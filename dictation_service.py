@@ -10,11 +10,22 @@ import subprocess
 import time
 from pathlib import Path
 import vosk
+import argparse
 
 # --- Konfiguration ---
 SCRIPT_DIR = Path(__file__).resolve().parent
-MODEL_NAME = "vosk-model-de-0.21"
-MODEL_NAME = "vosk-model-small-en-us-0.15"
+# MODEL_NAME = "vosk-model-de-0.21"
+
+parser = argparse.ArgumentParser(description="A dictation service.")
+parser.add_argument('--vosk_model')
+args = parser.parse_args()
+MODEL_NAME = f"{args.vosk_model}"
+
+# pkill -f dictation_service.py                                                                                                                                                                 # pgrep -f dictation_service.py
+
+
+
+# MODEL_NAME = "vosk-model-small-en-us-0.15"
 MODEL_PATH = SCRIPT_DIR / MODEL_NAME
 TRIGGER_FILE = Path("/tmp/vosk_trigger") # Unsere "Signal"-Datei
 
@@ -62,6 +73,8 @@ try:
 except Exception as e:
     print(f"FATALER FEHLER: Modell konnte nicht geladen werden. {e}")
     sys.exit(1)
+
+
 
 # Der Haupt-Loop: Warten auf die Trigger-Datei
 while True:

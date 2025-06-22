@@ -1,0 +1,34 @@
+{
+    "type": "script",
+    "description": "live_transcribe_en",
+    "store": {
+        "vosk_model_to_start": "vosk-model-en-us-0.22",
+        "vosk_model": "vosk-model-small-en-us-0.15"
+    },
+    "modes": [
+        3
+    ],
+    "usageCount": 45,
+    "prompt": false,
+    "omitTrigger": false,
+    "showInTrayMenu": false,
+    "abbreviation": {
+        "abbreviations": [],
+        "backspace": true,
+        "ignoreCase": false,
+        "immediate": false,
+        "triggerInside": false,
+        "wordChars": "[\\w]"
+    },
+    "hotkey": {
+        "modifiers": [
+            "<alt>",
+            "<ctrl>"
+        ],
+        "hotKey": "e"
+    },
+    "filter": {
+        "regex": null,
+        "isRecursive": false
+    }
+}
