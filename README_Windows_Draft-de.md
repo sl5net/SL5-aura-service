@@ -10,7 +10,7 @@ Dieses Tutorial adaptiert das ursprüngliche Linux-Konzept für Windows und verw
 *   **Hohe Genauigkeit:** Nutzt große, präzise Offline-Sprachmodelle von Vosk.
 *   **Schnelle Reaktionszeit:** Dank eines persistenten Hintergrunddienstes gibt es keine Ladeverzögerung beim Aktivieren des Hotkeys.
 *   **Offline & Privat:** Die gesamte Spracherkennung findet lokal auf deinem Computer statt. Es werden keine Daten in die Cloud gesendet.
-*   **Anpassbar:** Wechsle einfach zu anderen Sprachen (z. B. Deutsch), indem du das Vosk-Modell austauschst.
+*   **Anpassbar:** Wechsle einfach zu anderen Sprachen (z. B. Deutsch), indem du das [Vosk-Modell](https://alphacephei.com/vosk/models) austauschst.
 *   **Open Source:** Basiert vollständig auf kostenlosen Open-Source-Tools.
 
 ---

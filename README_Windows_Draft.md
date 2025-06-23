@@ -10,7 +10,7 @@ This guide adapts the original Linux concept for Windows, using native tools and
 *   **High Accuracy:** Uses large, precise offline language models from Vosk.
 *   **Fast Response:** Thanks to a persistent background service, there is no loading delay when activating the hotkey.
 *   **Offline & Private:** All speech recognition happens locally on your computer. No data is sent to the cloud.
-*   **Customizable:** Easily switch to other languages by swapping the Vosk model.
+*   **Customizable:** Easily switch to other languages by swapping the [Vosk model](https://alphacephei.com/vosk/models).
 *   **Open Source:** Based entirely on free and open-source tools.
 
 ---
