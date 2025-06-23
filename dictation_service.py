@@ -60,6 +60,10 @@ def transcribe_audio():
 
 # --- Hauptlogik des Dienstes ---
 print("--- Vosk Diktier-Dienst ---")
+
+if not MODEL_PATH:
+    MODEL_PATH = 'vosk-model-en-us-0.22'
+
 if not MODEL_PATH.exists():
     print(f"FATALER FEHLER: Modell nicht gefunden unter {MODEL_PATH}")
     sys.exit(1)
