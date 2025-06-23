@@ -67,6 +67,7 @@ Now, install the required Python libraries using `pip`.
 
 ```bash
 pip install vosk sounddevice pyperclip
+pip freeze > requirements.txt
 ```
 
 ### Step 5: Download a Vosk Language Model
