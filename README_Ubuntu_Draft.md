@@ -1,9 +1,9 @@
 This is a draft ! Means, not tested already.
 
 
-# System-Wide Dictation Tool with Vosk for Manjaro Linux
+# System-Wide Dictation Tool with Vosk for Ubuntu
 
-This project implements a powerful, system-wide dictation feature for Manjaro Linux (and other Linux distributions with minor adjustments). Once set up, you can press a hotkey in any text field (browser, editor, chat, etc.) to immediately start dictating. The spoken text will be automatically typed out for you.
+This project implements a powerful, system-wide dictation feature for Ubuntu (and other Debian-based distributions with minor adjustments). Once set up, you can press a hotkey in any text field (browser, editor, chat, etc.) to immediately start dictating. The spoken text will be automatically typed out for you.
 
 The system is designed to combine high accuracy (using large offline language models) with instant responsiveness (using a background service architecture).
 
@@ -24,26 +24,26 @@ This guide will walk you through the entire setup process, step by step.
 
 ### Step 1: Install System Dependencies
 
-First, we will install all necessary programs and libraries using Manjaro's package manager, `pacman`.
+First, we will install all necessary programs and libraries using Ubuntu's package manager, `apt`.
 
 Open a terminal and run the following command:
 
 ```bash
-sudo pacman -Syu python git portaudio ffmpeg xclip xdotool libnotify autokey unzip
+sudo apt update && sudo apt install python3 python3-pip python3-venv git portaudio19-dev ffmpeg xclip xdotool libnotify-bin autokey-gtk unzip
 ```
 
-*   `python`: The programming language we'll be using.
+*   `python3`, `python3-pip`, `python3-venv`: The programming language and tools for managing its packages and environments.
 *   `git`: For source code management (best practice).
-*   `portaudio`: An audio library required by `sounddevice`.
+*   `portaudio19-dev`: An audio library required by the `sounddevice` Python module.
 *   `ffmpeg`: For converting audio formats (optional, but useful).
 *   `xclip`, `xdotool`: Tools for controlling the mouse, keyboard, and clipboard.
-*   `libnotify`: Enables sending desktop notifications.
-*   `autokey`: The automation software for our hotkey.
+*   `libnotify-bin`: Enables sending desktop notifications from scripts.
+*   `autokey-gtk`: The automation software for our hotkey. Use `autokey-qt` if you are using a Qt-based desktop like KDE Plasma.
 *   `unzip`: For decompressing the language models.
 
 ### Step 2: Set Up the Project Directory
 
-We'll create a dedicated directory for our project.
+We'll create a dedicated directory for our project in your home folder.
 
 ```bash
 # Create the directory and change into it
@@ -56,17 +56,17 @@ cd ~/projects/py/STT
 A virtual environment is crucial for isolating the Python packages for this project from your main system.
 
 ```bash
-# Create the virtual environment named "vosk-tts"
-python -m venv vosk-tts
+# Create the virtual environment named "vosk-env"
+python3 -m venv vosk-env
 
 # Activate the environment. You must do this every time you work on this project.
-source vosk-tts/bin/activate
+source vosk-env/bin/activate
 ```
-After activation, your terminal prompt should change to show `(vosk-tts)`.
+After activation, your terminal prompt should change to show `(vosk-env)`.
 
 ### Step 4: Install Python Packages
 
-Now, install the required Python libraries using `pip`.
+Now, install the required Python libraries using `pip` inside your activated environment.
 
 ```bash
 pip install vosk sounddevice pyperclip
@@ -89,7 +89,7 @@ After unzipping, you will have a folder named `vosk-model-en-us-0.22-lgraph` in 
 
 ## Configuration
 
-The system consists of two scripts: the background service and the AutoKey trigger.
+The system consists of two parts: the background service script and the AutoKey trigger.
 
 ### Part A: The Background Service Script
 
@@ -100,7 +100,7 @@ This script runs persistently, holds the language model in memory, and waits for
     nano dictation_service.py
     ```
 
-2.  Copy the following code completely into the file. **Note:** The `MODEL_NAME` has been changed for the English model.
+2.  Copy the following code completely into the file. The code is already configured for the English model.
 
     ```python
     # File: ~/projects/py/STT/dictation_service.py
@@ -167,17 +167,19 @@ This script runs persistently, holds the language model in memory, and waits for
 
     while True:
         try:
+            # Check for the trigger file every 100ms
             if TRIGGER_FILE.exists():
                 print("Trigger detected! Starting transcription.")
                 notify("Vosk is Listening...", "Speak now.")
-                TRIGGER_FILE.unlink()
+                TRIGGER_FILE.unlink() # Remove the file to reset the trigger
 
                 recognized_text = transcribe_audio()
 
                 if recognized_text:
                     print(f"Transcribed: '{recognized_text}'")
+                    # Use xdotool to type the text
                     subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", recognized_text])
-                    pyperclip.copy(recognized_text)
+                    pyperclip.copy(recognized_text) # Also copy to clipboard
                 else:
                     notify("Vosk Dictation", "No text was recognized.")
             
@@ -210,14 +212,15 @@ This script runs persistently, holds the language model in memory, and waits for
 
 ## Usage
 
-1.  **Start the Service (once per computer session):**
-    Open a terminal and run:
+### Method 1: Manual Start (for testing)
+
+1.  **Start the Service:** Open a terminal and run:
     ```bash
     cd ~/projects/py/STT
-    source vosk-tts/bin/activate
-    python dictation_service.py
+    source vosk-env/bin/activate
+    python3 dictation_service.py
     ```
-    **IMPORTANT:** Leave this terminal window open! As long as it's open, your dictation service is running.
+    **IMPORTANT:** Leave this terminal window open! As long as it's open, your dictation service is running. This is great for testing or one-off use.
 
 2.  **Dictate:**
     *   Click inside any text box in any application.
@@ -226,22 +229,47 @@ This script runs persistently, holds the language model in memory, and waits for
     *   Speak a sentence. Pause briefly when you are finished.
     *   The recognized text will be automatically typed at your cursor's position.
 
----
+### Method 2: Automatic Start (Recommended)
 
-## Optional: Start the Service Automatically
+To avoid starting the service manually every time, we can create a `systemd` user service. This is the modern, robust way to manage background tasks on Ubuntu.
 
-To avoid starting the service manually every time, you can add it to your startup applications.
+1.  Create the directory for user services if it doesn't exist:
+    ```bash
+    mkdir -p ~/.config/systemd/user/
+    ```
 
-1.  Search for "Session and Startup" in your application menu.
-2.  Go to the "Application Autostart" tab.
-3.  Click "Add".
-4.  Fill in the fields:
-    *   **Name:** `Vosk Dictation Service`
-    *   **Description:** `Starts the background service for speech recognition`
-    *   **Command:** Copy the **full path** to the script here. Replace `<YOUR_USERNAME>` with your actual username.
-        ```
-        /home/<YOUR_USERNAME>/projects/py/STT/vosk-tts/bin/python /home/<YOUR_USERNAME>/projects/py/STT/dictation_service.py
-        ```
-5.  Click OK. The service will now start automatically the next time you log in.
+2.  Create a new service file:
+    ```bash
+    nano ~/.config/systemd/user/vosk-dictation.service
+    ```
 
-Enjoy
+3.  Paste the following content into the file. **You must replace `<YOUR_USERNAME>` with your actual username.**
+
+    ```ini
+    [Unit]
+    Description=Vosk System-Wide Dictation Service
+
+    [Service]
+    ExecStart=/home/<YOUR_USERNAME>/projects/py/STT/vosk-env/bin/python3 /home/<YOUR_USERNAME>/projects/py/STT/dictation_service.py
+    Restart=on-failure
+    RestartSec=5
+
+    [Install]
+    WantedBy=default.target
+    ```
+
+4.  Save and close the file (`Ctrl+X`, `Y`, `Enter`).
+
+5.  Enable and start the service:
+    ```bash
+    systemctl --user daemon-reload
+    systemctl --user enable --now vosk-dictation.service
+    ```
+    The `--now` flag starts it immediately. It will now automatically start every time you log in.
+
+6.  (Optional) You can check the status of your service at any time with:
+    ```bash
+    systemctl --user status vosk-dictation.service
+    ```
+
+Enjoy your new system-wide dictation setup
