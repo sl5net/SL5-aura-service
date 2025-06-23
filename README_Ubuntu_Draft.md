@@ -29,7 +29,7 @@ First, we will install all necessary programs and libraries using Ubuntu's packa
 Open a terminal and run the following command:
 
 ```bash
-sudo apt update && sudo apt install python3 python3-pip python3-venv git portaudio19-dev ffmpeg xclip xdotool libnotify-bin autokey-gtk unzip
+sudo apt update && sudo apt install python3 python3-pip python3-venv git portaudio19-dev ffmpeg xclip  xdotool libasound2-dev libnotify-bin autokey-gtk unzip
 ```
 
 *   `python3`, `python3-pip`, `python3-venv`: The programming language and tools for managing its packages and environments.
