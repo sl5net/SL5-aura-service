@@ -26,7 +26,7 @@ First, we will install all necessary programs and libraries using Manjaro's pack
 Open a terminal and run the following command:
 
 ```bash
-sudo pacman -Syu python git portaudio ffmpeg xclip xdotool libnotify autokey unzip
+sudo pacman -Syu --needed python git portaudio ffmpeg xclip xdotool libnotify autokey unzip
 ```
 
 *   `python`: The programming language we'll be using.
@@ -177,7 +177,7 @@ This script runs persistently, holds the language model in memory, and waits for
                     pyperclip.copy(recognized_text)
                 else:
                     notify("Vosk Dictation", "No text was recognized.")
-            
+
             time.sleep(0.1)
         except KeyboardInterrupt:
             print("\nService stopped by user.")
