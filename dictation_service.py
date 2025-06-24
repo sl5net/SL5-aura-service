@@ -10,6 +10,7 @@ import subprocess
 import time
 from pathlib import Path
 import argparse
+import os
 
 # --- Konfiguration ---
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -24,9 +25,16 @@ MODEL_NAME_DEFAULT = "vosk-model-de-0.21"
 parser = argparse.ArgumentParser(description="A real-time dictation service using Vosk.")
 parser.add_argument('--vosk_model', help=f"Name of the Vosk model folder. Defaults to '{MODEL_NAME_DEFAULT}'.")
 args = parser.parse_args()
-
-MODEL_NAME = args.vosk_model if args.vosk_model else MODEL_NAME_DEFAULT
+VOSK_MODEL_FILEread = ''
+VOSK_MODEL_FILE = "/tmp/vosk_model"
+if os.path.exists(VOSK_MODEL_FILE):
+    with open(VOSK_MODEL_FILE, 'r') as f:
+        VOSK_MODEL_FILEread = f.read()
+MODEL_NAME = args.vosk_model or VOSK_MODEL_FILEread or MODEL_NAME_DEFAULT
 MODEL_PATH = SCRIPT_DIR / MODEL_NAME
+
+# MODEL_NAME = args.vosk_model if args.vosk_model else MODEL_NAME_DEFAULT
+
 
 # --- Hilfsfunktionen ---
 def notify(summary, body="", urgency="low", icon=None):
