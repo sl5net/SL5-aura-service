@@ -92,14 +92,10 @@ The system consists of two scripts: the background service and the AutoKey trigg
 
 This script runs persistently, holds the language model in memory, and waits for a signal from the hotkey.
 
-1.  Create a new file in your project directory:
-    ```bash
-    nano dictation_service.py
-    ```
-
-2.  Copy the following code completely into the file. **Note:** The `MODEL_NAME` has been changed for the English model.
+Copy the following code, paste it into a terminal, and press enter. **Note:** The `MODEL_NAME` has been changed for the English model.
 
     ```python
+    cat <<'EOF' > dictation_service.py
     # File: ~/projects/py/STT/dictation_service.py
     import vosk
     import sys
@@ -185,9 +181,8 @@ This script runs persistently, holds the language model in memory, and waits for
         except Exception as e:
             print(f"An error occurred in the main loop: {e}")
             notify("Vosk Service Error", str(e))
+EOF
     ```
-
-3.  Save and close the file (in `nano`: `Ctrl+X`, then `Y`, then `Enter`).
 
 ### Part B: Configure AutoKey for the Hotkey
 
