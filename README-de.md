@@ -92,104 +92,21 @@ Das System besteht aus zwei Skripten: dem Hintergrund-Dienst und dem AutoKey-Tri
 
 Dieses Skript läuft permanent, hält das Sprachmodell im Speicher und wartet auf ein Signal vom Hotkey.
 
-1.  Erstellen Sie eine neue Datei in Ihrem Projektverzeichnis:
     ```bash
     nano dictation_service.py
     ```
 
-2.  Kopieren Sie den folgenden Code vollständig in die Datei:
+### Teil B 1 : AutoKey ist nicht nötig für den Hotkey 
 
-    ```python
-    # Datei: ~/projects/py/STT/dictation_service.py
-    import vosk
-    import sys
-    import sounddevice as sd
-    import queue
-    import json
-    import pyperclip
-    import subprocess
-    import time
-    from pathlib import Path
+    
+i got this to work thank you! i'm using it right now!
 
-    # --- Konfiguration ---
-    SCRIPT_DIR = Path(__file__).resolve().parent
-    MODEL_NAME = "vosk-model-de-0.21"
-    MODEL_PATH = SCRIPT_DIR / MODEL_NAME
-    TRIGGER_FILE = Path("/tmp/vosk_trigger") # Unsere "Signal"-Datei
+i suggest the that you mention in the docs that auto key isn't needed. A person can set up a hot key in whatever operating system or desktop they're using. i first tried installing auto key with yay and it had to install about seven or eight dependencies so i prefer not to use it and i have removed it.
 
-    NOTIFY_SEND_PATH = "/usr/bin/notify-send"
-    XDOTOOL_PATH = "/usr/bin/xdotool"
-    SAMPLE_RATE = 16000
+In xfce, I've added control alt V as the hot key
 
-    # --- Hilfsfunktionen ---
-    def notify(summary, body=""):
-        try:
-            subprocess.run([NOTIFY_SEND_PATH, summary, body, "-t", "2000"], check=True)
-        except Exception:
-            print(f"NOTIFY: {summary} - {body}")
 
-    def transcribe_audio():
-        q = queue.Queue()
-        def audio_callback(indata, frames, time, status):
-            q.put(bytes(indata))
-
-        try:
-            with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000,
-                                   dtype='int16', channels=1, callback=audio_callback):
-                while True:
-                    data = q.get()
-                    if recognizer.AcceptWaveform(data):
-                        break
-            result = json.loads(recognizer.Result())
-            return result.get('text', '')
-        except Exception as e:
-            print(f"Fehler bei der Transkription: {e}")
-            return ""
-
-    # --- Hauptlogik des Dienstes ---
-    print("--- Vosk Diktier-Dienst ---")
-    if not MODEL_PATH.exists():
-        print(f"FATALER FEHLER: Modell nicht gefunden unter {MODEL_PATH}")
-        sys.exit(1)
-
-    print(f"Lade Modell '{MODEL_NAME}'... Dies kann einige Sekunden dauern.")
-    try:
-        model = vosk.Model(str(MODEL_PATH))
-        recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-        print("Modell erfolgreich geladen. Dienst wartet auf Signal.")
-        notify("Vosk Dienst Bereit", "Hotkey ist nun aktiv.")
-    except Exception as e:
-        print(f"FATALER FEHLER: Modell konnte nicht geladen werden. {e}")
-        sys.exit(1)
-
-    while True:
-        try:
-            if TRIGGER_FILE.exists():
-                print("Signal erkannt! Starte Transkription.")
-                notify("Vosk Hört zu...", "Jetzt sprechen.")
-                TRIGGER_FILE.unlink()
-
-                recognized_text = transcribe_audio()
-
-                if recognized_text:
-                    print(f"Transkribiert: '{recognized_text}'")
-                    subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", recognized_text])
-                    pyperclip.copy(recognized_text)
-                else:
-                    notify("Vosk Diktat", "Kein Text erkannt.")
-            
-            time.sleep(0.1)
-        except KeyboardInterrupt:
-            print("\nDienst durch Benutzer beendet.")
-            break
-        except Exception as e:
-            print(f"Fehler im Haupt-Loop: {e}")
-            notify("Vosk Dienst Fehler", str(e))
-    ```
-
-3.  Speichern und schließen Sie die Datei (mit `nano`: `Ctrl+X`, dann `Y`, dann `Enter`).
-
-### Teil B: AutoKey für den Hotkey konfigurieren
+### Teil B 2 : AutoKey für den Hotkey konfigurieren
 
 1.  Starten Sie **AutoKey** aus Ihrem Anwendungsmenü.
 2.  Klicken Sie auf **File -> New -> Script**.
