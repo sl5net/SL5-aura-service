@@ -91,122 +91,20 @@ After unzipping, you will have a folder named `vosk-model-en-us-0.22-lgraph` in 
 
 The system consists of two parts: the background service script and the AutoKey trigger.
 
+
+  
+i got this to work thank you! i'm using it right now!
+
+i suggest the that you mention in the docs that auto key isn't needed. A person can set up a hot key in whatever operating system or desktop they're using. i first tried installing auto key with yay and it had to install about seven or eight dependencies so i prefer not to use it and i have removed it.
+
+In xfce, I've added control alt V as the hot key
+
+
+
 ### Part A: The Background Service Script
 
 This script runs persistently, holds the language model in memory, and waits for a signal from the hotkey.
 
-1.  Create a new file in your project directory:
-    ```bash
-    nano dictation_service.py
-    ```
-
-2.  Copy the following code completely into the file. The code is already configured for the English model.
-
-    ```python
-    # File: ~/projects/py/STT/dictation_service.py
-    import vosk
-    import sys
-    import sounddevice as sd
-    import queue
-    import json
-    import pyperclip
-    import subprocess
-    import time
-    from pathlib import Path
-
-    # --- Configuration ---
-    SCRIPT_DIR = Path(__file__).resolve().parent
-    MODEL_NAME = "vosk-model-en-us-0.22-lgraph" # English model
-    MODEL_PATH = SCRIPT_DIR / MODEL_NAME
-    TRIGGER_FILE = Path("/tmp/vosk_trigger") # Our signal file
-
-    NOTIFY_SEND_PATH = "/usr/bin/notify-send"
-    XDOTOOL_PATH = "/usr/bin/xdotool"
-    SAMPLE_RATE = 16000
-
-    # --- Helper Functions ---
-    def notify(summary, body=""):
-        try:
-            subprocess.run([NOTIFY_SEND_PATH, summary, body, "-t", "2000"], check=True)
-        except Exception:
-            print(f"NOTIFY: {summary} - {body}")
-
-    def transcribe_audio():
-        q = queue.Queue()
-        def audio_callback(indata, frames, time, status):
-            q.put(bytes(indata))
-
-        try:
-            with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000,
-                                   dtype='int16', channels=1, callback=audio_callback):
-                while True:
-                    data = q.get()
-                    if recognizer.AcceptWaveform(data):
-                        break
-            result = json.loads(recognizer.Result())
-            return result.get('text', '')
-        except Exception as e:
-            print(f"Error during transcription: {e}")
-            return ""
-
-    # --- Main Service Logic ---
-    print("--- Vosk Dictation Service ---")
-    if not MODEL_PATH.exists():
-        print(f"FATAL ERROR: Model not found at {MODEL_PATH}")
-        sys.exit(1)
-
-    print(f"Loading model '{MODEL_NAME}'... This may take a few seconds.")
-    try:
-        model = vosk.Model(str(MODEL_PATH))
-        recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-        print("Model loaded successfully. Service is waiting for a trigger.")
-        notify("Vosk Service Ready", "Hotkey is now active.")
-    except Exception as e:
-        print(f"FATAL ERROR: Could not load model. {e}")
-        sys.exit(1)
-
-    while True:
-        try:
-            # Check for the trigger file every 100ms
-            if TRIGGER_FILE.exists():
-                print("Trigger detected! Starting transcription.")
-                notify("Vosk is Listening...", "Speak now.")
-                TRIGGER_FILE.unlink() # Remove the file to reset the trigger
-
-                recognized_text = transcribe_audio()
-
-                if recognized_text:
-                    print(f"Transcribed: '{recognized_text}'")
-                    # Use xdotool to type the text
-                    subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", recognized_text])
-                    pyperclip.copy(recognized_text) # Also copy to clipboard
-                else:
-                    notify("Vosk Dictation", "No text was recognized.")
-            
-            time.sleep(0.1)
-        except KeyboardInterrupt:
-            print("\nService stopped by user.")
-            break
-        except Exception as e:
-            print(f"An error occurred in the main loop: {e}")
-            notify("Vosk Service Error", str(e))
-    ```
-
-3.  Save and close the file (in `nano`: `Ctrl+X`, then `Y`, then `Enter`).
-
-### Part B: Configure AutoKey for the Hotkey
-
-1.  Start **AutoKey** from your application menu.
-2.  Click **File -> New -> Script**.
-3.  Give the script a name, e.g., `Vosk Trigger`.
-4.  Delete all the sample code in the right-hand pane.
-5.  Paste this **single line** of code:
-    ```python
-    system.exec_command('touch /tmp/vosk_trigger')
-    ```
-6.  Click the **"Set"** button next to "Hotkey" at the top.
-7.  Press your desired key combination, e.g., **`Ctrl` + `Alt` + `D`**. Click OK.
-8.  Click the **Save icon** (floppy disk) to save the script.
 
 ---
 
