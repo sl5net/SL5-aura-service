@@ -92,97 +92,16 @@ The system consists of two scripts: the background service and the AutoKey trigg
 
 This script runs persistently, holds the language model in memory, and waits for a signal from the hotkey.
 
-Copy the following code, paste it into a terminal, and press enter. **Note:** The `MODEL_NAME` has been changed for the English model.
+### Teil B 1 : AutoKey ist nicht nötig für den Hotkey 
 
-    ```python
-    cat <<'EOF' > dictation_service.py
-    # File: ~/projects/py/STT/dictation_service.py
-    import vosk
-    import sys
-    import sounddevice as sd
-    import queue
-    import json
-    import pyperclip
-    import subprocess
-    import time
-    from pathlib import Path
+    
+i got this to work thank you! i'm using it right now!
 
-    # --- Configuration ---
-    SCRIPT_DIR = Path(__file__).resolve().parent
-    MODEL_NAME = "vosk-model-en-us-0.22-lgraph" # English model
-    MODEL_PATH = SCRIPT_DIR / MODEL_NAME
-    TRIGGER_FILE = Path("/tmp/vosk_trigger") # Our signal file
+i suggest the that you mention in the docs that auto key isn't needed. A person can set up a hot key in whatever operating system or desktop they're using. i first tried installing auto key with yay and it had to install about seven or eight dependencies so i prefer not to use it and i have removed it.
 
-    NOTIFY_SEND_PATH = "/usr/bin/notify-send"
-    XDOTOOL_PATH = "/usr/bin/xdotool"
-    SAMPLE_RATE = 16000
+In xfce, I've added control alt V as the hot key
 
-    # --- Helper Functions ---
-    def notify(summary, body=""):
-        try:
-            subprocess.run([NOTIFY_SEND_PATH, summary, body, "-t", "2000"], check=True)
-        except Exception:
-            print(f"NOTIFY: {summary} - {body}")
 
-    def transcribe_audio():
-        q = queue.Queue()
-        def audio_callback(indata, frames, time, status):
-            q.put(bytes(indata))
-
-        try:
-            with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000,
-                                   dtype='int16', channels=1, callback=audio_callback):
-                while True:
-                    data = q.get()
-                    if recognizer.AcceptWaveform(data):
-                        break
-            result = json.loads(recognizer.Result())
-            return result.get('text', '')
-        except Exception as e:
-            print(f"Error during transcription: {e}")
-            return ""
-
-    # --- Main Service Logic ---
-    print("--- Vosk Dictation Service ---")
-    if not MODEL_PATH.exists():
-        print(f"FATAL ERROR: Model not found at {MODEL_PATH}")
-        sys.exit(1)
-
-    print(f"Loading model '{MODEL_NAME}'... This may take a few seconds.")
-    try:
-        model = vosk.Model(str(MODEL_PATH))
-        recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-        print("Model loaded successfully. Service is waiting for a trigger.")
-        notify("Vosk Service Ready", "Hotkey is now active.")
-    except Exception as e:
-        print(f"FATAL ERROR: Could not load model. {e}")
-        sys.exit(1)
-
-    while True:
-        try:
-            if TRIGGER_FILE.exists():
-                print("Trigger detected! Starting transcription.")
-                notify("Vosk is Listening...", "Speak now.")
-                TRIGGER_FILE.unlink()
-
-                recognized_text = transcribe_audio()
-
-                if recognized_text:
-                    print(f"Transcribed: '{recognized_text}'")
-                    subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", recognized_text])
-                    pyperclip.copy(recognized_text)
-                else:
-                    notify("Vosk Dictation", "No text was recognized.")
-
-            time.sleep(0.1)
-        except KeyboardInterrupt:
-            print("\nService stopped by user.")
-            break
-        except Exception as e:
-            print(f"An error occurred in the main loop: {e}")
-            notify("Vosk Service Error", str(e))
-EOF
-    ```
 
 ### Part B: Configure AutoKey for the Hotkey
 
