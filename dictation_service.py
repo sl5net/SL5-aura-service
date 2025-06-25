@@ -181,7 +181,7 @@ try:
     while True:
         try:
 
-            # Call the function with the configured threshold
+            # Call memory is_critical (this check takes only about 5 milliseconds)
             is_critical, current_available_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
             # notify("Vosk Diktat", f"available memory MB:\n'{current_available_mb:.2f} MB'", "normal", icon="edit-paste")
 
