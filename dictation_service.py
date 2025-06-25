@@ -205,7 +205,10 @@ try:
                     recognized_text = transcribe_audio_with_feedback(recognizer)
                     if recognized_text:
                         print(f"Transkribiert: '{recognized_text}'")
-                        recognized_text = normalize_punctuation(recognized_text) + ' '
+
+                        recognized_text = normalize_punctuation(recognized_text)
+                        if re.match(r"^\w", recognized_text, re.IGNORECASE):
+                            recognized_text = ' ' + recognized_text
 
                         pyperclip.copy(recognized_text)
                         subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", recognized_text])
