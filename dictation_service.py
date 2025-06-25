@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 import argparse
 import os
+import re
 
 # --- Konfiguration ---
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -34,6 +35,50 @@ MODEL_NAME = args.vosk_model or VOSK_MODEL_FILEread or MODEL_NAME_DEFAULT
 MODEL_PATH = SCRIPT_DIR / MODEL_NAME
 
 # MODEL_NAME = args.vosk_model if args.vosk_model else MODEL_NAME_DEFAULT
+
+
+PUNCTUATION_MAP = {
+    # German
+    'punkt': '.',
+    'komma': ',',
+    'fragezeichen': '?',
+    'ausrufezeichen': '!',
+    'doppelpunkt': ':',
+    'semikolon': ';',
+    'strichpunkt': ';', # Synonym for Semicolon
+
+    # English
+    'period': '.',
+    'full stop': '.',
+    'dot': '.',
+    'comma': ',',
+    'question mark': '?',
+    'exclamation mark': '!',
+    'exclamation point': '!',
+    'colon': ':',
+    'semicolon': ';',
+}
+
+def normalize_punctuation(text: str) -> str:
+    """
+    Replaces spoken punctuation (e.g., "question mark") with its symbol (e.g., "?").
+    This function is case-insensitive and handles multiple languages via the map.
+    It correctly handles word boundaries to avoid partial replacements.
+    """
+    # Create a single regex pattern from the dictionary keys.
+    # The `|` acts as an "OR". We sort keys by length descending
+    # to match longer phrases first (e.g., "question mark" before "mark").
+    # \b ensures we match whole words only.
+    pattern = r'\b(' + '|'.join(re.escape(key) for key in sorted(PUNCTUATION_MAP.keys(), key=len, reverse=True)) + r')\b'
+
+    # The replacement function looks up the matched word (in lowercase) in our map.
+    def replace(match):
+        return PUNCTUATION_MAP[match.group(1).lower()]
+
+    # Use re.sub with the IGNORECASE flag to perform the replacement.
+    # The `(?i)` flag inline is an alternative to re.IGNORECASE
+    return re.sub(pattern, replace, text, flags=re.IGNORECASE)
+
 
 
 # --- Hilfsfunktionen ---
@@ -105,11 +150,15 @@ try:
                 TRIGGER_FILE.unlink()
                 print("Signal erkannt! Starte Transkription.")
 
+
+
                 try:
                     recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-                    recognized_text = transcribe_audio_with_feedback(recognizer) + ' '
+                    recognized_text = transcribe_audio_with_feedback(recognizer)
                     if recognized_text:
                         print(f"Transkribiert: '{recognized_text}'")
+                        recognized_text = normalize_punctuation(recognized_text) + ' '
+
                         pyperclip.copy(recognized_text)
                         subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", recognized_text])
                         # notify("Vosk Diktat", f"Text eingefügt:\n'{recognized_text}'", "normal", icon="edit-paste")
