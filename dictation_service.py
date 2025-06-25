@@ -13,7 +13,13 @@ import argparse
 import os
 import re
 
+import psutil # pip install psutil
+
+
+
 # --- Konfiguration ---
+# Set the critical threshold for available memory in Megabytes (MB).
+CRITICAL_THRESHOLD_MB = 1024  # 1 GB
 SCRIPT_DIR = Path(__file__).resolve().parent
 TRIGGER_FILE = Path("/tmp/vosk_trigger")
 LOG_FILE = Path("/tmp/vosk_dictation.log")
@@ -35,6 +41,35 @@ MODEL_NAME = args.vosk_model or VOSK_MODEL_FILEread or MODEL_NAME_DEFAULT
 MODEL_PATH = SCRIPT_DIR / MODEL_NAME
 
 # MODEL_NAME = args.vosk_model if args.vosk_model else MODEL_NAME_DEFAULT
+
+
+def check_memory_critical(threshold_mb: int) -> tuple[bool, float]:
+    """
+    Checks if the available system memory is below a given threshold.
+
+    This function uses 'psutil' to get cross-platform memory information.
+    It checks 'available' memory, which is a more realistic measure than 'free' memory.
+
+    Args:
+        threshold_mb: The critical memory threshold in Megabytes.
+
+    Returns:
+        A tuple containing:
+        - bool: True if memory is critical, False otherwise.
+        - float: The currently available memory in Megabytes.
+
+    its fast. maybe take 5 milliseconds
+    """
+    # Get memory statistics
+    mem = psutil.virtual_memory()
+
+    # Convert available memory from Bytes to Megabytes
+    available_mb = mem.available / (1024 * 1024)
+
+    # Check if available memory is below the threshold
+    is_critical = available_mb < threshold_mb
+
+    return is_critical, available_mb
 
 
 PUNCTUATION_MAP = {
@@ -145,6 +180,19 @@ is_recording = False
 try:
     while True:
         try:
+
+            # Call the function with the configured threshold
+            is_critical, current_available_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
+            # notify("Vosk Diktat", f"available memory MB:\n'{current_available_mb:.2f} MB'", "normal", icon="edit-paste")
+
+            # Print a status message based on the result
+            if is_critical:
+                print(f"CRITICAL: Available memory is {current_available_mb:.2f} MB, "
+                    f"which is below the threshold of {CRITICAL_THRESHOLD_MB} MB.")
+                # Exit with a non-zero status code to indicate a problem
+                sys.exit(1)
+
+
             if TRIGGER_FILE.exists() and not is_recording:
                 is_recording = True
                 TRIGGER_FILE.unlink()
