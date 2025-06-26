@@ -184,17 +184,19 @@ is_recording = False
 
 CHECK_INTERVAL_SECONDS = 3
 last_check_time = time.time()
+recording_time = 0
 
 try:
     while True:
         try:
+            current_time = time.time()
 
             if TRIGGER_FILE.exists() and not is_recording:
                 is_recording = True
+                is_recording_time = time.time()
+
                 TRIGGER_FILE.unlink()
                 print("Signal erkannt! Starte Transkription.")
-
-
 
                 try:
                     recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
@@ -204,7 +206,15 @@ try:
 
                         recognized_text = normalize_punctuation(recognized_text)
                         if re.match(r"^\w", recognized_text, re.IGNORECASE):
-                            recognized_text = ' ' + recognized_text
+                            # it starts with a word
+
+                            # use  needing space at the beginning then win us recognition  the last in the last twenty secondswas in last twenty seconds ago
+                            if current_time - recording_time < 20:
+                                recognized_text = ' ' + recognized_text
+
+                            recording_time = time.time()
+
+                            # good morning how are youokay let's try something else'
 
                         pyperclip.copy(recognized_text)
                         subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", recognized_text])
@@ -219,7 +229,6 @@ try:
                  TRIGGER_FILE.unlink()
 
 
-            current_time = time.time()
             if current_time - last_check_time > CHECK_INTERVAL_SECONDS:
                 # Run the memory check here
                 last_check_time = current_time
