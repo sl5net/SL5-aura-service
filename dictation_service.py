@@ -14,10 +14,25 @@ import os
 import re
 
 import psutil # pip install psutil
+import atexit
 
 
+HEARTBEAT_FILE = "/tmp/dictation_service.heartbeat"
+PIDFILE = "/tmp/dictation_service.pid"
+def cleanup():
+    """Remove the heartbeat and PID files on exit."""
+    print("Cleaning up and exiting.")
+    if os.path.exists(HEARTBEAT_FILE):
+        os.remove(HEARTBEAT_FILE)
+    if os.path.exists(PIDFILE):
+        os.remove(PIDFILE)
+# Register the cleanup function to run on normal exit or termination
+atexit.register(cleanup)
+# Write the PID file once at the start
+with open(PIDFILE, 'w') as f:
+    f.write(str(os.getpid()))
 
-# --- Konfiguration ---
+# --- configuratin ---
 # Set the critical threshold for available memory in Megabytes (MB).
 CRITICAL_THRESHOLD_MB = 1024  # 1 GB
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -214,8 +229,6 @@ try:
 
                             recording_time = time.time()
 
-                            # good morning how are youokay let's try something else'
-
                         pyperclip.copy(recognized_text)
                         subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", recognized_text])
                         # notify("Vosk Diktat", f"Text eingefügt:\n'{recognized_text}'", "normal", icon="edit-paste")
@@ -246,7 +259,9 @@ try:
 
             time.sleep(0.1)
 
-
+            # Update the heartbeat file with the current timestamp
+            with open(HEARTBEAT_FILE, 'w') as f:
+                f.write(str(int(time.time())))
 
 
         except KeyboardInterrupt:
