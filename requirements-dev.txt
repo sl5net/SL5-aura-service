@@ -1,0 +1,10 @@
+# Include production requirements
+-r requirements.txt
+
+# Development-specific tools
+pigar
+# 1. pip install pigar
+# 2. pigar generate
+
+# black
+# pytest
