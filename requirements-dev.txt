@@ -2,9 +2,11 @@
 -r requirements.txt
 
 # Development-specific tools
-pigar
+# pigar
 # 1. pip install pigar
 # 2. pigar generate
+# but better alternative: pip freeze > requirements.txt
+# It doesn't parse any code; it just asks pip what's installed. It's the Standard
 
 # black
 # pytest

@@ -1,5 +1,4 @@
 # Datei: ~/projects/py/STT/dictation_service.py
-
 import vosk
 import sys
 import sounddevice as sd
@@ -12,7 +11,6 @@ from pathlib import Path
 import argparse
 import os
 import re
-
 import psutil # pip install psutil
 import atexit
 
