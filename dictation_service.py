@@ -87,12 +87,17 @@ PUNCTUATION_MAP = {
     'full stop': '.',
     'dot': '.',
     'comma': ',',
+
     'question mark': '?',
+    'christian monk': '?', # ists not exacpt but help somtimes
+
     'exclamation mark': '!',
     'exclamation point': '!',
     'colon': ':',
     'semicolon': ';',
 }
+
+# ? huge please stop.!
 
 def normalize_punctuation(text: str) -> str:
     """
@@ -184,23 +189,6 @@ try:
     while True:
         try:
 
-            current_time = time.time()
-            if current_time - last_check_time > CHECK_INTERVAL_SECONDS:
-                # Run the memory check here
-                last_check_time = current_time
-
-                # Call memory is_critical (this check takes only about 5 milliseconds)
-                is_critical, current_available_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
-                # notify("Vosk Diktat", f"available memory MB:\n'{current_available_mb:.2f} MB'", "normal", icon="edit-paste")
-
-                # Print a status message based on the result
-                if is_critical:
-                    print(f"CRITICAL: Available memory is {current_available_mb:.2f} MB, "
-                        f"which is below the threshold of {CRITICAL_THRESHOLD_MB} MB.")
-                    # Exit with a non-zero status code to indicate a problem
-                    sys.exit(1)
-
-
             if TRIGGER_FILE.exists() and not is_recording:
                 is_recording = True
                 TRIGGER_FILE.unlink()
@@ -230,7 +218,28 @@ try:
             elif TRIGGER_FILE.exists() and not is_recording:
                  TRIGGER_FILE.unlink()
 
+
+            current_time = time.time()
+            if current_time - last_check_time > CHECK_INTERVAL_SECONDS:
+                # Run the memory check here
+                last_check_time = current_time
+
+                # Call memory is_critical (this check takes only about 5 milliseconds)
+                is_critical, current_available_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
+                # notify("Vosk Diktat", f"available memory MB:\n'{current_available_mb:.2f} MB'", "normal", icon="edit-paste")
+
+                # Print a status message based on the result
+                if is_critical:
+                    print(f"CRITICAL: Available memory is {current_available_mb:.2f} MB, "
+                        f"which is below the threshold of {CRITICAL_THRESHOLD_MB} MB.")
+                    # Exit with a non-zero status code to indicate a problem
+                    sys.exit(1)
+
             time.sleep(0.1)
+
+
+
+
         except KeyboardInterrupt:
             print("\nDienst durch Benutzer beendet.")
             notify("Vosk Diktat", "Dienst durch Benutzer beendet.", icon="dialog-warning")
