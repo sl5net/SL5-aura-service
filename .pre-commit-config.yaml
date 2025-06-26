@@ -1,0 +1,22 @@
+#!/bin/bash
+
+VENV_NAME="vosk-tts"
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+REQUIREMENTS_FILE="requirements.txt"
+
+echo "Running pre-commit hook..."
+
+if [ ! -d "$PROJECT_ROOT/$VENV_NAME" ]; then
+    echo "Virtual environment '$VENV_NAME' not found. Skipping hook."
+    exit 0
+fi
+
+source "$PROJECT_ROOT/$VENV_NAME/bin/activate"
+
+echo "Updating $REQUIREMENTS_FILE..."
+pip freeze > "$PROJECT_ROOT/$REQUIREMENTS_FILE"
+
+git add "$PROJECT_ROOT/$REQUIREMENTS_FILE"
+
+echo "Hook finished."
+exit 0
