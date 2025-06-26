@@ -30,7 +30,7 @@ atexit.register(cleanup)
 with open(PIDFILE, 'w') as f:
     f.write(str(os.getpid()))
 
-# --- configuratin ---
+# --- Configuration ---
 # Set the critical threshold for available memory in Megabytes (MB).
 CRITICAL_THRESHOLD_MB = 1024  # 1 GB
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -40,11 +40,13 @@ NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 SAMPLE_RATE = 16000
 
-# --- Argumenten-Verarbeitung mit Standardwert ---
+# --- Argument processing with default value ---
 MODEL_NAME_DEFAULT = "vosk-model-de-0.21"
 parser = argparse.ArgumentParser(description="A real-time dictation service using Vosk.")
 parser.add_argument('--vosk_model', help=f"Name of the Vosk model folder. Defaults to '{MODEL_NAME_DEFAULT}'.")
 args = parser.parse_args()
+
+# --- Model Name Resolution ---
 VOSK_MODEL_FILEread = ''
 VOSK_MODEL_FILE = "/tmp/vosk_model"
 if os.path.exists(VOSK_MODEL_FILE):
@@ -166,16 +168,19 @@ def transcribe_audio_with_feedback(recognizer):
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000,
                                dtype='int16', channels=1, callback=audio_callback):
             notify("Vosk Hört zu...", "Jetzt sprechen.", "normal", icon="microphone-sensitivity-high-symbolic")
+            # notify("Vosk is Listening...", "Speak now.", "normal", icon="microphone-sensitivity-high-symbolic")
+
             while True:
                 data = q.get()
                 if recognizer.AcceptWaveform(data):
                     return json.loads(recognizer.Result()).get('text', '')
-                else:
-                    partial_text = json.loads(recognizer.PartialResult()).get('partial', '')
+                #else:
+                #    partial_text = json.loads(recognizer.PartialResult()).get('partial', '')
                     # if partial_text: notify("...", partial_text, icon="microphone-sensitivity-medium-symbolic")
     except Exception as e:
-        error_msg = f"Fehler bei der Transkription: {e}"
-        print(error_msg); notify("Vosk Fehler", error_msg, icon="dialog-error"); return ""
+        # error_msg = f"Fehler bei der Transkription: {e}"
+        error_msg = f"Transcription error: {e}"
+        print(error_msg); notify("Vosk Error", error_msg, icon="dialog-error"); return ""
 
 # --- Hauptlogik des Dienstes ---
 print("--- Vosk Diktier-Dienst ---")
@@ -187,8 +192,11 @@ if not MODEL_PATH.exists():
 print(f"Lade Modell '{MODEL_NAME}'... Dies kann einige Sekunden dauern.")
 try:
     model = vosk.Model(str(MODEL_PATH))
-    print("Modell erfolgreich geladen. Dienst wartet auf Signal.")
-    notify("Vosk Dienst Bereit", f"Hotkey für '{MODEL_NAME}' ist nun aktiv.", icon="media-record")
+    # print("Modell erfolgreich geladen. Dienst wartet auf Signal.")
+    # notify("Vosk Dienst Bereit", f"Hotkey für '{MODEL_NAME}' ist nun aktiv.", icon="media-record")
+    print("Model loaded successfully. Service is waiting for signal.")
+    notify("Vosk Service Ready", f"Hotkey for '{MODEL_NAME}' is now active.", icon="media-record")
+
 except Exception as e:
     msg = f"FATALER FEHLER: Modell konnte nicht geladen werden. {e}"
     print(msg); notify("Vosk Startfehler", msg, icon="dialog-error"); sys.exit(1)
