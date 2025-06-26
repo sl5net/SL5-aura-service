@@ -1,0 +1,9 @@
+repos:
+-   repo: local
+    hooks:
+    -   id: requirements-update
+        name: Update requirements.txt
+        entry: bash -c 'source vosk-tts/bin/activate; pip freeze > requirements.txt; git add requirements.txt'
+        language: system
+        stages: [commit]
+        always_run: true
