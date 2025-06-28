@@ -1,6 +1,6 @@
 # System-Wide Dictation Tool with Vosk for Linux
 
-This project implements a powerful, system-wide dictation feature for Manjaro Linux (and other Linux distributions with minor adjustments). Once set up, you can press a hotkey in any text field (browser, editor, chat, etc.) to immediately start dictating. The spoken text will be automatically typed out for you.
+This project implements a powerful, system-wide dictation feature for Manjaro Linux (and other OS like other Linux distributions, MS Windows, Mac with minor adjustments). Once set up, you can press a hotkey in any text field (browser, editor, chat, etc.) to immediately start dictating. The spoken text will be automatically typed out for you.
 
 The system is designed to combine high accuracy (using large offline language models) with instant responsiveness (using a background service architecture).
 
