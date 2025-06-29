@@ -52,17 +52,14 @@ LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool-serv
 languagetool_process = None
 
 def guess_lt_language_from_model(model_name):
-    # Du kannst die Funktion beliebig erweitern für weitere Sprachen
-    model_name = model_name.lower()
-    if "de" in model_name:
+    name = model_name.lower()
+    if "-de-" in name:
         return "de-DE"
-    elif "en" in model_name:
+    elif "-en-" in name:
         return "en-US"
-    elif "fr" in model_name:
+    elif "-fr-" in name:
         return "fr-FR"
-    # Default fallback:
     return "de-DE"
-
 
 
 def start_languagetool_server():
