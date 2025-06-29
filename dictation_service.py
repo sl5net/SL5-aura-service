@@ -1,4 +1,4 @@
-# Datei: ~/projects/py/STT/dictation_service.py
+# File: ~/projects/py/STT/dictation_service.py
 import vosk
 import sys
 import sounddevice as sd
@@ -11,42 +11,132 @@ from pathlib import Path
 import argparse
 import os
 import re
-import psutil # pip install psutil
+import psutil
 import atexit
-
-
-HEARTBEAT_FILE = "/tmp/dictation_service.heartbeat"
-PIDFILE = "/tmp/dictation_service.pid"
-def cleanup():
-    """Remove the heartbeat and PID files on exit."""
-    print("Cleaning up and exiting.")
-    if os.path.exists(HEARTBEAT_FILE):
-        os.remove(HEARTBEAT_FILE)
-    if os.path.exists(PIDFILE):
-        os.remove(PIDFILE)
-# Register the cleanup function to run on normal exit or termination
-atexit.register(cleanup)
-# Write the PID file once at the start
-with open(PIDFILE, 'w') as f:
-    f.write(str(os.getpid()))
+import requests
+import threading
+import signal
+from inotify_simple import INotify, flags
 
 # --- Configuration ---
-# Set the critical threshold for available memory in Megabytes (MB).
-CRITICAL_THRESHOLD_MB = 1024  # 1 GB
+CRITICAL_THRESHOLD_MB = 1024
 SCRIPT_DIR = Path(__file__).resolve().parent
 TRIGGER_FILE = Path("/tmp/vosk_trigger")
 LOG_FILE = Path("/tmp/vosk_dictation.log")
+HEARTBEAT_FILE = "/tmp/dictation_service.heartbeat"
+PIDFILE = "/tmp/dictation_service.pid"
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 SAMPLE_RATE = 16000
 
-# --- Argument processing with default value ---
+# --- LanguageTool Configuration ---
+LANGUAGETOOL_URL = "http://localhost:8082/v2/check" # Standard-Port für LT ist 8081
+LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool-server.jar"
+# LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool.jar"
+
+languagetool_process = None
+
+
+# --- User-defined LanguageTool Configuration (Using your server JAR) ---
+LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
+LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool-server.jar"
+
+languagetool_process = None
+
+def start_languagetool_server():
+    global languagetool_process
+    if not Path(LANGUAGETOOL_JAR_PATH).exists():
+        # ... (error handling remains the same)
+        return False
+
+    port = LANGUAGETOOL_URL.split(':')[-1].split('/')[0]
+
+    # Define the path to the fasttext model
+    fasttext_model_path = str(Path(LANGUAGETOOL_JAR_PATH).parent / "lid.176.bin")
+
+    command = [
+        "java",
+        "-cp",
+        LANGUAGETOOL_JAR_PATH,
+        "org.languagetool.server.HTTPServer",
+        "--port",
+        port,
+        "--allow-origin",
+        "*",
+        "--fasttext-model", # This tells the server to use the model
+        fasttext_model_path # This tells it where to find it
+    ]
+
+    print("Starting LanguageTool Server with fastText...")
+    try:
+        dev_null = open(os.devnull, 'w')
+        process = subprocess.Popen(command, stdout=dev_null, stderr=dev_null)
+        languagetool_process = process
+    except Exception as e:
+        msg = f"Failed to start LanguageTool Server process: {e}"
+        print(f"FATAL: {msg}")
+        notify("Vosk Startup Error", msg, urgency="critical", icon="dialog-error")
+        return False
+
+    print("Waiting for LanguageTool Server to be responsive...")
+    max_retries = 15
+    for attempt in range(max_retries):
+        try:
+            ping_url = LANGUAGETOOL_URL.replace("/check", "/languages")
+
+            response = requests.get(ping_url, timeout=1)
+            if response.status_code == 200:
+                print("LanguageTool Server is online.")
+                notify("LanguageTool Server", "Successfully started.", "low")
+                return True
+        except requests.exceptions.RequestException:
+            pass
+
+        # Print a dot to show we are waiting
+        print(".", end="", flush=True)
+        time.sleep(1)
+
+    print("\nFATAL: LanguageTool Server did not become responsive after startup.")
+    notify("Vosk Startup Error", "LanguageTool Server is not responding.", urgency="critical", icon="dialog-error")
+    stop_languagetool_server()
+    return False
+
+
+
+def stop_languagetool_server():
+    """Stops the LanguageTool server process if it's running."""
+    global languagetool_process
+    if languagetool_process and languagetool_process.poll() is None:
+        print("Fahre LanguageTool Server herunter...")
+        languagetool_process.terminate()
+        try:
+            languagetool_process.wait(timeout=5)
+            print("LanguageTool Server sauber beendet.")
+        except subprocess.TimeoutExpired:
+            print("LanguageTool Server reagiert nicht auf terminate, sende kill...")
+            languagetool_process.kill()
+        languagetool_process = None
+
+# --- Cleanup & PID Management ---
+def cleanup():
+    """Remove heartbeat/PID files and stop the LT server on exit."""
+    print("Räume auf und beende das Skript.")
+    stop_languagetool_server()
+    if os.path.exists(HEARTBEAT_FILE):
+        os.remove(HEARTBEAT_FILE)
+    if os.path.exists(PIDFILE):
+        os.remove(PIDFILE)
+
+atexit.register(cleanup)
+
+with open(PIDFILE, 'w') as f:
+    f.write(str(os.getpid()))
+
+# --- Argumente & Modell-Pfad ---
 MODEL_NAME_DEFAULT = "vosk-model-de-0.21"
 parser = argparse.ArgumentParser(description="A real-time dictation service using Vosk.")
 parser.add_argument('--vosk_model', help=f"Name of the Vosk model folder. Defaults to '{MODEL_NAME_DEFAULT}'.")
 args = parser.parse_args()
-
-# --- Model Name Resolution ---
 VOSK_MODEL_FILEread = ''
 VOSK_MODEL_FILE = "/tmp/vosk_model"
 if os.path.exists(VOSK_MODEL_FILE):
@@ -55,107 +145,101 @@ if os.path.exists(VOSK_MODEL_FILE):
 MODEL_NAME = args.vosk_model or VOSK_MODEL_FILEread or MODEL_NAME_DEFAULT
 MODEL_PATH = SCRIPT_DIR / MODEL_NAME
 
-# MODEL_NAME = args.vosk_model if args.vosk_model else MODEL_NAME_DEFAULT
+def correct_text(text: str) -> str:
+    if not text.strip():
+        return text
+
+    print(f"  -> Input to LT:  '{text}'")
+
+    data = {
+        'language': 'de-DE',
+        'text': text,
+        'level': 'picky',
+        'enabledCategories': 'TYPOS,CASING,GRAMMAR'
+    }
+
+    try:
+        response = requests.post(LANGUAGETOOL_URL, data=data, timeout=10)
+        response.raise_for_status()
+
+        matches = response.json().get('matches', [])
+        if not matches:
+            print(f"  <- Output from LT: (No changes)")
+            return text
+
+        sorted_matches = sorted(matches, key=lambda m: m['offset'])
+        new_text_parts, last_index = [], 0
+
+        for match in sorted_matches:
+            new_text_parts.append(text[last_index:match['offset']])
+            if match['replacements']:
+                new_text_parts.append(match['replacements'][0]['value'])
+            last_index = match['offset'] + match['length']
+
+        new_text_parts.append(text[last_index:])
+        corrected_text = "".join(new_text_parts)
+
+        print(f"  <- Output from LT: '{corrected_text}'")
+
+        # This part is only reached if a correction was possible.
+        # We compare with the original text to be sure a change was made.
+        if corrected_text != text:
+             print("=> CORRECTION successfully applied.")
+        else:
+             print("=> NO CORRECTION needed.")
+
+        return corrected_text
+
+    except requests.exceptions.RequestException as e:
+        print(f"  <- ERROR: LanguageTool request failed: {e}")
+        print("=> NO CORRECTION applied due to an error.")
+        # CORRECTED: Return the original text here to exit the function.
+        return text
 
 
 def check_memory_critical(threshold_mb: int) -> tuple[bool, float]:
-    """
-    Checks if the available system memory is below a given threshold.
-
-    This function uses 'psutil' to get cross-platform memory information.
-    It checks 'available' memory, which is a more realistic measure than 'free' memory.
-
-    Args:
-        threshold_mb: The critical memory threshold in Megabytes.
-
-    Returns:
-        A tuple containing:
-        - bool: True if memory is critical, False otherwise.
-        - float: The currently available memory in Megabytes.
-
-    its fast. maybe take 5 milliseconds
-    """
-    # Get memory statistics
     mem = psutil.virtual_memory()
-
-    # Convert available memory from Bytes to Megabytes
     available_mb = mem.available / (1024 * 1024)
-
-    # Check if available memory is below the threshold
-    is_critical = available_mb < threshold_mb
-
-    return is_critical, available_mb
-
+    return available_mb < threshold_mb, available_mb
 
 PUNCTUATION_MAP = {
-    # German
+    # German - Correct and Common Mishearings
     'punkt': '.',
+    'pumpt': '.',
+    'punk': '.',
     'komma': ',',
     'fragezeichen': '?',
     'ausrufezeichen': '!',
     'doppelpunkt': ':',
     'semikolon': ';',
-    'strichpunkt': ';', # Synonym for Semicolon
+    'strichpunkt': ';',
 
-    # English
+    # English (for completeness)
     'period': '.',
     'full stop': '.',
     'dot': '.',
+
     'comma': ',',
-
     'question mark': '?',
-    'christian monk': '?', # ists not exacpt but help somtimes
-
+    'christian monk': '?',
     'exclamation mark': '!',
     'exclamation point': '!',
     'colon': ':',
     'semicolon': ';',
 }
-
-# ? huge please stop.!
-
 def normalize_punctuation(text: str) -> str:
-    """
-    Replaces spoken punctuation (e.g., "question mark") with its symbol (e.g., "?").
-    This function is case-insensitive and handles multiple languages via the map.
-    It correctly handles word boundaries to avoid partial replacements.
-    """
-    # Create a single regex pattern from the dictionary keys.
-    # The `|` acts as an "OR". We sort keys by length descending
-    # to match longer phrases first (e.g., "question mark" before "mark").
-    # \b ensures we match whole words only.
     pattern = r'\b(' + '|'.join(re.escape(key) for key in sorted(PUNCTUATION_MAP.keys(), key=len, reverse=True)) + r')\b'
-
-    # The replacement function looks up the matched word (in lowercase) in our map.
     def replace(match):
         return PUNCTUATION_MAP[match.group(1).lower()]
-
-    # Use re.sub with the IGNORECASE flag to perform the replacement.
-    # The `(?i)` flag inline is an alternative to re.IGNORECASE
     return re.sub(pattern, replace, text, flags=re.IGNORECASE)
 
-
-
-# --- Hilfsfunktionen ---
 def notify(summary, body="", urgency="low", icon=None):
     full_cmd = [NOTIFY_SEND_PATH, "-r", "9999", "-u", urgency, summary, body, "-t", "2000"]
-    if icon:
-        full_cmd.extend(["-i", icon])
-    try:
-        subprocess.run(full_cmd, check=True, capture_output=True)
-    except (subprocess.CalledProcessError, FileNotFoundError) as e1:
-        basic_cmd = [NOTIFY_SEND_PATH, summary, body]
-        try:
-            subprocess.run(basic_cmd, check=True, capture_output=True)
-        except (subprocess.CalledProcessError, FileNotFoundError) as e2:
-            error_message = (
-                f"{time.strftime('%Y-%m-%d %H:%M:%S')} - NOTIFICATION FAILED\n"
-                f"  Summary: {summary}\n  Body: {body}\n  Full command error: {e1}\n  Basic command error: {e2}\n"
-                "------------------------------------------\n"
-            )
-            print(error_message)
-            with open(LOG_FILE, "a") as f: f.write(error_message)
-
+    if icon: full_cmd.extend(["-i", icon])
+    try: subprocess.run(full_cmd, check=True, capture_output=True, text=True)
+    except:
+        try: subprocess.run([NOTIFY_SEND_PATH, summary, body], check=True, capture_output=True, text=True)
+        except Exception as e: print(f"NOTIFICATION FAILED: {summary} - {e}")
 
 def transcribe_audio_with_feedback(recognizer):
     q = queue.Queue()
@@ -165,120 +249,105 @@ def transcribe_audio_with_feedback(recognizer):
 
     recognizer.SetWords(True)
     try:
-        with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000,
-                               dtype='int16', channels=1, callback=audio_callback):
+        with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1, callback=audio_callback):
             notify("Vosk Hört zu...", "Jetzt sprechen.", "normal", icon="microphone-sensitivity-high-symbolic")
-            # notify("Vosk is Listening...", "Speak now.", "normal", icon="microphone-sensitivity-high-symbolic")
-
             while True:
                 data = q.get()
                 if recognizer.AcceptWaveform(data):
                     return json.loads(recognizer.Result()).get('text', '')
-                #else:
-                #    partial_text = json.loads(recognizer.PartialResult()).get('partial', '')
-                    # if partial_text: notify("...", partial_text, icon="microphone-sensitivity-medium-symbolic")
     except Exception as e:
-        # error_msg = f"Fehler bei der Transkription: {e}"
-        error_msg = f"Transcription error: {e}"
-        print(error_msg); notify("Vosk Error", error_msg, icon="dialog-error"); return ""
+        notify("Vosk Error", f"Transcription error: {e}", icon="dialog-error")
+        return ""
 
-# --- Hauptlogik des Dienstes ---
-print("--- Vosk Diktier-Dienst ---")
+print("--- Vosk dictation_service ---")
+
+if not start_languagetool_server():
+    sys.exit(1)
 
 if not MODEL_PATH.exists():
-    msg = f"FATALER FEHLER: Modell nicht gefunden unter {MODEL_PATH}"
-    print(msg); notify("Vosk Startfehler", msg, icon="dialog-error"); sys.exit(1)
+    notify("Vosk StartError", f"Modell not found: {MODEL_PATH}", icon="dialog-error")
+    sys.exit(1)
 
-print(f"Lade Modell '{MODEL_NAME}'... Dies kann einige Sekunden dauern.")
+print(f"load Modell '{MODEL_NAME}'...")
 try:
     model = vosk.Model(str(MODEL_PATH))
-    # print("Modell erfolgreich geladen. Dienst wartet auf Signal.")
-    # notify("Vosk Dienst Bereit", f"Hotkey für '{MODEL_NAME}' ist nun aktiv.", icon="media-record")
-    print("Model loaded successfully. Service is waiting for signal.")
-    notify("Vosk Service Ready", f"Hotkey for '{MODEL_NAME}' is now active.", icon="media-record")
-
+    message = f"{MODEL_NAME} loaded. Waiting for Signal."
+    print(message)
+    notify("Vosk ready", message, icon="media-record")
 except Exception as e:
-    msg = f"FATALER FEHLER: Modell konnte nicht geladen werden. {e}"
-    print(msg); notify("Vosk Startfehler", msg, icon="dialog-error"); sys.exit(1)
+    notify("Vosk error", f"Modell {MODEL_NAME} not loaded: {e}", icon="dialog-error")
+    sys.exit(1)
 
 is_recording = False
-
-CHECK_INTERVAL_SECONDS = 3
 last_check_time = time.time()
 recording_time = 0
+CHECK_INTERVAL_SECONDS = 3
 
 try:
+    # Setup the file system watcher
+    inotify = INotify()
+    watch_flags = flags.CREATE | flags.IGNORED
+    # We watch the /tmp directory for events related to our trigger file
+    wd = inotify.add_watch('/tmp', watch_flags)
+
+    print("Service is now listening for triggers via inotify...")
+
+    # This loop will now block and wait for events, consuming no CPU.
     while True:
-        try:
-            current_time = time.time()
+        # Check for events from the OS
+        for event in inotify.read(timeout=1):
 
-            if TRIGGER_FILE.exists() and not is_recording:
-                is_recording = True
-                is_recording_time = time.time()
+            # We are only interested in the creation of our specific trigger file
+            if event.name == TRIGGER_FILE.name and event.mask & flags.CREATE:
+                print("\n--- Trigger received via inotify! Starting processing. ---")
 
-                TRIGGER_FILE.unlink()
-                print("Signal erkannt! Starte Transkription.")
+                # Immediately remove the trigger to prevent re-triggering
+                try:
+                    TRIGGER_FILE.unlink()
+                except FileNotFoundError:
+                    pass # It might already be gone, which is fine
 
+                # --- The entire processing logic is now inside the event handler ---
                 try:
                     recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-                    recognized_text = transcribe_audio_with_feedback(recognizer)
+                    recognized_text = transcribe_audio_with_feedback(recognizer) # This part is still blocking
+
                     if recognized_text:
-                        print(f"Transkribiert: '{recognized_text}'")
+                        print(f"Transcribed: '{recognized_text}'")
 
-                        recognized_text = normalize_punctuation(recognized_text)
-                        if re.match(r"^\w", recognized_text, re.IGNORECASE):
-                            # it starts with a word
+                        processed_text = normalize_punctuation(recognized_text)
+                        processed_text = correct_text(processed_text)
 
-                            # use  needing space at the beginning then win us recognition  the last in the last twenty secondswas in last twenty seconds ago
-                            if current_time - recording_time < 20:
-                                recognized_text = ' ' + recognized_text
-
+                        if re.match(r"^\w", processed_text):
+                            if time.time() - recording_time < 20:
+                                processed_text = ' ' + processed_text
                             recording_time = time.time()
 
-                        pyperclip.copy(recognized_text)
-                        subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", recognized_text])
-                        # notify("Vosk Diktat", f"Text eingefügt:\n'{recognized_text}'", "normal", icon="edit-paste")
+                        pyperclip.copy(processed_text)
+                        subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", processed_text])
                     else:
-                        notify("Vosk Diktat", "Kein Text erkannt.", icon="dialog-warning")
+                        notify("Vosk Dictation", "No text recognized.", icon="dialog-warning")
                 finally:
-                    is_recording = False
-                    notify("Vosk Diktat", "Not Recoding at the Moment.", icon="dialog-warning")
+                    notify("Vosk Dictation", "Processing finished.", "low", icon="microphone-sensitivity-off-symbolic")
+                    print("--- Processing finished. Waiting for next trigger. ---\n")
 
-            elif TRIGGER_FILE.exists() and not is_recording:
-                 TRIGGER_FILE.unlink()
-
-
-            if current_time - last_check_time > CHECK_INTERVAL_SECONDS:
-                # Run the memory check here
-                last_check_time = current_time
-
-                # Call memory is_critical (this check takes only about 5 milliseconds)
-                is_critical, current_available_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
-                # notify("Vosk Diktat", f"available memory MB:\n'{current_available_mb:.2f} MB'", "normal", icon="edit-paste")
-
-                # Print a status message based on the result
-                if is_critical:
-                    print(f"CRITICAL: Available memory is {current_available_mb:.2f} MB, "
-                        f"which is below the threshold of {CRITICAL_THRESHOLD_MB} MB.")
-                    # Exit with a non-zero status code to indicate a problem
-                    sys.exit(1)
-
-            time.sleep(0.1)
-
-            # Update the heartbeat file with the current timestamp
+        # heartbeat/memory check runs every second
+        # when no trigger event is happening.
+        current_time = time.time()
+        if current_time - last_check_time > CHECK_INTERVAL_SECONDS:
+            last_check_time = current_time
+            is_critical, _ = check_memory_critical(CRITICAL_THRESHOLD_MB)
+            if is_critical:
+                print(f"CRITICAL: Low memory detected. Shutting down.")
+                sys.exit(1)
             with open(HEARTBEAT_FILE, 'w') as f:
                 f.write(str(int(time.time())))
 
 
-        except KeyboardInterrupt:
-            print("\nDienst durch Benutzer beendet.")
-            notify("Vosk Diktat", "Dienst durch Benutzer beendet.", icon="dialog-warning")
-            break # Verlässt den while-Loop und geht zum finally-Block
-        except Exception as e:
-            error_msg = f"Fehler im Haupt-Loop: {e}"
-            print(error_msg)
-            notify("Vosk Dienst Fehler", error_msg, icon="dialog-error")
-            is_recording = False
+except KeyboardInterrupt:
+    print("\nService interrupted by user.")
+
 finally:
-    print("Dienst wird heruntergefahren. Sende Abschluss-Benachrichtigung.")
-    notify("Vosk Dienst", "Dienst wurde beendet.", "normal", icon="process-stop-symbolic")
+    cleanup()
+    notify("Vosk Service", "Service has been shut down.", "normal", icon="process-stop-symbolic")
+
