@@ -125,7 +125,7 @@ def correct_text(text: str) -> str:
     if not text.strip(): return text
     logger.info(f"  -> Input to LT:  '{text}'")
     try:
-        response = requests.post(LANGUAGETOOL_URL, data={'language': 'de-DE', 'text': text}, timeout=10)
+        response = requests.post(LANGUAGETOOL_URL, data={'language': 'de-DE', 'text': text, 'maxSuggestions': 1}, timeout=10)
         response.raise_for_status()
         matches = response.json().get('matches', [])
         if not matches:
