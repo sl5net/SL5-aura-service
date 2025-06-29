@@ -1,14 +1,11 @@
 {
     "type": "script",
-    "description": "live_transcribe",
-    "store": {
-        "vosk_model": "vosk-model-de-0.21",
-        "vosk_model_lastused": "vosk-model-de-0.21"
-    },
+    "description": "get_suggestions",
+    "store": {},
     "modes": [
         3
     ],
-    "usageCount": 206,
+    "usageCount": 18,
     "prompt": false,
     "omitTrigger": false,
     "showInTrayMenu": false,
@@ -21,8 +18,11 @@
         "wordChars": "[\\w]"
     },
     "hotkey": {
-        "modifiers": [],
-        "hotKey": "<scroll_lock>"
+        "modifiers": [
+            "<alt>",
+            "<ctrl>"
+        ],
+        "hotKey": "s"
     },
     "filter": {
         "regex": null,
