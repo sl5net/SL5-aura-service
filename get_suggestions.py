@@ -16,7 +16,13 @@ from nltk.corpus import wordnet
 LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 LOGFILE = os.path.expanduser("~/projects/py/STT/get_suggestions.log")
-GERMAN_THESAURUS_FILE = os.path.expanduser("~/projects/py/STT/openthesaurus-data.json")  # Adjust path as needed
+
+# Deutscher-Thesaurus.oxt
+#GERMAN_THESAURUS_FILE = os.path.expanduser("~/projects/py/STT/openthesaurus-data.json")  # Adjust path as needed
+GERMAN_THESAURUS_FILE = os.path.expanduser("~/projects/py/STT/openthesaurus.txt")  # Adjust path as needed
+
+
+
 NUM_SUGGESTIONS = 3
 
 def guess_lt_language_from_model(model_name):
@@ -49,22 +55,31 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s: %(message)s",
 )
 
-# --- Load German Synonyms DB (from OpenThesaurus JSON) ---
-def load_german_thesaurus(path):
-    if not Path(path).exists():
-        logging.error(f"German thesaurus file not found: {path}")
-        return {}
+def load_german_thesaurus_txt(path):
+    synonyms = {}
     with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    # Build a fast lookup dictionary: word -> set([syn1, syn2, ...])
-    synmap = {}
-    for synset in data.get("synsets", []):
-        terms = [term["term"] for term in synset.get("terms", [])]
-        for term in terms:
-            synmap.setdefault(term.lower(), set()).update([t for t in terms if t != term])
-    return synmap
+        for line in f:
+            line = line.strip()
+            # Kommentare und leere Zeilen überspringen
+            if not line or line.startswith("#"):
+                continue
+            # Manche Zeilen enthalten nur Präfixe, keine Synonyme
+            terms = [t.strip() for t in line.split(";") if t.strip()]
+            if len(terms) < 2:
+                continue
+            # Jede Variante auf die anderen mappen
+            for i, term in enumerate(terms):
+                key = term.lower()
+                syns = set(t for j, t in enumerate(terms) if i != j)
+                if key in synonyms:
+                    synonyms[key].update(syns)
+                else:
+                    synonyms[key] = syns
+    return synonyms
 
-german_synonyms = load_german_thesaurus(GERMAN_THESAURUS_FILE)
+
+german_synonyms = load_german_thesaurus_txt(GERMAN_THESAURUS_FILE) if LT_LANGUAGE == "de-DE" else {}
+
 
 def get_german_synonyms(word: str) -> list:
     """Get German synonyms from the loaded OpenThesaurus DB."""
