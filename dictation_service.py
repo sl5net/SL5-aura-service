@@ -168,7 +168,33 @@ def check_memory_critical(threshold_mb: int) -> tuple[bool, float]:
     mem = psutil.virtual_memory()
     return mem.available / (1024 * 1024) < threshold_mb, mem.available / (1024 * 1024)
 
-PUNCTUATION_MAP = {'punkt': '.', 'komma': ',', 'fragezeichen': '?', 'ausrufezeichen': '!', 'doppelpunkt': ':'}
+PUNCTUATION_MAP = {
+    # German - Correct and Common Mishearings
+    'punkt': '.',
+    'komma': ',',
+    'fragezeichen': '?',
+    'ausrufezeichen': '!',
+    'doppelpunkt': ':',
+    'semikolon': ';',
+    'strichpunkt': ';',
+
+    # English (for completeness)
+    'period': '.',
+    'full stop': '.',
+    'dot': '.',
+
+    'comma': ',',
+    'question mark': '?',
+    'christian monk': '?',
+    'Question Mark': '?',
+
+    'exclamation mark': '!',
+    'exclamation point': '!',
+    'colon': ':',
+    'semicolon': ';',
+}
+
+
 def normalize_punctuation(text: str) -> str:
     pattern = r'\b(' + '|'.join(re.escape(k) for k in sorted(PUNCTUATION_MAP, key=len, reverse=True)) + r')\b'
     return re.sub(pattern, lambda m: PUNCTUATION_MAP[m.group(1).lower()], text, flags=re.IGNORECASE)
