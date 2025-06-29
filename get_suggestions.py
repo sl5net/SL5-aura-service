@@ -17,6 +17,7 @@ LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 LOGFILE = os.path.expanduser("~/projects/py/STT/get_suggestions.log")
 GERMAN_THESAURUS_FILE = os.path.expanduser("~/projects/py/STT/openthesaurus-data.json")  # Adjust path as needed
+NUM_SUGGESTIONS = 3
 
 def guess_lt_language_from_model(model_name):
     name = model_name.lower()
@@ -78,7 +79,7 @@ def get_suggestions(word: str) -> list:
         'language': LT_LANGUAGE,
         'text': word,
         'level': 'picky',
-        'maxSuggestions': 3
+        'maxSuggestions': NUM_SUGGESTIONS
     }
 
     try:
@@ -131,7 +132,7 @@ def main():
         # Add more languages as needed
 
     if suggestions:
-        output_string = f" ( {' | '.join(suggestions[:3])} )"
+        output_string = f" ( {' | '.join(suggestions[:NUM_SUGGESTIONS])} )"
         try:
             subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", output_string])
             logging.info(f"Suggestions typed: {output_string}")
