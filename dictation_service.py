@@ -22,6 +22,12 @@ from inotify_simple import INotify, flags
 CRITICAL_THRESHOLD_MB = 1024
 SCRIPT_DIR = Path(__file__).resolve().parent
 TRIGGER_FILE = Path("/tmp/vosk_trigger")
+
+try:
+    TRIGGER_FILE.unlink()
+except FileNotFoundError:
+    pass # It might already be gone, which is fine
+
 LOG_FILE = Path("/tmp/vosk_dictation.log")
 HEARTBEAT_FILE = "/tmp/dictation_service.heartbeat"
 PIDFILE = "/tmp/dictation_service.pid"
@@ -36,70 +42,50 @@ LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool-serv
 
 languagetool_process = None
 
-
-# --- User-defined LanguageTool Configuration (Using your server JAR) ---
-LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
-LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool-server.jar"
-
-languagetool_process = None
+# File: ~/projects/py/STT/dictation_service.py
 
 def start_languagetool_server():
     global languagetool_process
     if not Path(LANGUAGETOOL_JAR_PATH).exists():
-        # ... (error handling remains the same)
+        print(f"FATAL: LanguageTool JAR not found at {LANGUAGETOOL_JAR_PATH}")
         return False
 
     port = LANGUAGETOOL_URL.split(':')[-1].split('/')[0]
-
-    # Define the path to the fasttext model
     fasttext_model_path = str(Path(LANGUAGETOOL_JAR_PATH).parent / "lid.176.bin")
 
-    command = [
-        "java",
-        "-cp",
-        LANGUAGETOOL_JAR_PATH,
-        "org.languagetool.server.HTTPServer",
-        "--port",
-        port,
-        "--allow-origin",
-        "*",
-        "--fasttext-model", # This tells the server to use the model
-        fasttext_model_path # This tells it where to find it
-    ]
+    command = ["java", "-cp", LANGUAGETOOL_JAR_PATH, "org.languagetool.server.HTTPServer", "--port", port, "--allow-origin", "*"]
 
-    print("Starting LanguageTool Server with fastText...")
+    # Only add the fastText parameter if the model file actually exists
+    if Path(fasttext_model_path).exists():
+        command.extend(["--fasttext-model", fasttext_model_path])
+        print("Starting LanguageTool Server with fastText...")
+    else:
+        print("Starting LanguageTool Server (fastText model not found, performance may be reduced)...")
+
     try:
         dev_null = open(os.devnull, 'w')
-        process = subprocess.Popen(command, stdout=dev_null, stderr=dev_null)
-        languagetool_process = process
+        languagetool_process = subprocess.Popen(command, stdout=dev_null, stderr=dev_null)
     except Exception as e:
-        msg = f"Failed to start LanguageTool Server process: {e}"
-        print(f"FATAL: {msg}")
-        notify("Vosk Startup Error", msg, urgency="critical", icon="dialog-error")
+        print(f"FATAL: Failed to start LanguageTool Server process: {e}")
         return False
 
     print("Waiting for LanguageTool Server to be responsive...")
-    max_retries = 15
-    for attempt in range(max_retries):
+    for _ in range(15):
         try:
             ping_url = LANGUAGETOOL_URL.replace("/check", "/languages")
-
             response = requests.get(ping_url, timeout=1)
             if response.status_code == 200:
                 print("LanguageTool Server is online.")
-                notify("LanguageTool Server", "Successfully started.", "low")
                 return True
         except requests.exceptions.RequestException:
             pass
-
-        # Print a dot to show we are waiting
         print(".", end="", flush=True)
         time.sleep(1)
 
     print("\nFATAL: LanguageTool Server did not become responsive after startup.")
-    notify("Vosk Startup Error", "LanguageTool Server is not responding.", urgency="critical", icon="dialog-error")
     stop_languagetool_server()
     return False
+
 
 
 
@@ -241,23 +227,46 @@ def notify(summary, body="", urgency="low", icon=None):
         try: subprocess.run([NOTIFY_SEND_PATH, summary, body], check=True, capture_output=True, text=True)
         except Exception as e: print(f"NOTIFICATION FAILED: {summary} - {e}")
 
+# File: ~/projects/py/STT/dictation_service.py
+
 def transcribe_audio_with_feedback(recognizer):
+    """
+    Transcribes audio with a built-in timeout to prevent getting stuck on silence.
+    """
     q = queue.Queue()
     def audio_callback(indata, frames, time, status):
         if status: print(status, file=sys.stderr)
         q.put(bytes(indata))
 
     recognizer.SetWords(True)
+    notify("Vosk is Listening...", "Speak now. It will stop on silence.", "normal", icon="microphone-sensitivity-high-symbolic")
+
     try:
-        with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1, callback=audio_callback):
-            notify("Vosk Hört zu...", "Jetzt sprechen.", "normal", icon="microphone-sensitivity-high-symbolic")
-            while True:
-                data = q.get()
-                if recognizer.AcceptWaveform(data):
-                    return json.loads(recognizer.Result()).get('text', '')
+        with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000, dtype='int16', channels=1, callback=audio_callback):
+            # Timeout configuration
+            SILENCE_TIMEOUT = 2.0  # seconds of silence to stop
+            last_audio_time = time.time()
+
+            while time.time() - last_audio_time < SILENCE_TIMEOUT:
+                try:
+                    # Wait for audio data, but with a timeout to check our condition
+                    data = q.get(timeout=0.5)
+                    last_audio_time = time.time() # Reset timer on receiving audio
+
+                    if recognizer.AcceptWaveform(data):
+                        # This happens on a natural pause, we can stop early
+                        break
+                except queue.Empty:
+                    # No audio received in the last 0.5s, loop will check main timeout
+                    pass
     except Exception as e:
         notify("Vosk Error", f"Transcription error: {e}", icon="dialog-error")
         return ""
+    finally:
+        # Important: Get the final recognized text after the loop
+        return json.loads(recognizer.FinalResult()).get('text', '')
+
+
 
 print("--- Vosk dictation_service ---")
 
