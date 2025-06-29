@@ -51,6 +51,19 @@ LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
 LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool-server.jar"
 languagetool_process = None
 
+def guess_lt_language_from_model(model_name):
+    # Du kannst die Funktion beliebig erweitern für weitere Sprachen
+    model_name = model_name.lower()
+    if "de" in model_name:
+        return "de-DE"
+    elif "en" in model_name:
+        return "en-US"
+    elif "fr" in model_name:
+        return "fr-FR"
+    # Default fallback:
+    return "de-DE"
+
+
 
 def start_languagetool_server():
     global languagetool_process
@@ -121,11 +134,19 @@ vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MO
 MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
 MODEL_PATH = SCRIPT_DIR / MODEL_NAME
 
+LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
+
+
 def correct_text(text: str) -> str:
     if not text.strip(): return text
     logger.info(f"  -> Input to LT:  '{text}'")
     try:
-        response = requests.post(LANGUAGETOOL_URL, data={'language': 'de-DE', 'text': text, 'maxSuggestions': 1}, timeout=10)
+        # Hier wird nun die automatisch erkannte Sprache benutzt!
+        response = requests.post(
+            LANGUAGETOOL_URL,
+            data={'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1},
+            timeout=10
+        )
         response.raise_for_status()
         matches = response.json().get('matches', [])
         if not matches:
