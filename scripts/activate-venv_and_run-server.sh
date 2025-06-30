@@ -1,12 +1,17 @@
 #!/bin/bash
 # activate-venv_and_run-server.sh
 # Exit immediately if a command fails
-set -e
 
 SCRIPT_firstName="dictation_service"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 PROJECT_ROOT="$SCRIPT_DIR/.."
+
+
+$PROJECT_ROOT/type_watcher.sh &
+
+set -e
+
 
 HEARTBEAT_FILE="/tmp/$SCRIPT_firstName.heartbeat"
 SCRIPT_TO_START="$SCRIPT_DIR/../$SCRIPT_firstName.py"
@@ -26,7 +31,7 @@ then
     if [ "$age" -lt "$MAX_STALE_SECONDS" ]
     then
         echo "Service appears to be running and healthy."
-        exit 0
+        exit 0 
     else
         echo "Service heartbeat is stale. Attempting to restart."
     fi
@@ -42,15 +47,7 @@ echo "Starting Python server from '$PROJECT_ROOT'..."
 # We run the python script using its absolute path to be safe
 
 echo "Starting service..."
-# python3 "$SCRIPT_TO_START" &
-python3 "$SCRIPT_TO_START" &
 
-# echo "PROJECT_ROOT = $PROJECT_ROOT"
-pkill -9 -f "$PROJECT_ROOT/type_watcher.sh"
-sleep 0.02
-$PROJECT_ROOT/type_watcher.sh &
-#exit 1
+python3 "$SCRIPT_TO_START" & 
 
-
-# bash -x $PROJECT_ROOT/type_watcher.sh &
 
