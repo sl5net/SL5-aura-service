@@ -48,7 +48,7 @@ Set a *different* global hotkey to trigger the homophone lookup. This hotkey sho
 
 ## Support the Project
 
-If you find this tool useful and want to support its continued development, please consider buying me a coffee! Your support is greatly appreciated and helps fuel future improvements.
+If you find this tool useful and want to support our team's continued development, please consider buying us a coffee! Your support is greatly appreciated and helps fuel future improvements.
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C445TF6)
 
