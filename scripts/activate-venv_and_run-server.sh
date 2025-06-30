@@ -12,6 +12,11 @@ HEARTBEAT_FILE="/tmp/$SCRIPT_firstName.heartbeat"
 SCRIPT_TO_START="$SCRIPT_DIR/../$SCRIPT_firstName.py"
 MAX_STALE_SECONDS=5
 
+echo "PROJECT_ROOT = $PROJECT_ROOT"
+pkill -9 -f "$PROJECT_ROOT/type_watcher.sh"
+sleep 0.01
+$PROJECT_ROOT/type_watcher.sh &
+#exit 1
 
 # Get the currently active window ID BEFORE starting anything.
 ACTIVE_WINDOW_ID=$(xdotool getactivewindow)
@@ -55,10 +60,5 @@ echo "Starting Python server from '$PROJECT_ROOT'..."
 echo "Starting service..."
 # python3 "$SCRIPT_TO_START" &
 python3 "$SCRIPT_TO_START" --target-window "$ACTIVE_WINDOW_ID" &
-sleep 2
-pkill -9 -f "$PROJECT_ROOT/type_watcher.sh"
-$PROJECT_ROOT/type_watcher.sh &
-
-
-
+# bash -x $PROJECT_ROOT/type_watcher.sh &
 

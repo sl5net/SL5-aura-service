@@ -1,10 +1,42 @@
 #!/bin/bash
-
+# type_watcher.sh
 FILE_TO_WATCH="/tmp/tts_output.txt"
 DIR_TO_WATCH=$(dirname "$FILE_TO_WATCH")
 BASEFILE=$(basename "$FILE_TO_WATCH")
 
 echo "Watcher started. Waiting for $FILE_TO_WATCH to be written..."
+notify-send "Watcher started. Waiting for $FILE_TO_WATCH to be written..."
+
+#!/bin/bash
+LOCKFILE="/tmp/type_watcher.lock"
+
+if [ -e "$LOCKFILE" ]; then
+    OLD_PID=$(cat "$LOCKFILE")
+    if ps -p $OLD_PID > /dev/null 2>&1; then
+        echo "Another instance is already running (PID $OLD_PID). Exiting."
+        exit 1
+    else
+        echo $$ > "$LOCKFILE"
+    fi
+else
+    echo $$ > "$LOCKFILE"
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 while true; do
     # Warte auf close_write oder create im Verzeichnis
@@ -27,3 +59,8 @@ while true; do
         fi
     fi
 done
+
+# On exit, remove the lock
+trap "rm -f $LOCKFILE" EXIT
+
+
