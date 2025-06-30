@@ -1,6 +1,4 @@
 # File: ~/projects/py/STT/dictation_service.py
-# FINAL VERSION - Combines original working structure with learned fixes.
-
 import vosk
 import sys
 import sounddevice as sd
