@@ -1,23 +1,46 @@
-exit 0
+#!/bin/bash
+set -e
 
-# list running
-pgrep -f live_transcribe.py
-1223
+# --- Bidirectional sync ---
 
-ps aux | grep '[l]ive_transcribe.py'
+SRC1="$HOME/.config/autokey/data/stt/autokey-scripts/"
+SRC2="scripts/autokey-scripts/"
 
-# kill the service. option 1
-kill 1223
+# Sync newer files from SRC1 to SRC2 
+rsync -au --delete "$SRC1" "$SRC2"
 
+# Sync newer files from SRC2  to SRC1
+rsync -au --delete "$SRC2" "$SRC1"
 
-# kill the service. option 2
-pkill -f live_transcribe.py
+# --- Existing pipreqs logic ---
 
-# start
-python3 ~/projects/py/speak_server/live_transcribe.py &
-/scripts/activate-venv_and_run-server.sh &
+# Check if pipreqs is available in the venv
+if [ ! -x ".venv/bin/pipreqs" ]; then
+    echo "pipreqs is not installed in .venv. Please run '.venv/bin/pip install pipreqs' inside your virtual environment."
+    exit 1
+fi
 
+# Temporary directory for requirements generation
+TMPDIR=".pipreqs_temp"
+FILES=("dictation_service.py" "get_suggestions.py")
 
+# Clean up any old temp dirs
+rm -rf "$TMPDIR"
+mkdir "$TMPDIR"
 
+# Copy only the relevant files
+for f in "${FILES[@]}"; do
+    cp "$f" "$TMPDIR/"
+done
 
+# Generate requirements.txt from only those files using pipreqs from the venv
+.venv/bin/pipreqs "$TMPDIR" --force
 
+# Replace the actual requirements.txt
+mv "$TMPDIR/requirements.txt" requirements.txt
+
+# Convert package names to lowercase
+awk -F'==' '{print tolower($1) "==" $2}' requirements.txt > requirements.txt.tmp && mv requirements.txt.tmp requirements.txt
+
+# Clean up temp directory
+rm -rf "$TMPDIR"

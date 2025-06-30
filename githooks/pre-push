@@ -1,6 +1,17 @@
 #!/bin/bash
 set -e
 
+
+SRC1="$HOME/.config/autokey/data/stt/autokey-scripts/"
+SRC2="scripts/autokey-scripts/"
+
+# Sync newer files from SRC1 to SRC2 
+rsync -au --delete "$SRC1" "$SRC2"
+
+# Sync newer files from SRC2  to SRC1
+rsync -au --delete "$SRC2" "$SRC1"
+
+
 # Temporary directory for requirements generation
 TMPDIR=".pipreqs_temp"
 FILES=("dictation_service.py" "get_suggestions.py")
