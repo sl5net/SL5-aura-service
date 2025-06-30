@@ -50,7 +50,7 @@ Set a *different* global hotkey to trigger the homophone lookup. This hotkey sho
 
 If you find this tool useful and want to support our team's continued development, please consider buying us a coffee! Your support is greatly appreciated and helps fuel future improvements.
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C445TF6)
+[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 ---
 
