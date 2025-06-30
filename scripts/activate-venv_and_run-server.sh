@@ -26,7 +26,7 @@ then
     if [ "$age" -lt "$MAX_STALE_SECONDS" ]
     then
         echo "Service appears to be running and healthy."
-        exit 1
+        exit 0
     else
         echo "Service heartbeat is stale. Attempting to restart."
     fi
