@@ -30,6 +30,8 @@ It's a complete, offline writing assistant built on Vosk and LanguageTool.
 
 You will need to configure two separate hotkeys for the system's two main functions.
 
+if you want use AutoKey read here: https://github.com/autokey/autokey/wiki/Installing
+
 ### 1. The Main Dictation Hotkey
 
 Set a global hotkey to trigger the dictation. The command is:
