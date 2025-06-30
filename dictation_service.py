@@ -247,11 +247,14 @@ PUNCTUATION_MAP = {
     'star': '*',
 
     'from get up': 'from GitHub',
-    'get up': 'from GitHub',
+    'get up': 'GitHub',
+
+    'Keep it up': 'GitHub',
+    'Good job': 'GitHub',
 
 
 }
-
+# From GitHub  From GitHub  From GitHub
 
 def normalize_punctuation(text: str) -> str:
     pattern = r'\b(' + '|'.join(re.escape(k) for k in sorted(PUNCTUATION_MAP, key=len, reverse=True)) + r')\b'
