@@ -38,8 +38,7 @@ Set a global hotkey to trigger the dictation. The command is:
 ### 2. The Homophone Lookup Hotkey
 
 Set a *different* global hotkey to trigger the homophone lookup. This hotkey should execute a separate script. The command is:
-`[path-to-your-project]/scripts/get_homophones.sh`
-*(Note: Please adjust the script name if it is different.)*
+`[path-to-your-project]/get_suggestions.py`
 
 **How to Set Hotkeys:** Use your Desktop Environment's keyboard settings (in XFCE, KDE, GNOME) to create two new custom shortcuts, one for each command above.
 
