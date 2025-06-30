@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+# Temporary directory for requirements generation
+TMPDIR=".pipreqs_temp"
+FILES=("dictation_service.py" "get_suggestions.py")
+
+# Clean up any old temp dirs
+rm -rf "$TMPDIR"
+mkdir "$TMPDIR"
+
+# Copy only the relevant files
+for f in "${FILES[@]}"; do
+    cp "$f" "$TMPDIR/"
+done
+
+# Generate requirements.txt from only those files
+pipreqs "$TMPDIR" --force
+
+# Replace the actual requirements.txt
+mv "$TMPDIR/requirements.txt" requirements.txt
+
+# Convert all package names to lowercase (keep version numbers)
+awk -F'==' '{print tolower($1) "==" $2}' requirements.txt > requirements.txt.tmp && mv requirements.txt.tmp requirements.txt
+
+# Clean up temp directory
+rm -rf "$TMPDIR"
+
