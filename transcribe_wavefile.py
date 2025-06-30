@@ -29,7 +29,7 @@ parser.add_argument('--vosk_model', help=f"Name of the Vosk model folder. Defaul
 args = parser.parse_args()
 
 # --- Model Name Resolution ---
-VOSK_MODEL_FILE_PATH = "/tmp/vosk_model"
+VOSK_MODEL_FILE_PATH =  SCRIPT_DIR / "config/model_name.txt"
 vosk_model_from_file = ''
 if os.path.exists(VOSK_MODEL_FILE_PATH):
     with open(VOSK_MODEL_FILE_PATH, 'r') as f:

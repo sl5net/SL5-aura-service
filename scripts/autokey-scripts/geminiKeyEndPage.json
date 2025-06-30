@@ -3,11 +3,14 @@ import time
 from pathlib import Path
 import os
 
+home_dir = Path.home()
+project_dir = home_dir / "projects" / "py" / "STT"
+
 # source /pfad/zum/venv/bin/activate
 
 # --- Dateipfade für den Zustand ---
-VOSK_MODEL_FILE = "/tmp/vosk_model"
-VOSK_LASTUSED_FILE = "/tmp/vosk_model_lastused"
+VOSK_MODEL_FILE = project_dir / "config/model_name.txt"
+VOSK_LASTUSED_FILE = project_dir / "config/model_name_lastused.txt"
 
 # --- Hilfsfunktionen ---
 def read_from_file(filepath, default_value=None):
@@ -33,8 +36,6 @@ def write_to_file(filepath, content):
 # Andere Pfade und Variablen
 service_name = "dictation_service.py"
 trigger_file = Path("/tmp/vosk_trigger")
-home_dir = Path.home()
-project_dir = home_dir / "projects" / "py" / "STT"
 python_executable = project_dir / ".venv" / "bin" / "python"
 service_script_path = project_dir / service_name
 

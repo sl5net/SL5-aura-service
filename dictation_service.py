@@ -23,7 +23,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)-8s - %(message)s',
     handlers=[
-        logging.FileHandler('/tmp/vosk_dictation.log', mode='w'),
+        logging.FileHandler('vosk_dictation.log', mode='w'),
         logging.StreamHandler(sys.stdout)
     ]
 )
@@ -39,7 +39,7 @@ if os.environ.get("DICTATION_SERVICE_STARTED_CORRECTLY") != "true":
 CRITICAL_THRESHOLD_MB = 1024
 SCRIPT_DIR = Path(__file__).resolve().parent
 TRIGGER_FILE = Path("/tmp/vosk_trigger")
-LOG_FILE = Path("/tmp/vosk_dictation.log")
+LOG_FILE = Path("vosk_dictation.log")
 HEARTBEAT_FILE = "/tmp/dictation_service.heartbeat"
 PIDFILE = "/tmp/dictation_service.pid"
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
@@ -122,9 +122,10 @@ MODEL_NAME_DEFAULT = "vosk-model-de-0.21"
 parser = argparse.ArgumentParser(description="A real-time dictation service using Vosk.")
 parser.add_argument('--vosk_model', help=f"Name of the Vosk model folder. Defaults to '{MODEL_NAME_DEFAULT}'.")
 # parser.add_argument('--target-window', required=True, help="The window ID to send keystrokes to.")
+#
 args = parser.parse_args()
 
-VOSK_MODEL_FILE = "/tmp/vosk_model"
+VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
 vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
 MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
 MODEL_PATH = SCRIPT_DIR / MODEL_NAME
@@ -251,7 +252,7 @@ PUNCTUATION_MAP = {
 
     'Keep it up': 'GitHub',
     'Good job': 'GitHub',
-
+    'Q-tip': 'GitHub',
 
 }
 # From GitHub  From GitHub  From GitHub

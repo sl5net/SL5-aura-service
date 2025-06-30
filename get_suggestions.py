@@ -32,7 +32,7 @@ COOLDOWN_SECONDS = 2
 LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 NUM_SUGGESTIONS = 5
-VOSK_MODEL_FILE = Path("/tmp/vosk_model")
+VOSK_MODEL_FILE = Path( PROJECT_DIR / "config/model_name.txt")
 
 GERMAN_THESAURUS_FILE = PROJECT_DIR / "openthesaurus.txt"
 ENGLISH_WORD_LIST_FILE = PROJECT_DIR / "en_thesaurus.txt"

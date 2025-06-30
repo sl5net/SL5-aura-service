@@ -13,7 +13,7 @@ def write_to_file(filepath, content):
         system.exec_command(f"notify-send 'FEHLER' 'Konnte nicht in {filepath} schreiben: {e}'")
 
 # --- Hauptlogik ---
-VOSK_MODEL_FILE = "/tmp/vosk_model"
+VOSK_MODEL_FILE = PROJECT_DIR / "config/model_name.txt"
 # new_model = "vosk-model-small-en-us-0.15"
 new_model = "vosk-model-de-0.21"
 
