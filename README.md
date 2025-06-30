@@ -51,6 +51,7 @@ Set a *different* global hotkey to trigger the homophone lookup. This hotkey sho
 If you find this tool useful and want to support its continued development, please consider buying me a coffee! Your support is greatly appreciated and helps fuel future improvements.
 
 **[>> Support on Ko-fi <<](https://ko-fi.com/sl5)**
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C0C445TF6)
 
 ---
 
