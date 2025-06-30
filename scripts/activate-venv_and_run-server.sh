@@ -12,22 +12,6 @@ HEARTBEAT_FILE="/tmp/$SCRIPT_firstName.heartbeat"
 SCRIPT_TO_START="$SCRIPT_DIR/../$SCRIPT_firstName.py"
 MAX_STALE_SECONDS=5
 
-echo "PROJECT_ROOT = $PROJECT_ROOT"
-pkill -9 -f "$PROJECT_ROOT/type_watcher.sh"
-sleep 0.01
-$PROJECT_ROOT/type_watcher.sh &
-#exit 1
-
-# Get the currently active window ID BEFORE starting anything.
-ACTIVE_WINDOW_ID=$(xdotool getactivewindow)
-
-# Check if we got a valid ID
-if [ -z "$ACTIVE_WINDOW_ID" ]; then
-    echo "Error: Could not get active window ID."
-    notify-send "Vosk Trigger Error" "Could not identify the active window."
-    exit 1
-fi
-
 export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
 export DISPLAY=:0
 export XAUTHORITY=${HOME}/.Xauthority
@@ -59,6 +43,14 @@ echo "Starting Python server from '$PROJECT_ROOT'..."
 
 echo "Starting service..."
 # python3 "$SCRIPT_TO_START" &
-python3 "$SCRIPT_TO_START" --target-window "$ACTIVE_WINDOW_ID" &
+python3 "$SCRIPT_TO_START" &
+
+# echo "PROJECT_ROOT = $PROJECT_ROOT"
+pkill -9 -f "$PROJECT_ROOT/type_watcher.sh"
+sleep 0.02
+$PROJECT_ROOT/type_watcher.sh &
+#exit 1
+
+
 # bash -x $PROJECT_ROOT/type_watcher.sh &
 

@@ -3,12 +3,15 @@ vosk*
 dictate.py
 live_transcribe.py
 transcribe.py
+
 dictation.log
+get_suggestions.log
+
 *.kate-swp
 
 *.txt
 
-
+*.cache.*
 
 # But DO NOT ignore requirements.txt
 !requirements.txt

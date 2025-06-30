@@ -121,7 +121,7 @@ with open(PIDFILE, 'w') as f:
 MODEL_NAME_DEFAULT = "vosk-model-de-0.21"
 parser = argparse.ArgumentParser(description="A real-time dictation service using Vosk.")
 parser.add_argument('--vosk_model', help=f"Name of the Vosk model folder. Defaults to '{MODEL_NAME_DEFAULT}'.")
-parser.add_argument('--target-window', required=True, help="The window ID to send keystrokes to.")
+# parser.add_argument('--target-window', required=True, help="The window ID to send keystrokes to.")
 args = parser.parse_args()
 
 VOSK_MODEL_FILE = "/tmp/vosk_model"

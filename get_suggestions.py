@@ -211,7 +211,8 @@ def main():
 
         if suggestions:
             unique_suggestions = list(dict.fromkeys(suggestions))
-            output_string = f" ( {' | '.join(unique_suggestions[:NUM_SUGGESTIONS])} )"
+            output_string = f" {' '.join(unique_suggestions[:NUM_SUGGESTIONS])}"
+            # Hilfe ( elfe | elf | elv | alpha | alpha-tier )
             print(f"--> Found suggestions. Typing: {output_string}")
             try:
                 subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", output_string], check=True)
@@ -225,3 +226,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Bridge ( bridger | bridget | bridged | bridging | brutage )
+# Haus ( hass | aus | hausse | jause | hase  ( hose | hass | aas | hatz | husse ))
+# Mensch ( mansch | manisch | mänsche | manusch | minoisch )
