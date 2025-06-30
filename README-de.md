@@ -53,13 +53,13 @@ cd ~/projects/py/STT
 Eine virtuelle Umgebung ist entscheidend, um die Python-Pakete für dieses Projekt von Ihrem System zu isolieren.
 
 ```bash
-# Erstellen Sie die virtuelle Umgebung namens "vosk-tts"
-python -m venv vosk-tts
+# Erstellen Sie die virtuelle Umgebung namens ".venv"
+python -m venv .venv
 
 # Aktivieren Sie die Umgebung. Dies müssen Sie immer tun, wenn Sie an diesem Projekt arbeiten.
-source vosk-tts/bin/activate
+source .venv/bin/activate
 ```
-Nach der Aktivierung sollte Ihr Terminal-Prompt `(vosk-tts)` anzeigen.
+Nach der Aktivierung sollte Ihr Terminal-Prompt `(.venv)` anzeigen.
 
 ### Schritt 4: Python-Pakete installieren
 
@@ -128,7 +128,7 @@ In xfce, I've added control alt V as the hot key
     Öffnen Sie ein Terminal und führen Sie aus:
     ```bash
     cd ~/projects/py/STT
-    source vosk-tts/bin/activate
+    source .venv/bin/activate
     python dictation_service.py
     ```
     **WICHTIG:** Lassen Sie dieses Terminalfenster geöffnet! Solange es offen ist, läuft Ihr Diktier-Dienst.
@@ -154,7 +154,7 @@ Damit Sie den Dienst nicht jedes Mal manuell starten müssen, können Sie ihn zu
     *   **Beschreibung:** `Startet den Hintergrunddienst für die Spracherkennung`
     *   **Befehl:** Kopieren Sie hier den **vollständigen Pfad** zum Skript. Ersetzen Sie `<DEIN_BENUTZERNAME>` durch Ihren tatsächlichen Benutzernamen.
         ```
-        /home/<DEIN_BENUTZERNAME>/projects/py/STT/vosk-tts/bin/python /home/<DEIN_BENUTZERNAME>/projects/py/STT/dictation_service.py
+        /home/<DEIN_BENUTZERNAME>/projects/py/STT/.venv/bin/python /home/<DEIN_BENUTZERNAME>/projects/py/STT/dictation_service.py
         ```
 5.  Klicken Sie auf OK. Beim nächsten Anmelden startet der Dienst automatisch im Hintergrund.
 

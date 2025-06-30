@@ -47,7 +47,7 @@ fi
 
 
 echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
-source "$PROJECT_ROOT/vosk-tts/bin/activate"
+source "$PROJECT_ROOT/.venv/bin/activate"
 
 echo "Starting Python server from '$PROJECT_ROOT'..."
 # We run the python script using its absolute path to be safe

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VENV_NAME="vosk-tts"
+VENV_NAME=".venv"
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 REQUIREMENTS_FILE="requirements.txt"
 

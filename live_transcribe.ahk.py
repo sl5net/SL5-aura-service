@@ -11,7 +11,7 @@ trigger_file = Path("/tmp/vosk_trigger")
 # Path
 home_dir = Path.home()
 project_dir = home_dir / "projects" / "py" / "STT"
-python_executable = project_dir / "vosk-tts" / "bin" / "python"
+python_executable = project_dir / ".venv" / "bin" / "python"
 service_script_path = project_dir / service_name
 
 # --- Hauptlogik ---
@@ -43,6 +43,6 @@ exit(1)
 from pathlib import Path
 
 home_dir = str(Path.home())
-command_to_run = f'/home/seeh/projects/py/STT/vosk-tts/bin/python /home/seeh/projects/py/STT/dictate.py {home_dir}'
+command_to_run = f'/home/seeh/projects/py/STT/.venv/bin/python /home/seeh/projects/py/STT/dictate.py {home_dir}'
 system.exec_command(command_to_run)
 

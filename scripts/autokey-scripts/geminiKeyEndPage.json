@@ -35,7 +35,7 @@ service_name = "dictation_service.py"
 trigger_file = Path("/tmp/vosk_trigger")
 home_dir = Path.home()
 project_dir = home_dir / "projects" / "py" / "STT"
-python_executable = project_dir / "vosk-tts" / "bin" / "python"
+python_executable = project_dir / ".venv" / "bin" / "python"
 service_script_path = project_dir / service_name
 
 # Werte aus Dateien lesen statt aus dem store
