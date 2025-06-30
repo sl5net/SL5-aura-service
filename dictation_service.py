@@ -169,7 +169,7 @@ def check_memory_critical(threshold_mb: int) -> tuple[bool, float]:
     return mem.available / (1024 * 1024) < threshold_mb, mem.available / (1024 * 1024)
 
 PUNCTUATION_MAP = {
-    # German - Correct and Common Mishearings
+    # German - Common, Mishearings
     'punkt': '.',
     'komma': ',',
     'fragezeichen': '?',
@@ -177,21 +177,81 @@ PUNCTUATION_MAP = {
     'doppelpunkt': ':',
     'semikolon': ';',
     'strichpunkt': ';',
+    'klammer auf': '(',
+    'klammer zu': ')',
+    'runde klammer auf': '(',
+    'runde klammer zu': ')',
+    'eckige klammer auf': '[',
+    'eckige klammer zu': ']',
+    'geschweifte klammer auf': '{',
+    'geschweifte klammer zu': '}',
+    'bindestrich': '-',
+    'minus': '-',
+    'gedankenstrich': '–',
+    'apostroph': "'",
+    'hochkomma': "'",
+    'anführungszeichen': '"',
+    'anführungsstriche': '"',
+    'schlusszeichen': '"',
+    'gaensefuesschen': '"',
+    'schrägstrich': '/',
+    'slash': '/',
+    'backslash': '\\',
+    'unterstrich': '_',
+    'punktpunktpunkt': '...',
+    'raute': '#',
+    'undzeichen': '&',
+    'etzeichen': '&',
+    'atzeichen': '@',
+    'stern': '*',
 
-    # English (for completeness)
+
+
+    # English - Common, Mishearings
     'period': '.',
     'full stop': '.',
     'dot': '.',
-
+    'point': '.',
     'comma': ',',
     'question mark': '?',
-    'christian monk': '?',
-    'Question Mark': '?',
-
     'exclamation mark': '!',
     'exclamation point': '!',
     'colon': ':',
     'semicolon': ';',
+    'parenthesis': '(',
+    'parentheses': ('(', ')'),
+    'open parenthesis': '(',
+    'close parenthesis': ')',
+    'bracket': '[',
+    'open bracket': '[',
+    'close bracket': ']',
+    'brace': '{',
+    'open brace': '{',
+    'close brace': '}',
+    'hyphen': '-',
+    'dash': '-',
+    'minus': '-',
+    'apostrophe': "'",
+    'quote': '"',
+    'quotation mark': '"',
+    'single quote': "'",
+    'double quote': '"',
+    'slash': '/',
+    'backslash': '\\',
+    'underscore': '_',
+    'ellipsis': '...',
+    'dot dot dot': '...',
+    'hash': '#',
+    'number sign': '#',
+    'and sign': '&',
+    'ampersand': '&',
+    'at sign': '@',
+    'star': '*',
+
+    'from get up': 'from GitHub',
+    'get up': 'from GitHub',
+
+
 }
 
 
