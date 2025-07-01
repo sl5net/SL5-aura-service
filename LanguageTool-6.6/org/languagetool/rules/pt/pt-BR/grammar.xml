@@ -1,0 +1,1839 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../print.xsl" title="Pretty print" ?>
+<?xml-stylesheet type="text/css" href="../rules.css" title="Easy editing stylesheet" ?>
+<!--
+Portuguese Brazilian - Grammar and Typo Rules for LanguageTool.
+Copyright (c) 2016 Matheus Otavio Poletto (https://github.com/MatheusPoletto).
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+-->
+
+<!-- Contribuintes opensource, deem uma olhada aqui: https://dev.languagetool.org/#portuguese -->
+
+<!DOCTYPE rules [
+        <!ENTITY % messages  SYSTEM "../../../resource/pt/entities/messages.ent" >
+        <!ENTITY % datetime  SYSTEM "../../../resource/pt/entities/datetime.ent" >
+        <!ENTITY % misc      SYSTEM "../../../resource/pt/entities/misc.ent"     >
+        <!ENTITY % abbrev    SYSTEM "../../../resource/pt/entities/abbrev.ent"   >
+        <!ENTITY % paronyms  SYSTEM "../../../resource/pt/entities/paronyms.ent" >
+        <!ENTITY % verbs     SYSTEM "../../../resource/pt/entities/verbs.ent"    >
+        <!ENTITY % languages SYSTEM "../../../resource/pt/entities/languages.ent">
+        <!ENTITY % postal    SYSTEM "../../../resource/pt/entities/postal.ent"   >
+        <!ENTITY % chars     SYSTEM "../../../resource/pt/entities/chars.ent"    >
+        %messages;
+        %datetime;
+        %misc;
+        %abbrev;
+        %paronyms;
+        %verbs;
+        %languages;
+        %postal;
+        %chars;
+        ]>
+
+<rules lang="pt-BR" xsi:noNamespaceSchemaLocation="../../../../../../../../../../languagetool-core/src/main/resources/org/languagetool/rules/rules.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <category id="MISC" name="Gramática Geral">
+      <rulegroup id='AO90_COMPOUNDS_GENERIC_PREFIX' name='[pt-BR][AO90] Hifenizador de palavras' default="temp_off">
+          <url>https://pt.wikipedia.org/wiki/Uso_do_h%C3%ADfen_conforme_o_Acordo_Ortogr%C3%A1fico_de_1990</url>
+          <antipattern>
+              <token regexp='no'>extra</token>
+              <token postag='VMP00.+|SPS00|(SPS00:)?[DP][ADIPRT].+|Z0.+|RG|CC' postag_regexp='yes'/>
+              <example>A ferramenta tem regras gramaticais extra criadas por profissionais.</example>
+              <example>... ao chegar a essa conclusão, desenhar volta a ser um prazer, e a concentração no trabalho traz como extra uns quilinhos a menos.</example>
+              <example>Nick faz um salto perfeito por cima do avião Extra 300 pilotado pelo experiente Glen, que passa raspando pelo solo, entre as duas rampas que possibilitara...</example>
+              <example>Pra consumir mídia, jogos e redes sociais, ele pode ser uma boa e o valor extra só deve ser levado em conta se você quer ficar com o iPad por mais uns dois anos.</example>
+              <example>... Celebração de Harold Pinter foi bem recebido; Um teatro, o Irish Repertory Theatre, acrescentou um extra três semanas para a corrida do show.</example>
+              <example>... uma consequência direta do fato de três orbitais formula_2 combinam-se e espalham os seis elétrons extra sobre os seis átomos de carbono.</example>
+          </antipattern>
+          <antipattern>
+              <token regexp='yes'>auto|bio|micro|quilo</token>
+              <token postag='D[AI].+|SPS00:D[AI].+|CS|CC|SPS00|SP000' postag_regexp='yes'/>
+              <example>Leia a reportagem completa no Semanário nas bancas e através do link na bio do @jornalexpresso.</example>
+              <example>Ficou registado no auto que se tratara de um acidente.</example>
+              <example>Vamos compor os auscultadores e o micro frente aos lábios.</example>
+              <example>Como ele fica na bancada, o micro que esta ligado a ele é um K6 que uso para ler datasheet, abrir esquemas, gravador de pic, eprom, etc.</example>
+          </antipattern>
+          <antipattern>
+              <token regexp='yes'>extra|pós</token>
+              <token postag='SPS.+|CS|CC|V.+|NP.+' postag_regexp='yes'>
+                  <exception postag_regexp='yes' postag='VMN0000|VMP00.+|NC.+|AQ.+'/>
+              </token>
+          </antipattern>
+          <antipattern>
+              <token>pós</token>
+              <token>são</token>
+          </antipattern>
+          <antipattern>
+              <token regexp='no'>ex</token>
+              <token spacebefore='no' postag='_PUNCT' postag_regexp='no'/>
+          </antipattern>
+          <antipattern>
+              <token regexp='no'>uni</token>
+              <token regexp='yes' spacebefore='no'>&tracos_de_separacao;</token>
+              <token regexp='yes' spacebefore='no'>[ao]s?|l[ao]s?|lh[aeo]s?|n[ao]s?|me|se|te|vos</token>
+          </antipattern>
+          <rule>
+              <pattern>
+                  <token regexp='yes'>ex|sota|soto|vice|vizo|grã|pós|pré|pró|recém</token>
+                  <!-- além|aquém|bem|sem|grão are better dealt by PortugueseCompoundRule.java -->
+                  <token>
+                      <exception regexp='yes'>[-,.!?\(\)]</exception>
+                      <exception postag='C.|R.|S.+' postag_regexp='yes'/>
+                  </token>
+              </pattern>
+              <message>Palavra hifenizada.</message>
+              <suggestion>\1-\2</suggestion>
+              <example correction='vice-diretor'>Tem uma reunião marcada com o <marker>vice diretor</marker>.</example>
+          </rule>
+          <rule>
+              <pattern>
+                  <token>
+                      <exception regexp='yes'>[-,.!?\(\)]</exception>
+                      <exception postag='(?:C|R|S|NP).+' postag_regexp='yes'/>
+                  </token>
+                  <token regexp='yes'>açu|guaçu|mirim</token>
+                  <!-- These suffixes are used in Brazilian Portuguese -->
+              </pattern>
+              <message>Palavra hifenizada.</message>
+              <suggestion>\1-\2</suggestion>
+              <example correction='Escuteiro-Mirim'>Manual do  <marker>Escuteiro Mirim</marker></example>
+          </rule>
+          <rule>
+              <pattern>
+                  <token regexp='yes'>&prefixos_hifenizados_h;</token>
+                  <!-- além|aquém|sem|grão|bem|mal|contra|entre|sobre|ante are better dealt by PortugueseCompoundRule.java -->
+                  <token regexp='yes'>h.+
+                  <exception regexp='yes'>[-,.!?\(\)]</exception>
+                  <exception postag='C.|R.|S.+' postag_regexp='yes'/>
+              </token>
+          </pattern>
+          <message>Palavra provavelmente hifenizada.</message>
+          <suggestion>\1-\2</suggestion>
+          <example correction='co-herdada'>A análise do ADN mostrou uma mutação <marker>co herdada</marker> por todos os membros da família afetados.</example>
+          <!--	<example correction='sobre-humano'>Fez um esforço <marker>sobre humano</marker> para obter bons resultados.</example>-->
+          <example correction='sub-hepática'>Prescrevi uma ecografia à região <marker>sub hepática</marker>.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>co|p(?:r[eo]|os)|re|bi|tri|tetra|penta|hexa</token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes' case_sensitive="yes" spacebefore='no'>[^hrs].+</token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='codependência'>Vivem em regime de <marker>co-dependência</marker>.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>não|quase</token>
+              <token regexp='yes' spacebefore='no'>&hifen;</token>
+              <token/>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto. Pretende dizer </message>
+          <suggestion>\1 \3</suggestion>
+          <example correction='não agressão'>O pacto de <marker>não-agressão</marker> foi a prioridade do dia.</example>
+      </rule>
+      <rule>
+          <antipattern>
+              <token regexp='yes'>horas?</token>
+              <token>extra</token>
+          </antipattern>
+          <pattern>
+              <token regexp='yes'>extra|in(?:fra|tra)|supra|ultra|mega</token>
+              <!-- contra are better dealt by PortugueseCompoundRule.java -->
+              <token regexp='yes'>a.+
+                  <exception postag='C.|R.|S.+' postag_regexp='yes'/>
+              </token>
+          </pattern>
+          <message>Palavra hifenizada.</message>
+          <suggestion>\1-\2</suggestion>
+          <example correction='infra-acústico'>O som foi produzido no espetro <marker>infra acústico</marker>.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>extra|in(?:fra|tra)|supra|ultra|mega</token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>[^ahrs].+
+                  <exception postag='C.|R.|S.+' postag_regexp='yes'/>
+              </token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='megalítico'>O artefato encontrado provém do período <marker>mega lítico</marker> altos.</example>
+          <example type='correct'>O <marker>Extra está</marker> desativado.</example>
+      </rule>
+      <rule>
+          <antipattern>
+              <token>contra</token>
+              <token regexp='yes'>ventos?</token>
+              <token>e</token>
+              <token>marés</token>
+          </antipattern>
+          <antipattern>
+              <token>para</token>
+              <token regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>a(?:pendicite|xial)|b(?:alas|risas?)|c(?:entelhas|hispas|hoques?|huvas?|inzas|ostas)|e(?:stilhaços|stopilhas?)|f(?:ios|ogos?)|h(?:élio|idrog[êé]nic?[ao]|istória)|l(?:amas?|uz(?:es)?)|muros?|pelotes?|raios|s(?:ol|óis)|ventos?</token>
+          </antipattern>
+          <pattern>
+              <token regexp='yes'>contra|justa|tetra|p(?:ara|enta)|h(?:exa|epta)|nona|deca</token>
+              <token regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>[^ahrs].+</token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <!--TODO: move to a new rule, compounds.txt? <example correction='paraquedistas'>São <marker>para-quedistas</marker>.</example>-->
+          <example correction='pentacampeões'>São <marker>penta-campeões</marker>.</example>
+      </rule>
+      <rule>
+          <antipattern>
+              <token regexp='yes'>horas?</token>
+              <token>extra</token>
+          </antipattern>
+          <pattern>
+              <token>extra</token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>ção|conjugal|continental|contratual|tivo|to|tor|dição|ditar|escolar|fino|ir|legal|muros|ordinário|parlamentar|polação|polar|programa|terrestre|territorial|territorialidade|uterino|vagância|vaganciar|vagante|vaginal|vasação|vasado|vasante|vasão|vasar|versão|viar|vio</token>
+          </pattern>
+          <message>Neste contexto deve unir as palavras.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='extraterrestre'>A rocha encontrada é de origem <marker>extra terrestre</marker>.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token>tele</token>
+              <!-- ante|entre|sobre are better dealt by PortugueseCompoundRule.java -->
+              <token regexp='yes'>e.+</token>
+          </pattern>
+          <message>Palavra hifenizada.</message>
+          <suggestion>\1-\2</suggestion>
+          <example correction='tele-educação'>Os filhos tiveram que recorrer à <marker>tele educação</marker>.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token>tele</token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>[^ehrs].+</token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='televisão'>Nem tudo o que aparece na <marker>tele-visão</marker> é verdade.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>&prefixos_i;</token>
+              <token regexp='yes'>i.+
+                  <exception case_sensitive='yes' regexp='yes'>\p{Lu}.+</exception>
+              </token>
+          </pattern>
+          <message>Palavra hifenizada.</message>
+          <suggestion>\1-\2</suggestion>
+          <example correction='anti-intelectuais'>Tive que superar atitudes <marker>anti intelectuais</marker> antes de conseguir apresentar o trabalho.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>&prefixos_i;</token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>[^ihrs].+
+                  <exception case_sensitive='yes' regexp='yes'>\p{Lu}.+</exception>
+                  <exception postag_regexp='yes' postag='[RS].+'/>
+              </token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='minimercados'>Os <marker>mini-mercados</marker> abrem em todo o lado.</example>
+          <example>... protestos anti-Maduro ...</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>&prefixos_o;|&prefixos_o_2;|arqui
+                  <exception case_sensitive='yes'>Homo</exception>
+              </token>
+              <token regexp='yes'>o.+</token>
+          </pattern>
+          <message>Palavra hifenizada.</message>
+          <suggestion>\1-\2</suggestion>
+          <example correction='micro-ondas'>Aquece 10 minutos no <marker>micro ondas</marker> altos.</example>
+      </rule>
+      <rule>
+          <antipattern>
+              <token regexp='yes'>auto|quilo</token>
+              <token regexp='yes'>d[aeo]s?|policial|falantes?</token>
+          </antipattern>
+          <pattern>
+              <token regexp='yes'>&prefixos_o;|&prefixos_o_2;|arqui
+                  <exception case_sensitive='yes'>Homo</exception>
+              </token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>[^hors].+</token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='biodiversidade'>...apresenta índices de <marker>bio-diversidade</marker> altos.</example>
+          <example>Ficou registado no <marker>auto que</marker> se tratara de um acidente.</example>
+      </rule>
+      <rule>
+          <antipattern>
+              <token>centro</token>
+              <token regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes' spacebefore='no'>direita|esquerda</token>
+          </antipattern>
+          <pattern>
+              <token regexp='yes'>&prefixos_o_ambiguos;</token>
+              <token regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes' spacebefore='no'>[^hors].+</token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='eurocéticos'>Os <marker>euro-céticos</marker> têm dúvidas em relação ao europeísmo.</example>
+      </rule>
+      <rule>
+          <antipattern>
+              <token regexp='yes'>horas?</token>
+              <token>extra</token>
+          </antipattern>
+          <pattern>
+              <token regexp='yes'>extra|infra|intra|supra|ultra|mega|tele|&prefixos_i;|&prefixos_o;|&prefixos_o_2;|arqui
+                  <exception case_sensitive='yes'>Homo</exception>
+              </token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>r.+</token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1r<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='arquirrival'>O F.C. Porto é <marker>arqui-rival</marker> do S.L.Benfica.</example>
+      </rule>
+      <rule>
+          <antipattern>
+              <token>retro</token>
+              <token>satanás</token>
+          </antipattern>
+          <antipattern>
+              <token regexp='yes'>horas?</token>
+              <token>extra</token>
+          </antipattern>
+          <pattern>
+              <token regexp='yes'>extra|infra|intra|supra|ultra|mega|tele|&prefixos_i;|&prefixos_o;|&prefixos_o_2;|arqui
+                  <exception case_sensitive='yes'>Homo</exception>
+              </token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>s.+</token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1s<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='multissecular'>Esta é uma história <marker>multi secular</marker>.</example>
+          <example>Vade retro satanás!</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>hiper|inter|super</token>
+              <token regexp='yes'>r.+</token>
+          </pattern>
+          <message>Palavra hifenizada.</message>
+          <suggestion>\1-\2</suggestion>
+          <example correction='super-resistente'>Estamos a desenvolver um liga <marker>super resistente</marker>.</example>
+      </rule>
+      <rule>
+          <antipattern>
+              <token regexp='yes'>hiper|inter|super</token>
+              <token postag='SPS.+|CS|CC|V.+' postag_regexp='yes'>
+                  <exception postag_regexp='yes' postag='AQ0.+|NC.+'/>
+              </token>
+          </antipattern>
+          <pattern>
+              <token regexp='yes'>hiper|inter|super</token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>[^hr\d]\p{L}+
+                  <exception case_sensitive='yes'>AMOLED</exception>
+              </token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='hiperventilar'>É natural <marker>hiper-ventilar</marker>.</example>
+          <example>Ele fecha o hiper no fim.</example>
+          <example>Fiquei super sem jeito quando a minha mãe me beijou perto dos meus amigos.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>ob|sub</token>
+              <!-- ab (latim)|sob is better dealt by PortugueseCompoundRule.java -->
+              <token regexp='yes' case_sensitive="yes">[br].+</token>
+          </pattern>
+          <message>Palavra hifenizada.</message>
+          <suggestion>\1-\2</suggestion>
+          <!--  <example correction='ab-rogar'>Pretende-se <marker>ab rogar</marker> as novas referências, no início do ano.</example>-->
+          <example correction='sub-reino'>No <marker>sub reino</marker> dos Eumetazoa podemos encontrar...</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>ob|sub</token>
+              <!-- ab (latim)|sob is better dealt by PortugueseCompoundRule.java -->
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes' case_sensitive="yes">[^,.!\(\)brh\d]\p{L}+</token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <!--	<example correction='abdicar'>Pretende <marker>ab-dicar</marker> dos seus direitos...</example>-->
+          <example correction='subnível'>Em caso de emergência, saia pelo <marker>sub nível</marker> 1.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>circum|pan
+                  <exception case_sensitive='yes'>PAN</exception>
+              </token>
+              <token regexp='yes'>[mnaeiouh]\p{L}+</token>
+          </pattern>
+          <message>Palavra hifenizada.</message>
+          <suggestion>\1-\2</suggestion>
+          <example correction='Circum-navegação'><marker>Circum navegação</marker> é uma viagem marítima em torno de um lugar.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token regexp='yes'>circum|pan
+                  <exception case_sensitive='yes'>PAN</exception>
+              </token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token regexp='yes'>[^,.!\(\)mnaeiouh\d]\p{L}+
+                  <exception regexp='yes'>escrev.+|paniscus|troglodytes</exception>
+              </token>
+          </pattern>
+          <message>Este prefixo não é hifenizado neste contexto.</message>
+          <suggestion>\1<match no='3' case_conversion="startlower"/></suggestion>
+          <example correction='panteístas'>As crenças <marker>pan-teístas</marker> são próximas das filosofias orientais.</example>
+          <example> O chimpanzé, Pan troglodytes, e o bonobo, Pan paniscus, são encontrados nas proximidades do rio Congo.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <token>circum</token>
+              <token min='0' regexp='yes' spacebefore='no'>&hifen;</token>
+              <token inflected='yes'>escrever</token>
+          </pattern>
+          <message>Palavra hifenizada.</message>
+          <suggestion>circun<match no='3' regexp_match='esc' regexp_replace='sc'/></suggestion>
+          <example correction='circunscrito'>O fogo está <marker>circum-escrito</marker>.</example>
+      </rule>
+  </rulegroup>
+
+
+  <rulegroup id='AO90_ACCENTUATED_PREFIXES' name='[pt-BR][AO90] Prefixos acentuados' default="temp_off">
+      <rule>
+          <pattern>
+              <marker>
+                  <token regexp='yes'>alem|aquem|pre</token>
+                  <token regexp='yes' spacebefore='no'>&hifen;</token>
+              </marker>
+              <token spacebefore='no'/>
+          </pattern>
+          <message>Este prefixo é acentuado.</message>
+          <suggestion><match no='1' regexp_match='e' regexp_replace='é'/>\2</suggestion>
+          <example correction='Além-'>Crónicas de <marker>Alem-</marker>Mar.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <marker>
+                  <token>recem</token>
+                  <token regexp='yes' spacebefore='no'>&hifen;</token>
+              </marker>
+              <token spacebefore='no'/>
+          </pattern>
+          <message>Este prefixo é acentuado.</message>
+          <suggestion>recém\2</suggestion>
+          <example correction='Recém-'>Crónicas das <marker>Recem-</marker>Casadas.</example>
+      </rule>
+      <rule>
+          <pattern>
+              <marker>
+                  <token regexp='yes'>pos|pro</token>
+                  <token regexp='yes' spacebefore='no'>&hifen;</token>
+              </marker>
+              <token spacebefore='no'/>
+          </pattern>
+          <message>Este prefixo é acentuado.</message>
+          <suggestion><match no='1' regexp_match='o' regexp_replace='ó'/>\2</suggestion>
+          <example correction='pós-'>O período <marker>pos-</marker>moderno.</example>
+      </rule>
+  </rulegroup>
+
+      <rule id="ATOA_BR" name="Uso de 'atoa' em vez de 'à toa'">
+          <!-- Super rare usage of the verb 'atoar', but let's be cautious. -->
+          <antipattern>
+              <token>atoa</token>
+              <token min="0" max="-1" postag_regexp="yes" postag="[DAZRP].+"/>
+              <token regexp="yes" inflected="yes">carro|veículo|caminhão|van|ônibus</token>
+              <example>A prefeitura atoa seu carro se estacionar onde não deve.</example>
+          </antipattern>
+          <pattern>
+              <token>atoa</token>
+          </pattern>
+          <message>Provavelmente você pretende usar a locução adverbial <suggestion>à toa</suggestion>.</message>
+          <example correction="à toa">Você está <marker>atoa</marker> hoje?</example>
+          <example correction="à toa">Fizemos isso tudo <marker>atoa</marker>?</example>
+      </rule>
+
+      <!-- ORDINAL_ABREVIATION -->
+
+    <rule id='A_NIVEL' name="A nível" default='on'>
+      <!-- Created by Tiago F. Santos, Portuguese rule, 2016-10-28 -->
+      <pattern>
+        <token regexp='yes'>a|em</token>
+        <token>nível</token>
+      </pattern>
+      <message>Substitua por <suggestion>ao \2</suggestion>.</message>
+      <url>https://duvidas.dicio.com.br/em-nivel-de-a-nivel-de-ou-ao-nivel-de/</url>
+      <short>Construção gramatical incorreta.</short>
+      <example correction="Ao nível"><marker>A nível</marker> de português está muito mau.</example>
+    </rule>
+
+    <!-- CONFUNDIR A GENTE POR AGENTE -->
+
+    <rulegroup id="AGENTE_BR" name="Confusão entre 'agente' e 'a gente'">
+        <antipattern>
+            <token>a</token>
+            <token>agente</token>
+            <example>Depois da ligação, a agente fez um relatório.</example>
+        </antipattern>
+        <antipattern>
+            <token postag_regexp="yes" postag="(SP.+:)?D.+"/>
+            <token>agente</token>
+            <example>Um agente foi assassinado.</example>
+            <example>O treinamento do agente foi árduo.</example>
+            <example>Ele era um agente da KGB.</example>
+            <example>Esse agente não teve uma boa atuação.</example>
+            <example>Quero saber quem é a agente que vai atender.</example>
+        </antipattern>
+        <antipattern>
+            <token>agente</token>
+            <token postag_regexp="yes" postag="R." min="0" max="-1"/>
+            <token postag_regexp="yes" postag="A.+|SP.+(:DA.+)|VMP.+"/>
+            <example>Um filme com agente secreto.</example>
+            <example>Ela era uma gente muito bem treinada.</example>
+            <example>Seu filho sempre foi um agente do caos.</example>
+        </antipattern>
+        <antipattern>
+            <token postag_regexp="yes" postag="A.+|SP.+(:DA.+)"/>
+            <token>agente</token>
+            <example>Ele sempre foi um excelente agente.</example>
+        </antipattern>
+        <!-- TODO improve disambiguator for basic ordinals -->
+        <antipattern>
+            <token regexp="yes">primeir[oa]|segund[oa]|melhor</token>
+            <token>agente</token>
+            <example>Sua primeira agente foi a poderosa.</example>
+        </antipattern>
+        <antipattern>
+            <token>agente</token>
+            <token regexp="yes">\p{L}+(&sufixos_adjetivais;|adora?)</token>
+            <!-- added to dictionary, but let's keep these here as a test as
+                 these derivations are relatively productive. -->
+            <example>Agente vitrificante.</example>
+            <example>Agente descolorizante.</example>
+            <example>Agente umidificador.</example>
+            <example>Agente infeccioso.</example>
+            <example>Agente etiológico.</example>
+            <example>Agente mutagênico.</example>
+            <example>Agente planejador e financiador.</example>
+        </antipattern>
+        <antipattern>
+            <token>agente</token>
+            <token spacebefore="no" min="0">:</token>
+            <token regexp="yes">\p{Lu}[\p{L}\d]*|\d+[\p{L}\d]*</token>
+            <example>Agente Jack Bauer.</example>
+            <!-- <example>Agente K.D. Lang.</example> -->
+            <example>Agente 007.</example>
+        </antipattern>
+        <antipattern>
+            <token>agente</token>
+            <token spacebefore="no">/</token>
+            <token postag_regexp="yes" postag="N.+"/>
+            <example>Agente/diretor Smith.</example>
+        </antipattern>
+        <antipattern>
+            <token regexp="yes">\p{Lu}\p{L}+</token>
+            <token spacebefore="no" min="0">,</token>
+            <token min="0">como</token>
+            <token>agente</token>
+            <example>Francisco Pestana, como Agente.</example>
+            <example>Frank Hubbard como agente número três.</example>
+            <example>Hank McGlaurie, agente e parceiro de Mala.</example>
+        </antipattern>
+        <antipattern>
+            <token regexp="yes">&prefixos;
+            <exception>para</exception>
+            </token>
+            <token spacebefore="no" regexp="yes" min="0">&hifen;</token>
+            <token>agente</token>
+            <example>Multi-agente.</example>
+        </antipattern>
+        <antipattern>
+            <token>agente</token>
+            <token regexp="yes">anti\p{L}+</token>
+            <example>Agente antichama.</example>
+        </antipattern>
+        <antipattern>
+            <token postag_regexp="yes" postag="SENT_START|_PUNCT"/>
+            <token spacebefore="no">agente</token>
+            <token postag_regexp="yes" postag="SENT_END|_PUNCT" spacebefore="no"/>
+            <example>David Zedeck (Agente)</example>
+            <example>Agente:</example>
+        </antipattern>
+        <antipattern>
+            <token>agente</token>
+            <token>é</token>
+            <token postag_regexp="yes" postag="D[AI]..S."/>
+            <token regexp="yes">pessoa|homem|mulher|indivíduo|ser humano|profissional</token>
+            <example>Agente é uma pessoa que se encarrega de fornecer um serviço.</example>
+        </antipattern>
+        <antipattern>
+            <token>agente</token>
+            <token>é</token>
+            <token>alguém</token>
+            <example>Agente é alguém que fornece um serviço.</example>
+        </antipattern>
+        <antipattern>
+            <token>agente</token>
+            <token postag_regexp="yes" postag="AQ..S.">
+                <exception postag_regexp="yes" postag="V.[^P].+"/>
+            </token>
+            <example>Ele é um agente político.</example>
+            <example>Se trata de um agente antisséptico e cicatrizante.</example>
+            <example>Ou por união com agente químico.</example>
+            <example>O estudo do negro como agente ativo do processo histórico.</example>
+        </antipattern>
+        <antipattern>
+            <token postag_regexp="yes" postag="AQ..S.">
+                <exception postag_regexp="yes" postag="V.[^P].+"/>
+            </token>
+            <token>agente</token>
+            <example>Ela é a única agente.</example>
+        </antipattern>
+        <rule>
+            <pattern>
+                <token postag_regexp="yes" postag="SP.+">
+                    <!-- The idea here is that usually one will have 'da gente' here. -->
+                    <exception>de</exception>
+                </token>
+                <marker>
+                    <token>agente</token>
+                </marker>
+                <token negate_pos="yes" postag="SPS00(:DA.+)?|AQ.+" postag_regexp="yes"/>
+            </pattern>
+            <message>Substitua &quot;agente&quot; por <suggestion>a gente</suggestion>.</message>
+            <example correction="a gente">Você vai com <marker>agente</marker> naquela festa.</example>
+            <example correction="a gente">Não é a melhor situação para <marker>agente</marker>.</example>
+            <example>Ele mudou de agente.</example>
+            <example>Quando na posição de agente.</example>
+        </rule>
+        <rule>
+            <pattern>
+                <marker>
+                    <token>agente</token>
+                </marker>
+                <token postag_regexp="yes" postag="R.+" min="0" max="-1"/>
+                <token postag_regexp="yes" postag="V.+"/>
+            </pattern>
+            <message>Substitua &quot;agente&quot; por <suggestion>a gente</suggestion>.</message>
+            <example correction="A gente"><marker>Agente</marker> vai junto ao parque?</example>
+            <example correction="a gente">Eu sei que <marker>agente</marker> ainda pode melhorar.</example>
+        </rule>
+    </rulegroup>
+
+    <rulegroup id="HEIN_BR" name="Ortografia da interjeição 'hein'">
+        <rule>
+            <pattern>
+                <token postag="_PUNCT_COMMA"/>
+                <marker><token>em</token></marker>
+                <token spacebefore="no" regexp="yes">[?!]</token>
+            </pattern>
+            <message>Esta interjeição se escreve <suggestion>hein</suggestion>, <suggestion>heim</suggestion>, ou <suggestion>hem</suggestion>.</message>
+            <example correction="hein|heim|hem">Está cheio de bufunfa, <marker>em</marker>?</example>
+        </rule>
+    </rulegroup>
+
+    <rulegroup id="CONFUSÃO_POSSO_POÇO" name="Confusão entre poço e posso">
+        <short>Possível erro de ortografia.</short>
+
+        <antipattern>
+            <token>um</token> <!-- since 'o' can also be a pronoun, keeping this restricted for now -->
+            <token>poço</token>
+            <example>Construímos um poço no vilarejo.</example>
+        </antipattern>
+
+        <rule>
+            <pattern>
+                <token postag="SENT_START"/>
+                <token postag_regexp="yes" postag="R.+" min="0" max="-1"/>
+                <marker><token>poço</token></marker>
+                <token postag_regexp="yes" postag="P.+" min="0"/>
+                <token postag="VMN0000"/>
+            </pattern>
+            <message>Se sua intenção for usar o verbo &quot;poder&quot;, a grafia correta é <suggestion>posso</suggestion>.</message>
+            <example correction="Posso"><marker>Poço</marker> sair?</example>
+            <example correction="Posso"><marker>Poço</marker> lhe dar uma boa razão.</example>
+        </rule>
+
+
+        <rule>
+            <pattern>
+                <token regexp="yes">não|mal</token>
+                <marker><token>poço</token></marker>
+                <token postag_regexp="yes" postag="P.+" min="0"/>
+                <token postag="VMN0000"/>
+            </pattern>
+            <message>Se sua intenção for usar o verbo &quot;poder&quot;, a grafia correta é <suggestion>posso</suggestion>.</message>
+            <example correction="posso">Não <marker>poço</marker> acreditar!</example>
+            <example correction="posso">Mal <marker>poço</marker> acreditar!</example>
+        </rule>
+
+        <rule>
+            <pattern>
+                <token regexp="yes">qu[eê]|quando|a?onde|como</token>
+                <marker><token>poço</token></marker>
+                <token postag_regexp="yes" postag="P.+" min="0"/>
+                <token postag="VMN0000"/>
+            </pattern>
+            <message>Se sua intenção for usar o verbo &quot;poder&quot;, a grafia correta é <suggestion>posso</suggestion>.</message>
+            <example correction="posso">O que <marker>poço</marker> fazer aqui?</example>
+            <example correction="posso">Aonde <marker>poço</marker> ir?</example>
+        </rule>
+
+        <rule>
+            <pattern>
+                <token>eu</token>
+                <token postag_regexp="yes" postag="R.+" min="0" max="-1"/>
+                <marker><token>poço</token></marker>
+                <token postag_regexp="yes" postag="P.+" min="0"/>
+                <token postag="VMN0000"/>
+            </pattern>
+            <message>Se sua intenção for usar o verbo &quot;poder&quot;, a grafia correta é <suggestion>posso</suggestion>.</message>
+            <example correction="posso">Eu ainda <marker>poço</marker> me levantar.</example>
+        </rule>
+    </rulegroup>
+
+    <!-- FIM A GENTE POR AGENTE -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR FAÇO POR FASSO -->
+
+    <rule id="FASSO_BR" name="faço">
+      <pattern>
+        <token negate="yes" regexp="yes">Burquina|Burkina</token>
+        <marker>
+          <token>fasso</token>
+        </marker>
+      </pattern>
+      <message>Substitua &quot;fasso&quot; por <suggestion>faço</suggestion>.</message>
+      <example correction="faço">Eu <marker>fasso</marker> os serviços domésticos.</example>
+    </rule>
+
+    <!-- FIM FAÇO POR FASSO -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR MAIS(QUANTIDADE) POR MAS(CONJUNÇÃO) -->
+
+    <rule id="MAS_BR" name="mais">
+      <pattern>
+        <token regexp="yes">quanto|quero</token>
+        <marker>
+          <token>mas</token>
+        </marker>
+      </pattern>
+      <message>Substitua &quot;mas&quot; por <suggestion>mais</suggestion>.</message>
+      <example correction="mais">Quanto <marker>mas</marker> eu falo, pior fica.</example>
+    </rule>
+
+    <rule id="QUERO_MAS_BR" name="quero mais">
+      <pattern>
+        <token>quero</token>
+        <token>mas</token>
+        <token>de</token>
+        <token>você</token>
+      </pattern>
+      <message>Substitua &quot;quero mas de você&quot; por <suggestion>quero mais de você</suggestion>.</message>
+      <example correction="quero mais de você">Eu <marker>quero mas de você</marker>.</example>
+    </rule>
+
+    <!-- FIM MAIS(QUANTIDADE) POR MAS(CONJUNÇÃO) -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR ABENÇOE POR ABENÇÕE -->
+
+    <rule id="ABENCOE_BR" name="abençoe">
+      <pattern>
+        <token>abençõe</token>
+      </pattern>
+      <message>Substitua &quot;abençõe&quot; por <suggestion>abençoe</suggestion>.</message>
+      <example correction="abençoe">Deus te <marker>abençõe</marker>.</example>
+    </rule>
+
+    <rule id="MIM_BR" name="me" default="off">
+      <pattern>
+        <marker>
+          <token>mim</token>
+        </marker>
+        <token regexp="yes">faça|fazer|ajuda|ajudar|lembra|lembrar|vou|irei|irá|digo|direi|dizer|beijar</token>
+      </pattern>
+      <message>O pronome &quot;mim&quot; não deve ser usado antes de um verbo, use <suggestion>me</suggestion>.</message>
+      <example correction="me">Você consegue <marker>mim</marker> ajudar.</example>
+    </rule>
+
+    <rule id="COMCERTEZA_BR" name="com certeza">
+      <pattern>
+        <token>comcerteza</token>
+      </pattern>
+      <message>Substitua &quot;comcerteza&quot; por <suggestion>com certeza</suggestion>.</message>
+      <example correction="com certeza">Eu irei na festa <marker>comcerteza</marker>.</example>
+    </rule>
+
+    <rule id="CONCERTEZA_BR" name="com certeza">
+      <pattern>
+        <token>concerteza</token>
+      </pattern>
+      <message>Substitua &quot;concerteza&quot; por <suggestion>com certeza</suggestion>.</message>
+      <example correction="com certeza">Eu irei <marker>concerteza</marker> na sua festa.</example>
+    </rule>
+
+    <!-- CONFUNDIR COM CERTEZA POR COMCERTEZA/CONCERTEZA -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR MENOS POR MENAS -->
+
+    <rule id="MENAS_BR" name="menos">
+      <pattern>
+        <token>menas</token>
+      </pattern>
+      <message>&quot;Menas&quot; é uma flexão de um pronome indefinido que não é aceita em registros formais.</message>
+      <suggestion>menos</suggestion>
+      <example correction="Menos"><marker>Menas</marker> chances de vencer.</example>
+    </rule>
+
+    <!-- FIM MENOS POR MENAS -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR ÀS VEZES POR AS VEZES || AS VESES -->
+
+    <rule id="AS_VEZES_BR" name="às vezes">
+      <pattern>
+        <token>as</token>
+        <token>vezes</token>
+      </pattern>
+      <message>Substitua &quot;as vezes&quot; por <suggestion>às vezes</suggestion>.</message>
+      <example correction="às vezes">Eu <marker>as vezes</marker> fico triste.</example>
+    </rule>
+
+    <rule id="AS_VESES_BR" name="às vezes">
+      <pattern>
+        <token>as</token>
+        <token>veses</token>
+      </pattern>
+      <message>Substitua &quot;as veses&quot; por <suggestion>às vezes</suggestion>.</message>
+      <example correction="às vezes">Eu <marker>as veses</marker> não tenho calma.</example>
+    </rule>
+
+    <!-- FIM ÀS VEZES POR AS VEZES || AS VESES -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR NADA A VER POR NADA HAVER -->
+
+    <rule id="NADA_HAVER_BR" name="nada a ver">
+      <pattern>
+        <token>nada</token>
+        <token>haver</token>
+      </pattern>
+      <message>Substitua &quot;nada haver&quot; por <suggestion>nada a ver</suggestion>.</message>
+      <example correction="nada a ver">Essa história é <marker>nada haver</marker>.</example>
+    </rule>
+
+    <!-- FIM NADA A VER POR NADA HAVER -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR DE REPENTE POR DERREPENTE || DEREPENTE -->
+
+    <rule id="DERREPENTE_BR" name="de repente">
+      <pattern>
+        <token>derrepente</token>
+      </pattern>
+      <message>Substitua &quot;derrepente&quot; por <suggestion>de repente</suggestion>.</message>
+      <example correction="de repente">E <marker>derrepente</marker> você apareceu.</example>
+    </rule>
+
+    <rule id="DEREPENTE_BR" name="de repente">
+      <pattern>
+        <token>derepente</token>
+      </pattern>
+      <message>Substitua &quot;derepente&quot; por <suggestion>de repente</suggestion>.</message>
+      <example correction="de repente">Você <marker>derepente</marker> apareceu.</example>
+    </rule>
+
+    <!-- FIM NADA A VER POR NADA HAVER || DEREPENTE -->
+
+    <rule id="AS_PONTUAL_BR" name="Usar 'às' com horas pontuais" default="off">
+      <pattern>
+        <token postag="SENT_START"/>
+        <marker>
+          <token>As</token>
+        </marker>
+        <token regexp="yes">uma|duas|três|quatro|cinco|seis|sete|oito|nove|dez|onze|doze</token>
+        <token regexp="yes">,|horas|da|em</token>
+      </pattern>
+      <message>Substitua &quot;as&quot; por <suggestion>às</suggestion> se estiver fazendo indicação pontual de hora.</message>
+      <example correction="Às"><marker>As</marker> duas da tarde.</example>
+    </rule>
+
+    <rule id="A_TERRA_FIRME_BR" name="Usar à terra firme" default="off">
+      <pattern>
+        <token postag="VMI.[21].+|VMI.3P.+" postag_regexp="yes"/>
+        <marker>
+          <token>a</token>
+        </marker>
+        <token regexp="yes">terra?</token>
+      </pattern>
+      <message>Substitua &quot;a&quot; por <suggestion>à</suggestion> se estiver usando a palavra terra no sentido chão firme.</message>
+      <example correction="à">Já chegaram <marker>a</marker> terra.</example>
+    </rule>
+
+    <!-- CONFUNDIR QUER SE POR QUER -->
+
+    <rule id="QUER_SE_BR" name="Quer" default="off">
+      <pattern>
+        <token>quer</token>
+        <token>se</token>
+      </pattern>
+      <message>Substitua &quot;quer se&quot; por <suggestion>quer</suggestion>.</message>
+      <example correction="quer">Ela <marker>quer se</marker> aparecer para todos.</example>
+    </rule>
+
+    <!-- FIM QUER SE POR QUER -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR DORMIU NO POR DORMIU AO -->
+
+    <rule id="DORMIU_NO_BR" name="Dormiu ao">
+      <pattern>
+        <marker>
+          <token inflected="yes">dormir</token>
+          <token>no</token>
+        </marker>
+        <token>volante</token>
+      </pattern>
+      <message>Substitua &quot;\1 \2&quot; por <suggestion>\1 ao</suggestion></message>
+      <example correction="dormiu ao">O motorista <marker>dormiu no</marker> volante.</example>
+    </rule>
+
+    <!-- FIM DORMIU NO POR DORMIU AO -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR PARASITO|S POR PARASITA|S QUANDO FOR PESSOA|ANIMAL -->
+
+    <rule id="PARASITO_BR" name="Parasita">
+      <pattern>
+        <token regexp="yes">um|autêntico|uma|de</token>
+        <marker>
+          <token>parasita</token>
+        </marker>
+      </pattern>
+      <message>Substitua &quot;parasita&quot; por <suggestion>parasito</suggestion> se estiver se referindo a pessoas ou animais.</message>
+      <example correction="parasito">Raquel age como um <marker>parasita</marker> da mãe.</example>
+    </rule>
+
+
+    <rule id="PARASITOS_BR" name="Parasita">
+      <pattern>
+        <token regexp="yes">um|autênticos|uma|de</token>
+        <marker>
+          <token>parasitas</token>
+        </marker>
+      </pattern>
+      <message>Substitua &quot;parasitas&quot; por <suggestion>parasitos</suggestion> se estiver se referindo a pessoas ou animais.</message>
+      <example correction="parasitos">Há sujeitos que são autênticos <marker>parasitas</marker> da sociedade.</example>
+    </rule>
+
+    <!-- FIM PARASITO|S POR PARASITA|S QUANDO FOR PESSOA|ANIMAL -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR ALERTA POR ALERTAS -->
+
+    <rule id="ALERTAS_BR" name="Alerta">
+      <pattern>
+        <token negate_pos="yes" postag="D...P.+|SPS00:....P.+" postag_regexp="yes"/>
+        <marker>
+          <token>alertas</token>
+        </marker>
+        <token negate_pos="yes" postag="A...P.+" postag_regexp="yes"/>
+      </pattern>
+      <message>Alerta é invariável para indicar número ou gênero com exceção de quando está acompanhado de um artigo (Ex: os).
+        Substitua &quot;alertas&quot; por <suggestion>alerta</suggestion>.</message>
+      <example correction="alerta">O comandante nos disse que ficássemos <marker>alertas</marker>.</example>
+    </rule>
+
+    <!-- FIM ALERTA POR ALERTAS -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR MENOR DE IDADE POR MENOR -->
+
+    <rule id="MENOR_IDADE_BR" name="Menor de idade">
+      <pattern>
+        <token>de</token>
+        <token>menor</token>
+        <token>.</token>
+      </pattern>
+      <message>Substitua &quot;de menor.&quot; por <suggestion>menor de idade.</suggestion></message>
+      <example correction="menor de idade.">A polícia não pode prendê-lo porque ele é <marker>de menor.</marker></example>
+    </rule>
+
+    <!-- FIM MENOR DE IDADE POR MENOR -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR O|A 3o, 4o, 5o por Os|As -->
+
+    <rule id="OS_PARAGRAFOS_BR" name="Usar o">
+      <pattern>
+        <marker>
+          <token>os</token>
+        </marker>
+        <token regexp="yes">2º|3º|4º|5º</token>
+      </pattern>
+      <message>Substitua &quot;os&quot; por <suggestion>o</suggestion>.</message>
+      <example correction="o">O juiz leu <marker>os</marker> 3º, 4º e 5º parágrafos.</example>
+    </rule>
+
+    <rule id="AS_PARAGRAFOS_BR" name="Usar a">
+      <pattern>
+        <marker>
+          <token>as</token>
+        </marker>
+        <token regexp="yes">2ª|3ª|4ª|5ª</token>
+      </pattern>
+      <message>Substitua &quot;as&quot; por <suggestion>a</suggestion>.</message>
+      <example correction="a">Este cartório serve <marker>as</marker> 2ª e 3ª varas de família.</example>
+    </rule>
+
+    <!-- FIM O|A 3o, 4o, 5o por Os|As -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR MIL POR UM MIL -->
+
+    <rule id="UM_MIL_BR" name="Mil">
+      <pattern>
+        <token>um</token>
+        <token>mil</token>
+      </pattern>
+      <message>Substitua &quot;um mil&quot; por <suggestion>mil</suggestion>.</message>
+      <example correction="mil">Ganho apenas <marker>um mil</marker> reais por mês.</example>
+    </rule>
+
+    <!-- FIM MIL POR UM MIL -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR TODA A AGUARDENTE POR TODO O -->
+
+    <rule id="O_AGUARDENTE_BR" name="A aguardente">
+      <pattern>
+        <token>todo</token>
+        <token>o</token>
+        <token>aguardente</token>
+      </pattern>
+      <message>Aguardente é uma palavra do gênero feminino. Substitua &quot;todo o aguardente&quot; por <suggestion>toda a aguardente</suggestion>.</message>
+      <example correction="toda a aguardente">Ele bebeu <marker>todo o aguardente</marker> que havia na garrafa.</example>
+    </rule>
+
+    <!-- FIM TODA A AGUARDENTE POR TODO O -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR NÃO É ADEQUEADO POR ÁDEQUA -->
+
+    <rule id="ADEQUA_BR" name="Não é adequado">
+      <pattern>
+        <token>não</token>
+        <token>se</token>
+        <token>ádequa</token>
+      </pattern>
+      <message>Substitua &quot;não se ádequa&quot; por <suggestion>não é adequado</suggestion>.</message>
+      <example correction="não é adequado">Você <marker>não se ádequa</marker> a vaga.</example>
+    </rule>
+
+    <!-- FIM NÃO É ADEQUEADO POR ÁDEQUA -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR CHEGAMOS A POR CHEGAMOS EM -->
+
+    <rule id="CHEGAMOS_EM_BR" name="Chegamos a">
+      <pattern>
+        <marker>
+          <token>chegamos</token>
+          <token>em</token>
+        </marker>
+        <token regexp="yes">\p{Lu}\p{Ll}.*</token>
+      </pattern>
+      <message>O verbo de movimento chegar exige a preposição A. Substitua &quot;chegamos em&quot; por <suggestion>chegamos a</suggestion>.</message>
+      <example correction="chegamos a">Nós <marker>chegamos em</marker> São Paulo.</example>
+    </rule>
+
+    <!-- FIM CHEGAMOS A POR CHEGAMOS EM -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR ONDE POR AONDE -->
+
+    <rule id="AONDE_BR" name="Onde" default="off">
+    <!-- p-goulart@2024-02-13 - DESC: disable completely, this causes more FPs than fixes actual issues -->
+      <pattern>
+        <token>aonde</token>
+        <token>você</token>
+      </pattern>
+      <message>Aonde só é utilizado com verbos de movimento. Substitua &quot;aonde você&quot; por <suggestion>onde você</suggestion>.</message>
+      <example correction="onde você">Ele me disse <marker>aonde você</marker> está.</example>
+    </rule>
+
+    <!-- FIM ONDE POR AONDE -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR ANEXOS POR ANEXO QUANDO É PLURAL -->
+
+    <rule id="ANEXO_P_BR" name="Anexos">
+      <pattern>
+        <token negate="yes">em</token>
+        <marker>
+          <token>anexo</token>
+          <token>os</token>
+        </marker>
+      </pattern>
+      <message>Anexo é um adjetivo e deve concordar em gênero e número. Substitua &quot;anexo os&quot; por <suggestion>anexos os</suggestion>.</message>
+      <example correction="anexos os">Segue <marker>anexo os</marker> documentos solicitados.</example>
+    </rule>
+
+    <!-- FIM ANEXOS POR ANEXO QUANDO É PLURAL -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR ESTÁ QUITE COM ESTÁ QUITES SINGULAR -->
+
+    <rule id="QUITE_P_BR" name="está quite">
+      <pattern>
+        <token>está</token>
+        <token>quites</token>
+      </pattern>
+      <message>Quite deve concordar com o substantivo ao qual se refere. Substitua &quot;está quites&quot; por <suggestion>está quite</suggestion>.</message>
+      <example correction="está quite">O contribuente <marker>está quites</marker> com a receita federal.</example>
+    </rule>
+
+    <!-- FIM ESTÁ QUITE COM ESTÁ QUITES SINGULAR -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR A MEU VER COM AO MEU VER -->
+
+    <rule id="AO_MEU_VER_BR" name="A meu ver">
+      <pattern>
+        <token>Ao</token>
+        <token>meu</token>
+        <token>ver</token>
+      </pattern>
+      <message>Substitua &quot;ao meu ver&quot; por <suggestion>a meu ver</suggestion>.</message>
+      <example correction="A meu ver"><marker>Ao meu ver</marker>, o evento foi um sucesso.</example>
+    </rule>
+
+    <!-- FIM A MEU VER COM AO MEU VER -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR SOMOS COM SOMOS EM -->
+
+    <rule id="SOMOS_EM_BR" name="Somos">
+      <pattern>
+        <marker>
+          <token>Somos</token>
+          <token>em</token>
+        </marker>
+        <or>
+          <token postag="Z.+" postag_regexp="yes"/>
+          <token regexp="yes">\d.+</token>
+        </or>
+      </pattern>
+      <message>Substitua &quot;somos em&quot; por <suggestion>somos</suggestion>.</message>
+      <example correction="Somos"><marker>Somos em</marker> cinco auditores na empresa.</example>
+    </rule>
+
+    <!-- FIM SOMOS COM SOMOS EM -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR CHEGARAM A POR CHEGARAM EM (VERBO DE MOVIMENTO EXIGE A) -->
+
+    <rule id="CHEGARAM_EM_BR" name="Chegaram a">
+      <pattern>
+        <marker>
+          <token>chegaram</token>
+          <token>em</token>
+        </marker>
+        <token postag="NP..G.." postag_regexp="yes"/>
+      </pattern>
+      <message>Verbos de movimento exigem a preposição A. Substitua &quot;chegaram em&quot; por <suggestion>chegaram a</suggestion>.</message>
+      <example correction="chegaram a">Os atletas <marker>chegaram em</marker> Curitiba na noite passada.</example>
+    </rule>
+
+    <!-- FIM CHEGARAM A POR CHEGARAM EM (VERBO DE MOVIMENTO EXIGE A) -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR EXISTEM (VARIOS) COM EXISTE (UM) -->
+
+    <rule id="EXISTE_VARIOS_BR" name="Existem vários">
+      <pattern>
+        <marker>
+          <token>existe</token>
+        </marker>
+        <token regexp="yes">vários|muitos</token>
+      </pattern>
+      <message>O verbo existir admite plural. Substitua &quot;existe&quot; por <suggestion>existem</suggestion>.</message>
+      <example correction="Existem"><marker>Existe</marker> muitos problemas nesta empresa.</example>
+    </rule>
+
+    <!-- FIM EXISTEM (VARIOS) COM EXISTE (UM) -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR ASSISTIU AO (SENTIDO DE VER) ASSISTIU O -->
+
+    <rule id="ASSISTIU_O_BR" name="Assistiu ao">
+      <pattern>
+        <marker>
+          <token>assistiu</token>
+          <token>o</token>
+        </marker>
+        <token negate="yes" regexp="yes">&vocativos;</token>
+      </pattern>
+      <message>O verbo assistir no sentido de ver exige a preposição a. Substitua &quot;assistiu o&quot; por <suggestion>assistiu ao</suggestion>.</message>
+      <example correction="assistiu ao">Ele <marker>assistiu o</marker> o filme.</example>
+    </rule>
+    <!-- CONFUNDIR HAVIA MUITAS COM HAVIAM MUITAS -->
+    <rule id="HAVIAM_MUITAS_BR" name="Havia muitas">
+      <pattern>
+        <token>haviam</token>
+        <token>muitas</token>
+      </pattern>
+      <message>Se o verbo &quot;haver&quot; está no sentido de existir, substitua &quot;haviam muitas&quot; por <suggestion>havia muitas</suggestion>.</message>
+      <example correction="Havia muitas"><marker>Haviam muitas</marker> pessoas no local.</example>
+    </rule>
+
+    <!-- FIM HAVIA MUITAS COM HAVIAM MUITAS -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR NA RUA COM À RUA -->
+
+    <rule id="A_RUA_BR" name="Na rua">
+      <pattern>
+        <token regexp="yes">residente|vive|estabelecido</token>
+        <marker>
+          <token>à</token>
+          <token>rua</token>
+        </marker>
+      </pattern>
+      <message>Substitua &quot;à rua&quot; por <suggestion>na rua</suggestion>.</message>
+      <example correction="na rua">José, residente <marker>à rua</marker> Estados Unidos.</example>
+    </rule>
+
+    <!-- FIM NA RUA COM À RUA -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR CAIU (AUMENTAR E DIMINUIR) COM CAIU EM -->
+
+    <rule id="CAIU_EM_BR" name="Caiu">
+      <antipattern>
+          <token postag="DI.+" postag_regexp="yes"/>
+          <token postag="[AN].+" postag_regexp="yes"/>
+          <example>Caiu em um buraco</example>
+      </antipattern>
+      <pattern>
+        <marker>
+          <token>caiu</token>
+          <token>em</token>
+        </marker>
+        <or>
+          <token postag="Z.+" postag_regexp="yes"/>
+          <token regexp="yes">\d.+</token>
+        </or>
+      </pattern>
+      <message>O verbo cair no sentido aumentar e diminuir não admite a preposição em. Substitua &quot;caiu em&quot; por <suggestion>caiu</suggestion>.</message>
+      <example correction="caiu">O lucro <marker>caiu em</marker> 10%.</example>
+      <example correction="caiu">O lucro <marker>caiu em</marker> uma vez.</example>
+    </rule>
+
+    <!-- FIM CAIU (AUMENTAR E DIMINUIR) COM CAIU EM -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR CONSISTE EM POR CONSISTE DE -->
+
+    <rule id="CONSISTE_DE_BR" name="Consiste em">
+        <antipattern>
+            <token inflected="yes">consistir</token>
+            <token postag_regexp="yes" postag="R.">de</token>
+            <token postag_regexp="yes" postag="R." min="1"/>
+            <example>O revestimento consistia de fato em duas camadas distintas.</example>
+        </antipattern>
+        <pattern>
+            <token inflected="yes">consistir</token>
+            <token postag_regexp="yes" postag="R." min="0"/>
+            <marker>
+                <token>de</token>
+            </marker>
+        </pattern>
+        <message>Consistir é um verbo transitivo indireto e requer a preposição em. Substitua &quot;de&quot; por <suggestion>em</suggestion>.</message>
+        <example correction="em">A seleção consiste <marker>de</marker> cinco etapas.</example>
+        <example correction="em">O time consistirá primariamente <marker>de</marker> seis jogadores.</example>
+    </rule>
+
+    <!-- FIM CONSISTE EM POR CONSISTE DE -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR DAQUI A COM DAQUI -->
+
+    <rule id="DAQUI_BR" name="Daqui a">
+      <!-- MARCOAGPINTO 2021-04-05 (17-MAR-2021+) *START* -->
+      <!--
+      Todos os garotos daqui têm namorada.
+      Será que o senhor não conheceria um caminho daqui para a cidade?
+      Quantas estrelas são visíveis a olho nu daqui da Terra?
+      Quatro casas daqui do bairro desmoronaram.
+      Vou-me embora daqui!
+      É normal que as pessoas daqui te cumprimentem com um beijo.
+      Daqui não saio, daqui ninguém me tira.
+      -->
+      <antipattern>
+        <token>daqui</token>
+        <token postag='V.+|RN|CC|SPS.+|CS|RG|PP.+|PI.+' postag_regexp='yes'>
+          <exception postag_regexp='yes' postag='DI.+|NC.+|AQ0.+'/>
+        </token>
+      </antipattern>
+      <!-- MARCOAGPINTO 2021-04-05 (17-MAR-2021+) *END* -->
+      <pattern>
+        <marker>
+          <token>daqui</token>
+        </marker>
+        <token postag="Z.+|DI.+" postag_regexp="yes">
+          <exception regexp="yes">tod[ao]s?</exception></token>
+      </pattern>
+      <message>O advérbio daqui é usado para indicar lugar ou tempo e pede a preposição a. Substitua &quot;daqui&quot; por <suggestion>daqui a</suggestion>.</message>
+      <example correction="daqui a">Farei o pagamento <marker>daqui</marker> 5 dias.</example>
+      <example>Todos os garotos daqui têm namorada.</example>
+      <example>Será que o senhor não conheceria um caminho daqui para a cidade?</example>
+      <example>Quantas estrelas são visíveis a olho nu daqui da Terra?</example>
+      <example>Quatro casas daqui do bairro desmoronaram.</example>
+      <example>Vou-me embora daqui!</example>
+      <example>É normal que as pessoas daqui te cumprimentem com um beijo.</example>
+      <example>Daqui não saio, daqui ninguém me tira.</example>
+    </rule>
+
+    <!-- FIM DAQUI A COM DAQUI -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR QUANTO ANTES COM O QUANTO ANTES  -->
+
+    <rule id="O_QUANTO_ANTES_BR" name="Quanto antes">
+      <pattern>
+        <token>o</token>
+        <token>quanto</token>
+        <token>antes</token>
+      </pattern>
+      <message>Antes da locução adverbial quanto antes não se usa artigo definido o. Substitua &quot;o quanto antes&quot; por <suggestion>quanto antes</suggestion>.</message>
+      <example correction="quanto antes">Voltarei ao escritório <marker>o quanto antes</marker>.</example>
+    </rule>
+
+    <!-- FIM QUANTO ANTES COM O QUANTO ANTES  -->
+    <!-- ********************************************************** -->
+    <!-- CONFUNDIR MAIS INFORMAÇÕES COM MAIORES INFORMAÇÕES  -->
+
+    <rule id="DUZENTAS_GRAMAS_NUMERAL" name="Duzentos gramas">
+        <pattern>
+            <token regexp="yes">(duz|trez|quatroc|quinh|seic|setec|oitoc|novec)entas</token>
+            <token>gramas</token>
+        </pattern>
+        <message>Se &quot;grama&quot; se refere a peso, substitua &quot;\1 \2&quot; por <suggestion><match no="1" regexp_match="^(.+)entas" regexp_replace="$1entos"/> \2</suggestion>.</message>
+        <example correction="duzentos gramas">Comprei <marker>duzentas gramas</marker> de carne.</example>
+        <example correction="Oitocentos gramas"><marker>Oitocentas gramas</marker> de alfalfa, por favor.</example>
+    </rule>
+
+    <rule id="FAZEM_TEMPO" name="Faz tempo">
+        <antipattern>
+            <token postag_regexp="yes" postag="N..P.+|PP3.P.+"/>
+            <token inflected="yes" postag_regexp="yes" postag="VM..3P.">fazer</token>
+            <example>Os ciclistas faziam algumas horas na estrada todo dia.</example>
+            <example>Eles fizeram 18 anos na mesma semana.</example>
+        </antipattern>
+        <antipattern>
+            <token inflected="yes" postag_regexp="yes" postag="VM..3P.">fazer</token>
+            <token postag_regexp="yes" postag="Z.C.+|D[NI].+"/>
+            <token regexp="yes" postag_regexp="yes" postag="NC.P.+">&expressoes_de_tempo_simples;</token>
+            <token>de</token>
+            <token postag_regexp="yes" postag="NC.+"/>
+            <example>Quando fizeram trinta anos de carreira os irmãos gravaram um álbum.</example>
+            <example>Farão 10 anos de idade.</example>
+        </antipattern>
+        <pattern>
+            <marker>
+                <token inflected="yes" postag_regexp="yes" postag="VM..3P.">fazer</token>
+            </marker>
+            <token postag_regexp="yes" postag="R." min="0" max="-1"/>
+            <token postag_regexp="yes" postag="Z.C.+|D[NI].+"/>
+            <token regexp="yes" postag_regexp="yes" postag="NC.P.+">&expressoes_de_tempo_simples;</token>
+        </pattern>
+        <message>O verbo &quot;fazer&quot; no sentido temporal é impessoal. Substitua &quot;\1&quot; por <suggestion><match no="1" postag_regexp="yes" postag="(VM..3)P(.+)" postag_replace="$1S$2"/></suggestion>.</message>
+        <example correction="Faz"><marker>Fazem</marker> dez anos que não vemos tantas mudanças.</example>
+        <example correction="faz">Já <marker>fazem</marker> algumas semanas...</example>
+        <example correction="fará">Semana que vem <marker>farão</marker> já 8 meses desde o seu nascimento.</example>
+        <example correction="Fazia"><marker>Faziam</marker> muitos anos que ele não via seu pai.</example>
+        <example correction="fez|fizera">Em janeiro <marker>fizeram</marker> três meses do começo do seu relacionamento.</example>
+        <example correction="fizesse">Achei que <marker>fizessem</marker> algumas décadas!</example>
+    </rule>
+
+    <rule id="VAO_FAZER_TEMPO" name="Vai fazer tempo">
+        <antipattern>
+            <token postag_regexp="yes" postag="N..P.+|PP3.P.+"/>
+            <token inflected="yes" postag_regexp="yes" postag="VMI.3P.">ir</token>
+            <token>fazer</token>
+            <example>Os ciclistas vão fazer algumas horas na estrada todo dia.</example>
+            <example>Eles iam fazer 18 anos na mesma semana.</example>
+        </antipattern>
+        <antipattern>
+            <token inflected="yes" postag_regexp="yes" postag="VMI.3P.">ir</token>
+            <token>fazer</token>
+            <token postag_regexp="yes" postag="Z.C.+|D[NI].+"/>
+            <token regexp="yes" postag_regexp="yes" postag="NC.P.+">&expressoes_de_tempo_simples;</token>
+            <token>de</token>
+            <token postag_regexp="yes" postag="NC.+"/>
+            <example>Eles vão fazer trinta anos de carreira mês que vem.</example>
+            <example>Vão fazer 10 anos de idade.</example>
+        </antipattern>
+        <pattern>
+            <marker>
+                <token inflected="yes" postag_regexp="yes" postag="VMI.3P.">ir</token>
+                <token>fazer</token>
+            </marker>
+            <token postag_regexp="yes" postag="R." min="0" max="-1"/>
+            <token postag_regexp="yes" postag="Z.C.+|D[NI].+"/>
+            <token regexp="yes" postag_regexp="yes" postag="NC.P.+">&expressoes_de_tempo_simples;</token>
+        </pattern>
+        <message>O verbo &quot;fazer&quot; no sentido temporal é impessoal. Substitua &quot;\1 \2&quot; por <suggestion><match no="1" postag_regexp="yes" postag="(VMI.3)P(.+)" postag_replace="$1S$2"/> \2</suggestion>.</message>
+        <example correction="Vai fazer"><marker>Vão fazer</marker> muitos anos desde a última vez.</example>
+        <example correction="ia fazer">Em janeiro <marker>iam fazer</marker> seis meses, e ele estivesse vivo...</example>
+        <example correction="vai fazer">Já <marker>vão fazer</marker> 10 minutos que estamos esperando!</example>
+    </rule>
+
+    <rule id="NAO_E_ADJ" name="Não e + adjetivo, falta de acento">
+        <pattern>
+            <token>não</token>
+            <marker>
+                <token>e</token>
+            </marker>
+            <token postag_regexp="yes" postag="R." min="0" max="-1"/>
+            <token postag_regexp="yes" postag="A.+"/>
+        </pattern>
+        <message>Possível erro de digitação: será que você quis escrever <suggestion>é</suggestion>?</message>
+        <short>Possível erro de digitação.</short>
+        <example correction="é">Não <marker>e</marker> preciso.</example>
+        <example correction="é">Não <marker>e</marker> absolutamente necessário.</example>
+        <example>A resposta é complexa: não e sim.</example>
+        <example>Ele disse que não e que talvez tenha que ficar em casa.</example>
+    </rule>
+  </category>
+
+  <category id='CASING' name='Capitalização' type='grammar'>
+    <rule id='IRAO_IRA' name="Irão vs Irã" default="on">
+      <antipattern>
+        <token postag='SENT_START'/>
+        <marker>
+          <token case_sensitive='yes'>Irão</token>
+        </marker>
+        <example>Irão à conferência na próxima semana.</example>
+      </antipattern>
+      <pattern>
+        <token case_sensitive='yes'>Irão</token>
+      </pattern>
+      <message>&quot;Irão&quot; é como se escreve o nome do país em Portugal. No Brasil utiliza-se <suggestion>Irã</suggestion>.</message>
+      <example correction="Irã">A situação também se complica no <marker>Irão</marker>, onde a disputa permanece.</example>
+    </rule>
+
+    <rule id='AO90_MONTHS_CASING' type='grammar' name='AO90: Capitalização de Meses e Estações do Ano'><!-- TODO Converter mensagens para pt-BR -->
+      <!-- Created by  Tiago F. Santos , Portuguese rule, 2017-01-25 -->
+      <antipattern>
+        <token>Rio</token>
+        <token>de</token>
+        <token>Janeiro</token>
+      </antipattern>
+      <antipattern>
+        <token negate_pos="yes" postag="SENT_START"/>
+        <token regexp="yes">\p{Lu}\p{Ll}*</token>
+        <token regexp="yes">&meses_ano;|Invernos?|Primaveras?|Ver(ão|ões)|Outonos?</token>
+        <example>Confira a Coleção Primavera 2022</example>
+      </antipattern>
+      <antipattern>
+        <token regexp="yes">\p{Lu}\p{Ll}*</token>
+        <token regexp="yes">&meses_ano_abrev;</token>
+        <example>Mind Set</example>
+        <example>Ad Set</example>
+      </antipattern>
+      <antipattern>
+        <token regexp="yes">&meses_ano;|&meses_ano_abrev;|Invernos?|Primaveras?|Ver(ão|ões)|Outonos?</token>
+        <token regexp="yes">\p{Lu}\p{Ll}*</token>
+        <example>Primavera Sound</example>
+        <example>Setembro Amarelo</example>
+        <example>Outubro Rosa</example>
+        <example>Novembro Azul</example>
+        <example>Primavera Árabe</example>
+      </antipattern>
+      <antipattern>
+        <token regexp="yes">&meses_ano_abrev;</token>
+        <token regexp="yes" spacebefore="no">&tracos_de_separacao;</token>
+        <example>Set-up</example>
+      </antipattern>
+      <antipattern>
+        <token regexp="yes" skip="5">&enderecos;</token>
+        <token regexp='yes'>(Janeiro|Fevereiro|Março|Abril|Maio|Junho|Julho|Agosto|Setembro|Outubro|Novembro|Dezembro)s?|(Jan|Fev|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov)|Invernos?|Primaveras?|Ver(ão|ões)|Outonos?</token>
+        <example>Vá até a Rua Sete de Setembro.</example>
+      </antipattern>
+      <antipattern>
+        <token regexp='yes'>Jan|Fev|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov</token>
+        <token postag_regexp='yes' postag='NP.+|UNKNOWN'/>
+      </antipattern>
+      <antipattern case_sensitive='yes'>
+        <token postag='_PUNCT'>
+          <exception regexp="yes">[,;]</exception></token>
+        <token regexp='yes'>(Janeiro|Fevereiro|Março|Abril|Maio|Junho|Julho|Agosto|Setembro|Outubro|Novembro|Dezembro)s?|(Jan|Fev|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov)|Invernos?|Primaveras?|Ver(ão|ões)|Outonos?</token><!-- TODO |Mar|Dez create subrule for these cases -->
+        <example>Mês da fatura: Setembro</example>
+      </antipattern>
+      <pattern case_sensitive='yes'>
+        <token negate_pos='yes' postag='SENT_START|_QUOT' postag_regexp="yes"/>
+        <marker>
+          <token regexp='yes'>(Janeiro|Fevereiro|Março|Abril|Maio|Junho|Julho|Agosto|Setembro|Outubro|Novembro|Dezembro)s?|(Jan|Fev|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov)|Invernos?|Primaveras?|Ver(ão|ões)|Outonos?</token><!-- TODO |Mar|Dez create subrule for these cases -->
+        </marker>
+      </pattern>
+      <message>Segundo o Acordo Ortográfico de 90, os meses e as estações do ano deixam de ser capitalizados.</message>
+      <suggestion><match no='2' case_conversion='alllower'/></suggestion>
+      <url>https://www.escrevendoofuturo.org.br/EscrevendoFuturo/arquivos/188/Guia_Reforma_Ortografica_CP.pdf</url>
+      <short>Erro de capitalização.</short>
+      <example correction='janeiro'>O ano novo chinês é a 28 de <marker>Janeiro</marker>.</example>
+      <example correction='inverno'>Este <marker>Inverno</marker> está a ser muito seco.</example>
+      <example correction='set'>22 <marker>Set</marker> – início do outono.</example>
+      <example>Junho é um mês de muitas chuvas.</example>
+      <example>1) Jan Rogoziński, A brief history of the Caribbean : fr...</example>
+      <example correction='jan'>1 <marker>Jan</marker> 2002 - As moedas e notas físicas de euro entraram em circulação, tornando-se a moeda de uso corrente entre os membros originais.</example>
+    </rule>
+
+    <rulegroup id='AO90_WEEKDAYS_CASING_PT_BR' type='grammar' name='AO90: Capitalização dos Dias da Semana'><!-- TODO Converter mensagens para pt-BR -->
+      <!-- Created by  Tiago F. Santos , Portuguese rule, 2017-01-26 -->
+      <rule>
+        <antipattern>
+          <token postag='SENT_START'/>
+          <token regexp='yes'>[“«&quot;]</token>
+          <token>Ter</token>
+        </antipattern>
+        <antipattern>
+          <token>Ter</token>
+          <token>Stegen</token>
+        </antipattern>
+        <!-- MARCOAGPINTO 2022-05-17 (15-MAY-2022+) *START* -->
+        <!--
+        Os principais cuidados com seu pet Ter um cachorrinho em casa para te fazer companhia é muito bom!
+        - Ter cuidado especial ao escolher sua senha, evitando senhas óbvias tais como seu nome, seu e-mail, sobr...
+        · Ter desenvolvido e implantado projetos na tecnologia Sharepoint.
+        – Ter um momento em família, com todos reunidos, além das refeições.
+        Confessava Ter sido sempre bastante orgulhoso dos haveres herdados e sobretudo daquele filho tão perfeito...
+        - Dedicação: Ter vontade de servir, ser prestável e estabelecer uma relação de empatia.
+        Aprimorar a velocidade do Como Fazer Seu Website De Vendas Online Ter Sucesso - Byte A Byte a alegria do usuário (acesse o meu primeiro desse post), mas isto também poss...
+        Vinte e três Plantas Pra Ter Dentro De Apartamento Com Muito Charme!
+        -->
+        <antipattern>
+          <token>Ter</token>
+          <token postag='DI.+|VMP00.+|NC.+|AQ.+|RG|SP.+' postag_regexp='yes'/>
+        </antipattern>
+        <antipattern>
+          <token>Dom</token>
+          <token postag='SPS.+' postag_regexp='yes'/>
+        </antipattern>
+        <antipattern>
+          <token regexp='yes'>Sábado|Domingo|Segunda|Terça|Quarta|Quinta|Sexta</token>
+          <token min='0' postag='SPS.+' postag_regexp='yes'/>
+          <token regexp="yes">\p{Lu}.*</token>
+          <example>logo após o "Domingo Espetacular"</example>
+          <example>acontece no Domingo de Ramos</example>
+        </antipattern>
+        <antipattern>
+          <token regexp="yes">\p{Lu}.*</token>
+          <token min='0' postag='SPS.+' postag_regexp='yes'/>
+          <token regexp='yes'>Sábado|Domingo|Segunda|Terça|Quarta|Quinta|Sexta</token>
+          <example>Agenda de Domingo</example>
+        </antipattern>
+        <!-- MARCOAGPINTO 2022-05-17 (15-MAY-2022+) *END* -->
+        <pattern case_sensitive='yes'>
+          <token>
+            <exception postag_regexp='yes' postag='SENT_START|NP.+|_QUOT'/>
+            <exception>:</exception>
+          </token>
+          <marker>
+            <token regexp='yes'>Sábados?|Domingo|(Seg|Ter|Qua|Qui|Sex|S[aá]b|Dom)</token>
+          </marker>
+          <token><exception postag_regexp='yes' postag='NP.+|UNKNOWN'/></token>
+        </pattern>
+        <message>Segundo o Acordo Ortográfico de 90, os dias da semana deixam de ser capitalizados.</message>
+        <suggestion><match no='2' case_conversion='alllower'/></suggestion>
+        <url>https://www.escrevendoofuturo.org.br/EscrevendoFuturo/arquivos/188/Guia_Reforma_Ortografica_CP.pdf</url>
+        <example correction='domingo'>O torneio é no próximo <marker>Domingo</marker>.</example>
+        <example correction='sáb'>A nova temporada estreia em <marker>Sáb</marker>. 24 dez 2016.</example>
+        <example correction='ter'>A última temporada estreiou na <marker>Ter</marker>. 27 dez 2016.</example>
+        <example>A data coincide com o aniversário do imperador Dom Pedro II.</example>
+        <example>Nas eleições de 1946, o general Juan Domingo Perón se apresentou como candidato do Partido Lab...</example>
+        <example>Os principais cuidados com seu pet Ter um cachorrinho em casa para te fazer companhia é muito bom!</example>
+        <example>- Ter cuidado especial ao escolher sua senha, evitando senhas óbvias tais como seu nome, seu e-mail, sobr...</example>
+        <example>· Ter desenvolvido e implantado projetos na tecnologia Sharepoint.</example>
+        <example>– Ter um momento em família, com todos reunidos, além das refeições.</example>
+        <example>Confessava Ter sido sempre bastante orgulhoso dos haveres herdados e sobretudo daquele filho tão perfeito...</example>
+        <example>- Dedicação: Ter vontade de servir, ser prestável e estabelecer uma relação de empatia.</example>
+        <example>Aprimorar a velocidade do Como Fazer Seu Website De Vendas Online Ter Sucesso - Byte A Byte a alegria do usuário (acesse o meu primeiro desse post), mas isto também poss...</example>
+        <example>Vinte e três Plantas Pra Ter Dentro De Apartamento Com Muito Charme!</example>
+      </rule>
+      <rule>
+        <antipattern case_sensitive='yes'>
+          <marker>
+            <token regexp='yes'>(Segunda|Terça|Quarta|Quinta|Sexta)s?</token>
+          </marker>
+          <token regexp='yes' min='0' max='1'>do|da|dos|das|de</token>
+          <token spacebefore="yes" case_sensitive="yes" regexp="yes">\p{Lu}\p{Ll}+</token>
+          <example>O pastel da Quinta do Zé é o melhor da cidade.</example>
+          <example>O rapaz fez parte da Quarta Dinastia.</example>
+          <example>Foram mandados para a Segunda Divisão.</example>
+          <example>Ficou famoso na Segunda Guerra Mundial.</example>
+          <example>Há lugar na Segunda Classe.</example>
+        </antipattern>
+        <antipattern case_sensitive='yes'>
+          <token spacebefore="yes" regexp="yes">\p{Lu}\p{Ll}+</token>
+          <marker>
+            <token regexp='yes'>(Segunda|Terça|Quarta|Quinta|Sexta)s?</token>
+          </marker>
+          <example>A maioria faz parte da Décima Segunda ou Décima Terceira Divisão.</example>
+        </antipattern>
+        <antipattern case_sensitive='yes'>
+          <token regexp='yes'>&tracos_de_separacao;|:</token>
+          <marker>
+            <token regexp='yes'>(Segunda|Terça|Quarta|Quinta|Sexta)s?</token>
+          </marker>
+          <example>5- Quinta parte.</example>
+          <example>5 – Quinta vantagem</example>
+          <example>Atendimento: Segunda a domingo.</example>
+        </antipattern>
+        <antipattern case_sensitive='yes'>
+          <marker>
+            <token regexp='yes' skip="-1">(Segunda|Quarta|Quinta|Sexta)s?</token>
+          </marker>
+          <token regexp='yes'>Dinastia|Dinastias</token>
+          <example>Rainhas da Sexta e Oitava Dinastias.</example>
+        </antipattern>
+        <antipattern case_sensitive='yes'>
+          <marker>
+            <token>Quintas</token>
+          </marker>
+          <example>Felipe Quintas é doutorando em Ciências Políticas.</example>
+        </antipattern>
+        <antipattern case_sensitive='yes'>
+          <marker>
+            <token skip='-1'>Segunda</token>
+          </marker>
+          <token>Primeira</token>
+          <token regexp='yes'>Classe|Classes</token>
+          <example>Há lugar na Segunda e na Primeira Classes.</example>
+        </antipattern>
+        <antipattern>
+          <token case_sensitive='yes' regexp='yes'>\p{Lu}\p{Ll}+<exception regexp="yes">Segunda|Terça|Quarta|Quinta|Sexta</exception></token>
+          <token postag='SPS00'/>
+          <token regexp='yes' case_sensitive='yes'>(Segunda|Terça|Quarta|Quinta|Sexta)s?</token>
+          <example>Escrito por Redação em Quinta.</example>
+          <example>Este é o Futebol de Quinta.</example>
+          <example>Confira o programa Papo de Segunda.</example>
+        </antipattern>
+        <antipattern case_sensitive='yes'>
+          <token negate_pos='yes' postag='SENT_START'/>
+          <token regexp='yes'>(Segunda|Terça|Quarta|Quinta|Sexta)s?-[Ff]eiras?|(Segunda|Terça|Quarta|Quinta|Sexta)s?</token>
+          <token min='0'>de</token>
+          <token regexp='yes'>Cinzas|Santa</token>
+          <example>Era Quarta-Feira de Cinzas.</example>
+          <example>Viajaram na Sexta-Feira Santa.</example>
+        </antipattern>
+        <pattern case_sensitive='yes'>
+          <token negate_pos='yes' postag='SENT_START'/>
+          <marker>
+            <token regexp='yes'>(Segunda|Terça|Quarta|Quinta|Sexta)s?-[Ff]eiras?|(Segunda|Terça|Quarta|Quinta|Sexta)s?</token>
+          </marker>
+        </pattern>
+        <message>Segundo o Acordo Ortográfico de 90, os dias da semana deixam de ser capitalizados.</message>
+        <suggestion><match no='2' case_conversion='alllower'/></suggestion>
+        <url>https://www.escrevendoofuturo.org.br/EscrevendoFuturo/arquivos/188/Guia_Reforma_Ortografica_CP.pdf</url>
+        <example correction='segundas-feiras'>As <marker>Segundas-feiras</marker> são sempre difíceis.</example>
+        <example correction='segundas'>As <marker>Segundas</marker> são sempre difíceis.</example>
+        <example>Segundas-feiras são sempre difíceis.</example>
+      </rule>
+    </rulegroup>
+
+
+    <rule id='AO90_CARDINAL_POINTS_CASING' type='grammar' name='AO90: Capitalização de Pontos Cardeais'>
+      <!-- Created by Tiago F. Santos , Portuguese rule, 2017-01-26 -->
+      <antipattern case_sensitive='yes'>
+        <token>Médio</token>
+        <token>Oriente</token>
+      </antipattern>
+      <antipattern>
+        <token regexp='yes'>em|n[ao]s?</token>
+        <token regexp='yes' case_sensitive='yes'>Norte|Sul|Este|Oeste|Ocidente|Oriente|Nascente|Poente|Nordeste|Sudeste|Noroeste|Sudoeste</token>
+        <token regexp='yes'>d[eao]s?</token>
+        <token regexp='yes' case_sensitive='yes'>\p{Lu}.+</token>
+      </antipattern>
+      <antipattern>
+        <token postag='SENT_START'/>
+        <token postag='_PUNCT'/>
+        <token>Este</token>
+      </antipattern>
+      <antipattern>
+        <token regexp="yes" skip="-1">&palavras_estrangeiras;</token>
+        <token regexp='yes'>Norte|Sul|Este|Oeste|Ocidente|Oriente|Nascente|Poente|Nordeste|Sudeste|Noroeste|Sudoeste</token>
+        <example>Morei anos em Punta del Este.</example>
+      </antipattern>
+      <pattern case_sensitive='yes'>
+        <token>
+          <exception regexp='yes'>[Pp][oó]lo|[Zz]onas?|[Rr]egi(ão|ões)|[Oo]|[Dd]o|[Nn]o|[Pp]arte|-</exception>
+          <exception postag_regexp='yes' postag='SENT_START|NP.+|_PUNCT'/></token>
+        <marker>
+          <token regexp='yes'>Norte|Sul|Este|Oeste|Ocidente|Oriente|Nascente|Poente|Nordeste|Sudeste|Noroeste|Sudoeste
+            <exception postag_regexp='yes' postag='NP..[^G].+'/></token>
+        </marker>
+      </pattern>
+      <message>Os pontos cardeais se escrevem com minúscula, a não ser que estejam dando nome a uma região geográfica específica.</message>
+      <suggestion><match no='2' case_conversion='alllower'/></suggestion>
+      <url>https://www.escrevendoofuturo.org.br/EscrevendoFuturo/arquivos/188/Guia_Reforma_Ortografica_CP.pdf</url>
+      <example correction='sul'>Trás-os-Montes é a <marker>Sul</marker> do rio Douro.</example>
+      <example>Estas vão se reduzindo em direção ao Pólo Sul.</example>
+      <example>Rodeia o polo Sul, e por esse motivo está quase completamente coberto de gelo.</example>
+      <example>Este elevador é capaz de carregar 10 pessoas por vez.</example>
+      <example>A maior parte dos corais no Norte da Grande Barreira estão mortos.</example>
+      <example>A maioria dos corais na parte Norte da Grande Barreira estão mortos.</example>
+    </rule>
+
+    <rulegroup id='REFLEXIVO_CONJUNTIVO' name='Confusão de Tempo Verbal: Subjuntivo Pretérito - Reflexivo' default='off'><!-- XXX rethink rule. too many false positives -->
+        <rule>
+            <pattern>
+                <token postag='SENT_START' skip='-1'>
+                    <exception scope='next' regexp='yes'>&separadores_de_oracoes;</exception>
+                    <exception scope='next' regexp='yes'>&introduz_conjuntivo;</exception>
+                </token>
+                <marker>
+                    <token postag_regexp='yes' postag='VMSI.+' regexp='yes'>.+sse
+                        <exception negate_pos='yes' postag_regexp='yes' postag='VMSI.+'/>
+                    </token>
+                </marker>
+            </pattern>
+            <message>O subjuntivo é utilizado em condicionais (&quot;se...&quot;). Talvez você queira utilizar um pronome reflexivo?</message>
+            <suggestion><match no='2' regexp_match='(.+)sse' regexp_replace='$1-se'/></suggestion>
+            <example correction='aproxima-se'>Ela <marker>aproximasse</marker> mais perto da gente a cada palavra.</example>
+        </rule>
+        <rule>
+            <pattern>
+                <token regexp='yes' skip='-1'>&separadores_de_oracoes;
+                    <exception scope='next' regexp='yes'>&separadores_de_oracoes;</exception>
+                    <exception scope='next' regexp='yes'>&introduz_conjuntivo;</exception>
+                </token>
+                <marker>
+                    <token postag_regexp='yes' postag='VMSI.+' regexp='yes'>.+sse
+                        <exception negate_pos='yes' postag_regexp='yes' postag='VMSI.+'/>
+                    </token>
+                </marker>
+            </pattern>
+            <message>O subjuntivo é utilizado em condicionais (&quot;se...&quot;). Talvez você queira utilizar um pronome reflexivo?</message>
+            <suggestion><match no='2' regexp_match='(.+)sse' regexp_replace='$1-se'/></suggestion>
+            <example correction='aproxima-se'>A cada palavra, ela <marker>aproximasse</marker> da gente.</example>
+        </rule>
+        <rule>
+            <pattern>
+                <token skip='-1' postag_regexp='yes' postag='C.+' regexp='yes'>se|embora
+                    <exception scope='next' regexp='yes'>&separadores_de_oracoes;</exception>
+                </token>
+                <marker>
+                    <token postag_regexp='no' postag='VMIP3S0:PP3CNO00'/>
+                </marker>
+            </pattern>
+            <message>O subjuntivo é utilizado em condicionais (&quot;se...&quot;). Talvez você queira utilizar um pronome reflexivo?</message>
+            <suggestion><match no="2" postag_regexp="yes" postag="V.+" postag_replace="VMSI3S0"/></suggestion>
+            <example correction='lavasse'>Se <marker>lava-se</marker> os pratos, seria bom.</example>
+            <example correction='trabalhasse'>Embora Chekhov <marker>trabalha-se</marker> como médico, enriqueceu a sua escrita com…</example>
+        </rule>
+    </rulegroup>
+
+    <rulegroup id='HIFEN_INTRUSIVO' name="Verbo com hífen intrusivo">
+        <short>Possível erro de digitação.</short>
+        <rule>
+            <pattern>
+                <marker>
+                    <token postag='VMIP2S0:PP2CSO00'/>
+                </marker>
+                <token postag='SPS.+|PD0FS.+|PP3FSA.+' postag_regexp='yes'/>
+                <token postag='AQ0.+|NC.+|V.+|DD.+' postag_regexp='yes'/>
+            </pattern>
+            <message>Caso se trate de uma forma do pretérito perfeito da segunda pessoa do singular, escreve-se sem hífen.</message>
+            <suggestion><match no="1" postag_regexp="yes" postag="V.+" postag_replace="VMIS2S0"/></suggestion>
+            <example correction="trocaste">Hoje tu <marker>trocas-te</marker> de computador?</example>
+            <example>Tu andaste cantando?</example>
+            <example>Tu cantaste a canção?</example>
+        </rule>
+
+        <rule>
+            <pattern>
+                <marker>
+                    <token postag='VMIP2S0'/>
+                    <token spacebefore='yes'>te</token>
+                </marker>
+                <token postag='SPS.+|PD0FS.+|PP3FSA.+' postag_regexp='yes'/>
+                <token postag='AQ0.+|NC.+|V.+|DD.+' postag_regexp='yes'/>
+            </pattern>
+            <message>Caso se trate de uma forma do pretérito perfeito da segunda pessoa do singular, escreve-se sem hífen.</message>
+            <suggestion>\1\2</suggestion>
+            <example correction="ficaste">Tu também <marker>ficas te</marker> com essa canção.</example>
+        </rule>
+
+    </rulegroup>
+  </category>
+
+  <category id="BR_SPELLING" name="ortografia brasileira" type="misspelling">
+    <rule id='PARONYM_PREMIO_252_PT' name='Parónimo: premio'>
+      <pattern>
+        <token regexp='yes'>&art_detecao_paronimos;</token>
+        <token min='0' postag='A.+' postag_regexp='yes'/>
+        <token regexp='yes'>premios?</token>
+      </pattern>
+      <message>Esta palavra é um verbo. Se pretende referir-se a um nome ou adjetivo, deve utilizar a forma acentuada.</message>
+      <suggestion><match no='1' include_skipped='all'/> <match no='2' include_skipped='all'/> prêmio<match no='3' regexp_match='.+?(s?)$' regexp_replace='$1'/></suggestion>
+      <url>https://pt.wiktionary.org/wiki/prémio</url>
+      <example correction='no prêmio'><marker>no premio</marker>.</example>
+      <example correction='nos prêmios'><marker>nos premios</marker>.</example>
+    </rule>
+
+    <rule id='PARONYM_PREMIO_252_PT2' name='Parónimo: premio'>
+      <pattern>
+        <token regexp='yes' inflected="yes">&verbos_auxiliares_part_passado;|dever|poder|querer|costumar</token>
+        <marker>
+          <token regexp='yes'>premios?</token>
+        </marker>
+      </pattern>
+      <message>Esta palavra é um verbo. Se pretende referir-se a um nome ou adjetivo, deve utilizar a forma acentuada.</message>
+      <suggestion>prêmio<match no='2' regexp_match='.+?(s?)$' regexp_replace='$1'/></suggestion>
+      <url>https://pt.wiktionary.org/wiki/prémio</url>
+      <example correction='prêmio'>E tem <marker>premio</marker> para todos.</example>
+      <example correction='prêmios'>E tem <marker>premios</marker> para todos.</example>
+    </rule>
+
+    <rule id="PRETERITO_PERFEITO" name="Pretérito perfeito: provámos -> provamos" default="on">
+      <pattern>
+        <token postag="VMIS1P0P" regexp="yes">.*ámos</token>
+      </pattern>
+      <message>No português do Brasil, escreve-se sem acento.</message>
+      <suggestion><match no="1" postag="VMIS1P0P" postag_regexp="yes" postag_replace="VMIS1P0"/></suggestion>
+      <example correction="provamos"><marker>provámos</marker></example>
+    </rule>
+
+  </category>
+
+  <category id="TYPOGRAPHY" name="Tipografia">
+      <rule type="locale-violation" id='CURRENCY_PLACEMENT_BR' name="Posição dos símbolos de moeda: '100£ (£100)">
+          <pattern>
+              <token regexp="yes">\d+([,.]\d+)*</token>
+              <token regexp="yes">&currency_symbols;</token>
+          </pattern>
+          <message>Símbolos de moeda se escrevem, via de regra, antes do valor.</message>
+          <suggestion>\2&nbsp;\1</suggestion>
+          <short>Mova o símbolo da moeda para antes do valor</short>
+          <example correction="£&nbsp;100">Deve <marker>100£</marker>.</example>
+          <example correction="£&nbsp;100.00">Deve <marker>100.00£</marker>.</example>
+      </rule>
+
+      <rule type="locale-violation" id='CURRENCY_SPACE_BR' name="Espaçamento entre símbolos e valores monetários: '$100' ($ 100)">
+          <pattern>
+              <token regexp="yes">&currency_symbols;</token>
+              <token regexp="yes" spacebefore="no">\d+([,.]\d+)*</token>
+          </pattern>
+          <message>Os símbolos monetários se separam do valor por um espaço.</message>
+          <suggestion>\1&nbsp;\2</suggestion>
+          <short>Adicionar um espaço</short>
+          <example correction="R$&nbsp;100">Custa <marker>R$100</marker>.</example>
+      </rule>
+  </category>
+</rules>

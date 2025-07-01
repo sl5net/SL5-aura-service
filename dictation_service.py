@@ -46,7 +46,10 @@ NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 SAMPLE_RATE = 16000
 LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
-LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool-server.jar"
+
+# LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool-server.jar"
+LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
+
 languagetool_process = None
 
 def guess_lt_language_from_model(model_name):
@@ -256,6 +259,9 @@ PUNCTUATION_MAP = {
     'Kit': 'Git',
 
     'Coffee Pace': 'Copy Paste',
+    'Copy Pace': 'Copy Paste',
+    'Hobby Pest': 'Copy Paste',
+
 
 
 }
@@ -315,7 +321,7 @@ logger.info("--- Vosk dictation_service starting ---")
 TRIGGER_FILE.unlink(missing_ok=True)
 
 if not start_languagetool_server():
-    notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
+    notify("Vosk Startup Error", f"LanguageTool Server failed to start (LOG_FILE:{LOG_FILE}).", "critical")
     sys.exit(1)
 
 if not MODEL_PATH.exists():

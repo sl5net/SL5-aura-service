@@ -9,6 +9,11 @@ SERVER_SCRIPT="$SCRIPT_DIR/activate-venv_and_run-server.sh"
 source "$CONFIG_FILE" # loads Variable PORT
 
 echo "Restarting TTS Server on Port $PORT..."
+
+pkill -f dictation_service.py
+pkill -f type_watcher.sh
+sleep 1
+
 PID=$(lsof -t -i :$PORT)
 if [ -n "$PID" ]; then
     kill $PID
