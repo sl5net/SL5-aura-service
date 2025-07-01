@@ -10,10 +10,10 @@ LOCKFILE="/tmp/type_watcher.lock"
 if [ -e "$LOCKFILE" ]; then
     OLD_PID=$(cat "$LOCKFILE")
     if ps -p $OLD_PID > /dev/null 2>&1; then
-        echo "Another instance is already running (PID $OLD_PID). Exiting."
+        echo "Another instance of type_watcher.sh is already running (PID $OLD_PID). Exiting."
 
-        echo "Waiting for $FILE_TO_WATCH ..."
-        notify-send "Waiting for $FILE_TO_WATCH ..."
+        # echo "Waiting for $FILE_TO_WATCH ..."
+        # notify-send "Waiting for $FILE_TO_WATCH ..."
 
         exit 1
     else

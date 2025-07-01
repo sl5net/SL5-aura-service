@@ -253,8 +253,13 @@ PUNCTUATION_MAP = {
     'Keep it up': 'GitHub',
     'Good job': 'GitHub',
     'Q-tip': 'GitHub',
+    'Kit': 'Git',
+
+    'Coffee Pace': 'Copy Paste',
+
 
 }
+
 # From GitHub  From GitHub  From GitHub
 
 def normalize_punctuation(text: str) -> str:
@@ -262,12 +267,12 @@ def normalize_punctuation(text: str) -> str:
     return re.sub(pattern, lambda m: PUNCTUATION_MAP[m.group(1).lower()], text, flags=re.IGNORECASE)
 
 # >>> THE FIXED NOTIFY FUNCTION <<<
-def notify(summary, body="", urgency="low", icon=None):
+def notify(summary, body="", urgency="low", icon=None, duration=3000):
     """Sends a notification, fixed to not hang the script."""
     logger.info(f"DEBUG: Attempting to notify: '{summary}'")
     try:
         # We don't use '-r' as it can cause blocking issues.
-        command = [NOTIFY_SEND_PATH, "-u", urgency, summary, body, "-t", "3000"]
+        command = [NOTIFY_SEND_PATH, "-u", urgency, summary, body, "-t", str(duration)]
         if icon:
             command.extend(["-i", icon])
         # The critical fix: close_fds=True prevents conflicts with inotify.
@@ -372,7 +377,16 @@ try:
                         # Step 3: Now type the text directly into the active window
                         #subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", processed_text], check=True)
                         Path("/tmp/tts_output.txt").write_text(processed_text)
-                        notify("Vosk: Ready", "Text is ready to be typed.", "low")
+                        # notify("Vosk: Ready", "Text is ready to be typed.", "low")
+
+                        # notify("Transkribiert.", "", "low")
+
+                        # notify(summary, body="", urgency="low", icon=None, duration=3000):
+                        notify("Transkribiert", '' , '' , '' , 1000)
+                        # In der Funktion notify():
+
+
+
                         # notify("Vosk: Pasted", f'"{processed_text}"', "low", icon="edit-paste-symbolic")
                     else:
                         notify("Vosk: No Input", "No text was recognized.", "normal", icon="dialog-warning")
