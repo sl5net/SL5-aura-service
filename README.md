@@ -37,6 +37,25 @@ if you want use AutoKey read here: https://github.com/autokey/autokey/wiki/Insta
 Set a global hotkey to trigger the dictation. The command is:
 `touch /tmp/vosk_trigger`
 
+### Install
+
+#### inotifywait
+Ubuntu (Debian-based Linux)
+
+inotifywait is part of the inotify-tools package.
+sh
+
+sudo apt update
+sudo apt install inotify-tools
+
+Manjaro (Arch-based Linux)
+
+On Manjaro, use pacman to install inotify-tools:
+sh
+
+sudo pacman -S inotify-tools
+
+
 ### 2. The Homophone Lookup Hotkey
 
 Set a *different* global hotkey to trigger the homophone lookup. This hotkey should execute a separate script. The command is:
