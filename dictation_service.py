@@ -353,7 +353,9 @@ try:
 
                 # --- Step 2: Main processing logic in its own try/except block ---
                 try:
-                    notify("Vosk: Processing...", "Please wait.", "low", icon="system-run-symbolic")
+                    #notify("Transkribiert"      , ''            , ''   , ''                       , 1000)
+                    notify("Vosk: Processing...", "Please wait.", "low", icon="system-run-symbolic" , duration=1500)
+
                     recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
                     recognized_text = transcribe_audio_with_feedback(recognizer)
 
@@ -377,17 +379,9 @@ try:
                         # Step 3: Now type the text directly into the active window
                         #subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", processed_text], check=True)
                         Path("/tmp/tts_output.txt").write_text(processed_text)
-                        # notify("Vosk: Ready", "Text is ready to be typed.", "low")
 
-                        # notify("Transkribiert.", "", "low")
+                        notify("Transkribiert", '' , '' , '' ,      duration=1000)
 
-                        # notify(summary, body="", urgency="low", icon=None, duration=3000):
-                        notify("Transkribiert", '' , '' , '' , 1000)
-                        # In der Funktion notify():
-
-
-
-                        # notify("Vosk: Pasted", f'"{processed_text}"', "low", icon="edit-paste-symbolic")
                     else:
                         notify("Vosk: No Input", "No text was recognized.", "normal", icon="dialog-warning")
 
