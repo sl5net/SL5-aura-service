@@ -12,6 +12,8 @@ echo "Restarting TTS Server on Port $PORT..."
 
 pkill -f dictation_service.py
 pkill -f type_watcher.sh
+# DO NOT kill LanguageTool server here. pkill -f languagetool-server.jar
+
 sleep 1
 
 PID=$(lsof -t -i :$PORT)

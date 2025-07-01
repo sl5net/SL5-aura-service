@@ -18,22 +18,6 @@ import logging  # ADDED: For logging
 from inotify_simple import INotify, flags
 
 
-# --- Logging Setup (Must be first) ---
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)-8s - %(message)s',
-    handlers=[
-        logging.FileHandler('vosk_dictation.log', mode='w'),
-        logging.StreamHandler(sys.stdout)
-    ]
-)
-logger = logging.getLogger()
-
-# --- Wrapper Script Check ---
-if os.environ.get("DICTATION_SERVICE_STARTED_CORRECTLY") != "true":
-    logger.fatal("FATAL: This script must be started using the 'activate-venv_and_run-server.sh' wrapper.")
-    sys.exit(1)
-
 
 # --- Configuration ---
 CRITICAL_THRESHOLD_MB = 1024
@@ -45,12 +29,35 @@ PIDFILE = "/tmp/dictation_service.pid"
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 SAMPLE_RATE = 16000
-LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
+# LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
 
-# LANGUAGETOOL_JAR_PATH = "/home/seeh/Downloads/LanguageTool-6.5/languagetool-server.jar"
+LANGUAGETOOL_BASE_URL = "http://localhost:8082"
+LANGUAGETOOL_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check --data "
+
 LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
 
 languagetool_process = None
+
+
+
+# --- Logging Setup (Must be first) ---
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)-8s - %(message)s',
+    handlers=[
+        logging.FileHandler(f'{SCRIPT_DIR}/vosk_dictation.log', mode='w'),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger()
+
+# --- Wrapper Script Check ---
+if os.environ.get("DICTATION_SERVICE_STARTED_CORRECTLY") != "true":
+    logger.fatal("FATAL: This script must be started using the 'activate-venv_and_run-server.sh' wrapper.")
+    sys.exit(1)
+
+
+
 
 def guess_lt_language_from_model(model_name):
     name = model_name.lower()
@@ -63,6 +70,40 @@ def guess_lt_language_from_model(model_name):
     return "de-DE"
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def start_languagetool_server():
     global languagetool_process
     if not Path(LANGUAGETOOL_JAR_PATH).exists():
@@ -70,30 +111,85 @@ def start_languagetool_server():
         return False
     port = LANGUAGETOOL_URL.split(':')[-1].split('/')[0]
     logger.info("Starting LanguageTool Server...")
+
+    command = [
+        "java", "-jar", LANGUAGETOOL_JAR_PATH,
+        "--port", port,
+        "--allow-origin", "*"
+    ]
+
+    logger.info(f"LANGUAGETOOL_JAR_PATH: {LANGUAGETOOL_JAR_PATH}")
+    logger.info(f"Command list: {command!r}")
+
     try:
-        dev_null = open(os.devnull, 'w')
         languagetool_process = subprocess.Popen(
-            ["java", "-cp", LANGUAGETOOL_JAR_PATH, "org.languagetool.server.HTTPServer", "--port", port, "--allow-origin", "*"],
-            stdout=dev_null, stderr=dev_null
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
         )
     except Exception as e:
         logger.fatal(f"Failed to start LanguageTool Server process: {e}")
+        languagetool_process = None
         return False
 
     logger.info("Waiting for LanguageTool Server to be responsive...")
-    for _ in range(15):
+    for _ in range(20):
         try:
-            ping_url = LANGUAGETOOL_URL.replace("/check", "/languages")
-            response = requests.get(ping_url, timeout=1)
+            # ping_url = LANGUAGETOOL_URL.replace("/check", "/v2/languages")
+            ping_url = f"{LANGUAGETOOL_BASE_URL}/v2/languages"
+            response = requests.get(ping_url, timeout=1.5)
             if response.status_code == 200:
                 logger.info("LanguageTool Server is online.")
                 return True
         except requests.exceptions.RequestException:
             pass
+
+        if languagetool_process and languagetool_process.poll() is not None:
+            logger.fatal("LanguageTool process terminated unexpectedly.")
+            stdout, stderr = languagetool_process.communicate()
+            if stdout:
+                logger.error(f"LanguageTool STDOUT:\n{stdout}")
+            if stderr:
+                logger.error(f"LanguageTool STDERR:\n{stderr}")
+            return False
+
         time.sleep(1)
+
     logger.fatal("LanguageTool Server did not become responsive.")
     stop_languagetool_server()
+    if languagetool_process:
+        stdout, stderr = languagetool_process.communicate()
+        if stdout:
+            logger.error(f"LanguageTool STDOUT on timeout:\n{stdout}")
+        if stderr:
+            logger.error(f"LanguageTool STDERR on timeout:\n{stderr}")
+    else:
+        logger.error("LanguageTool process was not started, cannot get output.")
     return False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def stop_languagetool_server():
     global languagetool_process
