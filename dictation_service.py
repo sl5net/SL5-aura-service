@@ -380,7 +380,7 @@ try:
                         #subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", processed_text], check=True)
                         Path("/tmp/tts_output.txt").write_text(processed_text)
 
-                        notify("Transkribiert", '' , '' , '' ,      duration=1000)
+                        notify("Transkribiert", duration=1000)
 
                     else:
                         notify("Vosk: No Input", "No text was recognized.", "normal", icon="dialog-warning")
