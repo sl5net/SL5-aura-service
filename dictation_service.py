@@ -32,7 +32,7 @@ SAMPLE_RATE = 16000
 # LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
 
 LANGUAGETOOL_BASE_URL = "http://localhost:8082"
-LANGUAGETOOL_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check --data "
+LANGUAGETOOL_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check"
 
 LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
 
