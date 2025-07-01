@@ -75,6 +75,13 @@ A single script handles activating the environment and launching all background 
     ./scripts/activate-venv_and_run-server.sh
     ```
     **Leave this terminal open.**
+    
+### Download Models and External Tools
+
+- **Vosk-Sprachmodell:** [Vosk Model List](https://alphacephei.com/vosk/models)
+- **LanguageTool:**  
+   (6.6) [https://languagetool.org/download/](https://languagetool.org/download/) 
+  
 
 ### Day-to-Day Use
 
