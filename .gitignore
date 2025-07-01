@@ -3,7 +3,6 @@ LanguageTool*
 * *
 vosk*
 dictate.py
-live_transcribe.py
 transcribe.py
 
 dictation.log

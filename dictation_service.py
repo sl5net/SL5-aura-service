@@ -349,14 +349,14 @@ PUNCTUATION_MAP = {
     'from get up': 'from GitHub',
     'get up': 'GitHub',
 
-    'Keep it up': 'GitHub',
-    'Good job': 'GitHub',
-    'Q-tip': 'GitHub',
-    'Kit': 'Git',
+    'keep it up': 'GitHub',
+    'good job': 'GitHub',
+    'q-tip': 'GitHub',
+    'kit': 'Git',
 
-    'Coffee Pace': 'Copy Paste',
-    'Copy Pace': 'Copy Paste',
-    'Hobby Pest': 'Copy Paste',
+    'koffee pace': 'Copy Paste',
+    'copy pace': 'Copy Paste',
+    'hobby pest': 'Copy Paste',
 
 
 
