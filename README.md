@@ -39,6 +39,14 @@ Set a global hotkey to trigger the dictation. The command is:
 
 ### Install
 
+#### java >17
+
+please use new java:
+
+e.g. 
+
+sudo apt install openjdk-21-jdk
+
 #### inotifywait
 Ubuntu (Debian-based Linux)
 
