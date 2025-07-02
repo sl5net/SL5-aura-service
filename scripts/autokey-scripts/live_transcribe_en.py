@@ -15,8 +15,8 @@ def write_to_file(filepath, content):
 # --- Hauptlogik ---
 
 home_dir = Path.home()
-project_dir = home_dir / "projects" / "py" / "STT"
-VOSK_MODEL_FILE = project_dir / "config/model_name.txt"
+PROJECT_DIR = home_dir / "projects" / "py" / "STT"
+VOSK_MODEL_FILE = PROJECT_DIR / "config/model_name.txt"
 
 # new_model = "vosk-model-small-en-us-0.15"
 new_model = "vosk-model-en-us-0.22"

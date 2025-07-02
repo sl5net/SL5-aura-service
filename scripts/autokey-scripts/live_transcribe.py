@@ -6,11 +6,11 @@ import os
 # source /pfad/zum/venv/bin/activate
 
 home_dir = Path.home()
-project_dir = home_dir / "projects" / "py" / "STT"
+PROJECT_DIR = home_dir / "projects" / "py" / "STT"
 
 # --- Dateipfade für den Zustand ---
-VOSK_MODEL_FILE = project_dir / "config/model_name.txt"
-VOSK_LASTUSED_FILE = project_dir / "config/model_name_lastused.txt"
+VOSK_MODEL_FILE = PROJECT_DIR / "config/model_name.txt"
+VOSK_LASTUSED_FILE = PROJECT_DIR / "config/model_name_lastused.txt"
 
 # --- Hilfsfunktionen ---
 def read_from_file(filepath, default_value=None):
@@ -38,8 +38,8 @@ def write_to_file(filepath, content):
 # Andere Pfade und Variablen
 service_name = "dictation_service.py"
 trigger_file = Path("/tmp/vosk_trigger")
-python_executable = project_dir / ".venv" / "bin" / "python"
-service_script_path = project_dir / service_name
+python_executable = PROJECT_DIR / ".venv" / "bin" / "python"
+service_script_path = PROJECT_DIR / service_name
 
 # Werte aus Dateien lesen statt aus dem store
 # Wir geben einen Standardwert für vosk_model an, falls die Datei beim allerersten Start nicht existiert
@@ -86,7 +86,7 @@ if result.returncode != 0:
 
     # wehen teh script is already running. Then  the script gibes an Error. that we dont want see
     try:
-        start_command = f"{project_dir}/scripts/activate-venv_and_run-server.sh"
+        start_command = f"{PROJECT_DIR}/scripts/activate-venv_and_run-server.sh"
         # start_command = f"{python_executable} {service_script_path} --vosk_model {vosk_model} &"
         system.exec_command(start_command)
     finally:

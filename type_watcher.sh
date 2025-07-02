@@ -15,7 +15,7 @@ if [ -e "$LOCKFILE" ]; then
         # echo "Waiting for $FILE_TO_WATCH ..."
         # notify-send "Waiting for $FILE_TO_WATCH ..."
 
-        exit 1
+        exit 0
     else
         echo $$ > "$LOCKFILE"
     fi
