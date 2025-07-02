@@ -39,6 +39,13 @@ touch /tmp/vosk_trigger
 
 ### Additional Requirements
 
+Please make sure there are two text files.  Could be empty.
+
+Untracked files:
+
+        config/model_name.txt
+        config/model_name_lastused.txt
+
 #### Java (version >17)
 
 Make sure you have a recent Java version installed. For example:
