@@ -45,6 +45,7 @@ Untracked files:
 
         config/model_name.txt
         config/model_name_lastused.txt
+        config/model_name.txt_lastused
 
 #### Java (version >17)
 

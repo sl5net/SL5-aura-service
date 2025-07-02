@@ -13,15 +13,22 @@ def write_to_file(filepath, content):
         system.exec_command(f"notify-send 'FEHLER' 'Konnte nicht in {filepath} schreiben: {e}'")
 
 # --- Hauptlogik ---
-VOSK_MODEL_FILE = PROJECT_DIR / "config/model_name.txt"
+
+home_dir = Path.home()
+project_dir = home_dir / "projects" / "py" / "STT"
+VOSK_MODEL_FILE = project_dir / "config/model_name.txt"
+
 # new_model = "vosk-model-small-en-us-0.15"
 new_model = "vosk-model-de-0.21"
 
 # Den neuen Wert in die Datei schreiben
+#
 write_to_file(VOSK_MODEL_FILE, new_model)
 
-system.exec_command(f"notify-send 'Modell gesetzt' 'Neues Modell ist {new_model}'")
+# system.exec_command(f"notify-send 'Modell: ' '{new_model}'")
+system.exec_command(f"notify-send 'Modell: ' '{new_model}' -t 2000")
 
 # Das live_transcribe Skript aufrufen. Eine Verzögerung ist nicht mehr nötig.
 engine.run_script("live_transcribe")
-# no everything looks like expectednun funktioniert alles wie erwartetgute nacht
+
+# testWouldn't be GaetaUnd wie geht's

@@ -5,13 +5,18 @@ import os
 
 # source /pfad/zum/venv/bin/activate
 
+home_dir = Path.home()
+project_dir = home_dir / "projects" / "py" / "STT"
+
 # --- Dateipfade für den Zustand ---
-VOSK_MODEL_FILE = "config/model_name.txt"
-VOSK_LASTUSED_FILE = "config/model_name.txt_lastused"
+VOSK_MODEL_FILE = project_dir / "config/model_name.txt"
+VOSK_LASTUSED_FILE = project_dir / "config/model_name_lastused.txt"
 
 # --- Hilfsfunktionen ---
 def read_from_file(filepath, default_value=None):
-    """Liest Inhalt aus einer Datei; gibt default_value zurück, wenn nicht vorhanden."""
+    """
+    Liest Inhalt aus einer Datei; gibt default_value zurück, wenn nicht vorhanden.
+    """
     path = Path(filepath)
     if not path.exists():
         return default_value
@@ -33,8 +38,6 @@ def write_to_file(filepath, content):
 # Andere Pfade und Variablen
 service_name = "dictation_service.py"
 trigger_file = Path("/tmp/vosk_trigger")
-home_dir = Path.home()
-project_dir = home_dir / "projects" / "py" / "STT"
 python_executable = project_dir / ".venv" / "bin" / "python"
 service_script_path = project_dir / service_name
 
@@ -58,7 +61,7 @@ if vosk_model != vosk_model_lastused:
         if e.cmd == '' and e.returncode == 1:
             # If it is, run the specified server script instead.
             # Get the absolute path to the script in the home directory.
-            server_script = os.path.expanduser('~/projects/py/speak_server/scripts/activate-venv_and_run-server.sh')
+            server_script = os.path.expanduser('~/projects/py/STT/scripts/activate-venv_and_run-server.sh')
 
             # Execute the script
             system.exec_command(server_script)
@@ -67,10 +70,10 @@ if vosk_model != vosk_model_lastused:
             # so you don't hide other potential problems.
             raise e
 
-    
+
     # Kurze Pause, damit der pkill-Befehl wirken kann (dies ist immer noch eine gute Praxis)
-    time.sleep(0.5) 
-    
+    time.sleep(0.5)
+
     # Den neuen Zustand in die "lastused"-Datei schreiben
     write_to_file(VOSK_LASTUSED_FILE, vosk_model)
 
@@ -79,7 +82,7 @@ check_command = ['pgrep', '-f', service_name]
 result = subprocess.run(check_command, capture_output=True)
 
 if result.returncode != 0:
-    system.exec_command(f"notify-send 'Vosk Service' 'Dienst wird mit Modell {vosk_model} gestartet...' -t 4000")
+    system.exec_command(f"notify-send 'start ' ' {vosk_model}...' -t 3000")
 
     # wehen teh script is already running. Then  the script gibes an Error. that we dont want see
     try:
@@ -96,3 +99,6 @@ system.exec_command(f'touch {trigger_file}')
 
 # how are you what to nameno everything looks like expected
 #
+
+# sometimes all
+# blablab
