@@ -43,9 +43,9 @@ Please make sure there are two text files.  Could be empty.
 
 Untracked files:
 
-        config/model_name.txt
-        config/model_name_lastused.txt
-        config/model_name.txt_lastused
+        config/model_name.txt (in newer versions it's already included)
+        config/model_name_lastused.txt (in newer versions it's already included)
+        config/model_name.txt_lastused (Probably not needed)
 
 #### Java (version >17)
 
