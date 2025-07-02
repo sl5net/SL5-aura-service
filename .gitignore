@@ -13,6 +13,7 @@ get_suggestions.log
 *.txt
 
 *.cache.*
+__pycache__
 
 # But DO NOT ignore requirements.txt
 !requirements.txt
