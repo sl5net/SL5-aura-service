@@ -10,10 +10,10 @@ get_suggestions.log
 
 *.kate-swp
 
-*.txt
+/*.txt
 
 *.cache.*
-__pycache__
+**/__pycache__/
 
 # But DO NOT ignore requirements.txt
 !requirements.txt

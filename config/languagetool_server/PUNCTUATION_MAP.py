@@ -97,7 +97,5 @@ PUNCTUATION_MAP = {
     'laufer': 'Lauffer',
     'harald utz': 'Harald Uetz',
     'harald öz': 'Harald Uetz',
-    'götz': 'Uetz',
     'uz': 'Uetz',
-    'üz': 'Uetz',
 }
