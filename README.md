@@ -15,64 +15,66 @@ It's a complete, offline writing assistant built on Vosk and LanguageTool.
 
 ---
 
-## Installation Guide
+### Using AutoKey on Linux
 
-*(Steps 1-4 are the same as before)*
+- [AutoKey Releases](https://github.com/autokey/autokey/releases/)
+- [AutoKey Installation Wiki](https://github.com/autokey/autokey/wiki/Installing)
 
-### Step 1: Clone the Repository
-### Step 2: Install System Dependencies
-### Step 3: Set Up Python Environment
-### Step 4: Download Models
+#### For Ubuntu or Other Debian Derivatives
+
+**Easy Method:**  
+If you are running Ubuntu or another Debian-based distro, simply install AutoKey using the provided `.deb` files. This will handle dependencies and system integration (such as launcher menus) automatically. After installation, AutoKey (with one or both of its frontends) should be operational.
+
 
 ---
 
-## Configuration
+### 1. Main Dictation Hotkey
 
-You will need to configure two separate hotkeys for the system's two main functions.
+Set a global hotkey to trigger dictation. The command to use is:
+```sh
+touch /tmp/vosk_trigger
+```
 
-if you want use AutoKey read here: https://github.com/autokey/autokey/wiki/Installing
+---
 
-### 1. The Main Dictation Hotkey
+### Additional Requirements
 
-Set a global hotkey to trigger the dictation. The command is:
-`touch /tmp/vosk_trigger`
+#### Java (version >17)
 
-### Install
-
-#### java >17
-
-please use new java:
-
-e.g. 
-
+Make sure you have a recent Java version installed. For example:
+```sh
 sudo apt install openjdk-21-jdk
+```
 
 #### inotifywait
-Ubuntu (Debian-based Linux)
 
-inotifywait is part of the inotify-tools package.
-sh
-
+**Ubuntu/Debian:**
+```sh
 sudo apt update
 sudo apt install inotify-tools
+```
 
-Manjaro (Arch-based Linux)
-
-On Manjaro, use pacman to install inotify-tools:
-sh
-
+**Manjaro/Arch:**
+```sh
 sudo pacman -S inotify-tools
-
-
-### 2. The Homophone Lookup Hotkey
-
-Set a *different* global hotkey to trigger the homophone lookup. This hotkey should execute a separate script. The command is:
-`[path-to-your-project]/get_suggestions.py`
-
-**How to Set Hotkeys:** Use your Desktop Environment's keyboard settings (in XFCE, KDE, GNOME) to create two new custom shortcuts, one for each command above.
+```
 
 ---
 
+### 2. Homophone Lookup Hotkey
+
+Set a *different* global hotkey to trigger homophone lookup. This hotkey should execute a separate script:
+```sh
+[path-to-your-project]/get_suggestions.py
+```
+
+---
+
+#### How to Set Hotkeys
+
+Use your Desktop Environment’s keyboard settings tool (in XFCE, KDE, GNOME, etc.) to create two new custom shortcuts—one for each of the commands above.
+
+---
 
 ## Support the Project
 
