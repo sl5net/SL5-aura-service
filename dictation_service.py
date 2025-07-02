@@ -74,36 +74,6 @@ def guess_lt_language_from_model(model_name):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def start_languagetool_server():
     global languagetool_process
     if not Path(LANGUAGETOOL_JAR_PATH).exists():
@@ -170,27 +140,6 @@ def start_languagetool_server():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def stop_languagetool_server():
     global languagetool_process
     if languagetool_process and languagetool_process.poll() is None:
@@ -235,11 +184,15 @@ LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
 def correct_text(text: str) -> str:
     if not text.strip(): return text
     logger.info(f"  -> Input to LT:  '{text}'")
+    data = {
+        'language': LT_LANGUAGE,
+        'text': text,
+        'maxSuggestions': 1
+    }
+    # if LT_LANGUAGE == "de-DE":
+    #    data['enabledRules'] = ['DE_CASE']
     try:
-        # Hier wird nun die automatisch erkannte Sprache benutzt!
-        response = requests.post(
-            LANGUAGETOOL_URL,
-            data={'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1},
+        response = requests.post(LANGUAGETOOL_URL, data,
             timeout=10
         )
         response.raise_for_status()
@@ -258,6 +211,7 @@ def correct_text(text: str) -> str:
         corrected_text = "".join(new_text_parts)
         logger.info(f"  <- Output from LT: '{corrected_text}'")
         return corrected_text
+
     except requests.exceptions.RequestException as e:
         logger.error(f"  <- ERROR: LanguageTool request failed: {e}")
         return text
@@ -266,101 +220,9 @@ def check_memory_critical(threshold_mb: int) -> tuple[bool, float]:
     mem = psutil.virtual_memory()
     return mem.available / (1024 * 1024) < threshold_mb, mem.available / (1024 * 1024)
 
-PUNCTUATION_MAP = {
-    # German - Common, Mishearings
-    'punkt': '.',
-    'komma': ',',
-    'fragezeichen': '?',
-    'ausrufezeichen': '!',
-    'doppelpunkt': ':',
-    'semikolon': ';',
-    'strichpunkt': ';',
-    'klammer auf': '(',
-    'klammer zu': ')',
-    'runde klammer auf': '(',
-    'runde klammer zu': ')',
-    'eckige klammer auf': '[',
-    'eckige klammer zu': ']',
-    'geschweifte klammer auf': '{',
-    'geschweifte klammer zu': '}',
-    'bindestrich': '-',
-    'minus': '-',
-    'gedankenstrich': '–',
-    'apostroph': "'",
-    'hochkomma': "'",
-    'anführungszeichen': '"',
-    'anführungsstriche': '"',
-    'schlusszeichen': '"',
-    'gaensefuesschen': '"',
-    'schrägstrich': '/',
-    'slash': '/',
-    'backslash': '\\',
-    'unterstrich': '_',
-    'punktpunktpunkt': '...',
-    'raute': '#',
-    'undzeichen': '&',
-    'etzeichen': '&',
-    'atzeichen': '@',
-    'stern': '*',
+# PUNCTUATION_MAP = json.loads(f"{SCRIPT_DIR}/config/languagetool_server/PUNCTUATION_MAP.json")
+from config.languagetool_server.PUNCTUATION_MAP import PUNCTUATION_MAP
 
-
-
-    # English - Common, Mishearings
-    'period': '.',
-    'full stop': '.',
-    'dot': '.',
-    'point': '.',
-    'comma': ',',
-    'question mark': '?',
-    'exclamation mark': '!',
-    'exclamation point': '!',
-    'colon': ':',
-    'semicolon': ';',
-    'parenthesis': '(',
-    'parentheses': ('(', ')'),
-    'open parenthesis': '(',
-    'close parenthesis': ')',
-    'bracket': '[',
-    'open bracket': '[',
-    'close bracket': ']',
-    'brace': '{',
-    'open brace': '{',
-    'close brace': '}',
-    'hyphen': '-',
-    'dash': '-',
-    'minus': '-',
-    'apostrophe': "'",
-    'quote': '"',
-    'quotation mark': '"',
-    'single quote': "'",
-    'double quote': '"',
-    'slash': '/',
-    'backslash': '\\',
-    'underscore': '_',
-    'ellipsis': '...',
-    'dot dot dot': '...',
-    'hash': '#',
-    'number sign': '#',
-    'and sign': '&',
-    'ampersand': '&',
-    'at sign': '@',
-    'star': '*',
-
-    'from get up': 'from GitHub',
-    'get up': 'GitHub',
-
-    'keep it up': 'GitHub',
-    'good job': 'GitHub',
-    'q-tip': 'GitHub',
-    'kit': 'Git',
-
-    'koffee pace': 'Copy Paste',
-    'copy pace': 'Copy Paste',
-    'hobby pest': 'Copy Paste',
-
-
-
-}
 
 # From GitHub  From GitHub  From GitHub
 
