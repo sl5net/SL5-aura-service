@@ -176,7 +176,7 @@ args = parser.parse_args()
 VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
 vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
 MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
-MODEL_PATH = SCRIPT_DIR / MODEL_NAME
+MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
 
 LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
 
@@ -256,7 +256,7 @@ def transcribe_audio_with_feedback(recognizer):
     notify("Vosk is Listening...", "Speak now. It will stop on silence.", "normal", icon="microphone-sensitivity-high-symbolic")
     try:
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000, dtype='int16', channels=1, callback=audio_callback):
-            SILENCE_TIMEOUT = 2.0
+            SILENCE_TIMEOUT = 1.2
             last_audio_time = time.time()
             while time.time() - last_audio_time < SILENCE_TIMEOUT:
                 try:
