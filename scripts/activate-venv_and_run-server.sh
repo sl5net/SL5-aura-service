@@ -41,6 +41,7 @@ fi
 
 
 echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
+python3 -m venv .venv
 source "$PROJECT_ROOT/.venv/bin/activate"
 
 echo "Starting Python server from '$PROJECT_ROOT'..."

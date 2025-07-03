@@ -2,6 +2,7 @@ LanguageTool*
 
 * *
 vosk*
+.venv/
 dictate.py
 transcribe.py
 
