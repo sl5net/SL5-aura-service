@@ -129,6 +129,12 @@ A single script handles activating the environment and launching all background 
 - **LanguageTool:**  
    (6.6) [https://languagetool.org/download/](https://languagetool.org/download/) 
   
+```sh
+cd ~/projects/py/STT/
+wget https://languagetool.org/download/LanguageTool-6.6.zip
+unzip LanguageTool-6.6.zip
+```
+
 
 ### Day-to-Day Use
 
