@@ -8,7 +8,7 @@ echo "Starting setup for Debian/Ubuntu..."
 
 echo "1. Updating package list and installing system dependencies..."
 sudo apt-get update
-sudo apt-get install -y inotify-tools openjdk-21-jre-headless wget unzip libportaudio2
+sudo apt-get install -y inotify-tools openjdk-21-jre-headless wget unzip libportaudio2 xdotool
 
 # the new ubunto(3.7.'25 18:55 Thu) wants:
 sudo apt install python3.12-venv
