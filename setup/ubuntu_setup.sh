@@ -1,3 +1,6 @@
+# run this setup from project folder
+# setup/ubuntu_setup.sh
+
 #!/bin/bash
 set -e
 
@@ -39,4 +42,8 @@ if [ ! -d "models/vosk-model-de-0.21" ]; then
   wget -qO- https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip | unzip -q - -d models/
 fi
 
+touch config/__init__.py
+touch config/languagetool_server/__init__.py
+
 echo "Setup for Ubuntu complete."
+

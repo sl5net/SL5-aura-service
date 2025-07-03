@@ -176,7 +176,7 @@ args = parser.parse_args()
 VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
 vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
 MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
-MODEL_PATH = SCRIPT_DIR / MODEL_NAME
+MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
 
 LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
 
