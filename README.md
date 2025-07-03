@@ -70,6 +70,14 @@ sudo apt install inotify-tools
 sudo pacman -S inotify-tools
 ```
 
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python -m .venv vosk-env
+pip install -r requirements.txt
+```
+
+
 ---
 
 ### 2. Homophone Lookup Hotkey
