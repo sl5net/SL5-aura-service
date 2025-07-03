@@ -126,5 +126,5 @@ A single script handles activating the environment and launching all background 
 ### Day-to-Day Use
 
 *   **To Dictate:** Click in any text box and press your **dictation hotkey**. Speak, then pause. The corrected text will be typed for you.
-*   **To Look Up Homophones:** Place your cursor inside a word and press your **homophone lookup hotkey**. A notification will appear with a list of similarly sounding words.
+*   **To Look Up Homophones:** Place your cursor inside a word and press your **homophone lookup hotkey**. A list of similarly sounding words will writen.
 
