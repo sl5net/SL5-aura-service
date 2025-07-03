@@ -1,4 +1,5 @@
 #!/bin/bash
+# setup/macos_setup.sh
 set -e
 
 echo "Starting setup for macOS..."
