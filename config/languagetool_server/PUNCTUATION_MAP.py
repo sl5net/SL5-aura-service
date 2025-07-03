@@ -44,6 +44,7 @@ PUNCTUATION_MAP = {
     'point': '.',
     'comma': ',',
     'question mark': '?',
+    'question MK': '?',
     'exclamation mark': '!',
     'exclamation point': '!',
     'colon': ':',

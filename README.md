@@ -40,6 +40,47 @@ touch /tmp/vosk_trigger
 
 ---
 
+## Installation
+
+Before you can use the application, you need to run a one-time setup script to install dependencies and download the required models. These scripts are located in the `setup/` directory.
+
+### For Linux and macOS
+
+You only need to run the script that matches your operating system.
+
+1.  **Make the script executable:**
+    Open a terminal in the project's root directory and run the `chmod` command on the appropriate script. For example, if you are on Ubuntu:
+    ```shell
+    chmod +x setup/ubuntu_setup.sh
+    ```
+
+2.  **Run the setup script:**
+    Now, execute the script. The script will ask for your password to install system packages.
+    ```shell
+    bash setup/ubuntu_setup.sh
+    ```
+
+    Choose the script for your system:
+    *   `setup/arch_setup.sh`
+    *   `setup/manjaro_setup.sh`
+    *   `setup/ubuntu_setup.sh` (for Ubuntu, Debian, or other derivatives)
+    *   `setup/macos_setup.sh`
+
+### For Windows
+
+The application's core file-watching feature is not yet compatible with Windows. However, you can run the setup script to prepare the environment for future compatibility or development.
+
+The script must be run with administrator privileges.
+
+1.  Open **File Explorer** and navigate to the `setup` folder inside the project directory.
+2.  Right-click on the `windows_setup.ps1` file.
+3.  From the context menu, select **"Run with PowerShell"**.
+4.  If prompted by a User Account Control (UAC) dialog, click **Yes** to allow the script to make changes.
+
+The script will then install all necessary tools and models.
+
+---
+
 ### Additional Requirements
 
 Please make sure there are two text files.  Could be empty.
@@ -56,26 +97,6 @@ Make sure you have a recent Java version installed. For example:
 ```sh
 sudo apt install openjdk-21-jdk
 ```
-
-#### inotifywait
-
-**Ubuntu/Debian:**
-```sh
-sudo apt update
-sudo apt install inotify-tools
-```
-
-**Manjaro/Arch:**
-```sh
-sudo pacman -S inotify-tools
-```
-
-```sh
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
 
 ---
 
