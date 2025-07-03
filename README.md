@@ -4,6 +4,9 @@ This project provides a powerful, system-wide dictation tool that goes beyond si
 
 It's a complete, offline writing assistant built on Vosk and LanguageTool.
 
+[![Watch short AI-Demo System-wide offline dictation](https://img.youtube.com/vi/GqidoRiRBy0/maxresdefault.jpg)](https://youtu.be/GqidoRiRBy0)
+
+
 ## Key Features
 
 *   **Dictate, Correct & Enhance:** Automatic grammar/spelling correction and synonym suggestions for your dictated text.
@@ -67,6 +70,13 @@ sudo apt install inotify-tools
 sudo pacman -S inotify-tools
 ```
 
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+
 ---
 
 ### 2. Homophone Lookup Hotkey
@@ -123,5 +133,5 @@ A single script handles activating the environment and launching all background 
 ### Day-to-Day Use
 
 *   **To Dictate:** Click in any text box and press your **dictation hotkey**. Speak, then pause. The corrected text will be typed for you.
-*   **To Look Up Homophones:** Place your cursor inside a word and press your **homophone lookup hotkey**. A notification will appear with a list of similarly sounding words.
+*   **To Look Up Homophones:** Place your cursor inside a word and press your **homophone lookup hotkey**. A list of similarly sounding words will writen.
 
