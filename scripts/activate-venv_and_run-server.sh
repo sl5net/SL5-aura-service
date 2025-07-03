@@ -40,6 +40,8 @@ else
 fi
 
 
+python3 -m venv .env
+
 echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
 source "$PROJECT_ROOT/.venv/bin/activate"
 
