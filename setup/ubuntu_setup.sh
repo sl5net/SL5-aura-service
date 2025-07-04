@@ -10,16 +10,28 @@ set -e
 echo "--- Starting STT Setup for Debian/Ubuntu ---"
 
 # --- 1. System Dependencies ---
-echo "--> Updating package list and installing system dependencies..."
-sudo apt-get update
+echo "--> Checking for a compatible Java version (>=17)..."
+JAVA_OK=0
+if command -v java &> /dev/null; then
+    VERSION=$(java -version 2>&1 | awk -F'[."]' '/version/ {print $2}')
+    if [ "$VERSION" -ge 17 ]; then
+        echo "    -> Found compatible Java version $VERSION. OK."
+        JAVA_OK=1
+    fi
+fi
+
+if [ "$JAVA_OK" -eq 0 ]; then
+    echo "    -> Installing a modern JDK (>=17)..."
+    sudo apt-get update && sudo apt-get install -y openjdk-21-jdk
+fi
+
+echo "--> Installing other core dependencies..."
 sudo apt-get install -y \
-    inotify-tools \
-    openjdk-21-jre-headless \
-    wget \
-    unzip \
-    libportaudio2 \
-    xdotool \
-    python3-venv
+    inotify-tools wget unzip portaudio19-dev python3-pip
+
+
+
+
 
 # --- 2. Python Virtual Environment ---
 # We check if the venv directory exists before creating it.
