@@ -12,16 +12,20 @@ echo "--- Starting STT Setup for Manjaro/Arch Linux ---"
 # setup/manjaro_arch_setup.sh
 
 # --- 1. System Dependencies ---
-echo "--> Handling Java installation to prevent conflicts..."
-sudo pacman -S --noconfirm --needed jdk-openjdk
+echo "--> Checking for Java Development Kit (JDK)..."
+if command -v javac &> /dev/null
+then
+    echo "    -> JDK found. Skipping Java installation."
+else
+    echo "    -> No JDK found. Installing now..."
+    sudo pacman -Rdd --noconfirm jre-openjdk-headless 2>/dev/null || true
+    sudo pacman -Rdd --noconfirm jre-openjdk 2>/dev/null || true
+    sudo pacman -S --noconfirm --needed jdk-openjdk
+fi
 
-echo "--> Installing other system dependencies..."
+echo "--> Installing other core dependencies..."
 sudo pacman -S --noconfirm --needed \
-    inotify-tools \
-    wget \
-    unzip \
-    portaudio \
-    xdotool
+    inotify-tools wget unzip portaudio xdotool
 
 
 # --- 2. Python Virtual Environment ---
