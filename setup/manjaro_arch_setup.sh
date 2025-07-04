@@ -9,17 +9,20 @@ set -e
 
 echo "--- Starting STT Setup for Manjaro/Arch Linux ---"
 
+# setup/manjaro_arch_setup.sh
+
 # --- 1. System Dependencies ---
-echo "--> Ensuring system dependencies are installed..."
-# Note: python-venv is included in the main 'python' package on Arch/Manjaro.
-# --needed flag prevents re-installing packages that are already up-to-date.
+echo "--> Handling Java installation to prevent conflicts..."
+sudo pacman -S --noconfirm --needed jdk-openjdk
+
+echo "--> Installing other system dependencies..."
 sudo pacman -S --noconfirm --needed \
     inotify-tools \
-    jdk-openjdk \
     wget \
     unzip \
     portaudio \
     xdotool
+
 
 # --- 2. Python Virtual Environment ---
 # We check if the venv directory exists before creating it.
