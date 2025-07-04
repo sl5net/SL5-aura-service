@@ -3,7 +3,13 @@ import time
 from pathlib import Path
 import os
 
-SCRIPT_DIR = Path(__file__).resolve().parent
+# SCRIPT_DIR = Path(__file__).resolve().parent
+
+import tomllib # In Python 3.11+ Standard
+CONFIG_PATH = Path.home() / ".config/sl5-stt/config.toml"
+with open(CONFIG_PATH, "rb") as f:
+    config = tomllib.load(f)
+PROJECT_DIR = Path(config["paths"]["project_root"])
 
 
 readmeBuckup = """
@@ -21,7 +27,7 @@ keyboard.send_keys('<right>')
 
 home_dir = Path.home()
 
-command = f"{home_dir}/projects/py/STT/.venv/bin/python {home_dir}/projects/py/STT/get_suggestions.py"
+command = f"{PROJECT_DIR}/.venv/bin/python {PROJECT_DIR}/get_suggestions.py"
 # clipboard.fill_clipboard(command)
 # {SCRIPT_DIR}/.venv/bin/python {SCRIPT_DIR}/get_suggestions.py
 # maus     Has Huns UAS Hulas Huts /home/seeh/.config/autokey/data/stt/autokey-scripts/.venv/bin/python /home/seeh/.config/autokey/data/stt/autokey-scripts/get_suggestions.py
