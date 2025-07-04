@@ -1,25 +1,39 @@
 #!/bin/bash
-#
-# setup/macos_setup.sh
-# Run this setup script from the project's root directory.
-#
-
-# Exit immediately if a command fails
 set -e
+
+# --- Make script location-independent ---
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+cd "$PROJECT_ROOT"
+echo "--> Running setup from project root: $(pwd)"
 
 echo "--- Starting STT Setup for macOS ---"
 
 # --- 1. System Dependencies ---
-echo "--> Checking for Homebrew and installing system dependencies..."
 if ! command -v brew &> /dev/null; then
-    echo "ERROR: Homebrew not found. It is required to install dependencies."
-    echo "Please install Homebrew first by following the instructions at https://brew.sh"
+    echo "ERROR: Homebrew not found. Please install it from https://brew.sh"
     exit 1
 fi
 
-# fswatch is the macOS equivalent of inotify-tools.
-# We also add portaudio for sounddevice and xdotool for typing.
-brew install fswatch openjdk@21 wget unzip portaudio xdotool
+echo "--> Checking for a compatible Java version (>=17)..."
+JAVA_OK=0
+if command -v java &> /dev/null; then
+    VERSION=$(java -version 2>&1 | awk -F'[."]' '/version/ {print $2}')
+    if [ "$VERSION" -ge 17 ]; then
+        echo "    -> Found compatible Java version $VERSION. OK."
+        JAVA_OK=1
+    fi
+fi
+
+if [ "$JAVA_OK" -eq 0 ]; then
+    echo "    -> Installing a modern JDK via Homebrew..."
+    brew install openjdk
+fi
+
+echo "--> Installing other core dependencies..."
+brew install fswatch wget unzip portaudio xdotool
+
+
 
 # --- 2. Python Virtual Environment ---
 # We check if the venv directory exists before creating it.
