@@ -163,7 +163,10 @@ This table provides an overview of different Vosk models, including their size, 
 - **Vosk-Models:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **LanguageTool:**  
    (6.6) [https://languagetool.org/download/](https://languagetool.org/download/) 
-  
+
+**License of LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+   
 ```sh
 cd ~/projects/py/STT/
 wget https://languagetool.org/download/LanguageTool-6.6.zip
