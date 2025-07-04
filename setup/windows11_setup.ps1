@@ -33,8 +33,17 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 Write-Host "--> Checking for a compatible Java version (>=17)..."
 $javaOK = $false
 if (Get-Command java -ErrorAction SilentlyContinue) {
-    # Get version from stderr and check it
-    $versionOutput = java -version 2>&1
+    # Wir fangen den erwarteten Fehler von 'java -version' ab, da es auf stderr schreibt.
+    $versionOutput = ""
+    try {
+        # '-ErrorAction Stop' ist hier wichtig, damit der catch-Block zuverlässig ausgelöst wird.
+        $versionOutput = java -version -ErrorAction Stop 2>&1
+    } catch {
+        # Die Versionsinformation, die wir wollen, ist die eigentliche Fehlermeldung.
+        $versionOutput = $_.Exception.Message
+    }
+
+    # Jetzt prüfen wir die abgefangene Ausgabe
     if ($versionOutput -match 'version "(\d+)\.') {
         $majorVersion = [int]$matches[1]
         if ($majorVersion -ge 17) {
@@ -63,11 +72,33 @@ if (-not (Get-Command 7z.exe -ErrorAction SilentlyContinue)) {
 }
 
 
+# --- 2.5. Python-Installation prüfen (VERBESSERTE VERSION) ---
+Write-Host "--> Checking for a real Python installation..."
+$PythonCmd = Get-Command python -ErrorAction SilentlyContinue
+# Prüft, ob der Befehl nicht existiert ODER ob er der nutzlose App-Alias ist
+if (-not $PythonCmd -or $PythonCmd.Source -like "*Microsoft\WindowsApps*") {
+    Write-Host "    -> Python not found or is a store alias. Installing Python 3.11 via Winget..."
+    winget install --id Python.Python.3.11 -e --accept-source-agreements
+
+    Write-Host ""
+    Write-Host "------------------------------------------------------------------" -ForegroundColor Yellow
+    Write-Host "WICHTIG: Python wurde soeben installiert." -ForegroundColor Yellow
+    Write-Host "Bitte schließen Sie dieses PowerShell-Fenster und starten Sie das" -ForegroundColor Yellow
+    Write-Host "Setup-Skript in einem NEUEN PowerShell-Fenster erneut." -ForegroundColor Yellow
+    Write-Host "Dies ist notwendig, damit der neue Python-Pfad erkannt wird." -ForegroundColor Yellow
+    Write-Host "------------------------------------------------------------------" -ForegroundColor Yellow
+    Read-Host "Drücken Sie Enter, um das Skript zu beenden..."
+    exit
+} else {
+    Write-Host "    -> Found a real Python installation at $($PythonCmd.Source). OK."
+}
 
 # --- 3. Python Virtual Environment ---
 Write-Host "--> Creating Python virtual environment in '.\.venv'..."
 if (-not (Test-Path -Path ".\.venv")) {
-    python -m venv .venv
+    py -m venv .venv
+
+
 } else {
     Write-Host "    -> Virtual environment already exists. Skipping creation."
 }
@@ -80,11 +111,12 @@ Write-Host "--> Installing Python requirements into the virtual environment..."
 # --- 5. External Tools and Models ---
 Write-Host "--> Downloading external tools and models (if missing)..."
 
+
 # Download and extract LanguageTool
 $LT_VERSION = "6.6"
 if (-not (Test-Path -Path "LanguageTool-$LT_VERSION")) {
   Write-Host "    -> Downloading LanguageTool v$LT_VERSION..."
-  wget.exe "https://languagetool.org/download/LanguageTool-$($LT_VERSION).zip" -O "languagetool.zip"
+  Invoke-WebRequest -Uri "https://languagetool.org/download/LanguageTool-$($LT_VERSION).zip" -OutFile "languagetool.zip"
   7z.exe x "languagetool.zip" -o"." | Out-Null
   Remove-Item "languagetool.zip"
 }
@@ -93,26 +125,46 @@ if (-not (Test-Path -Path "LanguageTool-$LT_VERSION")) {
 New-Item -ItemType Directory -Path "models" -ErrorAction SilentlyContinue | Out-Null
 if (-not (Test-Path -Path "models/vosk-model-en-us-0.22")) {
   Write-Host "    -> Downloading English Vosk model..."
-  wget.exe "https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip" -O "models/en.zip"
+  Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip" -OutFile "models/en.zip"
+
   7z.exe x "models/en.zip" -o"models/" | Out-Null
   Remove-Item "models/en.zip"
 }
 
 if (-not (Test-Path -Path "models/vosk-model-de-0.21")) {
   Write-Host "    -> Downloading German Vosk model..."
-  wget.exe "https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip" -O "models/de.zip"
+  Invoke-WebRequest -Uri "https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip" -OutFile "models/de.zip"
+
+
   7z.exe x "models/de.zip" -o"models/" | Out-Null
   Remove-Item "models/de.zip"
 }
 
-:: --- Create central config file ---
-set "CONFIG_DIR=%USERPROFILE%\.config\sl5-stt"
-if not exist "%CONFIG_DIR%" mkdir "%CONFIG_DIR%"
 
-(
-    echo [paths]
-    echo project_root = "%CD%"
-) > "%CONFIG_DIR%\config.toml"
+
+# --- Create central config file ---
+Write-Host "--> Creating central config file..."
+# Pfad zum Konfigurationsverzeichnis erstellen ($env:USERPROFILE entspricht %USERPROFILE%)
+$ConfigDir = Join-Path -Path $env:USERPROFILE -ChildPath ".config\sl5-stt"
+
+# Überprüfen, ob das Verzeichnis existiert, und es bei Bedarf erstellen
+if (-not (Test-Path -Path $ConfigDir)) {
+    Write-Host "    -> Creating config directory at $ConfigDir"
+    New-Item -ItemType Directory -Path $ConfigDir | Out-Null
+}
+
+# Inhalt für die config.toml-Datei definieren
+# (Get-Location).Path entspricht dem aktuellen Verzeichnis
+$ConfigContent = @"
+[paths]
+project_root = "$((Get-Location).Path)"
+"@
+
+# Pfad zur Konfigurationsdatei erstellen und den Inhalt schreiben
+$ConfigFile = Join-Path -Path $ConfigDir -ChildPath "config.toml"
+Set-Content -Path $ConfigFile -Value $ConfigContent
+
+
 
 # --- 6. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.
