@@ -146,7 +146,10 @@ A single script handles activating the environment and launching all background 
     
 ### Download Models and External Tools
 
-by Using ./setup/{OS Name}_setub..
+by Using 
+```shell
+setup/{OS Name}_setup...
+```
 
 follwong Vosk-Models will be downloaded and used automatically:
 
