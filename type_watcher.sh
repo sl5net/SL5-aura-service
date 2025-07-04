@@ -1,5 +1,15 @@
 #!/bin/bash
 # type_watcher.sh
+
+# --- Dependency Check ---
+if ! command -v inotifywait &> /dev/null
+then
+    echo "Error: 'inotifywait' command not found."
+    echo "Please run the setup script first or install 'inotify-tools' manually."
+    exit 1
+fi
+
+
 FILE_TO_WATCH="/tmp/tts_output.txt"
 DIR_TO_WATCH=$(dirname "$FILE_TO_WATCH")
 BASEFILE=$(basename "$FILE_TO_WATCH")
