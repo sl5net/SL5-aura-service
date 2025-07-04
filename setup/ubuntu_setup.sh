@@ -4,6 +4,16 @@
 # Run this setup script from the project's root directory.
 #
 
+# --- Make script location-independent ---
+# This block ensures the script can be run from any directory.
+# It finds the project root directory and changes into it.
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+cd "$PROJECT_ROOT"
+
+echo "--> Running setup from project root: $(pwd)"
+# --- End of location-independent block ---
+
 # Exit immediately if a command fails
 set -e
 
