@@ -150,8 +150,6 @@ by Using ./setup/{OS Name}_setub..
 
 follwong Vosk-Models will be downloaded and used automatically:
 
-| Model | Size | Word error rate/Speed | Notes | License |
-
 | Model                                                                                  | Size | Word error rate/Speed                                                                         | Notes                                     | License    |
 | -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
 | [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69 (librispeech test-clean)<br/>6.05 (tedlium)<br/>29.78 (callcenter)                       | Accurate generic US English model         | Apache 2.0 |
