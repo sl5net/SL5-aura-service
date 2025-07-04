@@ -146,7 +146,15 @@ A single script handles activating the environment and launching all background 
     
 ### Download Models and External Tools
 
-- **Vosk-Sprachmodell:** [Vosk Model List](https://alphacephei.com/vosk/models)
+by Using ./setup/{OS Name}_setub..
+
+follwong Vosk-Models will be downloaded and used automatically:
+
+|Model|Size|Word error rate/Speed|Notes|License|
+|[vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip)|1.8G|5.69 (librispeech test-clean) 6.05 (tedlium) 29.78(callcenter)|Accurate generic US English model|Apache 2.0|
+|[vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip)|1.9G|9.83 (Tuda-de test), 24.00 (podcast) 12.82 (cv-test) 12.42 (mls) 33.26 (mtedx)|Big German model for telephony and server|Apache 2.0|
+
+- **Vosk-Models:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **LanguageTool:**  
    (6.6) [https://languagetool.org/download/](https://languagetool.org/download/) 
   
