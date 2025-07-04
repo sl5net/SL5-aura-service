@@ -45,9 +45,13 @@ else
 fi
 
 # --- 3. Python Requirements ---
-# We call pip from the venv directly. This is more robust than sourcing 'activate'.
 echo "--> Installing Python requirements into the virtual environment..."
-./.venv/bin/pip install -r requirements.txt
+if ! ./.venv/bin/pip install -r requirements.txt; then
+    echo "ERROR: Failed to install requirements. Trying to fix common version issues..."
+    # Example: Fix vosk version, then retry
+    sed -i.bak 's/vosk==0.3.45/vosk/' requirements.txt
+    ./.venv/bin/pip install -r requirements.txt
+fi
 
 # --- 4. External Tools and Models ---
 echo "--> Downloading external tools and models (if missing)..."
