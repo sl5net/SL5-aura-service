@@ -4,6 +4,14 @@ pgrep -f dictation_service.py
 """
 import time
 from pathlib import Path
+
+import tomllib # In Python 3.11+ Standard
+CONFIG_PATH = Path.home() / ".config/sl5-stt/config.toml"
+with open(CONFIG_PATH, "rb") as f:
+    config = tomllib.load(f)
+PROJECT_DIR = Path(config["paths"]["project_root"])
+
+
 # --- Hilfsfunktion zum Schreiben in eine Datei ---
 def write_to_file(filepath, content):
     """Schreibt den Inhalt sicher in eine Datei."""
@@ -15,7 +23,7 @@ def write_to_file(filepath, content):
 # --- Hauptlogik ---
 
 home_dir = Path.home()
-PROJECT_DIR = home_dir / "projects" / "py" / "STT"
+# PROJECT_DIR = home_dir / "projects" / "py" / "STT"
 VOSK_MODEL_FILE = PROJECT_DIR / "config/model_name.txt"
 
 # new_model = "vosk-model-small-en-us-0.15"

@@ -4,22 +4,44 @@
 # Run this setup script from the project's root directory.
 #
 
+# --- Make script location-independent ---
+# This block ensures the script can be run from any directory.
+# It finds the project root directory and changes into it.
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+cd "$PROJECT_ROOT"
+
+echo "--> Running setup from project root: $(pwd)"
+# --- End of location-independent block ---
+
 # Exit immediately if a command fails
 set -e
 
 echo "--- Starting STT Setup for Debian/Ubuntu ---"
 
 # --- 1. System Dependencies ---
-echo "--> Updating package list and installing system dependencies..."
-sudo apt-get update
+echo "--> Checking for a compatible Java version (>=17)..."
+JAVA_OK=0
+if command -v java &> /dev/null; then
+    VERSION=$(java -version 2>&1 | awk -F'[."]' '/version/ {print $2}')
+    if [ "$VERSION" -ge 17 ]; then
+        echo "    -> Found compatible Java version $VERSION. OK."
+        JAVA_OK=1
+    fi
+fi
+
+if [ "$JAVA_OK" -eq 0 ]; then
+    echo "    -> Installing a modern JDK (>=17)..."
+    sudo apt-get update && sudo apt-get install -y openjdk-21-jdk
+fi
+
+echo "--> Installing other core dependencies..."
 sudo apt-get install -y \
-    inotify-tools \
-    openjdk-21-jre-headless \
-    wget \
-    unzip \
-    libportaudio2 \
-    xdotool \
-    python3-venv
+    inotify-tools wget unzip portaudio19-dev python3-pip
+
+
+
+
 
 # --- 2. Python Virtual Environment ---
 # We check if the venv directory exists before creating it.
@@ -68,6 +90,13 @@ fi
 echo "--> Creating Python package markers (__init__.py)..."
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
+
+CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
+mkdir -p "$(dirname "$CONFIG_FILE")"
+echo "[paths]" > "$CONFIG_FILE"
+echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
+
+
 
 # --- 6. Completion ---
 echo ""

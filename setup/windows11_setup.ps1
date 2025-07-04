@@ -4,6 +4,17 @@
 # IMPORTANT: Right-click this file and choose "Run with PowerShell" to run it with the necessary permissions.
 #
 
+
+# --- Make script location-independent ---
+# This block ensures the script can be run from any directory by changing
+# the working directory to the project root.
+$ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
+Set-Location -Path $ProjectRoot
+
+Write-Host "--> Running setup from project root: (Get-Location)"
+# --- End of location-independent block ---
+
+
 # --- 0. Preamble ---
 # Exit immediately if a command fails
 $ErrorActionPreference = "Stop"
@@ -19,24 +30,39 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 }
 
 # --- 2. System Dependencies ---
-Write-Host "--> Installing system dependencies using Winget..."
-try {
-    winget --version > $null
-} catch {
-    Write-Error "Winget is not available. Please install 'App Installer' from the Microsoft Store."
-    Read-Host "Press Enter to exit..."
-    exit 1
+Write-Host "--> Checking for a compatible Java version (>=17)..."
+$javaOK = $false
+if (Get-Command java -ErrorAction SilentlyContinue) {
+    # Get version from stderr and check it
+    $versionOutput = java -version 2>&1
+    if ($versionOutput -match 'version "(\d+)\.') {
+        $majorVersion = [int]$matches[1]
+        if ($majorVersion -ge 17) {
+            Write-Host "    -> Found compatible Java version $majorVersion. OK."
+            $javaOK = $true
+        } else {
+            Write-Host "    -> Found Java version $majorVersion, but we need >=17."
+        }
+    }
+} else {
+    Write-Host "    -> No Java executable found."
 }
 
-# Install OpenJDK for LanguageTool, Wget for downloading, and 7-Zip for unzipping.
-winget install --id Microsoft.OpenJDK.21 -e --accept-package-agreements
+if (-not $javaOK) {
+    Write-Host "    -> Installing a modern JDK via Winget..."
+    winget install --id Microsoft.OpenJDK.21 -e --accept-package-agreements
+}
+
+Write-Host "--> Installing other core dependencies..."
 winget install --id GnuWin32.Wget -e --accept-source-agreements
 winget install --id 7zip.7zip -e
 
-# Temporarily add 7-Zip to the PATH for this script session if it's not already there.
+# Temporarily add 7-Zip to the PATH
 if (-not (Get-Command 7z.exe -ErrorAction SilentlyContinue)) {
     $env:Path += ";C:\Program Files\7-Zip"
 }
+
+
 
 # --- 3. Python Virtual Environment ---
 Write-Host "--> Creating Python virtual environment in '.\.venv'..."
@@ -78,6 +104,15 @@ if (-not (Test-Path -Path "models/vosk-model-de-0.21")) {
   7z.exe x "models/de.zip" -o"models/" | Out-Null
   Remove-Item "models/de.zip"
 }
+
+:: --- Create central config file ---
+set "CONFIG_DIR=%USERPROFILE%\.config\sl5-stt"
+if not exist "%CONFIG_DIR%" mkdir "%CONFIG_DIR%"
+
+(
+    echo [paths]
+    echo project_root = "%CD%"
+) > "%CONFIG_DIR%\config.toml"
 
 # --- 6. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.

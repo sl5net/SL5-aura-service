@@ -32,37 +32,32 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . .
 
 # --- 4. External Tools and Models ---
-# This RUN command encapsulates all the download and setup logic.
-RUN echo "--> Downloading external tools and models (if missing)..." && \
+
+RUN echo "--> Downloading external tools and models..." && \
     \
-    # LanguageTool
     LT_VERSION="6.6" && \
     if [ ! -d "LanguageTool-${LT_VERSION}" ]; then \
-      echo "    -> Downloading LanguageTool v${LT_VERSION}..." && \
       wget https://languagetool.org/download/LanguageTool-${LT_VERSION}.zip -O languagetool.zip && \
-      unzip -q languagetool.zip && \
-      rm languagetool.zip; \
+      unzip -q languagetool.zip && rm languagetool.zip; \
     fi && \
     \
-    # Vosk Models
     mkdir -p models && \
     if [ ! -d "models/vosk-model-en-us-0.22" ]; then \
-      echo "    -> Downloading English Vosk model..." && \
       wget https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip -O models/en.zip && \
-      unzip -q models/en.zip -d models/ && \
-      rm models/en.zip; \
+      unzip -q models/en.zip -d models/ && rm models/en.zip; \
     fi && \
     if [ ! -d "models/vosk-model-de-0.21" ]; then \
-      echo "    -> Downloading German Vosk model..." && \
       wget https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip -O models/de.zip && \
-      unzip -q models/de.zip -d models/ && \
-      rm models/de.zip; \
+      unzip -q models/de.zip -d models/ && rm models/de.zip; \
     fi && \
     \
-    # --- 5. Project Configuration ---
-    echo "--> Creating Python package markers (__init__.py)..." && \
+    echo "--> Finalizing configuration..." && \
     touch config/__init__.py && \
-    touch config/languagetool_server/__init__.py
+    touch config/languagetool_server/__init__.py && \
+    mkdir -p /root/.config/sl5-stt && \
+    echo "[paths]" > /root/.config/sl5-stt/config.toml && \
+    echo "project_root = \"/app\"" >> /root/.config/sl5-stt/config.toml
+
 
 # --- 6. Final Setup ---
 # Expose the port used by the LanguageTool server

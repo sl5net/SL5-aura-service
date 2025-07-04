@@ -1,12 +1,20 @@
 import subprocess
 import time
 from pathlib import Path
+
+import tomllib # In Python 3.11+ Standard
+CONFIG_PATH = Path.home() / ".config/sl5-stt/config.toml"
+with open(CONFIG_PATH, "rb") as f:
+    config = tomllib.load(f)
+PROJECT_DIR = Path(config["paths"]["project_root"])
+
+
 import os
 
 # source /pfad/zum/venv/bin/activate
 
 home_dir = Path.home()
-PROJECT_DIR = home_dir / "projects" / "py" / "STT"
+# PROJECT_DIR = home_dir / "projects" / "py" / "STT"
 
 # --- Dateipfade für den Zustand ---
 VOSK_MODEL_FILE = PROJECT_DIR / "config/model_name.txt"
@@ -61,7 +69,7 @@ if vosk_model != vosk_model_lastused:
         if e.cmd == '' and e.returncode == 1:
             # If it is, run the specified server script instead.
             # Get the absolute path to the script in the home directory.
-            server_script = os.path.expanduser('~/projects/py/STT/scripts/activate-venv_and_run-server.sh')
+            server_script = os.path.expanduser(f"{PROJECT_DIR}/scripts/activate-venv_and_run-server.sh")
 
             # Execute the script
             system.exec_command(server_script)

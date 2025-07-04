@@ -1,1 +1,1 @@
-vosk-model-en-us-0.22
+vosk-model-de-0.21
