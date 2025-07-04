@@ -79,6 +79,15 @@ if (-not (Test-Path -Path "models/vosk-model-de-0.21")) {
   Remove-Item "models/de.zip"
 }
 
+:: --- Create central config file ---
+set "CONFIG_DIR=%USERPROFILE%\.config\sl5-stt"
+if not exist "%CONFIG_DIR%" mkdir "%CONFIG_DIR%"
+
+(
+    echo [paths]
+    echo project_root = "%CD%"
+) > "%CONFIG_DIR%\config.toml"
+
 # --- 6. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.
 Write-Host "--> Creating Python package markers (__init__.py)..."

@@ -72,6 +72,12 @@ echo "--> Creating Python package markers (__init__.py)..."
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
 
+CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
+mkdir -p "$(dirname "$CONFIG_FILE")"
+echo "[paths]" > "$CONFIG_FILE"
+echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
+
+
 # --- 6. Completion ---
 echo ""
 echo "--- Setup for Manjaro/Arch is complete! ---"
