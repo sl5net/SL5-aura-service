@@ -280,21 +280,39 @@ def normalize_punctuation(text: str) -> str:
     pattern = r'\b(' + '|'.join(re.escape(k) for k in sorted(PUNCTUATION_MAP, key=len, reverse=True)) + r')\b'
     return re.sub(pattern, lambda m: PUNCTUATION_MAP[m.group(1).lower()], text, flags=re.IGNORECASE)
 
-# >>> THE FIXED NOTIFY FUNCTION <<<
+# >>> THE NEW, PLATFORM-AWARE NOTIFY FUNCTION <<<
 def notify(summary, body="", urgency="low", icon=None, duration=3000):
-    """Sends a notification, fixed to not hang the script."""
+    """Sends a desktop notification, using the appropriate method for the OS."""
     logger.info(f"DEBUG: Attempting to notify: '{summary}'")
-    try:
-        # We don't use '-r' as it can cause blocking issues.
-        command = [NOTIFY_SEND_PATH, "-u", urgency, summary, body, "-t", str(duration)]
-        if icon:
-            command.extend(["-i", icon])
-        # The critical fix: close_fds=True prevents conflicts with inotify.
-        subprocess.run(command, check=True, capture_output=True, text=True, timeout=5, close_fds=True)
+
+    if platform.system() == "Windows":
+        try:
+            # For Windows, we write to a file watched by an AHK script.
+            # This avoids adding new dependencies and uses our existing toolchain.
+            notify_file = TMP_DIR / "notification.txt"
+
+            # Sanitize inputs to prevent issues with the separator
+            clean_summary = summary.replace("|", "/")
+            clean_body = body.replace("|", "/")
+
+            # Create content in "Title|Body" format
+            content = f"{clean_summary}|{clean_body}"
+            notify_file.write_text(content, encoding='utf-8')
+        except Exception as e:
+            logger.error(f"Windows notification via file failed for '{summary}': {e}")
+
+    else: # Linux logic
+        if not NOTIFY_SEND_PATH or not Path(NOTIFY_SEND_PATH).exists():
+            return # Silently fail if notify-send is not available
+        try:
+            command = [NOTIFY_SEND_PATH, "-u", urgency, summary, body, "-t", str(duration)]
+            if icon:
+                command.extend(["-i", icon])
+            subprocess.run(command, check=True, capture_output=True, text=True, timeout=5)
+        except Exception as e:
+            logger.error(f"Linux notification failed for '{summary}': {e}")
 
 
-    except Exception as e:
-        logger.error(f"Notification failed for '{summary}': {e}")
 
 def transcribe_audio_with_feedback(recognizer):
     q = queue.Queue()
