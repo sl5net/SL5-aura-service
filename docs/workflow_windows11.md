@@ -3,14 +3,14 @@
   (Recommended Tool)
        |                         |                          |                             |                     |
    1. User presses Hotkey        |                          |                             |                     |
-       |---------------------->  | 2. Creates C:\tmp\vosk_trigger                           |                     |
-       |                         |                                                          |                     |
-       |               (watches for trigger file)                                           |                     |
-       |                         | 3. Detects & DELETES trigger file                        |                     |
-       |                         |                                                          |                     |
-       |                         o 4. Records & Processes (Vosk -> LT)                      |                     |
-       |                         |                                                          |                     |
-       |                         | 5. Writes final text ---------------------------------> o |                     |
+       |---------------------->  | 2. Creates C:\tmp\vosk_trigger                         |                     |
+       |                         |                                                        |                     |
+       |               (watches for trigger file)                                         |                     |
+       |                         | 3. Detects & DELETES trigger file                      |                     |
+       |                         |                                                        |                     |
+       |                         o 4. Records & Processes (Vosk -> LT)                    |                     |
+       |                         |                                                        |                     |
+       |                         | 5. Writes final text ------------------------------> o |                     |
        |                         |                          |                             |                     |
        |                         |                          |               (watches for output file)           |
        |                         |                          |                             |                     |
