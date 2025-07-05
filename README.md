@@ -151,6 +151,12 @@ by Using
 setup/{OS Name}_setup...
 ```
 
+### Windows OS
+
+install AutoHotkey version 2
+run server
+`type_watcher.ahk`
+
 follwong Vosk-Models will be downloaded and used automatically:
 
 | Model                                                                                  | Size | Word error rate/Speed                                                                         | Notes                                     | License    |
