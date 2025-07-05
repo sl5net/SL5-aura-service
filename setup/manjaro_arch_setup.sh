@@ -73,10 +73,81 @@ echo "--> Downloading external tools and models (if missing)..."
 LT_VERSION="6.6"
 if [ ! -d "LanguageTool-${LT_VERSION}" ]; then
   echo "    -> Downloading LanguageTool v${LT_VERSION}..."
+  MAX_RETRIES=3
+  RETRY_COUNT=0
+  while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    wget https://languagetool.org/download/LanguageTool-${LT_VERSION}.zip -O languagetool.zip
+    if [ $? -eq 0 ]; then
+      # Download sucesful
+      MIN_SIZE=240000000
+      ACTUAL_SIZE=$(stat -c%s languagetool.zip)
+      if [ $ACTUAL_SIZE -gt $MIN_SIZE ]; then
+        echo "    -> size looks not bad"
+        unzip -q languagetool.zip
+        rm languagetool.zip
+        break
+      fi
+      echo "    -> to small, retry..."
+      RETRY_COUNT=$((RETRY_COUNT+1))
+    else
+      echo "    -> Download bad, retry..."
+      RETRY_COUNT=$((RETRY_COUNT+1))
+    fi
+  done
+  if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+    echo "    -> Download fehlgeschlagen, bitte überprüfen Sie Ihre Internetverbindung."
+    exit 1
+  fi
+fi
+
+
+# Download and extract LanguageTool
+LT_VERSION="6.6"
+if [ ! -d "LanguageTool-${LT_VERSION}" ]; then
+  echo "    -> Downloading LanguageTool v${LT_VERSION}..."
   wget https://languagetool.org/download/LanguageTool-${LT_VERSION}.zip -O languagetool.zip
+
+  # Überprüfen Sie die Größe des heruntergeladenen ZIP-Files
+  MIN_SIZE=240000000
+  ACTUAL_SIZE=$(stat -c%s languagetool.zip)
+  if [ $ACTUAL_SIZE -lt $MIN_SIZE ]; then
+    echo "    -> Fehlgeschlagen: Die Größe des heruntergeladenen ZIP-Files ist zu klein."
+    rm languagetool.zip
+    exit 1
+  fi
+
+  # Entpacken Sie das ZIP-File
   unzip -q languagetool.zip
   rm languagetool.zip
 fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Download and extract Vosk Models
 mkdir -p models
