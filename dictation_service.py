@@ -16,16 +16,33 @@ import atexit
 import requests
 import logging  # ADDED: For logging
 from inotify_simple import INotify, flags
-
-
+import platform
 
 # --- Configuration ---
+
+if platform.system() == "Windows":
+    TMP_DIR = Path("C:/tmp")
+    NOTIFY_SEND_PATH = None # Deaktiviert notify-send
+else:
+    TMP_DIR = Path("/tmp")
+
+OUTPUT_FILE = TMP_DIR / "tts_output.txt"
+
+# ERSETZE DIE ALTEN PFADE:
+TRIGGER_FILE = TMP_DIR / "vosk_trigger"
+# TRIGGER_FILE = Path("/tmp/vosk_trigger")
+
+# HEARTBEAT_FILE = "/tmp/dictation_service.heartbeat"
+
+HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
+
+# PIDFILE = "/tmp/dictation_service.pid"
+PIDFILE = TMP_DIR / "dictation_service.pid"
+
+
 CRITICAL_THRESHOLD_MB = 1024
 SCRIPT_DIR = Path(__file__).resolve().parent
-TRIGGER_FILE = Path("/tmp/vosk_trigger")
 LOG_FILE = Path("vosk_dictation.log")
-HEARTBEAT_FILE = "/tmp/dictation_service.heartbeat"
-PIDFILE = "/tmp/dictation_service.pid"
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 SAMPLE_RATE = 16000
@@ -38,7 +55,7 @@ LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
 
 languagetool_process = None
 
-
+#Jetzt wird alles funktionieren
 
 # --- Logging Setup (Must be first) ---
 logging.basicConfig(
@@ -300,80 +317,83 @@ last_check_time = time.time()
 recording_time = 0
 CHECK_INTERVAL_SECONDS = 5
 
+
+
+
+
+def process_dictation_trigger(OUTPUT_FILE):
+    """Handles the entire transcription process after a trigger is detected."""
+    try:
+        notify("Vosk: Processing...", "Please wait.", "low", icon="system-run-symbolic", duration=1500)
+        recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
+        recognized_text = transcribe_audio_with_feedback(recognizer)
+
+        if recognized_text:
+            logger.info(f"Transcribed: '{recognized_text}'")
+            processed_text = normalize_punctuation(recognized_text)
+            processed_text = correct_text(processed_text)
+
+            # Hier müssen wir den Output-Pfad auch plattformunabhängig machen
+            Path(OUTPUT_FILE).write_text(processed_text)
+            notify("Transkribiert", duration=1000)
+        else:
+            notify("Vosk: No Input", "No text was recognized.", "normal", icon="dialog-warning")
+
+    except Exception as e:
+        logger.error(f"An error occurred during dictation: {e}", exc_info=True)
+        notify("Vosk: Error", str(e), "critical", icon="dialog-error")
+    finally:
+        logger.info("--- Processing finished. Waiting for next trigger. ---\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
 try:
-    inotify = INotify()
-    watch_flags = flags.CREATE | flags.IGNORED
-    inotify.add_watch('/tmp', watch_flags)
+    if platform.system() == "Linux":
+        # --- Bewährter INOTIFY-Code für Linux ---
+        inotify = INotify()
+        inotify.add_watch(TMP_DIR, flags.CREATE)
 
-    logger.info("Service is now listening for triggers via inotify...")
-    notify("Vosk Starting...", "Service is now listening for triggers.", "normal", icon="system-run")
-
-    while True:
-        for event in inotify.read(timeout=CHECK_INTERVAL_SECONDS):
-            if event.name == TRIGGER_FILE.name and event.mask & flags.CREATE:
-
-                # If we get here, we have a valid window ID.
-                TRIGGER_FILE.unlink(missing_ok=True)
-
-                # --- Step 2: Main processing logic in its own try/except block ---
-                try:
-                    #notify("Transkribiert"      , ''            , ''   , ''                       , 1000)
-                    notify("Vosk: Processing...", "Please wait.", "low", icon="system-run-symbolic" , duration=1500)
-
-                    recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-                    recognized_text = transcribe_audio_with_feedback(recognizer)
-
-                    if recognized_text:
-                        logger.info(f"Transcribed: '{recognized_text}'")
-                        processed_text = normalize_punctuation(recognized_text)
-                        processed_text = correct_text(processed_text)
-
-                        if re.match(r"^\w", processed_text) and time.time() - recording_time < 20:
-                            processed_text = ' ' + processed_text
-                        recording_time = time.time()
+        logger.info("Listening for triggers via inotify...")
+        while True:
+            for event in inotify.read(timeout=CHECK_INTERVAL_SECONDS):
 
 
-                        # REPLACE THE OLD SECTION WITH THIS
-                        # Step 1: Forcefully activate the target window
-                        # subprocess.run([XDOTOOL_PATH, "windowactivate", args.target_window], check=True)
+                if event.name == TRIGGER_FILE.name and event.mask & flags.CREATE:
+                #if event.name == TRIGGER_FILE.name:
+                    TRIGGER_FILE.unlink(missing_ok=True)
 
-                        # Step 2: A tiny delay to allow the window manager to process the focus change
-                        time.sleep(0.1)
-
-                        # Step 3: Now type the text directly into the active window
-                        #subprocess.run([XDOTOOL_PATH, "type", "--clearmodifiers", processed_text], check=True)
-                        Path("/tmp/tts_output.txt").write_text(processed_text)
-
-                        notify("Transkribiert", duration=1000)
-
-                    else:
-                        notify("Vosk: No Input", "No text was recognized.", "normal", icon="dialog-warning")
-
-                except Exception as e:
-                    logger.error(f"An error occurred during dictation: {e}", exc_info=True)
-                    notify("Vosk: Error", str(e), "critical", icon="dialog-error")
-
-                finally:
-                    logger.info("--- Processing finished. Waiting for next trigger. ---\n")
-
-
-#
-
-
-
-        # Heartbeat/memory check runs in the main loop
-        if time.time() - last_check_time > CHECK_INTERVAL_SECONDS:
-            last_check_time = time.time()
-            is_critical, avail_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
-            if is_critical:
-                logger.critical(f"Low memory detected ({avail_mb:.0f}MB available). Shutting down.")
-                notify("Vosk: Critical Error", "Low memory detected. Shutting down.", "critical")
-                sys.exit(1)
+                    process_dictation_trigger(OUTPUT_FILE)
+            # Heartbeat (wird alle CHECK_INTERVAL_SECONDS ausgeführt)
             Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
-            logger.debug("Heartbeat updated.")
+    else:
+        # --- Polling-Schleife für WINDOWS (und andere) ---
+        logger.info("Listening for triggers via file polling...")
+        last_check_time = time.time()
+        while True:
+            if TRIGGER_FILE.exists():
+                TRIGGER_FILE.unlink(missing_ok=True)
+                process_dictation_trigger(OUTPUT_FILE)
 
+            # Heartbeat (nur alle paar Sekunden)
+            if time.time() - last_check_time > CHECK_INTERVAL_SECONDS:
+                last_check_time = time.time()
+                Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
+
+            time.sleep(0.02)
+#
 except KeyboardInterrupt:
     logger.info("\nService interrupted by user.")
 finally:
     cleanup()
     notify("Vosk Service", "Service has been shut down.", "normal", icon="process-stop-symbolic")
+
