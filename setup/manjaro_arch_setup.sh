@@ -121,8 +121,7 @@ if [ ! -d "LanguageTool-${LT_VERSION}" ]; then
   rm languagetool.zip
 fi
 
-
-
+echo "LanguageTool installation verified successfully."
 
 
 

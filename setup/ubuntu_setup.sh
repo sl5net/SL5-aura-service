@@ -69,6 +69,12 @@ if [ ! -d "LanguageTool-${LT_VERSION}" ]; then
   rm languagetool.zip
 fi
 
+
+
+
+
+
+
 # Download and extract Vosk Models (using the more robust two-step method)
 mkdir -p models
 if [ ! -d "models/vosk-model-en-us-0.22" ]; then

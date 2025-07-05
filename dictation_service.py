@@ -15,7 +15,6 @@ import psutil
 import atexit
 import requests
 import logging  # ADDED: For logging
-from inotify_simple import INotify, flags
 import platform
 
 # --- Configuration ---
@@ -132,6 +131,11 @@ def start_languagetool_server():
         except requests.exceptions.RequestException:
             pass
 
+
+
+
+
+
         if languagetool_process and languagetool_process.poll() is not None:
             logger.fatal("LanguageTool process terminated unexpectedly.")
             stdout, stderr = languagetool_process.communicate()
@@ -139,7 +143,33 @@ def start_languagetool_server():
                 logger.error(f"LanguageTool STDOUT:\n{stdout}")
             if stderr:
                 logger.error(f"LanguageTool STDERR:\n{stderr}")
+                # --- HERE IS THE TARGETED ERROR DETECTION ---
+                if "ExceptionInInitializerError" in stderr and "common_words.txt" in stderr:
+                    print("\n" + "="*60)
+                    print("ERROR: LanguageTool failed to initialize correctly.")
+                    print("This is a known issue on the first installation.")
+                    print("\nPLEASE PERFORM THE FOLLOWING WORKAROUND:")
+                    print(f"1. Delete the folder: '{SCRIPT_DIR / 'LanguageTool-6.6'}'")
+
+                    notify("1. Delete the folder:", f"'{SCRIPT_DIR / 'LanguageTool-6.6'}'", "normal", icon="dialog-error")
+
+                    print("2. Run the setup script again.")
+
+                    notify("1. Delete the folder", "2. Run the setup script again.", "normal", icon="dialog-error")
+
+
+                    print("="*60 + "\n")
             return False
+
+
+
+
+
+
+
+
+
+
 
         time.sleep(1)
 
@@ -187,7 +217,10 @@ MODEL_NAME_DEFAULT = "vosk-model-de-0.21"
 parser = argparse.ArgumentParser(description="A real-time dictation service using Vosk.")
 parser.add_argument('--vosk_model', help=f"Name of the Vosk model folder. Defaults to '{MODEL_NAME_DEFAULT}'.")
 # parser.add_argument('--target-window', required=True, help="The window ID to send keystrokes to.")
-#
+
+
+parser.add_argument('--test-text', help="Bypass microphone and use this text for testing.")
+
 args = parser.parse_args()
 
 VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
@@ -318,30 +351,46 @@ recording_time = 0
 CHECK_INTERVAL_SECONDS = 5
 
 
+def process_and_output_text(text, output_path):
+    """Processes the recognized text, corrects it, and writes it to the output file."""
+    global recording_time
+    logger.info(f"Transcribed: '{text}'")
+    processed_text = normalize_punctuation(text)
+    processed_text = correct_text(processed_text)
 
+    # `recording_time` most be global
+    global recording_time
+    if re.match(r"^\w", processed_text) and time.time() - recording_time < 20:
+        processed_text = ' ' + processed_text
+    recording_time = time.time()
+
+    Path(output_path).write_text(processed_text)
+    notify("Transkribiert", duration=1000)
 
 
 def process_dictation_trigger(OUTPUT_FILE):
     """Handles the entire transcription process after a trigger is detected."""
     try:
-        notify("Vosk: Processing...", "Please wait.", "low", icon="system-run-symbolic", duration=1500)
-        recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-        recognized_text = transcribe_audio_with_feedback(recognizer)
+        # TEST-MODUS
+# when Windows: Git-Bash
+#  source .venv/Scripts/activate
+# DICTATION_SERVICE_STARTED_CORRECTLY="true" python dictation_service.py --test-text "dies ist ein test"
+
+        if args.test_text:
+            recognized_text = args.test_text
+            logger.info(f"TEST MODE: Using text '{recognized_text}'")
+        else:
+            notify("Vosk: Processing...", "Please wait.", "low", icon="system-run-symbolic", duration=1500)
+            recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
+            recognized_text = transcribe_audio_with_feedback(recognizer)
 
         if recognized_text:
-            logger.info(f"Transcribed: '{recognized_text}'")
-            processed_text = normalize_punctuation(recognized_text)
-            processed_text = correct_text(processed_text)
-
-            # Hier müssen wir den Output-Pfad auch plattformunabhängig machen
-            Path(OUTPUT_FILE).write_text(processed_text)
-            notify("Transkribiert", duration=1000)
+            process_and_output_text(recognized_text, OUTPUT_FILE)
         else:
             notify("Vosk: No Input", "No text was recognized.", "normal", icon="dialog-warning")
 
     except Exception as e:
         logger.error(f"An error occurred during dictation: {e}", exc_info=True)
-        notify("Vosk: Error", str(e), "critical", icon="dialog-error")
     finally:
         logger.info("--- Processing finished. Waiting for next trigger. ---\n")
 
@@ -352,14 +401,14 @@ def process_dictation_trigger(OUTPUT_FILE):
 
 
 
-
-
-
-
+# Okay Test. Test Nummer zweiTest Nummer dreiTest nur vier.
 
 try:
     if platform.system() == "Linux":
         # --- Bewährter INOTIFY-Code für Linux ---
+
+        from inotify_simple import INotify, flags
+
         inotify = INotify()
         inotify.add_watch(TMP_DIR, flags.CREATE)
 

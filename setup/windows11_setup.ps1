@@ -142,6 +142,9 @@ if (-not (Test-Path -Path "models/vosk-model-de-0.21")) {
 
 
 
+
+
+
 # --- Create central config file ---
 Write-Host "--> Creating central config file..."
 # Pfad zum Konfigurationsverzeichnis erstellen ($env:USERPROFILE entspricht %USERPROFILE%)
