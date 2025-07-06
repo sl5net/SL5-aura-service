@@ -438,21 +438,25 @@ try:
         inotify.add_watch(TMP_DIR, flags.CREATE)
         logger.info("418: Listening for triggers via inotify...")
         while True:
-            proc = subprocess.run(
-                ['inotifywait', '-q', '-e', 'create', '--format', '%f', str(TMP_DIR)],
-                capture_output=True, text=True
-            )
+            try:
+                proc = subprocess.run(
+                    ['inotifywait', '-q', '-e', 'create', '--format', '%f', str(TMP_DIR)],
+                    capture_output=True, text=True, timeout=5
+                )
 
-            # Prüfen, ob die erstellte Datei unser Trigger ist
-            if proc.stdout.strip() == TRIGGER_FILE.name:
-                logger.info("TRIGGER DETECTED!")
-                TRIGGER_FILE.unlink(missing_ok=True) # Trigger aufräumen
+                # Prüfen, ob die erstellte Datei unser Trigger ist
+                if proc.stdout.strip() == TRIGGER_FILE.name:
+                    logger.info("TRIGGER DETECTED!")
+                    TRIGGER_FILE.unlink(missing_ok=True) # Trigger aufräumen
 
-                # Die bekannte Logik von hier an...
-                recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-                text_to_process = transcribe_audio_with_feedback(recognizer)
-                thread = threading.Thread(target=process_dictation_trigger, args=(text_to_process,))
-                thread.start()
+                    # Die bekannte Logik von hier an...
+                    recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
+                    text_to_process = transcribe_audio_with_feedback(recognizer)
+                    thread = threading.Thread(target=process_dictation_trigger, args=(text_to_process,))
+                    thread.start()
+
+            except subprocess.TimeoutExpired:
+                pass  # No trigger, just continue
 
 
             time.sleep(0.02)
