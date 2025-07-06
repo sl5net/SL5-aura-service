@@ -16,6 +16,7 @@ import atexit
 import requests
 import logging  # ADDED: For logging
 import platform
+import threading
 
 # --- Configuration ---
 
@@ -386,81 +387,70 @@ def process_and_output_text(text, output_path):
     notify("Transkribiert", duration=1000)
 
 
-def process_dictation_trigger(OUTPUT_FILE):
-    """Handles the entire transcription process after a trigger is detected."""
-    try:
-        # TEST-MODUS
+def process_dictation_trigger(recognized_text, output_file_path):
+    """Processes the ALREADY-RECOGNIZED text in a background thread."""
+            # TEST-MODUS
 # when Windows: Git-Bash
 #  source .venv/Scripts/activate
 # DICTATION_SERVICE_STARTED_CORRECTLY="true" python dictation_service.py --test-text "dies ist ein test"
 
-        if args.test_text:
-            recognized_text = args.test_text
-            logger.info(f"TEST MODE: Using text '{recognized_text}'")
-        else:
-            notify("Vosk: Processing...", "Please wait.", "low", icon="system-run-symbolic", duration=1500)
-            recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-            recognized_text = transcribe_audio_with_feedback(recognizer)
 
+    try:
         if recognized_text:
-            process_and_output_text(recognized_text, OUTPUT_FILE)
+            # Diese Funktion schreibt die Datei etc.
+            process_and_output_text(recognized_text, output_file_path)
         else:
+            # Diese Benachrichtigung wird nur gesendet, wenn die Aufnahme fehlschlug.
             notify("Vosk: No Input", "No text was recognized.", "normal", icon="dialog-warning")
-
     except Exception as e:
-        logger.error(f"An error occurred during dictation: {e}", exc_info=True)
+        # EXTREM WICHTIG: Ein Thread muss seine eigenen Fehler loggen!
+        logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
+        notify("Processing Error!", f"Thread failed: {e}", "critical")
     finally:
-        logger.info("--- Processing finished. Waiting for next trigger. ---\n")
+        logger.info("--- Background processing finished. ---")
 
 
 
 
 
-
-
-
-# Okay Test. Test Nummer zweiTest Nummer dreiTest nur vier.
 
 try:
     if platform.system() == "Linux":
-        # --- Bewährter INOTIFY-Code für Linux ---
-
         from inotify_simple import INotify, flags
-
         inotify = INotify()
         inotify.add_watch(TMP_DIR, flags.CREATE)
-
         logger.info("Listening for triggers via inotify...")
         while True:
             for event in inotify.read(timeout=CHECK_INTERVAL_SECONDS):
-
-
                 if event.name == TRIGGER_FILE.name and event.mask & flags.CREATE:
-                #if event.name == TRIGGER_FILE.name:
                     TRIGGER_FILE.unlink(missing_ok=True)
 
-                    process_dictation_trigger(OUTPUT_FILE)
-            # Heartbeat (wird alle CHECK_INTERVAL_SECONDS ausgeführt)
+                    # 1. Aufnahme im Haupt-Thread (schnell)
+                    recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
+                    text_to_process = transcribe_audio_with_feedback(recognizer)
+
+                    # 2. Verarbeitung im Hintergrund-Thread starten
+                    thread = threading.Thread(target=process_dictation_trigger, args=(text_to_process, OUTPUT_FILE))
+                    thread.start()
+
             Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
     else:
-        # --- Polling-Schleife für WINDOWS (und andere) ---
+        # Windows-Logik mit Threading (konsistent)
         logger.info("Listening for triggers via file polling...")
-        last_check_time = time.time()
         while True:
             if TRIGGER_FILE.exists():
                 TRIGGER_FILE.unlink(missing_ok=True)
-                process_dictation_trigger(OUTPUT_FILE)
-
-            # Heartbeat (nur alle paar Sekunden)
-            if time.time() - last_check_time > CHECK_INTERVAL_SECONDS:
-                last_check_time = time.time()
-                Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
-
+                recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
+                text_to_process = transcribe_audio_with_feedback(recognizer)
+                thread = threading.Thread(target=process_dictation_trigger, args=(text_to_process, OUTPUT_FILE))
+                thread.start()
             time.sleep(0.02)
-#
+            Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
+
 except KeyboardInterrupt:
     logger.info("\nService interrupted by user.")
 finally:
     cleanup()
     notify("Vosk Service", "Service has been shut down.", "normal", icon="process-stop-symbolic")
+
 
