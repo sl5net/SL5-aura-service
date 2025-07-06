@@ -49,7 +49,7 @@ trigger_file = Path("/tmp/vosk_trigger")
 python_executable = PROJECT_DIR / ".venv" / "bin" / "python"
 service_script_path = PROJECT_DIR / service_name
 
-# Werte aus Dateien lesen statt aus dem store
+# Werte aus Dateien lesen statt aus dem storeHockey Test Test Test
 # Wir geben einen Standardwert für vosk_model an, falls die Datei beim allerersten Start nicht existiert
 vosk_model = read_from_file(VOSK_MODEL_FILE, default_value="vosk-model-de-0.21")
 vosk_model_lastused = read_from_file(VOSK_LASTUSED_FILE)
@@ -108,5 +108,5 @@ system.exec_command(f'touch {trigger_file}')
 # how are you what to nameno everything looks like expected
 #
 
-# sometimes all
+# sometimes all/
 # blablab
