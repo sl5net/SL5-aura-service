@@ -24,7 +24,7 @@ while true; do
             TEXT=$(cat "$f")
             rm "$f"
             xdotool type --clearmodifiers "$TEXT"
-            sleep 0.1 # Kurze Pause nach jedem Tippen
+            sleep 0.05 # Kurze Pause nach jedem Tippen
         fi
     done
 

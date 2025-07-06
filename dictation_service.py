@@ -411,77 +411,79 @@ def process_dictation_trigger(recognized_text):
         logger.info("--- Background processing finished. ---")
 
 
+def main():
+
+    try:
+        if platform.system() == "Linux":
+            from inotify_simple import INotify, flags
+            inotify = INotify()
+            inotify.add_watch(TMP_DIR, flags.CREATE)
+            logger.info("418: Listening for triggers...")
+            while True:
+                try:
+                    proc = subprocess.run(
+                        ['inotifywait', '-q', '-e', 'create', '--format', '%f', str(TMP_DIR)],
+                        capture_output=True, text=True, timeout=10
+                    )
+
+                    # Prüfen, ob die erstellte Datei unser ### Test eins Test zwei Test frei Ist vier Test schön Der SC Test sieben
+                    # 
+                    if proc.stdout.strip() == TRIGGER_FILE.name:
+                        logger.info("TRIGGER DETECTED!")
+                        TRIGGER_FILE.unlink(missing_ok=True) # Trigger aufräumen
+
+                        # Die bekannte Logik von hier an...
+                        recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
+                        text_to_process = transcribe_audio_with_feedback(recognizer)
+                        thread = threading.Thread(target=process_dictation_trigger, args=(text_to_process,))
+                        thread.start()
+                        thread.join(timeout=5) 
+                        if thread.is_alive():
+                            print("Hintergrundthread ist noch aktiv")
+                        else:
+                            print("442 Hintergrundthread ist beendet")
+                            time.sleep(0.40)
+                            main()
+    # zerstör eins Test zwei Test drei Test vier Test Föhns Test SexText sieben Test achten Test neuen
+    # Satz eins Franz zwei Franz III Satz hier Sets Phoenix Seit zwecksSatz sieben sind sieben
+    # Brot eins Oh zwei Brot drei Brot vier Brutvögel O oh zwecks ach Wo neun Oh zehn Brot fünfzehn Hut zwölf Brot dreizehn vierzehn Brot fünfzehnProject seen Brot sitzen Brot acht Seen
+    # 
+
+                except subprocess.TimeoutExpired:
+                    nothing = 0  # No trigger, just continue
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-try:
-    if platform.system() == "Linux":
-        from inotify_simple import INotify, flags
-        inotify = INotify()
-        inotify.add_watch(TMP_DIR, flags.CREATE)
-        logger.info("418: Listening for triggers via inotify...")
-        while True:
-            try:
-                proc = subprocess.run(
-                    ['inotifywait', '-q', '-e', 'create', '--format', '%f', str(TMP_DIR)],
-                    capture_output=True, text=True, timeout=10
-                )
-
-                # Prüfen, ob die erstellte Datei unser Trigger ist
-                if proc.stdout.strip() == TRIGGER_FILE.name:
-                    logger.info("TRIGGER DETECTED!")
-                    TRIGGER_FILE.unlink(missing_ok=True) # Trigger aufräumen
-
-                    # Die bekannte Logik von hier an...
+                time.sleep(0.25)
+                Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
+        else:
+            # Windows-Logik mit Threading (konsistent)Okay Test
+            logger.info("Listening for triggers...")
+            while True:
+                if TRIGGER_FILE.exists():
+                    TRIGGER_FILE.unlink(missing_ok=True)
                     recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
                     text_to_process = transcribe_audio_with_feedback(recognizer)
                     thread = threading.Thread(target=process_dictation_trigger, args=(text_to_process,))
                     thread.start()
-
-            except subprocess.TimeoutExpired:
-                nothing = 0  # No trigger, just continue
-
-
-            time.sleep(0.05)
-            Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
-    else:
-        # Windows-Logik mit Threading (konsistent)
-        logger.info("Listening for triggers via file polling...")
-        while True:
-            if TRIGGER_FILE.exists():
-                TRIGGER_FILE.unlink(missing_ok=True)
-                recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-                text_to_process = transcribe_audio_with_feedback(recognizer)
-                thread = threading.Thread(target=process_dictation_trigger, args=(text_to_process, OUTPUT_FILE))
-                thread.start()
-            time.sleep(0.02)
-            Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
-
-except Exception as e:
-    logger.error("FATAL ERROR in main loop:", exc_info=True)
-    notify("Vosk Service CRASHED", f"Error: {e}", "critical")
-
-except KeyboardInterrupt:
-    logger.info("\nService interrupted by user.")
-finally:
-    cleanup()
-    notify("Vosk Service", "Service has been shut down.", "normal", icon="process-stop-symbolic")
+                    thread.join(timeout=5) 
+                    if thread.is_alive():
+                        print("Hintergrundthread ist noch aktiv")
+                    else:
+                        print("Hintergrundthread ist beendet")
 
 
+                time.sleep(0.02)
+                Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
+
+    except Exception as e:
+        logger.error("FATAL ERROR in main loop:", exc_info=True)
+        notify("Vosk Service CRASHED", f"Error: {e}", "critical")
+
+    except KeyboardInterrupt:
+        logger.info("\nService interrupted by user.")
+    finally:
+        cleanup()
+        notify("Vosk Service", "Service has been shut down.", "normal", icon="process-stop-symbolic")
+
+
+main()
