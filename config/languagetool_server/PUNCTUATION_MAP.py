@@ -89,6 +89,10 @@ PUNCTUATION_MAP = {
     'q-tip': 'GitHub',
     'kit': 'Git',
 
+    'Kritik nur': '.gitignore',
+    'Git innere': '.gitignore',
+
+
     'koffee pace': 'Copy Paste',
     'copy pace': 'Copy Paste',
     'hobby pest': 'Copy Paste',
