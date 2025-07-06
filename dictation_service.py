@@ -325,7 +325,7 @@ def transcribe_audio_with_feedback(recognizer):
     notify("Vosk is Listening...", "Speak now. It will stop on silence.", "normal", icon="microphone-sensitivity-high-symbolic")
     try:
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000, dtype='int16', channels=1, callback=audio_callback):
-            SILENCE_TIMEOUT = 1
+            SILENCE_TIMEOUT = 0.6
             last_audio_time = time.time()
             while time.time() - last_audio_time < SILENCE_TIMEOUT:
                 try:
