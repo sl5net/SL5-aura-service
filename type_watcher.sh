@@ -1,64 +1,32 @@
 #!/bin/bash
-# type_watcher.sh
+# /scripts/type_watcher.sh (CPU-freundliche Version)
 
-# --- Dependency Check ---
-if ! command -v inotifywait &> /dev/null
-then
-    echo "Error: 'inotifywait' command not found."
-    echo "Please run the setup script first or install 'inotify-tools' manually."
-    exit 1
-fi
-
-
-FILE_TO_WATCH="/tmp/tts_output.txt"
-DIR_TO_WATCH=$(dirname "$FILE_TO_WATCH")
-BASEFILE=$(basename "$FILE_TO_WATCH")
-
-#!/bin/bash
+DIR_TO_WATCH="/tmp"
 LOCKFILE="/tmp/type_watcher.lock"
 
-if [ -e "$LOCKFILE" ]; then
-    OLD_PID=$(cat "$LOCKFILE")
-    if ps -p $OLD_PID > /dev/null 2>&1; then
-        echo "Another instance of type_watcher.sh is already running (PID $OLD_PID). Exiting."
-
-        # echo "Waiting for $FILE_TO_WATCH ..."
-        # notify-send "Waiting for $FILE_TO_WATCH ..."
-
-        exit 0
-    else
-        echo $$ > "$LOCKFILE"
-    fi
-else
-    echo $$ > "$LOCKFILE"
-fi
-
-echo "Watcher started. Waiting for $FILE_TO_WATCH to be written..."
-notify-send "Watcher started. Waiting for $FILE_TO_WATCH to be written..."
-
-while true; do
-    # Warte auf close_write oder create im Verzeichnis
-    EVENT=$(inotifywait -q -e close_write,create --format '%e %f' "$DIR_TO_WATCH")
-    EVENT_TYPE=$(echo "$EVENT" | awk '{print $1}')
-    EVENT_FILE=$(echo "$EVENT" | awk '{print $2}')
-
-    # Prüfe, ob das Ereignis unsere Datei betrifft
-    if [ "$EVENT_FILE" = "$BASEFILE" ]; then
-        # Gib dem Dateisystem einen kurzen Moment
-        sleep 0.1
-        if [ -f "$FILE_TO_WATCH" ]; then
-            TEXT_TO_TYPE=$(cat "$FILE_TO_WATCH")
-            rm -f "$FILE_TO_WATCH" # Direkt löschen
-            if [ -n "$TEXT_TO_TYPE" ]; then
-                # echo "File detected. Typing: $TEXT_TO_TYPE"
-                xdotool type --clearmodifiers "$TEXT_TO_TYPE"
-                sleep 2 # Optional: Warte, bevor du das nächste Event annimmst
-            fi
-        fi
-    fi
-done
-
-# On exit, remove the lock
+if [ -e "$LOCKFILE" ]; then exit 0; fi
+echo $$ > "$LOCKFILE"
 trap "rm -f $LOCKFILE" EXIT
 
+# Unendliche Schleife
+while true; do
+    # Warte, bis die ERSTE passende Datei auftaucht, und beende dich dann.
+    # Das verbraucht fast keine CPU.
+    inotifywait -q -e create "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
 
+    # Wenn wir hier sind, ist mindestens eine Datei da.
+    # PAUSIERE KURZ, um alle parallelen Events zu sammeln.
+    sleep 0.2
+
+    # Sammle ALLE passenden Dateien, sortiert nach Alter, und arbeite sie ab.
+    for f in $(ls -tr "$DIR_TO_WATCH"/tts_output_*.txt 2>/dev/null); do
+        if [ -f "$f" ]; then
+            TEXT=$(cat "$f")
+            rm "$f"
+            xdotool type --clearmodifiers "$TEXT"
+            sleep 0.1 # Kurze Pause nach jedem Tippen
+        fi
+    done
+
+    # Die Schleife beginnt von vorne und `inotifywait` wartet wieder passiv.
+done

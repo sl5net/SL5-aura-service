@@ -387,27 +387,44 @@ def process_and_output_text(text, output_path):
     notify("Transkribiert", duration=1000)
 
 
-def process_dictation_trigger(recognized_text, output_file_path):
-    """Processes the ALREADY-RECOGNIZED text in a background thread."""
-            # TEST-MODUS
-# when Windows: Git-Bash
-#  source .venv/Scripts/activate
-# DICTATION_SERVICE_STARTED_CORRECTLY="true" python dictation_service.py --test-text "dies ist ein test"
+# In: dictation_service.py
 
+# In dictation_service.py
 
+def process_dictation_trigger(recognized_text):
     try:
+        logger.info(f"THREAD: Received text to process: '{recognized_text}'") # NEU
         if recognized_text:
-            # Diese Funktion schreibt die Datei etc.
-            process_and_output_text(recognized_text, output_file_path)
+            timestamp = int(time.time() * 1000)
+            unique_output_file = TMP_DIR / f"tts_output_{timestamp}.txt"
+            logger.info(f"THREAD: Attempting to write to: {unique_output_file}") # NEU
+
+            process_and_output_text(recognized_text, unique_output_file)
         else:
-            # Diese Benachrichtigung wird nur gesendet, wenn die Aufnahme fehlschlug.
-            notify("Vosk: No Input", "No text was recognized.", "normal", icon="dialog-warning")
+            logger.info("THREAD: Received empty text. Nothing to write.") # NEU
+            notify("Vosk: No Input", "No text was recognized.", "normal")
+
     except Exception as e:
-        # EXTREM WICHTIG: Ein Thread muss seine eigenen Fehler loggen!
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
         notify("Processing Error!", f"Thread failed: {e}", "critical")
     finally:
         logger.info("--- Background processing finished. ---")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -419,20 +436,26 @@ try:
         from inotify_simple import INotify, flags
         inotify = INotify()
         inotify.add_watch(TMP_DIR, flags.CREATE)
-        logger.info("Listening for triggers via inotify...")
+        logger.info("418: Listening for triggers via inotify...")
         while True:
-            for event in inotify.read(timeout=CHECK_INTERVAL_SECONDS):
-                if event.name == TRIGGER_FILE.name and event.mask & flags.CREATE:
-                    TRIGGER_FILE.unlink(missing_ok=True)
+            proc = subprocess.run(
+                ['inotifywait', '-q', '-e', 'create', '--format', '%f', str(TMP_DIR)],
+                capture_output=True, text=True
+            )
 
-                    # 1. Aufnahme im Haupt-Thread (schnell)
-                    recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-                    text_to_process = transcribe_audio_with_feedback(recognizer)
+            # Prüfen, ob die erstellte Datei unser Trigger ist
+            if proc.stdout.strip() == TRIGGER_FILE.name:
+                logger.info("TRIGGER DETECTED!")
+                TRIGGER_FILE.unlink(missing_ok=True) # Trigger aufräumen
 
-                    # 2. Verarbeitung im Hintergrund-Thread starten
-                    thread = threading.Thread(target=process_dictation_trigger, args=(text_to_process, OUTPUT_FILE))
-                    thread.start()
+                # Die bekannte Logik von hier an...
+                recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
+                text_to_process = transcribe_audio_with_feedback(recognizer)
+                thread = threading.Thread(target=process_dictation_trigger, args=(text_to_process,))
+                thread.start()
 
+
+            time.sleep(0.02)
             Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
     else:
         # Windows-Logik mit Threading (konsistent)
@@ -446,6 +469,10 @@ try:
                 thread.start()
             time.sleep(0.02)
             Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
+
+except Exception as e:
+    logger.error("FATAL ERROR in main loop:", exc_info=True)
+    notify("Vosk Service CRASHED", f"Error: {e}", "critical")
 
 except KeyboardInterrupt:
     logger.info("\nService interrupted by user.")
