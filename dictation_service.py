@@ -441,7 +441,7 @@ try:
             try:
                 proc = subprocess.run(
                     ['inotifywait', '-q', '-e', 'create', '--format', '%f', str(TMP_DIR)],
-                    capture_output=True, text=True, timeout=5
+                    capture_output=True, text=True, timeout=10
                 )
 
                 # Prüfen, ob die erstellte Datei unser Trigger ist
@@ -456,10 +456,10 @@ try:
                     thread.start()
 
             except subprocess.TimeoutExpired:
-                pass  # No trigger, just continue
+                nix = 123456  # No trigger, just continue
 
 
-            time.sleep(0.02)
+            time.sleep(0.05)
             Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
     else:
         # Windows-Logik mit Threading (konsistent)
