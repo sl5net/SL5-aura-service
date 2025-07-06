@@ -456,7 +456,7 @@ try:
                     thread.start()
 
             except subprocess.TimeoutExpired:
-                nix = 123456  # No trigger, just continue
+                nothing = 0  # No trigger, just continue
 
 
             time.sleep(0.05)
