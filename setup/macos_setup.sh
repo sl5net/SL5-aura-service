@@ -45,13 +45,20 @@ else
 fi
 
 # --- 3. Python Requirements ---
+echo "--> Preparing requirements for macOS..."
+# Remove Linux-specific dependency 'inotify-tools' which is not available on macOS.
+# The macOS equivalent, 'fswatch', is already installed via Homebrew.
+sed -i.bak '/inotify-tools/d' requirements.txt
+
 echo "--> Installing Python requirements into the virtual environment..."
 if ! ./.venv/bin/pip install -r requirements.txt; then
-    echo "ERROR: Failed to install requirements. Trying to fix common version issues..."
+    echo "ERROR: Failed to install requirements. Trying to fix other common version issues..."
     # Example: Fix vosk version, then retry
     sed -i.bak 's/vosk==0.3.45/vosk/' requirements.txt
+    # We run the command again after the potential fixes
     ./.venv/bin/pip install -r requirements.txt
 fi
+
 
 # --- 4. External Tools and Models ---
 echo "--> Downloading external tools and models (if missing)..."
