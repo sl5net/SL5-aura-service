@@ -3,7 +3,9 @@
 # test Okay it's good to see me online today and oh, and it's in English okay English is also nice
 #  I can understand a little bit British English You need from the United States that can speak so well But sometimes need to listen to British or am I correct in English Undies from the United States It's And Trump is also from the United States
 
-echo "keep_lieve.sh checks if dictation_service is running and restarts it when not"
+echo "keep_alive.sh: Checks if the dictation_service is running and restarts it if needed."
+echo "Additionally, check the timestamp of /tmp/dictation_service.heartbeat An old timestamp indicates that the service has become unresponsive."
+
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
