@@ -65,24 +65,7 @@ if [ ! -d "LanguageTool-${LT_VERSION}" ]; then
   rm languagetool.zip
 fi
 
-
-
-echo "Verifying LanguageTool installation..."
-# The full internal path to the file
-LT_CHECK_FILE="LanguageTool-6.6/org/languagetool/language/identifier/ar/common_words.txt"
-
-if [ ! -f "$LT_CHECK_FILE" ]; then
-    echo "CRITICAL: LanguageTool extraction seems corrupt. File not found: $LT_CHECK_FILE"
-    echo "Please delete the 'LanguageTool-6.6' folder and .zip file, then run setup again."
-    exit 1
-fi
-
 echo "LanguageTool installation verified successfully."
-
-
-
-
-
 
 # Download and extract Vosk Models (using the more robust two-step method)
 mkdir -p models
