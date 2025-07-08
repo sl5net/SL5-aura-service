@@ -18,6 +18,9 @@ import logging  # ADDED: For logging
 import platform
 
 # --- Configuration ---
+suspicious_events = []
+SUSPICIOUS_TIME_WINDOW = 90
+SUSPICIOUS_THRESHOLD = 3
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -324,11 +327,11 @@ def transcribe_audio_with_feedback(recognizer):
     notify("Vosk is Listening...", "Speak now. It will stop on silence.", "normal", icon="microphone-sensitivity-high-symbolic")
     try:
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000, dtype='int16', channels=1, callback=audio_callback):
-            SILENCE_TIMEOUT = 1
+            SILENCE_TIMEOUT = 0.4
             last_audio_time = time.time()
             while time.time() - last_audio_time < SILENCE_TIMEOUT:
                 try:
-                    data = q.get(timeout=0.5)
+                    data = q.get(timeout=0.3)
                     last_audio_time = time.time()
                     if recognizer.AcceptWaveform(data):
                         break
@@ -411,10 +414,7 @@ def process_dictation_trigger(OUTPUT_FILE):
         logger.error(f"An error occurred during dictation: {e}", exc_info=True)
     finally:
         logger.info("--- Processing finished. Waiting for next trigger. ---\n")
-
-
-
-
+        return recognized_text
 
 
 
@@ -439,7 +439,24 @@ try:
                 #if event.name == TRIGGER_FILE.name:
                     TRIGGER_FILE.unlink(missing_ok=True)
 
-                    process_dictation_trigger(OUTPUT_FILE)
+                    recognized_text = process_dictation_trigger(OUTPUT_FILE)
+
+                    if not recognized_text.strip() or len(recognized_text.split()) < 1:
+                        # was empty or very short
+                        suspicious_events.append(time.time())
+
+                    now = time.time()
+                    suspicious_events = [t for t in suspicious_events if now - t < SUSPICIOUS_TIME_WINDOW]
+
+                    if len(suspicious_events) >= SUSPICIOUS_THRESHOLD:
+                        notify(
+                            "Tipp: Aufnahme zu kurz?",
+                            "Die Aufnahme stoppt sehr schnell. Erwäge, den SILENCE_TIMEOUT in der Konfiguration auf 0.8 oder 1.0 zu setzen.",
+                            "normal"
+                        )
+                        suspicious_events = []
+
+
             # Heartbeat (wird alle CHECK_INTERVAL_SECONDS ausgeführt)
             Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
     else:
