@@ -1,32 +1,36 @@
 #!/bin/bash
-# /scripts/type_watcher.sh (CPU-freundliche Version)
+# /type_watcher.sh
 
 DIR_TO_WATCH="/tmp"
 LOCKFILE="/tmp/type_watcher.lock"
 
-if [ -e "$LOCKFILE" ]; then exit 0; fi
+# --- Lockfile-Logic
+if [ -e "$LOCKFILE" ]; then
+    pid=$(cat "$LOCKFILE" 2>/dev/null)
+    if [ -n "$pid" ] && ps -p "$pid" > /dev/null; then
+        # echo "Watcher already runs (PID: $pid). Exiting."
+        exit 0
+    fi
+    rm -f "$LOCKFILE"
+fi
 echo $$ > "$LOCKFILE"
 trap "rm -f $LOCKFILE" EXIT
 
-# Unendliche Schleife
 while true; do
-    # Warte, bis die ERSTE passende Datei auftaucht, und beende dich dann.
-    # Das verbraucht fast keine CPU.
-    inotifywait -q -e create "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
+    inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
+    sleep 0.1
 
-    # Wenn wir hier sind, ist mindestens eine Datei da.
-    # PAUSIERE KURZ, um alle parallelen Events zu sammeln.
-    sleep 0.2
+    files_to_process=$(ls -tr "$DIR_TO_WATCH"/tts_output_*.txt 2>/dev/null)
 
-    # Sammle ALLE passenden Dateien, sortiert nach Alter, und arbeite sie ab.
-    for f in $(ls -tr "$DIR_TO_WATCH"/tts_output_*.txt 2>/dev/null); do
-        if [ -f "$f" ]; then
-            TEXT=$(cat "$f")
-            rm "$f"
-            xdotool type --clearmodifiers "$TEXT"
-            sleep 0.05 # Kurze Pause nach jedem Tippen
-        fi
-    done
-
-    # Die Schleife beginnt von vorne und `inotifywait` wartet wieder passiv.
+    if [ -n "$files_to_process" ]; then
+        for f in $files_to_process; do
+            if [ -f "$f" ]; then
+                TEXT=$(cat "$f")
+                rm "$f"
+                if [ -n "$TEXT" ]; then
+                    xdotool type --clearmodifiers --delay 0 "$TEXT"
+                fi
+            fi
+        done
+    fi
 done
