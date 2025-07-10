@@ -76,7 +76,7 @@ def write_to_file(filepath, content):
 # --- Ihre bestehende Logik, aber mit Dateizugriffen ---
 
 # Andere Pfade und Variablen
-service_name = "dictation_service.py"
+service_name = f"{SERVICE_NAME}.py" # todo: to many variables or rename this variable
 trigger_file = Path("/tmp/vosk_trigger")
 python_executable = PROJECT_DIR / ".venv" / "bin" / "python"
 service_script_path = PROJECT_DIR / service_name
@@ -147,9 +147,9 @@ if result.returncode != 0:
             
         except Exception as e:
             print(f"Exception: {e}")
-            system.exec_command(f"notify-send 'Exception' '{e}'")
+            system.exec_command(f"notify-send '150: Exception' '{e}'")
             time.sleep(4)
-            # continue to the next iteration if an exception occurs
+            # continue to the next iteration if an exception occurs Test
 
 system.exec_command(f'touch {trigger_file}')
 # 
