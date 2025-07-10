@@ -138,8 +138,8 @@ if result.returncode != 0:
             if result.returncode == 0:
                 system.exec_command(f"notify-send 'STT runs' '{vosk_model}'")
             else:
-                system.exec_command(f"notify-send 'Error' 'STT not runs'")
-                sys.exit(1)
+                system.exec_command(f"notify-send 'STT not runs ' 'start next try'")
+                continue # start next try
                 
             for _ in range(15):
                 if isHearHealty(HEARTBEAT_FILE, HEARTBEAT_INTERVAL_SECONDS):
