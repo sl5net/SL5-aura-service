@@ -178,13 +178,13 @@ def notify(summary, body="", urgency="low", icon=None, duration=3000):
         except Exception as e:
             logger.error(f"Linux notification failed for '{summary}': {e}")
 
-def transcribe_audio_with_feedback(recognizer):
+def transcribe_audio_with_feedback(recognizer,LT_LANGUAGE):
     q = queue.Queue()
     def audio_callback(indata, frames, time, status):
         if status: logger.warning(f"Audio status: {status}")
         q.put(bytes(indata))
     recognizer.SetWords(True)
-    notify("Vosk is Listening...", "Speak now. It will stop on silence.", "normal", icon="microphone-sensitivity-high-symbolic")
+    notify(f"Vosk is Listening {LT_LANGUAGE} ...", "Speak now. It will stop on silence.", "normal", icon="microphone-sensitivity-high-symbolic")
     try:
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000, dtype='int16', channels=1, callback=audio_callback):
             SILENCE_TIMEOUT = 0.4
@@ -245,7 +245,7 @@ def process_text_in_background(raw_text):
 
 # --- Hauptschleife (Main Thread) ---
 def main():
-    global suspicious_events
+    global suspicious_events, LT_LANGUAGE
     active_threads = []
 
     try:
@@ -262,7 +262,7 @@ def main():
                         logger.info(f"TRIGGER DETECTED via inotifywait! Active threads: {len(active_threads)}")
                         TRIGGER_FILE.unlink(missing_ok=True)
                         recognizer = vosk.KaldiRecognizer(model, SAMPLE_RATE)
-                        raw_text = transcribe_audio_with_feedback(recognizer)
+                        raw_text = transcribe_audio_with_feedback(recognizer, LT_LANGUAGE)
                         if not raw_text.strip() or len(raw_text.split()) < 1:
                             suspicious_events.append(time.time())
                         now = time.time()
