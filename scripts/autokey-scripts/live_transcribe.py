@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess
 import time
 from pathlib import Path
@@ -14,6 +15,8 @@ HEARTBEAT_FILE = f"/tmp/{SERVICE_NAME}.heartbeat"
 HEARTBEAT_INTERVAL_SECONDS = 10 # Should be less than MAX_STALE_SECONDS
 
 # source /pfad/zum/venv/bin/activate
+
+# 
 
 home_dir = Path.home()
 # PROJECT_DIR = home_dir / "projects" / "py" / "STT"
@@ -136,7 +139,7 @@ if result.returncode != 0:
                 system.exec_command(f"notify-send 'STT runs' '{vosk_model}'")
             else:
                 system.exec_command(f"notify-send 'Error' 'STT not runs'")
-                error(1)
+                sys.exit(1)
                 
             for _ in range(15):
                 if isHearHealty(HEARTBEAT_FILE, HEARTBEAT_INTERVAL_SECONDS):
@@ -149,7 +152,7 @@ if result.returncode != 0:
             print(f"Exception: {e}")
             system.exec_command(f"notify-send '150: Exception' '{e}'")
             time.sleep(4)
-            # continue to the next iteration if an exception occurs Test
+            # continue to the next iteration if an exception occurs Test theokay okay
 
 system.exec_command(f'touch {trigger_file}')
 # 
