@@ -24,6 +24,8 @@ suspicious_events = []
 SUSPICIOUS_TIME_WINDOW = 90
 SUSPICIOUS_THRESHOLD = 3
 
+CRITICAL_THRESHOLD_MB = 1024
+
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
     NOTIFY_SEND_PATH = None
@@ -132,6 +134,12 @@ vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MO
 MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
 MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
 LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
+
+def check_memory_critical(threshold_mb: int) -> tuple[bool, float]:
+    mem = psutil.virtual_memory()
+    available_mb = mem.available / (1024 * 1024)
+    return available_mb < threshold_mb, available_mb
+
 
 def correct_text(text: str) -> str:
     if not text.strip(): return text
@@ -244,8 +252,8 @@ def process_text_in_background(raw_text):
         logger.info(f"--- Background processing for '{raw_text[:20]}...' finished. ---")
 
 # --- Hauptschleife (Main Thread) ---
-def main():
-    global suspicious_events, LT_LANGUAGE
+def main(model):
+    global suspicious_events, LT_LANGUAGE, CRITICAL_THRESHOLD_MB
     active_threads = []
 
     try:
@@ -280,6 +288,14 @@ def main():
                             active_threads.append(thread)
                 except subprocess.TimeoutExpired:
                     pass
+
+
+                is_critical, avail_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
+                if is_critical:
+                    logger.critical(f"Low memory detected ({avail_mb:.0f}MB available). Shutting down.")
+                    notify("Vosk: Critical Error", "Low memory detected. Service shutting down.", "critical")
+                    sys.exit(1)
+
                 Path(HEARTBEAT_FILE).write_text(str(int(time.time())))
         else:
             # Polling
@@ -302,6 +318,6 @@ def main():
         notify("Vosk Service", "Service has been shut down.", "normal")
 
 if __name__ == "__main__":
-    main()
+    main(model)
 
 
