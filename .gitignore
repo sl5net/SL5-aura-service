@@ -23,4 +23,3 @@ type_watcher.log
 # But DO NOT ignore requirements.txt
 !requirements.txt
 !requirements-dev.txt
-
