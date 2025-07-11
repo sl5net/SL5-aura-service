@@ -1,3 +1,4 @@
+# file: scripts/autokey-scripts/live_transcribe_en.py
 intertingDontDeleteIt = """
 pkill -f dictation_service.py
 pgrep -f dictation_service.py

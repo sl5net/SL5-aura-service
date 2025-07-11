@@ -1,158 +1,71 @@
+# File: scripts/autokey-scripts/sl5_stt_trigger.py
+# This script's only job is to ensure the dictation service is running and then trigger it.
+# The backend now handles language switching internally, so no restart is needed.
+
 import os
 import sys
 import subprocess
 import time
 from pathlib import Path
+import tomllib
 
-import tomllib # In Python 3.11+ Standard
-CONFIG_PATH = Path.home() / ".config/sl5-stt/config.toml"
-with open(CONFIG_PATH, "rb") as f:
-    config = tomllib.load(f)
-PROJECT_DIR = Path(config["paths"]["project_root"])
+# --- Configuration and Paths ---
+try:
+    CONFIG_PATH = Path.home() / ".config/sl5-stt/config.toml"
+    with open(CONFIG_PATH, "rb") as f:
+        config = tomllib.load(f)
+    PROJECT_DIR = Path(config["paths"]["project_root"])
+except (FileNotFoundError, KeyError) as e:
+    subprocess.run(["notify-send", "-u", "critical", "SL5 STT Config Error", f"Could not load config: {e}"])
+    sys.exit(1)
 
-SERVICE_NAME = "dictation_service"
-HEARTBEAT_FILE = f"/tmp/{SERVICE_NAME}.heartbeat"
-HEARTBEAT_INTERVAL_SECONDS = 10 # Should be less than MAX_STALE_SECONDS
+SERVICE_PY_NAME = "dictation_service.py"
+TRIGGER_FILE = Path("/tmp/vosk_trigger")
+HEARTBEAT_FILE = Path(f"/tmp/dictation_service.heartbeat")
+# INCREASED TIMEOUT: Give the service more time to start
+HEARTBEAT_MAX_AGE_SECONDS = 30 # Increased from 15
 
-# source /pfad/zum/venv/bin/activate
-
-# 
-
-home_dir = Path.home()
-# PROJECT_DIR = home_dir / "projects" / "py" / "STT"
-
-# --- Dateipfade für den Zustand ---
-VOSK_MODEL_FILE = PROJECT_DIR / "config/model_name.txt"
-VOSK_LASTUSED_FILE = PROJECT_DIR / "config/model_name_lastused.txt"
-
-# --- Hilfsfunktionen ---
-def read_from_file(filepath, default_value=None):
-    """
-    Liest Inhalt aus einer Datei; gibt default_value zurück, wenn nicht vorhanden.
-    """
-    path = Path(filepath)
-    if not path.exists():
-        return default_value
+# --- Helper Function ---
+def is_service_healthy(heartbeat_path, max_age):
+    if not heartbeat_path.is_file():
+        return False
     try:
-        return path.read_text().strip()
-    except Exception as e:
-        system.exec_command(f"notify-send 'FEHLER' 'Konnte nicht aus {filepath} lesen: {e}'")
-        return default_value
-
-def isHearHealty(HEARTBEAT_FILE, MAX_STALE_SECONDS):
-    if os.path.isfile(HEARTBEAT_FILE):
-        try:
-            with open(HEARTBEAT_FILE, 'r') as f:
-                last_update_str = f.read().strip()
-                last_update = int(float(last_update_str))
-            
-            current_time = int(time.time())
-            age = current_time - last_update
-
-            if age < MAX_STALE_SECONDS:
-                print("Service appears to be running and healthy.")
-                return True
-                sys.exit(0)
-            else:
-                print("Service heartbeat is stale. Attempting to restart.")
-                return False
-                # The logic to restart the service would go here.
-                
-        except (IOError, ValueError):
-            print("Heartbeat file is present but unreadable or corrupt.")
-            return False
-            # Treat as if the service is not running correctly.
-    else:
-        print("Service is not running.")
+        age = time.time() - int(heartbeat_path.read_text().strip())
+        return age < max_age
+    except (IOError, ValueError):
         return False
 
+# --- Main Logic ---
+# 1. Check if the service is already running and healthy.
+# This is now the normal, fast path.
+if not is_service_healthy(HEARTBEAT_FILE, HEARTBEAT_MAX_AGE_SECONDS):
+    
+    # 2. If not healthy, check if the process exists but is stalled.
+    is_running = subprocess.run(['pgrep', '-f', SERVICE_PY_NAME]).returncode == 0
+    if is_running:
+        subprocess.run(["notify-send", "SL5 STT Warning", "Heartbeat stale. Killing old process."])
+        subprocess.run(['pkill', '-f', SERVICE_PY_NAME])
+        time.sleep(0.5)
 
+    # 3. Start the service and wait for it to become ready.
+    subprocess.run(["notify-send", "SL5 STT", "Service not running. Starting..."])
+    start_script = PROJECT_DIR / "scripts/activate-venv_and_run-server.sh"
+    subprocess.Popen([str(start_script)], shell=False)
 
+    ready = False
+    # Wait up to 30 seconds for the service to write its first heartbeat
+    for _ in range(HEARTBEAT_MAX_AGE_SECONDS): 
+        if is_service_healthy(HEARTBEAT_FILE, 5): # Check against a small window
+            subprocess.run(["notify-send", "SL5 STT", "Service is now ready!"])
+            ready = True
+            break
+        time.sleep(1)
 
-def write_to_file(filepath, content):
-    """Schreibt den Inhalt sicher in eine Datei."""
-    try:
-        Path(filepath).write_text(str(content))
-    except Exception as e:
-        system.exec_command(f"notify-send 'FEHLER' 'Konnte nicht in {filepath} schreiben: {e}'")
+    if not ready:
+        subprocess.run(["notify-send", "-u", "critical", "SL5 STT Error", "Service failed to start. Check logs."])
+        sys.exit(1)
 
-# --- Ihre bestehende Logik, aber mit Dateizugriffen ---
-
-# Andere Pfade und Variablen
-service_name = f"{SERVICE_NAME}.py" # todo: to many variables or rename this variable
-trigger_file = Path("/tmp/vosk_trigger")
-python_executable = PROJECT_DIR / ".venv" / "bin" / "python"
-service_script_path = PROJECT_DIR / service_name
-
-# Werte aus Dateien lesen statt aus dem storeHockey Test Test Test
-# Wir geben einen Standardwert für vosk_model an, falls die Datei beim allerersten Start nicht existiert
-vosk_model = read_from_file(VOSK_MODEL_FILE, default_value="vosk-model-de-0.21")
-vosk_model_lastused = read_from_file(VOSK_LASTUSED_FILE)
-
-if vosk_model != vosk_model_lastused:
-    system.exec_command("notify-send 'INFO' 'Sprachmodell wird gewechselt...'")
-
-    commandKill = f"/usr/bin/pkill -f {service_name} &"
-    try:
-        # This is the original command that sometimes fails
-        system.exec_command(commandKill)
-    except subprocess.CalledProcessError as e:
-        # Check if the error is specifically the one we are looking for
-        # (command was empty string and exit status was 1)
-        if e.cmd == '' and e.returncode == 1:
-            # If it is, run the specified server script instead.
-            # Get the absolute path to the script in the home directory.
-            server_script = os.path.expanduser(f"{PROJECT_DIR}/scripts/activate-venv_and_run-server.sh")
-
-            # Execute the script
-            system.exec_command(server_script)
-        else:
-            # If it's a different CalledProcessError, re-raise it
-            # so you don't hide other potential problems.
-            raise e
-
-
-    # Kurze Pause, damit der pkill-Befehl wirken kann (dies ist immer noch eine gute Praxis)
-    time.sleep(0.5)
-
-    # Den neuen Zustand in die "lastused"-Datei schreiben
-    write_to_file(VOSK_LASTUSED_FILE, vosk_model)
-
-# --- Hauptlogik (bleibt unverändert) ---
-check_command = ['pgrep', '-f', service_name]
-result = subprocess.run(check_command, capture_output=True)
-
-if result.returncode != 0:
-    for _ in range(5):
-        try:
-            system.exec_command(f"notify-send 'start ' ' {vosk_model}...' -t 5000")
-            start_command = f"{PROJECT_DIR}/scripts/activate-venv_and_run-server.sh"
-
-            proc = subprocess.Popen([start_command])
-            subprocess.run(["notify-send", "STT Server Started", f"Running with PID: {proc.pid}"])
-
-            time.sleep(5)
-            check_command = ['pgrep', '-f', service_name]
-            result = subprocess.run(check_command, capture_output=True)
-
-            if result.returncode == 0:
-                system.exec_command(f"notify-send 'STT runs' '{vosk_model}'")
-            else:
-                system.exec_command(f"notify-send 'STT not runs ' 'start next try'")
-                continue # start next try
-                
-            for _ in range(15):
-                if isHearHealty(HEARTBEAT_FILE, HEARTBEAT_INTERVAL_SECONDS):
-                    break
-                time.sleep(1)
-                                
-            break  # break out of the loop if no exception occurs
-            
-        except Exception as e:
-            print(f"Exception: {e}")
-            system.exec_command(f"notify-send '150: Exception' '{e}'")
-            time.sleep(4)
-            # continue to the next iteration if an exception occurs Test theokay okay
-
-system.exec_command(f'touch {trigger_file}')
-# 
+# 4. If we are here, the service is running. Trigger it.
+TRIGGER_FILE.touch(exist_ok=True)
+# Optional: a quiet confirmation that the trigger was sent
+# subprocess.run(["notify-send", "-t", "1000", "SL5 STT", "Triggered..."])
