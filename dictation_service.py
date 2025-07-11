@@ -28,7 +28,7 @@ else:
 TRIGGER_FILE = TMP_DIR / "vosk_trigger"
 HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
 PIDFILE = TMP_DIR / "dictation_service.pid"
-LOG_FILE = PROJECT_ROOT / "dictation_service.log"
+LOG_FILE = PROJECT_ROOT / "log/dictation_service.log"
 
 
 
@@ -50,7 +50,7 @@ TRIGGER_FILE = TMP_DIR / "vosk_trigger"
 
 HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
 PIDFILE = TMP_DIR / "dictation_service.pid"
-LOG_FILE = Path("dictation_service.log")
+LOG_FILE = Path("log/dictation_service.log")
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
@@ -64,7 +64,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)-8s - %(message)s',
     handlers=[
-        logging.FileHandler(f'{SCRIPT_DIR}/dictation_service.log', mode='w'),
+        logging.FileHandler(f'{SCRIPT_DIR}/log/dictation_service.log', mode='w'),
         logging.StreamHandler(sys.stdout)
     ]
 )

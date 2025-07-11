@@ -2,6 +2,8 @@
 # This script's only job is to ensure the dictation service is running and then trigger it.
 # The backend now handles language switching internally, so no restart is needed.
 
+# Das funktioniert perfekt Then works perfect
+
 import os
 import sys
 import subprocess
