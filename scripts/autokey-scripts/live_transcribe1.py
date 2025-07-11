@@ -2,8 +2,6 @@
 # This script's only job is to ensure the dictation service is running and then trigger it.
 # The backend now handles language switching internally, so no restart is needed.
 
-# Das funktioniert perfekt Then works perfect
-
 import os
 import sys
 import subprocess
@@ -73,4 +71,5 @@ if not is_service_healthy(HEARTBEAT_FILE, HEARTBEAT_MAX_AGE_SECONDS):
 subprocess.run(["touch", TRIGGER_path, "Triggered"]) # <= thats works more tabel much better 12.7.'25 00:42 Sat
 
 # Optional: a quiet confirmation that the trigger was sent
+# TestOkay das funktioniert
 # subprocess.run(["notify-send", "-t", "1000", "SL5 STT", "Triggered..."])
