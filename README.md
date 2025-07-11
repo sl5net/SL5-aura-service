@@ -172,6 +172,28 @@ This table provides an overview of different Vosk models, including their size, 
 
 **License of LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
+---
+
+### Download Models and External Tools (Recommended)
+
+The setup script will attempt to download the required models (~4 GB) automatically. However, the official download servers can sometimes be slow or unreliable, leading to timeouts.
+
+**For a faster and more reliable installation**, we strongly recommend downloading the required files manually from our official GitHub Releases page and placing them in the project's root directory **before** running the setup script.
+
+1.  **Go to our GitHub Releases page:**
+    *   **[Download All Required Models Here](https://github.com/sl5net/Vosk-System-Listener/releases/tag/v0.2.0.1)** 
+
+2.  **Download these files:**
+    *   `vosk-model-en-us-0.22.zip`
+    *   `vosk-model-de-0.21.zip`
+
+3.  **Place the `.zip` files** in the models directory of this project.
+
+The setup script will detect the local files and skip the download.
+
+---
+
+
    
 ```sh
 cd ~/projects/py/STT/
