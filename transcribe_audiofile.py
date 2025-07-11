@@ -115,7 +115,7 @@ def check_ffmpeg():
 
 
 # --- Main Logic ---
-def main():
+def main(logger):
     """Main function to run the transcription process."""
     check_ffmpeg()
 
@@ -181,4 +181,4 @@ def main():
             os.remove(temp_wav_path); print(f"Cleaned up temporary file.")
 
 if __name__ == "__main__":
-    main()
+    main(logger)

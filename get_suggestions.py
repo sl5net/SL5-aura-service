@@ -29,7 +29,7 @@ LOCK_FILE = Path("/tmp/get_suggestions.lock")
 TIMESTAMP_FILE = Path("/tmp/get_suggestions.timestamp")
 COOLDOWN_SECONDS = 2
 
-LANGUAGETOOL_URL = "http://localhost:8082/v2/check"
+LANGUAGETOOL_BASE_URL = "http://localhost:8082/v2/check"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 NUM_SUGGESTIONS = 5
 VOSK_MODEL_FILE = Path( PROJECT_DIR / "config/model_name.txt")
@@ -142,7 +142,7 @@ def get_phonetically_similar(word: str, phonetic_index: Dict[str, Set[str]], lan
 
 def get_suggestions_from_lt(word: str, language: str) -> List[str]:
     try:
-        response = requests.post(LANGUAGETOOL_URL, data={'language': language, 'text': word}, timeout=1.0)
+        response = requests.post(LANGUAGETOOL_BASE_URL, data={'language': language, 'text': word}, timeout=1.0)
         response.raise_for_status()
         return list({r['value'] for m in response.json().get('matches', []) for r in m.get('replacements', [])})
     except requests.exceptions.RequestException as e:
