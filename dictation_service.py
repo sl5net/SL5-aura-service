@@ -1,20 +1,39 @@
-# File: ~/projects/py/STT/dictation_service.py
-import vosk, sys, time
-import sounddevice as sd
-import queue, json, pyperclip, subprocess
+# File: STT/dictation_service.py
+import sys, time, os, atexit, requests, logging, platform
 from pathlib import Path
-import argparse
-import os, atexit, requests, logging
-import platform, threading
 
-from scripts.py.func import cleanup
-
-from scripts.py.func.main import main
-
-from pathlib import Path
+# --- Local Imports (grouped for clarity) ---
 from config.settings import (LANGUAGETOOL_RELATIVE_PATH,
                             USE_EXTERNAL_LANGUAGETOOL, EXTERNAL_LANGUAGETOOL_URL, LANGUAGETOOL_PORT,
-                            CRITICAL_THRESHOLD_MB)
+                            CRITICAL_THRESHOLD_MB, PRELOAD_MODELS)
+from scripts.py.func.main import main
+from scripts.py.func.notify import notify
+from scripts.py.func.cleanup import cleanup
+from scripts.py.func.start_languagetool_server import start_languagetool_server
+from scripts.py.func.stop_languagetool_server import stop_languagetool_server
+from scripts.py.func.check_memory_critical import check_memory_critical
+# We need vosk here for the model loading
+import vosk
+
+
+# --- Constants and Paths ---
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
+
+if platform.system() == "Windows":
+    TMP_DIR = Path("C:/tmp")
+else:
+    TMP_DIR = Path("/tmp")
+
+TRIGGER_FILE = TMP_DIR / "vosk_trigger"
+HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
+PIDFILE = TMP_DIR / "dictation_service.pid"
+LOG_FILE = PROJECT_ROOT / "vosk_dictation.log"
+
+
+
+
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 LANGUAGETOOL_JAR_PATH = PROJECT_ROOT / LANGUAGETOOL_RELATIVE_PATH
@@ -51,27 +70,34 @@ logging.basicConfig(
 )
 logger = logging.getLogger()
 # --- Wrapper Script Check ---
+"""
 if os.environ.get("DICTATION_SERVICE_STARTED_CORRECTLY") != "true":
     logger.fatal("FATAL: This script must be started using the 'activate-venv_and_run-server.sh' wrapper.")
     sys.exit(1)
+"""
 
 from scripts.py.func.notify import notify
 from scripts.py.func.cleanup import cleanup
 from scripts.py.func.start_languagetool_server import start_languagetool_server
-from scripts.py.func.stop_languagetool_server import stop_languagetool_server 
+from scripts.py.func.stop_languagetool_server import stop_languagetool_server
 from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
 from scripts.py.func.check_memory_critical import check_memory_critical
-from scripts.py.func.normalize_punctuation import normalize_punctuation
+from scripts.py.func.stop_languagetool_server import stop_languagetool_server
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 
 files_to_clean = [HEARTBEAT_FILE, PIDFILE, TRIGGER_FILE]
-atexit.register(cleanup, logger, files_to_clean)
+atexit.register(lambda: cleanup(logger, files_to_clean))
+atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
 
 with open(PIDFILE, 'w') as f:
     f.write(str(os.getpid()))
 
 # --- Argument Parsing und Model-Setup ---
-MODEL_NAME_DEFAULT = "vosk-model-de-0.21"
+MODEL_NAME_DEFAULT = "vosk-model-de-0.21" # fallback
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+""""
 parser = argparse.ArgumentParser(description="A real-time dictation service using Vosk.")
 parser.add_argument('--vosk_model', help=f"Name of the Vosk model folder. Defaults to '{MODEL_NAME_DEFAULT}'.")
 parser.add_argument('--test-text', help="Bypass microphone and use this text for testing.")
@@ -79,16 +105,20 @@ args = parser.parse_args()
 VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
 vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
 MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
-MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
+
+"""
+
+
+
+
+
+TRIGGER_FILE.unlink(missing_ok=True)
+
+# MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
 
 import scripts.py.func.guess_lt_language_from_model
 
-LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
-
-
-# --- Model Loading und Server-Start ---
-logger.info("--- Vosk dictation_service starting ---")
-TRIGGER_FILE.unlink(missing_ok=True)
+# LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
 
 
 
@@ -110,9 +140,11 @@ else:
     jar_path_absolute = PROJECT_ROOT / LANGUAGETOOL_RELATIVE_PATH
     internal_lt_url = f"http://localhost:{LANGUAGETOOL_PORT}"
 
+    logger.info(f"start_languagetool_server(logger, {jar_path_absolute}, {internal_lt_url})")
     languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url)
     if not languagetool_process: sys.exit(1)
-    atexit.register(stop_languagetool_server, logger, languagetool_process)
+    atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
+
     active_lt_url = f"http://localhost:{LANGUAGETOOL_PORT}/v2/check"
 
 
@@ -122,29 +154,74 @@ else:
 if not start_languagetool_server:
     notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
     sys.exit(1)
-if not MODEL_PATH.exists():
-    notify("Vosk Startup Error", f"Model not found: {MODEL_PATH}", "critical")
+
+# --- mainlogic is in Thread ---
+
+
+
+# --- Preload multiple models ---
+loaded_models = {}
+
+is_critical, avail_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
+if is_critical:
+    logger.critical(f"memory < --{CRITICAL_THRESHOLD_MB}-- ({avail_mb:.0f}MB available). Shutting down.")
+    notify("Vosk: Critical Error", "Low memory detected. Service shutting down.", "critical")
     sys.exit(1)
-try:
-    model = vosk.Model(str(MODEL_PATH))
-    logger.info(f"{MODEL_NAME} loaded. Waiting for trigger.")
-    notify("Vosk Ready", f"{MODEL_NAME} loaded.", icon="media-record")
-except Exception as e:
-    notify("Vosk Error", f"Could not load model {MODEL_NAME}: {e}", "critical")
+
+else:
+    # --- Model Pre-loading ---
+    logger.info("--- Starting model pre-loading phase ---")
+    loaded_models = {}
+
+    is_critical, avail_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
+
+    if is_critical:
+        logger.critical(f"memory < --{CRITICAL_THRESHOLD_MB}-- ({avail_mb:.0f}MB available). ")
+        logger.warning("Critical memory situation detected. Skipping model preloading.")
+        notify("Vosk: Critical Error", "Low memory detected. Service shutting down.", "critical")
+    else:
+        logger.info(f"Attempting to preload models from settings: {PRELOAD_MODELS}")
+        for model_name in PRELOAD_MODELS:
+            model_path = SCRIPT_DIR / "models" / model_name
+            if not model_path.exists():
+                logger.warning(f"Model '{model_name}' not found at '{model_path}', skipping.")
+                continue
+            try:
+                lang_key = model_name.split('-')[2]
+                logger.info(f"Loading model '{model_name}' for language key '{lang_key}'...")
+                model = vosk.Model(str(model_path))
+                loaded_models[lang_key] = model
+                logger.info(f"Successfully loaded '{model_name}'.")
+            except Exception as e:
+                logger.error(f"Could not load model '{model_name}': {e}", exc_info=True)
+
+
+if not loaded_models:
+    notify("Vosk Startup Error", "No models could be loaded. Check logs.", "critical")
+    logger.fatal("FATAL: No models were loaded. Exiting.")
     sys.exit(1)
-# --- Kernlogik für die Verarbeitung (läuft im Thread) ---
+
+logger.info(f"Models loaded: {list(loaded_models.keys())}. Waiting for trigger.")
+notify("Vosk Ready", f"Models loaded: {', '.join(loaded_models.keys())}", icon="media-record")
+
+
+
+
+# --- main-logic is in Thread ---
+
 recording_time = 0
 if __name__ == "__main__":
-
-
     config = {
         "TMP_DIR": TMP_DIR,
         "HEARTBEAT_FILE": HEARTBEAT_FILE,
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
-        "LT_LANGUAGE": LT_LANGUAGE,
-        "CRITICAL_THRESHOLD_MB": CRITICAL_THRESHOLD_MB   
+        # REMOVED: LT_LANGUAGE is now determined dynamically inside main
+        "CRITICAL_THRESHOLD_MB": CRITICAL_THRESHOLD_MB,
+        "PROJECT_ROOT": PROJECT_ROOT
     }
-    main(logger, LT_LANGUAGE, model, config, suspicious_events, TMP_DIR, recording_time,active_lt_url)
-#
+    # MODIFIED: Pass the dictionary of loaded models to main
+    main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_time, active_lt_url)
+
+
 

@@ -1,6 +1,11 @@
 # file: config/settings.py
 # Central configuration for the application
 
+# --- Language Model Preloading ---
+# A list of Vosk model folder names to preload at startup if memory allows.
+PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+# PRELOAD_MODELS = ["vosk-model-de-0.21"]
+
 # --- LanguageTool Server ---
 # Set to True to use an existing LT server. AT YOUR OWN RISK!
 # The application will not start its own server and will not stop the external one.
@@ -20,6 +25,8 @@ SUSPICIOUS_THRESHOLD = 3
 SILENCE_TIMEOUT = 5
 
 SILENCE_TIMEOUT2 = 0.4
+
+SAMPLE_RATE = 16000
 
 # System
 CRITICAL_THRESHOLD_MB = 1024
