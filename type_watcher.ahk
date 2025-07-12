@@ -28,5 +28,5 @@ Loop
     }
 
     ; Kurze Pause, um CPU-Last zu reduzieren, bevor erneut gesucht wird.
-    Sleep 5
+    Sleep 0.02
 }
