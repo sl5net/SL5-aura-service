@@ -20,8 +20,10 @@ except (FileNotFoundError, KeyError) as e:
     sys.exit(1)
 
 SERVICE_PY_NAME = "dictation_service.py"
+
 TRIGGER_path = "/tmp/vosk_trigger"
 TRIGGER_FILE = Path(TRIGGER_path)
+
 HEARTBEAT_FILE = Path(f"/tmp/dictation_service.heartbeat")
 # INCREASED TIMEOUT: Give the service more time to start
 HEARTBEAT_MAX_AGE_SECONDS = 30 # Increased from 15
@@ -69,7 +71,7 @@ if not is_service_healthy(HEARTBEAT_FILE, HEARTBEAT_MAX_AGE_SECONDS):
 # 4. If we are here, the service is running. Trigger it.
 # TRIGGER_FILE.touch(exist_ok=True) # <= thats not stabel  12.7.'25 00:42 Sat
 subprocess.run(["touch", TRIGGER_path, "Triggered"]) # <= thats works more tabel much better 12.7.'25 00:42 Sat
-
+# 
 # Optional: a quiet confirmation that the trigger was sent
 # TestOkay das funktioniert
 # subprocess.run(["notify-send", "-t", "1000", "SL5 STT", "Triggered..."])
