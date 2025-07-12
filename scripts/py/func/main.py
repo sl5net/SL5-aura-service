@@ -42,14 +42,24 @@ def main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_ti
                 except subprocess.TimeoutExpired:
                     pass
 
-        else: # Polling für andere Systeme
-            # Polling
+        else:  # Polling (Windows, macOS)
             logger.info("Listening for triggers via file polling...")
             while True:
+                # Prüfen, ob die Trigger-Datei existiert
                 if trigger_file.exists():
-                    pass
+                    logger.info("Trigger file detected by polling.")
+                    # Zuerst löschen, um erneutes Auslösen zu verhindern
+                    trigger_file.unlink(missing_ok=True)
+                    # Den eigentlichen Trigger-Prozess starten
+                    handle_trigger(
+                        logger, loaded_models, active_threads, suspicious_events,
+                        project_root, TMP_DIR, recording_time, active_lt_url
+                    )
+
                 time.sleep(0.2)
+                # Heartbeat-Datei aktualisieren
                 Path(heartbeat_file).write_text(str(int(time.time())))
+
 
     except KeyboardInterrupt:
         logger.info("\nService interrupted by user.")
