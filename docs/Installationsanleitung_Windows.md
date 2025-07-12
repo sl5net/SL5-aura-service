@@ -59,6 +59,10 @@ Jetzt sollte alles bereit sein.
 1.  **Watcher starten:** Starte `type_watcher.ahk` und `notification_watcher.ahk` per Doppelklick.
 2.  **Server starten:** Führe in der Git-Bash mit der aktiven `(.venv)`-Umgebung aus:
     ```bash
+    
+    source .venv/Scripts/activate
+    (.venv)    
+    
     python dictation_service.py
     ```
     Lass dieses Fenster offen. Es sollte nun fehlerfrei laufen.
