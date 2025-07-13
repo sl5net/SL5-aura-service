@@ -2,8 +2,11 @@
 from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
 from .normalize_punctuation import normalize_punctuation
 
+from config.languagetool_server.FUZZY_MAP import FUZZY_MAP
+
 from .correct_text import correct_text
 import re, time
+from thefuzz import fuzz
 from .notify import notify
 
 def process_text_in_background(logger,
@@ -22,6 +25,21 @@ def process_text_in_background(logger,
 
         processed_text = normalize_punctuation(raw_text)
         processed_text = correct_text(logger, active_lt_url, LT_LANGUAGE, processed_text)
+
+
+        # Step 2: Slower, fuzzy replacements on the result
+        words = processed_text.split()
+        for i, word in enumerate(words):
+            for replacement, match_word, threshold in FUZZY_MAP:
+                score = fuzz.ratio(word.lower(), match_word.lower())
+                if score >= threshold:
+                    words[i] = replacement
+                    break  # Move to next word once a match is found
+        processed_text = " ".join(words)
+
+
+
+
         if re.match(r"^\w", processed_text) and time.time() - recording_time < 20:
             processed_text = ' ' + processed_text
         recording_time = time.time()

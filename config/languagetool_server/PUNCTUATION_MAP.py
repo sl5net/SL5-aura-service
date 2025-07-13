@@ -109,8 +109,8 @@ PUNCTUATION_MAP = {
     'gittert punkt': 'git add .',
 
     # git commit -m "..."
-    'geht com mit': 'git commit -m ""', # Fügt direkt die Anführungszeichen hinzu
-    'gitter mit': 'git commit -m ""',
+    'geht com mit': 'git commit -m "', # Fügt direkt die Anführungszeichen hinzu
+    'gitter mit': 'git commit -m "',
 
     # git push
     'geht busch': 'git push',
@@ -130,10 +130,6 @@ PUNCTUATION_MAP = {
     # git add .
     'geht add punkt': 'git add .',
     'gittert punkt': 'git add .',
-
-    # git commit -m "..."
-    'geht com mit': 'git commit -m ""', # Fügt direkt die Anführungszeichen hinzu
-    'gitter mit': 'git commit -m ""',
 
     # git push
     'geht busch': 'git push',
