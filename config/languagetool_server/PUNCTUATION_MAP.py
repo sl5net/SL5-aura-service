@@ -1,3 +1,4 @@
+# file config/languagetool_server/PUNCTUATION_MAP.py
 PUNCTUATION_MAP = {
     # German - Common, Mishearings
     'punkt': '.',
@@ -96,6 +97,56 @@ PUNCTUATION_MAP = {
     'koffee pace': 'Copy Paste',
     'copy pace': 'Copy Paste',
     'hobby pest': 'Copy Paste',
+
+
+
+        # git status
+    'geht status': 'git status',
+    'gitter status': 'git status',
+
+    # git add .
+    'geht add punkt': 'git add .',
+    'gittert punkt': 'git add .',
+
+    # git commit -m "..."
+    'geht com mit': 'git commit -m ""', # Fügt direkt die Anführungszeichen hinzu
+    'gitter mit': 'git commit -m ""',
+
+    # git push
+    'geht busch': 'git push',
+    'gitter busch': 'git push',
+
+    # git pull
+    'geht pohl': 'git pull',
+    'gitter pohl': 'git pull',
+
+
+
+
+    # git status
+    'geht status': 'git status',
+    'gitter status': 'git status',
+
+    # git add .
+    'geht add punkt': 'git add .',
+    'gittert punkt': 'git add .',
+
+    # git commit -m "..."
+    'geht com mit': 'git commit -m ""', # Fügt direkt die Anführungszeichen hinzu
+    'gitter mit': 'git commit -m ""',
+
+    # git push
+    'geht busch': 'git push',
+    'gitter busch': 'git push',
+
+    # git pull
+    'geht pohl': 'git pull',
+    'gitter pohl': 'git pull',
+
+
+
+
+
 
     # lokale Berühmtheiten ;)
     'sebastian laufer': 'Sebastian Lauffer',
