@@ -3,7 +3,7 @@
 
 # --- Language Model Preloading ---
 # A list of Vosk model folder names to preload at startup if memory allows.
-PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 # PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 # --- LanguageTool Server ---
@@ -17,14 +17,13 @@ EXTERNAL_LANGUAGETOOL_URL = "http://localhost:8081"
 # Settings for our internal server (if used)
 LANGUAGETOOL_PORT = 8082
 
-
-
 # Recording & Transcription
 SUSPICIOUS_TIME_WINDOW = 90
 SUSPICIOUS_THRESHOLD = 3
 SILENCE_TIMEOUT = 0.4
-
 SILENCE_TIMEOUT2 = 0.4
+
+PRE_RECORDING_TIMEOUT = 5
 
 SAMPLE_RATE = 16000
 
