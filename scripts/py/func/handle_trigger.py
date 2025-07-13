@@ -66,12 +66,11 @@ def handle_trigger(
 
     if len(suspicious_events) == 0:
         silence_timout = PRE_RECORDING_TIMEOUT
+        logger.info(f"silence_timout now set to = PRE_RECORDING_TIMEOUT: '{PRE_RECORDING_TIMEOUT}' ")
     else:
         silence_timout = SILENCE_TIMEOUT
 
-    raw_text = transcribe_audio_with_feedback(logger, recognizer, lt_language,
-                                              silence_timout,
-                                              SAMPLE_RATE)
+    raw_text = transcribe_audio_with_feedback(logger, recognizer, lt_language)
 
     # 2. proof "strange" Events
     if not raw_text.strip() or len(raw_text.split()) < 1:

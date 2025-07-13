@@ -16,6 +16,10 @@ def process_text_in_background(logger,
 
 
         logger.info(f"THREAD: Starting processing for: '{raw_text}'")
+
+        # In der Funktion, wo die Aufnahme stoppt
+        notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
+
         processed_text = normalize_punctuation(raw_text)
         processed_text = correct_text(logger, active_lt_url, LT_LANGUAGE, processed_text)
         if re.match(r"^\w", processed_text) and time.time() - recording_time < 20:
@@ -26,11 +30,15 @@ def process_text_in_background(logger,
         unique_output_file.write_text(processed_text)
         logger.info(f"THREAD: Successfully wrote to {unique_output_file}")
 
-        notify("Transcribed", duration=700, urgency="low")
+        # notify("Transcribed", duration=700, urgency="low")
+
+        notify("Transcribed", "", "low", duration=1000, replace_tag="transcription_status")
 
 
     except Exception as e:
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
+        notify(f"FATAL: Error in processing thread", duration=4000, urgency="low")
     finally:
         logger.info(f"--- Background processing for '{raw_text[:20]}...' finished. ---")
+        notify(f"--- Background processing for '{raw_text[:20]}...' finished. ---", duration=700, urgency="low")
 
