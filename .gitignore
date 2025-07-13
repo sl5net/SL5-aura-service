@@ -17,6 +17,8 @@ type_watcher.log
 
 /log/
 
+config/settings_local.py
+
 *.cache.*
 **/__pycache__/
 

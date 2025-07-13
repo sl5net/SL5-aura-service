@@ -6,9 +6,14 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-from config.settings import NOTIFY_SEND_PATH
+from config.settings import NOTIFY_SEND_PATH, NOTIFICATION_LEVEL
 
 def notify(summary: object, body: object = "", urgency: object = "low", icon: object = None, duration: object = 3000,replace_tag: str = None) -> None:
+
+    if not NOTIFICATION_LEVEL:
+        logger.info(f"NOTIFICATION_LEVEL = {NOTIFICATION_LEVEL}")
+        return
+
     if not NOTIFY_SEND_PATH or not Path(NOTIFY_SEND_PATH).exists():
         logger.warning("Notifier not initialized or path invalid.")
         return
