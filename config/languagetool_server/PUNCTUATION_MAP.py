@@ -108,6 +108,11 @@ PUNCTUATION_MAP = {
     'geht add punkt': 'git add .',
     'gittert punkt': 'git add .',
 
+    'Dad geh': 'git add .',
+    'tat ID': 'git add .',
+    'geh tat': 'git add .',
+    'Da hat': 'git add .',
+
     # git commit -m "..."
     'geht com mit': 'git commit -m "', # Fügt direkt die Anführungszeichen hinzu
     'gitter mit': 'git commit -m "',
@@ -126,10 +131,22 @@ PUNCTUATION_MAP = {
     # git status
     'geht status': 'git status',
     'gitter status': 'git status',
+    'geht staates': 'git status',
 
     # git add .
     'geht add punkt': 'git add .',
     'gittert punkt': 'git add .',
+
+    'geht duett': 'git add .',   # Für "git add ."
+
+    'git at': 'git add .',
+    'mit at': 'git add .',
+
+    'kate at': 'git add .',
+    'geht es': 'git add .',
+
+    # git commit
+    'womit': 'git commit',        # Für "git commit"
 
     # git push
     'geht busch': 'git push',
