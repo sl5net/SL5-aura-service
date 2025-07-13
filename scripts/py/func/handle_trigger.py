@@ -1,16 +1,14 @@
 # File: scripts/py/func/handle_trigger.py
-import platform, subprocess, threading, time
-import sys
-from pathlib import Path
+import threading, time, vosk
 
-from config.settings import SILENCE_TIMEOUT, SAMPLE_RATE, SUSPICIOUS_TIME_WINDOW, SUSPICIOUS_THRESHOLD
-from .transcribe_audio_with_feedback import transcribe_audio_with_feedback
-from .process_text_in_background import process_text_in_background
-from .check_memory_critical import check_memory_critical
 from .guess_lt_language_from_model import guess_lt_language_from_model
 from .notify import notify
+from .process_text_in_background import process_text_in_background
+from .transcribe_audio_with_feedback import transcribe_audio_with_feedback
 
-import vosk
+from config.settings import SAMPLE_RATE, SUSPICIOUS_TIME_WINDOW, SUSPICIOUS_THRESHOLD, \
+    PRE_RECORDING_TIMEOUT, SILENCE_TIMEOUT
+
 
 def handle_trigger(
     logger,
@@ -59,7 +57,21 @@ def handle_trigger(
     logger.info(f"Using model for lang '{lt_language}'.")
 
     recognizer = vosk.KaldiRecognizer(selected_model, SAMPLE_RATE)
-    raw_text = transcribe_audio_with_feedback(logger, recognizer, lt_language, SILENCE_TIMEOUT, SAMPLE_RATE)
+
+    if not SILENCE_TIMEOUT:
+        logger.error(f"SILENCE_TIMEOUT: '{SILENCE_TIMEOUT}' ")
+    if not PRE_RECORDING_TIMEOUT:
+        logger.error(f"PRE_RECORDING_TIMEOUT: '{PRE_RECORDING_TIMEOUT}' ")
+
+
+    if len(suspicious_events) == 0:
+        silence_timout = PRE_RECORDING_TIMEOUT
+    else:
+        silence_timout = SILENCE_TIMEOUT
+
+    raw_text = transcribe_audio_with_feedback(logger, recognizer, lt_language,
+                                              silence_timout,
+                                              SAMPLE_RATE)
 
     # 2. proof "strange" Events
     if not raw_text.strip() or len(raw_text.split()) < 1:

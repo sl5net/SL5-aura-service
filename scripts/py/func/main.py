@@ -6,6 +6,10 @@ from .handle_trigger import handle_trigger
 from .check_memory_critical import check_memory_critical
 from .notify import notify
 
+from config.settings import SAMPLE_RATE, SUSPICIOUS_TIME_WINDOW, SUSPICIOUS_THRESHOLD, \
+    PRE_RECORDING_TIMEOUT, SILENCE_TIMEOUT
+
+
 def main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_time, active_lt_url):
     active_threads = []
 
@@ -14,6 +18,11 @@ def main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_ti
     heartbeat_file = config["HEARTBEAT_FILE"]
     critical_threshold_mb = config["CRITICAL_THRESHOLD_MB"]
     project_root = config["PROJECT_ROOT"]
+
+    if not SILENCE_TIMEOUT:
+        logger.error(f"SILENCE_TIMEOUT: '{SILENCE_TIMEOUT}' ")
+
+
 
     # --- Main Loop ---
     try:
@@ -38,6 +47,7 @@ def main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_ti
                         handle_trigger(
                             logger, loaded_models, active_threads, suspicious_events,
                             project_root, TMP_DIR, recording_time, active_lt_url
+                            , config
                         )
                 except subprocess.TimeoutExpired:
                     pass
@@ -59,7 +69,8 @@ def main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_ti
                     trigger_file.unlink(missing_ok=True)
                     handle_trigger(
                         logger, loaded_models, active_threads, suspicious_events,
-                        project_root, TMP_DIR, recording_time, active_lt_url
+                        project_root, TMP_DIR, recording_time, active_lt_url,
+                        config
                     )
 
                 time.sleep(0.2)
