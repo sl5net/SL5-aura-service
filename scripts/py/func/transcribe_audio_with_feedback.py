@@ -10,10 +10,6 @@ import sounddevice as sd
 def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , SILENCE_TIMEOUT
                                    , SAMPLE_RATE):
-    """
-
-    :type recognizer: object
-    """
     q = queue.Queue()
     def audio_callback(indata, frames, time, status):
         if status: logger.warning(f"Audio status: {status}")

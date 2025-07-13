@@ -47,7 +47,6 @@ def main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_ti
                         handle_trigger(
                             logger, loaded_models, active_threads, suspicious_events,
                             project_root, TMP_DIR, recording_time, active_lt_url
-                            , config
                         )
                 except subprocess.TimeoutExpired:
                     pass
