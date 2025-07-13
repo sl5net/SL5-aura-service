@@ -1,1 +1,0 @@
-vosk-model-de-0.21
