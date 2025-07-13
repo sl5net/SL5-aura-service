@@ -1,0 +1,4 @@
+# My personal settings for SL5 Dictation
+# This file is ignored by Git.
+
+NOTIFICATION_LEVEL = 0
