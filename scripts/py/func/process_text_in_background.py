@@ -25,7 +25,10 @@ def process_text_in_background(logger,
         unique_output_file = TMP_DIR / f"tts_output_{timestamp}.txt"
         unique_output_file.write_text(processed_text)
         logger.info(f"THREAD: Successfully wrote to {unique_output_file}")
-        notify("Transcribed", duration=700)
+
+        notify("Transcribed", duration=700, urgency="low")
+
+
     except Exception as e:
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
     finally:
