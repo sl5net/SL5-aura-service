@@ -31,4 +31,3 @@ def process_text_in_background(logger,
     finally:
         logger.info(f"--- Background processing for '{raw_text[:20]}...' finished. ---")
 
-    return suspicious_events
