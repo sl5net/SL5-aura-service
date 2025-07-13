@@ -202,7 +202,8 @@ if not loaded_models:
     sys.exit(1)
 
 logger.info(f"Models loaded: {list(loaded_models.keys())}. Waiting for trigger.")
-notify("Vosk Ready", f"Models loaded: {', '.join(loaded_models.keys())}", icon="media-record")
+# notify("Vosk Ready", f"Models loaded: {', '.join(loaded_models.keys())}", icon="media-record")
+notify("SL5 Dictation Ready", f"Models loaded: {', '.join(loaded_models.keys())}", icon="dialog-information")
 
 
 
