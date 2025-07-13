@@ -1,4 +1,5 @@
 # file: scripts/py/func/process_text_in_background.py
+from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
 from .normalize_punctuation import normalize_punctuation
 
 from .correct_text import correct_text
@@ -12,8 +13,8 @@ def process_text_in_background(logger,
                                recording_time,
                                active_lt_url):
     try:
-        if not raw_text:
-            return
+
+
         logger.info(f"THREAD: Starting processing for: '{raw_text}'")
         processed_text = normalize_punctuation(raw_text)
         processed_text = correct_text(logger, active_lt_url, LT_LANGUAGE, processed_text)
@@ -29,3 +30,5 @@ def process_text_in_background(logger,
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
     finally:
         logger.info(f"--- Background processing for '{raw_text[:20]}...' finished. ---")
+
+    return suspicious_events

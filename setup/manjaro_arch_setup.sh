@@ -127,25 +127,6 @@ echo "LanguageTool installation verified successfully."
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 mkdir -p log
 
 # Download and extract Vosk Models
