@@ -26,7 +26,16 @@ if 'VIRTUAL_ENV' not in os.environ:
         "       Then, you can run the script: python dictation_service.py",
         file=sys.stderr
     )
+
+    print("       Or (recommended) run:", file=sys.stderr)
+    print(
+        "       scripts/restart_venv_and_run-server.sh or run activate-venv_and_run-server.sh",
+        file=sys.stderr
+    )
     sys.exit(1)
+
+
+
 # ==============================================================================
 
 
