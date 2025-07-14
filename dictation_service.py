@@ -29,7 +29,7 @@ if 'VIRTUAL_ENV' not in os.environ:
 
     print("       Or (recommended) run:", file=sys.stderr)
     print(
-        "       scripts/restart_venv_and_run-server.sh or run activate-venv_and_run-server.sh",
+        "       scripts/restart_venv_and_run-server.sh or run scripts/activate-venv_and_run-server.sh",
         file=sys.stderr
     )
     sys.exit(1)
@@ -75,6 +75,9 @@ validate_setup(SCRIPT_DIR)
 # --- Wrapper Script Check ---
 if DEV_MODE :
     check_for_unused_functions(SCRIPT_DIR)
+
+    #sys.exit(1)
+
 # ==============================================================================
 # ==============================================================================
 # ==============================================================================

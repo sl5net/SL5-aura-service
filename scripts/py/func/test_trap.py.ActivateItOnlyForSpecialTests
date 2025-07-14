@@ -1,0 +1,14 @@
+# file: scripts/test_trap.py
+
+def another_dead_function_in_a_trap_file():
+    """This should also be detected by the validator."""
+    return True
+
+def _this_private_function_should_be_ignored():
+    """The validator is configured to ignore functions starting with _."""
+    pass
+
+def this_function_is_on_the_allowlist():
+    """We will add this to the allowlist to test the exception rule."""
+    pass
+
