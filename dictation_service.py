@@ -1,11 +1,47 @@
 # File: STT/dictation_service.py
+
+
+# In dictation_service.py
+
+import os
+import sys
+
+
+# ==============================================================================
+# --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
+# The script MUST run inside its virtual environment to find dependencies.
+# The 'VIRTUAL_ENV' variable is a standard indicator for an active venv.
+
+if 'VIRTUAL_ENV' not in os.environ:
+    print(
+        "\nFATAL: Python virtual environment not activated!",
+        file=sys.stderr
+    )
+    print(
+        "       Please activate it first. On Linux/macOS, run:",
+        file=sys.stderr
+    )
+    print("       source .venv/bin/activate", file=sys.stderr)
+    print(
+        "       Then, you can run the script: python dictation_service.py",
+        file=sys.stderr
+    )
+    sys.exit(1)
+# ==============================================================================
+
+
+
 import sys, time, os, atexit, requests, logging, platform
 from pathlib import Path
 
 # --- Local Imports (grouped for clarity) ---
 from config.settings import (LANGUAGETOOL_RELATIVE_PATH,
                             USE_EXTERNAL_LANGUAGETOOL, EXTERNAL_LANGUAGETOOL_URL, LANGUAGETOOL_PORT,
-                            CRITICAL_THRESHOLD_MB, PRELOAD_MODELS)
+                            CRITICAL_THRESHOLD_MB, PRELOAD_MODELS,
+                            DEV_MODE
+                            )
+
+
 from scripts.py.func.main import main
 from scripts.py.func.notify import notify
 from scripts.py.func.cleanup import cleanup
@@ -18,6 +54,18 @@ import vosk
 
 # --- Constants and Paths ---
 SCRIPT_DIR = Path(__file__).resolve().parent
+# ==============================================================================
+# --- PRE-RUN SETUP VALIDATION ---
+# We add the 'scripts' directory to the path to import our custom validator.
+sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
+from setup_validator import validate_setup
+
+# Execute the check. The script will exit here if the setup is incomplete.
+validate_setup(SCRIPT_DIR)
+# ==============================================================================
+
+
+
 PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 if platform.system() == "Windows":
@@ -69,12 +117,16 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger()
+
+
+# ==============================================================================
 # --- Wrapper Script Check ---
-"""
-if os.environ.get("DICTATION_SERVICE_STARTED_CORRECTLY") != "true":
+if not DEV_MODE and os.environ.get("DICTATION_SERVICE_STARTED_CORRECTLY") != "true":
     logger.fatal("FATAL: This script must be started using the 'activate-venv_and_run-server.sh' wrapper.")
     sys.exit(1)
-"""
+# ==============================================================================
+
+
 
 from scripts.py.func.notify import notify
 from scripts.py.func.cleanup import cleanup

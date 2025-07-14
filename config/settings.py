@@ -1,6 +1,10 @@
 # file: config/settings.py
 # Central configuration for the application
 
+# Set to True to disable certain production checks for local development,
+# e.g., the wrapper script enforcement.
+DEV_MODE = False
+
 # --- Notification Settings ---
 # Default for new users is the most verbose level.
 NOTIFICATION_LEVEL = 2 # 0=Silent, 1=Essential, 2=Verbose

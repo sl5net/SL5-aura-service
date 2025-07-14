@@ -1,5 +1,5 @@
 #!/bin/bash
-# activate-venv_and_run-server.sh
+# scripts/activate-venv_and_run-server.sh
 # Exit immediately if a command fails
 
 SCRIPT_firstName="dictation_service"
