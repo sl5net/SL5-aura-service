@@ -6,34 +6,35 @@ from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
 from .normalize_punctuation import normalize_punctuation
 
 # from config.languagetool_server.FUZZY_MAP import FUZZY_MAP
-
+#
 
 import importlib
 
 def load_maps_for_language(lang_code):
     """Dynamically loads punctuation and fuzzy maps for a given language code (e.g., 'de')."""
-    try:
+    # try:
 
-        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-        if project_root not in sys.path:
-            sys.path.insert(0, project_root)
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
 
-        # e.g. 'maps.de.punctuation_map'
-        punc_module_path = f"maps.{lang_code}.punctuation_map"
-        fuzzy_module_path = f"maps.{lang_code}.fuzzy_map"
+    # e.g. 'maps.de.punctuation_map'
+    punc_module_path = f"config.languagetool_server.maps.{lang_code}.PUNCTUATION_MAP"
+    fuzzy_module_path = f"config.languagetool_server.maps.{lang_code}.FUZZY_MAP"
 
-        punc_module = importlib.import_module(punc_module_path)
-        fuzzy_module = importlib.import_module(fuzzy_module_path)
+    punc_module = importlib.import_module(punc_module_path)
+    fuzzy_module = importlib.import_module(fuzzy_module_path)
 
-        punctuation_map = punc_module.PUNCTUATION_MAP
-        fuzzy_map = fuzzy_module.FUZZY_MAP
+    punctuation_map = punc_module.PUNCTUATION_MAP
+    fuzzy_map = fuzzy_module.FUZZY_MAP
 
-        # log.info(f"Successfully loaded command maps for language '{lang_code}'.")
-        return punctuation_map, fuzzy_map
-
+    # log.info(f"Successfully loaded command maps for language '{lang_code}'.")
+    return punctuation_map, fuzzy_map
+"""
     except (ModuleNotFoundError, AttributeError) as e:
         # log.warning(f"Could not load maps for '{lang_code}': {e}. Using empty maps.")
         return {}, [] # Fallback empty maps
+"""
 
 from .correct_text import correct_text
 import re, time

@@ -37,57 +37,6 @@ PUNCTUATION_MAP = {
     'stern': '*',
 
 
-
-    # English - Common, Mishearings
-    'period': '.',
-    'full stop': '.',
-    'dot': '.',
-    'point': '.',
-    'comma': ',',
-    'question mark': '?',
-    'question MK': '?',
-    'exclamation mark': '!',
-    'exclamation point': '!',
-    'colon': ':',
-    'semicolon': ';',
-    'parenthesis': '(',
-    'parentheses': ('(', ')'),
-    'open parenthesis': '(',
-    'close parenthesis': ')',
-    'bracket': '[',
-    'open bracket': '[',
-    'close bracket': ']',
-    'brace': '{',
-    'open brace': '{',
-    'close brace': '}',
-    'hyphen': '-',
-    'dash': '-',
-    'minus': '-',
-    'apostrophe': "'",
-    'quote': '"',
-    'quotation mark': '"',
-    'single quote': "'",
-    'double quote': '"',
-    'slash': '/',
-    'backslash': '\\',
-    'underscore': '_',
-    'ellipsis': '...',
-    'dot dot dot': '...',
-    'hash': '#',
-    'number sign': '#',
-    'and sign': '&',
-    'ampersand': '&',
-    'at sign': '@',
-    'star': '*',
-
-    # GitHub
-
-    'from get up': 'from GitHub',
-    'get up': 'GitHub',
-
-    'keep it up': 'GitHub',
-    'good job': 'GitHub',
-    'q-tip': 'GitHub',
     'kit': 'Git',
 
     'Kritik nur': '.gitignore',
@@ -152,9 +101,6 @@ PUNCTUATION_MAP = {
     # git pull
     'geht pohl': 'git pull',
     'gitter pohl': 'git pull',
-
-
-
 
 
 
