@@ -58,10 +58,16 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 # --- PRE-RUN SETUP VALIDATION ---
 # We add the 'scripts' directory to the path to import our custom validator.
 sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
-from setup_validator import validate_setup
+from setup_validator import validate_setup, check_for_unused_functions
 
 # Execute the check. The script will exit here if the setup is incomplete.
 validate_setup(SCRIPT_DIR)
+
+# --- Wrapper Script Check ---
+if DEV_MODE :
+    check_for_unused_functions(SCRIPT_DIR)
+# ==============================================================================
+# ==============================================================================
 # ==============================================================================
 
 
