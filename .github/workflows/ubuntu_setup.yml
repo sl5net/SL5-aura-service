@@ -1,0 +1,13 @@
+name: CI for macOS Setup
+on:
+  workflow_dispatch:
+jobs:
+  # Renamed job for clarity
+  validate-ubuntu-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Run ubuntu_setup.sh
+        run: bash ./setup/ubuntu_setup.sh
