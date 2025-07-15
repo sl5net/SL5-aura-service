@@ -1,4 +1,4 @@
-# File: scripts/py/func/main.py (Korrigierte Version)
+# File: scripts/py/func/main.py
 import platform, subprocess, threading, time, sys
 from pathlib import Path
 
