@@ -1,8 +1,9 @@
 name: CI for Manjaro Setup
+
 on:
   workflow_dispatch:
 jobs:
-  # Renamed job for clarity
+    # Renamed job for clarity
     validate-manjaro-setup:
     runs-on: manjaro-latest
     steps:
