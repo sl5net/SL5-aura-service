@@ -25,7 +25,7 @@ cp -r scripts/py/* "$TMPDIR/"
 
 
 
-echo "INFO: Generating requirements.txt..."
+echo "INFO: Generating requirements.txt (take into account .pipreqs-whitelist.txt) ..."
 
 # Führe pipreqs aus und fange die Warnungen (stderr) in einer Variable ab.
 WARNINGS=$(.venv/bin/pipreqs "$TMPDIR" --force --encoding=utf-8 2>&1 >/dev/null)
