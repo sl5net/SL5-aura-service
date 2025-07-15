@@ -1,0 +1,2 @@
+- name: Run macos_setup.sh
+  run: "bash ./setup/setup/macos_setup.sh"
