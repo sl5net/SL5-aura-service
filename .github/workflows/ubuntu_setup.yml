@@ -1,4 +1,4 @@
-name: CI for macOS Setup
+name: CI for ubuntu Setup
 on:
   workflow_dispatch:
 jobs:
