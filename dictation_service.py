@@ -1,11 +1,6 @@
 # File: STT/dictation_service.py
-
-
-# In dictation_service.py
-
 import os
 import sys
-
 
 # ==============================================================================
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
@@ -218,81 +213,30 @@ else:
     active_lt_url = f"http://localhost:{LANGUAGETOOL_PORT}/v2/check"
 
 
-
-
-
 if not start_languagetool_server:
     notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
     sys.exit(1)
-
-# --- mainlogic is in Thread ---
-
-
-
-# --- Preload multiple models ---
-loaded_models = {}
-
-is_critical, avail_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
-if is_critical:
-    logger.critical(f"memory < --{CRITICAL_THRESHOLD_MB}-- ({avail_mb:.0f}MB available). Shutting down.")
-    notify("Vosk: Critical Error", "Low memory detected. Service shutting down.", "critical")
-    sys.exit(1)
-
-else:
-    # --- Model Pre-loading ---
-    logger.info("--- Starting model pre-loading phase ---")
-    loaded_models = {}
-
-    is_critical, avail_mb = check_memory_critical(CRITICAL_THRESHOLD_MB)
-
-    if is_critical:
-        logger.critical(f"memory < --{CRITICAL_THRESHOLD_MB}-- ({avail_mb:.0f}MB available). ")
-        logger.warning("Critical memory situation detected. Skipping model preloading.")
-        notify("Vosk: Critical Error", "Low memory detected. Service shutting down.", "critical")
-    else:
-        logger.info(f"Attempting to preload models from settings: {PRELOAD_MODELS}")
-        for model_name in PRELOAD_MODELS:
-            model_path = SCRIPT_DIR / "models" / model_name
-            if not model_path.exists():
-                logger.warning(f"Model '{model_name}' not found at '{model_path}', skipping.")
-                continue
-            try:
-                lang_key = model_name.split('-')[2]
-                logger.info(f"Loading model '{model_name}' for language key '{lang_key}'...")
-                model = vosk.Model(str(model_path))
-                loaded_models[lang_key] = model
-                logger.info(f"Successfully loaded '{model_name}'.")
-            except Exception as e:
-                logger.error(f"Could not load model '{model_name}': {e}", exc_info=True)
-
-
-if not loaded_models:
-    notify("Vosk Startup Error", "No models could be loaded. Check logs.", "critical")
-    logger.fatal("FATAL: No models were loaded. Exiting.")
-    sys.exit(1)
-
-logger.info(f"Models loaded: {list(loaded_models.keys())}. Waiting for trigger.")
-# notify("Vosk Ready", f"Models loaded: {', '.join(loaded_models.keys())}", icon="media-record")
-notify("SL5 Dictation Ready", f"Models loaded: {', '.join(loaded_models.keys())}", icon="dialog-information", duration=2000)
-
-
 
 
 # --- main-logic is in Thread ---
 
 recording_time = 0
+from config import settings # Import the whole settings module
 if __name__ == "__main__":
-    config = {
+    # 1. Load all settings from the module into a dictionary
+    config = {key: getattr(settings, key) for key in dir(settings) if key.isupper()}
+
+    # 2. Add/overwrite dynamic, script-specific values
+    config.update({
+        "SCRIPT_DIR": SCRIPT_DIR,
         "TMP_DIR": TMP_DIR,
         "HEARTBEAT_FILE": HEARTBEAT_FILE,
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
-        # REMOVED: LT_LANGUAGE is now determined dynamically inside main
-        "CRITICAL_THRESHOLD_MB": CRITICAL_THRESHOLD_MB,
         "PROJECT_ROOT": PROJECT_ROOT
-    }
-    # MODIFIED: Pass the dictionary of loaded models to main
-    main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_time, active_lt_url)
+    })
 
-
+    # Pass the complete, unified config to main()
+    loaded_models = {}
+    main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url)
 
