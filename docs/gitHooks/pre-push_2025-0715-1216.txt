@@ -1,0 +1,68 @@
+#!/bin/bash
+# .git/hooks/pre-push
+
+set -e
+
+# Check if pipreqs is available in the venv
+if [ ! -x ".venv/bin/pipreqs" ]; then
+    echo "pipreqs is not installed in .venv. Please run '.venv/bin/pip install pipreqs' inside your virtual environment."
+    exit 1
+fi
+
+
+
+TMPDIR=".pipreqs_temp"
+
+# Clean up and create a fresh temp directory
+rm -rf "$TMPDIR"
+mkdir "$TMPDIR"
+
+# Copy all relevant Python sources into the temp directory
+cp dictation_service.py "$TMPDIR/"
+cp get_suggestions.py "$TMPDIR/"
+# Copy the entire contents of scripts/py
+cp -r scripts/py/* "$TMPDIR/"
+
+
+
+echo "INFO: Generating requirements.txt..."
+
+# Führe pipreqs aus und fange die Warnungen (stderr) in einer Variable ab.
+WARNINGS=$(.venv/bin/pipreqs "$TMPDIR" --force --encoding=utf-8 2>&1 >/dev/null)
+
+# Filtere die Warnungen. Zeige nur die an, die NICHT in der Whitelist stehen.
+if [ -s ".pipreqs-whitelist.txt" ]; then
+    # Zeige nur die Zeilen, die nicht in der Whitelist sind
+    echo "$WARNINGS" | grep -v -f .pipreqs-whitelist.txt
+else
+    # Wenn die Whitelist leer ist, zeige alle Warnungen
+    echo "$WARNINGS"
+fi
+
+
+
+# Remove known false positives like our own 'scripts' directory
+sed -i '/^scripts==/d' requirements.txt
+
+
+
+
+
+
+
+
+# Convert package names to lowercase
+awk -F'==' '{print tolower($1) "==" $2}' requirements.txt > requirements.txt.tmp && mv requirements.txt.tmp requirements.txt
+
+# Clean up temp directory
+rm -rf "$TMPDIR"
+
+
+
+
+SRC1="$HOME/.config/autokey/data/stt/autokey-scripts/"
+SRC2="scripts/autokey-scripts/"
+# Sync newer files from SRC1 to SRC2
+rsync -au --delete "$SRC1" "$SRC2"
+# Sync newer files from SRC2  to SRC1
+rsync -au --delete "$SRC2" "$SRC1"
