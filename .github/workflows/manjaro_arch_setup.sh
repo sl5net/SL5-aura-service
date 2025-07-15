@@ -1,0 +1,17 @@
+name: CI for Manjaro Setup
+on:
+  workflow_dispatch:
+jobs:
+  # Renamed job for clarity
+    validate-manjaro-setup:
+    runs-on: manjaro-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        
+      - name: Install dependencies
+        run: |
+          sudo pacman -S --needed git
+          
+      - name: Run manjaro_arch_setup.sh
+        run: bash ./setup/manjaro_arch_setup.sh
