@@ -18,9 +18,9 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE):
     # microphone-sensitivity-high-symbolic
 
     if random() > 0.5:
-        notify(f"Listening {LT_LANGUAGE} ...", "Speak now. It will stop on silence.", "low", icon="media-record")
+        notify(f"Listening {LT_LANGUAGE} ...", "Speak now. It will stop on silence of {SILENCE_TIMEOUT}ms .", "low", icon="media-record")
     else:
-        notify(f"Speak now.", "It will stop on silence.", "low", icon="media-record")
+        notify(f"Speak now.", "It will stop on silence of {SILENCE_TIMEOUT}ms .", "low", icon="media-record")
 
     is_speech_started = False
     current_timeout = PRE_RECORDING_TIMEOUT

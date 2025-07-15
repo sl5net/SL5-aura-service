@@ -1,11 +1,6 @@
 # File: STT/dictation_service.py
-
-
-# In dictation_service.py
-
 import os
 import sys
-
 
 # ==============================================================================
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
@@ -226,20 +221,22 @@ if not start_languagetool_server:
 # --- main-logic is in Thread ---
 
 recording_time = 0
+from config import settings # Import the whole settings module
 if __name__ == "__main__":
-    config = {
+    # 1. Load all settings from the module into a dictionary
+    config = {key: getattr(settings, key) for key in dir(settings) if key.isupper()}
+
+    # 2. Add/overwrite dynamic, script-specific values
+    config.update({
         "SCRIPT_DIR": SCRIPT_DIR,
         "TMP_DIR": TMP_DIR,
         "HEARTBEAT_FILE": HEARTBEAT_FILE,
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
-        # REMOVED: LT_LANGUAGE is now determined dynamically inside main
-        "CRITICAL_THRESHOLD_MB": CRITICAL_THRESHOLD_MB,
         "PROJECT_ROOT": PROJECT_ROOT
-    }
-    # MODIFIED: Pass the dictionary of loaded models to main
-    loaded_models = {} 
+    })
+
+    # Pass the complete, unified config to main()
+    loaded_models = {}
     main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url)
-
-
 

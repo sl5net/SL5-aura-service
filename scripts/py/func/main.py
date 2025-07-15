@@ -8,12 +8,8 @@ from .notify import notify
 
 from .model_manager import manage_models
 
-from config.settings import SAMPLE_RATE, SUSPICIOUS_TIME_WINDOW, SUSPICIOUS_THRESHOLD,     PRE_RECORDING_TIMEOUT, SILENCE_TIMEOUT, PRELOAD_MODELS, CRITICAL_THRESHOLD_MB
-
-from config import settings
-
-
 def main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url):
+
     active_threads = []
 
     # Unpack config dictionary
@@ -24,6 +20,12 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
     heartbeat_file = config["HEARTBEAT_FILE"]
     critical_threshold_mb = config["CRITICAL_THRESHOLD_MB"]
     project_root = config["PROJECT_ROOT"]
+
+    SILENCE_TIMEOUT = config["SILENCE_TIMEOUT"]
+
+    PRELOAD_MODELS = config["PRELOAD_MODELS"]
+    CRITICAL_THRESHOLD_MB = config["CRITICAL_THRESHOLD_MB"]
+
 
     if not SILENCE_TIMEOUT:
         logger.error(f"SILENCE_TIMEOUT: '{SILENCE_TIMEOUT}' ")
