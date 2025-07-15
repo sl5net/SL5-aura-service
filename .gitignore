@@ -12,6 +12,9 @@ get_suggestions.log
 type_watcher.log
 
 *.kate-swp
+.idea
+*.idea
+
 
 /*.txt
 
