@@ -5,8 +5,8 @@ on:
 jobs:
     # Renamed job for clarity
     validate-manjaro-setup:
-    runs-on: manjaro-latest
-    steps:
+      runs-on: manjaro-latest
+      steps:
       - name: Check out repository code
         uses: actions/checkout@v4
         
