@@ -33,7 +33,7 @@ WARNINGS=$(.venv/bin/pipreqs "$TMPDIR" --force --encoding=utf-8 2>&1 >/dev/null)
 # Filtere die Warnungen. Zeige nur die an, die NICHT in der Whitelist stehen.
 if [ -s ".pipreqs-whitelist.txt" ]; then
     # Zeige nur die Zeilen, die nicht in der Whitelist sind
-    echo "$WARNINGS" | grep -v -f .pipreqs-whitelist.txt
+    echo "$WARNINGS" | grep -v -f .pipreqs-whitelist.txt | grep -v "Please, verify manually"
 else
     # Wenn die Whitelist leer ist, zeige alle Warnungen
     echo "$WARNINGS"
