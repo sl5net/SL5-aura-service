@@ -1,11 +1,13 @@
 # File: scripts/py/func/model_manager.py
-#
+import math
 import sys, vosk
 from .check_memory_critical import check_memory_critical
 from .notify import notify
 
+"""Dynamically loads/unloads models based on available memory."""
 def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir):
-    """Dynamically loads/unloads models based on available memory."""
+
+    # --- Get Current State ---
     is_critical, avail_mb = check_memory_critical(threshold_mb)
 
     if is_critical:
@@ -15,6 +17,11 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             del loaded_models[key]
         else:
             logger.warning(f"Low memory ({avail_mb:.0f}MB), keeping last model.")
+        return
+
+    load_buffer_mb = math.ceil(threshold_mb * 0.05)
+    load_threshold_mb = threshold_mb + load_buffer_mb
+    if avail_mb < load_threshold_mb:
         return
 
     # Check if a desired model is missing and can be loaded
