@@ -1,0 +1,27 @@
+# config/settings_local.py
+
+# My personal settings for SL5 Dictation
+# This file is ignored by Git.
+
+NOTIFICATION_LEVEL = 1
+
+
+# Set to True to disable certain production checks for local development,
+# e.g., the wrapper script enforcement.
+DEV_MODE = True
+# DEV_MODE = False
+
+
+# --- Custom Correction Settings ---
+# Import the default dictionary from the main settings file.
+try:
+    from .settings import CORRECTIONS_ENABLED
+except ImportError:
+    CORRECTIONS_ENABLED = {} # Fallback in case the import fails
+
+# Update the dictionary with my personal preferences.
+# I want specialized legal and medical checks, but I don't want style advice.
+CORRECTIONS_ENABLED.update({
+    "git": True,
+})
+

@@ -67,7 +67,10 @@ git add .
 git commit
 git push
 git pull
-
+Geht tief
+Peach juice
+Good gifts
+Good tips
 """
 # Format: ('Text, der eingesetzt wird', 'Satz, mit dem verglichen wird', Mindest-Trefferquote)
 FUZZY_MAP = [
@@ -93,5 +96,11 @@ FUZZY_MAP = [
 
     ('git pull', 'geht pool', 80),
     ('git pull', 'pool', 80),
+
+    ('git diff', 'git diff', 75),
+    ('git diff', 'Geht tief', 75),
+    ('git diff', 'Peach juice', 75),
+
+
 
 ]

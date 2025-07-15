@@ -32,6 +32,38 @@ EXTERNAL_LANGUAGETOOL_URL = "http://localhost:8081"
 # Settings for our internal server (if used)
 LANGUAGETOOL_PORT = 8082
 
+# --- Text Correction Settings ---
+# This dictionary controls which categories of LanguageTool rules are enabled.
+# The application will use these settings to enable/disable rule categories
+# when checking text. Set a category to False to ignore its suggestions.
+#
+# You can override these in your config/settings_local.py file.
+CORRECTIONS_ENABLED = {
+    # Core Corrections
+    "spelling": True,          # Basic spell checking (e.g., "Rechtschreibung")
+    "punctuation": True,       # Missing/incorrect commas, periods, etc.
+    "grammar": True,           # Grammatical errors (e.g., subject-verb agreement)
+    "casing": True,            # Incorrect capitalization (e.g., "berlin" -> "Berlin")
+    "style": True,             # Stylistic suggestions (e.g., wordiness, passive voice)
+    "colloquialisms": True,    # Flags informal or colloquial language
+
+    # Specialized Dictionaries/Rules
+    # These are disabled by default as they may not be relevant for all users.
+    # Set to True in settings_local.py to enable them.
+    "medical": False,          # Rules related to medical terminology
+    "law_rules": False,        # Rules related to legal terminology
+
+    "git": True,        # git Basic commands
+
+    # Add other custom categories here as needed.
+    # "academic_writing": False,
+}
+
+
+
+
+
+
 # Recording & Transcription
 SUSPICIOUS_TIME_WINDOW = 90
 SUSPICIOUS_THRESHOLD = 3

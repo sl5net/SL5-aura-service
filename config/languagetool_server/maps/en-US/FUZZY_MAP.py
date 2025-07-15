@@ -5,8 +5,25 @@
 # A higher score means the typo must be closer to the original text.
 #
 
+# the git statusgit status
+
+"""
+Gujarat
+git add .
+git commit
+git push
+
+git status
+did
+It's permits
+git push
+git pull'
+
+
+"""
+
 FUZZY_MAP = [
-    ('git status', 'get status', 85),
+    ('git status', 'get status', 80),
     ('git status', 'the kids stayed', 85),
     ('git status', 'good it', 85),
     ('git status', 'good status', 85),
@@ -14,20 +31,24 @@ FUZZY_MAP = [
 
     ('git add .', 'stage all', 80),
     ('git add .', 'get add', 80),
-    ('git add .', 'your debt dutch', 75),
-    ('git add .', 'Get to it', 70),
+    ('git add .', 'your debt dutch', 80),
+    ('git add .', 'Get to it', 80),
 
-    ('git commit', 'get commit', 85),
+    ('git commit', 'get commit', 80),
 
     ('git push', 'get push', 75),
     ('git push', 'it\'d push', 85),
 
-    ('git pull', 'good play', 80),
-    ('git pull', 'get pull', 80),
-    ('git pull', 'good point', 75),
-    ('git pull', 'Good point', 75),
-    ('git pull', 'Good pull', 80),
+    # ('git pull', 'good play', 80),
+    ('git pull', 'get pull', 85),
+    # ('git pull', 'good point', 85),
+    # ('git pull', 'Good point', 85),
+    ('git pull', 'Good pull', 85),
     ('git pull', 'Get poorer', 80),
+
+    ('git diff', 'git diff', 80),
+
+
 
 
 ]
