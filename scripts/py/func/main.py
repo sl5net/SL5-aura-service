@@ -6,14 +6,20 @@ from .handle_trigger import handle_trigger
 from .check_memory_critical import check_memory_critical
 from .notify import notify
 
-from config.settings import SAMPLE_RATE, SUSPICIOUS_TIME_WINDOW, SUSPICIOUS_THRESHOLD, \
-    PRE_RECORDING_TIMEOUT, SILENCE_TIMEOUT
+from .model_manager import manage_models
+
+from config.settings import SAMPLE_RATE, SUSPICIOUS_TIME_WINDOW, SUSPICIOUS_THRESHOLD,     PRE_RECORDING_TIMEOUT, SILENCE_TIMEOUT, PRELOAD_MODELS, CRITICAL_THRESHOLD_MB
+
+from config import settings
 
 
-def main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_time, active_lt_url):
+def main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url):
     active_threads = []
 
     # Unpack config dictionary
+    script_dir = config["SCRIPT_DIR"]
+    TMP_DIR = config["TMP_DIR"]
+
     trigger_file = config["TRIGGER_FILE"]
     heartbeat_file = config["HEARTBEAT_FILE"]
     critical_threshold_mb = config["CRITICAL_THRESHOLD_MB"]
@@ -32,10 +38,14 @@ def main(logger, loaded_models, config, suspicious_events, TMP_DIR, recording_ti
                 Path(heartbeat_file).write_text(str(int(time.time())))
                 active_threads = [t for t in active_threads if t.is_alive()]
 
-                is_critical, avail_mb = check_memory_critical(critical_threshold_mb)
-                if is_critical:
-                    logger.critical(f"Low memory ({avail_mb:.0f}MB). Shutting down.")
-                    sys.exit(1)
+                manage_models(
+                    logger,
+                    loaded_models,
+                    PRELOAD_MODELS,
+                    CRITICAL_THRESHOLD_MB,
+                    script_dir
+                )
+
 
                 try:
                   proc = subprocess.run(
