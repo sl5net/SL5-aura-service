@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
-steps:
-  - name: Run macos_setup.sh
-    run: "bash ./setup/setup/macos_setup.sh"
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    steps:
+      - name: Run macos_setup.sh
+        run: "bash ./setup/setup/macos_setup.sh"
