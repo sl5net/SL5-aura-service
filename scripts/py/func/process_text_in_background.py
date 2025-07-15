@@ -2,7 +2,8 @@
 import os
 import sys
 
-from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
+# from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
+from config import settings
 from .normalize_punctuation import normalize_punctuation
 
 # from config.languagetool_server.FUZZY_MAP import FUZZY_MAP
@@ -55,7 +56,7 @@ def process_text_in_background(logger,
 
         processed_text = normalize_punctuation(raw_text, punctuation_map)
 
-        if "git" not in processed_text and "push" not in processed_text:
+        if not settings.CORRECTIONS_ENABLED["git"] or "git" not in processed_text and "push" not in processed_text:
             processed_text = correct_text(logger, active_lt_url, LT_LANGUAGE, processed_text)
 
 
