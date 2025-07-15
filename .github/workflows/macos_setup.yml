@@ -1,11 +1,24 @@
-name: Run macos_setup.sh
+name: CI for macOS Setup
+
 on:
+  # Run on pushes to the main branch
   push:
     branches:
       - main
+  # Also run on pull requests targeting the main branch
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  build-and-test:
+  # Renamed job for clarity
+  validate-macos-setup:
     runs-on: macos-latest
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
       - name: Run macos_setup.sh
+        # This assumes your script has `set -e` at the top for error handling
+        # and a shebang `#!/bin/bash`
         run: bash ./setup/setup/macos_setup.sh
