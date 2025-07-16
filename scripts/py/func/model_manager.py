@@ -11,12 +11,31 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
     is_critical, avail_mb = check_memory_critical(threshold_mb)
 
     if is_critical:
+        m = f"Low memory ({avail_mb:.0f}MB). Preventing new models from loading."
+        if not loaded_models:
+            logger.warning(m)
+            notify("STT-Error", m)
+            return
+
+        key = list(loaded_models.keys())[-1]
         if len(loaded_models) > 1:
-            key = list(loaded_models.keys())[-1]
-            logger.warning(f"Low memory ({avail_mb:.0f}MB). Unloading model: '{key}'")
+            m = f"Low memory ({avail_mb:.0f}MB). Unloading model: '{key}'"
+            logger.warning(m)
+            notify("STT-Error", m)
             del loaded_models[key]
-        else:
-            logger.warning(f"Low memory ({avail_mb:.0f}MB), keeping last model.")
+        elif len(loaded_models) == 1:
+            m=f"Low memory ({avail_mb:.0f}MB). Unloading last model: '{key}'"
+            logger.warning(m)
+            notify("STT-Error", m)
+
+        else:  # == len(loaded_models) == 0
+            logger.warning(m)
+            notify("STT-Error", m)
+
+
+        key = list(loaded_models.keys())[-1]
+        del loaded_models[key]
+
         return
 
     load_buffer_mb = math.ceil(threshold_mb * 0.05)

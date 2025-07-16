@@ -18,7 +18,7 @@ def notify(summary: object, body: object = "", urgency: object = "low", icon: ob
         logger.warning("Notifier not initialized or path invalid.")
         return
 
-    logger.info(f"DEBUG: Attempting to notify: '{summary}'")
+    # logger.info(f"DEBUG: Attempting to notify: '{summary}'")
     if platform.system() == "Windows":
         # ... Windows logic ...
         pass

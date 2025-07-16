@@ -101,6 +101,9 @@ FUZZY_MAP = [
     ('git diff', 'Geht tief', 75),
     ('git diff', 'Peach juice', 75),
 
+    ('git diff', 'Peach juice', 75),
+
+    ('sierra d', '0 A.D.', 75),
 
 
 ]

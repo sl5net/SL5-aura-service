@@ -20,6 +20,10 @@ def handle_trigger(
     recording_time,
     active_lt_url
 ):
+    if not loaded_models:
+        logger.error("Trigger ignored: No models are loaded, likely due to low memory.")
+        notify("STT-Fehler", "Keine Modelle geladen (wenig Speicher). Aufnahme ignoriert.")
+        return
     logger.info(f"TRIGGER DETECTED! Active threads: {len(active_threads)}")
     model_name_file = project_root / "config/model_name.txt"
     last_used_file = project_root / "config/model_name_lastused.txt"

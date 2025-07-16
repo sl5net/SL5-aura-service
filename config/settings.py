@@ -9,13 +9,6 @@ DEV_MODE = False
 # Default for new users is the most verbose level.
 NOTIFICATION_LEVEL = 2 # 0=Silent, 1=Essential, 2=Verbose
 
-# Try to import user-specific overrides
-try:
-    from .settings_local import *
-    print("Loaded local config overrides.")
-except ImportError:
-    pass # No local config found, using defaults.
-
 # --- Language Model Preloading ---
 # A list of Vosk model folder names to preload at startup if memory allows.
 PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
@@ -83,5 +76,14 @@ LANGUAGETOOL_RELATIVE_PATH = "LanguageTool-6.6/languagetool-server.jar"
 
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
+
+
+
+# Try to import user-specific overrides
+try:
+    from .settings_local import *
+    print("Loaded local config overrides.")
+except ImportError:
+    pass # No local config found, using defaults.
 
 
