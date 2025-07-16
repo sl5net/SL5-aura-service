@@ -1,0 +1,14 @@
+name: CI for winOS Setup
+
+on:
+  workflow_dispatch:
+jobs:
+  validate-windows-setup:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Run windows11_setup.ps1
+        run: |
+          powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"

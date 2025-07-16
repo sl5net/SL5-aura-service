@@ -9,7 +9,7 @@ on:
   pull_request:
     branches:
       - main
-
+  workflow_dispatch:
 jobs:
   # Renamed job for clarity
   validate-macos-setup:
@@ -21,4 +21,4 @@ jobs:
       - name: Run macos_setup.sh
         # This assumes your script has `set -e` at the top for error handling
         # and a shebang `#!/bin/bash`
-        run: bash ./setup/setup/macos_setup.sh
+        run: bash ./setup/macos_setup.sh
