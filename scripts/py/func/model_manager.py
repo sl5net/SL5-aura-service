@@ -1,62 +1,72 @@
+# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # File: scripts/py/func/model_manager.py
 import math
-import sys, vosk
+import vosk
 from .check_memory_critical import check_memory_critical
 from .notify import notify
 
-"""Dynamically loads/unloads models based on available memory."""
+max_model_memory_footprint = 0
+
+
+def _format_gb(mb):
+    """Helper to format MB into a readable GB string."""
+    if mb < 1024:
+        return f"{mb:.0f}MB"
+    return f"{mb / 1024:.1f}GB"
+
+
 def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir):
+    """Dynamically loads/unloads models based on available memory."""
+    global max_model_memory_footprint
 
-    # --- Get Current State ---
+    # --- Unloading Logic ---
     is_critical, avail_mb = check_memory_critical(threshold_mb)
-
     if is_critical:
-        m = f"Low memory ({avail_mb:.0f}MB). Preventing new models from loading."
         if not loaded_models:
-            logger.warning(m)
-            notify("STT-Error", m)
             return
 
-        key = list(loaded_models.keys())[-1]
-        if len(loaded_models) > 1:
-            m = f"Low memory ({avail_mb:.0f}MB). Unloading model: '{key}'"
-            logger.warning(m)
-            notify("STT-Error", m)
-            del loaded_models[key]
-        elif len(loaded_models) == 1:
-            m=f"Low memory ({avail_mb:.0f}MB). Unloading last model: '{key}'"
-            logger.warning(m)
-            notify("STT-Error", m)
-
-        else:  # == len(loaded_models) == 0
-            logger.warning(m)
-            notify("STT-Error", m)
-
-
-        key = list(loaded_models.keys())[-1]
-        del loaded_models[key]
-
+        key_to_unload = list(loaded_models.keys())[-1]
+        logger.warning(f"Low memory ({_format_gb(avail_mb)} available). Unloading model '{key_to_unload}'.")
+        del loaded_models[key_to_unload]
+        notify("Memory Manager", f"Unloaded '{key_to_unload}' model. {_format_gb(avail_mb)} RAM free.")
         return
 
-    load_buffer_mb = math.ceil(threshold_mb * 0.05)
-    load_threshold_mb = threshold_mb + load_buffer_mb
-    if avail_mb < load_threshold_mb:
+    # --- Loading Logic ---
+    load_buffer_mb = math.ceil(threshold_mb * 0.10)
+    required_memory_mb = threshold_mb + load_buffer_mb + max_model_memory_footprint
+
+    if avail_mb < required_memory_mb:
+        if max_model_memory_footprint > 0:
+            # IMPROVED LOG: Explain the calculation for "Required Memory"
+            log_msg = (
+                f"Postponing load: {_format_gb(avail_mb)} available is not enough. "
+                f"Need ~{_format_gb(required_memory_mb)} "
+                f"(Threshold: {_format_gb(threshold_mb)} + Model: {_format_gb(max_model_memory_footprint)} + Buffer: {_format_gb(load_buffer_mb)})"
+            )
+            logger.info(log_msg)
         return
 
-    # Check if a desired model is missing and can be loaded
-    loaded_keys = loaded_models.keys()
     for model_name in desired_names:
         lang_key = model_name.split('-')[2]
-        if lang_key not in loaded_keys:
-            logger.info(f"Memory stable. Attempting to load missing model: '{model_name}'")
-            try:
-                model_path = script_dir / "models" / model_name
-                model = vosk.Model(str(model_path))
-                loaded_models[lang_key] = model
-                logger.info(f"Successfully loaded model for '{lang_key}'.")
-                # Load one per cycle to be safe
-                break
-            except Exception as e:
-                logger.error(f"Failed to reload '{model_name}': {e}")
-                break
+        if lang_key in loaded_models:
+            continue
 
+        logger.info(f"Attempting to load missing model: '{model_name}'")
+        try:
+            _, avail_before = check_memory_critical(threshold_mb)
+
+            model = vosk.Model(str(script_dir / "models" / model_name))
+            loaded_models[lang_key] = model
+
+            _, avail_after = check_memory_critical(threshold_mb)
+            footprint = avail_before - avail_after
+
+            if footprint > max_model_memory_footprint:
+                max_model_memory_footprint = footprint
+                logger.info(f"Learned new max model footprint: ~{_format_gb(footprint)}")
+
+            logger.info(f"Successfully loaded model for '{lang_key}'.")
+            break
+        except Exception as e:
+            logger.error(f"Failed to load '{model_name}': {e}")
+            break
