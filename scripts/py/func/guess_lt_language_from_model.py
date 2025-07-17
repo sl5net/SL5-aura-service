@@ -1,3 +1,4 @@
+# file scripts/py/func/guess_lt_language_from_model.py
 def guess_lt_language_from_model(model_name):
     name = model_name.lower()
     if "-de-" in name: return "de-DE"
