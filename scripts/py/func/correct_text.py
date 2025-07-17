@@ -23,6 +23,11 @@ def correct_text(logger, active_lt_url, LT_LANGUAGE, text: str) -> str:
             new_text_parts.append(text[last_index:match['offset']])
             if match['replacements']:
                 new_text_parts.append(match['replacements'][0]['value'])
+            else:
+                # FIX: Keep original text if there is no replacement
+                original_slice = text[match['offset'] : match['offset'] + match['length']]
+                new_text_parts.append(original_slice)
+
             last_index = match['offset'] + match['length']
         new_text_parts.append(text[last_index:])
         corrected_text = "".join(new_text_parts)

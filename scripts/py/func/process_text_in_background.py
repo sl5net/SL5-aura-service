@@ -1,13 +1,15 @@
 # file: scripts/py/func/process_text_in_background.py
 import os
 import sys
+"""
+doc:
+how test language tool in command line:
+curl --data "language=de-DE&text=das stimmt unsere ist nicht absolut fehlerfrei" http://localhost:8081/v2/check
+"""
 
 # from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
 from config import settings
 from .normalize_punctuation import normalize_punctuation
-
-# from config.languagetool_server.FUZZY_MAP import FUZZY_MAP
-#
 
 import importlib
 
