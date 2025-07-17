@@ -1,5 +1,5 @@
 #!/bin/bash
-# /type_watcher.sh
+# type_watcher.sh
 
 DIR_TO_WATCH="/tmp"
 LOCKFILE="/tmp/type_watcher.lock"
@@ -10,7 +10,7 @@ LOGFILE="$SCRIPT_DIR/log/type_watcher.log"
 log_message() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOGFILE"
 }
-log_message "Hello fom Watcher"
+log_message "Hello from Watcher"
 
 # --- Lockfile-Logic
 if [ -e "$LOCKFILE" ]; then
@@ -35,12 +35,10 @@ while true; do
     if [ -n "$files_to_process" ]; then
         for f in $files_to_process; do
             if [ -f "$f" ]; then
-                TEXT=$(cat "$f")
-                sleep 0.01
+                # FIX: Pipe file content directly to xdotool to preserve UTF-8
+                # cat "$f" | LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file -
+                LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
                 rm "$f"
-                if [ -n "$TEXT" ]; then
-                    xdotool type --clearmodifiers --delay 0 "$TEXT"
-                fi
             fi
         done
     fi
