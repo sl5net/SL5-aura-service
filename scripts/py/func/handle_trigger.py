@@ -6,6 +6,9 @@ from .notify import notify
 from .process_text_in_background import process_text_in_background
 from .transcribe_audio_with_feedback import transcribe_audio_with_feedback
 
+from .prioritize_model import prioritize_model
+
+
 from config.settings import SAMPLE_RATE, SUSPICIOUS_TIME_WINDOW, SUSPICIOUS_THRESHOLD, \
     PRE_RECORDING_TIMEOUT, SILENCE_TIMEOUT
 
@@ -59,16 +62,8 @@ def handle_trigger(
 
     last_used_model_name = last_used_file.read_text().strip()
 
-    # --- START: PRIORITIZE MODEL ---
-    if last_used_model_name != target_model_name and found_key in loaded_models:
-        # This ensures the active model is the last to be unloaded in low-memory situations.
-        logger.info(f"Prioritizing active model '{found_key}'.")
-        active_model_instance = loaded_models.pop(found_key)
-        reordered_dict = {found_key: active_model_instance, **loaded_models}
-        loaded_models.clear()
-        loaded_models.update(reordered_dict)
-        logger.info(f"New model order for unloading priority: {list(loaded_models.keys())}")
-    # --- END: PRIORITIZE MODEL ---
+    if last_used_model_name != target_model_name:
+        prioritize_model(logger, loaded_models, found_key)
 
     last_used_file.write_text(target_model_name)
 
