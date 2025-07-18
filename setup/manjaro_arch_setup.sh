@@ -125,9 +125,18 @@ echo "LanguageTool installation verified successfully."
 
 
 
-
-
 mkdir -p log
+touch log/__init__.py
+
+mkdir -p config
+touch config/__init__.py
+
+touch config/model_name_lastused.txt
+echo "dummy" > config/model_name_lastused.txt
+
+
+
+
 
 # Download and extract Vosk Models
 mkdir -p models
@@ -150,6 +159,8 @@ fi
 echo "--> Creating Python package markers (__init__.py)..."
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
+
+
 
 CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
 mkdir -p "$(dirname "$CONFIG_FILE")"

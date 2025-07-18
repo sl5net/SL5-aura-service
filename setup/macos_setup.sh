@@ -102,6 +102,16 @@ echo "[paths]" > "$CONFIG_FILE"
 echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 
 
+mkdir -p log
+touch log/__init__.py
+
+mkdir -p config
+touch config/__init__.py
+
+touch config/model_name_lastused.txt
+echo "dummy" > config/model_name_lastused.txt
+
+
 # --- 6. Completion ---
 echo ""
 echo "--- Setup for macOS is complete! ---"
