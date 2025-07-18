@@ -89,20 +89,22 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
             logger.info("Listening for triggers via file polling...")
             while True:
 
-
-                is_critical, avail_mb = check_memory_critical(critical_threshold_mb)
-                if is_critical:
-                    logger.critical(f"Low memory ({avail_mb:.0f}MB). Shutting down.")
-                    sys.exit(1)
-
                 Path(heartbeat_file).write_text(str(int(time.time())))
+
+                manage_models(
+                    logger,
+                    loaded_models,
+                    PRELOAD_MODELS,
+                    CRITICAL_THRESHOLD_MB,
+                    script_dir
+                )
 
                 if trigger_file.exists():
                     logger.info("Trigger file detected by polling.")
                     trigger_file.unlink(missing_ok=True)
                     handle_trigger(
                         logger, loaded_models, active_threads, suspicious_events,
-                        project_root, TMP_DIR, recording_time, active_lt_url,
+                        project_root, TMP_DIR, recording_time, active_lt_url
                     )
 
                 time.sleep(0.2)
