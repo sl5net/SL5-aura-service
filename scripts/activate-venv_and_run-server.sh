@@ -8,7 +8,20 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PROJECT_ROOT="$SCRIPT_DIR/.."
 
 
-$PROJECT_ROOT/type_watcher.sh &
+if [[ "$os_type" == "MINGW"* || "$os_type" == "CYGWIN"* || "$os_type" == "MSYS"* ]]; then
+    # This is a Windows-based shell environment
+    detected_os="windows"
+else
+    # This is any other OS (Linux, macOS, FreeBSD, etc.)
+    detected_os="other"
+fi
+
+if [ "$detected_os" = "windows" ]; then
+  $PROJECT_ROOT/type_watcher.ahk &
+else
+  $PROJECT_ROOT/type_watcher.sh &
+fi
+
 
 set -e
 

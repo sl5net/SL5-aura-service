@@ -10,7 +10,23 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 SERVER_SCRIPT="$SCRIPT_DIR/activate-venv_and_run-server.sh"
 SERVICE_NAME_MAIN="dictation_service.py"
-SERVICE_NAME_WATCHER="type_watcher.sh"
+
+
+if [[ "$os_type" == "MINGW"* || "$os_type" == "CYGWIN"* || "$os_type" == "MSYS"* ]]; then
+    # This is a Windows-based shell environment
+    detected_os="windows"
+else
+    # This is any other OS (Linux, macOS, FreeBSD, etc.)
+    detected_os="other"
+fi
+
+if [ "$detected_os" = "windows" ]; then
+  SERVICE_NAME_WATCHER="type_watcher.ahk"
+else
+  SERVICE_NAME_WATCHER="type_watcher.sh"
+fi
+
+
 
 echo "Requesting restart for all services..."
 
