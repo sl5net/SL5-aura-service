@@ -21,7 +21,7 @@ else
 fi
 
 if [ "$detected_os" = "windows" ]; then
-  SERVICE_NAME_WATCHER="type_watcher.ahk"
+  echo "please start type_watcher.ahk"
 else
   SERVICE_NAME_WATCHER="type_watcher.sh"
 fi

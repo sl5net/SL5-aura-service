@@ -17,7 +17,7 @@ else
 fi
 
 if [ "$detected_os" = "windows" ]; then
-  $PROJECT_ROOT/type_watcher.ahk &
+  echo "please start type_watcher.ahk"
 else
   $PROJECT_ROOT/type_watcher.sh &
 fi
