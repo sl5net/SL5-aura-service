@@ -29,6 +29,18 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
     exit 1
 }
 
+
+
+if (!(Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Host "Winget is not installed. Installing Winget..."
+    $downloadUrl = "https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.appxbundle"
+    $downloadPath = "C:\Temp\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.appxbundle"
+    Invoke-WebRequest -Uri $downloadUrl -OutFile $downloadPath
+    Start-Process -FilePath $downloadPath -Wait -PassThru
+}
+
+
+
 # --- 2. System Dependencies ---
 Write-Host "--> Checking for a compatible Java version (>=17)..."
 $javaOK = $false
