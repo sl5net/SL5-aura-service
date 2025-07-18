@@ -18,6 +18,18 @@ It's a complete, offline writing assistant built on Vosk and LanguageTool.
 
 ---
 
+### Using CopyQ on Linux
+
+create litle on liner with
+https://hluk.github.io/CopyQ/
+```sh
+touch /tmp/vosk_trigger
+```
+then set any hotkey you like.
+
+[CopyQ](https://hluk.github.io/CopyQ/) works at Linux, Windows and OS X 10.15+.
+
+
 ### Using AutoKey on Linux
 
 - [AutoKey Releases](https://github.com/autokey/autokey/releases/)
