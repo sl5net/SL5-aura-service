@@ -103,7 +103,6 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
                     handle_trigger(
                         logger, loaded_models, active_threads, suspicious_events,
                         project_root, TMP_DIR, recording_time, active_lt_url,
-                        config
                     )
 
                 time.sleep(0.2)
