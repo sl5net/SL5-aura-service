@@ -7,7 +7,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 PROJECT_ROOT="$SCRIPT_DIR/.."
 
-
+os_type=$(uname -s)
 if [[ "$os_type" == "MINGW"* || "$os_type" == "CYGWIN"* || "$os_type" == "MSYS"* ]]; then
     # This is a Windows-based shell environment
     detected_os="windows"

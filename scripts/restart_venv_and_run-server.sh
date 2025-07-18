@@ -11,7 +11,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SERVER_SCRIPT="$SCRIPT_DIR/activate-venv_and_run-server.sh"
 SERVICE_NAME_MAIN="dictation_service.py"
 
-
+os_type=$(uname -s)
 if [[ "$os_type" == "MINGW"* || "$os_type" == "CYGWIN"* || "$os_type" == "MSYS"* ]]; then
     # This is a Windows-based shell environment
     detected_os="windows"
