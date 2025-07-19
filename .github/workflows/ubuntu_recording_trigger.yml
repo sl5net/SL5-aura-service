@@ -9,13 +9,23 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Pre-download LanguageTool from project releases
+      - name: Pre-download and Verify All Assets
         run: |
-          echo "--> Downloading LanguageTool from our reliable GitHub Release..."
-          wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/LanguageTool-6.6.zip        
+          echo "--> Downloading all assets from our GitHub Release..."
+          wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/LanguageTool-6.6.zip
+          wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
+          wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-en-us-0.22.zip
 
-      - name: Run ubuntu_setup.sh
+          echo "--> Verifying LanguageTool integrity..."
+          echo "53600506b399bb5ffe1e4c8dec794fd378212f14aaf38ccef9b6f89314d11631  LanguageTool-6.6.zip" | sha256sum -c -
+
+          echo "--> Placing models into the 'models' directory..."
+          mkdir -p models
+          mv vosk-model-*.zip models/
+
+      - name: Run ubuntu_setup.sh (should now use local files)
         run: bash ./setup/ubuntu_setup.sh
+        
         
         
       - name: Test Recording Trigger
@@ -49,3 +59,6 @@ jobs:
 
           echo "--> Cleaning up background processes..."
           pkill -f dictation_service.py
+
+          
+          
