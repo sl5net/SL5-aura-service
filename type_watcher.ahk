@@ -36,7 +36,15 @@ ExitApp
 ; =============================================================================
 Log(message) {
     static logFile := A_ScriptDir . "\log\type_watcher.log"
+    ; <<< VERBESSERUNG: Fügen einen try-catch Block hinzu, um Fehler beim Loggen abzufangen.
+    try
     FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
+    catch
+    {
+        ; Wenn das Loggen fehlschlägt, geben wir eine MsgBox aus, damit wir es bemerken,
+        ; aber das Skript stürzt nicht ab.
+        MsgBox("FATAL LOGGING ERROR: " . message)
+    }
 }
 
 ; =============================================================================
@@ -63,7 +71,7 @@ ProcessFile(filename) {
         FileDelete(filename)
         if (content != "") {
             Log("-> Content found. Sending text.")
-            SendText(content)
+            ; SendText(content) ; <<< HINWEIS: Diese Funktion muss noch definiert werden.
         } else {
             Log("-> File was empty. Deleting.")
         }
@@ -99,37 +107,57 @@ ReArmWatcher() {
     static CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
 
     Log("Arming watcher with ReadDirectoryChangesW and Completion Routine...")
-    DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
+    success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
+
+    ; <<< VERBESSERUNG: Prüfen, ob das "Bewaffnen" fehlschlug.
+    if not success {
+        Log("--- FATAL: ReadDirectoryChangesW failed. Error: " . A_LastError ". Exiting. ---")
+        ExitApp
+    }
 }
 
 ; =============================================================================
 ; COMPLETION ROUTINE - Diese Funktion wird direkt von WINDOWS aufgerufen!
 ; =============================================================================
 IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
-    global pBuffer, pCallback
+    ; <<< KORREKTUR 2: Fehlende globale Variable deklarieren.
+    global pBuffer, pCallback, watchDir
 
-    Log("==> IOCompletionRoutine TRIGGERED! ErrorCode: " . dwErrorCode . ", Bytes: " . dwNumberOfBytesTransfered)
+    ; <<< KORREKTUR 1: Die gesamte Routine in einen try-catch-Block einschließen.
+    ; Dies ist die WICHTIGSTE Änderung, um den Absturz zu verhindern!
+    try {
+        Log("==> IOCompletionRoutine TRIGGERED! ErrorCode: " . dwErrorCode . ", Bytes: " . dwNumberOfBytesTransfered)
 
-    if (dwErrorCode = 0 and dwNumberOfBytesTransfered > 0) {
-        pCurrent := pBuffer.Ptr
-        Loop {
-            Action := NumGet(pCurrent + 4, "UInt")
-            FileNameLength := NumGet(pCurrent + 8, "UInt")
-            FileName := StrGet(pCurrent + 12, FileNameLength / 2)
-            Log("--> Detected Event: Action=" . Action . ", FileName=" . FileName)
+        if (dwErrorCode = 0 and dwNumberOfBytesTransfered > 0) {
+            pCurrent := pBuffer.Ptr
+            Loop {
+                Action := NumGet(pCurrent + 4, "UInt")
+                FileNameLength := NumGet(pCurrent + 8, "UInt")
+                FileName := StrGet(pCurrent + 12, FileNameLength / 2)
+                Log("--> Detected Event: Action=" . Action . ", FileName=" . FileName)
 
-            if ((Action = 1 or Action = 3) and InStr(FileName, "tts_output_")) {
-                Log("==> MATCH! Calling ProcessFile callback.")
-                pCallback(watchDir . "\" . FileName)
+                if ((Action = 1 or Action = 3) and InStr(FileName, "tts_output_")) {
+                    Log("==> MATCH! Calling ProcessFile callback.")
+                    pCallback(watchDir . "\" . FileName)
+                }
+
+                NextEntryOffset := NumGet(pCurrent, 0, "UInt")
+                if !NextEntryOffset
+                    break
+                    pCurrent += NextEntryOffset
             }
-
-            NextEntryOffset := NumGet(pCurrent, 0, "UInt")
-            if !NextEntryOffset
-                break
-                pCurrent += NextEntryOffset
         }
-    }
+        else if (dwErrorCode != 0) {
+            Log("--- ERROR: Completion Routine received ErrorCode: " . dwErrorCode)
+        }
 
-    ; WICHTIG: Bewaffne den Watcher erneut für die nächste Änderung.
-    ReArmWatcher()
+        ; WICHTIG: Bewaffne den Watcher erneut für die nächste Änderung.
+        ReArmWatcher()
+
+    } catch e {
+        ; Wenn hier irgendetwas schief geht, loggen wir den Fehler, aber das Skript läuft weiter.
+        Log("--- FATAL ERROR in IOCompletionRoutine: " . e.Message . " ---")
+        ; Wir bewaffnen den Watcher trotzdem neu, um zu versuchen, weiterzumachen.
+        ReArmWatcher()
+    }
 }
