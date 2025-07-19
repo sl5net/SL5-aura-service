@@ -1,19 +1,15 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
-; --- Konfiguration ---
 watchDir := "C:\tmp"
 filePattern := "tts_output_*.txt"
-; Wartezeit in Millisekunden, um zu prüfen, ob eine Datei fertig geschrieben ist.
-; Erhöhen, falls sehr große Dateien unvollständig gelesen werden.
-stabilityDelay := 30
 
-monitor := FileChangeMonitor(watchDir, OnFileEvent)
-monitor.Filter := filePattern
-monitor.Start()
+FileChangeMonitor(watchDir, OnFileEvent, filePattern)
 
 OnFileEvent(filename, event)
 {
+    static stabilityDelay := 50
+
     ; Wir reagieren nur auf 'erstellt' (1) und 'geändert' (3).
     if (event != 1 and event != 3)
         return
@@ -21,24 +17,19 @@ OnFileEvent(filename, event)
         try
         {
             size1 := FileGetSize(filename)
-            Sleep(GLOBALS.stabilityDelay)
+            Sleep(stabilityDelay)
             size2 := FileGetSize(filename)
 
-            ; size should be stable
             if (size1 != size2 or size1 == 0)
             {
-                return
+                return ; Die Datei wächst noch oder ist leer, wir warten.
             }
         }
         catch
         {
-            ; Wenn die Datei bereits gelöscht wurde, während wir warteten,
-            ; ignorieren wir den Fehler und beenden die Funktion.
-            return
+            return ; Datei wurde bereits gelöscht.
         }
 
-
-        ; --- Robuste Verarbeitung der stabilen Datei ---
         Try
         {
             content := Trim(FileRead(filename, "UTF-8"))
@@ -51,8 +42,6 @@ OnFileEvent(filename, event)
         }
         Catch OSError
         {
-            ; Fängt den seltenen Fall ab, dass die Datei trotz Stabilitäts-
-            ; prüfung immer noch gesperrt ist. Ignorieren und auf das
-            ; nächste Event warten.
+            ; Ignorieren
         }
 }
