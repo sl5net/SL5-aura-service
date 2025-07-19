@@ -9,6 +9,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      - name: Pre-download LanguageTool from project releases
+        run: |
+          echo "--> Downloading LanguageTool from our reliable GitHub Release..."
+          wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/LanguageTool-6.6.zip        
+
       - name: Run ubuntu_setup.sh
         run: bash ./setup/ubuntu_setup.sh
         
