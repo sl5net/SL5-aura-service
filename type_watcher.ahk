@@ -120,17 +120,17 @@ ReArmWatcher() {
 ; COMPLETION ROUTINE - Diese Funktion wird direkt von WINDOWS aufgerufen!
 ; =============================================================================
 IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
-    ; <<< KORREKTUR 2: Fehlende globale Variable deklarieren.
     global pBuffer, pCallback, watchDir
 
-    ; <<< KORREKTUR 1: Die gesamte Routine in einen try-catch-Block einschließen.
-    ; Dies ist die WICHTIGSTE Änderung, um den Absturz zu verhindern!
     try {
         Log("==> IOCompletionRoutine TRIGGERED! ErrorCode: " . dwErrorCode . ", Bytes: " . dwNumberOfBytesTransfered)
 
         if (dwErrorCode = 0 and dwNumberOfBytesTransfered > 0) {
+
+            ; <<< KORREKTUR: Die Schleife zur Verarbeitung des Puffers wurde komplett überarbeitet, um Speicherfehler zu vermeiden.
             pCurrent := pBuffer.Ptr
             Loop {
+                ; Lese die Informationen für das aktuelle Ereignis
                 Action := NumGet(pCurrent + 4, "UInt")
                 FileNameLength := NumGet(pCurrent + 8, "UInt")
                 FileName := StrGet(pCurrent + 12, FileNameLength / 2)
@@ -141,23 +141,26 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
                     pCallback(watchDir . "\" . FileName)
                 }
 
+                ; Hole den Offset zum NÄCHSTEN Eintrag.
                 NextEntryOffset := NumGet(pCurrent, 0, "UInt")
-                if !NextEntryOffset
+
+                ; Wenn der Offset 0 ist, gibt es keinen nächsten Eintrag mehr. Wir sind fertig.
+                if !NextEntryOffset {
                     break
-                    pCurrent += NextEntryOffset
+                }
+
+                ; Wenn es einen nächsten Eintrag gibt, bewege den Zeiger dorthin für die nächste Iteration.
+                pCurrent += NextEntryOffset
             }
         }
         else if (dwErrorCode != 0) {
             Log("--- ERROR: Completion Routine received ErrorCode: " . dwErrorCode)
         }
 
-        ; WICHTIG: Bewaffne den Watcher erneut für die nächste Änderung.
         ReArmWatcher()
 
-    } catch e {
-        ; Wenn hier irgendetwas schief geht, loggen wir den Fehler, aber das Skript läuft weiter.
+    } catch as e {
         Log("--- FATAL ERROR in IOCompletionRoutine: " . e.Message . " ---")
-        ; Wir bewaffnen den Watcher trotzdem neu, um zu versuchen, weiterzumachen.
         ReArmWatcher()
     }
 }
