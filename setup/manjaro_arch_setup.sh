@@ -134,25 +134,9 @@ touch config/__init__.py
 touch config/model_name_lastused.txt
 echo "dummy" > config/model_name_lastused.txt
 
-
-
-
-
 # Download and extract Vosk Models
-mkdir -p models
-if [ ! -d "models/vosk-model-en-us-0.22" ]; then
-  echo "    -> Downloading English Vosk model..."
-  wget https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip -O models/en.zip
-  unzip -q models/en.zip -d models/
-  rm models/en.zip
-fi
 
-if [ ! -d "models/vosk-model-de-0.21" ]; then
-  echo "    -> Downloading German Vosk model..."
-  wget https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip -O models/de.zip
-  unzip -q models/de.zip -d models/
-  rm models/de.zip
-fi
+source "$(dirname "${BASH_SOURCE[0]}")/get_lang.sh"
 
 # --- 5. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.
