@@ -1,6 +1,0 @@
-# =========================================================================
-# This list of German prefixes is used by GermanSpellerRule to detect 
-# three-part compounds that consist of verb prefix + verb stem + noun
-# Example: 'Aus' + 'biege' + 'möglichkeit'
-# =========================================================================
-aus
