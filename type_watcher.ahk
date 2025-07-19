@@ -1,35 +1,53 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (final, robust DllCall version)
+; type_watcher.ahk (A robust, simplified DllCall version with DETAILED LOGGING)
 
-; Verhindert, dass das Skript mehrfach läuft
 #SingleInstance Force
 
 ; --- Konfiguration ---
 watchDir := "C:\tmp"
 
 ; --- Hauptteil des Skripts ---
-; Starte die Überwachung des Verzeichnisses.
-WatchFolder(watchDir, ProcessFile)
-return ; Beendet den auto-execute-Teil
+; Erstelle das Log-Verzeichnis, falls es nicht existiert
+logDir := A_ScriptDir . "\log"
+DirCreate(logDir)
+Log("--- Script Started ---")
 
-; -----------------------------------------------------------------------------
-; CALLBACK-FUNKTION: Diese Funktion wird aufgerufen, wenn eine Datei erstellt wird.
-; -----------------------------------------------------------------------------
+WatchFolder(watchDir, ProcessFile)
+Log("Watcher initialized. Waiting for file events...")
+return
+
+; =============================================================================
+; LOGGING-FUNKTION: Schreibt eine Nachricht mit Zeitstempel in die Log-Datei.
+; =============================================================================
+Log(message)
+{
+    static logFile := A_ScriptDir . "\log\type_watcher.log"
+    FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
+}
+
+; =============================================================================
+; CALLBACK-FUNKTION: Wird aufgerufen, um eine Datei zu verarbeiten.
+; =============================================================================
 ProcessFile(filename)
 {
+    Log("Processing file: " . filename)
     static stabilityDelay := 50
 
     try
     {
-        ; Prüfung auf Dateistabilität
         size1 := FileGetSize(filename)
         Sleep(stabilityDelay)
         size2 := FileGetSize(filename)
         if (size1 != size2 or size1 == 0)
+        {
+            Log("-> File is unstable or empty. Skipping for now. Size1: " . size1 . ", Size2: " . size2)
             return
+        }
+        Log("-> File is stable.")
     }
     catch
     {
+        Log("-> ERROR during stability check (file might have been deleted).")
         return
     }
 
@@ -38,92 +56,89 @@ ProcessFile(filename)
         content := Trim(FileRead(filename, "UTF-8"))
         FileDelete(filename)
         if (content != "")
+        {
+            Log("-> Content found. Sending text and deleting file.")
             SendText(content)
+        }
+        else
+        {
+            Log("-> File was empty. Deleting file.")
+        }
     }
     Catch OSError
     {
-        ; Ignorieren
+        Log("-> ERROR: File was locked during read/delete. Will retry on next event.")
     }
 }
 
-; -----------------------------------------------------------------------------
+; =============================================================================
 ; WATCHER-FUNKTION: Das Herzstück, das die Windows API direkt nutzt.
-; Basierend auf der von Ihnen gefundenen Low-Level-Methode.
-; -----------------------------------------------------------------------------
+; =============================================================================
 WatchFolder(pFolder, pCallback)
 {
     static hDir, pBuffer, pOverlapped
 
-    ; Erstelle einen Handle für das zu überwachende Verzeichnis.
-    hDir := DllCall("CreateFile", "Str", pFolder
-    , "UInt", 0x1 ; FILE_LIST_DIRECTORY
-    , "UInt", 0x3 ; FILE_SHARE_READ | FILE_SHARE_WRITE
-    , "Ptr", 0
-    , "UInt", 0x3 ; OPEN_EXISTING
-    , "UInt", 0x40000000 | 0x02000000 ; FILE_FLAG_OVERLAPPED | FILE_FLAG_BACKUP_SEMANTICS
-    , "Ptr", 0, "Ptr")
+    ; Windows API Konstanten
+    static FILE_NOTIFY_CHANGE_FILE_NAME := 0x1
+    static FILE_NOTIFY_CHANGE_LAST_WRITE := 0x10 ; WICHTIG: Wir lauschen jetzt auch auf Schreibänderungen.
+    static FILE_ACTION_ADDED := 1
+    static FILE_ACTION_MODIFIED := 3
+
+    hDir := DllCall("CreateFile", "Str", pFolder, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", 0x42000000, "Ptr", 0, "Ptr")
 
     if (hDir = -1)
     {
-        MsgBox("Fehler: Konnte das Verzeichnis nicht öffnen: " . pFolder)
-        return
+        errMsg := "FEHLER: Konnte das Verzeichnis nicht überwachen: " . pFolder
+        Log(errMsg)
+        MsgBox(errMsg)
+        ExitApp
     }
+    Log("Successfully opened handle for directory: " . pFolder)
 
-    ; Allokiere Speicher für die Informationen, die wir vom OS erhalten.
-    pBuffer := Buffer(1024 * 64)
+    pBuffer := Buffer(1024 * 16)
     pOverlapped := Buffer(A_PtrSize * 2 + 8)
 
-    ; Starte den ersten Lese-Vorgang, um die Überwachung zu beginnen.
-    DllCall("ReadDirectoryChangesW"
-    , "Ptr", hDir
-    , "Ptr", pBuffer
-    , "UInt", pBuffer.Size
-    , "Int", true ; bWatchSubtree
-    , "UInt", 0x1 ; FILE_NOTIFY_CHANGE_FILE_NAME
-    , "Ptr", 0
-    , "Ptr", pOverlapped
-    , "Ptr", 0)
+    ; Starte die Überwachung. WICHTIG: Wir überwachen jetzt auch Schreibzugriffe.
+    notifyFilter := FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE
+    DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", 0)
 
-    ; Setze einen Timer, der regelmäßig prüft, ob Änderungen aufgetreten sind.
-    ; Das ist der "Anker", der das Skript am Leben erhält.
     SetTimer(CheckChanges, 200)
+    Log("Timer set. Initial ReadDirectoryChangesW call completed.")
 
-    CheckChanges() ; Führe die Prüfung einmal sofort aus.
+    CheckChanges()
     {
-        ; Diese Funktion wird vom Timer aufgerufen.
         dwBytes := 0
-        if (DllCall("GetOverlappedResult", "Ptr", hDir, "Ptr", pOverlapped, "UInt*", &dwBytes, "Int", false))
+        ; Prüfe, ob die Operation abgeschlossen ist
+        result := DllCall("GetOverlappedResult", "Ptr", hDir, "Ptr", pOverlapped, "UInt*", &dwBytes, "Int", false)
+
+        if (result and dwBytes)
         {
-            pCurrent := pBuffer
+            Log("GetOverlappedResult returned TRUE with " . dwBytes . " bytes. Processing...")
+            pCurrent := pBuffer.Ptr
             Loop
             {
-                Action := NumGet(pCurrent, 4, "UInt")
-                FileNameLength := NumGet(pCurrent, 8, "UInt")
-                FileName := StrGet(pCurrent.Ptr + 12, FileNameLength / 2)
+                Action := NumGet(pCurrent + 4, "UInt")
+                FileNameLength := NumGet(pCurrent + 8, "UInt")
+                FileName := StrGet(pCurrent + 12, FileNameLength / 2)
 
-                ; Wir interessieren uns nur für neu erstellte Dateien (Action = 1)
-                if (Action = 1 and RegExMatch(FileName, "i)^tts_output_.*\.txt$"))
+                Log("--> Detected Event: Action=" . Action . ", FileName=" . FileName)
+
+                ; Wir reagieren jetzt auf HINZUGEFÜGT (1) und GEÄNDERT (3)
+                if ((Action = FILE_ACTION_ADDED or Action = FILE_ACTION_MODIFIED) and InStr(FileName, "tts_output_"))
                 {
-                    ; Rufe die Callback-Funktion mit dem vollen Pfad auf.
+                    Log("==> MATCH! Calling ProcessFile callback.")
                     pCallback(pFolder . "\" . FileName)
                 }
 
-                NextEntryOffset := NumGet(pCurrent, 0, "UInt")
-                if (!NextEntryOffset)
+                NextEntryOffset := NumGet(pCurrent, "UInt")
+                if !NextEntryOffset
                     break
-                    pCurrent.Ptr += NextEntryOffset
+                    pCurrent += NextEntryOffset
             }
 
-            ; Starte den nächsten Lese-Vorgang, um die Überwachung neu zu "bewaffnen".
-            DllCall("ReadDirectoryChangesW"
-            , "Ptr", hDir
-            , "Ptr", pBuffer
-            , "UInt", pBuffer.Size
-            , "Int", true
-            , "UInt", 0x1
-            , "Ptr", 0
-            , "Ptr", pOverlapped
-            , "Ptr", 0)
+            ; Starte die Überwachung erneut für die nächsten Änderungen.
+            Log("Re-arming the watcher with ReadDirectoryChangesW.")
+            DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", 0)
         }
     }
 }
