@@ -72,6 +72,8 @@ ProcessFile(filename)
 }
 
 
+
+
 ; =============================================================================
 ; WATCHER-FUNKTION: Version mit syntaktisch korrektem NumPut
 ; =============================================================================
@@ -142,4 +144,7 @@ WatchFolder(pFolder, pCallback)
             DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", 0)
         }
     }
+
+
+
 }
