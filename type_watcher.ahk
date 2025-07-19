@@ -71,8 +71,9 @@ ProcessFile(filename)
     }
 }
 
+
 ; =============================================================================
-; WATCHER-FUNKTION: Version mit explizitem Event-Handle für Robustheit
+; WATCHER-FUNKTION: Version mit syntaktisch korrektem NumPut
 ; =============================================================================
 WatchFolder(pFolder, pCallback)
 {
@@ -93,12 +94,13 @@ WatchFolder(pFolder, pCallback)
     Log("Successfully opened handle for directory: " . pFolder)
 
     pBuffer := Buffer(1024 * 16)
-    pOverlapped := Buffer(A_PtrSize * 2 + 8, 0) ; Buffer initialisieren
+    pOverlapped := Buffer(A_PtrSize * 2 + 8, 0)
 
-    ; --- DIE ENTSCHEIDENDE ÄNDERUNG ---
-    ; Erstelle ein explizites Event-Objekt, das Windows signalisieren kann.
     hEvent := DllCall("CreateEvent", "Ptr", 0, "Int", true, "Int", false, "Ptr", 0, "Ptr")
-    NumPut(hEvent, pOverlapped.Ptr + A_PtrSize * 2) ; Setze das Handle in die OVERLAPPED-Struktur.
+
+    ; --- DIE KORRIGIERTE ZEILE ---
+    NumPut("Ptr", hEvent, pOverlapped, A_PtrSize * 2) ; Setze das Handle in die OVERLAPPED-Struktur.
+
     Log("Created and assigned a manual event handle.")
 
     notifyFilter := FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE
@@ -110,8 +112,6 @@ WatchFolder(pFolder, pCallback)
     CheckChanges()
     {
         dwBytes := 0
-        ; Wir verwenden jetzt eine Wartezeit (letzter Parameter auf 0 = sofortige Rückkehr),
-        ; aber die Verknüpfung mit dem Event-Handle ist der robustere Mechanismus.
         result := DllCall("GetOverlappedResult", "Ptr", hDir, "Ptr", pOverlapped, "UInt*", &dwBytes, "Int", false)
 
         if (result and dwBytes)
@@ -128,7 +128,7 @@ WatchFolder(pFolder, pCallback)
                 if ((Action = FILE_ACTION_ADDED or Action = FILE_ACTION_MODIFIED) and InStr(FileName, "tts_output_"))
                 {
                     Log("==> MATCH! Calling ProcessFile callback.")
-                    DllCall("ResetEvent", "Ptr", hEvent) ; Setze das Event zurück für den nächsten Durchlauf
+                    DllCall("ResetEvent", "Ptr", hEvent)
                     pCallback(pFolder . "\" . FileName)
                 }
 
