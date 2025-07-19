@@ -1,5 +1,5 @@
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
-name: LanguageTool Health Check
+name: LanguageTool-6.6 Health Check
 
 # This workflow runs automatically on any push that modifies files inside the LanguageTool-6.6 directory.
 # It also allows for manual runs from the GitHub Actions tab.
@@ -33,8 +33,8 @@ jobs:
           # Save the Process ID (PID) of the last background command
           SERVER_PID=$!
 
-          echo "--> Waiting up to 15 seconds for the server to respond..."
-          for i in {1..15}; do
+          echo "--> Waiting up to 40 seconds for the server to respond..."
+          for i in {1..40}; do
             # Use curl to check if the server is responding on port 8081.
             # -s: silent, -f: fail fast on server error, -o /dev/null: discard output
             if curl -sf -o /dev/null http://localhost:8081; then
@@ -46,7 +46,7 @@ jobs:
             sleep 1
           done
           
-          echo "❌ Error: LanguageTool server did not respond within 15 seconds."
+          echo "❌ Error: LanguageTool server did not respond within 40 seconds."
           echo "It likely crashed on startup. Please check the committed files."
           # Ensure the process is killed (the '|| true' prevents an error if it already crashed)
           kill $SERVER_PID || true
