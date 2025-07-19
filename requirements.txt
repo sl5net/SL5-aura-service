@@ -24,5 +24,3 @@ thefuzz==0.22.1
 thread==2.0.5
 urllib3_secure_extra==0.1.0
 vosk==0.3.45
-watchdog==6.0.0
-xmlrpclib==1.0.1
