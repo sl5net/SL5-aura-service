@@ -1,19 +1,33 @@
 #Requires AutoHotkey v2.0
+; type_watcher.ahk (final, correct, event-driven version)
+
+; Verhindert, dass das Skript mehrfach läuft
 #SingleInstance Force
 
+; --- Konfiguration ---
 watchDir := "C:\tmp"
 filePattern := "tts_output_*.txt"
 
-FileChangeMonitor(watchDir, OnFileEvent, filePattern)
+; --- Hauptteil des Skripts ---
+; ERSTELLE das Monitor-Objekt und weise es einer globalen Variable zu.
+; Das ist notwendig, damit der Monitor aktiv bleibt.
+global monitor := FileChangeMonitor(watchDir, OnFileEvent)
+; Setze den Filter für die zu überwachenden Dateien.
+monitor.Filter := filePattern
+; Starte die Überwachung.
+monitor.Start()
 
+; Die Funktion, die bei jedem Datei-Ereignis aufgerufen wird.
 OnFileEvent(filename, event)
 {
+    ; Eine statische Variable ist sauberer als eine globale für diesen Zweck.
     static stabilityDelay := 50
 
     ; Wir reagieren nur auf 'erstellt' (1) und 'geändert' (3).
     if (event != 1 and event != 3)
         return
 
+        ; --- Prüfung auf Dateistabilität ---
         try
         {
             size1 := FileGetSize(filename)
@@ -30,6 +44,7 @@ OnFileEvent(filename, event)
             return ; Datei wurde bereits gelöscht.
         }
 
+        ; --- Robuste Verarbeitung der stabilen Datei ---
         Try
         {
             content := Trim(FileRead(filename, "UTF-8"))
@@ -42,6 +57,6 @@ OnFileEvent(filename, event)
         }
         Catch OSError
         {
-            ; Ignorieren
+            ; Ignorieren, falls die Datei trotz Prüfung gesperrt ist.
         }
 }
