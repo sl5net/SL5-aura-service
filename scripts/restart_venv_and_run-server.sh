@@ -65,4 +65,4 @@ else
     exit 1
 fi
 
-echo "Server restart sequence complete."
+echo "Server started or closed now."

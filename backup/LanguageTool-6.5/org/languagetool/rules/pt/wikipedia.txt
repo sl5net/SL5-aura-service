@@ -1,0 +1,23 @@
+# Wikipedia list of common errors
+# (c) 2016 Tiago F. Santos
+# Licensed under LGPL
+#
+# List triaged and compiled from:
+# https://pt.wikipedia.org/wiki/Wikip%C3%A9dia:Lista_de_erros_comuns/M%C3%A1quinas
+# Este texto é disponibilizado nos termos da licença
+# Creative Commons - Atribuição - Compartilha Igual 3.0 Não Adaptada (CC BY-SA 3.0);
+# pode estar sujeito a condições adicionais. Para mais detalhes, consulte as Condições de Uso.
+#
+à diversos=a diversos
+à diversas=a diversas
+à outras=a outras
+à pedido=a pedido
+à todos=a todos
+à tudo=a tudo
+ao meu ver=a meu ver
+as sua=as suas
+Castanheira de Pêra=Castanheira de Pera
+de encontro ao=ao encontro do
+# Gender varies in pt-BR and pt-PT
+#o síndrome=a síndrome
+# um síndrome=uma síndrome

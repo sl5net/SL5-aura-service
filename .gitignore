@@ -1,9 +1,8 @@
-LanguageTool*
 
 * *
 vosk*
 .venv/
-LanguageTool-6.5/
+
 dictate.py
 transcribe.py
 

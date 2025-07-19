@@ -86,7 +86,7 @@ FUZZY_MAP = [
     ('git add .', 'mit at', 85),
 
     ('git add .', 'kate at', 85),
-    ('git add .', 'geht es', 85),
+#    ('git add .', 'geht es', 85), ToDo should be only work at line beginning
 
     ('git commit', 'git commit', 80),
     ('git commit', 'womit', 85),

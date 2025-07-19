@@ -1,0 +1,5 @@
+# Foreign words confused with Portuguese ones
+# (c) 2015 Marco A.G.Pinto
+# Licensed under LGPL
+#
+
