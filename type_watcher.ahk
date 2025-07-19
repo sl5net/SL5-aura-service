@@ -6,26 +6,27 @@
 ; --- Konfiguration ---
 watchDir := "C:\tmp"
 
-; Globale Variablen, die wir für die DllCalls benötigen
+; --- Globale Variablen für die DllCalls ---
 global pBuffer := Buffer(1024 * 16)
 global hDir
 global pOverlapped := Buffer(A_PtrSize * 2 + 8, 0)
 global pCallback
+global CompletionRoutineProc
 
 ; --- Hauptteil des Skripts ---
 logDir := A_ScriptDir . "\log"
 DirCreate(logDir)
 Log("--- Script Started (Completion Routine Strategy) ---")
 
-pCallback := ProcessFile ; Speichere die Referenz zur Callback-Funktion
+pCallback := ProcessFile
+; <<< KORREKTUR: Den Callback einmalig im globalen Kontext erstellen, um seine Lebensdauer zu garantieren.
+CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
 
 ; Starte die Überwachung
 WatchFolder(watchDir)
 
 ; --- DER NEUE, KORREKTE "ANKER" ---
-; Wir versetzen den Haupt-Thread in einen "alertable" Wartezustand.
-; Er schläft, aber wacht auf, um die von Windows gesendeten Completion Routines und Timer auszuführen.
-DllCall("SleepEx", "UInt", 0xFFFFFFFF, "Int", true) ; -1 (als UInt) = INFINITE
+DllCall("SleepEx", "UInt", 0xFFFFFFFF, "Int", true)
 
 Log("--- FATAL: Watcher loop exited unexpectedly. ---")
 ExitApp
@@ -38,7 +39,7 @@ Log(message) {
     static logFile := A_ScriptDir . "\log\type_watcher.log"
     try {
         FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
-    } catch as e { ; <<< KORREKTUR: Korrekte AHK v2 Syntax
+    } catch as e {
         MsgBox("FATAL LOGGING ERROR: " . e.Message . "`n`nMessage was: " . message)
     }
 }
@@ -94,16 +95,16 @@ WatchFolder(pFolder) {
 ; =============================================================================
 ; BEWAFFNUNGS-FUNKTION
 ; =============================================================================
-ReArmWatcher(*) { ; <<< KRITISCHE KORREKTUR: (*) fügt einen variadischen Parameter hinzu, der den Aufruf von SetTimer akzeptiert.
-    global hDir, pBuffer, pOverlapped
+ReArmWatcher(*) {
+    ; <<< KORREKTUR: Verwende die globalen Variablen, erstelle sie hier aber nicht neu.
+    global hDir, pBuffer, pOverlapped, CompletionRoutineProc
     static notifyFilter := 0x1 | 0x10 ; FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE
-    static CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
 
     Log("Arming watcher with ReadDirectoryChangesW and Completion Routine...")
     success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
 
     if not success {
-        Log("--- FATAL: ReadDirectoryChangesW failed. Error: " . A_LastError ". Exiting. ---")
+        Log("--- FATAL: ReadDirectoryChangesW failed. Error: " . A_LastError . ". Exiting. ---")
         ExitApp
     }
 }
