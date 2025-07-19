@@ -22,7 +22,8 @@ SetTimer(KeepAlive, 10000) ; Rufe alle 10 Sek. eine leere Funktion auf.
 
 return ; Beendet den "auto-execute" Teil des Skripts explizit.
 
-; Diese Funktion tut nichts. Sie ist nur das Ziel für den Timer.
+; Diese Funktion tut nichts. Sie ist nur das Ziel für den Timer,
+; um das Skript am Leben zu erhalten.
 KeepAlive()
 {
 }
@@ -32,6 +33,7 @@ OnFileEvent(filename, event)
 {
     static stabilityDelay := 50
 
+    ; Wir reagieren nur auf 'erstellt' (1) und 'geändert' (3).
     if (event != 1 and event != 3)
         return
 
