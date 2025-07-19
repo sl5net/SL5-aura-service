@@ -24,7 +24,7 @@ WatchFolder(watchDir)
 
 ; --- DER NEUE, KORREKTE "ANKER" ---
 ; Wir versetzen den Haupt-Thread in einen "alertable" Wartezustand.
-; Er schläft, aber wacht auf, um die von Windows gesendeten Completion Routines auszuführen.
+; Er schläft, aber wacht auf, um die von Windows gesendeten Completion Routines und Timer auszuführen.
 DllCall("SleepEx", "UInt", 0xFFFFFFFF, "Int", true) ; -1 (als UInt) = INFINITE
 
 Log("--- FATAL: Watcher loop exited unexpectedly. ---")
@@ -36,14 +36,10 @@ ExitApp
 ; =============================================================================
 Log(message) {
     static logFile := A_ScriptDir . "\log\type_watcher.log"
-    ; <<< VERBESSERUNG: Fügen einen try-catch Block hinzu, um Fehler beim Loggen abzufangen.
-    try
-    FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
-    catch
-    {
-        ; Wenn das Loggen fehlschlägt, geben wir eine MsgBox aus, damit wir es bemerken,
-        ; aber das Skript stürzt nicht ab.
-        MsgBox("FATAL LOGGING ERROR: " . message)
+    try {
+        FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
+    } catch as e { ; <<< KORREKTUR: Korrekte AHK v2 Syntax
+        MsgBox("FATAL LOGGING ERROR: " . e.Message . "`n`nMessage was: " . message)
     }
 }
 
@@ -92,16 +88,13 @@ WatchFolder(pFolder) {
         Log(errMsg), MsgBox(errMsg), ExitApp
     }
     Log("Successfully opened handle for directory: " . pFolder)
-
-    ; Wir rufen jetzt ReadDirectoryChangesW zum ersten Mal auf.
-    ; Wenn es fertig ist, wird IOCompletionRoutine von Windows aufgerufen.
     ReArmWatcher()
 }
 
 ; =============================================================================
 ; BEWAFFNUNGS-FUNKTION
 ; =============================================================================
-ReArmWatcher() {
+ReArmWatcher(*) { ; <<< KRITISCHE KORREKTUR: (*) fügt einen variadischen Parameter hinzu, der den Aufruf von SetTimer akzeptiert.
     global hDir, pBuffer, pOverlapped
     static notifyFilter := 0x1 | 0x10 ; FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE
     static CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
@@ -109,7 +102,6 @@ ReArmWatcher() {
     Log("Arming watcher with ReadDirectoryChangesW and Completion Routine...")
     success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
 
-    ; <<< VERBESSERUNG: Prüfen, ob das "Bewaffnen" fehlschlug.
     if not success {
         Log("--- FATAL: ReadDirectoryChangesW failed. Error: " . A_LastError ". Exiting. ---")
         ExitApp
@@ -149,14 +141,10 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
             Log("--- ERROR: Completion Routine received ErrorCode: " . dwErrorCode)
         }
 
-        ; <<< FINALE KORREKTUR: Rufen Sie ReArmWatcher nicht mehr direkt auf!
-        ; Stattdessen starten wir einen einmaligen Timer, der so schnell wie möglich ausgeführt wird.
-        ; Dies entkoppelt die Neu-Bewaffnung vom Callback und verhindert den Absturz.
         SetTimer ReArmWatcher, -1
 
     } catch as e {
         Log("--- FATAL ERROR in IOCompletionRoutine: " . e.Message . " ---")
-        ; Auch im Fehlerfall versuchen wir, den Watcher sicher neu zu starten.
         SetTimer ReArmWatcher, -1
     }
 }
