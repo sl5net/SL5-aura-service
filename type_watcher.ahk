@@ -126,11 +126,8 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
         Log("==> IOCompletionRoutine TRIGGERED! ErrorCode: " . dwErrorCode . ", Bytes: " . dwNumberOfBytesTransfered)
 
         if (dwErrorCode = 0 and dwNumberOfBytesTransfered > 0) {
-
-            ; <<< KORREKTUR: Die Schleife zur Verarbeitung des Puffers wurde komplett überarbeitet, um Speicherfehler zu vermeiden.
             pCurrent := pBuffer.Ptr
             Loop {
-                ; Lese die Informationen für das aktuelle Ereignis
                 Action := NumGet(pCurrent + 4, "UInt")
                 FileNameLength := NumGet(pCurrent + 8, "UInt")
                 FileName := StrGet(pCurrent + 12, FileNameLength / 2)
@@ -141,15 +138,10 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
                     pCallback(watchDir . "\" . FileName)
                 }
 
-                ; Hole den Offset zum NÄCHSTEN Eintrag.
                 NextEntryOffset := NumGet(pCurrent, 0, "UInt")
-
-                ; Wenn der Offset 0 ist, gibt es keinen nächsten Eintrag mehr. Wir sind fertig.
                 if !NextEntryOffset {
                     break
                 }
-
-                ; Wenn es einen nächsten Eintrag gibt, bewege den Zeiger dorthin für die nächste Iteration.
                 pCurrent += NextEntryOffset
             }
         }
@@ -157,10 +149,14 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
             Log("--- ERROR: Completion Routine received ErrorCode: " . dwErrorCode)
         }
 
-        ReArmWatcher()
+        ; <<< FINALE KORREKTUR: Rufen Sie ReArmWatcher nicht mehr direkt auf!
+        ; Stattdessen starten wir einen einmaligen Timer, der so schnell wie möglich ausgeführt wird.
+        ; Dies entkoppelt die Neu-Bewaffnung vom Callback und verhindert den Absturz.
+        SetTimer ReArmWatcher, -1
 
     } catch as e {
         Log("--- FATAL ERROR in IOCompletionRoutine: " . e.Message . " ---")
-        ReArmWatcher()
+        ; Auch im Fehlerfall versuchen wir, den Watcher sicher neu zu starten.
+        SetTimer ReArmWatcher, -1
     }
 }
