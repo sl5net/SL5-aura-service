@@ -1,32 +1,58 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk
-
-; Verhindert, dass das Skript mehrfach läuft (wie die Lockfile-Logik)
 #SingleInstance Force
 
 ; --- Konfiguration ---
-; Das Skript überwacht dieses Verzeichnis auf Dateien, die dem Muster entsprechen.
 watchDir := "C:\tmp"
-filePattern := watchDir . "\tts_output_*.txt"
+filePattern := "tts_output_*.txt"
+; Wartezeit in Millisekunden, um zu prüfen, ob eine Datei fertig geschrieben ist.
+; Erhöhen, falls sehr große Dateien unvollständig gelesen werden.
+stabilityDelay := 30
 
-; --- Endlosschleife zum Überwachen ---
-Loop
+monitor := FileChangeMonitor(watchDir, OnFileEvent)
+monitor.Filter := filePattern
+monitor.Start()
+
+OnFileEvent(filename, event)
 {
-    ; Durchsuche das Verzeichnis nach passenden Dateien.
-    ; Die Verarbeitung erfolgt alphabetisch. Stelle sicher, dass der Timestamp
-    ; im Dateinamen das ermöglicht (z.B. YYYYMMDD_HHMMSS).
-    Loop Files, filePattern
-    {
-        ; A_LoopFileFullPath enthält den Pfad zur gefundenen Datei
-        content := Trim(FileRead(A_LoopFileFullPath))
-        FileDelete(A_LoopFileFullPath)
+    ; Wir reagieren nur auf 'erstellt' (1) und 'geändert' (3).
+    if (event != 1 and event != 3)
+        return
 
-        if (content != "")
+        try
         {
-            SendText(content) ; Zuverlässiger als Send()
-        }
-    }
+            size1 := FileGetSize(filename)
+            Sleep(GLOBALS.stabilityDelay)
+            size2 := FileGetSize(filename)
 
-    ; Kurze Pause, um CPU-Last zu reduzieren, bevor erneut gesucht wird.
-    Sleep 0.02
+            ; size should be stable
+            if (size1 != size2 or size1 == 0)
+            {
+                return
+            }
+        }
+        catch
+        {
+            ; Wenn die Datei bereits gelöscht wurde, während wir warteten,
+            ; ignorieren wir den Fehler und beenden die Funktion.
+            return
+        }
+
+
+        ; --- Robuste Verarbeitung der stabilen Datei ---
+        Try
+        {
+            content := Trim(FileRead(filename, "UTF-8"))
+            FileDelete(filename)
+
+            if (content != "")
+            {
+                SendText(content)
+            }
+        }
+        Catch OSError
+        {
+            ; Fängt den seltenen Fall ab, dass die Datei trotz Stabilitäts-
+            ; prüfung immer noch gesperrt ist. Ignorieren und auf das
+            ; nächste Event warten.
+        }
 }
