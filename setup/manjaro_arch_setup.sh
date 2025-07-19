@@ -29,8 +29,8 @@ echo "--> Checking for a compatible Java version (>=17)..."
 
 JAVA_OK=0
 if command -v java &> /dev/null; then
-    # Get major version number
-    VERSION=$(java -version 2>&1 | awk -F'[."]' '/version/ {print $2}')
+    # Get major version (handle Java 8 and 9+)
+    VERSION=$(java -version 2>&1 | awk -F[\".] '/version/ {print ($2 == "1") ? $3 : $2}')
     if [ "$VERSION" -ge 17 ]; then
         echo "    -> Found compatible Java version $VERSION. OK."
         JAVA_OK=1
