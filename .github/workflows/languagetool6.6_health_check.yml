@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin' # A popular open-source distribution of OpenJDK
           java-version: '17'
 
-      - name: Attempt to start LanguageTool Server
+      - name: Attempt to start LanguageTool-6.6 Server
         # We navigate into the directory to keep the commands clean.
         working-directory: ./LanguageTool-6.6
         run: |
