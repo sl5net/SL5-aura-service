@@ -9,6 +9,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      - name: Force Clean Re-installation of LanguageTool
+        run: |
+          echo "--> Removing potentially corrupt local LanguageTool directory..."
+          rm -rf LanguageTool-6.6
+          
       - name: Pre-download and Verify All Assets
         run: |
           echo "--> Downloading all assets from our GitHub Release..."
