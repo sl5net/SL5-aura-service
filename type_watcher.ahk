@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (v3.0 - Final Synchronous Fix)
+; type_watcher.ahk (v3.1 - Final Synchronous Fix)
 
 #SingleInstance Force
 
@@ -15,14 +15,11 @@ global pCallback
 ; --- Hauptteil des Skripts ---
 logDir := A_ScriptDir . "\log"
 DirCreate(logDir)
-Log("--- Script Started (v3.0 - SYNCHRONOUS Strategy) ---")
+Log("--- Script Started (v3.1 - SYNCHRONOUS Strategy) ---")
 
 pCallback := ProcessFile
 
 ; Öffne das Verzeichnis zum Überwachen
-; <<< KRITISCHE KORREKTUR: Wir müssen das Handle mit den korrekten Flags für Overlapped I/O öffnen.
-; FILE_FLAG_BACKUP_SEMANTICS (0x40000000) ist nötig, um ein Verzeichnis-Handle zu bekommen.
-; FILE_FLAG_OVERLAPPED (0x02000000) ist nötig, damit ReadDirectoryChangesW mit einem Overlapped-Puffer funktioniert.
 flagsAndAttributes := 0x40000000 | 0x02000000
 
 hDir := DllCall("CreateFile", "Str", watchDir, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", flagsAndAttributes, "Ptr", 0, "Ptr")
@@ -36,8 +33,9 @@ Loop {
     bytesReturned := Buffer(4)
     notifyFilter := 0x1 | 0x10 ; FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE
 
-    ; Setze den Overlapped-Puffer vor JEDEM Aufruf zurück, um API-Fehler zu vermeiden.
-    pOverlapped.Fill(0)
+    ; <<< DIE ENTSCHEIDENDE KORREKTUR v2 >>>
+    ; Setze den Overlapped-Puffer mit der korrekten Methode (memset) zurück.
+    DllCall("msvcrt\memset", "Ptr", pOverlapped.Ptr, "Int", 0, "Ptr", pOverlapped.Size)
 
     ; Setze den Watcher auf.
     success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", 0)
