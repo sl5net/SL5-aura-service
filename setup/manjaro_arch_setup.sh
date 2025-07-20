@@ -127,7 +127,7 @@ echo "LanguageTool installation verified successfully."
 
 
 echo "Creating application directories using Python script..."
-python3 "$(dirname "${BASH_SOURCE[0]}")/../scripts/py/func/ensure_directories.py"
+python3 "$(dirname "${BASH_SOURCE[0]}")/../scripts/py/func/create_required_folders.py"
 
 
 # mkdir -p log
