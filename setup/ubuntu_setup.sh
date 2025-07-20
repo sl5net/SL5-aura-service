@@ -5,8 +5,6 @@
 #
 
 # --- Make script location-independent ---
-# This block ensures the script can be run from any directory.
-# It finds the project root directory and changes into it.
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
 cd "$PROJECT_ROOT"
@@ -14,12 +12,12 @@ cd "$PROJECT_ROOT"
 echo "--> Running setup from project root: $(pwd)"
 # --- End of location-independent block ---
 
-# Exit immediately if a command fails
 set -e
 
 echo "--- Starting STT Setup for Debian/Ubuntu ---"
 
 # --- 1. System Dependencies ---
+# (This section remains unchanged)
 echo "--> Checking for a compatible Java version (>=17)..."
 JAVA_OK=0
 if command -v java &> /dev/null; then
@@ -29,22 +27,16 @@ if command -v java &> /dev/null; then
         JAVA_OK=1
     fi
 fi
-
 if [ "$JAVA_OK" -eq 0 ]; then
     echo "    -> Installing a modern JDK (>=17)..."
     sudo apt-get update && sudo apt-get install -y openjdk-21-jdk
 fi
-
 echo "--> Installing other core dependencies..."
 sudo apt-get install -y \
     inotify-tools wget unzip portaudio19-dev python3-pip
 
-
-
-
-
 # --- 2. Python Virtual Environment ---
-# We check if the venv directory exists before creating it.
+# (This section remains unchanged)
 if [ ! -d ".venv" ]; then
     echo "--> Creating Python virtual environment in './.venv'..."
     python3 -m venv .venv
@@ -53,11 +45,19 @@ else
 fi
 
 # --- 3. Python Requirements ---
-# We call pip from the venv directly. This is more robust than sourcing 'activate'.
+# (This section remains unchanged)
 echo "--> Installing Python requirements into the virtual environment..."
 ./.venv/bin/pip install -r requirements.txt
 
-# --- 4. External Tools and Models ---
+# --- 4. Project Structure and Configuration ---
+echo "--> Setting up project directories and initial files..."
+# THIS IS THE KEY CHANGE. We call the Python script and pass the current
+# working directory (which is the project root) as an argument.
+# This one command replaces all old 'mkdir' and 'touch' commands for the project structure.
+python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
+
+
+# --- 5. External Tools and Models ---
 echo "--> Downloading external tools and models (if missing)..."
 
 # Download and extract LanguageTool
@@ -69,39 +69,14 @@ if [ ! -d "LanguageTool-${LT_VERSION}" ]; then
   rm languagetool.zip
 fi
 
-
-
-
-echo "Creating application directories using Python script..."
-python3 "$(dirname "${BASH_SOURCE[0]}")/../scripts/py/func/create_required_folders.py"
-
-
-# mkdir -p log
-touch "$(dirname "${BASH_SOURCE[0]}")/../log/__init__.py"
-
-# mkdir -p config
-touch "$(dirname "${BASH_SOURCE[0]}")/../config/__init__.py
-
-
-
-
-
-
-touch config/model_name_lastused.txt
-echo "dummy" > config/model_name_lastused.txt
-
-
-
-
-# Download and extract Vosk Models (using the more robust two-step method)
-mkdir -p models
+# Download and extract Vosk Models
+# The Python script has already created the 'models' directory.
 if [ ! -d "models/vosk-model-en-us-0.22" ]; then
   echo "    -> Downloading English Vosk model..."
   wget https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip -O models/en.zip
   unzip -q models/en.zip -d models/
   rm models/en.zip
 fi
-
 if [ ! -d "models/vosk-model-de-0.21" ]; then
   echo "    -> Downloading German Vosk model..."
   wget https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip -O models/de.zip
@@ -109,20 +84,18 @@ if [ ! -d "models/vosk-model-de-0.21" ]; then
   rm models/de.zip
 fi
 
-# --- 5. Project Configuration ---
-# Ensures Python can treat 'config' directories as packages.
-echo "--> Creating Python package markers (__init__.py)..."
-touch config/__init__.py
-touch config/languagetool_server/__init__.py
-
+# --- 6. User-Specific Configuration ---
+# This part is about user config, so it's fine for it to stay here.
 CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
+echo "--> Ensuring user config file exists at $CONFIG_FILE..."
 mkdir -p "$(dirname "$CONFIG_FILE")"
-echo "[paths]" > "$CONFIG_FILE"
-echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
+# Only write the file if it doesn't exist to avoid overwriting user settings
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "[paths]" > "$CONFIG_FILE"
+    echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
+fi
 
-
-
-# --- 6. Completion ---
+# --- 7. Completion ---
 echo ""
 echo "--- Setup for Ubuntu is complete! ---"
 echo ""
