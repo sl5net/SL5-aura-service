@@ -34,7 +34,8 @@ then set any hotkey you like.
 # Windows- several built-in alternatives are available:
 ```sh
 
-cmd /c "type nul > c:\tmp\vosk_trigger"
+cmd /c "if not exist c:\tmp mkdir c:\tmp && type nul > c:\tmp\vosk_trigger"
+
 
 type nul > c:\tmp\vosk_trigger
 
