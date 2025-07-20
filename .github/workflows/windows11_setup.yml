@@ -28,3 +28,4 @@ jobs:
       - name: Run windows11_setup.ps1
         run: |
           powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"
+          

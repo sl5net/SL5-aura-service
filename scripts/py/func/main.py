@@ -1,6 +1,12 @@
 # File: scripts/py/func/main.py
 import platform, subprocess, threading, time, sys
+
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
 from pathlib import Path
+
+
 
 from .handle_trigger import handle_trigger
 from .check_memory_critical import check_memory_critical
@@ -85,29 +91,35 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
                 except subprocess.TimeoutExpired:
                     pass
 
-        else:  # Polling (Windows, macOS)
-            logger.info("Listening for triggers via file polling...")
+        else:
+            # --- IMPLEMENTATION FOR WINDOWS AND MACOS in File: scripts/py/func/main.py ---
+            trigger_event = threading.Event()
+
+            class TriggerEventHandler(FileSystemEventHandler):
+                def on_created(self, event):
+                    if event.src_path == str(trigger_file):
+                        logger.info("Trigger file detected by filesystem event.")
+                        trigger_event.set()
+
+            observer = Observer()
+            observer.schedule(TriggerEventHandler(), path=str(TMP_DIR), recursive=False)
+            observer.start()
+            logger.info(f"Event-driven listener started for non-Linux OS. Watching for '{trigger_file.name}'.")
+
             while True:
+                # Wait efficiently for a trigger, with a timeout for maintenance
+                trigger_event.wait(timeout=5.0)
 
+                # This block runs every 5s OR when a trigger happens
                 Path(heartbeat_file).write_text(str(int(time.time())))
+                manage_models(logger, loaded_models, PRELOAD_MODELS, CRITICAL_THRESHOLD_MB, script_dir)
 
-                manage_models(
-                    logger,
-                    loaded_models,
-                    PRELOAD_MODELS,
-                    CRITICAL_THRESHOLD_MB,
-                    script_dir
-                )
-
-                if trigger_file.exists():
-                    logger.info("Trigger file detected by polling.")
+                if trigger_event.is_set():
+                    trigger_event.clear()
                     trigger_file.unlink(missing_ok=True)
-                    handle_trigger(
-                        logger, loaded_models, active_threads, suspicious_events,
-                        project_root, TMP_DIR, recording_time, active_lt_url
-                    )
+                    handle_trigger(logger, loaded_models, active_threads, suspicious_events, project_root, TMP_DIR,
+                                   recording_time, active_lt_url)
 
-                time.sleep(0.2)
 
 
     except KeyboardInterrupt:

@@ -88,8 +88,11 @@ def process_text_in_background(logger,
         if re.match(r"^\w", processed_text) and time.time() - recording_time < 20:
             processed_text = ' ' + processed_text
         recording_time = time.time()
+
+        # file: scripts/py/func/process_text_in_background.py
+        # ... watchDir := "C:\tmp\sl5_dictation"
         timestamp = int(time.time() * 1000)
-        unique_output_file = TMP_DIR / f"tts_output_{timestamp}.txt"
+        unique_output_file = TMP_DIR / f"sl5_dictation/tts_output_{timestamp}.txt"
         unique_output_file.write_text(processed_text)
         logger.info(f"THREAD: Successfully wrote to {unique_output_file}")
 
@@ -102,6 +105,8 @@ def process_text_in_background(logger,
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
         notify(f"FATAL: Error in processing thread", duration=4000, urgency="low")
     finally:
+        # file: scripts/py/func/process_text_in_background.py
+        # ...
         logger.info(f" Background processing for '{raw_text[:20]}...' finished. ")
         notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
 
