@@ -93,7 +93,8 @@ def process_text_in_background(logger,
         # ... watchDir := "C:\tmp\sl5_dictation"
         timestamp = int(time.time() * 1000)
         unique_output_file = TMP_DIR / f"sl5_dictation/tts_output_{timestamp}.txt"
-        unique_output_file.write_text(processed_text)
+        # unique_output_file.write_text(processed_text)
+        unique_output_file.write_text(processed_text, encoding="utf-8-sig")
         logger.info(f"THREAD: Successfully wrote to {unique_output_file}")
 
         # notify("Transcribed", duration=700, urgency="low")
