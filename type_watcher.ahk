@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (v5.0 - The Asynchronous Redemption)
+; type_watcher.ahk (v5.1 - Asynchronous Redemption, memset fix)
 
 #SingleInstance Force
 
@@ -16,7 +16,7 @@ global CompletionRoutineProc ; Garantiert die Lebensdauer des Callbacks
 ; --- Hauptteil des Skripts ---
 logDir := A_ScriptDir . "\log"
 DirCreate(logDir)
-Log("--- Script Started (v5.0 - Asynchronous Redemption Strategy) ---")
+Log("--- Script Started (v5.1 - Asynchronous Redemption Strategy) ---")
 
 pCallback := ProcessFile
 CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
@@ -24,8 +24,6 @@ CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
 WatchFolder(watchDir)
 
 ; --- DER UNZERSTÖRBARE ANKER ---
-; Wir zwingen den Haupt-Thread, unter allen Umständen im Wartezustand zu bleiben,
-; selbst wenn SleepEx unerwartet zurückkehrt.
 Loop {
     DllCall("SleepEx", "UInt", 0xFFFFFFFF, "Int", true)
 }
@@ -40,7 +38,9 @@ Log(message) {
     static logFile := A_ScriptDir . "\log\type_watcher.log"
     try {
         FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
-    } catch { ; Silent fail }
+    } catch { ; Silent fail
+
+    }
 }
 
 ; =============================================================================
@@ -82,9 +82,8 @@ ProcessFile(filename) {
 WatchFolder(pFolder) {
     global hDir
 
-    ; Diese Parameter sind 100% korrekt für die asynchrone Methode.
-    flagsAndAttributes := 0x40000000 | 0x02000000 ; FILE_FLAG_OVERLAPPED | FILE_FLAG_BACKUP_SEMANTICS
-    hDir := DllCall("CreateFile", "Str", pFolder, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", flagsAndAttributes, "Ptr", 0, "Ptr")
+    ; Diese Parameter sind für die asynchrone Methode korrekt und haben in den ersten Versuchen funktioniert.
+    hDir := DllCall("CreateFile", "Str", pFolder, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", 0x42000000, "Ptr", 0, "Ptr")
 
     if (hDir = -1) {
         errMsg := "FEHLER: Konnte das Verzeichnis nicht überwachen: " . pFolder
@@ -102,7 +101,9 @@ ReArmWatcher(*) { ; Akzeptiert den optionalen Parameter von SetTimer
     static notifyFilter := 0x1 | 0x10
 
     Log("Arming watcher...")
-    pOverlapped.Fill(0) ; Gute Praxis: Puffer vor Verwendung zurücksetzen.
+    ; <<< KORREKTUR: Ersetze das fehlerhafte pOverlapped.Fill(0) durch den korrekten DllCall.
+    DllCall("msvcrt\memset", "Ptr", pOverlapped.Ptr, "Int", 0, "Ptr", pOverlapped.Size)
+
     success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
 
     if not success {
@@ -141,12 +142,10 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
                     pCurrent += NextEntryOffset
             }
         }
-        ; Stabile Neu-Bewaffnung per Timer, um Abstürze zu verhindern.
         SetTimer ReArmWatcher, -1
 
     } catch as e {
         Log("--- FATAL ERROR in IOCompletionRoutine: " . e.Message . " ---")
-        SetTimer ReArmWatcher, -1 ; Trotzdem versuchen, neu zu bewaffnen.
+        SetTimer ReArmWatcher, -1
     }
 }
-
