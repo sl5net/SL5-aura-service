@@ -92,7 +92,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
                     pass
 
         else:
-            # --- IMPLEMENTATION FOR WINDOWS AND MACOS ---
+            # --- IMPLEMENTATION FOR WINDOWS AND MACOS in File: scripts/py/func/main.py ---
             trigger_event = threading.Event()
 
             class TriggerEventHandler(FileSystemEventHandler):
