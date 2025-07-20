@@ -29,8 +29,8 @@ echo "--> Checking for a compatible Java version (>=17)..."
 
 JAVA_OK=0
 if command -v java &> /dev/null; then
-    # Get major version number
-    VERSION=$(java -version 2>&1 | awk -F'[."]' '/version/ {print $2}')
+    # Get major version (handle Java 8 and 9+)
+    VERSION=$(java -version 2>&1 | awk -F[\".] '/version/ {print ($2 == "1") ? $3 : $2}')
     if [ "$VERSION" -ge 17 ]; then
         echo "    -> Found compatible Java version $VERSION. OK."
         JAVA_OK=1
@@ -137,22 +137,9 @@ echo "dummy" > config/model_name_lastused.txt
 mkdir -p /tmp
 mkdir -p /tmp/sl5_dictation
 
-
 # Download and extract Vosk Models
-mkdir -p models
-if [ ! -d "models/vosk-model-en-us-0.22" ]; then
-  echo "    -> Downloading English Vosk model..."
-  wget https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip -O models/en.zip
-  unzip -q models/en.zip -d models/
-  rm models/en.zip
-fi
 
-if [ ! -d "models/vosk-model-de-0.21" ]; then
-  echo "    -> Downloading German Vosk model..."
-  wget https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip -O models/de.zip
-  unzip -q models/de.zip -d models/
-  rm models/de.zip
-fi
+source "$(dirname "${BASH_SOURCE[0]}")/get_lang.sh"
 
 # --- 5. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.
