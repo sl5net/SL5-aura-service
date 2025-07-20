@@ -29,6 +29,17 @@ then set any hotkey you like.
 
 [CopyQ](https://hluk.github.io/CopyQ/) works at Linux, Windows and OS X 10.15+.
 
+Also possible:
+
+# Linux/macOS
+```sh
+echo. > /tmp/vosk_trigger
+```
+
+# Windows
+```sh
+echo. > c:\tmp\vosk_trigger
+```
 
 ### Using AutoKey on Linux
 
