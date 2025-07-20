@@ -37,7 +37,9 @@ Log(message) {
     static logFile := logDir "\type_watcher.log"
     try {
         FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
-    } catch {}
+    } catch as e {
+        ; nix
+    }
 }
 
 ; =============================================================================
@@ -63,7 +65,8 @@ ProcessFile(filename) {
             return
         }
         Log("-> File is stable.")
-    } catch {
+    } catch as e {
+        ; nix
         Log("-> ERROR during stability check for " . fullPath)
         return
     }
