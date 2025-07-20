@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (FINAL - Synchronous Blocking Strategy)
+; type_watcher.ahk (v3.0 - Final Synchronous Fix)
 
 #SingleInstance Force
 
@@ -15,23 +15,31 @@ global pCallback
 ; --- Hauptteil des Skripts ---
 logDir := A_ScriptDir . "\log"
 DirCreate(logDir)
-Log("--- Script Started (SYNCHRONOUS Strategy) ---")
+Log("--- Script Started (v3.0 - SYNCHRONOUS Strategy) ---")
 
 pCallback := ProcessFile
 
 ; Öffne das Verzeichnis zum Überwachen
-hDir := DllCall("CreateFile", "Str", watchDir, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", 0x42000000, "Ptr", 0, "Ptr")
+; <<< KRITISCHE KORREKTUR: Wir müssen das Handle mit den korrekten Flags für Overlapped I/O öffnen.
+; FILE_FLAG_BACKUP_SEMANTICS (0x40000000) ist nötig, um ein Verzeichnis-Handle zu bekommen.
+; FILE_FLAG_OVERLAPPED (0x02000000) ist nötig, damit ReadDirectoryChangesW mit einem Overlapped-Puffer funktioniert.
+flagsAndAttributes := 0x40000000 | 0x02000000
+
+hDir := DllCall("CreateFile", "Str", watchDir, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", flagsAndAttributes, "Ptr", 0, "Ptr")
 if (hDir = -1) {
-    Log("FATAL: Could not open directory handle."), MsgBox("FATAL: Could not open directory handle."), ExitApp
+    Log("FATAL: Could not open directory handle. Error: " . A_LastError), MsgBox("FATAL: Could not open directory handle."), ExitApp
 }
 Log("Successfully opened handle for directory: " . watchDir)
 
-; --- DIE NEUE, ROBUSTE HAUPTSCHLEIFE ---
+; --- DIE FINALE, ROBUSTE HAUPTSCHLEIFE ---
 Loop {
     bytesReturned := Buffer(4)
     notifyFilter := 0x1 | 0x10 ; FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE
 
-    ; Setze den Watcher auf. Dieser Call kehrt sofort zurück.
+    ; Setze den Overlapped-Puffer vor JEDEM Aufruf zurück, um API-Fehler zu vermeiden.
+    pOverlapped.Fill(0)
+
+    ; Setze den Watcher auf.
     success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", 0)
 
     if not success {
@@ -41,11 +49,9 @@ Loop {
 
     Log("--- Watcher armed. Waiting for changes... ---")
 
-    ; Dies ist der entscheidende Punkt: Wir warten hier, bis die obige Operation ein Ergebnis liefert.
-    ; Der Befehl blockiert das Skript, bis ein Event eintritt.
+    ; Blockiere das Skript, bis ein Event eintritt.
     DllCall("GetOverlappedResult", "Ptr", hDir, "Ptr", pOverlapped, "Ptr", bytesReturned, "Int", true)
 
-    ; Wenn wir hier ankommen, ist ein Event passiert.
     numBytes := NumGet(bytesReturned, 0, "UInt")
     if (numBytes > 0)
     {
@@ -72,9 +78,7 @@ Loop {
     }
 }
 
-; Diese Zeilen sollten niemals erreicht werden.
-Log("--- FATAL: Main loop exited unexpectedly. ---")
-ExitApp
+Log("--- FATAL: Main loop exited unexpectedly. ---"), ExitApp
 
 
 ; =============================================================================
@@ -85,7 +89,7 @@ Log(message) {
     try {
         FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
     } catch {
-        ; Silent fail, um MsgBox-Spam zu verhindern
+        ; Silent fail
     }
 }
 
