@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (v3.1 - Final Synchronous Fix)
+; type_watcher.ahk (v4.0 - Final "By-the-Book" Handle Fix)
 
 #SingleInstance Force
 
@@ -15,14 +15,25 @@ global pCallback
 ; --- Hauptteil des Skripts ---
 logDir := A_ScriptDir . "\log"
 DirCreate(logDir)
-Log("--- Script Started (v3.1 - SYNCHRONOUS Strategy) ---")
+Log("--- Script Started (v4.0 - By-the-Book Strategy) ---")
 
 pCallback := ProcessFile
 
-; Öffne das Verzeichnis zum Überwachen
-flagsAndAttributes := 0x40000000 | 0x02000000
+; --- Windows API Konstanten für CreateFile ---
+FILE_LIST_DIRECTORY       := 0x0001     ; Nötiges Zugriffsrecht für ReadDirectoryChangesW
+FILE_SHARE_READ           := 0x0001
+FILE_SHARE_WRITE          := 0x0002
+FILE_SHARE_DELETE         := 0x0004
+OPEN_EXISTING             := 3
+FILE_FLAG_BACKUP_SEMANTICS := 0x02000000 ; Muss gesetzt sein, um ein Handle auf ein Verzeichnis zu bekommen
+FILE_FLAG_OVERLAPPED      := 0x40000000 ; Muss gesetzt sein für Overlapped I/O
 
-hDir := DllCall("CreateFile", "Str", watchDir, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", flagsAndAttributes, "Ptr", 0, "Ptr")
+; <<< DIE FINALE KORREKTUR: Alle Parameter für CreateFile sind jetzt 100% nach offizieller Doku.
+desiredAccess := FILE_LIST_DIRECTORY
+shareMode := FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE
+flagsAndAttributes := FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED
+
+hDir := DllCall("CreateFile", "Str", watchDir, "UInt", desiredAccess, "UInt", shareMode, "Ptr", 0, "UInt", OPEN_EXISTING, "UInt", flagsAndAttributes, "Ptr", 0, "Ptr")
 if (hDir = -1) {
     Log("FATAL: Could not open directory handle. Error: " . A_LastError), MsgBox("FATAL: Could not open directory handle."), ExitApp
 }
@@ -33,11 +44,8 @@ Loop {
     bytesReturned := Buffer(4)
     notifyFilter := 0x1 | 0x10 ; FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE
 
-    ; <<< DIE ENTSCHEIDENDE KORREKTUR v2 >>>
-    ; Setze den Overlapped-Puffer mit der korrekten Methode (memset) zurück.
     DllCall("msvcrt\memset", "Ptr", pOverlapped.Ptr, "Int", 0, "Ptr", pOverlapped.Size)
 
-    ; Setze den Watcher auf.
     success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", 0)
 
     if not success {
@@ -47,12 +55,10 @@ Loop {
 
     Log("--- Watcher armed. Waiting for changes... ---")
 
-    ; Blockiere das Skript, bis ein Event eintritt.
     DllCall("GetOverlappedResult", "Ptr", hDir, "Ptr", pOverlapped, "Ptr", bytesReturned, "Int", true)
 
     numBytes := NumGet(bytesReturned, 0, "UInt")
-    if (numBytes > 0)
-    {
+    if (numBytes > 0) {
         Log("==> Event TRIGGERED! Processing " . numBytes . " bytes.")
         pCurrent := pBuffer.Ptr
         Loop {
