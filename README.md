@@ -34,9 +34,11 @@ then set any hotkey you like.
 # Windows- several built-in alternatives are available:
 ```sh
 
-echo. > c:\tmp\vosk_trigger
+cmd /c "type nul > c:\tmp\vosk_trigger"
 
 type nul > c:\tmp\vosk_trigger
+
+echo. > c:\tmp\vosk_trigger
 
 copy /b c:\tmp\vosk_trigger +,,
 
