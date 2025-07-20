@@ -94,7 +94,6 @@ DE_MODEL_SHA256="fb45a53025a50830b16bcda94146f90e22166501bb3693b009cabed796dbaaa
 DE_MODEL_DIR="models/vosk-model-de-0.21"
 
 # --- Download and Verify Function ---
-# A reusable function to keep the code DRY (Don't Repeat Yourself)
 download_and_verify() {
     local url=$1
     local zip_file=$2
@@ -120,11 +119,10 @@ download_and_verify() {
     if [ ! -d "$final_dir_check" ]; then
         while [ $retry_count -lt $max_retries ]; do
             echo "    -> Attempting to download $(basename $zip_file) (Attempt $((retry_count + 1))).."
-            # Use -s for silent progress meter, or remove it to see the full curl output
             curl -L -s "$url" -o "$zip_file"
 
             echo "    -> Verifying checksum for $(basename $zip_file)..."
-            # Use the detected command to perform the check
+            # The corrected line uses the $sha_cmd variable
             if echo "$expected_sha256  $zip_file" | $sha_cmd --check --status; then
                 echo "    -> Checksum OK. Extracting..."
                 unzip -q "$zip_file" -d "$extract_dir"
