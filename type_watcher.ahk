@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (v4.0 - Final "By-the-Book" Handle Fix)
+; type_watcher.ahk (v5.0 - The Asynchronous Redemption)
 
 #SingleInstance Force
 
@@ -11,75 +11,23 @@ global pBuffer := Buffer(1024 * 16)
 global hDir
 global pOverlapped := Buffer(A_PtrSize * 2 + 8, 0)
 global pCallback
+global CompletionRoutineProc ; Garantiert die Lebensdauer des Callbacks
 
 ; --- Hauptteil des Skripts ---
 logDir := A_ScriptDir . "\log"
 DirCreate(logDir)
-Log("--- Script Started (v4.0 - By-the-Book Strategy) ---")
+Log("--- Script Started (v5.0 - Asynchronous Redemption Strategy) ---")
 
 pCallback := ProcessFile
+CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
 
-; --- Windows API Konstanten für CreateFile ---
-FILE_LIST_DIRECTORY       := 0x0001     ; Nötiges Zugriffsrecht für ReadDirectoryChangesW
-FILE_SHARE_READ           := 0x0001
-FILE_SHARE_WRITE          := 0x0002
-FILE_SHARE_DELETE         := 0x0004
-OPEN_EXISTING             := 3
-FILE_FLAG_BACKUP_SEMANTICS := 0x02000000 ; Muss gesetzt sein, um ein Handle auf ein Verzeichnis zu bekommen
-FILE_FLAG_OVERLAPPED      := 0x40000000 ; Muss gesetzt sein für Overlapped I/O
+WatchFolder(watchDir)
 
-; <<< DIE FINALE KORREKTUR: Alle Parameter für CreateFile sind jetzt 100% nach offizieller Doku.
-desiredAccess := FILE_LIST_DIRECTORY
-shareMode := FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE
-flagsAndAttributes := FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED
-
-hDir := DllCall("CreateFile", "Str", watchDir, "UInt", desiredAccess, "UInt", shareMode, "Ptr", 0, "UInt", OPEN_EXISTING, "UInt", flagsAndAttributes, "Ptr", 0, "Ptr")
-if (hDir = -1) {
-    Log("FATAL: Could not open directory handle. Error: " . A_LastError), MsgBox("FATAL: Could not open directory handle."), ExitApp
-}
-Log("Successfully opened handle for directory: " . watchDir)
-
-; --- DIE FINALE, ROBUSTE HAUPTSCHLEIFE ---
+; --- DER UNZERSTÖRBARE ANKER ---
+; Wir zwingen den Haupt-Thread, unter allen Umständen im Wartezustand zu bleiben,
+; selbst wenn SleepEx unerwartet zurückkehrt.
 Loop {
-    bytesReturned := Buffer(4)
-    notifyFilter := 0x1 | 0x10 ; FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE
-
-    DllCall("msvcrt\memset", "Ptr", pOverlapped.Ptr, "Int", 0, "Ptr", pOverlapped.Size)
-
-    success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", 0)
-
-    if not success {
-        Log("FATAL: ReadDirectoryChangesW failed on setup. Error: " . A_LastError . ". Exiting.")
-        ExitApp
-    }
-
-    Log("--- Watcher armed. Waiting for changes... ---")
-
-    DllCall("GetOverlappedResult", "Ptr", hDir, "Ptr", pOverlapped, "Ptr", bytesReturned, "Int", true)
-
-    numBytes := NumGet(bytesReturned, 0, "UInt")
-    if (numBytes > 0) {
-        Log("==> Event TRIGGERED! Processing " . numBytes . " bytes.")
-        pCurrent := pBuffer.Ptr
-        Loop {
-            Action := NumGet(pCurrent + 4, "UInt")
-            FileNameLength := NumGet(pCurrent + 8, "UInt")
-            FileName := StrGet(pCurrent + 12, FileNameLength / 2)
-            Log("--> Detected Event: Action=" . Action . ", FileName=" . FileName)
-
-            if ((Action = 1 or Action = 3) and InStr(FileName, "tts_output_")) {
-                Log("==> MATCH! Calling ProcessFile callback.")
-                pCallback(watchDir . "\" . FileName)
-            }
-
-            NextEntryOffset := NumGet(pCurrent, 0, "UInt")
-            if !NextEntryOffset
-                break
-                pCurrent += NextEntryOffset
-        }
-    } else {
-        Log("--> Spurious wakeup, no data. Re-arming...")
-    }
+    DllCall("SleepEx", "UInt", 0xFFFFFFFF, "Int", true)
 }
 
 Log("--- FATAL: Main loop exited unexpectedly. ---"), ExitApp
@@ -92,9 +40,7 @@ Log(message) {
     static logFile := A_ScriptDir . "\log\type_watcher.log"
     try {
         FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
-    } catch {
-        ; Silent fail
-    }
+    } catch { ; Silent fail }
 }
 
 ; =============================================================================
@@ -129,3 +75,78 @@ ProcessFile(filename) {
         Log("-> ERROR: File was locked.")
     }
 }
+
+; =============================================================================
+; WATCHER-INITIALISIERUNG
+; =============================================================================
+WatchFolder(pFolder) {
+    global hDir
+
+    ; Diese Parameter sind 100% korrekt für die asynchrone Methode.
+    flagsAndAttributes := 0x40000000 | 0x02000000 ; FILE_FLAG_OVERLAPPED | FILE_FLAG_BACKUP_SEMANTICS
+    hDir := DllCall("CreateFile", "Str", pFolder, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", flagsAndAttributes, "Ptr", 0, "Ptr")
+
+    if (hDir = -1) {
+        errMsg := "FEHLER: Konnte das Verzeichnis nicht überwachen: " . pFolder
+        Log(errMsg), MsgBox(errMsg), ExitApp
+    }
+    Log("Successfully opened handle for directory: " . pFolder)
+    ReArmWatcher()
+}
+
+; =============================================================================
+; STABILE BEWAFFNUNGS-FUNKTION
+; =============================================================================
+ReArmWatcher(*) { ; Akzeptiert den optionalen Parameter von SetTimer
+    global hDir, pBuffer, pOverlapped, CompletionRoutineProc
+    static notifyFilter := 0x1 | 0x10
+
+    Log("Arming watcher...")
+    pOverlapped.Fill(0) ; Gute Praxis: Puffer vor Verwendung zurücksetzen.
+    success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
+
+    if not success {
+        Log("--- WARNING: ReArmWatcher failed! Error: " . A_LastError . ". Retrying in 5 seconds... ---")
+        SetTimer ReArmWatcher, -5000
+    }
+}
+
+; =============================================================================
+; KUGELSICHERE COMPLETION ROUTINE
+; =============================================================================
+IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
+    global pBuffer, pCallback, watchDir
+
+    try {
+        if (dwErrorCode != 0) {
+            Log("--- ERROR in IOCompletionRoutine. ErrorCode: " . dwErrorCode)
+        }
+        else if (dwNumberOfBytesTransfered > 0) {
+            Log("==> Event TRIGGERED!")
+            pCurrent := pBuffer.Ptr
+            Loop {
+                Action := NumGet(pCurrent + 4, "UInt")
+                FileNameLength := NumGet(pCurrent + 8, "UInt")
+                FileName := StrGet(pCurrent + 12, FileNameLength / 2)
+                Log("--> Detected Event: Action=" . Action . ", FileName=" . FileName)
+
+                if ((Action = 1 or Action = 3) and InStr(FileName, "tts_output_")) {
+                    Log("==> MATCH! Calling ProcessFile callback.")
+                    pCallback(watchDir . "\" . FileName)
+                }
+
+                NextEntryOffset := NumGet(pCurrent, 0, "UInt")
+                if !NextEntryOffset
+                    break
+                    pCurrent += NextEntryOffset
+            }
+        }
+        ; Stabile Neu-Bewaffnung per Timer, um Abstürze zu verhindern.
+        SetTimer ReArmWatcher, -1
+
+    } catch as e {
+        Log("--- FATAL ERROR in IOCompletionRoutine: " . e.Message . " ---")
+        SetTimer ReArmWatcher, -1 ; Trotzdem versuchen, neu zu bewaffnen.
+    }
+}
+
