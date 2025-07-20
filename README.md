@@ -31,7 +31,26 @@ then set any hotkey you like.
 
 
 
-# Windows- several built-in alternatives are available:
+##### copyQ command for Windows OS:
+```js
+var filePath = 'c:/tmp/vosk_trigger';
+
+var f = File(filePath);
+
+if (f.openAppend()) {
+    f.close();
+} else {
+    popup(
+        'Error at Vosk Trigger',
+        'Cant create or open:\n' + filePath
+        + '\n' + f.errorString()
+    );
+}
+```
+
+
+
+#### Windows several built-in alternatives are available:
 ```sh
 
 pwsh -Command "New-Item -Path \"c:\tmp\vosk_trigger\" -ItemType File -Force"
