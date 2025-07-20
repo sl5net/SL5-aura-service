@@ -34,6 +34,8 @@ then set any hotkey you like.
 # Windows- several built-in alternatives are available:
 ```sh
 
+pwsh -Command "New-Item -Path \"c:\tmp\vosk_trigger\" -ItemType File -Force"
+
 New-Item -Path "c:\tmp\vosk_trigger" -ItemType File -Force
 
 powershell.exe -Command "if (Test-Path 'c:\tmp\vosk_trigger') { (Get-Item 'c:\tmp\vosk_trigger').LastWriteTime = Get-Date } else { New-Item -Path 'c:\tmp\vosk_trigger' -ItemType File }"
