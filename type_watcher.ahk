@@ -4,7 +4,7 @@
 #SingleInstance Force
 
 ; --- Configuration ---
-watchDir := "C:\tmp"
+watchDir := "C:\tmp\sl5_dictation"
 logDir := A_ScriptDir "\log"
 
 ; --- Global Variables ---

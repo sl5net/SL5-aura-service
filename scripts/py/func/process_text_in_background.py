@@ -90,9 +90,9 @@ def process_text_in_background(logger,
         recording_time = time.time()
 
         # file: scripts/py/func/process_text_in_background.py
-        # ...
+        # ... watchDir := "C:\tmp\sl5_dictation"
         timestamp = int(time.time() * 1000)
-        unique_output_file = TMP_DIR / f"tts_output_{timestamp}.txt"
+        unique_output_file = TMP_DIR / f"sl5_dictation/tts_output_{timestamp}.txt"
         unique_output_file.write_text(processed_text)
         logger.info(f"THREAD: Successfully wrote to {unique_output_file}")
 
