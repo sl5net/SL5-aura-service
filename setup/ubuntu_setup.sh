@@ -77,10 +77,10 @@ python3 "$(dirname "${BASH_SOURCE[0]}")/../scripts/py/func/create_required_folde
 
 
 # mkdir -p log
-touch log/__init__.py
+touch "$(dirname "${BASH_SOURCE[0]}")/../log/__init__.py"
 
 # mkdir -p config
-touch config/__init__.py
+touch "$(dirname "${BASH_SOURCE[0]}")/../config/__init__.py
 
 
 
