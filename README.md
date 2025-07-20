@@ -34,6 +34,8 @@ then set any hotkey you like.
 # Windows- several built-in alternatives are available:
 ```sh
 
+cmd /c "powershell.exe -Command '(Get-Item 'c:\tmp\vosk_trigger').LastWriteTime = Get-Date'
+
 cmd /c "if not exist c:\tmp mkdir c:\tmp && type nul > c:\tmp\vosk_trigger"
 
 
