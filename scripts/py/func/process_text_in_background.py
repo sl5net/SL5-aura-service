@@ -1,6 +1,5 @@
 # file: scripts/py/func/process_text_in_background.py
-import os
-import sys
+import os, sys
 """
 doc:
 how test language tool in command line:
@@ -44,6 +43,12 @@ import re, time
 from thefuzz import fuzz
 from .notify import notify
 
+
+# Helper to check if a string contains regex special characters
+def is_regex_pattern(pattern):
+    # This is a simple heuristic. You can add more characters if needed.
+    return any(char in pattern for char in r'^$*+?{}[]\|()")')
+
 def process_text_in_background(logger,
                                LT_LANGUAGE,
                                raw_text,
@@ -52,6 +57,7 @@ def process_text_in_background(logger,
                                active_lt_url):
     punctuation_map, fuzzy_map = load_maps_for_language(LT_LANGUAGE)
     try:
+        raw_text = raw_text.lstrip('\uFEFF') # removes ZWNBSP/BOM at beginning
         logger.info(f"THREAD: Starting processing for: '{raw_text}'")
 
         notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
@@ -68,16 +74,49 @@ def process_text_in_background(logger,
         best_score = 0
         best_replacement = None
 
-        for replacement, match_phrase, threshold in fuzzy_map:
-            score = fuzz.token_set_ratio(processed_text.lower(), match_phrase.lower())
+        # --- NEW HYBRID MATCHING LOGIC ---
 
+        # Pass 1: Prioritize and check for exact REGEX matches first.
+        # A regex match is considered definitive and will stop further processing.
+        for replacement, match_phrase, _ in fuzzy_map: # threshold is ignored for regex
+            if is_regex_pattern(match_phrase):
+                try:
+                    # Use re.IGNORECASE for case-insensitivity
+                    if re.search(match_phrase.lower(), processed_text.lower()):
+                        logger.info(f"Regex match found: Replacing '{processed_text}' with '{replacement}' based on pattern '{match_phrase}'")
+                        processed_text = replacement.strip()
+                        # Since we found a definitive match, we can skip the fuzzy check.
+                        # We return the result directly from the function.
+                        # You can also use a flag and a `break` if you have more logic after this block.
+                        # return processed_text # Or the final step of your processing
+                        # ﻿git add . ﻿git add .Geht gut ﻿Geht gut heute ﻿Geht gut﻿gutGeht gutGeht hat
+                        # ﻿Geht gut
+                        regex_match_found = True
+                        break  # Found a definitive match, stop this loop
+
+                except re.error as e:
+                    logger.warning(f"Invalid regex pattern in FUZZY_MAP: '{match_phrase}'. Error: {e}")
+                    continue # Skip this invalid rule
+
+        # Pass 2: If no regex matched, perform the FUZZY search as before.
+        # This code will only run if the loop above didn't find a regex match.
+        logger.info(f"No regex match. Proceeding to fuzzy search for: '{processed_text}'")
+        best_score = 0
+        best_replacement = None
+
+        for replacement, match_phrase, threshold in fuzzy_map:
+            # Skip regex patterns in this pass
+            if is_regex_pattern(match_phrase):
+                continue
+
+            score = fuzz.token_set_ratio(processed_text.lower(), match_phrase.lower())
             if score >= threshold and score > best_score:
                 best_score = score
                 best_replacement = replacement
 
         if best_replacement:
             logger.info(f"Fuzzy match found: Replacing '{processed_text}' with '{best_replacement}' (Score: {best_score})")
-            processed_text = best_replacement
+            processed_text = best_replacement.strip()
         else:
             logger.info(f"No fuzzy match found for '{processed_text}'")
 
