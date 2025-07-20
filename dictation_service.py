@@ -58,8 +58,8 @@ from scripts.py.func.check_memory_critical import check_memory_critical
 # We need vosk here for the model loading
 import vosk
 
-from scripts.py.func.create_required_folders import create_required_folders
-create_required_folders()
+from scripts.py.func.create_required_folders import setup_project_structure
+
 
 
 # --- Constants and Paths ---
@@ -86,6 +86,8 @@ if DEV_MODE :
 
 
 PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
+
+setup_project_structure(PROJECT_ROOT)
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
