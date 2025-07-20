@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (v5.1 - Asynchronous Redemption, memset fix)
+; type_watcher.ahk (v5.2 - Production Ready)
 
 #SingleInstance Force
 
@@ -16,7 +16,7 @@ global CompletionRoutineProc ; Garantiert die Lebensdauer des Callbacks
 ; --- Hauptteil des Skripts ---
 logDir := A_ScriptDir . "\log"
 DirCreate(logDir)
-Log("--- Script Started (v5.1 - Asynchronous Redemption Strategy) ---")
+Log("--- Script Started (v5.2 - Production Ready) ---")
 
 pCallback := ProcessFile
 CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
@@ -32,19 +32,19 @@ Log("--- FATAL: Main loop exited unexpectedly. ---"), ExitApp
 
 
 ; =============================================================================
-; LOGGING-FUNKTION (Unverändert)
+; LOGGING-FUNKTION
 ; =============================================================================
 Log(message) {
     static logFile := A_ScriptDir . "\log\type_watcher.log"
     try {
         FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
-    } catch { ; Silent fail
-
+    } catch {
+        ; User request: Corrected catch block formatting
     }
 }
 
 ; =============================================================================
-; DATEIVERARBEITUNGS-FUNKTION (Unverändert)
+; DATEIVERARBEITUNGS-FUNKTION
 ; =============================================================================
 ProcessFile(filename) {
     Log("ProcessFile called for: " . filename)
@@ -67,7 +67,7 @@ ProcessFile(filename) {
         FileDelete(filename)
         if (content != "") {
             Log("-> Content found. Sending text.")
-            ; SendText(content)
+            SendText(content) ; User request: Uncommented SendText
         } else {
             Log("-> File was empty. Deleting.")
         }
@@ -82,7 +82,6 @@ ProcessFile(filename) {
 WatchFolder(pFolder) {
     global hDir
 
-    ; Diese Parameter sind für die asynchrone Methode korrekt und haben in den ersten Versuchen funktioniert.
     hDir := DllCall("CreateFile", "Str", pFolder, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", 0x42000000, "Ptr", 0, "Ptr")
 
     if (hDir = -1) {
@@ -96,12 +95,11 @@ WatchFolder(pFolder) {
 ; =============================================================================
 ; STABILE BEWAFFNUNGS-FUNKTION
 ; =============================================================================
-ReArmWatcher(*) { ; Akzeptiert den optionalen Parameter von SetTimer
+ReArmWatcher(*) {
     global hDir, pBuffer, pOverlapped, CompletionRoutineProc
     static notifyFilter := 0x1 | 0x10
 
     Log("Arming watcher...")
-    ; <<< KORREKTUR: Ersetze das fehlerhafte pOverlapped.Fill(0) durch den korrekten DllCall.
     DllCall("msvcrt\memset", "Ptr", pOverlapped.Ptr, "Int", 0, "Ptr", pOverlapped.Size)
 
     success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
@@ -129,11 +127,17 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
                 Action := NumGet(pCurrent + 4, "UInt")
                 FileNameLength := NumGet(pCurrent + 8, "UInt")
                 FileName := StrGet(pCurrent + 12, FileNameLength / 2)
-                Log("--> Detected Event: Action=" . Action . ", FileName=" . FileName)
 
-                if ((Action = 1 or Action = 3) and InStr(FileName, "tts_output_")) {
-                    Log("==> MATCH! Calling ProcessFile callback.")
-                    pCallback(watchDir . "\" . FileName)
+                ; Ignoriere irrelevante Dateien früh, um Log-Rauschen zu reduzieren
+                if (FileName = "dictation_service.heartbeat") {
+                    Log("--> Heartbeat detected. Ignoring.")
+                } else {
+                    Log("--> Detected Event: Action=" . Action . ", FileName=" . FileName)
+
+                    if ((Action = 1 or Action = 3) and InStr(FileName, "tts_output_")) {
+                        Log("==> MATCH! Calling ProcessFile callback.")
+                        pCallback(watchDir . "\" . FileName)
+                    }
                 }
 
                 NextEntryOffset := NumGet(pCurrent, 0, "UInt")
