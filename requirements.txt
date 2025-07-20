@@ -8,3 +8,7 @@ requests==2.32.4
 sounddevice==0.5.2
 thefuzz==0.22.1
 vosk==0.3.45
+<<<<<<< HEAD
+=======
+watchdog==6.0.0
+>>>>>>> 228e945438215cad345cdd8012c25a158474e689

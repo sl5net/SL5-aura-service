@@ -95,6 +95,8 @@ def check_for_unused_functions(project_root):
     # Functions in this list are ignored.
     # Useful for callbacks from external libs or dynamically dispatched methods.
     EXTERNALLY_CALLED_FUNCTIONS = {
+        # Callback from the watchdog library for file system events
+        'on_created',
         # Callback from the audio library
         'audio_callback',
         # Dynamically called by the ast.NodeVisitor parent class
@@ -149,10 +151,6 @@ def check_for_unused_functions(project_root):
         sys.exit(1)
 
     print("--- Analysis finished successfully ---")
-
-
-
-
 
 # use it in .venv
 # python scripts/setup_validator.py
