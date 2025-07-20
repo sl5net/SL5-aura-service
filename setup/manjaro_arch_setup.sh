@@ -101,36 +101,61 @@ DE_MODEL_DIR="models/vosk-model-de-0.21"
 
 # --- Download and Verify Function ---
 # A reusable function to keep the code DRY (Don't Repeat Yourself)
+# --- Download and Verify Function ---
 download_and_verify() {
     local url=$1
     local zip_file=$2
     local expected_sha256=$3
     local extract_dir=$4
     local final_dir_check=$5
+    local max_retries=3
+    local retry_count=0
+    local sha_cmd=""
+
+    # Determine the correct sha256 command for the system
+    if command -v sha256sum &> /dev/null; then
+        sha_cmd="sha256sum"
+    elif command -v shasum &> /dev/null; then
+        sha_cmd="shasum -a 256"
+    else
+        echo "    -> FATAL: Could not find 'sha256sum' or 'shasum' command. Cannot verify downloads."
+        exit 1
+    fi
+
+    echo "    -> Using '$sha_cmd' for checksum verification."
 
     if [ ! -d "$final_dir_check" ]; then
-        echo "    -> Downloading $(basename $zip_file)..."
-        curl -L "$url" -o "$zip_file"
+        while [ $retry_count -lt $max_retries ]; do
+            echo "    -> Attempting to download $(basename $zip_file) (Attempt $((retry_count + 1))).."
+            curl -L -s "$url" -o "$zip_file"
 
-        echo "    -> Verifying checksum for $(basename $zip_file)..."
-        # Use a robust checksum command that works on most systems
-        if echo "$expected_sha256  $zip_file" | sha256sum --check --status; then
-            echo "    -> Checksum OK. Extracting..."
-            # Unzip to the specified directory, creating it if necessary
-            unzip -q "$zip_file" -d "$extract_dir"
-            echo "    -> Cleaning up $(basename $zip_file)..."
-            rm "$zip_file"
-        else
-            echo "    -> FATAL: Checksum mismatch for $(basename $zip_file)!"
-            echo "       Expected: $expected_sha256"
-            # Clean up the corrupted download
-            rm "$zip_file"
-            exit 1
-        fi
+            echo "    -> Verifying checksum for $(basename $zip_file)..."
+            # The corrected line uses the $sha_cmd variable
+            if echo "$expected_sha256  $zip_file" | $sha_cmd --check --status; then
+                echo "    -> Checksum OK. Extracting..."
+                unzip -q "$zip_file" -d "$extract_dir"
+                echo "    -> Cleaning up $(basename $zip_file)..."
+                rm "$zip_file"
+                return 0 # Success
+            else
+                echo "    -> WARNING: Checksum mismatch for $(basename $zip_file)!"
+                echo "       Expected: $expected_sha256"
+                rm "$zip_file" # Clean up the corrupted download
+                retry_count=$((retry_count + 1))
+                if [ $retry_count -lt $max_retries ]; then
+                    echo "    -> Retrying in 2 seconds..."
+                    sleep 2
+                fi
+            fi
+        done
+
+        echo "    -> FATAL: Failed to download and verify $(basename $zip_file) after $max_retries attempts."
+        exit 1
     else
         echo "    -> $(basename $final_dir_check) already exists. Skipping."
     fi
 }
+
 
 # --- Execute Downloads ---
 download_and_verify "$LT_URL" "$LT_ZIP" "$LT_SHA256" "." "$LT_DIR"
