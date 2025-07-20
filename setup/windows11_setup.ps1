@@ -56,6 +56,10 @@ if (-not (Test-Path -Path "models/vosk-model-de-0.21")) {
   Remove-Item "models/de.zip"
 }
 
+New-Item -ItemType Directory -Path "C:\tmp" | Out-Null
+New-Item -ItemType Directory -Path "C:\tmp\sl5_dictation" | Out-Null
+
+
 # --- Create central config file ---
 Write-Host "--> Creating central config file..."
 $ConfigDir = Join-Path -Path $env:USERPROFILE -ChildPath ".config\sl5-stt"

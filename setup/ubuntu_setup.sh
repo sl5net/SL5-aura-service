@@ -77,6 +77,10 @@ touch log/__init__.py
 mkdir -p config
 touch config/__init__.py
 
+mkdir -p /tmp
+mkdir -p /tmp/sl5_dictation
+
+
 touch config/model_name_lastused.txt
 echo "dummy" > config/model_name_lastused.txt
 

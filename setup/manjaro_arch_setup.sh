@@ -134,8 +134,8 @@ touch config/__init__.py
 touch config/model_name_lastused.txt
 echo "dummy" > config/model_name_lastused.txt
 
-
-
+mkdir -p /tmp
+mkdir -p /tmp/sl5_dictation
 
 
 # Download and extract Vosk Models
