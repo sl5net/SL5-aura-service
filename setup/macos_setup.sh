@@ -101,26 +101,36 @@ download_and_verify() {
     local expected_sha256=$3
     local extract_dir=$4
     local final_dir_check=$5
+    local max_retries=3
+    local retry_count=0
 
     if [ ! -d "$final_dir_check" ]; then
-        echo "    -> Downloading $(basename $zip_file)..."
-        curl -L "$url" -o "$zip_file"
+        while [ $retry_count -lt $max_retries ]; do
+            echo "    -> Attempting to download $(basename $zip_file) (Attempt $((retry_count + 1))).."
+            curl -L "$url" -o "$zip_file"
 
-        echo "    -> Verifying checksum for $(basename $zip_file)..."
-        # Use a robust checksum command that works on most systems
-        if echo "$expected_sha256  $zip_file" | sha256sum --check --status; then
-            echo "    -> Checksum OK. Extracting..."
-            # Unzip to the specified directory, creating it if necessary
-            unzip -q "$zip_file" -d "$extract_dir"
-            echo "    -> Cleaning up $(basename $zip_file)..."
-            rm "$zip_file"
-        else
-            echo "    -> FATAL: Checksum mismatch for $(basename $zip_file)!"
-            echo "       Expected: $expected_sha256"
-            # Clean up the corrupted download
-            rm "$zip_file"
-            exit 1
-        fi
+            echo "    -> Verifying checksum for $(basename $zip_file)..."
+            if echo "$expected_sha256  $zip_file" | sha256sum --check --status; then
+                echo "    -> Checksum OK. Extracting..."
+                unzip -q "$zip_file" -d "$extract_dir"
+                echo "    -> Cleaning up $(basename $zip_file)..."
+                rm "$zip_file"
+                # Exit the loop on success
+                return 0
+            else
+                echo "    -> WARNING: Checksum mismatch for $(basename $zip_file)!"
+                echo "       Expected: $expected_sha256"
+                rm "$zip_file" # Clean up the corrupted download
+                retry_count=$((retry_count + 1))
+                if [ $retry_count -lt $max_retries ]; then
+                    echo "    -> Retrying..."
+                    sleep 2 # Optional: wait for 2 seconds before retrying
+                fi
+            fi
+        done
+
+        echo "    -> FATAL: Failed to download and verify $(basename $zip_file) after $max_retries attempts."
+        exit 1
     else
         echo "    -> $(basename $final_dir_check) already exists. Skipping."
     fi
