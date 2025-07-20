@@ -34,11 +34,11 @@ then set any hotkey you like.
 # Windows- several built-in alternatives are available:
 ```sh
 
+New-Item -Path "c:\tmp\vosk_trigger" -ItemType File -Force
+
 powershell.exe -Command "if (Test-Path 'c:\tmp\vosk_trigger') { (Get-Item 'c:\tmp\vosk_trigger').LastWriteTime = Get-Date } else { New-Item -Path 'c:\tmp\vosk_trigger' -ItemType File }"
 
 powershell.exe -Command "Set-Content -Path 'c:\tmp\vosk_trigger' -Value $null"
-
-New-Item -ItemType file -Path "c:\tmp\vosk_trigger" -Force
 
 cmd /c "powershell.exe -Command '(Get-Item 'c:\tmp\vosk_trigger').LastWriteTime = Get-Date'
 
