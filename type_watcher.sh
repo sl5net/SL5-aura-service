@@ -1,7 +1,8 @@
 #!/bin/bash
 # type_watcher.sh
 
-DIR_TO_WATCH="/tmp"
+DIR_TO_WATCH="/tmp/sl5_dictation"
+
 LOCKFILE="/tmp/type_watcher.lock"
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
