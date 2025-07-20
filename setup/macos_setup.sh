@@ -103,28 +103,42 @@ download_and_verify() {
     local final_dir_check=$5
     local max_retries=3
     local retry_count=0
+    local sha_cmd=""
+
+    # Determine the correct sha256 command for the system
+    if command -v sha256sum &> /dev/null; then
+        sha_cmd="sha256sum"
+    elif command -v shasum &> /dev/null; then
+        sha_cmd="shasum -a 256"
+    else
+        echo "    -> FATAL: Could not find 'sha256sum' or 'shasum' command. Cannot verify downloads."
+        exit 1
+    fi
+
+    echo "    -> Using '$sha_cmd' for checksum verification."
 
     if [ ! -d "$final_dir_check" ]; then
         while [ $retry_count -lt $max_retries ]; do
             echo "    -> Attempting to download $(basename $zip_file) (Attempt $((retry_count + 1))).."
-            curl -L "$url" -o "$zip_file"
+            # Use -s for silent progress meter, or remove it to see the full curl output
+            curl -L -s "$url" -o "$zip_file"
 
             echo "    -> Verifying checksum for $(basename $zip_file)..."
-            if echo "$expected_sha256  $zip_file" | sha256sum --check --status; then
+            # Use the detected command to perform the check
+            if echo "$expected_sha256  $zip_file" | $sha_cmd --check --status; then
                 echo "    -> Checksum OK. Extracting..."
                 unzip -q "$zip_file" -d "$extract_dir"
                 echo "    -> Cleaning up $(basename $zip_file)..."
                 rm "$zip_file"
-                # Exit the loop on success
-                return 0
+                return 0 # Success
             else
                 echo "    -> WARNING: Checksum mismatch for $(basename $zip_file)!"
                 echo "       Expected: $expected_sha256"
                 rm "$zip_file" # Clean up the corrupted download
                 retry_count=$((retry_count + 1))
                 if [ $retry_count -lt $max_retries ]; then
-                    echo "    -> Retrying..."
-                    sleep 2 # Optional: wait for 2 seconds before retrying
+                    echo "    -> Retrying in 2 seconds..."
+                    sleep 2
                 fi
             fi
         done
