@@ -67,11 +67,21 @@ ProcessFile(filename) {
     local fullPath := watchDir "\" . filename
 
     try {
-        if !FileExist(fullPath) { return Log("-> File does not exist anymore.") }
+        if !FileExist(fullPath) {
+            return Log("-> File does not exist anymore.")
+
+        }
         size1 := FileGetSize(fullPath), Sleep(stabilityDelay), size2 := FileGetSize(fullPath)
-        if (size1 != size2 or size1 = 0) { return Log("-> File is unstable/empty. Deleting."), FileDelete(fullPath) }
+        if (size1 != size2 or size1 = 0) {
+            FileDelete(fullPath)
+            return Log("-> File is unstable/empty. Deleting.")
+
+        }
         Log("-> File is stable.")
-    } catch as e { return Log("-> ERROR during stability check: " . e.Message) }
+    } catch as e {
+        return Log("-> ERROR during stability check: " . e.Message)
+
+    }
 
     try {
         local content := Trim(FileRead(fullPath, "UTF-8"))
@@ -135,8 +145,14 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
                 local NextEntryOffset := NumGet(pCurrent, 0, "UInt")
                 local Action := NumGet(pCurrent + 4, "UInt"), FileName := StrGet(pCurrent + 12, NumGet(pCurrent + 8, "UInt") / 2, "UTF-16")
                 Log("--> Event data: Action=" . Action . ", FileName=" . FileName)
-                if (Action = 1) { pCallback(FileName) }
-                if (!NextEntryOffset) { break }
+                if (Action = 1) {
+                    pCallback(FileName)
+
+                }
+                if (!NextEntryOffset) {
+                    break
+
+                }
                 pCurrent += NextEntryOffset
             }
         }
