@@ -66,81 +66,76 @@ fi
 echo "--> Installing Python requirements into the virtual environment..."
 ./.venv/bin/pip install -r requirements.txt
 
-# --- 4. External Tools and Models ---
-echo "--> Downloading external tools and models (if missing)..."
 
-# Download and extract LanguageTool
-LT_VERSION="6.6"
-if [ ! -d "LanguageTool-${LT_VERSION}" ]; then
-  echo "    -> Downloading LanguageTool v${LT_VERSION}..."
-  MAX_RETRIES=3
-  RETRY_COUNT=0
-  while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    wget https://languagetool.org/download/LanguageTool-${LT_VERSION}.zip -O languagetool.zip
-    if [ $? -eq 0 ]; then
-      # Download sucesful
-      MIN_SIZE=240000000
-      ACTUAL_SIZE=$(stat -c%s languagetool.zip)
-      if [ $ACTUAL_SIZE -gt $MIN_SIZE ]; then
-        echo "    -> size looks not bad"
-        unzip -q languagetool.zip
-        rm languagetool.zip
-        break
-      fi
-      echo "    -> to small, retry..."
-      RETRY_COUNT=$((RETRY_COUNT+1))
+
+
+
+# --- 4. Project Structure and Configuration ---
+echo "--> Setting up project directories and initial files..."
+# THIS IS THE KEY CHANGE. We call the Python script and pass the current
+# working directory (which is the project root) as an argument.
+# This one command replaces all old 'mkdir' and 'touch' commands for the project structure.
+python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
+
+
+# --- 5. External Tools and Models ---
+echo "--> Downloading external tools and models from project GitHub Releases..."
+
+# Define URLs and checksums for all assets
+RELEASE_URL_BASE="https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1"
+
+LT_ZIP="LanguageTool-6.6.zip"
+LT_URL="${RELEASE_URL_BASE}/${LT_ZIP}"
+LT_SHA256="53600506b399bb5ffe1e4c8dec794fd378212f14aaf38ccef9b6f89314d11631"
+LT_DIR="LanguageTool-6.6"
+
+EN_MODEL_ZIP="vosk-model-en-us-0.22.zip"
+EN_MODEL_URL="${RELEASE_URL_BASE}/${EN_MODEL_ZIP}"
+EN_MODEL_SHA256="d410847b53faf1850f2bb99fb7a08adcb49dd236dcba66615397fe57a3cf68f5"
+EN_MODEL_DIR="models/vosk-model-en-us-0.22"
+
+DE_MODEL_ZIP="vosk-model-de-0.21.zip"
+DE_MODEL_URL="${RELEASE_URL_BASE}/${DE_MODEL_ZIP}"
+DE_MODEL_SHA256="fb45a53025a50830b16bcda94146f90e22166501bb3693b009cabed796dbaaa0"
+DE_MODEL_DIR="models/vosk-model-de-0.21"
+
+# --- Download and Verify Function ---
+# A reusable function to keep the code DRY (Don't Repeat Yourself)
+download_and_verify() {
+    local url=$1
+    local zip_file=$2
+    local expected_sha256=$3
+    local extract_dir=$4
+    local final_dir_check=$5
+
+    if [ ! -d "$final_dir_check" ]; then
+        echo "    -> Downloading $(basename $zip_file)..."
+        curl -L "$url" -o "$zip_file"
+
+        echo "    -> Verifying checksum for $(basename $zip_file)..."
+        # Use a robust checksum command that works on most systems
+        if echo "$expected_sha256  $zip_file" | sha256sum --check --status; then
+            echo "    -> Checksum OK. Extracting..."
+            # Unzip to the specified directory, creating it if necessary
+            unzip -q "$zip_file" -d "$extract_dir"
+            echo "    -> Cleaning up $(basename $zip_file)..."
+            rm "$zip_file"
+        else
+            echo "    -> FATAL: Checksum mismatch for $(basename $zip_file)!"
+            echo "       Expected: $expected_sha256"
+            # Clean up the corrupted download
+            rm "$zip_file"
+            exit 1
+        fi
     else
-      echo "    -> Download bad, retry..."
-      RETRY_COUNT=$((RETRY_COUNT+1))
+        echo "    -> $(basename $final_dir_check) already exists. Skipping."
     fi
-  done
-  if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
-    echo "    -> Download fehlgeschlagen, bitte überprüfen Sie Ihre Internetverbindung."
-    exit 1
-  fi
-fi
+}
 
-
-# Download and extract LanguageTool
-LT_VERSION="6.6"
-if [ ! -d "LanguageTool-${LT_VERSION}" ]; then
-  echo "    -> Downloading LanguageTool v${LT_VERSION}..."
-  wget https://languagetool.org/download/LanguageTool-${LT_VERSION}.zip -O languagetool.zip
-
-  # Überprüfen Sie die Größe des heruntergeladenen ZIP-Files
-  MIN_SIZE=240000000
-  ACTUAL_SIZE=$(stat -c%s languagetool.zip)
-  if [ $ACTUAL_SIZE -lt $MIN_SIZE ]; then
-    echo "    -> Fehlgeschlagen: Die Größe des heruntergeladenen ZIP-Files ist zu klein."
-    rm languagetool.zip
-    exit 1
-  fi
-
-  # Entpacken Sie das ZIP-File
-  unzip -q languagetool.zip
-  rm languagetool.zip
-fi
-
-echo "LanguageTool installation verified successfully."
-
-
-
-
-echo "Creating application directories using Python script..."
-python3 "$(dirname "${BASH_SOURCE[0]}")/../scripts/py/func/create_required_folders.py"
-
-
-# mkdir -p log
-touch log/__init__.py
-
-# mkdir -p config
-touch config/__init__.py
-
-touch config/model_name_lastused.txt
-echo "dummy" > config/model_name_lastused.txt
-
-# mkdir -p /tmp
-# mkdir -p /tmp/sl5_dictation
+# --- Execute Downloads ---
+download_and_verify "$LT_URL" "$LT_ZIP" "$LT_SHA256" "." "$LT_DIR"
+download_and_verify "$EN_MODEL_URL" "models/$EN_MODEL_ZIP" "$EN_MODEL_SHA256" "models/" "$EN_MODEL_DIR"
+download_and_verify "$DE_MODEL_URL" "models/$DE_MODEL_ZIP" "$DE_MODEL_SHA256" "models/" "$DE_MODEL_DIR"
 
 
 
@@ -148,8 +143,6 @@ echo "dummy" > config/model_name_lastused.txt
 
 
 
-
-# Download and extract Vosk Models
 
 source "$(dirname "${BASH_SOURCE[0]}")/get_lang.sh"
 
