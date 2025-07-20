@@ -1,91 +1,98 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (v5.2 - Production Ready)
+; type_watcher.ahk (v5.3 - Robust Event Loop)
 
 #SingleInstance Force
 
-; --- Konfiguration ---
+; --- Configuration ---
 watchDir := "C:\tmp"
+logDir := A_ScriptDir "\log"
 
-; --- Globale Variablen für die DllCalls ---
+; --- Global Variables ---
 global pBuffer := Buffer(1024 * 16)
 global hDir
 global pOverlapped := Buffer(A_PtrSize * 2 + 8, 0)
 global pCallback
-global CompletionRoutineProc ; Garantiert die Lebensdauer des Callbacks
+global CompletionRoutineProc ; Ensures the callback's lifetime
 
-; --- Hauptteil des Skripts ---
-logDir := A_ScriptDir . "\log"
+; --- Main Script Body ---
 DirCreate(logDir)
-Log("--- Script Started (v5.2 - Production Ready) ---")
+Log("--- Script Started (v5.3 - Robust Event Loop) ---")
 
 pCallback := ProcessFile
 CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
 
 WatchFolder(watchDir)
 
-; --- DER UNZERSTÖRBARE ANKER ---
+; --- The Unbreakable Anchor ---
 Loop {
     DllCall("SleepEx", "UInt", 0xFFFFFFFF, "Int", true)
 }
 
 Log("--- FATAL: Main loop exited unexpectedly. ---"), ExitApp
 
-
 ; =============================================================================
-; LOGGING-FUNKTION
+; LOGGING FUNCTION
 ; =============================================================================
 Log(message) {
-    static logFile := A_ScriptDir . "\log\type_watcher.log"
+    static logFile := logDir "\type_watcher.log"
     try {
         FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
     } catch {
-        ; User request: Corrected catch block formatting
+        ; Fail silently if logging fails
     }
 }
 
 ; =============================================================================
-; DATEIVERARBEITUNGS-FUNKTION
+; FILE PROCESSING FUNCTION
 ; =============================================================================
 ProcessFile(filename) {
     Log("ProcessFile called for: " . filename)
-    static stabilityDelay := 50
+    static stabilityDelay := 50 ; ms
+    local fullPath := watchDir "\" . filename
+
     try {
-        size1 := FileGetSize(filename)
-        Sleep(stabilityDelay)
-        size2 := FileGetSize(filename)
-        if (size1 != size2 or size1 == 0) {
-            Log("-> File is unstable or empty. Skipping.")
+        if !FileExist(fullPath) {
+            Log("-> File does not exist anymore. Probably processed by another event.")
             return
         }
-        Log("-> File is stable.")
+        size1 := FileGetSize(fullPath)
+        Sleep(stabilityDelay)
+        size2 := FileGetSize(fullPath)
+
+        if (size1 != size2 or size1 = 0) {
+            Log("-> File size changed or is empty. Deleting unstable file.")
+            FileDelete(fullPath)
+            return
+        }
+        Log("-> File is stable and not empty.")
     } catch {
-        Log("-> ERROR during stability check.")
+        Log("-> ERROR during stability check for " . fullPath)
         return
     }
-    Try {
-        content := Trim(FileRead(filename, "UTF-8"))
-        FileDelete(filename)
+
+    try {
+        content := Trim(FileRead(fullPath, "UTF-8"))
+        FileDelete(fullPath)
         if (content != "") {
-            Log("-> Content found. Sending text.")
-            SendText(content) ; User request: Uncommented SendText
+            Log("-> Content read successfully. Sending text.")
+            SendText(content)
         } else {
-            Log("-> File was empty. Deleting.")
+            Log("-> File was empty after read. Already deleted.")
         }
-    } Catch OSError {
-        Log("-> ERROR: File was locked.")
+    } catch OSError {
+        Log("-> ERROR: File was locked, could not read/delete " . fullPath)
     }
 }
 
 ; =============================================================================
-; WATCHER-INITIALISIERUNG
+; WATCHER INITIALIZATION
 ; =============================================================================
 WatchFolder(pFolder) {
     global hDir
-
-    hDir := DllCall("CreateFile", "Str", pFolder, "UInt", 1, "UInt", 3, "Ptr", 0, "UInt", 3, "UInt", 0x42000000, "Ptr", 0, "Ptr")
+    hDir := DllCall("CreateFile", "Str", pFolder, "UInt", 1, "UInt", 7, "Ptr", 0, "UInt", 3, "UInt", 0x42000000, "Ptr", 0, "Ptr")
 
     if (hDir = -1) {
-        errMsg := "FEHLER: Konnte das Verzeichnis nicht überwachen: " . pFolder
+        errMsg := "FATAL: Could not watch directory: " . pFolder
         Log(errMsg), MsgBox(errMsg), ExitApp
     }
     Log("Successfully opened handle for directory: " . pFolder)
@@ -93,16 +100,15 @@ WatchFolder(pFolder) {
 }
 
 ; =============================================================================
-; STABILE BEWAFFNUNGS-FUNKTION
+; STABLE RE-ARMING FUNCTION
 ; =============================================================================
 ReArmWatcher(*) {
     global hDir, pBuffer, pOverlapped, CompletionRoutineProc
-    static notifyFilter := 0x1 | 0x10
+    static notifyFilter := 0x1 | 0x4 | 0x10 ; Action: FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_ATTRIBUTES
 
     Log("Arming watcher...")
     DllCall("msvcrt\memset", "Ptr", pOverlapped.Ptr, "Int", 0, "Ptr", pOverlapped.Size)
-
-    success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", false, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
+    success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", true, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
 
     if not success {
         Log("--- WARNING: ReArmWatcher failed! Error: " . A_LastError . ". Retrying in 5 seconds... ---")
@@ -111,43 +117,40 @@ ReArmWatcher(*) {
 }
 
 ; =============================================================================
-; KUGELSICHERE COMPLETION ROUTINE
+; BULLETPROOF COMPLETION ROUTINE (REVISED)
 ; =============================================================================
 IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
-    global pBuffer, pCallback, watchDir
+    global pBuffer, pCallback
 
     try {
         if (dwErrorCode != 0) {
-            Log("--- ERROR in IOCompletionRoutine. ErrorCode: " . dwErrorCode)
-        }
-        else if (dwNumberOfBytesTransfered > 0) {
+            Log("--- ERROR in IOCompletionRoutine. Code: " . dwErrorCode)
+        } else if (dwNumberOfBytesTransfered > 0) {
             Log("==> Event TRIGGERED!")
             pCurrent := pBuffer.Ptr
             Loop {
-                Action := NumGet(pCurrent + 4, "UInt")
+                NextEntryOffset := NumGet(pCurrent, 0, "UInt")
+                Action := NumGet(pCurrent + 4, "UInt") ; 1=Created, 2=Deleted, 3=Modified, 4=RenamedOld, 5=RenamedNew
                 FileNameLength := NumGet(pCurrent + 8, "UInt")
-                FileName := StrGet(pCurrent + 12, FileNameLength / 2)
+                FileName := StrGet(pCurrent + 12, FileNameLength / 2, "UTF-16")
 
-                ; Ignoriere irrelevante Dateien früh, um Log-Rauschen zu reduzieren
+                ; --- PRIMARY LOGGING (See everything) ---
+                Log("--> Event data: Action=" . Action . ", FileName=" . FileName)
+
+                ; --- FILTERING ---
                 if (FileName = "dictation_service.heartbeat") {
-                    Log("--> Heartbeat detected. Ignoring.")
-                } else {
-                    Log("--> Detected Event: Action=" . Action . ", FileName=" . FileName)
-
-                    if ((Action = 1 or Action = 3) and InStr(FileName, "tts_output_")) {
-                        Log("==> MATCH! Calling ProcessFile callback.")
-                        pCallback(watchDir . "\" . FileName)
-                    }
+                    Log("    - Ignoring heartbeat.")
+                } else if ((Action = 1 or Action = 3) and InStr(FileName, "tts_output_")) {
+                    Log("    - MATCH! Calling ProcessFile for: " . FileName)
+                    pCallback(FileName)
                 }
 
-                NextEntryOffset := NumGet(pCurrent, 0, "UInt")
                 if !NextEntryOffset
-                    break
-                    pCurrent += NextEntryOffset
+                    break ; Exit loop if this is the last entry
+                    pCurrent += NextEntryOffset ; Move to the next entry in the buffer
             }
         }
         SetTimer ReArmWatcher, -1
-
     } catch as e {
         Log("--- FATAL ERROR in IOCompletionRoutine: " . e.Message . " ---")
         SetTimer ReArmWatcher, -1
