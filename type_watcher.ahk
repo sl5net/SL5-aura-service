@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (v5.6 - Central Dispatch Logic)
+; type_watcher.ahk (v5.7 - Failsafe Logging)
 
 #SingleInstance Force
 
@@ -15,8 +15,8 @@ global pCallback
 global CompletionRoutineProc
 
 ; --- Main Script Body ---
-DirCreate(logDir)
-Log("--- Script Started (v5.6 - Central Dispatch Logic) ---")
+DirCreate(logDir) ; Attempt to create the log directory first
+Log("--- Script Started (v5.7 - Failsafe Logging) ---")
 
 pCallback := ProcessFile
 CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
@@ -31,31 +31,32 @@ Loop {
 Log("--- FATAL: Main loop exited unexpectedly. ---"), ExitApp
 
 ; =============================================================================
-; LOGGING FUNCTION
+; LOGGING FUNCTION (REVISED WITH ERROR REPORTING)
 ; =============================================================================
 Log(message) {
     static logFile := logDir "\type_watcher.log"
     try {
         FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
-    } catch as e {}
+    } catch as e {
+        ; CRITICAL: If logging fails, we are blind.
+        ; Show a MsgBox to expose the error. This is often a permissions issue.
+        MsgBox("CRITICAL LOGGING FAILURE!`n`nCould not write to: " . logFile . "`n`nReason: " . e.Message, "Logging Error", "IconStop")
+        ExitApp ; Exit the script as it cannot function without logging.
+    }
 }
 
 ; =============================================================================
-; FILE PROCESSING FUNCTION (REVISED)
+; FILE PROCESSING FUNCTION
 ; =============================================================================
 ProcessFile(filename) {
-    ; --- Central Dispatch Logic ---
     if InStr(filename, "tts_output_") {
         Log("ProcessFile: Received target file -> " . filename)
     } else {
-        ; We ignore 'vosk_trigger' and any other unexpected files silently.
-        ; You can add logging here if you want to see them.
-        ; Log("ProcessFile: Ignored non-target file -> " . filename)
+        Log("ProcessFile: Ignored non-target file -> " . filename)
         return
     }
 
-    ; --- Proceed only with target files ---
-    static stabilityDelay := 50 ; ms
+    static stabilityDelay := 50
     local fullPath := watchDir "\" . filename
 
     try {
@@ -74,7 +75,7 @@ ProcessFile(filename) {
         }
         Log("-> File is stable.")
     } catch as e {
-        Log("-> ERROR during stability check for " . fullPath . ": " . e.Message)
+        Log("-> ERROR during stability check: " . e.Message)
         return
     }
 
@@ -88,7 +89,7 @@ ProcessFile(filename) {
             Log("-> File was empty. Already deleted.")
         }
     } catch as e {
-        Log("-> ERROR: File locked or other issue. " . e.Message)
+        Log("-> ERROR during file read/delete: " . e.Message)
     }
 }
 
@@ -123,7 +124,7 @@ ReArmWatcher(*) {
 }
 
 ; =============================================================================
-; BULLETPROOF COMPLETION ROUTINE (REVISED)
+; BULLETPROOF COMPLETION ROUTINE
 ; =============================================================================
 IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
     global pBuffer, pCallback
@@ -136,13 +137,11 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
             pCurrent := pBuffer.Ptr
             Loop {
                 NextEntryOffset := NumGet(pCurrent, 0, "UInt")
-                Action := NumGet(pCurrent + 4, "UInt") ; 1=Created
+                Action := NumGet(pCurrent + 4, "UInt")
                 FileName := StrGet(pCurrent + 12, NumGet(pCurrent + 8, "UInt") / 2, "UTF-16")
 
                 Log("--> Event data: Action=" . Action . ", FileName=" . FileName)
 
-                ; --- The CRITICAL CHANGE ---
-                ; We pass EVERY created file to the callback.
                 if (Action = 1) {
                     pCallback(FileName)
                 }
