@@ -35,6 +35,9 @@ if 'VIRTUAL_ENV' not in os.environ:
 
 
 
+
+
+
 import sys, time, os, atexit, requests, logging, platform
 from pathlib import Path
 
@@ -54,6 +57,9 @@ from scripts.py.func.stop_languagetool_server import stop_languagetool_server
 from scripts.py.func.check_memory_critical import check_memory_critical
 # We need vosk here for the model loading
 import vosk
+
+from scripts.py.func.create_required_folders import create_required_folders
+create_required_folders()
 
 
 # --- Constants and Paths ---

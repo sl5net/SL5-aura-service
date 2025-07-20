@@ -125,17 +125,29 @@ echo "LanguageTool installation verified successfully."
 
 
 
-mkdir -p log
+
+echo "Creating application directories using Python script..."
+python3 "$(dirname "${BASH_SOURCE[0]}")/../scripts/py/func/ensure_directories.py"
+
+
+# mkdir -p log
 touch log/__init__.py
 
-mkdir -p config
+# mkdir -p config
 touch config/__init__.py
 
 touch config/model_name_lastused.txt
 echo "dummy" > config/model_name_lastused.txt
 
-mkdir -p /tmp
-mkdir -p /tmp/sl5_dictation
+# mkdir -p /tmp
+# mkdir -p /tmp/sl5_dictation
+
+
+
+
+
+
+
 
 # Download and extract Vosk Models
 
