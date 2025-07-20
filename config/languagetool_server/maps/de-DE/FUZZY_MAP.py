@@ -1,109 +1,78 @@
-# file config/languagetool_server/PUNCTUATION_MAP.py
-
-# Map for fuzzy matching. More flexible but slightly slower.
-# Format: (replacement_text, text_to_match, required_similarity_score_%)
-# A higher score means the typo must be closer to the original text.
+# FUZZY_MAP.py
+# This map combines precise regex rules with flexible fuzzy matching.
 #
+# HOW IT WORKS:
+# 1. Regex Rules (r'...') are checked first for an exact, prioritized match.
+#    - We use r'^...' to anchor the match to the START of the phrase, which is
+#      perfect for git commands.
+# 2. Fuzzy Rules (plain strings) are used as a fallback if no regex matches.
+
 """
-
-deutsch try:
-
-
-
-
-english try:
-
-git status git status
-Gitta hat AT
-womit Komm mit
-Mit push git push
-Geht Pool Bull
-
-
-git status
-Gitta hat
-womit
-git push
-Pool
-
-git status
-Beat hebt
-git commit
-git push
-Geht Pool Geht Pool Mit Pool
-
-git status
-Geht Duett
-womit
-git push
-git pull
-
-git status
-Git AT Fiat AT Geht ab hat
-git commit
-git push
-git pull
-
-Geht Staates
-Git AT  Mit AT  git add .
-git commit
-git push
-git pull
-
-git status
-Drei Versuche: Kate AT Geht es git add .
-Komm mit git commit
-git push
-git pull
-
-git status
-Dad geh tat ID AT geh tat geh tat Da hat Internet
-git commit
-git push
-git pull
-
-git status
+Mir geht es gut
+﻿Geht gut
+﻿git status
+﻿git commit
+﻿git add .
+﻿Geht es gut
+﻿Geht gut
+Geht es gut
+Geht gut
+﻿Geht es gut
 git add .
-git commit
-git push
-git pull
-Geht tief
-Peach juice
-Good gifts
-Good tips
+mitkomm mit
 """
-# Format: ('Text, der eingesetzt wird', 'Satz, mit dem verglichen wird', Mindest-Trefferquote)
+
 FUZZY_MAP = [
-    ('git status', 'git status', 85),
-    ('git add .', 'git add', 85),
-    ('git add .', 'geht duett', 85),
+    # --- git status ---
+    ('git status', r'^git status$', 82),
+    ('git status', r'^geht status$', 82),
+    ('git status', r'^gitter status$', 82),
+    ('git status', r'^geht staates$', 82),
 
-    ('git add .', 'fiat at', 85),
-    ('git add .', 'geht ab hat', 85),
-    ('git add .', 'gitta hat', 85),
+    # --- git add . ---
+    ('git add .', r'^git add$', 82),
+    ('git add .', r'^geht add punkt$', 82),
+    ('git add .', r'^gittert punkt$', 82),
+    ('git add .', r'^geht duett$', 82),
+    ('git add .', r'^git at$', 82),
+    ('git add .', r'^mit at$', 82),
+    ('git add .', r'^kate at$', 82),
+    ('git add .', r'^fiat at$', 82),
+    ('git add .', r'^geht ab hat$', 82),
+    ('git add .', r'^geht hat$', 82),
+    ('git add .', r'^gitta hat$', 82),
+    ('git add .', r'^dad geh$', 82),
+    ('git add .', r'^tat id$', 82),
+    ('git add .', r'^geh tat$', 82),
+    ('git add .', r'^da hat$', 82),
+    ('git add .', r'^geht es$', 82),
 
-    ('git add .', 'git at', 85),
-    ('git add .', 'mit at', 85),
+    # --- git commit ---
+    ('git commit', r'^git commit$', 80),
+    ('git commit', r'^mitkomm mit$', 80),
+    ('git commit', r'^womit$', 85),           # Using '$' to match the whole word "womit"
+    ('git commit -m "', r'^geht com mit$', 80),
+    ('git commit -m "', r'^gitter mit$', 80),
 
-    ('git add .', 'kate at', 85),
-#    ('git add .', 'geht es', 85), ToDo should be only work at line beginning
+    # --- git push ---
+    ('git push', r'^git push$', 80),
+    ('git push', r'^geht busch$', 85),
+    ('git push', r'^gitter busch$', 85),
 
-    ('git commit', 'git commit', 80),
-    ('git commit', 'womit', 85),
+    # --- git pull ---
+    ('git pull', r'^git pull$', 80),
+    ('git pull', r'^geht pohl$', 82),
+    ('git pull', r'^gitter pohl$', 82),
+    ('git pull', r'^geht pool$', 80),
+    # Note: 'pool' is a fuzzy rule without regex. It will only be checked
+    # if no other regex rule for 'git pull' matches.
+    ('git pull', '^pool$', 80),
 
-    ('git push', 'git push', 80),
-    ('git pull', 'git pull', 80),
+    # --- git diff ---
+    ('git diff', r'^git diff$', 75),
+    ('git diff', r'^geht tief$', 75),
+    ('git diff', r'^peach juice$', 75), # .lower() is used, so case doesn't matter
 
-    ('git pull', 'geht pool', 80),
-    ('git pull', 'pool', 80),
-
-    ('git diff', 'git diff', 75),
-    ('git diff', 'Geht tief', 75),
-    ('git diff', 'Peach juice', 75),
-
-    ('git diff', 'Peach juice', 75),
-
-    ('sierra d', '0 A.D.', 75),
-
-
+    # --- Other commands (Example) ---
+    ('0 A.D.', 'sierra d', 75), # This is a good candidate for a non-regex fuzzy match
 ]
