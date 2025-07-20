@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (v5.5 - Creation-Only Filter)
+; type_watcher.ahk (v5.6 - Central Dispatch Logic)
 
 #SingleInstance Force
 
@@ -16,7 +16,7 @@ global CompletionRoutineProc
 
 ; --- Main Script Body ---
 DirCreate(logDir)
-Log("--- Script Started (v5.5 - Creation-Only Filter) ---")
+Log("--- Script Started (v5.6 - Central Dispatch Logic) ---")
 
 pCallback := ProcessFile
 CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
@@ -37,22 +37,30 @@ Log(message) {
     static logFile := logDir "\type_watcher.log"
     try {
         FileAppend(A_YYYY "-" A_MM "-" A_DD " " A_Hour ":" A_Min ":" A_Sec " - " . message . "`n", logFile)
-    } catch as e {
-        ; nix
-    }
+    } catch as e {}
 }
 
 ; =============================================================================
-; FILE PROCESSING FUNCTION
+; FILE PROCESSING FUNCTION (REVISED)
 ; =============================================================================
 ProcessFile(filename) {
-    Log("ProcessFile called for: " . filename)
+    ; --- Central Dispatch Logic ---
+    if InStr(filename, "tts_output_") {
+        Log("ProcessFile: Received target file -> " . filename)
+    } else {
+        ; We ignore 'vosk_trigger' and any other unexpected files silently.
+        ; You can add logging here if you want to see them.
+        ; Log("ProcessFile: Ignored non-target file -> " . filename)
+        return
+    }
+
+    ; --- Proceed only with target files ---
     static stabilityDelay := 50 ; ms
     local fullPath := watchDir "\" . filename
 
     try {
         if !FileExist(fullPath) {
-            Log("-> File does not exist. Already processed or deleted.")
+            Log("-> File does not exist. Already processed.")
             return
         }
         size1 := FileGetSize(fullPath)
@@ -66,8 +74,7 @@ ProcessFile(filename) {
         }
         Log("-> File is stable.")
     } catch as e {
-        ; nix
-        Log("-> ERROR during stability check for " . fullPath)
+        Log("-> ERROR during stability check for " . fullPath . ": " . e.Message)
         return
     }
 
@@ -80,8 +87,8 @@ ProcessFile(filename) {
         } else {
             Log("-> File was empty. Already deleted.")
         }
-    } catch OSError {
-        Log("-> ERROR: File locked. Could not read/delete " . fullPath)
+    } catch as e {
+        Log("-> ERROR: File locked or other issue. " . e.Message)
     }
 }
 
@@ -100,19 +107,15 @@ WatchFolder(pFolder) {
 }
 
 ; =============================================================================
-; STABLE RE-ARMING FUNCTION (REVISED)
+; STABLE RE-ARMING FUNCTION
 ; =============================================================================
 ReArmWatcher(*) {
     global hDir, pBuffer, pOverlapped, CompletionRoutineProc
-    ; --- The CRITICAL CHANGE ---
-    ; We ONLY listen for FILE_NOTIFY_CHANGE_FILE_NAME (0x1), which covers
-    ; file creation, deletion, and renaming. This is the most efficient filter.
-    static notifyFilter := 0x1
+    static notifyFilter := 0x1 ; FILE_NOTIFY_CHANGE_FILE_NAME (creation)
 
     Log("Arming watcher with creation-only filter (0x1)...")
     DllCall("msvcrt\memset", "Ptr", pOverlapped.Ptr, "Int", 0, "Ptr", pOverlapped.Size)
     success := DllCall("ReadDirectoryChangesW", "Ptr", hDir, "Ptr", pBuffer, "UInt", pBuffer.Size, "Int", true, "UInt", notifyFilter, "Ptr", 0, "Ptr", pOverlapped, "Ptr", CompletionRoutineProc)
-
     if not success {
         Log("--- WARNING: ReArmWatcher failed! Error: " . A_LastError . ". Retrying... ---")
         SetTimer ReArmWatcher, -5000
@@ -133,15 +136,14 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
             pCurrent := pBuffer.Ptr
             Loop {
                 NextEntryOffset := NumGet(pCurrent, 0, "UInt")
-                Action := NumGet(pCurrent + 4, "UInt") ; 1=Created, 2=Deleted, 3=Modified...
+                Action := NumGet(pCurrent + 4, "UInt") ; 1=Created
                 FileName := StrGet(pCurrent + 12, NumGet(pCurrent + 8, "UInt") / 2, "UTF-16")
 
                 Log("--> Event data: Action=" . Action . ", FileName=" . FileName)
 
                 ; --- The CRITICAL CHANGE ---
-                ; We ONLY care about creation events (Action=1)
-                if (Action = 1 and InStr(FileName, "tts_output_")) {
-                    Log("    - MATCH! Calling ProcessFile for new file: " . FileName)
+                ; We pass EVERY created file to the callback.
+                if (Action = 1) {
                     pCallback(FileName)
                 }
 
