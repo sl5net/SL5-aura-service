@@ -33,20 +33,44 @@ while [ ! -d "$DIR_TO_WATCH" ]; do
 done
 
 
-while true; do
-    inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
-    sleep 0.1
 
-    files_to_process=$(ls -tr "$DIR_TO_WATCH"/tts_output_*.txt 2>/dev/null)
+# --- OS Detection and Main Loop ---
+OS_TYPE=$(uname -s)
 
-    if [ -n "$files_to_process" ]; then
-        for f in $files_to_process; do
-            if [ -f "$f" ]; then
-                # FIX: Pipe file content directly to xdotool to preserve UTF-8
-                # cat "$f" | LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file -
-                LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
-                rm "$f"
-            fi
-        done
-    fi
-done
+if [[ "$OS_TYPE" == "Darwin" ]]; then
+    # --- macOS Logic ---
+    echo "Watcher starting in macOS mode (using fswatch and osascript)."
+    log_message "Watcher starting in macOS mode (using fswatch and osascript)."
+    fswatch -0 "$DIR_TO_WATCH" | while read -d "" file; do
+        if [[ "$file" == *tts_output_*.txt ]]; then
+            # Use osascript to type the file content on macOS
+            osascript -e "tell application \"System Events\" to keystroke \"$(cat "$file")\""
+            rm "$file"
+        fi
+    done
+elif [[ "$OS_TYPE" == "Linux" ]]; then
+    # --- Linux Logic ---
+    echo "Watcher starting in Linux mode (using inotifywait and xdotool)."
+    log_message "Watcher starting in Linux mode (using inotifywait and xdotool)."
+
+    while true; do
+        inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
+        sleep 0.1
+
+        files_to_process=$(ls -tr "$DIR_TO_WATCH"/tts_output_*.txt 2>/dev/null)
+
+        if [ -n "$files_to_process" ]; then
+            for f in $files_to_process; do
+                if [ -f "$f" ]; then
+                    # FIX: Pipe file content directly to xdotool to preserve UTF-8
+                    # cat "$f" | LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file -
+                    LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
+                    rm "$f"
+                fi
+            done
+        fi
+    done
+else
+    echo "ERROR: Unsupported operating system '$OS_TYPE'. Exiting."
+    exit 1
+fi

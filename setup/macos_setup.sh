@@ -1,4 +1,6 @@
 #!/bin/bash
+# setup/macos_setup.sh
+
 set -e
 
 # --- Make script location-independent ---
@@ -31,7 +33,8 @@ if [ "$JAVA_OK" -eq 0 ]; then
 fi
 
 echo "--> Installing other core dependencies..."
-brew install fswatch wget unzip portaudio xdotool
+brew install fswatch wget unzip portaudio
+
 
 
 

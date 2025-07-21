@@ -55,6 +55,8 @@ else
     done
 fi
 
+sleep 1
+
 # --- Step 4: Start the new server instance ---
 echo "Starting new server and watcher..."
 if [ -x "$SERVER_SCRIPT" ]; then

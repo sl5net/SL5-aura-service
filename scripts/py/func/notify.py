@@ -4,34 +4,62 @@ import subprocess
 import platform
 from pathlib import Path
 
-logger = logging.getLogger(__name__)
-
+# Assuming these are defined in your project's config
 from config.settings import NOTIFY_SEND_PATH, NOTIFICATION_LEVEL
 
-def notify(summary: object, body: object = "", urgency: object = "low", icon: object = None, duration: object = 3000,replace_tag: str = None) -> None:
+logger = logging.getLogger(__name__)
 
+def notify(summary: str, body: str = "", urgency: str = "low", icon: str = None, duration: int = 3000, replace_tag: str = None) -> None:
+    """
+    Sends a desktop notification, adapting to the host operating system.
+    """
+    logger.info("Attempting to send notification...")
     if not NOTIFICATION_LEVEL:
-        logger.info(f"NOTIFICATION_LEVEL = {NOTIFICATION_LEVEL}")
+        logger.info(f"Notifications are disabled (NOTIFICATION_LEVEL={NOTIFICATION_LEVEL}). Aborting.")
         return
 
-    if not NOTIFY_SEND_PATH or not Path(NOTIFY_SEND_PATH).exists():
-        logger.warning("Notifier not initialized or path invalid.")
-        return
+    system = platform.system()
+    summary = str(summary)
+    body = str(body)
 
-    # logger.info(f"DEBUG: Attempting to notify: '{summary}'")
-    if platform.system() == "Windows":
-        # ... Windows logic ...
-        pass
-    else:
-        if not NOTIFY_SEND_PATH or not Path(NOTIFY_SEND_PATH).exists(): return
-        try:
+    try:
+        if system == "Darwin":  # macOS
+            logger.debug("Using macOS (osascript) notification method.")
+            # Sanitize input to prevent breaking the AppleScript string
+            safe_summary = summary.replace('"', '\\"')
+            safe_body = body.replace('"', '\\"')
+
+            # Build and execute the AppleScript command
+            applescript_command = f'display notification "{safe_body}" with title "{safe_summary}"'
+            command = ["osascript", "-e", applescript_command]
+            subprocess.run(command, check=True, capture_output=True, text=True, timeout=5)
+            logger.info(f"Successfully sent macOS notification: '{summary}'")
+
+        elif system == "Linux":
+            logger.debug(f"Using Linux (notify-send) notification method with path: {NOTIFY_SEND_PATH}")
+            if not NOTIFY_SEND_PATH or not Path(NOTIFY_SEND_PATH).exists():
+                logger.warning(f"notify-send path not found or invalid: {NOTIFY_SEND_PATH}. Aborting notification.")
+                return
+
             command = [NOTIFY_SEND_PATH, "-u", urgency, summary, body, "-t", str(duration)]
-            if icon: command.extend(["-i", icon])
-
+            if icon:
+                command.extend(["-i", icon])
             if replace_tag:
                 command.extend(["-h", f"string:x-dunst-stack-tag:{replace_tag}"])
 
             subprocess.run(command, check=True, capture_output=True, text=True, timeout=5)
-        except Exception as e:
-            logger.error(f"Linux notification failed for '{summary}': {e}")
+            logger.info(f"Successfully sent Linux notification: '{summary}'")
 
+        elif system == "Windows":
+            logger.debug("Windows notifications are not yet implemented.")
+            # Placeholder for future Windows notification logic
+            # This could call the notification_watcher.ahk script
+            pass
+
+    except subprocess.TimeoutExpired:
+        logger.error(f"Notification command timed out for summary: '{summary}'")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"{system} notification failed for '{summary}'. Return code: {e.returncode}")
+        logger.error(f"Stderr: {e.stderr.strip()}")
+    except Exception as e:
+        logger.error(f"An unexpected error occurred during notification for '{summary}': {e}")
