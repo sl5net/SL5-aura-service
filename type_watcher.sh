@@ -27,6 +27,12 @@ fi
 echo $$ > "$LOCKFILE"
 trap "rm -f $LOCKFILE" EXIT
 
+# --- Wait for the directory to be created by the main service ---
+while [ ! -d "$DIR_TO_WATCH" ]; do
+  sleep 0.5 # Wait half a second before checking again
+done
+
+
 while true; do
     inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
     sleep 0.1
