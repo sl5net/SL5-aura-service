@@ -1,4 +1,4 @@
-# file config/languagetool_server/PUNCTUATION_MAP.py
+# file config/languagetool_server/maps/en-US/PUNCTUATION_MAP.py
 PUNCTUATION_MAP = {
     'period': '.',
     'full stop': '.',
@@ -40,45 +40,6 @@ PUNCTUATION_MAP = {
     'ampersand': '&',
     'at sign': '@',
     'star': '*',
-    'from get up': 'from GitHub',
-    'get up': 'GitHub',
-    'keep it up': 'GitHub',
-    'good job': 'GitHub',
-    'q-tip': 'GitHub',
-    'kit': 'Git',
-
-    'good status': 'git status',
-    'your debt dutch': 'git add .',
-    'it\'d push': 'git push',
-    'good play': 'git pull',
-
-    'it\'s status': 'git status',
-    'the commit': 'git commit',
-    'get push': 'git push',
-    'push': 'git push',
-
-    'the good status': 'git status',
-    'it\'s status': 'git status',
-    'good stages': 'git status',
-
-    'Good stages': 'git status',
-    'Good status': 'git status',
-
-
-
-    'get push': 'git push',
-    'good point': 'git pull',
-    'get point': 'git pull',
-    'good pool': 'git pull',
-
-    'good chat': 'git add .',
-    'due to its': 'git add .',
-
-    'Good touch': 'git add .',
-    'Get did': 'git add .',
-
-    'gg pool': 'git pull',
-    'get the flu': 'git pull',
 
 
 }
