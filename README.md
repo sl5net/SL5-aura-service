@@ -84,7 +84,7 @@ touch /tmp/vosk_trigger
 
 **Command for Windows use [CopyQ](https://github.com/hluk/CopyQ):**
 ```js
-
+copyq:
 var filePath = 'c:/tmp/vosk_trigger';
 
 var f = File(filePath);
