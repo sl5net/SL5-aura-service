@@ -84,13 +84,22 @@ touch /tmp/vosk_trigger
 
 **Command for Windows use [CopyQ](https://github.com/hluk/CopyQ):**
 ```js
+
 var filePath = 'c:/tmp/vosk_trigger';
+
 var f = File(filePath);
+
 if (f.openAppend()) {
     f.close();
 } else {
-    popup('Error at Vosk Trigger', 'Cant create or open:\n' + filePath + '\n' + f.errorString());
+    popup(
+        'error',
+        'cant read or open:\n' + filePath
+        + '\n' + f.errorString()
+    );
 }
+
+
 ```
 
 ### 3. Start Dictating!
