@@ -6,219 +6,110 @@ It's a complete, offline writing assistant built on Vosk and LanguageTool.
 
 [![Watch short AI-Demo System-wide offline dictation](https://img.youtube.com/vi/GqidoRiRBy0/maxresdefault.jpg)](https://youtu.be/GqidoRiRBy0)
 
-
 ## Key Features
 
-*   **Dictate, Correct & Enhance:** Automatic grammar/spelling correction and synonym suggestions for your dictated text.
-*   **Homophone Lookup:** Place your cursor on a word and press a hotkey to see a list of phonetically similar alternatives.
-*   **Fully Automated:** Manages its own LanguageTool server. A single script starts and stops everything cleanly.
-*   **Blazing Fast:** Intelligent caching ensures instant "Listening..." notifications and fast processing.
 *   **Offline & Private:** 100% local. No data ever leaves your machine.
-*   **Open Source & Smart:** Built with FOSS components. Auto-detects the correction language from your Vosk model.
+*   **Dictate, Correct & Enhance:** Automatic grammar/spelling correction and synonym suggestions.
+*   **Conservative RAM Usage:** Intelligently manages memory, preloading models only if enough free RAM is available, ensuring other applications (like your PC games) always have priority.
+*   **Cross-Platform:** Works on Linux, macOS, and Windows.
+*   **Fully Automated:** Manages its own LanguageTool server. A single script handles the startup process on Linux/macOS.
+*   **Blazing Fast:** Intelligent caching ensures instant "Listening..." notifications and fast processing.
 
----
-
-### Using CopyQ on Linux
-
-create litle on liner with
-https://hluk.github.io/CopyQ/
-```sh
-touch /tmp/vosk_trigger
-```
-then set any hotkey you like.
-
-[CopyQ](https://hluk.github.io/CopyQ/) works at Linux, Windows and OS X 10.15+.
-
-
-
-##### copyQ command for Windows OS:
-```js
-var filePath = 'c:/tmp/vosk_trigger';
-
-var f = File(filePath);
-
-if (f.openAppend()) {
-    f.close();
-} else {
-    popup(
-        'Error at Vosk Trigger',
-        'Cant create or open:\n' + filePath
-        + '\n' + f.errorString()
-    );
-}
-```
-
-
-
-#### Windows several built-in alternatives are available:
-```sh
-
-pwsh -Command "New-Item -Path \"c:\tmp\vosk_trigger\" -ItemType File -Force"
-
-New-Item -Path "c:\tmp\vosk_trigger" -ItemType File -Force
-
-powershell.exe -Command "if (Test-Path 'c:\tmp\vosk_trigger') { (Get-Item 'c:\tmp\vosk_trigger').LastWriteTime = Get-Date } else { New-Item -Path 'c:\tmp\vosk_trigger' -ItemType File }"
-
-powershell.exe -Command "Set-Content -Path 'c:\tmp\vosk_trigger' -Value $null"
-
-cmd /c "powershell.exe -Command '(Get-Item 'c:\tmp\vosk_trigger').LastWriteTime = Get-Date'
-
-cmd /c "if not exist c:\tmp mkdir c:\tmp && type nul > c:\tmp\vosk_trigger"
-
-
-type nul > c:\tmp\vosk_trigger
-
-echo. > c:\tmp\vosk_trigger
-
-copy /b c:\tmp\vosk_trigger +,,
-
-fsutil file createnew c:\tmp\vosk_trigger 0
-
-New-Item -ItemType File "c:\tmp\vosk_trigger"
-
-```
-
-
-### Using AutoKey on Linux
-
-- [AutoKey Releases](https://github.com/autokey/autokey/releases/)
-- [AutoKey Installation Wiki](https://github.com/autokey/autokey/wiki/Installing)
-
-#### For Ubuntu or Other Debian Derivatives
-
-**Easy Method:**  
-If you are running Ubuntu or another Debian-based distro, simply install AutoKey using the provided `.deb` files. This will handle dependencies and system integration (such as launcher menus) automatically. After installation, AutoKey (with one or both of its frontends) should be operational.
-
-
----
-
-### 1. Main Dictation Hotkey
-
-Set a global hotkey to trigger dictation. The command to use is:
-```sh
-touch /tmp/vosk_trigger
-```
+### Build Status
+[![Linux](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/ubuntu_setup.yml)
+[![macOS](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/macos_setup.yml)
+[![Windows 11](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup.yml)
 
 ---
 
 ## Installation
 
-Before you can use the application, you need to run a one-time setup script to install dependencies and download the required models. These scripts are located in the `setup/` directory.
+The setup is a simple, two-step process:
+1.  Clone this repository to your computer.
+2.  Run the one-time setup script for your operating system.
 
-### For Linux and macOS
+The setup scripts handle everything: system dependencies, Python environment, and downloading the necessary models and tools (~4GB) directly from our GitHub Releases for maximum speed.
 
-You only need to run the script that matches your operating system.
+#### For Linux & macOS & windows
+Open a terminal in the project's root directory and run the script for your system:
+```bash
+# For Ubuntu/Debian, Manjaro/Arch, macOs  or other derivatives
 
-1.  **Make the script executable:**
-    Open a terminal in the project's root directory and run the `chmod` command on the appropriate script. For example, if you are on Ubuntu:
-    ```shell
-    chmod +x setup/ubuntu_setup.sh
-    ```
+bash setup/{your-os}_setup.sh
 
-2.  **Run the setup script:**
-    Now, execute the script. The script will ask for your password to install system packages.
-    ```shell
-    bash setup/ubuntu_setup.sh
-    ```
+# For Windows in Admin-Powershell
 
-    Choose the script for your system:
-    *   `setup/arch_setup.sh`
-    *   `setup/manjaro_setup.sh`
-    *   `setup/ubuntu_setup.sh` (for Ubuntu, Debian, or other derivatives)
-    *   `setup/macos_setup.sh`
-
-### For Windows
-
-The application's core file-watching feature is not yet compatible with Windows. However, you can run the setup script to prepare the environment for future compatibility or development.
-
-The script must be run with administrator privileges.
-
-1.  Open **File Explorer** and navigate to the `setup` folder inside the project directory.
-2.  Right-click on the `windows_setup.ps1` file.
-3.  From the context menu, select **"Run with PowerShell"**.
-4.  If prompted by a User Account Control (UAC) dialog, click **Yes** to allow the script to make changes.
-
-The script will then install all necessary tools and models.
-
----
-
-### Additional Requirements
-
-Please make sure there are two text files.  Could be empty.
-
-Untracked files:
-
-        config/model_name.txt (in newer versions it's already included)
-        config/model_name_lastused.txt (in newer versions it's already included)
-        config/model_name.txt_lastused (Probably not needed)
-
-#### Java (version >17)
-
-Make sure you have a recent Java version installed. For example:
-```sh
-sudo apt install openjdk-21-jdk
+setup/windows_setup.ps1
 ```
 
----
-
-### 2. Homophone Lookup Hotkey
-
-Set a *different* global hotkey to trigger homophone lookup. This hotkey should execute a separate script:
-```sh
-[path-to-your-project]/get_suggestions.py
-```
+#### For Windows
+1.  **Install [AutoHotkey v2](https://www.autohotkey.com/)**. This is required for the text-typing watcher.
+2.  Run the setup script with administrator privileges **"Run with PowerShell"**.
 
 ---
-
-#### How to Set Hotkeys
-
-Use your Desktop Environment’s keyboard settings tool (in XFCE, KDE, GNOME, etc.) to create two new custom shortcuts—one for each of the commands above.
-
----
-
-## Support the Project
-
-If you find this tool useful and want to support our team's continued development, please consider buying us a coffee! Your support is greatly appreciated and helps fuel future improvements.
-
-[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
-
----
-
 
 ## Usage
 
+### 1. Start the Services
 
-
-### Starting the Service
-
-A single script handles activating the environment and launching all background services.
-
-1.  **Make the start script executable (one time only):**
-    ```bash
-    chmod +x scripts/activate-venv_and_run-server.sh
-    ```
-
-2.  **Start the Service (once per session):**
-    Simply run the script from the project's root directory.
-    ```bash
-    ./scripts/activate-venv_and_run-server.sh
-    ```
-    **Leave this terminal open.**
-    
-### Download Models and External Tools
-
-by Using 
-```shell
-setup/{OS Name}_setup...
+#### On Linux & macOS
+A single script handles everything. It starts the main dictation service and the file watcher automatically in the background.
+```bash
+# Run this from the project's root directory
+./scripts/restart_venv_and_run-server.sh
 ```
 
-### Windows OS
+#### On Windows
+Starting the service is a **two-step manual process**:
 
-install AutoHotkey version 2
-run server
-`type_watcher.ahk`
+1.  **Start the Main Service:** Run `activate-venv_and_run-server.bat`. or start from `.venv` the service with `python3`
+2.  **Start the Text Watcher:** Double-click `type_watcher.ahk`.
 
-follwong Vosk-Models will be downloaded and used automatically:
+
+
+You must have both the main service and the watcher running for dictation to work.
+
+### 2. Configure Your Hotkey
+
+To trigger dictation, you need a global hotkey that creates a specific file. We highly recommend the cross-platform tool [CopyQ](https://github.com/hluk/CopyQ).
+
+#### Our Recommendation: CopyQ
+
+Create a new command in CopyQ with a global shortcut.
+
+**Command for Linux/macOS:**
+```bash
+touch /tmp/vosk_trigger
+```
+
+**Command for Windows use [CopyQ](https://github.com/hluk/CopyQ):**
+```js
+var filePath = 'c:/tmp/vosk_trigger';
+var f = File(filePath);
+if (f.openAppend()) {
+    f.close();
+} else {
+    popup('Error at Vosk Trigger', 'Cant create or open:\n' + filePath + '\n' + f.errorString());
+}
+```
+
+### 3. Start Dictating!
+Click in any text field, press your hotkey, and a "Listening..." notification will appear. Speak clearly, then pause. The corrected text will be typed for you.
+
+---
+
+## Advanced Configuration (Optional)
+
+You can customize the application's behavior by creating a local settings file.
+
+1.  Navigate to the `config/` directory.
+2.  Create a copy of `settings_local.py_Example.txt` and rename it to `settings_local.py`.
+3.  Edit `settings_local.py` to override any setting from the main `config/settings.py` file.
+
+This `settings_local.py` file is ignored by Git, so your personal changes won't be overwritten by updates.
+
+# Used Models:
+
 
 | Model                                                                                  | Size | Word error rate/Speed                                                                         | Notes                                     | License    |
 | -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
@@ -226,6 +117,7 @@ follwong Vosk-Models will be downloaded and used automatically:
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip)       | 1.9G | 9.83 (Tuda-de test)<br/>24.00 (podcast)<br/>12.82 (cv-test)<br/>12.42 (mls)<br/>33.26 (mtedx) | Big German model for telephony and server | Apache 2.0 |
 
 This table provides an overview of different Vosk models, including their size, word error rate or speed, notes, and license information.
+
 
 - **Vosk-Models:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **LanguageTool:**  
@@ -235,36 +127,7 @@ This table provides an overview of different Vosk models, including their size, 
 
 ---
 
-### Download Models and External Tools (Recommended)
+## Support the Project
+If you find this tool useful, please consider buying us a coffee! Your support helps fuel future improvements.
 
-The setup script will attempt to download the required models (~4 GB) automatically. However, the official download servers can sometimes be slow or unreliable, leading to timeouts.
-
-**For a faster and more reliable installation**, we strongly recommend downloading the required files manually from our official GitHub Releases page and placing them in the project's root directory **before** running the setup script.
-
-1.  **Go to our GitHub Releases page:**
-    *   **[Download All Required Models Here](https://github.com/sl5net/Vosk-System-Listener/releases/tag/v0.2.0.1)** 
-
-2.  **Download these files:**
-    *   `vosk-model-en-us-0.22.zip`
-    *   `vosk-model-de-0.21.zip`
-
-3.  **Place the `.zip` files** in the models directory of this project.
-
-The setup script will detect the local files and skip the download.
-
----
-
-
-   
-```sh
-cd ~/projects/py/STT/
-wget https://languagetool.org/download/LanguageTool-6.6.zip
-unzip LanguageTool-6.6.zip
-```
-
-
-### Day-to-Day Use
-
-*   **To Dictate:** Click in any text box and press your **dictation hotkey**. Speak, then pause. The corrected text will be typed for you.
-*   **To Look Up Homophones:** Place your cursor inside a word and press your **homophone lookup hotkey**. A list of similarly sounding words will writen.
-
+[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
