@@ -232,11 +232,22 @@ if not start_languagetool_server:
     sys.exit(1)
 
 
+    from scripts.py.func.checks.integrity_checker import check_code_integrity # <--- NEU
+
 
 if DEV_MODE :
+    from scripts.py.func.checks.setup_validator import check_for_unused_functions
+    from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
+    from scripts.py.func.checks.integrity_checker import check_code_integrity
+
+    from scripts.py.func.checks.self_tester import run_core_logic_self_test
+
+
     check_for_unused_functions(SCRIPT_DIR)
     validate_punctuation_map_keys(SCRIPT_DIR)
+    check_code_integrity(SCRIPT_DIR, logger)
 
+    ##################### run_core_logic_self_test #############################
     VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
     vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
     #MODEL_NAME = MODEL_NAME_DEFAULT
