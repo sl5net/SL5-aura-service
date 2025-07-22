@@ -6,7 +6,7 @@ PUNCTUATION_MAP = {
     'point': '.',
     'comma': ',',
     'question mark': '?',
-    'question MK': '?',
+    'question mk': '?',
     'exclamation mark': '!',
     'exclamation point': '!',
     'colon': ':',

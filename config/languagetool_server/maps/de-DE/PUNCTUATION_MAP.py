@@ -41,11 +41,13 @@ PUNCTUATION_MAP = {
     'atzeichen': '@',
     'stern': '*',
 
+    'tilde': '~',
+    'haute': '#',
 
     'kit': 'Git',
 
-    'Kritik nur': '.gitignore',
-    'Git innere': '.gitignore',
+    'kritik nur': '.gitignore',
+    'git innere': '.gitignore',
 
 
     'koffee pace': 'Copy Paste',
