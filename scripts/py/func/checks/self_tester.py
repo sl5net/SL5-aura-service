@@ -35,7 +35,9 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
         ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization'),
         ('git at', 'git add .', 'Fuzzy map REGEX match'),
         ('geht status', 'git status', 'Fuzzy map FUZZY string match'),
-        ('ein test von sebastian laufer', 'Ein Test von Sebastian Lauffer', 'Partial map + LT correction')
+        ('ein test von sebastian laufer', 'Ein Test von Sebastian Lauffer', 'Partial map + LT correction'),
+        ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction')
+
     ]
 
     passed_count = 0

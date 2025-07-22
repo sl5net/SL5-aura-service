@@ -37,6 +37,7 @@ FUZZY_MAP = [
 
     # --- git add . ---
     ('git add .', r'^git add$', 82),
+    ('git add .', r'^Geht hätte$', 82),
     ('git add .', r'^geht add punkt$', 82),
     ('git add .', r'^gittert punkt$', 82),
     ('git add .', r'^geht duett$', 82),
