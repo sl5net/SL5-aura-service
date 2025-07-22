@@ -1,4 +1,4 @@
-name: CI for winOS Setup
+name: CI for winOS Setup v2 using winget
 
 on:
   workflow_dispatch:
