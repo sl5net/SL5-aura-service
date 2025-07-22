@@ -68,14 +68,20 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 # --- PRE-RUN SETUP VALIDATION ---
 # We add the 'scripts' directory to the path to import our custom validator.
 sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
-from setup_validator import validate_setup, check_for_unused_functions
+from scripts.py.func.checks.setup_validator import validate_setup, check_for_unused_functions
+from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
+
+from  scripts.py.func.checks.self_tester import run_core_logic_self_test
 
 # Execute the check. The script will exit here if the setup is incomplete.
 validate_setup(SCRIPT_DIR)
 
+# File: STT/dictation_service.py
+# ...
 # --- Wrapper Script Check ---
 if DEV_MODE :
     check_for_unused_functions(SCRIPT_DIR)
+    validate_punctuation_map_keys(SCRIPT_DIR)
 
     #sys.exit(1)
 
@@ -224,6 +230,20 @@ else:
 if not start_languagetool_server:
     notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
     sys.exit(1)
+
+
+
+if DEV_MODE :
+    check_for_unused_functions(SCRIPT_DIR)
+    validate_punctuation_map_keys(SCRIPT_DIR)
+
+    VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
+    vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
+    #MODEL_NAME = MODEL_NAME_DEFAULT
+
+    lang_code = guess_lt_language_from_model(vosk_model_from_file)
+    run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
+    #sys.exit(1)
 
 
 # --- main-logic is in Thread ---

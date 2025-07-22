@@ -1,6 +1,7 @@
 # file config/languagetool_server/PUNCTUATION_MAP.py
+# German - Common, Mishearings
+
 PUNCTUATION_MAP = {
-    # German - Common, Mishearings
     'punkt': '.',
     'komma': ',',
     'fragezeichen': '?',
@@ -53,11 +54,15 @@ PUNCTUATION_MAP = {
 
 
 
+    'wann weil': 'Wannweil',
 
 
-    # lokale Berühmtheiten ;)
     'sebastian laufer': 'Sebastian Lauffer',
     'laufer': 'Lauffer',
+    'sebastian läufer': 'Sebastian Lauffer',
+    'sebastian lauf':  'Sebastian Lauffer',
+    'läufer': 'Lauffer',
+
     'harald utz': 'Harald Uetz',
     'harald öz': 'Harald Uetz',
     'uz': 'Uetz',

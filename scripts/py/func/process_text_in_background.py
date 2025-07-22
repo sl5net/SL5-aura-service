@@ -54,7 +54,8 @@ def process_text_in_background(logger,
                                raw_text,
                                TMP_DIR,
                                recording_time,
-                               active_lt_url):
+                               active_lt_url,
+                              output_dir_override = None):
     punctuation_map, fuzzy_map = load_maps_for_language(LT_LANGUAGE)
     try:
         raw_text = raw_text.lstrip('\uFEFF') # removes ZWNBSP/BOM at beginning
@@ -62,65 +63,73 @@ def process_text_in_background(logger,
 
         notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
 
-        processed_text = normalize_punctuation(raw_text, punctuation_map)
+        processed_text, was_exact_match = normalize_punctuation(raw_text, punctuation_map)
+        if not was_exact_match:
+            if not settings.CORRECTIONS_ENABLED["git"] or "git" not in processed_text and "push" not in processed_text:
+                processed_text = correct_text(logger, active_lt_url, LT_LANGUAGE, processed_text)
 
-        if not settings.CORRECTIONS_ENABLED["git"] or "git" not in processed_text and "push" not in processed_text:
-            processed_text = correct_text(logger, active_lt_url, LT_LANGUAGE, processed_text)
 
+            # Step 2: Slower, fuzzy replacements on the result
+            # logger.info(f"DEBUG: Starting fuzzy match for: '{processed_text}'")
 
-        # Step 2: Slower, fuzzy replacements on the result
-        # logger.info(f"DEBUG: Starting fuzzy match for: '{processed_text}'")
+            best_score = 0
+            best_replacement = None
 
-        best_score = 0
-        best_replacement = None
+            # --- NEW HYBRID MATCHING LOGIC ---
 
-        # --- NEW HYBRID MATCHING LOGIC ---
+            # Pass 1: Prioritize and check for exact REGEX matches first.
+            # A regex match is considered definitive and will stop further processing.
+            regex_match_found = False
+            for replacement, match_phrase, _ in fuzzy_map: # threshold is ignored for regex
+                if is_regex_pattern(match_phrase):
+                    try:
+                        # Use re.IGNORECASE for case-insensitivity
+                        if re.search(match_phrase.lower(), processed_text.lower()):
+                            logger.info(f"Regex match found: Replacing '{processed_text}' with '{replacement}' based on pattern '{match_phrase}'")
 
-        # Pass 1: Prioritize and check for exact REGEX matches first.
-        # A regex match is considered definitive and will stop further processing.
-        for replacement, match_phrase, _ in fuzzy_map: # threshold is ignored for regex
-            if is_regex_pattern(match_phrase):
-                try:
-                    # Use re.IGNORECASE for case-insensitivity
-                    if re.search(match_phrase.lower(), processed_text.lower()):
-                        logger.info(f"Regex match found: Replacing '{processed_text}' with '{replacement}' based on pattern '{match_phrase}'")
-                        processed_text = replacement.strip()
-                        # Since we found a definitive match, we can skip the fuzzy check.
-                        # We return the result directly from the function.
-                        # You can also use a flag and a `break` if you have more logic after this block.
-                        # return processed_text # Or the final step of your processing
-                        # ﻿git add . ﻿git add .Geht gut ﻿Geht gut heute ﻿Geht gut﻿gutGeht gutGeht hat
-                        # ﻿Geht gut
-                        regex_match_found = True
-                        break  # Found a definitive match, stop this loop
+                            new_text = re.sub(
+                                match_phrase,
+                                replacement.strip(),
+                                processed_text,
+                                flags=re.IGNORECASE
+                            )
 
-                except re.error as e:
-                    logger.warning(f"Invalid regex pattern in FUZZY_MAP: '{match_phrase}'. Error: {e}")
-                    continue # Skip this invalid rule
+                            if new_text != processed_text:
+                                logger.info(
+                                    f"Regex match: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
+                                processed_text = new_text
 
-        # Pass 2: If no regex matched, perform the FUZZY search as before.
-        # This code will only run if the loop above didn't find a regex match.
-        logger.info(f"No regex match. Proceeding to fuzzy search for: '{processed_text}'")
-        best_score = 0
-        best_replacement = None
+                            regex_match_found = True
+                            break  # Found a definitive match, stop this loop
 
-        for replacement, match_phrase, threshold in fuzzy_map:
-            # Skip regex patterns in this pass
-            if is_regex_pattern(match_phrase):
-                continue
+                    except re.error as e:
+                        logger.warning(f"Invalid regex pattern in FUZZY_MAP: '{match_phrase}'. Error: {e}")
+                        continue # Skip this invalid rule
 
-            score = fuzz.token_set_ratio(processed_text.lower(), match_phrase.lower())
-            if score >= threshold and score > best_score:
-                best_score = score
-                best_replacement = replacement
+            # Pass 2: If no regex matched, perform the FUZZY search as before.
+            # This code will only run if the loop above didn't find a regex match.
+            if not regex_match_found:
+                logger.info(f"No regex match. Proceeding to fuzzy search for: '{processed_text}'")
+                best_score = 0
+                best_replacement = None
 
-        if best_replacement:
-            logger.info(f"Fuzzy match found: Replacing '{processed_text}' with '{best_replacement}' (Score: {best_score})")
-            processed_text = best_replacement.strip()
-        else:
-            logger.info(f"No fuzzy match found for '{processed_text}'")
+                for replacement, match_phrase, threshold in fuzzy_map:
+                    # Skip regex patterns in this pass
+                    if is_regex_pattern(match_phrase):
+                        continue
 
-        # --- ENDE DER KORRIGIERTEN LOGIK ---
+                    score = fuzz.token_set_ratio(processed_text.lower(), match_phrase.lower())
+                    if score >= threshold and score > best_score:
+                        best_score = score
+                        best_replacement = replacement
+
+                if best_replacement:
+                    logger.info(f"Fuzzy match found: Replacing '{processed_text}' with '{best_replacement}' (Score: {best_score})")
+                    processed_text = best_replacement.strip()
+                else:
+                    logger.info(f"No fuzzy match found for '{processed_text}'")
+
+            # --- ENDE DER KORRIGIERTEN LOGIK ---
 
 
 
@@ -131,7 +140,14 @@ def process_text_in_background(logger,
         # file: scripts/py/func/process_text_in_background.py
         # ... watchDir := "C:\tmp\sl5_dictation"
         timestamp = int(time.time() * 1000)
-        unique_output_file = TMP_DIR / f"sl5_dictation/tts_output_{timestamp}.txt"
+
+        if output_dir_override:
+            # unique_output_file = f"{output_dir_override}/tts_output_{timestamp}.txt"
+            unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
+        else:
+            unique_output_file = TMP_DIR / f"sl5_dictation/tts_output_{timestamp}.txt"
+
+        # unique_output_file = TMP_DIR / f"sl5_dictation/tts_output_{timestamp}.txt"
         # unique_output_file.write_text(processed_text)
         unique_output_file.write_text(processed_text, encoding="utf-8-sig")
         logger.info(f"THREAD: Successfully wrote to {unique_output_file}")
