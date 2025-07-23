@@ -18,6 +18,16 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.ps1') }}
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
+
       - name: Run macos_setup.sh
         # This assumes your script has `set -e` at the top for error handling
         # and a shebang `#!/bin/bash`
