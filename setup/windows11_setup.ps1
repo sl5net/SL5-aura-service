@@ -105,9 +105,21 @@ Download-And-Verify -Url $EnModelUrl -ZipFilePath ".\models\$EnModelZip" -Expect
 Download-And-Verify -Url $DeModelUrl -ZipFilePath ".\models\$DeModelZip" -ExpectedSha256 $DeModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$DeModelDir"
 
 
+$tmpPath = "C:\tmp"
+$sl5DictationPath = "C:\tmp\sl5_dictation"
+if (!(Test-Path $tmpPath)) {
+    New-Item -ItemType Directory -Path $tmpPath | Out-Null
+Write-Host "Created directory: $tmpPath"
+} else {
+    Write-Host "Directory already exists: $tmpPath"
+}
 
-New-Item -ItemType Directory -Path "C:\tmp" | Out-Null
-New-Item -ItemType Directory -Path "C:\tmp\sl5_dictation" | Out-Null
+if (!(Test-Path $sl5DictationPath)) {
+    New-Item -ItemType Directory -Path $sl5DictationPath | Out-Null
+Write-Host "Created directory: $sl5DictationPath"
+} else {
+    Write-Host "Directory already exists: $sl5DictationPath"
+}
 
 
 # --- Create central config file ---
