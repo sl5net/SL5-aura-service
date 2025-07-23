@@ -5,9 +5,6 @@ name: LanguageTool-6.6 Health Check
 # It also allows for manual runs from the GitHub Actions tab.
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'LanguageTool-6.6/**'
 
 jobs:
   health-check:
