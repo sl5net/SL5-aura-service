@@ -25,6 +25,16 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+           ./tools/
+           ./models/
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.ps1') }}
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
+
       - name: Run windows11_setup.ps1
         run: |
           powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"
