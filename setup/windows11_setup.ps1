@@ -105,6 +105,25 @@ Download-And-Verify -Url $EnModelUrl -ZipFilePath ".\models\$EnModelZip" -Expect
 Download-And-Verify -Url $DeModelUrl -ZipFilePath ".\models\$DeModelZip" -ExpectedSha256 $DeModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$DeModelDir"
 
 
+
+# --- Run language check script (get_lang.sh) ---
+Write-Host "INFO: Checking system language to download additional models if necessary..."
+
+# Get the 2-letter language code (e.g., "de", "fr") from Windows
+$LangCode = (Get-Culture).Name.Substring(0, 2)
+
+# Define the path to the bash script
+$GetLangScriptPath = "$PSScriptRoot\..\scripts\sh\get_lang.sh"
+
+# Execute the bash script via Git Bash and pass the detected language code as an argument
+# This requires bash.exe to be in the system's PATH, which Git for Windows does by default.
+& bash.exe $GetLangScriptPath $LangCode
+
+Write-Host "INFO: Language check script finished."
+
+
+
+
 $tmpPath = "C:\tmp"
 $sl5DictationPath = "C:\tmp\sl5_dictation"
 if (!(Test-Path $tmpPath)) {
