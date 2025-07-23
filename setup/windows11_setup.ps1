@@ -1,36 +1,31 @@
-# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
-# setup/windows11_setup.ps1
-# Self-contained setup script. Uses winget if available, otherwise falls back to manual install.
+# setup/windows11_setup.ps1 - Vereinfachtes Setup-Skript für den GitHub Actions CI-Workflow
+#
 
-$ProjectRoot = (Get-Location).Path
-Write-Host "--> Running setup from project root: $ProjectRoot"
-$ErrorActionPreference = 'Stop'
+# --- Make script location-independent ---
+$ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
+Set-Location -Path $ProjectRoot
+Write-Host "--> Running setup from project root: (Get-Location)"
 
-# --- 1. System Dependencies ---
-Write-Host "--> Checking for winget..."
-$wingetExists = (Get-Command winget -ErrorAction SilentlyContinue)
+# --- 0. Preamble ---
+$ErrorActionPreference = "Stop"
 
-if ($wingetExists) {
-    Write-Host "    -> winget found! Using modern, fast setup."
-    winget install -e --id Microsoft.OpenJDK.17
-    winget install -e --id Python.Python.3.11
+Write-Host "--- Starting STT Setup for Windows CI ---"
+
+# HINWEIS: Die Admin-Prüfung, Java-Installation, Python-Installation und alle
+# 'winget'-Aufrufe werden hier entfernt, da sie vom GitHub-Workflow (ci.yml)
+# übernommen werden oder weil die Tools (wie 7-Zip) bereits vorhanden sind.
+
+# --- 3. Python Virtual Environment ---
+Write-Host "--> Creating Python virtual environment in '.\.venv'..."
+if (-not (Test-Path -Path ".\.venv")) {
+    python -m venv .venv
 } else {
-    Write-Host "    -> winget not found. Falling back to manual install (slower)."
-    # Manual install logic from my previous correct proposal...
-    # (Implementation for manual Java/Python download & install)
+    Write-Host "    -> Virtual environment already exists. Skipping creation."
 }
 
-# --- 2. Python Virtual Environment ---
-Write-Host "--> Creating Python venv..."
-python -m venv .venv
-
-# --- 3. Python Requirements ---
-Write-Host "--> Installing Python requirements..."
-& ".\.venv\Scripts\pip.exe" install -r requirements.txt
-
-# --- 4. Project Structure ---
-Write-Host "--> Setting up project directories..."
-& ".\.venv\Scripts\python.exe" ".\scripts\py\func\create_required_folders.py" "$ProjectRoot"
+# --- 4. Python Requirements ---
+Write-Host "--> Installing Python requirements into the virtual environment..."
+.\.venv\Scripts\pip.exe install -r requirements.txt
 
 # --- 5. External Tools & Models (from Releases) ---
 Write-Host "--> Downloading external tools and models..."
@@ -107,26 +102,34 @@ Download-And-Verify -Url $EnModelUrl -ZipFilePath ".\models\$EnModelZip" -Expect
 Download-And-Verify -Url $DeModelUrl -ZipFilePath ".\models\$DeModelZip" -ExpectedSha256 $DeModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$DeModelDir"
 
 
-# --- 6. User-Specific Configuration ---
-$ConfigDir = Join-Path $HOME ".config\sl5-stt"
-$ConfigFile = Join-Path $ConfigDir "config.toml"
-Write-Host "--> Ensuring user config file exists at $ConfigFile..."
-if (-not (Test-Path $ConfigDir)) {
-    New-Item -Path $ConfigDir -ItemType Directory | Out-Null
+
+New-Item -ItemType Directory -Path "C:\tmp" | Out-Null
+New-Item -ItemType Directory -Path "C:\tmp\sl5_dictation" | Out-Null
+
+
+# --- Create central config file ---
+Write-Host "--> Creating central config file..."
+$ConfigDir = Join-Path -Path $env:USERPROFILE -ChildPath ".config\sl5-stt"
+if (-not (Test-Path -Path $ConfigDir)) {
+    Write-Host "    -> Creating config directory at $ConfigDir"
+    New-Item -ItemType Directory -Path $ConfigDir | Out-Null
 }
-if (-not (Test-Path $ConfigFile)) {
-    $ConfigContent = @"
+# Korrigiert, um Backslashes für Windows zu verwenden und dann für TOML zu normalisieren
+$ProjectRootPath = (Get-Location).Path
+$ConfigContent = @"
 [paths]
-project_root = "$($ProjectRoot -replace '\\', '\\')"
+project_root = "$($ProjectRootPath.Replace('\', '/'))"
 "@
-    Set-Content -Path $ConfigFile -Value $ConfigContent
-}
+$ConfigFile = Join-Path -Path $ConfigDir -ChildPath "config.toml"
+Set-Content -Path $ConfigFile -Value $ConfigContent
+
+# --- 6. Project Configuration ---
+Write-Host "--> Creating Python package markers (__init__.py)..."
+New-Item -Path "config/__init__.py" -ItemType File -Force | Out-Null
+New-Item -Path "config/languagetool_server/__init__.py" -ItemType File -Force | Out-Null
 
 # --- 7. Completion ---
 Write-Host ""
-Write-Host "--- Setup for Windows is complete! ---" -ForegroundColor Green
-Write-Host ""
-Write-Host "To activate the environment and run the server, use the following commands in this terminal:"
-Write-Host "  .\.venv\Scripts\Activate.ps1"
-Write-Host "  .\scripts\restart_venv_and_run-server.ps1" # We should create this as well
-Write-Host ""
+Write-Host "------------------------------------------------------------------" -ForegroundColor Green
+Write-Host "CI Setup for Windows completed successfully." -ForegroundColor Green
+Write-Host "------------------------------------------------------------------" -ForegroundColor Green
