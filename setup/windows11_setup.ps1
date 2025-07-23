@@ -48,6 +48,9 @@ $DeModelUrl = "$($ReleaseUrlBase)/$($DeModelZip)"
 $DeModelSha256 = "fb45a53025a50830b16bcda94146f90e22166501bb3693b009cabed796dbaaa0"
 $DeModelDir = "models\vosk-model-de-0.21"
 
+# Create the models directory before attempting to download files into it.
+New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
+
 # --- Download and Verify Function ---
 function Download-And-Verify {
     param(
@@ -98,7 +101,7 @@ function Download-And-Verify {
 
 # --- Execute Downloads ---
 Download-And-Verify -Url $LtUrl -ZipFilePath ".\$LtZip" -ExpectedSha256 $LtSha256 -ExtractDir "." -FinalDirCheck ".\$LtDir"
-Download-And-Verify -Url $EnModelUrl -ZipFilePath ".\models\$EnModelZip" -ExpectedSha256 $EnModelSha265 -ExtractDir ".\models\" -FinalDirCheck ".\$EnModelDir"
+Download-And-Verify -Url $EnModelUrl -ZipFilePath ".\models\$EnModelZip" -ExpectedSha256 $EnModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$EnModelDir"
 Download-And-Verify -Url $DeModelUrl -ZipFilePath ".\models\$DeModelZip" -ExpectedSha256 $DeModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$DeModelDir"
 
 
