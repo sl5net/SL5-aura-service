@@ -148,9 +148,9 @@ logger = logging.getLogger()
 
 # ==============================================================================
 # --- Wrapper Script Check ---
-if not DEV_MODE and os.environ.get("DICTATION_SERVICE_STARTED_CORRECTLY") != "true":
-    logger.fatal("FATAL: This script must be started using the 'activate-venv_and_run-server.sh' wrapper.")
-    sys.exit(1)
+# if not DEV_MODE and os.environ.get("DICTATION_SERVICE_STARTED_CORRECTLY") != "true":
+#     logger.fatal("FATAL: This script must be started using the 'activate-venv_and_run-server.sh' wrapper.")
+#     sys.exit(1)
 # ==============================================================================
 
 
