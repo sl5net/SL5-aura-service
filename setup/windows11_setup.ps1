@@ -1,4 +1,5 @@
-# setup/windows11_setup.ps1
+# setup/windows11_setup.ps1 - Vereinfachtes Setup-Skript für den GitHub Actions CI-Workflow
+#
 
 # --- Make script location-independent ---
 $ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
@@ -9,6 +10,10 @@ Write-Host "--> Running setup from project root: (Get-Location)"
 $ErrorActionPreference = "Stop"
 
 Write-Host "--- Starting STT Setup for Windows CI ---"
+
+# HINWEIS: Die Admin-Prüfung, Java-Installation, Python-Installation und alle
+# 'winget'-Aufrufe werden hier entfernt, da sie vom GitHub-Workflow (ci.yml)
+# übernommen werden oder weil die Tools (wie 7-Zip) bereits vorhanden sind.
 
 # --- 3. Python Virtual Environment ---
 Write-Host "--> Creating Python virtual environment in '.\.venv'..."
@@ -100,9 +105,21 @@ Download-And-Verify -Url $EnModelUrl -ZipFilePath ".\models\$EnModelZip" -Expect
 Download-And-Verify -Url $DeModelUrl -ZipFilePath ".\models\$DeModelZip" -ExpectedSha256 $DeModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$DeModelDir"
 
 
+$tmpPath = "C:\tmp"
+$sl5DictationPath = "C:\tmp\sl5_dictation"
+if (!(Test-Path $tmpPath)) {
+    New-Item -ItemType Directory -Path $tmpPath | Out-Null
+Write-Host "Created directory: $tmpPath"
+} else {
+    Write-Host "Directory already exists: $tmpPath"
+}
 
-New-Item -ItemType Directory -Path "C:\tmp" | Out-Null
-New-Item -ItemType Directory -Path "C:\tmp\sl5_dictation" | Out-Null
+if (!(Test-Path $sl5DictationPath)) {
+    New-Item -ItemType Directory -Path $sl5DictationPath | Out-Null
+Write-Host "Created directory: $sl5DictationPath"
+} else {
+    Write-Host "Directory already exists: $sl5DictationPath"
+}
 
 
 # --- Create central config file ---

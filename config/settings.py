@@ -1,5 +1,9 @@
 # file: config/settings.py
 # Central configuration for the application
+import os
+
+# Get username
+current_user = os.environ.get('USERNAME', 'default')
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
@@ -13,6 +17,11 @@ NOTIFICATION_LEVEL = 2 # 0=Silent, 1=Essential, 2=Verbose
 # A list of Vosk model folder names to preload at startup if memory allows.
 PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 # PRELOAD_MODELS = ["vosk-model-de-0.21"]
+
+if current_user == 'SL5.de':  #
+    PRELOAD_MODELS = ["vosk-model-de-0.21"]
+
+
 
 # --- LanguageTool Server ---
 # Set to True to use an existing LT server. AT YOUR OWN RISK!
