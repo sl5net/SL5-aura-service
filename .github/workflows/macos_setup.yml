@@ -24,7 +24,7 @@ jobs:
           path: |
             ./LanguageTool-6.6
             ./models/
-          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.ps1') }}
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
           restore-keys: |
             ${{ runner.os }}-models-tools-
 
