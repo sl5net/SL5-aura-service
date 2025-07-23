@@ -2,8 +2,6 @@
 # scripts/sh/get_lang.sh
 # This script detects the system language, downloads a corresponding voice model
 # if it's not a default one (de, en), and helps configure it.
-CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
-
 set -e
 
 # --- Path Definitions ---
