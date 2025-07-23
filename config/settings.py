@@ -1,5 +1,6 @@
 # file: config/settings.py
 # Central configuration for the application
+# please see also: settings_local.py_Example.txt
 import os
 
 # Get username
