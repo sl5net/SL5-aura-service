@@ -13,6 +13,17 @@ jobs:
       - name: Install dependencies
         run: |
           sudo pacman -S --needed git
+
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
+
           
       - name: Run manjaro_arch_setup.sh
         run: bash ./setup/manjaro_arch_setup.sh
