@@ -66,6 +66,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     # cat "$f" | LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file -
                     LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
                     rm "$f"
+                    # if you want newline/return/enter at the end:
+                    # LC_ALL=C.UTF-8 xdotool key Return
                 fi
             done
         fi
