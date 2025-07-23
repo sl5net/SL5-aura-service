@@ -29,8 +29,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-           ./tools/
-           ./models/
+            ./LanguageTool-6.6
+            ./models/
           key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.ps1') }}
           restore-keys: |
             ${{ runner.os }}-models-tools-
