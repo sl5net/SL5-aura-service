@@ -18,18 +18,31 @@ global fileQueue := []           ; The queue for files
 global isProcessingQueue := false ; Flag to prevent simultaneous processing
 
 ; --- Main Script Body ---
-myStartTimestamp := A_NowUTC
+myUniqueID := A_TickCount . "-" . Random(1000, 9999)
+
+Sleep(200)           ; Give a potential double-clicked instance time to act
+
 try {
-    file1 := FileOpen(heartbeat_start_File, "w", "UTF-8")
-    file1.Write(myStartTimestamp)
-    file1.Close()
-    Log("Heartbeat set with my start-timestamp: " . myStartTimestamp)
-} catch as e {
-    MsgBox("FATAL: Could not write start-heartbeat file: " . e.Message, "Error", 16), ExitApp
+    if FileExist(heartbeat_start_File) {
+        lastUniqueID := Trim(FileRead(heartbeat_start_File, "UTF-8"))
+        if (lastUniqueID != myUniqueID) {
+            ExitApp ; other instance exists, I must exit.
+        }
+    }
+} catch {
+    ; MsgBox("FATAL: " . e.Message, "Error", 16), ExitApp
 }
 
-Sleep(1000)           ; Give a potential double-clicked instance time to act
-CheckHeartbeatStart()     ; Perform one check IMMEDIATELY
+; If I'm still here, I write my ID.
+try {
+    local fileHandle := FileOpen(heartbeat_start_File, "w", "UTF-8")
+    fileHandle.Write(myUniqueID)
+    fileHandle.Close()
+} catch as e {
+    ; MsgBox("FATAL: Could not write heartbeat file: " . e.Message, "Error", 16)
+    ExitApp
+}
+
 
 SetTimer(CheckHeartbeatStart, 5000)
 
@@ -37,11 +50,11 @@ SetTimer(CheckHeartbeatStart, 5000)
 ; SELF-TERMINATION VIA HEARTBEAT START
 ; =============================================================================
 CheckHeartbeatStart() {
-    global heartbeat_start_File, myStartTimestamp
+    global heartbeat_start_File, myUniqueID
     try {
-        local currentHeartbeat := Trim(FileRead(heartbeat_start_File, "UTF-8"))
-        if (currentHeartbeat != myStartTimestamp) {
-            Log("Newer instance detected (" . currentHeartbeat . "). I am " . myStartTimestamp . ". Terminating self.")
+        local lastUniqueID := Trim(FileRead(heartbeat_start_File, "UTF-8"))
+        if (lastUniqueID != myUniqueID) {
+            Log("Newer instance detected (" . lastUniqueID . "). I am " . myUniqueID . ". Terminating self.")
             ExitApp
         }
     } catch {
