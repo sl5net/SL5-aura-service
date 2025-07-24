@@ -1,5 +1,5 @@
 #!/bin/bash
-# file: update/update.sh
+# file: update.sh
 # Description: Downloads the latest version and updates the application for Linux/macOS.
 
 # Exit immediately if a command exits with a non-zero status.
