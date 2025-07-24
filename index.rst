@@ -16,6 +16,7 @@ This is the central hub for all technical documentation, setup guides, and proje
    doc_sources/workflow.md
    doc_sources/workflow_windows11.md
    doc_sources/VirtualBoxSetupGuide_STT_Testing.md
+   setup/README_docker.md
    HOOKS_SETUP.md
 
 .. toctree::

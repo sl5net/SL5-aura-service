@@ -1,3 +1,4 @@
+# General Workflow
 ```
  [Any Hotkey Tool]         [DictationService.py]        [tts_output.txt] ...
  (e.g., DE Settings)
