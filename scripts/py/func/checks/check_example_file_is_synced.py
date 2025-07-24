@@ -68,7 +68,7 @@ def check_example_file_is_synced(project_root: Path):
             print("="*60 + "\n", file=sys.stderr)
             sys.exit(1)
 
-        print("INFO: Config sync check passed. Example file is up to date.")
+        print("✅ INFO: Config sync check passed. Example file is up to date.")
 
     except Exception as e:
         print(f"ERROR: An unexpected error occurred during config sync check: {e}", file=sys.stderr)

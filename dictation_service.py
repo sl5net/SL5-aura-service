@@ -280,6 +280,21 @@ if __name__ == "__main__":
         "PROJECT_ROOT": PROJECT_ROOT
     })
 
+
+
+    # --- Plugin State Communication ---
+    # Create a flag file so client scripts know if a plugin is active.
+    try:
+        auto_enter_flag_path = "/tmp/sl5_auto_enter.flag"
+        auto_enter_enabled = settings.PLUGINS_ENABLED.get("auto_enter_after_dictation", False)
+        with open(auto_enter_flag_path, "w") as f:
+            f.write(str(auto_enter_enabled).lower()) # Writes 'true' or 'false'
+        logger.info(f"Set auto-enter flag to: {auto_enter_enabled}")
+    except Exception as e:
+        logger.error(f"Could not write auto-enter flag file: {e}")
+
+
+
     # Pass the complete, unified config to main()
     loaded_models = {}
     main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url)

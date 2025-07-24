@@ -8,6 +8,8 @@ LOCKFILE="/tmp/type_watcher.lock"
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 LOGFILE="$SCRIPT_DIR/log/type_watcher.log"
 
+AUTO_ENTER_FLAG="/tmp/sl5_auto_enter.flag" # The flag file for auto-enter
+
 log_message() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOGFILE"
 }
@@ -39,7 +41,7 @@ OS_TYPE=$(uname -s)
 
 if [[ "$OS_TYPE" == "Darwin" ]]; then
     # --- macOS Logic ---
-    echo "Watcher starting in macOS mode (using fswatch and osascript)."
+    echo "✅ Watcher starting in macOS mode (using fswatch and osascript)."
     log_message "Watcher starting in macOS mode (using fswatch and osascript)."
     fswatch -0 "$DIR_TO_WATCH" | while read -d "" file; do
         if [[ "$file" == *tts_output_*.txt ]]; then
@@ -50,7 +52,7 @@ if [[ "$OS_TYPE" == "Darwin" ]]; then
     done
 elif [[ "$OS_TYPE" == "Linux" ]]; then
     # --- Linux Logic ---
-    echo "Watcher starting in Linux mode (using inotifywait and xdotool)."
+    echo "✅ Watcher starting in Linux mode (using inotifywait and xdotool)."
     log_message "Watcher starting in Linux mode (using inotifywait and xdotool)."
 
     while true; do
@@ -68,6 +70,16 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     rm "$f"
                     # if you want newline/return/enter at the end:
                     # LC_ALL=C.UTF-8 xdotool key Return
+
+                    # --- Conditional Enter Key ---
+                    if [ -f "$AUTO_ENTER_FLAG" ] && [ "$(cat "$AUTO_ENTER_FLAG")" = "true" ]; then
+                        log "INFO: Auto-Enter plugin is enabled. Pressing Return."
+                        LC_ALL=C.UTF-8 xdotool key Return
+                    fi
+                    # --- End of Conditional Block ---
+
+
+
                 fi
             done
         fi

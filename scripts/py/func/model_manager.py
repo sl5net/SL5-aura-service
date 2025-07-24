@@ -65,7 +65,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
                 max_model_memory_footprint = footprint
                 logger.info(f"Learned new max model footprint: ~{_format_gb(footprint)}")
 
-            logger.info(f"Successfully loaded model for '{lang_key}'.")
+            logger.info(f"✅ Successfully loaded model for '{lang_key}'.")
             break
         except Exception as e:
             logger.error(f"Failed to load '{model_name}': {e}")

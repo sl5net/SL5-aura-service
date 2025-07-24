@@ -6,6 +6,8 @@
 ; --- Configuration ---
 watchDir := "C:\tmp\sl5_dictation"
 logDir := A_ScriptDir "\log"
+autoEnterFlagPath := "C:\tmp\sl5_auto_enter.flag"
+
 
 ; --- Global Variables ---
 global pBuffer := Buffer(1024 * 16), hDir, pOverlapped := Buffer(A_PtrSize * 2 + 8, 0)
@@ -139,6 +141,17 @@ ProcessQueue() {
                 if (content != "") {
                     Log("--> Sending content: '" . content . "'")
                     SendText(content)
+
+                    ; --- Conditional Enter Key ---
+                    ; Check if the auto-enter plugin is enabled
+                    if FileExist(autoEnterFlagPath) {
+                        flagState := Trim(FileRead(autoEnterFlagPath))
+                        if (flagState = "true") {
+                            SendInput("{Enter}")
+                        }
+                    }
+                    ; --- End of Conditional Block ---
+
                 } else {
                     Log("-> File was empty.")
                 }

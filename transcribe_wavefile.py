@@ -114,7 +114,7 @@ def main():
     print(f"Loading model '{MODEL_NAME}'... This may take a moment.")
     try:
         model = vosk.Model(str(MODEL_PATH))
-        print("Model loaded successfully.")
+        print("✅ Model loaded successfully.")
     except Exception as e:
         msg = f"FATAL ERROR: Could not load model '{MODEL_NAME}'.\n{e}"
         print(msg, file=sys.stderr)

@@ -48,5 +48,5 @@ def validate_punctuation_map_keys(project_root):
                 continue
 
     if not found_issues:
-        print("  -> OK: All found punctuation map keys are lowercase.")
+        print("✅ OK: All found punctuation map keys are lowercase.")
 

@@ -38,4 +38,4 @@ def check_code_integrity(project_root, logger):
         logger.fatal(f"Aborting due to {failed_checks} failed integrity check(s).")
         sys.exit(1)
     else:
-        logger.info("  -> OK: All code integrity checks passed.")
+        logger.info("✅ OK: All code integrity checks passed.")

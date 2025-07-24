@@ -41,7 +41,7 @@ def validate_setup(project_root):
     #     print("FATAL: Config file 'model_name.txt' is missing.", file=sys.stderr)
     #     sys.exit(1)
 
-    print("INFO: Setup validation successful.")
+    print("INFO: ✅ Setup validation successful.")
 
 
 class DefinitionVisitor(ast.NodeVisitor):
@@ -152,7 +152,7 @@ def check_for_unused_functions(project_root):
         print("\n  -> This suggests dead code. Please remove or use these functions.")
         sys.exit(1)
 
-    print("--- Analysis finished successfully ---")
+    print("✅ Analysis finished successfully")
 
 # use it in .venv
 # python scripts/setup_validator.py
