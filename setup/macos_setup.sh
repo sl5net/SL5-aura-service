@@ -156,12 +156,7 @@ download_and_verify "$LT_URL" "$LT_ZIP" "$LT_SHA256" "." "$LT_DIR"
 download_and_verify "$EN_MODEL_URL" "models/$EN_MODEL_ZIP" "$EN_MODEL_SHA256" "models/" "$EN_MODEL_DIR"
 download_and_verify "$DE_MODEL_URL" "models/$DE_MODEL_ZIP" "$DE_MODEL_SHA256" "models/" "$DE_MODEL_DIR"
 
-
-
-
-
-
-
+source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 
 # --- 6. Completion ---

@@ -73,6 +73,11 @@ from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctu
 
 from  scripts.py.func.checks.self_tester import run_core_logic_self_test
 
+from  scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
+check_example_file_is_synced(SCRIPT_DIR)
+
+
+
 # Execute the check. The script will exit here if the setup is incomplete.
 validate_setup(SCRIPT_DIR)
 
