@@ -29,7 +29,7 @@ try {
 }
 
 Sleep(1000)           ; Give a potential double-clicked instance time to act
-CheckHeartbeat()     ; Perform one check IMMEDIATELY
+CheckHeartbeatStart()     ; Perform one check IMMEDIATELY
 
 SetTimer(CheckHeartbeatStart, 5000)
 
