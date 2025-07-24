@@ -20,9 +20,9 @@ global isProcessingQueue := false ; Flag to prevent simultaneous processing
 ; --- Main Script Body ---
 myStartTimestamp := A_NowUTC
 try {
-    file_heartbeat_start := FileOpen(heartbeat_start_File, "w", "UTF-8")
-    file_heartbeat_start.Write(myStartTimestamp)
-    file_heartbeat_start.Close()
+    file1 := FileOpen(heartbeat_start_File, "w", "UTF-8")
+    file1.Write(myStartTimestamp)
+    file1.Close()
     Log("Heartbeat set with my start-timestamp: " . myStartTimestamp)
 } catch as e {
     MsgBox("FATAL: Could not write start-heartbeat file: " . e.Message, "Error", 16), ExitApp
@@ -33,9 +33,9 @@ SetTimer(CheckHeartbeatStart, 5000)
 ; SELF-TERMINATION VIA HEARTBEAT START
 ; =============================================================================
 CheckHeartbeatStart() {
-    global heartbeatFile, myStartTimestamp
+    global heartbeat_start_File, myStartTimestamp
     try {
-        currentHeartbeat := Trim(FileRead(heartbeatFile, "UTF-8"))
+        local currentHeartbeat := Trim(FileRead(heartbeat_start_File, "UTF-8"))
         if (currentHeartbeat != myStartTimestamp) {
             Log("Newer instance detected (" . currentHeartbeat . "). I am " . myStartTimestamp . ". Terminating self.")
             ExitApp
@@ -264,3 +264,5 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
 
     watcherNeedsRearm := true
 }
+
+

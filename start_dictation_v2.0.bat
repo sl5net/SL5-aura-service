@@ -62,29 +62,8 @@ if "%VENV_HEALTHY%"=="false" (
 echo.
 echo -63-
 
-echo [*] DIAGNOSIS: Listing ALL AutoHotkey processes from ADMIN context...
-tasklist /FI "IMAGENAME eq AutoHotkey*.exe"
-echo.
-
-:: Forcefully terminate any running AutoHotkey process
-:: this is very importend! becouse the restart feature of a AutoHotkey-Script is buggy!!
-:: never delete the follwong taskkill lines.
-:: echo [*] Ensuring a clean start for watchers by terminating AutoHotkey processes
-:: taskkill /F /T /IM AutoHotkey64*.exe >nul 2>&1
-:: taskkill /F /T /IM *.ahk >nul 2>&1
-
-:: --- Step X: Forcefully terminate any running AutoHotkey process (using WMIC) ---
-echo [*] Ensuring a clean start by terminating ALL AutoHotkey processes system-wide...
-wmic process where "name like 'AutoHotkey%%.exe'" call terminate >nul 2>&1
-echo [INFO] System-wide termination command sent.
-
-echo [*] DIAGNOSIS: Checking for remaining processes...
-tasklist /FI "IMAGENAME eq AutoHotkey*.exe"
-echo.
-
 start "SL5 Type Watcher" type_watcher.ahk
 start "SL5 Notification Watcher" scripts\notification_watcher.ahk
-
 
 echo -72-
 
