@@ -8,6 +8,7 @@ watchDir := "C:\tmp\sl5_dictation"
 logDir := A_ScriptDir "\log"
 autoEnterFlagPath := "C:\tmp\sl5_auto_enter.flag"
 
+heartbeat_start_File := "C:\tmp\heartbeat_type_watcher_start.txt"
 
 ; --- Global Variables ---
 global pBuffer := Buffer(1024 * 16), hDir, pOverlapped := Buffer(A_PtrSize * 2 + 8, 0)
@@ -17,6 +18,34 @@ global fileQueue := []           ; The queue for files
 global isProcessingQueue := false ; Flag to prevent simultaneous processing
 
 ; --- Main Script Body ---
+myStartTimestamp := A_NowUTC
+try {
+    file := FileOpen(heartbeat_start_File, "w", "UTF-8")
+    file.Write(myStartTimestamp)
+    file.Close()
+    Log("Heartbeat set with my start-timestamp: " . myStartTimestamp)
+} catch as e {
+    MsgBox("FATAL: Could not write start-heartbeat file: " . e.Message, "Error", 16), ExitApp
+}
+SetTimer(CheckHeartbeatStart, 5000)
+
+; =============================================================================
+; SELF-TERMINATION VIA HEARTBEAT START
+; =============================================================================
+CheckHeartbeatStart() {
+    global heartbeatFile, myStartTimestamp
+    try {
+        currentHeartbeat := Trim(FileRead(heartbeatFile, "UTF-8"))
+        if (currentHeartbeat != myStartTimestamp) {
+            Log("Newer instance detected (" . currentHeartbeat . "). I am " . myStartTimestamp . ". Terminating self.")
+            ExitApp
+        }
+    } catch {
+        Log("Could not read heartbeat file. Terminating to be safe.")
+        ExitApp
+    }
+}
+
 DirCreate(watchDir)
 DirCreate(logDir)
 Log("--- Script Started (v8.3 - Correct FileRead Syntax) ---")
