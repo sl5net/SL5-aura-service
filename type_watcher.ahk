@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 ; type_watcher.ahk (v8.3 - Correct FileRead Syntax)
 
-#SingleInstance Force
+; #SingleInstance Force ; is buggy
 
 ; --- Configuration ---
 watchDir := "C:\tmp\sl5_dictation"
@@ -9,6 +9,17 @@ logDir := A_ScriptDir "\log"
 autoEnterFlagPath := "C:\tmp\sl5_auto_enter.flag"
 
 heartbeat_start_File := "C:\tmp\heartbeat_type_watcher_start.txt"
+; --- Main Script Body ---
+myUniqueID := A_TickCount . "-" . Random(1000, 9999)
+
+try {
+    fileHandle := FileOpen(heartbeat_start_File, "w")
+    fileHandle.Write(myUniqueID)
+    fileHandle.Close()
+} catch as e {
+    MsgBox("FATAL: Could not write heartbeat file: " . e.Message, "Error", 16)
+    ExitApp
+}
 
 ; --- Global Variables ---
 global pBuffer := Buffer(1024 * 16), hDir, pOverlapped := Buffer(A_PtrSize * 2 + 8, 0)
@@ -17,30 +28,19 @@ global watcherNeedsRearm := false
 global fileQueue := []           ; The queue for files
 global isProcessingQueue := false ; Flag to prevent simultaneous processing
 
-; --- Main Script Body ---
-myUniqueID := A_TickCount . "-" . Random(1000, 9999)
+
 
 Sleep(200)           ; Give a potential double-clicked instance time to act
 
 try {
     if FileExist(heartbeat_start_File) {
-        lastUniqueID := Trim(FileRead(heartbeat_start_File, "UTF-8"))
+        lastUniqueID := Trim(FileRead(heartbeat_start_File))
         if (lastUniqueID != myUniqueID) {
             ExitApp ; other instance exists, I must exit.
         }
     }
 } catch {
-    ; MsgBox("FATAL: " . e.Message, "Error", 16), ExitApp
-}
-
-; If I'm still here, I write my ID.
-try {
-    local fileHandle := FileOpen(heartbeat_start_File, "w", "UTF-8")
-    fileHandle.Write(myUniqueID)
-    fileHandle.Close()
-} catch as e {
-    ; MsgBox("FATAL: Could not write heartbeat file: " . e.Message, "Error", 16)
-    ExitApp
+    MsgBox("FATAL: " . e.Message, "Error", 16), ExitApp
 }
 
 
