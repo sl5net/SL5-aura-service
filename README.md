@@ -15,10 +15,19 @@ It's a complete, offline writing assistant built on Vosk and LanguageTool.
 *   **Fully Automated:** Manages its own LanguageTool server. A single script handles the startup process on Linux/macOS.
 *   **Blazing Fast:** Intelligent caching ensures instant "Listening..." notifications and fast processing.
 
+## Documentation
+
+For a complete technical reference, including all modules and scripts, please visit our official documentation page. It is automatically generated and always up-to-date.
+
+[**Go to Documentation >>**](https://sl5net.github.io/Vosk-System-Listener/)
+
+
 ### Build Status
 [![Linux](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/ubuntu_setup.yml)
 [![macOS](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup.yml)
+
+[![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/Vosk-System-Listener/)
 
 ---
 
