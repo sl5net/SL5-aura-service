@@ -22,14 +22,36 @@ INTEGRITY_CHECKS = {
     ],
 
     # Protects the regex substitution logic in the main processing function.
+    # germen umlauts needs this to could read correct for e.g. from script like autokey
+    # Ensures critical text processing logic is present.
     "scripts/py/func/process_text_in_background.py": [
-        "new_text = re.sub("
-    ],
-
-    # germen umlaute needs this to could read correct for e.g. from script like autokey
-    "scripts/py/func/process_text_in_background.py": [
+        "new_text = re.sub(",
         'encoding="utf-8-sig"'
     ],
 
+    # --- Start of Ensures language selection is included ---
+
+    # Ensures language selection is included in the macOS setup.
+    "setup/macos_setup.sh": [
+        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"'
+    ],
+
+    # Ensures language selection is included in the Ubuntu setup.
+    "setup/ubuntu_setup.sh": [
+        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"'
+    ],
+
+    # Ensures language selection is included in the Manjaro/Arch setup.
+    "setup/manjaro_arch_setup.sh": [
+        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"'
+    ],
+
+    # Ensures language selection is included in the Windows setup.
+    "setup/windows11_setup.ps1": [
+        '$GetLangScriptPath = "$PSScriptRoot\\..\\scripts\\sh\\get_lang.sh"',
+        '& bash.exe $GetLangScriptPath $LangCode'
+    ],
+
+    # --- End of Ensures language selection is included ---
 
 }
