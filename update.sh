@@ -7,7 +7,8 @@ set -e
 
 # --- Configuration ---
 REPO_URL="https://github.com/sl5net/Vosk-System-Listener/archive/refs/heads/master.zip"
-INSTALL_DIR="$(cd "$(dirname "$0")/.." && pwd)" # Absolute path to project root
+INSTALL_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 TEMP_DIR=$(mktemp -d)
 
 # --- Colors for output ---
