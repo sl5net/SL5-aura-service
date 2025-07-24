@@ -72,6 +72,16 @@ ProcessExistingFiles() {
 QueueFile(filename) {
     if InStr(filename, "tts_output_") {
         fullPath := watchDir "\" . filename
+
+        ; --- FIX: Check if file is already in the queue ---
+        for index, queuedPath in fileQueue {
+            if (queuedPath = fullPath) {
+                Log("-> File is already in queue. Ignoring duplicate add. -> " . filename)
+                return ; Exit the function, do not add again
+            }
+        }
+        ; --- End of FIX ---
+
         Log("Queuing file -> " . filename)
         fileQueue.Push(fullPath)
     } else {
