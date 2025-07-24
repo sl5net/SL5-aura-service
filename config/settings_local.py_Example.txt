@@ -1,6 +1,6 @@
 # config/settings_local.py
 
-# My personal settings for SL5 Dictation
+# My personal settings Example
 # This file is ignored by Git.
 
 NOTIFICATION_LEVEL = 1
@@ -25,3 +25,22 @@ CORRECTIONS_ENABLED.update({
     "git": True,
 })
 
+
+CORRECTIONS_ENABLED.update({
+    "github": True,
+})
+
+
+CRITICAL_THRESHOLD_MB = 1024 * 2
+# CRITICAL_THRESHOLD_MB = 28000 # (also 28 GB)
+
+
+# --- Custom Client-Side Plugins ---
+# Enable or disable specific client-side behaviors (plugins).
+# The logic is handled by client scripts (e.g., type_watcher.sh, AutoKey).
+# These settings tell the backend service what to expect or how to format output.
+####     "github_corrections": True,         # Example from before ???
+PLUGINS_ENABLED = {
+    "auto_enter_after_dictation": False, # Set to True to add an 'Enter' keypress
+    "poker_hotkeys": False,             # For Andy's poker game
+}

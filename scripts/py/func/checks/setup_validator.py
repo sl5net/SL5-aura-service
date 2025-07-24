@@ -102,7 +102,9 @@ def check_for_unused_functions(project_root):
         # Dynamically called by the ast.NodeVisitor parent class
         'visit_FunctionDef',
         'visit_Call',
-        'this_function_is_on_the_allowlist'
+        'this_function_is_on_the_allowlist',
+        'visit_Assign',
+        'visit_Dict'
     }
 
     files_to_check = [project_root / 'dictation_service.py']
@@ -143,7 +145,7 @@ def check_for_unused_functions(project_root):
     if not truly_unused_names:
         print("INFO: No unused functions found. Clean!")
     else:
-        print("\nFATAL: The following functions are defined but never appear to be called:")
+        print("\nFATAL setup_validator.py: The following functions are defined but never appear to be called:")
         for name in sorted(list(truly_unused_names)):
             file = all_definitions[name]
             print(f"  - Function: {name:<30} | Defined in: {file.relative_to(project_root)}")

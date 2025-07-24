@@ -1,5 +1,4 @@
 # file: scripts/py/func/checks/integrity_rules.py
-# integrity_rules.py
 
 """
 This file defines critical code fragments that must exist in specific files.
