@@ -66,8 +66,8 @@ echo -63-
 :: this is very importend! becouse the restart feature of a AutoHotkey-Script is buggy!!
 :: never delete the follwong taskkill lines.
 echo [*] Ensuring a clean start for watchers by terminating AutoHotkey processes
-taskkill /F /IM AutoHotkey.exe >nul 2>&1
-taskkill /F /IM AutoHotkey64.exe >nul 2>&1
+taskkill /F /T /IM AutoHotkey.exe >nul 2>&1
+taskkill /F /T /IM AutoHotkey64.exe >nul 2>&1
 
 start "SL5 Type Watcher" type_watcher.ahk
 start "SL5 Notification Watcher" scripts\notification_watcher.ahk
