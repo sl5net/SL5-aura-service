@@ -20,9 +20,9 @@ global isProcessingQueue := false ; Flag to prevent simultaneous processing
 ; --- Main Script Body ---
 myStartTimestamp := A_NowUTC
 try {
-    file := FileOpen(heartbeat_start_File, "w", "UTF-8")
-    file.Write(myStartTimestamp)
-    file.Close()
+    file_heartbeat_start := FileOpen(heartbeat_start_File, "w", "UTF-8")
+    file_heartbeat_start.Write(myStartTimestamp)
+    file_heartbeat_start.Close()
     Log("Heartbeat set with my start-timestamp: " . myStartTimestamp)
 } catch as e {
     MsgBox("FATAL: Could not write start-heartbeat file: " . e.Message, "Error", 16), ExitApp
