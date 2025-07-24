@@ -37,3 +37,8 @@ config/model_name_lastused.txt
 # But DO NOT ignore requirements.txt
 !requirements.txt
 !requirements-dev.txt
+
+_build/
+docs_old/
+*.rst
+!index.rst
