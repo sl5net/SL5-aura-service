@@ -16,3 +16,12 @@ documentation for details.
 
    modules
    utility_scripts
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Anleitungen & FAQs:
+
+   doc_sources/workflow.md
+   doc_sources/workflow_windows11.md
+   doc_sources/VirtualBoxSetupGuide_STT_Testing.md
