@@ -51,9 +51,14 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             continue
 
         model_path = script_dir / "models" / model_name
+
         if not model_path.exists():
             logger.warning(f"⚠️ WARNING: Model directory not found, skipping: {model_path}")
+
+            desired_names.remove(model_name)
+
             continue  # Go to the next model in the list
+
 
         logger.info(f"Attempting to load missing model: '{model_name}'")
         try:
