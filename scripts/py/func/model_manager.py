@@ -37,9 +37,8 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             logger.info(f"model {lang_key} already loaded.")
             continue
 
-
+        # File: scripts/py/func/model_manager.py
         model_path = script_dir / "models" / model_name
-
         if not model_path.exists():
             logger.warning(f"⚠️ WARNING: Model directory not found. Remove it from desired_names and skipping: {model_path}")
             desired_names.remove(model_name)
@@ -63,10 +62,10 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
         try:
 
             _, avail_before = check_memory_critical(threshold_mb)
-            model_path = vosk.Model(str(model_path))
+            loaded_model = vosk.Model(str(model_path))
             _, avail_after = check_memory_critical(threshold_mb)
 
-            loaded_models[lang_key] = model_path
+            loaded_models[lang_key] = loaded_model
 
             footprint = avail_before - avail_after
 
