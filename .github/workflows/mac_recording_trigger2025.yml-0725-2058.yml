@@ -1,8 +1,6 @@
-# .github/workflows/mac_recording_trigger2025.yml
 name: CI macOS Setup and Trigger 2025-0725-2058
 on:
   workflow_dispatch:
-
 jobs:
   validate-macos-e2e-test:
     runs-on: macos-latest
