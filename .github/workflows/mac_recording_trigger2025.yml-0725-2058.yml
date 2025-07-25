@@ -1,6 +1,5 @@
-# .github/workflows/mac_recording_trigger.yml
-
-name: CI for macOS Setup and Test Recording Trigger
+# .github/workflows/mac_recording_trigger2025.yml
+name: CI macOS Setup and Trigger 2025-0725-2058
 on:
   workflow_dispatch:
 
