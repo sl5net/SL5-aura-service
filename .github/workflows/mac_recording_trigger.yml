@@ -19,7 +19,7 @@ jobs:
             LanguageTool-6.6.zip
             vosk-model-de-0.21.zip
             vosk-model-en-us-0.22.zip
-          key: ${{ runner.os }}-assets-cache-2025-0725-1521
+          key: ${{ runner.os }}-assets-cache-2025-0725-1521-single-model
 
       - name: Download assets if cache not found
         if: steps.cache-assets.outputs.cache-hit != 'true'
@@ -27,7 +27,6 @@ jobs:
           echo "--> Cache not found. Downloading all assets..."
           curl -L -o LanguageTool-6.6.zip https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/LanguageTool-6.6.zip
           curl -L -o vosk-model-de-0.21.zip https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
-          curl -L -o vosk-model-en-us-0.22.zip https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-en-us-0.22.zip
       
       - name: Force Clean Re-installation of LanguageTool
         run: |
@@ -44,6 +43,14 @@ jobs:
 
       - name: Run macos_setup.sh
         run: bash ./setup/macos_setup.sh
+
+      - name: Adjust Memory Threshold for CI Environment
+        run: |
+          echo "--> Lowering memory threshold to 500MB for CI runner..."
+          sed -i '' 's/CRITICAL_THRESHOLD_MB = .*/CRITICAL_THRESHOLD_MB = 500/' config/settings.py
+          echo "--> Verifying the change in config/settings.py:"
+          grep "CRITICAL_THRESHOLD_MB" config/settings.py
+
 
       - name: Test Recording Trigger
         run: |
