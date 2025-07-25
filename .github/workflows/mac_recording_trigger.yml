@@ -18,8 +18,7 @@ jobs:
           path: |
             LanguageTool-6.6.zip
             vosk-model-de-0.21.zip
-            vosk-model-en-us-0.22.zip
-          key: ${{ runner.os }}-assets-cache-2025-0725-1521-single-model
+          key: ${{ runner.os }}-assets-cache-2025-0725-2001-single-model
 
       - name: Download assets if cache not found
         if: steps.cache-assets.outputs.cache-hit != 'true'
