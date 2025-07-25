@@ -1,0 +1,71 @@
+# .github/workflows/mac_recording_trigger.yml
+
+name: CI for macOS Setup and Test Recording Trigger
+on:
+  workflow_dispatch:
+
+jobs:
+  validate-macos-e2e-test:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Cache downloaded assets
+        id: cache-assets
+        uses: actions/cache@v4
+        with:
+          path: |
+            LanguageTool-6.6.zip
+            vosk-model-de-0.21.zip
+            vosk-model-en-us-0.22.zip
+          key: ${{ runner.os }}-assets-cache-2025-0725-1521
+
+      - name: Download assets if cache not found
+        if: steps.cache-assets.outputs.cache-hit != 'true'
+        run: |
+          echo "--> Cache not found. Downloading all assets..."
+          curl -L -o LanguageTool-6.6.zip https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/LanguageTool-6.6.zip
+          curl -L -o vosk-model-de-0.21.zip https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
+          curl -L -o vosk-model-en-us-0.22.zip https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-en-us-0.22.zip
+      
+      - name: Force Clean Re-installation of LanguageTool
+        run: |
+          echo "--> Removing potentially corrupt local LanguageTool directory..."
+          rm -rf LanguageTool-6.6
+
+      - name: Verify and Place Assets
+        run: |
+          echo "--> Verifying LanguageTool integrity..."
+          echo "53600506b399bb5ffe1e4c8dec794fd378212f14aaf38ccef9b6f89314d11631  LanguageTool-6.6.zip" | shasum -a 256 -c -
+          echo "--> Placing models into the 'models' directory..."
+          mkdir -p models
+          mv vosk-model-*.zip models/
+
+      - name: Run macos_setup.sh
+        run: bash ./setup/macos_setup.sh
+
+      - name: Test Recording Trigger
+        run: |
+          echo "--> Starting service in background..."
+          bash ./scripts/restart_venv_and_run-server.sh &
+          echo "--> Waiting 40s for service and models to initialize..."
+          sleep 40
+          echo "--> Triggering a test recording..."
+          touch /tmp/vosk_trigger
+          echo "--> Waiting 5s for the trigger to be processed..."
+          sleep 5
+          echo "--> Verifying log file for success indicators..."
+          LOG_FILE="log/dictation_service.log"
+          if grep "TRIGGER DETECTED!" "$LOG_FILE" && \
+             grep "Using model for lang" "$LOG_FILE" && \
+             grep "silence_timout now set to" "$LOG_FILE"; then
+            echo "✅ Success: All expected log entries for a trigger were found."
+          else
+            echo "❌ Error: Could not find all expected log entries."
+            echo "--- Displaying log content for debugging ---"
+            cat "$LOG_FILE"
+            exit 1
+          fi
+          echo "--> Cleaning up background processes..."
+          pkill -f dictation_service.py
