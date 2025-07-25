@@ -45,6 +45,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             desired_names.remove(model_name)
             return  # Go to the next model in the list
 
+        # File: scripts/py/func/model_manager.py
         load_buffer_mb = math.ceil(threshold_mb * 0.10)
         required_memory_mb = threshold_mb + load_buffer_mb + max_model_memory_footprint
         if avail_mb < required_memory_mb:
@@ -58,15 +59,15 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
                 logger.info(log_msg)
             return
 
-
         logger.info(f"Attempting to load missing model: '{model_name}'")
         try:
-            _, avail_before = check_memory_critical(threshold_mb)
 
-            model_path = vosk.Model(str(script_dir / "models" / model_name))
+            _, avail_before = check_memory_critical(threshold_mb)
+            model_path = vosk.Model(str(model_path))
+            _, avail_after = check_memory_critical(threshold_mb)
+
             loaded_models[lang_key] = model_path
 
-            _, avail_after = check_memory_critical(threshold_mb)
             footprint = avail_before - avail_after
 
             if footprint > max_model_memory_footprint:
