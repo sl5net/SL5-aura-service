@@ -22,7 +22,7 @@ EXPECTED_SAMPLE_RATE = 16000
 EXPECTED_CHANNELS = 1
 
 # --- Argument Processing with Defaults ---
-MODEL_NAME_DEFAULT = "vosk-model-de-0.21"
+MODEL_NAME_DEFAULT = "../models/vosk-model-de-0.21"
 parser = argparse.ArgumentParser(description="Transcribe a .WAV audio file using Vosk. Automatically converts format if needed.")
 parser.add_argument('wavefile', help="Path to the .WAV file to transcribe.")
 parser.add_argument('--vosk_model', help=f"Name of the Vosk model folder. Defaults to '{MODEL_NAME_DEFAULT}'.")
@@ -30,13 +30,14 @@ args = parser.parse_args()
 
 # --- Model Name Resolution ---
 VOSK_MODEL_FILE_PATH =  SCRIPT_DIR / "config/model_name.txt"
+
 vosk_model_from_file = ''
 if os.path.exists(VOSK_MODEL_FILE_PATH):
     with open(VOSK_MODEL_FILE_PATH, 'r') as f:
         vosk_model_from_file = f.read().strip()
 
 MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
-MODEL_PATH = SCRIPT_DIR / MODEL_NAME
+MODEL_PATH = SCRIPT_DIR / "../models" / MODEL_NAME
 
 
 # --- Punctuation Normalization (reused from your script) ---
