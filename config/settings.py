@@ -63,8 +63,7 @@ CORRECTIONS_ENABLED = {
 }
 
 
-
-
+PLUGINS_ENABLED = {}
 
 
 # Recording & Transcription
