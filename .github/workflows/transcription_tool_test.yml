@@ -1,13 +1,9 @@
 # File: .github/workflows/transcription_tool_test.yml
-# This workflow tests the transcription tool by running it on a sample audio file
-# and verifying that the output contains an expected German phrase with an umlaut.
 
 name: 'Test: Transcription Tool'
 
 on:
-  # Allow manual runs from the Actions tab
   workflow_dispatch:
-  # Run on pushes that change the tool or its test components
   push:
     paths:
       - 'tools/transcribe_wavefile.py'
@@ -27,19 +23,20 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: '3. Install Dependencies'
+      - name: '3. Install Python Dependencies'
         run: pip install -r requirements.txt
 
-      - name: '4. Download and Unzip Vosk Model'
-        run: |
-          echo "INFO: Downloading German Vosk model (vosk-model-de-0.21)..."
-          wget -q https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
-          unzip -q vosk-model-de-0.21.zip
-          echo "INFO: Model is ready in the root directory."
+      - name: '4. Install System Dependencies (ffmpeg)'
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: '5. Run Transcription and Verify Output'
+      - name: '5. Download and Unzip Vosk Model'
+        run: |
+          echo "INFO: Downloading German Vosk model..."
+          wget -q https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip
+          unzip -q vosk-model-de-0.21.zip
+          echo "INFO: Model is ready."
+
+      - name: '6. Run Transcription and Verify Output'
         run: |
           echo "INFO: Running transcription test..."
-          # Execute the script and pipe its output to grep.
-          # The step will fail if 'grep' does not find the expected string.
           python tools/transcribe_wavefile.py tools/input-test.wav | grep "zum nächsten"
