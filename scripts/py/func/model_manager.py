@@ -48,6 +48,9 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             logger.warning(f"⚠️ WARNING: Model directory not found. Remove it from desired_names and skipping: {model_path}")
             desired_names.remove(model_name)
             return  # Go to the next model in the list
+        else:
+            logger.info(f"✅ Model directory found: {model_path}")
+
 
         # File: scripts/py/func/model_manager.py
         load_buffer_mb = math.ceil(threshold_mb * 0.10)
