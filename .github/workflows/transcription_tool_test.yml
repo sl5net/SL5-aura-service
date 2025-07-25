@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: '3. Install Dependencies'
+      - name: '3. Install Python Dependencies'
         run: pip install -r requirements.txt
 
       - name: '4. Cache Vosk Model'
@@ -33,11 +33,10 @@ jobs:
           key: ${{ runner.os }}-vosk-model-de-0.21-v1
 
       - name: '5. Install System & Model Dependencies'
-        # Run this step only if the cache was not restored
         if: steps.cache-vosk-model.outputs.cache-hit != 'true'
         run: |
-          echo "INFO: Installing ffmpeg..."
-          sudo apt-get update && sudo apt-get install -y ffmpeg
+          echo "INFO: Installing system dependencies..."
+          sudo apt-get update && sudo apt-get install -y ffmpeg libnotify-bin
           echo "INFO: Downloading German Vosk model..."
           wget -q https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
           unzip -q vosk-model-de-0.21.zip
@@ -45,6 +44,6 @@ jobs:
 
       - name: '6. Run Transcription and Verify Output'
         run: |
-          echo "INFO: Running transcription test with explicit model path..."
-          # Pass the model name explicitly to avoid path issues in the script
-          python tools/transcribe_wavefile.py tools/input-test.wav --vosk_model vosk-model-de-0.21 | grep "zum nächsten"
+          echo "INFO: Running transcription test..."
+          # Pass a relative path to the model so the script can find it
+          python tools/transcribe_wavefile.py tools/input-test.wav --vosk_model ../vosk-model-de-0.21 | grep "zum nächsten"
