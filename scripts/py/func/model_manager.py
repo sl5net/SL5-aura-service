@@ -30,6 +30,11 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
         notify("Memory Manager", f"Unloaded '{key_to_unload}' model. {_format_gb(avail_mb)} RAM free.")
         return
 
+    desired_lang_keys = {name.split('-')[2] for name in desired_names}
+    if set(loaded_models.keys()) == desired_lang_keys:
+        logger.info("All desired models are already loaded. Nothing to do.")
+        return
+
     # --- Loading Logic ---
     for model_name in desired_names:
         lang_key = model_name.split('-')[2]
