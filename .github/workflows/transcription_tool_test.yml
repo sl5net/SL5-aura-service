@@ -39,6 +39,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg libnotify-bin
           echo "INFO: Downloading German Vosk model..."
           wget -q https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
+          mkdir models
           unzip -q vosk-model-de-0.21.zip models
           echo "INFO: Dependencies ready."
 
