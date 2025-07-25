@@ -39,11 +39,11 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg libnotify-bin
           echo "INFO: Downloading German Vosk model..."
           wget -q https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
-          unzip -q vosk-model-de-0.21.zip
+          unzip -q vosk-model-de-0.21.zip models
           echo "INFO: Dependencies ready."
 
       - name: '6. Run Transcription and Verify Output'
         run: |
           echo "INFO: Running transcription test..."
           # Pass a relative path to the model so the script can find it
-          python tools/transcribe_wavefile.py tools/input-test.wav --vosk_model ../vosk-model-de-0.21 | grep "zum nächsten"
+          python tools/transcribe_wavefile.py tools/input-test.wav --vosk_model ../models/vosk-model-de-0.21 | grep "zum nächsten"
