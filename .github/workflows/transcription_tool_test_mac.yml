@@ -23,7 +23,7 @@ jobs:
           python-version: '3.11'
 
       - name: 'Install System Dependencies'
-        run: brew install ffmpeg portaudio openjdk libnotify-bin xclip xvfb
+        run: brew install ffmpeg portaudio openjdk
 
       - name: '3. Install Python Dependencies'
         run: |
@@ -49,4 +49,4 @@ jobs:
       - name: '7. Run Transcription and Verify Output'
         run: |
           echo "INFO: Running transcription test..."
-          xvfb-run python tools/transcribe_wavefile.py tools/input-test.wav --vosk_model ../models/vosk-model-de-0.21 | grep "zum nächsten"
+          python tools/transcribe_wavefile.py tools/input-test.wav --vosk_model ../models/vosk-model-de-0.21 | grep "zum nächsten"
