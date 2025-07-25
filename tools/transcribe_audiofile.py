@@ -46,7 +46,7 @@ if os.path.exists(VOSK_MODEL_FILE_PATH):
         vosk_model_from_file = f.read().strip()
 
 MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
-MODEL_PATH = SCRIPT_DIR / MODEL_NAME
+MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
 
 MY_STOPWORDS = ['der', 'die', 'das', 'ist', 'ein', 'eine', 'einer', 'mit', 'und', 'a', 'is', 'with', 'the', 'of', 'in']
 

@@ -25,7 +25,7 @@ def handle_trigger(
 ):
     if not loaded_models:
         logger.error("Trigger ignored: No models are loaded, likely due to low memory.")
-        notify("STT-Fehler", "Keine Modelle geladen (wenig Speicher). Aufnahme ignoriert.")
+        notify("STT-error", "no models loaded (less memory). recording ignored.")
         return
     logger.info(f"TRIGGER DETECTED! Active threads: {len(active_threads)}")
     model_name_file = project_root / "config/model_name.txt"
