@@ -34,6 +34,8 @@ config/model_name_lastused.txt
 *.cache.*
 **/__pycache__/
 
+temp*
+
 # But DO NOT ignore requirements.txt
 !requirements.txt
 !requirements-dev.txt
