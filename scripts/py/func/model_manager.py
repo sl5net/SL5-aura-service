@@ -57,7 +57,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
             desired_names.remove(model_name)
 
-            continue  # Go to the next model in the list
+            break  # Go to the next model in the list
 
 
         logger.info(f"Attempting to load missing model: '{model_name}'")
