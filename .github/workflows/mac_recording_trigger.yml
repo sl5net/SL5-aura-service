@@ -43,6 +43,13 @@ jobs:
       - name: Run macos_setup.sh
         run: bash ./setup/macos_setup.sh
 
+      - name: Clean Up English Model for CI Single-Model Test
+        run: |
+          echo "--> Removing English model to create a controlled test environment..."
+          rm -rf models/vosk-model-en-us-0.22
+          echo "--> Contents of 'models' directory after cleanup:"
+          ls -l models/
+
       - name: Adjust Memory Threshold for CI Environment
         run: |
           echo "--> Lowering memory threshold to 500MB for CI runner..."
