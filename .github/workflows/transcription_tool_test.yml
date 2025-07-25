@@ -36,7 +36,7 @@ jobs:
         if: steps.cache-vosk-model.outputs.cache-hit != 'true'
         run: |
           echo "INFO: Installing system dependencies..."
-          sudo apt-get update && sudo apt-get install -y ffmpeg libnotify-bin
+          sudo apt-get update && sudo apt-get install -y ffmpeg libnotify-bin xclip
           echo "INFO: Downloading German Vosk model..."
           wget -q https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
           mkdir models
