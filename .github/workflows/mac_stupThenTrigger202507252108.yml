@@ -62,7 +62,7 @@ jobs:
           echo "--> Waiting 40s for service and models to initialize..."
           sleep 40
           echo "--> Triggering a test recording..."
-          touch /tmp/sl5_dictation/vosk_trigger
+          touch /tmp/vosk_trigger
           echo "--> Waiting 5s for the trigger to be processed..."
           sleep 5
           echo "--> Verifying log file for success indicators..."
