@@ -1,4 +1,5 @@
-name: CI macOS Setup and Trigger 2025-0725-2058
+# mac_stupThenTrigger202507252108.yml
+name: CI mac_stupThenTrigger202507252108
 on:
   workflow_dispatch:
 jobs:
