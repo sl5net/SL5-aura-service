@@ -1,6 +1,6 @@
 # File: .github/workflows/transcription_tool_test_mac.yml
 
-name: 'Test: Transcription Tool'
+name: 'Test: Transcription Tool Mac'
 
 on:
   workflow_dispatch:
