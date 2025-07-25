@@ -29,7 +29,7 @@ jobs:
           
       - name: '4. Install System Dependencies'
         # This step runs every time to ensure tools are present
-        run: sudo brew install update && sudo apt-get install -y ffmpeg libnotify-bin xclip xvfb
+        run: brew install update && sudo apt-get install -y ffmpeg libnotify-bin xclip xvfb
 
       - name: '5. Cache Vosk Model'
         id: cache-vosk-model
