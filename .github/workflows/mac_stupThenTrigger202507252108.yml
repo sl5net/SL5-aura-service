@@ -1,4 +1,3 @@
-# mac_stupThenTrigger202507252108.yml
 name: CI mac_stupThenTrigger202507252108
 on:
   workflow_dispatch:
