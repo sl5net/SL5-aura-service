@@ -104,8 +104,13 @@ def check_for_unused_functions(project_root):
         'visit_Call',
         'this_function_is_on_the_allowlist',
         'visit_Assign',
-        'visit_Dict'
+        'visit_Dict',
+        'on_any_event'
     }
+    """
+    following are only for testing, means temporarily maybe delete it later:
+    on_any_event 25.7.'25 23:01 Fri
+    """
 
     files_to_check = [project_root / 'dictation_service.py']
     files_to_check.extend(project_root.glob('scripts/**/*.py'))

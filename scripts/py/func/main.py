@@ -95,6 +95,11 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
             trigger_event = threading.Event()
 
             class TriggerEventHandler(FileSystemEventHandler):
+
+                def on_any_event(self, event):
+                    logger.info(f"DIAGNOSE-WATCHER: Event '{event.event_type}' auf path '{event.src_path}' found.")
+
+
                 def on_created(self, event):
                     if event.src_path == str(trigger_file):
                         logger.info("Trigger file detected by filesystem event.")
