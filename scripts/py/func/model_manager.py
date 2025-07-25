@@ -34,16 +34,16 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
     for model_name in desired_names:
         lang_key = model_name.split('-')[2]
         if lang_key in loaded_models:
+            logger.info(f"model {lang_key} already loaded.")
             continue
+
 
         model_path = script_dir / "models" / model_name
 
         if not model_path.exists():
-            logger.warning(f"⚠️ WARNING: Model directory not found, skipping: {model_path}")
-
+            logger.warning(f"⚠️ WARNING: Model directory not found. Remove it from desired_names and skipping: {model_path}")
             desired_names.remove(model_name)
-
-            break  # Go to the next model in the list
+            return  # Go to the next model in the list
 
         load_buffer_mb = math.ceil(threshold_mb * 0.10)
         required_memory_mb = threshold_mb + load_buffer_mb + max_model_memory_footprint

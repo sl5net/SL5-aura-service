@@ -76,7 +76,6 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
                     script_dir
                 )
 
-
                 try:
                   proc = subprocess.run(
                         ['inotifywait', '-q', '-e', 'create,close_write', '--format', '%f', str(TMP_DIR)],
