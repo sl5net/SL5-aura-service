@@ -47,6 +47,35 @@ jobs:
           echo "--> Contents of 'models' directory after cleanup:"
           ls -l models/
 
+      - name: DIAGNOSE - Test File Watcher in Different Directories
+        run: |
+          echo "--- Testing fswatch on global /tmp directory ---"
+          fswatch -1 /tmp > fswatch_tmp.log &
+          sleep 2
+          touch /tmp/test_trigger_global
+          sleep 2
+          pkill fswatch || true
+          if grep -q "test_trigger_global" fswatch_tmp.log; then
+            echo "✅ SUCCESS: fswatch CAN see events in /tmp."
+          else
+            echo "❌ FAILURE: fswatch CANNOT see events in /tmp. This confirms the sandbox theory."
+          fi
+
+          echo "--- Testing fswatch on local project directory ---"
+          fswatch -1 . > fswatch_local.log &
+          sleep 2
+          touch test_trigger_local
+          sleep 2
+          pkill fswatch || true
+          if grep -q "test_trigger_local" fswatch_local.log; then
+            echo "✅ SUCCESS: fswatch works as expected in the local directory."
+          else
+            echo "❌ FAILURE: fswatch seems to be completely broken."
+          fi
+
+
+          
+
       - name: Adjust Memory Threshold for CI Environment
         run: |
           echo "--> Lowering memory threshold to 500MB for CI runner..."
