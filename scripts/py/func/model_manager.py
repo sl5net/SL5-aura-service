@@ -1,4 +1,3 @@
-# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # File: scripts/py/func/model_manager.py
 import math
 import vosk
@@ -51,12 +50,17 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
         if lang_key in loaded_models:
             continue
 
+        model_path = script_dir / "models" / model_name
+        if not model_path.exists():
+            logger.warning(f"⚠️ WARNING: Model directory not found, skipping: {model_path}")
+            continue  # Go to the next model in the list
+
         logger.info(f"Attempting to load missing model: '{model_name}'")
         try:
             _, avail_before = check_memory_critical(threshold_mb)
 
-            model = vosk.Model(str(script_dir / "models" / model_name))
-            loaded_models[lang_key] = model
+            model_path = vosk.Model(str(script_dir / "models" / model_name))
+            loaded_models[lang_key] = model_path
 
             _, avail_after = check_memory_critical(threshold_mb)
             footprint = avail_before - avail_after
