@@ -1,9 +1,6 @@
-# .github/workflows/mac_recording_trigger.yml
-
-name: CI for macOS Setup and Test Recording Trigger
+name: CI mac_stupThenTrigger202507252108
 on:
   workflow_dispatch:
-
 jobs:
   validate-macos-e2e-test:
     runs-on: macos-latest
@@ -18,8 +15,7 @@ jobs:
           path: |
             LanguageTool-6.6.zip
             vosk-model-de-0.21.zip
-            vosk-model-en-us-0.22.zip
-          key: ${{ runner.os }}-assets-cache-2025-0725-1521-single-model
+          key: ${{ runner.os }}-assets-cache-2025-0725-2001-cleanUpEnglishAfterSetup
 
       - name: Download assets if cache not found
         if: steps.cache-assets.outputs.cache-hit != 'true'
@@ -43,6 +39,13 @@ jobs:
 
       - name: Run macos_setup.sh
         run: bash ./setup/macos_setup.sh
+
+      - name: Clean Up English Model for CI Single-Model Test
+        run: |
+          echo "--> Removing English model to create a controlled test environment..."
+          rm -rf models/vosk-model-en-us-0.22
+          echo "--> Contents of 'models' directory after cleanup:"
+          ls -l models/
 
       - name: Adjust Memory Threshold for CI Environment
         run: |
