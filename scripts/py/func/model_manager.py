@@ -31,20 +31,6 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
         return
 
     # --- Loading Logic ---
-    load_buffer_mb = math.ceil(threshold_mb * 0.10)
-    required_memory_mb = threshold_mb + load_buffer_mb + max_model_memory_footprint
-
-    if avail_mb < required_memory_mb:
-        if max_model_memory_footprint > 0:
-            # IMPROVED LOG: Explain the calculation for "Required Memory"
-            log_msg = (
-                f"Postponing load: {_format_gb(avail_mb)} available is not enough. "
-                f"Need ~{_format_gb(required_memory_mb)} "
-                f"(Threshold: {_format_gb(threshold_mb)} + Model: {_format_gb(max_model_memory_footprint)} + Buffer: {_format_gb(load_buffer_mb)})"
-            )
-            logger.info(log_msg)
-        return
-
     for model_name in desired_names:
         lang_key = model_name.split('-')[2]
         if lang_key in loaded_models:
@@ -58,6 +44,19 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             desired_names.remove(model_name)
 
             break  # Go to the next model in the list
+
+        load_buffer_mb = math.ceil(threshold_mb * 0.10)
+        required_memory_mb = threshold_mb + load_buffer_mb + max_model_memory_footprint
+        if avail_mb < required_memory_mb:
+            if max_model_memory_footprint > 0:
+                # IMPROVED LOG: Explain the calculation for "Required Memory"
+                log_msg = (
+                    f"Postponing load: {_format_gb(avail_mb)} available is not enough. "
+                    f"Need ~{_format_gb(required_memory_mb)} "
+                    f"(Threshold: {_format_gb(threshold_mb)} + Model: {_format_gb(max_model_memory_footprint)} + Buffer: {_format_gb(load_buffer_mb)})"
+                )
+                logger.info(log_msg)
+            return
 
 
         logger.info(f"Attempting to load missing model: '{model_name}'")
