@@ -1,9 +1,9 @@
 name: Deploy Documentation
 
 on:
-  push:
-    branches:
-      - master  # Oder 'main', je nachdem, wie dein Hauptbranch heißt
+  # push:
+    # branches:
+    #  - master  # Oder 'main', je nachdem, wie dein Hauptbranch heißt
   workflow_dispatch: # Ermöglicht manuelles Starten
 
 permissions:
