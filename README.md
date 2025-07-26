@@ -87,13 +87,13 @@ Create a new command in CopyQ with a global shortcut.
 
 **Command for Linux/macOS:**
 ```bash
-touch /tmp/sl5_record.trigger
+touch /tmp/vosk_trigger
 ```
 
 **Command for Windows use [CopyQ](https://github.com/hluk/CopyQ):**
 ```js
 copyq:
-var filePath = 'c:/tmp/sl5_record.trigger';
+var filePath = 'c:/tmp/vosk_trigger';
 
 var f = File(filePath);
 

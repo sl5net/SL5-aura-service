@@ -4,13 +4,13 @@
  (e.g., DE Settings)
        |
    1. User presses Hotkey
-       |---------------------->  | 2. Creates /tmp/sl5_record.trigger
+       |---------------------->  | 2. Creates /tmp/vosk_trigger
        |                         |
 ...
 
 ```
 
-The background service waits for a `/tmp/sl5_record.trigger`. When your hotkey is pressed, its only job is to create this file. You can use any tool you like for this.
+The background service waits for a `/tmp/vosk_trigger`. When your hotkey is pressed, its only job is to create this file. You can use any tool you like for this.
 Most desktop environments (XFCE, KDE, GNOME, etc.) have a built-in keyboard shortcut manager. This is the simplest method, as it requires no extra software.
 ```
 
@@ -18,7 +18,7 @@ Most desktop environments (XFCE, KDE, GNOME, etc.) have a built-in keyboard shor
  [User/AutoKeyAutoHotKey/..]  [DictationService.py]   [tts_output.txt]        [TypeWatcher]           [Active App]
        |                         |                          |                       |                     |
    1. User presses Hotkey        |                          |                       |                     |
-       |---------------------->  | 2. Creates /tmp/sl5_record.trigger                     |                     |
+       |---------------------->  | 2. Creates /tmp/vosk_trigger                     |                     |
        |                         |                                                  |                     |
        |               (watches for trigger file)                                   |                     |
        |                         | 3. Detects & DELETES trigger file                |                     |

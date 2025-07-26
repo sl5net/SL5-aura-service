@@ -4,7 +4,7 @@
   (Recommended Tool)
        |                         |                          |                             |                     |
    1. User presses Hotkey        |                          |                             |                     |
-       |---------------------->  | 2. Creates C:\tmp\sl5_record.trigger                         |                     |
+       |---------------------->  | 2. Creates C:\tmp\vosk_trigger                         |                     |
        |                         |                                                        |                     |
        |               (watches for trigger file)                                         |                     |
        |                         | 3. Detects & DELETES trigger file                      |                     |
@@ -27,7 +27,7 @@
 
 The service is activated by a simple file trigger, making it robust and flexible.
 
-*   **The Service waits** for a specific file to be created: `C:\tmp\sl5_record.trigger`.
+*   **The Service waits** for a specific file to be created: `C:\tmp\vosk_trigger`.
 *   **Your Hotkey's job** is just to create this empty file.
 *   **Recommended Tool:** For Windows, the ideal tool is **AutoHotkey (AHK)**. It's free, open-source, and already part of our toolchain.
 
@@ -38,6 +38,6 @@ The service is activated by a simple file trigger, making it robust and flexible
 ; Example: Win + Space hotkey to trigger dictation
 #Space::
 {
-    FileAppend("", "C:\tmp\sl5_record.trigger")
+    FileAppend("", "C:\tmp\vosk_trigger")
 }
 ```

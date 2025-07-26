@@ -21,8 +21,7 @@ def handle_trigger(
         project_root,
         TMP_DIR,
         recording_time,
-        active_lt_url,
-        stop_event
+        active_lt_url
 ):
     if not loaded_models:
         logger.error("Trigger ignored: No models are loaded, likely due to low memory.")
@@ -84,7 +83,7 @@ def handle_trigger(
     else:
         silence_timout = SILENCE_TIMEOUT
 
-    raw_text = transcribe_audio_with_feedback(logger, recognizer, lt_language, stop_event)
+    raw_text = transcribe_audio_with_feedback(logger, recognizer, lt_language)
 
     # 2. proof "strange" Events
     if not raw_text.strip() or len(raw_text.split()) < 1:

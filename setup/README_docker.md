@@ -2,7 +2,7 @@ docker build -t stt-service .
 
 docker run -it --rm --name stt-container stt-service
 
-docker exec stt-container touch /tmp/sl5_record.trigger
+docker exec stt-container touch /tmp/vosk_trigger
 
 
 Trying to containerize the application with Docker is a fantastic "fancy" step. It's the ultimate way to solve the "it works on my machine" problem by packaging the application and all its dependencies into a single, portable image.
@@ -35,9 +35,9 @@ With some luck, the container will build and run. You should see the log output 
 
 3.  **NO Desktop Notifications (`notify-send`):** Same as above. The container cannot send notifications to your host's desktop.
 
-4.  **NO File Trigger (`inotify`):** The `inotify`-based file trigger will not work as you expect. You cannot simply `touch /tmp/sl5_record.trigger` on your host machine. You would have to use a separate command to create the file *inside* the running container:
+4.  **NO File Trigger (`inotify`):** The `inotify`-based file trigger will not work as you expect. You cannot simply `touch /tmp/vosk_trigger` on your host machine. You would have to use a separate command to create the file *inside* the running container:
     ```bash
-    docker exec stt-container touch /tmp/sl5_record.trigger
+    docker exec stt-container touch /tmp/vosk_trigger
     ```
 
 ### Conclusion: "Fancy" but Fundamentally Incompatible

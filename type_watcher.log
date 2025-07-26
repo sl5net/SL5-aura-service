@@ -16,5 +16,5 @@ Event: pip-install-92h1myq5
 Event: pip-ephem-wheel-cache-wbsaesza
 Event: pip-unpack-5vqm86ru
 Event: dictation_service.pid
-Event: sl5_record.trigger
+Event: vosk_trigger
 Event: dictation_service.heartbeat
