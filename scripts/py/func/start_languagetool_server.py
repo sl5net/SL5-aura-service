@@ -24,7 +24,7 @@ def start_languagetool_server(logger, jar_path, base_url):
             response = requests.get(ping_url, timeout=1.5)
             if response.status_code == 200:
                 logger.info("LanguageTool Server is online.")
-                return True
+                return languagetool_process
         except requests.exceptions.RequestException:
             pass
         if languagetool_process and languagetool_process.poll() is not None:

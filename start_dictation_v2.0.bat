@@ -89,8 +89,8 @@ python -u dictation_service.py
 
 
 :: --- Step 4: Trigger the service ---
-echo [*] Triggering the service using the vosk_trigger file
-echo. >> "c:/tmp/vosk_trigger"
+echo [*] Triggering the service using the sl5_record.trigger file
+echo. >> "c:/tmp/sl5_record.trigger"
 echo -84-
 
 echo [SUCCESS] SL5 Dictation is now running in the background.
