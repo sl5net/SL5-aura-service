@@ -18,7 +18,7 @@ def validate_setup(project_root):
     Args:
         project_root (str): The absolute path to the project's root directory.
     """
-    print("INFO: Running setup validation...")
+    print("INFO: Running setup validation ( setup_validator.py )...")
 
     # --- Check 1: Existence of the 'log' directory ---
     log_dir = os.path.join(project_root, 'log')
@@ -105,7 +105,8 @@ def check_for_unused_functions(project_root):
         'this_function_is_on_the_allowlist',
         'visit_Assign',
         'visit_Dict',
-        'on_any_event'
+        'on_any_event',
+        'process_trigger'
     }
     """
     following are only for testing, means temporarily maybe delete it later:

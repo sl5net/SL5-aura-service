@@ -8,7 +8,7 @@ from config.settings import SILENCE_TIMEOUT, PRE_RECORDING_TIMEOUT, SAMPLE_RATE
 from scripts.py.func.notify import notify
 import sounddevice as sd
 
-def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE):
+def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, stop_event):
     q = queue.Queue()
     def audio_callback(indata, frames, time, status):
         if status: logger.warning(f"Audio status: {status}")
@@ -25,6 +25,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE):
     is_speech_started = False
     current_timeout = PRE_RECORDING_TIMEOUT
 
+
     try:
 
         notify(f"try", f"...", "low", duration=1500,
@@ -34,10 +35,19 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE):
             last_audio_time = time.time()
 
 
-            while time.time() - last_audio_time < SILENCE_TIMEOUT:
+            # while  not stop_event.is_set() and time.time() - last_audio_time < SILENCE_TIMEOUT:
+            while not stop_event.is_set():
+
+                current_timeout = PRE_RECORDING_TIMEOUT if not is_speech_started else SILENCE_TIMEOUT
+                if time.time() - last_audio_time > current_timeout:
+                    # This is our new "silence timeout" log message
+                    logger.info(f"⏳ Recording stopped due to timeout ({current_timeout}s).")
+                    break  # Exit the loop if timeout is reached
+
                 try:
                     data = q.get(timeout=current_timeout)
                     last_audio_time = time.time()
+                    is_speech_started = False
 
                     if recognizer.AcceptWaveform(data):
                         # Check for partial result to detect speech start
@@ -53,6 +63,12 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE):
                         break
                 except queue.Empty:
                     pass
+
+            if stop_event.is_set():
+                logger.info("⏹️ Recording stopped by manual trigger.")
+            else:
+                logger.info("⏳ Recording stopped due to silence timeout.")
+
     except Exception as e:
         logger.error(f"Transcription error: {e}")
         return ""

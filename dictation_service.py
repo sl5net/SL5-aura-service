@@ -105,7 +105,7 @@ if platform.system() == "Windows":
 else:
     TMP_DIR = Path("/tmp")
 
-TRIGGER_FILE = TMP_DIR / "vosk_trigger"
+TRIGGER_FILE = TMP_DIR / "sl5_record.trigger"
 HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
 PIDFILE = TMP_DIR / "dictation_service.pid"
 LOG_FILE = PROJECT_ROOT / "log/dictation_service.log"
@@ -126,7 +126,7 @@ if platform.system() == "Windows":
 else:
     TMP_DIR = Path("/tmp")
 OUTPUT_FILE = TMP_DIR / "tts_output.txt"
-TRIGGER_FILE = TMP_DIR / "vosk_trigger"
+TRIGGER_FILE = TMP_DIR / "sl5_record.trigger"
 
 HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
 PIDFILE = TMP_DIR / "dictation_service.pid"
@@ -224,7 +224,10 @@ else:
     jar_path_absolute = PROJECT_ROOT / LANGUAGETOOL_RELATIVE_PATH
     internal_lt_url = f"http://localhost:{LANGUAGETOOL_PORT}"
 
+    # File: STT/dictation_service.py
+
     logger.info(f"start_languagetool_server(logger, {jar_path_absolute}, {internal_lt_url})")
+
     languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url)
     if not languagetool_process: sys.exit(1)
     atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
