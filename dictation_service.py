@@ -1,4 +1,4 @@
-# File: STT/dictation_service.py
+# File: dictation_service.py
 import os
 import sys
 
@@ -126,7 +126,6 @@ if platform.system() == "Windows":
 else:
     TMP_DIR = Path("/tmp")
 OUTPUT_FILE = TMP_DIR / "tts_output.txt"
-TRIGGER_FILE = TMP_DIR / "vosk_trigger"
 
 HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
 PIDFILE = TMP_DIR / "dictation_service.pid"
