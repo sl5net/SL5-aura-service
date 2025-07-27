@@ -1,3 +1,4 @@
+# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # file: scripts/py/func/transcribe_audio_with_feedback.py
 
 import queue
@@ -10,7 +11,6 @@ from scripts.py.func.notify import notify
 import sounddevice as sd
 
 
-# MODIFIED: This function is now a generator, using 'yield' to stream results.
 def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_silence_timeout):
     q = queue.Queue()
     manual_stop_trigger = Path(TRIGGER_FILE_PATH)
@@ -25,38 +25,48 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_sile
 
     is_speech_started = False
     current_timeout = initial_silence_timeout
+    last_activity_time = time.time()  # MODIFIED: Our independent activity clock.
 
     try:
-        with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000, dtype='int16', channels=1,
+        with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,
                                callback=audio_callback):
             logger.info(f"Dictation Session started. Initial timeout: {current_timeout}s.")
 
-            while True:
+            # MODIFIED: The loop is now controlled by our activity clock.
+            while time.time() - last_activity_time < current_timeout:
                 if manual_stop_trigger.exists():
                     logger.info("⏹️ Manual stop trigger detected. Ending session.")
                     manual_stop_trigger.unlink(missing_ok=True)
                     break
                 try:
-                    data = q.get(timeout=current_timeout)
+                    # We use a short timeout here just to not block the loop.
+                    data = q.get(timeout=0.1)
 
-                    if recognizer.AcceptWaveform(data):
-                        # NEW: When VOSK has a result, yield it immediately.
+                    # KEY CHANGE: Reset the clock if we hear anything that looks like speech.
+                    is_speech = recognizer.AcceptWaveform(data)
+                    if is_speech:
+                        last_activity_time = time.time()  # Reset clock
                         result = json.loads(recognizer.Result())
                         if result.get('text'):
                             logger.info(f"--> Yielding chunk: '{result['text']}'")
                             yield result['text']
-
-                    if not is_speech_started:
+                    else:
+                        # Also reset clock on partial results to keep session alive during speech.
                         partial_result = json.loads(recognizer.PartialResult())
                         if partial_result.get('partial'):
-                            is_speech_started = True
-                            current_timeout = SILENCE_TIMEOUT
-                            logger.info(f"Speech detected. Switched to main SILENCE_TIMEOUT: {current_timeout}s.")
+                            last_activity_time = time.time()  # Reset clock
+
+                    if not is_speech_started and partial_result.get('partial'):
+                        is_speech_started = True
+                        current_timeout = SILENCE_TIMEOUT
+                        logger.info(f"Speech detected. Switched to main SILENCE_TIMEOUT: {current_timeout}s.")
                 except queue.Empty:
-                    logger.info(f"⏹️ Silence detected for {current_timeout}s. Ending session.")
-                    break
+                    # This is now expected. The outer 'while' loop handles the actual timeout.
+                    pass
+
+            logger.info(f"⏹️ Silence detected for {current_timeout}s. Ending session.")
+
     finally:
-        # NEW: Always process and yield the final text in the buffer.
         final_chunk = json.loads(recognizer.FinalResult())
         if final_chunk.get('text'):
             logger.info(f"--> Yielding final chunk: '{final_chunk['text']}'")
