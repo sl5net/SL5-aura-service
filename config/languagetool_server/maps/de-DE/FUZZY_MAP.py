@@ -29,6 +29,9 @@ FUZZY_MAP = [
 
     ('feature branch', r'\bFeature prince\b', 82),
 
+    ('git branch -d', r'\bPrince löschen\b', 82),
+    ('git branch -d', r'\bBranch löschen\b', 82),
+
     ('Lauffer', r'\bLäufer\b', 100),
 
     # --- git status ---
