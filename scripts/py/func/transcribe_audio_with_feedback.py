@@ -25,7 +25,8 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_sile
 
     is_speech_started = False
     current_timeout = initial_silence_timeout
-    last_activity_time = time.time()  # MODIFIED: Our independent activity clock.
+    last_activity_time = time.time()  # Our independent activity clock.
+    session_stopped_manually = False
 
     try:
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,
@@ -37,6 +38,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_sile
                 if manual_stop_trigger.exists():
                     logger.info("⏹️ Manual stop trigger detected. Ending session.")
                     manual_stop_trigger.unlink(missing_ok=True)
+                    session_stopped_manually = True
                     break
                 try:
                     # We use a short timeout here just to not block the loop.
@@ -64,7 +66,8 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_sile
                     # This is now expected. The outer 'while' loop handles the actual timeout.
                     pass
 
-            logger.info(f"⏹️ Silence detected for {current_timeout}s. Ending session.")
+            if not session_stopped_manually:
+                logger.info(f"⏹️ Silence detected for {current_timeout}s. Ending session.")
 
     finally:
         final_chunk = json.loads(recognizer.FinalResult())

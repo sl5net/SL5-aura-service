@@ -11,6 +11,7 @@ PUNCTUATION_MAP = {
     'strichpunkt': ';',
     'klammer auf': '(',
     'klammer zu': ')',
+    'klammern zu': ')',
     'spitze klammer': '<>',
     'spitze klammern': '<>',
     'spitze klammer auf': '<',
