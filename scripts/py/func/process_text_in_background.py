@@ -162,7 +162,6 @@ def process_text_in_background(logger,
         notify(f"FATAL: Error in processing thread", duration=4000, urgency="low")
     finally:
         # file: scripts/py/func/process_text_in_background.py
-        # ...
         logger.info(f"✅ Background processing for '{raw_text[:20]}...' finished. ")
         notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
 

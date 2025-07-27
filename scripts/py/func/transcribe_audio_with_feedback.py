@@ -1,70 +1,76 @@
+# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+# file: scripts/py/func/transcribe_audio_with_feedback.py
 
 import queue
 import json
 import time
 from pathlib import Path
-from random import random
 
-from config.settings import SILENCE_TIMEOUT, PRE_RECORDING_TIMEOUT, SAMPLE_RATE, TRIGGER_FILE_PATH
+from config.settings import SAMPLE_RATE, TRIGGER_FILE_PATH, SILENCE_TIMEOUT
 from scripts.py.func.notify import notify
 import sounddevice as sd
 
-def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE):
-    q = queue.Queue()
 
+def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_silence_timeout):
+    q = queue.Queue()
     manual_stop_trigger = Path(TRIGGER_FILE_PATH)
 
     def audio_callback(indata, frames, time, status):
         if status: logger.warning(f"Audio status: {status}")
         q.put(bytes(indata))
-    recognizer.SetWords(True)
-    # media-record
-    # microphone-sensitivity-high-symbolic
 
-    if random() > 0.5:
-        notify(f"Listening {LT_LANGUAGE} ...", f"Speak now. It will stop on silence of {SILENCE_TIMEOUT}ms .", "low", icon="media-record")
-    else:
-        notify(f"Speak now.", f"It will stop on silence of {SILENCE_TIMEOUT}ms .", "low", icon="media-record")
+    recognizer.SetWords(True)
+    notify(f"Listening {LT_LANGUAGE}...", "Speak now. Will stop on silence.", "low", icon="media-record",
+           replace_tag="transcription_status")
 
     is_speech_started = False
-    current_timeout = PRE_RECORDING_TIMEOUT
+    current_timeout = initial_silence_timeout
+    last_activity_time = time.time()  # Our independent activity clock.
+    session_stopped_manually = False
 
     try:
+        with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,
+                               callback=audio_callback):
+            logger.info(f"Dictation Session started. Initial timeout: {current_timeout}s.")
 
-        notify(f"try", f"...", "low", duration=1500,
-               replace_tag="transcription_status")
-
-        with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=8000, dtype='int16', channels=1, callback=audio_callback):
-            last_audio_time = time.time()
-
-
-            while time.time() - last_audio_time < SILENCE_TIMEOUT:
-                # --- NEW: Check for manual stop trigger at the start of every loop ---
+            # MODIFIED: The loop is now controlled by our activity clock.
+            while time.time() - last_activity_time < current_timeout:
                 if manual_stop_trigger.exists():
-                    logger.info("⏹️ Manual stop trigger detected. Stopping recording.")
-                    manual_stop_trigger.unlink(missing_ok=True)  # Clean up the trigger file
-                    break # Exit the recording loop immediately
-
+                    logger.info("⏹️ Manual stop trigger detected. Ending session.")
+                    manual_stop_trigger.unlink(missing_ok=True)
+                    session_stopped_manually = True
+                    break
                 try:
-                    data = q.get(timeout=current_timeout)
-                    last_audio_time = time.time()
+                    # We use a short timeout here just to not block the loop.
+                    data = q.get(timeout=0.1)
 
-                    if recognizer.AcceptWaveform(data):
+                    # KEY CHANGE: Reset the clock if we hear anything that looks like speech.
+                    is_speech = recognizer.AcceptWaveform(data)
+                    if is_speech:
+                        last_activity_time = time.time()  # Reset clock
+                        result = json.loads(recognizer.Result())
+                        if result.get('text'):
+                            logger.info(f"--> Yielding chunk: '{result['text']}'")
+                            yield result['text']
+                    else:
+                        # Also reset clock on partial results to keep session alive during speech.
                         partial_result = json.loads(recognizer.PartialResult())
-                        if partial_result.get('partial') and not is_speech_started:
-                            is_speech_started = True
-                            current_timeout = SILENCE_TIMEOUT
-                            logger.info("Speech detected. Switched to short SILENCE_TIMEOUT.")
-                        break
+                        if partial_result.get('partial'):
+                            last_activity_time = time.time()  # Reset clock
+
+                    if not is_speech_started and partial_result.get('partial'):
+                        is_speech_started = True
+                        current_timeout = SILENCE_TIMEOUT
+                        logger.info(f"Speech detected. Switched to main SILENCE_TIMEOUT: {current_timeout}s.")
                 except queue.Empty:
-                    # This is not an error, just a timeout. The outer while-loop will check if it's time to stop.
+                    # This is now expected. The outer 'while' loop handles the actual timeout.
                     pass
-            # --- NEW: This block runs only if the while loop finishes naturally (due to timeout) ---
-            logger.info(f"⏹️ Recording stopped due to silence timeout {current_timeout}sec.")
 
-    except Exception as e:
-        logger.error(f"Transcription error: {e}")
-        return ""
+            if not session_stopped_manually:
+                logger.info(f"⏹️ Silence detected for {current_timeout}s. Ending session.")
+
     finally:
-        return json.loads(recognizer.FinalResult()).get('text', '')
-
+        final_chunk = json.loads(recognizer.FinalResult())
+        if final_chunk.get('text'):
+            logger.info(f"--> Yielding final chunk: '{final_chunk['text']}'")
+            yield final_chunk.get('text')
