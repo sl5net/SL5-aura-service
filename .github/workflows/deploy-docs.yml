@@ -1,11 +1,11 @@
 name: Deploy Documentation
 
 on:
-  # push:
-    # branches:
-    #  - master  # Oder 'main', je nachdem, wie dein Hauptbranch heißt
-  workflow_dispatch: # Ermöglicht manuelles Starten
+  release:
+    types: [published] 
 
+  workflow_dispatch: 
+  
 permissions:
   pages: write
   id-token: write
