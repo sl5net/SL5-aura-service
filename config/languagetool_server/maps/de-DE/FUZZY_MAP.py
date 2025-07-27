@@ -27,6 +27,8 @@ FUZZY_MAP = [
     ('pull requests', r'^pull requests$', 82),
     ('pull requests', r'^Pullover Quest$', 82),
 
+    ('feature branch', r'\bFeature prince\b', 82),
+
     ('Lauffer', r'\bLäufer\b', 100),
 
     # --- git status ---
