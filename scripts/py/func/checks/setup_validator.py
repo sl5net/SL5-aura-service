@@ -105,7 +105,10 @@ def check_for_unused_functions(project_root):
         'this_function_is_on_the_allowlist',
         'visit_Assign',
         'visit_Dict',
-        'on_any_event'
+        'on_any_event',
+        'setUp',
+        'test_transcription_with_long_pause_yields_multiple_chunks',
+        'test_transcription_with_short_pause_yields_one_chunk'
     }
     """
     following are only for testing, means temporarily maybe delete it later:

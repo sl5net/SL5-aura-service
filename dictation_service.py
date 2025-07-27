@@ -1,6 +1,6 @@
 # File: dictation_service.py
 import os
-import sys
+import sys, subprocess
 
 # ==============================================================================
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
@@ -148,6 +148,25 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger()
+
+
+if DEV_MODE :
+    try:
+        # Create a copy of the current environment and set PYTHONPATH
+        env = os.environ.copy()
+        env['PYTHONPATH'] = '.'
+
+        subprocess.run(
+            [sys.executable, "scripts/py/func/checks/test_dictation_session_logic.py"],
+            check=True,
+            cwd=SCRIPT_DIR,
+            env=env
+        )
+        logger.info(">>> Core Logic Self-Test PASSED.")
+    except subprocess.CalledProcessError:
+        logger.critical(">>> Core Logic Self-Test FAILED. Aborting service start.")
+        sys.exit(1)
+
 
 
 # ==============================================================================
