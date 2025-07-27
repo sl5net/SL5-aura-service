@@ -32,7 +32,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
     desired_lang_keys = {name.split('-')[2] for name in desired_names}
     if set(loaded_models.keys()) == desired_lang_keys:
-        logger.info("All desired models are already loaded. Nothing to do.")
+        # logger.info("All desired models are already loaded. Nothing to do.")
         return
 
     # --- Loading Logic ---

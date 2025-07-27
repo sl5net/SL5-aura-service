@@ -70,7 +70,7 @@ PLUGINS_ENABLED = {}
 SUSPICIOUS_TIME_WINDOW = 90
 SUSPICIOUS_THRESHOLD = 3
 
-SILENCE_TIMEOUT = 0.4
+SILENCE_TIMEOUT = 0.6
 PRE_RECORDING_TIMEOUT = 12
 
 SAMPLE_RATE = 16000
@@ -86,7 +86,7 @@ LANGUAGETOOL_RELATIVE_PATH = "LanguageTool-6.6/languagetool-server.jar"
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 
-
+TRIGGER_FILE_PATH = "/tmp/vosk_trigger"
 
 # Try to import user-specific overrides
 try:
