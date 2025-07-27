@@ -1,4 +1,3 @@
-# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # file: scripts/py/func/transcribe_audio_with_feedback.py
 
 import queue
