@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-docs.txt
 
+      - name: Get latest release version
+        run: echo "DOCS_VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+
       - name: Build documentation
         run: make html
 
