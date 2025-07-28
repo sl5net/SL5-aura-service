@@ -11,6 +11,7 @@ import sounddevice as sd
 
 def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_silence_timeout):
 
+
     PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
     try:
         with open(PROJECT_ROOT / "config/settings_local.py", "r") as f:
@@ -20,9 +21,6 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_sile
                 if line.strip().startswith("SILENCE_TIMEOUT"):
                     SILENCE_TIMEOUT = float(line.split("=")[1].strip())
                     break
-    except FileNotFoundError:
-        logger.warning(f"file not found 2025-0728-1339")
-        pass
     except Exception as e:
         logger.warning(f"error: {e}")
         pass
