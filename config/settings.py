@@ -19,7 +19,7 @@ NOTIFICATION_LEVEL = 2 # 0=Silent, 1=Essential, 2=Verbose
 PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 # PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
-if current_user == 'SL5.de':  #
+if current_user == 'SL5.de':
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 
@@ -70,8 +70,9 @@ PLUGINS_ENABLED = {}
 SUSPICIOUS_TIME_WINDOW = 90
 SUSPICIOUS_THRESHOLD = 3
 
-SILENCE_TIMEOUT = 0.6
 PRE_RECORDING_TIMEOUT = 12
+SILENCE_TIMEOUT = 0.6
+
 
 SAMPLE_RATE = 16000
 

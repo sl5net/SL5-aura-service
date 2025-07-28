@@ -1,4 +1,7 @@
 # File: scripts/py/func/main.py
+import importlib
+import config.settings as settings
+
 import platform, subprocess, threading, time, sys
 
 from watchdog.observers import Observer
@@ -81,12 +84,15 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
                         ['inotifywait', '-q', '-e', 'create,close_write', '--format', '%f', str(TMP_DIR)],
                         capture_output=True, text=True, timeout=5
                     )
-                  if proc.stdout.strip() == trigger_file.name:
-                        trigger_file.unlink(missing_ok=True)
-                        handle_trigger(
-                            logger, loaded_models, active_threads, suspicious_events,
-                            project_root, TMP_DIR, recording_time, active_lt_url
-                        )
+
+                  if proc.stdout.strip() == config["TRIGGER_FILE"].name:
+
+                    trigger_file.unlink(missing_ok=True)
+
+                    handle_trigger(
+                        logger, loaded_models, active_threads, suspicious_events,
+                        project_root, TMP_DIR, recording_time, active_lt_url
+                    )
                 except subprocess.TimeoutExpired:
                     pass
 
@@ -119,7 +125,16 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
 
                 if trigger_event.is_set():
                     trigger_event.clear()
+
+                    importlib.reload(settings)
+                    # --- UNSER TEST ---
+                    logger.info(f"##########################################")
+                    logger.info(f"TEST: SILENCE_TIMEOUT ist jetzt: {settings.SILENCE_TIMEOUT}")
+                    logger.info(f"##########################################")
+                    # --- ENDE TEST ---
+
                     trigger_file.unlink(missing_ok=True)
+
                     handle_trigger(logger, loaded_models, active_threads, suspicious_events, project_root, TMP_DIR,
                                    recording_time, active_lt_url)
 
