@@ -117,7 +117,7 @@ Click in any text field, press your hotkey, and a "Listening..." notification wi
 
 
       
-![pydeps -v -o dependencies.svg scripts/py/func/main.py](docs/dependencies.svg)
+![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
 
 
 ## Advanced Configuration (Optional)
