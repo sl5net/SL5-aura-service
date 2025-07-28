@@ -41,6 +41,7 @@ FUZZY_MAP = [
     ('git status', r'^geht staates$', 82),
 
     # --- git add . ---
+    ('git add .', r'^Geht PET$', 82),
     ('git add .', r'^git add$', 82),
     ('git add .', r'^Geht hätte$', 82),
     ('git add .', r'^geht add punkt$', 82),

@@ -21,9 +21,8 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_sile
                 if line.strip().startswith("SILENCE_TIMEOUT"):
                     SILENCE_TIMEOUT = float(line.split("=")[1].strip())
                     break
-    except Exception as e:
-        logger.warning(f"error: {e}")
-        pass
+    except (FileNotFoundError, ValueError, IndexError) as e:
+        logger.warning(f"Could not read local config override ({e}), continuing with defaults.")
 
     logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SILENCE_TIMEOUT}")
 
