@@ -115,6 +115,7 @@ Click in any text field, press your hotkey, and a "Listening..." notification wi
 
 ---
 
+### bit grafically look to see whats behind:
 
       
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
