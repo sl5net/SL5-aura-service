@@ -1,4 +1,23 @@
-# File: scripts/py/func/model_manager.py
+# file: scripts/py/func/model_manager.py
+"""
+This module provides a dynamic, stateful model manager designed to run
+continuously within the main service loop.
+
+Core Responsibilities:
+1.  **Reactive Loading:** It iteratively loads models specified in the
+    `PRELOAD_MODELS` list, but only if sufficient system memory is
+    available. This prevents the service from crashing on low-memory
+    systems.
+2.  **Memory Monitoring:** On each invocation, it checks the current
+    available memory against a critical threshold.
+3.  **Proactive Unloading:** If memory becomes critical, it intelligently
+    unloads the least-recently-used model to free up resources and ensure
+    service stability.
+
+By being called repeatedly, it ensures the service adapts to changing
+system conditions, making it robust and responsive.
+"""
+
 import math
 import vosk
 from .check_memory_critical import check_memory_critical
@@ -81,8 +100,23 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
                 max_model_memory_footprint = footprint
                 logger.info(f"Learned new max model footprint: ~{_format_gb(footprint)}")
 
-            logger.info(f"✅ Successfully loaded model for '{lang_key}'.")
-            break
+            # logger.info(f"✅ Successfully loaded model for '{lang_key}'.")
+
+            # Define ANSI color codes for clarity
+            GREEN = '\033[92m'  # Bright Green
+            BOLD = '\033[1m'
+            ENDC = '\033[0m'  # End color
+
+            # The visually distinct message
+            print("\n")
+            print(f"{BOLD}{GREEN}====================================================={ENDC}")
+            print(f"{BOLD}{GREEN}==                                                 =={ENDC}")
+            print(f"{BOLD}{GREEN}==    ✅ MODEL READY: '{lang_key}'                    =={ENDC}")
+            print(f"{BOLD}{GREEN}==                                                 =={ENDC}")
+            print(f"{BOLD}{GREEN}====================================================={ENDC}")
+            print("\n")
+
+
         except Exception as e:
             logger.error(f"Failed to load '{model_name}': {e}")
-            break
+

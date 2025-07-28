@@ -8,6 +8,11 @@ def prioritize_model(logger, loaded_models: dict, key_to_prioritize: str):
 
     The dictionary is modified in-place.
     """
+
+    # --- Safety Guard: If there's nothing to reorder, do nothing. ---
+    if len(loaded_models) <= 1:
+        return
+
     if key_to_prioritize in loaded_models:
         logger.info(f"Prioritizing active model '{key_to_prioritize}'.")
 

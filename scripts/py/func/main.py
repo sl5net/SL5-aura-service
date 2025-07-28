@@ -23,6 +23,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
 
     active_threads = []
 
+
     # Unpack config dictionary
     script_dir = config["SCRIPT_DIR"]
     TMP_DIR = config["TMP_DIR"]
@@ -43,6 +44,9 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
 
     # --- START: ONE-TIME PRIORITIZATION ON STARTUP ---
     last_used_file = project_root / "config/model_name_lastused.txt"
+
+
+
     try:
         if last_used_file.exists():
             last_used_model_name = last_used_file.read_text().strip()
@@ -63,81 +67,35 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
     # --- END: ONE-TIME PRIORITIZATION ON STARTUP ---
 
 
-    # --- Main Loop in File: scripts/py/func/main.py ---
     try:
-        if platform.system() == "Linux":
-            logger.info(f"Main loop started. Waiting for triggers on '{trigger_file.name}'.")
-            while True:
-                Path(heartbeat_file).write_text(str(int(time.time())))
-                active_threads = [t for t in active_threads if t.is_alive()]
+        # --- UNIFIED LOGIC FOR ALL OS ---
+        logger.info(f"Starting watchdog observer for triggers on '{trigger_file.name}'.")
+        trigger_event = threading.Event()
 
-                manage_models(
-                    logger,
-                    loaded_models,
-                    PRELOAD_MODELS,
-                    CRITICAL_THRESHOLD_MB,
-                    script_dir
-                )
+        class TriggerEventHandler(FileSystemEventHandler):
+            def on_created(self, event):
+                if event.src_path == str(trigger_file.resolve()):
+                    logger.info("📥 Trigger file detected by 💾 filesystem event.")
+                    trigger_event.set()
 
-                try:
-                  proc = subprocess.run(
-                        ['inotifywait', '-q', '-e', 'create,close_write', '--format', '%f', str(TMP_DIR)],
-                        capture_output=True, text=True, timeout=5
-                    )
+        observer = Observer()
+        observer.schedule(TriggerEventHandler(), path=str(TMP_DIR), recursive=False)
+        observer.start()
 
-                  if proc.stdout.strip() == config["TRIGGER_FILE"].name:
+        while True:
+            # Wait efficiently for a trigger, with a timeout for maintenance
+            trigger_event.wait(timeout=5.0)
 
-                    trigger_file.unlink(missing_ok=True)
+            # This block runs every 5s OR when a trigger happens
+            Path(heartbeat_file).write_text(str(int(time.time())))
+            active_threads = [t for t in active_threads if t.is_alive()]
+            manage_models(logger, loaded_models, PRELOAD_MODELS, CRITICAL_THRESHOLD_MB, script_dir)
 
-                    handle_trigger(
-                        logger, loaded_models, active_threads, suspicious_events,
-                        project_root, TMP_DIR, recording_time, active_lt_url
-                    )
-                except subprocess.TimeoutExpired:
-                    pass
-
-        else:
-            # --- IMPLEMENTATION FOR WINDOWS AND MACOS in File: scripts/py/func/main.py ---
-            trigger_event = threading.Event()
-
-            class TriggerEventHandler(FileSystemEventHandler):
-
-                # def on_any_event(self, event):
-                #    logger.info(f"DIAGNOSE-WATCHER: Event '{event.event_type}' auf path '{event.src_path}' found.")
-
-                def on_created(self, event):
-                    if event.src_path == str(trigger_file.resolve()):
-                        logger.info("Trigger file detected by filesystem event.")
-                        trigger_event.set()
-
-            observer = Observer()
-            observer.schedule(TriggerEventHandler(), path=str(TMP_DIR), recursive=False)
-            observer.start()
-            logger.info(f"Event-driven listener started for non-Linux OS. Watching for '{trigger_file.name}'.")
-
-            while True:
-                # Wait efficiently for a trigger, with a timeout for maintenance
-                trigger_event.wait(timeout=5.0)
-
-                # This block runs every 5s OR when a trigger happens
-                Path(heartbeat_file).write_text(str(int(time.time())))
-                manage_models(logger, loaded_models, PRELOAD_MODELS, CRITICAL_THRESHOLD_MB, script_dir)
-
-                if trigger_event.is_set():
-                    trigger_event.clear()
-
-                    importlib.reload(settings)
-                    # --- UNSER TEST ---
-                    logger.info(f"##########################################")
-                    logger.info(f"TEST: SILENCE_TIMEOUT ist jetzt: {settings.SILENCE_TIMEOUT}")
-                    logger.info(f"##########################################")
-                    # --- ENDE TEST ---
-
-                    trigger_file.unlink(missing_ok=True)
-
-                    handle_trigger(logger, loaded_models, active_threads, suspicious_events, project_root, TMP_DIR,
-                                   recording_time, active_lt_url)
-
+            if trigger_event.is_set():
+                trigger_event.clear()
+                trigger_file.unlink(missing_ok=True)
+                handle_trigger(logger, loaded_models, active_threads, suspicious_events, project_root, TMP_DIR,
+                               recording_time, active_lt_url)
 
 
     except KeyboardInterrupt:
@@ -148,5 +106,3 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
         logger.info("Waiting for all background threads to finish...")
         for t in active_threads:
             t.join()
-
-#
