@@ -7,9 +7,6 @@ import sys
 import ast
 from pathlib import Path
 
-# Ein Helfer, um den AST (Abstrakten Syntaxbaum) eines Skripts zu durchlaufen
-
-
 def validate_setup(project_root):
     """
     Verifies that essential setup steps have been completed.
@@ -108,7 +105,8 @@ def check_for_unused_functions(project_root):
         'on_any_event',
         'setUp',
         'test_transcription_with_long_pause_yields_multiple_chunks',
-        'test_transcription_with_short_pause_yields_one_chunk'
+        'test_transcription_with_short_pause_yields_one_chunk',
+        'on_modified'
     }
     """
     following are only for testing, means temporarily maybe delete it later:
@@ -153,10 +151,10 @@ def check_for_unused_functions(project_root):
     if not truly_unused_names:
         print("INFO: No unused functions found. Clean!")
     else:
-        print("\nFATAL setup_validator.py: The following functions are defined but never appear to be called:")
+        print("\nFATAL \nsetup_validator.py: The following functions are defined but never appear to be called:")
         for name in sorted(list(truly_unused_names)):
             file = all_definitions[name]
-            print(f"  - Function: {name:<30} | Defined in: {file.relative_to(project_root)}")
+            print(f"  - Function: \n{name:<30}\n | Defined in: \n{file.relative_to(project_root)}\n")
         print("\n  -> This suggests dead code. Please remove or use these functions.")
         sys.exit(1)
 

@@ -1,8 +1,33 @@
-# File: scripts/py/func/model_manager.py
+# file: scripts/py/func/model_manager.py
+"""
+This module provides a dynamic, stateful model manager designed to run
+continuously within the main service loop.
+
+Core Responsibilities:
+1.  **Reactive Loading:** It iteratively loads models specified in the
+    `PRELOAD_MODELS` list, but only if sufficient system memory is
+    available. This prevents the service from crashing on low-memory
+    systems.
+2.  **Memory Monitoring:** On each invocation, it checks the current
+    available memory against a critical threshold.
+3.  **Proactive Unloading:** If memory becomes critical, it intelligently
+    unloads the least-recently-used model to free up resources and ensure
+    service stability.
+
+By being called repeatedly, it ensures the service adapts to changing
+system conditions, making it robust and responsive.
+"""
+
 import math
 import vosk
 from .check_memory_critical import check_memory_critical
 from .notify import notify
+
+import threading
+
+MODELS_LOCK = threading.Lock()
+
+
 
 max_model_memory_footprint = 0
 
@@ -12,6 +37,27 @@ def _format_gb(mb):
     if mb < 1024:
         return f"{mb:.0f}MB"
     return f"{mb / 1024:.1f}GB"
+
+
+# In model_manager.py
+
+def load_single_model(logger, model_path, lang_key, loaded_models):
+    """Loads a single Vosk model and adds it to the dictionary."""
+    try:
+        logger.info(f"Attempting to load model '{lang_key}' from {model_path}...")
+        model = vosk.Model(str(model_path))
+
+        with MODELS_LOCK:  # Protect access to the shared dictionary
+            loaded_models[lang_key] = model
+
+        logger.info(f"✅ MODEL READY: '{lang_key}'")
+    except Exception as e:
+        logger.error(f"Failed to load model '{lang_key}': {e}")
+
+
+
+
+
 
 
 def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir):
@@ -81,8 +127,25 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
                 max_model_memory_footprint = footprint
                 logger.info(f"Learned new max model footprint: ~{_format_gb(footprint)}")
 
+
             logger.info(f"✅ Successfully loaded model for '{lang_key}'.")
-            break
+
+            # Define ANSI color codes for clarity
+            GREEN = '\033[92m'  # Bright Green
+            BOLD = '\033[1m'
+            ENDC = '\033[0m'  # End color
+
+            # The visually distinct message
+            print("\n")
+            print(f"{BOLD}{GREEN}====================================================={ENDC}")
+            print(f"{BOLD}{GREEN}==                                                 =={ENDC}")
+            print(f"{BOLD}{GREEN}==    ✅ MODEL READY: '{lang_key}'                    =={ENDC}")
+            print(f"{BOLD}{GREEN}==                                                 =={ENDC}")
+            print(f"{BOLD}{GREEN}====================================================={ENDC}")
+            print("\n")
+
+
         except Exception as e:
             logger.error(f"Failed to load '{model_name}': {e}")
-            break
+
+

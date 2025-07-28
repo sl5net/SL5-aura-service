@@ -20,6 +20,13 @@ INTEGRITY_CHECKS = {
         "if actual.lstrip() == expected:"
     ],
 
+
+    "scripts/py/func/model_manager.py": [
+        "Reactive Loading" ,
+        'Memory Monitoring' ,
+        'Proactive Unloading'
+    ],
+
     # Protects the regex substitution logic in the main processing function.
     # germen umlauts needs this to could read correct for e.g. from script like autokey
     # Ensures critical text processing logic is present.

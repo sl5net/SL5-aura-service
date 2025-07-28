@@ -1,8 +1,5 @@
 # file: scripts/py/func/checks/setup_validator.py
 
-# file: setup_validator.py
-# setup_validator.py
-
 import os
 import sys
 import importlib
