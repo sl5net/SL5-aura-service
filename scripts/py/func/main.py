@@ -21,6 +21,11 @@ from .model_manager import manage_models
 
 def main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url):
 
+    global observer
+
+    last_trigger_time = 0
+    DEBOUNCE_SECONDS = 0.1  # 100ms cooldown
+
     active_threads = []
 
 
@@ -28,7 +33,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
     script_dir = config["SCRIPT_DIR"]
     TMP_DIR = config["TMP_DIR"]
 
-    trigger_file = config["TRIGGER_FILE"]
+    trigger_file_path = config["TRIGGER_FILE"]
     heartbeat_file = config["HEARTBEAT_FILE"]
     critical_threshold_mb = config["CRITICAL_THRESHOLD_MB"]
     project_root = config["PROJECT_ROOT"]
@@ -66,17 +71,17 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
         logger.error(f"Could not perform initial model prioritization: {e}")
     # --- END: ONE-TIME PRIORITIZATION ON STARTUP ---
 
-
     try:
         # --- UNIFIED LOGIC FOR ALL OS ---
-        logger.info(f"Starting watchdog observer for triggers on '{trigger_file.name}'.")
+        logger.info(f"Starting watchdog observer for triggers on '{trigger_file_path.name}'.")
         trigger_event = threading.Event()
 
+
         class TriggerEventHandler(FileSystemEventHandler):
-            def on_created(self, event):
-                if event.src_path == str(trigger_file.resolve()):
-                    logger.info("📥 Trigger file detected by 💾 filesystem event.")
+            def on_any_event(self, event):
+                if event.src_path == str(trigger_file_path.resolve()):
                     trigger_event.set()
+
 
         observer = Observer()
         observer.schedule(TriggerEventHandler(), path=str(TMP_DIR), recursive=False)
@@ -92,10 +97,16 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
             manage_models(logger, loaded_models, PRELOAD_MODELS, CRITICAL_THRESHOLD_MB, script_dir)
 
             if trigger_event.is_set():
-                trigger_event.clear()
-                trigger_file.unlink(missing_ok=True)
-                handle_trigger(logger, loaded_models, active_threads, suspicious_events, project_root, TMP_DIR,
-                               recording_time, active_lt_url)
+                current_time = time.time()
+                trigger_event.clear()  # Reset for the next trigger
+
+                if (current_time - last_trigger_time) > DEBOUNCE_SECONDS:
+                    last_trigger_time = current_time  # Update time only on success
+                    handle_trigger(logger, loaded_models, active_threads, suspicious_events, project_root, TMP_DIR,
+                                   recording_time, active_lt_url)
+                else:
+                    logger.info("Ignoring trigger action (debouncing).")
+
 
 
     except KeyboardInterrupt:
@@ -103,6 +114,9 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
     except Exception as e:
         logger.error("FATAL ERROR in main loop:", exc_info=True)
     finally:
+        observer.stop()
+        observer.join()
+
         logger.info("Waiting for all background threads to finish...")
         for t in active_threads:
             t.join()

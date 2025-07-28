@@ -51,6 +51,10 @@ from .prioritize_model import prioritize_model
 from config.settings import SAMPLE_RATE, SUSPICIOUS_TIME_WINDOW, SUSPICIOUS_THRESHOLD, \
     PRE_RECORDING_TIMEOUT, SILENCE_TIMEOUT
 
+# --- Session State Management ---
+dictation_session_active = threading.Event()
+active_transcription_thread = None
+
 
 def handle_trigger(
         logger,
@@ -62,6 +66,21 @@ def handle_trigger(
         recording_time,
         active_lt_url
 ):
+    global active_transcription_thread
+
+    # --- ACTION 1: STOP an ongoing session ---
+    if dictation_session_active.is_set():
+        logger.info("⏹️ Manual stop trigger detected. Signaling session to end.")
+        dictation_session_active.clear()  # Signal to stop
+        if active_transcription_thread and active_transcription_thread.is_alive():
+            active_transcription_thread.join(timeout=1.0) # Wait briefly for it to finish
+        dictation_session_active.clear() # Release lock on error
+        return # Important: Stop further execution
+
+
+    # --- ACTION 2: START a new session ---
+    logger.info("🎬 Trigger received. Starting new dictation session.")
+    dictation_session_active.set() # Set the lock
 
     if not loaded_models:
         logger.error("Trigger ignored: No models are loaded, likely due to low memory.")
@@ -112,6 +131,8 @@ def handle_trigger(
 
     recognizer = vosk.KaldiRecognizer(selected_model, SAMPLE_RATE)
 
+
+
     if len(suspicious_events) == 0:
         silence_timout = PRE_RECORDING_TIMEOUT
         logger.info(f"silence_timout now set to = PRE_RECORDING_TIMEOUT: '{PRE_RECORDING_TIMEOUT}' ")
@@ -119,7 +140,11 @@ def handle_trigger(
         silence_timout = SILENCE_TIMEOUT
 
     # --- MODIFIED: Process the stream of text chunks from the generator ---
-    text_chunk_iterator = transcribe_audio_with_feedback(logger, recognizer, lt_language, silence_timout)
+    text_chunk_iterator = transcribe_audio_with_feedback(logger,
+             recognizer,
+             lt_language,
+             silence_timout,
+             session_active_event=dictation_session_active)
 
     for text_chunk in text_chunk_iterator:
         # 2. proof "strange" Events for each chunk

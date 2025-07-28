@@ -9,7 +9,10 @@ from config.settings import SAMPLE_RATE, TRIGGER_FILE_PATH, SILENCE_TIMEOUT
 from scripts.py.func.notify import notify
 import sounddevice as sd
 
-def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_silence_timeout):
+def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
+                                   , initial_silence_timeout
+                                   , session_active_event
+                                   ):
 
 
     PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
@@ -49,11 +52,22 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE, initial_sile
 
             # MODIFIED: The loop is now controlled by our activity clock.
             while time.time() - last_activity_time < current_timeout:
+
+                if not session_active_event.is_set():
+                    logger.info("⏹️ Manual stop trigger detected. Ending session.")
+
+                    manual_stop_trigger.unlink(missing_ok=True)
+                    session_stopped_manually = True
+
+                    break
+
+                """                
                 if manual_stop_trigger.exists():
                     logger.info("⏹️ Manual stop trigger detected. Ending session.")
                     manual_stop_trigger.unlink(missing_ok=True)
                     session_stopped_manually = True
                     break
+                """
                 try:
                     # We use a short timeout here just to not block the loop.
                     data = q.get(timeout=0.1)

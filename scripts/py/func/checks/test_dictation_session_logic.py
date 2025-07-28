@@ -9,6 +9,7 @@ import time
 import logging
 from pathlib import Path
 import vosk
+import threading
 
 # Ensure the script can find the modules in the parent directory
 import sys
@@ -80,7 +81,17 @@ class TestDictationLogic(unittest.TestCase):
 
         expected_text = "the first test sequence is now complete ready to proceed with the second phase"
 
-        generator = transcribe_audio_with_feedback(logging, recognizer, "en-US", initial_silence_timeout=10.0)
+
+        # === START OF CORRECTION ===
+        # Create a dummy event that is always "active" for the test
+        test_session_event = threading.Event()
+        test_session_event.set()
+
+        generator = transcribe_audio_with_feedback(logging
+                   , recognizer
+                   , "en-US"
+                   , initial_silence_timeout=10.0
+                   , session_active_event=test_session_event)
         transcribed_chunks = [chunk for chunk in generator if chunk] # Collect non-empty chunks
 
         logging.info(f"Final transcribed chunks: {transcribed_chunks}")
