@@ -23,6 +23,12 @@ import vosk
 from .check_memory_critical import check_memory_critical
 from .notify import notify
 
+import threading
+
+MODELS_LOCK = threading.Lock()
+
+
+
 max_model_memory_footprint = 0
 
 
@@ -31,6 +37,27 @@ def _format_gb(mb):
     if mb < 1024:
         return f"{mb:.0f}MB"
     return f"{mb / 1024:.1f}GB"
+
+
+# In model_manager.py
+
+def load_single_model(logger, model_path, lang_key, loaded_models):
+    """Loads a single Vosk model and adds it to the dictionary."""
+    try:
+        logger.info(f"Attempting to load model '{lang_key}' from {model_path}...")
+        model = vosk.Model(str(model_path))
+
+        with MODELS_LOCK:  # Protect access to the shared dictionary
+            loaded_models[lang_key] = model
+
+        logger.info(f"✅ MODEL READY: '{lang_key}'")
+    except Exception as e:
+        logger.error(f"Failed to load model '{lang_key}': {e}")
+
+
+
+
+
 
 
 def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir):
@@ -100,7 +127,8 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
                 max_model_memory_footprint = footprint
                 logger.info(f"Learned new max model footprint: ~{_format_gb(footprint)}")
 
-            # logger.info(f"✅ Successfully loaded model for '{lang_key}'.")
+
+            logger.info(f"✅ Successfully loaded model for '{lang_key}'.")
 
             # Define ANSI color codes for clarity
             GREEN = '\033[92m'  # Bright Green
@@ -119,4 +147,5 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
         except Exception as e:
             logger.error(f"Failed to load '{model_name}': {e}")
+
 
