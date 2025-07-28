@@ -115,6 +115,11 @@ Click in any text field, press your hotkey, and a "Listening..." notification wi
 
 ---
 
+
+      
+![pydeps -v -o dependencies.svg scripts/py/func/main.py](docs/dependencies.svg)
+
+
 ## Advanced Configuration (Optional)
 
 You can customize the application's behavior by creating a local settings file.
