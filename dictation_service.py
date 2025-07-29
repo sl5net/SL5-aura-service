@@ -2,6 +2,8 @@
 import os
 import sys, subprocess
 
+
+
 # ==============================================================================
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
 # The script MUST run inside its virtual environment to find dependencies.
@@ -137,6 +139,34 @@ LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
 languagetool_process = None
 
 
+class WindowsEmojiFilter(logging.Filter):
+    """
+    A logging filter that replaces emojis with text placeholders on Windows.
+    This prevents UnicodeEncodeError on older console environments.
+    """
+    def __init__(self):
+        super().__init__()
+        self.replacements = {
+            '⚠️': '[WARN]',
+            '✅': '[OK]',
+            '👍': '[OK]',
+            '❌': '[FAIL]',
+            '🎬': '[START]',
+            '⏹️': '[STOP]',
+            '🎤': '[MIC]',
+            '💾': '[▀▄▀]'
+        }
+
+    def filter(self, record):
+        # Only perform replacement if running on Windows
+        #if os.name == 'nt':
+        if platform.system() == "Windows":
+            for emoji, text in self.replacements.items():
+                record.msg = record.msg.replace(emoji, text)
+        return True
+
+
+
 
 # --- Logging Setup ---
 logging.basicConfig(
@@ -148,6 +178,8 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger()
+logger.handlers[0].addFilter(WindowsEmojiFilter())
+
 
 
 if DEV_MODE :

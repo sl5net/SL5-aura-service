@@ -128,7 +128,6 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
                 logger.info(f"Learned new max model footprint: ~{_format_gb(footprint)}")
 
 
-            logger.info(f"✅ Successfully loaded model for '{lang_key}'.")
 
             # Define ANSI color codes for clarity
             GREEN = '\033[92m'  # Bright Green
@@ -139,7 +138,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             print("\n")
             print(f"{BOLD}{GREEN}====================================================={ENDC}")
             print(f"{BOLD}{GREEN}==                                                 =={ENDC}")
-            print(f"{BOLD}{GREEN}==    ✅ MODEL READY: '{lang_key}'                    =={ENDC}")
+            logger.info(f"==    ✅ MODEL READY: '{lang_key}'.")
             print(f"{BOLD}{GREEN}==                                                 =={ENDC}")
             print(f"{BOLD}{GREEN}====================================================={ENDC}")
             print("\n")

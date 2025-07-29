@@ -106,7 +106,8 @@ def check_for_unused_functions(project_root):
         'setUp',
         'test_transcription_with_long_pause_yields_multiple_chunks',
         'test_transcription_with_short_pause_yields_one_chunk',
-        'on_modified'
+        'on_modified',
+        'filter'
     }
     """
     following are only for testing, means temporarily maybe delete it later:
