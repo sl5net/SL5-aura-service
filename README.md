@@ -133,7 +133,7 @@ This `settings_local.py` file is ignored by Git, so your personal changes won't 
 Here is a list of the most important scripts to set up, update, and run the application on a Windows system.
 
 ### Setup & Update
-*   `setup/windows11_setup.ps1`: The main script for the **initial one-time setup** of the environment.
+*   `setup/setup.bat`: The main script for the **initial one-time setup** of the environment.
 *   `update.bat` : Use these to **get the latest code and dependencies**.
 
 ### Running the Application
