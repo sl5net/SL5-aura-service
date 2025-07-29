@@ -1,4 +1,4 @@
-# file: scripts/py/func/process_text_in_background.py
+# scripts/py/func/process_text_in_background.py
 import os, sys
 """
 doc:
