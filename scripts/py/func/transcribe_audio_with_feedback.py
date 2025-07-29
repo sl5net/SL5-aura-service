@@ -71,74 +71,65 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                callback=audio_callback):
             logger.info(f"Dictation Session started. Initial timeout: {current_timeout}s.")
 
-            shutdown_imminent = False
+            # This flag ensures we only reset the timer once.
+            graceful_shutdown_initiated = False
 
+            while True:
 
-
-
-
-
-
-            while time.time() - last_activity_time < current_timeout:
-            # while True:
-
-                # --- Graceful Shutdown Logic ---
-                # First, check if a stop has been requested.
-                if not session_active_event.is_set() and not shutdown_imminent:
-                    logger.info("Graceful shutdown initiated. Processing remaining audio queue...")
-                    shutdown_imminent = True  # Enter shutdown mode
+                # === START: DIAGNOSTIC LOGGING ===
+                logger.debug(
+                    f"Loop Top | "
+                    f"Active: {session_active_event.is_set()} | "
+                    f"Time Since Activity: {time.time() - last_activity_time:.2f}s"
+                )
+                # === END: DIAGNOSTIC LOGGING ===
 
                 try:
-                    # Get data from the queue. The timeout keeps the loop responsive.
-                    # If in shutdown mode, we want a very short timeout to quickly empty the queue.
-                    queue_timeout = 0.05 if shutdown_imminent else 0.1
-                    # data = q.get(timeout=queue_timeout)
+                    # Get data from the queue with a short timeout to keep the loop responsive.
                     data = q.get(timeout=0.1)
 
-                    if recognizer.AcceptWaveform(data):
-                        last_activity_time = time.time()  # Reset clock on full sentence
+                    # Feed the data to Vosk and check if it's considered speech.
+                    is_speech = recognizer.AcceptWaveform(data)
+                    if is_speech:
+                        last_activity_time = time.time()  # Reset clock
                         result = json.loads(recognizer.Result())
                         if result.get('text'):
                             logger.info(f"--> Yielding chunk: '{result['text']}'")
                             yield result['text']
                     else:
+                        # Also reset clock on partial results to keep the session alive.
                         partial_result = json.loads(recognizer.PartialResult())
                         if partial_result.get('partial'):
-                            last_activity_time = time.time()  # Reset clock on any speech
+                            last_activity_time = time.time()  # Reset clock
 
+                    # Switch to the shorter timeout as soon as any speech is detected.
                     if not is_speech_started and partial_result.get('partial'):
                         is_speech_started = True
                         current_timeout = SILENCE_TIMEOUT
                         logger.info(f"Speech detected. Switched to main SILENCE_TIMEOUT: {current_timeout}s.")
 
-
                 except queue.Empty:
                     pass
 
-                    """
-                    # This block is now INSIDE the while loop.
-                    # If shutdown is requested and the queue is empty, finalize and exit.
-                    if shutdown_imminent:
-                        logger.info("Audio queue empty after stop signal. Finalizing...")
-                        final_chunk2 = json.loads(recognizer.FinalResult())
-                        if final_chunk2.get('text'):
-                            logger.info(f"--> Yielding FINAL chunk after manual stop: '{final_chunk2['text']}'")
-                            yield final_chunk2.get('text')
-                            # This break is now valid because it's inside the while loop.
-                        break
-                    # If no shutdown, just continue the loop
-                    pass
-                    """
+                # --- THIS IS THE MODIFIED EXIT LOGIC ---
 
-            # This message will now only be shown if the timeout is reached.
+                # 1. Check if a manual stop has been requested AND we haven't handled it yet.
+                if not session_active_event.is_set() and not graceful_shutdown_initiated:
+                    logger.info("Manual stop detected. Resetting activity clock for graceful shutdown.")
+                    # THIS IS THE KEY: Manually reset the timer one last time.
+                    last_activity_time = time.time()
+                    graceful_shutdown_initiated = True  # Mark as handled.
 
-            logger.info(f"⏹️ Loop finished (likely due to timeout).")
-
+                # 2. Check for timeout. This check now works correctly because the
+                #    timer has been reset on manual stop.
+                if time.time() - last_activity_time > current_timeout:
+                    logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")
+                    break
 
     finally:
-            # This part runs after the loop has broken, regardless of the reason.
-            final_chunk = json.loads(recognizer.FinalResult())
-            if final_chunk.get('text'):
-                logger.info(f"--> Yielding final chunk: '{final_chunk['text']}'")
-                yield final_chunk.get('text')
+        # The finally block remains as is.
+        logger.info("Session has ended. Yielding final safety-net chunk.")
+        final_chunk = json.loads(recognizer.FinalResult())
+        if final_chunk.get('text'):
+            yield final_chunk.get('text')
 
