@@ -15,11 +15,20 @@ Format:
 """
 
 INTEGRITY_CHECKS = {
-    # Ensures the self-tester remains tolerant to leading whitespace.
+    "scripts/py/func/transcribe_audio_with_feedback.py": [
+        'logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SILENCE_TIMEOUT}")',
+        'logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")',
+        "blocksize=4000"
+    ],
+
+    'scripts/py/func/handle_trigger.py': [
+        'info("🎬 Trigger received',
+        '⏹️ Manual stop trigger detected',
+    ],
+
     "scripts/py/func/checks/self_tester.py": [
         "if actual.lstrip() == expected:"
     ],
-
 
     "scripts/py/func/model_manager.py": [
         "Reactive Loading" ,
@@ -32,7 +41,9 @@ INTEGRITY_CHECKS = {
     # Ensures critical text processing logic is present.
     "scripts/py/func/process_text_in_background.py": [
         "new_text = re.sub(",
-        'encoding="utf-8-sig"'
+        'encoding="utf-8-sig"',
+        'f"✅ Background processing for',
+        'f"✅ THREAD: Successfully wrote to '
     ],
 
     # --- Start of Ensures language selection is included ---

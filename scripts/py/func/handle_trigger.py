@@ -1,4 +1,4 @@
-# In scripts/py/func/handle_trigger.py
+# scripts/py/func/handle_trigger.py
 import threading
 import time
 import vosk
