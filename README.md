@@ -116,11 +116,6 @@ Click in any text field, press your hotkey, and a "Listening..." notification wi
 
 ---
 
-### bit grafically look to see whats behind:
-
-      
-![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
-
 
 ## Advanced Configuration (Optional)
 
@@ -131,6 +126,29 @@ You can customize the application's behavior by creating a local settings file.
 3.  Edit `settings_local.py` to override any setting from the main `config/settings.py` file.
 
 This `settings_local.py` file is ignored by Git, so your personal changes won't be overwritten by updates.
+
+
+## Key Scripts for Windows Users
+
+Here is a list of the most important scripts to set up, update, and run the application on a Windows system.
+
+### Setup & Update
+*   `setup/windows11_setup.ps1`: The main script for the **initial one-time setup** of the environment.
+*   `update.bat` : Use these to **get the latest code and dependencies**.
+
+### Running the Application
+*   `start_dictation_v2.0.bat`: A primary script to **start the dictation service**.
+
+### Core & Helper Scripts
+*   `dictation_service.py`: The core Python service (usually started by one of the scripts above).
+*   `get_suggestions.py`: A helper script for specific functionalities.
+*   `type_watcher.ahk`: The AutoHotkey script that listens for recognized text and types it out system-wide.
+
+### bit grafically look to see whats behind:
+
+      
+![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
+
 
 # Used Models:
 

@@ -11,6 +11,9 @@ import re
 FUZZY_MAP = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
+    ('.', r'^\s*(punkt|pup)\s*$', 82, re.IGNORECASE),
+
+
     ('CamelCase', r'^\s*kämme\s*Case\s*$', 82, re.IGNORECASE),
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, re.IGNORECASE),
     ('feature branch', r'\bFeature\s*prince\b', 82, re.IGNORECASE),
@@ -22,7 +25,7 @@ FUZZY_MAP = [
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, re.IGNORECASE),
     ('StopButton', r'\bstob\s*Button\b', 82, re.IGNORECASE),
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
-    ('Lauffer', r'\bLäufer\b', 82, re.IGNORECASE), # Exact match, but ignore case
+    ('Lauffer', r'\b(Läufer|laufer)\b', 82, re.IGNORECASE), # Exact match, but ignore case
 
     # === Git Commands (Consolidated & Case-Insensitive) ===
 
