@@ -15,6 +15,19 @@ from scripts.py.func.process_text_in_background import process_text_in_backgroun
 from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 
+
+def finalize_recording_session(logger):
+    """A dedicated function to clean up after a recording session."""
+    global active_transcription_thread
+
+    logger.info("Finalizing recording session: All new audio intake has stopped.")
+
+    # Set the global thread variable to None to indicate no active session.
+    active_transcription_thread = None
+
+
+
+
 def handle_trigger(
         logger,
         loaded_models,
@@ -29,6 +42,7 @@ def handle_trigger(
     # --- ACTION 1: STOP an ongoing session ---
     if dictation_session_active.is_set():
         logger.info("⏹️ Manual stop trigger detected. Signaling session to end.")
+
 
         # We just send the signal and exit immediately.
         # We DO NOT wait here for the thread to finish. This prevents
@@ -91,8 +105,6 @@ def handle_trigger(
             )
 
             for text_chunk in text_chunk_iterator:
-                if not dictation_session_active.is_set():
-                    break
                 if text_chunk.strip():
                     logger.info(f"Processing chunk: '{text_chunk[:30]}...'")
                     thread = threading.Thread(target=process_text_in_background,
@@ -100,8 +112,13 @@ def handle_trigger(
                                                     time.time(), active_lt_url))
                     thread.start()
 
+                if not dictation_session_active.is_set():
+                    logger.info("Stop signal received. Gracefully exiting recording loop.")
+                    break
+
         finally:
             logger.info("Session thread is finishing. Ensuring state is cleared.")
+            finalize_recording_session(logger)
             dictation_session_active.clear()
 
 

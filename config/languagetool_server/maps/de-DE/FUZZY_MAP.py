@@ -38,6 +38,11 @@ FUZZY_MAP = [
     ('Branch Name', r'\bRanch Namen\b', 82),
     ('Commit', r'\bkomm mit\b', 82),
 
+    ('Commit Message', r'\bkommen mit Message\b', 82),
+
+
+    ('Code Abschnitt', r'\bKot abschnittt', 82),
+    ('StopButton', r'\bstob Button\b', 82),
 
 
 
@@ -48,6 +53,8 @@ FUZZY_MAP = [
     ('git status', r'^geht status$', 82),
     ('git status', r'^gitter status$', 82),
     ('git status', r'^geht staates$', 82),
+    ('git status', r'^Kids Dates$', 82),
+
 
     # --- git add . ---
     ('git add .', r'^Geht PET$', 82),
