@@ -75,23 +75,25 @@ def process_text_in_background(logger,
             best_score = 0
             best_replacement = None
 
+            # 80:scripts/py/func/process_text_in_background.py
+
             # --- NEW HYBRID MATCHING LOGIC ---
 
             # Pass 1: Prioritize and check for exact REGEX matches first.
             # A regex match is considered definitive and will stop further processing.
             regex_match_found = False
-            for replacement, match_phrase, _ in fuzzy_map: # threshold is ignored for regex
+            for replacement, match_phrase, threshold, *flags_list in fuzzy_map:
+                flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
                 if is_regex_pattern(match_phrase):
                     try:
-                        # Use re.IGNORECASE for case-insensitivity
-                        if re.search(match_phrase.lower(), processed_text.lower()):
+                        if re.search(match_phrase, processed_text, flags=flags):
                             logger.info(f"Regex match found: Replacing '{processed_text}' with '{replacement}' based on pattern '{match_phrase}'")
 
                             new_text = re.sub(
                                 match_phrase,
                                 replacement.strip(),
                                 processed_text,
-                                flags=re.IGNORECASE
+                                flags=flags
                             )
 
                             if new_text != processed_text:
@@ -113,7 +115,8 @@ def process_text_in_background(logger,
                 best_score = 0
                 best_replacement = None
 
-                for replacement, match_phrase, threshold in fuzzy_map:
+                # for replacement, match_phrase, threshold in fuzzy_map:
+                for replacement, match_phrase, threshold, *_ in fuzzy_map:
                     # Skip regex patterns in this pass
                     if is_regex_pattern(match_phrase):
                         continue

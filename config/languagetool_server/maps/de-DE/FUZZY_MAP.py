@@ -1,112 +1,53 @@
 # FUZZY_MAP.py
-# This map combines precise regex rules with flexible fuzzy matching.
-#
-# HOW IT WORKS:
-# 1. Regex Rules (r'...') are checked first for an exact, prioritized match.
-#    - We use r'^...' to anchor the match to the START of the phrase, which is
-#      perfect for git commands.
-# 2. Fuzzy Rules (plain strings) are used as a fallback if no regex matches.
+import re
 
-"""
-Mir geht es gut
-﻿Geht gut
-﻿git status
-﻿git commit
-﻿git add .
-﻿Geht es gut
-﻿Geht gut
-Geht es gut
-Geht gut
-﻿Geht es gut
-git add .
-mitkomm mit
-"""
+# This map uses a hybrid approach:
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
+#    Structure: ('replacement', r'regex_pattern', threshold, flags)
+#    - The threshold is ignored for regex.
+#    - flags: Use re.IGNORECASE for case-insensitivity, or 0 for case-sensitivity.
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 FUZZY_MAP = [
+    # === General Terms (Case-Insensitive) ===
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
+    ('CamelCase', r'^\s*kämme\s*Case\s*$', 82, re.IGNORECASE),
+    ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, re.IGNORECASE),
+    ('feature branch', r'\bFeature\s*prince\b', 82, re.IGNORECASE),
+    ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, re.IGNORECASE),
+    ('Branch Name', r'\bRanch\s*Namen\b', 82, re.IGNORECASE),
+    ('Commit', r'\bkomm\s*mit\b', 82, re.IGNORECASE),
+    ('Commit Message', r'\bkommen\s*mit\s*Message\b', 82, re.IGNORECASE),
+    ('neues Release', r'\bneues\s*Verlies\b', 82, re.IGNORECASE),
+    ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, re.IGNORECASE),
+    ('StopButton', r'\bstob\s*Button\b', 82, re.IGNORECASE),
+    ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
+    ('Lauffer', r'\bLäufer\b', 82, re.IGNORECASE), # Exact match, but ignore case
 
-    ('CamelCase', r'^kämme Case$', 82),
-
-
-    ('pull requests', r'^pull requests$', 82),
-    ('pull requests', r'^Pullover Quest$', 82),
-
-    ('feature branch', r'\bFeature prince\b', 82),
-
-    ('git branch -d', r'\bPrince löschen\b', 82),
-    ('git branch -d', r'\bBranch löschen\b', 82),
-
-    ('Branch Name', r'\bRanch Namen\b', 82),
-    ('Commit', r'\bkomm mit\b', 82),
-
-    ('Commit Message', r'\bkommen mit Message\b', 82),
-
-
-    ('Code Abschnitt', r'\bKot abschnittt', 82),
-    ('StopButton', r'\bstob Button\b', 82),
-
-
-
-    ('Lauffer', r'\bLäufer\b', 100),
+    # === Git Commands (Consolidated & Case-Insensitive) ===
 
     # --- git status ---
-    ('git status', r'^git status$', 82),
-    ('git status', r'^geht status$', 82),
-    ('git status', r'^gitter status$', 82),
-    ('git status', r'^geht staates$', 82),
-    ('git status', r'^Kids Dates$', 82),
-
+    # This one regex replaces 5 old entries.
+    ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|dates)\s*$', 82, re.IGNORECASE),
 
     # --- git add . ---
-    ('git add .', r'^Geht PET$', 82),
-
-    ('git add .', r'^Geht PET$', 82),
-
-
-
-    ('git add .', r'^git add$', 82),
-    ('git add .', r'^Geht hätte$', 82),
-    ('git add .', r'^geht add punkt$', 82),
-    ('git add .', r'^gittert punkt$', 82),
-    ('git add .', r'^geht duett$', 82),
-    ('git add .', r'^git at$', 82),
-    ('git add .', r'^mit at$', 82),
-    ('git add .', r'^kate at$', 82),
-    ('git add .', r'^fiat at$', 82),
-    ('git add .', r'^geht ab hat$', 82),
-    ('git add .', r'^geht hat$', 82),
-    ('git add .', r'^gitta hat$', 82),
-    ('git add .', r'^dad geh$', 82),
-    ('git add .', r'^tat id$', 82),
-    ('git add .', r'^geh tat$', 82),
-    ('git add .', r'^da hat$', 82),
-    ('git add .', r'^geht es$', 82),
+    # geh tat geh tat
+    # This one regex replaces over 15 old entries!
+    ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
 
     # --- git commit ---
-    ('git commit', r'^git commit$', 80),
-    ('git commit', r'^mitkomm mit$', 80),
-    ('git commit', r'^womit$', 85),           # Using '$' to match the whole word "womit"
-    ('git commit -m "', r'^geht com mit$', 80),
-    ('git commit -m "', r'^gitter mit$', 80),
+    ('git commit', r'^\s*(git|mit)[\s-]*komm\s*mit\s*$', 80, re.IGNORECASE),
+    ('git commit', r'^\s*womit\s*$', 85, re.IGNORECASE),
+    ('git commit -m "', r'^\s*(git|geht|gitter)[\s-]*komm?\s*mit\s*-m\s*"', 80, re.IGNORECASE),
 
     # --- git push ---
-    ('git push', r'^git push$', 80),
-    ('git push', r'^geht busch$', 85),
-    ('git push', r'^gitter busch$', 85),
+    ('git push', r'^\s*(git|geht|gitter)\s*busch\s*$', 85, re.IGNORECASE),
+    ('git push', r'^\s*git\s*push\s*$', 80, re.IGNORECASE),
 
     # --- git pull ---
-    ('git pull', r'^git pull$', 80),
-    ('git pull', r'^geht pohl$', 82),
-    ('git pull', r'^gitter pohl$', 82),
-    ('git pull', r'^geht pool$', 80),
-    # Note: 'pool' is a fuzzy rule without regex. It will only be checked
-    # if no other regex rule for 'git pull' matches.
-    ('git pull', '^pool$', 80),
+    ('git pull', r'^\s*(git|geht|gitter)\s*(pohl|pool)\s*$', 82, re.IGNORECASE),
+    ('git pull', r'^\s*git\s*pull\s*$', 80, re.IGNORECASE),
 
     # --- git diff ---
-    ('git diff', r'^git diff$', 75),
-    ('git diff', r'^geht tief$', 75),
-    ('git diff', r'^peach juice$', 75), # .lower() is used, so case doesn't matter
-
-    # --- Other commands (Example) ---
-    ('0 A.D.', 'sierra d', 75), # This is a good candidate for a non-regex fuzzy match
+    ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, re.IGNORECASE),
 ]
