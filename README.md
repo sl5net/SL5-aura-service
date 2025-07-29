@@ -144,6 +144,15 @@ Here is a list of the most important scripts to set up, update, and run the appl
 *   `get_suggestions.py`: A helper script for specific functionalities.
 *   `type_watcher.ahk`: The AutoHotkey script that listens for recognized text and types it out system-wide.
 
+<details>
+<summary>Click to see the command used to generate this script list</summary>
+
+```bash
+{ find . -maxdepth 1 -type f \( -name "dictation_service.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
+```
+</details>
+
+
 ### bit grafically look to see whats behind:
 
       
