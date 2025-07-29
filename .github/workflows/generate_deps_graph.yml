@@ -1,0 +1,43 @@
+# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+# File: .github/workflows/generate_deps_graph.yml
+
+name: Generate Dependency Graph
+
+# This workflow runs when a pull request to 'master' is merged.
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  generate-graph:
+    # Only run this job if the pull request was successfully merged.
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    # Grant the job permission to commit changes to the repository.
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pydeps
+        run: pip install pydeps
+
+      - name: Generate dependency graph
+        run: pydeps -v -o dependencies.svg scripts/py/func/main.py
+
+      # Automatically commits the new/changed SVG file.
+      - name: Commit and push updated graph
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(deps): Update dependency graph"
+          file_pattern: doc_sources/dependencies.svg
