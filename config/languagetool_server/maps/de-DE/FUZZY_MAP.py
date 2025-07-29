@@ -35,6 +35,12 @@ FUZZY_MAP = [
     ('git branch -d', r'\bPrince löschen\b', 82),
     ('git branch -d', r'\bBranch löschen\b', 82),
 
+    ('Branch Name', r'\bRanch Namen\b', 82),
+    ('Commit', r'\bkomm mit\b', 82),
+
+
+
+
     ('Lauffer', r'\bLäufer\b', 100),
 
     # --- git status ---
