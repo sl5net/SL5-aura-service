@@ -12,7 +12,7 @@ from .normalize_punctuation import normalize_punctuation
 
 import importlib
 
-def load_maps_for_language(lang_code):
+def load_maps_for_language(lang_code, logger):
     """Dynamically loads punctuation and fuzzy maps for a given language code (e.g., 'de')."""
     # try:
 
@@ -26,6 +26,8 @@ def load_maps_for_language(lang_code):
 
     punc_module = importlib.import_module(punc_module_path)
     fuzzy_module = importlib.import_module(fuzzy_module_path)
+
+    logger.info(f"💾 Fuzzy: {fuzzy_module_path}")
 
     punctuation_map = punc_module.PUNCTUATION_MAP
     fuzzy_map = fuzzy_module.FUZZY_MAP
@@ -56,7 +58,7 @@ def process_text_in_background(logger,
                                recording_time,
                                active_lt_url,
                               output_dir_override = None):
-    punctuation_map, fuzzy_map = load_maps_for_language(LT_LANGUAGE)
+    punctuation_map, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
     try:
         raw_text = raw_text.lstrip('\uFEFF') # removes ZWNBSP/BOM at beginning
         logger.info(f"THREAD: Starting processing for: '{raw_text}'")
@@ -85,6 +87,7 @@ def process_text_in_background(logger,
             for replacement, match_phrase, threshold, *flags_list in fuzzy_map:
                 flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
                 if is_regex_pattern(match_phrase):
+
                     try:
                         if re.search(match_phrase, processed_text, flags=flags):
                             logger.info(f"Regex match found: Replacing '{processed_text}' with '{replacement}' based on pattern '{match_phrase}'")
