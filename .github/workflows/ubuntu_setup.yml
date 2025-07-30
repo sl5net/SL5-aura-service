@@ -22,3 +22,12 @@ jobs:
           
       - name: Run ubuntu_setup.sh
         run: bash ./setup/ubuntu_setup.sh
+
+      - name: Package Assets as Artifact(90days available from last run of this workflow)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sl5-assets-pack-ubuntu
+          path: |
+            ./LanguageTool-6.6
+            ./models/
