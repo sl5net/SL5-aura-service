@@ -35,14 +35,17 @@ jobs:
             ${{ runner.os }}-models-tools-v1-
 
       - name: Run setup.bat
+        shell: cmd  
         run: call setup\setup.bat
 
       - name: Run update.bat
+        shell: cmd  
         run: call update.bat
       
       - name: Start server and verify process
         run: |
           echo "Starting the dictation service in the background..."
+          shell: cmd  
           start "SL5 Dictation Service" /B start_dictation_v2.0.bat
           
           echo "Waiting for the service to initialize..."
