@@ -1,0 +1,52 @@
+# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+# .github/workflows/ci-windows-bat-scripts.yml
+
+name: CI for Windows Batch Scripts
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-windows-batch-scripts:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-models-tools-v1-${{ hashFiles('**/setup.bat') }}
+          restore-keys: |
+            ${{ runner.os }}-models-tools-v1-
+
+      - name: Run setup.bat
+        run: call setup\setup.bat
+
+      - name: Run update.bat
+        run: call update.bat
+      
+      - name: Start server and verify process
+        run: |
+          echo "Starting the dictation service in the background..."
+          start "SL5 Dictation Service" /B start_dictation_v2.0.bat
+          
+          echo "Waiting for the service to initialize..."
+          timeout /t 15
+          
+          echo "Checking for running python processes..."
+          tasklist | findstr /I "python.exe"
