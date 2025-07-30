@@ -134,16 +134,13 @@ Here is a list of the most important scripts to set up, update, and run the appl
 
 ### Setup & Update
 *   `setup/setup.bat`: The main script for the **initial one-time setup** of the
-*   `setup/setup.bat`: The main script for the **initial one-time setup** of the
-
-https://github.com/sl5net/Vosk-System-Listener/actions/runs/16548962826/job/46800935182
+* [or](https://github.com/sl5net/Vosk-System-Listener/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
 environment.
 *   `update.bat` : Use these to **get the latest code and dependencies**.
 
 ### Running the Application
 *   `start_dictation_v2.0.bat`: A primary script to **start the dictation service**.
-* [or](https://github.com/sl5net/Vosk-System-Listener/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
 ### Core & Helper Scripts
 *   `dictation_service.py`: The core Python service (usually started by one of the scripts above).
