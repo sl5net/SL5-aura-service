@@ -15,6 +15,30 @@ Format:
 """
 
 INTEGRITY_CHECKS = {
+
+    'README.md': [
+        'windows11_setup.ps1',
+        'https://www.autohotkey.com/',
+        './scripts/restart_venv_and_run-server.sh',
+        'start_dictation_v2.0.bat',
+        'https://github.com/hluk/CopyQ',
+        'touch /tmp/sl5_record.trigger',
+        'c:/tmp/sl5_record.trigger',
+        'settings_local.py_Example.txt',
+        'settings_local.py',
+        'config/settings.py',
+        'setup/setup.bat',
+        'https://github.com/sl5net/Vosk-System-Listener/actions/runs/16548962826/job/46800935182',
+        'update.bat',
+        'dictation_service.py',
+        'get_suggestions.py',
+        'type_watcher.ahk',
+        '![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)',
+        'https://github.com/sl5net/Vosk-System-Listener/releases/tag/v0.2.0.1'
+
+    ],
+
+
     "scripts/py/func/transcribe_audio_with_feedback.py": [
         'logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SILENCE_TIMEOUT}")',
         'logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")',

@@ -48,7 +48,7 @@ bash setup/{your-os}_setup.sh
 
 # For Windows in Admin-Powershell
 
-setup/windows_setup.ps1
+setup/windows11_setup.ps1
 ```
 
 #### For Windows
@@ -71,12 +71,7 @@ A single script handles everything. It starts the main dictation service and the
 #### On Windows
 Starting the service is a **two-step manual process**:
 
-1.  **Start the Main Service:** Run `activate-venv_and_run-server.bat`. or start from `.venv` the service with `python3`
-2.  **Start the Text Watcher:** Double-click `type_watcher.ahk`.
-
-
-
-You must have both the main service and the watcher running for dictation to work.
+1.  **Start the Main Service:** Run `start_dictation_v2.0.bat`. or start from `.venv` the service with `python3`
 
 ### 2. Configure Your Hotkey
 
@@ -133,11 +128,10 @@ This `settings_local.py` file is ignored by Git, so your personal changes won't 
 Here is a list of the most important scripts to set up, update, and run the application on a Windows system.
 
 ### Setup & Update
-*   `setup/setup.bat`: The main script for the **initial one-time setup** of the
+*   `setup/setup.bat`: The main script for the **initial one-time setup** of the environment.
 * [or](https://github.com/sl5net/Vosk-System-Listener/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
-environment.
-*   `update.bat` : Use these to **get the latest code and dependencies**.
+*   `update.bat` : Rund these from Project folder **get the latest code and dependencies**.
 
 ### Running the Application
 *   `start_dictation_v2.0.bat`: A primary script to **start the dictation service**.
@@ -164,6 +158,7 @@ environment.
 
 # Used Models:
 
+Recommendation: use models from Mirror https://github.com/sl5net/Vosk-System-Listener/releases/tag/v0.2.0.1 (probably faster)
 
 | Model                                                                                  | Size | Word error rate/Speed                                                                         | Notes                                     | License    |
 | -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
