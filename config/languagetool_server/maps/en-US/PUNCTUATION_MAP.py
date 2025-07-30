@@ -8,7 +8,7 @@ PUNCTUATION_MAP = {
     'comma': ',',
     'question mark': '?',
     'christian monk': '?',
-    'Christian luck': '?',
+    'christian luck': '?',
     'christian mk': '?',
     'question mk': '?',
     'exclamation mark': '!',

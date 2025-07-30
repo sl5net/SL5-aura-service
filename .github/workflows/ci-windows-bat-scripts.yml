@@ -24,16 +24,14 @@ jobs:
         with:
           python-version: '3.11'
       
-      - name: Cache models and tools
+      - name: Restore assets from specific cache
         uses: actions/cache@v4
         with:
           path: |
             ./LanguageTool-6.6
             ./models/
           key: ${{ runner.os }}-models-tools-2025-0724-1355
-          restore-keys: |
-            ${{ runner.os }}-models-tools-
-            
+
       - name: Run setup.bat
         shell: cmd  
         run: call setup\setup.bat
@@ -53,3 +51,12 @@ jobs:
           
           echo "Checking for running python processes..."
           tasklist | findstr /I "python.exe"
+
+      - name: Package Assets as Artifact(90days available from last run of this workflow)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sl5-assets-pack
+          path: |
+            ./LanguageTool-6.6
+            ./models/
