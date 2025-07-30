@@ -9,22 +9,22 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Force Clean Re-installation of LanguageTool
+      - name: Cache models and tools (stable key)
+        id: assets-cache # Give this step an ID
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-sl5-assets-v1
+
+      - name: Download assets if cache miss
+        if: steps.assets-cache.outputs.cache-hit != 'true'
         run: |
-          echo "--> Removing potentially corrupt local LanguageTool directory..."
-          rm -rf LanguageTool-6.6
-          
-      - name: Pre-download and Verify All Assets
-        run: |
-          echo "--> Downloading all assets from our GitHub Release..."
+          echo "--> Cache not found. Downloading assets from GitHub Release..."
           wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/LanguageTool-6.6.zip
           wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
           wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-en-us-0.22.zip
-
-          echo "--> Verifying LanguageTool integrity..."
-          echo "53600506b399bb5ffe1e4c8dec794fd378212f14aaf38ccef9b6f89314d11631  LanguageTool-6.6.zip" | sha256sum -c -
-
-          echo "--> Placing models into the 'models' directory..."
           mkdir -p models
           mv vosk-model-*.zip models/
 
@@ -65,5 +65,5 @@ jobs:
           echo "--> Cleaning up background processes..."
           pkill -f dictation_service.py
 
-          
+
           
