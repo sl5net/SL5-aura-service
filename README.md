@@ -33,7 +33,7 @@ For a complete technical reference, including all modules and scripts, please vi
 
 ## Installation
 
-The setup is a simple, two-step process:
+The setup is a two-step process:
 1.  Clone this repository to your computer.
 2.  Run the one-time setup script for your operating system.
 
@@ -133,11 +133,17 @@ This `settings_local.py` file is ignored by Git, so your personal changes won't 
 Here is a list of the most important scripts to set up, update, and run the application on a Windows system.
 
 ### Setup & Update
-*   `setup/setup.bat`: The main script for the **initial one-time setup** of the environment.
+*   `setup/setup.bat`: The main script for the **initial one-time setup** of the
+*   `setup/setup.bat`: The main script for the **initial one-time setup** of the
+
+https://github.com/sl5net/Vosk-System-Listener/actions/runs/16548962826/job/46800935182
+
+environment.
 *   `update.bat` : Use these to **get the latest code and dependencies**.
 
 ### Running the Application
 *   `start_dictation_v2.0.bat`: A primary script to **start the dictation service**.
+* [or](https://github.com/sl5net/Vosk-System-Listener/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
 ### Core & Helper Scripts
 *   `dictation_service.py`: The core Python service (usually started by one of the scripts above).
