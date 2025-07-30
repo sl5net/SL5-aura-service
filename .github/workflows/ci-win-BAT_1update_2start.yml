@@ -1,7 +1,6 @@
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
-# .github/workflows/ci-windows-bat-scripts.yml
-
-name: CI for Windows Batch Scripts
+# .github/workflows/ci-win-BAT_1update_2start.yml
+name: CI Win BAT 1 Update 2 Start
 
 on:
   workflow_dispatch:
@@ -36,8 +35,9 @@ jobs:
 
       - name: Run setup.bat
         if: steps.assets-cache.outputs.cache-hit != 'true'
-        run: cmd.exe /c "call setup\setup.bat"
-
+        run: |
+          powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"      
+      
       - name: Run update.bat
         run: cmd.exe /c "call update.bat"
       
