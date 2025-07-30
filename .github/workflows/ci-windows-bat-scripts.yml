@@ -31,6 +31,8 @@ jobs:
             ./LanguageTool-6.6
             ./models/
           key: ${{ runner.os }}-models-tools-2025-0724-1355
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
 
       - name: Run setup.bat
         if: steps.assets-cache.outputs.cache-hit != 'true'
