@@ -33,6 +33,7 @@ jobs:
           key: ${{ runner.os }}-models-tools-2025-0724-1355
 
       - name: Run setup.bat
+        if: steps.assets-cache.outputs.cache-hit != 'true'
         run: cmd.exe /c "call setup\setup.bat"
 
       - name: Run update.bat
