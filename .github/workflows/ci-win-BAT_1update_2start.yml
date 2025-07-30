@@ -37,7 +37,7 @@ jobs:
         if: steps.assets-cache.outputs.cache-hit != 'true'
         run: |
           powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"      
-      
+
       - name: Run update.bat
         run: cmd.exe /c "call update.bat"
       

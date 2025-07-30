@@ -1,5 +1,5 @@
-# setup/windows11_setup.ps1 - Vereinfachtes Setup-Skript für den GitHub Actions CI-Workflow
-#
+# setup/windows11_setup.ps1
+
 
 # --- Make script location-independent ---
 $ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
@@ -159,6 +159,8 @@ Set-Content -Path $ConfigFile -Value $ConfigContent
 
 # --- 6. Project Configuration ---
 Write-Host "--> Creating Python package markers (__init__.py)..."
+New-Item -Name "log" -Type Directory
+New-Item -Path "log/__init__.py" -ItemType File -Force | Out-Null
 New-Item -Path "config/__init__.py" -ItemType File -Force | Out-Null
 New-Item -Path "config/languagetool_server/__init__.py" -ItemType File -Force | Out-Null
 
