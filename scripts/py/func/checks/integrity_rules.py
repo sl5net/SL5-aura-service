@@ -35,7 +35,8 @@ INTEGRITY_CHECKS = {
         'type_watcher.ahk',
         '![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)',
         'https://github.com/sl5net/Vosk-System-Listener/releases/tag/v0.2.0.1',
-        '[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)'
+        '[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)',
+        '`mv vosk-model-*.zip models/`'
     ],
 
 
