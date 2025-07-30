@@ -30,10 +30,10 @@ jobs:
           path: |
             ./LanguageTool-6.6
             ./models/
-          key: ${{ runner.os }}-models-tools-v1-${{ hashFiles('**/setup.bat') }}
+          key: ${{ runner.os }}-models-tools-2025-0724-1355
           restore-keys: |
-            ${{ runner.os }}-models-tools-v1-
-
+            ${{ runner.os }}-models-tools-
+            
       - name: Run setup.bat
         shell: cmd  
         run: call setup\setup.bat
