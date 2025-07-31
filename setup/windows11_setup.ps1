@@ -28,81 +28,56 @@ Write-Host "--> Installing Python requirements into the virtual environment..."
 .\.venv\Scripts\pip.exe install -r requirements.txt
 
 # --- 5. External Tools & Models (from Releases) ---
-Write-Host "--> Downloading external tools and models..."
-
-# Define URLs and checksums
-$ReleaseUrlBase = "https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1"
-
-$LtZip = "LanguageTool-6.6.zip"
-$LtUrl = "$($ReleaseUrlBase)/$($LtZip)"
-$LtSha256 = "53600506b399bb5ffe1e4c8dec794fd378212f14aaf38ccef9b6f89314d11631"
 $LtDir = "LanguageTool-6.6"
-
-$EnModelZip = "vosk-model-en-us-0.22.zip"
-$EnModelUrl = "$($ReleaseUrlBase)/$($EnModelZip)"
-$EnModelSha256 = "d410847b53faf1850f2bb99fb7a08adcb49dd236dcba66615397fe57a3cf68f5"
-$EnModelDir = "models\vosk-model-en-us-0.22"
-
-$DeModelZip = "vosk-model-de-0.21.zip"
-$DeModelUrl = "$($ReleaseUrlBase)/$($DeModelZip)"
-$DeModelSha256 = "fb45a53025a50830b16bcda94146f90e22166501bb3693b009cabed796dbaaa0"
-$DeModelDir = "models\vosk-model-de-0.21"
+# $EnModelDir = "models\vosk-model-en-us-0.22"
+# $DeModelDir = "models\vosk-model-de-0.21"
 
 # Create the models directory before attempting to download files into it.
 New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
 
-# --- Download and Verify Function ---
-function Download-And-Verify {
-    param(
-        [string]$Url,
-        [string]$ZipFilePath,
-        [string]$ExpectedSha256,
-        [string]$ExtractDir,
-        [string]$FinalDirCheck
-    )
-    $MaxRetries = 3
-    $RetryCount = 0
 
-    if (-not (Test-Path $FinalDirCheck)) {
-        while ($RetryCount -lt $MaxRetries) {
-            $ZipFileName = Split-Path -Leaf $ZipFilePath
-            Write-Host "    -> Attempting to download $ZipFileName (Attempt $($RetryCount + 1)).."
-            try {
-                Invoke-WebRequest -Uri $Url -OutFile $ZipFilePath -UseBasicParsing
-                Write-Host "    -> Verifying checksum for $ZipFileName..."
-                $FileHash = (Get-FileHash $ZipFilePath -Algorithm SHA256).Hash.ToLower()
+# --- 5. External Tools & Models (using the robust Python downloader) ---
+Write-Host "--> Downloading external tools and models via Python downloader..."
 
-                if ($FileHash -eq $ExpectedSha256) {
-                    Write-Host "    -> Checksum OK. Extracting..." -ForegroundColor Green
-                    Expand-Archive -Path $ZipFilePath -DestinationPath $ExtractDir -Force
-                    Write-Host "    -> Cleaning up $ZipFileName..."
-                    Remove-Item $ZipFilePath
-                    return # Success
-                } else {
-                    Write-Host "    -> WARNING: Checksum mismatch for $ZipFileName!" -ForegroundColor Yellow
-                    Remove-Item $ZipFilePath # Clean up corrupted download
-                }
-            } catch {
-                Write-Host "    -> WARNING: Download for $ZipFileName failed: $($_.Exception.Message)" -ForegroundColor Yellow
-            }
+# Execute the downloader. It downloads all required ZIPs to the project root.
+.\.venv\Scripts\python.exe tools/download_all_packages.py
 
-            $RetryCount++
-            if ($RetryCount -lt $MaxRetries) {
-                Write-Host "    -> Retrying in 2 seconds..."
-                Start-Sleep -Seconds 2
-            }
-        }
-        Write-Host "    -> FATAL: Failed to download and verify $ZipFileName after $MaxRetries attempts." -ForegroundColor Red
-        exit 1
+# --- Now, extract the downloaded archives ---
+Write-Host "--> Extracting downloaded archives..."
+
+# Define file and directory names
+$LtZip = "LanguageTool-6.6.zip"
+$EnModelZip = "vosk-model-en-us-0.22.zip"
+$DeModelZip = "vosk-model-de-0.21.zip"
+
+# Function to extract and clean up
+function Expand-And-Cleanup {
+    param ([string]$ZipFile, [string]$DestinationPath)
+
+    if (Test-Path $ZipFile) {
+        Write-Host "    -> Extracting $ZipFile..."
+        Expand-Archive -Path $ZipFile -DestinationPath $DestinationPath -Force
+        Remove-Item $ZipFile # Cleanup
     } else {
-        Write-Host "    -> $(Split-Path -Leaf $FinalDirCheck) already exists. Skipping."
+        Write-Host "FATAL: Expected archive $ZipFile was not found after download." -ForegroundColor Red
+        exit 1
     }
 }
 
-# --- Execute Downloads ---
-Download-And-Verify -Url $LtUrl -ZipFilePath ".\$LtZip" -ExpectedSha256 $LtSha256 -ExtractDir "." -FinalDirCheck ".\$LtDir"
-Download-And-Verify -Url $EnModelUrl -ZipFilePath ".\models\$EnModelZip" -ExpectedSha256 $EnModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$EnModelDir"
-Download-And-Verify -Url $DeModelUrl -ZipFilePath ".\models\$DeModelZip" -ExpectedSha256 $DeModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$DeModelDir"
+# Create models directory if it doesn't exist
+New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
+
+# Execute extraction
+Expand-And-Cleanup -ZipFile $LtZip -DestinationPath "."
+Expand-And-Cleanup -ZipFile $EnModelZip -DestinationPath ".\models"
+Expand-And-Cleanup -ZipFile $DeModelZip -DestinationPath ".\models"
+
+Write-Host "    -> Extraction and cleanup successful." -ForegroundColor Green
+
+
+
+
+
 
 
 
