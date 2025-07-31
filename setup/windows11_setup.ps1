@@ -50,20 +50,30 @@ $LtZip = "LanguageTool-6.6.zip"
 $EnModelZip = "vosk-model-en-us-0.22.zip"
 $DeModelZip = "vosk-model-de-0.21.zip"
 
+
 # Function to extract and clean up
 function Expand-And-Cleanup {
     param ([string]$ZipFile, [string]$DestinationPath)
 
-    if (Test-Path $ZipFile) {
-        Write-Host "    -> Extracting $ZipFile..."
+    # Construct the downloaded filename with 'Z_' prefix
+    $DownloadedZipFile = "Z_$($ZipFile)"
+
+    if (Test-Path $DownloadedZipFile) {
+        Write-Host "    -> Renaming and extracting $DownloadedZipFile..."
+
+        # Rename the file to its original name
+        Rename-Item -Path $DownloadedZipFile -NewName $ZipFile
+
+        # Extract the now correctly named archive
         Expand-Archive -Path $ZipFile -DestinationPath $DestinationPath -Force
-        Remove-Item $ZipFile # Cleanup
+
+        # Cleanup the zip file
+        Remove-Item $ZipFile
     } else {
-        Write-Host "FATAL: Expected archive $ZipFile was not found after download." -ForegroundColor Red
+        Write-Host "FATAL: Expected archive $DownloadedZipFile was not found after download." -ForegroundColor Red
         exit 1
     }
 }
-
 # Create models directory if it doesn't exist
 New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
 
