@@ -70,7 +70,8 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 # --- PRE-RUN SETUP VALIDATION ---
 # We add the 'scripts' directory to the path to import our custom validator.
 sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
-from scripts.py.func.checks.setup_validator import validate_setup, check_for_unused_functions
+from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, check_for_frequent_calls
+
 from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
 
 from  scripts.py.func.checks.self_tester import run_core_logic_self_test
@@ -179,9 +180,13 @@ logger.handlers[0].addFilter(WindowsEmojiFilter())
 validate_setup(SCRIPT_DIR, logger)
 
 if DEV_MODE :
-    check_for_unused_functions(SCRIPT_DIR,logger)
     validate_punctuation_map_keys(SCRIPT_DIR,logger)
 
+    project_root = SCRIPT_DIR
+    parsed_trees = parse_all_files(project_root, logger)
+
+    check_for_unused_functions(parsed_trees, project_root , logger)
+    check_for_frequent_calls(parsed_trees, logger, threshold=1)
 
 if DEV_MODE :
     try:
@@ -292,7 +297,6 @@ if not start_languagetool_server:
 
 
 if DEV_MODE :
-    from scripts.py.func.checks.setup_validator import check_for_unused_functions
     from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
     from scripts.py.func.checks.integrity_checker import check_code_integrity
 

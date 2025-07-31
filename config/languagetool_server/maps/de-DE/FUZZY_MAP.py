@@ -16,6 +16,9 @@ FUZZY_MAP = [
 
     ('CamelCase', r'^\s*kämme\s*Case\s*$', 82, re.IGNORECASE),
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, re.IGNORECASE),
+
+    ('pull requests', r'\b(null|pull) requests\b', 82, re.IGNORECASE),
+    
     ('feature branch', r'\bFeature\s*prince\b', 82, re.IGNORECASE),
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, re.IGNORECASE),
     ('Branch Name', r'\bRanch\s*Namen\b', 82, re.IGNORECASE),
