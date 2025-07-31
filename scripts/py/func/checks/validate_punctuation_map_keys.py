@@ -5,15 +5,15 @@ import sys
 import importlib
 import ast
 
-def validate_punctuation_map_keys(project_root):
+def validate_punctuation_map_keys(project_root,logger):
     """
     Scans all language maps and warns if any PUNCTUATION_MAP contains non-lowercase keys.
     This check only runs in DEV_MODE to help developers avoid common errors.
     """
-    print("DEV_MODE: Running punctuation map key validation...")
+    logger.info("DEV_MODE: Running punctuation map key validation...")
     maps_path = os.path.join(project_root, 'config', 'languagetool_server', 'maps')
     if not os.path.isdir(maps_path):
-        print(f"  -> Info: Maps directory not found at '{maps_path}', skipping check.")
+        logger.info(f"  -> Info: Maps directory not found at '{maps_path}', skipping check.")
         return
 
     # Add project root to path for dynamic imports
@@ -32,18 +32,18 @@ def validate_punctuation_map_keys(project_root):
 
                 if uppercase_keys:
                     found_issues = True
-                    print("\n--- ----------------------------------------- ---")
-                    print(f"⚠️ WARNING: Found non-lowercase keys in '{module_path}.py'")
-                    print("   All keys in PUNCTUATION_MAP must be lowercase for reliable matching.")
-                    print("   Please fix the following keys:")
+                    logger.info("\n--- ----------------------------------------- ---")
+                    logger.info(f"⚠️ WARNING: Found non-lowercase keys in '{module_path}.py'")
+                    logger.info("   All keys in PUNCTUATION_MAP must be lowercase for reliable matching.")
+                    logger.info("   Please fix the following keys:")
                     for key in uppercase_keys:
-                        print(f"     - '{key}'")
-                    print("--- ----------------------------------------- ---\n")
+                        logger.info(f"     - '{key}'")
+                    logger.info("--- ----------------------------------------- ---\n")
 
             except (ModuleNotFoundError, AttributeError):
                 # This is fine, a language might not have a punctuation map.
                 continue
 
     if not found_issues:
-        print("✅ OK: All found punctuation map keys are lowercase.")
+        logger.info("✅ OK: All found punctuation map keys are lowercase.")
 

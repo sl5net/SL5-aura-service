@@ -7,25 +7,25 @@ import sys
 import ast
 from pathlib import Path
 
-def validate_setup(project_root):
+def validate_setup(project_root, logger):
     """
     Verifies that essential setup steps have been completed.
-    If a check fails, it prints an error and exits the program.
+    If a check fails, it logger.infos an error and exits the program.
 
     Args:
         project_root (str): The absolute path to the project's root directory.
     """
-    print("INFO: Running setup validation...")
+    logger.info("INFO: Running setup validation...")
 
     # --- Check 1: Existence of the 'log' directory ---
     log_dir = os.path.join(project_root, 'log')
     if not os.path.isdir(log_dir):
-        # This error is printed to stderr, which is standard for errors.
-        print(
+        # This error is logger.infoed to stderr, which is standard for errors.
+        logger.info(
             "\nFATAL: Setup validation failed. The 'log' directory is missing.",
             file=sys.stderr
         )
-        print(
+        logger.info(
             "       Please run the appropriate script from the 'setup/' directory.",
             file=sys.stderr
         )
@@ -35,10 +35,10 @@ def validate_setup(project_root):
     # Example: Check for a specific config file
     # config_file = os.path.join(project_root, 'config', 'model_name.txt')
     # if not os.path.isfile(config_file):
-    #     print("FATAL: Config file 'model_name.txt' is missing.", file=sys.stderr)
+    #     logger.info("FATAL: Config file 'model_name.txt' is missing.", file=sys.stderr)
     #     sys.exit(1)
 
-    print("INFO: ✅ Setup validation successful.")
+    logger.info("INFO: ✅ Setup validation successful.")
 
 
 class DefinitionVisitor(ast.NodeVisitor):
@@ -82,12 +82,12 @@ class CallVisitor(ast.NodeVisitor):
 
 
 
-def check_for_unused_functions(project_root):
+def check_for_unused_functions(project_root,logger):
     """
     Performs a static analysis to find unused functions.
     Uses a two-pass approach for correct results.
     """
-    print("\n--- Checking for unused functions (dev-mode) ---")
+    logger.info("\n--- Checking for unused functions (dev-mode) ---")
 
     # Functions in this list are ignored.
     # Useful for callbacks from external libs or dynamically dispatched methods.
@@ -129,7 +129,7 @@ def check_for_unused_functions(project_root):
                 tree = ast.parse(content, filename=str(file_path))
                 parsed_trees[file_path] = tree
         except Exception as e:
-            print(f"WARNING: Could not parse file: {file_path} ({e})")
+            logger.info(f"WARNING: Could not parse file: {file_path} ({e})")
 
     # PASS 1: Collect all function definitions from all files
     for file_path, tree in parsed_trees.items():
@@ -150,16 +150,16 @@ def check_for_unused_functions(project_root):
     truly_unused_names = unused_names - EXTERNALLY_CALLED_FUNCTIONS
 
     if not truly_unused_names:
-        print("INFO: No unused functions found. Clean!")
+        logger.info("INFO: No unused functions found. Clean!")
     else:
-        print("\nFATAL \nsetup_validator.py: The following functions are defined but never appear to be called:")
+        logger.info("\nFATAL \nsetup_validator.py: The following functions are defined but never appear to be called:")
         for name in sorted(list(truly_unused_names)):
             file = all_definitions[name]
-            print(f"  - Function: \n{name:<30}\n | Defined in: \n{file.relative_to(project_root)}\n")
-        print("\n  -> This suggests dead code. Please remove or use these functions.")
+            logger.info(f"  - Function: \n{name:<30}\n | Defined in: \n{file.relative_to(project_root)}\n")
+        logger.info("\n  -> This suggests dead code. Please remove or use these functions.")
         sys.exit(1)
 
-    print("✅ Analysis finished successfully")
+    logger.info("✅ Analysis finished successfully")
 
 # use it in .venv
 # python scripts/setup_validator.py

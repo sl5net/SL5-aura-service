@@ -80,15 +80,10 @@ check_example_file_is_synced(SCRIPT_DIR)
 
 
 
-# Execute the check. The script will exit here if the setup is incomplete.
-validate_setup(SCRIPT_DIR)
 
 # File: STT/dictation_service.py
 # ...
 # --- Wrapper Script Check ---
-if DEV_MODE :
-    check_for_unused_functions(SCRIPT_DIR)
-    validate_punctuation_map_keys(SCRIPT_DIR)
 
     #sys.exit(1)
 
@@ -180,6 +175,12 @@ logging.basicConfig(
 logger = logging.getLogger()
 logger.handlers[0].addFilter(WindowsEmojiFilter())
 
+# Execute the check. The script will exit here if the setup is incomplete.
+validate_setup(SCRIPT_DIR, logger)
+
+if DEV_MODE :
+    check_for_unused_functions(SCRIPT_DIR,logger)
+    validate_punctuation_map_keys(SCRIPT_DIR,logger)
 
 
 if DEV_MODE :
@@ -298,8 +299,6 @@ if DEV_MODE :
     from scripts.py.func.checks.self_tester import run_core_logic_self_test
 
 
-    check_for_unused_functions(SCRIPT_DIR)
-    validate_punctuation_map_keys(SCRIPT_DIR)
     check_code_integrity(SCRIPT_DIR, logger)
 
     ##################### run_core_logic_self_test #############################
