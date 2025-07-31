@@ -96,7 +96,7 @@ EN_MODEL_DIR="models/vosk-model-en-us-0.22"
 
 DE_MODEL_ZIP="vosk-model-de-0.21.zip"
 DE_MODEL_URL="${RELEASE_URL_BASE}/${DE_MODEL_ZIP}"
-DE_MODEL_o="fb45a53025a50830b16bcda94146f90e22166501bb3693b009cabed796dbaaa0"
+DE_MODEL_SHA256="fb45a53025a50830b16bcda94146f90e22166501bb3693b009cabed796dbaaa0"
 DE_MODEL_DIR="models/vosk-model-de-0.21"
 
 # --- Download and Verify Function ---
