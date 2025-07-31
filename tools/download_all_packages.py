@@ -62,7 +62,7 @@ def verbose_discovery(assets):
     for asset in checksum_assets:
         base_name = asset['name'].replace('.sha256sums.txt', '')
         packages[base_name]['checksum_asset'] = asset
-        print(f"  ✅ Found definition for package: '{base_name}'")
+        print(f"   [OK]  Found definition for package: '{base_name}'")
 
     print("\n[Step 2] Searching for part files (*.part.aa, etc)...")
     part_assets = [a for a in assets if '.part.' in a['name']]
@@ -87,11 +87,11 @@ def verbose_discovery(assets):
                 # Check for: _vosk-model-de-0.21.zip.part.
                 if f"_{base_name.lower()}.part." in asset_name_lower:
                     packages[base_name]['part_assets'].append(asset)
-                    print(f"  ✅ Matched '{asset['name']}' to package '{base_name}'")
+                    print(f"   [OK]  Matched '{asset['name']}' to package '{base_name}'")
                     matched = True
                     break
         if not matched:
-            print(f"  ⚠️  Warning: Could not match part file '{asset['name']}' to any known package.")
+            print(f"   [WARN]  Warning: Could not match part file '{asset['name']}' to any known package.")
 
     print("--- Discovery Complete ---\n")
     return packages
@@ -118,7 +118,7 @@ def process_package(base_name, package_files):
 
     final_merged_filename = final_zip_entries[0]
     final_zip_hash = official_hashes[final_merged_filename]
-    print(f"  ✅ Deduced final filename from manifest: '{final_merged_filename}'")
+    print(f"   [OK]  Deduced final filename from manifest: '{final_merged_filename}'")
 
     print(f"\n--- Step B: Downloading and Verifying {len(part_assets)} Parts ---")
     downloaded_parts = []
@@ -133,7 +133,7 @@ def process_package(base_name, package_files):
             if not download_file(asset['browser_download_url'], part_name): return False
             actual_hash = calculate_sha256(part_name)
             if actual_hash == expected_hash:
-                print(f"✅ OK: {part_name}\n")
+                print(f" [OK]  OK: {part_name}\n")
                 downloaded_parts.append(part_name)
                 break
             else:
@@ -149,13 +149,13 @@ def process_package(base_name, package_files):
     print(f"  Official Hash: {final_zip_hash}")
     print(f"  Computed Hash: {final_actual_hash}")
     if final_actual_hash == final_zip_hash:
-        print(f"\n🎉 SUCCESS! Package '{final_merged_filename}' is correct.")
+        print(f"\n[<3]  SUCCESS! Package '{final_merged_filename}' is correct.")
         for part in downloaded_parts: os.remove(part)
         os.remove(checksum_filename)
         print("Cleaned up intermediate files.")
         return True
     else:
-        print(f"\n💥 CRITICAL FAILURE! Merged file '{final_merged_filename}' is corrupt.")
+        print(f"\n[XXXXX]  CRITICAL FAILURE! Merged file '{final_merged_filename}' is corrupt.")
         return False
 
 def main():
