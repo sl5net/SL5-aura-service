@@ -22,28 +22,33 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
     Runs a series of predefined tests against the core text processing logic.
     This function simulates inputs and checks the output files.
     """
-    logger.info("DEV_MODE: Running core logic self-test...")
+    logger.info(f"DEV_MODE: Running core logic self-test... lang is: {lang_code} e.g. maybe de-DE")
     test_output_dir = tmp_dir / "sl5_dictation_self_test"
     test_output_dir.mkdir(parents=True, exist_ok=True)
 
     # --- Test Cases ---
     # Format: (input_text, expected_output, description)
     test_cases = [
-        ('punkt', '.', 'Exact PUNCTUATION_MAP match'),
-        ('komma', ',', 'Exact PUNCTUATION_MAP match'),
-        ('sebastian laufer', 'Sebastian Lauffer', 'Exact PUNCTUATION_MAP match'),
+        ('punkt', '.', 'Exact MAP match'),
+        ('komma', ',', 'Exact MAP match'),
         ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization'),
         ('git at', 'git add .', 'Fuzzy map REGEX match'),
         ('geht status', 'git status', 'Fuzzy map FUZZY string match'),
-        ('ein test von sebastian laufer', 'Ein Test von Sebastian Lauffer', 'Partial map + LT correction'),
-        ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction')
-
+        ('ein test von sebastian laufer', 'Ein Test von Sebastian Lauffer', 'Partial map + LT correction', 'de-DE'),
+        ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
+        ('sebastian laufer', 'Sebastian Lauffer', 'Exact MAP match', 'de-DE'),
     ]
-
     passed_count = 0
     failed_count = 0
 
-    for raw_text, expected, description in test_cases:
+    for test_case in test_cases:
+        if len(test_case) == 4:
+            raw_text, expected, description, check_only_this_lang_code = test_case
+            if check_only_this_lang_code != lang_code:
+                continue
+        elif len(test_case) == 3:
+            raw_text, expected, description = test_case
+
         # Clean up old output files to ensure we read the new one
         for f in glob.glob(str(tmp_dir / "sl5_dictation" / "tts_output_*.txt")):
             os.remove(f)
