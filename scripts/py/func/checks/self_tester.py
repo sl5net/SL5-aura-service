@@ -29,14 +29,14 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
     # --- Test Cases ---
     # Format: (input_text, expected_output, description)
     test_cases = [
-        ('punkt', '.', 'Exact MAP match'),
+        ('punkt', '.', 'Exact MAP match', 'de-DE'),
         ('komma', ',', 'Exact MAP match'),
-        ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization'),
-        ('git at', 'git add .', 'Fuzzy map REGEX match'),
-        ('geht status', 'git status', 'Fuzzy map FUZZY string match'),
+        ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization', 'de-DE'),
+        ('git at', 'git add .', 'Fuzzy map REGEX match', 'de-DE'),
+        ('geht status', 'git status', 'Fuzzy map FUZZY string match', 'de-DE'),
         ('ein test von sebastian laufer', 'Ein Test von Sebastian Lauffer', 'Partial map + LT correction', 'de-DE'),
         ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
-        ('sebastian laufer', 'Sebastian Lauffer', 'Exact MAP match', 'de-DE'),
+        ('sebastian laufer', 'Sebastian Lauffer', 'Exact MAP match', 'de-DE')
     ]
     passed_count = 0
     failed_count = 0
