@@ -22,14 +22,15 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
-      - name: Restore assets from specific cache
+
+      - name: Cache external tools and models
+        id: assets-cache # Give the step an ID to reference it
         uses: actions/cache@v4
         with:
           path: |
             ./LanguageTool-6.6
             ./models/
-          key: ${{ runner.os }}-models-tools-2025-0724-1355
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('tools/download_all_packages.py') }}
           restore-keys: |
             ${{ runner.os }}-models-tools-
 
