@@ -5,10 +5,6 @@ name: Generate Dependency Graph
 
 # This workflow runs when a pull request to 'master' is merged.
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:
