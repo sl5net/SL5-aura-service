@@ -129,16 +129,24 @@ def process_package(base_name, package_files):
         if not expected_hash:
             print(f"Warning: No hash for {part_name} in checksum file. Skipping.")
             continue
-        while True:
-            if not download_file(asset['browser_download_url'], part_name): return False
+
+        max_retries = 3
+        for attempt in range(max_retries):
+            if not download_file(asset['browser_download_url'], part_name):
+                return False # Direkter Abbruch bei Download-Fehler
+
             actual_hash = calculate_sha256(part_name)
             if actual_hash == expected_hash:
                 print(f" [OK]  OK: {part_name}\n")
                 downloaded_parts.append(part_name)
-                break
+                break  # Erfolgreich, innere Schleife verlassen
             else:
-                print(f"❌ FAILED: Hash mismatch for {part_name}. Retrying...")
+                print(f"❌ FAILED: Hash mismatch for {part_name} on attempt {attempt + 1}/{max_retries}. Retrying...")
                 os.remove(part_name)
+        else: # Diese else gehört zur for-Schleife! Wird nur ausgeführt, wenn die Schleife NICHT per break beendet wurde.
+            print(f"[XXXX] CRITICAL: Failed to verify {part_name} after {max_retries} attempts. Aborting.")
+            return False
+
 
     print(f"\n--- Step C: Merging and Verifying Final File: {final_merged_filename} ---")
     with open(final_merged_filename, 'wb') as f_out:
