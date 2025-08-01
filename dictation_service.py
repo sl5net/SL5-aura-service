@@ -294,7 +294,7 @@ if not start_languagetool_server:
 
 from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
 
-check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users 
+check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
 if DEV_MODE :
     from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys

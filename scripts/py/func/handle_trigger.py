@@ -88,7 +88,6 @@ def handle_trigger(
 
     # --- Define the session logic inside a nested function ---
     def session_thread_target():
-        global active_transcription_thread
         try:
             # In session_thread_target()
             model_object = selected_model
