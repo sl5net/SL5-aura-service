@@ -69,7 +69,7 @@ function Expand-And-Cleanup {
         Expand-Archive -Path $ZipFile -DestinationPath $DestinationPath -Force
 
         # Cleanup the zip file
-        Remove-Item $ZipFile
+        # Remove-Item $ZipFile
     } else {
         Write-Host "FATAL: Expected archive $DownloadedZipFile was not found after download." -ForegroundColor Red
         exit 1
