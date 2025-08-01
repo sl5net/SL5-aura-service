@@ -39,8 +39,21 @@ New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
 # --- 5. External Tools & Models (using the robust Python downloader) ---
 Write-Host "--> Downloading external tools and models via Python downloader..."
 
-# Execute the downloader. It downloads all required ZIPs to the project root.
+# Execute the downloader and check its exit code
+#  It downloads all required ZIPs to the project root.
 .\.venv\Scripts\python.exe tools/download_all_packages.py
+
+# $LASTEXITCODE contains the exit code of the last program that was run.
+# 0 means success. Anything else is an error.
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "FATAL: The Python download script failed. Halting setup." -ForegroundColor Red
+    # Wir benutzen 'exit 1', um das ganze Skript sofort zu beenden.
+    exit 1
+}
+
+Write-Host "    -> Python downloader completed successfully." -ForegroundColor Green
+
+
 
 # --- Now, extract the downloaded archives ---
 Write-Host "--> Extracting downloaded archives..."
@@ -56,22 +69,18 @@ $DeModelZip = "vosk-model-de-0.21.zip"
 function Expand-And-Cleanup {
     param ([string]$ZipFile, [string]$DestinationPath)
 
-    # Construct the downloaded filename with 'Z_' prefix
-    $DownloadedZipFile = "Z_$($ZipFile)"
+    $DownloadedZipFileFullPath = Join-Path -Path $ProjectRoot -ChildPath "Z_$($ZipFile)"
 
-    if (Test-Path $DownloadedZipFile) {
-        Write-Host "    -> Renaming and extracting $DownloadedZipFile..."
+    if (Test-Path $DownloadedZipFileFullPath) {
+        Write-Host "    -> Extracting $DownloadedZipFileFullPath..."
 
-        # Rename the file to its original name
-        Rename-Item -Path $DownloadedZipFile -NewName $ZipFile
+        $DestinationZipFullPath = Join-Path -Path $ProjectRoot -ChildPath $ZipFile
+        Move-Item -Path $DownloadedZipFileFullPath -Destination $DestinationZipFullPath -Force
 
-        # Extract the now correctly named archive
-        Expand-Archive -Path $ZipFile -DestinationPath $DestinationPath -Force
-
-        # Cleanup the zip file
-        # Remove-Item $ZipFile
+        Expand-Archive -Path $DestinationZipFullPath -DestinationPath $DestinationPath -Force
+        Remove-Item $DestinationZipFullPath
     } else {
-        Write-Host "FATAL: Expected archive $DownloadedZipFile was not found after download." -ForegroundColor Red
+        Write-Host "FATAL: Expected archive was not found at the absolute path: '$DownloadedZipFileFullPath'" -ForegroundColor Red
         exit 1
     }
 }
