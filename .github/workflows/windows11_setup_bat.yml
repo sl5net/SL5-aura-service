@@ -1,0 +1,41 @@
+name: CI winOS Setup.BAT
+
+on:
+  workflow_dispatch:
+
+jobs:
+  validate-windows-setup:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        # Diese Action installiert zuverlässig das gewünschte Java Development Kit
+        # und fügt es zum PATH hinzu.
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: Set up Python 3.11
+        # Diese Action installiert zuverlässig Python und fügt es zum PATH hinzu.
+        # Sie kümmert sich auch um das Problem mit dem "Windows Store Alias".
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-models-tools-2025-0724-1355
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
+
+      - name: Run setup.bat
+        run: cmd.exe /c "setup\\setup.bat"
+#          powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\setup.bat"
+
