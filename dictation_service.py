@@ -2,6 +2,8 @@
 import os
 import sys, subprocess
 
+# Python path to ensure reliable imports on all platforms
+# This solves potential issues when running from a batch script on Windows
 
 
 # ==============================================================================
@@ -65,10 +67,20 @@ from scripts.py.func.create_required_folders import setup_project_structure
 
 # --- Constants and Paths ---
 SCRIPT_DIR = Path(__file__).resolve().parent
+
+
+PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
+
 # ==============================================================================
 # --- PRE-RUN SETUP VALIDATION ---
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 # We add the 'scripts' directory to the path to import our custom validator.
-sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
+
+# sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
+
 from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, check_for_frequent_calls
 
 from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
@@ -93,7 +105,6 @@ check_example_file_is_synced(SCRIPT_DIR)
 
 
 
-PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 setup_project_structure(PROJECT_ROOT)
 
@@ -102,7 +113,7 @@ if platform.system() == "Windows":
 else:
     TMP_DIR = Path("/tmp")
 
-TRIGGER_FILE = TMP_DIR / "vosk_trigger"
+TRIGGER_FILE = TMP_DIR / "sl5_record.trigger"
 HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
 PIDFILE = TMP_DIR / "dictation_service.pid"
 LOG_FILE = PROJECT_ROOT / "log/dictation_service.log"

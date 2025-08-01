@@ -1,9 +1,5 @@
 :: start this script like: & .\start_dictation_v2.0.bat
 :: Version: v2.0
-:: Change: Added automatic self-repair. If 'requests' module is missing
-::         in venv, it automatically deletes and rebuilds the environment.
-:: Purpose: The final, one-click solution. Handles admin rights, setup,
-::          self-repair, and launches the application.
 
 @echo off
 setlocal
@@ -77,9 +73,52 @@ if %errorLevel% NEQ 0 (
 )
 
 echo [INFO] Virtuelle Umgebung ist aktiv.
+:: --- Start, Verifizierung und automatische Reparatur ---
+set REPAIR_ATTEMPTED=
+
+:START_SERVICE_LOOP
 echo [INFO] Starte den Python STT Backend-Server...
 
-python -u dictation_service.py
+:: Start the service in the background
+start "SL5 Dictation" python -u dictation_service.py
+
+echo [INFO] Warte 5 Sekunden, damit der Service starten kann...
+timeout /t 5 >nul
+
+echo [INFO] Pruefe, ob das "Setup validation successful" Signal geloggt wurde...
+
+:: findstr setzt ERRORLEVEL 0, wenn der Text gefunden wird, sonst 1
+findstr /C:"Setup validation successful" "log\dictation_service.log" >nul 2>&1
+
+IF %ERRORLEVEL% EQU 0 (
+    echo [SUCCESS] Erfolgs-Signal im Log gefunden. Service laeuft.
+    goto :CONTINUE_SCRIPT
+)
+
+:: --- FEHLERBEHANDLUNG ---
+echo [WARNING] Erfolgs-Signal im Log nicht gefunden.
+
+if defined REPAIR_ATTEMPTED (
+    echo [FATAL] Automatischer Reparaturversuch ist fehlgeschlagen.
+    pause
+    exit /b 1
+)
+
+echo [ACTION] Starte automatische Reparatur: Installiere 'requirements.txt' neu.
+set REPAIR_ATTEMPTED=true
+call .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+echo [INFO] Reparatur abgeschlossen. Versuche den Service erneut zu starten...
+goto :START_SERVICE_LOOP
+
+
+:CONTINUE_SCRIPT
+:: Dein restliches Skript (Trigger, etc.)
+echo [*] Triggering the service using the vosk_trigger file
+echo. >> "c:/tmp/sl5_record.trigger"
+echo [SUCCESS] SL5 Dictation ist jetzt aktiv.
+timeout /t 4 >nul
+
 
 :: --- Step 4: Launch all application components ---
 :: echo [*] Launching SL5 Dictation components in the background
@@ -87,14 +126,6 @@ python -u dictation_service.py
 
 
 
-
-:: --- Step 4: Trigger the service ---
-echo [*] Triggering the service using the vosk_trigger file
-echo. >> "c:/tmp/vosk_trigger"
-echo -84-
-
 echo [SUCCESS] SL5 Dictation is now running in the background.
 echo This window will close automatically.
 timeout /t 4 > nul
-pause
-

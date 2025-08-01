@@ -87,7 +87,7 @@ LANGUAGETOOL_RELATIVE_PATH = "LanguageTool-6.6/languagetool-server.jar"
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 
-TRIGGER_FILE_PATH = "/tmp/vosk_trigger"
+TRIGGER_FILE_PATH = "/tmp/sl5_record.trigger"
 
 # Try to import user-specific overrides
 try:

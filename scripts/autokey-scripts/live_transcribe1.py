@@ -20,7 +20,7 @@ except (FileNotFoundError, KeyError) as e:
 
 SERVICE_PY_NAME = "dictation_service.py"
 
-TRIGGER_path = "/tmp/vosk_trigger"
+TRIGGER_path = "/tmp/sl5_record.trigger"
 TRIGGER_FILE = Path(TRIGGER_path)
 
 HEARTBEAT_FILE = Path(f"/tmp/dictation_service.heartbeat")
