@@ -48,6 +48,7 @@ Write-Host "--> Extracting downloaded archives..."
 # Define file and directory names
 $LtZip = "LanguageTool-6.6.zip"
 $EnModelZip = "vosk-model-en-us-0.22.zip"
+$En15ModelZip = "vosk-model-small-en-us-0.15.zip"
 $DeModelZip = "vosk-model-de-0.21.zip"
 
 
@@ -80,6 +81,7 @@ New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
 # Execute extraction
 Expand-And-Cleanup -ZipFile $LtZip -DestinationPath "."
 Expand-And-Cleanup -ZipFile $EnModelZip -DestinationPath ".\models"
+Expand-And-Cleanup -ZipFile $En15ModelZip -DestinationPath ".\models"
 Expand-And-Cleanup -ZipFile $DeModelZip -DestinationPath ".\models"
 
 Write-Host "    -> Extraction and cleanup successful." -ForegroundColor Green
@@ -154,5 +156,4 @@ Write-Host ""
 Write-Host "------------------------------------------------------------------" -ForegroundColor Green
 Write-Host "CI Setup for Windows completed successfully." -ForegroundColor Green
 Write-Host "------------------------------------------------------------------" -ForegroundColor Green
-
 
