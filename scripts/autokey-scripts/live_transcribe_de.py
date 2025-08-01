@@ -2,7 +2,7 @@ intertingDontDeleteIt = """
 pkill -f dictation_service.py
 pgrep -f dictation_service.py
 """
-import time
+import system
 
 from pathlib import Path
 

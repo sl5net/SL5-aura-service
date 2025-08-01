@@ -40,25 +40,24 @@ if 'VIRTUAL_ENV' not in os.environ:
 
 
 
-import sys, time, os, atexit, requests, logging, platform
+import sys, os, atexit, requests, logging, platform
 from pathlib import Path
 
 # --- Local Imports (grouped for clarity) ---
 from config.settings import (LANGUAGETOOL_RELATIVE_PATH,
                             USE_EXTERNAL_LANGUAGETOOL, EXTERNAL_LANGUAGETOOL_URL, LANGUAGETOOL_PORT,
-                            CRITICAL_THRESHOLD_MB, PRELOAD_MODELS,
                             DEV_MODE
                             )
 
 
 from scripts.py.func.main import main
-from scripts.py.func.notify import notify
-from scripts.py.func.cleanup import cleanup
-from scripts.py.func.start_languagetool_server import start_languagetool_server
-from scripts.py.func.stop_languagetool_server import stop_languagetool_server
-from scripts.py.func.check_memory_critical import check_memory_critical
+#from scripts.py.func.notify import notify
+#from scripts.py.func.cleanup import cleanup
+#from scripts.py.func.start_languagetool_server import start_languagetool_server
+#from scripts.py.func.stop_languagetool_server import stop_languagetool_server
+#from scripts.py.func.check_memory_critical import check_memory_critical
 # We need vosk here for the model loading
-import vosk
+# import vosk
 
 from scripts.py.func.create_required_folders import setup_project_structure
 
@@ -76,7 +75,7 @@ from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctu
 
 # from  scripts.py.func.checks.self_tester import run_core_logic_self_test
 
-from  scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
+from scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
 check_example_file_is_synced(SCRIPT_DIR)
 
 
@@ -219,9 +218,9 @@ if DEV_MODE :
 from scripts.py.func.notify import notify
 from scripts.py.func.cleanup import cleanup
 from scripts.py.func.start_languagetool_server import start_languagetool_server
-from scripts.py.func.stop_languagetool_server import stop_languagetool_server
-from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
-from scripts.py.func.check_memory_critical import check_memory_critical
+# from scripts.py.func.stop_languagetool_server import stop_languagetool_server
+# from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
+# from scripts.py.func.check_memory_critical import check_memory_critical
 from scripts.py.func.stop_languagetool_server import stop_languagetool_server
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 
@@ -256,7 +255,7 @@ TRIGGER_FILE.unlink(missing_ok=True)
 
 # MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
 
-import scripts.py.func.guess_lt_language_from_model
+# import scripts.py.func.guess_lt_language_from_model
 
 # LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
 

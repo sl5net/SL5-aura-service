@@ -29,6 +29,9 @@ FUZZY_MAP = [
     ('StopButton', r'\bstob\s*Button\b', 82, re.IGNORECASE),
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
+    ('AutoKey', r'\bAuto k\b', 82, re.IGNORECASE),
+
+
     ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
     ('Sigune Lauffer', r'\b(Figur|Sekunde) (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
 
