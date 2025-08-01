@@ -1,4 +1,4 @@
-name: CI for winOS Setup
+name: CI winOS Setup.BAT
 
 on:
   workflow_dispatch:
