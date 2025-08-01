@@ -3,7 +3,7 @@
 import os
 import sys
 import importlib
-import ast
+# import ast
 
 def validate_punctuation_map_keys(project_root,logger):
     """

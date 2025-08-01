@@ -5,7 +5,7 @@ import json
 import time
 from pathlib import Path
 
-from config.settings import SAMPLE_RATE, TRIGGER_FILE_PATH, SILENCE_TIMEOUT
+from config.settings import SAMPLE_RATE
 from scripts.py.func.notify import notify
 import sounddevice as sd
 
@@ -64,7 +64,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     is_speech_started = False
     current_timeout = initial_silence_timeout
     last_activity_time = time.time()  # Our independent activity clock.
-    session_stopped_manually = False
+    # session_stopped_manually = False
 
     try:
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,

@@ -1,8 +1,6 @@
 # File: scripts/py/func/main.py
-import importlib
-import config.settings as settings
 
-import platform, subprocess, threading, time, sys
+import threading, time
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -14,8 +12,8 @@ from pathlib import Path
 
 
 from .handle_trigger import handle_trigger
-from .check_memory_critical import check_memory_critical
-from .notify import notify
+# from .check_memory_critical import check_memory_critical
+# from .notify import notify
 
 from .prioritize_model import prioritize_model
 
@@ -35,7 +33,6 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
 
     trigger_file_path = config["TRIGGER_FILE"]
     heartbeat_file = config["HEARTBEAT_FILE"]
-    critical_threshold_mb = config["CRITICAL_THRESHOLD_MB"]
     project_root = config["PROJECT_ROOT"]
 
     SILENCE_TIMEOUT = config["SILENCE_TIMEOUT"]
@@ -90,7 +87,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
     except KeyboardInterrupt:
         logger.info("\nService interrupted by user.")
     except Exception as e:
-        logger.error("FATAL ERROR in main loop:", exc_info=True)
+        logger.error(f"FATAL ERROR {e} in main loop:", exc_info=True)
     # finally:
     #    observer.stop()
     #    observer.join()

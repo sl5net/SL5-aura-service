@@ -1,6 +1,6 @@
 # file: scripts/py/func/start_languagetool_server.py
 from pathlib import Path
-import os, subprocess, requests, time
+import subprocess, requests, time
 from .stop_languagetool_server import stop_languagetool_server
 
 def start_languagetool_server(logger, jar_path, base_url):

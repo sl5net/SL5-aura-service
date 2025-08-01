@@ -3,7 +3,7 @@
 import os
 import time
 import glob
-from pathlib import Path
+# from pathlib import Path
 
 # Important: Add project root to sys.path to allow imports from other directories
 # This assumes self_tester.py is in the project's root or a subdirectory.
@@ -15,7 +15,7 @@ if project_root not in sys.path:
 # Note: In dictation_service.py this might be SCRIPT_DIR instead of project_root
 
 from scripts.py.func.process_text_in_background import process_text_in_background
-from config import settings
+# from config import settings
 
 def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
     """

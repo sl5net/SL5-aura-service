@@ -74,7 +74,7 @@ from scripts.py.func.checks.setup_validator import parse_all_files, validate_set
 
 from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
 
-from  scripts.py.func.checks.self_tester import run_core_logic_self_test
+# from  scripts.py.func.checks.self_tester import run_core_logic_self_test
 
 from  scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
 check_example_file_is_synced(SCRIPT_DIR)
@@ -292,9 +292,9 @@ if not start_languagetool_server:
     notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
     sys.exit(1)
 
+from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
 
-    from scripts.py.func.checks.integrity_checker import check_code_integrity # <--- NEU
-
+check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users 
 
 if DEV_MODE :
     from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
