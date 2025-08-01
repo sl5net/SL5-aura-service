@@ -49,7 +49,6 @@ FUZZY_MAP = [
 
     # --- git commit ---
 
-    Geht komm Commit
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, re.IGNORECASE),
 
     ('git commit ', r'^\s*(Geht|git|mit) (komm|Commit)\s*$', 80, re.IGNORECASE),
