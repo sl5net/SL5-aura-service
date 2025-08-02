@@ -1,5 +1,5 @@
 @echo off
-ECHO Starte das Windows 11 Setup-Skript...
+ECHO start Windows 11 Setup-Script...
 
 REM PowerShell, use Execution Policy this time
 powershell.exe -ExecutionPolicy Bypass -File "%~dp0\windows11_setup.ps1"
