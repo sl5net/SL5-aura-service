@@ -37,40 +37,60 @@ Write-Host "[SUCCESS] Running with Administrator privileges."
 
 
 
-
-# --- 2. Java Installation Check ---
-Write-Host "--> Checking Java installation..."
-$JavaVersion = $null
-try {
-    $JavaOutput = & java -version 2>&1
-    if ($JavaOutput -match 'version "(\d+)\.') {
-        $JavaVersion = [int]$matches[1]
-    } elseif ($JavaOutput -match 'version "1\.(\d+)\.') {
-        $JavaVersion = [int]$matches[1]
-    }
-} catch {
-    Write-Host "    -> Java not found in PATH."
-}
-
-if ($JavaVersion -and $JavaVersion -ge 17) {
-    Write-Host "    -> Java $JavaVersion detected. OK." -ForegroundColor Green
-} else {
-    Write-Host "    -> Java 17+ not found. Installing OpenJDK 17..." -ForegroundColor Yellow
-    try {
-        winget install --id Microsoft.OpenJDK.17 --silent --accept-source-agreements --accept-package-agreements
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "    -> OpenJDK 17 installed successfully." -ForegroundColor Green
-            # Refresh PATH for current session
-            $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
-        } else {
-            Write-Host "ERROR: Failed to install OpenJDK 17. Please install manually." -ForegroundColor Red
-            # exit 1 # the script works anywas usuallly. dont exit here!
+# Only check for java if NOT running in a CI environment (like GitHub Actions)
+if ($env:CI -ne 'true')
+{
+    # --- 2. Java Installation Check ---
+    Write-Host "--> Checking Java installation..."
+    $JavaVersion = $null
+    try
+    {
+        $JavaOutput = & java -version 2>&1
+        if ($JavaOutput -match 'version "(\d+)\.')
+        {
+            $JavaVersion = [int]$matches[1]
         }
-    } catch {
-        Write-Host "ERROR: Failed to install Java. Please install Java 17+ manually." -ForegroundColor Red
-        exit 1
+        elseif ($JavaOutput -match 'version "1\.(\d+)\.')
+        {
+            $JavaVersion = [int]$matches[1]
+        }
+    }
+    catch
+    {
+        Write-Host "    -> Java not found in PATH."
+    }
+
+    if ($JavaVersion -and $JavaVersion -ge 17)
+    {
+        Write-Host "    -> Java $JavaVersion detected. OK." -ForegroundColor Green
+    }
+    else
+    {
+        Write-Host "    -> Java 17+ not found. Installing OpenJDK 17..." -ForegroundColor Yellow
+        try
+        {
+            winget install --id Microsoft.OpenJDK.17 --silent --accept-source-agreements --accept-package-agreements
+            if ($LASTEXITCODE -eq 0)
+            {
+                Write-Host "    -> OpenJDK 17 installed successfully." -ForegroundColor Green
+                # Refresh PATH for current session
+                $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
+            }
+            else
+            {
+                Write-Host "ERROR: Failed to install OpenJDK 17. Please install manually." -ForegroundColor Red
+                # exit 1 # the script works anywas usuallly. dont exit here!
+            }
+        }
+        catch
+        {
+            Write-Host "ERROR: Failed to install Java. Please install Java 17+ manually." -ForegroundColor Red
+            exit 1
+        }
     }
 }
+
+
 
 # --- 3. Python Installation Check ---
 Write-Host "--> Checking Python installation..."
