@@ -75,86 +75,80 @@ python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 
 
-# --- 5. External Tools and Models ---
-echo "--> Downloading external tools and models from project GitHub Releases..."
 
-# Define URLs and checksums for all assets
-RELEASE_URL_BASE="https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1"
 
-LT_ZIP="LanguageTool-6.6.zip"
-LT_URL="${RELEASE_URL_BASE}/${LT_ZIP}"
-LT_SHA256="53600506b399bb5ffe1e4c8dec794fd378212f14aaf38ccef9b6f89314d11631"
-LT_DIR="LanguageTool-6.6"
 
-EN_MODEL_ZIP="vosk-model-en-us-0.22.zip"
-EN_MODEL_URL="${RELEASE_URL_BASE}/${EN_MODEL_ZIP}"
-EN_MODEL_SHA256="d410847b53faf1850f2bb99fb7a08adcb49dd236dcba66615397fe57a3cf68f5"
-EN_MODEL_DIR="models/vosk-model-en-us-0.22"
+# --- 6. External Tools & Models (using the robust Python downloader) ---
+echo "--> Downloading external tools and models via Python downloader..."
 
-DE_MODEL_ZIP="vosk-model-de-0.21.zip"
-DE_MODEL_URL="${RELEASE_URL_BASE}/${DE_MODEL_ZIP}"
-DE_MODEL_SHA256="fb45a53025a50830b16bcda94146f90e22166501bb3693b009cabed796dbaaa0"
-DE_MODEL_DIR="models/vosk-model-de-0.21"
+# Create the models directory before attempting to download files into it.
+mkdir -p ./models
 
-# --- Download and Verify Function ---
-download_and_verify() {
-    local url=$1
-    local zip_file=$2
-    local expected_sha256=$3
-    local extract_dir=$4
-    local final_dir_check=$5
-    local max_retries=3
-    local retry_count=0
-    local sha_cmd=""
+# Execute the downloader and let 'set -e' handle errors
+echo "    -> Running Python downloader..."
+./.venv/bin/python tools/download_all_packages.py
 
-    # Determine the correct sha256 command for the system
-    if command -v sha256sum &> /dev/null; then
-        sha_cmd="sha256sum"
-    elif command -v shasum &> /dev/null; then
-        sha_cmd="shasum -a 256"
-    else
-        echo "    -> FATAL: Could not find 'sha256sum' or 'shasum' command. Cannot verify downloads."
+echo "    -> Python downloader completed successfully."
+
+# --- Now, extract the downloaded archives ---
+echo "--> Extracting downloaded archives..."
+
+# THE FIX IS HERE: Define the prefix, just like in the PowerShell script
+PREFIX="Z_"
+
+# Define an array of archives to process
+# Format: "ZipFileName FinalDirName DestinationPath"
+ARCHIVE_CONFIG=(
+    "LanguageTool-6.6.zip LanguageTool-6.6 ."
+    "vosk-model-en-us-0.22.zip vosk-model-en-us-0.22 ./models"
+    "vosk-model-small-en-us-0.15.zip vosk-model-small-en-us-0.15 ./models"
+    "vosk-model-de-0.21.zip vosk-model-de-0.21 ./models"
+)
+
+# Function to extract and clean up
+expand_and_cleanup() {
+    local zip_file=$1
+    local expected_dir=$2
+    local dest_path=$3
+
+    # Check if final directory already exists
+    if [ -d "$dest_path/$expected_dir" ]; then
+        echo "    -> Directory '$expected_dir' already exists. Skipping."
+        return
+    fi
+
+    # Check if the downloaded zip exists
+    if [ ! -f "$zip_file" ]; then
+        echo "    -> FATAL: Expected archive not found: '$zip_file'"
         exit 1
     fi
 
-    echo "    -> Using '$sha_cmd' for checksum verification."
+    echo "    -> Extracting $zip_file to $dest_path..."
+    unzip -q "$zip_file" -d "$dest_path"
 
-    if [ ! -d "$final_dir_check" ]; then
-        while [ $retry_count -lt $max_retries ]; do
-            echo "    -> Attempting to download $(basename $zip_file) (Attempt $((retry_count + 1))).."
-            curl -L -s "$url" -o "$zip_file"
-
-            echo "    -> Verifying checksum for $(basename $zip_file)..."
-            # The corrected line uses the $sha_cmd variable
-            if echo "$expected_sha256  $zip_file" | $sha_cmd --check --status; then
-                echo "    -> Checksum OK. Extracting..."
-                unzip -q "$zip_file" -d "$extract_dir"
-                echo "    -> Cleaning up $(basename $zip_file)..."
-                rm "$zip_file"
-                return 0 # Success
-            else
-                echo "    -> WARNING: Checksum mismatch for $(basename $zip_file)!"
-                echo "       Expected: $expected_sha256"
-                rm "$zip_file" # Clean up the corrupted download
-                retry_count=$((retry_count + 1))
-                if [ $retry_count -lt $max_retries ]; then
-                    echo "    -> Retrying in 2 seconds..."
-                    sleep 2
-                fi
-            fi
-        done
-
-        echo "    -> FATAL: Failed to download and verify $(basename $zip_file) after $max_retries attempts."
-        exit 1
-    else
-        echo "    -> $(basename $final_dir_check) already exists. Skipping."
-    fi
+    # Clean up the zip file
+    rm "$zip_file"
+    echo "    -> Cleaned up ZIP file: $zip_file"
 }
 
-# --- Execute Downloads ---
-download_and_verify "$LT_URL" "$LT_ZIP" "$LT_SHA256" "." "$LT_DIR"
-download_and_verify "$EN_MODEL_URL" "models/$EN_MODEL_ZIP" "$EN_MODEL_SHA256" "models/" "$EN_MODEL_DIR"
-download_and_verify "$DE_MODEL_URL" "models/$DE_MODEL_ZIP" "$DE_MODEL_SHA256" "models/" "$DE_MODEL_DIR"
+# Execute extraction for each archive
+for config_line in "${BASE_CONFIG[@]}"; do
+    # Read the space-separated values into variables
+    read -r base_name dest_path <<< "$config_line"
+
+    # CONSTRUCT THE FILENAMES, including the prefix for the zip file
+    zip_file="${PREFIX}${base_name}.zip"
+    expected_dir="${base_name}" # The final directory name has no prefix
+
+    expand_and_cleanup "$zip_file" "$expected_dir" "$dest_path"
+done
+
+echo "    -> Extraction and cleanup successful."
+
+
+
+
+
 
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
