@@ -57,6 +57,8 @@ FUZZY_MAP = [
     ('git commit ', r'^\s*(Geht|git|mit) (komm|Commit)\s*$', 80, re.IGNORECASE),
 
 
+    ('commit ', r'\s+Komet\s+', 80, re.IGNORECASE),
+
     ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*womit\s*$', 85, re.IGNORECASE),
     ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, re.IGNORECASE),
