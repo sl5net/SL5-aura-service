@@ -9,6 +9,7 @@ curl --data "language=de-DE&text=das stimmt unsere ist nicht absolut fehlerfrei"
 # from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
 from config import settings
 from .normalize_punctuation import normalize_punctuation
+from .map_reloader import auto_reload_modified_maps
 
 import importlib
 
@@ -174,3 +175,4 @@ def process_text_in_background(logger,
         logger.info(f"✅ Background processing for '{raw_text[:20]}...' finished. ")
         notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
 
+        auto_reload_modified_maps(logger)
