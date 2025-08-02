@@ -69,6 +69,12 @@ $DeModelZip = "vosk-model-de-0.21.zip"
 function Expand-And-Cleanup {
     param ([string]$ZipFile, [string]$DestinationPath)
 
+    $FinalFullPath = Join-Path -Path $DestinationPath -ChildPath $FinalDirName
+    if (Test-Path $FinalFullPath) {
+        Write-Host "    -> Destination '$FinalDirName' already exists. Skipping extraction."
+        return
+    }
+
     $DownloadedZipFileFullPath = Join-Path -Path $ProjectRoot -ChildPath "Z_$($ZipFile)"
 
     if (Test-Path $DownloadedZipFileFullPath) {
