@@ -8,16 +8,38 @@ title SL5 Dictation - One-Click Starter
 :: --- Step 1: Set correct working directory ---
 cd /d "%~dp0"
 
-:: --- Step 2: Ensure Administrator privileges ---
+
+
+
+
+
+
+# --- 2. Admin Rights Check ---
 echo [*] Checking for Administrator privileges
-net session >nul 2>&1
-if %errorLevel% NEQ 0 (
-    echo [INFO] Administrative privileges needed. Relaunching...
-    powershell.exe -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
-    exit /b
+
+REM Only check for admin rights if NOT running in a CI environment
+if /I NOT "%CI%"=="true" (
+    net session >nul 2>&1
+    if %errorLevel% neq 0 (
+        echo [ERROR] Re-launching with Admin rights...
+        powershell -Command "Start-Process '%~f0' -Verb RunAs"
+        exit /b
+    )
 )
+
 echo [SUCCESS] Running with Administrator privileges.
-echo.
+
+
+
+
+
+
+
+
+
+
+
+
 
 :: --- Step 3: VEREINFACHT - Check if venv exists, otherwise run full setup ---
 if not exist ".\.venv\Scripts\python.exe" (
