@@ -82,7 +82,6 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
         command_str = f'"{java_executable_path}" -jar "{languagetool_jar_path}" --port {port} --allow-origin "*"'
         logger.info(f"Executing command via shell: {command_str}")
 
-        from .stop_languagetool_server import stop_languagetool_server
         languagetool_process = subprocess.Popen(command_str, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
                                                 encoding='utf-8', shell=True)
     except Exception as e:
