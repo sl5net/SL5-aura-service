@@ -5,20 +5,38 @@ $ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
 Set-Location -Path $ProjectRoot
 Write-Host "--> Running setup from project root: $(Get-Location)"
 
-# --- 0. Preamble ---
+
+
+
+
 $ErrorActionPreference = "Stop"
 
 # Configuration: Set to $false to keep ZIP files after extraction
 $CleanupZipFiles = $false
-
 # --- 1. Admin Rights Check ---
-Write-Host "--> Checking for Administrator privileges..."
-if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Host "ERROR: This script requires Administrator privileges for software installation." -ForegroundColor Red
-    Write-Host "Please run PowerShell as Administrator and try again." -ForegroundColor Red
-    exit 1
+Write-Host "[*] Checking for Administrator privileges"
+
+
+
+# Only check for admin rights if NOT running in a CI environment (like GitHub Actions)
+if ($env:CI -ne 'true') {
+    # Check if the current user is an Administrator
+    $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    if (-not $isAdmin) {
+        Write-Host "[ERROR] Administrator privileges are required. Re-launching..."
+        # Re-run the current script with elevated privileges for GitHub Actions
+        Start-Process -FilePath $PSCommandPath -Verb RunAs
+        # Exit the current (non-admin) script
+        exit
+    }
 }
-Write-Host "    -> Administrator privileges confirmed." -ForegroundColor Green
+Write-Host "[SUCCESS] Running with Administrator privileges."
+
+
+
+
+
 
 # --- 2. Java Installation Check ---
 Write-Host "--> Checking Java installation..."
