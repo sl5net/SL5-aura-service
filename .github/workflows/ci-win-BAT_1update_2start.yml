@@ -23,21 +23,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Cache external tools and models
-        id: assets-cache # Give the step an ID to reference it
-        uses: actions/cache@v4
-        with:
-          path: |
-            ./LanguageTool-6.6
-            ./models/
-          key: ${{ runner.os }}-models-tools-${{ hashFiles('tools/download_all_packages.py') }}
-          restore-keys: |
-            ${{ runner.os }}-models-tools-
-
       - name: Run setup.bat
-        if: steps.assets-cache.outputs.cache-hit != 'true'
-        run: |
-          powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"      
+        run: cmd.exe /c "setup\windows11_setup.bat"
 
       - name: Run update.bat
         run: cmd.exe /c "call update.bat"

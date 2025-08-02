@@ -11,16 +11,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK 21
-        # Diese Action installiert zuverlässig das gewünschte Java Development Kit
-        # und fügt es zum PATH hinzu.
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'microsoft'
 
       - name: Set up Python 3.11
-        # Diese Action installiert zuverlässig Python und fügt es zum PATH hinzu.
-        # Sie kümmert sich auch um das Problem mit dem "Windows Store Alias".
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -37,5 +33,4 @@ jobs:
 
       - name: Run setup.bat
         run: cmd.exe /c "setup\windows11_setup.bat"
-#          powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\setup.bat"
 
