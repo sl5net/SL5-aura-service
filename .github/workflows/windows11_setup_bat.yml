@@ -36,6 +36,6 @@ jobs:
             ${{ runner.os }}-models-tools-
 
       - name: Run setup.bat
-        run: cmd.exe /c "setup\\setup.bat"
+        run: cmd.exe /c "setup\setup.bat"
 #          powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\setup.bat"
 
