@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-windows-batch-scripts:
+  validate-windows-setup:
     runs-on: windows-latest
     steps:
       - name: Check out repository code
@@ -22,6 +22,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-models-tools-2025-0724-1355
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
 
       - name: Run setup.bat
         run: cmd.exe /c "setup\windows11_setup.bat"
