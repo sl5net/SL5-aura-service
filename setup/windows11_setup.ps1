@@ -143,6 +143,20 @@ Write-Host "--> Installing Python requirements into the virtual environment..."
 # --- 5. External Tools & Models (from Releases) ---
 $LtDir = "LanguageTool-6.6"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # --- 6. External Tools & Models (using the robust Python downloader) ---
 Write-Host "--> Downloading external tools and models via Python downloader..."
 
@@ -190,10 +204,6 @@ $ArchiveConfig = $BaseConfig | ForEach-Object {
     }
 }
 
-
-
-
-
 # Function to extract and clean up
 function Expand-And-Cleanup {
     param (
@@ -237,6 +247,10 @@ foreach ($Config in $ArchiveConfig) {
 }
 
 Write-Host "    -> Extraction and cleanup successful." -ForegroundColor Green
+
+
+
+
 
 # --- Run initial model setup ---
 Write-Host "INFO: Setting up initial models based on system language..."
