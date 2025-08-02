@@ -107,6 +107,7 @@ if (f.openAppend()) {
 
 **Command for Windows use [AutoHotkey](https://AutoHotkey.com):**
 ```sh
+; trigger-hotkeys.ahk
 ; AutoHotkey v2 Skript
 #SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
 

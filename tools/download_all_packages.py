@@ -1,4 +1,6 @@
 # tools/download_all_packages.py
+from os import remove
+
 import requests
 import hashlib
 import os
@@ -12,9 +14,18 @@ REPO = "Vosk-System-Listener"
 TAG = "v0.2.0"
 API_URL = f"https://api.github.com/repos/{OWNER}/{REPO}/releases/tags/{TAG}"
 
+remove_parts = False
+
 # --- Helper Functions (Unchanged) ---
 
-def download_file(url, filepath):
+def download_file(url, filepath, do_overwrite=False):
+    """
+    Downloads a file with a progress bar, with an option to skip if it already exists.
+    """
+    if os.path.exists(filepath) and not do_overwrite:
+        print(f"File '{os.path.basename(filepath)}' already exists. Skipping download.")
+        return True # Return True because the required file is present.
+
     try:
         response = requests.get(url, stream=True)
         response.raise_for_status()
@@ -97,7 +108,7 @@ def verbose_discovery(assets):
     print("--- Discovery Complete ---\n")
     return packages
 
-def process_package(base_name, package_files):
+def process_package(base_name, package_files, remove_parts):
     print("="*60)
     print(f"Processing Package: {base_name}")
     print("="*60)
@@ -159,9 +170,10 @@ def process_package(base_name, package_files):
     print(f"  Computed Hash: {final_actual_hash}")
     if final_actual_hash == final_zip_hash:
         print(f"\n[<3]  SUCCESS! Package '{final_merged_filename}' is correct.")
-        for part in downloaded_parts: os.remove(part)
-        os.remove(checksum_filename)
-        print("Cleaned up intermediate files.")
+        if remove_parts:
+            for part in downloaded_parts: os.remove(part)
+            os.remove(checksum_filename)
+            print("Cleaned up intermediate files.")
         return True
     else:
         print(f"\n[XXXXX]  CRITICAL FAILURE! Merged file '{final_merged_filename}' is corrupt.")
@@ -190,7 +202,7 @@ def main():
 
     all_successful = True
     for base_name, files in valid_packages.items():
-        if not process_package(base_name, files):
+        if not process_package(base_name, files, remove_parts):
             all_successful = False
 
     print("\n" + "#"*60)

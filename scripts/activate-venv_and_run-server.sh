@@ -18,6 +18,7 @@ fi
 
 if [ "$detected_os" = "windows" ]; then
   echo "please start type_watcher.ahk"
+  echo "please start trigger-hotkeys.ahk"
 else
   $PROJECT_ROOT/type_watcher.sh &
 fi
