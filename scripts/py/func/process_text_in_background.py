@@ -16,6 +16,9 @@ def load_maps_for_language(lang_code, logger):
     """Dynamically loads punctuation and fuzzy maps for a given language code (e.g., 'de')."""
     # try:
 
+    logger.info(f"lang_code: {lang_code}")
+    logger.info(f"lang_code: {lang_code}")
+
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     if project_root not in sys.path:
         sys.path.insert(0, project_root)

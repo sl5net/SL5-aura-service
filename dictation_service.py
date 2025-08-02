@@ -321,7 +321,7 @@ if DEV_MODE :
     vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
     #MODEL_NAME = MODEL_NAME_DEFAULT
 
-    lang_code = guess_lt_language_from_model(vosk_model_from_file)
+    lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
     run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
     #sys.exit(1)
 

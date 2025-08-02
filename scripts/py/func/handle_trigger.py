@@ -67,6 +67,8 @@ def handle_trigger(
 
         try:
             target_model_name = (project_root / "config/model_name.txt").read_text().strip()
+            logger.info("----> Target model name: %s", target_model_name)
+
             if not target_model_name: raise FileNotFoundError
 
             # Find the requested model among loaded ones
@@ -91,7 +93,7 @@ def handle_trigger(
         try:
             # In session_thread_target()
             model_object = selected_model
-            lt_language = guess_lt_language_from_model(found_key)
+            lt_language = guess_lt_language_from_model(logger, found_key)
 
 
             recognizer = vosk.KaldiRecognizer(model_object, SAMPLE_RATE)

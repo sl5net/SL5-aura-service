@@ -28,6 +28,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
     # --- Test Cases ---
     # Format: (input_text, expected_output, description)
+    logger.info('test_cases = ...')
     test_cases = [
         ('punkt', '.', 'Exact MAP match', 'de-DE'),
         ('komma', ',', 'Exact MAP match'),
@@ -41,6 +42,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
     passed_count = 0
     failed_count = 0
 
+    logger.info('45: for test_case in test_cases ...')
     for test_case in test_cases:
         if len(test_case) == 4:
             raw_text, expected, description, check_only_this_lang_code = test_case
@@ -55,6 +57,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
         # Run the actual processing function
         # process_text_in_background(logger, lang_code, raw_text, tmp_dir, time.time(), lt_url)
+        logger.info('59: process_text_in_background ...')
         process_text_in_background(logger, lang_code, raw_text, test_output_dir, time.time(), lt_url, output_dir_override=test_output_dir)
 
         # Find the output file - there should be only one
