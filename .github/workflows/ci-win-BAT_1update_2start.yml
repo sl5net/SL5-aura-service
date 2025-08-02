@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-windows-batch-scripts:
+  validate-windows-setup:
     runs-on: windows-latest
     steps:
       - name: Check out repository code
@@ -22,8 +22,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
-      - name: Restore assets from specific cache
+
+      - name: Cache models and tools
         uses: actions/cache@v4
         with:
           path: |
@@ -34,9 +34,7 @@ jobs:
             ${{ runner.os }}-models-tools-
 
       - name: Run setup.bat
-        if: steps.assets-cache.outputs.cache-hit != 'true'
-        run: |
-          powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"      
+        run: cmd.exe /c "setup\windows11_setup.bat"
 
       - name: Run update.bat
         run: cmd.exe /c "call update.bat"

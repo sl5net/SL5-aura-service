@@ -53,7 +53,7 @@ class CallVisitor(ast.NodeVisitor):
             _add_call(node.func.attr)
 
         for arg in node.args + [kw.value for kw in node.keywords]:
-             if isinstance(arg, ast.Name):
+            if isinstance(arg, ast.Name):
                 _add_call(arg.id)
         self.generic_visit(node)
 

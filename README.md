@@ -102,9 +102,30 @@ if (f.openAppend()) {
         + '\n' + f.errorString()
     );
 }
-
-
 ```
+
+
+**Command for Windows use [AutoHotkey](https://AutoHotkey.com):**
+```sh
+; trigger-hotkeys.ahk
+; AutoHotkey v2 Skript
+#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+
+;===================================================================
+; Hotkey zum Auslösen des STT Triggers
+; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+;===================================================================
+f9::
+f10::
+f11::
+{
+    local TriggerFile := "c:\tmp\sl5_record.trigger"
+    FileAppend("t", TriggerFile)
+    ToolTip("STT Trigger ausgelöst!")
+    SetTimer(() => ToolTip(), -1500)
+}
+```
+
 
 ### 3. Start Dictating!
 Click in any text field, press your hotkey, and a "Listening..." notification will appear. Speak clearly, then pause. The corrected text will be typed for you.

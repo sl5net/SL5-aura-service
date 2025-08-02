@@ -1,3 +1,6 @@
+# tools/download_all_packages.py
+from os import remove
+
 import requests
 import hashlib
 import os
@@ -11,9 +14,18 @@ REPO = "Vosk-System-Listener"
 TAG = "v0.2.0"
 API_URL = f"https://api.github.com/repos/{OWNER}/{REPO}/releases/tags/{TAG}"
 
+remove_parts = False
+
 # --- Helper Functions (Unchanged) ---
 
-def download_file(url, filepath):
+def download_file(url, filepath, do_overwrite=False):
+    """
+    Downloads a file with a progress bar, with an option to skip if it already exists.
+    """
+    if os.path.exists(filepath) and not do_overwrite:
+        print(f"File '{os.path.basename(filepath)}' already exists. Skipping download.")
+        return True # Return True because the required file is present.
+
     try:
         response = requests.get(url, stream=True)
         response.raise_for_status()
@@ -62,7 +74,7 @@ def verbose_discovery(assets):
     for asset in checksum_assets:
         base_name = asset['name'].replace('.sha256sums.txt', '')
         packages[base_name]['checksum_asset'] = asset
-        print(f"  ✅ Found definition for package: '{base_name}'")
+        print(f"   [OK]  Found definition for package: '{base_name}'")
 
     print("\n[Step 2] Searching for part files (*.part.aa, etc)...")
     part_assets = [a for a in assets if '.part.' in a['name']]
@@ -87,16 +99,16 @@ def verbose_discovery(assets):
                 # Check for: _vosk-model-de-0.21.zip.part.
                 if f"_{base_name.lower()}.part." in asset_name_lower:
                     packages[base_name]['part_assets'].append(asset)
-                    print(f"  ✅ Matched '{asset['name']}' to package '{base_name}'")
+                    print(f"   [OK]  Matched '{asset['name']}' to package '{base_name}'")
                     matched = True
                     break
         if not matched:
-            print(f"  ⚠️  Warning: Could not match part file '{asset['name']}' to any known package.")
+            print(f"   [WARN]  Warning: Could not match part file '{asset['name']}' to any known package.")
 
     print("--- Discovery Complete ---\n")
     return packages
 
-def process_package(base_name, package_files):
+def process_package(base_name, package_files, remove_parts):
     print("="*60)
     print(f"Processing Package: {base_name}")
     print("="*60)
@@ -118,7 +130,7 @@ def process_package(base_name, package_files):
 
     final_merged_filename = final_zip_entries[0]
     final_zip_hash = official_hashes[final_merged_filename]
-    print(f"  ✅ Deduced final filename from manifest: '{final_merged_filename}'")
+    print(f"   [OK]  Deduced final filename from manifest: '{final_merged_filename}'")
 
     print(f"\n--- Step B: Downloading and Verifying {len(part_assets)} Parts ---")
     downloaded_parts = []
@@ -129,16 +141,24 @@ def process_package(base_name, package_files):
         if not expected_hash:
             print(f"Warning: No hash for {part_name} in checksum file. Skipping.")
             continue
-        while True:
-            if not download_file(asset['browser_download_url'], part_name): return False
+
+        max_retries = 3
+        for attempt in range(max_retries):
+            if not download_file(asset['browser_download_url'], part_name):
+                return False # Direkter Abbruch bei Download-Fehler
+
             actual_hash = calculate_sha256(part_name)
             if actual_hash == expected_hash:
-                print(f"✅ OK: {part_name}\n")
+                print(f" [OK]  OK: {part_name}\n")
                 downloaded_parts.append(part_name)
-                break
+                break  # Erfolgreich, innere Schleife verlassen
             else:
-                print(f"❌ FAILED: Hash mismatch for {part_name}. Retrying...")
+                print(f"❌ FAILED: Hash mismatch for {part_name} on attempt {attempt + 1}/{max_retries}. Retrying...")
                 os.remove(part_name)
+        else: # Diese else gehört zur for-Schleife! Wird nur ausgeführt, wenn die Schleife NICHT per break beendet wurde.
+            print(f"[XXXX] CRITICAL: Failed to verify {part_name} after {max_retries} attempts. Aborting.")
+            return False
+
 
     print(f"\n--- Step C: Merging and Verifying Final File: {final_merged_filename} ---")
     with open(final_merged_filename, 'wb') as f_out:
@@ -149,13 +169,14 @@ def process_package(base_name, package_files):
     print(f"  Official Hash: {final_zip_hash}")
     print(f"  Computed Hash: {final_actual_hash}")
     if final_actual_hash == final_zip_hash:
-        print(f"\n🎉 SUCCESS! Package '{final_merged_filename}' is correct.")
-        for part in downloaded_parts: os.remove(part)
-        os.remove(checksum_filename)
-        print("Cleaned up intermediate files.")
+        print(f"\n[<3]  SUCCESS! Package '{final_merged_filename}' is correct.")
+        if remove_parts:
+            for part in downloaded_parts: os.remove(part)
+            os.remove(checksum_filename)
+            print("Cleaned up intermediate files.")
         return True
     else:
-        print(f"\n💥 CRITICAL FAILURE! Merged file '{final_merged_filename}' is corrupt.")
+        print(f"\n[XXXXX]  CRITICAL FAILURE! Merged file '{final_merged_filename}' is corrupt.")
         return False
 
 def main():
@@ -181,7 +202,7 @@ def main():
 
     all_successful = True
     for base_name, files in valid_packages.items():
-        if not process_package(base_name, files):
+        if not process_package(base_name, files, remove_parts):
             all_successful = False
 
     print("\n" + "#"*60)

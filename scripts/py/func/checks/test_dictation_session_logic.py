@@ -3,8 +3,7 @@
 import unittest
 import unittest.mock
 import wave
-import queue
-import threading
+# import queue
 import time
 import logging
 from pathlib import Path
@@ -66,8 +65,8 @@ class TestDictationLogic(unittest.TestCase):
 
         # Load the model once for all tests in this class
         if not hasattr(self, 'model'):
-             self.assertTrue(Path(MODEL_PATH).exists(), f"Vosk model not found at {MODEL_PATH}")
-             self.model = vosk.Model(MODEL_PATH)
+            self.assertTrue(Path(MODEL_PATH).exists(), f"Vosk model not found at {MODEL_PATH}")
+            self.model = vosk.Model(MODEL_PATH)
 
 
     @unittest.mock.patch('scripts.py.func.transcribe_audio_with_feedback.sd.RawInputStream', new=MockRawInputStream)

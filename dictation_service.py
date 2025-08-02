@@ -2,6 +2,8 @@
 import os
 import sys, subprocess
 
+# Python path to ensure reliable imports on all platforms
+# This solves potential issues when running from a batch script on Windows
 
 
 # ==============================================================================
@@ -40,25 +42,24 @@ if 'VIRTUAL_ENV' not in os.environ:
 
 
 
-import sys, time, os, atexit, requests, logging, platform
+import sys, os, atexit, requests, logging, platform
 from pathlib import Path
 
 # --- Local Imports (grouped for clarity) ---
 from config.settings import (LANGUAGETOOL_RELATIVE_PATH,
                             USE_EXTERNAL_LANGUAGETOOL, EXTERNAL_LANGUAGETOOL_URL, LANGUAGETOOL_PORT,
-                            CRITICAL_THRESHOLD_MB, PRELOAD_MODELS,
                             DEV_MODE
                             )
 
 
 from scripts.py.func.main import main
-from scripts.py.func.notify import notify
-from scripts.py.func.cleanup import cleanup
-from scripts.py.func.start_languagetool_server import start_languagetool_server
-from scripts.py.func.stop_languagetool_server import stop_languagetool_server
-from scripts.py.func.check_memory_critical import check_memory_critical
+#from scripts.py.func.notify import notify
+#from scripts.py.func.cleanup import cleanup
+#from scripts.py.func.start_languagetool_server import start_languagetool_server
+#from scripts.py.func.stop_languagetool_server import stop_languagetool_server
+#from scripts.py.func.check_memory_critical import check_memory_critical
 # We need vosk here for the model loading
-import vosk
+# import vosk
 
 from scripts.py.func.create_required_folders import setup_project_structure
 
@@ -66,18 +67,26 @@ from scripts.py.func.create_required_folders import setup_project_structure
 
 # --- Constants and Paths ---
 SCRIPT_DIR = Path(__file__).resolve().parent
+
+
+PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
+
 # ==============================================================================
 # --- PRE-RUN SETUP VALIDATION ---
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 # We add the 'scripts' directory to the path to import our custom validator.
-sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
+
+# sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
+
 from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, check_for_frequent_calls
 
 from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
 
-from  scripts.py.func.checks.self_tester import run_core_logic_self_test
+# from  scripts.py.func.checks.self_tester import run_core_logic_self_test
 
-from  scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
-check_example_file_is_synced(SCRIPT_DIR)
 
 
 
@@ -94,7 +103,6 @@ check_example_file_is_synced(SCRIPT_DIR)
 
 
 
-PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 setup_project_structure(PROJECT_ROOT)
 
@@ -103,7 +111,7 @@ if platform.system() == "Windows":
 else:
     TMP_DIR = Path("/tmp")
 
-TRIGGER_FILE = TMP_DIR / "vosk_trigger"
+TRIGGER_FILE = TMP_DIR / "sl5_record.trigger"
 HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
 PIDFILE = TMP_DIR / "dictation_service.pid"
 LOG_FILE = PROJECT_ROOT / "log/dictation_service.log"
@@ -219,9 +227,9 @@ if DEV_MODE :
 from scripts.py.func.notify import notify
 from scripts.py.func.cleanup import cleanup
 from scripts.py.func.start_languagetool_server import start_languagetool_server
-from scripts.py.func.stop_languagetool_server import stop_languagetool_server
-from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
-from scripts.py.func.check_memory_critical import check_memory_critical
+# from scripts.py.func.stop_languagetool_server import stop_languagetool_server
+# from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
+# from scripts.py.func.check_memory_critical import check_memory_critical
 from scripts.py.func.stop_languagetool_server import stop_languagetool_server
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 
@@ -256,7 +264,7 @@ TRIGGER_FILE.unlink(missing_ok=True)
 
 # MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
 
-import scripts.py.func.guess_lt_language_from_model
+# import scripts.py.func.guess_lt_language_from_model
 
 # LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
 
@@ -292,11 +300,14 @@ if not start_languagetool_server:
     notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
     sys.exit(1)
 
+from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
 
-    from scripts.py.func.checks.integrity_checker import check_code_integrity # <--- NEU
-
+check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
 if DEV_MODE :
+    from scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
+    check_example_file_is_synced(SCRIPT_DIR)
+
     from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
     from scripts.py.func.checks.integrity_checker import check_code_integrity
 
@@ -310,7 +321,7 @@ if DEV_MODE :
     vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
     #MODEL_NAME = MODEL_NAME_DEFAULT
 
-    lang_code = guess_lt_language_from_model(vosk_model_from_file)
+    lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
     run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
     #sys.exit(1)
 

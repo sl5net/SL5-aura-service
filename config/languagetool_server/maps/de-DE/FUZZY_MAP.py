@@ -18,7 +18,7 @@ FUZZY_MAP = [
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, re.IGNORECASE),
 
     ('pull requests', r'\b(null|pull) requests\b', 82, re.IGNORECASE),
-    
+
     ('feature branch', r'\bFeature\s*prince\b', 82, re.IGNORECASE),
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, re.IGNORECASE),
     ('Branch Name', r'\bRanch\s*Namen\b', 82, re.IGNORECASE),
@@ -28,6 +28,13 @@ FUZZY_MAP = [
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, re.IGNORECASE),
     ('StopButton', r'\bstob\s*Button\b', 82, re.IGNORECASE),
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
+
+    ('AutoKey', r'\bAuto k\b', 82, re.IGNORECASE),
+
+
+    ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
+    ('Sigune Lauffer', r'\b(Figur|Sekunde) (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
+
     ('Lauffer', r'\b(Läufer|laufer)\b', 82, re.IGNORECASE), # Exact match, but ignore case
 
     # === Git Commands (Consolidated & Case-Insensitive) ===
@@ -41,12 +48,17 @@ FUZZY_MAP = [
     # This one regex replaces over 15 old entries!
     ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
 
+
+
     # --- git commit ---
-    ('git commit', r'^\s*(Geht|git|mit) (komm|Commit)\s*$', 80, re.IGNORECASE),
+
+    ('git commit ', r'^\s*Geht komm Commit\s*$', 80, re.IGNORECASE),
+
+    ('git commit ', r'^\s*(Geht|git|mit) (komm|Commit)\s*$', 80, re.IGNORECASE),
 
 
-    ('git commit', r'^\s*(git|mit) komm\s*mit\s*$', 80, re.IGNORECASE),
-    ('git commit', r'^\s*womit\s*$', 85, re.IGNORECASE),
+    ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, re.IGNORECASE),
+    ('git commit ', r'^\s*womit\s*$', 85, re.IGNORECASE),
     ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, re.IGNORECASE),
     ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme)\s*$"', 80, re.IGNORECASE),
     # Gilt komme komme

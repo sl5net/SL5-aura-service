@@ -1,3 +1,9 @@
+# LanguageTool
+
+prüfen:
+
+java -jar C:\tmp\STT\LanguageTool-6.6\languagetool-server.jar --port 8082
+
 # Meine Taste für die Aufnahme funktioniert nicht mehr
 
 Haben sie das Betriebssystem oder den Computer gewechselt?

@@ -5,7 +5,7 @@ import json
 import time
 from pathlib import Path
 
-from config.settings import SAMPLE_RATE, TRIGGER_FILE_PATH, SILENCE_TIMEOUT
+from config.settings import SAMPLE_RATE
 from scripts.py.func.notify import notify
 import sounddevice as sd
 
@@ -14,16 +14,19 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , session_active_event
                                    ):
 
-
     PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+    local_config_path = PROJECT_ROOT / "config/settings_local.py"
+    default_config_path = PROJECT_ROOT / "config/settings.py"
+    config_to_read = local_config_path if local_config_path.exists() else default_config_path
     try:
-        with open(PROJECT_ROOT / "config/settings_local.py", "r") as f:
+        with open(PROJECT_ROOT / config_to_read, "r") as f:
             for line in f:
                 if line.strip().startswith("PRE_RECORDING_TIMEOUT"):
                     initial_silence_timeout = float(line.split("=")[1].strip())
                 if line.strip().startswith("SILENCE_TIMEOUT"):
                     SILENCE_TIMEOUT = float(line.split("=")[1].strip())
                     break
+
     except (FileNotFoundError, ValueError, IndexError) as e:
         logger.warning(f"Could not read local config override ({e}), continuing with defaults.")
 
@@ -64,7 +67,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     is_speech_started = False
     current_timeout = initial_silence_timeout
     last_activity_time = time.time()  # Our independent activity clock.
-    session_stopped_manually = False
+    # session_stopped_manually = False
 
     try:
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,

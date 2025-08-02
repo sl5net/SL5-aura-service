@@ -87,11 +87,11 @@ LANGUAGETOOL_RELATIVE_PATH = "LanguageTool-6.6/languagetool-server.jar"
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 
-TRIGGER_FILE_PATH = "/tmp/vosk_trigger"
+TRIGGER_FILE_PATH = "/tmp/sl5_record.trigger"
 
 # Try to import user-specific overrides
 try:
-    from .settings_local import *
+    from .settings_local import * # noqa: F401,F403
     print("Loaded local config overrides.")
 except ImportError:
     pass # No local config found, using defaults.

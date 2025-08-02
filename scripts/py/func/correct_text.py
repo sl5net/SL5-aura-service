@@ -1,7 +1,7 @@
 # file script/py/func/correct_text
 import requests
 
-from config.settings import LANGUAGETOOL_BASE_URL
+# from config.settings import LANGUAGETOOL_BASE_URL
 
 def correct_text(logger, active_lt_url, LT_LANGUAGE, text: str) -> str:
     # LANGUAGETOOL_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check"

@@ -1,19 +1,132 @@
 # setup/windows11_setup.ps1
 
-
 # --- Make script location-independent ---
 $ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
 Set-Location -Path $ProjectRoot
-Write-Host "--> Running setup from project root: (Get-Location)"
+Write-Host "--> Running setup from project root: $(Get-Location)"
 
-# --- 0. Preamble ---
+
+
+
+
 $ErrorActionPreference = "Stop"
 
-Write-Host "--- Starting STT Setup for Windows CI ---"
+# Configuration: Set to $false to keep ZIP files after extraction
+$CleanupZipFiles = $false
+# --- 1. Admin Rights Check ---
+Write-Host "[*] Checking for Administrator privileges"
 
-# HINWEIS: Die Admin-Prüfung, Java-Installation, Python-Installation und alle
-# 'winget'-Aufrufe werden hier entfernt, da sie vom GitHub-Workflow (ci.yml)
-# übernommen werden oder weil die Tools (wie 7-Zip) bereits vorhanden sind.
+
+
+# Only check for admin rights if NOT running in a CI environment (like GitHub Actions)
+if ($env:CI -ne 'true') {
+    # Check if the current user is an Administrator
+    $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    if (-not $isAdmin) {
+        Write-Host "[ERROR] Administrator privileges are required. Re-launching..."
+        # Re-run the current script with elevated privileges for GitHub Actions
+        Start-Process -FilePath $PSCommandPath -Verb RunAs
+        # Exit the current (non-admin) script
+        exit
+    }
+}
+Write-Host "[SUCCESS] Running with Administrator privileges."
+
+
+
+
+
+# Only check for java if NOT running in a CI environment (like GitHub Actions)
+if ($env:CI -ne 'true')
+{
+    # --- 2. Java Installation Check ---
+    Write-Host "--> Checking Java installation..."
+    $JavaVersion = $null
+    try
+    {
+        $JavaOutput = & java -version 2>&1
+        if ($JavaOutput -match 'version "(\d+)\.')
+        {
+            $JavaVersion = [int]$matches[1]
+        }
+        elseif ($JavaOutput -match 'version "1\.(\d+)\.')
+        {
+            $JavaVersion = [int]$matches[1]
+        }
+    }
+    catch
+    {
+        Write-Host "    -> Java not found in PATH."
+    }
+
+    if ($JavaVersion -and $JavaVersion -ge 17)
+    {
+        Write-Host "    -> Java $JavaVersion detected. OK." -ForegroundColor Green
+    }
+    else
+    {
+        Write-Host "    -> Java 17+ not found. Installing OpenJDK 17..." -ForegroundColor Yellow
+        try
+        {
+            winget install --id Microsoft.OpenJDK.17 --silent --accept-source-agreements --accept-package-agreements
+            if ($LASTEXITCODE -eq 0)
+            {
+                Write-Host "    -> OpenJDK 17 installed successfully." -ForegroundColor Green
+                # Refresh PATH for current session
+                $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
+            }
+            else
+            {
+                Write-Host "ERROR: Failed to install OpenJDK 17. Please install manually." -ForegroundColor Red
+                # exit 1 # the script works anywas usuallly. dont exit here!
+            }
+        }
+        catch
+        {
+            Write-Host "ERROR: Failed to install Java. Please install Java 17+ manually." -ForegroundColor Red
+            exit 1
+        }
+    }
+}
+
+
+
+# --- 3. Python Installation Check ---
+Write-Host "--> Checking Python installation..."
+$PythonVersion = $null
+try {
+    $PythonOutput = & python --version 2>&1
+    if ($PythonOutput -match 'Python (\d+)\.(\d+)') {
+        $PythonMajor = [int]$matches[1]
+        $PythonMinor = [int]$matches[2]
+        if ($PythonMajor -eq 3 -and $PythonMinor -ge 8) {
+            $PythonVersion = "$PythonMajor.$PythonMinor"
+        }
+    }
+} catch {
+    Write-Host "    -> Python not found in PATH."
+}
+
+if ($PythonVersion) {
+    Write-Host "    -> Python $PythonVersion detected. OK." -ForegroundColor Green
+} else {
+    Write-Host "    -> Python 3.8+ not found. Installing Python 3.11..." -ForegroundColor Yellow
+    try {
+        winget install --id Python.Python.3.11 --silent --accept-source-agreements --accept-package-agreements
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "    -> Python 3.11 installed successfully." -ForegroundColor Green
+            # Refresh PATH for current session
+            $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
+        } else {
+            Write-Host "ERROR: Failed to install Python. Please install manually." -ForegroundColor Red
+            exit 1
+        }
+    } catch {
+        Write-Host "ERROR: Failed to install Python. Please install Python 3.8+ manually." -ForegroundColor Red
+        exit 1
+    }
+}
 
 # --- 3. Python Virtual Environment ---
 Write-Host "--> Creating Python virtual environment in '.\.venv'..."
@@ -23,131 +136,154 @@ if (-not (Test-Path -Path ".\.venv")) {
     Write-Host "    -> Virtual environment already exists. Skipping creation."
 }
 
-# --- 4. Python Requirements ---
+# --- 5. Python Requirements ---
 Write-Host "--> Installing Python requirements into the virtual environment..."
 .\.venv\Scripts\pip.exe install -r requirements.txt
 
 # --- 5. External Tools & Models (from Releases) ---
-Write-Host "--> Downloading external tools and models..."
-
-# Define URLs and checksums
-$ReleaseUrlBase = "https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1"
-
-$LtZip = "LanguageTool-6.6.zip"
-$LtUrl = "$($ReleaseUrlBase)/$($LtZip)"
-$LtSha256 = "53600506b399bb5ffe1e4c8dec794fd378212f14aaf38ccef9b6f89314d11631"
 $LtDir = "LanguageTool-6.6"
 
-$EnModelZip = "vosk-model-en-us-0.22.zip"
-$EnModelUrl = "$($ReleaseUrlBase)/$($EnModelZip)"
-$EnModelSha256 = "d410847b53faf1850f2bb99fb7a08adcb49dd236dcba66615397fe57a3cf68f5"
-$EnModelDir = "models\vosk-model-en-us-0.22"
-
-$DeModelZip = "vosk-model-de-0.21.zip"
-$DeModelUrl = "$($ReleaseUrlBase)/$($DeModelZip)"
-$DeModelSha256 = "fb45a53025a50830b16bcda94146f90e22166501bb3693b009cabed796dbaaa0"
-$DeModelDir = "models\vosk-model-de-0.21"
+# --- 6. External Tools & Models (using the robust Python downloader) ---
+Write-Host "--> Downloading external tools and models via Python downloader..."
 
 # Create the models directory before attempting to download files into it.
 New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
 
-# --- Download and Verify Function ---
-function Download-And-Verify {
-    param(
-        [string]$Url,
-        [string]$ZipFilePath,
-        [string]$ExpectedSha256,
-        [string]$ExtractDir,
-        [string]$FinalDirCheck
-    )
-    $MaxRetries = 3
-    $RetryCount = 0
+# Execute the downloader and check its exit code
+#  It downloads all required ZIPs to the project root.
+.\.venv\Scripts\python.exe tools/download_all_packages.py
 
-    if (-not (Test-Path $FinalDirCheck)) {
-        while ($RetryCount -lt $MaxRetries) {
-            $ZipFileName = Split-Path -Leaf $ZipFilePath
-            Write-Host "    -> Attempting to download $ZipFileName (Attempt $($RetryCount + 1)).."
-            try {
-                Invoke-WebRequest -Uri $Url -OutFile $ZipFilePath -UseBasicParsing
-                Write-Host "    -> Verifying checksum for $ZipFileName..."
-                $FileHash = (Get-FileHash $ZipFilePath -Algorithm SHA256).Hash.ToLower()
+# $LASTEXITCODE contains the exit code of the last program that was run.
+# 0 means success. Anything else is an error.
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "FATAL: The Python download script failed. Halting setup." -ForegroundColor Red
+    # Wir benutzen 'exit 1', um das ganze Skript sofort zu beenden.
+    exit 1
+}
 
-                if ($FileHash -eq $ExpectedSha256) {
-                    Write-Host "    -> Checksum OK. Extracting..." -ForegroundColor Green
-                    Expand-Archive -Path $ZipFilePath -DestinationPath $ExtractDir -Force
-                    Write-Host "    -> Cleaning up $ZipFileName..."
-                    Remove-Item $ZipFilePath
-                    return # Success
-                } else {
-                    Write-Host "    -> WARNING: Checksum mismatch for $ZipFileName!" -ForegroundColor Yellow
-                    Remove-Item $ZipFilePath # Clean up corrupted download
-                }
-            } catch {
-                Write-Host "    -> WARNING: Download for $ZipFileName failed: $($_.Exception.Message)" -ForegroundColor Yellow
-            }
+Write-Host "    -> Python downloader completed successfully." -ForegroundColor Green
 
-            $RetryCount++
-            if ($RetryCount -lt $MaxRetries) {
-                Write-Host "    -> Retrying in 2 seconds..."
-                Start-Sleep -Seconds 2
-            }
-        }
-        Write-Host "    -> FATAL: Failed to download and verify $ZipFileName after $MaxRetries attempts." -ForegroundColor Red
-        exit 1
-    } else {
-        Write-Host "    -> $(Split-Path -Leaf $FinalDirCheck) already exists. Skipping."
+# --- Now, extract the downloaded archives ---
+Write-Host "--> Extracting downloaded archives..."
+
+# Define archive mappings: ZipFile -> FinalDirectoryName -> DestinationPath
+$ArchiveConfig = @(
+    @{ Zip = "LanguageTool-6.6.zip"; Dir = "LanguageTool-6.6"; Dest = "." },
+    @{ Zip = "vosk-model-en-us-0.22.zip"; Dir = "vosk-model-en-us-0.22"; Dest = ".\models" },
+    @{ Zip = "vosk-model-small-en-us-0.15.zip"; Dir = "vosk-model-small-en-us-0.15"; Dest = ".\models" },
+    @{ Zip = "vosk-model-de-0.21.zip"; Dir = "vosk-model-de-0.21"; Dest = ".\models" }
+)
+
+
+$Prefix = "Z_"
+$BaseConfig = @(
+    @{ BaseName = "LanguageTool-6.6";              Dest = "." },
+    @{ BaseName = "vosk-model-en-us-0.22";         Dest = ".\models" },
+    @{ BaseName = "vosk-model-small-en-us-0.15";   Dest = ".\models" },
+    @{ BaseName = "vosk-model-de-0.21";            Dest = ".\models" }
+)
+$ArchiveConfig = $BaseConfig | ForEach-Object {
+    [PSCustomObject]@{
+        Zip  = "$($Prefix)$($_.BaseName).zip"
+        Dir  = $_.BaseName
+        Dest = $_.Dest
     }
 }
 
-# --- Execute Downloads ---
-Download-And-Verify -Url $LtUrl -ZipFilePath ".\$LtZip" -ExpectedSha256 $LtSha256 -ExtractDir "." -FinalDirCheck ".\$LtDir"
-Download-And-Verify -Url $EnModelUrl -ZipFilePath ".\models\$EnModelZip" -ExpectedSha256 $EnModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$EnModelDir"
-Download-And-Verify -Url $DeModelUrl -ZipFilePath ".\models\$DeModelZip" -ExpectedSha256 $DeModelSha256 -ExtractDir ".\models\" -FinalDirCheck ".\$DeModelDir"
 
 
 
-# --- Run language check script (get_lang.sh) ---
-Write-Host "INFO: Checking system language to download additional models if necessary..."
+
+# Function to extract and clean up
+function Expand-And-Cleanup {
+    param (
+        [string]$ZipFile,
+        [string]$DestinationPath,
+        [string]$ExpectedDirName,
+        [bool]$CleanupAfterExtraction
+    )
+
+    # Check if final directory already exists
+    $FinalFullPath = Join-Path -Path $DestinationPath -ChildPath $ExpectedDirName
+    if (Test-Path $FinalFullPath) {
+        Write-Host "    -> Directory '$ExpectedDirName' already exists. Skipping extraction."
+        return
+    }
+
+    # Look for the downloaded ZIP (Python script creates final ZIPs without Z_ prefix)
+    $FinalZipPath = Join-Path -Path $ProjectRoot -ChildPath $ZipFile
+
+    if (-not (Test-Path $FinalZipPath)) {
+        Write-Host "FATAL: Expected archive not found: '$FinalZipPath'" -ForegroundColor Red
+        Write-Host "       The Python download script should have created this file." -ForegroundColor Red
+        exit 1
+    }
+
+    Write-Host "    -> Extracting $ZipFile to $DestinationPath..."
+
+    Expand-Archive -Path $FinalZipPath -DestinationPath $DestinationPath -Force
+
+    if ($CleanupAfterExtraction) {
+        Remove-Item $FinalZipPath -Force
+        Write-Host "    -> Cleaned up ZIP file: $ZipFile"
+    } else {
+        Write-Host "    -> Keeping ZIP file: $ZipFile"
+    }
+}
+
+# Execute extraction for each archive
+foreach ($Config in $ArchiveConfig) {
+    Expand-And-Cleanup -ZipFile $Config.Zip -DestinationPath $Config.Dest -ExpectedDirName $Config.Dir -CleanupAfterExtraction $CleanupZipFiles
+}
+
+Write-Host "    -> Extraction and cleanup successful." -ForegroundColor Green
+
+# --- Run initial model setup ---
+Write-Host "INFO: Setting up initial models based on system language..."
 
 # Get the 2-letter language code (e.g., "de", "fr") from Windows
 $LangCode = (Get-Culture).Name.Substring(0, 2)
 
-# Define the path to the bash script
-$GetLangScriptPath = "$PSScriptRoot\..\scripts\sh\get_lang.sh"
+# Define the path to the Python script
+$SetupModelScriptPath = ".\scripts\py\func\setup_initial_model.py"
 
-# Execute the bash script via Git Bash and pass the detected language code as an argument
-# This requires bash.exe to be in the system's PATH, which Git for Windows does by default.
-& bash.exe $GetLangScriptPath $LangCode
+# Check if the Python script exists
+if (Test-Path $SetupModelScriptPath) {
+    Write-Host "    -> Running setup_initial_model.py with language code: $LangCode"
 
-Write-Host "INFO: Language check script finished."
+    # Execute the Python script with the detected language code
+    .\.venv\Scripts\python.exe $SetupModelScriptPath $LangCode
 
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "INFO: Initial model setup completed successfully." -ForegroundColor Green
+    } else {
+        Write-Host "WARNING: Initial model setup failed with exit code: $LASTEXITCODE" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "WARNING: Initial model setup script not found at: $SetupModelScriptPath" -ForegroundColor Yellow
+}
 
-
-
+# --- Create required directories ---
 $tmpPath = "C:\tmp"
 $sl5DictationPath = "C:\tmp\sl5_dictation"
-if (!(Test-Path $tmpPath)) {
-    New-Item -ItemType Directory -Path $tmpPath | Out-Null
-Write-Host "Created directory: $tmpPath"
-} else {
-    Write-Host "Directory already exists: $tmpPath"
-}
 
-if (!(Test-Path $sl5DictationPath)) {
-    New-Item -ItemType Directory -Path $sl5DictationPath | Out-Null
-Write-Host "Created directory: $sl5DictationPath"
-} else {
-    Write-Host "Directory already exists: $sl5DictationPath"
+@($tmpPath, $sl5DictationPath) | ForEach-Object {
+    if (!(Test-Path $_)) {
+        New-Item -ItemType Directory -Path $_ | Out-Null
+        Write-Host "Created directory: $_"
+    } else {
+        Write-Host "Directory already exists: $_"
+    }
 }
-
 
 # --- Create central config file ---
 Write-Host "--> Creating central config file..."
 $ConfigDir = Join-Path -Path $env:USERPROFILE -ChildPath ".config\sl5-stt"
 if (-not (Test-Path -Path $ConfigDir)) {
     Write-Host "    -> Creating config directory at $ConfigDir"
-    New-Item -ItemType Directory -Path $ConfigDir | Out-Null
+    New-Item -ItemType Directory -Path $ConfigDir -Force | Out-Null
 }
+
 # Korrigiert, um Backslashes für Windows zu verwenden und dann für TOML zu normalisieren
 $ProjectRootPath = (Get-Location).Path
 $ConfigContent = @"
@@ -157,15 +293,25 @@ project_root = "$($ProjectRootPath.Replace('\', '/'))"
 $ConfigFile = Join-Path -Path $ConfigDir -ChildPath "config.toml"
 Set-Content -Path $ConfigFile -Value $ConfigContent
 
-# --- 6. Project Configuration ---
+# --- 9. Project Configuration ---
 Write-Host "--> Creating Python package markers (__init__.py)..."
-New-Item -Name "log" -Type Directory
-New-Item -Path "log/__init__.py" -ItemType File -Force | Out-Null
-New-Item -Path "config/__init__.py" -ItemType File -Force | Out-Null
-New-Item -Path "config/languagetool_server/__init__.py" -ItemType File -Force | Out-Null
 
-# --- 7. Completion ---
+# Create log directory if it doesn't exist
+if (-not (Test-Path "log")) {
+    New-Item -Name "log" -ItemType Directory | Out-Null
+}
+
+# Create __init__.py files
+@("log/__init__.py", "config/__init__.py", "config/languagetool_server/__init__.py") | ForEach-Object {
+    $Directory = Split-Path -Path $_ -Parent
+    if ($Directory -and (-not (Test-Path $Directory))) {
+        New-Item -ItemType Directory -Path $Directory -Force | Out-Null
+    }
+    New-Item -Path $_ -ItemType File -Force | Out-Null
+}
+
+# --- 10. Completion ---
 Write-Host ""
 Write-Host "------------------------------------------------------------------" -ForegroundColor Green
-Write-Host "CI Setup for Windows completed successfully." -ForegroundColor Green
+Write-Host "Setup for Windows completed successfully." -ForegroundColor Green
 Write-Host "------------------------------------------------------------------" -ForegroundColor Green
