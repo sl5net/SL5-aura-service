@@ -39,6 +39,8 @@ temp*
 # But DO NOT ignore requirements.txt
 !requirements.txt
 !requirements-dev.txt
+!doc_sources
+!doc_sources/**/*.rst
 
 _build/
 docs_old/

@@ -95,4 +95,9 @@ FUZZY_MAP_pre = [
 
     # --- git diff ---
     ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, re.IGNORECASE),
+
+    ('.gitignore', r'^\s*(Kritik knurren|Kritik Noah|Kritiken|kitte Knorr|Kritik Knorr)\s*$', 75, re.IGNORECASE),
+
+
+
 ]
