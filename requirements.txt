@@ -10,3 +10,4 @@ sounddevice==0.5.2
 thefuzz==0.22.1
 vosk==0.3.45
 watchdog==6.0.0
+webrtcvad_wheels==2.0.14
