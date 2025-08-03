@@ -23,14 +23,14 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
             for line in f:
                 if line.strip().startswith("PRE_RECORDING_TIMEOUT"):
                     initial_silence_timeout = float(line.split("=")[1].strip())
-                if line.strip().startswith("SILENCE_TIMEOUT"):
-                    SILENCE_TIMEOUT = float(line.split("=")[1].strip())
+                if line.strip().startswith("SPEECH_PAUSE_TIMEOUT"):
+                    SPEECH_PAUSE_TIMEOUT = float(line.split("=")[1].strip())
                     break
 
     except (FileNotFoundError, ValueError, IndexError) as e:
         logger.warning(f"Could not read local config override ({e}), continuing with defaults.")
 
-    logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SILENCE_TIMEOUT}")
+    logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")
 
     q = queue.Queue()
     # manual_stop_trigger = Path(TRIGGER_FILE_PATH)
@@ -108,8 +108,8 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                     # Switch to the shorter timeout as soon as any speech is detected.
                     if not is_speech_started and partial_result.get('partial'):
                         is_speech_started = True
-                        current_timeout = SILENCE_TIMEOUT
-                        logger.info(f"Speech detected. Switched to main SILENCE_TIMEOUT: {current_timeout}s.")
+                        current_timeout = SPEECH_PAUSE_TIMEOUT
+                        logger.info(f"Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: {current_timeout}s.")
 
                 except queue.Empty:
                     pass
@@ -123,6 +123,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                     last_activity_time = time.time()
                     graceful_shutdown_initiated = True  # Mark as handled.
 
+                    if current_timeout > 2:
+                        current_timeout = 2.0 # Set a short, final timeout
+                    logger.info(f"Graceful shutdown initiated. Final timeout set to {current_timeout}s.")
+
                 # 2. Check for timeout. This check now works correctly because the
                 #    timer has been reset on manual stop.
                 if time.time() - last_activity_time > current_timeout:
@@ -135,4 +139,3 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
         final_chunk = json.loads(recognizer.FinalResult())
         if final_chunk.get('text'):
             yield final_chunk.get('text')
-
