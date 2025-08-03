@@ -92,10 +92,8 @@ def process_text_in_background(logger,
             for replacement, match_phrase, threshold, *flags_list in fuzzy_map_pre:
                 flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
 
-
                 if is_regex_pattern(match_phrase):
                     logger.debug(f" '👀pre -->{match_phrase}<-- 👀")
-
 
                 regex_pre_is_replacing_all_maybe = match_phrase.startswith('^') and match_phrase.endswith('$')
 
@@ -112,7 +110,7 @@ def process_text_in_background(logger,
 
                         if new_text != processed_text:
                             logger.info(
-                                f"Regex_pre match: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
+                                f"🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
                             processed_text = new_text
 
                         regex_match_found_prev = True
@@ -123,7 +121,11 @@ def process_text_in_background(logger,
                     logger.warning(f"Invalid regex_pre pattern in FUZZY_MAP_pre: '{match_phrase}'. Error: {e}")
                     continue # Skip this invalid rule
 
-                regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe and regex_match_found_prev
+                if regex_pre_is_replacing_all:
+                    logger.info('lkjöasldkfjsödl')
+                    exit(1)
+
+            regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe and regex_match_found_prev
 
             if (not regex_pre_is_replacing_all
                 and not (
@@ -145,39 +147,41 @@ def process_text_in_background(logger,
             # Pass 1: Prioritize and check for exact REGEX matches first.
             # A regex match is considered definitive and will stop further processing.
             regex_match_found = False
-            for replacement, match_phrase, threshold, *flags_list in fuzzy_map:
-                flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
+
+            if not regex_pre_is_replacing_all:
+                for replacement, match_phrase, threshold, *flags_list in fuzzy_map:
+                    flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
 
 
-                if is_regex_pattern(match_phrase):
-                    logger.debug(f" '👀 -->{match_phrase}<-- 👀")
+                    if is_regex_pattern(match_phrase):
+                        logger.debug(f" '👀 -->{match_phrase}<-- 👀")
 
-                    try:
-                        if re.search(match_phrase, processed_text, flags=flags):
-                            logger.info(f"🔁Regex in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
+                        try:
+                            if re.search(match_phrase, processed_text, flags=flags):
+                                logger.info(f"🔁Regex in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
 
-                            new_text = re.sub(
-                                match_phrase,
-                                replacement.strip(),
-                                processed_text,
-                                flags=flags
-                            )
+                                new_text = re.sub(
+                                    match_phrase,
+                                    replacement.strip(),
+                                    processed_text,
+                                    flags=flags
+                                )
 
-                            if new_text != processed_text:
-                                logger.info(
-                                    f"Regex match: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
-                                processed_text = new_text
+                                if new_text != processed_text:
+                                    logger.info(
+                                        f"Regex match: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
+                                    processed_text = new_text
 
-                            regex_match_found = True
-                            break  # Found a definitive match, stop this loop
+                                regex_match_found = True
+                                break  # Found a definitive match, stop this loop
 
-                    except re.error as e:
-                        logger.warning(f"Invalid regex pattern in FUZZY_MAP: '{match_phrase}'. Error: {e}")
-                        continue # Skip this invalid rule
+                        except re.error as e:
+                            logger.warning(f"Invalid regex pattern in FUZZY_MAP: '{match_phrase}'. Error: {e}")
+                            continue # Skip this invalid rule
 
             # Pass 2: If no regex matched, perform the FUZZY search as before.
             # This code will only run if the loop above didn't find a regex match.
-            if not regex_match_found:
+            if not regex_pre_is_replacing_all and not regex_match_found:
                 logger.info(f"No regex match. Proceeding to fuzzy search for: '{processed_text}'")
                 best_score = 0
                 best_replacement = None
