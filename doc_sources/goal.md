@@ -15,7 +15,7 @@ Ein einziger Trigger startet eine **"Diktier-Sitzung"**, die aus drei Phasen bes
 
 3.  **Endphase (Ende der Sitzung):**
     *   Die gesamte Sitzung endet nur, wenn eine dieser beiden Bedingungen erfüllt ist:
-        *   Der Nutzer bleibt für die Dauer des `SILENCE_TIMEOUT` (z.B. 1-2s) komplett still.
+        *   Der Nutzer bleibt für die Dauer des `SPEECH_PAUSE_TIMEOUT` (z.B. 1-2s) komplett still.
         *   Der Nutzer stoppt die Sitzung manuell per Trigger.
 
 **Zusammengefasst:** Eine Sitzung, viele sofortige Textausgaben. Die Sitzung bleibt aktiv, bis der Nutzer eine längere Pause macht oder sie manuell beendet.
@@ -33,6 +33,6 @@ A single trigger initiates a **"Dictation Session"**, which consists of three ph
     *   The recording continues **seamlessly** in the background, waiting for the next utterance.
 3.  **Termination Phase (Ending the Session):**
     *   The entire session terminates only when one of two conditions is met:
-        *   The user remains completely silent for the duration of the `SILENCE_TIMEOUT` (e.g., 1-2s).
+        *   The user remains completely silent for the duration of the `SPEECH_PAUSE_TIMEOUT` (e.g., 1-2s).
         *   The user manually stops the session via the trigger.
 **In short:** One session, multiple immediate text outputs. The session remains active until the user takes a long pause or manually terminates it.

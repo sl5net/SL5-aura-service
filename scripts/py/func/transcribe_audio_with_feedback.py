@@ -9,6 +9,8 @@ from config.settings import SAMPLE_RATE
 from scripts.py.func.notify import notify
 import sounddevice as sd
 
+import webrtcvad  # NEU: Import für Voice Activity Detection
+
 def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , initial_silence_timeout
                                    , session_active_event
@@ -23,14 +25,21 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
             for line in f:
                 if line.strip().startswith("PRE_RECORDING_TIMEOUT"):
                     initial_silence_timeout = float(line.split("=")[1].strip())
-                if line.strip().startswith("SILENCE_TIMEOUT"):
-                    SILENCE_TIMEOUT = float(line.split("=")[1].strip())
+                if line.strip().startswith("SPEECH_PAUSE_TIMEOUT"):
+                    SPEECH_PAUSE_TIMEOUT = float(line.split("=")[1].strip())
                     break
 
     except (FileNotFoundError, ValueError, IndexError) as e:
         logger.warning(f"Could not read local config override ({e}), continuing with defaults.")
 
-    logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SILENCE_TIMEOUT}")
+    logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")
+
+    # --- NEU: VAD Initialisierung ---
+    vad = webrtcvad.Vad()
+    vad.set_mode(3)  # Wir starten mit dem sanftesten Modus (weniger aggressiv)
+    FRAME_DURATION_MS = 30  # VAD arbeitet am besten mit 10, 20 oder 30 ms Frames
+    FRAME_SIZE = int(SAMPLE_RATE * FRAME_DURATION_MS / 1000)
+    FRAME_BYTES = FRAME_SIZE * 2  # int16 = 2 bytes per sample
 
     q = queue.Queue()
     # manual_stop_trigger = Path(TRIGGER_FILE_PATH)
@@ -91,43 +100,63 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                     # Get data from the queue with a short timeout to keep the loop responsive.
                     data = q.get(timeout=0.1)
 
-                    # Feed the data to Vosk and check if it's considered speech.
-                    is_speech = recognizer.AcceptWaveform(data)
-                    if is_speech:
-                        last_activity_time = time.time()  # Reset clock
+                    # --- MODIFIZIERT: Voice Activity Detection mit webrtcvad ---
+                    # Wir prüfen den Audio-Chunk mit VAD, bevor wir ihn an Vosk geben.
+                    is_voice_active_in_chunk = False
+                    # Wir müssen den Chunk in VAD-kompatible Frames aufteilen
+                    for i in range(0, len(data), FRAME_BYTES):
+                        frame = data[i:i + FRAME_BYTES]
+                        if len(frame) == FRAME_BYTES:
+                            if vad.is_speech(frame, SAMPLE_RATE):
+                                is_voice_active_in_chunk = True
+                                break  # Stimme gefunden, Rest des Chunks irrelevant
+
+                    # Wir füttern die Daten immer an Vosk für die Transkription
+                    is_speech_finalized = recognizer.AcceptWaveform(data)
+
+                    if is_speech_finalized:
+                        last_activity_time = time.time()  # Aktivität bei finalem Ergebnis
                         result = json.loads(recognizer.Result())
                         if result.get('text'):
                             logger.info(f"--> Yielding chunk: '{result['text']}'")
                             yield result['text']
                     else:
-                        # Also reset clock on partial results to keep the session alive.
                         partial_result = json.loads(recognizer.PartialResult())
-                        if partial_result.get('partial'):
-                            last_activity_time = time.time()  # Reset clock
+                        # Aktivität, wenn VAD Stimme erkennt ODER Vosk ein Teilergebnis hat
+                        if is_voice_active_in_chunk or partial_result.get('partial'):
+                            last_activity_time = time.time()  # Aktivität erkannt, Timer zurücksetzen
 
-                    # Switch to the shorter timeout as soon as any speech is detected.
-                    if not is_speech_started and partial_result.get('partial'):
+                    # Timeout-Wechsel bei erster Aktivität
+                    if not is_speech_started and (is_voice_active_in_chunk or partial_result.get('partial')):
                         is_speech_started = True
-                        current_timeout = SILENCE_TIMEOUT
-                        logger.info(f"Speech detected. Switched to main SILENCE_TIMEOUT: {current_timeout}s.")
+                        current_timeout = SPEECH_PAUSE_TIMEOUT
+                        logger.info(f"Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: {current_timeout}s.")
 
                 except queue.Empty:
                     pass
 
-                # --- THIS IS THE MODIFIED EXIT LOGIC ---
+                    # --- MODIFIZIERT: Exit-Logik mit VAD-Modus-Wechsel ---
 
-                # 1. Check if a manual stop has been requested AND we haven't handled it yet.
-                if not session_active_event.is_set() and not graceful_shutdown_initiated:
-                    logger.info("Manual stop detected. Resetting activity clock for graceful shutdown.")
-                    # THIS IS THE KEY: Manually reset the timer one last time.
-                    last_activity_time = time.time()
-                    graceful_shutdown_initiated = True  # Mark as handled.
+                    # 1. Prüfen, ob manueller Stopp angefordert wurde
+                    if not session_active_event.is_set() and not graceful_shutdown_initiated:
+                        logger.info("Manual stop detected. Resetting activity clock for graceful shutdown.")
 
-                # 2. Check for timeout. This check now works correctly because the
-                #    timer has been reset on manual stop.
-                if time.time() - last_activity_time > current_timeout:
-                    logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")
-                    break
+                        # --- HIER IST DIE GEWÜNSCHTE ÄNDERUNG ---
+                        logger.info("Switching VAD mode to 1 (aggressive) for final voice detection.")
+                        vad.set_mode(1)
+                        # --- ENDE DER ÄNDERUNG ---
+
+                        last_activity_time = time.time()
+                        graceful_shutdown_initiated = True
+
+                        if current_timeout > 2:
+                            current_timeout = 2.0
+                        logger.info(f"Graceful shutdown initiated. Final timeout set to {current_timeout}s.")
+
+                    # 2. Prüfen auf Timeout
+                    if time.time() - last_activity_time > current_timeout:
+                        logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")
+                        break
 
     finally:
         # The finally block remains as is.
@@ -135,4 +164,3 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
         final_chunk = json.loads(recognizer.FinalResult())
         if final_chunk.get('text'):
             yield final_chunk.get('text')
-

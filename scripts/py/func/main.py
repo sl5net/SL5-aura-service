@@ -35,14 +35,14 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
     heartbeat_file = config["HEARTBEAT_FILE"]
     project_root = config["PROJECT_ROOT"]
 
-    SILENCE_TIMEOUT = config["SILENCE_TIMEOUT"]
+    SPEECH_PAUSE_TIMEOUT = config["SPEECH_PAUSE_TIMEOUT"]
 
     PRELOAD_MODELS = config["PRELOAD_MODELS"]
     CRITICAL_THRESHOLD_MB = config["CRITICAL_THRESHOLD_MB"]
 
 
-    if not SILENCE_TIMEOUT:
-        logger.error(f"SILENCE_TIMEOUT: '{SILENCE_TIMEOUT}' ")
+    if not SPEECH_PAUSE_TIMEOUT:
+        logger.error(f"SPEECH_PAUSE_TIMEOUT: '{SPEECH_PAUSE_TIMEOUT}' ")
 
     try:
         # --- UNIFIED LOGIC FOR ALL OS ---

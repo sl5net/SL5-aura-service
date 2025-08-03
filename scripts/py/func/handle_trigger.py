@@ -3,7 +3,7 @@ import threading
 import time
 import vosk
 
-from config.settings import PRE_RECORDING_TIMEOUT, SILENCE_TIMEOUT, SAMPLE_RATE
+from config.settings import PRE_RECORDING_TIMEOUT, SPEECH_PAUSE_TIMEOUT, SAMPLE_RATE
 
 from .model_manager import MODELS_LOCK
 
@@ -99,7 +99,7 @@ def handle_trigger(
             recognizer = vosk.KaldiRecognizer(model_object, SAMPLE_RATE)
             logger.info(f"Using model for lang '{lt_language}'.")
 
-            silence_timeout = PRE_RECORDING_TIMEOUT if not suspicious_events else SILENCE_TIMEOUT
+            silence_timeout = PRE_RECORDING_TIMEOUT if not suspicious_events else SPEECH_PAUSE_TIMEOUT
 
             text_chunk_iterator = transcribe_audio_with_feedback(
                 logger, recognizer, lt_language, silence_timeout, dictation_session_active
