@@ -36,7 +36,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
     # --- NEU: VAD Initialisierung ---
     vad = webrtcvad.Vad()
-    vad.set_mode(3)  # Wir starten mit dem sanftesten Modus (weniger aggressiv)
+    vad.set_mode(1)  # Wir starten mit dem sanftesten Modus (weniger aggressiv)
     FRAME_DURATION_MS = 30  # VAD arbeitet am besten mit 10, 20 oder 30 ms Frames
     FRAME_SIZE = int(SAMPLE_RATE * FRAME_DURATION_MS / 1000)
     FRAME_BYTES = FRAME_SIZE * 2  # int16 = 2 bytes per sample
