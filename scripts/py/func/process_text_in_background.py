@@ -126,7 +126,7 @@ def process_text_in_background(logger,
                 regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe and regex_match_found_prev
 
             if (not regex_pre_is_replacing_all
-                and not(
+                and not (
                             settings.CORRECTIONS_ENABLED["git"] and
                             ("git" in processed_text or "push" in processed_text))):
                 processed_text = correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, processed_text)
