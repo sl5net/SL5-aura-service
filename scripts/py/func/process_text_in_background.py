@@ -25,26 +25,31 @@ def load_maps_for_language(lang_code, logger):
         sys.path.insert(0, project_root)
 
     # e.g. 'maps.de.punctuation_map'
-    punc_module_path = f"config.languagetool_server.maps.{lang_code}.PUNCTUATION_MAP"
-    fuzzy_module_path = f"config.languagetool_server.maps.{lang_code}.FUZZY_MAP"
+    punc_module_path      = f"config.languagetool_server.maps.{lang_code}.PUNCTUATION_MAP"
+    fuzzy_module_path_pre = f"config.languagetool_server.maps.{lang_code}.FUZZY_MAP_pre"
+    fuzzy_module_path     = f"config.languagetool_server.maps.{lang_code}.FUZZY_MAP"
 
     punc_module = importlib.import_module(punc_module_path)
-    fuzzy_module = importlib.import_module(fuzzy_module_path)
+    fuzzy_module_pre = importlib.import_module(fuzzy_module_path_pre)
+    fuzzy_module     = importlib.import_module(fuzzy_module_path)
 
+    logger.info(f"💾 Fuzzy_pre: {fuzzy_module_path_pre}")
     logger.info(f"💾 Fuzzy: {fuzzy_module_path}")
 
     punctuation_map = punc_module.PUNCTUATION_MAP
-    fuzzy_map = fuzzy_module.FUZZY_MAP
+    fuzzy_map_pre   = fuzzy_module_pre.FUZZY_MAP_pre
+    fuzzy_map       = fuzzy_module.FUZZY_MAP
+
 
     # log.info(f"Successfully loaded command maps for language '{lang_code}'.")
-    return punctuation_map, fuzzy_map
+    return punctuation_map, fuzzy_map_pre, fuzzy_map
 """
     except (ModuleNotFoundError, AttributeError) as e:
         # log.warning(f"Could not load maps for '{lang_code}': {e}. Using empty maps.")
         return {}, [] # Fallback empty maps
 """
 
-from .correct_text import correct_text
+from .correct_text_by_languagetool import correct_text_by_languagetool
 import re, time
 from thefuzz import fuzz
 from .notify import notify
@@ -62,17 +67,69 @@ def process_text_in_background(logger,
                                recording_time,
                                active_lt_url,
                               output_dir_override = None):
-    punctuation_map, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
+    punctuation_map, fuzzy_map_pre, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
     try:
         raw_text = raw_text.lstrip('\uFEFF') # removes ZWNBSP/BOM at beginning
         logger.info(f"THREAD: Starting processing for: '{raw_text}'")
 
         notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
 
+        # lang_code = "DODO dummy"
+        # scripts/py/func/process_text_in_background.py
+        # fuzzy_map_poker_dc = 'config' / 'plugins' / 'poker' / 'dealers_choice.py'
+        #if settings.CORRECTIONS_ENABLED["poker_hotkeys"]:
+        #    map_path = fuzzy_map_poker_dc
+        #    processed_text, was_exact_match = normalize_punctuation(raw_text, map_path)
+
+
+        # scripts/py/func/process_text_in_background.py
         processed_text, was_exact_match = normalize_punctuation(raw_text, punctuation_map)
+
+        regex_match_found_prev = False
+        regex_pre_is_replacing_all = False
+
         if not was_exact_match:
-            if not settings.CORRECTIONS_ENABLED["git"] or "git" not in processed_text and "push" not in processed_text:
-                processed_text = correct_text(logger, active_lt_url, LT_LANGUAGE, processed_text)
+            for replacement, match_phrase, threshold, *flags_list in fuzzy_map_pre:
+                flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
+
+
+                if is_regex_pattern(match_phrase):
+                    logger.debug(f" '👀pre -->{match_phrase}<-- 👀")
+
+
+                regex_pre_is_replacing_all_maybe = match_phrase.startswith('^') and match_phrase.endswith('$')
+
+                try:
+                    if re.search(match_phrase, processed_text, flags=flags):
+                        logger.info(f"🔁Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
+
+                        new_text = re.sub(
+                            match_phrase,
+                            replacement.strip(),
+                            processed_text,
+                            flags=flags
+                        )
+
+                        if new_text != processed_text:
+                            logger.info(
+                                f"Regex_pre match: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
+                            processed_text = new_text
+
+                        regex_match_found_prev = True
+
+                        break  # Found a definitive match, stop this loop
+
+                except re.error as e:
+                    logger.warning(f"Invalid regex_pre pattern in FUZZY_MAP_pre: '{match_phrase}'. Error: {e}")
+                    continue # Skip this invalid rule
+
+                regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe and regex_match_found_prev
+
+            if (not regex_pre_is_replacing_all
+                and not(
+                            settings.CORRECTIONS_ENABLED["git"] and
+                            ("git" in processed_text or "push" in processed_text))):
+                processed_text = correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, processed_text)
 
 
             # Step 2: Slower, fuzzy replacements on the result
@@ -90,11 +147,14 @@ def process_text_in_background(logger,
             regex_match_found = False
             for replacement, match_phrase, threshold, *flags_list in fuzzy_map:
                 flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
+
+
                 if is_regex_pattern(match_phrase):
+                    logger.debug(f" '👀 -->{match_phrase}<-- 👀")
 
                     try:
                         if re.search(match_phrase, processed_text, flags=flags):
-                            logger.info(f"Regex match found: Replacing '{processed_text}' with '{replacement}' based on pattern '{match_phrase}'")
+                            logger.info(f"🔁Regex in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
 
                             new_text = re.sub(
                                 match_phrase,
@@ -134,10 +194,10 @@ def process_text_in_background(logger,
                         best_replacement = replacement
 
                 if best_replacement:
-                    logger.info(f"Fuzzy match found: Replacing '{processed_text}' with '{best_replacement}' (Score: {best_score})")
+                    logger.info(f"🎊{best_score}% Fuzzy found: Replacing '{processed_text}' with '{best_replacement}'")
                     processed_text = best_replacement.strip()
                 else:
-                    logger.info(f"No fuzzy match found for '{processed_text}'")
+                    logger.info(f"🔳best fuzzy score:{best_score}% for '{processed_text}'")
 
             # --- ENDE DER KORRIGIERTEN LOGIK ---
 

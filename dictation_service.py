@@ -149,16 +149,23 @@ class WindowsEmojiFilter(logging.Filter):
     This prevents UnicodeEncodeError on older console environments.
     """
     def __init__(self):
+        # Emojy resources: .venv/lib/python3.13/site-packages/rich/_emoji_codes.py
         super().__init__()
         self.replacements = {
             '⚠️': '[WARN]',
             '✅': '[OK]',
             '👍': '[OK]',
+            '🎊': 'CONFETTI',
             '❌': '[FAIL]',
             '🎬': '[START]',
             '⏹️': '[STOP]',
             '🎤': '[MIC]',
-            '💾': '[▀▄▀]'
+            '💾': '[▀▄▀]',
+            '📋': '[EMPTY]',
+            '🔳': '[NOTHING]',
+            "👀": '[EYES]',
+            '🚀': '[ROCKET]',
+         '🔁':'REPLACE'
         }
 
     def filter(self, record):

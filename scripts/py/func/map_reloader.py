@@ -21,11 +21,13 @@ def auto_reload_modified_maps(logger):
                 continue # __init__.py-Dateien ignorieren
 
             map_file_key = str(map_file_path)
+
             current_mtime = os.path.getmtime(map_file_key)
             last_mtime = LAST_MODIFIED_TIMES.get(map_file_key, 0)
 
             if current_mtime > last_mtime:
-                logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
+                if last_mtime != 0:
+                    logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
 
                 relative_path = map_file_path.relative_to(project_root)
                 module_path = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
