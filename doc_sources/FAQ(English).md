@@ -96,3 +96,39 @@ A: Accuracy depends on both your setup and software customization.
     *   **Benefit:** This allows you to "teach" the software your specific technical jargon, product names, abbreviations, or even create rule-sets for unique vocabularies. By customizing these maps, you can significantly improve accuracy for your specific use case.
 
 
+
+
+### Architectural Deep Dive: Achieving Continuous "Walkie-Talkie" Style Recording
+
+Our dictation service implements a robust, state-driven architecture to provide a seamless, continuous recording experience, akin to using a walkie-talkie. The system is always ready to capture audio, but only processes it when explicitly triggered, ensuring high responsiveness and low resource usage.
+
+This is achieved by decoupling the audio listening loop from the processing thread and managing the system state with two key components: an `active_session` event flag and our `audio_manager` for OS-level microphone control.
+
+**The State Machine Logic:**
+
+The system operates in a perpetual loop, managed by a single hotkey that toggles between two primary states:
+
+1.  **LISTENING State (Default/Ready):**
+    *   **Condition:** The `active_session` flag is `False`.
+    *   **Mic Status:** The microphone is **unmuted** via `unmute_microphone()`. The Vosk listener is active and waiting for audio input.
+    *   **Action:** When the user presses the hotkey, the state transitions. The `active_session` flag is set to `True`, signaling the start of a "real" dictation.
+
+2.  **PROCESSING State (User has finished speaking):**
+    *   **Condition:** The user presses the hotkey while the `active_session` flag is `True`.
+    *   **Mic Status:** The **first action** is to immediately **mute** the microphone via `mute_microphone()`. This instantly stops the audio stream to the Vosk engine.
+    *   **Action:**
+        *   The `active_session` flag is set to `False`.
+        *   The final recognized audio chunk is retrieved from Vosk.
+        *   The processing thread is launched with this final text.
+        *   Crucially, within a `finally` block, the processing thread executes `unmute_microphone()` upon completion.
+
+**The "Magic" of the Unmute Signal:**
+
+The key to the endless loop is the final `unmute_microphone()` call. As soon as the processing of dictation `A` is finished and the microphone is unmuted, the system automatically and instantly reverts to the **LISTENING** state. The Vosk listener, which was patiently waiting, immediately starts receiving audio again, ready to capture dictation `B`.
+
+This creates a highly responsive cycle:
+`Press -> Speak -> Press -> (Mute & Process) -> (Unmute & Listen)`
+
+This architecture ensures that the microphone is only ever muted for the brief duration of text processing, making the system feel instantaneous to the user while maintaining robust control and preventing runaway recordings.
+
+
