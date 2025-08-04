@@ -83,7 +83,14 @@ def process_text_in_background(logger,
 
 
         # scripts/py/func/process_text_in_background.py
+        normalize_punctuation_changed_size = False
         processed_text, was_exact_match = normalize_punctuation(raw_text, punctuation_map)
+        if len(processed_text) != len(raw_text):
+            normalize_punctuation_changed_size = True
+
+        if normalize_punctuation_changed_size:
+            # Entfernt Leerzeichen nur, wenn sie zwischen zwei Ziffern stehen
+            processed_text = re.sub(r'(?<=\d)\s+(?=\d)', '', processed_text)
 
         regex_match_found_prev = False
         regex_pre_is_replacing_all = False
@@ -131,10 +138,14 @@ def process_text_in_background(logger,
                 and not (
                             settings.CORRECTIONS_ENABLED["git"] and
                             ("git" in processed_text or "push" in processed_text))):
-                processed_text = correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, processed_text)
+                processed_text = correct_text_by_languagetool(
+                    logger,
+                    active_lt_url,
+                    LT_LANGUAGE,
+                    processed_text).lstrip('\uFEFF')
 
-
-            # Step 2: Slower, fuzzy replacements on the result
+#  1 2 3 4 5
+                # Step 2: Slower, fuzzy replacements on the result
             # logger.info(f"DEBUG: Starting fuzzy match for: '{processed_text}'")
 
             best_score = 0
@@ -148,7 +159,7 @@ def process_text_in_background(logger,
             # A regex match is considered definitive and will stop further processing.
             regex_match_found = False
 
-            if not regex_pre_is_replacing_all:
+            if regex_pre_is_replacing_all == False:
                 for replacement, match_phrase, threshold, *flags_list in fuzzy_map:
                     flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
 
@@ -201,9 +212,8 @@ def process_text_in_background(logger,
                     logger.info(f"🎊{best_score}% Fuzzy found: Replacing '{processed_text}' with '{best_replacement}'")
                     processed_text = best_replacement.strip()
                 else:
-                    logger.info(f"🔳best fuzzy score:{best_score}% for '{processed_text}'")
+                    logger.info(f"👎best fuzzy score:{best_score}% for '{processed_text}'")
 
-            # --- ENDE DER KORRIGIERTEN LOGIK ---
 
 
 

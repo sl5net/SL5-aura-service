@@ -1,4 +1,4 @@
-# config/languagetool_server/maps/de-DE/FUZZY_MAP.py
+# config/languagetool_server/maps/de-DE/FUZZY_MAP_pr.py
 import re
 
 # This map uses a hybrid approach:
@@ -14,15 +14,17 @@ FUZZY_MAP_pre = [
     # Importing to know:
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
+
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
+    ('Wannweil', r'\b(wen\s*Welpe)\b', 82, re.IGNORECASE),
 
-
-#    ('.', r'^\s*(punkt|pup)\s*$', 82, re.IGNORECASE),
-
-
-#    ('zwei', r'ein|eins', 60, re.IGNORECASE),
-#    ('drei', r'zwei', 60, re.IGNORECASE),
+    ('Wannweil', r'\b(wen\s*Welpe)\b', 82, re.IGNORECASE),
+    # ('Wannweil', r'^\s*(wann weil|Ran weil)\s*$', 82, re.IGNORECASE),
+    ('Wannweil', r'^\s*(Wannweil|Annweiler|wann\s*weil|Wann\s*wann\s*weil|Wann\s*war\s*Herr|Wann\s*war\s*er|An\s*weil|Wann\s*weine\w*|Wann\s*wein)\s*$', 70, re.IGNORECASE),
+#  wann weil
+# wann weil Wannweil Wannweil
+#  Sieben zwo acht zwo sieben
 
  #  zweis drei
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, re.IGNORECASE),

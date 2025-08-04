@@ -16,6 +16,9 @@ FUZZY_MAP_pre = [
     # - means first is most importend, lower rules maybe not get read.
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
+    ('Manjaro', r'\b(much whole|munchau|mon travel|Manchu|Much\s*whole)\b', 82, re.IGNORECASE),
+# Much whole Mon travel
+# One troll Michelle
 
 
 #    ('.', r'^\s*(punkt|pup)\s*$', 82, re.IGNORECASE),
@@ -29,6 +32,8 @@ FUZZY_MAP_pre = [
 
     ('pull requests', r'\b(null|pull) requests\b', 82, re.IGNORECASE),
 
+# bitte schreib mir denn geht kommen mit text'
+    ('git commit text', r'\b(geht kommen mit text)\b', 75, re.IGNORECASE),
 
 
     ('feature branch', r'\bFeature\s*prince\b', 82, re.IGNORECASE),

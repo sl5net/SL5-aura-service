@@ -155,6 +155,7 @@ class WindowsEmojiFilter(logging.Filter):
             '⚠️': '[WARN]',
             '✅': '[OK]',
             '👍': '[OK]',
+            '👎': '[NO]',
             '🎊': 'CONFETTI',
             '❌': '[FAIL]',
             '🎬': '[START]',
