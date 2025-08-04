@@ -7,6 +7,7 @@ from pathlib import Path
 
 from config.settings import SAMPLE_RATE
 from scripts.py.func.notify import notify
+from scripts.py.func.audio_manager import mute_microphone
 import sounddevice as sd
 
 import webrtcvad  # NEU: Import für Voice Activity Detection
@@ -139,6 +140,11 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
                     # 1. Prüfen, ob manueller Stopp angefordert wurde
                     if not session_active_event.is_set() and not graceful_shutdown_initiated:
+
+                        success = mute_microphone()
+                        if success:
+                            logger.info("--- Test action completed. ---")
+
                         logger.info("Manual stop detected. Resetting activity clock for graceful shutdown.")
 
                         # --- HIER IST DIE GEWÜNSCHTE ÄNDERUNG ---

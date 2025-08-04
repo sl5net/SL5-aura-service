@@ -16,6 +16,7 @@ FUZZY_MAP = [
     # - means first is most importend, lower rules maybe not get read.
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
+    ('Manjaro', r'\b(Manch paar|Mönche Euro)\b', 75, re.IGNORECASE),
 
 
 #    ('.', r'^\s*(punkt|pup)\s*$', 82, re.IGNORECASE),
@@ -28,6 +29,7 @@ FUZZY_MAP = [
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, re.IGNORECASE),
 
     ('pull requests', r'\b(null|pull) requests\b', 82, re.IGNORECASE),
+
 
 
 

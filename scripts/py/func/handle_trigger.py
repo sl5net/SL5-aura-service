@@ -14,6 +14,7 @@ active_transcription_thread = None
 from scripts.py.func.process_text_in_background import process_text_in_background
 from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
+from scripts.py.func.audio_manager import unmute_microphone
 
 
 def finalize_recording_session(logger):
@@ -53,6 +54,9 @@ def handle_trigger(
 
 
     # --- ACTION 2: START a new session ---
+
+    unmute_microphone()
+
     logger.info("🎬 Trigger received. Starting new dictation session.")
     dictation_session_active.set()
 
