@@ -141,17 +141,14 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
                     # 1. Prüfen, ob manueller Stopp angefordert wurde
                     if not session_active_event.is_set() and not graceful_shutdown_initiated:
+                        logger.info("Manual stop detected. Resetting activity clock for graceful shutdown.")
 
                         success = mute_microphone()
                         if success:
-                            logger.info("--- Test action completed. ---")
-
-                        logger.info("Manual stop detected. Resetting activity clock for graceful shutdown.")
-
-                        # --- HIER IST DIE GEWÜNSCHTE ÄNDERUNG ---
-                        logger.info("Switching VAD mode to 1 (aggressive) for final voice detection.")
-                        vad.set_mode(1)
-                        # --- ENDE DER ÄNDERUNG ---
+                            logger.info("🎤🚫 muted microphone ")
+                        else:
+                            logger.info("Switching VAD mode to 1 (aggressive) for final voice detection.")
+                            vad.set_mode(1)
 
                         last_activity_time = time.time()
                         graceful_shutdown_initiated = True
