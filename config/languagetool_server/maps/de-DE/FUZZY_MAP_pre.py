@@ -59,7 +59,7 @@ FUZZY_MAP_pre = [
     ('git status', r'^\s*(git|geht|gitter|kids|kate)\s+(status|staates|startet|dates)\s*$', 82, re.IGNORECASE),
 
     # --- git add . ---
-    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|kate|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
+    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
 
 
 
@@ -93,7 +93,7 @@ FUZZY_MAP_pre = [
     ('git push', r'^\s*(git|geht|gitter)\s*(busch|push)\s*$', 85, re.IGNORECASE),
 
     # --- git pull ---
-    ('git pull', r'^\s*(git|geht|gitter)\s*(pohl|pool)\s*$', 82, re.IGNORECASE),
+    ('git pull', r'^\s*(git|geht|quiet|gitter)\s*(pohl|pool)\s*$', 82, re.IGNORECASE),
     ('git pull', r'^\s*git\s*pull\s*$', 80, re.IGNORECASE),
 
     # --- git diff ---
