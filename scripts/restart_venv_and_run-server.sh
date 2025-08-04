@@ -41,6 +41,8 @@ else
     # Use -f to match the full command line, just like in pgrep.
     pkill -f "$SERVICE_NAME_MAIN"
     pkill -f "$SERVICE_NAME_WATCHER"
+    echo pkill -f "$SERVICE_NAME_MAIN"
+    echo pkill -f "$SERVICE_NAME_WATCHER"
 
     # --- Step 3: Reliably wait for BOTH processes to terminate ---
     echo -n "Waiting for all processes to shut down "
