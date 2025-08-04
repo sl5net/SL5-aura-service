@@ -4,10 +4,7 @@
 # Run this setup script from the project's root directory.
 #
 
-
 # --- Make script location-independent ---
-# This block ensures the script can be run from any directory.
-# It finds the project root directory and changes into it.
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
 cd "$PROJECT_ROOT"
@@ -15,21 +12,16 @@ cd "$PROJECT_ROOT"
 echo "--> Running setup from project root: $(pwd)"
 # --- End of location-independent block ---
 
-
-
-# Exit immediately if a command fails
 set -e
 
 echo "--- Starting STT Setup for Manjaro/Arch Linux ---"
 
 # setup/manjaro_arch_setup.sh
-
 # --- 1. System Dependencies ---
 echo "--> Checking for a compatible Java version (>=17)..."
 
 JAVA_OK=0
 if command -v java &> /dev/null; then
-    # Get major version (handle Java 8 and 9+)
     VERSION=$(java -version 2>&1 | awk -F[\".] '/version/ {print ($2 == "1") ? $3 : $2}')
     if [ "$VERSION" -ge 17 ]; then
         echo "    -> Found compatible Java version $VERSION. OK."
@@ -40,17 +32,13 @@ if command -v java &> /dev/null; then
 else
     echo "    -> No Java executable found."
 fi
-
 if [ "$JAVA_OK" -eq 0 ]; then
     echo "    -> Installing a modern JDK to satisfy the requirement..."
     sudo pacman -S --noconfirm --needed jdk-openjdk
 fi
-
 echo "--> Installing other core dependencies..."
 sudo pacman -S --noconfirm --needed \
     inotify-tools wget unzip portaudio xdotool
-
-
 
 # --- 2. Python Virtual Environment ---
 # We check if the venv directory exists before creating it.
@@ -65,10 +53,6 @@ fi
 # We call pip from the venv directly. This is more robust than sourcing 'activate'.
 echo "--> Installing Python requirements into the virtual environment..."
 ./.venv/bin/pip install -r requirements.txt
-
-
-
-
 
 # --- 4. Project Structure and Configuration ---
 echo "--> Setting up project directories and initial files..."
@@ -152,10 +136,6 @@ echo "    -> Extraction and cleanup successful."
 
 
 
-
-
-
-
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 # --- 5. Project Configuration ---
@@ -164,13 +144,15 @@ echo "--> Creating Python package markers (__init__.py)..."
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
 
-
-
+# --- User-Specific Configuration ---
+# This part is about user config, so it's fine for it to stay here.
 CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
 mkdir -p "$(dirname "$CONFIG_FILE")"
-echo "[paths]" > "$CONFIG_FILE"
-echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
-
+# Only write the file if it doesn't exist to avoid overwriting user settings
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "[paths]" > "$CONFIG_FILE"
+    echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
+fi
 
 # --- 6. Completion ---
 echo ""

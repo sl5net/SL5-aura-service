@@ -8,7 +8,6 @@ Write-Host "--> Running setup from project root: $(Get-Location)"
 
 
 
-
 $ErrorActionPreference = "Stop"
 
 # Configuration: Set to $false to keep ZIP files after extraction
@@ -142,16 +141,6 @@ Write-Host "--> Installing Python requirements into the virtual environment..."
 
 # --- 5. External Tools & Models (from Releases) ---
 $LtDir = "LanguageTool-6.6"
-
-
-
-
-
-
-
-
-
-
 
 
 

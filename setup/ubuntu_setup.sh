@@ -27,6 +27,11 @@ if command -v java &> /dev/null; then
         JAVA_OK=1
     fi
 fi
+
+
+
+
+
 if [ "$JAVA_OK" -eq 0 ]; then
     echo "    -> Installing a modern JDK (>=17)..."
     sudo apt-get update && sudo apt-get install -y openjdk-21-jdk
@@ -133,7 +138,13 @@ echo "    -> Extraction and cleanup successful."
 
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
-# --- 6. User-Specific Configuration ---
+# --- 5. Project Configuration ---
+# Ensures Python can treat 'config' directories as packages.
+echo "--> Creating Python package markers (__init__.py)..."
+touch config/__init__.py
+touch config/languagetool_server/__init__.py
+
+# --- User-Specific Configuration ---
 # This part is about user config, so it's fine for it to stay here.
 CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
 echo "--> Ensuring user config file exists at $CONFIG_FILE..."
@@ -144,7 +155,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 fi
 
-# --- 7. Completion ---
+# --- 6. Completion ---
 echo ""
 echo "--- Setup for Ubuntu is complete! ---"
 echo ""
