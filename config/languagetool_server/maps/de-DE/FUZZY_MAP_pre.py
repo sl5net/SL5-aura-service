@@ -66,10 +66,12 @@ FUZZY_MAP_pre = [
     # --- git commit ---
     #  Kate Commit einen  git commit
 
+    # ('git commit ', r'^\s*geht kommen\s*$', 80, re.IGNORECASE),
+
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*kate Commit\s*$', 80, re.IGNORECASE),
 
-    ('git commit ', r'^\s*Geht (Komet|kommend|Commit)\s*$', 80, re.IGNORECASE),
+    ('git commit ', r'^\s*Geht (Komet|kommen\w*|Commit)\s*$', 80, re.IGNORECASE),
 
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, re.IGNORECASE),
 
