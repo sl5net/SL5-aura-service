@@ -1,5 +1,21 @@
 # file config/languagetool_server/maps/en-US/PUNCTUATION_MAP.py
 PUNCTUATION_MAP = {
+
+    # Lowercase
+    'zero': '0', 'one': '1', 'two': '2', 'three': '3', 'four': '4',
+    'five': '5', 'six': '6', 'seven': '7', 'eight': '8', 'nine': '9',
+    'ten': '10', 'eleven': '11', 'twelve': '12', 'thirteen': '13',
+    'fourteen': '14', 'fifteen': '15', 'sixteen': '16', 'seventeen': '17',
+    'twenty': '20', 'thirty': '30', 'forty': '40', 'fifty': '50',
+    'sixty': '60', 'seventy': '70', 'eighty': '80', 'ninety': '90',
+    'hundred': '100', 'thousand': '1000',
+
+    # Capitalized
+    'Zero': '0', 'One': '1', 'Two': '2', 'Three': '3', 'Four': '4',
+    'Five': '5', 'Six': '6', 'Seven': '7', 'Eight': '8', 'Nine': '9',
+    'Ten': '10', 'Eleven': '11', 'Twelve': '12',
+
+
     'period': '.',
     'full stop': '.',
     'torch': '.',

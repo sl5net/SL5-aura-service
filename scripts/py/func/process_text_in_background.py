@@ -84,6 +84,7 @@ def process_text_in_background(logger,
 
         # scripts/py/func/process_text_in_background.py
         normalize_punctuation_changed_size = False
+        is_only_number = False
         processed_text, was_exact_match = normalize_punctuation(raw_text, punctuation_map)
         if len(processed_text) != len(raw_text):
             normalize_punctuation_changed_size = True
@@ -91,6 +92,8 @@ def process_text_in_background(logger,
         if normalize_punctuation_changed_size:
             # Entfernt Leerzeichen nur, wenn sie zwischen zwei Ziffern stehen
             processed_text = re.sub(r'(?<=\d)\s+(?=\d)', '', processed_text)
+
+            is_only_number =  processed_text.isdigit()
 
         regex_match_found_prev = False
         regex_pre_is_replacing_all = False
@@ -135,6 +138,7 @@ def process_text_in_background(logger,
             regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe and regex_match_found_prev
 
             if (not regex_pre_is_replacing_all
+                and not is_only_number
                 and not (
                             settings.CORRECTIONS_ENABLED["git"] and
                             ("git" in processed_text or "push" in processed_text))):
@@ -159,7 +163,7 @@ def process_text_in_background(logger,
             # A regex match is considered definitive and will stop further processing.
             regex_match_found = False
 
-            if regex_pre_is_replacing_all == False:
+            if not regex_pre_is_replacing_all and not is_only_number:
                 for replacement, match_phrase, threshold, *flags_list in fuzzy_map:
                     flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
 
@@ -192,7 +196,9 @@ def process_text_in_background(logger,
 
             # Pass 2: If no regex matched, perform the FUZZY search as before.
             # This code will only run if the loop above didn't find a regex match.
-            if not regex_pre_is_replacing_all and not regex_match_found:
+            if (not regex_pre_is_replacing_all
+                    and not regex_match_found
+                    and not is_only_number):
                 logger.info(f"No regex match. Proceeding to fuzzy search for: '{processed_text}'")
                 best_score = 0
                 best_replacement = None
