@@ -7,7 +7,7 @@ from pathlib import Path
 
 from config.settings import SAMPLE_RATE
 from scripts.py.func.notify import notify
-from scripts.py.func.audio_manager import mute_microphone
+from scripts.py.func.audio_manager import mute_microphone, unmute_microphone
 import sounddevice as sd
 
 import webrtcvad  # NEU: Import für Voice Activity Detection
@@ -16,6 +16,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , initial_silence_timeout
                                    , session_active_event
                                    ):
+    unmute_microphone()
 
     PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
     local_config_path = PROJECT_ROOT / "config/settings_local.py"
@@ -136,7 +137,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                 except queue.Empty:
                     pass
 
-                    # --- MODIFIZIERT: Exit-Logik mit VAD-Modus-Wechsel ---
+                    # --- Exit-Logik using VAD-Modus-Wechsel as fallback and also mute_microphone ---
 
                     # 1. Prüfen, ob manueller Stopp angefordert wurde
                     if not session_active_event.is_set() and not graceful_shutdown_initiated:

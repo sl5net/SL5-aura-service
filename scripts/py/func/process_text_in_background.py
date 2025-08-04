@@ -1,5 +1,8 @@
 # scripts/py/func/process_text_in_background.py
 import os, sys
+
+# from .audio_manager import unmute_microphone
+
 """
 doc:
 how test language tool in command line:
@@ -241,6 +244,8 @@ def process_text_in_background(logger,
         # unique_output_file.write_text(processed_text)
         unique_output_file.write_text(processed_text, encoding="utf-8-sig")
         logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file}")
+
+        # unmute_microphone()
 
         # notify("Transcribed", duration=700, urgency="low")
 

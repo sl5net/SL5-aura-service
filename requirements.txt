@@ -1,9 +1,11 @@
 cologne_phonetics==2.0.0
+comtypes==1.4.11
 config==0.5.1
 jellyfish==1.2.0
 keyboard==0.13.5
 nltk==3.9.1
 psutil==7.0.0
+pycaw==20240210
 pyperclip==1.9.0
 requests==2.32.4
 sounddevice==0.5.2
