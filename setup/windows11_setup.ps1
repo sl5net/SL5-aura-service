@@ -169,22 +169,13 @@ Write-Host "    -> Python downloader completed successfully." -ForegroundColor G
 # --- Now, extract the downloaded archives ---
 Write-Host "--> Extracting downloaded archives..."
 
-# Define archive mappings: ZipFile -> FinalDirectoryName -> DestinationPath
-$ArchiveConfig = @(
-    @{ Zip = "LanguageTool-6.6.zip"; Dir = "LanguageTool-6.6"; Dest = "." },
-    @{ Zip = "vosk-model-en-us-0.22.zip"; Dir = "vosk-model-en-us-0.22"; Dest = ".\models" },
-    @{ Zip = "vosk-model-small-en-us-0.15.zip"; Dir = "vosk-model-small-en-us-0.15"; Dest = ".\models" },
-    @{ Zip = "vosk-model-de-0.21.zip"; Dir = "vosk-model-de-0.21"; Dest = ".\models" }
-    @{ Zip = "lid.176.zip"; Dir = "lid.176.bin"; Dest = ".\models" }
-)
-
-
 $Prefix = "Z_"
 $BaseConfig = @(
     @{ BaseName = "LanguageTool-6.6";              Dest = "." },
     @{ BaseName = "vosk-model-en-us-0.22";         Dest = ".\models" },
     @{ BaseName = "vosk-model-small-en-us-0.15";   Dest = ".\models" },
     @{ BaseName = "vosk-model-de-0.21";            Dest = ".\models" }
+    @{ BaseName = "lid.176";                   Dest = ".\models" }
 )
 $ArchiveConfig = $BaseConfig | ForEach-Object {
     [PSCustomObject]@{
