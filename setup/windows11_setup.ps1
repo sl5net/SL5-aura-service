@@ -175,6 +175,7 @@ $ArchiveConfig = @(
     @{ Zip = "vosk-model-en-us-0.22.zip"; Dir = "vosk-model-en-us-0.22"; Dest = ".\models" },
     @{ Zip = "vosk-model-small-en-us-0.15.zip"; Dir = "vosk-model-small-en-us-0.15"; Dest = ".\models" },
     @{ Zip = "vosk-model-de-0.21.zip"; Dir = "vosk-model-de-0.21"; Dest = ".\models" }
+    @{ Zip = "lid.176.zip"; Dir = "lid.176.bin"; Dest = ".\models" }
 )
 
 

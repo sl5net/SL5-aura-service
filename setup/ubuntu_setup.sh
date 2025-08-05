@@ -90,6 +90,7 @@ ARCHIVE_CONFIG=(
     "vosk-model-en-us-0.22.zip vosk-model-en-us-0.22 ./models"
     "vosk-model-small-en-us-0.15.zip vosk-model-small-en-us-0.15 ./models"
     "vosk-model-de-0.21.zip vosk-model-de-0.21 ./models"
+    "lid.176.zip lid.176.bin ./models"
 )
 
 # Function to extract and clean up
