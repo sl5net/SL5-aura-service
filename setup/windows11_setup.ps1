@@ -135,6 +135,12 @@ if (-not (Test-Path -Path ".\.venv")) {
     Write-Host "    -> Virtual environment already exists. Skipping creation."
 }
 
+
+# --- PATCH: Replace fasttext with fasttext-wheel in requirements.txt ---
+Write-Host "--> Patching requirements.txt for Windows fasttext-wheel compatibility..."
+(Get-Content requirements.txt) -replace '^fasttext.*$', 'fasttext-wheel' | Set-Content requirements.txt
+
+
 # --- 5. Python Requirements ---
 Write-Host "--> Installing Python requirements into the virtual environment..."
 .\.venv\Scripts\pip.exe install -r requirements.txt
