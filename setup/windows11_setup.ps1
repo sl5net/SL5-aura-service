@@ -174,7 +174,7 @@ $BaseConfig = @(
     @{ BaseName = "LanguageTool-6.6";              Dest = "." },
     @{ BaseName = "vosk-model-en-us-0.22";         Dest = ".\models" },
     @{ BaseName = "vosk-model-small-en-us-0.15";   Dest = ".\models" },
-    @{ BaseName = "vosk-model-de-0.21";            Dest = ".\models" }
+    @{ BaseName = "vosk-model-de-0.21";            Dest = ".\models" },
     @{ BaseName = "lid.176";                   Dest = ".\models" }
 )
 $ArchiveConfig = $BaseConfig | ForEach-Object {
