@@ -4,6 +4,8 @@ LanguageTool*
 .stignore
 backup/
 
+Z_*
+
 
 * *
 vosk*

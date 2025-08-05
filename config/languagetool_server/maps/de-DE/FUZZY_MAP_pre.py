@@ -15,6 +15,11 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
+    #  Helps the Tool to switch to English
+    ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, re.IGNORECASE),
+
+
+
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
     ('Wannweil', r'\b(wen\s*Welpe)\b', 82, re.IGNORECASE),
@@ -37,7 +42,7 @@ FUZZY_MAP_pre = [
     ('feature branch', r'\bFeature\s*(prince|ranch)\b', 82, re.IGNORECASE),
 
 
-    ('git checkout ', r'^\s*git\s+(Git Checkout|Check-out)\s*$', 80, re.IGNORECASE),
+    ('git checkout ', r'^\s*(git|geht)\s+(Git Checkout|Check-out)\s*$', 80, re.IGNORECASE),
 
     ('git checkout ', r'^\s*(kitschiger|Geht Tscheka)\s*$', 80, re.IGNORECASE),
 
@@ -105,6 +110,10 @@ FUZZY_MAP_pre = [
     # --- git pull ---
     ('git pull', r'^\s*(git|geht|quiet|gitter)\s*(pohl|pool)\s*$', 82, re.IGNORECASE),
     ('git pull', r'^\s*git\s*pull\s*$', 80, re.IGNORECASE),
+
+    ('git push', r'^\s*kate\s+bush\s*$', 80, re.IGNORECASE),
+
+
 
     # --- git diff ---
     ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, re.IGNORECASE),
