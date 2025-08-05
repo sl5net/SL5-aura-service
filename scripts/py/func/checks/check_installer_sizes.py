@@ -72,8 +72,8 @@ def check_installer_sizes():
 
     primary_files = ["macos_setup.sh", "ubuntu_setup.sh", "manjaro_arch_setup.sh"]
     secondary_files = ["windows11_setup.ps1"]
-    primary_diff_percent = 2.0
-    secondary_diff_percent = 200.0
+    primary_diff_percent = 1.3
+    secondary_diff_percent = 110
 
     print(f"Checking installer sizes in: {SETUP_DIR}")
 
