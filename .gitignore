@@ -4,6 +4,10 @@ LanguageTool*
 .stignore
 backup/
 
+Z_*
+
+# to large
+models/lid.176.bin
 
 * *
 vosk*

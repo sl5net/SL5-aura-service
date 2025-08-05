@@ -1,41 +1,43 @@
 #!/bin/bash
+#
 # setup/macos_setup.sh
-
-set -e
+# Run this setup script from the project's root directory.
+#
 
 # --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
 cd "$PROJECT_ROOT"
+
 echo "--> Running setup from project root: $(pwd)"
-
+set -e
 echo "--- Starting STT Setup for macOS ---"
-
+# setup/macos_setup.sh
 # --- 1. System Dependencies ---
 if ! command -v brew &> /dev/null; then
     echo "ERROR: Homebrew not found. Please install it from https://brew.sh"
     exit 1
 fi
-
 echo "--> Checking for a compatible Java version (>=17)..."
+
 JAVA_OK=0
 if command -v java &> /dev/null; then
     VERSION=$(java -version 2>&1 | awk -F'[."]' '/version/ {print $2}')
     if [ "$VERSION" -ge 17 ]; then
         echo "    -> Found compatible Java version $VERSION. OK."
         JAVA_OK=1
+    else
+        echo "    -> Found Java version $VERSION, but we need >=17."
     fi
+else
+    echo "    -> No Java executable found."
 fi
-
 if [ "$JAVA_OK" -eq 0 ]; then
     echo "    -> Installing a modern JDK via Homebrew..."
     brew install openjdk
 fi
-
 echo "--> Installing other core dependencies..."
 brew install fswatch wget unzip portaudio
-
-
 
 
 # --- 2. Python Virtual Environment ---
@@ -49,10 +51,8 @@ fi
 
 # --- 3. Python Requirements ---
 echo "--> Preparing requirements for macOS..."
-# Remove Linux-specific dependency 'inotify-tools' which is not available on macOS.
 # The macOS equivalent, 'fswatch', is already installed via Homebrew.
 sed -i.bak '/inotify-tools/d' requirements.txt
-
 echo "--> Installing Python requirements into the virtual environment..."
 if ! ./.venv/bin/pip install -r requirements.txt; then
     echo "ERROR: Failed to install requirements. Trying to fix other common version issues..."
@@ -61,22 +61,9 @@ if ! ./.venv/bin/pip install -r requirements.txt; then
     # We run the command again after the potential fixes
     ./.venv/bin/pip install -r requirements.txt
 fi
-
-
-
 # --- 4. Project Structure and Configuration ---
 echo "--> Setting up project directories and initial files..."
-# THIS IS THE KEY CHANGE. We call the Python script and pass the current
-# working directory (which is the project root) as an argument.
-# This one command replaces all old 'mkdir' and 'touch' commands for the project structure.
 python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
-
-
-
-
-
-
-
 
 # --- 6. External Tools & Models (using the robust Python downloader) ---
 echo "--> Downloading external tools and models via Python downloader..."
@@ -103,6 +90,7 @@ ARCHIVE_CONFIG=(
     "vosk-model-en-us-0.22.zip vosk-model-en-us-0.22 ./models"
     "vosk-model-small-en-us-0.15.zip vosk-model-small-en-us-0.15 ./models"
     "vosk-model-de-0.21.zip vosk-model-de-0.21 ./models"
+    "lid.176.zip lid.176.bin ./models"
 )
 
 # Function to extract and clean up
@@ -144,7 +132,6 @@ for config_line in "${BASE_CONFIG[@]}"; do
 done
 
 echo "    -> Extraction and cleanup successful."
-
 
 
 

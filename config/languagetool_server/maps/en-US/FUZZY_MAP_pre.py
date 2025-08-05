@@ -14,7 +14,15 @@ FUZZY_MAP_pre = [
     # Importing to know:
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
+
+    #  Helps the Tool to switch to German
+    ('Deutsch bitte', r'^\s*(deutsche) (pizza|pigeons|putin)\s*$', 82, re.IGNORECASE),
+
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
+
+
+    ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
+
 
     ('Manjaro', r'\b(much whole|munchau|mon travel|Manchu|Much\s*whole)\b', 82, re.IGNORECASE),
 # Much whole Mon travel

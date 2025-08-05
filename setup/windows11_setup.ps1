@@ -135,6 +135,12 @@ if (-not (Test-Path -Path ".\.venv")) {
     Write-Host "    -> Virtual environment already exists. Skipping creation."
 }
 
+
+# --- PATCH: Replace fasttext with fasttext-wheel in requirements.txt ---
+Write-Host "--> Patching requirements.txt for Windows fasttext-wheel compatibility..."
+(Get-Content requirements.txt) -replace '^fasttext.*$', 'fasttext-wheel' | Set-Content requirements.txt
+
+
 # --- 5. Python Requirements ---
 Write-Host "--> Installing Python requirements into the virtual environment..."
 .\.venv\Scripts\pip.exe install -r requirements.txt
@@ -169,7 +175,6 @@ Write-Host "    -> Python downloader completed successfully." -ForegroundColor G
 # --- Now, extract the downloaded archives ---
 Write-Host "--> Extracting downloaded archives..."
 
-
 $Prefix = "Z_"
 $BaseConfig = @(
     @{ BaseName = "LanguageTool-6.6";              Dest = "." },
@@ -177,7 +182,6 @@ $BaseConfig = @(
     @{ BaseName = "vosk-model-small-en-us-0.15";   Dest = ".\models" },
     @{ BaseName = "vosk-model-de-0.21";            Dest = ".\models" },
     @{ BaseName = "lid.176";                   Dest = ".\models" }
-
 )
 $ArchiveConfig = $BaseConfig | ForEach-Object {
     [PSCustomObject]@{

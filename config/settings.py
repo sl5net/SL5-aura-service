@@ -100,3 +100,6 @@ except ImportError:
     pass # No local config found, using defaults.
 
 
+
+# Auto-detected Java path
+JAVA_EXECUTABLE_PATH = r"/usr/bin/java"

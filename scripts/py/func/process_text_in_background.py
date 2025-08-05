@@ -1,6 +1,21 @@
 # scripts/py/func/process_text_in_background.py
 import os, sys
 
+from pathlib import Path
+from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
+
+import fasttext
+
+from .setup_initial_model import get_model_name_from_key
+
+# Assumes 'models' directory is at the project root, parallel to 'scripts'
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+MODEL_PATH = PROJECT_ROOT / "models" / "lid.176.bin"
+
+# Load the model only once when the module is imported
+fasttext_model = fasttext.load_model(str(MODEL_PATH))
+
+
 # from .audio_manager import unmute_microphone
 
 """
@@ -73,6 +88,8 @@ def process_text_in_background(logger,
     punctuation_map, fuzzy_map_pre, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
     try:
         raw_text = raw_text.lstrip('\uFEFF') # removes ZWNBSP/BOM at beginning
+        raw_text = raw_text.replace('\u200b', '').strip() # newer verion from 2025-0805-1207
+        # ZWNBSP
         logger.info(f"THREAD: Starting processing for: '{raw_text}'")
 
         notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
@@ -84,6 +101,50 @@ def process_text_in_background(logger,
         #    map_path = fuzzy_map_poker_dc
         #    processed_text, was_exact_match = normalize_punctuation(raw_text, map_path)
 
+        lang_code_predictions = ''
+
+        if len(raw_text) > 0:
+            try:
+                logger.info(f"👀👀👀 Start lang_code predictions for: '{raw_text}'")
+                if LT_LANGUAGE == 'en-US':
+                    threshold = 0.50  # Low threshold: switch even if not 100% sure it's German
+                else:
+                    threshold=0.80
+                predictions = fasttext_model.predict(raw_text, threshold=threshold)
+
+                if predictions:
+                    logger.info(
+                        f"---------------------------> predictions: {predictions} , LT_LANGUAGE: {LT_LANGUAGE}")
+                    if predictions[0] and predictions[0][0]:
+                        lang_code_predictions = predictions[0][0].replace('__label__', '')
+                        # logger.info(f"Raw prediction object: {predictions}")
+
+                        logger.info(f"👀👀👀 lang_code predictions of '{raw_text}': {lang_code_predictions} 👀")
+
+                        # get something like language_code = "en-US":
+                        lang_code_predictions = guess_lt_language_from_model(logger, lang_code_predictions)
+
+                        # if predictions and predictions[0]:
+                        if LT_LANGUAGE != lang_code_predictions:
+                            logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
+                            logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
+                            logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
+                            logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
+
+                            LT_LANGUAGE = lang_code_predictions
+
+                            # get something like 'en-US': 'vosk-model-en-us-0.22':
+                            model_name = get_model_name_from_key(lang_code_predictions)
+
+                            (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
+                            # load_maps_for_language(lang_code_predictions, logger)
+
+            except Exception as e:
+                logger.info(f"❌❌❌ An exception in lang_code predictions  {e} lang_code: {lang_code_predictions} , LT_LANGUAGE: {LT_LANGUAGE}")
+                logger.info(f"❌❌❌ An exception in lang_code predictions  {e} lang_code: {lang_code_predictions} , LT_LANGUAGE: {LT_LANGUAGE}")
+                logger.info(f"❌❌❌ An exception in lang_code predictions  {e} lang_code: {lang_code_predictions} , LT_LANGUAGE: {LT_LANGUAGE}")
+                # lang_code_predictions = 'de'
+                exit(1)
 
         # scripts/py/func/process_text_in_background.py
         normalize_punctuation_changed_size = False
@@ -134,11 +195,24 @@ def process_text_in_background(logger,
                     logger.warning(f"Invalid regex_pre pattern in FUZZY_MAP_pre: '{match_phrase}'. Error: {e}")
                     continue # Skip this invalid rule
 
-                if regex_pre_is_replacing_all:
-                    logger.info('lkjöasldkfjsödl')
-                    exit(1)
-
             regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe and regex_match_found_prev
+
+            logger.info(f"LT_LANGUAGE = {LT_LANGUAGE}") #
+            if regex_pre_is_replacing_all:
+                if processed_text == 'english please' and LT_LANGUAGE == 'de-DE':
+                    processed_text = 'Ok, lets write in english now.'
+                    LT_LANGUAGE =  'en-US' # 'de-DE'
+                    model_name = get_model_name_from_key(LT_LANGUAGE)
+                    (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
+                    # load_maps_for_language(LT_LANGUAGE, logger)
+
+                elif processed_text == 'Deutsch bitte':
+                    processed_text = 'Klar, jetzt Deutsch.'
+                    LT_LANGUAGE =  'de-DE' # 'en-US' # 'de-DE'
+                    model_name = get_model_name_from_key(LT_LANGUAGE)
+                    (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
+                    # load_maps_for_language(LT_LANGUAGE, logger)
+                    # Switched to English mill ﻿ Deutsche Putin the
 
             if (not regex_pre_is_replacing_all
                 and not is_only_number

@@ -71,6 +71,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 
 PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
+
 # ==============================================================================
 # --- PRE-RUN SETUP VALIDATION ---
 
@@ -84,6 +85,8 @@ if str(PROJECT_ROOT) not in sys.path:
 from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, check_for_frequent_calls
 
 from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
+
+from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 
 # from  scripts.py.func.checks.self_tester import run_core_logic_self_test
 
@@ -196,6 +199,9 @@ logger.handlers[0].addFilter(WindowsEmojiFilter())
 validate_setup(SCRIPT_DIR, logger)
 
 if DEV_MODE :
+
+    check_installer_sizes()
+
     validate_punctuation_map_keys(SCRIPT_DIR,logger)
 
     project_root = SCRIPT_DIR
