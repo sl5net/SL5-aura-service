@@ -137,7 +137,7 @@ def process_text_in_background(logger,
                             model_name = get_model_name_from_key(lang_code_predictions)
 
                             (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
-                            load_maps_for_language(lang_code_predictions, logger)
+                            # load_maps_for_language(lang_code_predictions, logger)
 
             except Exception as e:
                 logger.info(f"❌❌❌ An exception in lang_code predictions  {e} lang_code: {lang_code_predictions} , LT_LANGUAGE: {LT_LANGUAGE}")

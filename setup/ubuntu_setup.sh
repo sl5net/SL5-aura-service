@@ -16,22 +16,22 @@ set -e
 
 echo "--- Starting STT Setup for Debian/Ubuntu ---"
 
+# setup/ubuntu_setup.sh
 # --- 1. System Dependencies ---
 # (This section remains unchanged)
 echo "--> Checking for a compatible Java version (>=17)..."
 JAVA_OK=0
 if command -v java &> /dev/null; then
-    VERSION=$(java -version 2>&1 | awk -F'[."]' '/version/ {print $2}')
+    VERSION=$(java -version 2>&1 | awk -F[\".] '/version/ {print ($2 == "1") ? $3 : $2}')
     if [ "$VERSION" -ge 17 ]; then
         echo "    -> Found compatible Java version $VERSION. OK."
         JAVA_OK=1
+    else
+        echo "    -> Found Java version $VERSION, but we need >=17."
     fi
+else
+    echo "    -> No Java executable found."
 fi
-
-
-
-
-
 if [ "$JAVA_OK" -eq 0 ]; then
     echo "    -> Installing a modern JDK (>=17)..."
     sudo apt-get update && sudo apt-get install -y openjdk-21-jdk

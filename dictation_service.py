@@ -86,6 +86,8 @@ from scripts.py.func.checks.setup_validator import parse_all_files, validate_set
 
 from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
 
+from scripts.py.func.checks.check_installer_sizes import  check_installer_sizes
+
 # from  scripts.py.func.checks.self_tester import run_core_logic_self_test
 
 
@@ -197,6 +199,9 @@ logger.handlers[0].addFilter(WindowsEmojiFilter())
 validate_setup(SCRIPT_DIR, logger)
 
 if DEV_MODE :
+
+    check_installer_sizes()
+
     validate_punctuation_map_keys(SCRIPT_DIR,logger)
 
     project_root = SCRIPT_DIR
