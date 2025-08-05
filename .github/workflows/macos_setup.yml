@@ -22,6 +22,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
+            ./tools/
             ./LanguageTool-6.6
             ./models/
           key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
