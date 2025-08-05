@@ -1,12 +1,10 @@
 # scripts/py/func/process_text_in_background.py
 import os, sys
 
-import random
 from pathlib import Path
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 
 import fasttext
-import numpy as np
 
 from .setup_initial_model import get_model_name_from_key
 
