@@ -197,17 +197,22 @@ def process_text_in_background(logger,
 
             regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe and regex_match_found_prev
 
+            logger.info(f"LT_LANGUAGE = {LT_LANGUAGE}") #
             if regex_pre_is_replacing_all:
                 if processed_text == 'english please' and LT_LANGUAGE == 'de-DE':
+                    processed_text = 'Ok, lets write in english now.'
                     LT_LANGUAGE =  'en-US' # 'de-DE'
                     model_name = get_model_name_from_key(LT_LANGUAGE)
                     (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
-                    load_maps_for_language(lang_code_predictions, logger)
-                elif processed_text == 'Deutsch bitte' and LT_LANGUAGE == 'en-US':
+                    # load_maps_for_language(LT_LANGUAGE, logger)
+
+                elif processed_text == 'Deutsch bitte':
+                    processed_text = 'Klar, jetzt Deutsch.'
                     LT_LANGUAGE =  'de-DE' # 'en-US' # 'de-DE'
                     model_name = get_model_name_from_key(LT_LANGUAGE)
                     (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
-                    load_maps_for_language(lang_code_predictions, logger)
+                    # load_maps_for_language(LT_LANGUAGE, logger)
+                    # Switched to English mill ﻿ Deutsche Putin the
 
             if (not regex_pre_is_replacing_all
                 and not is_only_number

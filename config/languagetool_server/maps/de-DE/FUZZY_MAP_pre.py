@@ -15,10 +15,13 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
+    #switch to english no
+
     #  Helps the Tool to switch to English
     ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, re.IGNORECASE),
+    ('english please', r'^\s*(switch to english\s*\w*)\s*$', 82, re.IGNORECASE),
 
-
+#
 
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
