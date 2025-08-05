@@ -25,13 +25,24 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Create virtual environment
+        run: python -m venv .venv
+        
+      - name: Upgrade pip in venv
+        run: .\.venv\Scripts\python.exe -m pip install --upgrade pip
+
+
+      - name: Print Python executable path
+        run: .\.venv\Scripts\python.exe -c "import sys; print(sys.executable)"
+        
       - name: Cache models and tools
         uses: actions/cache@v4
         with:
           path: |
+            ./tools/
             ./LanguageTool-6.6
             ./models/
-          key: ${{ runner.os }}-models-tools-2025-0724-1355
+          key: ${{ runner.os }}-models-tools-2025-0805-2017
           restore-keys: |
             ${{ runner.os }}-models-tools-
 
