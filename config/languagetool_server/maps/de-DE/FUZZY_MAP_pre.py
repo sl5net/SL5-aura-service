@@ -15,13 +15,13 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
-    #switch to english no
+    #switch to english no English please
 
     #  Helps the Tool to switch to English
     ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, re.IGNORECASE),
     ('english please', r'^\s*(switch to english\s*\w*)\s*$', 82, re.IGNORECASE),
 
-#
+# English please English please Deutsche Bit Deutsch bitte Nun sind wir im Deuten
 
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
@@ -79,7 +79,7 @@ FUZZY_MAP_pre = [
     # --- git add . ---
     ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
 
-
+#  Geht mit
 
     # --- git commit ---
     #  Kate Commit einen  git commit
@@ -87,7 +87,7 @@ FUZZY_MAP_pre = [
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*kate Commit\s*$', 80, re.IGNORECASE),
 
-    ('git commit ', r'^\s*Geht (Komet|kommend|Commit)\s*$', 80, re.IGNORECASE),
+    ('git commit ', r'^\s*Geht (Komet|kommend|Commit|mit)\s*$', 80, re.IGNORECASE),
 
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, re.IGNORECASE),
 

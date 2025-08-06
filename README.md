@@ -4,7 +4,7 @@ This project provides a powerful, system-wide dictation tool that goes beyond si
 
 It's a complete, offline writing assistant built on Vosk and LanguageTool.
 
-[![Watch short AI-Demo System-wide offline dictation](https://img.youtube.com/vi/-Qxd3qQFmPo/maxresdefault.jpg)](https://youtu.be/-Qxd3qQFmPo)
+[![SL5 Dictation (v0.6.0.3): A Deep Dive Under the Hood – Live Coding & Core Concepts](https://img.youtube.com/vi/-Qxd3qQFmPo/maxresdefault.jpg)](https://youtu.be/2YYkaY2dIcs)
 
 
 ## Key Features

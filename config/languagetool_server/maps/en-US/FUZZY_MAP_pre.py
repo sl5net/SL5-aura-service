@@ -15,8 +15,10 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
+    # Deutsche p Nun sprechen wir durch
+
     #  Helps the Tool to switch to German
-    ('Deutsch bitte', r'^\s*(deutsche) (pizza|pigeons|putin)\s*$', 82, re.IGNORECASE),
+    ('Deutsch bitte', r'^\s*(deutsche) (pizza|pigeons|putin|bit|p)\s*$', 82, re.IGNORECASE),
 
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 

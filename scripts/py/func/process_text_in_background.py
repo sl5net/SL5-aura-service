@@ -36,7 +36,6 @@ def load_maps_for_language(lang_code, logger):
     # try:
 
     logger.info(f"lang_code: {lang_code}")
-    logger.info(f"lang_code: {lang_code}")
 
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     if project_root not in sys.path:
@@ -109,7 +108,7 @@ def process_text_in_background(logger,
                 if LT_LANGUAGE == 'en-US':
                     threshold = 0.50  # Low threshold: switch even if not 100% sure it's German
                 else:
-                    threshold=0.80
+                    threshold=0.60
                 predictions = fasttext_model.predict(raw_text, threshold=threshold)
 
                 if predictions:
