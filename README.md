@@ -27,7 +27,8 @@ For a complete technical reference, including all modules and scripts, please vi
 [![Linux](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/ubuntu_setup.yml)
 [![macOS](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/macos_setup.yml)
 
-[![Windows 11](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup.yml/badge.svg)]([https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup.yml](https://github.com/sl5net/Vosk-System-Listener/blob/master/.github/workflows/windows11_setup_bat.yml))
+
+[![Windows 11]([https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup.yml](https://github.com/sl5net/Vosk-System-Listener/blob/master/.github/workflows/windows11_setup_bat.yml)/badge.svg)]([[https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup.yml](https://github.com/sl5net/Vosk-System-Listener/blob/master/.github/workflows/windows11_setup_bat.yml)](https://github.com/sl5net/Vosk-System-Listener/blob/master/.github/workflows/windows11_setup_bat.yml))
 
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/Vosk-System-Listener/)
