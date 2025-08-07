@@ -200,6 +200,13 @@ validate_setup(SCRIPT_DIR, logger)
 
 if DEV_MODE :
 
+    from scripts.py.func.checks.check_badges import check_badges
+
+
+    check_badges(SCRIPT_DIR)
+
+
+
     check_installer_sizes()
 
     validate_punctuation_map_keys(SCRIPT_DIR,logger)
