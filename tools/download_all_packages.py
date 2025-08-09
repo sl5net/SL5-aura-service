@@ -132,6 +132,32 @@ def process_package(base_name, package_files, remove_parts):
     final_zip_hash = official_hashes[final_merged_filename]
     print(f"   [OK]  Deduced final filename from manifest: '{final_merged_filename}'")
 
+
+    # Pre-check: If the final merged file already exists and is correct, skip everything.
+    if os.path.exists(final_merged_filename):
+        print(f"\n--- Pre-Verification Check ---")
+        print(f"File '{final_merged_filename}' already exists. Calculating its hash...")
+        local_hash = calculate_sha256(final_merged_filename)
+        if local_hash == final_zip_hash:
+            print(f"  Official Hash: {final_zip_hash}")
+            print(f"  Computed Hash: {local_hash}")
+            print(f"\n[<3] PRE-VERIFIED! Final file '{final_merged_filename}' is already correct. Skipping.")
+            return True # This is the crucial part: exit successfully.
+        else:
+            print(f"  [WARN] Existing file is corrupt. Deleting it and proceeding with download.")
+
+            # os.remove(final_merged_filename)
+
+
+
+
+
+
+
+
+
+
+
     print(f"\n--- Step B: Downloading and Verifying {len(part_assets)} Parts ---")
     downloaded_parts = []
     part_assets.sort(key=lambda x: x['name'])
