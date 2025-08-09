@@ -131,8 +131,6 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
         if [ -f "$zip_file" ]; then
             echo "    -> Extracting newly downloaded '$zip_file'..."
             unzip -q "$zip_file" -d "$dest_path"
-            # Special case for lid.176 rename
-            if [ "$base_name" = "lid.176" ]; then mv "$dest_path/lid.176" "$target_path"; fi
         else
             echo "    -> FATAL: Downloader ran but '$zip_file' is still missing. Aborting."
             exit 1
