@@ -62,25 +62,6 @@ echo "--> Setting up project directories and initial files..."
 python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ==============================================================================
 # --- 5. Download and Extract Required Components ---
 # This block intelligently handles downloads and extractions.
@@ -127,6 +108,10 @@ done
 # --- Phase 2: Download if necessary ---
 if [ "$DOWNLOAD_REQUIRED" = true ]; then
     echo "    -> Phase 2: Running Python downloader for missing components..."
+
+    # Create the models directory before attempting to download files into it.
+    mkdir -p ./models
+
     ./.venv/bin/python tools/download_all_packages.py
     echo "    -> Downloader finished. Retrying extraction..."
 
