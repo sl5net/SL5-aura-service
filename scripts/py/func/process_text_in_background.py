@@ -86,19 +86,16 @@ def process_text_in_background(logger,
                               output_dir_override = None):
     punctuation_map, fuzzy_map_pre, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
     try:
-        raw_text = raw_text.lstrip('\uFEFF') # removes ZWNBSP/BOM at beginning
-        raw_text = raw_text.replace('\u200b', '').strip() # newer verion from 2025-0805-1207
+
+        logger.info(f"start sanitize_transcription_start")
+        raw_text = sanitize_transcription_start(raw_text)
+        logger.info(f"end sanitize_transcription_start")
+
         # ZWNBSP
         logger.info(f"THREAD: Starting processing for: '{raw_text}'")
 
         notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
 
-        # lang_code = "DODO dummy"
-        # scripts/py/func/process_text_in_background.py
-        # fuzzy_map_poker_dc = 'config' / 'plugins' / 'poker' / 'dealers_choice.py'
-        #if settings.CORRECTIONS_ENABLED["poker_hotkeys"]:
-        #    map_path = fuzzy_map_poker_dc
-        #    processed_text, was_exact_match = normalize_punctuation(raw_text, map_path)
 
         lang_code_predictions = ''
 
@@ -159,7 +156,9 @@ def process_text_in_background(logger,
             is_only_number =  processed_text.isdigit()
 
         regex_match_found_prev = False
-        regex_pre_is_replacing_all = False
+        regex_pre_is_replacing_all_maybe = False
+        #regex_pre_is_replacing_all = False
+        # ﻿ Hallo Test ZWNBSP
 
         if not was_exact_match:
             for replacement, match_phrase, threshold, *flags_list in fuzzy_map_pre:
@@ -315,11 +314,10 @@ def process_text_in_background(logger,
 
         # unique_output_file = TMP_DIR / f"sl5_dictation/tts_output_{timestamp}.txt"
         # unique_output_file.write_text(processed_text)
-        unique_output_file.write_text(processed_text, encoding="utf-8-sig")
+        unique_output_file.write_text(processed_text, encoding="utf-8") # BOM -sig is outdated and not needed anymore
+        # unique_output_file.write_text(processed_text, encoding="utf-8-sig") # BOM -sig is outdated and not needed anymore
         logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file}")
-
-        # unmute_microphone()
-
+        #
         # notify("Transcribed", duration=700, urgency="low")
 
         notify("Transcribed", "", "low", duration=1000, replace_tag="transcription_status")
@@ -334,3 +332,37 @@ def process_text_in_background(logger,
         notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
 
         auto_reload_modified_maps(logger)
+# Hallo des Hallo Test
+
+def sanitize_transcription_start(raw_text: str) -> str:
+    """
+    cost: ~ 1 Microsecond (µs)
+
+
+    Removes leading junk characters from a string, preserving any language.
+
+    It iterates through the string to find the first alphanumeric character
+    (respecting Unicode, so it works for Cyrillic, CJK, etc.) and returns
+    the substring from that point onward. Also cleans BOM and ZWSP.
+    """
+    #logging.info(f"Sanitizing raw text: '{raw_text[:50]}...'")
+
+    start_index = -1
+    for i, char in enumerate(raw_text):
+        # isalnum() is Unicode-aware and checks for letters or numbers
+        if char.isalnum():
+            start_index = i
+            #logging.info(f"Found first valid character '{char}' at index {i}.")
+            break
+
+    #if start_index == -1:
+        #logging.info("No alphanumeric characters found. Returning empty string.")
+    #    return raw_text  # Or return raw_text if that's preferred
+
+    # Slice from the first valid character and then perform other cleanup
+    clean_text = raw_text[start_index:]
+    clean_text = clean_text.lstrip('\uFEFF')
+    clean_text = clean_text.replace('\u200b', '').strip()
+
+    #logging.info(f"Returning sanitized text: '{clean_text[:50]}...'")
+    return clean_text
