@@ -62,6 +62,9 @@ echo "--> Setting up project directories and initial files..."
 python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 
+
+
+
 # ==============================================================================
 # --- 5. Download and Extract Required Components ---
 # This block intelligently handles downloads and extractions.
@@ -142,33 +145,6 @@ echo "--> All components are present and correctly placed."
 # ==============================================================================
 # --- End of Download/Extract block ---
 # ==============================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Function to extract and clean up
 expand_and_cleanup() {
