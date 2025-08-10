@@ -10,8 +10,8 @@ Write-Host "--> Running setup from project root: $(Get-Location)"
 
 $ErrorActionPreference = "Stop"
 
-# Configuration: Set to $false to keep ZIP files after extraction
-$CleanupZipFiles = $false
+# Configuration: Set to $false to keep ZIP files after extraction or use $true
+$should_remove_zips_after_unpack = $true
 # --- 1. Admin Rights Check ---
 Write-Host "[*] Checking for Administrator privileges"
 
@@ -230,7 +230,7 @@ function Expand-And-Cleanup {
 
 # Execute extraction for each archive
 foreach ($Config in $ArchiveConfig) {
-    Expand-And-Cleanup -ZipFile $Config.Zip -DestinationPath $Config.Dest -ExpectedDirName $Config.Dir -CleanupAfterExtraction $CleanupZipFiles
+    Expand-And-Cleanup -ZipFile $Config.Zip -DestinationPath $Config.Dest -ExpectedDirName $Config.Dir -CleanupAfterExtraction $should_remove_zips_after_unpack
 }
 
 Write-Host "    -> Extraction and cleanup successful." -ForegroundColor Green

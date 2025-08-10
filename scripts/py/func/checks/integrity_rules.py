@@ -40,6 +40,11 @@ INTEGRITY_CHECKS = {
         '`mv vosk-model-*.zip models/`'
     ],
 
+
+    'tools/download_all_packages.py': [
+        'remove_parts = True  #  It can be useful for transporting'
+    ],
+
 #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
 #         'logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")',
 #         'logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")',
@@ -77,26 +82,34 @@ INTEGRITY_CHECKS = {
         'f"✅ THREAD: Successfully wrote to '
     ],
 
+
+    # should_remove_zips_after_unpack=true It's eventually useful to have it sometimes longer but maybe not online and not at costumers
+
     # --- Start of Ensures language selection is included ---
 
     # Ensures language selection is included in the macOS setup.
     "setup/macos_setup.sh": [
-        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"'
+        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
+        'should_remove_zips_after_unpack=true'
     ],
 
     # Ensures language selection is included in the Ubuntu setup.
     "setup/ubuntu_setup.sh": [
-        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"'
+        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
+        'should_remove_zips_after_unpack=true'
+
     ],
 
     # Ensures language selection is included in the Manjaro/Arch setup.
     "setup/manjaro_arch_setup.sh": [
-        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"'
+        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
+        'should_remove_zips_after_unpack=true'
     ],
 
     # Ensures language selection is included in the Windows setup.
     "setup/windows11_setup.ps1": [
-        'setup_initial_model.py'
+        'setup_initial_model.py',
+        '$cleanup_zips_on_finish = $true'
     ],
 
     # --- End of Ensures language selection is included ---

@@ -4,6 +4,8 @@
 # Run this setup script from the project's root directory.
 #
 
+should_remove_zips_after_unpack=true
+
 # --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
@@ -167,7 +169,9 @@ expand_and_cleanup() {
     unzip -q "$zip_file" -d "$dest_path"
 
     # Clean up the zip file
-    ########################################################################## rm "$zip_file"
+    if [ "$should_remove_zips_after_unpack" = true ] ; then
+        rm "$zip_file"
+    fi
     echo "    -> Cleaned up ZIP file: $zip_file"
 }
 
