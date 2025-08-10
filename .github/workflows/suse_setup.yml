@@ -31,9 +31,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-suse-models-tools-
 
-      # Execute the suse-specific setup script
+
       - name: Run suse_setup.sh
-        run: bash ./setup/suse_setup.sh
+        run: |
+          # The container runs as root, so 'sudo' is not needed and not installed.
+          # We remove all "sudo " calls from the script before executing it.
+          sed -i 's/sudo //g' ./setup/suse_setup.sh
+
+          bash ./setup/suse_setup.sh
+
 
       # Upload artifacts with a new name
       - name: Package Assets as Artifact
