@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Install required dependencies
-        run: zypper -n --no-gpg-checks install git tar python311 python311-pip gcc-c++ make python311-devel
+        run: zypper -n --no-gpg-checks install git tar python311 python311-pip gcc13 gcc13-c++ make python311-devel
 
       - name: Check out repository code
         uses: actions/checkout@v4
