@@ -200,6 +200,9 @@ validate_setup(SCRIPT_DIR, logger)
 
 if DEV_MODE :
 
+    check_installer_sizes()
+
+
     from scripts.py.func.checks.check_badges import check_badges
 
 
@@ -207,7 +210,6 @@ if DEV_MODE :
 
 
 
-    check_installer_sizes()
 
     validate_punctuation_map_keys(SCRIPT_DIR,logger)
 
@@ -216,6 +218,9 @@ if DEV_MODE :
 
     check_for_unused_functions(parsed_trees, project_root , logger)
     check_for_frequent_calls(parsed_trees, logger, threshold=1)
+
+    check_installer_sizes()
+
 
 if DEV_MODE :
     try:
@@ -336,6 +341,9 @@ if DEV_MODE :
 
 
     check_code_integrity(SCRIPT_DIR, logger)
+
+    check_installer_sizes()
+
 
     ##################### run_core_logic_self_test #############################
     VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
