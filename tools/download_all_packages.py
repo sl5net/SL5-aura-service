@@ -14,7 +14,7 @@ REPO = "Vosk-System-Listener"
 TAG = "v0.2.0"
 API_URL = f"https://api.github.com/repos/{OWNER}/{REPO}/releases/tags/{TAG}"
 
-remove_parts = False #  It can be useful for transporting too many parts.  or, if you want to store only a park somewhere
+remove_parts = True #  It can be useful for transporting too many parts.  or, if you want to store only a park somewhere
 
 # --- Helper Functions (Unchanged) ---
 

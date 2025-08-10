@@ -42,7 +42,7 @@ INTEGRITY_CHECKS = {
 
 
     'tools/download_all_packages.py': [
-        'remove_parts = True  #  It can be useful for transporting'
+        'remove_parts = True'
     ],
 
 #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
@@ -109,7 +109,7 @@ INTEGRITY_CHECKS = {
     # Ensures language selection is included in the Windows setup.
     "setup/windows11_setup.ps1": [
         'setup_initial_model.py',
-        '$cleanup_zips_on_finish = $true'
+        '$should_remove_zips_after_unpack = $true'
     ],
 
     # --- End of Ensures language selection is included ---

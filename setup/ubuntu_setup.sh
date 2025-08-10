@@ -66,8 +66,6 @@ python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 
 
-
-
 # ==============================================================================
 # --- 5. Download and Extract Required Components ---
 # This block intelligently handles downloads and extractions.
@@ -194,9 +192,6 @@ for config_line in "${BASE_CONFIG[@]}"; do
 done
 
 echo "    -> Extraction and cleanup successful."
-
-
-
 
 
 

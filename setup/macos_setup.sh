@@ -66,34 +66,84 @@ fi
 # --- 4. Project Structure and Configuration ---
 echo "--> Setting up project directories and initial files..."
 python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
+# ==============================================================================
+# --- 5. Download and Extract Required Components ---
+# This block intelligently handles downloads and extractions.
+# ==============================================================================
 
-# --- 6. External Tools & Models (using the robust Python downloader) ---
-echo "--> Downloading external tools and models via Python downloader..."
+echo "--> Checking for required components (LanguageTool, Vosk-Models)..."
 
-# Create the models directory before attempting to download files into it.
-mkdir -p ./models
-
-# Execute the downloader and let 'set -e' handle errors
-echo "    -> Running Python downloader..."
-./.venv/bin/python tools/download_all_packages.py
-
-echo "    -> Python downloader completed successfully."
-
-# --- Now, extract the downloaded archives ---
-echo "--> Extracting downloaded archives..."
-
-# THE FIX IS HERE: Define the prefix, just like in the PowerShell script
+# --- Configuration ---
 PREFIX="Z_"
-
-# Define an array of archives to process
-# Format: "ZipFileName FinalDirName DestinationPath"
+# Format: "BaseName FinalDirName DestinationPath"
 ARCHIVE_CONFIG=(
-    "LanguageTool-6.6.zip LanguageTool-6.6 ."
-    "vosk-model-en-us-0.22.zip vosk-model-en-us-0.22 ./models"
-    "vosk-model-small-en-us-0.15.zip vosk-model-small-en-us-0.15 ./models"
-    "vosk-model-de-0.21.zip vosk-model-de-0.21 ./models"
-    "lid.176.zip lid.176.bin ./models"
+    "LanguageTool-6.6 LanguageTool-6.6 ."
+    "vosk-model-en-us-0.22 vosk-model-en-us-0.22 ./models"
+    "vosk-model-small-en-us-0.15 vosk-model-small-en-us-0.15 ./models"
+    "vosk-model-de-0.21 vosk-model-de-0.21 ./models"
+    "lid.176 lid.176.bin ./models"
 )
+DOWNLOAD_REQUIRED=false
+
+# --- Phase 1: Check and attempt to restore from local ZIP cache ---
+echo "    -> Phase 1: Checking and trying to restore from local cache..."
+for config_line in "${ARCHIVE_CONFIG[@]}"; do
+    read -r base_name final_name dest_path <<< "$config_line"
+    target_path="$dest_path/$final_name"
+    zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
+
+    # If the component already exists, we're good for this one.
+    if [ -e "$target_path" ]; then
+        continue
+    fi
+
+    # The component is missing. Let's see if we can unzip it from a local cache.
+    echo "    -> Missing: '$target_path'. Searching for '$zip_file'..."
+    if [ -f "$zip_file" ]; then
+        echo "    -> Found ZIP cache. Extracting '$zip_file'..."
+        unzip -q "$zip_file" -d "$dest_path"
+    else
+        # The ZIP is not there. We MUST run the downloader.
+        echo "    -> ZIP cache not found. A download is required."
+        DOWNLOAD_REQUIRED=true
+    fi
+done
+
+# --- Phase 2: Download if necessary ---
+if [ "$DOWNLOAD_REQUIRED" = true ]; then
+    echo "    -> Phase 2: Running Python downloader for missing components..."
+
+    # Create the models directory before attempting to download files into it.
+    mkdir -p ./models
+
+    ./.venv/bin/python tools/download_all_packages.py
+    echo "    -> Downloader finished. Retrying extraction..."
+
+    # After downloading, we must re-check and extract anything that's still missing.
+    for config_line in "${ARCHIVE_CONFIG[@]}"; do
+        read -r base_name final_name dest_path <<< "$config_line"
+        target_path="$dest_path/$final_name"
+        zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
+
+        if [ -e "$target_path" ]; then
+            continue
+        fi
+
+        if [ -f "$zip_file" ]; then
+            echo "    -> Extracting newly downloaded '$zip_file'..."
+            unzip -q "$zip_file" -d "$dest_path"
+        else
+            echo "    -> FATAL: Downloader ran but '$zip_file' is still missing. Aborting."
+            exit 1
+        fi
+    done
+fi
+
+echo "--> All components are present and correctly placed."
+
+# ==============================================================================
+# --- End of Download/Extract block ---
+# ==============================================================================
 
 # Function to extract and clean up
 expand_and_cleanup() {
