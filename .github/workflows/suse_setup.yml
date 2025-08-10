@@ -1,0 +1,42 @@
+# .github/workflows/ci_suse_setup.yml
+
+name: CI for Suse Setup
+on:
+  workflow_dispatch:
+
+jobs:
+  validate-suse-setup:
+    runs-on: ubuntu-latest
+
+    # This is the key change: Run all steps inside a Suse Docker container
+    container:
+      image: opensuse/leap:latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      # The cache key works as before, as runner.os is still 'Linux'
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-suse-models-tools-${{ hashFiles('**/setup/suse_setup.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-suse-models-tools-
+
+      # Execute the suse-specific setup script
+      - name: Run suse_setup.sh
+        run: bash ./setup/suse_setup.sh
+
+      # Upload artifacts with a new name
+      - name: Package Assets as Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sl5-assets-pack-suse
+          path: |
+            ./LanguageTool-6.6
+            ./models/
