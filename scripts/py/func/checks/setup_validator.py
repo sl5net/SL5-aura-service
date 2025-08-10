@@ -127,6 +127,50 @@ def check_for_frequent_calls(parsed_trees, logger, threshold=1):
         'format', 'open', 'close', 'read', 'write', 'add', 'update', 'append', 'extend',
         'get', 'set', 'pop', 'startswith', 'endswith', 'strip', 'replace', 'split',
         'lower', 'upper', 'is_dir', 'is_file', 'exists', 'mkdir', 'relative_to', 'glob'
+
+
+        'Path', 'logger', 'str', 'run', 'exit', 'len', 'time', 'resolve',
+        'project_root', 'active_logger', 'fatal', 'items', 'write_text',
+        'processed_text', 'home', 'keys', 'list', 'notify', 'loaded_models',
+        'sleep', 'raw_text', 'match_phrase', 'is_set', 'SCRIPT_DIR', 'f',
+        'int', 'sorted', 'isinstance', 'read_text', 'active_lt_url',
+        'CONFIG_PATH', 'load', 'exec_command', 'import_module', 'model_name',
+        'start', 'clear', 'SAMPLE_RATE', 'file_path', 'insert', 'system',
+        'basicConfig', 'getLogger', 'check_installer_sizes', 'parsed_trees',
+        'VOSK_MODEL_FILE', 'is_service_healthy', 'HEARTBEAT_FILE',
+        'HEARTBEAT_MAX_AGE_SECONDS', 'range', 'send_keys', 'command',
+        'content', 'cmd', 'unmute_microphone', 'LT_LANGUAGE',
+        'get_model_name_from_key', 'sub', 'flags', 'Event', 'Thread', 'data',
+        'threshold_mb', 'generic_visit', 'node', 'visit', 'tree',
+        'assertEqual', 'PROJECT_ROOT', 'register', 'stop_languagetool_server',
+        'languagetool_process', 'unlink', 'guess_lt_language_from_model',
+        'TMP_DIR', 'lang_code', 'getattr', 'key', 'main', 'Popen',
+        'is_microphone_muted', 'mute_microphone', 'input', 'MODEL_PATH',
+        'is_regex_pattern', 'lstrip', 'float', 'loads', 'Model',
+        'check_memory_critical', 'avail_mb', 'remove', 'KaldiRecognizer',
+        'transcribe_audio_with_feedback', 'recognizer', 'isdir', 'parse',
+        'values', 'maps_path', 'setup_project_structure', 'text', 'check_badges',
+        'parse_all_files', 'check_for_unused_functions',
+        'check_for_frequent_calls', 'check_folder_syntax', 'settings',
+        'config', 'suspicious_events', 'recording_time', 'TRIGGER_path',
+        'start_script', 'filepath', 'write_to_file', 'new_model',
+        'run_script', 'GetSpeakers', 'Activate', 'CLSCTX_ALL',
+        'QueryInterface', 'IAudioEndpointVolume', 'toggle_microphone_mute',
+        'map_file_key', 'module_path', 'reload', 'abspath', 'dirname',
+        'lang_code_predictions', 'search', 'enumerate', 'config_path',
+        'new_java_line', 'poll', 'wait', 'key_to_prioritize', 'set_mode',
+        'Queue', 'bytes', 'indata', 'put', 'frame', 'model_path', 'group',
+        'process_text_in_background', 'url', 'CallVisitor', 'stat', 'abs',
+        'getframerate', 'logging', 'transcribed_chunks', 'patch',
+        'MockRawInputStream',
+
+        'Path',
+        'glob',
+        'expected_texts',
+        'test_case',
+        'test_output_dir',
+        'latest_file'
+
     }
 
     visitor = CallVisitor()
