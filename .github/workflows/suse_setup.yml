@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Install required dependencies
-        run: zypper -n --no-gpg-checks install git tar
+        run: zypper -n --no-gpg-checks install git tar python311 python311-pip
 
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -37,6 +37,8 @@ jobs:
           # The container runs as root, so 'sudo' is not needed and not installed.
           # We remove all "sudo " calls from the script before executing it.
           sed -i 's/sudo //g' ./setup/suse_setup.sh
+
+          sed -i 's/python3 -m venv .venv/python3.11 -m venv .venv/' ./setup/suse_setup.sh
 
           bash ./setup/suse_setup.sh
 
