@@ -33,6 +33,11 @@ jobs:
 
 
       - name: Run suse_setup.sh
+
+        # FIX: Force the build system to use the g++-13 compiler
+        env:
+          CXX: g++-13
+
         run: |
           # The container runs as root, so 'sudo' is not needed and not installed.
           # We remove all "sudo " calls from the script before executing it.
