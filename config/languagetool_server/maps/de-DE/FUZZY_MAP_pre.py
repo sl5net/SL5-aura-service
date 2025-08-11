@@ -61,13 +61,24 @@ FUZZY_MAP_pre = [
     ('StopButton', r'\bstob\s*Button\b', 82, re.IGNORECASE),
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
+
+    ('?', r'\s+(fragezeichen|fragen|frage)\s*$', 80, re.IGNORECASE),
+
+
+
     ('AutoKey', r'\bAuto k\b', 82, re.IGNORECASE),
 
 
     ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
     ('Sigune Lauffer', r'\b(Figur|Sekunde) (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
 
+
     ('Lauffer', r'\b(Läufer|laufer)\b', 82, re.IGNORECASE), # Exact match, but ignore case
+
+
+
+
+
 
     # === Git Commands (Consolidated & Case-Insensitive) ===
 
@@ -89,7 +100,7 @@ FUZZY_MAP_pre = [
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*kate Commit\s*$', 80, re.IGNORECASE),
 
-    ('git commit ', r'^\s*Geht (Komet|kommend|Commit|mit)\s*$', 80, re.IGNORECASE),
+    ('git commit ', r'^\s*Geht (Komet|Komik|Gummi|kommend|Commit|mit)\s*$', 80, re.IGNORECASE),
 
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, re.IGNORECASE),
 
