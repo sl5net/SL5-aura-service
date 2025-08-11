@@ -80,14 +80,11 @@ FUZZY_MAP_pre = [
 
     ('git status', r'^\s*(gitschtal|quatscht hatte|Geht tat uns)\s+$', 80, re.IGNORECASE),
 
-
     # --- git add . ---
-    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
-
-#  Geht mit
+    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
 
     # --- git commit ---
-    #  Kate Commit einen  git commit
+    #  Kate Commit einen  git commit Git beach
 
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*kate Commit\s*$', 80, re.IGNORECASE),
@@ -109,7 +106,7 @@ FUZZY_MAP_pre = [
     ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*womit\s*$', 85, re.IGNORECASE),
     ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, re.IGNORECASE),
-    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme)\s*$"', 80, re.IGNORECASE),
+    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|beach)\s*$"', 80, re.IGNORECASE),
     # Gilt komme komme
 
     # --- git push ---
