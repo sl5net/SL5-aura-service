@@ -42,14 +42,32 @@ if 'VIRTUAL_ENV' not in os.environ:
 
 
 
-import sys, os, atexit, requests, logging, platform
+import sys, os, atexit, requests, logging, platform, importlib
 from pathlib import Path
 
 # --- Local Imports (grouped for clarity) ---
 from config.settings import (LANGUAGETOOL_RELATIVE_PATH,
                             USE_EXTERNAL_LANGUAGETOOL, EXTERNAL_LANGUAGETOOL_URL, LANGUAGETOOL_PORT,
-                            DEV_MODE
+                            DEV_MODE,
+                            ENABLE_AUTO_LANGUAGE_DETECTION
                             )
+
+
+if ENABLE_AUTO_LANGUAGE_DETECTION:
+    # Check if the package is installed without actually importing it
+    if importlib.util.find_spec("fasttext") is None:
+        logging.warning("FastText is not installed but is enabled in config.")
+        logging.info("Attempting to install 'fasttext-wheel' automatically...")
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "fasttext-wheel"])
+            logging.info("FastText installed successfully. Please restart the service to activate it.")
+            sys.exit()
+        except subprocess.CalledProcessError:
+            logging.error("Failed to install FastText. Please install it manually: pip install fasttext-wheel")
+            sys.exit(1)
+    else:
+        logging.info("FastText for auto language detection is available.")
+
 
 
 from scripts.py.func.main import main

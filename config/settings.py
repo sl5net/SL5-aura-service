@@ -10,6 +10,8 @@ current_user = os.environ.get('USERNAME', 'default')
 # e.g., the wrapper script enforcement.
 DEV_MODE = False
 
+ENABLE_AUTO_LANGUAGE_DETECTION = False
+
 # --- Notification Settings ---
 # Default for new users is the most verbose level.
 NOTIFICATION_LEVEL = 2 # 0=Silent, 1=Essential, 2=Verbose

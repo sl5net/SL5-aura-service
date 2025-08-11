@@ -1,7 +1,6 @@
 cologne_phonetics==2.0.0
 comtypes==1.4.11
 config==0.5.1
-fasttext==0.9.3
 jellyfish==1.2.0
 keyboard==0.13.5
 nltk==3.9.1
