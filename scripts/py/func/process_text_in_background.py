@@ -1,10 +1,12 @@
 # scripts/py/func/process_text_in_background.py
+import logging
 import os, sys
 
 from pathlib import Path
+
+from config.settings import ENABLE_AUTO_LANGUAGE_DETECTION
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 
-import fasttext
 
 from .setup_initial_model import get_model_name_from_key
 
@@ -12,9 +14,16 @@ from .setup_initial_model import get_model_name_from_key
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MODEL_PATH = PROJECT_ROOT / "models" / "lid.176.bin"
 
-# Load the model only once when the module is imported
-fasttext_model = fasttext.load_model(str(MODEL_PATH))
-
+fasttext_model = None # Ensure variable exists
+if ENABLE_AUTO_LANGUAGE_DETECTION:
+    if not MODEL_PATH.exists():
+        # Using logger that will be passed into the main function later
+        # This part of the code needs a logger instance to be available.
+        logging.error(f"ERROR: Auto language detection is enabled, but model file is missing: {MODEL_PATH}")
+        # Or ideally, log this with a logger instance.
+    else:
+        import fasttext
+        fasttext_model = fasttext.load_model(str(MODEL_PATH))
 
 # from .audio_manager import unmute_microphone
 
@@ -106,7 +115,9 @@ def process_text_in_background(logger,
                     threshold = 0.50  # Low threshold: switch even if not 100% sure it's German
                 else:
                     threshold=0.60
-                predictions = fasttext_model.predict(raw_text, threshold=threshold)
+                predictions = None
+                if ENABLE_AUTO_LANGUAGE_DETECTION:
+                    predictions = fasttext_model.predict(raw_text, threshold=threshold)
 
                 if predictions:
                     logger.info(
