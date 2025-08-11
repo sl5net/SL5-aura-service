@@ -70,7 +70,7 @@ def check_installer_sizes():
     PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
     SETUP_DIR = PROJECT_ROOT / "setup"
 
-    primary_files = ["macos_setup.sh", "ubuntu_setup.sh", "manjaro_arch_setup.sh"]
+    primary_files = ["macos_setup.sh", "ubuntu_setup.sh", "manjaro_arch_setup.sh",'suse_setup.sh']
     secondary_files = ["windows11_setup.ps1"]
     primary_diff_percent = 1.3
     secondary_diff_percent = 110
