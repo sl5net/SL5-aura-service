@@ -1,6 +1,7 @@
 name: CI for macOS Setup
 
 on:
+
   # Release
   release:
       types: [published]

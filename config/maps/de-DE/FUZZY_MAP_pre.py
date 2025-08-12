@@ -36,7 +36,7 @@ FUZZY_MAP_pre = [
     # 3? Und jetzt noch mehr? Noch mehr?  Ich glaube, er lädt die Karte nicht nutzen?
 
 
-    ('???', r'\s+(fragezeichen|fragen|frage|fragt)\s*$', 80, re.IGNORECASE),
+    ('???', r'\s+(fragezeichen|fragen|fragend|frage|fragt)\s*$', 80, re.IGNORECASE),
 
 
     ('AutoKey', r'\bAuto k\b', 82, re.IGNORECASE),

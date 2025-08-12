@@ -1,5 +1,9 @@
 name: CI for ubuntu Setup
 on:
+
+  push:
+    branches: [ main ]
+
   # Release
   release:
       types: [published]

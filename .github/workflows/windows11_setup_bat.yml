@@ -1,6 +1,10 @@
 name: CI winOS Setup.BAT
 
 on:
+
+  push:
+    branches: [ main ]
+
   # Release
   release:
       types: [published]

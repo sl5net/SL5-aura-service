@@ -3,6 +3,10 @@
 name: CI Win BAT 1 Update 2 Start
 
 on:
+
+  push:
+    branches: [ main ]
+
   workflow_dispatch:
 
 jobs:

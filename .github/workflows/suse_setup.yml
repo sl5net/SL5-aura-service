@@ -2,6 +2,10 @@
 
 name: CI for Suse Setup
 on:
+
+  push:
+    branches: [ main ]
+
   # Release
   release:
       types: [published]
