@@ -24,7 +24,7 @@ def validate_punctuation_map_keys(project_root,logger):
     for lang_code in os.listdir(maps_path):
         if os.path.isdir(os.path.join(maps_path, lang_code)):
             try:
-                module_path = f"config.languagetool_server.maps.{lang_code}.PUNCTUATION_MAP"
+                module_path = f"config.maps.{lang_code}.PUNCTUATION_MAP"
                 punc_module = importlib.import_module(module_path)
                 punctuation_map = getattr(punc_module, 'PUNCTUATION_MAP', {})
 

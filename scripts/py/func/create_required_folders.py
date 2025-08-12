@@ -15,7 +15,7 @@ def setup_project_structure(project_root_str: str):
     project_dirs = {
         project_root / "log": ["__init__.py"],
         project_root / "config": ["__init__.py", "model_name_lastused.txt"],
-        project_root / "config" / "languagetool_server": ["__init__.py"],
+        project_root / "config" / "maps": ["__init__.py"],
         project_root / "models": None,  # For Vosk models
     }
 
