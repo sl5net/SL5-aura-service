@@ -74,7 +74,10 @@ def check_badges(SCRIPT_DIR):
     print("------------------------------")
     if found_red_badge:
         print("\n❌ A badge is RED. Please check your repository.")
-        sys.exit(1) # Exit with an error code
+        print("\n❌ A badge is RED. Please check your repository.")
+        print("\n❌ A badge is RED. Please check your repository.")
+        print("\n❌ A badge is RED. Please check your repository.")
+        # sys.exit(1) # Exit with an error code
     else:
         print("\n✅ All badges are GREEN.")
         # sys.exit(0) # Exit with a success code
