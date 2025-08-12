@@ -41,6 +41,11 @@ jobs:
         # and a shebang `#!/bin/bash`
 
         run: |
+
+
+          chmod +x ./setup/macos_setup.sh
+
+
           echo "--- DEBUG INFO START ---"
           pwd
           ls -la
