@@ -25,7 +25,6 @@ if current_user == 'SL5.de':
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 
-
 # --- LanguageTool Server ---
 # Set to True to use an existing LT server. AT YOUR OWN RISK!
 # The application will not start its own server and will not stop the external one.
@@ -58,7 +57,7 @@ CORRECTIONS_ENABLED = {
     "medical": False,          # Rules related to medical terminology
     "law_rules": False,        # Rules related to legal terminology
 
-    "git": True,        # git Basic commands
+    "git": False,        # git Basic commands
 
     # Add other custom categories here as needed.
     # "academic_writing": False,

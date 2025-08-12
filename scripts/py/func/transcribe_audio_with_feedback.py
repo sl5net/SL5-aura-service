@@ -120,7 +120,8 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         last_activity_time = time.time()  # Aktivität bei finalem Ergebnis
                         result = json.loads(recognizer.Result())
                         if result.get('text'):
-                            logger.info(f"--> Yielding chunk: '{result['text']}'")
+                            logger.info(f"             🎙️ 🎤 ")
+                            logger.info(f"---> Yielding chunk: '{result['text']}'")
                             yield result['text']
                     else:
                         partial_result = json.loads(recognizer.PartialResult())
@@ -128,7 +129,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         if is_voice_active_in_chunk or partial_result.get('partial'):
                             last_activity_time = time.time()  # Aktivität erkannt, Timer zurücksetzen
 
-                    # Timeout-Wechsel bei erster Aktivität
+                    # Timeout-change wehen first activity
                     if not is_speech_started and (is_voice_active_in_chunk or partial_result.get('partial')):
                         is_speech_started = True
                         current_timeout = SPEECH_PAUSE_TIMEOUT

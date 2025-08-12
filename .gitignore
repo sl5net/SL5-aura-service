@@ -25,6 +25,8 @@ type_watcher.log
 *.idea
 **/.idea/
 
+snyk_results.*
+
 
 /*.txt
 

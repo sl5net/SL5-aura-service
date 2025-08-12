@@ -1,4 +1,4 @@
-# config/languagetool_server/maps/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/git/de-DE/FUZZY_MAP_pr.py
 import re
 
 # This map uses a hybrid approach:
@@ -13,28 +13,8 @@ FUZZY_MAP_pre = [
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
     # - in our implementation it stops with first match!
-    # - means first is most importend, lower rules maybe not get read.
+    # - means first is most imported, lower rules maybe not get read.
 
-    #switch to english no English please
-
-    #  Helps the Tool to switch to English
-    ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, re.IGNORECASE),
-    ('english please', r'^\s*(switch to english\s*\w*)\s*$', 82, re.IGNORECASE),
-
-# English please English please Deutsche Bit Deutsch bitte Nun sind wir im Deuten
-
-    ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
-
-    ('Wannweil', r'\b(wen\s*Welpe)\b', 82, re.IGNORECASE),
-
-    ('Wannweil', r'\b(wen\s*Welpe)\b', 82, re.IGNORECASE),
-    # ('Wannweil', r'^\s*(wann weil|Ran weil)\s*$', 82, re.IGNORECASE),
-    ('Wannweil', r'^\s*(Wannweil|Annweiler|wann\s*weil|Wann\s*wann\s*weil|Wann\s*war\s*Herr|Wann\s*war\s*er|An\s*weil|Wann\s*weine\w*|Wann\s*wein)\s*$', 70, re.IGNORECASE),
-#  wann weil
-# wann weil Wannweil Wannweil
-#  Sieben zwo acht zwo sieben
-
- #  zweis drei
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, re.IGNORECASE),
 
     ('pull requests', r'\b(null|pull) requests\b', 82, re.IGNORECASE),
@@ -57,26 +37,6 @@ FUZZY_MAP_pre = [
     ('Commit', r'\bkomm\s*mit\b', 82, re.IGNORECASE),
     ('Commit Message', r'\bkommen\s*mit\s*Message\b', 82, re.IGNORECASE),
     ('neues Release', r'\bneues\s*Verlies\b', 82, re.IGNORECASE),
-    ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, re.IGNORECASE),
-    ('StopButton', r'\bstob\s*Button\b', 82, re.IGNORECASE),
-    ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
-
-
-    ('?', r'\s+(fragezeichen|fragen|frage)\s*$', 80, re.IGNORECASE),
-
-
-
-    ('AutoKey', r'\bAuto k\b', 82, re.IGNORECASE),
-
-
-    ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
-    ('Sigune Lauffer', r'\b(Figur|Sekunde) (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
-
-
-    ('Lauffer', r'\b(Läufer|laufer)\b', 82, re.IGNORECASE), # Exact match, but ignore case
-
-
-
 
 
 
@@ -85,22 +45,24 @@ FUZZY_MAP_pre = [
     # --- git status ---
     # This one regex replaces 5 old entries.
     # geht's starte Gliedstaat ist
-    ('git status', r'^\s*(git|get|gitter|kids|kate)\s+(status|staates|startet|starten|dates)\s*$', 82, re.IGNORECASE),
+    # Geht Staat git status git status
+    ('git status', r'^\s*(Geht|git|get|gitter|Gliedstaat|kids|kate)\s+(status|Staat|staates|start|startet|starten|dates)\s*$', 82, re.IGNORECASE),
 
     ('git status', r'^\s*(Gliedstaat)\s+(ist)\s*$', 80, re.IGNORECASE),
 
     ('git status', r'^\s*(gitschtal|quatscht hatte|Geht tat uns)\s+$', 80, re.IGNORECASE),
 
-    # --- git add . ---
+
+
+    # --- git add . --- git add .
     ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
 
     # --- git commit ---
-    #  Kate Commit einen  git commit Git beach
 
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*kate Commit\s*$', 80, re.IGNORECASE),
 
-    ('git commit ', r'^\s*Geht (Komet|Komik|Gummi|kommend|Commit|mit)\s*$', 80, re.IGNORECASE),
+    ('git commit ', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(Komet|Komik|Gummi|kommend|Commit|mit|hitch)\s*$', 80, re.IGNORECASE),
 
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, re.IGNORECASE),
 
@@ -120,23 +82,21 @@ FUZZY_MAP_pre = [
     ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|beach)\s*$"', 80, re.IGNORECASE),
     # Gilt komme komme
 
-    # --- git push ---
-    ('git push', r'^\s*(git|geht|gitter)\s*(busch|push)\s*$', 85, re.IGNORECASE),
+    # --- git push --- Gibt eine gibt git pull big push
+    ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push)\s*$', 85, re.IGNORECASE),
+    ('git push ', r'^\s*kate\s+bush\s*$', 80, re.IGNORECASE),
 
     # --- git pull ---
     ('git pull', r'^\s*(git|geht|quiet|gitter)\s*(pohl|pool)\s*$', 82, re.IGNORECASE),
     ('git pull', r'^\s*git\s*pull\s*$', 80, re.IGNORECASE),
 
-    ('git push', r'^\s*kate\s+bush\s*$', 80, re.IGNORECASE),
 
-
+# einen git add . Ihnen geht App Geht prüft git push
 
     # --- git diff ---
     ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, re.IGNORECASE),
 
     ('git switch ', r'^\s*(git|geht|peach)\s*(switch|Schmidt)\s*$', 75, re.IGNORECASE),
-
-
 
 
 ]

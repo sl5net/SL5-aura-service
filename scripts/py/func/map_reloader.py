@@ -14,7 +14,7 @@ def auto_reload_modified_maps(logger):
 
     try:
         project_root = Path(__file__).resolve().parent.parent.parent.parent
-        maps_base_dir = project_root / "config" / "languagetool_server" / "maps"
+        maps_base_dir = project_root / "config" / "maps"
 
         for map_file_path in maps_base_dir.glob("**/*.py"):
             if map_file_path.name == "__init__.py":

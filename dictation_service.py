@@ -182,6 +182,7 @@ class WindowsEmojiFilter(logging.Filter):
             '🎬': '[START]',
             '⏹️': '[STOP]',
             '🎤': '[MIC]',
+            '🎙️': '[MIC]',
             '💾': '[▀▄▀]',
             '📋': '[EMPTY]',
             '🔳': '[NOTHING]',

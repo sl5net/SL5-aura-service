@@ -1,5 +1,8 @@
 # scripts/py/func/process_text_in_background.py
 import logging
+import pkgutil
+import importlib
+
 import os, sys
 
 from pathlib import Path
@@ -41,39 +44,58 @@ from .map_reloader import auto_reload_modified_maps
 import importlib
 
 def load_maps_for_language(lang_code, logger):
-    """Dynamically loads punctuation and fuzzy maps for a given language code (e.g., 'de')."""
-    # try:
+    logger.info(f"Starting recursive map loading for language: {lang_code}")
 
-    logger.info(f"lang_code: {lang_code}")
+    # Zuerst alle Module im Speicher neu laden, um Änderungen zu erfassen
+    auto_reload_modified_maps(logger)
 
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-    if project_root not in sys.path:
-        sys.path.insert(0, project_root)
+    # Leere Container für die zusammengefügten Daten
+    punctuation_map = {}
+    fuzzy_map_pre   = []
+    fuzzy_map       = []
 
-    # e.g. 'maps.de.punctuation_map'
-    punc_module_path      = f"config.languagetool_server.maps.{lang_code}.PUNCTUATION_MAP"
-    fuzzy_module_path_pre = f"config.languagetool_server.maps.{lang_code}.FUZZY_MAP_pre"
-    fuzzy_module_path     = f"config.languagetool_server.maps.{lang_code}.FUZZY_MAP"
+    try:
+        maps_package = importlib.import_module('config.languagetool_server.maps')
+    except ModuleNotFoundError:
+        maps_package = importlib.import_module('config.maps')
 
-    punc_module = importlib.import_module(punc_module_path)
-    fuzzy_module_pre = importlib.import_module(fuzzy_module_path_pre)
-    fuzzy_module     = importlib.import_module(fuzzy_module_path)
+    for importer, modname, ispkg in pkgutil.walk_packages(
+            path=maps_package.__path__,
+            prefix=maps_package.__name__ + '.',
+            onerror=lambda x: None):
 
-    logger.info(f"💾 Fuzzy_pre: {fuzzy_module_path_pre}")
-    logger.info(f"💾 Fuzzy: {fuzzy_module_path}")
+        if ispkg:
+            continue
 
-    punctuation_map = punc_module.PUNCTUATION_MAP
-    fuzzy_map_pre   = fuzzy_module_pre.FUZZY_MAP_pre
-    fuzzy_map       = fuzzy_module.FUZZY_MAP
+        if f".{lang_code}." not in modname:
+            continue
+
+        # not use not needed plugins
+        if ".plugins." in modname:
+            plugin_name = modname.split('.plugins.')[1].split('.')[0]
+            if not settings.PLUGINS_ENABLED.get(plugin_name, True):
+                continue
 
 
-    # log.info(f"Successfully loaded command maps for language '{lang_code}'.")
+        try:
+            module = importlib.import_module(modname)
+            logger.debug(f"Processing module for aggregation: {modname}")
+
+            # Füge Daten hinzu, falls die Variablen existieren
+            if hasattr(module, 'PUNCTUATION_MAP'):
+                punctuation_map.update(module.PUNCTUATION_MAP)
+            if hasattr(module, 'FUZZY_MAP_pre'):
+                fuzzy_map_pre.extend(module.FUZZY_MAP_pre)
+            if hasattr(module, 'FUZZY_MAP'):
+                fuzzy_map.extend(module.FUZZY_MAP)
+
+        except Exception as e:
+            logger.error(f"Failed to process module '{modname}': {e}")
+
+    logger.info(f"Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")
     return punctuation_map, fuzzy_map_pre, fuzzy_map
-"""
-    except (ModuleNotFoundError, AttributeError) as e:
-        # log.warning(f"Could not load maps for '{lang_code}': {e}. Using empty maps.")
-        return {}, [] # Fallback empty maps
-"""
+
+
 
 from .correct_text_by_languagetool import correct_text_by_languagetool
 import re, time
@@ -110,13 +132,13 @@ def process_text_in_background(logger,
 
         if len(raw_text) > 0:
             try:
-                logger.info(f"👀👀👀 Start lang_code predictions for: '{raw_text}'")
                 if LT_LANGUAGE == 'en-US':
                     threshold = 0.50  # Low threshold: switch even if not 100% sure it's German
                 else:
                     threshold=0.60
                 predictions = None
                 if ENABLE_AUTO_LANGUAGE_DETECTION:
+                    logger.info(f"👀👀👀 Start lang_code predictions for: '{raw_text}'")
                     predictions = fasttext_model.predict(raw_text, threshold=threshold)
 
                 if predictions:
@@ -161,15 +183,15 @@ def process_text_in_background(logger,
             normalize_punctuation_changed_size = True
 
         if normalize_punctuation_changed_size:
-            # Entfernt Leerzeichen nur, wenn sie zwischen zwei Ziffern stehen
             processed_text = re.sub(r'(?<=\d)\s+(?=\d)', '', processed_text)
 
             is_only_number =  processed_text.isdigit()
 
+        # scripts/py/func/process_text_in_background.py
+
+        #regex_pre_is_replacing_all = False
         regex_match_found_prev = False
         regex_pre_is_replacing_all_maybe = False
-        #regex_pre_is_replacing_all = False
-        # ﻿ Hallo Test ZWNBSP
 
         if not was_exact_match:
             for replacement, match_phrase, threshold, *flags_list in fuzzy_map_pre:
@@ -226,16 +248,15 @@ def process_text_in_background(logger,
             if (not regex_pre_is_replacing_all
                 and not is_only_number
                 and not (
-                            settings.CORRECTIONS_ENABLED["git"] and
-                            ("git" in processed_text or "push" in processed_text))):
+                            settings.CORRECTIONS_ENABLED["git"]
+                            and ("git" in processed_text or "push" in processed_text))):
                 processed_text = correct_text_by_languagetool(
                     logger,
                     active_lt_url,
                     LT_LANGUAGE,
                     processed_text).lstrip('\uFEFF')
 
-#  1 2 3 4 5
-                # Step 2: Slower, fuzzy replacements on the result
+            # Step 2: Slower, fuzzy replacements on the result
             # logger.info(f"DEBUG: Starting fuzzy match for: '{processed_text}'")
 
             best_score = 0
