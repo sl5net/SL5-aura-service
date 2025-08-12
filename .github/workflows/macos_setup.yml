@@ -9,11 +9,13 @@ on:
   # Run on pushes to the main branch
   push:
     branches:
-      - main
+      - master
+
   # Also run on pull requests targeting the main branch
   pull_request:
     branches:
-      - main
+      - master
+
   workflow_dispatch:
 jobs:
   # Renamed job for clarity

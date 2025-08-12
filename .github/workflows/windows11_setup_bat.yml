@@ -3,7 +3,7 @@ name: CI winOS Setup.BAT
 on:
 
   push:
-    branches: [ main ]
+    branches: [ master ]
 
   # Release
   release:

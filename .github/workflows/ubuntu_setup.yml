@@ -2,7 +2,7 @@ name: CI for ubuntu Setup
 on:
 
   push:
-    branches: [ main ]
+    branches: [ master ]
 
   # Release
   release:

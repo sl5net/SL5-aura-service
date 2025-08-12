@@ -4,7 +4,7 @@ name: CI for Suse Setup
 on:
 
   push:
-    branches: [ main ]
+    branches: [ master ]
 
   # Release
   release:
