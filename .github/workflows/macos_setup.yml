@@ -44,4 +44,6 @@ jobs:
           ls -la
           echo "--- DEBUG INFO END ---"
 
-        run: bash ./setup/macos_setup.sh
+          ./setup/macos_setup.sh
+
+
