@@ -1,9 +1,6 @@
 # scripts/py/func/process_text_in_background.py
 import logging
 import pkgutil
-import importlib
-
-import os, sys
 
 from pathlib import Path
 
