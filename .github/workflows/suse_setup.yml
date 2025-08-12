@@ -2,6 +2,9 @@
 
 name: CI for Suse Setup
 on:
+  # Release
+  release:
+      types: [published]
   workflow_dispatch:
 
 jobs:

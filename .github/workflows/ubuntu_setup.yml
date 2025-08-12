@@ -1,5 +1,8 @@
 name: CI for ubuntu Setup
 on:
+  # Release
+  release:
+      types: [published]
   workflow_dispatch:
 jobs:
   # Renamed job for clarity

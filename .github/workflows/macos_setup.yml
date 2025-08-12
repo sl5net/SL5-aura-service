@@ -1,6 +1,10 @@
 name: CI for macOS Setup
 
 on:
+  # Release
+  release:
+      types: [published]
+
   # Run on pushes to the main branch
   push:
     branches:

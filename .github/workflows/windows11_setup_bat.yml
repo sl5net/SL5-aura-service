@@ -1,6 +1,9 @@
 name: CI winOS Setup.BAT
 
 on:
+  # Release
+  release:
+      types: [published]
   workflow_dispatch:
 
 jobs:
