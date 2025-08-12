@@ -37,4 +37,11 @@ jobs:
       - name: Run macos_setup.sh
         # This assumes your script has `set -e` at the top for error handling
         # and a shebang `#!/bin/bash`
+
+        run: |
+          echo "--- DEBUG INFO START ---"
+          pwd
+          ls -la
+          echo "--- DEBUG INFO END ---"
+
         run: bash ./setup/macos_setup.sh
