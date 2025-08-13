@@ -66,7 +66,9 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                 if [ -f "$f" ]; then
                     # FIX: Pipe file content directly to xdotool to preserve UTF-8
                     # cat "$f" | LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file -
-                    LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
+                    if [ -z "$CI" ]; then
+                        LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
+                    fi
                     rm "$f"
                     # if you want newline/return/enter at the end:
                     # LC_ALL=C.UTF-8 xdotool key Return
@@ -74,7 +76,9 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     # --- Conditional Enter Key ---
                     if [ -f "$AUTO_ENTER_FLAG" ] && [ "$(cat "$AUTO_ENTER_FLAG")" = "true" ]; then
                         log "INFO: Auto-Enter plugin is enabled. Pressing Return."
-                        LC_ALL=C.UTF-8 xdotool key Return
+                        if [ -z "$CI" ]; then
+                            LC_ALL=C.UTF-8 xdotool key Return
+                        fi
                     fi
                     # --- End of Conditional Block ---
 
