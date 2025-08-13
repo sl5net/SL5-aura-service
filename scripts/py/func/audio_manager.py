@@ -26,6 +26,7 @@ How to Use:
 import sys
 import subprocess
 import logging
+import os
 
 # Set up a basic logger for standalone testing or if no logger is passed
 log = logging.getLogger(__name__)
@@ -62,6 +63,11 @@ def _set_mute_state_windows(mute: bool, logger):
         return False
 
 def _get_mute_state_linux(logger):
+
+    if os.getenv('CI'):
+        logger.info("CI environment detected. Skipping pactl command for get_mute.")
+        return False
+
     try:
         cmd = ['pactl', 'get-source-mute', '@DEFAULT_SOURCE@']
         result = subprocess.run(cmd, check=True, capture_output=True, text=True)
