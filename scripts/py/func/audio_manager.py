@@ -36,6 +36,10 @@ if not log.handlers:
 # --- Platform-Specific Implementations ---
 
 def _get_mute_state_windows(logger):
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
+
     try:
         from comtypes import CLSCTX_ALL
         from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
@@ -49,6 +53,11 @@ def _get_mute_state_windows(logger):
 
 def _set_mute_state_windows(mute: bool, logger):
     logger.info(f"Setting Windows microphone mute state to: {mute}")
+
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
+
     try:
         from comtypes import CLSCTX_ALL
         from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
@@ -78,6 +87,10 @@ def _get_mute_state_linux(logger):
         return None
 
 def _set_mute_state_linux(mute: bool, logger):
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
+
     logger.info(f"Setting Linux microphone mute state to: {mute}")
     try:
         state = '1' if mute else '0'
@@ -90,6 +103,10 @@ def _set_mute_state_linux(mute: bool, logger):
         return False
 
 def _get_mute_state_macos(logger):
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
+
     try:
         cmd = "osascript -e 'input volume of (get volume settings)'"
         result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
@@ -100,6 +117,11 @@ def _get_mute_state_macos(logger):
 
 def _set_mute_state_macos(mute: bool, logger):
     logger.info(f"Setting macOS microphone mute state to: {mute}")
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
+
+
     try:
         if mute:
             cmd = "osascript -e 'set volume input volume 0'"
@@ -117,6 +139,10 @@ def _set_mute_state_macos(mute: bool, logger):
 
 def is_microphone_muted(logger=None):
     """Checks if the default system microphone is currently muted."""
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
+
     active_logger = logger if logger else log
     if sys.platform == "win32":
         return _get_mute_state_windows(active_logger)
@@ -129,6 +155,9 @@ def is_microphone_muted(logger=None):
         return None
 
 def mute_microphone(logger=None):
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
     """Mutes the default system microphone."""
     active_logger = logger if logger else log
 
@@ -151,6 +180,9 @@ def mute_microphone(logger=None):
         return False
 
 def unmute_microphone(logger=None):
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
     """
     Unmutes the default system microphone.
     This function is wrapped in a robust try-except block to prevent service crashes.
@@ -178,6 +210,12 @@ def unmute_microphone(logger=None):
 
 def toggle_microphone_mute(logger=None):
     """Toggles the default system microphone mute state."""
+
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
+
+
     active_logger = logger if logger else log
     is_muted = is_microphone_muted(active_logger)
     if is_muted is None:
