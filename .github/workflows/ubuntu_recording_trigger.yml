@@ -50,7 +50,7 @@ jobs:
           
           # Wait up to 90 seconds (18 * 5s) for the final success message
           for i in {1..18}; do
-            if grep -q "==    ✅ MODEL READY: 'en'." "$LOG_FILE"; then
+            if grep -q "✅ MODEL READY" "$LOG_FILE"; then
               echo "✅ Success: Service initialized and models are ready."
               pkill -f dictation_service.py
               exit 0

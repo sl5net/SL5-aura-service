@@ -203,16 +203,35 @@ class WindowsEmojiFilter(logging.Filter):
 
 
 # --- Logging Setup ---
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)-8s - %(message)s',
-    handlers=[
-        logging.FileHandler(f'{SCRIPT_DIR}/log/dictation_service.log', mode='w'),
-        logging.StreamHandler(sys.stdout)
-    ]
-)
+# Manual configuration for maximum robustness.
+
+# 1. Get the root logger.
 logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# 2. Clear any pre-existing handlers to prevent duplicates.
+if logger.hasHandlers():
+    logger.handlers.clear()
+
+# 3. Create a shared formatter.
+log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
+
+# 4. Create, configure, and add the File Handler.
+file_handler = logging.FileHandler(f'{SCRIPT_DIR}/log/dictation_service.log', mode='w')
+file_handler.setFormatter(log_formatter)
+logger.addHandler(file_handler)
+
+# 5. Create, configure, and add the Console Handler.
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(log_formatter)
+logger.addHandler(console_handler)
+
+# The filter is innocent, but we leave it out for now for the cleanest possible test.
+
+
 logger.handlers[0].addFilter(WindowsEmojiFilter())
+
+
 
 # Execute the check. The script will exit here if the setup is incomplete.
 validate_setup(SCRIPT_DIR, logger)
