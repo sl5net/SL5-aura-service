@@ -183,7 +183,7 @@ def mute_microphone(logger=None):
 def unmute_microphone(logger=None):
     active_logger = logger if logger else log
     if os.getenv('CI'):
-        logger.info("CI env: Skipping hardware call.")
+        active_logger.info("CI env: Skipping hardware call.")
         return False
     """
     Unmutes the default system microphone.
@@ -214,7 +214,7 @@ def toggle_microphone_mute(logger=None):
     active_logger = logger if logger else log
 
     if os.getenv('CI'):
-        logger.info("CI env: Skipping hardware call.")
+        active_logger.info("CI env: Skipping hardware call.")
         return False
 
 
