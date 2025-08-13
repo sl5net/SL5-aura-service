@@ -139,11 +139,11 @@ def _set_mute_state_macos(mute: bool, logger):
 
 def is_microphone_muted(logger=None):
     """Checks if the default system microphone is currently muted."""
+    active_logger = logger if logger else log
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
 
-    active_logger = logger if logger else log
     if sys.platform == "win32":
         return _get_mute_state_windows(active_logger)
     elif sys.platform == "linux":
@@ -155,11 +155,12 @@ def is_microphone_muted(logger=None):
         return None
 
 def mute_microphone(logger=None):
+    active_logger = logger if logger else log
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
     """Mutes the default system microphone."""
-    active_logger = logger if logger else log
+
 
     try:
         if sys.platform == "win32":
@@ -180,6 +181,7 @@ def mute_microphone(logger=None):
         return False
 
 def unmute_microphone(logger=None):
+    active_logger = logger if logger else log
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
@@ -187,7 +189,6 @@ def unmute_microphone(logger=None):
     Unmutes the default system microphone.
     This function is wrapped in a robust try-except block to prevent service crashes.
     """
-    active_logger = logger if logger else log
     try:
         if sys.platform == "win32":
             return _set_mute_state_windows(False, active_logger)
@@ -210,13 +211,13 @@ def unmute_microphone(logger=None):
 
 def toggle_microphone_mute(logger=None):
     """Toggles the default system microphone mute state."""
+    active_logger = logger if logger else log
 
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
 
 
-    active_logger = logger if logger else log
     is_muted = is_microphone_muted(active_logger)
     if is_muted is None:
         active_logger.error("Could not determine microphone state, cannot toggle.")
