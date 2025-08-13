@@ -141,7 +141,7 @@ def is_microphone_muted(logger=None):
     """Checks if the default system microphone is currently muted."""
     active_logger = logger if logger else log
     if os.getenv('CI'):
-        logger.info("CI env: Skipping hardware call.")
+        active_logger.info("CI env: Skipping hardware call.")
         return False
 
     if sys.platform == "win32":
@@ -157,7 +157,7 @@ def is_microphone_muted(logger=None):
 def mute_microphone(logger=None):
     active_logger = logger if logger else log
     if os.getenv('CI'):
-        logger.info("CI env: Skipping hardware call.")
+        active_logger.info("CI env: Skipping hardware call.")
         return False
     """Mutes the default system microphone."""
 
