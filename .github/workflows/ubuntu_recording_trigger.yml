@@ -53,7 +53,7 @@ jobs:
           sleep 40
 
           echo "--> Triggering a test recording..."
-          touch /tmp/vosk_trigger
+          touch /tmp/sl5_record.trigger
 
           echo "--> Waiting 5s for the trigger to be processed and logged..."
           sleep 5
