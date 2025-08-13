@@ -1,4 +1,4 @@
-# /home/seeh/projects/py/STT/scripts/py/func/checks/check_badges.py
+# STT/scripts/py/func/checks/check_badges.py
 import re
 import sys
 import requests
