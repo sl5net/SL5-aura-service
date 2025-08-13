@@ -86,8 +86,8 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     if os.getenv('CI'):
         logger.info("CI environment detected. Skipping microphone-dependent recording.")
         logger.info("Yielding a test string to signal success.")
-        yield "CI_TEST_SUCCESS"
-        return # Wichtig: Beendet die Funktion hier, damit der restliche Code nicht ausgeführt wird.
+        yield ""
+        return
 
     try:
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,
