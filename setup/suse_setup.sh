@@ -157,57 +157,6 @@ echo "--> All components are present and correctly placed."
 # --- End of Download/Extract block ---
 # ==============================================================================
 
-# Function to extract and clean up
-expand_and_cleanup() {
-    local zip_file=$1
-    local expected_dir=$2
-    local dest_path=$3
-
-    # Check if final directory already exists
-    if [ -d "$dest_path/$expected_dir" ]; then
-        echo "    -> Directory '$expected_dir' already exists. Skipping."
-        return
-    fi
-
-    # Check if the downloaded zip exists
-    if [ ! -f "$zip_file" ]; then
-        echo "    -> FATAL: Expected archive not found: '$zip_file'"
-        exit 1
-    fi
-
-    echo "    -> Extracting $zip_file to $dest_path..."
-    unzip -q "$zip_file" -d "$dest_path"
-
-    # Clean up the zip file
-    if [ "$should_remove_zips_after_unpack" = true ] ; then
-        rm "$zip_file"
-    fi
-    echo "    -> Cleaned up ZIP file: $zip_file"
-}
-
-# Execute extraction for each archive
-for config_line in "${BASE_CONFIG[@]}"; do
-    # Read the space-separated values into variables
-    read -r base_name final_name dest_path <<< "$config_line"
-
-    # CONSTRUCT THE FILENAMES, including the prefix for the zip file
-    zip_file="${PREFIX}${base_name}.zip"
-    expected_dir="${base_name}" # The final directory name has no prefix
-
-    if [ ! -e "$dest_path/$final_name" ]; then
-        echo "    -> MISSING: '$dest_path/$final_name'. Download is required."
-        download_needed=true
-        break # Ein fehlendes Teil reicht, Prüfung kann stoppen
-    fi
-
-    expand_and_cleanup "$zip_file" "$expected_dir" "$dest_path"
-done
-
-echo "    -> Extraction and cleanup successful."
-
-
-
-
 
 
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
