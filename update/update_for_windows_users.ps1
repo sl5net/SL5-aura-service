@@ -1,4 +1,4 @@
-# file: update_for_windows_users.ps1                                       
+# file: update/update_for_windows_users.ps1                                       
 # Description: Downloads the latest version and updates the application
 #              while preserving user settings. For non-developer use.
 
@@ -10,9 +10,11 @@ $tempDir = Join-Path $env:TEMP "sl5_update_temp"
 Write-Host "--- SL5 Dictation Updater ---" -ForegroundColor Cyan
 Write-Host "This will download the latest version and replace all application files."
 Write-Host "Your personal settings in 'config\settings_local.py' will be saved."
-Write-Host "Please close the main application if it is running."
-Read-Host -Prompt "Press Enter to continue or CTRL+C to cancel"
-
+if (-not ($env:CI -eq 'true'))
+{
+    Write-Host "Please close the main application if it is running."
+    Read-Host -Prompt "Press Enter to continue or CTRL+C to cancel"
+}
 try {
     # 1. Clean up previous temporary files if they exist
     if (Test-Path $tempDir) {
