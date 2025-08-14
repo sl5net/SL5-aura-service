@@ -2,12 +2,22 @@
 # setup/suse_setup.sh
 # Run this setup script from the project's root directory.
 
-should_remove_zips_after_unpack=true
+SCRIPT_NAME=$(basename "$0")
+# Check if the script is run from the project root.
+# This check is more robust than changing directory.
+if [ ! -f "requirements.txt" ]; then
+    echo "ERROR: Please run this script from the project's root directory."
+    echo ""
+    echo "cd .. ; ./setup/$SCRIPT_NAME"
+    exit 1
+fi
 
-# --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
-cd "$PROJECT_ROOT"
+#cd "$PROJECT_ROOT"
+
+should_remove_zips_after_unpack=true
+
 
 echo "--- Starting STT Setup for openSUSE ---"
 # --- End of location-independent block ---

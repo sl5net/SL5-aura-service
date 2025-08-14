@@ -4,6 +4,17 @@
 # Run this setup script from the project's root directory.
 #
 
+SCRIPT_NAME=$(basename "$0")
+# Check if the script is run from the project root.
+# This check is more robust than changing directory.
+if [ ! -f "requirements.txt" ]; then
+    echo "ERROR: Please run this script from the project's root directory."
+    echo ""
+    echo "cd .. ; ./setup/$SCRIPT_NAME"
+    exit 1
+fi
+
+
 should_remove_zips_after_unpack=true
 
 # --- Make script location-independent ---
