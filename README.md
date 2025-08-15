@@ -1,6 +1,10 @@
 # System-Wide Offline Dictation, Correction, Pluggable System
 
-This project provides a powerful, system-wide dictation tool that goes beyond simple speech-to-text. It **automatically corrects** your dictated text, **suggests synonyms** to improve your writing, and even includes a hotkey to **look up homophones** (e.g., "there" vs. "their") for any word on your screen.
+This project provides a powerful, system-wide dictation tool that goes beyond simple speech-to-text. It **automatically corrects** your dictated text.
+
+**Plugin-Features** encapsulated in plugins (e.g., git commands) that can be easily enabled or disabled in the config. This allows clean customization.
+
+**suggests synonyms** to improve your writing, and even includes a hotkey to **look up homophones** (e.g., "there" vs. "their") for any word on your screen.
 
 It's a complete, offline writing assistant built on Vosk and LanguageTool.
 
@@ -10,7 +14,7 @@ It's a complete, offline writing assistant built on Vosk and LanguageTool.
 ## Key Features
 
 *   **Offline & Private:** 100% local. No data ever leaves your machine.
-*   **Dictate, Correct & Enhance:** Automatic grammar/spelling correction and synonym suggestions.
+*   **Dictate, Correct:** Automatic grammar/spelling correction and synonym suggestions.
 *   **Conservative RAM Usage:** Intelligently manages memory, preloading models only if enough free RAM is available, ensuring other applications (like your PC games) always have priority.
 *   **Cross-Platform:** Works on Linux, macOS, and Windows.
 *   **Fully Automated:** Manages its own LanguageTool server. A single script handles the startup process on Linux/macOS.
