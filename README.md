@@ -1,4 +1,4 @@
-# System-Wide Offline Dictation, Correction, and Suggestion Tool
+# System-Wide Offline Dictation, Correction, Pluggable System
 
 This project provides a powerful, system-wide dictation tool that goes beyond simple speech-to-text. It **automatically corrects** your dictated text, **suggests synonyms** to improve your writing, and even includes a hotkey to **look up homophones** (e.g., "there" vs. "their") for any word on your screen.
 
