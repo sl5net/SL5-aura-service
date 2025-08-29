@@ -41,6 +41,9 @@ FUZZY_MAP_pre = [
 
     ('AutoKey', r'\bAuto k\b', 82, re.IGNORECASE),
 
+    ('Build Prozess', r'\bbild prozess\b', 82, re.IGNORECASE),
+
+
     ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
     ('Sigune Lauffer', r'\b(Figur|Sekunde) (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
 

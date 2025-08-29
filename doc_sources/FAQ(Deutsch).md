@@ -3,6 +3,9 @@
 **1. F: Was ist SL5 Dictation?**
 A: Es ist ein systemweites Offline-Spracherkennungsprogramm. Sie können damit in jede beliebige Anwendung auf Ihrem Computer (Windows, macOS, Linux) diktieren, ohne eine Internetverbindung zu benötigen.
 
+F: Is offline Spracherkennung Alexa/Siri und konsorten?
+A: Gute Frage. Nein, es ist das genaue Gegenteil. Alexa/Siri sind cloudbasiert. Die Sprachdaten werden zur Verarbeitung an deren Server gesendet. offline: alles passiert sicher auf dem Gerät des Nutzers. Das ist der entscheidende Vorteil für den Datenschutz.
+
 **2. F: Warum sollte ich das nutzen? Was ist das Besondere?**
 A: **Datenschutz.** Ihre Sprachdaten werden zu 100 % auf Ihrem lokalen Rechner verarbeitet und niemals in die Cloud gesendet. Das macht es absolut privat und DSGVO-konform.
 
