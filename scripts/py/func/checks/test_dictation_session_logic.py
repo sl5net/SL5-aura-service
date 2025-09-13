@@ -71,6 +71,7 @@ class TestDictationLogic(unittest.TestCase):
 
     @unittest.mock.patch('scripts.py.func.transcribe_audio_with_feedback.sd.RawInputStream', new=MockRawInputStream)
     def test_transcription_with_short_pause_yields_one_chunk(self):
+
         """
         Tests if continuous speech (with short pauses) is correctly transcribed as a single chunk.
         This test uses the current test_audio_16k.wav.
@@ -90,7 +91,8 @@ class TestDictationLogic(unittest.TestCase):
                    , recognizer
                    , "en-US"
                    , initial_silence_timeout=10.0
-                   , session_active_event=test_session_event)
+                   , session_active_event=test_session_event
+                   , AUTO_ENTER_AFTER_DICTATION_global=0)
         transcribed_chunks = [chunk for chunk in generator if chunk] # Collect non-empty chunks
 
         logging.info(f"Final transcribed chunks: {transcribed_chunks}")
@@ -114,7 +116,7 @@ class TestDictationLogic(unittest.TestCase):
             "ready to proceed with the second phase"
         ]
 
-        generator = transcribe_audio_with_feedback(logging, recognizer, "en-US", initial_silence_timeout=10.0)
+        generator = transcribe_audio_with_feedback(logging, recognizer, "en-US", initial_silence_timeout=10.0, AUTO_ENTER_AFTER_DICTATION_global=0)
         transcribed_chunks = [chunk for chunk in generator if chunk]
 
         logging.info(f"Final transcribed chunks: {transcribed_chunks}")

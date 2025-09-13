@@ -16,6 +16,15 @@ FUZZY_MAP_pre = [
     # - means first is most importend, lower rules maybe not get read.
 
     #switch to english no English please
+    # baue bauhaus
+
+    ('baue Haus', r'^\s*(baue auf|baue\s*\w*haus|Build House|Baue Haus)\s*$', 15, re.IGNORECASE),
+
+    ('alt+i', r'^\s*(alt\s*e|alt\s*i|ald\s*i|select in).*\s*$', 20, re.IGNORECASE),
+
+    ('alt+w', r'^\s*(select\s*wo|select\s*fr|alt\s*w|alt\s*wo|alt\s*fr|ald\s*women).*\s$', 20, re.IGNORECASE),
+
+
 
     #  Helps the Tool to switch to English
     ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, re.IGNORECASE),
@@ -43,6 +52,7 @@ FUZZY_MAP_pre = [
 
     ('Build Prozess', r'\bbild prozess\b', 82, re.IGNORECASE),
 
+    ('opensource', r'\bopensource\b', 75, re.IGNORECASE),
 
     ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
     ('Sigune Lauffer', r'\b(Figur|Sekunde) (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
