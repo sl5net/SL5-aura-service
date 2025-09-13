@@ -69,13 +69,64 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     if [ -z "$CI" ]; then
                         LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
                     fi
+
+
+
+                    GAME_WINDOW_ID=$(xdotool search --name "0 A.D." | head -1) # Replace "Your Game Window Name"
+
+                    # LC_ALL=C.UTF-8 xdotool --window $GAME_WINDOW_ID clearmodifiers # Clear after typing too
+
+
+                    # alt+i Alt+i
+                    mapfile -t lines < "$f"
+                    for line in "${lines[@]}"; do
+                        # Remove leading/trailing whitespace from the line for robust comparison
+                        trimmed_line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+
+                        if [[ "$trimmed_line" == 'alt+i' ]]; then
+                            # LC_ALL=C.UTF-8 xdotool windowactivate $GAME_WINDOW_ID
+                            sleep 0.01
+                            LC_ALL=C.UTF-8 xdotool key --window $GAME_WINDOW_ID alt+i clearmodifiers # Clear after typing too
+                            # LC_ALL=C.UTF-8 xdotool key alt+i
+                            # LC_ALL=C.UTF-8 xdotool --clearmodifiers
+                            sleep 0.1
+                            echo "Sent alt+i" # Optional: for debugging/confirmation
+                        fi
+
+                        if [[ "$trimmed_line" == 'alt+w' ]]; then
+        # LC_ALL=C.UTF-8 xdotool windowactivate --sync $GAME_WINDOW_ID
+        # LC_ALL=C.UTF-8 xdotool windowactivate $GAME_WINDOW_ID
+                            sleep 0.01
+                            LC_ALL=C.UTF-8 xdotool key alt+w clearmodifiers # Clear after typing too
+                            # LC_ALL=C.UTF-8 xdotool key alt+i
+                            # LC_ALL=C.UTF-8 xdotool --clearmodifiers
+                            sleep 1
+                            echo "Sent alt+w" # Optional: for debugging/confirmation
+                        fi
+
+                        if [[ "$trimmed_line" == 'baue Haus' ]]; then
+
+                        # printf "${line}"
+                            LC_ALL=C.UTF-8 xdotool --clearmodifiers key h clearmodifiers # Clear after typing too
+                            sleep 0.15
+                            xdotool click --delay 10 --repeat 8 1
+                            sleep 0.1
+                            LC_ALL=C.UTF-8 --clearmodifiers                             echo "Baue Haus" # Optional: for debugging/confirmation einen
+                        fi
+                    done
+
                     rm "$f"
+
                     # if you want newline/return/enter at the end:
                     # LC_ALL=C.UTF-8 xdotool key Return
 
+                    # log_message "INFO: Auto-Enter?"
+
                     # --- Conditional Enter Key ---
-                    if [ -f "$AUTO_ENTER_FLAG" ] && [ "$(cat "$AUTO_ENTER_FLAG")" = "true" ]; then
-                        log "INFO: Auto-Enter plugin is enabled. Pressing Return."
+                    if [ -f "$AUTO_ENTER_FLAG" ] && [ "$(cat "$AUTO_ENTER_FLAG")" = "1" ]; then
+                        # echo "INFO: Auto-Enter?"
+                        log_message "INFO: Auto-Enter plugin is enabled. Pressing Return."
                         if [ -z "$CI" ]; then
                             LC_ALL=C.UTF-8 xdotool key Return
                         fi

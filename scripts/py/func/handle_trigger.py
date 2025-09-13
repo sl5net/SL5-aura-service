@@ -3,6 +3,7 @@ import threading
 import time
 import vosk
 
+import config.settings_local
 from config.settings import PRE_RECORDING_TIMEOUT, SPEECH_PAUSE_TIMEOUT, SAMPLE_RATE
 
 from .model_manager import MODELS_LOCK
@@ -106,7 +107,7 @@ def handle_trigger(
             silence_timeout = PRE_RECORDING_TIMEOUT if not suspicious_events else SPEECH_PAUSE_TIMEOUT
 
             text_chunk_iterator = transcribe_audio_with_feedback(
-                logger, recognizer, lt_language, silence_timeout, dictation_session_active
+                logger, recognizer, lt_language, silence_timeout, dictation_session_active, config.settings_local.AUTO_ENTER_AFTER_DICTATION
             )
 
             for text_chunk in text_chunk_iterator:

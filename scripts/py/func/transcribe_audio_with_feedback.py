@@ -13,29 +13,59 @@ import sounddevice as sd
 
 import webrtcvad  # NEU: Import für Voice Activity Detection
 
+global AUTO_ENTER_AFTER_DICTATION_global  # noqa: F824
+
+
 def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , initial_silence_timeout
                                    , session_active_event
+                                   , AUTO_ENTER_AFTER_DICTATION_global
                                    ):
+
+    if 'AUTO_ENTER_AFTER_DICTATION_global' not in globals():
+        # This checks if the global variable has been defined at all.
+        # This would catch a NameError before it happens.
+        logger.warning(f"AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.")
+
     unmute_microphone()
 
     PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
     local_config_path = PROJECT_ROOT / "config/settings_local.py"
     default_config_path = PROJECT_ROOT / "config/settings.py"
     config_to_read = local_config_path if local_config_path.exists() else default_config_path
+
     try:
         with open(PROJECT_ROOT / config_to_read, "r") as f:
             for line in f:
-                if line.strip().startswith("PRE_RECORDING_TIMEOUT"):
+                stripped_line = line.strip()
+                if stripped_line.startswith("PRE_RECORDING_TIMEOUT"):
                     initial_silence_timeout = float(line.split("=")[1].strip())
-                if line.strip().startswith("SPEECH_PAUSE_TIMEOUT"):
+                elif stripped_line.startswith("SPEECH_PAUSE_TIMEOUT"):
                     SPEECH_PAUSE_TIMEOUT = float(line.split("=")[1].strip())
-                    break
+                elif stripped_line.startswith("AUTO_ENTER_AFTER_DICTATION"): # 1 means one Enter, 2 means Enter two times
+                    AUTO_ENTER_AFTER_DICTATION = int(line.split("=")[1].strip())
+
+                    if AUTO_ENTER_AFTER_DICTATION != AUTO_ENTER_AFTER_DICTATION_global:
+                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION: =====> {AUTO_ENTER_AFTER_DICTATION}")
+                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION: =====> {AUTO_ENTER_AFTER_DICTATION}")
+                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION: =====> {AUTO_ENTER_AFTER_DICTATION}")
+                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION: =====> {AUTO_ENTER_AFTER_DICTATION}")
+                        # global AUTO_ENTER_AFTER_DICTATION_global
+                        AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION
+                        # Define the path for the AutoEnter flag file
+                        AUTO_ENTER_FLAG_FILE = Path("/tmp/sl5_auto_enter.flag")
+                        with open(AUTO_ENTER_FLAG_FILE, "w") as flag_f:
+                            flag_f.write(str(AUTO_ENTER_AFTER_DICTATION))
+                        logger.info(f"AUTO_ENTER_AFTER_DICTATION written to {AUTO_ENTER_FLAG_FILE}: {AUTO_ENTER_AFTER_DICTATION}")
+
 
     except (FileNotFoundError, ValueError, IndexError) as e:
         logger.warning(f"Could not read local config override ({e}), continuing with defaults.")
+    except Exception as e:
+        logger.warning(f"warning: {e}")
 
     logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")
+    logger.info(f"AUTO_ENTER_AFTER_DICTATION = {AUTO_ENTER_AFTER_DICTATION}")
 
     # --- NEU: VAD Initialisierung ---
     vad = webrtcvad.Vad()

@@ -20,6 +20,10 @@ FUZZY_MAP_pre = [
     ('pull requests', r'\b(null|pull) requests\b', 82, re.IGNORECASE),
 
 
+    ('er branch', r'er\b (brach|Prime)\b', 82, re.IGNORECASE),
+
+
+
     ('feature branch', r'\bFeature\s*prince\b', 82, re.IGNORECASE),
 
     ('feature branch', r'\bFeature\s*(prince|ranch)\b', 82, re.IGNORECASE),

@@ -2,6 +2,8 @@
 import os
 import sys, subprocess
 
+
+
 # Python path to ensure reliable imports on all platforms
 # This solves potential issues when running from a batch script on Windows
 
@@ -49,7 +51,8 @@ from pathlib import Path
 from config.settings import (LANGUAGETOOL_RELATIVE_PATH,
                             USE_EXTERNAL_LANGUAGETOOL, EXTERNAL_LANGUAGETOOL_URL, LANGUAGETOOL_PORT,
                             DEV_MODE,
-                            ENABLE_AUTO_LANGUAGE_DETECTION
+                            ENABLE_AUTO_LANGUAGE_DETECTION,
+                            AUTO_ENTER_AFTER_DICTATION
                             )
 
 
@@ -395,6 +398,9 @@ if DEV_MODE :
 
 # --- main-logic is in Thread ---
 
+# File: dictation_service.py
+global AUTO_ENTER_AFTER_DICTATION_global
+
 recording_time = 0
 from config import settings # Import the whole settings module
 if __name__ == "__main__":
@@ -408,19 +414,21 @@ if __name__ == "__main__":
         "HEARTBEAT_FILE": HEARTBEAT_FILE,
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
-        "PROJECT_ROOT": PROJECT_ROOT
+        "PROJECT_ROOT": PROJECT_ROOT,
+        "AUTO_ENTER_AFTER_DICTATION": AUTO_ENTER_AFTER_DICTATION
     })
 
 
 
     # --- Plugin State Communication ---
+    # File: dictation_service.py Line 417
     # Create a flag file so client scripts know if a plugin is active.
     try:
+        AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION
         auto_enter_flag_path = "/tmp/sl5_auto_enter.flag"
-        auto_enter_enabled = settings.PLUGINS_ENABLED.get("auto_enter_after_dictation", False)
         with open(auto_enter_flag_path, "w") as f:
-            f.write(str(auto_enter_enabled).lower()) # Writes 'true' or 'false'
-        logger.info(f"Set auto-enter flag to: {auto_enter_enabled}")
+            f.write(str(AUTO_ENTER_AFTER_DICTATION_global)) # Writes 1 or 0
+        logger.info(f"Set auto-enter flag to: {AUTO_ENTER_AFTER_DICTATION_global}")
     except Exception as e:
         logger.error(f"Could not write auto-enter flag file: {e}")
 

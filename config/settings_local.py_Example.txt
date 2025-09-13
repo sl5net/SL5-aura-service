@@ -32,7 +32,7 @@ CORRECTIONS_ENABLED.update({
 
 PRE_RECORDING_TIMEOUT = 12
 SPEECH_PAUSE_TIMEOUT = 1
-
+AUTO_ENTER_AFTER_DICTATION = 0
 
 CRITICAL_THRESHOLD_MB = 1024 * 2
 # CRITICAL_THRESHOLD_MB = 28000 # (also 28 GB)
@@ -44,7 +44,6 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 # These settings tell the backend service what to expect or how to format output.
 ####     "github_corrections": True,         # Example from before ???
 PLUGINS_ENABLED = {
-    "auto_enter_after_dictation": False, # Set to True to add an 'Enter' keypress
     "game-dealers_choice": False,             # For Andy's poker game
     "git": False,
 }
