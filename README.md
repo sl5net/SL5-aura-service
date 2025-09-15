@@ -59,8 +59,9 @@ setup/windows11_setup.ps1
 ```
 
 #### For Windows
-1.  **Install [AutoHotkey v2](https://www.autohotkey.com/)**. This is required for the text-typing watcher.
-2.  Run the setup script with administrator privileges **"Run with PowerShell"**.
+Run the setup script with administrator privileges **"Run with PowerShell"**.
+
+**Install a tool for read and run e.g. [CopyQ](https://github.com/hluk/CopyQ) or [AutoHotkey v2](https://www.autohotkey.com/)**. This is required for the text-typing watcher.
 
 ---
 
