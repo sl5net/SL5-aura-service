@@ -27,8 +27,8 @@ A: Versuchen Sie, deutlich, in gleichmäßiger Lautstärke und Geschwindigkeit z
 
 #### **Teil 1: Allgemeine Fragen**
 
-**F: Was ist SL5 Dictation?**
-A: SL5 Dictation ist ein systemweites Offline-Spracherkennungsprogramm. Es ermöglicht Ihnen, Text in jede beliebige Anwendung auf Ihrem Computer (z. B. E-Mail-Programm, Textverarbeitung, Code-Editor) zu diktieren, ohne eine Internetverbindung zu benötigen.
+**F: Was ist SL5 Auro?**
+A: SL5 Auro ist ein systemweites Offline-Spracherkennungsprogramm. Es ermöglicht Ihnen, Text in jede beliebige Anwendung auf Ihrem Computer (z. B. E-Mail-Programm, Textverarbeitung, Code-Editor) zu diktieren, ohne eine Internetverbindung zu benötigen.
 
 **F: Was bedeutet "offline" und warum ist das wichtig?**
 A: "Offline" bedeutet, dass die gesamte Sprachverarbeitung direkt auf Ihrem Computer stattfindet. Ihre Sprachdaten werden **niemals** an einen Cloud-Server (wie Google, Amazon oder OpenAI) gesendet. Dies bietet maximale Privatsphäre und Sicherheit, ideal für vertrauliche Informationen (z. B. für Anwälte, Ärzte, Journalisten) und ist vollständig konform mit Datenschutzverordnungen wie der DSGVO.
@@ -63,7 +63,7 @@ A: Zuerst starten Sie den "Diktier-Dienst" durch Ausführen des entsprechenden S
 
 **F: Wie kann ich die Genauigkeit verbessern?**
 A: 1. **Verwenden Sie ein gutes Mikrofon:** Ein Headset-Mikrofon ist weitaus besser als das eingebaute Mikrofon eines Laptops. 2. **Minimieren Sie Hintergrundgeräusche:** Eine ruhige Umgebung ist entscheidend. 3. **Sprechen Sie deutlich:** Sprechen Sie in einem gleichmäßigen Tempo und mit konstanter Lautstärke. Nuscheln oder Hetzen vermeiden.
-Software-Anpassung (Die Stärke der Software): Für eine noch höhere Genauigkeit bietet SL5 Dictation eine sehr mächtige Funktion: FuzzyMaps. Stellen Sie sich diese wie Ihr persönliches, intelligentes Wörterbuch vor. Sie können einfache Textdateien mit Regeln erstellen, um typische, wiederkehrende Erkennungsfehler zu beheben.
+Software-Anpassung (Die Stärke der Software): Für eine noch höhere Genauigkeit bietet SL5 Auro eine sehr mächtige Funktion: FuzzyMaps. Stellen Sie sich diese wie Ihr persönliches, intelligentes Wörterbuch vor. Sie können einfache Textdateien mit Regeln erstellen, um typische, wiederkehrende Erkennungsfehler zu beheben.
 
 Beispiel: Wenn die Software hartnäckig "get hap" statt "GitHub" versteht, können Sie eine Regel in einer FuzzyMap anlegen, die das automatisch korrigiert.
 
@@ -103,7 +103,7 @@ A: Die Genauigkeit hängt sowohl von Ihrer Ausrüstung als auch von der Software
 
 *   **Ihre Ausrüstung (Die Grundlagen):** Versuchen Sie, deutlich, in gleichmäßiger Lautstärke und Geschwindigkeit zu sprechen. Die Reduzierung von Hintergrundgeräuschen und die Verwendung eines guten Headset-Mikrofons anstelle des eingebauten Laptop-Mikrofons machen den größten Unterschied.
 
-*   **Software-Anpassung (Die Stärke der Software):** Für eine noch höhere Genauigkeit bietet SL5 Dictation eine sehr mächtige Funktion: **FuzzyMaps**. Stellen Sie sich diese wie Ihr persönliches, intelligentes Wörterbuch vor. Sie können einfache Textdateien mit Regeln erstellen, um typische, wiederkehrende Erkennungsfehler zu beheben.
+*   **Software-Anpassung (Die Stärke der Software):** Für eine noch höhere Genauigkeit bietet SL5 Auro eine sehr mächtige Funktion: **FuzzyMaps**. Stellen Sie sich diese wie Ihr persönliches, intelligentes Wörterbuch vor. Sie können einfache Textdateien mit Regeln erstellen, um typische, wiederkehrende Erkennungsfehler zu beheben.
 
     *   **Beispiel:** Wenn die Software hartnäckig "get hap" statt "GitHub" versteht, können Sie eine Regel in einer FuzzyMap anlegen, die das automatisch korrigiert.
     *   **Vorteil:** Auf diese Weise können Sie der Software Ihren speziellen Fachjargon, Produktnamen, Abkürzungen oder sogar eigene "Sprachen" beibringen. Durch die Anpassung dieser Maps können Sie die Genauigkeit für Ihren persönlichen Anwendungsfall erheblich steigern.

@@ -24,8 +24,8 @@ Benefit: This allows you to "teach" the software your specific technical jargon,
 
 #### **Part 1: General Questions**
 
-**Q: What is SL5 Dictation?**
-A: SL5 Dictation is a system-wide, offline speech-to-text program. It allows you to dictate text into any application on your computer (e.g., your email client, a word processor, a code editor) without needing an internet connection.
+**Q: What is SL5 Auro?**
+A: SL5 Auro is a system-wide, offline speech-to-text program. It allows you to dictate text into any application on your computer (e.g., your email client, a word processor, a code editor) without needing an internet connection.
 
 **Q: What does "offline" mean and why is it important?**
 A: "Offline" means all voice processing happens directly on your computer. Your voice data is **never** sent to a cloud server (like Google, Amazon, or OpenAI). This provides maximum privacy and security, making it ideal for confidential information (e.g., for lawyers, doctors, journalists) and fully compliant with data protection regulations like GDPR.
@@ -60,7 +60,7 @@ A: First, you start the "dictation service" by running the appropriate script. I
 
 **Q: How do I improve the accuracy?**
 A: 1. **Use a good microphone:** A headset microphone is far better than a laptop's built-in mic. 2. **Minimize background noise:** A quiet environment is key. 3. **Speak clearly:** Speak at a consistent pace and volume. Don't mumble or rush.
-Software Customization (Advanced Power): For next-level accuracy, SL5 Dictation uses a powerful feature called FuzzyMaps. Think of these as your personal, intelligent dictionary. You can create simple text files with rules to fix common, recurring recognition errors.
+Software Customization (Advanced Power): For next-level accuracy, SL5 Auro uses a powerful feature called FuzzyMaps. Think of these as your personal, intelligent dictionary. You can create simple text files with rules to fix common, recurring recognition errors.
 
 Example: If the software often hears "get hap" instead of "GitHub", you can add a rule that automatically corrects this every time.
 
@@ -90,7 +90,7 @@ A: Accuracy depends on both your setup and software customization.
 
 *   **Your Setup (The Basics):** Try to speak clearly at a consistent volume and pace. Reducing background noise and using a good headset microphone instead of a laptop's built-in mic makes a huge difference.
 
-*   **Software Customization (Advanced Power):** For next-level accuracy, SL5 Dictation uses a powerful feature called **FuzzyMaps**. Think of these as your personal, intelligent dictionary. You can create simple text files with rules to fix common, recurring recognition errors.
+*   **Software Customization (Advanced Power):** For next-level accuracy, SL5 Auro uses a powerful feature called **FuzzyMaps**. Think of these as your personal, intelligent dictionary. You can create simple text files with rules to fix common, recurring recognition errors.
 
     *   **Example:** If the software often hears "get hap" instead of "GitHub", you can add a rule that automatically corrects this every time.
     *   **Benefit:** This allows you to "teach" the software your specific technical jargon, product names, abbreviations, or even create rule-sets for unique vocabularies. By customizing these maps, you can significantly improve accuracy for your specific use case.
