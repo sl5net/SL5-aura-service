@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
-A_IconTip := "SL5 Dictation Notifier"
+A_IconTip := "SL5 Aura Notifier"
 
 ; Create a borderless, always-on-top GUI window for our notification
 noteGui := Gui("+AlwaysOnTop -Caption +ToolWindow")

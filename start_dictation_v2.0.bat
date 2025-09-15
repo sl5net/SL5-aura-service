@@ -3,7 +3,7 @@
 
 @echo off
 setlocal
-title SL5 Dictation - One-Click Starter
+title SL5 Aura - One-Click Starter
 
 :: --- Step 1: Set correct working directory ---
 cd /d "%~dp0"
@@ -101,6 +101,6 @@ echo. >> "c:/tmp/sl5_record.trigger"
 echo.
 
 :: --- Final Success Message - ENTFERNT die doppelte Meldung ---
-echo [SUCCESS] SL5 Dictation is now running in the background.
+echo [SUCCESS] SL5 Aura is now running in the background.
 echo This window will close automatically in a few seconds.
 timeout /t 5 > nul

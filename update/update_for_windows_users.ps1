@@ -7,7 +7,7 @@ $repoUrl = "https://github.com/sl5net/Vosk-System-Listener/archive/refs/heads/ma
 $installDir = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $tempDir = Join-Path $env:TEMP "sl5_update_temp"
 
-Write-Host "--- SL5 Dictation Updater ---" -ForegroundColor Cyan
+Write-Host "--- SL5 Aura Updater ---" -ForegroundColor Cyan
 Write-Host "This will download the latest version and replace all application files."
 Write-Host "Your personal settings in 'config\settings_local.py' will be saved."
 if (-not ($env:CI -eq 'true'))

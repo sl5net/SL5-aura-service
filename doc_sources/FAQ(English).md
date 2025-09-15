@@ -1,6 +1,6 @@
 ### FAQ (English) 3.8.'2025 Sun
 
-**1. Q: What is SL5 Dictation?**
+**1. Q: What is SL5 Aura?**
 A: It's a system-wide, offline speech-to-text program. It allows you to dictate into any application on your computer (Windows, macOS, Linux) without needing an internet connection.
 
 **2. Q: Why should I use this? What makes it special?**
@@ -14,7 +14,7 @@ A: A computer and a microphone. For best accuracy, we strongly recommend a dedic
 
 **5. Q: The accuracy isn't perfect. How can I improve it?**
 A: Try to speak clearly at a consistent volume and pace. Reducing background noise and using a better microphone makes the biggest difference.
-Software Customization (Advanced Power): For next-level accuracy, SL5 Dictation uses a powerful feature called FuzzyMaps. Think of these as your personal, intelligent dictionary. You can create simple text files with rules to fix common, recurring recognition errors.
+Software Customization (Advanced Power): For next-level accuracy, SL5 Aura uses a powerful feature called FuzzyMaps. Think of these as your personal, intelligent dictionary. You can create simple text files with rules to fix common, recurring recognition errors.
 
 Example: If the software often hears "get hap" instead of "GitHub", you can add a rule that automatically corrects this every time.
 

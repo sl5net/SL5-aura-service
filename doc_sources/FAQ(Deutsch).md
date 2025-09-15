@@ -1,6 +1,6 @@
 ### FAQ (Deutsch) 3.8.'2025 Sun
 
-**1. F: Was ist SL5 Dictation?**
+**1. F: Was ist SL5 Aura?**
 A: Es ist ein systemweites Offline-Spracherkennungsprogramm. Sie können damit in jede beliebige Anwendung auf Ihrem Computer (Windows, macOS, Linux) diktieren, ohne eine Internetverbindung zu benötigen.
 
 F: Is offline Spracherkennung Alexa/Siri und konsorten?

@@ -1,4 +1,4 @@
-Welcome to SL5 Dictation's Documentation
+Welcome to SL5 Aura's Documentation
 ========================================
 
 This is the central hub for all technical documentation, setup guides, and project information.

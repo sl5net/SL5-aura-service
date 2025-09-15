@@ -22,7 +22,7 @@ NC='\033[0m' # No Color
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
 # --- Main Script ---
-echo -e "${GREEN}--- SL5 Dictation Updater for Linux/macOS ---${NC}"
+echo -e "${GREEN}--- SL5 Aura Updater for Linux/macOS ---${NC}"
 
 # 1. Check for required dependencies
 for cmd in curl unzip rsync; do
