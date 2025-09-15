@@ -21,8 +21,8 @@ jobs:
         if: steps.cache-assets.outputs.cache-hit != 'true'
         run: |
           echo "--> Cache not found. Downloading all assets..."
-          curl -L -o LanguageTool-6.6.zip https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/LanguageTool-6.6.zip
-          curl -L -o vosk-model-de-0.21.zip https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
+          curl -L -o LanguageTool-6.6.zip https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
+          curl -L -o vosk-model-de-0.21.zip https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
       
       - name: Force Clean Re-installation of LanguageTool
         run: |

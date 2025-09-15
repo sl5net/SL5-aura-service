@@ -41,7 +41,7 @@ jobs:
         # This step is skipped if the cache was restored
         if: steps.cache-vosk-model.outputs.cache-hit != 'true'
         run: |
-          wget -q https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
+          wget -q https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
           mkdir models
           unzip -q vosk-model-de-0.21.zip -d models
 

@@ -30,9 +30,9 @@ jobs:
         if: steps.assets-cache.outputs.cache-hit != 'true'
         run: |
           echo "--> Cache not found. Downloading assets from GitHub Release..."
-          wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/LanguageTool-6.6.zip
-          wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
-          wget https://github.com/sl5net/Vosk-System-Listener/releases/download/v0.2.0.1/vosk-model-en-us-0.22.zip
+          wget https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
+          wget https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
+          wget https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/vosk-model-en-us-0.22.zip
           mkdir -p models
           mv vosk-model-*.zip models/
 

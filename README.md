@@ -186,7 +186,7 @@ Here is a list of the most important scripts to set up, update, and run the appl
 
 # Used Models:
 
-Recommendation: use models from Mirror https://github.com/sl5net/Vosk-System-Listener/releases/tag/v0.2.0.1 (probably faster)
+Recommendation: use models from Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (probably faster)
 
 This Ziped models must be saved into `models/` folder
 

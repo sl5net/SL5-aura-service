@@ -6,7 +6,7 @@ This is the central hub for all technical documentation, setup guides, and proje
 .. raw:: html
 
    <p>
-     <strong><a href="https://github.com/sl5net/Vosk-System-Listener/releases/latest" target="_blank">View Latest Release on GitHub</a></strong>
+     <strong><a href="https://github.com/sl5net/SL5-aura-service/releases/latest" target="_blank">View Latest Release on GitHub</a></strong>
    </p>
 
 .. toctree::
