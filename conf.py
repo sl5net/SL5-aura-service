@@ -17,7 +17,7 @@ version = release
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'SL5 Dictation'
+project = 'SL5 Aura'
 copyright = '2025, Sebastian, Lena, Andy'
 author = 'Sebastian, Lena, Andy'
 
