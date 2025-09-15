@@ -46,4 +46,5 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 PLUGINS_ENABLED = {
     "game-dealers_choice": False,             # For Andy's poker game
     "git": False,
+    "0ad": False,
 }
