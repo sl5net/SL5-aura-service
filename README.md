@@ -24,7 +24,7 @@ It's a complete, offline writing assistant built on Vosk and LanguageTool.
 
 For a complete technical reference, including all modules and scripts, please visit our official documentation page. It is automatically generated and always up-to-date.
 
-[**Go to Documentation >>**](https://sl5net.github.io/Vosk-System-Listener/)
+[**Go to Documentation >>**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### Build Status
@@ -34,7 +34,7 @@ For a complete technical reference, including all modules and scripts, please vi
 [![macOS](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/Vosk-System-Listener/actions/workflows/windows11_setup_bat.yml)
 
-[![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/Vosk-System-Listener/)
+[![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
 ---
 
