@@ -5,6 +5,9 @@ def convert_aac_to_wav_ffmpeg(aac_file_path, wav_file_path):
     """
     Converts an AAC audio file to a WAV audio file using the ffmpeg command-line tool.
 
+    FFmpeg must be installed and in your system's PATH.
+    ffmpeg -version in your terminal.
+
     may use:
     source .venv/bin/activate (if you use python virtualenv)
     python3 convert_aac_to_wav.py input.aac output.wav

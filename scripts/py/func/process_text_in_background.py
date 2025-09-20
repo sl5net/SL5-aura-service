@@ -4,9 +4,8 @@ import pkgutil
 
 from pathlib import Path
 
-from config.settings import ENABLE_AUTO_LANGUAGE_DETECTION
+from config.settings import ENABLE_AUTO_LANGUAGE_DETECTION, ADD_POINT_TO_SENCTENCE
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
-
 
 from .setup_initial_model import get_model_name_from_key
 
@@ -329,6 +328,8 @@ def process_text_in_background(logger,
 
         if re.match(r"^\w", processed_text) and time.time() - recording_time < 20:
             processed_text = ' ' + processed_text
+            if ADD_POINT_TO_SENCTENCE:
+                processed_text +=  '.'
         recording_time = time.time()
 
         # file: scripts/py/func/process_text_in_background.py
