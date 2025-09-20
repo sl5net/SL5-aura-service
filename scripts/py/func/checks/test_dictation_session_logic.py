@@ -23,7 +23,6 @@ MODEL_PATH = "models/vosk-model-small-en-us-0.15"
 TEST_WAV_PATH = Path(__file__).resolve().parent / "test_audio_16k.wav"
 
 class MockRawInputStream:
-    # ... (Dieser Teil bleibt unverändert) ...
     def __init__(self, samplerate, blocksize, dtype, channels, callback):
         logging.info("MockRawInputStream: Initialized.")
         self._callback = callback
