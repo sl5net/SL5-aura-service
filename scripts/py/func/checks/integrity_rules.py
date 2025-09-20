@@ -28,7 +28,7 @@ INTEGRITY_CHECKS = {
         'settings_local.py',
         'config/settings.py',
         'setup/setup.bat',
-        'https://github.com/sl5net/Vosk-System-Listener/actions/runs/16548962826/job/46800935182',
+        'https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml',
         'update.bat',
         'dictation_service.py',
         'get_suggestions.py',
