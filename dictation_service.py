@@ -52,7 +52,7 @@ from config.settings import (LANGUAGETOOL_RELATIVE_PATH,
                             USE_EXTERNAL_LANGUAGETOOL, EXTERNAL_LANGUAGETOOL_URL, LANGUAGETOOL_PORT,
                             DEV_MODE,
                             ENABLE_AUTO_LANGUAGE_DETECTION,
-                            AUTO_ENTER_AFTER_DICTATION
+                            AUTO_ENTER_AFTER_DICTATION, SERVICE_START_OPTION
                             )
 
 
@@ -234,6 +234,38 @@ logger.addHandler(console_handler)
 
 logger.handlers[0].addFilter(WindowsEmojiFilter())
 
+if SERVICE_START_OPTION ==1:
+    # Option 1: Start the service only on autostart (start parameter) and if there is an internet
+
+    def check_internet_connection(host='https://iuziouziuzoiuziouzoiuziuzoiuzoiuzoiuzoiuzoiuziouzsl5.de'):
+        if host.startswith(('http://', 'https://')):
+            host = host.split('//')[1]
+        # Use 'ping -n 1' on Windows and 'ping -c 1' on other OS
+        # The '-n 1' and '-c 1' options specify the number of echo requests to send
+        param = '-n' if platform.system().lower() == 'windows' else '-c'
+        try:
+            # The subprocess.run function executes the ping command
+            # It waits for the command to complete and returns a CompletedProcess object
+            subprocess.run(
+                ['ping', param, '1', host],
+                check=True,  # This will raise a CalledProcessError if the command fails
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE
+            )
+            print(f"Internet connection is available. Successfully pinged {host}.")
+            return True
+        except subprocess.CalledProcessError:
+            print(f"No internet connection. Failed to ping {host}.")
+            return False
+        except FileNotFoundError:
+            print("The 'ping' command was not found. Please ensure it's in your system's PATH.")
+            return False
+
+    if not check_internet_connection():
+        m = "Service will not start due to no internet connection."
+        print(m)
+        logging.info(m)
+        sys.exit()
 
 
 # Execute the check. The script will exit here if the setup is incomplete.
