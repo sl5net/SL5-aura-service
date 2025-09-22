@@ -5,6 +5,7 @@
 
 NOTIFICATION_LEVEL = 1
 
+SERVICE_START_OPTION = 0
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
