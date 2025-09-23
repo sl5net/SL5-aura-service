@@ -1,6 +1,15 @@
 
 # Linux/Mac
 
+if you want automaticly stat the service maybe add:
+~/projects/py/STT/scripts/restart_venv_and_run-server.sh
+to the autostart.
+
+Start the service only on when there is an internet connection:
+then set in settings_local.py :
+SERVICE_START_OPTION = 1
+
+
 ## add enter
 when you set 
 config/settings_local.py/AUTO_ENTER_AFTER_DICTATION

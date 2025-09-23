@@ -237,7 +237,7 @@ logger.handlers[0].addFilter(WindowsEmojiFilter())
 if SERVICE_START_OPTION ==1:
     # Option 1: Start the service only on autostart (start parameter) and if there is an internet
 
-    def check_internet_connection(host='https://iuziouziuzoiuziouzoiuziuzoiuzoiuzoiuzoiuzoiuziouzsl5.de'):
+    def check_internet_connection(host='https://sl5.de'):
         if host.startswith(('http://', 'https://')):
             host = host.split('//')[1]
         # Use 'ping -n 1' on Windows and 'ping -c 1' on other OS
