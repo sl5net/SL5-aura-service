@@ -35,6 +35,11 @@ while [ ! -d "$DIR_TO_WATCH" ]; do
 done
 
 
+# Function to get the title of the active window
+get_active_window_title() {
+    active_window_id=$(xdotool getactivewindow)
+    xdotool getwindowname "$active_window_id"
+}
 
 # --- OS Detection and Main Loop ---
 OS_TYPE=$(uname -s)
@@ -124,16 +129,27 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     # log_message "INFO: Auto-Enter?"
 
                     # --- Conditional Enter Key ---
-                    if [ -f "$AUTO_ENTER_FLAG" ] && [ "$(cat "$AUTO_ENTER_FLAG")" = "1" ]; then
-                        # echo "INFO: Auto-Enter?"
-                        log_message "INFO: Auto-Enter plugin is enabled. Pressing Return."
+
+                    window_title=$(get_active_window_title)
+                    echo "Active window title: \"$window_title\""
+
+                    echo "Matching $window_title against regex: $(cat "$AUTO_ENTER_FLAG")"
+
+                    # Read the regex from the file and store it in the variable "regexLine"
+                    # regexLine="$(cat "$AUTO_ENTER_FLAG")" | sed 's/|/\\|/g; s/(/\\(/g; s/)/\\)/g; s/,/,/g'
+                    regexLine="$(cat "$AUTO_ENTER_FLAG")"
+                    echo "Matching $window_title against regex: $regexLine"
+                    # Check if the window title matches the regex
+                    # Use grep -E (for Extended Regular Expressions) to match
+                    if echo "$window_title" | grep -Eq "$regexLine"; then
+                        echo "The window title MATCHES the regular expression."
+                                                # echo "INFO: Auto-Enter?"
+                        log_message "INFO: Auto-Enter is enabled. Pressing Return."
                         if [ -z "$CI" ]; then
                             LC_ALL=C.UTF-8 xdotool key Return
                         fi
                     fi
-                    # --- End of Conditional Block ---
-
-
+                    # GAME_WINDOW_ID=$(xdotool search --name "$AUTO_ENTER_FLAG" | head -1) # Replace "Your Game Window Name"
 
                 fi
             done

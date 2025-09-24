@@ -52,7 +52,7 @@ from config.settings import (LANGUAGETOOL_RELATIVE_PATH,
                             USE_EXTERNAL_LANGUAGETOOL, EXTERNAL_LANGUAGETOOL_URL, LANGUAGETOOL_PORT,
                             DEV_MODE,
                             ENABLE_AUTO_LANGUAGE_DETECTION,
-                            AUTO_ENTER_AFTER_DICTATION, SERVICE_START_OPTION
+                            AUTO_ENTER_AFTER_DICTATION_REGEX_APPS, SERVICE_START_OPTION
                             )
 
 
@@ -447,7 +447,7 @@ if __name__ == "__main__":
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
         "PROJECT_ROOT": PROJECT_ROOT,
-        "AUTO_ENTER_AFTER_DICTATION": AUTO_ENTER_AFTER_DICTATION
+        "AUTO_ENTER_AFTER_DICTATION_REGEX_APPS": AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
     })
 
 
@@ -456,7 +456,7 @@ if __name__ == "__main__":
     # File: dictation_service.py Line 417
     # Create a flag file so client scripts know if a plugin is active.
     try:
-        AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION
+        AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
         auto_enter_flag_path = "/tmp/sl5_auto_enter.flag"
         with open(auto_enter_flag_path, "w") as f:
             f.write(str(AUTO_ENTER_AFTER_DICTATION_global)) # Writes 1 or 0

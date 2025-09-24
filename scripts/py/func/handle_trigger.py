@@ -107,7 +107,7 @@ def handle_trigger(
             silence_timeout = PRE_RECORDING_TIMEOUT if not suspicious_events else SPEECH_PAUSE_TIMEOUT
 
             text_chunk_iterator = transcribe_audio_with_feedback(
-                logger, recognizer, lt_language, silence_timeout, dictation_session_active, config.settings_local.AUTO_ENTER_AFTER_DICTATION
+                logger, recognizer, lt_language, silence_timeout, dictation_session_active, config.settings_local.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
             )
 
             for text_chunk in text_chunk_iterator:

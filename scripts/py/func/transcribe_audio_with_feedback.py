@@ -42,21 +42,23 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                     initial_silence_timeout = float(line.split("=")[1].strip())
                 elif stripped_line.startswith("SPEECH_PAUSE_TIMEOUT"):
                     SPEECH_PAUSE_TIMEOUT = float(line.split("=")[1].strip())
-                elif stripped_line.startswith("AUTO_ENTER_AFTER_DICTATION"): # 1 means one Enter, 2 means Enter two times
-                    AUTO_ENTER_AFTER_DICTATION = int(line.split("=")[1].strip())
+                elif stripped_line.startswith("AUTO_ENTER_AFTER_DICTATION_REGEX_APPS"): # 1 means one Enter, 2 means Enter two times
+                    value_without_whitespaces = str(line.split("=")[1].strip())
+                    value_without_quotes = value_without_whitespaces.strip('"')
+                    AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = value_without_quotes
 
-                    if AUTO_ENTER_AFTER_DICTATION != AUTO_ENTER_AFTER_DICTATION_global:
-                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION: =====> {AUTO_ENTER_AFTER_DICTATION}")
-                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION: =====> {AUTO_ENTER_AFTER_DICTATION}")
-                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION: =====> {AUTO_ENTER_AFTER_DICTATION}")
-                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION: =====> {AUTO_ENTER_AFTER_DICTATION}")
+                    if AUTO_ENTER_AFTER_DICTATION_REGEX_APPS != AUTO_ENTER_AFTER_DICTATION_global:
+                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION_REGEX_APPS} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION_REGEX_APPS: =====> {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
+                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION_REGEX_APPS} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION_REGEX_APPS: =====> {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
+                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION_REGEX_APPS} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION_REGEX_APPS: =====> {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
+                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION_REGEX_APPS} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION_REGEX_APPS: =====> {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
                         # global AUTO_ENTER_AFTER_DICTATION_global
-                        AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION
+                        AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
                         # Define the path for the AutoEnter flag file
                         AUTO_ENTER_FLAG_FILE = Path("/tmp/sl5_auto_enter.flag")
                         with open(AUTO_ENTER_FLAG_FILE, "w") as flag_f:
-                            flag_f.write(str(AUTO_ENTER_AFTER_DICTATION))
-                        logger.info(f"AUTO_ENTER_AFTER_DICTATION written to {AUTO_ENTER_FLAG_FILE}: {AUTO_ENTER_AFTER_DICTATION}")
+                            flag_f.write(str(AUTO_ENTER_AFTER_DICTATION_REGEX_APPS))
+                        logger.info(f"AUTO_ENTER_AFTER_DICTATION_REGEX_APPS written to {AUTO_ENTER_FLAG_FILE}: {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
 
 
     except (FileNotFoundError, ValueError, IndexError) as e:
@@ -65,7 +67,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
         logger.warning(f"warning: {e}")
 
     logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")
-    logger.info(f"AUTO_ENTER_AFTER_DICTATION = {AUTO_ENTER_AFTER_DICTATION}")
+    logger.info(f"AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
 
     # --- NEU: VAD Initialisierung ---
     vad = webrtcvad.Vad()

@@ -12,7 +12,7 @@ SERVICE_START_OPTION = 1
 
 ## add enter
 when you set 
-config/settings_local.py/AUTO_ENTER_AFTER_DICTATION
+config/settings_local.py/AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
 to 1 it adds enter.
 
 when you set 
