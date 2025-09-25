@@ -118,6 +118,7 @@ def process_text_in_background(logger,
         raw_text = sanitize_transcription_start(raw_text)
         logger.info(f"end sanitize_transcription_start")
 
+
         # ZWNBSP
         logger.info(f"THREAD: Starting processing for: '{raw_text}'")
 

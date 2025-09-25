@@ -8,7 +8,7 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
     # LANGUAGETOOL_URL active_lt_url
 
     if not text.strip(): return text
-    logger.info(f"  -> Input to LT:  '{text}'")
+    logger.info(f"📢-----> rawInput:  '{text}'")
     data = {'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1, 'enabledCategories': 'PUNCTUATION,GRAMMAR', 'Categories': 'PUNCTUATION,GRAMMAR'  }
     try:
         response = requests.post(active_lt_url, data, timeout=10)

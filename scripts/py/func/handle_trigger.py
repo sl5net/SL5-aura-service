@@ -2,6 +2,7 @@
 import threading
 import time
 import vosk
+import sounddevice as sd
 
 import config.settings_local
 from config.settings import PRE_RECORDING_TIMEOUT, SPEECH_PAUSE_TIMEOUT, SAMPLE_RATE
@@ -17,6 +18,7 @@ from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 from scripts.py.func.audio_manager import unmute_microphone
 
+global text_detected
 
 def finalize_recording_session(logger):
     """A dedicated function to clean up after a recording session."""
@@ -49,6 +51,9 @@ def handle_trigger(
         # We just send the signal and exit immediately.
         # We DO NOT wait here for the thread to finish. This prevents
         # blocking and queuing of subsequent trigger events.
+
+        logger.info(f"text_detected: {text_detected}")
+
         dictation_session_active.clear()
 
         return
@@ -107,12 +112,16 @@ def handle_trigger(
 
             silence_timeout = PRE_RECORDING_TIMEOUT if not suspicious_events else SPEECH_PAUSE_TIMEOUT
 
+            global text_detected
+            text_detected = 0
+
             text_chunk_iterator = transcribe_audio_with_feedback(
                 logger, recognizer, lt_language, silence_timeout, dictation_session_active, config.settings_local.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
             )
 
             for text_chunk in text_chunk_iterator:
                 if text_chunk.strip():
+                    text_detected = 1
                     logger.info(f"Processing chunk: '{text_chunk[:30]}...'")
                     thread = threading.Thread(target=process_text_in_background,
                                               args=(logger, lt_language, text_chunk, TMP_DIR,
@@ -123,8 +132,30 @@ def handle_trigger(
                     logger.info("Stop signal received. Gracefully exiting recording loop.")
                     break
 
+            if text_detected < 1:
+                # maybe user now need help to configure his mic
+                # maybe times for following code:
+                temp = """
+                    sd.query_devices(): ~1–10ms
+                    loop + Logging: ~1–5ms
+                    get Standard - Device: ~1–5ms
+                    Logging: < 1ms
+                    """
+                temp = "🎤"
+                logger.info(f"🎤 just for information: input channels: {temp}")
+                devices = sd.query_devices()
+                for idx, device in enumerate(devices):
+                    logger.info(f"🎤 {idx}: {device['name']} (input channels: {device['max_input_channels']}){temp}")
+                # Standard-Input-Device check:
+                default_input_index = sd.default.device[0]
+                default_input_device = sd.query_devices(default_input_index)
+                logger.info(f"🎤Standard: {default_input_device['name']} (Index: {default_input_index})")
+
+
+
+
         finally:
-            logger.info("Session thread is finishing. Ensuring state is cleared.")
+            logger.info(f"Session thread is finishing. Ensuring state is cleared. text_detected.")
             finalize_recording_session(logger)
             dictation_session_active.clear()
 

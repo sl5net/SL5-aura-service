@@ -16,6 +16,7 @@ import webrtcvad  # NEU: Import für Voice Activity Detection
 global AUTO_ENTER_AFTER_DICTATION_global  # noqa: F824
 
 
+
 def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , initial_silence_timeout
                                    , session_active_event
@@ -26,6 +27,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
         # This checks if the global variable has been defined at all.
         # This would catch a NameError before it happens.
         logger.warning(f"AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.")
+
 
     unmute_microphone()
 
@@ -108,7 +110,9 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     notify(f"Listening {LT_LANGUAGE}...", "Speak now. Will stop on silence.", "low", icon="media-record",
            replace_tag="transcription_status")
 
+
     is_speech_started = False
+
     current_timeout = initial_silence_timeout
     last_activity_time = time.time()  # Our independent activity clock.
     # session_stopped_manually = False
@@ -120,6 +124,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
         logger.info("Yielding a test string to signal success.")
         yield ""
         return
+
 
     try:
         with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,
@@ -208,25 +213,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         break
 
     finally:
+
         # The finally block remains as is.
         logger.info("Session has ended. Yielding final safety-net chunk.")
 
-        # maybe times for following code:
-        temp = """
-        sd.query_devices(): ~1–10ms
-        loop + Logging: ~1–5ms
-        get Standard - Device: ~1–5ms
-        Logging: < 1ms
-        """
-        temp = ""
-        devices = sd.query_devices()
-        for idx, device in enumerate(devices):
-            logger.info(f"🎤 {idx}: {device['name']} (input channels: {device['max_input_channels']})")
-        # Standard-Input-Device check:
-        default_input_index = sd.default.device[0]
-        default_input_device = sd.query_devices(default_input_index)
-        logger.info(f"🎤Standard: {default_input_device['name']} (Index: {default_input_index})")
-
         final_chunk = json.loads(recognizer.FinalResult())
-        if final_chunk.get('text'):
+        if final_chunk.get('text').strip():
             yield final_chunk.get('text')
