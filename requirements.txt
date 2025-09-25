@@ -7,6 +7,7 @@ keyboard==0.13.5
 nltk==3.9.1
 psutil==7.0.0
 pycaw==20240210
+pygame==2.6.1
 pyperclip==1.9.0
 requests==2.32.5
 sounddevice==0.5.2

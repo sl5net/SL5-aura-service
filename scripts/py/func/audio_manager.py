@@ -113,8 +113,8 @@ if sys.platform != "win32":
         log.warning("pygame not found. Sound feedback will not work on non-Windows systems.")
         # def play_beep(frequency, duration_ms):
         #     pass # No sound feedback if pygame is not available
-else:
-    import winsound
+# else:
+#     import winsound
     # def play_beep(frequency, duration_ms):
     #     winsound.Beep(frequency, duration_ms)
 
