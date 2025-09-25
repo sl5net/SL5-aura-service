@@ -143,16 +143,16 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                     # Get data from the queue with a short timeout to keep the loop responsive.
                     data = q.get(timeout=0.1)
 
-                    # --- MODIFIZIERT: Voice Activity Detection mit webrtcvad ---
-                    # Wir prüfen den Audio-Chunk mit VAD, bevor wir ihn an Vosk geben.
+                    # --- MODIFIEd: Voice Activity Detection mit webrtcvad ---
+                    # we proof Audio-Chunk with VAD, before send to Vosk
                     is_voice_active_in_chunk = False
-                    # Wir müssen den Chunk in VAD-kompatible Frames aufteilen
+                    # must be splitted in Chunk VAD-kompatible Frames
                     for i in range(0, len(data), FRAME_BYTES):
                         frame = data[i:i + FRAME_BYTES]
                         if len(frame) == FRAME_BYTES:
                             if vad.is_speech(frame, SAMPLE_RATE):
                                 is_voice_active_in_chunk = True
-                                break  # Stimme gefunden, Rest des Chunks irrelevant
+                                break  # voice found, rest of Chunks irrelevant
 
                     # Wir füttern die Daten immer an Vosk für die Transkription
                     is_speech_finalized = recognizer.AcceptWaveform(data)
@@ -170,7 +170,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         if is_voice_active_in_chunk or partial_result.get('partial'):
                             last_activity_time = time.time()  # Aktivität erkannt, Timer zurücksetzen
 
-                    # Timeout-change wehen first activity
+                    # Timeout-change when first activity
                     if not is_speech_started and (is_voice_active_in_chunk or partial_result.get('partial')):
                         is_speech_started = True
                         current_timeout = SPEECH_PAUSE_TIMEOUT
@@ -210,6 +210,23 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     finally:
         # The finally block remains as is.
         logger.info("Session has ended. Yielding final safety-net chunk.")
+
+        # maybe times for following code:
+        temp = """
+        sd.query_devices(): ~1–10ms
+        loop + Logging: ~1–5ms
+        get Standard - Device: ~1–5ms
+        Logging: < 1ms
+        """
+        temp = ""
+        devices = sd.query_devices()
+        for idx, device in enumerate(devices):
+            logger.info(f"🎤 {idx}: {device['name']} (input channels: {device['max_input_channels']})")
+        # Standard-Input-Device check:
+        default_input_index = sd.default.device[0]
+        default_input_device = sd.query_devices(default_input_index)
+        logger.info(f"🎤Standard: {default_input_device['name']} (Index: {default_input_index})")
+
         final_chunk = json.loads(recognizer.FinalResult())
         if final_chunk.get('text'):
             yield final_chunk.get('text')

@@ -84,9 +84,10 @@ def handle_trigger(
                     break
 
             if not selected_model:
-                logger.warning(f"Model for '{target_model_name}' not ready. Using first available.")
+                logger.info(f"Model for '{target_model_name}' not ready. Using first available.")
                 found_key = list(loaded_models.keys())[0]
                 selected_model = loaded_models[found_key]
+                logger.info(f"Model selected '{selected_model}'.")
 
         except FileNotFoundError:
             logger.warning("No target model file found. Using first available.")

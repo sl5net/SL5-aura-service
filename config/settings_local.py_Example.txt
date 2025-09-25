@@ -34,7 +34,12 @@ CORRECTIONS_ENABLED.update({
 
 PRE_RECORDING_TIMEOUT = 12
 SPEECH_PAUSE_TIMEOUT = 1
-AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = 0
+
+# needs NO restart. implemented in the sh part. TODO implemt for windows:
+# use . for all windos. Other examples:
+# AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "."
+AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist|Pi, your personal AI)"
+
 ADD_TO_SENCTENCE = "."
 # set ADD_TO_SENCTENCE = "" when you dont want it.
 
