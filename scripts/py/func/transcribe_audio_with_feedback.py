@@ -210,6 +210,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                     # 2. Prüfen auf Timeout
                     if time.time() - last_activity_time > current_timeout:
                         logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")
+
+                        mute_microphone(logger, onlySound=True)
+                        # "Mute" sound: quick down-bending tone
+
                         break
 
     finally:
