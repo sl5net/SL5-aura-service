@@ -1,21 +1,27 @@
 #!/bin/bash
 
 # find your mic
+# # # # # # # # # # # # # # # # # # # # # #
 # watch -n 0.5 'pactl list sources | grep -E "Name:|Description:|Mute:|Source #"'
+# # # # # # # # # # # # # # # # # # # # # #
 
 # Define the trigger file path
 TRIGGER_FILE="/tmp/sl5_record.trigger"
 
 # Define your microphone source name (MAKE SURE THIS IS CORRECT!)
 
+# Plantronics 1
 MICROPHONE_SOURCE="alsa_input.pci-0000_2f_00.4.analog-stereo"
+
+# Plantronics 2
+MICROPHONE_SOURCE="alsa_input.usb-Plantronics_Plantronics_Savi_7xx_5E832D0D1B994D56B698FBDAE8A19BE1-00.mono-fallback"
 
 # Debounce time in seconds.
 # The state must remain unchanged for this duration before a trigger occurs.
-DEBOUNCE_TIME=0.5 # State must be stable for 1 second
+DEBOUNCE_TIME=3 # State must be stable for 1 second
 
 # Polling interval in seconds
-POLLING_INTERVAL=0.2 # Check more frequently than debounce time
+POLLING_INTERVAL=0.5 # Check more frequently than debounce time
 
 LAST_CHANGE_TIMESTAMP=$(date +%s.%N)
 
@@ -72,7 +78,7 @@ while true; do
 
             # exit
 
-            # touch "$TRIGGER_FILE"
+            touch "$TRIGGER_FILE"
             echo "Trigger file created/updated: $TRIGGER_FILE"
             PREV_MUTE_STATE="$CURRENT_MUTE_STATE"
         fi
