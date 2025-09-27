@@ -58,7 +58,6 @@ else
     source .venv/bin/activate
     end_dictation_servicePY="$PROJECT_ROOT/scripts/py/end_dictation_service.py"
     echo end_dictation_servicePY=$end_dictation_servicePY
-    exit
     python3 "$end_dictation_servicePY" &
 
 

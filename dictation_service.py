@@ -167,7 +167,7 @@ LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
 languagetool_process = None
 
 
-class WindowsEmojiFilter(logging.Filter):
+class WindowsEmojiFilter1(logging.Filter):
     """
     A logging filter that replaces emojis with text placeholders on Windows.
     This prevents UnicodeEncodeError on older console environments.
@@ -194,6 +194,48 @@ class WindowsEmojiFilter(logging.Filter):
             '🚀': '[ROCKET]',
             '🔁':'REPLACE',
             '📚':'BOOK'
+        }
+    def filter(self, record):
+        # Only perform replacement if running on Windows
+        #if os.name == 'nt':
+        if platform.system() == "Windows":
+            for emoji, text in self.replacements.items():
+                record.msg = record.msg.replace(emoji, text)
+        return True
+
+class WindowsEmojiFilter(logging.Filter):
+    """
+    A logging filter that replaces emojis with text placeholders on Windows.
+    This prevents UnicodeEncodeError on older console environments.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.replacements = {
+            '🚀': '[▲]',  # Rakete als Pfeil
+            '🔁': '[⟳]',  # Loop als Kreispfeil
+            '📚': '[▉]',  # Buch als gefülltes Rechteck
+            '❌': '[■]',  # Fehler als ausgefülltes Quadrat
+            '⚠️': '[!]',  # Warnung
+            '✅': '[✓]',  # OK, Haken
+            '👍': '[OK]',
+            '👎': '[NO]',
+            '🎊': '[*]',  # Konfetti
+            '❌': '[x]',  # Fehler, ausgefülltes Quadrat
+            '🎬': '[>]',  # Start, Play
+            '⏹️': '[■]',  # Stop, Quadrat
+            '🎤': '[◉]',  # Mikrofon
+            '🎙️': '[▣]',  # Studio-Mikrofon, gefüllter Kreis
+            '📢️': '[≡]',  # Lautsprecher (Klangwellen)
+            '💾': '[▀▄▀]',  # Diskette/Save, ausgefülltes Quadrat mit Rand
+            '📋': '[‗]',  # Zwischenablage, Unterstrich/Leiste
+            '🔳': '[□]',  # Nichts, leeres Quadrat
+            "👀": '[o_o]',  # Augen
+            '🚀': '[▲]',  # Rakete, Pfeil hoch
+            '🔁': '[⟳]',  # Wiederholen, Kreispfeil
+            '📚': '[▉]'  # Buch, gefülltes Rechteck
+        # ▣▣■
+                 #                 '🚀': '[>>>]',
         }
 
     def filter(self, record):
