@@ -31,7 +31,7 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
             last_index = match['offset'] + match['length']
         new_text_parts.append(text[last_index:])
         corrected_text = "".join(new_text_parts)
-        logger.info(f"  <- Output from LT: '{corrected_text}'")
+        logger.info(f"🔁 Output LT -> 📚{corrected_text}📚")
         return corrected_text
     except requests.exceptions.RequestException as e:
         logger.error(f"  <- ERROR: LanguageTool request failed: {e}")

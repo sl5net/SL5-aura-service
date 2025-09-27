@@ -192,7 +192,8 @@ class WindowsEmojiFilter(logging.Filter):
             '🔳': '[NOTHING]',
             "👀": '[EYES]',
             '🚀': '[ROCKET]',
-         '🔁':'REPLACE'
+            '🔁':'REPLACE',
+            '📚':'BOOK'
         }
 
     def filter(self, record):

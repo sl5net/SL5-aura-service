@@ -44,6 +44,25 @@ else
     echo pkill -f "$SERVICE_NAME_MAIN"
     echo pkill -f "$SERVICE_NAME_WATCHER"
 
+    # realpath /tmp/../tmp/../tmp
+    # /tmp
+    # PROJECT_ROOT=realpath $SCRIPT_DIR/..
+    PROJECT_ROOT=$(realpath "$SCRIPT_DIR/..")
+
+    echo SCRIPT_DIR=$SCRIPT_DIR
+    echo PROJECT_ROOT=$PROJECT_ROOT
+
+    echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
+    cd $PROJECT_ROOT
+    python3 -m venv .venv
+    source .venv/bin/activate
+    end_dictation_servicePY="$PROJECT_ROOT/scripts/py/end_dictation_service.py"
+    echo end_dictation_servicePY=$end_dictation_servicePY
+    exit
+    python3 "$end_dictation_servicePY" &
+
+
+
     # --- Step 3: Reliably wait for BOTH processes to terminate ---
     echo -n "Waiting for all processes to shut down "
     TIMEOUT_SECONDS=10
