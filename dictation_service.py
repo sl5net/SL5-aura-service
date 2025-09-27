@@ -215,13 +215,13 @@ class WindowsEmojiFilter(logging.Filter):
             '🚀': '[▲]',  # Rakete als Pfeil
             '🔁': '[⟳]',  # Loop als Kreispfeil
             '📚': '[▉]',  # Buch als gefülltes Rechteck
-            '❌': '[■]',  # Fehler als ausgefülltes Quadrat
+            '❌': '[■]',  # noqa: F601 Fehler als ausgefülltes Quadrat
             '⚠️': '[!]',  # Warnung
             '✅': '[✓]',  # OK, Haken
             '👍': '[OK]',
             '👎': '[NO]',
             '🎊': '[*]',  # Konfetti
-            '❌': '[x]',  # Fehler, ausgefülltes Quadrat
+            '❌': '[x]',  # noqa: F601 Fehler, ausgefülltes Quadrat
             '🎬': '[>]',  # Start, Play
             '⏹️': '[■]',  # Stop, Quadrat
             '🎤': '[◉]',  # Mikrofon
