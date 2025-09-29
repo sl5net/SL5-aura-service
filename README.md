@@ -1,4 +1,4 @@
-# System-Wide Offline Dictation too Commands or Text, Pluggable System
+# System-Wide Offline Voice to Commands or Text, Pluggable System
 
 # SL5 Aura Service - Features & OS Compatibility
 
