@@ -186,7 +186,7 @@ Legend for OS Compatibility:
     Our primary engine for offline speech recognition and audio processing.
 
 **STT-Core/** 🐧 🍏 🪟  
-├── `dictation_service.py` (Main Python service orchestrating STT) 🐧 🍏 🪟
+├── `dictation_service.py` (Main Python service orchestrating STT) 🐧 🍏 🪟  
 ├── **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
 ├── **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
 │   ├── `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
