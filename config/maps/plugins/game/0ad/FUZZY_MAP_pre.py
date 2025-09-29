@@ -15,9 +15,6 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
-    #switch to english no English please
-    # baue bauhaus
-
     ('baue Haus', r'^\s*(baue auf|baue\s*\w*haus|Build House|Baue Haus)\s*$', 15, re.IGNORECASE),
 
     ('alt+i', r'^\s*(alt\s*e|alt\s*i|ald\s*i|select in).*\s*$', 20, re.IGNORECASE),

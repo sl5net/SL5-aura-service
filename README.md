@@ -186,16 +186,15 @@ Legend for OS Compatibility:
 
 **STT-Core/** 🐧 🍏 🪟  
 ├─ `dictation_service.py` (Main Python service orchestrating STT) 🐧 🍏 🪟  
-├─ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
-├┬ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
-│├ `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
-│├ **Intelligent Pre-Correction** (`FuzzyMap Pre` - applied before LT for performance) 🐧 🍏 🪟  
-│├ `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
-│└ **Intelligent Post-Correction** (`FuzzyMap` - applied behind LT) 🐧 🍏 🪟  
+├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+│├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
+│├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
+│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - applied before LT for performance) 🐧 🍏 🪟  
+│├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
+│└ 4. **Intelligent Post-Correction** (`FuzzyMap` - applied behind LT) 🐧 🍏 🪟  
 ├┬ **Model Management/**   
 │├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
-├─ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
 ├─ **Adaptive VAD Timeout** 🐧 🍏 🪟  
 ├─ **Adaptive Hotkey (Start/Stop)** 🐧 🍏 🪟  
 └─ **Instant Language Switching** (via model preloading) 🐧 🍏 🪟
@@ -235,9 +234,12 @@ Legend for OS Compatibility:
 **ExperimentalFeatures/**  
 ├─ **ENTER_AFTER_DICTATION_REGEX** Example activation rule "(ExampleAplicationThatNotExist|Pi, your personal AI)" 🐧  
 ├┬Plugin
-│├ **git commands** (Voice control for send git commands) 🐧 🍏 🪟  
-│├ **Poker Plugin (Draft)** (Voice control for poker applications) 🐧 🍏 🪟  
-│└ **0 A.D. Plugin (Draft)** (Voice control for 0 A.D. game) 🐧 🍏 🪟  
+│╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟  
+│ │  (*Changes to Plugin activation/deactivation are applied on the next processing run without service restart.*)
+│ ├ **git commands** (Voice control for send git commands) 🐧 🍏 🪟  
+│ ├ **wannweil** (Map for Location Germany-Wannweil) 🐧 🍏 🪟  
+│ ├ **Poker Plugin (Draft)** (Voice control for poker applications) 🐧 🍏 🪟  
+│ └ **0 A.D. Plugin (Draft)** (Voice control for 0 A.D. game) 🐧 🍏 🪟  
 ├─ **Sound Output when Start or End a Session** (Description pending) 🐧   
 ├─ **Speech Output for Visually Impaired** (Description pending) 🐧 🍏 🪟  
 └─ **SL5 Aura Android Prototype** (Not fully offline yet) 📱  

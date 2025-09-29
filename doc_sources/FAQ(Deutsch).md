@@ -107,3 +107,16 @@ A: Die Genauigkeit hängt sowohl von Ihrer Ausrüstung als auch von der Software
 
     *   **Beispiel:** Wenn die Software hartnäckig "get hap" statt "GitHub" versteht, können Sie eine Regel in einer FuzzyMap anlegen, die das automatisch korrigiert.
     *   **Vorteil:** Auf diese Weise können Sie der Software Ihren speziellen Fachjargon, Produktnamen, Abkürzungen oder sogar eigene "Sprachen" beibringen. Durch die Anpassung dieser Maps können Sie die Genauigkeit für Ihren persönlichen Anwendungsfall erheblich steigern.
+
+    
+# Live Hot-Reload für Konfigurationen
+
+SL5 Aura bietet eine leistungsstarke Live Hot-Reload-Funktion für Konfigurationsänderungen, wie z.B. die Aktivierung oder Deaktivierung von Git-Kommandos. Dies bedeutet, dass Sie Anpassungen vornehmen können, ohne den SL5 Aura-Service neu starten zu müssen – ein großer Vorteil für die Produktivität!
+
+Wie es funktioniert:
+Um eine optimale Performance zu gewährleisten, werden Konfigurationsänderungen erst beim Start eines neuen Verarbeitungsdurchlaufs überprüft und angewendet. Das bedeutet:
+
+1 Änderung speichern: Sie ändern eine Einstellung (z.B. aktivieren Git-Kommandos).
+2 Aktivierung: Die Änderung wird aktiv, sobald SL5 Aura das nächste Mal eine Aktion verarbeitet (z.B. Sie sprechen einen Befehl ein). Der Cache wird dann aktualisiert.
+
+Wichtiger Hinweis: Ihre Änderungen sind sofort nach dem Speichern "vorgemerkt", werden aber erst mit der nächsten Interaktion aktiv. Es ist kein Neustart des Dienstes erforderlich.

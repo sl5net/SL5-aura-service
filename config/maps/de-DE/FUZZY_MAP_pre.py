@@ -18,11 +18,6 @@ FUZZY_MAP_pre = [
     #switch to english no English please
     # baue bauhaus
 
-    ('baue Haus', r'^\s*(baue auf|baue\s*\w*haus|Build House|Baue Haus)\s*$', 15, re.IGNORECASE),
-
-    ('alt+i', r'^\s*(alt\s*e|alt\s*i|ald\s*i|select in).*\s*$', 20, re.IGNORECASE),
-
-    ('alt+w', r'^\s*(select\s*wo|select\s*fr|alt\s*w|alt\s*wo|alt\s*fr|ald\s*women).*\s$', 20, re.IGNORECASE),
 
 
 
@@ -33,10 +28,6 @@ FUZZY_MAP_pre = [
 
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
-    ('Wannweil', r'\b(wen\s*Welpe)\b', 82, re.IGNORECASE),
-
-    ('Wannweil', r'\b(wen\s*Welpe)\b', 82, re.IGNORECASE),
-    ('Wannweil', r'^\s*(Wannweil|Annweiler|wann\s*weil|Wann\s*wann\s*weil|Wann\s*war\s*Herr|Wann\s*war\s*er|An\s*weil|Wann\s*weine\w*|Wann\s*wein)\s*$', 70, re.IGNORECASE),
 
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, re.IGNORECASE),
     ('StopButton', r'\bstob\s*Button\b', 82, re.IGNORECASE),
@@ -53,12 +44,6 @@ FUZZY_MAP_pre = [
     ('Build Prozess', r'\bbild prozess\b', 82, re.IGNORECASE),
 
     ('opensource', r'\bopensource\b', 75, re.IGNORECASE),
-
-    ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
-    ('Sigune Lauffer', r'\b(Figur|Sekunde) (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
-
-    ('Lauffer', r'\b(Läufer|laufer)\b', 82, re.IGNORECASE), # Exact match, but ignore case
-
 
 
 ]

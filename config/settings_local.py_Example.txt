@@ -54,6 +54,7 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 ####     "github_corrections": True,         # Example from before ???
 PLUGINS_ENABLED = {
     "game-dealers_choice": False,             # For Andy's poker game
+    "wannweil": False,
     "git": False,
     "0ad": False,
 }
