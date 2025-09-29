@@ -40,7 +40,7 @@ from .map_reloader import auto_reload_modified_maps
 import importlib
 
 def load_maps_for_language(lang_code, logger):
-    logger.info(f"Starting recursive map loading for language: {lang_code}")
+    logger.info(f"🗺️Starting recursive map loading for language: {lang_code}")
 
     # Zuerst alle Module im Speicher neu laden, um Änderungen zu erfassen
     auto_reload_modified_maps(logger)
@@ -60,6 +60,8 @@ def load_maps_for_language(lang_code, logger):
             prefix=maps_package.__name__ + '.',
             onerror=lambda x: None):
 
+        logger.debug(f"📚Found module candidate: {modname}")
+
         if ispkg:
             continue
 
@@ -70,12 +72,12 @@ def load_maps_for_language(lang_code, logger):
         if ".plugins." in modname:
             plugin_name = modname.split('.plugins.')[1].split('.')[0]
             if not settings.PLUGINS_ENABLED.get(plugin_name, True):
+                logger.info(f"🗺️ NOT True. plugin_name = {plugin_name}")
                 continue
-
 
         try:
             module = importlib.import_module(modname)
-            logger.debug(f"Processing module for aggregation: {modname}")
+            # logger.info(f"🗺️ Processing: {modname}")
 
             # Füge Daten hinzu, falls die Variablen existieren
             if hasattr(module, 'PUNCTUATION_MAP'):
@@ -88,7 +90,11 @@ def load_maps_for_language(lang_code, logger):
         except Exception as e:
             logger.error(f"Failed to process module '{modname}': {e}")
 
-    logger.info(f"Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")
+    logger.info(f"🗺️ Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")
+
+    logger.info(
+        f"🗺️ TIP !!! Dont forget  __init__.py in each directory. If you missing replacements, please check this.")
+
     return punctuation_map, fuzzy_map_pre, fuzzy_map
 
 
@@ -200,6 +206,8 @@ def process_text_in_background(logger,
                 regex_pre_is_replacing_all_maybe = match_phrase.startswith('^') and match_phrase.endswith('$')
 
                 try:
+                    # logger.info(f"Attempting regex_pre match for '{processed_text}' with pattern: '{match_phrase}'")
+
                     if re.search(match_phrase, processed_text, flags=flags):
                         logger.info(f"🔁Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
 
@@ -216,12 +224,14 @@ def process_text_in_background(logger,
                             processed_text = new_text
 
                         regex_match_found_prev = True
+                        logger.info(f"Line 223: regex_match_found: break")
 
                         break  # Found a definitive match, stop this loop
 
                 except re.error as e:
                     logger.warning(f"Invalid regex_pre pattern in FUZZY_MAP_pre: '{match_phrase}'. Error: {e}")
                     continue # Skip this invalid rule
+
 
             regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe and regex_match_found_prev
 

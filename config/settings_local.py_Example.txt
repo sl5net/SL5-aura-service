@@ -62,4 +62,5 @@ PLUGINS_ENABLED = {
     "wannweil": False,
     "git": False,
     "0ad": False,
+    "ethiktagung": True
 }

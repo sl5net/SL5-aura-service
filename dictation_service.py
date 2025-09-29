@@ -187,13 +187,14 @@ class WindowsEmojiFilter1(logging.Filter):
             '🎤': '[MIC]',
             '🎙️': '[MIC]',
             '📢️': '[MIC]',
-            '💾': '[▀▄▀]',
+            '💾': '[SAVE]',
             '📋': '[EMPTY]',
             '🔳': '[NOTHING]',
             "👀": '[EYES]',
             '🚀': '[ROCKET]',
             '🔁':'REPLACE',
-            '📚':'BOOK'
+            '📚':'BOOK',
+            '🗺️':'MAP'
         }
     def filter(self, record):
         # Only perform replacement if running on Windows
@@ -227,13 +228,14 @@ class WindowsEmojiFilter(logging.Filter):
             '🎤': '[◉]',  # Mikrofon
             '🎙️': '[▣]',  # Studio-Mikrofon, gefüllter Kreis
             '📢️': '[≡]',  # Lautsprecher (Klangwellen)
-            '💾': '[▀▄▀]',  # Diskette/Save, ausgefülltes Quadrat mit Rand
+            '💾': '[¥]',  # Diskette/Save, ausgefülltes Quadrat mit Rand
             '📋': '[‗]',  # Zwischenablage, Unterstrich/Leiste
             '🔳': '[□]',  # Nichts, leeres Quadrat
             "👀": '[o_o]',  # Augen
             '🚀': '[▲]',  # Rakete, Pfeil hoch
             '🔁': '[⟳]',  # Wiederholen, Kreispfeil
-            '📚': '[▉]'  # Buch, gefülltes Rechteck
+            '📚': '[▉]',  # Buch, gefülltes Rechteck
+            '🗺️':'▀▄▀'
         # ▣▣■
                  #                 '🚀': '[>>>]',
         }
