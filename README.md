@@ -185,34 +185,34 @@ Legend for OS Compatibility:
     Our primary engine for offline speech recognition and audio processing.
 
 **STT-Core/** 🐧 🍏 🪟  
-├┈ `dictation_service.py` (Main Python service orchestrating STT) 🐧 🍏 🪟  
-├┈ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+├─ `dictation_service.py` (Main Python service orchestrating STT) 🐧 🍏 🪟  
+├─ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
 ├┬ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
 │├ `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
 │├ **Intelligent Pre-Correction** (`FuzzyMap Pre` - applied before LT for performance) 🐧 🍏 🪟  
 │├ `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
 │└ **Intelligent Post-Correction** (`FuzzyMap` - applied behind LT) 🐧 🍏 🪟  
 ├┬ **Model Management/**   
-│├┈ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
-│└┈ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
-├┈ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
-├┈ **Adaptive VAD Timeout** 🐧 🍏 🪟  
-├┈ **Adaptive Hotkey (Start/Stop)** 🐧 🍏 🪟  
-└┈ **Instant Language Switching** (via model preloading) 🐧 🍏 🪟
+│├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
+│└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
+├─ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+├─ **Adaptive VAD Timeout** 🐧 🍏 🪟  
+├─ **Adaptive Hotkey (Start/Stop)** 🐧 🍏 🪟  
+└─ **Instant Language Switching** (via model preloading) 🐧 🍏 🪟
 
 **SystemUtilities/**   
 ├┬ **LanguageTool Server Management/**   
-│├┈ `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
-│└┈ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
-├┈ `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
+│├─ `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
+│└─ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
+├─ `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
 
 ### **Model & Package Management**  
     Tools for robust handling of large language models.  
 
 **ModelManagement/** 🐧 🍏 🪟  
-├┈ **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
-├┈ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
-└┈ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
+├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
+├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
+└─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
 
 
 ### **Development & Deployment Helpers**  
@@ -226,21 +226,21 @@ Legend for OS Compatibility:
 │├ Vosk-System-Listener Integration 🐧 🍏 🪟  
 │├ `scripts/monitor_mic.sh` (Linux-specific microphone monitoring) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey listens for recognized text and types it out system-wide) 🪟  
-└┈ **CI/CD Automation/**  
-    └┈ Expanded GitHub Workflows (Installation, testing, docs deployment) 🐧 🍏 🪟 *(Runs on GitHub Actions)*  
+└─ **CI/CD Automation/**  
+    └─ Expanded GitHub Workflows (Installation, testing, docs deployment) 🐧 🍏 🪟 *(Runs on GitHub Actions)*  
 
 ### **Upcoming / Experimental Features**  
     Features currently under development or in draft status.  
 
 **ExperimentalFeatures/**  
-├┈ **ENTER_AFTER_DICTATION_REGEX** Example activation rule "(ExampleAplicationThatNotExist|Pi, your personal AI)" 🐧  
+├─ **ENTER_AFTER_DICTATION_REGEX** Example activation rule "(ExampleAplicationThatNotExist|Pi, your personal AI)" 🐧  
 ├┬Plugin
 │├ **git commands** (Voice control for send git commands) 🐧 🍏 🪟  
 │├ **Poker Plugin (Draft)** (Voice control for poker applications) 🐧 🍏 🪟  
 │└ **0 A.D. Plugin (Draft)** (Voice control for 0 A.D. game) 🐧 🍏 🪟  
-├┈ **Sound Output when Start or End a Session** (Description pending) 🐧   
-├┈ **Speech Output for Visually Impaired** (Description pending) 🐧 🍏 🪟  
-└┈ **SL5 Aura Android Prototype** (Not fully offline yet) 📱  
+├─ **Sound Output when Start or End a Session** (Description pending) 🐧   
+├─ **Speech Output for Visually Impaired** (Description pending) 🐧 🍏 🪟  
+└─ **SL5 Aura Android Prototype** (Not fully offline yet) 📱  
 
 ---
 
