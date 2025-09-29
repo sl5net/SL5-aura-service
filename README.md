@@ -186,61 +186,61 @@ Legend for OS Compatibility:
     Our primary engine for offline speech recognition and audio processing.
 
 **STT-Core/** 🐧 🍏 🪟  
-├── `dictation_service.py` (Main Python service orchestrating STT) 🐧 🍏 🪟  
-├── **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
-├── **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
-│   ├── `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
-│   ├── **Intelligent Pre-Correction** (`FuzzyMap Pre` - applied before LT for performance) 🐧 🍏 🪟  
-│   ├── `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
-│   └── **Intelligent Post-Correction** (`FuzzyMap` - applied behind LT) 🐧 🍏 🪟  
-├── **Model Management/**   
-│   ├── `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
-│   └── `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
-├── **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
-├── **Adaptive VAD Timeout** 🐧 🍏 🪟  
-├── **Adaptive Hotkey Timeout** 🐧 🍏 🪟  
-└── **Instant Language Switching** (via model preloading) 🐧 🍏 🪟
+├─ `dictation_service.py` (Main Python service orchestrating STT) 🐧 🍏 🪟  
+├─ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+├─ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
+│   ├─ `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
+│   ├─ **Intelligent Pre-Correction** (`FuzzyMap Pre` - applied before LT for performance) 🐧 🍏 🪟  
+│   ├─ `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
+│   └─ **Intelligent Post-Correction** (`FuzzyMap` - applied behind LT) 🐧 🍏 🪟  
+├─ **Model Management/**   
+│   ├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
+│   └─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
+├─ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+├─ **Adaptive VAD Timeout** 🐧 🍏 🪟  
+├─ **Adaptive Hotkey Timeout** 🐧 🍏 🪟  
+└─ **Instant Language Switching** (via model preloading) 🐧 🍏 🪟
 
 **SystemUtilities/**   
-├── **LanguageTool Server Management/**   
-│   ├── `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
-│   ├── `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
-│   └── `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
+├─ **LanguageTool Server Management/**   
+│   ├─ `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
+│   ├─ `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
+│   └─ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
 
 ### **Model & Package Management**  
     Tools for robust handling of large language models.  
 
 **ModelManagement/** 🐧 🍏 🪟  
-├── **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
-├── `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
-└── `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
+├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
+├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
+└─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
 
 
 ### **Development & Deployment Helpers**  
     Scripts for environment setup, testing, and service execution.  
 
 **DevHelpers/**  
-├── **Virtual Environment Management/**  
-│   ├── `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏  
-│   └── `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
-├── **System-wide Dictation Integration/**  
-│   ├── Vosk-System-Listener Integration 🐧 🍏 🪟  
-│   ├── `scripts/monitor_mic.sh` (Linux-specific microphone monitoring) 🐧  
-│   └── `scripts/type_watcher.ahk` (Windows-specific input monitoring/automation) 🪟  
-└── **CI/CD Automation/**  
-    └── Expanded GitHub Workflows (Installation, testing, docs deployment) 🐧 🍏 🪟 *(Runs on GitHub Actions)*  
+├─ **Virtual Environment Management/**  
+│   ├─ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏  
+│   └─ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
+├─ **System-wide Dictation Integration/**  
+│   ├─ Vosk-System-Listener Integration 🐧 🍏 🪟  
+│   ├─ `scripts/monitor_mic.sh` (Linux-specific microphone monitoring) 🐧  
+│   └─ `scripts/type_watcher.ahk` (Windows-specific input monitoring/automation) 🪟  
+└─ **CI/CD Automation/**  
+    └─ Expanded GitHub Workflows (Installation, testing, docs deployment) 🐧 🍏 🪟 *(Runs on GitHub Actions)*  
 
 ### **Upcoming / Experimental Features**  
     Features currently under development or in draft status.  
 
 **ExperimentalFeatures/**  
-├── **AUTO_ENTER_AFTER_DICTATION_REGEX_APPS** Example activation rule "(ExampleAplicationThatNotExist|Pi, your personal AI)" 🐧  
-├── **git commands** (Voice control for send git commands) 🐧 🍏 🪟  
-├── **Poker Plugin (Draft)** (Voice control for poker applications) 🐧 🍏 🪟  
-├── **0 A.D. Plugin (Draft)** (Voice control for 0 A.D. game) 🐧 🍏 🪟  
-├── **Sound Output when Start or End a Session** (Description pending) 🐧   
-├── **Speech Output for Visually Impaired** (Description pending) 🐧 🍏 🪟  
-└── **SL5 Aura Android Prototype** (Not fully offline yet) 📱  
+├─ **AUTO_ENTER_AFTER_DICTATION_REGEX_APPS** Example activation rule "(ExampleAplicationThatNotExist|Pi, your personal AI)" 🐧  
+├─ **git commands** (Voice control for send git commands) 🐧 🍏 🪟  
+├─ **Poker Plugin (Draft)** (Voice control for poker applications) 🐧 🍏 🪟  
+├─ **0 A.D. Plugin (Draft)** (Voice control for 0 A.D. game) 🐧 🍏 🪟  
+├─ **Sound Output when Start or End a Session** (Description pending) 🐧   
+├─ **Speech Output for Visually Impaired** (Description pending) 🐧 🍏 🪟  
+└─ **SL5 Aura Android Prototype** (Not fully offline yet) 📱  
 
 ---
 
