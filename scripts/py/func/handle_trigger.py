@@ -2,7 +2,6 @@
 import threading
 import time
 import vosk
-import sounddevice as sd
 
 import config.settings_local
 from config.settings import PRE_RECORDING_TIMEOUT, SPEECH_PAUSE_TIMEOUT, SAMPLE_RATE
@@ -17,6 +16,8 @@ from scripts.py.func.process_text_in_background import process_text_in_backgroun
 from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 from scripts.py.func.audio_manager import unmute_microphone, mute_microphone
+from scripts.py.func.microphone_status_too_log import log_microphone_status
+
 
 global text_detected
 
@@ -145,13 +146,16 @@ def handle_trigger(
                     """
                 temp = "🎤"
                 logger.info(f"🎤 just for information: input channels: {temp}")
-                devices = sd.query_devices()
-                for idx, device in enumerate(devices):
-                    logger.info(f"🎤 {idx}: {device['name']} (input channels: {device['max_input_channels']}){temp}")
-                # Standard-Input-Device check:
-                default_input_index = sd.default.device[0]
-                default_input_device = sd.query_devices(default_input_index)
-                logger.info(f"🎤Standard: {default_input_device['name']} (Index: {default_input_index})")
+
+                log_microphone_status(logger)
+
+                # devices = sd.query_devices()
+                # for idx, device in enumerate(devices):
+                #     logger.info(f"🎤 {idx}: {device['name']} (input channels: {device['max_input_channels']}){temp}")
+                # # Standard-Input-Device check:
+                # default_input_index = sd.default.device[0]
+                # default_input_device = sd.query_devices(default_input_index)
+                # logger.info(f"🎤Standard: {default_input_device['name']} (Index: {default_input_index})")
 
 
 
