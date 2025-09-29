@@ -197,7 +197,7 @@ Legend for OS Compatibility:
 │└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
 ├─ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
 ├─ **Adaptive VAD Timeout** 🐧 🍏 🪟  
-├─ **Adaptive Hotkey Timeout** 🐧 🍏 🪟  
+├─ **Adaptive Hotkey (Start/Stop)** 🐧 🍏 🪟  
 └─ **Instant Language Switching** (via model preloading) 🐧 🍏 🪟
 
 **SystemUtilities/**   
