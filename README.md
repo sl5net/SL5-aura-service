@@ -1,12 +1,12 @@
-# System-Wide Offline Dictation, Correction, Pluggable System
+# System-Wide Offline Dictation too Commands or Text, Pluggable System
 
-This project provides a powerful, system-wide dictation tool that goes beyond simple speech-to-text. It **automatically corrects** your dictated text.
+# SL5 Aura Service - Features & OS Compatibility
 
-**Plugin-Features** encapsulated in plugins (e.g., git commands) that can be easily enabled or disabled in the config. This allows clean customization.
+Welcome to SL5 Aura Service! This document provides a quick overview of our key features and their operating system compatibility.
 
-**suggests synonyms** to improve your writing, and even includes a hotkey to **look up homophones** (e.g., "there" vs. "their") for any word on your screen.
+Aura goes beyond simple speech-to-text. This allows customization.
 
-It's a complete, offline writing assistant built on Vosk and LanguageTool.
+It's a complete, offline assistant built on Vosk and LanguageTool.
 
 [![SL5 Aura (v0.6.0.3): A Deep Dive Under the Hood – Live Coding & Core Concepts](https://img.youtube.com/vi/2YYkaY2dIcs/maxresdefault.jpg)](https://youtu.be/2YYkaY2dIcs)
 
@@ -14,10 +14,9 @@ It's a complete, offline writing assistant built on Vosk and LanguageTool.
 ## Key Features
 
 *   **Offline & Private:** 100% local. No data ever leaves your machine.
-*   **Dictate, Correct:** Automatic grammar/spelling correction and synonym suggestions.
 *   **Conservative RAM Usage:** Intelligently manages memory, preloading models only if enough free RAM is available, ensuring other applications (like your PC games) always have priority.
 *   **Cross-Platform:** Works on Linux, macOS, and Windows.
-*   **Fully Automated:** Manages its own LanguageTool server. A single script handles the startup process on Linux/macOS.
+*   **Fully Automated:** Manages its own LanguageTool server (but you can use a external also). 
 *   **Blazing Fast:** Intelligent caching ensures instant "Listening..." notifications and fast processing.
 
 ## Documentation
@@ -94,7 +93,7 @@ Create a new command in CopyQ with a global shortcut.
 touch /tmp/sl5_record.trigger
 ```
 
-**Command for Windows use [CopyQ](https://github.com/hluk/CopyQ):**
+**Command for Windows when use [CopyQ](https://github.com/hluk/CopyQ):**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -113,7 +112,7 @@ if (f.openAppend()) {
 ```
 
 
-**Command for Windows use [AutoHotkey](https://AutoHotkey.com):**
+**Command for Windows when use [AutoHotkey](https://AutoHotkey.com):**
 ```sh
 ; trigger-hotkeys.ahk
 ; AutoHotkey v2 Skript
@@ -170,6 +169,91 @@ Here is a list of the most important scripts to set up, update, and run the appl
 *   `get_suggestions.py`: A helper script for specific functionalities.
 *   `type_watcher.ahk`: The AutoHotkey script that listens for recognized text and types it out system-wide.
 
+
+
+
+## 🚀 Key Features & OS Compatibility
+
+Legend for OS Compatibility:  
+*   🐧 **Linux** (e.g., Arch, Ubuntu)  
+*   🍏 **macOS**  
+*   🪟 **Windows**  
+*   📱 **Android** (for mobile-specific features)  
+
+---
+
+### **Core Speech-to-Text (STT) Engine**
+    Our primary engine for offline speech recognition and audio processing.
+
+**STT-Core/** 🐧 🍏 🪟  
+├── `dictation_service.py` (Main Python service orchestrating STT) 🐧 🍏 🪟
+├── **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+├── **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
+│   ├── `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
+│   ├── **Intelligent Pre-Correction** (`FuzzyMap Pre` - applied before LT for performance) 🐧 🍏 🪟  
+│   ├── `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
+│   └── **Intelligent Post-Correction** (`FuzzyMap` - applied behind LT) 🐧 🍏 🪟  
+├── **Model Management/**   
+│   ├── `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
+│   └── `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
+├── **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+├── **Adaptive VAD Timeout** 🐧 🍏 🪟  
+├── **Adaptive Hotkey Timeout** 🐧 🍏 🪟  
+└── **Instant Language Switching** (via model preloading) 🐧 🍏 🪟
+
+**SystemUtilities/**   
+├── **LanguageTool Server Management/**   
+│   ├── `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
+│   ├── `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
+│   └── `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
+
+### **Model & Package Management**  
+    Tools for robust handling of large language models.  
+
+**ModelManagement/** 🐧 🍏 🪟  
+├── **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
+├── `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
+└── `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
+
+
+### **Development & Deployment Helpers**  
+    Scripts for environment setup, testing, and service execution.  
+
+**DevHelpers/**  
+├── **Virtual Environment Management/**  
+│   ├── `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏  
+│   └── `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
+├── **System-wide Dictation Integration/**  
+│   ├── Vosk-System-Listener Integration 🐧 🍏 🪟  
+│   ├── `scripts/monitor_mic.sh` (Linux-specific microphone monitoring) 🐧  
+│   └── `scripts/type_watcher.ahk` (Windows-specific input monitoring/automation) 🪟  
+└── **CI/CD Automation/**  
+    └── Expanded GitHub Workflows (Installation, testing, docs deployment) 🐧 🍏 🪟 *(Runs on GitHub Actions)*  
+
+### **Upcoming / Experimental Features**  
+    Features currently under development or in draft status.  
+
+**ExperimentalFeatures/**  
+├── **AUTO_ENTER_AFTER_DICTATION_REGEX_APPS** Example activation rule "(ExampleAplicationThatNotExist|Pi, your personal AI)" 🐧  
+├── **git commands** (Voice control for send git commands) 🐧 🍏 🪟  
+├── **Poker Plugin (Draft)** (Voice control for poker applications) 🐧 🍏 🪟  
+├── **0 A.D. Plugin (Draft)** (Voice control for 0 A.D. game) 🐧 🍏 🪟  
+├── **Sound Output when Start or End a Session** (Description pending) 🐧   
+├── **Speech Output for Visually Impaired** (Description pending) 🐧 🍏 🪟  
+└── **SL5 Aura Android Prototype** (Not fully offline yet) 📱  
+
+---
+
+*(Note: Specific Linux distributions like Arch (ARL) or Ubuntu (UBT) are covered by the general Linux 🐧 symbol. Detailed distinctions might be covered in installation guides.)*
+
+
+
+
+
+
+
+
+
 <details>
 <summary>Click to see the command used to generate this script list</summary>
 
@@ -216,3 +300,5 @@ If you find this tool useful, please consider buying us a coffee! Your support h
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+
+
