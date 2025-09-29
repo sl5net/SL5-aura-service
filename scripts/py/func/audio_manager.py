@@ -31,6 +31,8 @@ import os
 import array
 import math
 
+from config.settings import soundMute, soundUnMute
+
 
 # Set up a basic logger for standalone testing or if no logger is passed
 log = logging.getLogger(__name__)
@@ -39,7 +41,7 @@ if not log.handlers:
 
 
 # Fallback for systems without winsound (e.g., Linux, macOS)
-if sys.platform != "win32":
+if sys.platform != "win32" and (soundUnMute > 0 or soundMute > 0):
     try:
         import pygame
         pygame.mixer.init(frequency=44100, size=-16, channels=2)
@@ -240,6 +242,30 @@ def is_microphone_muted(logger=None):
         active_logger.warning(f"Unsupported OS: {sys.platform}")
         return None
 
+def sound_mute():
+    if not soundMute:
+        return
+    mute_sound = create_bent_sine_wave_sound(
+        start_freq=1200,  # Start higher
+        end_freq=800,  # Bend down
+        duration_ms=40,  # Quick
+        volume=0.1
+    )
+    mute_sound.play()
+    # pygame.mixer.quit()
+
+def sound_unmute():
+    if not soundUnMute:
+        return
+    # "Unmute" sound: quick up-bending tone
+    unmute_sound = create_bent_sine_wave_sound(
+        start_freq=1500,  # Start lower
+        end_freq=2000,  # Bend up
+        duration_ms=110,
+        volume=0.2
+    )
+    unmute_sound.play()
+
 def mute_microphone(logger=None,onlySound=False):
     active_logger = logger if logger else log
     if os.getenv('CI'):
@@ -259,14 +285,9 @@ def mute_microphone(logger=None,onlySound=False):
     # time.sleep(3.5)
 
     # "Mute" sound: quick down-bending tone
-    mute_sound = create_bent_sine_wave_sound(
-        start_freq=1200,  # Start higher
-        end_freq=800,  # Bend down
-        duration_ms=40,  # Quick
-        volume=0.1
-    )
-    mute_sound.play()
-    # pygame.mixer.quit()
+
+    sound_mute()
+
     if onlySound:
         return None
 
@@ -309,14 +330,8 @@ def unmute_microphone(logger=None):
     # medium_pitch_sound = create_sine_wave_sound(500, 200, volume=0.4)  # 600 Hz for 3 seconds
     # medium_pitch_sound.play()
 
-    # "Unmute" sound: quick up-bending tone
-    unmute_sound = create_bent_sine_wave_sound(
-        start_freq=1500,  # Start lower
-        end_freq=2000,  # Bend up
-        duration_ms=110,
-        volume=0.2
-    )
-    unmute_sound.play()
+    sound_unmute()
+
     # pygame.mixer.quit()
 
     try:

@@ -233,13 +233,13 @@ Legend for OS Compatibility:
 
 **ExperimentalFeatures/**  
 ├─ **ENTER_AFTER_DICTATION_REGEX** Example activation rule "(ExampleAplicationThatNotExist|Pi, your personal AI)" 🐧  
-├┬Plugin
+├┬Plugins
 │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟  
-│ │  (*Changes to Plugin activation/deactivation are applied on the next processing run without service restart.*)
+(*Changes to Plugin activation/deactivation, and their configurations, are applied on the next processing run without service restart.*)
 │ ├ **git commands** (Voice control for send git commands) 🐧 🍏 🪟  
 │ ├ **wannweil** (Map for Location Germany-Wannweil) 🐧 🍏 🪟  
 │ ├ **Poker Plugin (Draft)** (Voice control for poker applications) 🐧 🍏 🪟  
-│ └ **0 A.D. Plugin (Draft)** (Voice control for 0 A.D. game) 🐧 🍏 🪟  
+│ └ **0 A.D. Plugin (Draft)** (Voice control for 0 A.D. game) 🐧   
 ├─ **Sound Output when Start or End a Session** (Description pending) 🐧   
 ├─ **Speech Output for Visually Impaired** (Description pending) 🐧 🍏 🪟  
 └─ **SL5 Aura Android Prototype** (Not fully offline yet) 📱  
