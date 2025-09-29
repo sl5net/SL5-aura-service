@@ -28,6 +28,3 @@ FUZZY_MAP_pre = [
 
 ]
 
-
-
-# Sebastian Lauffer  Und noch einmal  Sebastian laufen
