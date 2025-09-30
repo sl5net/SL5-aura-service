@@ -22,7 +22,7 @@ FUZZY_MAP_pre = [
 # Kursleiterschulung bei uns dazukommen oder ich zeig Dir das Brett mal und Du kannst Dich damit warmspielen.
 #  Kursleiter Schulungen Kursleiter Schulung
 
-    ('Timo', r'(ti\w+r|T\w+i\w+o)', 70, re.IGNORECASE),
+    ('Timo', r'\b(ti\w+r|T\w+i\w+o)\B', 70, re.IGNORECASE),
 
 
     ('Timo Stösser', r'^(thieme|thema|ti\w+r|T\w+i\w+o)\s+(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|stöße|stöpsel|Störche)$', 70, re.IGNORECASE),

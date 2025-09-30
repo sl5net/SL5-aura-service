@@ -1,5 +1,6 @@
-# config/languagetool_server/maps/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/game/0ad/de-DE/FUZZY_MAP_pr.py
 import re
+
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
@@ -17,7 +18,27 @@ FUZZY_MAP_pre = [
 
     ('baue Haus', r'^\s*(baue auf|baue\s*\w*haus|Build House|Baue Haus)\s*$', 15, re.IGNORECASE),
 
+    ('baue Baracke', r'^\s*(baue|baue|Build)\s+(Ba\w+)$', 15, re.IGNORECASE),
+
+    ('baue Baracke', r'^\s*(\w+au\w+|Build)\s+(Ba\w+e)$', 15, re.IGNORECASE),
+
+    # paul barras
+    ('baue Baracke', r'^\s*(\w+au\w+|Build)\s+(Bar\w+)$', 15, re.IGNORECASE),
+
+
+
+    # select Verwaltungssitz
+    # kontroll c
+    # kontroll chi
+    # 📢kontrollzwecken
+    # controll c
+    ('ctrl+c', r'^\s*([kc]ontroll\w*) c.*$', 20, re.IGNORECASE),
+    ('ctrl+c', r'^\s*kontrollzwecken$', 20, re.IGNORECASE),
+
+    # Select all infrantry
     ('alt+i', r'^\s*(alt\s*e|alt\s*i|ald\s*i|select in).*\s*$', 20, re.IGNORECASE),
+
+    ('alt+#', r'^\s*Select all iddle workers*\s*$', 20, re.IGNORECASE),
 
     ('alt+w', r'^\s*(select\s*wo|select\s*fr|alt\s*w|alt\s*wo|alt\s*fr|ald\s*women).*\s$', 20, re.IGNORECASE),
 ]

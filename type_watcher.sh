@@ -1,14 +1,17 @@
 #!/bin/bash
 # type_watcher.sh
 
+set -euo pipefail
+
 DIR_TO_WATCH="/tmp/sl5_dictation"
-
 LOCKFILE="/tmp/type_watcher.lock"
-
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-LOGFILE="$SCRIPT_DIR/log/type_watcher.log"
-
+LOG_DIR="$SCRIPT_DIR/log"
+LOGFILE="$LOG_DIR/type_watcher.log"
 AUTO_ENTER_FLAG="/tmp/sl5_auto_enter.flag" # The flag file for auto-enter
+
+# Ensure log directory exists
+mkdir -p "$LOG_DIR"
 
 log_message() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOGFILE"
@@ -27,13 +30,12 @@ if [ -e "$LOCKFILE" ]; then
     rm -f "$LOCKFILE"
 fi
 echo $$ > "$LOCKFILE"
-trap "rm -f $LOCKFILE" EXIT
+trap 'rm -f "$LOCKFILE"' EXIT
 
 # --- Wait for the directory to be created by the main service ---
 while [ ! -d "$DIR_TO_WATCH" ]; do
-  sleep 0.5 # Wait half a second before checking again
+    sleep 0.5
 done
-
 
 # Function to get the title of the active window
 get_active_window_title() {
@@ -41,7 +43,6 @@ get_active_window_title() {
     xdotool getwindowname "$active_window_id"
 }
 
-# --- OS Detection and Main Loop ---
 OS_TYPE=$(uname -s)
 
 if [[ "$OS_TYPE" == "Darwin" ]]; then
@@ -50,9 +51,8 @@ if [[ "$OS_TYPE" == "Darwin" ]]; then
     log_message "Watcher starting in macOS mode (using fswatch and osascript)."
     fswatch -0 "$DIR_TO_WATCH" | while read -d "" file; do
         if [[ "$file" == *tts_output_*.txt ]]; then
-            # Use osascript to type the file content on macOS
             osascript -e "tell application \"System Events\" to keystroke \"$(cat "$file")\""
-            rm "$file"
+            rm -f "$file"
         fi
     done
 elif [[ "$OS_TYPE" == "Linux" ]]; then
@@ -64,96 +64,83 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
         inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
         sleep 0.1
 
-        files_to_process=$(ls -tr "$DIR_TO_WATCH"/tts_output_*.txt 2>/dev/null)
+        # Use null-separated find for safer file handling (handles spaces/newlines)
+        while IFS= read -r -d '' f; do
+            [ -f "$f" ] || continue
 
-        if [ -n "$files_to_process" ]; then
-            for f in $files_to_process; do
-                if [ -f "$f" ]; then
-                    # FIX: Pipe file content directly to xdotool to preserve UTF-8
-                    # cat "$f" | LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file -
-                    if [ -z "$CI" ]; then
-                        LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
+            # Read lines into an array
+            mapfile -t lines < "$f"
+            for line in "${lines[@]}"; do
+                trimmed_line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+                GAME_WINDOW_ID=$(xdotool search --name "0 A.D." | head -1 || true)
+
+                if [[ -n "$GAME_WINDOW_ID" ]]; then
+                    log_message "GAME_WINDOW_ID = $GAME_WINDOW_ID"
+                    if [[ "$trimmed_line" == 'alt+i' ]]; then
+                        LC_ALL=C.UTF-8 xdotool windowactivate "$GAME_WINDOW_ID"
+                        sleep 0.2
+                        log_message "Sende ALT+i explizit mit keydown/keyup"
+                        LC_ALL=C.UTF-8 xdotool keydown --window "$GAME_WINDOW_ID" 64
+                        sleep 0.05
+                        LC_ALL=C.UTF-8 xdotool key --window "$GAME_WINDOW_ID" 31
+                        sleep 0.05
+                        LC_ALL=C.UTF-8 xdotool keyup --window "$GAME_WINDOW_ID" 64
+                        sleep 0.1
+                        log_message "Fertig mit ALT+i Sequenz"
+                        log_message "Sent alt+i"
+                        rm -f "$f"
+                        continue
+                    elif [[ "$trimmed_line" == 'alt+w' ]]; then
+                        xte "keydown Alt_L" "keydown w" "keyup w" "keyup Alt_L"
+                        log_message "Sent alt+w"
+                        rm -f "$f"
+                        continue
+                    elif [[ "$trimmed_line" == 'ctrl+c' ]]; then
+                        LC_ALL=C.UTF-8 xdotool key ctrl+c clearmodifiers
+                        log_message "Sent ctrl+c"
+                        rm -f "$f"
+                        continue
+                    elif [[ "$trimmed_line" == 'baue Haus' ]]; then
+                        LC_ALL=C.UTF-8 xdotool key h
+                        sleep 0.15
+                        xdotool click --delay 10 --repeat 8 1
+                        log_message "Baue Haus"
+                        rm -f "$f"
+                        continue
+                    elif [[ "$trimmed_line" == 'baue Baracke' ]]; then
+                        LC_ALL=C.UTF-8 xdotool key b
+                        sleep 0.15
+                        xdotool click --delay 10 --repeat 8 1
+                        sleep 4
+                        log_message "baue Baracke"
+                        rm -f "$f"
+                        continue
                     fi
+                fi
 
-
-
-                    GAME_WINDOW_ID=$(xdotool search --name "0 A.D." | head -1) # Replace "Your Game Window Name"
-
-                    # LC_ALL=C.UTF-8 xdotool --window $GAME_WINDOW_ID clearmodifiers # Clear after typing too
-
-
-                    # alt+i Alt+i
-                    mapfile -t lines < "$f"
-                    for line in "${lines[@]}"; do
-                        # Remove leading/trailing whitespace from the line for robust comparison
-                        trimmed_line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-
-
-                        if [[ "$trimmed_line" == 'alt+i' ]]; then
-                            # LC_ALL=C.UTF-8 xdotool windowactivate $GAME_WINDOW_ID
-                            sleep 0.01
-                            LC_ALL=C.UTF-8 xdotool key --window $GAME_WINDOW_ID alt+i clearmodifiers # Clear after typing too
-                            # LC_ALL=C.UTF-8 xdotool key alt+i
-                            # LC_ALL=C.UTF-8 xdotool --clearmodifiers
-                            sleep 0.1
-                            echo "Sent alt+i" # Optional: for debugging/confirmation
-                        fi
-
-                        if [[ "$trimmed_line" == 'alt+w' ]]; then
-        # LC_ALL=C.UTF-8 xdotool windowactivate --sync $GAME_WINDOW_ID
-        # LC_ALL=C.UTF-8 xdotool windowactivate $GAME_WINDOW_ID
-                            sleep 0.01
-                            LC_ALL=C.UTF-8 xdotool key alt+w clearmodifiers # Clear after typing too
-                            # LC_ALL=C.UTF-8 xdotool key alt+i
-                            # LC_ALL=C.UTF-8 xdotool --clearmodifiers
-                            sleep 1
-                            echo "Sent alt+w" # Optional: for debugging/confirmation
-                        fi
-
-                        if [[ "$trimmed_line" == 'baue Haus' ]]; then
-
-                        # printf "${line}"
-                            LC_ALL=C.UTF-8 xdotool --clearmodifiers key h clearmodifiers # Clear after typing too
-                            sleep 0.15
-                            xdotool click --delay 10 --repeat 8 1
-                            sleep 0.1
-                            LC_ALL=C.UTF-8 --clearmodifiers                             echo "Baue Haus" # Optional: for debugging/confirmation einen
-                        fi
-                    done
-
-                    rm "$f"
-
-                    # if you want newline/return/enter at the end:
-                    # LC_ALL=C.UTF-8 xdotool key Return
-
-                    # log_message "INFO: Auto-Enter?"
-
-                    # --- Conditional Enter Key ---
-
-                    window_title=$(get_active_window_title)
-                    echo "Active window title: \"$window_title\""
-
-                    echo "Matching $window_title against regex: $(cat "$AUTO_ENTER_FLAG")"
-
-                    # Read the regex from the file and store it in the variable "regexLine"
-                    # regexLine="$(cat "$AUTO_ENTER_FLAG")" | sed 's/|/\\|/g; s/(/\\(/g; s/)/\\)/g; s/,/,/g'
-                    regexLine="$(cat "$AUTO_ENTER_FLAG")"
-                    echo "Matching $window_title against regex: $regexLine"
-                    # Check if the window title matches the regex
-                    # Use grep -E (for Extended Regular Expressions) to match
-                    if echo "$window_title" | grep -Eq "$regexLine"; then
-                        echo "The window title MATCHES the regular expression."
-                                                # echo "INFO: Auto-Enter?"
-                        log_message "INFO: Auto-Enter is enabled. Pressing Return."
-                        if [ -z "$CI" ]; then
-                            LC_ALL=C.UTF-8 xdotool key Return
-                        fi
-                    fi
-                    # GAME_WINDOW_ID=$(xdotool search --name "$AUTO_ENTER_FLAG" | head -1) # Replace "Your Game Window Name"
-
+                # Fallback: type file content (if not a special command)
+                if [ -z "${CI:-}" ]; then
+                    LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
+                    log_message "type --file $f"
+                    rm -f "$f"
+                    continue
                 fi
             done
-        fi
+
+            rm -f "$f"
+
+            # --- Conditional Enter Key ---
+            window_title=$(get_active_window_title)
+            if [[ -f "$AUTO_ENTER_FLAG" ]]; then
+                regexLine=$(cat "$AUTO_ENTER_FLAG")
+                if echo "$window_title" | grep -Eq "$regexLine"; then
+                    log_message "INFO: Auto-Enter is enabled. Pressing Return."
+                    if [ -z "${CI:-}" ]; then
+                        LC_ALL=C.UTF-8 xdotool key Return
+                    fi
+                fi
+            fi
+        done < <(find "$DIR_TO_WATCH" -maxdepth 1 -type f -name 'tts_output_*.txt' -print0)
     done
 else
     echo "ERROR: Unsupported operating system '$OS_TYPE'. Exiting."
