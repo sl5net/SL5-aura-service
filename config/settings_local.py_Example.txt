@@ -63,4 +63,6 @@ PLUGINS_ENABLED = {
     "git": False,
     "0ad": False,
     "ethiktagung": True
+    "ethiktagung": True,
+    "volkshochschule_tue": True
 }
