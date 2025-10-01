@@ -3,6 +3,9 @@
 # please see also: settings_local.py_Example.txt
 import os
 
+SERVICE_START_OPTION = 0
+# Option 1: Start the service only on when there is an internet connection.
+
 # Get username
 current_user = os.environ.get('USERNAME', 'default')
 
@@ -66,6 +69,10 @@ CORRECTIONS_ENABLED = {
 
 PLUGINS_ENABLED = {}
 
+# needs restart. implemented in the python part:
+ADD_TO_SENCTENCE = "."
+# set ADD_TO_SENCTENCE = "" when you dont want it.
+
 
 # Recording & Transcription
 SUSPICIOUS_TIME_WINDOW = 90
@@ -104,3 +111,9 @@ except ImportError:
 
 # Auto-detected Java path
 JAVA_EXECUTABLE_PATH = r"/usr/bin/java"
+
+# needs NO restart. implemented in the sh part. TODO implemt for windows:
+# use . for all windos. Other examples:
+# AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "."
+AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist|Pi, your personal AI)"
+# TODO implemt for windows
