@@ -36,8 +36,9 @@ FUZZY_MAP_pre = [
 
     ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, re.IGNORECASE),
 
-    ('Kursleiterschulung', r'^(Kursleiter\s*schu\w*)$', 60, re.IGNORECASE)
+    # ('Kursleiterschulung', r'^(Kursleiter\s*schu\w*| Dozenten Schulung  Dozenten Fortbildung)$', 60, re.IGNORECASE)
 
+    ('Kursleiterschulung', r'^(Kursleiter|Dozenten)[\w\s]*(\s*schu\w*|Fortbildung)$', 60, re.IGNORECASE)
 
 ]
 
