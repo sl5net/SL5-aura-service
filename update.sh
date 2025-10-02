@@ -6,7 +6,7 @@
 set -e
 
 # --- Configuration ---
-REPO_URL="https://github.com/sl5net/Vosk-System-Listener/archive/refs/heads/master.zip"
+REPO_URL="https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip"
 INSTALL_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 TEMP_DIR=$(mktemp -d)
@@ -52,7 +52,7 @@ curl -L -s -o "$ZIP_PATH" "$REPO_URL"
 # 4. Extract the archive
 echo "INFO: Extracting update..."
 unzip -q "$ZIP_PATH" -d "$TEMP_DIR"
-EXTRACTED_DIR="$TEMP_DIR/Vosk-System-Listener-master"
+EXTRACTED_DIR="$TEMP_DIR/SL5-aura-service-master"
 
 # 5. Restore local settings into the new version
 if [ -f "$TEMP_DIR/settings_local.py.bak" ]; then
