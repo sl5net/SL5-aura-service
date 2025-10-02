@@ -10,11 +10,17 @@ TRIGGER_FILE="/tmp/sl5_record.trigger"
 
 # Define your microphone source name (MAKE SURE THIS IS CORRECT!)
 
-# Plantronics 1
-MICROPHONE_SOURCE="alsa_input.pci-0000_2f_00.4.analog-stereo"
 
 # Plantronics 2
 MICROPHONE_SOURCE="alsa_input.usb-Plantronics_Plantronics_Savi_7xx_5E832D0D1B994D56B698FBDAE8A19BE1-00.mono-fallback"
+
+# Plantronics 1
+MICROPHONE_SOURCE="alsa_input.pci-0000_2f_00.4.analog-stereo"
+
+MICROPHONE_SOURCE="alsa_input.usb-Plantronics_Plantronics_Savi_7xx_5E832D0D1B994D56B698FBDAE8A19BE1-00.mono-fallback"
+
+MICROPHONE_SOURCE="alsa_output.usb-Plantronics_Plantronics_Savi_7xx_5E832D0D1B994D56B698FBDAE8A19BE1-00.mono-fallback.monitor"
+
 
 # Debounce time in seconds.
 # The state must remain unchanged for this duration before a trigger occurs.
