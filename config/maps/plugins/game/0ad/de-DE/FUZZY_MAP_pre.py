@@ -1,5 +1,6 @@
 # config/maps/plugins/game/0ad/de-DE/FUZZY_MAP_pr.py
-import re
+# https://regex101.com/
+import re # noqa: F401
 
 
 # This map uses a hybrid approach:

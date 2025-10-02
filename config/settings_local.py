@@ -50,8 +50,8 @@ PLUGINS_ENABLED = {
     "0ad": True,             # For 0ad game
     "ethiktagung": True,
     "volkshochschule_tue": True,
-    "CCC_tue": True
-
+    "CCC_tue": True,
+    "vsp_rt": True,
 }
 
 # needs restart. implemented in the python part:

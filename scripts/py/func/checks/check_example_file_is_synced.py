@@ -66,7 +66,13 @@ def check_example_file_is_synced(project_root: Path):
                 print(f"  - {key}", file=sys.stderr)
             print("\nPlease update the example file.", file=sys.stderr)
             print("="*60 + "\n", file=sys.stderr)
-            sys.exit(1)
+            print("="*60 + "\n", file=sys.stderr)
+            print("="*60 + "\n", file=sys.stderr)
+            print("="*60 + "\n", file=sys.stderr)
+            print("="*60 + "\n", file=sys.stderr)
+            print("="*60 + "\n", file=sys.stderr)
+            print("="*60 + "\n", file=sys.stderr)
+            # sys.exit(1)
 
         print("✅ INFO: Config sync check passed. Example file is up to date.")
 

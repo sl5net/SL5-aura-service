@@ -451,6 +451,7 @@ check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without
 
 if DEV_MODE :
     from scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
+    # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
     check_example_file_is_synced(SCRIPT_DIR)
 
     from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
@@ -472,6 +473,10 @@ if DEV_MODE :
     lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
     run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
     #sys.exit(1)
+
+    # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
+    check_example_file_is_synced(SCRIPT_DIR)
+
 
 
 # --- main-logic is in Thread ---

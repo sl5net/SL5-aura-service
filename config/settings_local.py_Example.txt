@@ -65,6 +65,8 @@ PLUGINS_ENABLED = {
     "ethiktagung": True
     "ethiktagung": True,
     "volkshochschule_tue": True,
-    "CCC_tue": True
+    "CCC_tue": True,
+    "vsp_rt": True
+
 
 }
