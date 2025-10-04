@@ -81,7 +81,7 @@ def load_maps_for_language(lang_code, logger):
             # So, if sub_parts is ['game', '0ad', 'de-DE', 'FUZZY_MAP_pre'],
             # we want sub_parts[1].
             if len(sub_parts) > 1:  # Ensure there's at least a type and an identifier
-                plugin_name = sub_parts[1]
+                plugin_name = sub_parts[-3]
             else:
                 # Fallback if the structure isn't as expected, or handle as an error
                 logger.warning(f"Could not determine plugin_name from modname: {modname}. Skipping.")

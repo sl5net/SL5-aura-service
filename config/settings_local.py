@@ -42,10 +42,11 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 # The logic is handled by client scripts (e.g., type_watcher.sh, AutoKey).
 # These settings tell the backend service what to expect or how to format output.
 
-#
+#  Sebastian laufe Sebastian Lauffer
+#  Sebastian laufen  Sebastian Lauffer  Lauffer
 PLUGINS_ENABLED = {
     "git": True,
-    "wannweil": True,
+    "wannweil": False,
     "game-dealers_choice": False,
     "0ad": False,
     "ethiktagung": True,
@@ -53,7 +54,10 @@ PLUGINS_ENABLED = {
     "CCC_tue": True,
     "vsp_rt": True,
     "ki-maker-space": True,
+    "spoken_numbers_to_digits": False,
 }
+
+#  Die Privatkurs alt+i
 
 # needs restart. implemented in the python part:
 ADD_TO_SENCTENCE = "."

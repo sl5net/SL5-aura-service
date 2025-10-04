@@ -25,6 +25,5 @@ FUZZY_MAP_pre = [
 
     ('Lauffer', r'\b(Läufer|laufer)\b', 82, re.IGNORECASE), # Exact match, but ignore case
 
-
 ]
 
