@@ -46,12 +46,13 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 PLUGINS_ENABLED = {
     "git": True,
     "wannweil": True,
-    "game-dealers_choice": False,             # For Andy's poker game
-    "0ad": True,             # For 0ad game
+    "game-dealers_choice": False,
+    "0ad": False,
     "ethiktagung": True,
     "volkshochschule_tue": True,
     "CCC_tue": True,
     "vsp_rt": True,
+    "ki-maker-space": True,
 }
 
 # needs restart. implemented in the python part:

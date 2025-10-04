@@ -70,14 +70,32 @@ def load_maps_for_language(lang_code, logger):
 
         # not use not needed plugins
         if ".plugins." in modname:
-            plugin_name = modname.split('.plugins.')[1].split('.')[0]
-            if not settings.PLUGINS_ENABLED.get(plugin_name, True):
-                logger.info(f"🗺️ NOT True. plugin_name = {plugin_name}")
+            # First, split by '.plugins.' to get the relevant part
+            parts_after_plugins = modname.split('.plugins.', 1)[1]  # Use maxsplit=1 for efficiency
+
+            # Now, split this part by '.'
+            sub_parts = parts_after_plugins.split('.')
+
+            # Assuming the structure is <plugin_type>.<plugin_identifier>.<rest>
+            # The plugin identifier is typically the second element here.
+            # So, if sub_parts is ['game', '0ad', 'de-DE', 'FUZZY_MAP_pre'],
+            # we want sub_parts[1].
+            if len(sub_parts) > 1:  # Ensure there's at least a type and an identifier
+                plugin_name = sub_parts[1]
+            else:
+                # Fallback if the structure isn't as expected, or handle as an error
+                logger.warning(f"Could not determine plugin_name from modname: {modname}. Skipping.")
                 continue
+            if not settings.PLUGINS_ENABLED.get(plugin_name, True):
+                logger.info(f"🗺️ FALSE. plugin_name = {plugin_name} in modname={modname}")
+                continue
+            else:
+                logger.info(f"🗺️ True. PLUGINS_ENABLED. plugin_name = {plugin_name} in modname={modname}")
 
         try:
             module = importlib.import_module(modname)
-            # logger.info(f"🗺️ Processing: {modname}")
+            logger.info(f"🗺️ Processing: {modname}")
+
 
             # Füge Daten hinzu, falls die Variablen existieren
             if hasattr(module, 'PUNCTUATION_MAP'):

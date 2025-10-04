@@ -1,4 +1,5 @@
 import importlib
+import sys
 from pathlib import Path
 import os
 
@@ -30,16 +31,39 @@ def auto_reload_modified_maps(logger):
                     logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
 
                 relative_path = map_file_path.relative_to(project_root)
-                module_path = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
+                # module_path = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
+                module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
 
-                try:
-                    module_to_reload = importlib.import_module(module_path)
-                    importlib.reload(module_to_reload)
+                if module_name in sys.modules:
+                    if last_mtime != 0:
+                        logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
 
+                    try:
+                        # Get the module object directly from sys.modules
+                        module_to_reload = sys.modules[module_name]
+                        importlib.reload(module_to_reload)
+
+                        LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+                        logger.info(f"✅ Successfully reloaded '{module_name}'.")
+                    except Exception as e:
+                        logger.error(f"❌ Failed to reload module '{module_name}': {e}")
+                else:
+                    logger.info(f"ℹ️ Module '{module_name}' is not currently loaded. Skipping reload.")
+                    # Optionally, you might want to load it for the first time here
+                    # if it's new/modified and not loaded, but your request was to
+                    # only reload already loaded modules.
+                    # Example if you wanted to load it:
+                    # try:
+                    #     importlib.import_module(module_name)
+                    #     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+                    #     logger.info(f"➕ Successfully loaded new module '{module_name}'.")
+                    # except Exception as e:
+                    #     logger.error(f"❌ Failed to load new module '{module_name}': {e}")
+                # --- END OF MODIFICATION ---
+            else:
+                # If no change detected, just ensure its mtime is recorded if it's a new entry
+                if map_file_key not in LAST_MODIFIED_TIMES:
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                    logger.info(f"✅ Successfully reloaded '{module_path}'.")
-                except Exception as e:
-                    logger.error(f"❌ Failed to reload module '{module_path}': {e}")
 
     except Exception as e:
         logger.error(f"Error during map reload check: {e}")
