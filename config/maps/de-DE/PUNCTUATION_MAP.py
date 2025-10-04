@@ -74,17 +74,6 @@ PUNCTUATION_MAP = {
     'copy pace': 'Copy Paste',
     'hobby pest': 'Copy Paste',
 
-
-
-    'wann weil': 'Wannweil',
-
-
-    'sebastian laufer': 'Sebastian Lauffer',
-    'laufer': 'Lauffer',
-    'sebastian läufer': 'Sebastian Lauffer',
-    'sebastian lauf':  'Sebastian Lauffer',
-    'läufer': 'Lauffer',
-
     'harald utz': 'Harald Uetz',
     'harald öz': 'Harald Uetz',
     'uz': 'Uetz',

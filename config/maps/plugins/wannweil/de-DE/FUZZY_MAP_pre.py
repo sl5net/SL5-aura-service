@@ -20,7 +20,7 @@ FUZZY_MAP_pre = [
     ('Wannweil', r'\b(wen\s*Welpe)\b', 82, re.IGNORECASE),
     ('Wannweil', r'^\s*(Wannweil|Annweiler|wann\s*weil|Wann\s*wann\s*weil|Wann\s*war\s*Herr|Wann\s*war\s*er|An\s*weil|Wann\s*weine\w*|Wann\s*wein|Van\s*weil)\s*$', 70, re.IGNORECASE),
 
-    ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
+    ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura|lauf)\b', 82, re.IGNORECASE),
     ('Sigune Lauffer', r'\b(Figur|Sekunde) (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
 
     ('Lauffer', r'\b(Läufer|laufer)\b', 82, re.IGNORECASE), # Exact match, but ignore case
