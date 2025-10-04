@@ -8,7 +8,7 @@ Aura goes beyond simple speech-to-text. This allows customization.
 
 It's a complete, offline assistant built on Vosk and LanguageTool.
 
-[![SL5 Aura – Live Coding Example 3.10.2025](https://img.youtube.com/vi/2YYkaY2dIcs/maxresdefault.jpg)]([https://youtu.be/2YYkaY2dIcs](https://www.youtube.com/watch?v=tEijy8WRFCI))
+[![SL5 Aura – Live Coding Example Sept2025](https://img.youtube.com/vi/2YYkaY2dIcs/maxresdefault.jpg)]([https://youtu.be/tEijy8WRFCI](https://www.youtube.com/watch?v=tEijy8WRFCI))
 
 
 ## Key Features
