@@ -94,12 +94,12 @@ def load_maps_for_language(lang_code, logger):
             if not settings.PLUGINS_ENABLED.get(plugin_name, True):
                 logger.info(f"🗺️ FALSE. plugin_name = {plugin_name} in modname={modname}")
                 continue
-            else:
-                logger.info(f"🗺️ True. PLUGINS_ENABLED. plugin_name = {plugin_name} in modname={modname}")
+            # else:
+            #     logger.info(f"🗺️ True. PLUGINS_ENABLED. plugin_name = {plugin_name} in modname={modname}")
 
         try:
             module = importlib.import_module(modname)
-            logger.info(f"🗺️ Processing: {modname}")
+            # logger.info(f"🗺️ Processing: {modname}")
 
 
             # Füge Daten hinzu, falls die Variablen existieren

@@ -47,8 +47,9 @@ def auto_reload_modified_maps(logger):
                         logger.info(f"✅ Successfully reloaded '{module_name}'.")
                     except Exception as e:
                         logger.error(f"❌ Failed to reload module '{module_name}': {e}")
-                else:
-                    logger.info(f"ℹ️ Module '{module_name}' is not currently loaded. Skipping reload.")
+                # else:
+                #     logger.info(f"ℹ️ Module '{module_name}' is not currently loaded. Skipping reload.")
+
                     # Optionally, you might want to load it for the first time here
                     # if it's new/modified and not loaded, but your request was to
                     # only reload already loaded modules.

@@ -18,7 +18,10 @@ DEV_MODE = True
 
 # may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
 # PRELOAD_MODELS = ["vosk-model-de-0.21"]
-PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+
+# PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+
+PRELOAD_MODELS = ["vosk-model-de-0.21"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 
 
 CRITICAL_THRESHOLD_MB = 1024 * 2
@@ -30,13 +33,12 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 # The logic is handled by client scripts (e.g., type_watcher.sh, AutoKey).
 # These settings tell the backend service what to expect or how to format output.
 
-#
 
 PLUGINS_ENABLED = {
     "git": True,
     "wannweil": True,
     "game-dealers_choice": False,
-    "0ad": True,
+    "0ad": False,
     "ethiktagung": True,
     "volkshochschule_tue": True,
     "CCC_tue": True,

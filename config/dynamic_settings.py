@@ -54,15 +54,14 @@ class DynamicSettings:
                 local_modified_time > self._last_modified_time
             )
 
-            # Folgende Print Ausgaben sind leider Imer gleich und passieren leider nur ein einzigem mal. D.h. Die _last_modified_time Prüfeung wird zur Laufzeit leider nicht mehr gemacht.
-            print(f"DEBUG: local_modified_time = {local_modified_time}")
-            print(f"DEBUG: local_modified_time = {local_modified_time}")
-            print(f"DEBUG: local_modified_time = {local_modified_time}")
-            print(f"DEBUG: local_modified_time = {local_modified_time}")
-            print(f"DEBUG: local_modified_time = {local_modified_time}")
-            print(f"DEBUG: local_modified_time = {local_modified_time}")
-            print(f"DEBUG: local_modified_time = {local_modified_time}")
-            print(f"DEBUG: local_modified_time = {local_modified_time}")
+            # print(f"DEBUG: local_modified_time = {local_modified_time}")
+            # print(f"DEBUG: local_modified_time = {local_modified_time}")
+            # print(f"DEBUG: local_modified_time = {local_modified_time}")
+            # print(f"DEBUG: local_modified_time = {local_modified_time}")
+            # print(f"DEBUG: local_modified_time = {local_modified_time}")
+            # print(f"DEBUG: local_modified_time = {local_modified_time}")
+            # print(f"DEBUG: local_modified_time = {local_modified_time}")
+            # print(f"DEBUG: local_modified_time = {local_modified_time}")
 
             if force or self._settings_module is None or any_file_modified:
                 print("DEBUG: Reloading settings due to modification or force.")
