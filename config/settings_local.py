@@ -16,21 +16,9 @@ soundUnMute = 0
 DEV_MODE = True
 # DEV_MODE = False
 
-# may yo want overwrite the PRELOAD_MODELS settings from settings.py here
+# may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
 # PRELOAD_MODELS = ["vosk-model-de-0.21"]
 PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
-
-
-# --- Custom Correction Settings ---
-# Import the default dictionary from the main settings file.
-try:
-    from .settings import CORRECTIONS_ENABLED
-except ImportError:
-    CORRECTIONS_ENABLED = {} # Fallback in case the import fails
-
-# Update the dictionary with my personal preferences.
-CORRECTIONS_ENABLED.update({
-})
 
 
 CRITICAL_THRESHOLD_MB = 1024 * 2
@@ -42,22 +30,21 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 # The logic is handled by client scripts (e.g., type_watcher.sh, AutoKey).
 # These settings tell the backend service what to expect or how to format output.
 
-#  Sebastian laufe Sebastian Lauffer
-#  Sebastian laufen  Sebastian Lauffer  Lauffer
+#
+
 PLUGINS_ENABLED = {
     "git": True,
-    "wannweil": False,
+    "wannweil": True,
     "game-dealers_choice": False,
-    "0ad": False,
+    "0ad": True,
     "ethiktagung": True,
     "volkshochschule_tue": True,
     "CCC_tue": True,
     "vsp_rt": True,
     "ki-maker-space": True,
-    "spoken_numbers_to_digits": False,
+    "numbers_to_digits": True,
+    # "digits_to_numbers": False, deprecated
 }
-
-#  Die Privatkurs alt+i
 
 # needs restart. implemented in the python part:
 ADD_TO_SENCTENCE = "."
@@ -72,5 +59,5 @@ SPEECH_PAUSE_TIMEOUT = 2
 # use . for all windos. Other examples:
 # AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "."
 AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist|Pi, your personal AI)"
-# TODO implemt for windows
+# TODO implement for windows
 

@@ -100,20 +100,11 @@ XDOTOOL_PATH = "/usr/bin/xdotool"
 
 TRIGGER_FILE_PATH = "/tmp/sl5_record.trigger"
 
-# Try to import user-specific overrides
-try:
-    from .settings_local import * # noqa: F401,F403
-    print("Loaded local config overrides.")
-except ImportError:
-    pass # No local config found, using defaults.
-
-
-
 # Auto-detected Java path
 JAVA_EXECUTABLE_PATH = r"/usr/bin/java"
 
 # needs NO restart. implemented in the sh part. TODO implemt for windows:
-# use . for all windos. Other examples:
+# use . for all Windows. Other examples:
 # AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "."
 AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist|Pi, your personal AI)"
-# TODO implemt for windows
+# TODO implement for windows

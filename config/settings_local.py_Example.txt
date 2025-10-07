@@ -67,6 +67,7 @@ PLUGINS_ENABLED = {
     "volkshochschule_tue": True,
     "CCC_tue": True,
     "vsp_rt": True,
-    "spoken_numbers_to_digits": True,
-
+    "numbers_to_digits": True,
+    # "digits_to_numbers": False, deprecated
+    "ki-maker-space": False,
 }
