@@ -31,7 +31,9 @@ import os
 import array
 import math
 
-from config.settings import soundMute, soundUnMute
+from config.dynamic_settings import settings
+
+
 
 
 # Set up a basic logger for standalone testing or if no logger is passed
@@ -41,7 +43,7 @@ if not log.handlers:
 
 
 # Fallback for systems without winsound (e.g., Linux, macOS)
-if sys.platform != "win32" and (soundUnMute > 0 or soundMute > 0):
+if sys.platform != "win32" and (settings.soundUnMute > 0 or settings.soundMute > 0):
     try:
         import pygame
         pygame.mixer.init(frequency=44100, size=-16, channels=2)
@@ -243,7 +245,7 @@ def is_microphone_muted(logger=None):
         return None
 
 def sound_mute():
-    if not soundMute:
+    if not settings.soundMute:
         return
     mute_sound = create_bent_sine_wave_sound(
         start_freq=1200,  # Start higher
@@ -255,7 +257,7 @@ def sound_mute():
     # pygame.mixer.quit()
 
 def sound_unmute():
-    if not soundUnMute:
+    if not settings.soundUnMute:
         return
     # "Unmute" sound: quick up-bending tone
     unmute_sound = create_bent_sine_wave_sound(

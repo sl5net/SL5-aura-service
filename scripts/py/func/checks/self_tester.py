@@ -15,7 +15,7 @@ if project_root not in sys.path:
 # Note: In dictation_service.py this might be SCRIPT_DIR instead of project_root
 
 from scripts.py.func.process_text_in_background import process_text_in_background
-# from config import settings
+# from config.dynamic_settings import settings
 
 def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
     """

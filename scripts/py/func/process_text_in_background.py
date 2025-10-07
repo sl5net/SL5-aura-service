@@ -4,7 +4,10 @@ import pkgutil
 
 from pathlib import Path
 
-from config.settings import ENABLE_AUTO_LANGUAGE_DETECTION, ADD_TO_SENCTENCE
+# from config.settings import ENABLE_AUTO_LANGUAGE_DETECTION, ADD_TO_SENCTENCE
+
+from config.dynamic_settings import settings
+
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 
 from .setup_initial_model import get_model_name_from_key
@@ -14,7 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MODEL_PATH = PROJECT_ROOT / "models" / "lid.176.bin"
 
 fasttext_model = None # Ensure variable exists
-if ENABLE_AUTO_LANGUAGE_DETECTION:
+if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     if not MODEL_PATH.exists():
         # Using logger that will be passed into the main function later
         # This part of the code needs a logger instance to be available.
@@ -33,7 +36,7 @@ curl --data "language=de-DE&text=das stimmt unsere ist nicht absolut fehlerfrei"
 """
 
 # from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
-from config import settings
+from config.dynamic_settings import settings
 from .normalize_punctuation import normalize_punctuation
 from .map_reloader import auto_reload_modified_maps
 
@@ -41,6 +44,8 @@ import importlib
 
 def load_maps_for_language(lang_code, logger):
     logger.info(f"🗺️Starting recursive map loading for language: {lang_code}")
+
+    settings.reload_settings()
 
     # Zuerst alle Module im Speicher neu laden, um Änderungen zu erfassen
     auto_reload_modified_maps(logger)
@@ -158,7 +163,7 @@ def process_text_in_background(logger,
                 else:
                     threshold=0.60
                 predictions = None
-                if ENABLE_AUTO_LANGUAGE_DETECTION:
+                if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
                     logger.info(f"👀👀👀 Start lang_code predictions for: '{raw_text}'")
                     predictions = fasttext_model.predict(raw_text, threshold=threshold)
 
@@ -357,9 +362,9 @@ def process_text_in_background(logger,
 
         if re.match(r"^\w", processed_text) and time.time() - recording_time < 20:
             processed_text = ' ' + processed_text
-            if ADD_TO_SENCTENCE:
+            if settings.ADD_TO_SENCTENCE:
                 if len(processed_text)> 70 and re.match(r"\w\s*$", processed_text):
-                    processed_text +=  ADD_TO_SENCTENCE
+                    processed_text +=  settings.ADD_TO_SENCTENCE
         recording_time = time.time()
 
         # file: scripts/py/func/process_text_in_background.py

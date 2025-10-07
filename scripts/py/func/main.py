@@ -64,6 +64,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
             # Wait efficiently for a trigger, with a timeout for maintenance
             trigger_event.wait(timeout=5.0)
 
+
             # This block runs every 5s OR when a trigger happens
             Path(heartbeat_file).write_text(str(int(time.time())))
             # active_threads = [t for t in active_threads if t.is_alive()]

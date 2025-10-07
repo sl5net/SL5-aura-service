@@ -58,11 +58,6 @@ FUZZY_MAP_pre = [
 
     ('AutoKey', r'\bAuto k\b', 82, re.IGNORECASE),
 
-
-    ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura)\b', 82, re.IGNORECASE),
-
-    ('Lauffer', r'\b(Läufer|laufer)\b', 82, re.IGNORECASE), # Exact match, but ignore case
-
     # === Git Commands (Consolidated & Case-Insensitive) ===
 
     # --- git status ---

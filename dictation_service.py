@@ -47,16 +47,9 @@ if 'VIRTUAL_ENV' not in os.environ:
 import sys, os, atexit, requests, logging, platform, importlib
 from pathlib import Path
 
-# --- Local Imports (grouped for clarity) ---
-from config.settings import (LANGUAGETOOL_RELATIVE_PATH,
-                            USE_EXTERNAL_LANGUAGETOOL, EXTERNAL_LANGUAGETOOL_URL, LANGUAGETOOL_PORT,
-                            DEV_MODE,
-                            ENABLE_AUTO_LANGUAGE_DETECTION,
-                            AUTO_ENTER_AFTER_DICTATION_REGEX_APPS, SERVICE_START_OPTION
-                            )
+from config.dynamic_settings import settings
 
-
-if ENABLE_AUTO_LANGUAGE_DETECTION:
+if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     # Check if the package is installed without actually importing it
     if importlib.util.find_spec("fasttext") is None:
         logging.warning("FastText is not installed but is enabled in config.")
@@ -146,7 +139,7 @@ LOG_FILE = PROJECT_ROOT / "log/dictation_service.log"
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent
-LANGUAGETOOL_JAR_PATH = PROJECT_ROOT / LANGUAGETOOL_RELATIVE_PATH
+LANGUAGETOOL_JAR_PATH = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
 
 
 suspicious_events = []
@@ -280,7 +273,7 @@ logger.addHandler(console_handler)
 
 logger.handlers[0].addFilter(WindowsEmojiFilter())
 
-if SERVICE_START_OPTION ==1:
+if settings.SERVICE_START_OPTION ==1:
     # Option 1: Start the service only on autostart (start parameter) and if there is an internet
 
     def check_internet_connection(host='https://sl5.de'):
@@ -317,7 +310,7 @@ if SERVICE_START_OPTION ==1:
 # Execute the check. The script will exit here if the setup is incomplete.
 validate_setup(SCRIPT_DIR, logger)
 
-if DEV_MODE :
+if settings.DEV_MODE :
 
     check_installer_sizes()
 
@@ -341,7 +334,7 @@ if DEV_MODE :
     check_installer_sizes()
 
 
-if DEV_MODE :
+if settings.DEV_MODE :
     try:
         # Create a copy of the current environment and set PYTHONPATH
         env = os.environ.copy()
@@ -418,9 +411,9 @@ TRIGGER_FILE.unlink(missing_ok=True)
 
 active_lt_url = None
 
-if USE_EXTERNAL_LANGUAGETOOL:
-    logger.warning(f"USING EXTERNAL LT SERVER: {EXTERNAL_LANGUAGETOOL_URL}. AT YOUR OWN RISK.")
-    active_lt_url = EXTERNAL_LANGUAGETOOL_URL
+if settings.USE_EXTERNAL_LANGUAGETOOL:
+    logger.warning(f"USING EXTERNAL LT SERVER: {settings.EXTERNAL_LANGUAGETOOL_URL}. AT YOUR OWN RISK.")
+    active_lt_url = settings.EXTERNAL_LANGUAGETOOL_URL
     # PING-TEST:
     try:
         requests.get(f"{active_lt_url}/v2/languages", timeout=3)
@@ -430,15 +423,15 @@ if USE_EXTERNAL_LANGUAGETOOL:
         sys.exit(1)
 else:
     PROJECT_ROOT = Path(__file__).resolve().parent
-    jar_path_absolute = PROJECT_ROOT / LANGUAGETOOL_RELATIVE_PATH
-    internal_lt_url = f"http://localhost:{LANGUAGETOOL_PORT}"
+    jar_path_absolute = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
+    internal_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}"
 
     logger.info(f"start_languagetool_server(logger, {jar_path_absolute}, {internal_lt_url})")
     languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url)
     if not languagetool_process: sys.exit(1)
     atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
 
-    active_lt_url = f"http://localhost:{LANGUAGETOOL_PORT}/v2/check"
+    active_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}/v2/check"
 
 
 if not start_languagetool_server:
@@ -449,7 +442,7 @@ from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
 
 check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
-if DEV_MODE :
+if settings.DEV_MODE :
     from scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
     # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
     check_example_file_is_synced(SCRIPT_DIR)
@@ -485,7 +478,7 @@ if DEV_MODE :
 global AUTO_ENTER_AFTER_DICTATION_global
 
 recording_time = 0
-from config import settings # Import the whole settings module
+# from config import settings # Import the whole settings module
 if __name__ == "__main__":
     # 1. Load all settings from the module into a dictionary
     config = {key: getattr(settings, key) for key in dir(settings) if key.isupper()}
@@ -498,7 +491,7 @@ if __name__ == "__main__":
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
         "PROJECT_ROOT": PROJECT_ROOT,
-        "AUTO_ENTER_AFTER_DICTATION_REGEX_APPS": AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
+        "AUTO_ENTER_AFTER_DICTATION_REGEX_APPS": settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
     })
 
 
@@ -507,7 +500,7 @@ if __name__ == "__main__":
     # File: dictation_service.py Line 417
     # Create a flag file so client scripts know if a plugin is active.
     try:
-        AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
+        AUTO_ENTER_AFTER_DICTATION_global = settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
         auto_enter_flag_path = "/tmp/sl5_auto_enter.flag"
         with open(auto_enter_flag_path, "w") as f:
             f.write(str(AUTO_ENTER_AFTER_DICTATION_global)) # Writes 1 or 0
