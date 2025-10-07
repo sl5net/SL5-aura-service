@@ -121,28 +121,31 @@ class DynamicSettings:
                         if not attr.startswith('__'):
                             local_value = getattr(self._settings_local_module, attr)
 
-                            if hasattr(self, attr) and isinstance(getattr(self, attr), collections.abc.MutableMapping) and isinstance(local_value, collections.abc.MutableMapping):
+
+                        # --- START MODIFICATION ---
+                            # Special handling for PRELOAD_MODELS: always override
+                            if attr == "PRELOAD_MODELS":
+                                setattr(self, attr, local_value)
+                                print(f"DEBUG: Overrode PRELOAD_MODELS with local value: {local_value}")
+                            # --- END MODIFICATION ---
+                            elif hasattr(self, attr) and isinstance(getattr(self, attr), collections.abc.MutableMapping) and isinstance(local_value, collections.abc.MutableMapping):
                                 merged_dict = getattr(self, attr)
                                 merged_dict.update(local_value)
                                 setattr(self, attr, merged_dict)
                                 print(f"DEBUG: Merged dictionary setting '{attr}': {getattr(self, attr)}")
                             elif hasattr(self, attr) and isinstance(getattr(self, attr), collections.abc.MutableSequence) and not isinstance(getattr(self, attr), (str, bytes)) and isinstance(local_value, collections.abc.MutableSequence) and not isinstance(local_value, (str, bytes)):
                                 merged_list = getattr(self, attr)
+                                # Only append items if they are not already in the list
                                 for item in local_value:
                                     if item not in merged_list:
                                         merged_list.append(item)
                                 setattr(self, attr, merged_list)
                                 print(f"DEBUG: Merged list setting '{attr}': {getattr(self, attr)}")
                             else:
+                                # Default: override with local value
                                 setattr(self, attr, local_value)
                                 print(f"DEBUG: Overrode setting '{attr}' with local value: {local_value}")
-                    print("DEBUG: Local settings attributes applied/merged to DynamicSettings instance.")
+                        print("DEBUG: Local settings attributes applied/merged to DynamicSettings   instance.")
 
-                self._last_modified_time = max(base_modified_time, local_modified_time)
-                print(f"DEBUG: Last modified time updated to: {self._last_modified_time}")
-                print("DEBUG: Settings reloaded successfully. Lock released.")
-            else:
-                print("DEBUG: No settings file modification detected. Using existing settings.")
-            print("DEBUG: Reload_settings finished.") # This line needs to be outside the 'if force or ...' but inside the 'with self._lock:'
 
 settings = DynamicSettings()
