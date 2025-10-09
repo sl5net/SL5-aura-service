@@ -8,8 +8,8 @@ SERVICE_START_OPTION = 1
 
 NOTIFICATION_LEVEL = 1
 
-soundMute = 1
-soundUnMute = 0
+soundMute = 1  # 1 is really recommandet. to know when your recording is endet.
+soundUnMute = 1
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
@@ -40,7 +40,7 @@ PLUGINS_ENABLED = {
     "game-dealers_choice": False,
     "0ad": False,
     "ethiktagung": True,
-    "volkshochschule_tue": True,
+    "volkshochschule_tue": False,
     "CCC_tue": True,
     "vsp_rt": True,
     "ki-maker-space": True,

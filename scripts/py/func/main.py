@@ -5,6 +5,7 @@ import threading, time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+from .log_memory_details import log_memory_details
 from .press_trigger_button import press_trigger_button
 
 from pathlib import Path
@@ -59,6 +60,8 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
         observer = Observer()
         observer.schedule(TriggerEventHandler(), path=str(TMP_DIR), recursive=False)
         observer.start()
+
+        log_memory_details("before while True", logger)
 
         while True:
             # Wait efficiently for a trigger, with a timeout for maintenance

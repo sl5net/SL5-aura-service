@@ -88,7 +88,7 @@ def check_for_unused_functions(parsed_trees, project_root, logger):
         'on_created', 'audio_callback', 'visit_FunctionDef', 'visit_Call',
         'visit_Assign', 'visit_Dict', 'on_any_event', 'setUp', 'on_modified', 'filter',
         'test_transcription_with_long_pause_yields_multiple_chunks',
-        'test_transcription_with_short_pause_yields_one_chunk'
+        'test_transcription_with_short_pause_yields_one_chunk','formatTime'
     }
 
     all_definitions = {}

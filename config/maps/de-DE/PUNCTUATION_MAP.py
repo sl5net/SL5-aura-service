@@ -5,9 +5,11 @@ PUNCTUATION_MAP = {
 
 # config/languagetool_server/maps/de-DE/PUNCTUATION_MAP.py
 
-# #   Sierra 12345678910 15
+# #   Sierra 12345678910 15 .
 
     'punkt': '.',
+    'prunk': '.',
+
     'komma': ',',
     'fragezeichen': '?',
     'ausrufezeichen': '!',
@@ -51,6 +53,8 @@ PUNCTUATION_MAP = {
     'haute': '#',
 
     'kit': 'Git',
+
+    'Kochdatei': 'Logdatei',
 
     'kritik nur': '.gitignore',
     'git innere': '.gitignore',

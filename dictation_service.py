@@ -47,6 +47,7 @@ if 'VIRTUAL_ENV' not in os.environ:
 import sys, os, atexit, requests, logging, platform, importlib
 from pathlib import Path
 
+
 from config.dynamic_settings import settings
 
 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
@@ -244,34 +245,41 @@ class WindowsEmojiFilter(logging.Filter):
 
 
 
-# --- Logging Setup ---
-# Manual configuration for maximum robustness.
 
-# 1. Get the root logger.
+import time
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-# 2. Clear any pre-existing handlers to prevent duplicates.
-if logger.hasHandlers():
+# Clear any pre-existing handlers to prevent duplicates.
+if len(logger.handlers) > 0:
     logger.handlers.clear()
 
-# 3. Create a shared formatter.
-log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
+# Create a shared formatter with the custom formatTime function.
+def formatTime(record, datefmt=None):
+    time_str = time.strftime("%H:%M:%S")
+    milliseconds = int((record.created - int(record.created)) * 1000)
+    ms_str = f",{milliseconds:03d}"
+    return time_str + ms_str
 
-# 4. Create, configure, and add the File Handler.
+log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
+log_formatter.formatTime = formatTime
+
+# Create, configure, and add the File Handler.
 file_handler = logging.FileHandler(f'{SCRIPT_DIR}/log/dictation_service.log', mode='w')
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 
-# 5. Create, configure, and add the Console Handler.
+# Create, configure, and add the Console Handler.
 console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setFormatter(log_formatter)
 logger.addHandler(console_handler)
 
-# The filter is innocent, but we leave it out for now for the cleanest possible test.
+# Add the WindowsEmojiFilter to the file_handler
+file_handler.addFilter(WindowsEmojiFilter())
 
 
-logger.handlers[0].addFilter(WindowsEmojiFilter())
+
 
 if settings.SERVICE_START_OPTION ==1:
     # Option 1: Start the service only on autostart (start parameter) and if there is an internet
@@ -438,11 +446,16 @@ if not start_languagetool_server:
     notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
     sys.exit(1)
 
+
+
 from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
 
 check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
 if settings.DEV_MODE :
+    from scripts.py.func.log_memory_details import log_memory_details
+    log_memory_details("Script Start", logger)
+
     from scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
     # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
     check_example_file_is_synced(SCRIPT_DIR)

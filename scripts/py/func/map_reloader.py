@@ -3,6 +3,8 @@ import sys
 from pathlib import Path
 import os
 
+from config.dynamic_settings import settings
+
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 def auto_reload_modified_maps(logger):
@@ -12,6 +14,10 @@ def auto_reload_modified_maps(logger):
     Scans the map directories, detects changed files based on their
     modification time, and reloads only the necessary modules.
     """
+
+    if settings.DEV_MODE:
+        from scripts.py.func.log_memory_details import log_memory_details
+        log_memory_details(f"def start", logger)
 
     try:
         project_root = Path(__file__).resolve().parent.parent.parent.parent
@@ -68,3 +74,7 @@ def auto_reload_modified_maps(logger):
 
     except Exception as e:
         logger.error(f"Error during map reload check: {e}")
+
+    if settings.DEV_MODE:
+        from scripts.py.func.log_memory_details import log_memory_details
+        log_memory_details(f"def end", logger)

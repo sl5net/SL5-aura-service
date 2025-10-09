@@ -31,7 +31,6 @@ MODELS_LOCK = threading.Lock()
 
 max_model_memory_footprint = 0
 
-
 def _format_gb(mb):
     """Helper to format MB into a readable GB string."""
     if mb < 1024:

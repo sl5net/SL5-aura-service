@@ -21,6 +21,8 @@ MICROPHONE_SOURCE="alsa_input.usb-Plantronics_Plantronics_Savi_7xx_5E832D0D1B994
 
 MICROPHONE_SOURCE="alsa_output.usb-Plantronics_Plantronics_Savi_7xx_5E832D0D1B994D56B698FBDAE8A19BE1-00.mono-fallback.monitor"
 
+MICROPHONE_SOURCE="alsa_input.usb-Plantronics_Plantronics_Savi_7xx_5E832D0D1B994D56B698FBDAE8A19BE1-00.mono-fallback"
+
 
 # Debounce time in seconds.
 # The state must remain unchanged for this duration before a trigger occurs.

@@ -43,12 +43,24 @@ from .map_reloader import auto_reload_modified_maps
 import importlib
 
 def load_maps_for_language(lang_code, logger):
+    if settings.DEV_MODE:
+        from scripts.py.func.log_memory_details import log_memory_details
+        log_memory_details(f"def load_maps_for_language", logger)
+
     logger.info(f"🗺️Starting recursive map loading for language: {lang_code}")
 
     settings.reload_settings()
 
+    if settings.DEV_MODE:
+        from scripts.py.func.log_memory_details import log_memory_details
+        log_memory_details(f"next: auto_reload_modified_maps", logger)
+
     # Zuerst alle Module im Speicher neu laden, um Änderungen zu erfassen
     auto_reload_modified_maps(logger)
+
+    if settings.DEV_MODE:
+        from scripts.py.func.log_memory_details import log_memory_details
+        log_memory_details(f"last: auto_reload_modified_maps", logger)
 
     # Leere Container für die zusammengefügten Daten
     punctuation_map = {}
@@ -117,6 +129,11 @@ def load_maps_for_language(lang_code, logger):
 
     logger.info(
         f"🗺️ TIP !!! Dont forget  __init__.py in each directory. If you missing replacements, please check this.")
+
+    if settings.DEV_MODE:
+        from scripts.py.func.log_memory_details import log_memory_details
+        log_memory_details(f"next: return punctuation_map, fuzzy_map_pre, fuzzy_map", logger)
+
 
     return punctuation_map, fuzzy_map_pre, fuzzy_map
 
@@ -280,11 +297,20 @@ def process_text_in_background(logger,
                 and not (
                             settings.CORRECTIONS_ENABLED["git"]
                             and ("git" in processed_text or "push" in processed_text))):
+
+                if settings.DEV_MODE:
+                    from scripts.py.func.log_memory_details import log_memory_details
+                    log_memory_details(f"next  correct_text_by_languagetool:", logger)
+
                 processed_text = correct_text_by_languagetool(
                     logger,
                     active_lt_url,
                     LT_LANGUAGE,
                     processed_text).lstrip('\uFEFF')
+
+                if settings.DEV_MODE:
+                    from scripts.py.func.log_memory_details import log_memory_details
+                    log_memory_details(f"last correct_text_by_languagetool:", logger)
 
             # Step 2: Slower, fuzzy replacements on the result
             # logger.info(f"DEBUG: Starting fuzzy match for: '{processed_text}'")
@@ -386,6 +412,10 @@ def process_text_in_background(logger,
         # notify("Transcribed", duration=700, urgency="low")
 
         notify("Transcribed", "", "low", duration=1000, replace_tag="transcription_status")
+
+        if settings.DEV_MODE:
+            from scripts.py.func.log_memory_details import log_memory_details
+            log_memory_details(f"✅ THREAD: Successfully wrote to file", logger)
 
 
     except Exception as e:
