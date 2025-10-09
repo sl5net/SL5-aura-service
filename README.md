@@ -25,6 +25,7 @@ For a complete technical reference, including all modules and scripts, please vi
 
 [**Go to Documentation >>**](https://sl5net.github.io/SL5-aura-service/)
 
+https://skipvids.com/?v=tEijy8WRFCI&gl=US
 
 ### Build Status
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/D9ylPBnP2aQ)
