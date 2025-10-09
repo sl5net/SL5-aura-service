@@ -88,22 +88,22 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         sleep 0.1
                         log_message "Fertig mit ALT+i Sequenz"
                         log_message "Sent alt+i"
-                    python3 /home/seeh/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
-                    sleep 0.01
+                    # python3 ~/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
+                    # sleep 0.01
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'alt+w' ]]; then
                         xte "keydown Alt_L" "keydown w" "keyup w" "keyup Alt_L"
                         log_message "Sent alt+w"
-                    python3 /home/seeh/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
-                    sleep 0.01
+                    # python3 ~/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
+                    # sleep 0.01
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'ctrl+c' ]]; then
                         LC_ALL=C.UTF-8 xdotool key ctrl+c clearmodifiers
                         log_message "Sent ctrl+c"
-                    python3 /home/seeh/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
-                    sleep 0.01
+                    # python3 ~/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
+                    # sleep 0.01
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'baue Haus' ]]; then
@@ -111,8 +111,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         sleep 0.15
                         xdotool click --delay 10 --repeat 8 1
                         log_message "baue Haus"
-                    python3 /home/seeh/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
-                    sleep 0.01
+                    # python3 ~/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
+                    # sleep 0.01
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'baue Lagerhaus' ]]; then
@@ -120,8 +120,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         sleep 0.15
                         xdotool click --delay 10 --repeat 8 1
                         log_message "baue Lagerhaus"
-                    python3 /home/seeh/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
-                    sleep 0.01
+                    # python3 ~/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
+                    # sleep 0.01
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'select iddle' ]]; then
@@ -131,8 +131,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         sleep 0.15
                         # xdotool click --delay 10 --repeat 8 1
                         log_message "select iddle"
-                    python3 /home/seeh/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
-                    sleep 0.01
+                    # python3 ~/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
+                    # sleep 0.01
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'baue Baracke' ]]; then
@@ -141,8 +141,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         xdotool click --delay 10 --repeat 8 1
                         sleep 4
                         log_message "baue Baracke"
-                    python3 /home/seeh/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
-                    sleep 0.01
+                    # python3 ~/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
+                    # sleep 0.01
                         rm -f "$f"
                         continue
                     fi
@@ -159,8 +159,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     #  You could start the STT Service like so:
                     # ~/projects/py/TTS/scripts/restart_venv_and_run-server.sh
                     #  And add to type_watcher.sh the following line here:
-                    python3 /home/seeh/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
-                    sleep 0.01
+                    # python3 ~/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
+                    # sleep 0.01
 
                     rm -f "$f"
                     continue
