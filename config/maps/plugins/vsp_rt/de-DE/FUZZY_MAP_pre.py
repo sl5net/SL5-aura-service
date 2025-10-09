@@ -16,10 +16,6 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
-#  V s p Person
-#  VfB personal
-# VfB passen  VfB personal VfB per Sünde Torsten Hau,Katja Janssens,Harald Uetz,Juliana Kunrad
-
 
     ('Torsten Hau,Katja Janssens,Harald Uetz,Juliana Kunrad', r'^\b(V\s*S\s*P|V\s*[FS]\s*B)\s*(Person\w+)\b$', 70, re.IGNORECASE),
 
@@ -28,7 +24,14 @@ FUZZY_MAP_pre = [
     ('Torsten Hau ist gerne mit dem MTB unterwegs', r'^(\w+ubis|Hobbys)\b.*(V\s*S\s*P|V\s*[FS]\s*B|Frau\s*s\s*p)\s*(Geschäftsf\w+|Chef)\b$', 70, re.IGNORECASE),
 
 
-    # Frau s p Geschäftsführer Torsten Hau Hobbys Foulspiel Geschäftsführer
+    ('Herr Schröer', r'^(Herr Schröder|Herr hersteller|Herr Schröer|herr schrill)\b$', 70, re.IGNORECASE),
+    ('Schröer', r'^(Schrö\w*r|schwör\w*|schworen|schon besorgt)\b$', 70, re.IGNORECASE),
+
+    ('Ergotherapie Schröer', r'^Ergo\w* (Schrö\w*|schwör\w*|schworen|schon besorgt)\b$', 70, re.IGNORECASE),
+
+    ('Schröer Ergotherapie', r'^(Schrö\w*|schwör\w*|schworen|schon besorgt)\b Ergo\w*$', 70, re.IGNORECASE),
+
+    ('Schröer Ergotherapie', r'^(Früher|Speyer) (eher|ergo|erst)\b$', 70, re.IGNORECASE),
 
 
 ]
