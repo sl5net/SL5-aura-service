@@ -16,6 +16,7 @@ then
   echo " ok $speak_file_path exist"
 else
     speak_file_path=''
+    echo "$speak_file_path dont exist"
 fi
 
 # Ensure log directory exists
@@ -182,8 +183,10 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     #  You could start the STT Service like so:
                     # ~/projects/py/TTS/scripts/restart_venv_and_run-server.sh
                     #  And add to type_watcher.sh the following line here:
-                    # python3 ~/projects/py/TTS/speak_file.py "$f" > /tmp/speak_error.log 2>&1
-                    # sleep 0.01
+                    if [[ -n "$speak_file_path" ]]; then
+                      python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+                      sleep 0.01
+                    fi
 
                     rm -f "$f"
                     continue
