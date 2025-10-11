@@ -99,6 +99,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
                           sleep 0.01
+                        fi
+
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'alt+w' ]]; then
@@ -107,6 +109,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
                           sleep 0.01
+                        fi
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'ctrl+c' ]]; then
@@ -115,6 +118,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
                           sleep 0.01
+                        fi
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'baue Haus' ]]; then
@@ -125,6 +129,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
                           sleep 0.01
+                        fi
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'baue Lagerhaus' ]]; then
@@ -135,6 +140,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
                           sleep 0.01
+                        fi
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'select iddle' ]]; then
@@ -147,6 +153,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
                           sleep 0.01
+                        fi
                         rm -f "$f"
                         continue
                     elif [[ "$trimmed_line" == 'baue Baracke' ]]; then
@@ -158,6 +165,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
                           sleep 0.01
+                        fi
                         rm -f "$f"
                         continue
                     fi
