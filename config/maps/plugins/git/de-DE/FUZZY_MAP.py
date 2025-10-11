@@ -50,9 +50,10 @@ FUZZY_MAP = [
 
     # --- git status ---
     # This one regex replaces 5 old entries.
-    ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|dates)\s*$', 82, re.IGNORECASE),
+    ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|statt|dates)\s*$', 82, re.IGNORECASE),
 
     # --- git add . ---
+    # geht statt
     ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
 
 
@@ -72,7 +73,7 @@ FUZZY_MAP = [
 
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, re.IGNORECASE),
 
-    ('git commit ', r'^\s*(Geht|git|mit) (komm|Kometen|Commit)\s*$', 80, re.IGNORECASE),
+    ('git commit ', r'^\s*(Geht|git|mit) (komm|Kometen|Commit|kevin)\s*$', 80, re.IGNORECASE),
 
 
     ('commit ', r'\s+Komet\s+', 80, re.IGNORECASE),
