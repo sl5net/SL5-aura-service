@@ -7,7 +7,7 @@ import requests
 import time
 import sys
 import importlib
-
+from config.dynamic_settings import settings
 
 def _update_settings_file(logger, java_path):
     config_path = Path('config/settings.py')
@@ -40,7 +40,8 @@ def _update_settings_file(logger, java_path):
     with open(config_path, 'w', encoding='utf-8') as f:
         f.writelines(new_lines)
 
-    logger.info(f"Settings file updated. Java path set to: {java_path}")
+    if settings.DEV_MODE:
+        logger.info(f"Settings file updated. Java path set to: {java_path}")
 
 
 def start_languagetool_server(logger, languagetool_jar_path, base_url):
@@ -76,11 +77,13 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
         return False
 
     port = base_url.split(':')[-1].split('/')[0]
-    logger.info(f"Starting LanguageTool Server using Java from: {java_executable_path}")
+    if settings.DEV_MODE:
+        logger.info(f"Starting LanguageTool Server using Java from: {java_executable_path}")
 
     try:
         command_str = f'"{java_executable_path}" -jar "{languagetool_jar_path}" --port {port} --allow-origin "*"'
-        logger.info(f"Executing command via shell: {command_str}")
+        if settings.DEV_MODE:
+            logger.info(f"Executing command via shell: {command_str}")
 
         languagetool_process = subprocess.Popen(command_str, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
                                                 encoding='utf-8', shell=True)
@@ -88,12 +91,14 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
         logger.fatal(f"Failed to start LanguageTool Server process with shell=True: {e}")
         return False
 
-    logger.info("Waiting for LanguageTool Server to be responsive...")
+    if settings.DEV_MODE:
+        logger.info("Waiting for LanguageTool Server to be responsive...")
     for _ in range(20):
         try:
             response = requests.get(f"{base_url}/v2/languages", timeout=1.5)
             if response.status_code == 200:
-                logger.info("LanguageTool Server is online.")
+                if settings.DEV_MODE:
+                    logger.info("LanguageTool Server is online.")
                 return languagetool_process
         except requests.exceptions.RequestException:
             pass

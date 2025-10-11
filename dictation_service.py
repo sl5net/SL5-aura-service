@@ -317,9 +317,10 @@ if settings.SERVICE_START_OPTION ==1:
 
 
 # Execute the check. The script will exit here if the setup is incomplete.
-validate_setup(SCRIPT_DIR, logger)
 
 if settings.DEV_MODE :
+
+    validate_setup(SCRIPT_DIR, logger)
 
     check_installer_sizes()
 

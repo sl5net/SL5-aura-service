@@ -108,7 +108,8 @@ def load_maps_for_language(lang_code, logger):
                 logger.warning(f"Could not determine plugin_name from modname: {modname}. Skipping.")
                 continue
             if not settings.PLUGINS_ENABLED.get(plugin_name, True):
-                logger.info(f"🗺️ FALSE. plugin_name = {plugin_name} in modname={modname}")
+                if settings.DEV_MODE:
+                    logger.info(f"🗺️ FALSE. plugin_name = {plugin_name} in modname={modname}")
                 continue
             # else:
             #     logger.info(f"🗺️ True. PLUGINS_ENABLED. plugin_name = {plugin_name} in modname={modname}")
@@ -164,13 +165,16 @@ def process_text_in_background(logger,
     punctuation_map, fuzzy_map_pre, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
     try:
 
-        logger.info(f"start sanitize_transcription_start")
+        # if settings.DEV_MODE:
+        #     logger.info(f"start sanitize_transcription_start")
         raw_text = sanitize_transcription_start(raw_text)
-        logger.info(f"end sanitize_transcription_start")
+        # if settings.DEV_MODE:
+        #     logger.info(f"end sanitize_transcription_start")
 
 
         # ZWNBSP
-        logger.info(f"THREAD: Starting processing for: '{raw_text}'")
+        if settings.DEV_MODE:
+            logger.info(f"THREAD: Starting processing for: '{raw_text}'")
 
         notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
 
@@ -422,8 +426,9 @@ def process_text_in_background(logger,
         notify(f"FATAL: Error in processing thread", duration=4000, urgency="low")
     finally:
         # file: scripts/py/func/process_text_in_background.py
-        logger.info(f"✅ Background processing for '{raw_text[:20]}...' finished. ")
-        notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
+        if settings.DEV_MODE:
+            logger.info(f"✅ Background processing for '{raw_text[:20]}...' finished. ")
+            notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
 
         # TODO fallback:
         max_model_memory_footprint_mb_not_calculate =  5000
@@ -431,10 +436,11 @@ def process_text_in_background(logger,
         process = psutil.Process(os.getpid())
         mem_info = process.memory_info()
         rss_mb = mem_info.rss / (1024 * 1024)
-        if (rss_mb*2) > max_model_memory_footprint_mb_not_calculate:
+        if (rss_mb*0.5) > max_model_memory_footprint_mb_not_calculate:
             # restart your script is a very common and effective fallback workaround for managing excessive memory usage
-            logger.info(f"Fallback restart script: rss_mb={rss_mb}*2 > max_model_memory_footprint={max_model_memory_footprint_mb_not_calculate}")
+            logger.info(f"Fallback restart script: rss_mb={rss_mb}*2.5 > max_model_memory_footprint={max_model_memory_footprint_mb_not_calculate}")
             # restart script
+            time.sleep(0.02)
             os.execv(sys.executable, ['python'] + sys.argv + ['restarted'])
 
         auto_reload_modified_maps(logger)

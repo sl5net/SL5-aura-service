@@ -244,29 +244,40 @@ def is_microphone_muted(logger=None):
         active_logger.warning(f"Unsupported OS: {sys.platform}")
         return None
 
+def sound_program_loaded():
+    if not settings.soundProgramLoaded:
+        return
+    sound = create_bent_sine_wave_sound(
+        start_freq=400,
+        end_freq=800,
+        duration_ms=150,
+        volume=0.1
+    )
+    sound.play()
+
 def sound_mute():
     if not settings.soundMute:
         return
-    mute_sound = create_bent_sine_wave_sound(
+    sound = create_bent_sine_wave_sound(
         start_freq=1200,  # Start higher
         end_freq=800,  # Bend down
         duration_ms=40,  # Quick
         volume=0.1
     )
-    mute_sound.play()
+    sound.play()
     # pygame.mixer.quit()
 
 def sound_unmute():
     if not settings.soundUnMute:
         return
     # "Unmute" sound: quick up-bending tone
-    unmute_sound = create_bent_sine_wave_sound(
+    sound = create_bent_sine_wave_sound(
         start_freq=1500,  # Start lower
         end_freq=2000,  # Bend up
         duration_ms=110,
         volume=0.2
     )
-    unmute_sound.play()
+    sound.play()
 
 def mute_microphone(logger=None,onlySound=False):
     active_logger = logger if logger else log

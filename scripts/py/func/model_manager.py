@@ -23,6 +23,8 @@ import vosk
 from .check_memory_critical import check_memory_critical
 from .notify import notify
 
+from config.dynamic_settings import settings
+
 import threading
 
 MODELS_LOCK = threading.Lock()
@@ -110,7 +112,8 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
                     f"Need ~{_format_gb(required_memory_mb)} "
                     f"(Threshold: {_format_gb(threshold_mb)} + Model: {_format_gb(max_model_memory_footprint_mb)} + Buffer: {_format_gb(load_buffer_mb)})"
                 )
-                logger.info(log_msg)
+                if settings.DEV_MODE:
+                    logger.info(log_msg)
             return max_model_memory_footprint_mb
 
         logger.info(f"Attempting to load missing model: '{model_name}'")

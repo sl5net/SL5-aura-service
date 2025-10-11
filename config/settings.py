@@ -13,6 +13,10 @@ current_user = os.environ.get('USERNAME', 'default')
 # e.g., the wrapper script enforcement.
 DEV_MODE = False
 
+soundMute = 1  # 1 is really recommandet. to know when your recording is ended.
+soundUnMute = 1
+soundProgramLoaded = 1
+
 ENABLE_AUTO_LANGUAGE_DETECTION = False
 
 # --- Notification Settings ---

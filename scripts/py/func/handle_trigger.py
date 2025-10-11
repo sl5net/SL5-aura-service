@@ -3,7 +3,7 @@ import threading
 import time
 import vosk
 
-import config.settings_local
+from config.dynamic_settings import settings
 from config.settings import PRE_RECORDING_TIMEOUT, SPEECH_PAUSE_TIMEOUT, SAMPLE_RATE
 
 from .model_manager import MODELS_LOCK
@@ -25,7 +25,8 @@ def finalize_recording_session(logger):
     """A dedicated function to clean up after a recording session."""
     global active_transcription_thread
 
-    logger.info("Finalizing recording session: All new audio intake has stopped.")
+    if settings.DEV_MODE:
+        logger.info("Finalizing recording session: All new audio intake has stopped.")
 
     # Set the global thread variable to None to indicate no active session.
     active_transcription_thread = None
@@ -119,13 +120,14 @@ def handle_trigger(
             text_detected = 0
 
             text_chunk_iterator = transcribe_audio_with_feedback(
-                logger, recognizer, lt_language, silence_timeout, dictation_session_active, config.settings_local.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
+                logger, recognizer, lt_language, silence_timeout, dictation_session_active, settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
             )
 
             for text_chunk in text_chunk_iterator:
                 if text_chunk.strip():
                     text_detected = 1
-                    logger.info(f"Processing chunk: '{text_chunk[:30]}...'")
+                    if settings.DEV_MODE:
+                        logger.info(f"Processing chunk: '{text_chunk[:30]}...'")
                     thread = threading.Thread(target=process_text_in_background,
                                               args=(logger, lt_language, text_chunk, TMP_DIR,
                                                     time.time(), active_lt_url))
@@ -161,7 +163,8 @@ def handle_trigger(
 
 
         finally:
-            logger.info(f"Session thread is finishing. Ensuring state is cleared. text_detected.")
+            if settings.DEV_MODE:
+                logger.info(f"Session thread is finishing. Ensuring state is cleared. text_detected.")
             finalize_recording_session(logger)
             dictation_session_active.clear()
 

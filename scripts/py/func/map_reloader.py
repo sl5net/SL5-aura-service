@@ -34,7 +34,8 @@ def auto_reload_modified_maps(logger):
 
             if current_mtime > last_mtime:
                 if last_mtime != 0:
-                    logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
+                    if settings.DEV_MODE:
+                        logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
 
                 relative_path = map_file_path.relative_to(project_root)
                 # module_path = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
@@ -42,7 +43,8 @@ def auto_reload_modified_maps(logger):
 
                 if module_name in sys.modules:
                     if last_mtime != 0:
-                        logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
+                        if settings.DEV_MODE:
+                            logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
 
                     try:
                         # Get the module object directly from sys.modules
@@ -50,7 +52,8 @@ def auto_reload_modified_maps(logger):
                         importlib.reload(module_to_reload)
 
                         LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                        logger.info(f"✅ Successfully reloaded '{module_name}'.")
+                        if settings.DEV_MODE:
+                            logger.info(f"✅ Successfully reloaded '{module_name}'.")
                     except Exception as e:
                         logger.error(f"❌ Failed to reload module '{module_name}': {e}")
                 # else:

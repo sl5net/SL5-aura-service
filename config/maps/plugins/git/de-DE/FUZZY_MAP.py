@@ -85,7 +85,8 @@ FUZZY_MAP = [
     # Gilt komme komme
 
     # --- git push ---
-    ('git push', r'^\s*(git|geht|gitter)\s*(busch|frisch|push)\s*$', 85, re.IGNORECASE),
+    ('git push', r'^\s*(git|geht|gitter)\s*(busch|frisch|push|wohl)\s*$', 85, re.IGNORECASE),
+
 
     # --- git pull ---
     ('git pull', r'^\s*(git|geht|gitter)\s*(pohl|pool)\s*$', 82, re.IGNORECASE),

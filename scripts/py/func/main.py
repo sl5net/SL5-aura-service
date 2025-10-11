@@ -5,6 +5,8 @@ import threading, time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+from config.dynamic_settings import settings
+from .audio_manager import sound_program_loaded
 from .log_memory_details import log_memory_details
 from .press_trigger_button import press_trigger_button
 
@@ -61,8 +63,10 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
         observer.schedule(TriggerEventHandler(), path=str(TMP_DIR), recursive=False)
         observer.start()
 
-        log_memory_details("before while True", logger)
+        if settings.DEV_MODE_memory:
+            log_memory_details("before while True", logger)
 
+        is_first_loading = None
         while True:
             # Wait efficiently for a trigger, with a timeout for maintenance
             trigger_event.wait(timeout=5.0)
@@ -71,7 +75,17 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
             # This block runs every 5s OR when a trigger happens
             Path(heartbeat_file).write_text(str(int(time.time())))
             # active_threads = [t for t in active_threads if t.is_alive()]
+
+
+            if not loaded_models:
+                is_first_loading = True
+
             manage_models(logger, loaded_models, PRELOAD_MODELS, CRITICAL_THRESHOLD_MB, script_dir)
+
+            if is_first_loading:
+                is_first_loading = False
+                # sound_mute()
+                sound_program_loaded()
 
             if trigger_event.is_set():
                 trigger_event.clear()  # Reset for the next trigger

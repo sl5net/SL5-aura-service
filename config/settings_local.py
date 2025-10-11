@@ -10,12 +10,13 @@ NOTIFICATION_LEVEL = 1
 
 soundMute = 1  # 1 is really recommandet. to know when your recording is endet.
 soundUnMute = 1
+soundProgramLoaded = 1
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
 # DEV_MODE = True
 DEV_MODE = False
-DEV_MODE_memory = True
+DEV_MODE_memory = False
 
 
 # may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
