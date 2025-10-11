@@ -1,8 +1,12 @@
 # scripts/py/func/process_text_in_background.py
 import logging
+import os
 import pkgutil
+import sys
 
 from pathlib import Path
+
+import psutil
 
 # from config.settings import ENABLE_AUTO_LANGUAGE_DETECTION, ADD_TO_SENCTENCE
 
@@ -413,11 +417,6 @@ def process_text_in_background(logger,
 
         notify("Transcribed", "", "low", duration=1000, replace_tag="transcription_status")
 
-        if settings.DEV_MODE:
-            from scripts.py.func.log_memory_details import log_memory_details
-            log_memory_details(f"✅ THREAD: Successfully wrote to file", logger)
-
-
     except Exception as e:
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
         notify(f"FATAL: Error in processing thread", duration=4000, urgency="low")
@@ -425,6 +424,21 @@ def process_text_in_background(logger,
         # file: scripts/py/func/process_text_in_background.py
         logger.info(f"✅ Background processing for '{raw_text[:20]}...' finished. ")
         notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
+
+        # TODO fallback:
+        max_model_memory_footprint_mb_not_calculate =  5000
+
+        process = psutil.Process(os.getpid())
+        mem_info = process.memory_info()
+        rss_mb = mem_info.rss / (1024 * 1024)
+        if rss_mb > max_model_memory_footprint_mb_not_calculate:
+            # restart your script is a very common and effective fallback workaround for managing excessive memory usage
+            logger.info(f"max_model_memory_footprint={max_model_memory_footprint_mb_not_calculate} Fallback ?? rss_mb={rss_mb} ?????????????????????????????????????????????????????????????")
+            notify(
+                f"max_model_memory_footprint_mb_not_calculate={max_model_memory_footprint_mb_not_calculate} Fallback ?? rss_mb={rss_mb} ?????????????????????????????????????????????????????????????",
+                duration=700, urgency="low")
+            # restart the script
+            os.execv(sys.executable, ['python'] + sys.argv + ['restarted'])
 
         auto_reload_modified_maps(logger)
 # Hallo des Hallo Test

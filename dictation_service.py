@@ -219,6 +219,7 @@ class WindowsEmojiFilter(logging.Filter):
             '❌': '[x]',  # noqa: F601 Fehler, ausgefülltes Quadrat
             '🎬': '[>]',  # Start, Play
             '⏹️': '[■]',  # Stop, Quadrat
+            '🏁': '[>]',  # Start
             '🎤': '[◉]',  # Mikrofon
             '🎙️': '[▣]',  # Studio-Mikrofon, gefüllter Kreis
             '📢️': '[≡]',  # Lautsprecher (Klangwellen)

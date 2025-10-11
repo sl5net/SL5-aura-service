@@ -29,7 +29,9 @@ MODELS_LOCK = threading.Lock()
 
 
 
-max_model_memory_footprint = 0
+max_model_memory_footprint_mb = 0
+
+
 
 def _format_gb(mb):
     """Helper to format MB into a readable GB string."""
@@ -61,24 +63,24 @@ def load_single_model(logger, model_path, lang_key, loaded_models):
 
 def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir):
     """Dynamically loads/unloads models based on available memory."""
-    global max_model_memory_footprint
+    global max_model_memory_footprint_mb
 
     # --- Unloading Logic ---
     is_critical, avail_mb = check_memory_critical(threshold_mb)
     if is_critical:
         if not loaded_models:
-            return
+            return max_model_memory_footprint_mb
 
         key_to_unload = list(loaded_models.keys())[-1]
         logger.warning(f"Low memory ({_format_gb(avail_mb)} available). Unloading model '{key_to_unload}'.")
         del loaded_models[key_to_unload]
         notify("Memory Manager", f"Unloaded '{key_to_unload}' model. {_format_gb(avail_mb)} RAM free.")
-        return
+        return max_model_memory_footprint_mb
 
     desired_lang_keys = {name.split('-')[2] for name in desired_names}
     if set(loaded_models.keys()) == desired_lang_keys:
         # logger.info("All desired models are already loaded. Nothing to do.")
-        return
+        return max_model_memory_footprint_mb
 
     # --- Loading Logic ---
     for model_name in desired_names:
@@ -99,17 +101,17 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
         # File: scripts/py/func/model_manager.py
         load_buffer_mb = math.ceil(threshold_mb * 0.10)
-        required_memory_mb = threshold_mb + load_buffer_mb + max_model_memory_footprint
+        required_memory_mb = threshold_mb + load_buffer_mb + max_model_memory_footprint_mb
         if avail_mb < required_memory_mb:
-            if max_model_memory_footprint > 0:
+            if max_model_memory_footprint_mb > 0:
                 # IMPROVED LOG: Explain the calculation for "Required Memory"
                 log_msg = (
                     f"Postponing load: {_format_gb(avail_mb)} available is not enough. "
                     f"Need ~{_format_gb(required_memory_mb)} "
-                    f"(Threshold: {_format_gb(threshold_mb)} + Model: {_format_gb(max_model_memory_footprint)} + Buffer: {_format_gb(load_buffer_mb)})"
+                    f"(Threshold: {_format_gb(threshold_mb)} + Model: {_format_gb(max_model_memory_footprint_mb)} + Buffer: {_format_gb(load_buffer_mb)})"
                 )
                 logger.info(log_msg)
-            return
+            return max_model_memory_footprint_mb
 
         logger.info(f"Attempting to load missing model: '{model_name}'")
         try:
@@ -122,8 +124,8 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
             footprint = avail_before - avail_after
 
-            if footprint > max_model_memory_footprint:
-                max_model_memory_footprint = footprint
+            if footprint > max_model_memory_footprint_mb:
+                max_model_memory_footprint_mb = footprint
                 logger.info(f"Learned new max model footprint: ~{_format_gb(footprint)}")
 
 
@@ -145,5 +147,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
         except Exception as e:
             logger.error(f"Failed to load '{model_name}': {e}")
+
+        return max_model_memory_footprint_mb
 
 

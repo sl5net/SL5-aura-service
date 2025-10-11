@@ -13,8 +13,8 @@ soundUnMute = 1
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
-DEV_MODE = True
-# DEV_MODE = False
+# DEV_MODE = True
+DEV_MODE = False
 
 # may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
 # PRELOAD_MODELS = ["vosk-model-de-0.21"]

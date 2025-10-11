@@ -46,7 +46,7 @@ def handle_trigger(
 
     # --- ACTION 1: STOP an ongoing session ---
     if dictation_session_active.is_set():
-        logger.info("⏹️ Manual stop trigger detected. Signaling session to end.")
+        logger.info("🎬⏹️ Manual stop trigger detected. Signaling session to end.")
         mute_microphone()
         # unmute_microphone()
 
@@ -66,7 +66,7 @@ def handle_trigger(
 
     unmute_microphone()
 
-    logger.info("🎬 Trigger received. Starting new dictation session.")
+    logger.info("🎬🏁 Trigger received. Starting new dictation session.")
     dictation_session_active.set()
 
     # --- Select a model safely ---
