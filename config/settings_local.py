@@ -48,6 +48,7 @@ PLUGINS_ENABLED = {
     "ki-maker-space": True,
     "numbers_to_digits": True,
     # "digits_to_numbers": False, deprecated
+    "web-radio-funk": True,
 }
 
 # needs restart. implemented in the python part:
