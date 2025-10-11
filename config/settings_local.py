@@ -15,6 +15,8 @@ soundUnMute = 1
 # e.g., the wrapper script enforcement.
 # DEV_MODE = True
 DEV_MODE = False
+DEV_MODE_memory = True
+
 
 # may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
 # PRELOAD_MODELS = ["vosk-model-de-0.21"]

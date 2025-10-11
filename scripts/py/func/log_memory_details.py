@@ -44,7 +44,7 @@ def log_memory_details(stage: str, logger):
 
     """
     DEBUG:
-    if settings.DEV_MODE:
+    if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"Line 135", logger)
 

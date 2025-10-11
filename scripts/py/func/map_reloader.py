@@ -15,7 +15,7 @@ def auto_reload_modified_maps(logger):
     modification time, and reloads only the necessary modules.
     """
 
-    if settings.DEV_MODE:
+    if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"def start", logger)
 
@@ -75,6 +75,6 @@ def auto_reload_modified_maps(logger):
     except Exception as e:
         logger.error(f"Error during map reload check: {e}")
 
-    if settings.DEV_MODE:
+    if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"def end", logger)

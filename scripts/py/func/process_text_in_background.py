@@ -47,7 +47,7 @@ from .map_reloader import auto_reload_modified_maps
 import importlib
 
 def load_maps_for_language(lang_code, logger):
-    if settings.DEV_MODE:
+    if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"def load_maps_for_language", logger)
 
@@ -55,14 +55,14 @@ def load_maps_for_language(lang_code, logger):
 
     settings.reload_settings()
 
-    if settings.DEV_MODE:
+    if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"next: auto_reload_modified_maps", logger)
 
     # Zuerst alle Module im Speicher neu laden, um Änderungen zu erfassen
     auto_reload_modified_maps(logger)
 
-    if settings.DEV_MODE:
+    if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"last: auto_reload_modified_maps", logger)
 
@@ -134,7 +134,7 @@ def load_maps_for_language(lang_code, logger):
     logger.info(
         f"🗺️ TIP !!! Dont forget  __init__.py in each directory. If you missing replacements, please check this.")
 
-    if settings.DEV_MODE:
+    if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"next: return punctuation_map, fuzzy_map_pre, fuzzy_map", logger)
 
@@ -302,7 +302,7 @@ def process_text_in_background(logger,
                             settings.CORRECTIONS_ENABLED["git"]
                             and ("git" in processed_text or "push" in processed_text))):
 
-                if settings.DEV_MODE:
+                if settings.DEV_MODE_memory:
                     from scripts.py.func.log_memory_details import log_memory_details
                     log_memory_details(f"next  correct_text_by_languagetool:", logger)
 
@@ -312,7 +312,7 @@ def process_text_in_background(logger,
                     LT_LANGUAGE,
                     processed_text).lstrip('\uFEFF')
 
-                if settings.DEV_MODE:
+                if settings.DEV_MODE_memory:
                     from scripts.py.func.log_memory_details import log_memory_details
                     log_memory_details(f"last correct_text_by_languagetool:", logger)
 
