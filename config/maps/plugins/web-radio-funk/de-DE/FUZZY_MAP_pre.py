@@ -1,4 +1,4 @@
-# config/languagetool_server/maps/plugins/CCC_tue/de-DE/FUZZY_MAP_pr.py
+# config/languagetool_server/maps/plugins/web-radio-funk/de-DE/FUZZY_MAP_pr.py
 # https://regex101.com/
 import re # noqa: F401
 
