@@ -168,7 +168,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         if result.get('text'):
                             logger.info(f"📢📢📢             🎙️ 🎤 ")
                             logger.info(f"📢📢📢             🎙️ 🎤 ")
-                            logger.info(f"📢📢📢-----> Yielding chunk: 📢 {result['text']}'")
+                            logger.info(f"📢📢📢-----> Yielding chunk: 📢 {result['text']}")
                             yield result['text']
                     else:
                         partial_result = json.loads(recognizer.PartialResult())

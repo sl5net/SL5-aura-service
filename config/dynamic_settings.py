@@ -164,4 +164,4 @@ class DynamicSettings:
                                     print(f"DEBUG: Overrode setting '{attr}' with local value: {local_value}")
                                     print("DEBUG: Local settings attributes applied/merged to DynamicSettings   instance.")
 
-settings = DynamicSettings() # noqa: F824
+settings = DynamicSettings() # noqa: F811
