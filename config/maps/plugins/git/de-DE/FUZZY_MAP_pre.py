@@ -50,6 +50,7 @@ FUZZY_MAP_pre = [
     # This one regex replaces 5 old entries.
     # geht's starte Gliedstaat ist
     # Geht Staat git status git status
+
     ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|Gliedstaat|kids|kate)\s+(status|Staat|staates|start|startet|starten|dates)\s*$', 82, re.IGNORECASE),
 
     ('git status', r'^\s*(Gliedstaat)\s+(ist)\s*$', 80, re.IGNORECASE),
@@ -61,7 +62,8 @@ FUZZY_MAP_pre = [
 
 
     # --- git add . --- git add .
-    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
+    # Gitta hat
+    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
 
     # --- git commit ---
 

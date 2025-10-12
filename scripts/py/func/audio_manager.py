@@ -43,7 +43,7 @@ if not log.handlers:
 # Fallback for systems without winsound (e.g., Linux, macOS)
 # and only attempt pygame.mixer.init if audio is not disabled by CI
 if sys.platform != "win32": # This condition means pygame is *only* considered for non-Windows
-    if os.environ.get("CI_DISABLE_AUDIO", "false").lower() == "true":
+    if os.environ.get("CI_DISABLE_AUDIO", "true").lower() == "true":
         log.info("CI_DISABLE_AUDIO is set to true. Skipping pygame.mixer initialization.")
     elif settings.soundUnMute > 0 or settings.soundMute > 0: # Only try to init if sound is meant to be used
         try:
