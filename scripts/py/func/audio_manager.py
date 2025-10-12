@@ -1,4 +1,3 @@
-# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # scripts/py/func/audio_manager.py
 """
 Cross-platform microphone control utility.
@@ -41,87 +40,93 @@ log = logging.getLogger(__name__)
 if not log.handlers:
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-
 # Fallback for systems without winsound (e.g., Linux, macOS)
-if sys.platform != "win32" and (settings.soundUnMute > 0 or settings.soundMute > 0):
-    try:
-        import pygame
-        pygame.mixer.init(frequency=44100, size=-16, channels=2)
-        # Pre-create a simple beep sound
-        # beep_sound_high = pygame.mixer.Sound(b'\x00\xff\x00\xff' * 100)  # Simple high-pitched wave
-        # beep_sound_low = pygame.mixer.Sound(b'\x00\x00\xff\xff' * 100)   # Simple low-pitched wave
-        # def play_beep(frequency, duration_ms):
-        #     # Pygame doesn't directly support frequency/duration for simple beeps like winsound.Beep.
-        #     # This is a very rough approximation for demonstration.
-        #     if frequency > 700: # Arbitrary high freq threshold
-        #         beep_sound_high.play()
-        #     else:
-        #         beep_sound_low.play()
-        #     pygame.time.wait(duration_ms)
+# and only attempt pygame.mixer.init if audio is not disabled by CI
+if sys.platform != "win32": # This condition means pygame is *only* considered for non-Windows
+    if os.environ.get("CI_DISABLE_AUDIO", "false").lower() == "true":
+        log.info("CI_DISABLE_AUDIO is set to true. Skipping pygame.mixer initialization.")
+    elif settings.soundUnMute > 0 or settings.soundMute > 0: # Only try to init if sound is meant to be used
+        try:
+            import pygame
+            pygame.mixer.init(frequency=44100, size=-16, channels=2)
+            log.info("pygame.mixer initialized successfully.")
+            # Pre-create a simple beep sound
+            # beep_sound_high = pygame.mixer.Sound(b'\x00\xff\x00\xff' * 100)  # Simple high-pitched wave
+            # beep_sound_low = pygame.mixer.Sound(b'\x00\x00\xff\xff' * 100)   # Simple low-pitched wave
+            # def play_beep(frequency, duration_ms):
+            #     # Pygame doesn't directly support frequency/duration for simple beeps like winsound.Beep.
+            #     # This is a very rough approximation for demonstration.
+            #     if frequency > 700: # Arbitrary high freq threshold
+            #         beep_sound_high.play()
+            #     else:
+            #         beep_sound_low.play()
+            #     pygame.time.wait(duration_ms)
 
 
-        # def create_sine_wave_sound(frequency, duration_ms, volume=0.5, sample_rate=44100):
-        #     """
-        #     Generates a stereo sine wave sound.
-        #     frequency: frequency in Hz
-        #     duration_ms: duration in milliseconds
-        #     volume: amplitude (0.0 to 1.0)
-        #     sample_rate: samples per second
-        #     """
-        #     num_samples = int(sample_rate * (duration_ms / 1000.0))
-        #     # Pygame's default for Sound is 16-bit signed, so values from -32768 to 32767
-        #     max_amplitude = 32767 * volume
-        #
-        #     samples = array.array('h')  # 'h' for signed short (2 bytes)
-        #
-        #     for i in range(num_samples):
-        #         # Calculate sine wave value
-        #         value = max_amplitude * math.sin(2 * math.pi * frequency * (i / sample_rate))
-        #         samples.append(int(value))
-        #         samples.append(int(value))  # For stereo, append twice
-        #
-        #     return pygame.mixer.Sound(samples)
+            # def create_sine_wave_sound(frequency, duration_ms, volume=0.5, sample_rate=44100):
+            #     """
+            #     Generates a stereo sine wave sound.
+            #     frequency: frequency in Hz
+            #     duration_ms: duration in milliseconds
+            #     volume: amplitude (0.0 to 1.0)
+            #     sample_rate: samples per second
+            #     """
+            #     num_samples = int(sample_rate * (duration_ms / 1000.0))
+            #     # Pygame's default for Sound is 16-bit signed, so values from -32768 to 32767
+            #     max_amplitude = 32767 * volume
+            #
+            #     samples = array.array('h')  # 'h' for signed short (2 bytes)
+            #
+            #     for i in range(num_samples):
+            #         # Calculate sine wave value
+            #         value = max_amplitude * math.sin(2 * math.pi * frequency * (i / sample_rate))
+            #         samples.append(int(value))
+            #         samples.append(int(value))  # For stereo, append twice
+            #
+            #     return pygame.mixer.Sound(samples)
 
 
-        def create_bent_sine_wave_sound(
-                start_freq,
-                end_freq,
-                duration_ms,
-                volume=0.4,
-                sample_rate=44100
-        ):
-            """
-            Generates a stereo sine wave sound with an optional pitch bend.
-            - start_freq: starting frequency in Hz
-            - end_freq: ending frequency in Hz (for pitch bend; same as start for flat tone)
-            - duration_ms: duration in milliseconds
-            - volume: amplitude (0.0 to 1.0)
-            - sample_rate: samples per second
-            """
-            num_samples = int(sample_rate * (duration_ms / 1000.0))
-            max_amplitude = 32767 * volume
-            samples = array.array('h')
+            def create_bent_sine_wave_sound(
+                    start_freq,
+                    end_freq,
+                    duration_ms,
+                    volume=0.4,
+                    sample_rate=44100
+            ):
+                """
+                Generates a stereo sine wave sound with an optional pitch bend.
+                - start_freq: starting frequency in Hz
+                - end_freq: ending frequency in Hz (for pitch bend; same as start for flat tone)
+                - duration_ms: duration in milliseconds
+                - volume: amplitude (0.0 to 1.0)
+                - sample_rate: samples per second
+                """
+                num_samples = int(sample_rate * (duration_ms / 1000.0))
+                max_amplitude = 32767 * volume
+                samples = array.array('h')
 
-            for i in range(num_samples):
-                # Linear interpolation for pitch bend
-                t = i / num_samples
-                freq = start_freq + (end_freq - start_freq) * t
-                value = max_amplitude * math.sin(2 * math.pi * freq * (i / sample_rate))
-                # Stereo: append same sample for both channels
-                samples.append(int(value))
-                samples.append(int(value))
+                for i in range(num_samples):
+                    # Linear interpolation for pitch bend
+                    t = i / num_samples
+                    freq = start_freq + (end_freq - start_freq) * t
+                    value = max_amplitude * math.sin(2 * math.pi * freq * (i / sample_rate))
+                    # Stereo: append same sample for both channels
+                    samples.append(int(value))
+                    samples.append(int(value))
 
-            return pygame.mixer.Sound(buffer=samples)
+                return pygame.mixer.Sound(buffer=samples)
 
-    except ImportError:
-        log.warning("pygame not found. Sound feedback will not work on non-Windows systems.")
-        # def play_beep(frequency, duration_ms):
-        #     pass # No sound feedback if pygame is not available
-# else:
-#     import winsound
-    # def play_beep(frequency, duration_ms):
-    #     winsound.Beep(frequency, duration_ms)
-
+        except pygame.error as e:
+            log.warning(f"Could not initialize pygame mixer: {e}. Audio functionalities might be limited.")
+        except ImportError:
+            log.warning("pygame not installed. Audio functionalities requiring pygame will be unavailable.")
+            # def play_beep(frequency, duration_ms):
+            #     pass # No sound feedback if pygame is not available
+    else:
+        # This block would execute on Windows.
+        # If you intend to use pygame on Windows too, adjust the initial `if sys.platform != "win32"`
+        # Otherwise, assume winsound is handled elsewhere.
+        log.debug("Running on Windows, assuming winsound or other native audio is used.")
 
 # --- Platform-Specific Implementations ---
 

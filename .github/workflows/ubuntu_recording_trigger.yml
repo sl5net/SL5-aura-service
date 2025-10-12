@@ -36,6 +36,9 @@ jobs:
           mkdir -p models
           mv vosk-model-*.zip models/
 
+      - name: Set CI_DISABLE_AUDIO environment variable
+        run: echo "CI_DISABLE_AUDIO=true" >> $GITHUB_ENV
+
       - name: Run ubuntu_setup.sh (should now use local files)
         run: bash ./setup/ubuntu_setup.sh
         

@@ -50,23 +50,25 @@ FUZZY_MAP_pre = [
     # This one regex replaces 5 old entries.
     # geht's starte Gliedstaat ist
     # Geht Staat git status git status
-    ('git status', r'^\s*(Geht|git|get|gitter|Gliedstaat|kids|kate)\s+(status|Staat|staates|start|startet|starten|dates)\s*$', 82, re.IGNORECASE),
+    ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|Gliedstaat|kids|kate)\s+(status|Staat|staates|start|startet|starten|dates)\s*$', 82, re.IGNORECASE),
 
     ('git status', r'^\s*(Gliedstaat)\s+(ist)\s*$', 80, re.IGNORECASE),
+
+    ('git status', r'^\s*(Gliedstaat|Kickstarter)\s*$', 80, re.IGNORECASE),
 
     ('git status', r'^\s*(gitschtal|quatscht hatte|Geht tat uns)\s+$', 80, re.IGNORECASE),
 
 
 
     # --- git add . --- git add .
-    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
+    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, re.IGNORECASE),
 
     # --- git commit ---
 
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*kate Commit\s*$', 80, re.IGNORECASE),
 
-    ('git commit ', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(Komet|Komik|Gummi|kommend|Commit|mit|hitch)\s*$', 80, re.IGNORECASE),
+    ('git commit ', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(Komet|Komik|Comics|Gummi|kommend|Commit|mit|hitch)\s*$', 80, re.IGNORECASE),
 
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, re.IGNORECASE),
 
