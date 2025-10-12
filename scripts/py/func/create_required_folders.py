@@ -1,8 +1,6 @@
 # file: scripts/py/func/create_required_folders.py
 import sys
 from pathlib import Path
-from config.dynamic_settings import settings
-
 
 def setup_project_structure(project_root_str: str):
     """
@@ -11,9 +9,6 @@ def setup_project_structure(project_root_str: str):
     truth for the project's internal directory structure.
     """
     project_root = Path(project_root_str).resolve()
-
-    if settings.DEV_MODE:
-        print(f"--> Using project root for setup: {project_root}")
 
     # Define all required project-relative directories and their initial files
     project_dirs = {
@@ -35,8 +30,6 @@ def setup_project_structure(project_root_str: str):
         try:
             # 1. Create the directory
             dir_path.mkdir(parents=True, exist_ok=True)
-            if settings.DEV_MODE:
-                print(f"    -> OK (DIR): {dir_path}")
 
             # 2. Create initial placeholder files if any are specified
             if initial_files:
@@ -44,14 +37,10 @@ def setup_project_structure(project_root_str: str):
                     file_path = dir_path / filename
                     if not file_path.exists():
                         file_path.touch()
-                        if settings.DEV_MODE:
-                            print(f"    -> OK (TOUCH): {file_path}")
 
                         # Special handling for dummy content
                         if filename == "model_name_lastused.txt":
                             file_path.write_text("dummy\n")
-                            if settings.DEV_MODE:
-                                print(f"    -> OK (WRITE): Wrote 'dummy' to {file_path}")
         except Exception as e:
             print(f"    -> FATAL ERROR setting up {dir_path}: {e}")
             sys.exit(1) # Exit with an error code to fail the CI/CD job

@@ -24,7 +24,7 @@ DEV_MODE_memory = False
 
 # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 
-PRELOAD_MODELS = ["vosk-model-de-0.21"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 
 
 CRITICAL_THRESHOLD_MB = 1024 * 2
