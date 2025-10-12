@@ -87,7 +87,7 @@ FUZZY_MAP_pre = [
     ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*womit\s*$', 85, re.IGNORECASE),
     ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, re.IGNORECASE),
-    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|beach)\s*$"', 80, re.IGNORECASE),
+    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|beach|gemütlich)\s*$"', 80, re.IGNORECASE),
     # Gilt komme komme
 
     # --- git push --- Gibt eine gibt git pull big push pitbull
@@ -104,12 +104,9 @@ FUZZY_MAP_pre = [
 # einen git add . Ihnen geht App Geht prüft git push
 
     # --- git diff ---
-    ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, re.IGNORECASE),
+    ('git diff', r'^\s*(kit|git|geht|peach)\s*(diff|tief|tiff|tüv|juice|tipps|geht\'s|kittys|dies|die)\s*$', 75, re.IGNORECASE),
 
     ('git switch ', r'^\s*(git|geht|peach)\s*(switch|Schmidt)\s*$', 75, re.IGNORECASE),
 
-
 ]
-
-
 
