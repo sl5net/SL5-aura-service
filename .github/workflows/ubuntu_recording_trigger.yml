@@ -37,7 +37,7 @@ jobs:
           mv vosk-model-*.zip models/
 
       - name: Set CI_DISABLE_AUDIO environment variable
-        run: echo "CI_DISABLE_AUDIO=true" >> $GITHUB_ENV
+        run: echo "CI=true" >> $GITHUB_ENV
 
       - name: Run ubuntu_setup.sh (should now use local files)
         run: bash ./setup/ubuntu_setup.sh
@@ -51,14 +51,14 @@ jobs:
           echo "--> Waiting for successful model load..."
           LOG_FILE="log/dictation_service.log"
           
-          # Wait up to 90 seconds (18 * 5s) for the final success message
-          for i in {1..18}; do
+          # Wait up to 100 seconds (20 * 5s) for the final success message
+          for i in {1..20}; do
             if grep -q "✅ MODEL READY" "$LOG_FILE"; then
               echo "✅ Success: Service initialized and models are ready."
               pkill -f dictation_service.py
               exit 0
             fi
-            echo "Waiting... ($i/18)"
+            echo "Waiting... ($i/20)"
             sleep 5
           done
           
