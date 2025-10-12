@@ -90,9 +90,11 @@ FUZZY_MAP_pre = [
     ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|beach)\s*$"', 80, re.IGNORECASE),
     # Gilt komme komme
 
-    # --- git push --- Gibt eine gibt git pull big push
+    # --- git push --- Gibt eine gibt git pull big push pitbull
     ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push)\s*$', 85, re.IGNORECASE),
     ('git push ', r'^\s*kate\s+bush\s*$', 80, re.IGNORECASE),
+
+    ('git push ', r'^\s*pitbull\s*$', 80, re.IGNORECASE),
 
     # --- git pull ---
     ('git pull', r'^\s*(git|geht|quiet|gitter)\s*(pohl|pool)\s*$', 82, re.IGNORECASE),

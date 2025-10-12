@@ -121,6 +121,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
             _, avail_before = check_memory_critical(threshold_mb)
             loaded_model = vosk.Model(str(model_path))
+
             _, avail_after = check_memory_critical(threshold_mb)
 
             loaded_models[lang_key] = loaded_model
@@ -149,7 +150,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
 
         except Exception as e:
-            logger.error(f"Failed to load '{model_name}': {e}")
+            logger.error(f"❌ CRITICAL ERROR: Failed to load Vosk model '{model_name}' for language '{lang_key}': {e}", exc_info=True)
 
         return max_model_memory_footprint_mb
 

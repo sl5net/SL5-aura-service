@@ -286,10 +286,8 @@ if settings.SERVICE_START_OPTION ==1:
     # Option 1: Start the service only on autostart (start parameter) and if there is an internet
 
     def check_internet_connection(host='https://sl5.de'):
-
-        # Check if we are in a CI environment and should skip this check
-        if os.environ.get("CI_SKIP_INTERNET_CHECK", "false").lower() == "true":
-            print("CI_SKIP_INTERNET_CHECK is set to true. Skipping internet connectivity check.")
+        if os.getenv('CI'):
+            logger.info("CI environment detected. Skipping microphone-dependent recording.")
             return True  # Pretend internet is available for CI
 
         if host.startswith(('http://', 'https://')):

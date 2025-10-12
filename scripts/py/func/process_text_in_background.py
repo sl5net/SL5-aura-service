@@ -430,8 +430,11 @@ def process_text_in_background(logger,
             logger.info(f"✅ Background processing for '{raw_text[:20]}...' finished. ")
             notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
 
-        # TODO fallback:
+        # # scripts/py/func/process_text_in_background.py:433 TODO fallback:
         max_model_memory_footprint_mb_not_calculate =  5000
+
+        # 21:05:34,680 - INFO     - Attempting to load missing model: 'vosk-model-en-us-0.22'
+        # 21:05:43,987 - INFO     - Learned new max model footprint: ~4.4GB
 
         process = psutil.Process(os.getpid())
         mem_info = process.memory_info()
