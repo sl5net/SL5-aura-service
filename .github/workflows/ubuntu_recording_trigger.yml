@@ -1,4 +1,4 @@
-name: CI for ubuntu Setup and Test Recording Trigger
+name: CI for ubuntu Setup and Test Service Initialization
 on:
 
   push:
@@ -55,7 +55,7 @@ jobs:
           for i in {1..20}; do
             if grep -q "✅ MODEL READY" "$LOG_FILE"; then
               echo "✅ Success: Service initialized and models are ready."
-              pkill -f dictation_service.py
+              # pkill -f dictation_service.py || true # <--- || true HERE to prevent error when service not runs.
               exit 0
             fi
             echo "Waiting... ($i/20)"
@@ -78,3 +78,6 @@ jobs:
           path: |
             ./LanguageTool-6.6
             ./models/
+
+
+  
