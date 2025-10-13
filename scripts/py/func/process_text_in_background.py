@@ -291,17 +291,6 @@ def process_text_in_background(logger,
                     continue # Skip this invalid rule
                 if not current_rule_matched:
                     # Ensure match_phrase is a string for fuzzy comparison if it's not a regex pattern
-                    # We need to decide what 'match_phrase' means in the context of fuzzy matching.
-                    # Is it the exact word to be found fuzzily, or is it still a pattern?
-                    # For a "simple fuzzy match," it's usually a target word.
-                    # Assuming 'match_phrase' should be the target string for fuzzy comparison if no regex.
-
-                    # Let's assume for fuzzy matching, 'match_phrase' refers to the exact word to match fuzzily.
-                    # If your FUZZY_MAP_pre contains patterns that *only* work as regex,
-                    # you might need to structure the map differently or add a flag
-                    # to indicate if an entry is intended for fuzzy match vs regex.
-                    # For now, I'll assume 'match_phrase' can be used as target for fuzzy match.
-
                     # The threshold is given as a percentage (e.g., 82). difflib.SequenceMatcher ratio is 0.0-1.0.
                     # So, we convert the threshold to a float between 0 and 1.
                     similarity_threshold = threshold / 100.0 if threshold is not None else 0.70  # Default to 70% if no threshold given
@@ -317,14 +306,13 @@ def process_text_in_background(logger,
 
 
                     found_fuzzy_match = False
-                    temp_processed_text = processed_text  # Use a temporary variable for replacements
+                    # temp_processed_text = processed_text  # Use a temporary variable for replacements
 
                     for word_in_text in words_in_text:
 
                         # We need to iterate over the words in `processed_text` and compare each to `replacement`.
                         words_in_text = re.findall(r'\b\w+\b', processed_text)
                         temp_text_for_fuzzy_replace = processed_text
-                        fuzzy_matched_something = False
 
                         for word_in_text_idx, word_in_text in enumerate(words_in_text):
                             sm = difflib.SequenceMatcher(None, word_in_text.lower(),
