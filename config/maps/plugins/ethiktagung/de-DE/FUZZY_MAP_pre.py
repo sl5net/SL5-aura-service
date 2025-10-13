@@ -20,8 +20,9 @@ FUZZY_MAP_pre = [
     # Importing to know:
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
+    # ethik habe
 
-    ('Ethiktagung, Freitag den 10 Oktober 2025', r'^(ethik tiago|Ethik\s*Tag\w*|Ethiktagung|ethik tagung|Ethik\s*Tagung|Ethikrat|Ethik\s*Togo|Erledigt haben|Edikt haben)$', 80, re.IGNORECASE),
+    ('Ethiktagung, Freitag den 10 Oktober 2025', r'^(ethik tiago|Ethik\s*Tag\w*|Ethiktagung|ethik tagung|ethik\s*habe|Ethik\s*Tagung|Ethikrat|Ethik\s*Togo|Erledigt haben|Edikt haben)$', 80, re.IGNORECASE),
 
     ('ZfP = Zentrum für Psychiatrie', r'^(Zentrum.*Psychiatrie|Z\s*f\s*P|z ist|ZDF [pt])$', 80, re.IGNORECASE),
 
