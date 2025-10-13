@@ -55,7 +55,7 @@ INTEGRITY_CHECKS = {
     ],
 
     'scripts/py/func/handle_trigger.py': [
-        'info("🎬⏹️ Trigger received',
+        'info("🎬🏁 Trigger received',
         '🎬⏹️ Manual stop trigger detected',
         "Processing chunk:",
         "Gracefully exiting recording loop.",

@@ -8,13 +8,16 @@ SERVICE_START_OPTION = 0
 
 NOTIFICATION_LEVEL = 1
 
-soundMute = 1
+soundMute = 1  # 1 is really recommandet. to know when your recording is endet.
 soundUnMute = 1
+soundProgramLoaded = 1
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
-DEV_MODE = True
+DEV_MODE = False
 # DEV_MODE = False
+DEV_MODE_memory = False
+
 
 PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
@@ -70,4 +73,5 @@ PLUGINS_ENABLED = {
     "numbers_to_digits": True,
     # "digits_to_numbers": False, deprecated
     "ki-maker-space": False,
+    "web-radio-funk": False,
 }

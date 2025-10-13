@@ -14,6 +14,9 @@ FUZZY_MAP = [
     # Importing to know:
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
+
+    ('Lauffer', r'\b(Läufer|laufer)\b', 70, re.IGNORECASE),
+
     ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
 
     ('Manjaro', r'\b(Manch paar|Mönche Euro)\b', 75, re.IGNORECASE),

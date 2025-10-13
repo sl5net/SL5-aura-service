@@ -30,7 +30,7 @@ FUZZY_MAP_pre = [
     ('fifteen', r'\b(15)\b', 80, re.IGNORECASE),
     ('null', r'\b(0)\b', 80, re.IGNORECASE),
 
-    ('eins', r'\b(1)\b', 80, re.IGNORECASE),
+    ('eins', r'\b(1)\b', 100, re.IGNORECASE),
     ('zwei', r'\b(2)\b', 80, re.IGNORECASE),
     ('drei', r'\b(3)\b', 80, re.IGNORECASE),
     ('vier', r'\b(4)\b', 80, re.IGNORECASE),

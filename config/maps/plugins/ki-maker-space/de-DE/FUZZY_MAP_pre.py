@@ -56,9 +56,9 @@ FUZZY_MAP_pre = [
 
     ('ki-maker.space', r'^(ki-maker|ki[\s]*make[\se]*space|k i [\s]*make[\s\w]*space|space|ki weckers|KI im weg ist|KI Säcke Espe|Kain weggesprengt|K \w*\s*make space|KI es|K i \w+ \w*|ki menkes)\s*\w*$', 60, re.IGNORECASE),
 
-    ('Gregor Schulte, 07071- 6395627 Gregor.Schulte@ki-maker.space', r'^(Gregor|Schulte|ki-maker.space)\s*\w*$', 40, re.IGNORECASE),
+    ('Gregor Schulte, 07071- 6395627 Gregor.Schulte@ki-maker.space', r'^(Gregor|Schulte|ki-maker.space)\s*\w*$', 80, re.IGNORECASE),
 
-    ('Bulsat', r'^(Büro ki-maker.space)\s*\w*$', 40, re.IGNORECASE),
+    ('Bulsat', r'^(Büro ki-maker.space)\s*\w*$', 85, re.IGNORECASE),
 
     #  Gregor  schulte  Gregor
     #  Per E-Mail Gespräch K i Säcke Respekt

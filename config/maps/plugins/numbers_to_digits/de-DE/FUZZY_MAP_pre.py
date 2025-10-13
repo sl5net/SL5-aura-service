@@ -32,7 +32,7 @@ FUZZY_MAP_pre = [
 #  eins2025-1005-1324 eins
 
     ('0', r'(\b|\d)(null)(\b|\d)', 80, re.IGNORECASE),
-    ('1', r'(\b|\d)(eins)(\b|\d)', 80, re.IGNORECASE),
+    ('1', r'(\b|\d)(eins)(\b|\d)', 100, re.IGNORECASE),
     ('2', r'(\b|\d)(zwei)(\b|\d)', 80, re.IGNORECASE),
     ('3', r'(\b|\d)(drei)(\b|\d)', 80, re.IGNORECASE),
     ('4', r'(\b|\d)(vier)(\b|\d)', 80, re.IGNORECASE),

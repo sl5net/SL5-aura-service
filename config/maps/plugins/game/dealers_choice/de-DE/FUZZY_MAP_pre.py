@@ -15,16 +15,16 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
-    ('c', r'^\s*(call|check)\s*$', 50, re.IGNORECASE),
-    ('r', r'^\s*(raise)\s*$', 50, re.IGNORECASE),
-    ('f', r'^\s*(fold)\s*$', 50, re.IGNORECASE),
-    ('d', r'^\s*(discard)\s*$', 50, re.IGNORECASE),
-    ('b', r'^\s*(bet)\s*$', 50, re.IGNORECASE),
-    ('x', r'^\s*(exchange)\s*$', 50, re.IGNORECASE),
+    ('c', r'^\s*(call|check)\s*$', 80, re.IGNORECASE),
+    ('r', r'^\s*(raise)\s*$', 80, re.IGNORECASE),
+    ('f', r'^\s*(fold)\s*$', 80, re.IGNORECASE),
+    ('d', r'^\s*(discard)\s*$', 80, re.IGNORECASE),
+    ('b', r'^\s*(bet)\s*$', 80, re.IGNORECASE),
+    ('x', r'^\s*(exchange)\s*$', 80, re.IGNORECASE),
     # Amount keys
-    ('1', r'^\s*(100|one hundred)\s*$', 50, re.IGNORECASE),
-    ('2', r'^\s*(250|two fifty)\s*$', 50, re.IGNORECASE),
-    ('3', r'^\s*(50|fifty)\s*$', 50, re.IGNORECASE),
+    ('1', r'^\s*(100|one hundred)\s*$', 80, re.IGNORECASE),
+    ('2', r'^\s*(280|two fifty)\s*$', 80, re.IGNORECASE),
+    ('3', r'^\s*(80|fifty)\s*$', 80, re.IGNORECASE),
 
 
 ]
