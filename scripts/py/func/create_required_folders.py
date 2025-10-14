@@ -20,7 +20,7 @@ def setup_project_structure(project_root_str: str):
 
     # Define absolute paths required by the application (independent of project location)
     absolute_dirs = {
-        Path("/tmp/sl5_dictation"): None,
+        Path("/tmp/sl5_aura"): None,
     }
 
     # Combine both dictionaries

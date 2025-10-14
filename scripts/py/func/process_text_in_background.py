@@ -469,16 +469,16 @@ def process_text_in_background(logger,
         recording_time = time.time()
 
         # file: scripts/py/func/process_text_in_background.py
-        # ... watchDir := "C:\tmp\sl5_dictation"
+        # ... watchDir := "C:\tmp\sl5_aura"
         timestamp = int(time.time() * 1000)
 
         if output_dir_override:
             # unique_output_file = f"{output_dir_override}/tts_output_{timestamp}.txt"
             unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
         else:
-            unique_output_file = TMP_DIR / f"sl5_dictation/tts_output_{timestamp}.txt"
+            unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
 
-        # unique_output_file = TMP_DIR / f"sl5_dictation/tts_output_{timestamp}.txt"
+        # unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
         # unique_output_file.write_text(processed_text)
         unique_output_file.write_text(processed_text, encoding="utf-8") # BOM -sig is outdated and not needed anymore
         # unique_output_file.write_text(processed_text, encoding="utf-8-sig") # BOM -sig is outdated and not needed anymore

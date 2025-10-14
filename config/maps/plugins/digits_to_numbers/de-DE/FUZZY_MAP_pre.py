@@ -38,7 +38,7 @@ FUZZY_MAP_pre = [
     ('sechs', r'\b(6)\b', 80, re.IGNORECASE),
     ('sieben', r'\b(7)\b', 80, re.IGNORECASE),
     ('acht', r'\b(8)\b', 80, re.IGNORECASE),
-    ('neun', r'\b(9)\b', 80, re.IGNORECASE),
+    ('neun', r'\b(9)\b', 100, re.IGNORECASE),
     ('zehn', r'\b(10)\b', 80, re.IGNORECASE),
     ('elf', r'\b(11)\b', 80, re.IGNORECASE),
     ('zwölf', r'\b(12)\b', 80, re.IGNORECASE),

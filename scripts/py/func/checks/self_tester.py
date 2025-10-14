@@ -23,7 +23,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
     This function simulates inputs and checks the output files.
     """
     logger.info(f"DEV_MODE: Running core logic self-test... lang is: {lang_code} e.g. maybe de-DE")
-    test_output_dir = tmp_dir / "sl5_dictation_self_test"
+    test_output_dir = tmp_dir / "sl5_aura_self_test"
     test_output_dir.mkdir(parents=True, exist_ok=True)
 
     # --- Test Cases ---
@@ -52,7 +52,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
             raw_text, expected, description = test_case
 
         # Clean up old output files to ensure we read the new one
-        for f in glob.glob(str(tmp_dir / "sl5_dictation" / "tts_output_*.txt")):
+        for f in glob.glob(str(tmp_dir / "sl5_aura" / "tts_output_*.txt")):
             os.remove(f)
 
         # Run the actual processing function
@@ -62,7 +62,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
         # Find the output file - there should be only one
         try:
-            # output_files = list(glob.glob(str(tmp_dir / "sl5_dictation" / "tts_output_*.txt")))
+            # output_files = list(glob.glob(str(tmp_dir / "sl5_aura" / "tts_output_*.txt")))
             output_files = list(test_output_dir.glob("tts_output_*.txt"))
 
             if not output_files:
@@ -89,6 +89,10 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
     logger.info("-" * 40)
     if failed_count == 0:
         logger.info(f"✅ Core Logic Self-Test: All {passed_count} tests passed!")
+        if passed_count == 0:
+            logger.error(f"❌ FAIL: Self-Test was tested: 0 of 0 ! Probably wrong. Makes no sense")
+            exit(1)
     else:
         logger.error(f"❌ Core Logic Self-Test: {failed_count} of {passed_count + failed_count} tests failed.")
     logger.info("-" * 40)
+

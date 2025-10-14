@@ -4,7 +4,7 @@
 ; #SingleInstance Force ; is buggy
 
 ; --- Configuration ---
-watchDir := "C:\tmp\sl5_dictation"
+watchDir := "C:\tmp\sl5_aura"
 logDir := A_ScriptDir "\log"
 autoEnterFlagPath := "C:\tmp\sl5_auto_enter.flag"
 

@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-DIR_TO_WATCH="/tmp/sl5_dictation"
+DIR_TO_WATCH="/tmp/sl5_aura"
 LOCKFILE="/tmp/type_watcher.lock"
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 LOG_DIR="$SCRIPT_DIR/log"

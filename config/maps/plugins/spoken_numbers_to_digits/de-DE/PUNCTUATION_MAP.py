@@ -10,9 +10,7 @@ PUNCTUATION_MAP = {
     'ten': '10',
     'fifteen': '15',
 
-    # Lowercase
-    'null': '0', 'eins': '1', 'zwei': '2', 'drei': '3', 'vier': '4',
-    'fünf': '5', 'sechs': '6', 'sieben': '7', 'acht': '8', 'neun': '9',
+    # Lowercase 'eins': '1',  'drei': '3', 'vier': '4', 'acht': '8',  'neun': '9',
     'zehn': '10', 'elf': '11', 'zwölf': '12', 'dreizehn': '13',
     'vierzehn': '14', 'fünfzehn': '15', 'sechzehn': '16', 'siebzehn': '17',
     'zwanzig': '20', 'dreißig': '30', 'vierzig': '40', 'fünfzig': '50',

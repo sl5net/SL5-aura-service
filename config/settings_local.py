@@ -8,7 +8,7 @@ SERVICE_START_OPTION = 1
 
 NOTIFICATION_LEVEL = 1
 
-soundMute = 1  # 1 is really recommandet. to know when your recording is endet.
+soundMute = 1  # 1 is really recomanded. to know when your recording is endet.
 soundUnMute = 1
 soundProgramLoaded = 1
 

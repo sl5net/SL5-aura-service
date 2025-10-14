@@ -116,6 +116,30 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
                     logger.info(log_msg)
             return max_model_memory_footprint_mb
 
+
+
+        # new code follows here :
+
+        if avail_mb < required_memory_mb:
+            if max_model_memory_footprint_mb > 0:
+                log_msg = (
+                    f"Postponing load: {_format_gb(avail_mb)} available is not enough. "
+                    f"Need ~{_format_gb(required_memory_mb)} "
+                    f"(Threshold: {_format_gb(threshold_mb)} + Model: {_format_gb(max_model_memory_footprint_mb)} + Buffer: {_format_gb(load_buffer_mb)})"
+                )
+                if settings.DEV_MODE: # Only log if DEV_MODE is enabled
+                    logger.info(log_msg)
+            # IMPORTANT CHANGE: Replace 'return' with 'continue'
+            continue # <--- CONTINUE to the next model in desired_names
+            # If the current model cannot be loaded due to memory,
+            # we still want to check other desired models in this iteration.
+
+            # read 2025-1013-1734.txt in home path
+            # read 2025-1013-1734.txt in home path
+            # read 2025-1013-1734.txt in home path
+            # read 2025-1013-1734.txt in home path
+            # read 2025-1013-1734.txt in home path
+
         logger.info(f"Attempting to load missing model: '{model_name}'")
         try:
 

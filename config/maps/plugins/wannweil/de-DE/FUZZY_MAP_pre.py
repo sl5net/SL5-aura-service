@@ -30,5 +30,12 @@ FUZZY_MAP_pre = [
     # ('TestFuzzyImmer', r'\b(diesesRegexWirdImmerMatchen)\b', 1, re.IGNORECASE),
 
 
+    ('pragmatic minds GmbH 2019', r'\b(Paradigma Minds)\b', 75, re.IGNORECASE),
+
+
+
+
+
+
 ]
 
