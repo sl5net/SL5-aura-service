@@ -108,5 +108,8 @@ FUZZY_MAP_pre = [
 
     ('git switch ', r'^\s*(git|geht|peach)\s*(switch|Schmidt)\s*$', 75, re.IGNORECASE),
 
+    ('git fetch; git pull"', r'^\s*(git|Gilt|geht) (fett)\s*$"', 80, re.IGNORECASE),
+
+
 ]
 

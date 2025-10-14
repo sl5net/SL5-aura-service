@@ -1,3 +1,4 @@
+# scripts/py/func/map_reloader.py
 import importlib
 import sys
 from pathlib import Path
@@ -8,6 +9,7 @@ from config.dynamic_settings import settings
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 def auto_reload_modified_maps(logger):
+    # scripts/py/func/map_reloader.py:12
     global LAST_MODIFIED_TIMES # noqa: F824
 
     """

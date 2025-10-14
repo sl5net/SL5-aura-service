@@ -48,6 +48,7 @@ from .map_reloader import auto_reload_modified_maps
 import importlib
 
 def load_maps_for_language(lang_code, logger):
+    # scripts/py/func/process_text_in_background.py:50
     if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"def load_maps_for_language", logger)
@@ -163,6 +164,7 @@ def process_text_in_background(logger,
                                recording_time,
                                active_lt_url,
                               output_dir_override = None):
+    # scripts/py/func/process_text_in_background.py:167
     punctuation_map, fuzzy_map_pre, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
     try:
 

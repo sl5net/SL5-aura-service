@@ -17,13 +17,6 @@ LOG_FILE = PROJECT_ROOT / "log/dynamic_settings.log"
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-
-
-import time
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
 # Clear any pre-existing handlers to prevent duplicates.
 if len(logger.handlers) > 0:
     logger.handlers.clear()
@@ -42,10 +35,6 @@ log_formatter.formatTime = formatTime
 file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='w')
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
-
-# Create, configure, and add the Console Handler.
-console_handler = logging.StreamHandler(sys.stdout)
-console_handler.setFormatter(log_formatter)
 
 logger.info(f"👀 dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
 

@@ -1,4 +1,5 @@
-# config/  dealers_choice/maps/ FUZZY_MAP_pre.py
+# file config/maps/plugins/it-begriffe/FUZZY_MAP_pr.py
+# Beispiel: https://www.it-begriffe.de/#L
 import re
 
 # This map uses a hybrid approach:
@@ -13,18 +14,16 @@ FUZZY_MAP_pre = [
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
     # - in our implementation it stops with first match!
-    # - means first is most importend, lower rules maybe not get read.
+    # - means first is most imported, lower rules maybe not get read.
 
-    ('c', r'^\s*(call|check)\s*$', 85, re.IGNORECASE),
-    ('r', r'^\s*(raise)\s*$', 85, re.IGNORECASE),
-    ('f', r'^\s*(fold)\s*$', 85, re.IGNORECASE),
-    ('d', r'^\s*(discard)\s*$', 85, re.IGNORECASE),
-    ('b', r'^\s*(bet)\s*$', 85, re.IGNORECASE),
-    ('x', r'^\s*(exchange)\s*$', 85, re.IGNORECASE),
-    # Amount keys
-    ('1', r'^\s*(100|one hundred)\s*$', 85, re.IGNORECASE),
-    ('2', r'^\s*(280|two fifty)\s*$', 85, re.IGNORECASE),
-    ('3', r'^\s*(80|fifty)\s*$', 85, re.IGNORECASE),
+    ('Logdatei', r'^(\b)(Logdatei|Kochdatei)(\b)$', 80, re.IGNORECASE),
+
+    ('Logfile', r'^(\b)(Logfile)(\b)$', 60, re.IGNORECASE),
+
+ # Logfile-Duden  Logfile-Duden Logfile-Logdatei Nordwärts erreicht Logfile-Logdatei Logfile-Logdatei
 
 
 ]
+
+
+

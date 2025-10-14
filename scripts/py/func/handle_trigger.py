@@ -35,6 +35,7 @@ def finalize_recording_session(logger):
 
 
 def handle_trigger(
+    # scripts/py/func/handle_trigger.py:38
         logger,
         loaded_models,
         suspicious_events,
@@ -167,7 +168,6 @@ def handle_trigger(
                 logger.info(f"Session thread is finishing. Ensuring state is cleared. text_detected.")
             finalize_recording_session(logger)
             dictation_session_active.clear()
-
 
     # --- Start the session in a new thread ---
     active_transcription_thread = threading.Thread(target=session_thread_target)
