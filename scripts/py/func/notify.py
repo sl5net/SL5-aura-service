@@ -5,7 +5,8 @@ import platform
 from pathlib import Path
 
 # Assuming these are defined in your project's config
-from config.settings import NOTIFY_SEND_PATH, NOTIFICATION_LEVEL
+# from config.settings import NOTIFY_SEND_PATH, NOTIFICATION_LEVEL
+from config.dynamic_settings import settings
 
 logger = logging.getLogger(__name__)
 
@@ -14,8 +15,8 @@ def notify(summary: str, body: str = "", urgency: str = "low", icon: str = None,
     Sends a desktop notification, adapting to the host operating system.
     """
     logger.info("Attempting to send notification...")
-    if not NOTIFICATION_LEVEL:
-        logger.info(f"Notifications are disabled (NOTIFICATION_LEVEL={NOTIFICATION_LEVEL}). Aborting.")
+    if not settings.NOTIFICATION_LEVEL:
+        logger.info(f"Notifications are disabled (NOTIFICATION_LEVEL={settings.NOTIFICATION_LEVEL}). Aborting.")
         return
 
     system = platform.system()
@@ -36,12 +37,12 @@ def notify(summary: str, body: str = "", urgency: str = "low", icon: str = None,
             logger.info(f"Successfully sent macOS notification: '{summary}'")
 
         elif system == "Linux":
-            logger.debug(f"Using Linux (notify-send) notification method with path: {NOTIFY_SEND_PATH}")
-            if not NOTIFY_SEND_PATH or not Path(NOTIFY_SEND_PATH).exists():
-                logger.warning(f"notify-send path not found or invalid: {NOTIFY_SEND_PATH}. Aborting notification.")
+            logger.debug(f"Using Linux (notify-send) notification method with path: {settings.NOTIFY_SEND_PATH}")
+            if not settings.NOTIFY_SEND_PATH or not Path(settings.NOTIFY_SEND_PATH).exists():
+                logger.warning(f"notify-send path not found or invalid: {settings.NOTIFY_SEND_PATH}. Aborting notification.")
                 return
 
-            command = [NOTIFY_SEND_PATH, "-u", urgency, summary, body, "-t", str(duration)]
+            command = [settings.NOTIFY_SEND_PATH, "-u", urgency, summary, body, "-t", str(duration)]
             if icon:
                 command.extend(["-i", icon])
             if replace_tag:

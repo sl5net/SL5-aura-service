@@ -6,7 +6,7 @@
 SERVICE_START_OPTION = 1
 # Option 1: Start the service only on when there is an internet connection.
 
-NOTIFICATION_LEVEL = 1
+NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
 soundMute = 1  # 1 is really recomanded. to know when your recording is endet.
 soundUnMute = 1
@@ -14,8 +14,8 @@ soundProgramLoaded = 1
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
-# DEV_MODE = True
-DEV_MODE = False
+DEV_MODE = True
+# DEV_MODE = False
 DEV_MODE_memory = False
 
 
@@ -51,7 +51,7 @@ PLUGINS_ENABLED = {
     "vsp_rt": True,
     "ki-maker-space": True,
     "numbers_to_digits": True,
-    # "digits_to_numbers": False, deprecated
+    "digits_to_numbers": False,
     "web-radio-funk": True,
 }
 

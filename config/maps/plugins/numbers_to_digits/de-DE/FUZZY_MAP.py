@@ -1,5 +1,6 @@
-# # file config/maps/plugins/spoken_numbers_to_digits/FUZZY_MAP_pr.py
-import re
+# config/languagetool_server/maps/plugins/ki-maker.space/de-DE/FUZZY_MAP.py
+# https://regex101.com/
+import re # noqa: F401
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
@@ -8,34 +9,13 @@ import re
 #    - flags: Use re.IGNORECASE for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
-FUZZY_MAP_pre = [
+FUZZY_MAP = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
     # - in our implementation it stops with first match!
-    # - means first is most imported, lower rules maybe not get read.
+    # - means first is most importend, lower rules maybe not get read.
 
-
-    ('1', r'(\b|\d)(one)(\b|\d)', 87, re.IGNORECASE),
-    ('2', r'(\b|\d)(two)(\b|\d)', 87, re.IGNORECASE),
-    ('3', r'(\b|\d)(three)(\b|\d)', 87, re.IGNORECASE),
-    ('4', r'(\b|\d)(four)(\b|\d)', 87, re.IGNORECASE),
-    ('5', r'(\b|\d)(five)(\b|\d)', 87, re.IGNORECASE),
-    ('6', r'(\b|\d)(six)(\b|\d)', 87, re.IGNORECASE),
-    ('7', r'(\b|\d)(seven)(\b|\d)', 87, re.IGNORECASE),
-    ('8', r'(\b|\d)(eight)(\b|\d)', 87, re.IGNORECASE),
-    ('9', r'(\b|\d)(nine)(\b|\d)', 87, re.IGNORECASE),
-    ('10', r'(\b|\d)(ten)(\b|\d)', 87, re.IGNORECASE),
-
-    ('15', r'(\b|\d)(fifteen)(\b|\d)', 87, re.IGNORECASE),
-
-#  eins2025-1005-1324 eins
-
-    ('0', r'(\b|\d)(null)(\b|\d)', 87, re.IGNORECASE),
-    ('1', r'(\b|\d)(eins)(\b|\d)', 100, re.IGNORECASE),
-    ('2', r'(\b|\d)(zwei)(\b|\d)', 87, re.IGNORECASE),
-    ('3', r'(\b|\d)(drei)(\b|\d)', 87, re.IGNORECASE),
-    ('4', r'(\b|\d)(vier)(\b|\d)', 87, re.IGNORECASE),
     ('5', r'(\b|\d)(fünf)(\b|\d)', 87, re.IGNORECASE),
     ('6', r'(\b|\d)(sechs)(\b|\d)', 87, re.IGNORECASE),
     ('7', r'(\b|\d)(sieben)(\b|\d)', 87, re.IGNORECASE),
@@ -61,7 +41,6 @@ FUZZY_MAP_pre = [
     ('90', r'(\b|\d)(neunzig)(\b|\d)', 87, re.IGNORECASE),
     ('100', r'(\b|\d)(hundert)(\b|\d)', 87, re.IGNORECASE),
     ('1000', r'(\b|\d)(tausend)(\b|\d)', 87, re.IGNORECASE),
+
+
 ]
-
-
-

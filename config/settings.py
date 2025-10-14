@@ -21,7 +21,7 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False
 
 # --- Notification Settings ---
 # Default for new users is the most verbose level.
-NOTIFICATION_LEVEL = 2 # 0=Silent, 1=Essential, 2=Verbose
+NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
 # --- Language Model Preloading ---
 # A list of Vosk model folder names to preload at startup if memory allows.
