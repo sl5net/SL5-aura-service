@@ -6,6 +6,8 @@ import time
 from pathlib import Path
 import os
 
+import gc # NEW: Import garbage collector module for explicit control
+
 from config.settings import SAMPLE_RATE
 from scripts.py.func.notify import notify
 from scripts.py.func.audio_manager import mute_microphone, unmute_microphone
@@ -22,6 +24,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , session_active_event
                                    , AUTO_ENTER_AFTER_DICTATION_global
                                    ):
+    # file: scripts/py/func/transcribe_audio_with_feedback.py:25
 
     if 'AUTO_ENTER_AFTER_DICTATION_global' not in globals():
         # This checks if the global variable has been defined at all.
@@ -125,10 +128,12 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
         yield ""
         return
 
-
+    stream = None # ADDED: Initialize stream to None before the try block
     try:
-        with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,
-                               callback=audio_callback):
+        stream = sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,
+                                   callback=audio_callback)
+        #with sd.RawInputStream(samplerate=SAMPLE_RATE, blocksize=4000, dtype='int16', channels=1,callback=audio_callback):
+        with stream: # CHANGED: Use context manager for stream
             logger.info(f"Dictation Session started. Initial timeout: {current_timeout}s.")
 
             # This flag ensures we only reset the timer once.
@@ -217,11 +222,45 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
                         break
 
+                    logger.debug(
+                        f"Loop Top | Active: {session_active_event.is_set()} | "
+                        f"Time Since Activity: {time.time() - last_activity_time:.2f}s | "
+                        f"Queue Size: {q.qsize()} | "  # ADDED: Queue size to debug
+                        f"GC Collect Count: {gc.get_count()}"  # ADDED: GC count to debug
+                    )
+
     finally:
-
+        logger.info("transcribe_audio_with_feedback session finally block entered.")
         # The finally block remains as is.
-        logger.info("Session has ended. Yielding final safety-net chunk.")
+        #logger.info("Session has ended. Yielding final safety-net chunk.")
 
-        final_chunk = json.loads(recognizer.FinalResult())
-        if final_chunk.get('text').strip():
-            yield final_chunk.get('text')
+
+        logger.info("Explicitly clearing audio queue and attempting resource deletion.")
+        while not q.empty():
+            try:
+                q.get_nowait()
+                q.task_done()
+            except queue.Empty:
+                break
+
+        if 'vad' in locals() and vad is not None:
+            del vad
+            logger.debug("webrtcvad.Vad object explicitly deleted.")  # CHANGED: Using logger.debug
+
+        # Force a garbage collection cycle.
+        gc.collect()
+        logger.info(
+            f"Garbage collector called. Objects collected: {gc.collect()}.")  # CHANGED: Using gc.collect() directly in log
+
+        # Add explicit stream stop and close, if stream was successfully created
+        if stream:
+            try:
+                if stream.active:
+                    stream.stop()
+                    logger.debug("Sounddevice stream stopped.")  # CHANGED: Using logger.debug
+                stream.close()
+                logger.debug("Sounddevice stream closed.")  # CHANGED: Using logger.debug
+            except Exception as e:
+                logger.warning(f"Error stopping/closing sounddevice stream: {e}")  # CHANGED: Using logger.warning
+
+        logger.info("transcribe_audio_with_feedback session finished.")  # ADDED: New log

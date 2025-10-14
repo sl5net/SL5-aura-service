@@ -12,6 +12,7 @@ soundMute = 1  # 1 is really recomanded. to know when your recording is endet.
 soundUnMute = 1
 soundProgramLoaded = 1
 
+
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
 # DEV_MODE = True
@@ -46,13 +47,15 @@ PLUGINS_ENABLED = {
     "game-dealers_choice": False,
     "0ad": False,
     "ethiktagung": True,
-    "volkshochschule_tue": False,
+    "volkshochschule_tue": True,
     "CCC_tue": True,
     "vsp_rt": True,
     "ki-maker-space": True,
     "numbers_to_digits": True,
     # "digits_to_numbers": False, deprecated
     "web-radio-funk": True,
+    "it-begriffe": True,
+
 }
 
 # needs restart. implemented in the python part:
