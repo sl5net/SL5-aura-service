@@ -3,13 +3,27 @@ import collections.abc # Corrected import to collections.abc
 import importlib
 import sys
 import os
-from datetime import time
+from datetime import time, datetime
 from pathlib import Path
 from threading import RLock
 from config import settings
 from config.settings_local import DEV_MODE
 # Get a logger instance instead of direct print statements for better control
 import logging
+
+class CustomFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        dt_object = datetime.fromtimestamp(record.created)
+
+        # Das Standardformat des logging-Moduls für asctime ist '%Y-%m-%d %H:%M:%S,f'
+        # Hier formatieren wir nur den H:M:S Teil und fügen die Millisekunden an
+        time_str_without_msecs = dt_object.strftime("%H:%M:%S")
+
+        milliseconds = int(record.msecs)
+        # Die 03d sorgt dafür, dass die Millisekunden immer dreistellig sind (z.B. 001, 010, 123)
+        formatted_time = f"{time_str_without_msecs},{milliseconds:03d}"
+
+        return formatted_time
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 LOG_FILE = PROJECT_ROOT / "log/dynamic_settings.log"
@@ -22,14 +36,8 @@ if len(logger.handlers) > 0:
     logger.handlers.clear()
 
 # Create a shared formatter with the custom formatTime function.
-def formatTime(record, datefmt=None):
-    time_str = time.strftime("%H:%M:%S")
-    milliseconds = int((record.created - int(record.created)) * 1000)
-    ms_str = f",{milliseconds:03d}"
-    return time_str + ms_str
 
-log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
-log_formatter.formatTime = formatTime
+log_formatter = CustomFormatter('%(asctime)s - %(levelname)-8s - %(message)s')
 
 # Create, configure, and add the File Handler.
 file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='w')
