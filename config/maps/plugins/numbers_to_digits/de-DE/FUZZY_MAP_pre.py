@@ -24,7 +24,7 @@ FUZZY_MAP_pre = [
     ('6', r'(\b|\d)(six)(\b|\d)', 87, re.IGNORECASE),
     ('7', r'(\b|\d)(seven)(\b|\d)', 87, re.IGNORECASE),
     ('8', r'(\b|\d)(eight)(\b|\d)', 87, re.IGNORECASE),
-    ('9', r'(\b|\d)(nine)(\b|\d)', 87, re.IGNORECASE),
+    ('9', r'(\b|\d)(nine)(\b|\d)', 87, re.IGNORECASE, {'mode': 'all'}),
     ('10', r'(\b|\d)(ten)(\b|\d)', 87, re.IGNORECASE),
 
     ('15', r'(\b|\d)(fifteen)(\b|\d)', 87, re.IGNORECASE),

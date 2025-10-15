@@ -25,25 +25,14 @@ FUZZY_MAP_pre = [
     ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, re.IGNORECASE),
     ('english please', r'^\s*(switch to english\s*\w*)\s*$', 82, re.IGNORECASE),
 
-
-    ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
-
-
-    ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, re.IGNORECASE),
-    ('StopButton', r'\bstob\s*Button\b', 82, re.IGNORECASE),
-    ('lowerCase', r'\blobt\s*Case\b', 82, re.IGNORECASE),
-
-    # 3? Und jetzt noch mehr? Noch mehr?  Ich glaube, er lädt die Karte nicht nutzen?
+    (':', r'\bDoppelpost\b', 82, re.IGNORECASE),
 
 
-    ('???', r'\s+(fragezeichen|fragen|fragend|frage|fragt)\s*$', 80, re.IGNORECASE),
+
+    ('?', r'\s+(fragezeichen|fragen|fragend|frage|fragt)\s*$', 80, re.IGNORECASE),
 
 
-    ('AutoKey', r'\bAuto k\b', 82, re.IGNORECASE),
 
-    ('Build Prozess', r'\bbild prozess\b', 82, re.IGNORECASE),
-
-    ('opensource', r'\bopensource\b', 75, re.IGNORECASE),
 
 
 ]
