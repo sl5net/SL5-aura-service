@@ -23,7 +23,7 @@ FUZZY_MAP_pre = [
 
     ('release', r'^(\b)(Relief|release|Relief|wer dies)(\b)$', 75, re.IGNORECASE),
 
-    ('Python', r'^(\b)(Brighton)(\b)$', 75, re.IGNORECASE),
+    ('Python', r'^(\b)(Brighton|breit schon|Fallschirm|peitschen)(\b)$', 75, re.IGNORECASE),
 
     ('default', r'^(\b)(d fahl)(\b)$', 75, re.IGNORECASE),
 

@@ -249,9 +249,10 @@ def process_text_in_background(logger,
 
         if not was_exact_match:
 
-            default_mode_is_all = True  # TODO: Diese Variable kommt aus deiner Konfiguration
 
-            if default_mode_is_all:
+            # default_mode_is_all = True  # TODO: Diese Variable kommt aus deiner Konfiguration
+
+            if settings.default_mode_is_all:
                 # Rufe die neue Funktion auf, die alle Regeln iterativ anwendet
                 logger.info(f"Applying all rules until stable (default 'all' mode).")
                 new_processed_text, regex_pre_is_replacing_all_maybe = apply_all_rules_until_stable(processed_text, fuzzy_map_pre, logger)

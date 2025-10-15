@@ -51,7 +51,7 @@ FUZZY_MAP_pre = [
     # geht's starte Gliedstaat ist
     # Geht Staat git status git status
 
-    ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|Gliedstaat|kids|kate)\s+(status|Staat|staates|start|startet|starten|dates)\s*$', 82, re.IGNORECASE),
+    ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|start|startet|starten|stadel|dates)\s*$', 82, re.IGNORECASE),
 
     ('git status', r'^\s*(Gliedstaat)\s+(ist)\s*$', 80, re.IGNORECASE),
 
@@ -59,6 +59,7 @@ FUZZY_MAP_pre = [
 
     ('git status', r'^\s*(gitschtal|quatscht hatte|Geht tat uns)\s+$', 80, re.IGNORECASE),
 
+#geht statisch
 
 
     # --- git add . --- git add .

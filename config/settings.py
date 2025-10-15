@@ -71,6 +71,8 @@ CORRECTIONS_ENABLED = {
 }
 
 
+default_mode_is_all = True
+
 PLUGINS_ENABLED = {}
 
 # needs restart. implemented in the python part:
