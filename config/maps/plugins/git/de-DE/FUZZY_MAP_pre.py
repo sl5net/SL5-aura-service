@@ -70,7 +70,8 @@ FUZZY_MAP_pre = [
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, re.IGNORECASE),
     ('git commit ', r'^\s*kate Commit\s*$', 80, re.IGNORECASE),
 
-    ('git commit ', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(Komet|Komik|Comics|Gummi|kommend|Commit|mit|hitch)\s*$', 80, re.IGNORECASE),
+    # Geht kommt
+    ('git commit ', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(Komet|Komik|Comics|Gummi|kommt|kommend|Commit|mit|hitch)\s*$', 80, re.IGNORECASE),
 
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, re.IGNORECASE),
 
@@ -90,8 +91,9 @@ FUZZY_MAP_pre = [
     ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|beach|gemütlich)\s*$"', 80, re.IGNORECASE),
     # Gilt komme komme
 
-    # --- git push --- Gibt eine gibt git pull big push pitbull
-    ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push)\s*$', 85, re.IGNORECASE),
+    # --- git push --- Gibt eine gibt git pull big push pitbull Geht prüfen
+
+    ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push|prüfen)\s*$', 85, re.IGNORECASE),
     ('git push ', r'^\s*kate\s+bush\s*$', 80, re.IGNORECASE),
 
     ('git push ', r'^\s*pitbull\s*$', 80, re.IGNORECASE),

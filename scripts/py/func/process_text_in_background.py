@@ -563,63 +563,30 @@ def sanitize_transcription_start(raw_text: str) -> str:
     return clean_text
 
 
-
-
-# def apply_regex_replacements_until_stable(text, regex, flags, logger_instance):
-#     replacement_text = regex[0]
-#     regex_pattern = regex[1]
-#
-#     previous_text = ""
-#     current_text = text
-#
-#     sub_replacement_string = r'\g<1>' + replacement_text + r'\g<3>'
-#
-#     while current_text != previous_text:
-#         previous_text = current_text
-#
-#         new_current_text = re.sub(
-#             regex_pattern,
-#             sub_replacement_string,
-#             current_text,
-#             flags=flags
-#         )
-#
-#         if new_current_text != current_text:
-#             logger_instance.info(
-#                 f"🚀Iterative-Rule: '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
-#             current_text = new_current_text
-#     if current_text != text:
-#         return current_text
-#     else:
-#         return False
-
-
 def apply_all_rules_until_stable(text, rules_map, logger_instance):
     """
-    Wendet alle Regeln aus der gegebenen rules_map iterativ auf den Text an,
-    bis sich der Text in einem vollständigen Durchlauf durch alle Regeln nicht mehr ändert.
-    Ersetzt den gesamten Match des Regex durch den replacement_text, ohne Gruppenreferenzen.
+    Applies all rules from the given rules_map iteratively to the text until the text no longer changes after a complete pass through all the rules.
+    Replaces the entire match of the regex without group references with the replacement_text.
 
     Args:
-        text (str): Der Eingabetext, auf den die Ersetzungen angewendet werden sollen.
-        rules_map (list): Eine Liste von Regel-Tupeln. Jedes Tupel im Format:
+        text (str): The input text on which the substitutions should be applied.
+        rules_map (list): A list of rule tuples. Each tuple in the format:
                           (replacement_text, regex_pattern, threshold_value, optional_flags).
-                          Der threshold_value wird ignoriert.
-        logger_instance (logging.Logger): Der Logger für die Protokollierung.
+                          The threshold_value is ignored.
+        logger_instance (logging.Logger): The logger for logging.
 
     Returns:
-        tuple: Ein Tupel (str, bool).
-               str: Der stabilisierte Text.
-               bool: True, wenn ein vollständiger Ersatz des Textes durch eine Regel stattgefunden hat,
-                     was auf einen vorzeitigen Abbruch hindeutet. False sonst.
+        tuple: A tuple (str, bool).
+               str: The stabilized text.
+               bool: True if a complete replacement of the text by a rule has taken place, indicating an early termination. False otherwise.
     """
     previous_text = ""
     current_text = text
-    full_text_replaced_by_rule = False  # Flag für den vollständigen Ersatz des Textes
+    full_text_replaced_by_rule = False
 
     while current_text != previous_text:
-        previous_text = current_text  # Zustand vor diesem Zyklus speichern
-        made_a_change_in_cycle = False  # Flag, ob in diesem Zyklus überhaupt eine Änderung vorgenommen wurde
+        previous_text = current_text
+        made_a_change_in_cycle = False
 
         for rule_entry in rules_map:
             replacement_text = rule_entry[0]
@@ -629,12 +596,11 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             sub_replacement_string = replacement_text
 
             try:
-                # Prüfen, ob der Regex den gesamten Text matcht
                 match_obj = re.fullmatch(regex_pattern, current_text, flags=flags)
 
                 if match_obj:
-                    # Wenn der Regex den gesamten Text matcht, nehmen wir die Ersetzung vor
-                    # und setzen das Flag für den vollständigen Ersatz
+                    # If the regex matches the entire text, we prioritize the replacement
+                    # and set the flag for complete replacement
                     new_current_text = re.sub(
                         regex_pattern,
                         sub_replacement_string,
@@ -647,9 +613,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         current_text = new_current_text
                         full_text_replaced_by_rule = True
                         made_a_change_in_cycle = True
-                        break  # Wichtig: Breche die Schleife der Regeln ab, da der gesamte Text ersetzt wurde
+                        break
                 else:
-                    # Wenn der Regex nicht den gesamten Text matcht, ist es eine normale Teileresetzung
                     new_current_text = re.sub(
                         regex_pattern,
                         sub_replacement_string,
@@ -663,70 +628,14 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         made_a_change_in_cycle = True
             except re.error as e:
                 logger_instance.error(f"Invalid regex pattern in map: '{regex_pattern}' - {e}. Skipping rule.")
-                # Hier können wir die fehlerhafte Regel überspringen und weitermachen.
 
-        # Wenn der gesamte Text durch eine Regel ersetzt wurde, beenden wir die äußere Schleife
         if full_text_replaced_by_rule:
             logger_instance.info(
                 f"🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}")
 
             break
 
-        # Wenn in diesem Zyklus keine Regel eine Änderung vorgenommen hat, sind wir stabil
         if not made_a_change_in_cycle:
             break
 
     return current_text, full_text_replaced_by_rule
-
-# def vorgänger alt apply_all_rules_until_stable(text, rules_map, logger_instance):
-#     """
-#     Wendet alle Regeln aus der gegebenen rules_map iterativ auf den Text an,
-#     bis sich der Text in einem vollständigen Durchlauf durch alle Regeln nicht mehr ändert.
-#     Ersetzt den gesamten Match des Regex durch den replacement_text, ohne Gruppenreferenzen.
-#
-#     Args:
-#         text (str): Der Eingabetext, auf den die Ersetzungen angewendet werden sollen.
-#         rules_map (list): Eine Liste von Regel-Tupeln. Jedes Tupel im Format:
-#                           (replacement_text, regex_pattern, threshold_value, optional_flags).
-#                           Der threshold_value wird ignoriert.
-#         logger_instance (logging.Logger): Der Logger für die Protokollierung.
-#
-#     Returns:
-#         str: Der stabilisierte Text, wenn Änderungen vorgenommen wurden.
-#         False: Wenn keine Änderungen am Originaltext vorgenommen wurden.
-#     """
-#     previous_text = ""
-#     current_text = text
-#
-#     while current_text != previous_text:
-#         previous_text = current_text # Zustand vor diesem Zyklus speichern
-#
-#         for rule_entry in rules_map:
-#             replacement_text = rule_entry[0]
-#             regex_pattern = rule_entry[1]
-#             flags = rule_entry[3] if len(rule_entry) > 3 else 0 # Standard: 0
-#
-#             # --- KORREKTUR: Der Ersatz-String ist einfach der replacement_text ---
-#             # Keine \g<>-Referenzen, da der gesamte Match ersetzt werden soll.
-#             sub_replacement_string = replacement_text
-#
-#             try:
-#                 new_current_text = re.sub(
-#                     regex_pattern,
-#                     sub_replacement_string, # Jetzt der einfache replacement_text
-#                     current_text,
-#                     flags=flags
-#                 )
-#
-#                 if new_current_text != current_text:
-#                     logger_instance.info(f"🚀Iterative-All-Rules: '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
-#                     current_text = new_current_text
-#
-#             except re.error as e:
-#                 logger_instance.error(f"Invalid regex pattern in map: '{regex_pattern}' - {e}. Skipping rule.")
-#                 # Hier können wir die fehlerhafte Regel überspringen und weitermachen.
-#
-#     if current_text != text:
-#         return current_text
-#     else:
-#         return False
