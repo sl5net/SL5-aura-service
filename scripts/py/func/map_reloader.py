@@ -37,7 +37,7 @@ def auto_reload_modified_maps(logger):
             if current_mtime > last_mtime:
                 if last_mtime != 0:
                     if settings.DEV_MODE:
-                        logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
+                        logger.info(f"🔄 Detected change in '{map_file_path}'. Reloading...")
 
                 relative_path = map_file_path.relative_to(project_root)
                 # module_path = str(relative_path.with_suffix('')).replace(os.path.sep, '.')

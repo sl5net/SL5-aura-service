@@ -1,4 +1,5 @@
 # File: dictation_service.py
+import datetime
 import os
 import sys, subprocess
 
@@ -97,7 +98,6 @@ if str(PROJECT_ROOT) not in sys.path:
 
 # sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
 
-from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, check_for_frequent_calls
 
 from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
 
@@ -188,6 +188,7 @@ class WindowsEmojiFilter1(logging.Filter):
             '🚀': '[ROCKET]',
             '🔁':'REPLACE',
             '📚':'BOOK',
+            '⌚': '[(-)]',  # clock
             '🗺️':'MAP'
         }
     def filter(self, record):
@@ -230,6 +231,7 @@ class WindowsEmojiFilter(logging.Filter):
             '🚀': '[▲]',  # Rakete, Pfeil hoch
             '🔁': '[⟳]',  # Wiederholen, Kreispfeil
             '📚': '[▉]',  # Buch, gefülltes Rechteck
+            '⌚': '[(-)]',  # clock
             '🗺️':'▀▄▀'
         # ▣▣■
                  #                 '🚀': '[>>>]',
@@ -324,15 +326,6 @@ if settings.SERVICE_START_OPTION ==1:
 
 if settings.DEV_MODE :
 
-    validate_setup(SCRIPT_DIR, logger)
-
-    check_installer_sizes()
-
-
-    from scripts.py.func.checks.check_badges import check_badges
-
-
-    check_badges(SCRIPT_DIR)
 
 
 
@@ -340,12 +333,6 @@ if settings.DEV_MODE :
     validate_punctuation_map_keys(SCRIPT_DIR,logger)
 
     project_root = SCRIPT_DIR
-    parsed_trees = parse_all_files(project_root, logger)
-
-    check_for_unused_functions(parsed_trees, project_root , logger)
-    check_for_frequent_calls(parsed_trees, logger, threshold=1)
-
-    check_installer_sizes()
 
 
 if settings.DEV_MODE :
@@ -464,18 +451,6 @@ if settings.DEV_MODE :
 
     from scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
     # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
-    check_example_file_is_synced(SCRIPT_DIR)
-
-    from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
-    from scripts.py.func.checks.integrity_checker import check_code_integrity
-
-    from scripts.py.func.checks.self_tester import run_core_logic_self_test
-
-
-    check_code_integrity(SCRIPT_DIR, logger)
-
-    check_installer_sizes()
-
 
     ##################### run_core_logic_self_test #############################
     VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
@@ -483,8 +458,55 @@ if settings.DEV_MODE :
     #MODEL_NAME = MODEL_NAME_DEFAULT
 
     lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
+
+    from scripts.py.func.checks.self_tester import run_core_logic_self_test
+
+    self_test_start_time = time.time()
     run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
-    #sys.exit(1)
+    self_test_end_time = time.time()
+    self_test_duration = self_test_end_time - self_test_start_time
+    self_test_readable_duration = datetime.timedelta(seconds=self_test_duration)
+    logger.info("⌚ self_test_readable_duration: ", self_test_readable_duration)
+    """
+    # self_test_readable_duration
+    59 of 82 tests ❌ FAILed.    seconds=5, microseconds=578883
+
+    """
+
+    check_installer_sizes()
+
+
+    from scripts.py.func.checks.check_badges import check_badges
+
+
+    check_badges(SCRIPT_DIR)
+
+
+    from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, \
+        check_for_frequent_calls
+
+    validate_setup(SCRIPT_DIR, logger)
+
+
+    PROJECT_ROOT = SCRIPT_DIR  # In this structure, SCRIPT_DIR is PROJECT_ROOT
+
+    parsed_trees = parse_all_files(PROJECT_ROOT, logger)
+
+    check_for_unused_functions(parsed_trees, PROJECT_ROOT , logger)
+    check_for_frequent_calls(parsed_trees, logger, threshold=1)
+
+    check_installer_sizes()
+
+
+    check_example_file_is_synced(SCRIPT_DIR)
+
+    from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
+    from scripts.py.func.checks.integrity_checker import check_code_integrity
+
+    check_code_integrity(SCRIPT_DIR, logger)
+
+    check_installer_sizes()
+
 
     # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
     check_example_file_is_synced(SCRIPT_DIR)

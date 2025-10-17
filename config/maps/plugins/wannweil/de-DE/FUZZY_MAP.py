@@ -1,4 +1,4 @@
-# config/languagetool_server/maps/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/git/de-DE/FUZZY_MAP_pr.py
 import re
 
 # This map uses a hybrid approach:
@@ -8,34 +8,14 @@ import re
 #    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
-FUZZY_MAP_pre = [
+FUZZY_MAP = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
     # - in our implementation it stops with first match!
-    # - means first is most importend, lower rules maybe not get read.
+    # - means first is most imported, lower rules maybe not get read.
 
-    #switch to english no English please
-    # baue bauhaus
-
-
-
-
-    #  Helps the Tool to switch to English
-    ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, {'flags': re.IGNORECASE}),
-    ('english please', r'^\s*(switch to english\s*\w*)\s*$', 82, {'flags': re.IGNORECASE}),
-
-    (':', r'\bDoppelpost\b', 82, {'flags': re.IGNORECASE}),
-
-
-
-    ('?', r'\s+(fragezeichen|fragen|fragend|frage|fragt)\s*$', 80, {'flags': re.IGNORECASE}),
-
-
-
-
-
+    ('Lauffer', r'\b(Läufer|laufer|Lauscha|lauf war|lauf er)\b', 70, {'flags': re.IGNORECASE}),  # Exact match, but ignore case
+# lautLauffer3 4 5 73p 3 9 chatEs sitzt ein Vogel auf dem Leim er flattert sehr und kann nicht heim ein schwarzer Kater kommt hin zu den Augen grau die Augen.oute#
 ]
-
-
 

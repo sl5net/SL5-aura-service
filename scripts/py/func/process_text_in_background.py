@@ -78,6 +78,8 @@ def load_maps_for_language(lang_code, logger):
     except ModuleNotFoundError:
         maps_package = importlib.import_module('config.maps')
 
+    plugin_name_before = ''
+    plugin_name = ''
     for importer, modname, ispkg in pkgutil.walk_packages(
             path=maps_package.__path__,
             prefix=maps_package.__name__ + '.',
@@ -104,6 +106,7 @@ def load_maps_for_language(lang_code, logger):
             # So, if sub_parts is ['game', '0ad', 'de-DE', 'FUZZY_MAP_pre'],
             # we want sub_parts[1].
             if len(sub_parts) > 1:  # Ensure there's at least a type and an identifier
+                plugin_name_before = plugin_name
                 plugin_name = sub_parts[-3]
             else:
                 # Fallback if the structure isn't as expected, or handle as an error
@@ -111,10 +114,13 @@ def load_maps_for_language(lang_code, logger):
                 continue
             if not settings.PLUGINS_ENABLED.get(plugin_name, True):
                 if settings.DEV_MODE:
-                    logger.info(f"🗺️ FALSE. plugin_name = {plugin_name} in modname={modname}")
+                    if plugin_name_before != plugin_name:
+                        logger.info(f"🗺️ FALSE: {plugin_name} ▉ {modname[:-4]}...")
                 continue
-            # else:
-            #     logger.info(f"🗺️ True. PLUGINS_ENABLED. plugin_name = {plugin_name} in modname={modname}")
+            else:
+                if plugin_name_before != plugin_name:
+                    if settings.DEV_MODE:
+                        logger.info(f"🗺️ ENABLED: {plugin_name} ▉ {modname[:-4]}...")
 
         try:
             module = importlib.import_module(modname)
@@ -157,6 +163,154 @@ def is_regex_pattern(pattern):
     # This is a simple heuristic. You can add more characters if needed.
     return any(char in pattern for char in r'^$*+?{}[]\|()")')
 
+
+def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger):
+    # Ensure match_phrase is a string for fuzzy comparison if it's not a regex pattern
+    # The threshold is given as a percentage (e.g., 82). difflib.SequenceMatcher ratio is 0.0-1.0.
+    # So, we convert the threshold to a float between 0 and 1.
+    similarity_threshold = threshold / 100.0 if threshold is not None else 0.70  # Default to 70% if no threshold given
+
+    # Find possible fuzzy matches in the processed_text for the 'match_phrase'.
+    # difflib.get_close_matches finds the best matches.
+    # However, for finding and replacing *within* a text, we usually need to iterate
+    # through the words of the text and compare each.
+
+    # A simpler approach for "simple fuzzy match" if 'match_phrase' is a target word:
+    # Iterate through words in processed_text and check similarity.
+    words_in_text = re.findall(r'\b\w+\b', processed_text)  # Split text into words
+
+    found_fuzzy_match = False
+    # temp_processed_text = processed_text  # Use a temporary variable for replacements
+
+    for word_in_text in words_in_text:
+
+        # We need to iterate over the words in `processed_text` and compare each to `replacement`.
+        words_in_text = re.findall(r'\b\w+\b', processed_text)
+        temp_text_for_fuzzy_replace = processed_text
+
+        for word_in_text_idx, word_in_text in enumerate(words_in_text):
+            sm = difflib.SequenceMatcher(None, word_in_text.lower(),
+                                         replacement.lower())  # Case-insensitive fuzzy
+            similarity_ratio = sm.ratio()
+
+            if similarity_ratio >= similarity_threshold:
+                found_fuzzy_match = True
+                logger.info(
+                    f"✨Fuzzy Match found: '{word_in_text}' vs target '{replacement}' (Similarity: {similarity_ratio:.2f}, Threshold: {similarity_threshold:.2f})")
+                # For simplicity, we'll use a direct string replace here.
+                # A more precise method might involve finding the exact span of the word in original text.
+
+                # For simple replacement of the *first* fuzzy matched instance:
+                original_word_length = len(word_in_text)
+                start_index = temp_text_for_fuzzy_replace.lower().find(word_in_text.lower())
+
+                if start_index != -1:
+                    temp_text_for_fuzzy_replace = (
+                            temp_text_for_fuzzy_replace[:start_index] +
+                            replacement +
+                            temp_text_for_fuzzy_replace[start_index + original_word_length:]
+                    )
+                    found_fuzzy_match = True
+                    logger.info(
+                        f"🚀Fuzzy: '{processed_text}' -> '{temp_text_for_fuzzy_replace}' (Target: '{replacement}')")
+                    processed_text = temp_text_for_fuzzy_replace  # Update processed_text
+                    # If one fuzzy match is enough for this rule, break the inner loop
+                    break  # Break from inner word iteration
+
+
+        if found_fuzzy_match:
+            # current_rule_matched = True  # Mark rule as matched due to fuzzy
+            break  # Break the main loop after a successful fuzzy match as per original logic
+    return processed_text
+
+
+def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
+    new_processed_text, full_text_replaced_by_rule, skip_list = apply_all_rules_until_stable(
+        processed_text
+        , fuzzy_map_pre
+        , logger)
+    #made_a_change_in_cycle = None
+    a_rule_matched = False
+    if new_processed_text is False:
+        #made_a_change_in_cycle = False
+        return new_processed_text, None, skip_list
+
+
+    if full_text_replaced_by_rule:
+        skip_list.append('LanguageTool')
+        # regex_pre_is_replacing_all_maybeTEST1 = True
+        logger.info(f"242: 🔁??? new_processed_text: {new_processed_text})")
+        return new_processed_text, True, skip_list
+
+    logger.info(f"246: ??? new_processed_text: {new_processed_text},  "
+                f"skip_list:{skip_list} ")
+
+    # if regex_pre_is_replacing_all_maybe:
+    #     regex_match_found_prev = True  # need to be then also true for historical reasons. to be compatible to rest of the code
+    if new_processed_text:
+        processed_text = new_processed_text
+    else:
+        # scripts/py/func/process_text_in_background.py:248
+        #for replacement, match_phrase, threshold, *flags_list, rule_mode in fuzzy_map_pre:
+        for replacement, match_phrase, threshold, options_dict in fuzzy_map_pre:
+
+            # logger.info(f"252: 🔁??? threshold: '{threshold}' based on pattern '{match_phrase}'")
+
+            flags = options_dict.get('flags', 0)  # Hier extrahierst du den INTEGER korrekt
+            skip_list = options_dict.get('skip_list', [])
+
+            # logger.info(f"248: threshold={threshold} , skip_list: {skip_list}")
+
+            # flags = flags_list[0] if flags_list else 0  # Default: 0 (case-sensitive)
+
+            if is_regex_pattern(match_phrase):
+                logger.debug(f" '👀pre -->{match_phrase}<-- 👀")
+
+            # regex_pre_is_replacing_all_maybeTEST1 = match_phrase.startswith('^') and match_phrase.endswith('$')
+            #regex_pre_is_replacing_all_maybe = regex_pre_is_replacing_all_maybeTEST1
+
+            # Flag to track if a match (regex or fuzzy) was found for the current iteration
+            current_rule_matched = False
+
+
+            try:
+
+                if re.search(match_phrase, processed_text, flags=flags):
+                    logger.info(
+                        f"🔁 265: Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
+
+                    new_text = re.sub(
+                        match_phrase,
+                        replacement.strip(),
+                        processed_text,
+                        flags=flags
+                    )
+
+                    if new_text != processed_text:
+                        logger.info(
+                            f"🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
+                        processed_text = new_text
+
+                    #regex_match_found_prev = True
+                    #current_rule_matched = True
+                    a_rule_matched = True
+
+                    logger.info(f"Line 223: regex_match_found: break")
+
+                    break  # Found a definitive match, stop this loop
+
+            except re.error as e:
+                logger.warning(f"Invalid regex_pre pattern in FUZZY_MAP_pre: '{match_phrase}'. Error: {e}")
+                continue  # Skip this invalid rule
+
+            if not current_rule_matched:
+                processed_text = apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger)
+            #logger.info(f"292: regex_pre_is_replacing_all_maybeTEST1: {regex_pre_is_replacing_all_maybeTEST1}")
+    return new_processed_text, a_rule_matched, skip_list
+
+
+
+
 def process_text_in_background(logger,
                                LT_LANGUAGE,
                                raw_text,
@@ -166,6 +320,7 @@ def process_text_in_background(logger,
                               output_dir_override = None):
     # scripts/py/func/process_text_in_background.py:167
     punctuation_map, fuzzy_map_pre, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
+    new_processed_text = ''
     try:
 
         # if settings.DEV_MODE:
@@ -177,7 +332,7 @@ def process_text_in_background(logger,
 
         # ZWNBSP
         if settings.DEV_MODE:
-            logger.info(f"THREAD: Starting processing for: '{raw_text}'")
+            logger.info(f"335: THREAD: Starting processing for: '{raw_text}'")
 
         notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
 
@@ -193,7 +348,7 @@ def process_text_in_background(logger,
                 predictions = None
                 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
                     logger.info(f"👀👀👀 Start lang_code predictions for: '{raw_text}'")
-                    predictions = fasttext_model.predict(raw_text, threshold=threshold)
+                    # predictions = fasttext_model.predict(raw_text, threshold=threshold)
 
                 if predictions:
                     logger.info(
@@ -236,6 +391,9 @@ def process_text_in_background(logger,
         if len(processed_text) != len(raw_text):
             normalize_punctuation_changed_size = True
 
+            logger.info(
+                f"395: ?? {processed_text} ?? normalize_punctuation_changed_size:{normalize_punctuation_changed_size}")
+
         if normalize_punctuation_changed_size:
             processed_text = re.sub(r'(?<=\d)\s+(?=\d)', '', processed_text)
 
@@ -246,125 +404,37 @@ def process_text_in_background(logger,
         #regex_pre_is_replacing_all = False
         regex_match_found_prev = False
         regex_pre_is_replacing_all_maybe = False
+        result_languagetool = None
 
+        logger.info(
+            f"406: ?? {processed_text} ?? {new_processed_text}")
+
+        skip_list = []
         if not was_exact_match:
 
 
             # default_mode_is_all = True  # TODO: Diese Variable kommt aus deiner Konfiguration
 
+            regex_pre_is_replacing_all_maybeTEST1 = None
+
             if settings.default_mode_is_all:
                 # Rufe die neue Funktion auf, die alle Regeln iterativ anwendet
                 logger.info(f"Applying all rules until stable (default 'all' mode).")
-                new_processed_text, regex_pre_is_replacing_all_maybe = apply_all_rules_until_stable(processed_text, fuzzy_map_pre, logger)
-                if regex_pre_is_replacing_all_maybe:
-                    regex_match_found_prev = True # need to be then also true for historical reasons. to be compatible to rest of the code
-                if new_processed_text:
-                    processed_text = new_processed_text
-                else:
-                    # scripts/py/func/process_text_in_background.py:248
-                    for replacement, match_phrase, threshold, *flags_list, rule_mode in fuzzy_map_pre:
-
-                        # logger.info(f"252: 🔁??? threshold: '{threshold}' based on pattern '{match_phrase}'")
-
-                        flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
-
-                        if is_regex_pattern(match_phrase):
-                            logger.debug(f" '👀pre -->{match_phrase}<-- 👀")
-
-                        regex_pre_is_replacing_all_maybe = match_phrase.startswith('^') and match_phrase.endswith('$')
-
-                        # Flag to track if a match (regex or fuzzy) was found for the current iteration
-                        current_rule_matched = False
-
-                        try:
-
-                            if re.search(match_phrase, processed_text, flags=flags):
-                                logger.info(f"🔁Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
-
-                                new_text = re.sub(
-                                    match_phrase,
-                                    replacement.strip(),
-                                    processed_text,
-                                    flags=flags
-                                )
-
-                                if new_text != processed_text:
-                                    logger.info(
-                                        f"🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
-                                    processed_text = new_text
-
-                                regex_match_found_prev = True
-                                current_rule_matched = True
-
-                                logger.info(f"Line 223: regex_match_found: break")
-
-                                break  # Found a definitive match, stop this loop
-
-                        except re.error as e:
-                            logger.warning(f"Invalid regex_pre pattern in FUZZY_MAP_pre: '{match_phrase}'. Error: {e}")
-                            continue # Skip this invalid rule
-                        if not current_rule_matched:
-                            # Ensure match_phrase is a string for fuzzy comparison if it's not a regex pattern
-                            # The threshold is given as a percentage (e.g., 82). difflib.SequenceMatcher ratio is 0.0-1.0.
-                            # So, we convert the threshold to a float between 0 and 1.
-                            similarity_threshold = threshold / 100.0 if threshold is not None else 0.70  # Default to 70% if no threshold given
-
-                            # Find possible fuzzy matches in the processed_text for the 'match_phrase'.
-                            # difflib.get_close_matches finds the best matches.
-                            # However, for finding and replacing *within* a text, we usually need to iterate
-                            # through the words of the text and compare each.
-
-                            # A simpler approach for "simple fuzzy match" if 'match_phrase' is a target word:
-                            # Iterate through words in processed_text and check similarity.
-                            words_in_text = re.findall(r'\b\w+\b', processed_text)  # Split text into words
+                (new_processed_text
+                , regex_pre_is_replacing_all_maybe
+                , skip_list) = apply_all_rules_may_until_stable(processed_text
+                , fuzzy_map_pre, logger)
 
 
-                            found_fuzzy_match = False
-                            # temp_processed_text = processed_text  # Use a temporary variable for replacements
+            regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe # and regex_match_found_prev
+            logger.info(f"423: ????? "
+                        f"regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
+                        f"regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
+                        f"normalize_punctuation_changed_size={normalize_punctuation_changed_size}"
+                        f"regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
+                        f"regex_match_found_prev:{regex_match_found_prev}")
 
-                            for word_in_text in words_in_text:
-
-                                # We need to iterate over the words in `processed_text` and compare each to `replacement`.
-                                words_in_text = re.findall(r'\b\w+\b', processed_text)
-                                temp_text_for_fuzzy_replace = processed_text
-
-                                for word_in_text_idx, word_in_text in enumerate(words_in_text):
-                                    sm = difflib.SequenceMatcher(None, word_in_text.lower(),
-                                                                 replacement.lower())  # Case-insensitive fuzzy
-                                    similarity_ratio = sm.ratio()
-
-                                    if similarity_ratio >= similarity_threshold:
-                                        found_fuzzy_match = True
-                                        logger.info(
-                                            f"✨Fuzzy Match found: '{word_in_text}' vs target '{replacement}' (Similarity: {similarity_ratio:.2f}, Threshold: {similarity_threshold:.2f})")
-                                        # For simplicity, we'll use a direct string replace here.
-                                        # A more precise method might involve finding the exact span of the word in original text.
-
-                                        # For simple replacement of the *first* fuzzy matched instance:
-                                        original_word_length = len(word_in_text)
-                                        start_index = temp_text_for_fuzzy_replace.lower().find(word_in_text.lower())
-
-                                        if start_index != -1:
-                                            temp_text_for_fuzzy_replace = (
-                                                    temp_text_for_fuzzy_replace[:start_index] +
-                                                    replacement +
-                                                    temp_text_for_fuzzy_replace[start_index + original_word_length:]
-                                            )
-                                            found_fuzzy_match = True
-                                            logger.info(
-                                                f"🚀Fuzzy: '{processed_text}' -> '{temp_text_for_fuzzy_replace}' (Target: '{replacement}')")
-                                            processed_text = temp_text_for_fuzzy_replace  # Update processed_text
-                                            # If one fuzzy match is enough for this rule, break the inner loop
-                                            break  # Break from inner word iteration
-
-                                if found_fuzzy_match:
-                                    current_rule_matched = True  # Mark rule as matched due to fuzzy
-                                    break  # Break the main loop after a successful fuzzy match as per original logic
-
-
-            regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe and regex_match_found_prev
-
-            logger.info(f"LT_LANGUAGE = {LT_LANGUAGE}") #
+            logger.info(f"425: LT_LANGUAGE = {LT_LANGUAGE} , skip_list = {skip_list} , regex_pre_is_replacing_all_maybe ={regex_pre_is_replacing_all_maybe}") #
             if regex_pre_is_replacing_all:
                 if processed_text == 'english please' and LT_LANGUAGE == 'de-DE':
                     processed_text = 'Ok, lets write in english now.'
@@ -383,15 +453,21 @@ def process_text_in_background(logger,
 
             if (not regex_pre_is_replacing_all
                 and not is_only_number
+                and 'LanguageTool' not in skip_list
                 and not (
                             settings.CORRECTIONS_ENABLED["git"]
                             and ("git" in processed_text or "push" in processed_text))):
+
+                logger.info(f"449: and not 'LanguageTool' in skip_list ==> {skip_list}"
+                            f" processed_text:{processed_text}"
+                            f" new_processed_text:{new_processed_text} ")
+
 
                 if settings.DEV_MODE_memory:
                     from scripts.py.func.log_memory_details import log_memory_details
                     log_memory_details(f"next  correct_text_by_languagetool:", logger)
 
-                processed_text = correct_text_by_languagetool(
+                result_languagetool = correct_text_by_languagetool(
                     logger,
                     active_lt_url,
                     LT_LANGUAGE,
@@ -413,45 +489,66 @@ def process_text_in_background(logger,
 
             # Pass 1: Prioritize and check for exact REGEX matches first.
             # A regex match is considered definitive and will stop further processing.
-            regex_match_found = False
+            logger.info(f"477: SkipList: {skip_list} "
+                        f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
+                        f" processed_text:{processed_text} "
+                        f" new_processed_text:{new_processed_text}" 
+                        f" result_languagetool:{result_languagetool} ")
+            # 477: SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
 
+            regex_match_found = False
+            logger.info(f'500: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ')
             if not regex_pre_is_replacing_all and not is_only_number:
-                for replacement, match_phrase, threshold, *flags_list in fuzzy_map:
-                    flags = flags_list[0] if flags_list else 0 # Default: 0 (case-sensitive)
+                logger.info(f'502 in fuzzy_map: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ')
+                for replacement, match_phrase, threshold, options_dict in fuzzy_map:
+
+                    flags = options_dict.get('flags', 0)  # Standardwert ist 0, wenn kein Flag angegeben
+                    skip_list = options_dict.get('skip_list', [])  # Standardwert ist leere Liste
+
+                    # ... Rest deiner Logik
+                    # logger.info(f"Flags: {flags}, Skip List: {skip_list}")
+                    if skip_list:
+                        logger.info(f"511:Skip List: {skip_list}")
+                        sys.exit(1)
 
 
                     if is_regex_pattern(match_phrase):
-                        logger.debug(f" '👀 -->{match_phrase}<-- 👀")
+                        # logger.info(f"516 in fuzzy_map: '👀 -->{match_phrase}<-- 👀")
 
                         try:
-                            if re.search(match_phrase, processed_text, flags=flags):
-                                logger.info(f"🔁Regex in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
+                            if not re.search(match_phrase, result_languagetool, flags=flags):
+                                continue
+                            logger.info(f"520:🔁Regex in: '{result_languagetool}' --> '{replacement}' based on pattern '{match_phrase}'")
 
-                                new_text = re.sub(
-                                    match_phrase,
-                                    replacement.strip(),
-                                    processed_text,
-                                    flags=flags
-                                )
+                            new_text = re.sub(
+                                match_phrase,
+                                replacement.strip(),
+                                result_languagetool,
+                                flags=flags
+                            )
 
-                                if new_text != processed_text:
-                                    logger.info(
-                                        f"Regex match: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
-                                    processed_text = new_text
+                            if new_text != result_languagetool:
+                                logger.info(
+                                    f"533: Regex match: '{result_languagetool}' -> '{new_text}' (Pattern: '{match_phrase}')")
+                                processed_text = new_text
+                                result_languagetool = new_text # TODO: lazy programming
 
-                                regex_match_found = True
-                                break  # Found a definitive match, stop this loop
+                            regex_match_found = True
+                            break  # Found a definitive match, stop this loop
 
                         except re.error as e:
                             logger.warning(f"Invalid regex pattern in FUZZY_MAP: '{match_phrase}'. Error: {e}")
                             continue # Skip this invalid rule
+                        except Exception as e:
+                            logger.warning(f"FUZZY_MAP: '{match_phrase}'. Error: {e}")
 
             # Pass 2: If no regex matched, perform the FUZZY search as before.
             # This code will only run if the loop above didn't find a regex match.
             if (not regex_pre_is_replacing_all
+                    and not regex_pre_is_replacing_all_maybe
                     and not regex_match_found
                     and not is_only_number):
-                logger.info(f"No regex match. Proceeding to fuzzy search for: '{processed_text}'")
+                logger.info(f"534: No regex match. Proceeding to fuzzy search for: '{processed_text}'")
                 best_score = 0
                 best_replacement = None
 
@@ -472,7 +569,10 @@ def process_text_in_background(logger,
                 else:
                     logger.info(f"👎best fuzzy score:{best_score}% for '{processed_text}'")
 
-
+        if new_processed_text:
+            logger.info(f"549: SkipList: {skip_list} regex_match_found_prev:{regex_match_found_prev} regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} processed_text:{processed_text} "
+                    f"new_processed_text:{new_processed_text}")
+        # 477: SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
 
 
         if re.match(r"^\w", processed_text) and time.time() - recording_time < 20:
@@ -492,11 +592,36 @@ def process_text_in_background(logger,
         else:
             unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
 
+        logger.info(
+            f"596: SkipList:{skip_list} "
+            f" processed_text:{processed_text} "
+            f" new_processed_text:{new_processed_text}"
+            f" result_languagetool:{result_languagetool} ")
+        # SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
+        # SkipList:[]  processed_text: mit nachnamen Lauffer  new_processed_text:False result_languagetool:Mit Nachnamen lauf er
+
+        if new_processed_text and new_processed_text != processed_text:
+            processed_text = new_processed_text
+
         # unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
         # unique_output_file.write_text(processed_text)
+        logger.info(f"609: SkipList:{skip_list}"
+                    f" new_processed_text:{new_processed_text}"
+                    f" result_languagetool:{result_languagetool}"
+                    f" processed_text:{processed_text} ")
+
+        #processed_text = (result_languagetool) ? result_languagetool : processed_text
+        processed_text = result_languagetool if result_languagetool else processed_text
+
+        processed_text = result_languagetool if result_languagetool else processed_text
+        # processed_text = new_processed_text if new_processed_text else processed_text
+
         unique_output_file.write_text(processed_text, encoding="utf-8") # BOM -sig is outdated and not needed anymore
         # unique_output_file.write_text(processed_text, encoding="utf-8-sig") # BOM -sig is outdated and not needed anymore
-        logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file}")
+
+        # SkipList:['LanguageTool', 'LanguageTool'] new_processed_text:Sigune Lauffer result_languagetool:None processed_text:Sigune Lauffer
+
+        logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '{processed_text}'")
         #
         # notify("Transcribed", duration=700, urgency="low")
 
@@ -520,7 +645,7 @@ def process_text_in_background(logger,
         process = psutil.Process(os.getpid())
         mem_info = process.memory_info()
         rss_mb = mem_info.rss / (1024 * 1024)
-        if (rss_mb*0.5) > max_model_memory_footprint_mb_not_calculate:
+        if (rss_mb*0.9) > max_model_memory_footprint_mb_not_calculate:
             # restart your script is a very common and effective fallback workaround for managing excessive memory usage
             logger.info(f"Fallback restart script: rss_mb={rss_mb}*2.5 > max_model_memory_footprint={max_model_memory_footprint_mb_not_calculate}")
             # restart script
@@ -581,24 +706,33 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                str: The stabilized text.
                bool: True if a complete replacement of the text by a rule has taken place, indicating an early termination. False otherwise.
     """
+    skip_list = []
     previous_text = ""
     current_text = text
     full_text_replaced_by_rule = False
 
+    made_a_change = 0
     while current_text != previous_text:
         previous_text = current_text
         made_a_change_in_cycle = False
+        full_text_replaced_by_rule = False
 
         for rule_entry in rules_map:
-            replacement_text = rule_entry[0]
-            regex_pattern = rule_entry[1]
-            flags = rule_entry[3] if len(rule_entry) > 3 else 0  # Standard: 0
+            # NEU: Entpacke das Tupel korrekt
+            # Gehe davon aus, dass rule_entry immer 4 Elemente hat:
+            # (replacement_text, regex_pattern, threshold_value, options_dict)
+            replacement_text, regex_pattern, threshold, options_dict = rule_entry
+
+            # Extrahiere die Flags aus dem options_dict
+            flags = options_dict.get('flags', 0) # Jetzt ist 'flags' ein Integer
+            skip_list = options_dict.get('skip_list', []) # Optional: Wenn du skip_list brauchst
+
+            # Den threshold hast du jetzt auch direkt entpackt
 
             sub_replacement_string = replacement_text
 
             try:
                 match_obj = re.fullmatch(regex_pattern, current_text, flags=flags)
-
                 if match_obj:
                     # If the regex matches the entire text, we prioritize the replacement
                     # and set the flag for complete replacement
@@ -609,11 +743,20 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         flags=flags
                     )
                     if new_current_text != current_text:
-                        logger_instance.info(
-                            f"🚀Iterative-All-Rules (FULL REPLACE): '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
-                        current_text = new_current_text
-                        full_text_replaced_by_rule = True
                         made_a_change_in_cycle = True
+                        made_a_change = made_a_change+1
+
+                        # logger_instance.info(f"711: 🚀712: Iterative-All-Rules (FULL REPLACE): '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
+                        # 16:09:11,968 - INFO     - 🚀Iterative-All-Rules: 'mit nachnamen laufer' -> 'mit nachnamen Lauffer' (Pattern: '\b(Läufer|laufer|lauf war)\b')
+                        current_text = new_current_text
+                        full_text_replaced_by_rule = regex_pattern.startswith('^') and regex_pattern.endswith(
+                            '$') or replacement_text == current_text
+
+                        logger_instance.info(
+                            f"🚀712: made_a_change={made_a_change} Iterative-All-Rules (?? FULL REPLACE={full_text_replaced_by_rule}): '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
+
+                        # sys.exit(0)
+
                         break
                 else:
                     new_current_text = re.sub(
@@ -623,20 +766,38 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         flags=flags
                     )
                     if new_current_text != current_text:
+                        made_a_change += 1
                         logger_instance.info(
-                            f"🚀Iterative-All-Rules: '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
+                            f"🚀Iterative-All-Rules made_a_change={made_a_change} : '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
                         current_text = new_current_text
                         made_a_change_in_cycle = True
+                    # TODO: Proof follwoing. maybe use it
+                    # else:
+                    #     current_text = apply_fuzzy_replacement_logic(current_text, new_current_text, threshold, logger_instance)
+
             except re.error as e:
                 logger_instance.error(f"Invalid regex pattern in map: '{regex_pattern}' - {e}. Skipping rule.")
 
         if full_text_replaced_by_rule:
+            made_a_change = True
             logger_instance.info(
-                f"🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}")
+                f"744: 🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}, skip_list='{skip_list}'")
 
             break
 
         if not made_a_change_in_cycle:
             break
 
-    return current_text, full_text_replaced_by_rule
+    if not made_a_change:
+        logging.info(f"752: made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}")
+        #  z.b. "das ist ein test landet" hier. Es gibt auch (höchstwahrschienlich keine Regel hiervür. Also correkt.
+        # logging.info('sys.exit(1) 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923')
+        # sys.exit(1) # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 Test
+        return made_a_change, full_text_replaced_by_rule, skip_list
+    logging.info(f"793: made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}")
+    # 17:08:56,492 - INFO     - 758: made_a_change=True full_text_replaced_by_rule:False current_text:mit nachnamen Lauffer
+    if made_a_change > 1:
+        skip_list.append('LanguageTool')
+    return current_text, full_text_replaced_by_rule, skip_list
+
+#

@@ -39,9 +39,10 @@ else
     # --- Step 2: Kill ALL old processes (Main Service AND Watcher) ---
     echo "Stopping old processes..."
     # Use -f to match the full command line, just like in pgrep.
-    pkill -f "$SERVICE_NAME_MAIN"
+    # pkill -f "$SERVICE_NAME_MAIN"
+    pkill -9 -f "$SERVICE_NAME_MAIN"
     pkill -f "$SERVICE_NAME_WATCHER"
-    echo pkill -f "$SERVICE_NAME_MAIN"
+    echo pkill -9 -f "$SERVICE_NAME_MAIN"
     echo pkill -f "$SERVICE_NAME_WATCHER"
 
     # realpath /tmp/../tmp/../tmp

@@ -6,7 +6,7 @@ import re # noqa: F401
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use re.IGNORECASE for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 
@@ -54,11 +54,11 @@ FUZZY_MAP_pre = [
     # K i Säcke Makerspace KI Säcke Espe
     #  Per E-Mail gesperrt ki-maker.space
 
-    ('ki-maker.space', r'^(ki-maker|ki[\s]*make[\se]*space|k i [\s]*make[\s\w]*space|space|ki weckers|KI im weg ist|KI Säcke Espe|Kain weggesprengt|K \w*\s*make space|KI es|K i \w+ \w*|ki menkes)\s*\w*$', 60, re.IGNORECASE),
+    ('ki-maker.space', r'^(ki-maker|ki[\s]*make[\se]*space|k i [\s]*make[\s\w]*space|space|ki weckers|KI im weg ist|KI Säcke Espe|Kain weggesprengt|K \w*\s*make space|KI es|K i \w+ \w*|ki menkes)\s*\w*$', 60, {'flags': re.IGNORECASE}),
 
-    ('Gregor Schulte, 07071- 6395627 Gregor.Schulte@ki-maker.space', r'^(Gregor|Schulte|ki-maker.space)\s*\w*$', 80, re.IGNORECASE),
+    ('Gregor Schulte, 07071- 6395627 Gregor.Schulte@ki-maker.space', r'^(Gregor|Schulte|ki-maker.space)\s*\w*$', 80, {'flags': re.IGNORECASE}),
 
-    ('Bulsat', r'^(Büro ki-maker.space)\s*\w*$', 85, re.IGNORECASE),
+    ('Bulsat', r'^(Büro ki-maker.space)\s*\w*$', 85, {'flags': re.IGNORECASE}),
 
     #  Gregor  schulte  Gregor
     #  Per E-Mail Gespräch K i Säcke Respekt

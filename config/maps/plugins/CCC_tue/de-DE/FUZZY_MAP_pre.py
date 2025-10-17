@@ -6,7 +6,7 @@ import re # noqa: F401
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use re.IGNORECASE for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 FUZZY_MAP_pre = [
@@ -16,20 +16,20 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
-    ('https://cttue.de', r'^(chaos|Karls) treff tübingen\s*\w*$', 60, re.IGNORECASE),
+    ('https://cttue.de', r'^(chaos|Karls) treff tübingen\s*\w*$', 60, {'flags': re.IGNORECASE}),
 
     # karl stress was steht an
 
-    ('https://cttue.de/doku.php?id=start#was_ansteht', r'^(chaos|Karls)\s+.*was.*an.*$', 60, re.IGNORECASE),
+    ('https://cttue.de/doku.php?id=start#was_ansteht', r'^(chaos|Karls)\s+.*was.*an.*$', 60, {'flags': re.IGNORECASE}),
 
-    ('https://pad.cttue.de/cttue-meta#', r'^(chaos|Karls)\w*\s+.*Sitzungsprot.*$', 60, re.IGNORECASE),
+    ('https://pad.cttue.de/cttue-meta#', r'^(chaos|Karls)\w*\s+.*Sitzungsprot.*$', 60, {'flags': re.IGNORECASE}),
 
-    # ('https://pad.cttue.de/cttue-meta#', r'^(chaos|Karls)\s+.*Sitzungsprot.*$', 60, re.IGNORECASE),
-
-
-    ('https://cttue.de/doku.php?id=events:past', r'^(chaos|Karls)\s+.* \bVerg.*$', 60, re.IGNORECASE),
+    # ('https://pad.cttue.de/cttue-meta#', r'^(chaos|Karls)\s+.*Sitzungsprot.*$', 60, {'flags': re.IGNORECASE}),
 
 
-    ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, re.IGNORECASE)
+    ('https://cttue.de/doku.php?id=events:past', r'^(chaos|Karls)\s+.* \bVerg.*$', 60, {'flags': re.IGNORECASE}),
+
+
+    ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, {'flags': re.IGNORECASE})
 ]
 

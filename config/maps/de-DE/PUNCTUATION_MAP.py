@@ -44,9 +44,11 @@ PUNCTUATION_MAP = {
     'unterstrich': '_',
     'punktpunktpunkt': '...',
     'raute': '#',
+    'aute': '#',
     'undzeichen': '&',
     'etzeichen': '&',
     'atzeichen': '@',
+    # AT zeigt
     'stern': '*',
 
     'tilde': '~',

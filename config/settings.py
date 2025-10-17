@@ -17,7 +17,7 @@ soundMute = 1  # 1 is really recommandet. to know when your recording is ended.
 soundUnMute = 1
 soundProgramLoaded = 1
 
-ENABLE_AUTO_LANGUAGE_DETECTION = False
+ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 
 # --- Notification Settings ---
 # Default for new users is the most verbose level.
@@ -25,8 +25,8 @@ NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
 # --- Language Model Preloading ---
 # A list of Vosk model folder names to preload at startup if memory allows.
-PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
-# PRELOAD_MODELS = ["vosk-model-de-0.21"]
+# PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 if current_user == 'SL5.de':
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
@@ -72,6 +72,8 @@ CORRECTIONS_ENABLED = {
 
 
 default_mode_is_all = True
+#  1 zwei drei vier 5
+#
 
 PLUGINS_ENABLED = {}
 
