@@ -36,11 +36,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-models-tools-
 
+      - name: Install Xcode Command Line Tools
+        run: xcode-select --install || true
+
+      - name: Install Homebrew
+        run: |
+            if ! command -v brew &> /dev/null; then
+                /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            fi
+
+      - name: Install Pygame dependencies via Homebrew
+        run: brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf portmidi
+
+
       - name: Run macos_setup.sh
         # This assumes your script has `set -e` at the top for error handling
         # and a shebang `#!/bin/bash`
 
         run: |
+
 
 
           chmod +x ./setup/macos_setup.sh
