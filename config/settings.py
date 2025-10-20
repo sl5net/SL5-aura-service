@@ -2,12 +2,13 @@
 # Central configuration for the application
 # please see also: settings_local.py_Example.txt
 import os
+import pwd
 
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
 
 # Get username
-current_user = os.environ.get('USERNAME', 'default')
+current_user = pwd.getpwuid(os.getuid())[0]
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.

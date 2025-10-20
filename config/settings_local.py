@@ -1,10 +1,15 @@
 # config/settings_local.py
+import os
+import pwd
 
 # My personal settings for SL5 Aura
 # This file is ignored by Git.
 
 SERVICE_START_OPTION = 1
 # Option 1: Start the service only on when there is an internet connection.
+
+# Get username
+current_user = pwd.getpwuid(os.getuid())[0]
 
 NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
@@ -18,6 +23,8 @@ soundProgramLoaded = 1
 DEV_MODE = False
 DEV_MODE_memory = False
 
+if current_user == 'seeh':
+    DEV_MODE = True
 
 # may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
 PRELOAD_MODELS = ["vosk-model-de-0.21"]
@@ -45,8 +52,8 @@ PLUGINS_ENABLED = {
     "wannweil": True,
     "game-dealers_choice": False,
     "0ad": False,
-    "ethiktagung": True,
-    "volkshochschule_tue": False,
+    "ethiktagung": False,
+    "volkshochschule_tue": True,
     "CCC_tue": True,
     "vsp_rt": True,
     "ki-maker-space": True,

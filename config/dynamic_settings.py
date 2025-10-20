@@ -1,6 +1,7 @@
 # config/dynamic_settings.py
 import collections.abc # Corrected import to collections.abc
 import importlib
+import pwd
 import sys
 import os
 from datetime import datetime
@@ -44,8 +45,10 @@ file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', m
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 
-logger.info(f"👀 dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
+current_user = pwd.getpwuid(os.getuid())[0]
 
+logger.info(f"👀 dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}, current_user={current_user}")
+# sys.exit(1)
 
 class DynamicSettings:
     _instance = None

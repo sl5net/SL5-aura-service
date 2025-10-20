@@ -1,7 +1,9 @@
 # config/settings_local.py
+import os
+import pwd
 
 # My personal settings Example
-# This file is ignored by Git.
+# This file is (maybe) ignored by Git.
 
 
 SERVICE_START_OPTION = 0
@@ -11,6 +13,11 @@ NOTIFICATION_LEVEL = 1
 soundMute = 1  # 1 is really recommandet. to know when your recording is endet.
 soundUnMute = 1
 soundProgramLoaded = 1
+
+# Get username
+current_user = pwd.getpwuid(os.getuid())[0]
+if current_user == 'seeh':
+    DEV_MODE = True
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.

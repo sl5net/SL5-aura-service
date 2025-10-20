@@ -24,8 +24,19 @@ FUZZY_MAP_pre = [
 
     ('Timo', r'\b(ti\w+r|T\w+i\w+o)\b', 70, {'flags': re.IGNORECASE}),
 
+#Keyboard stattKeyboard stürzendavor stört, war
+# davor stürzendavor stößt
+# davor stürzen
+# Tchibo stößtTimoTimoTimo Störzonen TchiboTimoTimoThema stört, war
+# SchlösserStösser
+#stößtThema StoffeTchibo das wardavor stößt
+#
 
-    ('Timo Stösser', r'^(thieme|thema|ti\w+r|T\w+i\w+o)\s+(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|stöße|stöpsel|Störche)$', 70, {'flags': re.IGNORECASE}),
+    ('Stösser', r'Frühstück$', 7, {'flags': re.IGNORECASE}),
+
+    ('Stösser', r'^(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Schlösser|stöße|stöpsel|Störche)$', 7, {'flags': re.IGNORECASE}),
+
+    ('Timo Stösser', r'^(ti\w+r|T\w+i\w+o)\s+(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Schlösser|stöße|stöpsel|Störche)$', 7, {'flags': re.IGNORECASE}),
 
     ('Fachbereichsleitung', r'^(fachbereichsleiter)$', 60, {'flags': re.IGNORECASE}),
 
@@ -43,7 +54,7 @@ FUZZY_MAP_pre = [
 ]
 
 # Python-Buch  Breitem Buch Python-Buch  Python-Buch bei im Buch
-# Brighton Buch  Python Buch Peitsche Buch Breite Buch
+# Brighton Buch  Python Buch Peitsche Buch Breite BuchTimoTchibo stürzen
 # Zweites Buch Bei Totenbuch Python Buch Breiter Buch Weite Buch Python-Buch
 #  Heitert Buch
 #  Python-Buch
