@@ -1,3 +1,11 @@
+# regular expressions rules
+
+Important: Please apply the regular expressions in the correct order.
+
+You must use the composite (more general) regular expression first, and then apply the specialized one.
+
+The reason is that if the shorter, specialized regex runs first, it might match a part of the string that is essential for the larger, composite regex. This would make it impossible for the composite regex to find its match afterwards.
+(S. 20.10.'25 18:37 Mon)
 
 # Linux/Mac
 
