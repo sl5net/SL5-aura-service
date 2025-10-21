@@ -23,11 +23,14 @@ soundProgramLoaded = 1
 DEV_MODE = False
 DEV_MODE_memory = False
 
-if current_user == 'seeh':
-    DEV_MODE = True
-
 # may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
 PRELOAD_MODELS = ["vosk-model-de-0.21"]
+
+if current_user == 'seeh':
+    DEV_MODE = True
+    PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+
+
 
 # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 

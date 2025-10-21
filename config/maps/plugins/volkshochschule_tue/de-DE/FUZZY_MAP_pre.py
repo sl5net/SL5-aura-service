@@ -14,29 +14,18 @@ FUZZY_MAP_pre = [
     # Importing to know:
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
-#  Kurztitel KI Helfer EDV und Beruf
-#  Katharinenstraße Besuch Wie Launch Übungsleiterpauschale
+"""
+Important: Please apply the regular expressions in the correct order.
 
-# Kursleiter schule
+You must use the composite (more general) regular expression first, and then apply the specialized one.
 
-# Kursleiterschulung bei uns dazukommen oder ich zeig Dir das Brett mal und Du kannst Dich damit warmspielen.
-#  Kursleiter Schulungen Kursleiter Schulung
+The reason is that if the shorter, specialized regex runs first, it might match a part of the string that is essential for the larger, composite regex. This would make it impossible for the composite regex to find its match afterwards.
+"""
+    ('Timo Stösser', r'^(ti\w+r|T\w+i\w+o)\s+(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Stoffe|Schlösser|stöße|stöpsel|Störche)$', 7, {'flags': re.IGNORECASE}),
 
     ('Timo', r'\b(ti\w+r|T\w+i\w+o)\b', 70, {'flags': re.IGNORECASE}),
 
-#Keyboard stattKeyboard stürzendavor stört, war
-# davor stürzendavor stößt
-# davor stürzen
-# Tchibo stößtTimoTimoTimo Störzonen TchiboTimoTimoThema stört, war
-# SchlösserStösser
-#stößtThema StoffeTchibo das wardavor stößt
-#
-
-    ('Stösser', r'Frühstück$', 7, {'flags': re.IGNORECASE}),
-
-    ('Stösser', r'^(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Schlösser|stöße|stöpsel|Störche)$', 7, {'flags': re.IGNORECASE}),
-
-    ('Timo Stösser', r'^(ti\w+r|T\w+i\w+o)\s+(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Schlösser|stöße|stöpsel|Störche)$', 7, {'flags': re.IGNORECASE}),
+    ('Stösser', r'^(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Schlösser|stöße|stöpsel|Störche)$', 70, {'flags': re.IGNORECASE}),
 
     ('Fachbereichsleitung', r'^(fachbereichsleiter)$', 60, {'flags': re.IGNORECASE}),
 
@@ -53,6 +42,10 @@ FUZZY_MAP_pre = [
 
 ]
 
+# Timo Stösser
+
+
+# Kursleiterschulung Python-BuchFachbereichsleitung
 # Python-Buch  Breitem Buch Python-Buch  Python-Buch bei im Buch
 # Brighton Buch  Python Buch Peitsche Buch Breite BuchTimoTchibo stürzen
 # Zweites Buch Bei Totenbuch Python Buch Breiter Buch Weite Buch Python-Buch
