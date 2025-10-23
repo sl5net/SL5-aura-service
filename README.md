@@ -267,6 +267,8 @@ Legend for OS Compatibility:
 
 ### bit grafically look to see whats behind:
 
+![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
+
       
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
 

@@ -63,4 +63,4 @@ The modified configuration file and the final Call Graph visualization should be
 | **Raw Profiling Data** | *(Optional: Should be excluded from final repository documentation)* |
 
 
-![yappi_png](yappi_call_graph_stripped.svg_20251024_010459.png "yappi_call_graph_stripped.svg_20251024_010459.png")
+![yappi_call_graph](yappi_call_graph_stripped.svg_20251024_010459.png "yappi_call_graph_stripped.svg_20251024_010459.png")
