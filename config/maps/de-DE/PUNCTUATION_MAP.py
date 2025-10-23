@@ -6,6 +6,7 @@ PUNCTUATION_MAP = {
 # config/languagetool_server/maps/de-DE/PUNCTUATION_MAP.py
 
 # #   Sierra 12345678910 15 .
+    # druck
 
     'punkt': '.',
     'prunk': '.',

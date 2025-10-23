@@ -1,21 +1,29 @@
 # file script/py/func/correct_text_by_languagetool
 import requests
 
+import settings.settings
+
+
 # from config.settings import LANGUAGETOOL_BASE_URL
 
 def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) -> str:
     # LANGUAGETOOL_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check"
     # LANGUAGETOOL_URL active_lt_url
 
+    log_all_changes = False
+
     if not text.strip(): return text
-    logger.info(f"-----> rawInput to LT:  '{text}'")
+
+    if log_all_changes:
+        logger.info(f"-----> rawInput to LT:  '{text}'")
     data = {'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1, 'enabledCategories': 'PUNCTUATION,GRAMMAR', 'Categories': 'PUNCTUATION,GRAMMAR'  }
     try:
         response = requests.post(active_lt_url, data, timeout=10)
         response.raise_for_status()
         matches = response.json().get('matches', [])
         if not matches:
-            logger.info("  <- Output from LT: (No changes)")
+            if log_all_changes:
+                logger.info("  <- Output from LT: (No changes)")
             return text
         sorted_matches = sorted(matches, key=lambda m: m['offset'])
         new_text_parts, last_index = [], 0
@@ -31,7 +39,8 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
             last_index = match['offset'] + match['length']
         new_text_parts.append(text[last_index:])
         corrected_text = "".join(new_text_parts)
-        logger.info(f"34:🔁 📚{text}📚 ->LT-> 📚{corrected_text}📚")
+        if log_all_changes:
+            logger.info(f"34:🔁 📚{text}📚 ->LT-> 📚{corrected_text}📚")
         return corrected_text
     except requests.exceptions.RequestException as e:
         logger.error(f"  <- ERROR: LanguageTool request failed: {e}")

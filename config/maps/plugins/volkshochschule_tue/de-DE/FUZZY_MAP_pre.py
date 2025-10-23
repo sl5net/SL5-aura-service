@@ -8,12 +8,6 @@ import re
 #    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
-FUZZY_MAP_pre = [
-    # === General Terms (Case-Insensitive) ===
-    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
-    # Importing to know:
-    # - in our implementation it stops with first match!
-    # - means first is most imported, lower rules maybe not get read.
 """
 Important: Please apply the regular expressions in the correct order.
 
@@ -21,6 +15,13 @@ You must use the composite (more general) regular expression first, and then app
 
 The reason is that if the shorter, specialized regex runs first, it might match a part of the string that is essential for the larger, composite regex. This would make it impossible for the composite regex to find its match afterwards.
 """
+
+FUZZY_MAP_pre = [
+    # === General Terms (Case-Insensitive) ===
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
+    # Importing to know:
+    # - in our implementation it stops with first match!
+    # - means first is most imported, lower rules maybe not get read.
     ('Timo Stösser', r'^(ti\w+r|T\w+i\w+o)\s+(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Stoffe|Schlösser|stöße|stöpsel|Störche)$', 7, {'flags': re.IGNORECASE}),
 
     ('Timo', r'\b(ti\w+r|T\w+i\w+o)\b', 70, {'flags': re.IGNORECASE}),

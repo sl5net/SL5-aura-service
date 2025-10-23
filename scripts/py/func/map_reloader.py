@@ -43,6 +43,9 @@ def auto_reload_modified_maps(logger):
                 # module_path = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
                 module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
 
+                log_all_map_reloaded = settings.DEV_MODE and False
+
+
                 if module_name in sys.modules:
                     if last_mtime != 0:
                         if settings.DEV_MODE:
@@ -54,7 +57,7 @@ def auto_reload_modified_maps(logger):
                         importlib.reload(module_to_reload)
 
                         LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                        if settings.DEV_MODE:
+                        if log_all_map_reloaded:
                             logger.info(f"✅ Successfully reloaded '{module_name}'.")
                     except Exception as e:
                         logger.error(f"❌ Failed to reload module '{module_name}': {e}")

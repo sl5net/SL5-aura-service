@@ -27,7 +27,7 @@ FUZZY_MAP_pre = [
 
     # zugrunde laufSigune LaufferSiguneSebastianlaufeLauscha
 
-    ('Sigune', r'^(Figur|Sekunde|sigourney|sheego|Sie gute|gun|Ski gute|c gute|Schick ohne|sheikh ohne|gleich ohne|spione)$', 82, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    # ('Sigune', r'^(Figur|Sekunde|sigourney|sheego|Sie gute|gun|Ski gute|c gute|Schick ohne|sheikh ohne|gleich ohne|spione)$', 82, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # SpioneC google Dow vorSchicht guteSigune Lauffer Sekunde laufe
 
 

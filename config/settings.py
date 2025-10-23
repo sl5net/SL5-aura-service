@@ -76,6 +76,14 @@ default_mode_is_all = True
 #  1 zwei drei vier 5
 #
 
+LT_SKIP_RATIO_THRESHOLD = 20
+"""
+Explanation of the Ratio Logic:
+ratio = original_text_length / made_a_change: Calculates how many characters (on average) correspond to one change.
+
+if ratio < lt_skip_ratio_threshold: If the ratio is low (less than the safe threshold), we skip LanguageTool.
+"""
+
 PLUGINS_ENABLED = {}
 
 # needs restart. implemented in the python part:

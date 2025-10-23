@@ -68,6 +68,7 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 # These settings tell the backend service what to expect or how to format output.
 ####     "github_corrections": True,         # Example from before ???
 PLUGINS_ENABLED = {
+    "empty_all": True,
     "game-dealers_choice": False,             # For Andy's poker game
     "wannweil": False,
     "git": False,

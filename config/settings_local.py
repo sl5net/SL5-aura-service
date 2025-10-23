@@ -28,7 +28,7 @@ PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 if current_user == 'seeh':
     DEV_MODE = True
-    PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+    # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 
 
 
@@ -49,8 +49,10 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 # The logic is handled by client scripts (e.g., type_watcher.sh, AutoKey).
 # These settings tell the backend service what to expect or how to format output.
 
+#git status git status git status
 
 PLUGINS_ENABLED = {
+    "empty_all": False,
     "git": True,
     "wannweil": True,
     "game-dealers_choice": False,
@@ -60,10 +62,11 @@ PLUGINS_ENABLED = {
     "CCC_tue": True,
     "vsp_rt": True,
     "ki-maker-space": True,
-    "numbers_to_digits": True,
+    "numbers_to_digits": True, # hundert|einhundert --> 100
     "digits_to_numbers": False,
     "web-radio-funk": True,
 }
+#  geht status eins zwei doch
 
 # needs restart. implemented in the python part:
 ADD_TO_SENCTENCE = "."

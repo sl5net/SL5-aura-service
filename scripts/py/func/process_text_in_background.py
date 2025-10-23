@@ -88,10 +88,14 @@ def load_maps_for_language(lang_code, logger):
         logger.debug(f"📚Found module candidate: {modname}")
 
         if ispkg:
+            # logger.info(f"🗺️ispkg -> continue || {modname[:-4]}...")
             continue
 
         if f".{lang_code}." not in modname:
+            # logger.info(f"🗺️{lang_code} not in {modname[:-4]}... -> continue")
             continue
+
+        log_all_map_ENABLED = False and settings.DEV_MODE
 
         # not use not needed plugins
         if ".plugins." in modname:
@@ -115,11 +119,12 @@ def load_maps_for_language(lang_code, logger):
             if not settings.PLUGINS_ENABLED.get(plugin_name, True):
                 if settings.DEV_MODE:
                     if plugin_name_before != plugin_name:
-                        logger.info(f"🗺️ FALSE: {plugin_name} ▉ {modname[:-4]}...")
+                        if log_all_map_ENABLED:
+                            logger.info(f"🗺️ FALSE: {plugin_name} ▉ {modname[:-4]}...")
                 continue
             else:
                 if plugin_name_before != plugin_name:
-                    if settings.DEV_MODE:
+                    if log_all_map_ENABLED:
                         logger.info(f"🗺️ ENABLED: {plugin_name} ▉ {modname[:-4]}...")
 
         try:
@@ -133,7 +138,29 @@ def load_maps_for_language(lang_code, logger):
             if hasattr(module, 'FUZZY_MAP_pre'):
                 fuzzy_map_pre.extend(module.FUZZY_MAP_pre)
             if hasattr(module, 'FUZZY_MAP'):
-                fuzzy_map.extend(module.FUZZY_MAP)
+                # 1. Get the raw map data
+                raw_map = module.FUZZY_MAP
+
+                # 2. Standardize the data structure using a list comprehension
+                #    This ensures every item is 4 elements long (or fails if it's not 3 or 4)
+                standardized_map = []
+                for item in raw_map:
+                    item_len = len(item)
+
+                    if item_len == 3:
+                        standardized_map.append(item + ({},))
+
+                    elif item_len == 4:
+                        standardized_map.append(item)
+
+                    else:
+                        logger.error(f"warning: FUZZY_MAP-length: ({item_len}): {item}",
+                              file=sys.stderr)
+
+                fuzzy_map.extend(standardized_map)
+
+                # 3. Extend the main fuzzy_map with the standardized rules
+                fuzzy_map.extend(standardized_map)
 
         except Exception as e:
             logger.error(f"Failed to process module '{modname}': {e}")
@@ -147,10 +174,7 @@ def load_maps_for_language(lang_code, logger):
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"next: return punctuation_map, fuzzy_map_pre, fuzzy_map", logger)
 
-
     return punctuation_map, fuzzy_map_pre, fuzzy_map
-
-
 
 from .correct_text_by_languagetool import correct_text_by_languagetool
 import re, time
@@ -165,6 +189,14 @@ def is_regex_pattern(pattern):
 
 
 def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger):
+
+    log_all_processed_text = settings.DEV_MODE and False
+
+    if type(processed_text) is int:
+        if log_all_processed_text:
+            logger.info(f"apply_fuzzy_replacement_logic():168: type(processed_text:{processed_text}) is int replacement:{replacement}")
+        if processed_text==0:
+            return processed_text
     # Ensure match_phrase is a string for fuzzy comparison if it's not a regex pattern
     # The threshold is given as a percentage (e.g., 82). difflib.SequenceMatcher ratio is 0.0-1.0.
     # So, we convert the threshold to a float between 0 and 1.
@@ -230,25 +262,38 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         , fuzzy_map_pre
         , logger)
     #made_a_change_in_cycle = None
+
+    log_all_processed_text = False and settings.DEV_MODE
+
     a_rule_matched = False
     if new_processed_text is False:
         #made_a_change_in_cycle = False
+        if log_all_processed_text:
+            logger.info(f"261: new_processed_text is return ... None")
         return new_processed_text, None, skip_list
 
 
     if full_text_replaced_by_rule:
         skip_list.append('LanguageTool')
         # regex_pre_is_replacing_all_maybeTEST1 = True
-        logger.info(f"242: 🔁??? new_processed_text: {new_processed_text})")
+        if log_all_processed_text:
+            logger.info(f"242: 🔁??? new_processed_text: {new_processed_text}")
         return new_processed_text, True, skip_list
 
-    logger.info(f"246: ??? new_processed_text: {new_processed_text},  "
-                f"skip_list:{skip_list} ")
+    if log_all_processed_text:
+        logger.info(f"246: new_processed_text: {new_processed_text},  "
+                f"skip_list:{skip_list} ,  full_text_replaced_by_rule: '{full_text_replaced_by_rule}'   ")
 
     # if regex_pre_is_replacing_all_maybe:
     #     regex_match_found_prev = True  # need to be then also true for historical reasons. to be compatible to rest of the code
+    if log_all_processed_text:
+        logger.info(f"251: skip_list={skip_list} 🔁🔁🔁🔁🔁 full_text_replaced_by_rule: '{full_text_replaced_by_rule}' ")
+
     if new_processed_text:
         processed_text = new_processed_text
+        if log_all_processed_text:
+            logger.info(f"251: 🔁🔁🔁🔁🔁 full_text_replaced_by_rule: '{full_text_replaced_by_rule}' ")
+
     else:
         # scripts/py/func/process_text_in_background.py:248
         #for replacement, match_phrase, threshold, *flags_list, rule_mode in fuzzy_map_pre:
@@ -304,8 +349,17 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                 continue  # Skip this invalid rule
 
             if not current_rule_matched:
-                processed_text = apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger)
-            #logger.info(f"292: regex_pre_is_replacing_all_maybeTEST1: {regex_pre_is_replacing_all_maybeTEST1}")
+                # logger.info(f"310: new: new_processed_text={new_processed_text}, threshold={threshold} , a_rule_matched={a_rule_matched}")
+                # , is in # file config/languagetool_server/PUNCTUATION_MAP.py
+                if type(new_processed_text) is int and new_processed_text == 0:
+                    # if log_all_processed_text:
+                    if log_all_processed_text:
+                        logger.info('TODO: what to do here?')
+                    # new_processed_text = ''
+                new_processed_text = apply_fuzzy_replacement_logic(new_processed_text, replacement, threshold, logger)
+                if log_all_processed_text:
+                    logger.info(f"346: new: new_processed_text={new_processed_text} , threshold={threshold} , a_rule_matched={a_rule_matched}")
+
     return new_processed_text, a_rule_matched, skip_list
 
 
@@ -331,13 +385,19 @@ def process_text_in_background(logger,
 
 
         # ZWNBSP
-        if settings.DEV_MODE:
+
+        log_all_processing = settings.DEV_MODE and False
+
+        if log_all_processing:
             logger.info(f"335: THREAD: Starting processing for: '{raw_text}'")
 
         notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
 
 
         lang_code_predictions = ''
+
+        if log_all_processing:
+            logger.info(f"process_text_in_background.py:371 raw_text:{raw_text}")
 
         if len(raw_text) > 0:
             try:
@@ -390,9 +450,10 @@ def process_text_in_background(logger,
         processed_text, was_exact_match = normalize_punctuation(raw_text, punctuation_map)
         if len(processed_text) != len(raw_text):
             normalize_punctuation_changed_size = True
-
-            logger.info(
-                f"395: ?? {processed_text} ?? normalize_punctuation_changed_size:{normalize_punctuation_changed_size}")
+            new_processed_text = processed_text
+            if log_all_processing:
+                logger.info(
+                f"process_text_in_background.py:426 processed_text:{processed_text} ?? normalize_punctuation_changed_size:{normalize_punctuation_changed_size}")
 
         if normalize_punctuation_changed_size:
             processed_text = re.sub(r'(?<=\d)\s+(?=\d)', '', processed_text)
@@ -405,9 +466,9 @@ def process_text_in_background(logger,
         regex_match_found_prev = False
         regex_pre_is_replacing_all_maybe = False
         result_languagetool = None
-
-        logger.info(
-            f"406: ?? {processed_text} ?? {new_processed_text}")
+        if log_all_processing:
+            logger.info(
+            f"process_text_in_background.py:406 processed_text:{processed_text} new_processed_text:{new_processed_text}")
 
         skip_list = []
         if not was_exact_match:
@@ -417,9 +478,18 @@ def process_text_in_background(logger,
 
             regex_pre_is_replacing_all_maybeTEST1 = None
 
+            if log_all_processing:
+                logger.info(f"process_text_in_background()458: new_processed_text: {new_processed_text}"
+                        f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
+                        f" normalize_punctuation_changed_size={normalize_punctuation_changed_size}"
+                        f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
+                        f" regex_match_found_prev:{regex_match_found_prev}")
+
+
             if settings.default_mode_is_all:
                 # Rufe die neue Funktion auf, die alle Regeln iterativ anwendet
-                logger.info(f"Applying all rules until stable (default 'all' mode).")
+                if log_all_processing:
+                    logger.info(f"Applying all rules until stable (default 'all' mode).")
                 (new_processed_text
                 , regex_pre_is_replacing_all_maybe
                 , skip_list) = apply_all_rules_may_until_stable(processed_text
@@ -427,14 +497,17 @@ def process_text_in_background(logger,
 
 
             regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe # and regex_match_found_prev
-            logger.info(f"423: ????? "
-                        f"regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
-                        f"regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
-                        f"normalize_punctuation_changed_size={normalize_punctuation_changed_size}"
-                        f"regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
-                        f"regex_match_found_prev:{regex_match_found_prev}")
+            if log_all_processing:
+                logger.info(f"475: new_processed_text: {new_processed_text}"
+                        f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
+                        f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
+                        f" normalize_punctuation_changed_size={normalize_punctuation_changed_size}"
+                        f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
+                        f" regex_match_found_prev:{regex_match_found_prev}"
+                        f" skip_list={skip_list}")
 
-            logger.info(f"425: LT_LANGUAGE = {LT_LANGUAGE} , skip_list = {skip_list} , regex_pre_is_replacing_all_maybe ={regex_pre_is_replacing_all_maybe}") #
+            if log_all_processing:
+                logger.info(f"483: LT_LANGUAGE = {LT_LANGUAGE} , skip_list = {skip_list} , regex_pre_is_replacing_all_maybe ={regex_pre_is_replacing_all_maybe}") #
             if regex_pre_is_replacing_all:
                 if processed_text == 'english please' and LT_LANGUAGE == 'de-DE':
                     processed_text = 'Ok, lets write in english now.'
@@ -451,14 +524,21 @@ def process_text_in_background(logger,
                     # load_maps_for_language(LT_LANGUAGE, logger)
                     # Switched to English mill ﻿ Deutsche Putin the
 
+            if log_all_processing:
+                logger.info(f"500: if ({not regex_pre_is_replacing_all}"
+                        f" and not {is_only_number}"
+                        f" and 📚📚'LanguageTool'📚📚 not in {skip_list} "
+                        f" and not ( ... {processed_text}")
+
             if (not regex_pre_is_replacing_all
                 and not is_only_number
                 and 'LanguageTool' not in skip_list
                 and not (
                             settings.CORRECTIONS_ENABLED["git"]
-                            and ("git" in processed_text or "push" in processed_text))):
+                            and ("git " in processed_text or " push" in processed_text))):
 
-                logger.info(f"449: and not 'LanguageTool' in skip_list ==> {skip_list}"
+                if log_all_processing:
+                    logger.info(f"449: and not 📚📚'LanguageTool'📚📚 in skip_list ==> {skip_list}"
                             f" processed_text:{processed_text}"
                             f" new_processed_text:{new_processed_text} ")
 
@@ -489,18 +569,27 @@ def process_text_in_background(logger,
 
             # Pass 1: Prioritize and check for exact REGEX matches first.
             # A regex match is considered definitive and will stop further processing.
-            logger.info(f"477: SkipList: {skip_list} "
+            if log_all_processing:
+                logger.info(f"539: SkipList: {skip_list} "
                         f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
                         f" processed_text:{processed_text} "
                         f" new_processed_text:{new_processed_text}" 
-                        f" result_languagetool:{result_languagetool} ")
+                        f" 📚📚result_languagetool📚📚:{result_languagetool} ")
             # 477: SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
 
             regex_match_found = False
-            logger.info(f'500: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ')
+            if log_all_processing:
+                logger.info(f'500: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ')
             if not regex_pre_is_replacing_all and not is_only_number:
-                logger.info(f'502 in fuzzy_map: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ')
+                if log_all_processing:
+                    logger.info(f'502 in fuzzy_map: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ')
                 for replacement, match_phrase, threshold, options_dict in fuzzy_map:
+                    # logger.info(
+                    #     f'process_text_in_background.py:549 in fuzzy_map:'
+                    #     f' regex_pre_is_replacing_all:{regex_pre_is_replacing_all}'
+                    #     f' replacement:{replacement}'
+                    #     f' match_phrase:{match_phrase}'
+                    #     f' threshold:{threshold}')
 
                     flags = options_dict.get('flags', 0)  # Standardwert ist 0, wenn kein Flag angegeben
                     skip_list = options_dict.get('skip_list', [])  # Standardwert ist leere Liste
@@ -508,7 +597,7 @@ def process_text_in_background(logger,
                     # ... Rest deiner Logik
                     # logger.info(f"Flags: {flags}, Skip List: {skip_list}")
                     if skip_list:
-                        logger.info(f"511:Skip List: {skip_list}")
+                        logger.info(f"process_text_in_background.py:557 Skip List:{skip_list}")
                         sys.exit(1)
 
 
@@ -518,7 +607,8 @@ def process_text_in_background(logger,
                         try:
                             if not re.search(match_phrase, result_languagetool, flags=flags):
                                 continue
-                            logger.info(f"520:🔁Regex in: '{result_languagetool}' --> '{replacement}' based on pattern '{match_phrase}'")
+                            if log_all_processing:
+                                logger.info(f"520:🔁Regex in: '{result_languagetool}' --> '{replacement}' based on pattern '{match_phrase}'")
 
                             new_text = re.sub(
                                 match_phrase,
@@ -528,7 +618,8 @@ def process_text_in_background(logger,
                             )
 
                             if new_text != result_languagetool:
-                                logger.info(
+                                if log_all_processing:
+                                    logger.info(
                                     f"533: Regex match: '{result_languagetool}' -> '{new_text}' (Pattern: '{match_phrase}')")
                                 processed_text = new_text
                                 result_languagetool = new_text # TODO: lazy programming
@@ -548,7 +639,8 @@ def process_text_in_background(logger,
                     and not regex_pre_is_replacing_all_maybe
                     and not regex_match_found
                     and not is_only_number):
-                logger.info(f"534: No regex match. Proceeding to fuzzy search for: '{processed_text}'")
+                if log_all_processing:
+                    logger.info(f"534: No regex match. Proceeding to fuzzy search for: '{processed_text}'")
                 best_score = 0
                 best_replacement = None
 
@@ -570,7 +662,8 @@ def process_text_in_background(logger,
                     logger.info(f"👎best fuzzy score:{best_score}% for '{processed_text}'")
 
         if new_processed_text:
-            logger.info(f"549: SkipList: {skip_list} regex_match_found_prev:{regex_match_found_prev} regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} processed_text:{processed_text} "
+            if log_all_processing:
+                logger.info(f"process_text_in_background.py:619 SkipList: {skip_list} regex_match_found_prev:{regex_match_found_prev} regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} processed_text:{processed_text} "
                     f"new_processed_text:{new_processed_text}")
         # 477: SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
 
@@ -592,20 +685,30 @@ def process_text_in_background(logger,
         else:
             unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
 
-        logger.info(
-            f"596: SkipList:{skip_list} "
+        if log_all_processing:
+            logger.info(
+            f"634: SkipList:{skip_list} "
             f" processed_text:{processed_text} "
             f" new_processed_text:{new_processed_text}"
             f" result_languagetool:{result_languagetool} ")
         # SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
         # SkipList:[]  processed_text: mit nachnamen Lauffer  new_processed_text:False result_languagetool:Mit Nachnamen lauf er
 
-        if new_processed_text and new_processed_text != processed_text:
+
+        if not new_processed_text:
+            if log_all_processing:
+                logger.info(f"607: Empty results are allowed not |||  SkipList:{skip_list}"
+                        f" new_processed_text:{new_processed_text}"
+                        f" result_languagetool:{result_languagetool}"
+                        f" processed_text:{processed_text} ")
+
+        if new_processed_text != processed_text:
             processed_text = new_processed_text
 
         # unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
         # unique_output_file.write_text(processed_text)
-        logger.info(f"609: SkipList:{skip_list}"
+        if log_all_processing:
+            logger.info(f"609: SkipList:{skip_list}"
                     f" new_processed_text:{new_processed_text}"
                     f" result_languagetool:{result_languagetool}"
                     f" processed_text:{processed_text} ")
@@ -706,10 +809,15 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                str: The stabilized text.
                bool: True if a complete replacement of the text by a rule has taken place, indicating an early termination. False otherwise.
     """
+    log_all_changes = False and settings.DEV_MODE
+
     skip_list = []
+
     previous_text = ""
     current_text = text
     full_text_replaced_by_rule = False
+
+    regex_pattern = None
 
     made_a_change = 0
     while current_text != previous_text:
@@ -725,7 +833,11 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             # Extrahiere die Flags aus dem options_dict
             flags = options_dict.get('flags', 0) # Jetzt ist 'flags' ein Integer
-            skip_list = options_dict.get('skip_list', []) # Optional: Wenn du skip_list brauchst
+            skip_list_temp = options_dict.get('skip_list', [])
+
+            if log_all_changes:
+                logger_instance.info(
+                f"process_text_in_background.py:783 made_a_change={made_a_change} REPLACE:{full_text_replaced_by_rule} options_dict={options_dict} skip_list:{skip_list} (Pattern: '{regex_pattern}')")
 
             # Den threshold hast du jetzt auch direkt entpackt
 
@@ -745,6 +857,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     if new_current_text != current_text:
                         made_a_change_in_cycle = True
                         made_a_change = made_a_change+1
+                        skip_list = skip_list_temp
 
                         # logger_instance.info(f"711: 🚀712: Iterative-All-Rules (FULL REPLACE): '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
                         # 16:09:11,968 - INFO     - 🚀Iterative-All-Rules: 'mit nachnamen laufer' -> 'mit nachnamen Lauffer' (Pattern: '\b(Läufer|laufer|lauf war)\b')
@@ -752,11 +865,13 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         full_text_replaced_by_rule = regex_pattern.startswith('^') and regex_pattern.endswith(
                             '$') or replacement_text == current_text
 
-                        logger_instance.info(
-                            f"🚀712: made_a_change={made_a_change} Iterative-All-Rules (?? FULL REPLACE={full_text_replaced_by_rule}): '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
+                        if log_all_changes:
+                            logger_instance.info(
+                            f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} {current_text} ----> '{new_current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}")
+
 
                         # sys.exit(0)
-
+                        # while current_text != previous_text:
                         break
                 else:
                     new_current_text = re.sub(
@@ -767,8 +882,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     )
                     if new_current_text != current_text:
                         made_a_change += 1
-                        logger_instance.info(
-                            f"🚀Iterative-All-Rules made_a_change={made_a_change} : '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
+                        if log_all_changes:
+                            logger_instance.info(
+                            f"834🚀🚀Iterative-All-Rules made_a_change={made_a_change} : '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
                         current_text = new_current_text
                         made_a_change_in_cycle = True
                     # TODO: Proof follwoing. maybe use it
@@ -781,7 +897,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
         if full_text_replaced_by_rule:
             made_a_change = True
             logger_instance.info(
-                f"744: 🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}, skip_list='{skip_list}'")
+                f"847: 🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}, skip_list='{skip_list}'")
 
             break
 
@@ -789,15 +905,46 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             break
 
     if not made_a_change:
-        logging.info(f"752: made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}")
+        if log_all_changes:
+            logging.info(f"855: made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}")
         #  z.b. "das ist ein test landet" hier. Es gibt auch (höchstwahrschienlich keine Regel hiervür. Also correkt.
         # logging.info('sys.exit(1) 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923')
         # sys.exit(1) # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 Test
         return made_a_change, full_text_replaced_by_rule, skip_list
-    logging.info(f"793: made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}")
+    if log_all_changes:
+        logging.info(f"852: 🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}")
     # 17:08:56,492 - INFO     - 758: made_a_change=True full_text_replaced_by_rule:False current_text:mit nachnamen Lauffer
-    if made_a_change > 1:
-        skip_list.append('LanguageTool')
+
+    # 1. Calculate the Ratio
+    lt_skip_ratio_threshold = settings.LT_SKIP_RATIO_THRESHOLD
+    len_previous_text = len(previous_text)
+    ratio = len_previous_text / made_a_change if made_a_change > 0 else float('inf')
+
+    # 2. Check against the threshold
+    # If the text is short OR the change density is high (low ratio), skip LT.
+    if ratio < lt_skip_ratio_threshold:
+
+        # Check if LanguageTool is not already marked for skipping
+        if 'LanguageTool' not in skip_list:
+            # Add LT to the skip list
+            skip_list.append('LanguageTool')
+
+            # 3. Add the Warning Message
+            if log_all_changes:
+                logger_instance.warning(
+                f"LT Skipped (Heuristic): Change density is too high or text too short. "
+                f"Length: {len_previous_text}, Changes: {made_a_change}. "
+                f"Ratio ({ratio:.2f}) is below threshold ({lt_skip_ratio_threshold})."
+            )
+
+
+    # if made_a_change > 1:
+    #     if 'LanguageTool' not in skip_list:
+    #         skip_list.append('LanguageTool')
+    if log_all_changes:
+        logging.info(f"862: 🚀🚀🚀skip_list:{skip_list} regex_pattern={regex_pattern} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}")
+    # 17:08:56,492 - INFO     - 758: made_a_change=True full_text_replaced_by_rule:False current_text:mit nachnamen Lauffer
+
     return current_text, full_text_replaced_by_rule, skip_list
 
 #

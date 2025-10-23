@@ -14,7 +14,8 @@ def notify(summary: str, body: str = "", urgency: str = "low", icon: str = None,
     """
     Sends a desktop notification, adapting to the host operating system.
     """
-    logger.info("Attempting to send notification...")
+    if settings.DEV_MODE:
+        logger.info("Attempting to send notification...")
     if not settings.NOTIFICATION_LEVEL:
         logger.info(f"Notifications are disabled (NOTIFICATION_LEVEL={settings.NOTIFICATION_LEVEL}). Aborting.")
         return
