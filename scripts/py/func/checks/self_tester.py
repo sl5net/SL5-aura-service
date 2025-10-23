@@ -249,7 +249,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
         if actual.lstrip() == expected:
             passed_count += 1
-            logger.info(f"self_tester.py:216 ✅ PASS:"
+            logger.info(f"self_tester.py:216 ✅ "
                         f" {failed_count} ❌ FAILed of"
                         f" {passed_count + failed_count}tested of"
                         f" {len(test_cases)} tests")
