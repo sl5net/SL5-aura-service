@@ -34,7 +34,7 @@ python3 dictation_service.py
 
 Press **Ctrl+C** once to trigger the signal handler. This will stop the profiler and save the raw data to:
 
-$$\mathbf{yappi\_profile\_data.prof}$$
+`\mathbf{yappi\_profile\_data.prof`
 
 ### Step 3: Generating and Filtering the Visual Graph
 
