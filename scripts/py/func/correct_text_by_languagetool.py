@@ -1,9 +1,6 @@
 # file script/py/func/correct_text_by_languagetool
 import requests
 
-import settings.settings
-
-
 # from config.settings import LANGUAGETOOL_BASE_URL
 
 def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) -> str:

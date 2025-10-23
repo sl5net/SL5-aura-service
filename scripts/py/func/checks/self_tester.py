@@ -37,7 +37,7 @@ def simple_clear_log(log_path: Path):
 
     try:
         # Open in write mode ('w') to truncate the file
-        with open(log_path, 'w', encoding='utf-8') as f:
+        with open(log_path, 'w', encoding='utf-8'):
             pass
         print(f"Log '{log_path}' cleared successfully.")
     except Exception as e:
