@@ -249,9 +249,9 @@ Legend for OS Compatibility:
 
 **ExperimentalFeatures/**  
 ├─ **ENTER_AFTER_DICTATION_REGEX** Example activation rule "(ExampleAplicationThatNotExist|Pi, your personal AI)" 🐧  
-├┬Plugins
+├┬Plugins  
 │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟  
-(*Changes to Plugin activation/deactivation, and their configurations, are applied on the next processing run without service restart.*)
+(*Changes to Plugin activation/deactivation, and their configurations, are applied on the next processing run without service restart.*)  
 │ ├ **git commands** (Voice control for send git commands) 🐧 🍏 🪟  
 │ ├ **wannweil** (Map for Location Germany-Wannweil) 🐧 🍏 🪟  
 │ ├ **Poker Plugin (Draft)** (Voice control for poker applications) 🐧 🍏 🪟  
