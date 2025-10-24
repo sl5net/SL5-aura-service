@@ -16,6 +16,9 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
-    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(deutschlandfunk|Deutschlandradio)\s*$', 70, {'flags': re.IGNORECASE}),
+
+    # deutsche radio
+
+    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(deutschlandfunk|Deutschlandradio|deutsch\w* radio)\s*$', 70, {'flags': re.IGNORECASE}),
 ]
 
