@@ -14,6 +14,7 @@ It's a complete, offline assistant built on Vosk and LanguageTool.
 ## Key Features
 
 *   **Offline & Private:** 100% local. No data ever leaves your machine.
+*  **High-Control Transformation Engine:** Implements a configuration-driven, highly customizable processing pipeline. Rule priority, command detection, and text transformations are determined purely by the sequential order of rules in the Fuzzy Maps, requiring **configuration, not coding**.
 *   **Conservative RAM Usage:** Intelligently manages memory, preloading models only if enough free RAM is available, ensuring other applications (like your PC games) always have priority.
 *   **Cross-Platform:** Works on Linux, macOS, and Windows.
 *   **Fully Automated:** Manages its own LanguageTool server (but you can use a external also). 
@@ -119,7 +120,7 @@ if (f.openAppend()) {
 #SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
 
 ;===================================================================
-; Hotkey zum Auslösen des STT Triggers
+; Hotkey zum Auslösen des Aura Triggers
 ; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
 ;===================================================================
 f9::
@@ -128,7 +129,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("STT Trigger ausgelöst!")
+    ToolTip("Aura Trigger ausgelöst!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```
@@ -150,7 +151,18 @@ You can customize the application's behavior by creating a local settings file.
 
 This `settings_local.py` file is (maybe) ignored by Git, so your personal changes (maybe) won't be overwritten by updates.
 
+### Plug-in Structure and Logic
 
+The system's modularity allows for robust extension via the plugins/ directory.
+
+The processing engine strictly adheres to a **Hierarchical Priority Chain**:
+
+1. **Module Loading Order (High Priority):** Rules loaded from core language packs (de-DE, en-US) take precedence over rules loaded from the plugins/ directory (which load last alphabetically).
+    
+2. **In-File Order (Micro Priority):** Within any given map file (FUZZY_MAP_pre.py), rules are processed strictly by **line number** (top-to-bottom).
+    
+
+This architecture ensures that core system rules are protected, while project-specific or context-aware rules (like those for CodeIgniter or game controls) can be easily added as low-priority extensions via plug-ins.
 ## Key Scripts for Windows Users
 
 Here is a list of the most important scripts to set up, update, and run the application on a Windows system.
@@ -181,17 +193,21 @@ Legend for OS Compatibility:
 
 ---
 
-### **Core Speech-to-Text (STT) Engine**
+### **Core Speech-to-Text (Aura) Engine**
     Our primary engine for offline speech recognition and audio processing.
 
-**STT-Core/** 🐧 🍏 🪟  
-├─ `dictation_service.py` (Main Python service orchestrating STT) 🐧 🍏 🪟  
+**Aura-Core/** 🐧 🍏 🪟  
+├─ `dictation_service.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
 │├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
-│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - applied before LT for performance) 🐧 🍏 🪟  
+│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - **The Primary Command Layer**) 🐧 🍏 🪟  
+││ * **Cascading Execution:** Rules are processed sequentially and their effects are **cumulative**. Later rules apply to text modified by earlier rules.
+││ * **Highest Priority Stop Criterion:** If a rule achieves a **Full Match** (^...$), the entire processing pipeline for that token stops immediately. This mechanism is critical for implementing reliable voice commands.
 │├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
-│└ 4. **Intelligent Post-Correction** (`FuzzyMap` - applied behind LT) 🐧 🍏 🪟  
+│└ 4. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟  
+││ * Applied after LanguageTool to correct LT-specific outputs. Follows the same strict cascading priority logic as the Pre-Correction layer.
+││ * **Fuzzy Fallback:** The **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. It is only executed if the entire preceding deterministic/cascading rule run failed to find a match (current_rule_matched is False), optimizing performance by avoiding slow fuzzy checks whenever possible.
 ├┬ **Model Management/**   
 │├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
