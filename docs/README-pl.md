@@ -8,7 +8,7 @@ Aura wykracza poza zwykłą zamianę mowy na tekst. Umożliwia to personalizacj�
 
 To kompletny asystent offline zbudowany na Vosk i LanguageTool.
 
-Tłumaczenia: Ten dokument istnieje również w [other languages](https://github.com/sl5net/docs).
+Tłumaczenia: Ten dokument istnieje również w [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumentacji w języku angielskim i mają one wyłącznie charakter ogólny. W przypadku rozbieżności lub niejasności, zawsze obowiązuje wersja angielska. Czekamy na pomoc społeczności w ulepszaniu tego tłumaczenia!
 

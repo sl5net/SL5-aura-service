@@ -8,7 +8,7 @@ Aura va au-delà de la simple synthèse vocale. Cela permet la personnalisation.
 
 Il s'agit d'un assistant complet hors ligne construit sur Vosk et LanguageTool.
 
-Traductions : Ce document existe également en [other languages](https://github.com/sl5net/docs).
+Traductions : Ce document existe également en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Remarque : De nombreux textes sont des traductions générées automatiquement de la documentation originale en anglais et sont uniquement destinés à des conseils généraux. En cas de divergences ou d'ambiguïtés, la version anglaise prévaut toujours. Nous apprécions l’aide de la communauté pour améliorer cette traduction !
 

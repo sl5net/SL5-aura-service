@@ -8,7 +8,7 @@ Aura geht über die einfache Speech-to-Text-Funktion hinaus. Dies ermöglicht ei
 
 Es handelt sich um einen vollständigen Offline-Assistenten, der auf Vosk und LanguageTool basiert.
 
-Übersetzungen: Dieses Dokument existiert auch in [other languages](https://github.com/sl5net/docs) verfügbar.
+Übersetzungen: Dieses Dokument existiert auch in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs) verfügbar.
 
 Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzungen der englischen Originaldokumentation, die lediglich der allgemeinen Orientierung dienen. Im Falle von Unstimmigkeiten oder Unklarheiten ist stets die englische Version maßgebend. Wir freuen uns über die Hilfe der Community, um diese Übersetzung zu verbessern!
 

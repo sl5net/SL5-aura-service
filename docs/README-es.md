@@ -8,7 +8,7 @@ Aura va más allá de la simple conversión de voz a texto. Esto permite la pers
 
 Es un asistente completo y fuera de línea creado sobre Vosk y LanguageTool.
 
-Traducciones: Este documento también existe en [other languages](https://github.com/sl5net/docs).
+Traducciones: Este documento también existe en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Nota: Muchos textos son traducciones generadas automáticamente de la documentación original en inglés y están destinados únicamente a proporcionar orientación general. En caso de discrepancias o ambigüedades, siempre prevalecerá la versión en inglés. ¡Agradecemos la ayuda de la comunidad para mejorar esta traducción!
 

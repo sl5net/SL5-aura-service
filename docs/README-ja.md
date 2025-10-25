@@ -8,7 +8,7 @@ Aura は、単純な音声からテキストへの変換を超えています。
 
 これは、Vosk と LanguageTool に基づいて構築された完全なオフライン アシスタントです。
 
-翻訳: このドキュメントは [other languages](https://github.com/sl5net/docs) にも存在します。
+翻訳: このドキュメントは [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs) にも存在します。
 
 注: 多くのテキストは、元の英語ドキュメントの機械翻訳であり、一般的なガイダンスのみを目的としています。矛盾や曖昧な点がある場合には、常に英語版が優先されます。この翻訳を改善するためにコミュニティからの協力を歓迎します。
 

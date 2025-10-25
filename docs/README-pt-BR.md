@@ -8,7 +8,7 @@ Aura vai além da simples fala para texto. Isso permite personalização.
 
 É um assistente offline completo baseado em Vosk e LanguageTool.
 
-Traduções: Este documento também existe em [other languages](https://github.com/sl5net/docs).
+Traduções: Este documento também existe em [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Nota: Muitos textos são traduções geradas automaticamente da documentação original em inglês e destinam-se apenas a orientação geral. Em caso de discrepâncias ou ambiguidades, prevalece sempre a versão em inglês. Agradecemos a ajuda da comunidade para melhorar esta tradução!
 

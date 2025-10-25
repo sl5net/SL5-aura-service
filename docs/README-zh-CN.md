@@ -8,7 +8,7 @@ Aura 不仅仅是简单的语音转文本。这允许定制。
 
 它是一个基于 Vosk 和 LanguageTool 构建的完整离线助手。
 
-翻译：该文档也存在于[other languages](https://github.com/sl5net/docs)中。
+翻译：该文档也存在于[other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs)中。
 
 注意：许多文本是原始英文文档的机器生成翻译，仅供一般指导。如有差异或歧义，始终以英文版本为准。我们欢迎社区帮助改进此翻译！
 
