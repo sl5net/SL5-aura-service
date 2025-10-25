@@ -8,6 +8,11 @@ Aura goes beyond simple speech-to-text. This allows customization.
 
 It's a complete, offline assistant built on Vosk and LanguageTool.
 
+Translations: This document also exists in [other languages](https://github.com/sl5net/docs).
+
+Note: Many texts are machine-generated translations of the original English documentation and are intended for general guidance only. In case of discrepancies or ambiguities, the English version always prevails. We welcome help from the community to improve this translation!
+
+
 [![SL5 Aura (v0.7.0.2): A Deep Dive Under the Hood – Live Coding & Core Concepts](https://img.youtube.com/vi/tEijy8WRFCI/maxresdefault.jpg)](https://www.youtube.com/watch?v=tEijy8WRFCI)
 ( https://skipvids.com/?v=tEijy8WRFCI )
 
@@ -187,7 +192,7 @@ Here is a list of the most important scripts to set up, update, and run the appl
 
 Legend for OS Compatibility:  
 *   🐧 **Linux** (e.g., Arch, Ubuntu)  
-*   🍏 **macOS**  
+    *   🍏 **macOS**  
 *   🪟 **Windows**  
 *   📱 **Android** (for mobile-specific features)  
 
@@ -320,5 +325,3 @@ If you find this tool useful, please consider buying us a coffee! Your support h
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
-
-
