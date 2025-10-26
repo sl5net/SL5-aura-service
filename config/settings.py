@@ -32,6 +32,13 @@ PRELOAD_MODELS = ["vosk-model-de-0.21"]
 if current_user == 'SL5.de':
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
+PLUGIN_HELPER_TTS_ENABLED = True
+# USE_AS_PRIMARY_SPEAK = "piper"
+USE_AS_PRIMARY_SPEAK = "ESPEAK"
+USE_ESPEAK_FALLBACK = True
+
+
+ESPEAK_FALLBACK_AMPLITUDE = 80
 
 # --- LanguageTool Server ---
 # Set to True to use an existing LT server. AT YOUR OWN RISK!
@@ -94,6 +101,7 @@ ADD_TO_SENCTENCE = "."
 # Recording & Transcription
 SUSPICIOUS_TIME_WINDOW = 90
 SUSPICIOUS_THRESHOLD = 3
+
 
 # INITIAL_WAIT_TIMEOUT = initial_silence_timeout
 # SPEECH_PAUSE_TIMEOUT = 2.0 # Standardwert

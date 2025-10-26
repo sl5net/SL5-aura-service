@@ -24,9 +24,9 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     }),
 
-    #
+    #portugiesisch ausschau
 
-    ('', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|einschalten|deaktivieren|ausschalten|toggle|Dogge|doppelt)\b', 95, {
+    ('', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|einschalten|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),

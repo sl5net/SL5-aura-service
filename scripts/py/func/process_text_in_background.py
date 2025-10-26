@@ -10,6 +10,8 @@ from pathlib import Path
 
 import psutil
 
+from .audio_manager import speak_fallback
+
 
 # This is your function at line 17
 def load_module_from_path(script_path):
@@ -38,6 +40,8 @@ from .setup_initial_model import get_model_name_from_key
 # Assumes 'models' directory is at the project root, parallel to 'scripts'
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MODEL_PATH = PROJECT_ROOT / "models" / "lid.176.bin"
+
+
 
 fasttext_model = None # Ensure variable exists
 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
@@ -767,7 +771,27 @@ def process_text_in_background(logger,
 
         # SkipList:['LanguageTool', 'LanguageTool'] new_processed_text:Sigune Lauffer result_languagetool:None processed_text:Sigune Lauffer
 
+        home_dir = Path.home()
+        speak_piper_file_path = home_dir / "projects" / "py" / "TTTS" / "speak_file.py"
+        primary_tts_successful = False
+        if not speak_piper_file_path.exists():
+            primary_tts_successful = True
+        # logger.info(f"✅ THREAD: Successfully processed for primary TTS: '{processed_text}'")
+        if (settings.USE_AS_PRIMARY_SPEAK == "ESPEAK" or
+                (not primary_tts_successful
+                and settings.USE_ESPEAK_FALLBACK
+                and processed_text)):
+            logger.warning("primary TTS failed. try Espeak-Fallback...")
+            speak_fallback(processed_text, LT_LANGUAGE)
         logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '{processed_text}'")
+
+
+
+
+
+
+
+
         #
         # notify("Transcribed", duration=700, urgency="low")
 

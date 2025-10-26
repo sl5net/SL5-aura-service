@@ -52,6 +52,8 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 
 #git status git status git status
 
+USE_ESPEAK_FALLBACK = True
+
 PLUGINS_ENABLED = {
     "empty_all": False,
     "git": True,

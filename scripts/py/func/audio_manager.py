@@ -24,15 +24,88 @@ How to Use:
 """
 
 import sys
-import subprocess
-import logging
-
 import os
 import array
 import math
 
+import threading
+import subprocess
+import logging
+
 from config.dynamic_settings import settings
 
+logger = logging.getLogger(__name__)
+
+
+def speak_fallback(text_to_speak, language_code):
+    """
+    - Linux: espeak
+    - Windows: PowerShell (SAPI)
+    - macOS: say
+    """
+
+    command = []
+    platform_name = ""
+
+    if sys.platform.startswith('linux'):
+        platform_name = "Linux (espeak)"
+        espeak_voice = convert_lang_code_for_espeak(language_code)
+        command = [
+            'espeak',
+            '-v', espeak_voice,
+            '-a', str(settings.ESPEAK_FALLBACK_AMPLITUDE),
+            text_to_speak
+        ]
+    elif sys.platform == 'win32':
+        platform_name = "Windows (PowerShell TTS)"
+        ps_command = f"Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{text_to_speak.replace('\'', '\'\'')}')"
+        command = ['powershell', '-Command', ps_command]
+    elif sys.platform == 'darwin':  # macOS
+        platform_name = "macOS (say)"
+        command = ['say', text_to_speak]
+    else:
+        logger.warning(f"no TTS-Fallback  '{sys.platform}' .")
+        return
+
+    def run_command():
+        try:
+            result = subprocess.Popen(
+                command,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+            if result.returncode == 0:
+                # Success!
+                print("Command ran successfully.")
+            elif result.returncode == 1:
+                print("A specific, expected error occurred (e.g., file not found).")
+                # Handle this specific case
+            else:
+                print(f"An unexpected error occurred with code {result.returncode}.")
+                print(f"Error output: {result.stderr}")
+
+
+            logger.info(f"🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
+        except FileNotFoundError:
+            logger.error(f"fallback fouled '{command[0]}' no found.")
+        except Exception as e:
+            logger.error(f" {e}")
+
+    thread = threading.Thread(target=run_command)
+    thread.daemon = True
+    thread.start()
+
+
+
+def convert_lang_code_for_espeak(long_code: str) -> str:
+    if not isinstance(long_code, str):
+        return 'en'
+    # 'de-DE' -> 'de'
+    # 'en_US' -> 'en'
+    # 'pt-BR' -> 'pt'
+    # 'de'    -> 'de'
+    short_code = long_code.split('-')[0].split('_')[0].lower()
+    return short_code
 
 
 

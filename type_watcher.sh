@@ -11,6 +11,34 @@ LOGFILE="$LOG_DIR/type_watcher.log"
 AUTO_ENTER_FLAG="/tmp/sl5_auto_enter.flag" # The flag file for auto-enter
 
 speak_file_path="$HOME/projects/py/TTS/speak_file.py"
+
+
+
+# --- START: Read Python config to conditionally disable speaker ---
+PROJECT_ROOT="$HOME/projects/py/STT"
+PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python3"
+
+# Read the setting from config.settings.py. Default to "ERROR" on failure.
+
+PRIMARY_TTS_ENGINE=$($PYTHON_BIN -c "import sys; sys.path.append('$PROJECT_ROOT'); from config.settings import USE_AS_PRIMARY_SPEAK; print(USE_AS_PRIMARY_SPEAK)" 2>/dev/null) || PRIMARY_TTS_ENGINE="ERROR"
+
+
+echo "PRIMARY_TTS_ENGINE=$PRIMARY_TTS_ENGINE"
+
+# If the setting is ESPEAK, empty the path to disable the speaker script
+if [[ "$PRIMARY_TTS_ENGINE" == "ESPEAK" ]]; then
+    echo "Primary speak is ESPEAK, disabling external speaker script by clearing path."
+    speak_file_path=""
+fi
+# --- END: Read Python config ---
+
+
+
+
+
+
+
+
 if [ -e $speak_file_path ]
 then
   echo " ok $speak_file_path exist"

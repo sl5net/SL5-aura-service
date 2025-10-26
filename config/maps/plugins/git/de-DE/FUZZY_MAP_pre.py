@@ -51,7 +51,11 @@ FUZZY_MAP_pre = [
     # geht's starte Gliedstaat ist
     # Geht Staat git status git status Jetzt startet
 
-    ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
+
+
+
+
 
     ('git status', r'^\s*(Gliedstaat)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
 
@@ -79,7 +83,7 @@ FUZZY_MAP_pre = [
 
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
 
-    ('git commit ', r'^\s*Geht Commit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*(Geht Commit|Geht womit)\s*$', 80, {'flags': re.IGNORECASE}),
 
 
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),

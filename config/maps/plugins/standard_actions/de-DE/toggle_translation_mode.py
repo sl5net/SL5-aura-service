@@ -73,7 +73,7 @@ def execute(match_data):
             lines[rule_line_index] = '#' + lines[rule_line_index]
         else: # current_state is 'off'
             new_state = 'on'
-            feedback_message = "Übersetzungsmodus wird aktiviert."
+            feedback_message = "Übersetzungsmodus wird eingeschaltet."
             # Die Zeile einkommentieren (entferne führende '#' und Leerzeichen)
             lines[rule_line_index] = lines[rule_line_index].lstrip('#')
 

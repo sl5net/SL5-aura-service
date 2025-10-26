@@ -61,6 +61,8 @@ ADD_TO_SENCTENCE = "."
 CRITICAL_THRESHOLD_MB = 1024 * 2
 # CRITICAL_THRESHOLD_MB = 28000 # (also 28 GB)
 
+USE_ESPEAK_FALLBACK = True
+ESPEAK_FALLBACK_AMPLITUDE = 80
 
 # --- Custom Client-Side Plugins ---
 # Enable or disable specific client-side behaviors (plugins).
