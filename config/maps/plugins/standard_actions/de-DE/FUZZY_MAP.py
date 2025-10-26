@@ -15,7 +15,5 @@ FUZZY_MAP = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
-    ('Lauffer', r'\b(Läufer|laufer|Lauscha|lauf war|lauf er)\b', 70, {'flags': re.IGNORECASE}),  # Exact match, but ignore case
-
 ]
 

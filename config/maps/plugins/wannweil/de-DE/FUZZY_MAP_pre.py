@@ -19,60 +19,6 @@ FUZZY_MAP_pre = [
     # - means first is most imported, lower rules maybe not get read.
 
 
-    ('', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|einschalten|deaktivieren|ausschalten|toggle|Dogge|doppelt)\b', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-    # r'.+' passt auf jeden Text, der mindestens ein Zeichen hat.
-
-    # ANCHOR: The following line is controlled by the toggle script.
-    # TRANSLATION_RULE
-#    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
-
-
-#Portugiesisch aktivAuf Englischbom, funcionou Português deficientePortugiesisch togglePortugiesisch Dogge
-#ok funçõesDupla portuguesa
-
-    ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
-        'flags': re.IGNORECASE,
-        # Ruft unser neues Skript auf
-        'on_match_exec': [CONFIG_DIR / 'good_night.py']
-    }),
-
-
-    ('anrede', r'\b(anrede|begrüßung|neue email|Neue E-Mail)\b', 95, {
-        'flags': re.IGNORECASE,
-        # Ruft unser neues Skript auf
-        'on_match_exec': [CONFIG_DIR / 'greeting_generator.py']
-    }),
-
-#
-
-    ('', r'^uhr\w+', 75, {'flags': re.IGNORECASE,
-                          'on_match_exec': [CONFIG_DIR / 'get_current_time.py'] }),
-
-    # Die Regex fängt zwei Zahlen (\d+) und einen Operator (plus|minus|mal|geteilt)
-    ('', r'was ist (\d+)\s*(plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'calculator.py']
-    }),
-
-    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
-    'flags': re.IGNORECASE,
-    'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
-    }),
-
-    ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
-    }),
-
-    # Regel zum Anzeigen
-    ('', r'zeige die einkaufsliste', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
-    }),
 
 
     ('Wannweil', r'\b(wen\s*Welpe)\b', 82, {'flags': re.IGNORECASE}),

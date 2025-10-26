@@ -49,13 +49,13 @@ FUZZY_MAP_pre = [
     # --- git status ---
     # This one regex replaces 5 old entries.
     # geht's starte Gliedstaat ist
-    # Geht Staat git status git status
+    # Geht Staat git status git status Jetzt startet
 
-    ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
 
     ('git status', r'^\s*(Gliedstaat)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
 
-    ('git status', r'^\s*(Gliedstaat|Kickstarter)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
 
     ('git status', r'^\s*(gitschtal|quatscht hatte|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
 
@@ -65,6 +65,9 @@ FUZZY_MAP_pre = [
     # --- git add . --- git add .
     # Gitta hat
     ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
+
+    ('git add .', r'^\s*Geht er hin\s*$', 82, {'flags': re.IGNORECASE}),
+
 
     # --- git commit ---
 

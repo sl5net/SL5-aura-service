@@ -7,6 +7,8 @@ import re
 import sys
 from pathlib import Path
 
+# search_path = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
+
 # ==============================================================================
 #           Intelligenter Markdown-Übersetzer (Python-Version)
 # ==============================================================================
