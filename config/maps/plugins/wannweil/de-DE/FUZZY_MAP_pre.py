@@ -19,6 +19,14 @@ FUZZY_MAP_pre = [
     # - means first is most imported, lower rules maybe not get read.
 
 
+    # In deiner Map-Datei (z.B. .../de-DE/standard_actions.py)
+
+    ('anrede', r'\b(anrede|begrüßung|neue email|Neue E-Mail)\b', 95, {
+        'flags': re.IGNORECASE,
+        # Ruft unser neues Skript auf
+        'on_match_exec': [CONFIG_DIR / 'greeting_generator.py']
+    }),
+
 #
 
     ('', r'^uhr\w+', 75, {'flags': re.IGNORECASE,
