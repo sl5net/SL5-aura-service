@@ -5,9 +5,27 @@ import os
 import pkgutil
 import sys
 
+import importlib.util
 from pathlib import Path
 
 import psutil
+
+
+# This is your function at line 17
+def load_module_from_path(script_path):
+    path = Path(script_path)
+    spec = importlib.util.spec_from_file_location(path.stem, path)
+
+    # <<< FIX 1: Add this check right here
+    if spec is None:
+        # Log this error to know which script failed
+        logging.error(f"Could not create module spec for path: {script_path}")
+        return None
+
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
 
 # from config.settings import ENABLE_AUTO_LANGUAGE_DETECTION, ADD_TO_SENCTENCE
 
@@ -320,10 +338,15 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
             try:
 
-                if re.search(match_phrase, processed_text, flags=flags):
+                # <<< ÄNDERUNG 1: Speichere das Ergebnis von re.search in 'match_obj'
+                match_obj = re.search(match_phrase, processed_text, flags=flags)
+
+                # <<< ÄNDERUNG 2: Prüfe, ob 'match_obj' existiert
+                if match_obj:
                     logger.info(
                         f"🔁 265: Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
 
+                    # Die Ersetzung bleibt genau gleich
                     new_text = re.sub(
                         match_phrase,
                         replacement.strip(),
@@ -331,19 +354,39 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                         flags=flags
                     )
 
-                    if new_text != processed_text:
+                    # Hier wird es interessant: Wir behalten den alten und den neuen Text für die Skripte
+                    original_text_before_rule = processed_text
+
+                    if new_text != original_text_before_rule:
                         logger.info(
                             f"🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
                         processed_text = new_text
 
-                    #regex_match_found_prev = True
-                    #current_rule_matched = True
                     a_rule_matched = True
 
+                    on_match_exec_list = options_dict.get('on_match_exec', [])
+
+                    # <<< ÄNDERUNG 3: Bereite das 'match_data'-Paket für die Skripte vor
+                    match_data = {
+                        'original_text': original_text_before_rule,  # Der Text VOR der Regelanwendung
+                        'text_after_replacement': new_text,  # Der Text NACH re.sub, aber VOR den Skripten
+                        'regex_match_obj': match_obj,  # Das entscheidende Match-Objekt!
+                        'rule_options': options_dict  # Die kompletten Optionen der Regel
+                    }
+
+                    for script_path in on_match_exec_list:
+                        module = load_module_from_path(script_path)
+                        logger.info(f"360: script_path:'{script_path}'")
+                        if hasattr(module, 'execute'):
+                            # <<< ÄNDERUNG 4: Übergebe das 'match_data'-Dictionary
+                            processed_text = module.execute(match_data)  # Das Skript gibt den finalen Text zurück
+
+                            # WICHTIG: Dein Code beendet die Funktion hier nach dem ERSTEN Skript.
+                            # Das ist okay, wenn pro Regel nur ein Skript vorgesehen ist.
+                            return processed_text, a_rule_matched, skip_list
+
                     logger.info(f"Line 223: regex_match_found: break")
-
                     break  # Found a definitive match, stop this loop
-
             except re.error as e:
                 logger.warning(f"Invalid regex_pre pattern in FUZZY_MAP_pre: '{match_phrase}'. Error: {e}")
                 continue  # Skip this invalid rule
@@ -846,51 +889,89 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             try:
                 match_obj = re.fullmatch(regex_pattern, current_text, flags=flags)
                 if match_obj:
-                    # If the regex matches the entire text, we prioritize the replacement
-                    # and set the flag for complete replacement
+                    # Der ursprüngliche Text, bevor irgendetwas geändert wird
+                    original_text_for_script = current_text
+
                     new_current_text = re.sub(
                         regex_pattern,
                         sub_replacement_string,
                         current_text,
                         flags=flags
                     )
-                    if new_current_text != current_text:
+
+                    if new_current_text != original_text_for_script:
+
+                        # <<< ÄNDERUNG 1: Erstelle das match_data-Dictionary
+                        match_data = {
+                            'original_text': original_text_for_script,
+                            'text_after_replacement': new_current_text,
+                            'regex_match_obj': match_obj,  # Wir haben es bereits von re.fullmatch
+                            'rule_options': options_dict
+                        }
+
+                        on_match_exec_list = options_dict.get('on_match_exec', [])
+                        for script_path in on_match_exec_list:
+                            module = load_module_from_path(script_path)
+                            if module and hasattr(module, 'execute'):
+                                # <<< ÄNDERUNG 2: Übergebe match_data und aktualisiere den Text
+                                new_current_text = module.execute(match_data)
+
+                        # <<< HINWEIS: Dein restlicher Code kann jetzt unverändert bleiben >>>
+                        # Er verwendet new_current_text, das jetzt das finale Ergebnis aus den Skripten enthält.
+
                         made_a_change_in_cycle = True
-                        made_a_change = made_a_change+1
+                        made_a_change = made_a_change + 1
                         skip_list = skip_list_temp
+                        current_text = new_current_text  # Jetzt wird der finale Text zugewiesen
 
-                        # logger_instance.info(f"711: 🚀712: Iterative-All-Rules (FULL REPLACE): '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
-                        # 16:09:11,968 - INFO     - 🚀Iterative-All-Rules: 'mit nachnamen laufer' -> 'mit nachnamen Lauffer' (Pattern: '\b(Läufer|laufer|lauf war)\b')
-                        current_text = new_current_text
-                        full_text_replaced_by_rule = regex_pattern.startswith('^') and regex_pattern.endswith(
-                            '$') or replacement_text == current_text
+                        full_text_replaced_by_rule = True  # Da es ein fullmatch war
 
                         if log_all_changes:
                             logger_instance.info(
-                            f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} {current_text} ----> '{new_current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}")
+                                f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} '{original_text_for_script}' ----> '{current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}")
 
-
-                        # sys.exit(0)
-                        # while current_text != previous_text:
                         break
-                else:
-                    new_current_text = re.sub(
-                        regex_pattern,
-                        sub_replacement_string,
-                        current_text,
-                        flags=flags
-                    )
-                    if new_current_text != current_text:
-                        made_a_change += 1
-                        if log_all_changes:
-                            logger_instance.info(
-                            f"834🚀🚀Iterative-All-Rules made_a_change={made_a_change} : '{current_text}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
-                        current_text = new_current_text
-                        made_a_change_in_cycle = True
-                    # TODO: Proof follwoing. maybe use it
-                    # else:
-                    #     current_text = apply_fuzzy_replacement_logic(current_text, new_current_text, threshold, logger_instance)
 
+                else:  # Dieser Block wird ausgeführt, wenn es KEIN fullmatch gab
+
+                    # <<< ÄNDERUNG 3: Wir müssen hier explizit nach einem partiellen Match suchen, um das match_obj zu bekommen
+                    partial_match_obj = re.search(regex_pattern, current_text, flags=flags)
+
+                    # Nur fortfahren, wenn auch wirklich etwas gefunden wurde
+                    if partial_match_obj:
+                        original_text_for_script = current_text
+                        new_current_text = re.sub(
+                            regex_pattern,
+                            sub_replacement_string,
+                            current_text,
+                            flags=flags
+                        )
+
+                        if new_current_text != original_text_for_script:
+
+                            # Erstelle das match_data-Dictionary für den partiellen Match
+                            match_data = {
+                                'original_text': original_text_for_script,
+                                'text_after_replacement': new_current_text,
+                                'regex_match_obj': partial_match_obj,  # Verwende das neue partial_match_obj
+                                'rule_options': options_dict
+                            }
+
+                            on_match_exec_list = options_dict.get('on_match_exec', [])
+                            for script_path in on_match_exec_list:
+                                module = load_module_from_path(script_path)
+                                if module and hasattr(module, 'execute'):
+                                    # Übergebe match_data und aktualisiere den Text
+                                    new_current_text = module.execute(match_data)
+
+                            # Dein restlicher Code für diesen Block
+                            made_a_change += 1
+                            if log_all_changes:
+                                logger_instance.info(
+                                    f"834🚀🚀Iterative-All-Rules made_a_change={made_a_change} : '{original_text_for_script}' -> '{new_current_text}' (Pattern: '{regex_pattern}')")
+
+                            current_text = new_current_text
+                            made_a_change_in_cycle = True
             except re.error as e:
                 logger_instance.error(f"Invalid regex pattern in map: '{regex_pattern}' - {e}. Skipping rule.")
 
@@ -898,6 +979,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             made_a_change = True
             logger_instance.info(
                 f"847: 🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}, skip_list='{skip_list}'")
+
 
             break
 

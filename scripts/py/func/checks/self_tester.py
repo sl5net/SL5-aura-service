@@ -66,6 +66,11 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
     # Format: (input_text, expected_output, description)
     # logger.info('self_tester.py:31 test_cases = ...')
     test_cases = [
+
+
+
+        # ('uhrzeit', 'es ist viel zu spät', 'uhrzeit', 'de-DE'),
+
         ('hundert euro', '100 Euro', 'Number with unit', 'de-DE'),
         ('bitte reservieren sie einen tisch für zwei personen um acht uhr',
          'Bitte reservieren Sie einen Tisch für zwei Personen um 8 Uhr', 'Polite request with time and number',
