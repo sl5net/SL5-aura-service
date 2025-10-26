@@ -4,10 +4,11 @@
 
 ¡Bienvenido al Servicio SL5 Aura! Este documento proporciona una descripción general rápida de nuestras funciones clave y su compatibilidad con el sistema operativo.
 
-Aura va más allá de la simple conversión de voz a texto. Esto permite la personalización.
+Aura no es sólo un transcriptor; es un potente motor de procesamiento fuera de línea que transforma su voz en acciones y texto precisos.
 
-Es un asistente completo y fuera de línea creado sobre Vosk y LanguageTool.
-
+Es un asistente completo fuera de línea creado sobre Vosk y LanguageTool, diseñado para una máxima personalización a través de un sistema de reglas conectable y un motor de secuencias de comandos dinámico.
+  
+  
 Traducciones: Este documento también existe en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Nota: Muchos textos son traducciones generadas automáticamente de la documentación original en inglés y están destinados únicamente a proporcionar orientación general. En caso de discrepancias o ambigüedades, siempre prevalecerá la versión en inglés. ¡Agradecemos la ayuda de la comunidad para mejorar esta traducción!
@@ -19,6 +20,7 @@ Nota: Muchos textos son traducciones generadas automáticamente de la documentac
 ## Características clave
 
 * **Sin conexión y privado:** 100% local. Ningún dato sale nunca de su máquina.
+* **Motor de scripting dinámico:** Vaya más allá del reemplazo de texto. Las reglas pueden ejecutar secuencias de comandos Python personalizadas (`on_match_exec`) para realizar acciones avanzadas como llamar a API (por ejemplo, buscar en Wikipedia), interactuar con archivos (por ejemplo, administrar una lista de tareas pendientes) o generar contenido dinámico (por ejemplo, un saludo por correo electrónico contextual).
 * **Motor de transformación de alto control:** Implementa un proceso de procesamiento altamente personalizable y basado en configuración. La prioridad de las reglas, la detección de comandos y las transformaciones de texto están determinadas exclusivamente por el orden secuencial de las reglas en Fuzzy Maps, lo que requiere **configuración, no codificación**.
 * **Uso conservador de RAM:** Administra de forma inteligente la memoria, precargando modelos solo si hay suficiente RAM libre disponible, lo que garantiza que otras aplicaciones (como los juegos de PC) siempre tengan prioridad.
 * **Multiplataforma:** Funciona en Linux, macOS y Windows.
@@ -207,11 +209,13 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
 │├ **Procesamiento y corrección de texto/** Agrupado por idioma (p. ej., `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (Estandariza la puntuación post-transcripción) 🐧 🍏 🪟  
 │├ 2. **Precorrección inteligente** (`FuzzyMap Pre` - **La capa de comando principal**) 🐧 🍏 🪟  
+││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas (on_match_exec) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
 ││ * **Ejecución en cascada:** Las reglas se procesan secuencialmente y sus efectos son **acumulativos**. Las reglas posteriores se aplican al texto modificado por reglas anteriores.  
 ││ * **Criterio de detención de prioridad más alta:** Si una regla logra una **Coincidencia completa** (^...$), todo el proceso de procesamiento para ese token se detiene inmediatamente. Este mecanismo es fundamental para implementar comandos de voz confiables.  
 │├ 3. `correct_text_by_languagetool.py` (Integra LanguageTool para corrección de gramática/estilo) 🐧 🍏 🪟  
 │└ 4. **Postcorrección inteligente** (`FuzzyMap`)**– Refinamiento post-LT** 🐧 🍏 🪟  
 ││ * Se aplica después de LanguageTool para corregir resultados específicos de LT. Sigue la misma lógica estricta de prioridad en cascada que la capa de corrección previa.  
+││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas (on_match_exec) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
 ││ * **Refuerzo difuso:** La **Comprobación de similitud difusa** (controlada por un umbral, por ejemplo, 85%) actúa como la capa de corrección de errores de menor prioridad. Solo se ejecuta si toda la ejecución de la regla determinista/en cascada anterior no pudo encontrar una coincidencia (current_rule_matched es False), lo que optimiza el rendimiento evitando comprobaciones difusas lentas siempre que sea posible.  
 ├┬ **Gestión de modelos/**   
 │├─ `prioritize_model.py` (Optimiza la carga/descarga del modelo según el uso) 🐧 🍏 🪟  

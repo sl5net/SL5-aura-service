@@ -4,10 +4,11 @@
 
 Bienvenue au service SL5 Aura ! Ce document fournit un aperçu rapide de nos fonctionnalités clés et de leur compatibilité avec le système d'exploitation.
 
-Aura va au-delà de la simple synthèse vocale. Cela permet la personnalisation.
+Aura n'est pas seulement un transcripteur ; il s'agit d'un puissant moteur de traitement hors ligne qui transforme votre voix en actions et en texte précis.
 
-Il s'agit d'un assistant complet hors ligne construit sur Vosk et LanguageTool.
-
+Il s'agit d'un assistant complet hors ligne construit sur Vosk et LanguageTool, conçu pour une personnalisation ultime grâce à un système de règles enfichable et un moteur de script dynamique.
+  
+  
 Traductions : Ce document existe également en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Remarque : De nombreux textes sont des traductions générées automatiquement de la documentation originale en anglais et sont uniquement destinés à des conseils généraux. En cas de divergences ou d'ambiguïtés, la version anglaise prévaut toujours. Nous apprécions l’aide de la communauté pour améliorer cette traduction !
@@ -19,6 +20,7 @@ Remarque : De nombreux textes sont des traductions générées automatiquement 
 ## Principales fonctionnalités
 
 * **Hors ligne et privé :** 100 % local. Aucune donnée ne quitte votre machine.
+* **Moteur de script dynamique :** Allez au-delà du remplacement de texte. Les règles peuvent exécuter des scripts Python personnalisés (`on_match_exec`) pour effectuer des actions avancées telles que l'appel d'API (par exemple, rechercher sur Wikipédia), interagir avec des fichiers (par exemple, gérer une liste de tâches) ou générer du contenu dynamique (par exemple, un message d'accueil par e-mail contextuel).
 * **Moteur de transformation à contrôle élevé :** implémente un pipeline de traitement hautement personnalisable et basé sur la configuration. La priorité des règles, la détection des commandes et les transformations de texte sont déterminées uniquement par l'ordre séquentiel des règles dans les cartes floues, nécessitant une **configuration, pas un codage**.
 * **Utilisation conservatrice de la RAM :** Gère intelligemment la mémoire, en préchargeant les modèles uniquement si suffisamment de RAM libre est disponible, garantissant ainsi que les autres applications (comme vos jeux PC) ont toujours la priorité.
 * **Multiplateforme :** Fonctionne sous Linux, macOS et Windows.
@@ -207,11 +209,13 @@ Notre principal moteur de reconnaissance vocale et de traitement audio hors lign
 │├ **Traitement et correction de texte/** Regroupés par langue ( par exemple `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardise la ponctuation après la transcription) 🐧 🍏 🪟  
 │├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - **La couche de commande principale**) 🐧 🍏 🪟  
+││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés (on_match_exec) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Exécution en cascade :** Les règles sont traitées séquentiellement et leurs effets sont **cumulatifs**. Les règles ultérieures s'appliquent au texte modifié par les règles antérieures.  
 ││ * **Critère d'arrêt de priorité la plus élevée :** Si une règle obtient une **Correspondance complète** (^...$), l'ensemble du pipeline de traitement pour ce jeton s'arrête immédiatement. Ce mécanisme est essentiel pour implémenter des commandes vocales fiables.  
 │├ 3. `correct_text_by_lingualtool.py` (Intègre LanguageTool pour la correction de grammaire/style) 🐧 🍏 🪟  
 │└ 4. **Post-correction intelligente** (`FuzzyMap`)** – Affinement post-LT** 🐧 🍏 🪟  
 ││ * Appliqué après LanguageTool pour corriger les sorties spécifiques à LT. Suit la même logique stricte de priorité en cascade que la couche de pré-correction.  
+││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés (on_match_exec) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Fuzzy Fallback :** Le **Fuzzy Similarity Check** (contrôlé par un seuil, par exemple 85 %) agit comme la couche de correction d'erreurs la plus basse priorité. Elle n'est exécutée que si l'exécution complète de la règle déterministe/en cascade précédente n'a pas réussi à trouver une correspondance (current_rule_matched est False), optimisant ainsi les performances en évitant les vérifications floues lentes autant que possible.  
 ├┬ **Gestion des modèles/**   
 │├─ `prioritize_model.py` (Optimise le chargement/déchargement du modèle en fonction de l'utilisation) 🐧 🍏 🪟  
@@ -263,7 +267,7 @@ Fonctionnalités actuellement en cours de développement ou à l'état de projet
 │ └ **0 A.D. Plugin (Draft)** (Commande vocale pour le jeu 0 A.D.) 🐧   
 ├─ **Sortie sonore au démarrage ou à la fin d'une session** (Description en attente) 🐧   
 ├─ **Sortie vocale pour les malvoyants** (Description en attente) 🐧 🍏 🪟  
-└─ **Prototype Android SL5 Aura** (Pas encore entièrement hors ligne) 📱  
+└─ **Prototype Android SL5 Aura** (Pas encore complètement hors ligne) 📱  
 
 ---
 

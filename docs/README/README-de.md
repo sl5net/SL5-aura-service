@@ -4,11 +4,12 @@
 
 Willkommen beim SL5 Aura Service! Dieses Dokument bietet einen schnellen Überblick über unsere wichtigsten Funktionen und deren Betriebssystemkompatibilität.
 
-Aura geht über die einfache Speech-to-Text-Funktion hinaus. Dies ermöglicht eine individuelle Anpassung.
+Aura ist nicht nur eine Transkriptorin; Es handelt sich um eine leistungsstarke Offline-Verarbeitungs-Engine, die Ihre Stimme in präzise Aktionen und Texte umwandelt.
 
-Es handelt sich um einen vollständigen Offline-Assistenten, der auf Vosk und LanguageTool basiert.
-
-Übersetzungen: Dieses Dokument existiert auch in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs) verfügbar.
+Es handelt sich um einen vollständigen Offline-Assistenten, der auf Vosk und LanguageTool basiert und für ultimative Anpassung durch ein steckbares Regelsystem und eine dynamische Skript-Engine entwickelt wurde.
+  
+  
+Übersetzungen: Dieses Dokument existiert auch in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzungen der englischen Originaldokumentation, die lediglich der allgemeinen Orientierung dienen. Im Falle von Unstimmigkeiten oder Unklarheiten ist stets die englische Version maßgebend. Wir freuen uns über die Hilfe der Community, um diese Übersetzung zu verbessern!
 
@@ -19,6 +20,7 @@ Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzunge
 ## Hauptmerkmale
 
 * **Offline und privat:** 100 % lokal. Keine Daten verlassen jemals Ihren Computer.
+* **Dynamic Scripting Engine:** Gehen Sie über das Ersetzen von Text hinaus. Regeln können benutzerdefinierte Python-Skripte („on_match_exec“) ausführen, um erweiterte Aktionen wie das Aufrufen von APIs (z. B. Wikipedia durchsuchen), die Interaktion mit Dateien (z. B. das Verwalten einer Aufgabenliste) oder das Generieren dynamischer Inhalte (z. B. eine kontextbezogene E-Mail-Begrüßung) durchzuführen.
 * **High-Control Transformation Engine:** Implementiert eine konfigurationsgesteuerte, hochgradig anpassbare Verarbeitungspipeline. Regelpriorität, Befehlserkennung und Texttransformationen werden ausschließlich durch die Reihenfolge der Regeln in den Fuzzy Maps bestimmt und erfordern **Konfiguration, keine Codierung**.
 * **Konservative RAM-Nutzung:** Verwaltet den Speicher intelligent und lädt Modelle nur dann vor, wenn genügend freier RAM verfügbar ist, um sicherzustellen, dass andere Anwendungen (wie Ihre PC-Spiele) immer Vorrang haben.
 * **Plattformübergreifend:** Funktioniert unter Linux, macOS und Windows.
@@ -207,11 +209,13 @@ Unsere primäre Engine für Offline-Spracherkennung und Audioverarbeitung.
 │├ **Textverarbeitung und -korrektur/** Gruppiert nach Sprache (z. B. „de-DE“, „en-US“, ...)   
 │├ 1. `normalize_punctuation.py` (Standardisiert die Zeichensetzung nach der Transkription) 🐧 🍏 🪟  
 │├ 2. **Intelligente Vorkorrektur** („FuzzyMap Pre“ – **Die primäre Befehlsebene**) 🐧 🍏 🪟  
+││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte (on_match_exec) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
 ││ * **Kaskadierende Ausführung:** Regeln werden nacheinander verarbeitet und ihre Auswirkungen sind **kumulativ**. Spätere Regeln gelten für Text, der durch frühere Regeln geändert wurde.  
 ││ * **Stoppkriterium mit höchster Priorität:** Wenn eine Regel eine **Vollständige Übereinstimmung** (^...$) erreicht, stoppt die gesamte Verarbeitungspipeline für dieses Token sofort. Dieser Mechanismus ist für die Implementierung zuverlässiger Sprachbefehle von entscheidender Bedeutung.  
 │├ 3. `correct_text_by_lingualtool.py` (Integriert LanguageTool zur Grammatik-/Stilkorrektur) 🐧 🍏 🪟  
 │└ 4. **Intelligente Nachkorrektur** (`FuzzyMap`)**– Post-LT-Verfeinerung** 🐧 🍏 🪟  
 ││ * Wird nach LanguageTool angewendet, um LT-spezifische Ausgaben zu korrigieren. Folgt der gleichen strengen kaskadierenden Prioritätslogik wie die Vorkorrekturschicht.  
+││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte (on_match_exec) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
 ││ * **Fuzzy-Fallback:** Die **Fuzzy-Ähnlichkeitsprüfung** (gesteuert durch einen Schwellenwert, z. B. 85 %) fungiert als Fehlerkorrekturebene mit der niedrigsten Priorität. Es wird nur ausgeführt, wenn bei der gesamten vorherigen Ausführung der deterministischen/kaskadierenden Regel keine Übereinstimmung gefunden werden konnte (current_rule_matched ist False). Dadurch wird die Leistung optimiert, indem nach Möglichkeit langsame Fuzzy-Prüfungen vermieden werden.  
 ├┬ **Modellverwaltung/**   
 │├─ `prioritize_model.py` (Optimiert das Laden/Entladen von Modellen basierend auf der Nutzung) 🐧 🍏 🪟  

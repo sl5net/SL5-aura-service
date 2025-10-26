@@ -4,10 +4,11 @@
 
 Welcome to SL5 Aura Service! This document provides a quick overview of our key features and their operating system compatibility.
 
-Aura goes beyond simple speech-to-text. This allows customization.
+Aura isn't just a transcriber; it's a powerful, offline processing engine that transforms your voice into precise actions and text.
 
-It's a complete, offline assistant built on Vosk and LanguageTool.
-
+It's a complete, offline assistant built on Vosk and LanguageTool, designed for ultimate customization through a pluggable rule system and a dynamic scripting engine.
+    
+    
 Translations: This document also exists in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Note: Many texts are machine-generated translations of the original English documentation and are intended for general guidance only. In case of discrepancies or ambiguities, the English version always prevails. We welcome help from the community to improve this translation!
@@ -19,6 +20,7 @@ Note: Many texts are machine-generated translations of the original English docu
 ## Key Features
 
 *   **Offline & Private:** 100% local. No data ever leaves your machine.
+*   **Dynamic Scripting Engine:** Go beyond text replacement. Rules can execute custom Python scripts (`on_match_exec`) to perform advanced actions like calling APIs (e.g., search Wikipedia), interacting with files (e.g., manage a to-do list), or generating dynamic content (e.g., a context-aware email greeting).
 *  **High-Control Transformation Engine:** Implements a configuration-driven, highly customizable processing pipeline. Rule priority, command detection, and text transformations are determined purely by the sequential order of rules in the Fuzzy Maps, requiring **configuration, not coding**.
 *   **Conservative RAM Usage:** Intelligently manages memory, preloading models only if enough free RAM is available, ensuring other applications (like your PC games) always have priority.
 *   **Cross-Platform:** Works on Linux, macOS, and Windows.
@@ -207,11 +209,13 @@ Legend for OS Compatibility:
 │├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
 │├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - **The Primary Command Layer**) 🐧 🍏 🪟  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (on_match_exec) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
 ││ * **Cascading Execution:** Rules are processed sequentially and their effects are **cumulative**. Later rules apply to text modified by earlier rules.  
 ││ * **Highest Priority Stop Criterion:** If a rule achieves a **Full Match** (^...$), the entire processing pipeline for that token stops immediately. This mechanism is critical for implementing reliable voice commands.  
 │├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
 │└ 4. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟  
 ││ * Applied after LanguageTool to correct LT-specific outputs. Follows the same strict cascading priority logic as the Pre-Correction layer.  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (on_match_exec) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
 ││ * **Fuzzy Fallback:** The **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. It is only executed if the entire preceding deterministic/cascading rule run failed to find a match (current_rule_matched is False), optimizing performance by avoiding slow fuzzy checks whenever possible.  
 ├┬ **Model Management/**   
 │├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  

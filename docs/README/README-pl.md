@@ -4,10 +4,11 @@
 
 Witamy w serwisie SL5 Aura! Ten dokument zawiera krótki przegląd naszych kluczowych funkcji i ich kompatybilności z systemem operacyjnym.
 
-Aura wykracza poza zwykłą zamianę mowy na tekst. Umożliwia to personalizację.
+Aura to nie tylko osoba dokonująca transkrypcji; to potężny silnik przetwarzania offline, który przekształca Twój głos w precyzyjne działania i tekst.
 
-To kompletny asystent offline zbudowany na Vosk i LanguageTool.
-
+Jest to kompletny asystent offline, zbudowany na platformie Vosk i LanguageTool, zaprojektowany z myślą o maksymalnej personalizacji poprzez podłączany system reguł i dynamiczny silnik skryptowy.
+XSPACEbreakX
+XSPACEbreakX
 Tłumaczenia: Ten dokument istnieje również w [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumentacji w języku angielskim i mają one wyłącznie charakter ogólny. W przypadku rozbieżności lub niejasności, zawsze obowiązuje wersja angielska. Czekamy na pomoc społeczności w ulepszaniu tego tłumaczenia!
@@ -19,6 +20,7 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 ## Kluczowe funkcje
 
 * **Offline i prywatnie:** 100% lokalnie. Żadne dane nigdy nie opuszczają Twojej maszyny.
+* **Dynamiczny silnik skryptowy:** Wyjdź poza zastępowanie tekstu. Reguły mogą uruchamiać niestandardowe skrypty Pythona (`on_match_exec`) w celu wykonywania zaawansowanych działań, takich jak wywoływanie interfejsów API (np. przeszukiwanie Wikipedii), interakcja z plikami (np. zarządzanie listą zadań do wykonania) lub generowanie zawartości dynamicznej (np. kontekstowe powitanie e-mail).
 * **Silnik transformacji o wysokim poziomie kontroli:** implementuje oparty na konfiguracji, wysoce konfigurowalny potok przetwarzania. Priorytet reguł, wykrywanie poleceń i transformacje tekstu są określane wyłącznie na podstawie kolejności reguł w Fuzzy Maps, co wymaga **konfiguracji, a nie kodowania**.
 * **Oszczędne wykorzystanie pamięci RAM:** Inteligentnie zarządza pamięcią, wstępnie ładując modele tylko wtedy, gdy dostępna jest wystarczająca ilość wolnej pamięci RAM, zapewniając, że inne aplikacje (takie jak gry komputerowe) zawsze mają priorytet.
 * **Wiele platform:** działa na systemach Linux, macOS i Windows.
@@ -161,11 +163,13 @@ Nasz główny silnik do rozpoznawania mowy w trybie offline i przetwarzania dźw
 │├ **Przetwarzanie i korekta tekstu/** Pogrupowane według języka (np. `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punstanding.py` (Standaryzuje interpunkcję po transkrypcji) 🐧 🍏 🪟XSPACEbreakX
 │├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - **Podstawowa warstwa dowodzenia**) 🐧 🍏 🪟XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty Pythona (on_match_exec) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
 ││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego przez wcześniejsze reguły.XSPACEbreakX
 ││ * **Kryterium zatrzymania o najwyższym priorytecie:** Jeśli reguła osiągnie **Pełne dopasowanie** (^...$), cały potok przetwarzania dla tego tokena zostanie natychmiast zatrzymany. Mechanizm ten ma kluczowe znaczenie dla realizacji niezawodnych poleceń głosowych.XSPACEbreakX
 │├ 3. `correct_text_by_languagetool.py` (integruje narzędzie LanguageTool do poprawiania gramatyki/stylu) 🐧 🍏 🪟XSPACEbreakX
 │└ 4. **Inteligentna korekta końcowa** (`FuzzyMap`)** – Udoskonalenie po LT** 🐧 🍏 🪟XSPACEbreakX
 ││ * Stosowane po LanguageTool w celu skorygowania wyników specyficznych dla LT. Działa zgodnie z tą samą ścisłą logiką priorytetów kaskadowych, co warstwa wstępnej korekty.XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty Pythona (on_match_exec) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
 ││ * **Fuzzy Fallback:** **Rozmyta kontrola podobieństwa** (kontrolowana przez próg, np. 85%) działa jako warstwa korekcji błędów o najniższym priorytecie. Jest wykonywana tylko wtedy, gdy w całym poprzedzającym uruchomieniu reguły deterministycznej/kaskadowej nie znaleziono dopasowania (bieżąca_rule_matched ma wartość False), optymalizując wydajność poprzez unikanie, jeśli to możliwe, powolnych kontroli rozmytych.XSPACEbreakX
 ├┬ **Zarządzanie modelami/** XSPACEbreakX
 │├─ `prioritize_model.py` (optymalizuje ładowanie/rozładowywanie modelu w oparciu o wykorzystanie) 🐧 🍏 🪟XSPACEbreakX
@@ -221,7 +225,7 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 
 ---
 
-*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT) są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
+*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT), są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
 
 
 

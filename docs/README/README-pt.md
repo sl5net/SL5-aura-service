@@ -4,10 +4,11 @@
 
 Bem-vindo ao Serviço SL5 Aura! Este documento fornece uma visão geral rápida dos nossos principais recursos e da compatibilidade do sistema operacional.
 
-Aura vai além da simples fala para texto. Isso permite personalização.
+Aura não é apenas uma transcritora; é um poderoso mecanismo de processamento off-line que transforma sua voz em ações e textos precisos.
 
-É um assistente offline completo baseado em Vosk e LanguageTool.
-
+É um assistente offline completo baseado em Vosk e LanguageTool, projetado para personalização definitiva por meio de um sistema de regras conectável e um mecanismo de script dinâmico.
+  
+  
 Traduções: Este documento também existe em [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Nota: Muitos textos são traduções geradas automaticamente da documentação original em inglês e destinam-se apenas a orientação geral. Em caso de discrepâncias ou ambiguidades, prevalece sempre a versão em inglês. Agradecemos a ajuda da comunidade para melhorar esta tradução!
@@ -19,6 +20,7 @@ Nota: Muitos textos são traduções geradas automaticamente da documentação o
 ## Principais recursos
 
 * **Off-line e privado:** 100% local. Nenhum dado sai da sua máquina.
+* **Mecanismo de script dinâmico:** Vá além da substituição de texto. As regras podem executar scripts Python personalizados (`on_match_exec`) para executar ações avançadas, como chamar APIs (por exemplo, pesquisar na Wikipedia), interagir com arquivos (por exemplo, gerenciar uma lista de tarefas) ou gerar conteúdo dinâmico (por exemplo, uma saudação por e-mail com reconhecimento de contexto).
 * **Mecanismo de transformação de alto controle:** Implementa um pipeline de processamento altamente personalizável e orientado por configuração. A prioridade das regras, a detecção de comandos e as transformações de texto são determinadas puramente pela ordem sequencial das regras nos Mapas Fuzzy, exigindo **configuração, não codificação**.
 * **Uso conservador de RAM:** Gerencia a memória de forma inteligente, pré-carregando modelos apenas se houver RAM livre suficiente disponível, garantindo que outros aplicativos (como jogos de PC) sempre tenham prioridade.
 * **Plataforma cruzada:** Funciona em Linux, macOS e Windows.
@@ -189,11 +191,13 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 │├ **Processamento e correção de texto/** Agrupado por idioma (por exemplo, `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (padroniza a pontuação pós-transcrição) 🐧 🍏 🪟  
 │├ 2. **Pré-correção inteligente** (`FuzzyMap Pre` - **A camada de comando primária**) 🐧 🍏 🪟  
+││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados (on_match_exec) para executar ações avançadas como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
 ││ * **Execução em Cascata:** As regras são processadas sequencialmente e seus efeitos são **cumulativos**. Regras posteriores se aplicam ao texto modificado por regras anteriores.  
 ││ * **Critério de parada de prioridade mais alta:** Se uma regra atingir uma **Correspondência completa** (^...$), todo o pipeline de processamento desse token será interrompido imediatamente. Este mecanismo é fundamental para implementar comandos de voz confiáveis.  
 │├ 3. `correct_text_by_languagetool.py` (Integra o LanguageTool para correção de gramática/estilo) 🐧 🍏 🪟  
 │└ 4. **Pós-Correção Inteligente** (`FuzzyMap`)**– Refinamento Pós-LT** 🐧 🍏 🪟  
 ││ * Aplicado após o LanguageTool para corrigir saídas específicas do LT. Segue a mesma lógica estrita de prioridade em cascata da camada de pré-correção.  
+││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados (on_match_exec) para executar ações avançadas como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
 ││ * **Fuzzy Fallback:** A **Verificação de similaridade difusa** (controlada por um limite, por exemplo, 85%) atua como a camada de correção de erros de prioridade mais baixa. Ele só será executado se toda a execução anterior da regra determinística/em cascata não conseguir encontrar uma correspondência (current_rule_matched é False), otimizando o desempenho evitando verificações difusas lentas sempre que possível.  
 ├┬ **Gerenciamento de modelo/**   
 │├─ `prioritize_model.py` (otimiza o carregamento/descarregamento do modelo com base no uso) 🐧 🍏 🪟  
