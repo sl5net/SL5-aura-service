@@ -69,7 +69,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
 
 
-        # ('uhrzeit', 'es ist viel zu spät', 'uhrzeit', 'de-DE'),
+        ('was ist 5 plus 3', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', 'de-DE'),
 
         ('hundert euro', '100 Euro', 'Number with unit', 'de-DE'),
         ('bitte reservieren sie einen tisch für zwei personen um acht uhr',
