@@ -19,7 +19,13 @@ FUZZY_MAP_pre = [
     # - means first is most imported, lower rules maybe not get read.
 
 
-    # In deiner Map-Datei (z.B. .../de-DE/standard_actions.py)
+
+    ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
+        'flags': re.IGNORECASE,
+        # Ruft unser neues Skript auf
+        'on_match_exec': [CONFIG_DIR / 'good_night.py']
+    }),
+
 
     ('anrede', r'\b(anrede|begrüßung|neue email|Neue E-Mail)\b', 95, {
         'flags': re.IGNORECASE,
