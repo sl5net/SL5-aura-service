@@ -899,9 +899,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         flags=flags
                     )
 
+# 
+
                     if new_current_text != original_text_for_script:
 
-                        # <<< ÄNDERUNG 1: Erstelle das match_data-Dictionary
                         match_data = {
                             'original_text': original_text_for_script,
                             'text_after_replacement': new_current_text,

@@ -1,0 +1,5 @@
+--- Original ---
+Doing the magic to have shared folders
+
+--- Übersetzung (DE) ---
+Machen Sie den Zauber, um freigegebene Ordner zu haben

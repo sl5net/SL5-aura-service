@@ -1,0 +1,21 @@
+--- Original ---
+### Design Philosophy: Advantages and Considerations
+
+This approach of modifying the configuration file directly was chosen for its clarity and simplicity for the end-user.
+
+#### Advantages:
+
+*   **High Transparency:** The current state of the system is always visible. A quick look at the `FUZZY_MAP_pre.py` file immediately reveals whether the translation rule is active or commented out.
+*   **No Core Engine Changes:** This powerful feature was implemented without altering a single line of the core rule-processing engine. It demonstrates the flexibility of the plugin system.
+*   **Intuitive for Developers:** The concept of enabling or disabling a piece of configuration by commenting it out is a familiar, simple, and trusted pattern for anyone who has worked with code or config files.
+
+--- Übersetzung (DE) ---
+### Designphilosophie: Vorteile und Überlegungen
+
+Dieser Ansatz, die Konfigurationsdatei direkt zu ändern, wurde aufgrund seiner Klarheit und Einfachheit für den Endbenutzer gewählt.
+
+#### Vorteile:
+
+* **Hohe Transparenz:** Der aktuelle Zustand des Systems ist immer sichtbar. Ein kurzer Blick in die Datei „FUZZY_MAP_pre.py“ verrät sofort, ob die Übersetzungsregel aktiv oder auskommentiert ist.
+* **Keine Änderungen an der Kern-Engine:** Diese leistungsstarke Funktion wurde implementiert, ohne eine einzige Zeile der Kern-Regelverarbeitungs-Engine zu ändern. Es demonstriert die Flexibilität des Plugin-Systems.
+* **Intuitiv für Entwickler:** Das Konzept, einen Teil der Konfiguration durch Auskommentieren zu aktivieren oder zu deaktivieren, ist ein vertrautes, einfaches und vertrauenswürdiges Muster für jeden, der mit Code oder Konfigurationsdateien gearbeitet hat.

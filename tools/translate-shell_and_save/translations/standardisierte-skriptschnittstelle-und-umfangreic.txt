@@ -1,0 +1,17 @@
+--- Original ---
+*   **Standardized Script Interface & Rich Context:**
+    *   Scripts must contain a standard `execute(match_data)` function, which the engine calls automatically.
+    *   A comprehensive `match_data` dictionary is passed to every script, providing full context about the match, including:
+        *   `original_text`: The text before the rule was applied.
+        *   `regex_match_obj`: The full Python match object, enabling access to **capture groups** (`.group(1)`, etc.).
+        *   `text_after_replacement`: The text after the basic replacement, before the script runs.
+        *   `rule_options`: The full dictionary of the matched rule.
+
+--- Übersetzung (DE) ---
+* **Standardisierte Skriptschnittstelle und umfangreicher Kontext:**
+    * Skripte müssen eine Standardfunktion „execute(match_data)“ enthalten, die die Engine automatisch aufruft.
+    * An jedes Skript wird ein umfassendes „match_data“-Wörterbuch übergeben, das den vollständigen Kontext zum Match bereitstellt, einschließlich:
+        * `original_text`: Der Text vor der Anwendung der Regel.
+        * „regex_match_obj“: Das vollständige Python-Match-Objekt, das den Zugriff auf **Erfassungsgruppen** („.group(1)“ usw.) ermöglicht.
+        * „text_after_replacement“: Der Text nach der grundlegenden Ersetzung, bevor das Skript ausgeführt wird.
+        * „rule_options“: Das vollständige Wörterbuch der übereinstimmenden Regel.

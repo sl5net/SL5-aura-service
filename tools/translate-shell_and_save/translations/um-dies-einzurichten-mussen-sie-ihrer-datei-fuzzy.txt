@@ -1,0 +1,5 @@
+--- Original ---
+Setting this up involves adding two rules to your `FUZZY_MAP_pre.py` file and creating the corresponding scripts.
+
+--- Übersetzung (DE) ---
+Um dies einzurichten, müssen Sie Ihrer Datei „FUZZY_MAP_pre.py“ zwei Regeln hinzufügen und die entsprechenden Skripte erstellen.

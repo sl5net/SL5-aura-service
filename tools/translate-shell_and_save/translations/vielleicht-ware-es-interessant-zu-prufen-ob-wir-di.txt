@@ -1,0 +1,5 @@
+--- Original ---
+Maybe it would be interesting to check if we really need to use this form or if we can cancel our interactions with it, I think it's relatively cheap compared to the alternatives we have.
+
+--- Übersetzung (DE) ---
+Vielleicht wäre es interessant zu prüfen, ob wir dieses Formular wirklich verwenden müssen oder ob wir unsere Interaktionen damit abbrechen können. Ich denke, es ist im Vergleich zu den Alternativen, die wir haben, relativ günstig.

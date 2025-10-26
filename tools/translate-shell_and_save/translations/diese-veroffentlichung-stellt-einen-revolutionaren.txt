@@ -1,0 +1,17 @@
+--- Original ---
+This release marks a revolutionary step for the Aura service, transforming the rule engine from a text-replacement system into a fully dynamic and extensible action platform. You can now execute custom Python scripts directly from rules, enabling interactions with APIs, files, and complex internal logic.
+
+**🚀 Core Feature: Dynamic Script Execution Engine**
+
+*   **Introducing `on_match_exec` (`feat: Implement external script execution...`):**
+    *   Rules can now include a new option, `on_match_exec`, which takes a list of Python scripts to be executed when a pattern matches.
+    *   This decouples complex logic from the core application, allowing developers to add or modify advanced functionality simply by editing a script file, without needing to restart the service.
+
+--- Übersetzung (DE) ---
+Diese Veröffentlichung stellt einen revolutionären Schritt für den Aura-Dienst dar und verwandelt die Regel-Engine von einem Textersetzungssystem in eine vollständig dynamische und erweiterbare Aktionsplattform. Sie können jetzt benutzerdefinierte Python-Skripte direkt aus Regeln ausführen und so Interaktionen mit APIs, Dateien und komplexer interner Logik ermöglichen.
+
+**🚀 Kernfunktion: Dynamic Script Execution Engine**
+
+* **Wir stellen vor: „on_match_exec“ („feat: Externe Skriptausführung implementieren...“):**
+    * Regeln können jetzt eine neue Option enthalten, „on_match_exec“, die eine Liste von Python-Skripten akzeptiert, die ausgeführt werden sollen, wenn ein Muster übereinstimmt.
+    * Dadurch wird komplexe Logik von der Kernanwendung entkoppelt, sodass Entwickler erweiterte Funktionen einfach durch Bearbeiten einer Skriptdatei hinzufügen oder ändern können, ohne den Dienst neu starten zu müssen.

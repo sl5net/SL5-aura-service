@@ -1,0 +1,5 @@
+--- Original ---
+This is a "catch-all" rule that, when active, matches any text and sends it to the translation script.
+
+--- Übersetzung (DE) ---
+Dies ist eine „Catch-All“-Regel, die, wenn sie aktiv ist, jeden Text abgleicht und ihn an das Übersetzungsskript sendet.

@@ -1,0 +1,19 @@
+--- Original ---
+**✨ New Capabilities & Documentation**
+
+*   **Powerful Example Implementations:**
+    *   To demonstrate the new power, we've added several ready-to-use examples:
+        *   `get_current_time.py`: Provides personalized, time-aware responses.
+        *   `calculator.py`: Uses regex capture groups to perform calculations.
+        *   `shopping_list.py`: Shows state persistence by reading/writing to a local file.
+        *   **`wiki_search.py`**: A prime example of the engine's power, allowing you to search Wikipedia via an external API and return the summary.
+
+--- Übersetzung (DE) ---
+**✨ Neue Funktionen und Dokumentation**
+
+* **Leistungsstarke Beispielimplementierungen:**
+    * Um die neue Leistungsfähigkeit zu demonstrieren, haben wir mehrere gebrauchsfertige Beispiele hinzugefügt:
+        * „get_current_time.py“: Bietet personalisierte, zeitbezogene Antworten.
+        * „calculator.py“: Verwendet Regex-Erfassungsgruppen, um Berechnungen durchzuführen.
+        * „shopping_list.py“: Zeigt die Statuspersistenz durch Lesen/Schreiben in eine lokale Datei an.
+        * **`wiki_search.py`**: Ein Paradebeispiel für die Leistungsfähigkeit der Engine, die es Ihnen ermöglicht, Wikipedia über eine externe API zu durchsuchen und die Zusammenfassung zurückzugeben.

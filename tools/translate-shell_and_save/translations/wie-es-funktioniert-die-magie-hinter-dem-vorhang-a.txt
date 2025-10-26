@@ -1,0 +1,25 @@
+--- Original ---
+### How It Works: The Magic Behind the Curtain
+
+Instead of using an internal state, this method directly edits the rule map on the file system. The `toggle_translation_mode.py` script acts as a configuration manager.
+
+1.  **Find the Rule:** When triggered, the script reads the content of `FUZZY_MAP_pre.py`. It searches for the unique anchor comment `# TRANSLATION_RULE`.
+
+2.  **Toggle the State:**
+    *   **To Disable:** If the rule line below the anchor is active, the script adds a `#` at the beginning of the line, effectively commenting it out and disabling it.
+    *   **To Enable:** If the rule line is already commented out, the script carefully removes the leading `#`, re-activating the rule.
+
+3.  **Save and Reload:** The script saves the modified content back to `FUZZY_MAP_pre.py`. It then creates a special trigger file (e.g., `RELOAD_RULES.trigger`). The main service constantly watches for this trigger file. When it appears, the service knows its configuration has changed and reloads the entire rule map from disk, applying the change instantly.
+
+--- Übersetzung (DE) ---
+### Wie es funktioniert: Die Magie hinter dem Vorhang
+
+Anstatt einen internen Status zu verwenden, bearbeitet diese Methode direkt die Regelzuordnung im Dateisystem. Das Skript „toggle_translation_mode.py“ fungiert als Konfigurationsmanager.
+
+1. **Finden Sie die Regel:** Wenn das Skript ausgelöst wird, liest es den Inhalt von „FUZZY_MAP_pre.py“. Es sucht nach dem eindeutigen Ankerkommentar „# TRANSLATION_RULE“.
+
+2. **Status umschalten:**
+    * **Zum Deaktivieren:** Wenn die Regelzeile unter dem Anker aktiv ist, fügt das Skript am Anfang der Zeile ein „#“ hinzu, wodurch sie effektiv auskommentiert und deaktiviert wird.
+    * **Zur Aktivierung:** Wenn die Regelzeile bereits auskommentiert ist, entfernt das Skript sorgfältig das führende „#“ und aktiviert die Regel erneut.
+
+3. **Speichern und neu laden:** Das Skript speichert den geänderten Inhalt zurück in „FUZZY_MAP_pre.py“. Anschließend wird eine spezielle Triggerdatei erstellt (z. B. „RELOAD_RULES.trigger“). Der Hauptdienst sucht ständig nach dieser Triggerdatei. Wenn es angezeigt wird, weiß der Dienst, dass sich seine Konfiguration geändert hat, lädt die gesamte Regelzuordnung neu von der Festplatte und übernimmt die Änderung sofort.

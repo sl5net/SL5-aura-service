@@ -1,0 +1,5 @@
+--- Original ---
+python3
+
+--- Übersetzung (DE) ---
+Python3

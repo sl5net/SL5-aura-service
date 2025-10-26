@@ -1,0 +1,5 @@
+--- Original ---
+I'm testing some ways of transparent redirection to the landing site and blog. The biggest problem has been the fact that Google requires the url to stay the same, but we'll get to that soon.
+
+--- Übersetzung (DE) ---
+Ich teste einige Möglichkeiten der transparenten Weiterleitung zur Zielseite und zum Blog. Das größte Problem war die Tatsache, dass Google verlangt, dass die URL gleich bleibt, aber dazu kommen wir bald.

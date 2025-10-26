@@ -1,0 +1,5 @@
+--- Original ---
+print(f"python_bin={python_bin} SPEAK_SCRIPT_PATH={SPEAK_SCRIPT_PATH} temp_file_path={temp_file_path}")
+
+--- Übersetzung (DE) ---
+print(f"python_bin={python_bin} SPEAK_SCRIPT_PATH={SPEAK_SCRIPT_PATH} temp_file_path={temp_file_path}")

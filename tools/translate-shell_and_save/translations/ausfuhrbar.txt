@@ -1,0 +1,5 @@
+--- Original ---
+executable
+
+--- Übersetzung (DE) ---
+ausführbar

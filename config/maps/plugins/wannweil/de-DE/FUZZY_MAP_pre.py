@@ -19,6 +19,20 @@ FUZZY_MAP_pre = [
     # - means first is most imported, lower rules maybe not get read.
 
 
+    ('', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|einschalten|deaktivieren|ausschalten|toggle|Dogge|doppelt)\b', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
+    # r'.+' passt auf jeden Text, der mindestens ein Zeichen hat.
+
+    # ANCHOR: The following line is controlled by the toggle script.
+    # TRANSLATION_RULE
+#    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
+
+
+#Portugiesisch aktivAuf Englischbom, funcionou Português deficientePortugiesisch togglePortugiesisch Dogge
+#ok funçõesDupla portuguesa
 
     ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
         'flags': re.IGNORECASE,

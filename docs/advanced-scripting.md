@@ -6,7 +6,19 @@ This document describes how to extend the functionality of simple text replaceme
 
 Instead of just replacing text, you can now tell a rule to execute one or more Python scripts when its pattern matches. This is done by adding an `on_match_exec` key to the rule's options dictionary.
 
-The script's primary job is to receive information about the match, perform an action, and return a final string that will be used as the new text.
+The Service's primary job is to receive information about the match:
+
+```
+match_data = {
+    'original_text': original_text_for_script,
+    'text_after_replacement': new_current_text,
+    'regex_match_obj': match_obj,  # Wir haben es bereits von re.fullmatch
+    'rule_options': options_dict
+}
+```
+
+And then, perform an action, and return a final string that will be used as the new text.
+
 
 ### Rule Structure
 
@@ -21,7 +33,7 @@ CONFIG_DIR = Path(__file__).parent
 
 FUZZY_MAP_pre = [
     (
-        None,  # The replacement string is often None, as the script generates the final text.
+        '',  # The replacement string is often , as the script generates the final text.
         r'what time is it', # The regex pattern to match.
         95, # The confidence threshold.
         {
@@ -56,7 +68,7 @@ This is the standard entry point for all executable scripts. The system will aut
 This dictionary is the bridge between the main application and your script. It contains the following keys:
 
 *   `'original_text'` (str): The full text string *before* any replacement from the current rule was applied.
-*   `'text_after_replacement'` (str): The text *after* the rule's basic replacement string was applied, but *before* your script was called. (If the replacement is `None`, this will be the same as `original_text`).
+*   `'text_after_replacement'` (str): The text *after* the rule's basic replacement string was applied, but *before* your script was called. (If the replacement is ``, this will be the same as `original_text`).
 *   `'regex_match_obj'` (re.Match): The official Python regex match object. This is extremely powerful for accessing **capture groups**. You can use `match_obj.group(1)`, `match_obj.group(2)`, etc.
 *   `'rule_options'` (dict): The complete options dictionary for the rule that triggered the script.
 
@@ -70,7 +82,7 @@ This script returns a personalized greeting based on the time of day.
 
 **1. The Rule (in your map file):**
 ```python
-(None, r'\b(what time is it|uhrzeit)\b', 95, {
+('', r'\b(what time is it|uhrzeit)\b', 95, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'get_current_time.py']
 }),
@@ -110,7 +122,7 @@ This script uses capture groups from the regex to perform a calculation.
 
 **1. The Rule (in your map file):**
 ```python
-(None, r'calculate (\d+) (plus|minus) (\d+)', 98, {
+('', r'calculate (\d+) (plus|minus) (\d+)', 98, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'calculator.py']
 }),
@@ -149,13 +161,13 @@ This example shows how one script can handle multiple commands (adding, showing)
 **1. The Rules (in your map file):**
 ```python
 # Rule for adding items
-(None, r'add (.*) to the shopping list', 95, {
+('', r'add (.*) to the shopping list', 95, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),
 
 # Rule for showing the list
-(None, r'show the shopping list', 95, {
+('', r'show the shopping list', 95, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),

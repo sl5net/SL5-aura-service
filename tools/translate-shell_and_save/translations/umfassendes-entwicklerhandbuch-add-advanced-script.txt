@@ -1,0 +1,21 @@
+--- Original ---
+*   **Comprehensive Developer Guide (`add advanced-scripting.md`):**
+    *   A new document, `advanced-scripting.md`, has been added to the `docs` folder. It explains the feature in detail with copy-pasteable examples and best practices for creating your own scripts.
+
+**🌍 Documentation & Internationalization**
+
+*   **Translated READMEs:** The project's `README.md` has been translated into several new languages to welcome more developers to the community.
+*   **New Project Elevator Pitch:** Added `ElevatorPitch.md` to quickly explain the project's vision and goals.
+
+This release fundamentally changes what is possible with the rule engine, opening the door to endless integrations and intelligent, stateful voice commands.
+
+--- Übersetzung (DE) ---
+* **Umfassendes Entwicklerhandbuch („add advanced-scripting.md“):**
+    * Ein neues Dokument, „advanced-scripting.md“, wurde zum Ordner „docs“ hinzugefügt. Es erklärt die Funktion im Detail mit kopier- und einfügbaren Beispielen und Best Practices für die Erstellung eigener Skripte.
+
+**🌍 Dokumentation & Internationalisierung**
+
+* **Übersetzte READMEs:** Die Datei „README.md“ des Projekts wurde in mehrere neue Sprachen übersetzt, um mehr Entwickler in der Community willkommen zu heißen.
+* **Neues Projekt Elevator Pitch:** „ElevatorPitch.md“ hinzugefügt, um die Vision und Ziele des Projekts schnell zu erklären.
+
+Diese Version verändert grundlegend die Möglichkeiten der Regel-Engine und öffnet die Tür zu endlosen Integrationen und intelligenten, zustandsbehafteten Sprachbefehlen.

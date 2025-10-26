@@ -1,0 +1,5 @@
+--- Original ---
+The key here is the `# TRANSLATION_RULE` comment. This acts as an "anchor" that the toggle script uses to find and modify the rule below it.
+
+--- Übersetzung (DE) ---
+Der Schlüssel hier ist der Kommentar „# TRANSLATION_RULE“. Dies fungiert als „Anker“, den das Umschaltskript verwendet, um die darunter liegende Regel zu finden und zu ändern.
