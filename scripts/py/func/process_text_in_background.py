@@ -899,7 +899,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         flags=flags
                     )
 
-# 
+#
 
                     if new_current_text != original_text_for_script:
 

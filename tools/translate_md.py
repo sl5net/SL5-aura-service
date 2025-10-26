@@ -5,6 +5,7 @@ import subprocess
 import time
 import re
 import sys
+from pathlib import Path
 
 # ==============================================================================
 #           Intelligenter Markdown-Übersetzer (Python-Version)
@@ -18,6 +19,8 @@ import sys
 # - Python 3
 # - `translate-shell` muss im System-PATH installiert sein (`trans` Befehl)
 #
+
+script_dir = Path(__file__).resolve().parent
 
 # --- KONFIGURATION ---
 SOURCE_LANG = "en"
@@ -91,7 +94,9 @@ def process_file(filename):
     # --- SCHLEIFE DURCH ZIELSPRACHEN ---
     base_name = os.path.splitext(filename)[0]
     for lang in TARGET_LANGS:
-        output_file = f"docs/{base_name}-{lang}.md"
+
+        # output_file = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
+        output_file = f"{base_name}-{lang}.md"
         if os.path.exists(output_file):
             print(f"   -> Überspringe '{output_file}' (existiert bereits).")
             continue
@@ -152,8 +157,11 @@ def main():
     print("Starte die intelligente Übersetzung von Markdown-Dateien...")
     print(f"Quellsprache: {SOURCE_LANG}")
     print(f"Zielsprachen: {TARGET_LANGS}")
-    print("----------------------------------------------------")
-    for filename in glob.glob('*.md'):
+
+    search_path = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
+
+    print(f"---- {search_path} ------------------------------------------------")
+    for filename in glob.glob(str(search_path)):
         if not re.search(r'-([a-z]{2,3})\.md$', filename):
             process_file(filename)
             print("")
