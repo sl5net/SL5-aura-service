@@ -37,6 +37,8 @@ config/settings_local.py
 config/model_name.txt
 config/model_name_lastused.txt
 
+tools/translate-shell_and_save/translations
+
 *.cache.*
 **/__pycache__/
 

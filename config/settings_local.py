@@ -58,8 +58,8 @@ PLUGINS_ENABLED = {
     "empty_all": False,
     "git": True,
     "wannweil": True,
-    "game-dealers_choice": False,
-    "0ad": False,
+    "game/game-dealers_choice": False,
+    "game/0ad": False,
     "ethiktagung": False,
     "volkshochschule_tue": True,
     "CCC_tue": True,
@@ -68,6 +68,8 @@ PLUGINS_ENABLED = {
     "numbers_to_digits": True, # hundert|einhundert --> 100
     "digits_to_numbers": False,
     "web-radio-funk": True,
+    "it-begriffe": False,
+    "it-begriffe/php/codeigniter": True,
 }
 #  geht status eins zwei doch
 

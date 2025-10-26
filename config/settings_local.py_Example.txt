@@ -70,18 +70,19 @@ ESPEAK_FALLBACK_AMPLITUDE = 80
 # These settings tell the backend service what to expect or how to format output.
 ####     "github_corrections": True,         # Example from before ???
 PLUGINS_ENABLED = {
-    "empty_all": True,
-    "game-dealers_choice": False,             # For Andy's poker game
-    "wannweil": False,
-    "git": False,
-    "0ad": False,
-    "ethiktagung": True
-    "ethiktagung": True,
+    "empty_all": False,
+    "git": True,
+    "wannweil": True,
+    "game/game-dealers_choice": False,
+    "game/0ad": False,
+    "ethiktagung": False,
     "volkshochschule_tue": True,
     "CCC_tue": True,
     "vsp_rt": True,
-    "numbers_to_digits": True,
-    # "digits_to_numbers": False, deprecated
-    "ki-maker-space": False,
-    "web-radio-funk": False,
+    "ki-maker-space": True,
+    "numbers_to_digits": True, # hundert|einhundert --> 100
+    "digits_to_numbers": False,
+    "web-radio-funk": True,
+    "it-begriffe": False,
+    "it-begriffe/php/codeigniter": True,
 }

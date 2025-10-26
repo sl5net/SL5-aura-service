@@ -38,7 +38,7 @@ USE_AS_PRIMARY_SPEAK = "ESPEAK"
 USE_ESPEAK_FALLBACK = True
 
 
-ESPEAK_FALLBACK_AMPLITUDE = 80
+ESPEAK_FALLBACK_AMPLITUDE = 50
 
 # --- LanguageTool Server ---
 # Set to True to use an existing LT server. AT YOUR OWN RISK!

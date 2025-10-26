@@ -16,7 +16,12 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
-    ('https://cttue.de', r'^(chaos|Karls) treff tübingen\s*\w*$', 60, {'flags': re.IGNORECASE}),
+
+    # raus trefft tübingen Chaos trifft TypGraues trifft Tübingen
+
+
+
+    ('https://cttue.de', r'^(chaos|Graues|Karls|raus) (treff|trifft) (tübingen|Typ)\s*\w*$', 60, {'flags': re.IGNORECASE}),
 
     # karl stress was steht an
 

@@ -117,38 +117,24 @@ def load_maps_for_language(lang_code, logger):
             # logger.info(f"🗺️{lang_code} not in {modname[:-4]}... -> continue")
             continue
 
-        log_all_map_ENABLED = False and settings.DEV_MODE
+        log_all_map_ENABLED = True and settings.DEV_MODE
 
         # not use not needed plugins
         if ".plugins." in modname:
-            # First, split by '.plugins.' to get the relevant part
-            parts_after_plugins = modname.split('.plugins.', 1)[1]  # Use maxsplit=1 for efficiency
-
-            # Now, split this part by '.'
-            sub_parts = parts_after_plugins.split('.')
-
-            # Assuming the structure is <plugin_type>.<plugin_identifier>.<rest>
-            # The plugin identifier is typically the second element here.
-            # So, if sub_parts is ['game', '0ad', 'de-DE', 'FUZZY_MAP_pre'],
-            # we want sub_parts[1].
-            if len(sub_parts) > 1:  # Ensure there's at least a type and an identifier
-                plugin_name_before = plugin_name
-                plugin_name = sub_parts[-3]
-            else:
-                # Fallback if the structure isn't as expected, or handle as an error
+            if len(parts := modname.split('.plugins.', 1)[1].split('.')) < 2:
                 logger.warning(f"Could not determine plugin_name from modname: {modname}. Skipping.")
                 continue
-            if not settings.PLUGINS_ENABLED.get(plugin_name, True):
-                if settings.DEV_MODE:
-                    if plugin_name_before != plugin_name:
-                        if log_all_map_ENABLED:
-                            logger.info(f"🗺️ FALSE: {plugin_name} ▉ {modname[:-4]}...")
-                continue
-            else:
-                if plugin_name_before != plugin_name:
-                    if log_all_map_ENABLED:
-                        logger.info(f"🗺️ ENABLED: {plugin_name} ▉ {modname[:-4]}...")
 
+            plugin_name_before, plugin_name = plugin_name, parts[-3]
+            hierarchical_key = "/".join(parts[:-2])
+
+            if not settings.PLUGINS_ENABLED.get(hierarchical_key, True):
+                if settings.DEV_MODE and plugin_name_before != plugin_name and log_all_map_ENABLED and False:
+                    logger.info(f"🗺️ FALSE: {hierarchical_key} ▉ {modname[:-4]}...")
+                continue
+
+            if plugin_name_before != plugin_name and log_all_map_ENABLED:
+                logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}...")
         try:
             module = importlib.import_module(modname)
             # logger.info(f"🗺️ Processing: {modname}")

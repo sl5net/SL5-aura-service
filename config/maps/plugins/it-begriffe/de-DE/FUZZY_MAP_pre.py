@@ -16,6 +16,10 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
+    #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
+    ('Manjaro Linux', r'^\b(whatchado|Mönch) (Linux|Carolin\w*)(\b)$', 80, {'flags': re.IGNORECASE}),
+
+
 
     ('Logdatei', r'^(\b)(Logdatei|Kochdatei)(\b)$', 80, {'flags': re.IGNORECASE}),
 
