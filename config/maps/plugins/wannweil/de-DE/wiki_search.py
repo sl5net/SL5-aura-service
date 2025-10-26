@@ -14,8 +14,8 @@ def execute(match_data):
     try:
         # User-Agent ist guter Stil bei API-Anfragen
         wiki_wiki = wikipediaapi.Wikipedia('de', headers={'User-Agent': 'MySpeechApp/1.0'})
-
-        search_term = match_data['regex_match_obj'].group(1).strip()
+        #
+        search_term = match_data['regex_match_obj'].group(2).strip()
         if not search_term:
             return "Was soll ich denn suchen?"
 

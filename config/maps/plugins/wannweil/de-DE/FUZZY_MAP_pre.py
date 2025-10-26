@@ -30,21 +30,10 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'calculator.py']
     }),
 
-    ('', r'suche auf wikipedia nach (.*)', 90, {
+    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
     }),
-
-
-# Flüge zur Einkaufsliste hinzu SchuheFlüge Schuhe zur Einkaufsliste hinzuDie Einkaufsliste ist noch leer.Okay, 'schuhe' wurde zur Einkaufsliste hinzugefügt.Züge Teller zur Einkaufsliste hinzuZüge Bechers zur Einkaufsliste
-#Vögel Schuhe zur Einkaufsliste Okay, 'autos' wurde zur Einkaufsliste hinzugefügt.Füge Marmelade zur EinkaufslisteOkay, 'marmelade' wurde zur Einkaufsliste hinzugefügt.Waschmittel in die EinkaufslisteWaschmittel in die EinkaufslisteWelcher in die EinkaufslisteWelcher in die EinkaufslisteFächer in die EinkaufslisteAutos in die Einkaufsliste
-
-    # Regel zum HinzufügenSchuhe in die Einkaufsliste
-    #  schuhe in die einkaufsliste
-    #
-    #  Sage ich
-    #  "Füge Schuhe zur Einkaufsliste"
-    # Wird die Einkaufsliste leider nicht aktiviertSchuhe in die Einkaufsliste
 
     ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
         'flags': re.IGNORECASE,
