@@ -165,7 +165,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
         # --- Fragen und Ausrufe ---
         ('wie spät ist es', 'Wie spät ist es', 'Direct question', 'de-DE'),
-        ('wo ist die toilette', 'Wo ist die Toilette', 'Direct question', 'de-DE'),
+        ('wo finde ich toilette', 'Wo finde ich Toilette', 'Direct question', 'de-DE'),
         ('das ist unglaublich', 'Das ist unglaublich', 'Exclamatory sentence', 'de-DE'),
         ('hilfe', 'Hilfe', 'word', 'de-DE'),
         ('was für ein tag', 'Was für ein Tag', 'Exclamatory phrase', 'de-DE'),
