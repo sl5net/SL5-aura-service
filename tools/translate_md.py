@@ -98,7 +98,7 @@ def process_file(filename):
     for lang in TARGET_LANGS:
 
         # output_file = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
-        output_file = f"{base_name}-{lang}.md"
+        output_file = f"{base_name}-lang{lang}.md"
         if os.path.exists(output_file):
             print(f"   -> Überspringe '{output_file}' (existiert bereits).")
             continue
