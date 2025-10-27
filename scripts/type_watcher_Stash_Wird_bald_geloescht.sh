@@ -1,5 +1,5 @@
 #!/bin/bash
-# type_watcher.sh (Version 4 - Final)
+# type_watcher_keep_alive.sh (Version 4 - Final)
 
 # --- Set FULL Environment explicitly for background tools ---
 export DISPLAY=:0

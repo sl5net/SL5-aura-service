@@ -73,7 +73,8 @@ FUZZY_MAP = [
 
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
 
-    ('git commit ', r'^\s*(Geht|git|mit) (komm|Kometen|Commit|kevin)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*(Geht|git|gut|mit) (komm|Kometen|Commit|kevin)\s*$', 80, {'flags': re.IGNORECASE}),
+
 
 
     ('commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),

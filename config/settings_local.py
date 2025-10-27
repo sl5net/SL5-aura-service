@@ -47,7 +47,7 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 
 # --- Custom Client-Side Plugins ---
 # Enable or disable specific client-side behaviors (plugins).
-# The logic is handled by client scripts (e.g., type_watcher.sh, AutoKey).
+# The logic is handled by client scripts (e.g., type_watcher_keep_alive.sh, AutoKey).
 # These settings tell the backend service what to expect or how to format output.
 
 #git status git status git status
@@ -57,7 +57,7 @@ USE_ESPEAK_FALLBACK = True
 PLUGINS_ENABLED = {
     "empty_all": False,
     "git": True,
-    "wannweil": True,
+    # "wannweil": True,
     "game": False,
     "game/dealers_choice": True,
     "game/0ad": False,

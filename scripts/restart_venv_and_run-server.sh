@@ -24,7 +24,7 @@ if [ "$detected_os" = "windows" ]; then
   echo "please start type_watcher.ahk"
   echo "please start trigger-hotkeys.ahk"
 else
-  SERVICE_NAME_WATCHER="type_watcher.sh"
+  SERVICE_NAME_WATCHER="type_watcher_keep_alive.sh"
 fi
 
 

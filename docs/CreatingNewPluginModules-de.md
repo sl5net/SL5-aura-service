@@ -87,6 +87,7 @@ Wenn ein Modul nicht im Wörterbuch „PLUGINS_ENABLED“ aufgeführt ist, gilt 
 
 * **Abkürzung für Enabling**
 Ihr Konfigurationssystem versteht auch, dass die Auflistung eines Modulschlüssels ohne Wert bedeutet, dass er aktiviert ist. Beispielsweise ist das Hinzufügen von „wannweil“ zum Wörterbuch dasselbe wie das Hinzufügen von „wannweil“: True“. Dies bietet eine praktische Abkürzung zum Aktivieren von Modulen.
+(Optional) Für True/False können Sie auch 1/0 verwenden. Dies ist jedoch unüblich und kann die Lesbarkeit beeinträchtigen.
 
 * **Deaktivieren übergeordneter Module:** Das beabsichtigte Verhalten besteht darin, dass die Deaktivierung eines übergeordneten Moduls    sein sollte
 Deaktivieren Sie automatisch alle untergeordneten Module und Sprachunterordner. Beispielsweise sollte die Einstellung „standard_actions“: False verhindern, dass sowohl „de-DE“ als auch „en-US“ geladen werden. (27.10.'25 Mo)

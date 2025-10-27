@@ -900,6 +900,7 @@ def sanitize_transcription_start(raw_text: str) -> str:
 
 
 def handle_tts_fallback(processed_text: str, LT_LANGUAGE: str, logger):
+    # scripts/py/func/process_text_in_background.py:900
     home_dir = Path.home()
     speak_piper_file_path = home_dir / "projects" / "py" / "TTS" / "speak_file.py"
     primary_tts_successful = False

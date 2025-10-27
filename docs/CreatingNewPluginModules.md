@@ -55,6 +55,8 @@ Modules are **enabled by default**. As long as a module folder exists in `config
 
 To disable a module, you must add an entry for it in the `PLUGINS_ENABLED` dictionary within your settings file and set its value to `False`.
 
+(Optional) For True/False, you can also use 1/0. However, this is uncommon and can reduce readability.
+
 **Example (`config/settings.py`):**
 ```python
 # A dictionary to explicitly control the state of modules.
@@ -87,6 +89,8 @@ PLUGINS_ENABLED = {
 
 *   **Shorthand for Enabling**
     Your configuration system also understands that listing a module key without a value implies it is enabled. For example, adding `"wannweil"` to the dictionary is the same as adding `"wannweil": True`. This provides a convenient shorthand for enabling modules.
+    
+    (Optional) For True/False, you can also use 1/0. However, this is uncommon and can reduce readability.
 
 *   **Disabling Parent Modules:** The intended behavior is that disabling a parent module should          
     automatically disable all of its child modules and language subfolders. For example, setting `"standard_actions": False` should prevent both `de-DE` and `en-US` from loading. (27.10.'25 Mon)

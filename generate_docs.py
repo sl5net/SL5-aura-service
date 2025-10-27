@@ -7,7 +7,7 @@ import os
 DIRS_TO_SCAN = ['setup', 'config', 'githooks', 'update','scripts']
 FILES_IN_ROOT = [
     'start_dictation_v2.0.bat', 'update.bat', 'install_hooks.sh',
-    'type_watcher.ahk', 'type_watcher.sh'
+    'type_watcher.ahk', 'type_watcher_keep_alive.sh'
 ]
 OUTPUT_FILENAME = 'utility_scripts.rst'
 
