@@ -4,6 +4,7 @@ Welcome to SL5 Aura's Documentation
 This is the central hub for all technical documentation, setup guides, and project information.
 
 .. raw:: html
+    <meta name="algolia-site-verification" content="EE9B96B9D07D1676" />
 
    <p>
      <strong><a href="https://github.com/sl5net/SL5-aura-service/releases/latest" target="_blank">View Latest Release on GitHub</a></strong>
