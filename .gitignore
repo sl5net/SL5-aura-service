@@ -52,7 +52,7 @@ temp*
 
 _build/
 docs_old/
-*.rst
+# *.rst
 !index.rst
 
 # Lokale Symlink
