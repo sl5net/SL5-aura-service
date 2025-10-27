@@ -88,9 +88,8 @@ Si un module n'est pas répertorié dans le dictionnaire `PLUGINS_ENABLED`, il e
 * **Raccourci pour activer**
 Votre système de configuration comprend également que lister une clé de module sans valeur implique qu'elle est activée. Par exemple, ajouter « wannweil » au dictionnaire revient à ajouter « wannweil : True ». Cela fournit un raccourci pratique pour activer les modules.
 
-* **Désactivation des modules parents (amélioration future) :** Le comportement prévu est que la désactivation d'un module parent devrait   
-désactiver automatiquement tous ses modules enfants et sous-dossiers de langue. Par exemple, définir `"standard_actions": False` devrait empêcher le chargement de `de-DE` et `en-US`. *Veuillez noter que la mise en œuvre de cette désactivation récursive est toujours prévue.* (27.10.'25 lundi)
+* **Désactivation des modules parents :** Le comportement prévu est que la désactivation d'un module parent devrait   
+désactiver automatiquement tous ses modules enfants et sous-dossiers de langue. Par exemple, définir `"standard_actions": False` devrait empêcher le chargement de `de-DE` et `en-US`. (27.10.'25 lundi)
   
-* **Amélioration future**
-*(Remarque : il s'agit d'une fonctionnalité prévue)*
+*   **but**
 L’objectif est d’améliorer encore ce système. Par exemple, fournir un moyen de respecter les paramètres du module enfant même si le parent est désactivé, ou introduire des règles d'héritage plus complexes. (27.10.'25 lundi)

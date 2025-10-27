@@ -88,9 +88,8 @@ Si un módulo no aparece en el diccionario `PLUGINS_ENABLED`, se considera **act
 * **Abreviatura de habilitación**
 Su sistema de configuración también entiende que enumerar una clave de módulo sin un valor implica que está habilitado. Por ejemplo, agregar `"wannweil"` al diccionario es lo mismo que agregar `"wannweil": True`. Esto proporciona una abreviatura conveniente para habilitar módulos.
 
-* **Deshabilitar módulos principales (mejora futura):** El comportamiento previsto es que deshabilitar un módulo principal debería   
-deshabilite automáticamente todos sus módulos secundarios y subcarpetas de idioma. Por ejemplo, configurar `"standard_actions": False` debería evitar que se carguen `de-DE` y `en-US`. *Tenga en cuenta que la implementación de esta desactivación recursiva aún está planificada.* (27.10.'25 lunes)
+* **Deshabilitar módulos principales:** El comportamiento previsto es que al deshabilitar un módulo principal   
+deshabilite automáticamente todos sus módulos secundarios y subcarpetas de idioma. Por ejemplo, configurar `"standard_actions": False` debería evitar que se carguen `de-DE` y `en-US`. (27.10.'25 lunes)
   
-* **Mejora futura**
-*(Nota: esta es una característica planificada)*
+*   **meta**
 El objetivo es mejorar aún más este sistema. Por ejemplo, proporcionar una forma de respetar la configuración del módulo secundario incluso si el principal está deshabilitado, o introducir reglas de herencia más complejas. (27.10.'25 lunes)

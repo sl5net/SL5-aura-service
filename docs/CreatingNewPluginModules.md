@@ -88,10 +88,9 @@ PLUGINS_ENABLED = {
 *   **Shorthand for Enabling**
     Your configuration system also understands that listing a module key without a value implies it is enabled. For example, adding `"wannweil"` to the dictionary is the same as adding `"wannweil": True`. This provides a convenient shorthand for enabling modules.
 
-*   **Disabling Parent Modules (Future Enhancement):** The intended behavior is that disabling a parent module should          
-    automatically disable all of its child modules and language subfolders. For example, setting `"standard_actions": False` should prevent both `de-DE` and `en-US` from loading. *Please note that the implementation for this recursive disabling is still planned.* (27.10.'25 Mon)
+*   **Disabling Parent Modules:** The intended behavior is that disabling a parent module should          
+    automatically disable all of its child modules and language subfolders. For example, setting `"standard_actions": False` should prevent both `de-DE` and `en-US` from loading. (27.10.'25 Mon)
     
-*   **Future Enhancement**
-    *(Note: This is a planned feature)*
+*   **goal**
     The goal is to enhance this system further. For example, providing a way for child module settings to be respected even if the parent is disabled, or introducing more complex inheritance rules. (27.10.'25 Mon)
 

@@ -88,9 +88,8 @@ Se um módulo não estiver listado no dicionário `PLUGINS_ENABLED`, ele será c
 * **Abreviação de Habilitação**
 Seu sistema de configuração também entende que listar uma chave de módulo sem valor implica que ela está habilitada. Por exemplo, adicionar `"wannweil"` ao dicionário é o mesmo que adicionar `"wannweil": True`. Isso fornece um atalho conveniente para habilitar módulos.
 
-* **Desabilitando Módulos Pai (Aprimoramento Futuro):** O comportamento pretendido é que desabilitar um módulo pai deve   
-desabilita automaticamente todos os seus módulos filhos e subpastas de idioma. Por exemplo, definir `"standard_actions": False` deve impedir o carregamento de `de-DE` e `en-US`. *Observe que a implementação desta desativação recursiva ainda está planejada.* (27.10.25 Seg)
+* **Desabilitando Módulos Pai:** O comportamento pretendido é que desabilitar um módulo pai deve   
+desabilita automaticamente todos os seus módulos filhos e subpastas de idioma. Por exemplo, definir `"standard_actions": False` deve impedir o carregamento de `de-DE` e `en-US`. (27.10.'25 seg)
   
-* **Aprimoramento futuro**
-*(Observação: este é um recurso planejado)*
+*   **meta**
 O objetivo é aprimorar ainda mais esse sistema. Por exemplo, fornecer uma maneira de respeitar as configurações do módulo filho mesmo se o pai estiver desabilitado ou introduzir regras de herança mais complexas. (27.10.'25 seg)

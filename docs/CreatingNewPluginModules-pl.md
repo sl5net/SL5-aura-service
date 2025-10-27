@@ -52,9 +52,8 @@ Jeśli moduł nie jest wymieniony w słowniku `PLUGINS_ENABLED`, domyślnie jest
 * **Skrót od Włączanie**
 Twój system konfiguracyjny rozumie również, że wypisanie klucza modułu bez wartości oznacza, że jest on włączony. Na przykład dodanie „wannweil” do słownika jest równoznaczne z dodaniem „wannweil”: True. Zapewnia to wygodny skrót umożliwiający włączanie modułów.
 
-* **Wyłączanie modułów nadrzędnych (przyszłe udoskonalenia):** Zamierzone zachowanie polega na tym, że wyłączenie modułu nadrzędnego powinno XSPACEbreakX
-automatycznie wyłącza wszystkie moduły podrzędne i podfoldery językowe. Na przykład ustawienie `"standard_actions": False` powinno uniemożliwić załadowanie zarówno `de-DE`, jak i `en-US`. *Proszę pamiętać, że wdrożenie tego rekurencyjnego wyłączania jest nadal planowane.* (27.10.'25 Pon.)
+* **Wyłączanie modułów nadrzędnych:** Zamierzone zachowanie polega na tym, że wyłączenie modułu nadrzędnego powinno XSPACEbreakX
+automatycznie wyłącza wszystkie moduły podrzędne i podfoldery językowe. Na przykład ustawienie `"standard_actions": False` powinno uniemożliwić załadowanie zarówno `de-DE`, jak i `en-US`. (27.10.25 pon.)
 XSPACEbreakX
-* **Przyszłe ulepszenia**
-*(Uwaga: jest to planowana funkcja)*
+*   **bramka**
 Celem jest dalsze udoskonalanie tego systemu. Na przykład umożliwienie respektowania ustawień modułu podrzędnego, nawet jeśli moduł nadrzędny jest wyłączony, lub wprowadzenie bardziej złożonych reguł dziedziczenia. (27.10.25 pon.)
