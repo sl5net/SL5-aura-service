@@ -369,7 +369,23 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                         logger.info(f"360: script_path:'{script_path}'")
                         if hasattr(module, 'execute'):
                             # <<< ÄNDERUNG 4: Übergebe das 'match_data'-Dictionary
-                            processed_text = module.execute(match_data)  # Das Skript gibt den finalen Text zurück
+                            script_result = module.execute(match_data)  # Das Skript gibt den finalen Text zurück
+
+                            # lang_for_tts = "de-DE"  # Deine Standard-Systemsprache
+
+                            new_current_text = ''
+                            if isinstance(script_result, str):
+                                new_current_text = script_result
+                                # lang_for_tts bleibt der Standardwert "de-DE"
+
+                            elif isinstance(script_result, dict):
+                                # Fall 2: Dictionary mit Metadaten (unser Übersetzer-Plugin)
+                                new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
+                                # Hole die Sprache aus dem Dictionary, mit einem Fallback auf die Standardsprache
+                                lang_for_tts = script_result.get("lang", "de-DE")
+    
+                                handle_tts_fallback(new_current_text, lang_for_tts, logger)
+                                logger.info(f"289: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
 
                             # WICHTIG: Dein Code beendet die Funktion hier nach dem ERSTEN Skript.
                             # Das ist okay, wenn pro Regel nur ein Skript vorgesehen ist.
@@ -747,30 +763,44 @@ def process_text_in_background(logger,
                     f" processed_text:{processed_text} ")
 
         #processed_text = (result_languagetool) ? result_languagetool : processed_text
-        processed_text = result_languagetool if result_languagetool else processed_text
+
+
 
         processed_text = result_languagetool if result_languagetool else processed_text
-        # processed_text = new_processed_text if new_processed_text else processed_text
 
-        unique_output_file.write_text(processed_text, encoding="utf-8") # BOM -sig is outdated and not needed anymore
-        # unique_output_file.write_text(processed_text, encoding="utf-8-sig") # BOM -sig is outdated and not needed anymore
+        script_result = processed_text  # Wir starten mit dem Originaltext
 
-        # SkipList:['LanguageTool', 'LanguageTool'] new_processed_text:Sigune Lauffer result_languagetool:None processed_text:Sigune Lauffer
+        # new_current_text wird das finale Ergebnis sein
+        new_current_text = None
+        # lang_for_tts startet mit der Originalsprache
+        lang_for_tts = LT_LANGUAGE
 
-        home_dir = Path.home()
-        speak_piper_file_path = home_dir / "projects" / "py" / "TTTS" / "speak_file.py"
-        primary_tts_successful = False
-        if not speak_piper_file_path.exists():
-            primary_tts_successful = True
-        # logger.info(f"✅ THREAD: Successfully processed for primary TTS: '{processed_text}'")
-        if (settings.USE_AS_PRIMARY_SPEAK == "ESPEAK" or
-                (not primary_tts_successful
-                and settings.USE_ESPEAK_FALLBACK
-                and processed_text)):
-            logger.warning("primary TTS failed. try Espeak-Fallback...")
-            speak_fallback(processed_text, LT_LANGUAGE)
-        logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '{processed_text}'")
+        # --- Hier wird die Magie passieren ---
+        # (Dein Code, der das Plugin aufruft und script_result füllt, fehlt hier, aber das Ergebnis ist klar)
+        # Nehmen wir an, script_result ist jetzt das Dictionary vom Übersetzer
 
+        if isinstance(script_result, str):
+            new_current_text = script_result
+            # lang_for_tts bleibt die Standardsprache
+
+        elif isinstance(script_result, dict):
+            new_current_text = script_result.get("text")
+            lang_for_tts = script_result.get("lang", LT_LANGUAGE)  # Fallback auf Originalsprache
+
+        # --- AB HIER KOMMEN DIE KORREKTUREN ---
+
+        if new_current_text:
+            # DIESE ZEILE WAR SCHON RICHTIG:
+            unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
+
+            # KORREKTUR 1: Verwende die NEUEN Variablen für den Fallback
+            handle_tts_fallback(new_current_text, lang_for_tts, logger)
+            logger.info(f"789: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
+
+            # KORREKTUR 2: Logge den Text, der WIRKLICH geschrieben wurde
+            logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '{new_current_text}'")
+        else:
+            logger.warning("Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.")
 
 
 
@@ -843,6 +873,21 @@ def sanitize_transcription_start(raw_text: str) -> str:
 
     #logging.info(f"Returning sanitized text: '{clean_text[:50]}...'")
     return clean_text
+
+
+def handle_tts_fallback(processed_text: str, LT_LANGUAGE: str, logger):
+    home_dir = Path.home()
+    speak_piper_file_path = home_dir / "projects" / "py" / "TTS" / "speak_file.py"
+    primary_tts_successful = False
+    if not speak_piper_file_path.exists():
+        primary_tts_successful = False
+    use_fallback = (
+            settings.USE_AS_PRIMARY_SPEAK == "ESPEAK" or
+            (not primary_tts_successful and settings.USE_ESPEAK_FALLBACK and processed_text)
+    )
+    if use_fallback:
+        logger.warning("primary TTS failed. try Espeak-Fallback...")
+        speak_fallback(processed_text, LT_LANGUAGE)
 
 
 def apply_all_rules_until_stable(text, rules_map, logger_instance):
@@ -973,9 +1018,29 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                                 module = load_module_from_path(script_path)
                                 if module and hasattr(module, 'execute'):
                                     # Übergebe match_data und aktualisiere den Text
-                                    new_current_text = module.execute(match_data)
+                                    # new_current_text = module.execute(match_data)
 
-                            # Dein restlicher Code für diesen Block
+                                    script_result = module.execute(match_data)
+
+                                    # Standardwerte initialisieren
+                                    # lang_for_tts = "de-DE"  # Deine Standard-Systemsprache
+
+                                    if isinstance(script_result, str):
+                                        new_current_text = script_result
+                                        # lang_for_tts bleibt der Standardwert "de-DE"
+
+                                    elif isinstance(script_result, dict):
+                                        # Fall 2: Dictionary mit Metadaten (unser Übersetzer-Plugin)
+                                        new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
+                                        # Hole die Sprache aus dem Dictionary, mit einem Fallback auf die Standardsprache
+                                        lang_for_tts = script_result.get("lang", "de-DE")
+
+                                        handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
+                                        logger_instance.info(f"1026: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger_instance)")
+
+
+
+                                # Dein restlicher Code für diesen Block
                             made_a_change += 1
                             if log_all_changes:
                                 logger_instance.info(

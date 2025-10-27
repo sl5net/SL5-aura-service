@@ -96,8 +96,9 @@ FUZZY_MAP_pre = [
     ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, {'flags': re.IGNORECASE}),
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
     ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, {'flags': re.IGNORECASE}),
-    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|beach|gemütlich)\s*$"', 80, {'flags': re.IGNORECASE}),
+    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|kubis|cobit|beach|gemütlich)\s*$"', 80, {'flags': re.IGNORECASE}),
     # Gilt komme komme
+
 
     # --- git push --- Gibt eine gibt git pull big push pitbull Geht prüfen
 

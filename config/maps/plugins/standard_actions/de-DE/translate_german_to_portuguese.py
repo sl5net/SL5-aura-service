@@ -54,7 +54,11 @@ def execute(match_data):
         translated_text = result.stdout.strip()
 
         # 3. Das reine Ergebnis zurückgeben, damit der Service es sprechen kann
-        return translated_text
+        return {
+            "text": translated_text,
+            "lang": "pt-BR"
+        }
+
 
     except subprocess.CalledProcessError as e:
         # Das simple_translate.py Skript hat einen Fehler gemeldet.
