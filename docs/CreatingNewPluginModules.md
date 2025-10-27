@@ -65,8 +65,8 @@ PLUGINS_ENABLED = {
     # This module is explicitly enabled.
     "git": True,
 
-    # This module is also enabled. Second Parameter is per default True
-    "wannweil",
+    # This module is also enabled. Second Parameter is per default True. Not False means True.
+    # "wannweil": False,
 
     # This module is explicitly disabled.
     "game": False,

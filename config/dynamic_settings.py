@@ -12,6 +12,23 @@ from config.settings_local import DEV_MODE
 # Get a logger instance instead of direct print statements for better control
 import logging
 
+
+def is_plugin_enabled(hierarchical_key, plugins_config):
+    """
+    Prüft, ob ein Plugin aktiviert ist. Ein Plugin ist DEAKTIVIERT,
+    wenn es selbst oder irgendein übergeordnetes Modul in der Hierarchie
+    explizit auf `False` gesetzt ist. In allen anderen Fällen ist es AKTIVIERT.
+    """
+    current_key_parts = hierarchical_key.split('/')
+
+    for i in range(len(current_key_parts)):
+        current_key = "/".join(current_key_parts[:i + 1])
+
+        if plugins_config.get(current_key) is False:
+            return False
+
+    return True
+
 class CustomFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
         dt_object = datetime.fromtimestamp(record.created)
@@ -227,5 +244,31 @@ class DynamicSettings:
                                 if settings.DEV_MODE:
                                     print(f"👀 DEBUG: Overrode setting '{attr}' with local value: {local_value}")
                                     print("👀 DEBUG: Local settings attributes applied/merged to DynamicSettings   instance.")
+
+                if hasattr(self, 'PLUGINS_ENABLED') and isinstance(self.PLUGINS_ENABLED, dict):
+                    if settings.DEV_MODE:
+                        print("👀 DEBUG: Resolving PLUGINS_ENABLED hierarchy...")
+
+                    # Das zusammengeführte Dictionary, bevor es aufgelöst wird
+                    raw_plugins_config = self.PLUGINS_ENABLED
+
+                    # Ein neues Dictionary für die aufgelösten Zustände
+                    resolved_plugins_config = {}
+
+                    # Wir müssen über eine Kopie der Keys iterieren, falls wir das dict ändern
+                    all_plugin_keys = list(raw_plugins_config.keys())
+
+                    for key in all_plugin_keys:
+                        # Wende unsere Hierarchie-Logik auf jeden Key an
+                        resolved_status = is_plugin_enabled(key, raw_plugins_config)
+                        resolved_plugins_config[key] = resolved_status
+                        if settings.DEV_MODE:
+                            print(f"👀 DEBUG: Plugin '{key}' -> Resolved Status: {resolved_status}")
+
+                    # Überschreibe das alte PLUGINS_ENABLED mit dem neuen, aufgelösten Dictionary
+                    setattr(self, 'PLUGINS_ENABLED', resolved_plugins_config)
+                    if settings.DEV_MODE:
+                        print("👀 DEBUG: PLUGINS_ENABLED has been updated with resolved statuses.")
+
 
 settings = DynamicSettings() # noqa: F811

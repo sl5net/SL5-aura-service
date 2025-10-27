@@ -69,6 +69,33 @@ from .map_reloader import auto_reload_modified_maps
 
 import importlib
 
+
+def is_plugin_enabled(hierarchical_key, plugins_config):
+    """
+    Prüft, ob ein Plugin aktiviert ist. Ein Plugin ist DEAKTIVIERT,
+    wenn es selbst oder irgendein übergeordnetes Modul in der Hierarchie
+    explizit auf `False` gesetzt ist. In allen anderen Fällen ist es AKTIVIERT.
+    """
+    current_key_parts = hierarchical_key.split('/')
+
+    # Wir bauen die Hierarchie von oben nach unten auf und prüfen jeden Schritt
+    # z.B. für "game/0ad" prüfen wir erst "game", dann "game/0ad"
+    for i in range(len(current_key_parts)):
+        # Baue den aktuellen Key zusammen, z.B. erst 'game', dann 'game/0ad'
+        current_key = "/".join(current_key_parts[:i + 1])
+
+        # Prüfe, ob dieser Key EXPLIZIT auf False gesetzt ist.
+        # .get(key, True) gibt True zurück, wenn der Key nicht existiert.
+        # Das entspricht deiner Regel "Kein Eintrag = True".
+        if plugins_config.get(current_key) is False:
+            # Sobald wir ein 'False' in der Kette finden, ist die Entscheidung gefallen.
+            return False
+
+    # Wenn wir die gesamte Hierarchie durchlaufen haben und kein einziges
+    # 'False' gefunden haben, ist das Modul aktiviert.
+    return True
+
+
 def load_maps_for_language(lang_code, logger):
     # scripts/py/func/process_text_in_background.py:50
     if settings.DEV_MODE_memory:
@@ -110,16 +137,13 @@ def load_maps_for_language(lang_code, logger):
         logger.debug(f"📚Found module candidate: {modname}")
 
         if ispkg:
-            # logger.info(f"🗺️ispkg -> continue || {modname[:-4]}...")
             continue
 
         if f".{lang_code}." not in modname:
-            # logger.info(f"🗺️{lang_code} not in {modname[:-4]}... -> continue")
             continue
 
         log_all_map_ENABLED = True and settings.DEV_MODE
 
-        # not use not needed plugins
         if ".plugins." in modname:
             if len(parts := modname.split('.plugins.', 1)[1].split('.')) < 2:
                 logger.warning(f"Could not determine plugin_name from modname: {modname}. Skipping.")
@@ -128,9 +152,9 @@ def load_maps_for_language(lang_code, logger):
             plugin_name_before, plugin_name = plugin_name, parts[-3]
             hierarchical_key = "/".join(parts[:-2])
 
-            if not settings.PLUGINS_ENABLED.get(hierarchical_key, True):
+            if not is_plugin_enabled(hierarchical_key, settings.PLUGINS_ENABLED):
                 if settings.DEV_MODE and plugin_name_before != plugin_name and log_all_map_ENABLED and False:
-                    logger.info(f"🗺️ FALSE: {hierarchical_key} ▉ {modname[:-4]}...")
+                    logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}...")
                 continue
 
             if plugin_name_before != plugin_name and log_all_map_ENABLED:
@@ -383,7 +407,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                                 new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
                                 # Hole die Sprache aus dem Dictionary, mit einem Fallback auf die Standardsprache
                                 lang_for_tts = script_result.get("lang", "de-DE")
-    
+
                                 handle_tts_fallback(new_current_text, lang_for_tts, logger)
                                 logger.info(f"289: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
 
