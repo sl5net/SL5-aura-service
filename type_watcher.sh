@@ -5,9 +5,11 @@ set -euo pipefail
 
 DIR_TO_WATCH="/tmp/sl5_aura"
 LOCKFILE="/tmp/type_watcher.lock"
+
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 LOG_DIR="$SCRIPT_DIR/log"
 LOGFILE="$LOG_DIR/type_watcher.log"
+
 AUTO_ENTER_FLAG="/tmp/sl5_auto_enter.flag" # The flag file for auto-enter
 
 speak_file_path="$HOME/projects/py/TTS/speak_file.py"
