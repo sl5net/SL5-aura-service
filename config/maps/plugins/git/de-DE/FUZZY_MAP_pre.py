@@ -61,7 +61,7 @@ FUZZY_MAP_pre = [
 
     ('git status', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
 
-    ('git status', r'^\s*(gitschtal|quatscht hatte|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(gitschtal|quatscht hatte|quitscht werden|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
 
 #geht statisch
 
@@ -94,6 +94,9 @@ FUZZY_MAP_pre = [
     ('commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),
 
     ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*(gehst du mit\s*$', 80, {'flags': re.IGNORECASE}),
+
+
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
     ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, {'flags': re.IGNORECASE}),
     ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|kubis|cobit|beach|gemütlich)\s*$"', 80, {'flags': re.IGNORECASE}),

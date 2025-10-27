@@ -17,6 +17,7 @@ help:
 # Custom target for 'html' to run our generator script first
 html:
 	@python generate_docs.py
+	@python generate_docs_index.py
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 .PHONY: help Makefile

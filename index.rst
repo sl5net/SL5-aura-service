@@ -20,7 +20,7 @@ This is the central hub for all technical documentation, setup guides, and proje
    :maxdepth: 2
    :caption: Setup & Guides
 
-   doc_sources/workflow.md
+   docs/index
    doc_sources/workflow_windows11.md
    doc_sources/VirtualBoxSetupGuide_STT_Testing.md
    docs/advanced-scripting.md
