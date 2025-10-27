@@ -160,7 +160,19 @@ def main():
     print(f"Quellsprache: {SOURCE_LANG}")
     print(f"Zielsprachen: {TARGET_LANGS}")
 
-    search_path = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
+
+
+
+
+    # search_path = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
+    search_path = script_dir.parent / 'docs' / 'CreatingNewPluginModules.md'
+
+
+
+
+
+
+
 
     print(f"---- {search_path} ------------------------------------------------")
     for filename in glob.glob(str(search_path)):
