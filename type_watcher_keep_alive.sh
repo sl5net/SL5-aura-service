@@ -42,7 +42,10 @@ while true; do
     else
         # It's not running, so it must have crashed. Start it.
         log_message "WATCHDOG: 'type_watcher.sh' is not running. Starting it now."
-        ./type_watcher.sh
+        log_message "$SCRIPT_DIR/type_watcher.sh"
+        echo log_message "WATCHDOG: 'type_watcher.sh' is not running. Starting it now "
+        echo $SCRIPT_DIR/type_watcher.sh
+        $SCRIPT_DIR/type_watcher.sh
     fi
 
     # Wait for a few seconds before checking again.

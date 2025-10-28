@@ -33,9 +33,6 @@ FUZZY_MAP_pre = [
 
     ('git checkout ', r'^\s*(kitschiger|Geht Tscheka)\s*$', 80, {'flags': re.IGNORECASE}),
 
-
-
-
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
     ('Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
@@ -57,11 +54,11 @@ FUZZY_MAP_pre = [
 
 
 
-    ('git status', r'^\s*(Gliedstaat)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(Gliedstaat|Gliedstaaten)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
 
     ('git status', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
 
-    ('git status', r'^\s*(gitschtal|quatscht hatte|quitscht werden|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(gitschtal|quatscht hatte|quitscht|quitscht werden|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
 
 #geht statisch
 
@@ -79,7 +76,7 @@ FUZZY_MAP_pre = [
     ('git commit ', r'^\s*kate Commit\s*$', 80, {'flags': re.IGNORECASE}),
 
     # Geht kommt
-    ('git commit ', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(Komet|Komik|Comics|Gummi|kommt|kommend|Commit|mit|hitch)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(Komet|Komik|Comics|Gummi|gummis|kommt|kommend|Commit|mit|hitch)\s*$', 80, {'flags': re.IGNORECASE}),
 
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
 
@@ -94,7 +91,7 @@ FUZZY_MAP_pre = [
     ('commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),
 
     ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, {'flags': re.IGNORECASE}),
-    ('git commit ', r'^\s*(gehst du mit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*(gehst du mit)\s*$', 80, {'flags': re.IGNORECASE}),
 
 
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),

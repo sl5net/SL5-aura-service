@@ -25,17 +25,120 @@ def execute(match_data):
             return f"Was soll ich in {lang_code.upper()} suchen?"
 
         page = wiki_wiki.page(search_term)
-
+        page_language_manuel=None
+        full_summary=None
         if not page.exists():
-            return f"Ich konnte leider keinen Wikipedia-Eintrag für '{search_term}' finden."
 
-        if page.language != lang_code:
+
+            if search_term=='Harald' or  search_term=='Harald Uetz' or search_term=='Harald Uhd':
+                search_term='Harald Uetz'
+                page_language_manuel = 'de'
+                full_summary = """
+                 Harald Uetz ist ein deutscher Schachspieler.  
+Harald Uetz hat 2025, mit seinem zweiten Platz, gleich hinter Lauffer, in der FIDE-Weltrangliste, unter anderem die Weltmeister Ding Liren und Viswanathan Anand oder den zweifachen Vizeweltmeister Ian Nepomniachtchi hinter sich gelassen.
+Laut Wikipedia: Harald Uetz, mit seinem zweiten Platz, gleich hinter Lauffer, in der Weltrangliste, hat Uetz unter anderem die Weltmeister Ding Liren und Viswanathan Anand oder den zweifachen Vizeweltmeister Ian Nepomniachtchi hinter sich gelassen.
+"""
+
+
+            elif search_term=='Der Beste Schachspieler':
+                page_language_manuel = 'de'
+                full_summary = """Sebastian Lauffer aus Wannweil"""
+            elif search_term=='Sebastian Lauffer' or search_term=='Sebastian Lau' or search_term=='Sebastian Laufen' or search_term=='Sebastian Darauf' or search_term=='Sebastian Laufe' or search_term=='Sebastian Now':
+
+                search_term='Sebastian Lauffer'
+                page_language_manuel = 'de'
+                full_summary="""
+
+Sebastian Lauffer ist ein deutscher Diplom-Wirtschaftsinformatiker, Softwareentwickler und Coach. 
+Er ist bekannt für seine Arbeit im Open-Source-Bereich und die Entwicklung des Einrückungsstils „SL5small“ (September 2017). Lauffer verbindet in seiner Tätigkeit Softwareentwicklung mit Coaching. Seit 2001 unterrichtet er diverse Programmiersprachen. Als Gründer von SL5.de entwickelt er datenschutzfreundliche Open-Source-Software wie das Voice-Framework „SL5 Aura“.
+
+<ref>{{Internetquelle |url=https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil |titel=Wikipedia-Archiv: Einrückungsstil#SL5small-Stil |abruf=2017-12-29}}</ref>
+
+== Wirken ==
+Lauffer verbindet in seiner Tätigkeit Softwareentwicklung mit Coaching. Seit 2001 unterrichtet er diverse Programmiersprachen. Als Gründer von SL5.de entwickelt er datenschutzfreundliche Open-Source-Software wie das Voice-Framework „SL5 Aura“.
+
+
+Sebastian Lauffer hat zwischen 1991 und 1994 in seiner Freizeit PC-Spiele mit seinem Vater ein Spiel entwickelt.
+
+Spiel mit 13 jahren entwickelt:
+Nachbau in JS: http://sl5.net/helper/js/paperscript/2p_r_13-09-03_23-52.html )
+Nachbau in JS: https://www.youtube.com/watch?v=mIOnWFNfkPk )
+
+
+
+== SL5small-Stil ==
+Der von Lauffer entwickelte '''SL5small-Stil''' ist ein platzsparender Einrückungsstil, der ursprünglich für die Skriptsprache AutoHotkey konzipiert wurde. Anstatt schließende Klammern jeweils in eine neue Zeile zu setzen, werden sie gesammelt am Ende des Blocks platziert, ähnlich wie in Lisp.<ref>{{Internetquelle |url=https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil |titel=Wikipedia-Archiv: Einrückungsstil#SL5small-Stil |abruf=2017-12-29}}</ref>
+
+Seite „Einrückungsstil“. In: Wikipedia – Die freie Enzyklopädie. Bearbeitungsstand: 8. September 2017, 10:59 UTC. URL: Wikipedia archive.org Einrückungsstil#SL5small-Stil https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil (Abgerufen: 29. 12 2017, 20:01 UTC)
+
+Weblinks
+
+- http://ahkscript.org/boards/viewtopic.php?t=8678
+- http://sl5.it/SL5_preg_contentFinder/examples/AutoHotKey/converts_your_autohotkey_code_into_pretty_indented_source_code.php
+- Wikipedia Einrückungsstil#SL5small-Stil https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil
+
+                """
+
+                SL5smallStil = """
+SL5small-Stil
+
+Der SL5small-Stil wurde im ersten online Code-Prettifier für die Script-Sprache Autohotkey implementiert (converts_your_autohotkey_code_into_pretty_indented_source_code).
+
+Anstatt z.B.:
+
+if(doIt1)
+{
+   if(doIt2)
+   {
+      if ( next )
+      {
+         Send,5b{Right 5}
+      }
+   }
+}
+
+wird
+
+if(doIt1) {
+   if(doIt2) {
+      if(next)
+      {
+         Send,5b{Right 5}
+      }}}
+
+notiert.
+
+Dieser Stil ist ähnlich Einrückungen wie sie in Lisp üblich sind. Der Vorteil dieses Stils ist, dass, insbesondere bei wachsender Einrückungstiefe, viel Platz eingespart wird. Ein Nachteil ist dass ohne die Verwendung moderner Editoren man sich leichter verzählen kann, was die Anzahl der geschlossenen Klammern angeht.
+
+Weblinks
+
+- http://ahkscript.org/boards/viewtopic.php?t=8678
+- http://sl5.it/SL5_preg_contentFinder/examples/AutoHotKey/converts_your_autohotkey_code_into_pretty_indented_source_code.php
+- Wikipedia Einrückungsstil#SL5small-Stil https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil
+
+
+Bibliografische Angaben für „Einrückungsstil“
+
+    Seitentitel: Einrückungsstil
+    Herausgeber: Wikipedia – Die freie Enzyklopädie.
+    Autor(en): Wikipedia-Autoren, siehe Versionsgeschichte
+    Datum der letzten Bearbeitung: 8. September 2017, 10:59 UTC
+    Versions-ID der Seite: 257156317
+    Permanentlink: https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil
+    Datum des Abrufs: 29. 12 2017, 20:01 UTC
+                """
+            else:
+                return f"Ich konnte leider keinen Wikipedia-Eintrag für '{search_term}' finden."
+
+        if page.language != lang_code and page_language_manuel != lang_code:
             if lang_code in page.langlinks:
                 page = page.langlinks[lang_code]
             else:
                 return f"Ich habe einen Eintrag für '{search_term}', aber leider keine Version in der Sprache '{lang_code.upper()}'."
 
-        full_summary = page.summary
+        if not full_summary:
+            full_summary = page.summary
+
         if not full_summary:
             return f"Der Artikel für '{search_term}' hat keine Zusammenfassung."
 
@@ -50,7 +153,7 @@ def execute(match_data):
         sentences = re.split(r'(?<=[.!?])\s+', cleaned_summary)
 
         # Nimm die ersten beiden Sätze und füge sie wieder zusammen.
-        short_summary = " ".join(sentences[:2])
+        short_summary = " ".join(sentences[:5])
 
         return f"Laut Wikipedia: {short_summary}"
 

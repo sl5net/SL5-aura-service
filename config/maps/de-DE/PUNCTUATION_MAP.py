@@ -68,6 +68,10 @@ PUNCTUATION_MAP = {
     'hobby pest': 'Copy Paste',
 
     'harald utz': 'Harald Uetz',
+
+    'harald utz': 'Harald Uetz',
+    'Harald Uhd': 'Harald Uetz',
+
     'harald öz': 'Harald Uetz',
     'uz': 'Uetz',
 }

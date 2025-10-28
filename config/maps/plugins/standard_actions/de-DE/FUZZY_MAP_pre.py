@@ -22,11 +22,19 @@ FUZZY_MAP_pre = [
     # Regel für die WetterabfrageGoogle Jimmy datenGoogle ja bedeutenGoogle ja wiederGucke chapiteau a
     #Google TribüneGoogle Termine Google arm StudioTestGoogle eiche Stühlen TestGoogle Aviv du
     # Gucke gebiete
+    # google gemini a
+
     #Google ein StudioGoogle my styleGoogle ist StudioGoogle StückGoogle my style
-    ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|Google ein Studio|google it studio|google \w+ studio|google my style|Google ein Studie|Google leicht|Google ein Stuhl|Google eingestuft|google gb day|google kapital|Google kriminell|google gebiet\w*|Gucke gebiet\w*|google g b day|google geht wieder|gucke dir bitte|google g bitte|gucke gemini ei|google gemini recht|Gucke Gehminuten|Google Gewinde|Google Gehminuten)\b.*$', 70, {
+    ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|Google ein Studio|google it studio|google \w+ studio|google my style|Google ein Studie|Google leicht|Google ein Stuhl|Google eingestuft|google gb day|google kapital|Google kriminell|google gebiet\w*|Gucke gebiet\w*|google g b day|google geht wieder|gucke dir bitte|google g bitte|gucke gemini\s*\w*|google gemini ein|google gemini\s*\w*|google gemini recht|Gucke Gehminuten|Google Gewinde|Google Gehminuten|gut \w*minarett)\b.*$', 70, {
         'flags': re.IGNORECASE
     }),
 
+
+    ('https://pi.ai/talk', r'^(Chat) mit (der e|AI|Terry|frei|ei|ari|3|a|der a)\b.*$', 70, {
+        'flags': re.IGNORECASE
+    }),
+
+#https://aistudio.google.com/prompts/new_chat
 
     # Regel für Python coding short
     ('', r'^(compact_python|Kompakt fein|Kompakt Brighton|Kompakt bei)$', 95, {
@@ -85,10 +93,12 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'calculator.py']
     }),
 
-    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
+    ('', r'OFFFFFFFFFFFFF mobed to other to --->post wannweil map (suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
     }),
+
+
 
     ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
         'flags': re.IGNORECASE,

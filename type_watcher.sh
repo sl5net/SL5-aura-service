@@ -129,7 +129,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         log_message "Sent alt+i"
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.01
+                          sleep 0.012
                         fi
 
                         rm -f "$f"
@@ -139,7 +139,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         log_message "Sent alt+w"
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.01
+                          sleep 0.012
                         fi
                         rm -f "$f"
                         continue
@@ -148,7 +148,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         log_message "Sent ctrl+c"
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.01
+                          sleep 0.012
                         fi
                         rm -f "$f"
                         continue
@@ -159,7 +159,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         log_message "baue Haus"
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.01
+                          sleep 0.012
                         fi
                         rm -f "$f"
                         continue
@@ -170,7 +170,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         log_message "baue Lagerhaus"
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.01
+                          sleep 0.012
                         fi
                         rm -f "$f"
                         continue
@@ -183,7 +183,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         log_message "select iddle"
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.01
+                          sleep 0.012
                         fi
                         rm -f "$f"
                         continue
@@ -195,9 +195,10 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         log_message "baue Baracke"
                         if [[ -n "$speak_file_path" ]]; then
                           python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.01
+                          sleep 0.012
                         fi
                         rm -f "$f"
+                        f=""
                         continue
                     fi
                 fi
@@ -215,7 +216,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     #  And add to type_watcher.sh the following line here:
                     if [[ -n "$speak_file_path" ]]; then
                       python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                      sleep 0.01
+                      sleep 0.012
                     fi
 
                     rm -f "$f"

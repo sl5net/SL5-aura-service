@@ -18,13 +18,24 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
+# Bratwurst wäre intern
+
+    ('Kirchentellinsfurt', r'\b(Kirchen\s*teilen|Kirchentellinsfurt|klirrend hält)\b', 82, {'flags': re.IGNORECASE}),
+
+    ('https://www.kirchentellinsfurt.de/de/kontakt', r'\b(Rathaus|Kontakt)\b\s*\b(Kirchen\s*teilen|Kirchentellinsfurt)\b', 82, {'flags': re.IGNORECASE}),
+
+    ('https://www.kirchentellinsfurt.de/de/kontakt', r'\b(rathaus klirrend hält)\b', 82, {'flags': re.IGNORECASE}),
 
 
+# zieglersche https://www.zieglersche.de/altenhilfe.html pflegheim
+
+#Rathaus klirrend hält
+#Hartholz klirren tönt
 
     ('Wannweil', r'\b(wen\s*Welpe)\b', 82, {'flags': re.IGNORECASE}),
 
     ('Wannweil', r'\b(wen\s*Welpe)\b', 82, {'flags': re.IGNORECASE}),
-    ('Wannweil', r'^\s*(Wannweil|Annweiler|wann\s*weil|Wann\s*wann\s*weil|Wann\s*war\s*Herr|Wann\s*war\s*er|An\s*weil|Wann\s*weine\w*|Wann\s*wein|Van\s*weil)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('Wannweil', r'^\s*(Wannweil|Annweiler|wann\s*weil|Wann\s*wann\s*weil|Wann\s*war\s*Herr|Wann\s*war\s*er|An\s*weil|Wann\s*weine\w*|Wann\s*wein|Van\s*weil|wann was)\s*$', 70, {'flags': re.IGNORECASE}),
 
     ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura|lauf|lauf war)\b', 82, {'flags': re.IGNORECASE}),
 
@@ -47,6 +58,12 @@ FUZZY_MAP_pre = [
 
 
 
+    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
+    }),
+
+    #
 
 
 

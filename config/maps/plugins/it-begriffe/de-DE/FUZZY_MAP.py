@@ -1,4 +1,5 @@
-# config/maps/plugins/git/de-DE/FUZZY_MAP_pr.py
+# config/languagetool_server/maps/plugins/ki-maker.space/de-DE/FUZZY_MAP.py
+# https://regex101.com/
 import re # noqa: F401
 
 # This map uses a hybrid approach:
@@ -13,10 +14,9 @@ FUZZY_MAP = [
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
     # - in our implementation it stops with first match!
-    # - means first is most imported, lower rules maybe not get read.
+    # - means first is most importend, lower rules maybe not get read.
 
-
+    ('Python', r'^(\b)(Brighton|breit schon|Fallschirm|peitschen)(\b)$', 75, {'flags': re.IGNORECASE}),
 
 
 ]
-
