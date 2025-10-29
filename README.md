@@ -45,7 +45,7 @@ For a complete technical reference, including all modules and scripts, please vi
 
 **Read this in other languages:**
 
-[🇬🇧 English](docs/README/README.md) | [🇸🇦 العربية](docs/README/README-ar.md) | [🇩🇪 Deutsch](docs/README/README-de.md) | [🇪🇸 Español](docs/README/README-es.md) | [🇫🇷 Français](docs/README/README-fr.md) | [🇮🇳 हिन्दी](docs/README/README-hi.md) | [🇯🇵 日本語](docs/README/README-ja.md) | [🇰🇷 한국어](docs/README/README-ko.md) | [🇵🇱 Polski](docs/README/README-pl.md) | [🇵🇹 Português](docs/README/README-pt.md) | [🇧🇷 Português (docs/README/Brasil)](docs/README/README-pt-BR.md) | [🇨🇳 简体中文](docs/README/README-zh-CN.md)
+[🇬🇧 English](docs/README/README.md) | [🇸🇦 العربية](docs/README/README-ar.md) | [🇩🇪 Deutsch](docs/README/README-de.md) | [🇪🇸 Español](docs/README/README-es.md) | [🇫🇷 Français](docs/README/README-fr.md) | [🇮🇳 हिन्दी](docs/README/README-hi.md) | [🇯🇵 日本語](docs/README/README-ja.md) | [🇰🇷 한국어](docs/README/README-ko.md) | [🇵🇱 Polski](docs/README/README-pl.md) | [🇵🇹 Português](docs/README/README-pt.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BR.md) | [🇨🇳 简体中文](docs/README/README-zh-CN.md)
 
 ---
 
@@ -207,19 +207,20 @@ Legend for OS Compatibility:
 ### **Core Speech-to-Text (Aura) Engine**
     Our primary engine for offline speech recognition and audio processing.
 
+    
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `dictation_service.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
 │├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
-│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - **The Primary Command Layer**) 🐧 🍏 🪟  
+│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules.md)) 🐧 🍏 🪟  
 ││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (on_match_exec) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
 ││ * **Cascading Execution:** Rules are processed sequentially and their effects are **cumulative**. Later rules apply to text modified by earlier rules.  
 ││ * **Highest Priority Stop Criterion:** If a rule achieves a **Full Match** (^...$), the entire processing pipeline for that token stops immediately. This mechanism is critical for implementing reliable voice commands.  
 │├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
 │└ 4. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟  
 ││ * Applied after LanguageTool to correct LT-specific outputs. Follows the same strict cascading priority logic as the Pre-Correction layer.  
-││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (on_match_exec) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts ([on_match_exec](docs/advanced-scripting.md)) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
 ││ * **Fuzzy Fallback:** The **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. It is only executed if the entire preceding deterministic/cascading rule run failed to find a match (current_rule_matched is False), optimizing performance by avoiding slow fuzzy checks whenever possible.  
 ├┬ **Model Management/**   
 │├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
