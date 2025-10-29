@@ -43,6 +43,21 @@ For a complete technical reference, including all modules and scripts, please vi
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
+**Read this in other languages:**
+
+- 🇬🇧 [English](README.md)
+- 🇸🇦 [العربية](README-ar.md)
+- 🇩🇪 [Deutsch](README-de.md)
+- 🇪🇸 [Español](README-es.md)
+- 🇫🇷 [Français](README-fr.md)
+- 🇮🇳 [हिन्दी](README-hi.md)
+- 🇯🇵 [日本語](README-ja.md)
+- 🇰🇷 [한국어](README-ko.md)
+- 🇵🇱 [Polski](README-pl.md)
+- 🇵🇹 [Português](README-pt.md)
+- 🇧🇷 [Português (Brasil)](README-pt-BR.md)
+- 🇨🇳 [简体中文](README-zh-CN.md)
+
 ---
 
 ## Installation
