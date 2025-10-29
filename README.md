@@ -45,18 +45,7 @@ For a complete technical reference, including all modules and scripts, please vi
 
 **Read this in other languages:**
 
-- 🇬🇧 [English](README.md)
-- 🇸🇦 [العربية](README-ar.md)
-- 🇩🇪 [Deutsch](README-de.md)
-- 🇪🇸 [Español](README-es.md)
-- 🇫🇷 [Français](README-fr.md)
-- 🇮🇳 [हिन्दी](README-hi.md)
-- 🇯🇵 [日本語](README-ja.md)
-- 🇰🇷 [한국어](README-ko.md)
-- 🇵🇱 [Polski](README-pl.md)
-- 🇵🇹 [Português](README-pt.md)
-- 🇧🇷 [Português (Brasil)](README-pt-BR.md)
-- 🇨🇳 [简体中文](README-zh-CN.md)
+[🇬🇧 English](docs/README/README.md) | [🇸🇦 العربية](docs/README/README-ar.md) | [🇩🇪 Deutsch](docs/README/README-de.md) | [🇪🇸 Español](docs/README/README-es.md) | [🇫🇷 Français](docs/README/README-fr.md) | [🇮🇳 हिन्दी](docs/README/README-hi.md) | [🇯🇵 日本語](docs/README/README-ja.md) | [🇰🇷 한국어](docs/README/README-ko.md) | [🇵🇱 Polski](docs/README/README-pl.md) | [🇵🇹 Português](docs/README/README-pt.md) | [🇧🇷 Português (docs/README/Brasil)](docs/README/README-pt-BR.md) | [🇨🇳 简体中文](docs/README/README-zh-CN.md)
 
 ---
 
