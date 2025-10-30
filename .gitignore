@@ -1,5 +1,7 @@
 LanguageTool*
 
+gitDiff.txt
+
 .stfolder/
 .stignore
 backup/
