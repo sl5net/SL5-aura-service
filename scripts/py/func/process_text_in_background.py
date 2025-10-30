@@ -855,7 +855,7 @@ def process_text_in_background(logger,
         process = psutil.Process(os.getpid())
         mem_info = process.memory_info()
         rss_mb = mem_info.rss / (1024 * 1024)
-        if (rss_mb*0.9) > max_model_memory_footprint_mb_not_calculate:
+        if (rss_mb*0.4) > max_model_memory_footprint_mb_not_calculate:
             # restart your script is a very common and effective fallback workaround for managing excessive memory usage
             logger.info(f"Fallback restart script: rss_mb={rss_mb}*2.5 > max_model_memory_footprint={max_model_memory_footprint_mb_not_calculate}")
             # restart script

@@ -57,6 +57,7 @@ def log_memory_details(stage: str, logger):
     # logger.info(f"  Stack Size: {getattr(mem_info, 'stack', 0) / (1024 * 1024):.2f} MB") # Specific to some OS, like Linux
     logger.info("-")
     logger.info("-")
+    return mem_info.rss
 
 # Call this at the very beginning of your script
 # log_memory_details("Script Start",logger)

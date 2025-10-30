@@ -3,6 +3,7 @@ import datetime
 import os
 import sys, subprocess
 
+import signal
 
 
 # Python path to ensure reliable imports on all platforms
@@ -395,7 +396,39 @@ MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
 
 """
 
+import psutil
+import threading
 
+SYSTEM_MEMORY_THRESHOLD_PERCENT = 95.0
+
+
+def system_memory_watchdog(logging):
+    logging.info(f"System Memory Watchdog started. Threshold: {SYSTEM_MEMORY_THRESHOLD_PERCENT}%")
+
+    my_pgid = os.getpgrp()
+
+    while True:
+        # get the real RAM-usages
+        current_memory_percent = psutil.virtual_memory().percent
+
+        if current_memory_percent > SYSTEM_MEMORY_THRESHOLD_PERCENT:
+            logging.warning(
+                f"SYSTEM-MEMORY CRITICAL! Usage: {current_memory_percent}%. "
+                f"Exceeds threshold. Terminating entire process group {my_pgid}."
+            )
+            try:
+                os.killpg(my_pgid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+
+        time.sleep(3)
+
+
+
+
+
+watchdog_thread = threading.Thread(target=system_memory_watchdog, args=(logger,), daemon=True)
+watchdog_thread.start()
 
 
 
