@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DocSearch Test</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3/dist/style.css" />
+</head>
+<body>
+
+    <h1>SL5 Aura Dokumentationssuche</h1>
+
+    <div>
+        <strong>Sprache wählen:</strong>
+        <input type="radio" name="lang" value="de" id="lang-de"> <label for="lang-de">Deutsch</label>
+
+        <input type="radio" name="lang" value="en" id="lang-en" checked> <label for="lang-en">English</label>
+
+        <input type="radio" name="lang" value="fr" id="lang-fr" checked> <label for="lang-fr">Français</label>
+
+        <input type="radio" name="lang" value="pt-BR" id="lang-pt-BR" checked> <label for="lang-pt-BR">Português BR</label>
+
+        <input type="radio" name="lang" value="pt" id="lang-pt" checked> <label for="lang-pt">Português</label>
+    </div>
+    <hr>
+
+    <div id="docsearch"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3/dist/umd/index.js"></script>
+    <script>
+      // Eine Variable, um die aktuelle Such-Instanz zu speichern
+      let searchInstance = null;
+
+      function initializeDocSearch(language) {
+        // --- DAS IST DIE WICHTIGE ÄNDERUNG ---
+        // Wenn bereits eine Suche existiert, beende sie sauber
+        if (searchInstance) {
+          searchInstance.destroy();
+        }
+
+        // Erstelle eine neue Instanz und speichere sie
+        searchInstance = docsearch({
+          container: '#docsearch',
+    appId: 'ZYXRBS44SX',
+    indexName: 'sl5-aura-service', // Dein Index-Name
+    apiKey: 'cb4e4336383a25e26cb07eac118b6317', // Wichtig: NUR den Search-Only Key verwenden!
+
+          searchParameters: {
+            facetFilters: [`lang:${language}`],
+          },
+        });
+      }
+
+      // Füge die Event Listener zu den Radio-Buttons hinzu
+      document.querySelectorAll('input[name="lang"]').forEach((radio) => {
+        radio.addEventListener('change', function() {
+          initializeDocSearch(this.value);
+        });
+      });
+
+      // Starte die Suche initial
+      initializeDocSearch('en');
+    </script>
+
+</body>
+</html>
+

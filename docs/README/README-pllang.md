@@ -1,6 +1,6 @@
 # Głos w trybie offline w całym systemie na polecenia lub tekst, system podłączany
 
-# Usługa SL5 Aura – funkcje i kompatybilność z IOS
+# Usługa SL5 Aura — funkcje i kompatybilność z systemem operacyjnym
 
 Witamy w serwisie SL5 Aura! Ten dokument zawiera krótki przegląd naszych kluczowych funkcji i ich kompatybilności z systemem operacyjnym.
 
@@ -42,6 +42,10 @@ Aby uzyskać pełne informacje techniczne, w tym wszystkie moduły i skrypty, od
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
+
+**Przeczytaj to w innych językach:**
+
+[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
 ---
 
@@ -157,19 +161,20 @@ Legenda dotycząca zgodności systemu operacyjnego:XSPACEbreakX
 ### **Podstawowy silnik zamiany mowy na tekst (Aura)**
 Nasz główny silnik do rozpoznawania mowy w trybie offline i przetwarzania dźwięku.
 
+XSPACEbreakX
 **Aura-Rdzeń/** 🐧 🍏 🪟XSPACEbreakX
 ├─ `dictation_service.py` (główna usługa Pythona zarządzająca Aurą) 🐧 🍏 🪟XSPACEbreakX
 ├┬ **Przeładuj na żywo** (konfiguracja i mapy) 🐧 🍏 🪟XSPACEbreakX
 │├ **Przetwarzanie i korekta tekstu/** Pogrupowane według języka (np. `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punstanding.py` (Standaryzuje interpunkcję po transkrypcji) 🐧 🍏 🪟XSPACEbreakX
-│├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - **Podstawowa warstwa dowodzenia**) 🐧 🍏 🪟XSPACEbreakX
-││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty Pythona (on_match_exec) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
-││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego przez wcześniejsze reguły.XSPACEbreakX
+│├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python (on_match_exec) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
+││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego wcześniejszymi regułami.XSPACEbreakX
 ││ * **Kryterium zatrzymania o najwyższym priorytecie:** Jeśli reguła osiągnie **Pełne dopasowanie** (^...$), cały potok przetwarzania dla tego tokena zostanie natychmiast zatrzymany. Mechanizm ten ma kluczowe znaczenie dla realizacji niezawodnych poleceń głosowych.XSPACEbreakX
 │├ 3. `correct_text_by_languagetool.py` (integruje narzędzie LanguageTool do poprawiania gramatyki/stylu) 🐧 🍏 🪟XSPACEbreakX
 │└ 4. **Inteligentna korekta końcowa** (`FuzzyMap`)** – Udoskonalenie po LT** 🐧 🍏 🪟XSPACEbreakX
 ││ * Stosowane po LanguageTool w celu skorygowania wyników specyficznych dla LT. Działa zgodnie z tą samą ścisłą logiką priorytetów kaskadowych, co warstwa wstępnej korekty.XSPACEbreakX
-││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty Pythona (on_match_exec) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python ([on_match_exec](docs/advanced-scripting-pllang.md)) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
 ││ * **Fuzzy Fallback:** **Rozmyta kontrola podobieństwa** (kontrolowana przez próg, np. 85%) działa jako warstwa korekcji błędów o najniższym priorytecie. Jest wykonywana tylko wtedy, gdy w całym poprzedzającym uruchomieniu reguły deterministycznej/kaskadowej nie znaleziono dopasowania (bieżąca_rule_matched ma wartość False), optymalizując wydajność poprzez unikanie, jeśli to możliwe, powolnych kontroli rozmytych.XSPACEbreakX
 ├┬ **Zarządzanie modelami/** XSPACEbreakX
 │├─ `prioritize_model.py` (optymalizuje ładowanie/rozładowywanie modelu w oparciu o wykorzystanie) 🐧 🍏 🪟XSPACEbreakX
@@ -202,7 +207,7 @@ Skrypty do konfiguracji środowiska, testowania i wykonywania usług.XSPACEbreak
 │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
 ├┬ **Ogólnosystemowa integracja dyktowania/**XSPACEbreakX
 │├ Integracja Vosk-System-Słuchacz 🐧 🍏 🪟XSPACEbreakX
-│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧XSPACEbreakX
+│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey nasłuchuje rozpoznanego tekstu i wpisuje go w całym systemie) 🪟XSPACEbreakX
 └─ **Automatyka CI/CD/**XSPACEbreakX
 └─ Rozszerzone przepływy pracy GitHub (instalacja, testowanie, wdrażanie dokumentów) 🐧 🍏 🪟 *(Działa w akcjach GitHub)*XSPACEbreakX
@@ -214,7 +219,7 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 ├─ **ENTER_AFTER_DICTATION_REGEX** Przykładowa reguła aktywacji „(ExampleAplicationThatNotExist|Pi, Twoja osobista sztuczna inteligencja)” 🐧XSPACEbreakX
 ├┬WtyczkiXSPACEbreakX
 │╰┬ **Lenno na żywo – przeładuj** (*) 🐧 🍏 🪟XSPACEbreakX
-(*Zmiany dotyczące aktywacji/dezaktywacji wtyczki i ich konfiguracji zostaną zastosowane przy następnym uruchomieniu przetwarzania bez ponownego uruchomienia usługi.*)XSPACEbreakX
+(*Zmiany dotyczące aktywacji/dezaktywacji wtyczek i ich konfiguracji zostaną zastosowane przy następnym uruchomieniu przetwarzania bez ponownego uruchomienia usługi.*)XSPACEbreakX
 │ ├ **polecenia git** (sterowanie głosowe przy wysyłaniu poleceń git) 🐧 🍏 🪟XSPACEbreakX
 │ ├ **wannweil** (Mapa lokalizacji Niemcy-Wannweil) 🐧 🍏 🪟XSPACEbreakX
 │ ├ **Wtyczka pokerowa (wersja robocza)** (Sterowanie głosowe w aplikacjach pokerowych) 🐧 🍏 🪟XSPACEbreakX

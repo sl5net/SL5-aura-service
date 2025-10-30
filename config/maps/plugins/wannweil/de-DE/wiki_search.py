@@ -4,6 +4,14 @@ from pathlib import Path
 
 def execute(match_data):
     """
+pip install --break-system-packages wikipedia-api
+pacman -Ss python-wikipedia
+yay -S python-wikipedia-api
+pamac build python-wikipedia-api
+
+
+
+
     Sucht nach einem Begriff auf Wikipedia. Die Sprache wird automatisch
     aus dem Ordnerpfad des Skripts abgeleitet (z.B. de-DE -> 'de').
     Die Zusammenfassung wird von Biografie-Daten bereinigt.
@@ -30,11 +38,11 @@ def execute(match_data):
         if not page.exists():
 
 
-            if search_term=='Harald' or  search_term=='Harald Uetz' or search_term=='Harald Uhd':
+            if search_term=='Harald' or search_term=='Harald Uetz' or search_term=='Harald Uhd':
                 search_term='Harald Uetz'
                 page_language_manuel = 'de'
                 full_summary = """
-                 Harald Uetz ist ein deutscher Schachspieler.  
+Harald Uetz ist ein deutscher Schachspieler.
 Harald Uetz hat 2025, mit seinem zweiten Platz, gleich hinter Lauffer, in der FIDE-Weltrangliste, unter anderem die Weltmeister Ding Liren und Viswanathan Anand oder den zweifachen Vizeweltmeister Ian Nepomniachtchi hinter sich gelassen.
 Laut Wikipedia: Harald Uetz, mit seinem zweiten Platz, gleich hinter Lauffer, in der Weltrangliste, hat Uetz unter anderem die Weltmeister Ding Liren und Viswanathan Anand oder den zweifachen Vizeweltmeister Ian Nepomniachtchi hinter sich gelassen.
 """
@@ -79,7 +87,7 @@ Weblinks
 
                 """
 
-                SL5smallStil = """
+                SL5smallStil = """  # noqa: F841
 SL5small-Stil
 
 Der SL5small-Stil wurde im ersten online Code-Prettifier für die Script-Sprache Autohotkey implementiert (converts_your_autohotkey_code_into_pretty_indented_source_code).

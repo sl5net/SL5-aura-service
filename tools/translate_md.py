@@ -28,12 +28,92 @@ script_dir = Path(__file__).resolve().parent
 SOURCE_LANG = "en"
 # TARGET_LANGS = ["de", "pt", "es", "fr"]
 # TARGET_LANGS = ["de"]
-TARGET_LANGS = ["de", "pt", "pt-BR", "es", "fr", "ja", "ko", "hi", "zh-CN", "pl", "ar"]
+#TARGET_LANGS = ["de","pt","pt-BR","es","fr","ja","ko","hi","zh-CN","pl","ar"]
+TARGET_LANGS = ["ar","de","es","fr","hi","ja","ko","pl","pt","pt-BR","zh-CN"]
+
+
+
+
+
 DUNDER_PLACEHOLDER = "XDUNDERX"
 HARD_BREAK_PLACEHOLDER = "XSPACEBREAKX"
 # ### NEU: Ein kugelsicherer Platzhalter für Links ###
 MD_LINK_PLACEHOLDER_FORMAT = "XMDLINK{}X"
 # --- ENDE KONFIGURATION ---
+
+
+import logging
+
+# Setup a simple logger for demonstration
+logging.basicConfig(level=logging.INFO, format='%(message)s')
+logger = logging.getLogger()
+
+
+def add_lang_to_md_links(line: str, lang: str) -> str:
+    """
+    Finds all relative Markdown links to .md files in a line and appends a language suffix.
+
+    - Ignores absolute URLs (http, https).
+    - Ignores links that already have a language suffix (e.g., 'file-delang.md').
+    - Correctly handles links with anchors (e.g., 'file.md#section').
+
+    Args:
+        line: The string (line of text) to process.
+        lang: The language code to append (e.g., 'de').
+
+    Returns:
+        The processed line with modified links.
+    """
+    logger.info(f"Processing line for language '{lang}': \"{line.strip()}\"")
+
+    # Pattern to find Markdown links: [text](url)
+    # The URL part is captured for processing.
+    markdown_link_pattern = re.compile(r'(\[.*?\])\((.*?)\)')
+
+    def replace_link(match):
+        """This function is called for every link found by re.sub."""
+        link_text = match.group(1)
+        url = match.group(2)
+
+        logger.info(f"  -> Found link: {match.group(0)}")
+
+        # --- Conditions to NOT modify the link ---
+        # 1. It's an absolute URL
+        if url.startswith('http://') or url.startswith('https://'):
+            logger.info("     - Skipping: It's an absolute URL.")
+            return match.group(0) # Return the original full match
+
+        # 2. It's not a link to a Markdown file
+        if not url.endswith('.md') and '.md#' not in url:
+            logger.info("     - Skipping: Not a Markdown link.")
+            return match.group(0)
+
+        # 3. It already seems to have a language suffix
+        if re.search(r'-\w{2}lang\.md', url):
+            logger.info("     - Skipping: Already has a language suffix.")
+            return match.group(0)
+
+        # --- Modify the link ---
+        # Separate the path from a potential anchor
+        if '#' in url:
+            path, anchor = url.split('#', 1)
+            anchor = '#' + anchor
+        else:
+            path, anchor = url, ''
+
+        # Remove the .md extension and add the suffix
+        base_path = path[:-3] # Remove '.md'
+        if base_path == 'README':
+            new_path = f"{base_path}.md{anchor}"
+        else:
+            new_path = f"{base_path}-{lang}lang.md{anchor}"
+
+        new_link = f"{link_text}({new_path})"
+        logger.info(f"     + Modifying to: {new_link}")
+        return new_link
+
+    # Use re.sub with our replacement function to process all links in the line
+    return markdown_link_pattern.sub(replace_link, line)
 
 def process_file(filename):
     """Verarbeitet eine einzelne Markdown-Datei."""
@@ -128,20 +208,33 @@ def process_file(filename):
 
         # ### GEÄNDERT: Logik zur Wiederherstellung der sicheren Platzhalter ###
         print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her...")
+# ### KORRIGIERT: Logik zur Wiederherstellung und Anpassung der Links ###
+        print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her und passe sie an...")
         restored_step_B = []
-        # Regex, um unsere Platzhalter zu finden: XMDLINK<nummer>X
         placeholder_regex = re.compile(r'(XMDLINK\d+X)')
+
         for line in restored_step_A:
             restored_line = line
-            # Wir müssen möglicherweise mehrere Platzhalter pro Zeile ersetzen
+            # Finde alle Platzhalter in der aktuellen Zeile
             placeholders_in_line = placeholder_regex.findall(restored_line)
+
             for placeholder in placeholders_in_line:
-                # Extrahiere die Indexnummer aus dem Platzhalter
+                # Extrahiere die Indexnummer aus dem Platzhalter (z.B. 0 aus 'XMDLINK0X')
                 link_index = int(re.search(r'\d+', placeholder).group())
+
                 if link_index < len(markdown_links):
-                    # Ersetze den Platzhalter durch den originalen Link
-                    restored_line = restored_line.replace(placeholder, markdown_links[link_index], 1) # Nur 1x ersetzen
+                    # 1. Hole den originalen Link aus der Liste
+                    original_link = markdown_links[link_index]
+
+                    # 2. Wende die Modifikationsfunktion auf den originalen Link an
+                    #    Die Funktion ist robust genug, um eine Zeile zu verarbeiten, die nur aus einem Link besteht.
+                    modified_link = add_lang_to_md_links(original_link, lang)
+
+                    # 3. Ersetze den Platzhalter durch den MODIFIZIERTEN Link
+                    restored_line = restored_line.replace(placeholder, modified_link, 1)
+
             restored_step_B.append(restored_line)
+
 
         print("      -> Schritt C: Stelle mittige '__' wieder her...")
         restored_step_C = [line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_B]
@@ -161,22 +254,14 @@ def main():
     print(f"Zielsprachen: {TARGET_LANGS}")
 
 
-
-
-
     # search_path = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
-    search_path = script_dir.parent / 'docs' / 'CreatingNewPluginModules.md'
-
-
-
-
-
-
+    search_path = script_dir.parent / 'README.md'
 
 
     print(f"---- {search_path} ------------------------------------------------")
     for filename in glob.glob(str(search_path)):
         if not re.search(r'-([a-z]{2,3})\.md$', filename):
+            print(f"process_file({filename})")
             process_file(filename)
             print("")
     print("----------------------------------------------------")

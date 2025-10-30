@@ -1,6 +1,6 @@
 # システム全体のオフライン音声からコマンドまたはテキストへのプラグイン可能なシステム
 
-# SL5 Aura サービス - 機能と IOS の互換性
+# SL5 Aura サービス - 機能と OS の互換性
 
 SL5 オーラ サービスへようこそ!このドキュメントでは、主要な機能とそのオペレーティング システムの互換性の概要を説明します。
 
@@ -20,7 +20,7 @@ Aura は単なる文字起こしではありません。これは、あなたの
 ## 主な機能
 
 * **オフライン&プライベート:** 100% ローカル。データがマシンから流出することはありません。
-* **ダイナミック スクリプト エンジン:** テキストの置換を超えます。ルールはカスタム Python スクリプト (「on_match_exec」) を実行して、API の呼び出し (Wikipedia の検索など)、ファイルの操作 (ToDo リストの管理など)、動的コンテンツの生成 (コンテキストを認識した電子メールの挨拶など) などの高度なアクションを実行できます。
+* **ダイナミック スクリプト エンジン:** テキストの置換を超えた機能。ルールはカスタム Python スクリプト (「on_match_exec」) を実行して、API の呼び出し (Wikipedia の検索など)、ファイルの操作 (ToDo リストの管理など)、動的コンテンツの生成 (コンテキストを認識した電子メールの挨拶など) などの高度なアクションを実行できます。
 * **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定されるため、コーディングではなく**構成が必要です**。
 * **控えめな RAM 使用量:** メモリをインテリジェントに管理し、十分な空き RAM がある場合にのみモデルをプリロードし、他のアプリケーション (PC ゲームなど) が常に優先されるようにします。
 * **クロスプラットフォーム:** Linux、macOS、および Windows で動作します。
@@ -42,6 +42,10 @@ Aura は単なる文字起こしではありません。これは、あなたの
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
+
+**他の言語で読む:**
+
+[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
 ---
 
@@ -164,7 +168,7 @@ f11::
 
 処理エンジンは **階層的な優先順位チェーン** に厳密に従っています。
 
-1. **モジュールのロード順序 (高優先度):** コア言語パック (de-DE、en-US) からロードされたルールは、plugins/ ディレクトリからロードされたルール (アルファベット順で最後にロードされる) より優先されます。
+1. **モジュールのロード順序 (高優先度):** コア言語パック (de-DE、en-US) からロードされるルールは、plugins/ ディレクトリ (アルファベット順で最後にロードされる) からロードされるルールよりも優先されます。
   
 2. **ファイル内順序 (マイクロ優先度):** 特定のマップ ファイル (FUZZY_MAP_pre.py) 内では、ルールは **行番号** (上から下) によって厳密に処理されます。
   
@@ -203,19 +207,20 @@ OS 互換性の凡例:
 ### **コア Speech-to-Text (Aura) エンジン**
 オフライン音声認識と音声処理のための主要なエンジン。
 
+  
 **オーラコア/** 🐧 🍏 🪟  
-§─ `dictation_service.py` (Aura をオーケストレーションするメインの Python サービス) 🐧 🍏 🪟  
+§─ `dictation_service.py` (Aura をオーケストレーションするメイン Python サービス) 🐧 🍏 🪟  
 §┬ **ライブ ホットリロード** (構成とマップ) 🐧 🍏 🪟  
 │§ **テキストの処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
 │§ 1. `normalize_punctuation.py` (文字起こし後の句読点を標準化) 🐧 🍏 🪟  
-│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - **プライマリ コマンド レイヤー**) 🐧 🍏 🪟  
+│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
 ││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト (on_match_exec) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **カスケード実行:** ルールは順番に処理され、その効果は **累積的**です。以前のルールによって変更されたテキストには、後のルールが適用されます。  
 ││ * **最優先停止基準:** ルールが **完全一致** (^...$) に達すると、そのトークンの処理パイプライン全体が直ちに停止します。このメカニズムは、信頼性の高い音声コマンドを実装するために重要です。  
 │§ 3. `correct_text_by_ languagetool.py` (文法/スタイル修正のために LanguageTool を統合) 🐧 🍏 🪟  
 │└ 4. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の改良** 🐧 🍏 🪟  
 ││ * LT 固有の出力を修正するために、LanguageTool の後に適用されます。前修正レイヤーと同じ厳密なカスケード優先順位ロジックに従います。  
-││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト (on_match_exec) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
+││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](docs/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **ファジー フォールバック:** **ファジー類似性チェック** (しきい値、たとえば 85% によって制御される) は、優先度が最も低いエラー修正層として機能します。これは、先行する決定的/カスケード ルールの実行全体で一致が見つからなかった場合 (current_rule_matched が False) にのみ実行され、可能な限り遅いファジー チェックを回避することでパフォーマンスを最適化します。  
 §┬ **モデル管理/**   
 │§─ `prioritize_model.py` (使用状況に基づいてモデルのロード/アンロードを最適化します) 🐧 🍏 🪟  
@@ -310,7 +315,7 @@ OS 互換性の凡例:
 |モデル |サイズ |ワードエラー率/速度 |メモ |ライセンス |
 | -------------------------------------------------------------------------------------- | ---- | -------------------------------------------------------------------------------------------- | -------------------------------------- | ---------- |
 | [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69 (librispeech test-clean)<br/>6.05 (tedlium)<br/>29.78 (コールセンター) |正確な一般的な米国英語モデル |アパッチ2.0 |
-| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G | 9.83 (Tuda-de テスト)<br/>24.00 (ポッドキャスト)<br/>12.82 (CV-テスト)<br/>12.42 (mls)<br/>33.26 (mtedx) |電話およびサーバー用のドイツの大型モデル |アパッチ2.0 |
+| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G | 9.83 (Tuda-de テスト)<br/>24.00 (ポッドキャスト)<br/>12.82 (CV テスト)<br/>12.42 (mls)<br/>33.26 (mtedx) |電話およびサーバー用のドイツの大型モデル |アパッチ2.0 |
 
 この表には、サイズ、ワードエラー率または速度、注意事項、ライセンス情報など、さまざまな Vosk モデルの概要が示されています。
 

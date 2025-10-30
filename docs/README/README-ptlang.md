@@ -1,6 +1,6 @@
 # Voz offline em todo o sistema para comandos ou texto, sistema conectável
 
-# SL5 Aura Service - Recursos e compatibilidade com IOS
+# Serviço SL5 Aura - Recursos e compatibilidade de sistema operacional
 
 Bem-vindo ao Serviço SL5 Aura! Este documento fornece uma visão geral rápida dos nossos principais recursos e da compatibilidade do sistema operacional.
 
@@ -42,6 +42,10 @@ Para uma referência técnica completa, incluindo todos os módulos e scripts, v
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
+
+**Leia isto em outros idiomas:**
+
+[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
 ---
 
@@ -185,19 +189,20 @@ Legenda para compatibilidade de sistema operacional:
 ### **Motor principal de conversão de fala em texto (Aura)**
 Nosso principal mecanismo para reconhecimento de fala offline e processamento de áudio.
 
+  
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `dictation_service.py` (principal serviço Python orquestrando Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Configuração e Mapas) 🐧 🍏 🪟  
 │├ **Processamento e correção de texto/** Agrupado por idioma (por exemplo, `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (padroniza a pontuação pós-transcrição) 🐧 🍏 🪟  
-│├ 2. **Pré-correção inteligente** (`FuzzyMap Pre` - **A camada de comando primária**) 🐧 🍏 🪟  
+│├ 2. **Pré-correção inteligente** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-ptlang.md)) 🐧 🍏 🪟  
 ││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados (on_match_exec) para executar ações avançadas como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
 ││ * **Execução em Cascata:** As regras são processadas sequencialmente e seus efeitos são **cumulativos**. Regras posteriores se aplicam ao texto modificado por regras anteriores.  
 ││ * **Critério de parada de prioridade mais alta:** Se uma regra atingir uma **Correspondência completa** (^...$), todo o pipeline de processamento desse token será interrompido imediatamente. Este mecanismo é fundamental para implementar comandos de voz confiáveis.  
 │├ 3. `correct_text_by_languagetool.py` (Integra o LanguageTool para correção de gramática/estilo) 🐧 🍏 🪟  
 │└ 4. **Pós-Correção Inteligente** (`FuzzyMap`)**– Refinamento Pós-LT** 🐧 🍏 🪟  
 ││ * Aplicado após o LanguageTool para corrigir saídas específicas do LT. Segue a mesma lógica estrita de prioridade em cascata da camada de pré-correção.  
-││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados (on_match_exec) para executar ações avançadas como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
+││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados ([on_match_exec](docs/advanced-scripting-ptlang.md)) para executar ações avançadas, como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
 ││ * **Fuzzy Fallback:** A **Verificação de similaridade difusa** (controlada por um limite, por exemplo, 85%) atua como a camada de correção de erros de prioridade mais baixa. Ele só será executado se toda a execução anterior da regra determinística/em cascata não conseguir encontrar uma correspondência (current_rule_matched é False), otimizando o desempenho evitando verificações difusas lentas sempre que possível.  
 ├┬ **Gerenciamento de modelo/**   
 │├─ `prioritize_model.py` (otimiza o carregamento/descarregamento do modelo com base no uso) 🐧 🍏 🪟  
@@ -206,7 +211,7 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 ├─ **Tecla de atalho adaptativa (Iniciar/Parar)** 🐧 🍏 🪟  
 └─ **Troca instantânea de idioma** (Experimental via pré-carregamento de modelo) 🐧 🍏   
 
-**Utilitários do sistema/**   
+**Utilitários do Sistema/**   
 ├┬ **Gerenciamento de servidor LanguageTool/**   
 │├─ `start_languagetool_server.py` (inicializa o servidor LanguageTool local) 🐧 🍏 🪟  
 │└─ `stop_languagetool_server.py` (Desliga o servidor LanguageTool) 🐧 🍏
@@ -295,7 +300,7 @@ Estes modelos compactados devem ser salvos na pasta `models/`
 Esta tabela fornece uma visão geral dos diferentes modelos Vosk, incluindo tamanho, taxa ou velocidade de erro de palavras, notas e informações de licença.
 
 
-**Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
+- **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Ferramenta de Idioma:**  
 (6.6)[https://languagetool.org/download/](https://languagetool.org/download/)
 

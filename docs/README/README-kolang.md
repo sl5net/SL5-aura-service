@@ -1,12 +1,12 @@
-# 시스템 전체 오프라인 음성에서 명령 또는 텍스트로 변환, 플러그형 시스템
+# 명령 또는 텍스트에 대한 시스템 전체 오프라인 음성, 플러그형 시스템
 
-# SL5 Aura 서비스 - 기능 및 IOS 호환성
+# SL5 Aura 서비스 - 기능 및 OS 호환성
 
 SL5 Aura 서비스에 오신 것을 환영합니다! 이 문서에서는 주요 기능과 운영 체제 호환성에 대한 간략한 개요를 제공합니다.
 
 Aura는 단순한 전사기가 아닙니다. 이는 음성을 정확한 동작과 텍스트로 변환하는 강력한 오프라인 처리 엔진입니다.
 
-Vosk 및 LanguageTool을 기반으로 구축된 완전한 오프라인 어시스턴트이며, 플러그형 규칙 시스템과 동적 스크립팅 엔진을 통해 궁극적인 사용자 정의를 위해 설계되었습니다.
+Vosk 및 LanguageTool을 기반으로 구축된 완전한 오프라인 어시스턴트이며 플러그형 규칙 시스템과 동적 스크립팅 엔진을 통해 궁극적인 사용자 정의를 위해 설계되었습니다.
 XSPACEbreakX
 XSPACEbreakX
 번역: 이 문서는 [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs)에도 존재합니다.
@@ -20,7 +20,7 @@ XSPACEbreakX
 ## 주요 기능
 
 * **오프라인 및 비공개:** 100% 로컬. 어떤 데이터도 귀하의 컴퓨터를 떠나지 않습니다.
-* **동적 스크립팅 엔진:** 텍스트 교체 이상의 기능을 제공합니다. 규칙은 사용자 정의 Python 스크립트(`on_match_exec`)를 실행하여 API 호출(예: Wikipedia 검색), 파일 상호 작용(예: 할 일 목록 관리), 동적 콘텐츠 생성(예: 상황 인식 이메일 인사말)과 같은 고급 작업을 수행할 수 있습니다.
+* **동적 스크립팅 엔진:** 텍스트 교체 이상의 기능을 제공합니다. 규칙은 사용자 정의 Python 스크립트(`on_match_exec`)를 실행하여 API 호출(예: Wikipedia 검색), 파일 상호 작용(예: 할 일 목록 관리) 또는 동적 콘텐츠 생성(예: 상황 인식 이메일 인사말)과 같은 고급 작업을 수행할 수 있습니다.
 * **고도의 제어 변환 엔진:** 구성 중심의 고도로 사용자 정의 가능한 처리 파이프라인을 구현합니다. 규칙 우선순위, 명령 감지 및 텍스트 변환은 순전히 퍼지 맵의 규칙 순서에 따라 결정되며 **코딩이 아닌 구성**이 필요합니다.
 * **보수적인 RAM 사용:** 메모리를 지능적으로 관리하고 여유 RAM이 충분한 경우에만 모델을 사전 로드하여 다른 애플리케이션(예: PC 게임)이 항상 우선순위를 갖도록 합니다.
 * **크로스 플랫폼:** Linux, macOS, Windows에서 작동합니다.
@@ -42,6 +42,10 @@ XSPACEbreakX
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
+
+**다른 언어로 읽어 보세요:**
+
+[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
 ---
 
@@ -143,7 +147,7 @@ f11::
 
 
 ### 3. 받아쓰기를 시작하세요!
-텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추십시오. 수정된 텍스트가 자동으로 입력됩니다.
+텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추세요. 수정된 텍스트가 자동으로 입력됩니다.
 
 ---
 
@@ -164,7 +168,7 @@ f11::
 
 처리 엔진은 **계층적 우선순위 체인**을 엄격하게 준수합니다.
 
-1. **모듈 로드 순서(높은 우선순위):** 핵심 언어 팩(de-DE, en-US)에서 로드된 규칙은 플러그인/ 디렉터리에서 로드된 규칙(마지막 알파벳순으로 로드됨)보다 우선합니다.
+1. **모듈 로드 순서(높은 우선순위):** 핵심 언어 팩(de-DE, en-US)에서 로드된 규칙은 플러그인/ 디렉터리에서 로드된 규칙(알파벳순으로 마지막으로 로드됨)보다 우선합니다.
 XSPACEbreakX
 2. **파일 내 순서(마이크로 우선순위):** 지정된 맵 파일(FUZZY_MAP_pre.py) 내에서 규칙은 **라인 번호**(위에서 아래로)에 따라 엄격하게 처리됩니다.
 XSPACEbreakX
@@ -192,7 +196,7 @@ XSPACEbreakX
 
 ## 🚀 주요 기능 및 OS 호환성
 
-OS 호환성에 대한 범례:XSPACEbreakX
+OS 호환성 범례:XSPACEbreakX
 * 🐧 **Linux**(예: Arch, Ubuntu)XSPACEbreakX
 * 🍏 **macOS**XSPACEbreakX
 * 🪟 **윈도우**XSPACEbreakX
@@ -203,19 +207,20 @@ OS 호환성에 대한 범례:XSPACEbreakX
 ### **핵심 음성-텍스트(Aura) 엔진**
 오프라인 음성 인식 및 오디오 처리를 위한 기본 엔진입니다.
 
+XSPACEbreakX
 **Aura-Core/** 🐧 🍏 🪟XSPACEbreakX
 ├─ `dictation_service.py`(Aura를 조정하는 주요 Python 서비스) 🐧 🍏 🪟  
 ├┬ **라이브 핫 리로드**(구성 및 맵) 🐧 🍏 🪟XSPACEbreakX
 │├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
-│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - **기본 명령 계층**) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(on_match_exec)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **계단식 실행:** 규칙은 순차적으로 처리되며 해당 효과는 **누적**됩니다. 이후 규칙은 이전 규칙에 의해 수정된 텍스트에 적용됩니다.  
 ││ * **가장 높은 우선순위 중지 기준:** 규칙이 **완전 일치**(^...$)를 달성하면 해당 토큰에 대한 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 안정적인 음성 명령을 구현하는 데 중요합니다.  
 │├ 3. `corright_text_by_언어tool.py` (문법/스타일 교정을 위한 LanguageTool 통합) 🐧 🍏 🪟  
 │└ 4. **지능형 사후 수정**(`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟XSPACEbreakX
 ││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선순위 논리를 따릅니다.  
-││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(on_match_exec)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
+││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](docs/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전 결정적/계단식 규칙 실행 전체가 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
 ├┬ **모델 관리/** XSPACEbreakX
 │├─ `prioritize_model.py` (사용에 따라 모델 로드/언로드 최적화) 🐧 🍏 🪟  
@@ -225,7 +230,7 @@ OS 호환성에 대한 범례:XSPACEbreakX
 └─ **즉각적인 언어 전환** (모델 사전 로드를 통한 실험) 🐧 🍏 XSPACEbreakX
 
 **시스템 유틸리티/** XSPACEbreakX
-├┬ **LanguageTool 서버 관리/**   
+├┬ **LanguageTool 서버 관리/** XSPACEbreakX
 │├─ `start_언어tool_server.py`(로컬 LanguageTool 서버 초기화) 🐧 🍏 🪟  
 │└─ `stop_언어tool_server.py` (LanguageTool 서버 종료) 🐧 🍏
 ├─ `monitor_mic.sh` (예: 키보드와 모니터를 사용하지 않고 헤드셋과 함께 사용) 🐧 🍏 🪟XSPACEbreakX

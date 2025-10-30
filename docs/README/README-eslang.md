@@ -1,6 +1,6 @@
 # Voz a comandos o texto sin conexión en todo el sistema, sistema conectable
 
-# Servicio SL5 Aura - Funciones y compatibilidad con IOS
+# Servicio SL5 Aura: características y compatibilidad del sistema operativo
 
 ¡Bienvenido al Servicio SL5 Aura! Este documento proporciona una descripción general rápida de nuestras funciones clave y su compatibilidad con el sistema operativo.
 
@@ -42,6 +42,10 @@ Para obtener una referencia técnica completa, incluidos todos los módulos y sc
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
+
+**Lea esto en otros idiomas:**
+
+[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
 ---
 
@@ -203,19 +207,20 @@ Leyenda de compatibilidad del sistema operativo:
 ### **Motor principal de conversión de voz a texto (Aura)**
 Nuestro motor principal para el reconocimiento de voz y el procesamiento de audio sin conexión.
 
+  
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `dictation_service.py` (Servicio principal de Python que orquesta Aura) 🐧 🍏 🪟  
-├┬ **Recarga en vivo en vivo** (Configuración y mapas) 🐧 🍏 🪟  
+├┬ **Recarga en vivo** (Configuración y mapas) 🐧 🍏 🪟  
 │├ **Procesamiento y corrección de texto/** Agrupado por idioma (p. ej., `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (Estandariza la puntuación post-transcripción) 🐧 🍏 🪟  
-│├ 2. **Precorrección inteligente** (`FuzzyMap Pre` - **La capa de comando principal**) 🐧 🍏 🪟  
+│├ 2. **Precorrección inteligente** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-eslang.md)) 🐧 🍏 🪟  
 ││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas (on_match_exec) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
 ││ * **Ejecución en cascada:** Las reglas se procesan secuencialmente y sus efectos son **acumulativos**. Las reglas posteriores se aplican al texto modificado por reglas anteriores.  
 ││ * **Criterio de detención de prioridad más alta:** Si una regla logra una **Coincidencia completa** (^...$), todo el proceso de procesamiento para ese token se detiene inmediatamente. Este mecanismo es fundamental para implementar comandos de voz confiables.  
 │├ 3. `correct_text_by_languagetool.py` (Integra LanguageTool para corrección de gramática/estilo) 🐧 🍏 🪟  
 │└ 4. **Postcorrección inteligente** (`FuzzyMap`)**– Refinamiento post-LT** 🐧 🍏 🪟  
 ││ * Se aplica después de LanguageTool para corregir resultados específicos de LT. Sigue la misma lógica estricta de prioridad en cascada que la capa de corrección previa.  
-││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas (on_match_exec) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
+││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas ([on_match_exec](docs/advanced-scripting-eslang.md)) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
 ││ * **Refuerzo difuso:** La **Comprobación de similitud difusa** (controlada por un umbral, por ejemplo, 85%) actúa como la capa de corrección de errores de menor prioridad. Solo se ejecuta si toda la ejecución de la regla determinista/en cascada anterior no pudo encontrar una coincidencia (current_rule_matched es False), lo que optimiza el rendimiento evitando comprobaciones difusas lentas siempre que sea posible.  
 ├┬ **Gestión de modelos/**   
 │├─ `prioritize_model.py` (Optimiza la carga/descarga del modelo según el uso) 🐧 🍏 🪟  
@@ -315,9 +320,9 @@ Estos modelos comprimidos deben guardarse en la carpeta `modelos/`
 Esta tabla proporciona una descripción general de los diferentes modelos de Vosk, incluido su tamaño, velocidad o tasa de error de palabras, notas e información de licencia.
 
 
-- **Modelos Vosk:** XMLDLINK19X
+- **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Herramienta de idioma:**  
-(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
+(6.6) XMLDLINK34X
 
 **Licencia de LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
