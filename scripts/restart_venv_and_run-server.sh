@@ -25,6 +25,7 @@ if [ "$detected_os" = "windows" ]; then
   echo "please start trigger-hotkeys.ahk"
 else
   SERVICE_NAME_WATCHER="type_watcher_keep_alive.sh"
+  SERVICE_NAME_WATCHER2="type_watcher_keep_alive.sh"
 fi
 
 
@@ -40,10 +41,11 @@ else
     echo "Stopping old processes..."
     # Use -f to match the full command line, just like in pgrep.
     # pkill -f "$SERVICE_NAME_MAIN"
-    pkill -9 -f "$SERVICE_NAME_MAIN"
+    pkill -9 "$SERVICE_NAME_MAIN"
     pkill -f "$SERVICE_NAME_WATCHER"
     echo pkill -9 -f "$SERVICE_NAME_MAIN"
-    echo pkill -f "$SERVICE_NAME_WATCHER"
+    echo pkill -9 -f "$SERVICE_NAME_WATCHER"
+    echo pkill -9 -f "$SERVICE_NAME_WATCHER2"
 
     # realpath /tmp/../tmp/../tmp
     # /tmp
