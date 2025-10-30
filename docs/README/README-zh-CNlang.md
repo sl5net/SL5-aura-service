@@ -167,14 +167,14 @@ X空格符X
 ├┬ **实时热重载**（配置和地图）🐧🍏🪟  
 │├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
-│├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
+│├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
 │ │ * **动态脚本执行：**规则可以触发自定义Python脚本（on_match_exec）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 │ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
 │ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
 │├ 3. ` Correct_text_by_languagetool.py` (集成LanguageTool用于语法/风格校正) 🐧 🍏 🪟  
 │└ 4. **智能后期校正** (`FuzzyMap`)**– LT后细化** 🐧 🍏 🪟  
 │ │ * 在 LanguageTool 之后应用以纠正 LT 特定的输出。遵循与预校正层相同的严格级联优先级逻辑。  
-││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](docs/advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
+││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](../advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 ││ * **模糊回退：** **模糊相似性检查**（由阈值控制，例如 85%）充当最低优先级的纠错层。仅当前面的整个确定性/级联规则运行未能找到匹配项（current_rule_matched 为 False）时才会执行它，通过尽可能避免缓慢的模糊检查来优化性能。  
 ├┬ **模型管理/**   
 │├─ `prioritize_model.py` (根据使用情况优化模型加载/卸载) 🐧 🍏 🪟  

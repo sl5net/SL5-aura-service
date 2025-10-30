@@ -213,14 +213,14 @@ XSPACEbreakX
 ├┬ **라이브 핫 리로드**(구성 및 맵) 🐧 🍏 🪟XSPACEbreakX
 │├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
-│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(on_match_exec)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **계단식 실행:** 규칙은 순차적으로 처리되며 해당 효과는 **누적**됩니다. 이후 규칙은 이전 규칙에 의해 수정된 텍스트에 적용됩니다.  
 ││ * **가장 높은 우선순위 중지 기준:** 규칙이 **완전 일치**(^...$)를 달성하면 해당 토큰에 대한 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 안정적인 음성 명령을 구현하는 데 중요합니다.  
 │├ 3. `corright_text_by_언어tool.py` (문법/스타일 교정을 위한 LanguageTool 통합) 🐧 🍏 🪟  
 │└ 4. **지능형 사후 수정**(`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟XSPACEbreakX
 ││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선순위 논리를 따릅니다.  
-││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](docs/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
+││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전 결정적/계단식 규칙 실행 전체가 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
 ├┬ **모델 관리/** XSPACEbreakX
 │├─ `prioritize_model.py` (사용에 따라 모델 로드/언로드 최적화) 🐧 🍏 🪟  

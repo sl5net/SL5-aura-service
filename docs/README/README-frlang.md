@@ -213,14 +213,14 @@ Notre principal moteur de reconnaissance vocale et de traitement audio hors lign
 ├┬ **Live Hot-Reload** (Configuration et cartes) 🐧 🍏 🪟  
 │├ **Traitement et correction de texte/** Regroupés par langue ( par exemple `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardise la ponctuation après la transcription) 🐧 🍏 🪟  
-│├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
+│├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - [The Primary Command Layer](../CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
 ││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés (on_match_exec) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Exécution en cascade :** Les règles sont traitées séquentiellement et leurs effets sont **cumulatifs**. Les règles ultérieures s'appliquent au texte modifié par les règles antérieures.  
 ││ * **Critère d'arrêt de priorité la plus élevée :** Si une règle obtient une **Correspondance complète** (^...$), l'ensemble du pipeline de traitement pour ce jeton s'arrête immédiatement. Ce mécanisme est essentiel pour implémenter des commandes vocales fiables.  
 │├ 3. `correct_text_by_lingualtool.py` (Intègre LanguageTool pour la correction de grammaire/style) 🐧 🍏 🪟  
 │└ 4. **Post-correction intelligente** (`FuzzyMap`)** – Affinement post-LT** 🐧 🍏 🪟  
 ││ * Appliqué après LanguageTool pour corriger les sorties spécifiques à LT. Suit la même logique stricte de priorité en cascade que la couche de pré-correction.  
-││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés ([on_match_exec](docs/advanced-scripting-frlang.md)) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
+││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés ([on_match_exec](../advanced-scripting-frlang.md)) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Fuzzy Fallback :** Le **Fuzzy Similarity Check** (contrôlé par un seuil, par exemple 85 %) agit comme la couche de correction d'erreurs la plus basse priorité. Elle n'est exécutée que si l'exécution complète de la règle déterministe/en cascade précédente n'a pas réussi à trouver une correspondance (current_rule_matched est False), optimisant ainsi les performances en évitant les vérifications floues lentes autant que possible.  
 ├┬ **Gestion des modèles/**   
 │├─ `prioritize_model.py` (Optimise le chargement/déchargement du modèle en fonction de l'utilisation) 🐧 🍏 🪟  
