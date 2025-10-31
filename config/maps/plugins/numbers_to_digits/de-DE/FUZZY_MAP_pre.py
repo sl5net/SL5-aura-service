@@ -61,7 +61,12 @@ FUZZY_MAP_pre = [
     ('90', r'(\b|\d)(neunzig)(\b|\d)', 87, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     ('100', r'(\b|\d)(hundert|einhundert)(\b|\d)', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     ('1000', r'(\b|\d)(tausend)(\b|\d)', 87, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    ('2024', r'(\b|\d)(zweitausend\s*vierundzwanzig)(\b|\d)', 87, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    ('2025', r'(\b|\d)(zweitausend\s*fünfundzwanzig)(\b|\d)', 87, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    ('2026', r'(\b|\d)(zweitausend\s*sechsundzwanzig|zweitausend\s*sechs\s*und\b.*)(\b|\d)', 87, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 ]
+#zweitausend 4Zweitausend Fans zweitausendvierundzwanzig20242025zweitausend 6 undzweitausend 6 sind2026
+
 #  60 50witzig 13Drei SSW 2018 17Zweck ziehen 16100
 #  1000Ein HuhnEin wundenEin wunderEin wunderEin unnützEin runde 90 80 70Schwächt sich
 

@@ -15,6 +15,6 @@ PUNCTUATION_MAP = {
     'vierzehn': '14', 'fünfzehn': '15', 'sechzehn': '16', 'siebzehn': '17',
     'zwanzig': '20', 'dreißig': '30', 'vierzig': '40', 'fünfzig': '50',
     'sechzig': '60', 'siebzig': '70', 'achtzig': '80', 'neunzig': '90',
-    'hundert': '100', 'tausend': '1000',
+    'hundert': '100', 'tausend': '1000', 'zweitausendvierundzwanzig':'2024'
 
 }

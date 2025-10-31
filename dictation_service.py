@@ -399,29 +399,80 @@ MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
 import psutil
 import threading
 
-SYSTEM_MEMORY_THRESHOLD_PERCENT = 95.0
+"""
+31.10.'25 22:09 Fri
+22:07:36,080 - INFO     - Graceful shutdown initiated. Final timeout set to 2.0s.
+22:07:36,484 - WARNING  - SYSTEM-MEMORY CRITICAL! Usage: 92.00440896261489%. Exceeds threshold. Terminating entire process group 82694.BTW: ramUsageIncreadFromBegining: 1.0818119049072266 times
+"""
 
 
+SYSTEM_MEMORY_THRESHOLD_PERCENT = 87.0
+# SYSTEM_MEMORY_THRESHOLD_PERCENT = 64.0 # when i test i will use lower
+
+RAM_ESTIMATE_PER_MODEL_GB = 4.0 # plus some other needet space for the model
+GB_TO_MB_CONVERSION_FACTOR = 1024
+
+# dictation_service.py:404
 def system_memory_watchdog(logging):
     logging.info(f"System Memory Watchdog started. Threshold: {SYSTEM_MEMORY_THRESHOLD_PERCENT}%")
+
+    process = psutil.Process(os.getpid())
+
+    num_preloaded_models = len(settings.PRELOAD_MODELS)
+
+    #estimated_total_size_mb = file_size_bytes / (1024 * 1024)
+    estimated_ram_for_models_mb = num_preloaded_models * RAM_ESTIMATE_PER_MODEL_GB * GB_TO_MB_CONVERSION_FACTOR
 
     my_pgid = os.getpgrp()
 
     while True:
         # get the real RAM-usages
-        current_memory_percent = psutil.virtual_memory().percent
+        # current_memory_percent = psutil.virtual_memory().percent
+        mem = psutil.virtual_memory()
+        truly_used_ram = mem.total - mem.available
+        current_memory_percent = (truly_used_ram / mem.total) * 100
 
         if current_memory_percent > SYSTEM_MEMORY_THRESHOLD_PERCENT:
+
+            ram_occupied_by_this_specific_process_mb =  process.memory_info().rss / (1024 * 1024)
+            ramUsageIncreadFromBegining = ram_occupied_by_this_specific_process_mb / estimated_ram_for_models_mb
+            if ram_occupied_by_this_specific_process_mb > 1.3 * estimated_ram_for_models_mb: # 1.2 or higher is maybe a good value
+                logging.error(
+                    f"memoryLECK! "
+                    f"Prozess-RAM {estimated_ram_for_models_mb:.2f} MB now {ram_occupied_by_this_specific_process_mb:.2f} MB")
+
+
+
+                if sys.platform in ["linux", "darwin"]:
+                    try:
+                        restart_script = os.path.join(PROJECT_ROOT, 'scripts', 'restart_venv_and_run-server.sh')
+                        subprocess.Popen([restart_script])
+                        sys.exit(0)
+
+                    except FileNotFoundError:
+                        logging.error(f"not found: {restart_script}")
+                    except Exception as e:
+                        logging.error(f"error: {e}")
+                else:
+                    logging.warning(f"restart '{sys.platform}' not suported. Prozess will endet now.")
+
+
+
+
+
             logging.warning(
                 f"SYSTEM-MEMORY CRITICAL! Usage: {current_memory_percent}%. "
                 f"Exceeds threshold. Terminating entire process group {my_pgid}."
+                f"BTW: ramUsageIncreadFromBegining: {ramUsageIncreadFromBegining} times"
+
+
             )
             try:
                 os.killpg(my_pgid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
 
-        time.sleep(3)
+        time.sleep(2)
 
 
 
