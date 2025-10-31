@@ -407,7 +407,7 @@ import threading
 
 
 SYSTEM_MEMORY_THRESHOLD_PERCENT = 87.0
-# SYSTEM_MEMORY_THRESHOLD_PERCENT = 64.0 # when i test i will use lower
+#SYSTEM_MEMORY_THRESHOLD_PERCENT = 52.0 # when i test i will use lower
 
 RAM_ESTIMATE_PER_MODEL_GB = 4.0 # plus some other needet space for the model
 GB_TO_MB_CONVERSION_FACTOR = 1024
@@ -441,20 +441,26 @@ def system_memory_watchdog(logging):
                     f"memoryLECK! "
                     f"Prozess-RAM {estimated_ram_for_models_mb:.2f} MB now {ram_occupied_by_this_specific_process_mb:.2f} MB")
 
+                script_name = None
+                if sys.platform.startswith('win'):
+                    script_name = 'restart_venv_and_run-server.ahk'
+                elif sys.platform in ["linux", "darwin"]:
+                    script_name = 'restart_venv_and_run-server.sh'
+                else:
+                    logging.warning(f"restart for '{sys.platform}' not suported.")
 
-
-                if sys.platform in ["linux", "darwin"]:
+                if script_name:
                     try:
-                        restart_script = os.path.join(PROJECT_ROOT, 'scripts', 'restart_venv_and_run-server.sh')
-                        subprocess.Popen([restart_script])
+                        restart_script_path = os.path.join(PROJECT_ROOT, 'scripts', script_name)
+                        logging.info(f"restart in '{sys.platform}' using  {restart_script_path}")
+                        subprocess.Popen([restart_script_path], shell=True) # shell=True ist für Windows sicherer
+                        logging.info("Prozess will end, hope it helps restarting.")
                         sys.exit(0)
 
                     except FileNotFoundError:
-                        logging.error(f"not found: {restart_script}")
+                        logging.error(f"restart-Skript not found: {restart_script_path}")
                     except Exception as e:
-                        logging.error(f"error: {e}")
-                else:
-                    logging.warning(f"restart '{sys.platform}' not suported. Prozess will endet now.")
+                        logging.error(f"error when try restart: {e}")
 
 
 
@@ -473,9 +479,6 @@ def system_memory_watchdog(logging):
                 pass
 
         time.sleep(2)
-
-
-
 
 
 watchdog_thread = threading.Thread(target=system_memory_watchdog, args=(logger,), daemon=True)
