@@ -98,6 +98,8 @@ FUZZY_MAP_pre = [
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'calculator.py']
     }),
+# Das Ergebnis von 5 plus 3 ist 8.
+
 
     ('', r'OFFFFFFFFFFFFF mobed to other to --->post wannweil map (suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
     'flags': re.IGNORECASE,
@@ -119,9 +121,12 @@ FUZZY_MAP_pre = [
 
 
 
-    ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, {'flags': re.IGNORECASE}),
+    # --- Rule for the Chess Commentator ---
+    # This rule listens for various forms of negative self-talk during a game.
+    ( 'schach_kommentator_negativ', r'^\b(fehler|mist|verdammt|scheiße|blöd|dumm|idiot|nicht aufgepasst|ärgerlich|ach komm|das wars|verloren|ich geb\w? auf)\b$', 90, { 'flags': re.IGNORECASE, 'on_match_exec': [CONFIG_DIR / 'chess_commentator.py'] }),
 
-    # ('TestFuzzyImmer', r'\b(diesesRegexWirdImmerMatchen)\b', 1, {'flags': re.IGNORECASE}),
+
+    ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, {'flags': re.IGNORECASE}),
 
 
 

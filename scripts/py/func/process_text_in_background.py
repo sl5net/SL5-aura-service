@@ -701,10 +701,10 @@ def process_text_in_background(logger,
                             break  # Found a definitive match, stop this loop
 
                         except re.error as e:
-                            logger.warning(f"Invalid regex pattern in FUZZY_MAP: '{match_phrase}'. Error: {e}")
+                            logger.warning(f"704: Invalid regex pattern in FUZZY_MAP: '{match_phrase}'. Error: {e}")
                             continue # Skip this invalid rule
                         except Exception as e:
-                            logger.warning(f"FUZZY_MAP: '{match_phrase}'. Error: {e}")
+                            logger.warning(f"707: FUZZY_MAP: '{match_phrase}'. Error: {e}")
 
             # Pass 2: If no regex matched, perform the FUZZY search as before.
             # This code will only run if the loop above didn't find a regex match.
@@ -814,6 +814,9 @@ def process_text_in_background(logger,
         # --- AB HIER KOMMEN DIE KORREKTUREN ---
 
         if new_current_text:
+
+            new_current_text = sanitize_transcription_start(new_current_text)
+
             # DIESE ZEILE WAR SCHON RICHTIG:
             unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
 

@@ -406,8 +406,8 @@ import threading
 """
 
 
-SYSTEM_MEMORY_THRESHOLD_PERCENT = 87.0
-#SYSTEM_MEMORY_THRESHOLD_PERCENT = 52.0 # when i test i will use lower
+SYSTEM_RAM_THRESHOLD_PERCENT = 89.0
+SYSTEM_SWAP_THRESHOLD_PERCENT = 85.0
 
 RAM_ESTIMATE_PER_MODEL_GB = 4.0 # plus some other needet space for the model
 GB_TO_MB_CONVERSION_FACTOR = 1024
@@ -428,18 +428,35 @@ def system_memory_watchdog(logging):
     while True:
         # get the real RAM-usages
         # current_memory_percent = psutil.virtual_memory().percent
-        mem = psutil.virtual_memory()
-        truly_used_ram = mem.total - mem.available
-        current_memory_percent = (truly_used_ram / mem.total) * 100
 
-        if current_memory_percent > SYSTEM_MEMORY_THRESHOLD_PERCENT:
+        # 1. Get Physical RAM
+        ram_info = psutil.virtual_memory()
+        current_ram_percent = ((ram_info.total - ram_info.available) / ram_info.total) * 100
+
+        # 2. Get Swap Memory
+        swap_info = psutil.swap_memory()
+        current_swap_percent = swap_info.percent
+
+        swap_info = psutil.swap_memory()
+        current_swap_percent = swap_info.percent
+
+        if (current_ram_percent > SYSTEM_RAM_THRESHOLD_PERCENT and
+                current_swap_percent > SYSTEM_SWAP_THRESHOLD_PERCENT):
+        # if current_memory_percent > SYSTEM_MEMORY_THRESHOLD_PERCENT:
+
+            # Create a detailed log message that shows WHY the shutdown is happening
+            log_msg = (
+                f"SYSTEM-MEMORY CRITICAL! RAM Usage: {current_ram_percent:.1f}% (>{SYSTEM_RAM_THRESHOLD_PERCENT}%) "
+                f"AND Swap Usage: {current_swap_percent:.1f}% (>{SYSTEM_SWAP_THRESHOLD_PERCENT}%). "
+            )
+            logging.warning(log_msg)
 
             ram_occupied_by_this_specific_process_mb =  process.memory_info().rss / (1024 * 1024)
             ramUsageIncreadFromBegining = ram_occupied_by_this_specific_process_mb / estimated_ram_for_models_mb
             if ram_occupied_by_this_specific_process_mb > 1.3 * estimated_ram_for_models_mb: # 1.2 or higher is maybe a good value
                 logging.error(
                     f"memoryLECK! "
-                    f"Prozess-RAM {estimated_ram_for_models_mb:.2f} MB now {ram_occupied_by_this_specific_process_mb:.2f} MB")
+                    f"Process-RAM {estimated_ram_for_models_mb:.2f} MB now {ram_occupied_by_this_specific_process_mb:.2f} MB")
 
                 script_name = None
                 if sys.platform.startswith('win'):
@@ -467,7 +484,7 @@ def system_memory_watchdog(logging):
 
 
             logging.warning(
-                f"SYSTEM-MEMORY CRITICAL! Usage: {current_memory_percent}%. "
+                f"SYSTEM-MEMORY CRITICAL! Usage: {current_ram_percent}%. "
                 f"Exceeds threshold. Terminating entire process group {my_pgid}."
                 f"BTW: ramUsageIncreadFromBegining: {ramUsageIncreadFromBegining} times"
 
