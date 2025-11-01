@@ -414,7 +414,7 @@ GB_TO_MB_CONVERSION_FACTOR = 1024
 
 # dictation_service.py:404
 def system_memory_watchdog(logging):
-    logging.info(f"System Memory Watchdog started. Threshold: {SYSTEM_MEMORY_THRESHOLD_PERCENT}%")
+    logging.info(f"System Memory Watchdog started. Threshold: {SYSTEM_RAM_THRESHOLD_PERCENT}%")
 
     process = psutil.Process(os.getpid())
 
@@ -442,7 +442,6 @@ def system_memory_watchdog(logging):
 
         if (current_ram_percent > SYSTEM_RAM_THRESHOLD_PERCENT and
                 current_swap_percent > SYSTEM_SWAP_THRESHOLD_PERCENT):
-        # if current_memory_percent > SYSTEM_MEMORY_THRESHOLD_PERCENT:
 
             # Create a detailed log message that shows WHY the shutdown is happening
             log_msg = (
