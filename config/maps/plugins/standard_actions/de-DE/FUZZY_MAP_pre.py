@@ -123,12 +123,19 @@ FUZZY_MAP_pre = [
 
     # --- Rule for the Chess Commentator ---
     # This rule listens for various forms of negative self-talk during a game.
-    ( 'schach_kommentator_negativ', r'^\b(fehler|mist|verdammt|scheiße|blöd|dumm|idiot|nicht aufgepasst|ärgerlich|ach komm|das wars|verloren|ich geb\w? auf)\b$', 90, { 'flags': re.IGNORECASE, 'on_match_exec': [CONFIG_DIR / 'chess_commentator.py'] }),
+    ( 'schach_kommentator_negativ', r'^\b(fehler|mist|So ein Mist|verdammt|scheiße|blöd|dumm|idiot|nicht aufgepasst|ärgerlich|ach komm|das wars|verloren|ich geb\w? auf)\b$', 90, { 'flags': re.IGNORECASE, 'on_match_exec': [CONFIG_DIR / 'chess_commentator.py'] }),
 
 
     ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, {'flags': re.IGNORECASE}),
 
 
+    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) ([a-z]+.*)', 90, {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
+    }),
+
 
 ]
 
+#Laut Wikipedia: Wannweil ist eine Gemeinde im Landkreis Reutlingen in Baden-Württemberg. Sie gehört zur Region Neckar-Alb und zur europäischen Metropolregion Stuttgart.
+#Laut Wikipedia: Tübingen (amtlicher Name: Universitätsstadt Tübingen) ist eine Universitätsstadt im Zentrum Baden-Württembergs. Sie liegt am Neckar rund 30 Kilometer südlich der Landeshauptstadt Stuttgart. Die Stadt ist Sitz des Landkreises Tübingen sowie des gleichnamigen Regierungsbezirks und war von 1947 bis 1952 Landeshauptstadt von Württemberg-Hohenzollern. Sie gehört zur Region Neckar-Alb und zur europäischen Metropolregion Stuttgart. Gemeinsam mit der östlichen Nachbarstadt Reutlingen bildet sie eines der 14 Oberzentren des Landes.

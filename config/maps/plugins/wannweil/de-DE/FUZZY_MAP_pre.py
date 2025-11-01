@@ -58,10 +58,6 @@ FUZZY_MAP_pre = [
 
 
 
-    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) ([a-z]+.*)', 90, {
-    'flags': re.IGNORECASE,
-    'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
-    }),
 
     #
 
