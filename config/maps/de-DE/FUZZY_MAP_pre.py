@@ -28,6 +28,9 @@ FUZZY_MAP_pre = [
     (':', r'\bDoppelpunkt\b', 82, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
+    ('quinquillieren', r'\b(kwink wir nieren|swing wie lire|klingt wie lire|kwink wir dir)\b', 82, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+#Swing wie LireKlingt wie Lire
 
     ('?', r'\s+(fragezeichen|fragen|fragend|frage|fragt)\s*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 

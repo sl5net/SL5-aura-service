@@ -414,6 +414,7 @@ GB_TO_MB_CONVERSION_FACTOR = 1024
 
 # dictation_service.py:404
 def system_memory_watchdog(logging):
+
     logging.info(f"System Memory Watchdog started. Threshold: {SYSTEM_RAM_THRESHOLD_PERCENT}%")
 
     process = psutil.Process(os.getpid())
@@ -425,6 +426,20 @@ def system_memory_watchdog(logging):
 
     my_pgid = os.getpgrp()
 
+    if True:
+        # 2. Get Swap Memory just for information
+        swap_info = psutil.swap_memory()
+        current_swap_percent = swap_info.percent
+
+        ram_info = psutil.virtual_memory()
+        current_ram_percent = ((ram_info.total - ram_info.available) / ram_info.total) * 100
+
+        log_msg = (
+            f"SYSTEM-MEMORY Usage: {current_ram_percent:.1f}% (>{SYSTEM_RAM_THRESHOLD_PERCENT}%) "
+            f"current_swap_percent: {current_swap_percent:.1f}% (>{SYSTEM_SWAP_THRESHOLD_PERCENT}%). "
+        )
+
+
     while True:
         # get the real RAM-usages
         # current_memory_percent = psutil.virtual_memory().percent
@@ -434,14 +449,13 @@ def system_memory_watchdog(logging):
         current_ram_percent = ((ram_info.total - ram_info.available) / ram_info.total) * 100
 
         # 2. Get Swap Memory
-        swap_info = psutil.swap_memory()
-        current_swap_percent = swap_info.percent
+        # swap_info = psutil.swap_memory()
+        # current_swap_percent = swap_info.percent
 
-        swap_info = psutil.swap_memory()
-        current_swap_percent = swap_info.percent
+        # current_swap_percent seems not working in my tests sadly
 
-        if (current_ram_percent > SYSTEM_RAM_THRESHOLD_PERCENT and
-                current_swap_percent > SYSTEM_SWAP_THRESHOLD_PERCENT):
+        # and current_swap_percent > SYSTEM_SWAP_THRESHOLD_PERCENT
+        if (current_ram_percent > SYSTEM_RAM_THRESHOLD_PERCENT ):
 
             # Create a detailed log message that shows WHY the shutdown is happening
             log_msg = (
