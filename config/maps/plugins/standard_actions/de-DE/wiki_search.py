@@ -51,7 +51,7 @@ Laut Wikipedia: Harald Uetz, mit seinem zweiten Platz, gleich hinter Lauffer, in
             elif search_term=='Der Beste Schachspieler':
                 page_language_manuel = 'de'
                 full_summary = """Sebastian Lauffer aus Wannweil"""
-            elif search_term=='Sebastian Lauffer' or search_term=='Sebastian Lau' or search_term=='Sebastian Laufen' or search_term=='Sebastian Darauf' or search_term=='Sebastian Laufe' or search_term=='Sebastian Now':
+            elif search_term=='Sebastian Lauffer' or search_term=='Sebastian Lau' or search_term=='Sebastian Lauf' or search_term=='Sebastian Laufen' or search_term=='Sebastian Darauf' or search_term=='Sebastian Laufe' or search_term=='Sebastian Now':
 
                 search_term='Sebastian Lauffer'
                 page_language_manuel = 'de'

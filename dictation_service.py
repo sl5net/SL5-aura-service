@@ -406,10 +406,10 @@ import threading
 """
 
 
-SYSTEM_RAM_THRESHOLD_PERCENT = 89.0
-SYSTEM_SWAP_THRESHOLD_PERCENT = 85.0
+SYSTEM_RAM_THRESHOLD_PERCENT = 92.0
+SYSTEM_SWAP_THRESHOLD_PERCENT = 85.0 # this is deprecated. idk. seems not working like expected. dont use it.
 
-RAM_ESTIMATE_PER_MODEL_GB = 4.0 # plus some other needet space for the model
+RAM_ESTIMATE_PER_MODEL_GB = 4.0 # plus some other needed space for the model
 GB_TO_MB_CONVERSION_FACTOR = 1024
 
 # dictation_service.py:404
@@ -455,18 +455,18 @@ def system_memory_watchdog(logging):
         # current_swap_percent seems not working in my tests sadly
 
         # and current_swap_percent > SYSTEM_SWAP_THRESHOLD_PERCENT
-        if (current_ram_percent > SYSTEM_RAM_THRESHOLD_PERCENT ):
+        if current_ram_percent > SYSTEM_RAM_THRESHOLD_PERCENT:
 
             # Create a detailed log message that shows WHY the shutdown is happening
             log_msg = (
                 f"SYSTEM-MEMORY CRITICAL! RAM Usage: {current_ram_percent:.1f}% (>{SYSTEM_RAM_THRESHOLD_PERCENT}%) "
-                f"AND Swap Usage: {current_swap_percent:.1f}% (>{SYSTEM_SWAP_THRESHOLD_PERCENT}%). "
+                # f"AND Swap Usage: {current_swap_percent:.1f}% (>{SYSTEM_SWAP_THRESHOLD_PERCENT}%). "
             )
             logging.warning(log_msg)
 
             ram_occupied_by_this_specific_process_mb =  process.memory_info().rss / (1024 * 1024)
             ramUsageIncreadFromBegining = ram_occupied_by_this_specific_process_mb / estimated_ram_for_models_mb
-            if ram_occupied_by_this_specific_process_mb > 1.3 * estimated_ram_for_models_mb: # 1.2 or higher is maybe a good value
+            if ram_occupied_by_this_specific_process_mb >= 1.3 * estimated_ram_for_models_mb: # 1.2 or higher is maybe a good value
                 logging.error(
                     f"memoryLECK! "
                     f"Process-RAM {estimated_ram_for_models_mb:.2f} MB now {ram_occupied_by_this_specific_process_mb:.2f} MB")
@@ -480,6 +480,7 @@ def system_memory_watchdog(logging):
                     logging.warning(f"restart for '{sys.platform}' not suported.")
 
                 if script_name:
+                    restart_script_path=''
                     try:
                         restart_script_path = os.path.join(PROJECT_ROOT, 'scripts', script_name)
                         logging.info(f"restart in '{sys.platform}' using  {restart_script_path}")
@@ -498,6 +499,7 @@ def system_memory_watchdog(logging):
 
             logging.warning(
                 f"SYSTEM-MEMORY CRITICAL! Usage: {current_ram_percent}%. "
+                f"ram_occupied_by_this_specific_process_mb: {ram_occupied_by_this_specific_process_mb}%. "
                 f"Exceeds threshold. Terminating entire process group {my_pgid}."
                 f"BTW: ramUsageIncreadFromBegining: {ramUsageIncreadFromBegining} times"
 
@@ -583,7 +585,7 @@ if settings.DEV_MODE :
     self_test_end_time = time.time()
     self_test_duration = self_test_end_time - self_test_start_time
     self_test_readable_duration = datetime.timedelta(seconds=self_test_duration)
-    logger.info("⌚ self_test_readable_duration: ", self_test_readable_duration)
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
     """
     # self_test_readable_duration
     59 of 82 tests ❌ FAILed.    seconds=5, microseconds=578883
