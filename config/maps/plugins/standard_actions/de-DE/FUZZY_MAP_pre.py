@@ -59,9 +59,12 @@ FUZZY_MAP_pre = [
 
 
 
-#Aktiviere Portugiesen
 
-    ('', r'^(Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese)\b', 95, {
+
+
+#
+
+    ('', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese\w*)\b', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
@@ -76,7 +79,7 @@ FUZZY_MAP_pre = [
 
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
-#    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
+    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
 
 
     ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {

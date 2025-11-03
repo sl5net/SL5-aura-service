@@ -21,7 +21,7 @@ def scrape_wikipedia_summary(search_term, lang_code='de'):
         response = requests.get(url, headers={'User-Agent': 'MySpeechApp/1.0 Fallback Scraper'}, timeout=5)
 
         if response.status_code != 200:
-             return None
+            return None
 
         soup = BeautifulSoup(response.content, 'html.parser')
         content_div = soup.find('div', id='mw-content-text')
@@ -265,7 +265,7 @@ Bibliografische Angaben für „Einrückungsstil“
 
 #﻿Der Buckelwal (Megaptera novaeangliae) ist ein oft in Küstennähe vorkommender Vertreter der Furchenwale. Er erreicht eine Körpergröße von 12 bis 15 Metern und hat im Vergleich zu anderen Walen deutlic
 # ﻿Laut Wikipedia: Reutlingen ist eine Großstadt im zentralen Baden-Württemberg und dessen neuntgrößte Stadt. Die Hochschulstadt und frühere Reichsstadt ist die größte Stadt und zugleich Kreisstadt des Landkreises Reutlingen, in dessen äußerstem Nordwesten gelegen. Sie gehört zur Region Neckar-Alb und zur Metropolregion Stuttgart. Nahebei befindet sich die Mittelstadt Tübingen (12 Kilometer westlich), die nächsten Großstädte sind Stuttgart (31 Kilometer nördlich) und Ulm (57 Kilometer östlich). Mit der Spreuerhofstraße besitzt Reutlingen die engste Straße der Welt.
-        # 
+        #
 
 
         if page.language != lang_code and page_language_manuel != lang_code:

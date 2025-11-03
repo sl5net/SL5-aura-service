@@ -20,5 +20,21 @@ FUZZY_MAP_pre = [
     # deutsche radio
 
     ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(deutschlandfunk|Deutschlandradio|deutsch\w* radio)\s*$', 70, {'flags': re.IGNORECASE}),
+
+
+    ('https://www.wueste-welle.de/broadcasts/livestream', r'^(Radio wüste welle live\w*|wüste welle live\w*)\s*$', 70, {'flags': re.IGNORECASE}),
+
+    ('https://www.wueste-welle.de/', r'^(Radio wüste welle|wüste welle)\s*$', 70, {'flags': re.IGNORECASE}),
+
+
+    ('https://lora924.de/livestream/live-horen/', r'^(LORA München\w*)\s*$', 70, {'flags': re.IGNORECASE}),
+
+    ('https://www.freies-radio.de/', r'^(Freies Radio .*Stuttgart)\s*$', 70, {'flags': re.IGNORECASE}),
+
+    ('https://www.youtube.com/gbsstuttgart', r'^(Archiv Freies Radio .*Stuttgart)\s*$', 70, {'flags': re.IGNORECASE}),
+
+
+
+
 ]
 
