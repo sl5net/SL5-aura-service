@@ -1,20 +1,120 @@
-import wikipediaapi
-import re
 from pathlib import Path
+
+import wikipediaapi
+import requests
+from bs4 import BeautifulSoup
+import re
+
+# NEU: Wir definieren die benötigten Funktionen/Klassen hier erneut zur Klarheit
+# -----------------------------------------------------------------------------
+
+def scrape_wikipedia_summary(search_term, lang_code='de'):
+    # (Fügen Sie hier die vollständige Definition der scrape_wikipedia_summary Funktion ein,
+    # die im vorherigen Beitrag detailliert beschrieben wurde.)
+
+    # ... (Ihr Scraping-Code hier) ...
+
+    # Hier ist der gekürzte Beispiel-Körper:
+    try:
+        encoded_term = search_term.replace(" ", "_")
+        url = f"https://{lang_code}.wikipedia.org/wiki/{encoded_term}"
+        response = requests.get(url, headers={'User-Agent': 'MySpeechApp/1.0 Fallback Scraper'}, timeout=5)
+
+        if response.status_code != 200:
+             return None
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+        content_div = soup.find('div', id='mw-content-text')
+
+        if content_div:
+            first_p = content_div.find('p', recursive=False)
+            if first_p is None:
+                first_p = content_div.find('div', class_='mw-parser-output').find('p', recursive=False)
+
+            if first_p and first_p.text.strip():
+                summary = re.sub(r'\[.*?\]', '', first_p.text.strip())
+                return summary
+    except Exception:
+        return None
+    return None
+
+class ScrapedPage:
+    """ Dummy-Klasse, um das Ergebnis wie ein wikipediaapi-Objekt aussehen zu lassen """
+    def __init__(self, title, summary, lang_code):
+        self.title = title
+        self.summary = summary
+        self.fullurl = f"https://{lang_code}.wikipedia.org/wiki/{title.replace(' ', '_')}"
+
+    def exists(self):
+        return True
+
+# -----------------------------------------------------------------------------
+
+def get_robust_summary(search_term, lang_code='de'):
+    """
+    Versucht die Wikipedia-API und fällt bei jedem Fehler auf Web Scraping zurück.
+    """
+
+    # WICHTIG: Sicherstellen, dass der Sprachcode KORREKT (klein) ist
+    lang_code = lang_code.lower()
+
+    # API-Versuch:
+    try:
+        wiki_wiki = wikipediaapi.Wikipedia(
+            lang_code,
+            headers={'User-Agent': 'MySpeechApp/1.0'}
+        )
+
+        page = wiki_wiki.page(search_term)
+
+        if page.exists() and page.summary:
+            print(f"DEBUG: ✅ API Erfolg für {search_term}.")
+            return page.summary[0:200]
+
+    except Exception as e:
+        # Hier fangen wir alle Probleme ab (AttributeError, Sprachcode-Fehler, etc.)
+        print(f"DEBUG: ❌ API-Versuch fehlgeschlagen ({type(e).__name__}).")
+
+
+    # SCRAPING FALLBACK
+    print(f"DEBUG: 🔄 Starte Scraping-Fallback für {search_term}...")
+
+    summary_text = scrape_wikipedia_summary(search_term, lang_code)
+
+    if summary_text:
+        print(f"DEBUG: ✅ Scraping erfolgreich.")
+        # Wenn Sie ein volles Objekt benötigen:
+        # return ScrapedPage(search_term, summary_text, lang_code)
+        return summary_text[0:200]
+
+    print(f"DEBUG: ❌ Scraping fehlgeschlagen.")
+    return None
+
 
 def execute(match_data):
     """
+
+
+    ﻿Bei der Suche ist ein Fehler aufgetreten: name 'Path' is not defined
+
+pacman -Ss python-wikipedia                                                                                                                                                                      1 ✘
+extra/python-wikipedia 1.4.0-12
+    A Pythonic wrapper for the Wikipedia API
+
+
 pip install --break-system-packages wikipedia-api
 pacman -Ss python-wikipedia
 yay -S python-wikipedia-api
 pamac build python-wikipedia-api
 
 
-
-
     Sucht nach einem Begriff auf Wikipedia. Die Sprache wird automatisch
     aus dem Ordnerpfad des Skripts abgeleitet (z.B. de-DE -> 'de').
     Die Zusammenfassung wird von Biografie-Daten bereinigt.
+
+
+    ﻿Bei der Suche ist ein Fehler aufgetreten: name 'get_wikipedia_page_debug' is not defined
+
     """
     try:
         # Sprache aus dem Ordnerpfad ableiten (deine geniale Idee)
@@ -26,14 +126,13 @@ pamac build python-wikipedia-api
 
         search_term = match_data['regex_match_obj'].group(2).strip().title()
 
-        if search_term=='Steuerhinterziehung' or search_term == 'Steuerbetrug' or search_term=='Steuer' or search_term=='hinterziehung' or search_term=='betrug':
+        if search_term=='Steuerhinterziehung' or search_term=='Steuer' or search_term=='hinterziehung' or search_term=='betrug':
 
             full_summary = """
 100 Milliarden Euro, das ist der geschätzte Schaden, der durch
 Steuerhinterziehung jedes Jahr in Deutschland entsteht, jedes Jahr aufs Neue.
 Das sind 270 Millionen Euro pro Tag, 11 Millionen Euro pro Stunde.
 Und während ich euch hier das erzähle, sind schon wieder 100.000 € verschwunden. ( Rede von Anne Brorhilker in der re-publica 2025 )
-AdR: Deutschland gibt pro Jahr für alle Bundesaufgaben (Verteidigung, Sozialleistungen, Verkehr, Verwaltung) fast 500 Milliarden Euro aus.
 """
 # https://www.youtube.com/watch?v=ZDQZTHre0Go
             return full_summary
@@ -151,7 +250,23 @@ Bibliografische Angaben für „Einrückungsstil“
     Datum des Abrufs: 29. 12 2017, 20:01 UTC
                 """
             else:
-                return f"Ich konnte leider keinen Wikipedia-Eintrag für '{search_term}' finden."
+
+                # search_term = 'Buckelwal'
+                # lang_code = 'de'
+
+                summary_buckelwal = get_robust_summary(search_term, lang_code)
+
+                if summary_buckelwal:
+                    return summary_buckelwal
+                else:
+
+                    return f"208: Ich konnte leider keinen Wikipedia-Eintrag für '{search_term}' finden."
+
+
+#﻿Der Buckelwal (Megaptera novaeangliae) ist ein oft in Küstennähe vorkommender Vertreter der Furchenwale. Er erreicht eine Körpergröße von 12 bis 15 Metern und hat im Vergleich zu anderen Walen deutlic
+# ﻿Laut Wikipedia: Reutlingen ist eine Großstadt im zentralen Baden-Württemberg und dessen neuntgrößte Stadt. Die Hochschulstadt und frühere Reichsstadt ist die größte Stadt und zugleich Kreisstadt des Landkreises Reutlingen, in dessen äußerstem Nordwesten gelegen. Sie gehört zur Region Neckar-Alb und zur Metropolregion Stuttgart. Nahebei befindet sich die Mittelstadt Tübingen (12 Kilometer westlich), die nächsten Großstädte sind Stuttgart (31 Kilometer nördlich) und Ulm (57 Kilometer östlich). Mit der Spreuerhofstraße besitzt Reutlingen die engste Straße der Welt.
+        # 
+
 
         if page.language != lang_code and page_language_manuel != lang_code:
             if lang_code in page.langlinks:
@@ -182,3 +297,5 @@ Bibliografische Angaben für „Einrückungsstil“
 
     except Exception as e:
         return f"Bei der Suche ist ein Fehler aufgetreten: {e}"
+
+
