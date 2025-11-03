@@ -87,7 +87,7 @@ FUZZY_MAP_pre = [
 
     #
 
-    ('anrede', r'^(anrede|begrüßung|neue email|Neue E-Mail)$', 95, {
+    ('anrede', r'^(anrede|begrüßung|neue email|Neue E-Mail|Schreibe anrede\w*|Schreibe begrüßung)$', 95, {
         'flags': re.IGNORECASE,
         # Ruft unser neues Skript auf
         'on_match_exec': [CONFIG_DIR / 'greeting_generator.py']

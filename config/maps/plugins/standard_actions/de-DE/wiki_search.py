@@ -26,13 +26,14 @@ pamac build python-wikipedia-api
 
         search_term = match_data['regex_match_obj'].group(2).strip().title()
 
-        if search_term=='Steuerhinterziehung' or search_term=='Steuer' or search_term=='hinterziehung' or search_term=='betrug':
+        if search_term=='Steuerhinterziehung' or search_term == 'Steuerbetrug' or search_term=='Steuer' or search_term=='hinterziehung' or search_term=='betrug':
 
             full_summary = """
 100 Milliarden Euro, das ist der geschätzte Schaden, der durch
 Steuerhinterziehung jedes Jahr in Deutschland entsteht, jedes Jahr aufs Neue.
 Das sind 270 Millionen Euro pro Tag, 11 Millionen Euro pro Stunde.
 Und während ich euch hier das erzähle, sind schon wieder 100.000 € verschwunden. ( Rede von Anne Brorhilker in der re-publica 2025 )
+AdR: Deutschland gibt pro Jahr für alle Bundesaufgaben (Verteidigung, Sozialleistungen, Verkehr, Verwaltung) fast 500 Milliarden Euro aus.
 """
 # https://www.youtube.com/watch?v=ZDQZTHre0Go
             return full_summary
