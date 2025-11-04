@@ -54,7 +54,8 @@ def execute(match_data):
         translated_text = result.stdout.strip()
 
         # 3. Das reine Ergebnis zurückgeben, damit der Service es sprechen kann
-        return f"{translated_text} (original: {original_text} ) "
+        # Sprachübersetzung - Tradução de Voz
+        return f"{translated_text} (original:'{original_text}', Tradução de Voz SL5.de/Aura ). "
 
     except subprocess.CalledProcessError as e:
         # Das simple_translate.py Skript hat einen Fehler gemeldet.

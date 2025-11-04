@@ -62,7 +62,7 @@ FUZZY_MAP_pre = [
 
     ('git status', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
 
-    ('git status', r'^\s*(gitschtal|quatscht hatte|quitscht|quitscht werden|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(gitschtal|glitschte|quatscht hatte|quitscht|quitscht werden|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
 
 #geht statisch
 
