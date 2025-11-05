@@ -64,24 +64,39 @@ FUZZY_MAP_pre = [
 
 #
 
-    ('', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese\w*)\b', 95, {
+    ('pt-BR', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese\w*)\b', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
-
-
-    ('', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
+    ('pt-BR', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
+
+
+    # Englisch
+    # englischenglisch einschalten
+    # englisch einschalten
+    ('en', r'^(englisch|ennglish\w*) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+    ('en', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Englisch|ennglish\w*)\b', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
 
     # portugiesisch abs
 
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
 #    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
+
+
+
 
 
     ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
