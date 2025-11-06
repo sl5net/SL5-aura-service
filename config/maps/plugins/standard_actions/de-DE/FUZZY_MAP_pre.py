@@ -59,27 +59,35 @@ FUZZY_MAP_pre = [
 
 
 
+    # arabisch
+    #
+    #Olá, como vai (original:'hallo wie geht's', Tradução de Voz SL5.de/Aura ).
+
+
+    ('ar', r'^(arabisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
 
 
 
 #
 
     ('pt-BR', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese\w*)\b', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+         'flags': re.IGNORECASE,
+         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
     ('pt-BR', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+         'flags': re.IGNORECASE,
+         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
     # Englisch
-    # englischenglisch einschalten
-    # englisch einschalten
-    ('en', r'^(englisch|ennglish\w*) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+    ('en', r'^(englisch|english\w*|Wisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
@@ -93,8 +101,11 @@ FUZZY_MAP_pre = [
 
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
-#    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
+    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
 
+
+#
+    # ﻿مرحبا، كيف حالك (original:'hallo wie geht's', TODO ar SL5.de/Aura ).
 
 
 

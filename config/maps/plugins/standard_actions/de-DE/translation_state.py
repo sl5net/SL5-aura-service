@@ -1,1 +1,1 @@
-pt_BR='off'
+ar='on'

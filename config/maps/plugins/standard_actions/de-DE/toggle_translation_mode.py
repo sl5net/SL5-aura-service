@@ -33,24 +33,28 @@ def speak(text):
 
 def execute(match_data):
 
-    temp = """
-('pt-BR', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|ein|einschalten|abs|deaktivieren|ausschalten|
-
-# Englisch
-('en', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Englisch|ennglish
-"""
+    # temp = "('pt-BR', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|ein|einschalten|abs|deaktivieren|ausschalten"
+    # temp1 = "('en', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Englisch|ennglish"
 
     # original_text = match_data['original_text'].lower()
     text_after_replacement = match_data['text_after_replacement'].lower()
 
-    target_lang = 'pt-BR'
+    target_lang = 'ar'
     if text_after_replacement == 'pt-BR':
         target_lang = 'pt-BR'
     elif text_after_replacement == 'en':
         target_lang = 'en'
 
+    # print("yyyyyyyyyyyyyyyyyyyyyyyyyyy")
+    # print(f"original_text={original_text}")
+    # print(f"text_after_replacement={text_after_replacement}")
+    # ﻿Olá, como vai (original:'hallo wie geht's', Tradução de Voz SL5.de/Aura ).
+    # print(f"target_lang={target_lang}")
+    # sys.exit(0)
 
-    match_obj = match_data['regex_match_obj']
+
+    #
+    # match_obj = match_data['regex_match_obj']
 
     # num1 = int(match_obj.group(1))
     # target_lang_matched_in_regex = match_obj.group(2).lower()

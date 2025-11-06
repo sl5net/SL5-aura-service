@@ -21,7 +21,7 @@ def execute(match_data):
     # 1. Prüfen, ob der Übersetzungsmodus aktiv ist
     original_text = match_data.get('original_text')
 
-    match_obj = match_data['regex_match_obj']
+    # match_obj = match_data['regex_match_obj']
 
     # ('', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Englisch|ennglish\w*)\b', 95, {
 
@@ -47,15 +47,13 @@ def execute(match_data):
     lang_target = lang_target.strip().replace('_', '-')
 
     # 'pt-BR' # Ziel: Brasilianisches Portugiesisch
-
-
-
+    # 'ar' # Ziel: arabisch
 
     try:
         if not original_text:
             return None # Kein Text zum Übersetzen
 
-        print(f"INFO: [Translator Plugin] Übersetze: '{original_text}'")
+        print(f"INFO: [Translator Plugin] trnslate: '{original_text}'")
 
         # 2. Das NEUE, saubere Übersetzungsskript aufrufen
         command = [
@@ -65,6 +63,9 @@ def execute(match_data):
             str(lang_target)
 
         ]
+
+        print(f"67: yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
+        print(f"INFO: [Translator Plugin] Translation command: '{' '.join(command)}'")
 
         result = subprocess.run(
             command,
@@ -84,8 +85,11 @@ def execute(match_data):
             return f"{translated_text} (original:'{original_text}', Tradução de Voz SL5.de/Aura ). "
         elif lang_target == 'en':
             return f"{translated_text} (original:'{original_text}', Voice Translation SL5.de/Aura ). "
+        elif lang_target == 'ar':
+            return f"{translated_text} (original:'{original_text}, SL5.de/Aura  تحدثت الترجمة). "
         else:
             return f"{translated_text} (original:'{original_text}', Voice Translation SL5.de/Aura ). "
+        # ﻿Sprach Übersetzung﻿ar okay funktionieren ﻿sprach Besetzung
 
     except subprocess.CalledProcessError as e:
         # Das simple_translate.py Skript hat einen Fehler gemeldet.
