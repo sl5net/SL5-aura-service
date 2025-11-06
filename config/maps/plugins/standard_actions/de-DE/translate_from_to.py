@@ -1,4 +1,4 @@
-# In Ihrer CONFIG_DIR / 'translate_german_to_portuguese.py'
+# In Ihrer CONFIG_DIR / 'translate_from_to.py'
 
 import sys
 from pathlib import Path

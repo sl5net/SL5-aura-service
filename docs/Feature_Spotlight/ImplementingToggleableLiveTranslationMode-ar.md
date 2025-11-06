@@ -24,7 +24,7 @@
 ```python
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
+    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 ```
 المفتاح هنا هو التعليق `# TRANSLATION_RULE`. يعمل هذا بمثابة "مرساة" يستخدمها البرنامج النصي للتبديل للعثور على القاعدة الموجودة أسفله وتعديلها.
 

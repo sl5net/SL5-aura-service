@@ -24,7 +24,7 @@ When you say "Übersetzung einschalten" (Turn translation on), the `toggle_trans
 ```python
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
+    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 ```
 The key here is the `# TRANSLATION_RULE` comment. This acts as an "anchor" that the toggle script uses to find and modify the rule below it.
 
