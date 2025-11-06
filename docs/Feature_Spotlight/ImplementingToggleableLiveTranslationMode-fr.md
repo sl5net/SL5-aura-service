@@ -24,7 +24,7 @@ Lorsque vous dites « Übersetzung einschalten » (Activer la traduction), le sc
 ```python
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
+    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 ```
 La clé ici est le commentaire `# TRANSLATION_RULE`. Cela agit comme une « ancre » que le script à bascule utilise pour rechercher et modifier la règle en dessous.
 

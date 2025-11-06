@@ -24,7 +24,7 @@ Cuando dices "Übersetzung einschalten" (Activar traducción), se ejecuta el scr
 ```python
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
+    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 ```
 La clave aquí es el comentario `# TRANSLATION_RULE`. Esto actúa como un "ancla" que el script de alternancia utiliza para buscar y modificar la regla debajo de él.
 

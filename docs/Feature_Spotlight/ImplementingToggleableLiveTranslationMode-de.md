@@ -24,7 +24,7 @@ Wenn Sie „Übersetzung einschalten“ sagen, wird das Skript „toggle_transla
 ```python
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_german_to_portuguese.py']}),
+    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 ```
 Der Schlüssel hier ist der Kommentar „# TRANSLATION_RULE“. Dies fungiert als „Anker“, den das Umschaltskript verwendet, um die darunter liegende Regel zu finden und zu ändern.
 

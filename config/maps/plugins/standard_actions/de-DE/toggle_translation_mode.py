@@ -1,3 +1,4 @@
+# translation
 import sys
 from pathlib import Path
 import subprocess
@@ -31,6 +32,35 @@ def speak(text):
         print(f"STDOUT (TTS-Fallback): {text}")
 
 def execute(match_data):
+
+    # temp = "('pt-BR', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|ein|einschalten|abs|deaktivieren|ausschalten"
+    # temp1 = "('en', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Englisch|ennglish"
+
+    # original_text = match_data['original_text'].lower()
+    text_after_replacement = match_data['text_after_replacement'].lower()
+
+    target_lang = 'ar'
+    if text_after_replacement == 'pt-BR':
+        target_lang = 'pt-BR'
+    elif text_after_replacement == 'en':
+        target_lang = 'en'
+
+    # print("yyyyyyyyyyyyyyyyyyyyyyyyyyy")
+    # print(f"original_text={original_text}")
+    # print(f"text_after_replacement={text_after_replacement}")
+    # ﻿Olá, como vai (original:'hallo wie geht's', Tradução de Voz SL5.de/Aura ).
+    # print(f"target_lang={target_lang}")
+    # sys.exit(0)
+
+
+    #
+    # match_obj = match_data['regex_match_obj']
+
+    # num1 = int(match_obj.group(1))
+    # target_lang_matched_in_regex = match_obj.group(2).lower()
+    # num2 = int(match_obj.group(3))
+
+
     """
     Liest die Regel-Datei, findet die Übersetzungsregel und kommentiert sie
     ein oder aus, um sie zu aktivieren oder zu deaktivieren.
@@ -87,8 +117,12 @@ def execute(match_data):
         # --- WICHTIG: SCHRITT 3 ---
         # Signalisiere der Hauptanwendung, dass sie die Regeln neu laden soll.
         # Eine einfache Methode ist, eine "Trigger-Datei" zu erstellen.
-        (Path(__file__).parent / 'RELOAD_RULES.trigger').touch()
+        #(Path(__file__).parent / 'RELOAD_RULES.trigger').touch()
         print("Reload-Trigger wurde gesetzt.")
+
+        with open(Path(__file__).parent / 'translation_state.py', "w") as file:
+            target_lang_asVaribleKey = target_lang.strip().replace('-', '_')
+            file.write(f"{target_lang_asVaribleKey}='{new_state}'")
 
 
     except Exception as e:
