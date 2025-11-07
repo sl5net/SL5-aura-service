@@ -39,7 +39,7 @@ def execute(match_data):
     # original_text = match_data['original_text'].lower()
     text_after_replacement = match_data['text_after_replacement'].lower()
 
-    target_lang = 'ar'
+    target_lang = text_after_replacement
     if text_after_replacement == 'pt-BR':
         target_lang = 'pt-BR'
     elif text_after_replacement == 'en':
