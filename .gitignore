@@ -24,6 +24,10 @@ ENV/
 dictate.py
 transcribe.py
 
+
+
+**/translation_state.py
+
 dictation.log
 get_suggestions.log
 type_watcher.log
