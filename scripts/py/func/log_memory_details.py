@@ -8,7 +8,7 @@ from config.dynamic_settings import settings
 
 def log4DEV(text: str, logger):
     if not settings.DEV_MODE_all_processing:
-        print('10:not DEV_MODE_all_processing: return')
+        # print('10:not DEV_MODE_all_processing: return')
         return
     import inspect
     caller_script_name = "unknown"

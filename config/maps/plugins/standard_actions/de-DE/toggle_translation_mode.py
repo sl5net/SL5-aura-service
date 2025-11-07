@@ -89,6 +89,8 @@ def execute(match_data):
                         current_state = 'on'
                 break
 
+        print("current_state:", current_state)
+
         if not found_anchor:
             error_msg = f"Fehler: Anker '{RULE_ANCHOR}' in der Regel-Datei nicht gefunden."
             print(error_msg, file=sys.stderr)
@@ -103,8 +105,10 @@ def execute(match_data):
             lines[rule_line_index] = '#' + lines[rule_line_index]
         else: # current_state is 'off'
             new_state = 'on'
+            print("new_state:", new_state)
             feedback_message = "Übersetzungsmodus wird eingeschaltet."
             # Die Zeile einkommentieren (entferne führende '#' und Leerzeichen)
+            #lines[rule_line_index] = lines[rule_line_index].lstrip('# ')
             lines[rule_line_index] = lines[rule_line_index].lstrip('#')
 
 

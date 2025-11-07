@@ -64,7 +64,6 @@ def execute(match_data):
 
         ]
 
-        print(f"67: yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
         print(f"INFO: [Translator Plugin] Translation command: '{' '.join(command)}'")
 
         result = subprocess.run(

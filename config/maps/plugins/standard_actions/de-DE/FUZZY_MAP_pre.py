@@ -87,27 +87,33 @@ FUZZY_MAP_pre = [
 
 
     # Englisch
-    ('en', r'^(englisch|english\w*|Wisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+    ('en', r'^(Denglisch|englisch|english\w*|Wisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
-    ('en', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Englisch|ennglish\w*)\b', 95, {
+    ('en', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Denglisch|Englisch|ennglish\w*)\b', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
-    # portugiesisch abs
+    ('de', r'^(\w*besetzung) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
+    ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*besetzung)\b', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
+
+    #
 
     # ANCHOR: The following line is controlled by the toggle script.
     # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
     # TRANSLATION_RULE
-    #('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
-
-
-    # ﻿مرحبا، كيف حالك (original:'hallo wie geht's', TODO ar SL5.de/Aura ).
-
-
+#    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 
 
     ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
@@ -171,5 +177,3 @@ FUZZY_MAP_pre = [
 
 ]
 
-#Laut Wikipedia: Wannweil ist eine Gemeinde im Landkreis Reutlingen in Baden-Württemberg. Sie gehört zur Region Neckar-Alb und zur europäischen Metropolregion Stuttgart.
-#Laut Wikipedia: Tübingen (amtlicher Name: Universitätsstadt Tübingen) ist eine Universitätsstadt im Zentrum Baden-Württembergs. Sie liegt am Neckar rund 30 Kilometer südlich der Landeshauptstadt Stuttgart. Die Stadt ist Sitz des Landkreises Tübingen sowie des gleichnamigen Regierungsbezirks und war von 1947 bis 1952 Landeshauptstadt von Württemberg-Hohenzollern. Sie gehört zur Region Neckar-Alb und zur europäischen Metropolregion Stuttgart. Gemeinsam mit der östlichen Nachbarstadt Reutlingen bildet sie eines der 14 Oberzentren des Landes.

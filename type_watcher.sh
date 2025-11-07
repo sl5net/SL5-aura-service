@@ -76,6 +76,48 @@ while [ ! -d "$DIR_TO_WATCH" ]; do
     sleep 0.5
 done
 
+
+
+
+sanitize_transcription_start() {
+    local raw_text="$1"
+    local clean_text="$raw_text"
+
+    # --- 1. Entferne ZWNBSP (\uFEFF) und ZWSP (\u200b) am Anfang ---
+    # Wir nutzen printf, um die tatsächlichen Unicode-Zeichen zu erzeugen.
+    # Beachten Sie: Dies funktioniert nur, wenn die Shell und 'sed' Unicode unterstützen.
+
+    # Entferne führenden ZWNBSP (\uFEFF / BOM)
+    clean_text=$(echo "$clean_text" | sed 's/^\xef\xbb\xbf//') # UTF-8 representation of \uFEFF
+
+    # Entferne führenden ZWSP (\u200b)
+    # Beachten Sie, dass \u200b oft auch entfernt werden muss, falls es in den Input gelangt.
+    clean_text=$(echo "$clean_text" | sed 's/^\xe2\x80\x8b//') # UTF-8 representation of \u200b
+
+    # --- 2. Entferne alle führenden Whitespace ---
+    clean_text=$(echo "$clean_text" | sed -e 's/^[[:space:]]*//')
+
+    # --- 3. (Optional) Wenn Sie wirklich den ersten alphanumerischen Teil finden wollen
+    # Hier wird es kompliziert, da sed/grep nicht leicht zwischen nicht-alphanum. Steuerzeichen
+    # und echten non-alphanum. Satzzeichen unterscheiden kann, ohne komplexe PCRE.
+    # Die obigen Schritte reichen oft für die Bereinigung von Transkriptions-Junk aus.
+
+    # Gib das bereinigte Ergebnis zurück
+    echo "$clean_text"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Function to get the title of the active window
 get_active_window_title() {
     active_window_id=$(xdotool getactivewindow)
@@ -205,7 +247,17 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
 
                 # Fallback: type file content (if not a special command)
                 if [ -z "${CI:-}" ]; then
-                    LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
+
+                    # echo "Bereinigt:" "$(sanitize_transcription_start "$f")"
+
+
+                    RAW_CONTENT=$(cat "$f")
+                    CLEAN_CONTENT=$(sanitize_transcription_start "$RAW_CONTENT")
+                    LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 "$CLEAN_CONTENT"
+
+                    # old:
+                    # LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
+
                     log_message "type --file $f"
 
                     # When you also want to have a voice feedback (means STT + littleAI + TTS )

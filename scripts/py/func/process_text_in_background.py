@@ -854,6 +854,9 @@ def process_text_in_background(logger,
 
 def sanitize_transcription_start(raw_text: str) -> str:
     """
+    ﻿test (original:'test', Voice Translation SL5.de/Aura ).
+    ZWNBSP
+
     cost: ~ 1 Microsecond (µs)
 
 
