@@ -190,8 +190,13 @@ class WindowsEmojiFilter1(logging.Filter):
             '🔁':'REPLACE',
             '📚':'BOOK',
             '⌚': '[(-)]',  # clock
-            '🗺️':'MAP'
+            '🗺️':'MAP',
+            '🍒':'cherries'
         }
+
+        # Fancy text symbols˗ˏˋ꒰ 🍒 ꒱ˏˋ°•*⁀ ༊*·˚⋆·˚ ༘ *・ ・ೃ⁀ ⇢ ˗ˏˋ*ೃ༄︶︶༉‧₊˚.♡ ༉‧₊˚ੈ ‧₊˚☄. *. ⋆: ̗̀ ...
+
+
     def filter(self, record):
         # Only perform replacement if running on Windows
         #if os.name == 'nt':
@@ -281,7 +286,6 @@ logger.addHandler(console_handler)
 
 # Add the WindowsEmojiFilter to the file_handler
 file_handler.addFilter(WindowsEmojiFilter())
-
 
 
 
@@ -565,7 +569,10 @@ from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
 check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
 if settings.DEV_MODE :
-    from scripts.py.func.log_memory_details import log_memory_details
+    from scripts.py.func.log_memory_details import log_memory_details,log4DEV
+
+    log4DEV('Script Start', logger)
+
     log_memory_details("Script Start", logger)
 
     from scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced

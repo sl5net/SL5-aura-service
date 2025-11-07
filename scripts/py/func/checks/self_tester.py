@@ -58,7 +58,11 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
         log_path = get_logger_file_path(logger)
         simple_clear_log(log_path)  # Call the simple function
 
+    logger.info(f"______________________________________________________")
     logger.info(f"self_tester.py DEV_MODE: Running core logic self-test... lang is: {lang_code} e.g. maybe de-DE")
+    logger.info(f"______________________________________________________")
+    logger.info(f"___ best disable before run: match all to nothing. like: .+ -> or .* -> '' ___")
+    logger.info(f"______________________________________________________")
     test_output_dir = tmp_dir / "sl5_aura_self_test"
     test_output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -69,9 +73,10 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
 # ﻿was ist 5 flüssen ﻿Das Ergebnis von 5 plus 3 ist 8.
 
+        ('tausend euro. Und euro großgeschrieben.', '1000 Euro. Und Euro großgeschrieben.', 'Number with unit', 'de-DE'),
+
         ('was ist 5 plus 3', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', 'de-DE'),
 
-        ('hundert euro', '100 Euro', 'Number with unit', 'de-DE'),
         ('bitte reservieren sie einen tisch für zwei personen um acht uhr',
          'Bitte reservieren Sie einen Tisch für zwei Personen um 8 Uhr', 'Polite request with time and number',
          'de-DE'),
@@ -265,7 +270,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
             failed_count += 1
             logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed")
 
-            # exit(1)
+            exit(1)
 
 
     # --- Summary ---

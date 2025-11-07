@@ -17,11 +17,15 @@ soundMute = 1  # 1 is really recomanded. to know when your recording is endet.
 soundUnMute = 1
 soundProgramLoaded = 1
 
+
+# best disable before run self-tester(DEV_MODE = True) rules like: match all to nothing. like: .+ -> or .* -> ''
+
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
 # DEV_MODE = True
 DEV_MODE = False
 DEV_MODE_memory = False
+DEV_MODE_all_processing = False
 
 # may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
 PRELOAD_MODELS = ["vosk-model-de-0.21"]

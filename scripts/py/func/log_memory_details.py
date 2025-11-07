@@ -1,8 +1,54 @@
 # file scripts/py/func/log_memory_details.py
 import os
 import psutil
+from config.dynamic_settings import settings
+
 
 # --- Start of suggested DEBUG memory analysis snippet ---
+
+def log4DEV(text: str, logger):
+    if not settings.DEV_MODE_all_processing:
+        print('10:not DEV_MODE_all_processing: return')
+        return
+    import inspect
+    caller_script_name = "unknown"
+    caller_file_and_line = "unknown:0"
+    caller_line = 0
+
+    stack = inspect.stack()
+    # Find the frame that is *not* log_memory_details itself
+    # and also not an internal inspect frame
+    for frame_info in stack:
+        # Check if the function name is not log_memory_details
+        # and if it's not part of the inspect module itself
+        if frame_info.function != 'log4DEV' and \
+           not frame_info.filename.startswith(inspect.__file__):
+            try:
+                # Get the base name of the calling script
+                caller_script_name = os.path.basename(frame_info.filename)
+                # Get the full path of the calling script and its line number
+
+                caller_line= frame_info.lineno
+                # caller_file_and_line = f"XYZ:{os.path.relpath(frame_info.filename)}:{caller_line}"
+
+
+                # caller_file_and_line = f"XYZ:{os.path.relpath(frame_info.filename)}:{frame_info.lineno}"
+                caller_file_and_line = f"🍒 {os.path.relpath(caller_script_name)}:{caller_line}"
+                break # Found the caller, exit loop
+            except Exception as e:
+                logger.debug(f"Error getting caller info: {e}")
+                pass # Continue to next frame if there's an issue with this one
+
+    if not settings.DEV_MODE:
+        print('10:not settings.DEV_MODE: return')
+        return
+
+
+    # Construct the log message for the memory details
+    logger.info(f"{caller_file_and_line} {text}")
+    # return caller_file_and_line, caller_script_name, caller_file_and_line
+
+
 def log_memory_details(stage: str, logger):
     process = psutil.Process(os.getpid())
     mem_info = process.memory_info()
