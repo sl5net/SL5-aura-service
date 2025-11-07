@@ -4,14 +4,18 @@ import sys
 from pathlib import Path
 import subprocess
 
-# Pfad zur Statusdatei
 STATE_FILE = Path(__file__).parent / 'translation_state.py'
 
-# --- KONFIGURATION für das externe Übersetzungstool ---
-# Python-Interpreter für das neue Skript
-PYTHON_EXECUTABLE = Path.home() / 'projects' / 'py' / 'STT' / '.venv' / 'bin' / 'python3'
-# WICHTIG: Pfad zum NEUEN, sauberen Skript
-TRANSLATE_SCRIPT = Path.home() / 'projects' / 'py' / 'STT' / 'tools' / 'simple_translate.py' # ANPASSEN, falls der Pfad anders ist
+project_dir = Path(__file__).parent.parent.parent.parent.parent.parent
+
+TRANSLATE_SCRIPT = project_dir / 'tools' / 'simple_translate.py'
+PYTHON_EXECUTABLE = project_dir / '.venv' / 'bin' / 'python3'
+
+
+# TRANSLATE_SCRIPT = Path.home() / 'projects' / 'py' / 'STT' / 'tools' / 'simple_translate.py'
+
+
+# ANPASSEN, falls der Pfad anders ist
 
 def execute(match_data):
     """

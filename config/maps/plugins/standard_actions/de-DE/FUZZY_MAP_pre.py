@@ -25,7 +25,8 @@ FUZZY_MAP_pre = [
     # google gemini a chat mit cheminée
 
     #Google ein StudioGoogle my styleGoogle ist StudioGoogle StückGoogle my style
-    ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google ein Studie|Google leicht|Google ein Stuhl|Google eingestuft|google gb day|google kapital|Google kriminell|google gebiet\w*|Gucke gebiet\w*|google g b day|google geht wieder|gucke dir bitte|google g bitte|gucke gemini\s*\w*|google gemini ein|google gemini\s*\w*|google gemini recht|Gucke Gehminuten|Google Gewinde|Google Gehminuten|gut \w*minarett|brooke kriminelle|google gaming|google grimmen\s*.*|google grimmig|Google Germany|Google feminin|Google Gewinnern|Google wieder)\b.*$', 70, {
+    # google g bedeuten
+    ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google ein Studie|Google leicht|Google ein Stuhl|Google eingestuft|google gb day|google kapital|Google kriminell|google gebiet\w*|Gucke gebiet\w*|google g b day|google geht wieder|gucke dir bitte|google g bitte|gucke gemini\s*\w*|google gemini ein|google gemini\s*\w*|google gemini recht|Gucke Gehminuten|Google Gewinde|Google Gehminuten|gut \w*minarett|brooke kriminelle|google gaming|google grimmen\s*.*|google grimmig|Google Germany|Google feminin|Google Gewinnern|Google wieder|google g bedeuten)\b.*$', 70, {
         'flags': re.IGNORECASE
     }),
 
@@ -85,22 +86,34 @@ FUZZY_MAP_pre = [
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+    # spanisch
+    ('es', r'^(Spanien|spanisch|starr dich|sparr dich) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)$', 95, {
+         'flags': re.IGNORECASE,
+         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
 
     # Englisch
-    ('en', r'^(Denglisch|englisch|english\w*|Wisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-    ('en', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Denglisch|Englisch|ennglish\w*)\b', 95, {
+    ('en', r'^(Denglisch|englisch|english\w*|Wisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|abschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+    # english abschalten
 
-    ('de', r'^(\w*besetzung) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+    ('en', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|abschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Denglisch|Englisch|ennglish\w*)$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
+
+    # bersetzung modus ausschalten
+    #
+
+    ('de', r'^(\w*besetzung) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
 
     ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*besetzung)\b', 95, {
         'flags': re.IGNORECASE,
