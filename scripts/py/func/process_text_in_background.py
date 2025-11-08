@@ -315,7 +315,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         return new_processed_text, True, skip_list
 
     log4DEV(f"new_processed_text: {new_processed_text},  "
-                f"skip_list:{skip_list} ,  full_text_replaced_by_rule: '{full_text_replaced_by_rule}'   ",logger)
+        f"skip_list:{skip_list} ,  full_text_replaced_by_rule: '{full_text_replaced_by_rule}'   ",logger)
 
     # if regex_pre_is_replacing_all_maybe:
     #     regex_match_found_prev = True  # need to be then also true for historical reasons. to be compatible to rest of the code
