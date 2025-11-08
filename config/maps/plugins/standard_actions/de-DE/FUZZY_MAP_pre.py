@@ -18,11 +18,23 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
+# lkjlkjteile reparierenteile reparieren
+#Teile reparierenAlternativekeine nummerieren
+#Teile reparierenAlternativekeine nummerieren 2 lep nummerieren
+#enzeilen operieren
+# CMD_RENUMBER_CLIP
+# CMD_RENUMBER_CLIP
+# command
+#Zeile nummeriere
 
-    # Regel für die WetterabfrageGoogle Jimmy datenGoogle ja bedeutenGoogle ja wiederGucke chapiteau a
-    #Google TribüneGoogle Termine Google arm StudioTestGoogle eiche Stühlen TestGoogle Aviv du
-    # Gucke gebiete
-    # google gemini a chat mit cheminée
+
+
+
+    ('', r'^(Zeile\w* nummeriere\w*|Zeilen suggerieren|Zeile dumme geritten|zeile\w* operieren|Text neu nummerieren|Zwischenablage nummerieren|Laufende Zeilennummern einfügen|Zeilennummern aktualisieren|teile reparieren|keine nummerieren|Zeilesuggerieren)$', 70, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'renumber_clipboard_text.py']
+    }),
+
 
     #Google ein StudioGoogle my styleGoogle ist StudioGoogle StückGoogle my style
     # google g bedeuten
@@ -126,7 +138,7 @@ FUZZY_MAP_pre = [
     # ANCHOR: The following line is controlled by the toggle script.
     # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
+#    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 
 
     ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
