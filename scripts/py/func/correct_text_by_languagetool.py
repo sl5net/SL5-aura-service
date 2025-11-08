@@ -7,7 +7,7 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
     # LANGUAGETOOL_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check"
     # LANGUAGETOOL_URL active_lt_url
 
-    log_all_changes = False
+    log_all_changes = True
 
     if not text.strip(): return text
 

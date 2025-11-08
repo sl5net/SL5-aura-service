@@ -79,6 +79,7 @@ CORRECTIONS_ENABLED = {
 }
 
 
+# if true call iteratively all rules
 default_mode_is_all = True
 #  1 zwei drei vier 5
 #

@@ -73,6 +73,28 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
 # ﻿was ist 5 flüssen ﻿Das Ergebnis von 5 plus 3 ist 8.
 
+        ('good Morning people', 'hey all out there people', 'use a postRule. Funny useless rule ;) just for testing',
+         'en-US'),
+
+
+        ('colours', 'colors', 'fix by LT','en-US'),
+        ('underilnes', 'underlines', 'fix by LT', 'en-US'),
+        ('too have', 'to have', 'fix by LT', 'en-US'),
+        ('colours', 'colors', 'fix by LT', 'en-US'),
+        ('5 PM in the afternoon', '5 PM', 'fix by LT', 'en-US'),
+
+        ('good nigt Mum', 'Good night Mum', 'Funny useless rule ;) just for testing',
+         'en-US'),
+
+        # ﻿good evening dead ﻿Good evening them ﻿Good evening ought to get
+
+        ('thousand dollars.', '1000 dollars.', 'Number with unit',
+         'en-US'),
+        ('one and thousand dollars.', '1 and 1000 dollars.', 'Number with unit',
+         'en-US'),
+
+
+
         ('tausend euro. Und euro großgeschrieben.', '1000 Euro. Und Euro großgeschrieben.', 'Number with unit', 'de-DE'),
 
         ('was ist 5 plus 3', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', 'de-DE'),
@@ -210,7 +232,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
         if len(test_case) == 4:
             raw_text, expected, description, check_only_this_lang_code = test_case
             if check_only_this_lang_code != lang_code:
-                logger.info(f'self_tester.py:167 {check_only_this_lang_code} != {lang_code}')
+                # logger.info(f'self_tester.py:167 {check_only_this_lang_code} != {lang_code}')
                 continue
         elif len(test_case) == 3:
             raw_text, expected, description = test_case
@@ -276,7 +298,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
     # --- Summary ---
     logger.info("-" * 40)
     if failed_count == 0:
-        logger.info(f"self_tester.py:229✅ Core Logic Self-Test: All {passed_count}tested of {len(test_cases)} tests passed!")
+        logger.info(f"self_tester.py:229✅ Core Logic Self-Test: All {passed_count}tested of {len(test_cases)} tests(all lang) passed! Great no test failed")
         if passed_count == 0:
             logger.error(f"self_tester.py:232 ❌ FAIL was tested: 0 of 0 ! Probably wrong. Makes no sense")
             exit(1)

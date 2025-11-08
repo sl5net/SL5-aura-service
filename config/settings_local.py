@@ -32,8 +32,10 @@ PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 if current_user == 'seeh':
     DEV_MODE = True
+    DEV_MODE_all_processing = True
     # DEV_MODE = False
-    PRELOAD_MODELS = ["vosk-model-de-0.21"]
+    # PRELOAD_MODELS = ["vosk-model-de-0.21"]
+    PRELOAD_MODELS = ["vosk-model-en-us-0.22"]
 
 
 
