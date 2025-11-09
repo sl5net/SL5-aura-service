@@ -3,6 +3,8 @@
 import logging
 # import re
 from pathlib import Path
+from rapidfuzz import fuzz
+
 
 # --- Setup Logging ---
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
@@ -52,14 +54,80 @@ def search_bible_sqlite(book_name, chapter, verse, translation=TRANSLATION, db_p
         table_books = f'"{translation}_books"'
         table_verses = f'"{translation}_verses"'
 
-        # Suche id des Buchs
-        cur.execute(f"SELECT id, name FROM {table_books} WHERE lower(name) = ?", (book_name.lower(),))
-        book_row = cur.fetchone()
-        if not book_row:
-            logger.warning(f"Buch '{book_name}' nicht gefunden in Übersetzung '{translation}'")
-            return f"Das Buch '{book_name}' existiert nicht in der Übersetzung '{translation}'."
 
-        book_id = book_row['id']
+
+
+
+        # --- START DES AKTUALISIERTEN SUCHBLOCKS ---
+
+        # 1. ALLE Bücher abfragen, da wir die Ähnlichkeit in Python berechnen müssen.
+        try:
+            cur.execute(f"SELECT id, name FROM {table_books}")
+            all_books = cur.fetchall()
+        except sqlite3.OperationalError:
+            logger.error(f"Tabelle {table_books} nicht gefunden.")
+            return f"Fehler: Die Übersetzung '{translation}' ist nicht verfügbar."
+
+        if not all_books:
+            logger.warning(f"Keine Bücher in Tabelle {table_books} gefunden.")
+            return "Keine Bücher gefunden."
+
+        # Initialisierung der besten Übereinstimmung
+        best_score = -1
+        best_match_row = None
+        user_input_lower = book_name.lower()
+
+        # Schwelle definieren: Bei einer Ähnlichkeit unter diesem Wert wird gewarnt,
+        # aber der beste Treffer trotzdem genutzt.
+        MIN_ACCEPTABLE_SCORE = 60
+
+        # 2. Fuzzy-Vergleich durchführen
+        for book_row in all_books:
+            book_name_db = book_row['name']
+
+            # Wir verwenden fuzz.ratio, um die allgemeine Zeichenähnlichkeit zu messen.
+            # Bei sehr kurzen Namen kann auch fuzz.partial_ratio nützlich sein.
+            score = fuzz.ratio(user_input_lower, book_name_db.lower())
+
+            if score > best_score:
+                best_score = score
+                best_match_row = book_row
+
+        # 3. Ergebnis auswerten und zuweisen
+        if best_match_row:
+            book_id = best_match_row['id']
+            matched_name = best_match_row['name']
+
+            # Wenn der Score unter der Schwelle liegt, protokollieren wir eine Warnung
+            if best_score < 100:
+                logger.info(f"Fuzzy Match: Eingabe '{book_name}' (Score: {best_score:.2f}) führte zu '{matched_name}'.")
+
+            # Wenn der Score sehr schlecht ist, geben wir eine informative Rückmeldung
+            if best_score < MIN_ACCEPTABLE_SCORE:
+                # Hier geben wir eine freundliche Warnung an den Nutzer aus
+                # Wir liefern aber trotzdem das beste Ergebnis, wie gewünscht
+                print(f"Warnung: Die Spracheingabe '{book_name}' war undeutlich. Ich habe das ähnlichste Buch '{matched_name}' gewählt.")
+
+
+            book_name = matched_name
+
+            # Hier können Sie mit book_id und matched_name weiterarbeiten
+            # Beispiel:
+            # print(f"Buch gefunden (ID: {book_id}): {matched_name}")
+
+            # return True # Oder die nächste Funktion aufrufen
+        else:
+            # Dies sollte theoretisch nicht passieren, wenn die Datenbank Bücher enthält
+            logger.error("Unerwarteter Fehler: Kein bestes Match gefunden.")
+            return "Ein interner Fehler ist aufgetreten."
+
+        # --- ENDE DES AKTUALISIERTEN SUCHBLOCKS ---
+
+
+
+
+
+
         # Suche nach Kapitel und Vers
         cur.execute(
             f"SELECT text FROM {table_verses} WHERE book_id=? AND chapter=? AND verse=?",

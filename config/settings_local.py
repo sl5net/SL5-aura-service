@@ -35,6 +35,14 @@ SPEECH_PAUSE_TIMEOUT = 2
 PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 if current_user == 'seeh':
+
+    signatur=''
+    signatur1=f''
+    signatur_pt_br=f''
+    signatur_en=f''
+    signatur_ar=f''
+
+
     DEV_MODE = True
     # DEV_MODE = False
     DEV_MODE_all_processing = True

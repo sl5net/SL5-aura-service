@@ -11,6 +11,25 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
+examples = """
+Suche in Ruth Kapitel 1 Vers 1
+Ruth 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Und es geschah in den Tagen, als die Richter richteten, da entstand eine Hungersnot im Lande. Und ein Mann von Bethlehem-Juda zog hin, um sich in den Gefilden Moabs aufzuhalten, er und sein Weib und seine beiden Söhne.
+
+Suche in erster Dave Kapitel 1 Vers halten
+
+Suche in 1 Chroniken 1 Kapitel 1
+Joel 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Das Wort Jehovas, welches zu Joel, dem Sohne Pethuels, geschah.
+suche ihn 1 codec les kapitel 1 ps ein
+
+I Chronicles 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Adam, Seth, Enos,
+
+Suche in 1 t'gallo tot als 1 Kapitel 1 Vers'
+
+"""
+
+Thessalonians = r"(dem via|t[\w ']*chal[\w ]*w[\w ]*o[\w ]*a[\w ]*s|t\w*\s*\w*s|k\w*e\w*alonia\w*\s*\w*)\b"
+
+
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
@@ -19,44 +38,103 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
-    # To-do aufgaben:
-    # Es müssen die Buch Namen eingesprochen werden so lange bis sie korrekt verstanden werden (Powered by SL5.de/Aura)
-    # Jetzt muss entschieden werden, ob ein alle Bibel lebt oder du will (Powered by SL5.de/Aura)
-    # Und welche die beste ist (Powered by SL5.de/Aura)
-
-    # Hier Sprachergebnisse:
-
-    #Suche in Genesis Kapitel 1 Vers ein 1
-    #genesis 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Im Anfang schuf Gott die Himmel und die Erde.
-
-    # Suche in Exodus Kapitel 1 Vers ein (Powered by SL5.de/Aura)
-    # exodus 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Und dies sind die Namen der Söhne Israels, die nach Ägypten kamen; mit Jakob kamen sie, ein jeder mit seinem Hause:
 
     # Das Buch 'levitikus' existiert nicht in der Übersetzung 'GerElb1905'.
     ('Leviticus', r'\blevitikus\b', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
     }),
+
+    ('Chronicles', r'\b(c\w*\s*les|Kodex\s*lese|bro\w*\s*läßt)\b', 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+
+
+
+
+
+    # ('Timothy', rf"(timotheus|tee[ \w]*io[ \w\-]*tee|t[ \w]+tes)\b", 90, {
+    #     'flags': re.IGNORECASE,
+    #     'skip_list': ['LanguageTool'],
+    # }),
+
+
+    # TODO: suche in II Timothy is buggy 9.11.'25
+    #('suche in II Timothy', rf"(suche in zweiter) ([\w ]+ee|[\w ]+sy)\b", 90, {
+    #    'flags': re.IGNORECASE,
+    #    'skip_list': ['LanguageTool'],
+    #}),
+
+
+
+
+
+
+
+    ('suche in I Thessalonians', rf"suche in (1|erster) {Thessalonians}\b", 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+    ('suche in II Thessalonians', rf"suche in (2|zweiter) {Thessalonians}\b", 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+
+
+
+    ('suche in II', r'^Suche (ins|in) \wweiter\w*', 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+    ('suche in II Samuel', r'suche in zweiter (s\w+|trafen)', 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+
+
+    ('1', r'\b(erste\w*|ernster)\b', 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+    ('2', r'\bzweite\w*\b', 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+
+
     ('Suche in Leviticus', r'\bSuche in (Lev\w*\b|\w.*kurz\b|.*kuss)', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
     }),
-    #Leviticus 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Und Jehova rief Mose, und er redete zu ihm aus dem Zelte der Zusammenkunft und sprach:
 
-    #
 
-    #Suche in esther Kapitel 1 Vers ein 1
-    #esther 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Und es geschah in den Tagen des Ahasveros (das ist der Ahasveros, der von Indien bis Äthiopien über hundertsiebenundzwanzig Landschaften regierte),
 
-    ('bible suche', r'^suche \w+ (?P<book>.*) kapitel (?P<chapter>\d+) [vf]\w+ (?P<verse>\d+)$', 90, {
+
+    ('Vers 1', r'\b(Vers|fährt) (ein|erwähnt|ab)$', 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+
+    ('Vers 1', r'\b(fair sein)$', 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+
+
+    ('bible suche', r'^suche (i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 
-
-
-
-
+    ('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'bible_search.py']
+    }),
+    ('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'bible_search.py']
+    }),
 
 
 ]

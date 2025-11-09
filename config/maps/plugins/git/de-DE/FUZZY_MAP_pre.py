@@ -79,7 +79,7 @@ FUZZY_MAP_pre = [
     # Gitta hat
     ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
 
-    ('git add .', r'^\s*(Gitterbett|Geht er hin)\s*$', 78, {'flags': re.IGNORECASE}),
+    ('git add .', r'^\s*(Gitterbett|Geht er hin|kredit)\s*$', 78, {'flags': re.IGNORECASE}),
 
 
 
