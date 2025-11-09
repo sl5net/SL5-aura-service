@@ -73,6 +73,7 @@ import importlib
 
 def is_plugin_enabled(hierarchical_key, plugins_config):
     """
+
     Prüft, ob ein Plugin aktiviert ist. Ein Plugin ist DEAKTIVIERT,
     wenn es selbst oder irgendein übergeordnetes Modul in der Hierarchie
     explizit auf `False` gesetzt ist. In allen anderen Fällen ist es AKTIVIERT.
@@ -648,6 +649,7 @@ def process_text_in_background(logger,
             log4DEV(f'regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
             log4DEV(f"skip_list: {skip_list}", logger)
             skip_list_backup = skip_list
+            options_dict = None
             log4DEV(f"skip_list_backup: {skip_list_backup}", logger)
             if not regex_pre_is_replacing_all and not is_only_number:
                 log4DEV(f'in fuzzy_map: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
@@ -820,6 +822,13 @@ def process_text_in_background(logger,
         # --- AB HIER KOMMEN DIE KORREKTUREN ---
 
         if new_current_text:
+
+            if options_dict: # If it exists, no sub-module will be output. they have may its own signature.
+                # e.g. the tranlating modules have their own signature
+                log4DEV(f"options_dict={options_dict}",logger)
+
+                if type(new_current_text) is str and len(new_current_text) >= 11:
+                    new_current_text += f"{settings.signatur1}"
 
             new_current_text = sanitize_transcription_start(new_current_text)
 

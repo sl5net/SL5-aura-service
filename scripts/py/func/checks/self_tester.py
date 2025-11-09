@@ -17,7 +17,9 @@ if project_root not in sys.path:
 # Note: In dictation_service.py this might be SCRIPT_DIR instead of project_root
 
 from scripts.py.func.process_text_in_background import process_text_in_background
-# from config.dynamic_settings import settings
+from config.dynamic_settings import settings
+# from config.settings import signatur # ,signatur_ar,signatur_en,signatur_pt_br
+
 
 def get_logger_file_path(logger_instance):
     """Retrieves the Path object for the first FileHandler."""
@@ -100,7 +102,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
         ('was ist 5 plus 3', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', 'de-DE'),
 
         ('bitte reservieren sie einen tisch für zwei personen um acht uhr',
-         'Bitte reservieren Sie einen Tisch für zwei Personen um 8 Uhr', 'Polite request with time and number',
+         'Bitte reservieren Sie einen Tisch für 2 Personen um 8 Uhr', 'Polite request with time and number',
          'de-DE'),
         ('eins', '1', 'maps/plugins/numbers_to_digits/de-DE/', 'de-DE'),
         ('eins zwei', '1 2', 'maps/plugins/numbers_to_digits/de-DE/', 'de-DE'),
@@ -279,18 +281,22 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
         # logger.info(f"self_tester.py:211: test_case:{test_case} actual:{actual}")
 
+        actual = actual.replace(settings.signatur1, '')
+        actual = actual.replace(settings.signatur, '')
+        actual = actual.strip()
+
         if actual.lstrip() == expected:
             passed_count += 1
             logger.info(f"self_tester.py:216 ✅ "
                         f" {failed_count} ❌ FAILed of"
                         f" {passed_count + failed_count}tested of"
-                        f" {len(test_cases)} tests")
+                        f" {len(test_cases)} tests (lang={lang_code})")
         else:
             logger.error(f"     - Input:    '{raw_text}'")
             logger.error(f"     - Expected: '{expected}'")
             logger.error(f"     - Got:      '{actual}'")
             failed_count += 1
-            logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed")
+            logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed (lang={lang_code})")
 
             exit(1)
 

@@ -24,6 +24,17 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 # Default for new users is the most verbose level.
 NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
+signatur='SL5.de/Aura'
+signatur1=f' (Powered by {signatur})'
+signatur_pt_br=f'Tradução de Voz {signatur}'
+signatur_en=f'Voice Translation {signatur}'
+signatur_ar=f"تحدثت الترجمة{signatur} "
+
+# Bei der Übersetzung ist ein unerwarteter Fehler aufgetreten.
+
+#Irgendwelche einschaltentwist (original:'twist', Voice Translation SL5.de/Aura ).
+# examples: "Gesendet von meinem iPhone""Powered by WordPress""Follow me on Twitter @username""Sent from MailChimp"
+
 # --- Language Model Preloading ---
 # A list of Vosk model folder names to preload at startup if memory allows.
 # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]

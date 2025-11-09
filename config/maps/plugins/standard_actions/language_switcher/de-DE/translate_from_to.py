@@ -4,6 +4,10 @@ import sys
 from pathlib import Path
 import subprocess
 
+from config.settings import signatur,signatur_ar,signatur_en,signatur_pt_br
+
+#
+
 STATE_FILE = Path(__file__).parent / 'translation_state.py'
 
 project_dir = Path(__file__).parent.parent.parent.parent.parent.parent.parent
@@ -76,17 +80,19 @@ def execute(match_data):
         translated_text = result.stdout.strip()
 
         # 3. Das reine Ergebnis zurückgeben, damit der Service es sprechen kann
-        # Sprachübersetzung - Tradução de Voz
+        # Sprachübersetzung - Tradução de VozTesttest (original:'test', Voice Translation SL5.de/Aura Powered by SL5.de/Aura ).
+
+        # signatur
 
         if lang_target=='pt-BR' or lang_target=='pt-br' :
-            return f"{translated_text} (original:'{original_text}', Tradução de Voz SL5.de/Aura ). "
+            return f"{translated_text} (original:'{original_text}', {signatur_pt_br} ). "
         elif lang_target == 'en':
-            return f"{translated_text} (original:'{original_text}', Voice Translation SL5.de/Aura ). "
+            return f"{translated_text} (original:'{original_text}', {signatur_en} ). "
         elif lang_target == 'ar':
-            return f"{translated_text} (original:'{original_text}, SL5.de/Aura  تحدثت الترجمة). "
+            return f"{translated_text} (original:'{original_text}, {signatur_ar} ). "
         else:
-            return f"{translated_text} (original:'{original_text}', Voice Translation SL5.de/Aura ). "
-        # ﻿Sprach Übersetzung﻿ar okay funktionieren ﻿sprach Besetzung
+            return f"{translated_text} (original:'{original_text}', {signatur_en} ). "
+        # ﻿Sprach Übersetzung﻿ar okay funktionieren ﻿sprach BesetzungBei der Übersetzung ist ein unerwarteter Fehler aufgetreten.
 
     except subprocess.CalledProcessError as e:
         # Das simple_translate.py Skript hat einen Fehler gemeldet.

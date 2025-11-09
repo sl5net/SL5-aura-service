@@ -11,7 +11,7 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
-Englisch=r'(Denglisch|englisch\w*|english\w*|Wisch|nische)'
+Englisch=r'(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche)'
 toggleCmd='(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
 
 FUZZY_MAP_pre = [
@@ -67,7 +67,7 @@ FUZZY_MAP_pre = [
     # ANCHOR: The following line is controlled by the toggle script.
     # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
+#    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 
 
     ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {

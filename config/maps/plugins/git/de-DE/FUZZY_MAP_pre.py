@@ -11,8 +11,15 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
+gitGit = r'(git|Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit|kit|peach|quitt)'
+
+commitGit = r'(Komet|Komik|Comics|Gummi|gummis|kommt|kommend|Commit|mit|hitch|komm|Kometen|kubicki|komisch|gewinnen|gromit|komme|kubis|cobit|beach|gemütlich|quitt)'
 
 FUZZY_MAP_pre = [
+
+    ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
+
+
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
@@ -41,6 +48,7 @@ FUZZY_MAP_pre = [
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
     ('Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
     ('Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
+
     ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
 
 
@@ -92,37 +100,16 @@ FUZZY_MAP_pre = [
 
 
 
-
+    # Petrovicgit commit
 
     # --- git commit ---
-
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, {'flags': re.IGNORECASE}),
     ('git commit ', r'^\s*kate Commit\s*$', 80, {'flags': re.IGNORECASE}),
-
-    # Geht kommt
-    ('git commit ', r'^\s*(git|geht[^\s]*|geh|gitter|kate|käthe|fiat|mit)\s+(Komet|Komik|Comics|Gummi|gummis|kommt|kommend|Commit|mit|hitch)\s*$', 80, {'flags': re.IGNORECASE}),
-
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
-
-    ('git commit ', r'^\s*(Geht Commit|Geht womit)\s*$', 80, {'flags': re.IGNORECASE}),
-
-
+    ('git commit ', r'^\s*(Geht Commit|Geht womit|petkovic)\s*$', 80, {'flags': re.IGNORECASE}),
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
-
-    ('git commit ', r'^\s*(Geht|git|mit) (komm|Kometen|Commit)\s*$', 80, {'flags': re.IGNORECASE}),
-
-
-    ('commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),
-
-    ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, {'flags': re.IGNORECASE}),
     ('git commit ', r'^\s*(gehst du mit)\s*$', 80, {'flags': re.IGNORECASE}),
-
-
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
-    ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, {'flags': re.IGNORECASE}),
-    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme|kubis|cobit|beach|gemütlich)\s*$"', 80, {'flags': re.IGNORECASE}),
-    # Gilt komme komme
-
 
     # --- git push --- Gibt eine gibt git pull big push pitbull Geht prüfen
 
