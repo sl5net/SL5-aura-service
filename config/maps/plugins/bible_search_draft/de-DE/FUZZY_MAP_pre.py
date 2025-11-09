@@ -26,8 +26,24 @@ FUZZY_MAP_pre = [
 
     # Hier Sprachergebnisse:
 
-    #Das Buch 'johannes' existiert nicht in der Übersetzung 'GerElb1905'.
-    #Das Buch 'peter' existiert nicht in der Übersetzung 'GerElb1905'.
+    #Suche in Genesis Kapitel 1 Vers ein 1
+    #genesis 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Im Anfang schuf Gott die Himmel und die Erde.
+
+    # Suche in Exodus Kapitel 1 Vers ein (Powered by SL5.de/Aura)
+    # exodus 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Und dies sind die Namen der Söhne Israels, die nach Ägypten kamen; mit Jakob kamen sie, ein jeder mit seinem Hause:
+
+    # Das Buch 'levitikus' existiert nicht in der Übersetzung 'GerElb1905'.
+    ('Leviticus', r'\blevitikus\b', 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+    ('Suche in Leviticus', r'\bSuche in (Lev\w*\b|\w.*kurz\b|.*kuss)', 90, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+    }),
+    #Leviticus 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Und Jehova rief Mose, und er redete zu ihm aus dem Zelte der Zusammenkunft und sprach:
+
+    #
 
     #Suche in esther Kapitel 1 Vers ein 1
     #esther 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Und es geschah in den Tagen des Ahasveros (das ist der Ahasveros, der von Indien bis Äthiopien über hundertsiebenundzwanzig Landschaften regierte),
