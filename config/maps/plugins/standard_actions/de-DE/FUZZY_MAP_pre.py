@@ -11,16 +11,6 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
-# englische einschalten
-#
-
-Englisch=r'(Denglisch|englisch\w*|english\w*|Wisch|nische)'
-
-toggleCmd='(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
-
-#Switch on English (original:'english einschalten', Voice Translation SL5.de/Aura ).
-#Hello, how are you (original:'hallo wie geht's', Voice Translation SL5.de/Aura ).
-#englisch einenglisch einEnglische einschalten
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
@@ -28,81 +18,6 @@ FUZZY_MAP_pre = [
     # Importing to know:
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
-
-
-    # Englisch Nische einchecken
-    # nische einchecken
-    ('en', fr'^{Englisch} {toggleCmd}$', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-    # english abschalten
-
-    ('en', fr'^{toggleCmd} {Englisch}$', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-    # bersetzung modus ausschalten
-    #
-
-
-# lkjlkjteile reparierenteile reparieren
-#Teile reparierenAlternativekeine nummerieren
-#Teile reparierenAlternativekeine nummerieren 2 lep nummerieren
-#enzeilen operieren
-# CMD_RENUMBER_CLIP
-# CMD_RENUMBER_CLIP
-# command
-#Zeile nummeriereKonsole-Befehl: /home/seeh/projects/py/STT/.venv/bin/python3 /home/seeh/projects/py/STT/config/maps/plugins/standard_actions/de-DE/renumber_clipboard_text.py
-
-
-# johannes 3 16
-#johannes 3 16 johannes 3 16
-# johannes drei sechzehnHier hat es 3010 johannes 3 16
-#ihr hört es 3 60johannes 3 16Früher hatte ich 30 SSWIhr hattet 3 schwächt sie
-#John 3:16: 'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.'
-#An unexpected error occurred during command processing: NameError.
-#
-
-    # Rule to trigger the Bible Quote Plugin
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     ('bible suche', r'^suche in (?P<book>.*) kapitel (?P<chapter>\d+) [vf]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
@@ -164,69 +79,6 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     }),
 
-
-
-    # arabisch
-    #
-    #Olá, como vai (original:'hallo wie geht's', Tradução de Voz SL5.de/Aura ).
-
-
-    ('ar', r'^(arabisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-
-
-
-#
-
-    ('pt-BR', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese\w*)\b', 95, {
-         'flags': re.IGNORECASE,
-         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-
-    ('pt-BR', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
-         'flags': re.IGNORECASE,
-         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-    # spanisch
-    ('es', r'^(Spanien|spanisch|starr dich|sparr dich) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)$', 95, {
-         'flags': re.IGNORECASE,
-         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-
-
-    ('de', r'^(\w*besetzung) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-
-    ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*besetzung)\b', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-
-    #
-
-    # ANCHOR: The following line is controlled by the toggle script.
-    # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
-    # TRANSLATION_RULE
-#    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
-
-
-    ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
-        'flags': re.IGNORECASE,
-        # Ruft unser neues Skript auf
-        'on_match_exec': [CONFIG_DIR / 'good_night.py']
-    }),
-
-    #
 
     ('anrede', r'^(anrede|begrüßung|neue email|Neue E-Mail|Schreibe anrede\w*|Schreibe begrüßung)$', 95, {
         'flags': re.IGNORECASE,
