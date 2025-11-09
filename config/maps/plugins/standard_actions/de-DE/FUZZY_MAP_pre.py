@@ -19,19 +19,13 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
-    ('bible suche', r'^suche in (?P<book>.*) kapitel (?P<chapter>\d+) [vf]\w+ (?P<verse>\d+)$', 90, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'bible_scraper.py']
-    }),
-
-    # Example Trigger: "suche in Johannes kapitel drei vers sechzehn"
     # The regex capture groups will look for the book name ("Johannes") and the numbers ("3", "16").
 
 # Suche in Johannes Kapitel 3 Vers schlechtThe external Bible service is currently unreachable (HTTP 404).
 
 #The external Bible service is currently unreachable (HTTP 404).
 #Reference John 3:16 (King James Version): For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.
-
+#
 
 # Suche im New Hadith Kapitel 3 Vers schicken
 #Suche in Johannes fährt 3 Vers 16
