@@ -113,7 +113,7 @@ FUZZY_MAP_pre = [
 
     # --- git push --- Gibt eine gibt git pull big push pitbull Geht prüfen
 
-    ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push|pushen|prüfen)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push|pushen|prüfen|futsch)\s*$', 85, {'flags': re.IGNORECASE}),
     ('git push ', r'^\s*kate\s+bush\s*$', 80, {'flags': re.IGNORECASE}),
 
 
