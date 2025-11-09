@@ -4,8 +4,8 @@ import logging
 import re
 import requests
 from bs4 import BeautifulSoup
-import sys
-from pathlib import Path
+# import sys
+# from pathlib import Path
 from urllib.parse import quote
 
 # --- Setup Logging ---
@@ -72,9 +72,9 @@ def scrape_bible_server(book_name, chapter, verse):
             # Try to extract the canonical reference (e.g., "Johannes 3,16 LUT")
             ref_header = soup.find('h1', class_='passage-title')
             if ref_header:
-                 reference_found = ref_header.text.strip()
+                reference_found = ref_header.text.strip()
             else:
-                 reference_found = f"{book_name.title()} {chapter}:{verse} ({GERMAN_TRANSLATION_CODE})"
+                reference_found = f"{book_name.title()} {chapter}:{verse} ({GERMAN_TRANSLATION_CODE})"
 
             if verse_text_parts:
                 full_text = " ".join(verse_text_parts).strip()

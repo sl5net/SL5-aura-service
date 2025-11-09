@@ -679,6 +679,11 @@ def process_text_in_background(logger,
                         log4DEV(f"re.search({match_phrase}, {result_languagetool}..):",logger)
 
                         try:
+
+                            if result_languagetool is None:
+                                log4DEV("Skipping regex matching because result_languagetool is None.", logger)
+                                continue
+
                             if not re.search(match_phrase, result_languagetool, flags=flags):
                                 continue
                             log4DEV(f"🔁Regex in: '{result_languagetool}' --> '{replacement}' based on pattern '{match_phrase}'",logger)
@@ -703,7 +708,7 @@ def process_text_in_background(logger,
                             logger.warning(f"704: Invalid regex pattern in FUZZY_MAP: '{match_phrase}'. Error: {e}")
                             continue # Skip this invalid rule
                         except Exception as e:
-                            logger.warning(f"707: FUZZY_MAP: '{match_phrase}'. Error: {e}")
+                            logger.warning(f"❌ 707: FUZZY_MAP: '{match_phrase}'. Error: {e}")
 
             # Pass 2: If no regex matched, perform the FUZZY search as before.
             # This code will only run if the loop above didn't find a regex match.

@@ -1,10 +1,10 @@
 # bible_search.py
 
 import logging
-import re
+# import re
 import requests
-import sys
-from pathlib import Path
+#import sys
+#from pathlib import Path
 from urllib.parse import quote
 
 # --- Setup Logging ---
@@ -99,14 +99,6 @@ def execute(match_data):
 
 if __name__ == "__main__":
     # Example test data (assuming the regex matched these groups)
-    class DummyMatch:
-        def group(self, name):
-            if name == 'book': return "John"
-            if name == 'chapter': return "3"
-            if name == 'verse': return "16"
-            return ""
-        def group(self, index): # Dummy for safety
-            return self.group(index)
 
-    test_data = {'regex_match_obj': DummyMatch()}
-    print(execute(test_data))
+    #test_data = {'regex_match_obj': DummyMatch()}
+    print('execute(test_data)')

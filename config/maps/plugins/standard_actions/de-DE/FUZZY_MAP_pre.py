@@ -12,9 +12,9 @@ from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
 
 # englische einschalten
+#
 
-Englisch='(Denglisch|englisch\w*|english\w*|Wisch|nische)'
-Englisch='(Denglisch|Englisch\w*|english\w*|Wisch|nische)'
+Englisch=r'(Denglisch|englisch\w*|english\w*|Wisch|nische)'
 
 toggleCmd='(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
 

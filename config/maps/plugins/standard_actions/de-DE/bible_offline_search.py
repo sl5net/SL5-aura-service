@@ -1,7 +1,7 @@
 import logging
 import re
 from pathlib import Path
-import sys
+# import sys
 # --- HINZUGEFÜGTE IMPORTE FÜR DEN INITIALEN DOWNLOAD ---
 import requests
 from bs4 import BeautifulSoup
@@ -64,7 +64,7 @@ def scrape_and_format_verse(book_abbr, chapter, verse):
         if verse_div:
             # Suchen Sie den Vers-Text innerhalb des Hauptcontainers
             for verse_span in verse_div.find_all(class_='verse-text'):
-                 verse_text_parts.append(verse_span.text.strip())
+                verse_text_parts.append(verse_span.text.strip())
 
             if verse_text_parts:
                 full_text = " ".join(verse_text_parts).strip()
@@ -86,7 +86,7 @@ def scrape_and_format_verse(book_abbr, chapter, verse):
 
 def load_bible_data():
     """Lädt die statische Bibeldatei und initialisiert sie bei Bedarf über Online-Scraping."""
-    global BIBLE_DATA
+    # global BIBLE_DATA
     if BIBLE_DATA:
         return True
 
@@ -106,8 +106,8 @@ def load_bible_data():
                 logger.warning(f"File size check: {DATA_FILE.name} is only {file_size_bytes / 1024:.2f} KB. Proceeding to online fetch.")
                 # content_read bleibt None, was den Fallback triggert
             else:
-                 # Datei ist groß genug, lies den Inhalt
-                 with open(file_path, 'r', encoding='utf-8') as f:
+                # Datei ist groß genug, lies den Inhalt
+                with open(file_path, 'r', encoding='utf-8') as f:
                     content_read = f.read().strip()
 
     except FileNotFoundError:
@@ -132,7 +132,7 @@ def load_bible_data():
 
             logger.info(f"Successfully loaded {len(BIBLE_DATA)} verses from file.")
             if len(BIBLE_DATA) > 0:
-                 return True
+                return True
             logger.warning("File was empty after reading. Proceeding to initial online fetch.")
 
         except Exception as e:
@@ -165,7 +165,7 @@ def load_bible_data():
                     # Weiter zum Minimal-Fallback (Schritt 3)
                     pass
         except Exception as fetch_e:
-             logger.error(f"Error during online fetch: {fetch_e}")
+            logger.error(f"Error during online fetch: {fetch_e}")
 
 
     # 3. ZWECKS MINIMALFUNKTION: Notfall-Default-Vers (Wenn Online-Fallback und Parsing fehlschlagen)

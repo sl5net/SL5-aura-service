@@ -1,7 +1,7 @@
 import logging
 import re
 from pathlib import Path
-import sys
+# import sys
 import time
 
 import requests

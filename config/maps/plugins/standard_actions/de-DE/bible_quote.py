@@ -1,8 +1,8 @@
 # bible_quote.py
 
 import logging
-import sys
-from pathlib import Path
+#import sys
+#from pathlib import Path
 
 # Setup basic logging based on user directive
 # NOTE: Since this is a simple action plugin returning text, extensive logging
