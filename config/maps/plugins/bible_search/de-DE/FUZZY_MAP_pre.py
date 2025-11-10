@@ -1,4 +1,6 @@
-# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py
+# /home/seeh/projects/py/STT/config/maps/plugins/bible_search/FUZZY_MAP_pr.py
+# its using https://github.com/scrollmapper/bible_databases/tree/master/formats/sqlite
+
 import re # noqa: F401
 from pathlib import Path
 
@@ -12,6 +14,25 @@ from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
 
 examples = """
+
+Verwendung:
+
+Beispiele:
+
+Suche in Ruth Kapitel 1 Vers 1
+Suche in erster Dave Kapitel 1 Vers halten
+Suche in 1 Chroniken 1 Kapitel 1
+
+Suche in Ruth Kapitel 1 Vers 1
+('bible suche', r'^suche (i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, { ...
+
+Suche in Ruth Kapitel 1 1 Vers
+('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {...
+
+Suche in Ruth 1 Kapitel 1 Vers
+('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {...
+
+
 Suche in Ruth Kapitel 1 Vers 1
 Ruth 1:1 (# GerElb1905: German Darby Unrevidierte Elberfelder (1905)): Und es geschah in den Tagen, als die Richter richteten, da entstand eine Hungersnot im Lande. Und ein Mann von Bethlehem-Juda zog hin, um sich in den Gefilden Moabs aufzuhalten, er und sein Weib und seine beiden Söhne.
 

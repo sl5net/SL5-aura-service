@@ -20,7 +20,7 @@ import sqlite3
 TRANSLATION ='GerElb1905' # 'kjv'
 #              GerElb1905_books
 
-
+# 
 #project_dir = Path(__file__).parent.parent.parent.parent.parent.parent
 
 #TRANSLATE_SCRIPT = project_dir / 'tools' / 'simple_translate.py'
