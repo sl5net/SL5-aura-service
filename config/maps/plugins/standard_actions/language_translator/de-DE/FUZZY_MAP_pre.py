@@ -11,6 +11,25 @@ from pathlib import Path
 #sprache gabe stopp
 
 
+readme = """
+'Translate Shell .. is a versatile and powerful command-line translator that leverages the translation services of major providers like
+
+Google Translate,
+DeepL, and
+Microsoft Translator.
+
+Its design prioritizes ease of use and extensibility, making it an ideal companion for Linux and other Unix-like operating systems'
+(10.11.'25 18:58 Mon, https://itsfoss.gitlab.io/post/how-to-use-google-translate-from-commandline-in-linux/ )
+
+Arch-Users may use:
+source .venv/bin/activate
+pip install --upgrade pip
+yay -S translate-shell
+
+
+"""
+
+
 CONFIG_DIR = Path(__file__).parent
 
 Englisch=r'(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe\b)'

@@ -36,18 +36,19 @@ PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 if current_user == 'seeh':
 
-    if 0:
+    if 1:
         signatur=''
         signatur1=f''
         signatur_pt_br=f''
         signatur_en=f''
         signatur_ar=f''
+        signatur_ja=f''
 
 
     DEV_MODE = True
     # DEV_MODE = False
     DEV_MODE_all_processing = True
-    DEV_MODE_all_processing = False
+    DEV_MODE_all_processing = 0
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
     # PRELOAD_MODELS = ["vosk-model-en-us-0.22"]
 
@@ -91,7 +92,7 @@ PLUGINS_ENABLED = {
     "numbers_to_digits": True, # hundert|einhundert --> 100
     "digits_to_numbers": False,
     "web-radio-funk": True,
-    "it-begriffe": False,
+    "it-begriffe": True,
     "it-begriffe/php/codeigniter": True,
 }
 #  geht status eins zwei doch

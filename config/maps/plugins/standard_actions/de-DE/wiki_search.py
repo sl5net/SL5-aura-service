@@ -5,8 +5,6 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-# NEU: Wir definieren die benötigten Funktionen/Klassen hier erneut zur Klarheit
-# -----------------------------------------------------------------------------
 
 def scrape_wikipedia_summary(search_term, lang_code='de'):
     # (Fügen Sie hier die vollständige Definition der scrape_wikipedia_summary Funktion ein,
@@ -94,8 +92,12 @@ def get_robust_summary(search_term, lang_code='de'):
 def execute(match_data):
     """
 
+source .venv/bin/activate
+pip install --upgrade pip
+python3 -m pip install --break-system-packages wikipedia-api --upgrade
 
-    ﻿Bei der Suche ist ein Fehler aufgetreten: name 'Path' is not defined
+
+Fehler aufgetreten: name 'Path' is not defined
 
 pacman -Ss python-wikipedia                                                                                                                                                                      1 ✘
 extra/python-wikipedia 1.4.0-12
@@ -165,7 +167,7 @@ Laut Wikipedia: Harald Uetz, mit seinem zweiten Platz, gleich hinter Lauffer, in
             elif search_term=='Der Beste Schachspieler':
                 page_language_manuel = 'de'
                 full_summary = """Sebastian Lauffer aus Wannweil"""
-            elif search_term=='Sebastian Lauffer' or search_term=='Sebastian Lau' or search_term=='Sebastian Lauf' or search_term=='Sebastian Laufen' or search_term=='Sebastian Darauf' or search_term=='Sebastian Laufe' or search_term=='Sebastian Now':
+            elif search_term=='Sebastian Lauffer' or search_term=='Sebastian Laufer' or search_term=='Sebastian Lau' or search_term=='Sebastian Lauf' or search_term=='Sebastian Laufen' or search_term=='Sebastian Darauf' or search_term=='Sebastian Laufe' or search_term=='Sebastian Now':
 
                 search_term='Sebastian Lauffer'
                 page_language_manuel = 'de'

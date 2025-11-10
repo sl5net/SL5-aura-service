@@ -248,12 +248,23 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                 # Fallback: type file content (if not a special command)
                 if [ -z "${CI:-}" ]; then
 
-                    # echo "Bereinigt:" "$(sanitize_transcription_start "$f")"
-
 
                     RAW_CONTENT=$(cat "$f")
-                    CLEAN_CONTENT=$(sanitize_transcription_start "$RAW_CONTENT")
+
+                    EMOJI='🗣️'
+                    PLACEHOLDER='°202511101302°'
+                    SL5de='SL5.de'
+
+
+                    RAW_MOD=$(printf '%s' "$RAW_CONTENT" | sed "s/Powered by $SL5de/$PLACEHOLDER$SL5de/g")
+                    RAW_MOD=$(printf '%s' "$RAW_CONTENT" | sed "s/$SL5de\/Aura/$PLACEHOLDER$SL5de\/Aura/g")
+
+                    SANITIZED=$(sanitize_transcription_start "$RAW_MOD")
+
+                    CLEAN_CONTENT=$(printf '%s' "$SANITIZED" | sed "s/$PLACEHOLDER/$EMOJI/g")
+
                     LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 "$CLEAN_CONTENT"
+
 
                     # old:
                     # LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"

@@ -11,6 +11,21 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
+readme = """
+source .venv/bin/activate
+pip install --upgrade pip
+python3 -m pip install --break-system-packages wikipedia-api --upgrade
+
+Arch-Users:
+yay -S translate-shell
+Sync Explicit (1): translate-shell-0.9.7.1-2
+warning: translate-shell-0.9.7.1-2 is up to date -- reinstalling
+Packages (1) translate-shell-0.9.7.1-2
+Total Installed Size:  0.24 MiB
+
+
+"""
+
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
@@ -42,7 +57,7 @@ FUZZY_MAP_pre = [
     #Google ein StudioGoogle my styleGoogle ist StudioGoogle StückGoogle my style
     # google g bedeuten
     # google gebe drei
-    ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google ein Studie|Google leicht|Google ein Stuhl|Google eingestuft|google gb day|google kapital|Google kriminell|google gebiet\w*|Gucke gebiet\w*|google g b day|google geht wieder|gucke dir bitte|google g bitte|gucke gemini\s*\w*|google gemini ein|google gemini\s*\w*|google gemini recht|Gucke Gehminuten|Google Gewinde|Google Gehminuten|gut \w*minarett|brooke kriminelle|google gaming|google grimmen\s*.*|google grimmig|Google Germany|Google feminin|Google Gewinnern|Google wieder|google g bedeuten|google gebe drei|google gb daten)\b.*$', 70, {
+    ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google ein Studie|Google leicht|Google ein Stuhl|Google eingestuft|google gb day|google kapital|Google kriminell|google gebiet\w*|Gucke gebiet\w*|google g b day|google geht wieder|gucke dir bitte|google g bitte|gucke gemini\s*\w*|google gemini ein|google gemini\s*\w*|google gemini recht|Gucke Gehminuten|Google Gewinde|Google Gehminuten|gut \w*minarett|brooke kriminelle|google gaming|google grimmen\s*.*|google grimmig|Google Germany|Google feminin|Google Gewinnern|Google gewinne|Google wieder|google g bedeuten|google gebe drei|google gb daten|google gewinn ein|google gebe dein)\b.*$', 70, {
         'flags': re.IGNORECASE
     }),
 
@@ -50,7 +65,7 @@ FUZZY_MAP_pre = [
         'flags': re.IGNORECASE
     }),
 
-#
+#gewinne
 
 
 
@@ -92,6 +107,7 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'calculator.py']
     }),
 # Das Ergebnis von 5 plus 3 ist 8.
+
 
 
     ('', r'OFFFFFFFFFFFFF mobed to other to --->post wannweil map (suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {

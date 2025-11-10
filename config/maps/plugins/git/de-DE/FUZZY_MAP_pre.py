@@ -137,5 +137,80 @@ FUZZY_MAP_pre = [
     ('git fetch; git pull"', r'^\s*(git|Gilt|geht) (fett)\s*$"', 80, {'flags': re.IGNORECASE}),
 
 
+##################################################################
+
+ #  zweis drei
+    ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, {'flags': re.IGNORECASE}),
+
+    ('pull requests', r'\b(null|pull) requests\b', 82, {'flags': re.IGNORECASE}),
+
+# bitte schreib mir denn geht kommen mit text'
+    ('git commit text', r'\b(geht kommen mit text)\b', 75, {'flags': re.IGNORECASE}),
+
+
+    ('feature branch', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
+    ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
+    ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
+    ('Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    ('Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
+    ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
+    ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
+    ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),
+    ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
+
+    ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
+
+    # === Git Commands (Consolidated & Case-Insensitive) ===
+
+    # --- git status ---
+    # This one regex replaces 5 old entries.
+    ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|dates)\s*$', 82, {'flags': re.IGNORECASE}),
+
+    # --- git add . ---
+    ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
+
+
+
+    # --- git commit ---
+    #  Kate Commit einen  git commit
+
+    ('git commit ', r'^\s*Klitschko mit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*kate Commit\s*$', 80, {'flags': re.IGNORECASE}),
+
+    ('git commit ', r'^\s*Geht (Komet|kommend|Commit)\s*$', 80, {'flags': re.IGNORECASE}),
+
+    ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
+
+    ('git commit ', r'^\s*Geht Commit\s*$', 80, {'flags': re.IGNORECASE}),
+
+
+    ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
+
+    ('git commit ', r'^\s*(Geht|git|mit) (komm|Kometen|Commit)\s*$', 80, {'flags': re.IGNORECASE}),
+
+
+    ('commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),
+
+    ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
+    ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, {'flags': re.IGNORECASE}),
+    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme)\s*$"', 80, {'flags': re.IGNORECASE}),
+    # Gilt komme komme
+
+    # --- git push ---
+    ('git push', r'^\s*(git|geht|gitter)\s*(busch|push)\s*$', 85, {'flags': re.IGNORECASE}),
+
+    # --- git pull ---
+    ('git pull', r'^\s*(git|geht|gitter)\s*(pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git pull', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
+
+    # --- git diff ---
+    ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, {'flags': re.IGNORECASE}),
+
+    ('.gitignore', r'^\s*(Kritik knurren|Kritik Noah|Kritiken|kitte Knorr|Kritik Knorr)\s*$', 75, {'flags': re.IGNORECASE}),
+
+
+
+
 ]
 

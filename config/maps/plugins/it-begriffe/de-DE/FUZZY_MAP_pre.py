@@ -21,13 +21,59 @@ FUZZY_MAP_pre = [
 
 
 
-    ('Logdatei', r'^(\b)(Logdatei|Kochdatei)(\b)$', 80, {'flags': re.IGNORECASE}),
+    ('Logdatei', r'^(Logdatei|Kochdatei|log-datei)$', 80, {'flags': re.IGNORECASE}),
 
     ('Logfile', r'^(\b)(Logfile)(\b)$', 80, {'flags': re.IGNORECASE}),
 
     ('release', r'^(\b)(Relief|release|Relief|wer dies)(\b)$', 75, {'flags': re.IGNORECASE}),
 
+#Virtuell in Weibern
+#Ritual in Deibel
+# virtual in weibel
+#Virtuell in weite
+#virtuell in white
+#Ritual in Weimarvirtual in weimar
+#Virtual environment
+#virtual in weiß witwen in weimarRitual in Weiß#Virtual environment
+#Ritual in Deibelvirtual in weibelVirtuelle in DeibelWird schon in wein
+#wird schon in weinWird schwer in warme
+#wird schwer in warmeWirtschaft in Weimarwirtschaft in weimarVirtual environment
+#witwer in wei mit
+#Heiden wird je eine virtuelle Weibe verbindenWird wird es in Deibel
+#Bachelorette DeibelVirtuell im WerbenVirtuell in wirbelnWildschweine in räumenVirtual environmentTitan wird hier in einem Ritual Environment verwendet
+#virtuell in weivirtuell in räumen
+#
+
+    ('Virtual environment', r'\b(Virtuell|virtual|witwe\w*|witwer|wird schon|wird schwer|wirtschaft|wildschwein)\w* (in |wei |im )?(Weibe|white|weima|metall|wei|warm|wei mit|wirbeln|räumen|beweise|wallet)\w*\b', 75, {'flags': re.IGNORECASE,
+            'skip_list': ['LanguageTool'],
+    }),
+
+
+#titan wird hier in einem virtual in weibe verwendet
+#Virtual environmentTitan wird hier in einem Ritual Environment mit verbinden
+#beiden wird hier in eine virtuelle weibe verwirrt
+#titan wird jedem witwe in weibe verwendet
+#Titan wird, hier liegtEinen MenschenneinBeiden wird hier deine Witwe salbe zu werdenBeiden wird hier deine Witwe salbe zu wen blöd
+#Beiden wird hier in eine virtuelle Weibe verwirrt
+#Beiden wird hier in einem ritt für den Leib verbinden
+#Titan wird hier in einem virtuellen Weibe verwendet
+# titan wird wird in weibel
+#Beiden wird hier in einer wird für den falle verwendet
+#Weiterhin wird hier in einem virtuell in bei mit verwendet
+#Halten wird jedwedem Witwe wird Weibe verwenden
+#titan wird hier in einem virtuellen wei metall verwendet
+#Zeiten wird hier in einem Witwen in Weimar verbinden
+#zeiten wird hier in einem witwen in weimar verbinden
+#Scheitern wird hierSkaterTitan wird je in einem Witwer in bei mit verwenden
+#titan wird je in einem witwer in wei mit verwenden
+#Zeiten wird hier in einem Wildschwein in Weibe verwendet
+#ützensagTitan wird hier in einem Ritual Environment mitverwendet
+
     ('Python', r'^(\b)(Brighton|breit schon|Fallschirm|peitschen)(\b)$', 75, {'flags': re.IGNORECASE}),
+
+    ('Python wird hier in einer Virtual environment verwendet', r'^(beiden wird hier in einem Virtual environment mitverwendet|Beiden wird hier in einer wird für den falle verwendet|Weiterhin wird hier in einem virtuell in bei mit verwendet|Halten wird jedwedem Witwe wird Weibe verwenden|titan wird hier in einem virtual in weibe verwendet|beiden wird hier in einem virtuell in wei mitverwendet)$', 75, {'flags': re.IGNORECASE}),
+
+
 
     ('default', r'^(\b)(d fahl)(\b)$', 75, {'flags': re.IGNORECASE}),
 

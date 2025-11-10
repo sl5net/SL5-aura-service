@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 import subprocess
 
-from config.settings import signatur_ar,signatur_en,signatur_pt_br
+from config.settings import signatur_ar,signatur_en,signatur_pt_br,signatur_ja
 
 #
 
@@ -82,16 +82,18 @@ def execute(match_data):
         # 3. Das reine Ergebnis zurückgeben, damit der Service es sprechen kann
         # Sprachübersetzung - Tradução de VozTesttest (original:'test', Voice Translation SL5.de/Aura Powered by SL5.de/Aura ).
 
-        # signatur
+        #
 
         if lang_target=='pt-BR' or lang_target=='pt-br' :
-            return f"{translated_text} (original:'{original_text}', {signatur_pt_br} ). "
+            return f"{translated_text} (original:'{original_text}', {signatur_pt_br}). "
         elif lang_target == 'en':
-            return f"{translated_text} (original:'{original_text}', {signatur_en} ). "
+            return f"{translated_text} (original:'{original_text}', {signatur_en})."
         elif lang_target == 'ar':
-            return f"{translated_text} (original:'{original_text}, {signatur_ar} ). "
+            return f"{translated_text} (original:'{original_text}, {signatur_ar}). "
+        elif lang_target == 'ja':
+            return f"{translated_text} (original:'{original_text}, {signatur_ja}). "
         else:
-            return f"{translated_text} (original:'{original_text}', {signatur_en} ). "
+            return f"{translated_text} (original:'{original_text}', {signatur_en}). "
         # ﻿Sprach Übersetzung﻿ar okay funktionieren ﻿sprach BesetzungBei der Übersetzung ist ein unerwarteter Fehler aufgetreten.
 
     except subprocess.CalledProcessError as e:

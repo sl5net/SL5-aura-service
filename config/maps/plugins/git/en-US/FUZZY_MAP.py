@@ -20,11 +20,6 @@ REGEX_MAP = {
 FUZZY_MAP = [
 
 
-    ('.', r'\bperiod|full stop|dot|point\b', 95),
-    (',', r'\bcomma\b', 95),
-    ('?', r'\bquestion mark|christian monk|Christian luck|christian mk|question mk\b', 85),
-    ('!', r'\bexclamation mark|exclamation point\b', 95),
-
     ('Git', r'^kit$', 85),
     ('GitHub', r'^get up$', 85),
     ('GitHub', r'^good job$', 85),

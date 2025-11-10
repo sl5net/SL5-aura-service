@@ -9,6 +9,24 @@ import re # noqa: F401
 #    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
+"""
+Tübingen OpenLab https://ki-maker.space/angebote/open-lab
+Öffnungszeiten:
+Donnerstag: 11 - 22 Uhr
+Freitag: 11 - 18 Uhr
+Samstag: 10 - 18 Uhr
+KI-Makerspace - Geschwister-Scholl-Platz - 72074 Tübingen - hallo  ki-maker.space - ki-maker.space
+
+https://ki-maker.space/team
+
+https://gitlab.com/kimakerspace
+
+FabLab In Bahnhofsnähe
+Wltes-Simon-Straße 4, Tübingen (Nahe Reutlinger Straße)
+https://www.openstreetmap.org/node/9879183939
+
+"""
+
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
@@ -33,6 +51,17 @@ FUZZY_MAP_pre = [
 
 
     ('https://cttue.de/doku.php?id=events:past', r'^(chaos|Karls)\s+.* \bVerg.*$', 60, {'flags': re.IGNORECASE}),
+
+    # fettleber typ
+    # vettel app tübingen
+    # fred leb tübingen
+    ('https://ki-maker.space/', r'^(fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ)$', 60, {'flags': re.IGNORECASE}),
+
+    ('https://ki-maker.space/angebote/kurse-und-workshops', r'^(fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ).*(Kurse|workshops)$', 60, {'flags': re.IGNORECASE}),
+
+
+
+
 
 
     ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, {'flags': re.IGNORECASE})
