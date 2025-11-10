@@ -9,12 +9,12 @@ from pathlib import Path
 #    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 #sprache gabe stopp
-#
+
 
 CONFIG_DIR = Path(__file__).parent
 
 Englisch=r'(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe\b)'
-toggleCmd=r'(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|stopp\w*|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
+toggleCmd=r'(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
@@ -29,6 +29,12 @@ FUZZY_MAP_pre = [
     }),
 
     ('en', fr'^{toggleCmd} {Englisch}$', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
+
+    ('ja', fr'^(japanisch) {toggleCmd}$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
@@ -55,10 +61,23 @@ FUZZY_MAP_pre = [
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+
+
     ('de', r'^(\w*besetzung) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
+    ('de', r'^(\w*besetzung) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+    ('de', fr'^(\w*sprach\w*) (übersetzung)? {toggleCmd}$', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
+
+    #
 
 
     ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*besetzung)\b', 95, {
@@ -69,7 +88,7 @@ FUZZY_MAP_pre = [
     # ANCHOR: The following line is controlled by the toggle script.
     # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
+#    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 
 
     ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
