@@ -13,7 +13,7 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
-examples = """
+examples = r"""
 
 Verwendung:
 
@@ -23,6 +23,8 @@ Suche in Ruth Kapitel 1 Vers 1
 Suche in erster Dave Kapitel 1 Vers halten
 Suche in 1 Chroniken 1 Kapitel 1
 
+Varianten um das gleiche zu Fragen:
+
 Suche in Ruth Kapitel 1 Vers 1
 ('bible suche', r'^suche (i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, { ...
 
@@ -31,6 +33,8 @@ Suche in Ruth Kapitel 1 1 Vers
 
 Suche in Ruth 1 Kapitel 1 Vers
 ('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {...
+
+"in" kann auch weggelassen werden.
 
 
 Suche in Ruth Kapitel 1 Vers 1
