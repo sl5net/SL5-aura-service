@@ -167,7 +167,7 @@ FUZZY_MAP_pre = [
     ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|dates)\s*$', 82, {'flags': re.IGNORECASE}),
 
     # --- git add . ---
-    ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|ab|at|ritt|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
 
 
 
