@@ -99,7 +99,7 @@ current_user = str(current_user)
 
 
 
-logger.info(f"👀 dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}, current_user={current_user}")
+logger.info(f"dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}, current_user={current_user}")
 # sys.exit(1)
 
 class DynamicSettings:
@@ -122,10 +122,10 @@ class DynamicSettings:
         with cls._lock:
             if cls._instance is None:
                 cls._instance = super(DynamicSettings, cls).__new__(cls)
-                logger.info(f"👀 dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
+                logger.info(f"dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
 
                 if settings.DEV_MODE:
-                    print("👀 DEBUG: DynamicSettings.__new__ called, initializing instance.")
+                    print("DEBUG: DynamicSettings.__new__ called, initializing instance.")
                 cls._instance._init_settings()
         return cls._instance
 
@@ -140,25 +140,25 @@ class DynamicSettings:
         self._last_base_modified_time = os.path.getmtime(self._settings_file_path)
         self._last_local_modified_time = os.path.getmtime(self._settings_local_file_path)
 
-        logger.info(f"👀 dynamic_settings.py: settings.DEV_MODE = {settings.DEV_MODE}")
+        logger.info(f"dynamic_settings.py: settings.DEV_MODE = {settings.DEV_MODE}")
 
         if settings.DEV_MODE:
-            print(f"👀 DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
-            print(f"👀 DEBUG: DynamicSettings._init_settings called. Local settings file: {self._settings_local_file_path}")
-            logger.info(f"👀 DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
+            print(f"DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
+            print(f"DEBUG: DynamicSettings._init_settings called. Local settings file: {self._settings_local_file_path}")
+            logger.info(f"DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
         self.reload_settings(force=False)
 
     def reload_settings(self, force=False):
         # config/dynamic_settings.py:44
-        logger.info(f"👀 dynamic_settings.py:reload_settings():44 DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
-        print(f"👀 dynamic_settings.py:reload_settings():44 DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
+        logger.info(f"dynamic_settings.py:reload_settings():44 DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
+        print(f"dynamic_settings.py:reload_settings():44 DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
 
 
         if settings.DEV_MODE:
-            print("👀 DEBUG: reload_settings called.")
+            print("DEBUG: reload_settings called.")
         with self._lock:
             if settings.DEV_MODE:
-                print("👀 DEBUG: Lock acquired for settings reload.")
+                print("DEBUG: Lock acquired for settings reload.")
 
             current_base_modified_time = os.path.getmtime(self._settings_file_path) if os.path.exists(
                 self._settings_file_path) else 0
@@ -175,7 +175,7 @@ class DynamicSettings:
                 if settings.DEV_MODE:
 
                     logger.info(
-                        f"👀 Triggering full settings reload. Reasons: force={force}, _settings_module is None={self._settings_module is None}, any_file_modified={any_file_modified}")
+                        f"Triggering full settings reload. Reasons: force={force}, _settings_module is None={self._settings_module is None}, any_file_modified={any_file_modified}")
                     logger.info(
                         f"👀【┘】⌚ ⏳ self._settings_file_path: {self._settings_file_path} | self._settings_local_file_path={self._settings_local_file_path} | any_file_modified={any_file_modified}")
                     logger.info(
@@ -190,42 +190,42 @@ class DynamicSettings:
                 # --- Reloading base settings (config.settings) ---
                 if 'config.settings' in sys.modules:
                     if settings.DEV_MODE:
-                        print("👀 DEBUG: Calling importlib.reload(sys.modules['config.settings'])")
+                        print("DEBUG: Calling importlib.reload(sys.modules['config.settings'])")
                     self._settings_module = importlib.reload(sys.modules['config.settings'])
                 else:
                     if settings.DEV_MODE:
-                        print("👀 DEBUG: Calling importlib.import_module('config.settings')")
+                        print("DEBUG: Calling importlib.import_module('config.settings')")
                     self._settings_module = importlib.import_module('config.settings')
                 if settings.DEV_MODE:
-                    print("👀 DEBUG: Base settings loaded.")
+                    print("DEBUG: Base settings loaded.")
 
                 # --- Reloading local settings (config.settings_local) ---
                 try:
                     if os.path.exists(self._settings_local_file_path):
                         if 'config.settings_local' in sys.modules:
                             if settings.DEV_MODE:
-                                print("👀 DEBUG: Calling importlib.reload(sys.modules['config.settings_local'])")
+                                print("DEBUG: Calling importlib.reload(sys.modules['config.settings_local'])")
                             self._settings_local_module = importlib.reload(sys.modules['config.settings_local'])
                         else:
                             if settings.DEV_MODE:
-                                print("👀 DEBUG: Calling importlib.import_module('config.settings_local')")
+                                print("DEBUG: Calling importlib.import_module('config.settings_local')")
                             self._settings_local_module = importlib.import_module('config.settings_local')
                         if settings.DEV_MODE:
-                            print("👀 DEBUG: Local settings loaded.")
+                            print("DEBUG: Local settings loaded.")
                     else:
-                        print("👀 INFO: config.settings_local.py does not exist. Skipping local settings load.")
+                        print("INFO: config.settings_local.py does not exist. Skipping local settings load.")
                         self._settings_local_module = None
                 except ModuleNotFoundError:
-                    print("👀 WARNING: config.settings_local module not found. This might indicate a path issue or missing file.")
+                    print("WARNING: config.settings_local module not found. This might indicate a path issue or missing file.")
                     self._settings_local_module = None
                 except Exception as e:
-                    print(f"👀 CRITICAL ERROR: Exception during config.settings_local import/reload: {e}")
+                    print(f"CRITICAL ERROR: Exception during config.settings_local import/reload: {e}")
                     import traceback
                     traceback.print_exc()
                     raise
 
                 if settings.DEV_MODE:
-                    print("👀 DEBUG: --- Merging settings ---")
+                    print("DEBUG: --- Merging settings ---")
                 # Clear existing attributes to ensure a clean merge
                 for attr in list(self.__dict__.keys()):
                     # IMPORTANT: Do not delete 'settings' itself or internal attributes like '_instance', '_lock', etc.
@@ -242,7 +242,7 @@ class DynamicSettings:
                             value = getattr(self._settings_module, attr)
                             setattr(self, attr, value)
                     if settings.DEV_MODE:
-                        print("👀 DEBUG: Base settings attributes applied to DynamicSettings instance.")
+                        print("DEBUG: Base settings attributes applied to DynamicSettings instance.")
 
                 # Apply/Merge local settings
                 if self._settings_local_module:
@@ -256,14 +256,14 @@ class DynamicSettings:
                             if attr == "PRELOAD_MODELS":
                                 setattr(self, attr, local_value)
                                 if settings.DEV_MODE:
-                                    print(f"👀 DEBUG: Overrode PRELOAD_MODELS with local value: {local_value}")
+                                    print(f"DEBUG: Overrode PRELOAD_MODELS with local value: {local_value}")
                             # --- END MODIFICATION ---
                             elif hasattr(self, attr) and isinstance(getattr(self, attr), collections.abc.MutableMapping) and isinstance(local_value, collections.abc.MutableMapping):
                                 merged_dict = getattr(self, attr)
                                 merged_dict.update(local_value)
                                 setattr(self, attr, merged_dict)
                                 if settings.DEV_MODE:
-                                    print(f"👀 DEBUG: Merged dictionary setting '{attr}': {getattr(self, attr)}")
+                                    print(f"DEBUG: Merged dictionary setting '{attr}': {getattr(self, attr)}")
                             elif hasattr(self, attr) and isinstance(getattr(self, attr), collections.abc.MutableSequence) and not isinstance(getattr(self, attr), (str, bytes)) and isinstance(local_value, collections.abc.MutableSequence) and not isinstance(local_value, (str, bytes)):
                                 merged_list = getattr(self, attr)
                                 # Only append items if they are not already in the list
@@ -272,17 +272,17 @@ class DynamicSettings:
                                         merged_list.append(item)
                                 setattr(self, attr, merged_list)
                                 if settings.DEV_MODE:
-                                    print(f"👀 DEBUG: Merged list setting '{attr}': {getattr(self, attr)}")
+                                    print(f"DEBUG: Merged list setting '{attr}': {getattr(self, attr)}")
                             else:
                                 # Default: override with local value
                                 setattr(self, attr, local_value)
                                 if settings.DEV_MODE:
-                                    print(f"👀 DEBUG: Overrode setting '{attr}' with local value: {local_value}")
-                                    print("👀 DEBUG: Local settings attributes applied/merged to DynamicSettings   instance.")
+                                    print(f"DEBUG: Overrode setting '{attr}' with local value: {local_value}")
+                                    print("DEBUG: Local settings attributes applied/merged to DynamicSettings   instance.")
 
                 if hasattr(self, 'PLUGINS_ENABLED') and isinstance(self.PLUGINS_ENABLED, dict):
                     if settings.DEV_MODE:
-                        print("👀 DEBUG: Resolving PLUGINS_ENABLED hierarchy...")
+                        print("DEBUG: Resolving PLUGINS_ENABLED hierarchy...")
 
                     # Das zusammengeführte Dictionary, bevor es aufgelöst wird
                     raw_plugins_config = self.PLUGINS_ENABLED
@@ -298,12 +298,12 @@ class DynamicSettings:
                         resolved_status = is_plugin_enabled(key, raw_plugins_config)
                         resolved_plugins_config[key] = resolved_status
                         if settings.DEV_MODE:
-                            print(f"👀 DEBUG: Plugin '{key}' -> Resolved Status: {resolved_status}")
+                            print(f"DEBUG: Plugin '{key}' -> Resolved Status: {resolved_status}")
 
                     # Überschreibe das alte PLUGINS_ENABLED mit dem neuen, aufgelösten Dictionary
                     setattr(self, 'PLUGINS_ENABLED', resolved_plugins_config)
                     if settings.DEV_MODE:
-                        print("👀 DEBUG: PLUGINS_ENABLED has been updated with resolved statuses.")
+                        print("DEBUG: PLUGINS_ENABLED has been updated with resolved statuses.")
 
 
 settings = DynamicSettings() # noqa: F811
