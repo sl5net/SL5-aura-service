@@ -49,6 +49,9 @@ config/settings_local.py
 config/model_name.txt
 config/model_name_lastused.txt
 
+config/maps/plugins/.privat/
+
+
 tools/translate-shell_and_save/translations
 
 *.cache.*

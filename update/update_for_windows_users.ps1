@@ -4,6 +4,7 @@
 
 $ErrorActionPreference = 'Stop'
 $repoUrl = "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip"
+
 $installDir = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $tempDir = Join-Path $env:TEMP "sl5_update_temp"
 
