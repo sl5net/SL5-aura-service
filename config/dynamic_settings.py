@@ -1,7 +1,7 @@
 # config/dynamic_settings.py
-import collections.abc # Corrected import to collections.abc
+import collections.abc
 import importlib
-import pwd
+#import pwd
 import sys
 import os
 from datetime import datetime
@@ -62,7 +62,42 @@ file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', m
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 
-current_user = pwd.getpwuid(os.getuid())[0]
+
+
+# Cross-platform logic to determine the current user's name:
+if sys.platform.startswith('win'):
+    # On Windows, use the USERNAME environment variable.
+    current_user = os.environ.get('USERNAME')
+    # logger.info("Determined current_user using Windows environment variables.") # Add log later if needed
+else:
+    # On Unix/Linux/Mac, try the 'pwd' module (it should work here)
+    # If the user is on a Unix-like system where 'pwd' is available,
+    # the original logic is more robust than environment variables alone.
+    try:
+        import pwd
+        current_user = pwd.getpwuid(os.getuid()).pw_name
+        # logger.info("Determined current_user using 'pwd' module (Unix-like system).")
+    except ImportError:
+        # Fallback for systems that look like Unix but might lack 'pwd'
+        # (e.g., some minimal environments or non-standard Python builds)
+        current_user = os.environ.get('USER')
+
+# Final fallback
+if not current_user:
+    current_user = "unknown_user"
+    logger.warning("Could not determine current_user, defaulting to 'unknown_user'.")
+
+# Ensure 'current_user' is a string before proceeding
+current_user = str(current_user)
+
+
+
+
+
+
+
+
+
 
 logger.info(f"👀 dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}, current_user={current_user}")
 # sys.exit(1)
