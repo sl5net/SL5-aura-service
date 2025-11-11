@@ -50,6 +50,7 @@ config/model_name.txt
 config/model_name_lastused.txt
 
 config/maps/plugins/.privat/
+config/maps/plugins/privat/
 
 
 tools/translate-shell_and_save/translations
