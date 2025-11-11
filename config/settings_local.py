@@ -1,6 +1,5 @@
 # config/settings_local.py
-import os
-import pwd
+import os, sys
 
 # My personal settings for SL5 Aura
 # This file is ignored by Git.
@@ -9,7 +8,29 @@ SERVICE_START_OPTION = 1
 # Option 1: Start the service only on when there is an internet connection.
 
 # Get username
-current_user = pwd.getpwuid(os.getuid())[0]
+
+# Determine username in a cross-platform way
+if sys.platform.startswith('win'):
+    # On Windows, use the USERNAME environment variable.
+    current_user = os.environ.get('USERNAME')
+else:
+    # On Unix/Linux/Mac, try the 'pwd' module for robustness
+    try:
+        import pwd
+        # The original Unix-like system logic
+        current_user = pwd.getpwuid(os.getuid()).pw_name
+    except ImportError:
+        # Fallback for non-standard Unix environments
+        current_user = os.environ.get('USER')
+
+# Final fallback to ensure current_user is always a string
+if not current_user:
+    current_user = "unknown_user"
+
+current_user = str(current_user)
+# logger.info("Current user successfully determined in a cross-platform manner.") # Add logger import if needed
+
+
 
 NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
