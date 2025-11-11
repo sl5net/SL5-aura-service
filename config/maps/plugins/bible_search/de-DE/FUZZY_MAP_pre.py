@@ -202,11 +202,13 @@ FUZZY_MAP_pre = [
 
 
 
+    # following is in conflict with rules like: was ist 5 plus 3 (s.,11.11.'25 13:35 Tue)
+    # Das war ein bisschen schwierig zu finden
 
-    ('bible suche', fr'^(i\w+ )?(?P<book>\w*[ ]?\w+) (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'bible_search.py']
-    }),
+    #('bible suche', fr'^(i\w+ )?(?P<book>\w*[ ]?\w+) (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
+    #    'flags': re.IGNORECASE,
+    #    'on_match_exec': [CONFIG_DIR / 'bible_search.py']
+    #}),
 
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
