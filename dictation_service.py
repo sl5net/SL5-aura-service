@@ -428,7 +428,19 @@ def system_memory_watchdog(logging):
     #estimated_total_size_mb = file_size_bytes / (1024 * 1024)
     estimated_ram_for_models_mb = num_preloaded_models * RAM_ESTIMATE_PER_MODEL_GB * GB_TO_MB_CONVERSION_FACTOR
 
-    my_pgid = os.getpgrp()
+    # Cross-platform call - use getpgrp only on non-Windows systems
+    import sys
+    my_pgid = None
+    if not sys.platform.startswith('win'):
+        try:
+            my_pgid = os.getpgrp()
+            logging.info(f"System Memory Watchdog is running on Unix-like system with pgid: {my_pgid}")
+        except AttributeError:
+            # Fallback in case os.getpgrp is still missing for some reason
+            pass
+
+
+
 
     if True:
         # 2. Get Swap Memory just for information

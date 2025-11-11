@@ -37,6 +37,19 @@ from config.dynamic_settings import settings
 logger = logging.getLogger(__name__)
 
 
+# Initialize the function as a placeholder for Windows to avoid NameError
+def create_bent_sine_wave_sound(*args, **kwargs): # noqa: F811
+    """
+    Placeholder function for Windows and environments where Pygame is not used.
+    Prevents NameError when sound functions are called.
+    """
+    class DummySound:
+        def play(self):
+            pass
+    return DummySound()
+
+
+
 def speak_fallback(text_to_speak, language_code):
     """
     - Linux: espeak
