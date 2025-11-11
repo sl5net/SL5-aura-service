@@ -30,10 +30,14 @@ NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 # signatur='SL5.de/Aura'
 # signatur='🗣ടㄴ5⠄de╱Aura'
 # signatur='🗣Sㄴ5⠄de╱Aura' # this l is unvisable in gemini
-signatur='🗣SL5⠄de╱Aura'
+#signatur='🗣SL5⠄de╱Aura'
+# signatur='🗣SL5⠠de╱Aura' # i like this 11.11.'25 09:58 Tue
+#now (original:'jetzt', ).
+signatur=' ,🗣SL5。de╱Aura' # i like this 11.11.'25 09:58 Tue
+signatur=''
 signatur1=f' (Powered by {signatur})'
-signatur_pt_br=f'Tradução de Voz {signatur}'
-signatur_en=f'Voice Translation {signatur}'
+signatur_pt_br=f'Tradução de Voz{signatur}'
+signatur_en=f'Voice Translation{signatur}'
 signatur_en=f'{signatur}'
 signatur_ar=f"تحدثت الترجمة{signatur} "
 signatur_ja=f"話し言葉の翻訳{signatur} "

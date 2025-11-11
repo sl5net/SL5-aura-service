@@ -34,9 +34,12 @@ SPEECH_PAUSE_TIMEOUT = 2
 # may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
 PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
+#test (original:'test', 🗣SL5。de╱Aura).
 if current_user == 'seeh':
 
-    if 1:
+    signatur=''
+
+    if True:
         signatur=''
         signatur1=f''
         signatur_pt_br=f''

@@ -85,15 +85,15 @@ def execute(match_data):
         #
 
         if lang_target=='pt-BR' or lang_target=='pt-br' :
-            return f"{translated_text} (original:'{original_text}', {signatur_pt_br}). "
+            return f"{translated_text} (original:'{original_text}'{signatur_pt_br}). "
         elif lang_target == 'en':
-            return f"{translated_text} (original:'{original_text}', {signatur_en})."
+            return f"{translated_text} (original:'{original_text}'{signatur_en})."
         elif lang_target == 'ar':
-            return f"{translated_text} (original:'{original_text}, {signatur_ar}). "
+            return f"{translated_text} (original:'{original_text}'{signatur_ar}). "
         elif lang_target == 'ja':
-            return f"{translated_text} (original:'{original_text}, {signatur_ja}). "
+            return f"{translated_text} (original:'{original_text}'{signatur_ja}). "
         else:
-            return f"{translated_text} (original:'{original_text}', {signatur_en}). "
+            return f"{translated_text} (original:'{original_text}'{signatur_en}). "
         # ﻿Sprach Übersetzung﻿ar okay funktionieren ﻿sprach BesetzungBei der Übersetzung ist ein unerwarteter Fehler aufgetreten.
 
     except subprocess.CalledProcessError as e:
