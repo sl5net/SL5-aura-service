@@ -4,7 +4,7 @@ import os, sys
 # My personal settings for SL5 Aura
 # This file is ignored by Git.
 
-SERVICE_START_OPTION = 1
+SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
 
 # Get username
