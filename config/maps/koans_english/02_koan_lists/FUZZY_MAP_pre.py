@@ -1,6 +1,5 @@
 # config/maps/koan_english/01_koan_first_steps/
 import re # noqa: F401
-from pathlib import Path
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
@@ -12,6 +11,9 @@ from pathlib import Path
 FUZZY_MAP_pre = [
 
     #TODO
+
+    #('on', r'^[a-m]*$', 80, {'flags': re.IGNORECASE}),
+    #('off', r'^[n-z]*$', 80, {'flags': re.IGNORECASE}),
 
     #('hi 02_koan_lists', r'^.*$', 80, {'flags': re.IGNORECASE}),
 
