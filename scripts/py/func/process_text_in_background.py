@@ -446,6 +446,7 @@ def process_text_in_background(logger,
     punctuation_map, fuzzy_map_pre, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
     new_processed_text = ''
     skip_list=[]
+    options_dict = None
     log4DEV(f"skip_list: {skip_list}", logger)
 
     try:
@@ -535,6 +536,7 @@ def process_text_in_background(logger,
         regex_match_found_prev = False
         regex_pre_is_replacing_all_maybe = False
         result_languagetool = None
+
         log4DEV(
             f"proces..:'{processed_text}' new..:'{new_processed_text}'",logger)
 
@@ -1038,7 +1040,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
                         log4DEV(f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} '{original_text_for_script}' ----> '{current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}",logger_instance)
 
-                        break
+                        if 'fullMatchStop' not in skip_list:
+                            break
 
                 else:  # Dieser Block wird ausgeführt, wenn es KEIN fullmatch gab
 

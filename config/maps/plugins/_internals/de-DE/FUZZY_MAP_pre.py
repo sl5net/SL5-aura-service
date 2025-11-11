@@ -27,6 +27,7 @@ FUZZY_MAP_pre = [
 
 
     ('?', r'\s+(fragezeichen|fragen|fragend|frage|fragt)\s*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    ('!', r'\b(ausrufezeichen)\b', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
 

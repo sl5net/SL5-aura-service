@@ -75,6 +75,9 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
 # ﻿was ist 5 flüssen ﻿Das Ergebnis von 5 plus 3 ist 8.
 
+        ('ausrufezeichen', '!', 'Exact MAP match for punctuation', 'de-DE'),
+
+
         ('good Morning people', 'hey all out there people', 'use a postRule. Funny useless rule ;) just for testing',
          'en-US'),
 
@@ -111,7 +114,6 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
         ('mit nachnamen laufer', 'Mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
         ('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'Partial map + LT correction', 'de-DE'),
         ('von sebastian laufer', 'Von Sebastian Lauffer', 'Partial map + LT correction', 'de-DE'),
-        ('ausrufezeichen', '!', 'Exact MAP match for punctuation', 'de-DE'),
         ('punkt', '.', 'Exact MAP match', 'de-DE'),
         ('komma', ',', 'Exact MAP match'),
         ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization', 'de-DE'),

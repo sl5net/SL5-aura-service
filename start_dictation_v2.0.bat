@@ -14,7 +14,7 @@ cd /d "%~dp0"
 
 
 
-# --- 2. Admin Rights Check ---
+:: --- 2. Admin Rights Check ---
 echo [*] Checking for Administrator privileges
 
 REM Only check for admin rights if NOT running in a CI environment
@@ -28,14 +28,6 @@ if /I NOT "%CI%"=="true" (
 )
 
 echo [SUCCESS] Running with Administrator privileges.
-
-
-
-
-
-
-
-
 
 
 
