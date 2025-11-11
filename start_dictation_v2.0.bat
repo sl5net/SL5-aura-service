@@ -49,8 +49,9 @@ if not exist ".\.venv\Scripts\python.exe" (
 echo.
 
 :: --- Step 4: Start background components ---
-start "SL5 Type Watcher" type_watcher.ahk
-start "SL5 Notification Watcher" scripts\notification_watcher.ahk
+start "SL5 Type Watcher.ahk" type_watcher.ahk
+start "SL5 Notification Watcher.ahk" scripts\notification_watcher.ahk
+start "trigger-hotkeys.ahk" trigger-hotkeys.ahk
 echo [INFO] Background watchers have been started.
 echo.
 
