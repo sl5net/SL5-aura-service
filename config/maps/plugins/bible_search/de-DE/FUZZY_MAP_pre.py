@@ -52,6 +52,8 @@ Suche in 1 t'gallo tot als 1 Kapitel 1 Vers'
 
 """
 
+searchCmd=r'(suche|bibel|suche \w+ bibel)'
+
 Thessalonians = r"(dem via|t[\w ']*chal[\w ]*w[\w ]*o[\w ]*a[\w ]*s|t\w*\s*\w*s|k\w*e\w*alonia\w*\s*\w*)\b"
 
 
@@ -147,16 +149,34 @@ FUZZY_MAP_pre = [
     }),
 
 
-    ('bible suche', r'^suche (i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
+    ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 
-    ('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
+    ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
-    ('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {
+    ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'bible_search.py']
+    }),
+
+
+
+
+
+    ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*[ ]?\w+) (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'bible_search.py']
+    }),
+
+    ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'bible_search.py']
+    }),
+    ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
