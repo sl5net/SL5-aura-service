@@ -52,7 +52,7 @@ For a complete technical reference, including all modules and scripts, please vi
 ## Installation
 
 The setup is a two-step process:
-1.  Clone this repository to your computer.
+1.  Download last Release or master ( https://github.com/sl5net/Vosk-System-Listener/archive/master.zip ) or clone this repository to your computer.
 2.  Run the one-time setup script for your operating system.
 
 The setup scripts handle everything: system dependencies, Python environment, and downloading the necessary models and tools (~4GB) directly from our GitHub Releases for maximum speed.
