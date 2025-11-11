@@ -53,22 +53,23 @@ FUZZY_MAP_pre = [
     # Vorwahlnummern hauptsächlich 0707 (Tübingen) und 0712 (Reutlingen) sowie Abwandlungen für kleinere umliegende Orte.
 
     # Tübingen und Umgebung (0707x) Vorwahl	Regex-Beschreibung
-    ('07071', r'^Vorwahl Tübingen Hauptzone$', 80, {'flags': re.IGNORECASE})
-    ('07073', r'^Vorwahl Dußlingen$', 80, {'flags': re.IGNORECASE})
-    ('07074', r'^Vorwahl Rottenburg am Neckar$', 80, {'flags': re.IGNORECASE})
-    ('07075', r'^Vorwahl Ammerbuch$', 80, {'flags': re.IGNORECASE})
-    ('07076', r'^Vorwahl Gomaringen$', 80, {'flags': re.IGNORECASE})
-    ('07078', r'^Vorwahl Mössingen$', 80, {'flags': re.IGNORECASE})
+    ('07071', r'^Vorwahl Tübingen Hauptzone$', 80, {'flags': re.IGNORECASE}),
+    ('07073', r'^Vorwahl Dußlingen$', 80, {'flags': re.IGNORECASE}),
+    ('07074', r'^Vorwahl Rottenburg am Neckar$', 80, {'flags': re.IGNORECASE}),
+    ('07075', r'^Vorwahl Ammerbuch$', 80, {'flags': re.IGNORECASE}),
+    ('07076', r'^Vorwahl Gomaringen$', 80, {'flags': re.IGNORECASE}),
+    ('07078', r'^Vorwahl Mössingen$', 80, {'flags': re.IGNORECASE}),
 
     # Reutlingen und Umgebung (0712x) Vorwahl	Regex-Beschreibung
-    ('07121', r'^Vorwahl Reutlingen Hauptzone$', 80, {'flags': re.IGNORECASE})
-    ('07122', r'^Vorwahl Metzingen$', 80, {'flags': re.IGNORECASE})
-    ('07123', r'^Vorwahl Reutlingen-Degerschlacht$', 80, {'flags': re.IGNORECASE})
-    ('07124', r'^Vorwahl Pliezhausen$', 80, {'flags': re.IGNORECASE})
-    ('07125', r'^Vorwahl Pfullingen$', 80, {'flags': re.IGNORECASE})
-    ('07127', r'^Vorwahl Neckartenzlingen$', 80, {'flags': re.IGNORECASE})
+    ('07121', r'^Vorwahl Reutlingen Hauptzone$', 80, {'flags': re.IGNORECASE}),
+    ('07122', r'^Vorwahl Metzingen$', 80, {'flags': re.IGNORECASE}),
+    ('07123', r'^Vorwahl Reutlingen-Degerschlacht$', 80, {'flags': re.IGNORECASE}),
+    ('07124', r'^Vorwahl Pliezhausen$', 80, {'flags': re.IGNORECASE}),
+    ('07125', r'^Vorwahl Pfullingen$', 80, {'flags': re.IGNORECASE}),
+    ('07127', r'^Vorwahl Neckartenzlingen$', 80, {'flags': re.IGNORECASE}),
 
     # Können Sie auch anders Fragen? Vielleicht Ihre eigene vollständig Nummer ausgeben lassen?
+    #
 
 ]
 
