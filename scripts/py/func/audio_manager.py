@@ -172,7 +172,7 @@ and not os.getenv('CI'):
         #     return pygame.mixer.Sound(samples)
 
 
-        def create_bent_sine_wave_sound(
+        def create_bent_sine_wave_sound( # noqa: F811
                 start_freq,
                 end_freq,
                 duration_ms,

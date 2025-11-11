@@ -63,7 +63,10 @@ set REPAIR_ATTEMPTED=
 :START_SERVICE_LOOP
 echo [INFO] Starting the Python STT backend service...
 
-python -u dictation_service.py
+# python -u dictation_service.py
+python -X utf8 -u dictation_service.py
+
+
 
 echo [INFO] Waiting 5 seconds for the service to initialize...
 timeout /t 5 >nul

@@ -289,6 +289,11 @@ file_handler.addFilter(WindowsEmojiFilter())
 
 
 
+
+
+
+
+
 if settings.SERVICE_START_OPTION ==1:
     # Option 1: Start the service only on autostart (start parameter) and if there is an internet
 
