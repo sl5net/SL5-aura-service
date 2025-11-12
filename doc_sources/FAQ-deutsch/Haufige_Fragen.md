@@ -60,9 +60,21 @@ Empfolenen extension: AHK++ (AutoHotkey Plus Plus)
 
 Installation von :
 
+- https://github.com/sl5net/SL5-aura-service/archive/refs/tags/v0.9.0.0.zip
+Installationsanleitung (Kurzfassung)
+    Öffnen Sie die PowerShell mit Administratorrechten.
+    Führen Sie das Setup-Skript windows11_setup.bat aus dem Projektordner mit PowerShell und Administratorrechten aus.
+Wichtig: NICHT per Rechtsklick auf die Datei windows11_setup.bat im Explorer und Auswahl von "Als Administrator ausführen".
+weil muss aus dem Projektordner ausgeführt werden.
+   
 - https://www.autohotkey.com/ -> https://www.autohotkey.com/download/ahk-v2.exe
+
 - Notedpadd++ https://notepad-plus-plus.org/downloads/ (Tastenkombination 192 und 193 bitte löschen)
 Bitte im Menü > Ansicht > "Automatischer Zeilenumbuch" einschallten
+
+Wiel Spaß beim bearbeiten der:
+01_koan_erste_schritte  03_koan_schwierige_namen  05_koan_such_beispiel    
+02_koan_listen          04_koan_kleine_helfer     06_koan_wikipedia_suche  ...  
 
 
 
