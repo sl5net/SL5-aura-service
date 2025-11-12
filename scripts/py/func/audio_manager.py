@@ -31,7 +31,6 @@ import math
 import threading
 import subprocess
 import logging
-import time
 
 from config.dynamic_settings import settings
 
@@ -262,9 +261,11 @@ def _set_mute_state_windows(mute: bool, logger):
     # ------------------------------------------------------------------
 
     try:
-        from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+        # from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+        from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, EDataFlow, ERole  # ERole and EDataFlow are needed
         # CLSCTX_ALL is now imported successfully above
-        devices = AudioUtilities.GetSpeakers()
+        # devices = AudioUtilities.GetSpeakers()
+        devices = AudioUtilities.GetDefaultAudioEndpoint(EDataFlow.eCapture.value, ERole.eCommunications.value)
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = interface.QueryInterface(IAudioEndpointVolume)
         volume.SetMute(1 if mute else 0, None)
@@ -274,7 +275,7 @@ def _set_mute_state_windows(mute: bool, logger):
         logger.error(f"Failed to set Windows microphone mute state: {e}", exc_info=True)
         return False
 
-    
+
 def _get_mute_state_linux(logger):
 
     if os.getenv('CI'):
@@ -466,18 +467,6 @@ def unmute_microphone(logger=None):
     Handles platform-specific implementations.
     """
     active_logger = logger if logger is not None else logging.getLogger(__name__)
-
-    # ------------------------------------------------------------------
-    # FIX for Windows timing issue with mute/unmute cycle
-    # Adding a small delay ONLY on Windows to prevent race condition
-    # where the OS hasn't finished unmuting before the next action.
-    if sys.platform.startswith('win'):
-        active_logger.info("Applying 100ms timing safety delay before Windows unmute.")
-        time.sleep(0.1)
-    # ------------------------------------------------------------------
-
-
-
 
     try:
         if sys.platform == "win32":

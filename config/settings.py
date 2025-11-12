@@ -55,7 +55,7 @@ NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 #now (original:'jetzt', ).
 signatur=' ,🗣SL5。de╱Aura' # i like this 11.11.'25 09:58 Tue
 signatur=''
-signatur1=f' (Powered by {signatur})'
+signatur1=f'{signatur}' # (Powered by
 signatur_pt_br=f'Tradução de Voz{signatur}'
 signatur_en=f'Voice Translation{signatur}'
 signatur_en=f'{signatur}'
