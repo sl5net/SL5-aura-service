@@ -2,7 +2,3 @@ cologne_phonetics
 jellyfish
 Requests
 setup_validator
-wikipedia
-wikipediaapi
-wikipedia-api
-bs4
