@@ -13,6 +13,16 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
+einleitung = """
+Für diese technische Demonstration benötigen wir ein komplexes, öffentlich verfügbares Dataset in einem gängigen Format (hier: SQLite). Die Bibel dient uns in diesem Zusammenhang lediglich als ein bekanntes, frei verfügbares und vielschichtiges Beispieldokument zur Veranschaulichung von Datenbankabfragen und Recherche-Logiken.
+
+Ich möchte betonen, dass es in dieser Einheit nicht um theologische, religiöse oder inhaltliche Interpretationen geht. Unser Fokus liegt rein auf der Implementierung und der Anwendung zur Analyse von strukturierten Textdaten.
+
+Der entscheidende Punkt ist die Verfügbarkeit solcher Daten. Viele historische und kulturelle Texte, wie auch die Bibel in verschiedenen Übersetzungen, sind glücklicherweise als Open-Source-Datenbestände verfügbar, was uns die technische Arbeit ermöglicht. Wir könnten an dieser Stelle ebenso gut ein juristisches Kompendium oder einen wissenschaftlichen Fachartikel analysieren.
+
+
+"""
+
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
