@@ -31,8 +31,11 @@ import math
 import threading
 import subprocess
 import logging
+import time
 
 from config.dynamic_settings import settings
+
+
 
 logger = logging.getLogger(__name__)
 
@@ -230,6 +233,9 @@ def _get_mute_state_windows(logger):
         logger.error("Failed to get Windows microphone mute state.", exc_info=True)
         return None
 
+# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+# audio_manager.py: _set_mute_state_windows function
+
 def _set_mute_state_windows(mute: bool, logger):
     logger.info(f"Setting Windows microphone mute state to: {mute}")
 
@@ -237,9 +243,27 @@ def _set_mute_state_windows(mute: bool, logger):
         logger.info("CI env: Skipping hardware call.")
         return False
 
+    # ------------------------------------------------------------------
+    # FIX: Import comtypes only here to avoid 'ImportError' on Linux/Mac
     try:
+        import comtypes.client as cc # IMPORT IS LOCAL AND ALIAS IS CREATED
         from comtypes import CLSCTX_ALL
+    except ImportError as e:
+        logger.error(f"Cannot import comtypes for Windows audio control: {e}")
+        return False
+    # ------------------------------------------------------------------
+
+    # FIX for: OSError: [WinError -2147221008] CoInitialize was not called
+    try:
+        cc.CoInitialize()
+        logger.info("COM initialized for the current thread.")
+    except Exception as e:
+        logger.warning(f"CoInitialize failed, assuming already initialized: {e}")
+    # ------------------------------------------------------------------
+
+    try:
         from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+        # CLSCTX_ALL is now imported successfully above
         devices = AudioUtilities.GetSpeakers()
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = interface.QueryInterface(IAudioEndpointVolume)
@@ -250,6 +274,7 @@ def _set_mute_state_windows(mute: bool, logger):
         logger.error(f"Failed to set Windows microphone mute state: {e}", exc_info=True)
         return False
 
+    
 def _get_mute_state_linux(logger):
 
     if os.getenv('CI'):
@@ -435,6 +460,24 @@ def unmute_microphone(logger=None):
     sound_unmute()
 
     # pygame.mixer.quit()
+
+    """
+    Unmutes the default system microphone.
+    Handles platform-specific implementations.
+    """
+    active_logger = logger if logger is not None else logging.getLogger(__name__)
+
+    # ------------------------------------------------------------------
+    # FIX for Windows timing issue with mute/unmute cycle
+    # Adding a small delay ONLY on Windows to prevent race condition
+    # where the OS hasn't finished unmuting before the next action.
+    if sys.platform.startswith('win'):
+        active_logger.info("Applying 100ms timing safety delay before Windows unmute.")
+        time.sleep(0.1)
+    # ------------------------------------------------------------------
+
+
+
 
     try:
         if sys.platform == "win32":
