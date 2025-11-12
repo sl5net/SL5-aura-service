@@ -42,7 +42,6 @@ App-Berechtigungen prüfen (Windows 10/11):
     
     Vermutlich unterstert Eintrag bei "Datenschutz und Sicherheit"
 
-Geräteneustart: Manchmal hilft einfach ein Neustart des Computers, um blockierte Ressourcen freizugeben.
 
 ## Editor für Window?
 
@@ -60,7 +59,7 @@ Empfolenen extension: AHK++ (AutoHotkey Plus Plus)
 
 Installation von :
 
-- https://github.com/sl5net/SL5-aura-service/archive/refs/tags/v0.9.0.0.zip
+- https://github.com/sl5net/SL5-aura-service/archive/refs/tags/v0.12.0.1.zip
 Installationsanleitung (Kurzfassung)
     Öffnen Sie die PowerShell mit Administratorrechten.
     Führen Sie das Setup-Skript windows11_setup.bat aus dem Projektordner mit PowerShell und Administratorrechten aus.
