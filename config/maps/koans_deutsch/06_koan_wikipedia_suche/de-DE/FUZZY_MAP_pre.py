@@ -28,7 +28,7 @@ FUZZY_MAP_pre = [
 
 
 
-"""
+tips = fr"""
 
 TODO: Was passiert jetzt?
 TODO: Mehr Informationen, Fehlermeldungen usw, erhalten wir meisens, wenn wir die Log lesen:

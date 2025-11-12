@@ -47,7 +47,6 @@ Geräteneustart: Manchmal hilft einfach ein Neustart des Computers, um blockiert
 ## Editor für Window?
 
 Notedpadd++ (Tastenkombination 192 und 193 bitte löschen)
-
 Bitte im Menü > Ansicht > Automatischer Zeilenumbuch
 einschallten
 
@@ -56,6 +55,15 @@ Für Python wird gerne PyCharm, z.B. Comunity Edition verwendet.
 Für vele Sprachen, auch AutoHotkey, Studio Code.
 
 Empfolenen extension: AHK++ (AutoHotkey Plus Plus)
+
+## Empfolenen für Window?
+
+Installation von :
+
+- https://www.autohotkey.com/ -> https://www.autohotkey.com/download/ahk-v2.exe
+- Notedpadd++ https://notepad-plus-plus.org/downloads/ (Tastenkombination 192 und 193 bitte löschen)
+Bitte im Menü > Ansicht > "Automatischer Zeilenumbuch" einschallten
+
 
 
 ## Wie sehe ich ob das Mikrofon unter Windows 11 an oder aus ist?
