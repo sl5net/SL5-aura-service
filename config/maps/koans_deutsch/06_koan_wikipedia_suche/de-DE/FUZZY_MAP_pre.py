@@ -64,7 +64,44 @@ funktioniert es jetzt?
 
 Warum?
 
+###### offline wikipedia ########################################################
+
+Geht es auch komplett offline? Ja. Z.B.
+
+mit Hilfe von
+
+https://library.kiwix.org/#lang=deu&q=wikipedia
+
+
+
+Nötige Speicherplatz zwischen 50 Gigabyte und 20 MB (Auswahl)
+
+Gute Wahl: 3,54 GB ohne Bilder:
+https://browse.library.kiwix.org/viewer#wikipedia_de_all_mini_2025-09
+https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_mini_2025-09.zim
+
+Eine der möglichen Variante der Nutzung ist über Docker:
+
+sudo systemctl start docker                                                                                            125 ✘
+[sudo] password:
+
+# Startet den Webserver im Hintergrund und gibt den vollen Inhalt aus:
+docker run --rm -d -p 8080:8080 -v "$(pwd):/data" ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port 8080 /data/wikipedia_de_all_mini_2025-09.zim
+
+# http://localhost:8080 im Browser öffnen
+
+Jetzt, da der Inhalt als Webseite verfügbar ist, kann Ihr Python-Skript ihn wie jede andere Webseite verarbeiten.
+
+    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
+    }),
+
+Ein Beispiel-Py-Script dafür findet sich hier: config/maps/plugins/standard_actions/de-DE/wikipedia_local.py
 
 
 """
+
+
+
 
