@@ -47,15 +47,15 @@ NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 # 🗣️🌐 (symbols and icons are probably cut out later by )
 # sometimes e.g.in twitch: gelöscht: Nightbot: @seeh74 -> Sorry, you can't post links without permission!
 #🗣ടㄴ⠄de╱Aura SL5.de/Aura
-# signatur='SL5.de/Aura'
+signatur=' #FreedomLadder #FreeSoftware #FSF #SL5Aura SL5.de/Aura'
 # signatur='🗣ടㄴ5⠄de╱Aura'
 # signatur='🗣Sㄴ5⠄de╱Aura' # this l is unvisable in gemini
 #signatur='🗣SL5⠄de╱Aura'
 # signatur='🗣SL5⠠de╱Aura' # i like this 11.11.'25 09:58 Tue
 #now (original:'jetzt', ).
-signatur=' ,🗣SL5。de╱Aura' # i like this 11.11.'25 09:58 Tue
+#signatur=',🗣SL5。de╱Aura' # i like this 11.11.'25 09:58 Tue
 signatur=''
-signatur1=f'{signatur}' # (Powered by
+#signatur1=f'{signatur}' # (Powered by
 signatur_pt_br=f'Tradução de Voz{signatur}'
 signatur_en=f'Voice Translation{signatur}'
 signatur_en=f'{signatur}'

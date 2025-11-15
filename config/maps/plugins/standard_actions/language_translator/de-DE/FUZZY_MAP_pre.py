@@ -64,6 +64,11 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+    ('fa', r'^(persisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
     ('pt-BR', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese\w*)\b', 95, {
          'flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']

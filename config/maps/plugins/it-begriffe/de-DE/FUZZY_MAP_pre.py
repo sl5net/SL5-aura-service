@@ -21,6 +21,8 @@ FUZZY_MAP_pre = [
 
 
 
+    ('Debug-Ausgaben', r'^(Debatte ausgaben)$', 80, {'flags': re.IGNORECASE}),
+
     ('Logdatei', r'^(Logdatei|Kochdatei|log-datei)$', 80, {'flags': re.IGNORECASE}),
 
     ('Logfile', r'^(\b)(Logfile)(\b)$', 80, {'flags': re.IGNORECASE}),

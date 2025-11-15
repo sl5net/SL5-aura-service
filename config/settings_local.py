@@ -60,7 +60,8 @@ if current_user == 'seeh':
 
     signatur=''
 
-    if True:
+    #
+    if 1:
         signatur=''
         signatur1=f''
         signatur_pt_br=f''
@@ -71,7 +72,7 @@ if current_user == 'seeh':
 
     DEV_MODE = True
     # DEV_MODE = False
-    DEV_MODE_all_processing = 1
+    DEV_MODE_all_processing = 0
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
     # PRELOAD_MODELS = ["vosk-model-en-us-0.22"]
 

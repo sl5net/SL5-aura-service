@@ -19,6 +19,11 @@ FUZZY_MAP_pre = [
 
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
 
+    ('git clone ', rf'^\s*{gitGit}\s+(klar|klon)\s*$', 80, {'flags': re.IGNORECASE}),
+
+    # git@github.com:kiwix/kiwix-tools.git
+    #
+
 
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.

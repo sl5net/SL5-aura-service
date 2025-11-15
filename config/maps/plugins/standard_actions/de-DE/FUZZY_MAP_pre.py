@@ -61,6 +61,7 @@ FUZZY_MAP_pre = [
         'flags': re.IGNORECASE
     }),
 
+
     ('https://aistudio.google.com/prompts/new_chat', r'^chat mit\s+(gemini|cheminée|chip|Kevin)\b.*$', 70, {
         'flags': re.IGNORECASE
     }),
@@ -108,14 +109,19 @@ FUZZY_MAP_pre = [
     }),
 # Das Ergebnis von 5 plus 3 ist 8.
 
+#
+
+    # ('', r'OFFFFFFFFFFFFF mobed to other to --->post wannweil map (suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'wiki_search.py']}),
 
 
-    ('', r'OFFFFFFFFFFFFF mobed to other to --->post wannweil map (suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
+
+    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
     'flags': re.IGNORECASE,
-    'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
+    'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
 
 
+    #
 
     ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
         'flags': re.IGNORECASE,
@@ -135,13 +141,24 @@ FUZZY_MAP_pre = [
     ( 'schach_kommentator_negativ', r'^\b(fehler|mist|So ein Mist|verdammt|scheiße|blöd|dumm|idiot|nicht aufgepasst|ärgerlich|ach komm|das wars|verloren|ich geb\w? auf)\b$', 90, { 'flags': re.IGNORECASE, 'on_match_exec': [CONFIG_DIR / 'chess_commentator.py'] }),
 
 
+    # Benötigt eigentlich keine übersetzung funktioniert auch so schon (15.11.'25 13:48 Sat)
+    ('konsole', r'^(Konsole)$', 95, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool']
+    }),
+    ('konsole', r'\b(Konsole)\b', 95, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool']
+    }),
+
+
     ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, {'flags': re.IGNORECASE}),
 
 
-    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) ([a-z]+.*)', 90, {
-    'flags': re.IGNORECASE,
-    'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
-    }),
+    # ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) ([a-z]+.*)', 90, {
+    # 'flags': re.IGNORECASE,
+    # 'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
+    # }),
 
 
 ]
