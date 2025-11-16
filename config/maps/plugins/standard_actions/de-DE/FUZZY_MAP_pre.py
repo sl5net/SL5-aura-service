@@ -47,6 +47,13 @@ FUZZY_MAP_pre = [
 
 
 
+    #home/seeh/projects/py/STT/.venv/bin/python3 /home/seeh/projects/py/STT/config/maps/plugins/standard_actions/de-DE/renumber_clipboard_text.py
+    ('',
+     r'^(Clipboard|Zwischenablage|Zeile\w*|Text neu) (nummeriere\w*|suggerieren|dumme geritten|operieren|nummerieren|nummerieren)$',
+     70, {
+         'flags': re.IGNORECASE,
+         'on_match_exec': [CONFIG_DIR / 'renumber_clipboard_text.py']
+     }),
 
     ('', r'^(Zeile\w* nummeriere\w*|Zeilen suggerieren|Zeile dumme geritten|zeile\w* operieren|Text neu nummerieren|Zwischenablage nummerieren|Laufende Zeilennummern einfügen|Zeilennummern aktualisieren|teile reparieren|keine nummerieren|Zeilesuggerieren)$', 70, {
         'flags': re.IGNORECASE,
@@ -116,13 +123,13 @@ FUZZY_MAP_pre = [
 
 # (?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
 
-    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein)? (?P<search>.*)', 90, {
+    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der)? (?P<search>.*)', 90, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
 
 
-    #
+    #Hallo wie geht's'
 
     ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
         'flags': re.IGNORECASE,
@@ -151,11 +158,17 @@ FUZZY_MAP_pre = [
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
-    ('regex', r'\b(krieg x|rekik|mike x|rick x)\b', 95, {
+    ('regex', r'\b(krieg x|rekik|mike x|rick x|Recaps)\b', 95, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
 
+
+
+    ('ip a', r'\b(Show IP)\b', 95, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool']
+    }),
 
 
 

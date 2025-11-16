@@ -57,6 +57,9 @@ FUZZY_MAP = [
     ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|at|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
 
 
+    # --- git commit mitten im text irgendwo: ---
+    ('git commit ', r'\b(Geht|git|gut|mit) (Commit)\b', 80, {'flags': re.IGNORECASE}),
+
 
     # --- git commit ---
     #  Kate Commit einen  git commit
@@ -74,6 +77,7 @@ FUZZY_MAP = [
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
 
     ('git commit ', r'^\s*(Geht|git|gut|mit) (komm|Kometen|Commit|kevin)\s*$', 80, {'flags': re.IGNORECASE}),
+
 
 
 
