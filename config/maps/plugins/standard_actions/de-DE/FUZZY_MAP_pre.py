@@ -114,8 +114,9 @@ FUZZY_MAP_pre = [
     # ('', r'OFFFFFFFFFFFFF mobed to other to --->post wannweil map (suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'wiki_search.py']}),
 
 
+# (?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
 
-    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {
+    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein)? (?P<search>.*)', 90, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
@@ -150,6 +151,12 @@ FUZZY_MAP_pre = [
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
+    ('regex', r'\b(krieg x|rekik|mike x|rick x)\b', 95, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool']
+    }),
+
+
 
 
     ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, {'flags': re.IGNORECASE}),

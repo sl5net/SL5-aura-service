@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import quote, unquote, urlparse
+from urllib.parse import quote, unquote
 import logging, inspect, os, sys
 from rapidfuzz import fuzz
 
@@ -132,7 +132,10 @@ def _construct_article_url(article_title: str) -> str:
 
 def execute(match_data):
     log_debug("--- START of EXECUTE ---")
-    user_term = match_data['regex_match_obj'].group(2).strip()
+
+    user_term = match_data['regex_match_obj'].group('search').strip()
+
+
     log_debug(f"original_search_term={user_term}")
 
     # 1. Strategie: NUR das erste Wort Suchen, dann die besten Treffer auf den vollen Query fuzzy-mappen!
@@ -184,8 +187,10 @@ def execute(match_data):
     return clean_article_text
 
 class DummyMatch:
-    def __init__(self, group2_value): self._group2_value = group2_value
-    def group(self, index): return self._group2_value if index == 2 else None
+    def __init__(self, group2_value):
+        self._group2_value = group2_value
+    def group(self, index):
+        return self._group2_value if index == 2 else None
 
 if __name__ == '__main__':
     for test_term in [
