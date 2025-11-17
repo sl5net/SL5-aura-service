@@ -89,6 +89,12 @@ FUZZY_MAP = [
     ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme)\s*$"', 80, {'flags': re.IGNORECASE}),
     # Gilt komme komme
 
+    # now also inline replacments:
+    ('git commit "', r'\b(git|Gilt|geht) (Komet|komme|kubitz)\b"', 80, {'flags': re.IGNORECASE}),
+
+
+
+
     # --- git push ---
     ('git push', r'^\s*(git|geht|gitter)\s*(busch|frisch|push|wohl)\s*$', 85, {'flags': re.IGNORECASE}),
 

@@ -32,7 +32,7 @@ yay -S translate-shell
 
 CONFIG_DIR = Path(__file__).parent
 
-Englisch=r'(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe\b)'
+Englisch=r'\b(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe|ähnlich)\b'
 toggleCmd=r'(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
 
 FUZZY_MAP_pre = [

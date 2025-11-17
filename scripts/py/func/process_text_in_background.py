@@ -904,7 +904,8 @@ def sanitize_transcription_start(raw_text: str) -> str:
     start_index = -1
     for i, char in enumerate(raw_text):
         # isalnum() is Unicode-aware and checks for letters or numbers
-        if char.isalnum():
+        if char.isalnum() or char == '/' or char == '~': # <-- MODIFICATION HERE
+        # if char.isalnum():
             start_index = i
             #logging.info(f"Found first valid character '{char}' at index {i}.")
             break

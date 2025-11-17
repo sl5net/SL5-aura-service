@@ -1,73 +1,74 @@
 # config/maps/plugins/.../de-DE/FUZZY_MAP_pr.py
-
 import re # noqa: F401
+import os
 from pathlib import Path
 
-CONFIG_DIR = Path(__file__).parent # e.g., .../path_navigator/de-DE
-# Calculate Project Root: Up 4 levels (de-DE -> path_navigator -> plugins -> maps -> config -> STT)
+CONFIG_DIR = Path(__file__).parent
 PROJECT_ROOT = CONFIG_DIR.parents[5]
 
-# --- Path Commands ---
-# We define the commands directly here, using the calculated PROJECT_ROOT.
+home_dir_str = str(Path.home())
+project_root_str_full = str(PROJECT_ROOT)
+
+PROJECT_ROOT_DISPLAY_STR = ''
+# 1. Tilde Replacement (Only a String Operation!)
+if project_root_str_full.startswith(home_dir_str):
+    # This result will be a string like '~/projects/py/STT' (Linux) or '~\projects\py\STT' (Windows)
+    PROJECT_ROOT_DISPLAY_STR = project_root_str_full.replace(home_dir_str, '~', 1)
+    print(f"PROJECT_ROOT_DISPLAY_STR: {PROJECT_ROOT_DISPLAY_STR}")
+else:
+    PROJECT_ROOT_DISPLAY_STR = project_root_str_full
+    print(f"PROJECT_ROOT_DISPLAY_STR: {PROJECT_ROOT_DISPLAY_STR}")
+
+# 2. Use the SHELL-Display string, but manually join with the OS-Specific Separator (os.path.sep)
+# This will be used in your f-string map actions.
+PROJECT_ROOT_FOR_MAP = PROJECT_ROOT_DISPLAY_STR
+print(f"PROJECT_ROOT_FOR_MAP: {PROJECT_ROOT_FOR_MAP}")
 
 FUZZY_MAP_pre = [
-    # 1. Navigiere zu Aura Root
-    # Command: 'cd /home/user/projects/py/STT'
-    (f'cd {PROJECT_ROOT}',
-     r'^(Navigiere zu\w*|Pfad zu|Path to|navi gerät)\s+(Aura|Root)$',
+
+
+    (f'{PROJECT_ROOT_FOR_MAP}',
+     r'^(Aura|Agora|Aurora|ora|hurra|Flora)\s+(Aura|Pfad)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    # ~/projects/py/STT
+
+
+    (f'{PROJECT_ROOT_FOR_MAP}',
+     r'^(Raumfahrt)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    # ~/projects/py/STT
+
+    (f'{home_dir_str}',
+     r'^(home|heimat|user)\s+(Pfad|Dir\w*)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
+#Navigiere zur Aura Da bin ich Rezo Aura
 
     # 2. Navigiere zu Aura Config (Directory)
-    # Command: 'cd /home/user/projects/py/STT/config'
-    (f'cd {PROJECT_ROOT / "config"}',
-     r'^(Navigiere zu\w*|Pfad zu|Path to|navi gerät)\s+Aura Konf\w*$',
+    (f'cd {os.path.join(PROJECT_ROOT_FOR_MAP, "config")}',
+    r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)\s*Konf\w*$',
+    90,
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    #cd ~/projects/py/STT/config cd ~/projects/py/STT/config
+
+    # 2. Navigiere zu Aura (Directory)
+    (f'cd {os.path.join(PROJECT_ROOT_FOR_MAP)}',
+    r'^(Navigiere|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)$',
+    90,
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    #cd ~/projects/py/STT
+
+    # 2. Config (Directory)
+    # konzentration is typoe sometimes so catch it:
+    #Rover KunstAura KonfliktAura Konflikt/projects/py/STT/config
+    # Laura Konflikt/projects/py/STT/config
+    (f'{os.path.join(PROJECT_ROOT_FOR_MAP, "config")}',
+     r'^(Aura|Laura|over|Dora)\s+(Konf\w*|konzentration)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    #Dora Konfiguration~/projects/py/STT/config
 
-    (f'kate {PROJECT_ROOT / "config" / "settings.py"}',
-     r'^(Öffne\w*|Editiere)( \w+)?\s+Aura Einstellungen$',
-     95,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-    #kate /home/seeh/projects/py/STT/config/settings_local.py
-
-    (f'kate {PROJECT_ROOT / "config" / "settings_local.py"}',
-     r'^(Öffne\w*|Editiere)( \w+)?\s+Aura (local\w*|lokal\w*)$',
-     95,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-
-    # 4. Navigiere zu Maps Plugin Ordner
-    # Command: 'cd /home/user/projects/py/STT/config/maps/plugins'
-    (f'cd {PROJECT_ROOT / "config" / "maps" / "plugins"}',
-     r'^(Navigiere zu|Pfad zu)\s+Maps Plugin$',
-     90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-    (f'kate {PROJECT_ROOT / "log" / "dictation_service.log"}',
-     r'^(öffne\w* look|öffne\w* log|Öffne\w* Look|öffnen luft)$',
-     90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-    (f'tail -f {PROJECT_ROOT / "log" / "dictation_service.log"}', r'\b(Follow Main Lo[gk]\w*|Folge Lo[gk]\w*|Zeige Lo[gk]\w*)\b', 95, {
-        'flags': re.IGNORECASE,
-        'skip_list': ['LanguageTool']
-    }),
-
-
-
-    #öffnenÖffne logÖffnen logdie die logkate /home/seeh/projects/py/STT/log/dictation_service.log
-
-    # ... weitere Einträge
 ]
-
-"""
-cd /home/seeh/projects/py/STT/config
-
-cd /home/seeh/projects/py/STT/config
-
-cd /home/seeh/projects/py/STT/config
-"""
-    #cd /home/seeh/projects/py/STT/configNavigiere zu Mac Logincd /home/seeh/projects/py/STT/config/config/maps/plugins

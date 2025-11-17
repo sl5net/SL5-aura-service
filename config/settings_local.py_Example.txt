@@ -58,6 +58,21 @@ CORRECTIONS_ENABLED.update({
 PRE_RECORDING_TIMEOUT = 12
 SPEECH_PAUSE_TIMEOUT = 1
 
+# for more poweruser mor in hurry:
+
+# needs NO restart:
+PRE_RECORDING_TIMEOUT = 6
+SPEECH_PAUSE_TIMEOUT = 2
+
+#test (original:'test', 🗣SL5。de╱Aura).
+if current_user == 'sl5':
+
+    # needs NO restart:
+    PRE_RECORDING_TIMEOUT = 4
+    SPEECH_PAUSE_TIMEOUT = 1
+
+
+
 # examples:
 # AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "."
 
