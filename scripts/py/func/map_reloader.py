@@ -46,35 +46,62 @@ def auto_reload_modified_maps(logger):
                 log_all_map_reloaded = settings.DEV_MODE and False
 
 
+
+
+
+
                 if module_name in sys.modules:
                     if last_mtime != 0:
                         if settings.DEV_MODE:
                             logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
 
                     try:
+                        # --- START OF MEMORY LEAK FIX ---
+                        # CRITICAL STEP 1: Get the old module reference
+                        # gi told_module = sys.modules[module_name]
+
+                        # CRITICAL STEP 2: Explicitly remove the old module from sys.modules
+                        # This breaks the global reference, allowing the GC to potentially clean it up.
+                        del sys.modules[module_name]
+
+                        # CRITICAL STEP 3: Manually force garbage collection BEFORE re-import
+                        # This is a defensive step to clean up temporary objects from the old module.
+
+                        # the gc.collect() for now) is technically the most aggressive and complete memory fix.
+                        import gc
+                        gc.collect()
+                        # --- END OF MEMORY LEAK FIX ---
+
                         # Get the module object directly from sys.modules
-                        module_to_reload = sys.modules[module_name]
+                        # module_to_reload = sys.modules[module_name]
+                        module_to_reload = importlib.import_module(module_name)  # 4. Correct Fresh Import
                         importlib.reload(module_to_reload)
+
+                        LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+                        if log_all_map_reloaded:
+                            logger.info(f"✅ Successfully reloaded '{module_name}'.")
+
+                        # CRITICAL STEP 4: Import the module fresh (instead of using importlib.reload)
+                        # Re-importing from scratch is cleaner than reload for memory management.
+                        module_to_reload = importlib.import_module(module_name)
+
+                        # Note: If your system uses a central registry/list of map functions,
+                        # you MUST clear the old functions from that registry NOW,
+                        # then re-add the new functions from module_to_reload.
 
                         LAST_MODIFIED_TIMES[map_file_key] = current_mtime
                         if log_all_map_reloaded:
                             logger.info(f"✅ Successfully reloaded '{module_name}'.")
                     except Exception as e:
                         logger.error(f"❌ Failed to reload module '{module_name}': {e}")
-                # else:
-                #     logger.info(f"ℹ️ Module '{module_name}' is not currently loaded. Skipping reload.")
 
-                    # Optionally, you might want to load it for the first time here
-                    # if it's new/modified and not loaded, but your request was to
-                    # only reload already loaded modules.
-                    # Example if you wanted to load it:
-                    # try:
-                    #     importlib.import_module(module_name)
-                    #     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                    #     logger.info(f"➕ Successfully loaded new module '{module_name}'.")
-                    # except Exception as e:
-                    #     logger.error(f"❌ Failed to load new module '{module_name}': {e}")
-                # --- END OF MODIFICATION ---
+
+
+
+
+
+
+
             else:
                 # If no change detected, just ensure its mtime is recorded if it's a new entry
                 if map_file_key not in LAST_MODIFIED_TIMES:
