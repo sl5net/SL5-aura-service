@@ -1,9 +1,14 @@
 # File: dictation_service.py
+import objgraph
 import datetime
 import os
 import sys, subprocess
 
 import signal
+
+
+import psutil
+import time
 
 
 # Python path to ensure reliable imports on all platforms
@@ -422,6 +427,112 @@ RAM_ESTIMATE_PER_MODEL_GB = 4.0 # plus some other needed space for the model
 GB_TO_MB_CONVERSION_FACTOR = 1024
 
 # dictation_service.py:404
+
+
+
+
+
+
+# --- SETUP FOR DEDICATED MEMORY LOGGING ---
+# Define the path for the memory log file
+MEMORY_LOG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log/memory_leak_analysis.log')
+
+# Initialize a dedicated logger for memory events
+memory_logger = logging.getLogger('MemoryAnalyzer')
+# Ensure the logger hasn't already been configured by accident (common in Python)
+if not memory_logger.handlers:
+    memory_logger.setLevel(logging.INFO)
+    file_handler = logging.FileHandler(MEMORY_LOG_PATH)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
+    memory_logger.addHandler(file_handler)
+    # Prevent propagation to the root logger which might write to stdout/stderr
+    memory_logger.propagate = False
+
+
+def memory_leak_analyzer(interval_seconds=600, significant_growth_threshold=100):
+    """
+    Periodically logs the growth of the largest Python objects to a dedicated file
+    to diagnose memory leaks. Runs indefinitely as a daemon thread.
+    """
+    memory_logger.info("logger.info('Memory Leak Analyzer started. Initializing object counts.')")
+
+    # Store initial counts of all objects to track growth accurately
+    try:
+        initial_counts = objgraph.most_common_types(limit=None, shortnames=False)
+        initial_dict = {item[0]: item[1] for item in initial_counts}
+    except Exception as e1:
+        memory_logger.error(f"logger.info('Failed to get initial object counts: {e1}')")
+        return  # Stop if initial check fails
+
+    memory_logger.info(
+        f"logger.info('Analysis interval set to {interval_seconds} seconds. Growth threshold: {significant_growth_threshold} objects.')")
+
+    while True:
+        try:
+            time.sleep(interval_seconds)
+
+            # 1. Get current process memory usage (as reported by OS)
+            process = psutil.Process(os.getpid())
+            current_memory_mb = process.memory_info().rss / (1024 * 1024)
+
+            # 2. Get current Python object counts (top 30 to catch most issues)
+            current_counts = objgraph.most_common_types(limit=30, shortnames=False)
+
+            memory_logger.info("--- MEMORY SNAPSHOT ---")
+            memory_logger.info(f"logger.info('System Process Memory (RSS): {current_memory_mb:.2f} MB')")
+
+            # 3. Compare current counts to initial and log significant growth
+            growth_found = False
+            for type_name, count in current_counts:
+                initial_count = initial_dict.get(type_name, 0)
+                count_increase = count - initial_count
+
+                # Only log objects that have grown significantly
+                if count_increase > significant_growth_threshold:
+                    memory_logger.info(
+                        f"logger.info('GROWTH DETECTED: {type_name}: Current={count} | Growth={count_increase}')")
+                    growth_found = True
+
+            if not growth_found:
+                memory_logger.info("logger.info('No significant object growth detected in top 30 types.')")
+            memory_logger.info("---------------------")
+
+        except Exception as e2:
+            memory_logger.error(f"logger.info('Analyzer loop encountered an error: {e2}')")
+            time.sleep(60)  # Short pause before continuing the loop
+
+
+# --- INTEGRATION STEP ---
+# This line must be added to your main application startup sequence (e.g., main.py or similar):
+
+# To run it in parallel (similar to your existing watchdog):
+if settings.DEV_MODE:
+    threading.Thread(target=memory_leak_analyzer, daemon=True).start()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def system_memory_watchdog(logging):
 
     logging.info(f"System Memory Watchdog started. Threshold: {SYSTEM_RAM_THRESHOLD_PERCENT}%")
