@@ -51,8 +51,8 @@ FUZZY_MAP_pre = [
 
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
-    ('Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
-    ('Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
 
     ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
 
@@ -84,7 +84,7 @@ FUZZY_MAP_pre = [
     # Gitta hat
     ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
 
-    ('git add .', r'^\s*(Gitterbett|Geht er hin|kredit)\s*$', 78, {'flags': re.IGNORECASE}),
+    ('git add .', r'^\s*(Gitterbett|Geht er hin|kredit|quitte hat)\s*$', 78, {'flags': re.IGNORECASE}),
 
 
 
@@ -156,8 +156,8 @@ FUZZY_MAP_pre = [
     ('feature branch', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
-    ('Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
-    ('Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
     ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
     ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),

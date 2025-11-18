@@ -26,9 +26,23 @@ PROJECT_ROOT_FOR_MAP = PROJECT_ROOT_DISPLAY_STR
 print(f"PROJECT_ROOT_FOR_MAP: {PROJECT_ROOT_FOR_MAP}")
 
 #fzf_in_gitRepo1="git ls-files | fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard"
-fzf_everything="fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection cl"
+fzf_everything="""
+fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection cl
+"""
 
-fzf_in_gitRepo="git ls-files | fzf --style full --preview 'cat {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard"
+fzf_in_gitRepo="""
+git ls-files | fzf --style full --preview 'cat {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard
+"""
+
+# fzf_smart_file_finder Single-line, Git-aware file search command
+fzf_in_gitRepo = r"""
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git ls-files
+else
+  find . -type f
+fi | fzf --style full --preview 'cat {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard
+"""
+
 
 FUZZY_MAP_pre = [
 
@@ -43,9 +57,11 @@ FUZZY_MAP_pre = [
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
+    #
+
     # sometimes here (18.11.'25 10:36 Tue) stt undstand wrong this is quickfix:
     (f"{fzf_in_gitRepo}",
-     r'^(falsche|somit datei|suche data)$',
+     r'^(falsche|somit datei|suche data|suche Datei|suche Dateien|datei suche\w*|so geleitet hat)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
