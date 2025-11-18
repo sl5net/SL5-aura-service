@@ -433,7 +433,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
     return new_processed_text, a_rule_matched, skip_list
 
 
-
+GLOBAL_PUNCTUATION_MAP = {} # Use distinct names for clarity!
+GLOBAL_FUZZY_MAP_PRE = [] # Note: fuzzy_map_pre is a list!
+GLOBAL_FUZZY_MAP = []     # Note: fuzzy_map is a list!
 
 def process_text_in_background(logger,
                                LT_LANGUAGE,
@@ -442,8 +444,16 @@ def process_text_in_background(logger,
                                recording_time,
                                active_lt_url,
                               output_dir_override = None):
+
+    global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP
+
     # scripts/py/func/process_text_in_background.py:167
-    punctuation_map, fuzzy_map_pre, fuzzy_map = load_maps_for_language(LT_LANGUAGE, logger)
+    new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger)
+
+    GLOBAL_PUNCTUATION_MAP = new_punctuation
+    GLOBAL_FUZZY_MAP_PRE = new_fuzzy_pre
+    GLOBAL_FUZZY_MAP = new_fuzzy
+
     new_processed_text = ''
     skip_list=[]
     options_dict = None
@@ -519,7 +529,7 @@ def process_text_in_background(logger,
         # scripts/py/func/process_text_in_background.py:229
         normalize_punctuation_changed_size = False
         is_only_number = False
-        processed_text, was_exact_match = normalize_punctuation(raw_text, punctuation_map)
+        processed_text, was_exact_match = normalize_punctuation(raw_text, GLOBAL_PUNCTUATION_MAP)
         if len(processed_text) != len(raw_text):
             normalize_punctuation_changed_size = True
             new_processed_text = processed_text
@@ -557,7 +567,7 @@ def process_text_in_background(logger,
                 (new_processed_text
                 , regex_pre_is_replacing_all_maybe
                 , skip_list) = apply_all_rules_may_until_stable(processed_text
-                , fuzzy_map_pre, logger)
+                , GLOBAL_FUZZY_MAP_PRE, logger)
 
                 log4DEV(f"new_processed_text: {new_processed_text}"
                     f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} "
@@ -655,7 +665,7 @@ def process_text_in_background(logger,
             log4DEV(f"skip_list_backup: {skip_list_backup}", logger)
             if not regex_pre_is_replacing_all and not is_only_number:
                 log4DEV(f'in fuzzy_map: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
-                for replacement, match_phrase, threshold, options_dict in fuzzy_map:
+                for replacement, match_phrase, threshold, options_dict in GLOBAL_FUZZY_MAP:
                     log4DEV(f'for {replacement}, {match_phrase} ... in fuzzy_map:', logger)
 
                     # logger.info(
@@ -731,7 +741,7 @@ def process_text_in_background(logger,
                 skip_list=skip_list_backup
 
                 # for replacement, match_phrase, threshold in fuzzy_map:
-                for replacement, match_phrase, threshold, *_ in fuzzy_map:
+                for replacement, match_phrase, threshold, *_ in GLOBAL_FUZZY_MAP:
                     # Skip regex patterns in this pass
                     if is_regex_pattern(match_phrase):
                         continue
@@ -966,14 +976,46 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
     regex_pattern = None
 
     made_a_change = 0
+
+    # --- START OF STABILITY PATCH: TIME-BASED WARNING/THROTTLE ---
+    MAX_PROCESSING_SECONDS = 2.0  # Threshold for warning the user about an infinite loop
+    RECURSION_LOOP_START_TIME = time.time()
+    WARNING_ISSUED = False
+
+    # We also add a simple counter for robustness in case time.time() is unreliable
+    MAX_ITERATIONS_FOR_SAFETY = 50000
+    current_iteration = 0
+    # --- END OF STABILITY PATCH ---
+
+
     while current_text != previous_text:
         previous_text = current_text
         made_a_change_in_cycle = False
         full_text_replaced_by_rule = False
 
+        # --- Stability Check inside the loop (Line 970 area) ---
+        current_iteration += 1
+        elapsed_time = time.time() - RECURSION_LOOP_START_TIME
+
+        if elapsed_time > MAX_PROCESSING_SECONDS or current_iteration > MAX_ITERATIONS_FOR_SAFETY:
+            if not WARNING_ISSUED:
+                # Issue the warning to both the main log and the console
+                warning_message = (
+                    f"⚠️ CRITICAL WARNING: Recursive map processing exceeded {MAX_PROCESSING_SECONDS}s "
+                    f"or {MAX_ITERATIONS_FOR_SAFETY} iterations. This suggests an infinite loop in your maps. "
+                    f"Processing continues but check your last map change (e.g., recursive rule 'hallo')."
+                )
+                logger_instance.error(warning_message)
+                print(warning_message, file=sys.stderr)  # Output to console/stderr
+                WARNING_ISSUED = True
+
+            # Throttle the loop by forcing a break, but ONLY if the time is exceeded (not just the iteration count)
+            if elapsed_time > MAX_PROCESSING_SECONDS + 0.5:  # Give it half a second grace period after warning
+                break
+        # --- END OF STABILITY CHECK ---
+
+
         for rule_entry in rules_map:
-            # NEU: Entpacke das Tupel korrekt
-            # Gehe davon aus, dass rule_entry immer 4 Elemente hat:
             # (replacement_text, regex_pattern, threshold_value, options_dict)
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
 
