@@ -260,7 +260,6 @@ class WindowsEmojiFilter(logging.Filter):
 
 
 
-import time
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -410,7 +409,6 @@ MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
 
 """
 
-import psutil
 import threading
 
 """

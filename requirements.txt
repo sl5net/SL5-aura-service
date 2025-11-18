@@ -5,6 +5,7 @@ fasttext==0.9.3
 jellyfish==1.2.1
 keyboard==0.13.5
 nltk==3.9.1
+objgraph==3.6.2
 psutil==7.0.0
 pycaw==20240210
 pygame==2.6.1
