@@ -1,4 +1,5 @@
-# config/maps/plugins/.../de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
+
 import re # noqa: F401
 import os
 from pathlib import Path
@@ -24,22 +25,35 @@ else:
 PROJECT_ROOT_FOR_MAP = PROJECT_ROOT_DISPLAY_STR
 print(f"PROJECT_ROOT_FOR_MAP: {PROJECT_ROOT_FOR_MAP}")
 
+#fzf_in_gitRepo1="git ls-files | fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard"
+fzf_everything="fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection cl"
+
+fzf_in_gitRepo="git ls-files | fzf --style full --preview 'cat {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard"
+
 FUZZY_MAP_pre = [
 
 
     # fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' --extensions 'py,sh,html' | xclip -selection cl
 
+    # config/maps/plugins/.../de-DE/FUZZY_MAP_pr.py
     # following search is best when inside a Git repository, this is the quickest and most effective way to exclude boilerplate (date that you not interested in)
     # https://junegunn.github.io/fzf/
-    ("git ls-files | fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard",
+    (f"{fzf_in_gitRepo}",
      r'^(suche|search|find)\s+(file|datei)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
+    # sometimes here (18.11.'25 10:36 Tue) stt undstand wrong this is quickfix:
+    (f"{fzf_in_gitRepo}",
+     r'^(falsche|somit datei|suche data)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+
     # following works with fzf (highliy recomande to have, s.18.11.'25 09:00 Tue)
     # https://junegunn.github.io/fzf/
-    ("fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection cl",
-     r'^(suche|search|find)\s+(überall|everywhere)$',
+    (f"{fzf_everything}",
+     r'^(suche|search|find)\s+(alles|everything|überall|everywhere|everything)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
@@ -51,6 +65,7 @@ FUZZY_MAP_pre = [
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # ~/projects/py/STT
+    #
 
 
     (f'{PROJECT_ROOT_FOR_MAP}',
@@ -95,10 +110,12 @@ FUZZY_MAP_pre = [
 
     # , "dictation_service.log"
     (f'tail -f {os.path.join(PROJECT_ROOT_FOR_MAP,"log","dictation_service.log")}',
-     r'^(Follow Main Lo[gk]\w*|Folge Lo[gk]\w*|Zeige Lo+[gk]\w*|Zeige Luft)$',
+     r'^(Follow Main L[o]+[gk]\w*|Folge L[o]+[gk]\w*|folge luft|Zeige L[o]+[gk]\w*|Zeige Luft)$',
      95,
      {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
     #Zeige Look->tail -f ~/projects/py/STT/log/dictation_service.log
+
+    #
 
 
 
