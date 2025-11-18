@@ -1,4 +1,4 @@
-# config/maps/plugins/git/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/git/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path
 
@@ -18,6 +18,11 @@ commitGit = r'(Komet|Komik|Comics|Gummi|gummis|kommt|kommend|Commit|mit|hitch|ko
 FUZZY_MAP_pre = [
 
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
+
+    # happens very seldem :D 18.11.'25 17:53 Tue
+    ('git commit message ', rf'\bQuarzwerk gibt komm Mitmensch\b ', 80, {'flags': re.IGNORECASE}),
+
+
 
     ('git clone ', rf'^\s*{gitGit}\s+(klar|klon)\s*$', 80, {'flags': re.IGNORECASE}),
 
@@ -66,8 +71,6 @@ FUZZY_MAP_pre = [
     # Geht Staat git status git status Jetzt startet
 
     ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
-
-
 
 
 
