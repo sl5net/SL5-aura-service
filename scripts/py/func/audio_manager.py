@@ -1,4 +1,3 @@
-# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # scripts/py/func/audio_manager.py
 """
 Cross-platform microphone control utility.
@@ -90,16 +89,6 @@ def speak_fallback(text_to_speak, language_code):
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL
             )
-            if result.returncode == 0:
-                # Success!
-                print("Command ran successfully.")
-            elif result.returncode == 1:
-                print("A specific, expected error occurred (e.g., file not found).")
-                # Handle this specific case
-            else:
-                print(f"An unexpected error occurred with code {result.returncode}.")
-                print(f"Error output: {result.stderr}")
-
 
             logger.info(f"🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
         except FileNotFoundError:

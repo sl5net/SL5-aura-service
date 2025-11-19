@@ -185,6 +185,8 @@ def load_maps_for_language(lang_code, logger):
 
     plugin_name_before = ''
     plugin_name = ''
+    ENABLED_modname_list = []
+
     for importer, modname, ispkg in pkgutil.walk_packages(
             path=maps_package.__path__,
             prefix=maps_package.__name__ + '.',
@@ -216,6 +218,7 @@ def load_maps_for_language(lang_code, logger):
             if plugin_name_before != plugin_name and log_all_map_ENABLED:
 
                 # logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}...")
+                ENABLED_modname_list.append(hierarchical_key)
 
 
                 # pprint.pprint(vars(settings))
@@ -264,6 +267,9 @@ def load_maps_for_language(lang_code, logger):
 
         except Exception as e:
             logger.error(f"Failed to process module '{modname}': {e}")
+
+    enabled_modname_str = '▉'.join(ENABLED_modname_list)
+    logger.info(f"🗺️ ENABLED: ▉{enabled_modname_str}▉")
 
     logger.info(f"🗺️ Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")
 
@@ -920,12 +926,6 @@ def process_text_in_background(logger,
             logger.warning("Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.")
 
 
-
-
-
-
-
-        #
         # notify("Transcribed", duration=700, urgency="low")
 
         notify("Transcribed", "", "low", duration=1000, replace_tag="transcription_status")
