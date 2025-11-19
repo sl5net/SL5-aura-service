@@ -9,6 +9,20 @@ import sys
 
 
 REQUIRED_COMMANDS = ['fzf', 'git', 'find', 'xclip', 'file']
+CLIPBOARD_COMMAND = None
+
+if sys.platform.startswith('linux'):
+    CLIPBOARD_COMMAND = 'xclip'
+elif sys.platform == 'win32':
+    # 'clip' is the standard command for piping to the Windows clipboard
+    CLIPBOARD_COMMAND = 'clip'
+elif sys.platform == 'darwin':
+    # 'pbcopy' is the standard command for macOS clipboard
+    CLIPBOARD_COMMAND = 'pbcopy'
+else:
+    # Fallback/Warning for unsupported OS
+    print(f"WARNING: Clipboard functionality not tested on '{sys.platform}'. Skipping clipboard command check.", file=sys.stderr)
+
 BORDER = "=================================================================="
 
 for cmd in REQUIRED_COMMANDS:
@@ -57,13 +71,31 @@ git ls-files | fzf --style full --preview 'cat {}' --bind 'focus:transform-heade
 """
 
 # fzf_smart_file_finder Single-line, Git-aware file search command
-fzf_in_gitRepo = r"""
+if sys.platform.startswith('linux'):
+    # Linux Shell Syntax with Git/Find logic and xclip
+    fzf_smart_file_finder = rf"""
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git ls-files
 else
   find . -type f
-fi | fzf --style full --preview 'cat {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard
+fi | fzf --style full --preview 'cat {{}}' --bind 'focus:transform-header:file --brief {{}}' | {CLIPBOARD_COMMAND} -selection clipboard
 """
+elif sys.platform == 'darwin':
+    # macOS Shell Syntax with Git/Find logic and pbcopy
+    # pbcopy does not support/require the '-selection clipboard' flag
+    fzf_smart_file_finder = rf"""
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git ls-files
+else
+  find . -type f
+fi | fzf --style full --preview 'cat {{}}' --bind 'focus:transform-header:file --brief {{}}' | {CLIPBOARD_COMMAND}
+"""
+elif sys.platform == 'win32':
+    # Simple FZF command for Windows, as requested
+    fzf_smart_file_finder = r"fzf"
+else:
+    # Fallback for other systems
+    fzf_smart_file_finder = r"fzf"
 
 
 FUZZY_MAP_pre = [

@@ -36,8 +36,8 @@ FUZZY_MAP = [
     ('feature branch', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
-    ('Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
-    ('Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit ', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
     ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
     ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),
@@ -81,7 +81,7 @@ FUZZY_MAP = [
 
 
 
-    ('commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),
+    (' commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),
 
     ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, {'flags': re.IGNORECASE}),
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
