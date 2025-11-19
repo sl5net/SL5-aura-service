@@ -1,5 +1,6 @@
 # config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
 
+
 import re # noqa: F401
 import os
 from pathlib import Path
@@ -121,18 +122,6 @@ FUZZY_MAP_pre = [
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #Dora Konfiguration~/projects/py/STT/config
     #Aura Konfiguration ->~/projects/py/STT/config ->Horror Konfiguration->~/projects/py/STT/config/settings.py
-
-
-
-    # , "dictation_service.log"
-    (f'tail -f {os.path.join(PROJECT_ROOT_FOR_MAP,"log","dictation_service.log")}',
-     r'^(Follow Main L[o]+[gk]\w*|Folge L[o]+[gk]\w*|folge luft|Zeige L[o]+[gk]\w*|Zeige Luft)$',
-     95,
-     {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
-    #Zeige Look->tail -f ~/projects/py/STT/log/dictation_service.log
-
-    #
-
 
 
 

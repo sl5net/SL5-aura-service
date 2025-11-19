@@ -3,7 +3,7 @@ import difflib
 import logging
 import os
 import pkgutil
-import pprint
+#import pprint
 import sys
 
 import importlib.util
@@ -264,9 +264,6 @@ def load_maps_for_language(lang_code, logger):
             logger.error(f"Failed to process module '{modname}': {e}")
 
     logger.info(f"🗺️ Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")
-
-    logger.info(
-        f"🗺️ TIP !!! Dont forget  __init__.py in each directory. If you missing replacements, please check this.")
 
     if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details

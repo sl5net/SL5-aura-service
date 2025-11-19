@@ -74,7 +74,7 @@ FUZZY_MAP_pre = [
 
 
 
-    ('git status', r'^\s*(Gliedstaat|Gliedstaaten)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(Gliedstaat|Gliedstaaten|Jetzt Stadt|Geht Staat ist|geht status)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
 
     ('git status', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
 
