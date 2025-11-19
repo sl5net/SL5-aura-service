@@ -1,9 +1,30 @@
 # config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
 
-
 import re # noqa: F401
 import os
 from pathlib import Path
+
+import shutil
+import sys
+
+
+REQUIRED_COMMANDS = ['fzf', 'git', 'find', 'xclip', 'file']
+BORDER = "=================================================================="
+
+for cmd in REQUIRED_COMMANDS:
+    if shutil.which(cmd) is None:
+        error_message = f"🛑🛑🛑 ERROR: The required command '{cmd}' was not found in PATH. It needs to be installed. 🛑🛑🛑"
+
+        print(BORDER, file=sys.stderr)
+        print(error_message, file=sys.stderr)
+        print("💡 TIP: Please check 'config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.md' for installation instructions.", file=sys.stderr)
+        print(BORDER, file=sys.stderr)
+
+        #sys.exit(1)
+
+
+
+
 
 CONFIG_DIR = Path(__file__).parent
 PROJECT_ROOT = CONFIG_DIR.parents[5]

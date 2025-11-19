@@ -1,4 +1,5 @@
-# config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
+# config/maps/plugins/standard_actions/path_navigator/aura_log/de-DE/FUZZY_MAP_pre.py
+
 
 
 import re # noqa: F401
@@ -55,7 +56,7 @@ FUZZY_MAP_pre = [
     95,
     {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
 
-
+    # ~/projects/py/STT/log/dictation_service.log
 
     # , "dictation_service.log"
     (f'tail -f {os.path.join(PROJECT_ROOT_FOR_MAP,"log","dictation_service.log")}',

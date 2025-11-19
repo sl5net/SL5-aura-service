@@ -75,6 +75,16 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
 # ﻿was ist 5 flüssen ﻿Das Ergebnis von 5 plus 3 ist 8.
 
+        ('Aura Log', '~/projects/py/STT/log/dictation_service.log', 'log', 'de-DE'),
+
+        ('Aura Pfad', '~/projects/py/STT', '19.11.25 10:19 Wed', 'de-DE'),
+
+        ('Aura Pfad', '~/projects/py/STT', '19.11.25 10:19 Wed', 'de-DE'),
+
+        ('geht staates', 'git status', '19.11.25 10:19 Wed', 'de-DE'),
+
+
+
         ('ausrufezeichen', '!', 'Exact MAP match for punctuation', 'de-DE'),
 
 
@@ -289,10 +299,16 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
 
         if actual.lstrip() == expected:
             passed_count += 1
-            logger.info(f"self_tester.py:216 ✅ "
-                        f" {failed_count} ❌ FAILed of"
-                        f" {passed_count + failed_count}tested of"
-                        f" {len(test_cases)} tests (lang={lang_code})")
+            if failed_count > 0:
+                logger.info(f"self_tester.py:216 ✅ "
+                            f" {failed_count} ❌ FAILed of"
+                            f" {passed_count + failed_count}tested of"
+                            f" {len(test_cases)} tests (lang={lang_code})")
+            else:
+                logger.info(f"self_tester.py:216 ✅ "
+                            f" {passed_count + failed_count}tested of"
+                            f" {len(test_cases)} tests (lang={lang_code})")
+
         else:
             logger.error(f"     - Input:    '{raw_text}'")
             logger.error(f"     - Expected: '{expected}'")
@@ -300,7 +316,7 @@ def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
             failed_count += 1
             logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed (lang={lang_code})")
 
-            # exit(1)
+            exit(1)
 
 
     # --- Summary ---

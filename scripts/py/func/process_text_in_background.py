@@ -214,7 +214,9 @@ def load_maps_for_language(lang_code, logger):
                 continue
 
             if plugin_name_before != plugin_name and log_all_map_ENABLED:
-                logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}...")
+
+                # logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}...")
+
 
                 # pprint.pprint(vars(settings))
 
