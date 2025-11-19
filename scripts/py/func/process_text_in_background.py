@@ -3,6 +3,7 @@ import difflib
 import logging
 import os
 import pkgutil
+import pprint
 import sys
 
 import importlib.util
@@ -13,6 +14,54 @@ import psutil
 from .audio_manager import speak_fallback
 from .log_memory_details import log4DEV
 
+
+def repariere_pakete_mit_laenderkuerzeln(basis_pfad: Path, aktuelle_tiefe: int = 1, max_tiefe: int = 2):
+    """
+    Durchsucht den gegebenen Pfad und seine direkten Unterordner (bis max_tiefe)
+    und erstellt fehlende __init__.py-Dateien.
+
+    Args:
+        basis_pfad: Der Pfad, der gescannt werden soll (als Path-Objekt).
+        aktuelle_tiefe: Interne Zählvariable. Startet bei 1.
+        max_tiefe: Die maximale Rekursionstiefe (hier 2).
+    """
+
+    if not basis_pfad.is_dir():
+        # print(f"Warnung: Pfad '{basis_pfad}' existiert nicht oder ist kein Ordner.")
+        return
+
+    # Liste, um die Unterordner für die nächste Rekursion zu speichern
+    unterordner_zur_weitergabe = []
+    reparierte_anzahl = 0
+
+    # 1. Scanne den aktuellen Pfad (basis_pfad) und repariere fehlende __init__.py
+    for eintrag in basis_pfad.iterdir():
+        if eintrag.is_dir() and eintrag.name != '__pycache__':
+            init_datei = eintrag / "__init__.py"
+
+            # Speichere den Ordner für die nächste Stufe
+            unterordner_zur_weitergabe.append(eintrag)
+
+            # 1.1 REPARATUR des aktuellen Unterordners
+            if not init_datei.exists():
+                try:
+                    init_datei.touch()
+                    print(f"Repariert (Stufe {aktuelle_tiefe}): __init__.py erstellt in: {eintrag}")
+                    reparierte_anzahl += 1
+                except OSError as e:
+                    print(f"FEHLER: Konnte __init__.py in '{eintrag}' nicht erstellen: {e}")
+
+    # 2. Rekursion in die nächste Stufe (Ländercodes)
+    if aktuelle_tiefe < max_tiefe:
+        for unterordner in unterordner_zur_weitergabe:
+            # Rufe die Funktion für jeden Unterordner auf (z.B. Ländercode-Ordner)
+            reparierte_anzahl += repariere_pakete_mit_laenderkuerzeln(
+                unterordner,
+                aktuelle_tiefe + 1,
+                max_tiefe
+            )
+
+    return reparierte_anzahl
 
 # This is your function at line 17
 def load_module_from_path(script_path):
@@ -27,6 +76,8 @@ def load_module_from_path(script_path):
 
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
+
+
     return module
 
 
@@ -85,6 +136,9 @@ def is_plugin_enabled(hierarchical_key, plugins_config):
     for i in range(len(current_key_parts)):
         # Baue den aktuellen Key zusammen, z.B. erst 'game', dann 'game/0ad'
         current_key = "/".join(current_key_parts[:i + 1])
+
+
+
 
         # Prüfe, ob dieser Key EXPLIZIT auf False gesetzt ist.
         # .get(key, True) gibt True zurück, wenn der Key nicht existiert.
@@ -161,6 +215,16 @@ def load_maps_for_language(lang_code, logger):
 
             if plugin_name_before != plugin_name and log_all_map_ENABLED:
                 logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}...")
+
+                # pprint.pprint(vars(settings))
+
+                basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps" / "plugins"
+
+                eltern_pfad_maps = basis_pfad / hierarchical_key
+                repariere_pakete_mit_laenderkuerzeln(eltern_pfad_maps, max_tiefe=2)
+                # print(f"eltern_pfad_maps={eltern_pfad_maps} -> anzahl: {anzahl}")
+                # exit(1)
+
         try:
             module = importlib.import_module(modname)
             # logger.info(f"🗺️ Processing: {modname}")
