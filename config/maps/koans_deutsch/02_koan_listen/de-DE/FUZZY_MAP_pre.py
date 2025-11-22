@@ -1,4 +1,5 @@
-# config/maps/koan_english/01_koan_first_steps/
+# config/maps/koans_deutsch/02_koan_listen/de-DE/FUZZY_MAP_pre.py
+
 import re # noqa: F401
 
 # This map uses a hybrid approach:
@@ -11,16 +12,8 @@ import re # noqa: F401
 FUZZY_MAP_pre = [
 
     #TODO
-    #('on', r'^[a-m]*$', 80, {'flags': re.IGNORECASE}),
-    #('off', r'^[n-z]*$', 80, {'flags': re.IGNORECASE}),
-
-# Seine Kaiserlichst-Königlichst-Erzherzoglichst-Großherrschaftliche Durchlaucht, der Fürst und Herzog von Theobald-Wenzel-Leopold-Maximilian Graf von und zu Rittersturz-Adlerschild-Kupferschmiedl-Grabenwalden.
-
-# Phryxts-Tschwirbel-Wzeschtsch-Chryschth Gräfin von und zu Echtschluchtz-Quarzschicht-Pfrtschnitz-Krüppelschwärz.
-
-
-
-
+    #('an', r'^[a-m]+.*$', 80, {'flags': re.IGNORECASE}),
+    #('aus', r'^[n-z]+.*$', 80, {'flags': re.IGNORECASE}),
 ]
 
 schwierigeNamen = """

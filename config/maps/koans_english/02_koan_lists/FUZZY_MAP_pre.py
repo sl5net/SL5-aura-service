@@ -12,10 +12,11 @@ FUZZY_MAP_pre = [
 
     #TODO
 
-    #('on', r'^[a-m]*$', 80, {'flags': re.IGNORECASE}),
-    #('off', r'^[n-z]*$', 80, {'flags': re.IGNORECASE}),
 
-    #('hi 02_koan_lists', r'^.*$', 80, {'flags': re.IGNORECASE}),
+
+    #('on', r'^[a-m]+.*$' , 80, {'flags': re.IGNORECASE}),
+    #('off', r'^[n-z]+.*$' , 80, {'flags': re.IGNORECASE}),
+
 
 
 ]

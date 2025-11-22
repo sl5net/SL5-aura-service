@@ -1,4 +1,4 @@
-# config/maps/koan_english/01_koan_first_steps/
+# koans_deutsch/01_koan_erste_schritte/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 
 # This map uses a hybrid approach:
@@ -16,5 +16,10 @@ FUZZY_MAP_pre = [
 
     #('hi 01_koan_erste__schritte', r'^.*$', 80, {'flags': re.IGNORECASE}),
 
+    #TestTestaskfjhasldfj asdljfhson
+    #tschüss
+
+
 ]
+
 
