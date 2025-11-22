@@ -5,6 +5,11 @@ import logging, inspect, os, sys
 from rapidfuzz import fuzz
 
 """
+
+sudo systemctl start docker
+sudo systemctl enable docker
+http://localhost:8080/viewer#wikipedia_de_all_mini_2025-09/Automobil
+
 Findet leider nur
 
 "Python Programmiersprache",  # → Python (Programmiersprache) direkt
@@ -45,6 +50,7 @@ def _find_best_article_path_via_http_fuzzy(api_term: str, user_term: str, zim_fi
     2. Fuzzy-matche die Treffer gegen den **vollen** Query (user_term).
     3. Gib besten Treffer zurück.
     """
+
     search_url = f"{BASE_SERVER_URL}/search?pattern={quote(api_term)}&book={zim_file}"
     log_debug(f"search_url: {search_url}")
     try:
@@ -177,13 +183,93 @@ def execute(match_data):
         else:
             break
 
+    clean_article_text = extract_structured_text(soup)
+    return f"{clean_article_text} ( {BASE_SERVER_URL}{article_path} )"
+
+
 
     article_text_parts = []
     if soup.find('body'):
-        paragraphs = soup.find('body').find_all('p')
+        paragraphs = soup.find('body').find_all(['p', 'li'])
         article_text_parts = [p.get_text().strip() for p in paragraphs if p.get_text().strip()]
+
     full_article_text = "\n\n".join(article_text_parts)
+
+
+
     clean_article_text = ' '.join(full_article_text.split())
+    return f"{clean_article_text} ({article_path})"
+
+
+def extract_structured_text(soup):
+    """
+    Extrahiert den Text aus <p>- und <li>-Tags, wobei Listen-Elemente
+    mit einem Zeilenumbruch und einem führenden ' - ' formatiert werden.
+    """
+
+    if not soup.find('body'):
+        # Behandelt den Fall, dass kein Body-Tag gefunden wird
+        return ""
+
+    body = soup.find('body')
+    article_text_parts = []
+
+    # Durchlaufe alle direkten Kind-Elemente, die textuellen Inhalt haben könnten
+    # (z.B. <p>, <ul>, <ol>, <h1>, etc.). Wir konzentrieren uns hier aber nur auf
+    # die Elemente, die p oder ul/ol/li enthalten, wie im vorherigen Beispiel.
+
+    # NEU: Wir suchen nach allen p-Tags und allen ul/ol-Tags im Body
+    text_containers = body.find_all(['p', 'ul', 'ol'], recursive=False)
+    # 'recursive=False' kann hilfreich sein, um nur die Top-Level-Container zu bekommen.
+    # Für Wikipedia ist die Suche ohne 'recursive=False' oft besser, aber wir
+    # müssen sorgfältig alle p und li Tags innerhalb des body finden.
+
+
+
+    # Eine sicherere Methode ist, alle p- und li-Tags zu finden und sie dann zu verarbeiten:
+    for element in body.find_all(['p', 'li']):
+        text = element.get_text().strip()
+
+        if not text:
+            continue
+
+        # Wenn es ein Listen-Element ist (<li>)
+        if element.name == 'li':
+            # Füge es mit einer neuen Zeile und einem Bindestrich hinzu, um die Listenstruktur zu kennzeichnen
+            # Wir verwenden '\n - ' hier, um sicherzustellen, dass es auf einer neuen Zeile beginnt
+            article_text_parts.append(f"\n| ★ {text} \n")
+
+        # Wenn es ein Absatz-Element ist (<p>)
+        elif element.name == 'p':
+            # Füge es wie einen normalen Absatz hinzu. '\n\n' dient als Separator zwischen Absätzen
+            # Da wir später alles splitten und joinen, ist es besser, es zunächst nur
+            # als sauberen Text hinzuzufügen und die Trennung später zu handhaben.
+            article_text_parts.append(text)
+
+
+    # SCHRITT 1: Die Teile mit dem gewünschten Trennzeichen zusammenfügen
+    # Hier verwenden wir '\n\n' zwischen allen gesammelten Teilen.
+    # Wichtig: Die <li>-Teile enthalten bereits ein '\n - ', das wird also beachtet.
+    full_text_with_structure = "\n\n".join(article_text_parts)
+
+    # SCHRITT 2: Endgültige Bereinigung, um überschüssige Leerzeichen im Text zu entfernen,
+    # ABER die Listenstruktur beibehalten.
+
+    # Wir möchten die Zeilenumbrüche (besonders die der Listen) beibehalten.
+    # Daher verwenden wir eine etwas andere Bereinigungsstrategie:
+
+    # 1. Entfernen Sie überflüssige Whitespaces innerhalb der Textzeilen
+    cleaned_lines = []
+    for line in full_text_with_structure.splitlines():
+        # Entferne mehrere Leerzeichen durch ein einzelnes Leerzeichen in der Zeile
+        cleaned_line = ' '.join(line.split()).strip()
+        if cleaned_line: # Nur nicht-leere Zeilen behalten
+            cleaned_lines.append(cleaned_line)
+
+    # 2. Fügen Sie die Zeilen wieder zusammen. Hierdurch bleibt die Listenformatierung
+    #    (z.B. '\n - ...') erhalten.
+    clean_article_text = "\n".join(cleaned_lines)
+
     return clean_article_text
 
 class DummyMatch:
