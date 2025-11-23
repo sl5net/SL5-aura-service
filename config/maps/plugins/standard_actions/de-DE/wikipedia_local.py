@@ -1,3 +1,4 @@
+# wikipedia_local.py
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import quote, unquote
@@ -219,11 +220,10 @@ def extract_structured_text(soup):
     # die Elemente, die p oder ul/ol/li enthalten, wie im vorherigen Beispiel.
 
     # NEU: Wir suchen nach allen p-Tags und allen ul/ol-Tags im Body
-    text_containers = body.find_all(['p', 'ul', 'ol'], recursive=False)
+    # text_containers = body.find_all(['p', 'ul', 'ol'], recursive=False)
     # 'recursive=False' kann hilfreich sein, um nur die Top-Level-Container zu bekommen.
     # Für Wikipedia ist die Suche ohne 'recursive=False' oft besser, aber wir
     # müssen sorgfältig alle p und li Tags innerhalb des body finden.
-
 
 
     # Eine sicherere Methode ist, alle p- und li-Tags zu finden und sie dann zu verarbeiten:

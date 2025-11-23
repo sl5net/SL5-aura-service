@@ -106,8 +106,15 @@ FUZZY_MAP_pre = [
     # config/maps/plugins/.../de-DE/FUZZY_MAP_pr.py
     # following search is best when inside a Git repository, this is the quickest and most effective way to exclude boilerplate (date that you not interested in)
     # https://junegunn.github.io/fzf/
+
+
     (f"{fzf_in_gitRepo}",
      r'^(suche|search|find)\s+(file|datei)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+    (f"{fzf_in_gitRepo}",
+     r'^(file|datei) (suche|search|find)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 

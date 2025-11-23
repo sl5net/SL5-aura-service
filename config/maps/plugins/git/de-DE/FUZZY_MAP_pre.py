@@ -17,7 +17,13 @@ commitGit = r'(Komet|Komik|Comics|Gummi|gummis|kommt|kommend|Commit|mit|hitch|ko
 
 FUZZY_MAP_pre = [
 
+
+
+
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
+
+    ('git commit ', rf'\b{gitGit}\s+(COBIT)(\b$', 80, {'flags': re.IGNORECASE}),
+
 
     # happens very seldem :D 18.11.'25 17:53 Tue
     ('git commit message ', rf'\bQuarzwerk gibt komm Mitmensch\b ', 80, {'flags': re.IGNORECASE}),
@@ -224,6 +230,9 @@ FUZZY_MAP_pre = [
     ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, {'flags': re.IGNORECASE}),
 
     ('.gitignore', r'^\s*(Kritik knurren|Kritik Noah|Kritiken|kitte Knorr|Kritik Knorr)\s*$', 75, {'flags': re.IGNORECASE}),
+
+    ('.gitignore', r'\b(gibt Knorr)\b$', 75, {'flags': re.IGNORECASE}),
+
 
 
 

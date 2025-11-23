@@ -27,6 +27,43 @@ pip install --upgrade pip
 yay -S translate-shell
 
 
+here's a list of common language codes you want use:
+
+    en: English
+    de: German
+    jp: Japanese
+    pr-br: Brazilian Portuguese
+    fr: French
+    es: Spanish
+    it: Italian
+    pt: European Portuguese
+    ru: Russian
+    nl: Dutch
+    zh-CN: Chinese (Simplified)
+    zh-TW: Chinese (Traditional)
+    pl: Polish
+    tr: Turkish
+    sv: Swedish
+    da: Danish
+    no: Norwegian
+    fi: Finnish
+    cs: Czech
+    hu: Hungarian
+    ro: Romanian
+    gr: Greek
+    th: Thai
+    ko: Korean
+    ar: Arabic
+    he: Hebrew
+    hi: Hindi
+    id: Indonesian
+    ms: Malay
+
+You can find a comprehensive list of language codes in the
+ISO 639-1
+ISO 15897
+standards.
+
 """
 
 

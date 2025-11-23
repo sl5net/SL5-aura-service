@@ -14,6 +14,7 @@ FUZZY_MAP_pre = [
     #TODO
     #('an', r'^[a-m]+.*$', 80, {'flags': re.IGNORECASE}),
     #('aus', r'^[n-z]+.*$', 80, {'flags': re.IGNORECASE}),
+
 ]
 
 schwierigeNamen = """
