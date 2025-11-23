@@ -52,6 +52,13 @@ config/model_name_lastused.txt
 config/maps/plugins/.privat/
 config/maps/plugins/privat/
 
+# Ignore all dot-files (passwords/keys) and dot-directories within config/maps
+config/maps/**/.*
+
+# Ignore all directories and files beginning with an underscore (_)
+# inside config/maps (this is our unencrypted working directory)
+config/maps/**/_*
+
 
 tools/translate-shell_and_save/translations
 

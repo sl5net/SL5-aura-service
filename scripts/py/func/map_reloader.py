@@ -1,16 +1,26 @@
 # scripts/py/func/map_reloader.py
 import importlib
+import subprocess
 import sys
+import gc # Added for forced garbage collection
+import pathlib
 from pathlib import Path
 import os
+import zipfile
+import shutil
+
+#import time # Added for os.path.getmtime typing, just in case
 
 from config.dynamic_settings import settings
 
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
+
 def auto_reload_modified_maps(logger):
     # scripts/py/func/map_reloader.py:12
-    global LAST_MODIFIED_TIMES # noqa: F824
+    from .process_text_in_background import clear_global_maps
+
+    global LAST_MODIFIED_TIMES  # noqa: F824
 
     """
     Scans the map directories, detects changed files based on their
@@ -21,91 +31,122 @@ def auto_reload_modified_maps(logger):
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"def start", logger)
 
+    logger.info("Starting map reload check.")
+
     try:
         project_root = Path(__file__).resolve().parent.parent.parent.parent
         maps_base_dir = project_root / "config" / "maps"
 
+        # Track if any maps were reloaded, to know if we need a final GC call
+        reload_performed = False
+
         for map_file_path in maps_base_dir.glob("**/*.py"):
             if map_file_path.name == "__init__.py":
-                continue # __init__.py-Dateien ignorieren
+                continue  # Ignore __init__.py files
 
             map_file_key = str(map_file_path)
 
+            # Using time.time() for current time, though os.path.getmtime is fine for file checks
             current_mtime = os.path.getmtime(map_file_key)
             last_mtime = LAST_MODIFIED_TIMES.get(map_file_key, 0)
 
+            # CRITICAL CHECK: Reload if modified OR if it's a new file (last_mtime == 0)
             if current_mtime > last_mtime:
+                reload_performed = True
+
                 if last_mtime != 0:
                     if settings.DEV_MODE:
                         logger.info(f"🔄 Detected change in '{map_file_path}'. Reloading...")
+                else:
+                    if settings.DEV_MODE:
+                        logger.info(f"🆕 Detected new map file: '{map_file_path}'. Loading...")
 
                 relative_path = map_file_path.relative_to(project_root)
-                # module_path = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
                 module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
 
-                log_all_map_reloaded = settings.DEV_MODE and False
+                log_all_map_reloaded = settings.DEV_MODE and True
 
-
-
-
-
-
+                # --- START OF COMPLETE MEMORY LEAK FIX ---
                 if module_name in sys.modules:
-                    if last_mtime != 0:
-                        if settings.DEV_MODE:
-                            logger.info(f"🔄 Detected change in '{map_file_path.name}'. Reloading module...")
+                    # 1. CLEAR CENTRAL REGISTRY (Breaks references to old ast.* objects)
+                    logger.info("🗑️ Calling clear_global_maps to release old function references.")
+                    clear_global_maps(logger)
 
-                    try:
-                        # --- START OF MEMORY LEAK FIX ---
-                        # CRITICAL STEP 1: Get the old module reference
-                        # gi told_module = sys.modules[module_name]
+                    # 2. DELETE OLD MODULE (Breaks the global reference in Python's cache)
+                    logger.info(f"🗑️ Deleting old module reference for {module_name} from sys.modules.")
+                    del sys.modules[module_name]
 
-                        # CRITICAL STEP 2: Explicitly remove the old module from sys.modules
-                        # This breaks the global reference, allowing the GC to potentially clean it up.
-                        del sys.modules[module_name]
+                # 3. FORCE GARBAGE COLLECTION
+                # Placed outside the 'if module_name in sys.modules' to always clean up before re-import
+                # (in case a map was deleted, like in our test).
+                gc.collect()
+                logger.info("🗑️ Forced garbage collection before re-import.")
 
-                        # CRITICAL STEP 3: Manually force garbage collection BEFORE re-import
-                        # This is a defensive step to clean up temporary objects from the old module.
+                # --- END OF COMPLETE MEMORY LEAK FIX ---
 
-                        # the gc.collect() for now) is technically the most aggressive and complete memory fix.
-                        import gc
-                        gc.collect()
-                        # --- END OF MEMORY LEAK FIX ---
+                # scripts/py/func/map_reloader.py:82
+                try:
+                    # 4. CORRECT FRESH IMPORT
+                    # Import fresh: This finds and executes the module again, populating the now-cleared global maps.
+                    #module_to_reload = importlib.import_module(module_name)
 
-                        # Get the module object directly from sys.modules
-                        # module_to_reload = sys.modules[module_name]
-                        module_to_reload = importlib.import_module(module_name)  # 4. Correct Fresh Import
-                        importlib.reload(module_to_reload)
+                    # Note: importlib.reload() is not used after del sys.modules
 
-                        LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                        if log_all_map_reloaded:
-                            logger.info(f"✅ Successfully reloaded '{module_name}'.")
+                    module_to_reload = importlib.import_module(module_name)  # 4. Correct Fresh Import
+                    importlib.reload(module_to_reload)
 
-                        # CRITICAL STEP 4: Import the module fresh (instead of using importlib.reload)
-                        # Re-importing from scratch is cleaner than reload for memory management.
-                        module_to_reload = importlib.import_module(module_name)
+                    LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+                    if log_all_map_reloaded:
+                        logger.info(f"✅ Successfully reloaded '{module_name}'.")
 
-                        # Note: If your system uses a central registry/list of map functions,
-                        # you MUST clear the old functions from that registry NOW,
-                        # then re-add the new functions from module_to_reload.
+                    # CRITICAL STEP 4: Import the module fresh (instead of using importlib.reload)
+                    # Re-importing from scratch is cleaner than reload for memory management.
+                    module_to_reload = importlib.import_module(module_name)
 
-                        LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                        if log_all_map_reloaded:
-                            logger.info(f"✅ Successfully reloaded '{module_name}'.")
-                    except Exception as e:
-                        logger.error(f"❌ Failed to reload module '{module_name}': {e}")
+                    # Note: If your system uses a central registry/list of map functions,
+                    # you MUST clear the old functions from that registry NOW,
+                    # then re-add the new functions from module_to_reload.
 
+                    LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+                    if log_all_map_reloaded:
+                        logger.info(f"✅ Successfully reloaded '{module_name}'.")
 
+                    LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+                    if settings.DEV_MODE:
+                        logger.info(f"✅ Successfully reloaded/loaded '{module_name}'.")
 
+                except Exception as e:
+                    # --- NEW LOGIC: Check for private map pattern ---
+                    was_private_map = _handle_private_map_exception(module_name, map_file_key, logger)
+                    logger.info(f"??????🔄 should we do unpack")
 
+                    if was_private_map:
+                        # Successfully handled a private map. The files are now in the _*-dir.
+                        # We can 'continue' the outer loop. The files will be picked up
+                        # by the file scanning logic on the next iteration of 'check_and_reload_maps'.
+                        logger.info(f"🔄 Triggered unpack. Will continue loop and pick up from '_'-directory in next scan.")
+                        continue  # Skip to the next file in the list
 
+                    # If it wasn't a private map, log the original error
 
+                    # thats to much disturbinb messages in console.log there fadd comment:
+                    # logger.error(f"❌ Failed to reload module '{module_name}': {e}")
 
+                    # ... existing comment block
+                    """
+                    Modules that you import with the import statement must follow the same naming rules set for variable names (identifiers). Specifically, they must start with either a letter1 or an underscore and then be composed entirely of letters, digits2, and/or underscores.
+                    can used to protect folder from loading. when use . at beginning. 
+                    """
 
             else:
                 # If no change detected, just ensure its mtime is recorded if it's a new entry
                 if map_file_key not in LAST_MODIFIED_TIMES:
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+
+        # Optional: Final cleanup if any reload occurred
+        if reload_performed:
+            gc.collect()
+            logger.info("🗑️ Final garbage collection after map scan.")
 
     except Exception as e:
         logger.error(f"Error during map reload check: {e}")
@@ -113,3 +154,153 @@ def auto_reload_modified_maps(logger):
     if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"def end", logger)
+
+
+# --- HELPER FUNCTION (Needs to be added to map_reloader.py) ---
+def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -> bool:
+    """
+    Checks if a failed module load is actually a private ZIP/Key pattern
+    (Triggered by a dot-prefixed .py file). Unpacks the ZIP and returns True.
+
+    Returns:
+        True if a private map was successfully unpacked (or found unpacked), False otherwise.
+    """
+    # 1. Determine the map directory
+    map_dir = str(pathlib.Path(map_file_key).parent)
+
+    # 2. Check for the private map pattern in this directory
+    key_file = None
+    zip_file = None
+
+    for item in os.listdir(map_dir):
+        # Trigger is now a .py file that starts with a dot
+        if item.startswith('.') and item.endswith('.py') and os.path.isfile(os.path.join(map_dir, item)):
+            key_file = os.path.join(map_dir, item)
+        # ZIP file is the one we want to unpack
+        if item.lower().endswith('.zip') and os.path.isfile(os.path.join(map_dir, item)):
+            zip_file = os.path.join(map_dir, item)
+
+    if not (key_file and zip_file):
+        # Not the pattern we are looking for. (e.g., a real syntax error in a normal map)
+        return False
+
+    # 3. Pattern found: Extract Key and set Unpack Target
+    try:
+
+        # --------------------------------------------------------------------------------
+        # CRITICAL SECURITY STEP (23.11.'25 14:07 Sun)
+        if not _check_gitignore_for_security(logger):
+            return False # ABORT! Do not unpack if security rules are missing.
+        # --------------------------------------------------------------------------------
+
+
+        with open(key_file, 'r') as f:
+            password = f.read().strip()
+
+
+        map_dir = str(pathlib.Path(map_file_key).parent)
+        zip_name_base = pathlib.Path(zip_file).stem
+
+        # The FINAL target directory where the maps will reside (e.g., config/maps/private/_privat)
+        if zip_name_base.startswith('_'):
+            target_maps_dir = os.path.join(map_dir, f"{zip_name_base}")
+        else:
+            target_maps_dir = os.path.join(map_dir, f"_{zip_name_base}")
+
+        if os.path.exists(target_maps_dir):
+            # If the final directory exists, we assume it's correctly unpacked and ready for editing.
+            logger.info(f"✅ Private maps already unpacked to '{target_maps_dir}'. Skipping ZIP operation.")
+            return True
+
+        # --------------------------------------------------------------------------------
+        # 4. UNPACKING LOGIC: Use a temporary, hidden directory to neutralize ZIP's internal folder structure
+        temp_unpack_dir = os.path.join(map_dir, f".__tmp_unpack_{os.getpid()}")  # Unique name
+        os.makedirs(temp_unpack_dir, exist_ok=False)
+
+        logger.info(f"🔑 Private map pattern found. Unpacking '{zip_file}' to TEMP: '{temp_unpack_dir}'.")
+
+        with zipfile.ZipFile(zip_file, 'r') as zf:
+            zf.extractall(temp_unpack_dir, pwd=password.encode('utf-8'))
+
+        # --------------------------------------------------------------------------------
+        # 5. NORMALIZATION LOGIC: Find the actual map files within the temp dir and move them
+
+        # 5a. Find the directory that contains the real map files
+        content = os.listdir(temp_unpack_dir)
+        source_dir = temp_unpack_dir
+
+        if len(content) == 1 and os.path.isdir(os.path.join(temp_unpack_dir, content[0])):
+            # This is the 'extra' folder created by the 'Right-Click -> Zip' operation.
+            # E.g., temp/__privat/
+            source_dir = os.path.join(temp_unpack_dir, content[0])
+            logger.info(f"📁 Found top-level folder in ZIP: '{source_dir}'. Normalizing path.")
+
+        # 5b. Create the FINAL target directory
+        os.makedirs(target_maps_dir, exist_ok=True)
+
+        # 5c. Move all files/folders from the source_dir to the final target_maps_dir
+        for item in os.listdir(source_dir):
+            shutil.move(os.path.join(source_dir, item), target_maps_dir)
+
+        # 5d. Cleanup
+        shutil.rmtree(temp_unpack_dir)
+
+        logger.info(f"📦 Unpack and Normalization complete. Files ready in '{target_maps_dir}'.")
+        return True
+
+    except Exception as e:
+        # We explicitly log the exact error here to help with debugging the ZIP/Key/shutil process
+        logger.error(f"❌ Failed to process private map ZIP/Key: {e}", exc_info=True)
+        # Clean up in case of failure
+        if os.path.exists(temp_unpack_dir):
+            shutil.rmtree(temp_unpack_dir)
+        return False
+
+def _check_gitignore_for_security(logger) -> bool:
+        """
+        Verifies that the required .gitignore entries for private maps are present
+        in the main .gitignore file by direct string check.
+
+        Returns:
+            True if all required security rules are present, False otherwise.
+        """
+        # Assuming the main .gitignore is in the project's root directory (or equivalent base)
+        # We need to find the root of the project to locate the main .gitignore
+        # Let's assume the root is two levels up from scripts/py/func/
+        gitignore_path = pathlib.Path(__file__).parents[3] / ".gitignore"
+
+        if not gitignore_path.exists():
+            logger.critical("🛑 SECURITY ALERT: Main gitignore:{gitignore_path} file not found at expected path. ABORTING.")
+            return False
+
+        # The two mandatory security rules
+        required_rules = [
+            "config/maps/**/.*",  # Dot-prefixed files/dirs (passwords/keys)
+            "config/maps/**/_*"  # Underscore-prefixed files/dirs (unencrypted working area)
+        ]
+
+        try:
+            with open(gitignore_path, 'r', encoding='utf-8') as f:
+                content = f.read().splitlines()
+
+            all_checks_pass = True
+
+            for rule in required_rules:
+                # Check if the rule is present (ignoring comments and whitespace)
+                is_present = any(
+                    line.strip() == rule for line in content if not line.strip().startswith('#') and line.strip())
+
+                if not is_present:
+                    logger.critical(
+                        f"🛑 SECURITY ALERT: Required rule '{rule}' is MISSING from .gitignore. "
+                        f"ABORTING private map loading. Please add it to the file."
+                    )
+                    all_checks_pass = False
+                else:
+                    logger.info(f"✅ Security Check Passed: Rule '{rule}' is present in .gitignore.")
+
+            return all_checks_pass
+
+        except Exception as e:
+            logger.error(f"Error reading .gitignore file: {e}")
+            return False
