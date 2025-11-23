@@ -1,6 +1,7 @@
 # File: dictation_service.py
 import objgraph
-import datetime
+from datetime import datetime, timedelta
+
 import os
 import sys, subprocess
 
@@ -61,7 +62,7 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     # Check if the package is installed without actually importing it
     if importlib.util.find_spec("fasttext") is None:
         logging.warning("FastText is not installed but is enabled in config.")
-        logging.info("Attempting to install 'fasttext-wheel' automatically...")
+        logging.info("At    ting to install 'fasttext-wheel' automatically...")
         try:
             subprocess.check_call([sys.executable, "-m", "pip", "install", "fasttext-wheel"])
             logging.info("FastText installed successfully. Please restart the service to activate it.")
@@ -108,6 +109,12 @@ if str(PROJECT_ROOT) not in sys.path:
 from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
 
 from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
+
+from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
+
+
+
+
 
 # from  scripts.py.func.checks.self_tester import run_core_logic_self_test
 
@@ -437,6 +444,26 @@ MEMORY_LOG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log/
 
 # Initialize a dedicated logger for memory events
 memory_logger = logging.getLogger('MemoryAnalyzer')
+
+
+
+# Fügen Sie dies vor der Konfiguration des memory_logger hinzu:
+
+if os.path.exists(MEMORY_LOG_PATH):
+    # Get last modification time
+    mtime_ts = os.path.getmtime(MEMORY_LOG_PATH)
+    log_date = datetime.fromtimestamp(mtime_ts).date()
+    # If the log file is not from today, delete it
+    if log_date < datetime.now().date():
+        os.remove(MEMORY_LOG_PATH)
+        memory_logger.info("Old memory log file deleted.")
+
+
+
+
+
+
+
 # Ensure the logger hasn't already been configured by accident (common in Python)
 if not memory_logger.handlers:
     memory_logger.setLevel(logging.INFO)
@@ -453,6 +480,11 @@ def memory_leak_analyzer(interval_seconds=600, significant_growth_threshold=100)
     to diagnose memory leaks. Runs indefinitely as a daemon thread.
     """
     memory_logger.info("logger.info('Memory Leak Analyzer started. Initializing object counts.')")
+
+    process = psutil.Process(os.getpid())
+    current_memory_mb = process.memory_info().rss / (1024 * 1024)
+
+    memory_logger.info(f"System Process Memory (RSS): {current_memory_mb:.2f} MB")
 
     # Store initial counts of all objects to track growth accurately
     try:
@@ -477,7 +509,7 @@ def memory_leak_analyzer(interval_seconds=600, significant_growth_threshold=100)
             current_counts = objgraph.most_common_types(limit=30, shortnames=False)
 
             memory_logger.info("--- MEMORY SNAPSHOT ---")
-            memory_logger.info(f"logger.info('System Process Memory (RSS): {current_memory_mb:.2f} MB')")
+            memory_logger.info(f"System Process Memory (RSS): {current_memory_mb:.2f} MB")
 
             # 3. Compare current counts to initial and log significant growth
             growth_found = False
@@ -488,7 +520,7 @@ def memory_leak_analyzer(interval_seconds=600, significant_growth_threshold=100)
                 # Only log objects that have grown significantly
                 if count_increase > significant_growth_threshold:
                     memory_logger.info(
-                        f"logger.info('GROWTH DETECTED: {type_name}: Current={count} | Growth={count_increase}')")
+                        f"GROWTH DETECTED: {type_name}: Current={count} | Growth={count_increase}")
                     growth_found = True
 
             if not growth_found:
@@ -496,7 +528,7 @@ def memory_leak_analyzer(interval_seconds=600, significant_growth_threshold=100)
             memory_logger.info("---------------------")
 
         except Exception as e2:
-            memory_logger.error(f"logger.info('Analyzer loop encountered an error: {e2}')")
+            memory_logger.error(f"Analyzer loop encountered an error: {e2}")
             time.sleep(60)  # Short pause before continuing the loop
 
 
@@ -689,17 +721,22 @@ if not start_languagetool_server:
     sys.exit(1)
 
 
-
-from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
-
-check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
-
 if settings.DEV_MODE :
+
+    from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
     from scripts.py.func.log_memory_details import log_memory_details,log4DEV
+
+    check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
+
+
+    run_e2e_live_reload_func_test_v2(logger, active_lt_url)
 
     log4DEV('Script Start', logger)
 
+
     log_memory_details("Script Start", logger)
+
+
 
     from scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
     # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
@@ -717,7 +754,7 @@ if settings.DEV_MODE :
     run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
     self_test_end_time = time.time()
     self_test_duration = self_test_end_time - self_test_start_time
-    self_test_readable_duration = datetime.timedelta(seconds=self_test_duration)
+    self_test_readable_duration = timedelta(seconds=self_test_duration)
     logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
     """
     # self_test_readable_duration
@@ -734,8 +771,7 @@ if settings.DEV_MODE :
     check_badges(SCRIPT_DIR)
 
 
-    from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, \
-        check_for_frequent_calls
+    from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, check_for_frequent_calls
 
     validate_setup(SCRIPT_DIR, logger)
 

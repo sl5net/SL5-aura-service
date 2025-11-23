@@ -14,6 +14,11 @@ import psutil
 from .audio_manager import speak_fallback
 from .log_memory_details import log4DEV
 
+# scripts/py/func/process_text_in_background.py
+GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
+GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
+GLOBAL_FUZZY_MAP = [] # noqa: F824
+
 
 def repariere_pakete_mit_laenderkuerzeln(basis_pfad: Path, aktuelle_tiefe: int = 1, max_tiefe: int = 2):
     """
@@ -115,6 +120,8 @@ curl --data "language=de-DE&text=das stimmt unsere ist nicht absolut fehlerfrei"
 """
 
 # from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
+
+# scripts/py/func/process_text_in_background.py:120
 from config.dynamic_settings import settings
 from .normalize_punctuation import normalize_punctuation
 from .map_reloader import auto_reload_modified_maps
@@ -501,10 +508,6 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
     return new_processed_text, a_rule_matched, skip_list
 
-
-GLOBAL_PUNCTUATION_MAP = {} # Use distinct names for clarity!
-GLOBAL_FUZZY_MAP_PRE = [] # Note: fuzzy_map_pre is a list!
-GLOBAL_FUZZY_MAP = []     # Note: fuzzy_map is a list!
 
 def process_text_in_background(logger,
                                LT_LANGUAGE,
@@ -956,6 +959,8 @@ def process_text_in_background(logger,
             os.execv(sys.executable, ['python'] + sys.argv + ['restarted'])
 
         auto_reload_modified_maps(logger)
+
+
 # Hallo des Hallo Test
 
 def sanitize_transcription_start(raw_text: str) -> str:
@@ -1272,3 +1277,23 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
     return current_text, full_text_replaced_by_rule, skip_list
 
 #
+
+
+# scripts/py/func/process_text_in_background.py:1282
+def clear_global_maps(logger):
+    """
+    Clears all global map dictionaries to release references before a full reload.
+    This prevents memory leaks from unreferenced old map functions.
+    """
+    logger.info("Starting CLEAR of global Map Registries.")
+
+    # CRITICAL FIX: Use 'global' to access the module-level variables for clearing.
+    global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP # noqa: F824
+
+    # Clearing the dictionaries explicitly breaks the reference to old functions.
+    GLOBAL_PUNCTUATION_MAP.clear()
+    GLOBAL_FUZZY_MAP_PRE.clear()
+    GLOBAL_FUZZY_MAP.clear()
+
+    logger.info("Global Map Registries successfully cleared.")
+

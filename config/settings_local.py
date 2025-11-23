@@ -46,7 +46,7 @@ soundProgramLoaded = 1
 # DEV_MODE = True
 DEV_MODE = False
 DEV_MODE_memory = False
-DEV_MODE_all_processing = False
+DEV_MODE_all_processing = True
 
 # needs NO restart:
 PRE_RECORDING_TIMEOUT = 6

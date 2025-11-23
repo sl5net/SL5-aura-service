@@ -84,7 +84,7 @@ def speak_fallback(text_to_speak, language_code):
 
     def run_command():
         try:
-            result = subprocess.Popen(
+            subprocess.Popen(
                 command,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL

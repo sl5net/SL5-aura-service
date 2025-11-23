@@ -1,6 +1,5 @@
 # scripts/py/func/map_reloader.py
 import importlib
-import subprocess
 import sys
 import gc # Added for forced garbage collection
 import pathlib
@@ -115,10 +114,10 @@ def auto_reload_modified_maps(logger):
                     if settings.DEV_MODE:
                         logger.info(f"✅ Successfully reloaded/loaded '{module_name}'.")
 
-                except Exception as e:
+                except Exception:
                     # --- NEW LOGIC: Check for private map pattern ---
                     was_private_map = _handle_private_map_exception(module_name, map_file_key, logger)
-                    logger.info(f"??????🔄 should we do unpack")
+                    # logger.info(f"??????🔄 should we do unpack")
 
                     if was_private_map:
                         # Successfully handled a private map. The files are now in the _*-dir.
@@ -257,50 +256,50 @@ def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -
         return False
 
 def _check_gitignore_for_security(logger) -> bool:
-        """
-        Verifies that the required .gitignore entries for private maps are present
-        in the main .gitignore file by direct string check.
+    """
+    Verifies that the required .gitignore entries for private maps are present
+    in the main .gitignore file by direct string check.
 
-        Returns:
-            True if all required security rules are present, False otherwise.
-        """
-        # Assuming the main .gitignore is in the project's root directory (or equivalent base)
-        # We need to find the root of the project to locate the main .gitignore
-        # Let's assume the root is two levels up from scripts/py/func/
-        gitignore_path = pathlib.Path(__file__).parents[3] / ".gitignore"
+    Returns:
+        True if all required security rules are present, False otherwise.
+    """
+    # Assuming the main .gitignore is in the project's root directory (or equivalent base)
+    # We need to find the root of the project to locate the main .gitignore
+    # Let's assume the root is two levels up from scripts/py/func/
+    gitignore_path = pathlib.Path(__file__).parents[3] / ".gitignore"
 
-        if not gitignore_path.exists():
-            logger.critical("🛑 SECURITY ALERT: Main gitignore:{gitignore_path} file not found at expected path. ABORTING.")
-            return False
+    if not gitignore_path.exists():
+        logger.critical("🛑 SECURITY ALERT: Main gitignore:{gitignore_path} file not found at expected path. ABORTING.")
+        return False
 
-        # The two mandatory security rules
-        required_rules = [
-            "config/maps/**/.*",  # Dot-prefixed files/dirs (passwords/keys)
-            "config/maps/**/_*"  # Underscore-prefixed files/dirs (unencrypted working area)
-        ]
+    # The two mandatory security rules
+    required_rules = [
+        "config/maps/**/.*",  # Dot-prefixed files/dirs (passwords/keys)
+        "config/maps/**/_*"  # Underscore-prefixed files/dirs (unencrypted working area)
+    ]
 
-        try:
-            with open(gitignore_path, 'r', encoding='utf-8') as f:
-                content = f.read().splitlines()
+    try:
+        with open(gitignore_path, 'r', encoding='utf-8') as f:
+            content = f.read().splitlines()
 
-            all_checks_pass = True
+        all_checks_pass = True
 
-            for rule in required_rules:
-                # Check if the rule is present (ignoring comments and whitespace)
-                is_present = any(
-                    line.strip() == rule for line in content if not line.strip().startswith('#') and line.strip())
+        for rule in required_rules:
+            # Check if the rule is present (ignoring comments and whitespace)
+            is_present = any(
+                line.strip() == rule for line in content if not line.strip().startswith('#') and line.strip())
 
-                if not is_present:
-                    logger.critical(
-                        f"🛑 SECURITY ALERT: Required rule '{rule}' is MISSING from .gitignore. "
-                        f"ABORTING private map loading. Please add it to the file."
-                    )
-                    all_checks_pass = False
-                else:
-                    logger.info(f"✅ Security Check Passed: Rule '{rule}' is present in .gitignore.")
+            if not is_present:
+                logger.critical(
+                    f"🛑 SECURITY ALERT: Required rule '{rule}' is MISSING from .gitignore. "
+                    f"ABORTING private map loading. Please add it to the file."
+                )
+                all_checks_pass = False
+            else:
+                logger.info(f"✅ Security Check Passed: Rule '{rule}' is present in .gitignore.")
 
-            return all_checks_pass
+        return all_checks_pass
 
-        except Exception as e:
-            logger.error(f"Error reading .gitignore file: {e}")
-            return False
+    except Exception as e:
+        logger.error(f"Error reading .gitignore file: {e}")
+        return False
