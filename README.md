@@ -13,9 +13,11 @@ Translations: This document also exists in [other languages](https://github.com/
 
 Note: Many texts are machine-generated translations of the original English documentation and are intended for general guidance only. In case of discrepancies or ambiguities, the English version always prevails. We welcome help from the community to improve this translation!
 
+https://www.youtube.com/watch?v=d98ml86u68g
 
-[![SL5 Aura (v0.7.0.2): A Deep Dive Under the Hood – Live Coding & Core Concepts](https://img.youtube.com/vi/tEijy8WRFCI/maxresdefault.jpg)](https://www.youtube.com/watch?v=tEijy8WRFCI)
-( https://skipvids.com/?v=tEijy8WRFCI )
+
+[![SL5 Aura (v0.13.0): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=d98ml86u68g)
+( https://skipvids.com/?v=d98ml86u68g )
 
 ## Key Features
 
