@@ -1,7 +1,7 @@
 # scripts/py/func/handle_trigger.py
 
 
-# flake8: noqa: F821, F401, F811, F403
+# flake8: noqa: F821
 # F821: Undefined name (Accepting Closure access to handle_trigger arguments)
 
 import threading
