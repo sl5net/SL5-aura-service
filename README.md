@@ -213,6 +213,8 @@ Legend for OS Compatibility:
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `dictation_service.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+│├ **Secure Private Map Loading (Integrity-First)** 🔒  🐧 🍏 🪟  
+││ * **Workflow:** Loads password-protected ZIP archives. __
 │├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
 │├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules.md)) 🐧 🍏 🪟  
