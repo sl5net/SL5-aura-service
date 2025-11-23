@@ -14,6 +14,9 @@ import psutil
 from .audio_manager import speak_fallback
 from .log_memory_details import log4DEV
 
+from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE # <--- NEW IMPORT
+
+
 # scripts/py/func/process_text_in_background.py
 GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
 GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
@@ -510,13 +513,58 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
 
 def process_text_in_background(logger,
-                               LT_LANGUAGE,
-                               raw_text,
-                               TMP_DIR,
-                               recording_time,
-                               active_lt_url,
-                              output_dir_override = None):
+                            LT_LANGUAGE,
+                            raw_text,
+                            TMP_DIR,
+                            recording_time,
+                            active_lt_url,
+                            output_dir_override = None,
+                            chunk_id: int = 0,  # <--- NEU
+                            session_id: int = 0):  # <--- NEU
 
+    # --- KRITISCHE SEQUENZPRÜFUNG AM ANFANG DER FUNKTION ---
+    if chunk_id > 0:
+
+        # 1. Warte-Loop, um die Reihenfolge zu garantieren
+        while True:
+            expected_id = 0
+            with SEQUENCE_LOCK:
+                expected_id = SESSION_LAST_PROCESSED.get(session_id, 0) + 1
+
+            if chunk_id == expected_id:
+                # Wir sind dran!
+                break
+
+            if chunk_id < expected_id:
+                # Wurde bereits verarbeitet/überholt (oder wir sind ein Duplikat). Abbrechen!
+                logger.warning(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                return
+
+                # Wir sind zu schnell. In den Cache legen und warten.
+            logger.info(f"ID {chunk_id} arrived early. Waiting for {expected_id}...")
+
+            # --- CACHE: Legt uns in den Warte-Cache und wartet auf andere Threads, die abarbeiten ---
+            with SEQUENCE_LOCK:
+                if chunk_id not in OUT_OF_ORDER_CACHE:
+                    OUT_OF_ORDER_CACHE[chunk_id] = (logger, LT_LANGUAGE, raw_text, TMP_DIR, recording_time,
+                                                    active_lt_url, output_dir_override)
+
+            # Kurze, effiziente Wartezeit, um den Thread freizugeben
+            time.sleep(0.005)
+
+            # --- Wenn der Cache-Eintrag nicht mehr da ist, wurde er von einem anderen Thread abgeholt ---
+            if chunk_id not in OUT_OF_ORDER_CACHE:
+                # Der Chunk wurde gerade von einem anderen Thread freigegeben, also neu prüfen.
+                continue
+
+                # 2. Erfolgreich an der Reihe: Aktualisiere die letzte verarbeitete ID
+        with SEQUENCE_LOCK:
+            SESSION_LAST_PROCESSED[session_id] = chunk_id
+
+        # 3. Cache prüfen: Nachdem wir verarbeitet wurden, prüfen, ob wir Blocker für andere waren
+        # Hier müsste ein weiterer Block hin, der den Cache aufräumt. (Wir implementieren das später)
+
+    # --- ENDE DER SEQUENZPRÜFUNG ---
     global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP
 
     # scripts/py/func/process_text_in_background.py:167
