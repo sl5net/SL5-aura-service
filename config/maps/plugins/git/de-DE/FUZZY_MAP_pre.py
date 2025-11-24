@@ -135,6 +135,9 @@ FUZZY_MAP_pre = [
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
     ('git commit ', r'^\s*(gehst du mit)\s*$', 80, {'flags': re.IGNORECASE}),
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^geht cobit einen$', 85, {'flags': re.IGNORECASE}),
+
+
 
     # --- git push --- Gibt eine gibt git pull big push pitbull Geht prüfen
 

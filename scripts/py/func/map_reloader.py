@@ -9,16 +9,16 @@ import zipfile
 import shutil
 import time
 
-import os
-from pathlib import Path
-from pathlib import Path
+
+
+
 
 
 #import time # Added for os.path.getmtime typing, just in case
 
 from config.dynamic_settings import settings
 
-from .process_text_in_background import repariere_pakete_mit_laenderkuerzeln
+#from .process_text_in_background import repariere_pakete_mit_laenderkuerzeln
 
 
 
@@ -336,8 +336,8 @@ def _check_gitignore_for_security(logger) -> bool:
         return False
 
 
-import time
-from pathlib import Path
+
+
 
 # following can make the script littlbe bit faster sometimes (1% or so)
 # log:
@@ -357,7 +357,8 @@ def ensure_init_files(root_dir: Path, logger):
     time_since_last_call = current_time - ensure_init_files.last_call_time
 
     if time_since_last_call < ensure_init_files.min_wait_time:
-        wait_remaining = ensure_init_files.min_wait_time - time_since_last_call
+        #wait_remaining = ensure_init_files.min_wait_time - time_since_last_call
+        ensure_init_files.min_wait_time - time_since_last_call
 
         # logger.info(
         #     f"(Throttling). "

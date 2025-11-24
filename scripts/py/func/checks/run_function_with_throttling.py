@@ -1,7 +1,6 @@
 # scripts/py/func/checks/run_function_with_throttling.py
 import time
 import json
-import os
 from pathlib import Path
 from datetime import timedelta
 
@@ -46,8 +45,7 @@ def _load_throttle_state(state_file_path: Path):
 
             # Ensure min_wait_time is at least the initial value (in case of manual file corruption)
             if state['min_wait_time'] < INITIAL_WAIT_TIME:
-                 state['min_wait_time'] = INITIAL_WAIT_TIME
-
+                state['min_wait_time'] = INITIAL_WAIT_TIME
             return state
 
     except (IOError, json.JSONDecodeError) as e:

@@ -234,8 +234,8 @@ def load_maps_for_language(lang_code, logger):
                 if settings.DEV_MODE and plugin_name_before != plugin_name and log_all_map_ENABLED and False:
                     logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}...")
 
-                    basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps"
-                    eltern_pfad_maps = basis_pfad / hierarchical_key
+                    #basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps"
+                    #eltern_pfad_maps = basis_pfad / hierarchical_key
                     # repariere_pakete_mit_laenderkuerzeln(logger, eltern_pfad_maps, max_tiefe=1)
 
                 continue
@@ -249,9 +249,9 @@ def load_maps_for_language(lang_code, logger):
 
                 # pprint.pprint(vars(settings))
 
-                basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps"
+                #basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps"
 
-                eltern_pfad_maps = basis_pfad / hierarchical_key
+                # eltern_pfad_maps = basis_pfad / hierarchical_key
                 # repariere_pakete_mit_laenderkuerzeln(logger,eltern_pfad_maps, max_tiefe=2)
                 # print(f"eltern_pfad_maps={eltern_pfad_maps} -> anzahl: {anzahl}")
                 # exit(1)
