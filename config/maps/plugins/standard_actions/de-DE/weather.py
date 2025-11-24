@@ -4,15 +4,21 @@ import subprocess
 from pathlib import Path
 import configparser
 import json
+import logging
+
+
 
 from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
 
 # Pfad zur Konfigurationsdatei (liegt im selben Ordner wie dieses Skript)
 CONFIG_FILE = Path(__file__).parent / 'weather_config.ini'
 
-WEATHER_TTL = 300 # 5 Minuten
+WEATHER_TTL = 900 # 15 Minuten
 
 def execute(match_data):
+
+    logger = logging.getLogger(__name__)
+
     """
     Ruft die aktuelle Wettervorhersage für einen vordefinierten Ort ab
     und gibt eine menschenlesbare Zusammenfassung zurück.
@@ -72,14 +78,39 @@ def execute(match_data):
 
         weather_data = json.loads(result.stdout)
 
-    except FileNotFoundError:
-        return "Fehler: Das Programm 'curl' wurde nicht gefunden. Bitte installiere es."
-    except subprocess.TimeoutExpired:
-        return "Die Wetterabfrage hat zu lange gedauert. Bitte versuche es später erneut."
-    except (subprocess.CalledProcessError, json.JSONDecodeError):
-        return f"Ich konnte die Wetterdaten für '{city}' leider nicht abrufen."
-    except Exception as e:
-        return f"Ein unerwarteter Fehler ist aufgetreten: {e}"
+
+    # --- 3. EXCEPTION: FAILOVER AUF ABGELAUFENEN CACHE ---
+    except (subprocess.CalledProcessError, json.JSONDecodeError, subprocess.TimeoutExpired, FileNotFoundError, Exception) as e:
+
+        # Füge einen Log-Eintrag hinzu, der zeigt, dass die API fehlschlug
+        if logger:
+            logger.warning(f"API-Abruf fehlgeschlagen ({type(e).__name__}). Versuche, den abgelaufenen Cache zu laden...")
+
+        # ZWEITER CACHE-ABRUF: Ohne TTL-Angabe (d.h., ttl_seconds=None)
+        # Dies ruft den letzten gespeicherten Eintrag ab, egal wie alt er ist (ewiger Cache).
+        stale_response = get_cached_result(
+            BASE_DIR_FOR_CACHE,
+            'get_weather',
+            cache_key_args,
+            logger=logger # Wichtig: TTL wird hier weggelassen/ist None
+        )
+
+        if stale_response:
+            # Erfolgreicher Failover: Liefere alte, aber gültige Antwort
+            if logger:
+                logger.warning("Liefere ABGELAUFENEN (stale) Cache als Fallback.")
+            return stale_response
+
+        # Kein Stale-Cache verfügbar: Liefere die Fehlermeldung des API-Aufrufs
+
+        if isinstance(e, FileNotFoundError):
+            return "Fehler: Das Programm 'curl' wurde nicht gefunden. Bitte installiere es."
+        elif isinstance(e, subprocess.TimeoutExpired):
+            return "Die Wetterabfrage hat zu lange gedauert. Bitte versuche es später erneut."
+        elif isinstance(e, (subprocess.CalledProcessError, json.JSONDecodeError)):
+            return f"Ich konnte die Wetterdaten für '{city}' leider nicht abrufen."
+        else:
+            return f"Ein unerwarteter Fehler ist aufgetreten: {e}"
 
     # 3. Die JSON-Antwort verarbeiten und einen Satz bauen
     try:
@@ -96,7 +127,7 @@ def execute(match_data):
         )
 
 
-       # --- 3. ERFOLG: ERGEBNIS SPEICHERN ---
+        # --- 3. ERFOLG: ERGEBNIS SPEICHERN ---
         set_cached_result(
             BASE_DIR_FOR_CACHE,
             'get_weather',

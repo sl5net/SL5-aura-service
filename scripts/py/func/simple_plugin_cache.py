@@ -4,9 +4,9 @@ import hashlib
 import json
 from pathlib import Path
 from typing import Optional
-import json
-from pathlib import Path
-from typing import Optional, Any, Tuple
+
+
+from typing import Any, Tuple
 
 # --- Configuration ---
 # NOTE: Using a static name for the cache DB ensures all plugins use the same file.
@@ -26,24 +26,24 @@ def get_cache_db_path(base_dir: Path) -> Path:
     return base_dir.parent / CACHE_DB_FILE
 
 def get_cached_result(
-    base_dir: Path,
-    function_name: str,
-    key_args: Tuple[Any, ...],
-    ttl_seconds: Optional[int] = None,
-    logger: Optional[Any] = None
-    ) -> (str, None):
-    """
-    Retrieves a result from the cache if it is valid (not expired).
-
-    Args:
-        base_dir: The base directory (e.g., TMP_DIR or a stable path).
-        function_name: The name of the function being called (e.g., 'get_current_weather').
-        key_args: A tuple of the function arguments (used for hashing).
-        ttl_seconds: The Time-To-Live in seconds for this entry.
-
-    Returns:
-        The cached result (str) or None if not found or expired.
-    """
+        base_dir: Path,
+        function_name: str,
+        key_args: Tuple[Any, ...],
+        ttl_seconds: Optional[int] = None,
+        logger: Optional[Any] = None) -> (str, None):
+    # explained = """
+    # Retrieves a result from the cache if it is valid (not expired).
+    #
+    # Args:
+    #     base_dir: The base directory (e.g., TMP_DIR or a stable path).
+    #     function_name: The name of the function being called (e.g., 'get_current_weather').
+    #     key_args: A tuple of the function arguments (used for hashing).
+    #     ttl_seconds: The Time-To-Live in seconds for this entry.
+    #
+    # Returns:
+    #     The cached result (str) or None if not found or expired.
+    # """
+    # noqa: F841
     db_path = get_cache_db_path(base_dir)
 
 
