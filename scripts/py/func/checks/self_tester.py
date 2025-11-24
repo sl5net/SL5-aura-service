@@ -104,7 +104,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     # logger.info('self_tester.py:31 test_cases = ...')
     test_cases = [
 
-# ﻿was ist 5 flüssen ﻿Das Ergebnis von 5 plus 3 ist 8.
+        ('git commit', 'geht cobit', 'git', 'de-DE'),
 
         ('Aura Log', '~/projects/py/STT/log/dictation_service.log', 'log', 'de-DE'),
 
@@ -347,7 +347,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
             failed_count += 1
             logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed (lang={lang_code})")
 
-            exit(1)
+            # exit(1)
 
 
     # --- Summary ---

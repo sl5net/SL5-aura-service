@@ -1,12 +1,16 @@
-# STT/config/maps/plugins/standard_actions/de-DE/weather.py
+# config/maps/plugins/standard_actions/de-DE/weather.py
 
 import subprocess
 from pathlib import Path
 import configparser
 import json
 
+from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
+
 # Pfad zur Konfigurationsdatei (liegt im selben Ordner wie dieses Skript)
 CONFIG_FILE = Path(__file__).parent / 'weather_config.ini'
+
+WEATHER_TTL = 300 # 5 Minuten
 
 def execute(match_data):
     """
@@ -24,6 +28,28 @@ def execute(match_data):
         lang = config.get('Settings', 'language', fallback='de')
     except (configparser.NoSectionError, configparser.NoOptionError) as e:
         return f"Fehler in der Wetter-Konfigurationsdatei: {e}"
+
+
+    # 0. Benötigte Basisverzeichnisse (Muss von der aufrufenden Funktion bereitgestellt werden!)
+    # ANNAHME: match_data enthält ein 'base_dir' für den stabilen Cache-Pfad
+    # Hier müsste base_dir korrekt übergeben werden. Für's Beispiel nehmen wir an, es ist der Plugin-Ordner.
+
+    # --- 1. CACHE PRÜFEN (Key-Args sind die Parameter, die die Ausgabe bestimmen) ---
+    BASE_DIR_FOR_CACHE = Path(__file__).parent.parent.parent.parent.parent # <- Korrigieren Sie dies auf Ihren stabilen TMP-Pfad!
+
+    cache_key_args = (city, lang)
+    cached_response = get_cached_result(
+        BASE_DIR_FOR_CACHE,
+        'get_weather',
+        cache_key_args,
+        WEATHER_TTL
+    )
+    if cached_response:
+        # CACHE HIT! KEIN NETZWERK-AUFRUF
+        print(f"DEBUG: CACHE HIT! => {cached_response}")
+        return cached_response
+
+
 
     # 2. Wetterdaten von wttr.in abrufen
     try:
@@ -68,6 +94,16 @@ def execute(match_data):
             f"Aktuell in {city} sind es {temp_c} Grad, gefühlt wie {feels_like_c} Grad. "
             f"Die Vorhersage meldet: {description}."
         )
+
+
+       # --- 3. ERFOLG: ERGEBNIS SPEICHERN ---
+        set_cached_result(
+            BASE_DIR_FOR_CACHE,
+            'get_weather',
+            cache_key_args,
+            response # Speichere nur die erfolgreiche menschenlesbare Antwort
+        )
+
         return response
 
     except (KeyError, IndexError):

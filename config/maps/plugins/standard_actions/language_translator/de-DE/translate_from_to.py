@@ -1,12 +1,17 @@
+# config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py
 # In Ihrer CONFIG_DIR / 'translate_from_to.py'
 
 import sys
 from pathlib import Path
 import subprocess
+import logging
 
 from config.settings import signatur_ar,signatur_en,signatur_pt_br,signatur_ja
 
-#
+from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
+
+
+#Hello, how are you (original:'hallo wie geht's').
 
 STATE_FILE = Path(__file__).parent / 'translation_state.py'
 
@@ -51,6 +56,25 @@ def execute(match_data):
     # 'pt-BR' # Ziel: Brasilianisches Portugiesisch
     # 'ar' # Ziel: arabisch
 
+    logger = logging.getLogger(__name__)
+
+    # --- 1. CACHE PRÜFEN (Key-Args sind die Parameter, die die Ausgabe bestimmen) ---
+    BASE_DIR_FOR_CACHE = Path(__file__).parent.parent.parent.parent.parent # <- Korrigieren Sie dies auf Ihren stabilen TMP-Pfad!
+
+    cache_key_args = (original_text, str(lang_target))
+    cached_response = get_cached_result(
+        BASE_DIR_FOR_CACHE,
+        TRANSLATE_SCRIPT,
+        cache_key_args,
+        logger=logger
+    )
+    if cached_response:
+        # CACHE HIT! KEIN NETZWERK-AUFRUF
+        print(f"DEBUG: CACHE HIT! => {cached_response}")
+        return cached_response
+
+    #
+
     try:
         if not original_text:
             return None # Kein Text zum Übersetzen
@@ -85,15 +109,26 @@ def execute(match_data):
         #
 
         if lang_target=='pt-BR' or lang_target=='pt-br' :
-            return f"{translated_text} (original:'{original_text}'{signatur_pt_br}). "
+            translated_text = f"{translated_text} (original:'{original_text}'{signatur_pt_br}). "
         elif lang_target == 'en':
-            return f"{translated_text} (original:'{original_text}'{signatur_en})."
+            translated_text = f"{translated_text} (original:'{original_text}'{signatur_en})."
         elif lang_target == 'ar':
-            return f"{translated_text} (original:'{original_text}'{signatur_ar}). "
+            translated_text = f"{translated_text} (original:'{original_text}'{signatur_ar}). "
         elif lang_target == 'ja':
-            return f"{translated_text} (original:'{original_text}'{signatur_ja}). "
+            translated_text = f"{translated_text} (original:'{original_text}'{signatur_ja}). "
         else:
-            return f"{translated_text} (original:'{original_text}'{signatur_en}). "
+            translated_text = f"{translated_text} (original:'{original_text}'{signatur_en}). "
+
+        # --- 3. ERFOLG: ERGEBNIS SPEICHERN ---
+        set_cached_result(
+            BASE_DIR_FOR_CACHE,
+            TRANSLATE_SCRIPT,
+            cache_key_args,
+            translated_text # Speichere nur die erfolgreiche menschenlesbare Antwort
+        )
+        return translated_text
+
+
         # ﻿Sprach Übersetzung﻿ar okay funktionieren ﻿sprach BesetzungBei der Übersetzung ist ein unerwarteter Fehler aufgetreten.
 
     except subprocess.CalledProcessError as e:

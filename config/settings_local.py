@@ -82,7 +82,7 @@ if current_user == 'seeh':
     # PRELOAD_MODELS = ["vosk-model-en-us-0.22"]
 
     # needs NO restart:
-    PRE_RECORDING_TIMEOUT = 3
+    PRE_RECORDING_TIMEOUT = 2
     SPEECH_PAUSE_TIMEOUT = 1
 
 # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]

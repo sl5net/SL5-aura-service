@@ -13,7 +13,7 @@ CONFIG_DIR = Path(__file__).parent
 
 gitGit = r'(git|Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit|kit|peach|quitt)'
 
-commitGit = r'(Komet|Komik|Comics|Gummi|gummis|kommt|kommend|Commit|mit|hitch|komm|Kometen|kubicki|komisch|gewinnen|gromit|komme|kubis|cobit|beach|gemütlich|quitt|google)'
+commitGit = r'(Komet|Komik|Comics|Gummi|gummis|kommt|kommend|Commit|mit|hitch|komm|Kometen|kubicki|komisch|gewinnen|gromit|komme|kubis|cobit|COBIT|beach|gemütlich|quitt|google)'
 
 FUZZY_MAP_pre = [
 
@@ -21,9 +21,6 @@ FUZZY_MAP_pre = [
 
 
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
-
-    ('git commit ', rf'\b{gitGit}\s+(COBIT)\b$', 80, {'flags': re.IGNORECASE}),
-
 
     # happens very seldem :D 18.11.'25 17:53 Tue
     ('git commit message ', rf'\bQuarzwerk gibt komm Mitmensch\b ', 80, {'flags': re.IGNORECASE}),
