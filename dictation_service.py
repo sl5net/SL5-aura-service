@@ -782,6 +782,12 @@ if settings.DEV_MODE :
     self_test_readable_duration = timedelta(seconds=self_test_duration)
     logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
 
+    logSnippet = """
+    without checks it seems service can start in about 27 Seconds with a good german Model (s,24.11.'25 15:16 Mon)
+    15:12:19,851 - INFO     - DEV_MODE: Running punctuation map key validation...
+    15:12:46,853 - INFO     - ==    ✅ MODEL READY: 'de'.
+    """
+
     logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
     logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
     logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")

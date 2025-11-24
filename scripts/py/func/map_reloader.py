@@ -40,7 +40,7 @@ def auto_reload_modified_maps(logger):
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"def start", logger)
 
-    logger.info("Starting map reload check.")
+    # logger.info("Starting map reload check.")
 
     try:
         project_root = Path(__file__).resolve().parent.parent.parent.parent
@@ -67,14 +67,14 @@ def auto_reload_modified_maps(logger):
                 if last_mtime != 0:
                     if settings.DEV_MODE:
                         logger.info(f"🔄 Detected change in '{map_file_path}'. Reloading...")
-                else:
-                    if settings.DEV_MODE:
-                        logger.info(f"🆕 Detected new map file: '{map_file_path}'. Loading...")
+                # else:
+                #     if settings.DEV_MODE:
+                #         logger.info(f"🆕 Detected new map file: '{map_file_path}'. Loading...")
 
                 relative_path = map_file_path.relative_to(project_root)
                 module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
 
-                log_all_map_reloaded = settings.DEV_MODE and True
+                log_all_map_reloaded = settings.DEV_MODE_all_processing
 
                 # --- START OF COMPLETE MEMORY LEAK FIX ---
                 if module_name in sys.modules:
@@ -90,7 +90,8 @@ def auto_reload_modified_maps(logger):
                 # Placed outside the 'if module_name in sys.modules' to always clean up before re-import
                 # (in case a map was deleted, like in our test).
                 gc.collect()
-                logger.info("🗑️ Forced garbage collection before re-import.")
+                if log_all_map_reloaded:
+                    logger.info("🗑️ Forced garbage collection before re-import.")
 
                 # --- END OF COMPLETE MEMORY LEAK FIX ---
 
@@ -134,7 +135,7 @@ def auto_reload_modified_maps(logger):
                         # Successfully handled a private map. The files are now in the _*-dir.
                         # We can 'continue' the outer loop. The files will be picked up
                         # by the file scanning logic on the next iteration of 'check_and_reload_maps'.
-                        logger.info(f"🔄 Triggered unpack. Will continue loop and pick up from '_'-directory in next scan.")
+                        # logger.info(f"🔄 pick up from '_'-directory in next scan.")
                         continue  # Skip to the next file in the list
 
                     # If it wasn't a private map, log the original error
@@ -176,7 +177,9 @@ def auto_reload_modified_maps(logger):
         # Optional: Final cleanup if any reload occurred
         if reload_performed:
             gc.collect()
-            logger.info("🗑️ Final garbage collection after map scan.")
+
+            # if log_all_map_reloaded:
+            #     logger.info("🗑️ Final garbage collection after map scan.")
 
     except Exception as e:
         logger.error(f"Error during map reload check: {e}")
@@ -239,7 +242,7 @@ def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -
 
         if os.path.exists(target_maps_dir):
             # If the final directory exists, we assume it's correctly unpacked and ready for editing.
-            logger.info(f"✅ Private maps already unpacked to '{target_maps_dir}'. Skipping ZIP operation.")
+            # logger.info(f"✅ Private maps already unpacked to '{target_maps_dir}'. Skipping ZIP operation.")
             return True
 
         # --------------------------------------------------------------------------------
@@ -326,8 +329,8 @@ def _check_gitignore_for_security(logger) -> bool:
                     f"ABORTING private map loading. Please add it to the file."
                 )
                 all_checks_pass = False
-            else:
-                logger.info(f"✅ Security Check Passed: Rule '{rule}' is present in .gitignore.")
+            # else:
+            #     logger.info(f"✅ Security Check Passed: Rule '{rule}' is present in .gitignore.")
 
         return all_checks_pass
 

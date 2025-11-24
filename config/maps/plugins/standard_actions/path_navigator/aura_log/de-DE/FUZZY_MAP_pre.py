@@ -48,14 +48,14 @@ fi | fzf --style full --preview 'cat {}' --bind 'focus:transform-header:file --b
 
 FUZZY_MAP_pre = [
 
-
     # dictation_service.log
     #    log
     (f'{os.path.join(PROJECT_ROOT_FOR_MAP,"log","dictation_service.log")}',
-    r'^(Aura |laura |hurra |\w?aura |zauberer )?(log-datei|L[o]+[gk]\w*|L[o]+[gk]\w*|L[o]+[gk]\w*|low|luck|luft|b datei|voll gesorgt)$',
+    r'^(Aura |laura |dora |hurra |\w?aura |prora |zauberer |over a |oral )?(log-datei|L[o]+[gk]\w*|L[o]+[gk]\w*|L[o]+[gk]\w*|low|luck|lux|luft|b datei|voll gesorgt)$',
     95,
     {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
 
+#oder a Lookroter LookOral Look
     # ~/projects/py/STT/log/dictation_service.log
 
     # , "dictation_service.log"
