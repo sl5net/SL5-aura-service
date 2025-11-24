@@ -438,6 +438,23 @@ GB_TO_MB_CONVERSION_FACTOR = 1024
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # --- SETUP FOR DEDICATED MEMORY LOGGING ---
 # Define the path for the memory log file
 MEMORY_LOG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'log/memory_leak_analysis.log')
@@ -538,6 +555,8 @@ def memory_leak_analyzer(interval_seconds=600, significant_growth_threshold=100)
 # To run it in parallel (similar to your existing watchdog):
 if settings.DEV_MODE:
     threading.Thread(target=memory_leak_analyzer, daemon=True).start()
+
+
 
 
 
@@ -680,6 +699,12 @@ watchdog_thread.start()
 
 
 
+
+
+
+
+
+
 TRIGGER_FILE.unlink(missing_ok=True)
 
 # MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
@@ -756,6 +781,21 @@ if settings.DEV_MODE :
     self_test_duration = self_test_end_time - self_test_start_time
     self_test_readable_duration = timedelta(seconds=self_test_duration)
     logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+
     """
     # self_test_readable_duration
     59 of 82 tests ❌ FAILed.    seconds=5, microseconds=578883

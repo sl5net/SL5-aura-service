@@ -22,7 +22,7 @@ FUZZY_MAP_pre = [
 
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
 
-    ('git commit ', rf'\b{gitGit}\s+(COBIT)(\b$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', rf'\b{gitGit}\s+(COBIT)\b$', 80, {'flags': re.IGNORECASE}),
 
 
     # happens very seldem :D 18.11.'25 17:53 Tue
@@ -91,10 +91,11 @@ FUZZY_MAP_pre = [
 
     # --- git add . --- git add .
     # Gitta hat
-    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App|er hat)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
 
     ('git add .', r'^\s*(Gitterbett|Geht er hin|kredit|quitte hat)\s*$', 78, {'flags': re.IGNORECASE}),
 
+    # Geht er hat
 
 
 

@@ -23,7 +23,7 @@ GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
 
-def repariere_pakete_mit_laenderkuerzeln(basis_pfad: Path, aktuelle_tiefe: int = 1, max_tiefe: int = 2):
+def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tiefe: int = 1, max_tiefe: int = 2):
     """
     Durchsucht den gegebenen Pfad und seine direkten Unterordner (bis max_tiefe)
     und erstellt fehlende __init__.py-Dateien.
@@ -44,6 +44,8 @@ def repariere_pakete_mit_laenderkuerzeln(basis_pfad: Path, aktuelle_tiefe: int =
 
     # 1. Scanne den aktuellen Pfad (basis_pfad) und repariere fehlende __init__.py
     for eintrag in basis_pfad.iterdir():
+        # logger.info(f"eintrag {eintrag } llllllllllllllllllllllllllllllllllllllllll")
+
         if eintrag.is_dir() and eintrag.name != '__pycache__':
             init_datei = eintrag / "__init__.py"
 
@@ -54,16 +56,24 @@ def repariere_pakete_mit_laenderkuerzeln(basis_pfad: Path, aktuelle_tiefe: int =
             if not init_datei.exists():
                 try:
                     init_datei.touch()
-                    print(f"Repariert (Stufe {aktuelle_tiefe}): __init__.py erstellt in: {eintrag}")
+                    logger.info(f"Repariert (Stufe {aktuelle_tiefe}): __init__.py erstellt in: {eintrag}")
                     reparierte_anzahl += 1
                 except OSError as e:
-                    print(f"FEHLER: Konnte __init__.py in '{eintrag}' nicht erstellen: {e}")
+                    logger.error(
+                        f"FEHLER: Konnte __init__.py in '{eintrag}' nicht erstellen: {e}")
+            else:
+                logger.info(f"found init_datei in: {eintrag}")
 
     # 2. Rekursion in die nächste Stufe (Ländercodes)
     if aktuelle_tiefe < max_tiefe:
+        logger.info(
+            f"🗺️ {aktuelle_tiefe} < {max_tiefe} ##########################################################################################################################################")
         for unterordner in unterordner_zur_weitergabe:
+            logger.info(
+                f"🗺️ {unterordner} OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+
             # Rufe die Funktion für jeden Unterordner auf (z.B. Ländercode-Ordner)
-            reparierte_anzahl += repariere_pakete_mit_laenderkuerzeln(
+            reparierte_anzahl += repariere_pakete_mit_laenderkuerzeln(logger,
                 unterordner,
                 aktuelle_tiefe + 1,
                 max_tiefe
@@ -223,20 +233,26 @@ def load_maps_for_language(lang_code, logger):
             if not is_plugin_enabled(hierarchical_key, settings.PLUGINS_ENABLED):
                 if settings.DEV_MODE and plugin_name_before != plugin_name and log_all_map_ENABLED and False:
                     logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}...")
+
+                    basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps"
+                    eltern_pfad_maps = basis_pfad / hierarchical_key
+                    # repariere_pakete_mit_laenderkuerzeln(logger, eltern_pfad_maps, max_tiefe=1)
+
                 continue
 
-            if plugin_name_before != plugin_name and log_all_map_ENABLED:
+            if plugin_name_before != plugin_name:
 
-                # logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}...")
-                ENABLED_modname_list.append(hierarchical_key)
+                if log_all_map_ENABLED:
+                    # logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}...")
+                    ENABLED_modname_list.append(hierarchical_key)
 
 
                 # pprint.pprint(vars(settings))
 
-                basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps" / "plugins"
+                basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps"
 
                 eltern_pfad_maps = basis_pfad / hierarchical_key
-                repariere_pakete_mit_laenderkuerzeln(eltern_pfad_maps, max_tiefe=2)
+                # repariere_pakete_mit_laenderkuerzeln(logger,eltern_pfad_maps, max_tiefe=2)
                 # print(f"eltern_pfad_maps={eltern_pfad_maps} -> anzahl: {anzahl}")
                 # exit(1)
 

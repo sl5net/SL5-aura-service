@@ -7,10 +7,20 @@ from pathlib import Path
 import os
 import zipfile
 import shutil
+import time
+
+import os
+from pathlib import Path
+from pathlib import Path
+
 
 #import time # Added for os.path.getmtime typing, just in case
 
 from config.dynamic_settings import settings
+
+from .process_text_in_background import repariere_pakete_mit_laenderkuerzeln
+
+
 
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
@@ -44,6 +54,7 @@ def auto_reload_modified_maps(logger):
                 continue  # Ignore __init__.py files
 
             map_file_key = str(map_file_path)
+
 
             # Using time.time() for current time, though os.path.getmtime is fine for file checks
             current_mtime = os.path.getmtime(map_file_key)
@@ -114,7 +125,7 @@ def auto_reload_modified_maps(logger):
                     if settings.DEV_MODE:
                         logger.info(f"✅ Successfully reloaded/loaded '{module_name}'.")
 
-                except Exception:
+                except Exception as e:
                     # --- NEW LOGIC: Check for private map pattern ---
                     was_private_map = _handle_private_map_exception(module_name, map_file_key, logger)
                     # logger.info(f"??????🔄 should we do unpack")
@@ -129,7 +140,9 @@ def auto_reload_modified_maps(logger):
                     # If it wasn't a private map, log the original error
 
                     # thats to much disturbinb messages in console.log there fadd comment:
-                    # logger.error(f"❌ Failed to reload module '{module_name}': {e}")
+                    logger.error(f"❌ Failed to reload module '{module_name}': {e}")
+
+                    # todo: # scripts/py/func/map_reloader.py:135 run the into autorapair function
 
                     # ... existing comment block
                     """
@@ -139,8 +152,26 @@ def auto_reload_modified_maps(logger):
 
             else:
                 # If no change detected, just ensure its mtime is recorded if it's a new entry
+
+                # 03:37:44,491 - INFO     - Checking map file: /home/seeh/projects/py/STT/config/maps/plugins/it-begriffe/php/codeigniter/de-DE/FUZZY_MAP_pre.py ööööööööööööööööööööööööööööööööööööööööööööööööööööööööö
+                map_file_path = Path(map_file_path)
+                map_dir_path = map_file_path.parent
+
+                # Use the function by providing the directory path
+                ensure_init_files(map_dir_path,logger)
+
+                # init_file = map_dir_path / "__init__.py"
+                # if not init_file.exists():
+                #     try:
+                #         init_file.touch()
+                #         logger.info(f"init_file.touch ")
+                #     except OSError as e:
+                #         logger.error(
+                #             f"err: init_file.touch: {e}")
+
                 if map_file_key not in LAST_MODIFIED_TIMES:
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+                    # 03:37:44,491 - INFO     - Checking map file: /home/seeh/projects/py/STT/config/maps/plugins/it-begriffe/php/codeigniter/de-DE/FUZZY_MAP_pre.py ööööööööööööööööööööööööööööööööööööööööööööööööööööööööö
 
         # Optional: Final cleanup if any reload occurred
         if reload_performed:
@@ -303,3 +334,178 @@ def _check_gitignore_for_security(logger) -> bool:
     except Exception as e:
         logger.error(f"Error reading .gitignore file: {e}")
         return False
+
+
+import time
+from pathlib import Path
+
+# following can make the script littlbe bit faster sometimes (1% or so)
+# log:
+# 11:23:31,808 - INFO     - ⌚ self_test_readable_duration: 0:00:58.448283
+# 11:50:31,284 - INFO     - ⌚ self_test_readable_duration: 0:00:57.441311
+INITIAL_WAIT_TIME = 2.0
+MAX_WAIT_TIME = 60.0
+
+def ensure_init_files(root_dir: Path, logger):
+    if not hasattr(ensure_init_files, 'last_call_time'):
+        ensure_init_files.last_call_time = 0.0
+
+    if not hasattr(ensure_init_files, 'min_wait_time'):
+        ensure_init_files.min_wait_time = INITIAL_WAIT_TIME
+
+    current_time = time.time()
+    time_since_last_call = current_time - ensure_init_files.last_call_time
+
+    if time_since_last_call < ensure_init_files.min_wait_time:
+        wait_remaining = ensure_init_files.min_wait_time - time_since_last_call
+
+        # logger.info(
+        #     f"(Throttling). "
+        #     f"to wait: {ensure_init_files.min_wait_time:.1f}s. "
+        #     f"{wait_remaining:.2f}s ."
+        # )
+        return False
+
+
+    # logger.debug(
+    #     f"ensure_init_files  "
+    #     f"{ensure_init_files.min_wait_time:.1f}s"
+    # )
+
+    ensure_init_files.last_call_time = current_time
+
+    new_wait_time = ensure_init_files.min_wait_time * 2
+
+    if new_wait_time > MAX_WAIT_TIME:
+        ensure_init_files.min_wait_time = INITIAL_WAIT_TIME
+        logger.info(
+            f"wait-time over {MAX_WAIT_TIME}s. set back to {INITIAL_WAIT_TIME:.1f}s ."
+        )
+    else:
+        ensure_init_files.min_wait_time = new_wait_time
+        logger.info(
+            f"double wait-time to {new_wait_time:.1f}s."
+        )
+    # logger.info('########################################## erlaubt ##############')
+
+    # --- 4. ACTUAL FUNCTION LOGIC (File Creation) ---
+
+    # List of required paths for __init__.py files
+    # 4a. __init__.py in root_dir     # 4b. __init__.py in root_dir's parent directory
+    paths_to_process = [root_dir / "__init__.py", root_dir.parent / "__init__.py"]
+
+    # 4c. __init__.py in all first-level subdirectories of root_dir
+    try:
+        # Check all items in the directory
+        for item in root_dir.iterdir():
+            # os.path.isdir is often faster/safer than Path.is_dir() inside a loop,
+            # but Path.is_dir() is idiomatic here.
+            if item.is_dir():
+                paths_to_process.append(item / "__init__.py")
+    except FileNotFoundError:
+        logger.error(f"Root directory not found: {root_dir}")
+        return False  # Execution failed
+    except PermissionError as e:
+        logger.error(f"Permission denied while listing {root_dir}: {e}")
+        return False  # Execution failed
+
+    # Execute file creation for all collected paths
+    for file_path in paths_to_process:
+        _create_init_file(file_path, logger)
+
+    # ------------------------------------
+
+    return True  # Successfully executed the core logic
+
+
+def _create_init_file(file_path: Path, logger):
+    """
+    Helper function to safely create an __init__.py file and log the result.
+
+    Args:
+        file_path (Path): The full path to the __init__.py file to be created.
+        logger: The logger object.
+    """
+    if not file_path.exists():
+        try:
+            # exist_ok=True is technically redundant here because of the 'if not exists' check,
+            # but good practice for Path.touch()
+            file_path.touch(exist_ok=True)
+            logger.info(f"Created __init__.py: {file_path}.")
+        except OSError as e:
+            logger.error(f"Error creating __init__.py in {file_path}: {e}")
+
+# def ensure_init_files2(root_dir: Path, logger):
+#     """
+#     Stellt sicher, dass __init__.py im root_dir und in allen
+#     unmittelbaren Unterverzeichnissen (erste Ebene) existiert.
+#     __pycache__ wird ignoriert.
+#     """
+#
+#     # Sicherstellen, dass root_dir ein Path-Objekt ist (für Konsistenz)
+#     root_dir = Path(root_dir)
+#
+#     # 1. __init__.py im Hauptverzeichnis (root_dir) erstellen
+#     init_file_root = root_dir / "__init__.py"
+#     if not init_file_root.exists():
+#         try:
+#             init_file_root.touch(exist_ok=True)
+#             logger.info(f"Created __init__.py in root: {root_dir}")
+#         except OSError as e:
+#             logger.error(f"Error creating __init__.py in {root_dir}: {e}")
+#
+#     # 2. Durch die unmittelbaren Kinder (erste Schicht/Ebene) iterieren
+#     try:
+#         for item in root_dir.iterdir():
+#             # Prüfen, ob es ein Verzeichnis ist und ob es NICHT __pycache__ ist
+#             if item.is_dir() and item.name != '__pycache__':
+#
+#                 # Pfad zur __init__.py im Unterverzeichnis
+#                 init_file_subdir = item / "__init__.py"
+#
+#                 if not init_file_subdir.exists():
+#                     try:
+#                         init_file_subdir.touch(exist_ok=True)
+#                         logger.info(f"Created __init__.py in subdirectory: {item}")
+#                     except OSError as e:
+#                         logger.error(f"Error creating __init__.py in {item}: {e}")
+#
+#     except FileNotFoundError:
+#         logger.error(f"Root directory not found: {root_dir}")
+#     except PermissionError as e:
+#         logger.error(f"Permission denied accessing directory {root_dir}: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+# def ensure_init_files_in_all_folder_full_recursiv(root_dir,logger):
+#     for dir_path, _, files in os.walk(root_dir):
+#         if dir_path == '__pycache__':
+#                 continue
+#         if not (root_dir / "__init__.py").exists():
+#             (root_dir / "__init__.py").touch(exist_ok=True)
+#             logger.info(f"Created __init__.py in {root_dir}")
+#
+#         for sub_dir in os.listdir(dir_path):
+#             sub_dir_path = os.path.join(dir_path, sub_dir)
+#             if os.path.isdir(sub_dir_path):
+#                 init_file = (Path(sub_dir_path) / "__init__.py")
+#                 if not init_file.exists():
+#                     try:
+#                         init_file.touch(exist_ok=True)
+#                         logger.info(f"Created __init__.py in {sub_dir_path}")
+#                     except OSError as e:
+#                         logger.error(f"Error creating __init__.py in {sub_dir_path}: {e}")
+#

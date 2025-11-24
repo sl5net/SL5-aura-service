@@ -17,6 +17,7 @@ if project_root not in sys.path:
 # Note: In dictation_service.py this might be SCRIPT_DIR instead of project_root
 
 from scripts.py.func.process_text_in_background import process_text_in_background
+from scripts.py.func.checks.run_function_with_throttling import run_function_with_throttling
 from config.dynamic_settings import settings
 # from config.settings import signatur # ,signatur_ar,signatur_en,signatur_pt_br
 
@@ -47,11 +48,41 @@ def simple_clear_log(log_path: Path):
         print(f"Warning: Could not clear log file {log_path}. Error: {e}", file=sys.stderr)
 
 
-def run_core_logic_self_test(logger, tmp_dir, lt_url, lang_code):
+# file: scripts/py/func/checks/self_tester.py:50
+def run_core_logic_self_test(logger, tmp_dir: Path, lt_url, lang_code):
+    """
+    Runs a series of predefined tests, guarded by a persistent throttle mechanism.
+    """
+
+    # 1. Collect all parameters needed by _execute_self_test_core
+    core_params = {
+        'logger': logger,
+        'tmp_dir': tmp_dir,
+        'lt_url': lt_url,
+        'lang_code': lang_code
+    }
+
+    # 2. Call the generic wrapper function
+    test_executed = run_function_with_throttling(
+        logger,
+        state_dir=tmp_dir,
+        core_logic_function=_execute_self_test_core,
+        func_params=core_params,
+        state_file_name="self_test_throttle_state.json"  # Provide a specific file name for this function
+    )
+
+    if not test_executed:
+        logger.warning("Self-test skipped due to persistent throttling.")
+
+    return test_executed
+
+# file: scripts/py/func/checks/self_tester.py:79
+def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     """
     Runs a series of predefined tests against the core text processing logic.
     This function simulates inputs and checks the output files.
     """
+
 
     start_with_empty_logger = True
     # start_with_empty_logger = False
