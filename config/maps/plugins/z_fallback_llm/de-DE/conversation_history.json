@@ -1,0 +1,18 @@
+[
+  {
+    "role": "user",
+    "content": "was steht in der zwischenablage"
+  },
+  {
+    "role": "assistant",
+    "content": "Es gibt aktuell einen Baum in der Zwischenablage."
+  },
+  {
+    "role": "user",
+    "content": "fasse den text in der zwischenablage zusammen"
+  },
+  {
+    "role": "assistant",
+    "content": "Die wichtigsten Punkte der aktuellen Zwischenablage sind: - Der \"Memory Leak\" im Live-Reload ist behoben worden. - Die ersten 6 Koans für das Onboarding neuer Entwickler sind fertiggestellt, aber noch Feedback erforderlich. - Das Marketing-Fokus soll auf \"Privacy First\" legen. - Ollama als optionale lokale Erweiterung (\"Architekt Praktikant\"-Modell) anzubieten."
+  }
+]
