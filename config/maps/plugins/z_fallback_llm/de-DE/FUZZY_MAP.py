@@ -1,5 +1,5 @@
 # config/languagetool_server/maps/plugins/Volkshochschule/de-DE/FUZZY_MAP.py
-import re
+import re # noqa: F401
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
@@ -19,15 +19,4 @@ FUZZY_MAP = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
-
-    ('ask_ollama', r'^\s*(Aura|laura|dora|hurra|prora)\s+(.*)$', 100,
-        {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'ask_ollama.py']
-        }
-    )
-
-
-
 ]
-#Dora wie geht's'
