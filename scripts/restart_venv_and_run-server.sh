@@ -5,6 +5,7 @@
 # Final version: Correctly terminates ALL associated processes (main service and watcher)
 # and reliably waits for them to disappear before starting a new instance.
 
+
 # --- Configuration ---
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -57,6 +58,11 @@ else
 
     echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
     cd $PROJECT_ROOT
+
+    # Sometimes it can help for performance (original:'manchmal kann es helfen aus performance Gründen').
+    # to loose all cash files (original:'wenn alle cash files entgernt werden').
+    find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+
     python3 -m venv .venv
     source .venv/bin/activate
     end_dictation_servicePY="$PROJECT_ROOT/scripts/py/end_dictation_service.py"

@@ -236,6 +236,10 @@ FUZZY_MAP_pre = [
     ('.gitignore', r'\b(gibt Knorr)\b$', 75, {'flags': re.IGNORECASE}),
 
 
+    ("alias release_protokoll='gh release list --limit 100 | awk \"{print $1}\" | while read tag; do if [ -n \"$tag\" ]; then echo -e \"\n\n--- RELEASE: $tag ---\n\"; gh release view \"$tag\"; fi; done > all_releases.txt && kate all_releases.txt'", r'\b(releas\w* protokoll\w*|Relais\w* Protokolle|alle releases|releas\w* export\w*|frites Protokolle)\b$', 75, {'flags': re.IGNORECASE}),
+
+    #frites ProtokolleRelais Protokolle Relais ProtokolleRelease Protokolle
+
 
 
 

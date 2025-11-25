@@ -1,0 +1,33 @@
+# config/languagetool_server/maps/plugins/Volkshochschule/de-DE/FUZZY_MAP.py
+import re
+
+# This map uses a hybrid approach:
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
+#    Structure: ('replacement', r'regex_pattern', threshold, flags)
+#    - The threshold is ignored for regex.
+#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+
+from pathlib import Path
+CONFIG_DIR = Path(__file__).parent
+
+
+FUZZY_MAP = [
+    # === General Terms (Case-Insensitive) ===
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
+    # Importing to know:
+    # - in our implementation it stops with first match!
+    # - means first is most importend, lower rules maybe not get read.
+
+
+    ('ask_ollama', r'^\s*(Aura|laura|dora|hurra|prora)\s+(.*)$', 100,
+        {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'ask_ollama.py']
+        }
+    )
+
+
+
+]
+#Dora wie geht's'
