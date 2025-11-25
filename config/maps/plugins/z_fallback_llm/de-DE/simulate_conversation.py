@@ -41,6 +41,15 @@ def generate_user_question(last_aura_response, round_num):
         "3. Sei kreativ! Frag nach Details, Installation, Witzen oder technischen Grenzen.\n"
         "4. Schreib nur den Satz, keine Anführungszeichen.\n"
     )
+    system_prompt = (
+        "Du bist ein User, Ergotherapeut mit Schwehrbehinderten, der sehr selten Computer benutz und das neue Open-Source assistant framework testet.\n"
+        "Du hast keine Ahnung, wie er funktioniert.\n"
+        "REGELN:\n"
+        "1. Stelle EINE kurze, Frage basierend auf der letzten Antwort.\n"
+        "2. Beginne den Satz IMMER mit 'Computer, '.\n"
+        "3. Sei kreativ! \n"
+        "4. Schreib nur den Satz, keine Anführungszeichen.\n"
+    )
 
     # Kontext geben: Was hat Aura gerade gesagt?
     context_prompt = f"{system_prompt}\n\nLETZTE ANTWORT DES ASSISTENTEN:\n\"{last_aura_response}\"\n\nDEINE NÄCHSTE FRAGE:"

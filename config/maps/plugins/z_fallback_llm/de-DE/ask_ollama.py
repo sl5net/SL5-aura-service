@@ -17,9 +17,12 @@ MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
 BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
 DB_FILE = PLUGIN_DIR / "llm_cache.db"
 
-MAX_HISTORY_ENTRIES = 6
-CACHE_TTL_DAYS = 7     # Nach 7 Tagen gilt der Prompt als "alt" -> Neu generieren
-MAX_VARIANTS = 5       # Maximale Anzahl an Varianten pro Frage
+# ÄNDERUNG: Nur noch 1 Frage + 1 Antwort merken.
+# Das erhöht die Chance auf Cache-Treffer massiv.
+MAX_HISTORY_ENTRIES = 2
+CACHE_TTL_DAYS = 7
+MAX_VARIANTS = 5
+DEFAULT_RATING = 5
 
 LOG_FILE = "/tmp/aura_ollama_debug.log"
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
@@ -38,16 +41,17 @@ def log_debug(message: str):
     print(f"[DEBUG_LLM] {caller_info}: {message}", file=sys.stderr)
     logging.info(f"{caller_info}: {message}")
 
-# --- DATABASE LAYER (RELATIONAL) ---
+# --- DATABASE LAYER ---
 def init_db():
-    """Erstellt zwei Tabellen: Eine für Prompts, eine für Antwort-Varianten."""
     try:
         conn = sqlite3.connect(DB_FILE)
         c = conn.cursor()
 
+        # Tabelle prompts bekommt 'clean_input' für bessere Statistik
         c.execute('''CREATE TABLE IF NOT EXISTS prompts (
                         hash TEXT PRIMARY KEY,
                         prompt_text TEXT,
+                        clean_input TEXT,
                         last_used TIMESTAMP
                     )''')
 
@@ -56,8 +60,58 @@ def init_db():
                         prompt_hash TEXT,
                         response_text TEXT,
                         created_at TIMESTAMP,
+                        rating INTEGER DEFAULT 5,
+                        comment TEXT,
+                        usage_count INTEGER DEFAULT 0,
                         FOREIGN KEY(prompt_hash) REFERENCES prompts(hash)
                     )''')
+
+        # MIGRATIONEN
+        try: c.execute("ALTER TABLE responses ADD COLUMN rating INTEGER DEFAULT 5")
+        except Exception: pass
+        try: c.execute("ALTER TABLE responses ADD COLUMN comment TEXT")
+        except Exception: pass
+        try: c.execute("ALTER TABLE responses ADD COLUMN usage_count INTEGER DEFAULT 0")
+        except Exception: pass
+        # NEU: Spalte für reinen Input (ohne History) für Statistik
+        try: c.execute("ALTER TABLE prompts ADD COLUMN clean_input TEXT")
+        except Exception: pass
+
+        c.execute(f"UPDATE responses SET rating = {DEFAULT_RATING} WHERE rating = 0 AND comment IS NULL")
+
+        # --- VIEW ERSTELLEN (Optimiert für Statistik) ---
+        c.execute("DROP VIEW IF EXISTS overview_readable")
+        c.execute('''
+            CREATE VIEW overview_readable AS
+            SELECT
+                r.id,
+                r.rating,
+                r.usage_count,
+                p.clean_input AS User_Frage, -- Zeigt nur die Frage, ohne System-Prompt
+                r.response_text,
+                r.comment,
+                r.created_at,
+                p.prompt_text AS Full_Context_Prompt
+            FROM responses r
+            LEFT JOIN prompts p ON r.prompt_hash = p.hash
+            ORDER BY r.created_at DESC
+        ''')
+
+        # --- VIEW FÜR STATISTIK (Neu) ---
+        # Zeigt, welche Fragen AM HÄUFIGSTEN gestellt wurden, egal welcher Kontext
+        c.execute("DROP VIEW IF EXISTS stats_most_asked")
+        c.execute('''
+            CREATE VIEW stats_most_asked AS
+            SELECT
+                clean_input,
+                COUNT(*) as context_variations,
+                SUM(r.usage_count) as total_answers_served
+            FROM prompts p
+            JOIN responses r ON p.hash = r.prompt_hash
+            GROUP BY clean_input
+            ORDER BY total_answers_served DESC
+        ''')
+
         conn.commit()
         conn.close()
     except Exception as e:
@@ -69,10 +123,6 @@ def normalize_for_hashing(text):
     return text
 
 def get_cached_response(full_prompt_str):
-    """
-    Holt eine ZUFÄLLIGE Variante aus dem Cache.
-    """
-    # Sicherstellen, dass DB existiert
     init_db()
 
     normalized_prompt = normalize_for_hashing(full_prompt_str)
@@ -82,52 +132,55 @@ def get_cached_response(full_prompt_str):
         conn = sqlite3.connect(DB_FILE)
         c = conn.cursor()
 
-        # 1. Prüfen wann zuletzt genutzt (TTL)
         c.execute("SELECT last_used FROM prompts WHERE hash=?", (prompt_hash,))
         row = c.fetchone()
 
         if not row:
             conn.close()
-            return None, False # Gar nicht im Cache
+            return None, False
 
         last_used_str = row[0]
         try:
             last_used = datetime.datetime.fromisoformat(last_used_str)
             age = datetime.datetime.now() - last_used
             if age.days > CACHE_TTL_DAYS:
-                log_debug(f"Cache EXPIRED (Alter: {age.days} Tage). Generiere neue Variante...")
+                log_debug(f"Cache EXPIRED (Alter: {age.days} Tage).")
                 conn.close()
                 return None, True
         except Exception: pass
 
-        # 2. Varianten laden
-        c.execute("SELECT response_text FROM responses WHERE prompt_hash=?", (prompt_hash,))
+        c.execute("SELECT id, response_text FROM responses WHERE prompt_hash=?", (prompt_hash,))
         rows = c.fetchall()
-        conn.close()
 
         if rows:
             variant_count = len(rows)
-
-            # Active Variation: 20% Chance auf Neuberechnung bei wenigen Varianten
+            # Active Variation (20% Chance)
             if variant_count < 3 and random.random() < 0.2:
-                log_debug(f"♻️ Active Variation: Habe erst {variant_count} Varianten. Generiere proaktiv eine neue...")
+                log_debug(f"♻️ Active Variation: {variant_count} Varianten. Generiere neu...")
+                conn.close()
                 return None, True
 
-            chosen_response = random.choice(rows)[0]
-            log_debug(f"⚡ CACHE HIT! Wähle zufällige Variante aus {variant_count} verfügbaren.")
+            chosen_row = random.choice(rows)
+            chosen_id = chosen_row[0]
+            chosen_text = chosen_row[1]
 
+            c.execute("UPDATE responses SET usage_count = usage_count + 1 WHERE id = ?", (chosen_id,))
+            conn.commit()
+            conn.close()
+
+            log_debug(f"⚡ CACHE HIT! Variante ID {chosen_id} gewählt.")
             update_prompt_stats(prompt_hash)
-            return chosen_response, False
+            return chosen_text, False
 
+        conn.close()
         return None, False
 
     except Exception as e:
         log_debug(f"DB Read Error: {e}")
         return None, False
 
-def cache_response(full_prompt_str, response_text):
-    """Speichert neue Antwort und löscht die älteste, wenn Limit erreicht."""
-    # Sicherstellen, dass DB existiert
+def cache_response(full_prompt_str, response_text, clean_user_input):
+    """Speichert Antwort + reinen User Input für Statistik."""
     init_db()
 
     normalized_prompt = normalize_for_hashing(full_prompt_str)
@@ -138,26 +191,31 @@ def cache_response(full_prompt_str, response_text):
         conn = sqlite3.connect(DB_FILE)
         c = conn.cursor()
 
-        c.execute("INSERT OR REPLACE INTO prompts (hash, prompt_text, last_used) VALUES (?, ?, ?)",
-                  (prompt_hash, full_prompt_str, now))
+        # INSERT prompt mit clean_input
+        c.execute("INSERT OR REPLACE INTO prompts (hash, prompt_text, clean_input, last_used) VALUES (?, ?, ?, ?)",
+                  (prompt_hash, full_prompt_str, clean_user_input, now))
 
-        c.execute("INSERT INTO responses (prompt_hash, response_text, created_at) VALUES (?, ?, ?)",
-                  (prompt_hash, response_text, now))
+        c.execute('''INSERT INTO responses
+                     (prompt_hash, response_text, created_at, rating, usage_count)
+                     VALUES (?, ?, ?, ?, 1)''',
+                  (prompt_hash, response_text, now, DEFAULT_RATING))
 
-        # Limit prüfen
+        # Aufräumen
         c.execute("SELECT count(*) FROM responses WHERE prompt_hash=?", (prompt_hash,))
         count = c.fetchone()[0]
 
         if count > MAX_VARIANTS:
+            excess = count - MAX_VARIANTS
             c.execute(f'''
                 DELETE FROM responses
                 WHERE id IN (
                     SELECT id FROM responses
                     WHERE prompt_hash=?
-                    ORDER BY created_at ASC
-                    LIMIT {count - MAX_VARIANTS}
+                    ORDER BY rating ASC, usage_count ASC, created_at ASC
+                    LIMIT {excess}
                 )
             ''', (prompt_hash,))
+            log_debug(f"Cache Cleanup: {excess} Varianten gelöscht.")
 
         conn.commit()
         conn.close()
@@ -179,7 +237,6 @@ def update_prompt_stats(prompt_hash):
 
 # --- HELPER FUNCTIONS ---
 def clean_text_for_typing(text):
-    # Erlaubt URLs, Pfade und Satzzeichen
     allowed_chars = r'[^\w\s\.,!\?\-\(\)\[\]\{\}<>äöüÄÖÜß:;\'"\/\\@\+\=\~\#\%]'
     text = re.sub(allowed_chars, '', text)
     text = re.sub(r'\s+', ' ', text).strip()
@@ -249,7 +306,6 @@ def execute(match_data):
                 except Exception: pass
             return "Gedächtnis gelöscht."
 
-        # --- TRIGGER ANALYSE ---
         trigger_clipboard = ["zwischenablage", "clipboard", "kopierten text", "kopierter text", "zusammenfassung"]
         trigger_readme = [
             "hilfe", "dokumentation", "readme", "read me", "redmi", "lies mich",
@@ -267,7 +323,6 @@ def execute(match_data):
             bypass_cache = True
             log_debug("Cache BYPASS: Zufallswort erkannt.")
 
-        # Fall 1: Clipboard
         if any(w in input_lower for w in trigger_clipboard):
             log_debug("Mode: CLIPBOARD")
             content = get_clipboard_content()
@@ -278,7 +333,6 @@ def execute(match_data):
             else:
                 return "Die Zwischenablage ist leer."
 
-        # Fall 2: Readme
         elif any(w in input_lower for w in trigger_readme):
             log_debug("Mode: README")
             readme_content = get_readme_content()
@@ -289,9 +343,7 @@ def execute(match_data):
             else:
                 return "Ich konnte die Readme nicht finden."
 
-        # --- PROMPT BAUEN ---
         full_prompt = f"{system_role}\n"
-
         if use_history:
             history = load_history()
             if history:
@@ -302,28 +354,18 @@ def execute(match_data):
 
         full_prompt += f"{context_data}\nUser: {user_input_raw}\nAura:"
 
-        # --- CACHE CHECK ---
         if not bypass_cache:
             cached_resp, expired = get_cached_response(full_prompt)
             if cached_resp:
-                if use_history:
-                    save_to_history(user_input_raw, cached_resp)
+                if use_history: save_to_history(user_input_raw, cached_resp)
                 return cached_resp
             if expired:
                 log_debug("♻️ Cache Entry EXPIRED.")
 
-        # --- OLLAMA CALL ---
         log_debug("Cache MISS. Rufe Ollama...")
         cmd = ["ollama", "run", "llama3.2"]
-
-        # STDIN für große Inputs!
         result = subprocess.run(
-            cmd,
-            input=full_prompt,
-            capture_output=True,
-            text=True,
-            encoding='utf-8',
-            timeout=90
+            cmd, input=full_prompt, capture_output=True, text=True, encoding='utf-8', timeout=90
         )
 
         if result.returncode != 0:
@@ -332,7 +374,8 @@ def execute(match_data):
         response = clean_text_for_typing(result.stdout.strip())
 
         if not bypass_cache:
-            cache_response(full_prompt, response)
+            # FIX: Wir übergeben jetzt user_input_raw für die Statistik
+            cache_response(full_prompt, response, user_input_raw)
 
         if use_history:
             save_to_history(user_input_raw, response)
