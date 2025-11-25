@@ -9,13 +9,14 @@ FUZZY_MAP_pre = [
     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100,
         {
         'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'ask_ollama_has_memory_clipboard_06.py']
+        'on_match_exec': [CONFIG_DIR / 'ask_ollama_about_Aura.py']
         }
     )
 
 ]
 
 
+# ask_ollama_has_memory_clipboard_06
 
 # Sag: "Computer, was steht in der Zwischenablage?"
 # Sag: "Computer, was steht in der Zwischenablage?"
@@ -28,3 +29,16 @@ FUZZY_MAP_pre = [
 
 #Die Zwischenablage ist leer und enthält keine Informationen. Sie können versuchen, einen neuen Text zu kopieren und in die Zwischenablage einfügen oder einen anderen Browser zu verwenden.
 #
+
+"""
+Frag Aura:
+
+    "Computer, wie installiere ich das Projekt?"
+
+    "Computer, welche Features hast du?"
+
+    "Computer, was steht in der Readme?"
+
+
+
+"""
