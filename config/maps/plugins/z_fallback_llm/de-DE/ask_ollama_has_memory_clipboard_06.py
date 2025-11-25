@@ -58,7 +58,7 @@ def load_history():
     if not MEMORY_FILE.exists(): return []
     try:
         with open(MEMORY_FILE, 'r', encoding='utf-8') as f: return json.load(f)
-    except: return []
+    except Exception: return []
 
 def save_to_history(user_text, ai_text):
     history = load_history()
@@ -69,7 +69,8 @@ def save_to_history(user_text, ai_text):
     try:
         with open(MEMORY_FILE, 'w', encoding='utf-8') as f:
             json.dump(history, f, ensure_ascii=False, indent=2)
-    except: pass
+    except Exception:
+        pass
 
 def execute(match_data):
     try:
