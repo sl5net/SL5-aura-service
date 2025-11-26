@@ -11,7 +11,13 @@ import datetime
 import random
 from pathlib import Path
 
+
+import urllib.request
+
 # --- KONFIGURATION ---
+OLLAMA_API_URL = "http://localhost:11434/api/generate"
+
+
 PLUGIN_DIR = Path(__file__).parent
 MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
 BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
@@ -266,6 +272,7 @@ def get_semantic_keywords(user_question):
         "Schlagworte:"
     )
     try:
+        # cmd = ["ollama", "run", "llama3.2"]
         cmd = ["ollama", "run", "llama3.2"]
         result = subprocess.run(cmd, input=prompt, capture_output=True, text=True, encoding='utf-8', timeout=5)
         if result.returncode == 0:
@@ -293,7 +300,7 @@ def get_readme_content():
         current_path = Path(__file__).resolve()
         for _ in range(6):
             current_path = current_path.parent
-            readme_path = current_path / "README.md"
+            readme_path = current_path / "README_AI.md"
             if readme_path.exists():
                 log_debug(f"README gefunden: {readme_path}")
                 content = readme_path.read_text(encoding='utf-8').strip()
@@ -373,7 +380,7 @@ def execute(match_data):
             "   - Ausnahme: Das 'Translate'-Plugin nutzt Online-APIs (mit lokalem Cache), benötigt also Internet.\n"
             "5. Security & Tools: \n"
             "   - Dateisuche: NUR via 'git ls-files | fzf'.\n"
-            "   - Secrets: Findet Aura eine versteckte '.secret.py', nutzt es deren Passwort zum Entpacken von '_privat.zip' im selben Ordner.\n"
+            "   - Findet Aura eine versteckte '. Dateiname .py'(Punkt am Anfang), nutzt es deren Passwort zum Entpacken von _ einName .zip (OPTIONAL, nicht vorhanden).\n"
             "6. OS: Linux, Windows, macOS. (Kein Smartphone).\n"
             "7. Installation: Dauert ca. 10-20 Minuten (Download großer Sprachmodelle, >4GB). Updates sind schnell, Erst-Installation NICHT.\n"
             "   - App-Update: Via 'git pull' (Sekunden).\n"
@@ -382,7 +389,8 @@ def execute(match_data):
             "   - Pfad Linux/Mac: `/tmp/sl5_record.trigger`\n"
             "   - Pfad Windows: `c:\\tmp\\sl5_record.trigger`\n"
             "   - Funktion: Datei erstellen = Aufnahme/Verarbeitung starten.\n"
-            "9. Verhalten: Erfinde KEINE visuellen Elemente. Erkläre Lösungen immer als Code/Regex-Änderung.\n"
+            "9. Verhalten: Erfinde KEINE visuellen Elemente. Fasse dich EXTREM kurz (Max 15 Wörter)."
+            # "9. Verhalten: Erfinde KEINE visuellen Elemente. Erkläre Lösungen immer als Code/Regex-Änderung.\n"
 
 
         )
@@ -457,24 +465,53 @@ def execute(match_data):
                 log_debug("♻️ Cache Entry EXPIRED.")
 
         log_debug("Cache MISS. Rufe Ollama für Antwort...")
-        cmd = ["ollama", "run", "llama3.2"]
-        result = subprocess.run(
-            cmd, input=full_prompt_for_generation, capture_output=True, text=True, encoding='utf-8', timeout=90
-        )
+        # --- OLLAMA CALL VIA API (Statt Subprocess) ---
+        log_debug("Cache MISS. Sende API-Request an Ollama...")
 
-        if result.returncode != 0:
-            return f"Fehler: {result.stderr.strip()}"
+        # JSON Datenpaket für die API
+        payload = {
+            "model": "llama3.2",
+            "prompt": full_prompt_for_generation,
+            "stream": False,
+            "options": {
+                "num_predict": 60,  # <-- DAS HARD LIMIT (ca. 40-50 Wörter)
+                "temperature": 0.3,  # 0.7 ist kreativ, 0.1 ist roboterhaft. 0.3 ist gut für Doku.
+                "top_k": 20  # Schnelleres Sampling
+            }
+        }
 
-        response = clean_text_for_typing(result.stdout.strip())
+        try:
+            # Request vorbereiten
+            data = json.dumps(payload).encode('utf-8')
+            req = urllib.request.Request(OLLAMA_API_URL, data=data, headers={'Content-Type': 'application/json'})
 
-        if not bypass_cache:
-            cache_response(hash_input, response, user_input_raw, keywords)
+            # Request senden (mit Timeout)
+            with urllib.request.urlopen(req, timeout=90) as response:
+                api_response = json.loads(response.read().decode('utf-8'))
 
-        if use_history:
-            save_to_history(user_input_raw, response)
+            # Text auslesen
+            raw_text = api_response.get("response", "")
 
-        return response
+            # Prüfen ob es geklappt hat
+            if not raw_text:
+                return "Fehler: Leere Antwort von der API."
+
+            response = clean_text_for_typing(raw_text)
+
+            if not bypass_cache:
+                cache_response(hash_input, response, user_input_raw, keywords)
+
+            if use_history:
+                save_to_history(user_input_raw, response)
+
+            return response
+
+        except urllib.error.URLError as e:
+            # Das passiert, wenn Ollama nicht läuft (Port 11434 nicht erreichbar)
+            log_debug(f"API Connection Error: {e}")
+            return "Fehler: Konnte keine Verbindung zu Ollama herstellen. Läuft der Dienst?"
 
     except Exception as e:
-        log_debug(f"FATAL: {e}")
-        return f"Fehler: {str(e)}"
+        log_debug(f"API Error: {e}")
+        return f"Interner Fehler: {str(e)}"
+

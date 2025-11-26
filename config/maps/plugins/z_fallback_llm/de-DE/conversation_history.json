@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Computer, wie kann ich den Assistenten zum Beispiel bitten, mir eine passende musikalische Playlist basierend auf meiner Stimmung zu empfehlen?"
+    "content": "Computer, wie kann ich das lokale Git-Repository von SL5 Aura herunterladen und wie sieht die lokale Anbindung aus?"
   },
   {
     "role": "assistant",
-    "content": "Um dir eine passende musikalische Playlist basierend auf deiner Stimmung zu empfehlen, kannst du folgende Anfrage an mich stellen: \"Aura, bitte empfehle mir eine musikalische Playlist, die meine gegenwärtige Stimmung widerspiegelt.\" Ich werde dann automatisch nach einer passenden Liste suchen und dir diese vorlesen."
+    "content": "Du kannst das lokale Git-Repository von SL5 Aura herunterladen, indem du die folgende Befehle im Terminal ausführst: bash git clone https://github.com/aura-framework/aura.git Anschließend solltest du dich in den Ordner"
   },
   {
     "role": "user",
-    "content": "Computer, kann ich diese Software ohne spezielle Hardware- oder Betriebssystem-Anforderungen installieren?"
+    "content": "Computer, wie kann ich das lokale Git-Repository von SL5 Aura herunterladen und was ist mit dem Ordner passiert, wenn es erfolgreich heruntergeladen wurde?"
   },
   {
     "role": "assistant",
-    "content": "Ja, du kannst die Software \"Aura\" ohne spezielle Hardware- oder Betriebssystem-Anforderungen installieren. Aura ist eine Headless-Lösung und läuft vollständig in der Console, also benötigt sie keine zusätzlichen Geräte oder Benutzeroberfläche."
+    "content": "Hallo! Du kannst das lokale Git-Repository von SL5 Aura herunterladen, indem du die Befehle bash git clone https://github.com/aura-framework/aura.git im Terminal ausführst. Nach dem erfolgreichen Download solltest du dich in den Ordner /path"
   }
 ]

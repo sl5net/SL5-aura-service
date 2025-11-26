@@ -55,6 +55,7 @@ def generate_user_question(last_aura_response, round_num):
     # Kontext geben: Was hat Aura gerade gesagt?
     context_prompt = f"{system_prompt}\n\nLETZTE ANTWORT DES ASSISTENTEN:\n\"{last_aura_response}\"\n\nDEINE NÄCHSTE FRAGE:"
 
+    # cmd = ["ollama", "run", "llama3.2"]
     cmd = ["ollama", "run", "llama3.2"]
     result = subprocess.run(cmd, input=context_prompt, capture_output=True, text=True, encoding='utf-8')
 
