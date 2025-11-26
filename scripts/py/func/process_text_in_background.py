@@ -975,8 +975,9 @@ def process_text_in_background(logger,
                 # e.g. the tranlating modules have their own signature
                 log4DEV(f"options_dict={options_dict}",logger)
 
-                if type(new_current_text) is str and len(new_current_text) >= 11:
-                    new_current_text += f"{settings.signatur1}"
+                if hasattr(settings, 'signatur1'):
+                    if type(new_current_text) is str and len(new_current_text) >= 11:
+                        new_current_text += f"{settings.signatur1}"
 
             new_current_text = sanitize_transcription_start(new_current_text)
 

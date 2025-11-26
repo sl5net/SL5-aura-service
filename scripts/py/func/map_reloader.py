@@ -351,85 +351,67 @@ def _check_gitignore_for_security(logger) -> bool:
 INITIAL_WAIT_TIME = 2.0
 MAX_WAIT_TIME = 60.0
 
-def ensure_init_files(current_dir: Path, logger, stop_at_marker="maps"):
+def ensure_init_files(current_dir: Path, logger):
     """
-    Stellt sicher, dass vom aktuellen Ordner bis hoch zum 'maps'-Ordner
-    überall __init__.py Dateien existieren.
-
-    Args:
-        current_dir (Path): Der Ordner der aktuellen Map-Datei.
-        logger: Der Logger.
-        stop_at_marker (str): Ordnername, bei dem wir aufhören (z.B. 'maps' oder 'plugins').
+    Stellt sicher, dass __init__.py Dateien existieren.
+    Wandert von current_dir nach OBEN.
+    Nutzt ein SET, um Verzeichnisse nicht doppelt zu prüfen (statt Zeit-Drosselung).
     """
 
-    # --- 1. Throttling Logic (Beibehalten & Repariert) ---
-    if not hasattr(ensure_init_files, 'last_call_time'):
-        ensure_init_files.last_call_time = 0.0
-    if not hasattr(ensure_init_files, 'min_wait_time'):
-        ensure_init_files.min_wait_time = INITIAL_WAIT_TIME
+    # --- 1. Cache Logic (Ersetzt Time Throttling) ---
+    # Wir merken uns, welche Pfade wir schon "repariert" haben.
+    if not hasattr(ensure_init_files, 'checked_paths'):
+        ensure_init_files.checked_paths = set()
 
-    current_time = time.time()
-    time_since_last_call = current_time - ensure_init_files.last_call_time
+    # Wenn wir diesen Start-Ordner schon erledigt haben, brechen wir sofort ab.
+    # Das spart Performance in der Schleife.
+    if current_dir in ensure_init_files.checked_paths:
+        return True
 
-    if time_since_last_call < ensure_init_files.min_wait_time:
-        # Hier war vorher ein kleiner Logik-Fehler (Berechnung ohne Effekt),
-        # wir returnen einfach False, das passt.
-        return False
-
-    # Reset timer logic
-    ensure_init_files.last_call_time = current_time
-    new_wait_time = ensure_init_files.min_wait_time * 2
-
-    if new_wait_time > MAX_WAIT_TIME:
-        ensure_init_files.min_wait_time = INITIAL_WAIT_TIME
-        # Nur loggen, wenn wirklich nötig, sonst spammt das den Log voll
-        # logger.info(f"wait-time reset to {INITIAL_WAIT_TIME:.1f}s.")
-    else:
-        ensure_init_files.min_wait_time = new_wait_time
-
-    # --- 2. SICHERE REKURSION ---
+    # --- 2. SICHERE REKURSION NACH OBEN ---
 
     temp_path = current_dir.resolve()
-    user_home = Path.home().resolve() # /home/username
+    user_home = Path.home().resolve()
 
-    # Liste der Ordner-Namen, bei denen wir aufhören (inklusive)
+    # Liste der Ordner-Namen, bei denen wir definitiv aufhören
     stop_markers = {'maps', 'config', 'STT', 'projects'}
 
-    # Sicherheits-Limit: Max 8 Ebenen hoch
-    for _ in range(8):
+    # Sicherheits-Limit: Max 10 Ebenen hoch
+    for _ in range(10):
+
+        # Wenn wir diesen Pfad schonmal geprüft haben, können wir hier stoppen.
+        # (Wir wissen ja, dass wir von dort aus schonmal nach oben gewandert sind)
+        if temp_path in ensure_init_files.checked_paths:
+            break
 
         # NOTBREMSE 1: Wir sind im Home-Dir oder Root
         if temp_path == user_home or temp_path == Path('/'):
-            # logger.warning(f"🛑 Stopped auto-repair at Home/Root: {temp_path}")
             break
 
         # __init__.py erstellen
         _create_init_file(temp_path / "__init__.py", logger)
 
+        # Pfad als "erledigt" markieren
+        ensure_init_files.checked_paths.add(temp_path)
+
         # NOTBREMSE 2: Wir haben gerade 'maps' oder 'config' bearbeitet -> Fertig.
         if temp_path.name in stop_markers:
             break
 
-        # Eine Ebene höher
+        # Eine Ebene höher gehen
         temp_path = temp_path.parent
 
     return True
 
-
-
 def _create_init_file(file_path: Path, logger):
-    """
-    Helper function to safely create an __init__.py file.
-    Returns True if file was created, False otherwise.
-    """
     if not file_path.exists():
         try:
             file_path.touch(exist_ok=True)
             if settings.DEV_MODE:
-                logger.info(f"🔧 Auto-Repair: Created missing package marker '{file_path}'")
+                logger.info(f"🔧 Auto-Repair: Created package marker '{file_path}'")
             return True
-        except OSError as e:
-            logger.error(f"Error creating __init__.py in {file_path}: {e}")
+        except OSError:
+            pass
     return False
 
 

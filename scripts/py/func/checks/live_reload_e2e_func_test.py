@@ -5,7 +5,6 @@ import shutil
 import time
 from pathlib import Path
 import glob
-#import objgraph # Import the library
 
 # Re-use utilities and core logic from the main self_tester context
 from scripts.py.func.process_text_in_background import process_text_in_background
