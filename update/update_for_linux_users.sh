@@ -87,7 +87,16 @@ echo "INFO: Finalisiere Update und ersetze Dateien. Bitte warten..."
 # Die '-a' Option bewahrt Berechtigungen, Zeiten etc.
 # Die '--delete' Option entfernt Dateien, die im Quellverzeichnis nicht vorhanden sind.
 # Der abschließende Schrägstrich bei "$extractedFolder/" ist wichtig, um den *Inhalt* zu kopieren.
-rsync -a --delete --force "$extractedFolder/" "$installDir"
+# rsync -a --delete --force "$extractedFolder/" "$installDir"
+#    --exclude='__pycache__' \
+#    --exclude='*.pyc' \
+
+rsync -a --delete --force \
+    --exclude='.venv' \
+    --exclude='models' \
+    --exclude='.git' \
+    "$extractedFolder/" "$installDir"
+
 
 # 7. Aufräumen
 echo "INFO: Bereinige temporäre Dateien..."
