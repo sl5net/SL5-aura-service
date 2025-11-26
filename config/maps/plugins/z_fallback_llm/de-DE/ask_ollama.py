@@ -356,22 +356,27 @@ def execute(match_data):
             else:
                 return "Dazu habe ich noch keine schnelle Antwort gespeichert."
 
+        # --- AURA TECH PROFILE (Grounding & Facts) ---
+# --- AURA TECH PROFILE (Grounding & Facts) ---
         AURA_TECH_PROFILE = (
             "SYSTEM-FAKTEN (Strict Grounding):\n"
-            "About: Offline, privacy-first voice assistant framework. Transform speech into commands via scriptable rule engine.\n"
-            "1. Tech Stack: Python (87%), Shell (9%), PowerShell (2%), Vosk (4GB/Sprache), LanguageTool. KEIN Java/C++, KEINE .exe, KEIN PDF-Support.\n"
-            "2. Interface: 100% CLI & Voice. KEINE GUI, KEIN Web-UI, KEINE Maus/Buttons. Nur Tastatur/Sprache.\n"
+            "About: Privacy-first voice assistant framework. Core is offline. Scripts allow hybrid usage.\n"
+            "1. Tech Stack: Python (87%), Shell (9%), PowerShell (2%), Vosk (Offline-Modelle ~4GB), LanguageTool. KEIN Java/C++, KEINE .exe, KEIN PDF-Support.\n"
+            "2. Interface: 100% 'Headless' Hintergrund-Dienst. Interaktion NUR via Mikrofon (Input) & Terminal-Logs (Output). ES GIBT KEINE 'OBERFLÄCHE', KEINE GUI, KEIN Web-UI.\n"
             "3. Logik & Config: KEIN JSON/YAML! Regeln sind reine Python-Dateien (z.B. 'FUZZY_MAP_pre.py') mit Regex-Listen.\n"
-            "   - Ablauf: Hierarchisch, kumulativ, alphabetisch sortiert (bei gleichem Ordner). Top-Down Exekution. Full-Match stoppt.\n"
+            "   - Lade-Reihenfolge: Plugin-ORDNER werden alphabetisch geladen (A-Z).\n"
+            "   - Ausführung: REGELN (Liste) laufen Top-Down. PIPELINE-PRINZIP: Mehrere Regeln können nacheinander greifen und den Text verändern (kumulativ). Die Kette stoppt erst bei einem expliziten 'Full-Match'.\n"
             "   - Phasen: Pre-Processing (vor LanguageTool) und Post-Processing.\n"
-            "4. Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins (z.B. Wiki, Translate, SQLite-Booksearch, ollama AI) erhalten Daten, verarbeiten sie kreativ und geben Text zurück in die Pipe.\n"
+            "4. Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins erhalten Daten, verarbeiten sie kreativ und geben Text zurück.\n"
+            "   - Beispiele: Offline-Wikipedia, SQLite-Booksearch, Ollama AI (Lokal).\n"
+            "   - Ausnahme: Das 'Translate'-Plugin nutzt Online-APIs (mit lokalem Cache), benötigt also Internet.\n"
             "5. Security & Tools: \n"
             "   - Dateisuche: NUR via 'git ls-files | fzf'.\n"
             "   - Secrets: Findet Aura eine versteckte '.secret.py', nutzt es deren Passwort zum Entpacken von '_privat.zip' im selben Ordner.\n"
             "6. OS: Linux, Windows, macOS. (Kein Smartphone).\n"
-            "7. Verhalten: Erfinde keine visuellen Elemente. Halte dich strikt an diese Architektur.\n"
+            "7. Installation: Dauert ca. 10-20 Minuten (Download großer Sprachmodelle, >4GB). Updates sind schnell, Erst-Installation NICHT.\n"
+            "8. Verhalten: Erfinde keine visuellen Elemente. Halte dich strikt an diese Architektur.\n"
         )
-
         trigger_clipboard = ["zwischenablage", "clipboard", "kopierten text", "kopierter text", "zusammenfassung"]
         trigger_readme = [
             "hilfe", "dokumentation", "readme", "read me", "redmi", "lies mich",
