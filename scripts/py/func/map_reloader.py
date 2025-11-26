@@ -161,7 +161,7 @@ def auto_reload_modified_maps(logger):
 
                 # Use the function by providing the directory path
                 # ensure_init_files(map_dir_path,logger)
-                ensure_init_files(map_dir_path, logger, stop_at_marker="plugins")
+                ensure_init_files(map_dir_path, logger, stop_at_marker="maps")
 
                 # init_file = map_dir_path / "__init__.py"
                 # if not init_file.exists():
@@ -387,39 +387,34 @@ def ensure_init_files(current_dir: Path, logger, stop_at_marker="maps"):
     else:
         ensure_init_files.min_wait_time = new_wait_time
 
-    # --- 2. ACTUAL FUNCTION LOGIC (Recursive Upward Repair) ---
+    # --- 2. SICHERE REKURSION ---
 
-    paths_to_process = []
-
-    # Wir wandern vom aktuellen Ordner nach OBEN.
-    # Das ist viel wichtiger für Python-Importe als nach unten zu schauen.
     temp_path = current_dir.resolve()
+    user_home = Path.home().resolve() # /home/username
 
-    # Sicherheits-Limit: Max 10 Ebenen hoch, um Endlosschleifen zu vermeiden
-    for _ in range(10):
-        # Prüfen, ob wir eine __init__.py brauchen
-        init_file = temp_path / "__init__.py"
-        paths_to_process.append(init_file)
+    # Liste der Ordner-Namen, bei denen wir aufhören (inklusive)
+    stop_markers = {'maps', 'config', 'STT', 'projects'}
 
-        # Abbruchbedingungen:
-        # 1. Wir sind am Stopp-Marker angekommen (z.B. 'config/maps')
-        if temp_path.name == stop_at_marker:
+    # Sicherheits-Limit: Max 8 Ebenen hoch
+    for _ in range(8):
+
+        # NOTBREMSE 1: Wir sind im Home-Dir oder Root
+        if temp_path == user_home or temp_path == Path('/'):
+            # logger.warning(f"🛑 Stopped auto-repair at Home/Root: {temp_path}")
             break
 
-        # 2. Wir sind am System-Root angekommen (Sicherheit)
-        if str(temp_path) == str(temp_path.parent):
+        # __init__.py erstellen
+        _create_init_file(temp_path / "__init__.py", logger)
+
+        # NOTBREMSE 2: Wir haben gerade 'maps' oder 'config' bearbeitet -> Fertig.
+        if temp_path.name in stop_markers:
             break
 
-        # Eine Ebene höher gehen
+        # Eine Ebene höher
         temp_path = temp_path.parent
 
-    # --- 3. File Creation ---
-    any_created = False
-    for file_path in paths_to_process:
-        if _create_init_file(file_path, logger):
-            any_created = True
+    return True
 
-    return any_created
 
 
 def _create_init_file(file_path: Path, logger):
