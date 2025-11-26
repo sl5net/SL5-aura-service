@@ -17,9 +17,7 @@ MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
 BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
 DB_FILE = PLUGIN_DIR / "llm_cache.db"
 
-# ÄNDERUNG: Nur noch 1 Frage + 1 Antwort merken.
-# Das erhöht die Chance auf Cache-Treffer massiv.
-MAX_HISTORY_ENTRIES = 2
+MAX_HISTORY_ENTRIES = 6
 CACHE_TTL_DAYS = 7
 MAX_VARIANTS = 5
 DEFAULT_RATING = 5
@@ -47,11 +45,12 @@ def init_db():
         conn = sqlite3.connect(DB_FILE)
         c = conn.cursor()
 
-        # Tabelle prompts bekommt 'clean_input' für bessere Statistik
+        # Tabelle prompts mit neuer Spalte 'keywords'
         c.execute('''CREATE TABLE IF NOT EXISTS prompts (
                         hash TEXT PRIMARY KEY,
                         prompt_text TEXT,
                         clean_input TEXT,
+                        keywords TEXT,
                         last_used TIMESTAMP
                     )''')
 
@@ -73,13 +72,14 @@ def init_db():
         except Exception: pass
         try: c.execute("ALTER TABLE responses ADD COLUMN usage_count INTEGER DEFAULT 0")
         except Exception: pass
-        # NEU: Spalte für reinen Input (ohne History) für Statistik
         try: c.execute("ALTER TABLE prompts ADD COLUMN clean_input TEXT")
         except Exception: pass
+        try: c.execute("ALTER TABLE prompts ADD COLUMN keywords TEXT")
+        except Exception: pass # Neue Spalte für Keywords
 
         c.execute(f"UPDATE responses SET rating = {DEFAULT_RATING} WHERE rating = 0 AND comment IS NULL")
 
-        # --- VIEW ERSTELLEN (Optimiert für Statistik) ---
+        # VIEW UPDATE
         c.execute("DROP VIEW IF EXISTS overview_readable")
         c.execute('''
             CREATE VIEW overview_readable AS
@@ -87,29 +87,14 @@ def init_db():
                 r.id,
                 r.rating,
                 r.usage_count,
-                p.clean_input AS User_Frage, -- Zeigt nur die Frage, ohne System-Prompt
+                p.clean_input AS User_Frage,
+                p.keywords AS Schlagworte, -- Zeigt die extrahierten Keywords
                 r.response_text,
                 r.comment,
-                r.created_at,
-                p.prompt_text AS Full_Context_Prompt
+                r.created_at
             FROM responses r
             LEFT JOIN prompts p ON r.prompt_hash = p.hash
             ORDER BY r.created_at DESC
-        ''')
-
-        # --- VIEW FÜR STATISTIK (Neu) ---
-        # Zeigt, welche Fragen AM HÄUFIGSTEN gestellt wurden, egal welcher Kontext
-        c.execute("DROP VIEW IF EXISTS stats_most_asked")
-        c.execute('''
-            CREATE VIEW stats_most_asked AS
-            SELECT
-                clean_input,
-                COUNT(*) as context_variations,
-                SUM(r.usage_count) as total_answers_served
-            FROM prompts p
-            JOIN responses r ON p.hash = r.prompt_hash
-            GROUP BY clean_input
-            ORDER BY total_answers_served DESC
         ''')
 
         conn.commit()
@@ -122,10 +107,62 @@ def normalize_for_hashing(text):
     text = re.sub(r'\s+', ' ', text).strip()
     return text
 
-def get_cached_response(full_prompt_str):
+def get_semantic_keywords(user_question):
+    """
+    Nutzt Ollama, um Schlagworte zu finden.
+    Sortiert diese alphabetisch, damit die Reihenfolge egal ist ("Bag of Words").
+    """
+    log_debug(f"🔍 Extrahiere Keywords aus: '{user_question}'")
+
+    prompt = (
+        "Extrahiere den Kern der folgenden Frage in maximal 3 Schlagworten.\n"
+        "Regeln: Nur die Schlagworte. Keine Sätze. Kleinschreibung. Deutsch.\n"
+        f"Frage: \"{user_question}\"\n"
+        "Schlagworte:"
+    )
+
+    try:
+        cmd = ["ollama", "run", "llama3.2"]
+        result = subprocess.run(
+            cmd,
+            input=prompt,
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            timeout=5
+        )
+        if result.returncode == 0:
+            raw_output = result.stdout.strip().lower()
+
+            # 1. Sonderzeichen durch Leerzeichen ersetzen (damit "haus,bau" zu "haus bau" wird)
+            clean_text = re.sub(r'[^\w\s]', ' ', raw_output)
+
+            # 2. Splitten in Liste
+            words = clean_text.split()
+
+            # 3. Alphabetisch sortieren (Der Trick!)
+            words.sort()
+
+            # 4. Wieder zusammenfügen
+            sorted_keywords = " ".join(words)
+
+            log_debug(f"🗝️  Keywords (Sorted): '{sorted_keywords}'")
+            return sorted_keywords
+
+        return user_question
+    except Exception as e:
+        log_debug(f"Keyword extraction failed: {e}")
+        return user_question
+
+
+def get_cached_response(hash_input_str):
+    """
+    Prüft Cache basierend auf dem Input-String (kann Full Prompt oder Keyword-Mix sein).
+    """
     init_db()
 
-    normalized_prompt = normalize_for_hashing(full_prompt_str)
+    # Wir hashen das, was reinkommt (das ist jetzt schon "semantisch" vorbereitet)
+    normalized_prompt = normalize_for_hashing(hash_input_str)
     prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
 
     try:
@@ -144,7 +181,6 @@ def get_cached_response(full_prompt_str):
             last_used = datetime.datetime.fromisoformat(last_used_str)
             age = datetime.datetime.now() - last_used
             if age.days > CACHE_TTL_DAYS:
-                log_debug(f"Cache EXPIRED (Alter: {age.days} Tage).")
                 conn.close()
                 return None, True
         except Exception: pass
@@ -154,23 +190,19 @@ def get_cached_response(full_prompt_str):
 
         if rows:
             variant_count = len(rows)
-            # Active Variation (20% Chance)
             if variant_count < 3 and random.random() < 0.2:
                 log_debug(f"♻️ Active Variation: {variant_count} Varianten. Generiere neu...")
                 conn.close()
                 return None, True
 
             chosen_row = random.choice(rows)
-            chosen_id = chosen_row[0]
-            chosen_text = chosen_row[1]
-
-            c.execute("UPDATE responses SET usage_count = usage_count + 1 WHERE id = ?", (chosen_id,))
+            c.execute("UPDATE responses SET usage_count = usage_count + 1 WHERE id = ?", (chosen_row[0],))
             conn.commit()
             conn.close()
 
-            log_debug(f"⚡ CACHE HIT! Variante ID {chosen_id} gewählt.")
+            log_debug(f"⚡ CACHE HIT! Variante ID {chosen_row[0]} gewählt.")
             update_prompt_stats(prompt_hash)
-            return chosen_text, False
+            return chosen_row[1], False
 
         conn.close()
         return None, False
@@ -179,11 +211,10 @@ def get_cached_response(full_prompt_str):
         log_debug(f"DB Read Error: {e}")
         return None, False
 
-def cache_response(full_prompt_str, response_text, clean_user_input):
-    """Speichert Antwort + reinen User Input für Statistik."""
+def cache_response(hash_input_str, response_text, clean_user_input, keywords=None):
     init_db()
 
-    normalized_prompt = normalize_for_hashing(full_prompt_str)
+    normalized_prompt = normalize_for_hashing(hash_input_str)
     prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
     now = datetime.datetime.now().isoformat()
 
@@ -191,16 +222,15 @@ def cache_response(full_prompt_str, response_text, clean_user_input):
         conn = sqlite3.connect(DB_FILE)
         c = conn.cursor()
 
-        # INSERT prompt mit clean_input
-        c.execute("INSERT OR REPLACE INTO prompts (hash, prompt_text, clean_input, last_used) VALUES (?, ?, ?, ?)",
-                  (prompt_hash, full_prompt_str, clean_user_input, now))
+        # Speichern mit Keywords
+        c.execute("INSERT OR REPLACE INTO prompts (hash, prompt_text, clean_input, keywords, last_used) VALUES (?, ?, ?, ?, ?)",
+                  (prompt_hash, hash_input_str, clean_user_input, keywords, now))
 
         c.execute('''INSERT INTO responses
                      (prompt_hash, response_text, created_at, rating, usage_count)
                      VALUES (?, ?, ?, ?, 1)''',
                   (prompt_hash, response_text, now, DEFAULT_RATING))
 
-        # Aufräumen
         c.execute("SELECT count(*) FROM responses WHERE prompt_hash=?", (prompt_hash,))
         count = c.fetchone()[0]
 
@@ -215,7 +245,6 @@ def cache_response(full_prompt_str, response_text, clean_user_input):
                     LIMIT {excess}
                 )
             ''', (prompt_hash,))
-            log_debug(f"Cache Cleanup: {excess} Varianten gelöscht.")
 
         conn.commit()
         conn.close()
@@ -232,8 +261,7 @@ def update_prompt_stats(prompt_hash):
         c.execute("UPDATE prompts SET last_used = ? WHERE hash = ?", (now, prompt_hash))
         conn.commit()
         conn.close()
-    except Exception:
-        pass
+    except Exception: pass
 
 # --- HELPER FUNCTIONS ---
 def clean_text_for_typing(text):
@@ -252,24 +280,16 @@ def get_readme_content():
                 log_debug(f"README gefunden: {readme_path}")
                 content = readme_path.read_text(encoding='utf-8').strip()
                 return content[:6000]
-        log_debug("WARNUNG: Keine README.md gefunden.")
         return None
-    except Exception:
-        return None
+    except Exception: return None
 
 def get_clipboard_content():
-    if not BRIDGE_FILE.exists():
-        log_debug(f"FAIL: Bridge-Datei {BRIDGE_FILE} fehlt.")
-        return None
+    if not BRIDGE_FILE.exists(): return None
     try:
         content = BRIDGE_FILE.read_text(encoding='utf-8').strip()
-        if content:
-            preview = content.replace('\n', ' ')[:50]
-            log_debug(f"SUCCESS: Clipboard: '{preview}...' ({len(content)} Zeichen)")
-            return content
+        if content: return content
         return None
-    except Exception:
-        return None
+    except Exception: return None
 
 def load_history():
     if not MEMORY_FILE.exists(): return []
@@ -318,10 +338,19 @@ def execute(match_data):
         use_history = True
         input_lower = user_input_raw.lower()
         bypass_cache = False
+        use_semantic_hashing = False # Wird True bei Heavy Tasks
 
         if any(w in input_lower for w in no_cache_keywords):
             bypass_cache = True
             log_debug("Cache BYPASS: Zufallswort erkannt.")
+
+
+        # --- NEU: Längen-Trigger ---
+        # Lange Sätze sind "Rauschen". Wir reduzieren sie auf Keywords,
+        # um die Cache-Trefferquote zu erhöhen.
+        if len(user_input_raw) > 50: # Ab 50 Zeichen lohnt sich die Analyse
+            use_semantic_hashing = True
+            log_debug(f"Mode: LONG INPUT ({len(user_input_raw)} chars) -> Semantic Hashing ON")
 
         if any(w in input_lower for w in trigger_clipboard):
             log_debug("Mode: CLIPBOARD")
@@ -330,6 +359,7 @@ def execute(match_data):
                 context_data = f"\nDATEN ZWISCHENABLAGE:\n'''{content[:8000]}'''\n"
                 system_role = "Du bist ein Assistent. Analysiere die Daten in der Zwischenablage."
                 use_history = False
+                use_semantic_hashing = True # Hier lohnt sich das!
             else:
                 return "Die Zwischenablage ist leer."
 
@@ -340,32 +370,44 @@ def execute(match_data):
                 context_data = f"\nPROJEKT DOKUMENTATION (README.md - Auszug):\n'''{readme_content}'''\n"
                 system_role = "Du bist der Support-Bot für 'SL5 Aura'. Nutze die Doku."
                 use_history = False
+                use_semantic_hashing = True # Hier lohnt sich das!
             else:
                 return "Ich konnte die Readme nicht finden."
 
-        full_prompt = f"{system_role}\n"
+        # --- HASH BERECHNUNG ---
+        full_prompt_for_generation = f"{system_role}\n{context_data}\nUser: {user_input_raw}\nAura:"
+
+        # Standard: Hash basiert auf dem exakten Prompt
+        hash_input = full_prompt_for_generation
+        keywords = None
+
+        # Optimierung: Bei Heavy Tasks nutzen wir Keywords statt Frage
+        if use_semantic_hashing:
+            keywords = get_semantic_keywords(user_input_raw)
+            # Der Hash-Input ist jetzt: Kontext + Keywords
+            # Dadurch ergeben "Wie Install?" und "Installation bitte" denselben Hash!
+            hash_input = f"{system_role}\n{context_data}\nKEYWORDS: {keywords}"
+
         if use_history:
+            # History wird erst hier geladen, damit sie nicht den semantischen Hash stört
             history = load_history()
             if history:
-                full_prompt += "\nVerlauf:\n"
-                for entry in history:
-                    role = "User" if entry['role'] == "user" else "Aura"
-                    full_prompt += f"{role}: {entry['content']}\n"
+                full_prompt_for_generation = f"{system_role}\nVerlauf: {json.dumps(history)}\n{context_data}\nUser: {user_input_raw}\nAura:"
 
-        full_prompt += f"{context_data}\nUser: {user_input_raw}\nAura:"
-
+        # --- CACHE CHECK ---
         if not bypass_cache:
-            cached_resp, expired = get_cached_response(full_prompt)
+            cached_resp, expired = get_cached_response(hash_input)
             if cached_resp:
                 if use_history: save_to_history(user_input_raw, cached_resp)
                 return cached_resp
             if expired:
                 log_debug("♻️ Cache Entry EXPIRED.")
 
-        log_debug("Cache MISS. Rufe Ollama...")
+        # --- OLLAMA CALL ---
+        log_debug("Cache MISS. Rufe Ollama für Antwort...")
         cmd = ["ollama", "run", "llama3.2"]
         result = subprocess.run(
-            cmd, input=full_prompt, capture_output=True, text=True, encoding='utf-8', timeout=90
+            cmd, input=full_prompt_for_generation, capture_output=True, text=True, encoding='utf-8', timeout=90
         )
 
         if result.returncode != 0:
@@ -374,8 +416,8 @@ def execute(match_data):
         response = clean_text_for_typing(result.stdout.strip())
 
         if not bypass_cache:
-            # FIX: Wir übergeben jetzt user_input_raw für die Statistik
-            cache_response(full_prompt, response, user_input_raw)
+            # Wir speichern unter dem 'hash_input' (Keywords oder Full), aber merken uns die echte Frage
+            cache_response(hash_input, response, user_input_raw, keywords)
 
         if use_history:
             save_to_history(user_input_raw, response)

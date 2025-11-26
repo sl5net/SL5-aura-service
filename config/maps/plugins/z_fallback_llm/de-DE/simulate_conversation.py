@@ -13,7 +13,7 @@ except ImportError:
     sys.exit(1)
 
 # --- KONFIGURATION ---
-ROUNDS = 5  # Wie oft sollen sie hin und her reden?
+ROUNDS = 25  # Wie oft sollen sie hin und her reden?
 
 # --- MOCK OBJEKT (Damit Aura denkt, es kommt vom Mikrofon) ---
 class MockMatchObj:
@@ -33,21 +33,22 @@ def generate_user_question(last_aura_response, round_num):
     print(f"\n🤔 User-Bot überlegt (Runde {round_num})...")
 
     system_prompt = (
-        "Du bist ein neugieriger, kritischer User, der einen neuen Open-Source Sprachassistenten testet.\n"
-        "Du hast keine Ahnung, wie er funktioniert.\n"
-        "REGELN:\n"
-        "1. Stelle EINE kurze, knackige Frage basierend auf der letzten Antwort.\n"
-        "2. Beginne den Satz IMMER mit 'Computer, '.\n"
-        "3. Sei kreativ! Frag nach Details, Installation, Witzen oder technischen Grenzen.\n"
-        "4. Schreib nur den Satz, keine Anführungszeichen.\n"
-    )
-    system_prompt = (
         "Du bist ein User, Ergotherapeut mit Schwehrbehinderten, der sehr selten Computer benutz und das neue Open-Source assistant framework testet.\n"
         "Du hast keine Ahnung, wie er funktioniert.\n"
         "REGELN:\n"
         "1. Stelle EINE kurze, Frage basierend auf der letzten Antwort.\n"
         "2. Beginne den Satz IMMER mit 'Computer, '.\n"
         "3. Sei kreativ! \n"
+        "4. Schreib nur den Satz, keine Anführungszeichen.\n"
+    )
+
+    system_prompt = (
+        "Du bist ein neugieriger, kritischer User, der einen neuen Open-Source Sprachassistenten testet.\n"
+        "Du hast keine Ahnung, wie er funktioniert.\n"
+        "REGELN:\n"
+        "1. Stelle EINE kurze, knackige Frage basierend auf der letzten Antwort.\n"
+        "2. Beginne den Satz IMMER mit 'Computer, '.\n"
+        "3. Sei kreativ! Frag nach Details, Installation, Witzen oder technischen Grenzen.\n"
         "4. Schreib nur den Satz, keine Anführungszeichen.\n"
     )
 
