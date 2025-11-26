@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Computer, kann ich mit diesem Assistenten wirklich eine Datei finden oder muss ich nur daran glauben?"
+    "content": "Computer, wie kann ich diesen Assistenten überzeugen, dass meine Regex-Regel korrekt definiert ist?"
   },
   {
     "role": "assistant",
-    "content": "Entschuldigung, aber ich kann dir nicht helfen, eine Datei zu finden. Ich bin hier, um dir bei technischen Fragen und Anleitungen zu helfen, aber ich benötige deine Kooperation, um sicherzustellen, dass du die Informationen erhältst, die du suchst. Wenn du mir jedoch mehr über die Datei erzählen möchtest, die du finden möchtest, kann ich dir vielleicht einige Tipps oder Vorschläge geben, wie du sie finden kannst."
+    "content": "Um sicherzustellen, dass deine Regex-Regel korrekt definiert ist und den Assistenten überzeugst, solltest du folgende Schritte beachten: 1. Überprüfe die Regel: Stelle sicher, dass deine Regex-Regel genau definiert ist und mit Full-Match stoppt. Überprüfe, ob es keine Lücken oder Unstimmigkeiten gibt. 2. Führe Tests durch: Führe Tests durch, um sicherzustellen, dass die Regel korrekt funktioniert. Du kannst verschiedene Szenarien erstellen und überprüfen, ob der Assistent die richtigen Antworten liefert. 3. Lerne von den Fehlern: Wenn der Assistent Fehler macht, lerne daraus und passe deine Regel entsprechend an. Indem du diese Schritte befolgst, kannst du sicherstellen, dass deine Regex-Regel korrekt definiert ist und den Assistenten überzeugst."
   },
   {
     "role": "user",
-    "content": "Computer, wie kann ich die Fuzzy Maps in der CopyQ-Datei bearbeiten?"
+    "content": "Computer, kann der Assistent tatsächlich meine Frage verstehen, wenn ich sie in einer Schrift mit dargestellten Zeichen frage?"
   },
   {
     "role": "assistant",
-    "content": "Um die Fuzzy Maps in der CopyQ-Datei zu bearbeiten, musst du zunächst eine neue Datei namens 'FUZZY_MAP_pre.py' erstellen und dort deine gewünschten Regulären Listen einfügen. Anschließend kannst du die Regel 'on_match_exec' nutzen, um deine Änderungen durchzuführen. Beachte jedoch, dass diese Änderungen nur als Grundlage dienen und du die spezifischen Regeln in deiner CopyQ-Datei anpassen musst, um deine Anforderungen zu erfüllen. Beispiel für eine einfache Regel: python import os def on_match_exec(match): # Datei-Verzeichnis setzen verzeichnis = '/media/Dateiendescriptroute' # Datei-Namen filtern dateinamen = [match.group(1) for match in re.finditer(r'\\b[A-Za-z0-9_-]+\\.txt\\b', match)] # Dateien durchsuchen und zurückgeben return f'Dateien im Verzeichnis {verzeichnis}: {\", \".join(dateinamen)}' # Beispiele für Reguläre Listen regex_liste = [ r'\\b[A-Za-z0-9_-]+\\.txt\\b', r'\\bPDF\\b', r'\\bDOCX\\b' ] Denk daran, dass du die Regeln in einer alphabetischen Reihenfolge und nach dem Ablauf der Phasen (Pre-Processing und Post-Processing) anwendest."
+    "content": "Ja, der Assistent kann deine Frage verstehen, auch wenn du sie in einer Schrift mit dargestellten Zeichen fragst. Der Assistent verwendet das Vosk-Modell, um Sprechzüge zu erkennen und zu übersetzen, was es ihm ermöglicht, verschiedene Sprachen und Textstile zu verarbeiten."
   }
 ]

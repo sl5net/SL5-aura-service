@@ -26,19 +26,14 @@ LOG_FILE = "/tmp/aura_ollama_debug.log"
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-# --- AUDIO SETUP (NEU) ---
+# --- AUDIO SETUP ---
 create_bent_sine_wave_sound = None
 try:
-    # Wir navigieren 6 Ebenen hoch zum Projekt-Root (STT/)
     project_root = Path(__file__).resolve().parents[5]
     if str(project_root) not in sys.path:
         sys.path.append(str(project_root))
-
-    # Import aus deinem existierenden Audio-Manager
     from scripts.py.func.audio_manager import create_bent_sine_wave_sound
 except ImportError:
-    # Kein Crash, wenn Audio fehlt (z.B. im Docker oder CI)
-    # logging.warning(f"Audio Manager nicht gefunden: {e}")
     pass
 
 def log_debug(message: str):
@@ -54,29 +49,18 @@ def log_debug(message: str):
     print(f"[DEBUG_LLM] {caller_info}: {message}", file=sys.stderr)
     logging.info(f"{caller_info}: {message}")
 
-# --- SOUND FUNKTION ---
 def play_cache_hit_sound():
-    """Spielt einen 'Happy Sound' (Ping) bei Cache-Treffer."""
     if create_bent_sine_wave_sound:
         try:
-            # Start: 880Hz, Ende: 1200Hz (Aufsteigend = Positiv)
-            # Sehr kurz: 80ms
-            sound = create_bent_sine_wave_sound(
-                start_freq=880,
-                end_freq=1200,
-                duration_ms=80,
-                volume=0.15 # Leise, nicht erschrecken
-            )
+            sound = create_bent_sine_wave_sound(880, 1200, 80, 0.15)
             sound.play()
-        except Exception as e:
-            log_debug(f"Sound Error: {e}")
+        except Exception: pass
 
 # --- DATABASE LAYER ---
 def init_db():
     try:
         conn = sqlite3.connect(DB_FILE)
         c = conn.cursor()
-
         c.execute('''CREATE TABLE IF NOT EXISTS prompts (
                         hash TEXT PRIMARY KEY,
                         prompt_text TEXT,
@@ -84,7 +68,6 @@ def init_db():
                         keywords TEXT,
                         last_used TIMESTAMP
                     )''')
-
         c.execute('''CREATE TABLE IF NOT EXISTS responses (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         prompt_hash TEXT,
@@ -95,8 +78,7 @@ def init_db():
                         usage_count INTEGER DEFAULT 0,
                         FOREIGN KEY(prompt_hash) REFERENCES prompts(hash)
                     )''')
-
-        # MIGRATIONEN
+        # Migrationen (silent fails if exists)
         try: c.execute("ALTER TABLE responses ADD COLUMN rating INTEGER DEFAULT 5")
         except Exception: pass
         try: c.execute("ALTER TABLE responses ADD COLUMN comment TEXT")
@@ -110,37 +92,18 @@ def init_db():
 
         c.execute(f"UPDATE responses SET rating = {DEFAULT_RATING} WHERE rating = 0 AND comment IS NULL")
 
-        # VIEWS
         c.execute("DROP VIEW IF EXISTS overview_readable")
         c.execute('''
             CREATE VIEW overview_readable AS
-            SELECT
-                r.id,
-                r.rating,
-                r.usage_count,
-                p.clean_input AS User_Frage,
-                p.keywords AS Schlagworte,
-                r.response_text,
-                r.comment,
-                r.created_at
-            FROM responses r
-            LEFT JOIN prompts p ON r.prompt_hash = p.hash
-            ORDER BY r.created_at DESC
+            SELECT r.id, r.rating, r.usage_count, p.clean_input AS User_Frage, p.keywords, r.response_text, r.comment, r.created_at
+            FROM responses r LEFT JOIN prompts p ON r.prompt_hash = p.hash ORDER BY r.created_at DESC
         ''')
-
         c.execute("DROP VIEW IF EXISTS stats_most_asked")
         c.execute('''
             CREATE VIEW stats_most_asked AS
-            SELECT
-                clean_input,
-                COUNT(*) as context_variations,
-                SUM(r.usage_count) as total_answers_served
-            FROM prompts p
-            JOIN responses r ON p.hash = r.prompt_hash
-            GROUP BY clean_input
-            ORDER BY total_answers_served DESC
+            SELECT clean_input, COUNT(*) as context_variations, SUM(r.usage_count) as total_answers_served
+            FROM prompts p JOIN responses r ON p.hash = r.prompt_hash GROUP BY clean_input ORDER BY total_answers_served DESC
         ''')
-
         conn.commit()
         conn.close()
     except Exception as e:
@@ -150,6 +113,149 @@ def normalize_for_hashing(text):
     text = text.lower()
     text = re.sub(r'\s+', ' ', text).strip()
     return text
+
+# --- INSTANT MODE MATCHING ---
+def get_instant_match(user_text):
+    """
+    Sucht in der DB nach Keywords, die dem User-Text am ähnlichsten sind.
+    Nutzt Python Set-Intersection (Schnittmenge) statt LLM.
+    """
+    init_db()
+
+    # 1. User Text in Worte zerlegen (einfache Normalisierung)
+    user_words = set(re.sub(r'[^\w\s]', '', user_text.lower()).split())
+    # Entferne Füllwörter für besseres Matching (optional, aber hilfreich)
+    stop_words = {"computer", "aura", "bitte", "danke", "und", "oder", "wie", "was", "ist", "der", "die", "das", "sofort", "schnell", "instant"}
+    user_relevant = user_words - stop_words
+
+    if not user_relevant:
+        return None
+
+    log_debug(f"🚀 INSTANT MODE: Suche Match für {user_relevant}...")
+
+    try:
+        conn = sqlite3.connect(DB_FILE)
+        c = conn.cursor()
+
+        # Lade alle Prompts, die Keywords haben
+        c.execute("SELECT hash, keywords FROM prompts WHERE keywords IS NOT NULL")
+        rows = c.fetchall()
+
+        best_hash = None
+        best_score = 0
+
+        for row in rows:
+            db_hash = row[0]
+            db_keywords_str = row[1]
+            if not db_keywords_str: continue
+
+            db_keywords = set(db_keywords_str.split())
+
+            # Zähle Übereinstimmungen (Intersection)
+            matches = user_relevant.intersection(db_keywords)
+            score = len(matches)
+
+            if score > best_score:
+                best_score = score
+                best_hash = db_hash
+
+        # Entscheidung: Wir brauchen mindestens 1 signifikantes Wort als Treffer
+        if best_score >= 1:
+            log_debug(f"🚀 Instant Match gefunden! Score: {best_score} (Hash: {best_hash[:8]})")
+
+            # Lade eine Antwort zu diesem Hash (bevorzuge gut bewertete)
+            c.execute("SELECT response_text FROM responses WHERE prompt_hash=? ORDER BY rating DESC, created_at DESC LIMIT 1", (best_hash,))
+            resp_row = c.fetchone()
+            conn.close()
+
+            if resp_row:
+                play_cache_hit_sound()
+                return f"[SOFORT-MODUS]: {resp_row[0]}"
+        else:
+            log_debug("🚀 Kein ausreichender Match im Instant Modus.")
+            conn.close()
+
+        return None
+
+    except Exception as e:
+        log_debug(f"Instant Mode Error: {e}")
+        return None
+
+# --- NORMALER CACHE ---
+def get_cached_response(hash_input_str):
+    init_db()
+    normalized_prompt = normalize_for_hashing(hash_input_str)
+    prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
+
+    try:
+        conn = sqlite3.connect(DB_FILE)
+        c = conn.cursor()
+        c.execute("SELECT last_used FROM prompts WHERE hash=?", (prompt_hash,))
+        row = c.fetchone()
+        if not row:
+            conn.close()
+            return None, False
+
+        last_used_str = row[0]
+        try:
+            last_used = datetime.datetime.fromisoformat(last_used_str)
+            age = datetime.datetime.now() - last_used
+            if age.days > CACHE_TTL_DAYS:
+                conn.close()
+                return None, True
+        except Exception: pass
+
+        c.execute("SELECT id, response_text FROM responses WHERE prompt_hash=?", (prompt_hash,))
+        rows = c.fetchall()
+        if rows:
+            variant_count = len(rows)
+            if variant_count < 3 and random.random() < 0.2:
+                log_debug(f"♻️ Active Variation: {variant_count} Varianten. Generiere neu...")
+                conn.close()
+                return None, True
+
+            chosen_row = random.choice(rows)
+            c.execute("UPDATE responses SET usage_count = usage_count + 1 WHERE id = ?", (chosen_row[0],))
+            conn.commit()
+            conn.close()
+            play_cache_hit_sound()
+            update_prompt_stats(prompt_hash)
+            return chosen_row[1], False
+        conn.close()
+        return None, False
+    except Exception: return None, False
+
+def cache_response(hash_input_str, response_text, clean_user_input, keywords=None):
+    init_db()
+    normalized_prompt = normalize_for_hashing(hash_input_str)
+    prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
+    now = datetime.datetime.now().isoformat()
+    try:
+        conn = sqlite3.connect(DB_FILE)
+        c = conn.cursor()
+        c.execute("INSERT OR REPLACE INTO prompts (hash, prompt_text, clean_input, keywords, last_used) VALUES (?, ?, ?, ?, ?)",
+                  (prompt_hash, hash_input_str, clean_user_input, keywords, now))
+        c.execute('''INSERT INTO responses (prompt_hash, response_text, created_at, rating, usage_count) VALUES (?, ?, ?, ?, 1)''',
+                  (prompt_hash, response_text, now, DEFAULT_RATING))
+        c.execute("SELECT count(*) FROM responses WHERE prompt_hash=?", (prompt_hash,))
+        count = c.fetchone()[0]
+        if count > MAX_VARIANTS:
+            excess = count - MAX_VARIANTS
+            c.execute(f'''DELETE FROM responses WHERE id IN (SELECT id FROM responses WHERE prompt_hash=? ORDER BY rating ASC, usage_count ASC, created_at ASC LIMIT {excess})''', (prompt_hash,))
+        conn.commit()
+        conn.close()
+        log_debug(f"Cache saved. Hash: {prompt_hash[:8]}")
+    except Exception: pass
+
+def update_prompt_stats(prompt_hash):
+    try:
+        conn = sqlite3.connect(DB_FILE)
+        c = conn.cursor()
+        now = datetime.datetime.now().isoformat()
+        c.execute("UPDATE prompts SET last_used = ? WHERE hash = ?", (now, prompt_hash))
+        conn.commit()
+        conn.close()
+    except Exception: pass
 
 def get_semantic_keywords(user_question):
     log_debug(f"🔍 Extrahiere Keywords aus: '{user_question}'")
@@ -175,103 +281,7 @@ def get_semantic_keywords(user_question):
         log_debug(f"Keyword extraction failed: {e}")
         return user_question
 
-def get_cached_response(hash_input_str):
-    init_db()
-    normalized_prompt = normalize_for_hashing(hash_input_str)
-    prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
-
-    try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-
-        c.execute("SELECT last_used FROM prompts WHERE hash=?", (prompt_hash,))
-        row = c.fetchone()
-        if not row:
-            conn.close()
-            return None, False
-
-        last_used_str = row[0]
-        try:
-            last_used = datetime.datetime.fromisoformat(last_used_str)
-            age = datetime.datetime.now() - last_used
-            if age.days > CACHE_TTL_DAYS:
-                conn.close()
-                return None, True
-        except Exception: pass
-
-        c.execute("SELECT id, response_text FROM responses WHERE prompt_hash=?", (prompt_hash,))
-        rows = c.fetchall()
-
-        if rows:
-            variant_count = len(rows)
-            if variant_count < 3 and random.random() < 0.2:
-                log_debug(f"♻️ Active Variation: {variant_count} Varianten. Generiere neu...")
-                conn.close()
-                return None, True
-
-            chosen_row = random.choice(rows)
-            c.execute("UPDATE responses SET usage_count = usage_count + 1 WHERE id = ?", (chosen_row[0],))
-            conn.commit()
-            conn.close()
-
-            log_debug(f"⚡ CACHE HIT! Variante ID {chosen_row[0]} gewählt.")
-
-            # --- HIER KOMMT DER HAPPY SOUND ---
-            play_cache_hit_sound()
-            # ----------------------------------
-
-            update_prompt_stats(prompt_hash)
-            return chosen_row[1], False
-
-        conn.close()
-        return None, False
-
-    except Exception as e:
-        log_debug(f"DB Read Error: {e}")
-        return None, False
-
-def cache_response(hash_input_str, response_text, clean_user_input, keywords=None):
-    init_db()
-    normalized_prompt = normalize_for_hashing(hash_input_str)
-    prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
-    now = datetime.datetime.now().isoformat()
-
-    try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-        c.execute("INSERT OR REPLACE INTO prompts (hash, prompt_text, clean_input, keywords, last_used) VALUES (?, ?, ?, ?, ?)",
-                  (prompt_hash, hash_input_str, clean_user_input, keywords, now))
-        c.execute('''INSERT INTO responses
-                     (prompt_hash, response_text, created_at, rating, usage_count)
-                     VALUES (?, ?, ?, ?, 1)''',
-                  (prompt_hash, response_text, now, DEFAULT_RATING))
-        c.execute("SELECT count(*) FROM responses WHERE prompt_hash=?", (prompt_hash,))
-        count = c.fetchone()[0]
-        if count > MAX_VARIANTS:
-            excess = count - MAX_VARIANTS
-            c.execute(f'''
-                DELETE FROM responses WHERE id IN (
-                    SELECT id FROM responses WHERE prompt_hash=?
-                    ORDER BY rating ASC, usage_count ASC, created_at ASC LIMIT {excess}
-                )
-            ''', (prompt_hash,))
-        conn.commit()
-        conn.close()
-        log_debug(f"Cache saved. Hash: {prompt_hash[:8]}")
-    except Exception as e:
-        log_debug(f"DB Write Error: {e}")
-
-def update_prompt_stats(prompt_hash):
-    try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-        now = datetime.datetime.now().isoformat()
-        c.execute("UPDATE prompts SET last_used = ? WHERE hash = ?", (now, prompt_hash))
-        conn.commit()
-        conn.close()
-    except Exception: pass
-
-# --- HELPER FUNCTIONS ---
+# --- HELPER ---
 def clean_text_for_typing(text):
     allowed_chars = r'[^\w\s\.,!\?\-\(\)\[\]\{\}<>äöüÄÖÜß:;\'"\/\\@\+\=\~\#\%]'
     text = re.sub(allowed_chars, '', text)
@@ -334,10 +344,18 @@ def execute(match_data):
                 except Exception: pass
             return "Gedächtnis gelöscht."
 
-        # --- AURA TECH PROFILE (Grounding) ---
-        # Das verhindert Halluzinationen über GUIs, JSON oder falsche Sprachen.
-        # --- AURA TECH PROFILE (Grounding & Facts) ---
-        # Optimiert auf Token-Effizienz (Telegram-Stil), um Latenz zu verringern.
+        # --- INSTANT MODE CHECK (NEU) ---
+        # Wenn der User "sofort", "schnell" oder "instant" sagt,
+        # suchen wir NUR in der DB nach dem besten Keyword-Match.
+        instant_triggers = ["sofort", "schnell", "instant", "direkt"]
+        if any(w in user_input_raw.lower() for w in instant_triggers):
+            log_debug("Mode: INSTANT REQUEST")
+            instant_response = get_instant_match(user_input_raw)
+            if instant_response:
+                return instant_response
+            else:
+                return "Dazu habe ich noch keine schnelle Antwort gespeichert."
+
         AURA_TECH_PROFILE = (
             "SYSTEM-FAKTEN (Strict Grounding):\n"
             "About: Offline, privacy-first voice assistant framework. Transform speech into commands via scriptable rule engine.\n"
@@ -363,15 +381,12 @@ def execute(match_data):
         no_cache_keywords = ["witz", "spruch", "zufall", "überrasch", "random"]
 
         context_data = ""
-        # Wir fügen das Tech-Profil standardmäßig zur Rolle hinzu
         system_role = f"Du bist Aura. Antworte auf Deutsch. Kurz (max 2 Sätze). {AURA_TECH_PROFILE}"
-
         use_history = True
         input_lower = user_input_raw.lower()
         bypass_cache = False
         use_semantic_hashing = False
 
-        # Längen-Trigger
         if len(user_input_raw) > 50:
             use_semantic_hashing = True
             log_debug(f"Mode: LONG INPUT ({len(user_input_raw)} chars) -> Semantic Hashing ON")
@@ -385,7 +400,6 @@ def execute(match_data):
             content = get_clipboard_content()
             if content:
                 context_data = f"\nDATEN ZWISCHENABLAGE:\n'''{content[:8000]}'''\n"
-                # Bei Clipboard-Analysen ist das Tech-Profil weniger wichtig, aber schadet nicht.
                 system_role = "Du bist ein Assistent. Analysiere die Daten in der Zwischenablage."
                 use_history = False
                 use_semantic_hashing = True
@@ -397,7 +411,6 @@ def execute(match_data):
             readme_content = get_readme_content()
             if readme_content:
                 context_data = f"\nPROJEKT DOKUMENTATION (README.md - Auszug):\n'''{readme_content}'''\n"
-                # Hier ist das Tech-Profil besonders wichtig, um Lücken in der Readme zu füllen
                 system_role = (
                     f"Du bist der Support-Bot für 'SL5 Aura'. Nutze die Doku und folgende Fakten:\n"
                     f"{AURA_TECH_PROFILE}\n"
@@ -408,10 +421,7 @@ def execute(match_data):
             else:
                 return "Ich konnte die Readme nicht finden."
 
-        # --- HASH BERECHNUNG ---
         full_prompt_for_generation = f"{system_role}\n{context_data}\nUser: {user_input_raw}\nAura:"
-
-        # ... (Rest der Funktion bleibt EXAKT gleich wie vorher) ...
         hash_input = full_prompt_for_generation
         keywords = None
 
@@ -424,7 +434,6 @@ def execute(match_data):
             if history:
                 full_prompt_for_generation = f"{system_role}\nVerlauf: {json.dumps(history)}\n{context_data}\nUser: {user_input_raw}\nAura:"
 
-        # --- CACHE CHECK ---
         if not bypass_cache:
             cached_resp, expired = get_cached_response(hash_input)
             if cached_resp:
@@ -455,5 +464,3 @@ def execute(match_data):
     except Exception as e:
         log_debug(f"FATAL: {e}")
         return f"Fehler: {str(e)}"
-
-
