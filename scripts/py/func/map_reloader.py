@@ -158,8 +158,10 @@ def auto_reload_modified_maps(logger):
                 map_file_path = Path(map_file_path)
                 map_dir_path = map_file_path.parent
 
+
                 # Use the function by providing the directory path
-                ensure_init_files(map_dir_path,logger)
+                # ensure_init_files(map_dir_path,logger)
+                ensure_init_files(map_dir_path, logger, stop_at_marker="plugins")
 
                 # init_file = map_dir_path / "__init__.py"
                 # if not init_file.exists():
@@ -349,10 +351,20 @@ def _check_gitignore_for_security(logger) -> bool:
 INITIAL_WAIT_TIME = 2.0
 MAX_WAIT_TIME = 60.0
 
-def ensure_init_files(root_dir: Path, logger):
+def ensure_init_files(current_dir: Path, logger, stop_at_marker="maps"):
+    """
+    Stellt sicher, dass vom aktuellen Ordner bis hoch zum 'maps'-Ordner
+    überall __init__.py Dateien existieren.
+
+    Args:
+        current_dir (Path): Der Ordner der aktuellen Map-Datei.
+        logger: Der Logger.
+        stop_at_marker (str): Ordnername, bei dem wir aufhören (z.B. 'maps' oder 'plugins').
+    """
+
+    # --- 1. Throttling Logic (Beibehalten & Repariert) ---
     if not hasattr(ensure_init_files, 'last_call_time'):
         ensure_init_files.last_call_time = 0.0
-
     if not hasattr(ensure_init_files, 'min_wait_time'):
         ensure_init_files.min_wait_time = INITIAL_WAIT_TIME
 
@@ -360,84 +372,71 @@ def ensure_init_files(root_dir: Path, logger):
     time_since_last_call = current_time - ensure_init_files.last_call_time
 
     if time_since_last_call < ensure_init_files.min_wait_time:
-        #wait_remaining = ensure_init_files.min_wait_time - time_since_last_call
-        ensure_init_files.min_wait_time - time_since_last_call
-
-        # logger.info(
-        #     f"(Throttling). "
-        #     f"to wait: {ensure_init_files.min_wait_time:.1f}s. "
-        #     f"{wait_remaining:.2f}s ."
-        # )
+        # Hier war vorher ein kleiner Logik-Fehler (Berechnung ohne Effekt),
+        # wir returnen einfach False, das passt.
         return False
 
-
-    # logger.debug(
-    #     f"ensure_init_files  "
-    #     f"{ensure_init_files.min_wait_time:.1f}s"
-    # )
-
+    # Reset timer logic
     ensure_init_files.last_call_time = current_time
-
     new_wait_time = ensure_init_files.min_wait_time * 2
 
     if new_wait_time > MAX_WAIT_TIME:
         ensure_init_files.min_wait_time = INITIAL_WAIT_TIME
-        logger.info(
-            f"wait-time over {MAX_WAIT_TIME}s. set back to {INITIAL_WAIT_TIME:.1f}s ."
-        )
+        # Nur loggen, wenn wirklich nötig, sonst spammt das den Log voll
+        # logger.info(f"wait-time reset to {INITIAL_WAIT_TIME:.1f}s.")
     else:
         ensure_init_files.min_wait_time = new_wait_time
-        logger.info(
-            f"double wait-time to {new_wait_time:.1f}s."
-        )
-    # logger.info('########################################## erlaubt ##############')
 
-    # --- 4. ACTUAL FUNCTION LOGIC (File Creation) ---
+    # --- 2. ACTUAL FUNCTION LOGIC (Recursive Upward Repair) ---
 
-    # List of required paths for __init__.py files
-    # 4a. __init__.py in root_dir     # 4b. __init__.py in root_dir's parent directory
-    paths_to_process = [root_dir / "__init__.py", root_dir.parent / "__init__.py"]
+    paths_to_process = []
 
-    # 4c. __init__.py in all first-level subdirectories of root_dir
-    try:
-        # Check all items in the directory
-        for item in root_dir.iterdir():
-            # os.path.isdir is often faster/safer than Path.is_dir() inside a loop,
-            # but Path.is_dir() is idiomatic here.
-            if item.is_dir():
-                paths_to_process.append(item / "__init__.py")
-    except FileNotFoundError:
-        logger.error(f"Root directory not found: {root_dir}")
-        return False  # Execution failed
-    except PermissionError as e:
-        logger.error(f"Permission denied while listing {root_dir}: {e}")
-        return False  # Execution failed
+    # Wir wandern vom aktuellen Ordner nach OBEN.
+    # Das ist viel wichtiger für Python-Importe als nach unten zu schauen.
+    temp_path = current_dir.resolve()
 
-    # Execute file creation for all collected paths
+    # Sicherheits-Limit: Max 10 Ebenen hoch, um Endlosschleifen zu vermeiden
+    for _ in range(10):
+        # Prüfen, ob wir eine __init__.py brauchen
+        init_file = temp_path / "__init__.py"
+        paths_to_process.append(init_file)
+
+        # Abbruchbedingungen:
+        # 1. Wir sind am Stopp-Marker angekommen (z.B. 'config/maps')
+        if temp_path.name == stop_at_marker:
+            break
+
+        # 2. Wir sind am System-Root angekommen (Sicherheit)
+        if str(temp_path) == str(temp_path.parent):
+            break
+
+        # Eine Ebene höher gehen
+        temp_path = temp_path.parent
+
+    # --- 3. File Creation ---
+    any_created = False
     for file_path in paths_to_process:
-        _create_init_file(file_path, logger)
+        if _create_init_file(file_path, logger):
+            any_created = True
 
-    # ------------------------------------
-
-    return True  # Successfully executed the core logic
+    return any_created
 
 
 def _create_init_file(file_path: Path, logger):
     """
-    Helper function to safely create an __init__.py file and log the result.
-
-    Args:
-        file_path (Path): The full path to the __init__.py file to be created.
-        logger: The logger object.
+    Helper function to safely create an __init__.py file.
+    Returns True if file was created, False otherwise.
     """
     if not file_path.exists():
         try:
-            # exist_ok=True is technically redundant here because of the 'if not exists' check,
-            # but good practice for Path.touch()
             file_path.touch(exist_ok=True)
-            logger.info(f"Created __init__.py: {file_path}.")
+            if settings.DEV_MODE:
+                logger.info(f"🔧 Auto-Repair: Created missing package marker '{file_path}'")
+            return True
         except OSError as e:
             logger.error(f"Error creating __init__.py in {file_path}: {e}")
+    return False
+
 
 # def ensure_init_files2(root_dir: Path, logger):
 #     """
