@@ -13,7 +13,7 @@ except ImportError:
     sys.exit(1)
 
 # --- KONFIGURATION ---
-ROUNDS = 25  # Wie oft sollen sie hin und her reden?
+ROUNDS = 100  # Wie oft sollen sie hin und her reden?
 
 # --- MOCK OBJEKT (Damit Aura denkt, es kommt vom Mikrofon) ---
 class MockMatchObj:

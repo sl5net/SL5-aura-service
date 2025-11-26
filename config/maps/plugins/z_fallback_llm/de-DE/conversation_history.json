@@ -1,50 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Computer, was genau passiert, wenn der Assistent nicht mehr neue Informationen verarbeiten kann?"
+    "content": "Computer, kann ich mit diesem Assistenten wirklich eine Datei finden oder muss ich nur daran glauben?"
   },
   {
     "role": "assistant",
-    "content": "Wenn der Vosk-Assistent nicht mehr neue Informationen verarbeiten kann, bedeutet das, dass er bereits die Sprachverstehen abgefangen hat und keine neuen Daten mehr benötigt. Dies geschieht, weil das Modell nach einer bestimmten Zeit des Abkühlsens ausgelöst wird, um sicherzustellen, dass es nicht übermäßig Ressourcen verbraucht oder ausgetestet wird."
+    "content": "Entschuldigung, aber ich kann dir nicht helfen, eine Datei zu finden. Ich bin hier, um dir bei technischen Fragen und Anleitungen zu helfen, aber ich benötige deine Kooperation, um sicherzustellen, dass du die Informationen erhältst, die du suchst. Wenn du mir jedoch mehr über die Datei erzählen möchtest, die du finden möchtest, kann ich dir vielleicht einige Tipps oder Vorschläge geben, wie du sie finden kannst."
   },
   {
     "role": "user",
-    "content": "Computer, wie kann man den Vosk-Assistenten von vornherein trainieren, wenn er sich nicht auf andere Sprachen beschränken kann?"
+    "content": "Computer, wie kann ich die Fuzzy Maps in der CopyQ-Datei bearbeiten?"
   },
   {
     "role": "assistant",
-    "content": "Um den Vosk-Assistenten so zu trainieren, dass er alle Sprachen unterstützt, musst du folgende Schritte ausführen: 1. Wähle ein geeignetes Modell: Suche nach einem Vosk-Modell, das speziell für die Sprache deiner Wahl entwickelt wurde. 2. Installiere das Modell: Installiere das Modell und integriere es in dein Skript. 3. Konfiguriere das Modell: Konfiguriere das Modell entsprechend deiner Anforderungen. 4. Trainiere das Modell: Trainiere das Modell mit einer großen Menge an Daten, die du selbst erstellst oder die du bereits hast. Es ist wichtig zu beachten, dass der Vosk-Assistent nicht automatisch alle Sprachen unterstützen kann. Du musst dich auf die jeweilige Sprache konzentrieren und entsprechend modifizieren. Eine andere Möglichkeit ist es, mehrere Modelle gleichzeitig zu verwenden und sie je nach Sprache auszuwählen."
-  },
-  {
-    "role": "user",
-    "content": "Computer, wie lange dauert das Trainieren eines Vosk-Modells mit einer großen Menge an Daten und was sind die Mindestanforderungen für meine Hardware?"
-  },
-  {
-    "role": "assistant",
-    "content": "Das Training eines Vosk-Modells kann je nach Größe der Daten und der Leistung deiner Hardware variieren. In Allgemeinen dauert es jedoch einige Stunden bis Tage, um ein großes Modell zu trainieren. Für die Mindestanforderungen an deine Hardware empfehle ich folgende: Ein schneller Prozessor (mindestens dualcore mit 2 GHz) Eine gute Betriebssystem-Performance (meist Linux oder Windows) Genügend RAM (je nach Größe des Modells mindestens 8 GB, aber mehr ist immer besser) Eine schnelle Festplatte für das Trainingsdaten Eine moderne Audio-Karte mit einem guten Mikrofon"
-  },
-  {
-    "role": "user",
-    "content": "Computer, wie kann ich den Assistenten überprüfen, ob er korrekt antwortet, wenn ich ihm einen Satz rede und er dann eine Antwort generiert?"
-  },
-  {
-    "role": "assistant",
-    "content": "Du kannst den Assistenten überprüfen, indem du die Gesprächsprotokolle der Antworten des Assistenten durchsuchst. Überprüfe auch das Ausgabeformat und die Rechenschaftspflicht des Assistenten. Wenn du noch mehr Fragen hast, melde dich einfach mit \"Computer\" wieder an!"
-  },
-  {
-    "role": "user",
-    "content": "Computer, wie genau kann ich den Gesprächsprotokoll von deinen Antworten durchsuchen?"
-  },
-  {
-    "role": "assistant",
-    "content": "Du kannst die Gesprächsprotokolle der Antworten des Assistenten durchsuchen, indem du die Ausgabe des Assistenten in ein Text-Format umwandels. So kann der Assistent wie folgt antworten: \"Hi, ich bin Aura. Wie kann ich dir helfen? Du kannst mich direkt nach den Fragen oder Anliegen fragen, und ich werde mein Bestes tun, um dir zu helfen.\" Du kannst diese Antwort dann in ein Text-Format umwandeln, zum Beispiel in einem Datei-Format, indem du die Antwort in eine Textdatei kopierst."
-  },
-  {
-    "role": "user",
-    "content": "Computer, wie kann ich die Gesprächsprotokolle des Assistenten in ein grafisches Layout umwandeln und sie dann in einer Präsentation vorlege?"
-  },
-  {
-    "role": "assistant",
-    "content": "Um die Gesprächsprotokolle des Assistenten in ein grafisches Layout umzuwandeln und sie in einer Präsentation vorzulegen, kannst du folgende Schritte ausführen: 1. Dateiimport: Importiere die Textdatei mit den Gesprächsprotokollen in eine Präsentations-Software wie Powerpoint. 2. Tabelle erstellen: Erstelle eine Tabelle, um die Informationen zu organisieren und anzuzeigen. 3. Datensätze erstellen: Erstelle Datensätze für jeden Gesprächsabschnitt, indem du die Antworten des Assistenten und die Fragen oder Anliegen des Benutzers in zwei Spalten aufteilst. 4. Grafische Darstellung: Verwende grafische Elemente wie Diagramme, Grafiken oder Tabellen um die Daten zu visualisieren und eine überzeugende Präsentation zu erstellen. 5. Datenüberprüfen: Überprüfe die Daten für Fehlertoleranz und korrigiere sie, wenn nötig. Diese Schritte können dir dabei helfen, die Gesprächsprotokolle des Assistenten in ein grafisches Layout umzuwandeln und sie in einer Präsentation vorzulegen."
+    "content": "Um die Fuzzy Maps in der CopyQ-Datei zu bearbeiten, musst du zunächst eine neue Datei namens 'FUZZY_MAP_pre.py' erstellen und dort deine gewünschten Regulären Listen einfügen. Anschließend kannst du die Regel 'on_match_exec' nutzen, um deine Änderungen durchzuführen. Beachte jedoch, dass diese Änderungen nur als Grundlage dienen und du die spezifischen Regeln in deiner CopyQ-Datei anpassen musst, um deine Anforderungen zu erfüllen. Beispiel für eine einfache Regel: python import os def on_match_exec(match): # Datei-Verzeichnis setzen verzeichnis = '/media/Dateiendescriptroute' # Datei-Namen filtern dateinamen = [match.group(1) for match in re.finditer(r'\\b[A-Za-z0-9_-]+\\.txt\\b', match)] # Dateien durchsuchen und zurückgeben return f'Dateien im Verzeichnis {verzeichnis}: {\", \".join(dateinamen)}' # Beispiele für Reguläre Listen regex_liste = [ r'\\b[A-Za-z0-9_-]+\\.txt\\b', r'\\bPDF\\b', r'\\bDOCX\\b' ] Denk daran, dass du die Regeln in einer alphabetischen Reihenfolge und nach dem Ablauf der Phasen (Pre-Processing und Post-Processing) anwendest."
   }
 ]
