@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Computer, was genau ist mit diesem 'vosk.json'-File passiert und wie wirkt es wie eine Konfiguration?"
+    "content": "Computer, wie kann ich mit dem Assistenten kommunizieren, wenn ich meine Frage in einem anderen Sprachstil formulierte?"
   },
   {
     "role": "assistant",
-    "content": "Der 'vosk.json'-File enthält die Sprachdaten für den Vosk-Audio-Modell. Er speichert die gesprochenen Wörter in einer Datenbank, um sie während des Gesprächs wiederzuerkennen und zu verarbeiten. Es handelt sich also um eine wichtige Konfiguration, ohne die der Assistent nicht richtig funktionieren kann."
+    "content": "Du kannst mit mir kommunizieren, indem du deine Frage in deinem eigenen Sprachstil formulierst. Ich werde diese dann automatisch in die unterstützten Sprachen übersetzt und verarbeite sie, um eine Antwort zu finden."
   },
   {
     "role": "user",
-    "content": "Computer, wie kann ich den 'vosk.json'-File herunterladen und installieren?"
+    "content": "Computer, wie kann ich den Assistenten überzeugen, dass mein unübersetzter Dialekt besser ist als seine automatische Übersetzung?"
   },
   {
     "role": "assistant",
-    "content": "Um den 'vosk.json'-File herunterzuladen und zu installieren, musst du folgende Schritte befolgen: 1. Öffne eine Terminal-Fenster und navigiere zum Ordner \"aura\". 2. Führe die Befehle python setup.py download und unzip vosk.zip aus, um den 'vosk.json'-File herunterzuladen und zu entpacken. 3. Führe die Befehle cp vosk_model.pbmm vosk_model und cp vosk.model vosk_model aus, um die Modell-Dateien in den richtigen Ordner zu kopieren. 4. Führe die Befehl python setup.py install aus, um den Vosk-Assistenten zu installieren. beachte jedoch, dass du die Datei 'vosk.json' normalerweise nicht manuell herunterladen musst, da sie bereits im Ordner \"aura\" enthalten ist."
+    "content": "Um deine Frage so zu formulieren, dass der Assistent dich besser verstehen kann, musst du dich auf die reine Sprache beschränken und keine spezifischen Ausdrücke oder Wendungen verwenden, die zum Verständnis im Ausland schwierig sein könnten. Zum Beispiel kannst du \"Ich möchte den 'vosk.json'-File herunterladen\" stattdessen einfach \"Ich brauche den 'vosk.json'-File\" sagen."
   }
 ]
