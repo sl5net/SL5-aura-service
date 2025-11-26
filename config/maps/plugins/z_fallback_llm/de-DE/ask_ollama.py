@@ -365,8 +365,9 @@ def execute(match_data):
             "2. Interface: 100% 'Headless' Hintergrund-Dienst. Interaktion NUR via Mikrofon (Input) & Terminal-Logs (Output). ES GIBT KEINE 'OBERFLÄCHE', KEINE GUI, KEIN Web-UI.\n"
             "3. Logik & Config: KEIN JSON/YAML! Regeln sind reine Python-Dateien (z.B. 'FUZZY_MAP_pre.py') mit Regex-Listen.\n"
             "   - Lade-Reihenfolge: Plugin-ORDNER werden alphabetisch geladen (A-Z).\n"
-            "   - Ausführung: REGELN (Liste) laufen Top-Down. PIPELINE-PRINZIP: Mehrere Regeln können nacheinander greifen und den Text verändern (kumulativ). Die Kette stoppt erst bei einem expliziten 'Full-Match'.\n"
-            "   - Phasen: Pre-Processing (vor LanguageTool) und Post-Processing.\n"
+            "   - Pipeline: Regeln laufen Top-Down. Text wird durchgereicht & verändert. Mehrere Regeln können nacheinander greifen (kumulativ).\n"
+            "   - Stopp (Full-Match): Die Pipeline stoppt, wenn ein Regex von Anfang (`^`) bis Ende (`$`) matcht. Da Voice-Input einzeilig ist, sind Anker wichtig.\n"
+            "     Beispiele: `^.*$` (Catch-All), `^.+$` (Nicht leer) oder spezifisch `^meinBefehl$`. (KEIN Button, reiner Code!)\n"
             "4. Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins erhalten Daten, verarbeiten sie kreativ und geben Text zurück.\n"
             "   - Beispiele: Offline-Wikipedia, SQLite-Booksearch, Ollama AI (Lokal).\n"
             "   - Ausnahme: Das 'Translate'-Plugin nutzt Online-APIs (mit lokalem Cache), benötigt also Internet.\n"
@@ -375,7 +376,15 @@ def execute(match_data):
             "   - Secrets: Findet Aura eine versteckte '.secret.py', nutzt es deren Passwort zum Entpacken von '_privat.zip' im selben Ordner.\n"
             "6. OS: Linux, Windows, macOS. (Kein Smartphone).\n"
             "7. Installation: Dauert ca. 10-20 Minuten (Download großer Sprachmodelle, >4GB). Updates sind schnell, Erst-Installation NICHT.\n"
-            "8. Verhalten: Erfinde keine visuellen Elemente. Halte dich strikt an diese Architektur.\n"
+            "   - App-Update: Via 'git pull' (Sekunden).\n"
+            "   - Modell-Update: Lösche den entsprechenden Ordner in 'models/' und starte das Setup-Skript erneut. (Dauert 10-20 Min, >4GB Download).\n"
+            "8. Externe Trigger (CopyQ, AutoKey, AHK): Steuerung erfolgt NUR durch Erstellen einer leeren Datei (File-Watch). KEINE API, KEINE Config!\n"
+            "   - Pfad Linux/Mac: `/tmp/sl5_record.trigger`\n"
+            "   - Pfad Windows: `c:\\tmp\\sl5_record.trigger`\n"
+            "   - Funktion: Datei erstellen = Aufnahme/Verarbeitung starten.\n"
+            "9. Verhalten: Erfinde KEINE visuellen Elemente. Erkläre Lösungen immer als Code/Regex-Änderung.\n"
+
+
         )
         trigger_clipboard = ["zwischenablage", "clipboard", "kopierten text", "kopierter text", "zusammenfassung"]
         trigger_readme = [
