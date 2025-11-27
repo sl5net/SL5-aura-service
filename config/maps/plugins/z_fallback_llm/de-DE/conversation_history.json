@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Aura, wie genau werden diese Regeln überprüft und wie kann man sie bearbeiten?"
+    "content": "Aura, wie kann ich sicherstellen, dass der Assistent tatsächlich mit den von mir eingegebenen Fragen interagiert und nicht einfach nur eine statische Antwort liefert?"
   },
   {
     "role": "assistant",
-    "content": "Die Regeln werden überprüft, indem der Text mit den Regeln verglichen wird. Wenn ein Regex einen Match findet, wird die Pipeline gestoppt und der entsprechende Code ausgeführt. Die Regeln können in Python-Dateien gespeichert werden und können dann via 'git pull' aktualisiert werden."
+    "content": "Um sicherzustellen, dass der Assistent tatsächlich mit deinen Eingaben interagiert und keine statische Antwort liefert, kannst du die Funktion \"on_match_exec\" in den Regeln verwenden. Diese Funktion wird ausgelöst, wenn ein Regex einen Match findet, und ermöglicht es dir, Code zu schreiben, der auf diese Situation reagiert. Be"
   },
   {
     "role": "user",
-    "content": "Aura, wie kann ich sicherstellen, dass der Ausdruck tatsächlich analysiert wird und nicht einfach nur in den Logfiles platziert wird?"
+    "content": "Aura, wie kann ich die Funktion on_match_exec genau nutzen, um den Assistenten dazu zu bringen, mir eine humorvolle Witze auszusagen?"
   },
   {
     "role": "assistant",
-    "content": "Um sicherzustellen, dass der Ausdruck tatsächlich analysiert wird und nicht einfach nur in die Logfiles platziert wird, solltest du folgende Dinge beachten: 1. Verwende Anker: Stelle sicher, dass deine Regeln mit Anker wie oder beginnen, um zu verhindern, dass der Aus"
+    "content": "Um die Funktion on_match_exec für humorvolle Witze zu nutzen, musst du ein Regex erstellen, das einen bestimmten Satz oder eine bestimmte Phrase in der Eingabe erkennt. Dann kannst du Code schreiben, der auf diese Situation reagiert und einen humorvollen Witz ausgibt. Beispiel: python import re def on"
   }
 ]

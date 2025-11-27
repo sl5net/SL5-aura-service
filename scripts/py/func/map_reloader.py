@@ -64,7 +64,7 @@ def auto_reload_modified_maps(logger):
 
             if last_mtime == 0:
                 map_file_path_obj = Path(map_file_path)
-                ensure_init_files(map_file_path_obj.parent, logger, stop_at_marker="maps")
+                ensure_init_files(map_file_path_obj.parent, logger)
 
             if current_mtime > last_mtime:
                 reload_performed = True
