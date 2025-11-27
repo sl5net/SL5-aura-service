@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Computer, wie kann ich das lokale Git-Repository von SL5 Aura herunterladen und wie sieht die lokale Anbindung aus?"
+    "content": "Aura, wie genau werden diese Regeln überprüft und wie kann man sie bearbeiten?"
   },
   {
     "role": "assistant",
-    "content": "Du kannst das lokale Git-Repository von SL5 Aura herunterladen, indem du die folgende Befehle im Terminal ausführst: bash git clone https://github.com/aura-framework/aura.git Anschließend solltest du dich in den Ordner"
+    "content": "Die Regeln werden überprüft, indem der Text mit den Regeln verglichen wird. Wenn ein Regex einen Match findet, wird die Pipeline gestoppt und der entsprechende Code ausgeführt. Die Regeln können in Python-Dateien gespeichert werden und können dann via 'git pull' aktualisiert werden."
   },
   {
     "role": "user",
-    "content": "Computer, wie kann ich das lokale Git-Repository von SL5 Aura herunterladen und was ist mit dem Ordner passiert, wenn es erfolgreich heruntergeladen wurde?"
+    "content": "Aura, wie kann ich sicherstellen, dass der Ausdruck tatsächlich analysiert wird und nicht einfach nur in den Logfiles platziert wird?"
   },
   {
     "role": "assistant",
-    "content": "Hallo! Du kannst das lokale Git-Repository von SL5 Aura herunterladen, indem du die Befehle bash git clone https://github.com/aura-framework/aura.git im Terminal ausführst. Nach dem erfolgreichen Download solltest du dich in den Ordner /path"
+    "content": "Um sicherzustellen, dass der Ausdruck tatsächlich analysiert wird und nicht einfach nur in die Logfiles platziert wird, solltest du folgende Dinge beachten: 1. Verwende Anker: Stelle sicher, dass deine Regeln mit Anker wie oder beginnen, um zu verhindern, dass der Aus"
   }
 ]
