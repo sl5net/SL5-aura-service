@@ -39,7 +39,7 @@ def generate_user_question(last_aura_response, round_num):
     """
     # print(f"\n🤔 User-Bot überlegt (Runde {round_num})...")
 
-    system_prompt_Ergotherapeut = (
+    system_prompt_Ergotherapeut = ( # noqa: F841
         "Du bist ein User, Ergotherapeut mit Schwehrbehinderten, der sehr selten Computer benutz und das neue Open-Source assistant framework testet.\n"
         "Du hast keine Ahnung, wie er funktioniert.\n"
         "REGELN:\n"
@@ -49,7 +49,7 @@ def generate_user_question(last_aura_response, round_num):
         "4. Schreib nur den Satz, keine Anführungszeichen.\n"
     )
 
-    system_prompt_kritischer = (
+    system_prompt_kritischer = ( # noqa: F841
         "Du bist ein neugieriger, kritischer User, der einen neuen Open-Source Sprachassistenten testet.\n"
         "Du hast keine Ahnung, wie er funktioniert.\n"
         "REGELN:\n"
@@ -59,7 +59,7 @@ def generate_user_question(last_aura_response, round_num):
         "4. Schreib nur den Satz, keine Anführungszeichen.\n"
     )
 
-    system_prompt_LinuxAdministrator = (
+    system_prompt_LinuxAdministrator = ( # noqa: F841
         "Du bist ein Linux-User, der Aura, den Offline Voice Assistant STT to Commands or Text, Pluggable System testet.\n"
         "REGELN:\n"
         "Aura ist Headless / CLI. Keine GUI. Keine Maus für alle OS (z.B. Linux, Windows, Mac).\n"
@@ -68,7 +68,7 @@ def generate_user_question(last_aura_response, round_num):
         "2. Beginne den Satz IMMER mit 'Aura, '.\n"
         "3. Sei kreativ! Schreib nur den Satz, keine Anführungszeichen.\n"
     )
-    system_prompt_LinuxMusikerin = (
+    system_prompt_LinuxMusikerin = ( # noqa: F841
         "Du bist ein kritische, kreative Jornalist, die Aura, den Offline Voice Assistant STT to Commands or Text, Pluggable System testet.\n"
         "Dich interessieren Beispiel oder einfache Regeln:\n"
         "Aura ist Headless / CLI. Keine GUI. Keine Maus für alle OS (z.B. Linux, Windows, Mac).\n"
