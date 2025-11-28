@@ -108,7 +108,7 @@ FUZZY_MAP_pre = [
     # https://junegunn.github.io/fzf/
 
 
-    (f"{fzf_in_gitRepo}",
+    (f"{fzf_smart_file_finder}",
      r'^(suche|search|find)\s+(file|datei)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
@@ -121,15 +121,16 @@ FUZZY_MAP_pre = [
     #
 
     # sometimes here (18.11.'25 10:36 Tue) stt undstand wrong this is quickfix:
-    (f"{fzf_in_gitRepo}",
-     r'^(falsche|somit datei|suche data|suche Datei|suche Dateien|datei suche\w*|so geleitet hat)$',
+    (f"{fzf_smart_file_finder}",
+     r'^(falsche|somit datei|suche data|suche Datei|suche Dateien|datei suche\w*|so geleitet hat|sorry datei)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
     # following works with fzf (highliy recomande to have, s.18.11.'25 09:00 Tue)
     # https://junegunn.github.io/fzf/
-    (f"{fzf_everything}",
+    # sorry datei
+    (f"{fzf_smart_file_finder}",
      r'^(suche|search|find)\s+(alles|everything|überall|everywhere|everything)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),

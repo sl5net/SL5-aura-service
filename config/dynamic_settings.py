@@ -44,7 +44,11 @@ class CustomFormatter(logging.Formatter):
         return formatted_time
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-LOG_FILE = PROJECT_ROOT / "log/dynamic_settings.log"
+LOG_DIR = PROJECT_ROOT / "log"
+LOG_FILE = LOG_DIR / "dynamic_settings.log"
+
+if not LOG_DIR.exists():
+    LOG_DIR.mkdir(exist_ok=True)
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)

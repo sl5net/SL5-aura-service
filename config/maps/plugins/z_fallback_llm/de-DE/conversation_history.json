@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Aura, was genau sind diese tatsächlichen Sprachfähigkeiten und wie können sie so unterschiedlich sein vom, was die Modelle vorschreiben?"
+    "content": "Aura, wie kann ich den Vosk-Modell in meinem Assistenten einsetzen, ohne dass es wie ein Robot klingt?"
   },
   {
     "role": "assistant",
-    "content": "Die tatsächlichen Sprachfähigkeiten von Aura basieren auf der Kombination der heruntergeladenen Modelle mit den Regeln und Pipeline-Logiken, die ich implementiert habe. Diese Logik ermöglicht es mir, Texte zu verarbeiten und zu bearbeiten, indem ich Regeln anwende, um bestimmte Muster oder Anker in"
+    "content": "Du kannst das Vosk-Modell nutzen, indem du die on_match_exec-Funktion in deiner Regel verwenden. Diese Funktion wird aufgerufen, wenn ein Regex von Anfang bis Ende matcht. Du kannst dann Code schreiben, der auf diese Situation reagiert und einen humorvollen Witz ausgibt."
   },
   {
     "role": "user",
-    "content": "Aura, was genau sind diese Modelle, die heruntergeladen werden müssen?"
+    "content": "Aura, wie kann ich das Vosk-Modell nutzen, um eine Regierung zu ersetzen?"
   },
   {
     "role": "assistant",
-    "content": "Die heruntergeladenen Modelle sind Offline-Modellnetzwerke, wie zum Beispiel das Vosk-Modell. Diese Modelle liefern die Grundlage für die Sprachfähigkeiten von Aura und ermöglichen es mir, Texte zu verarbeiten und zu bearbeiten."
+    "content": "Das ist ein bisschen zu viel für mich. Ich bin ein Headless-Assistent, also habe ich keine visuellen Elemente und reagiere nur auf Mikrofon-Eingaben und Terminal-Logs. Um das Vosk-Modell zu nutzen, musst du die on_match_exec-Funktion in deiner Regel verwenden und Code schreiben, der auf den Match re"
   }
 ]

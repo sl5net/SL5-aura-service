@@ -45,9 +45,14 @@ FUZZY_MAP_pre = [
 
     ('https://cttue.de/doku.php?id=start#was_ansteht', r'^(chaos|Karls)\s+.*was.*an.*$', 60, {'flags': re.IGNORECASE}),
 
-    ('https://pad.cttue.de/cttue-meta#', r'^(chaos|Karls)\w*\s+.*Sitzungsprot.*$', 60, {'flags': re.IGNORECASE}),
 
-    # ('https://pad.cttue.de/cttue-meta#', r'^(chaos|Karls)\s+.*Sitzungsprot.*$', 60, {'flags': re.IGNORECASE}),
+
+    ('https://pad.ccc-mannheim.de/p/1', r'^(chaos)\w*\s+.*pad.*$', 60, {'flags': re.IGNORECASE}),
+    ('https://pad.cttue.de/1', r'^(chaos)\w*\s+.*Tübingen.*$', 60, {'flags': re.IGNORECASE}),
+
+
+
+    ('https://pad.cttue.de/cttue-meta#', r'^(chaos|Karls)\w*\s+.*Sitzungsprot.*$', 60, {'flags': re.IGNORECASE}),
 
 
     ('https://cttue.de/doku.php?id=events:past', r'^(chaos|Karls)\s+.* \bVerg.*$', 60, {'flags': re.IGNORECASE}),
