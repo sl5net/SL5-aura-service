@@ -1,5 +1,7 @@
 #!/bin/bash
+
 # file: update/update_for_linux_users.sh
+
 # Description: Downloads the latest version and updates the application
 #              while preserving user settings. For non-developer use.
 
@@ -92,8 +94,10 @@ echo "INFO: Finalisiere Update und ersetze Dateien. Bitte warten..."
 #    --exclude='*.pyc' \
 
 rsync -a --delete --force \
+    --max-size=100M \
     --exclude='.venv' \
     --exclude='models' \
+    --exclude='LanguageTool*' \
     --exclude='.git' \
     "$extractedFolder/" "$installDir"
 
