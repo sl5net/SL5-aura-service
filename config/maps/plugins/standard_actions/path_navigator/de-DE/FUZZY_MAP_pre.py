@@ -74,9 +74,9 @@ if sys.platform.startswith('linux'):
     # Linux Shell Syntax with Git/Find logic and xclip
     fzf_smart_file_finder = rf"""
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  git ls-files
+  git ls-files --cached --others --exclude-standard
 else
-  find . -type f
+    find . -type f
 fi | fzf --style full --preview 'cat {{}}' --bind 'focus:transform-header:file --brief {{}}' | {CLIPBOARD_COMMAND} -selection clipboard
 """
 elif sys.platform == 'darwin':
@@ -113,7 +113,7 @@ FUZZY_MAP_pre = [
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     (f"{fzf_in_gitRepo}",
-     r'^(file|datei) (suche|search|find)$',
+     r'^(file|datei|Details) (suche|search|find)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 

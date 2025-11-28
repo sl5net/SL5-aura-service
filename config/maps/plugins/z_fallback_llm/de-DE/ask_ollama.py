@@ -428,7 +428,7 @@ def execute(match_data):
                 use_history = False
                 use_semantic_hashing = True
             else:
-                return "Die Zwischenablage ist leer."
+                return "Die Zwischenablage ist leer. Tipp!! Starte ~/clipboard_bridge.sh im Autostart ordner oder manuell"
 
         elif any(w in input_lower for w in trigger_readme):
             log_debug("Mode: README")

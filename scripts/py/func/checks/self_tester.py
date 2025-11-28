@@ -76,6 +76,10 @@ def run_core_logic_self_test(logger, tmp_dir: Path, lt_url, lang_code):
 
     return test_executed
 
+# helper for use named Parameters
+def case(input_text, expected, context='', lang='de-DE'):
+    return (input_text, expected, context, lang)
+
 # file: scripts/py/func/checks/self_tester.py:79
 def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     """
@@ -99,12 +103,15 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     test_output_dir = tmp_dir / "sl5_aura_self_test"
     test_output_dir.mkdir(parents=True, exist_ok=True)
 
+
+    # ('geht cobit', 'git commit', 'git', 'de-DE'),
+
     # --- Test Cases ---
     # Format: (input_text, expected_output, description)
     # logger.info('self_tester.py:31 test_cases = ...')
     test_cases = [
 
-        ('geht cobit', 'git commit', 'git', 'de-DE'),
+        case(input_text='geht cobit', expected='git commit', context='git'),
 
         ('geht staates', 'git status', '19.11.25 10:19 Wed', 'de-DE'),
 
