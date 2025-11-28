@@ -89,7 +89,6 @@ def speak_espeak(text):
         subprocess.run(['espeak', '-v', 'de', text], check=True)
 
     #     h = os.environ.get("HOME", "/tmp")  # $HOME Variable
-    #     speak_file_path = f"{h}/projects/py/TTS/speak_file.py"
     #     f = "/tmp/sl5_aura/simulate_conversation.txt"
     #     process = subprocess.run(['python', speak_file_path, f], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:

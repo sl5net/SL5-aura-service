@@ -11,8 +11,8 @@ with open(CONFIG_PATH, "rb") as f:
 PROJECT_DIR = Path(config["paths"]["project_root"])
 
 readmeBuckup = """
-xdotool key --clearmodifiers ctrl+Left ctrl+shift+Right && sleep 0.1 && xdotool key --clearmodifiers ctrl+c && sleep 0.1 && {scriptDir}/.venv/bin/python {scriptDir}/vosk-tts/bin/python ~/projects/py/STT/get_suggestions.py
-command = 'xdotool click 2 && sleep 0.1 && xdotool key --clearmodifiers "ctrl+c" && sleep 0.1 && {scriptDir}/vosk-tts/bin/python ~/projects/py/STT/get_suggestions.py'
+xdotool key --clearmodifiers ctrl+Left ctrl+shift+Right && sleep 0.1 && xdotool key --clearmodifiers ctrl+c && sleep 0.1 && {scriptDir}/.venv/bin/python {scriptDir}/vosk-tts/bin/python ~/ projects /py /STT / get_suggestions.py
+command = 'xdotool click 2 && sleep 0.1 && xdotool key --clearmodifiers "ctrl+c" && sleep 0.1 && {scriptDir}/vosk-tts/bin/python ~/projects /py /STT /get_suggestions.py'
 system . exec_command (command)
 Mond
 """

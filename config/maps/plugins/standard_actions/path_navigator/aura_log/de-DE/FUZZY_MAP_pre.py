@@ -15,7 +15,6 @@ project_root_str_full = str(PROJECT_ROOT)
 PROJECT_ROOT_DISPLAY_STR = ''
 # 1. Tilde Replacement (Only a String Operation!)
 if project_root_str_full.startswith(home_dir_str):
-    # This result will be a string like '~/projects/py/STT' (Linux) or '~\projects\py\STT' (Windows)
     PROJECT_ROOT_DISPLAY_STR = project_root_str_full.replace(home_dir_str, '~', 1)
     print(f"PROJECT_ROOT_DISPLAY_STR: {PROJECT_ROOT_DISPLAY_STR}")
 else:
@@ -56,14 +55,13 @@ FUZZY_MAP_pre = [
     {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
 
 #oder a Lookroter LookOral Look
-    # ~/projects/py/STT/log/dictation_service.log
+    # ~/log/dictation_service.log
 
     # , "dictation_service.log"
     (f'tail -f {os.path.join(PROJECT_ROOT_FOR_MAP,"log","dictation_service.log")}',
      r'^(Follow Main L[o]+[gk]\w*|Folge L[o]+[gk]\w*|folge luft|Zeige L[o]+[gk]\w*|Zeige Luft)$',
      95,
      {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
-    #Zeige Look->tail -f ~/projects/py/STT/log/dictation_service.log
 
 
 ]

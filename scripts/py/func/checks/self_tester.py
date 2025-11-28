@@ -106,12 +106,6 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
 
         ('git commit', 'geht cobit', 'git', 'de-DE'),
 
-        ('Aura Log', '~/projects/py/STT/log/dictation_service.log', 'log', 'de-DE'),
-
-        ('Aura Pfad', '~/projects/py/STT', '19.11.25 10:19 Wed', 'de-DE'),
-
-        ('Aura Pfad', '~/projects/py/STT', '19.11.25 10:19 Wed', 'de-DE'),
-
         ('geht staates', 'git status', '19.11.25 10:19 Wed', 'de-DE'),
 
 

@@ -1,4 +1,3 @@
-# /home/seeh/projects/py/STT/config/maps/plugins/bible_search/FUZZY_MAP_pr.py
 # its using https://github.com/scrollmapper/bible_databases/tree/master/formats/sqlite
 
 import re # noqa: F401

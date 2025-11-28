@@ -47,7 +47,6 @@ FUZZY_MAP_pre = [
 
 
 
-    #home/seeh/projects/py/STT/.venv/bin/python3 /home/seeh/projects/py/STT/config/maps/plugins/standard_actions/de-DE/renumber_clipboard_text.py
     ('',
      r'^(Clipboard|Zwischenablage|Zeile\w*|Text neu) (nummeriere\w*|suggerieren|dumme geritten|operieren|nummerieren|nummerieren)$',
      70, {

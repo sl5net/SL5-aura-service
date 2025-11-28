@@ -117,11 +117,6 @@ FUZZY_MAP_pre = [
 
     # (f'cd {CONFIG_DIR}/../../../../../; !git add . && git commit -m "WIP" && git push', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
 
-    #Geht störtGitta deGit quickkickcd /home/seeh/projects/py/STT/config/maps/plugins/git/de-DE; !git add . && git commit -m "WIP" && git push
-    # gingen
-
-
-
 
     # Petrovicgit commit
 

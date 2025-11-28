@@ -159,7 +159,6 @@ def auto_reload_modified_maps(logger):
             else:
                 # If no change detected, just ensure its mtime is recorded if it's a new entry
 
-                # 03:37:44,491 - INFO     - Checking map file: /home/seeh/projects/py/STT/config/maps/plugins/it-begriffe/php/codeigniter/de-DE/FUZZY_MAP_pre.py ööööööööööööööööööööööööööööööööööööööööööööööööööööööööö
                 map_file_path = Path(map_file_path)
                 map_dir_path = map_file_path.parent
 
@@ -179,7 +178,6 @@ def auto_reload_modified_maps(logger):
 
                 if map_file_key not in LAST_MODIFIED_TIMES:
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                    # 03:37:44,491 - INFO     - Checking map file: /home/seeh/projects/py/STT/config/maps/plugins/it-begriffe/php/codeigniter/de-DE/FUZZY_MAP_pre.py ööööööööööööööööööööööööööööööööööööööööööööööööööööööööö
 
         # Optional: Final cleanup if any reload occurred
         if reload_performed:

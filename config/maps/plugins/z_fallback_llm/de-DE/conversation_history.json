@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Aura, wie kann ich den Vosk-Modell in meinem Assistenten einsetzen, ohne dass es wie ein Robot klingt?"
+    "content": "Aura, wie kann man die Regex-Listen in den Python-Dateien wie 'FUZZY_MAP_pre.py' überprüfen, ohne Programmierkenntnisse?"
   },
   {
     "role": "assistant",
-    "content": "Du kannst das Vosk-Modell nutzen, indem du die on_match_exec-Funktion in deiner Regel verwenden. Diese Funktion wird aufgerufen, wenn ein Regex von Anfang bis Ende matcht. Du kannst dann Code schreiben, der auf diese Situation reagiert und einen humorvollen Witz ausgibt."
+    "content": "Um die Regex-Listen in den Python-Dateien wie 'FUZZY_MAP_pre.py' zu überprüfen, ohne Programmierkenntnisse, kannst du einfach eine leere Datei erstellen und den Pfad /tmp/sl5_record.trigger einfügen. Dieser Pfad wird von CopyQ oder AutoKey verwendet, um die Aufnahme/Verarbeitung zu"
   },
   {
     "role": "user",
-    "content": "Aura, wie kann ich das Vosk-Modell nutzen, um eine Regierung zu ersetzen?"
+    "content": "Aura, wie kann ich mit CopyQ oder AutoKey verbinden, ohne dass ich irgendwelche programmierlichen Fähigkeiten besitze?"
   },
   {
     "role": "assistant",
-    "content": "Das ist ein bisschen zu viel für mich. Ich bin ein Headless-Assistent, also habe ich keine visuellen Elemente und reagiere nur auf Mikrofon-Eingaben und Terminal-Logs. Um das Vosk-Modell zu nutzen, musst du die on_match_exec-Funktion in deiner Regel verwenden und Code schreiben, der auf den Match re"
+    "content": "Um CopyQ oder AutoKey mit deinem Aura-System zu verbinden, musst du einfach eine leere Datei erstellen und den Pfad /tmp/sl5_record.trigger in dieser Datei einfügen. Dieser Pfad wird von CopyQ oder AutoKey verwendet, um die Aufnahme/Verarbeitung zu starten."
   }
 ]
