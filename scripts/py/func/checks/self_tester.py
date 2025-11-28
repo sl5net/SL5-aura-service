@@ -104,7 +104,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     # logger.info('self_tester.py:31 test_cases = ...')
     test_cases = [
 
-        ('git commit', 'geht cobit', 'git', 'de-DE'),
+        ('geht cobit', 'git commit', 'git', 'de-DE'),
 
         ('geht staates', 'git status', '19.11.25 10:19 Wed', 'de-DE'),
 
@@ -341,7 +341,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
             failed_count += 1
             logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed (lang={lang_code})")
 
-            # exit(1)
+            exit(1)
 
 
     # --- Summary ---

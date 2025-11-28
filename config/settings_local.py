@@ -109,7 +109,7 @@ USE_ESPEAK_FALLBACK = True
 PLUGINS_ENABLED = {
     "empty_all": False,
     "git": True,
-    # "wannweil": True,
+    "wannweil": True,
     "game": False,
     "game/dealers_choice": True,
     "game/0ad": False,

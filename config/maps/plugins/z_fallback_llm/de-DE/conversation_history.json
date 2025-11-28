@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Aura, wie kann man die Regex-Listen in den Python-Dateien wie 'FUZZY_MAP_pre.py' überprüfen, ohne Programmierkenntnisse?"
+    "content": "Aura, wie kann man sicherstellen, dass der Python-Interpreter tatsächlich aus der angegebenen Pfad gefunden wird?"
   },
   {
     "role": "assistant",
-    "content": "Um die Regex-Listen in den Python-Dateien wie 'FUZZY_MAP_pre.py' zu überprüfen, ohne Programmierkenntnisse, kannst du einfach eine leere Datei erstellen und den Pfad /tmp/sl5_record.trigger einfügen. Dieser Pfad wird von CopyQ oder AutoKey verwendet, um die Aufnahme/Verarbeitung zu"
+    "content": "Um sicherzustellen, dass der Python-Interpreter tatsächlich aus der angegebenen Pfad gefunden wird, kannst du den vollständigen Pfad zum Python-Interpreter in die Batch-Datei einfügen. Zum Beispiel: C:\\Python39\\python.exe -m pdfkit --quiet --page-size A4 --margin-top 0.75cm --margin-right"
   },
   {
     "role": "user",
-    "content": "Aura, wie kann ich mit CopyQ oder AutoKey verbinden, ohne dass ich irgendwelche programmierlichen Fähigkeiten besitze?"
+    "content": "Aura, wie kann ich den vollständigen Pfad zum Python-Interpreter in die Batch-Datei einfügen?"
   },
   {
     "role": "assistant",
-    "content": "Um CopyQ oder AutoKey mit deinem Aura-System zu verbinden, musst du einfach eine leere Datei erstellen und den Pfad /tmp/sl5_record.trigger in dieser Datei einfügen. Dieser Pfad wird von CopyQ oder AutoKey verwendet, um die Aufnahme/Verarbeitung zu starten."
+    "content": "Um den vollständigen Pfad zum Python-Interpreter in eine Batch-Datei einzufügen, kannst du einfach den vollständigen Pfad direkt in die Batch-Datei schreiben. Zum Beispiel: C:\\Python39\\python.exe -m pdfkit --quiet --page-size A4 --margin-top 0.75cm --margin-right oder C:\\Python"
   }
 ]
