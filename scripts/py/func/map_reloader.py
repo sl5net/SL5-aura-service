@@ -166,7 +166,7 @@ def auto_reload_modified_maps(logger):
 
                 # Use the function by providing the directory path
                 # ensure_init_files(map_dir_path,logger)
-                ensure_init_files(map_dir_path, logger, stop_at_marker="maps")
+                ensure_init_files(map_dir_path, logger)
 
                 # init_file = map_dir_path / "__init__.py"
                 # if not init_file.exists():
