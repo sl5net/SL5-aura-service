@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Aura, was ist mit dem sudo-Befehl, wenn ich nicht weiß, wer ich bin?"
+    "content": "Aura, wie kann ich eine bestimmte Textdatei in einer Liste der im Konfigurationsordner gefundenen Dateien auswählen?"
   },
   {
     "role": "assistant",
-    "content": "Du musst dich als Administrator ausgeben, indem du den Befehl sudo vor deinem Zielbefehl einlegst. Zum Beispiel: sudo mkdir /Path/zu/deinem Zielverzeichnis. Beachte dabei, dass du möglicherweise nach einem Passwort gefragt wirst, das du als Administrator benötigst."
+    "content": "Um eine bestimmte Textdatei in einer Liste der im Konfigurationsordner gefundenen Dateien auszuwählen, kannst du den Befehl find . -type f -name \"deinBefehlsname.txt\" ausführen. Dieser Befehl sucht alle Dateien (-type f) im aktuellen Verzeichnis und seinen Unterordn"
   },
   {
     "role": "user",
-    "content": "Aura, wie kann ich den Befehl sudo mit meinem Passwort kombinieren, ohne jedes Mal auf mein Passwort zu fragen?"
+    "content": "Aura, wie kann ich den Befehl find . -type d verwenden, um die Ordner in dem Konfigurationsordner zu finden?"
   },
   {
     "role": "assistant",
-    "content": "Um den Befehl sudo mit deinem Passwort zu kombinieren, ohne jedes Mal auf dein Passwort gefragt zu werden, kannst du einen Hinzufügungskontext verwenden. Führe die folgenden Schritte aus: 1. Öffne das Terminal und gib den folgenden Befehl ein: sudo -v 2"
+    "content": "Um die Ordner in dem Konfigurationsordner zu finden, kannst du den Befehl find . -type d ausführen. Dieser Befehl sucht alle Ordner (-type d) im aktuellen Verzeichnis und seinen Unterordnern."
   }
 ]

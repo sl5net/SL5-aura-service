@@ -51,19 +51,47 @@ try {
     if (Test-Path $backupPath) {
         Write-Host "INFO: Restoring your local settings into the new version..." -ForegroundColor Green
         Copy-Item -Path $backupPath -Destination (Join-Path $extractedFolder.FullName "config\")
-    }
 
-    # 6. Create a final batch script to perform the file replacement
+    }
+    # 6. Create a final batch script to perform the file replacement and update dependencies
+    # WICHTIG: Ersetze 'install.bat' durch den echten Namen deiner Installations-Datei!
+    $installerName = "install.bat"
+
     $batchScript = @'
 @echo off
 echo Finalizing update, please wait...
 timeout /t 3 /nobreak > nul
+
+:: 1. Dateien verschieben
 robocopy "{0}" "{1}" /E /MOVE /NFL /NDL /NJH /NJS > nul
+
+:: 2. In Zielordner wechseln
+cd /d "{1}"
+
+:: 3. Abhängigkeiten aktualisieren
+echo.
+echo ---------------------------------------------------
+echo Updating dependencies (pip install)...
+echo ---------------------------------------------------
+:: 3. Installer aufrufen (Dort passiert das pip upgrade und requirements install)
+if exist "{2}" (
+    echo Starting installer script...
+    call "{2}"
+) else (
+    echo WARNING: "{2}" not found. Trying manual pip upgrade...
+    :: Fallback, falls keine install.bat da ist:
+    if exist ".venv\Scripts\activate.bat" (
+        call .venv\Scripts\activate.bat
+        python.exe -m pip install --upgrade pip
+        pip install -r requirements.txt
+    )
+)
+
 echo.
 echo Update complete! You can now restart the application.
-timeout /t 5 > nul
+timeout /t 10 > nul
 del "%~f0"
-'@ -f $extractedFolder.FullName, $installDir
+'@ -f $extractedFolder.FullName, $installDir, $installerName
 
     $batchPath = Join-Path $installDir "_finalize_update.bat"
     Set-Content -Path $batchPath -Value $batchScript

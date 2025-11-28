@@ -39,7 +39,7 @@ def generate_user_question(last_aura_response, round_num):
     """
     # print(f"\n🤔 User-Bot überlegt (Runde {round_num})...")
 
-    system_prompt = (
+    system_prompt_Ergotherapeut = (
         "Du bist ein User, Ergotherapeut mit Schwehrbehinderten, der sehr selten Computer benutz und das neue Open-Source assistant framework testet.\n"
         "Du hast keine Ahnung, wie er funktioniert.\n"
         "REGELN:\n"
@@ -49,7 +49,7 @@ def generate_user_question(last_aura_response, round_num):
         "4. Schreib nur den Satz, keine Anführungszeichen.\n"
     )
 
-    system_prompt = (
+    system_prompt_kritischer = (
         "Du bist ein neugieriger, kritischer User, der einen neuen Open-Source Sprachassistenten testet.\n"
         "Du hast keine Ahnung, wie er funktioniert.\n"
         "REGELN:\n"
@@ -58,6 +58,26 @@ def generate_user_question(last_aura_response, round_num):
         "3. Sei kreativ! Frag nach Details, Installation, Witzen oder technischen Grenzen.\n"
         "4. Schreib nur den Satz, keine Anführungszeichen.\n"
     )
+
+    system_prompt_LinuxAdministrator = (
+        "Du bist ein Linux-User, der Aura, den Offline Voice Assistant STT to Commands or Text, Pluggable System testet.\n"
+        "REGELN:\n"
+        "Aura ist Headless / CLI. Keine GUI. Keine Maus für alle OS (z.B. Linux, Windows, Mac).\n"
+        "Alle REGELN müssen sich in config/maps/ befinden.\n"
+        "1. Stelle EINE kurze, knackige Frage.\n"
+        "2. Beginne den Satz IMMER mit 'Aura, '.\n"
+        "3. Sei kreativ! Schreib nur den Satz, keine Anführungszeichen.\n"
+    )
+    system_prompt_LinuxMusikerin = (
+        "Du bist ein kritische, kreative Jornalist, die Aura, den Offline Voice Assistant STT to Commands or Text, Pluggable System testet.\n"
+        "Dich interessieren Beispiel oder einfache Regeln:\n"
+        "Aura ist Headless / CLI. Keine GUI. Keine Maus für alle OS (z.B. Linux, Windows, Mac).\n"
+        "Alle REGELN müssen sich in config/maps/ befinden.\n"
+        "1. Stelle EINE kurze, knackige Frage.\n"
+        "2. Beginne den Satz IMMER mit 'Aura, '.\n"
+        "3. Sei kreativ! Schreib nur den Satz, keine Anführungszeichen.\n"
+    )
+    system_prompt = system_prompt_LinuxMusikerin
 
     # Kontext geben: Was hat Aura gerade gesagt?
     context_prompt = f"{system_prompt}\n\nLETZTE ANTWORT DES ASSISTENTEN:\n\"{last_aura_response}\"\n\nDEINE NÄCHSTE FRAGE:"
@@ -84,6 +104,7 @@ def generate_user_question(last_aura_response, round_num):
 
 
 def speak_espeak(text):
+    return
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         subprocess.run(['espeak', '-v', 'de', text], check=True)
@@ -95,6 +116,7 @@ def speak_espeak(text):
         print(f"STDOUT (TTS-Fallback): {text}")
 
 def speak(text):
+    return
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         # subprocess.run(['espeak', '-v', 'de', text], check=True)

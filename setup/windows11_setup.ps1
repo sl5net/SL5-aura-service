@@ -143,6 +143,9 @@ Write-Host "--> Patching requirements.txt for Windows fasttext-wheel compatibili
 
 # --- 5. Python Requirements ---
 Write-Host "--> Installing Python requirements into the virtual environment..."
+
+.\.venv\Scripts\pip.exe install --upgrade pip
+
 .\.venv\Scripts\pip.exe install -r requirements.txt
 
 # --- 5. External Tools & Models (from Releases) ---

@@ -375,6 +375,7 @@ def execute(match_data):
             "   - Lade-Reihenfolge: Plugin-ORDNER werden alphabetisch geladen (A-Z).\n"
             "   - Pipeline: Regeln laufen Top-Down. Text wird durchgereicht & verändert. Mehrere Regeln können nacheinander greifen (kumulativ).\n"
             "   - Stopp (Full-Match): Die Pipeline stoppt, wenn ein Regex von Anfang (`^`) bis Ende (`$`) matcht. Da Voice-Input einzeilig ist, sind Anker wichtig.\n"
+            "   - In config/ befinden sich alle KONFIGURATION .\n"
             "   Beispiele: `^.*$` (Catch-All), `^.+$` (Nicht leer) oder spezifisch `^meinBefehl$`. (KEIN Button, reiner Code!)\n"
             "   Beispiel für eine einfache Regel ('Angela Dorothea Merkel', r'^Bundeskanzlerin$', 100, {'flags': re.IGNORECASE})\n"
             "4. Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins erhalten Daten, verarbeiten sie kreativ und geben Text zurück.\n"
@@ -476,7 +477,7 @@ def execute(match_data):
             "prompt": full_prompt_for_generation,
             "stream": False,
             "options": {
-                "num_predict": 80,  # <-- DAS HARD LIMIT (ca. 40-50 Wörter)
+                # "num_predict": 80,  # <-- DAS HARD LIMIT (ca. 40-50 Wörter)
                 "temperature": 0.1,  # 0.7 ist kreativ, 0.1 ist roboterhaft. 0.3 ist gut für Doku.
                 "top_k": 20  # Schnelleres Sampling
             }
