@@ -304,7 +304,7 @@ def get_readme_content():
         current_path = Path(__file__).resolve()
         for _ in range(6):
             current_path = current_path.parent
-            readme_path = current_path / "README_AI.md"
+            readme_path = current_path / "README_AI-delang.md"
             if readme_path.exists():
                 log_debug(f"README gefunden: {readme_path}")
                 content = readme_path.read_text(encoding='utf-8').strip()
