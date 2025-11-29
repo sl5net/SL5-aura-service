@@ -40,9 +40,9 @@ INTEGRITY_CHECKS = {
         '`mv vosk-model-*.zip models/`'
     ],
 
-
-    'tools/download_all_packages.py': [
-        'remove_parts = True'
+    'requirements.txt': [
+        "fasttext==0.9.3; sys_platform != 'win32'",
+        "fasttext-wheel==0.9.2; sys_platform == 'win32'",
     ],
 
 #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
