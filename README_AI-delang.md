@@ -17,6 +17,7 @@
 - Ort: `config/maps/plugins/`
 - Format: Python-Dateien (`FUZZY_MAP_pre.py`).
 - Logik: Regex-Listen. Top-Down Abarbeitung (Alle Treffer gewinnen, stop bei fullmatch).
+- Status: Default an (Opt-out via Config config/maps/settings.py).
 - Funktion: Toggle (Schaltet Aufnahme Start/Stop um).
 
 ## Trigger (Externe Steuerung)
