@@ -10,6 +10,8 @@ import time
 # --- KONFIGURATION ---
 ROUNDS = 500  # Wie oft sollen sie hin und her reden?
 
+# https://ollama.com/download
+
 
 # Sicherstellen, dass wir ask_ollama finden
 try:

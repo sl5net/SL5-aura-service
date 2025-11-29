@@ -6,6 +6,8 @@ FUZZY_MAP_pre = [
     # Catch-all rule: Matches everything (.*) as the last resort.
     # It captures the whole text in group 1 to pass it to the script.
 
+
+    # # https://ollama.com/download
     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100,
         {
         'flags': re.IGNORECASE,

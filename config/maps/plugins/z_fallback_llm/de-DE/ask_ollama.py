@@ -14,6 +14,9 @@ from pathlib import Path
 
 import urllib.request
 
+# https://ollama.com/download
+
+
 # --- KONFIGURATION ---
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 

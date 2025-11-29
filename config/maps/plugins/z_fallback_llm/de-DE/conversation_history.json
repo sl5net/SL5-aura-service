@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Aura, wie kann ich eine bestimmte Textdatei in einer Liste der im Konfigurationsordner gefundenen Dateien auswählen?"
+    "content": "Aura, wie kann ich die neue Regel Hallo Welt in der Datei config/maps/de.json hinzufügen?"
   },
   {
     "role": "assistant",
-    "content": "Um eine bestimmte Textdatei in einer Liste der im Konfigurationsordner gefundenen Dateien auszuwählen, kannst du den Befehl find . -type f -name \"deinBefehlsname.txt\" ausführen. Dieser Befehl sucht alle Dateien (-type f) im aktuellen Verzeichnis und seinen Unterordn"
+    "content": "Um eine neue Regel \"Hallo Welt\" in der Datei config/maps/de.json hinzuzufügen, folge bitte diesen Schritten: 1. Öffne die Datei config/maps/de.json im Texteditor. 2. Füge deine neue Regel unter den anderen Regeln hinzu, z.B. so: json { \"pattern\": \"Hallo Welt\", \"functions\": [\"print_hello_world\"] } 3. Speichere die Änderungen an der Datei. Die neue Regel wird dann automatisch in Aura's Regeln-Liste sichtbar sein und kann verwendet werden, sobald du die Funktion print_rules() ausführen kannst."
   },
   {
     "role": "user",
-    "content": "Aura, wie kann ich den Befehl find . -type d verwenden, um die Ordner in dem Konfigurationsordner zu finden?"
+    "content": "Aura, wie kann ich eine spezifische Sprachanrede Willkommen in der Datei config/maps/en.json hinzufügen und unter anderem dann den Satz in allen Sprachen übersetzen?"
   },
   {
     "role": "assistant",
-    "content": "Um die Ordner in dem Konfigurationsordner zu finden, kannst du den Befehl find . -type d ausführen. Dieser Befehl sucht alle Ordner (-type d) im aktuellen Verzeichnis und seinen Unterordnern."
+    "content": "Um eine spezifische Sprachanrede \"Willkommen\" in die Datei config/maps/en.json zu hinzufügen, folge bitte diesen Schritten: 1. Öffne die Datei config/maps/en.json im Texteditor. 2. Füge deine neue Regel unter den anderen Regeln hinzu, z.B. so: json { \"pattern\": \"Willkommen\", \"functions\": [ \"print_welcome\" ] } 3. Speichere die Änderungen an der Datei. Um den Satz dann in allen Sprachen zu übersetzen, kannst du eine Funktion erstellen, die die Übersetzungsregeln aus den verschiedenen Dateien aufruft. Zum Beispiel könntest du eine Funktion translate_welcome erstellen, die wie folgt aussieht: python import json def translate_welcome(text): # Lade die Übersetzungsregeln für jede Sprache en_rules = load_json('config/maps/en.json') de_rules = load_json('config/maps/de.json') fr_rules = load_json('config/maps/fr.json') # Durchsuche die Regeln, um den Satz zu übersetzen for rule in en_rules['functions']: if text == rule['pattern']: return rule['functions'][0]() for rule in de_rules['functions']: if text == rule['pattern']: return rule['functions'][0]() for rule in fr_rules['functions']: if text == rule['pattern']: return rule['functions'][0]() # Wenn keine Übersetzungsregel gefunden wird, kehre einen Fehler zurück return \"Keine Übersetzungsregel gefunden\" def load_json(file_path): with open(file_path, 'r') as f: return json.load(f) 4. Füge die Funktion translate_welcome zu deiner Hauptregeldatei hinzu. Jetzt kannst du den Satz \"Willkommen\" in allen Sprachen übersetzen, indem du die Funktion translate_welcome ausführst. Zum Beispiel: python print(translate_welcome(\"Willkommen\")) Dies sollte den Satz in der jeweiligen Sprache ausgeben, basierend auf den Übersetzungsregeln in deinen Dateien."
   }
 ]

@@ -1,6 +1,7 @@
 # warm_up_cache_v04.py
 # Version: 0.4
 # Status: Aura-Safe & Kreativer Modus (keine langweiligen Fragen mehr)
+# https://ollama.com/download
 
 import sys
 import os

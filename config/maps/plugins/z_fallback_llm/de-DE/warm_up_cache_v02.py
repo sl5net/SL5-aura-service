@@ -8,6 +8,7 @@ import re
 import subprocess
 import time
 from pathlib import Path
+# https://ollama.com/download
 
 # --- AURA SAFETY CHECK ---
 # Wir definieren ask_ollama global als None.
