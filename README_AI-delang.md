@@ -14,9 +14,9 @@
 4. Dauer: ~15 Min (Download 4GB Modelle).
 
 ## Konfiguration
-- Ort: `config/maps/plugins/`
-- Format: Python-Dateien (`FUZZY_MAP_pre.py`).
-- Logik: Regex-Listen. Top-Down Abarbeitung (Alle Treffer gewinnen, stop bei fullmatch).
+- Ort: `config/maps/`
+- Format: Python-Dateien (`.py`).
+- Logik: Regex-Listen (z.B. `FUZZY_MAP_pre.py`). Top-Down Abarbeitung (Alle Treffer gewinnen, stop bei fullmatch).
 - Status: Default an (Opt-out via Config config/maps/settings.py).
 - Funktion: Toggle (Schaltet Aufnahme Start/Stop um).
 
@@ -33,6 +33,7 @@ Vosk (Audio) > Maps (Pre-LT) > LanguageTool (Opt.) > Maps (Post-LT) > Output (Te
 **Details:**
 - Maps: Regex-Regeln aus `config/maps/` (kumulativ, hierarchisch).
 - Plugins: Können in *jeder* Map-Phase (Pre oder Post) via `on_match_exec` ausgeführt werden.
+- Regeln ändern: Regel in Regeldatei (Regelordner-XY/RegelDatei-ABC.py) mit Text-Editor bearbeiten oder löschen.
 
 Vosk (Audio) >> Regeln (Pass 1) >> LanguageTool (Opt.) >> Regeln (Pass 2) >> TTS.
 (Info: Regeln in `config/maps/` sind kumulativ; Plugins via `on_match_exec`.)

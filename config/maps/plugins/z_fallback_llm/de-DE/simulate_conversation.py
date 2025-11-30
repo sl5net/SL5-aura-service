@@ -61,7 +61,7 @@ def generate_user_question(last_aura_response, round_num):
         "4. Schreib nur den Satz, keine Anführungszeichen.\n"
     )
 
-    system_prompt_LinuxAdministrator = ( # noqa: F841
+    system_prompt_LinuxAdministrator1 = ( # noqa: F841
         "Du bist ein Linux-User, der Aura, den Offline Voice Assistant STT to Commands or Text, Pluggable System testet.\n"
         "REGELN:\n"
         "Aura ist Headless / CLI. Keine GUI. Keine Maus für alle OS (z.B. Linux, Windows, Mac).\n"
@@ -79,7 +79,28 @@ def generate_user_question(last_aura_response, round_num):
         "2. Beginne den Satz IMMER mit 'Aura, '.\n"
         "3. Sei kreativ! Schreib nur den Satz, keine Anführungszeichen.\n"
     )
-    system_prompt = system_prompt_LinuxMusikerin
+
+    system_prompt_LinuxAdministrator = (
+        "Du bist ein strenger Linux-Admin, der den Voice-Assistant 'SL5 Aura' konfiguriert.\n"
+        "Dein Ziel: Prüfen, ob der Bot die Dateipfade und Regex-Syntax kennt.\n"
+        "Kontext: Aura ist headless, nutzt '/tmp/sl5_record.trigger' und Configs in 'config/maps/'.\n\n"
+
+        "REGELN FÜR DICH:\n"
+        "1. Stelle Fragen zur Konfiguration, zu Dateipfaden oder Regex-Regeln.\n"
+        "2. Frage NICHT nach allgemeinem Linux-Wissen (wie 'Was ist systemd').\n"
+        "3. Beginne IMMER mit 'Aura, '.\n"
+        "4. Sei kurz und fordernd.\n\n"
+
+        "BEISPIEL-FRAGEN (Variiere diese):\n"
+        "- Aura, wo muss ich meine neuen Regeln speichern?\n"
+        "- Aura, erstelle eine Regel, die auf 'Computer herunterfahren' reagiert.\n"
+        "- Aura, wie lautet der Befehl, um die Aufnahme manuell auszulösen?\n"
+        "- Aura, schreibe einen Regex, der 'Licht an' oder 'Licht aus' erkennt.\n"
+        "- Aura, welche Datei muss ich anlegen, damit du zuhörst?"
+    )
+
+
+    system_prompt = system_prompt_LinuxAdministrator
 
     # Kontext geben: Was hat Aura gerade gesagt?
     context_prompt = f"{system_prompt}\n\nLETZTE ANTWORT DES ASSISTENTEN:\n\"{last_aura_response}\"\n\nDEINE NÄCHSTE FRAGE:"
@@ -95,7 +116,6 @@ def generate_user_question(last_aura_response, round_num):
     question = result.stdout.strip().replace('"', '')
 
     speak_espeak(question)
-    # speak(question)
 
     # Sicherstellen, dass "Computer" am Anfang steht (falls Llama es vergisst)
     if not question.lower().startswith("aura"):
@@ -106,7 +126,6 @@ def generate_user_question(last_aura_response, round_num):
 
 
 def speak_espeak(text):
-    return
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         subprocess.run(['espeak', '-v', 'de', text], check=True)
@@ -118,7 +137,6 @@ def speak_espeak(text):
         print(f"STDOUT (TTS-Fallback): {text}")
 
 def speak(text):
-    return
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         # subprocess.run(['espeak', '-v', 'de', text], check=True)
@@ -127,11 +145,14 @@ def speak(text):
 
         speak_file_path = f"{h}/projects/py/TTS/speak_file.py"
 
-        f = "/tmp/sl5_aura/simulate_conversation.txt"
-        subprocess.run(['python', speak_file_path, f], subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-
-
+        f_path = "/tmp/sl5_aura/simulate_conversation.txt"
+        # --- FIX: stdout explizit stummschalten ---
+        subprocess.run(
+            ['python', speak_file_path, f_path],
+            stdout=subprocess.DEVNULL,  # <--- WICHTIG: Das hier fehlte/war falsch positioniert
+            stderr=subprocess.DEVNULL,  # Auch Fehler unterdrücken
+            check=False                 # Verhindert Absturz, falls Exit-Code != 0
+        )
 
 
     except Exception:
@@ -169,6 +190,8 @@ def ask_aura(question):
 
 
     speak(response)
+
+    # sys.exit(1)
 
     return response
 

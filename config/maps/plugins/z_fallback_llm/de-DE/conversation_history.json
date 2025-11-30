@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "Aura, wie kann ich eine bestimmte Regel aus einer config/maps-Datei importieren, wenn die Regeln alle unterschiedlich sind und ich nicht weiß, welche Datei den Namen oder die Beschreibung der Regel enthält?"
+    "content": "aura, wie kann ich die dateipfade und regex-regeln in der config/maps/ordnen und speichern? gibt es bestimmte richtlinien oder best practices für die regelnordnung?"
   },
   {
     "role": "assistant",
-    "content": "Um eine bestimmte Regel aus einer config/maps-Datei zu importieren, wenn die Regeln alle unterschiedlich sind und du nicht weißt, welchen Dateinamen die Regel enthält, kannst du folgende Schritte ausführen: 1. Öffne die gewünschte .py-Datei im config/maps-Verzeichnis. 2. Suche nach dem Text, den du importieren möchtest, indem du nach bestimmten Wörtern oder einem bestimmten Namen in der Dateinamen suchst. 3. Wenn du die fzf-Bibliothek verwendest, kannst du fzf -0 config/maps/ ausführen, um eine Liste aller .py-Dateien im Verzeichnis zu sehen, und dann einen Namen oder eine Beschreibung in der Dateiname vorfindest, um die gewünschte Datei auszuwählen. 4. Wenn du die grep-Befehl verwendest, kannst du grep \"Text\" config/maps/.py ausführen, um alle Dateien zu sehen, die den Text enthalten. 5. Sobald du die gewünschte Datei gefunden hast, kannst du den Inhalt der Datei importieren, indem du den Befehl cat /path/to/Regelname.py ausführst. 6. Um den Text dann über den Befehl output zu erstellen, kannst du den folgenden Befehl ausführen: echo \"(cat Regelname.py)\" output Alternativ kannst du auch den grep-Befehl verwenden, um alle Dateien zu sehen, die den Text enthalten. Sobald du die gewünschte Datei gefunden hast, kannst du den Inhalt der Datei importieren und dann über den Befehl output zu erstellen."
+    "content": "user_map.py python # Regel-Tupel: (Name, Regex, Priorität, Flags) ('Regel-Speicherdirektory', r'config/maps/(.)', 10, {}) user_trigger.py python ('Trigger', r'/tmp/sl5_record\\.trigger', 0, {})"
   },
   {
     "role": "user",
-    "content": "Aura, wie kann ich den Inhalt einer bestimmten Regel aus einer config/maps-Datei importieren und ihn als Text ausgeben, wenn die Dateinamen alle unterschiedlich sind?"
+    "content": "aura, wo muss ich meine neuen regeln speichern? gibt es bestimmte dateien oder ordner, in denen du die regeln erwartest?"
   },
   {
     "role": "assistant",
-    "content": "Um den Inhalt einer bestimmten Regel aus einer config/maps-Datei zu importieren und ihn als Text auszugeben, wenn die Dateinamen alle unterschiedlich sind, kannst du folgende Schritte ausführen: 1. Öffne die gewünschte .py-Datei im config/maps-Verzeichnis. 2. Suche nach dem Text, den du importieren möchtest, indem du nach bestimmten Wörtern oder einem bestimmten Namen in der Dateinamen suchst. 3. Wenn du die fzf-Bibliothek verwendest, kannst du fzf -0 config/maps/ ausführen, um eine Liste aller .py-Dateien im Verzeichnis zu sehen, und dann einen Namen oder eine Beschreibung in der Dateiname vorfindest, um die gewünschte Datei auszuwählen. 4. Wenn du die grep-Befehl verwendest, kannst du grep \"Text\" config/maps/.py ausführen, um alle Dateien zu sehen, die den Text enthalten. 5. Sobald du die gewünschte Datei gefunden hast, kannst du den Inhalt der Datei importieren, indem du den Befehl cat /path/to/Regelname.py ausführst. 6. Um den Text dann über den Befehl output zu erstellen, kannst du den folgenden Befehl ausführen: echo \"(cat Regelname.py)\" output Alternativ kannst du auch den grep-Befehl verwenden, um alle Dateien zu sehen, die den Text enthalten. Sobald du die gewünschte Datei gefunden hast, kannst du den Inhalt der Datei importieren und dann über den Befehl output zu erstellen."
+    "content": "user_map.py python ('Regel-Speicherdirektory', r'config/maps/(.)', 10, {})"
   }
 ]

@@ -1,4 +1,4 @@
-import subprocess
+#import subprocess
 import re
 import json
 import os
@@ -10,7 +10,12 @@ import hashlib
 import datetime
 import random
 from pathlib import Path
+#import yake
 
+
+import time
+
+from urllib.error import HTTPError, URLError
 
 import urllib.request
 
@@ -19,6 +24,10 @@ import urllib.request
 
 # --- KONFIGURATION ---
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
+
+SESSION_CACHE_HITS = 0
+SESSION_COUNT = 0
+SESSION_SEC_SUM = 0
 
 
 PLUGIN_DIR = Path(__file__).parent
@@ -36,7 +45,7 @@ logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 # --- AUDIO SETUP ---
-create_bent_sine_wave_sound = None
+create_bent_sine_wave_sound = True
 try:
     project_root = Path(__file__).resolve().parents[5]
     if str(project_root) not in sys.path:
@@ -45,18 +54,41 @@ try:
 except ImportError:
     pass
 
-def log_debug(message: str):
-    caller_info = "UNKNOWN:0"
-    stack = inspect.stack()
-    if len(stack) > 1:
-        try:
-            filename = os.path.basename(stack[1].filename)
-            line_number = stack[1].lineno
-            caller_info = f"{filename}:{line_number}"
-        except Exception:
-            pass
-    # print(f"[DEBUG_LLM] {caller_info}: {message}", file=sys.stderr)
-    logging.info(f"{caller_info}: {message}")
+# def log_debug2(message: str):
+#     caller_info = "UNKNOWN:0"
+#     stack = inspect.stack()
+#     if len(stack) > 1:
+#         try:
+#             filename = os.path.basename(stack[1].filename)
+#             line_number = stack[1].lineno
+#             caller_info = f"{filename}:{line_number}"
+#         except Exception:
+#             pass
+#
+#     t = f"⏱️{secDauerSeitExecFunctionStart()}s"
+#
+#     print(f"{t}:[DEBUG_LLM] {caller_info}: {message}", file=sys.stderr)
+#     logging.info(f"{t}:{caller_info}: {message}")
+
+
+
+def log_debug(text):
+    """
+    Loggt mit Zeitstempel und KORREKTER Zeilennummer des Aufrufers.
+    """
+    # 1. Zeit holen
+    sec = secDauerSeitExecFunctionStart()
+
+    # 2. Den "Stack Frame" des Aufrufers holen (f_back = 1 Schritt zurück)
+    caller_frame = inspect.currentframe().f_back
+
+    # 3. Dateiname und Zeilennummer aus diesem Frame extrahieren
+    filename = os.path.basename(caller_frame.f_code.co_filename)
+    lineno = caller_frame.f_lineno
+
+    # 4. Ausgabe formatieren
+    print(f"⏱{sec}s:[DEBUG_LLM] {filename}:{lineno}: {text}")
+    logging.info(f"{sec} {filename}:{lineno}: {text}")
 
 def play_cache_hit_sound():
     if create_bent_sine_wave_sound:
@@ -140,7 +172,7 @@ def get_instant_match(user_text):
     if not user_relevant:
         return None
 
-    log_debug(f"🚀 INSTANT MODE: Suche Match für {user_relevant}...")
+    # log_debug(f"🚀 INSTANT MODE: Suche Match für {user_relevant}...")
 
     try:
         conn = sqlite3.connect(DB_FILE)
@@ -193,6 +225,7 @@ def get_instant_match(user_text):
 
 # --- NORMALER CACHE ---
 def get_cached_response(hash_input_str):
+    global SESSION_CACHE_HITS
     init_db()
     normalized_prompt = normalize_for_hashing(hash_input_str)
     prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
@@ -200,7 +233,22 @@ def get_cached_response(hash_input_str):
     try:
         conn = sqlite3.connect(DB_FILE)
         c = conn.cursor()
-        c.execute("SELECT last_used FROM prompts WHERE hash=?", (prompt_hash,))
+
+        # 1. Variablen vorbereiten
+        sql_query = "SELECT last_used FROM prompts WHERE hash=?"
+        sql_params = (prompt_hash,)
+
+        # normalized_prompt = normalize_for_hashing(hash_input_str)
+        # log_debug(f"🔑{normalized_prompt} -> Hash: {prompt_hash}")
+
+
+        # 2. Loggen (Was gleich passiert)
+        # log_debug(f"🔍Select: {sql_query} | Params: {sql_params}")
+
+        # 3. Ausführen (mit den Variablen)
+        c.execute(sql_query, sql_params)
+
+        # c.execute("SELECT last_used FROM prompts WHERE hash=?", (prompt_hash,))
         row = c.fetchone()
         if not row:
             conn.close()
@@ -218,16 +266,25 @@ def get_cached_response(hash_input_str):
         c.execute("SELECT id, response_text FROM responses WHERE prompt_hash=?", (prompt_hash,))
         rows = c.fetchall()
         if rows:
-            variant_count = len(rows)
-            if variant_count < 3 and random.random() < 0.2:
-                log_debug(f"♻️ Active Variation: {variant_count} Varianten. Generiere neu...")
-                conn.close()
-                return None, True
+            # --- FEATURE DEAKTIVIERT: Active Variation ---
+            # deaktiviert, want 100% Cache Hits.
+            # Der Sinn dieses Features ("Active Variation") ist es, den "Papagei-Effekt" zu verhindern und das System menschlicher wirken zu lassen.
+            # variant_count = len(rows)
+            # if variant_count < 3 and random.random() < 0.2:
+            #     # ACHTUNG: Hier ist eine 20% Chance auf ABSICHTLICHEN Cache-Miss!
+            #     log_debug(f"♻️ Active Variation: {variant_count} Varianten. Generiere neu...")
+            #     conn.close()
+            #     return None, True # <--- Zwingt das System, neu zu generieren
 
             chosen_row = random.choice(rows)
             c.execute("UPDATE responses SET usage_count = usage_count + 1 WHERE id = ?", (chosen_row[0],))
             conn.commit()
             conn.close()
+            SESSION_CACHE_HITS += 1
+            log_debug(f"✅ Cache HIT! (Session-Hits: {SESSION_CACHE_HITS} | "
+                    f"Gesparte Zeit: ~{SESSION_CACHE_HITS * int(SESSION_SEC_SUM / (SESSION_COUNT - SESSION_CACHE_HITS) * 10) / 10}s")
+
+
             play_cache_hit_sound()
             update_prompt_stats(prompt_hash)
             return chosen_row[1], False
@@ -235,27 +292,75 @@ def get_cached_response(hash_input_str):
         return None, False
     except Exception: return None, False
 
+
+
+
 def cache_response(hash_input_str, response_text, clean_user_input, keywords=None):
-    init_db()
+    # 1. PRÜFUNG: Kommen überhaupt Daten an?
+    if not keywords:
+        log_debug("⚠️ WARNUNG: cache_response wurde OHNE Keywords aufgerufen (None/Leer)!")
+    # else:
+    #     log_debug(f"💾 DB-Save: Versuche Keywords zu speichern: '{keywords}'")
+
+    init_db() # Sicherstellen, dass Tabelle existiert
+
+    # Normalisierung für Hash
     normalized_prompt = normalize_for_hashing(hash_input_str)
     prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
     now = datetime.datetime.now().isoformat()
+
     try:
         conn = sqlite3.connect(DB_FILE)
         c = conn.cursor()
+
+        # 2. INSERT: Genau passend zu deinem Schema
+        # hash | prompt_text | clean_input | keywords | last_used
         c.execute("INSERT OR REPLACE INTO prompts (hash, prompt_text, clean_input, keywords, last_used) VALUES (?, ?, ?, ?, ?)",
                   (prompt_hash, hash_input_str, clean_user_input, keywords, now))
+
+        # Response speichern (bleibt gleich)
         c.execute('''INSERT INTO responses (prompt_hash, response_text, created_at, rating, usage_count) VALUES (?, ?, ?, ?, 1)''',
                   (prompt_hash, response_text, now, DEFAULT_RATING))
+
+        # Cleanup (Zu viele Varianten löschen)
+
+
         c.execute("SELECT count(*) FROM responses WHERE prompt_hash=?", (prompt_hash,))
         count = c.fetchone()[0]
         if count > MAX_VARIANTS:
             excess = count - MAX_VARIANTS
             c.execute(f'''DELETE FROM responses WHERE id IN (SELECT id FROM responses WHERE prompt_hash=? ORDER BY rating ASC, usage_count ASC, created_at ASC LIMIT {excess})''', (prompt_hash,))
+
         conn.commit()
         conn.close()
-        log_debug(f"Cache saved. Hash: {prompt_hash[:8]}")
-    except Exception: pass
+        # log_debug(f"✅ Cache saved to db💾. Hash: {prompt_hash[:8]}")
+
+    except Exception as e:
+        # 3. FEHLER: Nicht mehr 'pass', sondern ausgeben!
+        log_debug(f"❌ DB ERROR in cache_response: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def update_prompt_stats(prompt_hash):
     try:
@@ -267,30 +372,42 @@ def update_prompt_stats(prompt_hash):
         conn.close()
     except Exception: pass
 
-def get_semantic_keywords(user_question):
-    log_debug(f"🔍 Extrahiere Keywords aus: '{user_question}'")
-    prompt = (
-        "Extrahiere den Kern der folgenden Frage in maximal 3 Schlagworten.\n"
-        "Regeln: Nur die Schlagworte. Keine Sätze. Kleinschreibung. Deutsch.\n"
-        f"Frage: \"{user_question}\"\n"
-        "Schlagworte:"
-    )
+def get_professional_keywords(text):
+    """
+    Hybrid-Ansatz: Erst Müll rausfiltern, dann Keywords bestimmen.
+    """
+    # 1. Hardcore Stopword-Liste für Voice-Commands
+    ignore_words = {
+        "aura", "computer", "pc", "system", "hallo", "hey", "bitte", "danke",
+        "erstellen", "mach", "mache", "tue", "generiere", "zeig", "zeige",
+        "ein", "eine", "einer", "der", "die", "das", "und", "oder", "mit",
+        "regeln", "regel", "text", "string" # Oft Füllwörter in deinem Kontext
+    }
+
     try:
-        # cmd = ["ollama", "run", "llama3.2"]
-        cmd = ["ollama", "run", "llama3.2"]
-        result = subprocess.run(cmd, input=prompt, capture_output=True, text=True, encoding='utf-8', timeout=5)
-        if result.returncode == 0:
-            raw_output = result.stdout.strip().lower()
-            clean_text = re.sub(r'[^\w\s]', ' ', raw_output)
-            words = clean_text.split()
-            words.sort()
-            sorted_keywords = " ".join(words)
-            log_debug(f"🗝️  Keywords (Sorted): '{sorted_keywords}'")
-            return sorted_keywords
-        return user_question
-    except Exception as e:
-        log_debug(f"Keyword extraction failed: {e}")
-        return user_question
+        # Text säubern
+        words = re.findall(r'\w+', text.lower())
+        relevant_words = [w for w in words if w not in ignore_words and len(w) > 2]
+        clean_text = " ".join(relevant_words)
+
+        if not clean_text:
+            return "" # Keine Keywords (besser als Müll)
+
+        # Versuche YAKE auf dem gesäuberten Text
+        import yake
+        kw_extractor = yake.KeywordExtractor(lan="de", n=1, dedupLim=0.9, top=3)
+        keywords = kw_extractor.extract_keywords(clean_text)
+
+        # Sortierte Liste zurückgeben
+        final_kws = sorted([k[0].lower() for k in keywords])
+        return " ".join(final_kws)
+
+    except ImportError:
+        # Fallback ohne YAKE
+        return " ".join(sorted(list(set(relevant_words))))
+    except Exception:
+        return ""
+
 
 # --- HELPER ---
 def clean_text_for_typing(text):
@@ -337,17 +454,112 @@ def save_to_history(user_text, ai_text):
             json.dump(history, f, ensure_ascii=False, indent=2)
     except Exception: pass
 
+
+
+def secDauerSeitExecFunctionStart(reset=False):
+    # Wenn reset=True ist ODER die Funktion zum allerersten Mal läuft: Zeit setzen
+    if reset or not hasattr(secDauerSeitExecFunctionStart, "start_time"):
+        secDauerSeitExecFunctionStart.start_time = time.time()
+        return 0.00
+
+    # Differenz berechnen
+    duration = time.time() - secDauerSeitExecFunctionStart.start_time
+    return round(duration, 2)
+
+
+def check_static_guardrails(text_raw):
+    """
+    Fängt Fragen ab, die auf falschen Annahmen basieren,
+    bevor sie teure AI-Zeit verschwenden.
+    """
+    text = text_raw.lower()
+
+
+    user_keywords_stict = ["benutzer", "user", "account", "konto", "login", "anmelden", "registrieren", "whatsapp"]
+    # Wenn "Benutzer" UND eine "Aktion" vorkommt -> Blocken.
+    if any(k in text for k in user_keywords_stict):
+        return (
+            "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
+            "Es gibt keine Accounts, Logins oder Passwörter. "
+            "Du bist der einzige Nutzer (Besitzer des Geräts)."
+        )
+
+    forbidden_terms = ["account erstellen", "passwort ändern", "login", "neuer benutzer"]
+    if any(term in text.lower() for term in forbidden_terms):
+        return (
+            "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
+            "Es gibt keine Accounts, Logins oder Passwörter. "
+            "Du bist der einzige Nutzer (Besitzer des Geräts)."
+        )
+
+    # 1. Benutzerverwaltung (Gibt es nicht)
+    user_keywords = ["benutzer", "account", "konto", "login", "anmelden", "registrieren", "whatsapp"]
+    user_actions = ["entfernen", "löschen", "erstellen", "hinzufügen", "ändern", "wechseln", "neu"]
+
+    # Wenn "Benutzer" UND eine "Aktion" vorkommt -> Blocken.
+    if any(k in text for k in user_keywords) and any(a in text for a in user_actions):
+        return (
+            "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
+            "Es gibt keine Accounts, Logins oder Passwörter. "
+            "Du bist der einzige Nutzer (Besitzer des Geräts)."
+        )
+
+    # 2. Trigger-Datei Missverständnisse
+    # Wenn nach Konfiguration IN der Trigger-Datei gefragt wird
+    if "trigger" in text and ("konfigurier" in text or "schreib" in text or "inhalt" in text or "make update" in text):
+        return (
+            "Die Datei '.sl5_record.trigger' ist eine reine Steuerdatei (Toggle). "
+            "Erstellen = Aufnahme Start/Stop. "
+            "Konfigurationen gehören ausschließlich nach 'config/'."
+        )
+
+    return None
+
+
+
+
+
+
+
+
 def execute(match_data):
+
+
+
+    secDauerSeitExecFunctionStart(reset=True)  # <--- Startschuss!
+
+    global SESSION_COUNT
+    SESSION_COUNT += 1
+
     try:
         match_obj = match_data['regex_match_obj']
-        if len(match_obj.groups()) >= 2:
-            user_input_raw = match_obj.group(2).strip()
-        else:
-            user_input_raw = match_obj.group(1).strip()
 
-        log_debug(f"Input: '{user_input_raw}'")
+        # --- FIX START ---
+        # Statt match_obj.lastindex zu prüfen (was im Mock fehlt),
+        # prüfen wir einfach die Länge des groups()-Tuples.
+        # Das funktioniert in Python re UND in Mock-Objekten.
+        groups = match_obj.groups()
+
+        user_input_raw = (match_obj.group(2) if len(groups) >= 2 else
+                          match_obj.group(1) if len(groups) >= 1 else
+                          match_obj.group(0)).strip()
+        user_input_raw = user_input_raw.lower()
+
+        # log_debug(f"⏱️{secDauerSeitExecFunctionStart()}s")
+        # log_debug(f"Input: '{user_input_raw}'")
+
 
         if not user_input_raw: return "Nichts gehört."
+
+
+        # Fängt Unsinn sofort ab (0.00s)
+        static_reply = check_static_guardrails(user_input_raw)
+        if static_reply:
+            log_debug(f"🛡️ Guardrail ausgelöst: '{user_input_raw}'")
+            return static_reply
+
+
+
 
         if "vergiss alles" in user_input_raw.lower():
             if MEMORY_FILE.exists():
@@ -355,10 +567,11 @@ def execute(match_data):
                 except Exception: pass
             return "Gedächtnis gelöscht."
 
-        # --- INSTANT MODE CHECK (NEU) ---
+
+        # --- INSTANT MODE CHECK ---
         # Wenn der User "sofort", "schnell" oder "instant" sagt,
         # suchen wir NUR in der DB nach dem besten Keyword-Match.
-        instant_triggers = ["sofort", "schnell", "instant", "direkt"]
+        instant_triggers = ["sofort", "schnell", "instant"]
         if any(w in user_input_raw.lower() for w in instant_triggers):
             log_debug("Mode: INSTANT REQUEST")
             instant_response = get_instant_match(user_input_raw)
@@ -369,18 +582,37 @@ def execute(match_data):
 
         # --- AURA TECH PROFILE (Grounding & Facts) ---
 # --- AURA TECH PROFILE (Grounding & Facts) ---
-        AURA_TECH_PROFILE = (
+        AURA_TECH_PROFILE_2911252235Sat = (  # noqa: F841
+            "Du bist SL5 Aura. Antworte auf Deutsch. Sei extrem kurz.\n"
+            
+            "ANWEISUNG FÜR DICH:\n"
+            "Unterscheide selbstständig:\n"
+            "1. WISSENSFRAGE (Wo/Was/Wie) -> Nur den Fakt nennen (1 Satz).\n"
+            "2. HANDLUNG (Erstelle/Schreibe) -> Nur Dateiname und Code-Block.\n\n"
+        
+            "BEISPIELE (Nutze diesen Stil):\n"
+            "User: 'Wo sind die Configs?'\n"
+            "Aura: Die Konfigurationen liegen im Ordner 'config/maps/'.\n\n"
+        
+            "User: 'Wie starte ich die Aufnahme?'\n"
+            "Aura: Durch Erstellen der Datei '/tmp/sl5_record.trigger'.\n\n"
+            
             "SYSTEM-FAKTEN (Strict Grounding):\n"
             "About: Privacy-first voice assistant framework. Core is offline. Scripts allow hybrid usage.\n"
             "1. Tech Stack: Python (87%), Shell (9%), PowerShell (2%), Vosk (Offline-Modelle ~4GB), LanguageTool. KEIN Java/C++, KEINE .exe, KEIN PDF-Support.\n"
             "2. Interface: 100% 'Headless' Hintergrund-Dienst. Interaktion NUR via Mikrofon (Input) & Terminal-Logs (Output). ES GIBT KEINE 'OBERFLÄCHE', KEINE GUI, KEIN Web-UI.\n"
             "3. Logik & Config: KEIN JSON/YAML! Regeln sind reine Python-Dateien (z.B. 'FUZZY_MAP_pre.py') mit Regex-Listen.\n"
+            "   - In config/ befinden sich alle KONFIGURATION .\n"
+            "   Beispiele: `^.*$` (Catch-All), `^.+$` (Nicht leer) oder spezifisch `^meinBefehl$`. (KEIN Button, reiner Code!)\n"
+            "   - Syntax WICHTIG: Nutze Python 're' Syntax. Für Alternativen (ODER) nutze zwingend '|' ohne Leerzeichen!\n"
+            "     FALSCH: `(Hans Max Luis)` -> RICHTIG: `(Hans|Max|Luis)`\n"
+            "     FALSCH: `[Licht Lampe]`   -> RICHTIG: `(Licht|Lampe)`\n"
             "   - Lade-Reihenfolge: Plugin-ORDNER werden alphabetisch geladen (A-Z).\n"
             "   - Pipeline: Regeln laufen Top-Down. Text wird durchgereicht & verändert. Mehrere Regeln können nacheinander greifen (kumulativ).\n"
             "   - Stopp (Full-Match): Die Pipeline stoppt, wenn ein Regex von Anfang (`^`) bis Ende (`$`) matcht. Da Voice-Input einzeilig ist, sind Anker wichtig.\n"
-            "   - In config/ befinden sich alle KONFIGURATION .\n"
-            "   Beispiele: `^.*$` (Catch-All), `^.+$` (Nicht leer) oder spezifisch `^meinBefehl$`. (KEIN Button, reiner Code!)\n"
-            "   Beispiel für eine einfache Regel ('Angela Dorothea Merkel', r'^Bundeskanzlerin$', 100, {'flags': re.IGNORECASE})\n"
+            "   - In config/ befinden sich alle KONFIGURATIONEN.\n"
+            "   Beispiele: `^.*$` (Catch-All), `^.+$` (Nicht leer). \n"
+            "   Beispiel Regel-Tupel: ('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
             "4. Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins erhalten Daten, verarbeiten sie kreativ und geben Text zurück.\n"
             "   - Beispiele: Offline-Wikipedia, SQLite-Booksearch, Ollama AI (Lokal).\n"
             "   - Ausnahme: Das 'Translate'-Plugin nutzt Online-APIs (mit lokalem Cache), benötigt also Internet.\n"
@@ -396,126 +628,353 @@ def execute(match_data):
             "   - Pfad Windows: `c:\\tmp\\sl5_record.trigger`\n"
             "   - Funktion: Datei erstellen = Aufnahme/Verarbeitung starten.\n"
             "9. Verhalten: Erfinde KEINE visuellen Elemente. Fasse dich EXTREM kurz (Max 15 Wörter)."
-            # "9. Verhalten: Erfinde KEINE visuellen Elemente. Erkläre Lösungen immer als Code/Regex-Änderung.\n"
-
-
+            
+            "BEISPIEL-DIALOGE (Lerne die Unterscheidung!):\n"
+            "User: 'Wo finde ich die Konfiguration?'\n"
+            "Aura: Die Konfigurationen liegen im Ordner 'config/'.\n\n"
+        
+            "User: 'Welche Datei startet die Aufnahme in Linux?'\n"
+            "Aura: Das Erstellen der Datei '/tmp/sl5_record.trigger' startet die Aufnahme  in Linux .\n\n"            
+            
+            "BEISPIEL-INTERAKTION (Folge diesem Format strikt!):\n"
+            "User: 'Erstelle Regeln für Licht.'\n"
+            "Aura: Erstelle 'licht_control.py' in 'config/maps/':\n"
         )
-        trigger_clipboard = ["zwischenablage", "clipboard", "kopierten text", "kopierter text", "zusammenfassung"]
-        trigger_readme = [
-            "hilfe", "dokumentation", "readme", "read me", "redmi", "lies mich",
-            "wie installiere", "wie funktioniert", "projekt", "features", "was kannst du",
-            "erkläre", "bedeutet", "warum", "wieso", "ist es möglich", "unterstützt"
-        ]
-        no_cache_keywords = ["witz", "spruch", "zufall", "überrasch", "random"]
+
+        AURA_TECH_PROFILE_2911252311Sat_8sec_superFast = ( # noqa: F841
+            "Du bist SL5 Aura, ein Offline-Sprachassistent.\n"
+            "Deine Aufgabe: Technischer Support. Antworte EXTREM kurz.\n\n"
+
+            "WICHTIGSTE REGELN:\n"
+            "- KEIN 'Meta-Talk' (Kein: 'Du hast gefragt...', Kein: 'Hier ist der Code').\n"
+            "- KEINE Höflichkeitsfloskeln.\n"
+            "- Wenn Code gefragt ist: ZUERST Dateiname (snake_case.py), DANN Code-Block.\n"
+            "- Wenn Info gefragt ist: Nur den Fakt nennen (Max 1 Satz).\n\n"
+
+            "SYSTEM-WISSEN:\n"
+            "1. Config-Ort: 'config/maps/' (Reine Python-Dateien).\n"
+            "2. Logik: Regex Listen (Top-Down Pipeline). Nutze Python 're'.\n"
+            "3. Trigger: Datei '/tmp/sl5_record.trigger' startet Aufnahme.\n"
+            "4. Suche: Nur 'git ls-files'. Keine DB.\n"
+            "5. Umgebung: Headless (Keine GUI). Offline (Kein 'requests' Modul nutzen!).\n\n"
+
+            "MUSTER-ANTWORTEN (Kopiere diesen Stil strikt):\n\n"
+
+            "User: Wo liegen die Konfigurationen?\n"
+            "Aura: Die Konfigurationen befinden sich als Python-Dateien im Ordner 'config/maps/'.\n\n"
+
+            "User: Wie starte ich die Aufnahme?\n"
+            "Aura: Durch Erstellen der Datei '/tmp/sl5_record.trigger'.\n\n"
+
+            "User: Erstelle eine Regel für Bundeskanzlerin.\n"
+            "   Beispiel Regel-Tupel: ('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
+            "User: Erstelle eine Regel für Full-Match.\n"
+            "   Beispiele: `^.*$` (Catch-All), `^.+$` (Nicht leer). \n"
+            "```"
+        )
+
+        AURA_TECH_PROFILE = ( # noqa: F841
+            "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte EXTREM kurz.\n\n"
+
+            "WICHTIGSTE REGELN:\n"
+            "1. KEIN 'Meta-Talk' (Keine Einleitungen, kein 'Hier ist der Code').\n"
+            "2. Wenn du etwas nicht weißt oder es nicht zu Aura gehört: Sage 'Dazu habe ich keine Infos.' (Nicht leer bleiben!).\n"
+            "3. Bei BEFEHLEN (Erstelle Regel): Antworte NUR mit dem Dateinamen und dem Regel-Tupel.\n\n"
+
+            "SYSTEM-WISSEN:\n"
+            "- Config: 'config/maps/' (Python-Dateien).\n"
+            "- Logik: Regex Listen als Tupel.\n"
+            "- Pipeline: Regeln laufen Top-Down. Text wird durchgereicht & verändert. Mehrere Regeln können nacheinander greifen (kumulativ).\n"
+            "- Vosk (Audio) > Maps (FUZZY_MAP_pre.py) > LanguageTool (Opt.) > Maps (FUZZY_MAP_post.py) > Output (Text & TTS).\n"
+            "- Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins erhalten Daten, verarbeiten sie kreativ und geben Text zurück.\n"
+
+            "- Trigger: Datei '/tmp/sl5_record.trigger' (Startet Aufnahme).\n"
+            "- Umgebung: Headless (Keine GUI). Offline.\n\n"
+
+            "MUSTER-ANTWORTEN (Kopiere diesen Stil):\n\n"
+
+            "User: Wo sind die Configs?\n"
+            "Aura: Die Konfigurationen liegen im Ordner 'config/maps/'.\n\n"
+
+            "User: Erstelle eine Regel für Kanzlerin.\n"
+            "Aura: kanzlerin_map.py\n"
+            "```python\n"
+            "# Regel-Tupel: (Name, Regex, Priorität, Flags)\n"
+            "('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
+            "```\n\n"
+
+            "User: Erstelle eine Catch-All Regel.\n"
+            "Aura: catch_all.py\n"
+            "```python\n"
+            "('Alles', r'^.*$', 10, {})\n"
+            "User: Erstelle Regel mit Plugin Wiki.\n"
+            "Aura: wiki_plugin.py\n"
+            "```python\n"
+            "('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
+            "```"
+        )
+
+        AURA_TECH_PROFILE_3011250003Sun = ( # noqa: F841
+            "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte kurz & präzise.\n\n"
+
+            "WICHTIGSTE REGELN:\n"
+            "1. KEIN 'Meta-Talk'. Antworte direkt mit der Lösung.\n"
+            "2. Wenn User nach Regeln fragen: Gib IMMER ein Python-Beispiel (Dateiname + Code).\n"
+            "3. DATEINAMEN: Passend zum Thema (z.B. 'config/maps/pdf/de-DE/FUZZY_MAP_pre.py').\n"
+            "4. WICHTIG: Regex matcht auf GESPROCHENEN TEXT, nicht auf Dateien!\n"
+            "   - Falsch: r'config/maps/file.py'\n"
+            "   - Richtig: r'öffne datei (.*)'\n\n"
+
+            "SYSTEM-WISSEN:\n"
+            "- Config: 'config/maps/' (Python-Dateien).\n"
+            "- Logik: Tupel `('Ergebnis-Text', r'Regex', Prio, Flags)`.\n"                       
+            "- Pipeline: Regeln laufen Top-Down. Text wird durchgereicht & verändert. Mehrere Regeln können nacheinander greifen (kumulativ).\n"
+            "- Vosk (Audio) > Maps (FUZZY_MAP_pre.py) > LanguageTool (Opt.) > Maps (FUZZY_MAP.py) > Output (Text & TTS).\n"
+
+            
+            "- Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins erhalten Daten, verarbeiten sie kreativ und geben Text zurück.\n"
+
+            "- Trigger: '/tmp/sl5_record.trigger' (Startet/Stoped Aufnahme).\n"
+            "- Umgebung: Headless, Offline.\n\n"
+
+
+            "MUSTER-ANTWORTEN (Kopiere diesen Stil):\n\n"
+
+            "User: Wo sind die Regeln?\n"
+            "Aura: In 'config/maps/' als Python-Dateien.\n\n"
+
+            "User: Wo sind die Configs?\n"
+            "Aura: Die Konfigurationen liegen im Ordner 'config/maps/'.\n\n"
+
+            "User: Erstelle eine Regel für Kanzlerin.\n"
+            "Aura: kanzlerin_map.py\n"
+            "```python\n"
+            "# Regel-Tupel: (Name, Regex, Priorität, Flags)\n"
+            "('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
+            "```\n\n"
+
+            "User: Erstelle eine Catch-All Regel.\n"
+            "Aura: config/maps/system/de-DE/FUZZY_MAP_pre.py\n"
+            "```python\n"
+            "('Kein Treffer', r'^.*$', 10, {})\n"
+            "```\n\n"
+            
+            "User: Erstelle Regel mit Plugin Wiki.\n"
+            "Aura: wiki_plugin.py\n"
+            "```python\n"
+            "('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
+            "```"
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        trigger_clipboard = ["zwischenablage", "clipboard", "kopierten text", "zusammenfassung"]
+        trigger_readme = ["hilfe", "dokumentation", "readme", "read me", "wie funktioniert", "was kannst du"]
+        no_cache_keywords = ["witz", "spruch", "zufall", "random"]
 
         context_data = ""
-        system_role = f"Du bist Aura. Antworte auf Deutsch. Kurz (max 2 Sätze). {AURA_TECH_PROFILE}"
+        mode_prefix = "STD" # Standard Mode
+        system_role = f"{AURA_TECH_PROFILE}"
         use_history = True
         input_lower = user_input_raw.lower()
         bypass_cache = False
-        use_semantic_hashing = False
 
-        if len(user_input_raw) > 50:
-            use_semantic_hashing = True
-            log_debug(f"Mode: LONG INPUT ({len(user_input_raw)} chars) -> Semantic Hashing ON")
+        # --- MODE DETECTION & KONTEXT LADEN ---
+        # Hier bestimmen wir nur: Welcher Modus ist aktiv? Welcher Kontext wird geladen?
 
         if any(w in input_lower for w in no_cache_keywords):
             bypass_cache = True
             log_debug("Cache BYPASS: Zufallswort erkannt.")
 
-        if any(w in input_lower for w in trigger_clipboard):
+        # 1. CLIPBOARD CHECK
+        elif any(w in input_lower for w in trigger_clipboard):
             log_debug("Mode: CLIPBOARD")
             content = get_clipboard_content()
             if content:
-                context_data = f"\nDATEN ZWISCHENABLAGE:\n'''{content[:8000]}'''\n"
-                system_role = "Du bist ein Assistent. Analysiere die Daten in der Zwischenablage."
-                use_history = False
-                use_semantic_hashing = True
-            else:
-                return "Die Zwischenablage ist leer. Tipp!! Starte ~/clipboard_bridge.sh im Autostart ordner oder manuell"
+                content_preview = content[:50] + str(len(content))
+                # Hash des Inhalts wird Teil des Prefix -> Inhalt ändert sich = Cache ändert sich
+                clip_hash = hashlib.md5(content_preview.encode()).hexdigest()
+                mode_prefix = f"CLIP_{clip_hash}"
 
+                context_data = f"\nDATEN ZWISCHENABLAGE:\n'''{content[:8000]}'''\n"
+                system_role = "Du bist ein Assistent. Analysiere die Daten."
+                use_history = False
+            else:
+                return "Zwischenablage ist leer."
+
+        # 2. README CHECK
         elif any(w in input_lower for w in trigger_readme):
             log_debug("Mode: README")
             readme_content = get_readme_content()
             if readme_content:
-                context_data = f"\nPROJEKT DOKUMENTATION (README.md - Auszug):\n'''{readme_content}'''\n"
-                system_role = (
-                    f"Du bist der Support-Bot für 'SL5 Aura'. Nutze die Doku und folgende Fakten:\n"
-                    f"{AURA_TECH_PROFILE}\n"
-                    "Wenn etwas nicht in der Doku steht, nutze die Fakten. Erfinde nichts."
-                )
+                # Hash der Readme wird Teil des Prefix -> Doku ändert sich = Cache ändert sich
+                readme_hash = hashlib.md5(readme_content.encode()).hexdigest()
+                mode_prefix = f"README_{readme_hash}"
+
+                context_data = f"\nPROJEKT DOKUMENTATION:\n'''{readme_content}'''\n"
+                system_role = (f"Support-Bot für 'SL5 Aura'. Fakten:\n{AURA_TECH_PROFILE}\nErfinde nichts.")
                 use_history = False
-                use_semantic_hashing = True
             else:
-                return "Ich konnte die Readme nicht finden."
+                return "Readme nicht gefunden."
 
+        # 3. STANDARD (Fallback ist "STD", wie oben initialisiert)
+
+        # --- HASH BERECHNUNG ---
+
+        # 1. Keywords IMMER sofort generieren (für Cache-Key UND DB-Speicherung)
+        # Das macht den Cache "fuzzy" -> "Erstelle Regel" und "Regel erstellen" landen im selben Cache!
+        keywords_str = get_professional_keywords(user_input_raw)
+        # log_debug(f"Keywords: {keywords_str}")
+
+        # Fallback: Wenn keine Keywords gefunden wurden (z.B. nur Füllwörter), nimm den Raw Text
+        if not keywords_str:
+            base_for_hash = user_input_raw
+        else:
+            base_for_hash = keywords_str
+
+        # 2. Den Hash-String bauen
+        if "CLIP" in mode_prefix or "README" in mode_prefix:
+            # Bei Clipboard/Readme muss der Inhalt (Prefix) Teil des Hashes sein
+            hash_input_string = f"{mode_prefix}|{base_for_hash}"
+        else:
+            # Im Standard-Modus zählt nur das Keyword-Set
+            # Frage: "Aura wie spät" -> Key: "STD|spät"
+            # Frage: "Wie spät ist es" -> Key: "STD|spät" -> TREFFER!
+            hash_input_string = f"STD|{base_for_hash}"
+
+        # log_debug(f"🔑 base_for_hash: '{base_for_hash}'")
+        # log_debug(f"🔑 hash_input_string: '{hash_input_string}'")
+
+        # Full Prompt für die AI (bleibt wie es war, für Context)
         full_prompt_for_generation = f"{system_role}\n{context_data}\nUser: {user_input_raw}\nAura:"
-        hash_input = full_prompt_for_generation
-        keywords = None
-
-        if use_semantic_hashing:
-            keywords = get_semantic_keywords(user_input_raw)
-            hash_input = f"{system_role}\n{context_data}\nKEYWORDS: {keywords}"
-
         if use_history:
-            history = load_history()
-            if history:
-                full_prompt_for_generation = f"{system_role}\nVerlauf: {json.dumps(history)}\n{context_data}\nUser: {user_input_raw}\nAura:"
+            hist = load_history()
+            full_prompt_for_generation = f"{system_role}\nVerlauf: {json.dumps(hist)}\n{context_data}\nUser: {user_input_raw}\nAura:"
+
+        # --- CACHE CHECK ---
+
 
         if not bypass_cache:
-            cached_resp, expired = get_cached_response(hash_input)
+            # Jetzt suchen wir mit dem Keyword-Hash!
+            cached_resp, expired = get_cached_response(hash_input_string)
+
             if cached_resp:
                 if use_history: save_to_history(user_input_raw, cached_resp)
                 return cached_resp
+
             if expired:
                 log_debug("♻️ Cache Entry EXPIRED.")
 
-        log_debug("Cache MISS. Rufe Ollama für Antwort...")
-        # --- OLLAMA CALL VIA API (Statt Subprocess) ---
-        log_debug("Cache MISS. Sende API-Request an Ollama...")
+            # --- AI GENERIERUNG (OLLAMA API) ---
+        # log_debug("Cache MISS. Sende API-Request an Ollama...")
 
-        # JSON Datenpaket für die API
         payload = {
             "model": "llama3.2",
             "prompt": full_prompt_for_generation,
             "stream": False,
             "options": {
-                # "num_predict": 80,  # <-- DAS HARD LIMIT (ca. 40-50 Wörter)
-                "temperature": 0.1,  # 0.7 ist kreativ, 0.1 ist roboterhaft. 0.3 ist gut für Doku.
-                "top_k": 20  # Schnelleres Sampling
+                "temperature": 0.1,
+                "top_k": 20,
+                "num_predict": 100,
+                "stop": ["User:", "Verlauf:", "System:", "Aura:"]
             }
         }
 
         try:
-            # Request vorbereiten
             data = json.dumps(payload).encode('utf-8')
             req = urllib.request.Request(OLLAMA_API_URL, data=data, headers={'Content-Type': 'application/json'})
 
-            # Request senden (mit Timeout)
-            with urllib.request.urlopen(req, timeout=90) as response:
+            # Timeout erhöht auf 120s für Sicherheit
+            with urllib.request.urlopen(req, timeout=120) as response:
                 api_response = json.loads(response.read().decode('utf-8'))
 
-            # Text auslesen
             raw_text = api_response.get("response", "")
 
-            # Prüfen ob es geklappt hat
             if not raw_text:
-                return "Fehler: Leere Antwort von der API."
+                return (
+                    "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. \n"
+                    "Es gibt keine Accounts, Logins. \n"
+                    "Du bist der einzige Nutzer (Besitzer des Geräts). \n"
+                    
+                    "Konfiguration befindet sich in config/ \n"
+                    "Regeln-Ordner und Regeln befinden sich in config/maps/ \n"
+
+                    "Beispiel Regel-Tupel: ('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n "
+                    "('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search.py'})\n"
+                    
+                    "Bitte lese Details in der Dokumentation: https://SL5.de/Aura \n"
+                )
+
 
             response = clean_text_for_typing(raw_text)
 
+            # --- SPEICHERN ---
             if not bypass_cache:
-                cache_response(hash_input, response, user_input_raw, keywords)
+                # WICHTIG: Wir nutzen hier denselben hash_input_string (basierend auf Keywords),
+                # den wir oben zum Lesen benutzt haben!
+                cache_response(hash_input_string, response, user_input_raw, keywords=keywords_str)
 
             if use_history:
                 save_to_history(user_input_raw, response)
 
+            global SESSION_SEC_SUM
+            SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
+            log_debug(f"⌚ Nr. {SESSION_COUNT} | SESSION_CACHE_HITS:{SESSION_CACHE_HITS} | "
+                      f"Gesparte Zeit: ~{SESSION_CACHE_HITS * int(SESSION_SEC_SUM / (SESSION_COUNT-SESSION_CACHE_HITS)*10)/10}s")
+
+            if response == 'Dazu habe ich keine Infos.':
+                response = 'Bitte lese Details in der Dokumentation: https://SL5.de/Aura'
+
+            if 'Fehler:' in response:
+                return (
+                    "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
+                    "Es gibt keine Accounts, Logins. "
+                    "Du bist der einzige Nutzer (Besitzer des Geräts). "
+                    "Bitte lese Details in der Dokumentation: https: // SL5.de / Aura"
+                )
+
             return response
 
-        except urllib.error.URLError as e:
-            # Das passiert, wenn Ollama nicht läuft (Port 11434 nicht erreichbar)
-            log_debug(f"API Connection Error: {e}")
-            return "Fehler: Konnte keine Verbindung zu Ollama herstellen. Läuft der Dienst?"
+
+        # --- FEHLER BEHANDLUNG ---
+        except HTTPError as e:
+            # Hier fangen wir den "Server response: 500" ab
+            if e.code == 500:
+                log_debug(f"❌ OLLAMA SERVER ERROR (500). Ignoriere Fehlertext für User.")
+                # Wenn du NICHT willst, dass der User den Fehler sieht:
+                return "Ich habe kurz den Faden verloren. Kannst du das wiederholen?"
+            else:
+                log_debug(f"API HTTP Error: {e.code}")
+                return f"Server Fehler: {e.code}"
+
+        except URLError as e:
+            # Wenn Ollama gar nicht läuft (Connection refused)
+            log_debug(f"API Connection Error: {e.reason}")
+            return "Fehler: Keine Verbindung zu Ollama."
+
+        except Exception as e:
+            # Alle anderen Fehler
+            log_debug(f"API General Error: {e}")
+            return "Ein interner Fehler ist aufgetreten."
+
+
+
+
+
+
 
     except Exception as e:
         log_debug(f"API Error: {e}")
