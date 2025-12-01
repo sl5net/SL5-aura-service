@@ -1,10 +1,16 @@
-#import subprocess
+# ask_ollama.py
+from .normalizer import *
+
+from .cache_core import *
+from .utils import *
+
+
 import re
 import json
-import os
+#import os
 import sys
 import logging
-import inspect
+#import inspect
 import sqlite3
 import hashlib
 import datetime
@@ -25,20 +31,8 @@ import urllib.request
 # --- KONFIGURATION ---
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 
-SESSION_CACHE_HITS = 0
-SESSION_COUNT = 0
-SESSION_SEC_SUM = 0
 
-
-PLUGIN_DIR = Path(__file__).parent
-MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
-BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
-DB_FILE = PLUGIN_DIR / "llm_cache.db"
-
-MAX_HISTORY_ENTRIES = 2
-CACHE_TTL_DAYS = 7
-MAX_VARIANTS = 5
-DEFAULT_RATING = 5
+# GLOBAL_NORMALIZED_KEY = ""
 
 LOG_FILE = "/tmp/aura_ollama_debug.log"
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
@@ -72,88 +66,73 @@ except ImportError:
 
 
 
-def log_debug(text):
-    """
-    Loggt mit Zeitstempel und KORREKTER Zeilennummer des Aufrufers.
-    """
-    # 1. Zeit holen
-    sec = secDauerSeitExecFunctionStart()
 
-    # 2. Den "Stack Frame" des Aufrufers holen (f_back = 1 Schritt zurück)
-    caller_frame = inspect.currentframe().f_back
 
-    # 3. Dateiname und Zeilennummer aus diesem Frame extrahieren
-    filename = os.path.basename(caller_frame.f_code.co_filename)
-    lineno = caller_frame.f_lineno
+# def normalize_for_hashing(text):
+#     return extreme_standardize_prompt_text(text)
+#     # text = text.lower()
+#     # text = re.sub(r'\s+', ' ', text).strip()
+#     # return text
 
-    # 4. Ausgabe formatieren
-    print(f"⏱{sec}s:[DEBUG_LLM] {filename}:{lineno}: {text}")
-    logging.info(f"{sec} {filename}:{lineno}: {text}")
 
-def play_cache_hit_sound():
-    if create_bent_sine_wave_sound:
-        try:
-            sound = create_bent_sine_wave_sound(880, 1200, 80, 0.15)
-            sound.play()
-        except Exception: pass
 
-# --- DATABASE LAYER ---
-def init_db():
-    try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS prompts (
-                        hash TEXT PRIMARY KEY,
-                        prompt_text TEXT,
-                        clean_input TEXT,
-                        keywords TEXT,
-                        last_used TIMESTAMP
-                    )''')
-        c.execute('''CREATE TABLE IF NOT EXISTS responses (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        prompt_hash TEXT,
-                        response_text TEXT,
-                        created_at TIMESTAMP,
-                        rating INTEGER DEFAULT 5,
-                        comment TEXT,
-                        usage_count INTEGER DEFAULT 0,
-                        FOREIGN KEY(prompt_hash) REFERENCES prompts(hash)
-                    )''')
-        # Migrationen (silent fails if exists)
-        try: c.execute("ALTER TABLE responses ADD COLUMN rating INTEGER DEFAULT 5")
-        except Exception: pass
-        try: c.execute("ALTER TABLE responses ADD COLUMN comment TEXT")
-        except Exception: pass
-        try: c.execute("ALTER TABLE responses ADD COLUMN usage_count INTEGER DEFAULT 0")
-        except Exception: pass
-        try: c.execute("ALTER TABLE prompts ADD COLUMN clean_input TEXT")
-        except Exception: pass
-        try: c.execute("ALTER TABLE prompts ADD COLUMN keywords TEXT")
-        except Exception: pass
 
-        c.execute(f"UPDATE responses SET rating = {DEFAULT_RATING} WHERE rating = 0 AND comment IS NULL")
 
-        c.execute("DROP VIEW IF EXISTS overview_readable")
-        c.execute('''
-            CREATE VIEW overview_readable AS
-            SELECT r.id, r.rating, r.usage_count, p.clean_input AS User_Frage, p.keywords, r.response_text, r.comment, r.created_at
-            FROM responses r LEFT JOIN prompts p ON r.prompt_hash = p.hash ORDER BY r.created_at DESC
-        ''')
-        c.execute("DROP VIEW IF EXISTS stats_most_asked")
-        c.execute('''
-            CREATE VIEW stats_most_asked AS
-            SELECT clean_input, COUNT(*) as context_variations, SUM(r.usage_count) as total_answers_served
-            FROM prompts p JOIN responses r ON p.hash = r.prompt_hash GROUP BY clean_input ORDER BY total_answers_served DESC
-        ''')
-        conn.commit()
-        conn.close()
-    except Exception as e:
-        log_debug(f"DB Init Error: {e}")
+# Sehr aggressive Liste deutscher Stoppwörter (aus der nltk-Bibliothek)
+# Hier könnten Sie Ihre eigene, noch längere Liste definieren
 
-def normalize_for_hashing(text):
-    text = text.lower()
-    text = re.sub(r'\s+', ' ', text).strip()
-    return text
+
+# def extreme_standardize_prompt_text(text):
+#     global STOP_WORDS_DE_EXTREME
+#
+#     # Den deutschen Stemmer initialisieren
+#     stemmer = GermanStemmer()
+#
+#
+#     # 1. Alles in Kleinbuchstaben
+#     text = text.lower()
+#
+#     # 2. ALLE Zahlen, Zeitangaben und Währungszeichen durch Platzhalter ersetzen
+#     text = re.sub(r'\d+([.,]\d+)?', ' [NUMBER] ', text)  # Z.B. '10', '10.5'
+#     text = re.sub(r'[€$£%]', ' ', text)
+#
+#     # 3. Radikale Entfernung von fast allen Sonderzeichen und Satzzeichen
+#     text = re.sub(r'[^a-zäöüß\s]', ' ', text)
+#
+#     # 4. Whitespace auf ein einzelnes Leerzeichen reduzieren und trimmen
+#     text = re.sub(r'\s+', ' ', text).strip()
+#
+#     # 5. Tokenisierung (Wörter trennen)
+#     words = text.split()
+#
+#     # 6. Entfernung von Stoppwörtern und Stemming
+#     stemmed_words = []
+#     for word in words:
+#         if word not in STOP_WORDS_DE_EXTREME:
+#             # Das Wort auf seinen Stamm reduzieren (Stemming)
+#             stemmed_words.append(stemmer.stem(word))
+#
+#     # 7. Wörter wieder zu einem String zusammensetzen
+#     text = ' '.join(stemmed_words)
+#
+#     log_debug(f"keywords<lastLine<extreme_standardize_prompt_text: 🔎 {text.strip()} 🔍")
+#
+#     return text.strip()
+
+
+# --- Beispiel-Test ---
+# Prompt 1: "Wie viele Häuser haben wir in der Gegend zur Auswahl?"
+# Stemmed: "wiel haus hab wir gegend auswahl"
+# Extreme Stemmed: "wiel haus hab gegend auswahl" (nach Stoppwortentfernung)
+
+# Prompt 2: "Das Haus ist teuer, aber sehr schön."
+# Extreme Stemmed: "haus teuer schön"
+
+# Prompt 3: "Wieviel Häuser sind in dem Gebiet?"
+# Extreme Stemmed: "wieviel haus gebiet"
+
+
+
 
 # --- INSTANT MODE MATCHING ---
 def get_instant_match(user_text):
@@ -223,78 +202,10 @@ def get_instant_match(user_text):
         log_debug(f"Instant Mode Error: {e}")
         return None
 
-# --- NORMALER CACHE ---
-def get_cached_response(hash_input_str):
-    global SESSION_CACHE_HITS
-    init_db()
-    normalized_prompt = normalize_for_hashing(hash_input_str)
-    prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
-
-    try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-
-        # 1. Variablen vorbereiten
-        sql_query = "SELECT last_used FROM prompts WHERE hash=?"
-        sql_params = (prompt_hash,)
-
-        # normalized_prompt = normalize_for_hashing(hash_input_str)
-        # log_debug(f"🔑{normalized_prompt} -> Hash: {prompt_hash}")
-
-
-        # 2. Loggen (Was gleich passiert)
-        # log_debug(f"🔍Select: {sql_query} | Params: {sql_params}")
-
-        # 3. Ausführen (mit den Variablen)
-        c.execute(sql_query, sql_params)
-
-        # c.execute("SELECT last_used FROM prompts WHERE hash=?", (prompt_hash,))
-        row = c.fetchone()
-        if not row:
-            conn.close()
-            return None, False
-
-        last_used_str = row[0]
-        try:
-            last_used = datetime.datetime.fromisoformat(last_used_str)
-            age = datetime.datetime.now() - last_used
-            if age.days > CACHE_TTL_DAYS:
-                conn.close()
-                return None, True
-        except Exception: pass
-
-        c.execute("SELECT id, response_text FROM responses WHERE prompt_hash=?", (prompt_hash,))
-        rows = c.fetchall()
-        if rows:
-            # --- FEATURE DEAKTIVIERT: Active Variation ---
-            # deaktiviert, want 100% Cache Hits.
-            # Der Sinn dieses Features ("Active Variation") ist es, den "Papagei-Effekt" zu verhindern und das System menschlicher wirken zu lassen.
-            # variant_count = len(rows)
-            # if variant_count < 3 and random.random() < 0.2:
-            #     # ACHTUNG: Hier ist eine 20% Chance auf ABSICHTLICHEN Cache-Miss!
-            #     log_debug(f"♻️ Active Variation: {variant_count} Varianten. Generiere neu...")
-            #     conn.close()
-            #     return None, True # <--- Zwingt das System, neu zu generieren
-
-            chosen_row = random.choice(rows)
-            c.execute("UPDATE responses SET usage_count = usage_count + 1 WHERE id = ?", (chosen_row[0],))
-            conn.commit()
-            conn.close()
-            SESSION_CACHE_HITS += 1
-            log_debug(f"✅ Cache HIT! (Session-Hits: {SESSION_CACHE_HITS} | "
-                    f"Gesparte Zeit: ~{SESSION_CACHE_HITS * int(SESSION_SEC_SUM / (SESSION_COUNT - SESSION_CACHE_HITS) * 10) / 10}s")
-
-
-            play_cache_hit_sound()
-            update_prompt_stats(prompt_hash)
-            return chosen_row[1], False
-        conn.close()
-        return None, False
-    except Exception: return None, False
 
 
 
-
+# ask_ollama.py
 def cache_response(hash_input_str, response_text, clean_user_input, keywords=None):
     # 1. PRÜFUNG: Kommen überhaupt Daten an?
     if not keywords:
@@ -305,9 +216,11 @@ def cache_response(hash_input_str, response_text, clean_user_input, keywords=Non
     init_db() # Sicherstellen, dass Tabelle existiert
 
     # Normalisierung für Hash
-    normalized_prompt = normalize_for_hashing(hash_input_str)
+    global GLOBAL_NORMALIZED_KEY
+    normalized_prompt =    GLOBAL_NORMALIZED_KEY
     prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
     now = datetime.datetime.now().isoformat()
+
 
     try:
         conn = sqlite3.connect(DB_FILE)
@@ -333,7 +246,7 @@ def cache_response(hash_input_str, response_text, clean_user_input, keywords=Non
 
         conn.commit()
         conn.close()
-        # log_debug(f"✅ Cache saved to db💾. Hash: {prompt_hash[:8]}")
+        log_debug(f"✅ Cache saved to db💾. Hash: {prompt_hash[:8]}")
 
     except Exception as e:
         # 3. FEHLER: Nicht mehr 'pass', sondern ausgeben!
@@ -362,51 +275,92 @@ def cache_response(hash_input_str, response_text, clean_user_input, keywords=Non
 
 
 
-def update_prompt_stats(prompt_hash):
-    try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-        now = datetime.datetime.now().isoformat()
-        c.execute("UPDATE prompts SET last_used = ? WHERE hash = ?", (now, prompt_hash))
-        conn.commit()
-        conn.close()
-    except Exception: pass
 
-def get_professional_keywords(text):
-    """
-    Hybrid-Ansatz: Erst Müll rausfiltern, dann Keywords bestimmen.
-    """
-    # 1. Hardcore Stopword-Liste für Voice-Commands
-    ignore_words = {
-        "aura", "computer", "pc", "system", "hallo", "hey", "bitte", "danke",
-        "erstellen", "mach", "mache", "tue", "generiere", "zeig", "zeige",
-        "ein", "eine", "einer", "der", "die", "das", "und", "oder", "mit",
-        "regeln", "regel", "text", "string" # Oft Füllwörter in deinem Kontext
-    }
-
-    try:
-        # Text säubern
-        words = re.findall(r'\w+', text.lower())
-        relevant_words = [w for w in words if w not in ignore_words and len(w) > 2]
-        clean_text = " ".join(relevant_words)
-
-        if not clean_text:
-            return "" # Keine Keywords (besser als Müll)
-
-        # Versuche YAKE auf dem gesäuberten Text
-        import yake
-        kw_extractor = yake.KeywordExtractor(lan="de", n=1, dedupLim=0.9, top=3)
-        keywords = kw_extractor.extract_keywords(clean_text)
-
-        # Sortierte Liste zurückgeben
-        final_kws = sorted([k[0].lower() for k in keywords])
-        return " ".join(final_kws)
-
-    except ImportError:
-        # Fallback ohne YAKE
-        return " ".join(sorted(list(set(relevant_words))))
-    except Exception:
-        return ""
+# def get_professional_keywords(text):
+#     return extreme_standardize_prompt_text(text)
+#
+#     """
+#     Hybrid-Ansatz: Erst Müll rausfiltern, dann Keywords bestimmen.
+#     """
+#     # 1. Hardcore Stopword-Liste für Voice-Commands
+#     # ignore_words = {
+#     #     "aura", "computer", "pc", "system", "hallo", "hey", "bitte", "danke",
+#     #     "erstellen", "mach", "mache", "tue", "generiere", "zeig", "zeige",
+#     #     "ein", "eine", "einer", "der", "die", "das", "und", "oder", "mit",
+#     #     "regeln", "regel", "text", "string" # Oft Füllwörter in deinem Kontext
+#     # }
+#
+#
+#     synonyms = {
+#         # Befehle
+#         "erstelle": "neu", "erstellen": "neu", "generiere": "neu", "mach": "neu",
+#         "mache": "neu", "schreibe": "neu", "füge": "neu", "neue": "neu",
+#         # Info
+#         "zeig": "info", "zeige": "info", "wo": "info", "wie": "info", "hilfe": "info", "erklär": "info",
+#         # Löschen
+#         "lösche": "del", "entferne": "del", "vergiss": "del",
+#         # Kontext
+#         "config": "konfig", "configuration": "konfig", "einstellungen": "konfig",
+#         "regex": "regel", "regeln": "regel", "pattern": "regel"
+#     }
+#
+#     ignore_words = {
+#         "aura", "computer", "pc", "system", "hallo", "hey", "hi",
+#         "bitte", "danke", "mal", "eben", "schnell", "kurz",
+#         "ein", "eine", "einer", "einem", "einen",
+#         "der", "die", "das", "dem", "den",
+#         "und", "oder", "mit", "von", "in", "im", "zu", "zur", "auf", "für",
+#         "ist", "sind", "war", "wäre", "kannst", "du", "mir", "uns", "ich"
+#     }
+#
+#     try:
+#         # Text säubern
+#         words = re.findall(r'\w+', text.lower())
+#
+#         final_tokens = []
+#         for w in words:
+#             # 1. Ignorieren?
+#             if w in ignore_words:
+#                 continue
+#
+#             # 2. Synonym ersetzen?
+#             if w in synonyms:
+#                 final_tokens.append(synonyms[w])
+#             else:
+#                 # 3. Wort behalten
+#                 final_tokens.append(w)
+#
+#         if not final_tokens:
+#             return ""
+#
+#         # 4. Sortieren: "Licht an" und "An Licht" werden identisch ("an licht")
+#         # final_kws = sorted(list(set(final_tokens)))
+#         # return " ".join(final_kws)
+#
+#
+#
+#
+#
+#         relevant_words = [w for w in final_tokens if w not in ignore_words and len(w) > 2]
+#         clean_text = " ".join(relevant_words)
+#
+#         if not clean_text:
+#             return "" # Keine Keywords (besser als Müll)
+#
+#         # Versuche YAKE auf dem gesäuberten Text
+#         import yake
+#         kw_extractor = yake.KeywordExtractor(lan="de", n=1, dedupLim=0.9, top=3)
+#         keywords = kw_extractor.extract_keywords(clean_text)
+#
+#         # Sortierte Liste zurückgeben
+#         final_kws = sorted([k[0].lower() for k in keywords])
+#         return " ".join(final_kws)
+#
+#     except ImportError:
+#         # Fallback ohne YAKE
+#         return " ".join(sorted(list(set(relevant_words))))
+#     except Exception:
+#         return ""
 
 
 # --- HELPER ---
@@ -480,7 +434,7 @@ def check_static_guardrails(text_raw):
     if any(k in text for k in user_keywords_stict):
         return (
             "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
-            "Es gibt keine Accounts, Logins oder Passwörter. "
+            "Es gibt keine Accounts, Passwörter, Logins . "
             "Du bist der einzige Nutzer (Besitzer des Geräts)."
         )
 
@@ -488,7 +442,7 @@ def check_static_guardrails(text_raw):
     if any(term in text.lower() for term in forbidden_terms):
         return (
             "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
-            "Es gibt keine Accounts, Logins oder Passwörter. "
+            "Es gibt keine Accounts, Passwörter und Logins . "
             "Du bist der einzige Nutzer (Besitzer des Geräts)."
         )
 
@@ -500,7 +454,7 @@ def check_static_guardrails(text_raw):
     if any(k in text for k in user_keywords) and any(a in text for a in user_actions):
         return (
             "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
-            "Es gibt keine Accounts, Logins oder Passwörter. "
+            "Es gibt keine Accounts oder Passwörter, Logins. "
             "Du bist der einzige Nutzer (Besitzer des Geräts)."
         )
 
@@ -524,12 +478,21 @@ def check_static_guardrails(text_raw):
 
 def execute(match_data):
 
-
+    # play_cache_hit_sound()
 
     secDauerSeitExecFunctionStart(reset=True)  # <--- Startschuss!
 
     global SESSION_COUNT
+    global SESSION_SEC_SUM
+    global SUM_PER_CACHE
+
+
+
     SESSION_COUNT += 1
+
+    global GLOBAL_NORMALIZED_KEY
+
+    # 1. KANONISCHEN SCHLÜSSEL EINMAL BERECHNEN
 
     try:
         match_obj = match_data['regex_match_obj']
@@ -551,6 +514,9 @@ def execute(match_data):
 
         if not user_input_raw: return "Nichts gehört."
 
+        GLOBAL_NORMALIZED_KEY = create_ultimate_cache_key(user_input_raw)
+
+        keywords_str = GLOBAL_NORMALIZED_KEY
 
         # Fängt Unsinn sofort ab (0.00s)
         static_reply = check_static_guardrails(user_input_raw)
@@ -644,8 +610,12 @@ def execute(match_data):
         AURA_TECH_PROFILE_2911252311Sat_8sec_superFast = ( # noqa: F841
             "Du bist SL5 Aura, ein Offline-Sprachassistent.\n"
             "Deine Aufgabe: Technischer Support. Antworte EXTREM kurz.\n\n"
+            
+            "STRIKTE REGELN:\n"
+            "1. Aura nutzt NUR Python-Dateien (.py) und Tupel.\n"
+            "2. Wenn der User nach YAML, JSON oder Importen fragt: IGNORIERE ES.\n"
+            "3. Schreibe KEINEN Programm-Logik-Code (Kein 'with open', kein 'import', kein 'def').\n"
 
-            "WICHTIGSTE REGELN:\n"
             "- KEIN 'Meta-Talk' (Kein: 'Du hast gefragt...', Kein: 'Hier ist der Code').\n"
             "- KEINE Höflichkeitsfloskeln.\n"
             "- Wenn Code gefragt ist: ZUERST Dateiname (snake_case.py), DANN Code-Block.\n"
@@ -685,10 +655,9 @@ def execute(match_data):
             "- Config: 'config/maps/' (Python-Dateien).\n"
             "- Logik: Regex Listen als Tupel.\n"
             "- Pipeline: Regeln laufen Top-Down. Text wird durchgereicht & verändert. Mehrere Regeln können nacheinander greifen (kumulativ).\n"
-            "- Vosk (Audio) > Maps (FUZZY_MAP_pre.py) > LanguageTool (Opt.) > Maps (FUZZY_MAP_post.py) > Output (Text & TTS).\n"
+            "- Vosk (Audio) > Maps (PUNCTUATION_MAP.py)  > Maps (...pre.py) > LanguageTool (Opt.) > Maps (...post.py) > Output (Text & TTS).\n"
             "- Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins erhalten Daten, verarbeiten sie kreativ und geben Text zurück.\n"
 
-            "- Trigger: Datei '/tmp/sl5_record.trigger' (Startet Aufnahme).\n"
             "- Umgebung: Headless (Keine GUI). Offline.\n\n"
 
             "MUSTER-ANTWORTEN (Kopiere diesen Stil):\n\n"
@@ -696,22 +665,28 @@ def execute(match_data):
             "User: Wo sind die Configs?\n"
             "Aura: Die Konfigurationen liegen im Ordner 'config/maps/'.\n\n"
 
-            "User: Erstelle eine Regel für Kanzlerin.\n"
+            "User: Erstelle eine PUNCTUATION-Regel für Stern.\n"
+            "```python\n"
+            "# PUNCTUATION-Tupel: (Suchwort, neues Wort)\n"
+            "'stern': '*'\n"
+            "```\n\n"
+
+            "User: Erstelle eine Regex-Regel für Kanzlerin.\n"
             "Aura: kanzlerin_map.py\n"
             "```python\n"
-            "# Regel-Tupel: (Name, Regex, Priorität, Flags)\n"
+            "# Regel-Tupel: (Ersetzung, Regex, Priorität, Flags)\n"
             "('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
             "```\n\n"
 
             "User: Erstelle eine Catch-All Regel.\n"
             "Aura: catch_all.py\n"
             "```python\n"
-            "('Alles', r'^.*$', 10, {})\n"
+            "('Ersetzung', r'^.*$', 10, {})\n"
             "User: Erstelle Regel mit Plugin Wiki.\n"
             "Aura: wiki_plugin.py\n"
             "```python\n"
-            "('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
-            "```"
+            "('Ersetzung', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
+
         )
 
         AURA_TECH_PROFILE_3011250003Sun = ( # noqa: F841
@@ -836,8 +811,9 @@ def execute(match_data):
 
         # 1. Keywords IMMER sofort generieren (für Cache-Key UND DB-Speicherung)
         # Das macht den Cache "fuzzy" -> "Erstelle Regel" und "Regel erstellen" landen im selben Cache!
-        keywords_str = get_professional_keywords(user_input_raw)
-        # log_debug(f"Keywords: {keywords_str}")
+
+        #log_debug(f"Keywords<execute 🔎 {keywords_str} 🔍")
+
 
         # Fallback: Wenn keine Keywords gefunden wurden (z.B. nur Füllwörter), nimm den Raw Text
         if not keywords_str:
@@ -869,10 +845,22 @@ def execute(match_data):
 
         if not bypass_cache:
             # Jetzt suchen wir mit dem Keyword-Hash!
-            cached_resp, expired = get_cached_response(hash_input_string)
+            cached_resp, expired = get_cached_response()
 
             if cached_resp:
                 if use_history: save_to_history(user_input_raw, cached_resp)
+
+
+                global SUM_PER_CACHE
+                global SESSION_CACHE_HITS # noqa: F841
+                sum_per_cache = SESSION_CACHE_HITS / (SESSION_COUNT + 0.01)
+                sum_per_cache_str = f"{int(sum_per_cache * 10) / 10} {'📉' if sum_per_cache < SUM_PER_CACHE else '📈'}"
+                SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
+                log_debug(f"⌚ Nr. {SESSION_COUNT} | CACHE_HITS:{SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
+                        f"Gespart: ~{SESSION_CACHE_HITS * int(SESSION_SEC_SUM / (SESSION_COUNT-SESSION_CACHE_HITS)*10)/10}s")
+                SUM_PER_CACHE = sum_per_cache
+
+
                 return cached_resp
 
             if expired:
@@ -901,25 +889,57 @@ def execute(match_data):
             with urllib.request.urlopen(req, timeout=120) as response:
                 api_response = json.loads(response.read().decode('utf-8'))
 
+            sum_per_cache = SESSION_CACHE_HITS / (SESSION_COUNT + 0.01)
+            sum_per_cache_str = f"{int(sum_per_cache * 10) / 10} {'📉' if sum_per_cache < SUM_PER_CACHE else '📈'}"
+            SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
+            log_debug(f"⌚ Nr. {SESSION_COUNT} | CACHE_HITS:{SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
+                      f"Gespart: ~{SESSION_CACHE_HITS * int(SESSION_SEC_SUM / (SESSION_COUNT-SESSION_CACHE_HITS)*10)/10}s")
+            SUM_PER_CACHE = sum_per_cache
+
+
             raw_text = api_response.get("response", "")
 
+            answerForAllFallback = (
+            "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\n"
+            "Pfade: Configs in 'config/', Regeln in 'config/maps/'.\n\n"
+
+            "FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\n"
+            "Synatx: 'Wort': 'Ersatz'\n"
+            "Beispiel: 'stern': '*'\n\n"
+
+            "FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\n"
+            "Syntax: (Name, Regex, Prio, Flags)\n"
+            "Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
+            "Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\n"
+
+            "Doku: https://SL5.de/Aura"
+            )
+
             if not raw_text:
-                return (
-                    "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. \n"
-                    "Es gibt keine Accounts, Logins. \n"
-                    "Du bist der einzige Nutzer (Besitzer des Geräts). \n"
-                    
-                    "Konfiguration befindet sich in config/ \n"
-                    "Regeln-Ordner und Regeln befinden sich in config/maps/ \n"
-
-                    "Beispiel Regel-Tupel: ('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n "
-                    "('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search.py'})\n"
-                    
-                    "Bitte lese Details in der Dokumentation: https://SL5.de/Aura \n"
-                )
-
+                response = answerForAllFallback
 
             response = clean_text_for_typing(raw_text)
+
+            response.replace('sl5_config.py',' settings_local.py ')
+            response.replace(' sl5_record_trigger.py ',' /tmp/sl5_record.trigger ')
+
+            response = response.replace('JSON', 'Python')
+            response = response.replace('YAML', 'Python')
+            response = response.replace('json', 'Python')
+            response = response.replace('Aurah ', 'Aura ')
+            response = response.replace('config/maps/Ordner', 'config/maps Ordner')
+
+            # Dazu habe ich keine Infos
+            if 'Dazu habe ich keine Info' in response or 'sl5_record_trigger.py' in response :
+                response = answerForAllFallback
+
+            if (False # noqa: E129
+                or "r'/tmp" in response
+                or 'user_map.py' in response
+                or 'user_regeln.py' in response): response = answerForAllFallback
+
+            if 'Fehler:' in response or '.json' in response :
+                response = answerForAllFallback
 
             # --- SPEICHERN ---
             if not bypass_cache:
@@ -930,21 +950,8 @@ def execute(match_data):
             if use_history:
                 save_to_history(user_input_raw, response)
 
-            global SESSION_SEC_SUM
-            SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
-            log_debug(f"⌚ Nr. {SESSION_COUNT} | SESSION_CACHE_HITS:{SESSION_CACHE_HITS} | "
-                      f"Gesparte Zeit: ~{SESSION_CACHE_HITS * int(SESSION_SEC_SUM / (SESSION_COUNT-SESSION_CACHE_HITS)*10)/10}s")
 
-            if response == 'Dazu habe ich keine Infos.':
-                response = 'Bitte lese Details in der Dokumentation: https://SL5.de/Aura'
 
-            if 'Fehler:' in response:
-                return (
-                    "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
-                    "Es gibt keine Accounts, Logins. "
-                    "Du bist der einzige Nutzer (Besitzer des Geräts). "
-                    "Bitte lese Details in der Dokumentation: https: // SL5.de / Aura"
-                )
 
             return response
 
@@ -968,7 +975,13 @@ def execute(match_data):
         except Exception as e:
             # Alle anderen Fehler
             log_debug(f"API General Error: {e}")
-            return "Ein interner Fehler ist aufgetreten."
+            #return "Ein interner Fehler ist aufgetreten."
+            return (
+                "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
+                "Es gibt keine Logins, Accounts. "
+                "Du bist der einzige Nutzer (Besitzer des Geräts). "
+                "Bitte lese Details in der Dokumentation: https://SL5.de/Aura"
+            )
 
 
 
@@ -979,4 +992,11 @@ def execute(match_data):
     except Exception as e:
         log_debug(f"API Error: {e}")
         return f"Interner Fehler: {str(e)}"
+
+
+
+
+
+
+
 

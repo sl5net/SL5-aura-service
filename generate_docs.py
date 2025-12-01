@@ -1,5 +1,7 @@
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
-# generate_docs.py
+# generate_docs.py for Sphinx
+
+# Automatisch generierte Übersicht der Hilfsskripte.
 
 import os
 

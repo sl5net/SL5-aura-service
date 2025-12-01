@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "aura, wie kann ich die dateipfade und regex-regeln in der config/maps/ordnen und speichern? gibt es bestimmte richtlinien oder best practices für die regelnordnung?"
+    "content": "aura, wie kann ich ein regenwasserzeichen (*) in den text regen einsetzen?"
   },
   {
     "role": "assistant",
-    "content": "user_map.py python # Regel-Tupel: (Name, Regex, Priorität, Flags) ('Regel-Speicherdirektory', r'config/maps/(.)', 10, {}) user_trigger.py python ('Trigger', r'/tmp/sl5_record\\.trigger', 0, {})"
+    "content": ""
   },
   {
     "role": "user",
-    "content": "aura, wo muss ich meine neuen regeln speichern? gibt es bestimmte dateien oder ordner, in denen du die regeln erwartest?"
+    "content": "aura, gibt es eine möglichkeit, die sprachverwirrung zu reduzieren, indem man bestimmte wörter oder phrasen, die häufiger als anderen verwendet werden, hervorhebt?"
   },
   {
     "role": "assistant",
-    "content": "user_map.py python ('Regel-Speicherdirektory', r'config/maps/(.)', 10, {})"
+    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
   }
 ]

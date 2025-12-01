@@ -2,10 +2,18 @@ import sys
 import os
 import subprocess
 import time
+
+from pygments.lexer import include
+
 #import re
 #import sys
 #from pathlib import Path
 #import subprocess
+
+#from utils import log_debug
+
+from . health_checks import check_db_statistics_and_exit_if_invalid, check_db_statistics_and_exit_if_invalid
+
 
 # --- KONFIGURATION ---
 ROUNDS = 500  # Wie oft sollen sie hin und her reden?
@@ -14,12 +22,17 @@ ROUNDS = 500  # Wie oft sollen sie hin und her reden?
 
 
 # Sicherstellen, dass wir ask_ollama finden
-try:
-    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-    import ask_ollama
-except ImportError:
-    print("❌ FEHLER: Konnte 'ask_ollama.py' nicht importieren.")
-    sys.exit(1)
+# try:
+#     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+#     import ask_ollama
+# except ImportError:
+#     print("❌ FEHLER: Konnte 'ask_ollama.py' nicht importieren.")
+#     sys.exit(1)
+
+
+
+# simulate_conversation.py
+from . import ask_ollama
 
 
 # --- MOCK OBJEKT (Damit Aura denkt, es kommt vom Mikrofon) ---
@@ -80,7 +93,7 @@ def generate_user_question(last_aura_response, round_num):
         "3. Sei kreativ! Schreib nur den Satz, keine Anführungszeichen.\n"
     )
 
-    system_prompt_LinuxAdministrator = (
+    system_prompt_LinuxAdministrator = ( # noqa: F841
         "Du bist ein strenger Linux-Admin, der den Voice-Assistant 'SL5 Aura' konfiguriert.\n"
         "Dein Ziel: Prüfen, ob der Bot die Dateipfade und Regex-Syntax kennt.\n"
         "Kontext: Aura ist headless, nutzt '/tmp/sl5_record.trigger' und Configs in 'config/maps/'.\n\n"
@@ -100,7 +113,7 @@ def generate_user_question(last_aura_response, round_num):
     )
 
 
-    system_prompt = system_prompt_LinuxAdministrator
+    system_prompt = system_prompt_LinuxMusikerin
 
     # Kontext geben: Was hat Aura gerade gesagt?
     context_prompt = f"{system_prompt}\n\nLETZTE ANTWORT DES ASSISTENTEN:\n\"{last_aura_response}\"\n\nDEINE NÄCHSTE FRAGE:"
@@ -115,6 +128,21 @@ def generate_user_question(last_aura_response, round_num):
     # Bereinigen (Manchmal ist Llama geschwätzig)
     question = result.stdout.strip().replace('"', '')
 
+    question = question.replace('trigger-Ordner','trigger ')
+
+
+    # /tmp/sl5_record.trigger-Ordner
+
+    question = question.replace('JSON','Python')
+    question = question.replace('YAML','Python')
+    question = question.replace('json','Python')
+    question = question.replace('.Python','.py')
+    question = question.replace('Aurah ','Aura ')
+    question = question.replace('Aurawhen','Aura ')
+    question = question.replace('config/maps/Ordner','config/maps Ordner')
+
+    question = question.replace('Format `.config`','Format `.py`')
+    question = question.replace('.config',' config/ ')
     speak_espeak(question)
 
     # Sicherstellen, dass "Computer" am Anfang steht (falls Llama es vergisst)
@@ -227,4 +255,7 @@ def main():
     print("Tipp: Die generierten Antworten sind jetzt im Cache und stehen sofort zur Verfügung!")
 
 if __name__ == "__main__":
+    # 🚨
+    check_db_statistics_and_exit_if_invalid()
+
     main()

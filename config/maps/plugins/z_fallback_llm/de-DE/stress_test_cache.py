@@ -6,9 +6,10 @@ import time
 # Import erzwingen
 try:
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-    import ask_ollama
+    # stress_test_cache.py
+    from . import ask_ollama
 except ImportError:
-    print("❌ 'ask_ollama.py' nicht gefunden.")
+    print("❌ 'stress_test_cache.py:11: ask_ollama.py' nicht gefunden 1.12.'25 16:32 Mon.")
     sys.exit(1)
 
 # Mock Objekt
