@@ -1,0 +1,13 @@
+10:14:48,261 - INFO     - 0.0 cache_core.py:107: ✅ 1 Cache HITs | CacheHITs/Nr : 100.0📈Zeit gespart: ~0.0s
+10:14:48,268 - INFO     - 0.01 ask_ollama.py:820: cached_resp: Ja, du kannst die Regeln aus dem Ordner config/maps/ importieren. Dazu musst du einfach den Inhalt des Ordners in deine Python-Datei einfügen oder sie direkt in deine Regeln-Dateien einbinden. Die Regeln werden automatisch geladen und können dann verwendet werden.
+10:15:13,191 - INFO     - 24.93 cache_core.py:107: ✅ 2 Cache HITs | CacheHITs/Nr : 200.0📈Zeit gespart: ~0.0s
+10:15:13,198 - INFO     - 24.94 ask_ollama.py:820: cached_resp: ['formatieren.py', ('Ersetzung', r'.', '', 10, {'flags': re.IGNORECASE}), 'catch_all.py', ('Ersetzung', r'.', 10, {}), 'wiki_plugin.py', ('Ersetzung', r'Wiki (.)', 50, {'on_match_exec': 'plugins.wiki_search'})]
+10:15:36,228 - INFO     - 47.97 ask_ollama.py:487: 🛡️ Guardrail ausgelöst: 'aura, wie kann ich eine bestimmte datei im verzeichnis /home/user/dateien finden und sie dann durch eine platzhalter ('[datei]') ersetzen?'
+10:16:04,144 - INFO     - 75.88 ask_ollama.py:864: ⌚ Nr. 4 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | Gespart: ~0.0s
+10:16:04,159 - INFO     - 75.9 cache_core.py:180: ✅ Cache saved to db💾. normalized_key: 6dc11039 ...
+10:16:15,360 - INFO     - 87.1 cache_core.py:107: ✅ 3 Cache HITs | CacheHITs/Nr : 300.0📈Zeit gespart: ~0.0s
+10:16:15,365 - INFO     - 87.1 ask_ollama.py:820: cached_resp: Dazu habe ich keine Infos.
+10:16:36,142 - INFO     - 107.88 ask_ollama.py:864: ⌚ Nr. 6 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | Gespart: ~0.0s
+10:16:36,153 - INFO     - 107.89 cache_core.py:180: ✅ Cache saved to db💾. normalized_key: e0d35dcb ...
+10:16:44,869 - INFO     - 116.61 cache_core.py:107: ✅ 4 Cache HITs | CacheHITs/Nr : 400.0📈Zeit gespart: ~0.0s
+10:16:44,875 - INFO     - 116.61 ask_ollama.py:820: cached_resp: User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'

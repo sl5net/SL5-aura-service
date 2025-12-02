@@ -128,7 +128,7 @@ def extreme_standardize_prompt_text(text):
     if not text:
         text = 'aura_empty_request'  # <-- Ein eindeutiger, kanonischer Fallback-Schlüssel
 
-    log_debug(f"keywords<lastLine<extreme_standardize_prompt_text: 🔎 {text.strip()} 🔍")
+    # log_debug(f"keywords<lastLine<extreme_standardize_prompt_text: 🔎 {text.strip()} 🔍")
 
 
 

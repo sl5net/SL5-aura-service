@@ -27,24 +27,21 @@ from scripts.py.func.audio_manager import create_bent_sine_wave_sound
 # utils.py
 
 
-GLOBAL_NORMALIZED_KEY =''
-
-DEFAULT_RATING = 5
-
-SESSION_CACHE_HITS = 0
-SUM_PER_CACHE =0
-SESSION_COUNT = 0
-SESSION_SEC_SUM = 0.01
-
 
 PLUGIN_DIR = Path(__file__).parent
 MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
 BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
 
+DEFAULT_RATING = 5
 
 MAX_HISTORY_ENTRIES = 2
 CACHE_TTL_DAYS = 7
 MAX_VARIANTS = 5
+
+SESSION_CACHE_HITS = 0
+SUM_PER_CACHE = 0
+SESSION_SEC_SUM = 0
+SESSION_COUNT = 0
 
 
 
@@ -84,6 +81,38 @@ STOP_WORDS_DE_EXTREME.update({
 })
 
 
+LOG_FILE = CURRENT_DIR / "ask_ollama.log"
+logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Clear any pre-existing handlers to prevent duplicates.
+if len(logger.handlers) > 0:
+    logger.handlers.clear()
+
+# Create a shared formatter with the custom formatTime function.
+def formatTime(record, datefmt=None):
+    time_str = time.strftime("%H:%M:%S")
+    milliseconds = int((record.created - int(record.created)) * 1000)
+    ms_str = f",{milliseconds:03d}"
+    return time_str + ms_str
+
+log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
+log_formatter.formatTime = formatTime
+
+# Create, configure, and add the File Handler.
+file_handler = logging.FileHandler(f'{LOG_FILE}', mode='w')
+file_handler.setFormatter(log_formatter)
+logger.addHandler(file_handler)
+
+# Create, configure, and add the Console Handler.
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(log_formatter)
+logger.addHandler(console_handler)
+
+
 
 #from pathlib import Path
 def log_debug(text):
@@ -113,7 +142,6 @@ def secDauerSeitExecFunctionStart(reset=False):
     # Differenz berechnen
     duration = time.time() - secDauerSeitExecFunctionStart.start_time
     return round(duration, 2)
-
 
 # --- DATABASE LAYER ---
 def init_db():

@@ -1,4 +1,5 @@
 # ask_ollama.py
+
 from .normalizer import *
 
 from .cache_core import *
@@ -33,6 +34,9 @@ OLLAMA_API_URL = "http://localhost:11434/api/generate"
 
 
 # GLOBAL_NORMALIZED_KEY = ""
+
+
+SESSION_COUNT = 0
 
 LOG_FILE = "/tmp/aura_ollama_debug.log"
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
@@ -206,51 +210,6 @@ def get_instant_match(user_text):
 
 
 # ask_ollama.py
-def cache_response(hash_input_str, response_text, clean_user_input, keywords=None):
-    # 1. PRÜFUNG: Kommen überhaupt Daten an?
-    if not keywords:
-        log_debug("⚠️ WARNUNG: cache_response wurde OHNE Keywords aufgerufen (None/Leer)!")
-    # else:
-    #     log_debug(f"💾 DB-Save: Versuche Keywords zu speichern: '{keywords}'")
-
-    init_db() # Sicherstellen, dass Tabelle existiert
-
-    # Normalisierung für Hash
-    global GLOBAL_NORMALIZED_KEY
-    normalized_prompt =    GLOBAL_NORMALIZED_KEY
-    prompt_hash = hashlib.sha256(normalized_prompt.encode('utf-8')).hexdigest()
-    now = datetime.datetime.now().isoformat()
-
-
-    try:
-        conn = sqlite3.connect(DB_FILE)
-        c = conn.cursor()
-
-        # 2. INSERT: Genau passend zu deinem Schema
-        # hash | prompt_text | clean_input | keywords | last_used
-        c.execute("INSERT OR REPLACE INTO prompts (hash, prompt_text, clean_input, keywords, last_used) VALUES (?, ?, ?, ?, ?)",
-                  (prompt_hash, hash_input_str, clean_user_input, keywords, now))
-
-        # Response speichern (bleibt gleich)
-        c.execute('''INSERT INTO responses (prompt_hash, response_text, created_at, rating, usage_count) VALUES (?, ?, ?, ?, 1)''',
-                  (prompt_hash, response_text, now, DEFAULT_RATING))
-
-        # Cleanup (Zu viele Varianten löschen)
-
-
-        c.execute("SELECT count(*) FROM responses WHERE prompt_hash=?", (prompt_hash,))
-        count = c.fetchone()[0]
-        if count > MAX_VARIANTS:
-            excess = count - MAX_VARIANTS
-            c.execute(f'''DELETE FROM responses WHERE id IN (SELECT id FROM responses WHERE prompt_hash=? ORDER BY rating ASC, usage_count ASC, created_at ASC LIMIT {excess})''', (prompt_hash,))
-
-        conn.commit()
-        conn.close()
-        log_debug(f"✅ Cache saved to db💾. Hash: {prompt_hash[:8]}")
-
-    except Exception as e:
-        # 3. FEHLER: Nicht mehr 'pass', sondern ausgeben!
-        log_debug(f"❌ DB ERROR in cache_response: {e}")
 
 
 
@@ -509,12 +468,16 @@ def execute(match_data):
         user_input_raw = user_input_raw.lower()
 
         # log_debug(f"⏱️{secDauerSeitExecFunctionStart()}s")
-        # log_debug(f"Input: '{user_input_raw}'")
+        # log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
 
 
         if not user_input_raw: return "Nichts gehört."
 
         GLOBAL_NORMALIZED_KEY = create_ultimate_cache_key(user_input_raw)
+        hash_of_normalized_key = prompt_key_to_hash(GLOBAL_NORMALIZED_KEY)
+
+        # log_debug(f"GLOBAL_NORMALIZED_KEY: {GLOBAL_NORMALIZED_KEY}")
+        # log_debug(f"hash_of_normalized_key: {hash_of_normalized_key}")
 
         keywords_str = GLOBAL_NORMALIZED_KEY
 
@@ -770,6 +733,10 @@ def execute(match_data):
         # --- MODE DETECTION & KONTEXT LADEN ---
         # Hier bestimmen wir nur: Welcher Modus ist aktiv? Welcher Kontext wird geladen?
 
+        # log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
+        # log_debug(f"Input: {input_lower}:'{input_lower}'")
+
+
         if any(w in input_lower for w in no_cache_keywords):
             bypass_cache = True
             log_debug("Cache BYPASS: Zufallswort erkannt.")
@@ -845,9 +812,12 @@ def execute(match_data):
 
         if not bypass_cache:
             # Jetzt suchen wir mit dem Keyword-Hash!
-            cached_resp, expired = get_cached_response()
+            # log_debug(f"11111 hash_input_string: '{hash_input_string}'") # 'STD|aura_empty_request'
+            # log_debug(f"11111 GLOBAL_NORMALIZED_KEY: '{GLOBAL_NORMALIZED_KEY}'") # 'aura_empty_request'
+            cached_resp, expired = get_cached_response(GLOBAL_NORMALIZED_KEY)
 
             if cached_resp:
+                log_debug(f"cached_resp: {cached_resp}")
                 if use_history: save_to_history(user_input_raw, cached_resp)
 
 
@@ -856,8 +826,6 @@ def execute(match_data):
                 sum_per_cache = SESSION_CACHE_HITS / (SESSION_COUNT + 0.01)
                 sum_per_cache_str = f"{int(sum_per_cache * 10) / 10} {'📉' if sum_per_cache < SUM_PER_CACHE else '📈'}"
                 SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
-                log_debug(f"⌚ Nr. {SESSION_COUNT} | CACHE_HITS:{SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
-                        f"Gespart: ~{SESSION_CACHE_HITS * int(SESSION_SEC_SUM / (SESSION_COUNT-SESSION_CACHE_HITS)*10)/10}s")
                 SUM_PER_CACHE = sum_per_cache
 
 
@@ -880,6 +848,7 @@ def execute(match_data):
                 "stop": ["User:", "Verlauf:", "System:", "Aura:"]
             }
         }
+
 
         try:
             data = json.dumps(payload).encode('utf-8')
@@ -943,9 +912,19 @@ def execute(match_data):
 
             # --- SPEICHERN ---
             if not bypass_cache:
+                # log_debug(f"bypass_cache: {bypass_cache}")
                 # WICHTIG: Wir nutzen hier denselben hash_input_string (basierend auf Keywords),
                 # den wir oben zum Lesen benutzt haben!
-                cache_response(hash_input_string, response, user_input_raw, keywords=keywords_str)
+                # cache_response(hash_input_string, response, user_input_raw, keywords=keywords_str)
+
+                cache_response(
+                    tag_keyword=hash_input_string,
+                    response_text=response,
+                    clean_user_input=user_input_raw,
+                    hash_of_normalized_key=hash_of_normalized_key
+                )
+
+
 
             if use_history:
                 save_to_history(user_input_raw, response)

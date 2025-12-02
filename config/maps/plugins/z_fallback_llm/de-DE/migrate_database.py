@@ -1,11 +1,17 @@
-# migrate_database.py
+# migrate_database.py # migrate_database
 from pathlib import Path
-
 from .utils import STOP_WORDS_DE_EXTREME # noqa: F401
-from .normalizer import *
-
+from .normalizer import extreme_standardize_prompt_text,create_ultimate_cache_key,log_debug
 #from cache_core import *
 from .utils import log_debug
+
+PLUGIN_DIR = Path(__file__).parent
+MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
+BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
+DB_FILE = PLUGIN_DIR / "llm_cache.db"
+log_debug(f'DB_FILE = {DB_FILE }')
+
+
 
 """
 cd config/maps/plugins/z_fallback_llm/de-DE/                                                                                                  1 ✘    STT 
@@ -33,11 +39,6 @@ from nltk.stem.snowball import GermanStemmer # Benötigt: pip install nltk
 # 1. KONFIGURATION (Bitte anpassen!)
 # ----------------------------------------------------
 
-PLUGIN_DIR = Path(__file__).parent
-MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
-BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
-DB_FILE = PLUGIN_DIR / "llm_cache_OFF_DUMMY.db"
-log_debug(f'DB_FILE = {DB_FILE }')
 
 
 
@@ -59,7 +60,6 @@ COMMAND_SYNONYMS = {
 
 
 
-GLOBAL_STEMMER = GermanStemmer()
 
 
 

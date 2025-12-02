@@ -1,6 +1,6 @@
 import sys
 import os
-import subprocess
+import subprocess, psutil
 import time
 
 from pygments.lexer import include
@@ -10,13 +10,15 @@ from pygments.lexer import include
 #from pathlib import Path
 #import subprocess
 
-#from utils import log_debug
+from . utils import log_debug
+
+
 
 from . health_checks import check_db_statistics_and_exit_if_invalid, check_db_statistics_and_exit_if_invalid
 
 
 # --- KONFIGURATION ---
-ROUNDS = 500  # Wie oft sollen sie hin und her reden?
+ROUNDS = 900  # Wie oft sollen sie hin und her reden?
 
 # https://ollama.com/download
 
@@ -235,8 +237,21 @@ def main():
     print(f"\n")
 
     for i in range(1, ROUNDS + 1):
+
+        if psutil.virtual_memory().percent > 80:
+            # restart your script is a very common and effective fallback workaround for managing excessive memory usage
+            print(' memory().percent > 80% -> exit. protected excessive memory usage')
+            sys.exit(1)
+
+
+
+        print("\n")
+
         # 1. User generiert Frage
-        question = generate_user_question(last_response, i)
+
+        question = "Aura. Was ist SL5 Aura?"
+        if True:
+            question = generate_user_question(last_response, i)
         if not question:
             print("❌ User-Bot ist abgestürzt.")
             break
@@ -248,14 +263,24 @@ def main():
         last_response = response
 
         # Kurze Pause für Lesbarkeit
-        time.sleep(1)
+        time.sleep(0.1)
         print("_" * 40)
+        print("\n")
+
 
     print("\n✅ Simulation beendet.")
     print("Tipp: Die generierten Antworten sind jetzt im Cache und stehen sofort zur Verfügung!")
 
 if __name__ == "__main__":
     # 🚨
+
+    # https://stackoverflow.com/a/69511430/2891692
+    # psutil.virtual_memory().percent
+
+
+
     check_db_statistics_and_exit_if_invalid()
 
     main()
+
+    log_debug("hi")
