@@ -10,8 +10,15 @@ from pathlib import Path
 
 from nltk.stem.snowball import GermanStemmer
 
+
+PLUGIN_DIR = Path(__file__).parent
+MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
+BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
+DB_FILE = PLUGIN_DIR / "llm_cache.db"
+
+
 CURRENT_DIR = Path(__file__).resolve().parent
-DB_FILE = CURRENT_DIR / "llm_cache.db"
+# DB_FILE = CURRENT_DIR / "llm_cache.db"
 
 
 GLOBAL_STEMMER = GermanStemmer()
@@ -25,23 +32,42 @@ sys.path.append(str(PROJECT_ROOT_DIR))
 from scripts.py.func.audio_manager import create_bent_sine_wave_sound
 
 # utils.py
-
-
-
 PLUGIN_DIR = Path(__file__).parent
 MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
 BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
 
 DEFAULT_RATING = 5
 
+# utils.py
+global SESSION_CACHE_HITS
+global SUM_PER_CACHE
+global SESSION_SEC_SUM
+global SESSION_COUNT
+
+try:
+    _ = SESSION_CACHE_HITS
+except NameError:
+    SESSION_CACHE_HITS = 0
+try:
+    _ = SUM_PER_CACHE
+except NameError:
+    SUM_PER_CACHE = 0
+try:
+    _ = SESSION_SEC_SUM
+except NameError:
+    SESSION_SEC_SUM = 0
+try:
+    _ = SESSION_COUNT
+except NameError:
+    SESSION_COUNT = 0
+
+
+
+
 MAX_HISTORY_ENTRIES = 2
 CACHE_TTL_DAYS = 7
 MAX_VARIANTS = 5
 
-SESSION_CACHE_HITS = 0
-SUM_PER_CACHE = 0
-SESSION_SEC_SUM = 0
-SESSION_COUNT = 0
 
 
 
@@ -130,8 +156,7 @@ def log_debug(text):
     lineno = caller_frame.f_lineno
 
     # 4. Ausgabe formatieren
-    print(f"⏱{sec}s:[DEBUG_LLM] {filename}:{lineno}: {text}")
-    logging.info(f"{sec} {filename}:{lineno}: {text}")
+    logging.info(f"⏱{sec} {filename}:{lineno}: {text}")
 
 def secDauerSeitExecFunctionStart(reset=False):
     # Wenn reset=True ist ODER die Funktion zum allerersten Mal läuft: Zeit setzen

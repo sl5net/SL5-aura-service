@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "aura, kann du mir bitte bestätigen, ob die regel in config/maps/entfernen.txt korrekt deaktiviert wird?"
+    "content": "aura, wie kann ich eine vordefinierte sprache oder einen befehl für den offline-modus aktivieren?"
   },
   {
     "role": "assistant",
-    "content": "entfernt.txt"
+    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
   },
   {
     "role": "user",
-    "content": "aura, welches datei entfernt.txt gelöscht hat?"
+    "content": "aura, wie kann ich das regex-paar 'url' und 'https\\.\\s+' auf den ersten satz von jedem input übersetzen?"
   },
   {
     "role": "assistant",
-    "content": "User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'"
+    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
   }
 ]

@@ -1,15 +1,10 @@
 # migrate_database.py # migrate_database
 from pathlib import Path
-from .utils import STOP_WORDS_DE_EXTREME # noqa: F401
-from .normalizer import extreme_standardize_prompt_text,create_ultimate_cache_key,log_debug
+from .normalizer import extreme_standardize_prompt_text,create_ultimate_cache_key,utils.log_debug
 #from cache_core import *
-from .utils import log_debug
+from . import utils
 
-PLUGIN_DIR = Path(__file__).parent
-MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
-BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
-DB_FILE = PLUGIN_DIR / "llm_cache.db"
-log_debug(f'DB_FILE = {DB_FILE }')
+utils.log_debug(f'utils.DB_FILE = {utils.DB_FILE }')
 
 
 
@@ -33,7 +28,7 @@ import sqlite3
 import hashlib
 #import re
 from nltk.stem.snowball import GermanStemmer # Benötigt: pip install nltk
-#from utils import log_debug
+#from utils import utils.log_debug
 
 # ----------------------------------------------------
 # 1. KONFIGURATION (Bitte anpassen!)
@@ -68,8 +63,8 @@ COMMAND_SYNONYMS = {
 # 3. MIGRATIONSLOGIK
 # ----------------------------------------------------
 def migrate_database():
-    print(f"Starte Datenbank-Migration für '{DB_FILE}'...")
-    conn = sqlite3.connect(DB_FILE)
+    print(f"Starte Datenbank-Migration für '{utils.DB_FILE}'...")
+    conn = sqlite3.connect(utils.DB_FILE)
     c = conn.cursor()
 
     #conn.execute("PRAGMA foreign_keys = ON;")
@@ -123,7 +118,7 @@ def migrate_database():
                          (new_hash, old_data[0], new_clean_input, new_clean_input, old_data[1]))
                 updates_performed += 1
             else:
-                log_debug(f"⚠️ WARNUNG: Eintrag mit Hash {old_hash[:8]} nicht gefunden.")
+                utils.log_debug(f"⚠️ WARNUNG: Eintrag mit Hash {old_hash[:8]} nicht gefunden.")
 
 
     conn.commit()

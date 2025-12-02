@@ -10,7 +10,7 @@ from pygments.lexer import include
 #from pathlib import Path
 #import subprocess
 
-from . utils import log_debug
+from . import utils
 
 
 
@@ -283,4 +283,4 @@ if __name__ == "__main__":
 
     main()
 
-    log_debug("hi")
+    utils.log_debug("hi")

@@ -3,7 +3,7 @@ import re
 from idna.idnadata import scripts
 
 #import hashlib
-from .utils import log_debug,GLOBAL_STEMMER ,STOP_WORDS_DE_EXTREME # noqa: F401
+from . import utils
 
 
 import sys
@@ -21,12 +21,12 @@ try:
     from scripts.py.func.audio_manager import *
 except ImportError as e:
     print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
-    log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
+    utils.log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
 try:
     from config.maps.plugins.standard_actions.get_suggestions import get_suggestions # noqa: F401
 except ImportError as e:
     print(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")
-    log_debug(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")
+    utils.log_debug(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")
     sys.exit(1)
 
 # TODO: synonym verbessern
@@ -92,7 +92,6 @@ def create_ultimate_cache_key(text):
 
 
 def extreme_standardize_prompt_text(text):
-    global STOP_WORDS_DE_EXTREME # noqa: F824
 
     # Den deutschen Stemmer initialisieren
 
@@ -116,8 +115,8 @@ def extreme_standardize_prompt_text(text):
     # 6. Entfernung von Stoppwörtern und Stemming
     stemmed_words = []
     for word in words:
-        if word not in STOP_WORDS_DE_EXTREME and len(word) > 8:
-            stemmed_words.append(GLOBAL_STEMMER.stem(word))
+        if word not in utils.STOP_WORDS_DE_EXTREME and len(word) > 8:
+            stemmed_words.append(utils.GLOBAL_STEMMER.stem(word))
             # stemmed_words.append(stemmer.stem(word))
 
     unique_and_sorted_words = sorted(list(set(stemmed_words)))
@@ -128,7 +127,7 @@ def extreme_standardize_prompt_text(text):
     if not text:
         text = 'aura_empty_request'  # <-- Ein eindeutiger, kanonischer Fallback-Schlüssel
 
-    # log_debug(f"keywords<lastLine<extreme_standardize_prompt_text: 🔎 {text.strip()} 🔍")
+    # utils.log_debug(f"keywords<lastLine<extreme_standardize_prompt_text: 🔎 {text.strip()} 🔍")
 
 
 

@@ -3,8 +3,7 @@
 from .normalizer import *
 
 from .cache_core import *
-from .utils import *
-
+from . import utils
 
 import re
 import json
@@ -52,7 +51,7 @@ try:
 except ImportError:
     pass
 
-# def log_debug2(message: str):
+# def utils.log_debug2(message: str):
 #     caller_info = "UNKNOWN:0"
 #     stack = inspect.stack()
 #     if len(stack) > 1:
@@ -119,7 +118,7 @@ except ImportError:
 #     # 7. Wörter wieder zu einem String zusammensetzen
 #     text = ' '.join(stemmed_words)
 #
-#     log_debug(f"keywords<lastLine<extreme_standardize_prompt_text: 🔎 {text.strip()} 🔍")
+#     utils.log_debug(f"keywords<lastLine<extreme_standardize_prompt_text: 🔎 {text.strip()} 🔍")
 #
 #     return text.strip()
 
@@ -144,7 +143,7 @@ def get_instant_match(user_text):
     Sucht in der DB nach Keywords, die dem User-Text am ähnlichsten sind.
     Nutzt Python Set-Intersection (Schnittmenge) statt LLM.
     """
-    init_db()
+    utils.init_db()
 
     # 1. User Text in Worte zerlegen (einfache Normalisierung)
     user_words = set(re.sub(r'[^\w\s]', '', user_text.lower()).split())
@@ -155,10 +154,10 @@ def get_instant_match(user_text):
     if not user_relevant:
         return None
 
-    # log_debug(f"🚀 INSTANT MODE: Suche Match für {user_relevant}...")
+    # utils.log_debug(f"🚀 INSTANT MODE: Suche Match für {user_relevant}...")
 
     try:
-        conn = sqlite3.connect(DB_FILE)
+        conn = sqlite3.connect(utils.DB_FILE)
         c = conn.cursor()
 
         # Lade alle Prompts, die Keywords haben
@@ -185,7 +184,7 @@ def get_instant_match(user_text):
 
         # Entscheidung: Wir brauchen mindestens 1 signifikantes Wort als Treffer
         if best_score >= 1:
-            log_debug(f"🚀 Instant Match gefunden! Score: {best_score} (Hash: {best_hash[:8]})")
+            utils.log_debug(f"🚀 Instant Match gefunden! Score: {best_score} (Hash: {best_hash[:8]})")
 
             # Lade eine Antwort zu diesem Hash (bevorzuge gut bewertete)
             c.execute("SELECT response_text FROM responses WHERE prompt_hash=? ORDER BY rating DESC, created_at DESC LIMIT 1", (best_hash,))
@@ -193,17 +192,17 @@ def get_instant_match(user_text):
             conn.close()
 
             if resp_row:
-                play_cache_hit_sound()
+                utils.play_cache_hit_sound()
                 # return f"[SOFORT-MODUS]: {resp_row[0]}"
                 return f"{resp_row[0]}"
         else:
-            log_debug("🚀 Kein ausreichender Match im Instant Modus.")
+            utils.log_debug("🚀 Kein ausreichender Match im Instant Modus.")
             conn.close()
 
         return None
 
     except Exception as e:
-        log_debug(f"Instant Mode Error: {e}")
+        utils.log_debug(f"Instant Mode Error: {e}")
         return None
 
 
@@ -336,34 +335,34 @@ def get_readme_content():
             current_path = current_path.parent
             readme_path = current_path / "README_AI-delang.md"
             if readme_path.exists():
-                log_debug(f"README gefunden: {readme_path}")
+                utils.log_debug(f"README gefunden: {readme_path}")
                 content = readme_path.read_text(encoding='utf-8').strip()
                 return content[:6000]
         return None
     except Exception: return None
 
 def get_clipboard_content():
-    if not BRIDGE_FILE.exists(): return None
+    if not utils.BRIDGE_FILE.exists(): return None
     try:
-        content = BRIDGE_FILE.read_text(encoding='utf-8').strip()
+        content = utils.BRIDGE_FILE.read_text(encoding='utf-8').strip()
         if content: return content
         return None
     except Exception: return None
 
 def load_history():
-    if not MEMORY_FILE.exists(): return []
+    if not utils.MEMORY_FILE.exists(): return []
     try:
-        with open(MEMORY_FILE, 'r', encoding='utf-8') as f: return json.load(f)
+        with open(utils.MEMORY_FILE, 'r', encoding='utf-8') as f: return json.load(f)
     except Exception: return []
 
 def save_to_history(user_text, ai_text):
     history = load_history()
     history.append({"role": "user", "content": user_text})
     history.append({"role": "assistant", "content": ai_text})
-    if len(history) > MAX_HISTORY_ENTRIES * 2:
-        history = history[-(MAX_HISTORY_ENTRIES * 2):]
+    if len(history) > utils.MAX_HISTORY_ENTRIES * 2:
+        history = history[-(utils.MAX_HISTORY_ENTRIES * 2):]
     try:
-        with open(MEMORY_FILE, 'w', encoding='utf-8') as f:
+        with open(utils.MEMORY_FILE, 'w', encoding='utf-8') as f:
             json.dump(history, f, ensure_ascii=False, indent=2)
     except Exception: pass
 
@@ -441,13 +440,10 @@ def execute(match_data):
 
     secDauerSeitExecFunctionStart(reset=True)  # <--- Startschuss!
 
-    global SESSION_COUNT
-    global SESSION_SEC_SUM
-    global SUM_PER_CACHE
 
 
 
-    SESSION_COUNT += 1
+    utils.SESSION_COUNT += 1
 
     global GLOBAL_NORMALIZED_KEY
 
@@ -467,8 +463,8 @@ def execute(match_data):
                           match_obj.group(0)).strip()
         user_input_raw = user_input_raw.lower()
 
-        # log_debug(f"⏱️{secDauerSeitExecFunctionStart()}s")
-        # log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
+        # utils.log_debug(f"⏱️{secDauerSeitExecFunctionStart()}s")
+        # utils.log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
 
 
         if not user_input_raw: return "Nichts gehört."
@@ -476,23 +472,23 @@ def execute(match_data):
         GLOBAL_NORMALIZED_KEY = create_ultimate_cache_key(user_input_raw)
         hash_of_normalized_key = prompt_key_to_hash(GLOBAL_NORMALIZED_KEY)
 
-        # log_debug(f"GLOBAL_NORMALIZED_KEY: {GLOBAL_NORMALIZED_KEY}")
-        # log_debug(f"hash_of_normalized_key: {hash_of_normalized_key}")
+        # utils.log_debug(f"GLOBAL_NORMALIZED_KEY: {GLOBAL_NORMALIZED_KEY}")
+        # utils.log_debug(f"hash_of_normalized_key: {hash_of_normalized_key}")
 
         keywords_str = GLOBAL_NORMALIZED_KEY
 
         # Fängt Unsinn sofort ab (0.00s)
         static_reply = check_static_guardrails(user_input_raw)
         if static_reply:
-            log_debug(f"🛡️ Guardrail ausgelöst: '{user_input_raw}'")
+            utils.log_debug(f"🛡️ Guardrail ausgelöst: '{user_input_raw}'")
             return static_reply
 
 
 
 
         if "vergiss alles" in user_input_raw.lower():
-            if MEMORY_FILE.exists():
-                try: MEMORY_FILE.unlink()
+            if utils.MEMORY_FILE.exists():
+                try: utils.MEMORY_FILE.unlink()
                 except Exception: pass
             return "Gedächtnis gelöscht."
 
@@ -502,7 +498,7 @@ def execute(match_data):
         # suchen wir NUR in der DB nach dem besten Keyword-Match.
         instant_triggers = ["sofort", "schnell", "instant"]
         if any(w in user_input_raw.lower() for w in instant_triggers):
-            log_debug("Mode: INSTANT REQUEST")
+            utils.log_debug("Mode: INSTANT REQUEST")
             instant_response = get_instant_match(user_input_raw)
             if instant_response:
                 return instant_response
@@ -733,17 +729,17 @@ def execute(match_data):
         # --- MODE DETECTION & KONTEXT LADEN ---
         # Hier bestimmen wir nur: Welcher Modus ist aktiv? Welcher Kontext wird geladen?
 
-        # log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
-        # log_debug(f"Input: {input_lower}:'{input_lower}'")
+        # utils.log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
+        # utils.log_debug(f"Input: {input_lower}:'{input_lower}'")
 
 
         if any(w in input_lower for w in no_cache_keywords):
             bypass_cache = True
-            log_debug("Cache BYPASS: Zufallswort erkannt.")
+            utils.log_debug("Cache BYPASS: Zufallswort erkannt.")
 
         # 1. CLIPBOARD CHECK
         elif any(w in input_lower for w in trigger_clipboard):
-            log_debug("Mode: CLIPBOARD")
+            utils.log_debug("Mode: CLIPBOARD")
             content = get_clipboard_content()
             if content:
                 content_preview = content[:50] + str(len(content))
@@ -759,7 +755,7 @@ def execute(match_data):
 
         # 2. README CHECK
         elif any(w in input_lower for w in trigger_readme):
-            log_debug("Mode: README")
+            utils.log_debug("Mode: README")
             readme_content = get_readme_content()
             if readme_content:
                 # Hash der Readme wird Teil des Prefix -> Doku ändert sich = Cache ändert sich
@@ -779,7 +775,7 @@ def execute(match_data):
         # 1. Keywords IMMER sofort generieren (für Cache-Key UND DB-Speicherung)
         # Das macht den Cache "fuzzy" -> "Erstelle Regel" und "Regel erstellen" landen im selben Cache!
 
-        #log_debug(f"Keywords<execute 🔎 {keywords_str} 🔍")
+        #utils.log_debug(f"Keywords<execute 🔎 {keywords_str} 🔍")
 
 
         # Fallback: Wenn keine Keywords gefunden wurden (z.B. nur Füllwörter), nimm den Raw Text
@@ -798,8 +794,8 @@ def execute(match_data):
             # Frage: "Wie spät ist es" -> Key: "STD|spät" -> TREFFER!
             hash_input_string = f"STD|{base_for_hash}"
 
-        # log_debug(f"🔑 base_for_hash: '{base_for_hash}'")
-        # log_debug(f"🔑 hash_input_string: '{hash_input_string}'")
+        # utils.log_debug(f"🔑 base_for_hash: '{base_for_hash}'")
+        # utils.log_debug(f"🔑 hash_input_string: '{hash_input_string}'")
 
         # Full Prompt für die AI (bleibt wie es war, für Context)
         full_prompt_for_generation = f"{system_role}\n{context_data}\nUser: {user_input_raw}\nAura:"
@@ -812,30 +808,30 @@ def execute(match_data):
 
         if not bypass_cache:
             # Jetzt suchen wir mit dem Keyword-Hash!
-            # log_debug(f"11111 hash_input_string: '{hash_input_string}'") # 'STD|aura_empty_request'
-            # log_debug(f"11111 GLOBAL_NORMALIZED_KEY: '{GLOBAL_NORMALIZED_KEY}'") # 'aura_empty_request'
+            # utils.log_debug(f"11111 hash_input_string: '{hash_input_string}'") # 'STD|aura_empty_request'
+            # utils.log_debug(f"11111 GLOBAL_NORMALIZED_KEY: '{GLOBAL_NORMALIZED_KEY}'") # 'aura_empty_request'
             cached_resp, expired = get_cached_response(GLOBAL_NORMALIZED_KEY)
 
             if cached_resp:
-                log_debug(f"cached_resp: {cached_resp}")
+                utils.log_debug(f"cached_resp: {cached_resp}")
                 if use_history: save_to_history(user_input_raw, cached_resp)
 
 
                 global SUM_PER_CACHE
                 global SESSION_CACHE_HITS # noqa: F841
-                sum_per_cache = SESSION_CACHE_HITS / (SESSION_COUNT + 0.01)
+                sum_per_cache = SESSION_CACHE_HITS / (utils.SESSION_COUNT + 0.01)
                 sum_per_cache_str = f"{int(sum_per_cache * 10) / 10} {'📉' if sum_per_cache < SUM_PER_CACHE else '📈'}"
-                SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
+                utils.SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
                 SUM_PER_CACHE = sum_per_cache
 
 
                 return cached_resp
 
             if expired:
-                log_debug("♻️ Cache Entry EXPIRED.")
+                utils.log_debug("♻️ Cache Entry EXPIRED.")
 
             # --- AI GENERIERUNG (OLLAMA API) ---
-        # log_debug("Cache MISS. Sende API-Request an Ollama...")
+        # utils.log_debug("Cache MISS. Sende API-Request an Ollama...")
 
         payload = {
             "model": "llama3.2",
@@ -858,12 +854,14 @@ def execute(match_data):
             with urllib.request.urlopen(req, timeout=120) as response:
                 api_response = json.loads(response.read().decode('utf-8'))
 
-            sum_per_cache = SESSION_CACHE_HITS / (SESSION_COUNT + 0.01)
-            sum_per_cache_str = f"{int(sum_per_cache * 10) / 10} {'📉' if sum_per_cache < SUM_PER_CACHE else '📈'}"
-            SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
-            log_debug(f"⌚ Nr. {SESSION_COUNT} | CACHE_HITS:{SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
-                      f"Gespart: ~{SESSION_CACHE_HITS * int(SESSION_SEC_SUM / (SESSION_COUNT-SESSION_CACHE_HITS)*10)/10}s")
-            SUM_PER_CACHE = sum_per_cache
+            utils.SUM_PER_CACHE = (utils.SESSION_CACHE_HITS / utils.SESSION_COUNT) if utils.SESSION_COUNT > 0 else 0
+            utils.sum_per_cache_str = f"{int(utils.SUM_PER_CACHE * 10) / 10} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
+            utils.SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
+
+
+
+            utils.log_debug(f"⌚ Nr. {utils.SESSION_COUNT} | CACHE_HITS:{utils.SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {utils.SUM_PER_CACHE} | "
+                      f"Gespart: ~{utils.SESSION_CACHE_HITS * int(utils.SESSION_SEC_SUM / (utils.SESSION_CACHE_HITS-utils.SESSION_COUNT)*10)/10}s")
 
 
             raw_text = api_response.get("response", "")
@@ -912,7 +910,7 @@ def execute(match_data):
 
             # --- SPEICHERN ---
             if not bypass_cache:
-                # log_debug(f"bypass_cache: {bypass_cache}")
+                # utils.log_debug(f"bypass_cache: {bypass_cache}")
                 # WICHTIG: Wir nutzen hier denselben hash_input_string (basierend auf Keywords),
                 # den wir oben zum Lesen benutzt haben!
                 # cache_response(hash_input_string, response, user_input_raw, keywords=keywords_str)
@@ -939,21 +937,21 @@ def execute(match_data):
         except HTTPError as e:
             # Hier fangen wir den "Server response: 500" ab
             if e.code == 500:
-                log_debug(f"❌ OLLAMA SERVER ERROR (500). Ignoriere Fehlertext für User.")
+                utils.log_debug(f"❌ OLLAMA SERVER ERROR (500). Ignoriere Fehlertext für User.")
                 # Wenn du NICHT willst, dass der User den Fehler sieht:
                 return "Ich habe kurz den Faden verloren. Kannst du das wiederholen?"
             else:
-                log_debug(f"API HTTP Error: {e.code}")
+                utils.log_debug(f"API HTTP Error: {e.code}")
                 return f"Server Fehler: {e.code}"
 
         except URLError as e:
             # Wenn Ollama gar nicht läuft (Connection refused)
-            log_debug(f"API Connection Error: {e.reason}")
+            utils.log_debug(f"API Connection Error: {e.reason}")
             return "Fehler: Keine Verbindung zu Ollama."
 
         except Exception as e:
             # Alle anderen Fehler
-            log_debug(f"API General Error: {e}")
+            utils.log_debug(f"API General Error: {e}")
             #return "Ein interner Fehler ist aufgetreten."
             return (
                 "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
@@ -969,7 +967,7 @@ def execute(match_data):
 
 
     except Exception as e:
-        log_debug(f"API Error: {e}")
+        utils.log_debug(f"API Error: {e}")
         return f"Interner Fehler: {str(e)}"
 
 
