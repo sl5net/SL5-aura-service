@@ -262,8 +262,8 @@ def main():
         # Speichern für nächste Runde
         last_response = response
 
-        # Kurze Pause für Lesbarkeit
-        time.sleep(0.1)
+        # Kurze Pause
+        time.sleep(0.03)
         print("_" * 40)
         print("\n")
 

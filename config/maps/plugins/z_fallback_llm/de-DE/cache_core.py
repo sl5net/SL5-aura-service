@@ -113,7 +113,7 @@ def get_cached_response(prompt_key_to_hash1: str):
             cache_hit_rate = lll if utils.SESSION_COUNT > 0 else 0
             sum_per_cache_str = f"{cache_hit_rate:.1f}"
             utils.log_debug(f"✅ {utils.SESSION_CACHE_HITS} Cache HITs | CacheHITs/Nr : {sum_per_cache_str}📈"
-                    f"Zeit gespart: ~{SESSION_SEC_Average * utils.SESSION_CACHE_HITS:.1f}s")
+                    f"⌚ Zeit gespart: ~{SESSION_SEC_Average * utils.SESSION_CACHE_HITS:.1f}s")
 
 
             utils.play_cache_hit_sound()

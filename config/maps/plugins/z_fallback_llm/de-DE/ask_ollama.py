@@ -859,8 +859,8 @@ def execute(match_data):
 
             SESSION_SEC_Average = utils.SESSION_SEC_SUM / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
 
-            utils.log_debug(f"⌚ Nr. {utils.SESSION_COUNT} | CACHE_HITS:{utils.SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
-                      f"Gespart: ~{SESSION_SEC_Average * utils.SESSION_CACHE_HITS:.1f}s")
+            utils.log_debug(f"Nr. {utils.SESSION_COUNT} | CACHE_HITS:{utils.SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
+                      f"⌚ Gespart: ~{SESSION_SEC_Average * utils.SESSION_CACHE_HITS:.1f}s")
 
 
             raw_text = api_response.get("response", "")

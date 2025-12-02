@@ -156,9 +156,13 @@ def log_debug(text):
     lineno = caller_frame.f_lineno
 
     # 4. Ausgabe formatieren
-    logging.info(f"⏱{sec} {filename}:{lineno}: {text}")
+    # ⏱️
+    logging.info(f"⏱{sec}⏱️ {filename}:{lineno}: {text}")
 
 def secDauerSeitExecFunctionStart(reset=False):
+    return format_duration(secDauerSeitExecFunctionStart_REAL(reset=reset))
+
+def secDauerSeitExecFunctionStart_REAL(reset=False):
     # Wenn reset=True ist ODER die Funktion zum allerersten Mal läuft: Zeit setzen
     if reset or not hasattr(secDauerSeitExecFunctionStart, "start_time"):
         secDauerSeitExecFunctionStart.start_time = time.time()
@@ -167,6 +171,49 @@ def secDauerSeitExecFunctionStart(reset=False):
     # Differenz berechnen
     duration = time.time() - secDauerSeitExecFunctionStart.start_time
     return round(duration, 2)
+
+
+def format_duration(seconds):
+    """
+    Formatiert eine Dauer in Sekunden in den String 'Mm:Ss.m' (eine Stelle nach dem Komma).
+    """
+
+    # 1. Minuten berechnen
+    minutes = int(seconds // 60)
+
+    # 2. Restliche Sekunden berechnen
+    remaining_seconds = seconds % 60
+
+    # 3. Teil für die Ausgabe berechnen: Ganze Sekunden und Zehntelsekunde
+
+    # Ganze Sekunden (S)
+    seconds_part = int(remaining_seconds)
+
+    # Zehntelsekunde (m): Die erste Ziffer nach dem Komma
+    # Multipliziere den Dezimalteil mit 10 und runde auf die nächste Ganzzahl (oder einfach nur abschneiden)
+    # Abschneiden ist hier sinnvoller, um die Zehntelsekunde zu erhalten
+    tenth_second = int((remaining_seconds - seconds_part) * 10)
+
+    # Formatierung
+
+    if minutes > 0:
+        # Format: M:SS.m
+        # Minuten (M), Sekunden (SS mit führender Null), Zehntelsekunde (m)
+        return f"{minutes}m:{seconds_part:02d}.{tenth_second}s"
+
+    # Wenn die Dauer unter einer Minute liegt
+    else:
+        # Format: S.m
+        # Sekunden (S), Zehntelsekunde (m)
+        # Die 02d für Sekunden ist bei unter einer Minute i.d.R. nicht nötig
+        return f"{seconds_part}.{tenth_second}s"
+
+
+# Beispielausgaben:
+# format_duration(0.1234) -> '0.1s'
+# format_duration(1.007)  -> '1.0s'
+# format_duration(12.51)  -> '12.5s'
+# format_duration(65.43)  -> '1m:05.4s'
 
 # --- DATABASE LAYER ---
 def init_db():

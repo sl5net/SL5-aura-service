@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "aura, wie kann ich den satz 'die wichtigsten regeln für die verwendung von spazierbuchstaben in der schreibrechtskonvention findest du?' formatieren?"
+    "content": "aura, wie kann ich dir bei der verwendung von regeln aus dem config-ordner helfen?"
   },
   {
     "role": "assistant",
-    "content": "Formatiere den Satz mit der folgenden Regel: formatieren.py ('Ersetzung', r'\\s+', '', 10, {'flags': re.IGNORECASE}) oder formatieren.py ('Ersetzung', r'[a-zA-Z0-9\\s]', '', 10, {})"
+    "content": "format_2.py python # Regel-Tupel: (Ersetzung, Regex, Priorität, Flags) ('Regel1', r'Regel1', 10, {}) ('Regel2', r'Regel2', 20, {})"
   },
   {
     "role": "user",
-    "content": "aura, wie kann ich den satz in allen fällen durch die regel 'formatieren.py ('ersetzung', r'\\s+', '', 10, {'flags': re.ignorecase})' formatieren?"
+    "content": "aura, kann ich die regel-tupel für die eingabe von texten auswerten?"
   },
   {
     "role": "assistant",
-    "content": ""
+    "content": "Um den Inhalt einer bestimmten Regel aus dem Map-Ordner abzurufen, kannst du folgende Schritte ausführen: 1. Öffne einen Terminal und navigiere zur Konfigurationsordner /config/maps/. 2. Führe den Befehl grep -rR 'fuzzy_map_abc' /config/maps/ aus. 3. Dieser Befehl sucht nach dem Regelnamen 'fuzzy_map_abc'"
   }
 ]
