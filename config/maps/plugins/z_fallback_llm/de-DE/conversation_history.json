@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "aura, wie kann ich eine eingabe für den audio-input in linux mit einem bestimmten format überprüfen?"
+    "content": "aura, wie kann ich den satz 'die wichtigsten regeln für die verwendung von spazierbuchstaben in der schreibrechtskonvention findest du?' formatieren?"
   },
   {
     "role": "assistant",
-    "content": "Du hast eine BEFEHL gestellt. Antwort: location.py: python import requests import re def location(): url = \"https://api.example.com/standorte\" response = requests.get(url) data = response.json() for item in data: if re.search(r\"ort:.\", item): ort = item[\"ort\"] print(ort) location()"
+    "content": "Formatiere den Satz mit der folgenden Regel: formatieren.py ('Ersetzung', r'\\s+', '', 10, {'flags': re.IGNORECASE}) oder formatieren.py ('Ersetzung', r'[a-zA-Z0-9\\s]', '', 10, {})"
   },
   {
     "role": "user",
-    "content": "aura, zeige mir die liste aller standorte, für den kann ich eine filterung auf basis des ortes münchen durchführen?"
+    "content": "aura, wie kann ich den satz in allen fällen durch die regel 'formatieren.py ('ersetzung', r'\\s+', '', 10, {'flags': re.ignorecase})' formatieren?"
   },
   {
     "role": "assistant",
-    "content": "location.py python import requests import re def location(): url = \"https://api.example.com/standorte\" response = requests.get(url) data = response.Python() for item in data: if re.search(r\"ort:München\", item): ort = item[\"ort\"] print(ort) location()"
+    "content": ""
   }
 ]

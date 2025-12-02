@@ -818,7 +818,7 @@ def execute(match_data):
 
 
                 utils.SUM_PER_CACHE = utils.SESSION_CACHE_HITS / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
-                utils.SUM_PER_CACHE_str = f"{utils.SUM_PER_CACHE:.1f} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
+                sum_per_cache_str = f"{utils.SUM_PER_CACHE:.1f} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
                 utils.SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
                 utils.SUM_PER_CACHE = utils.SUM_PER_CACHE
 
@@ -853,13 +853,13 @@ def execute(match_data):
                 api_response = json.loads(response.read().decode('utf-8'))
 
             utils.SUM_PER_CACHE = (utils.SESSION_CACHE_HITS / utils.SESSION_COUNT) if utils.SESSION_COUNT > 0 else 0
-            utils.SUM_PER_CACHE_str = f"{int(utils.SUM_PER_CACHE * 10) / 10} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
+            sum_per_cache_str = f"{utils.SUM_PER_CACHE:.1f} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
             utils.SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
 
 
             SESSION_SEC_Average = utils.SESSION_SEC_SUM / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
 
-            utils.log_debug(f"⌚ Nr. {utils.SESSION_COUNT} | CACHE_HITS:{utils.SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {utils.SUM_PER_CACHE} | "
+            utils.log_debug(f"⌚ Nr. {utils.SESSION_COUNT} | CACHE_HITS:{utils.SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
                       f"Gespart: ~{SESSION_SEC_Average * utils.SESSION_CACHE_HITS:.1f}s")
 
 
