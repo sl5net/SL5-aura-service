@@ -1,17 +1,18 @@
-13:12:01,325 - INFO     - ⏱0.0s⏱️ ask_ollama.py:862: Nr. 1 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
-13:12:01,340 - INFO     - ⏱0.0s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: a12bbff7 ...
-13:12:29,525 - INFO     - ⏱28.1s⏱️ ask_ollama.py:862: Nr. 2 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
-13:12:29,539 - INFO     - ⏱28.2s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: f3310be9 ...
-13:12:49,557 - INFO     - ⏱48.2s⏱️ ask_ollama.py:483: 🛡️ Guardrail ausgelöst: 'aura, können die in config/maps/user_to_lower.py definierten regeln für den textkonvertierer überprüft werden, um sicherzustellen, dass alle eingaben korrekt in kleinbuchstaben umgewandelt werden?'
-13:13:17,541 - INFO     - ⏱1m:16.2s⏱️ ask_ollama.py:862: Nr. 4 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
-13:13:17,556 - INFO     - ⏱1m:16.2s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: b0f40efc ...
-13:14:13,295 - INFO     - ⏱2m:11.9s⏱️ ask_ollama.py:862: Nr. 5 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
-13:14:13,310 - INFO     - ⏱2m:11.9s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: e1d0176f ...
-13:14:38,052 - INFO     - ⏱2m:36.7s⏱️ ask_ollama.py:862: Nr. 6 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
-13:14:38,066 - INFO     - ⏱2m:36.7s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: 13372d20 ...
-13:15:00,259 - INFO     - ⏱2m:58.9s⏱️ ask_ollama.py:862: Nr. 7 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
-13:15:00,273 - INFO     - ⏱2m:58.9s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: e2517d01 ...
-13:15:09,011 - INFO     - ⏱3m:07.6s⏱️ cache_core.py:115: ✅ 1 Cache HITs | CacheHITs/Nr : 0.1📈⌚ Zeit gespart: ~8.8s
-13:15:09,018 - INFO     - ⏱3m:07.6s⏱️ ask_ollama.py:816: cached_resp: format_2.py python # Regel-Tupel: (Ersetzung, Regex, Priorität, Flags) ('Regel1', r'Regel1', 10, {}) ('Regel2', r'Regel2', 20, {})
-13:15:25,124 - INFO     - ⏱3m:23.8s⏱️ cache_core.py:115: ✅ 2 Cache HITs | CacheHITs/Nr : 0.2📈⌚ Zeit gespart: ~15.7s
-13:15:25,130 - INFO     - ⏱3m:23.8s⏱️ ask_ollama.py:816: cached_resp: Um den Inhalt einer bestimmten Regel aus dem Map-Ordner abzurufen, kannst du folgende Schritte ausführen: 1. Öffne einen Terminal und navigiere zur Konfigurationsordner /config/maps/. 2. Führe den Befehl grep -rR 'fuzzy_map_abc' /config/maps/ aus. 3. Dieser Befehl sucht nach dem Regelnamen 'fuzzy_map_abc'
+13:49:50,011 - INFO     - ⏱0.0s⏱️ cache_core.py:115: ✅ 1 Cache HITs | CacheHITs/Nr : 1.0📈⌚ Zeit gespart: ~0.0s
+13:49:50,016 - INFO     - ⏱0.0s⏱️ ask_ollama.py:816: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+13:50:52,855 - INFO     - ⏱1m:02.8s⏱️ ask_ollama.py:862: Nr. 2 | CACHE_HITS:1 📊 CacheHITs/Nr.: 0.5 📈 | ⌚ Gespart: ~11.3s
+13:50:52,867 - INFO     - ⏱1m:02.8s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: e98365b9 ...
+13:51:31,466 - INFO     - ⏱1m:41.4s⏱️ ask_ollama.py:862: Nr. 3 | CACHE_HITS:1 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~11.9s
+13:51:31,483 - INFO     - ⏱1m:41.4s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: d67cb062 ...

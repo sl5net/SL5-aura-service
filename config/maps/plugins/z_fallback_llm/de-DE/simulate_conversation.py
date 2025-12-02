@@ -1,7 +1,7 @@
 import sys
 import os
 import subprocess, psutil
-import time
+import time, datetime
 
 from pygments.lexer import include
 
@@ -236,6 +236,8 @@ def main():
     print(f"🗣 SL5 AURA (Start): {last_response}")
     print(f"\n")
 
+    script_start_time = time.time()
+
     for i in range(1, ROUNDS + 1):
 
         if psutil.virtual_memory().percent > 80:
@@ -258,6 +260,48 @@ def main():
 
         # 2. Aura antwortet
         response = ask_aura(question)
+
+
+        # -------------------------------------------------------------
+        # BERECHNUNGEN FÜR DIE AUSGABE (am Ende jeder Runde)
+        # -------------------------------------------------------------
+
+        # 1. Bisherige Laufzeit (verstrichen)
+        elapsed_time_secs = time.time() - script_start_time
+
+        # 2. Durchschnittliche Zeit pro Runde (Vermeidung von Division durch Null bei i=1)
+        # Wenn i > 0, berechne Durchschnitt, sonst 0
+        avg_time_per_round = elapsed_time_secs / i if i > 0 else 0
+
+        # 3. Geschätzte Gesamtzeit (für alle ROUNDS)
+        estimated_total_time_secs = avg_time_per_round * ROUNDS
+
+        # 4. Geschätzte verbleibende Zeit
+        remaining_time_secs = estimated_total_time_secs - elapsed_time_secs
+
+        # 5. Voraussichtliches Ende (Timestamp)
+        estimated_end_timestamp = script_start_time + estimated_total_time_secs
+
+        # 6. Formatierung der Endzeit in einen lesbaren String
+        estimated_end_str = datetime.datetime.fromtimestamp(estimated_end_timestamp).strftime('%H:%M:%S')
+
+        # 7. Formatierung der Zeitdauern in einen lesbaren String (Minuten, Sekunden)
+        # Verwenden Sie hier die Funktion format_duration, die wir zuvor besprochen haben
+        # (Ich nehme an, diese ist verfügbar, ansonsten nutzen Sie eine einfache Rundung)
+
+        total_duration_str = utils.format_duration(estimated_total_time_secs)
+        remaining_duration_str = utils.format_duration(remaining_time_secs)
+
+        # -------------------------------------------------------------
+        # AUSGABE MIT F-STRING
+        # -------------------------------------------------------------
+
+
+        print(f"\n\n Nr. {i} 📊  ")
+        print(f"vorrausichtliches gesamt Dauer der {ROUNDS} Durchläufe {total_duration_str} \n"
+              f"und vorraussichtliches Ende der {ROUNDS} Durchläufe um {estimated_end_str} \n"
+              f"und noch verbleibndee Zeit: {remaining_duration_str} \n")
+
 
         # Speichern für nächste Runde
         last_response = response
@@ -283,4 +327,4 @@ if __name__ == "__main__":
 
     main()
 
-    utils.log_debug("hi")
+
