@@ -29,7 +29,6 @@ def prompt_key_to_hash(normalized_prompt_key: str):
 # def get_cached_response():
 def get_cached_response(prompt_key_to_hash1: str):
 
-    global SESSION_CACHE_HITS
     utils.init_db()
 
 
@@ -109,10 +108,12 @@ def get_cached_response(prompt_key_to_hash1: str):
 
             lll = (utils.SESSION_CACHE_HITS / utils.SESSION_COUNT) if utils.SESSION_COUNT > 0 else 0
 
+            SESSION_SEC_Average = utils.SESSION_SEC_SUM / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
+
             cache_hit_rate = lll if utils.SESSION_COUNT > 0 else 0
-            sum_per_cache_str = f"{cache_hit_rate:.1f}"
-            utils.log_debug(f"✅ {utils.SESSION_CACHE_HITS} Cache HITs | CacheHITs/Nr : {sum_per_cache_str}📈"
-                    f"Zeit gespart: ~{utils.SESSION_CACHE_HITS * int(utils.SESSION_SEC_SUM / (utils.SESSION_CACHE_HITS - utils.SESSION_COUNT) * 10) / 10}s")
+            utils.SUM_PER_CACHE_str = f"{cache_hit_rate:.1f}"
+            utils.log_debug(f"✅ {utils.SESSION_CACHE_HITS} Cache HITs | CacheHITs/Nr : {utils.SUM_PER_CACHE_str}📈"
+                    f"Zeit gespart: ~{SESSION_SEC_Average * utils.SESSION_CACHE_HITS:.1f}s")
 
 
             utils.play_cache_hit_sound()

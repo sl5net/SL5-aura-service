@@ -817,12 +817,10 @@ def execute(match_data):
                 if use_history: save_to_history(user_input_raw, cached_resp)
 
 
-                global SUM_PER_CACHE
-                global SESSION_CACHE_HITS # noqa: F841
-                sum_per_cache = SESSION_CACHE_HITS / (utils.SESSION_COUNT + 0.01)
-                sum_per_cache_str = f"{int(sum_per_cache * 10) / 10} {'📉' if sum_per_cache < SUM_PER_CACHE else '📈'}"
+                utils.SUM_PER_CACHE = utils.SESSION_CACHE_HITS / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
+                utils.SUM_PER_CACHE_str = f"{utils.SUM_PER_CACHE:.1f} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
                 utils.SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
-                SUM_PER_CACHE = sum_per_cache
+                utils.SUM_PER_CACHE = utils.SUM_PER_CACHE
 
 
                 return cached_resp
@@ -855,13 +853,14 @@ def execute(match_data):
                 api_response = json.loads(response.read().decode('utf-8'))
 
             utils.SUM_PER_CACHE = (utils.SESSION_CACHE_HITS / utils.SESSION_COUNT) if utils.SESSION_COUNT > 0 else 0
-            utils.sum_per_cache_str = f"{int(utils.SUM_PER_CACHE * 10) / 10} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
+            utils.SUM_PER_CACHE_str = f"{int(utils.SUM_PER_CACHE * 10) / 10} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
             utils.SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
 
 
+            SESSION_SEC_Average = utils.SESSION_SEC_SUM / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
 
             utils.log_debug(f"⌚ Nr. {utils.SESSION_COUNT} | CACHE_HITS:{utils.SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {utils.SUM_PER_CACHE} | "
-                      f"Gespart: ~{utils.SESSION_CACHE_HITS * int(utils.SESSION_SEC_SUM / (utils.SESSION_CACHE_HITS-utils.SESSION_COUNT)*10)/10}s")
+                      f"Gespart: ~{SESSION_SEC_Average * utils.SESSION_CACHE_HITS:.1f}s")
 
 
             raw_text = api_response.get("response", "")

@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "aura, wie kann ich eine vordefinierte sprache oder einen befehl für den offline-modus aktivieren?"
+    "content": "aura, wie kann ich eine eingabe für den audio-input in linux mit einem bestimmten format überprüfen?"
   },
   {
     "role": "assistant",
-    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
+    "content": "Du hast eine BEFEHL gestellt. Antwort: location.py: python import requests import re def location(): url = \"https://api.example.com/standorte\" response = requests.get(url) data = response.json() for item in data: if re.search(r\"ort:.\", item): ort = item[\"ort\"] print(ort) location()"
   },
   {
     "role": "user",
-    "content": "aura, wie kann ich das regex-paar 'url' und 'https\\.\\s+' auf den ersten satz von jedem input übersetzen?"
+    "content": "aura, zeige mir die liste aller standorte, für den kann ich eine filterung auf basis des ortes münchen durchführen?"
   },
   {
     "role": "assistant",
-    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
+    "content": "location.py python import requests import re def location(): url = \"https://api.example.com/standorte\" response = requests.get(url) data = response.Python() for item in data: if re.search(r\"ort:München\", item): ort = item[\"ort\"] print(ort) location()"
   }
 ]

@@ -1,5 +1,4 @@
-11:50:18,313 - INFO     - 0.0 ask_ollama.py:483: 🛡️ Guardrail ausgelöst: 'aura, wie kann ich für benutzer mit behinderungen die funktionen deines frameworks so anpassen, dass sie sich optimal eignen?'
-11:50:51,761 - INFO     - 33.45 ask_ollama.py:863: ⌚ Nr. 2 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 | Gespart: ~0.0s
-11:50:51,776 - INFO     - 33.46 cache_core.py:187: ✅ Cache saved to db💾. normalized_key: eabea799 ...
-11:51:50,216 - INFO     - 91.9 ask_ollama.py:863: ⌚ Nr. 3 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 | Gespart: ~0.0s
-11:51:50,232 - INFO     - 91.92 cache_core.py:187: ✅ Cache saved to db💾. normalized_key: 7c8ca334 ...
+12:28:05,866 - INFO     - ⏱0.0 cache_core.py:115: ✅ 1 Cache HITs | CacheHITs/Nr : 1.0📈Zeit gespart: ~0.0s
+12:28:05,871 - INFO     - ⏱0.0 ask_ollama.py:816: cached_resp: Du hast eine BEFEHL gestellt. Antwort: location.py: python import requests import re def location(): url = "https://api.example.com/standorte" response = requests.get(url) data = response.json() for item in data: if re.search(r"ort:.", item): ort = item["ort"] print(ort) location()
+12:28:52,109 - INFO     - ⏱46.24 ask_ollama.py:862: ⌚ Nr. 2 | CACHE_HITS:1 📊 CacheHITs/Nr.: 0.5 | Gespart: ~9.3s
+12:28:52,124 - INFO     - ⏱46.26 cache_core.py:188: ✅ Cache saved to db💾. normalized_key: 3eec197c ...
