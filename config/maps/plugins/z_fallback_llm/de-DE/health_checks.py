@@ -1,25 +1,11 @@
-# utils.py
 import sys
-import time
-import inspect
-import os
-#import sys
-import logging
 import sqlite3
-from pathlib import Path
 
 from nltk.stem.snowball import GermanStemmer
 GLOBAL_STEMMER = GermanStemmer()
 
 
-import sys
-import sqlite3  # Import für die DB-Prüfung
-
-from . import normalizer
 from . import utils
-
-
-
 
 def check_db_statistics_and_exit_if_invalid():
     """Prüft die DB-Statistiken (Total Hits > Unique Prompts) und bricht bei Inkonsistenz ab."""

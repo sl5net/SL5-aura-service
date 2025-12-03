@@ -3,7 +3,7 @@ import os
 import subprocess, psutil
 import time, datetime
 
-from pygments.lexer import include
+
 
 #import re
 #import sys
@@ -13,12 +13,12 @@ from pygments.lexer import include
 try:
     # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
     from . import utils
-    from . health_checks import check_db_statistics_and_exit_if_invalid, check_db_statistics_and_exit_if_invalid
+    from . health_checks import check_db_statistics_and_exit_if_invalid
     from . import ask_ollama
 
 except ImportError:
     import utils
-    import health_checks
+    import health_checks  # noqa: F403 F401
     import ask_ollama
 
 # --- KONFIGURATION ---

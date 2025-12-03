@@ -1,24 +1,17 @@
-cologne_phonetics==2.0.0
 comtypes==1.4.11
 config==0.5.1
-
-
-fasttext==0.9.3; sys_platform != 'win32'
-fasttext-wheel==0.9.2; sys_platform == 'win32'
-
-jellyfish==1.2.1
 keyboard==0.13.5
-nltk==3.9.1
 objgraph==3.6.2
 psutil==7.0.0
 pycaw==20240210
 pygame==2.6.1
-pyperclip==1.9.0
 requests==2.32.5
 sounddevice==0.5.2
 thefuzz==0.22.1
 vosk==0.3.45
 watchdog==6.0.0
 webrtcvad_wheels==2.0.14
+fasttext==0.9.3; sys_platform != 'win32'
+fasttext-wheel==0.9.2; sys_platform == 'win32'
 wikipedia-api
 bs4

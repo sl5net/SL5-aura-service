@@ -4,7 +4,7 @@ from pathlib import Path
 DB_FILE = Path(__file__).parent / "llm_cache_OFFF.db"
 
 def main():
-    if not utils.DB_FILE.exists():
+    if not DB_FILE.exists():
         print("❌ Keine Datenbank gefunden.")
         return
 

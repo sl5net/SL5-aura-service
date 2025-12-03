@@ -11,7 +11,7 @@ except ImportError:
     import utils
 
 
-import os,sys
+
 
 
 
@@ -37,7 +37,7 @@ Bitte prüfen Sie die DB mit der SQL GROUP BY Abfrage!
 import sqlite3
 import hashlib
 #import re
-from nltk.stem.snowball import GermanStemmer # Benötigt: pip install nltk
+#from nltk.stem.snowball import GermanStemmer # Benötigt: pip install nltk
 #from utils import utils.log_debug
 
 # ----------------------------------------------------

@@ -16,11 +16,11 @@ try:
     from . import normalizer
 
 except ImportError:
-    import utils
-    import normalizer
+    import utils # noqa: F401
+    import normalizer # noqa: F401
 
 
-from pathlib import Path
+#from pathlib import Path
 #
 # utils.PLUGIN_DIR = Path(__file__).parent
 # utils.MEMORY_FILE = utils.PLUGIN_DIR / "conversation_history.json"

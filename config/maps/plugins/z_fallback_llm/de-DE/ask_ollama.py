@@ -25,8 +25,8 @@ import logging
 #import inspect
 import sqlite3
 import hashlib
-import datetime
-import random
+#import datetime
+#import random
 from pathlib import Path
 #import yake
 
@@ -59,7 +59,7 @@ try:
     project_root = Path(__file__).resolve().parents[5]
     if str(project_root) not in sys.path:
         sys.path.append(str(project_root))
-    from scripts.py.func.audio_manager import create_bent_sine_wave_sound
+    #from scripts.py.func.audio_manager import create_bent_sine_wave_sound
 except ImportError:
     pass
 

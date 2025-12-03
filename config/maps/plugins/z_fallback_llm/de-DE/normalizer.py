@@ -1,6 +1,6 @@
 import re
 
-from idna.idnadata import scripts
+#from idna.idnadata import scripts
 
 #import hashlib
 
@@ -23,7 +23,7 @@ PROJECT_ROOT_DIR = CURRENT_FILE_DIR
 # sys.path.append(str(PROJECT_ROOT_DIR))
 
 try:
-    from scripts.py.func.audio_manager import *
+    from scripts.py.func.audio_manager import * # noqa: F403 F401
 except ImportError as e:
     print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
     utils.log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
