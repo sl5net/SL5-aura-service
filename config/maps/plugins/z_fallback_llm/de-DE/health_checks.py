@@ -15,8 +15,8 @@ GLOBAL_STEMMER = GermanStemmer()
 import sys
 import sqlite3  # Import für die DB-Prüfung
 
-from .normalizer import *
-from .utils import *
+from . import normalizer
+from . import utils
 
 
 

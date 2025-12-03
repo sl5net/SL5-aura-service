@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "aura, wie kann ich die regel punctuation_map mit der ersatzung '*' für '*' in den pfeilzeichen setzen?"
+    "content": "aura, kann ich eine liste aller regelbaren befehle und konfigurationsmappen auswerten?"
   },
   {
     "role": "assistant",
-    "content": "punctuation_map.py python # PUNCTUATION-Tupel: (Suchwort, neues Wort) 'stern': '' Und hier ist eine zusätzliche Regel, um die Punkte mit Kommas zu ersetzen: python # PUNCTUATION-Tupel: (Suchwort, neues Wort) '.': ',' Beachte, dass diese Regel nur für die Eingabe von Texten gilt, die keine Uml"
+    "content": "Regel-Tupel für Befehle: - help: (None, None, 0, {}) - config: ('config/maps/', {}, 10, {}) - regeln: ('config/maps/', {}, 10, {}) - auswerten': ('config/maps/', {}, 10, {}) Regel-Tupel für Konfigurationsmappen: - 'config/maps/': (None, None, 0, {})"
   },
   {
     "role": "user",
-    "content": "aura, gibt es eine möglichkeit, um den komma-punkt mit doppelkomma zu ersetzen?"
+    "content": "aura, wie kann ich eine regel aus der datei regeln.txt im ordner config/maps/ laden?"
   },
   {
     "role": "assistant",
-    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
+    "content": "User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'"
   }
 ]

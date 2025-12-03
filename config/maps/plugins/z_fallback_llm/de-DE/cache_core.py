@@ -10,7 +10,7 @@ import datetime
 
 
 from . import utils
-from .normalizer import *
+from . import normalizer
 
 
 

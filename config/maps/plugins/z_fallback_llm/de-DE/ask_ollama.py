@@ -1,6 +1,6 @@
 # ask_ollama.py
 
-from .normalizer import *
+from . import normalizer
 
 from .cache_core import *
 from . import utils
@@ -469,7 +469,7 @@ def execute(match_data):
 
         if not user_input_raw: return "Nichts gehört."
 
-        GLOBAL_NORMALIZED_KEY = create_ultimate_cache_key(user_input_raw)
+        GLOBAL_NORMALIZED_KEY = normalizer.create_ultimate_cache_key(user_input_raw)
         hash_of_normalized_key = prompt_key_to_hash(GLOBAL_NORMALIZED_KEY)
 
         # utils.log_debug(f"GLOBAL_NORMALIZED_KEY: {GLOBAL_NORMALIZED_KEY}")

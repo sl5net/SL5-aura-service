@@ -1,10 +1,13 @@
 # migrate_database.py # migrate_database
-from pathlib import Path
-from .normalizer import extreme_standardize_prompt_text,create_ultimate_cache_key,utils.log_debug
-#from cache_core import *
+from . import normalizer
 from . import utils
 
+import os,sys
+
+
 utils.log_debug(f'utils.DB_FILE = {utils.DB_FILE }')
+
+sys.exit(1)
 
 
 
@@ -80,7 +83,7 @@ def migrate_database():
     for old_hash, prompt_text in rows:
 
         # 1. NEUE Werte berechnen
-        new_clean_input = create_ultimate_cache_key(prompt_text)
+        new_clean_input = normalizer.create_ultimate_cache_key(prompt_text)
         new_hash = hashlib.sha256(new_clean_input.encode('utf-8')).hexdigest()
 
 

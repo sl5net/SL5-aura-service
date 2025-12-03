@@ -240,9 +240,9 @@ def main():
 
     for i in range(1, ROUNDS + 1):
 
-        if psutil.virtual_memory().percent > 80:
+        if psutil.virtual_memory().percent >90:
             # restart your script is a very common and effective fallback workaround for managing excessive memory usage
-            print(' memory().percent > 80% -> exit. protected excessive memory usage')
+            print(' memory().percent > 90% -> exit. protected excessive memory usage')
             sys.exit(1)
 
 

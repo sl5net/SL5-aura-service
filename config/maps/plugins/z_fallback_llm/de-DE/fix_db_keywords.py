@@ -1,15 +1,15 @@
 import sqlite3
 from pathlib import Path
 
-utils.DB_FILE = Path(__file__).parent / "llm_cache.db"
+DB_FILE = Path(__file__).parent / "llm_cache_OFFF.db"
 
 def main():
     if not utils.DB_FILE.exists():
         print("❌ Keine Datenbank gefunden.")
         return
 
-    print(f"🔧 Öffne Datenbank: {utils.DB_FILE}")
-    conn = sqlite3.connect(utils.DB_FILE)
+    print(f"🔧 Öffne Datenbank: {DB_FILE}")
+    conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
 
     try:
