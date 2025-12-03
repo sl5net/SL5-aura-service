@@ -15,6 +15,28 @@ if [ ! -f "requirements.txt" ]; then
 fi
 
 
+
+# --- Argument Parsing for Exclusion ---
+EXCLUDE_LANGUAGES=""
+
+# Parst Argumente wie 'exclude:de,en' oder 'exclude=all'
+for arg in "$@"; do
+    if [[ "$arg" =~ ^exclude:([a-zA-Z,]+)$ ]]; then
+        EXCLUDE_LANGUAGES="${BASH_REMATCH[1]}"
+    elif [[ "$arg" == "exclude=all" ]]; then
+        EXCLUDE_LANGUAGES="all"
+    fi
+done
+
+if [ -n "$EXCLUDE_LANGUAGES" ]; then
+    echo "--> Exclusion list detected: $EXCLUDE_LANGUAGES"
+fi
+
+# --- End Argument Parsing ---
+
+
+
+
 should_remove_zips_after_unpack=true
 
 # --- Make script location-independent ---
@@ -96,9 +118,59 @@ ARCHIVE_CONFIG=(
 )
 DOWNLOAD_REQUIRED=false
 
+
+
+# --- Filter Configuration based on EXCLUDE_LANGUAGES ---
+INSTALL_CONFIG=()
+if [ -z "$EXCLUDE_LANGUAGES" ]; then
+    # Keine Ausschlüsse, die gesamte MASTER-Liste wird installiert.
+    INSTALL_CONFIG=("${ARCHIVE_CONFIG[@]}")
+else
+    # Ausschlüsse aktiv, die Liste wird gefiltert.
+    for config_line in "${ARCHIVE_CONFIG[@]}"; do
+        read -r base_name final_name dest_path <<< "$config_line"
+
+        IS_MANDATORY=false
+        IS_EXCLUDED=false
+
+        # Komponenten, die immer benötigt werden (z.B. LanguageTool Core)
+        if [[ "$base_name" == "LanguageTool-6.6" ]] || [[ "$base_name" == "lid.176" ]]; then
+            IS_MANDATORY=true
+        fi
+
+        # 1. Ausschluss-Check: exclude=all
+        if [ "$EXCLUDE_LANGUAGES" == "all" ] && [ "$IS_MANDATORY" = false ]; then
+            echo "    -> Excluding (all): $base_name"
+            IS_EXCLUDED=true
+        fi
+
+        # 2. Ausschluss-Check: Spezifische Sprachen (z.B. de, en)
+        if [ "$IS_EXCLUDED" = false ]; then
+            # Test auf 'de' im Namen und in der Ausschlussliste
+            if [[ "$base_name" =~ vosk-model-de- ]] && [[ "$EXCLUDE_LANGUAGES" =~ de ]]; then
+                echo "    -> Excluding (de): $base_name"
+                IS_EXCLUDED=true
+            fi
+            # Test auf 'en' im Namen und in der Ausschlussliste
+            if [[ "$base_name" =~ vosk-model-en-us- ]] && [[ "$EXCLUDE_LANGUAGES" =~ en ]]; then
+                echo "    -> Excluding (en): $base_name"
+                IS_EXCLUDED=true
+            fi
+            # Hinzufügen weiterer spezifischer Exklusionsregeln nach Bedarf...
+        fi
+
+        # Nur hinzufügen, wenn nicht ausgeschlossen
+        if [ "$IS_EXCLUDED" = false ]; then
+            INSTALL_CONFIG+=("$config_line")
+        fi
+    done
+fi
+# --- End Filter Configuration ---
+
+
 # --- Phase 1: Check and attempt to restore from local ZIP cache ---
 echo "    -> Phase 1: Checking and trying to restore from local cache..."
-for config_line in "${ARCHIVE_CONFIG[@]}"; do
+for config_line in "${INSTALL_CONFIG[@]}"; do
     read -r base_name final_name dest_path <<< "$config_line"
     target_path="$dest_path/$final_name"
     zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
@@ -127,11 +199,11 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
     # Create the models directory before attempting to download files into it.
     mkdir -p ./models
 
-    ./.venv/bin/python tools/download_all_packages.py
+    ./.venv/bin/python tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
     echo "    -> Downloader finished. Retrying extraction..."
 
     # After downloading, we must re-check and extract anything that's still missing.
-    for config_line in "${ARCHIVE_CONFIG[@]}"; do
+    for config_line in "${INSTALL_CONFIG[@]}"; do
         read -r base_name final_name dest_path <<< "$config_line"
         target_path="$dest_path/$final_name"
         zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
@@ -156,6 +228,55 @@ echo "--> All components are present and correctly placed."
 # --- End of Download/Extract block ---
 # ==============================================================================
 
+
+# Function to extract and clean up
+expand_and_cleanup() {
+    local zip_file=$1
+    local expected_dir=$2
+    local dest_path=$3
+
+    # Check if final directory already exists
+    if [ -d "$dest_path/$expected_dir" ]; then
+        echo "    -> Directory '$expected_dir' already exists. Skipping."
+        return
+    fi
+
+    # Check if the downloaded zip exists
+    if [ ! -f "$zip_file" ]; then
+        echo "    -> FATAL: Expected archive not found: '$zip_file'"
+        exit 1
+    fi
+
+    echo "    -> Extracting $zip_file to $dest_path..."
+    unzip -q "$zip_file" -d "$dest_path"
+
+    # Clean up the zip file
+    if [ "$should_remove_zips_after_unpack" = true ] ; then
+        rm "$zip_file"
+    fi
+
+    echo "    -> Cleaned up ZIP file: $zip_file"
+}
+
+# Execute extraction for each archive
+for config_line in "${BASE_CONFIG[@]}"; do
+    # Read the space-separated values into variables
+    read -r base_name final_name dest_path <<< "$config_line"
+
+    # CONSTRUCT THE FILENAMES, including the prefix for the zip file
+    zip_file="${PREFIX}${base_name}.zip"
+    expected_dir="${base_name}" # The final directory name has no prefix
+
+    if [ ! -e "$dest_path/$final_name" ]; then
+        echo "    -> MISSING: '$dest_path/$final_name'. Download is required."
+        download_needed=true
+        break # Ein fehlendes Teil reicht, Prüfung kann stoppen
+    fi
+
+    expand_and_cleanup "$zip_file" "$expected_dir" "$dest_path"
+done
+
+echo "    -> Extraction and cleanup successful."
 
 
 
