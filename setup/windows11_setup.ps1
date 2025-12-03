@@ -1,9 +1,28 @@
 # setup/windows11_setup.ps1
 
+#  how to start:
+#  .\setup\windows11_setup.ps1 -Exclude "en" or .\setup\windows11_setup.ps1 -Exclude "de" or .\setup\windows11_setup.ps1 -Exclude "all".
+
+# --- Argument Parsing for Exclusion (NEW) ---
+param(
+    [string]$Exclude = ""
+)
+
+
+
 # --- Make script location-independent ---
 $ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
 Set-Location -Path $ProjectRoot
 Write-Host "--> Running setup from project root: $(Get-Location)"
+
+
+
+$EXCLUDE_LANGUAGES = $Exclude
+
+if (-not [string]::IsNullOrEmpty($EXCLUDE_LANGUAGES)) {
+    Write-Host "--> Exclusion list detected: $EXCLUDE_LANGUAGES" -ForegroundColor Yellow
+}
+# --- End Argument Parsing ---
 
 
 
@@ -31,6 +50,10 @@ if ($env:CI -ne 'true') {
     }
 }
 Write-Host "[SUCCESS] Running with Administrator privileges."
+
+
+
+
 
 
 
@@ -163,7 +186,7 @@ New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
 
 # Execute the downloader and check its exit code
 #  It downloads all required ZIPs to the project root.
-.\.venv\Scripts\python.exe tools/download_all_packages.py
+.\.venv\Scripts\python.exe tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
 
 # $LASTEXITCODE contains the exit code of the last program that was run.
 # 0 means success. Anything else is an error.
@@ -178,21 +201,75 @@ Write-Host "    -> Python downloader completed successfully." -ForegroundColor G
 # --- Now, extract the downloaded archives ---
 Write-Host "--> Extracting downloaded archives..."
 
+
+
+
+
+
+
+
+
+# --- Configuration: Base List of Archives ---
 $Prefix = "Z_"
-$BaseConfig = @(
-    @{ BaseName = "LanguageTool-6.6";              Dest = "." },
-    @{ BaseName = "vosk-model-en-us-0.22";         Dest = ".\models" },
-    @{ BaseName = "vosk-model-small-en-us-0.15";   Dest = ".\models" },
-    @{ BaseName = "vosk-model-de-0.21";            Dest = ".\models" },
-    @{ BaseName = "lid.176";                   Dest = ".\models" }
+$MasterConfig = @(
+    @{ BaseName = "LanguageTool-6.6";              FinalName = "LanguageTool-6.6"; Dest = "." },
+    @{ BaseName = "vosk-model-en-us-0.22";         FinalName = "vosk-model-en-us-0.22"; Dest = ".\models" },
+    @{ BaseName = "vosk-model-small-en-us-0.15";   FinalName = "vosk-model-small-en-us-0.15"; Dest = ".\models" },
+    @{ BaseName = "vosk-model-de-0.21";            FinalName = "vosk-model-de-0.21"; Dest = ".\models" },
+    @{ BaseName = "lid.176";                       FinalName = "lid.176.bin"; Dest = ".\models" }
 )
-$ArchiveConfig = $BaseConfig | ForEach-Object {
+
+# --- Filter Configuration based on EXCLUDE_LANGUAGES (NEW) ---
+$INSTALL_CONFIG = @()
+$ExcludeList = @($EXCLUDE_LANGUAGES.Split(',') | ForEach-Object { $_.Trim().ToLower() })
+
+if ($ExcludeList.Count -eq 0 -or $ExcludeList[0] -eq "") {
+    # No exclusion, use master list
+    $INSTALL_CONFIG = $MasterConfig
+} else {
+    # Exclusion active, filter the list
+    foreach ($ConfigItem in $MasterConfig) {
+        $IsMandatory = $ConfigItem.BaseName -like "LanguageTool-*" -or $ConfigItem.BaseName -eq "lid.176"
+        $IsExcluded = $false
+
+        # 1. Exclusion Check: exclude=all
+        if ($ExcludeList -contains "all" -and -not $IsMandatory) {
+            Write-Host "    -> Excluding (all): $($ConfigItem.BaseName)"
+            $IsExcluded = $true
+        }
+
+        # 2. Exclusion Check: Specific Languages
+        if (-not $IsExcluded) {
+            # Check for 'de' exclusion
+            if ($ExcludeList -contains "de" -and $ConfigItem.BaseName -like "*vosk-model-de-*") {
+                Write-Host "    -> Excluding (de): $($ConfigItem.BaseName)"
+                $IsExcluded = $true
+            }
+            # Check for 'en' exclusion (covers both en-us models)
+            if ($ExcludeList -contains "en" -and $ConfigItem.BaseName -like "*vosk-model*en-us*") {
+                Write-Host "    -> Excluding (en): $($ConfigItem.BaseName)"
+                $IsExcluded = $true
+            }
+            # Add other specific language checks here if needed...
+        }
+
+        # Only add if not excluded
+        if (-not $IsExcluded) {
+            $INSTALL_CONFIG += $ConfigItem
+        }
+    }
+}
+
+# Now, create the ArchiveConfig from the filtered INSTALL_CONFIG
+$ArchiveConfig = $INSTALL_CONFIG | ForEach-Object {
     [PSCustomObject]@{
         Zip  = "$($Prefix)$($_.BaseName).zip"
         Dir  = $_.BaseName
         Dest = $_.Dest
     }
 }
+# --- End Filter Configuration ---
+
 
 # Function to extract and clean up
 function Expand-And-Cleanup {
@@ -235,6 +312,7 @@ function Expand-And-Cleanup {
 foreach ($Config in $ArchiveConfig) {
     Expand-And-Cleanup -ZipFile $Config.Zip -DestinationPath $Config.Dest -ExpectedDirName $Config.Dir -CleanupAfterExtraction $should_remove_zips_after_unpack
 }
+
 
 Write-Host "    -> Extraction and cleanup successful." -ForegroundColor Green
 
