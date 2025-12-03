@@ -8,12 +8,15 @@ import sys
 from tqdm import tqdm
 from collections import defaultdict
 
+import argparse
+
 # --- Configuration ---
 OWNER = "sl5net"
 REPO = "Vosk-System-Listener"
 TAG = "v0.2.0"
 API_URL = f"https://api.github.com/repos/{OWNER}/{REPO}/releases/tags/{TAG}"
-
+# https://api.github.com/repos/sl5net/Vosk-System-Listener/releases/tags/v0.2.0
+# https://api.github.com/repositories/1006604181/releases/tags/v0.2.0
 remove_parts = True #  It can be useful for transporting too many parts.  or, if you want to store only a park somewhere
 
 # --- Helper Functions (Unchanged) ---
@@ -205,7 +208,32 @@ def process_package(base_name, package_files, remove_parts):
         print(f"\n[XXXXX]  CRITICAL FAILURE! Merged file '{final_merged_filename}' is corrupt.")
         return False
 
+
 def main():
+    # ----------------------------------------------------
+    # NEU: 1. Argument-Parser MUSS ZUERST SEIN
+    # ----------------------------------------------------
+    parser = argparse.ArgumentParser(description="Download and verify assets from a GitHub release.")
+    parser.add_argument("--exclude", type=str, default="", # <-- Richtig eingerückt
+                        help="Comma-separated list of language codes to exclude (e.g., 'de,en') or 'all'.")
+    args = parser.parse_args()
+
+    # Sprache(n) auslesen und in eine Liste konvertieren
+    exclude_list = [item.strip().lower() for item in args.exclude.split(',')] if args.exclude else []
+
+    print(f"============================================")
+    print(f"============================================")
+    print(f"============================================")
+    print(f"--- DEBUG: Parsed exclusion list from arguments: {exclude_list}")
+    print(f"============================================")
+    # sys.exit(1) # Beenden, um die geparste Liste zu sehen
+    # ----------------------------------------------------
+
+
+
+    # ----------------------------------------------------
+    # NEU: 2. Nur einmaliger API-Call nach dem Argument-Parsing
+    # ----------------------------------------------------
     print(f"Fetching release assets for {OWNER}/{REPO} tag {TAG}...")
     try:
         release_info = requests.get(API_URL).json()
@@ -213,6 +241,8 @@ def main():
     except requests.exceptions.RequestException as e:
         print(f"Fatal Error: Could not connect to GitHub API. {e}")
         sys.exit(1)
+    # ----------------------------------------------------
+
 
     packages = verbose_discovery(assets)
     valid_packages = {k: v for k, v in packages.items() if v['checksum_asset'] and v['part_assets']}
@@ -224,10 +254,47 @@ def main():
         print("="*60)
         sys.exit(1)
 
-    print(f"Found {len(valid_packages)} valid package(s) to process: {', '.join(valid_packages.keys())}")
+    # Diese Ausgabezeile ist irreführend, da sie die UNGEFILTERTE Liste zeigt.
+    # Wir ändern den Text, damit es klarer wird, dass dies die "verfügbaren" Pakete sind.
+    print(f"Found {len(valid_packages)} valid package(s) available: {', '.join(valid_packages.keys())}")
+
+
+    # --- Filtering (Bleibt unverändert, aber jetzt greift es auf exclude_list zu!)
+    packages_to_process = {}
+
+    if exclude_list and exclude_list != ['']:
+        print(f"Applying exclusion filter: {', '.join(exclude_list)}")
+
+    for base_name, files in valid_packages.items():
+        is_mandatory = base_name.startswith("LanguageTool") or base_name.startswith("lid.")
+        is_excluded = False
+
+        if 'all' in exclude_list and not is_mandatory:
+            # Exclude=all: Überspringt alle nicht-obligatorischen Pakete
+            is_excluded = True
+
+        elif 'all' not in exclude_list:
+            # Check: 'vosk-model-de-0.21' -> 'de'
+            if 'de' in exclude_list and '-de-' in base_name:
+                is_excluded = True
+            if 'en' in exclude_list and ('-en-' in base_name or 'en-us' in base_name):
+                is_excluded = True
+
+        if is_excluded:
+            print(f"    -> Exclusion applied: Skipping {base_name}")
+        else:
+            packages_to_process[base_name] = files
+
+    if not packages_to_process:
+        print("Warning: All packages were excluded or no packages found to process. Exiting downloader.")
+        sys.exit(0)
+
+    print(f"Processing {len(packages_to_process)} package(s) after exclusion: {', '.join(packages_to_process.keys())}")
+    # ----------------------------------------------------
+
 
     all_successful = True
-    for base_name, files in valid_packages.items():
+    for base_name, files in packages_to_process.items():
         if not process_package(base_name, files, remove_parts):
             all_successful = False
 
@@ -240,4 +307,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
