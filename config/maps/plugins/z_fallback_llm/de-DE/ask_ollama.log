@@ -1,1147 +1,583 @@
-17:52:52,186 - INFO     - ⏱0.0s⏱️ ask_ollama.py:874: Nr. 1 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
-17:52:52,199 - INFO     - ⏱0.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 67130595 ...
-17:53:00,539 - INFO     - ⏱8.3s⏱️ cache_core.py:121: ✅ 1 Cache HITs | CacheHITs/Nr : 0.5📈⌚ Zeit gespart: ~4.8s
-17:53:00,545 - INFO     - ⏱8.3s⏱️ ask_ollama.py:828: cached_resp: Dateiname: sl5_record_trigger.py Regex-Code: import os import re def create_trigger_file(): trigger_file = open('/tmp/sl5_record.trigger', 'w') trigger_file.write('') trigger_file.close() create_trigger_file()
-17:53:44,101 - INFO     - ⏱51.9s⏱️ ask_ollama.py:874: Nr. 3 | CACHE_HITS:1 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~6.8s
-17:53:44,115 - INFO     - ⏱51.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: bb0c57b4 ...
-17:54:36,421 - INFO     - ⏱1m:44.2s⏱️ ask_ollama.py:874: Nr. 4 | CACHE_HITS:1 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~8.2s
-17:54:36,435 - INFO     - ⏱1m:44.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 915aa354 ...
-17:54:45,658 - INFO     - ⏱1m:53.4s⏱️ cache_core.py:121: ✅ 2 Cache HITs | CacheHITs/Nr : 0.4📈⌚ Zeit gespart: ~13.2s
-17:54:45,664 - INFO     - ⏱1m:53.4s⏱️ ask_ollama.py:828: cached_resp: Die letzte verfügbare Konfiguration für den Offline-Modus ist 'config/maps/latest_config.py'.
-17:55:10,517 - INFO     - ⏱2m:18.3s⏱️ ask_ollama.py:874: Nr. 6 | CACHE_HITS:2 📊 CacheHITs/Nr.: 0.3 �19:13:29,781 - INFO     - Setting Linux microphone mute state to: False
-19:13:29,788 - INFO     - ✅ Linux microphone mute state set to False.
-19:13:29,788 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:13:29,788 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:13:29,788 - INFO     - '🎤de': Returning 'de-DE'.
-19:13:29,826 - INFO     - Using model for lang 'de-DE'.
-19:13:29,826 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:13:29,829 - INFO     - Setting Linux microphone mute state to: False
-19:13:29,835 - INFO     - ✅ Linux microphone mute state set to False.
-19:13:29,835 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:13:29,835 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:13:29,836 - INFO     - Attempting to send notification...
-19:13:29,836 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:13:29,853 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:13:30,153 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:13:31,446 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:13:31,446 - INFO     - mute_microphone()
-19:13:31,446 - INFO     - Muted sound
-19:13:31,448 - INFO     - Setting Linux microphone mute state to: True
-19:13:31,490 - INFO     - ✅ Linux microphone mute state set to True.
-19:13:31,578 - INFO     - mute_microphone()
-19:13:31,578 - INFO     - Muted sound
-19:13:31,578 - INFO     - Setting Linux microphone mute state to: True
-19:13:31,584 - INFO     - ✅ Linux microphone mute state set to True.
-19:13:31,584 - INFO     - --- Test action completed. ---
-19:13:31,584 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:13:31,584 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:13:31,584 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:13:33,362 - INFO     - ________________________________ wer bist du __________________________________________
-19:13:33,362 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:13:33,362 - INFO     - 📢📢📢             🎙️ 🎤 
-19:13:33,362 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:13:33,362 - INFO     - Processing chunk: 'wer bist du...'
-19:13:33,363 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:13:33,363 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:13:33,363 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:13:33,363 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:13:33,363 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:13:33,415 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:13:33,415 - INFO     - 🗑️ Calling clear_global_maps to release old function references.
-19:13:33,415 - INFO     - Starting CLEAR of global Map Registries.
-19:13:33,415 - INFO     - Global Map Registries successfully cleared.
-19:13:33,415 - INFO     - 🗑️ Deleting old module reference for config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre from sys.modules.
-19:13:33,448 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:13:33,489 - ERROR    - Failed to process module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:13:33,489 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:13:33,490 - INFO     - 🗺️ Map loading complete. Found 289 FUZZY_MAP_pre rules.
-19:13:33,490 - INFO     - Attempting to send notification...
-19:13:33,490 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:13:33,491 - INFO     - -----> rawInput to LT:  'wer bist du'
-19:13:33,504 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:13:34,274 - INFO     - 🔁 📚wer bist du📚 ->LT-> 📚Wer bist du📚
-19:13:34,275 - INFO     - 👎best fuzzy score:0% for 'wer bist du'
-19:13:34,275 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:13:34,275 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764785614275.txt 'Wer bist du'
-19:13:34,275 - INFO     - Attempting to send notification...
-19:13:34,275 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:13:34,275 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:13:34,275 - INFO     - Attempting to send notification...
-19:13:34,275 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:13:34,312 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wer bist du...' 
-19:13:34,319 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:13:34,353 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:14:26,392 - INFO     - Setting Linux microphone mute state to: False
-19:14:26,430 - INFO     - ✅ Linux microphone mute state set to False.
-19:14:26,430 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:14:26,430 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:14:26,431 - INFO     - '🎤de': Returning 'de-DE'.
-19:14:26,452 - INFO     - Using model for lang 'de-DE'.
-19:14:26,452 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:14:26,454 - INFO     - Setting Linux microphone mute state to: False
-19:14:26,460 - INFO     - ✅ Linux microphone mute state set to False.
-19:14:26,461 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:14:26,461 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:14:26,461 - INFO     - Attempting to send notification...
-19:14:26,461 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:14:26,473 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:14:26,774 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:14:28,171 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:14:28,171 - INFO     - mute_microphone()
-19:14:28,171 - INFO     - Muted sound
-19:14:28,172 - INFO     - Setting Linux microphone mute state to: True
-19:14:28,209 - INFO     - ✅ Linux microphone mute state set to True.
-19:14:28,216 - INFO     - mute_microphone()
-19:14:28,216 - INFO     - Muted sound
-19:14:28,217 - INFO     - Setting Linux microphone mute state to: True
-19:14:28,225 - INFO     - ✅ Linux microphone mute state set to True.
-19:14:28,225 - INFO     - --- Test action completed. ---
-19:14:28,225 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:14:28,225 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:14:28,225 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:14:29,960 - INFO     - ________________________________ wer bist du __________________________________________
-19:14:29,960 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:14:29,960 - INFO     - 📢📢📢             🎙️ 🎤 
-19:14:29,960 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:14:29,960 - INFO     - Processing chunk: 'wer bist du...'
-19:14:29,960 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:14:29,960 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:14:29,960 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:14:29,961 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:14:29,961 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:14:29,994 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:14:30,025 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:14:30,063 - ERROR    - Failed to process module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:14:30,063 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:14:30,063 - INFO     - 🗺️ Map loading complete. Found 289 FUZZY_MAP_pre rules.
-19:14:30,063 - INFO     - Attempting to send notification...
-19:14:30,063 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:14:30,065 - INFO     - -----> rawInput to LT:  'wer bist du'
-19:14:30,122 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:14:30,565 - INFO     - 🔁 📚wer bist du📚 ->LT-> 📚Wer bist du📚
-19:14:30,566 - INFO     - 👎best fuzzy score:0% for 'wer bist du'
-19:14:30,566 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:14:30,566 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764785670566.txt 'Wer bist du'
-19:14:30,566 - INFO     - Attempting to send notification...
-19:14:30,566 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:14:30,566 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:14:30,566 - INFO     - Attempting to send notification...
-19:14:30,566 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:14:30,603 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wer bist du...' 
-19:14:30,609 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:14:30,640 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:16:42,104 - INFO     - Setting Linux microphone mute state to: False
-19:16:42,139 - INFO     - ✅ Linux microphone mute state set to False.
-19:16:42,139 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:16:42,140 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:16:42,140 - INFO     - '🎤de': Returning 'de-DE'.
-19:16:42,161 - INFO     - Using model for lang 'de-DE'.
-19:16:42,162 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:16:42,164 - INFO     - Setting Linux microphone mute state to: False
-19:16:42,169 - INFO     - ✅ Linux microphone mute state set to False.
-19:16:42,169 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:16:42,170 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:16:42,170 - INFO     - Attempting to send notification...
-19:16:42,170 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:16:42,187 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:16:42,491 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:16:43,679 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:16:43,679 - INFO     - mute_microphone()
-19:16:43,679 - INFO     - Muted sound
-19:16:43,680 - INFO     - Setting Linux microphone mute state to: True
-19:16:43,716 - INFO     - ✅ Linux microphone mute state set to True.
-19:16:43,772 - INFO     - mute_microphone()
-19:16:43,772 - INFO     - Muted sound
-19:16:43,774 - INFO     - Setting Linux microphone mute state to: True
-19:16:43,780 - INFO     - ✅ Linux microphone mute state set to True.
-19:16:43,780 - INFO     - --- Test action completed. ---
-19:16:43,780 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:16:43,780 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:16:43,780 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:16:45,425 - INFO     - ________________________________ wer bist du __________________________________________
-19:16:45,425 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:16:45,425 - INFO     - 📢📢📢             🎙️ 🎤 
-19:16:45,425 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:16:45,425 - INFO     - Processing chunk: 'wer bist du...'
-19:16:45,425 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:16:45,425 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:16:45,426 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:16:45,426 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:16:45,426 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:16:45,465 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:16:45,496 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:16:45,535 - ERROR    - Failed to process module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:16:45,535 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:16:45,535 - INFO     - 🗺️ Map loading complete. Found 289 FUZZY_MAP_pre rules.
-19:16:45,535 - INFO     - Attempting to send notification...
-19:16:45,535 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:16:45,537 - INFO     - -----> rawInput to LT:  'wer bist du'
-19:16:45,582 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:16:46,044 - INFO     - 🔁 📚wer bist du📚 ->LT-> 📚Wer bist du📚
-19:16:46,045 - INFO     - 👎best fuzzy score:0% for 'wer bist du'
-19:16:46,045 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:16:46,045 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764785806045.txt 'Wer bist du'
-19:16:46,045 - INFO     - Attempting to send notification...
-19:16:46,046 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:16:46,046 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:16:46,046 - INFO     - Attempting to send notification...
-19:16:46,046 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:16:46,046 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wer bist du...' 
-19:16:46,087 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:16:46,118 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:17:45,970 - INFO     - Setting Linux microphone mute state to: False
-19:17:46,006 - INFO     - ✅ Linux microphone mute state set to False.
-19:17:46,006 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:17:46,006 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:17:46,006 - INFO     - '🎤de': Returning 'de-DE'.
-19:17:46,027 - INFO     - Using model for lang 'de-DE'.
-19:17:46,027 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:17:46,030 - INFO     - Setting Linux microphone mute state to: False
-19:17:46,037 - INFO     - ✅ Linux microphone mute state set to False.
-19:17:46,037 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:17:46,037 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:17:46,037 - INFO     - Attempting to send notification...
-19:17:46,037 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:17:46,050 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:17:46,350 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:17:47,783 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:17:47,783 - INFO     - mute_microphone()
-19:17:47,783 - INFO     - Muted sound
-19:17:47,785 - INFO     - Setting Linux microphone mute state to: True
-19:17:47,823 - INFO     - ✅ Linux microphone mute state set to True.
-19:17:47,890 - INFO     - mute_microphone()
-19:17:47,890 - INFO     - Muted sound
-19:17:47,892 - INFO     - Setting Linux microphone mute state to: True
-19:17:47,899 - INFO     - ✅ Linux microphone mute state set to True.
-19:17:47,899 - INFO     - --- Test action completed. ---
-19:17:47,899 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:17:47,899 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:17:47,899 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:17:49,555 - INFO     - ________________________________ wer bist du __________________________________________
-19:17:49,555 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:17:49,555 - INFO     - 📢📢📢             🎙️ 🎤 
-19:17:49,555 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:17:49,555 - INFO     - Processing chunk: 'wer bist du...'
-19:17:49,555 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:17:49,555 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:17:49,555 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:17:49,555 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:17:49,556 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:17:49,594 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:17:49,623 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:17:49,657 - ERROR    - Failed to process module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:17:49,657 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:17:49,657 - INFO     - 🗺️ Map loading complete. Found 289 FUZZY_MAP_pre rules.
-19:17:49,657 - INFO     - Attempting to send notification...
-19:17:49,657 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:17:49,659 - INFO     - -----> rawInput to LT:  'wer bist du'
-19:17:49,697 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:17:50,186 - INFO     - 🔁 📚wer bist du📚 ->LT-> 📚Wer bist du📚
-19:17:50,186 - INFO     - 👎best fuzzy score:0% for 'wer bist du'
-19:17:50,187 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:17:50,187 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764785870186.txt 'Wer bist du'
-19:17:50,187 - INFO     - Attempting to send notification...
-19:17:50,187 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:17:50,187 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:17:50,187 - INFO     - Attempting to send notification...
-19:17:50,187 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:17:50,226 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wer bist du...' 
-19:17:50,233 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:17:50,265 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:20:03,564 - INFO     - Setting Linux microphone mute state to: False
-19:20:03,600 - INFO     - ✅ Linux microphone mute state set to False.
-19:20:03,600 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:20:03,600 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:20:03,600 - INFO     - '🎤de': Returning 'de-DE'.
-19:20:03,621 - INFO     - Using model for lang 'de-DE'.
-19:20:03,621 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:20:03,623 - INFO     - Setting Linux microphone mute state to: False
-19:20:03,630 - INFO     - ✅ Linux microphone mute state set to False.
-19:20:03,630 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:20:03,630 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:20:03,630 - INFO     - Attempting to send notification...
-19:20:03,630 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:20:03,644 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:20:03,947 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:20:05,528 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:20:05,528 - INFO     - mute_microphone()
-19:20:05,528 - INFO     - Muted sound
-19:20:05,530 - INFO     - Setting Linux microphone mute state to: True
-19:20:05,566 - INFO     - ✅ Linux microphone mute state set to True.
-19:20:05,636 - INFO     - mute_microphone()
-19:20:05,636 - INFO     - Muted sound
-19:20:05,637 - INFO     - Setting Linux microphone mute state to: True
-19:20:05,643 - INFO     - ✅ Linux microphone mute state set to True.
-19:20:05,643 - INFO     - --- Test action completed. ---
-19:20:05,644 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:20:05,644 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:20:05,644 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:20:07,146 - INFO     - ________________________________ wer bist du __________________________________________
-19:20:07,147 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:20:07,147 - INFO     - 📢📢📢             🎙️ 🎤 
-19:20:07,147 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:20:07,147 - INFO     - Processing chunk: 'wer bist du...'
-19:20:07,147 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:20:07,147 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:20:07,147 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:20:07,147 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:20:07,147 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:20:07,184 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:20:07,212 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:20:07,247 - ERROR    - Failed to process module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:20:07,247 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:20:07,247 - INFO     - 🗺️ Map loading complete. Found 289 FUZZY_MAP_pre rules.
-19:20:07,247 - INFO     - Attempting to send notification...
-19:20:07,247 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:20:07,249 - INFO     - -----> rawInput to LT:  'wer bist du'
-19:20:07,294 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:20:07,794 - INFO     - 🔁 📚wer bist du📚 ->LT-> 📚Wer bist du📚
-19:20:07,795 - INFO     - 👎best fuzzy score:0% for 'wer bist du'
-19:20:07,795 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:20:07,795 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786007795.txt 'Wer bist du'
-19:20:07,795 - INFO     - Attempting to send notification...
-19:20:07,795 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:20:07,795 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:20:07,795 - INFO     - Attempting to send notification...
-19:20:07,795 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:20:07,827 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wer bist du...' 
-19:20:07,832 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:20:07,865 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:21:23,210 - INFO     - Setting Linux microphone mute state to: False
-19:21:23,246 - INFO     - ✅ Linux microphone mute state set to False.
-19:21:23,246 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:21:23,246 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:21:23,246 - INFO     - '🎤de': Returning 'de-DE'.
-19:21:23,269 - INFO     - Using model for lang 'de-DE'.
-19:21:23,269 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:21:23,271 - INFO     - Setting Linux microphone mute state to: False
-19:21:23,277 - INFO     - ✅ Linux microphone mute state set to False.
-19:21:23,278 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:21:23,278 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:21:23,278 - INFO     - Attempting to send notification...
-19:21:23,278 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:21:23,290 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:21:23,597 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:21:25,527 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:21:25,528 - INFO     - mute_microphone()
-19:21:25,528 - INFO     - Muted sound
-19:21:25,529 - INFO     - Setting Linux microphone mute state to: True
-19:21:25,563 - INFO     - ✅ Linux microphone mute state set to True.
-19:21:25,630 - INFO     - mute_microphone()
-19:21:25,630 - INFO     - Muted sound
-19:21:25,631 - INFO     - Setting Linux microphone mute state to: True
-19:21:25,639 - INFO     - ✅ Linux microphone mute state set to True.
-19:21:25,639 - INFO     - --- Test action completed. ---
-19:21:25,639 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:21:25,639 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:21:25,639 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:21:27,010 - INFO     - ________________________________ wer bist du __________________________________________
-19:21:27,010 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:21:27,010 - INFO     - 📢📢📢             🎙️ 🎤 
-19:21:27,010 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:21:27,010 - INFO     - Processing chunk: 'wer bist du...'
-19:21:27,010 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:21:27,010 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:21:27,010 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:21:27,010 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:21:27,011 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:21:27,045 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:21:27,075 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:21:27,110 - ERROR    - Failed to process module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:21:27,111 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:21:27,111 - INFO     - 🗺️ Map loading complete. Found 289 FUZZY_MAP_pre rules.
-19:21:27,111 - INFO     - Attempting to send notification...
-19:21:27,111 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:21:27,112 - INFO     - -----> rawInput to LT:  'wer bist du'
-19:21:27,201 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:21:27,613 - INFO     - 🔁 📚wer bist du📚 ->LT-> 📚Wer bist du📚
-19:21:27,614 - INFO     - 👎best fuzzy score:0% for 'wer bist du'
-19:21:27,614 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:21:27,614 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786087614.txt 'Wer bist du'
-19:21:27,615 - INFO     - Attempting to send notification...
-19:21:27,615 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:21:27,615 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:21:27,615 - INFO     - Attempting to send notification...
-19:21:27,615 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:21:27,650 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wer bist du...' 
-19:21:27,656 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:21:27,689 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:22:20,146 - INFO     - Setting Linux microphone mute state to: False
-19:22:20,182 - INFO     - ✅ Linux microphone mute state set to False.
-19:22:20,182 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:22:20,183 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:22:20,183 - INFO     - '🎤de': Returning 'de-DE'.
-19:22:20,204 - INFO     - Using model for lang 'de-DE'.
-19:22:20,205 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:22:20,207 - INFO     - Setting Linux microphone mute state to: False
-19:22:20,213 - INFO     - ✅ Linux microphone mute state set to False.
-19:22:20,214 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:22:20,214 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:22:20,214 - INFO     - Attempting to send notification...
-19:22:20,214 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:22:20,227 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:22:20,531 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:22:22,065 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:22:22,065 - INFO     - mute_microphone()
-19:22:22,065 - INFO     - Muted sound
-19:22:22,066 - INFO     - Setting Linux microphone mute state to: True
-19:22:22,103 - INFO     - ✅ Linux microphone mute state set to True.
-19:22:22,229 - INFO     - mute_microphone()
-19:22:22,229 - INFO     - Muted sound
-19:22:22,230 - INFO     - Setting Linux microphone mute state to: True
-19:22:22,238 - INFO     - ✅ Linux microphone mute state set to True.
-19:22:22,238 - INFO     - --- Test action completed. ---
-19:22:22,238 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:22:22,238 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:22:22,238 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:22:23,731 - INFO     - ________________________________ wer bist du __________________________________________
-19:22:23,731 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:22:23,731 - INFO     - 📢📢📢             🎙️ 🎤 
-19:22:23,731 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:22:23,731 - INFO     - Processing chunk: 'wer bist du...'
-19:22:23,731 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:22:23,731 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:22:23,731 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:22:23,731 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:22:23,731 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:22:23,768 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:22:23,798 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': closing parenthesis ']' does not match opening parenthesis '{' on line 11 (FUZZY_MAP_pre.py, line 13)
-19:22:23,835 - ERROR    - Failed to process module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': closing parenthesis ']' does not match opening parenthesis '{' on line 11 (FUZZY_MAP_pre.py, line 13)
-19:22:23,835 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:22:23,835 - INFO     - 🗺️ Map loading complete. Found 289 FUZZY_MAP_pre rules.
-19:22:23,835 - INFO     - Attempting to send notification...
-19:22:23,835 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:22:23,837 - INFO     - -----> rawInput to LT:  'wer bist du'
-19:22:23,885 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:22:24,346 - INFO     - 🔁 📚wer bist du📚 ->LT-> 📚Wer bist du📚
-19:22:24,347 - INFO     - 👎best fuzzy score:0% for 'wer bist du'
-19:22:24,347 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:22:24,347 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786144347.txt 'Wer bist du'
-19:22:24,347 - INFO     - Attempting to send notification...
-19:22:24,347 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:22:24,347 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:22:24,348 - INFO     - Attempting to send notification...
-19:22:24,348 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:22:24,379 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wer bist du...' 
-19:22:24,385 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:22:24,416 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': closing parenthesis ']' does not match opening parenthesis '{' on line 11 (FUZZY_MAP_pre.py, line 13)
-19:23:04,853 - INFO     - Setting Linux microphone mute state to: False
-19:23:04,889 - INFO     - ✅ Linux microphone mute state set to False.
-19:23:04,890 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:23:04,890 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:23:04,890 - INFO     - '🎤de': Returning 'de-DE'.
-19:23:04,911 - INFO     - Using model for lang 'de-DE'.
-19:23:04,911 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:23:04,913 - INFO     - Setting Linux microphone mute state to: False
-19:23:04,919 - INFO     - ✅ Linux microphone mute state set to False.
-19:23:04,919 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:23:04,919 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:23:04,919 - INFO     - Attempting to send notification...
-19:23:04,919 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:23:04,932 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:23:05,234 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:23:06,793 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:23:06,793 - INFO     - mute_microphone()
-19:23:06,793 - INFO     - Muted sound
-19:23:06,794 - INFO     - Setting Linux microphone mute state to: True
-19:23:06,829 - INFO     - ✅ Linux microphone mute state set to True.
-19:23:06,946 - INFO     - mute_microphone()
-19:23:06,946 - INFO     - Muted sound
-19:23:06,947 - INFO     - Setting Linux microphone mute state to: True
-19:23:06,954 - INFO     - ✅ Linux microphone mute state set to True.
-19:23:06,955 - INFO     - --- Test action completed. ---
-19:23:06,955 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:23:06,955 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:23:06,955 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:23:08,418 - INFO     - ________________________________ wer bist du __________________________________________
-19:23:08,418 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:23:08,418 - INFO     - 📢📢📢             🎙️ 🎤 
-19:23:08,418 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:23:08,418 - INFO     - Processing chunk: 'wer bist du...'
-19:23:08,419 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:23:08,419 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:23:08,419 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:23:08,419 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:23:08,419 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:23:08,456 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:23:08,488 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:23:08,524 - ERROR    - Failed to process module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:23:08,524 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:23:08,524 - INFO     - 🗺️ Map loading complete. Found 289 FUZZY_MAP_pre rules.
-19:23:08,524 - INFO     - Attempting to send notification...
-19:23:08,524 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:23:08,526 - INFO     - -----> rawInput to LT:  'wer bist du'
-19:23:08,581 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:23:09,024 - INFO     - 🔁 📚wer bist du📚 ->LT-> 📚Wer bist du📚
-19:23:09,024 - INFO     - 👎best fuzzy score:0% for 'wer bist du'
-19:23:09,024 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:23:09,025 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786189024.txt 'Wer bist du'
-19:23:09,025 - INFO     - Attempting to send notification...
-19:23:09,025 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:23:09,025 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:23:09,025 - INFO     - Attempting to send notification...
-19:23:09,025 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:23:09,063 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wer bist du...' 
-19:23:09,070 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:23:09,103 - ERROR    - ❌ Failed to reload module 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre': 'tuple' object is not callable
-19:25:51,909 - INFO     - Setting Linux microphone mute state to: False
-19:25:51,950 - INFO     - ✅ Linux microphone mute state set to False.
-19:25:51,950 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:25:51,950 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:25:51,950 - INFO     - '🎤de': Returning 'de-DE'.
-19:25:51,972 - INFO     - Using model for lang 'de-DE'.
-19:25:51,972 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:25:51,974 - INFO     - Setting Linux microphone mute state to: False
-19:25:51,980 - INFO     - ✅ Linux microphone mute state set to False.
-19:25:51,980 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:25:51,981 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:25:51,981 - INFO     - Attempting to send notification...
-19:25:51,981 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:25:51,994 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:25:52,290 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:25:53,769 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:25:53,769 - INFO     - mute_microphone()
-19:25:53,769 - INFO     - Muted sound
-19:25:53,770 - INFO     - Setting Linux microphone mute state to: True
-19:25:53,809 - INFO     - ✅ Linux microphone mute state set to True.
-19:25:53,814 - INFO     - mute_microphone()
-19:25:53,814 - INFO     - Muted sound
-19:25:53,815 - INFO     - Setting Linux microphone mute state to: True
-19:25:53,821 - INFO     - ✅ Linux microphone mute state set to True.
-19:25:53,821 - INFO     - --- Test action completed. ---
-19:25:53,821 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:25:53,821 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:25:53,821 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:25:55,468 - INFO     - ________________________________ wer bist du __________________________________________
-19:25:55,468 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:25:55,468 - INFO     - 📢📢📢             🎙️ 🎤 
-19:25:55,468 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:25:55,468 - INFO     - Processing chunk: 'wer bist du...'
-19:25:55,468 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:25:55,468 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:25:55,468 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:25:55,468 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:25:55,468 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:25:55,505 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:25:55,535 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre'.
-19:25:55,570 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:25:55,570 - INFO     - 🗺️ Map loading complete. Found 292 FUZZY_MAP_pre rules.
-19:25:55,570 - INFO     - Attempting to send notification...
-19:25:55,570 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:25:55,572 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:25:55,572 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:25:55,572 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786355572.txt 'Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. Es gibt keine Accounts, Passwörter, Logins.'
-19:25:55,572 - INFO     - Attempting to send notification...
-19:25:55,572 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:25:55,572 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:25:55,572 - INFO     - Attempting to send notification...
-19:25:55,572 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:25:55,604 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ich bin Aura ein Offline-Syste...' 
-19:25:55,642 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:26:51,301 - INFO     - Setting Linux microphone mute state to: False
-19:26:51,339 - INFO     - ✅ Linux microphone mute state set to False.
-19:26:51,339 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:26:51,339 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:26:51,340 - INFO     - '🎤de': Returning 'de-DE'.
-19:26:51,361 - INFO     - Using model for lang 'de-DE'.
-19:26:51,361 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:26:51,363 - INFO     - Setting Linux microphone mute state to: False
-19:26:51,370 - INFO     - ✅ Linux microphone mute state set to False.
-19:26:51,370 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:26:51,370 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:26:51,370 - INFO     - Attempting to send notification...
-19:26:51,370 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:26:51,383 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:26:51,680 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:26:52,999 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:26:52,000 - INFO     - mute_microphone()
-19:26:52,000 - INFO     - Muted sound
-19:26:52,000 - INFO     - Setting Linux microphone mute state to: True
-19:26:53,039 - INFO     - ✅ Linux microphone mute state set to True.
-19:26:53,110 - INFO     - mute_microphone()
-19:26:53,110 - INFO     - Muted sound
-19:26:53,111 - INFO     - Setting Linux microphone mute state to: True
-19:26:53,118 - INFO     - ✅ Linux microphone mute state set to True.
-19:26:53,118 - INFO     - --- Test action completed. ---
-19:26:53,118 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:26:53,118 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:26:53,118 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:26:54,856 - INFO     - ________________________________ wer bist du __________________________________________
-19:26:54,856 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:26:54,857 - INFO     - 📢📢📢             🎙️ 🎤 
-19:26:54,857 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:26:54,857 - INFO     - Processing chunk: 'wer bist du...'
-19:26:54,857 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:26:54,857 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:26:54,857 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:26:54,857 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:26:54,857 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:26:54,894 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:26:54,894 - INFO     - 🗑️ Calling clear_global_maps to release old function references.
-19:26:54,894 - INFO     - Starting CLEAR of global Map Registries.
-19:26:54,894 - INFO     - Global Map Registries successfully cleared.
-19:26:54,894 - INFO     - 🗑️ Deleting old module reference for config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre from sys.modules.
-19:26:54,921 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre'.
-19:26:54,954 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:26:54,954 - INFO     - 🗺️ Map loading complete. Found 292 FUZZY_MAP_pre rules.
-19:26:54,954 - INFO     - Attempting to send notification...
-19:26:54,954 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:26:54,955 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:26:54,955 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:26:54,955 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786414955.txt 'Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. Es gibt keine Accounts, Passwörter, Logins.'
-19:26:54,956 - INFO     - Attempting to send notification...
-19:26:54,956 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:26:54,956 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:26:54,956 - INFO     - Attempting to send notification...
-19:26:54,956 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:26:54,988 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ich bin Aura ein Offline-Syste...' 
-19:26:55,027 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:27:19,189 - INFO     - Setting Linux microphone mute state to: False
-19:27:19,226 - INFO     - ✅ Linux microphone mute state set to False.
-19:27:19,226 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:27:19,226 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:27:19,227 - INFO     - '🎤de': Returning 'de-DE'.
-19:27:19,247 - INFO     - Using model for lang 'de-DE'.
-19:27:19,248 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:27:19,250 - INFO     - Setting Linux microphone mute state to: False
-19:27:19,257 - INFO     - ✅ Linux microphone mute state set to False.
-19:27:19,257 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:27:19,257 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:27:19,257 - INFO     - Attempting to send notification...
-19:27:19,257 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:27:19,271 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:27:19,570 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:27:21,153 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:27:21,153 - INFO     - mute_microphone()
-19:27:21,153 - INFO     - Muted sound
-19:27:21,154 - INFO     - Setting Linux microphone mute state to: True
-19:27:21,189 - INFO     - ✅ Linux microphone mute state set to True.
-19:27:21,252 - INFO     - mute_microphone()
-19:27:21,252 - INFO     - Muted sound
-19:27:21,254 - INFO     - Setting Linux microphone mute state to: True
-19:27:21,260 - INFO     - ✅ Linux microphone mute state set to True.
-19:27:21,261 - INFO     - --- Test action completed. ---
-19:27:21,261 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:27:21,261 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:27:21,261 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:27:22,750 - INFO     - ________________________________ wer bist du __________________________________________
-19:27:22,750 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:27:22,750 - INFO     - 📢📢📢             🎙️ 🎤 
-19:27:22,750 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:27:22,750 - INFO     - Processing chunk: 'wer bist du...'
-19:27:22,750 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:27:22,751 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:27:22,751 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:27:22,751 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:27:22,751 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:27:22,787 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:27:22,787 - INFO     - 🗑️ Calling clear_global_maps to release old function references.
-19:27:22,787 - INFO     - Starting CLEAR of global Map Registries.
-19:27:22,787 - INFO     - Global Map Registries successfully cleared.
-19:27:22,787 - INFO     - 🗑️ Deleting old module reference for config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre from sys.modules.
-19:27:22,814 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre'.
-19:27:22,850 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:27:22,850 - INFO     - 🗺️ Map loading complete. Found 292 FUZZY_MAP_pre rules.
-19:27:22,850 - INFO     - Attempting to send notification...
-19:27:22,850 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:27:22,851 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:27:22,851 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:27:22,852 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786442851.txt 'Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
-Es gibt keine Accounts, Passwörter, Logins.'
-19:27:22,852 - INFO     - Attempting to send notification...
-19:27:22,852 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:27:22,852 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:27:22,852 - INFO     - Attempting to send notification...
-19:27:22,852 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:27:22,887 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ich bin Aura ein Offline-Syste...' 
-19:27:22,924 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:29:06,462 - INFO     - Setting Linux microphone mute state to: False
-19:29:06,499 - INFO     - ✅ Linux microphone mute state set to False.
-19:29:06,499 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:29:06,499 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:29:06,500 - INFO     - '🎤de': Returning 'de-DE'.
-19:29:06,522 - INFO     - Using model for lang 'de-DE'.
-19:29:06,522 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:29:06,524 - INFO     - Setting Linux microphone mute state to: False
-19:29:06,530 - INFO     - ✅ Linux microphone mute state set to False.
-19:29:06,530 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:29:06,530 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:29:06,531 - INFO     - Attempting to send notification...
-19:29:06,531 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:06,545 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:29:06,841 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:29:08,561 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:29:08,561 - INFO     - mute_microphone()
-19:29:08,561 - INFO     - Muted sound
-19:29:08,562 - INFO     - Setting Linux microphone mute state to: True
-19:29:08,596 - INFO     - ✅ Linux microphone mute state set to True.
-19:29:08,635 - INFO     - mute_microphone()
-19:29:08,635 - INFO     - Muted sound
-19:29:08,637 - INFO     - Setting Linux microphone mute state to: True
-19:29:08,643 - INFO     - ✅ Linux microphone mute state set to True.
-19:29:08,644 - INFO     - --- Test action completed. ---
-19:29:08,644 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:29:08,644 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:29:08,644 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:29:09,858 - INFO     - ________________________________ google g b day __________________________________________
-19:29:09,859 - INFO     - 📢📢📢 ######################### google g b day ##########################################
-19:29:09,859 - INFO     - 📢📢📢             🎙️ 🎤 
-19:29:09,859 - INFO     - 📢📢📢-----> Yielding chunk: 📢 google g b day
-19:29:09,859 - INFO     - Processing chunk: 'google g b day...'
-19:29:09,859 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:29:09,859 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:29:09,859 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:29:09,859 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:29:09,859 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:29:09,894 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:29:09,894 - INFO     - 🗑️ Calling clear_global_maps to release old function references.
-19:29:09,894 - INFO     - Starting CLEAR of global Map Registries.
-19:29:09,894 - INFO     - Global Map Registries successfully cleared.
-19:29:09,894 - INFO     - 🗑️ Deleting old module reference for config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre from sys.modules.
-19:29:09,924 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre'.
-19:29:09,959 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:29:09,961 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:29:09,962 - INFO     - 🗺️ Map loading complete. Found 292 FUZZY_MAP_pre rules.
-19:29:09,962 - INFO     - Attempting to send notification...
-19:29:09,962 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:09,963 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:29:09,963 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:29:09,963 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786549963.txt 'https://aistudio.google.com/prompts/new_chat'
-19:29:09,963 - INFO     - Attempting to send notification...
-19:29:09,963 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:09,963 - INFO     - ✅ Background processing for 'google g b day...' finished. 
-19:29:09,963 - INFO     - Attempting to send notification...
-19:29:09,963 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:09,999 - INFO     - 🔊 Fallback (Linux (espeak)) 'https://aistudio.google.com/pr...' 
-19:29:14,685 - INFO     - Setting Linux microphone mute state to: False
-19:29:14,726 - INFO     - ✅ Linux microphone mute state set to False.
-19:29:14,726 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:29:14,726 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:29:14,726 - INFO     - '🎤de': Returning 'de-DE'.
-19:29:14,747 - INFO     - Using model for lang 'de-DE'.
-19:29:14,747 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:29:14,750 - INFO     - Setting Linux microphone mute state to: False
-19:29:14,756 - INFO     - ✅ Linux microphone mute state set to False.
-19:29:14,756 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:29:14,756 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:29:14,756 - INFO     - Attempting to send notification...
-19:29:14,756 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:14,771 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:29:15,004 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:29:21,163 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:29:21,163 - INFO     - mute_microphone()
-19:29:21,163 - INFO     - Muted sound
-19:29:21,165 - INFO     - Setting Linux microphone mute state to: True
-19:29:21,199 - INFO     - ✅ Linux microphone mute state set to True.
-19:29:21,281 - INFO     - mute_microphone()
-19:29:21,281 - INFO     - Muted sound
-19:29:21,282 - INFO     - Setting Linux microphone mute state to: True
-19:29:21,289 - INFO     - ✅ Linux microphone mute state set to True.
-19:29:21,289 - INFO     - --- Test action completed. ---
-19:29:21,289 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:29:21,289 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:29:21,289 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:29:33,582 - INFO     - Setting Linux microphone mute state to: False
-19:29:33,616 - INFO     - ✅ Linux microphone mute state set to False.
-19:29:33,616 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:29:33,616 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:29:33,616 - INFO     - '🎤de': Returning 'de-DE'.
-19:29:33,639 - INFO     - Using model for lang 'de-DE'.
-19:29:33,640 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:29:33,642 - INFO     - Setting Linux microphone mute state to: False
-19:29:33,648 - INFO     - ✅ Linux microphone mute state set to False.
-19:29:33,648 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:29:33,648 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:29:33,648 - INFO     - Attempting to send notification...
-19:29:33,648 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:33,661 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:29:33,905 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:29:35,489 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:29:35,489 - INFO     - mute_microphone()
-19:29:35,489 - INFO     - Muted sound
-19:29:35,491 - INFO     - Setting Linux microphone mute state to: True
-19:29:35,526 - INFO     - ✅ Linux microphone mute state set to True.
-19:29:35,583 - INFO     - mute_microphone()
-19:29:35,583 - INFO     - Muted sound
-19:29:35,585 - INFO     - Setting Linux microphone mute state to: True
-19:29:35,590 - INFO     - ✅ Linux microphone mute state set to True.
-19:29:35,590 - INFO     - --- Test action completed. ---
-19:29:35,590 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:29:35,591 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:29:35,591 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:29:35,988 - INFO     - ________________________________ wir brauchen einige varianten der begrüßung die möglicherweise benutzt werden hier die ersten vers __________________________________________
-19:29:35,988 - INFO     - 📢📢📢 ######################### wir brauchen einige varianten der begrüßung die möglicherweise benutzt werden hier die ersten vers ##########################################
-19:29:35,988 - INFO     - 📢📢📢             🎙️ 🎤 
-19:29:35,988 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wir brauchen einige varianten der begrüßung die möglicherweise benutzt werden hier die ersten vers
-19:29:35,988 - INFO     - Processing chunk: 'wir brauchen einige varianten ...'
-19:29:35,989 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:29:35,989 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:29:35,989 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:29:35,989 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:29:35,989 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:29:36,021 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:29:36,062 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:29:36,062 - INFO     - 🗺️ Map loading complete. Found 292 FUZZY_MAP_pre rules.
-19:29:36,062 - INFO     - Attempting to send notification...
-19:29:36,062 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:36,064 - INFO     - -----> rawInput to LT:  'wir brauchen einige varianten der begrüßung die möglicherweise benutzt werden hier die 1 vers'
-19:29:36,666 - INFO     - 🔁 📚wir brauchen einige varianten der begrüßung die möglicherweise benutzt werden hier die 1 vers📚 ->LT-> 📚Wir brauchen einige Varianten der Begrüßung die möglicherweise benutzt werden hier die 1 Vers📚
-19:29:36,667 - INFO     - 👎best fuzzy score:0% for 'wir brauchen einige varianten der begrüßung die möglicherweise benutzt werden hier die ersten vers'
-19:29:36,667 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:29:36,667 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786576667.txt 'Wir brauchen einige Varianten der Begrüßung die möglicherweise benutzt werden hier die 1 Vers'
-19:29:36,667 - INFO     - Attempting to send notification...
-19:29:36,667 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:36,667 - INFO     - ✅ Background processing for 'wir brauchen einige ...' finished. 
-19:29:36,667 - INFO     - Attempting to send notification...
-19:29:36,667 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:36,703 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wir brauchen einige Varianten ...' 
-19:29:37,131 - INFO     - ________________________________ hier die ersten versuche __________________________________________
-19:29:37,131 - INFO     - 📢📢📢 ######################### hier die ersten versuche ##########################################
-19:29:37,131 - INFO     - 📢📢📢             🎙️ 🎤 
-19:29:37,131 - INFO     - 📢📢📢-----> Yielding chunk: 📢 hier die ersten versuche
-19:29:37,131 - INFO     - Processing chunk: 'hier die ersten versuche...'
-19:29:37,131 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:29:37,131 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:29:37,131 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:29:37,131 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:29:37,131 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:29:37,212 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:29:37,213 - INFO     - 🗺️ Map loading complete. Found 292 FUZZY_MAP_pre rules.
-19:29:37,213 - INFO     - Attempting to send notification...
-19:29:37,213 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:37,215 - INFO     - 👎best fuzzy score:0% for 'hier die ersten versuche'
-19:29:37,215 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:29:37,215 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764786577215.txt 'hier die 1 versuche'
-19:29:37,215 - INFO     - Attempting to send notification...
-19:29:37,215 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:37,215 - INFO     - ✅ Background processing for 'hier die ersten vers...' finished. 
-19:29:37,215 - INFO     - Attempting to send notification...
-19:29:37,215 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:29:37,252 - INFO     - 🔊 Fallback (Linux (espeak)) 'hier die 1 versuche...' 
-19:29:37,256 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:36:57,417 - INFO     - Setting Linux microphone mute state to: False
-19:36:57,456 - INFO     - ✅ Linux microphone mute state set to False.
-19:36:57,456 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:36:57,456 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:36:57,457 - INFO     - '🎤de': Returning 'de-DE'.
-19:36:57,478 - INFO     - Using model for lang 'de-DE'.
-19:36:57,478 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:36:57,480 - INFO     - Setting Linux microphone mute state to: False
-19:36:57,486 - INFO     - ✅ Linux microphone mute state set to False.
-19:36:57,486 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:36:57,486 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:36:57,486 - INFO     - Attempting to send notification...
-19:36:57,486 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:36:57,499 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:36:57,797 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:36:59,227 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:36:59,227 - INFO     - mute_microphone()
-19:36:59,227 - INFO     - Muted sound
-19:36:59,228 - INFO     - Setting Linux microphone mute state to: True
-19:36:59,266 - INFO     - ✅ Linux microphone mute state set to True.
-19:36:59,330 - INFO     - mute_microphone()
-19:36:59,330 - INFO     - Muted sound
-19:36:59,332 - INFO     - Setting Linux microphone mute state to: True
-19:36:59,339 - INFO     - ✅ Linux microphone mute state set to True.
-19:36:59,339 - INFO     - --- Test action completed. ---
-19:36:59,339 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:36:59,339 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:36:59,339 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:37:01,009 - INFO     - ________________________________ wer bist du __________________________________________
-19:37:01,009 - INFO     - 📢📢📢 ######################### wer bist du ##########################################
-19:37:01,009 - INFO     - 📢📢📢             🎙️ 🎤 
-19:37:01,009 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wer bist du
-19:37:01,009 - INFO     - Processing chunk: 'wer bist du...'
-19:37:01,009 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:37:01,009 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:37:01,009 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:37:01,009 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:37:01,009 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:37:01,045 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py'. Reloading...
-19:37:01,046 - INFO     - 🗑️ Calling clear_global_maps to release old function references.
-19:37:01,046 - INFO     - Starting CLEAR of global Map Registries.
-19:37:01,046 - INFO     - Global Map Registries successfully cleared.
-19:37:01,046 - INFO     - 🗑️ Deleting old module reference for config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre from sys.modules.
-19:37:01,075 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre'.
-19:37:01,109 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:37:01,109 - INFO     - 🗺️ Map loading complete. Found 298 FUZZY_MAP_pre rules.
-19:37:01,109 - INFO     - Attempting to send notification...
-19:37:01,110 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:01,111 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:37:01,111 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:37:01,111 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764787021111.txt 'Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
-Es gibt keine Accounts, Passwörter, Logins.'
-19:37:01,111 - INFO     - Attempting to send notification...
-19:37:01,111 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:01,111 - INFO     - ✅ Background processing for 'wer bist du...' finished. 
-19:37:01,111 - INFO     - Attempting to send notification...
-19:37:01,111 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:01,146 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ich bin Aura ein Offline-Syste...' 
-19:37:01,150 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:37:36,050 - INFO     - Setting Linux microphone mute state to: False
-19:37:36,086 - INFO     - ✅ Linux microphone mute state set to False.
-19:37:36,086 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:37:36,086 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:37:36,086 - INFO     - '🎤de': Returning 'de-DE'.
-19:37:36,109 - INFO     - Using model for lang 'de-DE'.
-19:37:36,109 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:37:36,111 - INFO     - Setting Linux microphone mute state to: False
-19:37:36,118 - INFO     - ✅ Linux microphone mute state set to False.
-19:37:36,118 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:37:36,118 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:37:36,118 - INFO     - Attempting to send notification...
-19:37:36,118 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:36,132 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:37:36,428 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:37:37,748 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:37:37,748 - INFO     - mute_microphone()
-19:37:37,748 - INFO     - Muted sound
-19:37:37,750 - INFO     - Setting Linux microphone mute state to: True
-19:37:37,786 - INFO     - ✅ Linux microphone mute state set to True.
-19:37:37,871 - INFO     - mute_microphone()
-19:37:37,871 - INFO     - Muted sound
-19:37:37,872 - INFO     - Setting Linux microphone mute state to: True
-19:37:37,880 - INFO     - ✅ Linux microphone mute state set to True.
-19:37:37,880 - INFO     - --- Test action completed. ---
-19:37:37,880 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:37:37,880 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:37:37,880 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:37:39,596 - INFO     - ________________________________ hallo computer __________________________________________
-19:37:39,596 - INFO     - 📢📢📢 ######################### hallo computer ##########################################
-19:37:39,596 - INFO     - 📢📢📢             🎙️ 🎤 
-19:37:39,596 - INFO     - 📢📢📢-----> Yielding chunk: 📢 hallo computer
-19:37:39,596 - INFO     - Processing chunk: 'hallo computer...'
-19:37:39,596 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:37:39,596 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:37:39,596 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:37:39,596 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:37:39,597 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:37:39,665 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:37:39,665 - INFO     - 🗺️ Map loading complete. Found 298 FUZZY_MAP_pre rules.
-19:37:39,665 - INFO     - Attempting to send notification...
-19:37:39,665 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:39,666 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:37:39,666 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:37:39,666 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764787059666.txt 'Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
-Es gibt keine Accounts, Passwörter, Logins.'
-19:37:39,666 - INFO     - Attempting to send notification...
-19:37:39,666 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:39,667 - INFO     - ✅ Background processing for 'hallo computer...' finished. 
-19:37:39,667 - INFO     - Attempting to send notification...
-19:37:39,667 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:39,702 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ich bin Aura ein Offline-Syste...' 
-19:37:39,775 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:37:48,250 - INFO     - Setting Linux microphone mute state to: False
-19:37:48,286 - INFO     - ✅ Linux microphone mute state set to False.
-19:37:48,286 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:37:48,286 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:37:48,286 - INFO     - '🎤de': Returning 'de-DE'.
-19:37:48,308 - INFO     - Using model for lang 'de-DE'.
-19:37:48,308 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:37:48,310 - INFO     - Setting Linux microphone mute state to: False
-19:37:48,316 - INFO     - ✅ Linux microphone mute state set to False.
-19:37:48,317 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:37:48,317 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:37:48,317 - INFO     - Attempting to send notification...
-19:37:48,317 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:48,333 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:37:48,637 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:37:50,154 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:37:50,155 - INFO     - mute_microphone()
-19:37:50,155 - INFO     - Muted sound
-19:37:50,155 - INFO     - Setting Linux microphone mute state to: True
-19:37:50,193 - INFO     - ✅ Linux microphone mute state set to True.
-19:37:50,315 - INFO     - mute_microphone()
-19:37:50,315 - INFO     - Muted sound
-19:37:50,316 - INFO     - Setting Linux microphone mute state to: True
-19:37:50,323 - INFO     - ✅ Linux microphone mute state set to True.
-19:37:50,323 - INFO     - --- Test action completed. ---
-19:37:50,323 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:37:50,323 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:37:50,323 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:37:51,819 - INFO     - ________________________________ bist du da __________________________________________
-19:37:51,819 - INFO     - 📢📢📢 ######################### bist du da ##########################################
-19:37:51,819 - INFO     - 📢📢📢             🎙️ 🎤 
-19:37:51,819 - INFO     - 📢📢📢-----> Yielding chunk: 📢 bist du da
-19:37:51,820 - INFO     - Processing chunk: 'bist du da...'
-19:37:51,820 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:37:51,820 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:37:51,820 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:37:51,820 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:37:51,820 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:37:51,895 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:37:51,895 - INFO     - 🗺️ Map loading complete. Found 298 FUZZY_MAP_pre rules.
-19:37:51,895 - INFO     - Attempting to send notification...
-19:37:51,895 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:51,897 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:37:51,897 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:37:51,897 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764787071897.txt 'Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
-Es gibt keine Accounts, Passwörter, Logins.'
-19:37:51,897 - INFO     - Attempting to send notification...
-19:37:51,897 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:51,897 - INFO     - ✅ Background processing for 'bist du da...' finished. 
-19:37:51,897 - INFO     - Attempting to send notification...
-19:37:51,897 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:37:51,935 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ich bin Aura ein Offline-Syste...' 
-19:37:51,986 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:38:04,167 - INFO     - Setting Linux microphone mute state to: False
-19:38:04,209 - INFO     - ✅ Linux microphone mute state set to False.
-19:38:04,209 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:38:04,210 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:38:04,210 - INFO     - '🎤de': Returning 'de-DE'.
-19:38:04,231 - INFO     - Using model for lang 'de-DE'.
-19:38:04,231 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:38:04,233 - INFO     - Setting Linux microphone mute state to: False
-19:38:04,239 - INFO     - ✅ Linux microphone mute state set to False.
-19:38:04,239 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:38:04,239 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:38:04,239 - INFO     - Attempting to send notification...
-19:38:04,239 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:38:04,255 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:38:04,554 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:38:06,250 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:38:06,251 - INFO     - mute_microphone()
-19:38:06,251 - INFO     - Muted sound
-19:38:06,253 - INFO     - Setting Linux microphone mute state to: True
-19:38:06,289 - INFO     - ✅ Linux microphone mute state set to True.
-19:38:06,327 - INFO     - mute_microphone()
-19:38:06,328 - INFO     - Muted sound
-19:38:06,328 - INFO     - Setting Linux microphone mute state to: True
-19:38:06,335 - INFO     - ✅ Linux microphone mute state set to True.
-19:38:06,336 - INFO     - --- Test action completed. ---
-19:38:06,336 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:38:06,336 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:38:06,336 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:38:25,402 - INFO     - ________________________________ kannst du mich hören __________________________________________
-19:38:25,402 - INFO     - 📢📢📢 ######################### kannst du mich hören ##########################################
-19:38:25,402 - INFO     - 📢📢📢             🎙️ 🎤 
-19:38:25,402 - INFO     - 📢📢📢-----> Yielding chunk: 📢 kannst du mich hören
-19:38:25,402 - INFO     - Processing chunk: 'kannst du mich hören...'
-19:38:25,402 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:38:25,402 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:38:25,402 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:38:25,402 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:38:25,402 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:38:25,488 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:38:25,488 - INFO     - 🗺️ Map loading complete. Found 298 FUZZY_MAP_pre rules.
-19:38:25,488 - INFO     - Attempting to send notification...
-19:38:25,488 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:38:25,489 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:38:25,489 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:38:25,490 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764787105489.txt 'Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
-Es gibt keine Accounts, Passwörter, Logins.'
-19:38:25,490 - INFO     - Attempting to send notification...
-19:38:25,490 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:38:25,490 - INFO     - ✅ Background processing for 'kannst du mich hören...' finished. 
-19:38:25,490 - INFO     - Attempting to send notification...
-19:38:25,490 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:38:25,523 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ich bin Aura ein Offline-Syste...' 
-19:38:25,564 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:38:53,516 - INFO     - Setting Linux microphone mute state to: False
-19:38:53,559 - INFO     - ✅ Linux microphone mute state set to False.
-19:38:53,560 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:38:53,560 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:38:53,560 - INFO     - '🎤de': Returning 'de-DE'.
-19:38:53,581 - INFO     - Using model for lang 'de-DE'.
-19:38:53,581 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:38:53,583 - INFO     - Setting Linux microphone mute state to: False
-19:38:53,590 - INFO     - ✅ Linux microphone mute state set to False.
-19:38:53,591 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:38:53,591 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:38:53,591 - INFO     - Attempting to send notification...
-19:38:53,591 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:38:53,604 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:38:53,911 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:38:55,245 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:38:55,245 - INFO     - mute_microphone()
-19:38:55,245 - INFO     - Muted sound
-19:38:55,247 - INFO     - Setting Linux microphone mute state to: True
-19:38:55,286 - INFO     - ✅ Linux microphone mute state set to True.
-19:38:55,333 - INFO     - mute_microphone()
-19:38:55,333 - INFO     - Muted sound
-19:38:55,334 - INFO     - Setting Linux microphone mute state to: True
-19:38:55,341 - INFO     - ✅ Linux microphone mute state set to True.
-19:38:55,341 - INFO     - --- Test action completed. ---
-19:38:55,341 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:38:55,341 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:38:55,341 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:38:56,816 - INFO     - ________________________________ computer __________________________________________
-19:38:56,817 - INFO     - 📢📢📢 ######################### computer ##########################################
-19:38:56,817 - INFO     - 📢📢📢             🎙️ 🎤 
-19:38:56,817 - INFO     - 📢📢📢-----> Yielding chunk: 📢 computer
-19:38:56,817 - INFO     - Processing chunk: 'computer...'
-19:38:56,817 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:38:56,817 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:38:56,817 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:38:56,817 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:38:56,817 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:38:56,890 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:38:56,890 - INFO     - 🗺️ Map loading complete. Found 298 FUZZY_MAP_pre rules.
-19:38:56,890 - INFO     - Attempting to send notification...
-19:38:56,890 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:38:56,891 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:38:56,891 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:38:56,891 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764787136891.txt 'Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
-Es gibt keine Accounts, Passwörter, Logins.'
-19:38:56,891 - INFO     - Attempting to send notification...
-19:38:56,891 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:38:56,892 - INFO     - ✅ Background processing for 'computer...' finished. 
-19:38:56,892 - INFO     - Attempting to send notification...
-19:38:56,892 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:38:56,925 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ich bin Aura ein Offline-Syste...' 
-19:38:56,002 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:39:13,490 - INFO     - Setting Linux microphone mute state to: False
-19:39:13,526 - INFO     - ✅ Linux microphone mute state set to False.
-19:39:13,526 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
-19:39:13,526 - INFO     - ----> Target model name: vosk-model-de-0.21
-19:39:13,526 - INFO     - '🎤de': Returning 'de-DE'.
-19:39:13,548 - INFO     - Using model for lang 'de-DE'.
-19:39:13,549 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
-19:39:13,551 - INFO     - Setting Linux microphone mute state to: False
-19:39:13,557 - INFO     - ✅ Linux microphone mute state set to False.
-19:39:13,557 - INFO     - initial_timeout , timeout: 2.0 , 1.0
-19:39:13,557 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
-19:39:13,557 - INFO     - Attempting to send notification...
-19:39:13,557 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:39:13,570 - INFO     - Dictation Session started. Initial timeout: 2.0s.
-19:39:13,870 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
-19:39:15,628 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
-19:39:15,628 - INFO     - mute_microphone()
-19:39:15,628 - INFO     - Muted sound
-19:39:15,629 - INFO     - Setting Linux microphone mute state to: True
-19:39:15,666 - INFO     - ✅ Linux microphone mute state set to True.
-19:39:15,801 - INFO     - mute_microphone()
-19:39:15,801 - INFO     - Muted sound
-19:39:15,802 - INFO     - Setting Linux microphone mute state to: True
-19:39:15,810 - INFO     - ✅ Linux microphone mute state set to True.
-19:39:15,810 - INFO     - --- Test action completed. ---
-19:39:15,810 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
-19:39:15,810 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
-19:39:15,810 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
-19:39:17,057 - INFO     - ________________________________ was machst du __________________________________________
-19:39:17,057 - INFO     - 📢📢📢 ######################### was machst du ##########################################
-19:39:17,057 - INFO     - 📢📢📢             🎙️ 🎤 
-19:39:17,057 - INFO     - 📢📢📢-----> Yielding chunk: 📢 was machst du
-19:39:17,057 - INFO     - Processing chunk: 'was machst du...'
-19:39:17,057 - INFO     - 🗺️Starting recursive map loading for language: de-DE
-19:39:17,057 - INFO     - Stop signal received. Gracefully exiting recording loop.
-19:39:17,057 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
-19:39:17,057 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
-19:39:17,057 - INFO     - Finalizing recording session: All new audio intake has stopped.
-19:39:17,129 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-19:39:17,129 - INFO     - 🗺️ Map loading complete. Found 298 FUZZY_MAP_pre rules.
-19:39:17,129 - INFO     - Attempting to send notification...
-19:39:17,129 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:39:17,130 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-19:39:17,131 - WARNING  - primary TTS failed. try Espeak-Fallback...
-19:39:17,131 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764787157131.txt 'Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
-Es gibt keine Accounts, Passwörter, Logins.'
-19:39:17,131 - INFO     - Attempting to send notification...
-19:39:17,131 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:39:17,131 - INFO     - ✅ Background processing for 'was machst du...' finished. 
-19:39:17,131 - INFO     - Attempting to send notification...
-19:39:17,131 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-19:39:17,132 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ich bin Aura ein Offline-Syste...' 
-19:39:17,217 - INFO     - Session has ended. Yielding final safety-net chunk.
-19:39:18,987 - WARNING  - SYSTEM-MEMORY CRITICAL! RAM Usage: 92.1% (>92.0%) 
-19:39:18,987 - WARNING  - SYSTEM-MEMORY CRITICAL! Usage: 92.0668879032671%. ram_occupied_by_this_specific_process_mb: 4077.08203125%. Exceeds threshold. Terminating entire process group 4465.BTW: ramUsageIncreadFromBegining: 0.9953813552856445 times
+20:44:40,294 - INFO     - ⏱0.0s⏱️ cache_core.py:121: ✅ 1 Cache HITs | CacheHITs/Nr : 1.0📈⌚ Zeit gespart: ~0.0s
+20:44:40,301 - INFO     - ⏱0.0s⏱️ ask_ollama.py:827: cached_resp: User: "Wo finde ich die Regeln im 'maps'-Ordner?" Aura: Die Regeln liegen in den Dateien mit der Endung '.py' innerhalb des Ordners 'config/maps/'.
+20:44:54,394 - INFO     - ⏱14.0s⏱️ cache_core.py:121: ✅ 2 Cache HITs | CacheHITs/Nr : 1.0📈⌚ Zeit gespart: ~0.0s
+20:44:54,399 - INFO     - ⏱14.0s⏱️ ask_ollama.py:827: cached_resp: user_map.py python # Regel-Tupel: (Speichername, Dateipfad, Priorität, Flags) ('Regeln', r'config/maps/(.)', 0, {}) user_trigger.py python # Regel-Tupel: (Triggername, Dateipfad, Priorität, Flags) ('Trigger', r'/tmp/sl5_record\\.trigger', 0, {})
+20:45:31,180 - INFO     - ⏱50.8s⏱️ ask_ollama.py:873: Nr. 3 | CACHE_HITS:2 📊 CacheHITs/Nr.: 0.7 📈 | ⌚ Gespart: ~7.4s
+20:45:31,196 - INFO     - ⏱50.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 9ffc8336 ...
+20:46:10,193 - INFO     - ⏱1m:29.9s⏱️ cache_core.py:121: ✅ 3 Cache HITs | CacheHITs/Nr : 0.8📈⌚ Zeit gespart: ~8.3s
+20:46:10,199 - INFO     - ⏱1m:29.9s⏱️ ask_ollama.py:827: cached_resp: fuzzy_map_pre.py ist eine Python-Datei in 'config/maps/' mit einer Regex-Liste.
+20:46:40,062 - INFO     - ⏱1m:59.7s⏱️ ask_ollama.py:873: Nr. 5 | CACHE_HITS:3 📊 CacheHITs/Nr.: 0.6 📈 | ⌚ Gespart: ~14.2s
+20:46:40,076 - INFO     - ⏱1m:59.7s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 12e8888b ...
+20:47:40,791 - INFO     - ⏱3m:00.5s⏱️ ask_ollama.py:873: Nr. 6 | CACHE_HITS:3 📊 CacheHITs/Nr.: 0.5 📈 | ⌚ Gespart: ~18.9s
+20:47:40,806 - INFO     - ⏱3m:00.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 80151b25 ...
+20:48:08,501 - INFO     - ⏱3m:28.2s⏱️ ask_ollama.py:873: Nr. 7 | CACHE_HITS:3 📊 CacheHITs/Nr.: 0.4 📈 | ⌚ Gespart: ~21.5s
+20:48:08,515 - INFO     - ⏱3m:28.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 1509647f ...
+20:48:17,628 - INFO     - ⏱3m:37.3s⏱️ cache_core.py:121: ✅ 4 Cache HITs | CacheHITs/Nr : 0.5📈⌚ Zeit gespart: ~25.1s
+20:48:17,634 - INFO     - ⏱3m:37.3s⏱️ ask_ollama.py:827: cached_resp: Die letzte verfügbare Konfiguration für den Offline-Modus ist 'config/maps/latest_config.py'.
+20:48:42,779 - INFO     - ⏱4m:02.4s⏱️ ask_ollama.py:873: Nr. 9 | CACHE_HITS:4 📊 CacheHITs/Nr.: 0.4 📈 | ⌚ Gespart: ~27.9s
+20:48:42,794 - INFO     - ⏱4m:02.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 0651fc8e ...
+20:49:08,642 - INFO     - ⏱4m:28.3s⏱️ ask_ollama.py:873: Nr. 10 | CACHE_HITS:4 📊 CacheHITs/Nr.: 0.4 📈 | ⌚ Gespart: ~29.0s
+20:49:08,652 - INFO     - ⏱4m:28.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: e6f4e870 ...
+20:50:01,933 - INFO     - ⏱5m:21.6s⏱️ ask_ollama.py:873: Nr. 11 | CACHE_HITS:4 📊 CacheHITs/Nr.: 0.4 📈 | ⌚ Gespart: ~30.6s
+20:50:01,947 - INFO     - ⏱5m:21.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 908ac307 ...
+20:50:26,248 - INFO     - ⏱5m:45.9s⏱️ ask_ollama.py:873: Nr. 12 | CACHE_HITS:4 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~32.0s
+20:50:26,258 - INFO     - ⏱5m:45.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 79d765a4 ...
+20:51:05,841 - INFO     - ⏱6m:25.5s⏱️ cache_core.py:121: ✅ 5 Cache HITs | CacheHITs/Nr : 0.4📈⌚ Zeit gespart: ~36.9s
+20:51:05,848 - INFO     - ⏱6m:25.5s⏱️ ask_ollama.py:827: cached_resp: Um den Inhalt einer bestimmten Regel aus dem Map-Ordner abzurufen, kannst du folgende Schritte ausführen: 1. Öffne einen Terminal und navigiere zur Konfigurationsordner /config/maps/. 2. Führe den Befehl grep -rR 'fuzzy_map_abc' /config/maps/ aus. 3. Dieser Befehl sucht nach dem Regelnamen 'fuzzy_map_abc'
+20:51:33,604 - INFO     - ⏱6m:53.3s⏱️ cache_core.py:121: ✅ 6 Cache HITs | CacheHITs/Nr : 0.4📈⌚ Zeit gespart: ~41.1s
+20:51:46,946 - INFO     - ⏱7m:06.6s⏱️ ask_ollama.py:873: Nr. 14 | CACHE_HITS:6 📊 CacheHITs/Nr.: 0.4 📈 | ⌚ Gespart: ~46.8s
+20:51:46,962 - INFO     - ⏱7m:06.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 47b20b9a ...
+20:52:05,315 - INFO     - ⏱7m:25.0s⏱️ ask_ollama.py:873: Nr. 15 | CACHE_HITS:6 📊 CacheHITs/Nr.: 0.4 📈 | ⌚ Gespart: ~48.1s
+20:52:05,326 - INFO     - ⏱7m:25.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 373ec791 ...
+20:53:16,674 - INFO     - ⏱8m:36.3s⏱️ ask_ollama.py:873: Nr. 16 | CACHE_HITS:6 📊 CacheHITs/Nr.: 0.4 📈 | ⌚ Gespart: ~49.4s
+20:53:16,689 - INFO     - ⏱8m:36.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 605fa4ba ...
+20:53:43,203 - INFO     - ⏱9m:02.9s⏱️ ask_ollama.py:873: Nr. 17 | CACHE_HITS:6 📊 CacheHITs/Nr.: 0.4 📈 | ⌚ Gespart: ~51.6s
+20:53:43,218 - INFO     - ⏱9m:02.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 515b30cf ...
+20:54:13,059 - INFO     - ⏱9m:32.7s⏱️ ask_ollama.py:873: Nr. 18 | CACHE_HITS:6 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~52.2s
+20:54:13,073 - INFO     - ⏱9m:32.7s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 1bc0eaa3 ...
+20:55:14,778 - INFO     - ⏱10m:34.4s⏱️ ask_ollama.py:873: Nr. 19 | CACHE_HITS:6 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~54.2s
+20:55:14,793 - INFO     - ⏱10m:34.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: a545bada ...
+20:55:46,146 - INFO     - ⏱11m:05.8s⏱️ ask_ollama.py:873: Nr. 20 | CACHE_HITS:6 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~55.4s
+20:55:46,160 - INFO     - ⏱11m:05.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: eb36751e ...
+20:56:42,226 - INFO     - ⏱12m:01.9s⏱️ ask_ollama.py:873: Nr. 21 | CACHE_HITS:6 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~56.2s
+20:56:42,240 - INFO     - ⏱12m:01.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: dbddce76 ...
+20:56:48,130 - INFO     - ⏱12m:07.8s⏱️ cache_core.py:121: ✅ 7 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~62.6s
+20:56:48,136 - INFO     - ⏱12m:07.8s⏱️ ask_ollama.py:827: cached_resp: fuzzy_map_pre.py ist eine Python-Datei in 'config/maps/' mit einer Regex-Liste.
+20:57:17,435 - INFO     - ⏱12m:37.1s⏱️ ask_ollama.py:873: Nr. 23 | CACHE_HITS:7 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~62.9s
+20:57:17,450 - INFO     - ⏱12m:37.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 022e3e88 ...
+20:57:56,601 - INFO     - ⏱13m:16.3s⏱️ cache_core.py:121: ✅ 8 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~68.9s
+20:57:56,608 - INFO     - ⏱13m:16.3s⏱️ ask_ollama.py:827: cached_resp: User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'
+20:58:12,781 - INFO     - ⏱13m:32.4s⏱️ ask_ollama.py:494: 🛡️ Guardrail ausgelöst: 'aura, was ist die unterscheidung zwischen user_map.py und config/maps/user_map.py?'
+20:58:41,490 - INFO     - ⏱14m:01.2s⏱️ ask_ollama.py:873: Nr. 26 | CACHE_HITS:8 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~67.4s
+20:58:41,504 - INFO     - ⏱14m:01.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 27aa44ae ...
+20:59:21,989 - INFO     - ⏱14m:41.6s⏱️ cache_core.py:121: ✅ 9 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~73.1s
+20:59:21,994 - INFO     - ⏱14m:41.7s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+21:00:19,085 - INFO     - ⏱15m:38.7s⏱️ ask_ollama.py:873: Nr. 28 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~75.5s
+21:00:19,100 - INFO     - ⏱15m:38.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: ecde20de ...
+21:00:53,506 - INFO     - ⏱16m:13.2s⏱️ ask_ollama.py:873: Nr. 29 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~77.4s
+21:00:53,521 - INFO     - ⏱16m:13.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 8716f54b ...
+21:01:24,587 - INFO     - ⏱16m:44.2s⏱️ ask_ollama.py:873: Nr. 30 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~78.5s
+21:01:24,598 - INFO     - ⏱16m:44.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 64b201f4 ...
+21:01:48,901 - INFO     - ⏱17m:08.6s⏱️ ask_ollama.py:873: Nr. 31 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~78.9s
+21:01:48,912 - INFO     - ⏱17m:08.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 2d37f73f ...
+21:01:56,481 - INFO     - ⏱17m:16.1s⏱️ cache_core.py:129: return None, False
+21:02:05,643 - INFO     - ⏱17m:25.3s⏱️ ask_ollama.py:873: Nr. 32 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~79.0s
+21:02:05,658 - INFO     - ⏱17m:25.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 30ee5a2a ...
+21:02:20,850 - INFO     - ⏱17m:40.5s⏱️ ask_ollama.py:873: Nr. 33 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~79.1s
+21:02:20,864 - INFO     - ⏱17m:40.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: dde593e2 ...
+21:03:19,006 - INFO     - ⏱18m:38.7s⏱️ ask_ollama.py:873: Nr. 34 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~80.7s
+21:03:19,022 - INFO     - ⏱18m:38.7s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: a185675c ...
+21:04:35,738 - INFO     - ⏱19m:55.4s⏱️ ask_ollama.py:873: Nr. 35 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~83.1s
+21:04:35,755 - INFO     - ⏱19m:55.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 0175cae3 ...
+21:05:09,684 - INFO     - ⏱20m:29.3s⏱️ ask_ollama.py:873: Nr. 36 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~84.8s
+21:05:09,701 - INFO     - ⏱20m:29.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 03ecb14e ...
+21:05:42,915 - INFO     - ⏱21m:02.6s⏱️ ask_ollama.py:873: Nr. 37 | CACHE_HITS:9 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~85.8s
+21:05:42,933 - INFO     - ⏱21m:02.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 4e4cebd4 ...
+21:05:58,480 - INFO     - ⏱21m:18.1s⏱️ cache_core.py:121: ✅ 10 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~92.9s
+21:05:58,487 - INFO     - ⏱21m:18.1s⏱️ ask_ollama.py:827: cached_resp: trigger_map.py python # Regel-Tupel: (Dateipfad, Trigger-Wort) ('/tmp/sl5_record.trigger', r'/tmp/sl5_record\.trigger')
+21:06:30,511 - INFO     - ⏱21m:50.2s⏱️ ask_ollama.py:873: Nr. 39 | CACHE_HITS:10 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~93.0s
+21:06:30,527 - INFO     - ⏱21m:50.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: d7b73184 ...
+21:06:50,758 - INFO     - ⏱22m:10.4s⏱️ ask_ollama.py:873: Nr. 40 | CACHE_HITS:10 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~93.2s
+21:06:50,776 - INFO     - ⏱22m:10.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 45afc0c3 ...
+21:07:47,336 - INFO     - ⏱23m:07.0s⏱️ ask_ollama.py:873: Nr. 41 | CACHE_HITS:10 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~94.3s
+21:07:47,353 - INFO     - ⏱23m:07.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 81ac7011 ...
+21:08:14,225 - INFO     - ⏱23m:33.9s⏱️ ask_ollama.py:873: Nr. 42 | CACHE_HITS:10 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~94.9s
+21:08:14,242 - INFO     - ⏱23m:33.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 38802b0c ...
+21:08:20,301 - INFO     - ⏱23m:40.0s⏱️ cache_core.py:121: ✅ 11 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~102.0s
+21:08:20,306 - INFO     - ⏱23m:40.0s⏱️ ask_ollama.py:827: cached_resp: Dateiname: sl5_record_trigger.py Regex-Code: import os import re def create_trigger_file(): trigger_file = open('/tmp/sl5_record.trigger', 'w') trigger_file.write('') trigger_file.close() create_trigger_file()
+21:09:05,634 - INFO     - ⏱24m:25.3s⏱️ ask_ollama.py:873: Nr. 44 | CACHE_HITS:11 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~102.2s
+21:09:05,651 - INFO     - ⏱24m:25.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 35bc058b ...
+21:09:44,620 - INFO     - ⏱25m:04.3s⏱️ cache_core.py:121: ✅ 12 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~109.0s
+21:09:44,626 - INFO     - ⏱25m:04.3s⏱️ ask_ollama.py:827: cached_resp: Dateiname: sl5_record_trigger.py Regex-Code: import os import re def create_trigger_file(): trigger_file = open('/tmp/sl5_record.trigger', 'w') trigger_file.write('') trigger_file.close() create_trigger_file()
+21:10:27,597 - INFO     - ⏱25m:47.2s⏱️ ask_ollama.py:873: Nr. 46 | CACHE_HITS:12 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~110.0s
+21:10:27,625 - INFO     - ⏱25m:47.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: d31b31b8 ...
+21:11:11,800 - INFO     - ⏱26m:31.5s⏱️ ask_ollama.py:494: 🛡️ Guardrail ausgelöst: 'aura, wie kann ich den benutzer dazu bringen, dass alle texte mit hakenpunkten (*), strichlinien (-) und asterismen (*) ersetzt werden?'
+21:11:42,731 - INFO     - ⏱27m:02.4s⏱️ ask_ollama.py:873: Nr. 48 | CACHE_HITS:12 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~108.6s
+21:11:42,748 - INFO     - ⏱27m:02.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 005dad19 ...
+21:12:48,513 - INFO     - ⏱28m:08.2s⏱️ ask_ollama.py:873: Nr. 49 | CACHE_HITS:12 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~110.7s
+21:12:48,530 - INFO     - ⏱28m:08.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: da50bf0d ...
+21:13:27,845 - INFO     - ⏱28m:47.5s⏱️ ask_ollama.py:873: Nr. 50 | CACHE_HITS:12 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~113.9s
+21:13:27,861 - INFO     - ⏱28m:47.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 50df955e ...
+21:14:25,839 - INFO     - ⏱29m:45.5s⏱️ ask_ollama.py:873: Nr. 51 | CACHE_HITS:12 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~114.5s
+21:14:25,854 - INFO     - ⏱29m:45.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: c7736d64 ...
+21:14:48,158 - INFO     - ⏱30m:07.8s⏱️ ask_ollama.py:873: Nr. 52 | CACHE_HITS:12 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~115.1s
+21:14:48,175 - INFO     - ⏱30m:07.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: e9765df6 ...
+21:15:27,775 - INFO     - ⏱30m:47.4s⏱️ cache_core.py:121: ✅ 13 Cache HITs | CacheHITs/Nr : 0.2📈⌚ Zeit gespart: ~122.3s
+21:15:39,611 - INFO     - ⏱30m:59.3s⏱️ ask_ollama.py:873: Nr. 53 | CACHE_HITS:13 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~125.2s
+21:15:39,628 - INFO     - ⏱30m:59.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 38802b0c ...
+21:15:46,959 - INFO     - ⏱31m:06.6s⏱️ cache_core.py:121: ✅ 14 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~132.4s
+21:15:46,964 - INFO     - ⏱31m:06.6s⏱️ ask_ollama.py:827: cached_resp: 1. WISSENSFRAGE: Die Konfigurationen liegen im Ordner 'config/'. 2. HANDLUNG: Erstelle 'sl5_config.py' in 'config/' Verlauf: [{"role": "user", "content": "aura, wie komme ich in die /tmp/sl5_record.trigger-datei?"}, {"role": "assistant", "content": "Du kannst die Datei /tmp/sl5_record.trigger direkt öffnen oder durch den
+21:16:23,828 - INFO     - ⏱31m:43.5s⏱️ ask_ollama.py:873: Nr. 55 | CACHE_HITS:14 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~132.7s
+21:16:23,844 - INFO     - ⏱31m:43.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 0692a27d ...
+21:17:07,394 - INFO     - ⏱32m:27.0s⏱️ cache_core.py:121: ✅ 15 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~139.6s
+21:17:20,274 - INFO     - ⏱32m:39.9s⏱️ ask_ollama.py:873: Nr. 56 | CACHE_HITS:15 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~143.1s
+21:17:20,291 - INFO     - ⏱32m:40.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 847e42e8 ...
+21:17:29,972 - INFO     - ⏱32m:49.6s⏱️ cache_core.py:121: ✅ 16 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~150.0s
+21:17:29,977 - INFO     - ⏱32m:49.6s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+21:18:20,601 - INFO     - ⏱33m:40.3s⏱️ ask_ollama.py:873: Nr. 58 | CACHE_HITS:16 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~150.6s
+21:18:20,617 - INFO     - ⏱33m:40.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 2f725841 ...
+21:18:43,573 - INFO     - ⏱34m:03.2s⏱️ ask_ollama.py:873: Nr. 59 | CACHE_HITS:16 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~151.5s
+21:18:43,589 - INFO     - ⏱34m:03.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 31a61d5f ...
+21:19:03,096 - INFO     - ⏱34m:22.8s⏱️ ask_ollama.py:873: Nr. 60 | CACHE_HITS:16 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~151.4s
+21:19:03,113 - INFO     - ⏱34m:22.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: ee7412c0 ...
+21:19:23,619 - INFO     - ⏱34m:43.3s⏱️ ask_ollama.py:873: Nr. 61 | CACHE_HITS:16 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~151.3s
+21:19:23,638 - INFO     - ⏱34m:43.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 39fb5019 ...
+21:19:32,641 - INFO     - ⏱34m:52.3s⏱️ cache_core.py:121: ✅ 17 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~158.1s
+21:19:32,647 - INFO     - ⏱34m:52.3s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+21:20:26,284 - INFO     - ⏱35m:45.9s⏱️ ask_ollama.py:873: Nr. 63 | CACHE_HITS:17 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~158.8s
+21:20:26,296 - INFO     - ⏱35m:46.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: b717dbbe ...
+21:21:36,843 - INFO     - ⏱36m:56.5s⏱️ ask_ollama.py:873: Nr. 64 | CACHE_HITS:17 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~160.1s
+21:21:36,860 - INFO     - ⏱36m:56.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 2243f312 ...
+21:21:45,179 - INFO     - ⏱37m:04.8s⏱️ cache_core.py:121: ✅ 18 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~166.9s
+21:21:45,185 - INFO     - ⏱37m:04.8s⏱️ ask_ollama.py:827: cached_resp: Ja, ich kenne den Pfad '/tmp/sl5_record.trigger'.
+21:22:14,110 - INFO     - ⏱37m:33.8s⏱️ ask_ollama.py:873: Nr. 66 | CACHE_HITS:18 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~167.1s
+21:22:14,130 - INFO     - ⏱37m:33.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 00409a2b ...
+21:23:09,107 - INFO     - ⏱38m:28.8s⏱️ ask_ollama.py:873: Nr. 67 | CACHE_HITS:18 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~167.8s
+21:23:09,122 - INFO     - ⏱38m:28.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 9e5dabb3 ...
+21:23:15,557 - INFO     - ⏱38m:35.2s⏱️ cache_core.py:121: ✅ 19 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~174.5s
+21:23:15,563 - INFO     - ⏱38m:35.2s⏱️ ask_ollama.py:827: cached_resp: 1. WISSENSFRAGE: Die Konfigurationen liegen im Ordner 'config/'. 2. HANDLUNG: Erstelle 'sl5_config.py' in 'config/' Verlauf: [{"role": "user", "content": "aura, wie komme ich in die /tmp/sl5_record.trigger-datei?"}, {"role": "assistant", "content": "Du kannst die Datei /tmp/sl5_record.trigger direkt öffnen oder durch den
+21:23:41,415 - INFO     - ⏱39m:01.1s⏱️ cache_core.py:121: ✅ 20 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~181.1s
+21:23:41,420 - INFO     - ⏱39m:01.1s⏱️ ask_ollama.py:827: cached_resp: python config/maps/
+21:24:03,979 - INFO     - ⏱39m:23.6s⏱️ ask_ollama.py:873: Nr. 70 | CACHE_HITS:20 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~182.0s
+21:24:03,995 - INFO     - ⏱39m:23.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: b24107f2 ...
+21:24:30,388 - INFO     - ⏱39m:50.0s⏱️ ask_ollama.py:873: Nr. 71 | CACHE_HITS:20 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~182.2s
+21:24:30,405 - INFO     - ⏱39m:50.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: b9f81fe8 ...
+21:25:28,760 - INFO     - ⏱40m:48.4s⏱️ ask_ollama.py:873: Nr. 72 | CACHE_HITS:20 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~183.2s
+21:25:28,777 - INFO     - ⏱40m:48.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 5ed862ce ...
+21:25:52,574 - INFO     - ⏱41m:12.2s⏱️ ask_ollama.py:873: Nr. 73 | CACHE_HITS:20 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~184.2s
+21:25:52,591 - INFO     - ⏱41m:12.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 9d09f931 ...
+21:26:14,537 - INFO     - ⏱41m:34.2s⏱️ ask_ollama.py:873: Nr. 74 | CACHE_HITS:20 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~184.4s
+21:26:14,551 - INFO     - ⏱41m:34.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 488dad4d ...
+21:27:15,499 - INFO     - ⏱42m:35.1s⏱️ ask_ollama.py:494: 🛡️ Guardrail ausgelöst: 'aura, wie kann ich den benutzer mit einem fuzzy-regel einrichten, um alle einträge im wiki-pfad zu durchsuchen und bei jedem match eine spezifische aktion auszuführen?'
+21:27:31,333 - INFO     - ⏱42m:51.0s⏱️ cache_core.py:121: ✅ 21 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~188.5s
+21:27:31,338 - INFO     - ⏱42m:51.0s⏱️ ask_ollama.py:827: cached_resp: Regel-Formatänderung.py python # Formatänderung-Tupel: (Eingabeformat, Ausgabeformat) ('Einfaches Format', 'PUNCTUATION_MAP')
+21:28:05,088 - INFO     - ⏱43m:24.7s⏱️ ask_ollama.py:873: Nr. 77 | CACHE_HITS:21 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~189.4s
+21:28:05,105 - INFO     - ⏱43m:24.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: cee442bb ...
+21:28:10,885 - INFO     - ⏱43m:30.5s⏱️ cache_core.py:121: ✅ 22 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~195.8s
+21:28:10,889 - INFO     - ⏱43m:30.5s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+21:29:08,659 - INFO     - ⏱44m:28.3s⏱️ ask_ollama.py:873: Nr. 79 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~197.6s
+21:29:08,676 - INFO     - ⏱44m:28.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 7b2d97b6 ...
+21:30:04,637 - INFO     - ⏱45m:24.3s⏱️ ask_ollama.py:873: Nr. 80 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~199.1s
+21:30:04,654 - INFO     - ⏱45m:24.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 91c20bb6 ...
+21:31:06,838 - INFO     - ⏱46m:26.5s⏱️ ask_ollama.py:873: Nr. 81 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~201.6s
+21:31:06,855 - INFO     - ⏱46m:26.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 43796b2e ...
+21:31:38,838 - INFO     - ⏱46m:58.5s⏱️ ask_ollama.py:873: Nr. 82 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~202.7s
+21:31:38,855 - INFO     - ⏱46m:58.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 119922e8 ...
+21:32:33,185 - INFO     - ⏱47m:52.8s⏱️ ask_ollama.py:873: Nr. 83 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~203.6s
+21:32:33,203 - INFO     - ⏱47m:52.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 9400e96c ...
+21:33:40,456 - INFO     - ⏱49m:00.1s⏱️ ask_ollama.py:873: Nr. 84 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~207.0s
+21:33:40,469 - INFO     - ⏱49m:00.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: e52f2e46 ...
+21:34:35,950 - INFO     - ⏱49m:55.6s⏱️ ask_ollama.py:873: Nr. 85 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~210.6s
+21:34:35,966 - INFO     - ⏱49m:55.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 8464cf8a ...
+21:35:33,948 - INFO     - ⏱50m:53.6s⏱️ ask_ollama.py:873: Nr. 86 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~212.5s
+21:35:33,961 - INFO     - ⏱50m:53.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 95813bec ...
+21:36:07,935 - INFO     - ⏱51m:27.6s⏱️ ask_ollama.py:873: Nr. 87 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~214.3s
+21:36:07,951 - INFO     - ⏱51m:27.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 4aba9315 ...
+21:36:39,297 - INFO     - ⏱51m:59.0s⏱️ ask_ollama.py:873: Nr. 88 | CACHE_HITS:22 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~214.7s
+21:36:39,314 - INFO     - ⏱51m:59.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 54518490 ...
+21:37:23,935 - INFO     - ⏱52m:43.6s⏱️ cache_core.py:121: ✅ 23 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~221.9s
+21:37:23,940 - INFO     - ⏱52m:43.6s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+21:38:27,222 - INFO     - ⏱53m:46.9s⏱️ ask_ollama.py:873: Nr. 90 | CACHE_HITS:23 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~223.2s
+21:38:27,239 - INFO     - ⏱53m:46.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 4bbd1026 ...
+21:38:48,608 - INFO     - ⏱54m:08.3s⏱️ ask_ollama.py:873: Nr. 91 | CACHE_HITS:23 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~223.8s
+21:38:48,621 - INFO     - ⏱54m:08.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 3e7b43df ...
+21:39:45,877 - INFO     - ⏱55m:05.5s⏱️ ask_ollama.py:873: Nr. 92 | CACHE_HITS:23 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~224.2s
+21:39:45,892 - INFO     - ⏱55m:05.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 758d4018 ...
+21:39:52,603 - INFO     - ⏱55m:12.3s⏱️ cache_core.py:121: ✅ 24 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~231.5s
+21:39:52,608 - INFO     - ⏱55m:12.3s⏱️ ask_ollama.py:827: cached_resp: Bitte lese Details in der Dokumentation: https://SL5.de/Aura
+21:40:16,709 - INFO     - ⏱55m:36.4s⏱️ ask_ollama.py:873: Nr. 94 | CACHE_HITS:24 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~231.5s
+21:40:16,726 - INFO     - ⏱55m:36.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 7806a7bb ...
+21:41:10,404 - INFO     - ⏱56m:30.1s⏱️ ask_ollama.py:873: Nr. 95 | CACHE_HITS:24 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~232.1s
+21:41:10,421 - INFO     - ⏱56m:30.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 409c8e2a ...
+21:42:08,680 - INFO     - ⏱57m:28.3s⏱️ ask_ollama.py:873: Nr. 96 | CACHE_HITS:24 📊 CacheHITs/Nr.: 0.2 📈 | ⌚ Gespart: ~233.3s
+21:42:08,695 - INFO     - ⏱57m:28.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: aaf07a2a ...
+21:42:17,390 - INFO     - ⏱57m:37.0s⏱️ cache_core.py:121: ✅ 25 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~240.5s
+21:42:17,396 - INFO     - ⏱57m:37.0s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+21:42:54,633 - INFO     - ⏱58m:14.3s⏱️ cache_core.py:121: ✅ 26 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~247.6s
+21:42:54,638 - INFO     - ⏱58m:14.3s⏱️ ask_ollama.py:827: cached_resp: Regel-Tupel für Punktationsregel: ('Punktation', r'stern', '', 10, {})
+21:43:19,993 - INFO     - ⏱58m:39.6s⏱️ ask_ollama.py:873: Nr. 99 | CACHE_HITS:26 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~248.3s
+21:43:20,011 - INFO     - ⏱58m:39.7s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: cf2e732e ...
+21:44:16,562 - INFO     - ⏱59m:36.2s⏱️ ask_ollama.py:873: Nr. 100 | CACHE_HITS:26 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~249.4s
+21:44:16,579 - INFO     - ⏱59m:36.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 60c4c579 ...
+21:44:44,902 - INFO     - ⏱60m:04.6s⏱️ ask_ollama.py:873: Nr. 101 | CACHE_HITS:26 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~250.2s
+21:44:44,918 - INFO     - ⏱60m:04.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 4d5e13e3 ...
+21:45:55,345 - INFO     - ⏱61m:15.0s⏱️ ask_ollama.py:873: Nr. 102 | CACHE_HITS:26 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~251.1s
+21:45:55,362 - INFO     - ⏱61m:15.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 5b95f238 ...
+21:46:53,191 - INFO     - ⏱62m:12.9s⏱️ ask_ollama.py:873: Nr. 103 | CACHE_HITS:26 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~252.7s
+21:46:53,207 - INFO     - ⏱62m:12.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 761093e1 ...
+21:47:06,882 - INFO     - ⏱62m:26.5s⏱️ cache_core.py:121: ✅ 27 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~259.9s
+21:47:06,888 - INFO     - ⏱62m:26.5s⏱️ ask_ollama.py:827: cached_resp: Um Regeln für deine Datei text_to_speech.py zu importieren und anzuwenden, kannst du folgende Schritte ausführen: 1. Erstelle eine neue Datei in deinem config/maps/-Ordner mit dem Namen text_to_speech_regex.py. 2. Füge die Regeln für deine Datei text_to_speech.py in diese neue Datei ein, z.B.: python import re
+21:47:46,125 - INFO     - ⏱63m:05.8s⏱️ ask_ollama.py:873: Nr. 105 | CACHE_HITS:27 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~260.3s
+21:47:46,142 - INFO     - ⏱63m:05.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 6dd808af ...
+21:48:27,556 - INFO     - ⏱63m:47.2s⏱️ cache_core.py:121: ✅ 28 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~267.4s
+21:48:50,370 - INFO     - ⏱64m:10.0s⏱️ ask_ollama.py:873: Nr. 106 | CACHE_HITS:28 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~273.5s
+21:48:50,387 - INFO     - ⏱64m:10.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 8544166f ...
+21:49:22,675 - INFO     - ⏱64m:42.3s⏱️ ask_ollama.py:873: Nr. 107 | CACHE_HITS:28 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~274.4s
+21:49:22,691 - INFO     - ⏱64m:42.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 9de5997c ...
+21:50:20,288 - INFO     - ⏱65m:39.9s⏱️ ask_ollama.py:873: Nr. 108 | CACHE_HITS:28 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~275.3s
+21:50:20,305 - INFO     - ⏱65m:40.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 06575404 ...
+21:50:29,956 - INFO     - ⏱65m:49.6s⏱️ cache_core.py:121: ✅ 29 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~282.5s
+21:50:29,969 - INFO     - ⏱65m:49.6s⏱️ ask_ollama.py:827: cached_resp: Um sicherzustellen, dass dein Laptop nicht gehackt wird, wenn du mit mir kommunizierst, solltest du folgende Schritte ausführen: Verwende eine sichere Internetverbindung. Aktualisiere regelmäßig deine Betriebssystem- und Anwendungssoftware. verwendest ein starkes Passwort für dein Konto. Aktiviere die 2-Faktor-Authentifizierung, wenn möglich. Durch diese Maßnahmen kannst du das Risiko eines Cyberangriffs minimieren.
+21:50:58,752 - INFO     - ⏱66m:18.4s⏱️ cache_core.py:121: ✅ 30 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~289.6s
+21:50:58,758 - INFO     - ⏱66m:18.4s⏱️ ask_ollama.py:827: cached_resp: Regel-Tupel: ('aktuelle Regeln', ['regel_hinzufuegen.py (20, {'on_match_exec': 'plugins.new_rule'})'], 0, {})
+21:51:14,320 - INFO     - ⏱66m:34.0s⏱️ cache_core.py:121: ✅ 31 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~296.6s
+21:51:14,325 - INFO     - ⏱66m:34.0s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+21:52:13,400 - INFO     - ⏱67m:33.1s⏱️ cache_core.py:121: ✅ 32 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~303.4s
+21:52:13,407 - INFO     - ⏱67m:33.1s⏱️ ask_ollama.py:827: cached_resp: Regel-Tupel für Stern: ('Stern', '') Regel-Tupel für Kanzlerin: kanzlerin_map.py python # Regel-Tupel: (Ersetzung, Regex, Priorität, Flags) ('Angela Merkel', r'(BundeskanzlerinAngie)', 100, {'flags': re.IGNORECASE}) Regel-Tupel für Catch-All: catch_all.py python #
+21:52:51,965 - INFO     - ⏱68m:11.6s⏱️ ask_ollama.py:873: Nr. 113 | CACHE_HITS:32 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~304.6s
+21:52:51,980 - INFO     - ⏱68m:11.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 92e9cb88 ...
+21:53:48,759 - INFO     - ⏱69m:08.4s⏱️ ask_ollama.py:873: Nr. 114 | CACHE_HITS:32 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~306.7s
+21:53:48,775 - INFO     - ⏱69m:08.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 055e0f8b ...
+21:54:21,284 - INFO     - ⏱69m:40.9s⏱️ ask_ollama.py:873: Nr. 115 | CACHE_HITS:32 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~307.6s
+21:54:21,300 - INFO     - ⏱69m:41.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 84579aae ...
+21:55:35,367 - INFO     - ⏱70m:55.0s⏱️ ask_ollama.py:873: Nr. 116 | CACHE_HITS:32 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~308.6s
+21:55:35,384 - INFO     - ⏱70m:55.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 6d634b59 ...
+21:56:29,147 - INFO     - ⏱71m:48.8s⏱️ ask_ollama.py:873: Nr. 117 | CACHE_HITS:32 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~310.1s
+21:56:29,163 - INFO     - ⏱71m:48.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: f1bcf0f1 ...
+21:56:35,444 - INFO     - ⏱71m:55.1s⏱️ cache_core.py:121: ✅ 33 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~317.1s
+21:56:35,449 - INFO     - ⏱71m:55.1s⏱️ ask_ollama.py:827: cached_resp: User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'
+21:57:07,108 - INFO     - ⏱72m:26.8s⏱️ ask_ollama.py:873: Nr. 119 | CACHE_HITS:33 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~317.1s
+21:57:07,124 - INFO     - ⏱72m:26.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 4271b5be ...
+21:57:16,485 - INFO     - ⏱72m:36.1s⏱️ cache_core.py:121: ✅ 34 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~324.0s
+21:57:16,490 - INFO     - ⏱72m:36.1s⏱️ ask_ollama.py:827: cached_resp: maps_search.py python import os def search_maps(): maps_dir = 'config/maps' files = os.listdir(maps_dir) py_files = [file for file in files if file.endswith('.py')] return py_files # Beispiel: print(search_maps()) User: aura, welchen ordner soll ich bitte durchsuchen, um die regeln zu finden? Aura: config/maps
+21:58:06,617 - INFO     - ⏱73m:26.3s⏱️ ask_ollama.py:873: Nr. 121 | CACHE_HITS:34 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~324.2s
+21:58:06,629 - INFO     - ⏱73m:26.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 9ba491b2 ...
+21:58:13,958 - INFO     - ⏱73m:33.6s⏱️ cache_core.py:121: ✅ 35 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~331.0s
+21:58:13,964 - INFO     - ⏱73m:33.6s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+21:59:04,268 - INFO     - ⏱74m:23.9s⏱️ ask_ollama.py:873: Nr. 123 | CACHE_HITS:35 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~331.9s
+21:59:04,284 - INFO     - ⏱74m:23.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 3ccfc824 ...
+21:59:28,553 - INFO     - ⏱74m:48.2s⏱️ ask_ollama.py:873: Nr. 124 | CACHE_HITS:35 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~332.3s
+21:59:28,569 - INFO     - ⏱74m:48.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: a5b451f7 ...
+21:59:45,453 - INFO     - ⏱75m:05.1s⏱️ ask_ollama.py:873: Nr. 125 | CACHE_HITS:35 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~332.2s
+21:59:45,480 - INFO     - ⏱75m:05.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: aa3a444f ...
+22:00:28,095 - INFO     - ⏱75m:47.8s⏱️ cache_core.py:121: ✅ 36 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~339.0s
+22:00:28,100 - INFO     - ⏱75m:47.8s⏱️ ask_ollama.py:827: cached_resp: Dateiname: sl5_record_trigger.py Regex-Code: import os import re def create_trigger_file(): trigger_file = open('/tmp/sl5_record.trigger', 'w') trigger_file.write('') trigger_file.close() create_trigger_file()
+22:00:55,629 - INFO     - ⏱76m:15.3s⏱️ ask_ollama.py:494: 🛡️ Guardrail ausgelöst: 'aura, was ist der inhalt des erzeugten dateinamens '/tmp/sl5_record.trigger'?'
+22:01:14,641 - INFO     - ⏱76m:34.3s⏱️ ask_ollama.py:494: 🛡️ Guardrail ausgelöst: 'aura, wie kann ich die regeln für die sprachausgabe aus dem dateipfad '/home/user/aura_transcripts' einrichten?'
+22:01:47,222 - INFO     - ⏱77m:06.9s⏱️ ask_ollama.py:873: Nr. 129 | CACHE_HITS:36 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~334.7s
+22:01:47,239 - INFO     - ⏱77m:06.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: cc9bcbda ...
+22:02:36,606 - INFO     - ⏱77m:56.3s⏱️ ask_ollama.py:494: 🛡️ Guardrail ausgelöst: 'aura, kann ich bitte die regeln in config/maps/ auswerten und mir sagen, ob mein benutzername admin den einfluss einer priorität von 50 erhalten soll?'
+22:03:09,502 - INFO     - ⏱78m:29.2s⏱️ ask_ollama.py:873: Nr. 131 | CACHE_HITS:36 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~332.9s
+22:03:09,518 - INFO     - ⏱78m:29.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: d6263c95 ...
+22:03:30,203 - INFO     - ⏱78m:49.9s⏱️ ask_ollama.py:873: Nr. 132 | CACHE_HITS:36 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~333.6s
+22:03:30,221 - INFO     - ⏱78m:49.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: f2b96f91 ...
+22:04:24,403 - INFO     - ⏱79m:44.1s⏱️ ask_ollama.py:873: Nr. 133 | CACHE_HITS:36 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~334.3s
+22:04:24,419 - INFO     - ⏱79m:44.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: ce5ff5e1 ...
+22:04:49,389 - INFO     - ⏱80m:09.0s⏱️ ask_ollama.py:873: Nr. 134 | CACHE_HITS:36 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~335.4s
+22:04:49,405 - INFO     - ⏱80m:09.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 067373a6 ...
+22:05:04,320 - INFO     - ⏱80m:24.0s⏱️ ask_ollama.py:512: Mode: INSTANT REQUEST
+22:05:04,343 - INFO     - ⏱80m:24.0s⏱️ ask_ollama.py:210: 🚀 Kein ausreichender Match im Instant Modus.
+22:05:15,552 - INFO     - ⏱80m:35.2s⏱️ cache_core.py:121: ✅ 37 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~339.6s
+22:05:15,558 - INFO     - ⏱80m:35.2s⏱️ ask_ollama.py:827: cached_resp: user_regeln.py python # Regel-Tupel: (Name, Regex, Priorität, Flags) ('Regelspeicher', r'config/maps/\w+\.py', 0, {'flags': re.IGNORECASE})
+22:05:50,142 - INFO     - ⏱81m:09.8s⏱️ ask_ollama.py:873: Nr. 137 | CACHE_HITS:37 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~340.8s
+22:05:50,153 - INFO     - ⏱81m:09.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 0d46fd37 ...
+22:06:47,215 - INFO     - ⏱82m:06.9s⏱️ ask_ollama.py:873: Nr. 138 | CACHE_HITS:37 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~341.8s
+22:06:47,230 - INFO     - ⏱82m:06.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 58310dd0 ...
+22:07:44,559 - INFO     - ⏱83m:04.2s⏱️ ask_ollama.py:873: Nr. 139 | CACHE_HITS:37 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~343.4s
+22:07:44,575 - INFO     - ⏱83m:04.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: d90600cb ...
+22:08:24,925 - INFO     - ⏱83m:44.6s⏱️ cache_core.py:121: ✅ 38 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~350.1s
+22:08:24,932 - INFO     - ⏱83m:44.6s⏱️ ask_ollama.py:827: cached_resp: 'stern': ''
+22:08:29,856 - INFO     - ⏱83m:49.5s⏱️ cache_core.py:121: ✅ 39 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~356.8s
+22:08:29,862 - INFO     - ⏱83m:49.5s⏱️ ask_ollama.py:827: cached_resp: User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'
+22:08:59,515 - INFO     - ⏱84m:19.2s⏱️ ask_ollama.py:873: Nr. 142 | CACHE_HITS:39 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~357.0s
+22:08:59,530 - INFO     - ⏱84m:19.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: e7965aeb ...
+22:10:03,156 - INFO     - ⏱85m:22.8s⏱️ ask_ollama.py:873: Nr. 143 | CACHE_HITS:39 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~360.0s
+22:10:03,170 - INFO     - ⏱85m:22.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 543c5fc7 ...
+22:10:44,137 - INFO     - ⏱86m:03.8s⏱️ ask_ollama.py:873: Nr. 144 | CACHE_HITS:39 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~361.2s
+22:10:44,148 - INFO     - ⏱86m:03.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 46d0ae66 ...
+22:11:52,691 - INFO     - ⏱87m:12.3s⏱️ ask_ollama.py:873: Nr. 145 | CACHE_HITS:39 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~364.7s
+22:11:52,702 - INFO     - ⏱87m:12.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: a4df3d88 ...
+22:12:22,772 - INFO     - ⏱87m:42.4s⏱️ ask_ollama.py:873: Nr. 146 | CACHE_HITS:39 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~365.6s
+22:12:22,781 - INFO     - ⏱87m:42.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: bcb66fe5 ...
+22:12:47,639 - INFO     - ⏱88m:07.3s⏱️ ask_ollama.py:873: Nr. 147 | CACHE_HITS:39 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~365.8s
+22:12:47,653 - INFO     - ⏱88m:07.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: d0dbe9f0 ...
+22:12:57,832 - INFO     - ⏱88m:17.5s⏱️ cache_core.py:121: ✅ 40 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~372.6s
+22:12:57,838 - INFO     - ⏱88m:17.5s⏱️ ask_ollama.py:827: cached_resp: Um eine gespeicherte Regel im config/maps-Ordner zu ändern, folge bitte diesen Schritten: 1. Öffne einen Terminal und navigiere zum Ordner config. 2. Führe den Befehl git ls-files fzf aus, um die Dateien im Ordner maps zu finden. 3. Wähle die gewünschte Regel aus der Liste aus und führe den Befehl echo "neue Regel
+22:13:45,295 - INFO     - ⏱89m:05.0s⏱️ ask_ollama.py:873: Nr. 149 | CACHE_HITS:40 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~375.4s
+22:13:45,310 - INFO     - ⏱89m:05.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 347ebeb1 ...
+22:14:08,926 - INFO     - ⏱89m:28.6s⏱️ ask_ollama.py:873: Nr. 150 | CACHE_HITS:40 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~375.9s
+22:14:08,935 - INFO     - ⏱89m:28.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: b92b5ff2 ...
+22:14:52,033 - INFO     - ⏱90m:11.7s⏱️ cache_core.py:121: ✅ 41 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~382.7s
+22:14:52,038 - INFO     - ⏱90m:11.7s⏱️ ask_ollama.py:827: cached_resp: Ja, das kannst du mit dem Befehl echo "Hallo Welt!" > ausgabe.txt tun. Der >-Operator schreibt den Text "Hallo Welt!" in die Datei ausgabe.txt.
+22:15:06,953 - INFO     - ⏱90m:26.6s⏱️ cache_core.py:121: ✅ 42 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~389.5s
+22:15:06,958 - INFO     - ⏱90m:26.6s⏱️ ask_ollama.py:827: cached_resp: Um eine Regel zu erstellen, die auf bestimmte Wörter reagiert und dann eine bestimmte Aktion ausführt, kannst du folgende Syntax verwenden: ('Wort1', r'wort1', 100, {'flags': re.IGNORECASE}) ('Wort2', r'wort2', 200, {'flags': re.IGNORECASE}) In diesem Beispiel werden die Wörter "Wort1" und "Wort2" gesucht.
+22:15:45,451 - INFO     - ⏱91m:05.1s⏱️ ask_ollama.py:873: Nr. 153 | CACHE_HITS:42 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~390.0s
+22:15:45,465 - INFO     - ⏱91m:05.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: b03573bf ...
+22:16:29,296 - INFO     - ⏱91m:49.0s⏱️ cache_core.py:121: ✅ 43 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~396.7s
+22:16:29,303 - INFO     - ⏱91m:49.0s⏱️ ask_ollama.py:827: cached_resp: 'formatieren.py ('Ersetzung', r'\s+', '', 10, {'flags': re.IGNORECASE})'
+22:17:04,370 - INFO     - ⏱92m:24.0s⏱️ ask_ollama.py:873: Nr. 155 | CACHE_HITS:43 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~400.6s
+22:17:04,385 - INFO     - ⏱92m:24.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: c16ad1eb ...
+22:18:02,703 - INFO     - ⏱93m:22.4s⏱️ ask_ollama.py:873: Nr. 156 | CACHE_HITS:43 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~402.0s
+22:18:02,717 - INFO     - ⏱93m:22.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 98fef0c4 ...
+22:18:32,882 - INFO     - ⏱93m:52.5s⏱️ ask_ollama.py:873: Nr. 157 | CACHE_HITS:43 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~403.1s
+22:18:32,897 - INFO     - ⏱93m:52.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: b7ea3081 ...
+22:19:01,818 - INFO     - ⏱94m:21.5s⏱️ ask_ollama.py:873: Nr. 158 | CACHE_HITS:43 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~403.3s
+22:19:01,833 - INFO     - ⏱94m:21.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: d33caf08 ...
+22:19:24,949 - INFO     - ⏱94m:44.6s⏱️ ask_ollama.py:873: Nr. 159 | CACHE_HITS:43 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~403.8s
+22:19:24,964 - INFO     - ⏱94m:44.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 913c175b ...
+22:19:38,470 - INFO     - ⏱94m:58.1s⏱️ cache_core.py:121: ✅ 44 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~410.6s
+22:19:38,475 - INFO     - ⏱94m:58.1s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+22:20:41,310 - INFO     - ⏱96m:01.0s⏱️ cache_core.py:121: ✅ 45 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~417.3s
+22:21:01,524 - INFO     - ⏱96m:21.2s⏱️ ask_ollama.py:873: Nr. 161 | CACHE_HITS:45 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~423.0s
+22:21:01,535 - INFO     - ⏱96m:21.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 38802b0c ...
+22:21:34,205 - INFO     - ⏱96m:53.9s⏱️ cache_core.py:121: ✅ 46 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~429.7s
+22:21:34,211 - INFO     - ⏱96m:53.9s⏱️ ask_ollama.py:827: cached_resp: punctuation_map.py python # PUNCTUATION-Tupel: (Suchwort, neues Wort) 'stern': '' fuzzy_map.py python # Regel-Tupel: (Ersetzung, Regex, Priorität, Flags) ('Angie', r'(BundeskanzlerinAngie)', 100, {'flags': re.IGNORECASE})
+22:21:57,347 - INFO     - ⏱97m:17.0s⏱️ cache_core.py:121: ✅ 47 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~436.4s
+22:21:57,352 - INFO     - ⏱97m:17.0s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+22:23:14,061 - INFO     - ⏱98m:33.7s⏱️ ask_ollama.py:873: Nr. 164 | CACHE_HITS:47 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~439.5s
+22:23:14,077 - INFO     - ⏱98m:33.7s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 6897c806 ...
+22:23:54,532 - INFO     - ⏱99m:14.2s⏱️ ask_ollama.py:873: Nr. 165 | CACHE_HITS:47 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~440.5s
+22:23:54,550 - INFO     - ⏱99m:14.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: f80a3e1a ...
+22:24:55,526 - INFO     - ⏱100m:15.2s⏱️ ask_ollama.py:873: Nr. 166 | CACHE_HITS:47 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~441.8s
+22:24:55,541 - INFO     - ⏱100m:15.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: ff743293 ...
+22:25:31,361 - INFO     - ⏱100m:51.0s⏱️ ask_ollama.py:873: Nr. 167 | CACHE_HITS:47 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~445.1s
+22:25:31,376 - INFO     - ⏱100m:51.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 0c26ec80 ...
+22:26:24,887 - INFO     - ⏱101m:44.5s⏱️ ask_ollama.py:873: Nr. 168 | CACHE_HITS:47 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~445.9s
+22:26:24,898 - INFO     - ⏱101m:44.6s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 8d7cef53 ...
+22:26:50,296 - INFO     - ⏱102m:10.0s⏱️ ask_ollama.py:873: Nr. 169 | CACHE_HITS:47 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~447.1s
+22:26:50,310 - INFO     - ⏱102m:10.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 3acfc6be ...
+22:27:20,365 - INFO     - ⏱102m:40.0s⏱️ ask_ollama.py:873: Nr. 170 | CACHE_HITS:47 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~448.9s
+22:27:20,376 - INFO     - ⏱102m:40.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: ca5d871f ...
+22:28:01,329 - INFO     - ⏱103m:21.0s⏱️ cache_core.py:121: ✅ 48 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~455.8s
+22:28:01,336 - INFO     - ⏱103m:21.0s⏱️ ask_ollama.py:827: cached_resp: kritischem_map.py python ('kritik', r'wütendempört', 80, {'flags': re.IGNORECASE})
+22:28:32,254 - INFO     - ⏱103m:51.9s⏱️ ask_ollama.py:873: Nr. 172 | CACHE_HITS:48 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~456.5s
+22:28:32,265 - INFO     - ⏱103m:51.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 239c8711 ...
+22:28:38,074 - INFO     - ⏱103m:57.7s⏱️ cache_core.py:121: ✅ 49 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~463.3s
+22:28:38,079 - INFO     - ⏱103m:57.7s⏱️ ask_ollama.py:827: cached_resp: 1. WISSENSFRAGE: Die Konfigurationen liegen im Ordner 'config/'. 2. HANDLUNG: Erstelle 'sl5_config.py' in 'config/' Verlauf: [{"role": "user", "content": "aura, wie komme ich in die /tmp/sl5_record.trigger-datei?"}, {"role": "assistant", "content": "Du kannst die Datei /tmp/sl5_record.trigger direkt öffnen oder durch den
+22:29:03,234 - INFO     - ⏱104m:22.9s⏱️ cache_core.py:121: ✅ 50 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~470.1s
+22:29:03,239 - INFO     - ⏱104m:22.9s⏱️ ask_ollama.py:827: cached_resp: User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'
+22:29:30,393 - INFO     - ⏱104m:50.1s⏱️ ask_ollama.py:873: Nr. 175 | CACHE_HITS:50 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~470.5s
+22:29:30,404 - INFO     - ⏱104m:50.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 41400ee2 ...
+22:30:40,645 - INFO     - ⏱106m:00.3s⏱️ ask_ollama.py:873: Nr. 176 | CACHE_HITS:50 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~471.4s
+22:30:40,663 - INFO     - ⏱106m:00.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 434c852c ...
+22:31:42,553 - INFO     - ⏱107m:02.2s⏱️ ask_ollama.py:873: Nr. 177 | CACHE_HITS:50 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~474.3s
+22:31:42,567 - INFO     - ⏱107m:02.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 8d39ac25 ...
+22:31:53,227 - INFO     - ⏱107m:12.9s⏱️ cache_core.py:121: ✅ 51 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~481.0s
+22:31:53,237 - INFO     - ⏱107m:12.9s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+22:32:47,646 - INFO     - ⏱108m:07.3s⏱️ ask_ollama.py:873: Nr. 179 | CACHE_HITS:51 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~481.6s
+22:32:47,658 - INFO     - ⏱108m:07.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 2ae25e79 ...
+22:33:12,676 - INFO     - ⏱108m:32.3s⏱️ ask_ollama.py:873: Nr. 180 | CACHE_HITS:51 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~483.7s
+22:33:12,689 - INFO     - ⏱108m:32.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: f8160d62 ...
+22:34:03,798 - INFO     - ⏱109m:23.5s⏱️ cache_core.py:121: ✅ 52 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~490.5s
+22:34:03,807 - INFO     - ⏱109m:23.5s⏱️ ask_ollama.py:827: cached_resp: ausgabe_json.py python import os import json def ausgabe_json(): files = os.listdir('config/maps') py_files = [file for file in files if file.endswith('.py')] with open('maps_export.json', 'w') as f: for file in py_files: with open(os.path.join('config/maps', file), 'r') as g: json_data = json.load(g) f.write(json.dumps(json_data)
+22:34:49,908 - INFO     - ⏱110m:09.6s⏱️ cache_core.py:121: ✅ 53 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~497.2s
+22:34:49,916 - INFO     - ⏱110m:09.6s⏱️ ask_ollama.py:827: cached_resp: maps_sort.py python import os import json def sort_maps(): files = os.listdir('config/maps') py_files = [file for file in files if file.endswith('.py')] sorted_py_files = sorted(py_files) with open('sorted_maps.json', 'w') as f: for file in sorted_py_files: with open(os.path.join('config/maps', file), 'r') as g: json_data = json.load(g
+22:35:55,291 - INFO     - ⏱111m:15.0s⏱️ ask_ollama.py:873: Nr. 183 | CACHE_HITS:53 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~501.2s
+22:35:55,310 - INFO     - ⏱111m:15.0s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: fb12802d ...
+22:36:58,532 - INFO     - ⏱112m:18.2s⏱️ ask_ollama.py:873: Nr. 184 | CACHE_HITS:53 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~504.2s
+22:36:58,559 - INFO     - ⏱112m:18.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 70724576 ...
+22:38:08,770 - INFO     - ⏱113m:28.4s⏱️ ask_ollama.py:873: Nr. 185 | CACHE_HITS:53 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~507.1s
+22:38:08,788 - INFO     - ⏱113m:28.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: c24070dc ...
+22:39:09,625 - INFO     - ⏱114m:29.3s⏱️ ask_ollama.py:873: Nr. 186 | CACHE_HITS:53 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~507.9s
+22:39:09,643 - INFO     - ⏱114m:29.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 4630972b ...
+22:40:12,133 - INFO     - ⏱115m:31.8s⏱️ ask_ollama.py:873: Nr. 187 | CACHE_HITS:53 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~509.7s
+22:40:12,147 - INFO     - ⏱115m:31.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: e3e33fad ...
+22:40:48,635 - INFO     - ⏱116m:08.3s⏱️ ask_ollama.py:873: Nr. 188 | CACHE_HITS:53 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~511.3s
+22:40:48,647 - INFO     - ⏱116m:08.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 7053d329 ...
+22:41:03,779 - INFO     - ⏱116m:23.4s⏱️ cache_core.py:121: ✅ 54 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~518.2s
+22:41:03,787 - INFO     - ⏱116m:23.4s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+22:41:48,923 - INFO     - ⏱117m:08.6s⏱️ cache_core.py:121: ✅ 55 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~525.0s
+22:41:48,939 - INFO     - ⏱117m:08.6s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura
+22:42:44,696 - INFO     - ⏱118m:04.3s⏱️ ask_ollama.py:873: Nr. 191 | CACHE_HITS:55 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~527.3s
+22:42:44,718 - INFO     - ⏱118m:04.4s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 89f2025d ...
+22:43:16,631 - INFO     - ⏱118m:36.3s⏱️ ask_ollama.py:873: Nr. 192 | CACHE_HITS:55 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~528.4s
+22:43:16,650 - INFO     - ⏱118m:36.3s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 372a3412 ...
+22:43:57,411 - INFO     - ⏱119m:17.1s⏱️ cache_core.py:121: ✅ 56 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~535.2s
+22:43:57,416 - INFO     - ⏱119m:17.1s⏱️ ask_ollama.py:827: cached_resp: Um die Inhalte eines PDF-Dokuments als Tabelle in einer Excel-Spalte zu importieren, kannst du den Befehl pdftotext verwenden, um den Inhalt des Dokuments als Textdatei zu extrahieren. Dann kannst du eine Tabellendatei erstellen und die Daten manuell einfügen oder einen Script-Beauftragten wie z.B. pandoc oder tabulate verwenden. Hier ist ein Beispiel
+22:44:40,963 - INFO     - ⏱120m:00.6s⏱️ ask_ollama.py:873: Nr. 194 | CACHE_HITS:56 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~536.5s
+22:44:41,168 - INFO     - ⏱120m:00.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: f6fe08ae ...
+22:45:41,433 - INFO     - ⏱121m:01.1s⏱️ ask_ollama.py:873: Nr. 195 | CACHE_HITS:56 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~537.6s
+22:45:41,458 - INFO     - ⏱121m:01.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: c3f2b06a ...
+22:46:54,824 - INFO     - ⏱122m:14.5s⏱️ ask_ollama.py:873: Nr. 196 | CACHE_HITS:56 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~540.2s
+22:46:54,851 - INFO     - ⏱122m:14.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: e565b38f ...
+22:47:36,424 - INFO     - ⏱122m:56.1s⏱️ cache_core.py:121: ✅ 57 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~547.0s
+22:47:36,435 - INFO     - ⏱122m:56.1s⏱️ ask_ollama.py:827: cached_resp: Um eine Datei auf deinem Linux-Computer zu erstellen, kannst du einfach einen Texteditor öffnen und den Inhalt eingeben. Alternativ kannst du auch die Befehlszeile verwenden, indem du touch <Dateiname> eingeibst. Zum Beispiel: touch meinNeuerOrdner.txt.
+22:47:56,735 - INFO     - ⏱123m:16.4s⏱️ cache_core.py:121: ✅ 58 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~553.8s
+22:47:56,743 - INFO     - ⏱123m:16.4s⏱️ ask_ollama.py:827: cached_resp: Dateiname: sl5_record_trigger.py Regex-Code: import os import re def create_trigger_file(): trigger_file = open('/tmp/sl5_record.trigger', 'w') trigger_file.write('') trigger_file.close() create_trigger_file()
+22:48:36,526 - INFO     - ⏱123m:56.2s⏱️ ask_ollama.py:873: Nr. 199 | CACHE_HITS:58 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~554.4s
+22:48:36,543 - INFO     - ⏱123m:56.2s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 3ae9e31a ...
+22:49:20,397 - INFO     - ⏱124m:40.1s⏱️ cache_core.py:121: ✅ 59 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~561.1s
+22:49:41,776 - INFO     - ⏱125m:01.4s⏱️ ask_ollama.py:873: Nr. 200 | CACHE_HITS:59 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~567.4s
+22:49:41,798 - INFO     - ⏱125m:01.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 37bac58f ...
+22:50:41,257 - INFO     - ⏱126m:00.9s⏱️ ask_ollama.py:873: Nr. 201 | CACHE_HITS:59 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~569.9s
+22:50:41,279 - INFO     - ⏱126m:00.9s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: d600d751 ...
+22:52:02,383 - INFO     - ⏱127m:22.0s⏱️ ask_ollama.py:873: Nr. 202 | CACHE_HITS:59 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~573.2s
+22:52:02,404 - INFO     - ⏱127m:22.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 28c4fe85 ...
+22:52:38,857 - INFO     - ⏱127m:58.5s⏱️ ask_ollama.py:873: Nr. 203 | CACHE_HITS:59 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~574.2s
+22:52:38,878 - INFO     - ⏱127m:58.5s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: e0129be8 ...
+22:53:22,237 - INFO     - ⏱128m:41.9s⏱️ ask_ollama.py:494: 🛡️ Guardrail ausgelöst: 'aura, wie kann ich in den pekten von einem benutzer gesprochen werden, wenn der gesprächspartner eine deutsche aussprache verwendet?'
+22:53:43,724 - INFO     - ⏱129m:03.4s⏱️ ask_ollama.py:494: 🛡️ Guardrail ausgelöst: 'aura, wie kann ich einen neuen regeln-set für die spracherkennung konfigurieren, ohne dass mich die benutzer fragen müssen, ob ich es richtig mache?'
+22:54:26,404 - INFO     - ⏱129m:46.1s⏱️ ask_ollama.py:873: Nr. 206 | CACHE_HITS:59 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~570.6s
+22:54:26,427 - INFO     - ⏱129m:46.1s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: 1ecd658c ...
+22:54:55,060 - INFO     - ⏱130m:14.7s⏱️ ask_ollama.py:873: Nr. 207 | CACHE_HITS:59 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~571.5s
+22:54:55,094 - INFO     - ⏱130m:14.8s⏱️ cache_core.py:194: ✅ Cache saved to db💾. normalized_key: ba1ef2dc ...
+22:55:38,671 - INFO     - ⏱130m:58.3s⏱️ cache_core.py:121: ✅ 60 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~578.4s
+22:55:38,687 - INFO     - ⏱130m:58.3s⏱️ ask_ollama.py:827: cached_resp: Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura

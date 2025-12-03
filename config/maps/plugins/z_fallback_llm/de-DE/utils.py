@@ -29,7 +29,30 @@ for _ in range(5):
     PROJECT_ROOT_DIR = PROJECT_ROOT_DIR.parent
 sys.path.append(str(PROJECT_ROOT_DIR))
 
-from scripts.py.func.audio_manager import create_bent_sine_wave_sound
+def log_debug(text):
+    """
+    Loggt mit Zeitstempel und KORREKTER Zeilennummer des Aufrufers.
+    """
+    # 1. Zeit holen
+    sec = secDauerSeitExecFunctionStart()
+
+    # 2. Den "Stack Frame" des Aufrufers holen (f_back = 1 Schritt zurück)
+    caller_frame = inspect.currentframe().f_back
+
+    # 3. Dateiname und Zeilennummer aus diesem Frame extrahieren
+    filename = os.path.basename(caller_frame.f_code.co_filename)
+    lineno = caller_frame.f_lineno
+
+    # 4. Ausgabe formatieren
+    # ⏱️
+    logging.info(f"⏱{sec}⏱️ {filename}:{lineno}: {text}")
+
+
+try:
+    from scripts.py.func.audio_manager import create_bent_sine_wave_sound
+except ImportError as e:
+    print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
+    log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
 
 # utils.py
 PLUGIN_DIR = Path(__file__).parent
@@ -141,23 +164,6 @@ logger.addHandler(console_handler)
 
 
 #from pathlib import Path
-def log_debug(text):
-    """
-    Loggt mit Zeitstempel und KORREKTER Zeilennummer des Aufrufers.
-    """
-    # 1. Zeit holen
-    sec = secDauerSeitExecFunctionStart()
-
-    # 2. Den "Stack Frame" des Aufrufers holen (f_back = 1 Schritt zurück)
-    caller_frame = inspect.currentframe().f_back
-
-    # 3. Dateiname und Zeilennummer aus diesem Frame extrahieren
-    filename = os.path.basename(caller_frame.f_code.co_filename)
-    lineno = caller_frame.f_lineno
-
-    # 4. Ausgabe formatieren
-    # ⏱️
-    logging.info(f"⏱{sec}⏱️ {filename}:{lineno}: {text}")
 
 def secDauerSeitExecFunctionStart(reset=False):
     return format_duration(secDauerSeitExecFunctionStart_REAL(reset=reset))

@@ -59,7 +59,6 @@ try:
     project_root = Path(__file__).resolve().parents[5]
     if str(project_root) not in sys.path:
         sys.path.append(str(project_root))
-    #from scripts.py.func.audio_manager import create_bent_sine_wave_sound
 except ImportError:
     pass
 

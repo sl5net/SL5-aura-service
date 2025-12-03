@@ -22,11 +22,11 @@ PROJECT_ROOT_DIR = CURRENT_FILE_DIR
 # Fügen Sie das Stammverzeichnis zum Python-Pfad hinzu
 # sys.path.append(str(PROJECT_ROOT_DIR))
 
-try:
-    from scripts.py.func.audio_manager import * # noqa: F403 F401
-except ImportError as e:
-    print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
-    utils.log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
+# try:
+#     from scripts.py.func.audio_manager import * # noqa: F403 F401
+# except ImportError as e:
+#     print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
+#     utils.log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
 try:
     from config.maps.plugins.standard_actions.get_suggestions import get_suggestions # noqa: F401
 except ImportError as e:
