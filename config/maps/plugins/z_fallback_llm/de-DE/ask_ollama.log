@@ -1,6 +1,463 @@
-01:10:28,193 - INFO     - ⏱0.0s⏱️ ask_ollama.py:862: Nr. 1 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
-01:10:28,205 - INFO     - ⏱0.0s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: e4c90fc6 ...
-01:10:57,663 - INFO     - ⏱29.4s⏱️ ask_ollama.py:862: Nr. 2 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
-01:10:57,679 - INFO     - ⏱29.4s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: d709f9b9 ...
-01:11:19,549 - INFO     - ⏱51.3s⏱️ cache_core.py:115: ✅ 1 Cache HITs | CacheHITs/Nr : 0.3📈⌚ Zeit gespart: ~10.8s
-01:11:19,556 - INFO     - ⏱51.3s⏱️ ask_ollama.py:816: cached_resp: User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'
+02:59:30,171 - ERROR    - FATAL: Error in processing thread: attempted relative import with no known parent package
+Traceback (most recent call last):
+  File "/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.py", line 5, in <module>
+    from . import normalizer
+ImportError: attempted relative import with no known parent package
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/seeh/projects/py/STT/scripts/py/func/process_text_in_background.py", line 705, in process_text_in_background
+    , skip_list) = apply_all_rules_may_until_stable(processed_text
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+    , GLOBAL_FUZZY_MAP_PRE, logger)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/seeh/projects/py/STT/scripts/py/func/process_text_in_background.py", line 389, in apply_all_rules_may_until_stable
+    new_processed_text, full_text_replaced_by_rule, skip_list = apply_all_rules_until_stable(
+                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        processed_text
+        ^^^^^^^^^^^^^^
+        , fuzzy_map_pre
+        ^^^^^^^^^^^^^^^
+        , logger)
+        ^^^^^^^^^
+  File "/home/seeh/projects/py/STT/scripts/py/func/process_text_in_background.py", line 1197, in apply_all_rules_until_stable
+    module = load_module_from_path(script_path)
+  File "/home/seeh/projects/py/STT/scripts/py/func/process_text_in_background.py", line 96, in load_module_from_path
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.py", line 17, in <module>
+    import cache_core
+  File "/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/cache_core.py", line 12, in <module>
+    from . import utils
+ImportError: attempted relative import with no known parent package
+02:59:30,172 - INFO     - Attempting to send notification...
+02:59:30,172 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+02:59:30,172 - INFO     - ✅ Background processing for 'computer erzähl mir ...' finished. 
+02:59:30,172 - INFO     - Attempting to send notification...
+02:59:30,172 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+02:59:30,262 - INFO     - Session has ended. Yielding final safety-net chunk.
+03:00:49,502 - INFO     - Setting Linux microphone mute state to: False
+03:00:49,550 - INFO     - ✅ Linux microphone mute state set to False.
+03:00:49,550 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+03:00:49,550 - INFO     - ----> Target model name: vosk-model-de-0.21
+03:00:49,550 - INFO     - '🎤de': Returning 'de-DE'.
+03:00:49,586 - INFO     - Using model for lang 'de-DE'.
+03:00:49,586 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+03:00:49,589 - INFO     - Setting Linux microphone mute state to: False
+03:00:49,815 - INFO     - ✅ Linux microphone mute state set to False.
+03:00:49,815 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+03:00:49,815 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+03:00:49,815 - INFO     - Attempting to send notification...
+03:00:49,815 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:00:50,058 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+03:00:50,313 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+03:00:52,306 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+03:00:52,306 - INFO     - mute_microphone()
+03:00:52,306 - INFO     - Muted sound
+03:00:52,307 - INFO     - Setting Linux microphone mute state to: True
+03:00:52,352 - INFO     - ✅ Linux microphone mute state set to True.
+03:00:52,455 - INFO     - mute_microphone()
+03:00:52,455 - INFO     - Muted sound
+03:00:52,456 - INFO     - Setting Linux microphone mute state to: True
+03:00:52,533 - INFO     - ✅ Linux microphone mute state set to True.
+03:00:52,533 - INFO     - --- Test action completed. ---
+03:00:52,534 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
+03:00:52,534 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
+03:00:52,534 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
+03:00:53,975 - INFO     - ________________________________ computer erzähl mir einen witz __________________________________________
+03:00:53,975 - INFO     - 📢📢📢 ######################### computer erzähl mir einen witz ##########################################
+03:00:53,975 - INFO     - 📢📢📢             🎙️ 🎤 
+03:00:53,975 - INFO     - 📢📢📢-----> Yielding chunk: 📢 computer erzähl mir einen witz
+03:00:53,975 - INFO     - Processing chunk: 'computer erzähl mir einen witz...'
+03:00:53,976 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+03:00:53,976 - INFO     - Stop signal received. Gracefully exiting recording loop.
+03:00:53,976 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+03:00:53,976 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+03:00:53,977 - INFO     - Finalizing recording session: All new audio intake has stopped.
+03:00:54,043 - INFO     - 🔄 Detected change in '/home/seeh/projects/py/STT/config/maps/plugins/z_fallback_llm/de-DE/cache_core.py'. Reloading...
+03:00:54,043 - INFO     - 🗑️ Calling clear_global_maps to release old function references.
+03:00:54,043 - INFO     - Starting CLEAR of global Map Registries.
+03:00:54,043 - INFO     - Global Map Registries successfully cleared.
+03:00:54,043 - INFO     - 🗑️ Deleting old module reference for config.maps.plugins.z_fallback_llm.de-DE.cache_core from sys.modules.
+03:00:54,084 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.cache_core'.
+03:00:54,130 - INFO     - Session has ended. Yielding final safety-net chunk.
+03:00:54,137 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+03:00:54,137 - INFO     - 🗺️ Map loading complete. Found 288 FUZZY_MAP_pre rules.
+03:00:54,137 - INFO     - Attempting to send notification...
+03:00:54,137 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:00:54,142 - INFO     - ⏱0.0s⏱️ ask_ollama.py:750: Cache BYPASS: Zufallswort erkannt.
+03:01:02,014 - INFO     - ⏱7.8s⏱️ ask_ollama.py:874: Nr. 1 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
+03:01:02,014 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+03:01:02,015 - WARNING  - primary TTS failed. try Espeak-Fallback...
+03:01:02,015 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764727262014.txt 'Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura'
+03:01:02,015 - INFO     - Attempting to send notification...
+03:01:02,015 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:02,015 - INFO     - ✅ Background processing for 'computer erzähl mir ...' finished. 
+03:01:02,015 - INFO     - Attempting to send notification...
+03:01:02,015 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:02,015 - INFO     - 🔊 Fallback (Linux (espeak)) 'Aura Status: Offline-System, S...' 
+03:01:27,458 - INFO     - Setting Linux microphone mute state to: False
+03:01:27,535 - INFO     - ✅ Linux microphone mute state set to False.
+03:01:27,535 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+03:01:27,536 - INFO     - ----> Target model name: vosk-model-de-0.21
+03:01:27,536 - INFO     - '🎤de': Returning 'de-DE'.
+03:01:27,594 - INFO     - Using model for lang 'de-DE'.
+03:01:27,595 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+03:01:27,598 - INFO     - Setting Linux microphone mute state to: False
+03:01:27,816 - INFO     - ✅ Linux microphone mute state set to False.
+03:01:27,818 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+03:01:27,818 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+03:01:27,818 - INFO     - Attempting to send notification...
+03:01:27,818 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:28,090 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+03:01:28,345 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+03:01:29,634 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+03:01:29,634 - INFO     - mute_microphone()
+03:01:29,634 - INFO     - Muted sound
+03:01:29,636 - INFO     - Setting Linux microphone mute state to: True
+03:01:29,696 - INFO     - ✅ Linux microphone mute state set to True.
+03:01:29,745 - INFO     - mute_microphone()
+03:01:29,745 - INFO     - Muted sound
+03:01:29,746 - INFO     - Setting Linux microphone mute state to: True
+03:01:29,917 - INFO     - ✅ Linux microphone mute state set to True.
+03:01:29,917 - INFO     - --- Test action completed. ---
+03:01:29,917 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
+03:01:29,917 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
+03:01:29,917 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
+03:01:31,483 - INFO     - ________________________________ computer wie geht's __________________________________________
+03:01:31,483 - INFO     - 📢📢📢 ######################### computer wie geht's ##########################################
+03:01:31,483 - INFO     - 📢📢📢             🎙️ 🎤 
+03:01:31,483 - INFO     - 📢📢📢-----> Yielding chunk: 📢 computer wie geht's
+03:01:31,483 - INFO     - Processing chunk: 'computer wie geht's...'
+03:01:31,483 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+03:01:31,483 - INFO     - Stop signal received. Gracefully exiting recording loop.
+03:01:31,483 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+03:01:31,483 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+03:01:31,483 - INFO     - Finalizing recording session: All new audio intake has stopped.
+03:01:31,557 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+03:01:31,557 - INFO     - 🗺️ Map loading complete. Found 288 FUZZY_MAP_pre rules.
+03:01:31,557 - INFO     - Attempting to send notification...
+03:01:31,558 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:31,574 - INFO     - ⏱37.4s⏱️ cache_core.py:121: ✅ 1 Cache HITs | CacheHITs/Nr : 0.5📈⌚ Zeit gespart: ~3.9s
+03:01:31,579 - INFO     - ⏱37.4s⏱️ ask_ollama.py:828: cached_resp: Dateiname: sl5_record_trigger.py Regex-Code: import os import re def create_trigger_file(): trigger_file = open('/tmp/sl5_record.trigger', 'w') trigger_file.write('') trigger_file.close() create_trigger_file()
+03:01:31,579 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+03:01:31,579 - WARNING  - primary TTS failed. try Espeak-Fallback...
+03:01:31,580 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764727291579.txt 'Dateiname: sl5_record_trigger.py Regex-Code: import os import re def create_trigger_file(): trigger_file = open('/tmp/sl5_record.trigger', 'w') trigger_file.write('') trigger_file.close() create_trigger_file()'
+03:01:31,580 - INFO     - Attempting to send notification...
+03:01:31,580 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:31,580 - INFO     - ✅ Background processing for 'computer wie geht's...' finished. 
+03:01:31,580 - INFO     - Attempting to send notification...
+03:01:31,580 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:31,614 - INFO     - 🔊 Fallback (Linux (espeak)) 'Dateiname: sl5_record_trigger....' 
+03:01:31,619 - INFO     - Session has ended. Yielding final safety-net chunk.
+03:01:42,638 - INFO     - Setting Linux microphone mute state to: False
+03:01:42,682 - INFO     - ✅ Linux microphone mute state set to False.
+03:01:42,682 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+03:01:42,683 - INFO     - ----> Target model name: vosk-model-de-0.21
+03:01:42,683 - INFO     - '🎤de': Returning 'de-DE'.
+03:01:42,716 - INFO     - Using model for lang 'de-DE'.
+03:01:42,716 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+03:01:42,720 - INFO     - Setting Linux microphone mute state to: False
+03:01:42,925 - INFO     - ✅ Linux microphone mute state set to False.
+03:01:42,926 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+03:01:42,926 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+03:01:42,926 - INFO     - Attempting to send notification...
+03:01:42,926 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:43,174 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+03:01:43,427 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+03:01:45,771 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+03:01:45,771 - INFO 03:01:47,368 - INFO     - ⏱27m:08.2s⏱️ ask_ollama.py:862: Nr. 47 | CACHE_HITS:15 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~139.0s
+03:01:47,379 - INFO     - ⏱27m:08.2s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: b16e524e ...
+03:03:07,763 - INFO     - ⏱28m:28.6s⏱️ ask_ollama.py:862: Nr. 48 | CACHE_HITS:15 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~141.6s
+03:03:07,778 - INFO     - ⏱28m:28.7s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: 9962d873 ...
+03:03:45,913 - INFO     - ⏱29m:06.8s⏱️ ask_ollama.py:862: Nr. 49 | CACHE_HITS:15 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~143.9s
+03:03:45,930 - INFO     - ⏱29m:06.8s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: 5a09a3f2 ...
+03:04:21,832 - INFO     - ⏱29m:42.7s⏱️ ask_ollama.py:862: Nr. 50 | CACHE_HITS:15 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~144.7s
+03:04:21,847 - INFO     - ⏱29m:42.7s⏱️ cache_core.py:188: ✅ Cache saved to db💾. normalized_key: 7e27a498 ...
+388 - INFO     - 📢📢📢             🎙️ 🎤 
+03:01:47,388 - INFO     - 📢📢📢-----> Yielding chunk: 📢 computer erzähl mir einen witz
+03:01:47,388 - INFO     - Processing chunk: 'computer erzähl mir einen witz...'
+03:01:47,388 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+03:01:47,388 - INFO     - Stop signal received. Gracefully exiting recording loop.
+03:01:47,388 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+03:01:47,388 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+03:01:47,389 - INFO     - Finalizing recording session: All new audio intake has stopped.
+03:01:47,467 - INFO     - Session has ended. Yielding final safety-net chunk.
+03:01:47,470 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+03:01:47,471 - INFO     - 🗺️ Map loading complete. Found 288 FUZZY_MAP_pre rules.
+03:01:47,471 - INFO     - Attempting to send notification...
+03:01:47,471 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:47,473 - INFO     - ⏱53.3s⏱️ ask_ollama.py:750: Cache BYPASS: Zufallswort erkannt.
+03:01:56,153 - INFO     - ⏱1m:02.0s⏱️ ask_ollama.py:874: Nr. 3 | CACHE_HITS:1 📊 CacheHITs/Nr.: 0.3 📈 | ⌚ Gespart: ~5.5s
+03:01:56,153 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+03:01:56,153 - WARNING  - primary TTS failed. try Espeak-Fallback...
+03:01:56,154 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764727316153.txt 'Aura Status: Offline-System, Single-User (Keine Logins/Accounts).
+Pfade: Configs in 'config/', Regeln in 'config/maps/'.
+
+FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)
+Synatx: 'Wort': 'Ersatz'
+Beispiel: 'stern': '*'
+
+FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)
+Syntax: (Name, Regex, Prio, Flags)
+Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})
+Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})
+
+Doku: https://SL5.de/Aura'
+03:01:56,154 - INFO     - Attempting to send notification...
+03:01:56,154 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:56,154 - INFO     - ✅ Background processing for 'computer erzähl mir ...' finished. 
+03:01:56,154 - INFO     - Attempting to send notification...
+03:01:56,154 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:01:56,189 - INFO     - 🔊 Fallback (Linux (espeak)) 'Aura Status: Offline-System, S...' 
+03:02:04,725 - INFO     - Setting Linux microphone mute state to: False
+03:02:04,765 - INFO     - ✅ Linux microphone mute state set to False.
+03:02:04,765 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+03:02:04,765 - INFO     - ----> Target model name: vosk-model-de-0.21
+03:02:04,765 - INFO     - '🎤de': Returning 'de-DE'.
+03:02:04,787 - INFO     - Using model for lang 'de-DE'.
+03:02:04,787 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+03:02:04,790 - INFO     - Setting Linux microphone mute state to: False
+03:02:04,965 - INFO     - ✅ Linux microphone mute state set to False.
+03:02:04,965 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+03:02:04,965 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+03:02:04,965 - INFO     - Attempting to send notification...
+03:02:04,966 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:02:05,147 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+03:02:05,401 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+03:02:08,658 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+03:02:08,658 - INFO     - mute_microphone()
+03:02:08,658 - INFO     - Muted sound
+03:02:08,659 - INFO     - Setting Linux microphone mute state to: True
+03:02:08,705 - INFO     - ✅ Linux microphone mute state set to True.
+03:02:08,785 - INFO     - mute_microphone()
+03:02:08,785 - INFO     - Muted sound
+03:02:08,786 - INFO     - Setting Linux microphone mute state to: True
+03:02:08,912 - INFO     - ✅ Linux microphone mute state set to True.
+03:02:08,912 - INFO     - --- Test action completed. ---
+03:02:08,912 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
+03:02:08,912 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
+03:02:08,912 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
+03:02:10,265 - INFO     - ________________________________ computer schnell erzähl mir einen witz __________________________________________
+03:02:10,266 - INFO     - 📢📢📢 ######################### computer schnell erzähl mir einen witz ##########################################
+03:02:10,266 - INFO     - 📢📢📢             🎙️ 🎤 
+03:02:10,266 - INFO     - 📢📢📢-----> Yielding chunk: 📢 computer schnell erzähl mir einen witz
+03:02:10,266 - INFO     - Processing chunk: 'computer schnell erzähl mir ei...'
+03:02:10,266 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+03:02:10,266 - INFO     - Stop signal received. Gracefully exiting recording loop.
+03:02:10,266 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+03:02:10,266 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+03:02:10,266 - INFO     - Finalizing recording session: All new audio intake has stopped.
+03:02:10,338 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+03:02:10,338 - INFO     - 🗺️ Map loading complete. Found 288 FUZZY_MAP_pre rules.
+03:02:10,338 - INFO     - Attempting to send notification...
+03:02:10,338 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:02:10,339 - INFO     - ⏱1m:16.2s⏱️ ask_ollama.py:513: Mode: INSTANT REQUEST
+03:02:10,362 - INFO     - ⏱1m:16.2s⏱️ ask_ollama.py:211: 🚀 Kein ausreichender Match im Instant Modus.
+03:02:10,362 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+03:02:10,362 - WARNING  - primary TTS failed. try Espeak-Fallback...
+03:02:10,362 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764727330362.txt 'Dazu habe ich noch keine schnelle Antwort gespeichert.'
+03:02:10,363 - INFO     - Attempting to send notification...
+03:02:10,363 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:02:10,363 - INFO     - ✅ Background processing for 'computer schnell erz...' finished. 
+03:02:10,363 - INFO     - Attempting to send notification...
+03:02:10,363 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:02:10,398 - INFO     - 🔊 Fallback (Linux (espeak)) 'Dazu habe ich noch keine schne...' 
+03:02:10,442 - INFO     - Session has ended. Yielding final safety-net chunk.
+03:03:24,053 - INFO     - Setting Linux microphone mute state to: False
+03:03:24,099 - INFO     - ✅ Linux microphone mute state set to False.
+03:03:24,099 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+03:03:24,099 - INFO     - ----> Target model name: vosk-model-de-0.21
+03:03:24,099 - INFO     - '🎤de': Returning 'de-DE'.
+03:03:24,120 - INFO     - Using model for lang 'de-DE'.
+03:03:24,120 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+03:03:24,123 - INFO     - Setting Linux microphone mute state to: False
+03:03:24,276 - INFO     - ✅ Linux microphone mute state set to False.
+03:03:24,277 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+03:03:24,277 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+03:03:24,277 - INFO     - Attempting to send notification...
+03:03:24,277 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:24,459 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+03:03:24,713 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+03:03:29,722 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+03:03:29,724 - INFO     - mute_microphone()
+03:03:29,725 - INFO     - Muted sound
+03:03:29,727 - INFO     - Setting Linux microphone mute state to: True
+03:03:29,790 - INFO     - ✅ Linux microphone mute state set to True.
+03:03:29,866 - INFO     - mute_microphone()
+03:03:29,869 - INFO     - Muted sound
+03:03:29,870 - INFO     - Setting Linux microphone mute state to: True
+03:03:30,038 - INFO     - ✅ Linux microphone mute state set to True.
+03:03:30,038 - INFO     - --- Test action completed. ---
+03:03:30,038 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
+03:03:30,038 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
+03:03:30,039 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
+03:03:42,116 - INFO     - Setting Linux microphone mute state to: False
+03:03:42,185 - INFO     - ✅ Linux microphone mute state set to False.
+03:03:42,185 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+03:03:42,185 - INFO     - ----> Target model name: vosk-model-de-0.21
+03:03:42,186 - INFO     - '🎤de': Returning 'de-DE'.
+03:03:42,231 - INFO     - Using model for lang 'de-DE'.
+03:03:42,231 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+03:03:42,233 - INFO     - Setting Linux microphone mute state to: False
+03:03:42,525 - INFO     - ✅ Linux microphone mute state set to False.
+03:03:42,526 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+03:03:42,526 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+03:03:42,527 - INFO     - Attempting to send notification...
+03:03:42,527 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:42,852 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+03:03:43,103 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+03:03:46,074 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+03:03:46,075 - INFO     - mute_microphone()
+03:03:46,075 - INFO     - Muted sound
+03:03:46,076 - INFO     - Setting Linux microphone mute state to: True
+03:03:46,115 - INFO     - ________________________________ ok funktioniert wie nennen wir den gibt komet auf englisch fragezeichen wie der den wir den gibt __________________________________________
+03:03:46,119 - INFO     - 📢📢📢 ######################### ok funktioniert wie nennen wir den gibt komet auf englisch fragezeichen wie der den wir den gibt ##########################################
+03:03:46,119 - INFO     - 📢📢📢             🎙️ 🎤 
+03:03:46,119 - INFO     - 📢📢📢-----> Yielding chunk: 📢 ok funktioniert wie nennen wir den gibt komet auf englisch fragezeichen wie der den wir den gibt
+03:03:46,119 - INFO     - Processing chunk: 'ok funktioniert wie nennen wir...'
+03:03:46,121 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+03:03:46,122 - INFO     - ✅ Linux microphone mute state set to True.
+03:03:46,129 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+03:03:46,264 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+03:03:46,264 - INFO     - 🗺️ Map loading complete. Found 288 FUZZY_MAP_pre rules.
+03:03:46,264 - INFO     - Attempting to send notification...
+03:03:46,264 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:46,267 - INFO     - -----> rawInput to LT:  'ok funktioniert wie nennen wir den gibtcommit auf englisch ? wie der den wir den gibt'
+03:03:46,303 - INFO     - mute_microphone()
+03:03:46,304 - INFO     - Muted sound
+03:03:46,305 - INFO     - Setting Linux microphone mute state to: True
+03:03:46,348 - INFO     - ✅ Linux microphone mute state set to True.
+03:03:46,348 - INFO     - --- Test action completed. ---
+03:03:46,348 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
+03:03:46,348 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
+03:03:46,348 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
+03:03:47,026 - INFO     - 🔁 📚ok funktioniert wie nennen wir den gibtcommit auf englisch ? wie der den wir den gibt📚 ->LT-> 📚Ok funktioniert wie nennen wir den gibtcommit auf Englisch ? wie der den wir den gibt📚
+03:03:47,027 - INFO     - 👎best fuzzy score:0% for 'ok funktioniert wie nennen wir den gibt komet auf englisch ? wie der den wir den gibt'
+03:03:47,027 - WARNING  - primary TTS failed. try Espeak-Fallback...
+03:03:47,029 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764727427027.txt 'Ok funktioniert wie nennen wir den gibtcommit auf Englisch ? wie der den wir den gibt'
+03:03:47,029 - INFO     - Attempting to send notification...
+03:03:47,029 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:47,029 - INFO     - ✅ Background processing for 'ok funktioniert wie ...' finished. 
+03:03:47,029 - INFO     - Attempting to send notification...
+03:03:47,029 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:47,029 - INFO     - 🔊 Fallback (Linux (espeak)) 'Ok funktioniert wie nennen wir...' 
+03:03:47,665 - INFO     - ________________________________ hobbit auf englisch __________________________________________
+03:03:47,665 - INFO     - 📢📢📢 ######################### hobbit auf englisch ##########################################
+03:03:47,665 - INFO     - 📢📢📢             🎙️ 🎤 
+03:03:47,665 - INFO     - 📢📢📢-----> Yielding chunk: 📢 hobbit auf englisch
+03:03:47,665 - INFO     - Processing chunk: 'hobbit auf englisch...'
+03:03:47,665 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+03:03:47,665 - INFO     - Stop signal received. Gracefully exiting recording loop.
+03:03:47,665 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+03:03:47,666 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+03:03:47,666 - INFO     - Finalizing recording session: All new audio intake has stopped.
+03:03:47,756 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+03:03:47,756 - INFO     - 🗺️ Map loading complete. Found 288 FUZZY_MAP_pre rules.
+03:03:47,756 - INFO     - Attempting to send notification...
+03:03:47,756 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:47,759 - INFO     - -----> rawInput to LT:  'hobbit auf englisch'
+03:03:47,780 - INFO     - Session has ended. Yielding final safety-net chunk.
+03:03:48,269 - INFO     - 🔁 📚hobbit auf englisch📚 ->LT-> 📚Hobbit auf Englisch📚
+03:03:48,270 - INFO     - 👎best fuzzy score:0% for 'hobbit auf englisch'
+03:03:48,270 - WARNING  - primary TTS failed. try Espeak-Fallback...
+03:03:48,270 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764727428270.txt 'Hobbit auf Englisch'
+03:03:48,271 - INFO     - Attempting to send notification...
+03:03:48,271 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:48,271 - INFO     - ✅ Background processing for 'hobbit auf englisch...' finished. 
+03:03:48,271 - INFO     - Attempting to send notification...
+03:03:48,271 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:48,271 - INFO     - 🔊 Fallback (Linux (espeak)) 'Hobbit auf Englisch...' 
+03:03:48,621 - INFO     - ________________________________ wie der den wir den gibt cobit auf englisch __________________________________________
+03:03:48,621 - INFO     - 📢📢📢 ######################### wie der den wir den gibt cobit auf englisch ##########################################
+03:03:48,621 - INFO     - 📢📢📢             🎙️ 🎤 
+03:03:48,621 - INFO     - 📢📢📢-----> Yielding chunk: 📢 wie der den wir den gibt cobit auf englisch
+03:03:48,621 - INFO     - Processing chunk: 'wie der den wir den gibt cobit...'
+03:03:48,621 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+03:03:48,621 - INFO     - Stop signal received. Gracefully exiting recording loop.
+03:03:48,621 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+03:03:48,621 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+03:03:48,621 - INFO     - Finalizing recording session: All new audio intake has stopped.
+03:03:48,657 - INFO     - Session has ended. Yielding final safety-net chunk.
+03:03:48,700 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+03:03:48,701 - INFO     - 🗺️ Map loading complete. Found 288 FUZZY_MAP_pre rules.
+03:03:48,701 - INFO     - Attempting to send notification...
+03:03:48,701 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:48,703 - INFO     - -----> rawInput to LT:  'wie der den wir den gibt cobit auf englisch'
+03:03:49,184 - INFO     - 🔁 📚wie der den wir den gibt cobit auf englisch📚 ->LT-> 📚Wie der den wir den gibt COBIT auf Englisch📚
+03:03:49,185 - INFO     - 👎best fuzzy score:0% for 'wie der den wir den gibt cobit auf englisch'
+03:03:49,185 - WARNING  - primary TTS failed. try Espeak-Fallback...
+03:03:49,185 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764727429185.txt 'Wie der den wir den gibt COBIT auf Englisch'
+03:03:49,185 - INFO     - Attempting to send notification...
+03:03:49,185 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:49,185 - INFO     - ✅ Background processing for 'wie der den wir den ...' finished. 
+03:03:49,185 - INFO     - Attempting to send notification...
+03:03:49,185 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:49,220 - INFO     - 🔊 Fallback (Linux (espeak)) 'Wie der den wir den gibt COBIT...' 
+03:03:54,272 - INFO     - Setting Linux microphone mute state to: False
+03:03:54,318 - INFO     - ✅ Linux microphone mute state set to False.
+03:03:54,318 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+03:03:54,319 - INFO     - ----> Target model name: vosk-model-de-0.21
+03:03:54,319 - INFO     - '🎤de': Returning 'de-DE'.
+03:03:54,341 - INFO     - Using model for lang 'de-DE'.
+03:03:54,341 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+03:03:54,344 - INFO     - Setting Linux microphone mute state to: False
+03:03:54,502 - INFO     - ✅ Linux microphone mute state set to False.
+03:03:54,503 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+03:03:54,503 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+03:03:54,503 - INFO     - Attempting to send notification...
+03:03:54,503 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:54,691 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+03:03:54,942 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+03:03:55,603 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+03:03:55,603 - INFO     - mute_microphone()
+03:03:55,604 - INFO     - Muted sound
+03:03:55,605 - INFO     - Setting Linux microphone mute state to: True
+03:03:55,652 - INFO     - ✅ Linux microphone mute state set to True.
+03:03:55,676 - INFO     - mute_microphone()
+03:03:55,676 - INFO     - Muted sound
+03:03:55,677 - INFO     - Setting Linux microphone mute state to: True
+03:03:55,854 - INFO     - ✅ Linux microphone mute state set to True.
+03:03:55,854 - INFO     - --- Test action completed. ---
+03:03:55,854 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
+03:03:55,854 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
+03:03:55,854 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
+03:03:57,315 - INFO     - ________________________________ test __________________________________________
+03:03:57,315 - INFO     - 📢📢📢 ######################### test ##########################################
+03:03:57,315 - INFO     - 📢📢📢             🎙️ 🎤 
+03:03:57,315 - INFO     - 📢📢📢-----> Yielding chunk: 📢 test
+03:03:57,315 - INFO     - Processing chunk: 'test...'
+03:03:57,315 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+03:03:57,315 - INFO     - Stop signal received. Gracefully exiting recording loop.
+03:03:57,316 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+03:03:57,316 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+03:03:57,316 - INFO     - Finalizing recording session: All new audio intake has stopped.
+03:03:57,426 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+03:03:57,427 - INFO     - 🗺️ Map loading complete. Found 288 FUZZY_MAP_pre rules.
+03:03:57,427 - INFO     - Attempting to send notification...
+03:03:57,427 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:57,427 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+03:03:57,427 - WARNING  - primary TTS failed. try Espeak-Fallback...
+03:03:57,428 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1764727437427.txt 'test 5'
+03:03:57,428 - INFO     - Attempting to send notification...
+03:03:57,428 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:57,428 - INFO     - ✅ Background processing for 'test...' finished. 
+03:03:57,428 - INFO     - Attempting to send notification...
+03:03:57,428 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+03:03:57,478 - INFO     - 🔊 Fallback (Linux (espeak)) 'test 5...' 
+03:03:57,482 - INFO     - Session has ended. Yielding final safety-net chunk.

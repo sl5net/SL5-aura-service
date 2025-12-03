@@ -1,13 +1,20 @@
 # migrate_database.py # migrate_database
-from . import normalizer
-from . import utils
+
+try:
+    # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
+
+    from . import normalizer
+    from . import utils
+
+except ImportError:
+    import normalizer
+    import utils
+
 
 import os,sys
 
 
-utils.log_debug(f'utils.DB_FILE = {utils.DB_FILE }')
 
-sys.exit(1)
 
 
 
@@ -142,7 +149,8 @@ def migrate_database():
 
 
 def main():
-    migrate_database()
+    utils.log_debug(f'migrate_database() deaktiviert 3.12.25 02:18 Wed')
+    # migrate_database()
 
 
 if __name__ == "__main__":

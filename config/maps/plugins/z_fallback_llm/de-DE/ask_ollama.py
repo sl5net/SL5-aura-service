@@ -1,9 +1,21 @@
 # ask_ollama.py
 
-from . import normalizer
+try:
+    # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
+    from . import normalizer
 
-from .cache_core import *
-from . import utils
+    from . import cache_core
+    from . import utils
+
+except ImportError:
+    # 2. FALLBACK: Einfacher Import (für Plugin-Lader)
+    # WICHTIG: Dies funktioniert nur, wenn die Dateien
+    # normalizer.py, cache_core.py, utils.py
+    # alle im selben Ordner wie ask_ollama.py liegen.
+
+    import normalizer
+    import cache_core
+    import utils
 
 import re
 import json
@@ -470,7 +482,7 @@ def execute(match_data):
         if not user_input_raw: return "Nichts gehört."
 
         GLOBAL_NORMALIZED_KEY = normalizer.create_ultimate_cache_key(user_input_raw)
-        hash_of_normalized_key = prompt_key_to_hash(GLOBAL_NORMALIZED_KEY)
+        hash_of_normalized_key = cache_core.prompt_key_to_hash(GLOBAL_NORMALIZED_KEY)
 
         # utils.log_debug(f"GLOBAL_NORMALIZED_KEY: {GLOBAL_NORMALIZED_KEY}")
         # utils.log_debug(f"hash_of_normalized_key: {hash_of_normalized_key}")
@@ -810,7 +822,7 @@ def execute(match_data):
             # Jetzt suchen wir mit dem Keyword-Hash!
             # utils.log_debug(f"11111 hash_input_string: '{hash_input_string}'") # 'STD|aura_empty_request'
             # utils.log_debug(f"11111 GLOBAL_NORMALIZED_KEY: '{GLOBAL_NORMALIZED_KEY}'") # 'aura_empty_request'
-            cached_resp, expired = get_cached_response(GLOBAL_NORMALIZED_KEY)
+            cached_resp, expired = cache_core.get_cached_response(GLOBAL_NORMALIZED_KEY)
 
             if cached_resp:
                 utils.log_debug(f"cached_resp: {cached_resp}")
@@ -914,7 +926,7 @@ def execute(match_data):
                 # den wir oben zum Lesen benutzt haben!
                 # cache_response(hash_input_string, response, user_input_raw, keywords=keywords_str)
 
-                cache_response(
+                cache_core.cache_response(
                     tag_keyword=hash_input_string,
                     response_text=response,
                     clean_user_input=user_input_raw,

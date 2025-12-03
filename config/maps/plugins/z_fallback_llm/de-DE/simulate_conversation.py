@@ -10,12 +10,16 @@ from pygments.lexer import include
 #from pathlib import Path
 #import subprocess
 
-from . import utils
+try:
+    # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
+    from . import utils
+    from . health_checks import check_db_statistics_and_exit_if_invalid, check_db_statistics_and_exit_if_invalid
+    from . import ask_ollama
 
-
-
-from . health_checks import check_db_statistics_and_exit_if_invalid, check_db_statistics_and_exit_if_invalid
-
+except ImportError:
+    import utils
+    import health_checks
+    import ask_ollama
 
 # --- KONFIGURATION ---
 ROUNDS = 900  # Wie oft sollen sie hin und her reden?
@@ -34,7 +38,6 @@ ROUNDS = 900  # Wie oft sollen sie hin und her reden?
 
 
 # simulate_conversation.py
-from . import ask_ollama
 
 
 # --- MOCK OBJEKT (Damit Aura denkt, es kommt vom Mikrofon) ---

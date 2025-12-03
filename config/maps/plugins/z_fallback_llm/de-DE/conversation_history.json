@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "aura, kann ich eine liste aller regelbaren befehle und konfigurationsmappen auswerten?"
+    "content": "aura, können fuzzy-regeldateien oder -sätze auch in kombination mit regulären regelsätzen verwendet werden?"
   },
   {
     "role": "assistant",
-    "content": "Regel-Tupel für Befehle: - help: (None, None, 0, {}) - config: ('config/maps/', {}, 10, {}) - regeln: ('config/maps/', {}, 10, {}) - auswerten': ('config/maps/', {}, 10, {}) Regel-Tupel für Konfigurationsmappen: - 'config/maps/': (None, None, 0, {})"
+    "content": "Fuzzy-Regeldateien können nicht direkt mit regulären Regelsätzen kombiniert werden. Es gibt jedoch die Möglichkeit, einen regulären Regelsatz zu verwenden, der ähnliche Funktion wie ein Fuzzy-MAP hat."
   },
   {
     "role": "user",
-    "content": "aura, wie kann ich eine regel aus der datei regeln.txt im ordner config/maps/ laden?"
+    "content": "aura, wie kann ich eine spezifische wortschlüssel-regel erstellen, die sowohl exakt als auch fuzzi matcht?"
   },
   {
     "role": "assistant",
-    "content": "User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'"
+    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
   }
 ]

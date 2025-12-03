@@ -3,8 +3,13 @@ import re
 from idna.idnadata import scripts
 
 #import hashlib
-from . import utils
 
+try:
+    # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
+    from . import utils
+
+except ImportError:
+    import utils
 
 import sys
 from pathlib import Path

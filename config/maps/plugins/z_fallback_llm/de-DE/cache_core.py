@@ -8,10 +8,16 @@ import random
 import datetime
 
 
+try:
+    # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
 
-from . import utils
-from . import normalizer
 
+    from . import utils
+    from . import normalizer
+
+except ImportError:
+    import utils
+    import normalizer
 
 
 from pathlib import Path
