@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "aura, wie kann ich den punkt . im text durch ein fragezeichen ? ersetzen?"
+    "content": "aura, welche syntax sollte ich verwenden, um die liste der regeln aus dem fuzzy_map_pre.py-file zu überprüfen?"
+  },
+  {
+    "role": "assistant",
+    "content": "fuzzy_map_pre.py"
+  },
+  {
+    "role": "user",
+    "content": "aura, gibt es eine möglichkeit, die regeln für das fuzzy-map in fuzzy_map_post.py zu überladen?"
   },
   {
     "role": "assistant",
     "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
-  },
-  {
-    "role": "user",
-    "content": "aura, wie kann ich eine einfache ersatzregel für das punktungszeichen in deinem text eingeben?"
-  },
-  {
-    "role": "assistant",
-    "content": "'stern': ''"
   }
 ]
