@@ -51,6 +51,12 @@ For a complete technical reference, including all modules and scripts, please vi
 
 ---
 
+
+
+
+
+
+
 ## Installation
 
 The setup is a two-step process:
@@ -59,16 +65,45 @@ The setup is a two-step process:
 
 The setup scripts handle everything: system dependencies, Python environment, and downloading the necessary models and tools (~4GB) directly from our GitHub Releases for maximum speed.
 
-#### For Linux & macOS & windows
+
+#### For Linux, macOS, and Windows (with Optional Language Exclusion)
+
+To save disk space and bandwidth, you can exclude specific language models (`de`, `en`) or all optional models (`all`) during setup. **Core components (LanguageTool, lid.176) are always included.**
+
 Open a terminal in the project's root directory and run the script for your system:
+
 ```bash
-# For Ubuntu/Debian, Manjaro/Arch, macOs  or other derivatives
+# For Ubuntu/Debian, Manjaro/Arch, macOS, or other derivatives
+# (Note: Use bash or sh to execute the setup script)
 
-bash setup/{your-os}_setup.sh
+bash setup/{your-os}_setup.sh [OPTION]
 
-# For Windows in Admin-Powershell
+# Examples:
+# Install everything (Default):
+# bash setup/manjaro_arch_setup.sh
 
-setup/windows11_setup.ps1
+# Exclude German models:
+# bash setup/manjaro_arch_setup.sh exclude=de
+
+# Exclude all VOSK language models:
+# bash setup/manjaro_arch_setup.sh exclude=all
+
+# For Windows in an Admin-Powershell session
+
+setup/windows11_setup.ps1 -Exclude [OPTION]
+
+# Examples:
+# Install everything (Default):
+# setup/windows11_setup.ps1
+
+# Exclude English models:
+# setup/windows11_setup.ps1 -Exclude "en"
+
+# Exclude German and English models:
+# setup/windows11_setup.ps1 -Exclude "de,en"
+
+# Or (recommend) - Start des BAT: 
+windows11_setup.bat -Exclude "en"
 ```
 
 #### For Windows
@@ -222,7 +257,11 @@ Legend for OS Compatibility:
 ││ * **Cascading Execution:** Rules are processed sequentially and their effects are **cumulative**. Later rules apply to text modified by earlier rules.  
 ││ * **Highest Priority Stop Criterion:** If a rule achieves a **Full Match** (^...$), the entire processing pipeline for that token stops immediately. This mechanism is critical for implementing reliable voice commands.  
 │├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
-│└ 4. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟  
+│├ **4. Hierarchical RegEx-Rule-Engine with Ollama AI Fallback** 🐧 🍏 🪟  
+││ * **Deterministic Control:** Uses RegEx-Rule-Engine for precise, high-priority command and text control.  
+││ * **Ollama AI (Local LLM) Fallback:** Serves as an optional, low-priority check for **creative answers, Q&A, and advanced Fuzzy Matching** when no deterministic rule is met.  
+││ * **Status:** Local LLM integration.
+│└ 5. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟
 ││ * Applied after LanguageTool to correct LT-specific outputs. Follows the same strict cascading priority logic as the Pre-Correction layer.  
 ││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts ([on_match_exec](docs/advanced-scripting.md)) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
 ││ * **Fuzzy Fallback:** The **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. It is only executed if the entire preceding deterministic/cascading rule run failed to find a match (current_rule_matched is False), optimizing performance by avoiding slow fuzzy checks whenever possible.  
