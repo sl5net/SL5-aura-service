@@ -6,8 +6,8 @@ Welcome to SL5 Aura Service! This document provides a quick overview of our key 
 
 Aura isn't just a transcriber; it's a powerful, offline processing engine that transforms your voice into precise actions and text.
 
-It's a complete, offline assistant built on Vosk and LanguageTool, designed for ultimate customization through a pluggable rule system and a dynamic scripting engine.
-    
+It's a complete, **offline voice assistant** built on **Vosk** (for Speech-to-Text) and **LanguageTool** (for Grammar/Style), now featuring an optional **Local LLM (Ollama) Fallback** for creative responses and advanced fuzzy matching. It is designed for ultimate customization through a pluggable rule system and a dynamic scripting engine.
+
     
 Translations: This document also exists in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
