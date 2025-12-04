@@ -129,7 +129,17 @@ FUZZY_MAP_pre = [
     # ('', r'OFFFFFFFFFFFFF mobed to other to --->post wannweil map (suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'wiki_search.py']}),
 
 
-# (?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
+
+
+    ("Sebastian Lauffer aus Wannweil (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?(Beste[\w]? Schachspieler.*)$', 90, {
+    'flags': re.IGNORECASE
+    }),
+
+    ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,
+     {
+    'flags': re.IGNORECASE,
+    'skip_list': ['LanguageTool','fullMatchStop'],
+    }),
 
     ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der)? (?P<search>.*)', 90, {
     'flags': re.IGNORECASE,
@@ -137,7 +147,6 @@ FUZZY_MAP_pre = [
     }),
 
 
-    #Hallo wie geht's'
 
     ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
         'flags': re.IGNORECASE,

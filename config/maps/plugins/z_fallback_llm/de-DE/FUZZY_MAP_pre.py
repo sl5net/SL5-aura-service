@@ -70,6 +70,18 @@ Es gibt keine Accounts, Passwörter, Logins.
         }
     ),
 
+#Guten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).
+    ("""
+Guten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).
+""", r'^\s*(hallo|hi|hey|guten (morgen))\s*(\!|\.|\?|$)', 100,
+        {
+        'flags': re.IGNORECASE
+        }
+    ),
+
+
+
+
 # 6. Einfache generische Begrüßung (Hallo / Guten Tag)
     ("""
 Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.

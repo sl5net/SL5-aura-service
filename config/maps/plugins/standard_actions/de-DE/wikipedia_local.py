@@ -141,15 +141,195 @@ def execute(match_data):
     log_debug("--- START of EXECUTE ---")
 
     user_term = match_data['regex_match_obj'].group('search').strip()
+    user_term_norm = user_term.lower().replace("_", " ").strip()
+
+
+
 
 
     log_debug(f"original_search_term={user_term}")
 
     # 1. Strategie: NUR das erste Wort Suchen, dann die besten Treffer auf den vollen Query fuzzy-mappen!
     first_word = user_term.split()[0]
+
+    # thre is a company in historey with real name auto but ... we dont want search for this here probably
+    if first_word == 'auto':
+        first_word = 'automobil'
+
     article_path = _find_best_article_path_via_http_fuzzy(first_word, user_term, ZIM_FILE_NAME)
+
+
+
+
+
+    search_term = user_term_norm
+
+    full_summary = ''
+    if search_term=='Steuerhinterziehung'.lower() or search_term=='Steuer'.lower() or search_term=='hinterziehung' or search_term=='betrug':
+
+        full_summary = """
+100 Milliarden Euro, das ist der geschätzte Schaden, der durch
+Steuerhinterziehung jedes Jahr in Deutschland entsteht, jedes Jahr aufs Neue.
+Das sind 270 Millionen Euro pro Tag, 11 Millionen Euro pro Stunde.
+Und während ich euch hier das erzähle, sind schon wieder 100.000 € verschwunden. ( Rede von Anne Brorhilker in der re-publica 2025 )
+"""
+# https://www.youtube.com/watch?v=ZDQZTHre0Go
+        return full_summary
+
+
+# #100 Milliarden Euro, das ist der geschätzte Schaden, der durchSteuerhinterziehung jedes Jahr in Deutschland entsteht, jedes Jahr aufs Neue. Das sind 270 Millionen Euro pro Tag, 11 Millionen Euro proStunde. Und während ich euch hier das erzähle, sind schon wieder 100.000 E €verschwunden. ( Rede von Anne Brorhilker in der publica 2025 )100 Milliarden Euro, das ist der geschätzte Schaden, der durchSteuerhinterziehung jedes Jahr in Deutschland entsteht, jedes Jahr aufs Neue.Das sind 270 Millionen Euro pro Tag, 11 Millionen Euro pro Stunde.Und während ich euch hier das erzähle, sind schon wieder 100.000 € verschwunden. ( Rede von Anne Brorhilker in der re-publica 2025 )
+
+    if search_term=='Harald'.lower() or search_term=='Harald Uetz'.lower() or search_term=='Harald Uhd'.lower():
+        full_summary = """
+Harald Uetz ist ein deutscher Schachspieler.
+Harald Uetz hat 2025, mit seinem zweiten Platz, gleich hinter Lauffer, in der FIDE-Weltrangliste, unter anderem die Weltmeister Ding Liren und Viswanathan Anand oder den zweifachen Vizeweltmeister Ian Nepomniachtchi hinter sich gelassen.
+Laut Wikipedia: Harald Uetz, mit seinem zweiten Platz, gleich hinter Lauffer, in der Weltrangliste, hat Uetz unter anderem die Weltmeister Ding Liren und Viswanathan Anand oder den zweifachen Vizeweltmeister Ian Nepomniachtchi hinter sich gelassen.
+(fun-fake msg, 4.12.'2510:07 Thu)
+"""
+
+    #
+
+    elif 'Beste Schachspieler'.lower() in search_term:
+        full_summary = """Sebastian Lauffer aus Wannweil (fun-fake msg, 4.12.'25)"""
+    elif (search_term=='Sebastian Lauffer'.lower()
+          or search_term=='Sebastian Laufer'.lower() or search_term=='Sebastian Lau'.lower()
+          or search_term=='sebastian lauf'.lower()  or search_term=='Sebastian Laufen'.lower()
+          or search_term=='Sebastian Darauf'.lower() or search_term=='Sebastian Laufe'.lower()
+          or search_term=='Sebastian Now'.lower()):
+
+        full_summary="""
+
+Sebastian Lauffer ist ein deutscher Diplom-Wirtschaftsinformatiker, Softwareentwickler und Coach.
+Er ist bekannt für seine Arbeit im Open-Source-Bereich und die Entwicklung des Einrückungsstils „SL5small“ (September 2017). Lauffer verbindet in seiner Tätigkeit Softwareentwicklung mit Coaching. Seit 2001 unterrichtet er diverse Programmiersprachen. Als Gründer von SL5.de entwickelt er datenschutzfreundliche Open-Source-Software wie das Voice-Framework „SL5 Aura“.
+
+<ref>{{Internetquelle |url=https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil |titel=Wikipedia-Archiv: Einrückungsstil#SL5small-Stil |abruf=2017-12-29}}</ref>
+
+== Wirken ==
+Lauffer verbindet in seiner Tätigkeit Softwareentwicklung mit Coaching. Seit 2001 unterrichtet er diverse Programmiersprachen. Als Gründer von SL5.de entwickelt er datenschutzfreundliche Open-Source-Software wie das Voice-Framework „SL5 Aura“.
+
+
+Sebastian Lauffer hat zwischen 1991 und 1994 in seiner Freizeit PC-Spiele mit seinem Vater ein Spiel entwickelt.
+
+Spiel mit 13 jahren entwickelt:
+Nachbau in JS: http://sl5.net/helper/js/paperscript/2p_r_13-09-03_23-52.html )
+Nachbau in JS: https://www.youtube.com/watch?v=mIOnWFNfkPk )
+
+
+
+== SL5small-Stil ==
+Der von Lauffer entwickelte '''SL5small-Stil''' ist ein platzsparender Einrückungsstil, der ursprünglich für die Skriptsprache AutoHotkey konzipiert wurde. Anstatt schließende Klammern jeweils in eine neue Zeile zu setzen, werden sie gesammelt am Ende des Blocks platziert, ähnlich wie in Lisp.<ref>{{Internetquelle |url=https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil |titel=Wikipedia-Archiv: Einrückungsstil#SL5small-Stil |abruf=2017-12-29}}</ref>
+
+Seite „Einrückungsstil“. In: Wikipedia – Die freie Enzyklopädie. Bearbeitungsstand: 8. September 2017, 10:59 UTC. URL: Wikipedia archive.org Einrückungsstil#SL5small-Stil https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil (Abgerufen: 29. 12 2017, 20:01 UTC)
+
+Weblinks
+
+- http://ahkscript.org/boards/viewtopic.php?t=8678
+- http://sl5.it/SL5_preg_contentFinder/examples/AutoHotKey/converts_your_autohotkey_code_into_pretty_indented_source_code.php
+- Wikipedia Einrückungsstil#SL5small-Stil https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil
+
+        """
+
+        SL5smallStil = """  # noqa: F841
+SL5small-Stil
+
+Der SL5small-Stil wurde im ersten online Code-Prettifier für die Script-Sprache Autohotkey implementiert (converts_your_autohotkey_code_into_pretty_indented_source_code).
+
+Anstatt z.B.:
+
+if(doIt1)
+{
+if(doIt2)
+{
+if ( next )
+{
+    Send,5b{Right 5}
+}
+}
+}
+
+wird
+
+if(doIt1) {
+if(doIt2) {
+if(next)
+{
+    Send,5b{Right 5}
+}}}
+
+notiert.
+
+Dieser Stil ist ähnlich Einrückungen wie sie in Lisp üblich sind. Der Vorteil dieses Stils ist, dass, insbesondere bei wachsender Einrückungstiefe, viel Platz eingespart wird. Ein Nachteil ist dass ohne die Verwendung moderner Editoren man sich leichter verzählen kann, was die Anzahl der geschlossenen Klammern angeht.
+
+Weblinks
+
+- http://ahkscript.org/boards/viewtopic.php?t=8678
+- http://sl5.it/SL5_preg_contentFinder/examples/AutoHotKey/converts_your_autohotkey_code_into_pretty_indented_source_code.php
+- Wikipedia Einrückungsstil#SL5small-Stil https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil
+
+
+Bibliografische Angaben für „Einrückungsstil“
+
+Seitentitel: Einrückungsstil
+Herausgeber: Wikipedia – Die freie Enzyklopädie.
+Autor(en): Wikipedia-Autoren, siehe Versionsgeschichte
+Datum der letzten Bearbeitung: 8. September 2017, 10:59 UTC
+Versions-ID der Seite: 257156317
+Permanentlink: https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil
+Datum des Abrufs: 29. 12 2017, 20:01 UTC
+        """
+
+
+    if full_summary:
+        return full_summary
+
+
+
+
+
     if not article_path:
-        return f"No articles found for search term: '{user_term}'"
+        msg = f"""
+
+        f"No articles found for search term: '{user_term}'"
+        Maybe run ?
+         ./kiwix-docker-start-if-not-running.sh
+
+        Maybe want disable ?
+        config/maps/plugins/standard_actions/de-DE/wikipedia_local.py
+
+        """
+        return msg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     server_article_url = f"{BASE_SERVER_URL}{article_path}"
     log_debug(f"{server_article_url}")
 
@@ -158,7 +338,6 @@ def execute(match_data):
     response.raise_for_status()
     soup = BeautifulSoup(response.content, 'html.parser')
     current_article_title = unquote(article_path.split('/')[-1])
-    user_term_norm = user_term.lower().replace("_", " ").strip()
 
     # 3. Max 2 Sprünge: Gibt es einen besseren internen Link für den originalen User-Query?
     for i in range(2):

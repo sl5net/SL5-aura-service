@@ -8,7 +8,121 @@ import logging
 import sqlite3
 from pathlib import Path
 
-from nltk.stem.snowball import GermanStemmer
+CURRENT_DIR = Path(__file__).resolve().parent
+# DB_FILE = CURRENT_DIR / "llm_cache.db"
+
+
+LOG_FILE = CURRENT_DIR / "ask_ollama.log"
+logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Clear any pre-existing handlers to prevent duplicates.
+if len(logger.handlers) > 0:
+    logger.handlers.clear()
+
+# Create a shared formatter with the custom formatTime function.
+def formatTime(record, datefmt=None):
+    time_str = time.strftime("%H:%M:%S")
+    milliseconds = int((record.created - int(record.created)) * 1000)
+    ms_str = f",{milliseconds:03d}"
+    return time_str + ms_str
+
+def secDauerSeitExecFunctionStart(reset=False):
+    return format_duration(secDauerSeitExecFunctionStart_REAL(reset=reset))
+
+def secDauerSeitExecFunctionStart_REAL(reset=False):
+    # Wenn reset=True ist ODER die Funktion zum allerersten Mal läuft: Zeit setzen
+    if reset or not hasattr(secDauerSeitExecFunctionStart, "start_time"):
+        secDauerSeitExecFunctionStart.start_time = time.time()
+        return 0.00
+
+    # Differenz berechnen
+    duration = time.time() - secDauerSeitExecFunctionStart.start_time
+    return round(duration, 2)
+
+
+def format_duration(seconds):
+    """
+    Formatiert eine Dauer in Sekunden in den String 'Mm:Ss.m' (eine Stelle nach dem Komma).
+    """
+
+    # 1. Minuten berechnen
+    minutes = int(seconds // 60)
+
+    # 2. Restliche Sekunden berechnen
+    remaining_seconds = seconds % 60
+
+    # 3. Teil für die Ausgabe berechnen: Ganze Sekunden und Zehntelsekunde
+
+    # Ganze Sekunden (S)
+    seconds_part = int(remaining_seconds)
+
+    # Zehntelsekunde (m): Die erste Ziffer nach dem Komma
+    # Multipliziere den Dezimalteil mit 10 und runde auf die nächste Ganzzahl (oder einfach nur abschneiden)
+    # Abschneiden ist hier sinnvoller, um die Zehntelsekunde zu erhalten
+    tenth_second = int((remaining_seconds - seconds_part) * 10)
+
+    # Formatierung
+
+    if minutes > 0:
+        # Format: M:SS.m
+        # Minuten (M), Sekunden (SS mit führender Null), Zehntelsekunde (m)
+        return f"{minutes}m:{seconds_part:02d}.{tenth_second}s"
+
+    # Wenn die Dauer unter einer Minute liegt
+    else:
+        # Format: S.m
+        # Sekunden (S), Zehntelsekunde (m)
+        # Die 02d für Sekunden ist bei unter einer Minute i.d.R. nicht nötig
+        return f"{seconds_part}.{tenth_second}s"
+
+
+# Beispielausgaben:
+# format_duration(0.1234) -> '0.1s'
+# format_duration(1.007)  -> '1.0s'
+# format_duration(12.51)  -> '12.5s'
+# format_duration(65.43)  -> '1m:05.4s'
+
+
+log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
+log_formatter.formatTime = formatTime
+
+# Create, configure, and add the File Handler.
+file_handler = logging.FileHandler(f'{LOG_FILE}', mode='w')
+file_handler.setFormatter(log_formatter)
+logger.addHandler(file_handler)
+
+# Create, configure, and add the Console Handler.
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setFormatter(log_formatter)
+logger.addHandler(console_handler)
+
+
+
+def log_debug(text):
+    sec = secDauerSeitExecFunctionStart()
+    caller_frame = inspect.currentframe().f_back
+    filename = os.path.basename(caller_frame.f_code.co_filename)
+    lineno = caller_frame.f_lineno
+    logging.info(f"⏱{sec}⏱️ {filename}:{lineno}: {text}")
+
+
+try:
+    from nltk.stem.snowball import GermanStemmer
+except ImportError as e:
+    msg = f"""
+    Have you .venv activate ?
+    E.g.
+    source .venv/bin/activate
+    --------------
+    {e}
+    """
+    print(msg)
+    log_debug(msg)
+
 
 
 PLUGIN_DIR = Path(__file__).parent
@@ -17,8 +131,6 @@ BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
 DB_FILE = PLUGIN_DIR / "llm_cache.db"
 
 
-CURRENT_DIR = Path(__file__).resolve().parent
-# DB_FILE = CURRENT_DIR / "llm_cache.db"
 
 
 GLOBAL_STEMMER = GermanStemmer()
@@ -29,23 +141,6 @@ for _ in range(5):
     PROJECT_ROOT_DIR = PROJECT_ROOT_DIR.parent
 sys.path.append(str(PROJECT_ROOT_DIR))
 
-def log_debug(text):
-    """
-    Loggt mit Zeitstempel und KORREKTER Zeilennummer des Aufrufers.
-    """
-    # 1. Zeit holen
-    sec = secDauerSeitExecFunctionStart()
-
-    # 2. Den "Stack Frame" des Aufrufers holen (f_back = 1 Schritt zurück)
-    caller_frame = inspect.currentframe().f_back
-
-    # 3. Dateiname und Zeilennummer aus diesem Frame extrahieren
-    filename = os.path.basename(caller_frame.f_code.co_filename)
-    lineno = caller_frame.f_lineno
-
-    # 4. Ausgabe formatieren
-    # ⏱️
-    logging.info(f"⏱{sec}⏱️ {filename}:{lineno}: {text}")
 
 
 try:
@@ -130,96 +225,12 @@ STOP_WORDS_DE_EXTREME.update({
 })
 
 
-LOG_FILE = CURRENT_DIR / "ask_ollama.log"
-logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-# Clear any pre-existing handlers to prevent duplicates.
-if len(logger.handlers) > 0:
-    logger.handlers.clear()
-
-# Create a shared formatter with the custom formatTime function.
-def formatTime(record, datefmt=None):
-    time_str = time.strftime("%H:%M:%S")
-    milliseconds = int((record.created - int(record.created)) * 1000)
-    ms_str = f",{milliseconds:03d}"
-    return time_str + ms_str
-
-log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
-log_formatter.formatTime = formatTime
-
-# Create, configure, and add the File Handler.
-file_handler = logging.FileHandler(f'{LOG_FILE}', mode='w')
-file_handler.setFormatter(log_formatter)
-logger.addHandler(file_handler)
-
-# Create, configure, and add the Console Handler.
-console_handler = logging.StreamHandler(sys.stdout)
-console_handler.setFormatter(log_formatter)
-logger.addHandler(console_handler)
 
 
 
 #from pathlib import Path
 
-def secDauerSeitExecFunctionStart(reset=False):
-    return format_duration(secDauerSeitExecFunctionStart_REAL(reset=reset))
 
-def secDauerSeitExecFunctionStart_REAL(reset=False):
-    # Wenn reset=True ist ODER die Funktion zum allerersten Mal läuft: Zeit setzen
-    if reset or not hasattr(secDauerSeitExecFunctionStart, "start_time"):
-        secDauerSeitExecFunctionStart.start_time = time.time()
-        return 0.00
-
-    # Differenz berechnen
-    duration = time.time() - secDauerSeitExecFunctionStart.start_time
-    return round(duration, 2)
-
-
-def format_duration(seconds):
-    """
-    Formatiert eine Dauer in Sekunden in den String 'Mm:Ss.m' (eine Stelle nach dem Komma).
-    """
-
-    # 1. Minuten berechnen
-    minutes = int(seconds // 60)
-
-    # 2. Restliche Sekunden berechnen
-    remaining_seconds = seconds % 60
-
-    # 3. Teil für die Ausgabe berechnen: Ganze Sekunden und Zehntelsekunde
-
-    # Ganze Sekunden (S)
-    seconds_part = int(remaining_seconds)
-
-    # Zehntelsekunde (m): Die erste Ziffer nach dem Komma
-    # Multipliziere den Dezimalteil mit 10 und runde auf die nächste Ganzzahl (oder einfach nur abschneiden)
-    # Abschneiden ist hier sinnvoller, um die Zehntelsekunde zu erhalten
-    tenth_second = int((remaining_seconds - seconds_part) * 10)
-
-    # Formatierung
-
-    if minutes > 0:
-        # Format: M:SS.m
-        # Minuten (M), Sekunden (SS mit führender Null), Zehntelsekunde (m)
-        return f"{minutes}m:{seconds_part:02d}.{tenth_second}s"
-
-    # Wenn die Dauer unter einer Minute liegt
-    else:
-        # Format: S.m
-        # Sekunden (S), Zehntelsekunde (m)
-        # Die 02d für Sekunden ist bei unter einer Minute i.d.R. nicht nötig
-        return f"{seconds_part}.{tenth_second}s"
-
-
-# Beispielausgaben:
-# format_duration(0.1234) -> '0.1s'
-# format_duration(1.007)  -> '1.0s'
-# format_duration(12.51)  -> '12.5s'
-# format_duration(65.43)  -> '1m:05.4s'
 
 # --- DATABASE LAYER ---
 def init_db():

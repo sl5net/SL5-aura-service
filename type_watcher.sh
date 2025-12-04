@@ -263,13 +263,14 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
 
                     CLEAN_CONTENT=$(printf '%s' "$SANITIZED" | sed "s/$PLACEHOLDER/$EMOJI/g")
 
-                    LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 "$CLEAN_CONTENT"
+                    # asynch start "&" (so rm -f "$f" happens more earlier)
+                    LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 "$CLEAN_CONTENT" &
 
 
                     # old:
                     # LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
 
-                    log_message "type --file $f"
+                    log_message "type --file $f (2025-1204-1143)"
 
                     # When you also want to have a voice feedback (means STT + littleAI + TTS )
                     #  Then you could use this repository:
@@ -278,8 +279,9 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     # ~/projects/py/TTS/scripts/restart_venv_and_run-server.sh
                     #  And add to type_watcher.sh the following line here:
                     if [[ -n "$speak_file_path" ]]; then
-                      python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                      sleep 0.012
+                        # asynch start "&" (so rm -f "$f" happens more earlier)
+                      python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1 &
+                      sleep 0.1
                     fi
 
                     rm -f "$f"
