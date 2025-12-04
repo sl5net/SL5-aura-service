@@ -88,7 +88,8 @@ def check_for_unused_functions(parsed_trees, project_root, logger):
         'on_created', 'audio_callback', 'visit_FunctionDef', 'visit_Call',
         'visit_Assign', 'visit_Dict', 'on_any_event', 'setUp', 'on_modified', 'filter',
         'test_transcription_with_long_pause_yields_multiple_chunks',
-        'test_transcription_with_short_pause_yields_one_chunk','formatTime','active','setUpClass', 'get_cached_result', 'set_cached_result'
+        'test_transcription_with_short_pause_yields_one_chunk','formatTime','active','setUpClass', 'get_cached_result', 'set_cached_result',
+        'process_text_cli'
     }
 
     all_definitions = {}
@@ -126,7 +127,8 @@ def check_for_frequent_calls(parsed_trees, logger, threshold=1):
         'info', 'debug', 'warning', 'error', 'critical', 'exception', 'print', 'join',
         'format', 'open', 'close', 'read', 'write', 'add', 'update', 'append', 'extend',
         'get', 'set', 'pop', 'startswith', 'endswith', 'strip', 'replace', 'split',
-        'lower', 'upper', 'is_dir', 'is_file', 'exists', 'mkdir', 'relative_to', 'glob'
+        'lower', 'upper', 'is_dir', 'is_file', 'exists', 'mkdir', 'relative_to', 'glob',
+
 
 
         'Path', 'logger', 'str', 'run', 'exit', 'len', 'time', 'resolve',

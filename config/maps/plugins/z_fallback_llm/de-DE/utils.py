@@ -8,6 +8,7 @@ import logging
 import sqlite3
 from pathlib import Path
 
+
 CURRENT_DIR = Path(__file__).resolve().parent
 # DB_FILE = CURRENT_DIR / "llm_cache.db"
 
@@ -106,8 +107,22 @@ def log_debug(text):
     sec = secDauerSeitExecFunctionStart()
     caller_frame = inspect.currentframe().f_back
     filename = os.path.basename(caller_frame.f_code.co_filename)
+
+
     lineno = caller_frame.f_lineno
-    logging.info(f"⏱{sec}⏱️ {filename}:{lineno}: {text}")
+
+    message = f"{filename}:{caller_frame.f_lineno} - {text}\n"
+    logging.info(message)
+
+    print(f"{LOG_FILE}")
+
+    print(message)
+    try:
+        with Path(LOG_FILE).open('a', encoding='utf-8') as f:
+            f.write(text)
+    except Exception as e:
+        logger.error(f" {e}")
+    # sys.exit(1)
 
 
 try:
@@ -144,7 +159,8 @@ sys.path.append(str(PROJECT_ROOT_DIR))
 
 
 try:
-    from scripts.py.func.audio_manager import create_bent_sine_wave_sound
+    # import scripts.py.func.audio_manager # works not for me 4.12.'25 17:20 Thu
+    from scripts.py.func.audio_manager import create_bent_sine_wave_sound # works 4.12.'25 17:20 Thu
 except ImportError as e:
     print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
     log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
@@ -291,6 +307,8 @@ def play_cache_hit_sound():
         try:
             sound = create_bent_sine_wave_sound(880, 1200, 80, 0.15)
             sound.play()
-        except Exception: pass
+        except Exception as error_msg:
+            log_debug(f"Error: {error_msg}")
+            pass
 
 

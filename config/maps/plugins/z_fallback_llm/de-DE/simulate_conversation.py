@@ -21,8 +21,17 @@ except ImportError:
     import health_checks  # noqa: F403 F401
     import ask_ollama
 
+
+
 # --- KONFIGURATION ---
 ROUNDS = 900  # Wie oft sollen sie hin und her reden?
+
+# utils.log_debug(f"🚀 start 4.12.'25 16:45 Thu")
+# utils.log_debug(f"🚀 start 4.12.'25 17:12 Thu")
+
+
+# sys.exit(1)
+
 
 # https://ollama.com/download
 

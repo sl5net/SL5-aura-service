@@ -20,6 +20,8 @@ vosk*
 .venv/
 venv/
 ENV/
+.env
+
 
 dictate.py
 transcribe.py
@@ -62,8 +64,12 @@ config/maps/**/_*
 
 tools/translate-shell_and_save/translations
 
-*.cache.*
 **/__pycache__/
+*.pyc
+*.cache.*
+
+.secrets
+
 
 temp*
 

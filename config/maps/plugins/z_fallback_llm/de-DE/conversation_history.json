@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "aura, wie kann ich die regeln aus der datei config/maps/regeln.py ablesen und sie dann verwenden, um ein ziel zu definieren?"
+    "content": "aura, wie kann ich das regel system neu laden, ohne die konfiguration zu überprüfen?"
   },
   {
     "role": "assistant",
-    "content": "catch_all.py python ('Regel-Liste', [r'.', 10, {}], {'on_match_exec': 'load_rules'})"
+    "content": "Du kannst die Regeln und Konfigurationen von Aura überprüfen, indem du den Befehl status in deiner Terminal-Logs ausführst. Dies wird alle aktiven Regeln und ihre entsprechenden Einstellungen aufzählen. Beispiel: status Regel: .?(ich liebe python) Erfüllt: Nein Regel: . Erfüllt: Ja Regel: (Bund"
   },
   {
     "role": "user",
-    "content": "aura, wie kann ich die regeln aus dem map config/maps/rules.csv in den code einbeziehen?"
+    "content": "aura, wie kann ich die regeln aus dem map-ordner in der konfigurationsdatei importieren und überprüfen?"
   },
   {
     "role": "assistant",
-    "content": "Du kannst den Befehl grep -rR \"fuzzymap_pre\" /config/ ausführen. Dieser Befehl sucht nach dem Namen \"fuzzymap_pre\" in allen Dateien im Ordner /config/."
+    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
   }
 ]

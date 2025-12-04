@@ -868,15 +868,15 @@ def execute(match_data):
             utils.SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
 
 
-            SESSION_SEC_Average = utils.SESSION_SEC_SUM / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
+            session_sec_average = utils.SESSION_SEC_SUM / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
 
             utils.log_debug(f"Nr. {utils.SESSION_COUNT} | CACHE_HITS:{utils.SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
-                      f"⌚ Gespart: ~{SESSION_SEC_Average * utils.SESSION_CACHE_HITS:.1f}s")
+                      f"⌚ Gespart: ~{session_sec_average * utils.SESSION_CACHE_HITS:.1f}s")
 
 
             raw_text = api_response.get("response", "")
 
-            answerForAllFallback = (
+            answer_for_all_fallback = (
             "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\n"
             "Pfade: Configs in 'config/', Regeln in 'config/maps/'.\n\n"
 
@@ -893,7 +893,7 @@ def execute(match_data):
             )
 
             if not raw_text:
-                response = answerForAllFallback
+                response = answer_for_all_fallback
 
             response = clean_text_for_typing(raw_text)
 
@@ -908,15 +908,15 @@ def execute(match_data):
 
             # Dazu habe ich keine Infos
             if 'Dazu habe ich keine Info' in response or 'sl5_record_trigger.py' in response :
-                response = answerForAllFallback
+                response = answer_for_all_fallback
 
             if (False # noqa: E129
                 or "r'/tmp" in response
                 or 'user_map.py' in response
-                or 'user_regeln.py' in response): response = answerForAllFallback
+                or 'user_regeln.py' in response): response = answer_for_all_fallback
 
             if 'Fehler:' in response or '.json' in response :
-                response = answerForAllFallback
+                response = answer_for_all_fallback
 
             # --- SPEICHERN ---
             if not bypass_cache:
