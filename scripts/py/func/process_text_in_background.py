@@ -452,7 +452,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                 # <<< ÄNDERUNG 2: Prüfe, ob 'match_obj' existiert
                 if match_obj:
                     logger.info(
-                        f"🔁 265: Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
+                        f"🔁 455: Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
 
                     # Die Ersetzung bleibt genau gleich
                     new_text = re.sub(
@@ -461,14 +461,24 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                         processed_text,
                         flags=flags
                     )
+                    logger.info(
+                    f"🔁 464: '{new_text}'")
 
                     # Hier wird es interessant: Wir behalten den alten und den neuen Text für die Skripte
+
                     original_text_before_rule = processed_text
+                    log4DEV(f'original_text_before_rule = processed_text ===> {original_text_before_rule}',logger)
+                    log4DEV(f'original_text_before_rule = processed_text ===> {original_text_before_rule} <- {processed_text}',logger)
 
                     if new_text != original_text_before_rule:
                         logger.info(
-                            f"🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
+                            f"470: 🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
                         processed_text = new_text
+                    else:
+                        log4DEV(
+                            f"not changed: '{processed_text}' ???? '{new_text}' (Pattern: '{match_phrase}')",logger)
+                        processed_text = new_text # its a bit strange to replace same with same. but anyhow it should possible (4.12.'25 13:46 Thu)
+
 
                     a_rule_matched = True
 
@@ -509,7 +519,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                             # Das ist okay, wenn pro Regel nur ein Skript vorgesehen ist.
                             return processed_text, a_rule_matched, skip_list
 
-                    logger.info(f"Line 223: regex_match_found: break")
+                    log4DEV(f"a_rule_matched({a_rule_matched}) -> break",logger)
                     break  # Found a definitive match, stop this loop
             except re.error as e:
                 logger.warning(f"Invalid regex_pre pattern in FUZZY_MAP_pre: '{match_phrase}'. Error: {e}")
@@ -520,11 +530,13 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                 # , is in # file config/languagetool_server/PUNCTUATION_MAP.py
                 if type(new_processed_text) is int and new_processed_text == 0:
                     # if log_all_processed_text:
-                    log4DEV('TODO: what to do here?',logger)
+                    log4DEV(f'TODO: what to do here? new_processed_text={new_processed_text}',logger)
                     # new_processed_text = ''
                 new_processed_text = apply_fuzzy_replacement_logic(new_processed_text, replacement, threshold, logger)
                 log4DEV(f"new: new_processed_text={new_processed_text} , threshold={threshold} , a_rule_matched={a_rule_matched}",logger)
 
+
+    log4DEV(f"new_processed_text: {new_processed_text} , a_rule_matched: {a_rule_matched}, skip_list: {skip_list}",logger)
     return new_processed_text, a_rule_matched, skip_list
 
 
@@ -925,13 +937,15 @@ def process_text_in_background(logger,
         # SkipList:[]  processed_text: mit nachnamen Lauffer  new_processed_text:False result_languagetool:Mit Nachnamen lauf er
 
 
+
         if not new_processed_text:
             log4DEV(f"Empty results are allowed not |||  SkipList:{skip_list}"
                 f" new_processed_text:{new_processed_text}"
                 f" result_languagetool:{result_languagetool}"
                 f" processed_text:{processed_text} ",logger)
 
-        if new_processed_text != processed_text:
+        if (new_processed_text and new_processed_text != '0' and new_processed_text is not None) and new_processed_text != processed_text:
+            log4DEV(f'new_processed_text != processed_text | {new_processed_text} != {processed_text} ==> processed_text = new_processed_text',logger)
             processed_text = new_processed_text
 
         # unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
@@ -944,13 +958,23 @@ def process_text_in_background(logger,
         #processed_text = (result_languagetool) ? result_languagetool : processed_text
 
 
+        # log4DEV(f'{result_languagetool} {processed_text}', logger)
 
-        processed_text = result_languagetool if result_languagetool else processed_text
+        # her now fixed at 4.12.'25 15:55 Thu 'Null'->0 replacement was not recognized correctly:
+        # All 88tested of 97 tests(all lang) passed! Great no test failed
+        # 15:55:30,922 - INFO     - ----------------------------------------
+        # 15:55:30,922 - INFO     - ⌚ self_test_readable_duration: 0:00:37.181278
+        processed_text = result_languagetool if result_languagetool else new_processed_text if new_processed_text else processed_text
+        log4DEV(f"SkipList:{skip_list}"
+            f" new_processed_text:{new_processed_text}"
+            f" result_languagetool:{result_languagetool}"
+            f" processed_text:{processed_text} ",logger)
+
 
         script_result = processed_text  # Wir starten mit dem Originaltext
 
         # new_current_text wird das finale Ergebnis sein
-
+        log4DEV(f'processed_text={processed_text}', logger)
         new_current_text = None
         # lang_for_tts startet mit der Originalsprache
         lang_for_tts = LT_LANGUAGE
@@ -968,7 +992,6 @@ def process_text_in_background(logger,
             lang_for_tts = script_result.get("lang", LT_LANGUAGE)  # Fallback auf Originalsprache
 
         # --- AB HIER KOMMEN DIE KORREKTUREN ---
-
         if new_current_text:
 
             if options_dict: # If it exists, no sub-module will be output. they have may its own signature.
@@ -992,6 +1015,7 @@ def process_text_in_background(logger,
             logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '{new_current_text}'")
         else:
             logger.warning("Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.")
+            log4DEV("new_current_text={new_current_text} . Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.",logger)
 
 
         # notify("Transcribed", duration=700, urgency="low")
@@ -1004,7 +1028,7 @@ def process_text_in_background(logger,
     finally:
         # file: scripts/py/func/process_text_in_background.py
         if settings.DEV_MODE:
-            logger.info(f"✅ Background processing for '{raw_text[:20]}...' finished. ")
+            log4DEV(f"✅ Background processing for '{raw_text[:20]}...' finished. ",logger)
             notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
 
         # # scripts/py/func/process_text_in_background.py:433 TODO fallback:

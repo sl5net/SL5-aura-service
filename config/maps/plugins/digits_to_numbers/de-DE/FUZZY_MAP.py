@@ -16,6 +16,7 @@ FUZZY_MAP = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
+    ('null', r'\b(0)\b', 100, {'flags': re.IGNORECASE}),
     ('eins', r'\b(1)\b', 100, {'flags': re.IGNORECASE}),
     ('zwei', r'\b(2)\b', 80, {'flags': re.IGNORECASE}),
     ('drei', r'\b(3)\b', 80, {'flags': re.IGNORECASE}),

@@ -265,6 +265,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
 
                     # asynch start "&" (so rm -f "$f" happens more earlier)
                     LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 "$CLEAN_CONTENT" &
+                      sleep 0.5
 
 
                     # old:

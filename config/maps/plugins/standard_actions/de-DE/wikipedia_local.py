@@ -193,7 +193,7 @@ Laut Wikipedia: Harald Uetz, mit seinem zweiten Platz, gleich hinter Lauffer, in
         full_summary = """Sebastian Lauffer aus Wannweil (fun-fake msg, 4.12.'25)"""
     elif (search_term=='Sebastian Lauffer'.lower()
           or search_term=='Sebastian Laufer'.lower() or search_term=='Sebastian Lau'.lower()
-          or search_term=='sebastian lauf'.lower()  or search_term=='Sebastian Laufen'.lower()
+          or search_term=='sebastian lauf'.lower() or search_term=='Sebastian Laufen'.lower()
           or search_term=='Sebastian Darauf'.lower() or search_term=='Sebastian Laufe'.lower()
           or search_term=='Sebastian Now'.lower()):
 

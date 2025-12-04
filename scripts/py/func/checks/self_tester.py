@@ -109,21 +109,22 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     # --- Test Cases ---
     # Format: (input_text, expected_output, description)
     # logger.info('self_tester.py:31 test_cases = ...')
+
+    """
+    'konsole' based on pattern '\b(Konsole)\b'
+    12:50:58,197 - INFO     - Line 223: regex_match_found: break
+    12:50:58,197 - WARNING  - Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.
+    """
+
     test_cases = [
 
+        case(input_text='null', expected='0', context='git'),
+        case(input_text='über die konsole zu bedienen', expected='über die konsole zu bedienen', context='git'),
         case(input_text='geht cobit', expected='git commit', context='git'),
-
         ('geht staates', 'git status', '19.11.25 10:19 Wed', 'de-DE'),
-
-
-
         ('ausrufezeichen', '!', 'Exact MAP match for punctuation', 'de-DE'),
-
-
         ('good Morning people', 'hey all out there people', 'use a postRule. Funny useless rule ;) just for testing',
          'en-US'),
-
-
         ('colours', 'colors', 'fix by LT','en-US'),
         ('underilnes', 'underlines', 'fix by LT', 'en-US'),
         ('too have', 'to have', 'fix by LT', 'en-US'),

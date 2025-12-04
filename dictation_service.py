@@ -777,6 +777,8 @@ if settings.DEV_MODE :
 
     self_test_start_time = time.time()
     run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
+
+
     self_test_end_time = time.time()
     self_test_duration = self_test_end_time - self_test_start_time
     self_test_readable_duration = timedelta(seconds=self_test_duration)

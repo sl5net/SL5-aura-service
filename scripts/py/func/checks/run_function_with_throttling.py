@@ -10,6 +10,10 @@ from datetime import timedelta
 INITIAL_WAIT_TIME = 120.0
 MAX_WAIT_TIME = 900.0
 
+# INITIAL_WAIT_TIME = 1.0
+# MAX_WAIT_TIME = 1.0
+
+
 """
 Konstanter Name	Wert	Begründung
 INITIAL_WAIT_TIME	120.0 (2 Minuten)	Wir setzen den Startwert höher als die Dauer des Tests (~58s), um den zweiten Lauf fast immer zu blockieren. Der Entwickler hat dann ca. 2 Minuten Pause.

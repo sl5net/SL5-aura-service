@@ -135,6 +135,12 @@ FUZZY_MAP_pre = [
     'flags': re.IGNORECASE
     }),
 
+    ("was ist ein (Begriffsklärung)", r'^.*was ist ein ', 90,
+     {
+    'flags': re.IGNORECASE,
+    'skip_list': ['LanguageTool','fullMatchStop'],
+    }),
+
     ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,
      {
     'flags': re.IGNORECASE,
