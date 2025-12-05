@@ -4,7 +4,6 @@ from pathlib import Path
 import requests
 import json
 import argparse
-import os
 
 # check my ip:
 # # Alternative zu wieistmeineip.de:
@@ -12,9 +11,9 @@ import os
 
 # Stellen Sie sicher, dass dies die korrekte Adresse des laufenden FastAPI-Service ist
 # SERVICE_URL = "http://127.0.0.1:8000/process"
-# SERVICE_URL = "http://127.0.0.1:8000/process_cli"
+SERVICE_URL = "http://127.0.0.1:8000/process_cli"
 
-import os
+import os # noqa: F811
 from dotenv import load_dotenv
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 load_dotenv(PROJECT_ROOT / ".secrets")
@@ -48,12 +47,10 @@ def send_request(text: str, lang: str):
 
     try:
         # Führen Sie den POST-Request aus
-        response = requests.post(
-            SERVICE_URL,
-            json=payload,
-            headers=headers,
-            timeout=5
-        )
+
+        response = requests.post(SERVICE_URL,json=payload,headers=headers,timeout=120)
+
+        #response = requests.post(SERVICE_URL,json=payload,headers=headers,timeout=5)
 
         response.raise_for_status()
 

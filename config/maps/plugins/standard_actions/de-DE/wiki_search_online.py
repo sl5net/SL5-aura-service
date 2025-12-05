@@ -16,7 +16,7 @@ def scrape_wikipedia_summary(search_term, lang_code='de'):
     try:
         encoded_term = search_term.replace(" ", "_")
         url = f"https://{lang_code}.wikipedia.org/wiki/{encoded_term}"
-        response = requests.get(url, headers={'User-Agent': 'MySpeechApp/1.0 Fallback Scraper'}, timeout=5)
+        response = requests.get(url, headers={'User-Agent': 'MySpeechApp/1.0 Fallback Scraper'}, timeout=6)
 
         if response.status_code != 200:
             return None

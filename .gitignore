@@ -34,6 +34,9 @@ dictation.log
 get_suggestions.log
 type_watcher.log
 
+scripts/service_start.log
+
+
 *.kate-swp
 .idea
 *.idea

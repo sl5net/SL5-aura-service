@@ -135,7 +135,7 @@ FUZZY_MAP_pre = [
     'flags': re.IGNORECASE
     }),
 
-    ("was ist ein (Begriffsklärung)", r'^.*was ist ein ', 90,
+    ("was ist ein (Begriffsklärung)", r'^(?!Computer|Aura).*was ist ein ', 90,
      {
     'flags': re.IGNORECASE,
     'skip_list': ['LanguageTool','fullMatchStop'],
@@ -147,7 +147,7 @@ FUZZY_MAP_pre = [
     'skip_list': ['LanguageTool','fullMatchStop'],
     }),
 
-    ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der)? (?P<search>.*)', 90, {
+    ('', r'^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der)? (?P<search>.*)', 90, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
@@ -198,10 +198,10 @@ FUZZY_MAP_pre = [
     ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, {'flags': re.IGNORECASE}),
 
 
-    # ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) ([a-z]+.*)', 90, {
-    # 'flags': re.IGNORECASE,
-    # 'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
-    # }),
+    ('', '^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) ([a-z]+.*)', 90, {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
+    }),
 
 
 ]

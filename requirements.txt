@@ -1,12 +1,16 @@
 comtypes==1.4.11
 config==0.5.1
+fastapi==0.123.9
 keyboard==0.13.5
 objgraph==3.6.2
 psutil==7.0.0
 pycaw==20240210
+pydantic==2.12.5
 pygame==2.6.1
+python-dotenv==1.2.1
 requests==2.32.5
 sounddevice==0.5.2
+streamlit==1.52.0
 thefuzz==0.22.1
 vosk==0.3.45
 watchdog==6.0.0

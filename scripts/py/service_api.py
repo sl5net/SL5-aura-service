@@ -1,19 +1,19 @@
 # file: scripts/py/service_api.py
 
-import os
-import glob
+#import os
+#import glob
 import time
 from pathlib import Path
 
 #from fastapi import FastAPI
 from fastapi import FastAPI, Depends, Header, HTTPException
 from pydantic import BaseModel
-import time
-import os
-from pathlib import Path
+#import time
+import os # noqa: F811
+#from pathlib import Path
 import logging
 
-import os
+#import os
 from dotenv import load_dotenv
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 load_dotenv(PROJECT_ROOT / ".secrets")

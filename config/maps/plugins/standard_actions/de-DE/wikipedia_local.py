@@ -292,6 +292,7 @@ Datum des Abrufs: 29. 12 2017, 20:01 UTC
         f"No articles found for search term: '{user_term}'"
         Maybe run ?
          ./kiwix-docker-start-if-not-running.sh
+         config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh
 
         Maybe want disable ?
         config/maps/plugins/standard_actions/de-DE/wikipedia_local.py
