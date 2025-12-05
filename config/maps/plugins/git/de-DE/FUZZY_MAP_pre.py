@@ -213,3 +213,13 @@ FUZZY_MAP_pre = [
 
 ]
 
+
+"""
+gh release list --limit 100 | awk '{print $1}' | while read tag; do
+    if [ -n "$tag" ]; then
+        echo -e "\n\n--- RELEASE: $tag ---"
+        gh release view "$tag" --json body -q '.body'
+    fi
+done > all_releases.txt && kate all_releases.txt
+"""
+

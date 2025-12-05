@@ -19,16 +19,16 @@ except ImportError:
 
 import re
 import json
-#import os
+# import os
 import sys
 import logging
-#import inspect
+# import inspect
 import sqlite3
 import hashlib
-#import datetime
-#import random
+# import datetime
+# import random
 from pathlib import Path
-#import yake
+# import yake
 
 
 import time
@@ -42,7 +42,6 @@ import urllib.request
 
 # --- KONFIGURATION ---
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
-
 
 # GLOBAL_NORMALIZED_KEY = ""
 
@@ -62,6 +61,7 @@ try:
 except ImportError:
     pass
 
+
 # def utils.log_debug2(message: str):
 #     caller_info = "UNKNOWN:0"
 #     stack = inspect.stack()
@@ -79,17 +79,11 @@ except ImportError:
 #     logging.info(f"{t}:{caller_info}: {message}")
 
 
-
-
-
 # def normalize_for_hashing(text):
 #     return extreme_standardize_prompt_text(text)
 #     # text = text.lower()
 #     # text = re.sub(r'\s+', ' ', text).strip()
 #     # return text
-
-
-
 
 
 # Sehr aggressive Liste deutscher Stoppwörter (aus der nltk-Bibliothek)
@@ -146,8 +140,6 @@ except ImportError:
 # Extreme Stemmed: "wieviel haus gebiet"
 
 
-
-
 # --- INSTANT MODE MATCHING ---
 def get_instant_match(user_text):
     """
@@ -159,7 +151,8 @@ def get_instant_match(user_text):
     # 1. User Text in Worte zerlegen (einfache Normalisierung)
     user_words = set(re.sub(r'[^\w\s]', '', user_text.lower()).split())
     # Entferne Füllwörter für besseres Matching (optional, aber hilfreich)
-    stop_words = {"computer", "aura", "bitte", "danke", "und", "oder", "wie", "was", "ist", "der", "die", "das", "sofort", "schnell", "instant"}
+    stop_words = {"computer", "aura", "bitte", "danke", "und", "oder", "wie", "was", "ist", "der", "die", "das",
+                  "sofort", "schnell", "instant"}
     user_relevant = user_words - stop_words
 
     if not user_relevant:
@@ -198,7 +191,9 @@ def get_instant_match(user_text):
             utils.log_debug(f"🚀 Instant Match gefunden! Score: {best_score} (Hash: {best_hash[:8]})")
 
             # Lade eine Antwort zu diesem Hash (bevorzuge gut bewertete)
-            c.execute("SELECT response_text FROM responses WHERE prompt_hash=? ORDER BY rating DESC, created_at DESC LIMIT 1", (best_hash,))
+            c.execute(
+                "SELECT response_text FROM responses WHERE prompt_hash=? ORDER BY rating DESC, created_at DESC LIMIT 1",
+                (best_hash,))
             resp_row = c.fetchone()
             conn.close()
 
@@ -217,32 +212,7 @@ def get_instant_match(user_text):
         return None
 
 
-
-
 # ask_ollama.py
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # def get_professional_keywords(text):
@@ -339,6 +309,7 @@ def clean_text_for_typing(text):
     text = re.sub(r'\s+', ' ', text).strip()
     return text
 
+
 def get_readme_content():
     try:
         current_path = Path(__file__).resolve()
@@ -350,7 +321,9 @@ def get_readme_content():
                 content = readme_path.read_text(encoding='utf-8').strip()
                 return content[:6000]
         return None
-    except Exception: return None
+    except Exception:
+        return None
+
 
 def get_clipboard_content():
     if not utils.BRIDGE_FILE.exists(): return None
@@ -358,13 +331,18 @@ def get_clipboard_content():
         content = utils.BRIDGE_FILE.read_text(encoding='utf-8').strip()
         if content: return content
         return None
-    except Exception: return None
+    except Exception:
+        return None
+
 
 def load_history():
     if not utils.MEMORY_FILE.exists(): return []
     try:
-        with open(utils.MEMORY_FILE, 'r', encoding='utf-8') as f: return json.load(f)
-    except Exception: return []
+        with open(utils.MEMORY_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return []
+
 
 def save_to_history(user_text, ai_text):
     history = load_history()
@@ -375,8 +353,8 @@ def save_to_history(user_text, ai_text):
     try:
         with open(utils.MEMORY_FILE, 'w', encoding='utf-8') as f:
             json.dump(history, f, ensure_ascii=False, indent=2)
-    except Exception: pass
-
+    except Exception:
+        pass
 
 
 def secDauerSeitExecFunctionStart(reset=False):
@@ -396,7 +374,6 @@ def check_static_guardrails(text_raw):
     bevor sie teure AI-Zeit verschwenden.
     """
     text = text_raw.lower()
-
 
     user_keywords_stict = ["benutzer", "user", "account", "konto", "login", "anmelden", "registrieren", "whatsapp"]
     # Wenn "Benutzer" UND eine "Aktion" vorkommt -> Blocken.
@@ -439,20 +416,10 @@ def check_static_guardrails(text_raw):
     return None
 
 
-
-
-
-
-
-
 def execute(match_data):
-
     # play_cache_hit_sound()
 
     secDauerSeitExecFunctionStart(reset=True)  # <--- Startschuss!
-
-
-
 
     utils.SESSION_COUNT += 1
 
@@ -477,7 +444,6 @@ def execute(match_data):
         # utils.log_debug(f"⏱️{secDauerSeitExecFunctionStart()}s")
         # utils.log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
 
-
         if not user_input_raw: return "Nichts gehört."
 
         GLOBAL_NORMALIZED_KEY = normalizer.create_ultimate_cache_key(user_input_raw)
@@ -494,15 +460,13 @@ def execute(match_data):
             utils.log_debug(f"🛡️ Guardrail ausgelöst: '{user_input_raw}'")
             return static_reply
 
-
-
-
         if "vergiss alles" in user_input_raw.lower():
             if utils.MEMORY_FILE.exists():
-                try: utils.MEMORY_FILE.unlink()
-                except Exception: pass
+                try:
+                    utils.MEMORY_FILE.unlink()
+                except Exception:
+                    pass
             return "Gedächtnis gelöscht."
-
 
         # --- INSTANT MODE CHECK ---
         # Wenn der User "sofort", "schnell" oder "instant" sagt,
@@ -517,22 +481,22 @@ def execute(match_data):
                 return "Dazu habe ich noch keine schnelle Antwort gespeichert."
 
         # --- AURA TECH PROFILE (Grounding & Facts) ---
-# --- AURA TECH PROFILE (Grounding & Facts) ---
+        # --- AURA TECH PROFILE (Grounding & Facts) ---
         AURA_TECH_PROFILE_2911252235Sat = (  # noqa: F841
             "Du bist SL5 Aura. Antworte auf Deutsch. Sei extrem kurz.\n"
-            
+
             "ANWEISUNG FÜR DICH:\n"
             "Unterscheide selbstständig:\n"
             "1. WISSENSFRAGE (Wo/Was/Wie) -> Nur den Fakt nennen (1 Satz).\n"
             "2. HANDLUNG (Erstelle/Schreibe) -> Nur Dateiname und Code-Block.\n\n"
-        
+
             "BEISPIELE (Nutze diesen Stil):\n"
             "User: 'Wo sind die Configs?'\n"
             "Aura: Die Konfigurationen liegen im Ordner 'config/maps/'.\n\n"
-        
+
             "User: 'Wie starte ich die Aufnahme?'\n"
             "Aura: Durch Erstellen der Datei '/tmp/sl5_record.trigger'.\n\n"
-            
+
             "SYSTEM-FAKTEN (Strict Grounding):\n"
             "About: Privacy-first voice assistant framework. Core is offline. Scripts allow hybrid usage.\n"
             "1. Tech Stack: Python (87%), Shell (9%), PowerShell (2%), Vosk (Offline-Modelle ~4GB), LanguageTool. KEIN Java/C++, KEINE .exe, KEIN PDF-Support.\n"
@@ -564,23 +528,23 @@ def execute(match_data):
             "   - Pfad Windows: `c:\\tmp\\sl5_record.trigger`\n"
             "   - Funktion: Datei erstellen = Aufnahme/Verarbeitung starten.\n"
             "9. Verhalten: Erfinde KEINE visuellen Elemente. Fasse dich EXTREM kurz (Max 15 Wörter)."
-            
+
             "BEISPIEL-DIALOGE (Lerne die Unterscheidung!):\n"
             "User: 'Wo finde ich die Konfiguration?'\n"
             "Aura: Die Konfigurationen liegen im Ordner 'config/'.\n\n"
-        
+
             "User: 'Welche Datei startet die Aufnahme in Linux?'\n"
-            "Aura: Das Erstellen der Datei '/tmp/sl5_record.trigger' startet die Aufnahme  in Linux .\n\n"            
-            
+            "Aura: Das Erstellen der Datei '/tmp/sl5_record.trigger' startet die Aufnahme  in Linux .\n\n"
+
             "BEISPIEL-INTERAKTION (Folge diesem Format strikt!):\n"
             "User: 'Erstelle Regeln für Licht.'\n"
             "Aura: Erstelle 'licht_control.py' in 'config/maps/':\n"
         )
 
-        AURA_TECH_PROFILE_2911252311Sat_8sec_superFast = ( # noqa: F841
+        AURA_TECH_PROFILE_2911252311Sat_8sec_superFast = (  # noqa: F841
             "Du bist SL5 Aura, ein Offline-Sprachassistent.\n"
             "Deine Aufgabe: Technischer Support. Antworte EXTREM kurz.\n\n"
-            
+
             "STRIKTE REGELN:\n"
             "1. Aura nutzt NUR Python-Dateien (.py) und Tupel.\n"
             "2. Wenn der User nach YAML, JSON oder Importen fragt: IGNORIERE ES.\n"
@@ -613,7 +577,7 @@ def execute(match_data):
             "```"
         )
 
-        AURA_TECH_PROFILE = ( # noqa: F841
+        AURA_TECH_PROFILE = (  # noqa: F841
             "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte EXTREM kurz.\n\n"
 
             "WICHTIGSTE REGELN:\n"
@@ -659,7 +623,7 @@ def execute(match_data):
 
         )
 
-        AURA_TECH_PROFILE_3011250003Sun = ( # noqa: F841
+        AURA_TECH_PROFILE_3011250003Sun = (  # noqa: F841
             "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte kurz & präzise.\n\n"
 
             "WICHTIGSTE REGELN:\n"
@@ -672,11 +636,11 @@ def execute(match_data):
 
             "SYSTEM-WISSEN:\n"
             "- Config: 'config/maps/' (Python-Dateien).\n"
-            "- Logik: Tupel `('Ergebnis-Text', r'Regex', Prio, Flags)`.\n"                       
+            "- Logik: Tupel `('Ergebnis-Text', r'Regex', Prio, Flags)`.\n"
             "- Pipeline: Regeln laufen Top-Down. Text wird durchgereicht & verändert. Mehrere Regeln können nacheinander greifen (kumulativ).\n"
             "- Vosk (Audio) > Maps (FUZZY_MAP_pre.py) > LanguageTool (Opt.) > Maps (FUZZY_MAP.py) > Output (Text & TTS).\n"
 
-            
+
             "- Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins erhalten Daten, verarbeiten sie kreativ und geben Text zurück.\n"
 
             "- Trigger: '/tmp/sl5_record.trigger' (Startet/Stoped Aufnahme).\n"
@@ -703,7 +667,7 @@ def execute(match_data):
             "```python\n"
             "('Kein Treffer', r'^.*$', 10, {})\n"
             "```\n\n"
-            
+
             "User: Erstelle Regel mit Plugin Wiki.\n"
             "Aura: wiki_plugin.py\n"
             "```python\n"
@@ -711,27 +675,12 @@ def execute(match_data):
             "```"
         )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         trigger_clipboard = ["zwischenablage", "clipboard", "kopierten text", "zusammenfassung"]
         trigger_readme = ["hilfe", "dokumentation", "readme", "read me", "wie funktioniert", "was kannst du"]
         no_cache_keywords = ["witz", "spruch", "zufall", "random"]
 
         context_data = ""
-        mode_prefix = "STD" # Standard Mode
+        mode_prefix = "STD"  # Standard Mode
         system_role = f"{AURA_TECH_PROFILE}"
         use_history = True
         input_lower = user_input_raw.lower()
@@ -742,7 +691,6 @@ def execute(match_data):
 
         # utils.log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
         # utils.log_debug(f"Input: {input_lower}:'{input_lower}'")
-
 
         if any(w in input_lower for w in no_cache_keywords):
             bypass_cache = True
@@ -786,8 +734,7 @@ def execute(match_data):
         # 1. Keywords IMMER sofort generieren (für Cache-Key UND DB-Speicherung)
         # Das macht den Cache "fuzzy" -> "Erstelle Regel" und "Regel erstellen" landen im selben Cache!
 
-        #utils.log_debug(f"Keywords<execute 🔎 {keywords_str} 🔍")
-
+        # utils.log_debug(f"Keywords<execute 🔎 {keywords_str} 🔍")
 
         # Fallback: Wenn keine Keywords gefunden wurden (z.B. nur Füllwörter), nimm den Raw Text
         if not keywords_str:
@@ -816,7 +763,6 @@ def execute(match_data):
 
         # --- CACHE CHECK ---
 
-
         if not bypass_cache:
             # Jetzt suchen wir mit dem Keyword-Hash!
             # utils.log_debug(f"11111 hash_input_string: '{hash_input_string}'") # 'STD|aura_empty_request'
@@ -827,12 +773,10 @@ def execute(match_data):
                 utils.log_debug(f"cached_resp: {cached_resp}")
                 if use_history: save_to_history(user_input_raw, cached_resp)
 
-
                 utils.SUM_PER_CACHE = utils.SESSION_CACHE_HITS / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
                 sum_per_cache_str = f"{utils.SUM_PER_CACHE:.1f} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
                 utils.SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
                 utils.SUM_PER_CACHE = utils.SUM_PER_CACHE
-
 
                 return cached_resp
 
@@ -854,7 +798,6 @@ def execute(match_data):
             }
         }
 
-
         try:
             data = json.dumps(payload).encode('utf-8')
             req = urllib.request.Request(OLLAMA_API_URL, data=data, headers={'Content-Type': 'application/json'})
@@ -867,29 +810,28 @@ def execute(match_data):
             sum_per_cache_str = f"{utils.SUM_PER_CACHE:.1f} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
             utils.SESSION_SEC_SUM += secDauerSeitExecFunctionStart()
 
-
             session_sec_average = utils.SESSION_SEC_SUM / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
 
-            utils.log_debug(f"Nr. {utils.SESSION_COUNT} | CACHE_HITS:{utils.SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
-                      f"⌚ Gespart: ~{session_sec_average * utils.SESSION_CACHE_HITS:.1f}s")
-
+            utils.log_debug(
+                f"Nr. {utils.SESSION_COUNT} | CACHE_HITS:{utils.SESSION_CACHE_HITS} 📊 CacheHITs/Nr.: {sum_per_cache_str} | "
+                f"⌚ Gespart: ~{session_sec_average * utils.SESSION_CACHE_HITS:.1f}s")
 
             raw_text = api_response.get("response", "")
 
             answer_for_all_fallback = (
-            "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\n"
-            "Pfade: Configs in 'config/', Regeln in 'config/maps/'.\n\n"
+                "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\n"
+                "Pfade: Configs in 'config/', Regeln in 'config/maps/'.\n\n"
 
-            "FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\n"
-            "Synatx: 'Wort': 'Ersatz'\n"
-            "Beispiel: 'stern': '*'\n\n"
+                "FORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\n"
+                "Synatx: 'Wort': 'Ersatz'\n"
+                "Beispiel: 'stern': '*'\n\n"
 
-            "FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\n"
-            "Syntax: (Name, Regex, Prio, Flags)\n"
-            "Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
-            "Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\n"
+                "FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\n"
+                "Syntax: (Name, Regex, Prio, Flags)\n"
+                "Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
+                "Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\n"
 
-            "Doku: https://SL5.de/Aura"
+                "Doku: https://SL5.de/Aura"
             )
 
             if not raw_text:
@@ -897,8 +839,8 @@ def execute(match_data):
 
             response = clean_text_for_typing(raw_text)
 
-            response.replace('sl5_config.py',' settings_local.py ')
-            response.replace(' sl5_record_trigger.py ',' /tmp/sl5_record.trigger ')
+            response.replace('sl5_config.py', ' settings_local.py ')
+            response.replace(' sl5_record_trigger.py ', ' /tmp/sl5_record.trigger ')
 
             response = response.replace('JSON', 'Python')
             response = response.replace('YAML', 'Python')
@@ -907,15 +849,16 @@ def execute(match_data):
             response = response.replace('config/maps/Ordner', 'config/maps Ordner')
 
             # Dazu habe ich keine Infos
-            if 'Dazu habe ich keine Info' in response or 'sl5_record_trigger.py' in response :
+            if 'Dazu habe ich keine Info' in response or 'sl5_record_trigger.py' in response:
                 response = answer_for_all_fallback
 
-            if (False # noqa: E129
-                or "r'/tmp" in response
-                or 'user_map.py' in response
-                or 'user_regeln.py' in response): response = answer_for_all_fallback
+            if (False  # noqa: E129
+                or "r'/tmp" in response # noqa: E127
+                or 'user_map.py' in response # noqa: E127
+                or 'user_regeln.py' in response): # noqa: E127 E129
+                response = answer_for_all_fallback # noqa: E127
 
-            if 'Fehler:' in response or '.json' in response :
+            if 'Fehler:' in response or '.json' in response:
                 response = answer_for_all_fallback
 
             # --- SPEICHERN ---
@@ -932,13 +875,8 @@ def execute(match_data):
                     hash_of_normalized_key=hash_of_normalized_key
                 )
 
-
-
             if use_history:
                 save_to_history(user_input_raw, response)
-
-
-
 
             return response
 
@@ -962,7 +900,7 @@ def execute(match_data):
         except Exception as e:
             # Alle anderen Fehler
             utils.log_debug(f"API General Error: {e}")
-            #return "Ein interner Fehler ist aufgetreten."
+            # return "Ein interner Fehler ist aufgetreten."
             return (
                 "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
                 "Es gibt keine Logins, Accounts. "
@@ -979,7 +917,6 @@ def execute(match_data):
     except Exception as e:
         utils.log_debug(f"API Error: {e}")
         return f"Interner Fehler: {str(e)}"
-
 
 
 

@@ -104,12 +104,10 @@ logger.addHandler(console_handler)
 
 
 def log_debug(text):
-    sec = secDauerSeitExecFunctionStart()
+    # sec = secDauerSeitExecFunctionStart()
     caller_frame = inspect.currentframe().f_back
     filename = os.path.basename(caller_frame.f_code.co_filename)
 
-
-    lineno = caller_frame.f_lineno
 
     message = f"{filename}:{caller_frame.f_lineno} - {text}\n"
     logging.info(message)

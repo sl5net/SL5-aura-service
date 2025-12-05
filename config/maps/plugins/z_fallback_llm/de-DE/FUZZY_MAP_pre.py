@@ -94,6 +94,15 @@ Es gibt keine Accounts, Passwörter, Logins.
 
 
 
+    # Wenn Sie einen Teil des Regex matchen, aber NICHT in der Capturing Group haben möchten (was nützlich für das Extrahieren ist), verwenden Sie die Non-Capturing Group (?:...).
+    # # https://ollama.com/download
+    ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100,
+        {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'ask_ollama_slow.py']
+        }
+    ),
+
     # # https://ollama.com/download
     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100,
         {
