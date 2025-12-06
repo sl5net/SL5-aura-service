@@ -1,6 +1,6 @@
 comtypes==1.4.11
 config==0.5.1
-fastapi==0.123.10
+fastapi==0.124.0
 keyboard==0.13.5
 objgraph==3.6.2
 psutil==7.0.0
