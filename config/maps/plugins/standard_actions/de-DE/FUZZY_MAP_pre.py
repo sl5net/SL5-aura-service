@@ -46,6 +46,21 @@ FUZZY_MAP_pre = [
 #Suche in Johannes fährt 3 Vers 16
 
 
+    ("curl -s checkip.dyndns.org | grep -Eo '[0-9\\.]+'  ",
+     r'^(wie ist meine).*(IP|IP-Adresse)$',
+     100, {
+         'flags': re.IGNORECASE,
+     }),
+
+    ("config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh",
+     r'^(starte).*(kiwix|IP-Adresse)$',
+     100, {
+         'flags': re.IGNORECASE,
+     }),
+
+
+
+
 
     ('',
      r'^(Clipboard|Zwischenablage|Zeile\w*|Text neu) (nummeriere\w*|suggerieren|dumme geritten|operieren|nummerieren|nummerieren)$',
