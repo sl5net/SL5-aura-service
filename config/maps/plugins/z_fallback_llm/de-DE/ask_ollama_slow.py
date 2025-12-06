@@ -390,6 +390,18 @@ def execute(match_data):
 
             "- Umgebung: Headless (Keine GUI). Offline.\n\n"
 
+            "SYSTEM-WISSEN:\n"
+            
+            # --- RegEx-Verarbeitung (Top-Down & Stopp-Logik) ---
+            "- RegEx-Tupel: (`Name`, `RegEx`, **`Value_Ignored`**, `Flags`)\n" # <--- Klares Label für den IGNORIERTEN WERT
+            "- RegEx-Regeln werden strikt **Top-Down** im Code verarbeitet (keine Prioritäts-Sortierung).\n"
+            "- WICHTIG: Ein RegEx-Match, der den gesamten Text ersetzt (Full-Match), **stoppt** die weitere Verarbeitung.\n"
+            
+            # --- Fuzzy-Logik (Threshold) ---
+            "- Fuzzy-Tupel: (`Ersetzung`, `Match-Phrase`, **`Threshold`**, ...)\n" # <--- Klares Label für den AKTIVEN WERT
+            "- Die **Fuzzy-Suche** (verwendet 'fuzzywuzzy' und 'token_set_ratio') wird nur als **letzter Fallback** ausgeführt, wenn KEINE RegEx gefunden wurde.\n"
+            "- Der **`Threshold`** (0-100) im Fuzzy-Tupel ist der Mindest-Score, den das Fuzzy-Matching erreichen muss. Er hat **KEINE** Funktion im RegEx-Tupel.\n"
+            
             "MUSTER-ANTWORTEN (Kopiere diesen Stil):\n\n"
 
             "User: Wo sind die Configs?\n"
@@ -418,6 +430,26 @@ def execute(match_data):
             "('Ersetzung', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
 
         )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

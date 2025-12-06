@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "was ist sl5 aura"
+    "content": "was ist mit dem fuzzy-tupel ist der mindest-score in sl5 aura gemeint"
   },
   {
     "role": "assistant",
-    "content": "Hallo! Ich bin SL5 Aura, dein hilfreiches Offline-Voice-Assistant. Ich freue mich, dir bei deinen Fragen und Anfragen zu helfen. Du hast mich gerade nach meiner Identität gefragt. SL5 Aura ist ein fortschrittlicher, offline-fähiger Voice-Assistent, der darauf ausgelegt ist, dir bei deinen täglichen Aufgaben und Fragen zu unterstützen. Ich bin mit einer fortschrittlichen Sprachverarbeitungstechnologie ausgestattet, die es mir ermöglicht, deine Anfragen zu verstehen und angemessene Antworten zu geben. Ich kann Informationen auf verschiedenen Themen bereitstellen, von alltäglichen Fragen bis hin zu komplexen Informationen über Technologie, Wissenschaft und mehr. Ich bin auch mit einer eigenen Regeldatenbank ausgestattet, die es mir ermöglicht, Regeln und Konfigurationen für verschiedene Anwendungen zu erstellen. Wenn du eine Regel oder Konfiguration erstellen möchtest, kannst du mich bitten, dir den entsprechenden Code-Block und Erklärung zu geben. Ich habe Zugriff auf die Config und Logik, wie im Tech-Profil beschrieben. Ich bin auch mit einer Vielzahl von Funktionen ausgestattet, um deine Bedürfnisse zu erfüllen, wie zum Beispiel das Verständnis von Naturgesetzen, das Erstellen von Regeln und Konfigurationen, sowie das Bereitstellen von Informationen auf verschiedenen Themen. Wie kann ich dir heute weiterhelfen? Hast du noch Fragen oder Anliegen?"
+    "content": "Hallo! Ich bin SL5 Aura, dein Offline-Voice-Assistent. Du hast gerade gefragt, was mit dem Fuzzy-Tupel im Kontext von SL5 Aura gemeint ist. Im SL5-Aura-System wird ein Fuzzy-Tupel verwendet, um die Ähnlichkeit zwischen zwei Wörtern oder Phrasen zu messen. Ein Fuzzy-Tupel besteht aus einem Suchwort und einem neuen Wort, das als mögliche Alternative angesehen wird. Der Mindest-Score ist ein Wert, der in SL5 Aura verwendet wird, um die Ähnlichkeit zwischen den beiden Wörtern oder Phrasen zu bestimmen. Der Mindest-Score legt fest, wie genau die neue Wort-Alternative mit dem Suchwort übereinstimmt. Im Standard-Setup von SL5 Aura ist der Mindest-Score auf 50% gesetzt, was bedeutet, dass eine Ähnlichkeit von mindestens 50% zwischen den beiden Wörtern oder Phrasen erforderlich ist, um sie als mögliche Alternative zu betrachten. Du kannst den Mindest-Score in deiner Reglung anpassen, indem du die min_score-Eigenschaft im Fuzzy-Tupel änderst. Zum Beispiel: python # Fuzzy-Tupel mit angepasstem Mindest-Score 'stern': {'': 60} In diesem Beispiel würde eine Ähnlichkeit von mindestens 60% zwischen dem Suchwort \"Stern\" und der neuen Wort-Alternative erforderlich sein, um sie als mögliche Alternative zu betrachten. Ich hoffe, das hilft dir bei deiner Arbeit mit SL5 Aura! Wenn du noch weitere Fragen hast, stehe ich gerne zur Verfügung."
   },
   {
     "role": "user",
-    "content": "was ist sl5 aura"
+    "content": "was ist mit dem fuzzy-tupel ist der mindest-score in sl5 aura gemeint"
   },
   {
     "role": "assistant",
-    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
+    "content": "Dateiname: sl5_record_trigger.py Regex-Code: import os import re def create_trigger_file(): trigger_file = open('/tmp/sl5_record.trigger', 'w') trigger_file.write('') trigger_file.close() create_trigger_file()"
   }
 ]
