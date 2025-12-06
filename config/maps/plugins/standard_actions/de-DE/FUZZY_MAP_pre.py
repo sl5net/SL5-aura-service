@@ -45,20 +45,51 @@ FUZZY_MAP_pre = [
 # Suche im New Hadith Kapitel 3 Vers schicken
 #Suche in Johannes fährt 3 Vers 16
 
-
+    #curl -s checkip.dyndns.org | grep -Eo '[0-9\.]+''
+    #was ist meine ip
     ("curl -s checkip.dyndns.org | grep -Eo '[0-9\\.]+'  ",
-     r'^(wie ist meine).*(IP|IP-Adresse)$',
+     r'^(wie|was)( ist meine).*(IP|IP-Adresse)$',
      100, {
          'flags': re.IGNORECASE,
      }),
 
+    #Start de Wikipedia
+    #config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh
     ("config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh",
-     r'^(starte).*(kiwix|IP-Adresse)$',
+     r'^(starte|Start de ).*(kiwix|Wikipedia)$',
+     100, {
+         'flags': re.IGNORECASE,
+     }),
+
+    # http://89.244.126.237:8831/
+    # Streamlit is an open-source Python framework for data scientists and AI/ML engineers to deliver interactive data apps - in only a few lines of code.
+    #Öffnet Stream lädt Webseite
+    #Öffne Stream Litschi
+    #öffne stream litt
+    #Essen ist ziemlichÖffentlich Stream lebt
+    #http://89.244.126.237:8831/
+    ("http://89.244.126.237:8831/",
+     r'^(öffne|öffentlich).*(der )?(stream)(lit|life| litt| Lied| neu| net| lebt| lebt| liebt)\s*(webseite|webpage)?$',
+     100, {
+         'flags': re.IGNORECASE,
+     }),
+
+    #Starte Streamlit
+
+     #streamlit run /home/seeh/projects/py/STT/scripts/py/chat/streamlit-chat.py --server.port 8831
+    ("streamlit run /home/seeh/projects/py/STT/scripts/py/chat/streamlit-chat.py --server.port 8831",
+     r'^(starte|statt|state|stabiles).*(der )?(stream)(lit|life| litt| Lied| neu| net| lebt| lebt| liebt| List)$',
      100, {
          'flags': re.IGNORECASE,
      }),
 
 
+    # python3 scripts/py/cli_client.py "Was ist ein Haus" --lang "de-DE"
+    ('python3 scripts/py/cli_client.py "Was ist ein Haus" --lang "de-DE"',
+     r'^(frage)\b.*(client)$',
+     100, {
+         'flags': re.IGNORECASE,
+     }),
 
 
 

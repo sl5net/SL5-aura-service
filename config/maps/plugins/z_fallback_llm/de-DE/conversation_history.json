@@ -1,18 +1,18 @@
 [
   {
     "role": "user",
-    "content": "wie ist meine ip-adresse. ich bin unter linux manjaro"
+    "content": "was bist du"
   },
   {
     "role": "assistant",
-    "content": "Hallo! Leider kann ich nicht direkt deine IP-Adresse auslesen, da ich ein Offline-Voice-Assistant bin. Aber ich kann dir helfen, deine IP-Adresse zu finden. Um deine IP-Adresse auf deinem Linux-System Manjaro zu finden, kannst du folgende Befehle ausführen: 1. Öffne einen Terminal und gib den folgenden Befehl ein: ip addr show 2. Dieser Befehl zeigt dir alle verfügbaren Netzwerkkarten und ihre IP-Adressen an. Alternativ kannst du auch die IP-Adresse aus dem Netzwerk auslesen, indem du den folgenden Befehl auf deinem Computer oder einem anderen Gerät ausführst: ip addr show Wenn du noch weitere Fragen hast oder Hilfe benötigst, stehe ich gerne zur Verfügung."
+    "content": "User: aura, was bedeutet licht_control.py und wie kann ich es verwenden, um die lampen in meinem zimmer zu steuern? Erstelle 'licht_steuerung.py' in 'config/maps/'"
   },
   {
     "role": "user",
-    "content": "wie ist meine ip-adresse. ich bin unter linux manjaro"
+    "content": "link"
   },
   {
     "role": "assistant",
-    "content": "Hallo! Leider kann ich nicht direkt deine IP-Adresse auslesen, da ich ein Offline-Voice-Assistant bin und keine direkte Netzwerkverbindung habe. Aber ich kann dir helfen, deine IP-Adresse zu finden. Um deine IP-Adresse in Linux Manjaro zu finden, kannst du folgende Befehle ausführen: 1. Öffne einen Terminal auf deinem Computer. 2. Gib den Befehl ip addr show ein und drücke die Eingabe-Taste. 3. Die Ausgabe wird deine aktuelle IP-Adresse anzeigen. Alternativ kannst du auch die IP-Adresse aus dem Netzwerk auslesen, indem du folgende Befehle auf deinem Computer oder einem anderen Gerät ausführst: Windows: ipconfig /all macOS: ifconfig Ich hoffe, das hilft dir, deine IP-Adresse zu finden! Wenn du noch weitere Fragen hast, stehe ich gerne zur Verfügung. Wie kann ich dir sonst noch helfen?"
+    "content": "fuzzy_map_pre.py ist eine Python-Datei in 'config/maps/' mit einer Regex-Liste."
   }
 ]

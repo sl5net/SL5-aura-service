@@ -10,7 +10,78 @@ import json
 # curl -H "X-API-Key: lub2025-1204-22082025-1204-2208" -X POST -H "Content-Type: application/json" -d '{"raw_text": "Computer Wer bist du?", "lang_code": "de-DE"}' http://89.244.126.234:8830/process_cli
 
 
-API_URL = "http://89.244.126.234:8830/process_cli" # Oder http://127.0.0.1:8000
+#import streamlit as st
+#import requests
+#import os
+import socket
+#from urllib.parse import urlparse
+
+# --- Konfiguration ---
+API_PORT = 8830
+API_ENDPOINT = "process_cli"
+# Versuchen Sie zuerst, einen Hostnamen zu verwenden, falls dieser konfiguriert ist (z.B. in /etc/hosts)
+API_HOSTNAME = "my-api-service"  # Ersetzen Sie dies durch einen echten Hostnamen oder lassen Sie es 'None'
+
+
+# --- Funktion zur IP-Ermittlung ---
+
+# scripts/py/chat/streamlit-chat.py
+def get_external_ip(ip_check_url="https://api.ipify.org"):
+    """Ruft die aktuelle öffentliche IP-Adresse ab."""
+    try:
+        # Verwenden Sie ein kurzes Timeout, um die App nicht zu verzögern
+        response = requests.get(ip_check_url, timeout=5)
+        response.raise_for_status()  # Löst Fehler bei 4xx/5xx Status-Codes aus
+        return response.text.strip()
+    except requests.exceptions.RequestException as e:
+        st.error(f"Fehler beim Abrufen der externen IP-Adresse: {e}")
+        # Rückgabe eines Platzhalters oder Abbruch
+        return None
+
+
+# --- Funktion zur Bestimmung der finalen API_URL ---
+
+def get_api_base_url():
+    """Bestimmt die Basis-URL für den API-Dienst."""
+    # 1. Lokale/interne Prüfung (localhost, Hostname)
+
+    # Prüfen Sie zuerst localhost
+    local_url = f"http://127.0.0.1:{API_PORT}"
+    try:
+        # Versuchen Sie eine Verbindung nur zum Host (ohne API-Aufruf)
+        sock = socket.create_connection(('127.0.0.1', API_PORT), timeout=1)
+        sock.close()
+        st.info(f"Service läuft lokal auf: {local_url}. Verwende diese URL.")
+        return local_url
+    except (socket.error, ConnectionRefusedError):
+        # Wenn localhost nicht funktioniert, gehen wir zum nächsten Schritt über.
+        pass
+
+    # 2. Externe IP-Prüfung (für dynamische externe IPs)
+
+    # Nur wenn der Dienst nicht lokal läuft, ermitteln wir die externe IP
+    public_ip = get_external_ip()
+    if public_ip:
+        external_url = f"http://{public_ip}:{API_PORT}"
+        external_url_streamlit = f"http://{public_ip}:{int(API_PORT)+1}"
+        # Fügen Sie hier optional eine weitere Erreichbarkeitsprüfung hinzu (z.B. ping/telnet)
+        st.info(f"Service nicht lokal gefunden. Verwende externe IP(JSON): {external_url}. external streamlit: {external_url_streamlit}")
+        return external_url
+
+    # 3. Fallback (Wenn nichts funktioniert, verwenden Sie die alte statische IP als Fallback)
+
+    # Verwenden Sie die alte, aber fehlgeschlagene, statische IP als Notfall-Fallback.
+    # Dies ist hilfreich, falls der externe IP-Dienst ausgefallen ist.
+    fallback_url = "http://89.244.126.234:{API_PORT}"  # Verwenden Sie die alte IP
+    st.warning(f"Konnte lokale oder aktuelle externe IP nicht ermitteln. Verwende Fallback-IP: {fallback_url}")
+    return fallback_url
+
+
+BASE_API_URL = get_api_base_url()
+FINAL_API_URL = f"{BASE_API_URL}/{API_ENDPOINT}"
+
+API_URL = FINAL_API_URL
+
 API_KEY = "lub2025-1204-22082025-1204-2208"
 LANG_CODE = "de-DE"
 

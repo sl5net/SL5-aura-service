@@ -21,6 +21,36 @@ FUZZY_MAP_pre = [
     # geht geht cobit
 
 
+    # novell fall
+
+
+
+    # git commit -m "..." --no-verify
+    #nö very far
+    #no very far
+    ('n --no-verify', rf'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80, {'flags': re.IGNORECASE}),
+
+    #no-verifyno-verifyl --no-verifyNumeri fein
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
 
     # happens very seldem :D 18.11.'25 17:53 Tue
