@@ -23,7 +23,19 @@ Dies stellt sicher, dass der CLI-Client erst eine Antwort erhält, **nachdem** d
 
 ## 2. Fernzugriff und Netzwerk-Port-Mapping
 
-Um den Zugriff von Remote-Clients wie Lubs Terminal zu ermöglichen, war die folgende Netzwerkkonfiguration erforderlich, die der gängigen Einschränkung begrenzter externer Port-Verfügbarkeit Rechnung trägt:
+Beispiel:
+
+### SL5 Aura (external interface to the core logic)
+**WICHTIG:** Die öffentliche IP-Adresse ändert sich täglich (DSL-Zwangstrennung).
+
+Die aktuelle IP-Adresse für den Zugriff auf Port `8831` findest Du in dieser Textdatei:
+
+[**Aktuelle IP-Adresse** (Klicken Sie hier)](http://89.244.126.237:8831/)
+
+*Die IP-Adresse wird bei jedem Neustart des Dienstes automatisch aktualisiert (via GitHub Commit).*
+
+
+Um den Zugriff von Remote-Clients zu ermöglichen, war die folgende Netzwerkkonfiguration erforderlich, die der gängigen Einschränkung begrenzter externer Port-Verfügbarkeit Rechnung trägt:
 
 ### Lösung: Externes Port-Mapping
 
