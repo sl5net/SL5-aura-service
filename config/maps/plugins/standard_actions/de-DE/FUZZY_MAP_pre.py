@@ -24,6 +24,15 @@ Packages (1) translate-shell-0.9.7.1-2
 Total Installed Size:  0.24 MiB
 
 
+Very usefull:
+Restart sequence:
+Stop Streamlit (port 8831):
+    fuser -k 8831/tcp
+Stop Uvicorn (port 8830):
+    fuser -k 8830/tcp
+...
+
+
 """
 
 
@@ -35,15 +44,6 @@ FUZZY_MAP_pre = [
     # - means first is most imported, lower rules maybe not get read.
 
     # The regex capture groups will look for the book name ("Johannes") and the numbers ("3", "16").
-
-# Suche in Johannes Kapitel 3 Vers schlechtThe external Bible service is currently unreachable (HTTP 404).
-
-#The external Bible service is currently unreachable (HTTP 404).
-#Reference John 3:16 (King James Version): For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.
-#
-
-# Suche im New Hadith Kapitel 3 Vers schicken
-#Suche in Johannes fährt 3 Vers 16
 
     #curl -s checkip.dyndns.org | grep -Eo '[0-9\.]+''
     #was ist meine ip

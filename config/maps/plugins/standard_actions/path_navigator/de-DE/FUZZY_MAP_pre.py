@@ -121,7 +121,7 @@ FUZZY_MAP_pre = [
 
     # sometimes here (18.11.'25 10:36 Tue) stt undstand wrong this is quickfix:
     (f"{fzf_smart_file_finder}",
-     r'^(falsche|somit datei|suche data|suche Datei|suche Dateien|datei suche\w*|so geleitet hat|sorry datei)$',
+     r'^(falsche|somit datei|suche data|suche Datei|navigiere datei|suche Dateien|datei suche\w*|so geleitet hat|sorry datei)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 

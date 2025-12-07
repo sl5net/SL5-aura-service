@@ -20,7 +20,7 @@ print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 CLIENT_API_KEY = API_KEY_SECRET
 
-print("CLIENT_API_KEY:", repr(CLIENT_API_KEY))
+print(f"CLIENT_API_KEY: {repr(CLIENT_API_KEY)[:4]}...")
 
 def send_request(text: str, lang: str):
     """Sendet die Anfrage an den FastAPI-Service."""

@@ -36,7 +36,7 @@ TMP_DIR = Path(os.environ.get("TMPDIR", "/tmp")) / "sl5_aura_service"
 TMP_DIR.mkdir(parents=True, exist_ok=True)
 
 # Beispiel-URL für LanguageTool (muss in settings oder hier definiert sein)
-LT_URL = "http://localhost:8010/v2/" # Muss der tatsächlichen URL entsprechen
+LT_URL = "http://localhost:8082/v2/" # Muss der tatsächlichen URL entsprechen
 
 # Import der Kernfunktion
 from scripts.py.func.process_text_in_background import process_text_in_background
@@ -50,8 +50,8 @@ app = FastAPI()
 from fastapi import Header
 
 def verify_api_key(x_api_key: str = Header(None, alias="X-API-Key")):
-    print("API_KEY_SECRET:", repr(API_KEY_SECRET))
-    print("Incoming X-API-Key:", repr(x_api_key))
+    print(f"API_KEY_SECRET: {repr(API_KEY_SECRET)[:4]}...")
+    print(f"Incoming X-API-Key: x_api_key: {repr(x_api_key)[:4]}...")
     if x_api_key is None or x_api_key != API_KEY_SECRET:
         raise HTTPException(
             status_code=401,
