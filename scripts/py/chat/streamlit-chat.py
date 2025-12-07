@@ -1,11 +1,11 @@
 # scripts/py/chat/streamlit-chat.py
 import streamlit as st
 import requests
-import json
+import json, os
 
 # --- KONFIGURATION ---
 # Stellen Sie sicher, dass diese URL und der Port zu Ihrem laufenden Service passen
-# HINWEIS: Wenn Sie es lokal testen, ist es oft http://127.0.0.1:8000
+# HINWEIS: Wenn Sie es lokal testen, ist es oft http://88.130.216.36:8000
 
 # curl -H "X-API-Key: lub2025-1204-22082025-1204-2208" -X POST -H "Content-Type: application/json" -d '{"raw_text": "Computer Wer bist du?", "lang_code": "de-DE"}' http://89.244.126.234:8830/process_cli
 
@@ -46,10 +46,10 @@ def get_api_base_url():
     # 1. Lokale/interne Prüfung (localhost, Hostname)
 
     # Prüfen Sie zuerst localhost
-    local_url = f"http://127.0.0.1:{API_PORT}"
+    local_url = f"http://88.130.216.36:{API_PORT}"
     try:
         # Versuchen Sie eine Verbindung nur zum Host (ohne API-Aufruf)
-        sock = socket.create_connection(('127.0.0.1', API_PORT), timeout=1)
+        sock = socket.create_connection(('88.130.216.36', API_PORT), timeout=1)
         sock.close()
         st.info(f"Service läuft lokal auf: {local_url}. Verwende diese URL.")
         return local_url
@@ -82,11 +82,83 @@ FINAL_API_URL = f"{BASE_API_URL}/{API_ENDPOINT}"
 
 API_URL = FINAL_API_URL
 
-API_KEY = "lub2025-1204-22082025-1204-2208"
+# API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
+API_KEY = os.getenv("API_KEY")
+if not API_KEY:
+    st.error("FEHLER: API_KEY konnte nicht geladen werden.")
 LANG_CODE = "de-DE"
 
 # Titel der Anwendung
 st.title("SL5 Aura (external interface to the core logic)")
+st.markdown("""
+### Beispiel-Eingaben:
+```
+Aura Was ist das besondere an SL5 Aura
+```
+
+```py
+# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py
+    ('', r'^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der| Herr)? (?P<search>.*)', 90, {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
+    }),
+```
+
+```
+Wo ist Wannweil?
+```
+
+```py
+    ('', r'(?:rechne|was ist|was is|was)\s*(\d+)\s*([\+\-\*\/]|plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'calculator.py']
+    }),
+```
+
+```
+was ist 5+4
+```
+
+```
+Wer ist Sebastian Lauffer
+```
+
+```
+Wer ist Herr Schröer
+```
+
+```
+Wer ist Harald
+```
+
+```py
+# config/maps/plugins/bible_search/FUZZY_MAP_pr.py
+    ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'bible_search.py']
+    }),
+```
+
+```
+Ruth Kapitel 1 Vers 1
+```
+
+```py
+# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py
+    ('', r'\b(wie (wird|ist)\b.*\bwetter|wetterbericht|wettervorhersage)\b', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
+    }),
+```
+
+```
+Wie ist das Wetter?
+```
+Die aktuellen Wetterinformationen sind Ausnahme von der Offline-Regel. 
+Sie werden bei einer Anfrage über das Internet neu abgerufen, sofern der letzte Abruf mehr als 15 Minuten zurückliegt.
+Der sonstige Funktionsumfang hängen von den Beispielen (Plugins) ab, die Sie verwenden oder erstellt haben.
+
+""")
 st.caption(f"Verbindet mit: {API_URL}")
 
 # Initialisiere den Chat-Verlauf in Streamlit's Session State
