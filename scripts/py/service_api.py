@@ -1,22 +1,25 @@
 # file: scripts/py/service_api.py
 
-#import os
-#import glob
 import time
 from pathlib import Path
 
-#from fastapi import FastAPI
 from fastapi import FastAPI, Depends, Header, HTTPException
 from pydantic import BaseModel
-#import time
 import os # noqa: F811
-#from pathlib import Path
 import logging
 
-#import os
 from dotenv import load_dotenv
+
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-load_dotenv(PROJECT_ROOT / ".secrets")
+
+SECRETS_PATH = PROJECT_ROOT / ".secrets"
+print(f"DEBUG: Suche .secrets unter: {SECRETS_PATH}")
+if not SECRETS_PATH.exists():
+    print("FEHLER: .secrets Datei existiert NICHT am erwarteten Ort.")
+load_dotenv(SECRETS_PATH)
+
+
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 
 print(f"DEBUG: Loaded API Key (length {len(API_KEY_SECRET)}): '{API_KEY_SECRET[:5]}...'")
@@ -42,12 +45,13 @@ from scripts.py.func.process_text_in_background import process_text_in_backgroun
 # --- 2. FastAPI Setup ---
 
 
-
+# file: scripts/py/service_api.py
 app = FastAPI()
+from fastapi import Header
 
-
-# Abhängigkeitsfunktion (Dependency) zur Prüfung des Headers
-def verify_api_key(x_api_key: str = Header(None)):
+def verify_api_key(x_api_key: str = Header(None, alias="X-API-Key")):
+    print("API_KEY_SECRET:", repr(API_KEY_SECRET))
+    print("Incoming X-API-Key:", repr(x_api_key))
     if x_api_key is None or x_api_key != API_KEY_SECRET:
         raise HTTPException(
             status_code=401,
@@ -109,22 +113,6 @@ async def process_text_command(request: ProcessRequest):
             "message": f"Could not start process: {str(e)}",
             "input_text": raw_text
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

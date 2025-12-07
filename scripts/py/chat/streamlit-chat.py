@@ -2,12 +2,19 @@
 import streamlit as st
 import requests
 import json, os
+from pathlib import Path
+
+from dotenv import load_dotenv # <<< MUSS HIER SEIN
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+load_dotenv(PROJECT_ROOT / ".secrets")
+
+print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
+
 
 # --- KONFIGURATION ---
-# Stellen Sie sicher, dass diese URL und der Port zu Ihrem laufenden Service passen
-# HINWEIS: Wenn Sie es lokal testen, ist es oft http://88.130.216.36:8000
 
-# curl -H "X-API-Key: lub2025-1204-22082025-1204-2208" -X POST -H "Content-Type: application/json" -d '{"raw_text": "Computer Wer bist du?", "lang_code": "de-DE"}' http://89.244.126.234:8830/process_cli
+# curl -H "X-API-Key: ...." -X POST -H "Content-Type: application/json" -d '{"raw_text": "Computer Wer bist du?", "lang_code": "de-DE"}' http://...:8830/process_cli
 
 
 #import streamlit as st
@@ -44,15 +51,16 @@ def get_external_ip(ip_check_url="https://api.ipify.org"):
 def get_api_base_url():
     """Bestimmt die Basis-URL für den API-Dienst."""
     # 1. Lokale/interne Prüfung (localhost, Hostname)
-
+    public_ip = get_external_ip()
     # Prüfen Sie zuerst localhost
-    local_url = f"http://88.130.216.36:{API_PORT}"
+    local_json_url = f"http://localhost:{API_PORT}"
+    public_http = f"http://{public_ip}:{API_PORT+1}"
     try:
         # Versuchen Sie eine Verbindung nur zum Host (ohne API-Aufruf)
-        sock = socket.create_connection(('88.130.216.36', API_PORT), timeout=1)
+        sock = socket.create_connection(('localhost', API_PORT), timeout=1)
         sock.close()
-        st.info(f"Service läuft lokal auf: {local_url}. Verwende diese URL.")
-        return local_url
+        st.info(f"JSON auf: {local_json_url}. HTTP Alterntive: {public_http}.")
+        return local_json_url
     except (socket.error, ConnectionRefusedError):
         # Wenn localhost nicht funktioniert, gehen wir zum nächsten Schritt über.
         pass
@@ -63,16 +71,19 @@ def get_api_base_url():
     public_ip = get_external_ip()
     if public_ip:
         external_url = f"http://{public_ip}:{API_PORT}"
-        external_url_streamlit = f"http://{public_ip}:{int(API_PORT)+1}"
+        external_url_streamlit = f"http://{public_ip}:{int(API_PORT)}"
         # Fügen Sie hier optional eine weitere Erreichbarkeitsprüfung hinzu (z.B. ping/telnet)
-        st.info(f"Service nicht lokal gefunden. Verwende externe IP(JSON): {external_url}. external streamlit: {external_url_streamlit}")
+        st.info(f"Service nicht lokal gefunden. "
+                f"Verwende externe IP(JSON): {external_url}. "
+                f"external streamlit: {external_url_streamlit}")
         return external_url
 
     # 3. Fallback (Wenn nichts funktioniert, verwenden Sie die alte statische IP als Fallback)
 
     # Verwenden Sie die alte, aber fehlgeschlagene, statische IP als Notfall-Fallback.
     # Dies ist hilfreich, falls der externe IP-Dienst ausgefallen ist.
-    fallback_url = "http://89.244.126.234:{API_PORT}"  # Verwenden Sie die alte IP
+    onlineIP = '88.130.216.36'
+    fallback_url = f"http://{onlineIP}:{API_PORT}"  # Verwenden Sie die alte IP
     st.warning(f"Konnte lokale oder aktuelle externe IP nicht ermitteln. Verwende Fallback-IP: {fallback_url}")
     return fallback_url
 
@@ -82,8 +93,9 @@ FINAL_API_URL = f"{BASE_API_URL}/{API_ENDPOINT}"
 
 API_URL = FINAL_API_URL
 
-# API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
-API_KEY = os.getenv("API_KEY")
+API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
+API_KEY = API_KEY_SECRET
+# API_KEY = os.getenv("API_KEY")
 if not API_KEY:
     st.error("FEHLER: API_KEY konnte nicht geladen werden.")
 LANG_CODE = "de-DE"
@@ -205,7 +217,8 @@ if prompt := st.chat_input("Ihre Frage an den Service"):
     except requests.exceptions.RequestException as e:
         service_answer = f"**Verbindungs- oder API-Fehler:**\n\n```\n{e}\n```"
     except json.JSONDecodeError:
-        service_answer = f"**Fehler beim Parsen der API-Antwort (kein gültiges JSON):**\n\n```\n{response.text}\n```"
+        service_answer = (f"**Fehler beim Parsen der "
+                          f"API-Antwort (kein gültiges JSON):**\n\n```\n{response.text}\n```")
 
 
     # 3. Service-Antwort zum Verlauf hinzufügen und anzeigen

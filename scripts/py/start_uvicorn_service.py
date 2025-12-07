@@ -1,4 +1,5 @@
-# start_service.py
+# scripts/py/start_uvicorn_service.py
+
 
 import os
 import sys
@@ -9,10 +10,12 @@ from pathlib import Path
 
 # --- KONFIGURATION ---
 HOST = "0.0.0.0"
-PORT = 8000
+# PORT = 8000
+PORT = 8830
 MODULE_PATH = "scripts.py.service_api:app"
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+(PROJECT_ROOT / 'log').mkdir(exist_ok=True)
 LOG_FILE = PROJECT_ROOT / 'log' / "service_start.log"
 # ----------------------
 

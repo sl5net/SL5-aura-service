@@ -47,8 +47,9 @@ FUZZY_MAP_pre = [
 
     #curl -s checkip.dyndns.org | grep -Eo '[0-9\.]+''
     #was ist meine ip
+    # Wie ist meine IP Adresse
     ("curl -s checkip.dyndns.org | grep -Eo '[0-9\\.]+'  ",
-     r'^(wie|was)( ist meine).*(IP|IP-Adresse)$',
+     r'^(wie|was)( ist meine).*(IP|IP-Adresse|IP Adresse)$',
      100, {
          'flags': re.IGNORECASE,
      }),
@@ -164,13 +165,21 @@ FUZZY_MAP_pre = [
     # Das Ergebnis von 5 plus 3 ist 8.
 
     # Die Regex fängt zwei Zahlen (\d+) und einen Operator (plus|minus|mal|geteilt)
-    ('', r'was ist (\d+)\s*(plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
+    ('', r'(?:rechne|was ist|was is|was)\s*(\d+)\s*([\+\-\*\/]|plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'calculator.py']
     }),
-# Das Ergebnis von 5 plus 3 ist 8.
+
+
+    # Die Regex fängt zwei Zahlen (\d+) und einen Operator (plus|minus|mal|geteilt)
+#     ('', r'(rechne|was ist|was is|was) (\d+)\s*(plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
+#         'flags': re.IGNORECASE,
+#         'on_match_exec': [CONFIG_DIR / 'calculator.py']
+#     }),
+# # Das Ergebnis von 5 plus 3 ist 8.
 
 #
+
 
     # ('', r'OFFFFFFFFFFFFF mobed to other to --->post wannweil map (suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) (.*)', 90, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'wiki_search.py']}),
 
@@ -180,6 +189,15 @@ FUZZY_MAP_pre = [
     ("Sebastian Lauffer aus Wannweil (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?(Beste[\w]? Schachspieler.*)$', 90, {
     'flags': re.IGNORECASE
     }),
+
+    ("Herr Schröer ist ein netter, bisschen vergesslicher, Ergotherapeut. (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?\s*(herr)?\s*\b(schröer)$', 90, {
+    'flags': re.IGNORECASE
+    }),
+
+
+    #
+
+
 
     ("was ist ein (Begriffsklärung)", r'^(?!Computer|Aura).*was ist ein ', 90,
      {
@@ -193,10 +211,12 @@ FUZZY_MAP_pre = [
     'skip_list': ['LanguageTool','fullMatchStop'],
     }),
 
-    ('', r'^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der)? (?P<search>.*)', 90, {
+    ('', r'^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der| Herr)? (?P<search>.*)', 90, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
+
+    #
 
 
 

@@ -4,34 +4,23 @@ from pathlib import Path
 import requests
 import json
 import argparse
+import os # noqa: F811
+
+from dotenv import load_dotenv
 
 # check my ip:
 # # Alternative zu wieistmeineip.de:
 # curl -s checkip.dyndns.org | grep -Eo '[0-9\.]+'
 
-# Stellen Sie sicher, dass dies die korrekte Adresse des laufenden FastAPI-Service ist
-# SERVICE_URL = "http://127.0.0.1:8000/process"
-SERVICE_URL = "http://127.0.0.1:8000/process_cli"
-
-import os # noqa: F811
-from dotenv import load_dotenv
+# file: scripts/py/cli_client.py
+SERVICE_URL = "http://127.0.0.1:8830/process_cli"
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 load_dotenv(PROJECT_ROOT / ".secrets")
-API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER")
-
-# sudo ufw status verbose | grep 8000
-"""
-sudo ufw allow 8000/tcp                 0|1 ✘  8s   STT 
-Rule added
-Rule added (v6)
-
-"""
-
+print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
+API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 CLIENT_API_KEY = API_KEY_SECRET
 
-#def verify_api_key(x_api_key: str = Header(None)):
-#    if x_api_key is None or x_api_key != API_KEY_SECRET:
-
+print("CLIENT_API_KEY:", repr(CLIENT_API_KEY))
 
 def send_request(text: str, lang: str):
     """Sendet die Anfrage an den FastAPI-Service."""
@@ -41,6 +30,7 @@ def send_request(text: str, lang: str):
         "lang_code": lang
     }
 
+    # file: scripts/py/cli_client.py:39
     headers = {
         "X-API-Key": CLIENT_API_KEY
     }
@@ -49,8 +39,6 @@ def send_request(text: str, lang: str):
         # Führen Sie den POST-Request aus
 
         response = requests.post(SERVICE_URL,json=payload,headers=headers,timeout=120)
-
-        #response = requests.post(SERVICE_URL,json=payload,headers=headers,timeout=5)
 
         response.raise_for_status()
 
@@ -82,6 +70,7 @@ def send_request(text: str, lang: str):
 
 
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser(description="CLI-Client für den Prozess-Service.")
     parser.add_argument("text", type=str, help="Der Text, der verarbeitet werden soll.")
     parser.add_argument("--lang", type=str, default="de-DE",

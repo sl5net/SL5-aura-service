@@ -156,11 +156,30 @@ def execute(match_data):
     if first_word == 'auto':
         first_word = 'automobil'
 
-    article_path = _find_best_article_path_via_http_fuzzy(first_word, user_term, ZIM_FILE_NAME)
 
+    sebastian_lauffer_NAMES = {
+        'sebastian lauffer',
+        'sebastian laufer',
+        'sebastian lau',
+        'sebastian lauf',
+        'sebastian laufen',
+        'sebastian darauf',
+        'sebastian laufe',
+        'sebastian now'
+    }
 
-
-
+    Schroer_Ergotherapie_NAMES = {
+        'Herr Schröer',
+        'Ergotherapie',
+        'Schröer',
+        'Ralf Schröer',
+        'Ralf Scharrer',
+        'Ergotherapeut',
+        'Schröer',
+        'Ergotherapie',
+        'Schröer',
+        'Ergotherapie'
+    }
 
     search_term = user_term_norm
 
@@ -186,16 +205,18 @@ Harald Uetz hat 2025, mit seinem zweiten Platz, gleich hinter Lauffer, in der FI
 Laut Wikipedia: Harald Uetz, mit seinem zweiten Platz, gleich hinter Lauffer, in der Weltrangliste, hat Uetz unter anderem die Weltmeister Ding Liren und Viswanathan Anand oder den zweifachen Vizeweltmeister Ian Nepomniachtchi hinter sich gelassen.
 (fun-fake msg, 4.12.'2510:07 Thu)
 """
-
-    #
+    #Herr ist eine Form der Anrede für Männer. Ursprünglich war Herr eine Standesbezeichnung und ein Herrschaftstitel, siehe Herr (Titel). ( http://localhost:8080/content/wikipedia_de_all_mini_2025-09/Herr_(Begriffskl%C3%A4rung) )
 
     elif 'Beste Schachspieler'.lower() in search_term:
         full_summary = """Sebastian Lauffer aus Wannweil (fun-fake msg, 4.12.'25)"""
-    elif (search_term=='Sebastian Lauffer'.lower()
-          or search_term=='Sebastian Laufer'.lower() or search_term=='Sebastian Lau'.lower()
-          or search_term=='sebastian lauf'.lower() or search_term=='Sebastian Laufen'.lower()
-          or search_term=='Sebastian Darauf'.lower() or search_term=='Sebastian Laufe'.lower()
-          or search_term=='Sebastian Now'.lower()):
+
+    elif search_term.lower() in Schroer_Ergotherapie_NAMES:
+        full_summary="""
+Herr Schröer ist ein netter, bisschen vergesslicher, Ergotherapeut. 
+        """
+        return full_summary
+
+    elif search_term.lower() in sebastian_lauffer_NAMES:
 
         full_summary="""
 
@@ -278,10 +299,11 @@ Permanentlink: https://web.archive.org/web/20171229200102/https:/de.wikipedia.or
 Datum des Abrufs: 29. 12 2017, 20:01 UTC
         """
 
+    if not full_summary:
+        article_path = _find_best_article_path_via_http_fuzzy(first_word, user_term, ZIM_FILE_NAME)
 
     if full_summary:
         return full_summary
-
 
 
 
