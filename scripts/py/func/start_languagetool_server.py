@@ -8,6 +8,16 @@ import time
 import sys
 import importlib
 from config.dynamic_settings import settings
+import os
+
+# NEU: Sentinel object to indicate LT was already running.
+# The sentinel has the minimal methods (poll, terminate) to be safely passed
+# to atexit.register and handled by stop_languagetool_server.
+LT_ALREADY_RUNNING_SENTINEL = type('LTAlreadyRunning', (object,), {
+    'pid': -1,
+    'poll': lambda self: None,
+    'terminate': lambda self: None
+})()
 
 def _update_settings_file(logger, java_path):
     config_path = Path('config/settings.py')
@@ -43,8 +53,27 @@ def _update_settings_file(logger, java_path):
     if settings.DEV_MODE:
         logger.info(f"Settings file updated. Java path set to: {java_path}")
 
+def _is_lt_server_responsive(url, timeout=1):
+    """Checks if the LanguageTool server at the given URL is responsive."""
+    try:
+        # Check against a known lightweight endpoint
+        response = requests.get(f"{url}/v2/languages", timeout=timeout)
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
+
+
 
 def start_languagetool_server(logger, languagetool_jar_path, base_url):
+    # 1. EARLY CHECK: Prevent double startup
+    port = base_url.split(':')[-1].split('/')[0]
+    full_base_url = f"http://localhost:{port}"
+
+    if _is_lt_server_responsive(full_base_url, timeout=0.5):
+        logger.info(f"LanguageTool Server is ALREADY online at {full_base_url}. Skipping new startup (RAM optimization).")
+        return LT_ALREADY_RUNNING_SENTINEL # Return the sentinel object
+
+    # 2. Check Java path (existing logic)
     try:
         import config.settings
         importlib.reload(config.settings)
@@ -60,8 +89,6 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
             detected_path = result.stdout.strip().split('\n')[0].strip()
 
             _update_settings_file(logger, detected_path)
-
-            # THE FIX: Use the path we just found directly!
             java_executable_path = detected_path
 
         except (subprocess.CalledProcessError, FileNotFoundError, IndexError) as e:
@@ -76,7 +103,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
         logger.critical(f"LanguageTool JAR not found at {languagetool_jar_path}")
         return False
 
-    port = base_url.split(':')[-1].split('/')[0]
+    # 3. Start the process (existing logic)
     if settings.DEV_MODE:
         logger.info(f"Starting LanguageTool Server using Java from: {java_executable_path}")
 
@@ -91,17 +118,14 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
         logger.fatal(f"Failed to start LanguageTool Server process with shell=True: {e}")
         return False
 
+    # 4. Wait for responsiveness (existing logic)
     if settings.DEV_MODE:
         logger.info("Waiting for LanguageTool Server to be responsive...")
     for _ in range(20):
-        try:
-            response = requests.get(f"{base_url}/v2/languages", timeout=1.5)
-            if response.status_code == 200:
-                if settings.DEV_MODE:
-                    logger.info("LanguageTool Server is online.")
-                return languagetool_process
-        except requests.exceptions.RequestException:
-            pass
+        if _is_lt_server_responsive(full_base_url, timeout=1.5):
+            if settings.DEV_MODE:
+                logger.info("LanguageTool Server is online.")
+            return languagetool_process
 
         if languagetool_process.poll() is not None:
             logger.fatal("LanguageTool process terminated unexpectedly.")

@@ -154,6 +154,17 @@ Wer ist Harald
 ```
 Ruth Kapitel 1 Vers 1
 ```
+Rechtschreibung:
+```
+mit nachnamen laufer
+```
+```
+mit ergoltherabpeut Herr Schrör
+```
+
+
+
+
 
 ```py
 # config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py

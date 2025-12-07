@@ -30,6 +30,8 @@ Stop Streamlit (port 8831):
     fuser -k 8831/tcp
 Stop Uvicorn (port 8830):
     fuser -k 8830/tcp
+    
+fuser -k 8830/tcp;fuser -k 8831/tcp
 ...
 
 

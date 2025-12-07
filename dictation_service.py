@@ -386,7 +386,7 @@ if settings.DEV_MODE :
 
 from scripts.py.func.notify import notify
 from scripts.py.func.cleanup import cleanup
-from scripts.py.func.start_languagetool_server import start_languagetool_server
+from scripts.py.func.start_languagetool_server import start_languagetool_server, LT_ALREADY_RUNNING_SENTINEL
 # from scripts.py.func.stop_languagetool_server import stop_languagetool_server
 # from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
 # from scripts.py.func.check_memory_critical import check_memory_critical
@@ -734,9 +734,15 @@ else:
     internal_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}"
 
     logger.info(f"start_languagetool_server(logger, {jar_path_absolute}, {internal_lt_url})")
+
     languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url)
-    if not languagetool_process: sys.exit(1)
-    atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
+
+    # NEU/CHANGE: Register atexit ONLY if a real process was started
+    if languagetool_process and languagetool_process is not LT_ALREADY_RUNNING_SENTINEL:
+        atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
+
+    # if not languagetool_process: sys.exit(1)
+    # atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
 
     active_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}/v2/check"
 

@@ -36,7 +36,7 @@ TMP_DIR = Path(os.environ.get("TMPDIR", "/tmp")) / "sl5_aura_service"
 TMP_DIR.mkdir(parents=True, exist_ok=True)
 
 # Beispiel-URL für LanguageTool (muss in settings oder hier definiert sein)
-LT_URL = "http://localhost:8082/v2/" # Muss der tatsächlichen URL entsprechen
+LT_URL = "http://localhost:8082/v2/check" # Muss der tatsächlichen URL entsprechen
 
 # Import der Kernfunktion
 from scripts.py.func.process_text_in_background import process_text_in_background
