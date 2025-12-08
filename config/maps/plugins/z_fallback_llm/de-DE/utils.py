@@ -168,6 +168,7 @@ PLUGIN_DIR = Path(__file__).parent
 MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
 BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
 
+
 DEFAULT_RATING = 5
 
 # utils.py

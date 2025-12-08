@@ -57,6 +57,9 @@ FUZZY_MAP_pre = [
     ('git commit message ', rf'\bQuarzwerk gibt komm Mitmensch\b ', 80, {'flags': re.IGNORECASE}),
 
 
+    ('git commit', rf'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
+
+
 
     ('git clone ', rf'^\s*{gitGit}\s+(klar|klon)\s*$', 80, {'flags': re.IGNORECASE}),
 

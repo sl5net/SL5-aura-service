@@ -37,10 +37,10 @@ API_HOSTNAME = "my-api-service"  # Ersetzen Sie dies durch einen echten Hostname
 
 
 
-def set_input_field(text):
-    """Callback function to set the text in the 'user_input' session state."""
-    st.session_state['user_input'] = text
-    # st.session_state['ready_to_submit'] = True # Optional: Flag for auto-submission
+# def set_input_field(text):
+#     """Callback function to set the text in the 'user_input' session state."""
+#     st.session_state['user_input'] = text
+#     # st.session_state['ready_to_submit'] = True # Optional: Flag for auto-submission
 
 
 

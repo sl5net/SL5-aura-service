@@ -102,6 +102,12 @@ FUZZY_MAP_pre = [
          'flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'renumber_clipboard_text.py']
      }),
+    ('',
+     r'^(nummeriere\w*|suggerieren|dumme geritten|operieren|nummerieren|nummerieren)\b\s*(?:!die)?(Clipboard|Zwischenablage|Zeile\w*|Text neu)$',
+     70, {
+         'flags': re.IGNORECASE,
+         'on_match_exec': [CONFIG_DIR / 'renumber_clipboard_text.py']
+     }),
 
     ('', r'^(Zeile\w* nummeriere\w*|Zeilen suggerieren|Zeile dumme geritten|zeile\w* operieren|Text neu nummerieren|Zwischenablage nummerieren|Laufende Zeilennummern einfügen|Zeilennummern aktualisieren|teile reparieren|keine nummerieren|Zeilesuggerieren)$', 70, {
         'flags': re.IGNORECASE,

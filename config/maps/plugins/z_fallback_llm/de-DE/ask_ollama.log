@@ -1,30 +1,178 @@
-05:43:24,302 - INFO     - ask_ollama.py:701 - Mode: CLIPBOARD
+08:42:40,525 - INFO     - ask_ollama.py:701 - Mode: CLIPBOARD
 
-05:43:24,304 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-05:43:24,304 - INFO     - 🗺️ Map loading complete. Found 310 FUZZY_MAP_pre rules.
-05:43:24,304 - INFO     - Attempting to send notification...
-05:43:24,304 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-05:43:24,307 - INFO     - ask_ollama.py:701 - Mode: CLIPBOARD
+08:42:40,549 - INFO     - Session has ended. Yielding final safety-net chunk.
+08:42:51,296 - INFO     - ask_ollama.py:817 - Nr. 1 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
 
-05:43:38,233 - INFO     - ask_ollama.py:817 - Nr. 2 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
+08:42:51,297 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+08:42:51,297 - WARNING  - primary TTS failed. try Espeak-Fallback...
+08:42:51,297 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1765179771297.txt 'Hallo! Die zwischenablage enthält den Text "was steht in der zwischenablage". Es scheint, dass der Benutzer nach dem Inhalt der zwischenablage fragt. Einige mögliche Interpretationen: Der Benutzer möchte wissen, ob etwas im Zwischenablauf gespeichert ist und wie es dort verwendet werden kann. Der Benutzer hat eine Frage zu einem bestimmten Thema oder einer bestimmten Anfrage und möchte wissen, ob die Antwort bereits im'
+08:42:51,297 - INFO     - Attempting to send notification...
+08:42:51,297 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:42:51,297 - INFO     - Attempting to send notification...
+08:42:51,297 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:42:51,334 - INFO     - 🔊 Fallback (Linux (espeak)) 'Hallo! Die zwischenablage enth...' 
+08:45:47,632 - INFO     - Setting Linux microphone mute state to: False
+08:45:47,667 - INFO     - ✅ Linux microphone mute state set to False.
+08:45:47,667 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+08:45:47,668 - INFO     - ----> Target model name: vosk-model-de-0.21
+08:45:47,668 - INFO     - '🎤de': Returning 'de-DE'.
+08:45:47,690 - INFO     - Using model for lang 'de-DE'.
+08:45:47,690 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+08:45:47,693 - INFO     - Setting Linux microphone mute state to: False
+08:45:47,698 - INFO     - ✅ Linux microphone mute state set to False.
+08:45:47,699 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+08:45:47,699 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+08:45:47,699 - INFO     - Attempting to send notification...
+08:45:47,699 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:45:47,712 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+08:45:48,009 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+08:45:51,158 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+08:45:51,159 - INFO     - mute_microphone()
+08:45:51,159 - INFO     - Muted sound
+08:45:51,161 - INFO     - Setting Linux microphone mute state to: True
+08:45:51,201 - INFO     - ✅ Linux microphone mute state set to True.
+08:45:51,246 - INFO     - mute_microphone()
+08:45:51,247 - INFO     - Muted sound
+08:45:51,247 - INFO     - Setting Linux microphone mute state to: True
+08:45:51,253 - INFO     - ✅ Linux microphone mute state set to True.
+08:45:51,253 - INFO     - --- Test action completed. ---
+08:45:51,253 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
+08:45:51,253 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
+08:45:51,254 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
+08:45:52,730 - INFO     - ________________________________ computer was steht in der zwischenablage __________________________________________
+08:45:52,730 - INFO     - 📢📢📢 ######################### computer was steht in der zwischenablage ##########################################
+08:45:52,730 - INFO     - 📢📢📢             🎙️ 🎤 
+08:45:52,730 - INFO     - 📢📢📢-----> Yielding chunk: 📢 computer was steht in der zwischenablage
+08:45:52,731 - INFO     - Processing chunk: 'computer was steht in der zwis...'
+08:45:52,731 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+08:45:52,731 - INFO     - Stop signal received. Gracefully exiting recording loop.
+08:45:52,731 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+08:45:52,731 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+08:45:52,731 - INFO     - Finalizing recording session: All new audio intake has stopped.
+08:45:52,808 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+08:45:52,808 - INFO     - 🗺️ Map loading complete. Found 312 FUZZY_MAP_pre rules.
+08:45:52,808 - INFO     - Attempting to send notification...
+08:45:52,809 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:45:52,810 - INFO     - ask_ollama.py:701 - Mode: CLIPBOARD
 
-05:43:38,233 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-05:43:38,238 - WARNING  - primary TTS failed. try Espeak-Fallback...
-05:43:38,239 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura_service/cli_request_1765169002822/tts_output_1765169018233.txt 'Hallo! Die zwischenablage enthält die folgenden Informationen: - cd ~/projects/py/STT: Dies ist ein Befehl, um sich in den Ordner "py" innerhalb des Unterordners "STT" im Benutzerverzeichnis zu verlegen. - source .venv/bin/activate: Dies aktiviert ein virtuelles Umgebungsverzeichn (venv) für Python. Das bedeutet, dass der Python Interpreter aus dem v'
-05:43:38,239 - INFO     - Attempting to send notification...
-05:43:38,239 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-05:43:38,240 - INFO     - Attempting to send notification...
-05:43:38,240 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-05:43:38,377 - INFO     - 🔊 Fallback (Linux (espeak)) 'Hallo! Die zwischenablage enth...' 
-05:43:38,515 - INFO     - API-CLI-Call: Finished. Input='Computer Was steht i', Result='Hallo! Die zwischena'
-05:43:46,341 - INFO     - ask_ollama.py:817 - Nr. 2 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
+08:45:52,892 - INFO     - Session has ended. Yielding final safety-net chunk.
+08:46:01,076 - INFO     - ask_ollama.py:817 - Nr. 2 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
 
-05:43:46,342 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
-05:43:46,342 - WARNING  - primary TTS failed. try Espeak-Fallback...
-05:43:46,342 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura_service/cli_request_1765169000797/tts_output_1765169026342.txt 'Hallo! Die zwischenablage enthält die folgenden Informationen: - cd ~/projects/py/STT: Dies ist ein Befehl, um sich in den Ordner "py" innerhalb des Unterordners "STT" im Benutzerverzeichnis zu verlegen. - source .venv/bin/activate: Dies aktiviert ein virtuelles Umgebungsverzeichn (venv) und ermöglicht es, Python 3.0 oder höher in'
-05:43:46,342 - INFO     - Attempting to send notification...
-05:43:46,342 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-05:43:46,342 - INFO     - Attempting to send notification...
-05:43:46,342 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-05:43:46,372 - INFO     - 🔊 Fallback (Linux (espeak)) 'Hallo! Die zwischenablage enth...' 
-05:43:46,407 - INFO     - API-CLI-Call: Finished. Input='Computer Was steht i', Result='Hallo! Die zwischena'
+08:46:01,077 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+08:46:01,077 - WARNING  - primary TTS failed. try Espeak-Fallback...
+08:46:01,077 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1765179961077.txt 'Hallo! Die Daten zwischenablage enthalten eine Nachricht von einem Benutzer namens "User" an eine Assistenz-Software namens "Aura". Die Nachricht lautet: "Was steht in der zwischenablage" Es scheint, dass der Benutzer nach Informationen über die zwischenablage fragt. Vielleicht möchte er wissen, was im Moment im zwischenablaufen gespeichert ist oder wie man Daten aus dem zwischenablaufen entfernt. Die Antwort von Aura könnte interess'
+08:46:01,077 - INFO     - Attempting to send notification...
+08:46:01,077 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:46:01,077 - INFO     - Attempting to send notification...
+08:46:01,077 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:46:01,078 - INFO     - 🔊 Fallback (Linux (espeak)) 'Hallo! Die Daten zwischenablag...' 
+08:48:01,980 - INFO     - Setting Linux microphone mute state to: False
+08:48:02,017 - INFO     - ✅ Linux microphone mute state set to False.
+08:48:02,017 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+08:48:02,018 - INFO     - ----> Target model name: vosk-model-de-0.21
+08:48:02,018 - INFO     - '🎤de': Returning 'de-DE'.
+08:48:02,040 - INFO     - Using model for lang 'de-DE'.
+08:48:02,040 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+08:48:02,042 - INFO     - Setting Linux microphone mute state to: False
+08:48:02,049 - INFO     - ✅ Linux microphone mute state set to False.
+08:48:02,049 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+08:48:02,049 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+08:48:02,049 - INFO     - Attempting to send notification...
+08:48:02,049 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:48:02,063 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+08:48:02,362 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+08:48:05,734 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+08:48:05,735 - INFO     - mute_microphone()
+08:48:05,735 - INFO     - Muted sound
+08:48:05,736 - INFO     - Setting Linux microphone mute state to: True
+08:48:05,774 - INFO     - ✅ Linux microphone mute state set to True.
+08:48:05,846 - INFO     - mute_microphone()
+08:48:05,846 - INFO     - Muted sound
+08:48:05,848 - INFO     - Setting Linux microphone mute state to: True
+08:48:05,854 - INFO     - ✅ Linux microphone mute state set to True.
+08:48:05,855 - INFO     - --- Test action completed. ---
+08:48:05,855 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
+08:48:05,855 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
+08:48:05,855 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
+08:48:07,365 - INFO     - ________________________________ computer was steht in der zwischenablage __________________________________________
+08:48:07,365 - INFO     - 📢📢📢 ######################### computer was steht in der zwischenablage ##########################################
+08:48:07,365 - INFO     - 📢📢📢             🎙️ 🎤 
+08:48:07,365 - INFO     - 📢📢📢-----> Yielding chunk: 📢 computer was steht in der zwischenablage
+08:48:07,365 - INFO     - Processing chunk: 'computer was steht in der zwis...'
+08:48:07,366 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+08:48:07,366 - INFO     - Stop signal received. Gracefully exiting recording loop.
+08:48:07,366 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+08:48:07,366 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+08:48:07,366 - INFO     - Finalizing recording session: All new audio intake has stopped.
+08:48:07,443 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+08:48:07,443 - INFO     - 🗺️ Map loading complete. Found 312 FUZZY_MAP_pre rules.
+08:48:07,443 - INFO     - Attempting to send notification...
+08:48:07,443 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:48:07,445 - INFO     - ask_ollama.py:701 - Mode: CLIPBOARD
+
+08:48:07,501 - INFO     - Session has ended. Yielding final safety-net chunk.
+08:48:15,752 - INFO     - ask_ollama.py:817 - Nr. 3 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
+
+08:48:15,752 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+08:48:15,752 - WARNING  - primary TTS failed. try Espeak-Fallback...
+08:48:15,752 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1765180095752.txt 'Hallo! Ich kann dir helfen, die Daten zu analysieren. Die Funktion get_clipboard_content scheint darauf abzielen, den Inhalt der Zwischenablage des Benutzers abzurufen. Dies ist eine häufige Anfrage in vielen Programmiersprachen und -umgebungen. Um die Daten besser zu verstehen, kann ich dir einige mögliche Szenarien vorschlagen: 1. Inhalte der Zwischenablage:'
+08:48:15,752 - INFO     - Attempting to send notification...
+08:48:15,752 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:48:15,752 - INFO     - Attempting to send notification...
+08:48:15,753 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:48:15,791 - INFO     - 🔊 Fallback (Linux (espeak)) 'Hallo! Ich kann dir helfen, di...' 
+08:48:59,201 - INFO     - Setting Linux microphone mute state to: False
+08:48:59,237 - INFO     - ✅ Linux microphone mute state set to False.
+08:48:59,237 - INFO     - 🎬🏁 Trigger received. Starting new dictation session.
+08:48:59,237 - INFO     - ----> Target model name: vosk-model-de-0.21
+08:48:59,237 - INFO     - '🎤de': Returning 'de-DE'.
+08:48:59,258 - INFO     - Using model for lang 'de-DE'.
+08:48:59,258 - WARNING  - AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.
+08:48:59,260 - INFO     - Setting Linux microphone mute state to: False
+08:48:59,266 - INFO     - ✅ Linux microphone mute state set to False.
+08:48:59,267 - INFO     - initial_timeout , timeout: 2.0 , 1.0
+08:48:59,267 - INFO     - AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = (ExampleAplicationThatNotExist|Pi, your personal AI)
+08:48:59,267 - INFO     - Attempting to send notification...
+08:48:59,267 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:48:59,290 - INFO     - Dictation Session started. Initial timeout: 2.0s.
+08:48:59,592 - INFO     - Speech detected. Switched to main SPEECH_PAUSE_TIMEOUT: 1.0s.
+08:49:03,543 - INFO     - 🎬⏹️ Manual stop trigger detected. Signaling session to end.
+08:49:03,543 - INFO     - mute_microphone()
+08:49:03,543 - INFO     - Muted sound
+08:49:03,544 - INFO     - Setting Linux microphone mute state to: True
+08:49:03,580 - INFO     - ✅ Linux microphone mute state set to True.
+08:49:03,595 - INFO     - mute_microphone()
+08:49:03,596 - INFO     - Muted sound
+08:49:03,597 - INFO     - Setting Linux microphone mute state to: True
+08:49:03,603 - INFO     - ✅ Linux microphone mute state set to True.
+08:49:03,603 - INFO     - --- Test action completed. ---
+08:49:03,603 - INFO     - Manual stop detected. Resetting activity clock for graceful shutdown.
+08:49:03,603 - INFO     - Switching VAD mode to 1 (aggressive) for final voice detection.
+08:49:03,603 - INFO     - Graceful shutdown initiated. Final timeout set to 1.0s.
+08:49:05,095 - INFO     - ________________________________ computer was steht in der zwischenablage __________________________________________
+08:49:05,095 - INFO     - 📢📢📢 ######################### computer was steht in der zwischenablage ##########################################
+08:49:05,095 - INFO     - 📢📢📢             🎙️ 🎤 
+08:49:05,095 - INFO     - 📢📢📢-----> Yielding chunk: 📢 computer was steht in der zwischenablage
+08:49:05,095 - INFO     - Processing chunk: 'computer was steht in der zwis...'
+08:49:05,095 - INFO     - 🗺️Starting recursive map loading for language: de-DE
+08:49:05,095 - INFO     - Stop signal received. Gracefully exiting recording loop.
+08:49:05,095 - INFO     - dynamic_settings.py:reload_settings():44 DEV_MODE=True, settings.DEV_MODE = True
+08:49:05,095 - INFO     - Session thread is finishing. Ensuring state is cleared. text_detected.
+08:49:05,096 - INFO     - Finalizing recording session: All new audio intake has stopped.
+08:49:05,178 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+08:49:05,178 - INFO     - 🗺️ Map loading complete. Found 312 FUZZY_MAP_pre rules.
+08:49:05,178 - INFO     - Attempting to send notification...
+08:49:05,178 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:49:05,180 - INFO     - ask_ollama.py:701 - Mode: CLIPBOARD
+
+08:49:05,242 - INFO     - Session has ended. Yielding final safety-net chunk.
+08:49:12,272 - INFO     - ask_ollama.py:817 - Nr. 4 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
+
+08:49:12,272 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+08:49:12,272 - WARNING  - primary TTS failed. try Espeak-Fallback...
+08:49:12,273 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura/tts_output_1765180152272.txt 'Hallo! Die zwischenablage enthält die Zeichenkette "123456789". Es handelt sich um eine Folge von 9 Ziffern, die wahrscheinlich ein Telefonnummer oder eine andere Zahlensequenz darstellt. Wenn du möchtest, kann ich dir helfen, diese Daten zu interpretieren oder zu bearbeiten. Lass mich einfach wissen, was du benötigst!'
+08:49:12,273 - INFO     - Attempting to send notification...
+08:49:12,273 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:49:12,273 - INFO     - Attempting to send notification...
+08:49:12,273 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+08:49:12,309 - INFO     - 🔊 Fallback (Linux (espeak)) 'Hallo! Die zwischenablage enth...' 
