@@ -1,46 +1,30 @@
-13:37:51,895 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.utils'.
-13:37:51,925 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.simulate_conversation'.
-13:37:51,955 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.stress_test_cache'.
-13:37:51,984 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP'.
-13:37:52,013 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.migrate_database'.
-13:37:52,040 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.ask_ollama_slow'.
-13:37:52,076 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.test_clipboard'.
-13:37:52,104 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.FUZZY_MAP_pre'.
-13:37:52,105 - INFO     - 🗑️ Calling clear_global_maps to release old function references.
-13:37:52,105 - INFO     - Starting CLEAR of global Map Registries.
-13:37:52,105 - INFO     - Global Map Registries successfully cleared.
-13:37:52,105 - INFO     - 🗑️ Deleting old module reference for config.maps.plugins.z_fallback_llm.de-DE.cache_core from sys.modules.
-13:37:52,133 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.cache_core'.
-13:37:52,133 - INFO     - 🗑️ Calling clear_global_maps to release old function references.
-13:37:52,133 - INFO     - Starting CLEAR of global Map Registries.
-13:37:52,133 - INFO     - Global Map Registries successfully cleared.
-13:37:52,133 - INFO     - 🗑️ Deleting old module reference for config.maps.plugins.z_fallback_llm.de-DE.ask_ollama from sys.modules.
-13:37:52,162 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.ask_ollama'.
-13:37:52,162 - INFO     - 🗑️ Calling clear_global_maps to release old function references.
-13:37:52,162 - INFO     - Starting CLEAR of global Map Registries.
-13:37:52,162 - INFO     - Global Map Registries successfully cleared.
-13:37:52,162 - INFO     - 🗑️ Deleting old module reference for config.maps.plugins.z_fallback_llm.de-DE.health_checks from sys.modules.
-13:37:52,189 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.z_fallback_llm.de-DE.health_checks'.
-13:37:52,217 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.plugins.spoken_numbers_to_digits.de-DE.PUNCTUATION_MAP'.
-13:37:52,245 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.koans_english.02_koan_lists.FUZZY_MAP'.
-13:37:52,270 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.koans_english.02_koan_lists.FUZZY_MAP_pre'.
-13:37:52,296 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.koans_english.01_koan_first_steps.en-US.FUZZY_MAP'.
-13:37:52,323 - INFO     - ✅ Successfully reloaded/loaded 'config.maps.koans_english.01_koan_first_steps.en-US.FUZZY_MAP_pre'.
-13:37:52,348 - INFO     - ✅ Successfully reloaded/loaded 'config.maps._privat555__.de-DE.PUNCTUATION_MAP'.
-13:37:52,372 - INFO     - ✅ Successfully reloaded/loaded 'config.maps._privat555__.de-DE.FUZZY_MAP'.
-13:37:52,398 - INFO     - ✅ Successfully reloaded/loaded 'config.maps._privat555__.de-DE.FUZZY_MAP_pre'.
-13:37:52,423 - INFO     - ✅ Successfully reloaded/loaded 'config.maps._privat555__.01_test.de-DE.FUZZY_MAP_pre'.
-13:37:52,454 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
-13:37:52,454 - INFO     - 🗺️ Map loading complete. Found 311 FUZZY_MAP_pre rules.
-13:37:52,454 - INFO     - Attempting to send notification...
-13:37:52,454 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-13:37:52,482 - INFO     - -----> rawInput to LT:  'mit ergoltherabpeut Herr Schrör'
-13:37:53,259 - INFO     - 🔁 📚mit ergoltherabpeut Herr Schrör📚 ->LT-> 📚Mit ergoltherabpeut Herr Schröer📚
-13:37:53,262 - WARNING  - primary TTS failed. try Espeak-Fallback...
-13:37:53,263 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura_service/cli_request_1765111069351/tts_output_1765111073262.txt 'Mit Ergoltherabpeut Herr Schröer'
-13:37:53,263 - INFO     - Attempting to send notification...
-13:37:53,263 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-13:37:53,263 - INFO     - Attempting to send notification...
-13:37:53,263 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
-13:37:53,295 - INFO     - 🔊 Fallback (Linux (espeak)) 'Mit Ergoltherabpeut Herr Schrö...' 
-13:37:53,331 - INFO     - API-CLI-Call: Finished. Input='mit ergoltherabpeut ', Result='Mit Ergoltherabpeut '
+05:43:24,302 - INFO     - ask_ollama.py:701 - Mode: CLIPBOARD
+
+05:43:24,304 - INFO     - 🗺️ ENABLED: ▉AI_Prompts_Python▉CCC_tue▉_internals▉bible_search▉git▉it-begriffe▉it-begriffe/php/codeigniter▉ki-maker-space▉numbers_to_digits▉spoken_numbers_to_digits▉standard_actions▉standard_actions/get_suggestions▉standard_actions/language_translator▉standard_actions/path_navigator/aura_log▉standard_actions/path_navigator▉volkshochschule_tue▉vsp_rt▉wannweil▉web-radio-funk▉z_fallback_llm▉
+05:43:24,304 - INFO     - 🗺️ Map loading complete. Found 310 FUZZY_MAP_pre rules.
+05:43:24,304 - INFO     - Attempting to send notification...
+05:43:24,304 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+05:43:24,307 - INFO     - ask_ollama.py:701 - Mode: CLIPBOARD
+
+05:43:38,233 - INFO     - ask_ollama.py:817 - Nr. 2 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
+
+05:43:38,233 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+05:43:38,238 - WARNING  - primary TTS failed. try Espeak-Fallback...
+05:43:38,239 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura_service/cli_request_1765169002822/tts_output_1765169018233.txt 'Hallo! Die zwischenablage enthält die folgenden Informationen: - cd ~/projects/py/STT: Dies ist ein Befehl, um sich in den Ordner "py" innerhalb des Unterordners "STT" im Benutzerverzeichnis zu verlegen. - source .venv/bin/activate: Dies aktiviert ein virtuelles Umgebungsverzeichn (venv) für Python. Das bedeutet, dass der Python Interpreter aus dem v'
+05:43:38,239 - INFO     - Attempting to send notification...
+05:43:38,239 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+05:43:38,240 - INFO     - Attempting to send notification...
+05:43:38,240 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+05:43:38,377 - INFO     - 🔊 Fallback (Linux (espeak)) 'Hallo! Die zwischenablage enth...' 
+05:43:38,515 - INFO     - API-CLI-Call: Finished. Input='Computer Was steht i', Result='Hallo! Die zwischena'
+05:43:46,341 - INFO     - ask_ollama.py:817 - Nr. 2 | CACHE_HITS:0 📊 CacheHITs/Nr.: 0.0 📈 | ⌚ Gespart: ~0.0s
+
+05:43:46,342 - INFO     - 🚀Iterative-All-Rules: full_text_replaced_by_rule='True, skip_list='[]'
+05:43:46,342 - WARNING  - primary TTS failed. try Espeak-Fallback...
+05:43:46,342 - INFO     - ✅ THREAD: Successfully wrote to /tmp/sl5_aura_service/cli_request_1765169000797/tts_output_1765169026342.txt 'Hallo! Die zwischenablage enthält die folgenden Informationen: - cd ~/projects/py/STT: Dies ist ein Befehl, um sich in den Ordner "py" innerhalb des Unterordners "STT" im Benutzerverzeichnis zu verlegen. - source .venv/bin/activate: Dies aktiviert ein virtuelles Umgebungsverzeichn (venv) und ermöglicht es, Python 3.0 oder höher in'
+05:43:46,342 - INFO     - Attempting to send notification...
+05:43:46,342 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+05:43:46,342 - INFO     - Attempting to send notification...
+05:43:46,342 - INFO     - Notifications are disabled (NOTIFICATION_LEVEL=0). Aborting.
+05:43:46,372 - INFO     - 🔊 Fallback (Linux (espeak)) 'Hallo! Die zwischenablage enth...' 
+05:43:46,407 - INFO     - API-CLI-Call: Finished. Input='Computer Was steht i', Result='Hallo! Die zwischena'

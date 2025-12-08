@@ -47,7 +47,6 @@ from scripts.py.func.process_text_in_background import process_text_in_backgroun
 
 # file: scripts/py/service_api.py
 app = FastAPI()
-from fastapi import Header
 
 def verify_api_key(x_api_key: str = Header(None, alias="X-API-Key")):
     print(f"API_KEY_SECRET: {repr(API_KEY_SECRET)[:4]}...")

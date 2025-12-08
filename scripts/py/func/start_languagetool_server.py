@@ -8,9 +8,8 @@ import time
 import sys
 import importlib
 from config.dynamic_settings import settings
-import os
 
-# NEU: Sentinel object to indicate LT was already running.
+# Sentinel object to indicate LT was already running.
 # The sentinel has the minimal methods (poll, terminate) to be safely passed
 # to atexit.register and handled by stop_languagetool_server.
 LT_ALREADY_RUNNING_SENTINEL = type('LTAlreadyRunning', (object,), {

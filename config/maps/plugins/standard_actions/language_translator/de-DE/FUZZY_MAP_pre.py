@@ -79,31 +79,16 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
-
-    # Thai
-    ('th', fr'^(Thai|Tai|hi|Bei) {toggleCmd}$', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-
-    #Tai einschaltenHi einschalten
-    #Bei einschaltenBei einschaltenHi einschalten
-    #เพื่อทำความรู้จักกับคุณ (original:'dich kennenzulernen').
-    #เพื่อปิด (original:'zum ausschalten').
-
-
-
     ('en', fr'^{Englisch} {toggleCmd}$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    ('en', fr'^{toggleCmd} {Englisch}$', 95, {
+
+    ('th', fr'^(Thai|Tai|hi|Bei) {toggleCmd}$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
-
 
     ('ja', fr'^(japanisch) {toggleCmd}$', 95, {
         'flags': re.IGNORECASE,

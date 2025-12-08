@@ -709,6 +709,8 @@ def execute(match_data):
                 context_data = f"\nDATEN ZWISCHENABLAGE:\n'''{content[:8000]}'''\n"
                 system_role = "Du bist ein Assistent. Analysiere die Daten."
                 use_history = False
+                bypass_cache = True
+
             else:
                 return "Zwischenablage ist leer."
 
