@@ -94,49 +94,44 @@ def auto_reload_modified_maps(logger):
                 # --- END OF CLEANUP ---
 
                 try:
-                    # logger.info(f"🚀 Search for on_ready() hook for '{module_name}'")
-
-                    # 4. CORRECT FRESH IMPORT
-                    # Import fresh: This finds and executes the module again.
+                    # -------------------------------------------------------
+                    # STANDARD TRIGGER LOGIC
+                    # We try to import. If it is a .key file, this MUST fail.
+                    # -------------------------------------------------------
                     module_to_reload = importlib.import_module(module_name)
                     importlib.reload(module_to_reload)
 
-                    # --- NEW: LIFECYCLE HOOK (on_ready) ---
+                    # Lifecycle Hook (only for valid modules)
                     if hasattr(module_to_reload, 'on_reload') and callable(module_to_reload.on_reload):
                         try:
                             if log_all_map_reloaded:
-                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
-                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
-                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
-                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
-                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
-                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
-                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
+                                logger.info(f"🚀 Triggering on_reload() for '{module_name}'")
                             module_to_reload.on_reload()
                         except Exception as hook_error:
-                            logger.error(f"❌ Error executing on_reload() in '{module_name}': {hook_error}")
-                    # --------------------------------------
+                            logger.error(f"❌ Error in on_reload() for '{module_name}': {hook_error}")
 
-                    # 5. SUCCESS STATE UPDATE
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-
                     if log_all_map_reloaded:
                         logger.info(f"✅ Successfully reloaded '{module_name}'.")
-                    elif settings.DEV_MODE:
-                        # Less verbose log for standard dev mode
-                        logger.info(f"✅ Successfully reloaded/loaded '{module_name}'.")
 
                 except Exception as e:
-                    # --- CHECK FOR PRIVATE MAP PATTERN ---
-                    was_private_map = _handle_private_map_exception(module_name, map_file_key, logger)
+                    # -------------------------------------------------------
+                    # EXCEPTION HANDLER -> PRIVATE MAP CHECK
+                    # -------------------------------------------------------
 
+                    # DEBUG: Log that we hit an exception (expected for key files)
+                    # logger.info(f"💥 Import Exception for {module_name}: {e}")
+
+                    was_private_map = _handle_private_map_exception(module_name, 
+                                                                    map_file_key, 
+                                                                    logger)
                     if was_private_map:
                         # Successfully handled a private map. Skip to next file.
                         continue
 
                         # If it wasn't a private map, log the original error
                     logger.error(f"❌ Failed to reload module '{module_name}': {e}")
-
+                    # logger.error(f"❌ Failed to reload module '{module_name}': {e}")
                     # todo: # scripts/py/func/map_reloader.py:135 run the into autorepair function
 
             else:
@@ -197,11 +192,8 @@ def auto_reload_modified_maps(logger):
 # --- HELPER FUNCTION (Needs to be added to map_reloader.py) ---
 def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -> bool:
     """
-    Checks if a failed module load is actually a private ZIP/Key pattern
-    (Triggered by a dot-prefixed .py file). Unpacks the ZIP and returns True.
-
-    Returns:
-        True if a private map was successfully unpacked (or found unpacked), False otherwise.
+    Checks if a failed module load is actually a private ZIP/Key pattern.
+    Unpacks the ZIP (supports standard and Matryoshka/Blob formats) and returns True.
     """
     # 1. Determine the map directory
     map_dir = str(pathlib.Path(map_file_key).parent)
@@ -210,89 +202,128 @@ def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -
     key_file = None
     zip_file = None
 
-    for item in os.listdir(map_dir):
-        # Trigger is now a .py file that starts with a dot
-        if item.startswith('.') and item.endswith('.py') and os.path.isfile(os.path.join(map_dir, item)):
-            key_file = os.path.join(map_dir, item)
-        # ZIP file is the one we want to unpack
-        if item.lower().endswith('.zip') and os.path.isfile(os.path.join(map_dir, item)):
-            zip_file = os.path.join(map_dir, item)
-
-    if not (key_file and zip_file):
-        # Not the pattern we are looking for. (e.g., a real syntax error in a normal map)
-        return False
-
-    # 3. Pattern found: Extract Key and set Unpack Target
     try:
+        for item in os.listdir(map_dir):
+            path_item = os.path.join(map_dir, item)
+            # Trigger is a .py file that starts with a dot
+            if item.startswith('.') and item.endswith('.py') and os.path.isfile(path_item):
+                key_file = path_item
+
+            if item.lower().endswith('.zip') and os.path.isfile(path_item):
+                zip_file = path_item
+                logger.info(f"zip found: {zip_file}")
+
+        if not (key_file and zip_file):
+            return False  # Not a private map pattern
 
         # --------------------------------------------------------------------------------
-        # CRITICAL SECURITY STEP (23.11.'25 14:07 Sun)
+        # 3. PREPARATION & SECURITY
+
+        # CRITICAL SECURITY CHECK
         if not _check_gitignore_for_security(logger):
-            return False # ABORT! Do not unpack if security rules are missing.
-        # --------------------------------------------------------------------------------
+            return False
+
+        logger.info(f"found key_file: {key_file}")
 
 
-        with open(key_file, 'r') as f:
-            password = f.read().strip()
+            # Read Password (robust handling for comments)
+        password = None
+        with open(key_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith("#"):
+                    # Remove # and whitespace
+                    clean = line.lstrip("#").strip()
+                    if clean:
+                        password = clean
+                        break
+                elif line:
+                    password = line
+                    break
 
+        if not password:
+            logger.error(f"❌ Key file found but empty or invalid: {key_file}")
+            return False
 
-        map_dir = str(pathlib.Path(map_file_key).parent)
+        # Determine Paths
         zip_name_base = pathlib.Path(zip_file).stem
-
-        # The FINAL target directory where the maps will reside (e.g., config/maps/private/_privat)
         if zip_name_base.startswith('_'):
             target_maps_dir = os.path.join(map_dir, f"{zip_name_base}")
         else:
             target_maps_dir = os.path.join(map_dir, f"_{zip_name_base}")
 
+        # Check if already unpacked
         if os.path.exists(target_maps_dir):
-            # If the final directory exists, we assume it's correctly unpacked and ready for editing.
-            # logger.info(f"✅ Private maps already unpacked to '{target_maps_dir}'. Skipping ZIP operation.")
             return True
 
         # --------------------------------------------------------------------------------
-        # 4. UNPACKING LOGIC: Use a temporary, hidden directory to neutralize ZIP's internal folder structure
-        temp_unpack_dir = os.path.join(map_dir, f".__tmp_unpack_{os.getpid()}")  # Unique name
+        # 4. UNPACKING LOGIC (Matryoshka-Support)
+
+        temp_unpack_dir = os.path.join(map_dir, f".__tmp_unpack_{os.getpid()}")
         os.makedirs(temp_unpack_dir, exist_ok=False)
 
-        logger.info(f"🔑 Private map pattern found. Unpacking '{zip_file}' to TEMP: '{temp_unpack_dir}'.")
+        logger.info(f"🔑 Unpacking '{zip_file}' to TEMP: '{temp_unpack_dir}'.")
 
-        with zipfile.ZipFile(zip_file, 'r') as zf:
-            zf.extractall(temp_unpack_dir, pwd=password.encode('utf-8'))
+        try:
+            # A) Outer Unpack (Decryption)
+            with zipfile.ZipFile(zip_file, 'r') as outer_zip:
+                outer_zip.extractall(temp_unpack_dir, pwd=password.encode('utf-8'))
 
-        # --------------------------------------------------------------------------------
-        # 5. NORMALIZATION LOGIC: Find the actual map files within the temp dir and move them
+            # B) Matryoshka Check (Is there a blob inside?)
+            unpacked_files = os.listdir(temp_unpack_dir)
+            source_dir = temp_unpack_dir  # Default: Flat structure
 
-        # 5a. Find the directory that contains the real map files
-        content = os.listdir(temp_unpack_dir)
-        source_dir = temp_unpack_dir
+            if len(unpacked_files) == 1 and unpacked_files[0] == "aura_secure.blob":
+                logger.info("🪆 Detected Matryoshka-Container (Nested ZIP). Unpacking inner layer...")
+                blob_path = os.path.join(temp_unpack_dir, "aura_secure.blob")
+                inner_temp = os.path.join(temp_unpack_dir, "_inner")
+                os.makedirs(inner_temp, exist_ok=True)
 
-        if len(content) == 1 and os.path.isdir(os.path.join(temp_unpack_dir, content[0])):
-            # This is the 'extra' folder created by the 'Right-Click -> Zip' operation.
-            # E.g., temp/__privat/
-            source_dir = os.path.join(temp_unpack_dir, content[0])
-            logger.info(f"📁 Found top-level folder in ZIP: '{source_dir}'. Normalizing path.")
+                # Unpack the blob (unencrypted inner container)
+                with zipfile.ZipFile(blob_path, 'r') as inner_zip:
+                    inner_zip.extractall(inner_temp)
 
-        # 5b. Create the FINAL target directory
-        os.makedirs(target_maps_dir, exist_ok=True)
+                # Clean up blob to save space, switch source to inner folder
+                os.remove(blob_path)
+                source_dir = inner_temp
 
-        # 5c. Move all files/folders from the source_dir to the final target_maps_dir
-        for item in os.listdir(source_dir):
-            shutil.move(os.path.join(source_dir, item), target_maps_dir)
+            # --------------------------------------------------------------------------------
+            # 5. NORMALIZATION & MOVE
 
-        # 5d. Cleanup
-        shutil.rmtree(temp_unpack_dir)
+            # Check for nested single-folder (Zip-Artifacts)
+            content = os.listdir(source_dir)
+            if len(content) == 1 and os.path.isdir(os.path.join(source_dir, content[0])):
+                final_source = os.path.join(source_dir, content[0])
+            else:
+                final_source = source_dir
 
-        logger.info(f"📦 Unpack and Normalization complete. Files ready in '{target_maps_dir}'.")
+            # Create FINAL target directory
+            os.makedirs(target_maps_dir, exist_ok=True)
+
+            # Move files
+            for item in os.listdir(final_source):
+                shutil.move(os.path.join(final_source, item), target_maps_dir)
+
+            logger.info(f"📦 Unpack complete. Files ready in '{target_maps_dir}'.")
+
+        except Exception as e:
+            logger.error(f"❌ ZIP/Unpack Error (Wrong Password?): {e}")
+            # Cleanup on failure
+            if os.path.exists(temp_unpack_dir):
+                shutil.rmtree(temp_unpack_dir)
+            return False
+
+        # Cleanup Temp Dir on Success
+        if os.path.exists(temp_unpack_dir):
+            shutil.rmtree(temp_unpack_dir)
+
         return True
 
     except Exception as e:
-        # We explicitly log the exact error here to help with debugging the ZIP/Key/shutil process
-        logger.error(f"❌ Failed to process private map ZIP/Key: {e}", exc_info=True)
-        # Clean up in case of failure
-        if os.path.exists(temp_unpack_dir):
-            shutil.rmtree(temp_unpack_dir)
+        logger.error(f"❌ General Error in private map handler: {e}")
         return False
+
+
 
 def _check_gitignore_for_security(logger) -> bool:
     """
@@ -416,79 +447,3 @@ def _create_init_file(file_path: Path, logger):
         except OSError:
             pass
     return False
-
-
-# def ensure_init_files2(root_dir: Path, logger):
-#     """
-#     Stellt sicher, dass __init__.py im root_dir und in allen
-#     unmittelbaren Unterverzeichnissen (erste Ebene) existiert.
-#     __pycache__ wird ignoriert.
-#     """
-#
-#     # Sicherstellen, dass root_dir ein Path-Objekt ist (für Konsistenz)
-#     root_dir = Path(root_dir)
-#
-#     # 1. __init__.py im Hauptverzeichnis (root_dir) erstellen
-#     init_file_root = root_dir / "__init__.py"
-#     if not init_file_root.exists():
-#         try:
-#             init_file_root.touch(exist_ok=True)
-#             logger.info(f"Created __init__.py in root: {root_dir}")
-#         except OSError as e:
-#             logger.error(f"Error creating __init__.py in {root_dir}: {e}")
-#
-#     # 2. Durch die unmittelbaren Kinder (erste Schicht/Ebene) iterieren
-#     try:
-#         for item in root_dir.iterdir():
-#             # Prüfen, ob es ein Verzeichnis ist und ob es NICHT __pycache__ ist
-#             if item.is_dir() and item.name != '__pycache__':
-#
-#                 # Pfad zur __init__.py im Unterverzeichnis
-#                 init_file_subdir = item / "__init__.py"
-#
-#                 if not init_file_subdir.exists():
-#                     try:
-#                         init_file_subdir.touch(exist_ok=True)
-#                         logger.info(f"Created __init__.py in subdirectory: {item}")
-#                     except OSError as e:
-#                         logger.error(f"Error creating __init__.py in {item}: {e}")
-#
-#     except FileNotFoundError:
-#         logger.error(f"Root directory not found: {root_dir}")
-#     except PermissionError as e:
-#         logger.error(f"Permission denied accessing directory {root_dir}: {e}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
-# def ensure_init_files_in_all_folder_full_recursiv(root_dir,logger):
-#     for dir_path, _, files in os.walk(root_dir):
-#         if dir_path == '__pycache__':
-#                 continue
-#         if not (root_dir / "__init__.py").exists():
-#             (root_dir / "__init__.py").touch(exist_ok=True)
-#             logger.info(f"Created __init__.py in {root_dir}")
-#
-#         for sub_dir in os.listdir(dir_path):
-#             sub_dir_path = os.path.join(dir_path, sub_dir)
-#             if os.path.isdir(sub_dir_path):
-#                 init_file = (Path(sub_dir_path) / "__init__.py")
-#                 if not init_file.exists():
-#                     try:
-#                         init_file.touch(exist_ok=True)
-#                         logger.info(f"Created __init__.py in {sub_dir_path}")
-#                     except OSError as e:
-#                         logger.error(f"Error creating __init__.py in {sub_dir_path}: {e}")
-#

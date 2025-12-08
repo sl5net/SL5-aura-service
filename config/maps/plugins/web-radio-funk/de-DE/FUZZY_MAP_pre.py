@@ -5,7 +5,7 @@ import re # noqa: F401
 # --- NEU: Lifecycle Hook ---
 def on_reload():
     """Wird automatisch ausgeführt, wenn Aura dieses Skript neu lädt."""
-    print("123456789")
+    print("123456789aaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
 
 # This map uses a hybrid approach:
