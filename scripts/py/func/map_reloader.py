@@ -55,13 +55,11 @@ def auto_reload_modified_maps(logger):
 
             map_file_key = str(map_file_path)
 
-
             # Using time.time() for current time, though os.path.getmtime is fine for file checks
             current_mtime = os.path.getmtime(map_file_key)
             last_mtime = LAST_MODIFIED_TIMES.get(map_file_key, 0)
 
             # CRITICAL CHECK: Reload if modified OR if it's a new file (last_mtime == 0)
-
             if last_mtime == 0:
                 map_file_path_obj = Path(map_file_path)
                 ensure_init_files(map_file_path_obj.parent, logger)
@@ -72,16 +70,13 @@ def auto_reload_modified_maps(logger):
                 if last_mtime != 0:
                     if settings.DEV_MODE:
                         logger.info(f"🔄 Detected change in '{map_file_path}'. Reloading...")
-                # else:
-                #     if settings.DEV_MODE:
-                #         logger.info(f"🆕 Detected new map file: '{map_file_path}'. Loading...")
 
                 relative_path = map_file_path.relative_to(project_root)
                 module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
 
                 log_all_map_reloaded = settings.DEV_MODE_all_processing
 
-                # --- START OF COMPLETE MEMORY LEAK FIX ---
+                # --- START OF COMPLETE MEMORY LEAK FIX & CLEANUP ---
                 if module_name in sys.modules:
                     # 1. CLEAR CENTRAL REGISTRY (Breaks references to old ast.* objects)
                     logger.info("🗑️ Calling clear_global_maps to release old function references.")
@@ -92,92 +87,97 @@ def auto_reload_modified_maps(logger):
                     del sys.modules[module_name]
 
                 # 3. FORCE GARBAGE COLLECTION
-                # Placed outside the 'if module_name in sys.modules' to always clean up before re-import
-                # (in case a map was deleted, like in our test).
+                # Placed outside to always clean up before re-import
                 gc.collect()
                 if log_all_map_reloaded:
                     logger.info("🗑️ Forced garbage collection before re-import.")
+                # --- END OF CLEANUP ---
 
-                # --- END OF COMPLETE MEMORY LEAK FIX ---
-
-                # scripts/py/func/map_reloader.py:82
                 try:
+                    # logger.info(f"🚀 Search for on_ready() hook for '{module_name}'")
+
                     # 4. CORRECT FRESH IMPORT
-                    # Import fresh: This finds and executes the module again, populating the now-cleared global maps.
-                    #module_to_reload = importlib.import_module(module_name)
-
-                    # Note: importlib.reload() is not used after del sys.modules
-
-                    module_to_reload = importlib.import_module(module_name)  # 4. Correct Fresh Import
+                    # Import fresh: This finds and executes the module again.
+                    module_to_reload = importlib.import_module(module_name)
                     importlib.reload(module_to_reload)
 
+                    # --- NEW: LIFECYCLE HOOK (on_ready) ---
+                    if hasattr(module_to_reload, 'on_reload') and callable(module_to_reload.on_reload):
+                        try:
+                            if log_all_map_reloaded:
+                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
+                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
+                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
+                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
+                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
+                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
+                                logger.info(f"🚀 Triggering on_reload() hook for '{module_name}'")
+                            module_to_reload.on_reload()
+                        except Exception as hook_error:
+                            logger.error(f"❌ Error executing on_reload() in '{module_name}': {hook_error}")
+                    # --------------------------------------
+
+                    # 5. SUCCESS STATE UPDATE
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+
                     if log_all_map_reloaded:
                         logger.info(f"✅ Successfully reloaded '{module_name}'.")
-
-                    # CRITICAL STEP 4: Import the module fresh (instead of using importlib.reload)
-                    # Re-importing from scratch is cleaner than reload for memory management.
-                    module_to_reload = importlib.import_module(module_name)
-
-                    # Note: If your system uses a central registry/list of map functions,
-                    # you MUST clear the old functions from that registry NOW,
-                    # then re-add the new functions from module_to_reload.
-
-                    LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                    if log_all_map_reloaded:
-                        logger.info(f"✅ Successfully reloaded '{module_name}'.")
-
-                    LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                    if settings.DEV_MODE:
+                    elif settings.DEV_MODE:
+                        # Less verbose log for standard dev mode
                         logger.info(f"✅ Successfully reloaded/loaded '{module_name}'.")
 
                 except Exception as e:
-                    # --- NEW LOGIC: Check for private map pattern ---
+                    # --- CHECK FOR PRIVATE MAP PATTERN ---
                     was_private_map = _handle_private_map_exception(module_name, map_file_key, logger)
-                    # logger.info(f"??????🔄 should we do unpack")
 
                     if was_private_map:
-                        # Successfully handled a private map. The files are now in the _*-dir.
-                        # We can 'continue' the outer loop. The files will be picked up
-                        # by the file scanning logic on the next iteration of 'check_and_reload_maps'.
-                        # logger.info(f"🔄 pick up from '_'-directory in next scan.")
-                        continue  # Skip to the next file in the list
+                        # Successfully handled a private map. Skip to next file.
+                        continue
 
-                    # If it wasn't a private map, log the original error
-
-                    # thats to much disturbinb messages in console.log there fadd comment:
+                        # If it wasn't a private map, log the original error
                     logger.error(f"❌ Failed to reload module '{module_name}': {e}")
 
-                    # todo: # scripts/py/func/map_reloader.py:135 run the into autorapair function
-
-                    # ... existing comment block
-                    """
-                    Modules that you import with the import statement must follow the same naming rules set for variable names (identifiers). Specifically, they must start with either a letter1 or an underscore and then be composed entirely of letters, digits2, and/or underscores.
-                    can used to protect folder from loading. when use . at beginning. 
-                    """
+                    # todo: # scripts/py/func/map_reloader.py:135 run the into autorepair function
 
             else:
-                # If no change detected, just ensure its mtime is recorded if it's a new entry
-
-                map_file_path = Path(map_file_path)
-                map_dir_path = map_file_path.parent
-
-
-                # Use the function by providing the directory path
-                # ensure_init_files(map_dir_path,logger)
-                ensure_init_files(map_dir_path, logger)
-
-                # init_file = map_dir_path / "__init__.py"
-                # if not init_file.exists():
-                #     try:
-                #         init_file.touch()
-                #         logger.info(f"init_file.touch ")
-                #     except OSError as e:
-                #         logger.error(
-                #             f"err: init_file.touch: {e}")
-
+                # No change detected, but ensure initialization logic handles new paths if needed
                 if map_file_key not in LAST_MODIFIED_TIMES:
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+                    map_file_path = Path(map_file_path)
+                    ensure_init_files(map_file_path.parent, logger)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         # Optional: Final cleanup if any reload occurred
         if reload_performed:

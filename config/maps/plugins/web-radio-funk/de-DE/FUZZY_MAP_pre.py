@@ -2,6 +2,12 @@
 # https://regex101.com/
 import re # noqa: F401
 
+# --- NEU: Lifecycle Hook ---
+def on_reload():
+    """Wird automatisch ausgeführt, wenn Aura dieses Skript neu lädt."""
+    print("123456789")
+
+
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
