@@ -34,23 +34,6 @@ FUZZY_MAP_pre = [
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
 
     # happens very seldem :D 18.11.'25 17:53 Tue
