@@ -1,8 +1,5 @@
 # System-Wide Offline Voice to Commands or Text, Pluggable System
 
-# SL5 Aura Service - Features & OS Compatibility
-
-
 **⚠️ System Requirements & Compatibility**
 
 *   **Windows:** ✅ Fully supported (uses AutoHotkey/PowerShell).
