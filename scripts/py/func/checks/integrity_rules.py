@@ -14,6 +14,8 @@ Format:
 }
 """
 
+
+
 INTEGRITY_CHECKS = {
 
     'README.md': [
@@ -41,8 +43,12 @@ INTEGRITY_CHECKS = {
     ],
 
     'requirements.txt': [
-        "fasttext==0.9.3; sys_platform != 'win32'",
+
+        "comtypes==1.4.11; sys_platform == 'win32'",
+        "pycaw==20240210; sys_platform == 'win32'",
+        
         "fasttext-wheel==0.9.2; sys_platform == 'win32'",
+        "fasttext==0.9.3; sys_platform != 'win32'",
     ],
 
 #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
