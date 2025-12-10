@@ -49,9 +49,25 @@ def auto_reload_modified_maps(logger):
         # Track if any maps were reloaded, to know if we need a final GC call
         reload_performed = False
 
+        RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
+
         for map_file_path in maps_base_dir.glob("**/*.py"):
             if map_file_path.name == "__init__.py":
                 continue  # Ignore __init__.py files
+
+            # Security Check: Prevent loading of private maps (starting with _) in API mode
+            # This checks ANY part of the path relative to maps_base_dir
+            if RUN_MODE == "API_SERVICE":
+                try:
+                    # Get path relative to /config/maps to check subfolders
+                    relative_path = map_file_path.relative_to(maps_base_dir)
+
+                    # Check if any folder in the structure starts with "_"
+                    if any(part.startswith('_') for part in relative_path.parts):
+                        logger.info(f"🔒 Security: Ignoring private map update: {relative_path}")
+                        continue
+                except ValueError:
+                    continue  # Should not happen, but safe fallback
 
             map_file_key = str(map_file_path)
 
@@ -186,6 +202,7 @@ def auto_reload_modified_maps(logger):
 
     if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
+
         log_memory_details(f"def end", logger)
 
 

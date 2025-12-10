@@ -84,6 +84,24 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
 # This is your function at line 17
 def load_module_from_path(script_path):
     path = Path(script_path)
+
+    RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
+    if RUN_MODE == "API_SERVICE" and path.parent.name.startswith('_'):
+        print(
+            f"a####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
+        return None
+    if RUN_MODE == "API_SERVICE" and path.parent.parent.name.startswith('_'):
+        print(
+            f"b####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
+        return None
+    if RUN_MODE == "API_SERVICE" and path.parent.parent.parent.name.startswith('_'):
+        print(
+            f"c####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
+        return None    # Ignore folders that start with _
+
+    print(
+        f"####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
+
     spec = importlib.util.spec_from_file_location(path.stem, path)
 
     # <<< FIX 1: Add this check right here
@@ -200,25 +218,41 @@ def load_maps_for_language(lang_code, logger):
 
     try:
         maps_package = importlib.import_module('config.languagetool_server.maps')
+        log4DEV("whats this?", logger)
     except ModuleNotFoundError:
         maps_package = importlib.import_module('config.maps')
+        log4DEV("whats this?", logger)
 
     plugin_name_before = ''
     plugin_name = ''
     ENABLED_modname_list = []
+
+    RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
 
     for importer, modname, ispkg in pkgutil.walk_packages(
             path=maps_package.__path__,
             prefix=maps_package.__name__ + '.',
             onerror=lambda x: None):
 
-        logger.debug(f"📚Found module candidate: {modname}")
+        if RUN_MODE == "API_SERVICE" and ( "._" in modname or "/_" in modname  ):
+            continue # maps with underscore are private
+        # logger.debug(f"📚Found module candidate: {modname}",logger)
+        # log4DEV(f"📚Found module candidate: {modname}",logger)
+
+
+        #     In modules use import os and os.getenv('RUN_MODE') where needed.
+
+        #test 55test 55test 55test 55Jeffs
+
 
         if ispkg:
             continue
 
         if f".{lang_code}." not in modname:
             continue
+
+        log4DEV(f"############################## modname {modname}",logger)
+
 
         log_all_map_ENABLED = True and settings.DEV_MODE
 
@@ -229,6 +263,18 @@ def load_maps_for_language(lang_code, logger):
 
             plugin_name_before, plugin_name = plugin_name, parts[-3]
             hierarchical_key = "/".join(parts[:-2])
+
+
+            log4DEV(f'##### {hierarchical_key} #######', logger)
+            log4DEV(f'##### {hierarchical_key} #######', logger)
+            log4DEV(f'##### {hierarchical_key} #######', logger)
+            log4DEV(f'##### {hierarchical_key} #######', logger)
+            log4DEV(f'##### {hierarchical_key} #######', logger)
+            log4DEV(f'##### {hierarchical_key} #######', logger)
+            log4DEV(f'##### {hierarchical_key} #######', logger)
+            log4DEV(hierarchical_key, logger)
+            log4DEV(hierarchical_key, logger)
+
 
             if not is_plugin_enabled(hierarchical_key, settings.PLUGINS_ENABLED):
                 if settings.DEV_MODE and plugin_name_before != plugin_name and log_all_map_ENABLED and False:
@@ -1003,6 +1049,8 @@ def process_text_in_background(logger,
                         new_current_text += f"{settings.signatur1}"
 
             new_current_text = sanitize_transcription_start(new_current_text)
+
+
 
             # DIESE ZEILE WAR SCHON RICHTIG:
             unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
