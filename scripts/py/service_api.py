@@ -83,6 +83,7 @@ async def block_sensitive_folders(request: Request, call_next):
 class ProcessRequest(BaseModel):
     raw_text: str
     lang_code: str
+    unmasked: bool = False
 
 
 # --- 3. Endpunkt-Definition ---
@@ -96,6 +97,8 @@ async def process_text_command(request: ProcessRequest, valid: bool = Depends(ve
     """
     raw_text = request.raw_text
     lang_code = request.lang_code
+    unmasked = request.unmasked
+
     recording_time = time.time()
     active_lt_url = LT_URL
 
@@ -107,9 +110,10 @@ async def process_text_command(request: ProcessRequest, valid: bool = Depends(ve
             TMP_DIR=TMP_DIR,
             recording_time=recording_time,
             active_lt_url=active_lt_url,
+            unmasked=unmasked,
         )
 
-        app_logger.info(f"API-Request: Processing started for lang={lang_code}, text='{raw_text[:30]}...'")
+        app_logger.info(f"API-Request: Processing started for lang={lang_code}, unmasked={unmasked}, text='{raw_text[:30]}...'")
 
         return {
             "status": "success",
@@ -137,6 +141,8 @@ def process_text_cli(request: ProcessRequest, valid: bool = Depends(verify_api_k
     recording_time = time.time()
     active_lt_url = LT_URL
 
+    unmasked = request.unmasked
+
     # Eindeutigen Output-Ordner erstellen
     unique_dir_name = f"cli_request_{int(time.time() * 1000)}"
     request_output_dir = TMP_DIR / unique_dir_name
@@ -150,8 +156,10 @@ def process_text_cli(request: ProcessRequest, valid: bool = Depends(verify_api_k
         TMP_DIR=TMP_DIR,
         recording_time=recording_time,
         active_lt_url=active_lt_url,
-        output_dir_override=request_output_dir
+        output_dir_override=request_output_dir,
+        unmasked=unmasked,
     )
+
 
     # Warten und Ergebnis lesen
     actual_result_text = "[NO OUTPUT FILE CREATED]"

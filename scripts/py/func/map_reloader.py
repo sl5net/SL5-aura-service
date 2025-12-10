@@ -25,8 +25,11 @@ from config.dynamic_settings import settings
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 
-def auto_reload_modified_maps(logger):
+def auto_reload_modified_maps(logger,run_mode_override):
     # scripts/py/func/map_reloader.py:12
+
+    logger.info(f'31: run_mode_override: {run_mode_override}')
+
     from .process_text_in_background import clear_global_maps
 
     global LAST_MODIFIED_TIMES  # noqa: F824
@@ -49,7 +52,9 @@ def auto_reload_modified_maps(logger):
         # Track if any maps were reloaded, to know if we need a final GC call
         reload_performed = False
 
-        RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
+
+        # run_mode_override # os.getenv('RUN_MODE')  # returns None or the value
+        logger.info(f'run_mode_override: {run_mode_override}')
 
         for map_file_path in maps_base_dir.glob("**/*.py"):
             if map_file_path.name == "__init__.py":
@@ -57,7 +62,7 @@ def auto_reload_modified_maps(logger):
 
             # Security Check: Prevent loading of private maps (starting with _) in API mode
             # This checks ANY part of the path relative to maps_base_dir
-            if RUN_MODE == "API_SERVICE":
+            if run_mode_override == "API_SERVICE":
                 try:
                     # Get path relative to /config/maps to check subfolders
                     relative_path = map_file_path.relative_to(maps_base_dir)

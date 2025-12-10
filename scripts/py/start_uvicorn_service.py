@@ -57,6 +57,9 @@ def start_uvicorn_service(host, port, module_path):
 
     print(f"INFO: Starte Uvicorn auf {host}:{port} mit Modul {module_path}...")
 
+    env = os.environ.copy()
+    env['RUN_MODE'] = 'API_SERVICE'
+
     command = [
         sys.executable,  # Das aktuell laufende Python (aus der VENV)
         "-m", "uvicorn",
@@ -72,14 +75,24 @@ def start_uvicorn_service(host, port, module_path):
             # Subprocess.Popen startet den Befehl im Hintergrund
             process = subprocess.Popen(
                 command,
-                cwd=PROJECT_ROOT, # <<< KORREKTUR: Setze das CWD auf den Projekt-Root
+                cwd=PROJECT_ROOT,
                 stdout=log_f,
                 stderr=log_f,
-                preexec_fn=os.setsid
+                preexec_fn=os.setsid,
+                env=env
             )
             print(f"INFO: Uvicorn-Prozess (PID: {process.pid}) gestartet. Logs in {LOG_FILE}")
-            # ...
+
+            # RUN_MODE="API_SERVICE"
+
+            readme = """ # noqa: F841
+            In modules use import os and os.getenv('RUN_MODE') where needed.
+            Move any import-time side effects into startup handlers or under if RUN_MODE == ... guards.
+            """
+
+
             return process
+
 
     except Exception as e:
         print(f"FEHLER: Uvicorn konnte nicht gestartet werden: {e}")

@@ -82,10 +82,18 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
     return reparierte_anzahl
 
 # This is your function at line 17
-def load_module_from_path(script_path):
+def load_module_from_path(script_path, run_mode_override=None):
+    print(f'86: run_mode_override: {run_mode_override}')
+
     path = Path(script_path)
 
-    RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
+    # scripts/py/func/process_text_in_background.py:88
+    if run_mode_override:
+        RUN_MODE = run_mode_override
+    else:
+        RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
+
+
     if RUN_MODE == "API_SERVICE" and path.parent.name.startswith('_'):
         print(
             f"a####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
@@ -190,13 +198,13 @@ def is_plugin_enabled(hierarchical_key, plugins_config):
     return True
 
 
-def load_maps_for_language(lang_code, logger):
+def load_maps_for_language(lang_code, logger, run_mode_override=None):
     # scripts/py/func/process_text_in_background.py:50
     if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"def load_maps_for_language", logger)
 
-    logger.info(f"🗺️Starting recursive map loading for language: {lang_code}")
+    logger.info(f"207: 🗺️Starting recursive map loading for language: {lang_code}, run_mode_override:{run_mode_override}")
 
     settings.reload_settings()
 
@@ -205,7 +213,9 @@ def load_maps_for_language(lang_code, logger):
         log_memory_details(f"next: auto_reload_modified_maps", logger)
 
     # Zuerst alle Module im Speicher neu laden, um Änderungen zu erfassen
-    auto_reload_modified_maps(logger)
+    auto_reload_modified_maps(logger,run_mode_override)
+
+
 
     if settings.DEV_MODE_memory:
         from scripts.py.func.log_memory_details import log_memory_details
@@ -227,7 +237,12 @@ def load_maps_for_language(lang_code, logger):
     plugin_name = ''
     ENABLED_modname_list = []
 
-    RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
+    if run_mode_override:
+        RUN_MODE = run_mode_override
+    else:
+        RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
+
+    logger.info(f'245: run_mode_override:{run_mode_override} , run_mode:{RUN_MODE}')
 
     for importer, modname, ispkg in pkgutil.walk_packages(
             path=maps_package.__path__,
@@ -585,18 +600,29 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
     log4DEV(f"new_processed_text: {new_processed_text} , a_rule_matched: {a_rule_matched}, skip_list: {skip_list}",logger)
     return new_processed_text, a_rule_matched, skip_list
 
-
+# scripts/py/func/process_text_in_background.py:588
 def process_text_in_background(logger,
-                            LT_LANGUAGE,
-                            raw_text,
-                            TMP_DIR,
-                            recording_time,
-                            active_lt_url,
-                            output_dir_override = None,
-                            chunk_id: int = 0,  # <--- NEU
-                            session_id: int = 0):  # <--- NEU
+        LT_LANGUAGE,
+        raw_text,
+        TMP_DIR,
+        recording_time,
+        active_lt_url,
+        output_dir_override = None,
+        chunk_id: int = 0,  # <--- NEU
+        session_id: int = 0,
+        unmasked = False
+    ):
+    RUN_MODE = os.getenv('RUN_MODE')
+    if RUN_MODE == "API_SERVICE" and unmasked == True:
+        run_mode_override = "API_SERVICE_local"
+        logger.info(f"616: temporary run_mode_override={run_mode_override} (unmasked request).")
+    else:
+        run_mode_override = RUN_MODE
+        logger.info(f"run_mode_override={run_mode_override}.")
 
-    # --- KRITISCHE SEQUENZPRÜFUNG AM ANFANG DER FUNKTION ---
+
+
+        # --- KRITISCHE SEQUENZPRÜFUNG AM ANFANG DER FUNKTION ---
     if chunk_id > 0:
 
         # 1. Warte-Loop, um die Reihenfolge zu garantieren
@@ -642,7 +668,7 @@ def process_text_in_background(logger,
     global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP
 
     # scripts/py/func/process_text_in_background.py:167
-    new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger)
+    new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger,run_mode_override)
 
     GLOBAL_PUNCTUATION_MAP = new_punctuation
     GLOBAL_FUZZY_MAP_PRE = new_fuzzy_pre
@@ -1095,7 +1121,7 @@ def process_text_in_background(logger,
             time.sleep(0.02)
             os.execv(sys.executable, ['python'] + sys.argv + ['restarted'])
 
-        auto_reload_modified_maps(logger)
+        auto_reload_modified_maps(logger,run_mode_override)
 
 
 # Hallo des Hallo Test

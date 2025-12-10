@@ -1,17 +1,10 @@
 # file: scripts/py/cli_client.py
 from pathlib import Path
-
 import requests
 import json
 import argparse
 import os # noqa: F811
-
 from dotenv import load_dotenv
-
-# check my ip:
-# # Alternative zu wieistmeineip.de:
-# curl -s checkip.dyndns.org | grep -Eo '[0-9\.]+'
-
 # file: scripts/py/cli_client.py
 SERVICE_URL = "http://127.0.0.1:8830/process_cli"
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -22,12 +15,13 @@ CLIENT_API_KEY = API_KEY_SECRET
 
 print(f"CLIENT_API_KEY: {repr(CLIENT_API_KEY)[:4]}...")
 
-def send_request(text: str, lang: str):
+def send_request(text: str, lang: str, unmasked: bool):
     """Sendet die Anfrage an den FastAPI-Service."""
 
     payload = {
         "raw_text": text,
-        "lang_code": lang
+        "lang_code": lang,
+        "unmasked": unmasked
     }
 
     # file: scripts/py/cli_client.py:39
@@ -36,17 +30,17 @@ def send_request(text: str, lang: str):
     }
 
     try:
-        # Führen Sie den POST-Request aus
-
         response = requests.post(SERVICE_URL,json=payload,headers=headers,timeout=120)
 
+        # --- DEBUGGING FÜR 422 FEHLER ---
+        # if response.status_code == 422:
+        #     print("SERVER MELDET DATEN-FEHLER (422):")
+        #     print(json.dumps(response.json(), indent=4))
+        #     return # Abbruch
+        # --------------------------------
+
         response.raise_for_status()
-
-        # Ausgabe der Server-Antwort
-        #print("Service-Antwort:")
         #print(json.dumps(response.json(), indent=4))
-
-
         # Ausgabe der Server-Antwort
         response_data = response.json()
 
@@ -70,13 +64,12 @@ def send_request(text: str, lang: str):
 
 
 if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser(description="CLI-Client für den Prozess-Service.")
+    parser = argparse.ArgumentParser(description="CLI-Client für den Process-Service.")
     parser.add_argument("text", type=str, help="Der Text, der verarbeitet werden soll.")
     parser.add_argument("--lang", type=str, default="de-DE",
                         help="Der Sprachcode für die Verarbeitung (Standard: de-DE).")
-
+    parser.add_argument("--unmasked", action="store_true", help="show private")
     args = parser.parse_args()
 
-    send_request(args.text, args.lang)
+    send_request(args.text, args.lang, args.unmasked)
 
