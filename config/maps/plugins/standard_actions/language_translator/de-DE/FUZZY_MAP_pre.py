@@ -164,11 +164,11 @@ FUZZY_MAP_pre = [
 #    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 
 
-    ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
-        'flags': re.IGNORECASE,
-        # Ruft unser neues Skript auf
-        'on_match_exec': [CONFIG_DIR / 'good_night.py']
-    }),
+    # ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
+    #     'flags': re.IGNORECASE,
+    #     # Ruft unser neues Skript auf
+    #     'on_match_exec': [CONFIG_DIR / 'good_night.py']
+    # }),
 
 
 ]

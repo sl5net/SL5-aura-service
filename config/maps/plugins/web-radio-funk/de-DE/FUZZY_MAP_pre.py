@@ -2,10 +2,17 @@
 # https://regex101.com/
 import re # noqa: F401
 
+from tornado.gen import sleep
+
+
 # --- NEU: Lifecycle Hook ---
 def on_reload():
     """Wird automatisch ausgeführt, wenn Aura dieses Skript neu lädt."""
-    print("123456789aaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    print("hi from on_reload() in web-radio-funk")
+    for i in range(9):
+        sleep(1)
+        print(f"{i} loop in  web-radio-funk")
+
 
 
 # This map uses a hybrid approach:

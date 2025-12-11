@@ -611,9 +611,9 @@ def process_text_in_background(logger,
         chunk_id: int = 0,  # <--- NEU
         session_id: int = 0,
         unmasked = False
-    ):
+        ):
     RUN_MODE = os.getenv('RUN_MODE')
-    if RUN_MODE == "API_SERVICE" and unmasked == True:
+    if RUN_MODE == "API_SERVICE" and unmasked is True:
         run_mode_override = "API_SERVICE_local"
         logger.info(f"616: temporary run_mode_override={run_mode_override} (unmasked request).")
     else:

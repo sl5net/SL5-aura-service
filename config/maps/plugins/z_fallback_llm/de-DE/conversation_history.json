@@ -1,15 +1,15 @@
 [
   {
     "role": "user",
-    "content": "was ist das besondere an sl5 aura"
+    "content": "postleitzahl"
   },
   {
     "role": "assistant",
-    "content": "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\nPfade: Configs in 'config/', Regeln in 'config/maps/'.\n\nFORMAT 1: Einfache Ersetzung (z.B. PUNCTUATION_MAP)\nSynatx: 'Wort': 'Ersatz'\nBeispiel: 'stern': '*'\n\nFORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\nSyntax: (Name, Regex, Prio, Flags)\nBeispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\nBeispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\nDoku: https://SL5.de/Aura"
+    "content": "postleitzahl.py python # Regel-Tupel: (Ersetzung, Regex, Priorität, Flags) ('Postleitzahl', r'\\d{5}', 20, {'flags': re.IGNORECASE})"
   },
   {
     "role": "user",
-    "content": "was ist das besondere an sl5 aura"
+    "content": "test"
   },
   {
     "role": "assistant",

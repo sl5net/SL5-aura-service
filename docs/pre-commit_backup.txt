@@ -85,6 +85,18 @@ echo "fasttext==0.9.3; sys_platform != 'win32'" >> requirements.txt
 echo "fasttext-wheel==0.9.2; sys_platform == 'win32'" >> requirements.txt
 # ------------------------------------
 
+
+# B) WINDOWS AUDIO & CONTROL (Persistent on Linux)
+# Remove potential entries to prevent duplicates or missing markers
+sed -i '/^comtypes/d' requirements.txt
+sed -i '/^pycaw/d' requirements.txt
+# Append explicit Windows rules
+echo "comtypes==1.4.11; sys_platform == 'win32'" >> requirements.txt
+echo "pycaw==20240210; sys_platform == 'win32'" >> requirements.txt
+
+
+
+
 # Clean up temp directory
 rm -rf "$TMPDIR"
 
