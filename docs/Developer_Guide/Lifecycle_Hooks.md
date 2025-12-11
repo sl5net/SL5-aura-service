@@ -2,6 +2,10 @@
 
 Aura SL5 allows plugins (Maps) to define specific "Hooks" that are executed automatically when the module's state changes. This is essential for advanced workflows like the **Secure Private Map** system.
 
+## The `on_folder_change` hook  Hook
+
+Implemented `on_folder_change` hook detection. The reloader now scans up the directory
+
 ## The `on_reload()` Hook
 
 The `on_reload()` function is an optional function you can define in any Map module.
