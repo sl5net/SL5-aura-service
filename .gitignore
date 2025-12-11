@@ -30,6 +30,9 @@ transcribe.py
 
 **/translation_state.py
 
+config/plugin_call_cache.sqlite
+
+
 dictation.log
 get_suggestions.log
 type_watcher.log
