@@ -89,7 +89,7 @@ def check_for_unused_functions(parsed_trees, project_root, logger):
         'visit_Assign', 'visit_Dict', 'on_any_event', 'setUp', 'on_modified', 'filter',
         'test_transcription_with_long_pause_yields_multiple_chunks',
         'test_transcription_with_short_pause_yields_one_chunk','formatTime','active','setUpClass', 'get_cached_result', 'set_cached_result',
-        'process_text_cli'
+        'process_text_cli','execute_packing_logic'
     }
 
     all_definitions = {}

@@ -1,29 +1,18 @@
 # scripts/py/func/map_reloader.py
 import importlib
+import re
 import sys
 import gc # Added for forced garbage collection
 import pathlib
+from io import BytesIO
 from pathlib import Path
 import os
-import zipfile
 import shutil
 
-
-
-
-
-
-
-#import time # Added for os.path.getmtime typing, just in case
-
+import pyzipper
+# PyZipper (~20MB):
 from config.dynamic_settings import settings
-
-#from .process_text_in_background import repariere_pakete_mit_laenderkuerzeln
-
-
-
 LAST_MODIFIED_TIMES = {}  # noqa: F824
-
 
 def auto_reload_modified_maps(logger,run_mode_override):
     # scripts/py/func/map_reloader.py:12
@@ -84,13 +73,16 @@ def auto_reload_modified_maps(logger,run_mode_override):
             if last_mtime == 0:
                 map_file_path_obj = Path(map_file_path)
                 ensure_init_files(map_file_path_obj.parent, logger)
-
+            # scripts/py/func/map_reloader.py:77
             if current_mtime > last_mtime:
                 reload_performed = True
 
                 if last_mtime != 0:
                     if settings.DEV_MODE:
                         logger.info(f"🔄 Detected change in '{map_file_path}'. Reloading...")
+
+
+                # scripts / py / func / map_reloader.py: 84
 
                 relative_path = map_file_path.relative_to(project_root)
                 module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
@@ -114,6 +106,9 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     logger.info("🗑️ Forced garbage collection before re-import.")
                 # --- END OF CLEANUP ---
 
+
+
+
                 try:
                     # -------------------------------------------------------
                     # STANDARD TRIGGER LOGIC
@@ -122,7 +117,11 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     module_to_reload = importlib.import_module(module_name)
                     importlib.reload(module_to_reload)
 
+
+
+
                     # Lifecycle Hook (only for valid modules)
+                    # scripts/py/func/map_reloader.py:117
                     if hasattr(module_to_reload, 'on_reload') and callable(module_to_reload.on_reload):
                         try:
                             if log_all_map_reloaded:
@@ -135,17 +134,27 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     if log_all_map_reloaded:
                         logger.info(f"✅ Successfully reloaded '{module_name}'.")
 
+                    # --- NEW CODE START ---
+                    logger.info(f'before run: _trigger_upstream_hooks({map_file_path}, {project_root}, logger) ')
+                    _trigger_upstream_hooks(map_file_path, project_root, logger)
+                    # --- NEW CODE END ---
+
+
+
                 except Exception as e:
                     # -------------------------------------------------------
                     # EXCEPTION HANDLER -> PRIVATE MAP CHECK
                     # -------------------------------------------------------
 
                     # DEBUG: Log that we hit an exception (expected for key files)
-                    # logger.info(f"💥 Import Exception for {module_name}: {e}")
+                    logger.info(f"💥 Import Exception for {module_name}: {e}")
 
                     was_private_map = _handle_private_map_exception(module_name, 
                                                                     map_file_key, 
                                                                     logger)
+
+
+
                     if was_private_map:
                         # Successfully handled a private map. Skip to next file.
                         continue
@@ -162,37 +171,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     map_file_path = Path(map_file_path)
                     ensure_init_files(map_file_path.parent, logger)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        # scripts/py/func/map_reloader.py:155
 
 
         # Optional: Final cleanup if any reload occurred
@@ -210,8 +189,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
         log_memory_details(f"def end", logger)
 
-
-# --- HELPER FUNCTION (Needs to be added to map_reloader.py) ---
+# scripts/py/func/map_reloader.py:174
+# --- HELPER FUNCTION  ---
 def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -> bool:
     """
     Checks if a failed module load is actually a private ZIP/Key pattern.
@@ -233,7 +212,7 @@ def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -
 
             if item.lower().endswith('.zip') and os.path.isfile(path_item):
                 zip_file = path_item
-                logger.info(f"zip found: {zip_file}")
+                logger.info(f"scripts/py/func/map_reloader.py:204 -> zip found: {zip_file}")
 
         if not (key_file and zip_file):
             return False  # Not a private map pattern
@@ -247,23 +226,8 @@ def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -
 
         logger.info(f"found key_file: {key_file}")
 
-
-            # Read Password (robust handling for comments)
-        password = None
-        with open(key_file, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith("#"):
-                    # Remove # and whitespace
-                    clean = line.lstrip("#").strip()
-                    if clean:
-                        password = clean
-                        break
-                elif line:
-                    password = line
-                    break
-
-        if not password:
+        pw_bytes = _extract_password(key_file, logger)
+        if not pw_bytes:
             logger.error(f"❌ Key file found but empty or invalid: {key_file}")
             return False
 
@@ -276,39 +240,43 @@ def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -
 
         # Check if already unpacked
         if os.path.exists(target_maps_dir):
+            logger.info('scripts/py/func/map_reloader.py:244: already unpacked -> return True')
             return True
 
-        # --------------------------------------------------------------------------------
         # 4. UNPACKING LOGIC (Matryoshka-Support)
 
         temp_unpack_dir = os.path.join(map_dir, f".__tmp_unpack_{os.getpid()}")
         os.makedirs(temp_unpack_dir, exist_ok=False)
 
         logger.info(f"🔑 Unpacking '{zip_file}' to TEMP: '{temp_unpack_dir}'.")
-
         try:
             # A) Outer Unpack (Decryption)
-            with zipfile.ZipFile(zip_file, 'r') as outer_zip:
-                outer_zip.extractall(temp_unpack_dir, pwd=password.encode('utf-8'))
+            with pyzipper.AESZipFile(zip_file, 'r') as outer_zip:
+                outer_zip.setpassword(pw_bytes)
+                outer_zip.extractall(temp_unpack_dir)
 
             # B) Matryoshka Check (Is there a blob inside?)
             unpacked_files = os.listdir(temp_unpack_dir)
             source_dir = temp_unpack_dir  # Default: Flat structure
 
             if len(unpacked_files) == 1 and unpacked_files[0] == "aura_secure.blob":
-                logger.info("🪆 Detected Matryoshka-Container (Nested ZIP). Unpacking inner layer...")
+                logger.info("🔎 Detected Matryoshka-Container (Nested ZIP). Unpacking inner layer...")
                 blob_path = os.path.join(temp_unpack_dir, "aura_secure.blob")
                 inner_temp = os.path.join(temp_unpack_dir, "_inner")
                 os.makedirs(inner_temp, exist_ok=True)
 
-                # Unpack the blob (unencrypted inner container)
-                with zipfile.ZipFile(blob_path, 'r') as inner_zip:
+                # Read the blob bytes and open inner zip from memory (works for encrypted inner zips too)
+                with open(blob_path, 'rb') as f:
+                    blob_bytes = f.read()
+
+                with pyzipper.AESZipFile(BytesIO(blob_bytes), 'r') as inner_zip:
+                    inner_zip.setpassword(pw_bytes)
                     inner_zip.extractall(inner_temp)
 
-                # Clean up blob to save space, switch source to inner folder
                 os.remove(blob_path)
                 source_dir = inner_temp
 
+            #scripts/py/func/map_reloader.py:261
             # --------------------------------------------------------------------------------
             # 5. NORMALIZATION & MOVE
 
@@ -339,12 +307,10 @@ def _handle_private_map_exception(module_name: str, map_file_key: str, logger) -
         if os.path.exists(temp_unpack_dir):
             shutil.rmtree(temp_unpack_dir)
 
-        return True
-
     except Exception as e:
-        logger.error(f"❌ General Error in private map handler: {e}")
-        return False
+        logger.error(f"❌ ZIP/Unpack Error (Wrong Password?): {e}")
 
+    return True
 
 
 def _check_gitignore_for_security(logger) -> bool:
@@ -370,6 +336,7 @@ def _check_gitignore_for_security(logger) -> bool:
         "config/maps/**/_*"  # Underscore-prefixed files/dirs (unencrypted working area)
     ]
 
+    # scripts/py/func/map_reloader.py:319
     try:
         with open(gitignore_path, 'r', encoding='utf-8') as f:
             content = f.read().splitlines()
@@ -469,3 +436,164 @@ def _create_init_file(file_path: Path, logger):
         except OSError:
             pass
     return False
+
+from typing import Optional
+def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
+    """
+    Read key file and return password as bytes (or None on failure).
+
+    Heuristics:
+    - skip empty lines
+    - prefer comment lines starting with '#' (take text after '#')
+    - accept common assignment patterns (password=..., key: ..., secret = "...")
+    - strip surrounding quotes and whitespace, remove BOM and CR/LF
+    - return as bytes using given encoding
+    """
+    logger.info(f"📖scripts/py/func/map_reloader.py:453: Reading key file: {key_path}")
+    try:
+        with open(key_path, "r", encoding=encoding, errors="replace") as f:
+            lines = f.readlines()
+    except Exception as e:
+        logger.error(f"❌ Error reading key file: {e}")
+        return None
+
+    # helper to normalise candidate and return bytes if valid
+    def normalise(s: str) -> Optional[bytes]:
+        if not s:
+            return None
+        # remove BOM if present
+        s = s.lstrip("\ufeff").strip()
+        # strip surrounding single/double quotes
+        if (s.startswith('"') and s.endswith('"')) or (s.startswith("'") and s.endswith("'")):
+            s = s[1:-1].strip()
+        # remove inline comments after value (e.g. secret # comment)
+        s = re.split(r"\s+#", s, 1)[0].strip()
+        if not s:
+            return None
+        try:
+            b = s.encode(encoding)
+            return b
+        except Exception as e:
+            logger.warning(f"⚠ Could not encode password candidate: {e}")
+            return None
+
+    # patterns to detect assignment-like lines
+    assign_re = re.compile(r'^(?:password|pass|secret|key)\s*[:=]\s*(.+)$', re.IGNORECASE)
+
+    # 1) scan for explicit assignment lines (high priority)
+    for i, line in enumerate(lines):
+        raw = line.rstrip("\n\r")
+        m = assign_re.match(raw.strip())
+        if m:
+            candidate = m.group(1).strip()
+            pw = normalise(candidate)
+            if pw:
+                logger.info("✓ Found password via assignment pattern.")
+                return pw
+
+    # 2) scan for comment lines that contain a candidate (lines starting with '#')
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith("#"):
+            candidate = stripped.lstrip("#").strip()
+            pw = normalise(candidate)
+            if pw:
+                logger.info("scripts/py/func/map_reloader.py:491 ✓ Found password in comment.")
+                return pw
+
+    # 3) fallback: first non-empty, non-comment line
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped and not stripped.startswith("#"):
+            pw = normalise(stripped)
+            if pw:
+                logger.info("✓ Found password in plaintext line.")
+                return pw
+
+    logger.warning("⚠ No valid password pattern found in key file.")
+    return None
+
+
+# scripts/py/func/map_reloader.py
+
+def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
+    """
+    Traverses up the directory tree from start_path up to 'config/maps'.
+    Looks for sibling/parent Python files that have an 'on_folder_change' hook
+    and executes them. This ensures packers (like secure_packer.py) are triggered.
+    """
+    if start_path.name.startswith('.'):
+        return
+
+    import importlib
+    import sys
+
+    # 1. Define the stop boundary
+    # We stop scanning when we reach 'config/maps' to avoid scanning the whole project
+    logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:518')
+    stop_dir = project_root / "config" / "maps"
+    logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:521')
+    current_dir = start_path.parent
+    logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:523 -> current_dir:{current_dir}')
+
+    # Safety check: verify we are inside config/maps
+    try:
+        current_dir.relative_to(stop_dir)
+    except ValueError as e:
+        logger.info(f'x scripts/py/func/map_reloader.py:_trigger_upstream_hooks:533 -> {e}')
+        return  # Outside of scope
+
+    # 2. Traverse Upwards
+    while stop_dir in current_dir.parents or current_dir == stop_dir:
+        logger.info(f"🔍 Scanning for lifecycle hooks in: {current_dir}")
+
+        # Iterate over all .py files in this directory level
+        for file_path in current_dir.glob("*.py"):
+            # Skip the file we just reloaded (avoid infinite loop or double execution)
+            if file_path.resolve() == start_path.resolve():
+                continue
+
+            # Skip hidden files (except maybe the ones explicitly needed, but usually hidden are keys)
+            if file_path.name.startswith('.'):
+                continue
+
+            try:
+                # Calculate module name for import
+                relative_path = file_path.relative_to(project_root)
+                module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
+
+                # We only want to trigger modules that are ALREADY loaded or are the Packer.
+                # If we blindly import everything, we might start modules that should be off.
+                # BUT: secure_packer.py should be in sys.modules if it ran at start.
+
+                module = None
+                if module_name in sys.modules:
+                    module = sys.modules[module_name]
+                else:
+                    # Optional: explicit check for packer naming convention if needed?
+                    # For now, we try to import to be safe if it was unloaded.
+                    try:
+                        module = importlib.import_module(module_name)
+                    except Exception as e:
+                        logger.info(f'error importing module {module_name}: {e}')
+                        continue
+
+                # 3. Check and Execute Hook
+                if module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
+                    logger.info(f"🔗 Triggering upstream hook: {module_name}.on_folder_change()")
+                    try:
+                        module.on_folder_change()
+                    except Exception as e:
+                        logger.error(f"scripts/py/func/map_reloader.py -> in upstream hook '{module_name}': Exception: {e}")
+
+            except Exception as e:
+                # Suppress errors from unrelated files
+                logger.info(f'❌ scripts/py/func/map_reloader.py:575 -> Exception: {e}')
+                pass
+
+        # Move one level up
+        if current_dir == stop_dir:
+            break
+        current_dir = current_dir.parent
