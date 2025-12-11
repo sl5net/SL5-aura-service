@@ -1,8 +1,8 @@
 # scripts/py/func/secure_packer_lib.py:1
 import os
-import subprocess
+#import subprocess
 import logging
-import shutil
+#import shutil
 from pathlib import Path
 import pyzipper
 
@@ -127,10 +127,10 @@ def execute_packing_logic(current_dir, logger):
         logger.error(f"❌ CRITICAL EXCEPTION in SecurePacker: {e}", exc_info=True)
 
 
-from pathlib import Path
+#from pathlib import Path
 from typing import Optional, Iterable, IO, Union
 import re
-import io
+#import io
 
 def _extract_password(key_path: Union[str, Path, bytes, bytearray, IO, Iterable[str]],
                       logger,
