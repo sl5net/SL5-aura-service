@@ -95,6 +95,7 @@ if [ -n "$SELECTED_LINE" ]; then
 
     logger_info "Opening: $FILE_PATH at line $LINE_NUM"
     "$PREFERRED_EDITOR" "$FILE_PATH:$LINE_NUM" &
+    exit 0
 else
     logger_info "No selection made."
 fi
