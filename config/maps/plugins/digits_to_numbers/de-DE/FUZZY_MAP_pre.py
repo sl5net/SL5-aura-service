@@ -26,7 +26,9 @@ FUZZY_MAP_pre = [
     ('seven', r'\b(7)\b', 89, {'flags': re.IGNORECASE}),
     ('eight', r'\b(8)\b', 89, {'flags': re.IGNORECASE}),
     ('nine', r'\b(9)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 10
     ('ten', r'\b(10)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 15
     ('fifteen', r'\b(15)\b', 89, {'flags': re.IGNORECASE}),
     ('null', r'\b(0)\b', 89, {'flags': re.IGNORECASE}),
 
@@ -39,23 +41,41 @@ FUZZY_MAP_pre = [
     ('sieben', r'\b(7)\b', 89, {'flags': re.IGNORECASE}),
     ('acht', r'\b(8)\b', 89, {'flags': re.IGNORECASE}),
     ('neun', r'\b(9)\b', 100, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 10
     ('zehn', r'\b(10)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 11
     ('elf', r'\b(11)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 12
     ('zwölf', r'\b(12)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 13
     ('dreizehn', r'\b(13)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 14
     ('vierzehn', r'\b(14)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 15
     ('fünfzehn', r'\b(15)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 16
     ('sechzehn', r'\b(16)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 17
     ('siebzehn', r'\b(17)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 20
     ('zwanzig', r'\b(20)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 30
     ('dreißig', r'\b(30)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 40
     ('vierzig', r'\b(40)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 50
     ('fünfzig', r'\b(50)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 60
     ('sechzig', r'\b(60)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 70
     ('siebzig', r'\b(70)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 80
     ('achtzig', r'\b(80)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 90
     ('neunzig', r'\b(90)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 100
     ('hundert', r'\b(100)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 1000
     ('tausend', r'\b(1000)\b', 89, {'flags': re.IGNORECASE}),
 
 ]

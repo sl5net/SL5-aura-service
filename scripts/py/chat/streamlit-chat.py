@@ -98,7 +98,7 @@ def get_api_base_url():
 
     # Verwenden Sie die alte, aber fehlgeschlagene, statische IP als Notfall-Fallback.
     # Dies ist hilfreich, falls der externe IP-Dienst ausgefallen ist.
-    onlineIP = '89.244.126.251'
+    onlineIP = '89.244.126.238'
     fallback_url = f"http://{onlineIP}:{API_PORT}"  # Verwenden Sie die alte IP
     st.warning(f"Konnte lokale oder aktuelle externe IP nicht ermitteln. Verwende Fallback-IP: {fallback_url}")
     return fallback_url

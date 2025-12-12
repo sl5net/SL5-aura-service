@@ -7,8 +7,13 @@
 # -----------------------------------------------------------------------------
 PREFERRED_EDITOR="kate"
 HISTORY_FILE="$HOME/.search_rules_history"
-DEFAULT_QUERY=".py pre # EXAMPLE:"
+DEFAULT_QUERY=".py pre"
+
+# GITHUB CONFIGURATION
+# Wir definieren die Basis-URL für die Blob-Ansicht.
+# Falls der Branch 'master' heißt, bitte 'main' durch 'master' ersetzen.
 REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
+# REPO_URL="https://github.com/sl5net/SL5-aura-service/tree/master"
 
 # -----------------------------------------------------------------------------
 # LOGGING
@@ -26,6 +31,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 MAPS_DIR="$PROJECT_ROOT/config/maps"
 
+# WICHTIG: Variablen exportieren, damit sie innerhalb von fzf (subshell) verfügbar sind
 export PROJECT_ROOT
 export REPO_URL
 
@@ -43,10 +49,8 @@ if [ ! -d "$MAPS_DIR" ]; then
 fi
 
 # -----------------------------------------------------------------------------
-# PREVIEW COMMAND (AWK - Text Only)
+# PREVIEW COMMAND (AWK)
 # -----------------------------------------------------------------------------
-# Zeigt reinen Text an: 5 Zeilen vor und nach dem Treffer.
-# Markiert die Treffer-Zeile mit einem ">".
 PREVIEW_CMD='awk -v t={2} "BEGIN {t=t+0} NR>t-5 && NR<t+5 {printf \"%s%4d: %s\n\", (NR==t ? \">\" : \" \"), NR, \$0}" {1}'
 
 # -----------------------------------------------------------------------------
@@ -65,6 +69,11 @@ logger_info "Starting interactive search..."
 # -----------------------------------------------------------------------------
 # SEARCH & SELECT
 # -----------------------------------------------------------------------------
+# Keybindings:
+# ctrl-g:
+#   Baut die GitHub URL zusammen.
+#   Logik: Nimm Pfad {1}, entferne $PROJECT_ROOT am Anfang, hänge es an REPO_URL an, füge Zeilennummer {2} hinzu.
+
 SELECTED_LINE=$(grep --color=never -rnH -I . "$MAPS_DIR" | \
     fzf --delimiter : \
         --history "$HISTORY_FILE" \
@@ -81,7 +90,7 @@ SELECTED_LINE=$(grep --color=never -rnH -I . "$MAPS_DIR" | \
         --bind 'ctrl-delete:kill-word' \
         --bind 'ctrl-g:execute-silent(f={1}; rel=${f#$PROJECT_ROOT/}; xdg-open "$REPO_URL/$rel#L{2}")' \
         --preview "$PREVIEW_CMD" \
-        --preview-window="up:50%" \
+        --preview-window=up:50% \
 )
 
 # -----------------------------------------------------------------------------

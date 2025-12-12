@@ -98,3 +98,6 @@ PLUGINS_ENABLED = {
 *   **goal**
     The goal is to enhance this system further. For example, providing a way for child module settings to be respected even if the parent is disabled, or introducing more complex inheritance rules. (27.10.'25 Mon)
 
+
+*Tip: After defining your regex patterns, run `python3 tools/map_tagger.py` to automatically generate searchable examples for the CLI tools. See [Map Maintenance Tools](../Developer_Guide/Map_Maintenance_Tools.md) for details.*
+

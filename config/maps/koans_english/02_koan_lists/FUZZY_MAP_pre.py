@@ -14,7 +14,9 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: a-m ...
     #('on', r'^[a-m]+.*$' , 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: n-z ...
     #('off', r'^[n-z]+.*$' , 80, {'flags': re.IGNORECASE}),
 
 

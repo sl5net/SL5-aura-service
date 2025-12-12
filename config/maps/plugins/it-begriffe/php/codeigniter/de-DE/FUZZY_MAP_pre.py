@@ -18,8 +18,10 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: codeigniter
     ('~projects/php/codeigniter/', r'^\b(codeigniter|Gotik Dieter|gothic Dieter)(\b)$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: code
     ('~projects/php/codeigniter/', r'^\b(code|gothic|Gotik)\s*(igniter|ignite|eignete|knipser|igniter|Dieter|Dieter|wird|Wii|nette)(\b)$', 70, {'flags': re.IGNORECASE}),
 
 

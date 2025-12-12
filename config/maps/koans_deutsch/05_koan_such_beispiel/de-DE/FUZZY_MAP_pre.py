@@ -38,6 +38,7 @@ FUZZY_MAP_pre = [
 
     #TODO: Was passiert jetzt?
 
+    # EXAMPLE: suche in x text kapitel 123 vfdph text 123
     ('bible suche', fr'^suche in (?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']

@@ -31,6 +31,8 @@ transcribe.py
 **/translation_state.py
 
 config/plugin_call_cache.sqlite
+plugin_call_cache.sqlite
+
 
 
 dictation.log

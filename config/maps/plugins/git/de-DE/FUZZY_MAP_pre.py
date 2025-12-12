@@ -12,8 +12,10 @@ from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
 
 # kit cubic
+# EXAMPLE: git
 gitGit = r'(git|Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit|kit|peach|quitt)'
 
+# EXAMPLE: Komet
 commitGit = r'(Komet|Komik|Comics|Gummi|gummis|kommt|kommend|Commit|mit|hitch|komm|Kometen|kubicki|komisch|gewinnen|gromit|komme|kubis|cobit|cubic|beach|gemütlich|quitt|google)'
 
 FUZZY_MAP_pre = [
@@ -28,22 +30,27 @@ FUZZY_MAP_pre = [
     # git commit -m "..." --no-verify
     #nö very far
     #no very far
+    # EXAMPLE: no
     ('n --no-verify', rf'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80, {'flags': re.IGNORECASE}),
 
     #no-verifyno-verifyl --no-verifyNumeri fein
 
 
 
+    # EXAMPLE: s VAR VAR s
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
 
     # happens very seldem :D 18.11.'25 17:53 Tue
+    # EXAMPLE: Quarzwerk gibt komm Mitmensch
     ('git commit message ', rf'\bQuarzwerk gibt komm Mitmensch\b ', 80, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: gibt kaum mitx
     ('git commit', rf'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
 
 
 
+    # EXAMPLE: s VAR klar
     ('git clone ', rf'^\s*{gitGit}\s+(klar|klon)\s*$', 80, {'flags': re.IGNORECASE}),
 
     # git@github.com:kiwix/kiwix-tools.git
@@ -56,29 +63,41 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
+    # EXAMPLE: s pull s requests
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: null
     ('pull requests', r'\b(null|pull) requests\b', 82, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: er brach
     ('er branch', r'er\b (brach|Prime)\b', 82, {'flags': re.IGNORECASE}),
 
 
 
+    # EXAMPLE: Feature s prince
     ('feature branch', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Feature s prince
     ('feature branch', r'\bFeature\s*(prince|ranch)\b', 82, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: s git
     ('git checkout ', r'^\s*(git|geht)\s+(Git Checkout|Check-out)\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s kitschiger
     ('git checkout ', r'^\s*(kitschiger|Geht Tscheka)\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Branch
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: Ranch s Namen
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: komm s mit
     (' Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: kommen s mit s Message
     (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: neues s Verlies
     ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
 
 
@@ -90,14 +109,18 @@ FUZZY_MAP_pre = [
     # geht's starte Gliedstaat ist
     # Geht Staat git status git status Jetzt startet
 
+    # EXAMPLE: s Geht
     ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
 
 
 
+    # EXAMPLE: s Gliedstaat
     ('git status', r'^\s*(Gliedstaat|Gliedstaaten|Jetzt Stadt|Geht Staat ist|geht status)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s Gliedstaat
     ('git status', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s gitschtal
     ('git status', r'^\s*(gitschtal|glitschte|quatscht hatte|quitscht|quitscht werden|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
 
 #geht statisch
@@ -105,8 +128,10 @@ FUZZY_MAP_pre = [
 
     # --- git add . --- git add .
     # Gitta hat
+    # EXAMPLE: s git
     ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App|er hat)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s Gitterbett
     ('git add .', r'^\s*(Gitterbett|Geht er hin|kredit|quitte hat)\s*$', 78, {'flags': re.IGNORECASE}),
 
     # Geht er hat
@@ -121,9 +146,11 @@ FUZZY_MAP_pre = [
     #gehtHat quickGeht schnell
     #git add . && git commit -m "WIP" && git push; && git
 
+    # EXAMPLE: s git
     (f'!git add . && git commit -m "WIP" && git push', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: s git
     (f'!git add . && git commit -m "WIP" && git push; && git ', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
     ############################################
 
@@ -132,99 +159,149 @@ FUZZY_MAP_pre = [
     # (f'cd {CONFIG_DIR}/../../../../../; !git add . && git commit -m "WIP" && git push', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
 
     # --- git commit ---
+    # EXAMPLE: s Klitschko mit s
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s kate Commit s
     ('git commit ', r'^\s*kate Commit\s*$', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s Einen Kometen s
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s Geht Commit
     ('git commit ', r'^\s*(Geht Commit|Geht womit|petkovic)\s*$', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s Geht komm Commit s
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s gehst du mit s
     ('git commit ', r'^\s*(gehst du mit)\s*$', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s womit s
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: geht cobit einen
     ('git commit ', r'^geht cobit einen$', 85, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s git
     ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push|pushen|prüfen|futsch)\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s kate bush s
     ('git push ', r'^\s*kate\s+bush\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s pitbull s
     ('git push ', r'^\s*pitbull\s*$', 80, {'flags': re.IGNORECASE}),
 
     # --- git pull ---
+    # EXAMPLE: s git
     ('git pull', r'^\s*(git|geht|quiet|gitter)\s*(pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s git s pull s
     ('git pull', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
 
     # --- git diff ---
+    # EXAMPLE: s kit
     ('git diff', r'^\s*(kit|git|geht|peach)\s*(diff|tief|tiff|tüv|juice|tipps|geht\'s|kittys|dies|die)\s*$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s git
     ('git switch ', r'^\s*(git|geht|peach)\s*(switch|Schmidt)\s*$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s git
     ('git fetch; git pull"', r'^\s*(git|Gilt|geht) (fett)\s*$"', 80, {'flags': re.IGNORECASE}),
 
 ##################################################################
 
+    # EXAMPLE: s pull s requests
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: null
     ('pull requests', r'\b(null|pull) requests\b', 82, {'flags': re.IGNORECASE}),
 
 # bitte schreib mir denn geht kommen mit text'
+    # EXAMPLE: geht kommen mit text
     ('git commit text', r'\b(geht kommen mit text)\b', 75, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: Feature s prince
     ('feature branch', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: Branch
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: Ranch s Namen
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: komm s mit
     (' Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: kommen s mit s Message
     (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: neues s Verlies
     ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: Kot s abschnittt
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: stob s Button
     ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: lobt s Case
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Auto k
     ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
 
     # === Git Commands (Consolidated & Case-Insensitive) ===
 
     # --- git status ---
     # This one regex replaces 5 old entries.
+    # EXAMPLE: s git
     ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|dates)\s*$', 82, {'flags': re.IGNORECASE}),
 
     # --- git add . ---
+    # EXAMPLE: s git
     ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|ab|at|ritt|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
 
     # --- git commit ---
     #  Kate Commit einen  git commit
 
+    # EXAMPLE: s Klitschko mit s
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s kate Commit s
     ('git commit ', r'^\s*kate Commit\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s Geht Komet
     ('git commit ', r'^\s*Geht (Komet|kommend|Commit)\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s Einen Kometen s
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s Geht Commit s
     ('git commit ', r'^\s*Geht Commit\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s Geht komm Commit s
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s Geht
     ('git commit ', r'^\s*(Geht|git|mit) (komm|Kometen|Commit)\s*$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Komet
     ('commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s git
     ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s womit s
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s git
     ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s git
     ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme)\s*$"', 80, {'flags': re.IGNORECASE}),
 
     # --- git push ---
+    # EXAMPLE: s git
     ('git push', r'^\s*(git|geht|gitter)\s*(busch|push)\s*$', 85, {'flags': re.IGNORECASE}),
 
     # --- git pull ---
+    # EXAMPLE: s git
     ('git pull', r'^\s*(git|geht|gitter)\s*(pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s git s pull s
     ('git pull', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
 
     # --- git diff ---
+    # EXAMPLE: s git
     ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: s Kritik knurren
     ('.gitignore', r'^\s*(Kritik knurren|Kritik Noah|Kritiken|kitte Knorr|Kritik Knorr)\s*$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: gibt Knorr
     ('.gitignore', r'\b(gibt Knorr)\b$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: releasx protokollx
     ("alias release_protokoll='gh release list --limit 100 | awk \"{print $1}\" | while read tag; do if [ -n \"$tag\" ]; then echo -e \"\n\n--- RELEASE: $tag ---\n\"; gh release view \"$tag\"; fi; done > all_releases.txt && kate all_releases.txt'", r'\b(releas\w* protokoll\w*|Relais\w* Protokolle|alle releases|releas\w* export\w*|frites Protokolle)\b$', 75, {'flags': re.IGNORECASE}),
 
 ]

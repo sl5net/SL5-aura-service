@@ -26,12 +26,15 @@ Suche in 1 Chroniken 1 Kapitel 1
 Varianten um das gleiche zu Fragen:
 
 Suche in Ruth Kapitel 1 Vers 1
+# EXAMPLE: suche itext x text kapitel 123 vfdph text 123
 ('bible suche', r'^suche (i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, { ...
 
 Suche in Ruth Kapitel 1 1 Vers
+# EXAMPLE: suche itext x s text kapitel 123 123 vfdph text
 ('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {...
 
 Suche in Ruth 1 Kapitel 1 Vers
+# EXAMPLE: suche itext x s text 123 kapitel 123 vfdph text
 ('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {...
 
 "in" kann auch weggelassen werden.
@@ -52,8 +55,11 @@ Suche in 1 t'gallo tot als 1 Kapitel 1 Vers'
 
 """
 
-searchCmd=r'(suche|bibel|suche \w+ bibel)'
 
+# EXAMPLE: suche ãJ bibel
+searchCmd=r'(suche \w+ bibel|suche|bibel)'
+
+# EXAMPLE: dem via
 Thessalonians = r"(dem via|t[\w ']*chal[\w ]*w[\w ]*o[\w ]*a[\w ]*s|t\w*\s*\w*s|k\w*e\w*alonia\w*\s*\w*)\b"
 
 
@@ -67,11 +73,13 @@ FUZZY_MAP_pre = [
 
 
     # Das Buch 'levitikus' existiert nicht in der Übersetzung 'GerElb1905'.
+    # EXAMPLE: levitikus
     ('Leviticus', r'\blevitikus\b', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
     }),
 
+    # EXAMPLE: cx s les
     ('Chronicles', r'\b(c\w*\s*les|Kodex\s*lese|bro\w*\s*läßt)\b', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
@@ -99,10 +107,12 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: suche in 1
     ('suche in I Thessalonians', rf"suche in (1|erster) {Thessalonians}\b", 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
     }),
+    # EXAMPLE: suche in 2
     ('suche in II Thessalonians', rf"suche in (2|zweiter) {Thessalonians}\b", 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
@@ -110,26 +120,31 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: Suche ins
     ('suche in II', r'^Suche (ins|in) \wweiter\w*', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
     }),
+    # EXAMPLE: suche in zweiter stext
     ('suche in II Samuel', r'suche in zweiter (s\w+|trafen)', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
     }),
 
 
+    # EXAMPLE: erstex
     ('1', r'\b(erste\w*|ernster)\b', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
     }),
+    # EXAMPLE: zweitex
     ('2', r'\bzweite\w*\b', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
     }),
 
 
+    # EXAMPLE: Suche in Levx
     ('Suche in Leviticus', r'\bSuche in (Lev\w*\b|\w.*kurz\b|.*kuss)', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
@@ -138,11 +153,13 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: Vers
     ('Vers 1', r'\b(Vers|fährt) (ein|erwähnt|ab)$', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
     }),
 
+    # EXAMPLE: fair sein
     ('Vers 1', r'\b(fair sein)$', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
@@ -150,15 +167,18 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: VAR itext x text kapitel 123 vfdph text 123
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 
+    # EXAMPLE: VAR itext x s text kapitel 123 123 vfdph text
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
+    # EXAMPLE: VAR itext x s text 123 kapitel 123 vfdph text
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
@@ -168,15 +188,18 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: VAR itext x text 123 vfdph text 123
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*[ ]?\w+) (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 
+    # EXAMPLE: VAR itext x s text 123 123 vfdph text
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
+    # EXAMPLE: VAR itext x s text 123 123 vfdph text
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
@@ -185,15 +208,18 @@ FUZZY_MAP_pre = [
 
     # now experimental more agressiv search (this maybe overwites other plugins) (S.11.11.'25 09:13 Tue)
 
+    # EXAMPLE: itext x text kapitel 123 vfdph text 123
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 
+    # EXAMPLE: itext x s text kapitel 123 123 vfdph text
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
+    # EXAMPLE: itext x s text 123 kapitel 123 vfdph text
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
@@ -210,10 +236,12 @@ FUZZY_MAP_pre = [
     #    'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     #}),
 
+    # EXAMPLE: itext x s text 123 123 vfdph text
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
+    # EXAMPLE: itext x s text 123 123 vfdph text
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']

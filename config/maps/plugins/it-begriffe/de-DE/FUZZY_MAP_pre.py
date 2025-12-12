@@ -17,16 +17,21 @@ FUZZY_MAP_pre = [
     # - means first is most imported, lower rules maybe not get read.
 
     #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
+    # EXAMPLE: whatchado
     ('Manjaro Linux', r'^\b(whatchado|Mönch) (Linux|Carolin\w*)(\b)$', 80, {'flags': re.IGNORECASE}),
 
 
 
+    # EXAMPLE: Debatte ausgaben
     ('Debug-Ausgaben', r'^(Debatte ausgaben)$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Logdatei
     ('Logdatei', r'^(Logdatei|Kochdatei|log-datei)$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Logfile
     ('Logfile', r'^(\b)(Logfile)(\b)$', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Relief
     ('release', r'^(\b)(Relief|release|Relief|wer dies)(\b)$', 75, {'flags': re.IGNORECASE}),
 
 #Virtuell in Weibern
@@ -46,6 +51,7 @@ FUZZY_MAP_pre = [
 #virtuell in weivirtuell in räumen
 #
 
+    # EXAMPLE: Virtuell
     ('Virtual environment', r'\b(Virtuell|virtual|witwe\w*|witwer|wird schon|wird schwer|wirtschaft|wildschwein)\w* (in |wei |im )?(Weibe|white|weima|metall|wei|warm|wei mit|wirbeln|räumen|beweise|wallet)\w*\b', 75, {'flags': re.IGNORECASE,
             'skip_list': ['LanguageTool'],
     }),
@@ -71,34 +77,48 @@ FUZZY_MAP_pre = [
 #Zeiten wird hier in einem Wildschwein in Weibe verwendet
 #ützensagTitan wird hier in einem Ritual Environment mitverwendet
 
+    # EXAMPLE: Brighton
     ('Python', r'^(\b)(Brighton|breit schon|Fallschirm|peitschen)(\b)$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: beiden wird hier in einem Virtual environment mitverwendet
     ('Python wird hier in einer Virtual environment verwendet', r'^(beiden wird hier in einem Virtual environment mitverwendet|Beiden wird hier in einer wird für den falle verwendet|Weiterhin wird hier in einem virtuell in bei mit verwendet|Halten wird jedwedem Witwe wird Weibe verwenden|titan wird hier in einem virtual in weibe verwendet|beiden wird hier in einem virtuell in wei mitverwendet)$', 75, {'flags': re.IGNORECASE}),
 
 
 
+    # EXAMPLE: d fahl
     ('default', r'^(\b)(d fahl)(\b)$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Dringen
     ('String', r'^(\b)(Dringen)(\b)$', 75, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: Kot s abschnittt
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: lobt s Case
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: stob s Button
     ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: lobt s Case
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Auto k
     ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: bild prozess
     ('Build Prozess', r'\bbild prozess\b', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: opensource
     ('opensource', r'\bopensource\b', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: pipe
     ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: pipe
     ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: at
     ('@', r'\b(at|ed) (symbol|simba|simpel|simbel|schimmer|SIM|shampoo|schimpfwort|Zeichen)\b', 75, {'flags': re.IGNORECASE}),
 # ed shampoo denSchätzchen wurdenEr schimpft
 #HiPaypalPaid symbolPepWeib SymbolTreib SymbolPythonPaypal SymbolWeibchenbrät SimbaWeibchenPaypal Simbafeit SchimpfTreibt simpelVeit SchimmelPep Schimmer

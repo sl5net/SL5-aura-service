@@ -39,29 +39,37 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: chaos
     ('https://cttue.de', r'^(chaos|Graues|Karls|raus) (treff|trifft) (tübingen|Typ)\s*\w*$', 60, {'flags': re.IGNORECASE}),
 
     # karl stress was steht an
 
+    # EXAMPLE: chaos
     ('https://cttue.de/doku.php?id=start#was_ansteht', r'^(chaos|Karls)\s+.*was.*an.*$', 60, {'flags': re.IGNORECASE}),
 
 
 
+    # EXAMPLE: chaos x ...pad...
     ('https://pad.ccc-mannheim.de/p/1', r'^(chaos)\w*\s+.*pad.*$', 60, {'flags': re.IGNORECASE}),
+    # EXAMPLE: chaos x ...Tübingen...
     ('https://pad.cttue.de/1', r'^(chaos)\w*\s+.*Tübingen.*$', 60, {'flags': re.IGNORECASE}),
 
 
 
+    # EXAMPLE: chaos
     ('https://pad.cttue.de/cttue-meta#', r'^(chaos|Karls)\w*\s+.*Sitzungsprot.*$', 60, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: chaos
     ('https://cttue.de/doku.php?id=events:past', r'^(chaos|Karls)\s+.* \bVerg.*$', 60, {'flags': re.IGNORECASE}),
 
     # fettleber typ
     # vettel app tübingen
     # fred leb tübingen
+    # EXAMPLE: fred
     ('https://ki-maker.space/', r'^(fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ)$', 60, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: fred
     ('https://ki-maker.space/angebote/kurse-und-workshops', r'^(fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ).*(Kurse|workshops)$', 60, {'flags': re.IGNORECASE}),
 
 
@@ -69,6 +77,7 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: PBW textix tx ex Buch
     ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, {'flags': re.IGNORECASE})
 ]
 

@@ -20,9 +20,13 @@ REGEX_MAP = {
 FUZZY_MAP = [
 
 
+    # EXAMPLE: period
     ('.', r'\bperiod|full stop|dot|point\b', 95),
+    # EXAMPLE: comma
     (',', r'\bcomma\b', 95),
+    # EXAMPLE: question mark
     ('?', r'\bquestion mark|christian monk|Christian luck|christian mk|question mk\b', 85),
+    # EXAMPLE: exclamation mark
     ('!', r'\bexclamation mark|exclamation point\b', 95),
 
 ]

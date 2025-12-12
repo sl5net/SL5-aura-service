@@ -83,12 +83,15 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
+    # EXAMPLE: ai
     (multiline_string_1, r'^(ai|a|ei|pay|hey|hi|h)\s*\w?\ş*prompt\s*(for|vor|ver)?(\s+(Python|Zeiten|bei|titan))?.*$', 80, {'flags': re.IGNORECASE}),
 
     # Python
+    # EXAMPLE: Python
     (multiline_string_1, r'^(Python|Zeiten|bei|titan|from)\s*prompt.*$', 80,
      {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Zeiten prog
     ('Python prog', r'\bZeiten prog', 80, {'flags': re.IGNORECASE}),
 
 

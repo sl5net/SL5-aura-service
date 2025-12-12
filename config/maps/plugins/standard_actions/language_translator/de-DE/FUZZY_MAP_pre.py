@@ -69,7 +69,9 @@ standards.
 
 CONFIG_DIR = Path(__file__).parent
 
+# EXAMPLE: b Denglisch
 Englisch=r'\b(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe|ähnlich)\b'
+# EXAMPLE: Switch
 toggleCmd=r'(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
 
 FUZZY_MAP_pre = [
@@ -79,50 +81,59 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
+    # EXAMPLE: VAR VAR
     ('en', fr'^{Englisch} {toggleCmd}$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
+    # EXAMPLE: Thai
     ('th', fr'^(Thai|Tai|hi|Bei) {toggleCmd}$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+    # EXAMPLE: japanisch VAR
     ('ja', fr'^(japanisch) {toggleCmd}$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
+    # EXAMPLE: arabisch Switch
     ('ar', r'^(arabisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+    # EXAMPLE: persisch Switch
     ('fa', r'^(persisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+    # EXAMPLE: Switch
     ('pt-BR', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese\w*)\b', 95, {
          'flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
+    # EXAMPLE: portugiesisch
     ('pt-BR', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
          'flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+    # EXAMPLE: Spanien
     ('es', r'^(Spanien|spanisch|starr dich|sparr dich) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)$', 95, {
          'flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
     # afghanisch
+    # EXAMPLE: afghanisch
     ('Dari', r'^(afghanisch|Afghanistan|Organisch) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)$', 95, {
          'flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
@@ -134,14 +145,17 @@ FUZZY_MAP_pre = [
     #
 
     # übersetzung ein ausschalten
+    # EXAMPLE: x besetzung
     ('de', r'^(\w*besetzung|heizung|zum) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
+    # EXAMPLE: x besetzung modus Switch
     ('de', r'^(\w*besetzung) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
+    # EXAMPLE: x sprachx übersetzung VAR
     ('de', fr'^(\w*sprach\w*) (übersetzung)? {toggleCmd}$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
@@ -153,6 +167,7 @@ FUZZY_MAP_pre = [
     #
 
 
+    # EXAMPLE: Switch
     ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*besetzung)\b', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']

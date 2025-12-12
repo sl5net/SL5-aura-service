@@ -149,6 +149,7 @@ def get_instant_match(user_text):
     utils.init_db()
 
     # 1. User Text in Worte zerlegen (einfache Normalisierung)
+    # EXAMPLE: x s
     user_words = set(re.sub(r'[^\w\s]', '', user_text.lower()).split())
     # Entferne Füllwörter für besseres Matching (optional, aber hilfreich)
     stop_words = {"computer", "aura", "bitte", "danke", "und", "oder", "wie", "was", "ist", "der", "die", "das",
@@ -304,6 +305,7 @@ def get_instant_match(user_text):
 
 # --- HELPER ---
 def clean_text_for_typing(text):
+    # EXAMPLE: x s . - VAR äöüÄÖÜß
     allowed_chars = r'[^\w\s\.,!\?\-\(\)\[\]\{\}<>äöüÄÖÜß:;\'"\/\\@\+\=\~\#\%]'
     text = re.sub(allowed_chars, '', text)
     text = re.sub(r'\s+', ' ', text).strip()
@@ -512,6 +514,7 @@ def execute(match_data):
             "   - Stopp (Full-Match): Die Pipeline stoppt, wenn ein Regex von Anfang (`^`) bis Ende (`$`) matcht. Da Voice-Input einzeilig ist, sind Anker wichtig.\n"
             "   - In config/ befinden sich alle KONFIGURATIONEN.\n"
             "   Beispiele: `^.*$` (Catch-All), `^.+$` (Nicht leer). \n"
+            # EXAMPLE: Bundeskanzlerin
             "   Beispiel Regel-Tupel: ('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
             "4. Plugins & Erweiterbarkeit: Jede Regex kann 'on_match_exec' nutzen. Plugins erhalten Daten, verarbeiten sie kreativ und geben Text zurück.\n"
             "   - Beispiele: Offline-Wikipedia, SQLite-Booksearch, Ollama AI (Lokal).\n"
@@ -571,6 +574,7 @@ def execute(match_data):
             "Aura: Durch Erstellen der Datei '/tmp/sl5_record.trigger'.\n\n"
 
             "User: Erstelle eine Regel für Bundeskanzlerin.\n"
+            # EXAMPLE: Bundeskanzlerin
             "   Beispiel Regel-Tupel: ('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
             "User: Erstelle eine Regel für Full-Match.\n"
             "   Beispiele: `^.*$` (Catch-All), `^.+$` (Nicht leer). \n"
@@ -609,6 +613,7 @@ def execute(match_data):
             "Aura: kanzlerin_map.py\n"
             "```python\n"
             "# Regel-Tupel: (Ersetzung, Regex, Priorität, Flags)\n"
+            # EXAMPLE: Bundeskanzlerin
             "('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
             "```\n\n"
 
@@ -619,6 +624,7 @@ def execute(match_data):
             "User: Erstelle Regel mit Plugin Wiki.\n"
             "Aura: wiki_plugin.py\n"
             "```python\n"
+            # EXAMPLE: Wiki ...
             "('Ersetzung', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
 
         )
@@ -636,6 +642,7 @@ def execute(match_data):
 
             "SYSTEM-WISSEN:\n"
             "- Config: 'config/maps/' (Python-Dateien).\n"
+            # EXAMPLE: Regex
             "- Logik: Tupel `('Ergebnis-Text', r'Regex', Prio, Flags)`.\n"
             "- Pipeline: Regeln laufen Top-Down. Text wird durchgereicht & verändert. Mehrere Regeln können nacheinander greifen (kumulativ).\n"
             "- Vosk (Audio) > Maps (FUZZY_MAP_pre.py) > LanguageTool (Opt.) > Maps (FUZZY_MAP.py) > Output (Text & TTS).\n"
@@ -659,6 +666,7 @@ def execute(match_data):
             "Aura: kanzlerin_map.py\n"
             "```python\n"
             "# Regel-Tupel: (Name, Regex, Priorität, Flags)\n"
+            # EXAMPLE: Bundeskanzlerin
             "('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
             "```\n\n"
 
@@ -671,6 +679,7 @@ def execute(match_data):
             "User: Erstelle Regel mit Plugin Wiki.\n"
             "Aura: wiki_plugin.py\n"
             "```python\n"
+            # EXAMPLE: Wiki ...
             "('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
             "```"
         )
@@ -830,7 +839,9 @@ def execute(match_data):
 
                 "FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\n"
                 "Syntax: (Name, Regex, Prio, Flags)\n"
+                # EXAMPLE: Kanzlerin
                 "Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
+                # EXAMPLE: Wiki ...
                 "Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\n"
 
                 "Doku: https://SL5.de/Aura"

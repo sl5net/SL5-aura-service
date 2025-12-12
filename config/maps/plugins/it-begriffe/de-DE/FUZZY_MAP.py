@@ -17,15 +17,19 @@ FUZZY_MAP = [
     # - means first is most importend, lower rules maybe not get read.
 
 
+    # EXAMPLE: Brighton
     ('Python', r'^(\b)(Brighton|breit schon|Fallschirm|peitschen|Zeiten|Titan|Scheitern)(\b)$', 75, {'flags': re.IGNORECASE}),
 
 
 
     # a bit radial with following lines but i like it acually 17.11.'25 16:12 Mon
+    # EXAMPLE: Brighton
     ('Python', r'(\b)(Brighton|peitschen|Titan)(\b)', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Zeiten prog
     ('Python prog', r'\bZeiten prog', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: ritual
     ('Virtual environment', r'\b(ritual|Virtuell|virtual|witwe\w*|witwer|wird schon|wird schwer|wirtschaft|wildschwein)\w* (in |wei |im |ein )?(Environment|Weibe|white|weima|metall|wei|warm|wei mit|wirbeln|et Deibel|in Reiben|reiben|Hinweis)\w*\b', 75, {'flags': re.IGNORECASE}),
 
 

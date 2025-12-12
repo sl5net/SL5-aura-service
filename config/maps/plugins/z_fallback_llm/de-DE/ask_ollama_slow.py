@@ -101,6 +101,7 @@ def get_instant_match(user_text):
     utils.init_db()
 
     # 1. User Text in Worte zerlegen (einfache Normalisierung)
+    # EXAMPLE: x s
     user_words = set(re.sub(r'[^\w\s]', '', user_text.lower()).split())
     # Entferne Füllwörter für besseres Matching (optional, aber hilfreich)
     stop_words = {"computer", "aura", "bitte", "danke", "und", "oder", "wie", "was", "ist", "der", "die", "das",
@@ -167,6 +168,7 @@ def get_instant_match(user_text):
 
 # --- HELPER ---
 def clean_text_for_typing(text):
+    # EXAMPLE: x s . - VAR äöüÄÖÜß
     allowed_chars = r'[^\w\s\.,!\?\-\(\)\[\]\{\}<>äöüÄÖÜß:;\'"\/\\@\+\=\~\#\%]'
     text = re.sub(allowed_chars, '', text)
     text = re.sub(r'\s+', ' ', text).strip()
@@ -417,6 +419,7 @@ def execute(match_data):
             "Aura: kanzlerin_map.py\n"
             "```python\n"
             "# Regel-Tupel: (Ersetzung, Regex, Priorität, Flags)\n"
+            # EXAMPLE: Bundeskanzlerin
             "('Angela Merkel', r'^(Bundeskanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
             "```\n\n"
 
@@ -427,6 +430,7 @@ def execute(match_data):
             "User: Erstelle Regel mit Plugin Wiki.\n"
             "Aura: wiki_plugin.py\n"
             "```python\n"
+            # EXAMPLE: Wiki ...
             "('Ersetzung', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
 
         )
@@ -606,7 +610,9 @@ def execute(match_data):
 
                 "FORMAT 2: Logik-Regeln (z.B. FUZZY_MAP)\n"
                 "Syntax: (Name, Regex, Prio, Flags)\n"
+                # EXAMPLE: Kanzlerin
                 "Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
+                # EXAMPLE: Wiki ...
                 "Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\n"
 
                 "Doku: https://SL5.de/Aura"

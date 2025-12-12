@@ -26,10 +26,12 @@ FUZZY_MAP_pre = [
     #SchachmattSchachmatt
 
     # Folgende regel betrifft alles außer den Wörtern Schach,Matt:
+    # EXAMPLE: Schach
     ('', r'^(?!Schach|Matt|bad|Haus).*$', 5, {'flags': re.IGNORECASE}),
     #SchachSchachHausSchachSchachBad
     #Schachmatt
 
+    # EXAMPLE: Schach
     ('Schachmatt', r'^(Schach|Matt|bad|Haus).*$', 5, {'flags': re.IGNORECASE}),
     #SchachmattSchachmatt
 

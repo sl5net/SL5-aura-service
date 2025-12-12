@@ -17,6 +17,7 @@ FUZZY_MAP = [
 
 
     # Uppercase
+    # EXAMPLE: ergoltherabpeut
     ('Ergoltherabpeut', r'\b(ergoltherabpeut)\b', 70, {'flags': re.IGNORECASE}),  #
 
 

@@ -16,23 +16,20 @@ FUZZY_MAP = [
     # - means first is most importend, lower rules maybe not get read.
 
 
+    # EXAMPLE: thiemx
     ('Timo Stösser', r'\b(thiem\w|timo|thema|ti\w+r)\s+(stäfa|steffen|Stefan|stripper|stefan|stürze\w*|stütze\w*|Sturz|stösse|Schlösser|stöße|stößt|Stöße|stöpsel|stärker|Störche)\b', 70, {'flags': re.IGNORECASE}) ,
 
+    # EXAMPLE: Fachx Bereichsleitung
     ('Fachbereichsleitung', r'\bFach\w*\s+Bereichsleitung\b', 70, {'flags': re.IGNORECASE}) ,
 
+    # EXAMPLE: PBW textix tx ex Buch
     ('Python-Buch', r'\b([PBW]\w+i\w*t\w*e\w* Buch)\b', 60, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: Kursleiter s schux
     ('Kursleiterschulung', r'\b(Kursleiter\s*schu\w*)\b', 60, {'flags': re.IGNORECASE})
 
 
 
 ]
 
-# Timo Stösser ist Fachbereichsleiter
-#  Diebe stützen ist Fachbereichsleiter
-#  davor stürzen Sebastian lau
-# Fachbereichsleitung Fachbereichsleitung Die überstürzen davor stürzt
-# Kursleiterschulung
-#  Zeitschriften Buch Fight Breite Buch
-# Breite Buch  Python-Buch

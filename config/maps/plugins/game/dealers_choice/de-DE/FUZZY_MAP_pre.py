@@ -15,15 +15,24 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
+    # EXAMPLE: s call
     ('c', r'^\s*(call|check)\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s raise s
     ('r', r'^\s*(raise)\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s fold s
     ('f', r'^\s*(fold)\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s discard s
     ('d', r'^\s*(discard)\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s bet s
     ('b', r'^\s*(bet)\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s exchange s
     ('x', r'^\s*(exchange)\s*$', 85, {'flags': re.IGNORECASE}),
     # Amount keys
+    # EXAMPLE: s 100
     ('1', r'^\s*(100|one hundred)\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s 280
     ('2', r'^\s*(280|two fifty)\s*$', 85, {'flags': re.IGNORECASE}),
+    # EXAMPLE: s 80
     ('3', r'^\s*(80|fifty)\s*$', 85, {'flags': re.IGNORECASE}),
 
 

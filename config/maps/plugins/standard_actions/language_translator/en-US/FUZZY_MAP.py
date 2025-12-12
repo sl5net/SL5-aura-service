@@ -15,6 +15,7 @@ FUZZY_MAP = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
+    # EXAMPLE: Good evening
     ('hey all out there', r'Good evening', 95, {'flags': re.IGNORECASE}),
 
     #

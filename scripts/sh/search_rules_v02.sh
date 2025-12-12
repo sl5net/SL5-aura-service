@@ -7,8 +7,7 @@
 # -----------------------------------------------------------------------------
 PREFERRED_EDITOR="kate"
 HISTORY_FILE="$HOME/.search_rules_history"
-DEFAULT_QUERY=".py pre # EXAMPLE:"
-REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
+DEFAULT_QUERY=".py pre"
 
 # -----------------------------------------------------------------------------
 # LOGGING
@@ -26,9 +25,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 MAPS_DIR="$PROJECT_ROOT/config/maps"
 
-export PROJECT_ROOT
-export REPO_URL
-
 logger_info "Editor configured: $PREFERRED_EDITOR"
 logger_info "Target maps directory: $MAPS_DIR"
 
@@ -43,10 +39,8 @@ if [ ! -d "$MAPS_DIR" ]; then
 fi
 
 # -----------------------------------------------------------------------------
-# PREVIEW COMMAND (AWK - Text Only)
+# PREVIEW COMMAND (AWK)
 # -----------------------------------------------------------------------------
-# Zeigt reinen Text an: 5 Zeilen vor und nach dem Treffer.
-# Markiert die Treffer-Zeile mit einem ">".
 PREVIEW_CMD='awk -v t={2} "BEGIN {t=t+0} NR>t-5 && NR<t+5 {printf \"%s%4d: %s\n\", (NR==t ? \">\" : \" \"), NR, \$0}" {1}'
 
 # -----------------------------------------------------------------------------
@@ -65,23 +59,21 @@ logger_info "Starting interactive search..."
 # -----------------------------------------------------------------------------
 # SEARCH & SELECT
 # -----------------------------------------------------------------------------
+# New Keybindings for "Normal User" comfort:
+# --bind 'ctrl-c:cancel'        -> First press clears query, second press exits (prevents accidental exit).
+# --bind 'ctrl-z:previous-history' -> Mimics "Undo" by loading the previous search query from history.
+# --bind 'ctrl-a:select-all'    -> Standard GUI behavior (select all text).
+# --bind 'ctrl-e:deselect-all'  -> Clear selection (if needed).
+
 SELECTED_LINE=$(grep --color=never -rnH -I . "$MAPS_DIR" | \
     fzf --delimiter : \
         --history "$HISTORY_FILE" \
         --query "$INITIAL_QUERY" \
         --bind 'ctrl-c:cancel' \
         --bind 'ctrl-z:previous-history' \
-        --bind 'ctrl-y:next-history' \
-        --bind 'ctrl-p:previous-history' \
-        --bind 'ctrl-n:next-history' \
         --bind 'ctrl-a:select-all' \
-        --bind 'ctrl-left:backward-word' \
-        --bind 'ctrl-right:forward-word' \
-        --bind 'ctrl-backspace:unix-word-rubout' \
-        --bind 'ctrl-delete:kill-word' \
-        --bind 'ctrl-g:execute-silent(f={1}; rel=${f#$PROJECT_ROOT/}; xdg-open "$REPO_URL/$rel#L{2}")' \
         --preview "$PREVIEW_CMD" \
-        --preview-window="up:50%" \
+        --preview-window=up:50% \
 )
 
 # -----------------------------------------------------------------------------
@@ -93,7 +85,6 @@ if [ -n "$SELECTED_LINE" ]; then
 
     logger_info "Opening: $FILE_PATH at line $LINE_NUM"
     "$PREFERRED_EDITOR" "$FILE_PATH:$LINE_NUM" &
-    exit 0
 else
     logger_info "No selection made."
 fi

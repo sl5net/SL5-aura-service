@@ -147,7 +147,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     # -------------------------------------------------------
 
                     # DEBUG: Log that we hit an exception (expected for key files)
-                    logger.info(f"💥 Import Exception for {module_name}: {e}")
+                    # logger.info(f"💥 Import Exception - check its private? for {module_name}: {e}")
 
                     was_private_map = _handle_private_map_exception(module_name, 
                                                                     map_file_key, 

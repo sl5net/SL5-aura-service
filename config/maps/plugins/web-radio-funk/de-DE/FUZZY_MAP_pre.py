@@ -32,20 +32,27 @@ FUZZY_MAP_pre = [
 
     # deutsche radio
 
+    # EXAMPLE: deutschlandfunk
     ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(deutschlandfunk|Deutschlandradio|deutsch\w* radio)\s*$', 70, {'flags': re.IGNORECASE}),
+    # EXAMPLE: presseclub
     ('https://www1.wdr.de/daserste/presseclub/index.html', r'^(presseclub|pressig)\w*\s*$', 70, {'flags': re.IGNORECASE}),
 
 
 
+    # EXAMPLE: Radio wüste welle livex
     ('https://www.wueste-welle.de/broadcasts/livestream', r'^(Radio wüste welle live\w*|wüste welle live\w*)\s*$', 70, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Radio wüste welle
     ('https://www.wueste-welle.de/', r'^(Radio wüste welle|wüste welle)\s*$', 70, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: LORA Münchenx s
     ('https://lora924.de/livestream/live-horen/', r'^(LORA München\w*)\s*$', 70, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Freies Radio ...Stuttgart s
     ('https://www.freies-radio.de/', r'^(Freies Radio .*Stuttgart)\s*$', 70, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Archiv Freies Radio ...Stuttgart s
     ('https://www.youtube.com/gbsstuttgart', r'^(Archiv Freies Radio .*Stuttgart)\s*$', 70, {'flags': re.IGNORECASE}),
 
 
