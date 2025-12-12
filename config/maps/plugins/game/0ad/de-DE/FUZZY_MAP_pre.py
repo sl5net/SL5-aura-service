@@ -52,7 +52,7 @@ FUZZY_MAP_pre = [
 
     #  selects Verwaltung
 
-    # EXAMPLE: s x kc ontrollx c...
+    # EXAMPLE: s x kc ontrollx c 
     ('ctrl+c', r'^\s*\w*([kc]ontroll\w*) c.*$', 20, {'flags': re.IGNORECASE}),
     # EXAMPLE: s x kontrollzwecken
     ('ctrl+c', r'^\s*\w*(kontrollzwecken|Verwaltung\w+)$', 20, {'flags': re.IGNORECASE}),

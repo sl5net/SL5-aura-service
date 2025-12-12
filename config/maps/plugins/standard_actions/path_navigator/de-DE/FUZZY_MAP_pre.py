@@ -165,19 +165,19 @@ FUZZY_MAP_pre = [
 
     # 2. Navigiere zu Aura Config (Directory)
     (f'cd {os.path.join(PROJECT_ROOT_FOR_MAP, "config")}',
-    # EXAMPLE: Navigierex
+    # EXAMPLE: Navigiere Aura
     r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)\s*Konf\w*$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    # 2. Navigiere zu Aura (Directory)
+    # EXAMPLE: Navigiere zu Aura (Directory)
     (f'cd {os.path.join(PROJECT_ROOT_FOR_MAP)}',
     # EXAMPLE: Navigiere
     r'^(Navigiere|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    # 2. Config (Directory)
+    # EXAMPLE: 2. Config (Directory)
     (f'{os.path.join(PROJECT_ROOT_FOR_MAP, "config", "settings.py")}',
      # EXAMPLE: Aura
      r'^(Aura|Laura|over|Dora|Horror)\s+(Konf\w*|konzentration)$',

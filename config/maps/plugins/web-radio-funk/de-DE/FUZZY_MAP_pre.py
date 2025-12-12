@@ -49,10 +49,10 @@ FUZZY_MAP_pre = [
     # EXAMPLE: LORA Münchenx s
     ('https://lora924.de/livestream/live-horen/', r'^(LORA München\w*)\s*$', 70, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: Freies Radio ...Stuttgart s
+    # EXAMPLE: Freies Radio  Stuttgart s
     ('https://www.freies-radio.de/', r'^(Freies Radio .*Stuttgart)\s*$', 70, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: Archiv Freies Radio ...Stuttgart s
+    # EXAMPLE: Archiv Freies Radio  Stuttgart s
     ('https://www.youtube.com/gbsstuttgart', r'^(Archiv Freies Radio .*Stuttgart)\s*$', 70, {'flags': re.IGNORECASE}),
 
 

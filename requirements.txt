@@ -1,5 +1,5 @@
 config==0.5.1
-fastapi==0.124.2
+fastapi==0.124.4
 keyboard==0.13.5
 objgraph==3.6.2
 psutil==7.1.3

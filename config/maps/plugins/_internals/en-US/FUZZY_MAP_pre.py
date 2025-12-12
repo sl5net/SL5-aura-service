@@ -43,17 +43,17 @@ FUZZY_MAP_pre = [
 #    ('drei', r'zwei', 60, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: Unterschied...Aura
+    # EXAMPLE: Unterschied Aura
     ('Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commands', r'^(Unterschied\b.*\bAura\b|Auras? .*\badvantage\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
     ('SL5 Aura is a System-Wide, Offline Voice Automation and Command Framework. It instantly turns spoken words into commands, hotkeys, or text, with 100% privacy guarantee due to its offline operation. Its core is a powerful, scriptable RegEx Rule Engine that allows developers to create deeply customizable, multi-step workflows for professional and system-level automation.',
-     # EXAMPLE: Whatx ...Aura ...
+     # EXAMPLE: Whatx  Aura  
      r'^(What\w*\b.*\bAura\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #What is aura What is aura
 
 
-    # EXAMPLE: ...Aura...Strength ...
+    # EXAMPLE:  Aura Strength  
     ('SL5 Aura (Strength): Recursive, Hierarchical Rule Engine with Live Parsing and RegEx. Inheritance and Sub-folders (e.g., game/0ad, it-begriffe/php/codeigniter) enable modular, maintainable plugins.100% GDPR-Compliance and Developer-Friendly Design for complex, long-term projects. Conclusion: Aura is the Architect Solution for privacy-compliant, specialized, and scalable voice control.', r'^(.*\bAura.*\bStrength\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #
 

@@ -25,7 +25,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: ethik tiago
     ('Ethiktagung, Freitag den 10 Oktober 2025', r'^(ethik tiago|Ethik\s*Tag\w*|Ethiktagung|ethik tagung|ethik\s*habe|Ethik\s*Tagung|Ethikrat|Ethik\s*Togo|Erledigt haben|Edikt haben)$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: Zentrum...Psychiatrie
+    # EXAMPLE: Zentrum Psychiatrie
     ('ZfP = Zentrum für Psychiatrie', r'^(Zentrum.*Psychiatrie|Z\s*f\s*P|z ist|ZDF [pt])$', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Dieter

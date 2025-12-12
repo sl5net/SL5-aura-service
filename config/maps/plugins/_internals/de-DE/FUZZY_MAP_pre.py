@@ -38,11 +38,11 @@ FUZZY_MAP_pre = [
     ('Sondermüll!', r'\b(Sondermüll)\b', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
-    # EXAMPLE: Unterschied...Aura
+    # EXAMPLE: Unterschied Aura
     ('Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commands', r'^(Unterschied\b.*\bAura\b|Auras? .*\badvantage\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     ('SL5 Aura is a System-Wide, Offline Voice Automation and Command Framework. It instantly turns spoken words into commands, hotkeys, or text, with 100% privacy guarantee due to its offline operation. Its core is a powerful, scriptable RegEx Rule Engine that allows developers to create deeply customizable, multi-step workflows for professional and system-level automation.',
-     # EXAMPLE: Whatx ...Aura ...
+     # EXAMPLE: Whatx  Aura  
      r'^(What\w*\b.*\bAura\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #
 ]

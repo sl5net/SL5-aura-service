@@ -624,7 +624,7 @@ def execute(match_data):
             "User: Erstelle Regel mit Plugin Wiki.\n"
             "Aura: wiki_plugin.py\n"
             "```python\n"
-            # EXAMPLE: Wiki ...
+            # EXAMPLE: Wiki  
             "('Ersetzung', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
 
         )
@@ -679,7 +679,7 @@ def execute(match_data):
             "User: Erstelle Regel mit Plugin Wiki.\n"
             "Aura: wiki_plugin.py\n"
             "```python\n"
-            # EXAMPLE: Wiki ...
+            # EXAMPLE: Wiki  
             "('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'plugins.wiki_search'})\n"
             "```"
         )
@@ -841,7 +841,7 @@ def execute(match_data):
                 "Syntax: (Name, Regex, Prio, Flags)\n"
                 # EXAMPLE: Kanzlerin
                 "Beispiel: ('Merkel', r'^(Kanzlerin|Angie)$', 100, {'flags': re.IGNORECASE})\n"
-                # EXAMPLE: Wiki ...
+                # EXAMPLE: Wiki  
                 "Beispiel: ('Wiki', r'^Wiki (.*)$', 50, {'on_match_exec': 'wiki_search'})\n\n"
 
                 "Doku: https://SL5.de/Aura"

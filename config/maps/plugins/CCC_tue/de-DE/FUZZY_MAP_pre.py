@@ -49,9 +49,9 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE: chaos x ...pad...
+    # EXAMPLE: chaos x  pad 
     ('https://pad.ccc-mannheim.de/p/1', r'^(chaos)\w*\s+.*pad.*$', 60, {'flags': re.IGNORECASE}),
-    # EXAMPLE: chaos x ...Tübingen...
+    # EXAMPLE: chaos x  Tübingen 
     ('https://pad.cttue.de/1', r'^(chaos)\w*\s+.*Tübingen.*$', 60, {'flags': re.IGNORECASE}),
 
 

@@ -37,8 +37,10 @@ def sanitize_regex_part(text):
     s = s.replace(r'\w', 'x')
 
     s = s.replace(r'\s+', ' ')
-    s = s.replace(r'.+', '...')
-    s = s.replace(r'.*', '...')
+    s = s.replace(r'\w*', ' ')
+
+    s = s.replace(r'.+', '.')
+    s = s.replace(r'.*', '')
 
     # 2. Übrige Regex-Syntax entfernen (Klammern, Sonderzeichen)
     # Wir behalten nur Buchstaben, Zahlen, Umlaute, Bindestriche und Leerzeichen.

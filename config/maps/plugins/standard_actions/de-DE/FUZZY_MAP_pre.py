@@ -93,7 +93,7 @@ FUZZY_MAP_pre = [
 
     # python3 scripts/py/cli_client.py "Was ist ein Haus" --lang "de-DE"
     ('python3 scripts/py/cli_client.py "Was ist ein Haus" --lang "de-DE"',
-     # EXAMPLE: frage ... client
+     # EXAMPLE: frage   client
      r'^(frage)\b.*(client)$',
      100, {
          'flags': re.IGNORECASE,
@@ -212,12 +212,12 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE: ... Wer ist s der Beste x Schachspieler...
+    # EXAMPLE:   Wer ist s der Beste x Schachspieler 
     ("Sebastian Lauffer aus Wannweil (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?(Beste[\w]? Schachspieler.*)$', 90, {
     'flags': re.IGNORECASE
     }),
 
-    # EXAMPLE: ... Wer ist s der s herr s schröer
+    # EXAMPLE:   Wer ist s der s herr s schröer
     ("Herr Schröer ist ein netter, bisschen vergesslicher, Ergotherapeut. (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?\s*(herr)?\s*\b(schröer)$', 90, {
     'flags': re.IGNORECASE
     }),
@@ -234,7 +234,7 @@ FUZZY_MAP_pre = [
     'skip_list': ['LanguageTool','fullMatchStop'],
     }),
 
-    # EXAMPLE: ...was ist ein haus
+    # EXAMPLE:  was ist ein haus
     ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,
      {
     'flags': re.IGNORECASE,
@@ -251,7 +251,7 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE: ... zur
+    # EXAMPLE:   zur
     ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
