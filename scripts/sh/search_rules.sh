@@ -59,18 +59,10 @@ logger_info "Starting interactive search..."
 # -----------------------------------------------------------------------------
 # SEARCH & SELECT
 # -----------------------------------------------------------------------------
-# Keybindings:
-# --bind 'ctrl-c:cancel':
-#    First press clears query (like ESC), second press exits.
-# --bind 'ctrl-z:previous-history':
-#    Acts like "Undo" (Back in history).
-# --bind 'ctrl-y:next-history':
-#    Acts like "Redo" (Forward in history).
-#    (Note: Ctrl+Shift+Z is often not detectable in terminals, so Ctrl+Y is the standard alternative).
-# --bind 'ctrl-n:next-history' / 'ctrl-p:previous-history':
-#    Standard navigation fallbacks.
-# --bind 'ctrl-a:select-all':
-#    Selects all text.
+# Keybindings additions:
+# ctrl-backspace: unix-word-rubout (Löscht wortweise zurück)
+# ctrl-left/right: backward-word / forward-word (Springt wortweise)
+# ctrl-delete: kill-word (Löscht wortweise vorwärts - optional)
 
 SELECTED_LINE=$(grep --color=never -rnH -I . "$MAPS_DIR" | \
     fzf --delimiter : \
@@ -82,6 +74,10 @@ SELECTED_LINE=$(grep --color=never -rnH -I . "$MAPS_DIR" | \
         --bind 'ctrl-p:previous-history' \
         --bind 'ctrl-n:next-history' \
         --bind 'ctrl-a:select-all' \
+        --bind 'ctrl-left:backward-word' \
+        --bind 'ctrl-right:forward-word' \
+        --bind 'ctrl-backspace:unix-word-rubout' \
+        --bind 'ctrl-delete:kill-word' \
         --preview "$PREVIEW_CMD" \
         --preview-window=up:50% \
 )
