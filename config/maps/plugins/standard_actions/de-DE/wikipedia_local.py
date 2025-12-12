@@ -316,10 +316,17 @@ Datum des Abrufs: 29. 12 2017, 20:01 UTC
          ./kiwix-docker-start-if-not-running.sh
          config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh
 
-        Maybe want disable ?
-        config/maps/plugins/standard_actions/de-DE/wikipedia_local.py
+
+        Maybe want enable ?
+        ./config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh
+
+        
 
         """
+
+        # source .venv/bin/activate
+        # python3 config/maps/plugins/standard_actions/de-DE/wikipedia_local.py
+
         return msg
 
 

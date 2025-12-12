@@ -76,7 +76,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Vorwahl Pliezhausen
     ('07124', r'^Vorwahl Pliezhausen$', 80, {'flags': re.IGNORECASE}),
     # EXAMPLE: Vorwahl Pfullingen
-    ('07125', r'^Vorwahl Pfullingen$', 80, {'flags': re.IGNORECASE}),
+    ('07125 hi all', r'^Vorwahl Pfullingen$', 80, {'flags': re.IGNORECASE}),
     # EXAMPLE: Vorwahl Neckartenzlingen
     ('07127', r'^Vorwahl Neckartenzlingen$', 80, {'flags': re.IGNORECASE}),
 
