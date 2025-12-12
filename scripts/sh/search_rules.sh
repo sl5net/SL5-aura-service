@@ -9,6 +9,12 @@ PREFERRED_EDITOR="kate"
 HISTORY_FILE="$HOME/.search_rules_history"
 DEFAULT_QUERY=".py pre"
 
+# GITHUB CONFIGURATION
+# Wir definieren die Basis-URL für die Blob-Ansicht.
+# Falls der Branch 'master' heißt, bitte 'main' durch 'master' ersetzen.
+REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
+# REPO_URL="https://github.com/sl5net/SL5-aura-service/tree/master"
+
 # -----------------------------------------------------------------------------
 # LOGGING
 # -----------------------------------------------------------------------------
@@ -24,6 +30,10 @@ logger_info "Initializing search_rules.sh..."
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 MAPS_DIR="$PROJECT_ROOT/config/maps"
+
+# WICHTIG: Variablen exportieren, damit sie innerhalb von fzf (subshell) verfügbar sind
+export PROJECT_ROOT
+export REPO_URL
 
 logger_info "Editor configured: $PREFERRED_EDITOR"
 logger_info "Target maps directory: $MAPS_DIR"
@@ -59,10 +69,10 @@ logger_info "Starting interactive search..."
 # -----------------------------------------------------------------------------
 # SEARCH & SELECT
 # -----------------------------------------------------------------------------
-# Keybindings additions:
-# ctrl-backspace: unix-word-rubout (Löscht wortweise zurück)
-# ctrl-left/right: backward-word / forward-word (Springt wortweise)
-# ctrl-delete: kill-word (Löscht wortweise vorwärts - optional)
+# Keybindings:
+# ctrl-g:
+#   Baut die GitHub URL zusammen.
+#   Logik: Nimm Pfad {1}, entferne $PROJECT_ROOT am Anfang, hänge es an REPO_URL an, füge Zeilennummer {2} hinzu.
 
 SELECTED_LINE=$(grep --color=never -rnH -I . "$MAPS_DIR" | \
     fzf --delimiter : \
@@ -78,6 +88,7 @@ SELECTED_LINE=$(grep --color=never -rnH -I . "$MAPS_DIR" | \
         --bind 'ctrl-right:forward-word' \
         --bind 'ctrl-backspace:unix-word-rubout' \
         --bind 'ctrl-delete:kill-word' \
+        --bind 'ctrl-g:execute-silent(f={1}; rel=${f#$PROJECT_ROOT/}; xdg-open "$REPO_URL/$rel#L{2}")' \
         --preview "$PREVIEW_CMD" \
         --preview-window=up:50% \
 )
