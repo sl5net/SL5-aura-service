@@ -167,18 +167,18 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE: VAR itext x text kapitel 123 vfdph text 123
+    # EXAMPLE: VAR itext x text kapitel 123 Vers text 123
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 
-    # EXAMPLE: VAR itext x s text kapitel 123 123 vfdph text
+    # EXAMPLE: VAR itext x s text kapitel 123 123 Vers text
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
-    # EXAMPLE: VAR itext x s text 123 kapitel 123 vfdph text
+    # EXAMPLE: VAR itext x s text 123 kapitel 123 Vers text
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
@@ -188,18 +188,18 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE: VAR itext x text 123 vfdph text 123
+    # EXAMPLE: VAR itext x text 123 Vers text 123
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*[ ]?\w+) (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 
-    # EXAMPLE: VAR itext x s text 123 123 vfdph text
+    # EXAMPLE: Suche Ruth 123 123 Vers
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
-    # EXAMPLE: VAR itext x s text 123 123 vfdph text
+    # EXAMPLE: Suche Ruth 123 123 Vers
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
@@ -208,18 +208,19 @@ FUZZY_MAP_pre = [
 
     # now experimental more agressiv search (this maybe overwites other plugins) (S.11.11.'25 09:13 Tue)
 
-    # EXAMPLE: itext x text kapitel 123 vfdph text 123
+    # EXAMPLE: Ruth kapitel 123 Vers 123
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 
-    # EXAMPLE: itext x s text kapitel 123 123 vfdph text
+    # EXAMPLE: Ruth text kapitel 123 123 Vers
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
-    # EXAMPLE: itext x s text 123 kapitel 123 vfdph text
+
+    # EXAMPLE: Ruth 123 kapitel 123 Vers
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
@@ -236,12 +237,13 @@ FUZZY_MAP_pre = [
     #    'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     #}),
 
-    # EXAMPLE: itext x s text 123 123 vfdph text
+
+    # EXAMPLE: Ruth 123 123 Vers
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
-    # EXAMPLE: itext x s text 123 123 vfdph text
+    # EXAMPLE: Was Ruth 1 1 Vers
     ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']

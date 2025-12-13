@@ -91,16 +91,69 @@ FUZZY_MAP_pre = [
     (multiline_string_1, r'^(Python|Zeiten|bei|titan|from)\s*prompt.*$', 80,
      {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: Zeiten prog
+    # EXAMPLE: Python prog
     ('Python prog', r'\bZeiten prog', 80, {'flags': re.IGNORECASE}),
-
 
 
 ]
 test = """
 
-Das sieht schon ganz gut ausDas sieht schon ganz gut aus
-test 1
-test 1
+
+    # Prompt-Formulierung für EXAMPLE-Tags (deutsch, für AIs)
+    Zweck: Ersetze den Tag EXAMPLE durch ein einzeiliges, sofort matchendes und TTS-freundliches Format (keine Satzzeichen außer Leerzeichen).
+    Formatvorgabe (einzeilige Paare, nur Buchstaben und Leerzeichen):
+        EXAMPLE: ErwartetesErgebnis MATCHES Zu matchender Text
+        Erklärung: Das Wort MATCHES dient als Trennwort (nur Buchstaben). Beide Seiten dürfen nur A–Z, a–z und Leerzeichen enthalten.
+    Regeln:
+        Kein Einsatz von Klammern, Bindestrichen, Kommata, Punkten oder anderen Satzzeichen.
+        Das linke Feld ist das erwartete Ergebnis (muss exakt dem ersten Capture der Regex entsprechen).
+        Das rechte Feld ist der Text, der sofort vom Regex matchen muss (exact match, keine zusätzlichen Zeichen).
+    Kurzzeile für Entwickler/AI:
+        Replace EXAMPLE with lines: "EXAMPLE: ExpectedResult MATCHES TextToMatch" — only letters and spaces; ExpectedResult must equal the regex's first capture.
+
+
+    13.12.'25 00:45 Sat
+    Überarbeiteter Prompt (DE, TTS-freundlich, sofort matchend, keine Klammern)
+    Zweck: Ersetze den bestehenden EXAMPLE-Tag durch ein einzeiliges, sofort matchendes, TTS-freundliches Format.
+    Formatvorgabe (einzeilig, nur Buchstaben und Leerzeichen):
+
+
+13.12.'25 00:57 Sat
+Kurzvorschlag: Neues EXAMPLE-Format (TTS-freundlich, sofort matchend, ohne Sonderzeichen)
+
+    Zweck: Einzeilige, sofort matchende Examples für die weitere Verarbeitung.
+    Format: EXAMPLE: ErwartetesErgebnis oder EXAMPLE: ErwartetesErgebnis ZuMatchenderText
+        Wenn nur ein Wort/Begriff angegeben ist, gilt er als both erwartetes Ergebnis und zu matchender Text (einfachstes, sofort matchendes Verhalten).
+        Erlaubte Zeichen: nur Buchstaben A–Z, a–z und Leerzeichen. Keine Klammern, Bindestriche oder Satzzeichen.
+    Kurz für Entwickler/AI:
+        Replace EXAMPLE with lines: EXAMPLE: ExpectedResult or EXAMPLE: ExpectedResult TextToMatch — only letters and spaces; first token is the expected capture.
+
+
+
+
+    # Prompt-Formulierung für EXAMPLE-Tags (Englisch , für AIs)
+    Replace EXAMPLE with lines: "EXAMPLE: ExpectedResult MATCHES TextToMatch" — only letters and spaces; ExpectedResult must match the regex's first capture.
+
+    13.12.'25 00:46 Sat
+    Replace EXAMPLE with lines: "EXAMPLE: ExpectedResult MATCHES TextToMatch" — only letters and spaces; ExpectedResult must equal the regex's first capture.
+
+
+13.12.'25 01:18 Sat
+Vorschlag: finales, TTS-freundliches EXAMPLE-Format (sofort matchend, copy‑paste‑fähig)
+
+    Regel (einfach): Jede Zeile enthält genau das, was später gematcht werden soll.
+        Format: EXAMPLE: TextToMatch
+        Erlaubte Zeichen: nur Buchstaben (A–Z, a–z) und Leerzeichen.
+        Der erste Token/Wort der Zeile dient als erwartetes Ergebnis (erste Capture) — praktisch: ExpectedResult == erstes Wort/erste Wortgruppe.
+        Keine Trennwörter, keine Klammern, keine Satzzeichen.
+
+    Kurzzeile für Developer/AI:
+        Replace EXAMPLE with lines: "EXAMPLE: TextToMatch" — only letters and spaces; first token is expected capture.
+
+13.12.'25 01:25 Sat
+Kurzzeile für Entwickler/AI
+
+    Replace EXAMPLE with lines: EXAMPLE: TextToMatch — only letters and spaces; the first token is the expected capture.
+
 
 """

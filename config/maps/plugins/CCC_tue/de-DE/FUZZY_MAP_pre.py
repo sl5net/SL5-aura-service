@@ -77,7 +77,7 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE: PBW textix tx ex Buch
+    # EXAMPLE: Python Buch
     ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, {'flags': re.IGNORECASE})
 ]
 

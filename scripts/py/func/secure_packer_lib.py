@@ -6,6 +6,8 @@ import logging
 from pathlib import Path
 import pyzipper
 
+from scripts.py.func.password_extract import _extract_password
+
 logger = logging.getLogger(__name__)
 
 def execute(data):
@@ -132,101 +134,6 @@ from typing import Optional, Iterable, IO, Union
 import re
 #import io
 
-def _extract_password(key_path: Union[str, Path, bytes, bytearray, IO, Iterable[str]],
-                      logger,
-                      encoding: str = "utf-8") -> Optional[bytes]:
-    """
-    Read key data from various input forms and return password as bytes (or None).
-    Accepted key_path:
-      - pathlib.Path or str pointing to a file
-      - bytes/bytearray containing password or file content
-      - file-like object (has .read())
-      - iterable of lines (e.g. list/tuple of strings)
-    Heuristics:
-      - prefer assignment lines: password=..., pass: ..., key=...
-      - prefer comment lines starting with '#'
-      - fallback to first non-empty non-comment line
-      - strip BOM, surrounding quotes, CR/LF and inline comments
-    """
-    def read_lines_from_source(src) -> list:
-        # src already an iterable of lines
-        if isinstance(src, (list, tuple)):
-            return [str(x) for x in src]
-        # bytes-like: decode and splitlines
-        if isinstance(src, (bytes, bytearray)):
-            text = src.decode(encoding, errors="replace")
-            return text.splitlines()
-        # file-like
-        if hasattr(src, "read"):
-            data = src.read()
-            if isinstance(data, bytes):
-                data = data.decode(encoding, errors="replace")
-            return str(data).splitlines()
-        # Path or str => open file
-        p = Path(src)
-        with p.open("r", encoding=encoding, errors="replace") as f:
-            return f.read().splitlines()
-
-    def normalise(s: str) -> Optional[bytes]:
-        if s is None:
-            return None
-        s = s.lstrip("\ufeff").strip()                 # remove BOM + surrounding whitespace
-        # strip surrounding quotes if present
-        if (s.startswith('"') and s.endswith('"')) or (s.startswith("'") and s.endswith("'")):
-            s = s[1:-1].strip()
-        # remove inline comment after value
-        s = re.split(r"\s+#", s, 1)[0].strip()
-        if not s:
-            return None
-        try:
-            b = s.encode(encoding)
-            return b.rstrip(b"\r\n")
-        except Exception as e:
-            logger.warning(f"⚠ Could not encode password candidate: {e}")
-            return None
-
-    try:
-        lines = read_lines_from_source(key_path)
-    except Exception as e:
-        logger.error(f"❌ Error reading key source: {e}")
-        return None
-
-    assign_re = re.compile(r'^(?:password|pass|secret|key)\s*[:=]\s*(.+)$', re.IGNORECASE)
-
-    # 1) assignment-like lines (high priority)
-    for raw in lines:
-        raw_r = raw.rstrip("\r\n")
-        m = assign_re.match(raw_r.strip())
-        if m:
-            cand = m.group(1).strip()
-            pw = normalise(cand)
-            if pw:
-                logger.info("✓ Found password via assignment pattern.")
-                return pw
-
-    # 2) comment lines starting with '#'
-    for raw in lines:
-        stripped = raw.strip()
-        if not stripped:
-            continue
-        if stripped.startswith("#"):
-            cand = stripped.lstrip("#").strip()
-            pw = normalise(cand)
-            if pw:
-                logger.info("scripts/py/func/secure_packer_lib.py:171: ✓ Found password in comment.")
-                return pw
-
-    # 3) fallback: first non-empty, non-comment line
-    for raw in lines:
-        stripped = raw.strip()
-        if stripped and not stripped.startswith("#"):
-            pw = normalise(stripped)
-            if pw:
-                logger.info("✓ Found password in plaintext line.")
-                return pw
-
-    logger.warning("⚠ No valid password pattern found in key file.")
-    return None
 
 
 # config/maps/_privat555/secure_packer.py:182

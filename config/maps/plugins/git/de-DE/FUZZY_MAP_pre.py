@@ -11,12 +11,11 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
-# kit cubic
 # EXAMPLE: git
 gitGit = r'(git|Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit|kit|peach|quitt)'
 
-# EXAMPLE: Komet
-commitGit = r'(Komet|Komik|Comics|Gummi|gummis|kommt|kommend|Commit|mit|hitch|komm|Kometen|kubicki|komisch|gewinnen|gromit|komme|kubis|cobit|cubic|beach|gemütlich|quitt|google)'
+# EXAMPLE: Commit
+commitGit = r'(Commit|Komet|Komik|Comics|Gummi|gummis|kommt|kommend|mit|hitch|komm|Kometen|kubicki|komisch|gewinnen|gromit|komme|kubis|cobit|cubic|beach|gemütlich|quitt|google)'
 
 FUZZY_MAP_pre = [
 
@@ -27,17 +26,14 @@ FUZZY_MAP_pre = [
 
 
 
-    # git commit -m "..." --no-verify
-    #nö very far
-    #no very far
-    # EXAMPLE: no
+    # EXAMPLE: no verify
     ('n --no-verify', rf'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80, {'flags': re.IGNORECASE}),
 
     #no-verifyno-verifyl --no-verifyNumeri fein
 
 
 
-    # EXAMPLE: s VAR VAR s
+    # EXAMPLE: git commit
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
 
     # happens very seldem :D 18.11.'25 17:53 Tue
@@ -45,12 +41,12 @@ FUZZY_MAP_pre = [
     ('git commit message ', rf'\bQuarzwerk gibt komm Mitmensch\b ', 80, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: gibt kaum mitx
+    # EXAMPLE: git commit
     ('git commit', rf'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
 
 
 
-    # EXAMPLE: s VAR klar
+    # EXAMPLE: git clone
     ('git clone ', rf'^\s*{gitGit}\s+(klar|klon)\s*$', 80, {'flags': re.IGNORECASE}),
 
     # git@github.com:kiwix/kiwix-tools.git
@@ -63,10 +59,10 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
-    # EXAMPLE: s pull s requests
+    # EXAMPLE: pull requests
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: null
+    # EXAMPLE: pull requests
     ('pull requests', r'\b(null|pull) requests\b', 82, {'flags': re.IGNORECASE}),
 
 
@@ -75,30 +71,30 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE: Feature s prince
+    # EXAMPLE: Feature prince
     ('feature branch', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: Feature s prince
+    # EXAMPLE: Feature prince
     ('feature branch', r'\bFeature\s*(prince|ranch)\b', 82, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: s git
+    # EXAMPLE: git checkout
     ('git checkout ', r'^\s*(git|geht)\s+(Git Checkout|Check-out)\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s kitschiger
+    # EXAMPLE: git checkout
     ('git checkout ', r'^\s*(kitschiger|Geht Tscheka)\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: Branch
+    # EXAMPLE: git branch
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: Ranch s Namen
+    # EXAMPLE: Branch Name
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: komm s mit
+    # EXAMPLE: Commit
     (' Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: kommen s mit s Message
+    # EXAMPLE: Commit Message
     (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: neues s Verlies
-    ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: neues Release
+    ('neues Release', r'\bneues\s*(Release|Verlies)\b', 82, {'flags': re.IGNORECASE}),
 
 
 
@@ -109,18 +105,18 @@ FUZZY_MAP_pre = [
     # geht's starte Gliedstaat ist
     # Geht Staat git status git status Jetzt startet
 
-    # EXAMPLE: s Geht
+    # EXAMPLE: git status
     ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
 
 
 
-    # EXAMPLE: s Gliedstaat
+    # EXAMPLE: Gliedstaaten
     ('git status', r'^\s*(Gliedstaat|Gliedstaaten|Jetzt Stadt|Geht Staat ist|geht status)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s Gliedstaat
+    # EXAMPLE: Gliedstaat
     ('git status', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s gitschtal
+    # EXAMPLE: gitschtal
     ('git status', r'^\s*(gitschtal|glitschte|quatscht hatte|quitscht|quitscht werden|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
 
 #geht statisch
@@ -128,10 +124,10 @@ FUZZY_MAP_pre = [
 
     # --- git add . --- git add .
     # Gitta hat
-    # EXAMPLE: s git
+    # EXAMPLE: git add .
     ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App|er hat)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s Gitterbett
+    # EXAMPLE: Gitterbett
     ('git add .', r'^\s*(Gitterbett|Geht er hin|kredit|quitte hat)\s*$', 78, {'flags': re.IGNORECASE}),
 
     # Geht er hat
@@ -146,11 +142,11 @@ FUZZY_MAP_pre = [
     #gehtHat quickGeht schnell
     #git add . && git commit -m "WIP" && git push; && git
 
-    # EXAMPLE: s git
+    # EXAMPLE: git WIP push
     (f'!git add . && git commit -m "WIP" && git push', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: s git
+    # EXAMPLE: git WIP push
     (f'!git add . && git commit -m "WIP" && git push; && git ', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
     ############################################
 
@@ -159,53 +155,53 @@ FUZZY_MAP_pre = [
     # (f'cd {CONFIG_DIR}/../../../../../; !git add . && git commit -m "WIP" && git push', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
 
     # --- git commit ---
-    # EXAMPLE: s Klitschko mit s
+    # EXAMPLE: Klitschko mit
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s kate Commit s
+    # EXAMPLE: kate Commit
     ('git commit ', r'^\s*kate Commit\s*$', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s Einen Kometen s
+    # EXAMPLE: Einen Kometen
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s Geht Commit
+    # EXAMPLE: Geht Commit
     ('git commit ', r'^\s*(Geht Commit|Geht womit|petkovic)\s*$', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s Geht komm Commit s
+    # EXAMPLE: Geht komm Commit
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s gehst du mit s
+    # EXAMPLE: gehst du mit
     ('git commit ', r'^\s*(gehst du mit)\s*$', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s womit s
+    # EXAMPLE: womit s
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
     # EXAMPLE: geht cobit einen
     ('git commit ', r'^geht cobit einen$', 85, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s git
+    # EXAMPLE: git push
     ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push|pushen|prüfen|futsch)\s*$', 85, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s kate bush s
+    # EXAMPLE: kate bush
     ('git push ', r'^\s*kate\s+bush\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s pitbull s
+    # EXAMPLE: pitbull
     ('git push ', r'^\s*pitbull\s*$', 80, {'flags': re.IGNORECASE}),
 
     # --- git pull ---
-    # EXAMPLE: s git
-    ('git pull', r'^\s*(git|geht|quiet|gitter)\s*(pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: git pull
+    ('git pull', r'^\s*(git|geht|quiet|gitter)\s*(pull|pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: s git s pull s
     ('git pull', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
 
     # --- git diff ---
-    # EXAMPLE: s kit
+    # EXAMPLE: git diff
     ('git diff', r'^\s*(kit|git|geht|peach)\s*(diff|tief|tiff|tüv|juice|tipps|geht\'s|kittys|dies|die)\s*$', 75, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s git
+    # EXAMPLE: git switch
     ('git switch ', r'^\s*(git|geht|peach)\s*(switch|Schmidt)\s*$', 75, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s git
-    ('git fetch; git pull"', r'^\s*(git|Gilt|geht) (fett)\s*$"', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: git pull
+    ('git fetch; git pull"', r'^\s*(git|Gilt|geht) (pull|fett)\s*$"', 80, {'flags': re.IGNORECASE}),
 
 ##################################################################
 
-    # EXAMPLE: s pull s requests
+    # EXAMPLE: pull requests
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: null
+    # EXAMPLE: pull requests
     ('pull requests', r'\b(null|pull) requests\b', 82, {'flags': re.IGNORECASE}),
 
 # bitte schreib mir denn geht kommen mit text'
@@ -213,23 +209,23 @@ FUZZY_MAP_pre = [
     ('git commit text', r'\b(geht kommen mit text)\b', 75, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: Feature s prince
+    # EXAMPLE: Feature prince
     ('feature branch', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: Branch
+    # EXAMPLE: Branch löschen
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: Ranch s Namen
+    # EXAMPLE: Ranch Namen
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: komm s mit
+    # EXAMPLE: komm mit
     (' Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: kommen s mit s Message
+    # EXAMPLE: kommen mit Message
     (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: neues s Verlies
+    # EXAMPLE: neues Verlies
     ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: Kot s abschnittt
+    # EXAMPLE: code abschnittt
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: stob s Button
+    # EXAMPLE: stop button
     ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: lobt s Case
+    # EXAMPLE: lobt Case
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Auto k
@@ -301,10 +297,13 @@ FUZZY_MAP_pre = [
     # EXAMPLE: gibt Knorr
     ('.gitignore', r'\b(gibt Knorr)\b$', 75, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: releasx protokollx
+    # EXAMPLE: neues release
     ("alias release_protokoll='gh release list --limit 100 | awk \"{print $1}\" | while read tag; do if [ -n \"$tag\" ]; then echo -e \"\n\n--- RELEASE: $tag ---\n\"; gh release view \"$tag\"; fi; done > all_releases.txt && kate all_releases.txt'", r'\b(releas\w* protokoll\w*|Relais\w* Protokolle|alle releases|releas\w* export\w*|frites Protokolle)\b$', 75, {'flags': re.IGNORECASE}),
 
 ]
+
+
+
 
 
 """

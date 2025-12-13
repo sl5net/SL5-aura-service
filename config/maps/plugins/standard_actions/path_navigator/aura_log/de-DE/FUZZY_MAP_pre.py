@@ -47,23 +47,21 @@ fi | fzf --style full --preview 'cat {}' --bind 'focus:transform-header:file --b
 
 FUZZY_MAP_pre = [
 
-    # dictation_service.log
-    #    log
+    # EXAMPLE: log
     (f'{os.path.join(PROJECT_ROOT_FOR_MAP,"log","dictation_service.log")}',
-    # EXAMPLE: Aura
+
+    # EXAMPLE: Aura log
     r'^(Aura |laura |dora |hurra |\w?aura |prora |zauberer |over a |oral )?(log-datei|L[o]+[gk]\w*|L[o]+[gk]\w*|L[o]+[gk]\w*|low|luck|lux|luft|b datei|voll gesorgt)$',
     95,
     {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
 
-#oder a Lookroter LookOral Look
-    # ~/log/dictation_service.log
-
-    # , "dictation_service.log"
+    # EXAMPLE: log
     (f'tail -f {os.path.join(PROJECT_ROOT_FOR_MAP,"log","dictation_service.log")}',
-     # EXAMPLE: Follow Main L o gk x
-     r'^(Follow Main L[o]+[gk]\w*|Folge L[o]+[gk]\w*|folge luft|Zeige L[o]+[gk]\w*|Zeige Luft)$',
-     95,
-     {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
+
+    # EXAMPLE: Follow Main Log
+    r'^(Follow Main L[o]+[gk]\w*|Folge L[o]+[gk]\w*|folge luft|Zeige L[o]+[gk]\w*|Zeige Luft)$',
+    95,
+    {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
 
 
 ]

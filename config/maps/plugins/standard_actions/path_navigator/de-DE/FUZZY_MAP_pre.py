@@ -110,22 +110,22 @@ FUZZY_MAP_pre = [
 
 
     (f"{fzf_smart_file_finder}",
-     # EXAMPLE: suche
+     # EXAMPLE: suche file
      r'^(suche|search|find)\s+(file|datei)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     (f"{fzf_in_gitRepo}",
-     # EXAMPLE: file
-     r'^(file|datei|Details) (suche|search|find)$',
-     90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     # EXAMPLE: file search
+    r'^(file|datei|Details) (suche|search|find)$',
+    90,
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     #
 
     # sometimes here (18.11.'25 10:36 Tue) stt undstand wrong this is quickfix:
     (f"{fzf_smart_file_finder}",
-     # EXAMPLE: falsche
+     # EXAMPLE: suche Datei
      r'^(falsche|somit datei|suche data|suche Datei|navigiere datei|suche Dateien|datei suche\w*|so geleitet hat|sorry datei)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
@@ -135,7 +135,7 @@ FUZZY_MAP_pre = [
     # https://junegunn.github.io/fzf/
     # sorry datei
     (f"{fzf_smart_file_finder}",
-     # EXAMPLE: suche
+     # EXAMPLE: suche alles
      r'^(suche|search|find)\s+(alles|everything|überall|everywhere|everything)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
@@ -144,7 +144,7 @@ FUZZY_MAP_pre = [
 
 
     (f'{PROJECT_ROOT_FOR_MAP}',
-     # EXAMPLE: Aura
+     # EXAMPLE: Aura Pfad
      r'^(Aura|Agora|Aurora|ora|hurra|Flora)\s+(Aura|Pfad)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
@@ -157,27 +157,27 @@ FUZZY_MAP_pre = [
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     (f'{home_dir_str}',
-     # EXAMPLE: home
+     # EXAMPLE: home Dir
      r'^(home|heimat|user)\s+(Pfad|Dir\w*)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
-    # 2. Navigiere zu Aura Config (Directory)
+    # Navigiere zu Aura Config
     (f'cd {os.path.join(PROJECT_ROOT_FOR_MAP, "config")}',
     # EXAMPLE: Navigiere Aura
     r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)\s*Konf\w*$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    # EXAMPLE: Navigiere zu Aura (Directory)
+    # EXAMPLE: Navigiere zu Aura
     (f'cd {os.path.join(PROJECT_ROOT_FOR_MAP)}',
     # EXAMPLE: Navigiere
     r'^(Navigiere|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    # EXAMPLE: 2. Config (Directory)
+    # EXAMPLE: Config
     (f'{os.path.join(PROJECT_ROOT_FOR_MAP, "config", "settings.py")}',
      # EXAMPLE: Aura
      r'^(Aura|Laura|over|Dora|Horror)\s+(Konf\w*|konzentration)$',

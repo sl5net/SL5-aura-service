@@ -22,16 +22,16 @@ FUZZY_MAP_pre = [
     # EXAMPLE: s deutsche pizza
     ('Deutsch bitte', r'^\s*(deutsche) (pizza|pigeons|putin|bit|p)\s*$', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: lobt s Case
+    # EXAMPLE: lobtCase
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: lobt s Case
+    # EXAMPLE: lobtCase
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: much whole
-    ('Manjaro', r'\b(much whole|munchau|mon travel|Manchu|Much\s*whole)\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: Manjaro
+    ('Manjaro', r'\b(Manjaro|much whole|munchau|mon travel|Manchu|Much\s*whole)\b', 82, {'flags': re.IGNORECASE}),
 # Much whole Mon travel
 # One troll Michelle
 
@@ -48,7 +48,7 @@ FUZZY_MAP_pre = [
 
 
     ('SL5 Aura is a System-Wide, Offline Voice Automation and Command Framework. It instantly turns spoken words into commands, hotkeys, or text, with 100% privacy guarantee due to its offline operation. Its core is a powerful, scriptable RegEx Rule Engine that allows developers to create deeply customizable, multi-step workflows for professional and system-level automation.',
-     # EXAMPLE: Whatx  Aura  
+     # EXAMPLE: Whats Aura
      r'^(What\w*\b.*\bAura\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #What is aura What is aura
 

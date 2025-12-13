@@ -42,7 +42,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Btextixttext Buch
     ('Python-Buch', r'^(B\w+i\wt\w+ Buch)$', 60, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: PBW textix tx ex Buch
+    # EXAMPLE: Python-Buch
     ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, {'flags': re.IGNORECASE}),
 
     # ('Kursleiterschulung', r'^(Kursleiter\s*schu\w*| Dozenten Schulung  Dozenten Fortbildung)$', 60, {'flags': re.IGNORECASE})
