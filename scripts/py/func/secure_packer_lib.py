@@ -18,7 +18,7 @@ def execute_packing_logic(current_dir, logger):
     Creates a 'Matryoshka-ZIP' with extensive debug logging.
     """
     logger.info("==================================================")
-    logger.info("🚀 SECURE_PACKER: on_reload() triggered.")
+    logger.info("🚀 secure_packer_lib triggered.")
 
     try:
         # 1. PATH ANALYSIS
@@ -118,9 +118,9 @@ def execute_packing_logic(current_dir, logger):
         logger.info(f"🔐 Password extracted successfully (Length: {pass_len} chars).")
         blob_name = "aura_secure.blob"
         blob_path = parent_dir / blob_name
-        zipme(blob_path, current_dir,password)
+        zip_me(blob_path, current_dir,password)
 
-        zipme(zip_path_outer, blob_path,password)
+        zip_me(zip_path_outer, blob_path,password)
         # config/maps/_privat555/secure_packer.py:72
         os.remove(blob_path)
 
@@ -128,8 +128,7 @@ def execute_packing_logic(current_dir, logger):
     except Exception as e:
         logger.error(f"❌ CRITICAL EXCEPTION in SecurePacker: {e}", exc_info=True)
 
-# config/maps/_privat555/secure_packer.py:182
-def zipme(zip_path_outer, current_dir_or_single_file, password):
+def zip_me(zip_path_outer, current_dir_or_single_file, password):
     pw = password.encode("utf-8") if isinstance(password, str) else password
     current = str(current_dir_or_single_file)
 
@@ -139,14 +138,14 @@ def zipme(zip_path_outer, current_dir_or_single_file, password):
         zf.setpassword(pw)
 
         if os.path.isfile(current):
-            arcname = os.path.basename(current)
-            zf.write(current, arcname)
+            arc_name = os.path.basename(current)
+            zf.write(current, arc_name)
         else:
             base_len = len(current.rstrip(os.sep)) + 1
             for root, _, files in os.walk(current):
                 for fn in files:
                     full = os.path.join(root, fn)
-                    arcname = full[base_len:]
-                    zf.write(full, arcname)
+                    arc_name = full[base_len:]
+                    zf.write(full, arc_name)
 
     logger.info(f"📄 Zip Output: {zip_path_outer}")

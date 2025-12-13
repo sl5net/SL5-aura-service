@@ -5,26 +5,22 @@
 
 # --- Argument Parsing for Exclusion (NEW) ---
 param(
-    [string]$Exclude = ""
+    [string]$Exclude = $null
 )
-
-
 
 # --- Make script location-independent ---
 $ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
 Set-Location -Path $ProjectRoot
 Write-Host "--> Running setup from project root: $(Get-Location)"
 
-
-
 $EXCLUDE_LANGUAGES = $Exclude
 
 if (-not [string]::IsNullOrEmpty($EXCLUDE_LANGUAGES)) {
     Write-Host "--> Exclusion list detected: $EXCLUDE_LANGUAGES" -ForegroundColor Yellow
+} else {
+    Write-Host "No exclusion list provided."
 }
 # --- End Argument Parsing ---
-
-
 
 
 $ErrorActionPreference = "Stop"
