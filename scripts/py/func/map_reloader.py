@@ -42,7 +42,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
         for map_file_path in maps_base_dir.glob("**/*.py"):
             if map_file_path.name == "__init__.py":
-                continue  # Ignore __init__.py files
+                continue
 
             # Security Check: Prevent loading of private maps (starting with _) in API mode
             # This checks ANY part of the path relative to maps_base_dir
@@ -144,8 +144,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     # DEBUG: Log that we hit an exception (expected for key files)
                     # logger.info(f"💥 Import Exception - check its private? for {module_name}: {e}")
 
-                    was_private_map = _private_map_ex(map_file_key,
-                                                                    logger)
+                    was_private_map = _private_map_ex(map_file_key, logger)
 
 
 

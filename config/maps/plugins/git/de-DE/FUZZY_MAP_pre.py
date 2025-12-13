@@ -42,9 +42,10 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: git commit
-    ('git commit', rf'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', rf'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
 
-
+    # EXAMPLE: git commit
+    ('git commit ', rf'\bgit commit\b', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git clone
     ('git clone ', rf'^\s*{gitGit}\s+(klar|klon)\s*$', 80, {'flags': re.IGNORECASE}),
@@ -72,10 +73,10 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: Feature prince
-    ('feature branch', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
+    ('feature branch ', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Feature prince
-    ('feature branch', r'\bFeature\s*(prince|ranch)\b', 82, {'flags': re.IGNORECASE}),
+    ('feature branch ', r'\bFeature\s*(prince|ranch)\b', 82, {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: git checkout
@@ -89,12 +90,12 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Branch Name
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: Commit
-    (' Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit ', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: Commit Message
-    (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit Message ', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: neues Release
-    ('neues Release', r'\bneues\s*(Release|Verlies)\b', 82, {'flags': re.IGNORECASE}),
+    ('neues Release ', r'\bneues\s*(Release|Verlies)\b', 82, {'flags': re.IGNORECASE}),
 
 
 
@@ -106,15 +107,15 @@ FUZZY_MAP_pre = [
     # Geht Staat git status git status Jetzt startet
 
     # EXAMPLE: git status
-    ('git status', r'^\s*(Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git status ', r'^\s*(Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
 
 
 
     # EXAMPLE: Gliedstaaten
-    ('git status', r'^\s*(Gliedstaat|Gliedstaaten|Jetzt Stadt|Geht Staat ist|geht status)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git status ', r'^\s*(Gliedstaat|Gliedstaaten|Jetzt Stadt|Geht Staat ist|geht status)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Gliedstaat
-    ('git status', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git status ', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: gitschtal
     ('git status', r'^\s*(gitschtal|glitschte|quatscht hatte|quitscht|quitscht werden|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
@@ -182,13 +183,13 @@ FUZZY_MAP_pre = [
 
     # --- git pull ---
     # EXAMPLE: git pull
-    ('git pull', r'^\s*(git|geht|quiet|gitter)\s*(pull|pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git pull ', r'^\s*(git|geht|quiet|gitter)\s*(pull|pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: s git s pull s
-    ('git pull', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git pull ', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
 
     # --- git diff ---
     # EXAMPLE: git diff
-    ('git diff', r'^\s*(kit|git|geht|peach)\s*(diff|tief|tiff|tüv|juice|tipps|geht\'s|kittys|dies|die)\s*$', 75, {'flags': re.IGNORECASE}),
+    ('git diff ', r'^\s*(kit|git|geht|peach)\s*(diff|tief|tiff|tüv|juice|tipps|geht\'s|kittys|dies|die)\s*$', 75, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git switch
     ('git switch ', r'^\s*(git|geht|peach)\s*(switch|Schmidt)\s*$', 75, {'flags': re.IGNORECASE}),

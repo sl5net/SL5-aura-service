@@ -128,14 +128,6 @@ def execute_packing_logic(current_dir, logger):
     except Exception as e:
         logger.error(f"❌ CRITICAL EXCEPTION in SecurePacker: {e}", exc_info=True)
 
-
-#from pathlib import Path
-from typing import Optional, Iterable, IO, Union
-import re
-#import io
-
-
-
 # config/maps/_privat555/secure_packer.py:182
 def zipme(zip_path_outer, current_dir_or_single_file, password):
     pw = password.encode("utf-8") if isinstance(password, str) else password
