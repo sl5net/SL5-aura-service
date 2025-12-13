@@ -18,45 +18,26 @@ def _private_map_ex(map_file_key: str, logger) -> bool:
     map_dir = str(pathlib.Path(map_file_key).parent)
 
     # 2. Check for the private map pattern in this directory
-    # key_file = None
-    zip_file = None
+    # startswith('.') and endswith('.py')
+    key_file = map_file_key
 
-    # 1. Liste für die gesammelten Passwörter initialisieren
-    found_passwords = []
-
-    # search for key_file
-    for item in os.listdir(map_dir):
-        path_item = os.path.join(map_dir, item)
-
-        # Trigger is a .py file that starts with a dot
-        if item.startswith('.') and item.endswith('.py') and os.path.isfile(path_item):
-            logger.info(f"found key_file candidate: {path_item}")
-
-            # 2. Passwort direkt extrahieren (innerhalb der Schleife)
-            pw_bytes = _extract_password(path_item, logger)
-
-            # 3. Wenn ein Passwort gefunden wurde, zur Liste hinzufügen
-            if pw_bytes:
-                found_passwords.append(pw_bytes)
-            else:
-                logger.warning(f"❌ Key file found but empty or invalid: {path_item}")
-
-    # Prüfen, ob die Liste leer ist
-    if not found_passwords:
+    pw = _extract_password(key_file, logger)
+    if not pw:
         logger.error("No valid passwords found in any key file.")
         return False
 
     # CRITICAL SECURITY CHECK
     if not _check_gitignore_for_security(logger):
         return False
-
+    zip_file = None
     try:
+        # try unzip all zips with this
         for item in os.listdir(map_dir):
             path_item = os.path.join(map_dir, item)
 
             if item.lower().endswith('.zip') and os.path.isfile(path_item):
                 zip_file = path_item
-                logger.info(f"scripts/py/func/map_reloader.py:216 -> zip found: {zip_file}")
+                logger.info(f"scripts/py/func/map_reloader.py:244: {map_file_key} > zip found: {zip_file}")
             if not zip_file:
                 continue
 
@@ -68,7 +49,7 @@ def _private_map_ex(map_file_key: str, logger) -> bool:
 
             # Check if already unpacked
             if os.path.exists(target_maps_dir):
-                logger.info(f'scripts/py/func/map_reloader.py:244: {target_maps_dir} already unpacked -> return True')
+                logger.info(f'scripts/py/func/map_reloader.py:244: {map_file_key} > {item} || {target_maps_dir} already unpacked -> return True')
                 continue
 
             # UNPACKING LOGIC (Matryoshka-Support)
@@ -79,52 +60,51 @@ def _private_map_ex(map_file_key: str, logger) -> bool:
             try:
                 # A) Outer Unpack (Decryption)
 
-                for pw_bytes in found_passwords:
 
-                    with pyzipper.AESZipFile(zip_file, 'r') as outer_zip:
-                        outer_zip.setpassword(pw_bytes)
-                        outer_zip.extractall(temp_unpack_dir)
+                with pyzipper.AESZipFile(zip_file, 'r') as outer_zip:
+                    outer_zip.setpassword(pw)
+                    outer_zip.extractall(temp_unpack_dir)
 
-                    # B) Matryoshka Check (Is there a blob inside?)
-                    unpacked_files = os.listdir(temp_unpack_dir)
-                    source_dir = temp_unpack_dir  # Default: Flat structure
+                # B) Matryoshka Check (Is there a blob inside?)
+                unpacked_files = os.listdir(temp_unpack_dir)
+                source_dir = temp_unpack_dir  # Default: Flat structure
 
-                    if len(unpacked_files) == 1 and unpacked_files[0] == "aura_secure.blob":
-                        logger.info("🔎 Detected Matryoshka-Container (Nested ZIP). Unpacking inner layer...")
-                        blob_path = os.path.join(temp_unpack_dir, "aura_secure.blob")
-                        inner_temp = os.path.join(temp_unpack_dir, "_inner")
-                        os.makedirs(inner_temp, exist_ok=True)
+                if len(unpacked_files) == 1 and unpacked_files[0] == "aura_secure.blob":
+                    logger.info("🔎 Detected Matryoshka-Container (Nested ZIP). Unpacking inner layer...")
+                    blob_path = os.path.join(temp_unpack_dir, "aura_secure.blob")
+                    inner_temp = os.path.join(temp_unpack_dir, "_inner")
+                    os.makedirs(inner_temp, exist_ok=True)
 
-                        # Read the blob bytes and open inner zip from memory (works for encrypted inner zips too)
-                        with open(blob_path, 'rb') as f:
-                            blob_bytes = f.read()
+                    # Read the blob bytes and open inner zip from memory (works for encrypted inner zips too)
+                    with open(blob_path, 'rb') as f:
+                        blob_bytes = f.read()
 
-                        with pyzipper.AESZipFile(BytesIO(blob_bytes), 'r') as inner_zip:
-                            inner_zip.setpassword(pw_bytes)
-                            inner_zip.extractall(inner_temp)
+                    with pyzipper.AESZipFile(BytesIO(blob_bytes), 'r') as inner_zip:
+                        inner_zip.setpassword(pw)
+                        inner_zip.extractall(inner_temp)
 
-                        os.remove(blob_path)
-                        source_dir = inner_temp
+                    os.remove(blob_path)
+                    source_dir = inner_temp
 
-                    #scripts/py/func/map_reloader.py:261
-                    # --------------------------------------------------------------------------------
-                    # 5. NORMALIZATION & MOVE
+                #scripts/py/func/map_reloader.py:261
+                # --------------------------------------------------------------------------------
+                # 5. NORMALIZATION & MOVE
 
-                    # Check for nested single-folder (Zip-Artifacts)
-                    content = os.listdir(source_dir)
-                    if len(content) == 1 and os.path.isdir(os.path.join(source_dir, content[0])):
-                        final_source = os.path.join(source_dir, content[0])
-                    else:
-                        final_source = source_dir
+                # Check for nested single-folder (Zip-Artifacts)
+                content = os.listdir(source_dir)
+                if len(content) == 1 and os.path.isdir(os.path.join(source_dir, content[0])):
+                    final_source = os.path.join(source_dir, content[0])
+                else:
+                    final_source = source_dir
 
-                    # Create FINAL target directory
-                    os.makedirs(target_maps_dir, exist_ok=True)
+                # Create FINAL target directory
+                os.makedirs(target_maps_dir, exist_ok=True)
 
-                    # Move files
-                    for item2 in os.listdir(final_source):
-                        shutil.move(os.path.join(final_source, item2), target_maps_dir)
+                # Move files
+                for item2 in os.listdir(final_source):
+                    shutil.move(os.path.join(final_source, item2), target_maps_dir)
 
-                    logger.info(f"📦 Unpack complete. Files ready in '{target_maps_dir}'.")
+                logger.info(f"📦 Unpack complete. Files ready in '{target_maps_dir}'.")
 
 
             except Exception as e:
@@ -132,7 +112,7 @@ def _private_map_ex(map_file_key: str, logger) -> bool:
                 # Cleanup on failure
                 if os.path.exists(temp_unpack_dir):
                     shutil.rmtree(temp_unpack_dir)
-                return False
+                continue
 
             # Cleanup Temp Dir on Success
             if os.path.exists(temp_unpack_dir):
