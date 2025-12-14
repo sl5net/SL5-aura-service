@@ -37,7 +37,7 @@ def _private_map_ex(map_file_key: str, logger) -> bool:
 
             if item.lower().endswith('.zip') and os.path.isfile(path_item):
                 zip_file = path_item
-                logger.info(f"scripts/py/func/map_reloader.py:244: {map_file_key} > zip found: {zip_file}")
+                # logger.info(f"scripts/py/func/map_reloader.py:244: {map_file_key} > zip found: {zip_file}")
             if not zip_file:
                 continue
 
@@ -49,14 +49,14 @@ def _private_map_ex(map_file_key: str, logger) -> bool:
 
             # Check if already unpacked
             if os.path.exists(target_maps_dir):
-                logger.info(f'scripts/py/func/map_reloader.py:244: {map_file_key} > {item} || {target_maps_dir} already unpacked -> return True')
+                # logger.info(f'scripts/py/func/map_reloader.py:244: {map_file_key} > {item} || {target_maps_dir} already unpacked -> return True')
                 continue
 
             # UNPACKING LOGIC (Matryoshka-Support)
             temp_unpack_dir = os.path.join(map_dir, f".__tmp_unpack_{os.getpid()}")
             os.makedirs(temp_unpack_dir, exist_ok=False)
 
-            logger.info(f"🔑 Unpacking '{zip_file}' to TEMP: '{temp_unpack_dir}'.")
+            # logger.info(f"🔑 Unpacking '{zip_file}' to TEMP: '{temp_unpack_dir}'.")
             try:
                 # A) Outer Unpack (Decryption)
 

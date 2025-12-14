@@ -133,7 +133,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: chat mit gemini
-    ('https://aistudio.google.com/prompts/new_chat', r'^chat mit\s+(gemini|cheminée|chip|Kevin)\b.*$', 70, {
+    ('https://aistudio.google.com/prompts/new_chat', r'^chat mit\s+(gemini|cheminée|Boot Gaming nein|chip|Kevin)\b.*$', 70, {
         'flags': re.IGNORECASE
     }),
 

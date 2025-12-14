@@ -27,9 +27,10 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
     except Exception as e:
         logger.info(f"❌ Error is_fist5are_letters: {e}")
 
-
     # helper to normalise candidate and return bytes if valid
+
     def normalise(s: str) -> Optional[bytes]:
+
         if not s:
             return None
         # remove BOM if present
@@ -92,8 +93,6 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
         logger.info('🌍 This 🔒 encrypted 📦 ZIP file is portable (fist 5 are letters): External extraction 📤 supported.')
     return pw
 
-
-import re
 _first5_re = re.compile(r'^[A-Za-z]{5}')
 
 def file_first_line_has_ascii5(key_path: str, logger, encoding: str = 'utf-8') -> bool:

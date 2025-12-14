@@ -103,7 +103,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: lobt s Case
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: Auto k
+    # EXAMPLE: AutoKey
     ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: bild prozess

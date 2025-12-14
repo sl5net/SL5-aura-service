@@ -86,10 +86,17 @@ FUZZY_MAP_pre = [
     # EXAMPLE: ai
     (multiline_string_1, r'^(ai|a|ei|pay|hey|hi|h)\s*\w?\ş*prompt\s*(for|vor|ver)?(\s+(Python|Zeiten|bei|titan))?.*$', 80, {'flags': re.IGNORECASE}),
 
+
     # Python
-    # EXAMPLE: Python
-    (multiline_string_1, r'^(Python|Zeiten|bei|titan|from)\s*prompt.*$', 80,
+    # EXAMPLE: Python prompt
+    (multiline_string_1, r'^(Python|Zeiten|bei|titan|from|bei chain)\s*prompt.*$', 80,
      {'flags': re.IGNORECASE}),
+
+    # EXAMPLE: Python prompt
+    (multiline_string_1, r'^(breitenbrunn)\s*prompt.*$', 80,
+     {'flags': re.IGNORECASE}),
+
+
 
     # EXAMPLE: Python prog
     ('Python prog', r'\bZeiten prog', 80, {'flags': re.IGNORECASE}),

@@ -229,7 +229,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: lobt Case
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: Auto k
+    # EXAMPLE: AutoKey
     ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
 
     # === Git Commands (Consolidated & Case-Insensitive) ===
