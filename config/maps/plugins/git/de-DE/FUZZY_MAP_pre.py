@@ -19,12 +19,6 @@ commitGit = r'(Commit|Komet|Komik|Comics|Gummi|gummis|kommt|kommend|mit|hitch|ko
 
 FUZZY_MAP_pre = [
 
-    # geht geht cobit
-
-
-    # novell fall
-
-
 
     # EXAMPLE: no verify
     ('n --no-verify', rf'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80, {'flags': re.IGNORECASE}),
@@ -41,14 +35,14 @@ FUZZY_MAP_pre = [
     ('git commit message ', rf'\bQuarzwerk gibt komm Mitmensch\b ', 80, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: git commit
+    # EXAMPLE: gibt kaum mit
     ('git commit ', rf'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit
     ('git commit ', rf'\bgit commit\b', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git clone
-    ('git clone ', rf'^\s*{gitGit}\s+(klar|klon)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git clone ', rf'^\s*{gitGit}\s+(klar|klon|clone)\s*$', 80, {'flags': re.IGNORECASE}),
 
     # git@github.com:kiwix/kiwix-tools.git
     #
@@ -168,7 +162,7 @@ FUZZY_MAP_pre = [
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
     # EXAMPLE: gehst du mit
     ('git commit ', r'^\s*(gehst du mit)\s*$', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: womit s
+    # EXAMPLE: womit
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
     # EXAMPLE: geht cobit einen
     ('git commit ', r'^geht cobit einen$', 85, {'flags': re.IGNORECASE}),
@@ -216,31 +210,26 @@ FUZZY_MAP_pre = [
     ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: Ranch Namen
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: komm mit
+    # EXAMPLE: Commit Message
     (' Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: kommen mit Message
     (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: neues Verlies
-    ('neues Release', r'\bneues\s*Verlies\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: code abschnittt
+    # EXAMPLE: neues Release
+    ('neues Release', r'\bneues\s*(Verlies|Release)\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: Code Abschnitt
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: stop button
     ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: lobt Case
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: AutoKey
-    ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
-
-    # === Git Commands (Consolidated & Case-Insensitive) ===
-
     # --- git status ---
     # This one regex replaces 5 old entries.
-    # EXAMPLE: s git
+    # EXAMPLE: git status
     ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|dates)\s*$', 82, {'flags': re.IGNORECASE}),
 
     # --- git add . ---
-    # EXAMPLE: s git
+    # EXAMPLE: git add
     ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|ab|at|ritt|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
 
     # --- git commit ---
