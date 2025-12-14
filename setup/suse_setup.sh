@@ -299,7 +299,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 # --- 5. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.
-echo "--> Creating Python package markers (__init__.py)..."
+echo '--> Creating Python package markers (__init__.py)...'
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
 
