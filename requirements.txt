@@ -12,7 +12,7 @@ thefuzz==0.22.1
 vosk==0.3.45
 watchdog==6.0.0
 webrtcvad_wheels==2.0.14
-psutil>=5.9.0
+psutil>=7.0.0
 requests>=2.28.0
 tqdm>=4.60.0
 colorama>=0.4.0

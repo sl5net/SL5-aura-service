@@ -81,7 +81,7 @@ sed -i '/^tqdm/d' requirements.txt
 sed -i '/^colorama/d' requirements.txt
 
 # Re-add them with loose versioning
-echo "psutil>=5.9.0" >> requirements.txt
+echo "psutil>=7.0.0" >> requirements.txt
 echo "requests>=2.28.0" >> requirements.txt
 echo "tqdm>=4.60.0" >> requirements.txt
 echo "colorama>=0.4.0" >> requirements.txt

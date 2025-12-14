@@ -303,6 +303,7 @@ echo '--> Creating Python package markers (__init__.py)...'
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
 
+
 # --- User-Specific Configuration ---
 # This part is about user config, so it's fine for it to stay here.
 CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
@@ -313,6 +314,8 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "[paths]" > "$CONFIG_FILE"
     echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 fi
+
+
 
 # --- 6. Completion ---
 echo ""
