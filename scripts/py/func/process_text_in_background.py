@@ -242,7 +242,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
     else:
         RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
 
-    logger.info(f'245: run_mode_override:{run_mode_override} , run_mode:{RUN_MODE}')
+    # logger.info(f'245: run_mode_override:{run_mode_override} , run_mode:{RUN_MODE}')
 
     for importer, modname, ispkg in pkgutil.walk_packages(
             path=maps_package.__path__,
@@ -512,8 +512,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
                 # <<< ÄNDERUNG 2: Prüfe, ob 'match_obj' existiert
                 if match_obj:
-                    logger.info(
-                        f"🔁 455: Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
+                    # logger.info(
+                    #     f"🔁 455: Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
 
                     # Die Ersetzung bleibt genau gleich
                     new_text = re.sub(
@@ -522,8 +522,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                         processed_text,
                         flags=flags
                     )
-                    logger.info(
-                    f"🔁 464: '{new_text}'")
+                    # logger.info(
+                    # f"🔁 464: '{new_text}'")
 
                     # Hier wird es interessant: Wir behalten den alten und den neuen Text für die Skripte
 
@@ -1448,7 +1448,7 @@ def clear_global_maps(logger):
     Clears all global map dictionaries to release references before a full reload.
     This prevents memory leaks from unreferenced old map functions.
     """
-    logger.info("Starting CLEAR of global Map Registries.")
+    # logger.info("Starting CLEAR of global Map Registries.")
 
     # CRITICAL FIX: Use 'global' to access the module-level variables for clearing.
     global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP # noqa: F824
@@ -1458,5 +1458,5 @@ def clear_global_maps(logger):
     GLOBAL_FUZZY_MAP_PRE.clear()
     GLOBAL_FUZZY_MAP.clear()
 
-    logger.info("Global Map Registries successfully cleared.")
+    # logger.info("Global Map Registries successfully cleared.")
 

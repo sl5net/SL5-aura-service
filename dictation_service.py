@@ -801,19 +801,6 @@ if settings.DEV_MODE :
 
     """
 
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
 
     """
     # self_test_readable_duration

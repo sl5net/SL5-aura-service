@@ -30,7 +30,7 @@ TRANSLATION ='GerElb1905' # 'kjv'
 
 #DATABASE_PATH = 'bible.sqlite3'  # Passe ggf. an
 DATABASE_PATH = Path(__file__).parent / 'GerElb1905.db'
-print(f"DATABASE_PATH={DATABASE_PATH}")
+# print(f"DATABASE_PATH={DATABASE_PATH}")
 
 
 def search_bible_sqlite(book_name, chapter, verse, translation=TRANSLATION, db_path=DATABASE_PATH):

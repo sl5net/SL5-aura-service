@@ -17,8 +17,8 @@ def execute_packing_logic(current_dir, logger):
     """
     Creates a 'Matryoshka-ZIP' with extensive debug logging.
     """
-    logger.info("==================================================")
-    logger.info("🚀 secure_packer_lib triggered.")
+    # logger.info("==================================================")
+    # logger.info("🚀 secure_packer_lib triggered.")
 
     try:
         # 1. PATH ANALYSIS
@@ -32,23 +32,23 @@ def execute_packing_logic(current_dir, logger):
 
 
         #logger.info(f"📍 Script Location: {current_file}")
-        logger.info(f"📂 Directory to pack (Source): {current_dir}")
-        logger.info(f"📂 Parent Directory (Target):  {parent_dir}")
+        # logger.info(f"📂 Directory to pack (Source): {current_dir}")
+        # logger.info(f"📂 Parent Directory (Target):  {parent_dir}")
 
         # 2. NAME CALCULATION
         folder_name = current_dir.name
-        logger.info(f"🔍 Analyzing Folder Name: '{folder_name}'")
+        # logger.info(f"🔍 Analyzing Folder Name: '{folder_name}'")
 
         if folder_name.startswith('_'):
             base_name = folder_name[1:]
-            logger.info(f"✂ Removed leading underscore. Base: '{base_name}'")
+            # logger.info(f"✂ Removed leading underscore. Base: '{base_name}'")
         else:
             base_name = folder_name
-            logger.warning(f"⚠ Folder name '{folder_name}' does not start with '_'. Using asis.")
+            # logger.warning(f"⚠ Folder name '{folder_name}' does not start with '_'. Using asis.")
 
         zip_name_outer = base_name + ".zip"
         zip_path_outer = parent_dir / zip_name_outer
-        logger.info(f"🎯 Target ZIP Path: {zip_path_outer}")
+        # logger.info(f"🎯 Target ZIP Path: {zip_path_outer}")
 
         # ... nach: zip_path_outer = parent_dir / zip_name_outer ...
 
@@ -77,14 +77,15 @@ def execute_packing_logic(current_dir, logger):
                             latest_source_mtime = mtime
                             newest_file = str(file_path)
 
-                logger.info(f"⏱️ Timestamp Check:")
-                logger.info(f"   - ZIP Date:    {zip_mtime}")
-                logger.info(f"   - Source Date: {latest_source_mtime}")
-                logger.info(f"   - Newest File: {newest_file}")
+                # if False:
+                #     logger.info(f"⏱️ Timestamp Check:")
+                #     logger.info(f"   - ZIP Date:    {zip_mtime}")
+                #     logger.info(f"   - Source Date: {latest_source_mtime}")
+                #     logger.info(f"   - Newest File: {newest_file}")
 
                 # Check if ZIP is newer or equal (with 1s buffer)
                 if zip_mtime >= (latest_source_mtime - 1.0):
-                    logger.info(f"⏭️ ZIP is up-to-date. Skipping repack.")
+                    # logger.info(f"⏭️ ZIP is up-to-date. Skipping repack.")
                     return
 
                 logger.info(f"♻️ Content changed (Source is newer). Repacking...")
@@ -96,7 +97,7 @@ def execute_packing_logic(current_dir, logger):
 
 
         # 3. KEY FILE SEARCH
-        logger.info("🔎 Searching for .auth_key file...")
+        # logger.info("🔎 Searching for .auth_key file...")
         key_file = next(parent_dir.glob(".*.py"), None)
 
         if not key_file:
@@ -106,7 +107,7 @@ def execute_packing_logic(current_dir, logger):
             logger.info(f"ℹ Files actually present in parent: {files_in_parent}")
             return
 
-        logger.info(f"🔑 Key File found: {key_file}")
+        # logger.info(f"🔑 Key File found: {key_file}")
 
         # 4. PASSWORD EXTRACTION
         password = _extract_password(key_file,logger)
@@ -115,7 +116,7 @@ def execute_packing_logic(current_dir, logger):
             return
         # Mask password for logs (show only length)
         pass_len = len(password)
-        logger.info(f"🔐 Password extracted successfully (Length: {pass_len} chars).")
+        # logger.info(f"🔐 Password extracted successfully (Length: {pass_len} chars).")
         blob_name = "aura_secure.blob"
         blob_path = parent_dir / blob_name
         zip_me(blob_path, current_dir,password)
@@ -124,7 +125,7 @@ def execute_packing_logic(current_dir, logger):
         # config/maps/_privat555/secure_packer.py:72
         os.remove(blob_path)
 
-        logger.info("🏁 SecurePacker finished.")
+        # logger.info("🏁 SecurePacker finished.")
     except Exception as e:
         logger.error(f"❌ CRITICAL EXCEPTION in SecurePacker: {e}", exc_info=True)
 
@@ -148,4 +149,4 @@ def zip_me(zip_path_outer, current_dir_or_single_file, password):
                     arc_name = full[base_len:]
                     zf.write(full, arc_name)
 
-    logger.info(f"📄 Zip Output: {zip_path_outer}")
+    # logger.info(f"📄 Zip Output: {zip_path_outer}")

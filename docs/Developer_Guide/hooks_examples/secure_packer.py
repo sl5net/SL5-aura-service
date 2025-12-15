@@ -17,5 +17,5 @@ def on_folder_change():
     current_dir = Path(__file__).parent
 
     # Execute the logic located in the public library
-    logger.info(f"config/maps/_privat/secure_packer.py:19  current dir: {current_dir}")
+    # logger.info(f"config/maps/_privat/secure_packer.py:19  current dir: {current_dir}")
     secure_packer_lib.execute_packing_logic(current_dir, logger)

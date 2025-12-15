@@ -1,5 +1,6 @@
 # config/settings_local.py
-import os, sys
+import os, sys, getpass
+from scripts.py.func.determine_current_user import determine_current_user
 
 # My personal settings for SL5 Aura
 # This file is ignored by Git.
@@ -7,34 +8,12 @@ import os, sys
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
 
-# Get username
-
-# Determine username in a cross-platform way
-if sys.platform.startswith('win'):
-    # On Windows, use the USERNAME environment variable.
-    current_user = os.environ.get('USERNAME')
-else:
-    # On Unix/Linux/Mac, try the 'pwd' module for robustness
-    try:
-        import pwd
-        # The original Unix-like system logic
-        current_user = pwd.getpwuid(os.getuid()).pw_name
-    except ImportError:
-        # Fallback for non-standard Unix environments
-        current_user = os.environ.get('USER')
-
-# Final fallback to ensure current_user is always a string
-if not current_user:
-    current_user = "unknown_user"
-
-current_user = str(current_user)
-# logger.info("Current user successfully determined in a cross-platform manner.") # Add logger import if needed
-
-
+current_user,_ = determine_current_user()
+print(f'hi, hallo, welcome: {current_user}')
 
 NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
-soundMute = 1  # 1 is really recomanded. to know when your recording is endet.
+soundMute = 1  # 1 is really recommended. to know when your recording is ended.
 soundUnMute = 1
 soundProgramLoaded = 1
 

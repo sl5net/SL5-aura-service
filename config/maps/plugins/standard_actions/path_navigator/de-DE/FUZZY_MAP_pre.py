@@ -50,15 +50,15 @@ PROJECT_ROOT_DISPLAY_STR = ''
 # 1. Tilde Replacement (Only a String Operation!)
 if project_root_str_full.startswith(home_dir_str):
     PROJECT_ROOT_DISPLAY_STR = project_root_str_full.replace(home_dir_str, '~', 1)
-    print(f"PROJECT_ROOT_DISPLAY_STR: {PROJECT_ROOT_DISPLAY_STR}")
+    # print(f"PROJECT_ROOT_DISPLAY_STR: {PROJECT_ROOT_DISPLAY_STR}")
 else:
     PROJECT_ROOT_DISPLAY_STR = project_root_str_full
-    print(f"PROJECT_ROOT_DISPLAY_STR: {PROJECT_ROOT_DISPLAY_STR}")
+    # print(f"PROJECT_ROOT_DISPLAY_STR: {PROJECT_ROOT_DISPLAY_STR}")
 
 # 2. Use the SHELL-Display string, but manually join with the OS-Specific Separator (os.path.sep)
 # This will be used in your f-string map actions.
 PROJECT_ROOT_FOR_MAP = PROJECT_ROOT_DISPLAY_STR
-print(f"PROJECT_ROOT_FOR_MAP: {PROJECT_ROOT_FOR_MAP}")
+# print(f"PROJECT_ROOT_FOR_MAP: {PROJECT_ROOT_FOR_MAP}")
 
 #fzf_in_gitRepo1="git ls-files | fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard"
 fzf_everything="""

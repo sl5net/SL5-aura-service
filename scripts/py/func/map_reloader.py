@@ -12,7 +12,7 @@ LAST_MODIFIED_TIMES = {}  # noqa: F824
 def auto_reload_modified_maps(logger,run_mode_override):
     # scripts/py/func/map_reloader.py:12
 
-    logger.info(f'31: run_mode_override: {run_mode_override}')
+    # logger.info(f'31: run_mode_override: {run_mode_override}')
 
     from .process_text_in_background import clear_global_maps
 
@@ -87,11 +87,11 @@ def auto_reload_modified_maps(logger,run_mode_override):
                 # --- START OF COMPLETE MEMORY LEAK FIX & CLEANUP ---
                 if module_name in sys.modules:
                     # 1. CLEAR CENTRAL REGISTRY (Breaks references to old ast.* objects)
-                    logger.info("🗑️ Calling clear_global_maps to release old function references.")
+                    # logger.info("🗑️ Calling clear_global_maps to release old function references.")
                     clear_global_maps(logger)
 
                     # 2. DELETE OLD MODULE (Breaks the global reference in Python's cache)
-                    logger.info(f"🗑️ Deleting old module reference for {module_name} from sys.modules.")
+                    # logger.info(f"🗑️ Deleting old module reference for {module_name} from sys.modules.")
                     del sys.modules[module_name]
 
                 # 3. FORCE GARBAGE COLLECTION
@@ -130,7 +130,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                         logger.info(f"✅ Successfully reloaded '{module_name}'.")
 
                     # --- NEW CODE START ---
-                    logger.info(f'before run: _trigger_upstream_hooks({map_file_path}, {project_root}, logger) ')
+                    # logger.info(f'before run: _trigger_upstream_hooks({map_file_path}, {project_root}, logger) ')
                     _trigger_upstream_hooks(map_file_path, project_root, logger)
                     # --- NEW CODE END ---
 
@@ -153,7 +153,9 @@ def auto_reload_modified_maps(logger,run_mode_override):
                         continue
 
                         # If it wasn't a private map, log the original error
+
                     logger.error(f"❌ Failed to reload module '{module_name}': {e}")
+
                     # logger.error(f"❌ Failed to reload module '{module_name}': {e}")
                     # todo: # scripts/py/func/map_reloader.py:135 run the into autorepair function
 
@@ -279,11 +281,11 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
 
     # 1. Define the stop boundary
     # We stop scanning when we reach 'config/maps' to avoid scanning the whole project
-    logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:518')
+    # logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:518')
     stop_dir = project_root / "config" / "maps"
-    logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:521')
+    # logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:521')
     current_dir = start_path.parent
-    logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:523 -> current_dir:{current_dir}')
+    # logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:523 -> current_dir:{current_dir}')
 
     # Safety check: verify we are inside config/maps
     try:
@@ -294,7 +296,7 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
 
     # 2. Traverse Upwards
     while stop_dir in current_dir.parents or current_dir == stop_dir:
-        logger.info(f"🔍 Scanning for lifecycle hooks in: {current_dir}")
+        # logger.info(f"🔍 Scanning for lifecycle hooks in: {current_dir}")
 
         # Iterate over all .py files in this directory level
         for file_path in current_dir.glob("*.py"):
@@ -329,7 +331,7 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
 
                 # 3. Check and Execute Hook
                 if module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
-                    logger.info(f"🔗 Triggering upstream hook: {module_name}.on_folder_change()")
+                    # logger.info(f"🔗 Triggering upstream hook: {module_name}.on_folder_change()")
                     try:
                         module.on_folder_change()
                     except Exception as e:

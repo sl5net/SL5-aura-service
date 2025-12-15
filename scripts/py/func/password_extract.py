@@ -1,7 +1,66 @@
 # scripts/py/func/password_extract.py
 import re
+import os
+import sys
+
 from typing import Optional
+
+# scripts/py/func/password_extract.py:5
+# def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
+import time
+from typing import Optional
+
+# Global cache to store results and timestamps per key_path
+# Structure: { key_path: { 'timestamp': float, 'data': bytes } }
+
+# --- RELOAD-PROOF CACHE SETUP ---
+# We attach the cache to the 'sys' module so it survives module reloads.
+# TODO: SECURITY RISK - Passwords are currently stored in plain text in this RAM cache.
+#       This is a trade-off for performance to prevent I/O spam.
+#       In the future, we should investigate safer methods (e.g., encrypted memory,
+#       immediate zeroization, or strictly limiting the cache duration).
+# (Se, 2025-1215-1432, 15.12.'25 14:32 Mon)
+
+CACHE_ATTR_NAME = "_aura_password_extract_cache"
+
+if not hasattr(sys, CACHE_ATTR_NAME):
+    # Initialize the cache if it doesn't exist in sys
+    setattr(sys, CACHE_ATTR_NAME, {})
+
+# Reference the persistent cache
+_password_context_cache = getattr(sys, CACHE_ATTR_NAME)
+# --------------------------------
+
+
 def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
+    """
+    Extracts the password/content from the given key_path.
+    Includes a 5-second throttling mechanism per key_path to prevent log spam and excessive I/O.
+    """
+    global _password_context_cache
+
+    # Re-fetch the cache reference to be 100% safe
+    cache = getattr(sys, CACHE_ATTR_NAME)
+
+    normalized_key = os.path.abspath(key_path)
+
+    current_time = time.time()
+
+    # --- CACHE CHECK START ---
+    # Check if we have a valid cache entry for this specific key_path
+    if normalized_key in cache:
+        cached_entry = cache[key_path]
+        last_time = cached_entry['timestamp']
+
+        # If the request is within 5 seconds of the last successful extraction, return cached result
+        if current_time - last_time < 5.0:
+            # logger.debug(f"Throttling: Returning cached password for {os.path.basename(key_path)}")
+            time.sleep(.005) # not needed but consist how this function is used. eventually helpful
+            return cached_entry['pw']
+            # return None  # cached_entry['data']
+    # --- CACHE CHECK END ---
+
+
     """
     Read key file and return password as bytes (or None on failure).
 
@@ -12,7 +71,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
     - strip surrounding quotes and whitespace, remove BOM and CR/LF
     - return as bytes using given encoding
     """
-    logger.info(f"📖scripts/py/func/map_reloader.py:453: Reading key file: {key_path}")
+    # logger.info(f"📖scripts/py/func/map_reloader.py:453: Reading key file: {key_path}")
     try:
         with open(key_path, "r", encoding=encoding, errors="replace") as f:
             lines = f.readlines()
@@ -23,7 +82,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
     is_fist5are_letters = False
     try:
         is_fist5are_letters = file_first_line_has_ascii5(key_path, logger)
-        logger.info(f"is_fist5are_letters:26 is_fist5are_letters:{is_fist5are_letters} ")
+        # logger.info(f"is_fist5are_letters:26 is_fist5are_letters:{is_fist5are_letters} ")
     except Exception as e:
         logger.info(f"❌ Error is_fist5are_letters: {e}")
 
@@ -61,7 +120,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
             candidate = m.group(1).strip()
             pw = normalise(candidate)
             if pw:
-                logger.info("✓ Found password via assignment pattern.")
+                logger.info(f"✓ Found password via assignment pattern. in  ..{key_path[-30:]}")
                 # return pw
 
     # 2) scan for comment lines that contain a candidate (lines starting with '#')
@@ -72,8 +131,8 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
         if stripped.startswith("#"):
             candidate = stripped.lstrip("#").strip()
             pw = normalise(candidate)
-            if pw:
-                logger.info("scripts/py/func/map_reloader.py:491 ✓ Found password in comment.")
+            # if pw:
+            #     logger.info(f"scripts/py/func/map_reloader.py:491 ✓ Found password in comment in ..{key_path[-30:]}")
                 # return pw
 
     # 3) fallback: first non-empty, non-comment line
@@ -84,13 +143,26 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
             if pw:
                 logger.info("✓ Found password in plaintext line.")
                 # return pw
-    if pw:
-        logger.warning("⚠ No valid password pattern found in key file.")
+    if not pw:
+        logger.warning(f"⚠ No valid password pattern found in ..{key_path[-30:]}")
     if pw and not is_fist5are_letters:
         pw = mirror_outside_in_bytes(pw,9)
-        logger.info('⚠️ Extraction of this 🔒 encrypted 📦 ZIP is restricted (fist 5 are not only letters) to Aura only 🏗️ external extraction will fail🛑.')
+        # scripts/py/func/password_extract.py:91
+
+        process_id = os.getpid()  # Get the current Process ID
+
+        logger.info(f'⚠️ Extraction of this 🔒 encrypted 📦 ZIP is restricted (fist 5 are not only letters) to Aura only 🏗️ external extraction will fail🛑. Context: .. {key_path[-35:]} (PID {process_id})')
     else:
         logger.info('🌍 This 🔒 encrypted 📦 ZIP file is portable (fist 5 are letters): External extraction 📤 supported.')
+
+    # Update the persistent cache
+    cache[normalized_key] = {
+        'timestamp': current_time,
+        'pw': pw
+        ,
+    }
+
+
     return pw
 
 _first5_re = re.compile(r'^[A-Za-z]{5}')

@@ -163,6 +163,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
         success, actual_output = execute_test_case_and_check(logger, lt_url, EXPECTED_OUTPUT)
 
 
+    # scripts/py/func/checks/live_reload_e2e_func_test.py:166
     final_status = 0
     if success:
         logger.info("✅ Phase 5 PASSED: Rule is active again.")

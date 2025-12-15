@@ -23,7 +23,7 @@ def _private_map_ex(map_file_key: str, logger) -> bool:
 
     pw = _extract_password(key_file, logger)
     if not pw:
-        logger.error("No valid passwords found in any key file.")
+        # logger.info("No valid passwords found or recalled to early in any key file.")
         return False
 
     # CRITICAL SECURITY CHECK

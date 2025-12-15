@@ -6,12 +6,12 @@
 import os
 import pyperclip
 
-print(f"User: {os.environ.get('USER')}")
-print(f"Display: {os.environ.get('DISPLAY')}")
-print(f"Wayland: {os.environ.get('WAYLAND_DISPLAY')}")
+# print(f"User: {os.environ.get('USER')}")
+# print(f"Display: {os.environ.get('DISPLAY')}")
+# print(f"Wayland: {os.environ.get('WAYLAND_DISPLAY')}")
 
 try:
     content = pyperclip.paste()
-    print(f"✅ Inhalt der Zwischenablage: '{content}'")
+    # print(f"✅ Inhalt der Zwischenablage: '{content}'")
 except Exception as e:
     print(f"❌ Fehler: {e}")
