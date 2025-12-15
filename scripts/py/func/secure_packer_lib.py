@@ -107,7 +107,7 @@ def execute_packing_logic(current_dir, logger):
 
 
         # 2. Traverse Upwards
-        start_path_current_dir = None
+        # start_path_current_dir = None
         # scripts/py/func/secure_packer_lib.py:103
         project_root = Path(__file__).resolve().parent.parent.parent.parent
 
