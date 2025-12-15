@@ -47,7 +47,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
     # --- CACHE CHECK START ---
     # Check if we have a valid cache entry for this specific key_path
     if normalized_key in cache:
-        cached_entry = cache[key_path]
+        cached_entry = cache[normalized_key]
         last_time = cached_entry['timestamp']
 
         # If the request is within 5 seconds of the last successful extraction, return cached result
