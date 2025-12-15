@@ -12,6 +12,8 @@ from config.dynamic_settings import settings
 from config.settings import PRE_RECORDING_TIMEOUT, SPEECH_PAUSE_TIMEOUT, SAMPLE_RATE
 
 from .model_manager import MODELS_LOCK
+from vosk import SetLogLevel
+SetLogLevel(-1) # sadly it changes nothing (se, 15.12.'25 15:10 Mon )
 
 # In scripts/py/func/handle_trigger.py
 dictation_session_active = threading.Event()

@@ -3,12 +3,9 @@ import re
 import os
 import sys
 
-from typing import Optional
-
 # scripts/py/func/password_extract.py:5
 # def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
 import time
-from typing import Optional
 
 # Global cache to store results and timestamps per key_path
 # Structure: { key_path: { 'timestamp': float, 'data': bytes } }
@@ -28,16 +25,17 @@ if not hasattr(sys, CACHE_ATTR_NAME):
     setattr(sys, CACHE_ATTR_NAME, {})
 
 # Reference the persistent cache
-_password_context_cache = getattr(sys, CACHE_ATTR_NAME)
+#_password_context_cache = getattr(sys, CACHE_ATTR_NAME)
 # --------------------------------
 
+from typing import Optional
 
 def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
     """
     Extracts the password/content from the given key_path.
     Includes a 5-second throttling mechanism per key_path to prevent log spam and excessive I/O.
     """
-    global _password_context_cache
+    #global _password_context_cache
 
     # Re-fetch the cache reference to be 100% safe
     cache = getattr(sys, CACHE_ATTR_NAME)

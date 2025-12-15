@@ -1,5 +1,4 @@
 # config/settings_local.py
-import os, sys, getpass
 from scripts.py.func.determine_current_user import determine_current_user
 
 # My personal settings for SL5 Aura

@@ -58,7 +58,7 @@ def execute_packing_logic(current_dir, logger):
                 zip_mtime = zip_path_outer.stat().st_mtime
 
                 latest_source_mtime = 0.0
-                newest_file = "None"
+                # newest_file = "None"
 
                 for root, dirs, files in os.walk(current_dir):
                     # 1. EXCLUDE NOISE: Ignore __pycache__ directories
@@ -75,7 +75,7 @@ def execute_packing_logic(current_dir, logger):
 
                         if mtime > latest_source_mtime:
                             latest_source_mtime = mtime
-                            newest_file = str(file_path)
+                            # newest_file = str(file_path)
 
                 # if False:
                 #     logger.info(f"⏱️ Timestamp Check:")
@@ -115,8 +115,10 @@ def execute_packing_logic(current_dir, logger):
             logger.error("❌ Password extraction returned None/Empty!")
             return
         # Mask password for logs (show only length)
-        pass_len = len(password)
+
+        # pass_len = len(password)
         # logger.info(f"🔐 Password extracted successfully (Length: {pass_len} chars).")
+
         blob_name = "aura_secure.blob"
         blob_path = parent_dir / blob_name
         zip_me(blob_path, current_dir,password)

@@ -10,6 +10,10 @@ from pathlib import Path
 import vosk
 import threading
 
+from vosk import SetLogLevel
+SetLogLevel(-1)
+
+
 # Ensure the script can find the modules in the parent directory
 import sys
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))

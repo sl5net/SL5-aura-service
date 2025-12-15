@@ -3,7 +3,7 @@
 # source .venv/bin/activate
 # python config/maps/plugins/z_fallback_llm/de-DE/test_clipboard.py
 
-import os
+#import os
 import pyperclip
 
 # print(f"User: {os.environ.get('USER')}")
