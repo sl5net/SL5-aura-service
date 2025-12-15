@@ -12,6 +12,7 @@ from config.dynamic_settings import settings
 # Sentinel object to indicate LT was already running.
 # The sentinel has the minimal methods (poll, terminate) to be safely passed
 # to atexit.register and handled by stop_languagetool_server.
+# scripts/py/func/start_languagetool_server.py:15
 LT_ALREADY_RUNNING_SENTINEL = type('LTAlreadyRunning', (object,), {
     'pid': -1,
     'poll': lambda self: None,

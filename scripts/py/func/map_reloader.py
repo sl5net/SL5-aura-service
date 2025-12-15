@@ -30,6 +30,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
     # logger.info("Starting map reload check.")
 
     try:
+        # scripts/py/func/map_reloader.py:33
         project_root = Path(__file__).resolve().parent.parent.parent.parent
         maps_base_dir = project_root / "config" / "maps"
 
@@ -42,6 +43,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
         for map_file_path in maps_base_dir.glob("**/*.py"):
             if map_file_path.name == "__init__.py":
+                continue
+            if map_file_path.name == "__init__":
                 continue
 
             # Security Check: Prevent loading of private maps (starting with _) in API mode
@@ -130,7 +133,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
                         logger.info(f"✅ Successfully reloaded '{module_name}'.")
 
                     # --- NEW CODE START ---
-                    # logger.info(f'before run: _trigger_upstream_hooks({map_file_path}, {project_root}, logger) ')
+                    if log_all_map_reloaded:
+                        logger.info(f'before run: ↖️_trigger_upstream_hooks(📜...{str(map_file_path)[-35:]} ) ')
                     _trigger_upstream_hooks(map_file_path, project_root, logger)
                     # --- NEW CODE END ---
 
@@ -279,13 +283,16 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
     import importlib
     import sys
 
+    log_everything = False
+
     # 1. Define the stop boundary
     # We stop scanning when we reach 'config/maps' to avoid scanning the whole project
     # logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:518')
     stop_dir = project_root / "config" / "maps"
     # logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:521')
     current_dir = start_path.parent
-    # logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:523 -> current_dir:{current_dir}')
+    if log_everything:
+        logger.info(f'scripts/py/func/map_reloader.py:_trigger_upstream_hooks:523 -> current_dir:{current_dir}')
 
     # Safety check: verify we are inside config/maps
     try:
@@ -295,23 +302,39 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
         return  # Outside of scope
 
     # 2. Traverse Upwards
+    start_path_current_dir = ancestor_up_to_last_underscore_no_io(start_path)
+
     while stop_dir in current_dir.parents or current_dir == stop_dir:
-        # logger.info(f"🔍 Scanning for lifecycle hooks in: {current_dir}")
 
         # Iterate over all .py files in this directory level
         for file_path in current_dir.glob("*.py"):
+
+            if file_path.name.startswith('__'):
+                continue
+            if log_everything:
+                logger.info(f"🔍 Scanning for lifecycle hooks in: {str(current_dir)[-35:]}")
+
+            if log_everything:
+                logger.info(f"🔍:304 ...{str(file_path)[-35:]}")
+
             # Skip the file we just reloaded (avoid infinite loop or double execution)
             if file_path.resolve() == start_path.resolve():
+                if log_everything:
+                    logger.info(f"🔍:308 {str(file_path)[-35:]}")
                 continue
 
             # Skip hidden files (except maybe the ones explicitly needed, but usually hidden are keys)
             if file_path.name.startswith('.'):
+                if log_everything:
+                    logger.info(f"🔍:313 {str(file_path)[-35:]}")
                 continue
 
             try:
                 # Calculate module name for import
                 relative_path = file_path.relative_to(project_root)
-                module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
+                module_name = str(Path(relative_path.with_suffix(''))).replace(os.path.sep, '.')
+                if log_everything:
+                    logger.info(f"🔍🔍 module_name: {module_name} | relative_path: {relative_path}")
 
                 # We only want to trigger modules that are ALREADY loaded or are the Packer.
                 # If we blindly import everything, we might start modules that should be off.
@@ -329,14 +352,17 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                         logger.info(f'error importing module {module_name}: {e}')
                         continue
 
+                # scripts/py/func/map_reloader.py:355
                 # 3. Check and Execute Hook
                 if module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
-                    # logger.info(f"🔗 Triggering upstream hook: {module_name}.on_folder_change()")
+                    if log_everything:
+                        logger.info(f"🔗 Triggering upstream hook: 📜{module_name}.on_folder_change(start_path_current_dir:📂...{str(start_path_current_dir)[-35:]}")
                     try:
-                        module.on_folder_change()
+                        module.on_folder_change(start_path_current_dir)
                     except Exception as e:
-                        logger.error(f"scripts/py/func/map_reloader.py -> in upstream hook '{module_name}': Exception: {e}")
+                        logger.error(f"scripts/py/func/map_reloader.py -> in ↖️upstream hook '{module_name}': Exception: {e}")
 
+            # scripts/py/func/map_reloader.py:342
             except Exception as e:
                 # Suppress errors from unrelated files
                 logger.info(f'❌ scripts/py/func/map_reloader.py:575 -> Exception: {e}')
@@ -346,3 +372,31 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
         if current_dir == stop_dir:
             break
         current_dir = current_dir.parent
+
+    # def ancestor_up_to_last_underscore(path):
+    #     p = Path(path)
+    #     # if it exists, decide by filesystem; otherwise use suffix heuristic
+    #     if p.exists():
+    #         start = p if p.is_dir() else p.parent
+    #     else:
+    #         start = p.parent if p.suffix else p
+    #
+    #     for candidate in (start, *start.parents):
+    #         if candidate.name.startswith("_"):
+    #             return candidate
+    #     return None
+
+from pathlib import Path
+
+def ancestor_up_to_last_underscore_no_io(path):
+    p = Path(path)
+    parts = p.parts
+    # if the last part looks like a filename (has a dot), start from parent
+    start_index = len(parts) - 1
+    if '.' in parts[-1]:
+        start_index -= 1
+    for i in range(start_index, -1, -1):
+        if parts[i].startswith('_'):
+            return Path(*parts[: i + 1])
+    return None
+

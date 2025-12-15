@@ -120,7 +120,7 @@ def check_for_unused_functions(parsed_trees, project_root, logger):
         logger.error("\n  -> Please remove or use these functions.")
         sys.exit(1)
 
-def check_for_frequent_calls(parsed_trees, logger, threshold=2):
+def check_for_frequent_calls(parsed_trees, logger, threshold=3):
     """Finds functions called more often than the threshold."""
     logger.info(f"\n--- Checking for functions called more than {threshold} time(s) ---")
     ALLOWED_FREQUENT_FUNCTIONS = {

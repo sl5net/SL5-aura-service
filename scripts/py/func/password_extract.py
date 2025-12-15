@@ -44,6 +44,8 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
 
     current_time = time.time()
 
+    log_everything = False
+
     # --- CACHE CHECK START ---
     # Check if we have a valid cache entry for this specific key_path
     if normalized_key in cache:
@@ -139,7 +141,8 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
         if stripped and not stripped.startswith("#"):
             pw = normalise(stripped)
             if pw:
-                logger.info("✓ Found password in plaintext line.")
+                if log_everything:
+                    logger.info("✓ Found password in plaintext line.")
                 # return pw
     if not pw:
         logger.warning(f"⚠ No valid password pattern found in ..{key_path[-30:]}")

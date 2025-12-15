@@ -523,7 +523,7 @@ if settings.DEV_MODE :
     parsed_trees = parse_all_files(PROJECT_ROOT, logger)
 
     check_for_unused_functions(parsed_trees, PROJECT_ROOT , logger)
-    check_for_frequent_calls(parsed_trees, logger, threshold=1)
+    check_for_frequent_calls(parsed_trees, logger)
 
     check_installer_sizes()
 

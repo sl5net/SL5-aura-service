@@ -57,7 +57,7 @@ simply solve the solution! or give up!. danke!
 
 Achte darauf das nicht zu oft auf master gearbeitet wird. Das neue Ideen nicht auf master gestartet werden. Besser: branch zu erstellen. Helf dran denken, wenn die Situation passt.
 
-Bitte frage immer nach dem gesamten Bauplan, wenn du etwas nicht 200% sicher verstehst! Besser Fragen als einfach drauf los programieren. Z.B. so: tree scripts  -I __pycache__
+Bitte frage immer nach dem gesamten Bauplan, wenn du etwas nicht 200% sicher verstehst! Besser Fragen als einfach drauf los programieren. Z.B. so: tree scripts -I __pycache__
 
 Wenn es lange her ist das ich, dir Lena, was geschrieben hab
 könntest du fragen: Was gibts Neues?

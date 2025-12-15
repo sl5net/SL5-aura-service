@@ -2,7 +2,8 @@
 import os
 #import subprocess
 import logging
-#import shutil
+# import sys
+# import shutil
 from pathlib import Path
 import pyzipper
 
@@ -17,8 +18,12 @@ def execute_packing_logic(current_dir, logger):
     """
     Creates a 'Matryoshka-ZIP' with extensive debug logging.
     """
-    # logger.info("==================================================")
-    # logger.info("🚀 secure_packer_lib triggered.")
+
+    log_everything = False
+
+    if log_everything:
+        logger.info("==================================================")
+        logger.info("🚀 secure_packer_lib triggered.")
 
     try:
         # 1. PATH ANALYSIS
@@ -32,25 +37,31 @@ def execute_packing_logic(current_dir, logger):
 
 
         #logger.info(f"📍 Script Location: {current_file}")
-        # logger.info(f"📂 Directory to pack (Source): {current_dir}")
-        # logger.info(f"📂 Parent Directory (Target):  {parent_dir}")
+        if log_everything:
+            logger.info(f"📂secure_packer_lib.py : Directory to pack (Source): {current_dir}")
+            logger.info(f"📂secure_packer_lib.py : Parent Directory (Target):  {parent_dir}")
 
         # 2. NAME CALCULATION
         folder_name = current_dir.name
-        # logger.info(f"🔍 Analyzing Folder Name: '{folder_name}'")
+        if log_everything:
+            logger.info(f"🔍secure_packer_lib.py : Analyzing Folder Name: '{folder_name}'")
 
         if folder_name.startswith('_'):
             base_name = folder_name[1:]
             # logger.info(f"✂ Removed leading underscore. Base: '{base_name}'")
         else:
             base_name = folder_name
-            # logger.warning(f"⚠ Folder name '{folder_name}' does not start with '_'. Using asis.")
+            if log_everything:
+                logger.warning(f"secure_packer_lib.py : ⚠ Folder name '{folder_name}' does not start with '_'. Using asis.")
 
         zip_name_outer = base_name + ".zip"
         zip_path_outer = parent_dir / zip_name_outer
-        # logger.info(f"🎯 Target ZIP Path: {zip_path_outer}")
+        if log_everything:
+            logger.info(f"🎯secure_packer_lib.py : Target 📦 ZIP Path: {zip_path_outer}")
 
-        # ... nach: zip_path_outer = parent_dir / zip_name_outer ...
+        # sys.exit(0)
+
+        # ... nach: 📦 zip_path_outer = parent_dir / zip_name_outer ...
 
         # --- SMART TIMESTAMP CHECK (DEBUG VERSION) ---
         if zip_path_outer.exists():
@@ -77,17 +88,17 @@ def execute_packing_logic(current_dir, logger):
                             latest_source_mtime = mtime
                             # newest_file = str(file_path)
 
-                # if False:
-                #     logger.info(f"⏱️ Timestamp Check:")
-                #     logger.info(f"   - ZIP Date:    {zip_mtime}")
-                #     logger.info(f"   - Source Date: {latest_source_mtime}")
-                #     logger.info(f"   - Newest File: {newest_file}")
+                if log_everything:
+                    logger.info(f"⏱️ Timestamp Check:")
+                    logger.info(f"   - ZIP Date:    {zip_mtime}")
+                    logger.info(f"   - Source Date: {latest_source_mtime}")
+
 
                 # Check if ZIP is newer or equal (with 1s buffer)
                 if zip_mtime >= (latest_source_mtime - 1.0):
-                    # logger.info(f"⏭️ ZIP is up-to-date. Skipping repack.")
+                    if log_everything:
+                        logger.info(f"⏭️ 📦 ZIP is up-to-date. Skipping repack.")
                     return
-
                 logger.info(f"♻️ Content changed (Source is newer). Repacking...")
 
             except Exception as e:
@@ -95,10 +106,38 @@ def execute_packing_logic(current_dir, logger):
         # ---------------------------------------------
 
 
+        # 2. Traverse Upwards
+        start_path_current_dir = None
+        # scripts/py/func/secure_packer_lib.py:103
+        project_root = Path(__file__).resolve().parent.parent.parent.parent
 
+        stop_dir = project_root / "config" / "maps"
+        key_file = None
+        current_dir_loop = current_dir
+        while stop_dir in current_dir_loop.parents or current_dir == stop_dir:
+            if log_everything:
+                logger.info(f"🔍 Scanning for first key_file: {str(current_dir)[-35:]}")
+
+            # Iterate over all .py files in this directory level
+            for file_path in current_dir_loop.glob("*.py"):
+                if log_everything:
+                    logger.info(f"🔍:304 {str(file_path)[-35:]}")
+
+                if file_path.name.startswith('.'):
+                    if log_everything:
+                        logger.info(f"🔍:117 found {str(file_path)[-35:]}")
+                    key_file = file_path
+                    break
+
+            # Move one level up
+            if current_dir_loop == stop_dir:
+                break
+            current_dir_loop = current_dir_loop.parent
+
+        # scripts/py/func/secure_packer_lib.py:101
         # 3. KEY FILE SEARCH
         # logger.info("🔎 Searching for .auth_key file...")
-        key_file = next(parent_dir.glob(".*.py"), None)
+        # key_file = next(parent_dir.glob(".*.py"), None)
 
         if not key_file:
             logger.error(f"❌ No key file found in {parent_dir} matching '.*.py'")
@@ -151,4 +190,4 @@ def zip_me(zip_path_outer, current_dir_or_single_file, password):
                     arc_name = full[base_len:]
                     zf.write(full, arc_name)
 
-    # logger.info(f"📄 Zip Output: {zip_path_outer}")
+    # logger.info(f"📄 📦 Zip Output: {zip_path_outer}")

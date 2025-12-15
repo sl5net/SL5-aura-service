@@ -618,7 +618,7 @@ def process_text_in_background(logger,
         logger.info(f"616: temporary run_mode_override={run_mode_override} (unmasked request).")
     else:
         run_mode_override = RUN_MODE
-        logger.info(f"run_mode_override={run_mode_override}.")
+        # logger.info(f"run_mode_override={run_mode_override}.")
 
 
 

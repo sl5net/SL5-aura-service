@@ -220,8 +220,8 @@ def handle_trigger(
             for text_chunk in text_chunk_iterator:
                 if text_chunk.strip():
                     text_detected = 1
-                    if settings.DEV_MODE:
-                        logger.info(f"Processing chunk: '{text_chunk[:30]}...'")
+                    # if settings.DEV_MODE:
+                    #     logger.info(f"Processing chunk: '{text_chunk[:30]}...'")
                     thread = threading.Thread(target=process_text_in_background,
                                               args=(logger, lt_language, text_chunk, TMP_DIR,
                                                     time.time(), active_lt_url))

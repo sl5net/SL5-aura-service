@@ -158,11 +158,11 @@ class DynamicSettings:
         print(f"dynamic_settings.py:reload_settings():44 DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
 
 
-        if settings.DEV_MODE:
-            print("DEBUG: reload_settings called.")
+        # if settings.DEV_MODE:
+        #     print("DEBUG: reload_settings called.")
         with self._lock:
-            if settings.DEV_MODE:
-                print("DEBUG: Lock acquired for settings reload.")
+            # if settings.DEV_MODE:
+            #     print("DEBUG: Lock acquired for settings reload.")
 
             current_base_modified_time = os.path.getmtime(self._settings_file_path) if os.path.exists(
                 self._settings_file_path) else 0
