@@ -51,6 +51,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
             # Security Check: Prevent loading of private maps (starting with _) in API mode
             # This checks ANY part of the path relative to maps_base_dir
+            # func/map_reloader.py:54: auto_reload_modified_maps(logger,run_mode_override)
             if run_mode_override == "API_SERVICE":
                 try:
                     # Get path relative to /config/maps to check subfolders
@@ -284,8 +285,8 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
     import importlib
     import sys
 
-    log_everything = False
-    # log_everything = True
+    # log_everything = False
+    log_everything = True
 
     # 1. Define the stop boundary
     # We stop scanning when we reach 'config/maps' to avoid scanning the whole project
@@ -438,4 +439,4 @@ def zip_me_nopassword(zip_path_outer, current_dir_or_single_file):
                     arc_name = os.path.relpath(full_path, start=parent_dir)
                     zf.write(full_path, arc_name)
 
-    logger.info(f"📄 📦 Zip Output: {zip_path_outer}")
+    #logger.info(f"📄 📦 Zip Output: {zip_path_outer}")

@@ -1,3 +1,7 @@
+Aura SL5 Hooks: Added 
+on_folder_change() and 
+on_reload() to trigger logic after hot-reloads. Use this to "daisy chain" execution to parent scripts like secure_packer.py for complex packages.
+
 # Developer Guide: Plugin Lifecycle Hooks
 
 Aura SL5 allows plugins (Maps) to define specific "Hooks" that are executed automatically when the module's state changes. This is essential for advanced workflows like the **Secure Private Map** system.

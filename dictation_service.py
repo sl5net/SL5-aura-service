@@ -11,8 +11,6 @@ import signal
 import psutil
 import time
 
-# ohhh. 16.12.'25 19:43 Tue i have forgot diesaber the log server. omg
-# from tools.simple_log_server import readme
 
 # Python path to ensure reliable imports on all platforms
 # This solves potential issues when running from a batch script on Windows
@@ -58,8 +56,14 @@ import sys, os, atexit, requests, logging, platform, importlib
 from pathlib import Path
 
 
+
 # dictation_service.py:59
 from config.dynamic_settings import settings
+
+# if settings.DEV_MODE :
+#   ohhh. 16.12.'25 19:43 Tue i have forgot diesaber the log server. omg
+#   from tools.simple_log_server import readme
+
 
 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     # Check if the package is installed without actually importing it

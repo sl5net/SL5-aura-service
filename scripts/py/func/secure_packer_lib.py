@@ -163,9 +163,7 @@ def execute_packing_logic(current_dir, logger):
         # 4. PASSWORD EXTRACTION
         file_key_name = pathlib.Path(key_file).name
 
-        if False:
-            nothing = 1
-        elif file_key_name == '.nopassword.py': # password == "nopassword" or
+        if file_key_name == '.nopassword.py': # password == "nopassword" or
             zip_me_nopassword(zip_path_outer, current_dir)
         else:
 
@@ -214,9 +212,9 @@ zip_created_at = '{current_time}'
         logger.error(f"❌ CRITICAL EXCEPTION in SecurePacker: {e}", exc_info=True)
 
 
-import os
-import zipfile
-import pyzipper
+# import os
+# import zipfile
+# import pyzipper
 import logging
 
 
@@ -271,7 +269,7 @@ def zip_me_nopassword(zip_path_outer, current_dir_or_single_file):
 
             for root, _, files in os.walk(target_path):
                 for fn in files:
-                    if  '__init__.py' in fn:
+                    if '__init__.py' in fn:
                         continue
                     full_path = os.path.join(root, fn)
                     # relpath calculates the correct relative path automatically

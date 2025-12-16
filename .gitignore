@@ -49,6 +49,7 @@ scripts/service_start.log
 config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.log
 config/maps/plugins/z_fallback_llm/de-DE/conversation_history.json
 **/conversation_history.json
+**/zip_registry.json
 
 
 *.kate-swp

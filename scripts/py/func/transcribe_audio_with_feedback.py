@@ -15,8 +15,6 @@ import webrtcvad  # NEU: Import für Voice Activity Detection
 
 global AUTO_ENTER_AFTER_DICTATION_global  # noqa: F824
 
-
-
 def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , initial_silence_timeout
                                    , session_active_event
@@ -27,7 +25,6 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
         # This checks if the global variable has been defined at all.
         # This would catch a NameError before it happens.
         logger.warning(f"AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.")
-
 
     unmute_microphone()
 
@@ -86,7 +83,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     # ... (am Anfang der Funktion) ...
     q = queue.Queue()
 
-    def audio_callback(indata, frames, time, status):
+    def audio_callback(indata, frames, time2, status):
         """
         This function is called by the sounddevice library for each audio chunk.
         """

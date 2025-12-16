@@ -57,6 +57,8 @@ if current_user == 'seeh':
     # DEV_MODE = False
     DEV_MODE_all_processing = 0
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
+    # PRELOAD_MODELS = ["vosk-model-small-de-0.15"]
+
     # PRELOAD_MODELS = ["vosk-model-en-us-0.22"]
 
     # needs NO restart:

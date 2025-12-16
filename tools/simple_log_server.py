@@ -1,7 +1,11 @@
 # simple_log_server.py
 
+öööö
 readme = """
-Standardmäßig dient der SimpleHTTPRequestHandler (der erste Code-Vorschlag) nur die Dateien in dem Verzeichnis, in dem er gestartet wird, und allen Unterverzeichnissen. Es ist ein reiner Download-Server (GET-Anfragen) und verhindert normalerweise den Zugriff auf darüber liegende Verzeichnisse. ABER: Er stellt alle Dateien in diesem Startverzeichnis bereit.
+Standardmäßig dient der SimpleHTTPRequestHandler (der erste Code-Vorschlag) nur die Dateien in dem Verzeichnis,
+ in dem er gestartet wird, und allen Unterverzeichnissen.
+  Es ist ein reiner Download-Server (GET-Anfragen) und verhindert normalerweise den Zugriff auf darüber liegende Verzeichnisse.
+   ABER: Er stellt alle Dateien in diesem Startverzeichnis bereit.
 """
 
 import http.server
