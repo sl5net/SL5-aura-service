@@ -11,6 +11,8 @@ import signal
 import psutil
 import time
 
+# ohhh. 16.12.'25 19:43 Tue i have forgot diesaber the log server. omg
+# from tools.simple_log_server import readme
 
 # Python path to ensure reliable imports on all platforms
 # This solves potential issues when running from a batch script on Windows
@@ -302,7 +304,14 @@ file_handler.addFilter(WindowsEmojiFilter())
 
 
 DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
+# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
 
+readme = """
+vosk-model-small-de-0.15
+17:36:26,230 - INFO     - >>> Core Logic Self-Test PASSED.
+17:36:36,138 - INFO     - ==    ✅ MODEL READY: 'small'.
+==> 10 Seconds
+"""
 
 
 if settings.SERVICE_START_OPTION ==1:
