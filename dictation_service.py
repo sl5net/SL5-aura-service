@@ -301,7 +301,7 @@ file_handler.addFilter(WindowsEmojiFilter())
 
 
 
-
+DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
 
 
 
@@ -781,69 +781,71 @@ if settings.DEV_MODE :
 
     from scripts.py.func.checks.self_tester import run_core_logic_self_test
 
-    self_test_start_time = time.time()
-    run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
+    if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
+        self_test_start_time = time.time()
+        run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
 
 
-    self_test_end_time = time.time()
-    self_test_duration = self_test_end_time - self_test_start_time
-    self_test_readable_duration = timedelta(seconds=self_test_duration)
-    logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
+        self_test_end_time = time.time()
+        self_test_duration = self_test_end_time - self_test_start_time
+        self_test_readable_duration = timedelta(seconds=self_test_duration)
+        logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
 
-    logSnippet = """
-    without checks and clean all cashes before. it seems service can start in about 23 Seconds with a good german Model (s,25.11.'25 00:04 Tue)   
-    23:59:57,438 - INFO     - DEV_MODE: Running punctuation map key validation...
-    00:00:20,233 - INFO     - ==    ✅ MODEL READY: 'de'.
-
-    without checks it seems service can start in about 27 Seconds with a good german Model (s,24.11.'25 15:16 Mon):
-    15:12:19,851 - INFO     - DEV_MODE: Running punctuation map key validation...
-    15:12:46,853 - INFO     - ==    ✅ MODEL READY: 'de'.
-
-    """
-
-
-    """
-    # self_test_readable_duration
-    59 of 82 tests ❌ FAILed.    seconds=5, microseconds=578883
-
-    """
-
-    check_installer_sizes()
+        logSnippet = """
+        without checks and clean all cashes before. it seems service can start in about 23 Seconds with a good german Model (s,25.11.'25 00:04 Tue)   
+        23:59:57,438 - INFO     - DEV_MODE: Running punctuation map key validation...
+        00:00:20,233 - INFO     - ==    ✅ MODEL READY: 'de'.
+    
+        without checks it seems service can start in about 27 Seconds with a good german Model (s,24.11.'25 15:16 Mon):
+        15:12:19,851 - INFO     - DEV_MODE: Running punctuation map key validation...
+        15:12:46,853 - INFO     - ==    ✅ MODEL READY: 'de'.
+    
+        """
 
 
-    from scripts.py.func.checks.check_badges import check_badges
+        """
+        # self_test_readable_duration
+        59 of 82 tests ❌ FAILed.    seconds=5, microseconds=578883
+    
+        """
+
+        check_installer_sizes()
 
 
-    check_badges(SCRIPT_DIR)
+        from scripts.py.func.checks.check_badges import check_badges
 
 
-    from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, check_for_frequent_calls
-
-    validate_setup(SCRIPT_DIR, logger)
+        check_badges(SCRIPT_DIR)
 
 
-    PROJECT_ROOT = SCRIPT_DIR  # In this structure, SCRIPT_DIR is PROJECT_ROOT
+        from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, check_for_frequent_calls
 
-    parsed_trees = parse_all_files(PROJECT_ROOT, logger)
-
-    check_for_unused_functions(parsed_trees, PROJECT_ROOT , logger)
-    check_for_frequent_calls(parsed_trees, logger, threshold=1)
-
-    check_installer_sizes()
+        validate_setup(SCRIPT_DIR, logger)
 
 
-    check_example_file_is_synced(SCRIPT_DIR)
+        PROJECT_ROOT = SCRIPT_DIR  # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
-    from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
-    from scripts.py.func.checks.integrity_checker import check_code_integrity
+        parsed_trees = parse_all_files(PROJECT_ROOT, logger)
 
-    check_code_integrity(SCRIPT_DIR, logger)
+    if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
+        check_for_unused_functions(parsed_trees, PROJECT_ROOT , logger)
+        check_for_frequent_calls(parsed_trees, logger, threshold=1)
 
-    check_installer_sizes()
+        check_installer_sizes()
 
 
-    # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
-    check_example_file_is_synced(SCRIPT_DIR)
+        check_example_file_is_synced(SCRIPT_DIR)
+
+        from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
+        from scripts.py.func.checks.integrity_checker import check_code_integrity
+
+        check_code_integrity(SCRIPT_DIR, logger)
+
+        check_installer_sizes()
+
+
+        # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
+        check_example_file_is_synced(SCRIPT_DIR)
 
 
 

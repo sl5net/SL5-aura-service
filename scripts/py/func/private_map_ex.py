@@ -2,29 +2,45 @@
 import os
 import pathlib
 import shutil
-
+import sys
+from zipfile import ZipFile
 import pyzipper
 # PyZipper (~20MB):
 from io import BytesIO
 
 
 from scripts.py.func.password_extract import _extract_password
-def _private_map_ex(map_file_key: str, logger) -> bool:
+def _private_map_unpack(map_file_key: str, logger) -> bool:
     """
     Checks if a failed module load is actually a private ZIP/Key pattern.
     Unpacks the ZIP (supports standard and Matryoshka/Blob formats) and returns True.
     """
+
+    log_everything = False
+
     # 1. Determine the map directory
     map_dir = str(pathlib.Path(map_file_key).parent)
+
+    file_key_name = pathlib.Path(map_file_key).name
+
+    if log_everything:
+        logger.info(f'22: map_dir=📂...{map_dir[-30:]} file_key_name:📜{file_key_name} ')
+
 
     # 2. Check for the private map pattern in this directory
     # startswith('.') and endswith('.py')
     key_file = map_file_key
 
-    pw = _extract_password(key_file, logger)
-    if not pw:
-        # logger.info("No valid passwords found or recalled to early in any key file.")
-        return False
+    pw = None
+    if file_key_name == '.nopassword.py':
+        if log_everything:
+            logger.info(f'{file_key_name} --> normal extract')
+        pw = None
+    else:
+        pw = _extract_password(key_file, logger)
+        if not pw:
+            # logger.info("No valid passwords found or recalled to early in any key file.")
+            return False
 
     # CRITICAL SECURITY CHECK
     if not _check_gitignore_for_security(logger):
@@ -60,6 +76,20 @@ def _private_map_ex(map_file_key: str, logger) -> bool:
             try:
                 # A) Outer Unpack (Decryption)
 
+                if file_key_name == '.nopassword.py':
+                    logger.info(f'TODO normal extract {file_key_name} -> sys.exit(0)')
+                    logger.info(f'TODO normal extract {file_key_name} -> sys.exit(0)')
+                    logger.info(f'TODO normal extract {file_key_name} -> sys.exit(0)')
+                    logger.info(f'TODO normal extract {file_key_name} -> sys.exit(0)')
+                    logger.info(f'TODO normal extract {file_key_name} -> sys.exit(0)')
+                    logger.info(f'TODO normal extract {file_key_name} -> sys.exit(0)')
+
+                    with ZipFile(zip_file, 'r') as zip_ref:
+                        zip_ref.extractall(target_maps_dir)
+
+
+                    sys.exit(0)
+                    continue
 
                 with pyzipper.AESZipFile(zip_file, 'r') as outer_zip:
                     outer_zip.setpassword(pw)

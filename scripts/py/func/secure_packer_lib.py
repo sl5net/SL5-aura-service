@@ -2,6 +2,8 @@
 import os
 #import subprocess
 import logging
+import pathlib
+import zipfile
 # import sys
 # import shutil
 from pathlib import Path
@@ -14,17 +16,20 @@ logger = logging.getLogger(__name__)
 def execute(data):
     pass
 
+# scripts/py/func/secure_packer_lib.py:18
 def execute_packing_logic(current_dir, logger):
     """
     Creates a 'Matryoshka-ZIP' with extensive debug logging.
     """
 
     log_everything = False
+    # log_everything = True
+
+    current_dir_loop = current_dir
 
     if log_everything:
-        logger.info("==================================================")
-        logger.info("🚀 secure_packer_lib triggered.")
-
+        logger.info(f"========= current_dir:{current_dir} =========")
+        logger.info(f"🚀 secure_packer_lib triggered. current_dir:{current_dir}")
     try:
         # 1. PATH ANALYSIS
         #current_file = Path(__file__)
@@ -38,13 +43,13 @@ def execute_packing_logic(current_dir, logger):
 
         #logger.info(f"📍 Script Location: {current_file}")
         if log_everything:
-            logger.info(f"📂secure_packer_lib.py : Directory to pack (Source): {current_dir}")
-            logger.info(f"📂secure_packer_lib.py : Parent Directory (Target):  {parent_dir}")
+            logger.info(f"📂secure_packer_lib.py : Directory to pack (Source): ...{str(current_dir)[-30:]}")
+            logger.info(f"📂secure_packer_lib.py : Parent Directory (Target):  ...{str(parent_dir)[-30:]}")
 
         # 2. NAME CALCULATION
         folder_name = current_dir.name
         if log_everything:
-            logger.info(f"🔍secure_packer_lib.py : Analyzing Folder Name: '{folder_name}'")
+            logger.info(f"🔍secure_packer_lib.py : Analyzing Folder Name: '...{folder_name[-30:]}'")
 
         if folder_name.startswith('_'):
             base_name = folder_name[1:]
@@ -97,26 +102,30 @@ def execute_packing_logic(current_dir, logger):
                 # Check if ZIP is newer or equal (with 1s buffer)
                 if zip_mtime >= (latest_source_mtime - 1.0):
                     if log_everything:
-                        logger.info(f"⏭️ 📦 ZIP is up-to-date. Skipping repack.")
+                        logger.info(f"⏭️ 📦 ZIP {zip_path_outer} is up-to-date. Skipping repack. ->  ↩️ return from execute_packing_logic")
                     return
-                logger.info(f"♻️ Content changed (Source is newer). Repacking...")
+                logger.info(f"♻️ Content changed (Source is newer) then {zip_path_outer} --> Repacking...")
 
             except Exception as e:
                 logger.warning(f"⚠️ Timestamp check failed, forcing repack: {e}")
         # ---------------------------------------------
 
 
-        # 2. Traverse Upwards
+        # 2. Traverse Upwards ... search key?
         # start_path_current_dir = None
         # scripts/py/func/secure_packer_lib.py:103
         project_root = Path(__file__).resolve().parent.parent.parent.parent
 
-        stop_dir = project_root / "config" / "maps"
+        stop_dir = project_root / "config"
         key_file = None
-        current_dir_loop = current_dir
-        while stop_dir in current_dir_loop.parents or current_dir == stop_dir:
+        stop_search_key_file_is_found_year = False
+
+        current_dir_loop = current_dir_loop.parent
+        logger.info(f"🔍:122 found 📂current_dir_loop 🏃🏿‍♀️‍➡️ start = ...{str(current_dir_loop)[-35:]}")
+
+        while stop_dir in current_dir_loop.parents: # or current_dir == stop_dir:
             if log_everything:
-                logger.info(f"🔍 Scanning for first key_file: {str(current_dir)[-35:]}")
+                logger.info(f"🔍 Scanning for 🏃🏿‍♀️‍➡️ first 🔑key_file in {str(current_dir_loop)[-35:]}")
 
             # Iterate over all .py files in this directory level
             for file_path in current_dir_loop.glob("*.py"):
@@ -125,10 +134,13 @@ def execute_packing_logic(current_dir, logger):
 
                 if file_path.name.startswith('.'):
                     if log_everything:
-                        logger.info(f"🔍:117 found {str(file_path)[-35:]}")
+                        logger.info(f"🔍:117 found 🔑...{str(file_path)[-35:]}")
                     key_file = file_path
+                    stop_search_key_file_is_found_year = True
                     break
 
+            if stop_search_key_file_is_found_year:
+                break
             # Move one level up
             if current_dir_loop == stop_dir:
                 break
@@ -140,7 +152,7 @@ def execute_packing_logic(current_dir, logger):
         # key_file = next(parent_dir.glob(".*.py"), None)
 
         if not key_file:
-            logger.error(f"❌ No key file found in {parent_dir} matching '.*.py'")
+            logger.error(f"❌ No 🔑key file found in 📂...{parent_dir[-30:]} that is 🔎 matching '.*.py'")
             # Listing files to help debug
             files_in_parent = [f.name for f in parent_dir.iterdir()]
             logger.info(f"ℹ Files actually present in parent: {files_in_parent}")
@@ -149,26 +161,64 @@ def execute_packing_logic(current_dir, logger):
         # logger.info(f"🔑 Key File found: {key_file}")
 
         # 4. PASSWORD EXTRACTION
-        password = _extract_password(key_file,logger)
-        if not password:
-            logger.error("❌ Password extraction returned None/Empty!")
-            return
-        # Mask password for logs (show only length)
+        file_key_name = pathlib.Path(key_file).name
 
-        # pass_len = len(password)
-        # logger.info(f"🔐 Password extracted successfully (Length: {pass_len} chars).")
+        if False:
+            nothing = 1
+        elif file_key_name == '.nopassword.py': # password == "nopassword" or
+            zip_me_nopassword(zip_path_outer, current_dir)
+        else:
 
-        blob_name = "aura_secure.blob"
-        blob_path = parent_dir / blob_name
-        zip_me(blob_path, current_dir,password)
+            password = _extract_password(key_file, logger)
+            if not password:  # password == "nopassword" or:
+                logger.error("❌ Password extraction returned None/Empty!")
+                logger.error(
+                    "=> when you want now password your password file must named '.nopassword.py'. for extracting then you dont need a password.")
+                logger.error("=>without password file create a zip is not allowed.")
+                logger.info("🏁 SecurePacker empty password entry is not allowed.")
 
-        zip_me(zip_path_outer, blob_path,password)
-        # config/maps/_privat555/secure_packer.py:72
-        os.remove(blob_path)
+                return
+            # Mask password for logs (show only length)
+
+            # pass_len = len(password)
+            # logger.info(f"🔐 Password extracted successfully (Length: {pass_len} chars).")
+
+            # scripts/py/func/secure_packer_lib.py:166
+
+
+            blob_name = "aura_secure.blob"
+            blob_path = parent_dir / blob_name
+            zip_me(blob_path, current_dir, password)
+
+            zip_me(zip_path_outer, blob_path, password)
+            os.remove(blob_path)
+
+        # Source - https://stackoverflow.com/a/10607768
+        # Posted by Levon, modified by community. See post 'Timeline' for change history
+        # Retrieved 2025-12-16, License - CC BY-SA 3.0
+
+        # following will helpt start outer trigger (when outer trigger finds python change it will start automaticall, 16.12.'25 14:32 Tue )
+        import time
+        current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        content = f"""
+#!/usr/bin/env python3
+zip_created_at = '{current_time}'
+        """.lstrip()
+        with open(f'{zip_path_outer}.py', 'w') as file:
+            file.write(content)
+
+
 
         # logger.info("🏁 SecurePacker finished.")
     except Exception as e:
         logger.error(f"❌ CRITICAL EXCEPTION in SecurePacker: {e}", exc_info=True)
+
+
+import os
+import zipfile
+import pyzipper
+import logging
+
 
 def zip_me(zip_path_outer, current_dir_or_single_file, password):
     pw = password.encode("utf-8") if isinstance(password, str) else password
@@ -191,3 +241,42 @@ def zip_me(zip_path_outer, current_dir_or_single_file, password):
                     zf.write(full, arc_name)
 
     # logger.info(f"📄 📦 Zip Output: {zip_path_outer}")
+
+def zip_me_nopassword(zip_path_outer, current_dir_or_single_file):
+    target_path = str(current_dir_or_single_file)
+
+    # Standard Zip
+    zip_context = zipfile.ZipFile(
+        zip_path_outer,
+        "w",
+        compression=zipfile.ZIP_DEFLATED
+    )
+
+    # 2. Open Zip and Write Files
+    with zip_context as zf:
+
+        # CASE A: Single File
+        if os.path.isfile(target_path):
+            arc_name = os.path.basename(target_path)
+            zf.write(target_path, arc_name)
+
+        # CASE B: Directory
+        else:
+            # We want the archive names relative to the target directory
+            # If target is /tmp/data, and file is /tmp/data/sub/img.jpg
+            # arc_name should be sub/img.jpg (or data/sub/img.jpg depending on preference)
+
+            # This logic mimics your original string slicing (contents relative to root):
+            parent_dir = target_path
+
+            for root, _, files in os.walk(target_path):
+                for fn in files:
+                    if  '__init__.py' in fn:
+                        continue
+                    full_path = os.path.join(root, fn)
+                    # relpath calculates the correct relative path automatically
+                    arc_name = os.path.relpath(full_path, start=parent_dir)
+                    zf.write(full_path, arc_name)
+
+    logger.info(f"📄 📦 Zip Output: {zip_path_outer}")
+

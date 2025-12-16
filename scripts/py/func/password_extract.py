@@ -88,6 +88,8 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
 
     # helper to normalise candidate and return bytes if valid
 
+
+
     def normalise(s: str) -> Optional[bytes]:
 
         if not s:
@@ -102,6 +104,22 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
         if not s:
             return None
         try:
+            raw = line.rstrip("\n\r")
+
+            if raw == 'nopassword':
+                logger.info('found #######################################')
+                logger.info('found #######################################')
+                logger.info('found #######################################')
+                logger.info('found #######################################')
+                logger.info('found #######################################')
+                logger.info('found #######################################')
+                logger.info('found #######################################')
+                logger.info('found #######################################')
+                sys.exit(1)
+                return None
+
+
+
             b = s.encode(encoding)
             return b
         except Exception as e2:
@@ -145,14 +163,14 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
                     logger.info("✓ Found password in plaintext line.")
                 # return pw
     if not pw:
-        logger.warning(f"⚠ No valid password pattern found in ..{key_path[-30:]}")
+        logger.warning(f"⚠ No valid password pattern found in ..{key_path}")
     if pw and not is_fist5are_letters:
         pw = mirror_outside_in_bytes(pw,9)
         # scripts/py/func/password_extract.py:91
 
         process_id = os.getpid()  # Get the current Process ID
 
-        logger.info(f'⚠️ Extraction of this 🔒 encrypted 📦 ZIP is restricted (fist 5 are not only letters) to Aura only 🏗️ external extraction will fail🛑. Context: .. {key_path[-35:]} (PID {process_id})')
+        logger.info(f'⚠️ Extraction of this 🔒 encrypted 📦 ZIP is restricted (fist 5 are not only letters) to Aura only 🏗️ external extraction will fail🛑. Context: .. {key_path} (PID {process_id})')
     else:
         logger.info('🌍 This 🔒 encrypted 📦 ZIP file is portable (fist 5 are letters): External extraction 📤 supported.')
 

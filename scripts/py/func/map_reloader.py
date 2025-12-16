@@ -5,8 +5,10 @@ import gc # Added for forced garbage collection
 from pathlib import Path
 import os
 
+from pyzipper import zipfile
+
 from config.dynamic_settings import settings
-from scripts.py.func.private_map_ex import _private_map_ex
+from scripts.py.func.private_map_ex import _private_map_unpack
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 def auto_reload_modified_maps(logger,run_mode_override):
@@ -104,8 +106,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     logger.info("🗑️ Forced garbage collection before re-import.")
                 # --- END OF CLEANUP ---
 
-
-
+                log_all_changes = True
 
                 try:
                     # -------------------------------------------------------
@@ -122,19 +123,19 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     # scripts/py/func/map_reloader.py:117
                     if hasattr(module_to_reload, 'on_reload') and callable(module_to_reload.on_reload):
                         try:
-                            if log_all_map_reloaded:
+                            if log_all_map_reloaded or log_all_changes:
                                 logger.info(f"🚀 Triggering on_reload() for '{module_name}'")
                             module_to_reload.on_reload()
                         except Exception as hook_error:
                             logger.error(f"❌ Error in on_reload() for '{module_name}': {hook_error}")
 
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
-                    if log_all_map_reloaded:
+                    if log_all_map_reloaded or log_all_changes:
                         logger.info(f"✅ Successfully reloaded '{module_name}'.")
 
                     # --- NEW CODE START ---
-                    if log_all_map_reloaded:
-                        logger.info(f'before run: ↖️_trigger_upstream_hooks(📜...{str(map_file_path)[-35:]} ) ')
+                    if log_all_map_reloaded or log_all_changes:
+                        logger.info(f'before run: ↖️_trigger_upstream_hooks(📜...{str(map_file_path)[-25:]} ) ')
                     _trigger_upstream_hooks(map_file_path, project_root, logger)
                     # --- NEW CODE END ---
 
@@ -148,7 +149,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     # DEBUG: Log that we hit an exception (expected for key files)
                     # logger.info(f"💥 Import Exception - check its private? for {module_name}: {e}")
 
-                    was_private_map = _private_map_ex(map_file_key, logger)
+                    was_private_map = _private_map_unpack(map_file_key, logger)
 
 
 
@@ -284,6 +285,7 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
     import sys
 
     log_everything = False
+    # log_everything = True
 
     # 1. Define the stop boundary
     # We stop scanning when we reach 'config/maps' to avoid scanning the whole project
@@ -304,7 +306,8 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
     # 2. Traverse Upwards
     start_path_current_dir = ancestor_up_to_last_underscore_no_io(start_path)
 
-    while stop_dir in current_dir.parents or current_dir == stop_dir:
+    # scripts/py/func/map_reloader.py:309
+    while stop_dir in current_dir.parents:
 
         # Iterate over all .py files in this directory level
         for file_path in current_dir.glob("*.py"):
@@ -400,3 +403,39 @@ def ancestor_up_to_last_underscore_no_io(path):
             return Path(*parts[: i + 1])
     return None
 
+
+def zip_me_nopassword(zip_path_outer, current_dir_or_single_file):
+    target_path = str(current_dir_or_single_file)
+
+    # Standard Zip
+    zip_context = zipfile.ZipFile(
+        zip_path_outer,
+        "w",
+        compression=zipfile.ZIP_DEFLATED
+    )
+
+    # 2. Open Zip and Write Files
+    with zip_context as zf:
+
+        # CASE A: Single File
+        if os.path.isfile(target_path):
+            arc_name = os.path.basename(target_path)
+            zf.write(target_path, arc_name)
+
+        # CASE B: Directory
+        else:
+            # We want the archive names relative to the target directory
+            # If target is /tmp/data, and file is /tmp/data/sub/img.jpg
+            # arc_name should be sub/img.jpg (or data/sub/img.jpg depending on preference)
+
+            # This logic mimics your original string slicing (contents relative to root):
+            parent_dir = target_path
+
+            for root, _, files in os.walk(target_path):
+                for fn in files:
+                    full_path = os.path.join(root, fn)
+                    # relpath calculates the correct relative path automatically
+                    arc_name = os.path.relpath(full_path, start=parent_dir)
+                    zf.write(full_path, arc_name)
+
+    logger.info(f"📄 📦 Zip Output: {zip_path_outer}")

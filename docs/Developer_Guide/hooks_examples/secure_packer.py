@@ -9,6 +9,7 @@ from scripts.py.func import secure_packer_lib
 
 logger = logging.getLogger(__name__)
 
+# docs/Developer_Guide/hooks_examples/secure_packer.py:12
 def on_folder_change():
     """
     Triggered by map_reloader.py when anything in this folder changes.

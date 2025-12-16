@@ -39,6 +39,12 @@ dictation.log
 get_suggestions.log
 type_watcher.log
 
+**/*.zip_log.py
+**/*.zip.py
+
+config/maps/2025/
+
+
 scripts/service_start.log
 config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.log
 config/maps/plugins/z_fallback_llm/de-DE/conversation_history.json
