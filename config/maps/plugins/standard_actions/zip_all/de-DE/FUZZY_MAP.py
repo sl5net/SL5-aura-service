@@ -14,9 +14,5 @@ FUZZY_MAP = [
     # Importing to know:
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
-
-
-
-
 ]
 

@@ -30,13 +30,15 @@ FUZZY_MAP_pre = [
         (Zip|Zips)\s(Registry|Datenbank)\s(aktualisieren|erneuern)
         |
         jagen aktualisieren
-    )$''', 90, {
-        'flags': re.IGNORECASE | re.VERBOSE,
-        'on_match_exec': [CONFIG_DIR / 'zip.py']
-    }),
+        )$''', 90, {
+            'flags': re.IGNORECASE | re.VERBOSE,
+            'on_match_exec': [CONFIG_DIR / 'zip.py']
+        }
+        ),
 ]
 
-#Zip-Datei hinzu
+#Zip-Datei hinzuScan complete. Found 11 targets. Zips updated.
+#
 
 readme = '''
 Was deckt das jetzt alles ab?

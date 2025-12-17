@@ -2,164 +2,221 @@ import logging
 import json
 import os
 import sys
+import shutil
 import importlib.util
 from pathlib import Path
 
 # --- Configuration ---
 CURRENT_DIR = Path(__file__).parent
 JSON_DB_PATH = CURRENT_DIR / "zip_registry.json"
-
-# 0=Dateiname, 1=de-DE, 2=zip_all, ... 7=STT (Root)
-project_dir = Path(__file__).parents[6]
-SCAN_ROOT = project_dir / "config" / "maps"
+# Geht 7 Ebenen hoch zum Projekt-Root -> config -> maps
+SCAN_ROOT = Path(__file__).resolve().parents[6] / "config" / "maps"
 
 # --- Setup Logging ---
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
-# --- Import Helper for secure_packer_lib ---
-def get_packer_lib():
-    """Dynamically imports the secure_packer_lib module."""
-    lib_path = Path("/home/seeh/projects/py/STT/scripts/py/func/secure_packer_lib.py")
+# --- DYNAMIC IMPORTS ---
 
+def get_packer_lib():
+    """Import secure_packer_lib for PACKING."""
+    lib_path = SCAN_ROOT.parents[1] / "scripts" / "py" / "func" / "secure_packer_lib.py"
     if not lib_path.exists():
         logger.error(f"❌ secure_packer_lib not found at {lib_path}")
         return None
-
     spec = importlib.util.spec_from_file_location("secure_packer_lib", lib_path)
     module = importlib.util.module_from_spec(spec)
     sys.modules["secure_packer_lib"] = module
     spec.loader.exec_module(module)
     return module
 
+def get_unpacker_lib():
+    """Import private_map_ex for UNPACKING."""
+    lib_path = SCAN_ROOT.parents[1]  / "scripts" / "py" / "func" / "private_map_ex.py"
+    if not lib_path.exists():
+        logger.error(f"❌ private_map_ex not found at {lib_path}")
+        return None
+    spec = importlib.util.spec_from_file_location("private_map_ex", lib_path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["private_map_ex"] = module
+    spec.loader.exec_module(module)
+    return module
+
 # --- JSON Helpers ---
 def load_registry():
-    if not JSON_DB_PATH.exists():
-        return []
+    if not JSON_DB_PATH.exists(): return []
     try:
         with open(JSON_DB_PATH, 'r', encoding='utf-8') as f:
             data = json.load(f)
             return data.get("watched_folders", [])
-    except Exception:
-        return []
+    except Exception: return []
 
 def save_registry(folder_list):
     try:
         with open(JSON_DB_PATH, 'w', encoding='utf-8') as f:
             json.dump({"watched_folders": list(set(folder_list))}, f, indent=4)
-        logger.info(f"💾 Registry saved with {len(folder_list)} entries.")
-    except Exception as e:
-        logger.error(f"❌ Failed to save JSON: {e}")
+    except Exception as e: logger.error(f"❌ Failed to save JSON: {e}")
 
-# --- TIMESTAMPS LOGIC ---
-def _needs_update(source_folder: Path, zip_file: Path) -> bool:
-    """
-    Returns True if the folder content is newer than the zip file.
-    """
-    if not zip_file.exists():
-        # Zip doesn't exist yet -> Update needed
-        return True
+# --- TIMESTAMPS / SEARCH LOGIC ---
+
+def _needs_packing(source_folder: Path, zip_file: Path) -> bool:
+    """True if Folder content is NEWER than Zip."""
+    if not zip_file.exists(): return True
 
     zip_time = zip_file.stat().st_mtime
-
-    # Check modification time of all files inside the folder
-    # This covers PDFs, TXTs, scripts, etc.
     for root, _, files in os.walk(source_folder):
         for file in files:
-            file_path = Path(root) / file
-            # If any file is newer than the zip archive -> Update needed
-            if file_path.stat().st_mtime > zip_time:
-                # logger.debug(f"File {file} is newer than zip.")
+            if (Path(root) / file).stat().st_mtime > zip_time:
                 return True
-
     return False
 
-# --- 1. THE MANUAL PART (Scanning) ---
-def scan_and_register_folders():
-    """
-    MANUAL ONLY: Scans the file system for folders starting with '_'.
-    Updates the JSON registry.
-    """
-    logger.info(f"🕵️ Scanning for zip-targets in: {SCAN_ROOT}")
-    found_folders = []
+def _needs_unpacking(target_folder: Path, zip_file: Path) -> bool:
+    """True if Zip is NEWER than Folder (or Folder missing)."""
+    if not zip_file.exists(): return False
+    if not target_folder.exists(): return True
+    # Buffer of 2 seconds for filesystem precisions
+    return zip_file.stat().st_mtime > (target_folder.stat().st_mtime + 2)
 
+def find_password_file(start_dir: Path) -> Path:
+    """
+    Search upwards for a file starting with '.' (the key/password).
+    Stops at 'config/maps'.
+    """
+    current = start_dir
+    limit = SCAN_ROOT
+
+    while True:
+        if current.exists():
+            for item in current.iterdir():
+                if item.is_file() and item.name.startswith('.'):
+                    # Filter out system files
+                    if item.name in ['.DS_Store', '.gitignore', '.gitkeep']:
+                        continue
+                    return item
+
+        if current == limit: break
+        if current.parent == current: break
+        current = current.parent
+
+    return None
+
+# --- WORKFLOWS ---
+
+def scan_and_register_folders():
+    """MANUAL: Scans disk for '_folders', updates JSON."""
+    logger.info(f"🕵️ Scanning for zip-targets in: {SCAN_ROOT}")
+    found = []
     for root, dirs, files in os.walk(SCAN_ROOT):
         path_obj = Path(root)
+        if path_obj.name.startswith('.') or '__pycache__' in path_obj.parts: continue
 
-        # Ignoriere versteckte Systemordner
-        if path_obj.name.startswith('.') or '__pycache__' in path_obj.parts:
-            continue
-
-        # Prüfen ob der Ordner mit '_' beginnt (aber nicht '__')
         if path_obj.name.startswith('_') and not path_obj.name.startswith('__'):
-            found_folders.append(str(path_obj.resolve()))
+            found.append(str(path_obj.resolve()))
 
-    save_registry(found_folders)
-    return len(found_folders)
+    save_registry(found)
+    return len(found)
 
-# --- 2. THE AUTOMATIC PART (Updating) ---
-def update_existing_zips():
+def check_and_unpack_zips():
     """
-    AUTOMATIC: Reads JSON, checks timestamps, and calls the packer ONLY if needed.
+    Checks Registry. If Zip > Folder:
+    1. Find key file (upwards).
+    2. Copy key file to zip directory (if not already there).
+    3. Run existing unpacker.
+    4. Delete temporary key copy.
     """
     folders = load_registry()
-    if not folders:
-        return
+    if not folders: return
 
-    packer_lib = get_packer_lib()
-    if not packer_lib:
-        return
-
-    updates_count = 0
+    unpacker_module = get_unpacker_lib()
+    if not unpacker_module: return
 
     for folder_str in folders:
         folder_path = Path(folder_str)
+        # _t1 -> t1.zip (Sibling)
+        zip_name = folder_path.name.lstrip('_') + ".zip"
+        zip_dir = folder_path.parent
+        zip_path = zip_dir / zip_name
 
-        if not folder_path.exists():
-            continue
+        if _needs_unpacking(folder_path, zip_path):
+            logger.info(f"🔓 Update available for {folder_path.name}...")
 
-        # Determine Target Zip Name
-        # Rule: Folder "_t1" -> Zip "t1.zip" (Remove leading underscore)
+            # 1. Find the key (somewhere up the tree)
+            found_pw_file = find_password_file(folder_path)
+
+            if found_pw_file:
+                # 2. Determine local path for the key (next to zip)
+                local_key_path = zip_dir / found_pw_file.name
+                created_temp_copy = False
+
+                try:
+                    # If key is further up, copy it down temporarily
+                    if found_pw_file.parent.resolve() != zip_dir.resolve():
+                        logger.info(f"   🔑 Copying temp key to: {local_key_path.name}")
+                        shutil.copy2(found_pw_file, local_key_path)
+                        created_temp_copy = True
+
+                    # 3. Call existing unpacker with the LOCAL key path
+                    unpacker_module._private_map_unpack(str(local_key_path), logger)
+
+                    # Touch folder to update mtime (prevent loop)
+                    if folder_path.exists():
+                        os.utime(folder_path, None)
+
+                except Exception as e:
+                    logger.error(f"❌ Failed to unpack {zip_path.name}: {e}")
+
+                finally:
+                    # 4. Cleanup: Remove the copied key
+                    if created_temp_copy and local_key_path.exists():
+                        try:
+                            local_key_path.unlink()
+                            # logger.debug("🧹 Removed temp key file.")
+                        except Exception as cleanup_err:
+                            logger.warning(f"⚠️ Could not remove temp key {local_key_path}: {cleanup_err}")
+
+            else:
+                logger.warning(f"⚠️ No password file found for {folder_path.name}. Cannot unpack.")
+
+def check_and_pack_zips():
+    """Checks Registry. If Folder > Zip, calls secure_packer_lib."""
+    folders = load_registry()
+    if not folders: return
+
+    packer_lib = get_packer_lib()
+    if not packer_lib: return
+
+    for folder_str in folders:
+        folder_path = Path(folder_str)
+        if not folder_path.exists(): continue
+
         zip_name = folder_path.name.lstrip('_') + ".zip"
         zip_target = folder_path.parent / zip_name
 
-        # CHECK: Do we really need to zip?
-        if _needs_update(folder_path, zip_target):
-            logger.info(f"♻️ Content changed. Zipping: {folder_path.name} -> {zip_name}")
+        if _needs_packing(folder_path, zip_target):
+            logger.info(f"♻️ Content changed. Zipping: {folder_path.name}")
             try:
-                # Call the external lib to do the actual work
                 packer_lib.execute_packing_logic(folder_path, logger)
-                updates_count += 1
             except Exception as e:
                 logger.error(f"⚠️ Error packing {folder_path.name}: {e}")
-        # else:
-            # logger.debug(f"Skipping {folder_path.name}, zip is up to date.")
 
-    if updates_count > 0:
-        logger.info(f"✅ Updated {updates_count} zip archives.")
-
-# --- Hooks & Commands ---
+# --- HOOKS ---
 
 def on_reload():
-    """
-    AUTOMATIC TRIGGER:
-    Runs every time the map system reloads.
-    Checks timestamps for all known folders in JSON.
-    """
+    """Runs automatically on every reload."""
     try:
-        update_existing_zips()
+        check_and_unpack_zips()
+        check_and_pack_zips()
     except Exception as e:
         logger.error(f"🔥 Error in zip.py on_reload: {e}")
 
-
 def execute(match_data):
-    """
-    MANUAL VOICE TRIGGER:
-    Scans the disk for NEW folders, then checks all zips.
-    """
-    logger.info("🎤 Voice Command: Scanning system for new '_folders'...")
+    """Manual Voice Command."""
+    logger.info("🎤 Voice Command: Full Scan & Sync...")
 
     count = scan_and_register_folders()
-    update_existing_zips()
 
-    return f"Scan complete. Found {count} targets. Zips updated."
+    check_and_unpack_zips()
+    check_and_pack_zips()
+
+    return f"Scan complete. {count} targets synced."
+

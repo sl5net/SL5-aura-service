@@ -31,6 +31,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
     # logger.info("Starting map reload check.")
 
+    # func/map_reloader.py:34
     try:
         # scripts/py/func/map_reloader.py:33
         project_root = Path(__file__).resolve().parent.parent.parent.parent
@@ -43,6 +44,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
         # run_mode_override # os.getenv('RUN_MODE')  # returns None or the value
         logger.info(f'run_mode_override: {run_mode_override}')
 
+        # func/map_reloader.py:46
         for map_file_path in maps_base_dir.glob("**/*.py"):
             if map_file_path.name == "__init__.py":
                 continue
@@ -64,6 +66,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                 except ValueError:
                     continue  # Should not happen, but safe fallback
 
+            # func/map_reloader.py:67
             map_file_key = str(map_file_path)
 
             # Using time.time() for current time, though os.path.getmtime is fine for file checks
@@ -150,6 +153,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     # DEBUG: Log that we hit an exception (expected for key files)
                     # logger.info(f"💥 Import Exception - check its private? for {module_name}: {e}")
 
+                    # func/map_reloader.py:153
                     was_private_map = _private_map_unpack(map_file_key, logger)
 
 
