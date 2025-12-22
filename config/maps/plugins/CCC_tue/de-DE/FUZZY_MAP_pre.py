@@ -62,13 +62,15 @@ FUZZY_MAP_pre = [
     # EXAMPLE: chaos
     ('https://cttue.de/doku.php?id=events:past', r'^(chaos|Karls)\s+.* \bVerg.*$', 60, {'flags': re.IGNORECASE}),
 
-    # fettleber typ
-    # vettel app tübingen
-    # fred leb tübingen
-    # EXAMPLE: fred
+    # EXAMPLE: fred vettel
+    ('06.03.-08.03.2026 Uni Stuttgart selfnet.de/uplink INCO guserav Selfnet e.V. Mastodon', r'^(Stuttgart|Selfnet|Mastodon)(\s*\w*\s*\b)(Stuttgart|ccc)$', 60, {'flags': re.IGNORECASE}),
+    # https://events.ccc.de/congress/2025/hub/de/wiki/event-vorstellungen
+
+
+    # EXAMPLE: fred vettel
     ('https://ki-maker.space/', r'^(fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ)$', 60, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: fred
+    # EXAMPLE: fred Kurse workshops
     ('https://ki-maker.space/angebote/kurse-und-workshops', r'^(fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ).*(Kurse|workshops)$', 60, {'flags': re.IGNORECASE}),
 
 

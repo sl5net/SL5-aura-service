@@ -106,6 +106,10 @@ rsync -a --delete --force \
 echo "INFO: Bereinige temporäre Dateien..."
 rm -rf "$tempDir"
 
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+
 echo ""
 echo -e "${COLOR_GREEN}Update abgeschlossen! Sie können die Anwendung jetzt neu starten.${COLOR_RESET}"
 
