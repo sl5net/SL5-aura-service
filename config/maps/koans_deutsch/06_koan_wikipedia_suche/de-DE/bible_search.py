@@ -1,3 +1,4 @@
+# config/maps/koans_deutsch/06_koan_wikipedia_suche/de-DE/bible_search.py
 # bible_search.py
 
 import logging

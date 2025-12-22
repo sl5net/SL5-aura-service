@@ -49,7 +49,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
 
     try:
         # --- UNIFIED LOGIC FOR ALL OS ---
-        logger.info(f"Starting watchdog observer for triggers on '{trigger_file_path.name}'.")
+        logger.info(f"Starting 👀 watchdog observer for triggers on '{trigger_file_path.name}'.")
         trigger_event = threading.Event()
 
 

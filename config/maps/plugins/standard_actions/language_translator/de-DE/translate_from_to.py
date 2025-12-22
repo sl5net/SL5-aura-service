@@ -1,5 +1,5 @@
 # config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py
-# In Ihrer CONFIG_DIR / 'translate_from_to.py'
+# CONFIG_DIR / 'translate_from_to.py'
 
 import sys
 from pathlib import Path
@@ -38,13 +38,17 @@ def execute(match_data):
 
 
 
-    #
+    #Übersetzung anschaltenenglisch einschaltenokay (original:'okay').englisch ausschalten
 
     if not STATE_FILE.exists():
+        # return '2025-1222-0606'
         return original_text  # Modus aus, nichts tun
+
+#englisch einschaltenokay (original:'okay').englisch ausschaltenokay
 
     content = STATE_FILE.read_text().strip().lower()
     if "='on'" not in content:
+        # return '2025-1222-0606b'
         return original_text  # Modus aus, nichts tun
 
     key, value = content.split('=', 1)
@@ -57,6 +61,8 @@ def execute(match_data):
     # 'ar' # Ziel: arabisch
 
     logger = logging.getLogger(__name__)
+    logger.info(f'🌈 Translating to {lang_target}')
+
 
     # --- 1. CACHE PRÜFEN (Key-Args sind die Parameter, die die Ausgabe bestimmen) ---
     BASE_DIR_FOR_CACHE = Path(__file__).parent.parent.parent.parent.parent # <- Korrigieren Sie dies auf Ihren stabilen TMP-Pfad!
@@ -135,7 +141,11 @@ def execute(match_data):
         # Das simple_translate.py Skript hat einen Fehler gemeldet.
         # Die Fehlermeldung steht in e.stderr.
         print(f"ERROR: [Translator Plugin] Fehler vom Übersetzungsskript: {e.stderr.strip()}", file=sys.stderr)
+        logger.info(f'🌈 Translating to {lang_target}')
+        logger.info(f"🛑🛑🛑 ERROR: 🌈 [Translator Plugin] Fehler vom Übersetzungsskript: {e.stderr.strip()}")
+
         return "Bei der Übersetzung ist ein Fehler aufgetreten."
     except Exception as e:
-        print(f"ERROR: [Translator Plugin] Unerwarteter Fehler: {e}", file=sys.stderr)
+        print(f"🛑🛑🛑 ERROR: 🌈 ERROR: [Translator Plugin] : {e}", file=sys.stderr)
+        logger.info(f"🛑🛑🛑 ERROR: 🌈 ERROR: [Translator Plugin] : {e}")
         return "Bei der Übersetzung ist ein unerwarteter Fehler aufgetreten."

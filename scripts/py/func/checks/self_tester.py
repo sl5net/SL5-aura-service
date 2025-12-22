@@ -1,4 +1,5 @@
 # file: scripts/py/func/checks/self_tester.py
+import re
 from pathlib import Path
 from logging import FileHandler
 
@@ -11,6 +12,19 @@ import glob
 # This assumes self_tester.py is in the project's root or a subdirectory.
 # Adjust if necessary.
 import sys
+
+
+
+def check_translator_hijack(logger):
+    path = Path("config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py")
+    if path.exists():
+        # Sucht den Anker, überspringt allen Whitespace/leere Zeilen und prüft das erste Zeichen.
+        # Wenn das erste Zeichen der Regel KEIN # ist, gibt es einen Fehler.
+        if re.search(r"# TRANSLATION_RULE\s*\n\s*([^#\s])", path.read_text()):
+            logger.error(f"🚨 HIJACK: Regel in {path.name} ist AKTIV!")
+            return False
+    return True
+
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
@@ -53,6 +67,13 @@ def run_core_logic_self_test(logger, tmp_dir: Path, lt_url, lang_code):
     """
     Runs a series of predefined tests, guarded by a persistent throttle mechanism.
     """
+
+    if check_translator_hijack:
+        logger.info(f"self_tester.py exit exit exit")
+        logger.info(f"🚨 HIJACK: Regel unter ist AKTIV!")
+        exit(1)
+
+
 
     # 1. Collect all parameters needed by _execute_self_test_core
     core_params = {
@@ -118,6 +139,8 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
 
     test_cases = [
 
+        ('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'LT correction Uppercase', 'de-DE'),
+
         case(input_text='null', expected='0', context='git'),
         case(input_text='über die konsole zu bedienen', expected='über die konsole zu bedienen', context='git'),
         case(input_text='geht cobit', expected='git commit', context='git'),
@@ -140,7 +163,6 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
          'en-US'),
         ('one and thousand dollars.', '1 and 1000 dollars.', 'Number with unit',
          'en-US'),
-
 
 
         ('tausend euro. Und euro großgeschrieben.', '1000 Euro. Und Euro großgeschrieben.', 'Number with unit', 'de-DE'),
@@ -355,7 +377,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     # --- Summary ---
     logger.info("-" * 40)
     if failed_count == 0:
-        logger.info(f"self_tester.py:229✅ Core Logic Self-Test: All {passed_count}tested of {len(test_cases)} tests(all lang) passed! Great no test failed")
+        logger.info(f"self_tester.py:229✅ Core Logic Self-Test: All {passed_count}tested of {len(test_cases)} tests(all lang) passed! 🏆🥇 🎊 🎉 Great no test failed")
         if passed_count == 0:
             logger.error(f"self_tester.py:232 ❌ FAIL was tested: 0 of 0 ! Probably wrong. Makes no sense")
             exit(1)

@@ -1,3 +1,4 @@
+# config/maps/plugins/z_fallback_llm/de-DE/fix_db_keywords.py
 import sqlite3
 from pathlib import Path
 

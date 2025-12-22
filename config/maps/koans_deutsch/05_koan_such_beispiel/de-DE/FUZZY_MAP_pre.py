@@ -1,3 +1,4 @@
+# config/maps/koans_deutsch/05_koan_such_beispiel/de-DE/FUZZY_MAP_pre.py
 # its using https://github.com/scrollmapper/bible_databases/tree/master/formats/sqlite
 
 import re # noqa: F401

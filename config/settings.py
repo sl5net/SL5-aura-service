@@ -1,4 +1,4 @@
-# file: config/settings.py
+# config/settings.py
 # Central configuration for the application
 # please see also: settings_local.py_Example.txt
 import os
@@ -89,8 +89,9 @@ ESPEAK_FALLBACK_AMPLITUDE = 50
 USE_EXTERNAL_LANGUAGETOOL = False # Default: False
 
 # URL for the external server if the option above is True.
-EXTERNAL_LANGUAGETOOL_URL = "http://localhost:8081"
+# EXTERNAL_LANGUAGETOOL_URL = "http://localhost:8081"
 
+# config/settings.py
 # Settings for our internal server (if used)
 LANGUAGETOOL_PORT = 8082
 

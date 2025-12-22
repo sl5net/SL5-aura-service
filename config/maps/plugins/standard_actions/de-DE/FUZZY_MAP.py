@@ -1,4 +1,4 @@
-# config/maps/plugins/git/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP.py
 import re # noqa: F401
 
 # This map uses a hybrid approach:

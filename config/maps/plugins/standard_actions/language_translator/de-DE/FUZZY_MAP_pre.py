@@ -1,4 +1,4 @@
-# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path
 
@@ -69,10 +69,12 @@ standards.
 
 CONFIG_DIR = Path(__file__).parent
 
-# EXAMPLE: b Denglisch
+# EXAMPLE: Denglisch
 Englisch=r'\b(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe|ähnlich)\b'
 # EXAMPLE: Switch
 toggleCmd=r'(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
+
+# englisch einschaltenGuten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).# EXAMPLE: s hallo
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
@@ -87,6 +89,12 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+
+    # EXAMPLE: französisch einschalten
+    ('fr', fr'^(französisch) {toggleCmd}$', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
 
     # EXAMPLE: Thai Switch
     ('th', fr'^(Thai|Tai|hi|Bei) {toggleCmd}$', 95, {
@@ -121,7 +129,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: portugiesisch Switch
-    ('pt-BR', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
+    ('pt-BR', r'^(portugiesisch) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
          'flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
@@ -166,17 +174,24 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
+    # EXAMPLE: gute nacht
+    ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'good_night.py']
+    }),
+
+    #test (original:'test').
+    #
+
+
+    # config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
     # ANCHOR: The following line is controlled by the toggle script.
     # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
     # TRANSLATION_RULE
 #    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 
 
-    # ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
-    #     'flags': re.IGNORECASE,
-    #     # Ruft unser neues Skript auf
-    #     'on_match_exec': [CONFIG_DIR / 'good_night.py']
-    # }),
+
 
 
 ]

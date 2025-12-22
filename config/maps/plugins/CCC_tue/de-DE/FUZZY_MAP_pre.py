@@ -1,4 +1,4 @@
-# config/languagetool_server/maps/plugins/CCC_tue/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/CCC_tue/de-DE/FUZZY_MAP_pre.py
 # https://regex101.com/
 import re # noqa: F401
 
@@ -35,17 +35,16 @@ FUZZY_MAP_pre = [
     # - means first is most imported, lower rules maybe not get read.
 
 
-    # raus trefft tübingen Chaos trifft TypGraues trifft Tübingen
 
 
 
-    # EXAMPLE: chaos
-    ('https://cttue.de', r'^(chaos|Graues|Karls|raus) (treff|trifft) (tübingen|Typ)\s*\w*$', 60, {'flags': re.IGNORECASE}),
+    ('https://cttue.de',
+     # EXAMPLE: chaos
+     r'^(chaos|Graues|Karls|raus) (treff|trifft) (tübingen|Typ)\s*\w*$', 60, {'flags': re.IGNORECASE}),
 
-    # karl stress was steht an
-
-    # EXAMPLE: chaos
-    ('https://cttue.de/doku.php?id=start#was_ansteht', r'^(chaos|Karls)\s+.*was.*an.*$', 60, {'flags': re.IGNORECASE}),
+    ('https://cttue.de/doku.php?id=start#was_ansteht',
+     # EXAMPLE: chaos
+     r'^(chaos|Karls)\s+.*was.*an.*$', 60, {'flags': re.IGNORECASE}),
 
 
 
@@ -71,10 +70,6 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: fred
     ('https://ki-maker.space/angebote/kurse-und-workshops', r'^(fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ).*(Kurse|workshops)$', 60, {'flags': re.IGNORECASE}),
-
-
-
-
 
 
     # EXAMPLE: Python Buch

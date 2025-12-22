@@ -28,8 +28,8 @@ def execute_packing_logic(current_dir, logger):
     current_dir_loop = current_dir
 
     if log_everything:
-        logger.info(f"========= current_dir:{current_dir} =========")
-        logger.info(f"🚀 secure_packer_lib triggered. current_dir:{current_dir}")
+        logger.info(f"========= current_dir:{str(current_dir)[-30:]} =========")
+        logger.info(f"🚀 secure_packer_lib triggered. current_dir:{str(current_dir)[-30:]}")
     try:
         # 1. PATH ANALYSIS
         #current_file = Path(__file__)
@@ -49,7 +49,7 @@ def execute_packing_logic(current_dir, logger):
         # 2. NAME CALCULATION
         folder_name = current_dir.name
         if log_everything:
-            logger.info(f"🔍secure_packer_lib.py : Analyzing Folder Name: '...{folder_name[-30:]}'")
+            logger.info(f"🔍secure_packer_lib.py : Analyzing Folder Name: '...{str(folder_name)[-30:]}'")
 
         if folder_name.startswith('_'):
             base_name = folder_name[1:]
@@ -152,10 +152,14 @@ def execute_packing_logic(current_dir, logger):
         # key_file = next(parent_dir.glob(".*.py"), None)
 
         if not key_file:
-            logger.error(f"❌ No 🔑key file found in 📂...{parent_dir[-30:]} that is 🔎 matching '.*.py'")
+            # logger.error(f"❌ No 🔑key file found in 📂...{str(parent_dir)[-30:]} that is 🔎 matching '.*.py' | current_dir: {str(current_dir)[-40:]}")
+            # 20.12.'25 17:50 Sat that's not error. folder can be protected by _ from public and not must ave a akey
+            # maybe we add a setup for this in config in future
+
+
             # Listing files to help debug
-            files_in_parent = [f.name for f in parent_dir.iterdir()]
-            logger.info(f"ℹ Files actually present in parent: {files_in_parent}")
+            # files_in_parent = [f.name for f in parent_dir.iterdir()]
+            # logger.info(f"ℹ Files actually present in parent: {files_in_parent}")
             return
 
         # logger.info(f"🔑 Key File found: {key_file}")

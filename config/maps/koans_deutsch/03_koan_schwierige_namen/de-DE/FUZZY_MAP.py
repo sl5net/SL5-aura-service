@@ -1,3 +1,4 @@
+# config/maps/koans_deutsch/03_koan_schwierige_namen/de-DE/FUZZY_MAP.py
 # config/languagetool_server/maps/de-DE/FUZZY_MAP.py
 import re # noqa: F401
 

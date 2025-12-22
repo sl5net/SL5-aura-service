@@ -1,3 +1,4 @@
+# config/maps/plugins/standard_actions/de-DE/wiki_search_online.py
 from pathlib import Path
 
 import wikipediaapi
@@ -30,6 +31,7 @@ def scrape_wikipedia_summary(search_term, lang_code='de'):
                 first_p = content_div.find('div', class_='mw-parser-output').find('p', recursive=False)
 
             if first_p and first_p.text.strip():
+                # EXAMPLE: None
                 summary = re.sub(r'\[.*?\]', '', first_p.text.strip())
                 return summary
     except Exception:
@@ -286,10 +288,12 @@ Bibliografische Angaben für „Einrückungsstil“
         # Diese Regex findet den Biografie-Block (*...) inklusive der umgebenden Leerzeichen
         # und ersetzt ihn durch ein EINZIGES Leerzeichen.
         # So wird "Einstein (*...) war" zu "Einstein war".
+        # EXAMPLE: s s
         cleaned_summary = re.sub(r'\s*\(\*.*?\)\s*', ' ', full_summary, count=1).strip()
         # --- ENDE DER REINIGUNG ---
 
         # Teile den jetzt sauberen Text intelligent in Sätze auf.
+        # EXAMPLE: None
         sentences = re.split(r'(?<=[.!?])\s+', cleaned_summary)
 
         # Nimm die ersten beiden Sätze und füge sie wieder zusammen.

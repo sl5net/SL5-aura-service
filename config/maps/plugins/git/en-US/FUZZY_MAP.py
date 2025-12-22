@@ -1,3 +1,4 @@
+# config/maps/plugins/git/en-US/FUZZY_MAP.py
 # file config/languagetool_server/maps/en-US/FUZZY_MAP.py
 
 # Map for fuzzy matching. More flexible but slightly slower.

@@ -1,3 +1,4 @@
+# config/maps/plugins/standard_actions/wikipedia_local/en-US/FUZZY_MAP.py
 # config/languagetool_server/maps/en-US/FUZZY_MAP.py
 import re # noqa: F401
 

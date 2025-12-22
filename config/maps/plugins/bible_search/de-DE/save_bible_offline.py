@@ -1,3 +1,4 @@
+# config/maps/plugins/bible_search/de-DE/save_bible_offline.py
 import logging
 import re
 from pathlib import Path
@@ -55,6 +56,7 @@ def scrape_and_format_verse(book_abbr, chapter, verse):
                     return None
 
             # Clean up verse text
+            # EXAMPLE: None
             verse_text = re.sub(r'\s+', ' ', verse_text).strip()
             formatted = f"{book_abbr} {chapter}:{verse} {verse_text}"
             logger.debug(f"Fetched: {formatted}")

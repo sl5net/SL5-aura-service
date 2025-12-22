@@ -1,4 +1,4 @@
-# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/standard_actions/wikipedia_local/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path
 
@@ -25,6 +25,30 @@ FUZZY_MAP_pre = [
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
+
+
+    # EXAMPLE: Computer
+    ("was ist ein (Begriffsklärung)", r'^(?!Computer|Aura).*was ist ein ', 90,
+     {
+    'flags': re.IGNORECASE,
+    'skip_list': ['LanguageTool','fullMatchStop'],
+    }),
+
+    # EXAMPLE:  was ist ein haus
+    ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,
+     {
+    'flags': re.IGNORECASE,
+    'skip_list': ['LanguageTool','fullMatchStop'],
+    }),
+
+    # EXAMPLE: Computer
+    # ('', r'^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der| Herr)? (?P<search>.*)', 90, {
+    # 'flags': re.IGNORECASE,
+    # 'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
+    # }),
+
+    #  config/maps/plugins/standard_actions/wikipedia_local/de-DE/FUZZY_MAP_pre.py:251
+
 
 
 

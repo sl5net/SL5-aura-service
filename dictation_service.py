@@ -307,8 +307,8 @@ file_handler.addFilter(WindowsEmojiFilter())
 
 
 
-DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
-# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
+# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
+DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
 
 readme = """
 vosk-model-small-de-0.15
@@ -597,7 +597,7 @@ if settings.DEV_MODE:
 
 def system_memory_watchdog(logging):
 
-    logging.info(f"System Memory Watchdog started. Threshold: {SYSTEM_RAM_THRESHOLD_PERCENT}%")
+    logging.info(f"System Memory 👀 Watchdog started. Threshold: {SYSTEM_RAM_THRESHOLD_PERCENT}%")
 
     process = psutil.Process(os.getpid())
 
@@ -612,7 +612,7 @@ def system_memory_watchdog(logging):
     if not sys.platform.startswith('win'):
         try:
             my_pgid = os.getpgrp()
-            logging.info(f"System Memory Watchdog is running on Unix-like system with pgid: {my_pgid}")
+            logging.info(f"System Memory 👀 Watchdog is running on Unix-like system with pgid: {my_pgid}")
         except AttributeError:
             # Fallback in case os.getpgrp is still missing for some reason
             pass
@@ -746,8 +746,9 @@ else:
     jar_path_absolute = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
     internal_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}"
 
-    logger.info(f"start_languagetool_server(logger, {jar_path_absolute}, {internal_lt_url})")
+    logger.info(f"start_languagetool_server(.. {str(jar_path_absolute)[-30:0]}, {internal_lt_url})")
 
+    # dictation_service.py:751
     languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url)
 
     # NEU/CHANGE: Register atexit ONLY if a real process was started
@@ -757,10 +758,11 @@ else:
     # if not languagetool_process: sys.exit(1)
     # atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
 
+    # dictation_service.py:760
     active_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}/v2/check"
 
 
-if not start_languagetool_server:
+if not languagetool_process:
     notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
     sys.exit(1)
 

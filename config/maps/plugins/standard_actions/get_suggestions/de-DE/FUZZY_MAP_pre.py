@@ -1,4 +1,4 @@
-# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/standard_actions/get_suggestions/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path # noqa: F401
 

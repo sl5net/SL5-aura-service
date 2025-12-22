@@ -1,3 +1,4 @@
+# config/maps/plugins/standard_actions/language_translator/de-DE/toggle_translation_mode.py
 # translation
 import sys
 from pathlib import Path
@@ -37,6 +38,7 @@ def execute(match_data):
     # temp1 = "('en', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (Englisch|ennglish"
 
     # original_text = match_data['original_text'].lower()
+    # config/maps/plugins/standard_actions/language_translator/de-DE/toggle_translation_mode.py:41
     text_after_replacement = match_data['text_after_replacement'].lower()
 
     target_lang = text_after_replacement
@@ -47,7 +49,7 @@ def execute(match_data):
 
     # print("yyyyyyyyyyyyyyyyyyyyyyyyyyy")
     # print(f"original_text={original_text}")
-    # print(f"text_after_replacement={text_after_replacement}")
+    print(f"🌈 text_after_replacement={text_after_replacement}")
     # ﻿Olá, como vai (original:'hallo wie geht's', Tradução de Voz SL5.de/Aura ).
     # print(f"target_lang={target_lang}")
     # sys.exit(0)
@@ -100,19 +102,19 @@ def execute(match_data):
         # Zustand umschalten und Feedback geben
         if current_state == 'on':
             new_state = 'off'
-            feedback_message = "Übersetzungsmodus wird ausgeschaltet."
+            feedback_message = "translation mode is switched off (übersetzung modus wird ausgeschaltet')"
             # Die Zeile auskommentieren
             lines[rule_line_index] = '#' + lines[rule_line_index]
         else: # current_state is 'off'
             new_state = 'on'
             print("new_state:", new_state)
-            feedback_message = "Übersetzungsmodus wird eingeschaltet."
+            feedback_message = "translation mode is switched on (übersetzung modus wird eingeschaltet')"
             # Die Zeile einkommentieren (entferne führende '#' und Leerzeichen)
             #lines[rule_line_index] = lines[rule_line_index].lstrip('# ')
             lines[rule_line_index] = lines[rule_line_index].lstrip('#')
 
 
-        # Schreibe die geänderten Zeilen zurück in die Datei
+        # write back to the file
         RULES_FILE_PATH.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
         print(f"Status geändert zu: {new_state.upper()}. Regel-Datei wurde aktualisiert.")
@@ -122,14 +124,16 @@ def execute(match_data):
         # Signalisiere der Hauptanwendung, dass sie die Regeln neu laden soll.
         # Eine einfache Methode ist, eine "Trigger-Datei" zu erstellen.
         #(Path(__file__).parent / 'RELOAD_RULES.trigger').touch()
-        print("Reload-Trigger wurde gesetzt.")
+        # print("Reload-Trigger was set.")
 
         with open(Path(__file__).parent / 'translation_state.py', "w") as file:
-            target_lang_asVaribleKey = target_lang.strip().replace('-', '_')
-            file.write(f"{target_lang_asVaribleKey}='{new_state}'")
+            target_lang_as_variable_key = target_lang.strip().replace('-', '_')
+            file.write(f"{target_lang_as_variable_key}='{new_state}'")
 
+        return ' ' # text that is result. if you let it empty text you have spoken was written. if you want a empty result write ' '  because its intern not empty and will than accepted.
 
     except Exception as e:
         error_msg = f"Ein Fehler ist aufgetreten: {e}"
         print(error_msg, file=sys.stderr)
         speak("Es gab einen Fehler beim Ändern der Konfiguration.")
+

@@ -1,3 +1,4 @@
+# config/maps/plugins/AI_Prompts_Python/de-DE/FUZZY_MAP_pre.py
 # file config/maps/plugins/               /FUZZY_MAP_pr.py
 # Beispiel: https://www.it-begriffe.de/#L
 import re # noqa: F401
@@ -161,6 +162,48 @@ Vorschlag: finales, TTS-freundliches EXAMPLE-Format (sofort matchend, copy‑pas
 Kurzzeile für Entwickler/AI
 
     Replace EXAMPLE with lines: EXAMPLE: TextToMatch — only letters and spaces; the first token is the expected capture.
+
+
+
+
+
+
+17.12.'25 08:34 Wed
+
+ollama run
+
+Du bist ein Experte für Python Regular Expressions und Datenextraktion aus unsauberen OCR-Texten.
+Deine Aufgabe ist es, aus dem eingegebenen Text wichtige Entitäten (Firmennamen, Städtenamen, Schlüsselbegriffe, interessanten Text) zu extrahieren und in ein spezifisches Python-Tupel-Format zu konvertieren.
+
+Das Zielformat ist:
+# EXAMPLE: b Regex_Gruppe b
+('Interessanter Text', r'\b(Regex_Gruppe)\b', 80, {'flags': re.IGNORECASE})
+
+Regeln für den Regex:
+1. Der Regex muss robust sein und auch OCR-Fehler, falsche Trennungen oder phonetische Ähnlichkeiten abfangen (siehe Beispiele).
+2. Nutze immer `\b` (word boundaries).
+3. Der Score ist ein die Genauigkeit zwischen 70 und 100. Verwende immer 80 in unseren Beispielen.
+4. Gib NUR die Liste der Tupel aus, keinen erklärenden Text.
+
+Beispiele (Lerne von diesem Stil):
+Input: "Wir waren in Kirchentellinsfurt und sahen, dass Kirchen teilen nicht einfach ist."
+
+Input: "Rechnung von Paradigma Minds eingetroffen."
+# EXAMPLE: b Paradigma Minds
+Output: ('pragmatic minds GmbH 2019', r'\b(Paradigma Minds|pragmatic minds)\b', 75, {'flags': re.IGNORECASE})
+
+Verarbeite nun die Zwischenablage:
+
+
+
+
+
+
+
+
+
+
+
 
 
 """

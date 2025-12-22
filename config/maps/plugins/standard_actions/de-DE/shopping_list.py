@@ -1,3 +1,4 @@
+# config/maps/plugins/standard_actions/de-DE/shopping_list.py
 from pathlib import Path
 
 # Die Liste wird in einer einfachen Textdatei im selben Ordner gespeichert

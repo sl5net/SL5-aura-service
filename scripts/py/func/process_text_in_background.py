@@ -357,6 +357,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
     enabled_modname_str = '▉'.join(ENABLED_modname_list)
     logger.info(f"🗺️ ENABLED: ▉{enabled_modname_str}▉")
+    # englisch einschalten Hallo wie geht'senglisch einschaltenHallo wie geht's
 
     logger.info(f"🗺️ Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")
 
@@ -842,9 +843,6 @@ def process_text_in_background(logger,
                     f" new_processed_text:{new_processed_text} ",logger)
 
 
-                if settings.DEV_MODE_memory:
-                    from scripts.py.func.log_memory_details import log_memory_details
-                    log_memory_details(f"next  correct_text_by_languagetool:", logger)
 
                 result_languagetool = correct_text_by_languagetool(
                     logger,
@@ -1175,7 +1173,7 @@ def handle_tts_fallback(processed_text: str, LT_LANGUAGE: str, logger):
             (not primary_tts_successful and settings.USE_ESPEAK_FALLBACK and processed_text)
     )
     if use_fallback:
-        logger.warning("primary TTS failed. try Espeak-Fallback...")
+        logger.warning("primary 🗣️ TTS failed. try 🗣️ Espeak-Fallback...")
         speak_fallback(processed_text, LT_LANGUAGE)
 
 

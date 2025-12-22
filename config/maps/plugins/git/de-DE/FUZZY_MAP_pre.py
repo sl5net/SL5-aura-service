@@ -11,6 +11,7 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
+
 # EXAMPLE: git
 gitGit = r'(git|Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit|kit|peach|quitt)'
 

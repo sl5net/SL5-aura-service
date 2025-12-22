@@ -1,4 +1,4 @@
-# config/maps/plugins/game/0ad/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/game/0ad/de-DE/FUZZY_MAP_pre.py
 # https://regex101.com/
 import re # noqa: F401
 

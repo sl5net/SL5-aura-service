@@ -147,15 +147,15 @@ class DynamicSettings:
         logger.info(f"dynamic_settings.py: settings.DEV_MODE = {settings.DEV_MODE}")
 
         if settings.DEV_MODE:
-            print(f"DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
-            print(f"DEBUG: DynamicSettings._init_settings called. Local settings file: {self._settings_local_file_path}")
+            print(f"⚙ DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
+            print(f"⚙ DEBUG: DynamicSettings._init_settings called. Local settings file: {self._settings_local_file_path}")
             logger.info(f"DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
         self.reload_settings(force=False)
 
     def reload_settings(self, force=False):
         # config/dynamic_settings.py:44
-        logger.info(f"dynamic_settings.py:reload_settings():44 DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
-        print(f"dynamic_settings.py:reload_settings():44 DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
+        logger.info(f"⚙ dynamic_settings.py:reload_settings():44 ⛯ DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
+        print(f"⚙ dynamic_settings.py:reload_settings():44 ⛯ DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
 
 
         # if settings.DEV_MODE:

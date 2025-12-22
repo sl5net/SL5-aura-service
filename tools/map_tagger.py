@@ -2,14 +2,17 @@
 import os
 import re
 import sys
+import time
+
 
 # -----------------------------------------------------------------------------
 # KONFIGURATION
 # -----------------------------------------------------------------------------
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
 
-MAPS_DIR = os.path.join(SCRIPT_DIR, '..', '..', "config", "maps")
+MAPS_DIR = os.path.join(PROJECT_ROOT, "config", "maps")
 SKIP_ALL_FAILURES = False
 
 try:
@@ -25,7 +28,7 @@ def sanitize_regex_part(text):
     """
     Verwandelt einen Regex-Schnipsel in lesbaren Text.
     Ersetzt abstrakte Muster durch konkrete Platzhalter.
-    """
+    # """
     s = text
 
     # 1. Bekannte Regex-Klassen durch lesbare Beispiele ersetzen
@@ -97,23 +100,63 @@ def process_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
-    new_lines = []
+
+
     modified = False
 
+    # 1. Ensure File Header (Relative Path)
+    rel_path = os.path.relpath(filepath, PROJECT_ROOT)
+    expected_header = f"# {rel_path}\n"
+
+    if not lines or not lines[0].startswith("# config/maps/"):
+        lines.insert(0, expected_header)
+        modified = True
+        print(f"Header added to: {rel_path}")
+    elif lines[0] != expected_header:
+        lines[0] = expected_header
+        modified = True
+        print(f"Header updated in: {rel_path}")
+
+
+
+
+
+    new_lines = []
+
+
+
     # Findet: PATTERN = r"..."
-    regex_finder = re.compile(r'=\s*r["\']([^"\']+)["\']')
+    # regex_finder = re.compile(r'=\s*r["\']([\^"\']+)["\']')
+    regex_finder = re.compile(r'[:=,\(\s]\s*r(?P<q>"{3}|\'{3}|"|\')(?P<p>.*?)(?P=q)', re.DOTALL)
 
     for i, line in enumerate(lines):
+        time.sleep(.005)
         match = regex_finder.search(line)
 
         # Prüfen, ob Tag/Example davor existiert
         has_tag_before = (i > 0) and ("# EXAMPLE:" in lines[i-1] or "# TAGS:" in lines[i-1])
 
         if match and not has_tag_before:
-            found_pattern = match.group(1)
+            # found_pattern = match.group(1)
+            found_pattern = match.group('p').strip()
+
+
+            if not found_pattern:
+                new_lines.append(line)
+                continue
+
+            # Skip lines that are purely comments or empty
+            stripped = line.strip()
+            if not stripped or stripped.startswith('#'):
+                new_lines.append(line)
+                continue
 
             # Smart Suggestion holen
-            suggestion = get_smart_suggestion(found_pattern)
+            suggestion = str(get_smart_suggestion(found_pattern)).strip()
+            if not suggestion:
+                new_lines.append(line)
+                continue
+
 
             success = suggestion is not None
             display_suggestion = suggestion if success else "(Kein Vorschlag)"
@@ -122,13 +165,14 @@ def process_file(filepath):
                 new_lines.append(line)
                 continue
 
-            print(f"\n--- {os.path.basename(filepath)} | Zeile {i+1} ---")
+            # print(f"\n--- {os.path.basename(filepath)} | Zeile {i+1} ---")
+            print(f"\n--- {filepath} | Zeile {i+1} ---")
             print(f"Pattern:   {found_pattern}")
 
             # Ausgabe Farbe für Vorschlag
             color_code = "\033[92m" if success else "" # Grün
             reset_code = "\033[0m" if success else ""
-            print(f"Vorschlag: {color_code}{display_suggestion}{reset_code}")
+            print(f"Vorschlag: {color_code}'{display_suggestion}'{reset_code}")
 
             prompt_parts = ["ENTER (nehmen)", "Text (eigenes)", "'s' (skip)", "'q' (quit)"]
             if not success: prompt_parts.append("'sa' (skip failures)")
@@ -178,7 +222,9 @@ def main():
 
     print(f"Scanne {MAPS_DIR} ...")
     for root, dirs, files in os.walk(MAPS_DIR):
+        time.sleep(.005)
         for file in files:
+            time.sleep(.005)
             if file.endswith(".py"):
                 process_file(os.path.join(root, file))
     print("\nFertig.")

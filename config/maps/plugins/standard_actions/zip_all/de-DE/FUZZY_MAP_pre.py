@@ -1,4 +1,4 @@
-# config/maps/plugins/bible_search/FUZZY_MAP_pr.py
+# config/maps/plugins/standard_actions/zip_all/de-DE/FUZZY_MAP_pre.py
 # its using https://github.com/scrollmapper/bible_databases/tree/master/formats/sqlite
 
 import re # noqa: F401
@@ -22,18 +22,18 @@ CONFIG_DIR = Path(__file__).parent
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 FUZZY_MAP_pre = [
-('find all zips', fr'''^(
-        (Alle\s)?(ZIP|Sip|Chip|Tipp|Zipp|Seb)[-\s]?(Dateien|Ordner|Daten|s)?\s(suchen|hinzu|scannen|aktualisieren|einlesen|finden|checken|neu laden)
-        |
-        (Scanne|Suche|Aktualisiere)\s(alle\s)?(Zips|Zip-Dateien|Chips|Tipps)
-        |
-        (Zip|Zips)\s(Registry|Datenbank)\s(aktualisieren|erneuern)
-        |
-        jagen aktualisieren
-        )$''', 90, {
-            'flags': re.IGNORECASE | re.VERBOSE,
-            'on_match_exec': [CONFIG_DIR / 'zip.py']
-        }
+    ('find all zips', fr'''^(
+            (Alle\s)?(ZIP|Sip|Chip|Tipp|Zipp|Seb)[-\s]?(Dateien|Ordner|Daten|s)?\s(suchen|hinzu|scannen|aktualisieren|einlesen|finden|checken|neu laden)
+            |
+            (Scanne|Suche|Aktualisiere)\s(alle\s)?(Zips|Zip-Dateien|Chips|Tipps)
+            |
+            (Zip|Zips)\s(Registry|Datenbank)\s(aktualisieren|erneuern)
+            |
+            jagen aktualisieren
+            )$''', 90, {
+                'flags': re.IGNORECASE | re.VERBOSE,
+                'on_match_exec': [CONFIG_DIR / 'zip.py']
+            }
         ),
 ]
 

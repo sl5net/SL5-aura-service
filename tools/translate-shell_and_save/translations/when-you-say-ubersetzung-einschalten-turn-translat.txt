@@ -1,5 +1,0 @@
---- Original ---
-When you say "Übersetzung einschalten" (Turn translation on), the `toggle_translation_mode.py` script is executed.
-
---- Übersetzung (DE) ---
-When you say "Übersetzung einschalten" (Turn translation on), the `toggle_translation_mode.py` script is executed.

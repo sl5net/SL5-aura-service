@@ -1,3 +1,4 @@
+# config/maps/plugins/standard_actions/wikipedia_local/de-DE/wikipedia_local.py
 # wikipedia_local.py
 import requests
 from bs4 import BeautifulSoup
@@ -314,18 +315,18 @@ Datum des Abrufs: 29. 12 2017, 20:01 UTC
         f"No articles found for search term: '{user_term}'"
         Maybe run ?
          ./kiwix-docker-start-if-not-running.sh
-         config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh
+         config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh
 
 
         Maybe want enable ?
-        ./config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh
+        ./config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh
 
         
 
         """
 
         # source .venv/bin/activate
-        # python3 config/maps/plugins/standard_actions/de-DE/wikipedia_local.py
+        # python3 config/maps/plugins/standard_actions/wikipedia_local/de-DE/wikipedia_local.py
 
         return msg
 

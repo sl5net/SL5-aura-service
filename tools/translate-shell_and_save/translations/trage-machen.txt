@@ -1,5 +1,0 @@
---- Original ---
-slugify
-
---- Übersetzung (DE) ---
-träge machen

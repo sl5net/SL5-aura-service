@@ -53,7 +53,7 @@ if current_user == 'seeh':
         signatur_ja=f''
 
 
-    DEV_MODE = True
+    DEV_MODE = 1
     # DEV_MODE = False
     DEV_MODE_all_processing = 0
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
@@ -98,7 +98,7 @@ PLUGINS_ENABLED = {
     "CCC_tue": True,
     "vsp_rt": True,
     "ki-maker-space": True,
-    "numbers_to_digits": True, # hundert|einhundert --> 100
+    "numbers_to_digits": True,
     "digits_to_numbers": False,
     "web-radio-funk": True,
     "it-begriffe": True,

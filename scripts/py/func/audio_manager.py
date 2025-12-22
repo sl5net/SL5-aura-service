@@ -62,7 +62,7 @@ def speak_fallback(text_to_speak, language_code):
     platform_name = ""
 
     if sys.platform.startswith('linux'):
-        platform_name = "Linux (espeak)"
+        platform_name = "🐧Linux (espeak)"
         espeak_voice = convert_lang_code_for_espeak(language_code)
         command = [
             'espeak',
@@ -71,12 +71,12 @@ def speak_fallback(text_to_speak, language_code):
             text_to_speak
         ]
     elif sys.platform == 'win32':
-        platform_name = "Windows (PowerShell TTS)"
+        platform_name = "🪟Windows (PowerShell TTS)"
         clean_text = text_to_speak.replace("'", "''")
         ps_command = f"Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{clean_text}')"
         command = ['powershell', '-Command', ps_command]
     elif sys.platform == 'darwin':  # macOS
-        platform_name = "macOS (say)"
+        platform_name = "🍏macOS (say)"
         command = ['say', text_to_speak]
     else:
         logger.warning(f"no TTS-Fallback  '{sys.platform}' .")

@@ -1,5 +1,0 @@
---- Original ---
-path
-
---- Übersetzung (DE) ---
-Weg

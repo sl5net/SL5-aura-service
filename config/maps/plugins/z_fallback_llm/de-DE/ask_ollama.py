@@ -1,3 +1,4 @@
+# config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.py
 # ask_ollama.py
 
 try:
@@ -308,6 +309,7 @@ def clean_text_for_typing(text):
     # EXAMPLE: x s . - VAR äöüÄÖÜß
     allowed_chars = r'[^\w\s\.,!\?\-\(\)\[\]\{\}<>äöüÄÖÜß:;\'"\/\\@\+\=\~\#\%]'
     text = re.sub(allowed_chars, '', text)
+    # EXAMPLE: None
     text = re.sub(r'\s+', ' ', text).strip()
     return text
 
@@ -620,6 +622,7 @@ def execute(match_data):
             "User: Erstelle eine Catch-All Regel.\n"
             "Aura: catch_all.py\n"
             "```python\n"
+            # EXAMPLE: None
             "('Ersetzung', r'^.*$', 10, {})\n"
             "User: Erstelle Regel mit Plugin Wiki.\n"
             "Aura: wiki_plugin.py\n"
@@ -637,7 +640,9 @@ def execute(match_data):
             "2. Wenn User nach Regeln fragen: Gib IMMER ein Python-Beispiel (Dateiname + Code).\n"
             "3. DATEINAMEN: Passend zum Thema (z.B. 'config/maps/pdf/de-DE/FUZZY_MAP_pre.py').\n"
             "4. WICHTIG: Regex matcht auf GESPROCHENEN TEXT, nicht auf Dateien!\n"
+            # EXAMPLE: config maps file py
             "   - Falsch: r'config/maps/file.py'\n"
+            # EXAMPLE: öffne datei
             "   - Richtig: r'öffne datei (.*)'\n\n"
 
             "SYSTEM-WISSEN:\n"
@@ -673,6 +678,7 @@ def execute(match_data):
             "User: Erstelle eine Catch-All Regel.\n"
             "Aura: config/maps/system/de-DE/FUZZY_MAP_pre.py\n"
             "```python\n"
+            # EXAMPLE: None
             "('Kein Treffer', r'^.*$', 10, {})\n"
             "```\n\n"
 

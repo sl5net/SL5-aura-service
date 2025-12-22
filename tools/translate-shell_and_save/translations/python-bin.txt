@@ -1,5 +1,0 @@
---- Original ---
-python_bin
-
---- Übersetzung (DE) ---
-python_bin

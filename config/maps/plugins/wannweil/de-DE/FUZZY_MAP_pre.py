@@ -1,4 +1,4 @@
-# config/maps/plugins/git/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/wannweil/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path
 

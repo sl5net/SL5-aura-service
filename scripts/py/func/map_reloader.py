@@ -42,7 +42,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
 
         # run_mode_override # os.getenv('RUN_MODE')  # returns None or the value
-        logger.info(f'run_mode_override: {run_mode_override}')
+        logger.info(f'run_mode_override: {run_mode_override} (other examples: API_SERVICE , ...)')
 
         # func/map_reloader.py:46
         for map_file_path in maps_base_dir.glob("**/*.py"):
@@ -110,7 +110,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     logger.info("🗑️ Forced garbage collection before re-import.")
                 # --- END OF CLEANUP ---
 
-                log_all_changes = True
+                # log_all_changes = True
+                log_all_changes = False
 
                 try:
                     # -------------------------------------------------------
@@ -289,8 +290,8 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
     import importlib
     import sys
 
-    # log_everything = False
-    log_everything = True
+    log_everything = False
+    # log_everything = True
 
     # 1. Define the stop boundary
     # We stop scanning when we reach 'config/maps' to avoid scanning the whole project

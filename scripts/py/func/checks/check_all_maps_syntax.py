@@ -12,7 +12,9 @@ def check_syntax(file_path):
             ast.parse(f.read())
         return True
     except SyntaxError as e:
-        print(f"ERROR: Syntax error in {file_path} -> {e}")
+        print("❌" * 50)
+        print(f"❌ ERROR: Syntax error in {file_path} -> {e}")
+        print("❌" * 50)
         return False
 
 def check_folder_syntax(root_dir):
@@ -26,10 +28,10 @@ def check_folder_syntax(root_dir):
                     has_errors = True
 
     if has_errors:
-        print("\nFAILURE: Found syntax errors in one or more map files.")
+        print("\n❌ FAILURE: Found syntax errors in one or more map files.")
         sys.exit(1)
     else:
-        print("\nSUCCESS: All map files have valid Python syntax.")
+        print("\n✅ SUCCESS: All map files have valid Python syntax.")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

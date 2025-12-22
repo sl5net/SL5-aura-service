@@ -1,7 +1,0 @@
---- Original ---
-@sandro@natureinvest.org
-this paid platform from a large geo processing company called ESRI
-
---- Übersetzung (DE) ---
-@sandro@natureinvest.org
-Diese kostenpflichtige Plattform stammt von einem großen Geoverarbeitungsunternehmen namens ESRI

@@ -26,6 +26,13 @@ except ImportError:
 transcribe_audiofile.py
 
 audiofile
+
+python3 transcribe_audiofile.py --vosk_model vosk-model-de-0.21 output.wav
+
+python3 transcribe_audiofile.py --vosk_model vosk-model-de-0.21 audio_2025-12-19_21-29-07.ogg
+
+
+
 """
 
 # --- Configuration ---

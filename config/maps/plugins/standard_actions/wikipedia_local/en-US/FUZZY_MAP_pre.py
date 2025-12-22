@@ -1,4 +1,4 @@
-# config/maps/plugins/standard_actions/en-US/FUZZY_MAP_pr.py
+# config/maps/plugins/standard_actions/wikipedia_local/en-US/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path
 

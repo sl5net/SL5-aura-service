@@ -1,3 +1,5 @@
+# config/maps/plugins/z_fallback_llm/de-DE/normalizer.py
+
 import re
 
 #from idna.idnadata import scripts
@@ -107,6 +109,7 @@ def extreme_standardize_prompt_text(text):
     # 2. ALLE Zahlen, Zeitangaben und Währungszeichen durch Platzhalter ersetzen
     # EXAMPLE: 123 . 123
     text = re.sub(r'\d+([.,]\d+)?', ' [NUMBER] ', text)  # Z.B. '10', '10.5'
+    # EXAMPLE: $
     text = re.sub(r'[€$£%]', ' ', text)
 
     # 3. Radikale Entfernung von fast allen Sonderzeichen und Satzzeichen
@@ -114,6 +117,7 @@ def extreme_standardize_prompt_text(text):
     text = re.sub(r'[^a-zäöüß\s]', ' ', text)
 
     # 4. Whitespace auf ein einzelnes Leerzeichen reduzieren und trimmen
+    # EXAMPLE: 	
     text = re.sub(r'\s+', ' ', text).strip()
 
     # 5. Tokenisierung (Wörter trennen)

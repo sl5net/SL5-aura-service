@@ -1,9 +1,0 @@
---- Original ---
-Our pluginable voice assistant framework is designed for maximum flexibility. This guide demonstrates a powerful feature: a live translation mode that can be toggled on and off with a simple voice command. Imagine speaking to your assistant in German and hearing the output in Portuguese, then switching back to normal behavior instantly.
-
-This is achieved not by changing the core engine, but by cleverly manipulating the rule configuration file itself.
-
---- Übersetzung (DE) ---
-Unser einsteckbares Sprachassistenten-Framework ist auf maximale Flexibilität ausgelegt. In diesem Handbuch wird eine leistungsstarke Funktion demonstriert: ein Live-Übersetzungsmodus, der mit einem einfachen Sprachbefehl ein- und ausgeschaltet werden kann. Stellen Sie sich vor, Sie sprechen mit Ihrem Assistenten auf Deutsch, hören die Ausgabe auf Portugiesisch und kehren dann sofort zum normalen Verhalten zurück.
-
-Dies wird nicht durch eine Änderung der Kern-Engine erreicht, sondern durch eine geschickte Manipulation der Regelkonfigurationsdatei selbst.

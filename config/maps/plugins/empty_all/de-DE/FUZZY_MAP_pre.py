@@ -1,3 +1,4 @@
+# config/maps/plugins/empty_all/de-DE/FUZZY_MAP_pre.py
 # file config/maps/plugins/empty_all/de-DE/
 import re # noqa: F401
 
@@ -21,6 +22,7 @@ FUZZY_MAP_pre = [
     # ('---', r'^.*$', 5, {'flags': re.IGNORECASE}),
 
     # Folgende regel betrifft alles außer dem Wort Haus:
+    # EXAMPLE: Haus
     ('', r'^(?!Haus).*$', 5, {'flags': re.IGNORECASE}),
     #TestTestTestHausHausHausFrau ausHaus Baum unterGuten TagSchachmattSchachmatt
     #SchachmattSchachmatt

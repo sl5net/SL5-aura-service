@@ -1,5 +1,0 @@
---- Original ---
-translate-shell_and_save
-
---- Übersetzung (DE) ---
-Translate-Shell_and_save

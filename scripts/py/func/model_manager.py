@@ -102,7 +102,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             desired_names.remove(model_name)
             return  # Go to the next model in the list
         else:
-            logger.info(f"✅ Model directory found: ..{model_path} = ..{script_dir} / 'models' / {model_name}")
+            logger.info(f"✅ Model directory found: ..{str(model_path)[-30:]} = ..{str(script_dir)[-10:]} / 'models' / {model_name}")
 
 
         # File: scripts/py/func/model_manager.py
@@ -144,7 +144,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             # read 2025-1013-1734.txt in home path
             # read 2025-1013-1734.txt in home path
 
-        logger.info(f"Attempting to load missing model: '{model_name}'")
+        logger.info(f"Attempting to ⏳ load missing model: '{model_name}'")
         try:
 
             _, avail_before = check_memory_critical(threshold_mb)

@@ -1,3 +1,4 @@
+# config/maps/plugins/digits_to_numbers/de-DE/FUZZY_MAP.py
 # config/languagetool_server/maps/plugins//de-DE/FUZZY_MAP.py
 # https://regex101.com/
 import re # noqa: F401
@@ -16,15 +17,25 @@ FUZZY_MAP = [
     # - in our implementation it stops with first match!
     # - means first is most importend, lower rules maybe not get read.
 
+    # EXAMPLE: b 0 b
     ('null', r'\b(0)\b', 100, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 1 b
     ('eins', r'\b(1)\b', 100, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 2 b
     ('zwei', r'\b(2)\b', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 3 b
     ('drei', r'\b(3)\b', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 4 b
     ('vier', r'\b(4)\b', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 5 b
     ('fünf', r'\b(5)\b', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 6 b
     ('sechs', r'\b(6)\b', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 7 b
     ('sieben', r'\b(7)\b', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 8 b
     ('acht', r'\b(8)\b', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 9 b
     ('neun', r'\b(9)\b', 100, {'flags': re.IGNORECASE}),
     # EXAMPLE: 10
     ('zehn', r'\b(10)\b', 80, {'flags': re.IGNORECASE}),

@@ -1,3 +1,4 @@
+# config/maps/plugins/standard_actions/de-DE/chess_commentator.py
 # FILE: chess_commentator.py
 
 import random

@@ -1,3 +1,4 @@
+# config/maps/plugins/digits_to_numbers/de-DE/FUZZY_MAP_pre.py
 # # file config/maps/plugins/digits_to_numbers/FUZZY_MAP_pr.py
 import re
 
@@ -17,29 +18,48 @@ FUZZY_MAP_pre = [
 
     #  1  2  3  ein  2 3 test
 
+    # EXAMPLE: b 1 b
     ('one', r'\b(1)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 2 b
     ('two', r'\b(2)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 3 b
     ('three', r'\b(3)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 4 b
     ('four', r'\b(4)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 5 b
     ('five', r'\b(5)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 6 b
     ('six', r'\b(6)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 7 b
     ('seven', r'\b(7)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 8 b
     ('eight', r'\b(8)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 9 b
     ('nine', r'\b(9)\b', 89, {'flags': re.IGNORECASE}),
     # EXAMPLE: 10
     ('ten', r'\b(10)\b', 89, {'flags': re.IGNORECASE}),
     # EXAMPLE: 15
     ('fifteen', r'\b(15)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 0 b
     ('null', r'\b(0)\b', 89, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: b 1 b
     ('eins', r'\b(1)\b', 100, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 2 b
     ('zwei', r'\b(2)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 3 b
     ('drei', r'\b(3)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 4 b
     ('vier', r'\b(4)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 5 b
     ('fünf', r'\b(5)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 6 b
     ('sechs', r'\b(6)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 7 b
     ('sieben', r'\b(7)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 8 b
     ('acht', r'\b(8)\b', 89, {'flags': re.IGNORECASE}),
+    # EXAMPLE: b 9 b
     ('neun', r'\b(9)\b', 100, {'flags': re.IGNORECASE}),
     # EXAMPLE: 10
     ('zehn', r'\b(10)\b', 89, {'flags': re.IGNORECASE}),

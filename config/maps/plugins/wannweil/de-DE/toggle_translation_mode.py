@@ -1,3 +1,4 @@
+# config/maps/plugins/wannweil/de-DE/toggle_translation_mode.py
 import sys
 from pathlib import Path
 import subprocess

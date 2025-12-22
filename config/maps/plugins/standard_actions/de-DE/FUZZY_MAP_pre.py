@@ -1,4 +1,4 @@
-# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py
+# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path
 
@@ -58,8 +58,9 @@ FUZZY_MAP_pre = [
      }),
 
     #Start de Wikipedia
-    #config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh
-    ("config/maps/plugins/standard_actions/de-DE/kiwix-docker-start-if-not-running.sh",
+    #config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh
+    # config/maps/plugins/standard_actions/wikipedia_local/de-DE/
+    ("config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh",
      # EXAMPLE: starte
      r'^(starte|Start de ).*(kiwix|Wikipedia)$',
      100, {
@@ -127,8 +128,9 @@ FUZZY_MAP_pre = [
     # google g bedeuten
     # google gebe drei
     # coral gaming nein
+    # google seminare
     # EXAMPLE: gemini
-    ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google ein Studie|Google leicht|Google ein Stuhl|Google eingestuft|google gb day|google kapital|Google kriminell|google gebiet\w*|Gucke gebiet\w*|google g b day|google geht wieder|gucke dir bitte|google g bitte|gucke gemini\s*\w*|google gemini ein|google gemini\s*\w*|google gemini recht|Gucke Gehminuten|Google Gewinde|Google Gehminuten|gut \w*minarett|brooke kriminelle|google gaming|google grimmen\s*.*|google grimmig|Google Germany|Google feminin|Google Gewinnern|Google gewinne|Google wieder|google g bedeuten|google gebe drei|google gb daten|google gewinn ein|google gebe dein|google kriminelle|google gewitter|google b day|Google g wie neu|coral gaming nein|google geben innere)\b.*$', 70, {
+    ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google ein Studie|Google leicht|Google ein Stuhl|Google eingestuft|google gb day|google kapital|Google kriminell|google gebiet\w*|Gucke gebiet\w*|google g b day|google geht wieder|gucke dir bitte|google g bitte|gucke gemini\s*\w*|google gemini ein|google gemini\s*\w*|google gemini recht|Gucke Gehminuten|Google Gewinde|Google Gehminuten|gut \w*minarett|brooke kriminelle|google gaming|google grimmen\s*.*|google grimmig|Google Germany|Google feminin|Google Gewinnern|Google gewinne|Google wieder|google g bedeuten|google gebe drei|google gb daten|google gewinn ein|google gebe dein|google kriminelle|google gewitter|google b day|Google g wie neu|coral gaming nein|google geben innere|google seminare)\b.*$', 70, {
         'flags': re.IGNORECASE
     }),
     #
@@ -228,29 +230,7 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE: Computer
-    ("was ist ein (Begriffsklärung)", r'^(?!Computer|Aura).*was ist ein ', 90,
-     {
-    'flags': re.IGNORECASE,
-    'skip_list': ['LanguageTool','fullMatchStop'],
-    }),
-
-    # EXAMPLE:  was ist ein haus
-    ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,
-     {
-    'flags': re.IGNORECASE,
-    'skip_list': ['LanguageTool','fullMatchStop'],
-    }),
-
-    # EXAMPLE: Computer
-    ('', r'^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der| Herr)? (?P<search>.*)', 90, {
-    'flags': re.IGNORECASE,
-    'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
-    }),
-
-    #
-
-
+    
 
     # EXAMPLE:   zur
     ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
@@ -304,11 +284,12 @@ FUZZY_MAP_pre = [
     ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, {'flags': re.IGNORECASE}),
 
 
-    ('', '^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) ([a-z]+.*)', 90, {
-    'flags': re.IGNORECASE,
-    'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
-    }),
+    # ('', '^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) ([a-z]+.*)', 90, {
+    # 'flags': re.IGNORECASE,
+    # 'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
+    # }),
 
+#
 
 ]
 

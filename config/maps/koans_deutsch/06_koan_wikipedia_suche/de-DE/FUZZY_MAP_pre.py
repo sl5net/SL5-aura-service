@@ -1,4 +1,4 @@
-# config/maps/plugins/bible_search/FUZZY_MAP_pr.py
+# config/maps/koans_deutsch/06_koan_wikipedia_suche/de-DE/FUZZY_MAP_pre.py
 # its using https://github.com/scrollmapper/bible_databases/tree/master/formats/sqlite
 
 import re # noqa: F401

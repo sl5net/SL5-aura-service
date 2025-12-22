@@ -1,3 +1,4 @@
+# config/maps/plugins/bible_search/de-DE/bible_search.py
 # bible_search.py
 
 import logging

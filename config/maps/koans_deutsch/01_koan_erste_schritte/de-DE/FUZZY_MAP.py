@@ -1,3 +1,4 @@
+# config/maps/koans_deutsch/01_koan_erste_schritte/de-DE/FUZZY_MAP.py
 # config/languagetool_server/maps/de-DE/FUZZY_MAP.py
 import re # noqa: F401
 
