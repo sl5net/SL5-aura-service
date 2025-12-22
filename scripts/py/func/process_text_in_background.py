@@ -303,7 +303,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
             if plugin_name_before != plugin_name:
 
-                if log_all_map_ENABLED:
+                if settings.show_PLUGINS_ENABLED:
                     # logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}...")
                     ENABLED_modname_list.append(hierarchical_key)
 
@@ -355,8 +355,9 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         except Exception as e:
             logger.error(f"Failed to process module '{modname}': {e}")
 
-    enabled_modname_str = '▉'.join(ENABLED_modname_list)
-    logger.info(f"🗺️ ENABLED: ▉{enabled_modname_str}▉")
+    if settings.show_PLUGINS_ENABLED:
+        enabled_modname_str = '▉'.join(ENABLED_modname_list)
+        logger.info(f"🗺️ ENABLED: ▉{enabled_modname_str}▉")
     # englisch einschalten Hallo wie geht'senglisch einschaltenHallo wie geht's
 
     logger.info(f"🗺️ Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")

@@ -136,6 +136,8 @@ ratio = original_text_length / made_a_change: Calculates how many characters (on
 if ratio < lt_skip_ratio_threshold: If the ratio is low (less than the safe threshold), we skip LanguageTool.
 """
 
+show_PLUGINS_ENABLED = True
+
 PLUGINS_ENABLED = {}
 
 # needs restart. implemented in the python part:
