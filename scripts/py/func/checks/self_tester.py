@@ -16,13 +16,20 @@ import sys
 
 
 def check_translator_hijack(logger):
-    path = Path("config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py")
+    proj_dir = Path(__file__).parents[4]
+
+    path = proj_dir / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
     if path.exists():
-        # Sucht den Anker, überspringt allen Whitespace/leere Zeilen und prüft das erste Zeichen.
-        # Wenn das erste Zeichen der Regel KEIN # ist, gibt es einen Fehler.
-        if re.search(r"# TRANSLATION_RULE\s*\n\s*([^#\s])", path.read_text()):
-            logger.error(f"🚨 HIJACK: Regel in {path.name} ist AKTIV!")
+        # [ \t]* matches only horizontal whitespace
+        content = path.read_text()
+        pattern = r"#[ ]*TRANSLATION_RULE[ ]*\n[^\n]*#"
+        if re.search(pattern, content):
+            logger.info(f"25:🚨 HIJACK: Rule in ..{str(path)[-30:]} is activ!")
+            logger.info(content)
             return False
+    else:
+        logger.info(f"31:🚨 HIJACK: path {str(path)} not exists!")
+
     return True
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -68,9 +75,9 @@ def run_core_logic_self_test(logger, tmp_dir: Path, lt_url, lang_code):
     Runs a series of predefined tests, guarded by a persistent throttle mechanism.
     """
 
-    if check_translator_hijack:
+    if check_translator_hijack(logger):
         logger.info(f"self_tester.py exit exit exit")
-        logger.info(f"🚨 HIJACK: Regel unter ist AKTIV!")
+        logger.info(f"75:🚨 HIJACK: rule is activ!")
         exit(1)
 
 

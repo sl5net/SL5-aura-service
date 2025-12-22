@@ -1,4 +1,4 @@
-# config/settings_local.py
+# config.settings_local.py
 from scripts.py.func.determine_current_user import determine_current_user
 
 # My personal settings for SL5 Aura
@@ -53,7 +53,7 @@ if current_user == 'seeh':
         signatur_ja=f''
 
 
-    DEV_MODE = 0
+    DEV_MODE = 1
     # DEV_MODE = False
     DEV_MODE_all_processing = 0
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
@@ -91,8 +91,8 @@ PLUGINS_ENABLED = {
     "git": True,
     "wannweil": True,
     "game": False,
-    "game/dealers_choice": True,
-    "game/0ad": False,
+    "game.dealers_choice": True,
+    "game.0ad": False,
     "ethiktagung": False,
     "volkshochschule_tue": True,
     "CCC_tue": True,
@@ -102,7 +102,9 @@ PLUGINS_ENABLED = {
     "digits_to_numbers": False,
     "web-radio-funk": True,
     "it-begriffe": True,
-    "it-begriffe/php/codeigniter": True,
+    "it-begriffe.php.codeigniter": True,
+
+
 }
 #  geht status eins zwei doch
 

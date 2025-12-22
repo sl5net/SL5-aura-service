@@ -138,7 +138,9 @@ if ratio < lt_skip_ratio_threshold: If the ratio is low (less than the safe thre
 
 show_PLUGINS_ENABLED = True
 
-PLUGINS_ENABLED = {}
+PLUGINS_ENABLED = {
+    "standard_actions.wikipedia_local": False,
+}
 
 # needs restart. implemented in the python part:
 ADD_TO_SENCTENCE = "."
