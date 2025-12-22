@@ -357,8 +357,14 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                     # For now, we try to import to be safe if it was unloaded.
                     try:
                         module = importlib.import_module(module_name)
+                    except (ImportError, ModuleNotFoundError):
+                        if log_everything:
+                            logger.info(f"ℹ️ Ignoring non-importable file: {module_name}")
+                        continue
+
                     except Exception as e:
-                        logger.info(f'error importing module {module_name}: {e}')
+                        logger.info(f'❌ scripts/py/func/map_reloader.py:361 -> _trigger_upstream_hooks(start_path ...) '
+                                    f'🚨 error importing module 🚨 {module_name}: {e}')
                         continue
 
                 # scripts/py/func/map_reloader.py:355

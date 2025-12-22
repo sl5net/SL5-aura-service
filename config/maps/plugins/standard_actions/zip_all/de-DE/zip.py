@@ -60,16 +60,38 @@ def save_registry(folder_list):
 
 # --- TIMESTAMPS / SEARCH LOGIC ---
 
-def _needs_packing(source_folder: Path, zip_file: Path) -> bool:
-    """True if Folder content is NEWER than Zip."""
-    if not zip_file.exists(): return True
+from enum import Enum
+
+class PackingStatus(Enum):
+    NOT_NEEDED = 0
+    CONTENT_CHANGED = 1
+    ZIP_MISSING = 2
+
+def _needs_packing(source_folder: Path, zip_file: Path) -> PackingStatus:
+    """Returns the specific reason why packing is needed or NOT_NEEDED."""
+    if not zip_file.exists():
+        return PackingStatus.ZIP_MISSING
 
     zip_time = zip_file.stat().st_mtime
-    for root, _, files in os.walk(source_folder):
+
+    grace_period = 1.0
+
+    for root, dirs, files in os.walk(source_folder):
+        if "__pycache__" in root:
+            continue
+
         for file in files:
-            if (Path(root) / file).stat().st_mtime > zip_time:
-                return True
-    return False
+            if file.startswith('.') or file.endswith('.pyc'):
+                continue
+
+            file_path = Path(root) / file
+            file_time = file_path.stat().st_mtime
+
+            if file_time > (zip_time + grace_period):
+                # logger.info(f"File {file} is newer than ZIP. File: {file_time}, Zip: {zip_time}")
+                return PackingStatus.CONTENT_CHANGED
+
+    return PackingStatus.NOT_NEEDED
 
 def _needs_unpacking(target_folder: Path, zip_file: Path) -> bool:
     """True if Zip is NEWER than Folder (or Folder missing)."""
@@ -193,12 +215,15 @@ def check_and_pack_zips():
         zip_name = folder_path.name.lstrip('_') + ".zip"
         zip_target = folder_path.parent / zip_name
 
-        if _needs_packing(folder_path, zip_target):
-            logger.info(f"♻️ Content changed. Zipping: {folder_path.name}")
+        if (_needs_packing(folder_path, zip_target) == PackingStatus.CONTENT_CHANGED
+                or _needs_unpacking(folder_path, zip_target) == PackingStatus.ZIP_MISSING):
+            if _needs_packing(folder_path, zip_target) == PackingStatus.CONTENT_CHANGED:
+                logger.info(f"♻️ Content changed. 📦 Zipping: ...{str(folder_path)[-30:]}")
+                # missing a zip has maybe good reasons
             try:
                 packer_lib.execute_packing_logic(folder_path, logger)
             except Exception as e:
-                logger.error(f"⚠️ Error packing {folder_path.name}: {e}")
+                logger.error(f"⚠️ Error packing {str(folder_path)[-30:]}: {e}")
 
 # --- HOOKS ---
 

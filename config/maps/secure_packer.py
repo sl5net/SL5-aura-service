@@ -4,6 +4,8 @@
 
 import logging
 from pathlib import Path
+from config.dynamic_settings import settings
+
 # Import the new library
 from scripts.py.func import secure_packer_lib
 
@@ -18,5 +20,6 @@ def on_folder_change(current_dir=None):
         current_dir = Path(__file__).parent
 
     # Execute the logic located in the public library
-    logger.info(f"📂>📦..{str(current_dir)[-35:]}/secure_packer.py:19")
+    if settings.DEV_MODE:
+        logger.info(f"📂>📦..{str(current_dir)[-35:]}/secure_packer.py:19")
     secure_packer_lib.execute_packing_logic(current_dir, logger)
