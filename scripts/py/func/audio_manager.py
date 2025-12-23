@@ -1,4 +1,4 @@
-# scripts/py/func/audio_manager.py
+    # scripts/py/func/audio_manager.py
 """
 Cross-platform microphone control utility.
 
@@ -127,7 +127,7 @@ and not os.getenv('CI'):
     try:
         import pygame
         pygame.mixer.init(frequency=44100, size=-16, channels=2)
-        from comtypes import CLSCTX_ALL
+        # from comtypes import CLSCTX_ALL
 
 
         # Pre-create a simple beep sound
@@ -234,30 +234,25 @@ def _set_mute_state_windows(mute: bool, logger):
         logger.info("CI env: Skipping hardware call.")
         return False
 
-    # ------------------------------------------------------------------
-    # FIX: Import comtypes only here to avoid 'ImportError' on Linux/Mac
     try:
-        import comtypes.client as cc # IMPORT IS LOCAL AND ALIAS IS CREATED
+        # IMPORT the main module for CoInitialize
+        import comtypes
         from comtypes import CLSCTX_ALL
-
+        from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, EDataFlow, ERole
     except ImportError as e:
-        logger.error(f"Cannot import comtypes for Windows audio control: {e}")
+        logger.error(f"Cannot import comtypes/pycaw: {e}")
         return False
-    # ------------------------------------------------------------------
 
-    # FIX for: OSError: [WinError -2147221008] CoInitialize was not called
+    # CORRECT initialization
     try:
-        cc.CoInitialize()
-        logger.info("COM initialized for the current thread.")
+        comtypes.CoInitialize()
+        logger.info("COM initialized successfully.")
     except Exception as e:
-        logger.warning(f"CoInitialize failed, assuming already initialized: {e}")
-    # ------------------------------------------------------------------
+        # If already initialized, we can proceed
+        logger.debug(f"CoInitialize info: {e}")
 
     try:
-        # from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-        from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, EDataFlow, ERole  # ERole and EDataFlow are needed
-        # CLSCTX_ALL is now imported successfully above
-        # devices = AudioUtilities.GetSpeakers()
+        # Now AudioUtilities should be fully functional
         devices = AudioUtilities.GetDefaultAudioEndpoint(EDataFlow.eCapture.value, ERole.eCommunications.value)
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         volume = interface.QueryInterface(IAudioEndpointVolume)
@@ -267,7 +262,6 @@ def _set_mute_state_windows(mute: bool, logger):
     except Exception as e:
         logger.error(f"Failed to set Windows microphone mute state: {e}", exc_info=True)
         return False
-
 
 def _get_mute_state_linux(logger):
 

@@ -142,6 +142,7 @@ PLUGINS_ENABLED = {
     "standard_actions.wikipedia_local": False,
     "standard_actions.count_loud": False,
 }
+# count_loud▉
 
 # needs restart. implemented in the python part:
 ADD_TO_SENCTENCE = "."
