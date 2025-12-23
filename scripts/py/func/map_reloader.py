@@ -103,6 +103,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     # logger.info(f"🗑️ Deleting old module reference for {module_name} from sys.modules.")
                     del sys.modules[module_name]
 
+                # scripts/py/func/map_reloader.py:106
                 # 3. FORCE GARBAGE COLLECTION
                 # Placed outside to always clean up before re-import
                 gc.collect()
@@ -369,6 +370,11 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
 
                 # scripts/py/func/map_reloader.py:355
                 # 3. Check and Execute Hook
+
+                # scripts/py/func/map_reloader.py
+                # Add a log before the hasattr check
+                # logger.info(f"375: Checking module {module_name} for hooks...")
+
                 if module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
                     if log_everything:
                         logger.info(f"🔗 Triggering upstream hook: 📜{module_name}.on_folder_change(start_path_current_dir:📂...{str(start_path_current_dir)[-35:]}")

@@ -122,7 +122,7 @@ def execute_packing_logic(current_dir, logger):
         stop_search_key_file_is_found_year = False
 
         current_dir_loop = current_dir_loop.parent
-        logger.info(f"🔍:122 found 📂current_dir_loop 🏃🏿‍♀️‍➡️ start = ...{str(current_dir_loop)[-35:]}")
+        # logger.info(f"🔍:122 found 📂current_dir_loop 🏃🏿‍♀️‍➡️ start = ...{str(current_dir_loop)[-35:]}")
 
         while stop_dir in current_dir_loop.parents: # or current_dir == stop_dir:
             if log_everything:

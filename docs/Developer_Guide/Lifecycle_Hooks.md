@@ -1,4 +1,10 @@
 Aura SL5 Hooks: Added 
+
+HOOK_PLUGIN_LOAD = 'on_plugin_load'
+HOOK_FILE_LOAD   = 'on_file_load'
+HOOK_RELOAD      = 'on_reload'
+HOOK_UPSTREAM    = 'on_folder_change'
+
 on_folder_change() and 
 on_reload() to trigger logic after hot-reloads. Use this to "daisy chain" execution to parent scripts like secure_packer.py for complex packages.
 

@@ -18,10 +18,28 @@ def setup_project_structure(project_root_str: str):
         project_root / "models": None,  # For Vosk models
     }
 
+    # scripts/py/func/create_required_folders.py:21
     # Define absolute paths required by the application (independent of project location)
+
+    # scripts/py/func/create_required_folders.py
+    # (Second line: create_required_folders.py)
+
+    import sys
+    TMP_DIR = None
+    if not sys.platform.startswith('win'):
+        TMP_DIR = Path("/tmp")
+    else:
+        TMP_DIR = Path("C:/tmp")
+    # Use the dynamic TMP_DIR to support Windows (C:/tmp) and Linux (/tmp)
     absolute_dirs = {
-        Path("/tmp/sl5_aura"): None,
+        TMP_DIR / "sl5_aura": None,
+        TMP_DIR / "sl5_aura" / "session" : None,
+        TMP_DIR / "sl5_aura" / "session" / "lock": None,
     }
+
+
+
+
 
     # Combine both dictionaries
     all_dirs_to_create = {**project_dirs, **absolute_dirs}

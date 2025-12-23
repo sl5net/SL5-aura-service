@@ -88,6 +88,8 @@ CRITICAL_THRESHOLD_MB = 1024 * 2
 USE_ESPEAK_FALLBACK = True
 ESPEAK_FALLBACK_AMPLITUDE = 80
 
+show_PLUGINS_ENABLED = True
+
 # --- Custom Client-Side Plugins ---
 # Enable or disable specific client-side behaviors (plugins).
 # The logic is handled by client scripts (e.g., type_watcher.sh, AutoKey).

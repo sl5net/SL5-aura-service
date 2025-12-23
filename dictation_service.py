@@ -152,8 +152,9 @@ else:
 TRIGGER_FILE = TMP_DIR / "sl5_record.trigger"
 HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
 PIDFILE = TMP_DIR / "dictation_service.pid"
-LOG_FILE = PROJECT_ROOT / "log/dictation_service.log"
+LOG_FILE = PROJECT_ROOT / "log" / "dictation_service.log"
 
+LOCK_DIR = TMP_DIR / "sl5_aura" / "aura_lock"
 
 
 
@@ -883,7 +884,8 @@ if __name__ == "__main__":
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
         "PROJECT_ROOT": PROJECT_ROOT,
-        "AUTO_ENTER_AFTER_DICTATION_REGEX_APPS": settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
+        "AUTO_ENTER_AFTER_DICTATION_REGEX_APPS": settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS,
+        "languagetool_process": active_lt_url
     })
 
 

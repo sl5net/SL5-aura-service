@@ -8,11 +8,13 @@ import sys
 
 import importlib.util
 from pathlib import Path
+from platform import system
 
 import psutil
 
 from .audio_manager import speak_fallback
 from .log_memory_details import log4DEV
+from .state_manager import should_trigger_startup
 
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE # <--- NEW IMPORT
 
@@ -22,6 +24,18 @@ GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
 GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
+def execute_hook(logger, module, hook_name, lock_key):
+    if hasattr(module, hook_name):
+        # Unique lock ID for the specific hook and context
+        full_lock_id = f"{lock_key}_{hook_name}"
+        if should_trigger_startup(full_lock_id):
+            try:
+                # Correct way to call a function by string name
+                hook_func = getattr(module, hook_name)
+                if callable(hook_func):
+                    hook_func()
+            except Exception as e:
+                logger.error(f"Error in {hook_name} for {lock_key}: {e}")
 
 def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tiefe: int = 1, max_tiefe: int = 2):
     """
@@ -270,7 +284,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 
         log_all_map_ENABLED = True and settings.DEV_MODE
-
+        hierarchical_key = None
         if ".plugins." in modname:
             if len(parts := modname.split('.plugins.', 1)[1].split('.')) < 2:
                 logger.warning(f"Could not determine plugin_name from modname: {modname}. Skipping.")
@@ -301,6 +315,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
                 continue
 
+            # scripts/py/func/process_text_in_background.py:304
             if plugin_name_before != plugin_name:
 
                 if settings.show_PLUGINS_ENABLED:
@@ -318,8 +333,49 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                 # exit(1)
 
         try:
+            # scripts/py/func/process_text_in_background.py:323
             module = importlib.import_module(modname)
             # logger.info(f"🗺️ Processing: {modname}")
+            # logger.info(f"🔎 Checking {modname} for hooks. Attributes: {dir(module)}")
+
+            # logger.info(f"313: found on_startup: {plugin_name}")
+            # logger.info(f"1 {module.__dir__()}_on_startup")
+            # logger.info(f"2 {module.Path}_on_startup")
+            # logger.info(f"3 {module.Path}_on_startup")
+            # logger.info(f"4 {module.RULES_FILE_PATH}_ 123456789")
+            # logger.info(f"5 {module.__package__}_on_startup")
+            # logger.info(f"6 {module.__cached__}_on_startup")
+            # logger.info(f"7 {hierarchical_key}{module.__dir__()}_on_startup")
+            # sys.exit(1)
+
+            # {module.__package__}
+
+            execute_hook(logger, module, 'on_plugin_load', hierarchical_key)
+            execute_hook(logger, module, 'on_file_load', module.__package__)
+
+            # hook_name = 'on_package_when_first_speak_trigger_is_pressed'
+            # if hasattr(module, hook_name):
+            #     if should_trigger_startup(f"{hierarchical_key}_{hook_name}"):
+            #         if should_trigger_startup(f"{module.RULES_FILE_PATH}_{hook_name}"):
+            #             try:
+            #                 hook_function = getattr(module, hook_name)
+            #                 hook_function()
+            #             except Exception as e:
+            #                 m = f"336: {hook_name} failed for {hierarchical_key}_{hook_name}: {e}"
+            #                 logger.info(m)
+            #
+            # hook_name = 'on_startup_when_first_speak_trigger_is_pressed'
+            # if hasattr(module, hook_name):
+            #     if should_trigger_startup(f"{module.RULES_FILE_PATH}_{hook_name}"):
+            #         try:
+            #             hook_function = getattr(module, hook_name)
+            #             hook_function()
+            #         except Exception as e:
+            #             m = f"319: on_startup failed for {hierarchical_key}_{hook_name}: {e}"
+            #             # logger.error(m)
+            #             logger.info(m)
+
+
 
 
             # Füge Daten hinzu, falls die Variablen existieren
@@ -610,7 +666,7 @@ def process_text_in_background(logger,
         recording_time,
         active_lt_url,
         output_dir_override = None,
-        chunk_id: int = 0,  # <--- NEU
+        chunk_id: int = 0,
         session_id: int = 0,
         unmasked = False
         ):

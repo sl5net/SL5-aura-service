@@ -87,6 +87,41 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
                 # sound_mute()
                 sound_program_loaded()
 
+                # 'en-US'
+                 # 'de-DE'
+
+
+
+                from scripts.py.func.process_text_in_background import process_text_in_background
+                from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
+                # from scripts.py.func.setup_initial_model import get_system_language_code
+                # # lang_code = 'en-US'
+                # lang_code = 'de-DE'
+                # lang_code = get_system_language_code()
+
+
+
+                found_key = list(loaded_models.keys())[0]
+                # selected_model = loaded_models[found_key]
+                lang_code = guess_lt_language_from_model(logger, found_key)
+
+
+                logger.info(f"lang_code: {lang_code}")
+                raw_text = 'program loaded'
+                tmp_dir = config['TMP_DIR']
+                test_output_dir = tmp_dir / "sl5_aura_self_test"
+                test_output_dir.mkdir(parents=True, exist_ok=True)
+
+                test_output_dir = tmp_dir / "sl5_aura_self_test"
+
+                process_text_in_background(logger,
+                                           lang_code,
+                                           raw_text,
+                                           test_output_dir,
+                                           time.time(),
+                                           config['languagetool_process'],
+                                           output_dir_override=test_output_dir)
+
             if trigger_event.is_set():
                 trigger_event.clear()  # Reset for the next trigger
 

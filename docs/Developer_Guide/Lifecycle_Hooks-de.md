@@ -1,5 +1,10 @@
 # Entwickler-Handbuch: Plugin Lifecycle Hooks
 
+HOOK_PLUGIN_LOAD = 'on_plugin_load'
+HOOK_FILE_LOAD   = 'on_file_load'
+HOOK_RELOAD      = 'on_reload'
+HOOK_UPSTREAM    = 'on_folder_change'
+
 Aura SL5 ermöglicht es Plugins (Maps), spezifische "Hooks" (Einhängepunkte) zu definieren, die automatisch ausgeführt werden, wenn sich der Status eines Moduls ändert. Dies ist essenziell für fortgeschrittene Workflows wie das **Secure Private Map** System.
 
 ## Der `on_reload()` Hook

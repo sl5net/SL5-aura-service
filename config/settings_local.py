@@ -53,7 +53,7 @@ if current_user == 'seeh':
         signatur_ja=f''
 
 
-    DEV_MODE = 1
+    DEV_MODE = 0
     # DEV_MODE = False
     DEV_MODE_all_processing = 0
     PRELOAD_MODELS = ["vosk-model-de-0.21"]

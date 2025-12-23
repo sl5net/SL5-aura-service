@@ -329,6 +329,8 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
                            active_lt_url,
                           output_dir_override = None):
         """
+        # from scripts.py.func.process_text_in_background import process_text_in_background
+        # checks/self_tester.py:333
         process_text_in_background(logger,
                                    lang_code,
                                    raw_text,
