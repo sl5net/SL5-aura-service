@@ -8,12 +8,15 @@ import shutil
 import sys
 
 
-REQUIRED_COMMANDS = ['fzf', 'find', 'file']
+# config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
+
+REQUIRED_COMMANDS = ['fzf', 'find']
 CLIPBOARD_COMMAND = None
 
 if sys.platform.startswith('linux'):
     CLIPBOARD_COMMAND = 'xclip'
     REQUIRED_COMMANDS.append('xclip')
+    REQUIRED_COMMANDS.append('file')
 elif sys.platform == 'win32':
     # 'clip' is the standard command for piping to the Windows clipboard
     CLIPBOARD_COMMAND = 'clip'
@@ -22,6 +25,7 @@ elif sys.platform == 'darwin':
     # 'pbcopy' is the standard command for macOS clipboard
     CLIPBOARD_COMMAND = 'pbcopy'
     REQUIRED_COMMANDS.append('pbcopy')
+    REQUIRED_COMMANDS.append('file')
 else:
     # Fallback/Warning for unsupported OS
     print(f"WARNING: Clipboard functionality not tested on '{sys.platform}'. Skipping clipboard command check.", file=sys.stderr)

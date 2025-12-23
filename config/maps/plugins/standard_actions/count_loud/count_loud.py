@@ -3,6 +3,8 @@
 from pathlib import Path
 import subprocess
 
+from scripts.py.func.audio_manager import speak_fallback
+
 RULES_FILE_PATH = Path(__file__).parent / 'FUZZY_MAP_pre.py'
 def speak(text):
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
@@ -38,7 +40,8 @@ def speak(text):
 def on_folder_change_OFF(current_dir=None):
     for i in range(1):
         # print(i)
-        speak(f"out DE: {i}")
+        # speak(f"out DE: {i}")
+        speak_fallback(f"out DE: {i}",'en-US')
 
 #Nochmal ausprobierennochmal
 #Tipp Test

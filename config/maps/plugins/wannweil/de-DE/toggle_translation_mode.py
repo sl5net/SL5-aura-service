@@ -3,6 +3,8 @@ import sys
 from pathlib import Path
 import subprocess
 
+
+
 """
     Vorteile:
 
@@ -23,6 +25,8 @@ import subprocess
 RULES_FILE_PATH = Path(__file__).parent / 'FUZZY_MAP_pre.py'
 # Der eindeutige Anker-Kommentar, den wir suchen.
 RULE_ANCHOR = '# TRANSLATION_RULE'
+
+
 
 def speak(text):
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""

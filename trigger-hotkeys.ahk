@@ -5,7 +5,6 @@
 ; Hotkey zum Auslösen des STT Triggers
 ; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
 ;===================================================================
-f9::
 f10::
 f11::
 {

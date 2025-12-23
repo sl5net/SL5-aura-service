@@ -12,7 +12,7 @@ def get_lock_dir():
 
 def should_trigger_startup(modname_str):
     # Use integer PID to avoid illegal characters in filenames
-    print(f"{modname_str} should trigger startup")
+    # print(f"{modname_str} should trigger startup")
 
     pid = os.getpid()
     lock_dir = get_lock_dir()
@@ -24,13 +24,13 @@ def should_trigger_startup(modname_str):
     session_file = lock_dir / f"{safe_name}_{pid}.lock"
 
     if session_file.exists():
-        print(f"{session_file} exists, skipping")
+        # print(f"{session_file} exists, skipping")
         return False
 
     try:
         # session_file.parent.mkdir(parents=True, exist_ok=True)
         session_file.touch()
-        print(f"{session_file} created")
+        # print(f"{session_file} created")
         return True
     except Exception as e:
         print("Failed to trigger startup:", e)

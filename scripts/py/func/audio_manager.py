@@ -50,7 +50,7 @@ def create_bent_sine_wave_sound(*args, **kwargs): # noqa: F811
     return DummySound()
 
 
-
+# scripts/py/func/audio_manager.py:54
 def speak_fallback(text_to_speak, language_code):
     """
     - Linux: espeak

@@ -2,6 +2,8 @@
 # import sys
 from pathlib import Path
 import subprocess
+from scripts.py.func.audio_manager import speak_fallback
+
 
 RULES_FILE_PATH = Path(__file__).parent / 'FUZZY_MAP_pre.py'
 def speak(text):
@@ -18,7 +20,8 @@ def on_file_load():
     for i in range(10):
         # print(i)
         speak(f"{i}")
-        #Test
+
+        #TestTest
 
 def on_plugin_load():
     for i in range(4):
@@ -29,7 +32,10 @@ def on_plugin_load():
 def on_reload():
     for i in range(2):
         # print(i)
-        speak(f"{i}")
+        # speak(f"{i}")
+        speak_fallback(f"out DE: {i}",'en-US')
+        speak_fallback(f"out DE: {i}",'de-DE')
+# Test
 
 #     #Mal ausprobieren
 #TestnochmalTest
