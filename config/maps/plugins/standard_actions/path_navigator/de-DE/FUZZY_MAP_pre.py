@@ -106,6 +106,8 @@ else:
     # EXAMPLE: fzf
     fzf_smart_file_finder = r"fzf"
 
+PROJECT_ROOT_POSIX = Path(PROJECT_ROOT_DISPLAY_STR).as_posix()
+HOME_DIR_POSIX = Path(home_dir_str).as_posix()
 
 FUZZY_MAP_pre = [
 
@@ -151,47 +153,42 @@ FUZZY_MAP_pre = [
     #fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection cl'
 
 
-    (f'{PROJECT_ROOT_FOR_MAP}',
+    (f'{PROJECT_ROOT_POSIX}',
      # EXAMPLE: Aura Pfad
      r'^(Aura|Agora|Aurora|ora|hurra|Flora)\s+(Aura|Pfad)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-
-    (f'{PROJECT_ROOT_FOR_MAP}',
+    (f'{PROJECT_ROOT_POSIX}',
      # EXAMPLE: Raumfahrt
      r'^(Raumfahrt)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    (f'{home_dir_str}',
+    (f'{HOME_DIR_POSIX}',
      # EXAMPLE: home Dir
      r'^(home|heimat|user)\s+(Pfad|Dir\w*)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-
     # Navigiere zu Aura Config
-    (f'cd {os.path.join(PROJECT_ROOT_FOR_MAP, "config")}',
-    # EXAMPLE: Navigiere Aura
+    (f'cd "{Path(PROJECT_ROOT_POSIX, "config").as_posix()}"',
+    # EXAMPLE: Navigiere Aura Konfiguration
     r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)\s*Konf\w*$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: Navigiere zu Aura
-    (f'cd {os.path.join(PROJECT_ROOT_FOR_MAP)}',
+    (f'cd "{PROJECT_ROOT_POSIX}"',
     # EXAMPLE: Navigiere
     r'^(Navigiere|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: Config
-    (f'{os.path.join(PROJECT_ROOT_FOR_MAP, "config", "settings.py")}',
+    (f'{Path(PROJECT_ROOT_POSIX, "config", "settings.py").as_posix()}',
      # EXAMPLE: Aura
      r'^(Aura|Laura|over|Dora|Horror)\s+(Konf\w*|konzentration)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-
-
 ]
