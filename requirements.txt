@@ -1,6 +1,7 @@
 config==0.5.1
 fastapi==0.127.0
 keyboard==0.13.5
+numpy==2.4.0
 objgraph==3.6.2
 pydantic==2.12.5
 pygame==2.6.1

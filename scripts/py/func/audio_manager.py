@@ -400,9 +400,10 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
         return True
 
     except Exception as e:
+        print(f"Failed to play bent sine wave: {e}")
+
         if logger:
             logger.info(f"Failed to play bent sine wave: {e}")
-            print(f"Failed to play bent sine wave: {e}")
         # Fallback for Windows if pygame fails
         if sys.platform.startswith("win"):
             try:
@@ -425,25 +426,27 @@ def sound_program_loaded():
     )
 
 
-def sound_mute():
+def sound_mute(active_logger):
     if not getattr(settings, 'soundMute', False):
         return
     _play_bent_sine_wave_or_beep(
         start_freq=1200,
         end_freq=800,
         duration_ms=40,
-        volume=0.1
+        volume=0.1,
+        logger=active_logger
     )
 
 
-def sound_unmute():
+def sound_unmute(active_logger):
     if not getattr(settings, 'soundUnMute', False):
         return
     _play_bent_sine_wave_or_beep(
         start_freq=1500,
         end_freq=2000,
         duration_ms=110,
-        volume=0.2
+        volume=0.2,
+        logger=active_logger
     )
 
 
@@ -467,7 +470,7 @@ def mute_microphone(logger=None, onlySound=False):
 
     # "Mute" sound: quick down-bending tone
 
-    sound_mute()
+    sound_mute(active_logger)
 
     if onlySound:
         return None
@@ -512,7 +515,7 @@ def unmute_microphone(logger=None):
     # medium_pitch_sound = create_sine_wave_sound(500, 200, volume=0.4)  # 600 Hz for 3 seconds
     # medium_pitch_sound.play()
 
-    sound_unmute()
+    sound_unmute(active_logger)
 
     # pygame.mixer.quit()
 
