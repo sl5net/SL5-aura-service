@@ -418,8 +418,11 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
         except Exception as e:
             if logger:
                 logger.info(f"Pygame failed (channels={channels}): {e}")
-            try: pygame.mixer.quit()
-            except: pass
+            try:
+                pygame.mixer.quit()
+            except Exception as e2:
+                if logger: logger.info(f"424: {e2}")
+                pass
             continue # Try next channel setting or exit to winsound
 
     # FINAL FALLBACK: Never forget the Beep!
