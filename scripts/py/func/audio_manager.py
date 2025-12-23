@@ -1,4 +1,4 @@
-    # scripts/py/func/audio_manager.py
+# scripts/py/func/audio_manager.py
 """
 Cross-platform microphone control utility.
 
@@ -33,20 +33,20 @@ import logging
 
 from config.dynamic_settings import settings
 
-
-
 logger = logging.getLogger(__name__)
 
 
 # Initialize the function as a placeholder for Windows to avoid NameError
-def create_bent_sine_wave_sound(*args, **kwargs): # noqa: F811
+def create_bent_sine_wave_sound(*args, **kwargs):  # noqa: F811
     """
     Placeholder function for Windows and environments where Pygame is not used.
     Prevents NameError when sound functions are called.
     """
+
     class DummySound:
         def play(self):
             pass
+
     return DummySound()
 
 
@@ -92,14 +92,13 @@ def speak_fallback(text_to_speak, language_code):
 
             logger.info(f"🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
         except FileNotFoundError:
-            logger.error(f"fallback fouled '{command[0]}' no found.")
+            logger.info(f"fallback fouled '{command[0]}' no found.")
         except Exception as e:
-            logger.error(f" {e}")
+            logger.info(f" {e}")
 
     thread = threading.Thread(target=run_command)
     thread.daemon = True
     thread.start()
-
 
 
 def convert_lang_code_for_espeak(long_code: str) -> str:
@@ -113,22 +112,22 @@ def convert_lang_code_for_espeak(long_code: str) -> str:
     return short_code
 
 
-
 # Set up a basic logger for standalone testing or if no logger is passed
 log = logging.getLogger(__name__)
 if not log.handlers:
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-
 # Fallback for systems without winsound (e.g., Linux, macOS)
 if (sys.platform != "win32"
-and (settings.soundUnMute > 0 or settings.soundMute > 0))\
-and not os.getenv('CI'):
+    and (settings.soundUnMute > 0 or settings.soundMute > 0)) \
+        and not os.getenv('CI'):
     try:
         import pygame
-        pygame.mixer.init(frequency=44100, size=-16, channels=2)
-        # from comtypes import CLSCTX_ALL
 
+        pygame.mixer.init(frequency=44100, size=-16, channels=2)
+
+
+        # from comtypes import CLSCTX_ALL
 
         # Pre-create a simple beep sound
         # beep_sound_high = pygame.mixer.Sound(b'\x00\xff\x00\xff' * 100)  # Simple high-pitched wave
@@ -141,7 +140,6 @@ and not os.getenv('CI'):
         #     else:
         #         beep_sound_low.play()
         #     pygame.time.wait(duration_ms)
-
 
         # def create_sine_wave_sound(frequency, duration_ms, volume=0.5, sample_rate=44100):
         #     """
@@ -165,8 +163,7 @@ and not os.getenv('CI'):
         #
         #     return pygame.mixer.Sound(samples)
 
-
-        def create_bent_sine_wave_sound( # noqa: F811
+        def create_bent_sine_wave_sound(  # noqa: F811
                 start_freq,
                 end_freq,
                 duration_ms,
@@ -200,34 +197,44 @@ and not os.getenv('CI'):
         log.warning("pygame not found. Sound feedback will not work on non-Windows systems.")
         # def play_beep(frequency, duration_ms):
         #     pass # No sound feedback if pygame is not available
-# else:
-#     import winsound
+
+
+    # else:
+    #     import winsound
     # def play_beep(frequency, duration_ms):
     #     winsound.Beep(frequency, duration_ms)
 
+    # --- Platform-Specific Implementations ---
 
-# --- Platform-Specific Implementations ---
+    def _get_mute_state_windows(logger):
+        if os.getenv('CI'):
+            logger.info("CI env: Skipping hardware call.")
+            return False
 
-def _get_mute_state_windows(logger):
-    if os.getenv('CI'):
-        logger.info("CI env: Skipping hardware call.")
-        return False
-
-    try:
-        from comtypes import CLSCTX_ALL
-        from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-        devices = AudioUtilities.GetSpeakers()
-        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-        volume = interface.QueryInterface(IAudioEndpointVolume)
-        return volume.GetMute() == 1
-    except Exception:
-        logger.error("Failed to get Windows microphone mute state.", exc_info=True)
-        return None
+        try:
+            from comtypes import CLSCTX_ALL
+            from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+            devices = AudioUtilities.GetSpeakers()
+            interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+            volume = interface.QueryInterface(IAudioEndpointVolume)
+            return volume.GetMute() == 1
+        except Exception:
+            logger.info("Failed to get Windows microphone mute state.", exc_info=True)
+            return None
 
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # audio_manager.py: _set_mute_state_windows function
 
+import os
+
+
 def _set_mute_state_windows(mute: bool, logger):
+    """
+    Set the microphone mute state on Windows using pycaw/comtypes.
+    Local imports ensure cross-platform compatibility.
+    Properly initializes COM for the calling thread, supports CI environments.
+    Logs all errors via logger.
+    """
     logger.info(f"Setting Windows microphone mute state to: {mute}")
 
     if os.getenv('CI'):
@@ -235,33 +242,72 @@ def _set_mute_state_windows(mute: bool, logger):
         return False
 
     try:
-        # IMPORT the main module for CoInitialize
         import comtypes
+        # import ctypes
         from comtypes import CLSCTX_ALL
-        from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume, EDataFlow, ERole
-    except ImportError as e:
-        logger.error(f"Cannot import comtypes/pycaw: {e}")
-        return False
+        # Import from pycaw only inside this function
+        from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
-    # CORRECT initialization
-    try:
-        comtypes.CoInitialize()
-        logger.info("COM initialized successfully.")
-    except Exception as e:
-        # If already initialized, we can proceed
-        logger.debug(f"CoInitialize info: {e}")
+        # Explicitly initialize COM in the current thread.
+        try:
+            comtypes.CoInitialize()
+        except (OSError, AttributeError):
+            # May already be initialized -- skip if so.
+            pass
 
-    try:
-        # Now AudioUtilities should be fully functional
-        devices = AudioUtilities.GetDefaultAudioEndpoint(EDataFlow.eCapture.value, ERole.eCommunications.value)
-        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        # Constants
+        # eCapture = 1  # Audio endpoint for capture (microphone)
+        # eCommunications = 2  # Role for communications devices
+
+        # Use AudioUtilities to get audio devices
+        devices = AudioUtilities.GetMicrophone()
+        if not devices:
+            logger.info("No microphone device found.")
+            return False
+
+        device = devices[0]
+        interface = device.Activate(
+            IAudioEndpointVolume._iid_,
+            CLSCTX_ALL, None)
         volume = interface.QueryInterface(IAudioEndpointVolume)
         volume.SetMute(1 if mute else 0, None)
-        logger.info(f"✅ Windows microphone mute state set to {mute}.")
+        logger.info(f"Microphone mute state set to {mute}")
+        return True
+
+    except Exception as e:
+        logger.info(f"Failed to set Windows microphone mute state: {e}")
+        return False
+
+
+def _set_mute_state_linux(mute: bool, logger):
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
+
+    logger.info(f"Setting Linux microphone mute state to: {mute}")
+    try:
+        state = '1' if mute else '0'
+        cmd = ['pactl', 'set-source-mute', '@DEFAULT_SOURCE@', state]
+        subprocess.run(cmd, check=True, capture_output=True, text=True)
+        logger.info(f"✅ Linux microphone mute state set to {mute}.")
         return True
     except Exception as e:
-        logger.error(f"Failed to set Windows microphone mute state: {e}", exc_info=True)
+        logger.info(f"Failed to set Linux microphone mute state: {e}", exc_info=True)
         return False
+
+
+def _get_mute_state_macos(logger):
+    if os.getenv('CI'):
+        logger.info("CI env: Skipping hardware call.")
+        return False
+
+    try:
+        cmd = "osascript -e 'input volume of (get volume settings)'"
+        result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        return int(result.stdout.strip()) == 0
+    except Exception:
+        logger.info("Failed to get macOS microphone mute state.", exc_info=True)
+        return None
 
 def _get_mute_state_linux(logger):
 
@@ -278,41 +324,11 @@ def _get_mute_state_linux(logger):
         logger.error("Failed to get Linux microphone mute state.", exc_info=True)
         return None
 
-def _set_mute_state_linux(mute: bool, logger):
-    if os.getenv('CI'):
-        logger.info("CI env: Skipping hardware call.")
-        return False
-
-    logger.info(f"Setting Linux microphone mute state to: {mute}")
-    try:
-        state = '1' if mute else '0'
-        cmd = ['pactl', 'set-source-mute', '@DEFAULT_SOURCE@', state]
-        subprocess.run(cmd, check=True, capture_output=True, text=True)
-        logger.info(f"✅ Linux microphone mute state set to {mute}.")
-        return True
-    except Exception as e:
-        logger.error(f"Failed to set Linux microphone mute state: {e}", exc_info=True)
-        return False
-
-def _get_mute_state_macos(logger):
-    if os.getenv('CI'):
-        logger.info("CI env: Skipping hardware call.")
-        return False
-
-    try:
-        cmd = "osascript -e 'input volume of (get volume settings)'"
-        result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
-        return int(result.stdout.strip()) == 0
-    except Exception:
-        logger.error("Failed to get macOS microphone mute state.", exc_info=True)
-        return None
-
 def _set_mute_state_macos(mute: bool, logger):
     logger.info(f"Setting macOS microphone mute state to: {mute}")
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
-
 
     try:
         if mute:
@@ -324,8 +340,9 @@ def _set_mute_state_macos(mute: bool, logger):
         logger.info(f"✅ macOS microphone mute state set to {mute}.")
         return True
     except Exception as e:
-        logger.error(f"Failed to set macOS microphone mute state: {e}", exc_info=True)
+        logger.info(f"Failed to set macOS microphone mute state: {e}", exc_info=True)
         return False
+
 
 # --- Public API Functions ---
 
@@ -346,42 +363,91 @@ def is_microphone_muted(logger=None):
         active_logger.warning(f"Unsupported OS: {sys.platform}")
         return None
 
+
+def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logger=None):
+    """
+    Play a bent sine wave sound using pygame, with safe fallback to winsound.Beep for Windows.
+    Fixes ValueError: Array must be 2-dimensional for stereo mixer by ensuring shape ([samples, channels]).
+    """
+    try:
+        import pygame
+        import numpy as np
+        import sys
+
+        # Choose mixer config: mono (channels=1) or stereo (channels=2)
+        channels = 1  # You can switch to 2 for stereo, but waveform must match
+
+        pygame.mixer.init(frequency=44100, size=-16, channels=channels)
+        sample_rate = 44100
+        n_samples = int(sample_rate * duration_ms / 1000)
+        t = np.linspace(0, duration_ms / 1000, n_samples, False)
+
+        # Linear frequency sweep
+        freqs = np.linspace(start_freq, end_freq, n_samples)
+        waveform = (np.sin(2 * np.pi * freqs * t) * np.iinfo(np.int16).max * volume).astype(np.int16)
+
+        # Ensure waveform shape is [samples, channels] for pygame
+        if channels == 2:  # stereo: duplicate mono to both channels
+            waveform = np.column_stack([waveform, waveform])
+        else:  # mono: shape (n_samples, 1)
+            waveform = waveform.reshape(-1, 1)
+
+        sound = pygame.sndarray.make_sound(waveform)
+        sound.play()
+        pygame.time.wait(duration_ms)
+        sound.stop()
+        pygame.mixer.quit()
+        return True
+
+    except Exception as e:
+        if logger:
+            logger.info(f"Failed to play bent sine wave: {e}")
+            print(f"Failed to play bent sine wave: {e}")
+        # Fallback for Windows if pygame fails
+        if sys.platform.startswith("win"):
+            try:
+                import winsound
+                winsound.Beep(int(start_freq), int(duration_ms))
+            except Exception as e2:
+                if logger:
+                    logger.info(f"winsound.Beep fallback failed: {e2}")
+        return False
+
+
 def sound_program_loaded():
-    if not settings.soundProgramLoaded:
+    if not getattr(settings, 'soundProgramLoaded', False):
         return
-    sound = create_bent_sine_wave_sound(
+    _play_bent_sine_wave_or_beep(
         start_freq=400,
         end_freq=800,
         duration_ms=150,
         volume=0.1
     )
-    sound.play()
+
 
 def sound_mute():
-    if not settings.soundMute:
+    if not getattr(settings, 'soundMute', False):
         return
-    sound = create_bent_sine_wave_sound(
-        start_freq=1200,  # Start higher
-        end_freq=800,  # Bend down
-        duration_ms=40,  # Quick
+    _play_bent_sine_wave_or_beep(
+        start_freq=1200,
+        end_freq=800,
+        duration_ms=40,
         volume=0.1
     )
-    sound.play()
-    # pygame.mixer.quit()
+
 
 def sound_unmute():
-    if not settings.soundUnMute:
+    if not getattr(settings, 'soundUnMute', False):
         return
-    # "Unmute" sound: quick up-bending tone
-    sound = create_bent_sine_wave_sound(
-        start_freq=1500,  # Start lower
-        end_freq=2000,  # Bend up
+    _play_bent_sine_wave_or_beep(
+        start_freq=1500,
+        end_freq=2000,
         duration_ms=110,
         volume=0.2
     )
-    sound.play()
 
-def mute_microphone(logger=None,onlySound=False):
+
+def mute_microphone(logger=None, onlySound=False):
     active_logger = logger if logger else log
     if os.getenv('CI'):
         active_logger.info("CI env: Skipping hardware call.")
@@ -417,12 +483,13 @@ def mute_microphone(logger=None,onlySound=False):
             active_logger.warning(f"Unsupported OS: {sys.platform}")
             return False
     except Exception as e:
-        # Log the specific error for debugging purposes. Using .error is best practice here.
-        active_logger.error(f"An unexpected error occurred during unmute_microphone: {e}", exc_info=True)
+        # Log the specific error for debugging purposes. Using .info is best practice here.
+        active_logger.info(f"An unexpected error occurred during unmute_microphone: {e}", exc_info=True)
         # Add a general info message to confirm the service is not stopping.
         active_logger.info("The audio control operation failed, but the service will continue to run.")
         # Return False to indicate the operation was not successful.
         return False
+
 
 def unmute_microphone(logger=None):
     active_logger = logger if logger else log
@@ -467,8 +534,8 @@ def unmute_microphone(logger=None):
             return False
 
     except Exception as e:
-        # Log the specific error for debugging purposes. Using .error is best practice here.
-        active_logger.error(f"An unexpected error occurred during unmute_microphone: {e}", exc_info=True)
+        # Log the specific error for debugging purposes. Using .info is best practice here.
+        active_logger.info(f"An unexpected error occurred during unmute_microphone: {e}", exc_info=True)
         # Add a general info message to confirm the service is not stopping.
         active_logger.info("The audio control operation failed, but the service will continue to run.")
         # Return False to indicate the operation was not successful.
@@ -483,10 +550,9 @@ def toggle_microphone_mute(logger=None):
         active_logger.info("CI env: Skipping hardware call.")
         return False
 
-
     is_muted = is_microphone_muted(active_logger)
     if is_muted is None:
-        active_logger.error("Could not determine microphone state, cannot toggle.")
+        active_logger.info("Could not determine microphone state, cannot toggle.")
         return False
 
     if is_muted:
@@ -495,6 +561,7 @@ def toggle_microphone_mute(logger=None):
     else:
         active_logger.info("Microphone is active, will mute.")
         return mute_microphone(active_logger)
+
 
 # --- Standalone Test Block ---
 if __name__ == '__main__':
@@ -520,3 +587,9 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         log.info("\nTest aborted by user.")
+
+
+
+
+
+
