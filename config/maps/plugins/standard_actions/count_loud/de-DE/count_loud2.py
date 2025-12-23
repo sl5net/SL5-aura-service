@@ -1,5 +1,5 @@
 # config/maps/plugins/standard_actions/count_loud/de-DE/count_loud.py
-import sys
+# import sys
 from pathlib import Path
 import subprocess
 
@@ -20,7 +20,7 @@ def on_plugin_load():
     speak("einmal nur 20")
 
 
-#
+#Jeff
 
 # def on_reload():
 #     speak("System reloaded 1")

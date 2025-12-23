@@ -34,7 +34,7 @@ SPEECH_PAUSE_TIMEOUT = 2
 PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 #test (original:'test', 🗣SL5。de╱Aura).
-if current_user == 'seeh':
+if current_user == 'seeh' or current_user == 'SL5.de' :
 
     # needs NO restart:
     PRE_RECORDING_TIMEOUT = 2

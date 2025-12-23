@@ -8,17 +8,20 @@ import shutil
 import sys
 
 
-REQUIRED_COMMANDS = ['fzf', 'git', 'find', 'xclip', 'file']
+REQUIRED_COMMANDS = ['fzf', 'git', 'find', 'file']
 CLIPBOARD_COMMAND = None
 
 if sys.platform.startswith('linux'):
     CLIPBOARD_COMMAND = 'xclip'
+    REQUIRED_COMMANDS.append('xclip')
 elif sys.platform == 'win32':
     # 'clip' is the standard command for piping to the Windows clipboard
     CLIPBOARD_COMMAND = 'clip'
+    REQUIRED_COMMANDS.append('clip')
 elif sys.platform == 'darwin':
     # 'pbcopy' is the standard command for macOS clipboard
     CLIPBOARD_COMMAND = 'pbcopy'
+    REQUIRED_COMMANDS.append('pbcopy')
 else:
     # Fallback/Warning for unsupported OS
     print(f"WARNING: Clipboard functionality not tested on '{sys.platform}'. Skipping clipboard command check.", file=sys.stderr)

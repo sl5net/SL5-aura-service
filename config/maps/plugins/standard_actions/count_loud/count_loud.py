@@ -1,5 +1,5 @@
 # config/maps/plugins/standard_actions/count_loud/de-DE/count_loud.py
-import sys
+#import sys
 from pathlib import Path
 import subprocess
 
@@ -41,4 +41,4 @@ def on_folder_change_OFF(current_dir=None):
         speak(f"out DE: {i}")
 
 #Nochmal ausprobierennochmal
-#
+#Tipp Test

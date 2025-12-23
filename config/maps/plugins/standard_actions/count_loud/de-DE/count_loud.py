@@ -1,5 +1,5 @@
 # config/maps/plugins/standard_actions/count_loud/de-DE/count_loud.py
-import sys
+# import sys
 from pathlib import Path
 import subprocess
 
@@ -39,7 +39,7 @@ def on_folder_change(current_dir=None):
         # print(i)
         speak(f"in DE: {i}")
 
-#TestDoch malnochmaltschüss Jeff
+#TestDoch malnochmaltschüss JeffTipp
 
 # def execute(match_data):
 #
