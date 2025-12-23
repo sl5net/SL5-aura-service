@@ -8,7 +8,7 @@ import shutil
 import sys
 
 
-REQUIRED_COMMANDS = ['fzf', 'git', 'find', 'file']
+REQUIRED_COMMANDS = ['fzf', 'find', 'file']
 CLIPBOARD_COMMAND = None
 
 if sys.platform.startswith('linux'):

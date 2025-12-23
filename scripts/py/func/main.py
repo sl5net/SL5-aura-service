@@ -95,7 +95,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
                 lang_code = guess_lt_language_from_model(logger, found_key)
 
                 logger.info(f"lang_code: {lang_code}")
-                raw_text = 'program loaded'
+                raw_text = 'Program loaded'
                 tmp_dir = config['TMP_DIR']
                 test_output_dir = tmp_dir / "sl5_aura_self_test"
                 test_output_dir.mkdir(parents=True, exist_ok=True)
