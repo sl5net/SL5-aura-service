@@ -363,56 +363,79 @@ def is_microphone_muted(logger=None):
         active_logger.warning(f"Unsupported OS: {sys.platform}")
         return None
 
+# scripts/py/func/audio_manager.py
+# audio_manager.py
 
 def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logger=None):
     """
-    Play a bent sine wave sound using pygame, with safe fallback to winsound.Beep for Windows.
-    Fixes ValueError: Array must be 2-dimensional for stereo mixer by ensuring shape ([samples, channels]).
+    Ultra-robust sound playback with multi-stage fallbacks:
+    1. Stereo Pygame (2 channels)
+    2. Mono Pygame (1 channel)
+    3. Windows System Beep (winsound)
     """
-    try:
-        import pygame
-        import numpy as np
-        import sys
+    import sys
+    import numpy as np
 
-        # Choose mixer config: mono (channels=1) or stereo (channels=2)
-        channels = 1  # You can switch to 2 for stereo, but waveform must match
+    # Safety: Extremely low volume multiplier to prevent loudness issues
+    final_volume = volume
+    sample_rate = 44100
+    n_samples = int(sample_rate * duration_ms / 1000)
 
-        pygame.mixer.init(frequency=44100, size=-16, channels=channels)
-        sample_rate = 44100
-        n_samples = int(sample_rate * duration_ms / 1000)
-        t = np.linspace(0, duration_ms / 1000, n_samples, False)
+    # 1. Generate smooth phase-integrated waveform (Chirp)
+    freqs = np.linspace(start_freq, end_freq, n_samples)
+    dt = 2.0 / sample_rate
+    phases = 2 * np.pi * np.cumsum(freqs) * dt
+    waveform = np.sin(phases) * 32767 * final_volume
 
-        # Linear frequency sweep
-        freqs = np.linspace(start_freq, end_freq, n_samples)
-        waveform = (np.sin(2 * np.pi * freqs * t) * np.iinfo(np.int16).max * volume).astype(np.int16)
+    # 2. Apply Soft-Envelope (Fade-in/out) to prevent clicking
+    fade_len = min(int(sample_rate * 0.01), n_samples // 5)
+    envelope = np.ones(n_samples)
+    if fade_len > 0:
+        envelope[:fade_len] = np.linspace(0, 1, fade_len)
+        envelope[-fade_len:] = np.linspace(1, 0, fade_len)
+    soft_waveform = (waveform * envelope).astype(np.int16)
 
-        # Ensure waveform shape is [samples, channels] for pygame
-        if channels == 2:  # stereo: duplicate mono to both channels
-            waveform = np.column_stack([waveform, waveform])
-        else:  # mono: shape (n_samples, 1)
-            waveform = waveform.reshape(-1, 1)
+    # Fallback Chain Logic
+    for channels in [2, 1]:
+        try:
+            import pygame
+            # Check if mixer needs (re)init
+            if pygame.mixer.get_init() is None:
+                pygame.mixer.init(frequency=sample_rate, size=-16, channels=channels)
 
-        sound = pygame.sndarray.make_sound(waveform)
-        sound.play()
-        pygame.time.wait(duration_ms)
-        sound.stop()
-        pygame.mixer.quit()
-        return True
+            # Prepare data shape for channels
+            if channels == 2:
+                final_data = np.column_stack([soft_waveform, soft_waveform])
+            else:
+                final_data = soft_waveform # 1D is fine for mono in modern pygame
 
-    except Exception as e:
-        print(f"Failed to play bent sine wave: {e}")
+            sound = pygame.sndarray.make_sound(final_data)
+            sound.play()
+            pygame.time.wait(duration_ms + 10)
+            pygame.mixer.quit()
+            return True # Success!
 
-        if logger:
-            logger.info(f"Failed to play bent sine wave: {e}")
-        # Fallback for Windows if pygame fails
-        if sys.platform.startswith("win"):
-            try:
-                import winsound
-                winsound.Beep(int(start_freq), int(duration_ms))
-            except Exception as e2:
-                if logger:
-                    logger.info(f"winsound.Beep fallback failed: {e2}")
-        return False
+        except Exception as e:
+            if logger:
+                logger.info(f"Pygame failed (channels={channels}): {e}")
+            try: pygame.mixer.quit()
+            except: pass
+            continue # Try next channel setting or exit to winsound
+
+    # FINAL FALLBACK: Never forget the Beep!
+    if sys.platform.startswith("win"):
+        try:
+            import winsound
+            winsound.Beep(int(start_freq), int(duration_ms))
+            if logger: logger.info("Fallback to winsound.Beep successful.")
+            return True
+        except Exception as e2:
+            if logger: logger.info(f"winsound.Beep failed: {e2}")
+
+    return False
+
+
+
 
 
 def sound_program_loaded():
@@ -430,9 +453,9 @@ def sound_mute(active_logger):
     if not getattr(settings, 'soundMute', False):
         return
     _play_bent_sine_wave_or_beep(
-        start_freq=1200,
-        end_freq=800,
-        duration_ms=40,
+        start_freq=800,
+        end_freq=400,
+        duration_ms=55,
         volume=0.1,
         logger=active_logger
     )
@@ -442,9 +465,9 @@ def sound_unmute(active_logger):
     if not getattr(settings, 'soundUnMute', False):
         return
     _play_bent_sine_wave_or_beep(
-        start_freq=1500,
-        end_freq=2000,
-        duration_ms=110,
+        start_freq=800,
+        end_freq=1120,
+        duration_ms=100,
         volume=0.2,
         logger=active_logger
     )
@@ -590,6 +613,10 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         log.info("\nTest aborted by user.")
+
+
+
+
 
 
 
