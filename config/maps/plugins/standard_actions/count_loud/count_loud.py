@@ -10,8 +10,8 @@ def speak(text):
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         subprocess.run(['espeak', '-v', 'de', text], check=True)
-    except Exception:
-        print(f"STDOUT (TTS-Fallback): {text}")
+    except Exception as e:
+        print(f"STDOUT (TTS-Fallback): {text} , {e}")
 #
 #
 # def on_reload():
@@ -39,8 +39,6 @@ def speak(text):
 # standard_actions/count_loud/count_loud.py:37
 def on_folder_change_OFF(current_dir=None):
     for i in range(1):
-        # print(i)
-        # speak(f"out DE: {i}")
         speak_fallback(f"out DE: {i}",'en-US')
 
 #Nochmal ausprobierennochmal

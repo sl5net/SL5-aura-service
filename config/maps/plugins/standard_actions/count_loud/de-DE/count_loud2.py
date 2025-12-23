@@ -3,22 +3,23 @@
 from pathlib import Path
 import subprocess
 
+from scripts.py.func.audio_manager import speak_fallback
+
 RULES_FILE_PATH = Path(__file__).parent / 'FUZZY_MAP_pre.py'
 def speak(text):
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         subprocess.run(['espeak', '-v', 'de', text], check=True)
-    except Exception:
-        print(f"STDOUT (TTS-Fallback): {text}")
+    except Exception as e:
+        print(f"STDOUT (TTS-Fallback): {text} , {e}")
 
 # standard_actions/count_loud/de-DE/count_loud.py:14
 def on_file_load():
     # This must be defined to show up in the attributes list
-    speak("started 1")
+    speak_fallback("started 1", 'de-DE')
 
 def on_plugin_load():
-    speak("einmal nur 20")
-
+    speak_fallback("einmal nur 20", 'de-DE')
 
 #Jeff
 
