@@ -26,6 +26,7 @@ else:
     # Fallback/Warning for unsupported OS
     print(f"WARNING: Clipboard functionality not tested on '{sys.platform}'. Skipping clipboard command check.", file=sys.stderr)
 
+
 BORDER = "=================================================================="
 
 for cmd in REQUIRED_COMMANDS:
