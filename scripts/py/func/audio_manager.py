@@ -127,6 +127,9 @@ and not os.getenv('CI'):
     try:
         import pygame
         pygame.mixer.init(frequency=44100, size=-16, channels=2)
+        from comtypes import CLSCTX_ALL
+
+
         # Pre-create a simple beep sound
         # beep_sound_high = pygame.mixer.Sound(b'\x00\xff\x00\xff' * 100)  # Simple high-pitched wave
         # beep_sound_low = pygame.mixer.Sound(b'\x00\x00\xff\xff' * 100)   # Simple low-pitched wave
@@ -236,6 +239,7 @@ def _set_mute_state_windows(mute: bool, logger):
     try:
         import comtypes.client as cc # IMPORT IS LOCAL AND ALIAS IS CREATED
         from comtypes import CLSCTX_ALL
+
     except ImportError as e:
         logger.error(f"Cannot import comtypes for Windows audio control: {e}")
         return False
