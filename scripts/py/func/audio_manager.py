@@ -36,7 +36,9 @@ from config.dynamic_settings import settings
 
 
 
-
+# perf(audio): optimize Windows interaction latency
+# - Moved heavy imports (comtypes, pycaw, numpy, pygame) to global scope.
+# (24.12.'25 18:34 Wed, https://github.com/sl5net/SL5-aura-service/commit/c95c4929f77c950ae59a7eb2ac38dc76b616d1e8 )
 
 # Global imports for heavy libraries to prevent runtime latency
 try:
