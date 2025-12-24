@@ -1,7 +1,7 @@
 # config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
 
 import re # noqa: F401
-import os
+# import os
 from pathlib import Path
 
 import shutil
@@ -53,6 +53,18 @@ PROJECT_ROOT = CONFIG_DIR.parents[5]
 
 home_dir_str = str(Path.home())
 project_root_str_full = str(PROJECT_ROOT)
+
+# 1. Tilde Replacement POSIX (Linux/Mac)
+if sys.platform != 'win32' and project_root_str_full.startswith(home_dir_str):
+    PROJECT_ROOT_FOR_MAP = project_root_str_full.replace(home_dir_str, '~', 1)
+else:
+    # Auf Windows immer den vollen Pfad nehmen
+    PROJECT_ROOT_FOR_MAP = project_root_str_full
+
+PROJECT_ROOT_POSIX = Path(PROJECT_ROOT_FOR_MAP).as_posix()
+HOME_DIR_POSIX = Path(home_dir_str).as_posix()
+
+
 
 PROJECT_ROOT_DISPLAY_STR = ''
 # 1. Tilde Replacement (Only a String Operation!)
@@ -152,10 +164,9 @@ FUZZY_MAP_pre = [
 
     #fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection cl'
 
-
     (f'{PROJECT_ROOT_POSIX}',
      # EXAMPLE: Aura Pfad
-     r'^(Aura|Agora|Aurora|ora|hurra|Flora)\s+(Aura|Pfad)$',
+     r'^(Aura|Auer|Agora|Aurora|ora|hurra|Flora)\s+(Aura|Pfad)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
@@ -165,27 +176,30 @@ FUZZY_MAP_pre = [
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
+
     (f'{HOME_DIR_POSIX}',
      # EXAMPLE: home Dir
      r'^(home|heimat|user)\s+(Pfad|Dir\w*)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
+
+
     # Navigiere zu Aura Config
     (f'cd "{Path(PROJECT_ROOT_POSIX, "config").as_posix()}"',
     # EXAMPLE: Navigiere Aura Konfiguration
-    r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)\s*Konf\w*$',
+    r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Auer|Aurora|Root|Aurora)\s*Konf\w*$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: Navigiere zu Aura
     (f'cd "{PROJECT_ROOT_POSIX}"',
     # EXAMPLE: Navigiere
-    r'^(Navigiere|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora)$',
+    r'^(Navigiere|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora|Autoren)$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    # EXAMPLE: Config
+    # EXAMPLE: Aura Konfig
     (f'{Path(PROJECT_ROOT_POSIX, "config", "settings.py").as_posix()}',
      # EXAMPLE: Aura
      r'^(Aura|Laura|over|Dora|Horror)\s+(Konf\w*|konzentration)$',
