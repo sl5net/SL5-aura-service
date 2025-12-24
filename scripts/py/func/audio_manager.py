@@ -33,6 +33,57 @@ import logging
 
 from config.dynamic_settings import settings
 
+
+
+
+
+
+# Global imports for heavy libraries to prevent runtime latency
+try:
+    import numpy as np
+except ImportError:
+    np = None
+
+try:
+    import pygame
+except ImportError:
+    pygame = None
+
+# Windows-specific performance imports
+if os.name == 'nt':
+    try:
+        import winsound
+        import comtypes
+        from comtypes import CLSCTX_ALL
+        from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+
+        # Pre-initialize COM once at module level to eliminate the 1s delay
+        try:
+            comtypes.CoInitialize()
+        except Exception:
+            pass
+    except ImportError:
+        winsound = None
+        logging.error("Windows audio dependencies (pycaw/comtypes) not found.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -124,8 +175,6 @@ if (sys.platform != "win32"
     and (settings.soundUnMute > 0 or settings.soundMute > 0)) \
         and not os.getenv('CI'):
     try:
-        import pygame
-
         pygame.mixer.init(frequency=44100, size=-16, channels=2)
 
 
@@ -208,11 +257,13 @@ if (sys.platform != "win32"
 
     # --- Platform-Specific Implementations ---
 
+    # audio_manager.py:211
     def _get_mute_state_windows(logger):
         if os.getenv('CI'):
             logger.info("CI env: Skipping hardware call.")
             return False
 
+        logger.info(f"219: Audio Manager PID: {os.getpid()}")
         try:
             from comtypes import CLSCTX_ALL
             from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
@@ -231,6 +282,8 @@ import os
 
 
 def _set_mute_state_windows(mute: bool, logger):
+    logger.info(f"235: Audio Manager PID: {os.getpid()}")
+    
     """
     Set the microphone mute state on Windows using pycaw/comtypes.
     Local imports ensure cross-platform compatibility.
@@ -244,11 +297,8 @@ def _set_mute_state_windows(mute: bool, logger):
         return False
 
     try:
-        import comtypes
         # import ctypes
-        from comtypes import CLSCTX_ALL
         # Import from pycaw only inside this function
-        from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
         # Explicitly initialize COM in the current thread.
         try:
@@ -285,6 +335,7 @@ def _set_mute_state_linux(mute: bool, logger):
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
+    logger.info(f"294: Audio Manager PID: {os.getpid()}")
 
     logger.info(f"Setting Linux microphone mute state to: {mute}")
     try:
@@ -302,7 +353,7 @@ def _get_mute_state_macos(logger):
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
-
+    logger.info(f"312: Audio Manager PID: {os.getpid()}")
     try:
         cmd = "osascript -e 'input volume of (get volume settings)'"
         result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
@@ -316,6 +367,8 @@ def _get_mute_state_linux(logger):
     if os.getenv('CI'):
         logger.info("CI environment detected. Skipping pactl command for get_mute.")
         return False
+
+    logger.info(f"327: Audio Manager PID: {os.getpid()}")
 
     try:
         cmd = ['pactl', 'get-source-mute', '@DEFAULT_SOURCE@']
@@ -331,6 +384,8 @@ def _set_mute_state_macos(mute: bool, logger):
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
+
+    logger.info(f"344: Audio Manager PID: {os.getpid()}")
 
     try:
         if mute:
@@ -351,9 +406,12 @@ def _set_mute_state_macos(mute: bool, logger):
 def is_microphone_muted(logger=None):
     """Checks if the default system microphone is currently muted."""
     active_logger = logger if logger else log
+
     if os.getenv('CI'):
         active_logger.info("CI env: Skipping hardware call.")
         return False
+
+    logger.info(f"370: Audio Manager PID: {os.getpid()}")
 
     if sys.platform == "win32":
         return _get_mute_state_windows(active_logger)
@@ -365,9 +423,7 @@ def is_microphone_muted(logger=None):
         active_logger.warning(f"Unsupported OS: {sys.platform}")
         return None
 
-# scripts/py/func/audio_manager.py
-# audio_manager.py
-
+# scripts/py/func/audio_manager.py:370
 def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logger=None):
     """
     Ultra-robust sound playback with multi-stage fallbacks:
@@ -376,7 +432,6 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
     3. Windows System Beep (winsound)
     """
     import sys
-    import numpy as np
 
     # Safety: Extremely low volume multiplier to prevent loudness issues
     final_volume = volume
@@ -400,7 +455,6 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
     # Fallback Chain Logic
     for channels in [2, 1]:
         try:
-            import pygame
             # Check if mixer needs (re)init
             if pygame.mixer.get_init() is None:
                 pygame.mixer.init(frequency=sample_rate, size=-16, channels=channels)
@@ -430,7 +484,6 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
     # FINAL FALLBACK: Never forget the Beep!
     if sys.platform.startswith("win"):
         try:
-            import winsound
             winsound.Beep(int(start_freq), int(duration_ms))
             if logger: logger.info("Fallback to winsound.Beep successful.")
             return True
@@ -457,6 +510,9 @@ def sound_program_loaded():
 def sound_mute(active_logger):
     if not getattr(settings, 'soundMute', False):
         return
+
+    active_logger.info(f"475: Audio Manager PID: {os.getpid()}")
+
     _play_bent_sine_wave_or_beep(
         start_freq=800,
         end_freq=400,
@@ -469,6 +525,9 @@ def sound_mute(active_logger):
 def sound_unmute(active_logger):
     if not getattr(settings, 'soundUnMute', False):
         return
+
+    logger.info(f"490: Audio Manager PID: {os.getpid()}")
+
     _play_bent_sine_wave_or_beep(
         start_freq=800,
         end_freq=1120,
@@ -484,6 +543,8 @@ def mute_microphone(logger=None, onlySound=False):
         active_logger.info("CI env: Skipping hardware call.")
         return False
     """Mutes the default system microphone."""
+
+    active_logger.info(f"508: Audio Manager PID: {os.getpid()}")
 
     active_logger.info(f"mute_microphone()")
 
@@ -527,6 +588,8 @@ def unmute_microphone(logger=None):
     if os.getenv('CI'):
         active_logger.info("CI env: Skipping hardware call.")
         return False
+
+
     """
     Unmutes the default system microphone.
     This function is wrapped in a robust try-except block to prevent service crashes.
@@ -552,6 +615,9 @@ def unmute_microphone(logger=None):
     Handles platform-specific implementations.
     """
     active_logger = logger if logger is not None else logging.getLogger(__name__)
+
+    active_logger.info(f"553: Audio Manager PID: {os.getpid()}")
+
 
     try:
         if sys.platform == "win32":
@@ -580,6 +646,8 @@ def toggle_microphone_mute(logger=None):
     if os.getenv('CI'):
         active_logger.info("CI env: Skipping hardware call.")
         return False
+
+    logger.info(f"609: Audio Manager PID: {os.getpid()}")
 
     is_muted = is_microphone_muted(active_logger)
     if is_muted is None:
