@@ -89,8 +89,10 @@ def speak_fallback(text_to_speak, language_code):
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL
             )
-
-            logger.info(f"🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
+            logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}...' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
         except FileNotFoundError:
             logger.info(f"fallback fouled '{command[0]}' no found.")
         except Exception as e:
