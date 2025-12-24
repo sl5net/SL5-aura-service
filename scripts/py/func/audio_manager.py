@@ -265,7 +265,7 @@ if (sys.platform != "win32"
             logger.info("CI env: Skipping hardware call.")
             return False
 
-        logger.info(f"219: Audio Manager PID: {os.getpid()}")
+        # logger.info(f"219: Audio Manager PID: {os.getpid()}")
         try:
             from comtypes import CLSCTX_ALL
             from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
@@ -284,7 +284,7 @@ import os
 
 
 def _set_mute_state_windows(mute: bool, logger):
-    logger.info(f"235: Audio Manager PID: {os.getpid()}")
+    # logger.info(f"235: Audio Manager PID: {os.getpid()}")
     
     """
     Set the microphone mute state on Windows using pycaw/comtypes.
@@ -337,7 +337,7 @@ def _set_mute_state_linux(mute: bool, logger):
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
-    logger.info(f"294: Audio Manager PID: {os.getpid()}")
+    # logger.info(f"294: Audio Manager PID: {os.getpid()}")
 
     logger.info(f"Setting Linux microphone mute state to: {mute}")
     try:
@@ -355,7 +355,7 @@ def _get_mute_state_macos(logger):
     if os.getenv('CI'):
         logger.info("CI env: Skipping hardware call.")
         return False
-    logger.info(f"312: Audio Manager PID: {os.getpid()}")
+    # logger.info(f"312: Audio Manager PID: {os.getpid()}")
     try:
         cmd = "osascript -e 'input volume of (get volume settings)'"
         result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
@@ -370,7 +370,7 @@ def _get_mute_state_linux(logger):
         logger.info("CI environment detected. Skipping pactl command for get_mute.")
         return False
 
-    logger.info(f"327: Audio Manager PID: {os.getpid()}")
+    # logger.info(f"327: Audio Manager PID: {os.getpid()}")
 
     try:
         cmd = ['pactl', 'get-source-mute', '@DEFAULT_SOURCE@']
@@ -387,7 +387,7 @@ def _set_mute_state_macos(mute: bool, logger):
         logger.info("CI env: Skipping hardware call.")
         return False
 
-    logger.info(f"344: Audio Manager PID: {os.getpid()}")
+    # logger.info(f"344: Audio Manager PID: {os.getpid()}")
 
     try:
         if mute:
@@ -413,7 +413,7 @@ def is_microphone_muted(logger=None):
         active_logger.info("CI env: Skipping hardware call.")
         return False
 
-    logger.info(f"370: Audio Manager PID: {os.getpid()}")
+    # logger.info(f"370: Audio Manager PID: {os.getpid()}")
 
     if sys.platform == "win32":
         return _get_mute_state_windows(active_logger)
@@ -513,7 +513,7 @@ def sound_mute(active_logger):
     if not getattr(settings, 'soundMute', False):
         return
 
-    active_logger.info(f"475: Audio Manager PID: {os.getpid()}")
+    # active_logger.info(f"475: Audio Manager PID: {os.getpid()}")
 
     _play_bent_sine_wave_or_beep(
         start_freq=800,
@@ -528,7 +528,7 @@ def sound_unmute(active_logger):
     if not getattr(settings, 'soundUnMute', False):
         return
 
-    logger.info(f"490: Audio Manager PID: {os.getpid()}")
+    # logger.info(f"490: Audio Manager PID: {os.getpid()}")
 
     _play_bent_sine_wave_or_beep(
         start_freq=800,
@@ -546,7 +546,7 @@ def mute_microphone(logger=None, onlySound=False):
         return False
     """Mutes the default system microphone."""
 
-    active_logger.info(f"508: Audio Manager PID: {os.getpid()}")
+    # active_logger.info(f"508: Audio Manager PID: {os.getpid()}")
 
     active_logger.info(f"mute_microphone()")
 
@@ -618,7 +618,7 @@ def unmute_microphone(logger=None):
     """
     active_logger = logger if logger is not None else logging.getLogger(__name__)
 
-    active_logger.info(f"553: Audio Manager PID: {os.getpid()}")
+    # active_logger.info(f"553: Audio Manager PID: {os.getpid()}")
 
 
     try:
@@ -649,7 +649,7 @@ def toggle_microphone_mute(logger=None):
         active_logger.info("CI env: Skipping hardware call.")
         return False
 
-    logger.info(f"609: Audio Manager PID: {os.getpid()}")
+    # logger.info(f"609: Audio Manager PID: {os.getpid()}")
 
     is_muted = is_microphone_muted(active_logger)
     if is_muted is None:
