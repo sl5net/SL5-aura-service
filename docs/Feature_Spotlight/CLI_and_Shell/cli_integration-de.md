@@ -30,7 +30,7 @@ Demo(manchmal online):
 
 Die aktuelle IP-Adresse für den Zugriff auf Port `8___` findest Du in dieser Textdatei:
 
-[**Aktuelle IP-Adresse** (Klicken Sie hier)](http://88.130.216.52:8831/)
+[**Aktuelle IP-Adresse** (Klicken Sie hier)](http://89.244.126.242:8831/)
 
 *Die IP-Adresse wird bei jedem Neustart des Dienstes automatisch aktualisiert (via GitHub Commit).*
 
