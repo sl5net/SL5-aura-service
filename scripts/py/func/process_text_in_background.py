@@ -18,6 +18,25 @@ from .state_manager import should_trigger_startup
 
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE # <--- NEW IMPORT
 
+from .correct_text_by_languagetool import correct_text_by_languagetool
+import re, time
+from thefuzz import fuzz
+from .notify import notify
+
+
+from config.dynamic_settings import settings
+from .normalize_punctuation import normalize_punctuation
+from .map_reloader import auto_reload_modified_maps
+
+import importlib
+
+from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
+
+from .setup_initial_model import get_model_name_from_key
+
+
+
+
 
 # scripts/py/func/process_text_in_background.py
 GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
@@ -141,11 +160,6 @@ def load_module_from_path(script_path, run_mode_override=None):
 
 # from config.settings import ENABLE_AUTO_LANGUAGE_DETECTION, ADD_TO_SENCTENCE
 
-from config.dynamic_settings import settings
-
-from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
-
-from .setup_initial_model import get_model_name_from_key
 
 # Assumes 'models' directory is at the project root, parallel to 'scripts'
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
@@ -163,6 +177,13 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     else:
         import fasttext
         fasttext_model = fasttext.load_model(str(MODEL_PATH))
+        #
+
+        print(f"168: TODO: performance killer (2025-1225-1950)")
+        print(f"168: TODO: performance killer (2025-1225-1950)")
+        print(f"168: TODO: performance killer (2025-1225-1950)")
+
+
 
 # from .audio_manager import unmute_microphone
 
@@ -175,11 +196,6 @@ curl --data "language=de-DE&text=das stimmt unsere ist nicht absolut fehlerfrei"
 # from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
 
 # scripts/py/func/process_text_in_background.py:120
-from config.dynamic_settings import settings
-from .normalize_punctuation import normalize_punctuation
-from .map_reloader import auto_reload_modified_maps
-
-import importlib
 
 
 def is_plugin_enabled(hierarchical_key, plugins_config):
@@ -424,10 +440,6 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
     return punctuation_map, fuzzy_map_pre, fuzzy_map
 
-from .correct_text_by_languagetool import correct_text_by_languagetool
-import re, time
-from thefuzz import fuzz
-from .notify import notify
 
 
 # Helper to check if a string contains regex special characters

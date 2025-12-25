@@ -24,6 +24,7 @@ How to Use:
 
 import sys
 import os
+
 import array
 import math
 
@@ -142,12 +143,12 @@ def speak_fallback(text_to_speak, language_code):
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL
             )
-            logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}...' ")
+            # logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}...' ")
             # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
             # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
             # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
         except FileNotFoundError:
-            logger.info(f"fallback fouled '{command[0]}' no found.")
+            logger.info(f"fallback fouled '{command[0]}' no found. platform_name:{platform_name}")
         except Exception as e:
             logger.info(f" {e}")
 
@@ -180,7 +181,6 @@ if (sys.platform != "win32"
         pygame.mixer.init(frequency=44100, size=-16, channels=2)
 
 
-        # from comtypes import CLSCTX_ALL
 
         # Pre-create a simple beep sound
         # beep_sound_high = pygame.mixer.Sound(b'\x00\xff\x00\xff' * 100)  # Simple high-pitched wave
@@ -252,11 +252,6 @@ if (sys.platform != "win32"
         #     pass # No sound feedback if pygame is not available
 
 
-    # else:
-    #     import winsound
-    # def play_beep(frequency, duration_ms):
-    #     winsound.Beep(frequency, duration_ms)
-
     # --- Platform-Specific Implementations ---
 
     # audio_manager.py:211
@@ -267,8 +262,6 @@ if (sys.platform != "win32"
 
         # logger.info(f"219: Audio Manager PID: {os.getpid()}")
         try:
-            from comtypes import CLSCTX_ALL
-            from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
             devices = AudioUtilities.GetSpeakers()
             interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
             volume = interface.QueryInterface(IAudioEndpointVolume)
@@ -280,7 +273,6 @@ if (sys.platform != "win32"
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # audio_manager.py: _set_mute_state_windows function
 
-import os
 
 
 def _set_mute_state_windows(mute: bool, logger):
@@ -299,8 +291,6 @@ def _set_mute_state_windows(mute: bool, logger):
         return False
 
     try:
-        # import ctypes
-        # Import from pycaw only inside this function
 
         # Explicitly initialize COM in the current thread.
         try:
@@ -433,7 +423,6 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
     2. Mono Pygame (1 channel)
     3. Windows System Beep (winsound)
     """
-    import sys
 
     # Safety: Extremely low volume multiplier to prevent loudness issues
     final_volume = volume
