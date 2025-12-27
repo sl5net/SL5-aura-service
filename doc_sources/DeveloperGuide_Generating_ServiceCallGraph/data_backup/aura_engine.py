@@ -1,4 +1,4 @@
-# File: dictation_service.py (Am Anfang des Scripts, vor der Definition von main)
+# File: aura_engine.py (Am Anfang des Scripts, vor der Definition von main)
 
 import datetime
 import os
@@ -24,7 +24,7 @@ if 'VIRTUAL_ENV' not in os.environ:
     )
     print("       source .venv/bin/activate", file=sys.stderr)
     print(
-        "       Then, you can run the script: python dictation_service.py",
+        "       Then, you can run the script: python aura_engine.py",
         file=sys.stderr
     )
 
@@ -53,7 +53,7 @@ from config.dynamic_settings import settings
 
 
 # HIER MUSS DER FEHLERHAFTE IMPORT ENTFERNT WERDEN!
-# from dictation_service import main  <-- DIESE ZEILE ENTFERNEN!
+# from aura_engine import main  <-- DIESE ZEILE ENTFERNEN!
 
 
 
@@ -139,7 +139,7 @@ from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 
 
 
-# File: STT/dictation_service.py
+# File: STT/aura_engine.py
 # ...
 # --- Wrapper Script Check ---
 
@@ -160,9 +160,9 @@ else:
     TMP_DIR = Path("/tmp")
 
 TRIGGER_FILE = TMP_DIR / "sl5_record.trigger"
-HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
-PIDFILE = TMP_DIR / "dictation_service.pid"
-LOG_FILE = PROJECT_ROOT / "log/dictation_service.log"
+HEARTBEAT_FILE = TMP_DIR / "aura_engine.heartbeat"
+PIDFILE = TMP_DIR / "aura_engine.pid"
+LOG_FILE = PROJECT_ROOT / "log/aura_engine.log"
 
 
 
@@ -181,9 +181,9 @@ else:
     TMP_DIR = Path("/tmp")
 OUTPUT_FILE = TMP_DIR / "tts_output.txt"
 
-HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
-PIDFILE = TMP_DIR / "dictation_service.pid"
-LOG_FILE = Path("log/dictation_service.log")
+HEARTBEAT_FILE = TMP_DIR / "aura_engine.heartbeat"
+PIDFILE = TMP_DIR / "aura_engine.pid"
+LOG_FILE = Path("log/aura_engine.log")
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
@@ -299,7 +299,7 @@ log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
 log_formatter.formatTime = formatTime
 
 # Create, configure, and add the File Handler.
-file_handler = logging.FileHandler(f'{SCRIPT_DIR}/log/dictation_service.log', mode='w')
+file_handler = logging.FileHandler(f'{SCRIPT_DIR}/log/aura_engine.log', mode='w')
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 
@@ -545,7 +545,7 @@ if settings.DEV_MODE :
 
 # --- main-logic is in Thread ---
 
-# File: dictation_service.py
+# File: aura_engine.py
 global AUTO_ENTER_AFTER_DICTATION_global
 
 recording_time = 0
@@ -570,7 +570,7 @@ if __name__ == "__main__":
 
 
     # --- Plugin State Communication ---
-    # File: dictation_service.py Line 417
+    # File: aura_engine.py Line 417
     # Create a flag file so client scripts know if a plugin is active.
     try:
         AUTO_ENTER_AFTER_DICTATION_global = settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS

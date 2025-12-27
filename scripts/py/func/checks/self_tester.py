@@ -35,7 +35,7 @@ def check_translator_hijack(logger):
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
-# Note: In dictation_service.py this might be SCRIPT_DIR instead of project_root
+# Note: In aura_engine.py this might be SCRIPT_DIR instead of project_root
 
 from scripts.py.func.process_text_in_background import process_text_in_background
 from scripts.py.func.checks.run_function_with_throttling import run_function_with_throttling

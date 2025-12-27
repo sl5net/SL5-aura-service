@@ -67,7 +67,7 @@ def parse_all_files(project_root, logger):
     This is efficient as we don't re-read files for each check.
     """
     logger.info("\n--- Parsing project files for analysis (dev-mode) ---")
-    files_to_check = [project_root / 'dictation_service.py']
+    files_to_check = [project_root / 'aura_engine.py']
     files_to_check.extend(project_root.glob('scripts/**/*.py'))
 
     parsed_trees = {}

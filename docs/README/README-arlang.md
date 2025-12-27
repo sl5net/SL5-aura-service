@@ -188,7 +188,7 @@ f11::
 * `start_dictation_v2.0.bat`: برنامج نصي أساسي **لبدء خدمة الإملاء**.
 
             ### البرامج النصية الأساسية والمساعد
-* `dictation_service.py`: خدمة Python الأساسية (تبدأ عادةً بواسطة أحد البرامج النصية أعلاه).
+* `aura_engine.py`: خدمة Python الأساسية (تبدأ عادةً بواسطة أحد البرامج النصية أعلاه).
 * `get_suggestions.py`: برنامج نصي مساعد لوظائف محددة.
 
 
@@ -209,7 +209,7 @@ f11::
 
                                               اكس سبيس بريك اكس
                         **هالة النواة/** 🐧 🍏 🪟XSPACEbreakX
-├─ `dictation_service.py` (خدمة Python الرئيسية التي تنظم Aura) 🐧 🍏 🪟XSPACEbreakX
+├─ `aura_engine.py` (خدمة Python الرئيسية التي تنظم Aura) 🐧 🍏 🪟XSPACEbreakX
 ├┬ **بث مباشر مباشر** (التكوين والخرائط) 🐧 🍏 🪟XSPACEbreakX
 │├ **معالجة النصوص وتصحيحها/** مجمعة حسب اللغة (على سبيل المثال، `de-DE`، `en-US`، ...) XSPACEbreakX
 │├ 1. `normalize_peptication.py` (توحيد علامات الترقيم بعد النسخ) 🐧 🍏 🪟XSPACEbreakX
@@ -290,7 +290,7 @@ f11::
 <summary>انقر لرؤية الأمر المستخدم لإنشاء قائمة البرامج النصية هذه</summary>
 
 ```bash
-{ find . -maxdepth 1 -type f \( -name "dictation_service.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
+{ find . -maxdepth 1 -type f \( -name "aura_engine.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
 ```
                                                           </التفاصيل>
 

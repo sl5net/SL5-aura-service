@@ -22,7 +22,7 @@ fi
 
 # Temporary directory for requirements generation
 TMPDIR=".pipreqs_temp"
-FILES=("dictation_service.py" "get_suggestions.py")
+FILES=("aura_engine.py" "get_suggestions.py")
 
 # Clean up any old temp dirs
 rm -rf "$TMPDIR"

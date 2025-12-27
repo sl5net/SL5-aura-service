@@ -42,6 +42,10 @@ FUZZY_MAP_pre = [
     # EXAMPLE: git commit
     ('git commit ', rf'\bgit commit\b\s*', 80, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: git commit
+    ('git commit ', rf'\bgittern komet\b\s*', 80, {'flags': re.IGNORECASE}),
+
+
     # EXAMPLE: git clone
     ('git clone ', rf'^\s*{gitGit}\s+(klar|klon|clone)\s*$', 80, {'flags': re.IGNORECASE}),
 

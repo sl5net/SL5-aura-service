@@ -142,7 +142,7 @@ X空格符X
 * `start_dictation_v2.0.bat`：**启动听写服务**的主要脚本。
 
 ### 核心和帮助脚本
-* `dictation_service.py`：核心 Python 服务（通常由上述脚本之一启动）。
+* `aura_engine.py`：核心 Python 服务（通常由上述脚本之一启动）。
 * `get_suggestions.py`：用于特定功能的帮助程序脚本。
 
 
@@ -163,7 +163,7 @@ X空格符X
 
 X空格符X
 **光环核心/** 🐧 🍏 🪟  
-├─ `dictation_service.py` （主要 Python 服务编排 Aura） 🐧 🍏 🪟  
+├─ `aura_engine.py` （主要 Python 服务编排 Aura） 🐧 🍏 🪟  
 ├┬ **实时热重载**（配置和地图）🐧🍏🪟  
 │├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  

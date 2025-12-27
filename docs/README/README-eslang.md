@@ -188,7 +188,7 @@ Aquí hay una lista de los scripts más importantes para configurar, actualizar 
 * `start_dictation_v2.0.bat`: un script principal para **iniciar el servicio de dictado**.
 
 ### Scripts principales y auxiliares
-* `dictation_service.py`: el servicio principal de Python (generalmente iniciado por uno de los scripts anteriores).
+* `aura_engine.py`: el servicio principal de Python (generalmente iniciado por uno de los scripts anteriores).
 * `get_suggestions.py`: un script auxiliar para funcionalidades específicas.
 
 
@@ -209,7 +209,7 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
 
   
 **Aura-Core/** 🐧 🍏 🪟  
-├─ `dictation_service.py` (Servicio principal de Python que orquesta Aura) 🐧 🍏 🪟  
+├─ `aura_engine.py` (Servicio principal de Python que orquesta Aura) 🐧 🍏 🪟  
 ├┬ **Recarga en vivo** (Configuración y mapas) 🐧 🍏 🪟  
 │├ **Procesamiento y corrección de texto/** Agrupado por idioma (p. ej., `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (Estandariza la puntuación post-transcripción) 🐧 🍏 🪟  
@@ -290,7 +290,7 @@ Funciones actualmente en desarrollo o en estado de borrador.
 <summary>Haga clic para ver el comando utilizado para generar esta lista de scripts</summary>
 
 ```bash
-{ find . -maxdepth 1 -type f \( -name "dictation_service.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
+{ find . -maxdepth 1 -type f \( -name "aura_engine.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
 ```
 </detalles>
 

@@ -12,7 +12,7 @@ if [ -f .venv/bin/activate ]; then
 fi
 
 # Run flake8 on specific directories
-flake8 ./dictation_service.py ./scripts ./config
+flake8 ./aura_engine.py ./scripts ./config
 
 # Abort commit if flake8 finds errors
 if [ $? -ne 0 ]; then
@@ -39,7 +39,7 @@ rm -rf "$TMPDIR"
 mkdir "$TMPDIR"
 
 # Copy all relevant Python sources into the temp directory
-cp dictation_service.py "$TMPDIR/"
+cp aura_engine.py "$TMPDIR/"
 cp get_suggestions.py "$TMPDIR/"
 # Copy the entire 'scripts' directory to preserve import paths
 cp -r scripts "$TMPDIR/"

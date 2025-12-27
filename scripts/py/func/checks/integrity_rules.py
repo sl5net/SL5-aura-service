@@ -32,7 +32,7 @@ INTEGRITY_CHECKS = {
         'setup/setup.bat',
         'https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml',
         'update.bat',
-        'dictation_service.py',
+        'aura_engine.py',
         'get_suggestions.py',
         'type_watcher.ahk',
         'trigger-hotkeys.ahk',

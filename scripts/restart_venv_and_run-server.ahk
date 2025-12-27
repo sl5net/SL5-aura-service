@@ -29,7 +29,7 @@ PORT := Trim(FileReadLine(ConfigFile, 1), " `t")
 
 ; Starte den Server neu
 MsgBox "Restarting TTS Server on Port " PORT "..."
-Run "pkill -f dictation_service.py"
+Run "pkill -f aura_engine.py"
 Run "pkill -f type_watcher.sh"
 ; DO NOT kill LanguageTool server here. Run "pkill -f languagetool-server.jar"
 

@@ -17,6 +17,6 @@ def end_service_script(service_name):
         print(f'Error: {e}')
 
 if __name__ == '__main__':
-    service_name = 'dictation_service.py'
+    service_name = 'aura_engine.py'
     end_service_script(service_name)
 

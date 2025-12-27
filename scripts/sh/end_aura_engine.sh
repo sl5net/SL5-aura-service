@@ -15,7 +15,7 @@ fi
 }
 
 main() {
-    local service_name="dictation_service.py"
+    local service_name="aura_engine.py"
 end_service_script "$service_name"
 }
 

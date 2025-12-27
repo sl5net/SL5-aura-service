@@ -64,8 +64,8 @@ set REPAIR_ATTEMPTED=
 :START_SERVICE_LOOP
 echo [INFO] Starting the Python STT backend service...
 
-# python -u dictation_service.py
-python -X utf8 -u dictation_service.py
+# python -u aura_engine.py
+python -X utf8 -u aura_engine.py
 
 
 
@@ -73,7 +73,7 @@ echo [INFO] Waiting 5 seconds for the service to initialize...
 timeout /t 5 >nul
 
 echo [INFO] Verifying service status via log file...
-findstr /C:"Setup validation successful" "log\dictation_service.log" >nul 2>&1
+findstr /C:"Setup validation successful" "log\aura_engine.log" >nul 2>&1
 IF %ERRORLEVEL% EQU 0 goto :CONTINUE_SCRIPT
 
 :: --- ERROR HANDLING & REPAIR ---

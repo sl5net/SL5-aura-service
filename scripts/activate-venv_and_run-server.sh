@@ -2,7 +2,7 @@
 # scripts/activate-venv_and_run-server.sh
 # Exit immediately if a command fails
 
-SCRIPT_firstName="dictation_service"
+SCRIPT_firstName="aura_engine"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 PROJECT_ROOT="$SCRIPT_DIR/.."

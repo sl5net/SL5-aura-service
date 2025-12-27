@@ -1,6 +1,6 @@
 # Developer Guide: Generating the Service Call Graph
 
-This document describes the robust, thread-safe method for generating a visual Call Graph of the long-running `dictation_service.py`. We use the `yappi` profiler (for multi-threading support) and `gprof2dot` for visualization.
+This document describes the robust, thread-safe method for generating a visual Call Graph of the long-running `aura_engine.py`. We use the `yappi` profiler (for multi-threading support) and `gprof2dot` for visualization.
 
 ### Prerequisites
 
@@ -16,9 +16,9 @@ pip install yappi gprof2dot
 
 ### Step 1: Modifying the Service for Profiling
 
-The `dictation_service.py` script must be modified to manually start the `yappi` profiler and gracefully save the profiling data upon interruption (`Ctrl+C`).
+The `aura_engine.py` script must be modified to manually start the `yappi` profiler and gracefully save the profiling data upon interruption (`Ctrl+C`).
 
-**Key Changes in `dictation_service.py`:**
+**Key Changes in `aura_engine.py`:**
 
 1.  **Imports and Signal Handler:** Import `yappi` and define the `generate_graph_on_interrupt` function (as implemented previously) to call `yappi.stop()` and `stats.save(...)`.
 2.  **Start/Stop:** Add `yappi.start()` and `signal.signal(signal.SIGINT, ...)` within the `if __name__ == "__main__":` block to wrap the execution of `main(...)`.
@@ -29,7 +29,7 @@ Run the modified script directly and allow it to process data for a sufficient t
 
 ```bash
 # Execute the service directly (do NOT use the pycallgraph wrapper)
-python3 dictation_service.py
+python3 aura_engine.py
 ```
 
 Press **Ctrl+C** once to trigger the signal handler. This will stop the profiler and save the raw data to:
@@ -58,7 +58,7 @@ The modified configuration file and the final Call Graph visualization should be
 
 | Artifact | Location |
 | :--- | :--- |
-| **Modified Service File** | `doc_sources/profiling/dictation_service_profiling_base.py` |
+| **Modified Service File** | `doc_sources/profiling/aura_engine_profiling_base.py` |
 | **Final Cropped Image** | `doc_sources/profiling/core_logic_call_graph.svg` |
 | **Raw Profiling Data** | *(Optional: Should be excluded from final repository documentation)* |
 

@@ -188,7 +188,7 @@ Windows システム上でアプリケーションをセットアップ、更新
 * `start_dictation_v2.0.bat`: **ディクテーション サービス**を開始するための主要なスクリプト。
 
 ### コアスクリプトとヘルパースクリプト
-* `dictation_service.py`: コア Python サービス (通常は上記のスクリプトのいずれかによって開始されます)。
+* `aura_engine.py`: コア Python サービス (通常は上記のスクリプトのいずれかによって開始されます)。
 * `get_suggestions.py`: 特定の機能のためのヘルパー スクリプト。
 
 
@@ -209,7 +209,7 @@ OS 互換性の凡例:
 
   
 **オーラコア/** 🐧 🍏 🪟  
-§─ `dictation_service.py` (Aura をオーケストレーションするメイン Python サービス) 🐧 🍏 🪟  
+§─ `aura_engine.py` (Aura をオーケストレーションするメイン Python サービス) 🐧 🍏 🪟  
 §┬ **ライブ ホットリロード** (構成とマップ) 🐧 🍏 🪟  
 │§ **テキストの処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
 │§ 1. `normalize_punctuation.py` (文字起こし後の句読点を標準化) 🐧 🍏 🪟  
@@ -290,7 +290,7 @@ OS 互換性の凡例:
 <summary>クリックすると、このスクリプト リストの生成に使用されたコマンドが表示されます</summary>
 
 ```bash
-{ find . -maxdepth 1 -type f \( -name "dictation_service.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
+{ find . -maxdepth 1 -type f \( -name "aura_engine.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
 ```
 </詳細>
 

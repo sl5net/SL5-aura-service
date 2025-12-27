@@ -22,7 +22,7 @@ However, we will run into some fundamental challenges because this application i
 
 ### The Result: What Works and What (Critically) Does Not
 
-With some luck, the container will build and run. You should see the log output from `dictation_service.py` indicating that it has started, loaded the models, and is now waiting.
+With some luck, the container will build and run. You should see the log output from `aura_engine.py` indicating that it has started, loaded the models, and is now waiting.
 
 **This is a partial success!** The core Python application and its dependencies are running in a perfectly isolated environment.
 

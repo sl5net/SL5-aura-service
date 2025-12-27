@@ -1,4 +1,4 @@
-# File: dictation_service.py
+# File: aura_engine.py
 import objgraph
 from datetime import datetime, timedelta
 
@@ -32,7 +32,7 @@ if 'VIRTUAL_ENV' not in os.environ:
     )
     print("       source .venv/bin/activate", file=sys.stderr)
     print(
-        "       Then, you can run the script: python dictation_service.py",
+        "       Then, you can run the script: python aura_engine.py",
         file=sys.stderr
     )
 
@@ -57,7 +57,7 @@ from pathlib import Path
 
 
 
-# dictation_service.py:59
+# aura_engine.py:59
 from config.dynamic_settings import settings
 
 # if settings.DEV_MODE :
@@ -129,7 +129,7 @@ from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload
 
 
 
-# File: STT/dictation_service.py
+# File: STT/aura_engine.py
 # ...
 # --- Wrapper Script Check ---
 
@@ -150,9 +150,9 @@ else:
     TMP_DIR = Path("/tmp")
 
 TRIGGER_FILE = TMP_DIR / "sl5_record.trigger"
-HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
-PIDFILE = TMP_DIR / "dictation_service.pid"
-LOG_FILE = PROJECT_ROOT / "log" / "dictation_service.log"
+HEARTBEAT_FILE = TMP_DIR / "aura_engine.heartbeat"
+PIDFILE = TMP_DIR / "aura_engine.pid"
+LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"
 
 LOCK_DIR = TMP_DIR / "sl5_aura" / "aura_lock"
 
@@ -172,9 +172,9 @@ else:
     TMP_DIR = Path("/tmp")
 OUTPUT_FILE = TMP_DIR / "tts_output.txt"
 
-HEARTBEAT_FILE = TMP_DIR / "dictation_service.heartbeat"
-PIDFILE = TMP_DIR / "dictation_service.pid"
-LOG_FILE = Path("log/dictation_service.log")
+HEARTBEAT_FILE = TMP_DIR / "aura_engine.heartbeat"
+PIDFILE = TMP_DIR / "aura_engine.pid"
+LOG_FILE = Path("log/aura_engine.log")
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
@@ -273,7 +273,7 @@ class WindowsEmojiFilter(logging.Filter):
 
 
 
-# dictation_service.py:268
+# aura_engine.py:268
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -293,7 +293,7 @@ log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
 log_formatter.formatTime = formatTime
 
 # Create, configure, and add the File Handler.
-file_handler = logging.FileHandler(f'{SCRIPT_DIR}/log/dictation_service.log', mode='w')
+file_handler = logging.FileHandler(f'{SCRIPT_DIR}/log/aura_engine.log', mode='w')
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 
@@ -445,7 +445,7 @@ SYSTEM_SWAP_THRESHOLD_PERCENT = 85.0 # this is deprecated. idk. seems not workin
 RAM_ESTIMATE_PER_MODEL_GB = 4.0 # plus some other needed space for the model
 GB_TO_MB_CONVERSION_FACTOR = 1024
 
-# dictation_service.py:404
+# aura_engine.py:404
 
 
 
@@ -749,7 +749,7 @@ else:
 
     logger.info(f"start_languagetool_server(.. {str(jar_path_absolute)[-30:0]}, {internal_lt_url})")
 
-    # dictation_service.py:751
+    # aura_engine.py:751
     languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url)
 
     # NEU/CHANGE: Register atexit ONLY if a real process was started
@@ -759,7 +759,7 @@ else:
     # if not languagetool_process: sys.exit(1)
     # atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
 
-    # dictation_service.py:760
+    # aura_engine.py:760
     active_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}/v2/check"
 
 
@@ -867,7 +867,7 @@ if settings.DEV_MODE :
 
 # --- main-logic is in Thread ---
 
-# File: dictation_service.py
+# File: aura_engine.py
 global AUTO_ENTER_AFTER_DICTATION_global
 
 recording_time = 0
@@ -891,7 +891,7 @@ if __name__ == "__main__":
 
 
     # --- Plugin State Communication ---
-    # File: dictation_service.py Line 417
+    # File: aura_engine.py Line 417
     # Create a flag file so client scripts know if a plugin is active.
     try:
         AUTO_ENTER_AFTER_DICTATION_global = settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS

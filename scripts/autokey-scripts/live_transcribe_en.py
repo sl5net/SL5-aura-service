@@ -1,7 +1,7 @@
 # file: scripts/autokey-scripts/live_transcribe_en.py
 intertingDontDeleteIt = """
-pkill -f dictation_service.py
-pgrep -f dictation_service.py
+pkill -f aura_engine.py
+pgrep -f aura_engine.py
 """
 import time
 from pathlib import Path

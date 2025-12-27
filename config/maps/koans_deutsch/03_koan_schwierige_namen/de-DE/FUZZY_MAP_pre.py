@@ -27,7 +27,7 @@ Können Sie den Titel einsprechen?
 Können Sie den Namen einsprechen?
 
 Was finden Sie Interessantes in
-log/dictation_service.log ?
+log/aura_engine.log ?
 
 
 Wenn Sie mehrere Freundinnen haben die auch Gräfinen sind? Wie unterscheiden Sie das in der Sprachausgabe?

@@ -170,7 +170,7 @@ Aqui está uma lista dos scripts mais importantes para configurar, atualizar e e
 * `start_dictation_v2.0.bat`: Um script primário para **iniciar o serviço de ditado**.
 
 ### Scripts principais e auxiliares
-* `dictation_service.py`: O serviço principal do Python (geralmente iniciado por um dos scripts acima).
+* `aura_engine.py`: O serviço principal do Python (geralmente iniciado por um dos scripts acima).
 * `get_suggestions.py`: Um script auxiliar para funcionalidades específicas.
 
 
@@ -191,7 +191,7 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 
   
 **Aura-Core/** 🐧 🍏 🪟  
-├─ `dictation_service.py` (principal serviço Python orquestrando Aura) 🐧 🍏 🪟  
+├─ `aura_engine.py` (principal serviço Python orquestrando Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Configuração e Mapas) 🐧 🍏 🪟  
 │├ **Processamento e correção de texto/** Agrupado por idioma (por exemplo, `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (padroniza a pontuação pós-transcrição) 🐧 🍏 🪟  

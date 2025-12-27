@@ -188,7 +188,7 @@ XSPACEbreakX
 * `start_dictation_v2.0.bat`: **받아쓰기 서비스를 시작**하는 기본 스크립트입니다.
 
 ### 핵심 및 도우미 스크립트
-* `dictation_service.py`: 핵심 Python 서비스(일반적으로 위 스크립트 중 하나에 의해 시작됨).
+* `aura_engine.py`: 핵심 Python 서비스(일반적으로 위 스크립트 중 하나에 의해 시작됨).
 * `get_suggestions.py`: 특정 기능을 위한 도우미 스크립트입니다.
 
 
@@ -209,7 +209,7 @@ OS 호환성 범례:XSPACEbreakX
 
 XSPACEbreakX
 **Aura-Core/** 🐧 🍏 🪟XSPACEbreakX
-├─ `dictation_service.py`(Aura를 조정하는 주요 Python 서비스) 🐧 🍏 🪟  
+├─ `aura_engine.py`(Aura를 조정하는 주요 Python 서비스) 🐧 🍏 🪟  
 ├┬ **라이브 핫 리로드**(구성 및 맵) 🐧 🍏 🪟XSPACEbreakX
 │├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
@@ -290,7 +290,7 @@ XSPACEbreakX
 <summary>이 스크립트 목록을 생성하는 데 사용된 명령을 보려면 클릭하세요.</summary>
 
 ```bash
-{ find . -maxdepth 1 -type f \( -name "dictation_service.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
+{ find . -maxdepth 1 -type f \( -name "aura_engine.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
 ```
 </세부사항>
 

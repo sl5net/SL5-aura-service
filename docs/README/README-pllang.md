@@ -142,7 +142,7 @@ Oto lista najważniejszych skryptów do konfigurowania, aktualizowania i urucham
 * `start_dictation_v2.0.bat`: Podstawowy skrypt służący do **uruchamiania usługi dyktowania**.
 
 ### Skrypty podstawowe i pomocnicze
-* `dictation_service.py`: podstawowa usługa Pythona (zwykle uruchamiana przez jeden z powyższych skryptów).
+* `aura_engine.py`: podstawowa usługa Pythona (zwykle uruchamiana przez jeden z powyższych skryptów).
 * `get_suggestions.py`: Skrypt pomocniczy dla określonych funkcjonalności.
 
 
@@ -163,7 +163,7 @@ Nasz główny silnik do rozpoznawania mowy w trybie offline i przetwarzania dźw
 
 XSPACEbreakX
 **Aura-Rdzeń/** 🐧 🍏 🪟XSPACEbreakX
-├─ `dictation_service.py` (główna usługa Pythona zarządzająca Aurą) 🐧 🍏 🪟XSPACEbreakX
+├─ `aura_engine.py` (główna usługa Pythona zarządzająca Aurą) 🐧 🍏 🪟XSPACEbreakX
 ├┬ **Przeładuj na żywo** (konfiguracja i mapy) 🐧 🍏 🪟XSPACEbreakX
 │├ **Przetwarzanie i korekta tekstu/** Pogrupowane według języka (np. `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punstanding.py` (Standaryzuje interpunkcję po transkrypcji) 🐧 🍏 🪟XSPACEbreakX

@@ -49,13 +49,13 @@ jobs:
           bash ./scripts/restart_venv_and_run-server.sh > service_output.log 2>&1 &
   
           echo "--> Waiting for successful model load..."
-          LOG_FILE="log/dictation_service.log"
+          LOG_FILE="log/aura_engine.log"
           
           # Wait up to 100 seconds (20 * 5s) for the final success message
           for i in {1..20}; do
             if grep -q "✅ MODEL READY" "$LOG_FILE"; then
               echo "✅ Success: Service initialized and models are ready."
-              # pkill -f dictation_service.py || true # <--- || true HERE to prevent error when service not runs.
+              # pkill -f aura_engine.py || true # <--- || true HERE to prevent error when service not runs.
               exit 0
             fi
             echo "Waiting... ($i/20)"

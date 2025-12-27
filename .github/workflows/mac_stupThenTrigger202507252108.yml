@@ -95,7 +95,7 @@ jobs:
           echo "--> Waiting 5s for the trigger to be processed..."
           sleep 5
           echo "--> Verifying log file for success indicators..."
-          LOG_FILE="log/dictation_service.log"
+          LOG_FILE="log/aura_engine.log"
           if grep "TRIGGER DETECTED!" "$LOG_FILE" && \
              grep "Using model for lang" "$LOG_FILE" && \
              grep "silence_timout now set to" "$LOG_FILE"; then
@@ -107,4 +107,4 @@ jobs:
             exit 1
           fi
           echo "--> Cleaning up background processes..."
-          pkill -f dictation_service.py
+          pkill -f aura_engine.py

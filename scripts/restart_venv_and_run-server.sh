@@ -10,7 +10,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 SERVER_SCRIPT="$SCRIPT_DIR/activate-venv_and_run-server.sh"
-SERVICE_NAME_MAIN="dictation_service.py"
+SERVICE_NAME_MAIN="aura_engine.py"
 
 os_type=$(uname -s)
 if [[ "$os_type" == "MINGW"* || "$os_type" == "CYGWIN"* || "$os_type" == "MSYS"* ]]; then
@@ -65,9 +65,9 @@ else
 
     python3 -m venv .venv
     source .venv/bin/activate
-    end_dictation_servicePY="$PROJECT_ROOT/scripts/py/end_dictation_service.py"
-    echo end_dictation_servicePY=$end_dictation_servicePY
-    python3 "$end_dictation_servicePY" &
+    end_aura_enginePY="$PROJECT_ROOT/scripts/py/end_aura_engine.py"
+    echo end_aura_enginePY=$end_aura_enginePY
+    python3 "$end_aura_enginePY" &
 
 
 

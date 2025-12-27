@@ -33,7 +33,7 @@ tips = fr"""
 TODO: Was passiert jetzt?
 TODO: Mehr Informationen, Fehlermeldungen usw, erhalten wir meisens, wenn wir die Log lesen:
 
-log/dictation_service.log
+log/aura_engine.log
 
 Den Fehler können wir unter Windows folgendermasen reparieen:
 

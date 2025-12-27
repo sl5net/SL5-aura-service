@@ -235,7 +235,7 @@ Here is a list of the most important scripts to set up, update, and run the appl
 *   `start_dictation_v2.0.bat`: A primary script to **start the dictation service**.
 
 ### Core & Helper Scripts
-*   `dictation_service.py`: The core Python service (usually started by one of the scripts above).
+*   `aura_engine.py`: The core Python service (usually started by one of the scripts above).
 *   `get_suggestions.py`: A helper script for specific functionalities.
 
 
@@ -256,7 +256,7 @@ Legend for OS Compatibility:
 
     
 **Aura-Core/** 🐧 🍏 🪟  
-├─ `dictation_service.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
+├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
 │├ **Secure Private Map Loading (Integrity-First)** 🔒  🐧 🍏 🪟  
 ││ * **Workflow:** Loads password-protected ZIP archives.   
@@ -346,7 +346,7 @@ Legend for OS Compatibility:
 <summary>Click to see the command used to generate this script list</summary>
 
 ```bash
-{ find . -maxdepth 1 -type f \( -name "dictation_service.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
+{ find . -maxdepth 1 -type f \( -name "aura_engine.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
 ```
 </details>
 

@@ -65,4 +65,4 @@ EXPOSE 8082
 
 # Define the command to run when the container starts.
 # Note: We must override the environment variable check in the Python script.
-CMD ["/bin/bash", "-c", "export DICTATION_SERVICE_STARTED_CORRECTLY=true && python3 dictation_service.py"]
+CMD ["/bin/bash", "-c", "export DICTATION_SERVICE_STARTED_CORRECTLY=true && python3 aura_engine.py"]

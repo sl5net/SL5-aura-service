@@ -59,13 +59,13 @@ fi | fzf --style full --preview 'cat {}' --bind 'focus:transform-header:file --b
 
 FUZZY_MAP_pre = [
 
-    (f'{Path(PROJECT_ROOT_FOR_MAP, "log", "dictation_service.log").as_posix()}',
+    (f'{Path(PROJECT_ROOT_FOR_MAP, "log", "aura_engine.log").as_posix()}',
     # EXAMPLE: Aura log
     r'^(Aura |laura |dora |hurra |\w?aura |prora |zauberer |over a |oral )?(log-datei|L[o]+[gk]\w*|L[o]+[gk]\w*|L[o]+[gk]\w*|low|luck|lux|luft|b datei|voll gesorgt)$',
     95,
     {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
 
-    (f'tail -f {Path(PROJECT_ROOT_FOR_MAP, "log", "dictation_service.log").as_posix()}',
+    (f'tail -f {Path(PROJECT_ROOT_FOR_MAP, "log", "aura_engine.log").as_posix()}',
     # EXAMPLE: Follow Folge Main Log
     r'^(Follow Main L[o]+[gk]\w*|Folge[n]? L[o]+[gk]\w*|folge luft|Zeige L[o]+[gk]\w*|Zeige Luft)$',
     95,
