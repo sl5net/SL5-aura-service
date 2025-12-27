@@ -25,6 +25,14 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 LOG_DIR="$SCRIPT_DIR/log"
 LOGFILE="$LOG_DIR/type_watcher_keep_alive.sh"
 
+CONFIG_FILE_1="$SCRIPT_DIR/config/settings.py"
+CONFIG_FILE_2="$SCRIPT_DIR/config/settings_local.py"
+
+# Initial timestamps
+ts1_old=$(stat -c %Y "$CONFIG_FILE_1" 2>/dev/null || echo 0)
+ts2_old=$(stat -c %Y "$CONFIG_FILE_2" 2>/dev/null || echo 0)
+
+
 log_message() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOGFILE"
 }
@@ -36,6 +44,20 @@ log_message "Starting watchdog for type_watcher.sh"
 while true; do
     # Check if the process is running by looking for a process with the script's name.
     # We use 'pgrep -f' and exclude the watchdog script itself.
+
+    # Check config changes
+    ts1_new=$(stat -c %Y "$CONFIG_FILE_1" 2>/dev/null || echo 0)
+    ts2_new=$(stat -c %Y "$CONFIG_FILE_2" 2>/dev/null || echo 0)
+
+
+    if [ "$ts1_old" != "$ts1_new" ] || [ "$ts2_old" != "$ts2_new" ]; then
+        log_message "Config changed - killing type_watcher for restart"
+        pkill -f "type_watcher.sh"
+        ts1_old=$ts1_new
+        ts2_old=$ts2_new
+    fi
+
+
     if pgrep -f "type_watcher.sh" | grep -qv "$$"; then
         # It's running, do nothing.
         :

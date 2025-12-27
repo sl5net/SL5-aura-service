@@ -76,7 +76,7 @@ FUZZY_MAP = [
 
     # --- git commit mitten im text irgendwo: ---
     # EXAMPLE: git commit
-    ('git commit ', r'\b(Geht|git|gut|mit) (Commit)\b', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'\b(Geht|git|gut|mit) (Commit)\b\s*', 80, {'flags': re.IGNORECASE}),
 
 
     # --- git commit ---
@@ -121,7 +121,7 @@ FUZZY_MAP = [
 
     # now also inline replacments:
     # EXAMPLE: git commit
-    ('git commit "', r'\b(git|Gilt|geht) (Komet|komme|kubitz)\b"', 80, {'flags': re.IGNORECASE}),
+    ('git commit "', r'\b(git|Gilt|geht) (Komet|komme|kubitz)\b\s*"', 80, {'flags': re.IGNORECASE}),
 
 
 

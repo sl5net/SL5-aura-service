@@ -47,6 +47,9 @@ FUZZY_MAP_pre = [
 
     # The regex capture groups will look for the book name ("Johannes") and the numbers ("3", "16").
 
+
+
+
     #curl -s checkip.dyndns.org | grep -Eo '[0-9\.]+''
     #was ist meine ip
     # Wie ist meine IP Adresse
@@ -82,6 +85,10 @@ FUZZY_MAP_pre = [
      }),
 
     #Starte Streamlit
+
+
+
+
 
      #streamlit run /home/seeh/projects/py/STT/scripts/py/chat/streamlit-chat.py --server.port 8831
     ("streamlit run /home/seeh/projects/py/STT/scripts/py/chat/streamlit-chat.py --server.port 8831",
@@ -149,6 +156,21 @@ FUZZY_MAP_pre = [
      70, {'flags': re.IGNORECASE}),
 
     #Neue regelNeue regelNeue regelwohnlich neuerenix', r'pattern', 70, {'flags': re.IGNORECASE}),'
+
+
+
+
+
+    # EXAMPLE: reload
+    ('reload', r'\b(w lot|Why not|wie lot|Velo|free slot)\b', 70, {'flags': re.IGNORECASE}),
+
+    # EXAMPLE: reload
+    ('reload', r'^(lot)$', 70, {'flags': re.IGNORECASE}),
+
+    #frei SlotPilotWhy notLot
+    # ReloadWie Lot
+
+
 
 
 #gewinne
@@ -269,6 +291,14 @@ FUZZY_MAP_pre = [
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
+
+    # EXAMPLE: hot reload
+    ('hot reload', r'\b(hat)\s+(Reload)\b', 95, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool']
+    }),
+
+
 
 
 

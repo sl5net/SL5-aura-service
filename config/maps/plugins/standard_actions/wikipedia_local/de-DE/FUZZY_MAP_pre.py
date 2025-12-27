@@ -11,6 +11,7 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
+wikipedia = r"\s*\b(?:wikipedia|pedia|wiki|pedi|wik|pe|suche auf wikipedia nach)\b\s*"
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
@@ -19,33 +20,30 @@ FUZZY_MAP_pre = [
     # - in our implementation it stops with first match!
     # - means first is most imported, lower rules maybe not get read.
 
+    # EXAMPLE:  was ist ein haus
+    ("Wiki was ist ein haus (Begriffsklärung)", rf'^{wikipedia}was ist (ein|dein) haus$', 90,
+     {
+    'flags': re.IGNORECASE,
+    'skip_list': ['LanguageTool','fullMatchStop'],
+    }),
+
 
     # EXAMPLE: Computer
-    ('', r'^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der| Herr)? (?P<search>.*)', 90, {
+    ('', rf'^(?!Computer|Aura){wikipedia}(?:suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| dein| die| das| der| Herr)? (?P<search>.*)', 90, { 'flags': re.IGNORECASE,
+     'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
+    }),
+
+
+    #
+
+    # EXAMPLE: Computer
+    ('', rf'^(?!Computer|Aura){wikipedia}(?: ein| die| das| der| Herr)? (?P<search>.*)', 90, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
 
 
-    # EXAMPLE: Computer
-    ("was ist ein (Begriffsklärung)", r'^(?!Computer|Aura).*was ist ein ', 90,
-     {
-    'flags': re.IGNORECASE,
-    'skip_list': ['LanguageTool','fullMatchStop'],
-    }),
 
-    # EXAMPLE:  was ist ein haus
-    ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,
-     {
-    'flags': re.IGNORECASE,
-    'skip_list': ['LanguageTool','fullMatchStop'],
-    }),
-
-    # EXAMPLE: Computer
-    # ('', r'^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der| Herr)? (?P<search>.*)', 90, {
-    # 'flags': re.IGNORECASE,
-    # 'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
-    # }),
 
     #  config/maps/plugins/standard_actions/wikipedia_local/de-DE/FUZZY_MAP_pre.py:251
 

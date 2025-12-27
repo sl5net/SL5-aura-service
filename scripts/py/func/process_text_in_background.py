@@ -1193,6 +1193,7 @@ def process_text_in_background(logger,
 
 # Hallo des Hallo Test
 
+# py/func/process_text_in_background.py:1196
 def sanitize_transcription_start(raw_text: str) -> str:
     """
     ﻿test (original:'test', Voice Translation SL5.de/Aura ).

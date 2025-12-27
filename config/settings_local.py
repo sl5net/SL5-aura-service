@@ -40,6 +40,8 @@ if current_user == 'seeh' or current_user == 'SL5.de' :
     PRE_RECORDING_TIMEOUT = 2
     SPEECH_PAUSE_TIMEOUT = 1
 
+    PLUGIN_HELPER_TTS_ENABLED = False
+
 
     signatur=''
 

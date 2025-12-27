@@ -40,7 +40,7 @@ FUZZY_MAP_pre = [
     ('git commit ', rf'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit
-    ('git commit ', rf'\bgit commit\b', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', rf'\bgit commit\b\s*', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git clone
     ('git clone ', rf'^\s*{gitGit}\s+(klar|klon|clone)\s*$', 80, {'flags': re.IGNORECASE}),
@@ -85,7 +85,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Branch Name
     ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: Commit
-    (' Commit ', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit ', r'\bkomm\s*mit\b\s*', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: Commit Message
     (' Commit Message ', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
 

@@ -75,6 +75,7 @@ PRELOAD_MODELS = ["vosk-model-de-0.21"]
 if current_user == 'SL5.de':
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
+# config/settings.py
 PLUGIN_HELPER_TTS_ENABLED = True
 # USE_AS_PRIMARY_SPEAK = "piper"
 USE_AS_PRIMARY_SPEAK = "ESPEAK"

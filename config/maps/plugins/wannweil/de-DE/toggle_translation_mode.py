@@ -29,11 +29,12 @@ RULE_ANCHOR = '# TRANSLATION_RULE'
 
 
 def speak(text):
+
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         subprocess.run(['espeak', '-v', 'de', text], check=True)
-    except Exception:
-        print(f"STDOUT (TTS-Fallback): {text}")
+    except Exception as e:
+        print(f"STDOUT (TTS-Fallback): {text} {e}")
 
 def execute(match_data):
     """

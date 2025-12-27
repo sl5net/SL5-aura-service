@@ -202,7 +202,9 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Aura Konfig
     (f'{Path(PROJECT_ROOT_POSIX, "config", "settings.py").as_posix()}',
      # EXAMPLE: Aura
-     r'^(Aura|Laura|over|Dora|Horror)\s+(Konf\w*|konzentration)$',
+     r'^(Auras?|Laura|over|Dora|Horror)\s+(Konf\w*|konzentration|settings?)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+
 ]

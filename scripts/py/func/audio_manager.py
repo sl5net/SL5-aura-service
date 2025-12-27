@@ -106,8 +106,11 @@ def create_bent_sine_wave_sound(*args, **kwargs):  # noqa: F811
 
 # scripts/py/func/audio_manager.py:54
 def speak_fallback(text_to_speak, language_code):
+    """TTS helper for plugins"""
+    if not settings.PLUGIN_HELPER_TTS_ENABLED:
+        return  # Silent mode
     """
-    - Linux: espeak
+    - Linux: espeak 
     - Windows: PowerShell (SAPI)
     - macOS: say
     """

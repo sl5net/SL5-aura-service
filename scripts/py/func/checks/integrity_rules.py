@@ -60,6 +60,12 @@ INTEGRITY_CHECKS = {
         "blocksize=4000"
     ],
 
+    "scripts/py/func/audio_manager.py": [
+        "if not settings.PLUGIN_HELPER_TTS_ENABLED:"
+    ],
+
+
+
     'scripts/py/func/handle_trigger.py': [
         'info("🎬🏁 Trigger received',
         '🎬⏹️ Manual stop trigger detected',
