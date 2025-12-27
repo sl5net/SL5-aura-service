@@ -6,6 +6,10 @@ from urllib.parse import quote, unquote
 import logging, inspect, os, sys
 from rapidfuzz import fuzz
 
+import subprocess
+import socket
+
+
 """
 
 sudo systemctl start docker
@@ -138,8 +142,36 @@ def _construct_article_url(article_title: str) -> str:
     encoded_title = quote(article_title)
     return f"{BASE_SERVER_URL}/{ZIM_URL_PART}/{encoded_title}"
 
+
+
+def is_kiwix_reachable():
+    """Prüft ob Kiwix läuft (ohne Docker-Befehle)"""
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(2)
+        result = sock.connect_ex(('localhost', 8080))
+        sock.close()
+        return result == 0
+    except Exception as e:
+        print(e)
+        return False
+
+def start_kiwix():
+    """Startet Kiwix wenn nicht läuft"""
+    if not is_kiwix_reachable():
+        # Das sollte aus der venv funktionieren!
+        subprocess.Popen([
+            'bash',
+            'config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh'
+        ])
+        return "Kiwix wird gestartet..."
+    return "Kiwix läuft bereits"
+
 def execute(match_data):
     log_debug("--- START of EXECUTE ---")
+
+    if not is_kiwix_reachable():
+        start_kiwix()
 
     user_term = match_data['regex_match_obj'].group('search').strip()
     user_term_norm = user_term.lower().replace("_", " ").strip()
