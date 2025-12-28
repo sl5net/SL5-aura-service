@@ -14,7 +14,7 @@ FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
-    # - it stops with first full-match (^ ... $)!
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
 
@@ -30,13 +30,15 @@ FUZZY_MAP_pre = [
 
     # === Linux/Unix Commands ===
 
+
     # EXAMPLE: grep recursive
-    ('grep -r', r'^(grep recursive|kriechen recursiv|grep Durchsuchung)$', 80, {
+    ('grep -r "aura_engine.py" . --exclude-dir={.git,.venv,__pycache__,data} | wc -l',
+     r'^(grep recursive|kriechen recursiv|grep Durchsuchung)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
 
-    #Fein frei
+    #
 
     # EXAMPLE: find files
     ('find . -name', r'^(find files|finde Dateien|Suche Dateien)$', 80, {

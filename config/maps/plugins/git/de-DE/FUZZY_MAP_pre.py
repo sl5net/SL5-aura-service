@@ -56,7 +56,7 @@ FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
-    # - it stops with first full-match (^ ... $)!
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
     # EXAMPLE: pull requests
@@ -190,6 +190,15 @@ FUZZY_MAP_pre = [
     # EXAMPLE: git diff
     ('git diff ', r'^\s*(kit|git|geht|peach)\s*(diff|tief|tiff|tüv|juice|tipps|geht\'s|kittys|dies|die)\s*$', 75, {'flags': re.IGNORECASE}),
 
+
+    ('git diff HEAD~1', r'^Vergleich mit vorletztem Commit\s*$', 75, {'flags': re.IGNORECASE}),
+
+    ('git log -p -1', r'^Letzter Commit mit Diff\s*$', 75, {'flags': re.IGNORECASE}),
+
+    ('git diff --cached', r'^Zeigt staged (aber nicht committed) changes\s*$', 75, {'flags': re.IGNORECASE}),
+
+
+
     # EXAMPLE: git switch
     ('git switch ', r'^\s*(git|geht|peach)\s*(switch|Schmidt)\s*$', 75, {'flags': re.IGNORECASE}),
 
@@ -285,6 +294,10 @@ FUZZY_MAP_pre = [
     # --- git diff ---
     # EXAMPLE: s git
     ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, {'flags': re.IGNORECASE}),
+
+
+    ('git show HEAD > gitDiff.txt; kate gitDiff.txt', r'^\s*Zeige was im letzten Commit geändert wurde\s*$', 75, {'flags': re.IGNORECASE}),
+
 
     # EXAMPLE: s Kritik knurren
     ('.gitignore', r'^\s*(Kritik knurren|Kritik Noah|Kritiken|kitte Knorr|Kritik Knorr)\s*$', 75, {'flags': re.IGNORECASE}),

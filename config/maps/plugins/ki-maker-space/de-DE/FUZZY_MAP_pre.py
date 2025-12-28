@@ -48,7 +48,7 @@ FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
-    # - it stops with first full-match (^ ... $)!
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
     # ki make espace  KI Weckers  KI im weg ist k E-Mail Gespräch Per E-Mail Gespräch
