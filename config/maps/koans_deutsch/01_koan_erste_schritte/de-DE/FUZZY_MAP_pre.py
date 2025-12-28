@@ -15,10 +15,7 @@ FUZZY_MAP_pre = [
     #Entfernen sie das Kommentar, und machen sie eine Spracheingabe.
     #Was passiert und haben Sie eine Idee warum?
 
-    #('hi 01_koan_erste__schritte', r'^.*$', 80, {'flags': re.IGNORECASE}),
-
-    #TestTestaskfjhasldfj asdljfhson
-    #tschüss
+    # ('hi 01_koan_erste__schritte', r'^.*$'),
 
 
 ]
