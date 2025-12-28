@@ -10,12 +10,32 @@ import re # noqa: F401
 #    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
+BenachrichtigungenPosition = """
+    KDE
+    Systemeinstellungen > Benachrichtigungen > Position wählen[1]
+
+    XFCE
+    Einstellungen > Benachrichtigungen > Standardposition
+
+    GNOME
+    Erweiterung "Just Perfection" installieren > Benachrichtigungsposition[2]
+
+    Ganz ausschalten (alle)
+    Klick auf Uhrzeit/Glocke > Nicht stören
+"""
+
+
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
+
+
+
+    (f'{BenachrichtigungenPosition}', r'^Benachri\w+ stören$'),
+    (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$'),
 
 
 
@@ -34,11 +54,15 @@ FUZZY_MAP_pre = [
     # EXAMPLE: grep recursive
     ('grep -r "aura_engine.py" . --exclude-dir={.git,.venv,__pycache__,data} | wc -l',
      r'^(grep recursive|kriechen recursiv|grep Durchsuchung)$', 80, {
-        'flags': re.IGNORECASE,
-        'skip_list': ['LanguageTool']
+    'flags': re.IGNORECASE,
+    'skip_list': ['LanguageTool']
     }),
 
     #
+
+
+
+
 
     # EXAMPLE: find files
     ('find . -name', r'^(find files|finde Dateien|Suche Dateien)$', 80, {
