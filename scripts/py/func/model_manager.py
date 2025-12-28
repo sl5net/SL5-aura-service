@@ -29,7 +29,7 @@ SetLogLevel(-1)
 from .check_memory_critical import check_memory_critical
 from .notify import notify
 
-from config.dynamic_settings import settings
+from .config.dynamic_settings import settings
 
 import threading
 

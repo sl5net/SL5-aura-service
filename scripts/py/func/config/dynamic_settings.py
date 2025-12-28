@@ -1,4 +1,4 @@
-# config/dynamic_settings.py
+# scripts/py/func/config/dynamic_settings.py:2
 import collections.abc
 import importlib
 #import pwd
@@ -43,7 +43,7 @@ class CustomFormatter(logging.Formatter):
 
         return formatted_time
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 LOG_DIR = PROJECT_ROOT / "log"
 LOG_FILE = LOG_DIR / "dynamic_settings.log"
 
@@ -134,12 +134,10 @@ class DynamicSettings:
         return cls._instance
 
     def _init_settings(self):
-        self._settings_file_path = os.path.join(
-            os.path.dirname(__file__), "settings.py"
-        )
-        self._settings_local_file_path = os.path.join(
-            os.path.dirname(__file__), "settings_local.py"
-        )
+        config_dir = PROJECT_ROOT / "config"
+
+        self._settings_file_path = str(config_dir / "settings.py")
+        self._settings_local_file_path = str(config_dir / "settings_local.py")
 
         self._last_base_modified_time = os.path.getmtime(self._settings_file_path)
         self._last_local_modified_time = os.path.getmtime(self._settings_local_file_path)

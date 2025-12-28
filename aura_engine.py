@@ -58,7 +58,7 @@ from pathlib import Path
 
 
 # aura_engine.py:59
-from config.dynamic_settings import settings
+from scripts.py.func.config.dynamic_settings import settings
 
 # if settings.DEV_MODE :
 #   ohhh. 16.12.'25 19:43 Tue i have forgot diesaber the log server. omg

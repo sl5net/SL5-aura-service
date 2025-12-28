@@ -7,7 +7,7 @@ import requests
 import time
 import sys
 import importlib
-from config.dynamic_settings import settings
+from .config.dynamic_settings import settings
 
 # Sentinel object to indicate LT was already running.
 # The sentinel has the minimal methods (poll, terminate) to be safely passed

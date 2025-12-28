@@ -24,7 +24,7 @@ from thefuzz import fuzz
 from .notify import notify
 
 
-from config.dynamic_settings import settings
+from .config.dynamic_settings import settings
 from .normalize_punctuation import normalize_punctuation
 from .map_reloader import auto_reload_modified_maps
 

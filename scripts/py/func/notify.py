@@ -6,7 +6,7 @@ from pathlib import Path
 
 # Assuming these are defined in your project's config
 # from config.settings import NOTIFY_SEND_PATH, NOTIFICATION_LEVEL
-from config.dynamic_settings import settings
+from .config.dynamic_settings import settings
 
 logger = logging.getLogger(__name__)
 

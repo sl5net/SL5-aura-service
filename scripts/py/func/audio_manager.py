@@ -25,14 +25,14 @@ How to Use:
 import sys
 import os
 
-import array
-import math
+#import array
+#import math
 
 import threading
 import subprocess
 import logging
 
-from config.dynamic_settings import settings
+from .config.dynamic_settings import settings
 
 
 

@@ -7,7 +7,7 @@ import os
 
 from pyzipper import zipfile
 
-from config.dynamic_settings import settings
+from .config.dynamic_settings import settings
 from scripts.py.func.private_map_ex import _private_map_unpack
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 

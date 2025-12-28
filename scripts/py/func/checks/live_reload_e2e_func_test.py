@@ -8,7 +8,8 @@ import glob
 
 # Re-use utilities and core logic from the main self_tester context
 from scripts.py.func.process_text_in_background import process_text_in_background
-from config.dynamic_settings import settings
+from scripts.py.func.config.dynamic_settings import settings
+# from .config.dynamic_settings import settings
 
 TEST_INPUT = 'Recaps'
 EXPECTED_OUTPUT = 'regex'

@@ -1,0 +1,2 @@
+15:31:38,598 - INFO     - dynamic_settings.py: DEV_MODE=1, settings.DEV_MODE = False, current_user=seeh
+15:31:38,598 - INFO     - dynamic_settings.py: DEV_MODE=1, settings.DEV_MODE = False

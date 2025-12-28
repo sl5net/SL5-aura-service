@@ -39,7 +39,7 @@ if project_root not in sys.path:
 
 from scripts.py.func.process_text_in_background import process_text_in_background
 from scripts.py.func.checks.run_function_with_throttling import run_function_with_throttling
-from config.dynamic_settings import settings
+from ..config.dynamic_settings import settings
 # from config.settings import signatur # ,signatur_ar,signatur_en,signatur_pt_br
 
 
