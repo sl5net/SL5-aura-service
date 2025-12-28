@@ -55,8 +55,7 @@ if current_user == 'seeh' or current_user == 'SL5.de' :
         signatur_ja=f''
 
 
-    DEV_MODE = 0
-    # DEV_MODE = False
+    DEV_MODE = 1
     DEV_MODE_all_processing = 0
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
     # PRELOAD_MODELS = ["vosk-model-small-de-0.15"]

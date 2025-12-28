@@ -12,13 +12,13 @@ import re # noqa: F401
 
 BenachrichtigungenPosition = """
     KDE
-    Systemeinstellungen > Benachrichtigungen > Position wählen[1]
+    Systemeinstellungen > Benachrichtigungen > Position wählen
 
     XFCE
     Einstellungen > Benachrichtigungen > Standardposition
 
     GNOME
-    Erweiterung "Just Perfection" installieren > Benachrichtigungsposition[2]
+    Erweiterung "Just Perfection" installieren > Benachrichtigungsposition
 
     Ganz ausschalten (alle)
     Klick auf Uhrzeit/Glocke > Nicht stören
@@ -34,8 +34,8 @@ FUZZY_MAP_pre = [
 
 
 
-    (f'{BenachrichtigungenPosition}', r'^Benachri\w+ stören$'),
-    (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$'),
+    (f'{BenachrichtigungenPosition}', r'^Benachri\w+ stoeren$', 75, {'flags': re.IGNORECASE}),
+    (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$', 75, {'flags': re.IGNORECASE}),
 
 
 
@@ -57,10 +57,6 @@ FUZZY_MAP_pre = [
     'flags': re.IGNORECASE,
     'skip_list': ['LanguageTool']
     }),
-
-    #
-
-
 
 
 

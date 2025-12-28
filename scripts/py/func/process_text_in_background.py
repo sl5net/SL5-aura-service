@@ -1165,6 +1165,7 @@ def process_text_in_background(logger,
 
     except Exception as e:
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
+        logger.error(f"scripts/py/func/process_text_in_background.py:1167")
         notify(f"FATAL: Error in processing thread", duration=4000, urgency="low")
     finally:
         # file: scripts/py/func/process_text_in_background.py
@@ -1316,6 +1317,19 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
         for rule_entry in rules_map:
             # (replacement_text, regex_pattern, threshold_value, options_dict)
+
+            if len(rule_entry) != 4:
+                print(f"____________________________________________")
+                print(f"____________________________________________")
+                print(f"____________________________________________")
+                print(f"DEBUG: Broken rule found: {rule_entry}")
+                logger_instance.info(f"DEBUG: Broken rule found: {rule_entry}")
+                log4DEV(f"DEBUG: Broken rule found: {rule_entry}",logger_instance)
+                print(f"____________________________________________")
+                print(f"____________________________________________")
+                print(f"____________________________________________")
+                sys.exit(1)
+
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
 
             # Extrahiere die Flags aus dem options_dict
