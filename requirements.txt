@@ -1,4 +1,3 @@
-config==0.5.1
 fastapi==0.128.0
 keyboard==0.13.5
 numpy==2.4.0

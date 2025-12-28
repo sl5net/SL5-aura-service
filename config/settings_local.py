@@ -2,7 +2,7 @@
 from scripts.py.func.determine_current_user import determine_current_user
 
 # My personal settings for SL5 Aura
-# This file is ignored by Git.
+# This file should may ignored by you by Git. But is not here for demonstration.
 
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
