@@ -799,6 +799,7 @@ if settings.DEV_MODE :
 
     if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
         self_test_start_time = time.time()
+        log4DEV(f"Start run_core_logic_self_test( .. {lang_code}", logger)
         run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
 
 

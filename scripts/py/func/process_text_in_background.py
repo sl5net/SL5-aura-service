@@ -43,6 +43,14 @@ GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
 GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
+
+def normalize_fuzzy_map_rule_entry(rule_entry):
+    if len(rule_entry) == 2:
+        return (*rule_entry, 75, {'flags': re.IGNORECASE})
+    if len(rule_entry) == 3:
+        return (*rule_entry, {'flags': re.IGNORECASE})
+    return rule_entry
+
 def execute_hook(logger, module, hook_name, lock_key):
     if hasattr(module, hook_name):
         # Unique lock ID for the specific hook and context
@@ -554,7 +562,14 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
     else:
         # scripts/py/func/process_text_in_background.py:248
         #for replacement, match_phrase, threshold, *flags_list, rule_mode in fuzzy_map_pre:
-        for replacement, match_phrase, threshold, options_dict in fuzzy_map_pre:
+
+        for entry in fuzzy_map_pre:
+            if len(entry) < 4:
+                entry =normalize_fuzzy_map_rule_entry(entry)
+
+            replacement, match_phrase, threshold, options_dict = entry
+
+        # for replacement, match_phrase, threshold, options_dict in fuzzy_map_pre:
 
             # logger.info(f"252: 🔁??? threshold: '{threshold}' based on pattern '{match_phrase}'")
 
@@ -1317,6 +1332,11 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
         for rule_entry in rules_map:
             # (replacement_text, regex_pattern, threshold_value, options_dict)
+
+            if len(rule_entry) < 4:
+                rule_entry = normalize_fuzzy_map_rule_entry(rule_entry)
+
+
 
             if len(rule_entry) != 4:
                 print(f"____________________________________________")

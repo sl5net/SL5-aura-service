@@ -91,17 +91,17 @@ logger = logging.getLogger(__name__)
 
 
 # Initialize the function as a placeholder for Windows to avoid NameError
-def create_bent_sine_wave_sound(*args, **kwargs):  # noqa: F811
-    """
-    Placeholder function for Windows and environments where Pygame is not used.
-    Prevents NameError when sound functions are called.
-    """
-
-    class DummySound:
-        def play(self):
-            pass
-
-    return DummySound()
+# def create_bent_sine_wave_sound(*args, **kwargs):  # noqa: F811
+#     """
+#     Placeholder function for Windows and environments where Pygame is not used.
+#     Prevents NameError when sound functions are called.
+#     """
+#
+#     class DummySound:
+#         def play(self):
+#             pass
+#
+#     return DummySound()
 
 
 # scripts/py/func/audio_manager.py:54
@@ -219,35 +219,35 @@ if (sys.platform != "win32"
         #
         #     return pygame.mixer.Sound(samples)
 
-        def create_bent_sine_wave_sound(  # noqa: F811
-                start_freq,
-                end_freq,
-                duration_ms,
-                volume=0.4,
-                sample_rate=44100
-        ):
-            """
-            Generates a stereo sine wave sound with an optional pitch bend.
-            - start_freq: starting frequency in Hz
-            - end_freq: ending frequency in Hz (for pitch bend; same as start for flat tone)
-            - duration_ms: duration in milliseconds
-            - volume: amplitude (0.0 to 1.0)
-            - sample_rate: samples per second
-            """
-            num_samples = int(sample_rate * (duration_ms / 1000.0))
-            max_amplitude = 32767 * volume
-            samples = array.array('h')
-
-            for i in range(num_samples):
-                # Linear interpolation for pitch bend
-                t = i / num_samples
-                freq = start_freq + (end_freq - start_freq) * t
-                value = max_amplitude * math.sin(2 * math.pi * freq * (i / sample_rate))
-                # Stereo: append same sample for both channels
-                samples.append(int(value))
-                samples.append(int(value))
-
-            return pygame.mixer.Sound(buffer=samples)
+        # def create_bent_sine_wave_sound(  # noqa: F811
+        #         start_freq,
+        #         end_freq,
+        #         duration_ms,
+        #         volume=0.4,
+        #         sample_rate=44100
+        # ):
+        #     """
+        #     Generates a stereo sine wave sound with an optional pitch bend.
+        #     - start_freq: starting frequency in Hz
+        #     - end_freq: ending frequency in Hz (for pitch bend; same as start for flat tone)
+        #     - duration_ms: duration in milliseconds
+        #     - volume: amplitude (0.0 to 1.0)
+        #     - sample_rate: samples per second
+        #     """
+        #     num_samples = int(sample_rate * (duration_ms / 1000.0))
+        #     max_amplitude = 32767 * volume
+        #     samples = array.array('h')
+        #
+        #     for i in range(num_samples):
+        #         # Linear interpolation for pitch bend
+        #         t = i / num_samples
+        #         freq = start_freq + (end_freq - start_freq) * t
+        #         value = max_amplitude * math.sin(2 * math.pi * freq * (i / sample_rate))
+        #         # Stereo: append same sample for both channels
+        #         samples.append(int(value))
+        #         samples.append(int(value))
+        #
+        #     return pygame.mixer.Sound(buffer=samples)
 
     except ImportError:
         log.warning("pygame not found. Sound feedback will not work on non-Windows systems.")
@@ -499,6 +499,9 @@ def sound_program_loaded():
         duration_ms=150,
         volume=0.1
     )
+
+    # sound = create_bent_sine_wave_sound(880, 1200, 80, 0.15)
+    # sound.play()
 
 
 def sound_mute(active_logger):

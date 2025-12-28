@@ -121,6 +121,12 @@ CORRECTIONS_ENABLED = {
 
     # Add other custom categories here as needed.
     # "academic_writing": False,
+
+    "game.dealers_choice": False,
+    "game.0ad": False,
+    "ethiktagung": False,
+    "it-begriffe.php.codeigniter": False
+
 }
 
 

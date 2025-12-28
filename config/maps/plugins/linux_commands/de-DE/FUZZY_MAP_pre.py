@@ -34,7 +34,7 @@ FUZZY_MAP_pre = [
 
 
 
-    (f'{BenachrichtigungenPosition}', r'^Benachri\w+ stoeren$', 75, {'flags': re.IGNORECASE}),
+    (f'{BenachrichtigungenPosition}', r'^Benachri\w+ stoeren$'),
     (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$', 75, {'flags': re.IGNORECASE}),
 
 
