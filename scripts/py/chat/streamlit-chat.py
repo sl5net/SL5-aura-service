@@ -1,5 +1,6 @@
 # scripts/py/chat/streamlit-chat.py
 import streamlit as st
+
 import requests
 import json, os
 from pathlib import Path
@@ -9,6 +10,24 @@ import streamlit.components.v1 as components
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 load_dotenv(PROJECT_ROOT / ".secrets")
+
+if "scroll_trigger" not in st.session_state:
+    st.session_state.scroll_trigger = 0
+
+def trigger_scroll_to_bottom():
+    st.session_state.scroll_trigger += 1
+
+
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+if "scroll_trigger" not in st.session_state:
+    st.session_state.scroll_trigger = 0
+
+
+# Stelle sicher, dass der Trigger im Session-State existiert
+if "scroll_trigger" not in st.session_state:
+    st.session_state.scroll_trigger = 0
 
 print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
 
@@ -44,7 +63,6 @@ API_HOSTNAME = "my-api-service"  # Ersetzen Sie dies durch einen echten Hostname
 
 
 
-
 # --- Funktion zur IP-Ermittlung ---
 
 # scripts/py/chat/streamlit-chat.py
@@ -74,7 +92,7 @@ def get_api_base_url():
         # Versuchen Sie eine Verbindung nur zum Host (ohne API-Aufruf)
         sock = socket.create_connection(('localhost', API_PORT), timeout=1)
         sock.close()
-        st.info(f"JSON auf: {local_json_url}. HTTP online: {public_http}.")
+        st.info(f"JSON auf: ...{str(local_json_url)[-15:]}. HTTP online: ...{str(public_http)[-15:]}.")
         return local_json_url
     except (socket.error, ConnectionRefusedError):
         # Wenn localhost nicht funktioniert, gehen wir zum nächsten Schritt über.
@@ -98,7 +116,7 @@ def get_api_base_url():
 
     # Verwenden Sie die alte, aber fehlgeschlagene, statische IP als Notfall-Fallback.
     # Dies ist hilfreich, falls der externe IP-Dienst ausgefallen ist.
-    onlineIP = '88.130.216.33'
+    onlineIP = '88.130.216.50'
     fallback_url = f"http://{onlineIP}:{API_PORT}"  # Verwenden Sie die alte IP
     st.warning(f"Konnte lokale oder aktuelle externe IP nicht ermitteln. Verwende Fallback-IP: {fallback_url}")
     return fallback_url
@@ -211,7 +229,7 @@ st.markdown(r"""
 ```
 
 ```
-Wo ist Wannweil?
+Wiki Wo ist Wannweil?
 ```
 
 ```py
@@ -225,6 +243,10 @@ Wo ist Wannweil?
 was ist 5+4
 ```
 
+
+```
+wiki was ist ein Berg Begriffserklärung
+```
 
 
 ```
@@ -301,7 +323,7 @@ Sie werden bei einer Anfrage über das Internet neu abgerufen, sofern der letzte
 Der sonstige Funktionsumfang hängen von den Beispielen (Plugins) ab, die Sie verwenden oder erstellt haben.
 
 """)
-st.caption(f"Verbindet mit: {API_URL}")
+# st.caption(f"Verbindet mit: …{str(API_URL)[-40:]}")
 
 # Initialisiere den Chat-Verlauf in Streamlit's Session State
 if "messages" not in st.session_state:
@@ -368,3 +390,52 @@ if prompt := st.chat_input("Ihre Frage an den Service"):
             st.markdown(service_answer)
 
         st.session_state.messages.append({"role": "assistant", "content": service_answer})
+        trigger_scroll_to_bottom()
+        st.rerun()
+
+# --- DAS SCROLL-SKRIPT GANZ UNTEN ---
+
+# Wir prüfen, ob gescrollt werden soll
+if st.session_state.scroll_trigger > 0:
+    js_code = f"""
+    <script>
+        (function() {{
+            // Wir suchen das Hauptfenster von Streamlit
+            const mainContent = window.parent.document.querySelector('section.main');
+            if (mainContent) {{
+                // Timeout, damit der Content Zeit hat zu erscheinen
+                setTimeout(() => {{
+                    mainContent.scrollTo({{
+                        top: mainContent.scrollHeight,
+                        behavior: 'smooth'
+                    }});
+                }}, 150); 
+            }}
+        }})();
+    </script>
+    <div style="display:none">{st.session_state.scroll_trigger}</div>
+    """
+    # Key muss den Trigger enthalten, damit das Element bei jeder Nachricht neu "geboren" wird
+    # components.html(js_code, height=0, key=f"scroll_act_{st.session_state.scroll_trigger}")
+
+    # WICHTIG: Den Trigger sofort wieder auf 0 setzen!
+    # Dadurch wird beim nächsten Klick/Kopieren NICHT mehr gescrollt.
+    st.session_state.scroll_trigger = 0
+
+
+# TODO: ist not scrolls down
+# following dont work 2025-1227-2021 27.12.'25 20:21 Sat
+if st.session_state.get('scroll_trigger', 0) > 0:
+    st.session_state.scroll_trigger = 0
+    components.html(
+        f"""
+        <script>
+        setTimeout(function() {{
+            var el = window.parent.document.querySelector('section.main');
+            if(el) el.scrollTo({{top: el.scrollHeight, behavior: 'smooth'}});
+        }}, 200);
+        </script>
+        """,
+        height=0,
+        key=f"scroll_{st.session_state.scroll_trigger}"
+    )

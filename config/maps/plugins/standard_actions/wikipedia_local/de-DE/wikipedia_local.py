@@ -343,12 +343,20 @@ Datum des Abrufs: 29. 12 2017, 20:01 UTC
 
     if not article_path:
         msg = f"""
-
-        f"No articles found for search term: '{user_term}'"
+        
+        f"
+        Please Try Again in a Second 🔂. 
+        
+        Server may need to restart for several reasons, 
+        including applying updates, 
+        changing configurations, 
+        or ... etc. 
+        
+        ---
+        
+        No articles found for search term: '{user_term}'"
         Maybe run ?
-         ./kiwix-docker-start-if-not-running.sh
-         config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh
-
+        ---
 
         Maybe want enable ?
         ./config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh

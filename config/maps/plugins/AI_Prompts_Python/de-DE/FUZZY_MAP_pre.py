@@ -81,8 +81,8 @@ FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
-    # - in our implementation it stops with first match!
-    # - means first is most imported, lower rules maybe not get read.
+    # - it stops with first full-match (^ ... $)!
+    # - first is read first imported, lower rules maybe not get read.
 
     # EXAMPLE: ai
     (multiline_string_1, r'^(ai|a|ei|pay|hey|hi|h)\s*\w?\ş*prompt\s*(for|vor|ver)?(\s+(Python|Zeiten|bei|titan))?.*$', 80, {'flags': re.IGNORECASE}),

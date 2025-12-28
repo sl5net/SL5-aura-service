@@ -12,8 +12,8 @@ FUZZY_MAP = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
-    # - in our implementation it stops with first match!
-    # - means first is most imported, lower rules maybe not get read.
+    # - it stops with first full-match (^ ... $)!
+    # - first is read first imported, lower rules maybe not get read.
 
     # EXAMPLE: Läufer
     ('Lauffer', r'\b(Läufer|laufer|Lauscha|lauf war|lauf er)\b', 70, {'flags': re.IGNORECASE}),  # Exact match, but ignore case

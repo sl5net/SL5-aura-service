@@ -56,8 +56,8 @@ FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
-    # - in our implementation it stops with first match!
-    # - means first is most imported, lower rules maybe not get read.
+    # - it stops with first full-match (^ ... $)!
+    # - first is read first imported, lower rules maybe not get read.
 
     # EXAMPLE: pull requests
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, {'flags': re.IGNORECASE}),

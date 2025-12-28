@@ -17,11 +17,11 @@ FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
-    # - in our implementation it stops with first match!
-    # - means first is most imported, lower rules maybe not get read.
+    # - it stops with first full-match (^ ... $)!
+    # - first is read first imported, lower rules maybe not get read.
 
     # EXAMPLE:  was ist ein haus
-    ("Wiki was ist ein haus (Begriffsklärung)", rf'^{wikipedia}was ist (ein|dein) haus$', 90,
+    ("Wiki was ist ein haus (Begriffsklärung)", rf'^{wikipedia}was ist (ein|dein|den) haus$', 90,
      {
     'flags': re.IGNORECASE,
     'skip_list': ['LanguageTool','fullMatchStop'],
@@ -29,7 +29,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: Computer
-    ('', rf'^(?!Computer|Aura){wikipedia}(?:suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| dein| die| das| der| Herr)? (?P<search>.*)', 90, { 'flags': re.IGNORECASE,
+    ('', rf'^(?!Computer|Aura){wikipedia}(?:suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| dein| den| die| das| der| Herr)* (?P<search>.*)', 90, { 'flags': re.IGNORECASE,
      'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
 

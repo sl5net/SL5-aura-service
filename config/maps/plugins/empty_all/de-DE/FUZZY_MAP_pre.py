@@ -13,8 +13,8 @@ FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
-    # - in our implementation it stops with first match!
-    # - means first is most imported, lower rules maybe not get read.
+    # - it stops with first full-match (^ ... $)!
+    # - first is read first imported, lower rules maybe not get read.
 
     # Kumulation: Regeln (kumulieren) so das vielleicht nur die letzte Regeln sichbar wird. Beispiele:
 

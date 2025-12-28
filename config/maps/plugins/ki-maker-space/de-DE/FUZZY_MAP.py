@@ -14,7 +14,7 @@ FUZZY_MAP = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
-    # - in our implementation it stops with first match!
+    # - it stops with first full-match (^ ... $)!
     # - means first is most importend, lower rules maybe not get read.
 
 ]
