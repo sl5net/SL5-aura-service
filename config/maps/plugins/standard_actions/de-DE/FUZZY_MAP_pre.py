@@ -105,6 +105,17 @@ FUZZY_MAP_pre = [
      }),
 
 
+    ('source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config',
+     # EXAMPLE: frage   proof for syntac errors
+     r'^(proof for syntac errors|proof errors|proof syntac)$',
+     100, {
+         'flags': re.IGNORECASE,
+     }),
+
+
+
+
+
 
     ('',
      # EXAMPLE: Clipboard

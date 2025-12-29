@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- tools/wheel/index.html -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SL5 Aura - Topic Generator</title>
+    <style>
+        body { background: #1a1a1a; color: white; font-family: 'Arial Black', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .branding { text-align: center; margin-bottom: 20px; text-shadow: 2px 2px #ff3366; }
+        .branding h1 { color: #00ffcc; font-size: 3em; margin: 0; letter-spacing: 5px; }
+        .branding p { font-size: 1.2em; color: #ffcc00; margin: 5px 0; }
+        #wheel-container { position: relative; width: 500px; height: 500px; border: 15px solid #333; border-radius: 50%; box-shadow: 0 0 50px #00ffcc; }
+        #canvas { width: 100%; height: 100%; border-radius: 50%; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); }
+        #pointer { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-top: 50px solid #ff3366; z-index: 10; }
+        #spin-btn { margin-top: 30px; padding: 20px 50px; font-size: 1.5em; cursor: pointer; background: #ffcc00; border: none; border-radius: 50px; font-weight: bold; color: #1a1a1a; box-shadow: 0 5px #ccaa00; }
+        #spin-btn:active { transform: translateY(4px); box-shadow: 0 2px #ccaa00; }
+        #result { margin-top: 30px; font-size: 2em; color: #00ffcc; text-align: center; min-height: 1.2em; }
+    </style>
+</head>
+<body>
+    <div class="branding">
+        <h1>SL5 Aura</h1>
+        <p>Architect's Topic Generator</p>
+    </div>
+    <div id="wheel-container">
+        <div id="pointer"></div>
+        <canvas id="canvas" width="600" height="600"></canvas>
+    </div>
+    <button id="spin-btn">SPIN THE WHEEL</button>
+    <div id="result"></div>
+
+    <script>
+        const backlog = [
+            "0 A.D. Gaming", "Git Voice Control", "Wikipedia Search", "ncdu/gdu Tool",
+            "Stealth Folders (_)", "AI Fallback", "Aura Koans", "GDPR Privacy",
+            "RegEx vs LLM", "Hot Reload", "Offline First", "Custom Plugins",
+            "Architecture", "Voice to Shell", "Hierarchical Maps", "Cumulative Rules"
+        ];
+        const colors = ["#1abc9c", "#3498db", "#9b59b6", "#f1c40f", "#e67e22", "#e74c3c", "#2ecc71", "#34495e"];
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const resultDiv = document.getElementById('result');
+        let currentRotation = 0;
+        let activeTopics = [];
+
+        function initWheel() {
+            activeTopics = backlog.sort(() => 0.5 - Math.random()).slice(0, 8);
+            const arc = (2 * Math.PI) / 8;
+            activeTopics.forEach((topic, i) => {
+                ctx.fillStyle = colors[i];
+                ctx.beginPath(); ctx.moveTo(300, 300); ctx.arc(300, 300, 300, i * arc, (i + 1) * arc); ctx.fill();
+                ctx.save(); ctx.translate(300, 300); ctx.rotate(i * arc + arc / 2);
+                ctx.fillStyle = "white"; ctx.font = "bold 20px Arial"; ctx.textAlign = "right";
+                ctx.fillText(topic, 280, 10); ctx.restore();
+            });
+        }
+
+        document.getElementById('spin-btn').addEventListener('click', function() {
+            this.disabled = true;
+            const spin = Math.floor(Math.random() * 360) + 1800;
+            currentRotation += spin;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+            setTimeout(() => {
+                const actualDeg = currentRotation % 360;
+                const idx = Math.floor((360 - actualDeg) / (360 / 8)) % 8;
+                resultDiv.innerHTML = "Next Video: " + activeTopics[idx];
+                this.disabled = false;
+            }, 4000);
+        });
+
+        initWheel();
+    </script>
+</body>
+</html>

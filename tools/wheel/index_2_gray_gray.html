@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!-- tools/wheel/index.html -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SL5 Aura - Topic Generator</title>
+    <style>
+        body { background: #111; color: #eee; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .branding { text-align: center; margin-bottom: 20px; }
+        .branding h1 { color: #00ffcc; margin: 0; text-transform: uppercase; letter-spacing: 4px; }
+        #wheel-container { position: relative; width: 550px; height: 550px; }
+        #canvas { width: 100%; height: 100%; border-radius: 50%; border: 8px solid #333; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); }
+        #pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 40px solid #00ffcc; z-index: 10; }
+        .controls { margin-top: 30px; }
+        button { padding: 12px 30px; font-size: 1rem; cursor: pointer; background: #00ffcc; border: none; font-weight: bold; color: #111; border-radius: 4px; }
+        #result { margin-top: 25px; font-size: 1.8rem; color: #00ffcc; height: 2rem; text-shadow: 0 0 10px rgba(0,255,204,0.5); }
+    </style>
+</head>
+<body>
+    <div class="branding">
+        <h1>SL5 Aura</h1>
+        <p>Dynamic Content Backlog</p>
+    </div>
+    <div id="wheel-container">
+        <div id="pointer"></div>
+        <canvas id="canvas" width="600" height="600"></canvas>
+    </div>
+    <div class="controls">
+        <button id="spin-btn">SPIN FOR TOPIC</button>
+        <button id="refresh-btn" style="background: #444; color: white; margin-left: 10px;">REFRESH POOL</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        // FULL BACKLOG - Add as many as you want!
+        const backlog = [
+            "0 A.D. Gaming", "Git Voice Control", "Wikipedia Search", "ncdu/gdu Tool",
+            "Stealth Folders (_)", "AI Fallback (Llama)", "Aura Koans", "GDPR & Privacy",
+            "RegEx Speed vs LLM", "Hot Reload Demo", "Offline First USP", "Custom Plugins",
+            "The Architecture", "Voice to Shell", "Hierarchical Maps", "Cumulative Rules"
+        ];
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const resultDiv = document.getElementById('result');
+        let currentRotation = 0;
+        let activeTopics = [];
+
+        function getRandomTopics(count) {
+            const shuffled = [...backlog].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function drawWheel() {
+            const count = activeTopics.length;
+            const arc = (2 * Math.PI) / count;
+            ctx.clearRect(0, 0, 600, 600);
+
+            activeTopics.forEach((topic, i) => {
+                const angle = i * arc;
+                // Alternate professional colors
+                ctx.fillStyle = i % 2 === 0 ? "#1a1a1a" : "#2a2a2a";
+                ctx.strokeStyle = "#333";
+                ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(300, 300);
+                ctx.arc(300, 300, 300, angle, angle + arc);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(300, 300);
+                ctx.rotate(angle + arc / 2);
+                ctx.fillStyle = "#00ffcc";
+                ctx.font = "bold 18px Arial";
+                ctx.textAlign = "right";
+                ctx.fillText(topic, 280, 10);
+                ctx.restore();
+            });
+        }
+
+        function init() {
+            activeTopics = getRandomTopics(8);
+            drawWheel();
+        }
+
+        document.getElementById('spin-btn').addEventListener('click', () => {
+            const spin = Math.floor(Math.random() * 360) + 1800;
+            currentRotation += spin;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                const actualDeg = currentRotation % 360;
+                const idx = Math.floor((360 - actualDeg) / (360 / activeTopics.length)) % activeTopics.length;
+                resultDiv.innerText = "Target: " + activeTopics[idx];
+            }, 4000);
+        });
+
+        document.getElementById('refresh-btn').addEventListener('click', () => {
+            currentRotation = 0;
+            canvas.style.transition = "none";
+            canvas.style.transform = `rotate(0deg)`;
+            setTimeout(() => {
+                canvas.style.transition = "transform 4s cubic-bezier(0.15, 0, 0.15, 1)";
+                init();
+            }, 50);
+        });
+
+        init();
+    </script>
+</body>
+</html>

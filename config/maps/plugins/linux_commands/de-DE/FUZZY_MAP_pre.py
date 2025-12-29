@@ -160,7 +160,7 @@ FUZZY_MAP_pre = [
     (f"gdu",
     r'^(ordnergröße|speicherfresser|festplatte voll|verzeichnisgröße|gdu|duf|disk usage)$',
     90,
-    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']]}),
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
     # EXAMPLE: Launch ncdu
@@ -168,21 +168,20 @@ FUZZY_MAP_pre = [
         r'^(ordner größe|verzeichnis größe|speicherplatz anzeigen|festplatte prüfen|ncdu|Launch ncdu|wie groß sind die ordner)$',
         90,
         {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-    ]
-
 
 
     # Examples: disk usage
     (f"gdu",
-     r'^(folder size|directory size|disk usage|storage hog|gdu|disk full)$',
+    r'^(folder size|directory size|disk usage|storage hog|gdu|disk full)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # Examples: disk space
     (f"ncdu",
-     r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
+        r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
 
+]

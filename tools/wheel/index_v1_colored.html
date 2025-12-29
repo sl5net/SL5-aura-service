@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!-- tools/wheel/index.html -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SL5 Aura - Wheel of Fortune</title>
+    <style>
+        body { background: #1a1a1a; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        .branding { margin-bottom: 20px; text-align: center; }
+        .branding h1 { color: #00ffcc; margin: 0; font-size: 2.5em; text-transform: uppercase; letter-spacing: 2px; }
+        #wheel-container { position: relative; width: 500px; height: 500px; }
+        #canvas { width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 50px rgba(0,255,204,0.2); border: 10px solid #333; }
+        #pointer { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 40px; background: #ff3366; clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; }
+        #spin-btn { margin-top: 30px; padding: 15px 40px; font-size: 1.2em; cursor: pointer; background: #00ffcc; border: none; border-radius: 5px; font-weight: bold; transition: transform 0.2s; }
+        #spin-btn:active { transform: scale(0.95); }
+        #result { margin-top: 20px; font-size: 1.5em; color: #00ffcc; font-weight: bold; height: 1.5em; }
+    </style>
+</head>
+<body>
+    <div class="branding">
+        <h1>SL5 Aura</h1>
+        <p>Architect's Topic Generator</p>
+    </div>
+    <div id="wheel-container">
+        <div id="pointer"></div>
+        <canvas id="canvas" width="500" height="500"></canvas>
+    </div>
+    <button id="spin-btn">SPIN THE WHEEL</button>
+    <div id="result"></div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const btn = document.getElementById('spin-btn');
+        const resultDiv = document.getElementById('result');
+        const topics = ["0 A.D. Gaming", "Git Voice", "Wikipedia", "ncdu/gdu", "Stealth Folders", "AI Fallback", "Aura Koans"];
+        const colors = ["#1abc9c", "#3498db", "#9b59b6", "#34495e", "#f1c40f", "#e67e22", "#e74c3c"];
+        let currentRotation = 0;
+        let isSpinning = false;
+
+        function drawWheel() {
+            const arc = (2 * Math.PI) / topics.length;
+            topics.forEach((topic, i) => {
+                const angle = i * arc;
+                ctx.fillStyle = colors[i];
+                ctx.beginPath();
+                ctx.moveTo(250, 250);
+                ctx.arc(250, 250, 250, angle, angle + arc);
+                ctx.fill();
+                ctx.save();
+                ctx.translate(250, 250);
+                ctx.rotate(angle + arc / 2);
+                ctx.fillStyle = "white";
+                ctx.font = "bold 16px sans-serif";
+                ctx.fillText(topic, 100, 10);
+                ctx.restore();
+            });
+        }
+
+        btn.addEventListener('click', () => {
+            if (isSpinning) return;
+            isSpinning = true;
+            resultDiv.innerText = "";
+            const spin = Math.floor(Math.random() * 360) + 1440;
+            currentRotation += spin;
+            canvas.style.transition = "transform 4s cubic-bezier(0.15, 0, 0.15, 1)";
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+            setTimeout(() => {
+                isSpinning = false;
+                const actualDeg = currentRotation % 360;
+                const idx = Math.floor((360 - actualDeg) / (360 / topics.length)) % topics.length;
+                resultDiv.innerText = "Next Video: " + topics[idx];
+            }, 4000);
+        });
+
+        drawWheel();
+    </script>
+</body>
+</html>
