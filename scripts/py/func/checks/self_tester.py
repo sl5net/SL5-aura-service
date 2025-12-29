@@ -40,6 +40,7 @@ if project_root not in sys.path:
 from scripts.py.func.process_text_in_background import process_text_in_background
 from scripts.py.func.checks.run_function_with_throttling import run_function_with_throttling
 from ..config.dynamic_settings import settings
+
 # from config.settings import signatur # ,signatur_ar,signatur_en,signatur_pt_br
 
 
@@ -114,6 +115,9 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     Runs a series of predefined tests against the core text processing logic.
     This function simulates inputs and checks the output files.
     """
+
+    backupPLUGIN_HELPER_TTS_ENABLED = settings.PLUGIN_HELPER_TTS_ENABLED
+    settings.PLUGIN_HELPER_TTS_ENABLED = False
 
 
     start_with_empty_logger = True
@@ -379,7 +383,6 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
             logger.error(f"     - Got:      '{actual}'")
             failed_count += 1
             logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed (lang={lang_code})")
-
             exit(1)
 
 
@@ -393,4 +396,9 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     else:
         logger.error(f"self_tester.py:235 ❌ Core Logic Self-Test: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed.")
     logger.info("-" * 40)
+
+
+    settings.PLUGIN_HELPER_TTS_ENABLED = backupPLUGIN_HELPER_TTS_ENABLED
+
+
 
