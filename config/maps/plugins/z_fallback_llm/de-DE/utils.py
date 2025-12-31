@@ -159,7 +159,7 @@ sys.path.append(str(PROJECT_ROOT_DIR))
 
 try:
     # import scripts.py.func.audio_manager # works not for me 4.12.'25 17:20 Thu
-    from scripts.py.func.audio_manager import create_bent_sine_wave_sound # works 4.12.'25 17:20 Thu
+    from scripts.py.func.audio_manager import sound_program_loaded # works 4.12.'25 17:20 Thu
 except ImportError as e:
     print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
     log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
@@ -303,12 +303,13 @@ def init_db():
 
 
 def play_cache_hit_sound():
-    if create_bent_sine_wave_sound:
-        try:
-            sound = create_bent_sine_wave_sound(880, 1200, 80, 0.15)
-            sound.play()
-        except Exception as error_msg:
-            log_debug(f"Error: {error_msg}")
-            pass
+    sound_program_loaded()
+    # if create_bent_sine_wave_sound:
+    #     try:
+    #         sound = create_bent_sine_wave_sound(880, 1200, 80, 0.15)
+    #         sound.play()
+    #     except Exception as error_msg:
+    #         log_debug(f"Error: {error_msg}")
+    #         pass
 
 
