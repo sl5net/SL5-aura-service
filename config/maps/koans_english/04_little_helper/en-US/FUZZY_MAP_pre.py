@@ -16,10 +16,10 @@ Check log/aura_engine.log to see the transcription!
 
 FUZZY_MAP_pre = [
     # Tech Hubs & Global Cities
-    ('408', r'^area code (of )?Silicon Valley$', 90, {'flags': re.IGNORECASE}),
-    ('212', r'^area code (of )?New York( Manhattan)?$', 90, {'flags': re.IGNORECASE}),
-    ('020', r'^area code (of )?London$', 90, {'flags': re.IGNORECASE}),
-    ('03', r'^area code (of )?Tokyo$', 90, {'flags': re.IGNORECASE}),
-    ('206', r'^area code (of )?Seattle$', 90, {'flags': re.IGNORECASE}),
-    ('01', r'^area code (of )?Paris$', 90, {'flags': re.IGNORECASE}),
+    ('408', r'^area code (of )?Silicon Valley$'),
+    ('212', r'^area code (of )?New York( Manhattan)?$'),
+    ('020', r'^area code (of )?London$'),
+    ('03', r'^area code (of )?Tokyo$'),
+    ('206', r'^area code (of )?Seattle$'),
+    ('01', r'^area code (of )?Paris$'),
 ]

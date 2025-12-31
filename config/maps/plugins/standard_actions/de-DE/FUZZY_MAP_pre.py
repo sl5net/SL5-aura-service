@@ -37,6 +37,7 @@ fuser -k 8830/tcp;fuser -k 8831/tcp
 
 """
 
+flake8 = 'source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config'
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
@@ -105,15 +106,21 @@ FUZZY_MAP_pre = [
      }),
 
 
-    ('source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config',
+    (f'{flake8}',
      # EXAMPLE: frage   proof for syntac errors
-     r'^(proof for syntac errors|proof errors|proof syntac)$',
-     100, {
-         'flags': re.IGNORECASE,
-     }),
+     r'^(proof for syntac errors|proof errors|proof syntac|Regeln prüfen)$',
+     100, { 'flags': re.IGNORECASE }),
 
 
 
+    (f'{flake8}',
+    r'^(?:(?:pro[ovb]e?|check|scan|test|validate) (?:for )?'
+    r'(?:synta[xk]s? |rules? )?(?:err?ors?|rules?|issues?)?|'
+    r'(regeln? pr[üu]fen|syntax pr[üu]fen|fehler suchen)$',
+     100, { 'flags': re.IGNORECASE }),
+
+    #source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./configSyntax prüfen
+    #source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config
 
 
 

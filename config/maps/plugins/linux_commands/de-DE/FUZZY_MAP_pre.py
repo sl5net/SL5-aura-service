@@ -86,6 +86,31 @@ FUZZY_MAP_pre = [
 
 
 
+
+
+
+    # EXAMPLE: download webpage webseite
+    ('wget --mirror --convert-links --adjust-extension --page-requisites --no-parent https://www. x.de/',
+        r'^(download) (webpage|webseite)$', 80, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool']
+    }),
+
+    # EXAMPLE: alle Dateitypen
+    ('find . -type f -exec file -b --mime-type {} + | sort | uniq -c',
+        r'^(alle) (Dateitypen|Metadaten)$', 80, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool']
+    }),
+
+
+    # EXAMPLE: alle Dateitypen Metadaten
+    ('find . -type f -exec file -b {} + | sort | uniq -c', r'^(alle) (Dateitypen|Metadaten)$', 80, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool']
+    }),
+
+
     # EXAMPLE: grep with kate output
     ('grep -n "text" file | xclip -selection clipboard', r'^(grep nach Kate|suche und kopiere|grep in Zwischenablage)$', 80, {
         'flags': re.IGNORECASE,
@@ -181,6 +206,8 @@ FUZZY_MAP_pre = [
         r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+
 
 
 

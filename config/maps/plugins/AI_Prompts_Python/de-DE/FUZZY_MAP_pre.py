@@ -85,22 +85,21 @@ FUZZY_MAP_pre = [
     # - first is read first imported, lower rules maybe not get read.
 
     # EXAMPLE: ai
-    (multiline_string_1, r'^(ai|a|ei|pay|hey|hi|h)\s*\w?\ş*prompt\s*(for|vor|ver)?(\s+(Python|Zeiten|bei|titan))?.*$', 80, {'flags': re.IGNORECASE}),
+    (multiline_string_1, r'^(ai|a|ei|pay|hey|hi|h)\s*\w?\ş*prompt\s*(for|vor|ver)?(\s+(Python|Zeiten|bei|titan))?.*$'),
 
 
-    # Python
+    # Python prompt
+
+    # Python brighton prompt
     # EXAMPLE: Python prompt
-    (multiline_string_1, r'^(Python|Zeiten|bei|titan|from|bei chain)\s*prompt.*$', 80,
-     {'flags': re.IGNORECASE}),
+    (multiline_string_1, r'^(Python|Zeiten|bei|titan|from|bei chain|brighton)\s*prompt.*$'),
 
     # EXAMPLE: Python prompt
-    (multiline_string_1, r'^(breitenbrunn)\s*prompt.*$', 80,
-     {'flags': re.IGNORECASE}),
-
+    (multiline_string_1, r'^(breitenbrunn)\s*prompt.*$'),
 
 
     # EXAMPLE: Python prog
-    ('Python prog', r'\bZeiten prog', 80, {'flags': re.IGNORECASE}),
+    ('Python prog', r'\bZeiten prog'),
 
 
 ]
@@ -177,7 +176,7 @@ Deine Aufgabe ist es, aus dem eingegebenen Text wichtige Entitäten (Firmennamen
 
 Das Zielformat ist:
 # EXAMPLE: b Regex_Gruppe b
-('Interessanter Text', r'\b(Regex_Gruppe)\b', 80, {'flags': re.IGNORECASE})
+('Interessanter Text', r'\b(Regex_Gruppe)\b')
 
 Regeln für den Regex:
 1. Der Regex muss robust sein und auch OCR-Fehler, falsche Trennungen oder phonetische Ähnlichkeiten abfangen (siehe Beispiele).
