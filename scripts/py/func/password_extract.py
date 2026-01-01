@@ -170,7 +170,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
 
         process_id = os.getpid()  # Get the current Process ID
 
-        logger.info(f'⚠️ Extraction of this 🔒 encrypted 📦 ZIP is restricted (fist 5 are not only letters) to Aura only 🏗️ external extraction will fail🛑. Context: .. {key_path} (PID {process_id})')
+        logger.info(f'⚠️ Extraction of this 🔒 encrypted 📦 ZIP is restricted (fist 5 are not only letters) to Aura only 🏗️ external extraction will fail🛑. Context: … {str(key_path)[-45:]} (PID {process_id})')
     else:
         logger.info('🌍 This 🔒 encrypted 📦 ZIP file is portable (fist 5 are letters): External extraction 📤 supported.')
 

@@ -25,7 +25,7 @@ def check_code_integrity(project_root, logger):
                     logger.fatal("-" * 60)
                     logger.fatal(f"FATAL INTEGRITY CHECK FAILED!")
                     logger.fatal(f"  File: {file_path}")
-                    logger.fatal(f"  Missing Fragment: '{fragment}'")
+                    logger.fatal(f"❌ 🛑🛑🛑 Missing Fragment: '{fragment}'")
                     logger.fatal("  This part of the code is critical and must not be changed.")
                     logger.fatal("-" * 60)
                     failed_checks += 1

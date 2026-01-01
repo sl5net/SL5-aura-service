@@ -41,7 +41,7 @@ session_chunk_counter = 0
 
 
 # --- Define the session logic inside a nested function ---
-def session_thread_target():
+def session_thread_target(logger):
     global session_chunk_counter
     session_id = None
     lt_language = 'unknown'
@@ -71,12 +71,21 @@ def session_thread_target():
             selected_model = loaded_models[found_key]
             logger.info(f"Model selected '{selected_model}'.")
 
+    # py/func/handle_trigger.py:74
     except FileNotFoundError:
         logger.warning("No target model file found. Using first available.")
         found_key = list(loaded_models.keys())[0]
         selected_model = loaded_models[found_key]
 
-        text_chunk_iterator = transcribe_audio_with_feedback(...)
+
+        text_chunk_iterator = transcribe_audio_with_feedback(
+            logger,
+            recognizer,
+            lt_language,
+            initial_silence_timeout,
+            session_active_event,
+            AUTO_ENTER_AFTER_DICTATION_global
+        )
 
         for text_chunk in text_chunk_iterator:
             if text_chunk.strip():
@@ -139,10 +148,9 @@ def handle_trigger(
 
     # --- ACTION 1: STOP an ongoing session ---
     if dictation_session_active.is_set():
-        logger.info("🎬⏹️ Manual stop trigger detected. Signaling session to end.")
+        logger.info("🎬⏹️ Manual 🛑 stop trigger detected. Signaling session to end.")
         mute_microphone()
         # unmute_microphone()
-
 
         # We just send the signal and exit immediately.
         # We DO NOT wait here for the thread to finish. This prevents
@@ -208,6 +216,8 @@ def handle_trigger(
             recognizer = vosk.KaldiRecognizer(model_object, SAMPLE_RATE)
             logger.info(f"Using model for lang '{lt_language}'.")
 
+
+            # py/func/handle_trigger.py:221
             silence_timeout = PRE_RECORDING_TIMEOUT if not suspicious_events else SPEECH_PAUSE_TIMEOUT
 
             global text_detected

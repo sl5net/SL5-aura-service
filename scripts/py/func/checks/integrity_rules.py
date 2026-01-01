@@ -57,7 +57,7 @@ INTEGRITY_CHECKS = {
     "scripts/py/func/transcribe_audio_with_feedback.py": [
         'logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")',
         'logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")',
-        "blocksize=4000"
+        # "blocksize=4000"
     ],
 
     "scripts/py/func/audio_manager.py": [

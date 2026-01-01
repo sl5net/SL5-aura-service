@@ -4,6 +4,50 @@
 import os
 import sys
 
+# config/settings.py
+
+Unified_Sink = """
+
+
+1.1.'26 00:13 Thu
+virtuellen Umleitungen im System wieder abschalten:
+pactl unload-module module-loopback
+pactl unload-module module-null-sink
+
+Funktioniert hoffen lassen
+merge_Headset_input_and_Deskopt_output_and_set_it_as_default:
+pactl load-module module-null-sink sink_name=Unified_Sink
+pactl load-module module-loopback source=@DEFAULT_SOURCE@ sink=Unified_Sink
+pactl load-module module-loopback source=58 sink=Unified_Sink
+
+
+pactl unload-module module-loopback; pactl unload-module module-null-sink; pactl load-module module-null-sink sink_name=Unified_Sink channels=1 sink_properties=device.description=UNIFIED_AUDIO_INPUT; pactl load-module module-loopback s
+
+
+
+pactl unload-module module-loopback; pactl unload-module module-null-sink; \
+pactl load-module module-null-sink sink_name=Unified_Sink channels=1 rate=16000 sink_properties=device.description=UNIFIED_AUDIO_INPUT; \
+pactl load-module module-loopb
+# transcribe_audio_with_feedback.py
+def get_device_id(device_setting):
+    # examples: None, COMBINED_MIC_AND_DESKTOP, UNIFIED_AUDIO_INPUT
+    if device_setting is None:
+        return None  # System-Default
+    try:
+        return int(device_setting)
+    except (ValueError, TypeError):
+        devices = sd.query_devices()
+        for i, dev in enumerate(devices):
+            if device_setting.lower() in dev['name'].lower():
+                return i
+    return None
+
+
+
+
+"""
+
+
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
 
@@ -161,11 +205,35 @@ SUSPICIOUS_TIME_WINDOW = 90
 SUSPICIOUS_THRESHOLD = 3
 
 
-# INITIAL_WAIT_TIMEOUT = initial_silence_timeout
-# SPEECH_PAUSE_TIMEOUT = 2.0 # Standardwert
+# Default is SYSTEM_DEFAULT, can be set to an integer (device index)
+# or a string
+
+# Select the audio input source for the STT engine:
+# ------------------------------------------------
+# None:
+# Standard mode. Uses the system's default input device (e.g., your headset).
+#
+# 'UNIFIED_AUDIO_INPUT':
+# Advanced Linux-only mode. Captures both the microphone AND the desktop
+# audio (extern use of Aura, system, Radio, TV … sounds) simultaneously.
+# It creates a virtual "Unified_Sink" and manages routing automatically
+# via 'pactl' (PulseAudio/PipeWire).
+# Note: 🐧 On Linux, this will temporarily bridge your audio sources.
 
 PRE_RECORDING_TIMEOUT = 12
-SPEECH_PAUSE_TIMEOUT = 0.6
+# SPEECH_PAUSE_TIMEOUT = 0.6
+
+
+if False:
+    AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
+    # INITIAL_WAIT_TIMEOUT = initial_silence_timeout
+    # SPEECH_PAUSE_TIMEOUT = 2.0 # Standardwert
+    SPEECH_PAUSE_TIMEOUT = 2
+    # Standardwert
+else:
+    AUDIO_INPUT_DEVICE = 'MIC_AND_DESKTOP'
+    PRE_RECORDING_TIMEOUT = 12
+    SPEECH_PAUSE_TIMEOUT = 5
 
 
 SAMPLE_RATE = 16000
