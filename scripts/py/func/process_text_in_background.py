@@ -13,6 +13,7 @@ from pathlib import Path
 import psutil
 
 from .audio_manager import speak_fallback
+from .auto_fix_module import try_auto_fix_module
 from .log_memory_details import log4DEV
 from .state_manager import should_trigger_startup
 
@@ -239,7 +240,7 @@ def is_plugin_enabled(hierarchical_key, plugins_config):
 def load_maps_for_language(lang_code, logger, run_mode_override=None):
     # scripts/py/func/process_text_in_background.py:50
     if settings.DEV_MODE_memory:
-        from scripts.py.func.log_memory_details import log_memory_details
+        from .log_memory_details import log_memory_details
         log_memory_details(f"def load_maps_for_language", logger)
 
     logger.info(f"207: 🗺️Starting recursive map loading for language: {lang_code}, run_mode_override:{run_mode_override}")
@@ -247,7 +248,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
     settings.reload_settings()
 
     if settings.DEV_MODE_memory:
-        from scripts.py.func.log_memory_details import log_memory_details
+        from .log_memory_details import log_memory_details
         log_memory_details(f"next: auto_reload_modified_maps", logger)
 
     # Zuerst alle Module im Speicher neu laden, um Änderungen zu erfassen
@@ -256,7 +257,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 
     if settings.DEV_MODE_memory:
-        from scripts.py.func.log_memory_details import log_memory_details
+        from .log_memory_details import log_memory_details
         log_memory_details(f"last: auto_reload_modified_maps", logger)
 
     # Leere Container für die zusammengefügten Daten
@@ -433,7 +434,35 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                 fuzzy_map.extend(standardized_map)
 
         except Exception as e:
-            logger.error(f"Failed to process module '{modname}': {e}")
+
+            file_path = None
+            spec = importer.find_spec(modname)
+            if spec and spec.origin:
+                file_path = spec.origin
+
+            if 'file_path' in locals() and try_auto_fix_module(file_path, e, logger):
+                logger.info("🔧 Auto-Fix im Background-Loop angewendet! Versuche Reload...")
+                try:
+                    importlib.invalidate_caches()
+                    # Hier musst du schauen, wie das Modul im Original geladen wurde
+                    # Meistens so:
+                    module = importlib.import_module(modname)
+                    importlib.reload(module)
+
+                    # Wenn wir hier sind, hat es geklappt!
+                    # Je nach Logik musst du das Modul jetzt vielleicht zur Liste hinzufügen
+                    # oder einfach 'continue' machen, damit der nächste Loop-Durchlauf es sauber lädt.
+                    logger.info("✅ Modul gerettet. Mache weiter.")
+
+                    # Falls du das Modul hier direkt verarbeitest, tue es jetzt.
+                    # Ansonsten sorgt der nächste Zyklus des Loops dafür, dass es geladen wird.
+                    continue
+
+                except Exception as retry_err:
+                    logger.error(f"❌ Reload gescheitert: {retry_err}")
+            # --- AUTO-FIX ENDE ---
+
+
 
     if settings.show_PLUGINS_ENABLED:
         enabled_modname_str = '▉'.join(ENABLED_modname_list)
@@ -1348,7 +1377,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 print(f"____________________________________________")
                 print(f"____________________________________________")
                 print(f"____________________________________________")
-                sys.exit(1)
+                time.sleep(3)
+                return None, False
+                # sys.exit(1)
 
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
 

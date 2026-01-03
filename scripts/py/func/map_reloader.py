@@ -8,7 +8,9 @@ import os
 from pyzipper import zipfile
 
 from .config.dynamic_settings import settings
-from scripts.py.func.private_map_ex import _private_map_unpack
+from .log_memory_details import log4DEV
+from .private_map_ex import _private_map_unpack
+from .auto_fix_module import try_auto_fix_module
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 def auto_reload_modified_maps(logger,run_mode_override):
@@ -26,7 +28,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
     """
 
     if settings.DEV_MODE_memory:
-        from scripts.py.func.log_memory_details import log_memory_details
+        from .log_memory_details import log_memory_details
         log_memory_details(f"def start", logger)
 
     # logger.info("Starting map reload check.")
@@ -192,7 +194,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
         logger.error(f"Error during map reload check: {e}")
 
     if settings.DEV_MODE_memory:
-        from scripts.py.func.log_memory_details import log_memory_details
+        from .log_memory_details import log_memory_details
 
         log_memory_details(f"def end", logger)
 
@@ -362,6 +364,46 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                         if log_everything:
                             logger.info(f"ℹ️ Ignoring non-importable file: {module_name}")
                         continue
+
+                    except NameError as e:
+                        # Fängt spezifisch "name '...' is not defined"
+                        logger.error(f"🚨 NameError beim Import: {e}")
+
+                        was_fixed = try_auto_fix_module(file_path, e, logger)
+
+                        if was_fixed:
+                            logger.info("🔧 Fix wurde angewendet. Starte sofortigen Reload-Versuch...")
+
+                            try:
+                                # WICHTIG: Caches leeren, damit Python merkt, dass die Datei auf der Platte neu ist
+                                importlib.invalidate_caches()
+
+                                # 2. Versuch: Erneuter Import
+                                module = importlib.import_module(module_name)
+                                importlib.reload(module)  # Sicherstellen, dass es wirklich frisch ist
+
+                                logger.info(f"✅ Reload erfolgreich nach Auto-Fix für: {module_name}")
+
+                                # Hier machen wir weiter, als ob nichts passiert wäre
+                                # (Der Code unter dem try/except Block nutzt jetzt das reparierte 'module')
+                                # Falls du danach Code hast, der 'module' nutzt, läuft er jetzt durch.
+
+                            except Exception as retry_error:
+                                logger.error(f"❌ Auch der Reload nach dem Fix schlug fehl: {retry_error}")
+                                continue  # Abbrechen für dieses Modul
+                        else:
+                            # Kein Fix möglich -> Weiter zum nächsten
+                            continue
+
+                        if log_everything:
+                            log4DEV(f'Example: ',logger)
+
+                            """
+14:47:20,095 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
+14:47:20,959 - INFO     - ❌ scripts/py/func/map_reloader.py:361 -> _trigger_upstream_hooks(start_path ...) 🚨 error importing module 🚨 
+config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
+
+                            """
 
                     except Exception as e:
                         logger.info(f'❌ scripts/py/func/map_reloader.py:361 -> _trigger_upstream_hooks(start_path ...) '

@@ -490,12 +490,6 @@ else:
 
 
 
-# --- Test ---
-logger.info("System gestartet")
-logger.info("Verbindung wird aufgebaut...")
-logger.info("Verbindung wird aufgebaut...")  # Sollte "〃" zeigen
-logger.info("Verbindung wird aufgebaut...")  # Sollte "〃" zeigen
-logger.info("Fertig")
 
 
 

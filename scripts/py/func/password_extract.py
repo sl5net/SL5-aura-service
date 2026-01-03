@@ -201,7 +201,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
             return None
             # raise
 
-        sys.__stderr__.write("[DEBUG] Nach Cache-Schreiben. Funktion wird beendet.\n")
+        # sys.__stderr__.write("[DEBUG] Nach Cache-Schreiben. Funktion wird beendet.\n")
 
 
     return pw
