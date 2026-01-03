@@ -38,7 +38,9 @@ if current_user == 'seeh' or current_user == 'SL5.de' :
 
     # needs NO restart:
     PRE_RECORDING_TIMEOUT = 2
-    SPEECH_PAUSE_TIMEOUT = 15
+    SPEECH_PAUSE_TIMEOUT = 1
+
+
 
     PLUGIN_HELPER_TTS_ENABLED = False
 
@@ -58,18 +60,16 @@ if current_user == 'seeh' or current_user == 'SL5.de' :
     DEV_MODE = 1
     DEV_MODE_all_processing = 0
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
+    PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
     # PRELOAD_MODELS = ["vosk-model-small-de-0.15"]
-
     # PRELOAD_MODELS = ["vosk-model-en-us-0.22"]
-
     # needs NO restart:
 
-    AUDIO_INPUT_DEVICE = 'MIC_AND_DESKTOP'
-    PRE_RECORDING_TIMEOUT = 12
-    SPEECH_PAUSE_TIMEOUT = 15
+
+    AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
 
 
-    if False:
+    if 1:
         AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
         # INITIAL_WAIT_TIMEOUT = initial_silence_timeout
         # SPEECH_PAUSE_TIMEOUT = 2.0 # Standardwert
@@ -77,9 +77,11 @@ if current_user == 'seeh' or current_user == 'SL5.de' :
         # Standardwert
     else:
         AUDIO_INPUT_DEVICE = 'MIC_AND_DESKTOP'
-        PRE_RECORDING_TIMEOUT = 12
-        SPEECH_PAUSE_TIMEOUT = 5
+        PRE_RECORDING_TIMEOUT = 6
+        SPEECH_PAUSE_TIMEOUT = 4
 
+
+#
 
 
 # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]

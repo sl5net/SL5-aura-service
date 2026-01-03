@@ -62,6 +62,9 @@ SPEECH_PAUSE_TIMEOUT = 1
 
 # for more poweruser mor in hurry:
 
+AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
+
+
 # needs NO restart:
 PRE_RECORDING_TIMEOUT = 6
 SPEECH_PAUSE_TIMEOUT = 2

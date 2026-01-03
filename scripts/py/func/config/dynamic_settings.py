@@ -62,7 +62,9 @@ if len(logger.handlers) > 0:
 log_formatter = CustomFormatter('%(asctime)s - %(levelname)-8s - %(message)s')
 
 # Create, configure, and add the File Handler.
-file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='w')
+#file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='w', encoding='utf-8')
+file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='a', encoding='utf-8')
+
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 

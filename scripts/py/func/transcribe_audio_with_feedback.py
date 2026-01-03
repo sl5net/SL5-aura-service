@@ -8,13 +8,13 @@ import os
 
 import numpy as np
 from config.settings import SAMPLE_RATE
-from scripts.py.func.notify import notify
-from scripts.py.func.audio_manager import mute_microphone, unmute_microphone
-from scripts.py.func.manage_audio_routing import manage_audio_routing
+from .notify import notify
+from .audio_manager import mute_microphone, unmute_microphone
+from .manage_audio_routing import manage_audio_routing
+from .log_memory_details import log4DEV
 import sounddevice as sd
 
 import webrtcvad  # NEU: Import für Voice Activity Detection
-import subprocess
 
 
 global AUTO_ENTER_AFTER_DICTATION_global  # noqa: F824
@@ -96,19 +96,17 @@ def _get_downsampled_data(raw_data, input_rate, logger):
 
         # return data
 
+        #  noqa: F841
         comments = """
-Lösung A (reshape) vermutlich technisch besser?
-
+Lösung A (reshape) vermutlich technisch besser? #  noqa: 
 Warum?
 Bei Lösung B springst du im Zeitverlauf zwischen linkem und rechtem Kanal hin und her (L0, R1, L3, R4...). 
 Das erzeugt Phasenfehler und Verzerrungen. 
 Die Fehlerquote steigt, wenn links und rechts unterschiedliche Signale liegen (z. B. Stimme links, Musik rechts).
-
 Lösung A ist nimmst nur einen Kanal (Links). 
-
 Wichtig: Bleib bei channels=2 im RawInputStream, sonst stürzt Lösung A mit einem Fehler ab!
         """
-
+        comments2 = comments # noqa: F841
 
         # 1. Von Bytes zu Stereo-Array (2 Kanäle)
         audio_np = np.frombuffer(raw_data, dtype=np.int16).reshape(-1, 2)
@@ -116,7 +114,9 @@ Wichtig: Bleib bei channels=2 im RawInputStream, sonst stürzt Lösung A mit ein
         return audio_np[::3, 0].tobytes()
 
     else:
-        logger.info(f'transcribe_audio_with_feedback.py:86 input_rate: {input_rate}')
+        # happen when now input some times 3.1.'26 05:57 Sat.
+
+        log4DEV(f'transcribe_audio_with_feedback.py:86 input_rate: {input_rate}',logger)
         return raw_data
         # data = raw_data
 def _get_audio_data(q, input_rate):
@@ -170,7 +170,8 @@ def get_device_id(device_setting, logger):
         devices = sd.query_devices()
         for i, dev in enumerate(devices):
             if device_setting.lower() in dev['name'].lower():
-                logger.info(f'transcribe_audio_with_feedback.py: get_device_id: i: {i}')
+                log4DEV(f'transcribe_audio_with_feedback.py: get_device_id: i: {i}',logger)
+                # log4DEV("whats this?", logger)
                 return i
     except (ValueError, TypeError):
         logger.info(f'ValueError: {ValueError}')
@@ -330,7 +331,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         data = _get_downsampled_data(raw_data, input_rate,logger)
                         # is_voice_active_in_chunk = _is_voice_active(data, vad, FRAME_BYTES,SAMPLE_RATE)
                         is_voice_active_in_chunk = _is_voice_active(data, vad, FRAME_BYTES,16000)
-                        rms = np.sqrt(np.mean(np.frombuffer(data, dtype=np.int16).astype(np.float32) ** 2))
+                        # rms = np.sqrt(np.mean(np.frombuffer(data, dtype=np.int16).astype(np.float32) ** 2))
                         # if transcribe_audio_with_feedback._debug_count % 20 == 0:
                         #     logger.info(f"DEBUG: RMS={rms:.2f} | Rate={input_rate}")
 

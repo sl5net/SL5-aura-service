@@ -9,7 +9,8 @@ import pyzipper
 from io import BytesIO
 
 
-from scripts.py.func.password_extract import _extract_password
+from .password_extract import _extract_password
+# py/func/private_map_ex.py:13
 def _private_map_unpack(map_file_key: str, logger) -> bool:
     """
     Checks if a failed module load is actually a private ZIP/Key pattern.
@@ -17,6 +18,7 @@ def _private_map_unpack(map_file_key: str, logger) -> bool:
     """
 
     log_everything = False
+    # log_everything = True
 
     # 1. Determine the map directory
     map_dir = str(pathlib.Path(map_file_key).parent)
@@ -39,7 +41,7 @@ def _private_map_unpack(map_file_key: str, logger) -> bool:
     else:
         pw = _extract_password(key_file, logger)
         if not pw:
-            # logger.info("No valid passwords found or recalled to early in any key file.")
+            logger.info("No valid passwords found or recalled to early in any key file.")
             return False
 
     # CRITICAL SECURITY CHECK

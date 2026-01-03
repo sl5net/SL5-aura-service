@@ -30,6 +30,7 @@ if not hasattr(sys, CACHE_ATTR_NAME):
 
 from typing import Optional
 
+# py/func/password_extract.py:33
 def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
     """
     Extracts the password/content from the given key_path.
@@ -38,6 +39,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
     #global _password_context_cache
 
     # Re-fetch the cache reference to be 100% safe
+    # py/func/password_extract.py:42
     cache = getattr(sys, CACHE_ATTR_NAME)
 
     normalized_key = os.path.abspath(key_path)
@@ -172,14 +174,34 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
 
         logger.info(f'⚠️ Extraction of this 🔒 encrypted 📦 ZIP is restricted (fist 5 are not only letters) to Aura only 🏗️ external extraction will fail🛑. Context: … {str(key_path)[-45:]} (PID {process_id})')
     else:
+        # py/func/password_extract.py:176
         logger.info('🌍 This 🔒 encrypted 📦 ZIP file is portable (fist 5 are letters): External extraction 📤 supported.')
 
-    # Update the persistent cache
-    cache[normalized_key] = {
-        'timestamp': current_time,
-        'pw': pw
-        ,
-    }
+        # py/func/password_extract.py:180
+        # Update the persistent cache
+
+        # py/func/password_extract.py:181 (ungefähr)
+
+        # --- NEUE FALLE ANFANG ---
+        # sys.__stderr__.write("[DEBUG] Vor Cache-Schreiben. Funktion wird beendet.\n")
+        # --- NEUE FALLE ENDE ---
+
+
+        try:
+            cache[normalized_key] = {
+                'timestamp': current_time,
+                'pw': pw
+                ,
+            }
+
+        except Exception as e:
+            sys.__stderr__.write(f"\n[FATAL] Cache Crash: {e}\n")
+            logger.info(
+                'f"\n[FATAL] Cache Crash: {e}\n"')
+            return None
+            # raise
+
+        sys.__stderr__.write("[DEBUG] Nach Cache-Schreiben. Funktion wird beendet.\n")
 
 
     return pw

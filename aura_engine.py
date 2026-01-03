@@ -9,7 +9,7 @@ import signal
 
 
 import psutil
-import time
+import time, re
 
 
 # Python path to ensure reliable imports on all platforms
@@ -182,6 +182,8 @@ LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
 languagetool_process = None
 
 
+logging.raiseExceptions = True
+
 class WindowsEmojiFilter1(logging.Filter):
     """
     A logging filter that replaces emojis with text placeholders on Windows.
@@ -276,6 +278,100 @@ class WindowsEmojiFilter(logging.Filter):
 # aura_engine.py:268
 
 logger = logging.getLogger()
+
+
+
+# class PrintToConsoleAndFile(object):
+#     def __init__(self, logger):
+#         self.logger = logger
+#         self.terminal = sys.__stdout__ # Das echte Terminal sichern
+# 
+#     def write(self, buf):
+#         # 1. Sofort auf die Konsole schreiben (Garantie!)
+#         self.terminal.write(buf)
+#         self.terminal.flush()
+# 
+#         # 2. Danach ins Logfile senden
+#         if buf.strip():
+#             try:
+#                 # Hier nutzen wir den Logger nur fürs File
+#                 # (Falls der ConsoleHandler noch aktiv ist, könnte es doppelt kommen,
+#                 # aber besser doppelt als gar nicht)
+#                 self.logger.info(buf.rstrip())
+#             except:
+#                 pass
+# 
+#     def flush(self):
+#         self.terminal.flush()
+
+
+
+
+class SafeStreamToLogger(object):
+    def __init__(self, logger, original_stream, file_handler):
+        self.logger = logger
+        self.terminal = original_stream
+        self.file_handler_ref = file_handler               # <--- HIER speichern
+        self.is_logging = False # <--- DER SCHUTZSCHALTER
+        self.log_pattern = re.compile(r'^\d{2}:\d{2}:\d{2},\d{3}\s-\s[A-Z]+\s+-\s')
+
+    def write(self, buf):
+        # 1. Immer sofort auf die Konsole schreiben (für dich sichtbar)
+        self.terminal.write(buf)
+        # self.terminal.flush() <-- BESSER SO (Spart CPU/Zeit)
+
+        # 2. Wenn wir gerade NICHT loggen, dann ins File senden
+        # if not self.is_logging and buf.strip():
+        if buf and not buf.isspace() and not self.is_logging:
+            self.is_logging = True # Schalter an
+            try:
+                # Prüfen: Hat der Text schon einen Zeitstempel?
+                match = self.log_pattern.match(buf)
+
+                if match:
+                    # JA: Wir schneiden den Zeitstempel vorne weg!
+                    # match.end() ist die Stelle, wo der echte Text anfängt.
+                    clean_msg = buf[match.end():].rstrip()
+                else:
+                    # NEIN: Wir nehmen den Text so wie er ist (z.B. von print)
+                    clean_msg = buf.rstrip()
+
+                # Nur schreiben, wenn noch Text übrig ist
+                if clean_msg:
+                    record = logging.LogRecord(
+                        name="PRINT", level=logging.INFO, pathname="print", lineno=0,
+                        msg=clean_msg, args=(), exc_info=None
+                    )
+                    self.file_handler_ref.handle(record)
+
+            except Exception:
+                pass
+            finally:
+                self.is_logging = False
+
+    def flush(self):
+        # self.terminal.flush() # entfernen spart viel Zeit. Erfüllt die Pflicht
+        pass
+
+# sys.stdout = SafeStreamToLogger(logger, sys.__stdout__)
+
+
+
+
+
+
+# Aktivieren
+# sys.stdout = PrintToConsoleAndFile(logger)
+
+
+
+
+# sys.stdout = StreamToLogger(logger, logging.INFO) # print -> Logger
+# sys.stderr = StreamToLogger(logger, logging.ERROR) # Fehler -> Logger
+
+
+
+# 304
 logger.setLevel(logging.INFO)
 
 # Clear any pre-existing handlers to prevent duplicates.
@@ -289,21 +385,131 @@ def formatTime(record, datefmt=None):
     ms_str = f",{milliseconds:03d}"
     return time_str + ms_str
 
+
+# 1. Wir erstellen eine Filter-Klasse
+class DittoFilter(logging.Filter):
+    def __init__(self):
+        super().__init__()
+        self.last_msg = None
+
+    def filter(self, record):
+        # Den "echten" Inhalt der aktuellen Nachricht holen
+        current_msg = record.getMessage()
+
+        # Vergleich mit der gespeicherten Original-Nachricht
+        if current_msg == self.last_msg:
+            # Es ist eine Wiederholung -> Text für die Ausgabe ändern
+            record.msg = "〃"
+            record.args = ()
+
+            # WICHTIG: Wir aktualisieren self.last_msg HIER NICHT.
+            # Wir wollen, dass die nächste Zeile sich immer noch mit
+            # dem Original (z.B. "Verbindung...") vergleicht und
+            # nicht mit dem Gänsefüßchen ("〃").
+        else:
+            # Es ist eine neue Nachricht -> Speicher aktualisieren
+            self.last_msg = current_msg
+
+        return True
+
+
+# Filter instanziieren
+ditto_filter = DittoFilter()
+
+
+
 log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
 log_formatter.formatTime = formatTime
 
 # Create, configure, and add the File Handler.
-file_handler = logging.FileHandler(f'{SCRIPT_DIR}/log/aura_engine.log', mode='w')
+
+
+
+class FlushingFileHandler(logging.FileHandler):
+    def emit(self, record):
+        try:
+            super().emit(record)
+            self.flush() # Zwingt den Inhalt sofort auf die Platte
+        except Exception:
+            self.handleError(record)
+
+
+
+
+
+
+# file_handler = logging.FileHandler(f'{SCRIPT_DIR}/log/aura_engine.log', mode='a', encoding='utf-8')
+# Nutzen Sie diesen neuen Handler
+file_handler = FlushingFileHandler(
+    f'{SCRIPT_DIR}/log/aura_engine.log',
+    mode='a',
+    encoding='utf-8'
+)
+
+
 file_handler.setFormatter(log_formatter)
-logger.addHandler(file_handler)
+
+# logger.addFilter(ditto_filter)
+
+
+sys.stdout = SafeStreamToLogger(logger, sys.__stdout__, file_handler)
+
+
 
 # Create, configure, and add the Console Handler.
 console_handler = logging.StreamHandler(sys.stdout)
+#console_handler = logging.StreamHandler(sys.__stdout__)
+
 console_handler.setFormatter(log_formatter)
-logger.addHandler(console_handler)
+#console_handler.addFilter(ditto_filter)
+
+
+
 
 # Add the WindowsEmojiFilter to the file_handler
-file_handler.addFilter(WindowsEmojiFilter())
+if True:
+
+    logger.addFilter(ditto_filter)
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+    # logger.addHandler(console_handler)
+    # logger.addFilter(WindowsEmojiFilter())
+    # logger.addFilter(ditto_filter)
+else:
+    logger.addHandler(file_handler)
+
+    console_handler.addFilter(WindowsEmojiFilter())
+    console_handler.addFilter(ditto_filter)
+    file_handler.addFilter(WindowsEmojiFilter())
+    file_handler.addFilter(ditto_filter)
+
+# file_handler.addFilter(WindowsEmojiFilter())
+# file_handler.addFilter(ditto_filter)
+
+
+
+
+# --- Test ---
+logger.info("System gestartet")
+logger.info("Verbindung wird aufgebaut...")
+logger.info("Verbindung wird aufgebaut...")  # Sollte "〃" zeigen
+logger.info("Verbindung wird aufgebaut...")  # Sollte "〃" zeigen
+logger.info("Fertig")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -315,7 +521,15 @@ readme = """
 vosk-model-small-de-0.15
 17:36:26,230 - INFO     - >>> Core Logic Self-Test PASSED.
 17:36:36,138 - INFO     - ==    ✅ MODEL READY: 'small'.
-==> 10 Seconds
+==> 10 Seconds Sekunden
+
+vosk-model-de-0.21
+    ✅ MODEL READY: 'de'.
+13:27:52,772 - INFO     - >>> Core Logic Self-Test PASSED.
+13:29:09,816 - INFO     - self_tester.py:216 ✅  89tested of 98 tests (lang=de-DE)
+==> ~70 Seconds Sekunden
+
+
 """
 
 

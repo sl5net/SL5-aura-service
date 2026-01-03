@@ -127,7 +127,7 @@ FUZZY_MAP_pre = [
     100,
     {'flags': re.IGNORECASE | re.VERBOSE}
     ),
-    # attention! mit re.VERBOSE all normal spaces was ignored
+    # attention! mit re.VERBOSE all normal spaces was ignored. its the same like ix (i for IGNORECASE x for VERBOSE)
 
 
     ('',
@@ -157,18 +157,42 @@ FUZZY_MAP_pre = [
     # google gebe drei
     # coral gaming nein
     # google seminare
+    # gogol gemini ei
+    #https://aistudio.google.com/prompts/new_chathttps://aistudio.google.com/prompts/new_chat
+
     # EXAMPLE: gemini
-    ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google ein Studie|Google leicht|Google ein Stuhl|Google eingestuft|google gb day|google kapital|Google kriminell|google gebiet\w*|Gucke gebiet\w*|google g b day|google geht wieder|gucke dir bitte|google g bitte|gucke gemini\s*\w*|google gemini ein|google gemini\s*\w*|google gemini recht|Gucke Gehminuten|Google Gewinde|Google Gehminuten|gut \w*minarett|brooke kriminelle|google gaming|google grimmen\s*.*|google grimmig|Google Germany|Google feminin|Google Gewinnern|Google gewinne|Google wieder|google g bedeuten|google gebe drei|google gb daten|google gewinn ein|google gebe dein|google kriminelle|google gewitter|google b day|Google g wie neu|coral gaming nein|google geben innere|google seminare)\b.*$', 70, {
-        'flags': re.IGNORECASE
-    }),
-    #
+    # ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google
+
+    # EXAMPLE: gemini
+    ('https://aistudio.google.com/prompts/new_chat', r'''(?ix)
+    ^ (?:
+        gemini | cheminée |
+        (?:google|gucke|gut|brooke|coral) \s+
+        (?:
+            gemini[\s\w]* |
+            studi[ao]\w* |
+            ein\ Studio | ein\ Stuhl |
+            it\ studio | my\ style
+            ge[hmw]\w* | gemini\ recht | \w*minarett |
+            gaming nein | gaming |
+            kriminell\w* |
+            dir\ bitte |
+            termin\w* |
+            b[\s-]?day |
+            grimmen\s*.*|grimmig|Germany|feminin|Gewinnern|gewinne|wieder|g bedeuten|gebe drei|gb daten|gewinn ein|gebe dein|kriminelle|gewitter|b day|g wie neu|coral gaming nein|geben innere|seminare|gemini ei|
+            kapital | aviv | leicht | eingestuft | chapiteau | my\s+style | seminare | feminin | gemini\ ei
+        )
+    )
+    \b.*$
+    '''
+    , 70 ),
 
     # EXAMPLE: chat mit gemini
     ('https://aistudio.google.com/prompts/new_chat', r'^chat mit\s+(gemini|cheminée|Boot Gaming nein|chip|Kevin)\b.*$', 70, {
         'flags': re.IGNORECASE
     }),
 
-
+    # Google kriminelle
 
     # EXAMPLE: Suche
     ("('Rückgabe', r'Suche', 70, {'flags': re.IGNORECASE}),",

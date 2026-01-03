@@ -75,10 +75,14 @@ def run_core_logic_self_test(logger, tmp_dir: Path, lt_url, lang_code):
     """
     Runs a series of predefined tests, guarded by a persistent throttle mechanism.
     """
-
+    # config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
     if check_translator_hijack(logger):
         logger.info(f"self_tester.py exit exit exit")
-        logger.info(f"75:🚨 HIJACK: rule is activ!")
+        logger.info(f"""
+        75:🚨 HIJACK: rule is activ during self_test! maybe check: 
+        config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py 
+        (check_translator_hijack) --> exit(1)
+        """)
         exit(1)
 
 

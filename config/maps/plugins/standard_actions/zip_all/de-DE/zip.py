@@ -81,7 +81,7 @@ def _needs_packing(source_folder: Path, zip_file: Path) -> PackingStatus:
             continue
 
         for file in files:
-            if file.startswith('.') or file.endswith('.pyc'):
+            if file.startswith('.') or file.endswith('.pyc') or file.endswith('~'):
                 continue
 
             file_path = Path(root) / file
@@ -107,8 +107,10 @@ def find_password_file(start_dir: Path) -> Path:
     """
     current = start_dir
     limit = SCAN_ROOT
-
+    i = 0
     while True:
+        i += 1
+        logger.info(f'i={i}   standard_actions/zip_all/de-DE/zip.py:113')
         if current.exists():
             for item in current.iterdir():
                 if item.is_file() and item.name.startswith('.'):
@@ -233,7 +235,10 @@ def on_reload():
         check_and_unpack_zips()
         check_and_pack_zips()
     except Exception as e:
-        logger.error(f"🔥 Error in zip.py on_reload: {e}")
+        # STT/config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:236
+        logger.error(f"🔥 Error in zip_all/de-DE/zip.py:236 on_reload: {e}")
+        # sys.exit(1)
+        return f"🔥 Error in zip_all/de-DE/zip.py:236 on_reload: {e}"
 
 def execute(match_data):
     """Manual Voice Command."""
