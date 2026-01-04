@@ -7,8 +7,8 @@ from pathlib import Path
 import glob
 
 # Re-use utilities and core logic from the main self_tester context
-from scripts.py.func.process_text_in_background import process_text_in_background
-from scripts.py.func.config.dynamic_settings import settings
+from ..process_text_in_background import process_text_in_background
+from ..config.dynamic_settings import settings
 # from .config.dynamic_settings import settings
 
 TEST_INPUT = 'Recaps'
@@ -43,7 +43,13 @@ def execute_test_case_and_check(logger, lt_url, expected):
     os.remove(latest_file) # Clean up
 
     # Apply self_tester cleanup logic
-    actual = actual.replace(settings.signatur1, '').replace(settings.signatur, '').strip()
+    if hasattr(settings, 'signatur1'):
+        if settings.signatur1:
+            actual = actual.replace(settings.signatur1, '').strip()
+    if hasattr(settings, 'signatur'):
+        actual = actual.replace(settings.signatur, '').strip()
+
+    # actual = actual.replace(settings.signatur1, '').replace(settings.signatur, '').strip()
 
     # Check the result
     return actual == expected, actual
@@ -58,7 +64,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     logger.info("-" * 50)
     logger.info("✅ TEST (🏃🏿‍♀️‍➡️ 🔜 BACKUP/DELETE/RESTORE Map (live_reload_e2e_func_test .py)")
 
-    TEMP_DIR.mkdir(parents=True, exist_ok=True) # Stellt sicher, dass der log-Ordner existiert
+    TEMP_DIR.mkdir(parents=True, exist_ok=True)
 
     if MAP_BACKUP_DIR.is_dir():
         shutil.rmtree(MAP_BACKUP_DIR)
