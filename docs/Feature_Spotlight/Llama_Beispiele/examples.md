@@ -29,6 +29,10 @@ Wenn du einen langen Text in der Zwischenablage hast (oder diktiert hast):
 Wenn dir ein Wort fehlt oder du eine Idee brauchst.
 *   **Du sagst:** *"Aura nenne mir 5 Synonyme für 'Entwicklung'."*
 *   **LLM macht:** *"Fortschritt, Evolution, Entfaltung, Genese, Ausarbeitung."*
+*   **LLM macht:** *"Entwicklung, Fortschritt, Innovation, Fortbildung, Verbesserung.**
+
+
+
 
 ---
 

@@ -285,12 +285,12 @@ logger = logging.getLogger()
 #     def __init__(self, logger):
 #         self.logger = logger
 #         self.terminal = sys.__stdout__ # Das echte Terminal sichern
-# 
+#
 #     def write(self, buf):
 #         # 1. Sofort auf die Konsole schreiben (Garantie!)
 #         self.terminal.write(buf)
 #         self.terminal.flush()
-# 
+#
 #         # 2. Danach ins Logfile senden
 #         if buf.strip():
 #             try:
@@ -300,7 +300,7 @@ logger = logging.getLogger()
 #                 self.logger.info(buf.rstrip())
 #             except:
 #                 pass
-# 
+#
 #     def flush(self):
 #         self.terminal.flush()
 
@@ -1017,21 +1017,21 @@ if settings.DEV_MODE :
         logger.info(f"⌚ self_test_readable_duration: {self_test_readable_duration}")
 
         logSnippet = """
-        without checks and clean all cashes before. it seems service can start in about 23 Seconds with a good german Model (s,25.11.'25 00:04 Tue)   
+        without checks and clean all cashes before. it seems service can start in about 23 Seconds with a good german Model (s,25.11.'25 00:04 Tue)
         23:59:57,438 - INFO     - DEV_MODE: Running punctuation map key validation...
         00:00:20,233 - INFO     - ==    ✅ MODEL READY: 'de'.
-    
+
         without checks it seems service can start in about 27 Seconds with a good german Model (s,24.11.'25 15:16 Mon):
         15:12:19,851 - INFO     - DEV_MODE: Running punctuation map key validation...
         15:12:46,853 - INFO     - ==    ✅ MODEL READY: 'de'.
-    
+
         """
 
 
         """
         # self_test_readable_duration
         59 of 82 tests ❌ FAILed.    seconds=5, microseconds=578883
-    
+
         """
 
         check_installer_sizes()
@@ -1116,6 +1116,5 @@ if __name__ == "__main__":
     # Pass the complete, unified config to main()
     loaded_models = {}
     main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url)
-
 
 

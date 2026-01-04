@@ -25,7 +25,10 @@ from thefuzz import fuzz
 from .notify import notify
 
 
-from .config.dynamic_settings import settings
+from .config.dynamic_settings import DynamicSettings
+
+settings = DynamicSettings()
+
 from .normalize_punctuation import normalize_punctuation
 from .map_reloader import auto_reload_modified_maps
 
@@ -779,6 +782,8 @@ def process_text_in_background(logger,
         # Hier müsste ein weiterer Block hin, der den Cache aufräumt. (Wir implementieren das später)
 
     # --- ENDE DER SEQUENZPRÜFUNG ---
+
+
     global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP
 
     # scripts/py/func/process_text_in_background.py:167
@@ -792,6 +797,35 @@ def process_text_in_background(logger,
     skip_list=[]
     options_dict = None
     log4DEV(f"skip_list: {skip_list}", logger)
+
+    settings = DynamicSettings()
+
+
+
+    if settings.DEV_MODE: # some test. want check if we can change setting and get some setting correct back ( 2026-0104-1433 4.1.'26 14:33 Sun )
+        timestamp = int(time.time() * 1000)
+
+        if output_dir_override:
+            # unique_output_file = f"{output_dir_override}/tts_output_{timestamp}.txt"
+            unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
+        else:
+            unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
+
+        log4DEV(f'raw_text:{raw_text}',logger)
+        if raw_text == '->SPEECH_PAUSE_TIMEOUT<-':
+            log4DEV(f'raw_text:{raw_text}',logger)
+            raw_text = settings.SPEECH_PAUSE_TIMEOUT
+            unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
+            return raw_text
+        if raw_text == '->AUDIO_INPUT_DEVICE<-':
+            log4DEV(f'raw_text:{raw_text}',logger)
+            raw_text = settings.AUDIO_INPUT_DEVICE
+            unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
+            return raw_text
+
+
+
+
 
     try:
 
@@ -1103,13 +1137,7 @@ def process_text_in_background(logger,
 
         # file: scripts/py/func/process_text_in_background.py
         # ... watchDir := "C:\tmp\sl5_aura"
-        timestamp = int(time.time() * 1000)
 
-        if output_dir_override:
-            # unique_output_file = f"{output_dir_override}/tts_output_{timestamp}.txt"
-            unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
-        else:
-            unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
 
         log4DEV(
             f"SkipList:{skip_list} "

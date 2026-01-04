@@ -44,8 +44,7 @@ def execute_test_case_and_check(logger, lt_url, expected):
 
     # Apply self_tester cleanup logic
     if hasattr(settings, 'signatur1'):
-        if settings.signatur1:
-            actual = actual.replace(settings.signatur1, '').strip()
+        actual = actual.replace(settings.signatur1, '').strip()
     if hasattr(settings, 'signatur'):
         actual = actual.replace(settings.signatur, '').strip()
 

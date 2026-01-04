@@ -91,11 +91,14 @@ INTEGRITY_CHECKS = {
     # germen umlauts needs this to could read correct for e.g. from script like autokey
     # Ensures critical text processing logic is present.
     "scripts/py/func/process_text_in_background.py": [
+        "settings = DynamicSettings()",
         "new_text = re.sub(",
         'encoding="utf-8-sig"',
         'f"✅ Background processing for',
         'f"✅ THREAD: Successfully wrote to '
     ],
+    # settings = DynamicSettings() is important ! check the fist rule in self_tester and try it to change it 2026-0104-1829 4.1.'26 18:29 Sun
+
 
 
     # should_remove_zips_after_unpack=true It's eventually useful to have it sometimes longer but maybe not online and not at costumers

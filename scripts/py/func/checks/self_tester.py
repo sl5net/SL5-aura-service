@@ -6,7 +6,6 @@ from logging import FileHandler
 import os
 import time
 import glob
-# from pathlib import Path
 
 # Important: Add project root to sys.path to allow imports from other directories
 # This assumes self_tester.py is in the project's root or a subdirectory.
@@ -39,7 +38,9 @@ if project_root not in sys.path:
 
 from scripts.py.func.process_text_in_background import process_text_in_background
 from scripts.py.func.checks.run_function_with_throttling import run_function_with_throttling
-from ..config.dynamic_settings import settings
+from ..config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
 
 # from config.settings import signatur # ,signatur_ar,signatur_en,signatur_pt_br
 
@@ -96,6 +97,7 @@ def run_core_logic_self_test(logger, tmp_dir: Path, lt_url, lang_code):
     }
 
     # 2. Call the generic wrapper function
+
     test_executed = run_function_with_throttling(
         logger,
         state_dir=tmp_dir,
@@ -119,6 +121,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     Runs a series of predefined tests against the core text processing logic.
     This function simulates inputs and checks the output files.
     """
+    settings = DynamicSettings()
 
     backupPLUGIN_HELPER_TTS_ENABLED = settings.PLUGIN_HELPER_TTS_ENABLED
     settings.PLUGIN_HELPER_TTS_ENABLED = False
@@ -152,7 +155,47 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     12:50:58,197 - WARNING  - Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.
     """
 
+    settings = DynamicSettings()
+    #
+    # SRC = Path("") # SRC = Path("/home/seeh/projects/py/STT/config/settings_local.py")
+    # BACKUP_PREFIX = "backup_"
+    #
+    # def backup_file(src: Path, prefix: str = BACKUP_PREFIX) -> Path:
+    #     backup = src.with_name(prefix + src.name)
+    #     shutil.copy2(src, backup)
+    #     return backup
+    #
+    # def restore_file(backup: Path, target: Path):
+    #     shutil.copy2(backup, target)
+    #     backup.unlink(missing_ok=True)
+    #
+    # # Todo: add Backup
+    # SPEECH_PAUSE_TIMEOUT = settings.SPEECH_PAUSE_TIMEOUT
+    #
+    # def append_021_to_number(match: re.Match) -> str:
+    #     left, number = match.group(1), match.group(2)
+    #     return f"{left}{number}021"
+    #
+    # pattern = re.compile(r'(\bSPEECH_PAUSE_TIMEOUT\s*=\s*)(\d+(?:\.\d+)?)')
+    # p = SRC
+    # text = p.read_text(encoding="utf-8")
+    # SPEECH_PAUSE_TIMEOUT_021 = pattern.sub(append_021_to_number, text)
+    #
+    # try:
+    #     backup = backup_file(SRC.resolve())
+    # except (FileNotFoundError, IndexError):
+    #     print(f"Backup file {SRC.resolve()} not found. 2026-0104-1646")
+    #
+    #
+    # p.write_text(SPEECH_PAUSE_TIMEOUT_021, encoding="utf-8")
+    #
+    # # AUDIO_INPUT_DEVICE
+
     test_cases = [
+
+        # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected=f"{SPEECH_PAUSE_TIMEOUT_021}", context='proff if we can change settings 2026-0104-1435'),
+        case(input_text='->AUDIO_INPUT_DEVICE<-', expected=f"SYSTEM_DEFAULT", context='proff if we can change settings 2026-0104-1435'),
+        # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected='7890', context='proff if we can change settings 2026-0104-1435'),
 
         ('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'LT correction Uppercase', 'de-DE'),
 
@@ -365,8 +408,10 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
 
         # logger.info(f"self_tester.py:211: test_case:{test_case} actual:{actual}")
 
-        actual = actual.replace(settings.signatur1, '')
-        actual = actual.replace(settings.signatur, '')
+        if hasattr(settings, 'signatur1'):
+            actual = actual.replace(settings.signatur1, '')
+        if hasattr(settings, 'signatur'):
+            actual = actual.replace(settings.signatur, '')
         actual = actual.strip()
 
         if actual.lstrip() == expected:
@@ -387,7 +432,23 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
             logger.error(f"     - Got:      '{actual}'")
             failed_count += 1
             logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed (lang={lang_code})")
-            exit(1)
+
+            # print(f"Backup file {SRC.resolve()} not found. 2026-0104-1646")
+
+            # try:
+            #     restore_file(backup, SRC)
+            # except FileNotFoundError as e:
+            #     print(f"Backup file {SRC.resolve()} not found 2026-0104-1648")
+            #     sys.exit(1)
+
+            sys.exit(1)
+
+        # try:
+        #     restore_file(backup, SRC)
+        # except FileNotFoundError as e:
+        #     print(f"Backup file {SRC.resolve()} not found 2026-0104-1648")
+        #     sys.exit(1)
+
 
 
     # --- Summary ---

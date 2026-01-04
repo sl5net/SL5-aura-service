@@ -26,19 +26,23 @@ DEV_MODE = False
 DEV_MODE_memory = False
 DEV_MODE_all_processing = False
 
+#
+
 # needs NO restart:
-PRE_RECORDING_TIMEOUT = 6
+PRE_RECORDING_TIMEOUT = 5
 SPEECH_PAUSE_TIMEOUT = 2
 
-# may yo want to overwrite the PRELOAD_MODELS settings from settings.py here
 PRELOAD_MODELS = ["vosk-model-de-0.21"]
+
+AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
+
 
 #test (original:'test', 🗣SL5。de╱Aura).
 if current_user == 'seeh' or current_user == 'SL5.de' :
 
+    #
     # needs NO restart:
-    PRE_RECORDING_TIMEOUT = 2
-    SPEECH_PAUSE_TIMEOUT = 1
+    PRE_RECORDING_TIMEOUT = 3
 
 
 
@@ -48,7 +52,7 @@ if current_user == 'seeh' or current_user == 'SL5.de' :
     signatur=''
 
     #
-    if 1:
+    if 0:
         signatur=''
         signatur1=f''
         signatur_pt_br=f''
@@ -69,22 +73,21 @@ if current_user == 'seeh' or current_user == 'SL5.de' :
     AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
 
 
-    if 1:
+    if True:
         AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
         # INITIAL_WAIT_TIMEOUT = initial_silence_timeout
-        # SPEECH_PAUSE_TIMEOUT = 2.0 # Standardwert
-        SPEECH_PAUSE_TIMEOUT = 1
+        # SPEECH_PAUSE_TIMEOUT = 2
         # Standardwert
+        SPEECH_PAUSE_TIMEOUT = 2
+
+
     else:
         AUDIO_INPUT_DEVICE = 'MIC_AND_DESKTOP'
         PRE_RECORDING_TIMEOUT = 6
-        SPEECH_PAUSE_TIMEOUT = 4
+        SPEECH_PAUSE_TIMEOUT = 2
 
 
-#
-
-
-# PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+        # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 
 # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
 

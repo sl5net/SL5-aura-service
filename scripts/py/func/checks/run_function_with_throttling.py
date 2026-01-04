@@ -7,12 +7,17 @@ from datetime import timedelta
 # --- Throttling Constants (Fixed Cooldown) ---
 # --- Constants for the Throttling Mechanism ---
 # FIXED_COOLDOWN_TIME = 1800.0  # 30 minutes in seconds
+
 INITIAL_WAIT_TIME = 120.0
 MAX_WAIT_TIME = 900.0
 
 # INITIAL_WAIT_TIME = 1.0
 # MAX_WAIT_TIME = 1.0
 
+# run_always_ignore_times = True
+run_always_ignore_times = False
+
+# # tags: time inite minute seconds
 
 """
 Konstanter Name	Wert	Begründung
@@ -129,7 +134,7 @@ def run_function_with_throttling(
     time_since_last_call = current_time - last_call_time
 
     # 2. Throttling Check
-    if time_since_last_call < min_wait_time:
+    if not run_always_ignore_times and time_since_last_call < min_wait_time:
         wait_remaining = min_wait_time - time_since_last_call
 
         wait_remaining_minutes = int(wait_remaining // 60)

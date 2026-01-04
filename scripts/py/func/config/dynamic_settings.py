@@ -1,23 +1,30 @@
 # scripts/py/func/config/dynamic_settings.py:2
 import collections.abc
 import importlib
-#import pwd
+import subprocess
 import sys
 import os
+import threading
 from datetime import datetime
 from pathlib import Path
 from threading import RLock
+
+# py/func/config/dynamic_settings.py:11
+project_root = Path(__file__).resolve().parents[4]
+
 from config import settings
 from config.settings_local import DEV_MODE
 # Get a logger instance instead of direct print statements for better control
 import logging
 
 
+# scripts/py/func/config/dynamic_settings.py
+
+
 def is_plugin_enabled(hierarchical_key, plugins_config):
     """
-    Prüft, ob ein Plugin aktiviert ist. Ein Plugin ist DEAKTIVIERT,
-    wenn es selbst oder irgendein übergeordnetes Modul in der Hierarchie
-    explizit auf `False` gesetzt ist. In allen anderen Fällen ist es AKTIVIERT.
+    Check if a plugin is active.
+    A plugin is DEACTIVATED, when it or any superordinate module in the hierarchy is explicitly set to False. In all other cases, it is ACTIVE.
     """
     current_key_parts = hierarchical_key.split('/')
 
@@ -33,12 +40,11 @@ class CustomFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
         dt_object = datetime.fromtimestamp(record.created)
 
-        # Das Standardformat des logging-Moduls für asctime ist '%Y-%m-%d %H:%M:%S,f'
-        # Hier formatieren wir nur den H:M:S Teil und fügen die Millisekunden an
+        # "The standard log format for asctime is '%Y-%m-%d %H:%M:%S,f'."
         time_str_without_msecs = dt_object.strftime("%H:%M:%S")
 
         milliseconds = int(record.msecs)
-        # Die 03d sorgt dafür, dass die Millisekunden immer dreistellig sind (z.B. 001, 010, 123)
+        # "The 03d ensures that milliseconds are always three digits long (e.g. 001, 010, 123)"
         formatted_time = f"{time_str_without_msecs},{milliseconds:03d}"
 
         return formatted_time
@@ -154,9 +160,11 @@ class DynamicSettings:
 
     def reload_settings(self, force=False):
         # config/dynamic_settings.py:44
-        logger.info(f"⚙ dynamic_settings.py:reload_settings():44 ⛯ DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
-        print(f"⚙ dynamic_settings.py:reload_settings():44 ⛯ DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
+        logger.info(f"⚙ dynamic_settings.py:reload_settings():163 ⛯ DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
+        print(f"⚙ dynamic_settings.py:reload_settings():163 ⛯ DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
 
+        # if DEV_MODE:
+        # speak_fallback('reload_settings: hello world from dynamic_settings')
 
         # if settings.DEV_MODE:
         #     print("DEBUG: reload_settings called.")
@@ -308,6 +316,76 @@ class DynamicSettings:
                     setattr(self, 'PLUGINS_ENABLED', resolved_plugins_config)
                     if settings.DEV_MODE:
                         print("DEBUG: PLUGINS_ENABLED has been updated with resolved statuses.")
+
+                        speak_fallback('reload_settings: updated with resolved statuses')
+
+
+def convert_lang_code_for_espeak(long_code: str) -> str:
+    if not isinstance(long_code, str):
+        return 'en'
+    # 'de-DE' -> 'de'
+    # 'en_US' -> 'en'
+    # 'pt-BR' -> 'pt'
+    # 'de'    -> 'de'
+    short_code = long_code.split('-')[0].split('_')[0].lower()
+    return short_code
+
+
+def speak_fallback(text_to_speak, language_code="en-US"):
+    """TTS helper for plugins"""
+    # if not settings.PLUGIN_HELPER_TTS_ENABLED:
+    #     return  # Silent mode
+    """
+    - Linux: espeak 
+    - Windows: PowerShell (SAPI)
+    - macOS: say
+    """
+
+    command = []
+    platform_name = ""
+
+    if sys.platform.startswith('linux'):
+        platform_name = "🐧Linux (espeak)"
+        espeak_voice = convert_lang_code_for_espeak(language_code)
+        command = [
+            'espeak',
+            '-v', espeak_voice,
+            '-a', str(settings.ESPEAK_FALLBACK_AMPLITUDE),
+            text_to_speak
+        ]
+    elif sys.platform == 'win32':
+        platform_name = "🪟Windows (PowerShell TTS)"
+        clean_text = text_to_speak.replace("'", "''")
+        ps_command = f"Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{clean_text}')"
+        command = ['powershell', '-Command', ps_command]
+    elif sys.platform == 'darwin':  # macOS
+        platform_name = "🍏macOS (say)"
+        command = ['say', text_to_speak]
+    else:
+        logger.warning(f"no TTS-Fallback  '{sys.platform}' .")
+        return
+
+    def run_command():
+        try:
+            subprocess.Popen(
+                command,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+            # logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}...' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
+        except FileNotFoundError:
+            logger.info(f"fallback fouled '{command[0]}' no found. platform_name:{platform_name}")
+        except Exception as e:
+            logger.info(f" {e}")
+
+    thread = threading.Thread(target=run_command)
+    thread.daemon = True
+    thread.start()
+
+
 
 
 settings = DynamicSettings() # noqa: F811
