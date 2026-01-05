@@ -6,7 +6,6 @@ pydantic==2.12.5
 pygame==2.6.1
 python-dotenv==1.2.1
 pyzipper==0.3.6
-pyperclip
 sounddevice==0.5.2
 streamlit==1.52.0
 thefuzz==0.22.1
@@ -24,5 +23,7 @@ pycaw==20240210; sys_platform == 'win32'
 wikipedia-api
 bs4
 nltk
+pyperclip
 cologne_phonetics
+jellyfish
 
