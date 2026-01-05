@@ -105,6 +105,10 @@ echo "pycaw==20240210; sys_platform == 'win32'" >> requirements.txt
 echo "wikipedia-api" >> requirements.txt
 echo "bs4" >> requirements.txt
 
+echo "pyperclip" >> requirements.txt
+echo "cologne_phonetics" >> requirements.txt
+echo "jellyfish" >> requirements.txt
+
 # -----------------------------------------------------------------------------
 # 5. CLEANUP
 # -----------------------------------------------------------------------------
