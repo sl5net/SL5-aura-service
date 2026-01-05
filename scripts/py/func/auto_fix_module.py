@@ -13,6 +13,12 @@ def try_auto_fix_module(file_path, exception_obj, logger):
     if not os.path.exists(file_path):
         return False
 
+
+    # FIX: Only allow specific map filenames
+    filename = os.path.basename(file_path)
+    if filename not in ["FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
+        return False    
+
     error_msg = str(exception_obj)
 
     # Prüfen auf NameError: "name 'lauffe' is not defined"
