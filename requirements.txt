@@ -22,3 +22,4 @@ comtypes==1.4.11; sys_platform == 'win32'
 pycaw==20240210; sys_platform == 'win32'
 wikipedia-api
 bs4
+nltk
