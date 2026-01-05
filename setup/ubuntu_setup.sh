@@ -73,7 +73,8 @@ if [ "$JAVA_OK" -eq 0 ]; then
 fi
 echo "--> Installing other core dependencies..."
 sudo apt-get install -y \
-    inotify-tools wget unzip portaudio19-dev python3-pip
+    inotify-tools wget unzip portaudio19-dev python3-pip \
+    ffmpeg libnotify-bin xclip xvfb
 
 # --- 2. Python Virtual Environment ---
 # (This section remains unchanged)
