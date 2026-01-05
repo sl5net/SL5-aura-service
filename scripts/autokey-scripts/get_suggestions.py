@@ -28,7 +28,7 @@ home_dir = Path.home()
 command = f"{PROJECT_DIR}/.venv/bin/python {PROJECT_DIR}/get_suggestions.py"
 # clipboard.fill_clipboard(command)
 # {SCRIPT_DIR}/.venv/bin/python {SCRIPT_DIR}/get_suggestions.py
-# maus     Has Huns UAS Hulas Huts /home/seeh/.config/autokey/data/stt/autokey-scripts/.venv/bin/python /home/seeh/.config/autokey/data/stt/autokey-scripts/get_suggestions.py
+# maus     Has Huns UAS Hulas Huts .config/autokey/data/stt/autokey-scripts/.venv/bin/python ..autokey-scripts/get_suggestions.py
 system.exec_command(command)
 
 # Haus ( aus | hass | hatz | hausse | ass )

@@ -157,7 +157,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
 
     settings = DynamicSettings()
     #
-    # SRC = Path("") # SRC = Path("/home/seeh/projects/py/STT/config/settings_local.py")
+    # SRC = Path("") # SRC = Path(" ... config/settings_local.py")
     # BACKUP_PREFIX = "backup_"
     #
     # def backup_file(src: Path, prefix: str = BACKUP_PREFIX) -> Path:
@@ -215,7 +215,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
         ('good nigt Mum', 'Good night Mum', 'Funny useless rule ;) just for testing',
          'en-US'),
 
-        # ﻿good evening dead ﻿Good evening them ﻿Good evening ought to get
+        # good evening dead Good evening them Good evening ought to get
 
         ('thousand dollars.', '1000 dollars.', 'Number with unit',
          'en-US'),

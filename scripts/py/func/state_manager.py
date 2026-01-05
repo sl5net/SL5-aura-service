@@ -18,7 +18,7 @@ def should_trigger_startup(modname_str):
     lock_dir = get_lock_dir()
 
     # Ensure consistent naming without object-repr strings
-    # <module 'config_maps_plugins_standard_actions_count_loud_de-DE_count_loud' from '_home_seeh_projects_py_STT_config_maps_plugins_standard_actions_count_loud_de-DE_count_loud_py'>_19449.lock
+    # <module 'config_maps_plugins_standard_actions_count_loud_de-DE_count_loud' from ' _config_maps_plugins_standard_actions_count_loud_de-DE_count_loud_py'>_19449.lock
     safe_name = str(modname_str).replace(".", "_").replace("/", "_")
     # safe_name = str(modname_str).replace(".", "_").replace("/", "_").replace("\\", "_")
     session_file = lock_dir / f"{safe_name}_{pid}.lock"
