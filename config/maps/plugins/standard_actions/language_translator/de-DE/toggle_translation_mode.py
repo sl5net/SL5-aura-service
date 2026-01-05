@@ -3,6 +3,7 @@
 import sys
 from pathlib import Path
 import subprocess
+import re
 
 """
     Vorteile:
@@ -104,14 +105,17 @@ def execute(match_data):
             new_state = 'off'
             feedback_message = "translation mode is switched off (übersetzung modus wird ausgeschaltet')"
             # Die Zeile auskommentieren
-            lines[rule_line_index] = '#' + lines[rule_line_index]
+            # lines[rule_line_index] = '#' + lines[rule_line_index]
+            lines[rule_line_index] = re.sub(r'^(\s*)(.*)', r'\1#\2', lines[rule_line_index])
         else: # current_state is 'off'
             new_state = 'on'
             print("new_state:", new_state)
             feedback_message = "translation mode is switched on (übersetzung modus wird eingeschaltet')"
             # Die Zeile einkommentieren (entferne führende '#' und Leerzeichen)
             #lines[rule_line_index] = lines[rule_line_index].lstrip('# ')
-            lines[rule_line_index] = lines[rule_line_index].lstrip('#')
+            # lines[rule_line_index] = lines[rule_line_index].lstrip('#')
+            lines[rule_line_index] = lines[rule_line_index].replace('#', '', 1)
+
 
 
         # write back to the file
@@ -135,5 +139,4 @@ def execute(match_data):
     except Exception as e:
         error_msg = f"Ein Fehler ist aufgetreten: {e}"
         print(error_msg, file=sys.stderr)
-        speak("Es gab einen Fehler beim Ändern der Konfiguration.")
-
+        speak(f"Es gab einen Fehler beim Ändern der Konfiguration. {e}")
