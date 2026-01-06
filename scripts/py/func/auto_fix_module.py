@@ -1,6 +1,9 @@
 import os
 import re
 
+from pygments.styles.dracula import comment
+
+
 def try_auto_fix_module(file_path, exception_obj, logger):
     """
     Versucht, Syntaxfehler in Map-Dateien automatisch zu beheben.
@@ -101,7 +104,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
 
         # has_var_def = "PUNCTUATION_MAP = [" if "PUNCTUATION_MAP" in filename else "]" if "PUNCTUATION_MAP" in filename else ""
         if "PUNCTUATION_MAP" in filename:
-            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*\(", line) for line in lines[:10])
+            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*" + r"\{", line) for line in lines[:10])
         else:
             has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*\[", line) for line in lines[:10])
 
@@ -119,10 +122,13 @@ def _apply_fix_name_error(file_path, bad_name, logger):
         needs_closing_bracket = False
 
         if not has_var_def:
-            logger.info(f"   -> Füge fehlende Listen-Definition hinzu: {target_var} = {open_bracket}")
-            # Wir fügen es nach den Headern (Index 0 und 1) ein
-            # Index 2 ist sicher, da wir oben Pfad und Import sichergestellt haben
-            lines.insert(2, f"\n{target_var} = {open_bracket}\n")
+            logger.info(f"   -> add Definition: {target_var} = {open_bracket}")
+            if 'PUNCTUATION_MAP' in filename:
+                comment2add = '# from->too'
+            else:
+                comment2add = '# too<-from'
+
+            lines.insert(2, f"\n{comment2add}\n{target_var} = {open_bracket}\n")
             fixed_content = True
             needs_closing_bracket = True
 

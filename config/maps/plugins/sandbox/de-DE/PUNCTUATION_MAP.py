@@ -1,10 +1,12 @@
-# config/maps/plugins/it-begriffe/de-DE/PUNCTUATION_MAP.py
-# file config/maps/plugins/it-begriffe/PUNCTUATION_MAP.py
-# German - Common, Mishearings
+# config/maps/plugins/sandbox/de-DE/PUNCTUATION_MAP.py
 
+
+# from->too
 PUNCTUATION_MAP = {
-
-# config/languagetool_server/maps/de-DE/PUNCTUATION_MAP.py
-
-
+    ('lehrwart', 'lehrwart2'),
+    ('oki', 'oki'),
+    ('machtnix', 'machtnix'),
+    ('endichgut', 'endichgut'),
+    ('jetzt', 'jetzt'),
+    ('super2', 'super2'),
 }

@@ -3,9 +3,6 @@
 # German - Common, Mishearings
 
 PUNCTUATION_MAP = {
-
-# config/languagetool_server/maps/de-DE/PUNCTUATION_MAP.py
-
     'one': '1', 'two': '2', 'three': '3', 'four': '4',
     'five': '5', 'six': '6', 'seven': '7', 'eight': '8', 'nine': '9',
     'ten': '10',
@@ -17,5 +14,4 @@ PUNCTUATION_MAP = {
     'zwanzig': '20', 'dreißig': '30', 'vierzig': '40', 'fünfzig': '50',
     'sechzig': '60', 'siebzig': '70', 'achtzig': '80', 'neunzig': '90',
     'hundert': '100', 'tausend': '1000', 'zweitausendvierundzwanzig':'2024'
-
 }

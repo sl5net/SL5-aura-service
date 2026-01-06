@@ -194,6 +194,10 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     test_cases = [
 
         # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected=f"{SPEECH_PAUSE_TIMEOUT_021}", context='proff if we can change settings 2026-0104-1435'),
+
+        #     ('lehrwart', 'leerworttest1'),
+        case(input_text='lehrwart', expected=f"leerworttest1", context='punctation map test', lang='de-DE'),
+
         case(input_text='->AUDIO_INPUT_DEVICE<-', expected=f"SYSTEM_DEFAULT", context='proff if we can change settings 2026-0104-1435'),
         # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected='7890', context='proff if we can change settings 2026-0104-1435'),
 

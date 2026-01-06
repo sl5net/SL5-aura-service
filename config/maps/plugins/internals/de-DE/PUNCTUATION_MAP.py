@@ -1,14 +1,7 @@
 # config/maps/plugins/internals/de-DE/PUNCTUATION_MAP.py
 # file config/languagetool_server/PUNCTUATION_MAP.py
 # German - Common, Mishearings
-
 PUNCTUATION_MAP = {
-
-# config/languagetool_server/maps/de-DE/PUNCTUATION_MAP.py
-
-# #   Sierra 12345678910 15 .
-    # druck
-
     'punkt': '.',
     'prunk': '.',
 

@@ -4,7 +4,4 @@
 
 PUNCTUATION_MAP = {
 
-# config/languagetool_server/maps/de-DE/PUNCTUATION_MAP.py
-
-
 }

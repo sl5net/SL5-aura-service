@@ -847,7 +847,7 @@ def process_text_in_background(logger,
 
         lang_code_predictions = ''
 
-        log4DEV(f"process_text_in_background.py:371 raw_text:{raw_text}", logger)
+        # log4DEV(f"process_text_in_background.py:850 raw_text:{raw_text}", logger)
 
         if len(raw_text) > 0:
             try:
@@ -894,16 +894,18 @@ def process_text_in_background(logger,
                 # lang_code_predictions = 'de'
                 exit(1)
 
-        # scripts/py/func/process_text_in_background.py:229
-        normalize_punctuation_changed_size = False
+        # scripts/py/func/process_text_in_background.py:898
+        normalize_punctuation_changed = False
         is_only_number = False
+        log4DEV(f"process_text_in_background.py:900 raw_text:{raw_text}", logger)
         processed_text, was_exact_match = normalize_punctuation(raw_text, GLOBAL_PUNCTUATION_MAP)
-        if len(processed_text) != len(raw_text):
-            normalize_punctuation_changed_size = True
+        # if len(processed_text) != len(raw_text):
+        if processed_text != raw_text:
+            normalize_punctuation_changed = True
             new_processed_text = processed_text
-            log4DEV(f"process_text_in_background.py:426 processed_text:{processed_text} ?? normalize_punctuation_changed_size:{normalize_punctuation_changed_size}", logger)
+            log4DEV(f"process_text_in_background.py:426 processed_text:{processed_text} ?? normalize_punctuation_changed_size:{normalize_punctuation_changed}", logger)
 
-        if normalize_punctuation_changed_size:
+        if normalize_punctuation_changed:
             processed_text = re.sub(r'(?<=\d)\s+(?=\d)', '', processed_text)
 
             is_only_number =  processed_text.isdigit()
@@ -916,7 +918,7 @@ def process_text_in_background(logger,
         result_languagetool = None
 
         log4DEV(
-            f"proces..:'{processed_text}' new..:'{new_processed_text}'",logger)
+            f"processed_text:'{processed_text}' new_processed_text:'{new_processed_text}'",logger)
 
         if not was_exact_match:
 
@@ -924,7 +926,7 @@ def process_text_in_background(logger,
 
             log4DEV(f"new_processed_text: {new_processed_text}"
                 f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
-                f" normalize_punctuation_changed_size={normalize_punctuation_changed_size}"
+                f" normalize_punctuation_changed_size={normalize_punctuation_changed}"
                 f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
                 f" regex_match_found_prev:{regex_match_found_prev}",logger)
 
@@ -946,7 +948,7 @@ def process_text_in_background(logger,
             log4DEV(f"new_processed_text: {new_processed_text}"
                 f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
                 f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
-                f" normalize_punctuation_changed_size={normalize_punctuation_changed_size}"
+                f" normalize_punctuation_changed_size={normalize_punctuation_changed}"
                 f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
                 f" regex_match_found_prev:{regex_match_found_prev}"
                 f" skip_list={skip_list}",logger)

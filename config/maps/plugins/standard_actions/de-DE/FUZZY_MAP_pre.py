@@ -163,6 +163,9 @@ FUZZY_MAP_pre = [
     # EXAMPLE: gemini
     # ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google
 
+    # google seminar
+    # googeln jimmy nein
+
     # EXAMPLE: gemini
     ('https://aistudio.google.com/prompts/new_chat', r'''(?ix)
     ^ (?:
@@ -171,6 +174,7 @@ FUZZY_MAP_pre = [
         (?:
             gemini[\s\w]* |
             studi[ao]\w* |
+            seminar |
             ein\ Studio | ein\ Stuhl |
             it\ studio | my\ style
             ge[hmw]\w* | gemini\ recht | \w*minarett |
@@ -179,7 +183,8 @@ FUZZY_MAP_pre = [
             dir\ bitte |
             termin\w* |
             b[\s-]?day |
-            grimmen\s*.*|grimmig|Germany|feminin|Gewinnern|gewinne|wieder|g bedeuten|gebe drei|gb daten|gewinn ein|gebe dein|kriminelle|gewitter|b day|g wie neu|coral gaming nein|geben innere|seminare|gemini ei|
+            jimmy\ nein |
+            grimmen\s*.*|grimmig|Germany|feminin|Gewinnern|gewinne|wieder|g bedeuten|gebe drei|gb daten|gewinn ein|gebe dein|kriminelle|gewitter|b day|g wie neu|coral gaming nein|geben innere|seminare|gemini\ ei|
             kapital | aviv | leicht | eingestuft | chapiteau | my\s+style | seminare | feminin | gemini\ ei
         )
     )
