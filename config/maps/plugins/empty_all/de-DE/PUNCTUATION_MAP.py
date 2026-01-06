@@ -1,10 +1,10 @@
 # config/maps/plugins/empty_all/de-DE/PUNCTUATION_MAP.py
-# file config/maps/plugins/it-begriffe/PUNCTUATION_MAP.py
-# German - Common, Mishearings
 
 PUNCTUATION_MAP = {
-
-# config/languagetool_server/maps/de-DE/PUNCTUATION_MAP.py
-
-
+    ('leerworttest1', 'leerworttest'),
+    ('leerworttest1', 'lehrwart'),
+    ('leerworttest1', 'Lea bohrt'),
+    ('leerworttest1', 'Lehrwart'),
+    ('leerworttest1', 'lea mort'),
 }
+

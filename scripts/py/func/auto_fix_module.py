@@ -16,7 +16,7 @@ def try_auto_fix_module(file_path, exception_obj, logger):
 
     # FIX: Only allow specific map filenames
     filename = os.path.basename(file_path)
-    if filename not in ["FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
+    if filename not in ["PUNCTUATION_MAP.py", "FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
         return False    
 
     error_msg = str(exception_obj)
@@ -33,6 +33,10 @@ def try_auto_fix_module(file_path, exception_obj, logger):
 
 
 def _apply_fix_name_error(file_path, bad_name, logger):
+    filename = os.path.basename(file_path)
+    # if filename not in ["PUNCTUATION_MAP.py", "FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
+    #     return False
+
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
@@ -71,7 +75,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
         # 4. Import prüfen (Zeile 2 muss 'import re' sein)
         # Wir schauen in die ersten 5 Zeilen.
         has_import = any("import re" in line for line in lines[:5])
-        if not has_import:
+        if not has_import and filename in ["FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
             # Nach dem Header (Zeile 0) einfügen
             lines.insert(1, "import re # noqa: F401\n")
             fixed_content = True
@@ -80,26 +84,49 @@ def _apply_fix_name_error(file_path, bad_name, logger):
 
         # 2. Import re
         has_import = any("import re" in line for line in lines[:5])
-        if not has_import:
+        if not has_import and filename in ["FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
             lines.insert(1, "import re # noqa: F401\n")
             fixed_content = True
 
         # --- NEU: LISTEN-DEFINITION (FUZZY_MAP = [) ---
         filename = os.path.basename(file_path)
-        target_var = "FUZZY_MAP_pre" if "_pre" in filename else "FUZZY_MAP"
+        # target_var = "FUZZY_MAP_pre" if "_pre" in filename else "PUNCTUATION_MAP" if "PUNCTUATION_MAP" in filename else "FUZZY_MAP"
+        target_var = "FUZZY_MAP_pre" if "_pre" in filename \
+            else "FUZZY_MAP" if "FUZZY_MAP" in filename \
+            else "PUNCTUATION_MAP" if "PUNCTUATION_MAP" in filename \
+            else ""
+
 
         # Prüfen, ob die Variable schon definiert wird
-        has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*\[", line) for line in lines[:10])
+
+        # has_var_def = "PUNCTUATION_MAP = [" if "PUNCTUATION_MAP" in filename else "]" if "PUNCTUATION_MAP" in filename else ""
+        if "PUNCTUATION_MAP" in filename:
+            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*\(", line) for line in lines[:10])
+        else:
+            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*\[", line) for line in lines[:10])
+
+        if 'PUNCTUATION_MAP' in filename:
+            open_bracket = '{'
+        else:
+            open_bracket = '{'
+
+        if 'PUNCTUATION_MAP' in filename:
+            closing_bracket = '}'
+        else:
+            closing_bracket = ']'
+
 
         needs_closing_bracket = False
 
         if not has_var_def:
-            logger.info(f"   -> Füge fehlende Listen-Definition hinzu: {target_var} = [")
+            logger.info(f"   -> Füge fehlende Listen-Definition hinzu: {target_var} = {open_bracket}")
             # Wir fügen es nach den Headern (Index 0 und 1) ein
             # Index 2 ist sicher, da wir oben Pfad und Import sichergestellt haben
-            lines.insert(2, f"\n{target_var} = [\n")
+            lines.insert(2, f"\n{target_var} = {open_bracket}\n")
             fixed_content = True
             needs_closing_bracket = True
+
+
 
         # --- HAUPTSCHLEIFE (Inhalt fixen) ---
         for line in lines:
@@ -116,7 +143,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
                 if not indent: indent = '    '
 
                 # FALL 1: Singleton (nur 'lauffe')
-                clean_core = code_part.replace(',', '').replace("'", "").replace('"', "").replace('(', "").replace(')',
+                clean_core = code_part.replace(',', '').replace("'", "").replace('"', "").replace(open_bracket, "").replace(')',
                                                                                                                    "").strip()
                 if clean_core == bad_name:
                     line = f"{indent}('{bad_name}', '{bad_name}'),{comment}\n"
@@ -131,14 +158,15 @@ def _apply_fix_name_error(file_path, bad_name, logger):
                 current_text = re.sub(pattern, f"'{bad_name}'", code_part)
 
                 needs_fix = False
-                if not current_text.startswith('('):
-                    current_text = "(" + current_text
+
+                if not current_text.startswith(open_bracket):
+                    current_text = open_bracket + current_text
                     needs_fix = True
                 if not current_text.endswith(','):
                     current_text += ","
                     needs_fix = True
                 if not current_text.endswith('),'):
-                    current_text = current_text[:-1] + "),"
+                    current_text = current_text[:-1] + closing_bracket +  ","
                     needs_fix = True
 
                 if needs_fix or current_text != code_part:
@@ -151,12 +179,13 @@ def _apply_fix_name_error(file_path, bad_name, logger):
         # --- NEU: KLAMMER SCHLIESSEN ] ---
         # Wenn wir oben die Liste geöffnet haben, müssen wir sie unten schließen,
         # sonst gibt es SyntaxError: unexpected EOF
+
         if needs_closing_bracket:
             # Prüfen, ob die letzte Zeile schon eine Klammer ist
             last_line_clean = new_lines[-1].strip() if new_lines else ""
-            if last_line_clean != "]":
-                new_lines.append("]\n")
-                logger.info("   -> Füge schließende Klammer ] hinzu.")
+            if last_line_clean != closing_bracket:
+                new_lines.append(f"{closing_bracket}\n")
+                logger.info("   -> Füge schließende Klammer ] or ) hinzu.")
 
         if fixed_content:
             with open(file_path, 'w', encoding='utf-8') as f:
