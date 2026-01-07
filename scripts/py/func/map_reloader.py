@@ -53,6 +53,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
             if map_file_path.name == "__init__":
                 continue
 
+
             # Security Check: Prevent loading of private maps (starting with _) in API mode
             # This checks ANY part of the path relative to maps_base_dir
             # func/map_reloader.py:54: auto_reload_modified_maps(logger,run_mode_override)
@@ -147,8 +148,21 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     _trigger_upstream_hooks(map_file_path, project_root, logger)
                     # --- NEW CODE END ---
 
+                except (NameError, SyntaxError) as e:
+                    logger.error(f"151:🚨 Error Import: {e}")
+                    was_fixed = try_auto_fix_module(relative_path, e, logger)
+                    if was_fixed:
+                        logger.info("🔧 Fix successful. Reload...")
+                        try:
+                            importlib.invalidate_caches()
+                            module = importlib.import_module(module_name)
+                            importlib.reload(module)
+                            logger.info(f"✅ Reload successful: {module_name}")
+                        except Exception as retry_error:
+                            logger.error(f"❌ Fix failed: {retry_error}")
 
 
+                # scripts/py/func/map_reloader.py:151
                 except Exception as e:
                     # -------------------------------------------------------
                     # EXCEPTION HANDLER -> PRIVATE MAP CHECK
@@ -365,9 +379,10 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                             logger.info(f"ℹ️ Ignoring non-importable file: {module_name}")
                         continue
 
-                    except NameError as e:
-                        # Fängt spezifisch "name '...' is not defined"
-                        logger.error(f"🚨 NameError beim Import: {e}")
+                    # scripts/py/func/map_reloader.py:368
+                    except (NameError, SyntaxError, Exception) as e:
+                        logger.error(f"🚨 Error Import: {e}")
+                        logger.info(f"🚨 Error Import: {e}")
 
                         was_fixed = try_auto_fix_module(file_path, e, logger)
 

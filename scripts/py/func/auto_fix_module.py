@@ -14,12 +14,14 @@ def try_auto_fix_module(file_path, exception_obj, logger):
       2. Wandelt das unbekannte Wort in ein Tupel ('wort', 'wort'), um.
     """
     if not os.path.exists(file_path):
+        logger.info(f"{file_path} not found  -> return False")
         return False
 
 
     # FIX: Only allow specific map filenames
     filename = os.path.basename(file_path)
     if filename not in ["PUNCTUATION_MAP.py", "FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
+        logger.info(f"{filename} not found  -> return False")
         return False    
 
     error_msg = str(exception_obj)
@@ -31,7 +33,10 @@ def try_auto_fix_module(file_path, exception_obj, logger):
             bad_name = match.group(1)
             logger.info(f"Auto-Fix: NameError für '{bad_name}' erkannt. Repariere Datei...")
             return _apply_fix_name_error(file_path, bad_name, logger)
+    else:
+        _apply_fix_name_error(file_path, None, logger)
 
+    logger.info(f"{filename} -> return False")
     return False
 
 
@@ -39,6 +44,8 @@ def _apply_fix_name_error(file_path, bad_name, logger):
     filename = os.path.basename(file_path)
     # if filename not in ["PUNCTUATION_MAP.py", "FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
     #     return False
+
+    logger.info(f"def _apply_fix_name_error( '{filename}' {bad_name} ...")
 
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -133,54 +140,27 @@ def _apply_fix_name_error(file_path, bad_name, logger):
             needs_closing_bracket = True
 
 
-
+        # scripts/py/func/auto_fix_module.py:136
         # --- HAUPTSCHLEIFE (Inhalt fixen) ---
+            # scripts/py/func/auto_fix_module.py
         for line in lines:
             original_line = line
+            # Erkennt Wörter am Zeilenanfang (auch ohne Komma)
+            match = re.search(r"^\s*(?P<name>[a-zA-Z_]\w*)\s*,?\s*(?P<comment>#.*)?$", line)
 
-            if re.search(r'\b' + re.escape(bad_name) + r'\b', line):
-                stripped = line.strip()
-                code_part = stripped.split('#')[0].strip()
-                # comment = ""
-                if "#" in stripped: comment = "  #" + stripped.split('#', 1)[1]
+            # Falls ein "nacktes" Wort gefunden wurde (und es nicht die Map-Variable ist)
+            if match and match.group('name') not in [target_var, 'import', 're', 'True', 'False']:
+                current_word = match.group('name')
+                indent = line[:len(line) - len(line.lstrip())] or '    '
+                comment = "  " + match.group('comment') if match.group('comment') else ""
 
-                # Indent holen (oder Default 4)
-                indent = line[:len(line) - len(line.lstrip())]
-                if not indent: indent = '    '
-
-                # FALL 1: Singleton (nur 'lauffe')
-                clean_core = code_part.replace(',', '').replace("'", "").replace('"', "").replace(open_bracket, "").replace(')',
-                                                                                                                   "").strip()
-                if clean_core == bad_name:
-                    line = f"{indent}('{bad_name}', '{bad_name}'),{comment}\n"
-                    if line != original_line:
-                        logger.info(f"   -> Auto-Fix (Singleton): {stripped} => {line.strip()}")
-                        new_lines.append(line)
-                        fixed_content = True
-                        continue
-
-                # FALL 2: Struktur fixen
-                pattern = r"(?<!['\"])\b" + re.escape(bad_name) + r"\b(?!['\"])"
-                current_text = re.sub(pattern, f"'{bad_name}'", code_part)
-
-                needs_fix = False
-
-                if not current_text.startswith(open_bracket):
-                    current_text = open_bracket + current_text
-                    needs_fix = True
-                if not current_text.endswith(','):
-                    current_text += ","
-                    needs_fix = True
-                if not current_text.endswith('),'):
-                    current_text = current_text[:-1] + closing_bracket +  ","
-                    needs_fix = True
-
-                if needs_fix or current_text != code_part:
-                    line = f"{indent}{current_text}{comment}\n"
-                    logger.info(f"   -> Auto-Fix (Struktur): {stripped} => {line.strip()}")
-                    fixed_content = True
+                # Fix: In ('word', 'word'), konvertieren
+                line = f"{indent}('{current_word}', '{current_word}'),{comment}\n"
+                logger.info(f"   -> Bulk-Fix: {original_line.strip()} => {line.strip()}")
+                fixed_content = True
 
             new_lines.append(line)
+
 
         # --- NEU: KLAMMER SCHLIESSEN ] ---
         # Wenn wir oben die Liste geöffnet haben, müssen wir sie unten schließen,

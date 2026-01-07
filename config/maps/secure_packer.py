@@ -4,7 +4,8 @@
 
 import logging
 from pathlib import Path
-from config.dynamic_settings import settings
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
 
 # Import the new library
 from scripts.py.func import secure_packer_lib

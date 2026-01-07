@@ -25,7 +25,7 @@ from thefuzz import fuzz
 from .notify import notify
 
 
-from .config.dynamic_settings import DynamicSettings
+from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 settings = DynamicSettings()
 
@@ -463,6 +463,8 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
                 except Exception as retry_err:
                     logger.error(f"❌ Reload gescheitert: {retry_err}")
+                    logger.info(f"❌ Reload gescheitert: {retry_err}")
+                    log4DEV(f"❌ Reload gescheitert: {retry_err}")
             # --- AUTO-FIX ENDE ---
 
 
