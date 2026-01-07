@@ -214,12 +214,14 @@ def main():
     # NEU: 1. Argument-Parser MUSS ZUERST SEIN
     # ----------------------------------------------------
     parser = argparse.ArgumentParser(description="Download and verify assets from a GitHub release.")
-    parser.add_argument("--exclude", type=str, default="",
+    parser.add_argument("--exclude", type=str, narg='?', default="",
                         help="Comma-separated list of language codes to exclude (e.g., 'de,en') or 'all'.")
     args = parser.parse_args()
 
     # Sprache(n) auslesen und in eine Liste konvertieren
-    exclude_list = [item.strip().lower() for item in args.exclude.split(',')] if args.exclude else []
+    exclude_list = [x.strip().lower() for x in args.exclude.split(',')] if args.exclude else []
+
+    # exclude_list = [x.strip().lower() for x in args.exclude.split(',') if x.strip()]
 
     print(f"============================================")
     print(f"============================================")
