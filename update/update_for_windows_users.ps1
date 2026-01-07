@@ -54,7 +54,7 @@ try {
 
     }
     # 6. Create a final batch script to perform the file replacement and update dependencies
-    $installerName = "windows11_setup.bat"
+    $installerName = "setup\windows11_setup.bat"
 
     $batchScript = @'
 @echo off
