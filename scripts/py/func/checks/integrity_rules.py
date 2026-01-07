@@ -51,6 +51,11 @@ INTEGRITY_CHECKS = {
         "fasttext==0.9.3; sys_platform != 'win32'",
     ],
 
+    'tools/download_all_packages.py': [
+        "narg='*'",
+        'default=""',
+    ],
+
 #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
 #         'logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")',
 #         'logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")',

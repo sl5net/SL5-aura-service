@@ -1,7 +1,7 @@
 import os
 import re
 
-from pygments.styles.dracula import comment
+# from pygments.styles.dracula import comment
 
 
 def try_auto_fix_module(file_path, exception_obj, logger):
@@ -141,7 +141,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
             if re.search(r'\b' + re.escape(bad_name) + r'\b', line):
                 stripped = line.strip()
                 code_part = stripped.split('#')[0].strip()
-                comment = ""
+                # comment = ""
                 if "#" in stripped: comment = "  #" + stripped.split('#', 1)[1]
 
                 # Indent holen (oder Default 4)
