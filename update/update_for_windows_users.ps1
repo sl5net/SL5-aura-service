@@ -54,8 +54,7 @@ try {
 
     }
     # 6. Create a final batch script to perform the file replacement and update dependencies
-    # WICHTIG: Ersetze 'install.bat' durch den echten Namen deiner Installations-Datei!
-    $installerName = "install.bat"
+    $installerName = "windows11_setup.bat"
 
     $batchScript = @'
 @echo off
@@ -78,12 +77,25 @@ if exist "{2}" (
     echo Starting installer script...
     call "{2}"
 ) else (
+
+    color 4f
+    echo.
+    echo ===================================================
+    echo FATAL ERROR: SETUP SCRIPT NOT FOUND!
+    echo Expected: {2} in %CD%
+    echo ===================================================
+
     echo WARNING: "{2}" not found. Trying manual pip upgrade...
     :: Fallback, falls keine install.bat da ist:
     if exist ".venv\Scripts\activate.bat" (
         call .venv\Scripts\activate.bat
         python.exe -m pip install --upgrade pip
         pip install -r requirements.txt
+        color 07
+    ) else (
+        echo The update cannot proceed. Please verify the filename.
+        pause
+        exit /b 1
     )
 )
 
