@@ -118,7 +118,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
         if 'PUNCTUATION_MAP' in filename:
             open_bracket = '{'
         else:
-            open_bracket = '{'
+            open_bracket = '['
 
         if 'PUNCTUATION_MAP' in filename:
             closing_bracket = '}'
