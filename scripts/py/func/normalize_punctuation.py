@@ -11,7 +11,7 @@ settings = DynamicSettings()
 
 
 def normalize_punctuation(text: str, punctuation_map: dict, logger2) -> Tuple[str, bool]:
-    global settings
+    global settings # noqa: F824
     log4DEV(f'📍 START normalize_punctuation: "{text}"', logger2)
 
     if not punctuation_map:

@@ -150,6 +150,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                 except (NameError, SyntaxError) as e:
                     logger.error(f"151:🚨 Error Import: {e}")
+                    logger.error(f"151: {module_name}")
+                    logger.error(f"151: {relative_path}")
                     was_fixed = try_auto_fix_module(relative_path, e, logger)
                     if was_fixed:
                         logger.info("🔧 Fix successful. Reload...")

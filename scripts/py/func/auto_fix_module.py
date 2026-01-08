@@ -111,9 +111,9 @@ def _apply_fix_name_error(file_path, bad_name, logger):
 
         # has_var_def = "PUNCTUATION_MAP = [" if "PUNCTUATION_MAP" in filename else "]" if "PUNCTUATION_MAP" in filename else ""
         if "PUNCTUATION_MAP" in filename:
-            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*" + r"\{", line) for line in lines[:10])
+            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*" + r"\{", line) for line in lines[:70])
         else:
-            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*\[", line) for line in lines[:10])
+            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*\[", line) for line in lines[:70])
 
         if 'PUNCTUATION_MAP' in filename:
             open_bracket = '{'

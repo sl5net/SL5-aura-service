@@ -10,6 +10,8 @@ current_user,_ = determine_current_user()
 print(f'hi, hallo, welcome: {current_user}')
 
 current_user = str(current_user)
+user_name = current_user
+USER_NAME = current_user
 # logger.info("Current user successfully determined in a cross-platform manner.") # Add logger import if needed
 
 # Set to True to disable certain production checks for local development,
@@ -104,7 +106,6 @@ show_PLUGINS_ENABLED = True
 PLUGINS_ENABLED = {
     "standard_actions/wikipedia_local": False,
     "standard_actions/count_loud": False,
-    "game/": False,
     "game": False,
 }
 # count_loud▉

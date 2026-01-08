@@ -114,6 +114,17 @@ PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+    project_root = PROJECT_ROOT
+    sys.path.append(str(project_root))
+
+from config import settings
+
+
+
+
+
+
+
 # We add the 'scripts' directory to the path to import our custom validator.
 
 # sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
