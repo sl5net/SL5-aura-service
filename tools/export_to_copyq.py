@@ -14,6 +14,8 @@ import re
 import sys
 import shutil
 import subprocess
+from pathlib import Path
+
 
 import importlib.util
 
@@ -23,7 +25,14 @@ import importlib.util
 # KONFIGURATION
 # -----------------------------------------------------------------------------
 COPYQ_TAB_NAME = "SL5-Demo"
+
+COPYQ_PATH_TAB_NAME = "SL5-Paths"
+
 TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
 MAPS_DIR = os.path.join(TOOL_DIR, "..", "config", "maps")
 TARGET_FILES = ["FUZZY_MAP.py", "FUZZY_MAP_pre.py"]
 
@@ -84,6 +93,7 @@ except Exception as e:
 # -----------------------------------------------------------------------------
 def collect_examples():
     examples = {} # Dictionary: Content -> List of Tags (Ordered)
+    active_paths = []
     total_tags_found = 0
     plugins_enabled = load_plugins_config()
 
@@ -125,6 +135,8 @@ def collect_examples():
         for file in files:
             if file in TARGET_FILES:
                 file_path = os.path.join(root, file)
+                clean_rel_path = os.path.relpath(file_path, PROJECT_ROOT)
+                active_paths.append(clean_rel_path)
                 file_count += 1
                 try:
                     with open(file_path, 'r', encoding='utf-8') as f:
@@ -143,8 +155,8 @@ def collect_examples():
                                         if tag not in examples[content]:
                                             examples[content].append(tag)
 
-                except Exception as e:
-                    print(f"logger.info: Warning at {file}: {e}")
+                except Exception as e202601081103:
+                    print(f"logger.info: Warning at {file}: {e202601081103}")
 
     result_list = []
     for text in sorted(examples.keys()):
@@ -160,11 +172,12 @@ def collect_examples():
     print(f"  - Entries found: {total_tags_found}")
     print(f"  - Unique entries: {len(result_list)}")
 
-    return result_list
+    return result_list, active_paths
 
 
 def collect_examples_old_with_random_order():
     examples = {} # Dictionary: Content -> Set of Tags
+    active_paths = [] # Neu: Liste für Pfade
     total_tags_found = 0
     plugins_enabled = load_plugins_config()
 
@@ -214,6 +227,7 @@ def collect_examples_old_with_random_order():
         for file in files:
             if file in TARGET_FILES:
                 file_path = os.path.join(root, file)
+                active_paths.append(os.path.abspath(file_path)) # Pfad speichern
                 file_count += 1
                 try:
                     with open(file_path, 'r', encoding='utf-8') as f:
@@ -245,30 +259,28 @@ def collect_examples_old_with_random_order():
     print(f"  - Entries found: {total_tags_found}")
     print(f"  - Unique entries: {len(result_list)} (Duplicates merged)")
 
-    return result_list
+    return result_list, active_paths
 
 # -----------------------------------------------------------------------------
 # COPYQ EXPORT
 # -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-# COPYQ EXPORT
-# -----------------------------------------------------------------------------
-def export_to_copyq(items):
+
+def export_to_copyq(items, tab_name):
     if not items:
         print("logger.info: No examples found.")
         return
 
-    print(f"logger.info: Resetting tab '{COPYQ_TAB_NAME}' ...")
+    print(f"logger.info: Resetting tab '{tab_name}' ...")
     try:
-        subprocess.run(["copyq", "removetab", COPYQ_TAB_NAME], check=False, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(["copyq", "removetab", tab_name], check=False, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:
         pass
 
-    print(f"logger.info: Creating/Switching to Tab '{COPYQ_TAB_NAME}' ...")
-    subprocess.run(["copyq", "tab", COPYQ_TAB_NAME], check=True, env=env)
+    print(f"logger.info: Creating/Switching to Tab '{tab_name}' ...")
+    subprocess.run(["copyq", "tab", tab_name], check=True, env=env)
 
     print("logger.info: Clearing old content ...")
-    subprocess.run(["copyq", "eval", f"tab('{COPYQ_TAB_NAME}'); if(size()>0) remove(0, size())"], check=True, env=env)
+    subprocess.run(["copyq", "eval", f"tab('{tab_name}'); if(size()>0) remove(0, size())"], check=True, env=env)
 
     print(f"logger.info: Importing {len(items)} examples ...")
 
@@ -283,7 +295,7 @@ def export_to_copyq(items):
         tags = item['tags']
 
         # Build the command: copyq tab NAME write text/plain "DATA" [application/x-copyq-tags "TAGS"]
-        cmd = ["copyq", "tab", COPYQ_TAB_NAME, "write", "text/plain", text]
+        cmd = ["copyq", "tab", tab_name, "write", "text/plain", text]
 
         if tags:
             tag_string = ", ".join(tags)
@@ -303,8 +315,11 @@ def export_to_copyq(items):
 # MAIN
 # -----------------------------------------------------------------------------
 if __name__ == "__main__":
-    data = collect_examples()
+    data, paths = collect_examples()
     # To make it readable A->Z in CopyQ, we insert Z->A (since CopyQ is a stack).
     # We reverse the entire list.
     data.reverse()
-    export_to_copyq(data)
+    export_to_copyq(data,COPYQ_TAB_NAME)
+
+    path_items = [{'text': p, 'tags': []} for p in sorted(paths, reverse=True)]
+    export_to_copyq(path_items, COPYQ_PATH_TAB_NAME)
