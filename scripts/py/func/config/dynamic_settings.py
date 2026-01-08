@@ -28,7 +28,7 @@ def is_plugin_enabled(hierarchical_key, plugins_config):
     """
 
     # Normalize: Convert dots to slashes to be error-tolerant
-    hierarchical_key = hierarchical_key.replace('.', '/')
+    # hierarchical_key = hierarchical_key.replace('.', '/')
     current_key_parts = hierarchical_key.split('/')
 
     for i in range(len(current_key_parts)):

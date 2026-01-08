@@ -89,7 +89,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: beiden wird hier in einem Virtual environment mitverwendet
     ('Python wird hier in einer Virtual environment verwendet', r'^(beiden wird hier in einem Virtual environment mitverwendet|Beiden wird hier in einer wird für den falle verwendet|Weiterhin wird hier in einem virtuell in bei mit verwendet|Halten wird jedwedem Witwe wird Weibe verwenden|titan wird hier in einem virtual in weibe verwendet|beiden wird hier in einem virtuell in wei mitverwendet)$', 75, {'flags': re.IGNORECASE}),
 
-
+    ('PyCharm', r'^sdf(\b)(bytes charme)(\b)$', 75, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: d fahl
     ('default', r'^(\b)(d fahl)(\b)$', 75, {'flags': re.IGNORECASE}),

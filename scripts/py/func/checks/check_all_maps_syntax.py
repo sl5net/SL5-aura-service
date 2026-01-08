@@ -1,5 +1,3 @@
-# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
-
 # scripts/py/func/checks/check_all_maps_syntax.py
 import os
 import sys

@@ -64,6 +64,12 @@ from scripts.py.func.config.dynamic_settings import settings
 #   ohhh. 16.12.'25 19:43 Tue i have forgot diesaber the log server. omg
 #   from tools.simple_log_server import readme
 
+from scripts.py.func.checks.check_settings_syntax import verify_plugin_notation
+
+verify_plugin_notation(settings.PLUGINS_ENABLED)
+
+
+
 
 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     # Check if the package is installed without actually importing it
