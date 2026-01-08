@@ -19,7 +19,20 @@ from pathlib import Path
 
 import importlib.util
 
+# tools/export_to_copyq.py
+import platform
 
+copyq_exe = "copyq"
+if platform.system() == "Windows":
+    # Typische Installationspfade prüfen
+    potential_paths = [
+        r"C:\Program Files\CopyQ\copyq.exe",
+        r"C:\Program Files (x86)\CopyQ\copyq.exe"
+    ]
+    for p in potential_paths:
+        if os.path.exists(p):
+            copyq_exe = p
+            break
 
 # -----------------------------------------------------------------------------
 # KONFIGURATION
@@ -68,8 +81,8 @@ def load_plugins_config():
 # -----------------------------------------------------------------------------
 # CHECK COPYQ & ENVIRONMENT
 # -----------------------------------------------------------------------------
-if not shutil.which("copyq"):
-    print("logger.info: Error: 'copyq' command not found.")
+if not shutil.which(copyq_exe):
+    print(f"logger.info: Error: '{copyq_exe}' command not found.")
     sys.exit(1)
 
 # Fix for Locale warnings (Qt needs UTF-8)
@@ -78,7 +91,7 @@ env["LANG"] = "C.UTF-8"
 env["LC_ALL"] = "C.UTF-8"
 
 try:
-    subprocess.run(["copyq", "version"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env)
+    subprocess.run([copyq_exe, "version"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env)
 except Exception as e:
     print("logger.info: Error: Is CopyQ running? Please start it.")
     sys.exit(1)
@@ -292,15 +305,15 @@ def export_to_copyq(items, tab_name):
 
     print(f"logger.info: Resetting tab '{tab_name}' ...")
     try:
-        subprocess.run(["copyq", "removetab", tab_name], check=False, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run([copyq_exe, "removetab", tab_name], check=False, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception:
         pass
 
     print(f"logger.info: Creating/Switching to Tab '{tab_name}' ...")
-    subprocess.run(["copyq", "tab", tab_name], check=True, env=env)
+    subprocess.run([copyq_exe, "tab", tab_name], check=True, env=env)
 
     print("logger.info: Clearing old content ...")
-    subprocess.run(["copyq", "eval", f"tab('{tab_name}'); if(size()>0) remove(0, size())"], check=True, env=env)
+    subprocess.run([copyq_exe, "eval", f"tab('{tab_name}'); if(size()>0) remove(0, size())"], check=True, env=env)
 
     print(f"logger.info: Importing {len(items)} examples ...")
 
@@ -315,7 +328,7 @@ def export_to_copyq(items, tab_name):
         tags = item['tags']
 
         # Build the command: copyq tab NAME write text/plain "DATA" [application/x-copyq-tags "TAGS"]
-        cmd = ["copyq", "tab", tab_name, "write", "text/plain", text]
+        cmd = [copyq_exe, "tab", tab_name, "write", "text/plain", text]
 
         if tags:
             tag_string = ", ".join(tags)
