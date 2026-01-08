@@ -176,6 +176,7 @@ FUZZY_MAP_pre = [
         (?:
             gemini[\s\w]* |
             g\ mine |
+            will\ gemini\ a |
             cheminée |
             studi[ao]\w* |
             seminar |
@@ -195,6 +196,8 @@ FUZZY_MAP_pre = [
     \b.*$
     '''
     , 70 ),
+
+
 
     # EXAMPLE: chat mit gemini
     ('https://aistudio.google.com/prompts/new_chat', r'^chat mit\s+(gemini|cheminée|Boot Gaming nein|chip|Kevin)\b.*$', 70, {

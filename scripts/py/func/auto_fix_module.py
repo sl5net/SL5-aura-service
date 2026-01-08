@@ -47,6 +47,12 @@ def _apply_fix_name_error(file_path, bad_name, logger):
 
     logger.info(f"def _apply_fix_name_error( '{filename}' {bad_name} ...")
 
+
+    # 1. Check file size (1KB = 1024 bytes)
+    if os.path.getsize(file_path) > 1024:
+        logger.info(f"Auto-fix skipped: {os.path.basename(file_path)} is too large (> 1KB).")
+        return False
+
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
@@ -111,9 +117,9 @@ def _apply_fix_name_error(file_path, bad_name, logger):
 
         # has_var_def = "PUNCTUATION_MAP = [" if "PUNCTUATION_MAP" in filename else "]" if "PUNCTUATION_MAP" in filename else ""
         if "PUNCTUATION_MAP" in filename:
-            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*" + r"\{", line) for line in lines[:70])
+            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*" + r"\{", line) for line in lines[:270])
         else:
-            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*\[", line) for line in lines[:70])
+            has_var_def = any(re.search(rf"^\s*{target_var}\s*=\s*\[", line) for line in lines[:270])
 
         if 'PUNCTUATION_MAP' in filename:
             open_bracket = '{'
@@ -154,11 +160,16 @@ def _apply_fix_name_error(file_path, bad_name, logger):
                 indent = line[:len(line) - len(line.lstrip())] or '    '
                 comment = "  " + match.group('comment') if match.group('comment') else ""
 
-                # Fix: In ('word', 'word'), konvertieren
+                # seperator = ':' if 'PUNCTUATION_MAP.py' in filename else ','
 
-                seperator = ':' if 'PUNCTUATION_MAP.py' in filename else ','
+                if 'PUNCTUATION_MAP.py' in filename:
+                    seperator = ':'
+                    line = f"{indent}'{current_word}'{seperator} '{current_word}',{comment}\n"
+                else:
+                    seperator = ','
+                    line = f"{indent}('{current_word}'{seperator} '{current_word}'),{comment}\n"
 
-                line = f"{indent}('{current_word}'{seperator} '{current_word}'),{comment}\n"
+                # line = f"{indent}('{current_word}'{seperator} '{current_word}'),{comment}\n"
                 logger.info(f"   -> Bulk-Fix: {original_line.strip()} => {line.strip()}")
                 fixed_content = True
 

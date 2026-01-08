@@ -11,6 +11,11 @@ Konfigurations-Koans
 *   **Aufgabe:** "Trage deinen eigenen Namen in die Variable `USER_NAME` ein."
 *   **Nutzen:** Plugins können dann Sätze schreiben wie "Mit freundlichen Grüßen, [Dein Name]".
 
+```py
+from config import settings
+user_name = getattr(settings, "USER_NAME", "[Name fehlt]")
+```
+
 ### 3. Koan 10: Geduld bitte! (Pausen-Zeiten)
 **Lerneffekt:** Die Spracherkennung an das eigene Sprechtempo anpassen.
 *   **Aufgabe:** "Erhöhe den `SPEECH_PAUSE_TIMEOUT`, damit Aura länger wartet, bevor sie deinen Satz verarbeitet."

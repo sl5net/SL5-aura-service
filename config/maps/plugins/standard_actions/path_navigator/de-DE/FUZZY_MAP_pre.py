@@ -1,6 +1,7 @@
-# config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
-
+# projects/py/STT/config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
+
+# too<-from
 # import os
 from pathlib import Path
 
@@ -95,7 +96,7 @@ if sys.platform.startswith('linux'):
     fzf_smart_file_finder = rf"""
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git ls-files --cached --others --exclude-standard
-else
+    ('else', 'else'),
     find . -type f
 fi | fzf --style full --preview 'cat {{}}' --bind 'focus:transform-header:file --brief {{}}' | {CLIPBOARD_COMMAND} -selection clipboard
 """
@@ -105,7 +106,7 @@ elif sys.platform == 'darwin':
     fzf_smart_file_finder = rf"""
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git ls-files
-else
+    ('else', 'else'),
   find . -type f
 fi | fzf --style full --preview 'cat {{}}' --bind 'focus:transform-header:file --brief {{}}' | {CLIPBOARD_COMMAND}
 """
@@ -308,5 +309,11 @@ FUZZY_MAP_pre = [
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # Skepsis
+
+    (f'{Path(PROJECT_ROOT_POSIX, 'config','maps','koans_deutsch').as_posix()}',
+    r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(könne|co eins)\s*(deutsch)\s*\w*$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),4
+
 
 ]

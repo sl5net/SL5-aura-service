@@ -2,11 +2,8 @@
 
 # from->too
 PUNCTUATION_MAP = {
-    ('nix', 'nix'),
-    ('asdf', 'asdf'),
-    ('asdf', 'asdf'),
-    ('asdf', 'asdf'),
-    ('wer', 'wer'),
-    ('gfd', 'gfd'),
-
+    'hallo': 'hallo',
+    'welt': 'welt',
+    'nix': 'nix',
+    'gut': 'gut',
 }

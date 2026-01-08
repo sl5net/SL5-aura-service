@@ -8,10 +8,7 @@ SERVICE_START_OPTION = 0
 
 current_user,_ = determine_current_user()
 print(f'hi, hallo, welcome: {current_user}')
-
-current_user = str(current_user)
-user_name = current_user
-USER_NAME = current_user
+current_user = user_name = USER_NAME = str(current_user) # fallbacks
 # logger.info("Current user successfully determined in a cross-platform manner.") # Add logger import if needed
 
 # Set to True to disable certain production checks for local development,
