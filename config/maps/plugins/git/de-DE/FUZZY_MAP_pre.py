@@ -27,6 +27,7 @@ FUZZY_MAP_pre = [
     #no-verifyno-verifyl --no-verifyNumeri fein
 
 
+    ('PUNCTUATION_MAP ', rf'\b(punkt chemnitz)\b', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),

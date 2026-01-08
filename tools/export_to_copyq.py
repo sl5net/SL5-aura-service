@@ -34,7 +34,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 MAPS_DIR = os.path.join(TOOL_DIR, "..", "config", "maps")
-TARGET_FILES = ["FUZZY_MAP.py", "FUZZY_MAP_pre.py"]
+TARGET_FILES = ["FUZZY_MAP.py", "FUZZY_MAP_pre.py", 'PUNCTUATION_MAP.py']
 
 SETTINGS_FILE = os.path.join(TOOL_DIR, "..", "config", "settings_local.py")
 
@@ -140,20 +140,40 @@ def collect_examples():
                 file_count += 1
                 try:
                     with open(file_path, 'r', encoding='utf-8') as f:
+                        # Vor der Schleife definieren:
+                        # Findet: ('gesprochen', 'geschrieben')
+                        regex_tuple = re.compile(r"^\s*\(\s*['\"]([^'\"]+)['\"]\s*,\s*['\"]([^'\"]+)['\"]\s*\)")
+
+
+                        # Innerhalb der with open(...) as f: Schleife:
                         for line in f:
-                            match = regex_example.search(line)
-                            if match:
-                                content = match.group(1).strip()
-                                if content:
-                                    total_tags_found += 1
+                            found_items = []
 
-                                    if content not in examples:
-                                        examples[content] = []
+                            match_ex = regex_example.search(line)
 
-                                    # Add tags preserving order and avoiding duplicates
-                                    for tag in current_tags:
-                                        if tag not in examples[content]:
-                                            examples[content].append(tag)
+                            f2 = os.path.basename(f.name)
+
+                            # print(f"{clean_rel_path} -> {line} -> {f2} ")
+                            # if not f2:
+                            #     print(f"error: {clean_rel_path} -> {line} -> {f2} ")
+                            #     sys.exit(1)
+
+                            if match_ex:
+                                found_items.append(match_ex.group(1).strip())
+                            elif f2 == "PUNCTUATION_MAP.py":
+                                # Findet alle 'keys' vor einem Doppelpunkt (auch mehrere pro Zeile)
+                                found_items.extend(re.findall(r"['\"]([^'\"]+)['\"]\s*:", line))
+
+                                # print(f"logger.info: Found {len(found_items)} items in {file_path}")
+                                # sys.exit(1)
+
+                            for content in found_items:
+                                total_tags_found += 1
+                                if content not in examples:
+                                    examples[content] = []
+                                for tag in current_tags:
+                                    if tag not in examples[content]:
+                                        examples[content].append(tag)
 
                 except Exception as e202601081103:
                     print(f"logger.info: Warning at {file}: {e202601081103}")

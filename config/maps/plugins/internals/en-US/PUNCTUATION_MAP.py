@@ -1,7 +1,6 @@
 # config/maps/plugins/internals/en-US/PUNCTUATION_MAP.py
-# file config/languagetool_server/maps/en-US/PUNCTUATION_MAP.py
+# EXAMPLE: test
 PUNCTUATION_MAP = {
-#
     # Lowercase
     'zero': '0', 'one': '1', 'two': '2', 'three': '3',
     'five': '5', 'six': '6', 'seven': '7', 'eight': '8', 'nine': '9',
