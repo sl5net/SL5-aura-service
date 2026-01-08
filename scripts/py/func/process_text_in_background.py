@@ -979,12 +979,8 @@ def process_text_in_background(logger,
                 f" and 📚📚'LanguageTool'📚📚 not in SkipList:{skip_list} "
                 f" and not ( ... {processed_text}",logger)
 
-            if (not regex_pre_is_replacing_all
-                and not is_only_number
-                and 'LanguageTool' not in skip_list
-                and not (
-                            settings.CORRECTIONS_ENABLED["git"]
-                            and ("git " in processed_text or " push" in processed_text))):
+            # scripts/py/func/process_text_in_background.py:982 def process_text_in_background(...
+            if (not regex_pre_is_replacing_all and not is_only_number and 'LanguageTool' not in skip_list ):
 
                 if new_processed_text ==0:
                     new_processed_text = processed_text
