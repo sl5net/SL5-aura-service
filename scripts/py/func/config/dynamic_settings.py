@@ -13,7 +13,7 @@ from threading import RLock
 project_root = Path(__file__).resolve().parents[4]
 
 from config import settings
-from config.settings_local import DEV_MODE
+from config.settings_local import DEV_MODE, DEV_MODE_all_processing
 # Get a logger instance instead of direct print statements for better control
 import logging
 
@@ -163,8 +163,12 @@ class DynamicSettings:
 
     def reload_settings(self, force=False):
         # config/dynamic_settings.py:44
-        logger.info(f"⚙ dynamic_settings.py:reload_settings():163 ⛯ DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
-        print(f"⚙ dynamic_settings.py:reload_settings():163 ⛯ DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
+        m = (f"⚙ dynamic_settings.py:reload_settings():163 ⛯ DEV_MODE={DEV_MODE}, "
+             f"settings.DEV_MODE = {settings.DEV_MODE}, "
+             f"DEV_MODE_all_processing = {DEV_MODE_all_processing}, "
+             f"settings.DEV_MODE_all_processing = {settings.DEV_MODE_all_processing}")
+        logger.info(m)
+        print(m)
 
         # if DEV_MODE:
         # speak_fallback('reload_settings: hello world from dynamic_settings')

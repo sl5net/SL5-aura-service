@@ -48,6 +48,7 @@ def scrape_and_format_verse(book_abbr, chapter, verse):
                 verse_text = verse_element.get_text(separator=' ', strip=True)
             else:
                 # 2nd fallback: try regex
+                # EXAMPLE: verse
                 match = re.search(rf'{verse}\s+(.*)', soup.text)
                 if match:
                     verse_text = match.group(1).strip()

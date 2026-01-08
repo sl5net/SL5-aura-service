@@ -204,10 +204,10 @@ Click in any text field, press your hotkey, and a "Listening..." notification wi
 You can customize the application's behavior by creating a local settings file.
 
 1.  Navigate to the `config/` directory.
-2.  Create a copy of `settings_local.py_Example.txt` and rename it to `settings_local.py`.
-3.  Edit `settings_local.py` to override any setting from the main `config/settings.py` file.
+2.  Create a copy of `config/settings_local.py_Example.txt` and rename it to `config/settings_local.py`.
+3.  Edit `config/settings_local.py` (it overrides any setting from the main `config/settings.py` file).
 
-This `settings_local.py` file is (maybe) ignored by Git, so your personal changes (maybe) won't be overwritten by updates.
+This `config/settings_local.py` file is (maybe) ignored by Git, so your personal changes (maybe) won't be overwritten by updates.
 
 ### Plug-in Structure and Logic
 

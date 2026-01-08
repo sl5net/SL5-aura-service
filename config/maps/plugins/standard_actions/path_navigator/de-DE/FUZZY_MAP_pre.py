@@ -236,6 +236,7 @@ FUZZY_MAP_pre = [
     #
 
     # bzopfig
+    # EXAMPLE: bzopfig b
     (f'config/', r'\bzopfig\b', 90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
@@ -251,6 +252,7 @@ FUZZY_MAP_pre = [
 
     # skiplist
     ("'skip_list': ['LanguageTool','fullMatchStop']",
+     # EXAMPLE: skip_list
      r'^(skip_list|skip_list|skip list|script bläst|lässt|script lässt|squibb lässt|es lässt|es gibt les|scribbles|es gibt list|es gibt bläst|script list|skype lässt|skype list|gpl list)$', 90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 

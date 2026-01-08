@@ -20,7 +20,7 @@ def renumber_text(raw_text: str) -> str:
     Removes existing line numbers and renumbers sequentially.
     """
     # Regex for "1: ", "  02:", etc.
-    # EXAMPLE: s 123 s
+    # EXAMPLE: 123 s
     line_number_pattern = re.compile(r"^\s*\d+:\s*")
 
     lines = raw_text.splitlines()

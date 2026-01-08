@@ -323,13 +323,6 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 
             log4DEV(f'##### {hierarchical_key} #######', logger)
-            log4DEV(f'##### {hierarchical_key} #######', logger)
-            log4DEV(f'##### {hierarchical_key} #######', logger)
-            log4DEV(f'##### {hierarchical_key} #######', logger)
-            log4DEV(f'##### {hierarchical_key} #######', logger)
-            log4DEV(f'##### {hierarchical_key} #######', logger)
-            log4DEV(f'##### {hierarchical_key} #######', logger)
-            log4DEV(hierarchical_key, logger)
             log4DEV(hierarchical_key, logger)
 
 
@@ -732,13 +725,16 @@ def process_text_in_background(logger,
         unmasked = False
         ):
     RUN_MODE = os.getenv('RUN_MODE')
+    global settings
+
     if RUN_MODE == "API_SERVICE" and unmasked is True:
         run_mode_override = "API_SERVICE_local"
         logger.info(f"616: temporary run_mode_override={run_mode_override} (unmasked request).")
     else:
         run_mode_override = RUN_MODE
-        # logger.info(f"run_mode_override={run_mode_override}.")
 
+        if settings.DEV_MODE_all_processing:
+            logger.info(f"📍run_mode_override={run_mode_override}.")
 
 
         # --- KRITISCHE SEQUENZPRÜFUNG AM ANFANG DER FUNKTION ---
@@ -790,6 +786,10 @@ def process_text_in_background(logger,
 
     # scripts/py/func/process_text_in_background.py:167
     new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger,run_mode_override)
+
+    if settings.DEV_MODE_all_processing:
+        logger.info(f"📍new_punctuation={new_punctuation}")
+        log4DEV(f"📍new_punctuation={new_punctuation}",logger)
 
     GLOBAL_PUNCTUATION_MAP = new_punctuation
     GLOBAL_FUZZY_MAP_PRE = new_fuzzy_pre
@@ -900,7 +900,7 @@ def process_text_in_background(logger,
         normalize_punctuation_changed = False
         is_only_number = False
         log4DEV(f"process_text_in_background.py:900 raw_text:{raw_text}", logger)
-        processed_text, was_exact_match = normalize_punctuation(raw_text, GLOBAL_PUNCTUATION_MAP)
+        processed_text, was_exact_match = normalize_punctuation(raw_text, GLOBAL_PUNCTUATION_MAP, logger)
         # if len(processed_text) != len(raw_text):
         if processed_text != raw_text:
             normalize_punctuation_changed = True

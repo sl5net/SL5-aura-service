@@ -11,6 +11,7 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
+# EXAMPLE: b wikipedia
 wikipedia = r"\s*\b(?:wikipedia|pedia|wiki|pedi|wik|pe|suche auf wikipedia nach)\b\s*"
 
 FUZZY_MAP_pre = [

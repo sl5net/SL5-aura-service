@@ -30,11 +30,11 @@ Suche in Ruth Kapitel 1 Vers 1
 ('bible suche', r'^suche (i\w+ )?(?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, { ...
 
 Suche in Ruth Kapitel 1 1 Vers
-# EXAMPLE: suche itext x s text kapitel 123 123 vfdph text
+# EXAMPLE: suche itext x text kapitel 123 123 vfdph text
 ('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {...
 
 Suche in Ruth 1 Kapitel 1 Vers
-# EXAMPLE: suche itext x s text 123 kapitel 123 vfdph text
+# EXAMPLE: suche itext x text 123 kapitel 123 vfdph text
 ('bible suche', r'^suche (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {...
 
 "in" kann auch weggelassen werden.
@@ -79,7 +79,7 @@ FUZZY_MAP_pre = [
         'skip_list': ['LanguageTool'],
     }),
 
-    # EXAMPLE: cx s les
+    # EXAMPLE: cx les
     ('Chronicles', r'\b(c\w*\s*les|Kodex\s*lese|bro\w*\s*läßt)\b', 90, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool'],
@@ -173,12 +173,12 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 
-    # EXAMPLE: VAR itext x s text kapitel 123 123 Vers text
+    # EXAMPLE: VAR itext x text kapitel 123 123 Vers text
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) kapitel (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
-    # EXAMPLE: VAR itext x s text 123 kapitel 123 Vers text
+    # EXAMPLE: VAR itext x text 123 kapitel 123 Vers text
     ('bible suche', fr'^{searchCmd} (i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) kapitel (?P<verse>\d+) [vfdph]\w+$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']

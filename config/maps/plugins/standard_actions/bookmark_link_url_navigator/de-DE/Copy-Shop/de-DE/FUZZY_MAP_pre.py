@@ -1,4 +1,4 @@
-# config/maps/plugins/standard_actions/count_loud/de-DE/FUZZY_MAP_pre.py
+# config/maps/plugins/standard_actions/bookmark_link_url_navigator/de-DE/Copy-Shop/de-DE/FUZZY_MAP_pre.py
 
 import re # noqa: F401
 
@@ -10,12 +10,15 @@ FUZZY_MAP_pre = [
 
 
     # bitsundso website bus982
+    # EXAMPLE: Copy-Shop
     ('Ferdinand-Lassalle-Straße 17-19, 72770 Reutlingen', r'^(Copy-Shop|Copyshop).*Betzingen\s*$', 70, {'flags': re.IGNORECASE}),
 
     # EXAMPEL: Copyshop Betzingen Industriegebiet
+    # EXAMPLE: Betzingen Copy-Shop
     ('Ferdinand-Lassalle-Straße 17-19, 72770 Reutlingen', r'^(Betzingen).*(Copy-Shop|Copyshop)\s*$', 70, {'flags': re.IGNORECASE}),
 
     # EXAMPEL: Copyshop Betzingen Industriegebiet
+    # EXAMPLE: Betzingen Copy-Shop
     ('https://www.openstreetmap.org/#map=18/48.491606/9.156450', r'^(Betzingen).*(Copy-Shop|Copyshop)\s*$', 70, {'flags': re.IGNORECASE}),
 
 

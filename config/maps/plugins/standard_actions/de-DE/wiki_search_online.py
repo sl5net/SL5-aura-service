@@ -288,7 +288,7 @@ Bibliografische Angaben für „Einrückungsstil“
         # Diese Regex findet den Biografie-Block (*...) inklusive der umgebenden Leerzeichen
         # und ersetzt ihn durch ein EINZIGES Leerzeichen.
         # So wird "Einstein (*...) war" zu "Einstein war".
-        # EXAMPLE: s s
+        # EXAMPLE: s
         cleaned_summary = re.sub(r'\s*\(\*.*?\)\s*', ' ', full_summary, count=1).strip()
         # --- ENDE DER REINIGUNG ---
 

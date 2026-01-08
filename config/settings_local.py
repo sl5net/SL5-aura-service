@@ -19,11 +19,10 @@ soundProgramLoaded = 1
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
 # DEV_MODE = True
-DEV_MODE = False
+DEV_MODE = True
 DEV_MODE_memory = False
 DEV_MODE_all_processing = False
 
-#
 
 # needs NO restart:
 PRE_RECORDING_TIMEOUT = 5
@@ -60,7 +59,7 @@ if current_user == 'seeh' or current_user == 'SL5.de' :
 
 
     DEV_MODE = 1
-    DEV_MODE_all_processing = 0
+    DEV_MODE_all_processing = False
     # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
     # PRELOAD_MODELS = ["vosk-model-small-de-0.15"]

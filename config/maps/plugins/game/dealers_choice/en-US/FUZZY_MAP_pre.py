@@ -16,24 +16,24 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - means first is most importend, lower rules maybe not get read.
 
-    # EXAMPLE: s call
+    # EXAMPLE: call
     ('c', r'^\s*(call|check)\s*$', 50, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s raise s
+    # EXAMPLE: raise s
     ('r', r'^\s*(raise)\s*$', 50, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s fold s
+    # EXAMPLE: fold s
     ('f', r'^\s*(fold)\s*$', 50, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s discard s
+    # EXAMPLE: discard s
     ('d', r'^\s*(discard)\s*$', 50, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s bet s
+    # EXAMPLE: bet s
     ('b', r'^\s*(bet)\s*$', 50, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s exchange s
+    # EXAMPLE: exchange s
     ('x', r'^\s*(exchange)\s*$', 50, {'flags': re.IGNORECASE}),
     # Amount keys
-    # EXAMPLE: s 100
+    # EXAMPLE: 100
     ('1', r'^\s*(100|one hundred)\s*$', 50, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s 250
+    # EXAMPLE: 250
     ('2', r'^\s*(250|two fifty)\s*$', 50, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s 50
+    # EXAMPLE: 50
     ('3', r'^\s*(50|fifty)\s*$', 50, {'flags': re.IGNORECASE}),
 
 

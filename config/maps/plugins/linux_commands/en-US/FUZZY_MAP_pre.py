@@ -1,4 +1,4 @@
-# config/maps/plugins/
+# config/maps/plugins/linux_commands/en-US/FUZZY_MAP_pre.py
 # file config/maps/plugins/it-begriffe/FUZZY_MAP_pr.py
 # Beispiel: https://www.it-begriffe.de/#L
 import re # noqa: F401
@@ -34,7 +34,9 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: Benachritext stoeren
     (f'{BenachrichtigungenPosition}', r'^Benachri\w+ stoeren$'),
+    # EXAMPLE: Benachrichtigtext Position
     (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$', 75, {'flags': re.IGNORECASE}),
 
 
@@ -52,12 +54,14 @@ FUZZY_MAP_pre = [
 
     # Examples: disk usage
     (f"gdu",
+     # EXAMPLE: folder size
      r'^(folder size|directory size|disk usage|storage hog|gdu|disk full)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # Examples: disk space
     (f"ncdu",
+     # EXAMPLE: check storage
      r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),

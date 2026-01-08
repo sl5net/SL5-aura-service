@@ -306,7 +306,7 @@ def get_instant_match(user_text):
 
 # --- HELPER ---
 def clean_text_for_typing(text):
-    # EXAMPLE: x s . - VAR äöüÄÖÜß
+    # EXAMPLE: x . - VAR äöüÄÖÜß
     allowed_chars = r'[^\w\s\.,!\?\-\(\)\[\]\{\}<>äöüÄÖÜß:;\'"\/\\@\+\=\~\#\%]'
     text = re.sub(allowed_chars, '', text)
     # EXAMPLE: None

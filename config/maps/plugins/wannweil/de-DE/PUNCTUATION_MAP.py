@@ -2,4 +2,5 @@
 # German - Common, Mishearings
 
 PUNCTUATION_MAP = {
+    'leerworttest': 'leerworttest1',
 }

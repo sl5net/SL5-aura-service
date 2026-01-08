@@ -140,7 +140,7 @@ FUZZY_MAP_pre = [
 ('alt+p', r'^\s*(alt|ald)\s*\+?\s*p(ikeman|spearman|fanatic|lanzenkämpfer)?\s*$', 20, {'flags': re.IGNORECASE}),
 # Alt+ C = Cavalry
 
-# EXAMPLE: s alt Cavalry
+# EXAMPLE: alt Cavalry
 ('alt+c', r'^\s*(alt|ald)\s*\+?\s*c(avalry|kavallerie)?\s*$', 20, {'flags': re.IGNORECASE}),
 # Alt+ A = Archer, Elephant&Archer, Slinger Javelineer, ... (Gruppe von Fernkämpfern)
 

@@ -89,6 +89,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: beiden wird hier in einem Virtual environment mitverwendet
     ('Python wird hier in einer Virtual environment verwendet', r'^(beiden wird hier in einem Virtual environment mitverwendet|Beiden wird hier in einer wird für den falle verwendet|Weiterhin wird hier in einem virtuell in bei mit verwendet|Halten wird jedwedem Witwe wird Weibe verwenden|titan wird hier in einem virtual in weibe verwendet|beiden wird hier in einem virtuell in wei mitverwendet)$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: sdf b bytes charme b
     ('PyCharm', r'^sdf(\b)(bytes charme)(\b)$', 75, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: d fahl
@@ -98,15 +99,15 @@ FUZZY_MAP_pre = [
     ('String', r'^(\b)(Dringen)(\b)$', 75, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: Kot s abschnittt
+    # EXAMPLE: Kot abschnittt
     ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: lobt s Case
+    # EXAMPLE: lobt Case
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: stob s Button
+    # EXAMPLE: stob Button
     ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: lobt s Case
+    # EXAMPLE: lobt Case
     ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: AutoKey

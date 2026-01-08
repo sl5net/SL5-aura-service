@@ -1,4 +1,4 @@
-# config/maps/plugins/standard_actions/count_loud/de-DE/FUZZY_MAP_pre.py
+# config/maps/plugins/standard_actions/bookmark_link_url_navigator/de-DE/FUZZY_MAP_pre.py
 
 import re # noqa: F401
 
@@ -14,25 +14,25 @@ FUZZY_MAP_pre = [
     ('https://www.bitsundso.de/bus982/transcript/', r'^(bus982)\s*$', 70, {'flags': re.IGNORECASE}),
 
     # bitsundso mastodon
-    # EXAMPLE: bitsundso b s mastodonx s
+    # EXAMPLE: bitsundso b mastodonx s
     ('https://mastodon.social/@bitsundso', r'^bitsundso\b\s*(mastodon\w*)\s*$', 70, {'flags': re.IGNORECASE}),
 
     # bitsundso mastodon
-    # EXAMPLE: bitsundso b s tchncsx s
+    # EXAMPLE: bitsundso b tchncsx s
     ('https://social.tchncs.de/@bitsundso@mastodon.social', r'^bitsundso\b\s*(tchncs\w*)\s*$', 70, {'flags': re.IGNORECASE}),
 
 
 
     # bitsundso Bluesky
-    # EXAMPLE: bitsundso b s Blueskyx s
+    # EXAMPLE: bitsundso b Blueskyx s
     ('https://mastodon.social/@bitsundso', r'^bitsundso\b\s*(Bluesky\w*)\s*$', 70, {'flags': re.IGNORECASE}),
 
     # bitsundso impressum
-    # EXAMPLE: bitsundso b s impressum s
+    # EXAMPLE: bitsundso b impressum s
     ('https://www.bitsundso.de/impressum/', r'^bitsundso\b\s*(impressum)\s*$', 70, {'flags': re.IGNORECASE}),
 
     # bitsundso Email
-    # EXAMPLE: bitsundso b s Email s
+    # EXAMPLE: bitsundso b Email s
     ('info@undsoversum.de', r'^bitsundso\b\s*(Email)\s*$', 70, {'flags': re.IGNORECASE}),
 
 

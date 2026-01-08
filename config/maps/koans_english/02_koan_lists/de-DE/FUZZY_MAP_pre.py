@@ -1,4 +1,4 @@
-# config/maps/koans_english/02_koan_lists/FUZZY_MAP_pre.py
+# config/maps/koans_english/02_koan_lists/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 
 # This map uses a hybrid approach:

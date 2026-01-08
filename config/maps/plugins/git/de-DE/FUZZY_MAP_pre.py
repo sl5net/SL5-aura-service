@@ -27,6 +27,7 @@ FUZZY_MAP_pre = [
     #no-verifyno-verifyl --no-verifyNumeri fein
 
 
+    # EXAMPLE: b punkt chemnitz b
     ('PUNCTUATION_MAP ', rf'\b(punkt chemnitz)\b', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit
@@ -184,7 +185,7 @@ FUZZY_MAP_pre = [
     # --- git pull ---
     # EXAMPLE: git pull
     ('git pull ', r'^\s*(git|geht|quiet|gitter)\s*(pull|pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s git s pull s
+    # EXAMPLE: s git pull s
     ('git pull ', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
 
     # --- git diff ---
@@ -192,10 +193,13 @@ FUZZY_MAP_pre = [
     ('git diff ', r'^\s*(kit|git|geht|peach)\s*(diff|tief|tiff|tüv|juice|tipps|geht\'s|kittys|dies|die)\s*$', 75, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: Vergleich mit vorletztem Commit s
     ('git diff HEAD~1', r'^Vergleich mit vorletztem Commit\s*$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Letzter Commit mit Diff s
     ('git log -p -1', r'^Letzter Commit mit Diff\s*$', 75, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: Zeigt staged aber nicht committed changes s
     ('git diff --cached', r'^Zeigt staged (aber nicht committed) changes\s*$', 75, {'flags': re.IGNORECASE}),
 
 
@@ -250,57 +254,58 @@ FUZZY_MAP_pre = [
     # --- git commit ---
     #  Kate Commit einen  git commit
 
-    # EXAMPLE: s Klitschko mit s
+    # EXAMPLE: Klitschko mit s
     ('git commit ', r'^\s*Klitschko mit\s*$', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s kate Commit s
+    # EXAMPLE: kate Commit s
     ('git commit ', r'^\s*kate Commit\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s Geht Komet
+    # EXAMPLE: Geht Komet
     ('git commit ', r'^\s*Geht (Komet|kommend|Commit)\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s Einen Kometen s
+    # EXAMPLE: Einen Kometen s
     ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s Geht Commit s
+    # EXAMPLE: Geht Commit s
     ('git commit ', r'^\s*Geht Commit\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s Geht komm Commit s
+    # EXAMPLE: Geht komm Commit s
     ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s Geht
+    # EXAMPLE: Geht
     ('git commit ', r'^\s*(Geht|git|mit) (komm|Kometen|Commit)\s*$', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Komet
     ('commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s git
+    # EXAMPLE: git
     ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s womit s
+    # EXAMPLE: womit s
     ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s git
+    # EXAMPLE: git
     ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s git
+    # EXAMPLE: git
     ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme)\s*$"', 80, {'flags': re.IGNORECASE}),
 
     # --- git push ---
-    # EXAMPLE: s git
+    # EXAMPLE: git
     ('git push', r'^\s*(git|geht|gitter)\s*(busch|push)\s*$', 85, {'flags': re.IGNORECASE}),
 
     # --- git pull ---
-    # EXAMPLE: s git
+    # EXAMPLE: git
     ('git pull', r'^\s*(git|geht|gitter)\s*(pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s git s pull s
+    # EXAMPLE: s git pull s
     ('git pull', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
 
     # --- git diff ---
-    # EXAMPLE: s git
+    # EXAMPLE: git
     ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: Zeige was im letzten Commit geändert wurde s
     ('git show HEAD > gitDiff.txt; kate gitDiff.txt', r'^\s*Zeige was im letzten Commit geändert wurde\s*$', 75, {'flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: s Kritik knurren
+    # EXAMPLE: Kritik knurren
     ('.gitignore', r'^\s*(Kritik knurren|Kritik Noah|Kritiken|kitte Knorr|Kritik Knorr)\s*$', 75, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: gibt Knorr

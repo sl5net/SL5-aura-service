@@ -1,4 +1,4 @@
-# config/maps/plugins/it-begriffe/de-DE/FUZZY_MAP.py
+# config/maps/plugins/linux_commands/de-DE/FUZZY_MAP.py
 # config/languagetool_server/maps/  /de-DE/FUZZY_MAP.py
 # https://regex101.com/
 import re # noqa: F401

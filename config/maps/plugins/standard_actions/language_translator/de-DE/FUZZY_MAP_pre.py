@@ -74,7 +74,7 @@ Englisch=r'\b(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche|irgendw
 # EXAMPLE: Switch
 toggleCmd=r'(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
 
-# englisch einschaltenGuten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).# EXAMPLE: s hallo
+# englisch einschaltenGuten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).# EXAMPLE: hallo
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===

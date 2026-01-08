@@ -335,6 +335,9 @@ def export_to_copyq(items, tab_name):
 # MAIN
 # -----------------------------------------------------------------------------
 if __name__ == "__main__":
+
+    print('did you tools/map_tagger.py before?')
+
     data, paths = collect_examples()
     # To make it readable A->Z in CopyQ, we insert Z->A (since CopyQ is a stack).
     # We reverse the entire list.
@@ -343,3 +346,7 @@ if __name__ == "__main__":
 
     path_items = [{'text': p, 'tags': []} for p in sorted(paths, reverse=True)]
     export_to_copyq(path_items, COPYQ_PATH_TAB_NAME)
+
+    print('did you tools/map_tagger.py before?')
+
+

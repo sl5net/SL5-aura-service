@@ -14,7 +14,7 @@ import sys
 
 
 
-def check_translator_hijack(logger):
+def check_translator_hijack_is_not_active(logger):
     proj_dir = Path(__file__).parents[4]
 
     path = proj_dir / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
@@ -22,9 +22,9 @@ def check_translator_hijack(logger):
         # [ \t]* matches only horizontal whitespace
         content = path.read_text()
         pattern = r"#[ ]*TRANSLATION_RULE[ ]*\n[^\n]*#"
-        if re.search(pattern, content):
+        if not re.search(pattern, content):
             logger.info(f"25:🚨 HIJACK: Rule in ..{str(path)[-30:]} is activ!")
-            logger.info(content)
+            # logger.info(content)
             return False
     else:
         logger.info(f"31:🚨 HIJACK: path {str(path)} not exists!")
@@ -77,7 +77,7 @@ def run_core_logic_self_test(logger, tmp_dir: Path, lt_url, lang_code):
     Runs a series of predefined tests, guarded by a persistent throttle mechanism.
     """
     # config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
-    if check_translator_hijack(logger):
+    if not check_translator_hijack_is_not_active(logger):
         logger.info(f"self_tester.py exit exit exit")
         logger.info(f"""
         75:🚨 HIJACK: rule is activ during self_test! maybe check: 
@@ -196,7 +196,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
         # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected=f"{SPEECH_PAUSE_TIMEOUT_021}", context='proff if we can change settings 2026-0104-1435'),
 
         #     ('lehrwart', 'leerworttest1'),
-        case(input_text='lehrwart', expected=f"leerworttest1", context='punctation map test', lang='de-DE'),
+        case(input_text='leerworttest', expected=f"leerworttest1", context='punctation map test', lang='de-DE'),
 
         case(input_text='->AUDIO_INPUT_DEVICE<-', expected=f"SYSTEM_DEFAULT", context='proff if we can change settings 2026-0104-1435'),
         # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected='7890', context='proff if we can change settings 2026-0104-1435'),

@@ -1,3 +1,4 @@
+# config/maps/plugins/game/0ad2/de-DE/FUZZY_MAP.py
 import re # noqa: F401
 
 # This map uses a hybrid approach:

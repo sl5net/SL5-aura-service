@@ -18,9 +18,9 @@ FUZZY_MAP_pre = [
 
 
     #  Helps the Tool to switch to English
-    # EXAMPLE: s englisch
+    # EXAMPLE: englisch
     ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s switch to english s x s
+    # EXAMPLE: s switch to english x s
     ('english please', r'^\s*(switch to english\s*\w*)\s*$', 82, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: Doppelpunkt

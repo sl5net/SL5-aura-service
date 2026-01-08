@@ -105,8 +105,9 @@ PLUGINS_ENABLED = {
     "git": True,
     "wannweil": True,
 
-    "game.dealers_choice": False,
-    "game.0ad": False,
+    "game/dealers_choice": False,
+    "game/0ad": False,
+    "game/": False,
     "ethiktagung": False,
     "it-begriffe.php.codeigniter": False
 

@@ -15,6 +15,7 @@ current_user = str(current_user)
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
 DEV_MODE = False
+DEV_MODE_all_processing = False
 
 soundMute = 1  # 1 is really recommended. to know when your recording is ended.
 soundUnMute = 1
@@ -103,6 +104,8 @@ show_PLUGINS_ENABLED = True
 PLUGINS_ENABLED = {
     "standard_actions/wikipedia_local": False,
     "standard_actions/count_loud": False,
+    "game/": False,
+    "game": False,
 }
 # count_loud▉
 

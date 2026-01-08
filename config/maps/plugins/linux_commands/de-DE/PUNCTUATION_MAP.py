@@ -1,4 +1,4 @@
-# config/maps/plugins/it-begriffe/de-DE/PUNCTUATION_MAP.py
+# config/maps/plugins/linux_commands/de-DE/PUNCTUATION_MAP.py
 # file config/maps/plugins/it-begriffe/PUNCTUATION_MAP.py
 # German - Common, Mishearings
 

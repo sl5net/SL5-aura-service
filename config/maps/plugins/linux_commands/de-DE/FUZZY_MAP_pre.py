@@ -1,4 +1,4 @@
-# config/maps/plugins/
+# config/maps/plugins/linux_commands/de-DE/FUZZY_MAP_pre.py
 # file config/maps/plugins/it-begriffe/FUZZY_MAP_pr.py
 # Beispiel: https://www.it-begriffe.de/#L
 import re # noqa: F401
@@ -34,7 +34,9 @@ FUZZY_MAP_pre = [
 
 
 
+    # EXAMPLE: Benachritext stoeren
     (f'{BenachrichtigungenPosition}', r'^Benachri\w+ stoeren$'),
+    # EXAMPLE: Benachrichtigtext Position
     (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$', 75, {'flags': re.IGNORECASE}),
 
 
@@ -53,6 +55,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: grep recursive
     ('grep -r "aura_engine.py" . --exclude-dir={.git,.venv,__pycache__,data} | wc -l',
+     # EXAMPLE: grep recursive
      r'^(grep recursive|kriechen recursiv|grep Durchsuchung)$', 80, {
     'flags': re.IGNORECASE,
     'skip_list': ['LanguageTool']
@@ -91,6 +94,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: download webpage webseite
     ('wget --mirror --convert-links --adjust-extension --page-requisites --no-parent https://www. x.de/',
+        # EXAMPLE: download webpage
         r'^(download) (webpage|webseite)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
@@ -98,6 +102,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: alle Dateitypen
     ('find . -type f -exec file -b --mime-type {} + | sort | uniq -c',
+        # EXAMPLE: alle Dateitypen
         r'^(alle) (Dateitypen|Metadaten)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
@@ -183,6 +188,7 @@ FUZZY_MAP_pre = [
 
     # Examples: disk usage
     (f"gdu",
+    # EXAMPLE: ordnergröße
     r'^(ordnergröße|speicherfresser|festplatte voll|verzeichnisgröße|gdu|duf|disk usage)$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
@@ -190,6 +196,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: Launch ncdu
     (f"ncdu",
+        # EXAMPLE: ordner größe
         r'^(ordner größe|verzeichnis größe|speicherplatz anzeigen|festplatte prüfen|ncdu|Launch ncdu|wie groß sind die ordner)$',
         90,
         {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
@@ -197,12 +204,14 @@ FUZZY_MAP_pre = [
 
     # Examples: disk usage
     (f"gdu",
+    # EXAMPLE: folder size
     r'^(folder size|directory size|disk usage|storage hog|gdu|disk full)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # Examples: disk space
     (f"ncdu",
+        # EXAMPLE: check storage
         r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),

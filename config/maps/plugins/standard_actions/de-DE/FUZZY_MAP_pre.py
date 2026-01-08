@@ -291,12 +291,12 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE:   Wer ist s der Beste x Schachspieler 
+    # EXAMPLE:   Wer ist der Beste x Schachspieler 
     ("Sebastian Lauffer aus Wannweil (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?(Beste[\w]? Schachspieler.*)$', 90, {
     'flags': re.IGNORECASE
     }),
 
-    # EXAMPLE:   Wer ist s der s herr s schröer
+    # EXAMPLE:   Wer ist s der s herr schröer
     ("Herr Schröer ist ein netter, bisschen vergesslicher, Ergotherapeut. (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?\s*(herr)?\s*\b(schröer)$', 90, {
     'flags': re.IGNORECASE
     }),

@@ -3,34 +3,47 @@
 import re
 from typing import Tuple
 
+from .log_memory_details import log4DEV
 
-def normalize_punctuation(text: str, punctuation_map: dict) -> Tuple[str, bool]:
-    """
-    Replaces text based on a map, returning the new text and a flag.
+from scripts.py.func.config.dynamic_settings import DynamicSettings
 
-    Args:
-        text: The input string.
-        punctuation_map: A dictionary of phrases to replace.
+settings = DynamicSettings()
 
-    Returns:
-        A tuple: (processed_text: str, was_exact_match: bool).
-        The boolean is True only if the entire input text was an exact key
-        in the map, signaling that no further processing should occur.
-    """
-    lower_punctuation_map = {k.lower(): v for k, v in punctuation_map.items()}
 
-    # First, check for an exact, case-insensitive match of the whole string
-    if text.strip().lower() in lower_punctuation_map:
-        return lower_punctuation_map[text.strip().lower()], True
+def normalize_punctuation(text: str, punctuation_map: dict, logger2) -> Tuple[str, bool]:
+    global settings
+    log4DEV(f'📍 START normalize_punctuation: "{text}"', logger2)
 
-    # If no exact match, proceed with regex for partial replacements
-    pattern = r'\b(' + '|'.join(re.escape(k) for k in sorted(lower_punctuation_map, key=len, reverse=True)) + r')\b'
+    if not punctuation_map:
+        log4DEV(f'📍 Map is empty, skipping.', logger2)
+        return text, False
 
-    processed_text = re.sub(
-        pattern,
-        lambda m: lower_punctuation_map.get(m.group(1).lower(), m.group(1)),
-        text,
-        flags=re.IGNORECASE
-    )
+    lower_map = {k.lower(): v for k, v in punctuation_map.items()}
+    search_text = text.strip().lower()
 
-    return processed_text, False
+    if settings.DEV_MODE_all_processing:
+        log4DEV(f'📍 Available Keys: {list(lower_map.keys())[:10]}... (Total: {len(lower_map)})', logger2)
+
+    # Exact Match Check
+    if search_text in lower_map:
+        res = lower_map[search_text]
+        log4DEV(f'📍 EXACT MATCH: "{search_text}" -> "{res}"', logger2)
+        return res, True
+
+    # Partial/Regex Match
+    try:
+        keys = sorted(lower_map.keys(), key=len, reverse=True)
+        pattern = r'\b(' + '|'.join(re.escape(k) for k in keys) + r')\b'
+        log4DEV(f'📍 REGEX Pattern build with {len(keys)} keys.', logger2)
+
+        processed = re.sub(
+            pattern,
+            lambda m: lower_map.get(m.group(1).lower(), m.group(1)),
+            text,
+            flags=re.IGNORECASE
+        )
+        log4DEV(f'📍 RESULT: "{processed}" (was_exact=False)', logger2)
+        return processed, False
+    except Exception as e:
+        log4DEV(f'📍 ERROR during normalization: {e}', logger2)
+        return text, False

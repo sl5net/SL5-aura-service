@@ -20,7 +20,7 @@ FUZZY_MAP_pre = [
 
 # Bratwurst wäre intern
 
-    # EXAMPLE: Kirchen s teilen
+    # EXAMPLE: Kirchen teilen
     ('Kirchentellinsfurt', r'\b(Kirchen\s*teilen|Kirchentellinsfurt|klirrend hält)\b', 82, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Rathaus
@@ -35,12 +35,12 @@ FUZZY_MAP_pre = [
 #Rathaus klirrend hält
 #Hartholz klirren tönt
 
-    # EXAMPLE: wen s Welpe
+    # EXAMPLE: wen Welpe
     ('Wannweil', r'\b(wen\s*Welpe)\b', 82, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: wen s Welpe
+    # EXAMPLE: wen Welpe
     ('Wannweil', r'\b(wen\s*Welpe)\b', 82, {'flags': re.IGNORECASE}),
-    # EXAMPLE: s Wannweil
+    # EXAMPLE: Wannweil
     ('Wannweil', r'^\s*(Wannweil|Annweiler|wann\s*weil|Wann\s*wann\s*weil|Wann\s*war\s*Herr|Wann\s*war\s*er|An\s*weil|Wann\s*weine\w*|Wann\s*wein|Van\s*weil|wann was)\s*$', 70, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Sebastian Läufer

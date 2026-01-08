@@ -155,7 +155,10 @@ def _apply_fix_name_error(file_path, bad_name, logger):
                 comment = "  " + match.group('comment') if match.group('comment') else ""
 
                 # Fix: In ('word', 'word'), konvertieren
-                line = f"{indent}('{current_word}', '{current_word}'),{comment}\n"
+
+                seperator = ':' if 'PUNCTUATION_MAP.py' in filename else ','
+
+                line = f"{indent}('{current_word}'{seperator} '{current_word}'),{comment}\n"
                 logger.info(f"   -> Bulk-Fix: {original_line.strip()} => {line.strip()}")
                 fixed_content = True
 

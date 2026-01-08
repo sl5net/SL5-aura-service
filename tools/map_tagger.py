@@ -4,6 +4,7 @@ import re
 import sys
 import time
 
+# tools/map_tagger.py:7
 
 # -----------------------------------------------------------------------------
 # KONFIGURATION
@@ -14,6 +15,10 @@ PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
 
 MAPS_DIR = os.path.join(PROJECT_ROOT, "config", "maps")
 SKIP_ALL_FAILURES = False
+
+
+TARGET_FILES = ["FUZZY_MAP.py", "FUZZY_MAP_pre.py", 'PUNCTUATION_MAP.py']
+
 
 try:
     import exrex
@@ -40,6 +45,7 @@ def sanitize_regex_part(text):
     s = s.replace(r'\w', 'x')
 
     s = s.replace(r'\s+', ' ')
+    s = s.replace(r'\s*', ' ')
     s = s.replace(r'\w*', ' ')
 
     s = s.replace(r'.+', '.')
@@ -127,7 +133,12 @@ def process_file(filepath):
 
     # Findet: PATTERN = r"..."
     # regex_finder = re.compile(r'=\s*r["\']([\^"\']+)["\']')
-    regex_finder = re.compile(r'[:=,\(\s]\s*r(?P<q>"{3}|\'{3}|"|\')(?P<p>.*?)(?P=q)', re.DOTALL)
+    regex_finder = re.compile(r'[:=,\(\s]\s*(?:fr|rf|r)(?P<q>"{3}|\'{3}|"|\')(?P<p>.*?)(?P=q)', re.DOTALL)
+
+    # Findet Dictionary-Keys: 'key':
+    dict_finder = re.compile(r"^\s*(?P<q>['\"])(?P<p>[^'\"]+)(?P=q)\s*:")
+
+
 
     for i, line in enumerate(lines):
         time.sleep(.005)
@@ -135,6 +146,12 @@ def process_file(filepath):
 
         # Prüfen, ob Tag/Example davor existiert
         has_tag_before = (i > 0) and ("# EXAMPLE:" in lines[i-1] or "# TAGS:" in lines[i-1])
+
+        if not match and "PUNCTUATION_MAP.py" in filepath:
+            match = dict_finder.search(line)
+
+            # print(f"2026-0108-1436: {filepath} : {i}")
+            # sys.exit(1)
 
         if match and not has_tag_before:
             # found_pattern = match.group(1)
@@ -224,10 +241,15 @@ def main():
     for root, dirs, files in os.walk(MAPS_DIR):
         time.sleep(.005)
         for file in files:
+
+            if file not in TARGET_FILES:
+                continue
+
+
             time.sleep(.005)
             if file.endswith(".py"):
                 process_file(os.path.join(root, file))
-    print("\nFertig.")
+    print("\n finished / Fertig.")
 
 if __name__ == "__main__":
     main()

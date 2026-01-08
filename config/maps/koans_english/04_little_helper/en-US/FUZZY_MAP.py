@@ -1,4 +1,4 @@
-# config/maps/koans_deutsch/04_koan_kleine_helfer/de-DE/FUZZY_MAP.py
+# config/maps/koans_english/04_little_helper/en-US/FUZZY_MAP.py
 # config/languagetool_server/maps/de-DE/FUZZY_MAP.py
 import re # noqa: F401
 

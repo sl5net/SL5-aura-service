@@ -11,7 +11,7 @@ FUZZY_MAP_pre = [
     ("""
 Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
 Es gibt keine Accounts, Passwörter, Logins.
-# EXAMPLE: s Aura
+# EXAMPLE: Aura
 """, r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(w\w{2,3}) (bist|machst)?(du)$', 100,
         {
         'flags': re.IGNORECASE
@@ -25,7 +25,7 @@ Es gibt keine Accounts, Passwörter, Logins.
     ("""
 Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
 Es gibt keine Accounts, Passwörter, Logins.
-# EXAMPLE: s hallo
+# EXAMPLE: hallo
 """, r'^\s*(hallo|hi|hey|guten tag|servus)\s+(Aura|Aurora|Computer)\s*(\!|\.|\?|$)', 100,
         {
         'flags': re.IGNORECASE
@@ -36,7 +36,7 @@ Es gibt keine Accounts, Passwörter, Logins.
     ("""
 Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
 Es gibt keine Accounts, Passwörter, Logins.
-# EXAMPLE: s bist du da
+# EXAMPLE: bist du da
 """, r'^\s*(bist du da|hörst du mich|kannst du mich hören|sprichst du mit mir)\s*(\!|\.|\?|$)', 100,
         {
         'flags': re.IGNORECASE
@@ -47,7 +47,7 @@ Es gibt keine Accounts, Passwörter, Logins.
     ("""
 Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
 Es gibt keine Accounts, Passwörter, Logins.
-# EXAMPLE: s Aura
+# EXAMPLE: Aura
 """, r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*(\!|\.|\?|$)(\s+.*)?$', 100,
         {
         'flags': re.IGNORECASE
@@ -58,7 +58,7 @@ Es gibt keine Accounts, Passwörter, Logins.
     ("""
 Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
 Es gibt keine Accounts, Passwörter, Logins.
-# EXAMPLE: s was bist
+# EXAMPLE: was bist
 """, r'^\s*(was)\s+(bist|machst)\s+(du)\s*(\!|\.|\?|$)', 100,
         {
         'flags': re.IGNORECASE
@@ -69,7 +69,7 @@ Es gibt keine Accounts, Passwörter, Logins.
     ("""
 Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
 Es gibt keine Accounts, Passwörter, Logins.
-# EXAMPLE: s fang
+# EXAMPLE: fang
 """, r'^\s*(fang|starte|beginn)\s+(an|mal)?\s*(zu sprechen|mit mir|ein gespräch)\s*(\!|\.|\?|$)', 100,
         {
         'flags': re.IGNORECASE
@@ -79,7 +79,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 #Guten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).
     ("""
 Guten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).
-# EXAMPLE: s hallo
+# EXAMPLE: hallo
 """, r'^\s*(hallo|hi|hey|guten (morgen))\s*(\!|\.|\?|$)', 100,
         {
         'flags': re.IGNORECASE
@@ -93,7 +93,7 @@ Guten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).
     ("""
 Ich bin Aura ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung.
 Es gibt keine Accounts, Passwörter, Logins.
-# EXAMPLE: s hallo
+# EXAMPLE: hallo
 """, r'^\s*(hallo|hi|hey|guten (tag|abend|morgen))\s*(\!|\.|\?|$)', 100,
         {
         'flags': re.IGNORECASE
@@ -104,7 +104,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 
     # Wenn Sie einen Teil des Regex matchen, aber NICHT in der Capturing Group haben möchten (was nützlich für das Extrahieren ist), verwenden Sie die Non-Capturing Group (?:...).
     # # https://ollama.com/download
-    # EXAMPLE: s Aura
+    # EXAMPLE: Aura
     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100,
         {
         'flags': re.IGNORECASE,
@@ -113,7 +113,7 @@ Es gibt keine Accounts, Passwörter, Logins.
     ),
 
     # # https://ollama.com/download
-    # EXAMPLE: s Aura
+    # EXAMPLE: Aura
     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100,
         {
         'flags': re.IGNORECASE,

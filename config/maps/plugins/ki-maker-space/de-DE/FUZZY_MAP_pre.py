@@ -61,7 +61,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Gregor
     ('Gregor Schulte, 07071- 6395627 Gregor.Schulte@ki-maker.space', r'^(Gregor|Schulte|ki-maker.space)\s*\w*$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: Büro ki-maker.space s x
+    # EXAMPLE: Büro ki-maker.space x
     ('Bulsat', r'^(Büro ki-maker.space)\s*\w*$', 85, {'flags': re.IGNORECASE}),
 
     #  Gregor  schulte  Gregor

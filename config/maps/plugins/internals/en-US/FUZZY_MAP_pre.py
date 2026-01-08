@@ -20,7 +20,7 @@ FUZZY_MAP_pre = [
 
     #  Helps the Tool to switch to German
     # {'flags': {'flags': re.IGNORECASE}, 'skip_list': ['filter1', 'filter4']}
-    # EXAMPLE: s deutsche pizza
+    # EXAMPLE: deutsche pizza
     ('Deutsch bitte', r'^\s*(deutsche) (pizza|pigeons|putin|bit|p)\s*$', 82, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: lobtCase

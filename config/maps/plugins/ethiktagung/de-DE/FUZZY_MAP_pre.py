@@ -55,7 +55,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Julia
     ('Julia Kämmer, Wissenschaftliche Mitarbeiterin im Projekt „SMiLE2getherGaPa“ M.A. Angewandte, Gesundheitswissenschaft, Kath. Stiftungshochschule München', r'^(Julia|Jülicher)\s+(\w+mme\w*|Cameron|käm\w+)$', 80, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE: s Leonix Baux s
+    # EXAMPLE: Leonix Baux s
     ('Leonie Bauer, Psychotherapeutin PP.rt Klinik für Psychiatrie und Psychosomatik, Reutlingen', r'^\s*Leoni\w?\s+(Bau\w*)\s*$', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: matt

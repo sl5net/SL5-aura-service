@@ -19,15 +19,15 @@ Format:
 INTEGRITY_CHECKS = {
 
     'README.md': [
-        'windows11_setup.ps1',
+        'setup/windows11_setup.ps1',
         'https://www.autohotkey.com/',
         './scripts/restart_venv_and_run-server.sh',
         'start_dictation_v2.0.bat',
         'https://github.com/hluk/CopyQ',
         'touch /tmp/sl5_record.trigger',
         'c:/tmp/sl5_record.trigger',
-        'settings_local.py_Example.txt',
-        'settings_local.py',
+        'config/settings_local.py_Example.txt',
+        'config/settings_local.py',
         'config/settings.py',
         'setup/setup.bat',
         'https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml',
@@ -52,15 +52,15 @@ INTEGRITY_CHECKS = {
     ],
 
     'tools/download_all_packages.py': [
-        "narg='*'",
+        "nargs='*'",
         'default=""',
     ],
 
     # don't use . notation in this settings part. if we dont hava s settings part we need delete following checks:
-    'config.settings_local.py': [
+    'config/settings_local.py': [
         "game/",
     ],
-    'config.settings.py': [
+    'config/settings.py': [
         "game/",
     ],
 
