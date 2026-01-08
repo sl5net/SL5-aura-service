@@ -1390,6 +1390,14 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
         for rule_entry in rules_map:
             # (replacement_text, regex_pattern, threshold_value, options_dict)
 
+            # SAFETY GUARD: Skip invalid entries that are not tuples/lists
+            if not isinstance(rule_entry, (tuple, list)):
+                m = f"🚨 INVALID RULE ENTRY found while working on rule text=📃{text}📄 "\
+                    f"Type {type(rule_entry)}): {rule_entry}. Please check your map files!"
+                log4DEV(m,logger_instance)
+                logger_instance.info(m)
+                continue
+
             if len(rule_entry) < 4:
                 rule_entry = normalize_fuzzy_map_rule_entry(rule_entry)
 

@@ -313,7 +313,7 @@ FUZZY_MAP_pre = [
     (f'{Path(PROJECT_ROOT_POSIX, 'config','maps','koans_deutsch').as_posix()}',
     r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(könne|co eins)\s*(deutsch)\s*\w*$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),4
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
 ]
