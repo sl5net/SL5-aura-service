@@ -15,7 +15,7 @@ FUZZY_MAP_pre = [
     ('E', fr"^{place}\s*(e|elephant_stables)\w*$"),
     ('F', fr"^{place}\s*(f|feld|field)\w*$"),
     ('N', fr"^{place}\s*(n|forge|schmiede)\w*$"),
-    ('H', fr"^{place}\s*(b\w+aus|bauhaus|h|haus|house|\w*aus)\w*$"),
+    ('h', fr"^{place}\s*(\w+aus|bauhaus|h|haus|house|\w*aus)\w*$"),
     ('M', fr"^{place}\s*(markt|m|market)\w*$"),
     ('V', fr"^{place}\s*(v|stable|stabil)\w*$"),
     ('S', fr"^{place}\s*(s|lagerhaus|storehouse)\w*$"),

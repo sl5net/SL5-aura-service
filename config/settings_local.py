@@ -7,9 +7,6 @@ from scripts.py.func.determine_current_user import determine_current_user
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
 
-current_user,_ = determine_current_user()
-print(f'hi, hallo, welcome: {current_user}')
-
 NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
 soundMute = 1  # 1 is really recommended. to know when your recording is ended.
@@ -36,6 +33,7 @@ PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
 
+current_user,_ = determine_current_user()
 
 #test (original:'test', 🗣SL5。de╱Aura).
 if current_user == 'seeh' or current_user == 'SL5.de' :
@@ -104,9 +102,9 @@ PLUGINS_ENABLED = {
     "empty_all": False,
     "git": True,
     "wannweil": True,
-    "game": False,
-    "game.dealers_choice": True,
-    "game.0ad": False,
+    "game": True,
+    "game/dealers_choice": False,
+    "game/0ad": False,
     "ethiktagung": False,
     "volkshochschule_tue": True,
     "CCC_tue": True,
@@ -116,11 +114,10 @@ PLUGINS_ENABLED = {
     "digits_to_numbers": False,
     "web-radio-funk": True,
     "it-begriffe": True,
-    "it-begriffe.php.codeigniter": True,
+    "it-begriffe/php/codeigniter": False,
 
 
 }
-#  geht status eins zwei doch
 
 # needs restart. implemented in the python part:
 ADD_TO_SENCTENCE = "."

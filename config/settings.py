@@ -1,75 +1,13 @@
 # config/settings.py
 # Central configuration for the application
 # please see also: settings_local.py_Example.txt
-import os
-import sys
-
-# config/settings.py
-
-Unified_Sink = """
-
-
-1.1.'26 00:13 Thu
-virtuellen Umleitungen im System wieder abschalten:
-pactl unload-module module-loopback
-pactl unload-module module-null-sink
-
-Funktioniert hoffen lassen
-merge_Headset_input_and_Deskopt_output_and_set_it_as_default:
-pactl load-module module-null-sink sink_name=Unified_Sink
-pactl load-module module-loopback source=@DEFAULT_SOURCE@ sink=Unified_Sink
-pactl load-module module-loopback source=58 sink=Unified_Sink
-
-
-pactl unload-module module-loopback; pactl unload-module module-null-sink; pactl load-module module-null-sink sink_name=Unified_Sink channels=1 sink_properties=device.description=UNIFIED_AUDIO_INPUT; pactl load-module module-loopback s
-
-
-
-pactl unload-module module-loopback; pactl unload-module module-null-sink; \
-pactl load-module module-null-sink sink_name=Unified_Sink channels=1 rate=16000 sink_properties=device.description=UNIFIED_AUDIO_INPUT; \
-pactl load-module module-loopb
-# transcribe_audio_with_feedback.py
-def get_device_id(device_setting):
-    # examples: None, COMBINED_MIC_AND_DESKTOP, UNIFIED_AUDIO_INPUT
-    if device_setting is None:
-        return None  # System-Default
-    try:
-        return int(device_setting)
-    except (ValueError, TypeError):
-        devices = sd.query_devices()
-        for i, dev in enumerate(devices):
-            if device_setting.lower() in dev['name'].lower():
-                return i
-    return None
-
-
-
-
-"""
-
+from scripts.py.func.determine_current_user import determine_current_user
 
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
 
-# Get username
-
-# Determine username in a cross-platform way
-if sys.platform.startswith('win'):
-    # On Windows, use the USERNAME environment variable.
-    current_user = os.environ.get('USERNAME')
-else:
-    # On Unix/Linux/Mac, try the 'pwd' module for robustness
-    try:
-        import pwd
-        # The original Unix-like system logic
-        current_user = pwd.getpwuid(os.getuid()).pw_name
-    except ImportError:
-        # Fallback for non-standard Unix environments
-        current_user = os.environ.get('USER')
-
-# Final fallback to ensure current_user is always a string
-if not current_user:
-    current_user = "unknown_user"
+current_user,_ = determine_current_user()
+print(f'hi, hallo, welcome: {current_user}')
 
 current_user = str(current_user)
 # logger.info("Current user successfully determined in a cross-platform manner.") # Add logger import if needed

@@ -56,7 +56,15 @@ INTEGRITY_CHECKS = {
         'default=""',
     ],
 
-#     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
+    # don't use . notation in this settings part. if we dont hava s settings part we need delete following checks:
+    'config.settings_local.py': [
+        "game/",
+    ],
+    'config.settings.py': [
+        "game/",
+    ],
+
+    #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
 #         'logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")',
 #         'logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")',
     "scripts/py/func/transcribe_audio_with_feedback.py": [

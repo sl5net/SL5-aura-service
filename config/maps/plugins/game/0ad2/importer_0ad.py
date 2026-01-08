@@ -37,7 +37,9 @@ def get_translation(text):
         translated = result.stdout.strip().lower()
         translation_cache[text] = translated
         return translated
-    except: return text
+    except Exception as e:
+        print(f'x Exception {e} : config/maps/plugins/game/0ad2/importer_0ad.py:41' )
+        return text
 
 def generate_0ad_map():
     if not SOURCE_CFG.exists(): return print(f"Error: {SOURCE_CFG} not found.")

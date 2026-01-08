@@ -50,7 +50,9 @@ def load_registry():
         with open(JSON_DB_PATH, 'r', encoding='utf-8') as f:
             data = json.load(f)
             return data.get("watched_folders", [])
-    except Exception: return []
+    except Exception as e:
+        print(f"54:{e}")
+        return []
 
 def save_registry(folder_list):
     try:
@@ -239,6 +241,7 @@ def on_reload():
         logger.error(f"🔥 Error in zip_all/de-DE/zip.py:236 on_reload: {e}")
         # sys.exit(1)
         return f"🔥 Error in zip_all/de-DE/zip.py:236 on_reload: {e}"
+        # 07:40:03,498 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
 
 def execute(match_data):
     """Manual Voice Command."""

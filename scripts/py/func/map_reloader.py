@@ -136,7 +136,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                                 logger.info(f"🚀 Triggering on_reload() for '{module_name}'")
                             module_to_reload.on_reload()
                         except Exception as hook_error:
-                            logger.error(f"❌ Error in on_reload() for '{module_name}': {hook_error}")
+                            logger.info(f"❌ 🚨 Error in on_reload() for '{module_name}': {hook_error}")
 
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
                     if log_all_map_reloaded or log_all_changes:
@@ -159,7 +159,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                             importlib.reload(module)
                             logger.info(f"✅ Reload successful: {module_name}")
                         except Exception as retry_error:
-                            logger.error(f"❌ Fix failed: {retry_error}")
+                            logger.info(f"🚨 ❌ Fix failed: {retry_error}")
 
 
                 # scripts/py/func/map_reloader.py:151
@@ -182,7 +182,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                         # If it wasn't a private map, log the original error
 
-                    logger.error(f"❌ Failed to reload module '{module_name}': {e}")
+                    logger.info(f"🚨 ❌ Failed to reload module '{module_name}': {e}")
 
                     # logger.error(f"❌ Failed to reload module '{module_name}': {e}")
                     # todo: # scripts/py/func/map_reloader.py:135 run the into autorepair function
@@ -205,7 +205,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
             #     logger.info("🗑️ Final garbage collection after map scan.")
 
     except Exception as e:
-        logger.error(f"Error during map reload check: {e}")
+        logger.error(f"🚨 Error during map reload check: {e}")
 
     if settings.DEV_MODE_memory:
         from .log_memory_details import log_memory_details
@@ -397,14 +397,14 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                                 module = importlib.import_module(module_name)
                                 importlib.reload(module)  # Sicherstellen, dass es wirklich frisch ist
 
-                                logger.info(f"✅ Reload erfolgreich nach Auto-Fix für: {module_name}")
+                                logger.info(f"✅ Reload good, Auto-Fix: {module_name}")
 
                                 # Hier machen wir weiter, als ob nichts passiert wäre
                                 # (Der Code unter dem try/except Block nutzt jetzt das reparierte 'module')
                                 # Falls du danach Code hast, der 'module' nutzt, läuft er jetzt durch.
 
                             except Exception as retry_error:
-                                logger.error(f"❌ Auch der Reload nach dem Fix schlug fehl: {retry_error}")
+                                logger.info(f"error 🚨 ❌ Reload failed: retry_error: {retry_error}")
                                 continue  # Abbrechen für dieses Modul
                         else:
                             # Kein Fix möglich -> Weiter zum nächsten
@@ -438,12 +438,12 @@ config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
                     try:
                         module.on_folder_change(start_path_current_dir)
                     except Exception as e:
-                        logger.error(f"scripts/py/func/map_reloader.py -> in ↖️upstream hook '{module_name}': Exception: {e}")
+                        logger.info(f"Error: 🚨 scripts/py/func/map_reloader.py -> in ↖️upstream hook '{module_name}': Exception: {e}")
 
             # scripts/py/func/map_reloader.py:342
             except Exception as e:
                 # Suppress errors from unrelated files
-                logger.info(f'❌ scripts/py/func/map_reloader.py:575 -> Exception: {e}')
+                logger.info(f'❌ 🚨 scripts/py/func/map_reloader.py:575 -> Exception: {e}')
                 pass
 
         # Move one level up

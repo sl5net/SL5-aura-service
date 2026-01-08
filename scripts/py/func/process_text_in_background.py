@@ -246,7 +246,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         from .log_memory_details import log_memory_details
         log_memory_details(f"def load_maps_for_language", logger)
 
-    logger.info(f"207: 🗺️Starting recursive map loading for language: {lang_code}, run_mode_override:{run_mode_override}")
+    logger.info(f"🗺️Starting recursive map loading for language: {lang_code}, run_mode_override:{run_mode_override}")
 
     settings.reload_settings()
 

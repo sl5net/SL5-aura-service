@@ -34,9 +34,9 @@ def try_auto_fix_module(file_path, exception_obj, logger):
             logger.info(f"Auto-Fix: NameError für '{bad_name}' erkannt. Repariere Datei...")
             return _apply_fix_name_error(file_path, bad_name, logger)
     else:
-        _apply_fix_name_error(file_path, None, logger)
+        return _apply_fix_name_error(file_path, None, logger)
 
-    logger.info(f"{filename} -> return False")
+    logger.info(f"try_auto_fix_module({file_path}, {exception_obj}..) -> return False")
     return False
 
 
