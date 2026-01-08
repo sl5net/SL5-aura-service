@@ -26,6 +26,9 @@ def is_plugin_enabled(hierarchical_key, plugins_config):
     Check if a plugin is active.
     A plugin is DEACTIVATED, when it or any superordinate module in the hierarchy is explicitly set to False. In all other cases, it is ACTIVE.
     """
+
+    # Normalize: Convert dots to slashes to be error-tolerant
+    hierarchical_key = hierarchical_key.replace('.', '/')
     current_key_parts = hierarchical_key.split('/')
 
     for i in range(len(current_key_parts)):
