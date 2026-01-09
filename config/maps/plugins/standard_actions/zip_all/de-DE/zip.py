@@ -44,15 +44,63 @@ def get_unpacker_lib():
     return module
 
 # --- JSON Helpers ---
-def load_registry():
-    if not JSON_DB_PATH.exists(): return []
-    try:
-        with open(JSON_DB_PATH, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            return data.get("watched_folders", [])
-    except Exception as e:
-        print(f"54:{e}")
+from pathlib import Path
+import json
+from typing import List, Any
+
+from pathlib import Path
+import json
+import logging
+from typing import List, Any
+
+from pathlib import Path
+import json
+import logging
+from typing import List, Any
+import tempfile
+import shutil
+
+
+def load_registry(auto_migrate: bool = True) -> List[Any]:
+    if not JSON_DB_PATH.exists():
+        logger.debug("Registry file %s does not exist; returning empty list", JSON_DB_PATH)
         return []
+
+    text = JSON_DB_PATH.read_text(encoding="utf-8")
+    if not text.strip():
+        logger.debug("Registry file %s is empty; returning empty list", JSON_DB_PATH)
+        return []
+
+    data = json.loads(text)
+
+    if isinstance(data, list):
+        return data
+
+    if isinstance(data, dict):
+        if not auto_migrate:
+            raise ValueError(f"Registry {JSON_DB_PATH} is a dict, expected list")
+        # Beispiel-Migration: verwende die Werte als Liste (oder alternativ [data])
+        migrated = list(data.values())
+        _atomic_write_json(JSON_DB_PATH, migrated)
+        logger.debug("Migrated registry %s from dict -> list (backup created)", JSON_DB_PATH)
+        return migrated
+
+    raise ValueError(f"Registry {JSON_DB_PATH} contains unexpected JSON type: {type(data).__name__}")
+
+def _atomic_write_json(path: Path, obj: Any) -> None:
+    # schreibt atomar: temp -> rename, behält Backup
+    backup = path.with_suffix(path.suffix + ".bak")
+    if path.exists():
+        shutil.copy2(path, backup)
+    fd, tmp = tempfile.mkstemp(dir=path.parent)
+    try:
+        with open(fd, "w", encoding="utf-8") as f:
+            json.dump(obj, f, ensure_ascii=False, indent=2)
+        Path(tmp).replace(path)
+    finally:
+        if Path(tmp).exists():
+            Path(tmp).unlink()
+
 
 def save_registry(folder_list):
     try:
@@ -152,16 +200,37 @@ def check_and_unpack_zips():
     4. Delete temporary key copy.
     """
     folders = load_registry()
-    if not folders: return
+
+    if not folders:
+        print('2026-0109-1053')
+        print('2026-0109-1053')
+        print('2026-0109-1053')
+        print('2026-0109-1053')
+        return None
 
     unpacker_module = get_unpacker_lib()
-    if not unpacker_module: return
+    print('2026-0109-1049')
+    if not unpacker_module:
+        print('2026-0109-1107')
+        print('2026-0109-1107')
+        print('2026-0109-1107')
+        print('2026-0109-1107')
+        return None
 
     for folder_str in folders:
+
+        print('2026-0109-1050')
+        print('2026-0109-1050')
+        print('2026-0109-1050')
+        print('2026-0109-1050')
+
         folder_path = Path(folder_str)
         # _t1 -> t1.zip (Sibling)
         zip_name = folder_path.name.lstrip('_') + ".zip"
         zip_dir = folder_path.parent
+
+        print('2026-0109-1051')
+
         zip_path = zip_dir / zip_name
 
         if _needs_unpacking(folder_path, zip_path):
@@ -190,7 +259,8 @@ def check_and_unpack_zips():
                         os.utime(folder_path, None)
 
                 except Exception as e:
-                    logger.error(f"❌ Failed to unpack {zip_path.name}: {e}")
+                    logger.info(f"❌ Failed to unpack {zip_path.name}: {e}")
+                    return None
 
                 finally:
                     # 4. Cleanup: Remove the copied key
@@ -200,9 +270,13 @@ def check_and_unpack_zips():
                             # logger.debug("🧹 Removed temp key file.")
                         except Exception as cleanup_err:
                             logger.warning(f"⚠️ Could not remove temp key {local_key_path}: {cleanup_err}")
+                        return None
 
             else:
                 logger.warning(f"⚠️ No password file found for {folder_path.name}. Cannot unpack.")
+                return None
+    return None
+
 
 def check_and_pack_zips():
     """Checks Registry. If Folder > Zip, calls secure_packer_lib."""
@@ -227,20 +301,32 @@ def check_and_pack_zips():
             try:
                 packer_lib.execute_packing_logic(folder_path, logger)
             except Exception as e:
-                logger.error(f"⚠️ Error packing {str(folder_path)[-30:]}: {e}")
+                logger.info(f"⚠️ Error packing {str(folder_path)[-30:]}: {e}")
 
 # --- HOOKS ---
 
+# config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:234
 def on_reload():
     """Runs automatically on every reload."""
     try: # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:236
         check_and_unpack_zips()
+    except Exception as e:
+        # STT/config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:241
+        m = f"🔥 Error in zip_all/de-DE/zip.py:241 on_reload in check_and_unpack_zips(): {e}"
+        # logger.info(f"{m}")
+        logger.debug(f"{m}")
+        return f"{m}"
+        # sys.exit(1)
+        # 07:40:03,498 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
+    try: # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:236
         check_and_pack_zips()
     except Exception as e:
-        # STT/config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:236
-        logger.error(f"🔥 Error in zip_all/de-DE/zip.py:236 on_reload: {e}")
+        # STT/config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:241
+        m = f"🔥 Error in zip_all/de-DE/zip.py:251 on_reload in check_and_pack_zips(): {e}"
+        logger.info("{m")
+        logger.error(f"{m}")
+        return f"{m}"
         # sys.exit(1)
-        return f"🔥 Error in zip_all/de-DE/zip.py:236 on_reload: {e}"
         # 07:40:03,498 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
 
 def execute(match_data):

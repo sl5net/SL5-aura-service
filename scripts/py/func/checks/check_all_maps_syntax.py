@@ -15,6 +15,7 @@ def check_syntax(file_path):
         print("❌" * 50)
         return False
 
+# scripts/py/func/checks/check_all_maps_syntax.py:18
 def check_folder_syntax(root_dir):
     print(f"INFO: Starting syntax check in directory: {root_dir}")
     has_errors = False

@@ -8,6 +8,8 @@ gitDiff.txt
 .stignore
 backup/
 
+*.bak
+
 Z_*
 
 # to large

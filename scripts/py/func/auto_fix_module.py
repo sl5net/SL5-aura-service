@@ -36,7 +36,7 @@ def try_auto_fix_module(file_path, exception_obj, logger):
     else:
         return _apply_fix_name_error(file_path, None, logger)
 
-    logger.info(f"try_auto_fix_module({file_path}, {exception_obj}..) -> return False")
+    logger.info(f"try_auto_fix_module({str(file_path)}, {str(exception_obj)}..) -> return False")
     return False
 
 

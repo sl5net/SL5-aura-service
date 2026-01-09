@@ -1438,6 +1438,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
+
+            skip_list_temp = options_dict.get('skip_list', [])
+
             # 1. Flags extrahieren für den Cache-Key
             flags = options_dict.get('flags', re.IGNORECASE)
             cache_key = (regex_pattern, flags)

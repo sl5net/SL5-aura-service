@@ -64,10 +64,11 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: find files
-    ('find . -name', r'^(find files|finde Dateien|Suche Dateien)$', 80, {
+    ('find . -type f -path "*zip.py"', r'^(find files|finde Dateien|Suche Dateien)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
+
 
     # EXAMPLE: pkill process
     ('pkill -f', r'^(kill process|Prozess beenden|pkill)$', 85, {

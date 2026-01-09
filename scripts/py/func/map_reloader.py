@@ -1,5 +1,5 @@
 # scripts/py/func/map_reloader.py
-from .config.regex_cache import REGEX_COMPILE_CACHE, clear_regex_cache
+from .config.regex_cache import clear_regex_cache
 import importlib
 import sys
 import gc # Added for forced garbage collection
