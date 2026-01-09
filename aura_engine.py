@@ -705,13 +705,26 @@ memory_logger = logging.getLogger('MemoryAnalyzer')
 
 # Fügen Sie dies vor der Konfiguration des memory_logger hinzu:
 
+# aura_engine.py:708
 if os.path.exists(MEMORY_LOG_PATH):
     # Get last modification time
     mtime_ts = os.path.getmtime(MEMORY_LOG_PATH)
     log_date = datetime.fromtimestamp(mtime_ts).date()
     # If the log file is not from today, delete it
     if log_date < datetime.now().date():
-        os.remove(MEMORY_LOG_PATH)
+        # os.remove(MEMORY_LOG_PATH)
+        try:
+            if os.path.exists(MEMORY_LOG_PATH):
+                # Truncate the file instead of removing it to avoid WinError 32
+                with open(MEMORY_LOG_PATH, 'w'):
+                    pass
+        except PermissionError:
+            logger.warning(f"Could not clear {MEMORY_LOG_PATH} - file is locked. May Ctrl+Alt+Def and delete alle Python processes")
+            logger.warning('Prüfe im Task-Manager, ob noch eine alte python.exe im Hintergrund läuft, die die Logdatei blockiert.')
+
+
+
+
         memory_logger.info("Old memory log file deleted.")
 
 
