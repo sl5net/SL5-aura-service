@@ -71,19 +71,4 @@ Technische Begriffe:
 
 Hinweis: Ich habe re.VERBOSE (in den Flags) hinzugefügt, damit wir den Regex über mehrere Zeilen schreiben können (bessere Lesbarkeit). Falls deine Engine re.VERBOSE nicht unterstützt oder mag, sag Bescheid, dann schrumpfe ich es wieder in eine lange Zeile.
 
-    '''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+'''

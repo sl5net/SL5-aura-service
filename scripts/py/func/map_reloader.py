@@ -1,4 +1,5 @@
 # scripts/py/func/map_reloader.py
+from .config.regex_cache import REGEX_COMPILE_CACHE, clear_regex_cache
 import importlib
 import sys
 import gc # Added for forced garbage collection
@@ -12,6 +13,7 @@ from .log_memory_details import log4DEV
 from .private_map_ex import _private_map_unpack
 from .auto_fix_module import try_auto_fix_module
 LAST_MODIFIED_TIMES = {}  # noqa: F824
+
 
 def auto_reload_modified_maps(logger,run_mode_override):
     # scripts/py/func/map_reloader.py:12
@@ -110,6 +112,9 @@ def auto_reload_modified_maps(logger,run_mode_override):
                 # 3. FORCE GARBAGE COLLECTION
                 # Placed outside to always clean up before re-import
                 gc.collect()
+
+                clear_regex_cache()
+
                 if log_all_map_reloaded:
                     logger.info("🗑️ Forced garbage collection before re-import.")
                 # --- END OF CLEANUP ---

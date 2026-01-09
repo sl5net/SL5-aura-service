@@ -139,12 +139,17 @@ PRE_RECORDING_TIMEOUT = 12
 AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
 # INITIAL_WAIT_TIMEOUT = initial_silence_timeout
 # SPEECH_PAUSE_TIMEOUT = 2.0 # Standardwert
-SPEECH_PAUSE_TIMEOUT = 2
+SPEECH_PAUSE_TIMEOUT = 1
 # Standardwert
 
 # AUDIO_INPUT_DEVICE = 'MIC_AND_DESKTOP'
 # PRE_RECORDING_TIMEOUT = 12
 # SPEECH_PAUSE_TIMEOUT = 5
+
+# SPEECH_PAUSE_TIMEOUT
+# Hebel, um Aura spürbar zu beschleunigen:
+# Reaktionszeit (Der wichtigste Hebel): Reduziere den SPEECH_PAUSE_TIMEOUT in der settings_local.py (z. B. auf 0.5 oder 0.8). Aura wartet dann kürzer nach dem Ende deines Satzes, bevor sie loslegt. Das fühlt sich sofort "snappy" an.
+
 
 
 

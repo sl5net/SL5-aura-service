@@ -29,6 +29,8 @@ from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 settings = DynamicSettings()
 
+
+
 from .normalize_punctuation import normalize_punctuation
 from .map_reloader import auto_reload_modified_maps
 
@@ -46,6 +48,8 @@ from .setup_initial_model import get_model_name_from_key
 GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
 GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
+
+from .config.regex_cache import REGEX_COMPILE_CACHE
 
 
 def normalize_fuzzy_map_rule_entry(rule_entry):
@@ -1417,35 +1421,50 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 return None, False
                 # sys.exit(1)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
+            # 1. Flags extrahieren für den Cache-Key
+            flags = options_dict.get('flags', re.IGNORECASE)
+            cache_key = (regex_pattern, flags)
 
-            # Extrahiere die Flags aus dem options_dict
-            flags = options_dict.get('flags', 0) # Jetzt ist 'flags' ein Integer
-            skip_list_temp = options_dict.get('skip_list', [])
-            skip_list=skip_list_temp
-            log4DEV(f"{full_text_replaced_by_rule} skip_list:{skip_list} , skip_list_temp={skip_list_temp} (Pattern: '{regex_pattern}')",logger_instance)
+            # 2. Cache-Check oder Kompilierung
+            if cache_key not in REGEX_COMPILE_CACHE:
+                try:
+                    REGEX_COMPILE_CACHE[cache_key] = re.compile(regex_pattern, flags=flags)
+                except re.error as e:
+                    logger_instance.error(f"Invalid regex: {regex_pattern} - {e}")
+                    continue
 
-            #log4DEV(f"made_a_change={made_a_change} REPLACE:{full_text_replaced_by_rule} options_dict={options_dict} skip_list:{skip_list} (Pattern: '{regex_pattern}')",logger_instance)
+            compiled_regex = REGEX_COMPILE_CACHE[cache_key]
 
-            # Den threshold hast du jetzt auch direkt entpackt
-
-            sub_replacement_string = replacement_text
-
+            # 3. Nutzung des kompilierte Objekts (viel schneller!)
             try:
-                match_obj = re.fullmatch(regex_pattern, current_text, flags=flags)
+                match_obj = compiled_regex.fullmatch(current_text)
+
                 if match_obj:
                     # Der ursprüngliche Text, bevor irgendetwas geändert wird
                     original_text_for_script = current_text
                     log4DEV(f"original..={original_text_for_script}", logger_instance)
 
-                    new_current_text = re.sub(
-                        regex_pattern,
-                        sub_replacement_string,
-                        current_text,
-                        flags=flags
-                    )
+
+                    new_current_text = compiled_regex.sub(replacement_text, current_text)
                     log4DEV(f"new..={new_current_text}", logger_instance)
-                    log4DEV(f"regex_pattern:{regex_pattern}, sub_replacement_string={sub_replacement_string}", logger_instance)
+                    # log4DEV(f"regex_pattern:{regex_pattern}, sub_replacement_string={sub_replacement_string}", logger_instance)
 
                     if new_current_text != original_text_for_script:
 
@@ -1488,17 +1507,14 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 else:  # Dieser Block wird ausgeführt, wenn es KEIN fullmatch gab
 
                     # <<< ÄNDERUNG 3: Wir müssen hier explizit nach einem partiellen Match suchen, um das match_obj zu bekommen
-                    partial_match_obj = re.search(regex_pattern, current_text, flags=flags)
+                    # partial_match_obj = re.search(regex_pattern, current_text, flags=flags)
+                    partial_match_obj = compiled_regex.search(current_text)
 
-                    # Nur fortfahren, wenn auch wirklich etwas gefunden wurde
                     if partial_match_obj:
                         original_text_for_script = current_text
-                        new_current_text = re.sub(
-                            regex_pattern,
-                            sub_replacement_string,
-                            current_text,
-                            flags=flags
-                        )
+
+                        new_current_text = compiled_regex.sub(replacement_text, current_text)
+
 
                         if new_current_text != original_text_for_script:
 

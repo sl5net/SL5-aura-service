@@ -233,7 +233,7 @@ def check_and_pack_zips():
 
 def on_reload():
     """Runs automatically on every reload."""
-    try:
+    try: # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:236
         check_and_unpack_zips()
         check_and_pack_zips()
     except Exception as e:

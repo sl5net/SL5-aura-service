@@ -20,4 +20,10 @@ FUZZY_MAP_pre = [
 
 ]
 
+"""
+Tipp:
 
+Notepad++ ist schnell, übersichtlich und wirkt auf Nicht-IT-ler weit weniger einschüchternd als VS Code.
+Dass die Markdowns auch als reiner Text gut lesbar sind, unterstreicht Einfachheit vor Komplexität.
+PS https://nea.github.io/MarkdownViewerPlusPlus/
+"""
