@@ -3,6 +3,7 @@ import zipfile
 import os
 import shutil
 from pathlib import Path
+import random
 
 APKG_FILE = "Python_Tresor_Basis.apkg"
 OUTPUT_MAP = Path("config/maps/plugins/anki_quiz/de-DE/FUZZY_MAP_pre.py")
@@ -42,6 +43,33 @@ def extract_anki():
     conn.close()
     shutil.rmtree(TEMP_DIR)
     print(f"Aura-Map generiert: {OUTPUT_MAP}")
+
+def generate_mc_rules(notes):
+    rules = ["# Auto-generated Multiple Choice Quiz\nFUZZY_MAP_pre = ["]
+    all_answers = [n[0].split('\x1f')[1] for n in notes]
+
+    for i, note in enumerate(notes):
+        fields = note[0].split('\x1f')
+        question, correct_answer = fields[0], fields[1]
+
+        # 2 falsche Antworten suchen
+        wrong_answers = random.sample([a for a in all_answers if a != correct_answer], 2)
+        options = [correct_answer] + wrong_answers
+        random.shuffle(options)
+
+        correct_index = options.index(correct_answer) + 1
+
+        # In CopyQ anzuzeigender Text
+        display_text = f"{question}\\n\\n1) {options[0]}\\n2) {options[1]}\\n3) {options[2]}"
+
+        # Trigger: Wenn der User die richtige Nummer sagt
+        # Nutzt 'spoken_numbers_to_digits' Plugin Logik (eins -> 1)
+        rules.append(f"    ('Richtig!', r'^{correct_index}$', 0, {{'on_match_exec': ['anki_next.py']}}),")
+
+    rules.append("]")
+    return rules
+
+
 
 if __name__ == "__main__":
     extract_anki()
