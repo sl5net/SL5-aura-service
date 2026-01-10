@@ -1569,10 +1569,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
         if full_text_replaced_by_rule:
             made_a_change = True
             log4DEV(f"made a_change: {made_a_change}",logger_instance)
-            logger_instance.info(
-                f"🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}, skip_list='{skip_list}'")
-
-
+            # logger_instance.info(f"🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}, skip_list='{skip_list}'")
+            logger_instance.info(f"🚀full_text_replaced_by_rule='{full_text_replaced_by_rule}, skip_list='{skip_list}'")
             break
 
         if not made_a_change_in_cycle:
