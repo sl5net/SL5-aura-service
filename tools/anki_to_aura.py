@@ -13,9 +13,13 @@ def extract_anki():
     TEMP_DIR.mkdir(exist_ok=True)
 
     with zipfile.ZipFile(APKG_FILE, 'r') as zip_ref:
-        zip_ref.extract("collection.anki21", TEMP_DIR) # Newer Anki format
+        # Check if it's the old or new filename
+        db_name = "collection.anki21" if "collection.anki21" in zip_ref.namelist() else "collection.anki2"
+        zip_ref.extract(db_name, TEMP_DIR)
 
-    conn = sqlite3.connect(TEMP_DIR / "collection.anki21")
+    conn = sqlite3.connect(TEMP_DIR / db_name)
+
+    # conn = sqlite3.connect(TEMP_DIR / "collection.anki21")
     cursor = conn.cursor()
 
     # Get all notes (fields are separated by \x1f)
@@ -29,7 +33,7 @@ def extract_anki():
             question, answer = fields[0], fields[1]
             # Create a rule: if user says the answer, trigger 'Correct!' logic
             # For now, we map Answer -> Question as a simple check
-            rules.append(f"    ('{question}', r'^{answer}$'),")
+            rules.append(f"    ('Richtig!', r'^{answer}$', 0, {{'on_match_exec': ['anki_next.py']}}),")
 
     rules.append("]")
     OUTPUT_MAP.parent.mkdir(parents=True, exist_ok=True)
