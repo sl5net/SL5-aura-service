@@ -70,6 +70,28 @@ def generate_mc_rules(notes):
     return rules
 
 
+quiz_data = []
+for note in notes:
+    # ... (Zufalls-Optionen generieren wie im letzten Schritt) ...
+    display_text = f"{question}\n\n1) {options[0]}\n2) {options[1]}\n3) {options[2]}"
+    quiz_data.append({
+        "display": display_text,
+        "correct": options.index(correct_answer) + 1
+    })
+
+# Speicher die Fragen als Datenbank für das Plugin
+with open(OUTPUT_MAP.parent / "quiz_db.json", "w") as f:
+    json.dump(quiz_data, f)
+
+# Generiere die Aura-Regel (reagiert auf jede Zahl)
+rules = [
+    "from .anki_logic import check_answer\n",
+    "FUZZY_MAP_pre = [",
+    "    ('', r'^(1|2|3)$', 0, {'on_match_exec': [check_answer]}),",
+    "]"
+]
+
 
 if __name__ == "__main__":
     extract_anki()
+
