@@ -806,7 +806,11 @@ def process_text_in_background(logger,
 
     settings = DynamicSettings()
 
-
+    timestamp = int(time.time() * 1000)
+    if output_dir_override:
+        unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
+    else:
+        unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
 
     if settings.DEV_MODE: # some test. want check if we can change setting and get some setting correct back ( 2026-0104-1433 4.1.'26 14:33 Sun )
         timestamp = int(time.time() * 1000)
@@ -1022,7 +1026,7 @@ def process_text_in_background(logger,
             log4DEV(f"SkipList: {skip_list} "
                     f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
                     f" processed_text:{processed_text} "
-                    f" new_processed_text:{new_processed_text}" 
+                    f" new_processed_text:{new_processed_text}"
                     f" 📚📚result_languagetool📚📚:{result_languagetool} ",logger)
             # 477: SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
 
@@ -1647,4 +1651,3 @@ def clear_global_maps(logger):
     GLOBAL_FUZZY_MAP.clear()
 
     # logger.info("Global Map Registries successfully cleared.")
-
