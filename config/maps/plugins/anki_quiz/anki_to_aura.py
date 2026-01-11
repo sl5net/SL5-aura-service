@@ -15,7 +15,10 @@ TEMP_DIR = Path("temp_anki")
 
 BASE_DIR = OUTPUT_MAP.parent
 LOG_FILE = BASE_DIR / "QuizProtokoll.md"
-UNICODE_NUMS = {1: "⓵", 2: "⓶", 3: "⓷"}
+# UNICODE_NUMS = {1: "⓵", 2: "⓶", 3: "⓷"}
+
+UNICODE_NUMS = {1: "1️", 2: "2️", 3: "3️"}
+
 
 
 LOG_FILE = BASE_DIR / "QuizProtokoll.md"
