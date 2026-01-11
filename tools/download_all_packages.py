@@ -210,16 +210,15 @@ def process_package(base_name, package_files, remove_parts):
 
 
 def main():
-    # ----------------------------------------------------
-    # NEU: 1. Argument-Parser MUSS ZUERST SEIN
-    # ----------------------------------------------------
     parser = argparse.ArgumentParser(description="Download and verify assets from a GitHub release.")
-    parser.add_argument("--exclude", type=str, nargs='*', default="",
-                        help="Comma-separated list of language codes to exclude (e.g., 'de,en') or 'all'.")
-    args = parser.parse_args()
 
-    # Sprache(n) auslesen und in eine Liste konvertieren
-    exclude_list = [x.strip().lower() for x in args.exclude.split(',')] if args.exclude else []
+    parser.add_argument("--exclude", type=str, nargs='*', default=[],
+                        help="List of language codes to exclude, e.g. --exclude de en")
+    args = parser.parse_args()
+    exclude_list = [x.strip().lower() for x in args.exclude]  # args.exclude is already a list
+
+
+    # exclude_list = [x.strip().lower() for x in args.exclude.split(',')] if args.exclude else []
 
     # exclude_list = [x.strip().lower() for x in args.exclude.split(',') if x.strip()]
 
