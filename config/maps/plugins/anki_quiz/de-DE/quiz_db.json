@@ -1,0 +1,1 @@
+[{"display": "Wie erzeugt man einen digitalen Schl\u00fcssel (Datei schreiben)?\n\n1) with open(\".schluessel\", \"w\") as f:\n2) if wetter == \"sonne\":\n3) ---", "correct": 1}, {"display": "Wie pr\u00fcft man, ob das Wetter \"Sonne\" ist?\n\n1) if wetter == \"sonne\":\n2) with open(\".schluessel\", \"w\") as f:\n3) ---", "correct": 1}]

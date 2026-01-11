@@ -4,45 +4,68 @@ import os
 import shutil
 from pathlib import Path
 import random
+import json
 
 APKG_FILE = "Python_Tresor_Basis.apkg"
 OUTPUT_MAP = Path("config/maps/plugins/anki_quiz/de-DE/FUZZY_MAP_pre.py")
 TEMP_DIR = Path("temp_anki")
 
+
 def extract_anki():
     if not os.path.exists(APKG_FILE): return
     TEMP_DIR.mkdir(exist_ok=True)
-
     with zipfile.ZipFile(APKG_FILE, 'r') as zip_ref:
-        # Check if it's the old or new filename
         db_name = "collection.anki21" if "collection.anki21" in zip_ref.namelist() else "collection.anki2"
         zip_ref.extract(db_name, TEMP_DIR)
 
     conn = sqlite3.connect(TEMP_DIR / db_name)
+    notes = conn.execute("SELECT flds FROM notes").fetchall()
 
-    # conn = sqlite3.connect(TEMP_DIR / "collection.anki21")
-    cursor = conn.cursor()
+    # Alle Antworten sammeln für die Zufallsauswahl falscher Optionen
+    all_answers = [n[0].split('\x1f')[1] for n in notes if len(n[0].split('\x1f')) >= 2]
+    quiz_data = []
 
-    # Get all notes (fields are separated by \x1f)
-    cursor.execute("SELECT flds FROM notes")
-    notes = cursor.fetchall()
-
-    rules = ["# Auto-generated from Anki\nFUZZY_MAP_pre = ["]
     for note in notes:
         fields = note[0].split('\x1f')
         if len(fields) >= 2:
-            question, answer = fields[0], fields[1]
-            # Create a rule: if user says the answer, trigger 'Correct!' logic
-            # For now, we map Answer -> Question as a simple check
-            rules.append(f"    ('Richtig!', r'^{answer}$', 0, {{'on_match_exec': ['anki_next.py']}}),")
+            question, correct_answer = fields[0], fields[1]
 
-    rules.append("]")
+            wrong_candidates = list(set([a for a in all_answers if a != correct_answer]))
+            # Nimm max 2 falsche Antworten
+            sampled_wrongs = random.sample(wrong_candidates, min(len(wrong_candidates), 2))
+
+            options = [correct_answer] + sampled_wrongs
+            random.shuffle(options)
+
+            # Auffüllen, falls weniger als 3 Optionen vorhanden sind
+            while len(options) < 3:
+                options.append("---")
+
+            quiz_data.append({
+                "display": f"{question}\n\n1) {options[0]}\n2) {options[1]}\n3) {options[2]}",
+                "correct": options.index(correct_answer) + 1
+            })
+
+
+
+
+
+    # Dateien schreiben
+    with open(OUTPUT_MAP.parent / "quiz_db.json", "w", encoding="utf-8") as f:
+        json.dump(quiz_data, f)
+
+    rules = [
+        "from .anki_logic import execute\n",
+        "FUZZY_MAP_pre = [",
+        "    ('', r'^(1|2|3)$', 0, {'on_match_exec': [execute]}),",
+        "]"
+    ]
     OUTPUT_MAP.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_MAP.write_text("\n".join(rules), encoding="utf-8")
 
     conn.close()
     shutil.rmtree(TEMP_DIR)
-    print(f"Aura-Map generiert: {OUTPUT_MAP}")
+    print(f"Aura-Quiz bereit: {len(quiz_data)} Fragen in {OUTPUT_MAP.parent}")
 
 def generate_mc_rules(notes):
     rules = ["# Auto-generated Multiple Choice Quiz\nFUZZY_MAP_pre = ["]
@@ -70,18 +93,6 @@ def generate_mc_rules(notes):
     return rules
 
 
-quiz_data = []
-for note in notes:
-    # ... (Zufalls-Optionen generieren wie im letzten Schritt) ...
-    display_text = f"{question}\n\n1) {options[0]}\n2) {options[1]}\n3) {options[2]}"
-    quiz_data.append({
-        "display": display_text,
-        "correct": options.index(correct_answer) + 1
-    })
-
-# Speicher die Fragen als Datenbank für das Plugin
-with open(OUTPUT_MAP.parent / "quiz_db.json", "w") as f:
-    json.dump(quiz_data, f)
 
 # Generiere die Aura-Regel (reagiert auf jede Zahl)
 rules = [

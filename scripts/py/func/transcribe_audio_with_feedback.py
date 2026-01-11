@@ -98,12 +98,12 @@ def _get_downsampled_data(raw_data, input_rate, logger):
 
         #  noqa: F841
         comments = """
-Lösung A (reshape) vermutlich technisch besser? #  noqa: 
+Lösung A (reshape) vermutlich technisch besser? #  noqa:
 Warum?
-Bei Lösung B springst du im Zeitverlauf zwischen linkem und rechtem Kanal hin und her (L0, R1, L3, R4...). 
-Das erzeugt Phasenfehler und Verzerrungen. 
+Bei Lösung B springst du im Zeitverlauf zwischen linkem und rechtem Kanal hin und her (L0, R1, L3, R4...).
+Das erzeugt Phasenfehler und Verzerrungen.
 Die Fehlerquote steigt, wenn links und rechts unterschiedliche Signale liegen (z. B. Stimme links, Musik rechts).
-Lösung A ist nimmst nur einen Kanal (Links). 
+Lösung A ist nimmst nur einen Kanal (Links).
 Wichtig: Bleib bei channels=2 im RawInputStream, sonst stürzt Lösung A mit einem Fehler ab!
         """
         comments2 = comments # noqa: F841

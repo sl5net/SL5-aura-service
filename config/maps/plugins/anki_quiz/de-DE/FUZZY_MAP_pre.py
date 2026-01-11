@@ -1,6 +1,34 @@
-# Auto-generated from Anki
+# from .anki_logic import execute
+import re # noqa: F401
+from pathlib import Path
+
+
+CONFIG_DIR = Path(__file__).parent
 FUZZY_MAP_pre = [
-    ('Wie erzeugt man einen digitalen Schlüssel (Datei schreiben)?',
-     r'^with open(".schluessel", "w") as f:$'),
-    ('Wie prüft man, ob das Wetter "Sonne" ist?', r'^if wetter == "sonne":$'),
+
+
+    #Antwort 1Falsch, nochmal!
+    # r'^(?:die\s+)?Antwort\s*(?:ist\s+)?(e\w*)$'
+    #
+    ('Antwort 1',
+     r'^(?:die\s+)?Antwort\s*(?:ist\s+)?(e\w*)$', 100,
+    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+
+    # {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+
+    #('Antwort 1', r'^Antwort (e\w*)$',
+    #{'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', #'LT_SKIP_RATIO_THRESHOLD']}),
+
+    #antwort ist 1
+
+    ('', r'^Antwort (1|2|3)$', 0, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py']}),
+
+    # ('', r'^(1|2|3)$', 0, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py']}),
+
+    ('', r'^(quitt|quiz|quizz|swiss) (starten)$', 100, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py']}),
+    ('', r'^(start) (quitt|quiz|quizz)$', 100, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py']}),
+    # ('', r'^(1|2|3)$', 0, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py']}),
 ]
+
+#die antwort ist 1
+#Funktioniert es immer noch quizze startenQuiz gestartetdie antwort ist 1
