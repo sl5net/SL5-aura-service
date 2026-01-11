@@ -1,6 +1,5 @@
 # config/maps/plugins/anki_quiz/de-DE/anki_logic.py:1
 import json
-import time
 
 import platform
 from datetime import datetime
@@ -120,7 +119,7 @@ def log_question(text,user_choice):
         f.write("\\" + "_"*40 + "\n\n")
 
 
-
+# import time
 # def unique_output_file_write_text(text):
 #     timestamp = time.time()
 #     unique_output_file = TMP_DIR / f"sl5_aura/tts_output_anki_{timestamp}.txt"
