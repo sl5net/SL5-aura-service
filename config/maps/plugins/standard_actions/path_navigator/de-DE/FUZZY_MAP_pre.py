@@ -192,13 +192,14 @@ FUZZY_MAP_pre = [
 
 
 
+    # rohrer konfiguratione
 
-
+    #
 
 
     (f'{HOME_DIR_POSIX}/.config/0ad/config/',
      # EXAMPLE: 0ad config
-     r'^(Joa|zero ein|zero|februar|fiera|fira|fever|fewo|führer|tyrannei|februar|wieweit|hierbei|hierbei|zebra|silva|fiera|give|cio|in|sie|sie war|syrer|seo|cyra|chihuahua|hier mal|sie wollen|über|weberei)\s+(d|die|aed|it|die|di|dir|aed)\s+(Konflik|Konflikt|Konfiguration|konflikten|config|conflict)$',
+     r'^(Joa|zero ein|zero|februar|fiera|fira|fever|fewo|führer|tyrannei|februar|wieweit|hierbei|hierbei|zebra|silva|fiera|give|cio|in|sie|sie war|syrer|seo|cyra|chihuahua|hier mal|sie wollen|über|weberei|rohrer)\s+(d|die|aed|it|die|di|dir|aed)\s+(Konflik|Konflikt|Konfiguration|konflikten|config|conflict)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 

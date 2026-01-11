@@ -49,6 +49,8 @@ GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
 GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
+GLOBAL_debug_skip_list=False
+
 from .config.regex_cache import REGEX_COMPILE_CACHE
 
 
@@ -67,8 +69,6 @@ def normalize_fuzzy_map_rule_entry(entry):
 
 
     return entry
-
-
 
 def execute_hook(logger, module, hook_name, lock_key):
     if hasattr(module, hook_name):
@@ -143,7 +143,8 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
 
 # This is your function at line 17
 def load_module_from_path(script_path, run_mode_override=None):
-    print(f'86: run_mode_override: {run_mode_override}')
+    if GLOBAL_debug_skip_list:
+        print(f'86: run_mode_override: {run_mode_override}')
 
     path = Path(script_path)
 
@@ -205,6 +206,7 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
         import fasttext
         fasttext_model = fasttext.load_model(str(MODEL_PATH))
         #
+
 
         print(f"168: TODO: performance killer (2025-1225-1950)")
         print(f"168: TODO: performance killer (2025-1225-1950)")
@@ -575,12 +577,18 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
     #log_all_processed_text = False and settings.DEV_MODE
 
+    if GLOBAL_debug_skip_list:
 
+        print(f'567: skip_list={skip_list}')
 
     a_rule_matched = False
     if new_processed_text is False:
         #made_a_change_in_cycle = False
         log4DEV(f"new_processed_text is return ... None", logger)
+
+        if GLOBAL_debug_skip_list:
+            print(f'574: skip_list={skip_list}')
+
         return new_processed_text, None, skip_list
 
 
@@ -589,6 +597,10 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         skip_list.append('LanguageTool')
         # regex_pre_is_replacing_all_maybeTEST1 = True
         log4DEV(f"242: 🔁??? new_processed_text: {new_processed_text}", logger)
+
+        if GLOBAL_debug_skip_list:
+            print(f'585: skip_list={skip_list} | {new_processed_text} ')
+
         return new_processed_text, True, skip_list
 
     log4DEV(f"new_processed_text: {new_processed_text},  "
@@ -606,6 +618,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         #for replacement, match_phrase, threshold, *flags_list, rule_mode in fuzzy_map_pre:
 
         for entry in fuzzy_map_pre:
+
+
             if len(entry) < 4:
                 entry =normalize_fuzzy_map_rule_entry(entry)
 
@@ -616,7 +630,12 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
             # logger.info(f"252: 🔁??? threshold: '{threshold}' based on pattern '{match_phrase}'")
 
             flags = options_dict.get('flags', 0)  # Hier extrahierst du den INTEGER korrekt
+            
+            
             skip_list = options_dict.get('skip_list', [])
+
+            if GLOBAL_debug_skip_list:
+                print(f'618: skip_list={skip_list}')
 
             # logger.info(f"248: threshold={threshold} , skip_list: {skip_list}")
 
@@ -705,6 +724,10 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
                             # WICHTIG: Dein Code beendet die Funktion hier nach dem ERSTEN Skript.
                             # Das ist okay, wenn pro Regel nur ein Skript vorgesehen ist.
+
+                            if GLOBAL_debug_skip_list:
+                                print(f'708: skip_list={skip_list}')
+
                             return processed_text, a_rule_matched, skip_list
 
                     log4DEV(f"a_rule_matched({a_rule_matched}) -> break",logger)
@@ -725,6 +748,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
 
     log4DEV(f"new_processed_text: {new_processed_text} , a_rule_matched: {a_rule_matched}, skip_list: {skip_list}",logger)
+
+    if GLOBAL_debug_skip_list:
+        print(f'731: skip_list={skip_list}')
     return new_processed_text, a_rule_matched, skip_list
 
 # scripts/py/func/process_text_in_background.py:588
@@ -1044,6 +1070,8 @@ def process_text_in_background(logger,
             regex_match_found = False
             log4DEV(f'regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
             log4DEV(f"skip_list: {skip_list}", logger)
+            if GLOBAL_debug_skip_list:
+                print(f'1051: skip_list={skip_list}')
             skip_list_backup = skip_list
             options_dict = None
             log4DEV(f"skip_list_backup: {skip_list_backup}", logger)
@@ -1062,6 +1090,8 @@ def process_text_in_background(logger,
                     flags = options_dict.get('flags', 0)  # Standardwert ist 0, wenn kein Flag angegeben
                     #log4DEV(f"skip_list: {skip_list}", logger)
                     skip_list = options_dict.get('skip_list', [])  # Standardwert ist leere Liste
+                    if GLOBAL_debug_skip_list:
+                        print(f'1070: skip_list={skip_list}')
                     #log4DEV(f"skip_list: {skip_list}", logger)
 
                     # ... Rest deiner Logik
@@ -1123,6 +1153,8 @@ def process_text_in_background(logger,
 
                 log4DEV(f"skip_list_backup: {skip_list_backup}", logger)
                 skip_list=skip_list_backup
+                if GLOBAL_debug_skip_list:
+                    print(f'1132: skip_list={skip_list}')
 
                 # for replacement, match_phrase, threshold in fuzzy_map:
                 for replacement, match_phrase, threshold, *_ in GLOBAL_FUZZY_MAP:
@@ -1407,6 +1439,12 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
         for rule_entry in rules_map:
+
+            if GLOBAL_debug_skip_list:
+                print(f'1420: Processing rule {rule_entry}')
+
+
+
             # (replacement_text, regex_pattern, threshold_value, options_dict)
 
             # SAFETY GUARD: Skip invalid entries that are not tuples/lists
@@ -1415,6 +1453,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     f"Type {type(rule_entry)}): {rule_entry}. Please check your map files!"
                 log4DEV(m,logger_instance)
                 logger_instance.info(m)
+
+                if GLOBAL_debug_skip_list:
+                    print(f'1433: Processing rule {rule_entry} ')
+
                 continue
 
             if len(rule_entry) < 4:
@@ -1451,10 +1493,14 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
 
-
+            # scripts/py/func/process_text_in_background.py:1471
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
 
             skip_list_temp = options_dict.get('skip_list', [])
+
+            if GLOBAL_debug_skip_list:
+                print(f'1476: skip_list_temp={skip_list_temp}')
+                print(f'1476: skip_list_temp={options_dict}')
 
             # 1. Flags extrahieren für den Cache-Key
             flags = options_dict.get('flags', re.IGNORECASE)
@@ -1512,12 +1558,19 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         made_a_change_in_cycle = True
                         made_a_change = made_a_change + 1
                         skip_list = skip_list_temp
+
+                        if GLOBAL_debug_skip_list:
+                            print(f'1525: skip_list={skip_list}')
+
                         current_text = new_current_text  # Jetzt wird der finale Text zugewiesen
 
                         full_text_replaced_by_rule = True  # because was full-match
                         log4DEV(f"full_text_replaced_by_rule = {full_text_replaced_by_rule}",logger_instance)
 
                         log4DEV(f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} '{original_text_for_script}' ----> '{current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}",logger_instance)
+
+                        if GLOBAL_debug_skip_list:
+                            print(f'1534: skip_list={skip_list}')
 
                         if 'fullMatchStop' not in skip_list:
                             break
