@@ -1,3 +1,4 @@
+# tools/anki_to_aura.py:1
 import sqlite3
 import zipfile
 import os
@@ -11,27 +12,24 @@ APKG_FILE = Path("config/maps/plugins/anki_quiz/Python_fundamentals.apkg")
 OUTPUT_MAP = Path("config/maps/plugins/anki_quiz/de-DE/FUZZY_MAP_pre.py")
 TEMP_DIR = Path("temp_anki")
 
-# Richtig!Falsch, nochmal!
+
+BASE_DIR = OUTPUT_MAP.parent
+LOG_FILE = BASE_DIR / "QuizProtokoll.md"
+UNICODE_NUMS = {1: "⓵", 2: "⓶", 3: "⓷"}
+
+
+LOG_FILE = BASE_DIR / "QuizProtokoll.md"
 
 import html
 import re
 
-
-import re
-import html
-
-
-import re
-import html
-
-import html
-import re
+def strip_existing_numbering_OFF(text):
+    # Entfernt Muster wie "1)", "1.", "(1)", "a)" am Zeilenanfang
+    return re.sub(r'^\s*[\(\[0-9a-z]\s*[\)\.]\s*', '', text, flags=re.IGNORECASE).strip()
 
 def clean_html(text):
     if not text:
         return ""
-
-    # Richtig!Richtig!
 
     text = clean_html_old(text)
     text = clean_html2(text)
@@ -116,35 +114,34 @@ def extract_anki():
     # all_answers = [n[0].split('\x1f')[1] for n in notes if len(n[0].split('\x1f')) >= 2]
     all_answers = [clean_html(n[0].split('\x1f')[1]) for n in notes if len(n[0].split('\x1f')) >= 2]
 
-
     quiz_data = []
 
     # Innerhalb der Schleife in extract_anki:
     for note in notes:
         fields = note[0].split('\x1f')
         if len(fields) >= 2:
-            # HIER muss die Säuberung passieren:
             question = clean_html(fields[0])
-            correct_answer = clean_html(fields[1])
+            correct_ans = clean_html(fields[1])
 
-            # Falsch, nochmal!Richtig!
-
-            wrong_candidates = list(set([a for a in all_answers if a != correct_answer]))
-            # Nimm max 2 falsche Antworten
-            sampled_wrongs = random.sample(wrong_candidates, min(len(wrong_candidates), 2))
-
-            options = [correct_answer] + sampled_wrongs
+            # Filter: Falsche Antworten säubern und Dubletten vermeiden
+            wrong_candidates = list(set([a for a in all_answers if a != correct_ans]))
+            options = [correct_ans] + random.sample(wrong_candidates, min(len(wrong_candidates), 2))
             random.shuffle(options)
+            while len(options) < 3: options.append("---")
 
-            # Auffüllen, falls weniger als 3 Optionen vorhanden sind
-            while len(options) < 3:
-                options.append("---")
+            # Index der richtigen Antwort finden (für das Quiz-Plugin)
+            correct_idx = options.index(correct_ans) + 1
+
+            # --- Unicode Anzeige-Logik ---
+            display_text = f"{question}\n\n"
+            for i, opt in enumerate(options, 1):  # <--- WICHTIG: Start bei 1
+                symbol = UNICODE_NUMS.get(i, f"XXXX {i})")
+                display_text += f"YYYY {symbol} {opt}\n"
 
             quiz_data.append({
-                "display": f"{question}\n\n1) {options[0]}\n2) {options[1]}\n3) {options[2]}",
-                "correct": options.index(correct_answer) + 1
+                "display": display_text,
+                "correct": correct_idx
             })
-
 
 
 
@@ -165,41 +162,6 @@ def extract_anki():
     conn.close()
     shutil.rmtree(TEMP_DIR)
     print(f"Aura-Quiz bereit: {len(quiz_data)} Fragen in {OUTPUT_MAP.parent}")
-
-def generate_mc_rules(notes):
-    rules = ["# Auto-generated Multiple Choice Quiz\nFUZZY_MAP_pre = ["]
-    # all_answers = [n[0].split('\x1f')[1] for n in notes]
-    all_answers = [clean_html(n[0].split('\x1f')[1]) for n in notes if len(n[0].split('\x1f')) >= 2]
-
-    # Richtig!
-
-    for i, note in enumerate(notes):
-        fields = note[0].split('\x1f')
-        question, correct_answer = fields[0], fields[1]
-
-        # RICHTIGE ANTWORT FILTERN
-        correct_answer_clean = clean_html(correct_answer)
-
-        # FALSCHEN ANTWORTEN FILTERN IST SCHON OK
-        wrong_answers = random.sample([a for a in all_answers if a != correct_answer_clean], 2)
-        options = [correct_answer_clean] + wrong_answers
-        random.shuffle(options)
-
-        correct_index = options.index(correct_answer_clean) + 1
-
-        display_text = f"{question}\\n\\n1) {options[0]}\\n2) {options[1]}\\n3) {options[2]}"
-
-        # Trigger: Wenn der User die richtige Nummer sagt
-        # Nutzt 'spoken_numbers_to_digits' Plugin Logik (eins -> 1)
-        rules.append(f"    ('Richtig!', r'^{correct_index}$', 0, {{'on_match_exec': ['anki_next.py']}}),")
-
-        subprocess.run(["copyq", "show"], check=True)
-
-
-    rules.append("]")
-    return rules
-
-
 
 # Generiere die Aura-Regel (reagiert auf jede Zahl)
 rules = [
