@@ -6,10 +6,19 @@ from pathlib import Path
 import random
 import json
 
-APKG_FILE = "Python_Tresor_Basis.apkg"
+# APKG_FILE = "Python_Tresor_Basis.apkg"
+APKG_FILE = Path("config/maps/plugins/anki_quiz/Python_fundamentals.apkg")
 OUTPUT_MAP = Path("config/maps/plugins/anki_quiz/de-DE/FUZZY_MAP_pre.py")
 TEMP_DIR = Path("temp_anki")
 
+
+
+import re
+
+def clean_html(text):
+    # Entfernt alle <tags>, ersetzt <br> durch Zeilenbruch und unescaped Entities
+    text = text.replace("<br>", "\n").replace("<br />", "\n").replace("<div>", "").replace("</div>", "\n")
+    return re.sub(r'<[^>]+>', '', text).strip()
 
 def extract_anki():
     if not os.path.exists(APKG_FILE): return
@@ -28,7 +37,8 @@ def extract_anki():
     for note in notes:
         fields = note[0].split('\x1f')
         if len(fields) >= 2:
-            question, correct_answer = fields[0], fields[1]
+            question, correct_answer = clean_html(fields[0]), clean_html(fields[1])
+            
 
             wrong_candidates = list(set([a for a in all_answers if a != correct_answer]))
             # Nimm max 2 falsche Antworten
@@ -88,6 +98,9 @@ def generate_mc_rules(notes):
         # Trigger: Wenn der User die richtige Nummer sagt
         # Nutzt 'spoken_numbers_to_digits' Plugin Logik (eins -> 1)
         rules.append(f"    ('Richtig!', r'^{correct_index}$', 0, {{'on_match_exec': ['anki_next.py']}}),")
+
+        subprocess.run(["copyq", "show"], check=True)
+
 
     rules.append("]")
     return rules

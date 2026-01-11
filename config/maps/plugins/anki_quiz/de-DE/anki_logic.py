@@ -20,7 +20,7 @@ def update_display(text):
     """Löscht das Tab und schreibt die neue Frage rein."""
     subprocess.run(["copyq", "tab", QUIZ_TAB, "remove", "0"], stderr=subprocess.DEVNULL)
     subprocess.run(["copyq", "tab", QUIZ_TAB, "add", text], check=True)
-
+    subprocess.run(["copyq", "show"], check=True)
 
 def execute(match_data):
     spoken = match_data['regex_match_obj'].group(0).lower()
