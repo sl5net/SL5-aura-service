@@ -52,12 +52,23 @@ GLOBAL_FUZZY_MAP = [] # noqa: F824
 from .config.regex_cache import REGEX_COMPILE_CACHE
 
 
-def normalize_fuzzy_map_rule_entry(rule_entry):
-    if len(rule_entry) == 2:
-        return (*rule_entry, 75, {'flags': re.IGNORECASE})
-    if len(rule_entry) == 3:
-        return (*rule_entry, {'flags': re.IGNORECASE})
-    return rule_entry
+def normalize_fuzzy_map_rule_entry(entry):
+    if len(entry) == 2:
+        return *entry, 75, {'flags': re.IGNORECASE}
+    if len(entry) == 3:
+        if isinstance(entry[2], dict):
+            # Fall: (Ersatz, Pattern, {Optionen}) -> Die 0 (Schwelle) fehlt!
+            return entry[0], entry[1], 100, entry[2]
+        else:
+            # Fall: (Ersatz, Pattern, Schwelle) -> Die Optionen fehlen!
+            return entry[0], entry[1], entry[2], {'flags': re.IGNORECASE}
+
+        # return (*entry, {'flags': re.IGNORECASE})
+
+
+    return entry
+
+
 
 def execute_hook(logger, module, hook_name, lock_key):
     if hasattr(module, hook_name):
