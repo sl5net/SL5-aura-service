@@ -16,7 +16,7 @@ UNICODE_NUMS = {1: "1️", 2: "2️", 3: "3️"}
 import time
 
 
-import time
+# import time
 
 # from nltk import clean_html
 
@@ -163,7 +163,7 @@ def execute(match_data):
         card_prog["box"] = new_box
         card_prog["next_review"] = int(time.time() + wait_time)
 
-        feedback = "Richtig! (Box " + str(new_box) + ")"
+        # feedback = "Richtig! (Box " + str(new_box) + ")"
 
         # Speichern & Nächste Frage
         state["progress"][current_id] = card_prog

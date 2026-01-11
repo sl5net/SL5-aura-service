@@ -63,7 +63,7 @@ def analyze():
             break
 
     if not found:
-            print("Karte mit 'abcabcabc' nicht gefunden!")
+        print("Karte mit 'abcabcabc' nicht gefunden!")
 
 
     conn.close()

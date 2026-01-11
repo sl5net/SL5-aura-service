@@ -981,3 +981,44 @@ KeyboardInterrupt
  3️  2
 \________________________________________
 
+Richtig! Ja 3 war richtig.
+
+Nächste Aufgabe:
+
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Zeit: 22:46:00
+
+```python
+def func():
+    def nested():
+        nonlocal x
+        x = 1
+    x = 3
+    nested()
+    print("func:", x)
+    
+x = 2    
+func()
+print("global:", x)
+
+ 
+```
+ 1️  An object's attributes are stored in
+obj.__dict__
+.
+The
+__setitem__
+method powers the
+object[key] = value
+syntax.
+ 
+ 2️  foo bar
+foo bar
+foo
+bar
+('foo', 'bar')
+ 
+ 3️  func: 1
+global: 2
+\________________________________________
+

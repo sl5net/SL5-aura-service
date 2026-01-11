@@ -1,11 +1,11 @@
 import sqlite3
 import zipfile
-import os
+#import os
 import shutil
 from pathlib import Path
 import random
 import json
-import re
+# import re
 from bs4 import BeautifulSoup
 
 UNICODE_NUMS = {1: "⓵", 2: "⓶", 3: "⓷"}
