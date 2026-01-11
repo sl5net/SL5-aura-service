@@ -760,3 +760,224 @@ print(y)
  3️  BCBCBC
 \________________________________________
 
+
+Falsch, nochmal!Falsch, nochmal!antwort ich 2
+Falsch, nochmal!Falsch! Gewählt: 3, DB will: 1 (ID: 0)
+Falsch! Gewählt: 3, DB will: 1 (ID: 0))
+Falsch! Gewählt: 3, DB will: 1 (ID: 0)
+Falsch! Gewählt: 3, DB will: 1 (ID: 0)F
+alsch! Gewählt: 3, DB will: 1 (ID: 0)
+Falsch! Gewählt: 3, DB will: 1 (ID: 0)
+Falsch! Gewählt: 3, DB will: 2 (ID: 1)
+Falsch! Du wähltest 3. Richtig ist 1. (Das ist Frage-ID 1)
+
+Falsch! Du wähltest 3. Richtig ist 1. (Das ist Frage-ID 1)
+
+Falsch! Du wähltest 3. Richtig ist 1. (Das ist Frage-ID 1)
+
+Falsch! Du wähltest 3. Richtig ist 1. (Das ist Frage-ID 1)
+Falsch! Du wähltest 3. Richtig ist 1. (Das ist Frage-ID 1)
+
+
+
+
+
+
+
+Falsch! Du wähltest 1. Richtig ist 3. (Das ist Frage-ID 0)
+
+
+
+
+anton 1
+
+
+
+
+
+Richtig! Ja 1 war richtig.
+
+Nächste Aufgabe:
+
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Zeit: 22:22:30
+
+```python
+def func():
+    global x
+    x = 1
+
+x = 2
+func()
+print(x)
+
+ 
+```
+ ⓵  1
+ 
+ ⓶  blah
+blah
+ 
+ ⓷  1
+StopIteration
+\________________________________________
+
+Richtig! Ja 1 war richtig.
+
+Nächste Aufgabe:
+
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Zeit: 22:24:39
+
+```python
+def f():
+    x = 1
+
+x = 2
+f()
+print(x)
+
+ 
+```
+ 1️  finally
+KeyboardInterrupt
+ 
+ 2️  0
+1
+ 
+ 3️  2
+\________________________________________
+
+Richtig! Ja 3 war richtig.
+
+Nächste Aufgabe:
+
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Zeit: 22:26:47
+
+```python
+def func():
+    def nested():
+        nonlocal x
+        x = 1
+    x = 3
+    nested()
+    print("func:", x)
+    
+x = 2    
+func()
+print("global:", x)
+
+ 
+```
+ 1️  An object's attributes are stored in
+obj.__dict__
+.
+The
+__setitem__
+method powers the
+object[key] = value
+syntax.
+ 
+ 2️  foo bar
+foo bar
+foo
+bar
+('foo', 'bar')
+ 
+ 3️  func: 1
+global: 2
+\________________________________________
+
+Richtig! Ja 3 war richtig.
+
+Nächste Aufgabe:
+
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Zeit: 22:29:47
+
+```python
+def func():
+    def nested():
+        global x
+        x = 1
+    nested()
+    
+x = 2
+func()
+print(x)
+
+ 
+```
+ 1️  1
+ 
+ 2️  deque(['a', 'b', 'c', 'd'])
+deque(['d', 'c', 'b', 'a'])
+ 
+ 3️  5 a e
+deque(['a', 'b', 'd', 'e'])
+\________________________________________
+
+Richtig! Ja 1 war richtig.
+
+Nächste Aufgabe:
+
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Zeit: 22:31:20
+
+```python
+def func():
+    def nested():
+        def nested2():
+            nonlocal x
+            x = 100
+            print("nested2:", x)
+        x = 50
+        nested2()
+        print("nested:", x)
+    x = 10
+    nested()
+    print("func:", x)
+
+x = 1
+func()
+print("outer:", x)
+
+ 
+```
+ 1️  AttributeError: 'C' object has no attribute '__foo'. Did you mean: '_C__foo'?
+ 
+ 2️  sys.argv
+ 
+ 3️  nested2: 100
+nested: 100
+func: 10
+outer: 1
+\________________________________________
+
+Richtig! Ja 3 war richtig.
+
+Nächste Aufgabe:
+
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+Zeit: 22:33:54
+
+```python
+def f():
+    x = 1
+
+x = 2
+f()
+print(x)
+
+ 
+```
+ 1️  finally
+KeyboardInterrupt
+ 
+ 2️  0
+1
+ 
+ 3️  2
+\________________________________________
+

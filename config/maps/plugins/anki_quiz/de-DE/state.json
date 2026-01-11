@@ -1,1 +1,25 @@
-{"index": 115}
+{
+  "current_id": 0,
+  "progress": {
+    "0": {
+      "box": 1,
+      "next_review": 1768167107
+    },
+    "1": {
+      "box": 2,
+      "next_review": 1768181079
+    },
+    "2": {
+      "box": 2,
+      "next_review": 1768181480
+    },
+    "3": {
+      "box": 1,
+      "next_review": 1768167287
+    },
+    "4": {
+      "box": 1,
+      "next_review": 1768167534
+    }
+  }
+}

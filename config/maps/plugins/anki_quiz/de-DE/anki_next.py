@@ -1,5 +1,7 @@
 import subprocess
 
+UNICODE_NUMS = {1: "⓵", 2: "⓶", 3: "⓷"}
+
 def execute(match_data):
     # Logik für die nächste Frage hier...
     subprocess.run(["espeak", "-v", "de", "Hervorragend! Nächste Frage."])

@@ -10,6 +10,14 @@ import re
 from bs4 import BeautifulSoup
 import subprocess
 
+UNICODE_NUMS = {1: "1️", 2: "2️", 3: "3️"}
+
+
+import time
+
+
+import time
+
 # from nltk import clean_html
 
 if platform.system() == "Windows":
@@ -22,24 +30,67 @@ BASE_DIR = Path(__file__).parent
 DB_PATH = BASE_DIR / "quiz_db.json"
 STATE_PATH = BASE_DIR / "state.json"
 QUIZ_TAB = "Aura-Quiz"
+# Zeit-Intervalle für die Boxen (in Sekunden)
+# Box 0: sofort, Box 1: 5 Min, Box 2: 4 Std, Box 3: 1 Tag, Box 4: 3 Tage
+BOX_INTERVALS = [0, 300, 14400, 86400, 259200]
 
-# UNICODE_NUMS = {1: "⓵", 2: "⓶", 3: "⓷"}
-# UNICODE_NUMS = {1: "⓵", 2: "⓶", 3: "⓷"}
-# UNICODE_NUMS = {1: "⓵", 2: "➋", 3: "⒊"}
-UNICODE_NUMS = {1: "1️", 2: "2️", 3: "3️"}
-# ① ② ③
-# 🄌 ➊ ➋ ➌ ➍ ➎ ➏ ➐ ➑ ➒ ➓
-# 🄀 ⒈ ⒉ ⒊ ⒋ ⒌ ⒍ ⒎ ⒏ ⒐ ⒑ ⒒ ⒓ ⒔ ⒕ ⒖ ⒗ ⒘ ⒙ ⒚ ⒛
-# 0️# 1️# 2️# 3️
-# 0 1 2 3
+def get_state():
+    with open(STATE_PATH, "r") as f:
+        state = json.load(f)
+    return state
+
+def save_state(state):
+    with open(STATE_PATH, "w") as f:
+        json.dump(state, f, indent=2)
+
+def find_next_due_card(db, state):
+    now = time.time()
+    progress = state["progress"]
+
+    # 1. Suche Karten, die "fällig" sind (next_review <= jetzt)
+    due_cards = []
+    for idx_str in range(len(db)):
+        idx = str(idx_str)
+        card_data = progress.get(idx, {"box": 0, "next_review": 0})
+
+        if card_data["next_review"] <= now:
+            due_cards.append(int(idx))
+
+    if not due_cards:
+        return None # Nichts zu tun! (Oder wir nehmen die mit der kleinsten Wartezeit)
+
+    # Nimm die erste fällige Karte (oder random)
+    return due_cards[0]
 
 
 def show_current_question(user_choice):
     with open(DB_PATH, "r") as f: db = json.load(f)
     with open(STATE_PATH, "r") as f: state = json.load(f)
+    state = get_state()
+    next_id = find_next_due_card(db, state)
+
+    if next_id is None:
+        # Keine Karten fällig!
+        msg = "Glückwunsch! Alle Karten für jetzt erledigt."
+        subprocess.run(["copyq", "tab", QUIZ_TAB, "add", msg])
+        subprocess.run(["copyq", "show"])
+        return
+
+    # Speichere, dass wir diese Karte gerade anschauen
+    state["current_id"] = next_id
+    save_state(state)
+
+
+
+
     # Anzeige in CopyQ aktualisieren
     subprocess.run(["copyq", "tab", QUIZ_TAB, "remove", "0"], stderr=subprocess.DEVNULL)
-    t= db[state["index"]]["display"]
+
+    # current_id wurde als Zahl (next_id) gespeichert — benutze ihn als Index
+    current_id = state.get("current_id", next_id)
+    t = db[int(current_id)]["display"]
+
+
 
     soup = BeautifulSoup(t, "html.parser")  # oder "lxml"
     cleaned = soup.get_text(strip=True)
@@ -60,47 +111,10 @@ def show_current_question(user_choice):
     cleaned = re.sub(safe_p + r'(2\))' + safe_p2, rf'\1\2 \n {symbol2} ', cleaned)
     cleaned = re.sub(safe_p + r'(3\))' + safe_p2, rf'\1\2 \n {symbol3} ', cleaned)
 
-
-
-    # cleaned = re.sub(r'([1]\))', rf' ZZZZ \n\n {symbol1} ', cleaned)
-    # cleaned = re.sub(r'([2]\))', rf' ZZZZ \n\n {symbol2} ', cleaned)
-    # cleaned = re.sub(r'([3]\))', rf' ZZZZ \n\n {symbol3} ', cleaned)
-    # cleaned = re.sub(r'([2-3]\))', r' ZZZZ \n\n \1 ', cleaned)
-    # cleaned = re.sub(r'([1-3]\))', r' ZZZZ \n\n \1 ', cleaned)
-
-
-
-    # antwort bis 3Falsch, nochmal!Richtig!
-
     subprocess.run(["copyq", "tab", QUIZ_TAB, "add", cleaned], check=True)
-
-    # Falsch, nochmal!Falsch, nochmal! tja und hat Richtig!ich 2die antwort ist 2 die antwort ist 1Falsch, nochmal!
-
-    # t = clean_html(t)
-    # subprocess.run(["copyq", "tab", QUIZ_TAB, "add", t])
-
-    # backup_AUTO_ENTER_AFTER_DICTATION_global = settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
-
-
     log_question(cleaned,user_choice)
 
-    # try:
-    #     AUTO_ENTER_AFTER_DICTATION_global = backup_AUTO_ENTER_AFTER_DICTATION_global
-    #     auto_enter_flag_path = "/tmp/sl5_auto_enter.flag"
-    #     with open(auto_enter_flag_path, "w") as f:
-    #         f.write(str(AUTO_ENTER_AFTER_DICTATION_global)) # Writes 1 or 0
-    #     # logger.info(f"Set auto-enter flag to: {AUTO_ENTER_AFTER_DICTATION_global}")
-    # except Exception as e:
-    #     print(f"Could not write auto-enter flag file: {e}")
-        # logger.error(f"Could not write auto-enter flag file: {e}")
-
-
     subprocess.run(["copyq", "show"])
-
-
-
-# Antwort bis dahinRichtig!Richtig!Falsch, nochmal!irgendwas ist 3Falsch, nochmal!Richtig!
-
 
 # In anki_logic.py
 LOG_FILE = BASE_DIR / "QuizProtokoll.md"
@@ -115,18 +129,7 @@ def log_question(text,user_choice):
         f.write(f"Zeit: {datetime.now().strftime('%H:%M:%S')}\n")
         f.write("\n```python\n")
         f.write(text + "\n")
-        # f.write("```\n")
         f.write("\\" + "_"*40 + "\n\n")
-
-
-# import time
-# def unique_output_file_write_text(text):
-#     timestamp = time.time()
-#     unique_output_file = TMP_DIR / f"sl5_aura/tts_output_anki_{timestamp}.txt"
-#     unique_output_file.write_text(text, encoding="utf-8-sig")
-
-
-
 
 def execute(match_data):
     spoken = match_data['regex_match_obj'].group(0).lower()
@@ -135,21 +138,54 @@ def execute(match_data):
         show_current_question(None)
         return "Quiz gestartet"
 
-    # Antwort-Logik
     user_choice = int(match_data['regex_match_obj'].group(1))
+
     with open(DB_PATH, "r") as f:
         db = json.load(f)
-    with open(STATE_PATH, "r") as f:
-        state = json.load(f)
 
-    if user_choice == db[state["index"]]["correct"]:
-        state["index"] = (state["index"] + 1) % len(db)
-        with open(STATE_PATH, "w") as f: json.dump(state, f)
+    state = get_state()
+    current_id = str(state.get("current_id", "0"))
+
+    if "progress" not in state:
+        state["progress"] = {}
+
+    # Lade bisherigen Fortschritt der Karte
+    card_prog = state["progress"].get(current_id, {"box": 0, "next_review": 0})
+
+    correct_answer = db[int(current_id)]["correct"]
+
+    if user_choice == correct_answer:
+        new_box = card_prog["box"] + 1
+        if new_box >= len(BOX_INTERVALS):
+            new_box = len(BOX_INTERVALS) - 1 # Max Level erreicht
+
+        wait_time = BOX_INTERVALS[new_box]
+        card_prog["box"] = new_box
+        card_prog["next_review"] = int(time.time() + wait_time)
+
+        feedback = "Richtig! (Box " + str(new_box) + ")"
+
+        # Speichern & Nächste Frage
+        state["progress"][current_id] = card_prog
+        save_state(state)
         show_current_question(user_choice)
-        return " "
-        # return "Richtig!"
-    # return " "
-    return "Falsch, nochmal!"
 
 
+        return " " # oder feedback
 
+    else:
+        card_prog["box"] = 0
+        # card_prog["next_review"] = time.time() # Sofort wiederholen
+        card_prog["next_review"] = int(time.time())
+
+        state["progress"][current_id] = card_prog
+        save_state(state)
+
+        print("DEBUG current_id (state):", current_id, "type:", type(current_id))
+        print("DEBUG db len:", len(db))
+        print("DEBUG db entry index int(current_id):", int(current_id), "correct:", db[int(current_id)].get("correct"))
+
+
+        return (f"Falsch! Du wähltest {user_choice}. "
+                f"Richtig ist {correct_answer}. "
+                f"(Das ist Frage-ID {current_id})")
