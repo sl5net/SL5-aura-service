@@ -8,7 +8,8 @@ import json
 # import re
 from bs4 import BeautifulSoup
 
-UNICODE_NUMS = {1: "⓵", 2: "⓶", 3: "⓷"}
+UNICODE_NUMS = {1: "1️", 2: "2️", 3: "3️"}
+
 
 # PADE ANPASSEN falls nötig
 # Wir suchen die APKG Datei im Plugin Ordner oder relativ
