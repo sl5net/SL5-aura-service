@@ -1,7 +1,9 @@
 # config/maps/plugins/anki_quiz/de-DE/anki_logic.py:1
 import json
+import os
 
 import platform
+import shutil
 from datetime import datetime
 from pathlib import Path
 import re
@@ -33,6 +35,22 @@ QUIZ_TAB = "Aura-Quiz"
 # Zeit-Intervalle für die Boxen (in Sekunden)
 # Box 0: sofort, Box 1: 5 Min, Box 2: 4 Std, Box 3: 1 Tag, Box 4: 3 Tage
 BOX_INTERVALS = [0, 300, 14400, 86400, 259200]
+
+
+copyq_exe = "copyq"
+if platform.system() == "Windows":
+    # Typische Installationspfade prüfen
+    potential_paths = [
+        r"C:\Program Files\CopyQ\copyq.exe",
+        r"C:\Program Files (x86)\CopyQ\copyq.exe"
+    ]
+    for p in potential_paths:
+        if os.path.exists(p):
+            copyq_exe = p
+            break
+
+
+
 
 def get_state():
     with open(STATE_PATH, "r") as f:
@@ -72,8 +90,15 @@ def show_current_question(user_choice):
     if next_id is None:
         # Keine Karten fällig!
         msg = "Glückwunsch! Alle Karten für jetzt erledigt."
-        subprocess.run(["copyq", "tab", QUIZ_TAB, "add", msg])
-        subprocess.run(["copyq", "show"])
+
+
+        if shutil.which(copyq_exe):
+            subprocess.run([copyq_exe, "tab", QUIZ_TAB, "add", msg])
+            subprocess.run([copyq_exe, "show"])
+        else:
+            # fallback behaviour or log a clear error
+            print("copyq not found; skipping copyq-based actions")
+
         return
 
     # Speichere, dass wir diese Karte gerade anschauen
@@ -84,7 +109,13 @@ def show_current_question(user_choice):
 
 
     # Anzeige in CopyQ aktualisieren
-    subprocess.run(["copyq", "tab", QUIZ_TAB, "remove", "0"], stderr=subprocess.DEVNULL)
+
+    if shutil.which(copyq_exe):
+        subprocess.run([copyq_exe, "tab", QUIZ_TAB, "remove", "0"], stderr=subprocess.DEVNULL)
+    else:
+        # fallback behaviour or log a clear error
+        print("copyq not found; skipping copyq-based actions")
+
 
     # current_id wurde als Zahl (next_id) gespeichert — benutze ihn als Index
     current_id = state.get("current_id", next_id)
@@ -111,10 +142,20 @@ def show_current_question(user_choice):
     cleaned = re.sub(safe_p + r'(2\))' + safe_p2, rf'\1\2 \n {symbol2} ', cleaned)
     cleaned = re.sub(safe_p + r'(3\))' + safe_p2, rf'\1\2 \n {symbol3} ', cleaned)
 
-    subprocess.run(["copyq", "tab", QUIZ_TAB, "add", cleaned], check=True)
+    if shutil.which(copyq_exe):
+        subprocess.run([copyq_exe, "tab", QUIZ_TAB, "add", cleaned], check=True)
+    else:
+        # fallback behaviour or log a clear error
+        print("copyq not found; skipping copyq-based actions")
+
     log_question(cleaned,user_choice)
 
-    subprocess.run(["copyq", "show"])
+    if shutil.which(copyq_exe):
+        subprocess.run([copyq_exe, "show"])
+    else:
+        # fallback behaviour or log a clear error
+        print("copyq not found; skipping copyq-based actions")
+
 
 # In anki_logic.py
 LOG_FILE = BASE_DIR / "QuizProtokoll.md"
@@ -122,14 +163,14 @@ LOG_FILE = BASE_DIR / "QuizProtokoll.md"
 def log_question(text,user_choice):
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         if user_choice:
-            f.write(f"Richtig! Ja {user_choice} war richtig.\n")
-        f.write("\nNächste Aufgabe:\n")
+            f.write(f"Richtig! Ja {user_choice} war richtig. ")
+        f.write("Nächste Aufgabe:\n")
 
-        f.write("\n/" + "‾"*40 + "\n")
-        f.write(f"Zeit: {datetime.now().strftime('%H:%M:%S')}\n")
-        f.write("\n```python\n")
+        f.write("/" + "‾"*40 + "\n")
+        # f.write(f"Zeit: {datetime.now().strftime('%H:%M:%S')}\n")
+        f.write("```python\n")
         f.write(text + "\n")
-        f.write("\\" + "_"*40 + "\n\n")
+        f.write("\\" + "_"*40 + "\n")
 
 def execute(match_data):
     spoken = match_data['regex_match_obj'].group(0).lower()
