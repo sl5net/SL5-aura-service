@@ -986,8 +986,6 @@ Richtig! Ja 3 war richtig.
 Nächste Aufgabe:
 
 /‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-Zeit: 22:46:00
-
 ```python
 def func():
     def nested():
@@ -1022,3 +1020,45 @@ bar
 global: 2
 \________________________________________
 
+Richtig! Ja 3 war richtig.
+Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def f():
+    x = 1
+
+x = 2
+f()
+print(x)
+
+ 
+```
+ 1️  finally
+KeyboardInterrupt
+ 
+ 2️  0
+1
+ 
+ 3️  2
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    global x
+    x = 1
+
+x = 2
+func()
+print(x)
+
+ 
+```
+ 1️  1
+ 
+ 2️  blah
+blah
+ 
+ 3️  1
+StopIteration
+\________________________________________
