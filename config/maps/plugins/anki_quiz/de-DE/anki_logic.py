@@ -135,7 +135,7 @@ def show_current_question(user_choice):
     symbol3 = UNICODE_NUMS.get(3, f"{3})")
 
 
-    safe_p = r'(^|[^,\(=+\-*/\[])(\s*)'
+    safe_p = r'(^|[^"\'\.,\(=+\-*/\[])(\s*)'
     safe_p2 = r'(?!\))'
 
     cleaned = re.sub(safe_p + r'(1\))' + safe_p2, rf'\1\2 \n```\n {symbol1} ', cleaned)
@@ -161,6 +161,13 @@ def show_current_question(user_choice):
 LOG_FILE = BASE_DIR / "QuizProtokoll.md"
 
 def log_question(text,user_choice):
+
+    # text = r'(^|[^,\(=+\-*/\[])(\s*)'
+
+    text = re.sub(r'\n[ ]*\n' , '\n', text)
+    text = re.sub(r'\n[ ]*\n' , '\n', text)
+
+
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         if user_choice:
             f.write(f"Richtig! Ja {user_choice} war richtig. ")

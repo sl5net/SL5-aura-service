@@ -1062,3 +1062,557 @@ blah
  3️  1
 StopIteration
 \________________________________________
+Richtig! Ja 1 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def f():
+    x = 1
+
+x = 2
+f()
+print(x)
+
+ 
+```
+ 1️  finally
+KeyboardInterrupt
+ 
+ 2️  0
+1
+ 
+ 3️  2
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    def nested():
+        global x
+        x = 1
+    nested()
+    
+x = 2
+func()
+print(x)
+
+ 
+```
+ 1️  1
+ 
+ 2️  deque(['a', 'b', 'c', 'd'])
+deque(['d', 'c', 'b', 'a'])
+ 
+ 3️  5 a e
+deque(['a', 'b', 'd', 'e'])
+\________________________________________
+Richtig! Ja 1 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    def nested():
+        def nested2():
+            nonlocal x
+            x = 100
+            print("nested2:", x)
+        x = 50
+        nested2()
+        print("nested:", x)
+    x = 10
+    nested()
+    print("func:", x)
+
+x = 1
+func()
+print("outer:", x)
+
+ 
+```
+ 1️  AttributeError: 'C' object has no attribute '__foo'. Did you mean: '_C__foo'?
+ 
+ 2️  sys.argv
+ 
+ 3️  nested2: 100
+nested: 100
+func: 10
+outer: 1
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    print('first')
+
+func()
+
+def func():
+    print('second')
+
+func()
+
+ 
+```
+ 1️ LAX
+ 
+ 2️  <3s...>
+here
+ 
+ 3️  first
+second
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+for i in range(3):
+    print(i)
+    if i == 1:
+        break
+else:
+    print('end')
+
+ 
+```
+ 1️  the square of 3.0 is 9.0
+ 
+ 2️  unt 55
+ 
+ 3️  0
+1
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+print("foo", "bar", sep="baz", end="qux")
+
+ 
+```
+ 1️ ('day', '11/25/2020')
+ 
+ 2️  foobazbarqux
+ 
+ 3️  set1 ^ set2
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    print('first')
+
+func()
+
+def func():
+    print('second')
+
+func()
+
+ 
+```
+ 1️ LAX
+ 
+ 2️  <3s...>
+here
+ 
+ 3️  first
+second
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+for i in range(3):
+    print(i)
+    if i == 1:
+        break
+else:
+    print('end')
+
+ 
+```
+ 1️  the square of 3.0 is 9.0
+ 
+ 2️  unt 55
+ 
+ 3️  0
+1
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    def nested():
+        nonlocal x
+        x = 1
+    x = 3
+    nested()
+    print("func:", x)
+    
+x = 2    
+func()
+print("global:", x)
+
+ 
+```
+ 1️  An object's attributes are stored in
+obj.__dict__
+.
+The
+__setitem__
+method powers the
+object[key] = value
+syntax.
+ 
+ 2️  foo bar
+foo bar
+foo
+bar
+('foo', 'bar')
+ 
+ 3️  func: 1
+global: 2
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+print("foo", "bar", sep="baz", end="qux")
+
+ 
+```
+ 1️ ('day', '11/25/2020')
+ 
+ 2️  foobazbarqux
+ 
+ 3️  set1 ^ set2
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+get
+my_string
+'s length
+
+ 
+```
+ 1️  len(my_string)
+ 
+ 2️  (i for i in stream_of_ints if i % 5 != 0)
+ 
+ 3️  here
+(1, 2, [3, 4, 5])
+\________________________________________
+Richtig! Ja 1 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+create a string object from
+obj
+
+ 
+```
+ 1️  2
+3.5
+0
+1
+ 
+ 2️  str(obj)
+ 
+ 3️  new_string = ('ABCD'.lower()
+                    .rjust(6, '_')
+                    .strip('a'))
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+convert
+my_string
+to upper case, returning a new string
+
+ 
+```
+ 1️  my_string.upper()
+ 
+ 2️  callable(obj)
+ 
+ 3️  foo
+bar
+\________________________________________
+Richtig! Ja 1 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+get
+my_string
+'s length
+```
+ 1️  len(my_string)
+ 2️  (i for i in stream_of_ints if i % 5 != 0)
+ 3️  here
+(1, 2, [3, 4, 5])
+\________________________________________
+Richtig! Ja 1 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+create a string object from
+obj
+```
+ 1️  2
+3.5
+0
+1
+ 2️  str(obj)
+ 3️  new_string = ('ABCD'.lower()
+                    .rjust(6, '_')
+                    .strip('a'))
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+convert
+my_string
+to upper case, returning a new string
+```
+ 1️  my_string.upper()
+ 2️  callable(obj)
+ 3️  foo
+bar
+\________________________________________
+Richtig! Ja 1 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+get
+my_string
+'s length
+ 
+```
+ 1️  len(my_string)
+ 2️  (i for i in stream_of_ints if i % 5 != 0)
+ 3️  here
+(1, 2, [3, 4, 5])
+\________________________________________
+Richtig! Ja 1 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+text = "ababab"
+print(text.replace("a", "c"))
+ 
+```
+ 1️  in
+./bloop.py
+, line 8, returning
+None
+from
+bar()
+print(x)
+was the last executed statement before returning
+ 2️  Format strings call an object's
+__str__
+method.
+ 3️  cbcbcb
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+replace the first two occurrences of "foo" in
+my_string
+by "bar", returning a new string
+ 
+```
+ 1️  54321
+531
+ 2️  my_string.replace("foo", "bar",  
+ 2️ 
+ 3️  in bar
+<3s...>
+in foo
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    global x
+    x = 1
+func()
+print(x)
+ 
+```
+ 1️ ('day', '11/25/2020')
+ 2️  1
+ 3️  ValueError: Type names and field names cannot be a keyword: 'class'
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+text = "ababab"
+print(text.replace("a", "c"))
+ 
+```
+ 1️  in
+./bloop.py
+, line 8, returning
+None
+from
+bar()
+print(x)
+was the last executed statement before returning
+ 2️  Format strings call an object's
+__str__
+method.
+ 3️  cbcbcb
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+lst = ["a", "b", "c", "d", "e"]
+print(lst[0], lst[-1])
+ 
+```
+ 1️  in get
+2
+ 2️  a e
+ 3️  new_string = ('ABCD'.lower()
+                    .rjust(6, '_')
+                    .strip('a'))
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+my_list = ['a', 'b', 'c', 'd', 'e']
+print(my_list[1:4])
+ 
+```
+ 1️  3
+ 2️  my_string.count("foo", 5, 1 
+ 3️ 
+ 3️  ['b', 'c', 'd']
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+text = "foo bar foo bar"
+print(text.find("bar"))
+ 
+```
+ 1️  1 2
+{'y': 2}
+ 2️  4
+ 3️  1
+2
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+replace the first two occurrences of "foo" in
+my_string
+by "bar", returning a new string
+```
+ 1️  54321
+531
+ 2️  my_string.replace("foo", "bar",  
+ 2️ 
+ 3️  in bar
+<3s...>
+in foo
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    global x
+    x = 1
+func()
+print(x)
+```
+ 1️ ('day', '11/25/2020')
+ 2️  1
+ 3️  ValueError: Type names and field names cannot be a keyword: 'class'
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+lst = ["a", "b", "c", "d", "e"]
+print(lst[0], lst[-1])
+```
+ 1️  in get
+2
+ 2️  a e
+ 3️  new_string = ('ABCD'.lower()
+                    .rjust(6, '_')
+                    .strip('a'))
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+my_list = ['a', 'b', 'c', 'd', 'e']
+print(my_list[1:4])
+```
+ 1️  3
+ 2️  my_string.count("foo", 5, 1 
+ 3️ 
+ 3️  ['b', 'c', 'd']
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+text = "foo bar foo bar"
+print(text.find("bar"))
+```
+ 1️  1 2
+{'y': 2}
+ 2️  4
+ 3️  1
+2
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+get the index of the first occurrence of "foo" in
+my_string
+, starting from index 5
+```
+ 1️  bar
+bar
+ 2️  my_string.find("foo", 5)
+ 3️  0
+<~3s...>
+done
+done
+\________________________________________
+Richtig! Ja 2 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+get the index of the first occurrence of "foo" in
+my_string
+, between index 10 and 20
+```
+ 1️  __a___
+__aa__
+_aaa__
+_aaaa_
+aaaaa_
+ 2️  in
+./bloop.py
+, line 3, calling
+foo()
+ 3️  my_string.find("foo", 10, 20)
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+text = "abababab"
+i = text.count("abab")
+print(i)
+```
+ 1️  2
+ 2️  path
+ 3️  ['hiiii']
+['hi']
+['hiiii']
+['hii']
+\________________________________________
+Richtig! Ja 1 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+get the number of non-overlapping occurrences of "foo" in
+my_string
+, between indexes 5 and 13
+```
+ 1️  ll
+ 2️  ['another line\n', 'and a third']
+ 3️  my_string.count("foo", 5, 1 
+ 3️ 
+\________________________________________
