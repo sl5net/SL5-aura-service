@@ -8,15 +8,15 @@ CONFIG_DIR = Path(__file__).parent
 
 FUZZY_MAP_pre = [
     ('Antwort 1',
-     r'^(?:die\s+)?Antwort(e)?\s*(?:ist\s+)?(e\w*)$', 100,
+     r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?(e\w*)$', 100,
     {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
     ('Antwort 2',
-     r'^(?:die\s+)?Antwort(e)?\s*(?:ist\s+)?(z\w*)$', 100,
+     r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?(z\w*)$', 100,
     {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
     ('Antwort 3',
-     r'^(?:die\s+)?Antwort(e)?\s*(?:ist\s+)?([df]\w*)$', 100,
+     r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?([df]\w*)$', 100,
     {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
 
