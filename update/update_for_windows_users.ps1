@@ -107,7 +107,7 @@ del "%~f0"
 
     $batchPath = Join-Path $installDir "_finalize_update.bat"
     Set-Content -Path $batchPath -Value $batchScript
-
+    # update/update_for_windows_users.ps1:110
     # 7. Launch the batch script and exit this PowerShell script
     Write-Host "INFO: Handing over to final updater script. This window will close." -ForegroundColor Yellow
     Start-Process cmd.exe -ArgumentList "/C `"$batchPath`""
