@@ -1,0 +1,35 @@
+--------------------------------------------------------------------------------
+ENGLISH
+--------------------------------------------------------------------------------
+How to uninstall SL5 Aura:
+
+1. Stop the application:
+   Close the running Python window or terminate the process.
+
+2. Remove the Main System:
+   Simply DELETE the entire folder containing this file.
+   SL5 Aura is portable and runs within its own virtual environment.
+   It does not leave registry entries or hidden system files for the core engine.
+
+3. Optional - Remove Client Tools:
+   If you installed the optional helper tools (AutoHotkey & CopyQ) via our setup,
+   you can run the script located at:
+   setup/uninstall_ahk_copyq.bat
+
+--------------------------------------------------------------------------------
+DEUTSCH
+--------------------------------------------------------------------------------
+So deinstallieren Sie SL5 Aura:
+
+1. Anwendung beenden:
+   Schließen Sie das laufende Python-Fenster oder beenden Sie den Prozess.
+
+2. Hauptsystem entfernen:
+   LÖSCHEN Sie einfach den gesamten Ordner, in dem sich diese Datei befindet.
+   SL5 Aura ist "portable" und läuft in seiner eigenen virtuellen Umgebung.
+   Es hinterlässt keine Registry-Einträge oder versteckte Systemdateien für die Core-Engine.
+
+3. Optional - Client-Tools entfernen:
+   Falls Sie die optionalen Hilfsprogramme (AutoHotkey & CopyQ) über unser Setup
+   installiert haben, können Sie dieses Skript ausführen:
+   setup/uninstall_ahk_copyq.bat
