@@ -180,6 +180,7 @@ Write-Host "--> Downloading external tools and models via Python downloader..."
 # Create the models directory before attempting to download files into it.
 New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
 
+# setup/windows11_setup.ps1:183
 # Execute the downloader and check its exit code
 #  It downloads all required ZIPs to the project root.
 .\.venv\Scripts\python.exe tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
@@ -204,7 +205,7 @@ Write-Host "--> Extracting downloaded archives..."
 
 
 
-
+# setup/windows11_setup.ps1:207
 # --- Configuration: Base List of Archives ---
 $Prefix = "Z_"
 $MasterConfig = @(
@@ -266,7 +267,7 @@ $ArchiveConfig = $INSTALL_CONFIG | ForEach-Object {
 }
 # --- End Filter Configuration ---
 
-
+# setup/windows11_setup.ps1:269
 # Function to extract and clean up
 function Expand-And-Cleanup {
     param (
@@ -276,14 +277,25 @@ function Expand-And-Cleanup {
         [bool]$CleanupAfterExtraction
     )
 
-    # Check if final directory already exists
-    $FinalFullPath = Join-Path -Path $DestinationPath -ChildPath $ExpectedDirName
+    # FIX 1: Use absolute path based on ProjectRoot (Prevents System32 errors)
+    $AbsDest = Join-Path -Path $ProjectRoot -ChildPath $DestinationPath
+    $FinalFullPath = Join-Path -Path $AbsDest -ChildPath $ExpectedDirName
+
+    # FIX 2: Check for file/folder existence (Handle lid.176 vs lid.176.bin)
+    $TargetExists = $false
     if (Test-Path $FinalFullPath) {
-        Write-Host "    -> Directory '$ExpectedDirName' already exists. Skipping extraction."
+        $TargetExists = $true
+    } elseif (Test-Path "$FinalFullPath.bin") {
+        # This catches the case where config says "lid.176" but file is "lid.176.bin"
+        $TargetExists = $true
+    }
+
+    if ($TargetExists) {
+        Write-Host "    -> Target '$ExpectedDirName' already exists. Skipping extraction."
         return
     }
 
-    # Look for the downloaded ZIP (Python script creates final ZIPs without Z_ prefix)
+    # Look for the downloaded ZIP
     $FinalZipPath = Join-Path -Path $ProjectRoot -ChildPath $ZipFile
 
     if (-not (Test-Path $FinalZipPath)) {
@@ -294,7 +306,12 @@ function Expand-And-Cleanup {
 
     Write-Host "    -> Extracting $ZipFile to $DestinationPath..."
 
-    Expand-Archive -Path $FinalZipPath -DestinationPath $DestinationPath -Force
+    # Ensure destination directory exists
+    if (-not (Test-Path $AbsDest)) {
+        New-Item -ItemType Directory -Force -Path $AbsDest | Out-Null
+    }
+
+    Expand-Archive -Path $FinalZipPath -DestinationPath $AbsDest -Force
 
     if ($CleanupAfterExtraction) {
         Remove-Item $FinalZipPath -Force
@@ -303,6 +320,8 @@ function Expand-And-Cleanup {
         Write-Host "    -> Keeping ZIP file: $ZipFile"
     }
 }
+
+
 
 # Execute extraction for each archive
 foreach ($Config in $ArchiveConfig) {
