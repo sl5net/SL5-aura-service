@@ -204,7 +204,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     unmute_microphone()
 
     PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-    local_config_path = PROJECT_ROOT / "config/settings_local.py"
+    local_config_path = PROJECT_ROOT / "config/settings_local.py" # scripts/py/func/transcribe_audio_with_feedback.py:207
     default_config_path = PROJECT_ROOT / "config/settings.py"
     config_to_read = local_config_path if local_config_path.exists() else default_config_path
 
@@ -212,12 +212,24 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
         with open(PROJECT_ROOT / config_to_read, "r") as f:
             for line in f:
                 stripped_line = line.strip()
+
+
                 if stripped_line.startswith("PRE_RECORDING_TIMEOUT"):
-                    initial_silence_timeout = float(line.split("=")[1].strip())
+                    value_part = line.split("=")[1].strip()  # get all behin =
+                    value_part = value_part.split("#")[0].strip()  # get all before #
+
+                    initial_silence_timeout = float(value_part)
                 elif stripped_line.startswith("SPEECH_PAUSE_TIMEOUT"):
-                    SPEECH_PAUSE_TIMEOUT = float(line.split("=")[1].strip())
+                    value_part = line.split("=")[1].strip()  # get all behin =
+                    value_part = value_part.split("#")[0].strip()  # get all before #
+
+
+                    SPEECH_PAUSE_TIMEOUT = float(value_part)
                 elif stripped_line.startswith("AUTO_ENTER_AFTER_DICTATION_REGEX_APPS"): # 1 means one Enter, 2 means Enter two times
-                    value_without_whitespaces = str(line.split("=")[1].strip())
+                    value_part = line.split("=")[1].strip()  # get all behin =
+                    value_part = value_part.split("#")[0].strip()  # get all before #
+
+                    value_without_whitespaces = str(value_part)
                     value_without_quotes = value_without_whitespaces.strip('"')
                     AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = value_without_quotes
 

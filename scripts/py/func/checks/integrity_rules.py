@@ -14,7 +14,10 @@ Format:
 }
 """
 
-
+UNSAFE_LINE_STARTS = [
+    "from config.settings_local import",
+    "import config.settings_local"
+]
 
 INTEGRITY_CHECKS = {
 

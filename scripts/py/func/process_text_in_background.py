@@ -259,7 +259,7 @@ def is_plugin_enabled(hierarchical_key, plugins_config):
 
 def load_maps_for_language(lang_code, logger, run_mode_override=None):
     # scripts/py/func/process_text_in_background.py:50
-    if settings.DEV_MODE_memory:
+    if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
         log_memory_details(f"def load_maps_for_language", logger)
 
@@ -267,7 +267,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
     settings.reload_settings()
 
-    if settings.DEV_MODE_memory:
+    if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
         log_memory_details(f"next: auto_reload_modified_maps", logger)
 
@@ -276,7 +276,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 
 
-    if settings.DEV_MODE_memory:
+    if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
         log_memory_details(f"last: auto_reload_modified_maps", logger)
 
@@ -486,7 +486,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
     logger.info(f"🗺️ Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")
 
-    if settings.DEV_MODE_memory:
+    if getattr(settings, "DEV_MODE_memory", False):
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"next: return punctuation_map, fuzzy_map_pre, fuzzy_map", logger)
 
@@ -1044,7 +1044,7 @@ def process_text_in_background(logger,
 
 
 
-                if settings.DEV_MODE_memory:
+                if getattr(settings, "DEV_MODE_memory", False):
                     from scripts.py.func.log_memory_details import log_memory_details
                     log_memory_details(f"last correct_text_by_languagetool:", logger)
 

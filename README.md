@@ -24,7 +24,7 @@ Note: Many texts are machine-generated translations of the original English docu
 89.244.126.237
 
 [![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
-( https://skipvids.com/?v=BZCHonTqwUw )
+( https://www.youtube.com/watch?v=BZCHonTqwUw or https://skipvids.com/?v=BZCHonTqwUw )
 
 ## Key Features
 

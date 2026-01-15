@@ -13,10 +13,17 @@ from threading import RLock
 project_root = Path(__file__).resolve().parents[4]
 
 from config import settings
-from config.settings_local import DEV_MODE, DEV_MODE_all_processing
+
+
+# scripts/py/func/config/dynamic_settings.py:18
+DEV_MODE = DEV_MODE_all_processing = DEV_MODE_memory = False
+try:
+    from config.settings_local import DEV_MODE, DEV_MODE_all_processing
+except (ImportError, ModuleNotFoundError):
+    pass
+
 # Get a logger instance instead of direct print statements for better control
 import logging
-
 
 # scripts/py/func/config/dynamic_settings.py
 
@@ -151,7 +158,16 @@ class DynamicSettings:
         self._settings_local_file_path = str(config_dir / "settings_local.py")
 
         self._last_base_modified_time = os.path.getmtime(self._settings_file_path)
-        self._last_local_modified_time = os.path.getmtime(self._settings_local_file_path)
+
+        # --- FIX START ---
+        # Prüfen, ob die lokale Datei existiert, bevor wir das Datum abfragen
+        if os.path.exists(self._settings_local_file_path):
+            self._last_local_modified_time = os.path.getmtime(self._settings_local_file_path)
+        else:
+            self._last_local_modified_time = 0  # 0 bedeutet: "Noch nie modifiziert/Existiert nicht"
+        # --- FIX END ---
+
+        # self._last_local_modified_time = os.path.getmtime(self._settings_local_file_path)
 
         logger.info(f"dynamic_settings.py: settings.DEV_MODE = {settings.DEV_MODE}")
 

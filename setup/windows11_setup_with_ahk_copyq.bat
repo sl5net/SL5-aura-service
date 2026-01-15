@@ -18,19 +18,20 @@ REM --- ADMIN CHECK END ---
 
 REM 1. Call the existing core setup script
 REM Now running with Admin rights, so the PS1 won't try to crash-elevate itself.
-CALL "%~dp0\windows11_setup.bat" %*
+CALL "%~dp0windows11_setup.bat" %*
 
 REM Check if the core setup failed
 IF %ERRORLEVEL% NEQ 0 (
+    ECHO setup/windows11_setup_with_ahk_copyq.bat:25
     ECHO Core setup encountered errors. Skipping client tools installation.
-    PAUSE
-    EXIT /B %ERRORLEVEL%
+@REM     PAUSE
+@REM     EXIT /B %ERRORLEVEL%
 )
 
 ECHO Core setup completed. Moving to AHK and CopyQ installation...
 
 REM 2. Run the specific client tools installation script
-powershell.exe -ExecutionPolicy Bypass -File "%~dp0\install_ahk_copyq.ps1"
+powershell.exe -ExecutionPolicy Bypass -File "%~dp0install_ahk_copyq.ps1"
 
 ECHO Setup variant completed.
 PAUSE

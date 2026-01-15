@@ -63,7 +63,10 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
         observer.schedule(TriggerEventHandler(), path=str(TMP_DIR), recursive=False)
         observer.start()
 
-        if settings.DEV_MODE_memory:
+        # scripts/py/func/main.py:66
+        # if getattr(settings, "DEV_MODE_memory", False):
+
+        if getattr(settings, "DEV_MODE_memory", False):
             log_memory_details("before while True", logger)
 
         is_first_loading = None

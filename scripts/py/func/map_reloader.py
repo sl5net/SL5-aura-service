@@ -29,7 +29,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
     modification time, and reloads only the necessary modules.
     """
 
-    if settings.DEV_MODE_memory:
+    if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
         log_memory_details(f"def start", logger)
 
@@ -214,7 +214,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
     except Exception as e:
         logger.error(f"🚨 Error during map reload check: {e}")
 
-    if settings.DEV_MODE_memory:
+    if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
 
         log_memory_details(f"def end", logger)

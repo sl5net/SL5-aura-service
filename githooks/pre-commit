@@ -85,6 +85,7 @@ echo "fasttext==0.9.3; sys_platform != 'win32'" >> requirements.txt
 echo "fasttext-wheel==0.9.2; sys_platform == 'win32'" >> requirements.txt
 # ------------------------------------
 
+# githooks/pre-commit:88
 
 # B) WINDOWS AUDIO & CONTROL (Persistent on Linux)
 # Remove potential entries to prevent duplicates or missing markers
@@ -103,6 +104,8 @@ rm -rf "$TMPDIR"
 # add some explizit that e.g. used in little config/maps/plugin scripts
 echo "wikipedia-api" >> requirements.txt
 echo "bs4" >> requirements.txt
+
+echo "nltk==3.9.1" >> requirements.txt
 
 cp .git/hooks/pre-commit docs/pre-commit_backup.txt
 

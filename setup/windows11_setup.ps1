@@ -410,5 +410,6 @@ if (-not (Test-Path "log")) {
 # --- 10. Completion ---
 Write-Host ""
 Write-Host "------------------------------------------------------------------" -ForegroundColor Green
+Write-Host "------- setup/windows11_setup.ps1:413 ---" -ForegroundColor Green
 Write-Host "Setup for Windows completed successfully." -ForegroundColor Green
 Write-Host "------------------------------------------------------------------" -ForegroundColor Green
