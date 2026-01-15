@@ -3,7 +3,8 @@
 
 import os
 import sys
-from .integrity_rules import INTEGRITY_CHECKS
+from .integrity_rules import INTEGRITY_CHECKS, UNSAFE_LINE_STARTS, FORBIDDEN_PATTERNS
+
 
 def check_code_integrity(project_root, logger):
     """
@@ -62,8 +63,21 @@ def check_code_integrity(project_root, logger):
                                 failed_checks += 1
                                 sys.exit(1)
 
+
+                        for forbidden in FORBIDDEN_PATTERNS:
+                            if forbidden in line:
+                                # Ausnahme: Wir erlauben es, wenn es ein Kommentar ist (startet mit #)
+
+                                logger.fatal("-" * 60)
+                                logger.fatal(f"FATAL SECURITY CHECK FAILED!")
+                                logger.fatal(f"  File: {full_path}:{line_num}")
+                                logger.fatal(f"❌ Forbidden Pattern detected: '{forbidden}'")
+                                logger.fatal("  SOLUTION: Use 'if getattr(settings, \"VARIABLE\", False):' instead!")
+                                logger.fatal("-" * 60)
+                                failed_checks += 1
+                                sys.exit(1)
+
                 except Exception as e:
-                    # Falls eine Datei nicht lesbar ist (z.B. falsches Encoding), warnen wir nur kurz
                     logger.warning(f"Could not scan file {full_path}: {e}")
 
 

@@ -1,4 +1,4 @@
-REM windows11_setup_with_ahk_copyq.bat
+REM setup/windows11_setup_with_ahk_copyq.bat:1
 REM script_name: setup/windows11_setup_with_ahk_copyq.bat
 @echo off
 ECHO Starting Setup Variant: Core System + AutoHotkey + CopyQ...
@@ -15,6 +15,8 @@ IF %ERRORLEVEL% NEQ 0 (
 )
 ECHO Admin privileges confirmed.
 REM --- ADMIN CHECK END ---
+
+cd /d "%~dp0"
 
 REM 1. Call the existing core setup script
 REM Now running with Admin rights, so the PS1 won't try to crash-elevate itself.
@@ -34,4 +36,16 @@ REM 2. Run the specific client tools installation script
 powershell.exe -ExecutionPolicy Bypass -File "%~dp0install_ahk_copyq.ps1"
 
 ECHO Setup variant completed.
-PAUSE
+@REM PAUSE
+
+
+
+ECHO.
+ECHO ========================================================
+ECHO Installation abgeschlossen.
+ECHO start "Aura Dictation" (maybe ~ 30s)...
+ECHO ========================================================
+
+@REM CALL "%~dp0..\start_dictation_v2.0.bat"
+START "" explorer "%~dp0..\start_dictation_v2.0.bat"
+

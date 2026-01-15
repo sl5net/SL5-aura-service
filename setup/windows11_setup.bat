@@ -15,5 +15,5 @@ call .\.venv\Scripts\python.exe scripts/py/func/setup_initial_model.py
 ECHO
 ECHO Script is ended.
 ECHO You can close the window
-pause
+REM pause
 

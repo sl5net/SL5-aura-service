@@ -14,6 +14,7 @@ IF %ERRORLEVEL% NEQ 0 (
 ECHO [OK] Admin privileges confirmed.
 REM --- ADMIN CHECK END ---
 
+
 REM Ensure we are in the script directory to find the ps1 file
 CD /D "%~dp0"
 

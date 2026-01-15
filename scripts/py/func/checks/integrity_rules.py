@@ -19,6 +19,11 @@ UNSAFE_LINE_STARTS = [
     "import config.settings_local"
 ]
 
+FORBIDDEN_PATTERNS = [
+    "if settings.DEV_MODE_memory:",
+    "if settings.DEV_MODE_all_processing:",
+]
+
 INTEGRITY_CHECKS = {
 
     'README.md': [
