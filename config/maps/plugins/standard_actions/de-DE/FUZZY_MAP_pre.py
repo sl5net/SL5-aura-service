@@ -116,10 +116,11 @@ FUZZY_MAP_pre = [
     r'''
     ^
     (?:
-        (?:Prüft|prüfe|früchte|trüffel|Für|frevel|pro[ovb]e?|check|scan|test|validate)\s+(?:for\s+)? 
+        (?:Prüft|prüfe|früchte|trüffel|frevel|pro[ovb]e?|check|scan|test|validate)\s+(?:for\s+)? 
         \s*
         (?:synta[xk]s?\b|rules?\b)?(?:err?ors?|rules?|issues?)?
-    )
+    ) 
+    $
     |
     (?:regeln?\s+pr[üu]fen|syntax\s+pr[üu]fen|fehler\s+suchen)
     $

@@ -41,6 +41,7 @@ if 'VIRTUAL_ENV' not in os.environ:
         "       scripts/restart_venv_and_run-server.sh or run scripts/activate-venv_and_run-server.sh",
         file=sys.stderr
     )
+    # aura_engine.py:44 'VIRTUAL_ENV' not
     sys.exit(1)
 
 
