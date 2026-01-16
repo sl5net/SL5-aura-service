@@ -23,3 +23,5 @@ powershell.exe -ExecutionPolicy Bypass -File "%~dp0update\update_for_windows_use
 echo.
 echo The update script has finished. This window can be closed.
 pause
+
+powershell -c "[System.Media.SystemSounds]::Asterisk.Play()"
