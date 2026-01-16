@@ -52,7 +52,9 @@ signatur_ja=f"話し言葉の翻訳{signatur} "
 # --- Language Model Preloading ---
 # A list of Vosk model folder names to preload at startup if memory allows.
 # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
-PRELOAD_MODELS = ["vosk-model-de-0.21"]
+PRELOAD_MODELS = ["vosk-model-de-0.22"]
+
+
 
 if current_user == 'SL5.de':
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
