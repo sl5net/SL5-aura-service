@@ -2,7 +2,6 @@
 
 import json
 from pathlib import Path
-import sys
 
 POSSIBLE_PATHS = [
     Path("quiz_db.json"),
@@ -40,7 +39,9 @@ else:
         try:
             print(content[START:END])
             print(" " * (e.pos - START) + "^-- look")
-        except:
+
+        except Exception as e:
+            print(f"{e}\n")
             pass
         print("-------------------------------------\n")
 
