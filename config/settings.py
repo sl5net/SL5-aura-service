@@ -52,7 +52,7 @@ signatur_ja=f"話し言葉の翻訳{signatur} "
 # --- Language Model Preloading ---
 # A list of Vosk model folder names to preload at startup if memory allows.
 # PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
-PRELOAD_MODELS = ["vosk-model-de-0.22"]
+PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 
 
@@ -144,7 +144,7 @@ AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
 SPEECH_PAUSE_TIMEOUT = 1
 # Standardwert
 
-# AUDIO_INPUT_DEVICE = 'MIC_AND_DESKTOP'
+# AUDIO_INPUT_DEVICE = ' MIC_AND_DESKTOP'
 # PRE_RECORDING_TIMEOUT = 12
 # SPEECH_PAUSE_TIMEOUT = 5
 
