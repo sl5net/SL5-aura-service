@@ -109,6 +109,9 @@ echo "pyperclip" >> requirements.txt
 echo "cologne_phonetics" >> requirements.txt
 echo "jellyfish" >> requirements.txt
 
+echo "nltk==3.9.1" >> requirements.txt
+
+
 # -----------------------------------------------------------------------------
 # 5. CLEANUP
 # -----------------------------------------------------------------------------

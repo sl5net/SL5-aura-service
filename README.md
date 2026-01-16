@@ -114,9 +114,37 @@ windows11_setup.bat -Exclude "en"
 ```
 
 #### For Windows
-Run the setup script with administrator privileges **"Run with PowerShell"**.
+Run the setup script with administrator privileges.
 
 **Install a tool for read and run e.g. [CopyQ](https://github.com/hluk/CopyQ) or [AutoHotkey v2](https://www.autohotkey.com/)**. This is required for the text-typing watcher.
+
+The installation is fully automated and takes about **8-10 minutes** when using 2 Models on a fresh system.
+
+1. Navigate to the `setup` folder.
+2. Double-click on **`windows11_setup_with_ahk_copyq.bat`**.
+   * *The script will automatically prompt for Administrator privileges.*
+   * *It installs the Core System, Language Models, **AutoHotkey v2**, and **CopyQ**.*
+3. Once the installation is complete, **Aura Dictation** will launch automatically.
+
+> **Note:** You do not need to install Python or Git beforehand; the script handles everything.
+
+---
+
+#### Advanced / Custom Installation
+If you prefer not to install the client tools (AHK/CopyQ) or want to save disk space by excluding specific languages, you can run the core script via the command line:
+
+```powershell
+# Core Setup only (No AHK, No CopyQ)
+setup\windows11_setup.bat
+
+# Exclude specific language models (saves space):
+# Exclude English:
+setup\windows11_setup.bat -Exclude "en"
+
+# Exclude German and English:
+setup\windows11_setup.bat -Exclude "de,en"
+```
+
 
 ---
 

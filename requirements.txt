@@ -26,4 +26,3 @@ pyperclip
 cologne_phonetics
 jellyfish
 nltk==3.9.1
-
