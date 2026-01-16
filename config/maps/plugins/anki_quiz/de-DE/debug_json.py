@@ -1,10 +1,12 @@
+# config/maps/plugins/anki_quiz/de-DE/debug_json.py
+
 import json
 from pathlib import Path
+import sys
 
 POSSIBLE_PATHS = [
     Path("quiz_db.json"),
     Path("de-DE/quiz_db.json"),
-
     Path("config/maps/plugins/anki_quiz/de-DE/quiz_db.json"),
     Path("../config/maps/plugins/anki_quiz/de-DE/quiz_db.json"),
 ]
@@ -15,40 +17,32 @@ for p in POSSIBLE_PATHS:
         DB_PATH = p
         break
 
+if DB_PATH is None:
+    print("DEBUG_JSON: DB_PATH is None -> skip Check.")
+    pass
+else:
+    try:
+        with open(DB_PATH, "r", encoding="utf-8") as f:
+            content = f.read()
+        json.loads(content)
 
-# Pfad zur Problem-Datei (bitte anpassen falls nötig)
+        # print("SUCCESS: JSON valide!")
 
-print(f"Prüfe Datei: {DB_PATH.resolve()}")
+    except json.JSONDecodeError as e:
+        print(f"\n🛑 CRITICAL ERROR in '{DB_PATH.resolve()}'")
+        print(f"   {e.msg}")
+        print(f" line: {e.lineno}, col: {e.colno} (pos: {e.pos})")
 
-if not DB_PATH.exists():
-    print("FEHLER: Datei existiert nicht!")
-    exit()
+        START = max(0, e.pos - 60)
+        END = min(len(content), e.pos + 60)
 
-try:
-    with open(DB_PATH, "r", encoding="utf-8") as f:
-        content = f.read()
+        print("\n--- (preview) ---")
+        try:
+            print(content[START:END])
+            print(" " * (e.pos - START) + "^-- look")
+        except:
+            pass
+        print("-------------------------------------\n")
 
-    print(f"Dateigröße: {len(content)} Zeichen")
-
-    # Der Fehler war ca. bei Zeichen 34059
-    # Wir schauen uns den Bereich davor und danach an
-    ERROR_POS = 34059
-    START = max(0, ERROR_POS - 100)
-    END = min(len(content), ERROR_POS + 100)
-
-    print("\n--- UMGEBUNG DES FEHLERS ---")
-    snippet = content[START:END]
-    print(snippet)
-    print("----------------------------")
-    print(f"Zeichen an Position {ERROR_POS}: {repr(content[ERROR_POS]) if ERROR_POS < len(content) else 'EOF'}")
-
-    # Versuch zu parsen, um den Fehler zu reproduzieren
-    print("\nVersuche Parse...")
-    json.loads(content)
-    print("SUCCESS: JSON ist valide!")
-
-except json.JSONDecodeError as e:
-    print(f"\nCRASH: {e}")
-    print(f"Fehler ist in Zeile {e.lineno}, Spalte {e.colno}, Char {e.pos}")
-except Exception as e:
-    print(f"\nAllgemeiner Fehler: {e}")
+    except Exception as e:
+        print(f"Error by read JSON: {e}")

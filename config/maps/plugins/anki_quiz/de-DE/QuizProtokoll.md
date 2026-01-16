@@ -1616,3 +1616,18 @@ my_string
  3️  my_string.count("foo", 5, 1 
  3️ 
 \________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def f():
+    x = 1
+x = 2
+f()
+print(x)
+```
+ 1️  finally
+KeyboardInterrupt
+ 2️  0
+1
+ 3️  2
+\________________________________________

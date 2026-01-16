@@ -1,5 +1,5 @@
 {
-  "current_id": 20,
+  "current_id": 0,
   "progress": {
     "0": {
       "box": 2,
@@ -82,8 +82,8 @@
       "next_review": 1768225099
     },
     "20": {
-      "box": 0,
-      "next_review": 1768522793
+      "box": 1,
+      "next_review": 1768571537
     }
   }
 }
