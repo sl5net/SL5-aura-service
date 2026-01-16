@@ -57,7 +57,8 @@ def run_path_check(project_root, LOCK_DIR ,  force=False):
                 if current_len > max_internal_length:
                     max_internal_length = current_len
                     longest_relative_path = rel_path
-            except Exception:
+            except Exception as e:
+                print(f"[CHECK] Skipping {file}: {e}", file=sys.stderr)
                 continue
 
     # 2. Calculate totals
@@ -65,10 +66,10 @@ def run_path_check(project_root, LOCK_DIR ,  force=False):
     # +1 for the backslash separator
     total_len = current_root_len + 1 + max_internal_length
 
-    headroom = MAX_PATH_LIMIT - total_len
+    # headroom = MAX_PATH_LIMIT - total_len
 
     # 3. Evaluate
-    if total_len >= headroom:
+    if total_len >= MAX_PATH_LIMIT:
         print("❌ -----------------------------------------------------------")
         print("❌ CRITICAL ERROR: INSTALLATION PATH IS TOO LONG")
         print(f"❌ Windows Limit: {MAX_PATH_LIMIT} characters")
@@ -95,6 +96,7 @@ def run_path_check(project_root, LOCK_DIR ,  force=False):
 # Helper to run it standalone for testing
 if __name__ == "__main__":
     # Assume we are in scripts/py/func/checks/
+    print('hello from check_path_length')
     # Go up 4 levels to find project root: checks -> func -> py -> scripts -> ROOT
-    root_guess = Path(__file__).parents[4]
-    run_path_check(root_guess)
+    # root_guess = Path(__file__).parents[4]
+    # run_path_check(root_guess)
