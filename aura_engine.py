@@ -64,6 +64,18 @@ from scripts.py.func.config.dynamic_settings import settings
 #   ohhh. 16.12.'25 19:43 Tue i have forgot diesaber the log server. omg
 #   from tools.simple_log_server import readme
 
+# --- Constants and Paths ---
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+
+PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
+
+
+
+from scripts.py.func.checks.check_path_length import run_path_check
+
+
+
 
 
 from scripts.py.func.checks.check_settings_syntax import verify_plugin_notation
@@ -101,11 +113,6 @@ from scripts.py.func.create_required_folders import setup_project_structure
 
 
 
-# --- Constants and Paths ---
-SCRIPT_DIR = Path(__file__).resolve().parent
-
-
-PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 
 # ==============================================================================
@@ -181,6 +188,10 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 LANGUAGETOOL_JAR_PATH = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
 
 
+
+
+
+
 suspicious_events = []
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -195,6 +206,13 @@ LOG_FILE = Path("log/aura_engine.log")
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
+
+
+if not run_path_check(PROJECT_ROOT,LOCK_DIR):
+    print("\nFATAL: Path too long. See logs above.", file=sys.stderr)
+    sys.exit(1)
+
+
 
 languagetool_process = None
 
@@ -1033,7 +1051,7 @@ if settings.DEV_MODE :
 
     lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
 
-    from scripts.py.func.checks.self_tester import run_core_logic_self_test
+    from scripts.py.func.checks.self_tester import run_core_logic_self_test, project_root
 
     if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
         self_test_start_time = time.time()
