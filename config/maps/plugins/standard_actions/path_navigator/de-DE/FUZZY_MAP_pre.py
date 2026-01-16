@@ -7,8 +7,6 @@ from pathlib import Path
 
 import shutil
 import sys
-
-
 # config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
 
 REQUIRED_COMMANDS = ['fzf', 'find']
@@ -31,7 +29,6 @@ else:
     # Fallback/Warning for unsupported OS
     print(f"WARNING: Clipboard functionality not tested on '{sys.platform}'. Skipping clipboard command check.", file=sys.stderr)
 
-
 BORDER = "=================================================================="
 
 for cmd in REQUIRED_COMMANDS:
@@ -44,10 +41,6 @@ for cmd in REQUIRED_COMMANDS:
         print(BORDER, file=sys.stderr)
 
         #sys.exit(1)
-
-
-
-
 
 CONFIG_DIR = Path(__file__).parent
 PROJECT_ROOT = CONFIG_DIR.parents[5]
@@ -96,7 +89,7 @@ if sys.platform.startswith('linux'):
     fzf_smart_file_finder = rf"""
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git ls-files --cached --others --exclude-standard
-    ('else', 'else'),
+    else
     find . -type f
 fi | fzf --style full --preview 'cat {{}}' --bind 'focus:transform-header:file --brief {{}}' | {CLIPBOARD_COMMAND} -selection clipboard
 """
@@ -106,7 +99,7 @@ elif sys.platform == 'darwin':
     fzf_smart_file_finder = rf"""
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git ls-files
-    ('else', 'else'),
+    else
   find . -type f
 fi | fzf --style full --preview 'cat {{}}' --bind 'focus:transform-header:file --brief {{}}' | {CLIPBOARD_COMMAND}
 """
@@ -123,7 +116,6 @@ PROJECT_ROOT_POSIX = Path(PROJECT_ROOT_DISPLAY_STR).as_posix()
 HOME_DIR_POSIX = Path(home_dir_str).as_posix()
 
 FUZZY_MAP_pre = [
-
 
     # fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' --extensions 'py,sh,html' | xclip -selection cl
 
@@ -184,109 +176,22 @@ FUZZY_MAP_pre = [
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-
-
-
-
-
-
-
-
-    # rohrer konfiguratione
-
-    #
-
-
     (f'{HOME_DIR_POSIX}/.config/0ad/config/',
      # EXAMPLE: 0ad config
      r'^(Joa|zero ein|zero|februar|fiera|fira|fever|fewo|führer|tyrannei|februar|wieweit|hierbei|hierbei|zebra|silva|fiera|give|cio|in|sie|sie war|syrer|seo|cyra|chihuahua|hier mal|sie wollen|über|weberei|rohrer)\s+(d|die|aed|it|die|di|dir|aed)\s+(Konflik|Konflikt|Konfiguration|konflikten|config|conflict)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #
-
     # bzopfig
     # EXAMPLE: bzopfig b
     (f'config/', r'\bzopfig\b', 90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-
-
-
-
-
-
-
-
-
 
     # skiplist
     ("'skip_list': ['LanguageTool','fullMatchStop']",
      # EXAMPLE: skip_list
      r'^(skip_list|skip_list|skip list|script bläst|lässt|script lässt|squibb lässt|es lässt|es gibt les|scribbles|es gibt list|es gibt bläst|script list|skype lässt|skype list|gpl list)$', 90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     # Navigiere zu Aura Config
     (f'cd "{Path(PROJECT_ROOT_POSIX, "config").as_posix()}"',
@@ -309,12 +214,9 @@ FUZZY_MAP_pre = [
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    # Skepsis
-
-    (f'{Path(PROJECT_ROOT_POSIX, 'config','maps','koans_deutsch').as_posix()}',
+    (f"{Path(PROJECT_ROOT_POSIX, 'config','maps','koans_deutsch').as_posix()}",
     r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(könne|co eins)\s*(deutsch)\s*\w*$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
 
 ]
