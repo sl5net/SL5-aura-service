@@ -1,21 +1,30 @@
-# 명령 또는 텍스트에 대한 시스템 전체 오프라인 음성, 플러그형 시스템
+# 시스템 전체 오프라인 음성에서 명령 또는 텍스트로 변환, 플러그형 시스템
 
-# SL5 Aura 서비스 - 기능 및 OS 호환성
+**⚠️ 시스템 요구 사항 및 호환성**
+
+* **Windows:** ✅ 완전히 지원됩니다(AutoHotkey/PowerShell 사용).
+* **macOS:** ✅ 완전히 지원됩니다(AppleScript 사용).
+* **Linux(X11/Xorg):** ✅ 완전히 지원됩니다. 최고의 경험을 위해 권장됩니다.
+* **Linux(Wayland):** ⚠️ **제한적/실험적.**
+* *전역 단축키 및 자동 입력은 일반적으로 보안 제한으로 인해 Wayland에서 작동하지 않습니다.*
+* *모든 기능을 사용하려면 로그인 시 **X11 세션**(예: "Plasma (X11)" 또는 "Ubuntu on Xorg")으로 전환하세요.*
+
 
 SL5 Aura 서비스에 오신 것을 환영합니다! 이 문서에서는 주요 기능과 운영 체제 호환성에 대한 간략한 개요를 제공합니다.
 
 Aura는 단순한 전사기가 아닙니다. 이는 음성을 정확한 동작과 텍스트로 변환하는 강력한 오프라인 처리 엔진입니다.
 
-Vosk 및 LanguageTool을 기반으로 구축된 완전한 오프라인 어시스턴트이며 플러그형 규칙 시스템과 동적 스크립팅 엔진을 통해 궁극적인 사용자 정의를 위해 설계되었습니다.
-XSPACEbreakX
+**Vosk**(Speech-to-Text용) 및 **LanguageTool**(문법/스타일용)을 기반으로 구축된 완전한 **오프라인 음성 어시스턴트**이며 이제 창의적인 응답과 고급 퍼지 매칭을 위한 선택적인 **로컬 LLM(Ollama) 대체** 기능을 제공합니다. 이는 플러그형 규칙 시스템과 동적 스크립팅 엔진을 통해 궁극적인 사용자 정의를 위해 설계되었습니다.
+
 XSPACEbreakX
 번역: 이 문서는 [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs)에도 존재합니다.
 
 참고: 많은 텍스트는 원래 영어 문서를 기계로 생성한 번역이며 일반적인 지침으로만 사용됩니다. 불일치나 모호성이 있는 경우에는 항상 영어 버전이 우선합니다. 이 번역을 개선하기 위한 커뮤니티의 도움을 환영합니다!
 
+___
 
-[![SL5 Aura (v0.7.0.2): A Deep Dive Under the Hood – Live Coding & Core Concepts](https://img.youtube.com/vi/tEijy8WRFCI/maxresdefault.jpg)](https://www.youtube.com/watch?v=tEijy8WRFCI)
-( https://skipvids.com/?v=tEijy8WRFCI )
+[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+( https://www.youtube.com/watch?v=BZCHonTqwUw 또는 https://skipvids.com/?v=BZCHonTqwUw )
 
 ## 주요 기능
 
@@ -45,34 +54,97 @@ XSPACEbreakX
 
 **다른 언어로 읽어 보세요:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](README.md) | [🇸🇦 العربية](./README-arlang.md) | [🇩🇪 Deutsch](./README-delang.md) | [🇪🇸 Español](./README-eslang.md) | [🇫🇷 Français](./README-frlang.md) | [🇮🇳 हिन्दी](./README-hilang.md) | [🇯🇵 日本語](./README-jalang.md) | [🇰🇷 한국어](./README-kolang.md) | [🇵🇱 Polski](./README-pllang.md) | [🇵🇹 Português](./README-ptlang.md) | [🇧🇷 Português Brasil](./README-pt-BRlang.md) | [🇨🇳 简体中文](./README-zh-CNlang.md)
 
 ---
+
+
+
+
+
+
 
 ## 설치
 
 설정은 2단계 프로세스로 이루어집니다.
-1. 이 저장소를 컴퓨터에 복제합니다.
+1. 최신 릴리스 또는 마스터( https://github.com/sl5net/Vosk-System-Listener/archive/master.zip )를 다운로드하거나 이 저장소를 컴퓨터에 복제하십시오.
 2. 운영 체제에 대한 일회성 설정 스크립트를 실행합니다.
 
 설정 스크립트는 시스템 종속성, Python 환경, 최대 속도를 위해 GitHub 릴리스에서 직접 필요한 모델 및 도구(~4GB) 다운로드 등 모든 것을 처리합니다.
 
-#### Linux, macOS, Windows용
+
+#### Linux, macOS 및 Windows용(선택적 언어 제외 포함)
+
+디스크 공간과 대역폭을 절약하기 위해 설정 중에 특정 언어 모델(`de`, `en`) 또는 모든 선택적 모델(`all`)을 제외할 수 있습니다. **핵심 구성요소(LanguageTool,lid.176)는 항상 포함됩니다.**
+
 프로젝트의 루트 디렉터리에서 터미널을 열고 시스템에 대한 스크립트를 실행합니다.
+
 ```bash
-# For Ubuntu/Debian, Manjaro/Arch, macOs  or other derivatives
+# For Ubuntu/Debian, Manjaro/Arch, macOS, or other derivatives
+# (Note: Use bash or sh to execute the setup script)
 
-bash setup/{your-os}_setup.sh
+bash setup/{your-os}_setup.sh [OPTION]
 
-# For Windows in Admin-Powershell
+# Examples:
+# Install everything (Default):
+# bash setup/manjaro_arch_setup.sh
 
-setup/windows11_setup.ps1
+# Exclude German models:
+# bash setup/manjaro_arch_setup.sh exclude=de
+
+# Exclude all VOSK language models:
+# bash setup/manjaro_arch_setup.sh exclude=all
+
+# For Windows in an Admin-Powershell session
+
+setup/windows11_setup.ps1 -Exclude [OPTION]
+
+# Examples:
+# Install everything (Default):
+# setup/windows11_setup.ps1
+
+# Exclude English models:
+# setup/windows11_setup.ps1 -Exclude "en"
+
+# Exclude German and English models:
+# setup/windows11_setup.ps1 -Exclude "de,en"
+
+# Or (recommend) - Start des BAT: 
+windows11_setup.bat -Exclude "en"
 ```
 
 #### 윈도우의 경우
-관리자 권한 **"PowerShell로 실행"**으로 설정 스크립트를 실행합니다.
+관리자 권한으로 설정 스크립트를 실행합니다.
 
 **읽기 및 실행을 위한 도구를 설치합니다. [CopyQ](https://github.com/hluk/CopyQ) 또는 [AutoHotkey v2](https://www.autohotkey.com/)**. 이는 텍스트 입력 감시자에게 필요합니다.
+
+설치는 완전 자동화되어 있으며 새 시스템에서 2개 모델을 사용할 경우 약 **8~10분** 정도 소요됩니다.
+
+1. `setup` 폴더로 이동합니다.
+2. **`windows11_setup_with_ahk_copyq.bat`**를 두 번 클릭합니다.
+* *스크립트는 관리자 권한을 묻는 메시지를 자동으로 표시합니다.*
+* *핵심 시스템, 언어 모델, **AutoHotkey v2** 및 **CopyQ**를 설치합니다.*
+3. 설치가 완료되면 **Aura Dictation**이 자동으로 실행됩니다.
+
+> **참고:** Python이나 Git을 미리 설치할 필요는 없습니다. 스크립트가 모든 것을 처리합니다.
+
+---
+
+#### 고급/사용자 정의 설치
+클라이언트 도구(AHK/CopyQ)를 설치하지 않거나 특정 언어를 제외하여 디스크 공간을 절약하려는 경우 명령줄을 통해 핵심 스크립트를 실행할 수 있습니다.
+
+```powershell
+# Core Setup only (No AHK, No CopyQ)
+setup\windows11_setup.bat
+
+# Exclude specific language models (saves space):
+# Exclude English:
+setup\windows11_setup.bat -Exclude "en"
+
+# Exclude German and English:
+setup\windows11_setup.bat -Exclude "de,en"
+```
+
 
 ---
 
@@ -147,7 +219,7 @@ f11::
 
 
 ### 3. 받아쓰기를 시작하세요!
-텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추세요. 수정된 텍스트가 자동으로 입력됩니다.
+텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추십시오. 수정된 텍스트가 자동으로 입력됩니다.
 
 ---
 
@@ -157,10 +229,10 @@ f11::
 로컬 설정 파일을 생성하여 애플리케이션의 동작을 사용자 정의할 수 있습니다.
 
 1. `config/` 디렉토리로 이동합니다.
-2. `settings_local.py_Example.txt`의 복사본을 만들고 이름을 `settings_local.py`로 바꿉니다.
-3. `settings_local.py`를 편집하여 기본 `config/settings.py` 파일의 설정을 재정의합니다.
+2. `config/settings_local.py_Example.txt`의 복사본을 만들고 이름을 `config/settings_local.py`로 바꿉니다.
+3. `config/settings_local.py`를 편집합니다(기본 `config/settings.py` 파일의 모든 설정을 재정의합니다).
 
-이 `settings_local.py` 파일은 Git에서 (아마도) 무시되므로 업데이트로 인해 개인적인 변경 사항이 (아마도) 덮어쓰여지지 않을 것입니다.
+이 `config/settings_local.py` 파일은 Git에서 (아마도) 무시되므로 업데이트로 인해 개인적인 변경 사항이 (아마도) 덮어쓰여지지 않을 것입니다.
 
 ### 플러그인 구조 및 로직
 
@@ -168,7 +240,7 @@ f11::
 
 처리 엔진은 **계층적 우선순위 체인**을 엄격하게 준수합니다.
 
-1. **모듈 로드 순서(높은 우선순위):** 핵심 언어 팩(de-DE, en-US)에서 로드된 규칙은 플러그인/ 디렉터리에서 로드된 규칙(알파벳순으로 마지막으로 로드됨)보다 우선합니다.
+1. **모듈 로드 순서(높은 우선순위):** 핵심 언어 팩(de-DE, en-US)에서 로드된 규칙은 플러그인/ 디렉터리에서 로드된 규칙(마지막 알파벳순으로 로드됨)보다 우선합니다.
 XSPACEbreakX
 2. **파일 내 순서(마이크로 우선순위):** 지정된 맵 파일(FUZZY_MAP_pre.py) 내에서 규칙은 **라인 번호**(위에서 아래로)에 따라 엄격하게 처리됩니다.
 XSPACEbreakX
@@ -211,16 +283,22 @@ XSPACEbreakX
 **Aura-Core/** 🐧 🍏 🪟XSPACEbreakX
 ├─ `aura_engine.py`(Aura를 조정하는 주요 Python 서비스) 🐧 🍏 🪟  
 ├┬ **라이브 핫 리로드**(구성 및 맵) 🐧 🍏 🪟XSPACEbreakX
+│├ **보안된 비공개 지도 로드(무결성 우선)** 🔒 🐧 🍏 🪟XSPACEbreakX
+││ * **워크플로우:** 비밀번호로 보호된 ZIP 아카이브를 로드합니다. XSPACEbreakX
 │├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
-│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(on_match_exec)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **계단식 실행:** 규칙은 순차적으로 처리되며 해당 효과는 **누적**됩니다. 이후 규칙은 이전 규칙에 의해 수정된 텍스트에 적용됩니다.  
 ││ * **가장 높은 우선순위 중지 기준:** 규칙이 **완전 일치**(^...$)를 달성하면 해당 토큰에 대한 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 안정적인 음성 명령을 구현하는 데 중요합니다.  
 │├ 3. `corright_text_by_언어tool.py` (문법/스타일 교정을 위한 LanguageTool 통합) 🐧 🍏 🪟  
-│└ 4. **지능형 사후 수정**(`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟XSPACEbreakX
+│├ **4. Ollama AI 폴백을 사용한 계층적 RegEx-Rule-Engine** 🐧 🍏 🪟XSPACEbreakX
+││ * **결정론적 제어:** 정확하고 우선순위가 높은 명령 및 텍스트 제어를 위해 RegEx-Rule-Engine을 사용합니다.  
+││ * **Ollama AI(로컬 LLM) 폴백:** 결정적 규칙이 충족되지 않는 경우 **창의적인 답변, Q&A 및 고급 퍼지 매칭**에 대한 선택적이고 우선순위가 낮은 검사 역할을 합니다.  
+││ * **상태:** 로컬 LLM 통합.
+│└ 5. **지능형 사후 수정** (`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟
 ││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선순위 논리를 따릅니다.  
-││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
+││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](docs/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전 결정적/계단식 규칙 실행 전체가 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
 ├┬ **모델 관리/** XSPACEbreakX
 │├─ `prioritize_model.py` (사용에 따라 모델 로드/언로드 최적화) 🐧 🍏 🪟  
@@ -247,6 +325,16 @@ XSPACEbreakX
 ### **개발 및 배포 도우미**XSPACEbreakX
 환경 설정, 테스트, 서비스 실행을 위한 스크립트입니다.  
 
+*팁: glogg를 사용하면 정규식을 사용하여 로그 파일에서 흥미로운 이벤트를 검색할 수 있습니다.*   
+로그 파일과 연결하려면 설치 시 확인란을 선택하세요.  XSPACEbreakX
+https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https://glogg.bonnefon.org/     
+XSPACEbreakX
+*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
+
+그럼 아마도 더블클릭이겠지
+`로그/aura_engine.log`
+XSPACEbreakX
+XSPACEbreakX
 **DevHelpers/**XSPACEbreakX
 ├┬ **가상 환경 관리/**XSPACEbreakX
 │├ `scripts/restart_venv_and_run-server.sh`(Linux/macOS) 🐧 🍏  
@@ -334,3 +422,9 @@ XSPACEbreakX
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+
+
+
+IgnorePkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils
+
+nvidia-575xx-설정 mhwd-nvidia-575xx

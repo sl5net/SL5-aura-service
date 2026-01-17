@@ -14,6 +14,7 @@ import psutil
 
 from .audio_manager import speak_fallback
 from .auto_fix_module import try_auto_fix_module
+from .get_active_window_title import get_active_window_title_safe
 from .log_memory_details import log4DEV
 from .state_manager import should_trigger_startup
 
@@ -29,7 +30,8 @@ from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 settings = DynamicSettings()
 
-
+# active_window_title = None
+global _active_window_title
 
 from .normalize_punctuation import normalize_punctuation
 from .map_reloader import auto_reload_modified_maps
@@ -765,8 +767,32 @@ def process_text_in_background(logger,
         session_id: int = 0,
         unmasked = False
         ):
+
+
     RUN_MODE = os.getenv('RUN_MODE')
     global settings
+    global _active_window_title
+
+    # required_windows = cmd_config['only_in_windows']
+    # required_windows = 'dummy'
+
+    # clipboard_text_linux = get_clipboard_text_linux()
+
+    # scripts/py/func/process_text_in_background.py:782
+    # start = time.time()
+    _active_window_title = get_active_window_title_safe()
+    # end = time.time()
+    # duration = end - start # its about 3milliSeconds
+    # print(f"DISPLAY wt: {active_window_title} duration: {duration} clipboard: {clipboard_text_linux[0:25]}...")
+
+    # start = time.time()
+    # wt = get_active_window_title_safe()
+    # end = time.time()
+    # duration = end - start
+    # print(f"DISPLAY wt: {wt} duration: {duration} clipboard: {c}")
+
+
+
 
     if RUN_MODE == "API_SERVICE" and unmasked is True:
         run_mode_override = "API_SERVICE_local"
@@ -1463,7 +1489,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 rule_entry = normalize_fuzzy_map_rule_entry(rule_entry)
 
 
-
             if len(rule_entry) != 4:
                 print(f"____________________________________________")
                 print(f"____________________________________________")
@@ -1480,23 +1505,48 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
             # scripts/py/func/process_text_in_background.py:1471
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
 
             skip_list_temp = options_dict.get('skip_list', [])
+
+            only_in_windows_list = options_dict.get('only_in_windows', [])
+            skip_this_regex_pattern = False
+            # global _active_window_title
+
+
+            if only_in_windows_list and _active_window_title:
+                skip_this_regex_pattern = True
+
+                show_debug_prints = False
+                if show_debug_prints:
+                    print(f'1528: ⏩ ▶️▶️▶️ DEBUG: only_in_windows_list ▶️{only_in_windows_list}◀️ , '
+                          f'active_window_title=▶️{_active_window_title}◀️ ')
+
+                if any(re.search(pattern, str(_active_window_title)) for pattern in only_in_windows_list):
+                    skip_this_regex_pattern = False
+
+                    if show_debug_prints:
+                        print(f'matched: 🥳🥳🥳 regex_pattern="{str(regex_pattern)[0:20]}..."')
+                        print(f'matched: 🥳🥳🥳 {_active_window_title}')
+
+                # for pattern in only_in_windows_list:
+                #     if show_debug_prints:
+                #         print(f'????? pattern="{pattern} ..."')
+                #         print(f'????? {active_window_title}')
+                #     if re.search(pattern, str(active_window_title)):
+                #         if show_debug_prints:
+                #             print(f'🔎 🥳 matched: pattern="{pattern}... its okay use it"')
+                #         skip_this_regex_pattern = False
+                #         continue
+                #     else:
+                #         if show_debug_prints:
+                #             print('🔎 👎 not matched: pattern="{pattern}... dont use it -> skip this rule"')
+                        # skip_this_regex_pattern = True
+
+
+            if skip_this_regex_pattern:
+                continue
 
             if GLOBAL_debug_skip_list:
                 print(f'1476: skip_list_temp={skip_list_temp}')
@@ -1523,8 +1573,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 if match_obj:
                     # Der ursprüngliche Text, bevor irgendetwas geändert wird
                     original_text_for_script = current_text
+                    # print(f"1571:🔎 🔎 🔎 original..={original_text_for_script} current_text={current_text}")
                     log4DEV(f"original..={original_text_for_script}", logger_instance)
-
 
                     new_current_text = compiled_regex.sub(replacement_text, current_text)
                     log4DEV(f"new..={new_current_text}", logger_instance)

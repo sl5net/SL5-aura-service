@@ -1,21 +1,30 @@
 # Voix hors ligne à l'échelle du système vers des commandes ou du texte, système enfichable
 
-# Service SL5 Aura - Fonctionnalités et compatibilité du système d'exploitation
+**⚠️ Configuration système requise et compatibilité**
+
+* **Windows :** ✅ Entièrement pris en charge (utilise AutoHotkey/PowerShell).
+* **macOS :** ✅ Entièrement pris en charge (utilise AppleScript).
+* **Linux (X11/Xorg) :** ✅ Entièrement pris en charge. Recommandé pour une meilleure expérience.
+* **Linux (Wayland) :** ⚠️ **Limité / Expérimental.**
+* *Les raccourcis clavier globaux et la saisie automatique ne fonctionnent généralement pas sur Wayland en raison de restrictions de sécurité.*
+* *Veuillez passer à une **session X11** lors de la connexion (par exemple, « Plasma (X11) » ou « Ubuntu sur Xorg ») pour utiliser toutes les fonctionnalités.*
+
 
 Bienvenue au service SL5 Aura ! Ce document fournit un aperçu rapide de nos fonctionnalités clés et de leur compatibilité avec le système d'exploitation.
 
 Aura n'est pas seulement un transcripteur ; il s'agit d'un puissant moteur de traitement hors ligne qui transforme votre voix en actions et en texte précis.
 
-Il s'agit d'un assistant complet hors ligne construit sur Vosk et LanguageTool, conçu pour une personnalisation ultime grâce à un système de règles enfichable et un moteur de script dynamique.
-  
+Il s'agit d'un **assistant vocal hors ligne** complet, basé sur **Vosk** (pour la synthèse vocale) et **LanguageTool** (pour la grammaire/le style), proposant désormais un **Local LLM (Ollama) Fallback** en option pour des réponses créatives et une correspondance floue avancée. Il est conçu pour une personnalisation ultime grâce à un système de règles enfichable et un moteur de script dynamique.
+
   
 Traductions : Ce document existe également en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Remarque : De nombreux textes sont des traductions générées automatiquement de la documentation originale en anglais et sont uniquement destinés à des conseils généraux. En cas de divergences ou d'ambiguïtés, la version anglaise prévaut toujours. Nous apprécions l’aide de la communauté pour améliorer cette traduction !
 
+___
 
-[![SL5 Aura (v0.7.0.2): A Deep Dive Under the Hood – Live Coding & Core Concepts](https://img.youtube.com/vi/tEijy8WRFCI/maxresdefault.jpg)](https://www.youtube.com/watch?v=tEijy8WRFCI)
-(https://skipvids.com/?v=tEijy8WRFCI)
+[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+( https://www.youtube.com/watch?v=BZCHonTqwUw ou https://skipvids.com/?v=BZCHonTqwUw )
 
 ## Principales fonctionnalités
 
@@ -45,34 +54,97 @@ Pour une référence technique complète, y compris tous les modules et scripts,
 
 **Lisez ceci dans d'autres langues :**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](README.md) | [🇸🇦 العربية](./README-arlang.md) | [🇩🇪 Deutsch](./README-delang.md) | [🇪🇸 Español](./README-eslang.md) | [🇫🇷 Français](./README-frlang.md) | [🇮🇳 हिन्दी](./README-hilang.md) | [🇯🇵 日本語](./README-jalang.md) | [🇰🇷 한국어](./README-kolang.md) | [🇵🇱 Polski](./README-pllang.md) | [🇵🇹 Português](./README-ptlang.md) | [🇧🇷 Português Brasil](./README-pt-BRlang.md) | [🇨🇳 简体中文](./README-zh-CNlang.md)
 
 ---
+
+
+
+
+
+
 
 ##Installation
 
 La configuration est un processus en deux étapes :
-1. Clonez ce référentiel sur votre ordinateur.
+1. Téléchargez la dernière version ou master ( https://github.com/sl5net/Vosk-System-Listener/archive/master.zip ) ou clonez ce référentiel sur votre ordinateur.
 2. Exécutez le script d'installation unique pour votre système d'exploitation.
 
 Les scripts d'installation gèrent tout : les dépendances du système, l'environnement Python et le téléchargement des modèles et outils nécessaires (~ 4 Go) directement depuis nos versions GitHub pour une vitesse maximale.
 
-#### Pour Linux, macOS et Windows
+
+#### Pour Linux, macOS et Windows (avec exclusion de langue facultative)
+
+Pour économiser de l'espace disque et de la bande passante, vous pouvez exclure des modèles de langage spécifiques (`de`, `en`) ou tous les modèles facultatifs (`all`) lors de l'installation. **Les composants de base (LanguageTool, lid.176) sont toujours inclus.**
+
 Ouvrez un terminal dans le répertoire racine du projet et exécutez le script pour votre système :
+
 ```bash
-# For Ubuntu/Debian, Manjaro/Arch, macOs  or other derivatives
+# For Ubuntu/Debian, Manjaro/Arch, macOS, or other derivatives
+# (Note: Use bash or sh to execute the setup script)
 
-bash setup/{your-os}_setup.sh
+bash setup/{your-os}_setup.sh [OPTION]
 
-# For Windows in Admin-Powershell
+# Examples:
+# Install everything (Default):
+# bash setup/manjaro_arch_setup.sh
 
-setup/windows11_setup.ps1
+# Exclude German models:
+# bash setup/manjaro_arch_setup.sh exclude=de
+
+# Exclude all VOSK language models:
+# bash setup/manjaro_arch_setup.sh exclude=all
+
+# For Windows in an Admin-Powershell session
+
+setup/windows11_setup.ps1 -Exclude [OPTION]
+
+# Examples:
+# Install everything (Default):
+# setup/windows11_setup.ps1
+
+# Exclude English models:
+# setup/windows11_setup.ps1 -Exclude "en"
+
+# Exclude German and English models:
+# setup/windows11_setup.ps1 -Exclude "de,en"
+
+# Or (recommend) - Start des BAT: 
+windows11_setup.bat -Exclude "en"
 ```
 
 #### Pour Windows
-Exécutez le script d'installation avec les privilèges d'administrateur **"Exécuter avec PowerShell"**.
+Exécutez le script d'installation avec les privilèges d'administrateur.
 
 **Installez un outil pour lire et exécuter, par ex. [CopyQ](https://github.com/hluk/CopyQ) ou [AutoHotkey v2](https://www.autohotkey.com/)**. Ceci est requis pour l’observateur de saisie de texte.
+
+L'installation est entièrement automatisée et prend environ **8 à 10 minutes** lors de l'utilisation de 2 modèles sur un nouveau système.
+
+1. Accédez au dossier « setup ».
+2. Double-cliquez sur **`windows11_setup_with_ahk_copyq.bat`**.
+* *Le script demandera automatiquement les privilèges d'administrateur.*
+* *Il installe le système principal, les modèles de langage, **AutoHotkey v2** et **CopyQ**.*
+3. Une fois l'installation terminée, **Aura Dictation** se lancera automatiquement.
+
+> **Remarque :** Vous n'avez pas besoin d'installer Python ou Git au préalable ; le script gère tout.
+
+---
+
+#### Installation avancée/personnalisée
+Si vous préférez ne pas installer les outils clients (AHK/CopyQ) ou souhaitez économiser de l'espace disque en excluant des langues spécifiques, vous pouvez exécuter le script principal via la ligne de commande :
+
+```powershell
+# Core Setup only (No AHK, No CopyQ)
+setup\windows11_setup.bat
+
+# Exclude specific language models (saves space):
+# Exclude English:
+setup\windows11_setup.bat -Exclude "en"
+
+# Exclude German and English:
+setup\windows11_setup.bat -Exclude "de,en"
+```
+
 
 ---
 
@@ -157,10 +229,10 @@ Cliquez dans n'importe quel champ de texte, appuyez sur votre touche de raccourc
 Vous pouvez personnaliser le comportement de l'application en créant un fichier de paramètres local.
 
 1. Accédez au répertoire `config/`.
-2. Créez une copie de `settings_local.py_Example.txt` et renommez-la en `settings_local.py`.
-3. Modifiez `settings_local.py` pour remplacer tout paramètre du fichier principal `config/settings.py`.
+2. Créez une copie de `config/settings_local.py_Example.txt` et renommez-la en `config/settings_local.py`.
+3. Modifiez `config/settings_local.py` (il remplace tout paramètre du fichier principal `config/settings.py`).
 
-Ce fichier `settings_local.py` est (peut-être) ignoré par Git, donc vos modifications personnelles ne seront (peut-être) pas écrasées par les mises à jour.
+Ce fichier `config/settings_local.py` est (peut-être) ignoré par Git, donc vos modifications personnelles ne seront (peut-être) pas écrasées par les mises à jour.
 
 ### Structure et logique du plug-in
 
@@ -188,7 +260,7 @@ Voici une liste des scripts les plus importants pour configurer, mettre à jour 
 * `start_dictation_v2.0.bat` : Un script principal pour **démarrer le service de dictée**.
 
 ### Scripts de base et d'assistance
-* `aura_engine.py` : Le service Python principal (généralement démarré par l'un des scripts ci-dessus).
+* `aura_engine.py` : le service Python principal (généralement démarré par l'un des scripts ci-dessus).
 * `get_suggestions.py` : Un script d'assistance pour des fonctionnalités spécifiques.
 
 
@@ -209,18 +281,24 @@ Notre principal moteur de reconnaissance vocale et de traitement audio hors lign
 
   
 **Aura-Core/** 🐧 🍏 🪟  
-├─ `aura_engine.py` (Service Python principal orchestrant Aura) 🐧 🍏 🪟  
+├─ `aura_engine.py` (service Python principal orchestrant Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Configuration et cartes) 🐧 🍏 🪟  
+│├ **Chargement sécurisé de la carte privée (intégrité d'abord)** 🔒 🐧 🍏 🪟  
+││ * **Workflow :** Charge les archives ZIP protégées par mot de passe.   
 │├ **Traitement et correction de texte/** Regroupés par langue ( par exemple `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardise la ponctuation après la transcription) 🐧 🍏 🪟  
-│├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - [The Primary Command Layer](../CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
+│├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
 ││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés (on_match_exec) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Exécution en cascade :** Les règles sont traitées séquentiellement et leurs effets sont **cumulatifs**. Les règles ultérieures s'appliquent au texte modifié par les règles antérieures.  
 ││ * **Critère d'arrêt de priorité la plus élevée :** Si une règle obtient une **Correspondance complète** (^...$), l'ensemble du pipeline de traitement pour ce jeton s'arrête immédiatement. Ce mécanisme est essentiel pour implémenter des commandes vocales fiables.  
 │├ 3. `correct_text_by_lingualtool.py` (Intègre LanguageTool pour la correction de grammaire/style) 🐧 🍏 🪟  
-│└ 4. **Post-correction intelligente** (`FuzzyMap`)** – Affinement post-LT** 🐧 🍏 🪟  
+│├ **4. Moteur de règles RegEx hiérarchique avec Ollama AI Fallback** 🐧 🍏 🪟  
+││ * **Contrôle déterministe :** utilise RegEx-Rule-Engine pour un contrôle précis et prioritaire des commandes et du texte.  
+││ * **Ollama AI (Local LLM) Fallback :** Sert de vérification facultative et de faible priorité pour les **réponses créatives, les questions et réponses et la correspondance floue avancée** lorsqu'aucune règle déterministe n'est respectée.  
+││ * **Statut :** Intégration LLM locale.
+│└ 5. **Post-correction intelligente** (`FuzzyMap`)** – Raffinement post-LT** 🐧 🍏 🪟
 ││ * Appliqué après LanguageTool pour corriger les sorties spécifiques à LT. Suit la même logique stricte de priorité en cascade que la couche de pré-correction.  
-││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés ([on_match_exec](../advanced-scripting-frlang.md)) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
+││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés ([on_match_exec](docs/advanced-scripting-frlang.md)) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Fuzzy Fallback :** Le **Fuzzy Similarity Check** (contrôlé par un seuil, par exemple 85 %) agit comme la couche de correction d'erreurs la plus basse priorité. Elle n'est exécutée que si l'exécution complète de la règle déterministe/en cascade précédente n'a pas réussi à trouver une correspondance (current_rule_matched est False), optimisant ainsi les performances en évitant les vérifications floues lentes autant que possible.  
 ├┬ **Gestion des modèles/**   
 │├─ `prioritize_model.py` (Optimise le chargement/déchargement du modèle en fonction de l'utilisation) 🐧 🍏 🪟  
@@ -247,6 +325,16 @@ Outils pour une gestion robuste des grands modèles de langage.
 ### **Aide au développement et au déploiement**  
 Scripts pour la configuration de l'environnement, les tests et l'exécution des services.  
 
+*Astuce : glogg vous permet d'utiliser des expressions régulières pour rechercher des événements intéressants dans vos fichiers journaux.*   
+Veuillez cocher la case lors de l'installation pour l'associer aux fichiers journaux.    
+https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
+  
+*Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
+
+Alors peut-être double-cliquez
+`log/aura_engine.log`
+  
+  
 **DevHelpers/**  
 ├┬ **Gestion de l'environnement virtuel/**  
 │├ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏  
@@ -334,3 +422,9 @@ Si vous trouvez cet outil utile, pensez à nous offrir un café ! Votre soutien
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+
+
+
+IgnorerPkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils
+
+nvidia-575xx-paramètres mhwd-nvidia-575xx

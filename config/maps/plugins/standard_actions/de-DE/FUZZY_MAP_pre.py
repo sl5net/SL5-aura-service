@@ -68,14 +68,14 @@ FUZZY_MAP_pre = [
          'flags': re.IGNORECASE,
      }),
 
-    # http://89.244.126.237:8831/
+    # http://___:8831/
     # Streamlit is an open-source Python framework for data scientists and AI/ML engineers to deliver interactive data apps - in only a few lines of code.
     #Öffnet Stream lädt Webseite
     #Öffne Stream Litschi
     #öffne stream litt
     #Essen ist ziemlichÖffentlich Stream lebt
-    #http://89.244.126.237:8831/
-    ("http://89.244.126.237:8831/",
+    #http://___:8831/
+    ("http://___:8831/",
      # EXAMPLE: öffne
      r'^(öffne|öffentlich).*(der )?(stream)(lit|life| litt| Lied| neu| net| lebt| lebt| liebt)\s*(webseite|webpage)?$',
      100, {
@@ -126,10 +126,26 @@ FUZZY_MAP_pre = [
     $
     ''',
     100,
-    {'flags': re.IGNORECASE | re.VERBOSE}
+    {'flags': re.IGNORECASE | re.VERBOSE,
+     'only_in_windows': ['Konsole', 'Terminal', 'Console', 'Code', 'VSC', 'Alacritty']
+     }
     ),
     # attention! mit re.VERBOSE all normal spaces was ignored. its the same like ix (i for IGNORECASE x for VERBOSE)
 
+
+    # disabled_2026-0117-1336___
+
+    ('blocked_Terminal',
+     # EXAMPLE: Terminal blocked
+     r' disabled_2026-0117-1336___ ^.*$',
+     70,
+    {'flags': re.IGNORECASE | re.VERBOSE,
+     'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'Code', 'VSC', 'Alacritty']
+    }
+    ),
+
+    # mal ausprobierennicht gebloggtund hier eigentlich nicht
+    #
 
     ('',
      # EXAMPLE: Clipboard

@@ -193,9 +193,6 @@ def check_and_unpack_zips():
 
     if not folders:
         print('2026-0109-1053')
-        print('2026-0109-1053')
-        print('2026-0109-1053')
-        print('2026-0109-1053')
         return None
 
     unpacker_module = get_unpacker_lib()

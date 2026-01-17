@@ -1,21 +1,30 @@
 # Głos w trybie offline w całym systemie na polecenia lub tekst, system podłączany
 
-# Usługa SL5 Aura — funkcje i kompatybilność z systemem operacyjnym
+**⚠️ Wymagania systemowe i kompatybilność**
+
+* **Windows:** ✅ W pełni obsługiwane (używa AutoHotkey/PowerShell).
+* **macOS:** ✅ W pełni obsługiwany (używa AppleScript).
+* **Linux (X11/Xorg):** ✅ W pełni obsługiwane. Zalecane dla najlepszych wrażeń.
+* **Linux (Wayland):** ⚠️ **Ograniczony / eksperymentalny.**
+* *Globalne skróty klawiszowe i automatyczne wpisywanie zazwyczaj nie działają w Wayland ze względu na ograniczenia bezpieczeństwa.*
+* *Proszę przejść na **sesję X11** podczas logowania (np. „Plasma (X11)” lub „Ubuntu na Xorg”), aby móc korzystać ze wszystkich funkcji.*
+
 
 Witamy w serwisie SL5 Aura! Ten dokument zawiera krótki przegląd naszych kluczowych funkcji i ich kompatybilności z systemem operacyjnym.
 
 Aura to nie tylko osoba dokonująca transkrypcji; to potężny silnik przetwarzania offline, który przekształca Twój głos w precyzyjne działania i tekst.
 
-Jest to kompletny asystent offline, zbudowany na platformie Vosk i LanguageTool, zaprojektowany z myślą o maksymalnej personalizacji poprzez podłączany system reguł i dynamiczny silnik skryptowy.
-XSPACEbreakX
+Jest to kompletny **asystent głosowy offline** zbudowany na bazie **Vosk** (do zamiany mowy na tekst) i **LanguageTool** (do gramatyki/stylu), teraz wyposażony w opcjonalną funkcję **Local LLM (Ollama) Fallback** do kreatywnych odpowiedzi i zaawansowanego dopasowywania rozmytego. Został zaprojektowany z myślą o maksymalnej personalizacji poprzez podłączany system reguł i dynamiczny silnik skryptowy.
+
 XSPACEbreakX
 Tłumaczenia: Ten dokument istnieje również w [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
 Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumentacji w języku angielskim i mają one wyłącznie charakter ogólny. W przypadku rozbieżności lub niejasności, zawsze obowiązuje wersja angielska. Czekamy na pomoc społeczności w ulepszaniu tego tłumaczenia!
 
+___
 
-[![SL5 Aura (v0.7.0.2): A Deep Dive Under the Hood – Live Coding & Core Concepts](https://img.youtube.com/vi/tEijy8WRFCI/maxresdefault.jpg)](https://www.youtube.com/watch?v=tEijy8WRFCI)
-( https://skipvids.com/?v=tEijy8WRFCI )
+[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+( https://www.youtube.com/watch?v=BZCHonTqwUw lub https://skipvids.com/?v=BZCHonTqwUw )
 
 ## Kluczowe funkcje
 
@@ -45,26 +54,55 @@ Aby uzyskać pełne informacje techniczne, w tym wszystkie moduły i skrypty, od
 
 **Przeczytaj to w innych językach:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](README.md) | [🇸🇦 العربية](./README-arlang.md) | [🇩🇪 Deutsch](./README-delang.md) | [🇪🇸 Español](./README-eslang.md) | [🇫🇷 Français](./README-frlang.md) | [🇮🇳 हिन्दी](./README-hilang.md) | [🇯🇵 日本語](./README-jalang.md) | [🇰🇷 한국어](./README-kolang.md) | [🇵🇱 Polski](./README-pllang.md) | [🇵🇹 Português](./README-ptlang.md) | [🇧🇷 Português Brasil](./README-pt-BRlang.md) | [🇨🇳 简体中文](./README-zh-CNlang.md)
 
 ---
+
+
+
+
+
+
 
 ## Instalacja
 
 Konfiguracja jest procesem dwuetapowym:
-1. Sklonuj to repozytorium na swój komputer.
+1. Pobierz ostatnią wersję lub master (https://github.com/sl5net/Vosk-System-Listener/archive/master.zip) lub sklonuj to repozytorium na swój komputer.
 2. Uruchom jednorazowy skrypt instalacyjny dla swojego systemu operacyjnego.
 
 Skrypty instalacyjne obsługują wszystko: zależności systemowe, środowisko Python i pobieranie niezbędnych modeli i narzędzi (~4 GB) bezpośrednio z naszych wydań GitHub w celu uzyskania maksymalnej szybkości.
 
-#### Dla systemu Linux, macOS i Windows
+
+#### Dla systemów Linux, macOS i Windows (z opcjonalnym wykluczeniem języka)
+
+Aby zaoszczędzić miejsce na dysku i przepustowość, możesz podczas instalacji wykluczyć określone modele językowe („de”, „en”) lub wszystkie opcjonalne modele („all”). **Podstawowe komponenty (LanguageTool, lid.176) są zawsze uwzględnione.**
+
 Otwórz terminal w katalogu głównym projektu i uruchom skrypt dla swojego systemu:
+
 __KOD_BLOKU_0__
 
 #### Dla systemu Windows
-Uruchom skrypt instalacyjny z uprawnieniami administratora **„Uruchom z PowerShell”**.
+Uruchom skrypt instalacyjny z uprawnieniami administratora.
 
 **Zainstaluj narzędzie do odczytu i uruchamiania, np. [CopyQ](https://github.com/hluk/CopyQ) lub [AutoHotkey v2](https://www.autohotkey.com/)**. Jest to wymagane dla obserwatora wpisując tekst.
+
+Instalacja jest w pełni zautomatyzowana i zajmuje około **8-10 minut** w przypadku użycia 2 modeli w nowym systemie.
+
+1. Przejdź do folderu „setup”.
+2. Kliknij dwukrotnie **`windows11_setup_with_ahk_copyq.bat`**.
+* *Skrypt automatycznie wyświetli monit o uprawnienia administratora.*
+* *Instaluje system podstawowy, modele językowe, **AutoHotkey v2** i **CopyQ**.*
+3. Po zakończeniu instalacji **Aura Dictation** uruchomi się automatycznie.
+
+> **Uwaga:** Nie musisz wcześniej instalować Pythona ani Gita; skrypt obsługuje wszystko.
+
+---
+
+#### Instalacja zaawansowana/niestandardowa
+Jeśli nie chcesz instalować narzędzi klienckich (AHK/CopyQ) lub chcesz zaoszczędzić miejsce na dysku, wykluczając określone języki, możesz uruchomić podstawowy skrypt za pomocą wiersza poleceń:
+
+__KOD_BLOKU_1__
+
 
 ---
 
@@ -74,7 +112,7 @@ Uruchom skrypt instalacyjny z uprawnieniami administratora **„Uruchom z PowerS
 
 #### W systemie Linux i macOS
 Wszystko obsługuje jeden skrypt. Uruchamia główną usługę dyktowania i przeglądarkę plików automatycznie w tle.
-__KOD_BLOKU_1__
+__KOD_BLOKU_2__
 
 #### W systemie Windows
 Uruchomienie usługi jest **dwuetapowym procesem ręcznym**:
@@ -90,14 +128,14 @@ Aby uruchomić dyktowanie, potrzebujesz globalnego skrótu, który tworzy okreś
 Utwórz nowe polecenie w CopyQ za pomocą globalnego skrótu.
 
 **Polecenie dla systemu Linux/macOS:**
-__KOD_BLOKU_2__
+__KOD_BLOKU_3__
 
 **Polecenie dla Windows przy użyciu [CopyQ](https://github.com/hluk/CopyQ):**
-__KOD_BLOKU_3__
+__KOD_BLOKU_4__
 
 
 **Polecenie dla Windows przy użyciu [AutoHotkey](https://AutoHotkey.com):**
-__KOD_BLOKU_4__
+__KOD_BLOKU_5__
 
 
 ### 3. Zacznij dyktować!
@@ -111,10 +149,10 @@ Kliknij dowolne pole tekstowe, naciśnij klawisz skrótu, a pojawi się powiadom
 Możesz dostosować zachowanie aplikacji, tworząc plik ustawień lokalnych.
 
 1. Przejdź do katalogu `config/`.
-2. Utwórz kopię pliku `settings_local.py_Example.txt` i zmień jej nazwę na `settings_local.py`.
-3. Edytuj plik `settings_local.py`, aby zastąpić dowolne ustawienie z głównego pliku `config/settings.py`.
+2. Utwórz kopię pliku `config/settings_local.py_Example.txt` i zmień jej nazwę na `config/settings_local.py`.
+3. Edytuj plik `config/settings_local.py` (zastępuje to wszelkie ustawienia z głównego pliku `config/settings.py`).
 
-Ten plik `settings_local.py` jest (być może) ignorowany przez Gita, więc Twoje osobiste zmiany (być może) nie zostaną nadpisane przez aktualizacje.
+Ten plik `config/settings_local.py` jest (być może) ignorowany przez Gita, więc Twoje osobiste zmiany (być może) nie zostaną nadpisane przez aktualizacje.
 
 ### Struktura i logika wtyczek
 
@@ -163,18 +201,24 @@ Nasz główny silnik do rozpoznawania mowy w trybie offline i przetwarzania dźw
 
 XSPACEbreakX
 **Aura-Rdzeń/** 🐧 🍏 🪟XSPACEbreakX
-├─ `aura_engine.py` (główna usługa Pythona zarządzająca Aurą) 🐧 🍏 🪟XSPACEbreakX
+├─ `aura_engine.py` (Główna usługa Pythona zarządzająca Aurą) 🐧 🍏 🪟XSPACEbreakX
 ├┬ **Przeładuj na żywo** (konfiguracja i mapy) 🐧 🍏 🪟XSPACEbreakX
+│├ **Bezpieczne ładowanie prywatnej mapy (na pierwszym miejscu jest integralność)** 🔒 🐧 🍏 🪟XSPACEbreakX
+││ * **Przebieg pracy:** Ładuje archiwa ZIP chronione hasłem. XSPACEbreakX
 │├ **Przetwarzanie i korekta tekstu/** Pogrupowane według języka (np. `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punstanding.py` (Standaryzuje interpunkcję po transkrypcji) 🐧 🍏 🪟XSPACEbreakX
-│├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - [The Primary Command Layer](../CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟XSPACEbreakX
-││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python (on_match_exec) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
-││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego wcześniejszymi regułami.XSPACEbreakX
+│├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty Pythona (on_match_exec) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
+││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego przez wcześniejsze reguły.XSPACEbreakX
 ││ * **Kryterium zatrzymania o najwyższym priorytecie:** Jeśli reguła osiągnie **Pełne dopasowanie** (^...$), cały potok przetwarzania dla tego tokena zostanie natychmiast zatrzymany. Mechanizm ten ma kluczowe znaczenie dla realizacji niezawodnych poleceń głosowych.XSPACEbreakX
 │├ 3. `correct_text_by_languagetool.py` (integruje narzędzie LanguageTool do poprawiania gramatyki/stylu) 🐧 🍏 🪟XSPACEbreakX
-│└ 4. **Inteligentna korekta końcowa** (`FuzzyMap`)** – Udoskonalenie po LT** 🐧 🍏 🪟XSPACEbreakX
+│├ **4. Hierarchiczny silnik reguł RegEx z rezerwą Ollama AI** 🐧 🍏 🪟XSPACEbreakX
+││ * **Kontrola deterministyczna:** wykorzystuje silnik RegEx-Rule-Engine do precyzyjnego sterowania poleceniami i tekstem o wysokim priorytecie.XSPACEbreakX
+││ * **Awaryjny algorytm Ollama AI (lokalny LLM):** służy jako opcjonalna kontrola o niskim priorytecie w przypadku **kreatywnych odpowiedzi, pytań i odpowiedzi oraz zaawansowanego dopasowywania rozmytego**, gdy nie jest spełniona żadna reguła deterministyczna.XSPACEbreakX
+││ * **Stan:** Lokalna integracja LLM.
+│└ 5. **Inteligentna korekcja końcowa** (`FuzzyMap`)** – Udoskonalanie po LT** 🐧 🍏 🪟
 ││ * Stosowane po LanguageTool w celu skorygowania wyników specyficznych dla LT. Działa zgodnie z tą samą ścisłą logiką priorytetów kaskadowych, co warstwa wstępnej korekty.XSPACEbreakX
-││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python ([on_match_exec](../advanced-scripting-pllang.md)) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python ([on_match_exec](docs/advanced-scripting-pllang.md)) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
 ││ * **Fuzzy Fallback:** **Rozmyta kontrola podobieństwa** (kontrolowana przez próg, np. 85%) działa jako warstwa korekcji błędów o najniższym priorytecie. Jest wykonywana tylko wtedy, gdy w całym poprzedzającym uruchomieniu reguły deterministycznej/kaskadowej nie znaleziono dopasowania (bieżąca_rule_matched ma wartość False), optymalizując wydajność poprzez unikanie, jeśli to możliwe, powolnych kontroli rozmytych.XSPACEbreakX
 ├┬ **Zarządzanie modelami/** XSPACEbreakX
 │├─ `prioritize_model.py` (optymalizuje ładowanie/rozładowywanie modelu w oparciu o wykorzystanie) 🐧 🍏 🪟XSPACEbreakX
@@ -201,6 +245,16 @@ Narzędzia do niezawodnej obsługi dużych modeli językowych.XSPACEbreakX
 ### **Pomocnicy w programowaniu i wdrażaniu**XSPACEbreakX
 Skrypty do konfiguracji środowiska, testowania i wykonywania usług.XSPACEbreakX
 
+*Wskazówka: glogg umożliwia używanie wyrażeń regularnych do wyszukiwania interesujących zdarzeń w plikach dziennika.* XSPACEbreakX
+Podczas instalacji zaznacz pole wyboru, aby powiązać je z plikami dziennika.  XSPACEbreakX
+https://translate.google.com/translate?hl=en&sl=en&tl=pl&u=https://glogg.bonnefon.org/     
+XSPACEbreakX
+*Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-pllang.md).*
+
+Wtedy może kliknij dwukrotnie
+`log/aura_engine.log`
+XSPACEbreakX
+XSPACEbreakX
 **Pomocnicy deweloperów/**XSPACEbreakX
 ├┬ **Zarządzanie środowiskiem wirtualnym/**XSPACEbreakX
 │├ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏XSPACEbreakX
@@ -219,7 +273,7 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 ├─ **ENTER_AFTER_DICTATION_REGEX** Przykładowa reguła aktywacji „(ExampleAplicationThatNotExist|Pi, Twoja osobista sztuczna inteligencja)” 🐧XSPACEbreakX
 ├┬WtyczkiXSPACEbreakX
 │╰┬ **Lenno na żywo – przeładuj** (*) 🐧 🍏 🪟XSPACEbreakX
-(*Zmiany dotyczące aktywacji/dezaktywacji wtyczek i ich konfiguracji zostaną zastosowane przy następnym uruchomieniu przetwarzania bez ponownego uruchomienia usługi.*)XSPACEbreakX
+(*Zmiany dotyczące aktywacji/dezaktywacji wtyczki i ich konfiguracji zostaną zastosowane przy następnym uruchomieniu przetwarzania bez ponownego uruchomienia usługi.*)XSPACEbreakX
 │ ├ **polecenia git** (sterowanie głosowe przy wysyłaniu poleceń git) 🐧 🍏 🪟XSPACEbreakX
 │ ├ **wannweil** (Mapa lokalizacji Niemcy-Wannweil) 🐧 🍏 🪟XSPACEbreakX
 │ ├ **Wtyczka pokerowa (wersja robocza)** (Sterowanie głosowe w aplikacjach pokerowych) 🐧 🍏 🪟XSPACEbreakX
@@ -230,7 +284,7 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 
 ---
 
-*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT), są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
+*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT) są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
 
 
 
@@ -243,7 +297,7 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 <szczegóły>
 <summary>Kliknij, aby zobaczyć polecenie użyte do wygenerowania tej listy skryptów</summary>
 
-__KOD_BLOKU_5__
+__KOD_BLOKU_6__
 </details>
 
 
@@ -286,3 +340,9 @@ Jeśli uznasz to narzędzie za przydatne, rozważ zakup nam kawy! Twoje wsparcie
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+
+
+
+IgnorePkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils
+
+ustawienia nvidia-575xx mhwd-nvidia-575xx

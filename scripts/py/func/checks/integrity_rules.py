@@ -108,6 +108,13 @@ INTEGRITY_CHECKS = {
         'Proactive Unloading'
     ],
 
+    "scripts/py/func/get_active_window_title.py:8": [
+        "Path(X11_CACHE_FILE).chmod(0o600)"
+    ],
+
+    # Path(X11_CACHE_FILE).chmod(0o600)
+
+
     # Protects the regex substitution logic in the main processing function.
     # germen umlauts needs this to could read correct for e.g. from script like autokey
     # Ensures critical text processing logic is present.

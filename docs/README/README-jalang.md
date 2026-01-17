@@ -1,27 +1,36 @@
 # システム全体のオフライン音声からコマンドまたはテキストへのプラグイン可能なシステム
 
-# SL5 Aura サービス - 機能と OS の互換性
+**⚠️ システム要件と互換性**
+
+* **Windows:** ✅ 完全にサポートされています (AutoHotkey/PowerShell を使用)。
+* **macOS:** ✅ 完全にサポートされています (AppleScript を使用)。
+* **Linux (X11/Xorg):** ✅ 完全にサポートされています。最高の体験をお勧めします。
+* **Linux (Wayland):** ⚠️ **限定的/実験的。**
+* *グローバル ホットキーと自動入力は、セキュリティ制限のため、通常、Wayland では機能しません。*
+* *すべての機能を使用するには、ログイン時に **X11 セッション** (例: 「Plasma (X11)」または「Ubuntu on Xorg」) に切り替えてください。*
+
 
 SL5 オーラ サービスへようこそ!このドキュメントでは、主要な機能とそのオペレーティング システムの互換性の概要を説明します。
 
 Aura は単なる文字起こしではありません。これは、あなたの音声を正確なアクションとテキストに変換する強力なオフライン処理エンジンです。
 
-これは Vosk と LanguageTool に基づいて構築された完全なオフライン アシスタントであり、プラグイン可能なルール システムとダイナミック スクリプト エンジンを通じて究極のカスタマイズを実現するように設計されています。
-  
+これは、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタイル用) に基づいて構築された完全な **オフライン音声アシスタント** であり、クリエイティブな応答と高度なファジー マッチングのためのオプションの **ローカル LLM (Ollama) フォールバック** を備えています。プラグイン可能なルール システムとダイナミック スクリプト エンジンを介して究極のカスタマイズができるように設計されています。
+
   
 翻訳: このドキュメントは [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs) にも存在します。
 
 注: 多くのテキストは、元の英語ドキュメントの機械翻訳であり、一般的なガイダンスのみを目的としています。矛盾や曖昧な点がある場合には、常に英語版が優先されます。この翻訳を改善するためにコミュニティからの協力を歓迎します。
 
+___
 
-[![SL5 Aura (v0.7.0.2): A Deep Dive Under the Hood – Live Coding & Core Concepts](https://img.youtube.com/vi/tEijy8WRFCI/maxresdefault.jpg)](https://www.youtube.com/watch?v=tEijy8WRFCI)
-( https://skipvids.com/?v=tEijy8WRFCI )
+[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+( https://www.youtube.com/watch?v=BZCHonTqwUw または https://skipvids.com/?v=BZCHonTqwUw )
 
 ## 主な機能
 
-* **オフライン&プライベート:** 100% ローカル。データがマシンから流出することはありません。
+* **オフラインとプライベート:** 100% ローカル。データがマシンから流出することはありません。
 * **ダイナミック スクリプト エンジン:** テキストの置換を超えた機能。ルールはカスタム Python スクリプト (「on_match_exec」) を実行して、API の呼び出し (Wikipedia の検索など)、ファイルの操作 (ToDo リストの管理など)、動的コンテンツの生成 (コンテキストを認識した電子メールの挨拶など) などの高度なアクションを実行できます。
-* **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定されるため、コーディングではなく**構成が必要です**。
+* **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定され、コーディングではなく**構成が必要です**。
 * **控えめな RAM 使用量:** メモリをインテリジェントに管理し、十分な空き RAM がある場合にのみモデルをプリロードし、他のアプリケーション (PC ゲームなど) が常に優先されるようにします。
 * **クロスプラットフォーム:** Linux、macOS、および Windows で動作します。
 * **完全に自動化:** 独自の LanguageTool サーバーを管理します (ただし、外部を使用することもできます)。
@@ -45,34 +54,97 @@ Aura は単なる文字起こしではありません。これは、あなたの
 
 **他の言語で読む:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](README.md) | [🇸🇦 العربية](./README-arlang.md) | [🇩🇪 Deutsch](./README-delang.md) | [🇪🇸 Español](./README-eslang.md) | [🇫🇷 Français](./README-frlang.md) | [🇮🇳 हिन्दी](./README-hilang.md) | [🇯🇵 日本語](./README-jalang.md) | [🇰🇷 한국어](./README-kolang.md) | [🇵🇱 Polski](./README-pllang.md) | [🇵🇹 Português](./README-ptlang.md) | [🇧🇷 Português Brasil](./README-pt-BRlang.md) | [🇨🇳 简体中文](./README-zh-CNlang.md)
 
 ---
+
+
+
+
+
+
 
 ## インストール
 
 セットアップは 2 段階のプロセスです。
-1. このリポジトリのクローンをコンピュータに作成します。
+1. 最後のリリースまたはマスター ( https://github.com/sl5net/Vosk-System-Listener/archive/master.zip ) をダウンロードするか、このリポジトリのクローンをコンピュータに作成します。
 2. オペレーティング システムのワンタイム セットアップ スクリプトを実行します。
 
 セットアップ スクリプトは、システムの依存関係、Python 環境、必要なモデルとツール (最大 4GB) を GitHub リリースから直接ダウンロードして最大速度を実現するなど、すべてを処理します。
 
-#### Linux、macOS、Windows の場合
+
+#### Linux、macOS、および Windows の場合 (オプションの言語の除外あり)
+
+ディスク容量と帯域幅を節約するために、セットアップ中に特定の言語モデル (「de」、「en」) またはすべてのオプションのモデル (「all」) を除外できます。 **コアコンポーネント (LanguageTool、lid.176) は常に含まれます。**
+
 プロジェクトのルート ディレクトリでターミナルを開き、システムのスクリプトを実行します。
+
 ```bash
-# For Ubuntu/Debian, Manjaro/Arch, macOs  or other derivatives
+# For Ubuntu/Debian, Manjaro/Arch, macOS, or other derivatives
+# (Note: Use bash or sh to execute the setup script)
 
-bash setup/{your-os}_setup.sh
+bash setup/{your-os}_setup.sh [OPTION]
 
-# For Windows in Admin-Powershell
+# Examples:
+# Install everything (Default):
+# bash setup/manjaro_arch_setup.sh
 
-setup/windows11_setup.ps1
+# Exclude German models:
+# bash setup/manjaro_arch_setup.sh exclude=de
+
+# Exclude all VOSK language models:
+# bash setup/manjaro_arch_setup.sh exclude=all
+
+# For Windows in an Admin-Powershell session
+
+setup/windows11_setup.ps1 -Exclude [OPTION]
+
+# Examples:
+# Install everything (Default):
+# setup/windows11_setup.ps1
+
+# Exclude English models:
+# setup/windows11_setup.ps1 -Exclude "en"
+
+# Exclude German and English models:
+# setup/windows11_setup.ps1 -Exclude "de,en"
+
+# Or (recommend) - Start des BAT: 
+windows11_setup.bat -Exclude "en"
 ```
 
 #### Windows の場合
-管理者権限 **「PowerShell で実行」** でセットアップ スクリプトを実行します。
+管理者権限でセットアップ スクリプトを実行します。
 
 **読み取りと実行のためのツールをインストールします。 [CopyQ](https://github.com/hluk/CopyQ) または [AutoHotkey v2](https://www.autohotkey.com/)**。これはテキスト入力ウォッチャーに必要です。
+
+インストールは完全に自動化されており、新しいシステムで 2 つのモデルを使用する場合は約 **8 ～ 10 分**かかります。
+
+1. 「setup」フォルダーに移動します。
+2. **「windows11_setup_with_ahk_copyq.bat」** をダブルクリックします。
+* *スクリプトにより、管理者権限を求めるプロンプトが自動的に表示されます。*
+* *コア システム、言語モデル、**AutoHotkey v2**、**CopyQ** がインストールされます。*
+3. インストールが完了すると、**Aura Dictation** が自動的に起動します。
+
+> **注:** 事前に Python または Git をインストールする必要はありません。スクリプトがすべてを処理します。
+
+---
+
+#### 高度な/カスタム インストール
+クライアント ツール (AHK/CopyQ) をインストールしたくない場合、または特定の言語を除外してディスク領域を節約したい場合は、コマンド ラインからコア スクリプトを実行できます。
+
+```powershell
+# Core Setup only (No AHK, No CopyQ)
+setup\windows11_setup.bat
+
+# Exclude specific language models (saves space):
+# Exclude English:
+setup\windows11_setup.bat -Exclude "en"
+
+# Exclude German and English:
+setup\windows11_setup.bat -Exclude "de,en"
+```
+
 
 ---
 
@@ -157,10 +229,10 @@ f11::
 ローカル設定ファイルを作成することで、アプリケーションの動作をカスタマイズできます。
 
 1. 「config/」ディレクトリに移動します。
-2. `settings_local.py_Example.txt` のコピーを作成し、その名前を `settings_local.py` に変更します。
-3. `settings_local.py` を編集して、メインの `config/settings.py` ファイルの設定をオーバーライドします。
+2. `config/settings_local.py_Example.txt` のコピーを作成し、その名前を `config/settings_local.py` に変更します。
+3. `config/settings_local.py` を編集します (メインの `config/settings.py` ファイルの設定はすべて上書きされます)。
 
-この `settings_local.py` ファイルは Git によって (おそらく) 無視されるため、個人的な変更は (おそらく) 更新によって上書きされません。
+この `config/settings_local.py` ファイルは Git によって (おそらく) 無視されるため、個人的な変更は (おそらく) 更新によって上書きされません。
 
 ### プラグインの構造とロジック
 
@@ -168,7 +240,7 @@ f11::
 
 処理エンジンは **階層的な優先順位チェーン** に厳密に従っています。
 
-1. **モジュールのロード順序 (高優先度):** コア言語パック (de-DE、en-US) からロードされるルールは、plugins/ ディレクトリ (アルファベット順で最後にロードされる) からロードされるルールよりも優先されます。
+1. **モジュールのロード順序 (高優先度):** コア言語パック (de-DE、en-US) からロードされたルールは、plugins/ ディレクトリからロードされたルール (アルファベット順で最後にロードされる) より優先されます。
   
 2. **ファイル内順序 (マイクロ優先度):** 特定のマップ ファイル (FUZZY_MAP_pre.py) 内では、ルールは **行番号** (上から下) によって厳密に処理されます。
   
@@ -211,16 +283,22 @@ OS 互換性の凡例:
 **オーラコア/** 🐧 🍏 🪟  
 §─ `aura_engine.py` (Aura をオーケストレーションするメイン Python サービス) 🐧 🍏 🪟  
 §┬ **ライブ ホットリロード** (構成とマップ) 🐧 🍏 🪟  
+│§ **安全なプライベート マップの読み込み (整合性優先)** 🔒 🐧 🍏 🪟  
+││ * **ワークフロー:** パスワードで保護された ZIP アーカイブを読み込みます。   
 │§ **テキストの処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
 │§ 1. `normalize_punctuation.py` (文字起こし後の句読点を標準化) 🐧 🍏 🪟  
-│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
+│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
 ││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト (on_match_exec) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **カスケード実行:** ルールは順番に処理され、その効果は **累積的**です。以前のルールによって変更されたテキストには、後のルールが適用されます。  
 ││ * **最優先停止基準:** ルールが **完全一致** (^...$) に達すると、そのトークンの処理パイプライン全体が直ちに停止します。このメカニズムは、信頼性の高い音声コマンドを実装するために重要です。  
 │§ 3. `correct_text_by_ languagetool.py` (文法/スタイル修正のために LanguageTool を統合) 🐧 🍏 🪟  
-│└ 4. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の改良** 🐧 🍏 🪟  
+│§＊＊４． Ollama AI フォールバックを備えた階層 RegEx ルール エンジン** 🐧 🍏 🪟  
+││ * **決定的制御:** 正確で優先度の高いコマンドおよびテキスト制御に RegEx-Rule-Engine を使用します。  
+││ * **Ollama AI (ローカル LLM) フォールバック:** 決定論的なルールが満たされない場合、**創造的な回答、Q&A、および高度なファジー マッチング**のオプションの優先度の低いチェックとして機能します。  
+││ * **ステータス:** ローカル LLM 統合。
+│└ 5. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の洗練** 🐧 🍏 🪟
 ││ * LT 固有の出力を修正するために、LanguageTool の後に適用されます。前修正レイヤーと同じ厳密なカスケード優先順位ロジックに従います。  
-││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
+││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](docs/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **ファジー フォールバック:** **ファジー類似性チェック** (しきい値、たとえば 85% によって制御される) は、優先度が最も低いエラー修正層として機能します。これは、先行する決定的/カスケード ルールの実行全体で一致が見つからなかった場合 (current_rule_matched が False) にのみ実行され、可能な限り遅いファジー チェックを回避することでパフォーマンスを最適化します。  
 §┬ **モデル管理/**   
 │§─ `prioritize_model.py` (使用状況に基づいてモデルのロード/アンロードを最適化します) 🐧 🍏 🪟  
@@ -247,6 +325,16 @@ OS 互換性の凡例:
 ### **開発および展開ヘルパー**  
 環境のセットアップ、テスト、サービス実行のためのスクリプト。  
 
+*ヒント: glogg を使用すると、正規表現を使用してログ ファイル内の興味深いイベントを検索できます。*   
+ログファイルと関連付けるには、インストール時にチェックボックスをオンにしてください。    
+https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
+  
+*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-jalang.md) を参照してください。*
+
+それからダブルクリックしてください
+`log/aura_engine.log`
+  
+  
 **DevHelpers/**  
 §┬ **仮想環境管理/**  
 │§ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏  
@@ -315,14 +403,14 @@ OS 互換性の凡例:
 |モデル |サイズ |ワードエラー率/速度 |メモ |ライセンス |
 | -------------------------------------------------------------------------------------- | ---- | -------------------------------------------------------------------------------------------- | -------------------------------------- | ---------- |
 | [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69 (librispeech test-clean)<br/>6.05 (tedlium)<br/>29.78 (コールセンター) |正確な一般的な米国英語モデル |アパッチ2.0 |
-| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G | 9.83 (Tuda-de テスト)<br/>24.00 (ポッドキャスト)<br/>12.82 (CV テスト)<br/>12.42 (mls)<br/>33.26 (mtedx) |電話およびサーバー用のドイツの大型モデル |アパッチ2.0 |
+| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G | 9.83 (Tuda-de テスト)<br/>24.00 (ポッドキャスト)<br/>12.82 (CV-テスト)<br/>12.42 (mls)<br/>33.26 (mtedx) |電話およびサーバー用のドイツの大型モデル |アパッチ2.0 |
 
 この表には、サイズ、ワードエラー率または速度、注意事項、ライセンス情報など、さまざまな Vosk モデルの概要が示されています。
 
 
 - **Vosk モデル:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **言語ツール:**  
-(6.6)[https://languagetool.org/download/](https://languagetool.org/download/)
+(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
 
 **LanguageTool のライセンス:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
@@ -334,3 +422,9 @@ OS 互換性の凡例:
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+
+
+
+IgnorePkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils
+
+nvidia-575xx-設定 mhwd-nvidia-575xx
