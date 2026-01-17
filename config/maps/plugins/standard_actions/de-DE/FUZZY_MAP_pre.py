@@ -126,10 +126,26 @@ FUZZY_MAP_pre = [
     $
     ''',
     100,
-    {'flags': re.IGNORECASE | re.VERBOSE}
+    {'flags': re.IGNORECASE | re.VERBOSE,
+     'only_in_windows': ['Konsole', 'Terminal', 'Console', 'Code', 'VSC', 'Alacritty']
+     }
     ),
     # attention! mit re.VERBOSE all normal spaces was ignored. its the same like ix (i for IGNORECASE x for VERBOSE)
 
+
+    # disabled_2026-0117-1336___
+
+    ('blocked_Terminal',
+     # EXAMPLE: Terminal blocked
+     r' disabled_2026-0117-1336___ ^.*$',
+     70,
+    {'flags': re.IGNORECASE | re.VERBOSE,
+     'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'Code', 'VSC', 'Alacritty']
+    }
+    ),
+
+    # mal ausprobierennicht gebloggtund hier eigentlich nicht
+    #
 
     ('',
      # EXAMPLE: Clipboard
