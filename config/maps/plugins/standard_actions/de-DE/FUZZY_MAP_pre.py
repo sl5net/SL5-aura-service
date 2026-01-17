@@ -68,14 +68,14 @@ FUZZY_MAP_pre = [
          'flags': re.IGNORECASE,
      }),
 
-    # http://89.244.126.237:8831/
+    # http://___:8831/
     # Streamlit is an open-source Python framework for data scientists and AI/ML engineers to deliver interactive data apps - in only a few lines of code.
     #Öffnet Stream lädt Webseite
     #Öffne Stream Litschi
     #öffne stream litt
     #Essen ist ziemlichÖffentlich Stream lebt
-    #http://89.244.126.237:8831/
-    ("http://89.244.126.237:8831/",
+    #http://___:8831/
+    ("http://___:8831/",
      # EXAMPLE: öffne
      r'^(öffne|öffentlich).*(der )?(stream)(lit|life| litt| Lied| neu| net| lebt| lebt| liebt)\s*(webseite|webpage)?$',
      100, {
