@@ -8,6 +8,13 @@
 f10::
 f11::
 {
+    activeWinTitle := WinGetTitle('A')
+    ; MsgBox, "%activeWinTitle%"
+    local activeWinTitleFile  := "c:\tmp\activeWinTitle.txt"
+    try FileDelete activeWinTitleFile
+    FileAppend activeWinTitle, activeWinTitleFile
+
+
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
     ToolTip("STT Trigger ausgelöst!")

@@ -5,7 +5,7 @@ import shutil
 import json
 import tempfile
 from pathlib import Path
-
+# scripts/py/func/get_active_window_title.py
 # --- GLOBALER CACHE (Memory) ---
 _X11_ENV_CACHE = None
 
@@ -135,6 +135,12 @@ def get_active_window_title_safe():
     try:
         # --- WINDOWS ---
         if sys.platform == 'win32':
+
+            active_win_title_file_path = r"c:\tmp\activeWinTitle.txt"
+            with open(active_win_title_file_path) as f:
+                active_win_title = f.read()
+                return active_win_title
+
             import ctypes
             hwnd = ctypes.windll.user32.GetForegroundWindow()
             length = ctypes.windll.user32.GetWindowTextLengthW(hwnd)

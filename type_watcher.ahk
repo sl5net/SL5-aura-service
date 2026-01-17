@@ -28,10 +28,7 @@ global watcherNeedsRearm := false
 global fileQueue := []           ; The queue for files
 global isProcessingQueue := false ; Flag to prevent simultaneous processing
 
-
-
 Sleep(200)           ; Give a potential double-clicked instance time to act
-
 try {
     if FileExist(heartbeat_start_File) {
         lastUniqueID := Trim(FileRead(heartbeat_start_File))
