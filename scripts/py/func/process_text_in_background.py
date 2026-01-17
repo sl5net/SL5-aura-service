@@ -1573,10 +1573,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 if match_obj:
                     # Der ursprüngliche Text, bevor irgendetwas geändert wird
                     original_text_for_script = current_text
-                    print(f"1571:🔎 🔎 🔎 original..={original_text_for_script} current_text={current_text}")
+                    # print(f"1571:🔎 🔎 🔎 original..={original_text_for_script} current_text={current_text}")
                     log4DEV(f"original..={original_text_for_script}", logger_instance)
-
-#blocked
 
                     new_current_text = compiled_regex.sub(replacement_text, current_text)
                     log4DEV(f"new..={new_current_text}", logger_instance)

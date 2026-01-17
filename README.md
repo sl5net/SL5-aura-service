@@ -325,7 +325,14 @@ Legend for OS Compatibility:
 ### **Development & Deployment Helpers**  
     Scripts for environment setup, testing, and service execution.  
 
+*Tip: glogg enables you to use regular expressions to search for interesting events in your log files.*     
+Please check the checkbox when installing to associate with log-files.    
+https://glogg.bonnefon.org/     
+    
 *Tip: After defining your regex patterns, run `python3 tools/map_tagger.py` to automatically generate searchable examples for the CLI tools. See [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools.md) for details.*
+
+Then maybe Double Click 
+`log/aura_engine.log`
     
     
 **DevHelpers/**  
