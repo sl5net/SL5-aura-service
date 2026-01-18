@@ -106,6 +106,7 @@ PLUGINS_ENABLED = {
     "standard_actions/wikipedia_local": False,
     "standard_actions/count_loud": False,
     "game": False,
+    "empty_all": False,
 }
 # count_loud▉
 
@@ -171,10 +172,11 @@ XDOTOOL_PATH = "/usr/bin/xdotool"
 TRIGGER_FILE_PATH = "/tmp/sl5_record.trigger"
 
 # Auto-detected Java path
-JAVA_EXECUTABLE_PATH = r"/usr/bin/java"
+# JAVA_EXECUTABLE_PATH = r"/usr/bin/java"
 
 # needs NO restart. implemented in the sh part. TODO implemt for windows:
 # use . for all Windows. Other examples:
 # AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "."
 AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist|Pi, your personal AI)"
 # TODO implement for windows
+

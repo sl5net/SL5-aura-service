@@ -19,6 +19,7 @@ LT_ALREADY_RUNNING_SENTINEL = type('LTAlreadyRunning', (object,), {
     'terminate': lambda self: None
 })()
 
+# /home/seeh/projects/py/STT/scripts/py/func/start_languagetool_server.py
 def _update_settings_file(logger, java_path):
     config_path = Path('config/settings.py')
     new_lines = []
@@ -32,6 +33,7 @@ def _update_settings_file(logger, java_path):
     else:
         lines = ['# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY\n']
 
+    # scripts/py/func/start_languagetool_server.py:36
     new_java_line = f'JAVA_EXECUTABLE_PATH = r"{java_path}"\n'
 
     for line in lines:
@@ -67,8 +69,10 @@ def _is_lt_server_responsive(url, timeout=1):
 def start_languagetool_server(logger, languagetool_jar_path, base_url):
     # 1. EARLY CHECK: Prevent double startup
     port = base_url.split(':')[-1].split('/')[0]
-    full_base_url = f"http://localhost:{port}"
+    # full_base_url = f"http://localhost:{port}"
+    full_base_url = f"http://127.0.0.1:{port}" # Using 127.0.0.1 explicitly to avoid Windows IPv6 localhost issues
 
+    # scripts/py/func/start_languagetool_server.py:75
     if _is_lt_server_responsive(full_base_url, timeout=0.5):
         logger.info(f"LanguageTool Server is ALREADY online at {full_base_url}. Skipping new startup (RAM optimization).")
         return LT_ALREADY_RUNNING_SENTINEL # Return the sentinel object
@@ -109,15 +113,28 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
 
     try:
         command_str = f'"{java_executable_path}" -jar "{languagetool_jar_path}" --port {port} --allow-origin "*"'
+
+        # FIX: Windows can get with PIPE Deadlocks
+        # Optional: Use File when want read Logs
+        log_dir = Path("logs")
+        log_dir.mkdir(exist_ok=True)
+        log_file = open(log_dir / "languagetool_server.log", "w", encoding="utf-8")
         if settings.DEV_MODE:
             logger.info(f"Executing command via shell: {command_str}")
+        languagetool_process = subprocess.Popen(command_str,
+                                                stdout=log_file,
+                                                stderr=log_file,
 
-        languagetool_process = subprocess.Popen(command_str, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                                                # stdout=subprocess.PIPE,
+                                                # stderr=subprocess.PIPE,
+
+                                                text=True,
                                                 encoding='utf-8', shell=True)
     except Exception as e:
         logger.fatal(f"Failed to start LanguageTool Server process with shell=True: {e}")
         return False
 
+    # scripts/py/func/start_languagetool_server.py:137
     # 4. Wait for responsiveness (existing logic)
     if settings.DEV_MODE:
         logger.info("Waiting for LanguageTool Server to be responsive...")

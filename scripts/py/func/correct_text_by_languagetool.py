@@ -16,7 +16,8 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
         logger.info(f"-----> rawInput to LT:  '{text}'")
     data = {'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1, 'enabledCategories': 'PUNCTUATION,GRAMMAR', 'Categories': 'PUNCTUATION,GRAMMAR'  }
     try:
-        response = requests.post(active_lt_url, data, timeout=10)
+        # scripts/py/func/correct_text_by_languagetool.py:19
+        response = requests.post(active_lt_url, data, timeout=20) # timeout was 10 but Windows OS seems need much more at the moment 18.1.'26 21:28 Sun
         response.raise_for_status()
         matches = response.json().get('matches', [])
         if not matches:

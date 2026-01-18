@@ -70,6 +70,7 @@ INTEGRITY_CHECKS = {
     ],
     'config/settings.py': [
         "game",
+        '"empty_all": False,'
     ],
 
     #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
