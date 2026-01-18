@@ -88,6 +88,7 @@ if ($env:CI -ne 'true')
         Write-Host "    -> Java 17+ not found. Installing OpenJDK 17..." -ForegroundColor Yellow
         try
         {
+            # setup/windows11_setup.ps1:91
             winget install --id Microsoft.OpenJDK.17 --silent --accept-source-agreements --accept-package-agreements --force
             if ($LASTEXITCODE -eq 0)
             {
