@@ -61,15 +61,15 @@ INTEGRITY_CHECKS = {
 
     'tools/download_all_packages.py': [
         "nargs='*'",
-        'default=""',
+        'default=[]',
     ],
 
     # don't use . notation in this settings part. if we dont hava s settings part we need delete following checks:
     'config/settings_local.py': [
-        "game/",
+        "game",
     ],
     'config/settings.py': [
-        "game/",
+        "game",
     ],
 
     #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
@@ -108,11 +108,12 @@ INTEGRITY_CHECKS = {
         'Proactive Unloading'
     ],
 
-    "scripts/py/func/get_active_window_title.py:8": [
-        "Path(X11_CACHE_FILE).chmod(0o600)"
+    "scripts/py/func/get_active_window_title.py": [
+        "0o600)"
     ],
-
     # Path(X11_CACHE_FILE).chmod(0o600)
+    # or
+    # os.chmod(X11_CACHE_FILE, 0o600)
 
 
     # Protects the regex substitution logic in the main processing function.

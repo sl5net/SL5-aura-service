@@ -1,11 +1,11 @@
+# scripts/py/func/get_active_window_title.py
 import sys
 import os
 import subprocess
 import shutil
 import json
-import tempfile
+import tempfile #  CRITICAL - FATAL INTEGRITY CHECK: File not found
 from pathlib import Path
-# scripts/py/func/get_active_window_title.py
 # --- GLOBALER CACHE (Memory) ---
 _X11_ENV_CACHE = None
 
@@ -114,6 +114,7 @@ def get_linux_x11_env():
             with open(X11_CACHE_FILE, "w") as f:
                 # DANN Rechte einschränken (nur Owner darf lesen/schreiben)
                 try:
+                    Path(X11_CACHE_FILE).chmod(0o600)
                     os.chmod(X11_CACHE_FILE, 0o600)
                 except Exception as e:
                     print(f'Failed to chmod {X11_CACHE_FILE}: {e}')

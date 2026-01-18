@@ -11,7 +11,7 @@ def check_code_integrity(project_root, logger):
     Checks files for the presence of critical code fragments defined in integrity_rules.py.
     If a fragment is missing, logs a fatal error and exits the program.
     """
-    logger.info("DEV_MODE: Running code integrity check...")
+    logger.info("14: DEV_MODE: Running code integrity check...")
     failed_checks = 0
 
     for file_path, fragments in INTEGRITY_CHECKS.items():
@@ -32,7 +32,7 @@ def check_code_integrity(project_root, logger):
                     failed_checks += 1
 
         except FileNotFoundError:
-            logger.fatal(f"FATAL INTEGRITY CHECK: File not found at '{full_path}'")
+            logger.fatal(f"35: FATAL INTEGRITY CHECK: File not found at '{full_path}'")
             failed_checks += 1
 
     for root, dirs, files in os.walk(project_root):
@@ -63,19 +63,19 @@ def check_code_integrity(project_root, logger):
                                 failed_checks += 1
                                 sys.exit(1)
 
+                        if "integrity_rules.py" not in file:
+                            for forbidden in FORBIDDEN_PATTERNS:
+                                if forbidden in line:
+                                    # Ausnahme: Wir erlauben es, wenn es ein Kommentar ist (startet mit #)
 
-                        for forbidden in FORBIDDEN_PATTERNS:
-                            if forbidden in line:
-                                # Ausnahme: Wir erlauben es, wenn es ein Kommentar ist (startet mit #)
-
-                                logger.fatal("-" * 60)
-                                logger.fatal(f"FATAL SECURITY CHECK FAILED!")
-                                logger.fatal(f"  File: {full_path}:{line_num}")
-                                logger.fatal(f"❌ Forbidden Pattern detected: '{forbidden}'")
-                                logger.fatal("  SOLUTION: Use 'if getattr(settings, \"VARIABLE\", False):' instead!")
-                                logger.fatal("-" * 60)
-                                failed_checks += 1
-                                sys.exit(1)
+                                    logger.fatal("-" * 60)
+                                    logger.fatal(f"FATAL SECURITY CHECK FAILED!")
+                                    logger.fatal(f"  File: {full_path}:{line_num}")
+                                    logger.fatal(f"❌ Forbidden Pattern detected: '{forbidden}'")
+                                    logger.fatal("  SOLUTION: Use 'if getattr(settings, \"VARIABLE\", False):' instead!")
+                                    logger.fatal("-" * 60)
+                                    failed_checks += 1
+                                    sys.exit(1)
 
                 except Exception as e:
                     logger.warning(f"Could not scan file {full_path}: {e}")

@@ -9,15 +9,20 @@ CONFIG_DIR = Path(__file__).parent
 FUZZY_MAP_pre = [
     ('Antwort 1',
      r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?(e\w*)$', 100,
-    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+     'only_in_windows': ['quizprotokoll.md']}),
 
     ('Antwort 2',
      r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?(z\w*)$', 100,
-    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+     'only_in_windows': ['quizprotokoll.md'] }),
 
     ('Antwort 3',
      r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?([df]\w*)$', 100,
-    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+     'only_in_windows': ['quizprotokoll.md']
+
+     }),
 
 
 
@@ -52,44 +57,40 @@ FUZZY_MAP_pre = [
     ('Antwort 1',
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(1|eins|ein|one|erste)(?!\d).*',
      100,
-     {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+        'only_in_windows': ['quizprotokoll.md']
+      }),
+
+    # Richtig istantwort 3
 
     # Antwort 2
     # Matcht: "richtig ist 2die lösung...", "Antwort zwei", "nehme 2"
     ('Antwort 2',
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(2|zwei|zwo|two|zweite)(?!\d).*',
      100,
-     {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+      'only_in_windows': ['quizprotokoll.md']
+      }),
 
     # Antwort 3
     # Matcht: "Antwort 3", "Lösung drei", "ist 3"
     ('Antwort 3',
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(3|drei|rein|three|dritte)(?!\d).*',
      100,
-     {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+        'only_in_windows': ['quizprotokoll.md']
+      }),
 
 
+    ('', r'^Antwort (1|2|3)$', 0, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py'],
+     'only_in_windows': ['quizprotokoll.md']
+    }),
 
+    ('', r'^(quitt|quiz|quizz|swiss) (starten)$', 100, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py'],
+        'only_in_windows': ['quizprotokoll.md']
+    }),
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ('', r'^Antwort (1|2|3)$', 0, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py']}),
-
-    ('', r'^(quitt|quiz|quizz|swiss) (starten)$', 100, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py']}),
-    ('', r'^(start) (quitt|quiz|quizz)$', 100, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py']}),
+    ('', r'^(start) (quitt|quiz|quizz)$', 100, {'on_match_exec': [CONFIG_DIR / 'anki_logic.py'],
+        'only_in_windows': ['quizprotokoll.md']
+    }),
 ]

@@ -125,7 +125,6 @@ if str(PROJECT_ROOT) not in sys.path:
     project_root = PROJECT_ROOT
     sys.path.append(str(project_root))
 
-from config import settings
 
 
 
@@ -285,6 +284,7 @@ class WindowsEmojiFilter(logging.Filter):
             '🎬': '[>]',  # Start, Play
             '⏹️': '[■]',  # Stop, Quadrat
             '🏁': '[>]',  # Start
+            '🔵': '●',  #
             '🎤': '[◉]',  # Mikrofon
             '🎙️': '[▣]',  # Studio-Mikrofon, gefüllter Kreis
             '📢️': '[≡]',  # Lautsprecher (Klangwellen)
@@ -432,7 +432,7 @@ class DittoFilter(logging.Filter):
         # Den "echten" Inhalt der aktuellen Nachricht holen
         current_msg = record.getMessage()
 
-        # Vergleich mit der gespeicherten Original-Nachricht
+        # compare with saved original message
         if current_msg == self.last_msg:
             # Es ist eine Wiederholung -> Text für die Ausgabe ändern
             record.msg = "〃"
@@ -522,24 +522,6 @@ else:
 
 # file_handler.addFilter(WindowsEmojiFilter())
 # file_handler.addFilter(ditto_filter)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1023,6 +1005,10 @@ else:
 if not languagetool_process:
     notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
     sys.exit(1)
+
+
+# print(f'settings.DEV_MODE={settings.DEV_MODE}')
+# sys.exit(1)
 
 
 if settings.DEV_MODE :

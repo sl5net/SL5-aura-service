@@ -783,7 +783,8 @@ def process_text_in_background(logger,
     _active_window_title = get_active_window_title_safe()
     # end = time.time()
     # duration = end - start # its about 3milliSeconds
-    # print(f"DISPLAY wt: {active_window_title} duration: {duration} clipboard: {clipboard_text_linux[0:25]}...")
+    if settings.DEV_MODE:
+        print(f"window_title: 🔵{_active_window_title} ")
 
     # start = time.time()
     # wt = get_active_window_title_safe()
@@ -800,7 +801,8 @@ def process_text_in_background(logger,
     else:
         run_mode_override = RUN_MODE
 
-        if settings.DEV_MODE_all_processing:
+        # if getattr(settings, "DEV_MODE_all_processing", False):
+        if getattr(settings, "DEV_MODE_all_processing", False):
             logger.info(f"📍run_mode_override={run_mode_override}.")
 
 
@@ -854,7 +856,7 @@ def process_text_in_background(logger,
     # scripts/py/func/process_text_in_background.py:167
     new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger,run_mode_override)
 
-    if settings.DEV_MODE_all_processing:
+    if getattr(settings, "DEV_MODE_all_processing", False):
         logger.info(f"📍new_punctuation={new_punctuation}")
         log4DEV(f"📍new_punctuation={new_punctuation}",logger)
 
@@ -1503,7 +1505,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 return None, False
                 # sys.exit(1)
 
-
+            # 🔵
 
             # scripts/py/func/process_text_in_background.py:1471
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
@@ -1514,14 +1516,19 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             skip_this_regex_pattern = False
             # global _active_window_title
 
+            # if settings.DEV_MODE:
+            #     print(f"def process_text_in_background -> _active_window_title: {_active_window_title} ")
 
             if only_in_windows_list and _active_window_title:
-                skip_this_regex_pattern = True
-
                 show_debug_prints = False
+
+                m_202601180206=f"🔵 window_title: {_active_window_title} "
+                # log4DEV(m,logger_instance)
+                logger_instance.info(m_202601180206)
+
                 if show_debug_prints:
-                    print(f'1528: ⏩ ▶️▶️▶️ DEBUG: only_in_windows_list ▶️{only_in_windows_list}◀️ , '
-                          f'active_window_title=▶️{_active_window_title}◀️ ')
+                    print(f' ▶️{only_in_windows_list}◀️ , '
+                          f'window_title=🔵️{_active_window_title}️ ')
 
                 if any(re.search(pattern, str(_active_window_title)) for pattern in only_in_windows_list):
                     skip_this_regex_pattern = False

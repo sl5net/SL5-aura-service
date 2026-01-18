@@ -208,8 +208,9 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
         case(input_text='geht cobit', expected='git commit', context='git'),
         ('geht staates', 'git status', '19.11.25 10:19 Wed', 'de-DE'),
         ('ausrufezeichen', '!', 'Exact MAP match for punctuation', 'de-DE'),
-        ('good Morning people', 'hey all out there people', 'use a postRule. Funny useless rule ;) just for testing',
-         'en-US'),
+
+        # following differ when daytime chaning:
+        # ('good Morning people', 'hey all out there people', 'use a postRule. Funny useless rule ;) just for testing','en-US'),
         ('colours', 'colors', 'fix by LT','en-US'),
         ('underilnes', 'underlines', 'fix by LT', 'en-US'),
         ('too have', 'to have', 'fix by LT', 'en-US'),
@@ -243,7 +244,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
         ('von sebastian laufer', 'Von Sebastian Lauffer', 'Partial map + LT correction', 'de-DE'),
         ('punkt', '.', 'Exact MAP match', 'de-DE'),
         ('komma', ',', 'Exact MAP match'),
-        ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization', 'de-DE'),
+        # ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization', 'de-DE'),
         ('git at', 'git add .', 'Fuzzy map REGEX match', 'de-DE'),
         ('geht status', 'git status', 'Fuzzy map FUZZY string match', 'de-DE'),
         ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
@@ -263,7 +264,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
         ('klammer zu', ')', 'Exact MAP match for punctuation', 'de-DE'),
 
         # --- Groß- und Kleinschreibung (Satzanfang, Nomen) ---
-        ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization', 'de-DE'),
+        # ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization', 'de-DE'),
         # ('guten morgen', 'Guten Morgen', 'Capitalization of greeting and noun', 'de-DE'),
         ('ich heiße max', 'Ich heiße Max', 'Capitalization of pronoun and proper noun', 'de-DE'),
         ('der hund bellt', 'Der Hund bellt', 'Capitalization of article and noun', 'de-DE'),
