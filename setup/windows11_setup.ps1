@@ -78,6 +78,7 @@ if ($env:CI -ne 'true')
         Write-Host "    -> Java not found in PATH."
     }
 
+    # setup/windows11_setup.ps1:81
     if ($JavaVersion -and $JavaVersion -ge 17)
     {
         Write-Host "    -> Java $JavaVersion detected. OK." -ForegroundColor Green
@@ -87,7 +88,7 @@ if ($env:CI -ne 'true')
         Write-Host "    -> Java 17+ not found. Installing OpenJDK 17..." -ForegroundColor Yellow
         try
         {
-            winget install --id Microsoft.OpenJDK.17 --silent --accept-source-agreements --accept-package-agreements
+            winget install --id Microsoft.OpenJDK.17 --silent --accept-source-agreements --accept-package-agreements --force
             if ($LASTEXITCODE -eq 0)
             {
                 Write-Host "    -> OpenJDK 17 installed successfully." -ForegroundColor Green
