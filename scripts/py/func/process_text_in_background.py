@@ -1522,7 +1522,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             if only_in_windows_list and _active_window_title:
                 show_debug_prints = False
 
-                m_202601180206=f"🔵 window_title: {_active_window_title} "
+                m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
                 # log4DEV(m,logger_instance)
                 logger_instance.info(m_202601180206)
 

@@ -21,9 +21,9 @@ Ich möchte betonen, dass es in dieser Einheit nicht um theologische, religiöse
 Der entscheidende Punkt ist die Verfügbarkeit solcher Daten. Viele historische und kulturelle Texte, wie auch die Bibel in verschiedenen Übersetzungen, sind glücklicherweise als Open-Source-Datenbestände verfügbar, was uns die technische Arbeit ermöglicht. Wir könnten an dieser Stelle ebenso gut ein juristisches Kompendium oder einen wissenschaftlichen Fachartikel analysieren.
 
 Bitte fragen Sie Ihren Admin, das er
-https://aura.sl5.de:8831/
+aura.sl5.de:8831
 einschaltet. Dies demonstriert die Nutzung von Aura auch Online für Web-Seiten.
-Diese Demo-Seite ( https://aura.sl5.de:8831/ ) wird nur auf Anfrage aktiviert.
+Diese Demo-Seite ( aura.sl5.de:8831 ) wird nur auf Anfrage aktiviert.
 
 """
 

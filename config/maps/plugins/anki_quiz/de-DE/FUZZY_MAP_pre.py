@@ -58,8 +58,8 @@ FUZZY_MAP_pre = [
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(1|eins|ein|one|erste)(?!\d).*',
      100,
      {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
-        'only_in_windows': ['quizprotokoll.md']
-      }),
+      'only_in_windows': ['quizprotokoll.md']
+     }),
 
     # Richtig istantwort 3
 
@@ -78,7 +78,7 @@ FUZZY_MAP_pre = [
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(3|drei|rein|three|dritte)(?!\d).*',
      100,
      {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
-        'only_in_windows': ['quizprotokoll.md']
+      'only_in_windows': ['quizprotokoll.md']
       }),
 
 

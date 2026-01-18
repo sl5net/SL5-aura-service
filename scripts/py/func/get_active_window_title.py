@@ -4,7 +4,7 @@ import os
 import subprocess
 import shutil
 import json
-import tempfile #  CRITICAL - FATAL INTEGRITY CHECK: File not found
+import tempfile
 from pathlib import Path
 # --- GLOBALER CACHE (Memory) ---
 _X11_ENV_CACHE = None
