@@ -50,7 +50,7 @@ def main():
             print(f"ERROR: Could not write to '{model_name_file}': {e}", file=sys.stderr)
             sys.exit(1)
     else:
-        print(f"INFO: 'model_name.txt' {model_name_file} already exists. Skipping setup.")
+        print(f"INFO: 'model_name.txt' {model_name_file} already exists -> Skipping create model_name.txt")
         #exit(1)
 
 if __name__ == "__main__":
