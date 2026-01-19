@@ -15,8 +15,6 @@ if "%CI%"=="true" goto run_script
 echo test > ".write_permission_check.tmp" 2>nul
 
 if exist ".write_permission_check.tmp" (
-    :: ERFOLG: Wir koennen schreiben!
-    :: Datei wieder loeschen
     del ".write_permission_check.tmp"
     echo Schreibrechte vorhanden. Starten ohne Admin-Rechte...
     goto run_script
@@ -47,3 +45,4 @@ echo.
 echo The update script has finished. This window can be closed.
 
 powershell -c "[System.Media.SystemSounds]::Asterisk.Play()"
+
