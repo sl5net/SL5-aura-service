@@ -65,9 +65,17 @@ else
 
     sudo systemctl start docker
     echo "   docker daemon running?"
+
+    echo "may try following fist :"
+
     echo "sudo systemctl start docker"
-    echo "   Mögliche Gründe: 1. Port $HOST_PORT ist belegt."
+    echo "sudo systemctl enable docker"
+
+    echo "   Mögliche Gründe: "
+    echo "   1. Port $HOST_PORT ist belegt."
     echo "   2. ZIM-Datei korrupt oder Pfad falsch."
+    echo "   3. docker nicht gesartet (systemctl start docker)."
+    echo "   4. docker nicht enabled (systemctl enable docker)."
 
 
 fi

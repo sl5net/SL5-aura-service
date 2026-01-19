@@ -116,7 +116,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
 
         # FIX: Windows can get with PIPE Deadlocks
         # Optional: Use File when want read Logs
-        log_dir = Path("logs")
+        log_dir = Path("log")
         log_dir.mkdir(exist_ok=True)
         log_file = open(log_dir / "languagetool_server.log", "w", encoding="utf-8")
         if settings.DEV_MODE:

@@ -87,6 +87,11 @@ config/maps/**/_*
 
 tools/translate-shell_and_save/translations
 
+config/maps/plugins/z_fallback_llm/de-DE/llm_cache.db
+
+# to large
+wikipedia_de_all_mini_2025-09.zim
+
 **/__pycache__/
 *.pyc
 *.cache.*

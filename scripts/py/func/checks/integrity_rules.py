@@ -64,13 +64,17 @@ INTEGRITY_CHECKS = {
         'default=[]',
     ],
 
-    # don't use . notation in this settings part. if we dont hava s settings part we need delete following checks:
-    'config/settings_local.py': [
-        "game",
-    ],
+    # don't use . notation in this settings part. if we don't hava s settings part we need delete following checks:
     'config/settings.py': [
         "game",
+        '"standard_actions/wikipedia_local": False,',
         '"empty_all": False,'
+    ],
+
+    # don't use . notation in this settings part. if we don't hava s settings part we need delete following checks:
+    'config/settings_local.py': [
+        "game",
+        '"standard_actions/wikipedia_local": True,',
     ],
 
     #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")

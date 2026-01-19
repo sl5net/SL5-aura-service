@@ -168,7 +168,7 @@ def copy_to_clipboard_component_v2(text_to_copy, button_label="Click to Copy (Th
 # scripts/py/chat/streamlit-chat.py
 st.title("SL5 Aura (external interface to the core logic)")
 
-st.info('https://github.com/sl5net/SL5-aura-service/blob/master/docs/Feature_Spotlight/cli_integration-de.md#2-fernzugriff-und-netzwerk-port-mapping')
+st.info('https://github.com/sl5net/SL5-aura-service/blob/master/docs/README/README-delang.md')
 
 example_text = "Aura Was ist das Besondere an SL5 Aura"
 
