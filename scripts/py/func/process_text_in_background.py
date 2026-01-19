@@ -1533,18 +1533,17 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
                 m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
                 # log4DEV(m,logger_instance)
-                logger_instance.info(m_202601180206)
+                # logger_instance.info(m_202601180206)
 
                 if show_debug_prints:
                     print(f' ▶️{only_in_windows_list}◀️ , '
-                          f'window_title=🔵️{_active_window_title}️ ')
+                          f'{m_202601180206}️ ')
 
                 if any(re.search(pattern, str(_active_window_title)) for pattern in only_in_windows_list):
                     skip_this_regex_pattern = False
 
                     if show_debug_prints:
-                        print(f'matched: 🥳🥳🥳 regex_pattern="{str(regex_pattern)[0:20]}..."')
-                        print(f'matched: 🥳🥳🥳 {_active_window_title}')
+                        logger_instance.info(f'matched: 🥳 {m_202601180206}')
 
                 # for pattern in only_in_windows_list:
                 #     if show_debug_prints:

@@ -108,6 +108,7 @@ PLUGINS_ENABLED = {
     "game/dealers_choice": False,
     "game/0ad": False,
     "game/": False,
+    "standard_actions/wikipedia_local/": False,
     "ethiktagung": False,
     "it-begriffe.php.codeigniter": False
 
