@@ -213,3 +213,212 @@ WARNING: Restricted methods will be blocked in a future release unless native ac
 2026-01-19 08:36:13.336 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
 2026-01-19 08:36:13.879 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 48 chars, de-DE, requestId: null, #66, null, 0/2 matches, 543ms, agent:-, sent, q:0, h:1, dH:1, r:67, m:all, premium: false
 2026-01-19 08:36:13.879 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 543ms; sending code 200
+2026-01-19 08:43:21.231 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 08:43:21.697 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 69 chars, de-DE, requestId: null, #67, null, 0/2 matches, 466ms, agent:-, sent, q:0, h:1, dH:1, r:68, m:all, premium: false
+2026-01-19 08:43:21.697 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 467ms; sending code 200
+2026-01-19 08:44:10.585 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 08:44:11.066 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 51 chars, de-DE, requestId: null, #68, null, 0/2 matches, 481ms, agent:-, sent, q:0, h:1, dH:1, r:69, m:all, premium: false
+2026-01-19 08:44:11.066 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 481ms; sending code 200
+2026-01-19 08:44:30.978 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 08:44:31.483 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 41 chars, de-DE, requestId: null, #69, null, 0/2 matches, 504ms, agent:-, sent, q:0, h:1, dH:1, r:70, m:all, premium: false
+2026-01-19 08:44:31.483 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 505ms; sending code 200
+2026-01-19 08:44:53.041 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 08:44:53.496 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 26 chars, de-DE, requestId: null, #70, null, 0/2 matches, 455ms, agent:-, sent, q:0, h:1, dH:1, r:71, m:all, premium: false
+2026-01-19 08:44:53.496 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 455ms; sending code 200
+2026-01-19 08:45:09.645 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 08:45:10.119 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 35 chars, de-DE, requestId: null, #71, null, 0/2 matches, 473ms, agent:-, sent, q:0, h:1, dH:1, r:72, m:all, premium: false
+2026-01-19 08:45:10.119 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 474ms; sending code 200
+2026-01-19 08:50:52.138 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 08:50:52.651 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 47 chars, de-DE, requestId: null, #72, null, 0/2 matches, 513ms, agent:-, sent, q:0, h:1, dH:1, r:73, m:all, premium: false
+2026-01-19 08:50:52.651 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 513ms; sending code 200
+2026-01-19 09:08:23.221 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:08:23.878 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 75 chars, de-DE, requestId: null, #73, null, 0/2 matches, 657ms, agent:-, sent, q:0, h:1, dH:1, r:74, m:all, premium: false
+2026-01-19 09:08:23.878 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 657ms; sending code 200
+2026-01-19 09:09:00.944 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:09:01.435 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 15 chars, de-DE, requestId: null, #74, null, 0/1 matches, 491ms, agent:-, sent, q:0, h:1, dH:1, r:75, m:all, premium: false
+2026-01-19 09:09:01.435 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 492ms; sending code 200
+2026-01-19 09:09:12.950 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:09:13.406 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 72 chars, de-DE, requestId: null, #75, null, 0/3 matches, 454ms, agent:-, sent, q:0, h:1, dH:1, r:76, m:all, premium: false
+2026-01-19 09:09:13.406 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 456ms; sending code 200
+2026-01-19 09:09:24.935 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:09:25.379 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 40 chars, de-DE, requestId: null, #76, null, 0/2 matches, 443ms, agent:-, sent, q:0, h:1, dH:1, r:77, m:all, premium: false
+2026-01-19 09:09:25.379 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 444ms; sending code 200
+2026-01-19 09:16:02.483 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling GET /v2/languages
+2026-01-19 09:16:02.483 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 0ms; sending code 200
+2026-01-19 09:16:07.904 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:08.375 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 6 chars, de-DE, requestId: null, #77, null, 0/0 matches, 471ms, agent:-, sent, q:0, h:1, dH:1, r:79, m:all, premium: false
+2026-01-19 09:16:08.376 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 472ms; sending code 200
+2026-01-19 09:16:09.634 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:10.329 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 23 chars, de-DE, requestId: null, #78, null, 0/1 matches, 695ms, agent:-, sent, q:0, h:1, dH:1, r:80, m:all, premium: false
+2026-01-19 09:16:10.329 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 695ms; sending code 200
+2026-01-19 09:16:12.330 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:12.820 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 36 chars, de-DE, requestId: null, #79, null, 0/1 matches, 489ms, agent:-, sent, q:0, h:1, dH:1, r:81, m:all, premium: false
+2026-01-19 09:16:12.820 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 490ms; sending code 200
+2026-01-19 09:16:13.502 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:14.030 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 57 chars, de-DE, requestId: null, #80, null, 0/3 matches, 528ms, agent:-, sent, q:0, h:1, dH:1, r:82, m:all, premium: false
+2026-01-19 09:16:14.030 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 528ms; sending code 200
+2026-01-19 09:16:15.380 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:15.874 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 20 chars, de-DE, requestId: null, #81, null, 0/2 matches, 494ms, agent:-, sent, q:0, h:1, dH:1, r:83, m:all, premium: false
+2026-01-19 09:16:15.874 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 495ms; sending code 200
+2026-01-19 09:16:16.210 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:16.963 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 23 chars, de-DE, requestId: null, #82, null, 0/1 matches, 753ms, agent:-, sent, q:0, h:1, dH:1, r:84, m:all, premium: false
+2026-01-19 09:16:16.963 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 753ms; sending code 200
+2026-01-19 09:16:17.301 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:18.050 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 21 chars, de-DE, requestId: null, #83, null, 0/2 matches, 749ms, agent:-, sent, q:0, h:1, dH:1, r:85, m:all, premium: false
+2026-01-19 09:16:18.050 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 749ms; sending code 200
+2026-01-19 09:16:19.723 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:20.208 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 30 chars, de-DE, requestId: null, #84, null, 0/1 matches, 485ms, agent:-, sent, q:0, h:1, dH:1, r:86, m:all, premium: false
+2026-01-19 09:16:20.208 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 485ms; sending code 200
+2026-01-19 09:16:25.253 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:25.809 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 13 chars, de-DE, requestId: null, #85, null, 0/2 matches, 555ms, agent:-, sent, q:0, h:1, dH:1, r:87, m:all, premium: false
+2026-01-19 09:16:25.810 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 557ms; sending code 200
+2026-01-19 09:16:26.508 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:27.042 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 14 chars, de-DE, requestId: null, #86, null, 0/2 matches, 534ms, agent:-, sent, q:0, h:1, dH:1, r:88, m:all, premium: false
+2026-01-19 09:16:27.043 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 535ms; sending code 200
+2026-01-19 09:16:27.404 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:27.872 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 17 chars, de-DE, requestId: null, #87, null, 0/2 matches, 468ms, agent:-, sent, q:0, h:1, dH:1, r:89, m:all, premium: false
+2026-01-19 09:16:27.872 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 468ms; sending code 200
+2026-01-19 09:16:28.310 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:28.830 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 23 chars, de-DE, requestId: null, #88, null, 0/2 matches, 519ms, agent:-, sent, q:0, h:1, dH:1, r:90, m:all, premium: false
+2026-01-19 09:16:28.830 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 520ms; sending code 200
+2026-01-19 09:16:29.192 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:29.752 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 16 chars, de-DE, requestId: null, #89, null, 0/2 matches, 560ms, agent:-, sent, q:0, h:1, dH:1, r:91, m:all, premium: false
+2026-01-19 09:16:29.753 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 561ms; sending code 200
+2026-01-19 09:16:30.400 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:31.000 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 21 chars, de-DE, requestId: null, #90, null, 0/2 matches, 600ms, agent:-, sent, q:0, h:1, dH:1, r:92, m:all, premium: false
+2026-01-19 09:16:31.000 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 600ms; sending code 200
+2026-01-19 09:16:33.084 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:33.516 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 11 chars, de-DE, requestId: null, #91, null, 0/1 matches, 431ms, agent:-, sent, q:0, h:1, dH:1, r:93, m:all, premium: false
+2026-01-19 09:16:33.516 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 432ms; sending code 200
+2026-01-19 09:16:33.844 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:34.342 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 11 chars, de-DE, requestId: null, #92, null, 0/1 matches, 497ms, agent:-, sent, q:0, h:1, dH:1, r:94, m:all, premium: false
+2026-01-19 09:16:34.342 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 498ms; sending code 200
+2026-01-19 09:16:34.683 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:35.150 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 14 chars, de-DE, requestId: null, #93, null, 0/1 matches, 467ms, agent:-, sent, q:0, h:1, dH:1, r:95, m:all, premium: false
+2026-01-19 09:16:35.151 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 468ms; sending code 200
+2026-01-19 09:16:35.511 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:35.954 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 12 chars, de-DE, requestId: null, #94, null, 0/1 matches, 443ms, agent:-, sent, q:0, h:1, dH:1, r:96, m:all, premium: false
+2026-01-19 09:16:35.954 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 443ms; sending code 200
+2026-01-19 09:16:36.291 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:36.787 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 14 chars, de-DE, requestId: null, #95, null, 0/1 matches, 496ms, agent:-, sent, q:0, h:1, dH:1, r:97, m:all, premium: false
+2026-01-19 09:16:36.787 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 496ms; sending code 200
+2026-01-19 09:16:37.126 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:37.583 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 10 chars, de-DE, requestId: null, #96, null, 0/1 matches, 456ms, agent:-, sent, q:0, h:1, dH:1, r:98, m:all, premium: false
+2026-01-19 09:16:37.583 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 457ms; sending code 200
+2026-01-19 09:16:37.943 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:38.409 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 15 chars, de-DE, requestId: null, #97, null, 0/2 matches, 465ms, agent:-, sent, q:0, h:1, dH:1, r:99, m:all, premium: false
+2026-01-19 09:16:38.409 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 466ms; sending code 200
+2026-01-19 09:16:38.752 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:39.228 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 10 chars, de-DE, requestId: null, #98, null, 0/1 matches, 476ms, agent:-, sent, q:0, h:1, dH:1, r:100, m:all, premium: false
+2026-01-19 09:16:39.229 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 477ms; sending code 200
+2026-01-19 09:16:39.574 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:40.066 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 19 chars, de-DE, requestId: null, #99, null, 0/1 matches, 492ms, agent:-, sent, q:0, h:1, dH:1, r:101, m:all, premium: false
+2026-01-19 09:16:40.066 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 492ms; sending code 200
+2026-01-19 09:16:40.408 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:40.871 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 19 chars, de-DE, requestId: null, #100, null, 0/1 matches, 462ms, agent:-, sent, q:0, h:1, dH:1, r:102, m:all, premium: false
+2026-01-19 09:16:40.872 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 464ms; sending code 200
+2026-01-19 09:16:41.207 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:41.664 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 12 chars, de-DE, requestId: null, #101, null, 0/2 matches, 456ms, agent:-, sent, q:0, h:1, dH:1, r:103, m:all, premium: false
+2026-01-19 09:16:41.664 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 457ms; sending code 200
+2026-01-19 09:16:42.013 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:42.528 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 12 chars, de-DE, requestId: null, #102, null, 0/2 matches, 515ms, agent:-, sent, q:0, h:1, dH:1, r:104, m:all, premium: false
+2026-01-19 09:16:42.528 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 515ms; sending code 200
+2026-01-19 09:16:42.864 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:43.330 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 13 chars, de-DE, requestId: null, #103, null, 0/1 matches, 465ms, agent:-, sent, q:0, h:1, dH:1, r:105, m:all, premium: false
+2026-01-19 09:16:43.331 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 467ms; sending code 200
+2026-01-19 09:16:43.761 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:44.232 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 22 chars, de-DE, requestId: null, #104, null, 0/1 matches, 471ms, agent:-, sent, q:0, h:1, dH:1, r:106, m:all, premium: false
+2026-01-19 09:16:44.232 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 471ms; sending code 200
+2026-01-19 09:16:44.577 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:45.019 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 5 chars, de-DE, requestId: null, #105, null, 0/0 matches, 442ms, agent:-, sent, q:0, h:1, dH:1, r:107, m:all, premium: false
+2026-01-19 09:16:45.019 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 443ms; sending code 200
+2026-01-19 09:16:45.363 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:45.825 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 7 chars, de-DE, requestId: null, #106, null, 0/0 matches, 462ms, agent:-, sent, q:0, h:1, dH:1, r:108, m:all, premium: false
+2026-01-19 09:16:45.825 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 462ms; sending code 200
+2026-01-19 09:16:46.166 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:46.607 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 3 chars, de-DE, requestId: null, #107, null, 0/0 matches, 441ms, agent:-, sent, q:0, h:1, dH:1, r:109, m:all, premium: false
+2026-01-19 09:16:46.607 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 441ms; sending code 200
+2026-01-19 09:16:46.970 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:47.419 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 6 chars, de-DE, requestId: null, #108, null, 0/0 matches, 448ms, agent:-, sent, q:0, h:1, dH:1, r:110, m:all, premium: false
+2026-01-19 09:16:47.419 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 449ms; sending code 200
+2026-01-19 09:16:47.772 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:48.260 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 6 chars, de-DE, requestId: null, #109, null, 0/1 matches, 487ms, agent:-, sent, q:0, h:1, dH:1, r:111, m:all, premium: false
+2026-01-19 09:16:48.260 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 488ms; sending code 200
+2026-01-19 09:16:48.607 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:49.062 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 4 chars, de-DE, requestId: null, #110, null, 0/0 matches, 455ms, agent:-, sent, q:0, h:1, dH:1, r:112, m:all, premium: false
+2026-01-19 09:16:49.062 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 455ms; sending code 200
+2026-01-19 09:16:49.401 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:49.846 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 4 chars, de-DE, requestId: null, #111, null, 0/1 matches, 444ms, agent:-, sent, q:0, h:1, dH:1, r:113, m:all, premium: false
+2026-01-19 09:16:49.846 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 445ms; sending code 200
+2026-01-19 09:16:50.181 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:50.656 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 4 chars, de-DE, requestId: null, #112, null, 0/0 matches, 475ms, agent:-, sent, q:0, h:1, dH:1, r:114, m:all, premium: false
+2026-01-19 09:16:50.656 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 475ms; sending code 200
+2026-01-19 09:16:50.994 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:51.441 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 5 chars, de-DE, requestId: null, #113, null, 0/1 matches, 446ms, agent:-, sent, q:0, h:1, dH:1, r:115, m:all, premium: false
+2026-01-19 09:16:51.441 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 447ms; sending code 200
+2026-01-19 09:16:51.812 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:52.267 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 12 chars, de-DE, requestId: null, #114, null, 0/2 matches, 455ms, agent:-, sent, q:0, h:1, dH:1, r:116, m:all, premium: false
+2026-01-19 09:16:52.267 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 455ms; sending code 200
+2026-01-19 09:16:52.608 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:53.056 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 13 chars, de-DE, requestId: null, #115, null, 0/1 matches, 447ms, agent:-, sent, q:0, h:1, dH:1, r:117, m:all, premium: false
+2026-01-19 09:16:53.056 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 448ms; sending code 200
+2026-01-19 09:16:53.398 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:53.863 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 10 chars, de-DE, requestId: null, #116, null, 0/0 matches, 465ms, agent:-, sent, q:0, h:1, dH:1, r:118, m:all, premium: false
+2026-01-19 09:16:53.863 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 465ms; sending code 200
+2026-01-19 09:16:54.256 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:54.740 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 5 chars, de-DE, requestId: null, #117, null, 0/0 matches, 484ms, agent:-, sent, q:0, h:1, dH:1, r:119, m:all, premium: false
+2026-01-19 09:16:54.740 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 484ms; sending code 200
+2026-01-19 09:16:55.089 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:55.535 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 6 chars, de-DE, requestId: null, #118, null, 0/1 matches, 446ms, agent:-, sent, q:0, h:1, dH:1, r:120, m:all, premium: false
+2026-01-19 09:16:55.535 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 446ms; sending code 200
+2026-01-19 09:16:55.904 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:56.430 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 9 chars, de-DE, requestId: null, #119, null, 0/1 matches, 526ms, agent:-, sent, q:0, h:1, dH:1, r:121, m:all, premium: false
+2026-01-19 09:16:56.431 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 527ms; sending code 200
+2026-01-19 09:16:56.878 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:57.325 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 11 chars, de-DE, requestId: null, #120, null, 0/2 matches, 447ms, agent:-, sent, q:0, h:1, dH:1, r:122, m:all, premium: false
+2026-01-19 09:16:57.325 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 447ms; sending code 200
+2026-01-19 09:16:57.678 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:58.123 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 15 chars, de-DE, requestId: null, #121, null, 0/1 matches, 445ms, agent:-, sent, q:0, h:1, dH:1, r:123, m:all, premium: false
+2026-01-19 09:16:58.123 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 445ms; sending code 200
+2026-01-19 09:16:58.456 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:58.999 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 21 chars, de-DE, requestId: null, #122, null, 0/2 matches, 543ms, agent:-, sent, q:0, h:1, dH:1, r:124, m:all, premium: false
+2026-01-19 09:16:59.000 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 544ms; sending code 200
+2026-01-19 09:16:59.347 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:16:59.801 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 19 chars, de-DE, requestId: null, #123, null, 0/1 matches, 454ms, agent:-, sent, q:0, h:1, dH:1, r:125, m:all, premium: false
+2026-01-19 09:16:59.801 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 454ms; sending code 200
+2026-01-19 09:17:00.142 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:00.609 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 5 chars, de-DE, requestId: null, #124, null, 0/1 matches, 467ms, agent:-, sent, q:0, h:1, dH:1, r:126, m:all, premium: false
+2026-01-19 09:17:00.609 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 467ms; sending code 200
+2026-01-19 09:17:00.953 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:01.472 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 15 chars, de-DE, requestId: null, #125, null, 0/2 matches, 519ms, agent:-, sent, q:0, h:1, dH:1, r:127, m:all, premium: false
+2026-01-19 09:17:01.472 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 519ms; sending code 200
+2026-01-19 09:17:01.807 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:02.268 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 15 chars, de-DE, requestId: null, #126, null, 0/1 matches, 461ms, agent:-, sent, q:0, h:1, dH:1, r:128, m:all, premium: false
+2026-01-19 09:17:02.268 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 462ms; sending code 200
+2026-01-19 09:17:02.607 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:03.050 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 21 chars, de-DE, requestId: null, #127, null, 0/2 matches, 442ms, agent:-, sent, q:0, h:1, dH:1, r:129, m:all, premium: false
+2026-01-19 09:17:03.050 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 444ms; sending code 200
+2026-01-19 09:17:03.411 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:03.916 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 13 chars, de-DE, requestId: null, #128, null, 0/2 matches, 504ms, agent:-, sent, q:0, h:1, dH:1, r:130, m:all, premium: false
+2026-01-19 09:17:03.916 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 505ms; sending code 200
+2026-01-19 09:17:04.276 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:04.687 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 5 chars, de-DE, requestId: null, #129, null, 0/0 matches, 411ms, agent:-, sent, q:0, h:1, dH:1, r:131, m:all, premium: false
+2026-01-19 09:17:04.687 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 411ms; sending code 200
+2026-01-19 09:17:05.018 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:05.453 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 20 chars, de-DE, requestId: null, #130, null, 0/1 matches, 434ms, agent:-, sent, q:0, h:1, dH:1, r:132, m:all, premium: false
+2026-01-19 09:17:05.453 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 435ms; sending code 200
+2026-01-19 09:17:05.796 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:06.293 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 32 chars, de-DE, requestId: null, #131, null, 0/3 matches, 497ms, agent:-, sent, q:0, h:1, dH:1, r:133, m:all, premium: false
+2026-01-19 09:17:06.293 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 497ms; sending code 200
+2026-01-19 09:17:06.633 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:07.066 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 37 chars, de-DE, requestId: null, #132, null, 0/3 matches, 432ms, agent:-, sent, q:0, h:1, dH:1, r:134, m:all, premium: false
+2026-01-19 09:17:07.066 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 433ms; sending code 200
+2026-01-19 09:17:07.426 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:07.896 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 49 chars, de-DE, requestId: null, #133, null, 0/2 matches, 470ms, agent:-, sent, q:0, h:1, dH:1, r:135, m:all, premium: false
+2026-01-19 09:17:07.896 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 470ms; sending code 200
+2026-01-19 09:17:08.247 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:17:08.748 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 61 chars, de-DE, requestId: null, #134, null, 0/4 matches, 501ms, agent:-, sent, q:0, h:1, dH:1, r:136, m:all, premium: false
+2026-01-19 09:17:08.748 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 501ms; sending code 200
+2026-01-19 09:18:04.316 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 09:18:04.741 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 23 chars, de-DE, requestId: null, #135, null, 0/1 matches, 425ms, agent:-, sent, q:0, h:1, dH:1, r:137, m:all, premium: false
+2026-01-19 09:18:04.741 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 425ms; sending code 200

@@ -22,7 +22,9 @@ BenachrichtigungenPosition = """
 
     Ganz ausschalten (alle)
     Klick auf Uhrzeit/Glocke > Nicht stören
+    
 """
+
 
 
 FUZZY_MAP_pre = [
@@ -37,18 +39,18 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Benachritext stoeren
     (f'{BenachrichtigungenPosition}', r'^Benachri\w+ stoeren$'),
     # EXAMPLE: Benachrichtigtext Position
-    (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$', 75, {'flags': re.IGNORECASE}),
+    (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$', 75, {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
 
     # EXAMPLE: AutoKey
-    ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
+    ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: pipe
-    ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, {'flags': re.IGNORECASE}),
+    ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: pipe
-    ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, {'flags': re.IGNORECASE}),
+    ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # === Linux/Unix Commands ===
 
@@ -59,7 +61,7 @@ FUZZY_MAP_pre = [
      r'^(grep recursive|kriechen recursiv|grep Durchsuchung)$', 80, {
     'flags': re.IGNORECASE,
     'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
 
@@ -67,26 +69,27 @@ FUZZY_MAP_pre = [
     ('find . -type f -path "*zip.py"', r'^(find files|finde Dateien|Suche Dateien)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
+    # finde dateien
 
     # EXAMPLE: pkill process
     ('pkill -f', r'^(kill process|Prozess beenden|pkill)$', 85, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: sed replace in file
     ('sed -i', r'^(sed replace|ersetze in Datei|sed Ersetzung)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: cat with line numbers
     ('cat -n', r'^(cat numbered|cat mit Zahlen|zeige nummeriert|Zeige numerisch)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
 
@@ -99,7 +102,7 @@ FUZZY_MAP_pre = [
         r'^(download) (webpage|webseite)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: alle Dateitypen
     ('find . -type f -exec file -b --mime-type {} + | sort | uniq -c',
@@ -107,34 +110,34 @@ FUZZY_MAP_pre = [
         r'^(alle) (Dateitypen|Metadaten)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # EXAMPLE: alle Dateitypen Metadaten
     ('find . -type f -exec file -b {} + | sort | uniq -c', r'^(alle) (Dateitypen|Metadaten)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # EXAMPLE: grep with kate output
     ('grep -n "text" file | xclip -selection clipboard', r'^(grep nach Kate|suche und kopiere|grep in Zwischenablage)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # EXAMPLE: restart Watcher
     ('pkill -f type_watcher; sleep 0.1; ./type_watcher_keep_alive.sh &', r'^(Watcher neu starten|restart Watcher)$', 85, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: show recent logs
     ('tail -20 ~/projects/py/STT/log/type_watcher.log', r'^(zeige letzte logs|show recent logs|letzte Log Einträge)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
 
@@ -145,38 +148,38 @@ FUZZY_MAP_pre = [
     ('git show HEAD > gitDiff.txt; kate gitDiff.txt', r'^(zeige letzten Commit|show last commit|letzter Commit Diff)$', 85, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # EXAMPLE: check Watcher processes
     ('ps aux | grep type_watcher', r'^(prüfe Watcher Prozesse|check Watcher processes|zeige Watcher Prozesse)$', 85, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: aura process timestamps
     ('ps -eo pid,lstart,cmd | grep type_watcher', r'^(zeige Watcher Startzeiten|show Watcher start times|Watcher Prozess Zeiten|aura process timestamps)$', 85, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: search in aura script
     ('grep -n "check_config_changed" ~/projects/py/STT/type_watcher.sh', r'^(suche Config Check|search config check|finde Config Funktion)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: show Watcher script numbered
     ('cat -n ~/projects/py/STT/type_watcher.sh', r'^(zeige Watcher Script nummeriert|show Watcher script numbered|Watcher Script mit Zeilen)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: count lines in aura script
     ('wc -l ~/projects/py/STT/type_watcher.sh', r'^(zähle Watcher Zeilen|count Watcher lines|wie lang ist Watcher|Wie lange ist Hodscha)$', 80, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     #Wie lange ist Hodscha
 
@@ -184,7 +187,7 @@ FUZZY_MAP_pre = [
     ('kate ~/projects/py/STT/config/settings_local.py', r'^(editiere lokale Config|edit local config|öffne lokale Einstellungen)$', 85, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
-    }),
+    ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # Examples: disk usage
@@ -192,7 +195,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: ordnergröße
     r'^(ordnergröße|speicherfresser|festplatte voll|verzeichnisgröße|gdu|duf|disk usage)$',
     90,
-    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # EXAMPLE: Launch ncdu
@@ -200,7 +203,7 @@ FUZZY_MAP_pre = [
         # EXAMPLE: ordner größe
         r'^(ordner größe|verzeichnis größe|speicherplatz anzeigen|festplatte prüfen|ncdu|Launch ncdu|wie groß sind die ordner)$',
         90,
-        {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+        {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # Examples: disk usage
@@ -208,14 +211,14 @@ FUZZY_MAP_pre = [
     # EXAMPLE: folder size
     r'^(folder size|directory size|disk usage|storage hog|gdu|disk full)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # Examples: disk space
     (f"ncdu",
         # EXAMPLE: check storage
         r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
 

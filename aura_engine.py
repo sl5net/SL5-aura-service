@@ -940,7 +940,23 @@ def system_memory_watchdog(logging):
 
             )
             try:
-                os.killpg(my_pgid, signal.SIGKILL)
+                # os.killpg(my_pgid, signal.SIGKILL)
+
+                # logger.info("🚨 MEMORY CRITICAL! Initiating emergency shutdown.")
+
+                # aura_engine.py
+                if sys.platform == "win32":
+                    # WINDOWS: Use taskkill to kill the process tree (/T) forcefully (/F)
+                    # This simulates killpg behavior on Windows.
+                    subprocess.run(["taskkill", "/F", "/T", "/PID", str(os.getpid())],
+                                   stdout=subprocess.DEVNULL,
+                                   stderr=subprocess.DEVNULL)
+                else:
+                    # LINUX / MACOS: Use standard killpg
+                    os.killpg(my_pgid, signal.SIGKILL)
+
+
+
             except ProcessLookupError:
                 pass
 
