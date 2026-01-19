@@ -1076,13 +1076,14 @@ def process_text_in_background(logger,
                     from scripts.py.func.log_memory_details import log_memory_details
                     log_memory_details(f"last correct_text_by_languagetool:", logger)
 
+
+            # scripts/py/func/process_text_in_background.py:1080
             # Step 2: Slower, fuzzy replacements on the result
             # logger.info(f"DEBUG: Starting fuzzy match for: '{processed_text}'")
 
             best_score = 0
             best_replacement = None
 
-            # 80:scripts/py/func/process_text_in_background.py
 
             # --- NEW HYBRID MATCHING LOGIC ---
 
@@ -1135,6 +1136,7 @@ def process_text_in_background(logger,
                         log4DEV(f"re.search({match_phrase}, {result_languagetool}..):",logger)
 
                         try:
+                            log4DEV(f"DEBUG FUZZY: Starting fuzzy loop with text: '{processed_text}'", logger)
 
                             if result_languagetool is None:
                                 log4DEV("Skipping regex matching because result_languagetool is None.", logger)
@@ -1191,6 +1193,13 @@ def process_text_in_background(logger,
                         continue
 
                     score = fuzz.token_set_ratio(processed_text.lower(), match_phrase.lower())
+
+                    # DEBUG:
+                    if "marmela" in match_phrase.lower():
+                        log4DEV(
+                            f"DEBUG FUZZY CHECK: Input='{processed_text}' vs Rule='{match_phrase}' -> Score={score} (Threshold={threshold})",
+                            logger)
+
                     if score >= threshold and score > best_score:
                         best_score = score
                         best_replacement = replacement
@@ -1548,7 +1557,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 #         continue
                 else:
                     # if show_debug_prints:
-                        # print('🔎 👎 not matched: pattern="{pattern}... dont use it -> skip this rule"')
+                    # print('🔎 👎 not matched: pattern="{pattern}... dont use it -> skip this rule"')
                     skip_this_regex_pattern = True
 
 

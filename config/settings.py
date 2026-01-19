@@ -180,3 +180,6 @@ TRIGGER_FILE_PATH = "/tmp/sl5_record.trigger"
 AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist|Pi, your personal AI)"
 # TODO implement for windows
 
+
+# Auto-detected Java path
+JAVA_EXECUTABLE_PATH = r"/usr/bin/java"

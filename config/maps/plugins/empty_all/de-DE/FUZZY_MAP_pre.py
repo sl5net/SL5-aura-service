@@ -42,4 +42,18 @@ FUZZY_MAP_pre = [
 
 
 
+
+    ('LECKER_EXAKT', 'Marmelade', 100, {'flags': re.IGNORECASE}),
+    # Marmelade MarmeladeLECKER_EXAKT
+
+    # Test 2: Tolerante Regel (Tippfehler erlaubt)
+    # 'Marmelada' oder 'Marmelad' sollte auch erkannt werden.
+    # ('LECKER_FUZZY', 'Marmelade', 1, {'flags': re.IGNORECASE}),
+
+    #Marmelade Marmelade Mammon Mammon Mama Marion Málaga
+    # Mama MarionA lager mal mager
+
+
+
+
 ]
