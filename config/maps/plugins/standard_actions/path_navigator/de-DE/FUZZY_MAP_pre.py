@@ -134,16 +134,19 @@ FUZZY_MAP_pre = [
      # EXAMPLE: file search
     r'^(file|datei|Details) (suche|search|find)$',
     90,
-    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-    #
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+     'only_in_windows': ['Konsole', 'konsole', 'Console']
+     }),
 
     # sometimes here (18.11.'25 10:36 Tue) stt undstand wrong this is quickfix:
     (f"{fzf_smart_file_finder}",
      # EXAMPLE: suche Datei
      r'^(falsche|somit datei|suche data|suche Datei|navigiere datei|suche Dateien|datei suche\w*|so geleitet hat|sorry datei)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+      }),
+
+
 
 
     # following works with fzf (highliy recomande to have, s.18.11.'25 09:00 Tue)
@@ -153,7 +156,8 @@ FUZZY_MAP_pre = [
      # EXAMPLE: suche alles
      r'^(suche|search|find)\s+(alles|everything|überall|everywhere|everything)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+      }),
 
     #fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection cl'
 

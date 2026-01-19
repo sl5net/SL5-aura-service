@@ -476,7 +476,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                 except Exception as retry_err:
                     logger.error(f"❌ Reload gescheitert: {retry_err}")
                     logger.info(f"❌ Reload gescheitert: {retry_err}")
-                    log4DEV(f"❌ Reload gescheitert: {retry_err}")
+                    log4DEV(f"❌ Reload gescheitert: {retry_err}",logger)
             # --- AUTO-FIX ENDE ---
 
 
@@ -1719,7 +1719,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
         log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",
                 logger_instance)
         return made_a_change, full_text_replaced_by_rule, skip_list
-        log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
+        # log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
     # 17:08:56,492 - INFO     - 758: made_a_change=True full_text_replaced_by_rule:False current_text:mit nachnamen Lauffer
 
     # 1. Calculate the Ratio
