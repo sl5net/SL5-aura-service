@@ -22,6 +22,44 @@ fi
 
 echo "flake8 check passed."
 
+
+
+
+# convert staged .bat files to CRLF and restage them
+
+# find staged .bat files (cached)
+staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.bat$' || true)
+if [ -z "$staged_files" ]; then
+  exit 0
+fi
+
+# convert each file in the working tree, then restage
+for f in $staged_files; do
+  if [ -f "$f" ]; then
+    unix2dos "$f" >/dev/null 2>&1 || { echo "unix2dos failed on $f"; exit 1; }
+    git add "$f"
+  fi
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # -----------------------------------------------------------------------------
 # 2. SETUP FOR REQUIREMENTS GENERATION
 # -----------------------------------------------------------------------------
