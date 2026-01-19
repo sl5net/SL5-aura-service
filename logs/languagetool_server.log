@@ -207,3 +207,9 @@ WARNING: Restricted methods will be blocked in a future release unless native ac
 2026-01-19 08:10:34.531 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
 2026-01-19 08:10:35.060 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 56 chars, de-DE, requestId: null, #64, null, 0/3 matches, 529ms, agent:-, sent, q:0, h:1, dH:1, r:65, m:all, premium: false
 2026-01-19 08:10:35.060 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 529ms; sending code 200
+2026-01-19 08:36:00.916 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 08:36:01.528 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 59 chars, de-DE, requestId: null, #65, null, 0/1 matches, 611ms, agent:-, sent, q:0, h:1, dH:1, r:66, m:all, premium: false
+2026-01-19 08:36:01.528 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 612ms; sending code 200
+2026-01-19 08:36:13.336 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handling POST /v2/check
+2026-01-19 08:36:13.879 GMT+01:00 INFO  org.languagetool.server.TextChecker Check done: 48 chars, de-DE, requestId: null, #66, null, 0/2 matches, 543ms, agent:-, sent, q:0, h:1, dH:1, r:67, m:all, premium: false
+2026-01-19 08:36:13.879 GMT+01:00 INFO  org.languagetool.server.LanguageToolHttpHandler Handled request in 543ms; sending code 200

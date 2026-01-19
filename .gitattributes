@@ -1,0 +1,12 @@
+# Windows Batch-Dateien MÜSSEN immer CRLF sein (auch auf Linux)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# PowerShell Skripte (sicher ist sicher)
+*.ps1 text eol=crlf
+
+# Linux Shell Skripte MÜSSEN immer LF sein (sonst gehen sie auf Linux kaputt)
+*.sh text eol=lf
+
+# Python Dateien behandelt Git automatisch richtig (auto)
+*.py text auto
