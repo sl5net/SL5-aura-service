@@ -1681,3 +1681,74 @@ KeyboardInterrupt
 1
  3️  2
 \________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    def nested():
+        nonlocal x
+        x = 1
+    x = 3
+    nested()
+    print("func:", x)
+x = 2    
+func()
+print("global:", x)
+```
+ 1️  An object's attributes are stored in
+obj.__dict__
+.
+The
+__setitem__
+method powers the
+object[key] = value
+syntax.
+ 2️  foo bar
+foo bar
+foo
+bar
+('foo', 'bar')
+ 3️  func: 1
+global: 2
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def func():
+    def nested():
+        def nested2():
+            nonlocal x
+            x = 100
+            print("nested2:", x)
+        x = 50
+        nested2()
+        print("nested:", x)
+    x = 10
+    nested()
+    print("func:", x)
+x = 1
+func()
+print("outer:", x)
+```
+ 1️  AttributeError: 'C' object has no attribute '__foo'. Did you mean: '_C__foo'?
+ 2️  sys.argv
+ 3️  nested2: 100
+nested: 100
+func: 10
+outer: 1
+\________________________________________
+Richtig! Ja 3 war richtig. Nächste Aufgabe:
+/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+```python
+def f():
+    x = 1
+x = 2
+f()
+print(x)
+```
+ 1️  finally
+KeyboardInterrupt
+ 2️  0
+1
+ 3️  2
+\________________________________________

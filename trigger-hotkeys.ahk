@@ -1,10 +1,61 @@
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+#Requires AutoHotkey v2.0
 
-;===================================================================
-; Hotkey zum Auslösen des STT Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
-;===================================================================
+; trigger_hotkey.ahk
+; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
+
+; --- Configuration ---
+heartbeat_start_File := "c:\tmp\heartbeat_trigger_hotkey_start.txt"
+triggerFile := "c:\tmp\sl5_record.trigger"
+activeWinTitleFile := "c:\tmp\activeWinTitle.txt"
+
+; --- Main Script Body ---
+myUniqueID := A_TickCount . "-" . Random(1000, 9999)
+
+try {
+    fileHandle := FileOpen(heartbeat_start_File, "w")
+    fileHandle.Write(myUniqueID)
+    fileHandle.Close()
+} catch as e {
+    MsgBox("FATAL: Could not write heartbeat file: " . e.Message, "Error", 16)
+    ExitApp
+}
+
+; --- Self-Check at Startup ---
+Sleep(200) ; Give time for write operations
+try {
+    if FileExist(heartbeat_start_File) {
+        lastUniqueID := Trim(FileRead(heartbeat_start_File))
+        if (lastUniqueID != myUniqueID) {
+            ExitApp ; Newer instance exists, I must exit.
+        }
+    }
+} catch {
+    ; Ignore errors here, loop will handle it
+}
+
+SetTimer(CheckHeartbeatStart, 5000)
+
+; =============================================================================
+; SELF-TERMINATION VIA HEARTBEAT CHECK
+; =============================================================================
+CheckHeartbeatStart() {
+    global heartbeat_start_File, myUniqueID
+    try {
+        local lastUniqueID := Trim(FileRead(heartbeat_start_File, "UTF-8"))
+        if (lastUniqueID != myUniqueID) {
+            ; New instance took over
+            ExitApp
+        }
+    } catch {
+        ; If file is locked/deleted, better safe than sorry -> exit
+        ExitApp
+    }
+}
+
+; =============================================================================
+; HOTKEY DEFINITIONS (F10 & F11)
+; =============================================================================
+
 f10::
 f11::
 {

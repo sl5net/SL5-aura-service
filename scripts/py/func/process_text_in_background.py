@@ -1546,10 +1546,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 #             print(f'🔎 🥳 matched: pattern="{pattern}... its okay use it"')
                 #         skip_this_regex_pattern = False
                 #         continue
-                #     else:
-                #         if show_debug_prints:
-                #             print('🔎 👎 not matched: pattern="{pattern}... dont use it -> skip this rule"')
-                        # skip_this_regex_pattern = True
+                else:
+                    # if show_debug_prints:
+                        # print('🔎 👎 not matched: pattern="{pattern}... dont use it -> skip this rule"')
+                    skip_this_regex_pattern = True
 
 
             if skip_this_regex_pattern:
