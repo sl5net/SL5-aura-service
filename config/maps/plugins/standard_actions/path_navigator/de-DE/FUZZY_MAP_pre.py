@@ -144,6 +144,8 @@ FUZZY_MAP_pre = [
      r'^(falsche|somit datei|suche data|suche Datei|navigiere datei|suche Dateien|datei suche\w*|so geleitet hat|sorry datei)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+'only_in_windows': ['Konsole', 'konsole', 'Console',
+        r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
       }),
 
 
@@ -157,6 +159,9 @@ FUZZY_MAP_pre = [
      r'^(suche|search|find)\s+(alles|everything|überall|everywhere|everything)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+'only_in_windows': ['Konsole', 'konsole', 'Console',
+        r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+
       }),
 
     #fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection cl'
@@ -165,34 +170,59 @@ FUZZY_MAP_pre = [
      # EXAMPLE: Aura Pfad
      r'^(Aura|Auer|Agora|Aurora|ora|hurra|Flora)\s+(Aura|Pfad)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+
+        'only_in_windows': ['Konsole', 'konsole', 'Console',
+        r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+
+      }),
 
     (f'{PROJECT_ROOT_POSIX}',
      # EXAMPLE: Raumfahrt
      r'^(Raumfahrt)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+
+      'only_in_windows': ['Konsole', 'konsole', 'Console',
+                          r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+
+      }),
 
 
     (f'{HOME_DIR_POSIX}',
      # EXAMPLE: home Dir
      r'^(home|heimat|user)\s+(Pfad|Dir\w*)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+
+      'only_in_windows': ['Konsole', 'konsole', 'Console',
+                          r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+
+      }),
 
     (f'{HOME_DIR_POSIX}/.config/0ad/config/',
      # EXAMPLE: 0ad config
      r'^(Joa|zero ein|zero|februar|fiera|fira|fever|fewo|führer|tyrannei|februar|wieweit|hierbei|hierbei|zebra|silva|fiera|give|cio|in|sie|sie war|syrer|seo|cyra|chihuahua|hier mal|sie wollen|über|weberei|rohrer)\s+(d|die|aed|it|die|di|dir|aed)\s+(Konflik|Konflikt|Konfiguration|konflikten|config|conflict)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+
+      'only_in_windows': ['Konsole', 'konsole', 'Console',
+                          r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+
+      }),
 
     # bzopfig
     # EXAMPLE: bzopfig b
     (f'config/', r'\bzopfig\b', 90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+
+      'only_in_windows': ['Konsole', 'konsole', 'Console',
+                          r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+
+      }),
 
     # skiplist
-    ("'skip_list': ['LanguageTool','fullMatchStop']",
+    ("'skip_list': ['LanguageTool','fullMatchStop','only_in_windows']",
      # EXAMPLE: skip_list
      r'^(skip_list|skip_list|skip list|script bläst|lässt|script lässt|squibb lässt|es lässt|es gibt les|scribbles|es gibt list|es gibt bläst|script list|skype lässt|skype list|gpl list)$', 90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
