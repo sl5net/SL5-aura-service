@@ -56,6 +56,9 @@ CheckHeartbeatStart() {
 ; HOTKEY DEFINITIONS (F10 & F11)
 ; =============================================================================
 
+; Prevent Windows from capturing F10 and F11 input
+; the '$' modifier to the F10 and F11 hotkey forces AutoHotkey to use the keyboard hook, preventing the native Windows events (like menu activation) from firing alongside the script.
+
 $f10::
 $f11::
 {
