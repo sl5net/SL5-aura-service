@@ -56,8 +56,8 @@ CheckHeartbeatStart() {
 ; HOTKEY DEFINITIONS (F10 & F11)
 ; =============================================================================
 
-f10::
-f11::
+$f10::
+$f11::
 {
     activeWinTitle := WinGetTitle('A')
     ; MsgBox, "%activeWinTitle%"
