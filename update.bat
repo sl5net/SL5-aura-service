@@ -28,7 +28,7 @@ net session >nul 2>&1
 if %errorLevel% NEQ 0 (
     echo Requesting administrative privileges to run the updater...
     powershell -Command "Start-Process -FilePath '%0' -Verb RunAs"
-    exit /b
+    Start-Sleep -Seconds 2.5
 )
 
 call "%~dp0setup\fix_permissions.bat"
