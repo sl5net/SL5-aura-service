@@ -21,6 +21,10 @@ try {
     ExitApp
 }
 
+
+SendMode('InputThenPlay')
+SetKeyDelay(10, 10)
+
 ; --- Global Variables ---
 global pBuffer := Buffer(1024 * 16), hDir, pOverlapped := Buffer(A_PtrSize * 2 + 8, 0)
 global CompletionRoutineProc
@@ -268,6 +272,8 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
                 if (!NextEntryOffset) {
                     break
                 }
+
+
                 pCurrent += NextEntryOffset
             }
             TriggerQueueProcessing()
@@ -278,5 +284,7 @@ IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {
 
     watcherNeedsRearm := true
 }
+
+
 
 
