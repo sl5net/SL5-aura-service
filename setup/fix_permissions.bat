@@ -36,6 +36,9 @@ if not exist "%TARGET_DIR%" mkdir "%TARGET_DIR%"
 :: F           = Full Control (Vollzugriff - Lesen, Schreiben, Löschen)
 :: /t          = Rekursiv auf bereits existierende Unterelemente anwenden
 
+:: /grant *S-1-1-0:(OI)(CI)F = JEDER (Everyone) bekommt Vollzugriff auf Dateien und Unterordner
+
+:: icacls "%TARGET_DIR%" /grant *S-1-1-0:(OI)(CI)F /t /c /q
 icacls "%TARGET_DIR%" /grant *S-1-5-32-545:(OI)(CI)F /t
 
 net session >nul 2>&1
@@ -44,6 +47,7 @@ if %errorLevel% neq 0 (
     echo Bitte prüfen ob das Script in C:\tmp\sl5_aura schreiben kann.
     echo Eventuell noch mal starten so: Rechtsklick auf die Datei -> "Als Administrator ausfuehren"
     timeout /t 4
+
 )
 
 echo Rechte für %TARGET_DIR% verarbeitet.
