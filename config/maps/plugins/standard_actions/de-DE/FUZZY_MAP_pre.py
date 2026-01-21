@@ -193,13 +193,13 @@ FUZZY_MAP_pre = [
     # google seminar
     # googeln jimmy nein
     # google g mine
-    # googeln gehminuten
+    # googeln gehminuten gb dreht
     # https://aistudio.google.com/prompts/new_chat
 
     # EXAMPLE: gemini
     ('https://aistudio.google.com/prompts/new_chat', r'''(?ix)
     ^ (?:
-        gemini | cheminée |
+        gemini | cheminée | gb dreht |
         (?:google|googeln|gucke|gut|brooke|coral) \s+
         (?:
             gemini[\s\w]* |
