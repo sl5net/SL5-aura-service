@@ -50,5 +50,38 @@ if ($LASTEXITCODE -eq 0) {
     Write-Warning "CopyQ setup finished with exit code $LASTEXITCODE. It might be already installed or cancelled."
 }
 
+
+
+:: Prüfen, ob Notepad++ (64-bit) schon da ist
+if exist "C:\Program Files\Notepad++\notepad++.exe" (
+    echo Notepad++ ist bereits installiert.
+    goto :EndeNotepad
+)
+:: Wenn Notepad nicht gefunden, installieren
+echo Notepad++ wird installiert... bitte warten...
+winget install -e --id Notepad++.Notepad++ --silent --accept-source-agreements --accept-package-agreements
+
+echo Notepad Installation abgeschlossen.
+
+:EndeNotepad
+echo.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Write-Host "`nClient tools setup sequence finished." -ForegroundColor Cyan
 
