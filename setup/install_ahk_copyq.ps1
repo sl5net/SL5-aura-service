@@ -51,19 +51,26 @@ if ($LASTEXITCODE -eq 0) {
 }
 
 
-
-:: Prüfen, ob Notepad++ (64-bit) schon da ist
+:: --- Notepad++ ---
 if exist "C:\Program Files\Notepad++\notepad++.exe" (
-    echo Notepad++ ist bereits installiert.
-    goto :EndeNotepad
+    echo [OK] Notepad++ ist schon da.
+) else (
+    echo [..] Installiere Notepad++...
+    winget install -e --id Notepad++.Notepad++ --silent --accept-source-agreements --accept-package-agreements
 )
-:: Wenn Notepad nicht gefunden, installieren
-echo Notepad++ wird installiert... bitte warten...
-winget install -e --id Notepad++.Notepad++ --silent --accept-source-agreements --accept-package-agreements
 
-echo Notepad Installation abgeschlossen.
+echo.
 
-:EndeNotepad
+:: --- Double Commander ---
+if exist "C:\Program Files\Double Commander\doublecmd.exe" (
+    echo [OK] Double Commander ist schon da.
+) else (
+    echo [..] Installiere Double Commander...
+    winget install -e --id DoubleCommander.DoubleCommander --silent --accept-source-agreements --accept-package-agreements
+)
+
+echo.
+
 echo.
 
 
