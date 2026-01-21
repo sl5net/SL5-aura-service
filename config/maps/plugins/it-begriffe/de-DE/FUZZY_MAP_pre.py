@@ -17,6 +17,11 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
+    # das liquid Stuhl
+    # LanguageTool
+    ('das LanguageTool', r'\b(das) (liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
+    ('LanguageTool', r'\b(liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
+
     #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
     # EXAMPLE: whatchado
     ('Manjaro Linux', r'^\b(whatchado|Mönch) (Linux|Carolin\w*)(\b)$', 80, {'flags': re.IGNORECASE}),

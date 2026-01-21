@@ -14,22 +14,22 @@ import sys
 
 
 
-def check_translator_hijack_is_not_active(logger):
+def check_translator_hijack_is_active(logger):
+
     proj_dir = Path(__file__).parents[4]
-
     path = proj_dir / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
-    if path.exists():
-        # [ \t]* matches only horizontal whitespace
-        content = path.read_text()
-        pattern = r"#[ ]*TRANSLATION_RULE[ ]*\n[^\n]*#"
-        if not re.search(pattern, content):
-            logger.info(f"25:🚨 HIJACK: Rule in ..{str(path)[-30:]} is activ!")
-            # logger.info(content)
-            return False
-    else:
-        logger.info(f"31:🚨 HIJACK: path {str(path)} not exists!")
 
-    return True
+    if not path.exists():
+        logger.info(f"HIJACK: path {path} not exists!")
+        return False
+
+    pattern = re.compile(r"#[ ]*TRANSLATION_RULE[ ]*\n[^\n]*#")
+    for lineno, line in enumerate(path.read_text().splitlines(), start=1):
+        if pattern.search(line):
+            logger.info(f"🚨 HIJACK: Rule in ..{str(path)[-30:]}{lineno} is active!")
+            return lineno
+
+    return False
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
@@ -77,11 +77,12 @@ def run_core_logic_self_test(logger, tmp_dir: Path, lt_url, lang_code):
     Runs a series of predefined tests, guarded by a persistent throttle mechanism.
     """
     # config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
-    if not check_translator_hijack_is_not_active(logger):
+    lineno = check_translator_hijack_is_active(logger)
+    if lineno and lineno>0:
         logger.info(f"self_tester.py exit exit exit")
         logger.info(f"""
         75:🚨 HIJACK: rule is activ during self_test! maybe check: 
-        config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py 
+        config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py:{lineno} 
         (check_translator_hijack) --> exit(1)
         """)
         exit(1)

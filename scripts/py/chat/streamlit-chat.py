@@ -169,6 +169,7 @@ def copy_to_clipboard_component_v2(text_to_copy, button_label="Click to Copy (Th
 st.title("SL5 Aura (external interface to the core logic)")
 
 st.info('https://github.com/sl5net/SL5-aura-service/blob/master/docs/README/README-delang.md')
+st.info('https://pad.ccc-mannheim.de/p/kihelfer')
 
 example_text = "Aura Was ist das Besondere an SL5 Aura"
 

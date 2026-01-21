@@ -180,19 +180,11 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'good_night.py']
     }),
 
-    #test (original:'test').
-    #
-
 
     # config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
     # ANCHOR: The following line is controlled by the toggle script.
     # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
     # TRANSLATION_RULE
-    #('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
-
-
-
-
+    # ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 
 ]
-

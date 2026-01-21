@@ -73,6 +73,9 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
     full_base_url = f"http://127.0.0.1:{port}" # Using 127.0.0.1 explicitly to avoid Windows IPv6 localhost issues
 
     # scripts/py/func/start_languagetool_server.py:75
+
+
+
     if _is_lt_server_responsive(full_base_url, timeout=0.5):
         logger.info(f"LanguageTool Server is ALREADY online at {full_base_url}. Skipping new startup (RAM optimization).")
         return LT_ALREADY_RUNNING_SENTINEL # Return the sentinel object
@@ -138,7 +141,8 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
     # 4. Wait for responsiveness (existing logic)
     if settings.DEV_MODE:
         logger.info("Waiting for LanguageTool Server to be responsive...")
-    for _ in range(20):
+    for _ in range(40):
+        log_file.flush()
         if _is_lt_server_responsive(full_base_url, timeout=1.5):
             if settings.DEV_MODE:
                 logger.info("LanguageTool Server is online.")
@@ -149,7 +153,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
             _, stderr = languagetool_process.communicate()
             if stderr: logger.error(f"LanguageTool STDERR:\n{stderr}")
             return False
-        time.sleep(1.5)
+        time.sleep(1.0)
 
     logger.critical("LanguageTool Server did not become responsive.")
     from .stop_languagetool_server import stop_languagetool_server
