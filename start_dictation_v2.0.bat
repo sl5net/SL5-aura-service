@@ -8,12 +8,6 @@ title SL5 Aura - One-Click Starter
 :: --- Step 1: Set correct working directory ---
 cd /d "%~dp0"
 
-
-
-
-
-
-
 :: --- 2. Admin Rights Check ---
 echo [*] Checking for Administrator privileges
 
@@ -22,16 +16,18 @@ if /I NOT "%CI%"=="true" (
     net session >nul 2>&1
     if %errorLevel% neq 0 (
         echo [ERROR] Re-launching with Admin rights...
-        powershell -Command "Start-Process '%~f0' -Verb RunAs"
+        Rem powershell -Command "Start-Process '%~f0' -Verb RunAs"
+
+        Rem powershell -Command "Start-Process cmd -ArgumentList '/c, %~f0' -Verb RunAs"
+
+        Start-Process -FilePath "powershell.exe" -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File', $PSCommandPath) -Verb RunAs
+
+
         exit /b
     )
 )
 
 echo [SUCCESS] Running with Administrator privileges.
-
-
-
-
 
 :: --- Step 3: VEREINFACHT - Check if venv exists, otherwise run full setup ---
 if not exist ".\.venv\Scripts\python.exe" (
@@ -39,9 +35,9 @@ if not exist ".\.venv\Scripts\python.exe" (
     echo [ACTION] Running full setup. This may take a moment...
     pause
 
-    ::  .\setup\windows11_setup.ps1 -Exclude "en" or .\setup\windows11_setup.ps1 -Exclude "de" or .\setup\windows11_setup.ps1 -Exclude "all".
+    REM  .\setup\windows11_setup.ps1 -Exclude "en" or .\setup\windows11_setup.ps1 -Exclude "de" or .\setup\windows11_setup.ps1 -Exclude "all".
 
-    powershell.exe -ExecutionPolicy Bypass -File ".\setup\windows11_setup.ps1 -Exclude 'en'"
+    powershell.exe -ExecutionPolicy Bypass -File ".\setup\windows11_setup.ps1" -Exclude "en"
 
     if not exist ".\.venv\Scripts\python.exe" (
         echo [FATAL] Automated setup failed. Please check setup script.
@@ -70,8 +66,6 @@ echo [INFO] Starting the Python STT backend service...
 
 # python -u aura_engine.py
 python -X utf8 -u aura_engine.py
-
-
 
 echo [INFO] Waiting 5 seconds for the service to initialize...
 timeout /t 5 >nul
