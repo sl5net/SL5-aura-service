@@ -37,7 +37,11 @@ echo [SUCCESS] Running with Administrator privileges.
 if not exist ".\.venv\Scripts\python.exe" (
     echo [WARNING] Virtual environment is missing or incomplete.
     echo [ACTION] Running full setup. This may take a moment...
-    powershell.exe -ExecutionPolicy Bypass -File ".\setup\windows11_setup.ps1"
+    pause
+
+    ::  .\setup\windows11_setup.ps1 -Exclude "en" or .\setup\windows11_setup.ps1 -Exclude "de" or .\setup\windows11_setup.ps1 -Exclude "all".
+
+    powershell.exe -ExecutionPolicy Bypass -File ".\setup\windows11_setup.ps1 -Exclude 'en'"
 
     if not exist ".\.venv\Scripts\python.exe" (
         echo [FATAL] Automated setup failed. Please check setup script.

@@ -20,6 +20,10 @@ cd /d "%~dp0"
 
 REM 1. Call the existing core setup script
 REM Now running with Admin rights, so the PS1 won't try to crash-elevate itself.
+
+@REM  -Exclude 'en'"
+ 
+CALL "%~dp0windows11_setup.bat" -Exclude 'en'
 CALL "%~dp0windows11_setup.bat" %*
 
 REM Check if the core setup failed
