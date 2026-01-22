@@ -177,9 +177,11 @@ Write-Host "--> Patching requirements.txt for Windows fasttext-wheel compatibili
 # --- 5. Python Requirements ---
 Write-Host "--> Installing Python requirements into the virtual environment..."
 
-.\.venv\Scripts\pip.exe install --upgrade pip
+#.\.venv\Scripts\pip.exe install --upgrade pip # falsch innerhalbe eines setupa
+python -m pip install --upgrade pip
 
-.\.venv\Scripts\pip.exe install -r requirements.txt
+#.\.venv\Scripts\pip.exe install -r requirements.txt
+& ".\.venv\Scripts\python.exe" -m pip install -r requirements.txt
 
 # --- 5. External Tools & Models (from Releases) ---
 $LtDir = "LanguageTool-6.6"
