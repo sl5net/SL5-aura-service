@@ -84,8 +84,12 @@ $LASTEXITCODE
 
 Write-Host "Running export_to_copyq.py..."
 
-Start-Process ".\.venv\Scripts\python.exe" -ArgumentList "tools\export_to_copyq.py" -NoNewWindow -Wait -PassThru
+#Start-Process ".\.venv\Scripts\python.exe" -ArgumentList "tools\export_to_copyq.py" -NoNewWindow -Wait -PassThru
+#$LASTEXITCODE
+
+Start-Process "py" -ArgumentList "-3", "tools\export_to_copyq.py" -WorkingDirectory (Get-Location) -Wait -PassThru
 $LASTEXITCODE
+
 
 # map_tagger.py --yes
 

@@ -306,11 +306,25 @@ def export_to_copyq(items, tab_name):
     print(f"logger.info: Resetting tab '{tab_name}' ...")
     try:
         subprocess.run([copyq_exe, "removetab", tab_name], check=False, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    except Exception:
+    except Exception as e202601222016:
+        print(f"logger.info: Warning at {file}: {e202601222016}")
         pass
 
+    # tools/export_to_copyq.py:312
     print(f"logger.info: Creating/Switching to Tab '{tab_name}' ...")
-    subprocess.run([copyq_exe, "tab", tab_name], check=True, env=env)
+
+    # subprocess.run([copyq_exe, "tab", tab_name], check=True, env=env)
+
+    try:
+
+        proc = subprocess.run([copyq_exe, "tab", tab_name], check=True, capture_output=True, text=True, env=env)
+        print("copyq stdout:", proc.stdout)
+        print("copyq stderr:", proc.stderr)
+        proc.check_returncode()
+
+    except subprocess.CalledProcessError as e202601222017:
+        print(f"logger.info: Warning at {file}: {e202601222017}")
+
 
     print("logger.info: Clearing old content ...")
     subprocess.run([copyq_exe, "eval", f"tab('{tab_name}'); if(size()>0) remove(0, size())"], check=True, env=env)
