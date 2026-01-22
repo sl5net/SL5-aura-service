@@ -33,6 +33,8 @@ Write-Host "[*] Checking for Administrator privileges"
 
 
 # Only check for admin rights if NOT running in a CI environment (like GitHub Actions)
+# $PSCommandPath is an automatic variable in PowerShell that contains the full path and filename
+# of the script that is currently executing.
 if ($env:CI -ne 'true') {
     # Check if the current user is an Administrator
     $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -40,7 +42,17 @@ if ($env:CI -ne 'true') {
     if (-not $isAdmin) {
         Write-Host "[ERROR] Administrator privileges are required. Re-launching..."
         # Re-run the current script with elevated privileges for GitHub Actions
-        Start-Process -FilePath $PSCommandPath -Verb RunAs
+#        Start-Process -FilePath $PSCommandPath -Verb RunAs
+
+
+        Start-Process -FilePath "powershell.exe" -ArgumentList @(
+            '-NoProfile',
+            '-ExecutionPolicy', 'Bypass',
+            '-File', "`"$PSCommandPath`""  # <--- Note the escaped quotes here
+        ) -Verb RunAs
+
+
+
         # Exit the current (non-admin) script
         exit
     }
