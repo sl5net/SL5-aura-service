@@ -60,4 +60,6 @@ try {
 }
 
 Write-Host "--- DIAGNOSE ENDE ---"
-Pause
+Start-Sleep -Seconds 2
+
+#Pause

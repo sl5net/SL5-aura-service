@@ -77,14 +77,19 @@ if ($LASTEXITCODE -eq 0) { "OK" } else { "Fehler: $LASTEXITCODE" }
 Write-Host "Running map_tagger.py..."
 #& ".\.venv\Scripts\python.exe" "tools\map_tagger.py" "--yes"
 
+Write-Host "Running map_tagger.py..."
+
 Start-Process ".\.venv\Scripts\python.exe" -ArgumentList "tools\map_tagger.py","--yes" -NoNewWindow -Wait -PassThru
 $LASTEXITCODE
 
+Write-Host "Running export_to_copyq.py..."
+
+Start-Process ".\.venv\Scripts\python.exe" -ArgumentList "tools\export_to_copyq.py" -NoNewWindow -Wait -PassThru
+$LASTEXITCODE
 
 # map_tagger.py --yes
 
-Write-Host "Running map_tagger.py..."
-& ".\.venv\Scripts\python.exe" "tools\export_to_copyq.py"
+#& ".\.venv\Scripts\python.exe" "tools\export_to_copyq.py"
 
 
 
