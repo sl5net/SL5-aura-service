@@ -73,9 +73,15 @@ if (Test-Path "C:\Program Files\CopyQ\copyq.exe") {
 & "$copyqExe" config global_shortcuts/show "Ctrl+1"
 if ($LASTEXITCODE -eq 0) { "OK" } else { "Fehler: $LASTEXITCODE" }
 
-
+# setup/install_ahk_copyq.ps1:76
 Write-Host "Running map_tagger.py..."
-& ".\.venv\Scripts\python.exe" "tools\map_tagger.py"
+#& ".\.venv\Scripts\python.exe" "tools\map_tagger.py" "--yes"
+
+Start-Process ".\.venv\Scripts\python.exe" -ArgumentList "tools\map_tagger.py","--yes" -NoNewWindow -Wait -PassThru
+$LASTEXITCODE
+
+
+# map_tagger.py --yes
 
 Write-Host "Running map_tagger.py..."
 & ".\.venv\Scripts\python.exe" "tools\export_to_copyq.py"
@@ -103,20 +109,6 @@ if (Test-Path "C:\Program Files\Double Commander\doublecmd.exe")
     echo [..] Installiere Double Commander...
     winget install -e --id DoubleCommander.DoubleCommander --silent --accept-source-agreements --accept-package-agreements
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

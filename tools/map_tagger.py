@@ -4,7 +4,11 @@ import re
 import sys
 import time
 
-# tools/map_tagger.py:7
+# tools/map_tagger.py
+
+# optional:
+# .\\.venv\Scripts\python.exe tools\map_tagger.py --yes
+
 
 # -----------------------------------------------------------------------------
 # KONFIGURATION
@@ -25,6 +29,18 @@ try:
     HAS_EXREX = True
 except ImportError:
     HAS_EXREX = False
+
+
+import argparse
+
+parser = argparse.ArgumentParser(description="Map tagger (non-interactive option)")
+parser.add_argument("--yes", "-y", action="store_true", help="Automatically accept suggestions / skip prompts")
+args = parser.parse_args()
+
+# global setzen (z.B. nach PARSER)
+if args.yes:
+    SKIP_ALL_FAILURES = True  # oder separate FLAG_AUTOMATIC = True
+
 
 # -----------------------------------------------------------------------------
 # LOGIK: Smart Sanitizer
@@ -194,29 +210,38 @@ def process_file(filepath):
             prompt_parts = ["ENTER (nehmen)", "Text (eigenes)", "'s' (skip)", "'q' (quit)"]
             if not success: prompt_parts.append("'sa' (skip failures)")
 
-            print(f"[{' | '.join(prompt_parts)}]")
-            user_input = input("> ").strip()
-
-            # --- Input Logic ---
-            if user_input.lower() == 'q':
-                print("Beendet.")
-                sys.exit(0)
-            if user_input.lower() == 'sa':
-                SKIP_ALL_FAILURES = True
-                new_lines.append(line)
-                continue
-            if user_input.lower() == 's':
-                new_lines.append(line)
-                continue
-
-            final_example = ""
-            if user_input:
-                final_example = user_input
-            elif success:
-                final_example = suggestion
+            if args.yes:
+                # im automatischen Modus: benutze Vorschlag falls vorhanden, sonst skip
+                if success:
+                    final_example = suggestion
+                else:
+                    new_lines.append(line)
+                    continue
             else:
-                new_lines.append(line)
-                continue
+
+                print(f"[{' | '.join(prompt_parts)}]")
+                user_input = input("> ").strip()
+
+                # --- Input Logic ---
+                if user_input.lower() == 'q':
+                    print("Beendet.")
+                    sys.exit(0)
+                if user_input.lower() == 'sa':
+                    SKIP_ALL_FAILURES = True
+                    new_lines.append(line)
+                    continue
+                if user_input.lower() == 's':
+                    new_lines.append(line)
+                    continue
+
+                final_example = ""
+                if user_input:
+                    final_example = user_input
+                elif success:
+                    final_example = suggestion
+                else:
+                    new_lines.append(line)
+                    continue
 
             # Schreiben
             indent = line[:len(line) - len(line.lstrip())]
