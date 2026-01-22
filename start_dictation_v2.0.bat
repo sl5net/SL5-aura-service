@@ -16,11 +16,15 @@ if /I NOT "%CI%"=="true" (
     net session >nul 2>&1
     if %errorLevel% neq 0 (
         echo [ERROR] Re-launching with Admin rights...
-        Rem powershell -Command "Start-Process '%~f0' -Verb RunAs"
+        REM powershell -Command "Start-Process '%~f0' -Verb RunAs"
 
-        Rem powershell -Command "Start-Process cmd -ArgumentList '/c, %~f0' -Verb RunAs"
+        REM powershell -Command "Start-Process cmd -ArgumentList '/c, %~f0' -Verb RunAs"
 
-        Start-Process -FilePath "powershell.exe" -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File', $PSCommandPath) -Verb RunAs
+        REM Start-Process -FilePath "powershell.exe" -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File', $PSCommandPath) -Verb RunAs
+
+        REM Start-Process -FilePath "powershell.exe" -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File', $PSCommandPath -Verb RunAs
+        REM powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0\start_dictation_v2.0.ps1"
+        powershell -Command "Start-Process cmd -ArgumentList '/c, """%~f0"""' -Verb RunAs"
 
 
         exit /b
