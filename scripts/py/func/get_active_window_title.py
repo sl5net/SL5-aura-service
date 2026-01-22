@@ -203,6 +203,7 @@ def get_active_window_title_safe():
         # return res
 
     except Exception as e:
+        # scripts/py/func/get_active_window_title.py:206
         print(f'178 {e}')
         pass
 

@@ -86,25 +86,6 @@ if ($LASTEXITCODE -eq 0) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # --- Notepad++ ---
 # if exist "C:\Program Files\Notepad++\notepad++.exe" (
 if (Test-Path "C:\Program Files\Notepad++\notepad++.exe")
@@ -115,8 +96,6 @@ if (Test-Path "C:\Program Files\Notepad++\notepad++.exe")
     echo [..] Installiere Notepad++...
     winget install -e --id Notepad++.Notepad++ --silent --accept-source-agreements --accept-package-agreements
 }
-
-echo.
 
 # --- Double Commander ---
 if (Test-Path "C:\Program Files\Double Commander\doublecmd.exe")
