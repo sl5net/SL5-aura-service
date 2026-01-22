@@ -61,24 +61,15 @@ if ($LASTEXITCODE -eq 0) {
     # 1. Pfad suchen (Da PATH evtl. noch nicht aktuell ist)
     $copyqExe = "copyq" # Fallback
     if (Test-Path "C:\Program Files\CopyQ\copyq.exe") {
-        $copyqExe = "C:\Program Files\CopyQ\copyq.exe"
-    }
-    elseif (Test-Path "C:\Program Files (x86)\CopyQ\copyq.exe") {
-        $copyqExe = "C:\Program Files (x86)\CopyQ\copyq.exe"
+       $copyqExe = "C:\Program Files\CopyQ\copyq.exe"
+    } elseif (Test-Path "C:\Program Files (x86)\CopyQ\copyq.exe") {
+       $copyqExe = "C:\Program Files (x86)\CopyQ\copyq.exe"
     }
 
-    # 2. Befehl ausführen
-    try {
-        # 'config' Befehl aufrufen. Wichtig: & Operator für Ausführung
-        & $copyqExe config global_shortcuts/show "Ctrl+Q"
+    # Mit Call-Operator (Achtung: Pfad muss quoted werden)
+    & "$copyqExe" config global_shortcuts/show "Ctrl+1"
+    if ($LASTEXITCODE -eq 0) { "OK" } else { "Fehler: $LASTEXITCODE" }
 
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "    -> Hotkey set successfully to Ctrl+Q." -ForegroundColor Green
-        }
-    }
-    catch {
-        Write-Warning "    -> Could not set hotkey automatically. You may need to set 'Ctrl+Q' manually."
-    }
 
 } else {
     Write-Warning "CopyQ setup finished with exit code $LASTEXITCODE. It might be already installed or cancelled."

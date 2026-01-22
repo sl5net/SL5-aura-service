@@ -74,3 +74,26 @@ $f11::
     ToolTip("STT Trigger ausgelöst!")
     SetTimer(() => ToolTip(), -1500)
 }
+
+
+; ------------------------------------------------------------------
+; STRG+Q -> CopyQ Window/Fenster toggle/umschalten (Anzeigen/Verstecken)
+; ------------------------------------------------------------------
+$^q::
+{
+    ; 64-bit
+    if FileExist("C:\Program Files\CopyQ\copyq.exe")
+        Run('"C:\Program Files\CopyQ\copyq.exe" toggle')
+    ; 32-bit (Fallback)
+    else if FileExist("C:\Program Files (x86)\CopyQ\copyq.exe")
+        Run('"C:\Program Files (x86)\CopyQ\copyq.exe" toggle')
+    else
+        Run("copyq toggle", "", "UseErrorLevel")
+}
+
+
+
+
+
+
+

@@ -64,7 +64,15 @@ Write-Host "[SUCCESS] Running with Administrator privileges."
 
 
 
+<#
+Java-Balken always show (2-3 Sekunden) – thats normal
 
+Wenn der Balken für 160 MB in 2-3 Sekunden durchläuft, lädt Windows die Datei nicht wirklich herunter.
+Was passiert da? winget prüft die vorhandene Installation und vergleicht den "Hash" (Fingerabdruck) der Datei.
+Es merkt: "Datei ist schon da und korrekt", und setzt den Fortschritt sofort auf 100%.
+Fazit: please ignore it. The Das System works.
+22.1.'26 16:07 Thu
+#>
 
 
 # Only check for java if NOT running in a CI environment (like GitHub Actions)
