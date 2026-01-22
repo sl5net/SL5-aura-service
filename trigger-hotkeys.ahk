@@ -81,14 +81,17 @@ $f11::
 ; ------------------------------------------------------------------
 $^q::
 {
-    ; 64-bit
-    if FileExist("C:\Program Files\CopyQ\copyq.exe")
-        Run('"C:\Program Files\CopyQ\copyq.exe" toggle')
-    ; 32-bit (Fallback)
-    else if FileExist("C:\Program Files (x86)\CopyQ\copyq.exe")
-        Run('"C:\Program Files (x86)\CopyQ\copyq.exe" toggle')
-    else
-        Run("copyq toggle", "", "UseErrorLevel")
+    ; both should work show and toggle: https://github.com/hluk/CopyQ/issues/3011
+    ; Standard-Pfad definieren
+    exePath := "C:\Program Files\CopyQ\copyq.exe"
+    ; "C:\Program Files\CopyQ\copyq.exe" toggle
+
+    SplitPath exePath, &exeName, &exeDir
+
+;    Run('"' exePath '" toggle', exeDir)
+    Run('"' exePath '" show', exeDir)
+
+
 }
 
 
