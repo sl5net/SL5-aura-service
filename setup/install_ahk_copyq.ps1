@@ -71,7 +71,13 @@ if (Test-Path "C:\Program Files\CopyQ\copyq.exe") {
 
 # Mit Call-Operator (Achtung: Pfad muss quoted werden)
 & "$copyqExe" config global_shortcuts/show "Ctrl+1"
-if ($LASTEXITCODE -eq 0) { "OK" } else { "Fehler: $LASTEXITCODE" }
+if ($LASTEXITCODE -eq 0) { "OK" } else {
+    "Error: $LASTEXITCODE"
+    # Source - https://stackoverflow.com/a/22362868
+    # Posted by Michael Sorens
+    # Retrieved 2026-01-22, License - CC BY-SA 3.0
+    Read-Host -Prompt "Press Enter to continue"
+}
 
 # setup/install_ahk_copyq.ps1:76
 Write-Host "Running map_tagger.py..."
@@ -80,7 +86,13 @@ Write-Host "Running map_tagger.py..."
 Write-Host "Running map_tagger.py..."
 
 Start-Process ".\.venv\Scripts\python.exe" -ArgumentList "tools\map_tagger.py","--yes" -NoNewWindow -Wait -PassThru
-$LASTEXITCODE
+if ($LASTEXITCODE -eq 0) { "OK" } else {
+    "Error: $LASTEXITCODE"
+    # Source - https://stackoverflow.com/a/22362868
+    # Posted by Michael Sorens
+    # Retrieved 2026-01-22, License - CC BY-SA 3.0
+    Read-Host -Prompt "Press Enter to continue"
+}
 
 Write-Host "Running export_to_copyq.py..."
 
@@ -88,7 +100,19 @@ Write-Host "Running export_to_copyq.py..."
 #$LASTEXITCODE
 
 Start-Process "py" -ArgumentList "-3", "tools\export_to_copyq.py" -WorkingDirectory (Get-Location) -Wait -PassThru
-$LASTEXITCODE
+if ($LASTEXITCODE -eq 0) { "OK" } else {
+    "Error: $LASTEXITCODE"
+    # Source - https://stackoverflow.com/a/22362868
+    # Posted by Michael Sorens
+    # Retrieved 2026-01-22, License - CC BY-SA 3.0
+    Read-Host -Prompt "Press Enter to continue"
+}
+
+
+# Source - https://stackoverflow.com/a/22362868
+# Posted by Michael Sorens
+# Retrieved 2026-01-22, License - CC BY-SA 3.0
+Read-Host -Prompt "Press Enter to continue"
 
 
 # map_tagger.py --yes
