@@ -76,35 +76,35 @@ if ($LASTEXITCODE -eq 0) { "OK" } else {
     # Source - https://stackoverflow.com/a/22362868
     # Posted by Michael Sorens
     # Retrieved 2026-01-22, License - CC BY-SA 3.0
-    Read-Host -Prompt "Press Enter to continue"
+#    Read-Host -Prompt "Press Enter to continue"
+    Start-Sleep -Seconds 2
 }
 
 # setup/install_ahk_copyq.ps1:76
-Write-Host "Running map_tagger.py..."
 #& ".\.venv\Scripts\python.exe" "tools\map_tagger.py" "--yes"
 
-Write-Host "Running map_tagger.py..."
 
-Start-Process ".\.venv\Scripts\python.exe" -ArgumentList "tools\map_tagger.py","--yes" -NoNewWindow -Wait -PassThru
-if ($LASTEXITCODE -eq 0) { "OK" } else {
+# Ensure relative to the installer script directory
+$scriptDir  = Split-Path -Parent $MyInvocation.MyCommand.Path
+$pythonPath = Join-Path $scriptDir '..\.venv\Scripts\python.exe'
+$pythonPath = (Resolve-Path $pythonPath).Path
+
+# setup/install_ahk_copyq.ps1:87
+Write-Host "Running map_tagger.py..."
+$mapTagger  = Join-Path $scriptDir '..\tools\map_tagger.py'
+$mapTagger  = (Resolve-Path $mapTagger).Path
+& $pythonPath $mapTagger --yes
+if ($LASTEXITCODE -eq 0) {
+    "OK"
+} else {
     "Error: $LASTEXITCODE"
-    # Source - https://stackoverflow.com/a/22362868
-    # Posted by Michael Sorens
-    # Retrieved 2026-01-22, License - CC BY-SA 3.0
     Read-Host -Prompt "Press Enter to continue"
 }
 
 Write-Host "Running export_to_copyq.py..."
-
-#Start-Process ".\.venv\Scripts\python.exe" -ArgumentList "tools\export_to_copyq.py" -NoNewWindow -Wait -PassThru
-#$LASTEXITCODE
-
-Start-Process "py" -ArgumentList "-3", "tools\export_to_copyq.py" -WorkingDirectory (Get-Location) -Wait -PassThru
+Start-Process "py" -ArgumentList "-3", "..\tools\export_to_copyq.py" -WorkingDirectory (Get-Location) -Wait -PassThru
 if ($LASTEXITCODE -eq 0) { "OK" } else {
     "Error: $LASTEXITCODE"
-    # Source - https://stackoverflow.com/a/22362868
-    # Posted by Michael Sorens
-    # Retrieved 2026-01-22, License - CC BY-SA 3.0
     Read-Host -Prompt "Press Enter to continue"
 }
 

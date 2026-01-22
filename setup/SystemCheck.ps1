@@ -53,8 +53,8 @@ Start-Sleep -Seconds 1
 # SendKeys via PowerShell nutzen (ähnlich wie AHK, um zu testen ob Windows Input blockt)
 try {
     [void] [System.Reflection.Assembly]::LoadWithPartialName("'System.Windows.Forms")
-    [System.Windows.Forms.SendKeys]::SendWait("Der Test war erfolgreich.")
-    Write-Host "   Wurde Text in Notepad geschrieben? (Ja/Nein)"
+    [System.Windows.Forms.SendKeys]::SendWait("Test OK")
+#    Write-Host "   Wurde Text in Notepad geschrieben? (Ja/Nein)"
 } catch {
     Write-Host "   FEHLER beim Senden von Tastenanschlägen." -ForegroundColor Red
 }
