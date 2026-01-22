@@ -97,7 +97,7 @@ if ($env:CI -ne 'true')
     }
     else
     {
-        Write-Host "    -> Java 17+ not found. Installing OpenJDK 17..." -ForegroundColor Yellow
+        Write-Host "    -> Java 17+ ... OpenJDK 17..." -ForegroundColor Yellow
         try
         {
             # setup/windows11_setup.ps1:91
