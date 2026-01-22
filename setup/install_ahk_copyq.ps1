@@ -52,28 +52,34 @@ if ($LASTEXITCODE -eq 0) {
 
 winget install --id "hluk.CopyQ" -e --source winget --accept-package-agreements --accept-source-agreements
 
-if ($LASTEXITCODE -eq 0) {
-    Write-Host "CopyQ check/install completed successfully." -ForegroundColor Green
-
-    # --- NEU: Konfiguration des Hotkeys ---
-    Write-Host "    -> Configuring Global Hotkey (Ctrl+Q)..."
-
-    # 1. Pfad suchen (Da PATH evtl. noch nicht aktuell ist)
-    $copyqExe = "copyq" # Fallback
-    if (Test-Path "C:\Program Files\CopyQ\copyq.exe") {
-       $copyqExe = "C:\Program Files\CopyQ\copyq.exe"
-    } elseif (Test-Path "C:\Program Files (x86)\CopyQ\copyq.exe") {
-       $copyqExe = "C:\Program Files (x86)\CopyQ\copyq.exe"
-    }
-
-    # Mit Call-Operator (Achtung: Pfad muss quoted werden)
-    & "$copyqExe" config global_shortcuts/show "Ctrl+1"
-    if ($LASTEXITCODE -eq 0) { "OK" } else { "Fehler: $LASTEXITCODE" }
 
 
-} else {
-    Write-Warning "CopyQ setup finished with exit code $LASTEXITCODE. It might be already installed or cancelled."
+
+
+# Write-Host "CopyQ check/install completed successfully." -ForegroundColor Green
+
+# --- NEU: Konfiguration des Hotkeys ---
+Write-Host "    -> Configuring Global Hotkey (Ctrl+Q)..."
+
+# 1. Pfad suchen (Da PATH evtl. noch nicht aktuell ist)
+$copyqExe = "copyq" # Fallback
+if (Test-Path "C:\Program Files\CopyQ\copyq.exe") {
+   $copyqExe = "C:\Program Files\CopyQ\copyq.exe"
+} elseif (Test-Path "C:\Program Files (x86)\CopyQ\copyq.exe") {
+   $copyqExe = "C:\Program Files (x86)\CopyQ\copyq.exe"
 }
+
+# Mit Call-Operator (Achtung: Pfad muss quoted werden)
+& "$copyqExe" config global_shortcuts/show "Ctrl+1"
+if ($LASTEXITCODE -eq 0) { "OK" } else { "Fehler: $LASTEXITCODE" }
+
+
+Write-Host "Running map_tagger.py..."
+& ".\.venv\Scripts\python.exe" "tools\map_tagger.py"
+
+Write-Host "Running map_tagger.py..."
+& ".\.venv\Scripts\python.exe" "tools\export_to_copyq.py"
+
 
 
 
