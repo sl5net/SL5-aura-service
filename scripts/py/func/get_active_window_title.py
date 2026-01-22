@@ -162,7 +162,8 @@ def get_active_window_title_safe():
                         ["xdotool", "getwindowfocus", "getwindowname"],
                         stderr=subprocess.DEVNULL, env=env
                     )
-                    return res.decode("utf-8").strip().lower()
+                    # return res.decode("utf-8", errors='ignore').strip().lower()
+                    return res.decode('cp1252', errors='replace').strip().lower()
                 except Exception as e:
                     print(f'145 {e}')
                     pass

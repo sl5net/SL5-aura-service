@@ -69,7 +69,7 @@ set REPAIR_ATTEMPTED=
 :START_SERVICE_LOOP
 echo [INFO] Starting the Python STT backend service...
 
-# python -u aura_engine.py
+:: python -u aura_engine.py
 python -X utf8 -u aura_engine.py
 
 echo [INFO] Waiting 5 seconds for the service to initialize...
