@@ -16,7 +16,8 @@ if /I NOT "%CI%"=="true" (
     net session >nul 2>&1
     if %errorLevel% neq 0 (
         echo [ERROR] Re-launching with Admin rights...
-        REM powershell -Command "Start-Process '%~f0' -Verb RunAs"
+        REM update test: 2026-0122-1421
+        REM  powershell -Command "Start-Process '%~f0' -Verb RunAs"
 
         REM powershell -Command "Start-Process cmd -ArgumentList '/c, %~f0' -Verb RunAs"
 
