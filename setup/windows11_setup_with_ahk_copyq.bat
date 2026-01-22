@@ -1,4 +1,4 @@
-REM setup/windows11_setup_with_ahk_copyq.bat:1
+REM setup/windows11_setup_with_ahk_copyq.bat
 REM script_name: setup/windows11_setup_with_ahk_copyq.bat
 @echo off
 ECHO Starting Setup Variant: Core System + AutoHotkey + CopyQ...
@@ -38,6 +38,10 @@ ECHO Core setup completed. Moving to AHK and CopyQ installation...
 REM 2. Run the specific client tools installation script
 @REM setup/windows11_setup_with_ahk_copyq.bat:34
 powershell.exe -ExecutionPolicy Bypass -File "%~dp0install_ahk_copyq.ps1"
+
+
+
+
 
 call "%~dp0glogg_installer.bat"
 
