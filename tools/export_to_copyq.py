@@ -298,6 +298,13 @@ def collect_examples_old_with_random_order():
 # COPYQ EXPORT
 # -----------------------------------------------------------------------------
 
+import re
+
+def ensure_even_backslashes(s: str) -> str:
+    return re.sub(r'\\+', lambda m: m.group(0) if len(m.group(0)) % 2 == 0 else m.group(0) + '\\', s)
+
+
+
 def export_to_copyq(items, tab_name):
     if not items:
         print("logger.info: No examples found.")
@@ -318,8 +325,8 @@ def export_to_copyq(items, tab_name):
     try:
 
         proc = subprocess.run([copyq_exe, "tab", tab_name], check=True, capture_output=True, text=True, env=env)
-        print("copyq stdout:", proc.stdout)
-        print("copyq stderr:", proc.stderr)
+        # print("copyq stdout:", proc.stdout)
+        # print("copyq stderr:", proc.stderr)
         proc.check_returncode()
 
     except subprocess.CalledProcessError as e202601222017:
@@ -338,8 +345,12 @@ def export_to_copyq(items, tab_name):
     # Since the main block reverses the list (Z->A), writing Z then Y ... results in A at top.
 
     for i, item in enumerate(items):
-        text = item['text']
-        tags = item['tags']
+        text = str(item['text'])
+        # text = str(item['text']).replace('\\','\\\\') # importand for windows
+
+        text = ensure_even_backslashes(text)  # important for Windows
+
+        tags = str(item['tags'])
 
         # Build the command: copyq tab NAME write text/plain "DATA" [application/x-copyq-tags "TAGS"]
         cmd = [copyq_exe, "tab", tab_name, "write", "text/plain", text]

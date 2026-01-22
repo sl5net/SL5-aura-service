@@ -32,7 +32,7 @@ FUZZY_MAP_pre = [
     ('Debug-Ausgaben', r'^(Debatte ausgaben)$', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: program loaded
-    ('Program loaded', r'^(Progra[m]+ loaded)$', 80, {'flags': re.IGNORECASE}),
+    ('Programm geladen. Viel Spaß', r'^(Progra[m]+ loaded)$', 80, {'flags': re.IGNORECASE}),
 
 
 
