@@ -46,3 +46,4 @@ echo The update script has finished. This window can be closed.
 
 powershell -c "[System.Media.SystemSounds]::Asterisk.Play()"
 
+call "%~dp0..\start_dictation_v2.0.bat"
