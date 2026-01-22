@@ -65,6 +65,10 @@ Start-Sleep -Seconds 2
 # Fenster schließen mit Alt+F4
 #[System.Windows.Forms.SendKeys]::SendWait("%{F4}")
 # Kill all notepad without save !!
-Get-Process notepad -ErrorAction SilentlyContinue | Stop-Process -Force
+#Get-Process notepad -ErrorAction SilentlyContinue | Stop-Process -Force # thats also has killed the Terminals
+
+$procs = Get-Process -Name notepad -ErrorAction SilentlyContinue
+$procs | ForEach-Object { Stop-Process -Id $_.Id -Force }
+
 
 #Pause

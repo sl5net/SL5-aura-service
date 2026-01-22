@@ -345,10 +345,12 @@ def export_to_copyq(items, tab_name):
     # Since the main block reverses the list (Z->A), writing Z then Y ... results in A at top.
 
     for i, item in enumerate(items):
-        text = str(item['text'])
+        text_original = str(item['text'])
         # text = str(item['text']).replace('\\','\\\\') # importand for windows
 
-        text = ensure_even_backslashes(text)  # important for Windows
+        text = ensure_even_backslashes(text_original)  # important for Windows
+        if text != text_original:
+            text = 'e ' + text # at windows an e.bat exist and its opens the path when you press Enter in  Terminal the file in the notepad editor
 
         tags = str(item['tags'])
 

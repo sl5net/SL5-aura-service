@@ -112,7 +112,7 @@ if ($LASTEXITCODE -eq 0) { "OK" } else {
 # Source - https://stackoverflow.com/a/22362868
 # Posted by Michael Sorens
 # Retrieved 2026-01-22, License - CC BY-SA 3.0
-Read-Host -Prompt "Press Enter to continue"
+# Read-Host -Prompt "Press Enter to continue"
 
 
 # map_tagger.py --yes
