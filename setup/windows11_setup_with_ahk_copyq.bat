@@ -37,8 +37,6 @@ powershell.exe -ExecutionPolicy Bypass -File "%~dp0install_ahk_copyq.ps1"
 
 call "%~dp0glogg_installer.bat"
 
-ECHO Setup variant completed.
-@REM PAUSE
 
 
 

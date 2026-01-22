@@ -417,11 +417,11 @@ Write-Host "Setup for Windows completed successfully." -ForegroundColor Green
 Write-Host "------------------------------------------------------------------" -ForegroundColor Green
 
 
-/*
+<#
 Source - https://superuser.com/a/882297
 Posted by chingNotCHing
 Retrieved 2026-01-21, License - CC BY-SA 3.0
-*/
+#>
 
 call "%~dp0setup\fix_permissions.bat"
 
