@@ -21,7 +21,8 @@ Write-Host "Your personal settings in 'config\settings_local.py' will be saved."
 
 if (-not ($env:CI -eq 'true'))
 {
-    Write-Host "Please close the main application if it is running."
+    Write-Host "this will take some time ..."
+#    Write-Host "Please close the main application if it is running."
 #    Read-Host -Prompt "Press Enter to continue or CTRL+C to cancel"
 }
 try {
@@ -62,7 +63,8 @@ try {
 
     }
     # 6. Create a final batch script to perform the file replacement and update dependencies
-    $installerName = "setup\windows11_setup.bat"
+#    $installerName = "setup\windows11_setup.bat"
+    $installerName = "setup\windows11_setup_with_ahk_copyq.bat"
 
     $batchScript = @'
 @echo off
