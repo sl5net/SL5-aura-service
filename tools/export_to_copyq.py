@@ -351,6 +351,9 @@ def export_to_copyq(items, tab_name):
         text = ensure_even_backslashes(text_original)  # important for Windows
         if text != text_original:
             text = 'e ' + text # at windows an e.bat exist and its opens the path when you press Enter in  Terminal the file in the notepad editor
+        else: # it probably linux. maybe use k for kate
+            text = 'k ' + text # recommended use k for kate as alias
+
 
         tags = str(item['tags'])
 

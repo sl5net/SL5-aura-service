@@ -57,18 +57,26 @@ try {
 #    Write-Host "   Wurde Text in Notepad geschrieben? (Ja/Nein)"
 } catch {
     Write-Host "   FEHLER beim Senden von Tastenanschlägen." -ForegroundColor Red
+    Pause
 }
 
 Write-Host "--- DIAGNOSE ENDE ---"
-Start-Sleep -Seconds 2
+Start-Sleep -Seconds 1
 
 # Fenster schließen mit Alt+F4
 #[System.Windows.Forms.SendKeys]::SendWait("%{F4}")
 # Kill all notepad without save !!
 #Get-Process notepad -ErrorAction SilentlyContinue | Stop-Process -Force # thats also has killed the Terminals
 
-$procs = Get-Process -Name notepad -ErrorAction SilentlyContinue
-$procs | ForEach-Object { Stop-Process -Id $_.Id -Force }
+#$procs = Get-Process -Name notepad -ErrorAction SilentlyContinue
+#$procs | ForEach-Object { Stop-Process -Id $_.Id -Force }
+
+
+Add-Type -AssemblyName System.Windows.Forms
+# Alt+F4 (schließt Notepad) und dann 'n' für "Nicht speichern"
+[System.Windows.Forms.SendKeys]::SendWait("%{F4}")
+Start-Sleep -Milliseconds 120
+[System.Windows.Forms.SendKeys]::SendWait("n")
 
 
 #Pause
