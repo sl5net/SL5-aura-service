@@ -16,6 +16,12 @@ LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 
 def auto_reload_modified_maps(logger,run_mode_override):
+
+    # its using:
+    # importlib.reload(module): its changes the Memory of the Python-Interpreters (sys.modules).
+    # iss also changes the:
+    # LAST_MODIFIED_TIMES[...] = ...:
+
     # scripts/py/func/map_reloader.py:12
 
     # logger.info(f'31: run_mode_override: {run_mode_override}')
@@ -124,6 +130,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                 try:
                     # -------------------------------------------------------
+                    # In def auto_reload_modified_maps(logger,run_mode_override): -> scripts/py/func/map_reloader.py:127
                     # STANDARD TRIGGER LOGIC
                     # We try to import. If it is a .key file, this MUST fail.
                     # -------------------------------------------------------

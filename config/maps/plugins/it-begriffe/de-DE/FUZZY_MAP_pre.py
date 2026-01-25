@@ -17,6 +17,14 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
+
+    ('JSON Datei', r'^\b(JSON|jagen|jacen|jason|schweifen)\s*(Datei|detail)(\b)$', 80, {'flags': re.IGNORECASE}),
+
+    ('JSON Export', r'^\b(jacen export)(\b)$', 80, {'flags': re.IGNORECASE}),
+
+
+    #Mal ausprobieren
+
     # das liquid Stuhl
     # LanguageTool
     ('das LanguageTool', r'\b(das) (liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
@@ -33,6 +41,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: program loaded
     ('Programm geladen. Viel Spaß', r'^(Progra[m]+ loaded)$', 80, {'flags': re.IGNORECASE}),
+
 
 
 

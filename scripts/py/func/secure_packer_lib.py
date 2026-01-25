@@ -80,6 +80,7 @@ def execute_packing_logic(current_dir, logger):
                 for root, dirs, files in os.walk(current_dir):
                     # 1. EXCLUDE NOISE: Ignore __pycache__ directories
                     if "__pycache__" in dirs:
+                        # scripts/py/func/secure_packer_lib.py:83 (execute_packing_logic)
                         dirs.remove("__pycache__")
 
                     for file in files:

@@ -16,6 +16,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
+import pathlib
 
 import importlib.util
 
@@ -345,17 +346,36 @@ def export_to_copyq(items, tab_name):
     # Since the main block reverses the list (Z->A), writing Z then Y ... results in A at top.
 
     for i, item in enumerate(items):
-        text_original = str(item['text'])
-        # text = str(item['text']).replace('\\','\\\\') # importand for windows
+        # text = text_original = item['text']
+        text = str(item['text']).replace('\\','\\\\') # important for windows
 
-        text = ensure_even_backslashes(text_original)  # important for Windows
-        if text != text_original:
-            text = 'e ' + text # at windows an e.bat exist and its opens the path when you press Enter in  Terminal the file in the notepad editor
-        else: # it probably linux. maybe use k for kate
-            text = 'k ' + text # recommended use k for kate as alias
+        # text = ensure_even_backslashes(text_original)  # important for Windows
+        # if text != text_original:
+        #     text = 'e ' + text # at windows an e.bat exist and its opens the path when you press Enter in  Terminal the file in the notepad editor
+        # else: # it probably linux. maybe use k for kate
+        #     text = 'k ' + text # recommended use k for kate as alias
+
+        # config/maps/plugins/anki_quiz/de-DE/FUZZY_MAP_pre.py
+        tags = item['tags']
+        # print(f"--> {tags} {item['tags']}")
+        # print(f"--> {text} {item['text']}")
+
+        p2 = ''
+        if not tags:
+            try:
+                p2 = Path(text).parents[1]
+                p2 = pathlib.Path(*p2.parts[3:])
+            except Exception as e202601231029 :
+                pass
+            if p2:
+                # tags.append(p2)
+                tags.append(str(p2))
+                # print(f"--> {item['text']} ")
+                # print(f"--> {tags} {item['tags']}")
+                # print(f"-----> {p2}")
+                # sys.exit()
 
 
-        tags = str(item['tags'])
 
         # Build the command: copyq tab NAME write text/plain "DATA" [application/x-copyq-tags "TAGS"]
         cmd = [copyq_exe, "tab", tab_name, "write", "text/plain", text]

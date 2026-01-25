@@ -65,6 +65,7 @@ echo "Starting Python server from '$PROJECT_ROOT'..."
 
 echo "Starting service..."
 
-python3 "$SCRIPT_TO_START" & 
+# export PYTHONDONTWRITEBYTECODE=1
+PYTHONDONTWRITEBYTECODE=1 python3 "$SCRIPT_TO_START" &
 
 

@@ -3,7 +3,15 @@ import re # noqa: F401
 from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
 
-# Antwort 2
+readme = """
+ Antwort 2
+ Erklärung für Lernende:
+  'Antwort 2',                                       # Index 0 (Ergebnis)
+  r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?(z\w*)$',    # Index 1 (Regex Pattern)
+  100,                                               # Index 2 (Threshold/Score)
+  {'flags': re.IGNORECASE, ...}                      # Index 3 (Options Dict)
+"""
+
 
 FUZZY_MAP_pre = [
     ('Antwort 1',
@@ -15,6 +23,8 @@ FUZZY_MAP_pre = [
      r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?(z\w*)$', 100,
     {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
      'only_in_windows': [r'quizprotokoll\.md'] }),
+
+
 
     ('Antwort 3',
      r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?([df]\w*)$', 100,

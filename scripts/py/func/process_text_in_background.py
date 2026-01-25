@@ -256,11 +256,13 @@ def is_plugin_enabled(hierarchical_key, plugins_config):
 
     # Wenn wir die gesamte Hierarchie durchlaufen haben und kein einziges
     # 'False' gefunden haben, ist das Modul aktiviert.
+
+    # process_text_in_background.py:260 (is_plugin_enabled)
     return True
 
 
 def load_maps_for_language(lang_code, logger, run_mode_override=None):
-    # scripts/py/func/process_text_in_background.py:50
+    # process_text_in_background.py:265 (load_maps_for_language)
     if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
         log_memory_details(f"def load_maps_for_language", logger)
@@ -287,6 +289,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
     fuzzy_map_pre   = []
     fuzzy_map       = []
 
+    # process_text_in_background.py:290 (load_maps_for_language)
     try:
         maps_package = importlib.import_module('config.languagetool_server.maps')
         log4DEV("whats this?", logger)
@@ -304,12 +307,18 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
 
     # logger.info(f'245: run_mode_override:{run_mode_override} , run_mode:{RUN_MODE}')
-
+    # process_text_in_background.py:310 (load_maps_for_language)
     for importer, modname, ispkg in pkgutil.walk_packages(
             path=maps_package.__path__,
             prefix=maps_package.__name__ + '.',
             onerror=lambda x: None):
 
+
+        is_private = False
+
+        # scripts/py/func/process_text_in_background.py:316 (load_maps_for_language)
+        if "._" in modname or "/_" in modname or "\\_" in modname  :
+            is_private = True
         if RUN_MODE == "API_SERVICE" and ( "._" in modname or "/_" in modname  ):
             continue # maps with underscore are private
         # logger.debug(f"📚Found module candidate: {modname}",logger)
@@ -329,6 +338,12 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
         log4DEV(f"############################## modname {modname}",logger)
 
+        # process_text_in_background.py:341 (load_maps_for_language)
+
+            # for key, val in modname.items():
+            #     if isinstance(val, dict):
+            #         val['is_private'] = is_private
+            #         val['source_modname'] = modname
 
         log_all_map_ENABLED = True and settings.DEV_MODE
         hierarchical_key = None
@@ -355,7 +370,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
                 continue
 
-            # scripts/py/func/process_text_in_background.py:304
+            # scripts/py/func/process_text_in_background.py:304 (load_maps_for_language)
             if plugin_name_before != plugin_name:
 
                 if settings.show_PLUGINS_ENABLED:
@@ -373,8 +388,9 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                 # exit(1)
 
         try:
-            # scripts/py/func/process_text_in_background.py:323
+            # process_text_in_background.py:430 (load_maps_for_language)
             module = importlib.import_module(modname)
+
             # logger.info(f"🗺️ Processing: {modname}")
             # logger.info(f"🔎 Checking {modname} for hooks. Attributes: {dir(module)}")
 
@@ -416,12 +432,40 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
             #             logger.info(m)
 
 
+            # --- Metadaten  ---
+            injection_data = {
+                'source_modname': modname
+            }
+            if is_private:
+                injection_data['is_private'] = True
+            # -----------------------------
 
-
-            # Füge Daten hinzu, falls die Variablen existieren
             if hasattr(module, 'PUNCTUATION_MAP'):
+
+                if is_private:
+                    m = (f"⚠️ 💥 🚨 🛑 SECURITY WARNING: Found 'PUNCTUATION_MAP' in 🔑 private module '{modname}' "
+                         f"Punctuation maps do NOT support privacy masking! "
+                         f"Entries from this map will be logged in plain text. "
+                         f"Please move sensitive rules to 'FUZZY_MAP'.")
+                    logger.info(m)
+                    logger.warning(m)
+                    print(m)
+
                 punctuation_map.update(module.PUNCTUATION_MAP)
+
+
             if hasattr(module, 'FUZZY_MAP_pre'):
+
+                if is_private:
+                    for entry in module.FUZZY_MAP_pre:
+                        # Annahme: entry ist entweder Dict oder Tupel mit Dict am Ende
+                        if isinstance(entry, dict):
+                            entry.update(injection_data)
+                        elif isinstance(entry, (list, tuple)) and len(entry) > 0:
+                            last_item = entry[-1]
+                            if isinstance(last_item, dict):
+                                last_item.update(injection_data)
+
                 fuzzy_map_pre.extend(module.FUZZY_MAP_pre)
             if hasattr(module, 'FUZZY_MAP'):
                 # 1. Get the raw map data
@@ -434,19 +478,28 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                     item_len = len(item)
 
                     if item_len == 3:
-                        standardized_map.append(item + ({},))
+
+                        if is_private:
+                            standardized_map.append(item + (injection_data.copy(),))
+                        else:
+                            standardized_map.append(item + ({},))
 
                     elif item_len == 4:
+
+                        if is_private:
+                            options_dict = item[3]
+                            options_dict.update(injection_data)
+
                         standardized_map.append(item)
 
                     else:
                         logger.error(f"warning: FUZZY_MAP-length: ({item_len}): {item}",
-                              file=sys.stderr)
+                                     file=sys.stderr)
 
                 fuzzy_map.extend(standardized_map)
 
                 # 3. Extend the main fuzzy_map with the standardized rules
-                fuzzy_map.extend(standardized_map)
+                # fuzzy_map.extend(standardized_map)
 
         except Exception as e:
 
@@ -492,6 +545,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         from scripts.py.func.log_memory_details import log_memory_details
         log_memory_details(f"next: return punctuation_map, fuzzy_map_pre, fuzzy_map", logger)
 
+    # process_text_in_background.py:502 (load_maps_for_language)
     return punctuation_map, fuzzy_map_pre, fuzzy_map
 
 
@@ -503,6 +557,7 @@ def is_regex_pattern(pattern):
 
 
 def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger):
+    # is called in apply_all_rules_may_until_stable(
 
     log_all_processed_text = settings.DEV_MODE and False
 
@@ -556,6 +611,11 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
                             replacement +
                             temp_text_for_fuzzy_replace[start_index + original_word_length:]
                     )
+
+                    # scripts/py/func/process_text_in_background.py:560 (apply_fuzzy_replacement_logic)
+                    # angefangen noch ganz ohne funtion <=================================================
+                    # is_private = "/_" in source_path or "\\_" in source_path
+
                     found_fuzzy_match = True
                     logger.info(
                         f"🚀Fuzzy: '{processed_text}' -> '{temp_text_for_fuzzy_replace}' (Target: '{replacement}')")
@@ -571,13 +631,17 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
 
 
 def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
-    new_processed_text, full_text_replaced_by_rule, skip_list = apply_all_rules_until_stable(
+    new_processed_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred = apply_all_rules_until_stable(
         processed_text
         , fuzzy_map_pre
         , logger)
     #made_a_change_in_cycle = None
 
     #log_all_processed_text = False and settings.DEV_MODE
+
+    is_private = False
+    if privacy_taint_occurred:
+        is_private = True
 
     if GLOBAL_debug_skip_list:
 
@@ -591,7 +655,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         if GLOBAL_debug_skip_list:
             print(f'574: skip_list={skip_list}')
 
-        return new_processed_text, None, skip_list
+        return new_processed_text, None, skip_list, privacy_taint_occurred
 
 
     if full_text_replaced_by_rule:
@@ -603,7 +667,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         if GLOBAL_debug_skip_list:
             print(f'585: skip_list={skip_list} | {new_processed_text} ')
 
-        return new_processed_text, True, skip_list
+        return new_processed_text, True, skip_list, privacy_taint_occurred
 
     log4DEV(f"new_processed_text: {new_processed_text},  "
         f"skip_list:{skip_list} ,  full_text_replaced_by_rule: '{full_text_replaced_by_rule}'   ",logger)
@@ -616,7 +680,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         processed_text = new_processed_text
         log4DEV(f"251: 🔁🔁🔁🔁🔁 full_text_replaced_by_rule: '{full_text_replaced_by_rule}' ", logger)
     else:
-        # scripts/py/func/process_text_in_background.py:248
+        # scripts/py/func/process_text_in_background.py:248 (apply_all_rules_may_until_stable)
         #for replacement, match_phrase, threshold, *flags_list, rule_mode in fuzzy_map_pre:
 
         for entry in fuzzy_map_pre:
@@ -625,9 +689,25 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
             if len(entry) < 4:
                 entry =normalize_fuzzy_map_rule_entry(entry)
 
+
+
             replacement, match_phrase, threshold, options_dict = entry
 
-        # for replacement, match_phrase, threshold, options_dict in fuzzy_map_pre:
+            # 1. Try to determine privacy from options
+            # Assuming 'options_dict' is defined earlier in the loop (it usually is)
+            source_modname = options_dict.get('source_modname', '')
+
+            if options_dict.get('is_private'):
+                # Best case: The loader already flagged it
+                is_private = True
+            elif "/_" in str(source_modname) or "\\_" in str(source_modname):
+                # Fallback: Check path string
+                is_private = True
+
+            # Track global taint for this function execution
+
+                # ... (Jetzt kommt dein if is_private: Block) ...
+            # for replacement, match_phrase, threshold, options_dict in fuzzy_map_pre:
 
             # logger.info(f"252: 🔁??? threshold: '{threshold}' based on pattern '{match_phrase}'")
 
@@ -680,9 +760,16 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                     log4DEV(f'original_text_before_rule = processed_text ===> {original_text_before_rule} <- {processed_text}',logger)
 
                     if new_text != original_text_before_rule:
-                        logger.info(
-                            f"470: 🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
-                        processed_text = new_text
+
+
+                        if is_private:
+                            logger.info(
+                                f"apply_all_rules_may_until_stable -> 470: 🚀Regex_pre: '***' -> '***' (Pattern: '{match_phrase}')")
+                            processed_text = new_text
+                        else:
+                            logger.info(
+                                f"apply_all_rules_may_until_stable -> 470: 🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
+                            processed_text = new_text
                     else:
                         log4DEV(
                             f"not changed: '{processed_text}' ???? '{new_text}' (Pattern: '{match_phrase}')",logger)
@@ -690,6 +777,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
 
                     a_rule_matched = True
+
+                    if is_private:
+                        privacy_taint_occurred = True
 
                     on_match_exec_list = options_dict.get('on_match_exec', [])
 
@@ -730,7 +820,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                             if GLOBAL_debug_skip_list:
                                 print(f'708: skip_list={skip_list}')
 
-                            return processed_text, a_rule_matched, skip_list
+                            # return processed_text, a_rule_matched, skip_list # in
+                            return processed_text, a_rule_matched, skip_list, privacy_taint_occurred
 
                     log4DEV(f"a_rule_matched({a_rule_matched}) -> break",logger)
                     break  # Found a definitive match, stop this loop
@@ -753,9 +844,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
     if GLOBAL_debug_skip_list:
         print(f'731: skip_list={skip_list}')
-    return new_processed_text, a_rule_matched, skip_list
+    return new_processed_text, a_rule_matched, skip_list, privacy_taint_occurred
 
-# scripts/py/func/process_text_in_background.py:588
 def process_text_in_background(logger,
         LT_LANGUAGE,
         raw_text,
@@ -767,7 +857,7 @@ def process_text_in_background(logger,
         session_id: int = 0,
         unmasked = False
         ):
-
+    # scripts/py/func/process_text_in_background.py:588 (process_text_in_background)
 
     RUN_MODE = os.getenv('RUN_MODE')
     global settings
@@ -778,7 +868,7 @@ def process_text_in_background(logger,
 
     # clipboard_text_linux = get_clipboard_text_linux()
 
-    # scripts/py/func/process_text_in_background.py:782
+    # scripts/py/func/process_text_in_background.py:782 (process_text_in_background)
     # start = time.time()
     _active_window_title = get_active_window_title_safe()
     # end = time.time()
@@ -792,8 +882,7 @@ def process_text_in_background(logger,
     # duration = end - start
     # print(f"DISPLAY wt: {wt} duration: {duration} clipboard: {c}")
 
-
-
+    privacy_taint_occurred = False
 
     if RUN_MODE == "API_SERVICE" and unmasked is True:
         run_mode_override = "API_SERVICE_local"
@@ -853,7 +942,7 @@ def process_text_in_background(logger,
 
     global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP
 
-    # scripts/py/func/process_text_in_background.py:167
+    # scripts/py/func/process_text_in_background.py:167 (process_text_in_background)
     new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger,run_mode_override)
 
     if getattr(settings, "DEV_MODE_all_processing", False):
@@ -886,14 +975,19 @@ def process_text_in_background(logger,
         else:
             unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
 
-        log4DEV(f'raw_text:{raw_text}',logger)
-        if raw_text == '->SPEECH_PAUSE_TIMEOUT<-':
+        if not privacy_taint_occurred:
             log4DEV(f'raw_text:{raw_text}',logger)
+        if raw_text == '->SPEECH_PAUSE_TIMEOUT<-':
+            if not privacy_taint_occurred:
+
+                log4DEV(f'raw_text:{raw_text}',logger)
             raw_text = settings.SPEECH_PAUSE_TIMEOUT
             unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
             return raw_text
         if raw_text == '->AUDIO_INPUT_DEVICE<-':
-            log4DEV(f'raw_text:{raw_text}',logger)
+            if not privacy_taint_occurred:
+
+                log4DEV(f'raw_text:{raw_text}',logger)
             raw_text = settings.AUDIO_INPUT_DEVICE
             unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
             return raw_text
@@ -914,15 +1008,16 @@ def process_text_in_background(logger,
         # ZWNBSP
 
         # DEV_MODE_all_processing = settings.DEV_MODE and True
+        if not privacy_taint_occurred:
 
-        log4DEV(f"THREAD: Starting processing for: '{raw_text}'", logger)
+            log4DEV(f"THREAD: Starting processing for: '{raw_text}'", logger)
 
         notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
 
 
         lang_code_predictions = ''
 
-        # log4DEV(f"process_text_in_background.py:850 raw_text:{raw_text}", logger)
+        # log4DEV(f"process_text_in_background.py:850 (process_text_in_background) raw_text:{raw_text}", logger)
 
         if len(raw_text) > 0:
             try:
@@ -932,7 +1027,9 @@ def process_text_in_background(logger,
                     threshold=0.60
                 predictions = None
                 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
-                    logger.info(f"👀👀👀 Start lang_code predictions for: '{raw_text}'")
+                    if not privacy_taint_occurred:
+
+                        logger.info(f"👀👀👀 Start lang_code predictions for: '{raw_text}'")
                     # predictions = fasttext_model.predict(raw_text, threshold=threshold)
 
                 if predictions:
@@ -942,7 +1039,9 @@ def process_text_in_background(logger,
                         lang_code_predictions = predictions[0][0].replace('__label__', '')
                         # logger.info(f"Raw prediction object: {predictions}")
 
-                        logger.info(f"👀👀👀 lang_code predictions of '{raw_text}': {lang_code_predictions} 👀")
+                        if not privacy_taint_occurred:
+
+                            logger.info(f"👀👀👀 lang_code predictions of '{raw_text}': {lang_code_predictions} 👀")
 
                         # get something like language_code = "en-US":
                         lang_code_predictions = guess_lt_language_from_model(logger, lang_code_predictions)
@@ -969,16 +1068,20 @@ def process_text_in_background(logger,
                 # lang_code_predictions = 'de'
                 exit(1)
 
-        # scripts/py/func/process_text_in_background.py:898
+        # scripts/py/func/process_text_in_background.py:898 (process_text_in_background)
         normalize_punctuation_changed = False
         is_only_number = False
-        log4DEV(f"process_text_in_background.py:900 raw_text:{raw_text}", logger)
+        if not privacy_taint_occurred:
+
+            log4DEV(f"process_text_in_background.py:900 (process_text_in_background) raw_text:{raw_text}", logger)
         processed_text, was_exact_match = normalize_punctuation(raw_text, GLOBAL_PUNCTUATION_MAP, logger)
         # if len(processed_text) != len(raw_text):
         if processed_text != raw_text:
             normalize_punctuation_changed = True
             new_processed_text = processed_text
-            log4DEV(f"process_text_in_background.py:426 processed_text:{processed_text} ?? normalize_punctuation_changed_size:{normalize_punctuation_changed}", logger)
+            if not privacy_taint_occurred:
+
+                log4DEV(f"process_text_in_background.py:426 (process_text_in_background) processed_text:{processed_text} ?? normalize_punctuation_changed_size:{normalize_punctuation_changed}", logger)
 
         if normalize_punctuation_changed:
             processed_text = re.sub(r'(?<=\d)\s+(?=\d)', '', processed_text)
@@ -992,45 +1095,56 @@ def process_text_in_background(logger,
         regex_pre_is_replacing_all_maybe = False
         result_languagetool = None
 
-        log4DEV(
-            f"processed_text:'{processed_text}' new_processed_text:'{new_processed_text}'",logger)
+        if not privacy_taint_occurred:
+
+            log4DEV(
+                f"processed_text:'{processed_text}' new_processed_text:'{new_processed_text}'",logger)
 
         if not was_exact_match:
 
             regex_pre_is_replacing_all_maybeTEST1 = None
 
-            log4DEV(f"new_processed_text: {new_processed_text}"
-                f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
-                f" normalize_punctuation_changed_size={normalize_punctuation_changed}"
-                f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
-                f" regex_match_found_prev:{regex_match_found_prev}",logger)
+            if not privacy_taint_occurred:
+
+                log4DEV(f"new_processed_text: {new_processed_text}"
+                    f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
+                    f" normalize_punctuation_changed_size={normalize_punctuation_changed}"
+                    f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
+                    f" regex_match_found_prev:{regex_match_found_prev}",logger)
 
 
             if settings.default_mode_is_all:
                 # if true call iteratively all rules
-                log4DEV(f"Applying all rules until stable (default 'all' mode).", logger)
+
+                if not privacy_taint_occurred:
+
+                    log4DEV(f"Applying all rules until stable (default 'all' mode).", logger)
                 (new_processed_text
                 , regex_pre_is_replacing_all_maybe
-                , skip_list) = apply_all_rules_may_until_stable(processed_text
+                , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(processed_text
                 , GLOBAL_FUZZY_MAP_PRE, logger)
 
-                log4DEV(f"new_processed_text: {new_processed_text}"
-                    f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} "
-                    f" skip_list={skip_list}",logger)
+                if not privacy_taint_occurred:
+
+                    log4DEV(f"new_processed_text: {new_processed_text}"
+                        f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} "
+                        f" skip_list={skip_list}",logger)
 
 
             regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe # and regex_match_found_prev
-            log4DEV(f"new_processed_text: {new_processed_text}"
-                f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
-                f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
-                f" normalize_punctuation_changed_size={normalize_punctuation_changed}"
-                f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
-                f" regex_match_found_prev:{regex_match_found_prev}"
-                f" skip_list={skip_list}",logger)
 
-            log4DEV(f"new_processed_text:{new_processed_text}, regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}",logger)
+            if not privacy_taint_occurred:
+                log4DEV(f"new_processed_text: {new_processed_text}"
+                    f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
+                    f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
+                    f" normalize_punctuation_changed_size={normalize_punctuation_changed}"
+                    f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
+                    f" regex_match_found_prev:{regex_match_found_prev}"
+                    f" skip_list={skip_list}",logger)
 
-            log4DEV(f"LT_LANGUAGE = {LT_LANGUAGE} , SkipList=skip_list = {skip_list} , regex_pre_is_replacing_all_maybe ={regex_pre_is_replacing_all_maybe}",logger) #
+                log4DEV(f"new_processed_text:{new_processed_text}, regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}",logger)
+
+                log4DEV(f"LT_LANGUAGE = {LT_LANGUAGE} , SkipList=skip_list = {skip_list} , regex_pre_is_replacing_all_maybe ={regex_pre_is_replacing_all_maybe}",logger) #
             if regex_pre_is_replacing_all:
                 if processed_text == 'english please' and LT_LANGUAGE == 'de-DE':
                     processed_text = 'Ok, lets write in english now.'
@@ -1047,20 +1161,24 @@ def process_text_in_background(logger,
                     # load_maps_for_language(LT_LANGUAGE, logger)
                     # Switched to English mill ﻿ Deutsche Putin the
 
-            log4DEV(f"if ({not regex_pre_is_replacing_all}"
-                f" and not {is_only_number}"
-                f" and 📚📚'LanguageTool'📚📚 not in SkipList:{skip_list} "
-                f" and not ( ... {processed_text}",logger)
+            if not privacy_taint_occurred:
 
-            # scripts/py/func/process_text_in_background.py:982 def process_text_in_background(...
+                log4DEV(f"if ({not regex_pre_is_replacing_all}"
+                    f" and not {is_only_number}"
+                    f" and 📚📚'LanguageTool'📚📚 not in SkipList:{skip_list} "
+                    f" and not ( ... {processed_text}",logger)
+
+            # scripts/py/func/process_text_in_background.py:982 (process_text_in_background)
             if (not regex_pre_is_replacing_all and not is_only_number and 'LanguageTool' not in skip_list ):
 
                 if new_processed_text ==0:
                     new_processed_text = processed_text
 
-                log4DEV(f"and not 📚📚'LanguageTool'📚📚 in skip_list ==> {skip_list}"
-                    f" processed_text:{processed_text}"
-                    f" new_processed_text:{new_processed_text} ",logger)
+                if not privacy_taint_occurred:
+
+                    log4DEV(f"and not 📚📚'LanguageTool'📚📚 in skip_list ==> {skip_list}"
+                        f" processed_text:{processed_text}"
+                        f" new_processed_text:{new_processed_text} ",logger)
 
 
 
@@ -1077,7 +1195,7 @@ def process_text_in_background(logger,
                     log_memory_details(f"last correct_text_by_languagetool:", logger)
 
 
-            # scripts/py/func/process_text_in_background.py:1080
+            # scripts/py/func/process_text_in_background.py:1080 (process_text_in_background)
             # Step 2: Slower, fuzzy replacements on the result
             # logger.info(f"DEBUG: Starting fuzzy match for: '{processed_text}'")
 
@@ -1089,11 +1207,14 @@ def process_text_in_background(logger,
 
             # Pass 1: Prioritize and check for exact REGEX matches first.
             # A regex match is considered definitive and will stop further processing.
-            log4DEV(f"SkipList: {skip_list} "
-                    f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
-                    f" processed_text:{processed_text} "
-                    f" new_processed_text:{new_processed_text}"
-                    f" 📚📚result_languagetool📚📚:{result_languagetool} ",logger)
+
+            if not privacy_taint_occurred:
+
+                log4DEV(f"SkipList: {skip_list} "
+                        f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
+                        f" processed_text:{processed_text} "
+                        f" new_processed_text:{new_processed_text}"
+                        f" 📚📚result_languagetool📚📚:{result_languagetool} ",logger)
             # 477: SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
 
             regex_match_found = False
@@ -1107,7 +1228,9 @@ def process_text_in_background(logger,
             if not regex_pre_is_replacing_all and not is_only_number:
                 log4DEV(f'in fuzzy_map: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
                 for replacement, match_phrase, threshold, options_dict in GLOBAL_FUZZY_MAP:
-                    log4DEV(f'for {replacement}, {match_phrase} ... in fuzzy_map:', logger)
+
+                    if not privacy_taint_occurred:
+                        log4DEV(f'for {replacement}, {match_phrase} ... in fuzzy_map:', logger)
 
                     # logger.info(
                     #     f'process_text_in_background.py:549 in fuzzy_map:'
@@ -1133,7 +1256,8 @@ def process_text_in_background(logger,
                     # is_regex_pattern seems useless here. we also can replace with normal text. must not look like a regex. 8.11.'25
                     if True or is_regex_pattern(match_phrase):
                         # logger.info(f"516 in fuzzy_map: '👀 -->{match_phrase}<-- 👀")
-                        log4DEV(f"re.search({match_phrase}, {result_languagetool}..):",logger)
+                        if not privacy_taint_occurred:
+                            log4DEV(f"re.search({match_phrase}, {result_languagetool}..):",logger)
 
                         try:
                             log4DEV(f"DEBUG FUZZY: Starting fuzzy loop with text: '{processed_text}'", logger)
@@ -1144,7 +1268,8 @@ def process_text_in_background(logger,
 
                             if not re.search(match_phrase, result_languagetool, flags=flags):
                                 continue
-                            log4DEV(f"🔁Regex in: '{result_languagetool}' --> '{replacement}' based on pattern '{match_phrase}'",logger)
+                            if not privacy_taint_occurred:
+                                log4DEV(f"🔁Regex in: '{result_languagetool}' --> '{replacement}' based on pattern '{match_phrase}'",logger)
 
                             new_text = re.sub(
                                 match_phrase,
@@ -1154,8 +1279,9 @@ def process_text_in_background(logger,
                             )
 
                             if new_text != result_languagetool:
-                                log4DEV(
-                                    f"Regex match: '{result_languagetool}' -> '{new_text}' (Pattern: '{match_phrase}')",logger)
+                                if not privacy_taint_occurred:
+                                    log4DEV(
+                                        f"Regex match: '{result_languagetool}' -> '{new_text}' (Pattern: '{match_phrase}')",logger)
                                 processed_text = new_text
                                 result_languagetool = new_text # TODO: lazy programming
 
@@ -1177,7 +1303,9 @@ def process_text_in_background(logger,
                     and not regex_pre_is_replacing_all_maybe
                     and not regex_match_found
                     and not is_only_number):
-                log4DEV(f"No regex match. Proceeding to fuzzy search for: '{processed_text}'",logger)
+
+                if not privacy_taint_occurred:
+                    log4DEV(f"No regex match. Proceeding to fuzzy search for: '{processed_text}'",logger)
                 best_score = 0
                 best_replacement = None
 
@@ -1226,54 +1354,62 @@ def process_text_in_background(logger,
         # file: scripts/py/func/process_text_in_background.py
         # ... watchDir := "C:\tmp\sl5_aura"
 
-
-        log4DEV(
-            f"SkipList:{skip_list} "
-            f" processed_text:{processed_text} "
-            f" new_processed_text:{new_processed_text}"
-            f" result_languagetool:{result_languagetool} ",logger)
+        if not privacy_taint_occurred:
+            log4DEV(
+                f"SkipList:{skip_list} "
+                f" processed_text:{processed_text} "
+                f" new_processed_text:{new_processed_text}"
+                f" result_languagetool:{result_languagetool} ",logger)
         # SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
         # SkipList:[]  processed_text: mit nachnamen Lauffer  new_processed_text:False result_languagetool:Mit Nachnamen lauf er
 
 
 
         if not new_processed_text:
-            log4DEV(f"Empty results are allowed not |||  SkipList:{skip_list}"
+            if not privacy_taint_occurred:
+                log4DEV(f"Empty results are allowed not |||  SkipList:{skip_list}"
+                    f" new_processed_text:{new_processed_text}"
+                    f" result_languagetool:{result_languagetool}"
+                    f" processed_text:{processed_text} ",logger)
+
+        if (new_processed_text and new_processed_text != '0' and new_processed_text is not None) and new_processed_text != processed_text:
+            if not privacy_taint_occurred:
+                log4DEV(f'new_processed_text != processed_text | {new_processed_text} != {processed_text} ==> processed_text = new_processed_text',logger)
+            processed_text = new_processed_text
+
+            # unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
+            # unique_output_file.write_text(processed_text)
+
+            if not privacy_taint_occurred:
+                log4DEV(f"SkipList:{skip_list}"
+                    f" new_processed_text:{new_processed_text}"
+                    f" result_languagetool:{result_languagetool}"
+                    f" processed_text:{processed_text} ",logger)
+
+            #processed_text = (result_languagetool) ? result_languagetool : processed_text
+
+
+            # log4DEV(f'{result_languagetool} {processed_text}', logger)
+
+            # her now fixed at 4.12.'25 15:55 Thu 'Null'->0 replacement was not recognized correctly:
+            # All 88tested of 97 tests(all lang) passed! Great no test failed
+            # 15:55:30,922 - INFO     - ----------------------------------------
+            # 15:55:30,922 - INFO     - ⌚ self_test_readable_duration: 0:00:37.181278
+        processed_text = result_languagetool if result_languagetool else new_processed_text if new_processed_text else processed_text
+
+        if not privacy_taint_occurred:
+            log4DEV(f"SkipList:{skip_list}"
                 f" new_processed_text:{new_processed_text}"
                 f" result_languagetool:{result_languagetool}"
                 f" processed_text:{processed_text} ",logger)
-
-        if (new_processed_text and new_processed_text != '0' and new_processed_text is not None) and new_processed_text != processed_text:
-            log4DEV(f'new_processed_text != processed_text | {new_processed_text} != {processed_text} ==> processed_text = new_processed_text',logger)
-            processed_text = new_processed_text
-
-        # unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
-        # unique_output_file.write_text(processed_text)
-        log4DEV(f"SkipList:{skip_list}"
-            f" new_processed_text:{new_processed_text}"
-            f" result_languagetool:{result_languagetool}"
-            f" processed_text:{processed_text} ",logger)
-
-        #processed_text = (result_languagetool) ? result_languagetool : processed_text
-
-
-        # log4DEV(f'{result_languagetool} {processed_text}', logger)
-
-        # her now fixed at 4.12.'25 15:55 Thu 'Null'->0 replacement was not recognized correctly:
-        # All 88tested of 97 tests(all lang) passed! Great no test failed
-        # 15:55:30,922 - INFO     - ----------------------------------------
-        # 15:55:30,922 - INFO     - ⌚ self_test_readable_duration: 0:00:37.181278
-        processed_text = result_languagetool if result_languagetool else new_processed_text if new_processed_text else processed_text
-        log4DEV(f"SkipList:{skip_list}"
-            f" new_processed_text:{new_processed_text}"
-            f" result_languagetool:{result_languagetool}"
-            f" processed_text:{processed_text} ",logger)
 
 
         script_result = processed_text  # Wir starten mit dem Originaltext
 
         # new_current_text wird das finale Ergebnis sein
-        log4DEV(f'processed_text={processed_text}', logger)
+
+        if not privacy_taint_occurred:
+            log4DEV(f'processed_text={processed_text}', logger)
         new_current_text = None
         # lang_for_tts startet mit der Originalsprache
         lang_for_tts = LT_LANGUAGE
@@ -1310,10 +1446,17 @@ def process_text_in_background(logger,
 
             # KORREKTUR 1: Verwende die NEUEN Variablen für den Fallback
             handle_tts_fallback(new_current_text, lang_for_tts, logger)
-            log4DEV(f"handle_tts_fallback({new_current_text}, {lang_for_tts})",logger)
+            if not privacy_taint_occurred:
+                log4DEV(f"handle_tts_fallback({new_current_text}, {lang_for_tts})",logger)
 
             # KORREKTUR 2: Logge den Text, der WIRKLICH geschrieben wurde
-            logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '{new_current_text}'")
+
+            # process_text_in_background.py:1453 (process_text_in_background)
+            if privacy_taint_occurred:
+                logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '***'")
+            else:
+                logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '{new_current_text}'")
+
         else:
             logger.warning("Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.")
             log4DEV("new_current_text={new_current_text} . Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.",logger)
@@ -1325,12 +1468,13 @@ def process_text_in_background(logger,
 
     except Exception as e:
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
-        logger.error(f"scripts/py/func/process_text_in_background.py:1167")
+        logger.error(f"scripts/py/func/process_text_in_background.py:1167") (process_text_in_background)
         notify(f"FATAL: Error in processing thread", duration=4000, urgency="low")
     finally:
         # file: scripts/py/func/process_text_in_background.py
         if settings.DEV_MODE:
-            log4DEV(f"✅ Background processing for '{raw_text[:20]}...' finished. ",logger)
+            if not privacy_taint_occurred:
+                log4DEV(f"✅ Background processing for '{raw_text[:20]}...' finished. ",logger)
             notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
 
         # # scripts/py/func/process_text_in_background.py:433 TODO fallback:
@@ -1393,7 +1537,7 @@ def sanitize_transcription_start(raw_text: str) -> str:
 
 
 def handle_tts_fallback(processed_text: str, LT_LANGUAGE: str, logger):
-    # scripts/py/func/process_text_in_background.py:900
+    # scripts/py/func/process_text_in_background.py:900 (handle_tts_fallback)
     home_dir = Path.home()
     speak_piper_file_path = home_dir / "projects" / "py" / "TTS" / "speak_file.py"
     primary_tts_successful = False
@@ -1428,6 +1572,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
     # log_all_changes = False and settings.DEV_MODE
 
     skip_list = []
+    privacy_taint_occurred = False
 
     previous_text = ""
     current_text = text
@@ -1474,7 +1619,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 break
         # --- END OF STABILITY CHECK ---
 
-
+        is_private = False
         for rule_entry in rules_map:
 
             if GLOBAL_debug_skip_list:
@@ -1486,10 +1631,12 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             # SAFETY GUARD: Skip invalid entries that are not tuples/lists
             if not isinstance(rule_entry, (tuple, list)):
-                m = f"🚨 INVALID RULE ENTRY found while working on rule text=📃{text}📄 "\
-                    f"Type {type(rule_entry)}): {rule_entry}. Please check your map files!"
-                log4DEV(m,logger_instance)
-                logger_instance.info(m)
+
+                if not privacy_taint_occurred:
+                    m = f"🚨 INVALID RULE ENTRY found while working on rule text=📃{text}📄 "\
+                        f"Type {type(rule_entry)}): {rule_entry}. Please check your map files!"
+                    log4DEV(m,logger_instance)
+                    logger_instance.info(m)
 
                 if GLOBAL_debug_skip_list:
                     print(f'1433: Processing rule {rule_entry} ')
@@ -1516,10 +1663,35 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             # 🔵
 
-            # scripts/py/func/process_text_in_background.py:1471
+            # scripts/py/func/process_text_in_background.py -> apply_all_rules_until_stable :1471
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
 
             skip_list_temp = options_dict.get('skip_list', [])
+
+            source_modname = options_dict.get('source_modname', '')
+
+            # process_text_in_background.py:1669 (apply_all_rules_until_stable)
+
+            # 1. Check Metadata from Injection (Primary Source)
+            rule_is_private = options_dict.get('is_private', False)
+
+            # 2. Safety Fallback: Check Source Path if metadata is missing/False
+            # (Only needed if rule_is_private is False)
+            if not rule_is_private:
+                # Hole den Pfad, falls vorhanden
+                src = str(options_dict.get('source_modname', ''))  # oder 'source_path' je nach Benennung
+                if "/_" in src or "\\_" in src:
+                    rule_is_private = True
+
+            # 3. Update Global Taint (Sticky)
+            if rule_is_private:
+                is_private = True
+
+            # 4. Logging (Simplified)
+            # if rule_is_private:
+                # if settings.DEV_MODE:
+                #    logger_instance.info(f"🔒 Apply Private Rule (Source: ...)")
+
 
             only_in_windows_list = options_dict.get('only_in_windows', [])
             skip_this_regex_pattern = False
@@ -1543,7 +1715,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     skip_this_regex_pattern = False
 
                     if show_debug_prints:
-                        logger_instance.info(f'matched: 🥳 {m_202601180206}')
+                        logger_instance.info(f'window title matched: 🥳 {m_202601180206}')
 
                 # for pattern in only_in_windows_list:
                 #     if show_debug_prints:
@@ -1592,7 +1764,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     log4DEV(f"original..={original_text_for_script}", logger_instance)
 
                     new_current_text = compiled_regex.sub(replacement_text, current_text)
-                    log4DEV(f"new..={new_current_text}", logger_instance)
+                    if not privacy_taint_occurred:
+                        log4DEV(f"new..={new_current_text}", logger_instance)
                     # log4DEV(f"regex_pattern:{regex_pattern}, sub_replacement_string={sub_replacement_string}", logger_instance)
 
                     if new_current_text != original_text_for_script:
@@ -1618,9 +1791,13 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         # <<< HINWEIS: Dein restlicher Code kann jetzt unverändert bleiben >>>
                         # Er verwendet new_current_text, das jetzt das finale Ergebnis aus den Skripten enthält.
 
-                        log4DEV(f"new..:'{new_current_text}' != original..:'{original_text_for_script}'",logging)
+                        if not privacy_taint_occurred:
+                            log4DEV(f"new..:'{new_current_text}' != original..:'{original_text_for_script}'",logging)
 
                         made_a_change_in_cycle = True
+
+                        privacy_taint_occurred = True
+
                         made_a_change = made_a_change + 1
                         skip_list = skip_list_temp
 
@@ -1632,7 +1809,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         full_text_replaced_by_rule = True  # because was full-match
                         log4DEV(f"full_text_replaced_by_rule = {full_text_replaced_by_rule}",logger_instance)
 
-                        log4DEV(f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} '{original_text_for_script}' ----> '{current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}",logger_instance)
+                        if not privacy_taint_occurred:
+                            log4DEV(f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} '{original_text_for_script}' ----> '{current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}",logger_instance)
 
                         if GLOBAL_debug_skip_list:
                             print(f'1534: skip_list={skip_list}')
@@ -1691,7 +1869,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
                                 # Dein restlicher Code für diesen Block
                             made_a_change += 1
-                            log4DEV(
+                            if not privacy_taint_occurred:
+                                log4DEV(
                                     f"834🚀🚀Iterative-All-Rules made_a_change={made_a_change} : '{original_text_for_script}' -> '{new_current_text}' (Pattern: '{regex_pattern}')",logger_instance)
 
                             current_text = new_current_text
@@ -1712,13 +1891,14 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             break
 
     if not made_a_change:
-        log4DEV(f"made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
-        #  z.b. "das ist ein test landet" hier. Es gibt auch (höchstwahrschienlich keine Regel hiervür. Also correkt.
-        # logging.info('sys.exit(1) 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923')
-        # sys.exit(1) # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 Test
-        log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",
-                logger_instance)
-        return made_a_change, full_text_replaced_by_rule, skip_list
+        if not privacy_taint_occurred:
+            log4DEV(f"made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
+            #  z.b. "das ist ein test landet" hier. Es gibt auch (höchstwahrschienlich keine Regel hiervür. Also correkt.
+            # logging.info('sys.exit(1) 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923')
+            # sys.exit(1) # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 Test
+            log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",
+                    logger_instance)
+        return made_a_change, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
         # log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
     # 17:08:56,492 - INFO     - 758: made_a_change=True full_text_replaced_by_rule:False current_text:mit nachnamen Lauffer
 
@@ -1752,13 +1932,14 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
     # if made_a_change > 1:
     #     if 'LanguageTool' not in skip_list:
     #         skip_list.append('LanguageTool')
-    log4DEV(f"🚀🚀🚀skip_list:{skip_list} "
-            f"regex_pattern={regex_pattern} made_a_change:{made_a_change} "
-            f"full_text_replaced_by_rule:{full_text_replaced_by_rule} "
-            f"current_text:{current_text}",logger_instance)
+    if not privacy_taint_occurred:
+        log4DEV(f"🚀🚀🚀skip_list:{skip_list} "
+                f"regex_pattern={regex_pattern} made_a_change:{made_a_change} "
+                f"full_text_replaced_by_rule:{full_text_replaced_by_rule} "
+                f"current_text:{current_text}",logger_instance)
     # 17:08:56,492 - INFO     - 758: made_a_change=True full_text_replaced_by_rule:False current_text:mit nachnamen Lauffer
 
-    return current_text, full_text_replaced_by_rule, skip_list
+    return current_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
 
 #
 
