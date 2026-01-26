@@ -3,5 +3,5 @@ import re # noqa: F401
 
 # too<-from
 FUZZY_MAP = [
-    ('koans', '\b(korn|korns|chor|kohlen)\b'),
+    ('koans', '\b(korn|korns|chor|chor ins|kohlen)\b'),
 ]

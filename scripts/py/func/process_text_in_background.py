@@ -1468,7 +1468,7 @@ def process_text_in_background(logger,
 
     except Exception as e:
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
-        logger.error(f"scripts/py/func/process_text_in_background.py:1167") (process_text_in_background)
+        logger.error(f"scripts/py/func/process_text_in_background.py:1167  (process_text_in_background)")
         notify(f"FATAL: Error in processing thread", duration=4000, urgency="low")
     finally:
         # file: scripts/py/func/process_text_in_background.py
@@ -1619,7 +1619,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 break
         # --- END OF STABILITY CHECK ---
 
-        is_private = False
         for rule_entry in rules_map:
 
             if GLOBAL_debug_skip_list:
@@ -1631,7 +1630,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             # SAFETY GUARD: Skip invalid entries that are not tuples/lists
             if not isinstance(rule_entry, (tuple, list)):
-
+                # scripts/py/func/process_text_in_background.py:1634 (apply_all_rules_until_stable)
                 if not privacy_taint_occurred:
                     m = f"🚨 INVALID RULE ENTRY found while working on rule text=📃{text}📄 "\
                         f"Type {type(rule_entry)}): {rule_entry}. Please check your map files!"
@@ -1668,11 +1667,12 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             skip_list_temp = options_dict.get('skip_list', [])
 
-            source_modname = options_dict.get('source_modname', '')
+            # source_modname = options_dict.get('source_modname', '')
 
             # process_text_in_background.py:1669 (apply_all_rules_until_stable)
 
             # 1. Check Metadata from Injection (Primary Source)
+            # scripts/py/func/process_text_in_background.py:1676 (apply_all_rules_until_stable)
             rule_is_private = options_dict.get('is_private', False)
 
             # 2. Safety Fallback: Check Source Path if metadata is missing/False
@@ -1684,8 +1684,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     rule_is_private = True
 
             # 3. Update Global Taint (Sticky)
-            if rule_is_private:
-                is_private = True
 
             # 4. Logging (Simplified)
             # if rule_is_private:
@@ -1761,7 +1759,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     # Der ursprüngliche Text, bevor irgendetwas geändert wird
                     original_text_for_script = current_text
                     # print(f"1571:🔎 🔎 🔎 original..={original_text_for_script} current_text={current_text}")
-                    log4DEV(f"original..={original_text_for_script}", logger_instance)
+                    if not privacy_taint_occurred:
+                        log4DEV(f"original..={original_text_for_script}", logger_instance)
 
                     new_current_text = compiled_regex.sub(replacement_text, current_text)
                     if not privacy_taint_occurred:
@@ -1796,6 +1795,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
                         made_a_change_in_cycle = True
 
+                        # scripts/py/func/process_text_in_background.py:1799 (apply_all_rules_until_stable)
                         privacy_taint_occurred = True
 
                         made_a_change = made_a_change + 1

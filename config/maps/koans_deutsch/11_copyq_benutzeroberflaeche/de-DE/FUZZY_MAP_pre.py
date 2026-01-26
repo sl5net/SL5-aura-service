@@ -3,7 +3,9 @@ import re # noqa: F401
 
 # too<-from
 FUZZY_MAP_pre = [
-    ('koans', '^(korn|korns|koons|cohens|kreuz|kohl|kurz)$'),
+    ('koans', '^(korn|korns|koons|cohens|kreuz|kohl|kurz|chor ins|cuarón|twain|kurt)$'),
+
+    #
 ]
 
 

@@ -3,7 +3,7 @@ import re # noqa: F401
 from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
 
-readme = """
+readme = r"""
  Antwort 2
  Erklärung für Lernende:
   'Antwort 2',                                       # Index 0 (Ergebnis)
