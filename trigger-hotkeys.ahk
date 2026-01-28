@@ -1,7 +1,6 @@
 #Requires AutoHotkey v2.0
 
 #UseHook True
-#InstallKeybdHook
 
 ; trigger_hotkey.ahk
 ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
@@ -71,6 +70,10 @@ $f11::
     try FileDelete activeWinTitleFile
     FileAppend activeWinTitle, activeWinTitleFile
 
+    if InStr(activeWinTitle, ".py - Notepad++")
+    {
+        Send("^s")
+    }
 
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)

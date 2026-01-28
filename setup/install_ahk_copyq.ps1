@@ -1,11 +1,44 @@
 # install_ahk_copyq.ps1
 # script_name: setup/install_ahk_copyq.ps1
 
+param([string]$ProjectRootPath)
+
 $downloadDir = "$env:USERPROFILE\Downloads"
 # AHK specific variables
 $ahkInstallerName = "ahk-install.exe"
 $ahkLocalPath = Join-Path -Path $downloadDir -ChildPath $ahkInstallerName
 $ahkInstalledPath = "$env:ProgramFiles\AutoHotkey\v2\AutoHotkey.exe"
+
+$ProjectRootPath = Split-Path -Path $PSScriptRoot -Parent
+function Register-AuraStartupTask {
+    param(
+        [string]$ProjectRootPath
+    )
+    $AhkExePath = Join-Path $env:ProgramFiles "AutoHotkey\v2\AutoHotkey64.exe"
+    if (-not (Test-Path $AhkExePath)) {
+        $AhkExePath = Join-Path $env:ProgramFiles "AutoHotkey\v2\AutoHotkey.exe"
+    }
+    $AhkScriptPath = Join-Path $ProjectRootPath "trigger-hotkeys.ahk"
+    if (-not (Test-Path $AhkExePath)) {
+        Write-Error "AutoHotkey executable not found at '$AhkExePath'. Cannot create scheduled task."
+        return
+    }
+    $TaskName = "AuraDictation_Hotkeys"
+    $TaskDescription = "Starts the AutoHotkey script for Aura Dictation with highest privileges on user logon."
+    $TaskAction = New-ScheduledTaskAction -Execute $AhkExePath -Argument "`"$AhkScriptPath`""
+    $TaskTrigger = New-ScheduledTaskTrigger -AtLogOn
+    $TaskPrincipal = New-ScheduledTaskPrincipal -UserId (Get-CimInstance Win32_ComputerSystem).Username -LogonType Interactive -RunLevel Highest
+    # Alte Aufgabe löschen, falls vorhanden, für eine saubere Neuinstallation
+    Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
+    # Neue Aufgabe registrieren
+    try {
+        Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Principal $TaskPrincipal -Description $TaskDescription
+        Write-Host "Successfully created scheduled task '$TaskName'."
+    }
+    catch {
+        Write-Error "Failed to create scheduled task. Error: $_"
+    }
+}
 
 Write-Host "Starting setup for client tools..." -ForegroundColor Cyan
 
@@ -36,6 +69,20 @@ if (Test-Path -Path $ahkInstalledPath) {
         winget install --id "AutoHotkey.AutoHotkey" -e --source winget --accept-package-agreements --accept-source-agreements
     }
 }
+
+
+if ($ProjectRootPath) {
+        Register-AuraStartupTask -ProjectRootPath $ProjectRootPath
+} else {
+    Write-Warning "ProjectRootPath path not provided. Cannot create scheduled task."
+}
+
+
+
+
+
+
+
 
 # --- TASK 2: CopyQ ---
 Write-Host "`n[2/2] Checking CopyQ..." -ForegroundColor Yellow

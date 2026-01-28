@@ -61,7 +61,7 @@ REM --- FZF INSTALLATION END ---
 
 ECHO.
 ECHO ========================================================
-ECHO Installation abgeschlossen.
+ECHO Installation finished.
 ECHO start "Aura Dictation" (maybe ~ 30s)...
 ECHO ========================================================
 
