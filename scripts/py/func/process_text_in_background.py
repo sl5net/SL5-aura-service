@@ -12,6 +12,9 @@ from pathlib import Path
 
 import psutil
 
+import shutil
+import subprocess
+
 from .audio_manager import speak_fallback
 from .auto_fix_module import try_auto_fix_module
 from .get_active_window_title import get_active_window_title_safe
@@ -27,6 +30,9 @@ from .notify import notify
 
 
 from scripts.py.func.config.dynamic_settings import DynamicSettings
+
+
+import platform
 
 settings = DynamicSettings()
 
@@ -503,13 +509,14 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
         except Exception as e:
 
+            # scripts/py/func/process_text_in_background.py:506
             file_path = None
             spec = importer.find_spec(modname)
             if spec and spec.origin:
                 file_path = spec.origin
 
             if 'file_path' in locals() and try_auto_fix_module(file_path, e, logger):
-                logger.info("🔧 Auto-Fix im Background-Loop angewendet! Versuche Reload...")
+                logger.info("🔧 Auto-Fix in Background-Loop finished! try Reload...")
                 try:
                     importlib.invalidate_caches()
                     # Hier musst du schauen, wie das Modul im Original geladen wurde
@@ -520,10 +527,11 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                     # Wenn wir hier sind, hat es geklappt!
                     # Je nach Logik musst du das Modul jetzt vielleicht zur Liste hinzufügen
                     # oder einfach 'continue' machen, damit der nächste Loop-Durchlauf es sauber lädt.
-                    logger.info("✅ Modul gerettet. Mache weiter.")
+                    logger.info("✅ Modul repaired. ")
 
-                    # Falls du das Modul hier direkt verarbeitest, tue es jetzt.
-                    # Ansonsten sorgt der nächste Zyklus des Loops dafür, dass es geladen wird.
+                    if platform.system() == "Windows":
+                        windows_apply_correction_with_sync()
+
                     continue
 
                 except Exception as retry_err:
@@ -1970,3 +1978,51 @@ def clear_global_maps(logger):
     GLOBAL_FUZZY_MAP.clear()
 
     # logger.info("Global Map Registries successfully cleared.")
+
+# import subprocess
+
+windows_apply_correction_LAST_NOTIFY_TIME = 0
+
+
+# def windows_apply_correction_with_sync(file_path, corrected_text):
+def windows_apply_correction_with_sync():
+
+    windows_apply_correction_notify_cooldown = 3.0
+
+    current_time = time.time()
+    global windows_apply_correction_LAST_NOTIFY_TIME
+    # global PROJECT_ROOT
+    if (current_time - windows_apply_correction_LAST_NOTIFY_TIME) < windows_apply_correction_notify_cooldown:
+        return
+
+    # ahk_path = "AutoHotkey.exe"
+
+
+    ahk_path = shutil.which("AutoHotkey.exe")
+
+    if not ahk_path:
+        standard_paths = [
+            r"C:\Program Files\AutoHotkey\AutoHotkey.exe",
+            r"C:\Program Files\AutoHotkey\v1.1\AutoHotkey.exe",
+            r"C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe"
+        ]
+        for p in standard_paths:
+            if os.path.exists(p):
+                ahk_path = p
+                break
+
+    if not ahk_path:
+        print("error: AutoHotkey not found!")
+
+    # scripts/py/func/process_text_in_background.py:2013
+    script_path = PROJECT_ROOT / "scripts" / "ahk" / "sync_editor.ahk"
+
+    # subprocess.run([ahk_path, script_path, "save"])
+
+    #with open(file_path, "w", encoding="utf-8") as f:
+    #    f.write(corrected_text)
+
+    subprocess.run([ahk_path, script_path, "notify"])
+    windows_apply_correction_LAST_NOTIFY_TIME = current_time
+
+

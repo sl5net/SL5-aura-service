@@ -46,6 +46,17 @@ powershell.exe -ExecutionPolicy Bypass -File "%~dp0install_ahk_copyq.ps1"
 call "%~dp0glogg_installer.bat"
 
 
+REM --- FZF INSTALLATION START ---
+ECHO Installing fzf (Fuzzy Finder)...
+winget install -e --id junegunn.fzf --source winget --accept-package-agreements --accept-source-agreements
+IF %ERRORLEVEL% NEQ 0 (
+    ECHO fzf was already installed or an error occurred.
+) ELSE (
+    ECHO fzf installed successfully.
+)
+REM --- FZF INSTALLATION END ---
+
+
 
 
 ECHO.
