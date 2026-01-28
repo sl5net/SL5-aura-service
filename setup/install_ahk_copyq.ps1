@@ -31,8 +31,21 @@ function Register-AuraStartupTask {
     # Alte Aufgabe löschen, falls vorhanden, für eine saubere Neuinstallation
     Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
     # Neue Aufgabe registrieren
+
+    $TaskSettings = New-ScheduledTaskSettingsSet `
+        -AllowStartIfOnBatteries `
+        -DontStopIfGoingOnBatteries `
+        -StartWhenAvailable `
+        -DontStopOnIdleEnd `
+        -ExecutionTimeLimit 0
+
     try {
-        Register-ScheduledTask -TaskName $TaskName -Action $TaskAction -Trigger $TaskTrigger -Principal $TaskPrincipal -Description $TaskDescription
+        Register-ScheduledTask -TaskName $TaskName `
+        -Action $TaskAction  `
+        -Trigger $TaskTrigger  `
+        -Principal $TaskPrincipal  `
+        -Settings $TaskSettings `
+        -Description $TaskDescription
         Write-Host "Successfully created scheduled task '$TaskName'."
     }
     catch {
