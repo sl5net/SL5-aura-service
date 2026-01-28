@@ -67,6 +67,7 @@ def _is_lt_server_responsive(url, timeout=1):
 
 
 def start_languagetool_server(logger, languagetool_jar_path, base_url):
+    # scripts/py/func/start_languagetool_server.py:70
     # 1. EARLY CHECK: Prevent double startup
     port = base_url.split(':')[-1].split('/')[0]
     # full_base_url = f"http://localhost:{port}"
@@ -115,7 +116,15 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
         logger.info(f"Starting LanguageTool Server using Java from: {java_executable_path}")
 
     try:
-        command_str = f'"{java_executable_path}" -jar "{languagetool_jar_path}" --port {port} --allow-origin "*"'
+        # command_strOld = f'"{java_executable_path}" -jar "{languagetool_jar_path}" --port {port} --allow-origin "*"'
+
+        command_str = [
+            java_executable_path,
+            "-jar", str(languagetool_jar_path),
+            "--port", str(port),
+            "--address", '127.0.0.1',
+            "--allow-origin", "*"
+        ]
 
         # FIX: Windows can get with PIPE Deadlocks
         # Optional: Use File when want read Logs
@@ -127,15 +136,14 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
         languagetool_process = subprocess.Popen(command_str,
                                                 stdout=log_file,
                                                 stderr=log_file,
-
-                                                # stdout=subprocess.PIPE,
-                                                # stderr=subprocess.PIPE,
-
                                                 text=True,
-                                                encoding='utf-8', shell=True)
+                                                encoding='utf-8', shell=False)
     except Exception as e:
         logger.fatal(f"Failed to start LanguageTool Server process with shell=True: {e}")
         return False
+
+    # stdout=subprocess.PIPE,
+    # stderr=subprocess.PIPE,
 
     # scripts/py/func/start_languagetool_server.py:137
     # 4. Wait for responsiveness (existing logic)

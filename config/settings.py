@@ -76,11 +76,11 @@ ESPEAK_FALLBACK_AMPLITUDE = 50
 USE_EXTERNAL_LANGUAGETOOL = False # Default: False
 
 # URL for the external server if the option above is True.
-# EXTERNAL_LANGUAGETOOL_URL = "http://localhost:8081"
+# EXTERNAL_LANGUAGETOOL_URL = "http://127.0.0.1:8081"
 
 # config/settings.py
 # Settings for our internal server (if used)
-LANGUAGETOOL_PORT = 8082
+
 
 # --- Text Correction Settings ---
 # This dictionary controls which categories of LanguageTool rules are enabled.
@@ -161,8 +161,10 @@ SAMPLE_RATE = 16000
 # System
 CRITICAL_THRESHOLD_MB = 1024 * 2
 
+LANGUAGETOOL_PORT = 8082
+
 # LanguageTool Server Configuration
-LANGUAGETOOL_BASE_URL = f"http://localhost:{LANGUAGETOOL_PORT}"
+LANGUAGETOOL_BASE_URL = f"http://127.0.0.1:{LANGUAGETOOL_PORT}"
 LANGUAGETOOL_CHECK_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check"
 LANGUAGETOOL_RELATIVE_PATH = "LanguageTool-6.6/languagetool-server.jar"
 

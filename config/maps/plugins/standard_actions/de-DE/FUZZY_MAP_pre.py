@@ -198,6 +198,7 @@ FUZZY_MAP_pre = [
     # https://aistudio.google.com/prompts/new_chat
 
     # jimmy neu
+    # google gb
 
     # EXAMPLE: gemini
     ('https://aistudio.google.com/prompts/new_chat', r'''(?ix)
@@ -207,6 +208,7 @@ FUZZY_MAP_pre = [
         (?:
             gemini[\s\w]* |
             g\ mine |
+            gb |
             gehminuten |
             will\ gemini\ a |
             cheminée |

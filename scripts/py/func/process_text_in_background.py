@@ -659,6 +659,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
 
     if full_text_replaced_by_rule:
+        # source_modname = options_dict.get('source_modname', '')
+
         log4DEV("full_text_replaced_by_rule --> skip_list.append('LanguageTool')", logger)
         skip_list.append('LanguageTool')
         # regex_pre_is_replacing_all_maybeTEST1 = True
@@ -1664,6 +1666,12 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             # scripts/py/func/process_text_in_background.py -> apply_all_rules_until_stable :1471
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
+
+            if regex_pattern in [r'.+', r'.*', r'^.+$', r'^.*$']:
+                source_modname = options_dict.get('source_modname', '')
+                print(f"🚨 WARNING: Dangerous Catch-all '{regex_pattern}' found in {source_modname}")
+                print("=>will skip LanguageTool")
+
 
             skip_list_temp = options_dict.get('skip_list', [])
 
