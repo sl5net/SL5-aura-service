@@ -202,7 +202,10 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
         case(input_text='->AUDIO_INPUT_DEVICE<-', expected=f"SYSTEM_DEFAULT", context='proff if we can change settings 2026-0104-1435'),
         # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected='7890', context='proff if we can change settings 2026-0104-1435'),
 
-        ('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'LT correction Uppercase', 'de-DE'),
+        ('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'LT Uppercase. \n may check --> config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py', 'de-DE'),
+
+
+
 
         case(input_text='null', expected='0', context='git'),
         case(input_text='über die konsole zu bedienen', expected='über die konsole zu bedienen', context='git'),
@@ -362,6 +365,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     # logger.info(f'self_tester.py:161: for test_case in {len(test_cases)} test_cases ...')
     for test_case in test_cases:
         expected = ''
+        description = ''
         if len(test_case) == 4:
             raw_text, expected, description, check_only_this_lang_code = test_case
             if check_only_this_lang_code != lang_code:
@@ -373,6 +377,7 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
         # Clean up old output files to ensure we read the new one
         for f in glob.glob(str(tmp_dir / "sl5_aura" / "tts_output_*.txt")):
             os.remove(f)
+
 
         # Run the actual processing function
         # process_text_in_background(logger, lang_code, raw_text, tmp_dir, time.time(), lt_url)
@@ -437,7 +442,9 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
             logger.error(f"     - Expected: '{expected}'")
             logger.error(f"     - Got:      '{actual}'")
             failed_count += 1
-            logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed (lang={lang_code})")
+            logger.error(f"self_tester.py:222 ❌ FAIL: {failed_count} of {passed_count + failed_count}tested of {len(test_cases)} tests ❌ FAILed (lang: {lang_code})")
+            logger.error(f"self_tester.py:222 ❌ description: {description}  lang: {lang_code})")
+
 
             # print(f"Backup file {SRC.resolve()} not found. 2026-0104-1646")
 

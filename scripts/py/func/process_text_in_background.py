@@ -1669,9 +1669,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             if regex_pattern in [r'.+', r'.*', r'^.+$', r'^.*$']:
                 source_modname = options_dict.get('source_modname', '')
-                print(f"🚨 WARNING: Dangerous Catch-all '{regex_pattern}' found in {source_modname}")
-                print("=>will skip LanguageTool")
-
+                m = (f"🚨 WARNING: Dangerous Catch-all '{regex_pattern}' found in {source_modname}"
+                     f" =>will skip LanguageTool because not needed")
+                log4DEV(m, logger_instance)
+                logger_instance.info(m)
 
             skip_list_temp = options_dict.get('skip_list', [])
 
@@ -1686,7 +1687,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             # 2. Safety Fallback: Check Source Path if metadata is missing/False
             # (Only needed if rule_is_private is False)
             if not rule_is_private:
-                # Hole den Pfad, falls vorhanden
+                # get path, when exist
                 src = str(options_dict.get('source_modname', ''))  # oder 'source_path' je nach Benennung
                 if "/_" in src or "\\_" in src:
                     rule_is_private = True
