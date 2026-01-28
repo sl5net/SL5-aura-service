@@ -1,5 +1,8 @@
 #Requires AutoHotkey v2.0
 
+#UseHook True
+#InstallKeybdHook
+
 ; trigger_hotkey.ahk
 ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
 

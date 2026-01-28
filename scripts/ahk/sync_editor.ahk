@@ -4,7 +4,7 @@
 #NoTrayIcon
 
 ; sync_editor.ahk
-action := A_Args[1]
+action := "notify" ; A_Args[1]
 
 if (action = "save") {
     ; Sende Strg+S an das aktive Fenster

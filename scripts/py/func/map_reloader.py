@@ -1,7 +1,7 @@
 # scripts/py/func/map_reloader.py
 from .config.regex_cache import clear_regex_cache
 import importlib
-import sys
+import sys, platform
 import gc # Added for forced garbage collection
 from pathlib import Path
 import os
@@ -12,6 +12,7 @@ from .config.dynamic_settings import settings
 from .log_memory_details import log4DEV
 from .private_map_ex import _private_map_unpack
 from .auto_fix_module import try_auto_fix_module
+from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 
@@ -172,6 +173,11 @@ def auto_reload_modified_maps(logger,run_mode_override):
                             module = importlib.import_module(module_name)
                             importlib.reload(module)
                             logger.info(f"✅ Reload successful: {module_name}")
+
+                            if platform.system() == "Windows":
+                                windows_apply_correction_with_sync()
+
+
                         except Exception as retry_error:
                             logger.info(f"🚨 ❌ Fix failed: {retry_error}")
 

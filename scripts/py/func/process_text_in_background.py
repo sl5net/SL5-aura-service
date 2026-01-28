@@ -12,14 +12,15 @@ from pathlib import Path
 
 import psutil
 
-import shutil
-import subprocess
+#import shutil
+#import subprocess
 
 from .audio_manager import speak_fallback
 from .auto_fix_module import try_auto_fix_module
 from .get_active_window_title import get_active_window_title_safe
 from .log_memory_details import log4DEV
 from .state_manager import should_trigger_startup
+from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE # <--- NEW IMPORT
 
@@ -1979,50 +1980,7 @@ def clear_global_maps(logger):
 
     # logger.info("Global Map Registries successfully cleared.")
 
-# import subprocess
-
-windows_apply_correction_LAST_NOTIFY_TIME = 0
 
 
-# def windows_apply_correction_with_sync(file_path, corrected_text):
-def windows_apply_correction_with_sync():
-
-    windows_apply_correction_notify_cooldown = 3.0
-
-    current_time = time.time()
-    global windows_apply_correction_LAST_NOTIFY_TIME
-    # global PROJECT_ROOT
-    if (current_time - windows_apply_correction_LAST_NOTIFY_TIME) < windows_apply_correction_notify_cooldown:
-        return
-
-    # ahk_path = "AutoHotkey.exe"
-
-
-    ahk_path = shutil.which("AutoHotkey.exe")
-
-    if not ahk_path:
-        standard_paths = [
-            r"C:\Program Files\AutoHotkey\AutoHotkey.exe",
-            r"C:\Program Files\AutoHotkey\v1.1\AutoHotkey.exe",
-            r"C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe"
-        ]
-        for p in standard_paths:
-            if os.path.exists(p):
-                ahk_path = p
-                break
-
-    if not ahk_path:
-        print("error: AutoHotkey not found!")
-
-    # scripts/py/func/process_text_in_background.py:2013
-    script_path = PROJECT_ROOT / "scripts" / "ahk" / "sync_editor.ahk"
-
-    # subprocess.run([ahk_path, script_path, "save"])
-
-    #with open(file_path, "w", encoding="utf-8") as f:
-    #    f.write(corrected_text)
-
-    subprocess.run([ahk_path, script_path, "notify"])
-    windows_apply_correction_LAST_NOTIFY_TIME = current_time
 
 
