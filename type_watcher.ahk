@@ -3,12 +3,36 @@
 
 ; #SingleInstance Force ; is buggy
 
+
+
 ; --- Configuration ---
 watchDir := "C:\tmp\sl5_aura"
 logDir := A_ScriptDir "\log"
 autoEnterFlagPath := "C:\tmp\sl5_auto_enter.flag"
 
 heartbeat_start_File := "C:\tmp\heartbeat_type_watcher_start.txt"
+
+global processedZombies := Map() ; Key: FullPath, Value: Timestamp
+global isProcessingQueue := false
+
+
+global fileStates := Map() ; Mögliche Zustände: "queued", "processing", "done"
+
+
+
+
+; Am Anfang des Skripts (bevor der Watcher startet)
+CleanTempFolder() {
+    global watchDir
+    Log("Cleaning up old session files...")
+    Loop Files, watchDir "\tts_output_*.txt" {
+        try {
+            FileDelete(A_LoopFileFullPath)
+        }
+    }
+}
+CleanTempFolder() ; Einmal beim Start ausführen
+
 
 ; --- Main Script Body ---
 myUniqueID := A_TickCount . "-" . Random(1000, 9999)
@@ -26,6 +50,7 @@ try {
 SendMode('Event')
 SetKeyDelay(10, 10)
 
+; type_watcher.ahk:29
 ; --- Global Variables ---
 global pBuffer := Buffer(1024 * 16), hDir, pOverlapped := Buffer(A_PtrSize * 2 + 8, 0)
 global CompletionRoutineProc
@@ -65,6 +90,8 @@ DirCreate(logDir)
 Log("--- Script Started (v9.0 - Fixed Callback Freeze) ---")
 Log("Watching folder: " . watchDir)
 
+; type_watcher.ahk:69
+
 CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, "F", 3)
 WatchFolder(watchDir)
 
@@ -98,6 +125,24 @@ Log(message) {
 ; =============================================================================
 ; FILE QUEUING
 ; =============================================================================
+QueueFile(filename) {
+    global fileStates ; <--- Diese Zeile oben in der Funktion hinzufügen, falls sie fehlt
+    if InStr(filename, "tts_output_") {
+        fullPath := watchDir "\" . filename
+
+        ; Wenn der Pfad in der Map ist (als "queued", "processing" oder Zeitstempel),
+        ; ignorieren wir das Event.
+        if fileStates.Has(fullPath) {
+            return
+        }
+
+        fileStates[fullPath] := "queued"
+        Log("Queuing new file -> " . filename)
+        fileQueue.Push(fullPath)
+    }
+}
+
+
 ProcessExistingFiles() {
     Log("Scanning for existing files...")
     Loop Files, watchDir "\tts_output_*.txt" {
@@ -106,18 +151,6 @@ ProcessExistingFiles() {
     ScheduleQueueProcessing() ; Use the safe scheduler
 }
 
-QueueFile(filename) {
-    if InStr(filename, "tts_output_") {
-        fullPath := watchDir "\" . filename
-        for index, queuedPath in fileQueue {
-            if (queuedPath = fullPath) {
-                return
-            }
-        }
-        Log("Queuing file -> " . filename)
-        fileQueue.Push(fullPath)
-    }
-}
 
 ; =============================================================================
 ; Instead of running logic inside the callback, we set a Timer.
@@ -130,67 +163,144 @@ ScheduleQueueProcessing() {
 ; =============================================================================
 ; QUEUE PROCESSING LOOP
 ; =============================================================================
-ProcessQueue() {
-    global isProcessingQueue
-    if (isProcessingQueue)
+; --- Ganz oben im Skript ---
+global processedHistory := Map()
+
+
+
+
+
+
+
+CleanupZombies() {
+    global fileStates
+    if (fileStates.Count == 0)
         return
 
+    toDelete := []
+    now := A_TickCount
+
+    for fullPath, timestamp in fileStates {
+        ; WICHTIG: Wenn val ein Text ist ("queued" oder "processing"),
+        ; überspringen wir die Zeitberechnung, da die Datei noch in Arbeit ist.
+        if !IsNumber(timestamp) {
+            continue
+        }
+
+        ; 1. Versuche zu löschen, wenn die Datei noch da ist
+        if FileExist(fullPath) {
+            try {
+                FileDelete(fullPath)
+                ; Wenn erfolgreich, markieren wir den Map-Eintrag zum Löschen
+                ; aber erst nach einer Sicherheitsmarge von 10 Sekunden
+                if (now - timestamp > 10000) {
+                    toDelete.Push(fullPath)
+                }
+            } catch {
+                ; Noch gesperrt...
+                ; Datei ist noch gesperrt (wahrscheinlich von Python)
+                ; Wir lassen sie in der Map, damit sie nicht doppelt getippt wird.
+            }
+        } else {
+            ; Datei ist physisch schon weg
+            if (now - timestamp > 10000) {
+                toDelete.Push(fullPath)
+            }
+        }
+
+        ; 2. Aus der Map löschen, wenn Datei weg UND 10 Sek um
+        if !FileExist(fullPath) && (now - timestamp > 10000) {
+            toDelete.Push(fullPath)
+        }
+
+        ; 3. Sicherheits-Timeout (5 Min), falls Datei niemals gelöscht werden kann
+        if (now - timestamp > 300000) {
+            toDelete.Push(fullPath)
+        }
+    }
+
+    for path in toDelete {
+        if FileExist(path){
+        fileStates.Delete(path)
+        }
+    }
+}
+
+
+
+
+
+
+; --- 2. Anpassung in ProcessQueue ---
+ProcessQueue() {
+    global isProcessingQueue, fileQueue, fileStates
+
+    if (isProcessingQueue)
+        return
     isProcessingQueue := true
 
     while (fileQueue.Length > 0) {
         local fullPath := fileQueue[1]
-        static stabilityDelay := 50
-        local content := ""
-        local isReadyForProcessing := false
+        ; fileQueue.RemoveAt(1) ; <--- WICHTIG: Sofort aus der Liste nehmen!
 
-        try {
-            if !FileExist(fullPath) {
-                fileQueue.RemoveAt(1)
-                continue
-            }
-            size1 := FileGetSize(fullPath), Sleep(stabilityDelay), size2 := FileGetSize(fullPath)
-            if (size1 != size2 or size1 = 0) {
-                FileDelete(fullPath)
-                fileQueue.RemoveAt(1)
-                continue
-            }
-
-            content := FileRead(fullPath, "UTF-8")
-            content := Trim(content)
-            isReadyForProcessing := true
-        } catch as e {
-            Log("Read Error: " . e.Message)
-            fileQueue.RemoveAt(1)
+        ; Nur verarbeiten, wenn sie im Status "queued" ist
+        if (!fileStates.Has(fullPath) || fileStates[fullPath] != "queued") {
             continue
         }
 
-        if (isReadyForProcessing) {
-            fileQueue.RemoveAt(1)
-            try {
-                ; --- DEBUG MESSAGE BOX ---
-                ; MsgBox("Debug: I am about to send:`n" . content)
-                ; -----------------------------------------------
+        ; Status auf "processing" setzen
+        fileStates[fullPath] := "processing"
 
-                FileDelete(fullPath)
-
-                if (content != "") {
-                    Log("Sending: '" . SubStr(content, 1, 20) . "...'")
-                    SendText(content)
-
-                    if FileExist(autoEnterFlagPath) {
-                        if (Trim(FileRead(autoEnterFlagPath)) = "true") {
-                            SendInput("{Enter}")
-                        }
-                    }
-                }
-            } catch as e {
-                Log("Process Error: " . e.Message)
+        try {
+            ; Stabilitäts-Check (Punkt 3 der Experten: Sicherstellen, dass Python fertig ist)
+            size1 := FileGetSize(fullPath), Sleep(100), size2 := FileGetSize(fullPath)
+            if (size1 != size2 || size1 == 0) {
+                fileStates[fullPath] := "queued" ; Zurücksetzen für nächsten Versuch
+                isProcessingQueue := false
+                return
             }
+
+            content := Trim(FileRead(fullPath, "UTF-8"))
+            if (content != "") {
+                fileStates[fullPath] := A_TickCount
+                Log("Typing content from " . fullPath)
+
+                SendText(content)
+
+                ; Erfolg! Status auf "done" setzen
+                ; fileStates[fullPath] := "done"
+                ; fileStates["last_processed_time_" . fullPath] := A_TickCount ; Für Debouncing
+            }
+
+            fileQueue.RemoveAt(1)
+
+        } catch as e {
+            Log("Error: " . e.Message)
+            fileStates[fullPath] := "queued" ; Bei Fehler zurück in Warteschlange
+            fileQueue.RemoveAt(1)
         }
     }
-    isProcessingQueue := false
-}
 
+    CleanupZombies() ; Hier nutzen wir weiterhin fileStates statt processedZombies
+    isProcessingQueue := false
+} ; Ende von ProcessQueue()
+
+
+
+; Hilfsfunktion für rückstandsloses Löschen
+SecureDelete(filePath) {
+    Loop 100 { ; Versuche es bis zu 10-mal (ca. 1 Sekunde lang)
+        try {
+            if !FileExist(filePath)
+                return
+            FileDelete(filePath)
+            return ; Erfolg!
+        } catch {
+            Sleep(100) ; Warte 100ms, falls Datei noch gesperrt ist
+        }
+    }
+    Log("CRITICAL: Could not delete sensitive file after 10 attempts: " filePath)
+}
 ; =============================================================================
 ; WATCHER LOGIC
 ; =============================================================================

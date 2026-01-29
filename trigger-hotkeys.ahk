@@ -64,6 +64,11 @@ CheckHeartbeatStart() {
 $f10::
 $f11::
 {
+    static lastPress := 0
+    if (A_TickCount - lastPress < 900) ; 500ms Sperre
+        return
+    lastPress := A_TickCount
+
     activeWinTitle := WinGetTitle('A')
     ; MsgBox, "%activeWinTitle%"
     local activeWinTitleFile  := "c:\tmp\activeWinTitle.txt"
