@@ -294,6 +294,16 @@ echo "    -> Extraction and cleanup successful."
 
 
 
+# --- Install fzf (Fuzzy Finder) ---
+if ! command -v fzf &> /dev/null; then
+    echo "[INFO] fzf not found. Installing..."
+    sudo zypper install -y fzf
+else
+    echo "[INFO] fzf is already installed."
+fi
+
+
+
 
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 

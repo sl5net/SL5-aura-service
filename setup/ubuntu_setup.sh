@@ -286,6 +286,25 @@ echo "    -> Extraction and cleanup successful."
 
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
+
+# --- Install fzf (Fuzzy Finder) ---
+if ! command -v fzf &> /dev/null; then
+    echo "[INFO] fzf not found. Installing..."
+    # We use apt for simplicity in the setup script
+    sudo apt-get update && sudo apt-get install -y fzf
+
+    # Optional: If you want the latest version with full shell bindings:
+    # git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    # ~/.fzf/install --all
+else
+    echo "[INFO] fzf is already installed."
+fi
+
+
+
+
+
+
 # --- 5. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.
 echo "--> Creating Python package markers (__init__.py)..."

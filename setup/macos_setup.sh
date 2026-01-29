@@ -152,9 +152,27 @@ fi
 
 echo "--> All components are present and correctly placed."
 
+
 # ==============================================================================
 # --- End of Download/Extract block ---
 # ==============================================================================
+
+
+
+# --- Install fzf (Fuzzy Finder) ---
+if ! command -v fzf &> /dev/null; then
+    echo "[INFO] fzf not found. Installing..."
+    # Prüfen, ob brew installiert ist
+    if command -v brew &> /dev/null; then
+        brew install fzf
+    else
+        echo "[ERROR] Homebrew not found. Please install Homebrew first."
+    fi
+else
+    echo "[INFO] fzf is already installed."
+fi
+
+
 
 
 
