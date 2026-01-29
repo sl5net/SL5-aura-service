@@ -54,13 +54,24 @@ if not exist ".\.venv\Scripts\python.exe" (
 echo.
 
 powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -and ($_.CommandLine -like '*type_watcher.ahk*') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"
+
 powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -and ($_.CommandLine -like '*notification_watcher.ahk*') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"
 powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -and ($_.CommandLine -like '*trigger-hotkeys.ahk*') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"
 
 :: --- Step 4: Start background components ---
 start "SL5 Type Watcher.ahk" type_watcher.ahk
 start "SL5 Notification Watcher.ahk" scripts\notification_watcher.ahk
-start "trigger-hotkeys.ahk" trigger-hotkeys.ahk
+
+schtasks /query /tn "AuraDictation_Hotkeys" /v | findstr /I "Running" >nul
+if %errorlevel% equ 0 (
+    echo [INFO] Admin-Hotkeys are already running.
+) else (
+    echo [INFO] Starting Hotkeys in User-Mode...
+    :: HIER muss der Start-Befehl stehen, nicht ein Kill-Befehl!
+    start "Trigger Hotkeys" trigger-hotkeys.ahk
+)
+
+
 echo [INFO] Background watchers have been started.
 echo.
 

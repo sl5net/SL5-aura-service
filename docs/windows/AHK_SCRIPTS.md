@@ -34,6 +34,51 @@ Because Windows handles file locks and system hotkeys differently than Linux, th
     *   Monitors specific status files or events to display notifications to the user.
     *   Decouples the logic of "calculating" a message (Python) from "displaying" it (AHK), ensuring the main STT engine isn't blocked by UI interactions.
 
+
+---
+
+### Non-Admin Fallback
+If the application is run without Administrator privileges:
+ - **Functionality:** The service remains fully functional.
+ - **Hotkey Limitations:** System-reserved keys like **F10** may still trigger the Windows menu. In this case, it is recommended to change the hotkeys to non-system keys (e.g., `F9` or `Insert`).
+ - **Task Scheduler:** If the "AuraDictation_Hotkeys" task was created during an Admin-install, the script will run with high privileges even for a standard user. If not, the `start_dictation.bat` will launch a local user-level instance silently.
+
+---
+
+### 3. Warum "nervige Meldungen" erscheinen und wie man sie im AHK-Code stoppt
+Um sicherzustellen, dass das Skript selbst niemals den Nutzer mit Popups stört, füge diese "Silent-Flags" oben in deine `.ahk` Dateien ein:
+
+```autohotkey
+#Requires AutoHotkey v2.0
+#SingleInstance Force   ; Ersetzt alte Instanzen ohne zu fragen
+#NoTrayIcon            ; (Optional) Wenn du kein Icon im Tray willst
+ListLines(False)       ; Erhöht Performance und verbirgt Debug-Logs
+```
+
+### 4. Strategie für die Hotkeys (F10 Alternative)
+Da F10 ohne Admin-Rechte unter Windows fast unmöglich sauber abzufangen ist, könntest du im `trigger-hotkeys.ahk` eine Weiche einbauen:
+
+```autohotkey
+if !A_IsAdmin {
+    ; Wenn kein Admin, warne den Entwickler im Log
+    ; Log("Running without Admin - F10 might be unreliable")
+}
+
+; Nutze Wildcards, um die Chance zu erhöhen, dass es auch ohne Admin klappt
+*$f10::
+{
+    ; ... Logik
+}
+```
+
+### Zusammenfassung der Verbesserungen:
+1.  **Batch-Datei:** Nutzt `start "" /b`, um das schwarze Fenster zu vermeiden, und prüft vorher, ob der Admin-Task schon läuft.
+2.  **Transparenz:** Die Doku erklärt nun offen: "Kein Admin? Kein Problem, nimm einfach eine andere Taste als F10".
+3.  **AHK-Skript:** Nutzt `#SingleInstance Force`, um den "An older instance is running"-Dialog zu unterdrücken.
+
+Damit wirkt die Software viel professioneller ("Smooth"), da sie im Hintergrund startet, ohne dass der Nutzer mit technischen Details oder Bestätigungsfenstern konfrontiert wird.
+    
+    
 ---
 
 ### Why this Documentation is important:

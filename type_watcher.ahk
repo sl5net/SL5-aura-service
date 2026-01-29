@@ -1,5 +1,7 @@
 #Requires AutoHotkey v2.0
 
+#SingleInstance Force ; is buggy, using Heartbeat mechanism instead
+
 
 /**
  * @file type_watcher.ahk
@@ -7,6 +9,10 @@
  * Includes a "Zombie Map" state machine to prevent double-processing
  * due to redundant Windows file system events.
  * https://www.autohotkey.com/docs/v2/Language.htm#comments
+ *
+ *
+ * planed:
+ * ListLines(False)
  *
  */
 
