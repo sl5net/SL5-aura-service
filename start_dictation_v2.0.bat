@@ -68,6 +68,10 @@ if %errorlevel% equ 0 (
 ) else (
     echo [INFO] Starting Hotkeys in User-Mode...
     :: HIER muss der Start-Befehl stehen, nicht ein Kill-Befehl!
+
+    :: --- NEU: Warte 2 Sekunden, damit Windows die Datei-Locks freigeben kann ---
+    timeout /t 2 /nobreak >nul
+
     start "Trigger Hotkeys" trigger-hotkeys.ahk
 )
 

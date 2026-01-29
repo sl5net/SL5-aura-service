@@ -14,6 +14,7 @@ if "%CI%"=="true" goto run_script
 :: Wir versuchen, eine unsichtbare Test-Datei zu erstellen.
 echo test > ".write_permission_check.tmp" 2>nul
 
+:: update.bat:17
 if exist ".write_permission_check.tmp" (
     del ".write_permission_check.tmp"
     echo Schreibrechte vorhanden. Starten ohne Admin-Rechte...

@@ -1,6 +1,10 @@
 #Requires AutoHotkey v2.0
 
-#SingleInstance Force ; is buggy, using Heartbeat mechanism instead
+; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
+/**
+ *
+„Could not close the previous instance“ tritt genau dann auf, wenn ein Skript in einem Alertable State (SleepEx) oder einem tiefen DllCall (wie Folder-Watcher) feststeckt. AHKs Standardbefehl kann den Prozess dann nicht sauber beenden.
+*/
 
 
 /**

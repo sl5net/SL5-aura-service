@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#SingleInstance Force ; is buggy, using Heartbeat mechanism instead
+; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
 
 #UseHook True
 
