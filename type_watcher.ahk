@@ -1,5 +1,16 @@
 #Requires AutoHotkey v2.0
-; type_watcher.ahk (v9.0 - Decoupled Callback & Safe SendMode, 21.1.'26 03:19 Wed)
+
+
+/**
+ * @file type_watcher.ahk
+ * @description Monitors the STT output folder and types incoming text.
+ * Includes a "Zombie Map" state machine to prevent double-processing
+ * due to redundant Windows file system events.
+ * https://www.autohotkey.com/docs/v2/Language.htm#comments
+ *
+ */
+
+
 
 ; #SingleInstance Force ; is buggy
 

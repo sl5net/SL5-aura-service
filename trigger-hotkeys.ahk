@@ -3,6 +3,16 @@
 #UseHook True
 
 ; trigger_hotkey.ahk
+
+/**
+ * @file trigger-hotkeys.ahk
+ * @description Captures global hotkeys (F10/F11) to control the STT service.
+ * Designed to run with high privileges via Task Scheduler to override system keys.
+ * https://www.autohotkey.com/docs/v2/Language.htm#comments
+ *
+ */
+
+
 ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
 
 ; --- Configuration ---

@@ -1,7 +1,16 @@
 ; sync_editor.ahk
+
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 #NoTrayIcon
+
+/**
+ * @file sync_editor.ahk
+ * @description Handles Editor-Disk synchronization. Forces saves and
+ * auto-confirms "Reload File" dialogs for a seamless user experience.
+ * https://www.autohotkey.com/docs/v2/Language.htm#comments
+ */
+
 
 ; sync_editor.ahk
 action := "notify" ; A_Args[1]

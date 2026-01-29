@@ -1,6 +1,14 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
+/**
+ * @file notification_watcher.ahk
+ * @description Displays non-blocking system notifications and feedback
+ * from the STT background service.
+ * https://www.autohotkey.com/docs/v2/Language.htm#comments
+ */
+
+
 A_IconTip := "SL5 Aura Notifier"
 
 ; Create a borderless, always-on-top GUI window for our notification
