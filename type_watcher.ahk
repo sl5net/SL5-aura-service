@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 
+#SingleInstance Off
 ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
 /**
  *
@@ -19,12 +20,6 @@
  * ListLines(False)
  *
  */
-
-
-
-; #SingleInstance Force ; is buggy
-
-
 
 ; --- Configuration ---
 watchDir := "C:\tmp\sl5_aura"
