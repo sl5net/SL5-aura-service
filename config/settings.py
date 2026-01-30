@@ -1,4 +1,3 @@
-import re
 
 # config/settings.py
 # Central configuration for the application
@@ -48,12 +47,6 @@ signatur=' #FreedomLadder #FreeSoftware #FSF #SL5Aura SL5.de/Aura'
 signatur=''
 signatur='🗣SL5net ⟫ Aura'
 signatur1=f'{signatur}' # (Powered by
-signatur_pt_br=f'Tradução de Voz{signatur}'
-signatur_en=f'Voice Translation{signatur}'
-signatur_en=f'{signatur}'
-signatur_ar=f"تحدثت الترجمة{signatur} "
-signatur_ja=f"話し言葉の翻訳{signatur} "
-
 
 LANGUAGE_PREFIXES = {
     "pt-br": "Tradução de Voz",
@@ -69,31 +62,12 @@ LANGUAGE_PREFIXES = {
 
 # Format: { "Regex-Pattern": ( "Signatur-Text", Cooldown_in_Sekunden ) }
 SIGNATURE_MAPPING = {
-    r"0 a\.a\.": ("SL5net >> Aura", 14400),        # 4 Stunden für Spiele
+    r"0 a\.d\.": ("SL5net >> Aura", 14400),        # 4 Stunden für Spiele
     r"Matrix|Discord": ("🗣SL5net ⟫ Aura", 3600),   # 1 Stunde für Chat
     r"Outlook|Mail": ("-- Sent via Aura --", 86400), # 1 Tag für E-Mails
     "Konsole|kate": ("", 86400),
     r".*": ("🗣[ SL5net Aura ]", 1800)             # 30 Min Fallback
 }
-
-SIGNATURE_MAPPING_202601301653 = {
-    r"0 a\.a\.": "SL5net >> Aura",             # Regex für 0 A.D.
-    r"Matrix|Element|Discord": "🗣SL5net ⟫ Aura", # Mehrere Apps gleichzeitig
-    "DEFAULT": "🗣SL5net ⟫ Aura",      # Fallback
-    "Konsole": "",
-    r".*": "🗣[ SL5net Aura ]"                 # Fallback (entspricht DEFAULT)
-}
-
-SIGNATURE_MAPPING_old = {
-    "0 a.d.": "SL5net >> Aura 0 A.D.",       # Rein ASCII für das Spiel
-    "Matrix": "🗣SL5net ⟫ Aura",      # Mit Unicode für moderne Chats
-    "Discord": "🗣SL5net ⟫ Aura",
-    "DEFAULT": "🗣SL5net ⟫ Aura"      # Fallback
-}
-
-
-
-
 
 
 # --- Language Model Preloading ---

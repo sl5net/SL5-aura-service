@@ -15,7 +15,7 @@ from scripts.py.func.get_active_window_title import get_active_window_title_safe
 
 
 from config.settings import LANGUAGE_PREFIXES, SIGNATURE_MAPPING # signatur_ar,signatur_en,signatur_pt_br,signatur_ja
-from scripts.py.func.handle_trigger import text_detected
+# from scripts.py.func.handle_trigger import text_detected
 
 from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
 
@@ -31,9 +31,9 @@ PYTHON_EXECUTABLE = project_dir / '.venv' / 'bin' / 'python3'
 
 # config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py
 
-import time
-import re
-from scripts.py.func.global_state import SIGNATURE_TIMES, SEQUENCE_LOCK
+# import time
+# import re
+# from scripts.py.func.global_state import SEQUENCE_LOCK
 
 
 def get_current_signature(lang_target, window_title):
@@ -231,6 +231,7 @@ def execute(match_data):
             cache_key_args,
             translated_text # Speichere nur die erfolgreiche menschenlesbare Antwort
         )
+        # config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py:234
         return translated_text
 
 

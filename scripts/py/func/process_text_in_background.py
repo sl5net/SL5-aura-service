@@ -1894,6 +1894,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                             'rule_options': options_dict
                         }
 
+                        # scripts/py/func/process_text_in_background.py:1897
                         on_match_exec_list = options_dict.get('on_match_exec', [])
                         for script_path in on_match_exec_list:
                             module = load_module_from_path(script_path)
