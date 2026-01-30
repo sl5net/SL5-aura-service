@@ -1,12 +1,21 @@
 # config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py
 # CONFIG_DIR / 'translate_from_to.py'
-
+import re
 import sys
+import time
 from pathlib import Path
 import subprocess
 import logging
 
-from config.settings import signatur_ar,signatur_en,signatur_pt_br,signatur_ja
+# config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py:9
+
+from scripts.py.func.global_state import SIGNATURE_TIMES, SEQUENCE_LOCK
+from config import settings
+from scripts.py.func.get_active_window_title import get_active_window_title_safe
+
+
+from config.settings import LANGUAGE_PREFIXES, SIGNATURE_MAPPING # signatur_ar,signatur_en,signatur_pt_br,signatur_ja
+from scripts.py.func.handle_trigger import text_detected
 
 from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
 
@@ -19,6 +28,96 @@ project_dir = Path(__file__).parent.parent.parent.parent.parent.parent.parent
 
 TRANSLATE_SCRIPT = project_dir / 'tools' / 'simple_translate.py'
 PYTHON_EXECUTABLE = project_dir / '.venv' / 'bin' / 'python3'
+
+# config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py
+
+import time
+import re
+from scripts.py.func.global_state import SIGNATURE_TIMES, SEQUENCE_LOCK
+
+
+def get_current_signature(lang_target, window_title):
+    # 1. Hol den sprachspezifischen Präfix (z.B. "Voice Translation")
+    # Wir nutzen deine alten Varianten als Basis
+    # prefixes = {
+    #     'pt-br': 'Tradução de Voz',
+    #     'en': 'Voice Translation',
+    #     'ar': 'تحدثت الترجمة',
+    #     'ja': '話し言葉の翻訳'
+    # }
+    prefixes = LANGUAGE_PREFIXES
+
+
+    prefix = prefixes.get(lang_target.lower(), "")
+
+    # 2. Prüfe App-Mapping & Cooldown
+    current_time = time.time()
+    brand_text = ""
+    cooldown = 3600  # Default
+
+    if hasattr(settings, 'SIGNATURE_MAPPING'):
+        for pattern, config in settings.SIGNATURE_MAPPING.items():
+            if re.search(pattern, str(window_title), re.IGNORECASE):
+                brand_text, cooldown = config
+                break
+
+    # 3. DER ENTSCHEIDENDE COOLDOWN-CHECK
+    if brand_text:
+        with SEQUENCE_LOCK:
+            last_time = SIGNATURE_TIMES.get(window_title, 0)
+            if (current_time - last_time > cooldown):
+                # Zeitstempel aktualisieren!
+                SIGNATURE_TIMES[window_title] = current_time
+                # Rückgabe: "Präfix + Branding"
+                return f" {prefix} {brand_text}".strip()
+
+    return ""  # Cooldown aktiv -> Keine Signatur
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def get_smart_signature(lang_target, window_title):
+    # 1. Sprach-Präfix holen
+    prefix = LANGUAGE_PREFIXES.get(lang_target.lower(), LANGUAGE_PREFIXES["DEFAULT"])
+
+    # 2. App-Branding & Cooldown bestimmen
+    active_sig_text = ""
+    active_cooldown = 3600
+    for pattern, config in SIGNATURE_MAPPING.items():
+        if re.search(pattern, str(window_title), re.IGNORECASE):
+            active_sig_text, active_cooldown = config
+            break
+
+    # 3. Cooldown-Check
+    with SEQUENCE_LOCK:
+        current_time = time.time()
+        last_time = SIGNATURE_TIMES.get(window_title, 0)
+
+        if (current_time - last_time > active_cooldown):
+            # Update Zeitstempel
+            SIGNATURE_TIMES[window_title] = current_time
+            # Kombiniere Präfix und Branding
+            # Falls Präfix vorhanden, füge ein Leerzeichen dazwischen ein
+            full_sig = f"{prefix} {active_sig_text}".strip()
+            return full_sig
+
+    return ""  # Cooldown aktiv oder keine Signatur konfiguriert
+
+
+
 
 def execute(match_data):
     """
@@ -114,16 +213,16 @@ def execute(match_data):
 
         #
 
-        if lang_target=='pt-BR' or lang_target=='pt-br' :
-            translated_text = f"{translated_text} (original:'{original_text}'{signatur_pt_br}). "
-        elif lang_target == 'en':
-            translated_text = f"{translated_text} (original:'{original_text}'{signatur_en})."
-        elif lang_target == 'ar':
-            translated_text = f"{translated_text} (original:'{original_text}'{signatur_ar}). "
-        elif lang_target == 'ja':
-            translated_text = f"{translated_text} (original:'{original_text}'{signatur_ja}). "
-        else:
-            translated_text = f"{translated_text} (original:'{original_text}'{signatur_en}). "
+        _active_window_title = get_active_window_title_safe()
+
+        # --- Signatur-Check-Logik ---
+        current_sig = ""  # Standard: Keine Signatur
+        _active_window_title = getattr(settings, 'active_window_title', 'Unknown')  # Falls verfügbar
+
+        # current_sig = get_smart_signature(lang_target, _active_window_title)
+        current_sig = get_current_signature(lang_target, _active_window_title)
+
+        translated_text = f"{translated_text} (original:'{original_text}' {current_sig})."
 
         # --- 3. ERFOLG: ERGEBNIS SPEICHERN ---
         set_cached_result(

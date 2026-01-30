@@ -22,7 +22,9 @@ from .log_memory_details import log4DEV
 from .state_manager import should_trigger_startup
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 
-from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE # <--- NEW IMPORT
+# scripts/py/func/process_text_in_background.py:25
+from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES
+
 
 from .correct_text_by_languagetool import correct_text_by_languagetool
 import re, time
@@ -36,6 +38,8 @@ from scripts.py.func.config.dynamic_settings import DynamicSettings
 import platform
 
 settings = DynamicSettings()
+
+# global last_signature_time
 
 # active_window_title = None
 global _active_window_title
@@ -1437,16 +1441,109 @@ def process_text_in_background(logger,
             new_current_text = script_result.get("text")
             lang_for_tts = script_result.get("lang", LT_LANGUAGE)  # Fallback auf Originalsprache
 
-        # --- AB HIER KOMMEN DIE KORREKTUREN ---
+        # scripts/py/func/process_text_in_background.py:1440
         if new_current_text:
 
+            # scripts/py/func/process_text_in_background.py:1443
             if options_dict: # If it exists, no sub-module will be output. they have may its own signature.
-                # e.g. the tranlating modules have their own signature
+                # e.g. the translating modules have their own signature
                 log4DEV(f"options_dict={options_dict}",logger)
 
-                if hasattr(settings, 'signatur1'):
+                # scripts/py/func/process_text_in_background.py:1448
+
+
+                if hasattr(settings, 'SIGNATURE_MAPPING'):
                     if type(new_current_text) is str and len(new_current_text) >= 11:
-                        new_current_text += f"{settings.signatur1}"
+
+                        current_time = time.time()
+                        active_sig = ""
+                        active_cooldown = 3600  # Globaler Fallback
+
+                        # 1. Finde das passende Pattern
+                        for pattern, config in settings.SIGNATURE_MAPPING.items():
+                            if re.search(pattern, str(_active_window_title), re.IGNORECASE):
+                                active_sig, active_cooldown = config
+                                break
+
+                        # if active_sig == active_sig_default:
+                        log4DEV(f'🔵 window_title: {_active_window_title}',logger)
+
+
+                        if active_sig:
+                            with SEQUENCE_LOCK:
+                                # 2. Nutze den spezifischen Cooldown für dieses Fenster
+                                last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
+
+                                if (current_time - last_time > active_cooldown):
+                                    new_current_text += f"{active_sig}"
+                                    SIGNATURE_TIMES[_active_window_title] = current_time
+
+
+
+
+                if False and hasattr(settings, 'SIGNATURE_MAPPING'):
+                    if type(new_current_text) is str and len(new_current_text) >= 11:
+
+                        # 1. Bestimme die richtige Signatur basierend auf dem Fenster
+                        active_sig_default = settings.SIGNATURE_MAPPING.get("DEFAULT", "")
+                        active_sig = active_sig_default
+
+                        for pattern, sig in settings.SIGNATURE_MAPPING.items():
+                            if re.search(pattern, str(_active_window_title), re.IGNORECASE):
+                                active_sig = sig
+                                break
+
+
+
+
+                        if active_sig == active_sig_default:
+                            log4DEV(f'🔵 window_title: {_active_window_title}',logger)
+
+                        # for app_name, sig in settings.SIGNATURE_MAPPING.items():
+                        #     if app_name in _active_window_title:  # Sucht nach "0 A.D." im Titel
+                        #         active_sig = sig
+                        #         break
+
+                        if active_sig:
+                            signature_cooldown = getattr(settings, 'SIGNATURE_COOLDOWN', 3600)
+
+                            with SEQUENCE_LOCK:
+                                last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
+                                current_time = time.time()
+
+                                if (current_time - last_time > signature_cooldown):
+                                    new_current_text += f" {active_sig}"
+                                    SIGNATURE_TIMES[_active_window_title] = current_time
+
+                if False and hasattr(settings, 'signatur1'):
+
+                    if len(new_current_text) >= 11:
+
+                        current_time = time.time()
+
+                        if not hasattr(process_text_in_background, "last_signature_times"):
+                            process_text_in_background.last_signature_times = {}
+
+                        last_times = process_text_in_background.last_signature_times
+                        last_time = last_times.get(_active_window_title, 0)
+
+                        signature_cooldown = getattr(settings, 'SIGNATURE_COOLDOWN', 3600)
+
+                        with SEQUENCE_LOCK:
+                            last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
+                            current_time = time.time()
+
+                            if (current_time - last_time > signature_cooldown):
+
+                                if type(new_current_text) is str:
+                                    new_current_text += f"{settings.signatur1}"
+
+                                    SIGNATURE_TIMES[_active_window_title] = current_time
+
+                                    # last_signature_times[_active_window_title] = current_time
+                                    # process_text_in_background.last_signature_times[_active_window_title] = current_time
+
+
 
             new_current_text = sanitize_transcription_start(new_current_text)
 

@@ -1,3 +1,5 @@
+import re
+
 # config/settings.py
 # Central configuration for the application
 # please see also: settings_local.py_Example.txt
@@ -26,10 +28,17 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 # Default for new users is the most verbose level.
 NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
+
+SIGNATURE_COOLDOWN = 50 # 600
+
 # 🗣️🌐 (symbols and icons are probably cut out later by )
 # sometimes e.g.in twitch: gelöscht: Nightbot: @seeh74 -> Sorry, you can't post links without permission!
 #🗣ടㄴ⠄de╱Aura SL5.de/Aura
 signatur=' #FreedomLadder #FreeSoftware #FSF #SL5Aura SL5.de/Aura'
+
+# signatur='🗣SL5net ⟫ Aura'
+# signatur='🗣[ SL5net Aura ]'
+# signatur='🗣SL5net Aura'
 # signatur='🗣ടㄴ5⠄de╱Aura'
 # signatur='🗣Sㄴ5⠄de╱Aura' # this l is unvisable in gemini
 #signatur='🗣SL5⠄de╱Aura'
@@ -37,12 +46,50 @@ signatur=' #FreedomLadder #FreeSoftware #FSF #SL5Aura SL5.de/Aura'
 #now (original:'jetzt', ).
 #signatur=',🗣SL5。de╱Aura' # i like this 11.11.'25 09:58 Tue
 signatur=''
-#signatur1=f'{signatur}' # (Powered by
+signatur='🗣SL5net ⟫ Aura'
+signatur1=f'{signatur}' # (Powered by
 signatur_pt_br=f'Tradução de Voz{signatur}'
 signatur_en=f'Voice Translation{signatur}'
 signatur_en=f'{signatur}'
 signatur_ar=f"تحدثت الترجمة{signatur} "
 signatur_ja=f"話し言葉の翻訳{signatur} "
+
+
+LANGUAGE_PREFIXES = {
+    "pt-br": "Tradução de Voz",
+    "en": "Voice Translation",
+    "ar": "تحدثت الترجمة",
+    "ja": "話し言葉の翻訳",
+    "de": "Sprachübersetzung",
+    "DEFAULT": "" # Fallback
+}
+
+
+
+
+# Format: { "Regex-Pattern": ( "Signatur-Text", Cooldown_in_Sekunden ) }
+SIGNATURE_MAPPING = {
+    r"0 a\.a\.": ("SL5net >> Aura", 14400),        # 4 Stunden für Spiele
+    r"Matrix|Discord": ("🗣SL5net ⟫ Aura", 3600),   # 1 Stunde für Chat
+    r"Outlook|Mail": ("-- Sent via Aura --", 86400), # 1 Tag für E-Mails
+    "Konsole|kate": ("", 86400),
+    r".*": ("🗣[ SL5net Aura ]", 1800)             # 30 Min Fallback
+}
+
+SIGNATURE_MAPPING_202601301653 = {
+    r"0 a\.a\.": "SL5net >> Aura",             # Regex für 0 A.D.
+    r"Matrix|Element|Discord": "🗣SL5net ⟫ Aura", # Mehrere Apps gleichzeitig
+    "DEFAULT": "🗣SL5net ⟫ Aura",      # Fallback
+    "Konsole": "",
+    r".*": "🗣[ SL5net Aura ]"                 # Fallback (entspricht DEFAULT)
+}
+
+SIGNATURE_MAPPING_old = {
+    "0 a.d.": "SL5net >> Aura 0 A.D.",       # Rein ASCII für das Spiel
+    "Matrix": "🗣SL5net ⟫ Aura",      # Mit Unicode für moderne Chats
+    "Discord": "🗣SL5net ⟫ Aura",
+    "DEFAULT": "🗣SL5net ⟫ Aura"      # Fallback
+}
 
 
 

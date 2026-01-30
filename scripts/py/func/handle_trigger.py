@@ -25,7 +25,7 @@ from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_
 from scripts.py.func.audio_manager import unmute_microphone, mute_microphone
 from scripts.py.func.microphone_status_too_log import log_microphone_status
 
-from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED
+from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, SIGNATURE_TIMES
 # Global sequence counter for the current session (must be synchronized)
 
 global text_detected

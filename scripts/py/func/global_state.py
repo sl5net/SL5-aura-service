@@ -14,3 +14,7 @@ OUT_OF_ORDER_CACHE = {}
 # This prevents one long session from blocking a subsequent new session.
 # Key: Session ID (e.g., thread ID or unique counter), Value: Last processed Chunk ID
 SESSION_LAST_PROCESSED = {}
+
+# scripts/py/func/global_state.py:18
+SIGNATURE_TIMES = {}
+
