@@ -30,6 +30,11 @@ FUZZY_MAP_pre = [
     ('das LanguageTool', r'\b(das) (liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
     ('LanguageTool', r'\b(liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
 
+    # des link wich tools
+
+    ("des LanguageTool's", r'\b(des link w\w+ tools)(\b)', 80, {'flags': re.IGNORECASE}),
+
+
     #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
     # EXAMPLE: whatchado
     ('Manjaro Linux', r'^\b(whatchado|Mönch) (Linux|Carolin\w*)(\b)$', 80, {'flags': re.IGNORECASE}),

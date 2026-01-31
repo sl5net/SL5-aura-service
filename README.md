@@ -19,6 +19,7 @@ It's a complete, **offline voice assistant** built on **Vosk** (for Speech-to-Te
     
 Translations: This document also exists in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
+
 Note: Many texts are machine-generated translations of the original English documentation and are intended for general guidance only. In case of discrepancies or ambiguities, the English version always prevails. We welcome help from the community to improve this translation!
 
 
@@ -66,7 +67,7 @@ For a complete technical reference, including all modules and scripts, please vi
 ## Installation
 
 The setup is a two-step process:
-1.  Download last Release or master ( https://github.com/sl5net/Vosk-System-Listener/archive/master.zip ) or clone this repository to your computer.
+1.  Download last Release or master ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) or clone this repository to your computer.
 2.  Run the one-time setup script for your operating system.
 
 The setup scripts handle everything: system dependencies, Python environment, and downloading the necessary models and tools (~4GB) directly from our GitHub Releases for maximum speed.
