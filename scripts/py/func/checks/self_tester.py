@@ -2,7 +2,7 @@
 import re
 import concurrent.futures
 import sys
-import concurrent.futures
+# import concurrent.futures
 import os
 from pathlib import Path
 
@@ -106,7 +106,7 @@ def case(input_text, expected, context='', lang='de-DE'):
 
 # file: scripts/py/func/checks/self_tester.py:79
 
-import concurrent.futures
+# import concurrent.futures
 
 
 def _execute_self_test_core_202601311804(logger, tmp_dir, lt_url, lang_code):
@@ -624,21 +624,26 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
 import sys
 import os
 import time
-import traceback
+# import traceback
 from pathlib import Path
 
 
 # Dummy-Logger for Proses
 class SimpleNullLogger:
-    def info(self, msg): pass
+    def info(self, msg):
+        pass
 
-    def error(self, msg, *args, **kwargs): pass
+    def error(self, msg, *args, **kwargs):
+        pass
 
-    def warning(self, msg): pass
+    def warning(self, msg):
+        pass
 
-    def debug(self, msg): pass
+    def debug(self, msg):
+        pass
 
-    def exception(self, msg, *args, **kwargs): pass
+    def exception(self, msg, *args, **kwargs):
+        pass
 
 # if somebody is confused send him:
 # find . -name "*settings.py"                                                                                                                                     ✔
@@ -648,7 +653,7 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         import importlib.util
         import sys
         import os
-        import time  # Bleibt für andere Zwecke
+
         from pathlib import Path
 
         current_file = Path(__file__).resolve()
@@ -678,7 +683,7 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
 
         # 4. NANOSEKUNDEN + INDEX für absolute Eindeutigkeit
         # time.time_ns() liefert z.B. 1705678901234567890
-        unique_id_ns = time.time_ns() + index
+        # unique_id_ns = time.time_ns() + index
 
         # Wir konvertieren es in einen Float-Sekunden-Wert für die Funktion,
         # aber mit extrem hoher Präzision.
@@ -708,7 +713,8 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         os.remove(result_file)
         try:
             worker_dir.rmdir()
-        except:
+        except Exception as e:
+            print(f'717: {e}')
             pass
 
         return actual == expected, raw_text, actual, expected, description
