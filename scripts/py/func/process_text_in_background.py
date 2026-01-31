@@ -975,14 +975,17 @@ def process_text_in_background(logger,
 
     settings = DynamicSettings()
 
-    timestamp = int(time.time() * 1000)
+    # scripts/py/func/process_text_in_background.py:978
+    # timestamp = int(time.time() * 1000)
+    timestamp = str(recording_time).replace('.', '_')
+
     if output_dir_override:
         unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
     else:
         unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
 
     if settings.DEV_MODE: # some test. want check if we can change setting and get some setting correct back ( 2026-0104-1433 4.1.'26 14:33 Sun )
-        timestamp = int(time.time() * 1000)
+        # timestamp = str(recording_time).replace('.', '_')
 
         if output_dir_override:
             # unique_output_file = f"{output_dir_override}/tts_output_{timestamp}.txt"

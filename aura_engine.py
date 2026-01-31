@@ -120,6 +120,7 @@ from scripts.py.func.create_required_folders import setup_project_structure
 # ==============================================================================
 # --- PRE-RUN SETUP VALIDATION ---
 
+# aura_engine.py:123
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -205,6 +206,7 @@ HEARTBEAT_FILE = TMP_DIR / "aura_engine.heartbeat"
 PIDFILE = TMP_DIR / "aura_engine.pid"
 LOG_FILE = Path("log/aura_engine.log")
 
+# aura_engine.py:208
 SCRIPT_DIR = Path(__file__).resolve().parent
 LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
 

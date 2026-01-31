@@ -118,10 +118,14 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
     try:
         # command_strOld = f'"{java_executable_path}" -jar "{languagetool_jar_path}" --port {port} --allow-origin "*"'
 
+        # scripts/py/func/start_languagetool_server.py:121
         command_str = [
             java_executable_path,
+            "-Xms1G",  # Optional: Startet direkt mit 1GB (beschleunigt Warmup)
+            "-Xmx4G",  # Maximal 4GB RAM
             "-jar", str(languagetool_jar_path),
             "--port", str(port),
+            "--threads", "16",  # Muss ein String sein!
             "--address", '127.0.0.1',
             "--allow-origin", "*"
         ]

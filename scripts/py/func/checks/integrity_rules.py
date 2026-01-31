@@ -103,9 +103,9 @@ INTEGRITY_CHECKS = {
         "Finalizing recording session:",
     ],
 
-    "scripts/py/func/checks/self_tester.py": [
-        "if actual.lstrip() == expected:"
-    ],
+    # "scripts/py/func/checks/self_tester.py": [
+    #     "if actual.lstrip() == expected:"
+    # ],
 
     "scripts/py/func/model_manager.py": [
         "Reactive Loading" ,

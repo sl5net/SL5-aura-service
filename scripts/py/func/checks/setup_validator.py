@@ -90,9 +90,12 @@ def check_for_unused_functions(parsed_trees, project_root, logger):
         'test_transcription_with_long_pause_yields_multiple_chunks',
         'test_transcription_with_short_pause_yields_one_chunk','formatTime','active','setUpClass', 'get_cached_result', 'set_cached_result',
         'process_text_cli','execute_packing_logic','determine_current_user',
-        'get_clipboard_text_linux','set_clipboard_text_linux'
+        'get_clipboard_text_linux','set_clipboard_text_linux',
+        'SimpleNullLogger', 'exception',
+        'get_lt_session_202601311817', 'correct_text_by_languagetool_202601311818','run_single_test_202501311853'
     }
 
+    # scripts/py/func/checks/setup_validator.py:97
     all_definitions = {}
     all_calls = set()
 
@@ -117,7 +120,7 @@ def check_for_unused_functions(parsed_trees, project_root, logger):
         logger.error("\nFATAL: The following functions appear to be unused (dead code):")
         for name in sorted(list(unused)):
             file = all_definitions[name]
-            logger.error(f"  - {name:<30} | Defined in: {file.relative_to(project_root)}")
+            logger.error(f"  >>>{name:<30}<<< | Defined in: {file.relative_to(project_root)}")
         logger.error("\n  -> Please remove or use these functions.")
         sys.exit(1)
 

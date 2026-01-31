@@ -65,7 +65,7 @@ SIGNATURE_MAPPING = {
     r"0 a\.d\.": ("SL5net >> Aura", 1),        # 14400 = 4 h autocivp/moddata/autocivP_IconNames_README.txt
     r"Matrix|Discord": ("🗣SL5net ⟫ Aura", 3600),   # 1 Stunde für Chat
     r"Outlook|Mail": ("-- Sent via Aura --", 86400), # 1 Tag für E-Mails
-    r"Konsole|kate|Google AI Studio|google ai studio": ("", 86400),
+    r"\.py|Konsole|kate|Google AI Studio|google ai studio|google ai studio": ("", 999999),
     r".*": ("🗣[ SL5net Aura ]", 1800)             # 30 Min Fallback
 }
 
