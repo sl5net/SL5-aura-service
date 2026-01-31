@@ -11,6 +11,7 @@ import signal
 import psutil
 import time, re
 
+#from config.settings import LANGUAGETOOL_CHECK_URL
 
 # Python path to ensure reliable imports on all platforms
 # This solves potential issues when running from a batch script on Windows
@@ -1015,8 +1016,8 @@ else:
     # atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
 
     # aura_engine.py:760
-    active_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}/v2/check"
-
+    # active_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}/v2/check"
+    active_lt_url = f"{settings.LANGUAGETOOL_CHECK_URL}"
 
 if not languagetool_process:
     notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")

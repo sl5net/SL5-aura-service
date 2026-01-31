@@ -1,50 +1,66 @@
-# file script/py/func/correct_text_by_languagetool
+# scripts/py/func/correct_text_by_languagetool.py:1
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
-# from config.settings import LANGUAGETOOL_BASE_URL
+# scripts/py/func/correct_text_by_languagetool.py:6
+lt_session = requests.Session()
+
+
+retries = Retry(total=2, backoff_factor=0.1)
+lt_session.mount('http://', HTTPAdapter(max_retries=retries))
+
 
 def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) -> str:
-    # scripts/py/func/correct_text_by_languagetool.py:7
-    # LANGUAGETOOL_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check"
-    # LANGUAGETOOL_URL active_lt_url
+    if not text or not text.strip():
+        return text
 
     log_all_changes = True
-    # log_all_changes = False
 
-    if not text.strip(): return text
+    # 1. Daten-Payload optimieren
+    # Tipp: Deaktivieren Sie "picky" Regeln oder schränken Sie Kategorien ein
+    data = {
+        'language': LT_LANGUAGE,
+        'text': text,
+        'maxSuggestions': 1,
+        # 'enabledCategories': 'PUNCTUATION,GRAMMAR', # Nur das Nötigste
+        # 'disabledRules': 'WHITESPACE_RULE', # Beispiel für langsame Regeln
+        'level': 'default'  # 'picky' wäre deutlich langsamer
+    }
 
-    if log_all_changes:
-        logger.info(f"-----> rawInput to LT:  '{text}'")
-    # data = {'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1, 'enabledCategories': 'PUNCTUATION,GRAMMAR',
-    #         'Categories': 'PUNCTUATION,GRAMMAR'  }
-    data = {'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1  }
     try:
-        # scripts/py/func/correct_text_by_languagetool.py:19
-        response = requests.post(active_lt_url, data, timeout=20) # timeout was 10 but Windows OS seems need much more at the moment 18.1.'26 21:28 Sun
+        # 2. Timeout senken (z.B. 5 Sekunden)
+        # Wenn der lokale Server länger braucht, ist er überlastet
+        response = lt_session.post(active_lt_url, data=data, timeout=5)
         response.raise_for_status()
+
         matches = response.json().get('matches', [])
         if not matches:
-            if log_all_changes:
-                logger.info("  <- Output from LT: (No changes)")
             return text
+
+        # Korrektur-Logik (unverändert, aber effizienter)
         sorted_matches = sorted(matches, key=lambda m: m['offset'])
         new_text_parts, last_index = [], 0
-        for match in sorted_matches:
-            new_text_parts.append(text[last_index:match['offset']])
-            if match['replacements']:
-                new_text_parts.append(match['replacements'][0]['value'])
-            else:
-                # FIX: Keep original text if there is no replacement
-                original_slice = text[match['offset'] : match['offset'] + match['length']]
-                new_text_parts.append(original_slice)
 
+        for match in sorted_matches:
+            # Überspringe Korrektur, wenn keine Replacements vorhanden sind
+            if not match.get('replacements'):
+                continue
+
+            new_text_parts.append(text[last_index:match['offset']])
+            new_text_parts.append(match['replacements'][0]['value'])
             last_index = match['offset'] + match['length']
+
         new_text_parts.append(text[last_index:])
         corrected_text = "".join(new_text_parts)
+
         if log_all_changes:
-            logger.info(f"🔁 📚{text}📚 ->LT-> 📚{corrected_text}📚")
+            logger.info(f"🔁 LT-Korrektur durchgeführt.")
         return corrected_text
+
+    except requests.exceptions.Timeout:
+        logger.error(f"  <- TIMEOUT: LT Server war zu langsam.")
+        return text
     except requests.exceptions.RequestException as e:
         logger.error(f"  <- ERROR: LanguageTool request failed: {e}")
         return text
-

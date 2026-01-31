@@ -15,6 +15,9 @@ CONFIG_DIR = Path(__file__).parent
 # EXAMPLE: git
 gitGit = r'(git|Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit|kit|peach|quitt)'
 
+# ein kit mit text in english
+
+
 # EXAMPLE: Commit
 commitGit = r'(Commit|Komet|Komik|Comics|Gummi|gummis|kommt|kommend|mit|hitch|komm|Kometen|kubicki|komisch|gewinnen|gromit|komme|kubis|cobit|cubic|beach|gemütlich|quitt|google)'
 
@@ -46,6 +49,11 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: git commit
     ('git commit ', rf'\bgittern komet\b\s*', 80, {'flags': re.IGNORECASE}),
+
+    # EXAMPLE: git commit Text in english
+    ('git commit Text in english', rf'\bein {gitGit}\b\s*\b{commitGit} text in english\b', 80, {'flags': re.IGNORECASE}),
+
+
 
 
     # EXAMPLE: git clone
