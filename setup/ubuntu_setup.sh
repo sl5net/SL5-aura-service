@@ -49,7 +49,11 @@ echo "--> Running setup from project root: $(pwd)"
 
 set -e
 
+
+
 echo "--- Starting STT Setup for Debian/Ubuntu ---"
+
+sudo apt-get update -y
 
 # setup/ubuntu_setup.sh
 # --- 1. System Dependencies ---

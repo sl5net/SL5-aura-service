@@ -27,6 +27,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-models-tools-
           
+      - name: Update apt repositories
+        run: sudo apt-get update -y
+
       - name: Run ubuntu_setup.sh
         run: bash ./setup/ubuntu_setup.sh
 
