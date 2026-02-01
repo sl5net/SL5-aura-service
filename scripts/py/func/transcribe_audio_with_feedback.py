@@ -16,6 +16,7 @@ import sounddevice as sd
 
 import webrtcvad  # NEU: Import für Voice Activity Detection
 
+import platform
 
 global AUTO_ENTER_AFTER_DICTATION_global  # noqa: F824
 
@@ -322,8 +323,11 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     device_id = get_device_id(device_name,logger)
     logger.info(f"py/func/transcribe_audio_with_feedback.py:224 Using 🖥️ device name: {device_name} --> device_id: {device_id}")
 
+    # 1.2.'26 11:53 Sun: erhöhe den blocksize Parameter auf z.B. 16000 oder 24000
+    # 1.2.'26 11:53 Sun: was 4800
+
     try:
-        with sd.RawInputStream(samplerate=input_rate, blocksize=4800,
+        with sd.RawInputStream(samplerate=input_rate, blocksize=16000,
                                dtype='int16', channels=1, device=device_id,
                                callback=audio_callback):
             logger.info(f"Dictation Session started. Initial timeout: {current_timeout}s.")
@@ -391,11 +395,20 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
                     # 2. Prüfen auf Timeout
                     if time.time() - last_activity_time > current_timeout:
-                        logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")
 
-                        mute_microphone(logger, onlySound=True)
-                        # "Mute" sound: quick down-bending tone
-                        break
+                        suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path(
+                            "/tmp")) / "aura_vosk_suspended.flag"
+                        is_suspended = suspend_flag.exists()
+                        if is_suspended:
+                            # log4DEV(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
+                            last_activity_time = time.time()
+                            pass
+                        else:
+                            logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")
+                            mute_microphone(logger, onlySound=True)
+                            # "Mute" sound: quick down-bending tone
+                            break
+
                 except queue.Empty:
                     pass
 

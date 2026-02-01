@@ -103,7 +103,7 @@ FUZZY_MAP_pre = [
 #ützensagTitan wird hier in einem Ritual Environment mitverwendet
 
     # EXAMPLE: Brighton
-    ('Python', r'^(\b)(Brighton|breit schon|Fallschirm|peitschen)(\b)$', 75, {'flags': re.IGNORECASE}),
+    ('Python', r'^(\b)(B2026-0131-2125righton|breit schon|Fallschirm|peitschen)(\b)$', 75, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: beiden wird hier in einem Virtual environment mitverwendet
     ('Python wird hier in einer Virtual environment verwendet', r'^(beiden wird hier in einem Virtual environment mitverwendet|Beiden wird hier in einer wird für den falle verwendet|Weiterhin wird hier in einem virtuell in bei mit verwendet|Halten wird jedwedem Witwe wird Weibe verwenden|titan wird hier in einem virtual in weibe verwendet|beiden wird hier in einem virtuell in wei mitverwendet)$', 75, {'flags': re.IGNORECASE}),
@@ -131,6 +131,14 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: AutoKey
     ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
+    # EXAMPLE: 0 A.D.
+    ('0 A.D.', r'\bzewa d\b', 82, {'flags': re.IGNORECASE}),
+
+    # EXAMPLE: 0 A.D. spiel
+    ('0 A.D. spiel', r'\bzewa d spiel\W*\b', 82, {'flags': re.IGNORECASE}),
+
+
+
 
     # EXAMPLE: bild prozess
     ('Build Prozess', r'\bbild prozess\b', 82, {'flags': re.IGNORECASE}),

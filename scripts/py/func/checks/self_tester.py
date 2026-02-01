@@ -325,6 +325,13 @@ def _execute_self_test_core_202601311804(logger, tmp_dir, lt_url, lang_code):
             os.remove(result_file)
             worker_dir.rmdir()
 
+            pattern = r"🗣"  # cut off signature . example: first sequence of digits
+            m = re.search(pattern, expected)
+            if m:
+                expected = expected[:m.start()]
+            else:
+                expected = expected  # no match -> keep original
+
             return actual == expected, raw_text, actual, expected, description
         except Exception as e:
             return False, raw_text, str(e), expected, description
@@ -716,6 +723,17 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         except Exception as e:
             print(f'717: {e}')
             pass
+
+
+
+        pattern = r"🗣"  # cut off signature . example: first sequence of digits
+        m = re.search(pattern, expected)
+        if m:
+            expected = expected[:m.start()]
+        else:
+            expected = expected  # no match -> keep original
+
+
 
         return actual == expected, raw_text, actual, expected, description
 

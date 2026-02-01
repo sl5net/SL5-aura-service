@@ -25,7 +25,7 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 
 # --- Notification Settings ---
 # Default for new users is the most verbose level.
-NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
+NOTIFICATION_LEVEL = 1 # 0=Silent, 1=Essential, 2=Verbose
 
 
 SIGNATURE_COOLDOWN = 50 # 600
@@ -65,7 +65,7 @@ SIGNATURE_MAPPING = {
     r"0 a\.d\.": ("SL5net >> Aura", 1),        # 14400 = 4 h autocivp/moddata/autocivP_IconNames_README.txt
     r"Matrix|Discord": ("🗣SL5net ⟫ Aura", 3600),   # 1 Stunde für Chat
     r"Outlook|Mail": ("-- Sent via Aura --", 86400), # 1 Tag für E-Mails
-    r"\.py|Konsole|kate|Google AI Studio|google ai studio|google ai studio": ("", 999999),
+    r"\.py|Konsole|kate|commander|Google AI Studio|google ai studio|google ai studio": ("", 999999),
     r".*": ("🗣[ SL5net Aura ]", 1800)             # 30 Min Fallback
 }
 
@@ -164,7 +164,16 @@ AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
 # INITIAL_WAIT_TIMEOUT = initial_silence_timeout
 # SPEECH_PAUSE_TIMEOUT = 2.0 # Standardwert
 SPEECH_PAUSE_TIMEOUT = 1
-# Standardwert
+SPEECH_PAUSE_TIMEOUT = 999999
+# may set if you want have permanent recording
+
+# Standardwert 2
+
+#
+
+# test start:
+# 1.2.'26 16:35 Sun cpu 6%,
+# okeineneineneineneineneineneineneineneinen
 
 # AUDIO_INPUT_DEVICE = ' MIC_AND_DESKTOP'
 # PRE_RECORDING_TIMEOUT = 12

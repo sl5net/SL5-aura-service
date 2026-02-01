@@ -1390,6 +1390,15 @@ def process_text_in_background(logger,
                     f" result_languagetool:{result_languagetool}"
                     f" processed_text:{processed_text} ",logger)
 
+        # scripts/py/func/process_text_in_background.py:1394 process_text_in_background(...)
+        suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")) / "aura_vosk_suspended.flag"
+        is_suspended = suspend_flag.exists()
+        if is_suspended:
+            log4DEV(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
+            print(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
+            return ''
+
+
         if (new_processed_text and new_processed_text != '0' and new_processed_text is not None) and new_processed_text != processed_text:
             if not privacy_taint_occurred:
                 log4DEV(f'new_processed_text != processed_text | {new_processed_text} != {processed_text} ==> processed_text = new_processed_text',logger)

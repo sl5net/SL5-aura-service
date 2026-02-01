@@ -1,4 +1,4 @@
-# config/maps/plugins/  /de-DE/FUZZY_MAP_pre.py
+# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path
 
@@ -41,12 +41,18 @@ flake8 = 'source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config'
 
 FUZZY_MAP_pre = [
 
+    ('', r'^einen$', 100, {'flags': re.IGNORECASE}),
+    ('', r'^einens$', 100, {'flags': re.IGNORECASE}),
 
     # === VOSK NOISE FIX ===
     # Das kleine Vosk-Modell halluziniert oft "einen" bei Stille/Atmen.
     # Wenn der Input EXAKT nur "einen" ist, wird er ignoriert.
     # (Wer wirklich "einen" sagen will, sagt meist "Ich will einen..." -> das bleibt erhalten)
     # ('', r'^einen$', 100, {'flags': re.IGNORECASE}),
+    # ('', r'^einens$', 100, {'flags': re.IGNORECASE}),
+
+    ('', r'^\s*einen\s*$', 100, {'flags': re.IGNORECASE}),
+    ('', r'^\s*einens\s*$', 100, {'flags': re.IGNORECASE}),
 
     #Ich will einen Apfeleinen einen
 

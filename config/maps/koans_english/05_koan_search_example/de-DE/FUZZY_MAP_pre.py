@@ -23,7 +23,8 @@ FUZZY_MAP_pre = [
     #('search in Ruth chapter 1 verse 1', fr'^.*$', 90, {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
     # EXAMPLE: search in [book] chapter [number] verse [number]
-    ('(bible) search', fr'^search in (?P<book>\w*[ ]?\w+) chapter (?P<chapter>\d+) [v]\w+ (?P<verse>\d+)$', 90, {
+    ('(bible) search', fr'^search in (?P<book>\w*[ ]?\w+) chapter (?P<chapter>\d+) [v]\w+ (?P<verse>\d+)$', 90,
+    {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
