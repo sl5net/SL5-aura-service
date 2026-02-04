@@ -147,7 +147,7 @@ def process_text_cli(request: ProcessRequest, valid: bool = Depends(verify_api_k
     # Eindeutigen Output-Ordner erstellen
 
     unique_dir_name = f"cli_request_{timestamp}"
-    request_output_dir = TMP_DIR / unique_dir_name
+    request_output_dir = TMP_DIR / "sl5_aura" / "tts_output" / unique_dir_name
     request_output_dir.mkdir(parents=True, exist_ok=True)
 
     # Prozess starten

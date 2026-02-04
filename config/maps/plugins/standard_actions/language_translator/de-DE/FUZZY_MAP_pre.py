@@ -69,12 +69,13 @@ standards.
 
 CONFIG_DIR = Path(__file__).parent
 
-# EXAMPLE: Denglisch
-Englisch=r'\b(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe|ähnlich)\b'
-# EXAMPLE: Switch
-toggleCmd=r'(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
+# englisch einschalten
+nonsense_start_word = r'(?:(an|ein|eine|einen|essen)\s*)?'
 
-# englisch einschaltenGuten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).# EXAMPLE: hallo
+# EXAMPLE: Denglisch
+Englisch = fr'{nonsense_start_word}(Denglisch|englisch\w*|english\w*|endlich|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe|ähnlich)\b\s*'
+# EXAMPLE: Switch
+toggleCmd=r'\s*(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)\s*'
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
@@ -84,7 +85,7 @@ FUZZY_MAP_pre = [
     # - first is read first imported, lower rules maybe not get read.
 
     # EXAMPLE: Englisch Switch
-    ('en', fr'^{Englisch} {toggleCmd}$', 95, {
+    ('en', fr'^{Englisch}{toggleCmd}$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),

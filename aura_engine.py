@@ -170,17 +170,19 @@ from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload
 
 setup_project_structure(PROJECT_ROOT)
 
+LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"
+
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
 else:
     TMP_DIR = Path("/tmp")
 
-TRIGGER_FILE = TMP_DIR / "sl5_record.trigger"
-HEARTBEAT_FILE = TMP_DIR / "aura_engine.heartbeat"
-PIDFILE = TMP_DIR / "aura_engine.pid"
-LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"
-
+TRIGGER_FILE = TMP_DIR /  "sl5_record.trigger"
+HEARTBEAT_FILE = TMP_DIR / "sl5_aura" / "aura_engine.heartbeat"
+PIDFILE = TMP_DIR / "sl5_aura" / "aura_engine.pid"
 LOCK_DIR = TMP_DIR / "sl5_aura" / "aura_lock"
+
+
 
 
 
@@ -200,10 +202,11 @@ if platform.system() == "Windows":
     NOTIFY_SEND_PATH = None
 else:
     TMP_DIR = Path("/tmp")
-OUTPUT_FILE = TMP_DIR / "tts_output.txt"
+OUTPUT_FILE = TMP_DIR / "sl5_aura" / "tts_output" / "tts_output.txt"
 
-HEARTBEAT_FILE = TMP_DIR / "aura_engine.heartbeat"
-PIDFILE = TMP_DIR / "aura_engine.pid"
+
+HEARTBEAT_FILE = TMP_DIR / "sl5_aura" / "aura_engine.heartbeat"
+PIDFILE = TMP_DIR / "sl5_aura" / "aura_engine.pid"
 LOG_FILE = Path("log/aura_engine.log")
 
 # aura_engine.py:208
@@ -979,6 +982,12 @@ watchdog_thread.start()
 
 TRIGGER_FILE.unlink(missing_ok=True)
 
+suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path(
+    "/tmp")) / "sl5_aura" / "aura_vosk_suspended.flag"
+
+suspend_flag.unlink(missing_ok=True)
+
+
 # MODEL_PATH = SCRIPT_DIR / "models" / MODEL_NAME
 
 # import scripts.py.func.guess_lt_language_from_model
@@ -1062,7 +1071,7 @@ if settings.DEV_MODE :
     if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
         self_test_start_time = time.time()
         log4DEV(f"Start run_core_logic_self_test( .. {lang_code}", logger)
-        run_core_logic_self_test(logger, TMP_DIR, active_lt_url,lang_code)
+        run_core_logic_self_test(logger, TMP_DIR / "sl5_aura", active_lt_url,lang_code)
 
 
         self_test_end_time = time.time()
@@ -1158,7 +1167,7 @@ if __name__ == "__main__":
     # Create a flag file so client scripts know if a plugin is active.
     try:
         AUTO_ENTER_AFTER_DICTATION_global = settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
-        auto_enter_flag_path = "/tmp/sl5_auto_enter.flag"
+        auto_enter_flag_path = "/tmp/sl5_aura/sl5_auto_enter.flag"
         with open(auto_enter_flag_path, "w") as f:
             f.write(str(AUTO_ENTER_AFTER_DICTATION_global)) # Writes 1 or 0
         logger.info(f"Set auto-enter flag to: {AUTO_ENTER_AFTER_DICTATION_global}")

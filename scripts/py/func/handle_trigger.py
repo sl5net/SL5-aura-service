@@ -212,7 +212,7 @@ def handle_trigger(
             model_object = selected_model
             lt_language = guess_lt_language_from_model(logger, found_key)
 
-
+            # scripts/py/func/handle_trigger.py
             recognizer = vosk.KaldiRecognizer(model_object, SAMPLE_RATE)
             logger.info(f"Using model for lang '{lt_language}'.")
 

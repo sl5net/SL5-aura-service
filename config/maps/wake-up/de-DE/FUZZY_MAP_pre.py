@@ -13,9 +13,13 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
-aura = r'\s*\b(busch|computer|aura|auri|voss|voß|vosk|volk|vor sk|first|frost|froscon|free esc|frist|feuer)\b\s*'
+# aura = r'\s*\b(busch|computer|aura|auri|voss|voß|vosk|volk|vor sk|first|frost|froscon|free esc|frist|feuer)\b\s*'
+#praktisch einschlafenWie ist das bitte
+# einenhaben gratis einschlafennun
 
-aura = r'.*(kaktus|kaktos|kackt|taktus|voss|frost|wie törn).*'
+nonsense_start_word = r'(?:(ein|eine|einen)\s*)?'
+
+kaktus = r'{nonsense_word}(kaktus|kaktos|kackt|kraft|kürzlich|taktus|captain|voss|frost|klapptisch|praktisch|korb|wie törn).*'
 
 #STT Active. Mute flag removed.Was hat, spuckt
 
@@ -26,23 +30,41 @@ FUZZY_MAP_pre = [
     # guten tag das aufwachenkaktus einschalten
     # bin bi kaktus aufwachen
 
-    ('voss_start', fr'^({aura} höre nicht mit|{aura}wach auf|{aura}auf|{aura}aufwachen|{aura}wache|{aura}einschätzen|{aura}einschalten|{aura}aktiv|frost brach kracher|Vor krach auf|free square auf|frost quatsch auf|guten tag das aufwachen|einen kaktus woche aus|b\s*\w*\s*\bkaktus aufwachen)$', 89,
-    {
+    ('voss_start', fr'^({kaktus} höre nicht mit|{kaktus}wach auf|{kaktus}auf|{kaktus}aufwachen|{kaktus}wache|{kaktus}einschätzen|{kaktus}einschalten|{kaktus}aktiv|frost brach kracher|Vor krach auf|free square auf|frost quatsch auf|guten tag das aufwachen|{nonsense_start_word}kaktus woche aus|b\s*\w*\s*\bkaktus aufwachen)$', 89,
+     {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
     }),
 
+    # 1 köpfe einschlagen 2 Es richten 2 praktisch
+    # kürzlich einschlafen
+    # sehen könntest einschlafen
     #
 
-
-
-    ('voss_stop', fr'^({aura}stop\w*|{aura}schlafe\w*|{aura}geh schlafe\w*|gute nacht|{aura}ciao|{aura}nen)$', 89,
-    {
+    # EXAMPLE: einschalfen phonetic misinterpretations
+    ('voss_stop', fr'^(?:{kaktus}|gratis|köpfe|hörtest)\s*(?:einschlagen|einschlafen|einschleppen|einsch\w*en|geschlossen|stop|schlafe|ciao).*$', 89,
+     {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
     }),
 
-    ('voss_stop', fr'^(mithören|mithören stopppen|einschlafen|\w*\s*kannst du einschlafeneinen|guten tag das geh schlafen|bin jetzt dran hab das einschlafe\w*|bin klappt das einschlafen)$', 89,
+    # einen
+    ('voss_stop', fr'^(?:{kaktus}stop\w*|{nonsense_start_word}{kaktus}{nonsense_start_word}schlafe\w*|{kaktus}geh schlafe\w*|gute nacht|{kaktus}ciao|{kaktus}nen)$', 89,
+     {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
+    }),
+
+    # einen hörtest einschlafen
+    #e
+    ('voss_stop', fr'^{nonsense_start_word}\s*(hörtest einschlafen|sehen könntest einschlafen)$', 89,
+     {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
+    }),
+    # 18:40:16,502 - INFO     - 📢📢📢 ######################### gratis einstellen ##########################################
+    # stramg i said kakrus and it unsestands gratis ...
+    ('voss_stop', fr'^(gratis) (geschlossen|einstellen)$', 89,
     {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']

@@ -980,9 +980,9 @@ def process_text_in_background(logger,
     timestamp = str(recording_time).replace('.', '_')
 
     if output_dir_override:
-        unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
+        unique_output_file = output_dir_override / "sl5_aura" / "tts_output" / f"tts_output_{timestamp}.txt"
     else:
-        unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
+        unique_output_file = TMP_DIR / "sl5_aura" / "tts_output" / f"tts_output_{timestamp}.txt"
 
     if settings.DEV_MODE: # some test. want check if we can change setting and get some setting correct back ( 2026-0104-1433 4.1.'26 14:33 Sun )
         # timestamp = str(recording_time).replace('.', '_')
@@ -991,7 +991,7 @@ def process_text_in_background(logger,
             # unique_output_file = f"{output_dir_override}/tts_output_{timestamp}.txt"
             unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
         else:
-            unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
+            unique_output_file = TMP_DIR / "sl5_aura" / "tts_output" / f"tts_output_{timestamp}.txt"
 
         if not privacy_taint_occurred:
             log4DEV(f'raw_text:{raw_text}',logger)
@@ -1390,8 +1390,10 @@ def process_text_in_background(logger,
                     f" result_languagetool:{result_languagetool}"
                     f" processed_text:{processed_text} ",logger)
 
+        #     flag_path = TMP_DIR / "sl5_aura" / "aura_vosk_suspended.flag"
+
         # scripts/py/func/process_text_in_background.py:1394 process_text_in_background(...)
-        suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")) / "aura_vosk_suspended.flag"
+        suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")) / "sl5_aura" / "aura_vosk_suspended.flag"
         is_suspended = suspend_flag.exists()
         if is_suspended:
             log4DEV(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
@@ -1403,9 +1405,6 @@ def process_text_in_background(logger,
             if not privacy_taint_occurred:
                 log4DEV(f'new_processed_text != processed_text | {new_processed_text} != {processed_text} ==> processed_text = new_processed_text',logger)
             processed_text = new_processed_text
-
-            # unique_output_file = TMP_DIR / f"sl5_aura/tts_output_{timestamp}.txt"
-            # unique_output_file.write_text(processed_text)
 
             if not privacy_taint_occurred:
                 log4DEV(f"SkipList:{skip_list}"

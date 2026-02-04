@@ -15,6 +15,8 @@ from .log_memory_details import log4DEV
 import sounddevice as sd
 
 import webrtcvad  # NEU: Import für Voice Activity Detection
+from scripts.py.func.audio_manager import speak_fallback
+
 
 import platform
 
@@ -194,6 +196,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , session_active_event
                                    , AUTO_ENTER_AFTER_DICTATION_global
                                    ):
+    last_toggle = 0
 
     manage_audio_routing(settings.AUDIO_INPUT_DEVICE, logger)
 
@@ -242,7 +245,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         # global AUTO_ENTER_AFTER_DICTATION_global
                         AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
                         # Define the path for the AutoEnter flag file
-                        AUTO_ENTER_FLAG_FILE = Path("/tmp/sl5_auto_enter.flag")
+                        AUTO_ENTER_FLAG_FILE = Path("/tmp/sl5_aura/sl5_auto_enter.flag")
                         with open(AUTO_ENTER_FLAG_FILE, "w") as flag_f:
                             flag_f.write(str(AUTO_ENTER_AFTER_DICTATION_REGEX_APPS))
                         logger.info(f"AUTO_ENTER_AFTER_DICTATION_REGEX_APPS written to {AUTO_ENTER_FLAG_FILE}: {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
@@ -353,12 +356,70 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
                         is_speech_finalized = recognizer.AcceptWaveform(data)
 
+                        # 2. SOFORT das Partial Result prüfen (Wichtig für Wake-Words!)
+                        partial_result = json.loads(recognizer.PartialResult())
+                        partial_text = partial_result.get('partial', '').lower()
+
+                        suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path(
+                            "/tmp")) / "sl5_aura" / "aura_vosk_suspended.flag"
+                        is_suspended = suspend_flag.exists()
+                        #
+                        modus = 'toggle'
+                        if modus == 'toggle':
+                            if any(w in partial_text.lower() for w in ["kaktus", "kakturs", "klapptisch", "kette"]):
+                                if time.time() - last_toggle > 2.0:  # 2 sec cooldown
+                                    last_toggle = time.time()
+                                    if is_suspended:
+                                        suspend_flag.unlink()  # WAKE UP
+                                        logger.info("🚀 System ACTIVE")
+                                        speak_fallback(f"Wake-Word", 'en-US')
+                                    else:
+                                        suspend_flag.touch()  # GO TO SLEEP
+                                        logger.info("💤 System SUSPENDED")
+                                        speak_fallback(f"System SUSPENDED", 'en-US')
+                                    recognizer.Reset()
+
+                                    # Sofort weitermachen (kein Yield nötig, oder "Bin wach" sagen)
+                                    last_activity_time = time.time()
+
+                                    # speak_fallback(f"Wake-Word", 'de-DE')
+
+                                    continue
+
+                        # Wenn wir im "Warte-Modus" sind (z.B. durch dein suspend_flag geprüft)
+                        # Einen BantusMein nächstes Wetter
+                        if is_suspended:
+                            # Wir prüfen sofort das Teilergebnis auf das Wake-Word
+                            # "kakturs" oder "kaktus" - je nachdem wie du es aussprichst
+
+                            if modus == 'remove suspend_flag only': # when using this mode: you need rules for start sleeping. mabe there: config/maps/wake-up/de-DE/FUZZY_MAP_pre.py:31
+                                if "kakturs" in partial_text.lower() or "kaktus" in partial_text.lower():
+                                    logger.info("🚀 Wake-Word erkannt! Aktiviere System...")
+
+                                    # Flag-Datei löschen, damit das System wieder normal arbeitet
+                                    if is_suspended:
+                                        suspend_flag.unlink()
+
+                                    # WICHTIG: Recognizer resetten, damit das Wake-Word
+                                    # nicht in die nächste Text-Ausgabe rutscht
+                                    recognizer.Reset()
+
+                                    # Sofort weitermachen (kein Yield nötig, oder "Bin wach" sagen)
+                                    last_activity_time = time.time()
+
+                                    # speak_fallback(f"Wake-Word", 'de-DE')
+                                    speak_fallback(f"Wake-Word", 'en-US')
+
+                                    continue
+
+
                         if is_speech_finalized:
                             last_activity_time = time.time()
                             text = _handle_final_result(recognizer, logger)
-                            if text: yield text
+                            if text:
+                                yield text
                         else:
-                            partial_result = json.loads(recognizer.PartialResult())
+                            #partial_result = json.loads(recognizer.PartialResult())
                             if is_voice_active_in_chunk or partial_result.get('partial'):
                                 last_activity_time = time.time()  # Aktivität erkannt, Timer zurücksetzen
 
@@ -396,9 +457,6 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                     # 2. Prüfen auf Timeout
                     if time.time() - last_activity_time > current_timeout:
 
-                        suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path(
-                            "/tmp")) / "aura_vosk_suspended.flag"
-                        is_suspended = suspend_flag.exists()
                         if is_suspended:
                             # log4DEV(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
                             last_activity_time = time.time()

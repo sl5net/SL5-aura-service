@@ -16,6 +16,15 @@ else
     detected_os="other"
 fi
 
+
+# Kill any existing watcher instances to prevent ghost processes and lockfile conflicts
+pkill -f "type_watcher.sh" || true
+pkill -f "type_watcher_keep_alive.sh" || true
+
+# guarantee that no stale
+# processes from old paths or failed lockfile cleanups interfere with the new # instance. It is the most reliable way to handle path renames without leaving background processes behind.
+
+
 if [ "$detected_os" = "windows" ]; then
   echo "please start type_watcher.ahk"
   echo "please start trigger-hotkeys.ahk"

@@ -21,7 +21,7 @@ def execute(match_data):
     if not TMP_DIR.exists():
         TMP_DIR.mkdir(parents=True, exist_ok=True)
 
-    flag_path = TMP_DIR / "aura_vosk_suspended.flag"
+    flag_path = TMP_DIR / "sl5_aura" / "aura_vosk_suspended.flag"
     cmd_tag = match_data.get('text_after_replacement', '').lower()
 
     if cmd_tag == "voss_stop":

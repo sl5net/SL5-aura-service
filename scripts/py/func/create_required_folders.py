@@ -33,6 +33,7 @@ def setup_project_structure(project_root_str: str):
     # Use the dynamic TMP_DIR to support Windows (C:/tmp) and Linux (/tmp)
     absolute_dirs = {
         TMP_DIR / "sl5_aura": None,
+        TMP_DIR / "sl5_aura" / "tts_output": None,
         TMP_DIR / "sl5_aura" / "session" : None,
         TMP_DIR / "sl5_aura" / "session" / "lock": None,
     }

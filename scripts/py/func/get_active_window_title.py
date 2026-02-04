@@ -10,7 +10,7 @@ from pathlib import Path
 _X11_ENV_CACHE = None
 
 # --- DATEI CACHE (Disk - überlebt Reloads) ---
-X11_CACHE_FILE = Path(tempfile.gettempdir()) / "sl5_aura_x11_env.json"
+X11_CACHE_FILE = Path(tempfile.gettempdir()) / "sl5_aura" / "sl5_aura_x11_env.json"
 
 def get_linux_x11_env():
     """

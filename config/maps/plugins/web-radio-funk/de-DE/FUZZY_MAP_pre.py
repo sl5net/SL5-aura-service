@@ -30,9 +30,11 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
+    # einen hörtest einschlafen
 
     # EXAMPLE: deutschlandfunk
-    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(deutschlandfunk|Deutschlandradio|deutsch\w* radio)\s*$', 70, {'flags': re.IGNORECASE}),
+    # Einen  is somtimes noise of nothing
+    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio)\s*$', 70, {'flags': re.IGNORECASE}),
     # EXAMPLE: presseclub
     ('https://www1.wdr.de/daserste/presseclub/index.html', r'^(presseclub|pressig)\w*\s*$', 70, {'flags': re.IGNORECASE}),
 

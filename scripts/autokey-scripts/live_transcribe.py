@@ -21,10 +21,12 @@ except (FileNotFoundError, KeyError) as e:
     subprocess.run(["notify-send", "-u", "critical", "SL5 STT Config Error", f"Could not load config: {e}"])
     sys.exit(1)
 
+
 SERVICE_PY_NAME = "aura_engine.py"
 TRIGGER_path = "/tmp/sl5_record.trigger"
 TRIGGER_FILE = Path(TRIGGER_path)
-HEARTBEAT_FILE = Path(f"/tmp/aura_engine.heartbeat")
+
+HEARTBEAT_FILE = Path(f"/tmp/sl5_aura/aura_engine.heartbeat")
 # INCREASED TIMEOUT: Give the service more time to start
 HEARTBEAT_MAX_AGE_SECONDS = 30 # Increased from 15
 
