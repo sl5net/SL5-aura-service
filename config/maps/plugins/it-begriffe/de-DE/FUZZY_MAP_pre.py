@@ -36,8 +36,35 @@ FUZZY_MAP_pre = [
 
 
     #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
+    # matcha wo linux
     # EXAMPLE: whatchado
-    ('Manjaro Linux', r'^\b(whatchado|Mönch) (Linux|Carolin\w*)(\b)$', 80, {'flags': re.IGNORECASE}),
+
+    ('Manjaro Linux', r'^(whatchado|Mönch|matcha wo) (Linux|Carolin\w*)$', 80, {'flags': re.IGNORECASE}),
+
+    #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
+    # EXAMPLE: Linux Manjaro
+    ('Linux Manjaro', r'^(Linux) (man Karo|mal jaro|wird jaro|matcha rub)$', 80, {'flags': re.IGNORECASE}),
+
+    # EXAMPLE: Linux Manjaro
+    ('Linux Manjaro', r'^(Linux) ma\w*\s*\w*a\s*r[ou]m?$', 80, {'flags': re.IGNORECASE}),
+
+
+    #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
+    # EXAMPLE: Linux Manjarovelux
+    ('Linux Manjaro', r'^(velux) (matcha|wird jaro|wird jaro|mit jaro)$', 80, {'flags': re.IGNORECASE}),
+
+    # EXAMPLE: Linux Manjarovelux
+    ('Linux Manjaro', r'^velux m\w+\s*[ou]$', 80, {'flags': re.IGNORECASE}),
+
+    # velux m\w+\s*[ou]
+
+    # velux matcha r u
+    # velux mit jaro
+
+    #Velux matche
+
+    #Linux Manjaro Velux mal Karo
+    #matche wo Linux
 
 
 
@@ -136,6 +163,9 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: 0 A.D. spiel
     ('0 A.D. spiel', r'\bzewa d spiel\W*\b', 82, {'flags': re.IGNORECASE}),
+
+    # EXAMPLE: 0 A.D. spiel
+    ('GitHub SL5', r'\bgithub es sind 5\b', 82, {'flags': re.IGNORECASE}),
 
 
 

@@ -324,10 +324,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     logger.info(f"py/func/transcribe_audio_with_feedback.py:224 Using 🖥️ device name: {device_name} --> device_id: {device_id}")
 
     # 1.2.'26 11:53 Sun: erhöhe den blocksize Parameter auf z.B. 16000 oder 24000
-    # 1.2.'26 11:53 Sun: was 4800
+    # 1.2.'26 11:53 Sun: was 4800 > 10600
 
     try:
-        with sd.RawInputStream(samplerate=input_rate, blocksize=16000,
+        with sd.RawInputStream(samplerate=input_rate, blocksize=10600,
                                dtype='int16', channels=1, device=device_id,
                                callback=audio_callback):
             logger.info(f"Dictation Session started. Initial timeout: {current_timeout}s.")

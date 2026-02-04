@@ -6,6 +6,8 @@ import sys
 import os
 from pathlib import Path
 
+from ..audio_manager import speak_fallback
+
 def check_translator_hijack_is_active(logger):
 
     proj_dir = Path(__file__).parents[4]
@@ -325,14 +327,14 @@ def _execute_self_test_core_202601311804(logger, tmp_dir, lt_url, lang_code):
             os.remove(result_file)
             worker_dir.rmdir()
 
-            pattern = r"🗣"  # cut off signature . example: first sequence of digits
-            m = re.search(pattern, expected)
+            pattern = r"(🗣|\-\-)"  # cut off signature . example: first sequence of digits
+            m = re.search(pattern, actual)
             if m:
-                expected = expected[:m.start()]
+                actual2 = actual[:m.start()]
             else:
-                expected = expected  # no match -> keep original
+                actual2 = actual  # no match -> keep original
 
-            return actual == expected, raw_text, actual, expected, description
+            return actual2 == expected, raw_text, actual2, expected, description
         except Exception as e:
             return False, raw_text, str(e), expected, description
 
@@ -369,8 +371,11 @@ def _execute_self_test_core_202601311804(logger, tmp_dir, lt_url, lang_code):
     # 4. Summary
     duration = time.perf_counter() - start_time
     logger.info("-" * 40)
+    # m1 =f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}"
     logger.info(f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}")
+    m2=f"⌚ Total Duration: {duration:.2f} seconds"
     logger.info(f"⌚ Total Duration: {duration:.2f} seconds")
+    speak_fallback(f"{m2}", 'de-DE') # 'en-US') # 'de-DE')
     logger.info("-" * 40)
 
     settings.PLUGIN_HELPER_TTS_ENABLED = backup_tts_enabled
@@ -610,12 +615,17 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
                 logger.error(f"   Input:    '{raw}'")
                 logger.error(f"   Expected: '{expected}'")
                 logger.error(f"   Got:      '{actual}'")
+                sys.exit(1)
 
     # 4. Summary
     duration = time.perf_counter() - start_time
-    logger.info("-" * 40)
+    logger.info("=" * 40)
+    # m1 =f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}"
     logger.info(f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}")
+    m2=f"⌚ Total Duration: {duration:.2f} seconds"
     logger.info(f"⌚ Total Duration: {duration:.2f} seconds")
+    speak_fallback(f"{m2}", 'de-DE')# 'en-US') # 'de-DE')
+
     logger.info("-" * 40)
 
     settings.PLUGIN_HELPER_TTS_ENABLED = backup_tts_enabled
@@ -726,16 +736,16 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
 
 
 
-        pattern = r"🗣"  # cut off signature . example: first sequence of digits
-        m = re.search(pattern, expected)
+        pattern = r"(🗣|\-\-)"  # cut off signature . example: first sequence of digits
+        m = re.search(pattern, actual)
         if m:
-            expected = expected[:m.start()]
+            actual2 = actual[:m.start()]
         else:
-            expected = expected  # no match -> keep original
+            actual2 = actual  # no match -> keep original
 
 
 
-        return actual == expected, raw_text, actual, expected, description
+        return actual2 == expected, raw_text, actual2, expected, description
 
     except Exception as e:
         import traceback
@@ -836,7 +846,16 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
             print(f'812: {e}')
             pass
 
-        return actual == expected, raw_text, actual, expected, description
+        # -- Sent via Aura --'
+        pattern = r"(🗣|\-\-)"  # cut off signature . example: first sequence of digits
+        m = re.search(pattern, expected)
+        if m:
+            expected2 = expected[:m.start()]
+        else:
+            expected2 = expected  # no match -> keep original
+
+
+        return actual == expected2, raw_text, actual, expected2, description
 
     except Exception as e:
         return False, raw_text, f"Error: {str(e)}", expected, description
