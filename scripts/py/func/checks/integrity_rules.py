@@ -31,7 +31,7 @@ INTEGRITY_CHECKS = {
         'setup/windows11_setup.ps1',
         'https://www.autohotkey.com/',
         './scripts/restart_venv_and_run-server.sh',
-        'start_dictation_v2.0.bat',
+        'start_dictation_v2.1.bat',
         'https://github.com/hluk/CopyQ',
         'touch /tmp/sl5_record.trigger',
         'c:/tmp/sl5_record.trigger',
@@ -56,7 +56,8 @@ INTEGRITY_CHECKS = {
         "AuraDictation_Hotkeys",
     ],
 
-    'start_dictation_v2.0.bat': [
+    'start_dictation_v2.1.bat': [
+        ".venv\\Scripts\\activate",
         "start_dictation_v2.0.ps1",
         "log\\aura_engine.log",
         '"%CI%"=="true"',
@@ -68,6 +69,17 @@ INTEGRITY_CHECKS = {
         'powershell -Command "Start-Process cmd -ArgumentList \'/c, """%~f0"""\' -Verb RunAs"',
     ],
 
+    # 'start_dictation_v2.0.bat': [
+    #     "start_dictation_v2.0.ps1",
+    #     "log\\aura_engine.log",
+    #     '"%CI%"=="true"',
+    #     'start "" "%AHK_EXE%" "%~dp0',
+    #     "AuraDictation_Hotkeys",
+    #     "trigger-hotkeys.ahk",
+    #     "type_watcher.ahk",
+    #     "notification_watcher.ahk",
+    #     'powershell -Command "Start-Process cmd -ArgumentList \'/c, """%~f0"""\' -Verb RunAs"',
+    # ],
 
     'requirements.txt': [
 
