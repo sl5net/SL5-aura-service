@@ -1,13 +1,18 @@
-:: start this script like: & .\start_dictation_v2.0.bat
-:: Version: v2.1
-;;
-
 @echo off
 setlocal
 title SL5 Aura - One-Click Starter
 
-:: --- Step 1: Set correct working directory ---
+:: cmd /k "echo on & call start_dictation_v2.1.bat"
+
+
+echo DBG1: before cd
 cd /d "%~dp0"
+
+
+
+:: start this script like: & .\start_dictation_v2.1.bat
+:: Version: v2.1
+;;
 
 :: --- 2. Admin Rights Check ---
 echo [*] Checking for Administrator privileges
@@ -33,69 +38,85 @@ if /I NOT "%CI%"=="true" (
     )
 )
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 echo [SUCCESS] Running with Administrator privileges.
 
-:: --- Step 3: VEREINFACHT - Check if venv exists, otherwise run full setup ---
+echo DBG8: about to check venv
 if not exist ".\.venv\Scripts\python.exe" (
-    echo [WARNING] Virtual environment is missing or incomplete.
-    echo [ACTION] Running full setup. This may take a moment...
+  echo DBG9: venv missing
+  pause
+  powershell.exe -ExecutionPolicy Bypass -File ".\setup\windows11_setup.ps1" -Exclude "en"
+  if not exist ".\.venv\Scripts\python.exe" (
+    echo DBG10: venv still missing
     pause
-
-    REM  .\setup\windows11_setup.ps1 -Exclude "en" or .\setup\windows11_setup.ps1 -Exclude "de" or .\setup\windows11_setup.ps1 -Exclude "all".
-
-    powershell.exe -ExecutionPolicy Bypass -File ".\setup\windows11_setup.ps1" -Exclude "en"
-
-    if not exist ".\.venv\Scripts\python.exe" (
-        echo [FATAL] Automated setup failed. Please check setup script.
-        pause
-        exit /b
-    )
-    echo [SUCCESS] Virtual environment has been set up successfully.
+    exit /b
+  )
+  echo DBG11: venv created
 )
-echo.
+echo DBG12: after venv block
 
-
+echo DBG13: stop processes via powershell 1
 
 powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -and ($_.CommandLine -like '*type_watcher.ahk*') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"
 
+echo DBG14: after ps1
+
 powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -and ($_.CommandLine -like '*notification_watcher.ahk*') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"
+
+echo DBG15: after ps2
 
 powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -and ($_.CommandLine -like '*trigger-hotkeys.ahk*') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"
 
-:: --- Step 4: Start background components ---
-:: start "SL5 Type Watcher.ahk" type_watcher.ahk
-:: start "SL5 Notification Watcher.ahk" scripts\notification_watcher.ahk
-:: tasklist /v | findstr /i "trigger-hotkeys.ahk" >nul 2>&1
+echo DBG16: after ps3
 
-start "" "C:\Program Files\AutoHotkey\AutoHotkey.exe" "%~dp0scripts\notification_watcher.ahk" >nul 2>&1
-start "" "C:\Program Files\AutoHotkey\AutoHotkey.exe" "%~dp0trigger-hotkeys.ahk" >nul 2>&1
-start "" "C:\Program Files\AutoHotkey\AutoHotkey.exe" "%~dp0type_watcher.ahk" >nul 2>&1
-
-
-if "%errorlevel%"=="0" (
-    echo [INFO] Admin-Hotkeys are already running.
-) else (
-    echo [INFO] Starting Hotkeys in User-Mode...
-    :: HIER muss der Start-Befehl stehen, nicht ein Kill-Befehl!
-
-    :: --- NEU: Warte 2 Sekunden, damit Windows die Datei-Locks freigeben kann ---
-    timeout /t 2 /nobreak >nul
-
-    start "" "%~dp0trigger-hotkeys.ahk"
+set "AHK_EXE="
+if exist "%ProgramFiles%\AutoHotkey\v2\AutoHotkey64.exe" set "AHK_EXE=%ProgramFiles%\AutoHotkey\v2\AutoHotkey64.exe"
+if exist "%ProgramFiles%\AutoHotkey\AutoHotkey.exe" if not defined AHK_EXE set "AHK_EXE=%ProgramFiles%\AutoHotkey\AutoHotkey.exe"
+if not defined AHK_EXE (
+    echo [WARNING] AutoHotkey executable not found in %ProgramFiles%. Trying file association instead.
 )
 
 
+echo DBG17: about to start AHK processes
+start "" "%AHK_EXE%" "%~dp0scripts\notification_watcher.ahk" >nul 2>&1
+echo DBG18: started notification_watcher
+start "" "%AHK_EXE%" "%~dp0trigger-hotkeys.ahk" >nul 2>&1
+echo DBG19: started trigger-hotkeys
+start "" "%AHK_EXE%" "%~dp0type_watcher.ahk" >nul 2>&1
+echo DBG20: started type_watcher
+
+echo DBG21: checking errorlevel=%errorlevel%
+if "%errorlevel%"=="0" (
+  echo [INFO] Admin-Hotkeys are already running.
+) else (
+  echo [INFO] Starting Hotkeys in User-Mode...
+  timeout /t 2 /nobreak >nul
+  start "" "%~dp0trigger-hotkeys.ahk"
+)
+echo DBG22: after hotkey-start
 echo [INFO] Background watchers have been started.
-echo.
 
-:: --- Step 5: Activate venv and start the main service with auto-repair ---
-echo [INFO] Activating virtual environment...
-call .\.venv\Scripts\activate.bat
 
-set REPAIR_ATTEMPTED=
+
 
 :START_SERVICE_LOOP
 echo [INFO] Starting the Python STT backend service...
+
+.venv\Scripts\activate
 
 :: python -u aura_engine.py
 python -X utf8 -u aura_engine.py
@@ -132,3 +153,4 @@ echo.
 echo [SUCCESS] SL5 Aura is now running in the background.
 echo This window will close automatically in a few seconds.
 timeout /t 5 > nul
+

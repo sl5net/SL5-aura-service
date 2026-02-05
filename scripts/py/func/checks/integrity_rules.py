@@ -22,6 +22,7 @@ UNSAFE_LINE_STARTS = [
 FORBIDDEN_PATTERNS = [
     "if settings.DEV_MODE_memory:",
     "if settings.DEV_MODE_all_processing:",
+    'AutoHotkey.exe" "%',
 ]
 
 INTEGRITY_CHECKS = {
@@ -49,6 +50,24 @@ INTEGRITY_CHECKS = {
         '[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)',
         '`mv vosk-model-*.zip models/`'
     ],
+
+    # scripts/py/func/checks/integrity_rules.py:53
+    'setup/install_ahk_copyq.ps1': [
+        "AuraDictation_Hotkeys",
+    ],
+
+    'start_dictation_v2.0.bat': [
+        "start_dictation_v2.0.ps1",
+        "log\\aura_engine.log",
+        '"%CI%"=="true"',
+        'start "" "%AHK_EXE%" "%~dp0',
+        "AuraDictation_Hotkeys",
+        "trigger-hotkeys.ahk",
+        "type_watcher.ahk",
+        "notification_watcher.ahk",
+        'powershell -Command "Start-Process cmd -ArgumentList \'/c, """%~f0"""\' -Verb RunAs"',
+    ],
+
 
     'requirements.txt': [
 

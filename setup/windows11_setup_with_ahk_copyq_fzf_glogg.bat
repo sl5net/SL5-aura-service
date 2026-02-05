@@ -65,6 +65,6 @@ ECHO Installation finished.
 ECHO start "Aura Dictation" (maybe ~ 30s)...
 ECHO ========================================================
 
-@REM CALL "%~dp0..\start_dictation_v2.0.bat"
-START "" explorer "%~dp0..\start_dictation_v2.0.bat"
+@REM CALL "%~dp0..\start_dictation_v2.1.bat"
+START "" explorer "%~dp0..\start_dictation_v2.1.bat"
 
