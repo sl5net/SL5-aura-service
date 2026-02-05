@@ -162,7 +162,7 @@ A single script handles everything. It starts the main dictation service and the
 #### On Windows
 Starting the service is a **two-step manual process**:
 
-1.  **Start the Main Service:** Run `start_dictation_v2.0.bat`. or start from `.venv` the service with `python3`
+1.  **Start the Main Service:** Run `start_dictation_v2.1.bat`. or start from `.venv` the service with `python3`
 
 ### 2. Configure Your Hotkey
 
