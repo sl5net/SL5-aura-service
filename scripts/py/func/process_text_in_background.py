@@ -66,6 +66,14 @@ GLOBAL_debug_skip_list=False
 
 from .config.regex_cache import REGEX_COMPILE_CACHE
 
+from typing import Union, Optional
+
+def ensure_path(p: Union[str, os.PathLike, Path, None]) -> Optional[Path]:
+    if p is None:
+        return None
+    return p if isinstance(p, (Path, os.PathLike)) else Path(p)
+
+
 
 def normalize_fuzzy_map_rule_entry(entry):
     if len(entry) == 2:
@@ -861,22 +869,26 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         print(f'731: skip_list={skip_list}')
     return new_processed_text, a_rule_matched, skip_list, privacy_taint_occurred
 
+# scripts/py/func/process_text_in_background.py:864
 def process_text_in_background(logger,
-        LT_LANGUAGE,
-        raw_text,
-        TMP_DIR,
-        recording_time,
-        active_lt_url,
-        output_dir_override = None,
-        chunk_id: int = 0,
-        session_id: int = 0,
-        unmasked = False
-        ):
+                               LT_LANGUAGE,
+                               raw_text,
+                               output_dir,
+                               recording_time,
+                               active_lt_url,
+                               output_dir_override = None,
+                               chunk_id: int = 0,
+                               session_id: int = 0,
+                               unmasked = False
+                               ):
     # scripts/py/func/process_text_in_background.py:588 (process_text_in_background)
 
     RUN_MODE = os.getenv('RUN_MODE')
     global settings
     global _active_window_title
+
+    output_dir_override = ensure_path(output_dir_override)
+    output_dir = ensure_path(output_dir)
 
     # required_windows = cmd_config['only_in_windows']
     # required_windows = 'dummy'
@@ -934,7 +946,7 @@ def process_text_in_background(logger,
             # --- CACHE: Legt uns in den Warte-Cache und wartet auf andere Threads, die abarbeiten ---
             with SEQUENCE_LOCK:
                 if chunk_id not in OUT_OF_ORDER_CACHE:
-                    OUT_OF_ORDER_CACHE[chunk_id] = (logger, LT_LANGUAGE, raw_text, TMP_DIR, recording_time,
+                    OUT_OF_ORDER_CACHE[chunk_id] = (logger, LT_LANGUAGE, raw_text, output_dir, recording_time,
                                                     active_lt_url, output_dir_override)
 
             # Kurze, effiziente Wartezeit, um den Thread freizugeben
@@ -980,9 +992,9 @@ def process_text_in_background(logger,
     timestamp = str(recording_time).replace('.', '_')
 
     if output_dir_override:
-        unique_output_file = output_dir_override / "sl5_aura" / "tts_output" / f"tts_output_{timestamp}.txt"
+        unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt" # if output_dir_override:
     else:
-        unique_output_file = TMP_DIR / "sl5_aura" / "tts_output" / f"tts_output_{timestamp}.txt"
+        unique_output_file = output_dir / f"tts_output_{timestamp}.txt" # else:
 
     if settings.DEV_MODE: # some test. want check if we can change setting and get some setting correct back ( 2026-0104-1433 4.1.'26 14:33 Sun )
         # timestamp = str(recording_time).replace('.', '_')
@@ -990,8 +1002,15 @@ def process_text_in_background(logger,
         if output_dir_override:
             # unique_output_file = f"{output_dir_override}/tts_output_{timestamp}.txt"
             unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
+
+            # output_dir_override: /tmp/sl5_aura/tts_output
+            # print(f"🌞🌞🌞 raw_text: {raw_text}")
+            # print(f"🌞🌞🌞 output_dir: {output_dir}")
+            # print(f"🌞🌞🌞 output_dir_override: {output_dir_override}")
+            # sys.exit(1)
+
         else:
-            unique_output_file = TMP_DIR / "sl5_aura" / "tts_output" / f"tts_output_{timestamp}.txt"
+            unique_output_file = output_dir / f"tts_output_{timestamp}.txt"
 
         if not privacy_taint_occurred:
             log4DEV(f'raw_text:{raw_text}',logger)
@@ -1370,7 +1389,6 @@ def process_text_in_background(logger,
         recording_time = time.time()
 
         # file: scripts/py/func/process_text_in_background.py
-        # ... watchDir := "C:\tmp\sl5_aura"
 
         if not privacy_taint_occurred:
             log4DEV(
@@ -1555,6 +1573,7 @@ def process_text_in_background(logger,
                                     # process_text_in_background.last_signature_times[_active_window_title] = current_time
 
 
+            # scripts/py/func/process_text_in_background.py:1566
 
             new_current_text = sanitize_transcription_start(new_current_text)
 
@@ -1572,9 +1591,9 @@ def process_text_in_background(logger,
 
             # process_text_in_background.py:1453 (process_text_in_background)
             if privacy_taint_occurred:
-                logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '***'")
+                logger.info(f"✅ 💾 THREAD: Successfully wrote to {unique_output_file} '***'")
             else:
-                logger.info(f"✅ THREAD: Successfully wrote to {unique_output_file} '{new_current_text}'")
+                logger.info(f"✅ 💾 THREAD: Successfully wrote to {unique_output_file} '{new_current_text}'")
 
         else:
             logger.warning("Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.")

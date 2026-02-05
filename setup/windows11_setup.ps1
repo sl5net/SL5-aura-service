@@ -386,7 +386,7 @@ if (Test-Path $SetupModelScriptPath) {
 
 # --- Create required directories ---
 $tmpPath = "C:\tmp"
-$sl5DictationPath = "C:\tmp\sl5_aura"
+$sl5DictationPath = "C:\tmp\sl5_aura\tts_output"
 
 @($tmpPath, $sl5DictationPath) | ForEach-Object {
     if (!(Test-Path $_)) {

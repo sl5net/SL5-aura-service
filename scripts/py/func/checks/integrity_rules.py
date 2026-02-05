@@ -103,9 +103,11 @@ INTEGRITY_CHECKS = {
         "Finalizing recording session:",
     ],
 
-    # "scripts/py/func/checks/self_tester.py": [
-    #     "if actual.lstrip() == expected:"
-    # ],
+    # make sure buzzword Tests is in
+    "scripts/py/func/checks/self_tester.py": [
+        "{failed_count} Tests",
+        " == expected"
+    ],
 
     "scripts/py/func/model_manager.py": [
         "Reactive Loading" ,
@@ -129,7 +131,7 @@ INTEGRITY_CHECKS = {
         "new_text = re.sub(",
         'encoding="utf-8-sig"',
         'f"✅ Background processing for',
-        'f"✅ THREAD: Successfully wrote to '
+        'f"✅ 💾 THREAD: Successfully wrote to '
     ],
     # settings = DynamicSettings() is important ! check the fist rule in self_tester and try it to change it 2026-0104-1829 4.1.'26 18:29 Sun
 

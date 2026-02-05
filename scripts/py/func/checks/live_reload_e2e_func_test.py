@@ -22,25 +22,31 @@ MAP_TARGET_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "standard_action
 MAP_BACKUP_DIR = PROJECT_ROOT / "standard_actions_backup_temp"
 # TEMP_DIR = PROJECT_ROOT / "log"
 
-TEMP_DIR = (Path("C:/tmp") if platform.system() == "Windows" else Path(
+temp_dir = (Path("C:/tmp") if platform.system() == "Windows" else Path(
     "/tmp"))
 
 
 def execute_test_case_and_check(logger, lt_url, expected):
     """ Helper to run the core logic and parse the output as in self_tester.py """
 
-    target_dir = TEMP_DIR / "tts_output"
-    target_dir.mkdir(parents=True, exist_ok=True)
+    # target_dir = TEMP_DIR / "sl5_aura" / "tts_output"
+    # target_dir.mkdir(parents=True, exist_ok=True)
+
+    test_base_dir = temp_dir / "sl5_aura" / "sl5_aura_self_test"
+    test_base_dir.mkdir(parents=True, exist_ok=True)
+
 
     # Clean up old output files
-    for f in target_dir.glob("tts_output_*.txt"):
+    for f in test_base_dir.glob("tts_output_*.txt"):
         f.unlink()
 
+
     # Run the actual processing function
-    process_text_in_background(logger, LANG_CODE, TEST_INPUT, target_dir, time.time(), lt_url, output_dir_override=target_dir)
+    target_dir = ''
+    process_text_in_background(logger, LANG_CODE, TEST_INPUT, target_dir, time.time(), lt_url, output_dir_override=test_base_dir)
 
     # Find the output file
-    output_files = list(target_dir.glob("tts_output_*.txt"))
+    output_files = list(test_base_dir.glob("tts_output_*.txt"))
     # output_files = list((TEMP_DIR / "tts_output").glob("tts_output_*.txt"))
 
     if not output_files:
@@ -80,7 +86,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     logger.info("-" * 50)
     logger.info("✅ TEST (🏃🏿‍♀️‍➡️ 🔜 BACKUP/DELETE/RESTORE Map (live_reload_e2e_func_test .py)")
 
-    TEMP_DIR.mkdir(parents=True, exist_ok=True)
+    temp_dir.mkdir(parents=True, exist_ok=True)
 
     if MAP_BACKUP_DIR.is_dir():
         shutil.rmtree(MAP_BACKUP_DIR)
@@ -88,7 +94,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
         # Sollte nur passieren, wenn es eine Datei mit dem Backup-Namen ist. Löschen.
         os.remove(MAP_BACKUP_DIR)
 
-    TEMP_DIR.mkdir(parents=True, exist_ok=True)
+    temp_dir.mkdir(parents=True, exist_ok=True)
     if MAP_BACKUP_DIR.exists():
         shutil.rmtree(str( MAP_BACKUP_DIR))
 

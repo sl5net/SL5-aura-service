@@ -7,6 +7,9 @@ import os
 from pathlib import Path
 
 from ..audio_manager import speak_fallback
+# from ..log_memory_details import log4DEV
+from ..process_text_in_background import process_text_in_background
+
 
 def check_translator_hijack_is_active(logger):
 
@@ -30,8 +33,7 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 # Note: In aura_engine.py this might be SCRIPT_DIR instead of project_root
 
-from scripts.py.func.process_text_in_background import process_text_in_background
-from scripts.py.func.checks.run_function_with_throttling import run_function_with_throttling
+from .run_function_with_throttling import run_function_with_throttling
 from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
 
@@ -82,7 +84,7 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
     # 1. Collect all parameters needed by _execute_self_test_core
     core_params = {
         'logger': logger,
-        'tmp_dir': tmp_dir_aura,
+        'tmp_dir_aura': tmp_dir_aura,
         'lt_url': lt_url,
         'lang_code': lang_code
     }
@@ -98,7 +100,7 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
     )
 
     if not test_executed:
-        logger.warning("Self-test skipped due to persistent throttling.")
+        logger.warning("⏩ Self-test not executed. Way? Maybe skipped ⏩ due to persistent throttling?")
 
     return test_executed
 
@@ -111,7 +113,7 @@ def case(input_text, expected, context='', lang='de-DE'):
 # import concurrent.futures
 
 
-def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
+def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     """
 
     """
@@ -120,8 +122,13 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
     backup_tts_enabled = settings.PLUGIN_HELPER_TTS_ENABLED
     settings.PLUGIN_HELPER_TTS_ENABLED = False
 
+    # /home/seeh/projects/py/STT/scripts/py/func/checks/self_tester.py
+
     # Base directory for all tests
-    test_base_dir = tmp_dir / "sl5_aura" / "sl5_aura_self_test"
+
+    # print('🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞 tmp_dir=', tmp_dir_aura)
+
+    test_base_dir = tmp_dir_aura / "sl5_aura_self_test"
     test_base_dir.mkdir(parents=True, exist_ok=True)
 
     test_cases = [
@@ -332,23 +339,34 @@ def _execute_self_test_core(logger, tmp_dir, lt_url, lang_code):
 
         for future in concurrent.futures.as_completed(futures):
 
+            try:
+                print("🔍 Result received...")
 
-            success, raw, actual, expected, desc = future.result()
-            if success:
-                passed_count += 1
-            else:
-                failed_count += 1
-                logger.error(f"❌ FAIL: {desc}")
-                logger.error(f"   Input:    '{raw}'")
-                logger.error(f"   Expected: '{expected}'")
-                logger.error(f"   Got:      '{actual}'")
+                result = future.result(timeout=60)  # Add timeout
+                success, raw, actual, expected, desc = result
+                # success, raw, actual, expected, desc = future.result(timeout=60)
+                if success:
+                    passed_count += 1
+                    logger.error(f"{passed_count}🥳   Expected: '{expected}'")
+
+                    logger.error(f"{passed_count}🥳   Got:      '{actual}'")
+
+                else:
+                    failed_count += 1
+                    logger.error(f"❌ FAIL: {desc}")
+                    logger.error(f"   Input:    '{raw}'")
+                    logger.error(f"   Expected: '{expected}'")
+                    logger.error(f"   Got:      '{actual}'")
+                    sys.exit(1)
+            except Exception as e:
+                print(f"💥 Process crashed: {e}")
                 sys.exit(1)
 
     # 4. Summary
     duration = time.perf_counter() - start_time
     logger.info("=" * 40)
     # m1 =f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}"
-    logger.info(f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}")
+    logger.info(f"✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests")
     m2=f"⌚ Total Duration: {duration:.2f} seconds"
     logger.info(f"⌚ Total Duration: {duration:.2f} seconds")
     speak_fallback(f"{m2}", 'de-DE')# 'en-US') # 'de-DE')
@@ -393,12 +411,15 @@ class SimpleNullLogger:
 # find . -name "*settings.py"                                                                                                                                     ✔
 
 def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_str):
+    # print(f"🐣 [{index}] Sub-Process gestartet") # Direkter Print
     try:
         import importlib.util
         import sys
         import os
 
         from pathlib import Path
+
+        # print(f"🐣 [{index}] Imports ok")
 
         current_file = Path(__file__).resolve()
 
@@ -414,7 +435,6 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         if project_root not in sys.path:
             sys.path.insert(0, project_root)
 
-        from scripts.py.func.process_text_in_background import process_text_in_background
 
         raw_text, expected, description = test_data
 
@@ -434,9 +454,14 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         # unique_time_float = unique_id_ns / 1_000_000_000.0
         unique_time_float = float(index)  # Absolut eindeutig: 0.0, 1.0, 2.0 ...
 
+        # print('🌞🌞🌞 worker dir:', worker_dir)
+        # print('🌞🌞🌞 test_base_dir_str:', test_base_dir_str)
+
         process_text_in_background(
-            null_logger, lang_code, raw_text, worker_dir,
-            unique_time_float, lt_url, output_dir_override=worker_dir
+            null_logger, lang_code, raw_text,
+            None,  # Standard output_dir (ignored)
+            unique_time_float, lt_url,
+            output_dir_override=worker_dir  # Explicit override
         )
 
         # 5. Datei finden (nur in diesem privaten Task-Ordner!)
@@ -486,12 +511,14 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
     worker_dir = test_base_dir / f"task_{index}"
     worker_dir.mkdir(parents=True, exist_ok=True)
 
+    # print('scripts/py/func/checks/self_tester.py:497 🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞')
+
     try:
         # Execute processing in the isolated folder
-        process_text_in_background(
-            logger, lang_code, raw_text, worker_dir,
-            time.time(), lt_url, output_dir_override=worker_dir
-        )
+        # process_text_in_ background(
+        #     logger, lang_code, raw_text, worker_dir,
+        #     time.time(), lt_url, output_dir_override=worker_dir
+        # )
 
         # In this private folder, there will only be ONE tts_output_*.txt file
         output_files = list(worker_dir.glob("tts_output_*.txt"))

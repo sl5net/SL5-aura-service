@@ -85,7 +85,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
 
             manage_models(logger, loaded_models, PRELOAD_MODELS, CRITICAL_THRESHOLD_MB, script_dir)
 
-            if is_first_loading:
+            if is_first_loading: # scripts/py/func/main.py in while True:
                 is_first_loading = False
                 # sound_mute()
                 sound_program_loaded()

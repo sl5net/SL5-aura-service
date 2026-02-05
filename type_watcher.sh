@@ -140,8 +140,8 @@ if [[ "$OS_TYPE" == "Darwin" ]]; then
     done
 elif [[ "$OS_TYPE" == "Linux" ]]; then
     # --- Linux Logic ---
-    echo "✅ Watcher starting in Linux mode (using inotifywait and xdotool)."
-    log_message "Watcher starting in Linux mode (using inotifywait and xdotool)."
+    echo "✅ Watcher starting in  watch $DIR_TO_WATCH Linux mode (using inotifywait and xdotool)."
+    log_message "Watcher starting watch $DIR_TO_WATCH in Linux mode (using inotifywait and xdotool)."
 
     while true; do
         inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"

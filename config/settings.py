@@ -14,8 +14,9 @@ current_user = user_name = USER_NAME = str(current_user) # fallbacks
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
-DEV_MODE = False
-DEV_MODE_all_processing = False
+DEV_MODE = 0
+DEV_MODE_all_processing = 0
+
 
 soundMute = 1  # 1 is really recommended. to know when your recording is ended.
 soundUnMute = 1

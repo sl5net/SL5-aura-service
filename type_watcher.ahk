@@ -22,9 +22,10 @@
  */
 
 ; --- Configuration ---
-watchDir := "C:\tmp\sl5_aura"
+
+watchDir := "C:\tmp\sl5_aura\tts_output"
 logDir := A_ScriptDir "\log"
-autoEnterFlagPath := "C:\tmp\sl5_auto_enter.flag"
+autoEnterFlagPath := "C:\tmp\sl5_aura\sl5_auto_enter.flag"
 
 heartbeat_start_File := "C:\tmp\heartbeat_type_watcher_start.txt"
 

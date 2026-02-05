@@ -186,6 +186,6 @@ FUZZY_MAP_pre = [
     # ANCHOR: The following line is controlled by the toggle script.
     # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
     # TRANSLATION_RULE
-     #('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
+    # ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 
 ]

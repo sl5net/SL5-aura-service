@@ -19,11 +19,11 @@ SetLogLevel(-1) # sadly it changes nothing (se, 15.12.'25 15:10 Mon )
 dictation_session_active = threading.Event()
 active_transcription_thread = None
 
-from scripts.py.func.process_text_in_background import process_text_in_background
-from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
-from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
-from scripts.py.func.audio_manager import unmute_microphone, mute_microphone
-from scripts.py.func.microphone_status_too_log import log_microphone_status
+from .process_text_in_background import process_text_in_background
+from .transcribe_audio_with_feedback import transcribe_audio_with_feedback
+from .guess_lt_language_from_model import guess_lt_language_from_model
+from .audio_manager import unmute_microphone, mute_microphone
+from .microphone_status_too_log import log_microphone_status
 
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, SIGNATURE_TIMES
 # Global sequence counter for the current session (must be synchronized)
@@ -232,8 +232,9 @@ def handle_trigger(
                     text_detected = 1
                     # if settings.DEV_MODE:
                     #     logger.info(f"Processing chunk: '{text_chunk[:30]}...'")
+                    output_dir = TMP_DIR / "sl5_aura" / "tts_output"
                     thread = threading.Thread(target=process_text_in_background,
-                                              args=(logger, lt_language, text_chunk, TMP_DIR,
+                                              args=(logger, lt_language, text_chunk, output_dir,
                                                     time.time(), active_lt_url))
                     thread.start()
 
