@@ -111,8 +111,9 @@ echo DBG22: after hotkey-start
 echo [INFO] Background watchers have been started.
 
 
-# there should be a task (when you not admin) AuraDictation_Hotkeys (for use keys like F10) that is already installed during installation as admin.
-# maybe we should check this also in the start script?
+:: there should be a task (when you not admin) AuraDictation_Hotkeys (for use keys like F10) that is already installed during installation as admin.
+:: maybe we should check this also in the start script?
+:: maybe we should check this also in the start script?
 
 
 :START_SERVICE_LOOP
