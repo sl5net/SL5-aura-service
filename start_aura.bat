@@ -119,7 +119,7 @@ echo [INFO] Background watchers have been started.
 :START_SERVICE_LOOP
 echo [INFO] Starting the Python STT backend service...
 
-.venv\Scripts\activate
+call .venv\Scripts\activate
 
 :: python -u aura_engine.py
 python -X utf8 -u aura_engine.py

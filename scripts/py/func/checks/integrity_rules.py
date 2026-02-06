@@ -57,9 +57,9 @@ INTEGRITY_CHECKS = {
     ],
 
     'start_aura.bat': [
-        ".venv\\Scripts\\activate",
+        r".venv\Scripts\activate",
         "start_aura.ps1",
-        "log\\aura_engine.log",
+        r"log\aura_engine.log",
         '"%CI%"=="true"',
         'start "" "%AHK_EXE%" "%~dp0',
         "AuraDictation_Hotkeys",
@@ -67,6 +67,7 @@ INTEGRITY_CHECKS = {
         "type_watcher.ahk",
         "notification_watcher.ahk",
         'powershell -Command "Start-Process cmd -ArgumentList \'/c, """%~f0"""\' -Verb RunAs"',
+        r'call .venv\Scripts\activate',
     ],
 
     # 'start_aura.bat': [

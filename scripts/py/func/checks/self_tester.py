@@ -340,17 +340,15 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         for future in concurrent.futures.as_completed(futures):
 
             try:
-                print("🔍 Result received...")
+                # print("🔍 Result received...")
 
                 result = future.result(timeout=60)  # Add timeout
                 success, raw, actual, expected, desc = result
                 # success, raw, actual, expected, desc = future.result(timeout=60)
                 if success:
                     passed_count += 1
-                    logger.error(f"{passed_count}🥳   Expected: '{expected}'")
-
-                    logger.error(f"{passed_count}🥳   Got:      '{actual}'")
-
+                    # logger.error(f"{passed_count}🥳   Expected: '{expected}'")
+                    # logger.error(f"{passed_count}🥳   Got:      '{actual}'")
                 else:
                     failed_count += 1
                     logger.error(f"❌ FAIL: {desc}")
