@@ -162,7 +162,7 @@ A single script handles everything. It starts the main dictation service and the
 #### On Windows
 Starting the service is a **two-step manual process**:
 
-1.  **Start the Main Service:** Run `start_dictation_v2.1.bat`. or start from `.venv` the service with `python3`
+1.  **Start the Main Service:** Run `start_aura.bat`. or start from `.venv` the service with `python3`
 
 ### 2. Configure Your Hotkey
 
@@ -257,7 +257,7 @@ Here is a list of the most important scripts to set up, update, and run the appl
 *   `update.bat` : Rund these from Project folder **get the latest code and dependencies**.
 
 ### Running the Application
-*   `start_dictation_v2.0.bat`: A primary script to **start the dictation service**.
+*   `start_aura.bat`: A primary script to **start the dictation service**.
 
 ### Core & Helper Scripts
 *   `aura_engine.py`: The core Python service (usually started by one of the scripts above).

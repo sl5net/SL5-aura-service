@@ -43,7 +43,7 @@ jobs:
       - name: Start server and verify process
         run: |
           echo "Starting the dictation service in the background..."
-          cmd.exe /c "call start_dictation_v2.0.bat"
+          cmd.exe /c "call start_aura.bat"
           
           echo "Waiting for the service to initialize..."
           timeout /t 15

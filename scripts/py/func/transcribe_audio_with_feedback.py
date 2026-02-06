@@ -259,6 +259,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")
     logger.info(f"AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
 
+    # scripts/py/func/transcribe_audio_with_feedback.py:262
     # --- NEU: VAD Initialisierung ---
     vad = webrtcvad.Vad()
     vad.set_mode(1)  # Wir starten mit dem sanftesten Modus (weniger aggressiv)
@@ -342,6 +343,11 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                     if not hasattr(transcribe_audio_with_feedback, '_debug_count'):
                         transcribe_audio_with_feedback._debug_count = 0
 
+                    listen_persistent_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path(
+                        "/tmp")) / "sl5_aura" / "aura_vosk_listen_persistent.flag"
+
+                    is_listen_persistent = listen_persistent_flag.exists()
+
                     logger.debug(f"Loop Top | Active: {session_active_event.is_set()} | Time Since Activity: {time.time() - last_activity_time:.2f}s")
                     try:
 
@@ -354,24 +360,44 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         # if transcribe_audio_with_feedback._debug_count % 20 == 0:
                         #     logger.info(f"DEBUG: RMS={rms:.2f} | Rate={input_rate}")
 
+                        # scripts/py/func/transcribe_audio_with_feedback.py:362
+                        # is_listen_persistent verwenden?
+
+
                         is_speech_finalized = recognizer.AcceptWaveform(data)
 
                         # 2. SOFORT das Partial Result prüfen (Wichtig für Wake-Words!)
+
+                        # if not vad.is_speech(frame):
+                        #     continue
+
                         partial_result = json.loads(recognizer.PartialResult())
                         partial_text = partial_result.get('partial', '').lower()
 
                         suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path(
                             "/tmp")) / "sl5_aura" / "aura_vosk_suspended.flag"
                         is_suspended = suspend_flag.exists()
+
+
                         #
+
+                        #Wie ist das bitteWie ist das bitteAktuell in Tübingen sind es 0 Grad, gefühlt wie -0 Grad. Die Vorhersage meldet: Wolkenlos.
                         modus = 'toggle'
                         if modus == 'toggle':
-                            if any(w in partial_text.lower() for w in ["kaktus", "kakturs", "klapptisch", "kette"]):
+
+                            if is_listen_persistent:
+                                if any(w in partial_text.lower() for w in
+                                       ["einen"]):
+                                    continue
+
+                            if any(w in partial_text.lower() for w in ["kaktus", "kakturs", "klapptisch", "kette", "kräftig", 'teppich']):
                                 if time.time() - last_toggle > 2.0:  # 2 sec cooldown
                                     last_toggle = time.time()
                                     if is_suspended:
-                                        suspend_flag.unlink()  # WAKE UP
-                                        logger.info("🚀 System ACTIVE")
+                                        suspend_flag.unlink(missing_ok=True)  # WAKE UP
+                                        listen_persistent_flag.touch()
+                                        logger.info("🚀 System ACTIVE (wake) — persistent listening enabled")
+                                        # logger.info("🚀 System ACTIVE")
                                         speak_fallback(f"Wake-Word", 'en-US')
                                     else:
                                         suspend_flag.touch()  # GO TO SLEEP
@@ -397,8 +423,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                     logger.info("🚀 Wake-Word erkannt! Aktiviere System...")
 
                                     # Flag-Datei löschen, damit das System wieder normal arbeitet
-                                    if is_suspended:
-                                        suspend_flag.unlink()
+                                    suspend_flag.unlink(missing_ok=True)
 
                                     # WICHTIG: Recognizer resetten, damit das Wake-Word
                                     # nicht in die nächste Text-Ausgabe rutscht
@@ -455,7 +480,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         logger.info(f"Graceful shutdown initiated. Final timeout set to {current_timeout}s.")
 
                     # 2. Prüfen auf Timeout
-                    if time.time() - last_activity_time > current_timeout:
+                    if not is_listen_persistent and time.time() - last_activity_time > current_timeout:
 
                         if is_suspended:
                             # log4DEV(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)

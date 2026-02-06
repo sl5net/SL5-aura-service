@@ -6,6 +6,8 @@
 
 import threading
 import time
+from pathlib import Path
+
 import vosk
 
 from .config.dynamic_settings import settings
@@ -13,6 +15,8 @@ from config.settings import PRE_RECORDING_TIMEOUT, SPEECH_PAUSE_TIMEOUT, SAMPLE_
 
 from .model_manager import MODELS_LOCK
 from vosk import SetLogLevel
+import platform
+
 SetLogLevel(-1) # sadly it changes nothing (se, 15.12.'25 15:10 Mon )
 
 # In scripts/py/func/handle_trigger.py
@@ -147,9 +151,21 @@ def handle_trigger(
     global active_transcription_thread
 
     # --- ACTION 1: STOP an ongoing session ---
+    # scripts/py/func/handle_trigger.py:154
     if dictation_session_active.is_set():
         logger.info("🎬⏹️ Manual 🛑 stop trigger detected. Signaling session to end.")
         mute_microphone()
+
+        tmp = (Path("C:/tmp") if platform.system() == "Windows" else Path(
+            "/tmp"))
+        aura_vosk_suspended = tmp / "sl5_aura" / "aura_vosk_suspended.flag"
+        listen_persistent_flag = tmp / "sl5_aura" / "aura_vosk_listen_persistent.flag"
+
+        aura_vosk_suspended.unlink(missing_ok=True)
+        listen_persistent_flag.unlink(missing_ok=True)
+
+
+
         # unmute_microphone()
 
         # We just send the signal and exit immediately.

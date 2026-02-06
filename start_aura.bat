@@ -2,7 +2,7 @@
 setlocal
 title SL5 Aura - One-Click Starter
 
-:: cmd /k "echo on & call start_dictation_v2.1.bat"
+:: cmd /k "echo on & call start_aura.bat"
 
 
 echo DBG1: before cd
@@ -10,7 +10,7 @@ cd /d "%~dp0"
 
 
 
-:: start this script like: & .\start_dictation_v2.1.bat
+:: start this script like: & .\start_aura.bat
 :: Version: v2.1
 ;;
 
@@ -30,7 +30,7 @@ if /I NOT "%CI%"=="true" (
         REM Start-Process -FilePath "powershell.exe" -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File', $PSCommandPath) -Verb RunAs
 
         REM Start-Process -FilePath "powershell.exe" -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File', $PSCommandPath -Verb RunAs
-        REM powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0\start_dictation_v2.0.ps1"
+        REM powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0\start_aura.ps1"
         powershell -Command "Start-Process cmd -ArgumentList '/c, """%~f0"""' -Verb RunAs"
 
 
