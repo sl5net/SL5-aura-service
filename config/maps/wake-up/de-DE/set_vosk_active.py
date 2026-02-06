@@ -1,3 +1,4 @@
+# config/maps/wake-up/de-DE/set_vosk_active.py:1
 import os
 import platform
 from pathlib import Path
