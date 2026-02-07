@@ -1,6 +1,7 @@
 # scripts/py/func/checks/self_tester.py
 import re
 import concurrent.futures
+import shutil
 import sys
 # import concurrent.futures
 import os
@@ -68,7 +69,30 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
     """
     Runs a series of predefined tests, guarded by a persistent throttle mechanism.
     """
-    # config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
+
+
+
+
+
+
+    # scripts/py/func/checks/self_tester.py
+
+    rules_file_path = Path(__file__).parents[4] / 'config' / 'maps' / 'plugins' / 'standard_actions' / 'language_translator' / 'de-DE' / 'FUZZY_MAP_pre.py'
+    translation_state_path = Path(__file__).parents[4] / 'config' / 'maps' / 'plugins' / 'standard_actions' / 'language_translator' / 'de-DE' / 'translation_state.py'
+    os.remove(translation_state_path)
+    # RULES_FILE_PATH = 'config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py'
+    # create backup path (same name + .bak)
+    backup_path = rules_file_path.with_name(rules_file_path.name + ".off.backup.py")
+    # copy (overwrites existing backup)
+    shutil.copy2(backup_path, rules_file_path)
+
+    if should_restore(backup_path, rules_file_path):
+        shutil.copy2(backup_path, rules_file_path)
+    else:
+        print("Skipping restore: files appear different/newer or within tolerance.")
+
+
+
     lineno = check_translator_hijack_is_active(logger)
     if lineno and lineno>0:
         logger.info(f"self_tester.py exit exit exit")
@@ -556,3 +580,41 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
     except Exception as e:
         return False, raw_text, f"Error: {str(e)}", expected, description
 
+
+
+from pathlib import Path
+import time
+import hashlib
+import shutil
+
+def sha256(path: Path, chunk_size=1<<20):
+    h = hashlib.sha256()
+    with path.open('rb') as f:
+        while True:
+            data = f.read(chunk_size)
+            if not data:
+                break
+            h.update(data)
+    return h.hexdigest()
+
+def should_restore(backup: Path, target: Path,
+                   mtime_tolerance_seconds: float = 5.0,
+                   size_tolerance_bytes: int = 2):
+    if not backup.exists() or not target.exists():
+        return backup.exists() and not target.exists()
+
+    b_mtime = backup.stat().st_mtime
+    t_mtime = target.stat().st_mtime
+    # If backup is sufficiently newer, consider restore
+    if b_mtime - t_mtime > mtime_tolerance_seconds:
+        return True
+
+    # If mtimes are almost same, check size
+    b_size = backup.stat().st_size
+    t_size = target.stat().st_size
+    if abs(b_size - t_size) > size_tolerance_bytes:
+        # sizes differ more than tolerance: prefer not to overwrite if target is newer
+        return b_size > t_size
+
+    # If sizes are same (within tolerance) and mtimes close, optionally compare hashes
+    return sha256(backup) != sha256(target)

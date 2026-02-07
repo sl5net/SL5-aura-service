@@ -1,11 +1,5 @@
-# config/maps/plugins/wannweil/de-DE/check_trash.py
 Datum,Wochentag,Abfallarten
-2026-01-02,Fri,Biotonne 🍎 & Restmüll 🗑️
-2026-01-10,Sat,Papiertonne 📄
-2026-01-15,Thu,Biotonne 🍎 & Restmüll 🗑️
-2026-01-27,Tue,Gelber Sack 🟡
-2026-01-29,Thu,Biotonne 🍎 & Restmüll 🗑️
-2026-02-06,Fri,Papiertonne 📄
+
 2026-02-12,Thu,Biotonne 🍎 & Restmüll 🗑️
 2026-02-24,Tue,Gelber Sack 🟡
 2026-02-26,Thu,Biotonne 🍎 & Restmüll 🗑️
@@ -62,3 +56,5 @@ Datum,Wochentag,Abfallarten
 2026-12-11,Fri,Papiertonne 📄
 2026-12-16,Wed,Biotonne 🍎 & Restmüll 🗑️
 2026-12-29,Tue,Gelber Sack 🟡
+Datum,Wochentag,Abfallarten
+(Abgeschrieben von: Abfallterminuebersicht-01-12-2026-1.pdf)

@@ -1,5 +1,6 @@
 # config/maps/plugins/standard_actions/language_translator/de-DE/toggle_translation_mode.py
 # translation
+import shutil
 import sys
 from pathlib import Path
 import subprocess
@@ -30,8 +31,9 @@ def speak(text):
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         subprocess.run(['espeak', '-v', 'de', text], check=True)
-    except Exception:
-        print(f"STDOUT (TTS-Fallback): {text}")
+    except Exception as e33:
+        print(f"33: STDOUT (TTS-Fallback): {e33}")
+        speak(f"33: STDOUT (TTS-Fallback): Fehler {e33}")
 
 def execute(match_data):
 
@@ -108,6 +110,13 @@ def execute(match_data):
             # lines[rule_line_index] = '#' + lines[rule_line_index]
             lines[rule_line_index] = re.sub(r'^(\s*)(.*)', r'\1#\2', lines[rule_line_index])
         else: # current_state is 'off'
+
+            # create backup path (same name + .bak)
+            backup_path = RULES_FILE_PATH.with_name(RULES_FILE_PATH.name + ".off.backup.py")
+
+            # copy (overwrites existing backup)
+            shutil.copy2(RULES_FILE_PATH, backup_path)
+
             new_state = 'on'
             print("new_state:", new_state)
             feedback_message = "translation mode is switched on (übersetzung modus wird eingeschaltet')"
