@@ -5,8 +5,67 @@ import datetime
 import re
 import sys
 import subprocess
-import threading
+#import threading
 import csv
+
+
+import smtplib
+from email.message import EmailMessage
+from dotenv import load_dotenv
+
+
+
+
+# --- E-MAIL KONFIGURATION ---
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 465
+
+import os
+
+# Ermittle den Ordner, in dem dieses Skript liegt
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Suche die .env Datei genau in diesem Ordner
+env_path = os.path.join(script_dir, '.env')
+
+# Lade die Datei, falls sie existiert
+if os.path.exists(env_path):
+    load_dotenv(dotenv_path=env_path)
+else:
+    print(f"Hinweis: Keine .env Datei in {script_dir} gefunden.")
+
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+APP_PASSWORD = os.getenv("APP_PASSWORD")
+
+RECEIVER_EMAIL = "sl5softwarelab@gmail.com" # Wo die Mail hin soll
+
+def send_mail_notification(subject, body):
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg['Subject'] = subject
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = RECEIVER_EMAIL
+
+    try:
+        with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
+            smtp.login(SENDER_EMAIL, APP_PASSWORD)
+            smtp.send_message(msg)
+        print("E-Mail erfolgreich gesendet.")
+    except Exception as e:
+        print(f"E-Mail Fehler: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # --- KONFIGURATION ---
 LANG_CODE = "de-DE"
@@ -112,8 +171,11 @@ def parse_wannweil_silo_logic(pdf_path, debug=False):
     return [{"datum": d, "namen": sorted(final_dict[d])} for d in sorted(final_dict.keys())], pdf_year
 
 
-def save_to_csv(termine, script_path):
-    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "abfall_termine.csv")
+def save_to_csv(termine, script_path, pdf_path):
+    # print(f"{pdf_path} -----------------------------------------")
+    # csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "abfall_termine.csv")
+    csv_path = f"{pdf_path}.csv"
+
     try:
         with open(csv_path, 'w', encoding='utf-8') as f:
             f.write(f"# {script_path}\n")
@@ -139,7 +201,7 @@ def check_and_notify(force_test=False):
     termine_data, pdf_year = parse_wannweil_silo_logic(pdf_path, debug=force_test)
 
     if termine_data:
-        save_to_csv(termine_data, script_path)
+        save_to_csv(termine_data, script_path, pdf_path)
     else:
         print("Keine Termine gefunden.")
         return
@@ -162,13 +224,20 @@ def check_and_notify(force_test=False):
         if zukunft:
             n = zukunft[0]
             tag_name = WOCHENTAGE_DE[n['datum'].weekday()]
-            msg = f"Nächste Abholung: {n['datum'].strftime('%d.%m.%Y')} ({' & '.join(n['namen'])})"
-            datum_formatiert = n['datum'].strftime('%d.%m.%Y')
-            msg = f"Nächste Abholung: {tag_name}, {datum_formatiert} ({' & '.join(n['namen'])})"
+            # msg = f"Nächste Abholung: {n['datum'].strftime('%d.%m.%Y')} ({' & '.join(n['namen'])})"
+            # datum_formatiert = n['datum'].strftime('%-d.%-m.%Y ')
+            d = n['datum']
+            datum_formatiert = n['datum'].strftime(f"{d.day}.{d.month}.{d.year}") # Für Windows und Linux geeignet
+            datum_formatiert_espeak = n['datum'].strftime(f"{d.day}.{d.month}.") # Für Windows und Linux geeignet
+            msg = f"{tag_name}, {datum_formatiert} ({' & '.join(n['namen'])}) | Nächste Abholung | MÜLL-VORSCHAU |"
+            msg_espeak = f"{tag_name}, {datum_formatiert_espeak} ({' & '.join(n['namen'])}) | {tag_name}, ({' & '.join(n['namen'])}) "
+            msg_espeak_ohne_emojis = re.sub(r'[^\w\s.,!-]', '', msg_espeak).strip()
+
             print(msg)
             os.system(f'notify-send "MÜLL-VORSCHAU" "{msg}"')
-            espeak(msg, LANG_CODE)
+            espeak(msg_espeak_ohne_emojis, LANG_CODE)
 
+            # send_mail_notification(msg, msg)
 
 if __name__ == "__main__":
     check_and_notify(force_test="test" in sys.argv)
