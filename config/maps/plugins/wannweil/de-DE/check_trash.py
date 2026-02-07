@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 465
 
-import os
+#import os
 
 # Ermittle den Ordner, in dem dieses Skript liegt
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -36,14 +36,91 @@ else:
 SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 APP_PASSWORD = os.getenv("APP_PASSWORD")
 
-RECEIVER_EMAIL = "sl5softwarelab@gmail.com" # Wo die Mail hin soll
+
+# --- ZUSÄTZLICHE ALERTS ---
+def check_csv_alerts():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_file = os.path.join(script_dir, "_alerts/de-DE/alerts.csv")
+    if not os.path.exists(csv_file): return
+
+    now = datetime.datetime.now()
+    with open(csv_file, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                # .strip() entfernt die störenden Leerzeichen
+                start = datetime.datetime.strptime(row['Start'].strip(), "%Y-%m-%d %H:%M")
+                end = datetime.datetime.strptime(row['End'].strip(), "%Y-%m-%d %H:%M")
+
+                if start <= now <= end:
+                    msg = row['Message'].strip()
+                    modes = row['Modes'].strip()
+
+                    if 'P' in modes:
+                        os.system(f'notify-send "AURA ALERT" "{msg}" --urgency=critical')
+                    if 'V' in modes:
+                        # Hier säubern wir nur die Sprachausgabe (Emojis weg)
+                        clean_voice = re.sub(r'[^\w\s.,!-]', '', msg)
+                        espeak(clean_voice, LANG_CODE)
+                    if 'M' in modes:
+                        send_mail_notification("Aura Flash-Alert", msg)  # Mail darf Emojis behalten
+            except Exception as e:
+                print(f"Fehler beim Parsen einer Alert-Zeile: {e}")
+
+
+
+
+def check_general_alerts():
+    now = datetime.datetime.now()
+
+    # Beispiel für Alarme direkt im Skript (Hardcoded)
+    # Format: [Startzeit, Endzeit, Nachricht, Typ (V=Voice, P=Popup, M=Mail)]
+    extra_alerts = [
+        ["2026-02-06 15:00", "2026-02-06 16:00", "Lüften: Fenster im Arbeitszimmer öffnen!", "VP"],
+        ["2026-02-07 09:00", "2026-02-07 10:00", "Wichtiger Anruf beim Amt!", "VPM"],
+    ]
+
+    for start_str, end_str, msg, modes in extra_alerts:
+        start = datetime.datetime.strptime(start_str, "%Y-%m-%d %H:%M")
+        end = datetime.datetime.strptime(end_str, "%Y-%m-%d %H:%M")
+
+        # Prüfen, ob wir uns JETZT im Zeitfenster befinden
+        if start <= now <= end:
+            if 'P' in modes:
+                os.system(f'notify-send "AURA ALERT" "{msg}" --urgency=critical')
+            if 'V' in modes:
+                espeak(msg, LANG_CODE)
+            if 'M' in modes:
+                # E-Mail ohne Emojis senden
+                clean_msg = re.sub(r'[^\w\s.,!-]', '', msg)
+                send_mail_notification("Aura Flash-Alert", clean_msg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def send_mail_notification(subject, body):
     msg = EmailMessage()
     msg.set_content(body)
     msg['Subject'] = subject
     msg['From'] = SENDER_EMAIL
-    msg['To'] = RECEIVER_EMAIL
+    # msg['To'] = RECEIVER_EMAILS
 
     try:
         with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
@@ -237,7 +314,11 @@ def check_and_notify(force_test=False):
             os.system(f'notify-send "MÜLL-VORSCHAU" "{msg}"')
             espeak(msg_espeak_ohne_emojis, LANG_CODE)
 
+            # check_general_alerts()
+            check_csv_alerts()
             # send_mail_notification(msg, msg)
+
+
 
 if __name__ == "__main__":
     check_and_notify(force_test="test" in sys.argv)

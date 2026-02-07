@@ -1,4 +1,6 @@
 # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py
+# search for Zips:
+# find . -name "*.zip" -not -path "*/.venv/*" -not -path "*/.git/*" > ~/t.txt && kate ~/t.txt
 import logging
 import json
 import os
@@ -19,28 +21,77 @@ logger = logging.getLogger(__name__)
 
 # --- DYNAMIC IMPORTS ---
 
+def get_root():
+    # Startet bei zip.py und geht hoch bis zum Ordner, der 'scripts' enthält
+    p = Path(__file__).resolve()
+    for parent in p.parents:
+        if (parent / "scripts").exists():
+            return parent
+    return None
+
+
 def get_packer_lib():
     """Import secure_packer_lib for PACKING."""
-    lib_path = SCAN_ROOT.parents[1] / "scripts" / "py" / "func" / "secure_packer_lib.py"
+    # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:26
+    root = get_root()
+    lib_path = root / "scripts" / "py" / "func" / "secure_packer_lib.py"
+
+    # lib_path = SCAN_ROOT.parents[5] / "scripts" / "py" / "func" / "secure_packer_lib.py"
     if not lib_path.exists():
         logger.error(f"❌ secure_packer_lib not found at {lib_path}")
         return None
-    spec = importlib.util.spec_from_file_location("secure_packer_lib", lib_path)
+    # new: 7.2.'26 21:17 Sat
+    module_name = "scripts.py.func.secure_packer_lib"
+    spec = importlib.util.spec_from_file_location(module_name, lib_path)
     module = importlib.util.module_from_spec(spec)
-    sys.modules["secure_packer_lib"] = module
+
+    # Der entscheidende Fix für Python 3.13:
+    module.__package__ = "scripts.py.func"
+
+    # spec = importlib.util.spec_from_file_location("secure_packer_lib", lib_path)
+    # module = importlib.util.module_from_spec(spec)
+
+    sys.modules[module_name] = module
+    # sys.modules["secure_packer_lib"] = module
+
     spec.loader.exec_module(module)
     return module
 
 def get_unpacker_lib():
     """Import private_map_ex for UNPACKING."""
-    lib_path = SCAN_ROOT.parents[1]  / "scripts" / "py" / "func" / "private_map_ex.py"
+    # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:50
+    root = get_root()
+    lib_path = root  / "scripts" / "py" / "func" / "private_map_ex.py"
     if not lib_path.exists():
         logger.error(f"❌ private_map_ex not found at {lib_path}")
         return None
-    spec = importlib.util.spec_from_file_location("private_map_ex", lib_path)
+
+    # Der Name muss dem vollqualifizierten Modulpfad entsprechen,
+    # damit relative Importe innerhalb der Datei funktionieren.
+
+    # new. later >=2026
+    module_name = "scripts.py.func.private_map_ex"
+    spec = importlib.util.spec_from_file_location(module_name, lib_path)
+
+    # before 2026
+    # spec = importlib.util.spec_from_file_location("private_map_ex", lib_path)
+
     module = importlib.util.module_from_spec(spec)
-    sys.modules["private_map_ex"] = module
-    spec.loader.exec_module(module)
+
+    module.__package__ = "scripts.py.func"
+
+    # WICHTIG: Setze den Paket-Kontext explizit für Python 3.13
+    module.__package__ = "scripts.py.func"
+
+    # before 2026
+    # sys.modules["private_map_ex"] = module
+    # spec.loader.exec_module(module)
+
+    try:
+        spec.loader.exec_module(module)
+    except ImportError as e:
+        logger.error(f"🔥 Failed to exec_module {module_name}: {e}")
+
     return module
 
 # --- JSON Helpers ---

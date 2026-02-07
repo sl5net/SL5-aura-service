@@ -126,8 +126,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     logger.info("🗑️ Forced garbage collection before re-import.")
                 # --- END OF CLEANUP ---
 
-                # log_all_changes = True
-                log_all_changes = False
+                log_all_changes = True
+                # log_all_changes = False
 
                 try:
                     # -------------------------------------------------------
@@ -327,8 +327,8 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
     import importlib
     import sys
 
-    log_everything = False
-    # log_everything = True
+    # log_everything = False
+    log_everything = True
 
     # 1. Define the stop boundary
     # We stop scanning when we reach 'config/maps' to avoid scanning the whole project
