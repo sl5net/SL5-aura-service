@@ -23,13 +23,19 @@ Dieses Tool automatisiert die Erinnerung an Abfalltermine für Wannweil, basiere
 ## Automatisierung (Systemd)
 Der Dienst prüft täglich um 17:00 Uhr sowie 1 Minute nach dem Systemstart, ob am Folgetag Müll abgeholt wird.
 
-**Service-Datei:** `~/.config/systemd/user/trash_check.service`
-**Timer-Datei:** `~/.config/systemd/user/trash_check.timer`
+**Service-Datei:** 
+~/.config/systemd/user/trash_check.service
+
+**Timer-Datei:** `
+~/.config/systemd/user/trash_check.timer
 
 Befehle zum Aktivieren:
 ```bash
 systemctl --user daemon-reload
 systemctl --user enable --now trash_check.timer
+
+systemctl --user daemon-reload; systemctl --user enable --now trash_check.timer
+
 ```
 
 ## Empfehlungen für den Jahreswechsel

@@ -583,11 +583,11 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
 
 
 from pathlib import Path
-import time
+# import time
 import hashlib
-import shutil
+# import shutil
 
-def sha256(path: Path, chunk_size=1<<20):
+def sha256(path: Path, chunk_size=1 << 20):
     h = hashlib.sha256()
     with path.open('rb') as f:
         while True:

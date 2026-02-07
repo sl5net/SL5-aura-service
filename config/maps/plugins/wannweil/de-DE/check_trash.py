@@ -21,6 +21,17 @@ MAPPING = {
 
 
 def espeak(text_to_speak, language_code):
+    # damit wartet der system timer bis die sparausgabe fertig ist
+    # still Aura is not blocked (original:'trotzdem blockiert Aura nicht.' ). so don't worry (original:'also mach dir keine sorgen' ).'
+    short_lang = language_code.split('-')[0]
+    command = ['espeak', '-v', short_lang, text_to_speak]
+    try:
+        # subprocess.run wartet, bis der Befehl fertig ist
+        subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception as e:
+        print(f"Espeak Fehler: {e}")
+
+def espeak_Old(text_to_speak, language_code):
     short_lang = language_code.split('-')[0]
     command = ['espeak', '-v', short_lang, text_to_speak]
     threading.Thread(target=lambda: subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL),
@@ -170,10 +181,10 @@ def check_and_notify(force_test=False):
             n = zukunft[0]
             n1 = zukunft[1]
             msg = f"Nächste Abholung: {n['datum'].strftime('%d.%m.%Y')} ({' & '.join(n['namen'])}) "
-            msg += f"Übernnächste Abholung: {n1['datum'].strftime('%d.%m.%Y')} ({' & '.join(n1['namen'])})"
+            # msg += f"Übernnächste Abholung: {n1['datum'].strftime('%d.%m.%Y')} ({' & '.join(n1['namen'])})"
             print(msg)
-            espeak(msg, LANG_CODE)
             os.system(f'notify-send "MÜLL-VORSCHAU" "{msg}"')
+            espeak(msg, LANG_CODE)
 
 
 if __name__ == "__main__":
