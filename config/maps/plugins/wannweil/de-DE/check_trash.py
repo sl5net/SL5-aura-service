@@ -20,7 +20,6 @@ from dotenv import load_dotenv
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 465
 
-import os
 
 # Ermittle den Ordner, in dem dieses Skript liegt
 script_dir = os.path.dirname(os.path.abspath(__file__))
