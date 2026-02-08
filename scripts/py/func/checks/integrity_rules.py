@@ -19,11 +19,19 @@ UNSAFE_LINE_STARTS = [
     "import config.settings_local"
 ]
 
+
+
+# 11:05:48,817 - CRITICAL - FATAL SECURITY CHECK FAILED!
+# 11:05:48,817 - CRITICAL -   File: /home/seeh/projects/py/STT/.venv/lib/python3.13/site-packages/websockets/version.py:34
+# 11:05:48,817 - CRITICAL - ❌ Forbidden Pattern detected: 'pathlib.Path'
 FORBIDDEN_PATTERNS = [
     "if settings.DEV_MODE_memory:",
+    # "pathlib.Path",
     "if settings.DEV_MODE_all_processing:",
     'AutoHotkey.exe" "%',
 ]
+
+
 
 INTEGRITY_CHECKS = {
 

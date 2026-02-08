@@ -16,7 +16,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-import pathlib
+# import pathlib
 
 import importlib.util
 
@@ -364,7 +364,7 @@ def export_to_copyq(items, tab_name):
         if not tags:
             try:
                 p2 = Path(text).parents[1]
-                p2 = pathlib.Path(*p2.parts[3:])
+                p2 = Path(*p2.parts[3:])
             except Exception as e202601231029 :
                 pass
             if p2:

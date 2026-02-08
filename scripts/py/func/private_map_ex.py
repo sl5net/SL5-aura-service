@@ -1,6 +1,6 @@
 # scripts/py/func/private_map_ex.py _private_map_unpack(map_file_key: str, logger) -> bool:
 import os
-import pathlib
+from pathlib import Path
 import shutil
 import sys
 from zipfile import ZipFile
@@ -21,9 +21,9 @@ def _private_map_unpack(map_file_key: str, logger) -> bool:
     # log_everything = True
 
     # 1. Determine the map directory
-    map_dir = str(pathlib.Path(map_file_key).parent)
+    map_dir = str(Path(map_file_key).parent)
 
-    file_key_name = pathlib.Path(map_file_key).name
+    file_key_name = Path(map_file_key).name
 
     if log_everything:
         logger.info(f'22: map_dir=📂...{map_dir[-30:]} file_key_name:📜{file_key_name} ')
@@ -59,7 +59,7 @@ def _private_map_unpack(map_file_key: str, logger) -> bool:
             if not zip_file:
                 continue
 
-            zip_name_base = pathlib.Path(zip_file).stem
+            zip_name_base = Path(zip_file).stem
             if zip_name_base.startswith('_'):
                 target_maps_dir = os.path.join(map_dir, f"{zip_name_base}")
             else:
@@ -166,7 +166,7 @@ def _check_gitignore_for_security(logger) -> bool:
     # Assuming the main .gitignore is in the project's root directory (or equivalent base)
     # We need to find the root of the project to locate the main .gitignore
     # Let's assume the root is two levels up from scripts/py/func/
-    gitignore_path = pathlib.Path(__file__).parents[3] / ".gitignore"
+    gitignore_path = Path(__file__).parents[3] / ".gitignore"
 
     if not gitignore_path.exists():
         logger.critical("🛑 SECURITY ALERT: Main gitignore:{gitignore_path} file not found at expected path. ABORTING.")

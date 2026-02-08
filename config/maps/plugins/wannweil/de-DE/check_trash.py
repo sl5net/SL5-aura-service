@@ -1,7 +1,7 @@
 # config/maps/plugins/wannweil/de-DE/check_trash.py
 import os
 import pdfplumber
-import datetime
+import datetime  # Nur das Modul importieren
 import re
 import sys
 import subprocess
@@ -36,6 +36,7 @@ SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 APP_PASSWORD = os.getenv("APP_PASSWORD")
 
 RECEIVER_EMAIL = "sl5softwarelab@gmail.com" # Wo die Mail hin soll
+
 
 def send_mail_notification(subject, body):
     msg = EmailMessage()
@@ -154,8 +155,8 @@ def parse_wannweil_silo_logic(pdf_path, debug=False):
                                 datum = datetime.date(pdf_year, silo['nr'], tag_nr)
                                 # Die fehlerhaften tag_name Zeilen wurden hier entfernt
                                 termine.append({"datum": datum, "name": muell_name})
-                                if debug:
-                                    print(f"DEBUG: {tag_nr:02d}.{silo['nr']:02d} | rel_x: {rel_x:4.1f} -> {muell_name}")
+                                # if debug:
+                                #     print(f"DEBUG: {tag_nr:02d}.{silo['nr']:02d} | rel_x: {rel_x:4.1f} -> {muell_name}")
                             except ValueError:
                                 pass
     except Exception as e:
@@ -208,15 +209,22 @@ def check_and_notify(force_test=False):
     heute = datetime.date.today()
     morgen = heute + datetime.timedelta(days=1)
 
+
     # Debug Info für Terminal
-    if force_test:
-        print(f"System-Check: Heute ist {heute.strftime('%d.%m.%Y')}.")
+    # if force_test:
+    #     print(f"System-Check: Heute ist {heute.strftime('%d.%m.%Y')}.")
+
+    check_csv_alerts()
 
     for t in termine_data:
         if t['datum'] == morgen:
             inhalt = " & ".join(t['namen'])
             os.system(f'notify-send "MÜLL-ALARM" "Morgen: {inhalt}" --urgency=critical')
             espeak(f"Morgen wird der {inhalt} abgeholt", LANG_CODE)
+
+
+    # sys.exit(0)
+
 
     if force_test:
         zukunft = [t for t in termine_data if t['datum'] >= heute]
@@ -232,11 +240,75 @@ def check_and_notify(force_test=False):
             msg_espeak = f"{tag_name}, {datum_formatiert_espeak} ({' & '.join(n['namen'])}) | {tag_name}, ({' & '.join(n['namen'])}) "
             msg_espeak_ohne_emojis = re.sub(r'[^\w\s.,!-]', '', msg_espeak).strip()
 
+
             print(msg)
             os.system(f'notify-send "MÜLL-VORSCHAU" "{msg}"')
             espeak(msg_espeak_ohne_emojis, LANG_CODE)
 
             # send_mail_notification(msg, msg)
+
+
+def check_csv_alerts():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_file = os.path.join(script_dir, "_alerts/alerts.csv")
+    if not os.path.exists(csv_file):
+        print(f"CSV Fehler: {csv_file}.")
+        return
+
+    print(f"check_trash.py:256")
+
+    # now = datetime.datetime.now()
+    # now = datetime.now()
+
+    with open(csv_file, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                # Nutze hier datetime.datetime.strptime
+
+                now = datetime.datetime.now()
+
+                start = datetime.datetime.strptime(row['Start'].strip(), "%Y-%m-%d %H:%M")
+                end = datetime.datetime.strptime(row['End'].strip(), "%Y-%m-%d %H:%M")
+
+                tolerance = datetime.timedelta(hours=5)
+                print('check_trash.py:274')
+                if start - tolerance <= now <= end + tolerance:
+                    print(' innerhalb des tolerierten Zeitfensters')
+
+
+                    # if start <= now <= end:
+                    msg = f"{row['Start'].strip()} {row['Message'].strip()}"
+                    modes = row['Modes'].strip()
+
+                    if 'P' in modes:
+
+                        # critical stays for ever
+                        # os.system(f'notify-send "AURA ALERT" "{msg}" --urgency=critical')
+
+                        if '📍' in modes:
+                            os.system(f'notify-send "{msg} |{modes}" --urgency=critical')
+                        else:
+                            # os.system(f'notify-send "{msg} |{modes}" --urgency=critical -t 5000')
+                            os.system(f'notify-send "{msg}" |"{modes}" --urgency=normal')
+
+                    if 'V' in modes:
+                        # Hier säubern wir nur die Sprachausgabe (Emojis weg)
+
+                        msg = f"{row['Message'].strip()}"
+
+                        clean_voice = re.sub(r'[^\w\s.,!-]', '', msg)
+                        espeak(clean_voice, LANG_CODE)
+                    if 'M' in modes:
+                        send_mail_notification(f"Alert: {msg}", msg)  # Mail darf Emojis behalten
+            except Exception as e:
+                m = f"Fehler beim Parsen einer Alert-Zeile: {e}"
+                print(m)
+                espeak(m, LANG_CODE)
+
+
+
+
 
 if __name__ == "__main__":
     check_and_notify(force_test="test" in sys.argv)

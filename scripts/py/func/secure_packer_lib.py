@@ -1,12 +1,7 @@
 # scripts/py/func/secure_packer_lib.py:1
 import os
-#import subprocess
-
 import logging
-import pathlib
 import zipfile
-# import sys
-# import shutil
 from pathlib import Path
 import pyzipper
 
@@ -23,8 +18,8 @@ def execute_packing_logic(current_dir, logger):
     Creates a 'Matryoshka-ZIP' with extensive debug logging.
     """
 
-    log_everything = False
-    # log_everything = True
+    # log_everything = False
+    log_everything = True
 
     current_dir_loop = current_dir
 
@@ -42,7 +37,7 @@ def execute_packing_logic(current_dir, logger):
         parent_dir = current_dir.parent
 
 
-        #logger.info(f"📍 Script Location: {current_file}")
+        # logger.info(f"📍 Script Location: {current_file}")
         if log_everything:
             logger.info(f"📂secure_packer_lib.py : Directory to pack (Source): ...{str(current_dir)[-30:]}")
             logger.info(f"📂secure_packer_lib.py : Parent Directory (Target):  ...{str(parent_dir)[-30:]}")
@@ -167,7 +162,7 @@ def execute_packing_logic(current_dir, logger):
         # logger.info(f"🔑 Key File found: {key_file}")
 
         # 4. PASSWORD EXTRACTION
-        file_key_name = pathlib.Path(key_file).name
+        file_key_name = Path(key_file).name
 
         if file_key_name == '.nopassword.py': # password == "nopassword" or
             zip_me_nopassword(zip_path_outer, current_dir)

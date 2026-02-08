@@ -79,7 +79,14 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
 
     rules_file_path = Path(__file__).parents[4] / 'config' / 'maps' / 'plugins' / 'standard_actions' / 'language_translator' / 'de-DE' / 'FUZZY_MAP_pre.py'
     translation_state_path = Path(__file__).parents[4] / 'config' / 'maps' / 'plugins' / 'standard_actions' / 'language_translator' / 'de-DE' / 'translation_state.py'
-    os.remove(translation_state_path)
+
+    # Source - https://stackoverflow.com/q/10840533
+    # Posted by Scott C Wilson
+    # Retrieved 2026-02-08, License - CC BY-SA 3.0
+
+    if os.path.exists(translation_state_path):
+        os.remove(translation_state_path)
+
     # RULES_FILE_PATH = 'config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py'
     # create backup path (same name + .bak)
     backup_path = rules_file_path.with_name(rules_file_path.name + ".off.backup.py")
