@@ -82,6 +82,14 @@ WOCHENTAGE_DE = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Sam
 
 
 def espeak(text_to_speak, language_code):
+    return True
+
+
+
+
+
+
+
     short_lang = language_code.split('-')[0]
     command = ['espeak', '-v', short_lang, text_to_speak]
     try:
@@ -151,6 +159,12 @@ def parse_wannweil_silo_logic(pdf_path, debug=False):
                             col_idx = get_column_index(rel_x)
                             muell_name = MAPPING[col_idx]
 
+                            if col_idx == 0:
+
+                                tag_nr = muell_name = ''# 'Gelber Sack 🟡' FIX ... becouse i personally dont need the Ifor for the 'Gelber Sack 🟡' 13.2.'26 11:18 Fri
+                                #   0: 'Gelber Sack 🟡',
+
+
                             try:
                                 datum = datetime.date(pdf_year, silo['nr'], tag_nr)
                                 # Die fehlerhaften tag_name Zeilen wurden hier entfernt
@@ -172,6 +186,20 @@ def parse_wannweil_silo_logic(pdf_path, debug=False):
 
 
 def save_to_csv(termine, script_path, pdf_path):
+    print(f"csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print(f"csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print(f"csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print(f"csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+
+
+    return True
+
+
+
+
+
+
+
     # print(f"{pdf_path} -----------------------------------------")
     # csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "abfall_termine.csv")
     csv_path = f"{pdf_path}.csv"

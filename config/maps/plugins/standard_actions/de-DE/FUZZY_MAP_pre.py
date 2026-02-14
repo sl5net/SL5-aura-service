@@ -205,17 +205,20 @@ FUZZY_MAP_pre = [
 
     # jimmy neu
     # google gb
+    # google will termine
 
     # EXAMPLE: gemini
     ('https://aistudio.google.com/prompts/new_chat', r'''(?ix)
     ^ (?:
         gemini | cheminée | gb dreht |
-        (?:google|googeln|gogol|gucke|gut|gb|brooke|coral) \s+
+        (?:google|googeln|gogol|gucke|goris|gut|gb|kugeln|brooke|coral) \s+
         (?:
             gemini[\s\w]* |
             g\ mine |
             gb |
             gehminuten |
+            gehe\ mit |
+            geben\ ihnen\ ein |
             will\ gemini\ a |
             cheminée |
             studi[ao]\w* |
@@ -231,7 +234,8 @@ FUZZY_MAP_pre = [
             jimmy\ nein |
             jimmy\ neu |
             grimmen\s*.*|grimmig|Germany|feminin|Gewinnern|gewinne|wieder|g bedeuten|gebe drei|gb daten|gewinn ein|gebe dein|kriminelle|gewitter|b day|g wie neu|coral gaming nein|geben innere|seminare|gemini\ ei|
-            kapital | aviv | leicht | eingestuft | chapiteau | my\s+style | seminare | feminin | gemini\ ei
+            kapital | aviv | leicht | eingestuft | chapiteau | my\s+style | seminare | feminin | gemini\ ei |
+            will\ termine
         )
     )
     \b.*$

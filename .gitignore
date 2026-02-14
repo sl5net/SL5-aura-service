@@ -48,7 +48,7 @@ config/maps/2025/
 
 # config/maps/plugins/anki_quiz/de-DE/state.json
 
-
+**/Abfallterminuebersicht-01-12-2026*
 
 scripts/service_start.log
 config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.log

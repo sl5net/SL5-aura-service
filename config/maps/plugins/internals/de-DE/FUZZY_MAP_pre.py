@@ -1,5 +1,5 @@
 # config/maps/plugins/internals/de-DE/FUZZY_MAP_pre.py
-# config/languagetool_server/maps/de-DE/FUZZY_MAP_pr.py
+
 import re
 
 # This map uses a hybrid approach:
@@ -14,7 +14,7 @@ FUZZY_MAP_pre = [
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
-    # - means first is most importend, lower rules maybe not get read.
+    # - means first is most important, lower rules maybe not get read.
 
 
     #  Helps the Tool to switch to English

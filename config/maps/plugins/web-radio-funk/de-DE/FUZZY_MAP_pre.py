@@ -31,10 +31,12 @@ FUZZY_MAP_pre = [
     # - first is read first imported, lower rules maybe not get read.
 
     # einen hörtest einschlafen
+    # deutschland vor
 
     # EXAMPLE: deutschlandfunk
     # Einen  is somtimes noise of nothing
-    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, {'flags': re.IGNORECASE}),
+
     # EXAMPLE: presseclub
     ('https://www1.wdr.de/daserste/presseclub/index.html', r'^(presseclub|pressig)\w*\s*$', 70, {'flags': re.IGNORECASE}),
 
