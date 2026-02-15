@@ -73,8 +73,6 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
         # scripts/py/func/main.py:73
         while True:
 
-            print('hello world :)')
-
             # Wait efficiently for a trigger, with a timeout for maintenance
             trigger_event.wait(timeout=5.0)
 
