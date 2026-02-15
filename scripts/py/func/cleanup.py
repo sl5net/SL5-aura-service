@@ -15,6 +15,14 @@ def cleanup(logger, files_to_remove):
         # Check if it was a signal or just a regular exit
         logger.info(f"ℹ️ Aura reached a clean exit (PID: {os.getpid()}). No active Exception.")
 
+        # --- Ghost Plugin / Deactivation Hint ---
+        logger.info("❓ UNEXPECTED SHUTDOWN? Check for 'ghost' plugins!")
+        logger.info("💡 PRO-TIP: Renaming 'file.py' to 'file OFF.py' does NOT deactivate it.")
+        logger.info("💡 The engine still loads any file ending in '.py'.")
+        logger.info("💡 To truly deactivate a plugin, change the extension to '.py_bak' or move it out of the folder.")
+        # ----------------------------------------------
+
+
     # Final location check
     logger.info("🏁 Cleanup Stack-Trace (where the process ended):\n" + "".join(traceback.format_stack()))
 

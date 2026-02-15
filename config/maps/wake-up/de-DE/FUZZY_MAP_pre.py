@@ -27,8 +27,8 @@ kaktus = r'{nonsense_word}(kaktus|kaktos|kackt|kraft|kürzlich|taktus|captain|vo
 
 FUZZY_MAP_pre = [
 
-    # guten tag das aufwachenkaktus einschalten
-    # bin bi kaktus aufwachen
+    # guten tag das aufwachenkaktus einschalten 🌵
+    # bin bi kaktus aufwachen 🌵
 
     ('voss_start', fr'^({kaktus} höre nicht mit|{kaktus}wach auf|{kaktus}auf|{kaktus}aufwachen|{kaktus}wache|{kaktus}einschätzen|{kaktus}einschalten|{kaktus}aktiv|frost brach kracher|Vor krach auf|free square auf|frost quatsch auf|guten tag das aufwachen|{nonsense_start_word}kaktus woche aus|b\s*\w*\s*\bkaktus aufwachen)$', 89,
      {
@@ -41,14 +41,14 @@ FUZZY_MAP_pre = [
     # sehen könntest einschlafen
     #
 
-    # EXAMPLE: einschalfen phonetic misinterpretations
+    # EXAMPLE: einschalfen phonetic misinterpretations 🌵
     ('voss_stop', fr'^(?:{kaktus}|gratis|köpfe|hörtest)\s*(?:einschlagen|einschlafen|einschleppen|einsch\w*en|geschlossen|stop|schlafe|ciao).*$', 89,
      {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
     }),
 
-    # einen
+    # einen 🌵
     ('voss_stop', fr'^(?:{kaktus}stop\w*|{nonsense_start_word}{kaktus}{nonsense_start_word}schlafe\w*|{kaktus}geh schlafe\w*|gute nacht|{kaktus}ciao|{kaktus}nen)$', 89,
      {
         'flags': re.IGNORECASE,

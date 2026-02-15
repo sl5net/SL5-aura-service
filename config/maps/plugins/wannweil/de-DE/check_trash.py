@@ -1,5 +1,4 @@
 # config/maps/plugins/wannweil/de-DE/check_trash.py
-import sys
 import os
 import pdfplumber
 import datetime  # Nur das Modul importieren
