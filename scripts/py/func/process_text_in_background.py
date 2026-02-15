@@ -190,7 +190,7 @@ def load_module_from_path(script_path, run_mode_override=None):
         return None    # Ignore folders that start with _
 
     print(
-        f"####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
+        f"d####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
 
     spec = importlib.util.spec_from_file_location(path.stem, path)
 

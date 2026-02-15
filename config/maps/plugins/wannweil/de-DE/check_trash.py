@@ -1,9 +1,9 @@
 # config/maps/plugins/wannweil/de-DE/check_trash.py
+import sys
 import os
 import pdfplumber
 import datetime  # Nur das Modul importieren
 import re
-import sys
 import subprocess
 #import threading
 import csv
@@ -339,4 +339,5 @@ def check_csv_alerts():
 
 
 if __name__ == "__main__":
-    check_and_notify(force_test="test" in sys.argv)
+    # check_and_notify(force_test="test" in sys.argv)
+    print('nix')

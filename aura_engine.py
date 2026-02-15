@@ -1144,6 +1144,7 @@ global AUTO_ENTER_AFTER_DICTATION_global
 
 recording_time = 0
 # from config import settings # Import the whole settings module
+# aura_engine.py:1147
 if __name__ == "__main__":
     # 1. Load all settings from the module into a dictionary
     config = {key: getattr(settings, key) for key in dir(settings) if key.isupper()}
@@ -1181,3 +1182,4 @@ if __name__ == "__main__":
     main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url)
 
 
+logger.info("🏁 end of file aura_engine.py reached - logic fell through!")

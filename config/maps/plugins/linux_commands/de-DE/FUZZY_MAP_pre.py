@@ -181,6 +181,21 @@ FUZZY_MAP_pre = [
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
+
+    # git diff small
+    ('git diff -U0 > /tmp/aura_small_diff.txt && kate /tmp/aura_small_diff.txt',
+     r'^(git diff)$', 85, {
+         'flags': re.IGNORECASE,
+         'skip_list': ['LanguageTool']
+         , 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+
+    # EXAMPLE: sounddevice to kate editor
+    ('./.venv/bin/python3 -m sounddevice > /tmp/aura_devices.txt && kate /tmp/aura_devices.txt',
+     r'^(sound kate)$', 85, {
+         'flags': re.IGNORECASE,
+         'skip_list': ['LanguageTool']
+     , 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+
     #Wie lange ist Hodscha
 
     # EXAMPLE: edit aura config
@@ -219,9 +234,5 @@ FUZZY_MAP_pre = [
         r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
-
-
-
-
 
 ]
