@@ -614,8 +614,6 @@ if settings.SERVICE_START_OPTION ==1:
 if settings.DEV_MODE :
 
 
-    # from scripts.py.func.checks.auto_zip_startup_test import run_auto_zip_sanity_check
-    # run_auto_zip_sanity_check(logger)
 
 
 

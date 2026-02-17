@@ -41,7 +41,7 @@ def iter_non_hidden_dirs(start: Path):
 # Alle gefundenen Verzeichnisse nehmen und TEST_DIR_NAME anhängen
 
 # Achtung! Es werden bei jdem Durhclauf wieder viel mehr!
-TEST_ROOTS = [ (d / TEST_DIR_NAME).resolve() for d in iter_non_hidden_dirs(root) ]
+# TEST_ROOTS = [ (d / TEST_DIR_NAME).resolve() for d in iter_non_hidden_dirs(root) ]
 
 
 
@@ -50,8 +50,7 @@ TEST_ROOTS = [ (d / TEST_DIR_NAME).resolve() for d in iter_non_hidden_dirs(root)
 
 # print(TEST_ROOTS)
 
-
-if False:
+if True:
     TEST_ROOTS = [
         # following are true at the moment 17.2.'26 16:38 Tue
         Path("config/maps/plugins/wannweil/de-DE") / TEST_DIR_NAME,
@@ -60,18 +59,18 @@ if False:
 
         # following are not testest at the moment 17.2.'26 16:38 Tue
 
-        Path("config/maps/plugins/git/de-DE") / TEST_DIR_NAME,
-        Path("config/maps/plugins/git") / TEST_DIR_NAME,
-
-        Path("config/maps/plugins/web-radio-funk/de-DE") / TEST_DIR_NAME,
-        Path("config/maps/plugins/web-radio-funk") / TEST_DIR_NAME,
-
-        Path("config/maps/plugins/sandbox/de-DE") / TEST_DIR_NAME,
-        Path("config/maps/plugins/sandbox") / TEST_DIR_NAME,
-
-        Path("config/maps/plugins/wannweil") / TEST_DIR_NAME,
-        Path("config/maps/plugins") / TEST_DIR_NAME,
-        Path("config/maps") / TEST_DIR_NAME,
+        # Path("config/maps/plugins/git/de-DE") / TEST_DIR_NAME,
+        # Path("config/maps/plugins/git") / TEST_DIR_NAME,
+        #
+        # Path("config/maps/plugins/web-radio-funk/de-DE") / TEST_DIR_NAME,
+        # Path("config/maps/plugins/web-radio-funk") / TEST_DIR_NAME,
+        #
+        # Path("config/maps/plugins/sandbox/de-DE") / TEST_DIR_NAME,
+        # Path("config/maps/plugins/sandbox") / TEST_DIR_NAME,
+        #
+        # Path("config/maps/plugins/wannweil") / TEST_DIR_NAME,
+        # Path("config/maps/plugins") / TEST_DIR_NAME,
+        # Path("config/maps") / TEST_DIR_NAME,
     ]
 # Alle direkte Unterverzeichnisse nehmen und jeweils TEST_DIR_NAME anhängen
 
@@ -85,6 +84,12 @@ if platform.system() == "Windows":
 else:
     TMP_DIR = Path("/tmp")
 core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+
+# easier to debug when empties it at the start
+# aura_log = Path('log/aura_engine.log')
+# aura_log.unlink(missing_ok=True) ## seems problematic
+
+
 
 SUCCESS = None
 
@@ -144,13 +149,13 @@ def run_auto_zip_sanity_check(logger):
             waited_sec = time.time() - start_time
 
             if not core_logic_self_test_was_running:
-                # logger.info(f"Auto-Zip: Waiting core_logic_self_test_was_running ... {waited_sec:.1f}s")
+                logger.info(f"Auto-Zip: Waiting core_logic_self_test_was_running ... {waited_sec:.1f}s")
                 if core_logic_self_test_is_running_FILE.exists():
                     core_logic_self_test_was_running = True
                 else:
                     if timeout_auto_zip(waited_sec, MAX_WAIT_SECONDS, logger):
                         break
-                    time.sleep(2)
+                    time.sleep(5)
                     continue
 
             if not core_logic_self_test_not_running_anymore:
@@ -209,7 +214,7 @@ def run_auto_zip_sanity_check(logger):
 
     t = threading.Thread(target=_test_logic, daemon=True)
     t.start()
-    logger.info("🧵 Auto-Zip Test Thread started.")
+    logger.info("Auto-Zip: 🧵 Test Thread started.")
 
     # else:
     #     # wenn map_reloader.auto_reload_modified_maps ist nicht-blockierend, dann:
@@ -223,7 +228,7 @@ def run_auto_zip_sanity_check(logger):
     #     t.start()
     #     # warte auf reload_event mit Timeout bevor du Polling beginnst
     #     reload_event.wait(timeout=10)
-    #     logger.info("🧵 Auto-Zip Test Thread started.")
+    #     logger.info("🧵 Auto-Zipsdfg Test Thread started.")
     # time.sleep(1)
     # waited_sec = time.time() - start_time
 
@@ -273,7 +278,7 @@ def _cleanup(logger):
     for root in TEST_ROOTS:
         if root.exists():
             try:
-                # shutil.rmtree(root)
+                shutil.rmtree(root)
                 logger.info(f"NOT Cleaned: {root}")
             except Exception:
                 pass

@@ -7,6 +7,8 @@ import sys
 import os
 from pathlib import Path
 
+from .auto_zip_startup_test import run_auto_zip_sanity_check
+
 from ..audio_manager import speak_fallback
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
@@ -132,6 +134,7 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
         state_file_name="self_test_throttle_state.json"  # Provide a specific file name for this function
     )
 
+    # scripts/py/func/checks/self_tester.py:135
     if not test_executed:
         logger.warning(":st:⏩ Self-test not executed. Way? Maybe skipped ⏩ due to persistent throttling?")
 
@@ -163,6 +166,21 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     test_base_dir = tmp_dir_aura / "sl5_aura_self_test"
     test_base_dir.mkdir(parents=True, exist_ok=True)
+
+
+
+
+    run_auto_zip_sanity_check(logger) # runs asynchron and will run at the end to check if creating zips work
+
+
+
+
+
+
+
+
+
+
 
     test_cases = [
 
