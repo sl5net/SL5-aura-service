@@ -16,9 +16,13 @@ from .windows_apply_correction_with_sync import windows_apply_correction_with_sy
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 
+
 def auto_reload_modified_maps(logger,run_mode_override):
 
     # its using:
+
+    # may read: https://github.com/sl5net/SL5-aura-service/tree/master/docs/Feature_Spotlight/zip
+
     # importlib.reload(module): its changes the Memory of the Python-Interpreters (sys.modules).
     # iss also changes the:
     # LAST_MODIFIED_TIMES[...] = ...:
@@ -205,7 +209,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     logger.info(f"🚨 ❌ Failed to reload module '{module_name}': {e}")
 
                     # logger.error(f"❌ Failed to reload module '{module_name}': {e}")
-                    # todo: # scripts/py/func/map_reloader.py:135 run the into autorepair function
+                    # todo: # scripts/py/func/map_reloader.py:135 run the into auto-repair function
 
             else:
                 # No change detected, but ensure initialization logic handles new paths if needed
@@ -313,8 +317,7 @@ def _create_init_file(file_path: Path, logger):
 
 
 
-# scripts/py/func/map_reloader.py
-
+# scripts/py/func/map_reloader.py:321
 def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
     """
     Traverses up the directory tree from start_path up to 'config/maps'.
@@ -453,6 +456,12 @@ config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
                 # logger.info(f"375: Checking module {module_name} for hooks...")
 
                 if module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
+
+                    if not start_path_current_dir.name.startswith('_'):
+                        if log_everything:
+                            logger.info(f"🛑 Skipping hook for '{start_path_current_dir.name}' - folder does not start with '_'")
+                        continue
+
                     if log_everything:
                         logger.info(f"🔗 Triggering upstream hook: 📜{module_name}.on_folder_change(start_path_current_dir:📂...{str(start_path_current_dir)[-35:]}")
                     try:
@@ -526,7 +535,7 @@ def zip_me_nopassword(zip_path_outer, current_dir_or_single_file):
             # This logic mimics your original string slicing (contents relative to root):
             parent_dir = target_path
 
-            for root, _, files in os.walk(target_path):
+            for root, _, files in os.walk(target_path): # map_reloader.py:533
                 for fn in files:
                     full_path = os.path.join(root, fn)
                     # relpath calculates the correct relative path automatically
@@ -534,3 +543,4 @@ def zip_me_nopassword(zip_path_outer, current_dir_or_single_file):
                     zf.write(full_path, arc_name)
 
     #logger.info(f"📄 📦 Zip Output: {zip_path_outer}")
+# scripts/py/func/map_reloader.py:546

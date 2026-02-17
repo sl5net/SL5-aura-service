@@ -79,6 +79,13 @@ config/model_name_lastused.txt
 config/maps/plugins/.privat/
 config/maps/plugins/privat/
 
+config/maps/privat.zip
+config/maps/privat_BACKUP.zip
+
+config/maps/plugins/wannweil/de-DE/alerts.zip
+
+
+
 # Ignore all dot-files (passwords/keys) and dot-directories within config/maps
 config/maps/**/.*
 

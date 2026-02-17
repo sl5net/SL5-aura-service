@@ -1,4 +1,10 @@
 # config/maps/plugins/wannweil/de-DE/check_trash.py
+
+# ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py
+#  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py
+
+
+import sys
 import os
 import pdfplumber
 import datetime  # Nur das Modul importieren
@@ -81,12 +87,7 @@ WOCHENTAGE_DE = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Sam
 
 
 def espeak(text_to_speak, language_code):
-    return True
-
-
-
-
-
+    # return True
 
 
     short_lang = language_code.split('-')[0]
@@ -274,7 +275,7 @@ def check_and_notify(force_test=False):
 
             # send_mail_notification(msg, msg)
 
-
+# wannweil/de-DE/_alerts/
 def check_csv_alerts():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     csv_file = os.path.join(script_dir, "_alerts/alerts.csv")
@@ -338,5 +339,7 @@ def check_csv_alerts():
 
 
 if __name__ == "__main__":
-    # check_and_notify(force_test="test" in sys.argv)
-    print('nix')
+    if False:
+        check_and_notify(force_test="test" in sys.argv)
+    else:
+        print("nix 16.2.'26 Mon")

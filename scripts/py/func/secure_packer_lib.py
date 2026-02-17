@@ -7,6 +7,8 @@ import pyzipper
 
 from scripts.py.func.password_extract import _extract_password
 
+# may read: https://github.com/sl5net/SL5-aura-service/tree/master/docs/Feature_Spotlight/zip
+
 logger = logging.getLogger(__name__)
 
 def execute(data):
@@ -58,8 +60,8 @@ def execute_packing_logic(current_dir, logger):
         zip_name_outer = base_name + ".zip"
         zip_path_outer = parent_dir / zip_name_outer
         if log_everything:
-            logger.info(f"🎯secure_packer_lib.py : Target 📦 ZIP Path: {zip_path_outer}")
-
+            logger.info(f"🎯scripts … secure_packer_lib.py : Target 📦 ZIP Path: {zip_path_outer}")
+        #
         # sys.exit(0)
 
         # ... nach: 📦 zip_path_outer = parent_dir / zip_name_outer ...

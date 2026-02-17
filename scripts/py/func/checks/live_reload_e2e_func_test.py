@@ -1,4 +1,4 @@
-# live_reload_e2e_func_test.py
+# scripts/py/checks/live_reload_e2e_func_test.py
 
 import os
 import shutil

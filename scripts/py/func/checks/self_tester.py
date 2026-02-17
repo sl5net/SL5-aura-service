@@ -18,13 +18,13 @@ def check_translator_hijack_is_active(logger):
     path = proj_dir / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
 
     if not path.exists():
-        logger.info(f"HIJACK: path {path} not exists!")
+        logger.info(f"st:HIJACK: path {path} not exists!")
         return False
 
     pattern = re.compile(r"#[ ]*TRANSLATION_RULE[ ]*\n[^\n]*#")
     for lineno, line in enumerate(path.read_text().splitlines(), start=1):
         if pattern.search(line):
-            logger.info(f"🚨 HIJACK: Rule in ..{str(path)[-30:]}{lineno} is active!")
+            logger.info(f"st:🚨 HIJACK: Rule in ..{str(path)[-30:]}{lineno} is active!")
             return lineno
 
     return False
@@ -102,8 +102,10 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
 
     lineno = check_translator_hijack_is_active(logger)
     if lineno and lineno>0:
-        logger.info(f"self_tester.py exit exit exit")
+        logger.info(f"st:self_tester.py exit exit exit")
+        logger.info(f"st:75:🚨 HIJACK: rule is activ")
         logger.info(f"""
+        st:
         75:🚨 HIJACK: rule is activ during self_test! maybe check: 
         config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py:{lineno} 
         (check_translator_hijack) --> exit(1)
@@ -131,7 +133,7 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
     )
 
     if not test_executed:
-        logger.warning("⏩ Self-test not executed. Way? Maybe skipped ⏩ due to persistent throttling?")
+        logger.warning(":st:⏩ Self-test not executed. Way? Maybe skipped ⏩ due to persistent throttling?")
 
     return test_executed
 
@@ -344,8 +346,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
             active_tests.append((test_case[0], test_case[1], ''))
 
 
-    logger.info(f"Running {len(active_tests)} tests in parallel using PROCESSES...")
-    # logger.info(f"Running {len(active_tests)} tests in parallel (ThreadPool)...")
+    logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES...")
+    # logger.info(f":st:Running {len(active_tests)} tests in parallel (ThreadPool)...")
     start_time = time.perf_counter()
 
     # 2. Worker function with isolated sub-directory
@@ -356,7 +358,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     # Use 20 workers to fully saturate the 16-core Ryzen CPU
 
-    logger.info(f"Running {len(active_tests)} tests in parallel using PROCESSES...")
+    logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES...")
 
     # ProcessPoolExecutor nutzt echte CPU-Kerne parallel
     # Aber ACHTUNG: Das 'logger' Objekt kann oft nicht einfach in Prozesse kopiert werden.
@@ -395,9 +397,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     duration = time.perf_counter() - start_time
     logger.info("=" * 40)
     # m1 =f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}"
-    logger.info(f"✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests")
+    logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests")
     m2=f"⌚ Total Duration: {duration:.2f} seconds"
-    logger.info(f"⌚ Total Duration: {duration:.2f} seconds")
+    logger.info(f":st:⌚ Total Duration: {duration:.2f} seconds")
     speak_fallback(f"{m2}", 'de-DE')# 'en-US') # 'de-DE')
 
     logger.info("-" * 40)

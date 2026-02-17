@@ -143,7 +143,6 @@ from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctu
 
 from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 
-from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
 
 
 
@@ -208,6 +207,9 @@ OUTPUT_FILE = TMP_DIR / "sl5_aura" / "tts_output" / "tts_output.txt"
 HEARTBEAT_FILE = TMP_DIR / "sl5_aura" / "aura_engine.heartbeat"
 PIDFILE = TMP_DIR / "sl5_aura" / "aura_engine.pid"
 LOG_FILE = Path("log/aura_engine.log")
+
+core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+
 
 # aura_engine.py:208
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -358,7 +360,20 @@ class SafeStreamToLogger(object):
         self.log_pattern = re.compile(r'^\d{2}:\d{2}:\d{2},\d{3}\s-\s[A-Z]+\s+-\s')
 
     def write(self, buf):
+
+        # global core_logic_self_test_is_running_FILE
+        is_core_logic_self_test_is_running = core_logic_self_test_is_running_FILE.exists()
+
         # 1. Immer sofort auf die Konsole schreiben (für dich sichtbar)
+
+        if is_core_logic_self_test_is_running and ':st:' not in buf : # and buf[:3] == 'st:':
+            return
+            buf = f'ööööööööööööööööööööööööööööööööööööööö {buf} ääääääääääääääääääääääääääääääääääääääääääääää\n'
+            buf = f'ööööööööööööööööööööööööööööööööööööööö {buf} ääääääääääääääääääääääääääääääääääääääääääääää\n'
+            buf = f'ööööööööööööööööööööööööööööööööööööööö {buf} ääääääääääääääääääääääääääääääääääääääääääääää\n'
+            buf = f'ööööööööööööööööööööööööööööööööööööööö {buf} ääääääääääääääääääääääääääääääääääääääääääääää\n'
+            # return
+
         self.terminal.write(buf)
         # self.terminal.flush() <-- BESSER SO (Spart CPU/Zeit)
 
@@ -367,6 +382,9 @@ class SafeStreamToLogger(object):
         if buf and not buf.isspace() and not self.is_logging:
             self.is_logging = True # Schalter an
             try:
+
+                # st:
+
                 # Prüfen: Hat der Text schon einen Zeitstempel?
                 match = self.log_pattern.match(buf)
 
@@ -377,6 +395,8 @@ class SafeStreamToLogger(object):
                 else:
                     # NEIN: Wir nehmen den Text so wie er ist (z.B. von print)
                     clean_msg = buf.rstrip()
+
+
 
                 # Nur schreiben, wenn noch Text übrig ist
                 if clean_msg:
@@ -594,6 +614,8 @@ if settings.SERVICE_START_OPTION ==1:
 if settings.DEV_MODE :
 
 
+    # from scripts.py.func.checks.auto_zip_startup_test import run_auto_zip_sanity_check
+    # run_auto_zip_sanity_check(logger)
 
 
 
@@ -1039,6 +1061,8 @@ if not languagetool_process:
 # sys.exit(1)
 
 
+
+
 if settings.DEV_MODE :
 
     from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
@@ -1047,6 +1071,7 @@ if settings.DEV_MODE :
     check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
 
+    from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
     run_e2e_live_reload_func_test_v2(logger, active_lt_url)
 
     log4DEV('Script Start', logger)
@@ -1071,7 +1096,22 @@ if settings.DEV_MODE :
     if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
         self_test_start_time = time.time()
         log4DEV(f"Start run_core_logic_self_test( .. {lang_code}", logger)
+
+
+        Path(core_logic_self_test_is_running_FILE).write_text(str(int(time.time())))
+
         run_core_logic_self_test(logger, TMP_DIR / "sl5_aura", active_lt_url,lang_code)
+
+        core_logic_self_test_is_running_FILE.unlink(missing_ok=True)
+
+
+
+
+
+
+
+
+
 
 
         self_test_end_time = time.time()
@@ -1134,6 +1174,7 @@ if settings.DEV_MODE :
 
         # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
         check_example_file_is_synced(SCRIPT_DIR)
+
 
 
 
