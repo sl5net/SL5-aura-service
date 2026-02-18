@@ -10,7 +10,7 @@ SERVICE_START_OPTION = 0
 
 NOTIFICATION_LEVEL = 1
 
-soundMute = 1  # 1 is really recommandet. to know when your recording is endet.
+soundMute = 1  # 1 is really recommended. to know when your recording is ended.
 soundUnMute = 1
 soundProgramLoaded = 1
 
@@ -25,7 +25,7 @@ DEV_MODE = False
 # DEV_MODE = False
 DEV_MODE_memory = False
 DEV_MODE_all_processing = False
-
+DEV_MODE_zip_processing = False
 
 PRELOAD_MODELS = ["vosk-model-de-0.21"]
 

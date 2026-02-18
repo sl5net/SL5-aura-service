@@ -1,15 +1,21 @@
-# import os
+import sys
 import time
 import shutil
 import threading
-import platform
 from pathlib import Path
 
 from scripts.py.func.audio_manager import speak_fallback
 
+
+import os
+import platform
+
+
+
 # scripts/py/func/checks/auto_zip_startup_test.py:9
 
-readme = """
+readme = '' # noqa: F841
+readme += """
 für löschen siehe:
 
 tools/del_all_self_test_zip_tmp_folders.py
@@ -95,6 +101,9 @@ core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_t
 
 SUCCESS = None
 
+creation_time_first_zip = 0
+creation_time_last_zip = 0
+
 
 def timeout_auto_zip(waited_sec, MAX_WAIT_SECONDS, logger):
     if waited_sec > MAX_WAIT_SECONDS:
@@ -134,6 +143,9 @@ def run_auto_zip_sanity_check(logger):
 
         except Exception as e:
             logger.error(f"Auto-Zip: 💀 Setup Error: {e}")
+
+            sys.exit(1)
+
             return
 
         # 3. POLLING LOOP
@@ -193,8 +205,57 @@ def run_auto_zip_sanity_check(logger):
             speak_fallback("Auto-Zip: Error: SUCCESS is None . Das sollte nicht passieren", 'de-DE')
             # _cleanup(logger)
         elif SUCCESS:
+
+            readme ='' # noqa: F841
+            readme += r""" 
+show modification times for all .zip files (recursive)
+Sorted by newest first, with cleaner timestamp (no nanoseconds):
+            
+find . -type f -name '*.zip' -print0 \
+| while IFS= read -r -d '' f; do
+  printf '%s %s\n' "$(date -d "@$(stat -c %Y "$f")" '+%F %T')" "$f"
+done \
+| sort -r
+           
+            """
+
+            # logger.info(f"Auto-Zip: ⏱️ Time from first ZIP to Finish: {zip_lag:.2f}s")
+
+            # speak_fallback(f"Auto-Zip: Success in  {int(zip_lag)} Sekunden", 'de-DE')
+
+
+            """
+            19:52:25,729 - INFO     - Auto-Zip: Created creation time first_zip: 1771440710.7s
+            19:52:25,729 - INFO     - Auto-Zip: 🎉 🟢 ALL Checks PASSED in 39.1s.
+            """
+
+            # logger.info(f"Auto-Zip: 🎉 🟢 ALL Checks PASSED in {waited_sec:.1f}s.")
+            # speak_fallback(f"Auto-Zip: Success in  {int(waited_sec)} Sekunden", 'de-DE')
+
+            finish_time = time.time()
             logger.info(f"Auto-Zip: 🎉 🟢 ALL Checks PASSED in {waited_sec:.1f}s.")
-            speak_fallback(f"Auto-Zip: Success in  {int(waited_sec)} Sekunden", 'de-DE')
+
+            # --- STATISTIK BERECHNUNG ---
+            # global creation_time_first_zip, creation_time_last_zip
+            if creation_time_first_zip and creation_time_last_zip:
+                # 1. Wie lange hat das Zippen wirklich gedauert? (Von erster bis letzter Datei)
+                zipping_duration = creation_time_last_zip - creation_time_first_zip
+                zipping_duration = max(0.0, zipping_duration)  # Keine negativen Zahlen
+
+                # 2. Wie lange hat der Test nach dem letzten Zip noch gewartet?
+                test_lag = finish_time - creation_time_last_zip
+                test_lag = max(0.0, test_lag)
+
+                logger.info(f"Auto-Zip: 📊 Stats:")
+                logger.info(f"Auto-Zip:   - Zipping Duration (Real Work): {zipping_duration:.2f}s")
+                logger.info(f"Auto-Zip:   - Zipping per .Zip (Real Work): {(zipping_duration/len(TEST_ROOTS)):.2f}s")
+                logger.info(f"Auto-Zip:   - Test/Lock-File Lag:           {test_lag:.2f}s")
+                logger.info(f"Auto-Zip:   - Total Time:                   {waited_sec:.2f}s")
+
+                # speak_fallback(f"Auto-Zip: Zipping took {round((zipping_duration)} seconds", 'de-DE')
+                speak_fallback(f"Zip Dauer {round(zipping_duration)} Sekunden", 'de-DE')
+                # speak_fallback(f"Zip Dauer je Datei {round(zipping_duration/len(TEST_ROOTS))} Sekunden", 'de-DE')
+
 
             core_logic_self_test_is_running_FILE.unlink(missing_ok=True)
 
@@ -202,6 +263,8 @@ def run_auto_zip_sanity_check(logger):
         elif not SUCCESS:
             logger.error("Auto-Zip: 💀 FAILED.")
             for roots in TEST_ROOTS:
+                os.path.getctime(roots)
+
                 logger.info(f"Auto-Zip: -searching: {roots}/{TEST_DIR_Zip_NAME}")
             missing, found_zips = _get_missing_zips(logger, silent=False)
             for missing_zip in missing:
@@ -211,6 +274,14 @@ def run_auto_zip_sanity_check(logger):
             speak_fallback("Auto-Zip: Failed", 'de-DE')
 
             core_logic_self_test_is_running_FILE.unlink(missing_ok=True)
+
+
+
+            sys.exit(1)
+
+
+
+
 
     # 4. RESULT
 
@@ -249,6 +320,19 @@ def _get_missing_zips(logger, silent=True):
         else:
             found_zips.append(str(expected_zip))
 
+            # its interesting to check how long it takes to create al zips. idk how to check the beginning of the zip creations but here we can check when te first zip was created: (s, 18.2.'26 19:40 Wed)
+            global creation_time_first_zip
+
+            # p = Path(expected_zip)
+            ctime = expected_zip.stat().st_mtime
+
+            if not creation_time_first_zip:
+                creation_time_first_zip = ctime
+            else:
+                global creation_time_last_zip
+                if not creation_time_last_zip or ctime > creation_time_last_zip:
+                    creation_time_last_zip = ctime
+
 
     return missing, found_zips
 
@@ -276,13 +360,21 @@ def _create_test_scenarios(logger):
             logger.error(f"Error creating scenario in {root}: {e}")
 
 
+# Source - https://stackoverflow.com/a/39501288
+# Posted by Mark Amery, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-02-18, License - CC BY-SA 4.0
+
+
+
+
+
 def _cleanup(logger):
-    for root in TEST_ROOTS:
+    for root333 in TEST_ROOTS:
         if root.exists():
             try:
-                shutil.rmtree(root)
-                logger.info(f"Auto-Zip: Cleaned: {root}")
-            except Exception:
-                logger.info(f"Auto-Zip: NOT Cleaned: {root}")
+                shutil.rmtree(root333)
+                logger.info(f"Auto-Zip: Cleaned: {root333}")
+            except Exception as e:
+                logger.info(f"Auto-Zip: NOT Cleaned: {root333} Exception:{e}")
 
                 pass
