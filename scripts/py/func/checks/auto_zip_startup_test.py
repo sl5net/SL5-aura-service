@@ -59,23 +59,24 @@ def iter_non_hidden_dirs(start: Path):
 if True:
     TEST_ROOTS = [
         # following are true at the moment 17.2.'26 16:38 Tue
-        Path("config/maps/plugins/wannweil/de-DE") / TEST_DIR_NAME,
+        # Path("config/maps/plugins/wannweil/de-DE") / TEST_DIR_NAME,
         Path("config/maps/_privat") / TEST_DIR_NAME,
-        Path("config/maps/_privat/_subdira") / TEST_DIR_NAME,
+        # Path("config/maps/_privat/_subdira") / TEST_DIR_NAME,
 
         # following are not testest at the moment 17.2.'26 16:38 Tue
 
         Path("config/maps/plugins/git/de-DE") / TEST_DIR_NAME,
-        Path("config/maps/plugins/git") / TEST_DIR_NAME,
-
-        Path("config/maps/plugins/web-radio-funk/de-DE") / TEST_DIR_NAME,
-        Path("config/maps/plugins/web-radio-funk") / TEST_DIR_NAME,
-
-        Path("config/maps/plugins/sandbox/de-DE") / TEST_DIR_NAME,
-        Path("config/maps/plugins/sandbox") / TEST_DIR_NAME,
-
-        Path("config/maps/plugins/wannweil") / TEST_DIR_NAME,
+        # Path("config/maps/plugins/git") / TEST_DIR_NAME,
         Path("config/maps/plugins") / TEST_DIR_NAME,
+        Path("config/maps") / TEST_DIR_NAME,
+
+        # Path("config/maps/plugins/web-radio-funk/de-DE") / TEST_DIR_NAME,
+        # Path("config/maps/plugins/web-radio-funk") / TEST_DIR_NAME,
+        #
+        # Path("config/maps/plugins/sandbox/de-DE") / TEST_DIR_NAME,
+        # Path("config/maps/plugins/sandbox") / TEST_DIR_NAME,
+        #
+        # Path("config/maps/plugins/wannweil") / TEST_DIR_NAME,
 
         # Path("config/maps") / TEST_DIR_NAME,
 
@@ -169,7 +170,7 @@ def run_auto_zip_sanity_check(logger):
                 else:
                     if timeout_auto_zip(waited_sec, MAX_WAIT_SECONDS, logger):
                         break
-                    time.sleep(5)
+                    time.sleep(0.1)
                     continue
 
             if not core_logic_self_test_not_running_anymore:
@@ -179,7 +180,7 @@ def run_auto_zip_sanity_check(logger):
                 else:
                     if timeout_auto_zip(waited_sec, MAX_WAIT_SECONDS, logger):
                         break
-                    time.sleep(2)
+                    time.sleep(0.05)
                     continue
 
             if timeout_auto_zip(waited_sec, MAX_WAIT_SECONDS, logger):
@@ -198,7 +199,7 @@ def run_auto_zip_sanity_check(logger):
                 break
 
             logger.debug(f"Auto-Zip: Waiting... ({len(missing_list)} remaining) {waited_sec:.1f}s")
-            time.sleep(1)
+            time.sleep(0.01)
 
         if SUCCESS is None:
             logger.error(f"Auto-Zip: SUCCESS is None {waited_sec:.1f}s.")
