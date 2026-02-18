@@ -149,6 +149,10 @@ def run_auto_zip_sanity_check(logger):
 
             return
 
+
+        time.sleep(20) # the selftest probably needs much more than 30 seconds, so we can wait per default
+
+
         # 3. POLLING LOOP
 
         core_logic_self_test_was_running = False
@@ -170,7 +174,7 @@ def run_auto_zip_sanity_check(logger):
                 else:
                     if timeout_auto_zip(waited_sec, MAX_WAIT_SECONDS, logger):
                         break
-                    time.sleep(0.1)
+                    time.sleep(0.5)
                     continue
 
             if not core_logic_self_test_not_running_anymore:
@@ -247,7 +251,7 @@ done \
                 test_lag = finish_time - creation_time_last_zip
                 test_lag = max(0.0, test_lag)
 
-                logger.info(f"Auto-Zip: 📊 Stats:")
+                logger.info(f"Auto-Zip: 📊 Stats (this stats is without the  time for the create_test_scenarios setup!!!):")
                 logger.info(f"Auto-Zip:   - Zipping Duration (Real Work): {zipping_duration:.2f}s")
                 logger.info(f"Auto-Zip:   - Zipping per .Zip (Real Work): {(zipping_duration/len(TEST_ROOTS)):.2f}s")
                 logger.info(f"Auto-Zip:   - Test/Lock-File Lag:           {test_lag:.2f}s")
