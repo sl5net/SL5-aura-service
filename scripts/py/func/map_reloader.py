@@ -352,8 +352,8 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
     # 2. Traverse Upwards
     start_path_current_dir = ancestor_up_to_last_underscore_no_io(start_path)
 
-    # scripts/py/func/map_reloader.py:309
-    while stop_dir in current_dir.parents:
+    # scripts/py/func/map_reloader.py:355
+    while stop_dir in current_dir.parents or current_dir == stop_dir:
 
         # Iterate over all .py files in this directory level
         for file_path in current_dir.glob("*.py"):

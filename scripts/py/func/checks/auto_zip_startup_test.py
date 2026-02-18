@@ -59,18 +59,20 @@ if True:
 
         # following are not testest at the moment 17.2.'26 16:38 Tue
 
-        # Path("config/maps/plugins/git/de-DE") / TEST_DIR_NAME,
-        # Path("config/maps/plugins/git") / TEST_DIR_NAME,
-        #
-        # Path("config/maps/plugins/web-radio-funk/de-DE") / TEST_DIR_NAME,
-        # Path("config/maps/plugins/web-radio-funk") / TEST_DIR_NAME,
-        #
-        # Path("config/maps/plugins/sandbox/de-DE") / TEST_DIR_NAME,
-        # Path("config/maps/plugins/sandbox") / TEST_DIR_NAME,
-        #
-        # Path("config/maps/plugins/wannweil") / TEST_DIR_NAME,
-        # Path("config/maps/plugins") / TEST_DIR_NAME,
+        Path("config/maps/plugins/git/de-DE") / TEST_DIR_NAME,
+        Path("config/maps/plugins/git") / TEST_DIR_NAME,
+
+        Path("config/maps/plugins/web-radio-funk/de-DE") / TEST_DIR_NAME,
+        Path("config/maps/plugins/web-radio-funk") / TEST_DIR_NAME,
+
+        Path("config/maps/plugins/sandbox/de-DE") / TEST_DIR_NAME,
+        Path("config/maps/plugins/sandbox") / TEST_DIR_NAME,
+
+        Path("config/maps/plugins/wannweil") / TEST_DIR_NAME,
+        Path("config/maps/plugins") / TEST_DIR_NAME,
+
         # Path("config/maps") / TEST_DIR_NAME,
+
     ]
 # Alle direkte Unterverzeichnisse nehmen und jeweils TEST_DIR_NAME anhängen
 
@@ -279,6 +281,8 @@ def _cleanup(logger):
         if root.exists():
             try:
                 shutil.rmtree(root)
-                logger.info(f"NOT Cleaned: {root}")
+                logger.info(f"Auto-Zip: Cleaned: {root}")
             except Exception:
+                logger.info(f"Auto-Zip: NOT Cleaned: {root}")
+
                 pass

@@ -84,6 +84,10 @@ config/maps/privat_BACKUP.zip
 
 config/maps/plugins/wannweil/de-DE/alerts.zip
 
+config/maps/Python-Tresor_Programmiere_dich_frei.zip
+
+
+
 
 
 # Ignore all dot-files (passwords/keys) and dot-directories within config/maps

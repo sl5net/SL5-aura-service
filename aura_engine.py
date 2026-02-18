@@ -363,6 +363,7 @@ class SafeStreamToLogger(object):
 
         # global core_logic_self_test_is_running_FILE
         is_core_logic_self_test_is_running = core_logic_self_test_is_running_FILE.exists()
+        # is_core_logic_self_test_is_running = False
 
         # 1. Immer sofort auf die Konsole schreiben (für dich sichtbar)
 
