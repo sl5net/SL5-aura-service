@@ -18,6 +18,7 @@ import smtplib
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
+import hashlib
 
 
 
@@ -340,7 +341,12 @@ def check_csv_alerts():
                         # os.system(f'notify-send "AURA ALERT" "{msg}" --urgency=critical')
 
                         if '📍' in modes or '📌' in modes:
-                            os.system(f'notify-send "{msg} |{modes}" --urgency=critical -t 0')
+
+                            hash_object = hashlib.md5(msg.encode())
+                            notif_id = int(hash_object.hexdigest(), 16) % 1000000
+
+
+                            os.system(f'notify-send "{msg} |{modes}" -r {notif_id} --urgency=critical -t 0')
                         else:
                             # os.system(f'notify-send "{msg} |{modes}" --urgency=critical -t 5000')
                             os.system(f'notify-send "{msg} |{modes}" --urgency=normal')
