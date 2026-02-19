@@ -32,9 +32,9 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: Manjaro
-    ('Manjaro', r'\b(Manjaro|much whole|munchau|mon travel|Manchu|Much\s*whole)\b', 82, {'flags': re.IGNORECASE}),
+    ('Manjaro', r'\b(Manjaro|much whole|munchau|mon travel|Mann schaue|Manchu|Much\s*whole)\b', 82, {'flags': re.IGNORECASE}),
 # Much whole Mon travel
-# One troll Michelle
+# One troll Michelle Mann schaue
 
 
 #    ('.', r'^\s*(punkt|pup)\s*$', 82, {'flags': re.IGNORECASE}),

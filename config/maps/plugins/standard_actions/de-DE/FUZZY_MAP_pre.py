@@ -211,7 +211,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: gemini
     ('https://aistudio.google.com/prompts/new_chat', r'''(?ix)
     ^ (?:
-        gemini | cheminée | gb\ dreht | kuchen\ gemini |
+        gemini | cheminée | gb\ dreht | kuchen\ gemini | gucken\ sie | 
         (?:google|googeln|gogol|gucke|goris|gut|gb|kugeln|brooke|coral) \s+
         (?:
             gemini[\s\w]* |
@@ -220,6 +220,7 @@ FUZZY_MAP_pre = [
             gehminuten |
             gehe\ mit |
             geben\ ihnen\ ein |
+            gibt |
             will\ gemini\ a |
             cheminée |
             studi[ao]\w* |

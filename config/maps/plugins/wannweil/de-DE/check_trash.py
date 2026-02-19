@@ -163,6 +163,7 @@ def parse_wannweil_silo_logic(pdf_path, debug=False):
 
                                 tag_nr = muell_name = ''# 'Gelber Sack 🟡' FIX ... becouse i personally dont need the Ifor for the 'Gelber Sack 🟡' 13.2.'26 11:18 Fri
                                 #   0: 'Gelber Sack 🟡',
+                                continue
 
 
                             try:
@@ -288,37 +289,61 @@ def check_csv_alerts():
     # now = datetime.datetime.now()
     # now = datetime.now()
 
-    with open(csv_file, 'r', encoding='utf-8') as f:
+    with (open(csv_file, 'r', encoding='utf-8') as f):
         reader = csv.DictReader(f)
         for row in reader:
+            print(row)
+
             try:
                 # Nutze hier datetime.datetime.strptime
 
                 now = datetime.datetime.now()
 
-                start = datetime.datetime.strptime(row['Start'].strip(), "%Y-%m-%d %H:%M")
-                end = datetime.datetime.strptime(row['End'].strip(), "%Y-%m-%d %H:%M")
+
+                # 1. Daten auslesen & Wildcards prüfen
+                # ---------------------------------------------------------
+                start_str = row.get('Start', '').strip()
+                end_str = row.get('End', '').strip()
+                modes = row.get('Modes', '').strip()
+                msg = row.get('Message', '').replace('"', '\\"')  # Anführungszeichen escapen
+
+                # Definition: Was gilt als "leeres" Datum? (Wildcard)
+                wildcards = ['', '_', '-']
+                is_start_always = start_str in wildcards
+                is_end_forever = end_str in wildcards
+
+                if not is_start_always:
+                    start = datetime.datetime.strptime(row['Start'].strip(), "%Y-%m-%d %H:%M")
+
+                if not is_end_forever:
+                    end = datetime.datetime.strptime(row['End'].strip(), "%Y-%m-%d %H:%M")
 
                 tolerance = datetime.timedelta(hours=5)
                 print('check_trash.py:274')
-                if start - tolerance <= now <= end + tolerance:
+                if (is_start_always and is_end_forever ) or (is_start_always and now <= end + tolerance) or (start - tolerance <= now and is_end_forever) or (start - tolerance <= now <= end + tolerance) :
                     print(' innerhalb des tolerierten Zeitfensters')
 
 
                     # if start <= now <= end:
-                    msg = f"{row['Start'].strip()} {row['Message'].strip()}"
-                    modes = row['Modes'].strip()
+                    # msg = f"{row['Start'].strip()} {row['Message'].strip()}"
+
+                    # msg = msg.replace('"', '\\"')
+
+                    # modes = row['Modes'].strip()
+                    # modes = row['Modes'].strip()
+
+                    print(f'319: modes={modes}')
 
                     if 'P' in modes:
 
                         # critical stays for ever
                         # os.system(f'notify-send "AURA ALERT" "{msg}" --urgency=critical')
 
-                        if '📍' in modes:
-                            os.system(f'notify-send "{msg} |{modes}" --urgency=critical')
+                        if '📍' in modes or '📌' in modes:
+                            os.system(f'notify-send "{msg} |{modes}" --urgency=critical -t 0')
                         else:
                             # os.system(f'notify-send "{msg} |{modes}" --urgency=critical -t 5000')
-                            os.system(f'notify-send "{msg}" |"{modes}" --urgency=normal')
+                            os.system(f'notify-send "{msg} |{modes}" --urgency=normal')
 
                     if 'V' in modes:
                         # Hier säubern wir nur die Sprachausgabe (Emojis weg)
@@ -339,7 +364,11 @@ def check_csv_alerts():
 
 
 if __name__ == "__main__":
-    if False:
+    if True:
         check_and_notify(force_test="test" in sys.argv)
     else:
+        print("nix 16.2.'26 Mon")
+        print("nix 16.2.'26 Mon")
+        print("nix 16.2.'26 Mon")
+        print("nix 16.2.'26 Mon")
         print("nix 16.2.'26 Mon")

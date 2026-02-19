@@ -149,8 +149,8 @@ def run_auto_zip_sanity_check(logger):
 
             return
 
-
-        time.sleep(20) # the selftest probably needs much more than 30 seconds, so we can wait per default
+        time_sleep_when_setup_is_finished = 30
+        time.sleep(time_sleep_when_setup_is_finished) # the selftest probably needs much more than 30 seconds, so we can wait per default
 
 
         # 3. POLLING LOOP
@@ -256,6 +256,10 @@ done \
                 logger.info(f"Auto-Zip:   - Zipping per .Zip (Real Work): {(zipping_duration/len(TEST_ROOTS)):.2f}s")
                 logger.info(f"Auto-Zip:   - Test/Lock-File Lag:           {test_lag:.2f}s")
                 logger.info(f"Auto-Zip:   - Total Time:                   {waited_sec:.2f}s")
+
+                abs_wait_diff = abs(time_sleep_when_setup_is_finished-(waited_sec-zipping_duration))
+                if abs_wait_diff > 10:
+                    logger.info(f"Auto-Zip: re-commended: best change time_sleep_when_setup_is_finished (actual {time_sleep_when_setup_is_finished} ) a bit for bit more performance. abs_wait_diff={abs_wait_diff:.2f}s")
 
                 # speak_fallback(f"Auto-Zip: Zipping took {round((zipping_duration)} seconds", 'de-DE')
                 speak_fallback(f"Zip Dauer {round(zipping_duration)} Sekunden", 'de-DE')
