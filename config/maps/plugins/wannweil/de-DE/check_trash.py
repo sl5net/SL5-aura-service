@@ -6,10 +6,14 @@
 
 import sys
 import os
+import time
+import unicodedata
+
 import pdfplumber
 import datetime  # Nur das Modul importieren
 import re
 import subprocess
+import tempfile
 #import threading
 import csv
 
@@ -20,7 +24,7 @@ from dotenv import load_dotenv
 
 import hashlib
 
-
+import shlex
 
 # --- E-MAIL KONFIGURATION ---
 SMTP_SERVER = "smtp.gmail.com"
@@ -43,6 +47,35 @@ APP_PASSWORD = os.getenv("APP_PASSWORD")
 
 RECEIVER_EMAIL = "sl5softwarelab@gmail.com" # Wo die Mail hin soll
 
+def sanitize_to_ascii(s: str, maxlen: int = None) -> str:
+    """
+    - Unicode normalisieren (NFKD), diakritische Zeichen trennen
+    - Non-ASCII entfernen (oder ersetzen)
+    - Steuerzeichen außer \t,\n,\r entfernen
+    - Optional kürzen
+    """
+    if s is None:
+        return ''
+    # 1) Normalize (separate accents)
+    s = unicodedata.normalize('NFKD', s)
+    # 2) Remove combining marks (keeps base ascii letters)
+    s = ''.join(ch for ch in s if not unicodedata.combining(ch))
+    # 3) Replace common unicode dashes/quotes with ascii equivalents
+    replacements = {
+        '\u2013': '-', '\u2014': '-', '\u2018': "'", '\u2019': "'",
+        '\u201c': '"', '\u201d': '"', '\u00A0': ' '
+    }
+    for k, v in replacements.items():
+        s = s.replace(k, v)
+    # 4) Remove NULs and other non-printable controls (allow tab, lf, cr)
+    s = s.replace('\x00', '')
+    s = re.sub(r'[^\x09\x0A\x0D\x20-\x7E]', '', s)
+    # 5) Collapse whitespace
+    s = re.sub(r'\s+', ' ', s).strip()
+    # 6) Optional truncate
+    if maxlen and len(s) > maxlen:
+        s = s[:maxlen-3].rstrip() + '...'
+    return s
 
 def send_mail_notification(subject, body):
     msg = EmailMessage()
@@ -290,6 +323,8 @@ def check_csv_alerts():
     # now = datetime.datetime.now()
     # now = datetime.now()
 
+    yad_row = 0
+
     with (open(csv_file, 'r', encoding='utf-8') as f):
         reader = csv.DictReader(f)
         for row in reader:
@@ -330,23 +365,23 @@ def check_csv_alerts():
 
                     # msg = msg.replace('"', '\\"')
 
-                    # modes = row['Modes'].strip()
-                    # modes = row['Modes'].strip()
-
-                    print(f'319: modes={modes}')
-
                     if 'P' in modes:
+                        if '📍' in modes or '📌' in modes :
+                            if '📍' in modes:
+                                msg_yad_save = sanitize_to_ascii(msg)
+                                yad_row += 1
+                                yad_y_offset = 150
+                                yad_y_pos = yad_row * yad_y_offset
+                                cmd = f'yad --text="{msg_yad_save}" --geometry=300x100+2000+{int(yad_y_pos-yad_y_offset/2)} --no-buttons --undecorated --sticky --on-top --timeout={60*14} &'
+                                os.system(cmd)
+                                #     geom = f'{width}x{height}+{geom_x}+{y}'
+                            if '📌' in modes:
+                                # critical stays for ever
+                                # os.system(f'notify-send "AURA ALERT" "{msg}" --urgency=critical')
+                                hash_object = hashlib.md5(msg.encode())
+                                notif_id = int(hash_object.hexdigest(), 16) % 1000000
+                                os.system(f'notify-send "{msg} |{modes}" -r {notif_id} --urgency=critical -t 0')
 
-                        # critical stays for ever
-                        # os.system(f'notify-send "AURA ALERT" "{msg}" --urgency=critical')
-
-                        if '📍' in modes or '📌' in modes:
-
-                            hash_object = hashlib.md5(msg.encode())
-                            notif_id = int(hash_object.hexdigest(), 16) % 1000000
-
-
-                            os.system(f'notify-send "{msg} |{modes}" -r {notif_id} --urgency=critical -t 0')
                         else:
                             # os.system(f'notify-send "{msg} |{modes}" --urgency=critical -t 5000')
                             os.system(f'notify-send "{msg} |{modes}" --urgency=normal')
