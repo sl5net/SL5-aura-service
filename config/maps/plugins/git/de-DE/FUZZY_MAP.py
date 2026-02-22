@@ -66,6 +66,9 @@ FUZZY_MAP = [
     # This one regex replaces 5 old entries.
 
     # EXAMPLE: git status
+    ('git status', r'^(glitschte|gliedstaaten|kickstart)$', 82, {'flags': re.IGNORECASE}),
+
+    # EXAMPLE: git status
     ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|statt|stade|dates)\s*$', 82, {'flags': re.IGNORECASE}),
 
     # --- git add . ---

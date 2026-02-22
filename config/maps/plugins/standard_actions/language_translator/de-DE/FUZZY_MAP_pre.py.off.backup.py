@@ -151,14 +151,22 @@ FUZZY_MAP_pre = [
     #Organisch aktivierenگرمایش را خاموش کنید (original:'heizung ausschalten').
 
 
+    # übersetzung ausschalten
+    # EXAMPLE: übersetzung: ausschalten deaktivieren toggle
+    ('de', r'^(\w*bersetzung|heizung|gewinnschätzungen) (deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)$', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
+
     # übersetzung ein ausschalten
     # EXAMPLE: übersetzung ausschalten
-    ('de', r'^(\w*besetzung|heizung|zum) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)', 95, {
+    ('de', r'^(\w*bersetzung|heizung|zum) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
     # EXAMPLE: übersetzung Switch
-    ('de', r'^(\w*besetzung) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
+    ('de', r'^(\w*besetzung) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
@@ -170,7 +178,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: übersetzung toggle
-    ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*besetzung)\b', 95, {
+    ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*bersetzung)\b', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),

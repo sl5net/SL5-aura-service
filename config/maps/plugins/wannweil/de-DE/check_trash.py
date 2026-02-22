@@ -2,29 +2,25 @@
 
 # ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py
 #  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py
+# or use:
+#     ~/pr/py/STT    master *1 !2 ?1  python.sh ./config/maps/plugins/wannweil/de-DE/check_trash.py &
 
 
 import sys
 import os
-import time
 import unicodedata
-
 import pdfplumber
 import datetime  # Nur das Modul importieren
 import re
 import subprocess
-import tempfile
-#import threading
 import csv
-
-
 import smtplib
+import hashlib
+
 from email.message import EmailMessage
 from dotenv import load_dotenv
 
-import hashlib
 
-import shlex
 
 # --- E-MAIL KONFIGURATION ---
 SMTP_SERVER = "smtp.gmail.com"
@@ -306,6 +302,13 @@ def check_and_notify(force_test=False):
 
             print(msg)
             os.system(f'notify-send "MÜLL-VORSCHAU" "{msg}"')
+
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
             espeak(msg_espeak_ohne_emojis, LANG_CODE)
 
             # send_mail_notification(msg, msg)
@@ -372,9 +375,12 @@ def check_csv_alerts():
                                 yad_row += 1
                                 yad_y_offset = 150
                                 yad_y_pos = yad_row * yad_y_offset
-                                cmd = f'yad --text="{msg_yad_save}" --geometry=300x100+2000+{int(yad_y_pos-yad_y_offset/2)} --no-buttons --undecorated --sticky --on-top --timeout={60*14} &'
+                                timeout = 60*15
+                                cmd = f'yad --text="{msg_yad_save}" --geometry=300x100+2000+{int(yad_y_pos-yad_y_offset/2)} --no-buttons --undecorated --sticky --on-top --timeout={timeout} &'
                                 os.system(cmd)
                                 #     geom = f'{width}x{height}+{geom_x}+{y}'
+                                # Set dialog timeout in seconds.
+
                             if '📌' in modes:
                                 # critical stays for ever
                                 # os.system(f'notify-send "AURA ALERT" "{msg}" --urgency=critical')
@@ -405,7 +411,7 @@ def check_csv_alerts():
 
 
 if __name__ == "__main__":
-    if True:
+    if 0:
         check_and_notify(force_test="test" in sys.argv)
     else:
         print("nix 16.2.'26 Mon")

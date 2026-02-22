@@ -300,10 +300,18 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'compact_python.py']
     }),
 
+    # nächstes wetter
 
     # Regel für die Wetterabfrage
-    # EXAMPLE: wie wird
-    ('', r'\b(wie (wird|ist)\b.*\bwetter|wetterbericht|wettervorhersage)\b', 95, {
+    # EXAMPLE: wie ist das wetter
+    ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)$', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
+    }),
+
+    # seltene unnötige falsch erennung abfangen
+    # EXAMPLE: wie ist das wetter
+    ('', r'^(wie ist das bett)|(wie ist es fett)$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     }),
