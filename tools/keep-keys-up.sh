@@ -22,7 +22,33 @@ command -v xset >/dev/null 2>&1 || { echo "xset not found"; exit 1; }
 export DISPLAY
 
 
-setxkbmap -option caps:none
+# Prüfen, welche Session aktuell läuft
+if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+    # --- X11 Welt ---
+    echo "X11 erkannt: Nutze setxkbmap"
+    setxkbmap -option caps:none
+
+elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+    # --- Wayland Welt ---
+    echo "Wayland erkannt: Nutze Desktop-spezifische Befehle"
+
+    # Unter Wayland müssen wir wissen, ob es KDE oder GNOME ist
+    if [[ "$XDG_CURRENT_DESKTOP" == *"KDE"* ]]; then
+        # KDE Wayland (Nutzt kwriteconfig, um die Einstellung zu setzen)
+
+        kwriteconfig6 --file kxkbrc --group Layout --key Options "caps:none"
+
+        qdbus org.kde.keyboard /Layouts reconfigure 2>/dev/null || true
+
+    elif [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]]; then
+        # GNOME Wayland
+        gsettings set org.gnome.desktop.input-sources xkb-options "['caps:none']"
+    fi
+else
+
+  echo "Unbekannte Session-Umgebung ($XDG_SESSION_TYPE)"
+fi
+
 
 
 while true; do
