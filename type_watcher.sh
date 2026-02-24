@@ -19,7 +19,7 @@ speak_file_path="$HOME/projects/py/TTS/speak_file.py"
 
 
 # --- START: Read Python config to conditionally disable speaker ---
-PROJECT_ROOT="$HOME/projects/py/STT"
+PROJECT_ROOT="$SCRIPT_DIR"
 PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python3"
 
 # Read the setting from config.settings.py. Default to "ERROR" on failure.
@@ -28,6 +28,10 @@ PRIMARY_TTS_ENGINE=$($PYTHON_BIN -c "import sys; sys.path.append('$PROJECT_ROOT'
 
 
 echo "PRIMARY_TTS_ENGINE=$PRIMARY_TTS_ENGINE"
+
+
+$PROJECT_ROOT/tools/keep-keys-up.sh &
+
 
 # If the setting is ESPEAK, empty the path to disable the speaker script
 if [[ "$PRIMARY_TTS_ENGINE" == "ESPEAK" ]]; then
