@@ -21,6 +21,10 @@ command -v xset >/dev/null 2>&1 || { echo "xset not found"; exit 1; }
 : "${DISPLAY:=:0}"
 export DISPLAY
 
+
+setxkbmap -option caps:none
+
+
 while true; do
   # if directory exists and is non-empty, skip sending keys
   if [ -d "$TTS_DIR" ] && [ "$(ls -A "$TTS_DIR" 2>/dev/null)" ]; then

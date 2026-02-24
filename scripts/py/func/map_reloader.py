@@ -493,7 +493,7 @@ config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
     #             return candidate
     #     return None
 
-from pathlib import Path
+# from pathlib import Path
 
 def ancestor_up_to_last_underscore_no_io(path):
     p = Path(path)
