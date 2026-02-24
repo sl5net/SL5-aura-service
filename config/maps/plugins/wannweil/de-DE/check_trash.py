@@ -411,7 +411,7 @@ def check_csv_alerts():
 
 
 if __name__ == "__main__":
-    if 0:
+    if 1:
         check_and_notify(force_test="test" in sys.argv)
     else:
         print("nix 16.2.'26 Mon")
