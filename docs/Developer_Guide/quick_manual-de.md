@@ -35,4 +35,34 @@ Hier ist das **SL5 Aura Dev-Cheatsheet** (Compact):
 **5. Lifecycle Hooks**
 *   `def on_reload():` im Map-File definieren, um nach einem Hot-Reload Wartungsaufgaben (wie `secure_packer.py` via Daisy-Chain) zu starten.
 
-Ich bin bereit für die nächste Aufgabe – diesmal strikt nach Protokoll. 🫡
+
+
+
+## Erweiterte Regel-Attribute
+
+Zusätzlich zu `search` und `replace` können Regeln durch weitere Attribute gesteuert werden:
+
+### 1. `only_in_windows` (Fenster-Filter)
+Trotz des Namens ist dieses Attribut **betriebssystemunabhängig**. Es dient dazu, die Ausführung einer Regel auf bestimmte aktive Fenster zu beschränken.
+
+*   **Typ:** Liste von Strings oder Regex-Mustern.
+*   **Funktion:** Die Regel wird nur angewendet, wenn der Titel des aktuell aktiven Fensters eines der Muster in der Liste enthält.
+*   **Beispiel:**
+    ```python
+    (
+        '|', 
+        r'\b(pipe|treib symbol)\b', 
+        75, 
+        {
+            'flags': re.IGNORECASE,
+            'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']
+        }
+    ),
+    ```
+    *In diesem Beispiel wird das Wort "pipe" nur dann durch das Symbol "|" ersetzt, wenn der Benutzer sich in einem Terminal-Fenster befindet.*
+
+### 2. `on_match_exec` (Dynamische Skripte)
+Wie bereits erwähnt, erlaubt dieses Attribut die Ausführung externer Python-Logik.
+
+*   **Syntax:** `'on_match_exec': [CONFIG_DIR / 'script.py']`
+*   **Nutzen:** Ideal für API-Abfragen, Datei-Operationen oder komplexe Textersetzungen, die über einfaches Regex hinausgehen.

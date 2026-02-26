@@ -7,8 +7,6 @@ import json
 import tempfile
 from pathlib import Path
 
-from scripts.py.func.checks.auto_zip_startup_test import readme
-
 # --- GLOBALER CACHE (Memory) ---
 _X11_ENV_CACHE = None
 
@@ -19,7 +17,6 @@ X11_CACHE_FILE = Path(tempfile.gettempdir()) / "sl5_aura" / "sl5_aura_x11_env.js
 # Posted by HybridMoments
 # Retrieved 2026-02-26, License - CC BY-SA 4.0
 
-import subprocess
 import time
 
 
@@ -76,11 +73,19 @@ def get_active_window_title_atspi():
     """
 
     try:
-        import gi
+        try:
+            import gi
+        except ImportError:
+            if os.environ.get("XDG_SESSION_TYPE") == "wayland" or os.environ.get("WAYLAND_DISPLAY"):
+                raise RuntimeError(
+                    "PyGObject is required on Wayland sessions (e.g. to get actual Window-Title (s, 26.2.'26). Install it with: "
+                    "pip install PyGObject"
+                )
+
         gi.require_version('Atspi', '2.0')
         from gi.repository import Atspi
     except (ImportError, ValueError) as e:
-        logger.error(f"Required library 'gi' (PyGObject) or Atspi 2.0 not found: {e}")
+        print(f"Required library 'gi' (PyGObject) or Atspi 2.0 not found: {e}")
         return "Error: AT-SPI dependencies missing"
 
     # Initialize the Atspi Registry (0 = success)
@@ -304,25 +309,25 @@ def get_active_window_title_safe():
 
             return get_active_window_title_atspi()
 
-            try:
-                # 1. Aktiven Fenster-Pfad über dbus-send holen (Standard-Tool)
-                cmd_id = ["dbus-send", "--session", "--print-reply", "--dest=org.kde.KWin", "/KWin",
-                          "org.kde.KWin.activeWindow"]
-                out_id = subprocess.check_output(cmd_id, stderr=subprocess.DEVNULL).decode()
-                # Extrahiert den Pfad (z.B. /Windows/W1)
-                win_path = out_id.split('objpath "')[1].split('"')[0]
-
-                # 2. Titel (caption) für diesen Pfad holen
-                cmd_title = ["dbus-send", "--session", "--print-reply", "--dest=org.kde.KWin", win_path,
-                             "org.freedesktop.DBus.Properties.Get", "string:org.kde.KWin.Window", "string:caption"]
-                out_title = subprocess.check_output(cmd_title, stderr=subprocess.DEVNULL).decode()
-                # Extrahiert den eigentlichen Titel
-                res = out_title.split('variant       string "')[1].split('"')[0]
-
-                if res: return res.lower()
-            except Exception:
-                pass
-            return "wayland-unknown"  # Verhindert den Absturz durch xdotool!
+            # try:
+            #     # 1. Aktiven Fenster-Pfad über dbus-send holen (Standard-Tool)
+            #     cmd_id = ["dbus-send", "--session", "--print-reply", "--dest=org.kde.KWin", "/KWin",
+            #               "org.kde.KWin.activeWindow"]
+            #     out_id = subprocess.check_output(cmd_id, stderr=subprocess.DEVNULL).decode()
+            #     # Extrahiert den Pfad (z.B. /Windows/W1)
+            #     win_path = out_id.split('objpath "')[1].split('"')[0]
+            #
+            #     # 2. Titel (caption) für diesen Pfad holen
+            #     cmd_title = ["dbus-send", "--session", "--print-reply", "--dest=org.kde.KWin", win_path,
+            #                  "org.freedesktop.DBus.Properties.Get", "string:org.kde.KWin.Window", "string:caption"]
+            #     out_title = subprocess.check_output(cmd_title, stderr=subprocess.DEVNULL).decode()
+            #     # Extrahiert den eigentlichen Titel
+            #     res = out_title.split('variant       string "')[1].split('"')[0]
+            #
+            #     if res: return res.lower()
+            # except Exception:
+            #     pass
+            # return "wayland-unknown"  # Verhindert den Absturz durch xdotool!
 
         # is_wayland = os.environ.get('XDG_SESSION_TYPE') == 'wayland' or os.environ.get('WAYLAND_DISPLAY')
 

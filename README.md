@@ -28,6 +28,7 @@ Note: Many texts are machine-generated translations of the original English docu
 
 *   **Offline & Private:** 100% local. No data ever leaves your machine.
 *   **Dynamic Scripting Engine:** Go beyond text replacement. Rules can execute custom Python scripts (`on_match_exec`) to perform advanced actions like calling APIs (e.g., search Wikipedia), interacting with files (e.g., manage a to-do list), or generating dynamic content (e.g., a context-aware email greeting).
+*   **Context-Aware Rules:** Restrict rules to specific applications. Using `only_in_windows`, you can ensure a rule only triggers if a specific window title (e.g., "Terminal", "VS Code" or "Browser") is active. This works cross-platform (Linux, Windows, macOS).
 *  **High-Control Transformation Engine:** Implements a configuration-driven, highly customizable processing pipeline. Rule priority, command detection, and text transformations are determined purely by the sequential order of rules in the Fuzzy Maps, requiring **configuration, not coding**.
 *   **Conservative RAM Usage:** Intelligently manages memory, preloading models only if enough free RAM is available, ensuring other applications (like your PC games) always have priority.
 *   **Cross-Platform:** Works on Linux, macOS, and Windows.
