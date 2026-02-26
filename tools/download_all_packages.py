@@ -238,8 +238,8 @@ def main():
         # Logic to append to your existing exclusion list
         # Assuming your current exclusion list is called 'exclude'
         for model in large_models:
-            if model not in exclude:
-                exclude.append(model)
+            if model not in exclude_list:
+                exclude_list.append(model)
 
 
 
