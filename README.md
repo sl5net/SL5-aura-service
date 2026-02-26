@@ -5,9 +5,7 @@
 *   **Windows:** ✅ Fully supported (uses AutoHotkey/PowerShell).
 *   **macOS:** ✅ Fully supported (uses AppleScript).
 *   **Linux (X11/Xorg):** ✅ Fully supported. Recommended for best experience.
-*   **Linux (Wayland):** ⚠️ **Limited / Experimental.**
-    *   *Global Hotkeys and Auto-Typing generally do not work on Wayland due to security restrictions.*
-    *   *Please switch to an **X11 Session** at login (e.g., "Plasma (X11)" or "Ubuntu on Xorg") to use all features.*
+*   **Linux (Wayland):** ✅ Fully supported(in next relaise and in main-branch). Recommended for best experience.
 
 
 Welcome to SL5 Aura Service! This document provides a quick overview of our key features and their operating system compatibility.
