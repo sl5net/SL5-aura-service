@@ -5,7 +5,7 @@
 *   **Windows:** ✅ Fully supported (uses AutoHotkey/PowerShell).
 *   **macOS:** ✅ Fully supported (uses AppleScript).
 *   **Linux (X11/Xorg):** ✅ Fully supported. Recommended for best experience.
-*   **Linux (Wayland):** ✅ Fully supported(in next relaise and in main-branch). Recommended for best experience.
+*   **Linux (Wayland):** ✅ Fully supported(in next relaise and in main-branch). 
 
 
 Welcome to SL5 Aura Service! This document provides a quick overview of our key features and their operating system compatibility.
