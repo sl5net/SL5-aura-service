@@ -24,92 +24,99 @@ import time
 
 
 def get_active_window_title_atspi():
+    """
+    Retrieves the title of the currently active window using the
+    AT-SPI (Accessibility) Bus. This is the most reliable method for
+    Linux / Plasma 6 (Wayland).
 
-    readme = """
-    Konsole:
+    Prerequisites for Linux:
+    1. System packages: sudo pacman -S orca at-spi2-core
+    2. Environment: export QT_ACCESSIBILITY=1
+    3. KDE Settings: Enable Screen Reader in Accessibility settings.
 
-
-    pip install PyGObject
-    
-    maybe use when this is not working:
-    
+    something else maybe important if you have problems:
     python -m venv .venv --system-site-packages
 
-    
-    nano ~/.bashrc 
+    don't forget:
+    pip install PyGObject
+
+    maybe use when this is not working:
+
+    python -m venv .venv --system-site-packages
+
+
+    nano ~/.bashrc
     nano ~/.config/fish/config.fish
-        
-    
-    att to 
+
+
+    att to
     Bash: export QT_ACCESSIBILITY=1
     Fish: set -gx QT_ACCESSIBILITY 1
-    
+
     sudo pacman -S at-spi2-core qt6-declarative
     or shorter (maybe better)
     sudo pacman -S orca at-spi2-core
-    
+
     kwriteconfig6 --file kaccessrc --group ScreenReader --key Enabled true
-    
+
     echo "export QT_ACCESSIBILITY=1" >> ~/.bashrc
     echo "set -gx QT_ACCESSIBILITY 1" >> ~/.config/fish/config.fish
-    
-    
+
+
     Systemeinstellungen > Eingabehilfen > Eingabehilfen
-    
-    
+
+
     orca -s
     > disable language
-    
+
     Test:
     dbus-send --print-reply --dest=org.a11y.Bus /org/a11y/bus org.a11y.Bus.GetAddress
-    
-    
+
+
     """
 
-    # Wir laden die Atspi (Assistive Technology Service Provider Interface) Library
-
-    import gi
-
     try:
+        import gi
         gi.require_version('Atspi', '2.0')
         from gi.repository import Atspi
-    except Exception as e:
-        print(f"Fehler: GObject-Introspection für Atspi fehlt. ({e})")
-        exit(1)
+    except (ImportError, ValueError) as e:
+        logger.error(f"Required library 'gi' (PyGObject) or Atspi 2.0 not found: {e}")
+        return "Error: AT-SPI dependencies missing"
 
-    # Initialisiere Atspi Registry
-    # 0 bedeutet Erfolg
+    # Initialize the Atspi Registry (0 = success)
     if Atspi.init() != 0:
-        return "Atspi konnte nicht initialisiert werden."
+        return "Error: Could not initialize Atspi"
 
-    # Wir holen uns das "Desktop"-Objekt (die Wurzel aller Fenster)
+    # Get the root desktop object
     desktop = Atspi.get_desktop(0)
+    if not desktop:
+        return "Error: Could not access desktop via AT-SPI"
 
-    # Wir gehen alle Anwendungen durch, die sich am A11Y-Bus angemeldet haben
+    # Iterate through all applications on the Accessibility Bus
     for i in range(desktop.get_child_count()):
         app = desktop.get_child_at_index(i)
         if not app:
             continue
 
-        # Jede App kann mehrere Fenster haben
+        # Each app can have multiple windows
         for j in range(app.get_child_count()):
             window = app.get_child_at_index(j)
             if not window:
                 continue
 
-            # Wir prüfen den Status des Fensters
-            state_set = window.get_state_set()
-            states = state_set.get_states()
+            # Check the states of the window
+            try:
+                state_set = window.get_state_set()
+                states = state_set.get_states()
 
-            # Die entscheidenden Zustände sind ACTIVE (Fenster aktiv)
-            # oder FOCUSED (Eingabefokus)
-            # Atspi.StateType.ACTIVE (2) oder Atspi.StateType.FOCUSED (4)
-            if Atspi.StateType.ACTIVE in states or Atspi.StateType.FOCUSED in states:
-                # Wir geben den Namen des Objekts zurück (das ist der Fenstertitel)
-                return f"App: {app.get_name()} | Titel: {window.get_name()}"
+                # We are looking for the window that is either ACTIVE or FOCUSED
+                # Atspi.StateType.ACTIVE (2) or Atspi.StateType.FOCUSED (4)
+                if Atspi.StateType.ACTIVE in states or Atspi.StateType.FOCUSED in states:
+                    return f"App: {app.get_name()} | Title: {window.get_name()}"
+            except Exception:
+                continue
 
-    return "Kein aktives Fenster über AT-SPI gefunden."
-
+    return "No active window found"
 
 
 
@@ -292,8 +299,8 @@ def get_active_window_title_safe():
 
         if os.environ.get('XDG_SESSION_TYPE') == 'wayland' or os.environ.get('WAYLAND_DISPLAY'):
 
-            print(f'🔵🔵🔵{get_active_window_title_atspi()}🔵🔵🔵')
-            exit(1)
+            # print(f'🔵🔵🔵{get_active_window_title_atspi()}🔵🔵🔵')
+            # exit(1)
 
             return get_active_window_title_atspi()
 
