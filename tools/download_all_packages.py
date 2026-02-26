@@ -210,6 +210,25 @@ def process_package(base_name, package_files, remove_parts):
 
 
 def main():
+    import os
+    import sys
+
+    # Detect GitHub Actions environment
+    is_ci = os.getenv('GITHUB_ACTIONS') == 'true'
+
+    # Define models that should be skipped in CI to save time/bandwidth
+    large_models = ['vosk-model-de-0.21', 'vosk-model-en-us-0.22']
+
+    # If in CI, add these to the exclusion list automatically
+    if is_ci:
+        print("--> GitHub Actions detected. Auto-excluding large models to stabilize build.")
+        # Logic to append to your existing exclusion list
+        # Assuming your current exclusion list is called 'exclude'
+        for model in large_models:
+            if model not in exclude:
+                exclude.append(model)
+
+
     parser = argparse.ArgumentParser(description="Download and verify assets from a GitHub release.")
 
     parser.add_argument("--exclude", type=str, nargs='*', default=[],

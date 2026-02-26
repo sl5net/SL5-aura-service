@@ -125,14 +125,26 @@ echo "--> Checking for required components (LanguageTool, Vosk-Models)..."
 
 # --- Configuration ---
 PREFIX="Z_"
-# Format: "BaseName FinalDirName DestinationPath"
-ARCHIVE_CONFIG=(
-    "LanguageTool-6.6 LanguageTool-6.6 ."
-    "vosk-model-en-us-0.22 vosk-model-en-us-0.22 ./models"
-    "vosk-model-small-en-us-0.15 vosk-model-small-en-us-0.15 ./models"
-    "vosk-model-de-0.21 vosk-model-de-0.21 ./models"
-    "lid.176 lid.176.bin ./models"
-)
+
+if [ "$GITHUB_ACTIONS" == "true" ]; then
+  # Format: "BaseName FinalDirName DestinationPath"
+  ARCHIVE_CONFIG=(
+      "LanguageTool-6.6 LanguageTool-6.6 ."
+      "vosk-model-small-en-us-0.15 vosk-model-small-en-us-0.15 ./models"
+      "lid.176 lid.176.bin ./models"
+  )
+  echo "--> GitHub CI detected: Large models (0.21, 0.22) excluded to prevent 502 errors."
+else
+  # Format: "BaseName FinalDirName DestinationPath"
+  ARCHIVE_CONFIG=(
+      "LanguageTool-6.6 LanguageTool-6.6 ."
+      "vosk-model-en-us-0.22 vosk-model-en-us-0.22 ./models"
+      "vosk-model-small-en-us-0.15 vosk-model-small-en-us-0.15 ./models"
+      "vosk-model-de-0.21 vosk-model-de-0.21 ./models"
+      "lid.176 lid.176.bin ./models"
+  )
+fi
+
 DOWNLOAD_REQUIRED=false
 
 # --- Filter Configuration based on EXCLUDE_LANGUAGES ---
