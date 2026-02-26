@@ -76,8 +76,8 @@ PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 from scripts.py.func.checks.check_path_length import run_path_check
 
-
-
+from scripts.py.func.checks.espeak_check import espeak_check
+espeak_check(settings)
 
 
 from scripts.py.func.checks.check_settings_syntax import verify_plugin_notation

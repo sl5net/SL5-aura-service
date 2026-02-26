@@ -369,7 +369,7 @@ def check_csv_alerts():
                     # msg = msg.replace('"', '\\"')
 
                     if 'P' in modes:
-                        if '📍' in modes or '📌' in modes :
+                        if '📍' in modes or '📌' in modes:
                             if '📍' in modes:
                                 msg_yad_save = sanitize_to_ascii(msg)
                                 yad_row += 1

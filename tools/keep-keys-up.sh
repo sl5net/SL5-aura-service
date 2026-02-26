@@ -8,10 +8,8 @@ if [ "$(pgrep -f $(basename "$0"))" != "$$" ]; then
     exit 1
 fi
 
-
-
 TTS_DIR="/tmp/sl5_aura/tts_output"
-SLEEP=3
+SLEEP=2
 
 # Ensure we have xdotool available
 command -v xdotool >/dev/null 2>&1 || { echo "xdotool not found"; exit 1; }
@@ -53,12 +51,12 @@ fi
 
 while true; do
   # if directory exists and is non-empty, skip sending keys
-  if [ -d "$TTS_DIR" ] && [ "$(ls -A "$TTS_DIR" 2>/dev/null)" ]; then
-    sleep "$SLEEP"
+  #if [ -d "$TTS_DIR" ] && [ "$(ls -A "$TTS_DIR" 2>/dev/null)" ]; then
+   # sleep "$SLEEP"
 #    continue
-  fi
+  #fi
 
-  sleep 0.15
+  sleep 0.2
 
   # send keyup for modifiers (ignore errors)
 #  xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R Caps_Lock 2>/dev/null || true

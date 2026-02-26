@@ -43,6 +43,8 @@ else
   SCRIPT="$PROJDIR/check_trash.py"
 fi
 
+VENV_PY="../../../../../.venv/bin/python"
+
 VENV_PY=".venv/bin/python"
 
 if [[ -x "$VENV_PY" ]]; then
