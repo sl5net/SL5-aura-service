@@ -213,11 +213,6 @@ def main():
     import os
     import sys
 
-    # Detect GitHub Actions environment
-    is_ci = os.getenv('GITHUB_ACTIONS') == 'true'
-
-    # Define models that should be skipped in CI to save time/bandwidth
-    large_models = ['vosk-model-de-0.21', 'vosk-model-en-us-0.22']
 
     parser = argparse.ArgumentParser(description="Download and verify assets from a GitHub release.")
 
@@ -230,6 +225,13 @@ def main():
     # exclude_list = [x.strip().lower() for x in args.exclude.split(',')] if args.exclude else []
 
     # exclude_list = [x.strip().lower() for x in args.exclude.split(',') if x.strip()]
+
+
+    # Detect GitHub Actions environment
+    is_ci = os.getenv('GITHUB_ACTIONS') == 'true'
+
+    # Define models that should be skipped in CI to save time/bandwidth
+    large_models = ['vosk-model-de-0.21', 'vosk-model-en-us-0.22']
 
 
     # If in CI, add these to the exclusion list automatically
