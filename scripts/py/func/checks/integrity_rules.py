@@ -78,6 +78,9 @@ INTEGRITY_CHECKS = {
         r'call .venv\Scripts\activate',
     ],
 
+
+
+
     # 'start_aura.bat': [
     #     "start_aura.ps1",
     #     "log\\aura_engine.log",
@@ -143,7 +146,14 @@ INTEGRITY_CHECKS = {
         "Finalizing recording session:",
     ],
 
+
+
     # make sure buzzword Tests is in
+    "type_watcher.sh": [
+        "printf 'type %s",
+        "printf 'key Return"
+    ],
+
     "scripts/py/func/checks/self_tester.py": [
         "{failed_count} Tests",
         " == expected"
