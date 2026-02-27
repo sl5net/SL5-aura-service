@@ -6,64 +6,80 @@ set -euo pipefail
 DIR_TO_WATCH="/tmp/sl5_aura/tts_output"
 LOCKFILE="/tmp/sl5_aura/type_watcher.lock"
 
-
-
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 LOG_DIR="$SCRIPT_DIR/log"
 LOGFILE="$LOG_DIR/type_watcher.log"
 
-AUTO_ENTER_FLAG="/tmp/sl5_aura/sl5_auto_enter.flag" # The flag file for auto-enter
+AUTO_ENTER_FLAG="/tmp/sl5_aura/sl5_auto_enter.flag"
 
 speak_file_path="$HOME/projects/py/TTS/speak_file.py"
 
+# --- Detect Wayland or X11 ---
+if [[ -n "${WAYLAND_DISPLAY:-}" ]]; then
+    DISPLAY_SERVER="wayland"
+    echo "🖥️  Display server: Wayland/KDE detected. Using dotool for text input."
+else
+    DISPLAY_SERVER="x11"
+    echo "🖥️  Display server: X11 detected. Using xdotool for text input."
+fi
 
+# Helper: type text
+# - Wayland: dotool  (layout-aware, Unicode-safe, kein Daemon nötig)
+# - X11:     xdotool
+do_type() {
+    local text="$1"
+    if [[ "$DISPLAY_SERVER" == "wayland" ]]; then
+        printf 'type %s\n' "$text" | dotool
+    else
+        LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 12 "$text"
+    fi
+}
 
-# --- START: Read Python config to conditionally disable speaker ---
+# Helper: press Return key
+do_key_return() {
+    if [[ "$DISPLAY_SERVER" == "wayland" ]]; then
+        printf 'key Return\n' | dotool
+    else
+        LC_ALL=C.UTF-8 xdotool key Return
+    fi
+}
+
+# Helper: xdotool with error suppression under Wayland (XWayland fallback for game macros)
+xdotool_safe() {
+    LC_ALL=C.UTF-8 xdotool "$@" || true
+}
+
+# --- START: Read Python config ---
 PROJECT_ROOT="$SCRIPT_DIR"
 PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python3"
 
-# Read the setting from config.settings.py. Default to "ERROR" on failure.
-
 PRIMARY_TTS_ENGINE=$($PYTHON_BIN -c "import sys; sys.path.append('$PROJECT_ROOT'); from config.settings import USE_AS_PRIMARY_SPEAK; print(USE_AS_PRIMARY_SPEAK)" 2>/dev/null) || PRIMARY_TTS_ENGINE="ERROR"
-
 
 echo "PRIMARY_TTS_ENGINE=$PRIMARY_TTS_ENGINE"
 
-
 $PROJECT_ROOT/tools/keep-keys-up.sh &
 
-
-# If the setting is ESPEAK, empty the path to disable the speaker script
 if [[ "$PRIMARY_TTS_ENGINE" == "ESPEAK" ]]; then
     echo "Primary speak is ESPEAK, disabling external speaker script by clearing path."
     speak_file_path=""
 fi
 # --- END: Read Python config ---
 
-
-
-
-
-
-
-
-if [ -e $speak_file_path ]
-then
-  echo " ok $speak_file_path exist"
+if [ -e "$speak_file_path" ]; then
+    echo " ok $speak_file_path exist"
 else
     speak_file_path=''
     echo "$speak_file_path dont exist"
 fi
 
-# Ensure log directory exists
 mkdir -p "$LOG_DIR"
 
 log_message() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOGFILE"
 }
-log_message "Hello from Watcher"
+log_message "Hello from Watcher (display: $DISPLAY_SERVER)"
 
-# --- Lockfile-Logic
+# --- Lockfile-Logic ---
 if [ -e "$LOCKFILE" ]; then
     pid=$(cat "$LOCKFILE" 2>/dev/null)
     if [ -n "$pid" ] && ps -p "$pid" > /dev/null; then
@@ -77,173 +93,144 @@ fi
 echo $$ > "$LOCKFILE"
 trap 'rm -f "$LOCKFILE"' EXIT
 
-# --- Wait for the directory to be created by the main service ---
+# --- Wait for directory ---
 while [ ! -d "$DIR_TO_WATCH" ]; do
     sleep 0.5
 done
-
-
-
 
 sanitize_transcription_start() {
     local raw_text="$1"
     local clean_text="$raw_text"
 
-    # --- 1. Entferne ZWNBSP (\uFEFF) und ZWSP (\u200b) am Anfang ---
-    # Wir nutzen printf, um die tatsächlichen Unicode-Zeichen zu erzeugen.
-    # Beachten Sie: Dies funktioniert nur, wenn die Shell und 'sed' Unicode unterstützen.
-
-    # Entferne führenden ZWNBSP (\uFEFF / BOM)
-    clean_text=$(echo "$clean_text" | sed 's/^\xef\xbb\xbf//') # UTF-8 representation of \uFEFF
-
-    # Entferne führenden ZWSP (\u200b)
-    # Beachten Sie, dass \u200b oft auch entfernt werden muss, falls es in den Input gelangt.
-    clean_text=$(echo "$clean_text" | sed 's/^\xe2\x80\x8b//') # UTF-8 representation of \u200b
-
-    # --- 2. Entferne alle führenden Whitespace ---
+    clean_text=$(echo "$clean_text" | sed 's/^\xef\xbb\xbf//')
+    clean_text=$(echo "$clean_text" | sed 's/^\xe2\x80\x8b//')
     clean_text=$(echo "$clean_text" | sed -e 's/^[[:space:]]*//')
 
-    # --- 3. (Optional) Wenn Sie wirklich den ersten alphanumerischen Teil finden wollen
-    # Hier wird es kompliziert, da sed/grep nicht leicht zwischen nicht-alphanum. Steuerzeichen
-    # und echten non-alphanum. Satzzeichen unterscheiden kann, ohne komplexe PCRE.
-    # Die obigen Schritte reichen oft für die Bereinigung von Transkriptions-Junk aus.
-
-    # Gib das bereinigte Ergebnis zurück
     echo "$clean_text"
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-# Function to get the title of the active window
 get_active_window_title() {
-    active_window_id=$(xdotool getactivewindow)
-    xdotool getwindowname "$active_window_id"
+    xdotool getactivewindow 2>/dev/null | xargs -I{} xdotool getwindowname {} 2>/dev/null || true
 }
 
 OS_TYPE=$(uname -s)
 
 if [[ "$OS_TYPE" == "Darwin" ]]; then
-    # --- macOS Logic ---
     echo "✅ Watcher starting in macOS mode (using fswatch and osascript)."
-    log_message "Watcher starting in macOS mode (using fswatch and osascript)."
+    log_message "Watcher starting in macOS mode."
     fswatch -0 "$DIR_TO_WATCH" | while read -d "" file; do
         if [[ "$file" == *tts_output_*.txt ]]; then
             osascript -e "tell application \"System Events\" to keystroke \"$(cat "$file")\""
             rm -f "$file"
         fi
     done
+
 elif [[ "$OS_TYPE" == "Linux" ]]; then
-    # --- Linux Logic ---
-    echo "✅ Watcher starting in  watch $DIR_TO_WATCH Linux mode (using inotifywait and xdotool)."
-    log_message "Watcher starting watch $DIR_TO_WATCH in Linux mode (using inotifywait and xdotool)."
+    echo "✅ Watcher starting. Watching: $DIR_TO_WATCH (mode: $DISPLAY_SERVER)"
+    log_message "Watcher starting. Watching $DIR_TO_WATCH in Linux/$DISPLAY_SERVER mode."
 
     while true; do
         inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
         sleep 0.1
 
-        # Use null-separated find for safer file handling (handles spaces/newlines)
         while IFS= read -r -d '' f; do
             [ -f "$f" ] || continue
 
-            # Read lines into an array
             mapfile -t lines < "$f"
             for line in "${lines[@]}"; do
                 trimmed_line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-                GAME_WINDOW_ID=$(xdotool search --name "0 A.D." | head -1 || true)
+
+                # Game macros: always use xdotool (XWayland)
+                # dotool cannot target specific windows or do mouse clicks
+                GAME_WINDOW_ID=$(xdotool search --name "0 A.D." 2>/dev/null | head -1 || true)
 
                 if [[ -n "$GAME_WINDOW_ID" ]]; then
                     log_message "GAME_WINDOW_ID = $GAME_WINDOW_ID"
+
                     if [[ "$trimmed_line" == 'alt+i' ]]; then
-                        LC_ALL=C.UTF-8 xdotool windowactivate "$GAME_WINDOW_ID"
+                        xdotool_safe windowactivate "$GAME_WINDOW_ID"
                         sleep 0.2
                         log_message "Sende ALT+i explizit mit keydown/keyup"
-                        LC_ALL=C.UTF-8 xdotool keydown --window "$GAME_WINDOW_ID" 64
+                        xdotool_safe keydown --window "$GAME_WINDOW_ID" 64
                         sleep 0.05
-                        LC_ALL=C.UTF-8 xdotool key --window "$GAME_WINDOW_ID" 31
+                        xdotool_safe key --window "$GAME_WINDOW_ID" 31
                         sleep 0.05
-                        LC_ALL=C.UTF-8 xdotool keyup --window "$GAME_WINDOW_ID" 64
+                        xdotool_safe keyup --window "$GAME_WINDOW_ID" 64
                         sleep 0.1
-                        log_message "Fertig mit ALT+i Sequenz"
-                        log_message "Sent alt+i"
+                        log_message "Fertig mit ALT+i Sequenz. Sent alt+i"
                         if [[ -n "$speak_file_path" ]]; then
-                          python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.012
+                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+                            sleep 0.012
                         fi
-
                         rm -f "$f"
                         continue
+
                     elif [[ "$trimmed_line" == 'alt+w' ]]; then
-                        xte "keydown Alt_L" "keydown w" "keyup w" "keyup Alt_L"
+                        xte "keydown Alt_L" "keydown w" "keyup w" "keyup Alt_L" || true
                         log_message "Sent alt+w"
                         if [[ -n "$speak_file_path" ]]; then
-                          python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.012
+                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+                            sleep 0.012
                         fi
                         rm -f "$f"
                         continue
+
                     elif [[ "$trimmed_line" == 'ctrl+c' ]]; then
-                        LC_ALL=C.UTF-8 xdotool key ctrl+c clearmodifiers
+                        xdotool_safe key ctrl+c clearmodifiers
                         log_message "Sent ctrl+c"
                         if [[ -n "$speak_file_path" ]]; then
-                          python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.012
+                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+                            sleep 0.012
                         fi
                         rm -f "$f"
                         continue
+
                     elif [[ "$trimmed_line" == 'baue Haus' ]]; then
-                        LC_ALL=C.UTF-8 xdotool key h
+                        xdotool_safe key h
                         sleep 0.15
-                        xdotool click --delay 10 --repeat 8 1
+                        xdotool_safe click --delay 10 --repeat 8 1
                         log_message "baue Haus"
                         if [[ -n "$speak_file_path" ]]; then
-                          python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.012
+                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+                            sleep 0.012
                         fi
                         rm -f "$f"
                         continue
+
                     elif [[ "$trimmed_line" == 'baue Lagerhaus' ]]; then
-                        LC_ALL=C.UTF-8 xdotool key s
+                        xdotool_safe key s
                         sleep 0.15
-                        xdotool click --delay 10 --repeat 8 1
+                        xdotool_safe click --delay 10 --repeat 8 1
                         log_message "baue Lagerhaus"
                         if [[ -n "$speak_file_path" ]]; then
-                          python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.012
+                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+                            sleep 0.012
                         fi
                         rm -f "$f"
                         continue
+
                     elif [[ "$trimmed_line" == 'select iddle' ]]; then
-                        xdotool keydown alt
-                        xdotool type '#'
-                        xdotool keyup alt
+                        xdotool_safe keydown alt
+                        xdotool_safe type '#'
+                        xdotool_safe keyup alt
                         sleep 0.15
-                        # xdotool click --delay 10 --repeat 8 1
                         log_message "select iddle"
                         if [[ -n "$speak_file_path" ]]; then
-                          python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.012
+                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+                            sleep 0.012
                         fi
                         rm -f "$f"
                         continue
+
                     elif [[ "$trimmed_line" == 'baue Baracke' ]]; then
-                        LC_ALL=C.UTF-8 xdotool key b
+                        xdotool_safe key b
                         sleep 0.15
-                        xdotool click --delay 10 --repeat 8 1
+                        xdotool_safe click --delay 10 --repeat 8 1
                         sleep 4
                         log_message "baue Baracke"
                         if [[ -n "$speak_file_path" ]]; then
-                          python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                          sleep 0.012
+                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+                            sleep 0.012
                         fi
                         rm -f "$f"
                         f=""
@@ -251,9 +238,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     fi
                 fi
 
-                # Fallback: type file content (if not a special command)
+                # --- Fallback: type file content ---
                 if [ -z "${CI:-}" ]; then
-
 
                     RAW_CONTENT=$(cat "$f")
 
@@ -261,55 +247,30 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                     PLACEHOLDER='°202511101302°'
                     SL5de='SL5.de'
 
-
                     RAW_MOD=$(printf '%s' "$RAW_CONTENT" | sed "s/Powered by $SL5de/$PLACEHOLDER$SL5de/g")
-                    RAW_MOD=$(printf '%s' "$RAW_CONTENT" | sed "s/$SL5de\/Aura/$PLACEHOLDER$SL5de\/Aura/g")
+                    RAW_MOD=$(printf '%s' "$RAW_MOD"     | sed "s|$SL5de/Aura|$PLACEHOLDER$SL5de/Aura|g")
 
                     SANITIZED=$(sanitize_transcription_start "$RAW_MOD")
 
                     CLEAN_CONTENT=$(printf '%s' "$SANITIZED" | sed "s/$PLACEHOLDER/$EMOJI/g")
 
-                    # asynch start "&" (so rm -f "$f" happens more earlier)
-#                    LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 "$CLEAN_CONTENT" &
-                    #                     sleep 0.5
-
-                    # synchron (seems works better when using wayland)
                     if [[ -n "$speak_file_path" ]]; then
-                        # asynch start "&" (so rm -f "$f" happens more earlier)
-                      python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1 &
-                      sleep 0.1
+                        python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1 &
+                        sleep 0.1
                     fi
 
-
-                    # synchron (seems works better when using wayland)
-                    LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 "$CLEAN_CONTENT"
+                    do_type "$CLEAN_CONTENT"
                     sleep 0.025
 
                     if [[ -n "$speak_file_path" ]]; then
-                      sleep 3
+                        sleep 3
                     fi
 
-
-
-
-                    # old:
-                    # LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 0 --file "$f"
-
-                    log_message "type --file $f (2025-1204-1143)"
-
-                    # When you also want to have a voice feedback (means STT + littleAI + TTS )
-                    #  Then you could use this repository:
-                    # https://github.com/sl5net/gemini-tts/blob/main/speak_file.py
-                    #  You could start the STT Service like so:
-                    # ~/projects/py/TTS/scripts/restart_venv_and_run-server.sh
-                    #  And add to type_watcher.sh the following line here:
-
+                    log_message "typed content of $f (dotool/xdotool hybrid)"
                     rm -f "$f"
                     continue
                 fi
             done
-
-
 
             rm -f "$f"
 
@@ -320,21 +281,23 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                 if echo "$window_title" | grep -Eq "$regexLine"; then
                     log_message "INFO: Auto-Enter is enabled. Pressing Return."
                     if [ -z "${CI:-}" ]; then
-                        LC_ALL=C.UTF-8 xdotool key Return
+                        do_key_return
                     fi
                 fi
             fi
         done < <(find "$DIR_TO_WATCH" -maxdepth 1 -type f -name 'tts_output_*.txt' -print0)
     done
+
 else
     echo "ERROR: Unsupported operating system '$OS_TYPE'. Exiting."
     exit 1
 fi
 
-
 cleanup() {
-  xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R || true
-#  xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R Super_L Super_R || true
+    xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R 2>/dev/null || true
+    # dotool: alle Modifier explizit loslassen
+    if [[ "$DISPLAY_SERVER" == "wayland" ]]; then
+        printf 'key shift:up\nkey ctrl:up\nkey alt:up\n' | dotool 2>/dev/null || true
+    fi
 }
 trap cleanup EXIT INT TERM
-
