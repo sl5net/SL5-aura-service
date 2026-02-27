@@ -9,7 +9,7 @@ if [ "$(pgrep -f $(basename "$0"))" != "$$" ]; then
 fi
 
 TTS_DIR="/tmp/sl5_aura/tts_output"
-SLEEP=2
+SLEEP=1
 
 # Ensure we have xdotool available
 command -v xdotool >/dev/null 2>&1 || { echo "xdotool not found"; exit 1; }
