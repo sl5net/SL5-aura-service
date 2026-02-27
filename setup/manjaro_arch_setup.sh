@@ -319,6 +319,8 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 fi
 
+chmod +x tools/keep-keys-up.sh
+
 # --- 6. Completion ---
 echo ""
 echo "--- Setup for Manjaro/Arch is complete! ---"
