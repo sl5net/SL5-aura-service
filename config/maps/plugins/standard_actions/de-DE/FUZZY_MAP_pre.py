@@ -233,7 +233,8 @@ FUZZY_MAP_pre = [
             dir\ bitte |
             termin\w* |
             b[\s-]?day |
-            jimmy\ nein |
+            jimmy\ nein 
+            jimmy\ knight|
             jimmy\ lai |
             jimmy\ neu |
             grimmen\s*.*|grimmig|Germany|feminin|Gewinnern|gewinne|wieder|g bedeuten|gebe drei|gb daten|gewinn ein|gebe dein|kriminelle|gewitter|b day|g wie neu|coral gaming nein|geben innere|seminare|gemini\ ei|
