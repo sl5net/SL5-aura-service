@@ -180,6 +180,7 @@ def execute(match_data):
 
     #
 
+    # config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py:183
     try:
         if not original_text:
             return None # Kein Text zum Übersetzen
@@ -245,7 +246,18 @@ def execute(match_data):
         logger.info(f"🛑🛑🛑 ERROR: 🌈 [Translator Plugin] Fehler vom Übersetzungsskript: {e.stderr.strip()}")
 
         return "Bei der Übersetzung ist ein Fehler aufgetreten."
+
     except Exception as e:
+        # Dies schreibt den EXAKTEN Fehlercode in eine neue Datei in deinem Home-Ordner
+        import traceback
+        with open("/tmp/stt_debug_error.txt", "a") as f:
+            f.write("\n--- NEUER FEHLER ---\n")
+            f.write(traceback.format_exc())
+        m = 'may you need install ? sudo pacman -S translate-shell ?'
         print(f"🛑🛑🛑 ERROR: 🌈 ERROR: [Translator Plugin] : {e}", file=sys.stderr)
-        logger.info(f"🛑🛑🛑 ERROR: 🌈 ERROR: [Translator Plugin] : {e}")
-        return "Bei der Übersetzung ist ein unerwarteter Fehler aufgetreten."
+        logger.info(f"🛑🛑🛑 ERROR: 🌈 ERROR: [Translator Plugin] : {e} # {m}")
+        return f"FEHLER-DETAILS: {str(e)} {m}"  # Gib den Fehler direkt an den Service zurück
+
+
+
+
