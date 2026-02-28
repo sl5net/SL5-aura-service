@@ -1,5 +1,12 @@
 #!/bin/bash
-# type_watcher.sh
+export DOTOOL_DELAY=0
+
+DOTOOL_PID=$!
+
+# typedelay direkt nach Start setzen
+sleep 0.1  # kurz warten bis dotool bereit ist
+echo "typedelay 0" > /tmp/dotool_fifo
+
 
 set -euo pipefail
 
@@ -14,35 +21,84 @@ AUTO_ENTER_FLAG="/tmp/sl5_aura/sl5_auto_enter.flag"
 
 speak_file_path="$HOME/projects/py/TTS/speak_file.py"
 
+INPUT_METHOD=""
+
 # --- Detect Wayland or X11 ---
 if [[ -n "${WAYLAND_DISPLAY:-}" ]]; then
     DISPLAY_SERVER="wayland"
-    echo "🖥️  Display server: Wayland/KDE detected. Using dotool for text input."
+    INPUT_METHOD="dotool"
+    echo "🖥️  Display server: Wayland/KDE detected. Using $INPUT_METHOD for text input."
 else
     DISPLAY_SERVER="x11"
-    echo "🖥️  Display server: X11 detected. Using xdotool for text input."
+    INPUT_METHOD="xdotool"
+
+    # 2. Python fragen (liest die Variable sicher aus der Konfig)
+    # OVERRIDE=$(python3 -c "from config.settings import x11_input_method_OVERRIDE; print(x11_input_method_OVERRIDE.strip())" 2>/dev/null)
+
+    OVERRIDE=$(python3 -c "
+    import importlib.util, sys
+    spec = importlib.util.spec_from_file_location('settings', '$(pwd)/config/settings.py')
+    # Stdout unterdrücken während Import
+    import io
+    old_stdout = sys.stdout
+    sys.stdout = io.StringIO()
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    sys.stdout = old_stdout
+    # Jetzt sauber ausgeben
+    print(mod.x11_input_method_OVERRIDE)
+    ")
+
+    echo "DEBUG OVERRIDE: '$OVERRIDE'"
+    [[ "$OVERRIDE" == "dotool" ]] && INPUT_METHOD="dotool"
+
+    echo "🖥️  Display server: X11 detected. Using $INPUT_METHOD for text input."
 fi
 
-# Helper: type text
-# - Wayland: dotool  (layout-aware, Unicode-safe, kein Daemon nötig)
-# - X11:     xdotool
+echo "Using: $INPUT_METHOD"
+
+
+
 do_type() {
     local text="$1"
-    if [[ "$DISPLAY_SERVER" == "wayland" ]]; then
-        printf 'type %s\n' "$text" | dotool
+    if [[ "$INPUT_METHOD" == "dotool" ]]; then
+        printf 'typedelay 2\ntype %s\n' "$text" | dotool
     else
         LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 12 "$text"
     fi
 }
 
+
 # Helper: press Return key
 do_key_return() {
-    if [[ "$DISPLAY_SERVER" == "wayland" ]]; then
+    if [[ "$INPUT_METHOD" == "dotool" ]]; then
         printf 'key Return\n' | dotool
     else
         LC_ALL=C.UTF-8 xdotool key Return
     fi
 }
+
+        # DOTOOL_DELAY=0 printf 'type %s\n' "$text" | dotool
+        # printf 'typedelay 0\ntype %s\n' "$text" > /tmp/dotool_fifo
+        # printf 'typedelay 0\ntype %s\n' "$text" > /tmp/dotool_fifo
+        # printf 'type %s\n' "$text" > /tmp/dotool_fifo
+        #printf 'export DOTOOL_DELAY=0 | type %s\n' "$text" | DOTOOL_DELAY=0 dotool
+        #printf 'type %s\n' "$text" | DOTOOL_DELAY=0 dotool
+        #export DOTOOL_DELAY=0
+        # printf 'type %s\n' "$text" | dotool
+        # printf 'typedelay 0\ntype %s\n' "$text" | dotool
+
+
+
+# Geschwindigkeitstest
+# time echo "typedelay 0
+# type aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" > /tmp/dotool_fifo
+
+
+
+# Helper: type text
+# - Wayland: dotool  (layout-aware, Unicode-safe, kein Daemon nötig)
+# - X11:     xdotool or dotool
 
 # Helper: xdotool with error suppression under Wayland (XWayland fallback for game macros)
 xdotool_safe() {
@@ -299,7 +355,7 @@ fi
 cleanup() {
     xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R 2>/dev/null || true
     # dotool: alle Modifier explizit loslassen
-    if [[ "$DISPLAY_SERVER" == "wayland" ]]; then
+    if [[ "$DISPLAY_SERVER" == "dotool" ]]; then
         printf 'key shift:up\nkey ctrl:up\nkey alt:up\n' | dotool 2>/dev/null || true
     fi
 }

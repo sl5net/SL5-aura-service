@@ -16,6 +16,17 @@ current_user = user_name = USER_NAME = str(current_user) # fallbacks
 DEV_MODE = 0
 DEV_MODE_all_processing = 0
 
+# --- Input Settings ---
+# Default for X11 is 'xdotool'. Default for Wayland is 'dotool'.
+# Set this to "dotool" if you have layout issues on X11.
+# Comment it out to use the system default.
+x11_input_method_OVERRIDE = "dotool" # intall examples: 1: pamac build dotool , yay -S dotool 2: sudo gpasswd -a $USER input 3: echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' | sudo tee /etc/udev/rules.d/80-dotool.rules 4: sudo udevadm control --reload-rules && sudo udevadm trigger 5: reloggin
+
+# x11_input_method_OVERRIDE = '' # fallback is xdotool. e.g. when you not set dotool
+
+# test:
+# dotoold &
+# echo "type Hallo" | dotool
 
 soundMute = 1  # 1 is really recommended. to know when your recording is ended.
 soundUnMute = 1
@@ -86,6 +97,8 @@ PLUGIN_HELPER_TTS_ENABLED = True
 # USE_AS_PRIMARY_SPEAK = "piper"
 USE_AS_PRIMARY_SPEAK = "ESPEAK"
 USE_ESPEAK_FALLBACK = True
+
+INPUT_METHOD="dotool"
 
 #testtest
 
