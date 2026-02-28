@@ -11,8 +11,8 @@ from scripts.py.func.config.regex_cache import REGEX_COMPILE_CACHE
 #             return None
 #     return REGEX_COMPILE_CACHE.get(pattern)
 
-import re
-from scripts.py.func.config.regex_cache import REGEX_COMPILE_CACHE
+
+# from scripts.py.func.config.regex_cache import REGEX_COMPILE_CACHE
 
 
 def get_compiled_regex(pattern, logger_instance, flags=0):

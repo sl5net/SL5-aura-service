@@ -247,7 +247,7 @@ FUZZY_MAP_pre = [
     )
     \b.*$
     '''
-    , 70, {
+        , 70, {
        'flags': re.IGNORECASE,
        'only_in_windows': [r'firefox', 'chrome', 'brave'],
     }),

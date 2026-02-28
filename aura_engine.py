@@ -370,6 +370,10 @@ class SafeStreamToLogger(object):
         if LOG_ONLY:
             if not any(p.search(buf) for p in LOG_FILTER_COMPILED_LOG_ONLY):
                 return
+            # 1. shorten letts like #### or somthing. not needed here anymore as aye-catcher.
+            buf = re.sub(r"(.)\1{3,}", r"\1\1\1", buf)
+
+
         elif any(p.search(buf) for p in LOG_FILTER_COMPILED):
             return
 

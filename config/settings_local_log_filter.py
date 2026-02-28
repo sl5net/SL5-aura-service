@@ -1,5 +1,5 @@
 # config/settings_local_log_filter.py
-import re
+# import re
 LOG_EXCLUDE = [
     r"heartbeat.*status: OK",
     r"cleaning up temp file",
@@ -69,5 +69,5 @@ LOG_EXCLUDE = [
 # OPTIONAL: Wenn nicht leer, wird NUR das geloggt, was hier matcht (ONLY und oder logig: Mindes eines aus LOG_ONLY muss matchen)
 LOG_ONLY = [
     r"CRITICAL",
-    r"📢📢📢",
+    r"📢📢📢 #",
 ]
