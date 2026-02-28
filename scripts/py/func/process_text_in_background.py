@@ -1836,42 +1836,42 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 #    logger_instance.info(f"🔒 Apply Private Rule (Source: ...)")
 
 
-            only_in_windows_list = options_dict.get('only_in_windows', [])
+
+
             skip_this_regex_pattern = False
-            # global _active_window_title
+            exclude_windows_list = options_dict.get('exclude_windows', [])
+            only_in_windows_list = options_dict.get('only_in_windows', [])
 
-            # if settings.DEV_MODE:
-            #     print(f"def process_text_in_background -> _active_window_title: {_active_window_title} ")
+            m_202602281126 = f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
+            # logger_instance.info(m_202602281126)
+            # logger_instance.info(f'🔴🔴🔴 exclude_windows_list: {exclude_windows_list}, '
+            #                      f'🔵🔵🔵 only_in_windows_list: {only_in_windows_list}')
+            #
 
-            if only_in_windows_list and _active_window_title:
+
+            if exclude_windows_list and _active_window_title:
                 show_debug_prints = False
 
                 m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
-                # log4DEV(m,logger_instance)
-                # logger_instance.info(m_202601180206)
 
-                if show_debug_prints:
-                    print(f' ▶️{only_in_windows_list}◀️ , '
-                          f'{m_202601180206}️ ')
+                if any(re.search(pattern, str(_active_window_title)) for pattern in exclude_windows_list):
+                    skip_this_regex_pattern = True
+                    if show_debug_prints:
+                        logger_instance.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
+
+
+            if (not skip_this_regex_pattern
+                    and only_in_windows_list and _active_window_title):
+                show_debug_prints = False
+
+                m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
 
                 if any(re.search(pattern, str(_active_window_title)) for pattern in only_in_windows_list):
                     skip_this_regex_pattern = False
-
                     if show_debug_prints:
-                        logger_instance.info(f'window title matched: 🥳 {m_202601180206}')
+                        logger_instance.info(f'{only_in_windows_list} matched: 🥳 {m_202601180206}')
 
-                # for pattern in only_in_windows_list:
-                #     if show_debug_prints:
-                #         print(f'????? pattern="{pattern} ..."')
-                #         print(f'????? {active_window_title}')
-                #     if re.search(pattern, str(active_window_title)):
-                #         if show_debug_prints:
-                #             print(f'🔎 🥳 matched: pattern="{pattern}... its okay use it"')
-                #         skip_this_regex_pattern = False
-                #         continue
                 else:
-                    # if show_debug_prints:
-                    # print('🔎 👎 not matched: pattern="{pattern}... dont use it -> skip this rule"')
                     skip_this_regex_pattern = True
 
 
