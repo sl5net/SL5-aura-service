@@ -349,7 +349,11 @@ logger = logging.getLogger()
 #         self.terminal.flush()
 
 
-
+from config.settings_local_log_filter import LOG_EXCLUDE, LOG_ONLY
+LOG_FILTER_COMPILED_LOG_ONLY = [re.compile(p) for p in LOG_ONLY]
+LOG_FILTER_COMPILED = [re.compile(p) for p in LOG_EXCLUDE]
+# except ImportError:
+#     LOG_FILTER_COMPILED = []
 
 class SafeStreamToLogger(object):
     def __init__(self, logger, original_stream, file_handler):
@@ -361,11 +365,20 @@ class SafeStreamToLogger(object):
 
     def write(self, buf):
 
+        # self.terminal.write(f"DEBUG_STDOUT 2026-0228-1533: {buf}")
+
+        if LOG_ONLY:
+            if not any(p.search(buf) for p in LOG_FILTER_COMPILED_LOG_ONLY):
+                return
+        elif any(p.search(buf) for p in LOG_FILTER_COMPILED):
+            return
+
         # global core_logic_self_test_is_running_FILE
         is_core_logic_self_test_is_running = core_logic_self_test_is_running_FILE.exists()
         # is_core_logic_self_test_is_running = False
 
         # 1. Immer sofort auf die Konsole schreiben (für dich sichtbar)
+
 
         if is_core_logic_self_test_is_running and ':st:' not in buf : # and buf[:3] == 'st:':
             return
@@ -401,13 +414,16 @@ class SafeStreamToLogger(object):
 
                 # Nur schreiben, wenn noch Text übrig ist
                 if clean_msg:
+
+
                     record = logging.LogRecord(
                         name="PRINT", level=logging.INFO, pathname="print", lineno=0,
                         msg=clean_msg, args=(), exc_info=None
                     )
                     self.file_handler_ref.handle(record)
 
-            except Exception:
+            except Exception as e202602281506:
+                print(f'lets ignore e202602281506: {e202602281506}')
                 pass
             finally:
                 self.is_logging = False

@@ -27,7 +27,8 @@ FUZZY_MAP_pre = [
     ('Timo Stösser', r'^(ti\w+r|T\w+i\w+o)\s+(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Stoffe|Schlösser|stöße|stöpsel|Störche)$', 7, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: titextr
-    ('Timo', r'\b(ti\w+r|T\w+i\w+o)\b', 70, {'flags': re.IGNORECASE}),
+    ('Timo', r'\b(ti\w+r|T\w+i\w+o)\b', 70, {'flags': re.IGNORECASE,
+        'only_in_windows': [r'mail',r'gmail',r'mail',r'posteingang']}),
 
     # EXAMPLE: stäfa
     ('Stösser', r'^(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Schlösser|stöße|stöpsel|Störche)$', 70, {'flags': re.IGNORECASE}),

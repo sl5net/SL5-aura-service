@@ -66,7 +66,11 @@ GLOBAL_debug_skip_list=False
 
 from .config.regex_cache import REGEX_COMPILE_CACHE
 
+from .get_compiled_regex import get_compiled_regex
+
 from typing import Union, Optional
+
+
 
 def ensure_path(p: Union[str, os.PathLike, Path, None]) -> Optional[Path]:
     if p is None:
@@ -338,6 +342,9 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         # scripts/py/func/process_text_in_background.py:316 (load_maps_for_language)
         if "._" in modname or "/_" in modname or "\\_" in modname  :
             is_private = True
+            if settings.DEV_MODE_show_when_private_map_found:
+                log4DEV(f"is_private: 📚Found module candidate: {modname}",logger)
+
         if RUN_MODE == "API_SERVICE" and ( "._" in modname or "/_" in modname  ):
             continue # maps with underscore are private
         # logger.debug(f"📚Found module candidate: {modname}",logger)
@@ -663,6 +670,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
     is_private = False
     if privacy_taint_occurred:
         is_private = True
+
+        if settings.DEV_MODE_show_when_private_map_found:
+            log4DEV(f"is_private: 📚Found module candidate", logger)
 
     if GLOBAL_debug_skip_list:
 
@@ -1848,32 +1858,72 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 logger_instance.info(f'🔴🔴🔴 exclude_windows_list: {exclude_windows_list}, '
                                      f'🔵🔵🔵 only_in_windows_list: {only_in_windows_list}')
 
-
-
+            # --- EXCLUDE LIST CHECK ---
             if exclude_windows_list and _active_window_title:
                 show_debug_prints = False
+                for pattern in exclude_windows_list:
 
-                m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
+                    compiled_p = get_compiled_regex(pattern,logger_instance)
 
-                if any(re.search(pattern, str(_active_window_title)) for pattern in exclude_windows_list):
-                    skip_this_regex_pattern = True
-                    if show_debug_prints:
-                        logger_instance.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
+                    if compiled_p and compiled_p.search(str(_active_window_title)):
+                        skip_this_regex_pattern = True
+
+                        if show_debug_prints:
+                            m_202601180206 = f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
+                            logger_instance.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
+
+                        break  # Ein Treffer reicht zum Überspringen
 
 
+
+
+
+
+            # if exclude_windows_list and _active_window_title:
+            #     show_debug_prints = False
+            #
+            #     m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
+            #
+            #     if any(re.search(pattern, str(_active_window_title)) for pattern in exclude_windows_list):
+            #         skip_this_regex_pattern = True
+            #         if show_debug_prints:
+            #             logger_instance.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
+
+            # --- ONLY IN LIST CHECK ---
             if (not skip_this_regex_pattern
                     and only_in_windows_list and _active_window_title):
-                show_debug_prints = False
 
+                show_debug_prints = False
                 m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
 
-                if any(re.search(pattern, str(_active_window_title)) for pattern in only_in_windows_list):
+                found_match = False
+                for pattern in only_in_windows_list:
+                    compiled_p = get_compiled_regex(pattern,logger_instance)
+                    if compiled_p and compiled_p.search(str(_active_window_title)):
+                        found_match = True
+                        break
+
+                if found_match:
                     skip_this_regex_pattern = False
                     if show_debug_prints:
                         logger_instance.info(f'{only_in_windows_list} matched: 🥳 {m_202601180206}')
 
                 else:
                     skip_this_regex_pattern = True
+
+            # if (not skip_this_regex_pattern
+            #         and only_in_windows_list and _active_window_title):
+            #     show_debug_prints = False
+            #
+            #     m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
+            #
+            #     if any(re.search(pattern, str(_active_window_title)) for pattern in only_in_windows_list):
+            #         skip_this_regex_pattern = False
+            #         if show_debug_prints:
+            #             logger_instance.info(f'{only_in_windows_list} matched: 🥳 {m_202601180206}')
+            #
+            #     else:
+            #         skip_this_regex_pattern = True
 
 
             if skip_this_regex_pattern:

@@ -13,12 +13,6 @@ _X11_ENV_CACHE = None
 # --- DATEI CACHE (Disk - überlebt Reloads) ---
 X11_CACHE_FILE = Path(tempfile.gettempdir()) / "sl5_aura" / "sl5_aura_x11_env.json"
 
-# Source - https://stackoverflow.com/a/79895679
-# Posted by HybridMoments
-# Retrieved 2026-02-26, License - CC BY-SA 4.0
-
-import time
-
 
 def get_active_window_title_atspi():
     """
@@ -125,32 +119,32 @@ def get_active_window_title_atspi():
 
 
 
-def get_active_window_plasma6():
-    script = "print(workspace.activeWindow.caption);"
-
-    load_cmd = [
-        "dbus-send", "--print-reply", "--dest=org.kde.KWin",
-        "/Scripting", "org.kde.kwin.Scripting.loadScript",
-        f"string:{script}"
-    ]
-
-    try:
-        result = subprocess.run(load_cmd, capture_output=True, text=True, check=True)
-        script_path = result.stdout.split('object path "')[1].split('"')[0]
-
-        start_time = time.time()
-        subprocess.run(["dbus-send", "--dest=org.kde.KWin", script_path, "org.kde.kwin.Script.run"], check=True)
-
-        log_cmd = ["journalctl", "_COMM=kwin_wayland", "-o", "cat", f"--since=@{int(start_time)}"]
-        logs = subprocess.run(log_cmd, capture_output=True, text=True).stdout
-
-        subprocess.run(["dbus-send", "--dest=org.kde.KWin", script_path, "org.kde.kwin.Script.stop"])
-
-        for line in logs.strip().split('\n'):
-            if line.startswith("js:"):
-                return line.replace("js: ", "").strip()
-    except Exception as e:
-        return f"Error: {e}"
+# def get_active_window_plasma6():
+#     script = "print(workspace.activeWindow.caption);"
+#
+#     load_cmd = [
+#         "dbus-send", "--print-reply", "--dest=org.kde.KWin",
+#         "/Scripting", "org.kde.kwin.Scripting.loadScript",
+#         f"string:{script}"
+#     ]
+#
+#     try:
+#         result = subprocess.run(load_cmd, capture_output=True, text=True, check=True)
+#         script_path = result.stdout.split('object path "')[1].split('"')[0]
+#
+#         start_time = time.time()
+#         subprocess.run(["dbus-send", "--dest=org.kde.KWin", script_path, "org.kde.kwin.Script.run"], check=True)
+#
+#         log_cmd = ["journalctl", "_COMM=kwin_wayland", "-o", "cat", f"--since=@{int(start_time)}"]
+#         logs = subprocess.run(log_cmd, capture_output=True, text=True).stdout
+#
+#         subprocess.run(["dbus-send", "--dest=org.kde.KWin", script_path, "org.kde.kwin.Script.stop"])
+#
+#         for line in logs.strip().split('\n'):
+#             if line.startswith("js:"):
+#                 return line.replace("js: ", "").strip()
+#     except Exception as e:
+#         return f"Error: {e}"
 
 
 # print(f"Active Window: {get_active_window_plasma6()}")

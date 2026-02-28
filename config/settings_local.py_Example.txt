@@ -27,6 +27,7 @@ DEV_MODE_memory = False
 DEV_MODE_all_processing = False
 DEV_MODE_zip_processing = False
 DEV_MODE_show_window_title_stuff = 0
+DEV_MODE_show_when_private_map_found = 0
 
 PRELOAD_MODELS = ["vosk-model-de-0.21"]
 

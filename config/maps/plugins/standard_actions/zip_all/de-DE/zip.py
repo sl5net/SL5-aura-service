@@ -257,8 +257,6 @@ def check_and_unpack_zips():
                             # logger.debug("🧹 Removed temp key file.")
                         except Exception as cleanup_err:
                             logger.warning(f"⚠️ Could not remove temp key {local_key_path}: {cleanup_err}")
-                        return None
-
             else:
                 logger.warning(f"⚠️ No password file found for {folder_path.name}. Cannot unpack.")
                 return None

@@ -82,7 +82,8 @@ Guten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).
 # EXAMPLE: hallo
 """, r'^\s*(hallo|hi|hey|guten (morgen))\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE
+        'flags': re.IGNORECASE,
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
         }
     ),
 
@@ -96,7 +97,8 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: hallo
 """, r'^\s*(hallo|hi|hey|guten (tag|abend|morgen))\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE
+        'flags': re.IGNORECASE,
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
         }
     ),
 

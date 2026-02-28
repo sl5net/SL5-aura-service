@@ -200,6 +200,7 @@ FUZZY_MAP_pre = [
     # googeln jimmy nein
     # google g mine
     # googeln gehminuten gb dreht
+    # obwohl gehminuten
     # gogol jimmy nein
     # https://aistudio.google.com/prompts/new_chat
 
@@ -207,12 +208,13 @@ FUZZY_MAP_pre = [
     # google gb
     # google will termine
     # google jimmy lai
+    # cool gemini
 
     # EXAMPLE: gemini
     ('https://aistudio.google.com/prompts/new_chat', r'''(?ix)
     ^ (?:
         gemini | cheminée | gb\ dreht | kuchen\ gemini | gucken\ sie | 
-        (?:google|googeln|gogol|gucke|goris|gut|gb|kugeln|brooke|coral) \s+
+        (?:google|googeln|gogol|gucke|goris|gut|gb|kugeln|brooke|coral|cool|obwohl) \s+
         (?:
             gemini[\s\w]* |
             g\ mine |
@@ -226,6 +228,7 @@ FUZZY_MAP_pre = [
             studi[ao]\w* |
             seminar |
             ein\ Studio | ein\ Stuhl |
+            eminent |
             it\ studio | my\ style
             ge[hmw]\w* | gemini\ recht | \w*minarett |
             gaming\ nein | gaming | 
@@ -244,16 +247,16 @@ FUZZY_MAP_pre = [
     )
     \b.*$
     '''
-    , 70 ),
-
-
-
-
+    , 70, {
+       'flags': re.IGNORECASE,
+       'only_in_windows': [r'firefox', 'chrome', 'brave'],
+    }),
 
 
     # EXAMPLE: chat mit gemini
     ('https://aistudio.google.com/prompts/new_chat', r'^chat mit\s+(gemini|cheminée|Boot Gaming nein|chip|Kevin)\b.*$', 70, {
-        'flags': re.IGNORECASE
+        'flags': re.IGNORECASE,
+        'only_in_windows': [r'firefox', 'chrome', 'brave'],
     }),
 
     # Google kriminelle

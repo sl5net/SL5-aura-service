@@ -75,7 +75,7 @@ nonsense_start_word = r'(?:(an|ein|eine|einen|essen)\s*)?'
 # EXAMPLE: Denglisch
 Englisch = fr'{nonsense_start_word}(Denglisch|englisch\w*|english\w*|endlich|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe|ähnlich)\b\s*'
 # EXAMPLE: Switch
-toggleCmd=r'\s*(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|abschied|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)\s*'
+toggleCmd=r'\s*(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|abschaffen|abschied|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)\s*'
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
@@ -194,6 +194,6 @@ FUZZY_MAP_pre = [
     # ANCHOR: The following line is controlled by the toggle script.
     # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
     # TRANSLATION_RULE
-     ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
+     #('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 
 ]
