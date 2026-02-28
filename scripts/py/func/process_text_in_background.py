@@ -1842,11 +1842,12 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             exclude_windows_list = options_dict.get('exclude_windows', [])
             only_in_windows_list = options_dict.get('only_in_windows', [])
 
-            m_202602281126 = f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
-            # logger_instance.info(m_202602281126)
-            # logger_instance.info(f'🔴🔴🔴 exclude_windows_list: {exclude_windows_list}, '
-            #                      f'🔵🔵🔵 only_in_windows_list: {only_in_windows_list}')
-            #
+            if settings.DEV_MODE_show_window_title_stuff:
+                m_202602281126 = f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
+                logger_instance.info(m_202602281126)
+                logger_instance.info(f'🔴🔴🔴 exclude_windows_list: {exclude_windows_list}, '
+                                     f'🔵🔵🔵 only_in_windows_list: {only_in_windows_list}')
+
 
 
             if exclude_windows_list and _active_window_title:
