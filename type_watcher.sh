@@ -7,7 +7,6 @@ DOTOOL_PID=$!
 sleep 0.1  # kurz warten bis dotool bereit ist
 echo "typedelay 0" > /tmp/dotool_fifo
 
-
 set -euo pipefail
 
 DIR_TO_WATCH="/tmp/sl5_aura/tts_output"
@@ -59,9 +58,33 @@ echo "Using: $INPUT_METHOD"
 
 
 
+if [[ "$INPUT_METHOD" == "dotool" ]]; then
+
+    # 1. Modellnamen lesen
+    MODEL_PATH="config/model_name.txt"
+    if [[ -f "$MODEL_PATH" ]]; then
+        MODEL_NAME=$(cat "$MODEL_PATH")
+        # Extrahiert den Teil nach 'model-' (z.B. 'de' aus 'vosk-model-de-0.21')
+        LANG_CODE=$(echo "$MODEL_NAME" | sed -n 's/.*model-\([a-z]\{2\}\).*/\1/p')
+    fi
+
+    # 2. Fallback, falls Datei leer oder nicht da
+    [[ -z "$LANG_CODE" ]] && LANG_CODE="de"
+
+    # 3. dotool mitteilen, welches Layout es nutzen soll
+    export XKB_DEFAULT_LAYOUT="$LANG_CODE"
+    export DOTOOL_XKB_LAYOUT="$LANG_CODE"
+
+    echo "🌍 Language detected: $LANG_CODE (Applied to dotool)"
+    fi
+
+
 do_type() {
     local text="$1"
     if [[ "$INPUT_METHOD" == "dotool" ]]; then
+        # export XKB_DEFAULT_LAYOUT=de
+        # export DOTOOL_XKB_LAYOUT=de
+
         printf 'typedelay 2\ntype %s\n' "$text" | dotool
     else
         LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 12 "$text"
