@@ -19,7 +19,9 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - means first is most important, lower rules maybe not get read.
 
-    #
+
+    # TEST: Vertauschte Regel (Regex vorn, ID hinten)
+    # (r'^(test fehler|chaos monkey)$', 'test_id', 100, {}),
 
     # EXAMPLE: "Fehler melden", "Logge Fehler", "Das war falsch"
     ('report_error',r'^(fehler melden|logge fehler|das war falsch|fehler mail|fehlermeldung)$', 100,

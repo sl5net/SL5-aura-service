@@ -12,6 +12,7 @@ from .config.dynamic_settings import settings
 from .log_memory_details import log4DEV
 from .private_map_ex import _private_map_unpack
 from .auto_fix_module import try_auto_fix_module
+from .validate_map_structure import check_map_health
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
@@ -165,6 +166,11 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     _trigger_upstream_hooks(map_file_path, project_root, logger)
                     # --- NEW CODE END ---
 
+                    if hasattr(module_to_reload, 'FUZZY_MAP_pre'):
+                        # def check_map_health(file_path, map_entries, logger):
+                        check_map_health(file_path=map_file_path, module=module_to_reload, logger=logger)
+
+
                 except (NameError, SyntaxError) as e:
                     logger.error(f"151:🚨 Error Import: {e}")
                     logger.error(f"151: {module_name}")
@@ -210,6 +216,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                     # logger.error(f"❌ Failed to reload module '{module_name}': {e}")
                     # todo: # scripts/py/func/map_reloader.py:135 run the into auto-repair function
+
 
             else:
                 # No change detected, but ensure initialization logic handles new paths if needed
