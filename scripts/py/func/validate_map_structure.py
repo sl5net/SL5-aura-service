@@ -1,13 +1,6 @@
-
 import os
 import re
 import time
-
-import os
-import re
-import time
-from pathlib import Path
-
 
 def check_map_health(file_path, module, logger):
     try:
@@ -34,7 +27,8 @@ def check_map_health(file_path, module, logger):
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()  # Die ganze Datei als ein String
-    except:
+    except Exception as e:
+        print(f'2026-0301-1511 {e}')
         return
 
     file_changed = False
@@ -97,7 +91,8 @@ def check_map_health_online_repairing(file_path, module, logger):
         # Nur Dateien prüfen, die jünger als 1 Stunde sind
         if (time.time() - os.path.getmtime(file_path)) > 3600:
             return
-    except:
+    except Exception as e:
+        print(f'2026-0301-1511 {e}')
         return
 
     # Wir suchen nach deinen Listen (FUZZY_MAP_pre, etc.)
@@ -116,7 +111,8 @@ def check_map_health_online_repairing(file_path, module, logger):
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             file_lines = f.readlines()
-    except:
+    except Exception as e:
+        print(f'2026-0301-1511 {e}')
         return
 
     for i, entry in enumerate(map_entries):
