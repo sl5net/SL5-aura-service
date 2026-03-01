@@ -19,9 +19,24 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - means first is most important, lower rules maybe not get read.
 
+    # Kannst du nicht ein
 
     # TEST: Vertauschte Regel (Regex vorn, ID hinten)
-    # (r'^(test fehler|chaos monkey)$', 'test_id', 100, {}),
+    (r'test_id', '^(test fehler|chaos monkey)$', 100, {}),
+    ('test_id','^(test fehler|chaos monkey)$',  100, {}),
+
+    # TEST 1: Vertauschte einfache Regel
+    (r'toggle_light', '^(taschenlampe an|licht an)$', 95, {}),
+
+    # TEST 2: Vertauschter Mehrzeiler (wie dein report_error)
+    (r'check_system_health',
+     '^(system status|wie geht es dir|alles okay)$',
+     100,
+     {
+         'flags': re.IGNORECASE
+     }),
+
+
 
     # EXAMPLE: "Fehler melden", "Logge Fehler", "Das war falsch"
     ('report_error',r'^(fehler melden|logge fehler|das war falsch|fehler mail|fehlermeldung)$', 100,
