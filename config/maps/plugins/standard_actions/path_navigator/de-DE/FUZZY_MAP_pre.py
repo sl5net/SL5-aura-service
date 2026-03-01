@@ -232,7 +232,9 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Navigiere Aura Konfiguration
     r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Auer|Aurora|Root|Aurora)\s*Konf\w*$',
     90,
-    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'flags': re.IGNORECASE,
+     'skip_list': ['LanguageTool'],
+     }),
 
     # EXAMPLE: Navigiere zu Aura
     (f'cd "{PROJECT_ROOT_POSIX}"',
