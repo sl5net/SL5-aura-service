@@ -1,6 +1,7 @@
 # config/maps/plugins/internals/de-DE/FUZZY_MAP_pre.py
 
 import re
+from pathlib import Path
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
@@ -9,6 +10,8 @@ import re
 #    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
+CONFIG_DIR = Path(__file__).parent
+
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
@@ -16,8 +19,16 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - means first is most important, lower rules maybe not get read.
 
+    #
 
-    #  Helps the Tool to switch to English
+    # EXAMPLE: "Fehler melden", "Logge Fehler", "Das war falsch"
+    ('report_error',r'^(fehler melden|logge fehler|das war falsch|fehler mail|fehlermeldung)$', 100,
+    {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
+    }),
+
+#  Helps the Tool to switch to English
     # EXAMPLE: englisch
     ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, {'flags': re.IGNORECASE}),
     # EXAMPLE: s switch to english x s
