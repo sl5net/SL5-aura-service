@@ -41,7 +41,7 @@ def execute(match_data):
     # Hier müsste base_dir korrekt übergeben werden. Für's Beispiel nehmen wir an, es ist der Plugin-Ordner.
 
     # --- 1. CACHE PRÜFEN (Key-Args sind die Parameter, die die Ausgabe bestimmen) ---
-    BASE_DIR_FOR_CACHE = Path(__file__).parent.parent.parent.parent.parent # <- Korrigieren Sie dies auf Ihren stabilen TMP-Pfad!
+    BASE_DIR_FOR_CACHE = Path(__file__).parent.parent.parent.parent.parent.parent # <- Korrigieren Sie dies auf Ihren stabilen TMP-Pfad!
 
     cache_key_args = (city, lang)
     cached_response = get_cached_result(

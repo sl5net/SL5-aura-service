@@ -19,11 +19,17 @@ def _json_default_converter(obj):
         return str(obj)
     raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
 
+# def get_cache_db_path(base_dir: Path) -> Path:
+#     p = Path(str(base_dir).replace("/config", "/data", 1))
+#     p.mkdir(parents=True, exist_ok=True)
+#     return p / CACHE_DB_FILE
 
 def get_cache_db_path(base_dir: Path) -> Path:
     """Returns the absolute path to the cache database file."""
     # Assuming the cache should live in a persistent location like the main tmp/log directory
-    return base_dir.parent / CACHE_DB_FILE
+    # Existiert data/ nicht, wirft Python den Fehler – kein blindes Speichern mehr.
+    return base_dir.parent / "data" / CACHE_DB_FILE
+    # return base_dir.parent / CACHE_DB_FILE
 
 def get_cached_result(
         base_dir: Path,

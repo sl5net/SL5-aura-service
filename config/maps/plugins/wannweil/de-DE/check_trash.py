@@ -411,7 +411,13 @@ def check_csv_alerts():
 
 
 if __name__ == "__main__":
-    if 1:
+
+    # from datetime import datetime
+
+    # True an Wochentagen, False an Samstag und Sonntag
+    is_active = datetime.now().weekday() < 5
+
+    if is_active:
         check_and_notify(force_test="test" in sys.argv)
     else:
         print("nix 16.2.'26 Mon")
