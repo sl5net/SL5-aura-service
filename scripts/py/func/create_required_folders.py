@@ -18,6 +18,8 @@ def setup_project_structure(project_root: Union[str, Path]):
         project_root / "log": ["__init__.py"],
         project_root / "config": ["__init__.py", "model_name_lastused.txt"],
         project_root / "config" / "maps": ["__init__.py"],
+        project_root / "config" / "filters": ["__init__.py"],
+        project_root / "config" / "internal": ["__init__.py"],
         project_root / "models": None,  # For Vosk models
     }
 

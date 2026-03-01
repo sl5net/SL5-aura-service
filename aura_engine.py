@@ -369,7 +369,7 @@ logger = logging.getLogger()
 #         self.terminal.flush()
 
 
-from config.settings_local_log_filter import LOG_EXCLUDE, LOG_ONLY
+from config.filters.settings_local_log_filter import LOG_EXCLUDE, LOG_ONLY
 LOG_FILTER_COMPILED_LOG_ONLY = [re.compile(p) for p in LOG_ONLY]
 LOG_FILTER_COMPILED = [re.compile(p) for p in LOG_EXCLUDE]
 # except ImportError:
