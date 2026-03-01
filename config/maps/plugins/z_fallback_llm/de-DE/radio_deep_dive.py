@@ -6,6 +6,7 @@ import json
 import datetime
 import urllib.request
 from pathlib import Path
+import subprocess  # Added for espeak support
 
 # --- METADATA ---
 VERSION = "1.1.0"
@@ -14,6 +15,9 @@ VERSION = "1.1.0"
 # --- CONFIGURATION ---
 MODEL_NAME = "llama3.2:latest"
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
+
+SPEECH_ENABLED = True
+BLOCKING_SPEECH = False # Set to True to wait for speech to finish before next step
 
 # Path setup
 SCRIPT_DIR = Path(__file__).parent
@@ -72,7 +76,9 @@ def get_files_needing_update(root_dir):
 
 
 def call_ollama(prompt, system_prompt=""):
-    """ Simple wrapper for Ollama API. """
+    """
+    Version 1.3.1: Added detailed error reporting.
+    """
     payload = {
         "model": MODEL_NAME,
         "prompt": prompt,
@@ -85,11 +91,18 @@ def call_ollama(prompt, system_prompt=""):
             data=json.dumps(payload).encode('utf-8'),
             headers={'Content-Type': 'application/json'}
         )
-        with urllib.request.urlopen(req, timeout=60) as response:
-            res_data = json.loads(response.read().decode('utf-8'))
-            return res_data.get("response", "").strip()
+        with urllib.request.urlopen(req, timeout=90) as response: # Increased timeout to 90s
+            raw_res = response.read().decode('utf-8')
+            if not raw_res:
+                print("  !! Error: Ollama returned an empty response.")
+                return None
+            res_data = json.loads(raw_res)
+            ans = res_data.get("response", "").strip()
+            if not ans:
+                print("  !! Error: 'response' field is empty in Ollama JSON.")
+            return ans
     except Exception as e:
-        print(f"  !! Ollama Error: {e}")
+        print(f"  !! Ollama Connection Error: {e}")
         return None
 
 
@@ -137,51 +150,87 @@ def save_to_aura_db(question, answer, file_path):
         print(f"Database Error: {e}")
 
 
-def main():
+def speak(text, voice="de-de", pitch=50, blocking=False):
     """
-    Version 1.1.0: Main Orchestrator.
+    Version 1.3.2: Merged speech function.
+    Supports global toggle, custom pitch, and optional blocking.
     """
-    init_db()
-    print(f"--- Radio Deep-Dive Generator v{VERSION} (Model: {MODEL_NAME}) ---")
-
-    # Filter candidates
-    candidates = get_files_needing_update(str(REPO_ROOT))
-
-    if not candidates:
-        print("All documents are up to date. No new content to generate.")
-        return
-
-    # Randomly select from the list of 'new or changed' files
-    target = random.choice(candidates)
-    print(f"Processing ({len(candidates)} files pending): {target}")
+    # Check if speech is enabled globally (ensure SPEECH_ENABLED is defined at top)
+    if not text or not globals().get('SPEECH_ENABLED', True):
+        return None
 
     try:
-        with open(target, 'r', encoding='utf-8') as f:
-            content = f.read(5000)
+        # -v: voice, -s: speed, -p: pitch
+        # We use Popen to allow asynchronous execution
+        process = subprocess.Popen([
+            "espeak",
+            "-v", voice,
+            "-s", "150",
+            "-p", str(pitch),
+            text
+        ])
+
+        if blocking:
+            process.wait()
+
+        return process
     except Exception as e:
-        print(f"Error reading file {target}: {e}")
+        print(f"  !! Speech Error: {e}")
+        return None
+
+
+def main():
+    init_db()
+    print(f"--- Radio Deep-Dive Generator v1.3.1 (Model: {MODEL_NAME}) ---")
+
+    candidates = get_files_needing_update(str(REPO_ROOT))
+    if not candidates:
+        print("All documents are up to date.")
         return
 
-    # Step 1: Moderator
+    target = random.choice(candidates)
+    print(f"Processing ({len(candidates)} pending): {target}")
+
+    with open(target, 'r', encoding='utf-8') as f:
+        content = f.read(4000)  # Slightly reduced to 4k for better stability
+
+    # --- PHASE 1: MODERATOR ---
     print("AI Moderator is thinking...")
-    q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze, neugierige Radio-Frage auf Deutsch."
+    q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze Radio-Frage auf Deutsch."
     question = call_ollama(q_prompt, "Du bist Moderator beim Radio Aura. Halte dich kurz.")
 
-    if not question: return
+    if not question:
+        print("  !! Technical Failure: Could not generate question.")
+        return
 
-    print(f"\nMODERATOR: {question}")
+    print(f"\nMODERATOR (Voice: de-de): {question}")
+    # Start speaking immediately (Non-blocking)
+    # mod_voice_proc = speak(question, voice="de-de", pitch=50)
+    mod_voice_proc = speak(question, voice="de-de", pitch=50, blocking=False)
 
-    # Step 2: Expert
-    print("AI Expert is thinking...")
+    # --- PHASE 2: EXPERT (Ollama works while Moderator speaks) ---
+    print("AI Expert is thinking (Parallel)...")
     a_prompt = f"Kontext: {content}\nFrage: {question}\n\nBeantworte die Frage kurz (max 3 Sätze) auf Deutsch."
-    answer = call_ollama(a_prompt, "Du bist ein technischer Experte für das Aura-System.")
+    answer = call_ollama(a_prompt, "Du bist ein technischer Experte.")
+
+    # Wait for moderator to finish talking before showing/speaking the answer
+    if mod_voice_proc:
+        mod_voice_proc.wait()
 
     if answer:
-        print(f"EXPERT: {answer}\n")
+        print(f"EXPERT (Voice: de+f2): {answer}\n")
+        # Expert speaks (Blocking, so we don't start the next file too early)
+        # exp_voice_proc = speak(answer, voice="de+f2", pitch=65)  # Higher pitch for female voice
+
+        exp_voice_proc = speak(answer, voice="de+f2", pitch=40, blocking=False)
+
+        if exp_voice_proc:
+            exp_voice_proc.wait()
+
         save_to_aura_db(question, answer, target)
-        print("Radio segment cached and file tracked successfully.")
+        print("Radio segment saved and tracked.")
     else:
-        print("Failed to get answer from AI.")
+        print("  !! Technical Failure: Could not generate answer.")
 
 
 if __name__ == "__main__":
