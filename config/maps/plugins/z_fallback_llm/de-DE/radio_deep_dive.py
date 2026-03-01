@@ -194,43 +194,42 @@ def main():
     with open(target, 'r', encoding='utf-8') as f:
         content = f.read(4000)  # Slightly reduced to 4k for better stability
 
-    # --- PHASE 1: MODERATOR ---
-    print("AI Moderator is thinking...")
-    q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze Radio-Frage auf Deutsch."
-    question = call_ollama(q_prompt, "Du bist Moderator beim Radio Aura. Halte dich kurz.")
+        # --- PHASE 1: MODERATOR ---
+        print("AI Moderator is thinking...")
+        q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze Radio-Frage auf Deutsch."
+        question = call_ollama(q_prompt, "Du bist Moderator beim Radio Aura. Halte dich kurz.")
 
-    if not question:
-        print("  !! Technical Failure: Could not generate question.")
-        return
+        if not question:
+            print("  !! Technical Failure: Could not generate question.")
+            return
 
-    print(f"\nMODERATOR (Voice: de-de): {question}")
-    # Start speaking immediately (Non-blocking)
-    # mod_voice_proc = speak(question, voice="de-de", pitch=50)
-    mod_voice_proc = speak(question, voice="de-de", pitch=50, blocking=False)
+        # ✅ ERST ausgeben, DANN vorlesen
+        print(f"\nMODERATOR (Voice: de-de): {question}")
+        import sys
+        sys.stdout.flush()  # Sofort sichtbar machen
+        mod_voice_proc = speak(question, voice="de-de", pitch=50, blocking=False)
 
-    # --- PHASE 2: EXPERT (Ollama works while Moderator speaks) ---
-    print("AI Expert is thinking (Parallel)...")
-    a_prompt = f"Kontext: {content}\nFrage: {question}\n\nBeantworte die Frage kurz (max 3 Sätze) auf Deutsch."
-    answer = call_ollama(a_prompt, "Du bist ein technischer Experte.")
+        # --- PHASE 2: EXPERT ---
+        print("AI Expert is thinking (Parallel)...")
+        a_prompt = f"Kontext: {content}\nFrage: {question}\n\nBeantworte die Frage kurz (max 3 Sätze) auf Deutsch."
+        answer = call_ollama(a_prompt, "Du bist ein technischer Experte.")
 
-    # Wait for moderator to finish talking before showing/speaking the answer
-    if mod_voice_proc:
-        mod_voice_proc.wait()
+        if mod_voice_proc:
+            mod_voice_proc.wait()
 
-    if answer:
-        print(f"EXPERT (Voice: de+f2): {answer}\n")
-        # Expert speaks (Blocking, so we don't start the next file too early)
-        # exp_voice_proc = speak(answer, voice="de+f2", pitch=65)  # Higher pitch for female voice
+        if answer:
+            # ✅ ERST ausgeben, DANN vorlesen
+            print(f"EXPERT (Voice: de+f2): {answer}\n")
+            sys.stdout.flush()  # Sofort sichtbar machen
+            save_to_aura_db(question, answer, target)
+            exp_voice_proc = speak(answer, voice="de+f2", pitch=40, blocking=False)
 
-        exp_voice_proc = speak(answer, voice="de+f2", pitch=40, blocking=False)
+            if exp_voice_proc:
+                exp_voice_proc.wait()
 
-        if exp_voice_proc:
-            exp_voice_proc.wait()
-
-        save_to_aura_db(question, answer, target)
-        print("Radio segment saved and tracked.")
-    else:
-        print("  !! Technical Failure: Could not generate answer.")
+            print("Radio segment saved and tracked.")
+        else:
+            print("  !! Technical Failure: Could not generate answer.")
 
 
 if __name__ == "__main__":
