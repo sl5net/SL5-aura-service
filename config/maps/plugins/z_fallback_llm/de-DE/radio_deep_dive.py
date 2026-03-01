@@ -163,7 +163,7 @@ def speak(text, voice="de-de", pitch=50, blocking=False):
         # -v: voice, -s: speed, -p: pitch
         # We use Popen to allow asynchronous execution
         process = subprocess.Popen([
-            "espeak",
+            "espeak-ng",
             "-v", voice,
             "-s", "150",
             "-p", str(pitch),
