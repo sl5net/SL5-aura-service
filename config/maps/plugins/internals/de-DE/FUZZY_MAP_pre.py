@@ -22,19 +22,19 @@ FUZZY_MAP_pre = [
     # Kannst du nicht ein
 
     # TEST: Vertauschte Regel (Regex vorn, ID hinten)
-    (r'test_id', '^(test fehler|chaos monkey)$', 100, {}),
-    ('test_id','^(test fehler|chaos monkey)$',  100, {}),
+    # (r'test_id', '^(test fehler|chaos monkey)$', 100, {}),
+    # ('test_id','^(test fehler|chaos monkey)$',  100, {}),
 
     # TEST 1: Vertauschte einfache Regel
-    (r'toggle_light', '^(taschenlampe an|licht an)$', 95, {}),
+    # (r'toggle_light', '^(taschenlampe an|licht an)$', 95, {}),
 
     # TEST 2: Vertauschter Mehrzeiler (wie dein report_error)
-    (r'check_system_health',
-     '^(system status|wie geht es dir|alles okay)$',
-     100,
-     {
-         'flags': re.IGNORECASE
-     }),
+    # (r'check_system_health',
+    #  '^(system status|wie geht es dir|alles okay)$',
+    #  100,
+    #  {
+    #      'flags': re.IGNORECASE
+    #  }),
 
 
 
