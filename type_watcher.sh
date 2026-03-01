@@ -31,22 +31,17 @@ else
     DISPLAY_SERVER="x11"
     INPUT_METHOD="xdotool"
 
-    # 2. Python fragen (liest die Variable sicher aus der Konfig)
-    # OVERRIDE=$(python3 -c "from config.settings import x11_input_method_OVERRIDE; print(x11_input_method_OVERRIDE.strip())" 2>/dev/null)
 
-    OVERRIDE=$(python3 -c "
-    import importlib.util, sys
-    spec = importlib.util.spec_from_file_location('settings', '$(pwd)/config/settings.py')
-    # Stdout unterdrücken während Import
-    import io
-    old_stdout = sys.stdout
-    sys.stdout = io.StringIO()
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    sys.stdout = old_stdout
-    # Jetzt sauber ausgeben
-    print(mod.x11_input_method_OVERRIDE)
-    ")
+    # read file if readable, else set default
+    timeout=20
+    file='/tmp/sl5_aura/aura_engine.heartbeat'
+    if inotifywait -q -t "$timeout" -e modify,close_write,create "$(dirname "$file")"; then
+      echo "heartbeat change found $(dirname "$file")"
+    fi
+
+    backup_settings_x11_input_method_OVERRIDE_PATH="/tmp/sl5_aura/settings_py_backup/x11_input_method_OVERRIDE.txt"
+    path="$backup_settings_x11_input_method_OVERRIDE_PATH"
+    if [[ -r "$path" ]]; then OVERRIDE=$(<"$path"); else OVERRIDE="ERROR_2026-0301-0913"; fi
 
     echo "DEBUG OVERRIDE: '$OVERRIDE'"
     [[ "$OVERRIDE" == "dotool" ]] && INPUT_METHOD="dotool"

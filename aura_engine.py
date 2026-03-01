@@ -166,10 +166,12 @@ from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 
 
 
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 setup_project_structure(PROJECT_ROOT)
 
 LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"
+
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -183,11 +185,29 @@ LOCK_DIR = TMP_DIR / "sl5_aura" / "aura_lock"
 
 
 
+# backup settings.x11_input_method_OVERRIDE so linux/mac shell script can read this easier
+settings_py_PATH = PROJECT_ROOT / 'config' / 'settings.py'
+settings_py_backup_DIR = TMP_DIR / "sl5_aura" / "settings_py_backup"
+
+settings_py_backup_PATH = TMP_DIR / "sl5_aura" / "settings_py_backup"
+backup_settings_x11_input_method_OVERRIDE_PATH = settings_py_backup_PATH / 'x11_input_method_OVERRIDE.txt'
+
+
+import os
+path = backup_settings_x11_input_method_OVERRIDE_PATH
+content = settings.x11_input_method_OVERRIDE
+# os.makedirs(os.path.dirname(path), exist_ok=True)
+with open(path, "w", encoding="utf-8") as f:
+    f.write(content)
+#
+#
+# with open(backup_settings_x11_input_method_OVERRIDE_PATH, 'w') as f:
+#     f.write(settings.x11_input_method_OVERRIDE)
 
 
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+
 LANGUAGETOOL_JAR_PATH = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
 
 

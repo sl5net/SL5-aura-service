@@ -184,6 +184,12 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'renumber_clipboard_text.py']
     }),
 
+# todo:
+# 09:58:10,526 - INFO   - 📢📢📢 ### kugel gemini a ###
+# 09:58:25,797 - INFO   - 📢📢📢 ### google ###
+# 09:58:42,008 - INFO   - 📢📢📢 ### google gemini ###
+
+
 
     #Google ein StudioGoogle my styleGoogle ist StudioGoogle StückGoogle my style
     # google g bedeuten
@@ -209,6 +215,8 @@ FUZZY_MAP_pre = [
     # google will termine
     # google jimmy lai
     # cool gemini
+
+
 
     # EXAMPLE: gemini
     ('https://aistudio.google.com/prompts/new_chat', r'''(?ix)

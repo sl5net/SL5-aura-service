@@ -36,11 +36,10 @@ def setup_project_structure(project_root_str: str):
         TMP_DIR / "sl5_aura" / "tts_output": None,
         TMP_DIR / "sl5_aura" / "session" : None,
         TMP_DIR / "sl5_aura" / "session" / "lock": None,
+
+        TMP_DIR / "sl5_aura" / "settings_py_backup": None,
     }
-
-
-
-
+    # backup settings.x11_input_method_OVERRIDE so linux/mac shell script can read this easier
 
     # Combine both dictionaries
     all_dirs_to_create = {**project_dirs, **absolute_dirs}
