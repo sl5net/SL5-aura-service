@@ -1,11 +1,11 @@
 import os
 import re
 import time
-from pathlib import Path
 
-import os
-import re
-import time
+
+
+
+
 
 
 def check_map_health(file_path, module, logger):
@@ -18,7 +18,7 @@ def check_map_health(file_path, module, logger):
         if (time.time() - os.path.getmtime(file_path)) > 3600:
             return
     except Exception as e:
-        print(f'2026-0301-1434: e')
+        print(f'2026-0301-1434: {e}')
         return
 
     # 2. Bekannte Listen-Namen, nach denen wir im Modul suchen
@@ -58,10 +58,8 @@ def check_map_health(file_path, module, logger):
             logger.error("=" * 60)
 
 
-import re
-import os
-import json
-from pathlib import Path
+
+
 
 def validate_map_structure(map_data, file_path, logger):
     """
