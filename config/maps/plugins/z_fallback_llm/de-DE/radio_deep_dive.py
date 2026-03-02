@@ -221,7 +221,12 @@ def main():
         return
 
     target = random.choice(candidates)
-    print(f"Processing ({len(candidates)} pending): {target}")
+    target_pretty = target
+    target_pretty = target_pretty.lstrip("/docs/")
+    target_pretty = target_pretty.lstrip("/README.md")
+
+
+    print(f"Processing ({len(candidates)} pending): {target_pretty}")
 
     with open(target, 'r', encoding='utf-8') as f:
         content = f.read(4000)  # Slightly reduced to 4k for better stability
@@ -235,9 +240,10 @@ def main():
             print("  !! Technical Failure: Could not generate question.")
             return
 
-        answer = question.replace("#", " ")
-        answer = question.replace("*", " ")
+        question = question.replace("#", " ")
+        question = question.replace("*", " ")
 
+        question = question.lstrip("/docs/")
 
         # ✅ ERST ausgeben, DANN vorlesen
         print(f"\n🤖 MODERATOR: {question}")
@@ -252,6 +258,9 @@ def main():
         answer = call_ollama(a_prompt, "Du bist ein technischer Experte für das Aura-System.")
         answer = answer.replace("#", " ")
         answer = answer.replace("*", " ")
+
+        answer = answer.lstrip("/docs/")
+
 
         if mod_thread:
             mod_thread.join()  # Warten bis Moderator fertig
@@ -303,7 +312,7 @@ def DEMO_MODE():
     return
 
 if __name__ == "__main__":
-    if 0:
+    if 1:
         DEMO_MODE()
     else:
         main()

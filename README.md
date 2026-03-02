@@ -423,7 +423,3 @@ If you find this tool useful, please consider buying us a coffee! Your support h
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
 
 
-
-IgnorePkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils 
-
-nvidia-575xx-settings mhwd-nvidia-575xx
