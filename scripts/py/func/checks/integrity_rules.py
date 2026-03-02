@@ -187,6 +187,11 @@ INTEGRITY_CHECKS = {
 
 
 
+    "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py": [
+        'espeak-ng',
+        'lstrip("/docs/',
+    ],
+
     # should_remove_zips_after_unpack=true It's eventually useful to have it sometimes longer but maybe not online and not at costumers
 
     # --- Start of Ensures language selection is included ---

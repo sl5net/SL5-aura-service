@@ -1,3 +1,4 @@
+# config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py
 import os
 import random
 import re
@@ -7,8 +8,11 @@ import json
 import datetime
 import sys
 import urllib.request
+import threading
+
 from pathlib import Path
 import subprocess  # Added for espeak support
+# config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py
 
 # --- METADATA ---
 VERSION = "1.1.0"
@@ -27,6 +31,7 @@ DB_PATH = SCRIPT_DIR / "llm_cache.db"
 # Go up to the repository root
 REPO_ROOT = SCRIPT_DIR.parents[4]
 
+_speech_lock = threading.Lock()
 
 def init_db():
     """
@@ -179,29 +184,29 @@ PIPER_SERVER_PORT = 5002
 PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
 PIPER_SPEAK_FILE = os.path.expanduser("~/projects/py/TTS/speak_file.py")
 
-import threading
 
 def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
     if not text or not globals().get('SPEECH_ENABLED', True):
         return None
 
     def _do_speak(use_espeak2):
-        if not use_espeak2:
-            try:
-                with open('/tmp/speak_server_input.txt', 'w') as f:
-                    f.write(text)
-                requests.post(PIPER_SERVER_URL, verify=False, timeout=60)
-                return
-            except requests.exceptions.ConnectionError:
-                print("  !! Piper Server nicht erreichbar — Fallback zu espeak")
-            except Exception as e:
-                print(f"  !! Piper Error: {e} — Fallback zu espeak")
+        with _speech_lock:  # 🔒 Nur eine Sprachausgabe gleichzeitig
+            if not use_espeak2:
+                try:
+                    with open('/tmp/speak_server_input.txt', 'w') as f:
+                        f.write(text)
+                    requests.post(PIPER_SERVER_URL, verify=False, timeout=60)
+                    return
+                except requests.exceptions.ConnectionError:
+                    print("  !! Piper Server nicht erreichbar — Fallback zu espeak")
+                except Exception as e:
+                    print(f"  !! Piper Error: {e} — Fallback zu espeak-ng")
 
-        # Fallback: espeak
-        try:
-            subprocess.run(["espeak", "-v", voice, "-s", "150", "-p", str(pitch), text])
-        except Exception as e:
-            print(f"  !! Speech Error (espeak): {e}")
+            # Fallback: espeak-ng
+            try:
+                subprocess.run(["espeak-ng", "-v", voice, "-s", "150", "-p", str(pitch), text])
+            except Exception as e:
+                print(f"  !! Speech Error (espeak-ng): {e}")
 
     t = threading.Thread(target=_do_speak, args=(use_espeak,))
     t.start()
