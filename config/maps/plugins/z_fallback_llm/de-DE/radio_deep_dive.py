@@ -143,11 +143,11 @@ def save_to_aura_db(question, answer, file_path):
     clean_input = question.lower().replace("?", "").strip()
 
     # GitHub Link logic
-    rel_path = ""
-    if "STT/" in file_path:
-        rel_path = file_path.split("STT/")[1]
-    elif "SL5-aura-service/" in file_path:
-        rel_path = file_path.split("SL5-aura-service/")[1]
+    #rel_path = ""
+    #if "STT/" in file_path:
+    #    rel_path = file_path.split("STT/")[1]
+    #elif "SL5-aura-service/" in file_path:
+    #    rel_path = file_path.split("SL5-aura-service/")[1]
     # github_link = f"https://github.com/sl5net/SL5-aura-service/blob/master/{rel_path}" if rel_path else ""
 
     github_link = get_github_url(file_path)
@@ -189,9 +189,6 @@ PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
 PIPER_SPEAK_FILE = os.path.expanduser("~/projects/py/TTS/speak_file.py")
 
 import webbrowser  # Zum Öffnen der GitHub-Seite
-import sys
-
-
 
 def get_github_url(file_path):
     """
