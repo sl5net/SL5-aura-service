@@ -1,9 +1,11 @@
 import os
 import random
+import re
 import sqlite3
 import hashlib
 import json
 import datetime
+import sys
 import urllib.request
 from pathlib import Path
 import subprocess  # Added for espeak support
@@ -42,6 +44,21 @@ def init_db():
     conn.close()
 
 
+def is_allowed_language(file_path):
+    filename = os.path.basename(file_path).lower()
+
+    pattern = r'[-_]([a-z]{2})(?:[-_]|lang|\.md$)'
+    matches = re.findall(pattern, filename)
+
+    if not matches:
+        return True  # Kein Kürzel → verwenden
+
+    # Nur ausschließen wenn eindeutig NICHT de/en
+    if any(lang in ('de', 'en') for lang in matches):
+        return True
+
+    return False
+
 def get_files_needing_update(root_dir):
     """
     Version 1.1.0: Filters files that are new or have been modified.
@@ -72,6 +89,9 @@ def get_files_needing_update(root_dir):
             continue
 
     conn.close()
+
+    needs_processing = [f for f in needs_processing if is_allowed_language(f)]
+
     return needs_processing
 
 
@@ -150,34 +170,48 @@ def save_to_aura_db(question, answer, file_path):
         print(f"Database Error: {e}")
 
 
-def speak(text, voice="de-de", pitch=50, blocking=False):
-    """
-    Version 1.3.2: Merged speech function.
-    Supports global toggle, custom pitch, and optional blocking.
-    """
-    # Check if speech is enabled globally (ensure SPEECH_ENABLED is defined at top)
+
+import requests
+import subprocess
+import os
+import time
+
+PIPER_SERVER_HOST = '127.0.0.1'
+PIPER_SERVER_PORT = 5002
+PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
+PIPER_SPEAK_FILE = os.path.expanduser("~/projects/py/TTS/speak_file.py")
+
+import threading
+
+def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
     if not text or not globals().get('SPEECH_ENABLED', True):
         return None
 
-    try:
-        # -v: voice, -s: speed, -p: pitch
-        # We use Popen to allow asynchronous execution
-        process = subprocess.Popen([
-            "espeak-ng",
-            "-v", voice,
-            "-s", "150",
-            "-p", str(pitch),
-            text
-        ])
+    def _do_speak(use_espeak2):
+        if not use_espeak2:
+            try:
+                with open('/tmp/speak_server_input.txt', 'w') as f:
+                    f.write(text)
+                requests.post(PIPER_SERVER_URL, verify=False, timeout=60)
+                return
+            except requests.exceptions.ConnectionError:
+                print("  !! Piper Server nicht erreichbar — Fallback zu espeak")
+            except Exception as e:
+                print(f"  !! Piper Error: {e} — Fallback zu espeak")
 
-        if blocking:
-            process.wait()
+        # Fallback: espeak
+        try:
+            subprocess.run(["espeak", "-v", voice, "-s", "150", "-p", str(pitch), text])
+        except Exception as e:
+            print(f"  !! Speech Error (espeak): {e}")
 
-        return process
-    except Exception as e:
-        print(f"  !! Speech Error: {e}")
-        return None
+    t = threading.Thread(target=_do_speak, args=(use_espeak,))
+    t.start()
 
+    if blocking:
+        t.join()
+
+    return t  # statt Prozess jetzt Thread zurückgeben
 
 def main():
     init_db()
@@ -197,40 +231,75 @@ def main():
         # --- PHASE 1: MODERATOR ---
         print("AI Moderator is thinking...")
         q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze Radio-Frage auf Deutsch."
-        question = call_ollama(q_prompt, "Du bist Moderator beim Radio Aura. Halte dich kurz.")
+        question = call_ollama(q_prompt, "Du bist Moderator beim Radio Aura. Deine Hobies:  privacy-first, voice assistant, scriptable rule engines. Halte dich kurz.")
 
         if not question:
             print("  !! Technical Failure: Could not generate question.")
             return
 
         # ✅ ERST ausgeben, DANN vorlesen
-        print(f"\nMODERATOR (Voice: de-de): {question}")
-        import sys
-        sys.stdout.flush()  # Sofort sichtbar machen
-        mod_voice_proc = speak(question, voice="de-de", pitch=50, blocking=False)
+        print(f"\n🤖 MODERATOR: {question}")
+        sys.stdout.flush()
+        # speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
+        mod_thread = speak(question, blocking=False,use_espeak=True)
 
-        # --- PHASE 2: EXPERT ---
-        print("AI Expert is thinking (Parallel)...")
-        a_prompt = f"Kontext: {content}\nFrage: {question}\n\nBeantworte die Frage kurz (max 3 Sätze) auf Deutsch."
-        answer = call_ollama(a_prompt, "Du bist ein technischer Experte.")
+        # 3. AI Expert Round
+        print("AI Expert is thinking...")
+        a_prompt = f"Kontext: {content}\nFrage: {question}\n\nBeantworte die Frage kurz und prägnant auf Deutsch (max 3 Sätze)."
 
-        if mod_voice_proc:
-            mod_voice_proc.wait()
+        answer = call_ollama(a_prompt, "Du bist ein technischer Experte für das Aura-System.")
+
+        if mod_thread:
+            mod_thread.join()  # Warten bis Moderator fertig
 
         if answer:
-            # ✅ ERST ausgeben, DANN vorlesen
-            print(f"EXPERT (Voice: de+f2): {answer}\n")
-            sys.stdout.flush()  # Sofort sichtbar machen
+            print(f"\n🙋‍♀️ EXPERT: {answer}\n")
+            sys.stdout.flush()
             save_to_aura_db(question, answer, target)
-            exp_voice_proc = speak(answer, voice="de+f2", pitch=40, blocking=False)
-
-            if exp_voice_proc:
-                exp_voice_proc.wait()
+            exp_thread = speak(answer, blocking=False)
+            if exp_thread:
+                exp_thread.join()
 
             print("Radio segment saved and tracked.")
         else:
             print("  !! Technical Failure: Could not generate answer.")
 
 
+def DEMO_MODE():
+    print("🎙️ DEMO MODE — playing cached results")
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT p.prompt_text, r.response_text
+        FROM responses r
+        JOIN prompts p ON r.prompt_hash = p.hash
+        WHERE p.keywords = 'radio_deep_dive'
+        ORDER BY RANDOM()
+        LIMIT 1
+    """)
+    row = cursor.fetchone()
+    conn.close()
+
+    if not row:
+        print("  !! Kein Cache vorhanden. Erst normal laufen lassen.")
+        return
+
+    question, answer = row
+    print(f"\nMODERATOR: {question}")
+    sys.stdout.flush()
+    mod_thread = speak(question, blocking=False,use_espeak=True)
+    if mod_thread:
+        mod_thread.join()
+
+    print(f"\nEXPERT: {answer}\n")
+    sys.stdout.flush()
+    exp_thread = speak(answer, blocking=False)
+    if exp_thread:
+        exp_thread.join()
+    return
+
 if __name__ == "__main__":
-    main()
+    if 0:
+        DEMO_MODE()
+    else:
+        main()
