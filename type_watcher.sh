@@ -131,10 +131,11 @@ PRIMARY_TTS_ENGINE=$($PYTHON_BIN -c "import sys; sys.path.append('$PROJECT_ROOT'
 
 echo "PRIMARY_TTS_ENGINE=$PRIMARY_TTS_ENGINE"
 
-# Das kann unangenehm genehm sein, wenn man einmal längere Zeit die Shift Taste drücken möchte zum Beispiel:
-# Schön es aktuell nicht mehr nötig ist:
-# $PROJECT_ROOT/tools/keep-keys-up.sh &
+# Das kann unangenehm genehm sein, wenn man einmal längere Zeit die Shift Taste drücken möchte zum
 
+# Rarely needed, but acts as a safety net for stuck modifier keys.
+# Releases Alt/Ctrl/Shift/Super etc. every 15s without interrupting active key combos.
+$PROJECT_ROOT/tools/keep-keys-up.sh &
 
 if [[ "$PRIMARY_TTS_ENGINE" == "ESPEAK" ]]; then
     echo "Primary speak is ESPEAK, disabling external speaker script by clearing path."

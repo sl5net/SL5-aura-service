@@ -368,10 +368,48 @@ logger = logging.getLogger()
 #     def flush(self):
 #         self.terminal.flush()
 
-
+# aura_engine.py:371
 from config.filters.settings_local_log_filter import LOG_EXCLUDE, LOG_ONLY
 LOG_FILTER_COMPILED_LOG_ONLY = [re.compile(p) for p in LOG_ONLY]
 LOG_FILTER_COMPILED = [re.compile(p) for p in LOG_EXCLUDE]
+LOG_FILTER_SETTINGS_PATH = os.path.join(os.path.dirname(__file__), "config", "filters", "settings_local_log_filter.py")
+LOG_FILTER_CHECK_INTERVAL_MIN = 4
+LOG_FILTER_CHECK_INTERVAL_MAX = 10
+LOG_FILTER_CHECK_INTERVAL_STEP = 2
+LOG_FILTER_current_interval = LOG_FILTER_CHECK_INTERVAL_MIN
+
+LOG_FILTER_last_modified = os.path.getmtime(LOG_FILTER_SETTINGS_PATH)
+LOG_FILTER_last_checked = time.monotonic()
+
+def LOG_FILTER_refresh_if_needed():
+    global LOG_FILTER_COMPILED, LOG_FILTER_COMPILED_LOG_ONLY
+    global LOG_FILTER_last_modified, LOG_FILTER_last_checked
+    global LOG_FILTER_current_interval
+
+    now = time.monotonic()
+    if now - LOG_FILTER_last_checked < LOG_FILTER_current_interval:
+        return
+
+    LOG_FILTER_last_checked = now
+
+    current_mtime = os.path.getmtime(LOG_FILTER_SETTINGS_PATH)
+    if current_mtime != LOG_FILTER_last_modified:
+        from importlib import reload
+        import config.filters.settings_local_log_filter as settings
+        reload(settings)
+
+        LOG_FILTER_COMPILED_LOG_ONLY = [re.compile(p) for p in settings.LOG_ONLY]
+        LOG_FILTER_COMPILED = [re.compile(p) for p in settings.LOG_EXCLUDE]
+        LOG_FILTER_last_modified = current_mtime
+
+        # Änderung erkannt → reset für schnelle Folgeupdates
+        LOG_FILTER_current_interval = LOG_FILTER_CHECK_INTERVAL_MIN
+    else:
+        # Keine Änderung → Intervall erhöhen bis Max
+        LOG_FILTER_current_interval = min(
+            LOG_FILTER_current_interval + LOG_FILTER_CHECK_INTERVAL_STEP,
+            LOG_FILTER_CHECK_INTERVAL_MAX
+        )
 # except ImportError:
 #     LOG_FILTER_COMPILED = []
 
@@ -386,6 +424,8 @@ class SafeStreamToLogger(object):
     def write(self, buf):
 
         # self.terminal.write(f"DEBUG_STDOUT 2026-0228-1533: {buf}")
+
+        LOG_FILTER_refresh_if_needed()
 
         if LOG_ONLY:
             if not any(p.search(buf) for p in LOG_FILTER_COMPILED_LOG_ONLY):

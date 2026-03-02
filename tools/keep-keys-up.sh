@@ -1,78 +1,102 @@
 #!/usr/bin/env bash
 # File: ~/bin/keep-keys-up.sh
-# Purpose: every 5s send "keyup" for modifier keys unless TTS output dir non-empty
+# Purpose: Every few seconds send "keyup" for stuck modifier keys.
+#          Skips if user is actively pressing keys (to not interrupt text selection).
 
-# Prüfe, ob mehr als eine Instanz dieses Scripts läuft
-if [ "$(pgrep -f $(basename "$0"))" != "$$" ]; then
-    echo "Script läuft bereits."
-    exit 1
-fi
+# --- Singleton via flock ---
+exec 9>/tmp/keep-keys-up.lock
+flock -n 9 || { echo "Script läuft bereits."; exit 1; }
 
 TTS_DIR="/tmp/sl5_aura/tts_output"
-SLEEP=1
+SLEEP_BETWEEN_CHECKS=15   # Pause zwischen den Durchläufen
 
-# Ensure we have xdotool available
-command -v xdotool >/dev/null 2>&1 || { echo "xdotool not found"; exit 1; }
-command -v xset >/dev/null 2>&1 || { echo "xset not found"; exit 1; }
+# --- Abhängigkeiten prüfen ---
+command -v xdotool >/dev/null 2>&1 || { echo "xdotool nicht gefunden"; exit 1; }
+command -v xset    >/dev/null 2>&1 || { echo "xset nicht gefunden"; exit 1; }
 
-# Ensure DISPLAY is set (adjust if you need specific display)
+# --- DISPLAY sicherstellen ---
 : "${DISPLAY:=:0}"
 export DISPLAY
 
+# --- Einmalige Keyboard-Konfiguration je nach Session ---
+case "$XDG_SESSION_TYPE" in
+    x11)
+        echo "X11 erkannt: Setze caps:none via setxkbmap"
+        setxkbmap -option caps:none
+        ;;
+    wayland)
+        echo "Wayland erkannt ($XDG_CURRENT_DESKTOP)"
+        case "$XDG_CURRENT_DESKTOP" in
+            *KDE*)
+                kwriteconfig6 --file kxkbrc --group Layout --key Options "caps:none"
+                qdbus org.kde.keyboard /Layouts reconfigure 2>/dev/null || true
+                ;;
+            *GNOME*)
+                gsettings set org.gnome.desktop.input-sources xkb-options "['caps:none']"
+                ;;
+            *)
+                echo "  Unbekanntes Wayland-Desktop: $XDG_CURRENT_DESKTOP – kein caps:none gesetzt"
+                ;;
+        esac
+        ;;
+    *)
+        echo "Unbekannte Session-Umgebung: '$XDG_SESSION_TYPE' – fahre trotzdem fort"
+        ;;
+esac
 
-# Prüfen, welche Session aktuell läuft
-if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
-    # --- X11 Welt ---
-    echo "X11 erkannt: Nutze setxkbmap"
-    setxkbmap -option caps:none
+# --- Hilfsfunktion: Prüfe ob Tasten physisch gedrückt sind (nur X11) ---
+any_key_physically_pressed() {
+    # xinput query-state gibt "key[N]=down" aus wenn eine Taste gedrückt ist
+    # Wir suchen das Keyboard-Gerät automatisch (erstes "keyboard" das kein "Virtual" ist)
+    local device_id
+    device_id=$(xinput list 2>/dev/null \
+        | grep -i "keyboard" \
+        | grep -iv "virtual\|pointer\|XTEST" \
+        | head -1 \
+        | grep -oP 'id=\K[0-9]+')
 
-elif [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-    # --- Wayland Welt ---
-    echo "Wayland erkannt: Nutze Desktop-spezifische Befehle"
-
-    # Unter Wayland müssen wir wissen, ob es KDE oder GNOME ist
-    if [[ "$XDG_CURRENT_DESKTOP" == *"KDE"* ]]; then
-        # KDE Wayland (Nutzt kwriteconfig, um die Einstellung zu setzen)
-
-        kwriteconfig6 --file kxkbrc --group Layout --key Options "caps:none"
-
-        qdbus org.kde.keyboard /Layouts reconfigure 2>/dev/null || true
-
-    elif [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]]; then
-        # GNOME Wayland
-        gsettings set org.gnome.desktop.input-sources xkb-options "['caps:none']"
+    if [ -z "$device_id" ]; then
+        return 1  # Kein Gerät gefunden → lieber nicht blockieren
     fi
-else
 
-  echo "Unbekannte Session-Umgebung ($XDG_SESSION_TYPE)"
-fi
+    xinput query-state "$device_id" 2>/dev/null | grep -q "key\[.*\]=down"
+}
 
-
+# --- Hauptschleife ---
+echo "keep-keys-up läuft (PID $$). Interval: ${SLEEP_BETWEEN_CHECKS}s"
 
 while true; do
-  # if directory exists and is non-empty, skip sending keys
-  #if [ -d "$TTS_DIR" ] && [ "$(ls -A "$TTS_DIR" 2>/dev/null)" ]; then
-   # sleep "$SLEEP"
-#    continue
-  #fi
+    sleep "$SLEEP_BETWEEN_CHECKS"
 
-  sleep 0.2
+    # Unter X11: Tasten-Druck prüfen → wenn aktiv, überspringen
+    if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+        if any_key_physically_pressed; then
+            echo "  [skip] Taste physisch gedrückt – warte auf Loslassen..."
+            # Warte bis alle Tasten losgelassen wurden (max 10s)
+            local_timeout=10
+            while any_key_physically_pressed && [ $local_timeout -gt 0 ]; do
+                sleep 0.3
+                (( local_timeout-- )) || true
+            done
+            # Nochmal kurz warten damit die Aktion (z.B. Markierung) abgeschlossen ist
+            sleep 0.5
+        fi
+    fi
 
-  # send keyup for modifiers (ignore errors)
-#  xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R Caps_Lock 2>/dev/null || true
-#  xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R Caps_Lock Super_L Super_R 2>/dev/null || true
-  xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R Caps_Lock Super_L Super_R ISO_Level3_Shift Num_Lock 2>/dev/null || true
+    # Modifier-Tasten freigeben
+    xdotool keyup \
+        Alt_L Alt_R \
+        Control_L Control_R \
+        Shift_L Shift_R \
+        Super_L Super_R \
+        ISO_Level3_Shift \
+        Num_Lock \
+        Caps_Lock 2>/dev/null || true
 
+    # Caps Lock ggf. ausschalten (falls noch aktiv nach keyup)
+    if xset q 2>/dev/null | grep -q "Caps Lock:   on"; then
+        xdotool key Caps_Lock
+        echo "  [fix] Caps Lock ausgeschaltet"
+    fi
 
-  # xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R 2>/dev/null || true
-
-  # 'xset q' fragt den Status ab. Wenn "Caps Lock: on" gefunden wird,
-  # drücken wir die Taste einmal, um sie auszuschalten.
-  if xset q | grep -q "Caps Lock:   on"; then
-    xdotool key Caps_Lock
-  fi
-
-  sleep "$SLEEP"
 done
-
-
