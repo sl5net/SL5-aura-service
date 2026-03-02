@@ -126,6 +126,7 @@ def call_ollama(prompt, system_prompt=""):
         return None
 
 
+
 def save_to_aura_db(question, answer, file_path):
     """
     Version 1.1.0: Saves dialogue and updates the tracking state.
@@ -172,9 +173,6 @@ def save_to_aura_db(question, answer, file_path):
 
 
 import requests
-import subprocess
-import os
-import time
 
 PIPER_SERVER_HOST = '127.0.0.1'
 PIPER_SERVER_PORT = 5002
@@ -231,11 +229,15 @@ def main():
         # --- PHASE 1: MODERATOR ---
         print("AI Moderator is thinking...")
         q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze Radio-Frage auf Deutsch."
-        question = call_ollama(q_prompt, "Du bist Moderator beim Radio Aura. Deine Hobies:  privacy-first, voice assistant, scriptable rule engines. Halte dich kurz.")
+        question = call_ollama(q_prompt, "Du bist Moderator beim Radio Aura. Deine Hobbies:  privacy-first, voice assistant, scriptable rule engines, regEx, SqlLite. Halte dich kurz.")
 
         if not question:
             print("  !! Technical Failure: Could not generate question.")
             return
+
+        answer = question.replace("#", " ")
+        answer = question.replace("*", " ")
+
 
         # ✅ ERST ausgeben, DANN vorlesen
         print(f"\n🤖 MODERATOR: {question}")
@@ -248,6 +250,8 @@ def main():
         a_prompt = f"Kontext: {content}\nFrage: {question}\n\nBeantworte die Frage kurz und prägnant auf Deutsch (max 3 Sätze)."
 
         answer = call_ollama(a_prompt, "Du bist ein technischer Experte für das Aura-System.")
+        answer = answer.replace("#", " ")
+        answer = answer.replace("*", " ")
 
         if mod_thread:
             mod_thread.join()  # Warten bis Moderator fertig
