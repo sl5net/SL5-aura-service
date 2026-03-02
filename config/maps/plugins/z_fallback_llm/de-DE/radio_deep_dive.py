@@ -189,6 +189,8 @@ def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
     if not text or not globals().get('SPEECH_ENABLED', True):
         return None
 
+    text = ' | GitHub SL5net Aura | ' + text # speak the GitHub repo address always
+
     def _do_speak(use_espeak2):
         with _speech_lock:  # 🔒 Nur eine Sprachausgabe gleichzeitig
             if not use_espeak2:
