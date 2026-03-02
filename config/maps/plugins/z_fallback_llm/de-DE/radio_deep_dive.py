@@ -22,6 +22,8 @@ VERSION = "1.1.0"
 MODEL_NAME = "llama3.2:latest"
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 
+OPEN_BROWSER = True  # Setze auf False für Massen-Generierung im Hintergrund
+
 SPEECH_ENABLED = True
 BLOCKING_SPEECH = False # Set to True to wait for speech to finish before next step
 
@@ -146,7 +148,9 @@ def save_to_aura_db(question, answer, file_path):
         rel_path = file_path.split("STT/")[1]
     elif "SL5-aura-service/" in file_path:
         rel_path = file_path.split("SL5-aura-service/")[1]
-    github_link = f"https://github.com/sl5net/SL5-aura-service/blob/master/{rel_path}" if rel_path else ""
+    # github_link = f"https://github.com/sl5net/SL5-aura-service/blob/master/{rel_path}" if rel_path else ""
+
+    github_link = get_github_url(file_path)
 
     try:
         conn = sqlite3.connect(DB_PATH)
@@ -184,6 +188,25 @@ PIPER_SERVER_PORT = 5002
 PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
 PIPER_SPEAK_FILE = os.path.expanduser("~/projects/py/TTS/speak_file.py")
 
+import webbrowser  # Zum Öffnen der GitHub-Seite
+import sys
+
+
+
+def get_github_url(file_path):
+    """
+    Erstellt den passenden GitHub-Link aus dem lokalen Pfad.
+    """
+    rel_path = ""
+    # Pfad bereinigen für GitHub (master branch)
+    if "STT/" in str(file_path):
+        rel_path = str(file_path).split("STT/")[1]
+    elif "SL5-aura-service/" in str(file_path):
+        rel_path = str(file_path).split("SL5-aura-service/")[1]
+
+    if rel_path:
+        return f"https://github.com/sl5net/SL5-aura-service/blob/master/{rel_path}"
+    return None
 
 def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
     if not text or not globals().get('SPEECH_ENABLED', True):
@@ -238,6 +261,16 @@ def main():
     with open(target, 'r', encoding='utf-8') as f:
         content = f.read(4000)  # Slightly reduced to 4k for better stability
 
+        # URL generieren und Browser öffnen
+        doc_url = get_github_url(target)
+        # NUR öffnen, wenn der Schalter aktiv ist
+        if OPEN_BROWSER and doc_url:
+            print(f"\n📖 Öffne Dokumentation im Browser: {doc_url}")
+            webbrowser.open(doc_url)
+        elif doc_url:
+            print(f"\n🔗 Dokumentations-Link: {doc_url}")  # Nur Text-Ausgabe im Hintergrund-Modus
+
+
         # --- PHASE 1: MODERATOR ---
         print("AI Moderator is thinking...")
         q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze Radio-Frage auf Deutsch."
@@ -290,7 +323,7 @@ def DEMO_MODE():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT p.prompt_text, r.response_text
+        SELECT p.prompt_text, r.response_text, r.comment
         FROM responses r
         JOIN prompts p ON r.prompt_hash = p.hash
         WHERE p.keywords = 'radio_deep_dive'
@@ -304,7 +337,17 @@ def DEMO_MODE():
         print("  !! Kein Cache vorhanden. Erst normal laufen lassen.")
         return
 
-    question, answer = row
+    # question, answer = row
+
+
+    question, answer, doc_url = row
+
+    # 1. Dokument im Browser öffnen (falls Link vorhanden und Browser-Modus an)
+    if globals().get('OPEN_BROWSER', True) and doc_url:
+        print(f"\n📖 Öffne Dokumentation: {doc_url}")
+        webbrowser.open(doc_url)
+
+
     print(f"\nMODERATOR: {question}")
     sys.stdout.flush()
     mod_thread = speak(question, blocking=False,use_espeak=True)
@@ -318,8 +361,17 @@ def DEMO_MODE():
         exp_thread.join()
     return
 
+
 if __name__ == "__main__":
-    if 1:
+    # Vorbereitungen treffen (DB prüfen)
+    init_db()
+
+    # SCHALTER: 1 für Demo (Cache), 0 für Generation (KI)
+    USE_DEMO = 1
+
+    if USE_DEMO:
         DEMO_MODE()
     else:
         main()
+
+        
