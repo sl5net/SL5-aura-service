@@ -26,6 +26,9 @@ FUZZY_MAP_pre = [
 
 
 
+
+
+
     ('Antwort 3',
      r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?([df]\w*)$', 100,
     {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],

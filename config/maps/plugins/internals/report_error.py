@@ -66,7 +66,7 @@ def execute(match_data):
         with open(report_file, "a", encoding="utf-8") as f:
             f.write(f"📢 {timestamp}:\n{error_line}\n")
 
-        return f"Notiert: {error_line}"
+        return f" internals "
 
     except Exception as e:
         return f"Fehler im Reporting-Script: {str(e)}"

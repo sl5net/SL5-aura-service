@@ -3,47 +3,24 @@
 import re
 from pathlib import Path
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
-#    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 CONFIG_DIR = Path(__file__).parent
 
+from scripts.py.func.determine_current_user import determine_current_user
+current_user,_ = determine_current_user()
+
 FUZZY_MAP_pre = [
-    # === General Terms (Case-Insensitive) ===
-    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
-    # Importing to know:
-    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
-    # - means first is most important, lower rules maybe not get read.
-
-    # Kannst du nicht ein
-
-    # TEST: Vertauschte Regel (Regex vorn, ID hinten)
-    # (r'test_id', '^(test fehler|chaos monkey)$', 100, {}),
-    # ('test_id','^(test fehler|chaos monkey)$',  100, {}),
-
-    # TEST 1: Vertauschte einfache Regel
-    # (r'toggle_light', '^(taschenlampe an|licht an)$', 95, {}),
-
-    # TEST 2: Vertauschter Mehrzeiler (wie dein report_error)
-    # (r'check_system_health',
-    #  '^(system status|wie geht es dir|alles okay)$',
-    #  100,
-    #  {
-    #      'flags': re.IGNORECASE
-    #  }),
 
 
+    (f'{current_user}', r'^Aktueller user$'),
 
-    # EXAMPLE: "Fehler melden", "Logge Fehler", "Das war falsch"
-    ('report_error',r'^(fehler melden|logge fehler|das war falsch|fehler mail|fehlermeldung)$', 100,
-    {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
-    }),
+    (f'{current_user}', '^Benutzer$',),
+
+    (f'{current_user}','^Aktueller Benutzer$'),
+    (f'{current_user}','^aktuelle benutzt$'),
+    (f'{current_user}','^Aktuelle Benutze$'),
+    (f'{current_user}','^aktueller bill$'),
+
 
 #  Helps the Tool to switch to English
     # EXAMPLE: englisch
@@ -74,7 +51,30 @@ FUZZY_MAP_pre = [
      # EXAMPLE: Whatx  Aura  
      r'^(What\w*\b.*\bAura\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #
+
+    # EXAMPLE: "Fehler melden", "Logge Fehler", "Das war falsch"
+    ('report_error',
+     r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|das war falsch|da stimmt was nicht|bug melden|bugreport|ticket erstellen|problem melden|da ist ein fehler|das ist falsch|das ist ein bug)$',
+     100,
+     {
+         'flags': re.IGNORECASE,
+         'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
+     }),
+
 ]
-#!Sünde muss Santa bSondermüll!Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commandshörig antwortetSowas Advantage
+
+if current_user in ['seeh']:
+    FUZZY_MAP_pre_user_specific = [
+        ('report_error',
+         r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|das war falsch|da stimmt was nicht|bug melden|bugreport|ticket erstellen|problem melden|da ist ein fehler|das ist falsch|das ist ein bug)$',
+         100,
+         {
+             'flags': re.IGNORECASE,
+             'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
+         })
+    ]
+
+    FUZZY_MAP_pre.extend( FUZZY_MAP_pre_user_specific )
+
 
 

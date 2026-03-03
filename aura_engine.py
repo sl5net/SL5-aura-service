@@ -395,11 +395,11 @@ def LOG_FILTER_refresh_if_needed():
     current_mtime = os.path.getmtime(LOG_FILTER_SETTINGS_PATH)
     if current_mtime != LOG_FILTER_last_modified:
         from importlib import reload
-        import config.filters.settings_local_log_filter as settings
-        reload(settings)
+        import config.filters.settings_local_log_filter as settings202603030531
+        reload(settings202603030531)
 
-        LOG_FILTER_COMPILED_LOG_ONLY = [re.compile(p) for p in settings.LOG_ONLY]
-        LOG_FILTER_COMPILED = [re.compile(p) for p in settings.LOG_EXCLUDE]
+        LOG_FILTER_COMPILED_LOG_ONLY = [re.compile(p) for p in settings202603030531.LOG_ONLY]
+        LOG_FILTER_COMPILED = [re.compile(p) for p in settings202603030531.LOG_EXCLUDE]
         LOG_FILTER_last_modified = current_mtime
 
         # Änderung erkannt → reset für schnelle Folgeupdates
@@ -410,8 +410,6 @@ def LOG_FILTER_refresh_if_needed():
             LOG_FILTER_current_interval + LOG_FILTER_CHECK_INTERVAL_STEP,
             LOG_FILTER_CHECK_INTERVAL_MAX
         )
-# except ImportError:
-#     LOG_FILTER_COMPILED = []
 
 class SafeStreamToLogger(object):
     def __init__(self, logger, original_stream, file_handler):
