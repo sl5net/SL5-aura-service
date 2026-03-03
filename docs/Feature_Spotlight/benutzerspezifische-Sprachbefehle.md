@@ -45,9 +45,8 @@ current_user, _ = determine_current_user()
 if current_user in ['misterx']:
     MY_USER_RULES = [
         # Format: (Antwort/Aktion, Regex-Muster, Min-Genauigkeit, Optionen)
-        (f"Hallo {current_user}", r'^(hallo|hi)$', MIN_GENAUIGKEIT:=100)
+        (f"Hallo {current_user}", r'^(hallo|hi)$') 
     ]
     FUZZY_MAP_pre.extend(MY_USER_RULES)
-
 
 ```

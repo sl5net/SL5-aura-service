@@ -17,17 +17,23 @@ Check log/aura_engine.log to see the transcription!
 FUZZY_MAP_pre = [
     # Tech Hubs & Global Cities
     # EXAMPLE: area code of Silicon Valley
-    ('408', r'^area code (of )?Silicon Valley$', 90, {'flags': re.IGNORECASE}),
+    ('408', r'^area code (of )?Silicon Valley$', 90, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: area code of New York Manhattan
-    ('212', r'^area code (of )?New York( Manhattan)?$', 90, {'flags': re.IGNORECASE}),
+    ('212', r'^area code (of )?New York( Manhattan)?$', 90, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: area code of London
-    ('020', r'^area code (of )?London$', 90, {'flags': re.IGNORECASE}),
+    ('020', r'^area code (of )?London$', 90, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: area code of Tokyo
-    ('03', r'^area code (of )?Tokyo$', 90, {'flags': re.IGNORECASE}),
+    ('03', r'^area code (of )?Tokyo$', 90, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: area code of Seattle
-    ('206', r'^area code (of )?Seattle$', 90, {'flags': re.IGNORECASE}),
+    ('206', r'^area code (of )?Seattle$', 90, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: area code of Paris
-    ('01', r'^area code (of )?Paris$', 90, {'flags': re.IGNORECASE}),
+    ('01', r'^area code (of )?Paris$', 90, # min_accuracy
+ {'flags': re.IGNORECASE}),
 ]
 
 #

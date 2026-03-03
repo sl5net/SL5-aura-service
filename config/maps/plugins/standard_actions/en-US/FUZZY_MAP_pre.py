@@ -25,7 +25,8 @@ FUZZY_MAP_pre = [
     # google gemini a chat mit cheminée
 
     # EXAMPLE: good Morning
-    ('good evening', r'good Morning', 95, {'flags': re.IGNORECASE, 'skip_list': ['LT_SKIP_RATIO_THRESHOLD']} ),
+    ('good evening', r'good Morning', 95, # min_accuracy
+ {'flags': re.IGNORECASE, 'skip_list': ['LT_SKIP_RATIO_THRESHOLD']} ),
     #good Eventing Good morning this day
     #
 

@@ -17,24 +17,33 @@ FUZZY_MAP_pre = [
     # - means first is most importend, lower rules maybe not get read.
 
     # EXAMPLE: call
-    ('c', r'^\s*(call|check)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('c', r'^\s*(call|check)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: raise s
-    ('r', r'^\s*(raise)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('r', r'^\s*(raise)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: fold s
-    ('f', r'^\s*(fold)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('f', r'^\s*(fold)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: discard s
-    ('d', r'^\s*(discard)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('d', r'^\s*(discard)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: bet s
-    ('b', r'^\s*(bet)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('b', r'^\s*(bet)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: exchange s
-    ('x', r'^\s*(exchange)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('x', r'^\s*(exchange)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # Amount keys
     # EXAMPLE: 100
-    ('1', r'^\s*(100|one hundred)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('1', r'^\s*(100|one hundred)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: 280
-    ('2', r'^\s*(280|two fifty)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('2', r'^\s*(280|two fifty)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: 80
-    ('3', r'^\s*(80|fifty)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('3', r'^\s*(80|fifty)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
 ]

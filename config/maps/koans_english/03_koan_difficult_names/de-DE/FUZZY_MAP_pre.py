@@ -89,7 +89,8 @@ FUZZY_MAP_pre = [
 
     # And for the name?
     # EXAMPLE: Countess
-    ('Phonetics mastered!', r'^.*(Countess|Mondes|kund des|Kaum des|kund des|count tess).*$', 90, {'flags': re.IGNORECASE}),
+    ('Phonetics mastered!', r'^.*(Countess|Mondes|kund des|Kaum des|kund des|count tess).*$', 90, # min_accuracy
+ {'flags': re.IGNORECASE}),
 ]
 
 #Kaum deskund deskund des

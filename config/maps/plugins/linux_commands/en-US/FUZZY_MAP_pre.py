@@ -42,13 +42,16 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: AutoKey
-    ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
+    ('AutoKey', r'\bAuto k\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: pipe
-    ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, {'flags': re.IGNORECASE}),
+    ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: pipe
-    ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, {'flags': re.IGNORECASE}),
+    ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # === Linux/Unix Commands ===
 

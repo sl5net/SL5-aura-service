@@ -70,41 +70,53 @@ FUZZY_MAP_pre = [
     # - first is read first imported, lower rules maybe not get read.
 
     # EXAMPLE: pull requests
-    ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: pull requests
-    ('pull requests', r'\b(null|pull) requests\b', 82, {'flags': re.IGNORECASE}),
+    ('pull requests', r'\b(null|pull) requests\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: er brach
-    ('er branch', r'er\b (brach|Prime)\b', 82, {'flags': re.IGNORECASE}),
+    ('er branch', r'er\b (brach|Prime)\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
 
     # EXAMPLE: Feature prince
-    ('feature branch ', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
+    ('feature branch ', r'\bFeature\s*prince\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Feature prince
-    ('feature branch ', r'\bFeature\s*(prince|ranch)\b', 82, {'flags': re.IGNORECASE}),
+    ('feature branch ', r'\bFeature\s*(prince|ranch)\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: git checkout
-    ('git checkout ', r'^\s*(git|geht)\s+(Git Checkout|Check-out)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git checkout ', r'^\s*(git|geht)\s+(Git Checkout|Check-out)\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git checkout
-    ('git checkout ', r'^\s*(kitschiger|Geht Tscheka)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git checkout ', r'^\s*(kitschiger|Geht Tscheka)\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git branch
-    ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
+    ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Branch Name
-    ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
+    ('Branch Name', r'\bRanch\s*Namen\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Commit
-    (' Commit ', r'\bkomm\s*mit\b\s*', 82, {'flags': re.IGNORECASE}),
+    (' Commit ', r'\bkomm\s*mit\b\s*', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Commit Message
-    (' Commit Message ', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit Message ', r'\bkommen\s*mit\s*Message\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: neues Release
-    ('neues Release ', r'\bneues\s*(Release|Verlies)\b', 82, {'flags': re.IGNORECASE}),
+    ('neues Release ', r'\bneues\s*(Release|Verlies)\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
 
@@ -116,18 +128,22 @@ FUZZY_MAP_pre = [
     # Geht Staat git status git status Jetzt startet
 
     # EXAMPLE: git status
-    ('git status ', r'^\s*(Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git status ', r'^\s*(Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
 
     # EXAMPLE: Gliedstaaten
-    ('git status ', r'^\s*(Gliedstaat|Gliedstaaten|Jetzt Stadt|Geht Staat ist|geht status)\s+(ist)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git status ', r'^\s*(Gliedstaat|Gliedstaaten|Jetzt Stadt|Geht Staat ist|geht status)\s+(ist)\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Gliedstaat
-    ('git status ', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git status ', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: gitschtal
-    ('git status', r'^\s*(gitschtal|glitschte|quatscht hatte|quitscht|quitscht werden|Geht tat uns)\s+$', 80, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(gitschtal|glitschte|quatscht hatte|quitscht|quitscht werden|Geht tat uns)\s+$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 #geht statisch
 
@@ -135,10 +151,12 @@ FUZZY_MAP_pre = [
     # --- git add . --- git add .
     # Gitta hat
     # EXAMPLE: git add .
-    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App|er hat)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App|er hat)\s*(\.|\bpunkt\b)?\s*$', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Gitterbett
-    ('git add .', r'^\s*(Gitterbett|Geht er hin|kredit|quitte hat)\s*$', 78, {'flags': re.IGNORECASE}),
+    ('git add .', r'^\s*(Gitterbett|Geht er hin|kredit|quitte hat)\s*$', 78, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # Geht er hat
 
@@ -166,35 +184,48 @@ FUZZY_MAP_pre = [
 
     # --- git commit ---
     # EXAMPLE: Klitschko mit
-    ('git commit ', r'^\s*Klitschko mit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*Klitschko mit\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: kate Commit
-    ('git commit ', r'^\s*kate Commit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*kate Commit\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Einen Kometen
-    ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*Einen Kometen\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Geht Commit
-    ('git commit ', r'^\s*(Geht Commit|Geht womit|petkovic)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*(Geht Commit|Geht womit|petkovic)\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Geht komm Commit
-    ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*Geht komm Commit\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: gehst du mit
-    ('git commit ', r'^\s*(gehst du mit)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*(gehst du mit)\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: womit
-    ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*womit\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: geht cobit einen
-    ('git commit ', r'^geht cobit einen$', 85, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^geht cobit einen$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git push
-    ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push|pushen|prüfen|futsch)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('git push ', r'^\s*(git|big|geht|gitter)\s*(busch|push|pushen|prüfen|futsch)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: kate bush
-    ('git push ', r'^\s*kate\s+bush\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git push ', r'^\s*kate\s+bush\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: pitbull
-    ('git push ', r'^\s*pitbull\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git push ', r'^\s*pitbull\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # --- git pull ---
     # EXAMPLE: git pull
-    ('git pull ', r'^\s*(git|geht|quiet|gitter)\s*(pull|pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git pull ', r'^\s*(git|geht|quiet|gitter)\s*(pull|pohl|pool)\s*$', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: s git pull s
-    ('git pull ', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git pull ', r'^\s*git\s*pull\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # --- git diff ---
     # EXAMPLE: git diff
@@ -202,122 +233,160 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: Vergleich mit vorletztem Commit s
-    ('git diff HEAD~1', r'^Vergleich mit vorletztem Commit\s*$', 75, {'flags': re.IGNORECASE}),
+    ('git diff HEAD~1', r'^Vergleich mit vorletztem Commit\s*$', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Letzter Commit mit Diff s
-    ('git log -p -1', r'^Letzter Commit mit Diff\s*$', 75, {'flags': re.IGNORECASE}),
+    ('git log -p -1', r'^Letzter Commit mit Diff\s*$', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Zeigt staged aber nicht committed changes s
-    ('git diff --cached', r'^Zeigt staged (aber nicht committed) changes\s*$', 75, {'flags': re.IGNORECASE}),
+    ('git diff --cached', r'^Zeigt staged (aber nicht committed) changes\s*$', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
 
     # EXAMPLE: git switch
-    ('git switch ', r'^\s*(git|geht|peach)\s*(switch|Schmidt)\s*$', 75, {'flags': re.IGNORECASE}),
+    ('git switch ', r'^\s*(git|geht|peach)\s*(switch|Schmidt)\s*$', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git pull
-    ('git fetch; git pull"', r'^\s*(git|Gilt|geht) (pull|fett)\s*$"', 80, {'flags': re.IGNORECASE}),
+    ('git fetch; git pull"', r'^\s*(git|Gilt|geht) (pull|fett)\s*$"', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 ##################################################################
 
     # EXAMPLE: pull requests
-    ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: pull requests
-    ('pull requests', r'\b(null|pull) requests\b', 82, {'flags': re.IGNORECASE}),
+    ('pull requests', r'\b(null|pull) requests\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 # bitte schreib mir denn geht kommen mit text'
     # EXAMPLE: geht kommen mit text
-    ('git commit text', r'\b(geht kommen mit text)\b', 75, {'flags': re.IGNORECASE}),
+    ('git commit text', r'\b(geht kommen mit text)\b', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Feature prince
-    ('feature branch', r'\bFeature\s*prince\b', 82, {'flags': re.IGNORECASE}),
+    ('feature branch', r'\bFeature\s*prince\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Branch löschen
-    ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, {'flags': re.IGNORECASE}),
+    ('git branch -d', r'\b(Branch|Prince)\s*löschen\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Ranch Namen
-    ('Branch Name', r'\bRanch\s*Namen\b', 82, {'flags': re.IGNORECASE}),
+    ('Branch Name', r'\bRanch\s*Namen\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Commit Message
-    (' Commit', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit', r'\bkomm\s*mit\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: kommen mit Message
-    (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
+    (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: neues Release
-    ('neues Release', r'\bneues\s*(Verlies|Release)\b', 82, {'flags': re.IGNORECASE}),
+    ('neues Release', r'\bneues\s*(Verlies|Release)\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: Code Abschnitt
-    ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
+    ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: stop button
-    ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),
+    ('StopButton', r'\bstob\s*Button\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: lobt Case
-    ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
+    ('lowerCase', r'\blobt\s*Case\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # --- git status ---
     # This one regex replaces 5 old entries.
     # EXAMPLE: git status
-    ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|dates)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|dates)\s*$', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # --- git add . ---
     # EXAMPLE: git add
-    ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|ab|at|ritt|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git add .', r'^\s*(git|geht|geh|gitter|kate|fiat|mit)\s+(add|ab|at|ritt|tat|dad|hat|duett|es)\s*(\.|\bpunkt\b)?\s*$', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # --- git commit ---
     #  Kate Commit einen  git commit
 
     # EXAMPLE: Klitschko mit s
-    ('git commit ', r'^\s*Klitschko mit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*Klitschko mit\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: kate Commit s
-    ('git commit ', r'^\s*kate Commit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*kate Commit\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Geht Komet
-    ('git commit ', r'^\s*Geht (Komet|kommend|Commit)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*Geht (Komet|kommend|Commit)\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Einen Kometen s
-    ('git commit ', r'^\s*Einen Kometen\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*Einen Kometen\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Geht Commit s
-    ('git commit ', r'^\s*Geht Commit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*Geht Commit\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Geht komm Commit s
-    ('git commit ', r'^\s*Geht komm Commit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*Geht komm Commit\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Geht
-    ('git commit ', r'^\s*(Geht|git|mit) (komm|Kometen|Commit)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*(Geht|git|mit) (komm|Kometen|Commit)\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Komet
-    ('commit ', r'\s+Komet\s+', 80, {'flags': re.IGNORECASE}),
+    ('commit ', r'\s+Komet\s+', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git
-    ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*(git|mit) komm\s*mit\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: womit s
-    ('git commit ', r'^\s*womit\s*$', 85, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^\s*womit\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: git
-    ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, {'flags': re.IGNORECASE}),
+    ('git commit -m "', r'^\s*(git|geht) komm?\s*mit\s*$"', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: git
-    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme)\s*$"', 80, {'flags': re.IGNORECASE}),
+    ('git commit -m "', r'^\s*(git|Gilt|geht) (Komet|komme)\s*$"', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # --- git push ---
     # EXAMPLE: git
-    ('git push', r'^\s*(git|geht|gitter)\s*(busch|push)\s*$', 85, {'flags': re.IGNORECASE}),
+    ('git push', r'^\s*(git|geht|gitter)\s*(busch|push)\s*$', 85, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # --- git pull ---
     # EXAMPLE: git
-    ('git pull', r'^\s*(git|geht|gitter)\s*(pohl|pool)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git pull', r'^\s*(git|geht|gitter)\s*(pohl|pool)\s*$', 82, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: s git pull s
-    ('git pull', r'^\s*git\s*pull\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git pull', r'^\s*git\s*pull\s*$', 80, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # --- git diff ---
     # EXAMPLE: git
-    ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, {'flags': re.IGNORECASE}),
+    ('git diff', r'^\s*(git|geht|peach)\s*(diff|tief|juice)\s*$', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Zeige was im letzten Commit geändert wurde s
-    ('git show HEAD > gitDiff.txt; kate gitDiff.txt', r'^\s*Zeige was im letzten Commit geändert wurde\s*$', 75, {'flags': re.IGNORECASE}),
+    ('git show HEAD > gitDiff.txt; kate gitDiff.txt', r'^\s*Zeige was im letzten Commit geändert wurde\s*$', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Kritik knurren
-    ('.gitignore', r'^\s*(Kritik knurren|Kritik Noah|Kritiken|kitte Knorr|Kritik Knorr)\s*$', 75, {'flags': re.IGNORECASE}),
+    ('.gitignore', r'^\s*(Kritik knurren|Kritik Noah|Kritiken|kitte Knorr|Kritik Knorr)\s*$', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: gibt Knorr
-    ('.gitignore', r'\b(gibt Knorr)\b$', 75, {'flags': re.IGNORECASE}),
+    ('.gitignore', r'\b(gibt Knorr)\b$', 75, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: neues release
     ("alias release_protokoll='gh release list --limit 100 | awk \"{print $1}\" | while read tag; do if [ -n \"$tag\" ]; then echo -e \"\n\n--- RELEASE: $tag ---\n\"; gh release view \"$tag\"; fi; done > all_releases.txt && kate all_releases.txt'", r'\b(releas\w* protokoll\w*|Relais\w* Protokolle|alle releases|releas\w* export\w*|frites Protokolle)\b$', 75, {'flags': re.IGNORECASE}),

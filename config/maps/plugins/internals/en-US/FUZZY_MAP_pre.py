@@ -54,7 +54,7 @@ FUZZY_MAP_pre = [
     #What is aura What is aura
 
 
-    # EXAMPLE:  Aura Strength  
+    # EXAMPLE:  Aura Strength
     ('SL5 Aura (Strength): Recursive, Hierarchical Rule Engine with Live Parsing and RegEx. Inheritance and Sub-folders (e.g., game/0ad, it-begriffe/php/codeigniter) enable modular, maintainable plugins.100% GDPR-Compliance and Developer-Friendly Design for complex, long-term projects. Conclusion: Aura is the Architect Solution for privacy-compliant, specialized, and scalable voice control.', r'^(.*\bAura.*\bStrength\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #
 

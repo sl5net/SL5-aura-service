@@ -189,7 +189,8 @@ Input: "Wir waren in Kirchentellinsfurt und sahen, dass Kirchen teilen nicht ein
 
 Input: "Rechnung von Paradigma Minds eingetroffen."
 # EXAMPLE: b Paradigma Minds
-Output: ('pragmatic minds GmbH 2019', r'\b(Paradigma Minds|pragmatic minds)\b', 75, {'flags': re.IGNORECASE})
+Output: ('pragmatic minds GmbH 2019', r'\b(Paradigma Minds|pragmatic minds)\b', 75, # min_accuracy
+ {'flags': re.IGNORECASE})
 
 Verarbeite nun die Zwischenablage:
 

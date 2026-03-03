@@ -22,29 +22,37 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: VSP Peronal
-    ('Torsten Hau,Katja Janssens,Harald Uetz,Juliana Kunrad', r'^\b(V\s*S\s*P|V\s*[FS]\s*B)\s*(Person\w+)\b$', 70, {'flags': re.IGNORECASE}),
+    ('Torsten Hau,Katja Janssens,Harald Uetz,Juliana Kunrad', r'^\b(V\s*S\s*P|V\s*[FS]\s*B)\s*(Person\w+)\b$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Frau Geschäftsführerin
-    ('Torsten Hau', r'^\b(V\s*S\s*P|V\s*[FS]\s*B|Frau\s*s\s*p)\s*(Geschäftsf\w+|Chef)\b$', 70, {'flags': re.IGNORECASE}),
+    ('Torsten Hau', r'^\b(V\s*S\s*P|V\s*[FS]\s*B|Frau\s*s\s*p)\s*(Geschäftsf\w+|Chef)\b$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Hobbys Geschäftsführer
-    ('Torsten Hau ist gerne mit dem MTB unterwegs', r'^(\w+ubis|Hobbys)\b.*(V\s*S\s*P|V\s*[FS]\s*B|Frau\s*s\s*p)\s*(Geschäftsf\w+|Chef)\b$', 70, {'flags': re.IGNORECASE}),
+    ('Torsten Hau ist gerne mit dem MTB unterwegs', r'^(\w+ubis|Hobbys)\b.*(V\s*S\s*P|V\s*[FS]\s*B|Frau\s*s\s*p)\s*(Geschäftsf\w+|Chef)\b$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Herr Schröder
-    ('Herr Schröer', r'^(Herr Schröder|Herr hersteller|Herr Schröer|herr schrill)\b$', 70, {'flags': re.IGNORECASE}),
+    ('Herr Schröer', r'^(Herr Schröder|Herr hersteller|Herr Schröer|herr schrill)\b$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Schröx
-    ('Schröer', r'^(Schrö\w*r|schwör\w*|schworen|schon besorgt)\b$', 70, {'flags': re.IGNORECASE}),
+    ('Schröer', r'^(Schrö\w*r|schwör\w*|schworen|schon besorgt)\b$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Ergox Schröx
-    ('Ergotherapie Schröer', r'^Ergo\w* (Schrö\w*|schwör\w*|schworen|schon besorgt)\b$', 70, {'flags': re.IGNORECASE}),
+    ('Ergotherapie Schröer', r'^Ergo\w* (Schrö\w*|schwör\w*|schworen|schon besorgt)\b$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Schröx Ergo
-    ('Schröer Ergotherapie', r'^(Schrö\w*|schwör\w*|schworen|schon besorgt)\b Ergo\w*$', 70, {'flags': re.IGNORECASE}),
+    ('Schröer Ergotherapie', r'^(Schrö\w*|schwör\w*|schworen|schon besorgt)\b Ergo\w*$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Früher ergo
-    ('Schröer Ergotherapie', r'^(Früher|Speyer) (eher|ergo|erst)\b$', 70, {'flags': re.IGNORECASE}),
+    ('Schröer Ergotherapie', r'^(Früher|Speyer) (eher|ergo|erst)\b$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
 ]

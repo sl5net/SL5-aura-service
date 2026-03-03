@@ -107,7 +107,8 @@ Es gibt keine Accounts, Passwörter, Logins.
     # Wenn Sie einen Teil des Regex matchen, aber NICHT in der Capturing Group haben möchten (was nützlich für das Extrahieren ist), verwenden Sie die Non-Capturing Group (?:...).
     # # https://ollama.com/download
     # EXAMPLE: Aura
-    ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100,
+    ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100, # min_accuracy
+
         {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'ask_ollama_slow.py']
@@ -116,7 +117,8 @@ Es gibt keine Accounts, Passwörter, Logins.
 
     # # https://ollama.com/download
     # EXAMPLE: Aura
-    ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100,
+    ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100, # min_accuracy
+
         {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'ask_ollama.py']

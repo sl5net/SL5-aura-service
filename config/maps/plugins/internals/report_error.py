@@ -15,7 +15,6 @@ def between_first_last_hash_manual(s: str) -> str:
         return ''
     return s[start:end].strip()
 
-print(between_first_last_hash_manual("bla# arnold # fasel"))  # "arnold"
 
 
 def execute(match_data):

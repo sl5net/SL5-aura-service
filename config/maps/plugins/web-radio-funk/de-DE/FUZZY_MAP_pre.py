@@ -35,31 +35,39 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: deutschlandfunk
     # Einen  is somtimes noise of nothing
-    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # dein deutschlands
-    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(dein\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(dein\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: presseclub
-    ('https://www1.wdr.de/daserste/presseclub/index.html', r'^(presseclub|pressig)\w*\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://www1.wdr.de/daserste/presseclub/index.html', r'^(presseclub|pressig)\w*\s*$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
 
     # EXAMPLE: Radio wüste welle livex
-    ('https://www.wueste-welle.de/broadcasts/livestream', r'^(Radio wüste welle live\w*|wüste welle live\w*)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://www.wueste-welle.de/broadcasts/livestream', r'^(Radio wüste welle live\w*|wüste welle live\w*)\s*$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Radio wüste welle
-    ('https://www.wueste-welle.de/', r'^(Radio wüste welle|wüste welle)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://www.wueste-welle.de/', r'^(Radio wüste welle|wüste welle)\s*$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: LORA Münchenx
-    ('https://lora924.de/livestream/live-horen/', r'^(LORA München\w*)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://lora924.de/livestream/live-horen/', r'^(LORA München\w*)\s*$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Freies Radio  Stuttgart
-    ('https://www.freies-radio.de/', r'^(Freies Radio .*Stuttgart)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://www.freies-radio.de/', r'^(Freies Radio .*Stuttgart)\s*$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Archiv Freies Radio  Stuttgart
-    ('https://www.youtube.com/gbsstuttgart', r'^(Archiv Freies Radio .*Stuttgart)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://www.youtube.com/gbsstuttgart', r'^(Archiv Freies Radio .*Stuttgart)\s*$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
 
 
 

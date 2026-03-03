@@ -44,13 +44,16 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: AutoKey
-    ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+    ('AutoKey', r'\bAuto k\b', 82, # min_accuracy
+ {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: pipe
-    ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+    ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, # min_accuracy
+ {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: pipe
-    ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+    ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, # min_accuracy
+ {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # === Linux/Unix Commands ===
 
@@ -66,7 +69,8 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: find files
-    ('find . -type f -path "*zip.py"', r'^(find files|finde Dateien|Suche Dateien)$', 80, {
+    ('find . -type f -path "*zip.py"', r'^(find files|finde Dateien|Suche Dateien)$', 80, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
@@ -74,19 +78,22 @@ FUZZY_MAP_pre = [
     # finde dateien
 
     # EXAMPLE: pkill process
-    ('pkill -f', r'^(kill process|Prozess beenden|pkill)$', 85, {
+    ('pkill -f', r'^(kill process|Prozess beenden|pkill)$', 85, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: sed replace in file
-    ('sed -i', r'^(sed replace|ersetze in Datei|sed Ersetzung)$', 80, {
+    ('sed -i', r'^(sed replace|ersetze in Datei|sed Ersetzung)$', 80, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: cat with line numbers
-    ('cat -n', r'^(cat numbered|cat mit Zahlen|zeige nummeriert|Zeige numerisch)$', 80, {
+    ('cat -n', r'^(cat numbered|cat mit Zahlen|zeige nummeriert|Zeige numerisch)$', 80, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
@@ -114,27 +121,31 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: alle Dateitypen Metadaten
-    ('find . -type f -exec file -b {} + | sort | uniq -c', r'^(alle) (Dateitypen|Metadaten)$', 80, {
+    ('find . -type f -exec file -b {} + | sort | uniq -c', r'^(alle) (Dateitypen|Metadaten)$', 80, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # EXAMPLE: grep with kate output
-    ('grep -n "text" file | xclip -selection clipboard', r'^(grep nach Kate|suche und kopiere|grep in Zwischenablage)$', 80, {
+    ('grep -n "text" file | xclip -selection clipboard', r'^(grep nach Kate|suche und kopiere|grep in Zwischenablage)$', 80, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # EXAMPLE: restart Watcher
-    ('pkill -f type_watcher; sleep 0.1; ./type_watcher_keep_alive.sh &', r'^(Watcher neu starten|restart Watcher)$', 85, {
+    ('pkill -f type_watcher; sleep 0.1; ./type_watcher_keep_alive.sh &', r'^(Watcher neu starten|restart Watcher)$', 85, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: show recent logs
-    ('tail -20 ~/projects/py/STT/log/type_watcher.log', r'^(zeige letzte logs|show recent logs|letzte Log Einträge)$', 80, {
+    ('tail -20 ~/projects/py/STT/log/type_watcher.log', r'^(zeige letzte logs|show recent logs|letzte Log Einträge)$', 80, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
@@ -145,38 +156,44 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: show last commit
-    ('git show HEAD > gitDiff.txt; kate gitDiff.txt', r'^(zeige letzten Commit|show last commit|letzter Commit Diff)$', 85, {
+    ('git show HEAD > gitDiff.txt; kate gitDiff.txt', r'^(zeige letzten Commit|show last commit|letzter Commit Diff)$', 85, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
     # EXAMPLE: check Watcher processes
-    ('ps aux | grep type_watcher', r'^(prüfe Watcher Prozesse|check Watcher processes|zeige Watcher Prozesse)$', 85, {
+    ('ps aux | grep type_watcher', r'^(prüfe Watcher Prozesse|check Watcher processes|zeige Watcher Prozesse)$', 85, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: aura process timestamps
-    ('ps -eo pid,lstart,cmd | grep type_watcher', r'^(zeige Watcher Startzeiten|show Watcher start times|Watcher Prozess Zeiten|aura process timestamps)$', 85, {
+    ('ps -eo pid,lstart,cmd | grep type_watcher', r'^(zeige Watcher Startzeiten|show Watcher start times|Watcher Prozess Zeiten|aura process timestamps)$', 85, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: search in aura script
-    ('grep -n "check_config_changed" ~/projects/py/STT/type_watcher.sh', r'^(suche Config Check|search config check|finde Config Funktion)$', 80, {
+    ('grep -n "check_config_changed" ~/projects/py/STT/type_watcher.sh', r'^(suche Config Check|search config check|finde Config Funktion)$', 80, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: show Watcher script numbered
-    ('cat -n ~/projects/py/STT/type_watcher.sh', r'^(zeige Watcher Script nummeriert|show Watcher script numbered|Watcher Script mit Zeilen)$', 80, {
+    ('cat -n ~/projects/py/STT/type_watcher.sh', r'^(zeige Watcher Script nummeriert|show Watcher script numbered|Watcher Script mit Zeilen)$', 80, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: count lines in aura script
-    ('wc -l ~/projects/py/STT/type_watcher.sh', r'^(zähle Watcher Zeilen|count Watcher lines|wie lang ist Watcher|Wie lange ist Hodscha)$', 80, {
+    ('wc -l ~/projects/py/STT/type_watcher.sh', r'^(zähle Watcher Zeilen|count Watcher lines|wie lang ist Watcher|Wie lange ist Hodscha)$', 80, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
@@ -184,14 +201,16 @@ FUZZY_MAP_pre = [
 
     # git diff small
     ('git diff -U0 > /tmp/aura_small_diff.txt && kate /tmp/aura_small_diff.txt',
-     r'^(git diff)$', 85, {
+     r'^(git diff)$', 85, # min_accuracy
+ {
          'flags': re.IGNORECASE,
          'skip_list': ['LanguageTool']
          , 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: sounddevice to kate editor
     ('./.venv/bin/python3 -m sounddevice > /tmp/aura_devices.txt && kate /tmp/aura_devices.txt',
-     r'^(sound kate)$', 85, {
+     r'^(sound kate)$', 85, # min_accuracy
+ {
          'flags': re.IGNORECASE,
          'skip_list': ['LanguageTool']
      , 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
@@ -199,7 +218,8 @@ FUZZY_MAP_pre = [
     #Wie lange ist Hodscha
 
     # EXAMPLE: edit aura config
-    ('kate ~/projects/py/STT/config/settings_local.py', r'^(editiere lokale Config|edit local config|öffne lokale Einstellungen)$', 85, {
+    ('kate ~/projects/py/STT/config/settings_local.py', r'^(editiere lokale Config|edit local config|öffne lokale Einstellungen)$', 85, # min_accuracy
+ {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
