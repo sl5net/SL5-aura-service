@@ -62,9 +62,16 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: "Fehler melden", "Logge Fehler", "Das war falsch"
     ('report_error',
-     r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|das war falsch|da stimmt was nicht|bug melden|bugreport|ticket erstellen|problem melden|da ist ein fehler|das ist falsch|das ist ein bug)$', 100,
-     # min_accuracy
+     r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|das war falsch|da stimmt was nicht|bug melden|bugreport|reisebericht|quelle fehlerbericht|freeride bericht|frede bericht|zelebriere|ticket erstellen|problem melden|da ist ein fehler|fehler bitte|hier der bericht|der bericht|fehler im bericht|das ist falsch|viele wissen|das ist ein bug)$', 100,
+     # min_accuracyzelebriereBerichtFehler bitteinternals>misrecognitionsBerichtinternals>misrecognitionss
 
+     {
+         'flags': re.IGNORECASE,
+         'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
+     }),
+
+    ('report_error',
+     r'\b(?:(?:[FVW][eihä]h?l[er]{1,2}|Wähler|Feller|Vierer|Völer|Phäler)\s?(?:be?richt|bricht|licht|richt))\b', 100,
      {
          'flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
@@ -72,8 +79,21 @@ FUZZY_MAP_pre = [
 
 ]
 
+# Schnelle Wirkung Hallo Berichts
+
 if current_user in ['seeh']:
     FUZZY_MAP_pre_user_specific = [
+
+
+        # Regel B: Niedrige Hürde (10%)
+        ("Niedrige Genauigkeit erkannt", r'^(Super fragill|Servus fragil)$', 10,
+         {
+             'flags': re.IGNORECASE,
+         }
+         ),
+
+        #Super fragilsuper Superfrau gebenServus fragilSo BefragungKübra fragil
+
         ('report_error',
          r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|das war falsch|da stimmt was nicht|bug melden|bugreport|ticket erstellen|problem melden|da ist ein fehler|das ist falsch|das ist ein bug)$', 100,
          # min_accuracy

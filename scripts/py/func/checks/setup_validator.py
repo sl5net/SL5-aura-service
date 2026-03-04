@@ -93,6 +93,8 @@ def check_for_unused_functions(parsed_trees, project_root, logger):
         'get_clipboard_text_linux','set_clipboard_text_linux',
         'SimpleNullLogger', 'exception',
         'get_lt_session_202601311817', 'correct_text_by_languagetool_202601311818','run_single_test_202501311853'
+        'check_map_health_online_repairing', 'validate_map_structure'
+        'check_map_health_online_repairing', 'run_single_test_202501311853'
     }
 
     # scripts/py/func/checks/setup_validator.py:97

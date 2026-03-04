@@ -148,7 +148,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                     # Lifecycle Hook (only for valid modules)
                     # scripts/py/func/map_reloader.py:117
-                    if hasattr(module_to_reload, 'on_reload') and callable(module_to_reload.on_reload):
+                    if module_name  is not None and  hasattr(module_to_reload, 'on_reload') and callable(module_to_reload.on_reload):
                         try:
                             if log_all_map_reloaded or log_all_changes:
                                 logger.info(f"🚀 Triggering on_reload() for '{module_name}'")
@@ -166,7 +166,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     _trigger_upstream_hooks(map_file_path, project_root, logger)
                     # --- NEW CODE END ---
 
-                    if hasattr(module_to_reload, 'FUZZY_MAP_pre'):
+                    if module_to_reload is not None and hasattr(module_to_reload, 'FUZZY_MAP_pre'):
                         # def check_map_health(file_path, map_entries, logger):
                         check_map_health(file_path=map_file_path, module=module_to_reload, logger=logger)
 
@@ -462,7 +462,12 @@ config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
                 # Add a log before the hasattr check
                 # logger.info(f"375: Checking module {module_name} for hooks...")
 
-                if module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
+                if  module is not None and  module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
+
+                    if (not start_path_current_dir
+                            or not start_path_current_dir.name):
+                        continue
+
 
                     if not start_path_current_dir.name.startswith('_'):
                         if log_everything:
@@ -479,7 +484,7 @@ config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
             # scripts/py/func/map_reloader.py:342
             except Exception as e:
                 # Suppress errors from unrelated files
-                logger.info(f'❌ 🚨 scripts/py/func/map_reloader.py:575 -> Exception: {e}')
+                logger.info(f'❌ 🚨 scripts/py/func/map_reloader.py:575 -> Exception: {e} <- …{str(file_path)[-45:]}')
                 pass
 
         # Move one level up

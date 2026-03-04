@@ -6,15 +6,16 @@ from pathlib import Path
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
+#    Structure: ('replacement', rregex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'flags': ...} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 CONFIG_DIR = Path(__file__).parent
 
+    # Eine Typ Datei natürlichinternalsSuche hebt das heiminternalsChips Datenbank aktualisiereninternalsScript Datenbank renoviereninternalsAktualisiere Chip twitter teileninternalsAlle Ordner SkillinternalsAlle Ordner aktualisiertinternalsA layout by meinternalsAlle Ordner einlesenKeyboard Morphin leseninternalsZwick daten eininternalsJeep daten einleseninternals
 
-
+    # Eine Zip-Dateien sucheninternalsAlle Dateien aktualisierenBerichtEine ZIP Dateien aktualisiereninternalsDeine der Zip-Dateien findenReisebericht
 
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.

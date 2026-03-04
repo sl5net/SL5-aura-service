@@ -8,11 +8,18 @@ import threading
 from datetime import datetime
 from pathlib import Path
 from threading import RLock
+import platform
 
 # py/func/config/dynamic_settings.py:11
 project_root = Path(__file__).resolve().parents[4]
 
 from config import settings
+
+if platform.system() == "Windows":
+    TMP_DIR = Path("C:/tmp")
+    NOTIFY_SEND_PATH = None
+else:
+    TMP_DIR = Path("/tmp")
 
 
 # scripts/py/func/config/dynamic_settings.py:18
@@ -146,8 +153,8 @@ class DynamicSettings:
                 cls._instance = super(DynamicSettings, cls).__new__(cls)
                 logger.info(f"dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
 
-                if settings.DEV_MODE:
-                    print("DEBUG: DynamicSettings.__new__ called, initializing instance.")
+                # if settings.DEV_MODE:
+                #     print("DEBUG: DynamicSettings.__new__ called, initializing instance.")
                 cls._instance._init_settings()
         return cls._instance
 
@@ -171,10 +178,10 @@ class DynamicSettings:
 
         logger.info(f"dynamic_settings.py: settings.DEV_MODE = {settings.DEV_MODE}")
 
-        if settings.DEV_MODE:
-            print(f"⚙ DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
-            print(f"⚙ DEBUG: DynamicSettings._init_settings called. Local settings file: {self._settings_local_file_path}")
-            logger.info(f"DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
+        # if settings.DEV_MODE:
+            # print(f"⚙ DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
+            # print(f"⚙ DEBUG: DynamicSettings._init_settings called. Local settings file: {self._settings_local_file_path}")
+            # logger.info(f"DEBUG: DynamicSettings._init_settings called. Base settings file: {self._settings_file_path}")
         self.reload_settings(force=False)
 
     def reload_settings(self, force=False):
@@ -224,8 +231,8 @@ class DynamicSettings:
 
                 # --- Reloading base settings (config.settings) ---
                 if 'config.settings' in sys.modules:
-                    if settings.DEV_MODE:
-                        print("DEBUG: Calling importlib.reload(sys.modules['config.settings'])")
+                    # if settings.DEV_MODE:
+                    #     print("DEBUG: Calling importlib.reload(sys.modules['config.settings'])")
                     self._settings_module = importlib.reload(sys.modules['config.settings'])
                 else:
                     if settings.DEV_MODE:
@@ -332,15 +339,17 @@ class DynamicSettings:
                         # Wende unsere Hierarchie-Logik auf jeden Key an
                         resolved_status = is_plugin_enabled(key, raw_plugins_config)
                         resolved_plugins_config[key] = resolved_status
-                        if settings.DEV_MODE:
-                            print(f"DEBUG: Plugin '{key}' -> Resolved Status: {resolved_status}")
+                        # if settings.DEV_MODE:
+                        #     print(f"DEBUG: Plugin '{key}' -> Resolved Status: {resolved_status}")
 
                     # Überschreibe das alte PLUGINS_ENABLED mit dem neuen, aufgelösten Dictionary
                     setattr(self, 'PLUGINS_ENABLED', resolved_plugins_config)
                     if settings.DEV_MODE:
                         print("DEBUG: PLUGINS_ENABLED has been updated with resolved statuses.")
 
-                        speak_fallback('reload_settings: updated with resolved statuses')
+                        core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+                        if not core_logic_self_test_is_running_FILE.exists():
+                            speak_fallback('reload_settings: updated with resolved statuses')
 
 
 def convert_lang_code_for_espeak(long_code: str) -> str:

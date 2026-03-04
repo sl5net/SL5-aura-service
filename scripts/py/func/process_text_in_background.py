@@ -22,6 +22,9 @@ from .log_memory_details import log4DEV
 from .state_manager import should_trigger_startup
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 
+# Auto-Zip Smoke Test
+from .checks.run_auto_zip_random_quick_check import trigger_background_zip_check
+
 # scripts/py/func/process_text_in_background.py:25
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES
 
@@ -1588,7 +1591,7 @@ def process_text_in_background(logger,
             new_current_text = sanitize_transcription_start(new_current_text)
 
 
-
+            # scripts/py/func/process_text_in_background.py:1591
             # DIESE ZEILE WAR SCHON RICHTIG:
             unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
 
@@ -1604,6 +1607,18 @@ def process_text_in_background(logger,
                 logger.info(f"✅ 💾 THREAD: Successfully wrote to {unique_output_file} '***'")
             else:
                 logger.info(f"✅ 💾 THREAD: Successfully wrote to {unique_output_file} '{new_current_text}'")
+
+
+
+
+            # Auto-Zip Smoke Test
+            if settings.DEV_MODE:
+                try:
+                    trigger_background_zip_check(logger)
+                except ImportError as e:
+                    logger.warning("Auto-Zip: error {e} trigger_background_zip_check ")
+
+            # Hm ist gewünscht
 
         else:
             logger.warning("Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.")

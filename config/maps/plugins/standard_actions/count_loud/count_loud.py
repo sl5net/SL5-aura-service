@@ -14,7 +14,7 @@ def speak(text):
         print(f"STDOUT (TTS-Fallback): {text} , {e}")
 #
 #
-# def on_reload():
+# def on_reload():Aber ich sehe auch keinen
 #     speak("System reloaded")
 #
 #     #Test

@@ -1,10 +1,9 @@
-
-
-
-
+from sys import exit
 from datetime import datetime
 from pathlib import Path
 import re
+
+from scripts.py.func.audio_manager import speak_fallback
 
 
 def between_first_last_hash_manual(s: str) -> str:
@@ -15,10 +14,12 @@ def between_first_last_hash_manual(s: str) -> str:
         return ''
     return s[start:end].strip()
 
-
+# internals>misrecognitionsDie Wetterabfrage hat zu lange gedauert. Bitte versuche es später erneut.
 
 def execute(match_data):
     # Pfad-Logik: Von .../internals/report_error.py zum Root
+    # config/maps/plugins/internals/report_error.py:19
+    # quelleZähle bürgenLog-Datei nicht gefunden.Philippinternals>misrecognitions
     root = Path(__file__).resolve().parents[4]
     log_file = root / "log" / "aura_engine.log"
     report_file = root / "docs" / "bugfix" / "TODO" / "misrecognitions.md"
@@ -26,9 +27,19 @@ def execute(match_data):
     # Begriffe, die wir ignorieren (da sie den Befehl selbst beschreiben)
     triggers = ["fehler melden", "logge fehler", "das war falsch", "fehlermeldung", "fehler mail"]
 
+    if not report_file.exists():
+        returns =f"error Reporting-File not exist"
+        speak_fallback(f"{returns}", 'de-DE')
+        return returns
+
+
+
     try:
         if not log_file.exists():
-            return "Log-Datei nicht gefunden."
+            returns= "Log-Datei nicht gefunden."
+            speak_fallback(f"{returns}", 'de-DE')
+            return returns
+
 
         with open(log_file, "r", encoding="utf-8") as f:
             lines = f.readlines()
@@ -40,7 +51,7 @@ def execute(match_data):
             line_clean = line.strip()
 
             # Suche nach deinem speziellen Log-Präfix
-            if "📢📢📢 #" in line_clean:
+            if "chunk: 📢" in line_clean:
                 # Prüfen: Ist das nur der Befehl selbst?
                 is_trigger = any(t.lower() in line_clean.lower() for t in triggers)
 
@@ -49,7 +60,10 @@ def execute(match_data):
                     break
 
         if not error_line:
-            return "Keine passende Fehl-Erkennung im Log gefunden."
+            returns= "Keine passende Fehl-Erkennung im Log gefunden."
+            speak_fallback(f"{returns}", 'de-DE')
+            return returns
+
 
         # Zeitstempel für die Markdown-Tabelle
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -59,13 +73,28 @@ def execute(match_data):
 
         error_line = re.sub(r"(.)\1+", r"\1", error_line)
 
-        error_line = between_first_last_hash_manual(error_line)
+        # error_line = betwefen_first_last_hash_manual(error_line)
+        try:
+            error_line = error_line.split("📢")[1]
+        except Exception as e:
+            print(e)
+            returns= f"Fehler im Log gefunden.{e}"
+            speak_fallback(f"{returns}", 'de-DE')
+
+            return returns
+
+
+
 
         # In die TODO-Liste schreiben
         with open(report_file, "a", encoding="utf-8") as f:
             f.write(f"📢 {timestamp}:\n{error_line}\n")
 
-        return f" internals "
+        return f" internals>misrecognitions "
 
     except Exception as e:
-        return f"Fehler im Reporting-Script: {str(e)}"
+
+        returns =f"error Reporting-Script: {str(e)}"
+        speak_fallback(f"{returns}", 'de-DE')
+        exit(1)
+        return returns

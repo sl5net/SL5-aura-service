@@ -1,4 +1,4 @@
-# config/maps/plugins/standard_actions/zip_all/de-DE/zip.py
+# config/maps/plugins/standard_actions/zip_all/de-DE/zip.pye
 import logging
 import json
 import os

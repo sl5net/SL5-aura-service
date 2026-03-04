@@ -1,4 +1,6 @@
 # scripts/py/func/checks/self_tester.py
+import logging
+import platform
 import re
 import concurrent.futures
 import shutil
@@ -7,11 +9,16 @@ import sys
 import os
 from pathlib import Path
 
-from .auto_zip_startup_test import run_auto_zip_sanity_check
+# from .auto_zip_startup_test import run_auto_zip_sanity_check
 
 from ..audio_manager import speak_fallback
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
+
+if platform.system() == "Windows":
+    TMP_DIR = Path("C:/tmp")
+else:
+    TMP_DIR = Path("/tmp")
 
 
 def check_translator_hijack_is_active(logger):
@@ -71,12 +78,6 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
     """
     Runs a series of predefined tests, guarded by a persistent throttle mechanism.
     """
-
-
-
-
-
-
     # scripts/py/func/checks/self_tester.py
 
     rules_file_path = Path(__file__).parents[4] / 'config' / 'maps' / 'plugins' / 'standard_actions' / 'language_translator' / 'de-DE' / 'FUZZY_MAP_pre.py'
@@ -136,7 +137,7 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
 
     # scripts/py/func/checks/self_tester.py:135
     if not test_executed:
-        logger.warning(":st:⏩ Self-test not executed. Way? Maybe skipped ⏩ due to persistent throttling?")
+        logger.warning(f":st:⏩ Self-test not executed. Wey?? _execute_self_test_core:{_execute_self_test_core}")
 
     return test_executed
 
@@ -167,19 +168,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     test_base_dir = tmp_dir_aura / "sl5_aura_self_test"
     test_base_dir.mkdir(parents=True, exist_ok=True)
 
-
-
-
-    run_auto_zip_sanity_check(logger) # runs asynchron and will run at the end to check if creating zips work
-
-
-
-
-
-
-
-
-
+    # run_auto_zip_sanity_check(logger) # runs asynchron and will run at the end to check if creating zips work
+    # auto_zip_thread = run_auto_zip_sanity_check(logger)
 
 
     test_cases = [
@@ -382,7 +372,11 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     # Aber ACHTUNG: Das 'logger' Objekt kann oft nicht einfach in Prozesse kopiert werden.
     # Wir übergeben None als Logger oder nutzen ein einfaches Print-Logging innerhalb.
 
-    with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
+    num_workers = max(1, os.cpu_count() // 2) #
+
+    # scripts/py/func/checks/self_tester.py:383
+    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
+    # with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
         # Wir reduzieren auf 8 Worker (echte physikalische Kerne),
         # das ist oft effizienter für CPU-lastige Aufgaben als 16 oder 20.
         futures = {executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir)): t
@@ -411,6 +405,19 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                 print(f"💥 Process crashed: {e}")
                 sys.exit(1)
 
+    core_logic_self_test_is_running_FILE = tmp_dir_aura / "core_logic_self_test_FILE_is_running"
+
+
+    MAX_WAIT_SECONDS=150
+
+    # run_auto_zip_sanity_check(logger)
+
+    # Am Ende, bevor das Programm endet:
+    # if auto_zip_thread:
+    #     logger.info("Auto-Zip: Warte auf Thread...")
+    #     auto_zip_thread.join(timeout=MAX_WAIT_SECONDS)
+
+
     # 4. Summary
     duration = time.perf_counter() - start_time
     logger.info("=" * 40)
@@ -423,6 +430,10 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     logger.info("-" * 40)
 
     settings.PLUGIN_HELPER_TTS_ENABLED = backup_tts_enabled
+
+    # scripts/py/func/checks/self_tester.py:434
+    # core_logic_self_test_is_running_FILE.unlink(missing_ok=True)
+
 
     if failed_count > 0:
         sys.exit(1)
@@ -512,6 +523,17 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
             unique_time_float, lt_url,
             output_dir_override=worker_dir  # Explicit override
         )
+
+        # scripts/py/func/checks/self_tester.py:523
+
+
+        core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+
+        # Nach dem ersten Durchlauf: Flag setzen → Zip-Test weiß "jetzt kann ich prüfen"
+
+        # if not core_logic_self_test_is_running_FILE.exists():
+        #     core_logic_self_test_is_running_FILE.write_text(str(int(time.time())))
+        #     print(f"Auto-Zip: Flag created process_text_in_background was finished before")
 
         # 5. Datei finden (nur in diesem privaten Task-Ordner!)
         output_files = list(worker_dir.glob("tts_output_*.txt"))

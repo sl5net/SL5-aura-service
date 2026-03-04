@@ -145,6 +145,11 @@ def run_function_with_throttling(
             f"Required wait: {min_wait_time:.1f}s. "
             f"Wait {wait_remaining_minutes}m {wait_remaining_seconds}s more ({wait_remaining:.2f}s total)."
         )
+
+        # TODO
+        # from scripts.py.func.checks.auto_zip_startup_test import run_auto_zip_random_quick_check
+        # run_auto_zip_random_quick_check(logger, force_full=False)
+
         return False
 
     # --- 3. Execution Allowed ---

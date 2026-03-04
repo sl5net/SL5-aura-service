@@ -222,7 +222,7 @@ if platform.system() == "Windows":
 else:
     TMP_DIR = Path("/tmp")
 OUTPUT_FILE = TMP_DIR / "sl5_aura" / "tts_output" / "tts_output.txt"
-
+# logging.info(f"Auto-Zip: ✅ Flag gesetzt - Self-Tests laufen")
 
 HEARTBEAT_FILE = TMP_DIR / "sl5_aura" / "aura_engine.heartbeat"
 PIDFILE = TMP_DIR / "sl5_aura" / "aura_engine.pid"
@@ -629,10 +629,14 @@ else:
 # file_handler.addFilter(ditto_filter)
 
 
+# if settings.DEV_MODE and settings.current_user == 'seeh':
+    # for testing often a clean log helpss
+    # aura_log = Path('log/aura_engine.log')
+    # aura_log.unlink(missing_ok=True) ## seems problematic
 
 
-DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
-# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
+# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
+DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
 
 readme = """
 vosk-model-small-de-0.15
@@ -939,7 +943,7 @@ if settings.DEV_MODE:
 
 
 
-
+parsed_trees = None
 def system_memory_watchdog(logging):
 
     logging.info(f"System Memory 👀 Watchdog started. Threshold: {SYSTEM_RAM_THRESHOLD_PERCENT}%")
@@ -1168,27 +1172,24 @@ if settings.DEV_MODE :
 
     lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
 
+    # aura_engine.py:1175
     from scripts.py.func.checks.self_tester import run_core_logic_self_test, project_root
 
+    # from scripts.py.func.checks.auto_zip_startup_test import run_auto_zip_sanity_check,run_auto_zip_random_quick_check
+
+    # run_auto_zip_random_quick_check(logger, force_full=False)
+
+
     if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
+
+        # logger.info(f"{core_logic_self_test_is_running_FILE} created near aura_engine.py:1183 -> run_core_logic_self_test() starts now")
+        # logger.info(f"Auto-Zip: {core_logic_self_test_is_running_FILE} created near aura_engine.py:1183 -> run_core_logic_self_test() starts now") # its often more relevant to this Auto-Zip
+        # time.sleep(0.05)
+
         self_test_start_time = time.time()
         log4DEV(f"Start run_core_logic_self_test( .. {lang_code}", logger)
 
-
-        Path(core_logic_self_test_is_running_FILE).write_text(str(int(time.time())))
-
         run_core_logic_self_test(logger, TMP_DIR / "sl5_aura", active_lt_url,lang_code)
-
-        core_logic_self_test_is_running_FILE.unlink(missing_ok=True)
-
-
-
-
-
-
-
-
-
 
 
         self_test_end_time = time.time()
@@ -1233,7 +1234,7 @@ if settings.DEV_MODE :
         parsed_trees = parse_all_files(PROJECT_ROOT, logger)
 
     if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
-        check_for_unused_functions(parsed_trees, PROJECT_ROOT , logger)
+        # check_for_unused_functions(parsed_trees, PROJECT_ROOT , logger)
         check_for_frequent_calls(parsed_trees, logger, threshold=1)
 
         check_installer_sizes()

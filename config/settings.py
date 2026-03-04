@@ -13,7 +13,7 @@ current_user = user_name = USER_NAME = str(current_user) # fallbacks
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
-DEV_MODE = 0
+DEV_MODE = 1
 DEV_MODE_all_processing = 0
 
 # --- Input Settings ---
@@ -205,7 +205,7 @@ SAMPLE_RATE = 16000
 # System
 CRITICAL_THRESHOLD_MB = 1024 * 2
 
-LANGUAGETOOL_PORT = 8082
+LANGUAGETOOL_PORT = 8081 # 8081 is for eg. used for LG by Eloquent
 
 # LanguageTool Server Configuration
 LANGUAGETOOL_BASE_URL = f"http://127.0.0.1:{LANGUAGETOOL_PORT}"

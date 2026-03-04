@@ -1,5 +1,16 @@
 # config/filters/settings_local_log_filter.py
 LOG_EXCLUDE = [
+    r"▉",
+    r"📦",
+    r"PUNCTUATION_MAP",
+    r"〃",
+    r"🗑",
+    r"process_text_in_background.py:365",
+    r"🗺Starting recursive map",
+    r"🗺 Map loading complete",
+    r"#####",
+]
+LOG_EXCLUDE_off = [
     r"heartbeat.*status: OK",
     r"cleaning up temp file",
     r"(?i)debug: rule \d+ skipped",
