@@ -52,7 +52,7 @@ CONTAINER_ID=$(docker run -d --name $CONTAINER_NAME -p $HOST_PORT:$CONTAINER_POR
 sleep 4
 
 # Finaler Prüfschritt
-if docker ps | grep -q "$CONTAINER_ID"; then
+if docker ps | grep -q "$CONTAINER_NAME"; then
     echo ""
     echo "✅ ERFOLG! Kiwix-Server gestartet."
     echo "   URL: http://localhost:$HOST_PORT/viewer#$CONTAINER_ZIM_NAME/Krankenhaus_J%C3%BClich"
