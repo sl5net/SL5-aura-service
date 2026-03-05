@@ -13,7 +13,7 @@ ZIM_FILE_host="wikipedia_de_all_mini_2025-09.zim"
 echo "ZIM_FILE_host=$ZIM_FILE_host"
 
 # 2. Der vollständige Pfad zur ZIM-Datei auf deinem PC
-ZIM_FILE_PATH_host="$HOME/Downloads/$ZIM_FILE_host"
+ZIM_FILE_PATH_host="$(dirname "$0")/data/$ZIM_FILE_host"
 
 # 3. Identischer Name im Container
 CONTAINER_ZIM_NAME="$ZIM_FILE_host"
@@ -65,17 +65,9 @@ else
 
     sudo systemctl start docker
     echo "   docker daemon running?"
-
-    echo "may try following fist :"
-
     echo "sudo systemctl start docker"
-    echo "sudo systemctl enable docker"
-
-    echo "   Mögliche Gründe: "
-    echo "   1. Port $HOST_PORT ist belegt."
+    echo "   Mögliche Gründe: 1. Port $HOST_PORT ist belegt."
     echo "   2. ZIM-Datei korrupt oder Pfad falsch."
-    echo "   3. docker nicht gesartet (systemctl start docker)."
-    echo "   4. docker nicht enabled (systemctl enable docker)."
 
 
 fi

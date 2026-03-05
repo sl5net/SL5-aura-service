@@ -36,16 +36,22 @@ preexec() {
     esac
 }
 
+
 precmd() {
-    # Restore stdout after command finishes
     exec >/dev/tty 2>&1
     if [ "$AUTO_CLIPBOARD" = "true" ] && [ -s ~/t.txt ]; then
-        # Filter out ANSI escape codes and KDE Konsole title sequences
-        cat ~/t.txt | sed 's/\][0-9]*;[^]]*\][0-9]*;//g; s/^[0-9]*;//g' \
-            | xclip -selection clipboard
-        echo "[📋 In Zwischenablage kopiert]"
+        cleaned=$(cat ~/t.txt \
+            | sed 's/\][0-9]*;[^]]*\][0-9]*;//g; s/^[0-9]*;//g' \
+            | sed "s|$HOME|~|g" \
+            | sed 's/[^[:print:]]//g' \
+            | grep -v '^$')
+        if [ -n "$cleaned" ]; then
+            echo "$cleaned" | xclip -selection clipboard
+            echo "[📋 In Zwischenablage kopiert]"
+        fi
     fi
 }
+
 ```
 
 Then reload:
