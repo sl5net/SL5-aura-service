@@ -316,7 +316,7 @@ FUZZY_MAP_pre = [
 
     # Regel für die Wetterabfrage
     # EXAMPLE: wie ist das wetter
-    ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)$', 95, {
+    ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)\??$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     }),
