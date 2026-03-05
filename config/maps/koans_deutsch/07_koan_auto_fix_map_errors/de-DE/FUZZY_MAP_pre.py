@@ -27,19 +27,19 @@ Bitte öffnen Sie das Fenster und diktieren Text in der Formular-Feld.
 
 Hier sind die Methoden, um auf Windows 11 zu prüfen, ob der LanguageTool im Hintegrund läuft:
 
-http://localhost:8082/v2/languages
+http://localhost:8081/v2/languages
 
 
 Erfolg: Du siehst eine JSON-Liste mit unterstützten Sprachen.
 
-netstat -ano | findstr 8082
+netstat -ano | findstr 8081
 
 Get-CimInstance Win32_Process -Filter "CommandLine LIKE '%languagetool%'" | Select-Object ProcessId, CommandLine
 
 Per Browser (Funktionstest)
 Öffne diese URL im Browser:
 
-http://localhost:8082/v2/languages
+http://localhost:8081/v2/languages
 
 Erfolg: Du siehst eine JSON-Liste mit unterstützten Sprachen.
 

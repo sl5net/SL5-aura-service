@@ -31,7 +31,7 @@ LOCK_FILE = Path("/tmp/get_suggestions.lock")
 TIMESTAMP_FILE = Path("/tmp/get_suggestions.timestamp")
 COOLDOWN_SECONDS = 2
 
-LANGUAGETOOL_BASE_URL = "http://localhost:8082/v2/check"
+LANGUAGETOOL_BASE_URL = "http://localhost:8081/v2/check"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 NUM_SUGGESTIONS = 5
 VOSK_MODEL_FILE = Path( PROJECT_DIR / "config/model_name.txt")

@@ -1,5 +1,5 @@
 # scripts/py/func/checks/self_tester.py
-import logging
+
 import platform
 import re
 import concurrent.futures
@@ -376,7 +376,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     # scripts/py/func/checks/self_tester.py:383
     with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
-    # with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
+        # with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
         # Wir reduzieren auf 8 Worker (echte physikalische Kerne),
         # das ist oft effizienter für CPU-lastige Aufgaben als 16 oder 20.
         futures = {executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir)): t
@@ -405,10 +405,10 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                 print(f"💥 Process crashed: {e}")
                 sys.exit(1)
 
-    core_logic_self_test_is_running_FILE = tmp_dir_aura / "core_logic_self_test_FILE_is_running"
+    #core_logic_self_test_is_running_FILE = tmp_dir_aura / "core_logic_self_test_FILE_is_running"
 
 
-    MAX_WAIT_SECONDS=150
+    # MAX_WAIT_SECONDS=150
 
     # run_auto_zip_sanity_check(logger)
 
@@ -527,7 +527,7 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         # scripts/py/func/checks/self_tester.py:523
 
 
-        core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+        # core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
 
         # Nach dem ersten Durchlauf: Flag setzen → Zip-Test weiß "jetzt kann ich prüfen"
 

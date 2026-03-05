@@ -205,7 +205,7 @@ SAMPLE_RATE = 16000
 # System
 CRITICAL_THRESHOLD_MB = 1024 * 2
 
-LANGUAGETOOL_PORT = 8081 # 8081 is for eg. used for LG by Eloquent
+LANGUAGETOOL_PORT = 8081 # 8081 is for eg. used for LG by Eloquent. before it was 8082
 
 # LanguageTool Server Configuration
 LANGUAGETOOL_BASE_URL = f"http://127.0.0.1:{LANGUAGETOOL_PORT}"

@@ -18,6 +18,140 @@ def trigger_scroll_to_bottom():
     st.session_state.scroll_trigger += 1
 
 
+def st_speak_diagnostic(text, speed=1.0):
+    safe_text = text.replace('"', '\\"').replace('\n', ' ')
+
+    # Wir bauen ein kleines Diagnose-Interface direkt in das HTML-Element
+    diag_html = f"""
+    <div id="diag-box" style="padding:10px; border:1px solid #ccc; border-radius:5px; background:#f9f9f9; font-family:sans-serif; font-size:12px;">
+        <b>Browser-Status:</b> <span id="status">Warte auf Klick...</span><br>
+        <b>Stimmen gefunden:</b> <span id="voices-count">0</span><br>
+        <b>Fehlermeldung:</b> <span id="error-msg" style="color:red;">keine</span>
+    </div>
+
+    <button id="play-btn" style="margin-top:10px; width:100%; padding:10px; background:#4f8bf9; color:white; border:none; border-radius:5px;">
+        🔊 JETZT TESTEN (Klick mich!)
+    </button>
+
+    <script>
+        const status = document.getElementById('status');
+        const voicesCount = document.getElementById('voices-count');
+        const errorMsg = document.getElementById('error-msg');
+        const btn = document.getElementById('play-btn');
+
+        // Funktion zum Sprechen
+        const runSpeech = () => {{
+            try {{
+                if (!window.speechSynthesis) {{
+                    status.innerText = "API NICHT UNTERSTÜTZT!";
+                    return;
+                }}
+
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance("{safe_text}");
+                msg.lang = "de-DE";
+                msg.rate = {speed};
+
+                msg.onstart = () => {{ status.innerText = "Spreche gerade..."; }};
+                msg.onend = () => {{ status.innerText = "Fertig gesprochen."; }};
+                msg.onerror = (e) => {{ 
+                    status.innerText = "FEHLER!"; 
+                    errorMsg.innerText = e.error + " (Typ: " + e.type + ")";
+                }};
+
+                window.speechSynthesis.speak(msg);
+                status.innerText = "Befehl an Browser gesendet...";
+
+            }} catch (err) {{
+                errorMsg.innerText = err.message;
+            }}
+        }};
+
+        // Stimmen zählen
+        const updateVoices = () => {{
+            const v = window.speechSynthesis.getVoices();
+            voicesCount.innerText = v.length + " (z.B. " + (v[0]?.name || 'keine') + ")";
+        }};
+
+        window.speechSynthesis.onvoiceschanged = updateVoices;
+        updateVoices();
+
+        btn.onclick = runSpeech;
+    </script>
+    """
+    components.html(diag_html, height=180)
+
+
+def st_speak(text, speed=1.0):
+    """
+    Spielt Text via Browser-JS ab.
+    WICHTIG: components.html erlaubt KEIN 'key' Argument!
+    """
+    # Sonderzeichen für JavaScript sicher machen
+    safe_text = text.replace('\\', '\\\\').replace('"', '\\"').replace("'", "\\'").replace('\n', ' ')
+
+    speak_js = f"""
+    <script>
+        (function() {{
+            // Bestehende Sprachausgabe stoppen
+            if (window.speechSynthesis) {{
+                window.speechSynthesis.cancel();
+
+                const msg = new SpeechSynthesisUtterance("{safe_text}");
+                msg.lang = "de-DE";
+                msg.rate = {speed};
+
+                // Debug-Log für die Browser-Konsole (F12)
+                console.log("Spreche: {safe_text[:20]}... mit Speed: " + {speed});
+
+                window.speechSynthesis.speak(msg);
+            }}
+        }})();
+    </script>
+    """
+    # Hier darf NUR 'html' und 'height' stehen (und optional 'width' oder 'scrolling')
+    components.html(speak_js, height=0)
+
+
+def st_speak_old_202603051322(text, speed=1.0):
+    """Verbesserte Sprachausgabe für mobile Browser."""
+    clean_text = text.replace('"', '\\"').replace('\n', ' ')
+    import hashlib
+    h = hashlib.md5(clean_text.encode()).hexdigest()
+
+    speak_js = f"""
+    <script>
+        (function() {{
+            const speak = () => {{
+                window.speechSynthesis.cancel(); // Stoppe laufende Ausgabe
+                const msg = new SpeechSynthesisUtterance("{clean_text}");
+                msg.lang = "de-DE";
+                msg.rate = {speed};
+
+                // Wichtig für Mobile: Warte bis Stimmen geladen sind
+                msg.onstart = () => console.log("Sprachausgabe gestartet");
+                msg.onerror = (e) => console.error("TTS Fehler:", e);
+
+                window.speechSynthesis.speak(msg);
+            }};
+
+            // Falls Stimmen noch nicht geladen sind (Chrome Bug)
+            if (window.speechSynthesis.getVoices().length === 0) {{
+                window.speechSynthesis.onvoiceschanged = speak;
+            }} else {{
+                speak();
+            }}
+        }})();
+    </script>
+    """
+    # Wir geben dem Iframe eine kleine Höhe, manche Browser ignorieren height=0
+    components.html(speak_js, height=0, key=f"speak_{h}_{speed}")
+
+if "speech_speed" not in st.session_state:
+    st.session_state.speech_speed = 1.0
+
+
+
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -167,6 +301,30 @@ def copy_to_clipboard_component_v2(text_to_copy, button_label="Click to Copy (Th
 
 # scripts/py/chat/streamlit-chat.py
 st.title("SL5 Aura (external interface to the core logic)")
+
+# --- SIDEBAR EINSTELLUNGEN ---
+with st.sidebar:
+    st.title("Einstellungen")
+
+    # 1. Checkbox für Aktivierung
+    speak_enabled = st.checkbox("Ergebnisse laut vorlesen", value=True)
+
+    # 2. Slider für Geschwindigkeit (Wichtig: Vor dem Button definieren!)
+    speech_speed = st.slider("Geschwindigkeit", 0.5, 2.0, 1.0, 0.1)
+
+    # 3. Der Sprach-Test Button
+    if st.button("🔊 Sprach-Test"):
+        st_speak("Die Sprachausgabe ist jetzt aktiviert.", speech_speed)
+        st.success("Sound aktiviert! Teste jetzt eine Anfrage.")
+
+    st.markdown("---")
+
+    # 4. Diagnose-Bereich (Hilfreich für Firefox/Android Tests)
+    st.subheader("Audio Diagnose")
+    st_speak_diagnostic("Diagnose-Modus aktiv.")
+
+    st.info("Hinweis: Chrome wird für die Sprachausgabe empfohlen.")
+
 
 st.info('https://github.com/sl5net/SL5-aura-service/blob/master/docs/README/README-delang.md')
 st.info('https://pad.ccc-mannheim.de/p/kihelfer')
@@ -373,7 +531,20 @@ if prompt := st.chat_input("Ihre Frage an den Service"):
 
             # Antwort auswerten (Annahme: Die Antwort ist ein JSON-Objekt mit einem 'result'-Feld)
             # PASSEN SIE DIESEN TEIL AN DAS EXAKTE ANTWORT-FORMAT IHRES SERVICES AN!
+
+            # ... dein bisheriger Code (API-Anfrage) ...
             api_response_data = response.json()
+            service_answer = api_response_data.get("result") or api_response_data.get("result_text") or "..."
+
+            # --- NEU: SPRACHAUSGABE TRIGGERN ---
+            if speak_enabled:
+                st_speak(service_answer, speech_speed)
+
+            # 3. Service-Antwort zum Verlauf hinzufügen und anzeigen
+            with st.chat_message("assistant"):
+                st.markdown(service_answer)
+
+
 
             # ANNAHME: Die relevante Antwort steht in einem Feld namens 'result' oder 'text'
             # PASSEN SIE DEN KEY (z.B. 'result') AN IHR EXAKTES FORMAT AN!

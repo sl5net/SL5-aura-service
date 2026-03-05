@@ -1616,7 +1616,7 @@ def process_text_in_background(logger,
                 try:
                     trigger_background_zip_check(logger)
                 except ImportError as e:
-                    logger.warning("Auto-Zip: error {e} trigger_background_zip_check ")
+                    logger.warning(f"Auto-Zip: error {e} trigger_background_zip_check ")
 
             # Hm ist gewünscht
 

@@ -3,7 +3,7 @@ import threading
 import random
 import time
 import shutil
-import os
+
 from pathlib import Path
 
 from scripts.py.func.audio_manager import speak_fallback

@@ -52,6 +52,17 @@ def find_and_kill_process_on_port(port):
 
     return False # Kein Prozess gefunden
 
+
+def ensure_dependencies():
+    dependencies = ["uvicorn", "fastapi", "requests"] # Erweitere die Liste nach Bedarf
+    for dep in dependencies:
+        try:
+            __import__(dep)
+        except ImportError:
+            print(f"--- Modul '{dep}' fehlt. Installiere jetzt... ---")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", dep])
+
+
 def start_uvicorn_service(host, port, module_path):
     """Startet den Uvicorn-Service neu."""
 
@@ -99,6 +110,7 @@ def start_uvicorn_service(host, port, module_path):
 
 
 if __name__ == "__main__":
+    ensure_dependencies()
 
     print(f"--- Service Start Skript ({time.strftime('%Y-%m-%d %H:%M:%S')}) ---")
 

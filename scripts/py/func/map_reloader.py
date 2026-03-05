@@ -148,7 +148,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                     # Lifecycle Hook (only for valid modules)
                     # scripts/py/func/map_reloader.py:117
-                    if module_name  is not None and  hasattr(module_to_reload, 'on_reload') and callable(module_to_reload.on_reload):
+                    if module_name is not None and hasattr(module_to_reload, 'on_reload') and callable(module_to_reload.on_reload):
                         try:
                             if log_all_map_reloaded or log_all_changes:
                                 logger.info(f"🚀 Triggering on_reload() for '{module_name}'")
@@ -462,7 +462,7 @@ config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
                 # Add a log before the hasattr check
                 # logger.info(f"375: Checking module {module_name} for hooks...")
 
-                if  module is not None and  module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
+                if module is not None and module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
 
                     if (not start_path_current_dir
                             or not start_path_current_dir.name):
