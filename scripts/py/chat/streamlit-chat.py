@@ -552,7 +552,6 @@ if prompt := st.chat_input("Ihre Frage an den Service"):
             st_speak(service_answer, speech_speed)
 
         trigger_scroll_to_bottom()
-        st.rerun()
 
 
 
