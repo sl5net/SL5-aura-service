@@ -313,7 +313,24 @@ with st.sidebar:
     st.session_state.speak_enabled = st.checkbox("Ergebnisse laut vorlesen", value=st.session_state.speak_enabled)
 
     # 2. Slider für Geschwindigkeit (Wichtig: Vor dem Button definieren!)
-    speech_speed = st.slider("Geschwindigkeit", 0.5, 2.0, 1.0, 0.1)
+    # Beim ersten Laden: Query-Parameter auslesen (gesetzt von localStorage via JS)
+    if "speech_speed_saved" not in st.session_state:
+        try:
+            st.session_state.speech_speed_saved = float(st.query_params.get("spd", 1.0))
+        except:
+            st.session_state.speech_speed_saved = 1.0
+
+    speech_speed = st.slider("Geschwindigkeit", 0.5, 2.0,
+                             st.session_state.speech_speed_saved, 0.1)
+    st.session_state.speech_speed_saved = speech_speed
+
+    # Wert in localStorage + URL speichern
+    components.html(f"""<script>
+        localStorage.setItem('sl5_speech_speed', '{speech_speed}');
+        const url = new URL(window.parent.location.href);
+        url.searchParams.set('spd', '{speech_speed}');
+        window.parent.history.replaceState(null, '', url.toString());
+    </script>""", height=0)
 
     # 3. Der Sprach-Test Button
     if st.button("🔊 Sprach-Test"):
@@ -337,6 +354,9 @@ example_text = "Aura Was ist das Besondere an SL5 Aura"
 st.markdown(r"""### Beispiel-Eingaben:""")
 
 st.code(example_text, language='plaintext')
+
+if st.button("▶️ Beispiel direkt senden", key="ex_main"):
+    st.session_state.prefill_input = example_text
 
 copy_to_clipboard_component_v2(example_text,
                            "📋 Beispiel kopieren (⬇️ unten Einfügen, Ändern ▶️ Senden)")
@@ -496,8 +516,42 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+# --- BEISPIEL-BUTTONS ---
+EXAMPLES = [
+    "Aura Was ist das Besondere an SL5 Aura",
+    "Wiki Wo ist Wannweil?",
+    "was ist 5+4",
+    "wiki was ist ein Berg Begriffserklärung",
+    "Wiki Wer ist Sebastian Lauffer",
+    "Wiki Wer ist Herr Schröer",
+    "Wiki Wer ist Harald",
+    "Ruth Kapitel 1 Vers 1",
+    "mit nachnamen laufer",
+    "mit ergoltherabpeut Herr Schrör",
+    "Englisch einschalten",
+    "Wie ist das Wetter?",
+]
+st.markdown("**Beispiele direkt ausprobieren:**")
+cols = st.columns(3)
+for i, ex in enumerate(EXAMPLES):
+    if cols[i % 3].button(ex, key=f"exbtn_{i}"):
+        st.session_state.prefill_input = ex
+        st.rerun()
+
 # --- HAUPT-EINGABE-BEREICH ---
-if prompt := st.chat_input("Ihre Frage an den Service"):
+if "prefill_input" not in st.session_state:
+    st.session_state.prefill_input = ""
+
+prefill = st.session_state.pop("prefill_input", "") if "prefill_input" in st.session_state else ""
+
+if prefill:
+    prompt = prefill
+elif prompt := st.chat_input("Ihre Frage an den Service"):
+    pass
+else:
+    prompt = None
+
+if prompt:
     # 1. Bereinigung und Kleinbuchstaben-Konvertierung des Prompts
     # Optional: strip() entfernt führende/abschließende Leerzeichen/Umbrüche
     cleaned_prompt = prompt.strip().lower()
