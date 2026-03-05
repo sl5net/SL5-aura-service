@@ -2,7 +2,8 @@
 import streamlit as st
 
 import requests
-import json, os
+import json
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -317,7 +318,8 @@ with st.sidebar:
     if "speech_speed_saved" not in st.session_state:
         try:
             st.session_state.speech_speed_saved = float(st.query_params.get("spd", 1.0))
-        except:
+        except (ValueError, TypeError) as e:
+            print(f"Fehler beim Laden der speech_speed: {e}")
             st.session_state.speech_speed_saved = 1.0
 
     speech_speed = st.slider("Geschwindigkeit", 0.5, 2.0,
@@ -644,12 +646,12 @@ if st.session_state.scroll_trigger > 0:
 if st.session_state.get('scroll_trigger', 0) > 0:
     st.session_state.scroll_trigger = 0
     components.html(
-        f"""
+        """
         <script>
-        setTimeout(function() {{
+        setTimeout(function() {
             var el = window.parent.document.querySelector('section.main');
-            if(el) el.scrollTo({{top: el.scrollHeight, behavior: 'smooth'}});
-        }}, 200);
+            if(el) el.scrollTo({top: el.scrollHeight, behavior: 'smooth'});
+        }, 200);
         </script>
         """,
         height=0,
