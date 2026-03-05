@@ -28,9 +28,12 @@ Add this to your `~/.zshrc`:
 # Toggle: set AUTO_CLIPBOARD=true/false
 AUTO_CLIPBOARD=true
 
+# Redirect stdout+stderr to ~/t.txt before each command
 preexec() {
-    # Redirect stdout+stderr to ~/t.txt before each command
-    exec > >(tee ~/t.txt) 2>&1
+    case "$1" in
+        sudo*|su*) return ;;
+        *) exec > >(tee ~/t.txt) 2>&1 ;;
+    esac
 }
 
 precmd() {
