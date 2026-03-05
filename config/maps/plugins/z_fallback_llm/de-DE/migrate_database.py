@@ -150,7 +150,7 @@ def migrate_database():
 
 
 def main():
-    utils.log_debug(f'migrate_database() deaktiviert 3.12.25 02:18 Wed')
+    utils.log_debug('migrate_database() deaktiviert 3.12.25 02:18 Wed')
     # migrate_database()
 
 

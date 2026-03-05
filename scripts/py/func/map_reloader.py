@@ -1,7 +1,8 @@
 # scripts/py/func/map_reloader.py
 from .config.regex_cache import clear_regex_cache
 import importlib
-import sys, platform
+import sys
+import platform
 import gc # Added for forced garbage collection
 from pathlib import Path
 import os
@@ -43,7 +44,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
     if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
-        log_memory_details(f"def start", logger)
+        log_memory_details("def start", logger)
 
     # logger.info("Starting map reload check.")
 
@@ -241,7 +242,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
     if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
 
-        log_memory_details(f"def end", logger)
+        log_memory_details("def end", logger)
 
 # scripts/py/func/map_reloader.py:174
 # --- HELPER FUNCTION  ---
@@ -441,7 +442,7 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                             continue
 
                         if log_everything:
-                            log4DEV(f'Example: ',logger)
+                            log4DEV('Example: ',logger)
 
                             """
 14:47:20,095 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package

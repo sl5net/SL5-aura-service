@@ -29,7 +29,7 @@ from .guess_lt_language_from_model import guess_lt_language_from_model
 from .audio_manager import unmute_microphone, mute_microphone
 from .microphone_status_too_log import log_microphone_status
 
-from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, SIGNATURE_TIMES
+from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED
 # Global sequence counter for the current session (must be synchronized)
 
 global text_detected
@@ -292,7 +292,7 @@ def handle_trigger(
                 # Note: We keep OUT_OF_ORDER_CACHE items until they time out/are picked up
 
             if settings.DEV_MODE:
-                logger.info(f"Session thread is finishing. Ensuring state is cleared. text_detected.")
+                logger.info("Session thread is finishing. Ensuring state is cleared. text_detected.")
             finalize_recording_session(logger)
             dictation_session_active.clear()
 

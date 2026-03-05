@@ -62,7 +62,7 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
         return corrected_text
 
     except requests.exceptions.Timeout:
-        logger.error(f"  <- TIMEOUT: LT Server war zu langsam.")
+        logger.error("  <- TIMEOUT: LT Server war zu langsam.")
         return text
     except requests.exceptions.RequestException as e:
         logger.error(f"  <- ERROR: LanguageTool request failed: {e}")
@@ -162,11 +162,11 @@ def correct_text_by_languagetool_202601311818(logger, active_lt_url, LT_LANGUAGE
         corrected_text = "".join(new_text_parts)
 
         if log_all_changes:
-            logger.info(f"🔁 LT-Korrektur durchgeführt.")
+            logger.info("🔁 LT-Korrektur durchgeführt.")
         return corrected_text
 
     except requests.exceptions.Timeout:
-        logger.error(f"  <- TIMEOUT: LT Server war zu langsam.")
+        logger.error("  <- TIMEOUT: LT Server war zu langsam.")
         return text
     except requests.exceptions.RequestException as e:
         logger.error(f"  <- ERROR: LanguageTool request failed: {e}")

@@ -226,7 +226,7 @@ FUZZY_MAP_pre = [
 
 
     # Examples: disk usage
-    (f"gdu",
+    ("gdu",
     # EXAMPLE: ordnergröße
     r'^(ordnergröße|speicherfresser|festplatte voll|verzeichnisgröße|gdu|duf|disk usage)$',
     90,
@@ -234,7 +234,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: Launch ncdu
-    (f"ncdu",
+    ("ncdu",
         # EXAMPLE: ordner größe
         r'^(ordner größe|verzeichnis größe|speicherplatz anzeigen|festplatte prüfen|ncdu|Launch ncdu|wie groß sind die ordner)$',
         90,
@@ -242,14 +242,14 @@ FUZZY_MAP_pre = [
 
 
     # Examples: disk usage
-    (f"gdu",
+    ("gdu",
     # EXAMPLE: folder size
     r'^(folder size|directory size|disk usage|storage hog|gdu|disk full)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # Examples: disk space
-    (f"ncdu",
+    ("ncdu",
         # EXAMPLE: check storage
         r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
      90,

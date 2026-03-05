@@ -25,30 +25,30 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: no verify
-    ('n --no-verify', rf'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80, {'flags': re.IGNORECASE}),
+    ('n --no-verify', r'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80, {'flags': re.IGNORECASE}),
 
     #no-verifyno-verifyl --no-verifyNumeri fein
 
 
     # EXAMPLE: b punkt chemnitz b
-    ('PUNCTUATION_MAP ', rf'\b(punkt chemnitz)\b', 80, {'flags': re.IGNORECASE}),
+    ('PUNCTUATION_MAP ', r'\b(punkt chemnitz)\b', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit
     ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
 
     # happens very seldem :D 18.11.'25 17:53 Tue
     # EXAMPLE: Quarzwerk gibt komm Mitmensch
-    ('git commit message ', rf'\bQuarzwerk gibt komm Mitmensch\b ', 80, {'flags': re.IGNORECASE}),
+    ('git commit message ', r'\bQuarzwerk gibt komm Mitmensch\b ', 80, {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: gibt kaum mit
-    ('git commit ', rf'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit
-    ('git commit ', rf'\bgit commit\b\s*', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'\bgit commit\b\s*', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit
-    ('git commit ', rf'\bgittern komet\b\s*', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'\bgittern komet\b\s*', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit Text in english
     ('git commit Text in english', rf'\bein {gitGit}\b\s*\b{commitGit} text in english\b', 80, {'flags': re.IGNORECASE}),
@@ -171,11 +171,11 @@ FUZZY_MAP_pre = [
     #git add . && git commit -m "WIP" && git push; && git
 
     # EXAMPLE: git WIP push
-    (f'!git add . && git commit -m "WIP" && git push', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
+    ('!git add . && git commit -m "WIP" && git push', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: git WIP push
-    (f'!git add . && git commit -m "WIP" && git push; && git ', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
+    ('!git add . && git commit -m "WIP" && git push; && git ', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),
     ############################################
 
     # (f'cd {CONFIG_DIR}/../../../../../; !git add . && git commit -m "WIP" && git push', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App)\s*(quick|schnell|dirty|wip)?\s*$', 82, {'flags': re.IGNORECASE}),

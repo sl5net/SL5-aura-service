@@ -10,7 +10,7 @@ import re # noqa: F401
 #    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
-multiline_string_1 = f"""
+multiline_string_1 = """
 Use in Source-Code always English(also for Comments).
 - Bitte achte darauf (in deinen Tipps) das (bei use) möglichst keine closed source installiert wird und das es nichts kostet.
 

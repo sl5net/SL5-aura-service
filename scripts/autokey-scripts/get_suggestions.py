@@ -1,6 +1,7 @@
 import time
 from pathlib import Path
-import system, keyboard
+import system
+import keyboard
 
 # SCRIPT_DIR = Path(__file__).resolve().parent
 

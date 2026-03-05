@@ -213,7 +213,7 @@ FUZZY_MAP_pre = [
 
     # bzopfig
     # EXAMPLE: bzopfig b
-    (f'config/', r'\bzopfig\b', 90,
+    ('config/', r'\bzopfig\b', 90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
 
       'only_in_windows': ['Konsole', 'konsole', 'Console',

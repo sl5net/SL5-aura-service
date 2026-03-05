@@ -1,6 +1,7 @@
 # File: scripts/py/func/main.py
 
-import threading, time
+import threading
+import time
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler

@@ -47,7 +47,7 @@ def analyze():
     notes = conn.execute("SELECT flds FROM notes LIMIT 20").fetchall()
     notes = conn.execute("SELECT flds FROM notes").fetchall() # KEIN LIMIT!
 
-    print(f"\n--- ANALYSE DER ERSTEN 20 KARTEN ---\n")
+    print("\n--- ANALYSE DER ERSTEN 20 KARTEN ---\n")
 
     found = False
     for i, note in enumerate(notes):

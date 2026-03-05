@@ -28,7 +28,7 @@ def execute(match_data):
     triggers = ["fehler melden", "logge fehler", "das war falsch", "fehlermeldung", "fehler mail"]
 
     if not report_file.exists():
-        returns =f"error Reporting-File not exist"
+        returns ="error Reporting-File not exist"
         speak_fallback(f"{returns}", 'de-DE')
         return returns
 
@@ -90,7 +90,7 @@ def execute(match_data):
         with open(report_file, "a", encoding="utf-8") as f:
             f.write(f"📢 {timestamp}:\n{error_line}\n")
 
-        return f" internals>misrecognitions "
+        return " internals>misrecognitions "
 
     except Exception as e:
 

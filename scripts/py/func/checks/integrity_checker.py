@@ -24,7 +24,7 @@ def check_code_integrity(project_root, logger):
             for fragment in fragments:
                 if fragment not in content:
                     logger.fatal("-" * 60)
-                    logger.fatal(f"FATAL INTEGRITY CHECK FAILED!")
+                    logger.fatal("FATAL INTEGRITY CHECK FAILED!")
                     logger.fatal(f"  File: {file_path}")
                     logger.fatal(f"❌ 🛑🛑🛑 Missing Fragment: '{fragment}'")
                     logger.fatal("  This part of the code is critical and must not be changed.")
@@ -55,7 +55,7 @@ def check_code_integrity(project_root, logger):
                             # startswith prüft exakt den Anfang (Spalte 0)
                             if line.startswith(unsafe_start):
                                 logger.fatal("-" * 60)
-                                logger.fatal(f"FATAL SECURITY CHECK FAILED!")
+                                logger.fatal("FATAL SECURITY CHECK FAILED!")
                                 logger.fatal(f"  File: {full_path}:{line_num}")
                                 logger.fatal(f"❌ Unsafe Import detected at start of line: '{unsafe_start.strip()}...'")
                                 logger.fatal("  Global settings imports MUST be inside a try-except block (indented).")
@@ -69,7 +69,7 @@ def check_code_integrity(project_root, logger):
                                     # Ausnahme: Wir erlauben es, wenn es ein Kommentar ist (startet mit #)
 
                                     logger.fatal("-" * 60)
-                                    logger.fatal(f"FATAL SECURITY CHECK FAILED!")
+                                    logger.fatal("FATAL SECURITY CHECK FAILED!")
                                     logger.fatal(f"  File: {full_path}:{line_num}")
                                     logger.fatal(f"❌ Forbidden Pattern detected: '{forbidden}'")
                                     logger.fatal("  SOLUTION: Use 'if getattr(settings, \"VARIABLE\", False):' instead!")

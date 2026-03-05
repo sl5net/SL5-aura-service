@@ -217,10 +217,10 @@ def parse_wannweil_silo_logic(pdf_path, debug=False):
 
 
 def save_to_csv(termine, script_path, pdf_path):
-    print(f"csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
-    print(f"csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
-    print(f"csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
-    print(f"csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print("csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print("csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print("csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print("csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
 
 
     return True
@@ -321,7 +321,7 @@ def check_csv_alerts():
         print(f"CSV Fehler: {csv_file}.")
         return
 
-    print(f"check_trash.py:256")
+    print("check_trash.py:256")
 
     # now = datetime.datetime.now()
     # now = datetime.now()

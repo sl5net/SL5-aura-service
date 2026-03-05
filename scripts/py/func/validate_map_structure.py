@@ -175,7 +175,7 @@ def validate_map_structure(map_data, file_path, logger):
         if id_looks_like_regex and pattern_looks_like_id:
             logger.error(f"❌ [VERTAUSCHUNGS-ALARM] {file_path}:")
             logger.error(f"   In Eintrag {i} scheint die ID '{rule_id}' ein Regex-Pattern zu sein.")
-            logger.error(f"   Prüfe, ob ID und Regex-Pattern vertauscht wurden!")
+            logger.error("   Prüfe, ob ID und Regex-Pattern vertauscht wurden!")
             return False
 
         # TYP-CHECK: Priority sollte eine Zahl sein

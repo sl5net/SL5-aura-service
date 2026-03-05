@@ -23,7 +23,7 @@ CONFIG_DIR = Path(__file__).parent
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 FUZZY_MAP_pre = [
-    ('find all zips', fr'''^(
+    ('find all zips', r'''^(
             (Alle\s)?(ZIP|Sip|Chip|Tipp|Zipp|Seb)[-\s]?(Dateien|Ordner|Daten|s)?\s(suchen|hinzu|scannen|aktualisieren|einlesen|finden|checken|neu laden)
             |
             (Scanne|Suche|Aktualisiere)\s(alle\s)?(Zips|Zip-Dateien|Chips|Tipps)

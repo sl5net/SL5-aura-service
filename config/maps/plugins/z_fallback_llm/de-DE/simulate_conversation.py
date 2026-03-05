@@ -1,8 +1,10 @@
 # config/maps/plugins/z_fallback_llm/de-DE/simulate_conversation.py
 import sys
 import os
-import subprocess, psutil
-import time, datetime
+import subprocess
+import psutil
+import time
+import datetime
 
 
 
@@ -220,7 +222,7 @@ def ask_aura(question):
     print(f"🤔: '{question}'")
 
 
-    print(f"\n")
+    print("\n")
 
     print(f"🗣 SL5 AURA ({duration:.2f}s): {response}… 🗣 SL5.de╱Aura")
 
@@ -247,7 +249,7 @@ def main():
     last_response = ("Hallo! Ich bin '🗣 SL5 Aura', dein offline, privacy-first, voice assistant framework. "
                      "Ich habe Zugriff auf meine eigene Dokumentation.")
     print(f"🗣 SL5 AURA (Start): {last_response}")
-    print(f"\n")
+    print("\n")
 
     script_start_time = time.time()
 

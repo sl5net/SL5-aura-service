@@ -1,9 +1,18 @@
 #!/bin/bash
 # .git/hooks/pre-commit
 
+echo "Running ruff auto-fix..."
+if [ -f .venv/bin/ruff ]; then
+  .venv/bin/ruff check --fix ./aura_engine.py ./scripts ./config 2>/dev/null || true
+fi
 
+# In pre-commit, nach ruff:
+echo "Running pylint (warnings only)..."
+.venv/bin/pylint ./aura_engine.py ./scripts ./config \
+    --disable=all,W0718 \
+    --enable=W0702,W0703,W0611,W0612 \
+    --exit-zero  # blockiert NIE den commit, nur Ausgabe
 
-# --- Start of flake8 check ---
 echo "Running flake8 code quality check..."
 
 # Activate virtual environment if it exists

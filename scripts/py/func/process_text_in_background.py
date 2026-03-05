@@ -30,7 +30,8 @@ from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CA
 
 
 from .correct_text_by_languagetool import correct_text_by_languagetool
-import re, time
+import re
+import time
 from thefuzz import fuzz
 from .notify import notify
 
@@ -236,9 +237,9 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
         #
 
 
-        print(f"168: TODO: performance killer (2025-1225-1950)")
-        print(f"168: TODO: performance killer (2025-1225-1950)")
-        print(f"168: TODO: performance killer (2025-1225-1950)")
+        print("168: TODO: performance killer (2025-1225-1950)")
+        print("168: TODO: performance killer (2025-1225-1950)")
+        print("168: TODO: performance killer (2025-1225-1950)")
 
 
 
@@ -291,7 +292,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
     # process_text_in_background.py:265 (load_maps_for_language)
     if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
-        log_memory_details(f"def load_maps_for_language", logger)
+        log_memory_details("def load_maps_for_language", logger)
 
     logger.info(f"🗺️Starting recursive map loading for language: {lang_code}, run_mode_override:{run_mode_override}")
 
@@ -299,7 +300,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
     if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
-        log_memory_details(f"next: auto_reload_modified_maps", logger)
+        log_memory_details("next: auto_reload_modified_maps", logger)
 
     # Zuerst alle Module im Speicher neu laden, um Änderungen zu erfassen
     auto_reload_modified_maps(logger,run_mode_override)
@@ -308,7 +309,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
     if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
-        log_memory_details(f"last: auto_reload_modified_maps", logger)
+        log_memory_details("last: auto_reload_modified_maps", logger)
 
     # Leere Container für die zusammengefügten Daten
     punctuation_map = {}
@@ -574,7 +575,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
     if getattr(settings, "DEV_MODE_memory", False):
         from scripts.py.func.log_memory_details import log_memory_details
-        log_memory_details(f"next: return punctuation_map, fuzzy_map_pre, fuzzy_map", logger)
+        log_memory_details("next: return punctuation_map, fuzzy_map_pre, fuzzy_map", logger)
 
     # process_text_in_background.py:502 (load_maps_for_language)
     return punctuation_map, fuzzy_map_pre, fuzzy_map
@@ -675,7 +676,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         is_private = True
 
         if settings.DEV_MODE_show_when_private_map_found:
-            log4DEV(f"is_private: 📚Found module candidate", logger)
+            log4DEV("is_private: 📚Found module candidate", logger)
 
     if GLOBAL_debug_skip_list:
 
@@ -684,7 +685,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
     a_rule_matched = False
     if new_processed_text is False:
         #made_a_change_in_cycle = False
-        log4DEV(f"new_processed_text is return ... None", logger)
+        log4DEV("new_processed_text is return ... None", logger)
 
         if GLOBAL_debug_skip_list:
             print(f'574: skip_list={skip_list}')
@@ -1168,7 +1169,7 @@ def process_text_in_background(logger,
 
                 if not privacy_taint_occurred:
 
-                    log4DEV(f"Applying all rules until stable (default 'all' mode).", logger)
+                    log4DEV("Applying all rules until stable (default 'all' mode).", logger)
                 (new_processed_text
                 , regex_pre_is_replacing_all_maybe
                 , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(processed_text
@@ -1242,7 +1243,7 @@ def process_text_in_background(logger,
 
                 if getattr(settings, "DEV_MODE_memory", False):
                     from scripts.py.func.log_memory_details import log_memory_details
-                    log_memory_details(f"last correct_text_by_languagetool:", logger)
+                    log_memory_details("last correct_text_by_languagetool:", logger)
 
 
             # scripts/py/func/process_text_in_background.py:1080 (process_text_in_background)
@@ -1427,8 +1428,8 @@ def process_text_in_background(logger,
         suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")) / "sl5_aura" / "aura_vosk_suspended.flag"
         is_suspended = suspend_flag.exists()
         if is_suspended:
-            log4DEV(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
-            print(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
+            log4DEV("is_suspended -> dont execute -> ty sleep and wait for active command", logger)
+            print("is_suspended -> dont execute -> ty sleep and wait for active command", logger)
             return ''
 
 
@@ -1631,8 +1632,8 @@ def process_text_in_background(logger,
 
     except Exception as e:
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
-        logger.error(f"scripts/py/func/process_text_in_background.py:1167  (process_text_in_background)")
-        notify(f"FATAL: Error in processing thread", duration=4000, urgency="low")
+        logger.error("scripts/py/func/process_text_in_background.py:1167  (process_text_in_background)")
+        notify("FATAL: Error in processing thread", duration=4000, urgency="low")
     finally:
         # file: scripts/py/func/process_text_in_background.py
         if settings.DEV_MODE:
@@ -1810,15 +1811,15 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
             if len(rule_entry) != 4:
-                print(f"____________________________________________")
-                print(f"____________________________________________")
-                print(f"____________________________________________")
+                print("____________________________________________")
+                print("____________________________________________")
+                print("____________________________________________")
                 print(f"DEBUG: Broken rule found: {rule_entry}")
                 logger_instance.info(f"DEBUG: Broken rule found: {rule_entry}")
                 log4DEV(f"DEBUG: Broken rule found: {rule_entry}",logger_instance)
-                print(f"____________________________________________")
-                print(f"____________________________________________")
-                print(f"____________________________________________")
+                print("____________________________________________")
+                print("____________________________________________")
+                print("____________________________________________")
                 time.sleep(3)
                 return None, False
                 # sys.exit(1)

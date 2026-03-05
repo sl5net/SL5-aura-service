@@ -159,7 +159,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
 
 
 
-        logger.info(f"✅ Test: Phase 3 PASSED: Rule successfully deactivated. ")
+        logger.info("✅ Test: Phase 3 PASSED: Rule successfully deactivated. ")
 
 
 

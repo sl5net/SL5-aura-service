@@ -23,7 +23,7 @@ SERVICE_PY_NAME = "aura_engine.py"
 TRIGGER_path = "/tmp/sl5_record.trigger"
 TRIGGER_FILE = Path(TRIGGER_path)
 
-HEARTBEAT_FILE = Path(f"/tmp/aura_engine.heartbeat")
+HEARTBEAT_FILE = Path("/tmp/aura_engine.heartbeat")
 # INCREASED TIMEOUT: Give the service more time to start
 HEARTBEAT_MAX_AGE_SECONDS = 30 # Increased from 15
 

@@ -86,7 +86,7 @@ def get_cached_response(prompt_key_to_hash1: str):
             # utils.log_debug('🎈')
             if age.days > utils.CACHE_TTL_DAYS:
                 conn.close()
-                utils.log_debug(f"return None, False")
+                utils.log_debug("return None, False")
                 return None, True
         except Exception as e:
             utils.log_debug(f"Exception {e}")
@@ -126,7 +126,7 @@ def get_cached_response(prompt_key_to_hash1: str):
             update_prompt_stats(prompt_hash)
             return chosen_row[1], False
         conn.close()
-        utils.log_debug(f"return None, False")
+        utils.log_debug("return None, False")
         return None, False
     except Exception as e:
         utils.log_debug(f"Exception: {e}")

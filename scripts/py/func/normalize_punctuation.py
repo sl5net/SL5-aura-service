@@ -15,7 +15,7 @@ def normalize_punctuation(text: str, punctuation_map: dict, logger2) -> Tuple[st
     log4DEV(f'📍 START normalize_punctuation: "{text}"', logger2)
 
     if not punctuation_map:
-        log4DEV(f'📍 Map is empty, skipping.', logger2)
+        log4DEV('📍 Map is empty, skipping.', logger2)
         return text, False
 
     lower_map = {k.lower(): v for k, v in punctuation_map.items()}

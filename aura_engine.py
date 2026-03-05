@@ -3,13 +3,15 @@ import objgraph
 from datetime import datetime, timedelta
 
 import os
-import sys, subprocess
+import sys
+import subprocess
 
 import signal
 
 
 import psutil
-import time, re
+import time
+import re
 
 #from config.settings import LANGUAGETOOL_CHECK_URL
 
@@ -54,7 +56,13 @@ if 'VIRTUAL_ENV' not in os.environ:
 
 
 
-import sys, os, atexit, requests, logging, platform, importlib
+import sys
+import os
+import atexit
+import requests
+import logging
+import platform
+import importlib
 from pathlib import Path
 
 

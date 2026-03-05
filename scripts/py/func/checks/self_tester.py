@@ -105,8 +105,8 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
 
     lineno = check_translator_hijack_is_active(logger)
     if lineno and lineno>0:
-        logger.info(f"st:self_tester.py exit exit exit")
-        logger.info(f"st:75:🚨 HIJACK: rule is activ")
+        logger.info("st:self_tester.py exit exit exit")
+        logger.info("st:75:🚨 HIJACK: rule is activ")
         logger.info(f"""
         st:
         75:🚨 HIJACK: rule is activ during self_test! maybe check: 
@@ -177,9 +177,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected=f"{SPEECH_PAUSE_TIMEOUT_021}", context='proff if we can change settings 2026-0104-1435'),
 
         #     ('lehrwart', 'leerworttest1'),
-        case(input_text='leerworttest', expected=f"leerworttest1", context='punctation map test', lang='de-DE'),
+        case(input_text='leerworttest', expected="leerworttest1", context='punctation map test', lang='de-DE'),
 
-        case(input_text='->AUDIO_INPUT_DEVICE<-', expected=f"SYSTEM_DEFAULT",
+        case(input_text='->AUDIO_INPUT_DEVICE<-', expected="SYSTEM_DEFAULT",
              context='proff if we can change settings 2026-0104-1435'),
         # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected='7890', context='proff if we can change settings 2026-0104-1435'),
 

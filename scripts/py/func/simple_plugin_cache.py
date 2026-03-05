@@ -84,7 +84,7 @@ def get_cached_result(
             # 2. Check TTL validity
 
             if cached_timestamp is None:
-                print(f"DEBUG: Cache entry found but timestamp is None. Treating as expired.")
+                print("DEBUG: Cache entry found but timestamp is None. Treating as expired.")
                 logger.warning("CACHE ERROR: Timestamp is None. Treating as expired.")
                 return None
 

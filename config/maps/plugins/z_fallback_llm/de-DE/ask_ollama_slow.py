@@ -672,7 +672,7 @@ def execute(match_data):
         except HTTPError as e:
             # Hier fangen wir den "Server response: 500" ab
             if e.code == 500:
-                utils.log_debug(f"❌ OLLAMA SERVER ERROR (500). Ignoriere Fehlertext für User.")
+                utils.log_debug("❌ OLLAMA SERVER ERROR (500). Ignoriere Fehlertext für User.")
                 # Wenn du NICHT willst, dass der User den Fehler sieht:
                 return "Ich habe kurz den Faden verloren. Kannst du das wiederholen?"
             else:

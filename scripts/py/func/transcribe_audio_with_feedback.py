@@ -88,7 +88,7 @@ def _get_downsampled_data(raw_data, input_rate, logger):
         # Lösung B:
         # version before: 1.1.'26 12:19 Thu
         # funktioniert aber ist kein echtes mono:
-        logger.debug(f"Downsampling 48kHz Stereo to 16kHz Mono")
+        logger.debug("Downsampling 48kHz Stereo to 16kHz Mono")
         audio_np = np.frombuffer(raw_data, dtype=np.int16)
         return audio_np[::3].tobytes()
 
@@ -154,7 +154,7 @@ def _is_voice_active(data, vad, frame_bytes, SAMPLE_RATE):
 def get_device_id(device_setting, logger):
     # examples: None, MIC_AND_DESKTOP
     if device_setting is None:
-        logger.info(f'transcribe_audio_with_feedback.py:110 get_device_id: device_setting is None')
+        logger.info('transcribe_audio_with_feedback.py:110 get_device_id: device_setting is None')
         return None  # System-Default
 
     # 1. Dynamisch die ID der Brücke finden
@@ -203,7 +203,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     if 'AUTO_ENTER_AFTER_DICTATION_global' not in globals():
         # This checks if the global variable has been defined at all.
         # This would catch a NameError before it happens.
-        logger.warning(f"AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.")
+        logger.warning("AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.")
 
     unmute_microphone()
 
@@ -398,11 +398,11 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                         listen_persistent_flag.touch()
                                         logger.info("🚀 System ACTIVE (wake) — persistent listening enabled")
                                         # logger.info("🚀 System ACTIVE")
-                                        speak_fallback(f"Wake-Word", 'en-US')
+                                        speak_fallback("Wake-Word", 'en-US')
                                     else:
                                         suspend_flag.touch()  # GO TO SLEEP
                                         logger.info("💤 System SUSPENDED")
-                                        speak_fallback(f"System SUSPENDED", 'en-US')
+                                        speak_fallback("System SUSPENDED", 'en-US')
                                     recognizer.Reset()
 
                                     # Sofort weitermachen (kein Yield nötig, oder "Bin wach" sagen)
@@ -434,7 +434,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                     last_activity_time = time.time()
 
                                     # speak_fallback(f"Wake-Word", 'de-DE')
-                                    speak_fallback(f"Wake-Word", 'en-US')
+                                    speak_fallback("Wake-Word", 'en-US')
 
                                     continue
 

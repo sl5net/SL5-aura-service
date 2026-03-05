@@ -15,7 +15,7 @@ def execute(match_data):
     else:
         TMP_DIR = Path("/tmp")
 
-    print(f'LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL cmd_tag')
+    print('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL cmd_tag')
 
 
     # Ensure directory exists for flag file

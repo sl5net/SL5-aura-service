@@ -93,7 +93,7 @@ def execute_packing_logic(current_dir, logger):
                             # newest_file = str(file_path)
 
                 if log_everything:
-                    logger.info(f"⏱️ Timestamp Check:")
+                    logger.info("⏱️ Timestamp Check:")
                     logger.info(f"   - ZIP Date:    {zip_mtime}")
                     logger.info(f"   - Source Date: {latest_source_mtime}")
 

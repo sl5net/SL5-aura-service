@@ -10,7 +10,7 @@ def execute(match_data):
     text_after_replacement = match_data['text_after_replacement'].lower()
     match_obj = match_data['regex_match_obj']
 
-    print(f"text_after_replacement")
+    print("text_after_replacement")
 
     # Befehl: Etwas hinzufügen
     if "add to einkaufsliste" in text_after_replacement:

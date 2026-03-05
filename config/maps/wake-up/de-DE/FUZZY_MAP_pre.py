@@ -64,7 +64,7 @@ FUZZY_MAP_pre = [
     }),
     # 18:40:16,502 - INFO     - 📢📢📢 ######################### gratis einstellen ##########################################
     # stramg i said kakrus and it unsestands gratis ...
-    ('voss_stop', fr'^(gratis) (geschlossen|einstellen)$', 89,
+    ('voss_stop', r'^(gratis) (geschlossen|einstellen)$', 89,
     {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']

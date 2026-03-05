@@ -543,9 +543,9 @@ def mute_microphone(logger=None, onlySound=False):
 
     # active_logger.info(f"508: Audio Manager PID: {os.getpid()}")
 
-    active_logger.info(f"mute_microphone()")
+    active_logger.info("mute_microphone()")
 
-    active_logger.info(f"Muted sound")
+    active_logger.info("Muted sound")
 
     # Muted sound (high-pitched tone)
     # play_beep(600, 400)  # 1000 Hz frequency, 100 ms duration

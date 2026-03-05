@@ -82,12 +82,12 @@ def get_robust_summary(search_term, lang_code='de'):
     summary_text = scrape_wikipedia_summary(search_term, lang_code)
 
     if summary_text:
-        print(f"DEBUG: ✅ Scraping erfolgreich.")
+        print("DEBUG: ✅ Scraping erfolgreich.")
         # Wenn Sie ein volles Objekt benötigen:
         # return ScrapedPage(search_term, summary_text, lang_code)
         return summary_text[0:200]
 
-    print(f"DEBUG: ❌ Scraping fehlgeschlagen.")
+    print("DEBUG: ❌ Scraping fehlgeschlagen.")
     return None
 
 

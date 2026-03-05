@@ -43,7 +43,7 @@ def check_badges(SCRIPT_DIR):
         with open(f'{SCRIPT_DIR}/README.md' , encoding='utf-8') as f:
             readme_content = f.read()
     except FileNotFoundError:
-        print(f"❌ ERROR: Cannot find the file.")
+        print("❌ ERROR: Cannot find the file.")
         sys.exit(1)
 
     urls = find_badge_urls(readme_content)
