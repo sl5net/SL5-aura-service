@@ -8,7 +8,8 @@ from pathlib import Path
 # Imports
 from fastapi import FastAPI, Depends, Header, HTTPException, Request
 from fastapi.responses import JSONResponse
-from pyarrow import timestamp
+from datetime import datetime
+def timestamp(): return datetime.now().strftime("%Y%m%d_%H%M%S")
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -146,7 +147,7 @@ def process_text_cli(request: ProcessRequest, valid: bool = Depends(verify_api_k
 
     # Eindeutigen Output-Ordner erstellen
 
-    unique_dir_name = f"cli_request_{timestamp}"
+    unique_dir_name = f"cli_request_{timestamp()}"
     request_output_dir = TMP_DIR / "sl5_aura" / "tts_output" / unique_dir_name
     request_output_dir.mkdir(parents=True, exist_ok=True)
 

@@ -46,20 +46,16 @@ esac
 
 # --- Hilfsfunktion: Prüfe ob Tasten physisch gedrückt sind (nur X11) ---
 any_key_physically_pressed() {
-    # xinput query-state gibt "key[N]=down" aus wenn eine Taste gedrückt ist
-    # Wir suchen das Keyboard-Gerät automatisch (erstes "keyboard" das kein "Virtual" ist)
-    local device_id
-    device_id=$(xinput list 2>/dev/null \
-        | grep -i "keyboard" \
-        | grep -iv "virtual\|pointer\|XTEST" \
-        | head -1 \
-        | grep -oP 'id=\K[0-9]+')
-
-    if [ -z "$device_id" ]; then
-        return 1  # Kein Gerät gefunden → lieber nicht blockieren
-    fi
-
-    xinput query-state "$device_id" 2>/dev/null | grep -q "key\[.*\]=down"
+    # Wir prüfen ALLE Geräte, die 'key' im Namen haben
+    local ids
+    ids=$(xinput list --id-only | xargs)
+    for id in $ids; do
+        # Falls das Gerät den Status nicht liefern kann, ignorieren wir Fehler
+        if xinput query-state "$id" 2>/dev/null | grep -q "key\[.*\]=down"; then
+            return 0 # Eine Taste ist IRGENDWO gedrückt
+        fi
+    done
+    return 1
 }
 
 # --- Hauptschleife ---
@@ -91,12 +87,10 @@ while true; do
         Super_L Super_R \
         ISO_Level3_Shift \
         Num_Lock \
-        Caps_Lock 2>/dev/null || true
 
-    # Caps Lock ggf. ausschalten (falls noch aktiv nach keyup)
-    if xset q 2>/dev/null | grep -q "Caps Lock:   on"; then
+           # Nur keyup senden, wenn CapsLock wirklich AN ist (weniger invasiv)
+    if xset q | grep -q "Caps Lock:   on"; then
         xdotool key Caps_Lock
-        echo "  [fix] Caps Lock ausgeschaltet"
     fi
 
 done

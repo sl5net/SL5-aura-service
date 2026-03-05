@@ -11,6 +11,9 @@ import streamlit.components.v1 as components
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 load_dotenv(PROJECT_ROOT / ".secrets")
 
+if "speak_enabled" not in st.session_state:
+    st.session_state.speak_enabled = True
+
 if "scroll_trigger" not in st.session_state:
     st.session_state.scroll_trigger = 0
 
@@ -304,10 +307,10 @@ st.title("SL5 Aura (external interface to the core logic)")
 
 # --- SIDEBAR EINSTELLUNGEN ---
 with st.sidebar:
-    st.title("Einstellungen")
+    st.title("Einstellungen 5")
 
     # 1. Checkbox für Aktivierung
-    speak_enabled = st.checkbox("Ergebnisse laut vorlesen", value=True)
+    st.session_state.speak_enabled = st.checkbox("Ergebnisse laut vorlesen", value=st.session_state.speak_enabled)
 
     # 2. Slider für Geschwindigkeit (Wichtig: Vor dem Button definieren!)
     speech_speed = st.slider("Geschwindigkeit", 0.5, 2.0, 1.0, 0.1)
@@ -523,47 +526,35 @@ if prompt := st.chat_input("Ihre Frage an den Service"):
             "Content-Type": "application/json"
         }
 
+        service_answer = ""
+        service_answer = ""
         try:
             response = requests.post(API_URL, headers=headers, data=json.dumps(data))
-
-            # Prüfen auf HTTP-Fehler
             response.raise_for_status()
-
-            # Antwort auswerten (Annahme: Die Antwort ist ein JSON-Objekt mit einem 'result'-Feld)
-            # PASSEN SIE DIESEN TEIL AN DAS EXAKTE ANTWORT-FORMAT IHRES SERVICES AN!
-
-            # ... dein bisheriger Code (API-Anfrage) ...
             api_response_data = response.json()
-            service_answer = api_response_data.get("result") or api_response_data.get("result_text") or "..."
 
-            # --- NEU: SPRACHAUSGABE TRIGGERN ---
-            if speak_enabled:
-                st_speak(service_answer, speech_speed)
-
-            # 3. Service-Antwort zum Verlauf hinzufügen und anzeigen
-            with st.chat_message("assistant"):
-                st.markdown(service_answer)
-
-
-
-            # ANNAHME: Die relevante Antwort steht in einem Feld namens 'result' oder 'text'
-            # PASSEN SIE DEN KEY (z.B. 'result') AN IHR EXAKTES FORMAT AN!
-            service_answer = api_response_data.get("result") or api_response_data.get("result_text") or "API-Antwort erhalten (Unbekanntes Format)."
+            service_answer = api_response_data.get("result") or \
+                             api_response_data.get("result_text") or \
+                             "API-Antwort erhalten (Unbekanntes Format)."
 
         except requests.exceptions.RequestException as e:
             service_answer = f"**Verbindungs- oder API-Fehler:**\n\n```\n{e}\n```"
         except json.JSONDecodeError:
             service_answer = (f"**Fehler beim Parsen der "
-                            f"API-Antwort (kein gültiges JSON):**\n\n```\n{response.text}\n```")
+                              f"API-Antwort (kein gültiges JSON):**\n\n```\n{response.text}\n```")
 
-
-        # 3. Service-Antwort zum Verlauf hinzufügen und anzeigen
+        # Antwort anzeigen, zum Verlauf hinzufügen, sprechen
+        st.session_state.messages.append({"role": "assistant", "content": service_answer})
         with st.chat_message("assistant"):
             st.markdown(service_answer)
 
-        st.session_state.messages.append({"role": "assistant", "content": service_answer})
+        if st.session_state.speak_enabled and service_answer:
+            st_speak(service_answer, speech_speed)
+
         trigger_scroll_to_bottom()
         st.rerun()
+
+
 
 # --- DAS SCROLL-SKRIPT GANZ UNTEN ---
 
