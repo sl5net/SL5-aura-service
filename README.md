@@ -15,7 +15,7 @@ Aura isn't just a transcriber; it's a powerful, offline processing engine that t
 It's a complete, **offline voice assistant** built on **Vosk** (for Speech-to-Text) and **LanguageTool** (for Grammar/Style), now featuring an optional **Local LLM (Ollama) Fallback** for creative responses and advanced fuzzy matching. It is designed for ultimate customization through a pluggable rule system and a dynamic scripting engine.
 
     
-Translations: This document also exists in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
+Translations: This document also exists in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n).
 
 
 Note: Many texts are machine-generated translations of the original English documentation and are intended for general guidance only. In case of discrepancies or ambiguities, the English version always prevails. We welcome help from the community to improve this translation!
@@ -53,7 +53,7 @@ For a complete technical reference, including all modules and scripts, please vi
 
 **Read this in other languages:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](README.md) | [🇸🇦 العربية](README.i18n/README/README-arlang.md) | [🇩🇪 Deutsch](README.i18n/README/README-delang.md) | [🇪🇸 Español](README.i18n/README/README-eslang.md) | [🇫🇷 Français](README.i18n/README/README-frlang.md) | [🇮🇳 हिन्दी](README.i18n/README/README-hilang.md) | [🇯🇵 日本語](README.i18n/README/README-jalang.md) | [🇰🇷 한국어](README.i18n/README/README-kolang.md) | [🇵🇱 Polski](README.i18n/README/README-pllang.md) | [🇵🇹 Português](README.i18n/README/README-ptlang.md) | [🇧🇷 Português Brasil](README.i18n/README/README-pt-BRlang.md) | [🇨🇳 简体中文](README.i18n/README/README-zh-CNlang.md)
 
 ---
 
