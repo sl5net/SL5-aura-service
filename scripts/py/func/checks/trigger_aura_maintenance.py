@@ -1,4 +1,4 @@
-# scripts/py/func/checks/run_auto_zip_random_quick_check.py
+# scripts/py/func/checks/trigger_aura_maintenance.py
 import threading
 import random
 import time
@@ -6,9 +6,11 @@ import shutil
 
 from pathlib import Path
 
-from scripts.py.func.audio_manager import speak_fallback
+import subprocess
+import sys
 
-# --- KONFIGURATION (unabhängig) ---
+# scripts/py/func/checks/trigger_aura_maintenance.py:12
+REPO_ROOT = Path(__file__).resolve().parents[4]
 TEST_ROOTS = [
     Path("config/maps/plugins/git/de-DE/self_test_zip_tmp"),
     Path("config/maps/plugins/self_test_zip_tmp"),
@@ -16,48 +18,72 @@ TEST_ROOTS = [
 ]
 EXPECTED_ZIP_NAME = "locked_folder.zip"
 LAST_CHECK_FILE = Path("/tmp/sl5_aura/last_smoke_zip_check")
-ZIP_TEST_TIMER = None
+
+radio_script = REPO_ROOT / "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
+
+MAINTENANCE_TIMER = None
+
+def trigger_aura_maintenance(logger):
+    from scripts.py.func.audio_manager import speak_fallback
+    """Triggered by Aura. Starts maintenance tasks after 4s of silence."""
+    global MAINTENANCE_TIMER
+    if MAINTENANCE_TIMER:
+        MAINTENANCE_TIMER.cancel()
+    logger.info("Maintenance: Timer scheduled (4s silence)...")
+    speak_fallback("Maintenance: Timer scheduled (4s silence)...", 'de-DE')
+
+    MAINTENANCE_TIMER = threading.Timer(4.0, _execute_maintenance_tasks, args=[logger])
+    MAINTENANCE_TIMER.daemon = True
+    MAINTENANCE_TIMER.start()
 
 
-def trigger_background_zip_check(logger):
-    """Wird von Aura aufgerufen. Startet den Test nach 4 Sek. Stille."""
-    global ZIP_TEST_TIMER
-    if ZIP_TEST_TIMER:
-        ZIP_TEST_TIMER.cancel()
+def _execute_maintenance_tasks(logger):
+    from scripts.py.func.audio_manager import speak_fallback
+    logger.info("!!! Maintenance Task Started !!!")
 
-    # Timer für 4 Sekunden Stille
-    ZIP_TEST_TIMER = threading.Timer(4.0, _execute_smoke_test, args=[logger])
-    ZIP_TEST_TIMER.daemon = True
-    ZIP_TEST_TIMER.start()
-
-    # Optionale Ansage, dass der Test in Warteschlange ist (kann man auch weglassen)
-    # speak_fallback("Zip Test geplant", 'de-DE')
-
-
-def _execute_smoke_test(logger):
-    """Die eigentliche Test-Logik (läuft im Hintergrund-Thread)."""
+    """Zentraler Manager für Hintergrund-Aufgaben."""
     try:
         # 1. Throttling: Nur alle 10 Minuten einen Test machen
         now = time.time()
         if LAST_CHECK_FILE.exists():
             try:
                 last_time = float(LAST_CHECK_FILE.read_text())
-                if now - last_time < 600:  # 10 Min
+                if now - last_time < 60 * 2:
                     return
             except Exception:
                 pass
 
-        LAST_CHECK_FILE.parent.mkdir(parents=True, exist_ok=True)
-        LAST_CHECK_FILE.write_text(str(now))
+        # 2. RADIO-AURA CACHE GENERIERUNG
+        logger.info(f"Maintenance: Checking Path: {radio_script}")
 
-        # 2. Zufälligen Pfad auswählen
+        if radio_script.exists():
+            # Wir nutzen subprocess, um die venv-Umgebung und das if-main-Handling sauber zu trennen
+
+            result = subprocess.run([sys.executable, str(radio_script)], capture_output=True, text=True, check=False)
+
+            output = result.stdout.strip()
+            logger.info(f"Radio Generator Output: {output}")
+
+            if "All documents are up to date" in output:
+                logger.info("Maintenance: Radio Cache is already current.")
+                speak_fallback("Maintenance: Radio Cache is already current.", 'de-DE')
+
+            else:
+                logger.info("Maintenance: Radio-Aura Cache wurde aktualisiert.")
+                speak_fallback("Maintenance: Radio-Aura Cache wurde aktualisiert", 'de-DE')
+
+            # subprocess.run([sys.executable, str(radio_script)], check=False)
+            logger.info("Maintenance: Radio-Aura Cache fertig.")
+            speak_fallback("Maintenance: Radio-Aura Cache fertig.", 'de-DE')
+
+        else:
+            logger.error(f"Maintenance: PATH NOT FOUND: {radio_script}")
+
+        # 3. SMOKE-ZIP TEST
         root = random.choice(TEST_ROOTS)
         folder_nickname = root.parent.name if root.parent.name != "self_test_zip_tmp" else "Root"
+        logger.info(f"Maintenance: Starting Smoke-Zip Test for: {root}")
 
-        logger.info(f"Auto-Zip: 🎲 Random Smoke Test startet für: {root}")
-        speak_fallback(f"Auto-Zip Test startet in Ordner {folder_nickname}", 'de-DE')
-
-        # 3. Test-Ordner erstellen
         if _setup_scenario(root, logger):
             # 4. Warten und Prüfen (Aura zippt im Vorbeigehen)
             success = False
@@ -132,4 +158,4 @@ def _cleanup(root, logger):
             shutil.rmtree(root)
             logger.info(f"Auto-Zip: Cleaned up {root}")
         except Exception as e:
-            logger.error(f"Auto-Zip: Cleanup failed for {root}: {e}")
+            logger.error(f"Maintenance Fehler: {e}")
