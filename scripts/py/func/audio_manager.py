@@ -105,7 +105,7 @@ logger = logging.getLogger(__name__)
 
 
 # scripts/py/func/audio_manager.py:54
-def speak_fallback(text_to_speak, language_code):
+def speak_inclusive_fallback(text_to_speak, language_code):
     """TTS helper for plugins"""
     if not settings.PLUGIN_HELPER_TTS_ENABLED:
         return  # Silent mode

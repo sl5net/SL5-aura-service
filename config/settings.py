@@ -94,8 +94,8 @@ if current_user == 'SL5.de':
 
 # config/settings.py
 PLUGIN_HELPER_TTS_ENABLED = True
-# USE_AS_PRIMARY_SPEAK = "piper"
-USE_AS_PRIMARY_SPEAK = "ESPEAK"
+USE_AS_PRIMARY_SPEAK = "piper"
+# USE_AS_PRIMARY_SPEAK = "ESPEAK"
 USE_ESPEAK_FALLBACK = True
 
 INPUT_METHOD="dotool"

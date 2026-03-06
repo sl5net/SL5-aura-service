@@ -18,8 +18,6 @@ LOGFILE="$LOG_DIR/type_watcher.log"
 
 AUTO_ENTER_FLAG="/tmp/sl5_aura/sl5_auto_enter.flag"
 
-speak_file_path="$HOME/projects/py/TTS/speak_file.py"
-
 INPUT_METHOD=""
 
 # --- Detect Wayland or X11 ---
@@ -127,9 +125,6 @@ xdotool_safe() {
 PROJECT_ROOT="$SCRIPT_DIR"
 PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python3"
 
-PRIMARY_TTS_ENGINE=$($PYTHON_BIN -c "import sys; sys.path.append('$PROJECT_ROOT'); from config.settings import USE_AS_PRIMARY_SPEAK; print(USE_AS_PRIMARY_SPEAK)" 2>/dev/null) || PRIMARY_TTS_ENGINE="ERROR"
-
-echo "PRIMARY_TTS_ENGINE=$PRIMARY_TTS_ENGINE"
 
 # Das kann unangenehm genehm sein, wenn man einmal längere Zeit die Shift Taste drücken möchte zum
 
@@ -137,18 +132,7 @@ echo "PRIMARY_TTS_ENGINE=$PRIMARY_TTS_ENGINE"
 # Releases Alt/Ctrl/Shift/Super etc. every 15s without interrupting active key combos.
 $PROJECT_ROOT/tools/keep-keys-up.sh &
 
-if [[ "$PRIMARY_TTS_ENGINE" == "ESPEAK" ]]; then
-    echo "Primary speak is ESPEAK, disabling external speaker script by clearing path."
-    speak_file_path=""
-fi
 # --- END: Read Python config ---
-
-if [ -e "$speak_file_path" ]; then
-    echo " ok $speak_file_path exist"
-else
-    speak_file_path=''
-    echo "$speak_file_path dont exist"
-fi
 
 mkdir -p "$LOG_DIR"
 
@@ -252,30 +236,21 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         xdotool_safe keyup --window "$GAME_WINDOW_ID" 64
                         sleep 0.1
                         log_message "Fertig mit ALT+i Sequenz. Sent alt+i"
-                        if [[ -n "$speak_file_path" ]]; then
-                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                            sleep 0.012
-                        fi
+                        sleep 0.012
                         rm -f "$f"
                         continue
 
                     elif [[ "$trimmed_line" == 'alt+w' ]]; then
                         xte "keydown Alt_L" "keydown w" "keyup w" "keyup Alt_L" || true
                         log_message "Sent alt+w"
-                        if [[ -n "$speak_file_path" ]]; then
-                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
-                            sleep 0.012
-                        fi
+
                         rm -f "$f"
                         continue
 
                     elif [[ "$trimmed_line" == 'ctrl+c' ]]; then
                         xdotool_safe key ctrl+c clearmodifiers
                         log_message "Sent ctrl+c"
-                        if [[ -n "$speak_file_path" ]]; then
-                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
                             sleep 0.012
-                        fi
                         rm -f "$f"
                         continue
 
@@ -284,10 +259,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         sleep 0.15
                         xdotool_safe click --delay 10 --repeat 8 1
                         log_message "baue Haus"
-                        if [[ -n "$speak_file_path" ]]; then
-                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
                             sleep 0.012
-                        fi
                         rm -f "$f"
                         continue
 
@@ -296,10 +268,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         sleep 0.15
                         xdotool_safe click --delay 10 --repeat 8 1
                         log_message "baue Lagerhaus"
-                        if [[ -n "$speak_file_path" ]]; then
-                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+
                             sleep 0.012
-                        fi
                         rm -f "$f"
                         continue
 
@@ -309,10 +279,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         xdotool_safe keyup alt
                         sleep 0.15
                         log_message "select iddle"
-                        if [[ -n "$speak_file_path" ]]; then
-                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+
                             sleep 0.012
-                        fi
                         rm -f "$f"
                         continue
 
@@ -322,10 +290,8 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         xdotool_safe click --delay 10 --repeat 8 1
                         sleep 4
                         log_message "baue Baracke"
-                        if [[ -n "$speak_file_path" ]]; then
-                            python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1
+
                             sleep 0.012
-                        fi
                         rm -f "$f"
                         f=""
                         continue
@@ -348,17 +314,12 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
 
                     CLEAN_CONTENT=$(printf '%s' "$SANITIZED" | sed "s/$PLACEHOLDER/$EMOJI/g")
 
-                    if [[ -n "$speak_file_path" ]]; then
-                        python3 "$speak_file_path" "$f" > /tmp/speak_error.log 2>&1 &
                         sleep 0.1
-                    fi
 
                     do_type "$CLEAN_CONTENT"
                     sleep 0.025
 
-                    if [[ -n "$speak_file_path" ]]; then
-                        sleep 3
-                    fi
+                        sleep 2
 
                     log_message "typed content of $f (dotool/timeout 1 xdotool hybrid)"
                     rm -f "$f"

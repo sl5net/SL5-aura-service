@@ -15,7 +15,8 @@ import psutil
 #import shutil
 #import subprocess
 
-from .audio_manager import speak_fallback
+from .audio.handle_tts_fallback import handle_tts_fallback
+
 from .auto_fix_module import try_auto_fix_module
 from .get_active_window_title import get_active_window_title_safe
 from .log_memory_details import log4DEV
@@ -34,13 +35,10 @@ import re
 import time
 from thefuzz import fuzz
 from .notify import notify
+import platform
 
 
 from scripts.py.func.config.dynamic_settings import DynamicSettings
-
-
-import platform
-
 settings = DynamicSettings()
 
 # global last_signature_time
@@ -1700,20 +1698,6 @@ def sanitize_transcription_start(raw_text: str) -> str:
     return clean_text
 
 
-def handle_tts_fallback(processed_text: str, LT_LANGUAGE: str, logger):
-    # scripts/py/func/process_text_in_background.py:900 (handle_tts_fallback)
-    home_dir = Path.home()
-    speak_piper_file_path = home_dir / "projects" / "py" / "TTS" / "speak_file.py"
-    primary_tts_successful = False
-    if not speak_piper_file_path.exists():
-        primary_tts_successful = False
-    use_fallback = (
-            settings.USE_AS_PRIMARY_SPEAK == "ESPEAK" or
-            (not primary_tts_successful and settings.USE_ESPEAK_FALLBACK and processed_text)
-    )
-    if use_fallback:
-        logger.warning("primary 🗣️ TTS failed. try 🗣️ Espeak-Fallback...")
-        speak_fallback(processed_text, LT_LANGUAGE)
 
 
 def apply_all_rules_until_stable(text, rules_map, logger_instance):
