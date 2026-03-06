@@ -53,7 +53,7 @@ For a complete technical reference, including all modules and scripts, please vi
 
 **Read this in other languages:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](README.i18n/README/README-arlang.md) | [🇩🇪 Deutsch](README.i18n/README/README-delang.md) | [🇪🇸 Español](README.i18n/README/README-eslang.md) | [🇫🇷 Français](README.i18n/README/README-frlang.md) | [🇮🇳 हिन्दी](README.i18n/README/README-hilang.md) | [🇯🇵 日本語](README.i18n/README/README-jalang.md) | [🇰🇷 한국어](README.i18n/README/README-kolang.md) | [🇵🇱 Polski](README.i18n/README/README-pllang.md) | [🇵🇹 Português](README.i18n/README/README-ptlang.md) | [🇧🇷 Português Brasil](README.i18n/README/README-pt-BRlang.md) | [🇨🇳 简体中文](README.i18n/README/README-zh-CNlang.md)
+[🇬🇧 English](README.md) | [🇸🇦 العربية](README.i18n/README-arlang.md) | [🇩🇪 Deutsch](README.i18n/README-delang.md) | [🇪🇸 Español](README.i18n/README-eslang.md) | [🇫🇷 Français](README.i18n/README-frlang.md) | [🇮🇳 हिन्दी](README.i18n/README-hilang.md) | [🇯🇵 日本語](README.i18n/README-jalang.md) | [🇰🇷 한국어](README.i18n/README-kolang.md) | [🇵🇱 Polski](README.i18n/README-pllang.md) | [🇵🇹 Português](README.i18n/README-ptlang.md) | [🇧🇷 Português Brasil](README.i18n/README-pt-BRlang.md) | [🇨🇳 简体中文](README.i18n/README-zh-CNlang.md)
 
 ---
 
