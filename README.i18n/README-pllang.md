@@ -248,7 +248,7 @@ Skrypty do konfiguracji środowiska, testowania i wykonywania usług.XSPACEbreak
 Podczas instalacji zaznacz pole wyboru, aby powiązać je z plikami dziennika.  XSPACEbreakX
 https://translate.google.com/translate?hl=en&sl=en&tl=pl&u=https://glogg.bonnefon.org/     
 XSPACEbreakX
-*Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-pllang.md).*
+*Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pllang.md).*
 
 Wtedy może kliknij dwukrotnie
 `log/aura_engine.log`

@@ -248,7 +248,7 @@ Xस्पेसब्रेकX
 कृपया इंस्टॉल करते समय लॉग-फ़ाइलों से संबद्ध करने के लिए चेकबॉक्स को चेक करें।  Xस्पेसब्रेकX
 https://translate.google.com/translate?hl=en&sl=en&tl=hi&u=https://glogg.bonnefon.org/     
 Xस्पेसब्रेकX
-*टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, सीएलआई टूल के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 टूल्स/मैप_टैगर.py` चलाएं। विवरण के लिए [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-hilang.md) देखें।*
+*टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, सीएलआई टूल के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 टूल्स/मैप_टैगर.py` चलाएं। विवरण के लिए [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-hilang.md) देखें।*
 
 फिर शायद डबल क्लिक करें
 `लॉग/ऑरा_इंजन.लॉग`

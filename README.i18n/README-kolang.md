@@ -328,7 +328,7 @@ XSPACEbreakX
 로그 파일과 연결하려면 설치 시 확인란을 선택하세요.  XSPACEbreakX
 https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https://glogg.bonnefon.org/     
 XSPACEbreakX
-*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
+*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
 
 그럼 아마도 더블클릭이겠지
 `로그/aura_engine.log`

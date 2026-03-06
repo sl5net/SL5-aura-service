@@ -328,7 +328,7 @@ Scripts para la configuración, prueba y ejecución del servicio del entorno.
 Marque la casilla de verificación durante la instalación para asociar con archivos de registro.    
 https://translate.google.com/translate?hl=en&sl=en&tl=es&u=https://glogg.bonnefon.org/     
   
-*Consejo: Después de definir sus patrones de expresiones regulares, ejecute `python3 tools/map_tagger.py` para generar automáticamente ejemplos de búsqueda para las herramientas CLI. Consulte [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-eslang.md) para obtener más detalles.*
+*Consejo: Después de definir sus patrones de expresiones regulares, ejecute `python3 tools/map_tagger.py` para generar automáticamente ejemplos de búsqueda para las herramientas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-eslang.md) para obtener más detalles.*
 
 Entonces tal vez haga doble clic
 `log/aura_engine.log`

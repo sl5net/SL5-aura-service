@@ -328,7 +328,7 @@ Scripts pour la configuration de l'environnement, les tests et l'exécution des 
 Veuillez cocher la case lors de l'installation pour l'associer aux fichiers journaux.    
 https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
   
-*Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
+*Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
 
 Alors peut-être double-cliquez
 `log/aura_engine.log`

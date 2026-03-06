@@ -328,7 +328,7 @@ OS 互換性の凡例:
 ログファイルと関連付けるには、インストール時にチェックボックスをオンにしてください。    
 https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
   
-*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-jalang.md) を参照してください。*
+*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-jalang.md) を参照してください。*
 
 それからダブルクリックしてください
 `log/aura_engine.log`

@@ -328,7 +328,7 @@ Skripte zum Einrichten, Testen und Ausführen von Diensten.
 Bitte aktivieren Sie das Kontrollkästchen bei der Installation, um eine Verknüpfung mit Protokolldateien herzustellen.    
 https://translate.google.com/translate?hl=en&sl=en&tl=de&u=https://glogg.bonnefon.org/     
   
-*Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-delang.md).*
+*Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-delang.md).*
 
 Dann vielleicht Double Click
 `log/aura_engine.log`

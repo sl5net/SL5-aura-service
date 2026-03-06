@@ -248,7 +248,7 @@ X空格符X
 安装时请选中该复选框以与日志文件关联。  X空格符X
 https://translate.google.com/translate?hl=en&sl=en&tl=zh-CN&u=https://glogg.bonnefon.org/     
 X空格符X
-*提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-zh-CNlang.md)。*
+*提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-zh-CNlang.md)。*
 
 然后也许双击
 `日志/aura_engine.log`

@@ -328,7 +328,7 @@ f11::
 يرجى تحديد مربع الاختيار عند التثبيت لربطه بملفات السجل.  اكس سبيس بريك اكس
 https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
                                               اكس سبيس بريك اكس
-*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
+*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
 
                              ثم ربما انقر نقرًا مزدوجًا
                                                     "سجل/aura_engine.log".
