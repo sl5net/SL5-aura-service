@@ -22,6 +22,7 @@ LAST_CHECK_FILE = Path("/tmp/sl5_aura/last_smoke_zip_check")
 # radio_script = REPO_ROOT / "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
 radio_script = REPO_ROOT / "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
 translator_script = REPO_ROOT / "tools" / "translate_md.py"
+heal_links_cascade_script = REPO_ROOT / "heal_links_cascade.py"
 
 
 MAINTENANCE_TIMER = None
@@ -88,8 +89,7 @@ def _execute_maintenance_tasks(logger):
 
             # Startet den Translator. Da dieser bereits existierende Dateien überspringt,
             # ist der Aufruf effizient.
-            res_trans = subprocess.run([sys.executable, str(translator_script)], capture_output=True, text=True,
-                                       check=False)
+            res_trans = subprocess.run([sys.executable, str(translator_script)], capture_output=True, text=True, check=False)
 
             if res_trans.stdout:
                 logger.info(f"Translator Output: {res_trans.stdout.strip()}")
@@ -100,6 +100,16 @@ def _execute_maintenance_tasks(logger):
         else:
             logger.error(f"Maintenance: TRANSLATOR PATH NOT FOUND: {translator_script}")
 
+        if heal_links_cascade_script.exists():
+            logger.info(f"Maintenance: heal_links_cascade_script: {heal_links_cascade_script}")
+            res = subprocess.run([sys.executable, str(heal_links_cascade_script)], capture_output=True, text=True, check=False)
+            if res.stdout:
+                logger.info(f"heal_links_cascade_script Output: {res.stdout.strip()}")
+            if res.stderr:
+                logger.warning(f"heal_links_cascade_script Warnings: {res.stderr.strip()}")
+            logger.info("Maintenance: heal_links_cascade_script finised.")
+        else:
+            logger.error(f"Maintenance: heal_links_cascade_script PATH NOT FOUND: {translator_script}")
 
         # 3. SMOKE-ZIP TEST
         root = random.choice(TEST_ROOTS)
