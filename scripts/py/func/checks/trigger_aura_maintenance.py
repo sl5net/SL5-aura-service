@@ -19,7 +19,10 @@ TEST_ROOTS = [
 EXPECTED_ZIP_NAME = "locked_folder.zip"
 LAST_CHECK_FILE = Path("/tmp/sl5_aura/last_smoke_zip_check")
 
+# radio_script = REPO_ROOT / "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
 radio_script = REPO_ROOT / "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
+translator_script = REPO_ROOT / "tools" / "translate_md.py"
+
 
 MAINTENANCE_TIMER = None
 
@@ -38,7 +41,7 @@ def trigger_aura_maintenance(logger):
 
 
 def _execute_maintenance_tasks(logger):
-    from scripts.py.func.audio_manager import speak_fallback
+    from scripts.py.func.audio_manager import speak_inclusive_fallback
     logger.info("!!! Maintenance Task Started !!!")
 
     """Zentraler Manager für Hintergrund-Aufgaben."""
@@ -79,6 +82,25 @@ def _execute_maintenance_tasks(logger):
         else:
             logger.error(f"Maintenance: PATH NOT FOUND: {radio_script}")
 
+        # 2.b MARKDOWN TRANSLATOR (i18n Sync)
+        if translator_script.exists():
+            logger.info(f"Maintenance: Starting Markdown Translator: {translator_script}")
+
+            # Startet den Translator. Da dieser bereits existierende Dateien überspringt,
+            # ist der Aufruf effizient.
+            res_trans = subprocess.run([sys.executable, str(translator_script)], capture_output=True, text=True,
+                                       check=False)
+
+            if res_trans.stdout:
+                logger.info(f"Translator Output: {res_trans.stdout.strip()}")
+            if res_trans.stderr:
+                logger.warning(f"Translator Warnings: {res_trans.stderr.strip()}")
+
+            logger.info("Maintenance: Markdown Translation Sync fertig.")
+        else:
+            logger.error(f"Maintenance: TRANSLATOR PATH NOT FOUND: {translator_script}")
+
+
         # 3. SMOKE-ZIP TEST
         root = random.choice(TEST_ROOTS)
         folder_nickname = root.parent.name if root.parent.name != "self_test_zip_tmp" else "Root"
@@ -112,11 +134,11 @@ def _execute_maintenance_tasks(logger):
             _cleanup(root, logger)
         else:
             logger.error(f"Auto-Zip: Setup fehlgeschlagen für {root}")
-            speak_fallback("Fehler beim Setup des Zip Tests", 'de-DE')
+            speak_inclusive_fallback("Fehler beim Setup des Zip Tests", 'de-DE')
 
     except Exception as e:
         logger.error(f"Auto-Zip: 💥 Fehler im Smoke Test: {e}")
-        speak_fallback("Kritischer Fehler im Auto-Zip Test", 'de-DE')
+        speak_inclusive_fallback("Kritischer Fehler im Auto-Zip Test", 'de-DE')
 
 
 def _setup_scenario(root, logger):

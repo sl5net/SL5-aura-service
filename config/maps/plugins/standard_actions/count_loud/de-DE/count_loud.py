@@ -2,7 +2,7 @@
 # import sys
 from pathlib import Path
 import subprocess
-from scripts.py.func.audio_manager import speak_fallback
+from scripts.py.func.audio_manager import speak_inclusive_fallback
 
 RULES_FILE_PATH = Path(__file__).parent / 'FUZZY_MAP_pre.py'
 def speak(text):
@@ -17,19 +17,19 @@ def speak(text):
 def on_file_load():
     # This must be defined to show up in the attributes list
     for i in range(10):
-        speak_fallback(f"in DE: {i}",'de-DE')
+        speak_inclusive_fallback(f"in DE: {i}", 'de-DE')
 
 def on_plugin_load():
     for i in range(4):
-        speak_fallback(f"in DE: {i}",'de-DE')
+        speak_inclusive_fallback(f"in DE: {i}", 'de-DE')
 
 def on_reload():
     for i in range(2):
-        speak_fallback(f"in DE: {i}",'de-DE')
+        speak_inclusive_fallback(f"in DE: {i}", 'de-DE')
 
 def on_folder_change(current_dir=None):
     for i in range(1):
-        speak_fallback(f"in DE: {i}",'de-DE')
+        speak_inclusive_fallback(f"in DE: {i}", 'de-DE')
 
 #TestDoch malnochmaltschüss JeffTipp
 

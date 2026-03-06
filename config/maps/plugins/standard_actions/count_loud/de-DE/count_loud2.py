@@ -3,7 +3,7 @@
 from pathlib import Path
 import subprocess
 
-from scripts.py.func.audio_manager import speak_fallback
+from scripts.py.func.audio_manager import speak_inclusive_fallback
 
 RULES_FILE_PATH = Path(__file__).parent / 'FUZZY_MAP_pre.py'
 def speak(text):
@@ -16,10 +16,10 @@ def speak(text):
 # standard_actions/count_loud/de-DE/count_loud.py:14
 def on_file_load():
     # This must be defined to show up in the attributes list
-    speak_fallback("started 1", 'de-DE')
+    speak_inclusive_fallback("started 1", 'de-DE')
 
 def on_plugin_load():
-    speak_fallback("einmal nur 20", 'de-DE')
+    speak_inclusive_fallback("einmal nur 20", 'de-DE')
 
 #Jeff
 

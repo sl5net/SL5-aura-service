@@ -33,7 +33,11 @@ fi
 
 > /tmp/sl5_aura/radio_output.txt
 
-~/projects/py/TTS/.venv/bin/python ~/projects/py/TTS/speak_server.py
+# ~/projects/py/TTS/.venv/bin/python ~/projects/py/TTS/speak_server.py
+# source ~/projects/py/TTS/.venv/bin/activate && cd ~/projects/py/TTS && python speak_server.py
+(cd ~/projects/py/TTS && .venv/bin/python speak_server.py) &
+sleep 3
+
 
 for ((i=1; i<=ITERATIONS; i++))
 do
@@ -50,3 +54,5 @@ done
 echo "--- Finished! ---"
 # Check final count in DB
 sqlite3 config/maps/plugins/z_fallback_llm/de-DE/llm_cache.db "SELECT COUNT(*) FROM prompts WHERE keywords = 'radio_deep_dive';"
+
+# kill $!

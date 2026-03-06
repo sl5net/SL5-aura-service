@@ -3,7 +3,7 @@ import os
 import platform
 from pathlib import Path
 
-from scripts.py.func.audio_manager import speak_fallback
+from scripts.py.func.audio_manager import speak_inclusive_fallback
 
 def execute(match_data):
     """
@@ -28,14 +28,14 @@ def execute(match_data):
     if cmd_tag == "voss_stop":
         # Create flag to stop processing (Mute)
         flag_path.touch()
-        speak_fallback("Ich schlafe jetzt",'de-DE')
+        speak_inclusive_fallback("Ich schlafe jetzt", 'de-DE')
         return "Suspended🗣"
 
     elif cmd_tag == "voss_start":
         # Remove flag to resume processing (Unmute)
         if flag_path.exists():
             os.remove(flag_path)
-            speak_fallback("Ich höre zu",'de-DE')
+            speak_inclusive_fallback("Ich höre zu", 'de-DE')
         return "on🗣" # STT Active. Mute flag removed
 
     status = "Suspended" if flag_path.exists() else "Active"

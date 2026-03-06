@@ -3,7 +3,7 @@
 from pathlib import Path
 import subprocess
 
-from scripts.py.func.audio_manager import speak_fallback
+from scripts.py.func.audio_manager import speak_inclusive_fallback
 
 RULES_FILE_PATH = Path(__file__).parent / 'FUZZY_MAP_pre.py'
 def speak(text):
@@ -39,7 +39,7 @@ def speak(text):
 # standard_actions/count_loud/count_loud.py:37
 def on_folder_change_OFF(current_dir=None):
     for i in range(1):
-        speak_fallback(f"out DE: {i}",'en-US')
+        speak_inclusive_fallback(f"out DE: {i}", 'en-US')
 
 #Nochmal ausprobierennochmal
 #Tipp Test

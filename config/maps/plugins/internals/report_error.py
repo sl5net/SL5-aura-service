@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 import re
 
-from scripts.py.func.audio_manager import speak_fallback
+from scripts.py.func.audio_manager import speak_inclusive_fallback
 
 
 def between_first_last_hash_manual(s: str) -> str:
@@ -29,7 +29,7 @@ def execute(match_data):
 
     if not report_file.exists():
         returns ="error Reporting-File not exist"
-        speak_fallback(f"{returns}", 'de-DE')
+        speak_inclusive_fallback(f"{returns}", 'de-DE')
         return returns
 
 
@@ -37,7 +37,7 @@ def execute(match_data):
     try:
         if not log_file.exists():
             returns= "Log-Datei nicht gefunden."
-            speak_fallback(f"{returns}", 'de-DE')
+            speak_inclusive_fallback(f"{returns}", 'de-DE')
             return returns
 
 
@@ -61,7 +61,7 @@ def execute(match_data):
 
         if not error_line:
             returns= "Keine passende Fehl-Erkennung im Log gefunden."
-            speak_fallback(f"{returns}", 'de-DE')
+            speak_inclusive_fallback(f"{returns}", 'de-DE')
             return returns
 
 
@@ -79,7 +79,7 @@ def execute(match_data):
         except Exception as e:
             print(e)
             returns= f"Fehler im Log gefunden.{e}"
-            speak_fallback(f"{returns}", 'de-DE')
+            speak_inclusive_fallback(f"{returns}", 'de-DE')
 
             return returns
 
@@ -95,6 +95,6 @@ def execute(match_data):
     except Exception as e:
 
         returns =f"error Reporting-Script: {str(e)}"
-        speak_fallback(f"{returns}", 'de-DE')
+        speak_inclusive_fallback(f"{returns}", 'de-DE')
         exit(1)
         return returns

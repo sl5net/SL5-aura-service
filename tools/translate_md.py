@@ -218,7 +218,6 @@ def process_file(filename):
 
 
         # NEU:
-        import os
         i18n_dir = f"{base_name}.i18n"
         os.makedirs(i18n_dir, exist_ok=True)
         output_file = f"{i18n_dir}/{os.path.basename(base_name)}-{lang}lang.md"
@@ -246,7 +245,7 @@ def process_file(filename):
         restored_step_A = []
         code_block_idx = 0
         for line in translated_lines:
-            if re.match(r'^__CODE_BLOCK_\d+__$', line.strip()):
+            if re.match(r'^__CODE_BLOCK_\d+__$', line.strip()) and code_block_idx < len(code_blocks):
                 restored_step_A.extend(code_blocks[code_block_idx].split('\n'))
                 code_block_idx += 1
             else:
@@ -296,8 +295,8 @@ def process_file(filename):
 
 def main():
 
-    test_translation_links()
-    sys.exit(1)
+    # test_translation_links()
+    # sys.exit(1)
 
     print("Starte die intelligente Übersetzung von Markdown-Dateien...")
     print(f"Quellsprache: {SOURCE_LANG}")
@@ -305,11 +304,34 @@ def main():
 
 
     # search_path = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
-    search_path = script_dir.parent / 'README.md'
+    # search_path = script_dir.parent / 'README.md' # alt
+    search_path = script_dir.parent / '**' / '*.md' # neu
 
 
     print(f"---- {search_path} ------------------------------------------------")
-    for filename in glob.glob(str(search_path)):
+    # for filename in glob.glob(str(search_path)):
+    for filename in glob.glob(str(search_path), recursive=True):
+
+        path_parts = filename.split(os.sep)
+
+        # 1. Überspringe, wenn IRGENDEIN Teil des Pfades mit einem Punkt beginnt
+        # (aber ignoriere den aktuellen Ordner '.' am Anfang)
+        if any(part.startswith('.') for part in path_parts if part not in ['.', '..']):
+            continue
+
+            # 2. Überspringe bekannte System-Ordner ohne Punkt (wie venv oder node_modules)
+        if any(ignored in path_parts for ignored in ["venv", "__pycache__", "node_modules"]):
+            continue
+
+        # 3. Überspringe bereits übersetzte Dateien (Suffix-Check)
+        if re.search(r'-[a-z]{2,3}lang\.md$', filename):
+            continue
+
+        # 4. Überspringe, wenn die Datei in einem .i18n Ordner liegt
+        if ".i18n" in filename:
+            continue
+
+        # eng ? de? fr?
         if not re.search(r'-([a-z]{2,3})\.md$', filename):
 
             # ALT:

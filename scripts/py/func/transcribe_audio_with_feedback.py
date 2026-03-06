@@ -15,7 +15,7 @@ from .log_memory_details import log4DEV
 import sounddevice as sd
 
 import webrtcvad  # NEU: Import für Voice Activity Detection
-from scripts.py.func.audio_manager import speak_fallback
+from scripts.py.func.audio_manager import speak_inclusive_fallback
 
 
 import platform
@@ -398,11 +398,11 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                         listen_persistent_flag.touch()
                                         logger.info("🚀 System ACTIVE (wake) — persistent listening enabled")
                                         # logger.info("🚀 System ACTIVE")
-                                        speak_fallback("Wake-Word", 'en-US')
+                                        speak_inclusive_fallback("Wake-Word", 'en-US')
                                     else:
                                         suspend_flag.touch()  # GO TO SLEEP
                                         logger.info("💤 System SUSPENDED")
-                                        speak_fallback("System SUSPENDED", 'en-US')
+                                        speak_inclusive_fallback("System SUSPENDED", 'en-US')
                                     recognizer.Reset()
 
                                     # Sofort weitermachen (kein Yield nötig, oder "Bin wach" sagen)
@@ -434,7 +434,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                     last_activity_time = time.time()
 
                                     # speak_fallback(f"Wake-Word", 'de-DE')
-                                    speak_fallback("Wake-Word", 'en-US')
+                                    speak_inclusive_fallback("Wake-Word", 'en-US')
 
                                     continue
 

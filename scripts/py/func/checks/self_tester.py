@@ -11,7 +11,7 @@ from pathlib import Path
 
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
-from ..audio_manager import speak_fallback
+from ..audio_manager import speak_inclusive_fallback
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
 
@@ -425,7 +425,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests")
     m2=f"⌚ Total Duration: {duration:.2f} seconds"
     logger.info(f":st:⌚ Total Duration: {duration:.2f} seconds")
-    speak_fallback(f"{m2}", 'de-DE')# 'en-US') # 'de-DE')
+    speak_inclusive_fallback(f"{m2}", 'de-DE')# 'en-US') # 'de-DE')
 
     logger.info("-" * 40)
 
