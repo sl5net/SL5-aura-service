@@ -1,0 +1,19 @@
+* Update: enable automated radio-aura cache generation and maintenance
+* WIP
+* fix: move ZIM files to data/ subdir, fix kiwix docker path
+* Update dev-tip-console-output-to-clipboard.md
+* docs/linux/dev-tip-console-output-to-clipboard.md
+* fix: allow optional trailing '?' in weather regex rule
+* style: ruff auto-fix across project
+* WIP
+* Speed saved in URL+localStorage
+* fix: restore TTS on Android by removing st.rerun() after st_speak()
+* WIP
+* feat: integrate Text-to-Speech in Streamlit and update LanguageTool port
+* refactor: stabilize auto-zip testing and optimize system performance
+* add comment # min_accuracy
+* add User-Specific-Commands.md
+* WIP
+* Enhance radio_deep_dive.py: Update DEMO_MODE for integrate automatic browser documentation opening
+* fix: improve keep-keys-up.sh reliability and key-press safety
+* speak the GitHub repo address always

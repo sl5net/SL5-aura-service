@@ -4,10 +4,8 @@
 
 * **Windows:** ✅ Totalmente compatible (usa AutoHotkey/PowerShell).
 * **macOS:** ✅ Totalmente compatible (usa AppleScript).
-* **Linux (X11/Xorg):** ✅ Totalmente compatible. Recomendado para la mejor experiencia.
-* **Linux (Wayland):** ⚠️ **Limitado/Experimental.**
-* *Las teclas de acceso rápido globales y la escritura automática generalmente no funcionan en Wayland debido a restricciones de seguridad.*
-* *Cambie a una **Sesión X11** al iniciar sesión (por ejemplo, "Plasma (X11)" o "Ubuntu en Xorg") para usar todas las funciones.*
+* **Linux (X11/Xorg):** ✅ Totalmente compatible.
+* **Linux (Wayland):** ✅ Totalmente compatible.
 
 
 ¡Bienvenido al Servicio SL5 Aura! Este documento proporciona una descripción general rápida de nuestras funciones clave y su compatibilidad con el sistema operativo.
@@ -19,9 +17,9 @@ Es un completo **asistente de voz sin conexión** creado en **Vosk** (para voz a
   
 Traducciones: Este documento también existe en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
+
 Nota: Muchos textos son traducciones generadas automáticamente de la documentación original en inglés y están destinados únicamente a proporcionar orientación general. En caso de discrepancias o ambigüedades, siempre prevalecerá la versión en inglés. ¡Agradecemos la ayuda de la comunidad para mejorar esta traducción!
 
-___
 
 [![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 (https://www.youtube.com/watch?v=BZCHonTqwUw o https://skipvids.com/?v=BZCHonTqwUw)
@@ -30,6 +28,7 @@ ___
 
 * **Sin conexión y privado:** 100% local. Ningún dato sale nunca de su máquina.
 * **Motor de scripting dinámico:** Vaya más allá del reemplazo de texto. Las reglas pueden ejecutar secuencias de comandos Python personalizadas (`on_match_exec`) para realizar acciones avanzadas como llamar a API (por ejemplo, buscar en Wikipedia), interactuar con archivos (por ejemplo, administrar una lista de tareas pendientes) o generar contenido dinámico (por ejemplo, un saludo por correo electrónico contextual).
+* **Reglas contextuales:** Restringe las reglas a aplicaciones específicas. Al usar `only_in_windows`, puede garantizar que una regla solo se active si un título de ventana específico (por ejemplo, "Terminal", "Código VS" o "Navegador") está activo. Esto funciona multiplataforma (Linux, Windows, macOS).
 * **Motor de transformación de alto control:** Implementa un proceso de procesamiento altamente personalizable y basado en configuración. La prioridad de las reglas, la detección de comandos y las transformaciones de texto están determinadas exclusivamente por el orden secuencial de las reglas en Fuzzy Maps, lo que requiere **configuración, no codificación**.
 * **Uso conservador de RAM:** Administra de forma inteligente la memoria, precargando modelos solo si hay suficiente RAM libre disponible, lo que garantiza que otras aplicaciones (como los juegos de PC) siempre tengan prioridad.
 * **Multiplataforma:** Funciona en Linux, macOS y Windows.
@@ -54,7 +53,7 @@ Para obtener una referencia técnica completa, incluidos todos los módulos y sc
 
 **Lea esto en otros idiomas:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](./README-arlang.md) | [🇩🇪 Deutsch](./README-delang.md) | [🇪🇸 Español](./README-eslang.md) | [🇫🇷 Français](./README-frlang.md) | [🇮🇳 हिन्दी](./README-hilang.md) | [🇯🇵 日本語](./README-jalang.md) | [🇰🇷 한국어](./README-kolang.md) | [🇵🇱 Polski](./README-pllang.md) | [🇵🇹 Português](./README-ptlang.md) | [🇧🇷 Português Brasil](./README-pt-BRlang.md) | [🇨🇳 简体中文](./README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
 ---
 
@@ -67,7 +66,7 @@ Para obtener una referencia técnica completa, incluidos todos los módulos y sc
 ## Instalación
 
 La configuración es un proceso de dos pasos:
-1. Descargue la última versión o master (https://github.com/sl5net/Vosk-System-Listener/archive/master.zip) o clone este repositorio en su computadora.
+1. Descargue la última versión o master (https://github.com/sl5net/SL5-aura-service/archive/master.zip) o clone este repositorio en su computadora.
 2. Ejecute el script de configuración única para su sistema operativo.
 
 Los scripts de configuración manejan todo: dependencias del sistema, entorno Python y descarga de los modelos y herramientas necesarios (~4 GB) directamente desde nuestras versiones de GitHub para obtener la máxima velocidad.
@@ -162,7 +161,7 @@ Un único script se encarga de todo. Inicia el servicio de dictado principal y e
 #### En Windows
 Iniciar el servicio es un **proceso manual de dos pasos**:
 
-1. **Inicie el servicio principal:** Ejecute `start_dictation_v2.0.bat`. o iniciar desde `.venv` el servicio con `python3`
+1. **Inicie el servicio principal:** Ejecute `start_aura.bat`. o iniciar desde `.venv` el servicio con `python3`
 
 ### 2. Configura tu tecla de acceso rápido
 
@@ -218,7 +217,7 @@ f11::
 ```
 
 
-### 3. ¡Empiece a dictar!
+### 3. ¡Empieza a dictar!
 Haga clic en cualquier campo de texto, presione la tecla de acceso rápido y aparecerá una notificación "Escuchando...". Habla con claridad y luego haz una pausa. El texto corregido se escribirá por usted.
 
 ---
@@ -257,7 +256,7 @@ Aquí hay una lista de los scripts más importantes para configurar, actualizar 
 * `update.bat`: ejecútelos desde la carpeta del proyecto **obtenga el código y las dependencias más recientes**.
 
 ### Ejecutando la aplicación
-* `start_dictation_v2.0.bat`: un script principal para **iniciar el servicio de dictado**.
+* `start_aura.bat`: Un script principal para **iniciar el servicio de dictado**.
 
 ### Scripts principales y auxiliares
 * `aura_engine.py`: El servicio principal de Python (generalmente iniciado por uno de los scripts anteriores).
@@ -282,7 +281,7 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
   
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Servicio principal de Python que orquesta Aura) 🐧 🍏 🪟  
-├┬ **Recarga en vivo** (Configuración y mapas) 🐧 🍏 🪟  
+├┬ **Recarga en vivo en vivo** (Configuración y mapas) 🐧 🍏 🪟  
 │├ **Carga segura de mapas privados (integridad primero)** 🔒 🐧 🍏 🪟  
 ││ * **Flujo de trabajo:** Carga archivos ZIP protegidos con contraseña.   
 │├ **Procesamiento y corrección de texto/** Agrupado por idioma (p. ej., `de-DE`, `en-US`, ...)   
@@ -293,7 +292,7 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
 ││ * **Criterio de detención de prioridad más alta:** Si una regla logra una **Coincidencia completa** (^...$), todo el proceso de procesamiento para ese token se detiene inmediatamente. Este mecanismo es fundamental para implementar comandos de voz confiables.  
 │├ 3. `correct_text_by_languagetool.py` (Integra LanguageTool para corrección de gramática/estilo) 🐧 🍏 🪟  
 │├ **4. Motor de reglas RegEx jerárquico con respaldo de IA de Ollama** 🐧 🍏 🪟  
-││ * **Control determinista:** Utiliza RegEx-Rule-Engine para comandos precisos y de alta prioridad y control de texto.  
+││ * **Control determinista:** Utiliza RegEx-Rule-Engine para control de texto y comandos precisos y de alta prioridad.  
 ││ * **Reserva de Ollama AI (LLM local):** Sirve como una verificación opcional de baja prioridad para **respuestas creativas, preguntas y respuestas y coincidencias aproximadas avanzadas** cuando no se cumple ninguna regla determinista.  
 ││ * **Estado:** Integración LLM local.
 │└ 5. **Postcorrección inteligente** (`FuzzyMap`)**– Refinamiento post-LT** 🐧 🍏 🪟
@@ -313,11 +312,11 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
 │└─ `stop_languagetool_server.py` (Cierra el servidor LanguageTool) 🐧 🍏
 ├─ `monitor_mic.sh` (por ejemplo, para usar con auriculares sin usar teclado ni monitor) 🐧 🍏 🪟  
 
-### **Gestión de modelos y paquetes**  
+
 Herramientas para un manejo sólido de modelos de lenguaje grandes.  
 
-**Gestión de modelos/** 🐧 🍏 🪟  
-├─ **Descargador robusto de modelos** (fragmentos de lanzamiento de GitHub) 🐧 🍏 🪟  
+
+├─ **Descargador robusto de modelos** (fragmentos de versión de GitHub) 🐧 🍏 🪟  
 ├─ `split_and_hash.py` (Utilidad para que los propietarios de repositorios divida archivos grandes y genere sumas de verificación) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (Herramienta para que los usuarios finales descarguen, verifiquen y vuelvan a ensamblar archivos de varias partes) 🐧 🍏 🪟  
 
@@ -388,7 +387,7 @@ Funciones actualmente en desarrollo o en estado de borrador.
 ![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
   
-![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
+![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
 
 
 # Modelos usados:
@@ -422,9 +421,3 @@ Si encuentra útil esta herramienta, ¡considere invitarnos a un café! Su apoyo
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
-
-
-
-IgnorarPkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils
-
-Configuración-nvidia-575xx mhwd-nvidia-575xx

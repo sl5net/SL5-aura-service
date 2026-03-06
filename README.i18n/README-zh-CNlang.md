@@ -4,10 +4,8 @@
 
 * **Windows：** ✅ 完全支持（使用 AutoHotkey/PowerShell）。
 * **macOS：** ✅ 完全支持（使用 AppleScript）。
-* **Linux (X11/Xorg)：** ✅ 完全支持。推荐以获得最佳体验。
-* **Linux (Wayland)：** ⚠️ **有限/实验性。**
-* *由于安全限制，全局热键和自动输入通常无法在 Wayland 上运行。*
-* *请在登录时切换到 **X11 会话**（例如“Plasma (X11)”或“Ubuntu on Xorg”）以使用所有功能。*
+* **Linux (X11/Xorg)：** ✅ 完全支持。
+* **Linux (Wayland)：** ✅ 完全支持。
 
 
 欢迎来到 SL5 Aura 服务！本文档快速概述了我们的主要功能及其操作系统兼容性。
@@ -19,9 +17,9 @@ Aura 不仅仅是一个转录器；它也是一个转录器。它是一个强大
 X空格符X
 翻译：该文档也存在于[other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs)中。
 
+
 注意：许多文本是原始英文文档的机器生成翻译，仅供一般指导。如有差异或歧义，始终以英文版本为准。我们欢迎社区帮助改进此翻译！
 
-___
 
 [![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 （ https://www.youtube.com/watch?v=BZCHonTqwUw 或 https://skipvids.com/?v=BZCHonTqwUw ）
@@ -30,6 +28,7 @@ ___
 
 * **离线和私人：** 100% 本地。任何数据都不会离开您的机器。
 * **动态脚本引擎：** 超越文本替换。规则可以执行自定义 Python 脚本（`on_match_exec`）来执行高级操作，例如调用 API（例如，搜索维基百科）、与文件交互（例如，管理待办事项列表）或生成动态内容（例如，上下文感知的电子邮件问候语）。
+* **上下文感知规则：** 将规则限制到特定应用程序。使用“only_in_windows”，您可以确保规则仅在特定窗口标题（例如“终端”、“VS Code”或“浏览器”）处于活动状态时触发。这适用于跨平台（Linux、Windows、macOS）。
 * **高控制转换引擎：** 实现配置驱动、高度可定制的处理管道。规则优先级、命令检测和文本转换纯粹由模糊映射中规则的顺序决定，需要**配置，而不是编码**。
 * **保守的 RAM 使用：** 智能管理内存，仅在有足够的可用 RAM 时才预加载模型，确保其他应用程序（例如您的 PC 游戏）始终具有优先权。
 * **跨平台：** 适用于 Linux、macOS 和 Windows。
@@ -54,7 +53,7 @@ ___
 
 **阅读其他语言版本：**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](./README-arlang.md) | [🇩🇪 Deutsch](./README-delang.md) | [🇪🇸 Español](./README-eslang.md) | [🇫🇷 Français](./README-frlang.md) | [🇮🇳 हिन्दी](./README-hilang.md) | [🇯🇵 日本語](./README-jalang.md) | [🇰🇷 한국어](./README-kolang.md) | [🇵🇱 Polski](./README-pllang.md) | [🇵🇹 Português](./README-ptlang.md) | [🇧🇷 Português Brasil](./README-pt-BRlang.md) | [🇨🇳 简体中文](./README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
 ---
 
@@ -67,7 +66,7 @@ ___
 ＃＃ 安装
 
 设置过程分为两步：
-1. 下载最新版本或主版本 ( https://github.com/sl5net/Vosk-System-Listener/archive/master.zip ) 或将此存储库克隆到您的计算机。
+1. 下载最新版本或主版本 ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) 或将此存储库克隆到您的计算机。
 2. 运行适用于您的操作系统的一次性安装脚本。
 
 安装脚本处理一切：系统依赖项、Python 环境，以及直接从我们的 GitHub 版本下载必要的模型和工具（~4GB）以获得最大速度。
@@ -117,11 +116,11 @@ __代码_块_2__
 #### 在 Windows 上
 启动服务是一个**两步手动过程**：
 
-1. **启动主服务：** 运行`start_dictation_v2.0.bat`。或使用“python3”从“.venv”服务启动
+1. **启动主服务：** 运行`start_aura.bat`。或使用“python3”从“.venv”服务启动
 
 ### 2. 配置您的热键
 
-
+要触发听写，您需要一个创建特定文件的全局热键。我们强烈推荐跨平台工具[CopyQ](https://github.com/hluk/CopyQ)。
 
 #### 我们的推荐：CopyQ
 
@@ -177,7 +176,7 @@ X空格符X
 * `update.bat` ：从项目文件夹运行这些**获取最新的代码和依赖项**。
 
 ### 运行应用程序
-* `start_dictation_v2.0.bat`：**启动听写服务**的主要脚本。
+* `start_aura.bat`：**启动听写服务**的主要脚本。
 
 ### 核心和帮助脚本
 * `aura_engine.py`：核心 Python 服务（通常由上述脚本之一启动）。
@@ -306,7 +305,7 @@ __代码_块_6__
 ![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
 X空格符X
-![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
+![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
 
 
 # 使用的型号：
@@ -319,7 +318,7 @@ X空格符X
 
 
 |型号|尺寸|字错误率/速度 |笔记|许可证|
-| ------------------------------------------------------------------------------------------ | ---- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
+| ------------------------------------------------------------------------------------------ | ----| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
 | [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型|阿帕奇2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G| 9.83（Tuda-de 测试）<br/>24.00（播客）<br/>12.82（cv-测试）<br/>12.42（mls）<br/>33.26（mtedx）|德国大型电话和服务器模型|阿帕奇2.0 |
 
@@ -340,9 +339,3 @@ X空格符X
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
-
-
-
-IgnorePkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils
-
-nvidia-575xx-设置 mhwd-nvidia-575xx

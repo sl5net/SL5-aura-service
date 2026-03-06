@@ -4,10 +4,8 @@
 
 * **Windows:** ✅ مدعوم بالكامل (يستخدم AutoHotkey/PowerShell).
        * **macOS:** ✅ مدعوم بالكامل (يستخدم AppleScript).
-* **Linux (X11/Xorg):** ✅ مدعوم بالكامل. موصى به للحصول على أفضل تجربة.
-                 * **Linux (Wayland):** ⚠️ **محدود / تجريبي.**
-* *لا تعمل مفاتيح التشغيل السريع العامة والكتابة التلقائية عمومًا على Wayland بسبب القيود الأمنية.*
-* *يُرجى التبديل إلى **جلسة X11** عند تسجيل الدخول (على سبيل المثال، "Plasma (X11)" أو "Ubuntu on Xorg") لاستخدام جميع الميزات.*
+                       * **Linux (X11/Xorg):** ✅ مدعوم بالكامل.
+            * **لينكس (وايلاند):** ✅ مدعوم بالكامل.
 
 
 مرحبًا بك في خدمة SL5 Aura! يقدم هذا المستند نظرة عامة سريعة على ميزاتنا الرئيسية وتوافقها مع نظام التشغيل.
@@ -19,9 +17,9 @@
                                               اكس سبيس بريك اكس
 الترجمات: هذا المستند موجود أيضًا في [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
+
 ملاحظة: العديد من النصوص عبارة عن ترجمات تم إنشاؤها آليًا للوثائق الإنجليزية الأصلية وهي مخصصة للإرشاد العام فقط. وفي حالة وجود تناقضات أو غموض، فإن النسخة الإنجليزية هي التي تسود دائمًا. نحن نرحب بالمساعدة من المجتمع لتحسين هذه الترجمة!
 
-                                                               ___
 
                       [![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 ( https://www.youtube.com/watch?v=BZCHonTqwUw أو https://skipvids.com/?v=BZCHonTqwUw )
@@ -30,6 +28,7 @@
 
 * **خاص وغير متصل بالإنترنت:** محلي 100%. لا توجد بيانات تترك جهازك على الإطلاق.
 * **محرك البرمجة الديناميكية:** تجاوز مجرد استبدال النص. يمكن للقواعد تنفيذ برامج Python النصية المخصصة (`on_match_exec`) لتنفيذ إجراءات متقدمة مثل استدعاء واجهات برمجة التطبيقات (على سبيل المثال، البحث في Wikipedia)، أو التفاعل مع الملفات (على سبيل المثال، إدارة قائمة المهام)، أو إنشاء محتوى ديناميكي (على سبيل المثال، تحية بريد إلكتروني تراعي السياق).
+* **قواعد مدركة للسياق:** تقييد القواعد على تطبيقات محددة. باستخدام `only_in_windows`، يمكنك التأكد من تشغيل القاعدة فقط إذا كان عنوان نافذة معين (على سبيل المثال، "Terminal" أو "VS Code" أو "Browser") نشطًا. يعمل هذا عبر الأنظمة الأساسية (Linux وWindows وmacOS).
 * **محرك التحويل عالي التحكم:** ينفذ خط أنابيب معالجة يعتمد على التكوين وقابل للتخصيص بدرجة كبيرة. يتم تحديد أولوية القاعدة، واكتشاف الأوامر، وتحويلات النص بشكل كامل من خلال الترتيب التسلسلي للقواعد في الخرائط الغامضة، مما يتطلب **التكوين، وليس الترميز**.
 * **الاستخدام المحافظ لذاكرة الوصول العشوائي:** يدير الذاكرة بذكاء، ولا يتم تحميل النماذج مسبقًا إلا في حالة توفر ذاكرة وصول عشوائي كافية، مما يضمن الأولوية دائمًا للتطبيقات الأخرى (مثل ألعاب الكمبيوتر).
 * **النظام الأساسي المشترك:** يعمل على Linux وmacOS وWindows.
@@ -54,7 +53,7 @@
 
                                      **اقرأ هذا بلغات أخرى:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](./README-arlang.md) | [🇩🇪 Deutsch](./README-delang.md) | [🇪🇸 Español](./README-eslang.md) | [🇫🇷 Français](./README-frlang.md) | [🇮🇳 हिन्दी](./README-hilang.md) | [🇯🇵 日本語](./README-jalang.md) | [🇰🇷 한국어](./README-kolang.md) | [🇵🇱 Polski](./README-pllang.md) | [🇵🇹 Português](./README-ptlang.md) | [🇧🇷 Português Brasil](./README-pt-BRlang.md) | [🇨🇳 简体中文](./README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
                                                                           ---
 
@@ -67,7 +66,7 @@
                                                                 ## تثبيت
 
                             الإعداد هو عملية من خطوتين:
-1. قم بتنزيل الإصدار الأخير أو الإصدار الرئيسي ( https://github.com/sl5net/Vosk-System-Listener/archive/master.zip ) أو انسخ هذا المستودع على جهاز الكمبيوتر الخاص بك.
+1. قم بتنزيل الإصدار الأخير أو الإصدار الرئيسي ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) أو انسخ هذا المستودع على جهاز الكمبيوتر الخاص بك.
 2. قم بتشغيل البرنامج النصي للإعداد لمرة واحدة لنظام التشغيل الخاص بك.
 
 تتعامل نصوص الإعداد مع كل شيء: تبعيات النظام، وبيئة Python، وتنزيل النماذج والأدوات الضرورية (حوالي 4 جيجابايت) مباشرةً من إصدارات GitHub الخاصة بنا لتحقيق أقصى سرعة.
@@ -162,7 +161,7 @@ setup\windows11_setup.bat -Exclude "de,en"
                                   #### على نظام التشغيل Windows
 يتم بدء الخدمة عبر **عملية يدوية مكونة من خطوتين**:
 
-1. ** ابدأ الخدمة الرئيسية: ** قم بتشغيل `start_dictation_v2.0.bat`. أو ابدأ من .venv الخدمة باستخدام python3
+1. ** ابدأ الخدمة الرئيسية: ** قم بتشغيل `start_aura.bat`. أو ابدأ من .venv الخدمة باستخدام python3
 
 ### 2. قم بتكوين مفتاح التشغيل السريع الخاص بك
 
@@ -257,7 +256,7 @@ f11::
 * `update.bat`: قم بتشغيل هذه العناصر من مجلد المشروع **احصل على أحدث التعليمات البرمجية والتبعيات**.
 
                                                 ### تشغيل التطبيق
-* `start_dictation_v2.0.bat`: برنامج نصي أساسي **لبدء خدمة الإملاء**.
+* `start_aura.bat`: برنامج نصي أساسي **لبدء خدمة الإملاء**.
 
             ### البرامج النصية الأساسية والمساعد
 * `aura_engine.py`: خدمة Python الأساسية (تبدأ عادةً بواسطة أحد البرامج النصية أعلاه).
@@ -388,7 +387,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefo
                                                                    ![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
                                               اكس سبيس بريك اكس
-                                                                   ![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
+                                                                   ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
 
 
                                      # الموديلات المستعملة:
@@ -422,9 +421,3 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefo
                                      [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
                                                                    [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
-
-
-
- IgnorePkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils
-
-                                إعدادات nvidia-575xx mhwd-nvidia-575xx

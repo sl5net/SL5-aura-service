@@ -21,10 +21,10 @@ from .get_active_window_title import get_active_window_title_safe
 from .log_memory_details import log4DEV
 from .state_manager import should_trigger_startup
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
-
 # Auto-Zip Smoke Test
-from .checks.run_auto_zip_random_quick_check import trigger_background_zip_check
-
+# scripts/py/func/process_text_in_background.py:25
+from .checks.trigger_aura_maintenance import trigger_aura_maintenance
+# scripts/py/func/process_text_in_background.py:27
 # scripts/py/func/process_text_in_background.py:25
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES
 
@@ -1615,9 +1615,9 @@ def process_text_in_background(logger,
             # Auto-Zip Smoke Test
             if settings.DEV_MODE:
                 try:
-                    trigger_background_zip_check(logger)
+                    trigger_aura_maintenance(logger)
                 except ImportError as e:
-                    logger.warning(f"Auto-Zip: error {e} trigger_background_zip_check ")
+                    logger.warning(f"Auto-Zip: error {e} trigger_aura_maintenance ")
 
             # Hm ist gewünscht
 

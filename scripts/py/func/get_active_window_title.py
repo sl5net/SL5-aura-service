@@ -342,6 +342,7 @@ def get_active_window_title_safe():
         #     return None  # Verhindert den Absturz im X11-Teil (xdotool)
 
         # --- LINUX X11 ---
+        # scripts/py/func/get_active_window_title.py:345
         if sys.platform.startswith('linux'):
             env = get_linux_x11_env()
 
@@ -351,7 +352,7 @@ def get_active_window_title_safe():
                 try:
                     res = subprocess.check_output(
                         ["xdotool", "getwindowfocus", "getwindowname"],
-                        stderr=subprocess.DEVNULL, env=env
+                        stderr=subprocess.DEVNULL, env=env, timeout=1.5
                     )
                     # return res.decode("utf-8", errors='ignore').strip().lower()
                     return res.decode('cp1252', errors='replace').strip().lower()
@@ -364,12 +365,12 @@ def get_active_window_title_safe():
                 try:
                     active_id = subprocess.check_output(
                         ["xprop", "-root", "_NET_ACTIVE_WINDOW"],
-                        stderr=subprocess.DEVNULL, env=env
+                        stderr=subprocess.DEVNULL, env=env, timeout=1.5
                     ).decode().split()[-1]
 
                     res = subprocess.check_output(
                         ["xprop", "-id", active_id, "WM_NAME"],
-                        stderr=subprocess.DEVNULL, env=env
+                        stderr=subprocess.DEVNULL, env=env, timeout=1.5
                     )
                     return res.decode("utf-8").split('=', 1)[-1].strip().strip('"').lower()
                 except Exception as e:
@@ -410,14 +411,14 @@ def get_clipboard_text_linux():
 
     if shutil.which("xclip"):
         try:
-            return subprocess.check_output(["xclip", "-selection", "clipboard", "-o"], stderr=subprocess.DEVNULL, env=env).decode("utf-8")
+            return subprocess.check_output(["xclip", "-selection", "clipboard", "-o"], stderr=subprocess.DEVNULL, env=env, timeout=1.5).decode("utf-8")
         except Exception as e:
             print(f'194 {e}')
         pass
 
     elif shutil.which("xsel"):
         try:
-            return subprocess.check_output(["xsel", "-b", "-o"], stderr=subprocess.DEVNULL, env=env).decode("utf-8")
+            return subprocess.check_output(["xsel", "-b", "-o"], stderr=subprocess.DEVNULL, env=env, timeout=1.5).decode("utf-8")
         except Exception as e:
             print(f'201 {e}')
             pass

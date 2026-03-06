@@ -239,6 +239,7 @@ def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
     return t  # statt Prozess jetzt Thread zurückgeben
 
 def main():
+    # config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py:242
     init_db()
     print(f"--- Radio Deep-Dive Generator v1.3.1 (Model: {MODEL_NAME}) ---")
 
@@ -270,7 +271,7 @@ def main():
 
         # --- PHASE 1: MODERATOR ---
         print("AI Moderator is thinking...")
-        q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze Radio-Frage auf Deutsch."
+        q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze Radio-Frage auf Deutsch. Am besten nur ein Satz."
         question = call_ollama(q_prompt, "Du bist Moderator beim Radio Aura. Deine Hobbies:  privacy-first, voice assistant, scriptable rule engines, regEx, SqlLite. Halte dich kurz.")
 
         if not question:
@@ -360,15 +361,17 @@ def DEMO_MODE():
 
 
 if __name__ == "__main__":
-    # Vorbereitungen treffen (DB prüfen)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--demo', action='store_true')
+    args = parser.parse_args()
+
     init_db()
 
-    # SCHALTER: 1 für Demo (Cache), 0 für Generation (KI)
-    USE_DEMO = 1
-
-    if USE_DEMO:
+    if args.demo:
         DEMO_MODE()
     else:
         main()
+
 
         

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# tools/translate_md.py
 import os
 import glob
 import subprocess
@@ -49,6 +50,34 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger()
 
 
+def test_translation_links():
+    # Test-Konfiguration
+    test_lang = "de"
+
+    # Testfälle: (Eingabezeile, Beschreibung)
+    test_cases = [
+        ('[Normaler Link](about.md)', "Standard Markdown Link"),
+        ('[Link mit Anker](contact.md#form)', "Markdown Link mit Anker"),
+        ('[Die README](README.md)', "Spezialfall README"),
+        ('![Ein Bild](images/logo.png)', "Asset / Bild (kein MD)"),
+        ('[Extern](https://google.com)', "Absoluter Link (sollte gleich bleiben)"),
+        ('[Anker](#abschnitt)', "Interner Anker (sollte gleich bleiben)"),
+        ('[](../about-delang.md)', "Bereits korrigierter Link (Idempotenz)"),
+    ]
+
+    print(f"{'INPUT':<40} | {'OUTPUT':<40}")
+    print("-" * 85)
+
+    for original, description in test_cases:
+        modified = add_lang_to_md_links(original, test_lang)
+        print(f"{original:<40} | {modified:<40}")
+
+
+
+
+
+
+
 def add_lang_to_md_links(line: str, lang: str) -> str:
     """
     Finds all relative Markdown links to .md files in a line and appends a language suffix.
@@ -68,7 +97,9 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
 
     # Pattern to find Markdown links: [text](url)
     # The URL part is captured for processing.
-    markdown_link_pattern = re.compile(r'(\[.*?\])\((.*?)\)')
+    # markdown_link_pattern = re.compile(r'(\[.*?\])\((.*?)\)')
+
+    markdown_link_pattern = re.compile(r'(\[!?.*?\])\((.*?)\)')
 
     def replace_link(match):
         """This function is called for every link found by re.sub."""
@@ -79,19 +110,15 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
 
         # --- Conditions to NOT modify the link ---
         # 1. It's an absolute URL
-        if url.startswith('http://') or url.startswith('https://'):
+        if url.startswith(('http://', 'https://', '#', 'mailto:', '/')):
             logger.info("     - Skipping: It's an absolute URL.")
             return match.group(0) # Return the original full match
 
-        # 2. It's not a link to a Markdown file
-        if not url.endswith('.md') and '.md#' not in url:
-            logger.info("     - Skipping: Not a Markdown link.")
-            return match.group(0)
 
         # 3. It already seems to have a language suffix
-        if re.search(r'-\w{2}lang\.md', url):
-            logger.info("     - Skipping: Already has a language suffix.")
-            return match.group(0)
+        # if re.search(r'-\w{2}lang\.md', url):
+        #     logger.info("     - Skipping: Already has a language suffix.")
+        #     return match.group(0)
 
         # --- Modify the link ---
         # Separate the path from a potential anchor
@@ -106,9 +133,15 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
         if base_path == 'README':
             new_path = f"{base_path}.md{anchor}"
         else:
-            new_path = f"{base_path}-{lang}lang.md{anchor}"
+            if '.md' in path and f"-{lang}lang.md" not in path:
+                new_path = f"{base_path}-{lang}lang.md{anchor}"
+            else:
+                new_path = path
 
+        # if not new_path.startswith(('/')):
+        new_path = f"../{new_path}"
         new_link = f"{link_text}({new_path})"
+
         logger.info(f"     + Modifying to: {new_link}")
         return new_link
 
@@ -178,7 +211,20 @@ def process_file(filename):
     for lang in TARGET_LANGS:
 
         # output_file = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
-        output_file = f"{base_name}-{lang}lang.md"
+
+
+
+        # output_file = f"{base_name}-{lang}lang.md"
+
+
+        # NEU:
+        import os
+        i18n_dir = f"{base_name}.i18n"
+        os.makedirs(i18n_dir, exist_ok=True)
+        output_file = f"{i18n_dir}/{os.path.basename(base_name)}-{lang}lang.md"
+
+
+
         if os.path.exists(output_file):
             print(f"   -> Überspringe '{output_file}' (existiert bereits).")
             continue
@@ -249,6 +295,10 @@ def process_file(filename):
         time.sleep(2)
 
 def main():
+
+    test_translation_links()
+    sys.exit(1)
+
     print("Starte die intelligente Übersetzung von Markdown-Dateien...")
     print(f"Quellsprache: {SOURCE_LANG}")
     print(f"Zielsprachen: {TARGET_LANGS}")
@@ -261,6 +311,26 @@ def main():
     print(f"---- {search_path} ------------------------------------------------")
     for filename in glob.glob(str(search_path)):
         if not re.search(r'-([a-z]{2,3})\.md$', filename):
+
+            # ALT:
+            if not re.search(r'-([a-z]{2,3})\.md$', filename):
+                process_file(filename)
+
+                # NEU – angepasst an "lang"-Suffix-Format:
+                if not re.search(r'-[a-z]{2,10}lang\.md$', filename):
+
+                    base_name = os.path.splitext(filename)[0]
+                    # Prüfe ob ALLE Zielsprachen bereits im .i18n Ordner existieren
+                    already_done = all(
+                        os.path.exists(f"{base_name}.i18n/{os.path.basename(base_name)}-{lang}lang.md")
+                        for lang in TARGET_LANGS
+                    )
+                    if already_done:
+                        print(f"   -> Überspringe '{filename}' (alle Übersetzungen bereits vorhanden).")
+                        continue
+                    process_file(filename)
+
+
             print(f"process_file({filename})")
             process_file(filename)
             print("")

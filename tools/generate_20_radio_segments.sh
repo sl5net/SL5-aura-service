@@ -20,10 +20,27 @@ fi
 
 echo "--- Starting Mass Generation: $ITERATIONS Segments ---"
 
+# starten anleigung:
+# python3 "$PYTHON_SCRIPT" $DEMO_FLAG > /tmp/sl5_aura/radio_output.txt 2>/dev/null
+# oder
+# ./generate_20_radio_segments.sh --demo; kate /tmp/sl5_aura/radio_output.txt
+
+
+DEMO_FLAG=""
+if [ "$1" = "--demo" ]; then
+    DEMO_FLAG="--demo"
+fi
+
+> /tmp/sl5_aura/radio_output.txt
+
+~/projects/py/TTS/.venv/bin/python ~/projects/py/TTS/speak_server.py
+
 for ((i=1; i<=ITERATIONS; i++))
 do
     echo "[$i/$ITERATIONS] Running generator..."
-    python3 "$PYTHON_SCRIPT"
+    # python3 "$PYTHON_SCRIPT"
+
+    python3 "$PYTHON_SCRIPT" $DEMO_FLAG >> /tmp/sl5_aura/radio_output.txt 2>/dev/null
 
     # Optional: Short sleep to let the system / Ollama cool down
     sleep 2

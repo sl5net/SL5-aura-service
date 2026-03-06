@@ -82,7 +82,7 @@ do_type() {
 
         printf 'typedelay 2\ntype %s\n' "$text" | dotool
     else
-        LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 12 "$text"
+        LC_ALL=C.UTF-8 timeout 1 xdotool type --clearmodifiers --delay 12 "$text"
     fi
 }
 
@@ -92,7 +92,7 @@ do_key_return() {
     if [[ "$INPUT_METHOD" == "dotool" ]]; then
         printf 'key Return\n' | dotool
     else
-        LC_ALL=C.UTF-8 xdotool key Return
+        LC_ALL=C.UTF-8 timeout 1 xdotool key Return
     fi
 }
 
@@ -116,11 +116,11 @@ do_key_return() {
 
 # Helper: type text
 # - Wayland: dotool  (layout-aware, Unicode-safe, kein Daemon nötig)
-# - X11:     xdotool or dotool
+# - X11:     timeout 1 xdotool or dotool
 
-# Helper: xdotool with error suppression under Wayland (XWayland fallback for game macros)
+# Helper: timeout 1 xdotool with error suppression under Wayland (XWayland fallback for game macros)
 xdotool_safe() {
-    LC_ALL=C.UTF-8 xdotool "$@" || true
+    LC_ALL=C.UTF-8 timeout 1 xdotool "$@" || true
 }
 
 # --- START: Read Python config ---
@@ -187,8 +187,14 @@ sanitize_transcription_start() {
     echo "$clean_text"
 }
 
+#get_active_window_title() {
+#    timeout 1 xdotool getactivewindow 2>/dev/null | xargs -I{} timeout 1 xdotool getwindowname {} 2>/dev/null || true
+#}
+
 get_active_window_title() {
-    xdotool getactivewindow 2>/dev/null | xargs -I{} xdotool getwindowname {} 2>/dev/null || true
+    local id
+    id=$(timeout 1 xdotool getactivewindow 2>/dev/null) || return
+    timeout 1 xdotool getwindowname "$id" 2>/dev/null || true
 }
 
 OS_TYPE=$(uname -s)
@@ -218,9 +224,19 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
             for line in "${lines[@]}"; do
                 trimmed_line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
-                # Game macros: always use xdotool (XWayland)
+                # Game macros: always use timeout 1 xdotool (XWayland)
                 # dotool cannot target specific windows or do mouse clicks
-                GAME_WINDOW_ID=$(xdotool search --name "0 A.D." 2>/dev/null | head -1 || true)
+
+                # Nur xdotool aufrufen wenn 0ad Prozess läuft
+                if pgrep -x "pyrogenesis" > /dev/null 2>&1; then
+                    GAME_WINDOW_ID=$(timeout 1 xdotool search --name "0 A.D." 2>/dev/null | head -1 || true)
+                else
+                    GAME_WINDOW_ID=""
+                    #                 GAME_WINDOW_ID=$(timeout 1 xdotool search --name "0 A.D." 2>/dev/null | head -1 || true)
+                    # old. used till 2026-0306
+
+                fi
+
 
                 if [[ -n "$GAME_WINDOW_ID" ]]; then
                     log_message "GAME_WINDOW_ID = $GAME_WINDOW_ID"
@@ -344,7 +360,7 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
                         sleep 3
                     fi
 
-                    log_message "typed content of $f (dotool/xdotool hybrid)"
+                    log_message "typed content of $f (dotool/timeout 1 xdotool hybrid)"
                     rm -f "$f"
                     continue
                 fi
@@ -372,7 +388,7 @@ else
 fi
 
 cleanup() {
-    xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R 2>/dev/null || true
+    timeout 1 xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R 2>/dev/null || true
     # dotool: alle Modifier explizit loslassen
     if [[ "$DISPLAY_SERVER" == "dotool" ]]; then
         printf 'key shift:up\nkey ctrl:up\nkey alt:up\n' | dotool 2>/dev/null || true

@@ -4,10 +4,8 @@
 
 * **Windows :** ✅ Entièrement pris en charge (utilise AutoHotkey/PowerShell).
 * **macOS :** ✅ Entièrement pris en charge (utilise AppleScript).
-* **Linux (X11/Xorg) :** ✅ Entièrement pris en charge. Recommandé pour une meilleure expérience.
-* **Linux (Wayland) :** ⚠️ **Limité / Expérimental.**
-* *Les raccourcis clavier globaux et la saisie automatique ne fonctionnent généralement pas sur Wayland en raison de restrictions de sécurité.*
-* *Veuillez passer à une **session X11** lors de la connexion (par exemple, « Plasma (X11) » ou « Ubuntu sur Xorg ») pour utiliser toutes les fonctionnalités.*
+* **Linux (X11/Xorg) :** ✅ Entièrement pris en charge.
+* **Linux (Wayland) :** ✅ Entièrement pris en charge.
 
 
 Bienvenue au service SL5 Aura ! Ce document fournit un aperçu rapide de nos fonctionnalités clés et de leur compatibilité avec le système d'exploitation.
@@ -19,9 +17,9 @@ Il s'agit d'un **assistant vocal hors ligne** complet, basé sur **Vosk** (pour 
   
 Traductions : Ce document existe également en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
+
 Remarque : De nombreux textes sont des traductions générées automatiquement de la documentation originale en anglais et sont uniquement destinés à des conseils généraux. En cas de divergences ou d'ambiguïtés, la version anglaise prévaut toujours. Nous apprécions l’aide de la communauté pour améliorer cette traduction !
 
-___
 
 [![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 ( https://www.youtube.com/watch?v=BZCHonTqwUw ou https://skipvids.com/?v=BZCHonTqwUw )
@@ -30,6 +28,7 @@ ___
 
 * **Hors ligne et privé :** 100 % local. Aucune donnée ne quitte votre machine.
 * **Moteur de script dynamique :** Allez au-delà du remplacement de texte. Les règles peuvent exécuter des scripts Python personnalisés (`on_match_exec`) pour effectuer des actions avancées telles que l'appel d'API (par exemple, rechercher sur Wikipédia), interagir avec des fichiers (par exemple, gérer une liste de tâches) ou générer du contenu dynamique (par exemple, un message d'accueil par e-mail contextuel).
+* **Règles contextuelles :** Restreindre les règles à des applications spécifiques. En utilisant `only_in_windows`, vous pouvez garantir qu'une règle ne se déclenche que si un titre de fenêtre spécifique (par exemple, "Terminal", "VS Code" ou "Navigateur") est actif. Cela fonctionne sur plusieurs plates-formes (Linux, Windows, macOS).
 * **Moteur de transformation à contrôle élevé :** implémente un pipeline de traitement hautement personnalisable et basé sur la configuration. La priorité des règles, la détection des commandes et les transformations de texte sont déterminées uniquement par l'ordre séquentiel des règles dans les cartes floues, nécessitant une **configuration, pas un codage**.
 * **Utilisation conservatrice de la RAM :** Gère intelligemment la mémoire, en préchargeant les modèles uniquement si suffisamment de RAM libre est disponible, garantissant ainsi que les autres applications (comme vos jeux PC) ont toujours la priorité.
 * **Multiplateforme :** Fonctionne sous Linux, macOS et Windows.
@@ -54,7 +53,7 @@ Pour une référence technique complète, y compris tous les modules et scripts,
 
 **Lisez ceci dans d'autres langues :**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](./README-arlang.md) | [🇩🇪 Deutsch](./README-delang.md) | [🇪🇸 Español](./README-eslang.md) | [🇫🇷 Français](./README-frlang.md) | [🇮🇳 हिन्दी](./README-hilang.md) | [🇯🇵 日本語](./README-jalang.md) | [🇰🇷 한국어](./README-kolang.md) | [🇵🇱 Polski](./README-pllang.md) | [🇵🇹 Português](./README-ptlang.md) | [🇧🇷 Português Brasil](./README-pt-BRlang.md) | [🇨🇳 简体中文](./README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
 ---
 
@@ -67,7 +66,7 @@ Pour une référence technique complète, y compris tous les modules et scripts,
 ##Installation
 
 La configuration est un processus en deux étapes :
-1. Téléchargez la dernière version ou master ( https://github.com/sl5net/Vosk-System-Listener/archive/master.zip ) ou clonez ce référentiel sur votre ordinateur.
+1. Téléchargez la dernière version ou master ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) ou clonez ce référentiel sur votre ordinateur.
 2. Exécutez le script d'installation unique pour votre système d'exploitation.
 
 Les scripts d'installation gèrent tout : les dépendances du système, l'environnement Python et le téléchargement des modèles et outils nécessaires (~ 4 Go) directement depuis nos versions GitHub pour une vitesse maximale.
@@ -162,7 +161,7 @@ Un seul script gère tout. Il démarre automatiquement le service de dictée pri
 #### Sous Windows
 Le démarrage du service est un **processus manuel en deux étapes** :
 
-1. **Démarrez le service principal :** Exécutez `start_dictation_v2.0.bat`. ou démarrez à partir de `.venv` le service avec `python3`
+1. **Démarrez le service principal :** Exécutez `start_aura.bat`. ou démarrez à partir de `.venv` le service avec `python3`
 
 ### 2. Configurez votre raccourci clavier
 
@@ -218,7 +217,7 @@ f11::
 ```
 
 
-### 3. Commencez à dicter !
+
 Cliquez dans n'importe quel champ de texte, appuyez sur votre touche de raccourci et une notification "Écoute..." apparaîtra. Parlez clairement, puis faites une pause. Le texte corrigé sera tapé pour vous.
 
 ---
@@ -257,7 +256,7 @@ Voici une liste des scripts les plus importants pour configurer, mettre à jour 
 * `update.bat` : exécutez-les à partir du dossier Projet **obtenez le dernier code et les dernières dépendances**.
 
 ### Exécution de l'application
-* `start_dictation_v2.0.bat` : Un script principal pour **démarrer le service de dictée**.
+* `start_aura.bat` : Un script principal pour **démarrer le service de dictée**.
 
 ### Scripts de base et d'assistance
 * `aura_engine.py` : le service Python principal (généralement démarré par l'un des scripts ci-dessus).
@@ -388,7 +387,7 @@ Fonctionnalités actuellement en cours de développement ou à l'état de projet
 ![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
   
-![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
+![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
 
 
 # Modèles utilisés :
@@ -422,9 +421,3 @@ Si vous trouvez cet outil utile, pensez à nous offrir un café ! Votre soutien
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
-
-
-
-IgnorerPkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils
-
-nvidia-575xx-paramètres mhwd-nvidia-575xx

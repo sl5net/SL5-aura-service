@@ -24,13 +24,13 @@ radio_script = REPO_ROOT / "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_
 MAINTENANCE_TIMER = None
 
 def trigger_aura_maintenance(logger):
-    from scripts.py.func.audio_manager import speak_fallback
+    # from scripts.py.func.audio_manager import speak_fallback
     """Triggered by Aura. Starts maintenance tasks after 4s of silence."""
     global MAINTENANCE_TIMER
     if MAINTENANCE_TIMER:
         MAINTENANCE_TIMER.cancel()
     logger.info("Maintenance: Timer scheduled (4s silence)...")
-    speak_fallback("Maintenance: Timer scheduled (4s silence)...", 'de-DE')
+    # speak_fallback("Maintenance: Timer scheduled (4s silence)...", 'de-DE')
 
     MAINTENANCE_TIMER = threading.Timer(4.0, _execute_maintenance_tasks, args=[logger])
     MAINTENANCE_TIMER.daemon = True
@@ -66,15 +66,15 @@ def _execute_maintenance_tasks(logger):
 
             if "All documents are up to date" in output:
                 logger.info("Maintenance: Radio Cache is already current.")
-                speak_fallback("Maintenance: Radio Cache is already current.", 'de-DE')
+                # speak_fallback("Maintenance: Radio Cache is already current.", 'de-DE')
 
             else:
                 logger.info("Maintenance: Radio-Aura Cache wurde aktualisiert.")
-                speak_fallback("Maintenance: Radio-Aura Cache wurde aktualisiert", 'de-DE')
+                # speak_fallback("Maintenance: Radio-Aura Cache wurde aktualisiert", 'de-DE')
 
             # subprocess.run([sys.executable, str(radio_script)], check=False)
             logger.info("Maintenance: Radio-Aura Cache fertig.")
-            speak_fallback("Maintenance: Radio-Aura Cache fertig.", 'de-DE')
+            # speak_fallback("Maintenance: Radio-Aura Cache fertig.", 'de-DE')
 
         else:
             logger.error(f"Maintenance: PATH NOT FOUND: {radio_script}")
@@ -100,11 +100,13 @@ def _execute_maintenance_tasks(logger):
             if success:
                 msg = f"Auto-Zip erfolgreich für {folder_nickname}"
                 logger.info(f"Auto-Zip: ✅ Smoke Test ERFOLGREICH für {root}")
-                speak_fallback(msg, 'de-DE')
+                # speak_fallback(msg, 'de-DE')
             else:
-                msg = f"Auto-Zip Zeitüberschreitung in {folder_nickname}"
-                logger.warning(f"Auto-Zip: ❌ Smoke Test Timeout für {root}")
-                speak_fallback(msg, 'de-DE')
+                msg = 'Smoke Test Timeout '
+                logger.warning(f"Auto-Zip: ❌ {msg} für {root}")
+                msg = f"Auto-Zip {msg} in {folder_nickname}"
+
+                # speak_fallback(msg, 'de-DE')
 
             # 5. Aufräumen
             _cleanup(root, logger)

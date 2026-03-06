@@ -4,10 +4,8 @@
 
 * **Windows:** ✅ Vollständig unterstützt (verwendet AutoHotkey/PowerShell).
 * **macOS:** ✅ Vollständig unterstützt (verwendet AppleScript).
-* **Linux (X11/Xorg):** ✅ Vollständig unterstützt. Empfohlen für beste Erfahrung.
-* **Linux (Wayland):** ⚠️ **Begrenzt / Experimentell.**
-* *Globale Hotkeys und automatische Eingabe funktionieren aus Sicherheitsgründen im Allgemeinen nicht auf Wayland.*
-* *Bitte wechseln Sie beim Anmelden zu einer **X11-Sitzung** (z. B. „Plasma (X11)“ oder „Ubuntu auf Xorg“), um alle Funktionen nutzen zu können.*
+* **Linux (X11/Xorg):** ✅ Vollständig unterstützt.
+* **Linux (Wayland):** ✅ Vollständig unterstützt.
 
 
 Willkommen beim SL5 Aura Service! Dieses Dokument bietet einen schnellen Überblick über unsere wichtigsten Funktionen und deren Betriebssystemkompatibilität.
@@ -19,9 +17,9 @@ Es handelt sich um einen vollständigen **Offline-Sprachassistenten**, der auf *
   
 Übersetzungen: Dieses Dokument existiert auch in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
 
+
 Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzungen der englischen Originaldokumentation, die lediglich der allgemeinen Orientierung dienen. Im Falle von Unstimmigkeiten oder Unklarheiten ist stets die englische Version maßgebend. Wir freuen uns über die Hilfe der Community, um diese Übersetzung zu verbessern!
 
-___
 
 [![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 (https://www.youtube.com/watch?v=BZCHonTqwUw oder https://skipvids.com/?v=BZCHonTqwUw)
@@ -30,6 +28,7 @@ ___
 
 * **Offline und privat:** 100 % lokal. Keine Daten verlassen jemals Ihren Computer.
 * **Dynamic Scripting Engine:** Gehen Sie über das Ersetzen von Text hinaus. Regeln können benutzerdefinierte Python-Skripte („on_match_exec“) ausführen, um erweiterte Aktionen wie das Aufrufen von APIs (z. B. Wikipedia durchsuchen), die Interaktion mit Dateien (z. B. das Verwalten einer Aufgabenliste) oder das Generieren dynamischer Inhalte (z. B. eine kontextbezogene E-Mail-Begrüßung) durchzuführen.
+* **Kontextsensitive Regeln:** Regeln auf bestimmte Anwendungen beschränken. Mit „only_in_windows“ können Sie sicherstellen, dass eine Regel nur dann ausgelöst wird, wenn ein bestimmter Fenstertitel (z. B. „Terminal“, „VS-Code“ oder „Browser“) aktiv ist. Dies funktioniert plattformübergreifend (Linux, Windows, macOS).
 * **High-Control Transformation Engine:** Implementiert eine konfigurationsgesteuerte, hochgradig anpassbare Verarbeitungspipeline. Regelpriorität, Befehlserkennung und Texttransformationen werden ausschließlich durch die Reihenfolge der Regeln in den Fuzzy Maps bestimmt und erfordern **Konfiguration, keine Codierung**.
 * **Konservative RAM-Nutzung:** Verwaltet den Speicher intelligent und lädt Modelle nur dann vor, wenn genügend freier RAM verfügbar ist, um sicherzustellen, dass andere Anwendungen (wie Ihre PC-Spiele) immer Vorrang haben.
 * **Plattformübergreifend:** Funktioniert unter Linux, macOS und Windows.
@@ -54,7 +53,7 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 
 **Lesen Sie dies in anderen Sprachen:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](./README-arlang.md) | [🇩🇪 Deutsch](./README-delang.md) | [🇪🇸 Español](./README-eslang.md) | [🇫🇷 Français](./README-frlang.md) | [🇮🇳 हिन्दी](./README-hilang.md) | [🇯🇵 日本語](./README-jalang.md) | [🇰🇷 한국어](./README-kolang.md) | [🇵🇱 Polski](./README-pllang.md) | [🇵🇹 Português](./README-ptlang.md) | [🇧🇷 Português Brasil](./README-pt-BRlang.md) | [🇨🇳 简体中文](./README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
 
 ---
 
@@ -67,7 +66,7 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 ## Installation
 
 Die Einrichtung ist ein zweistufiger Prozess:
-1. Laden Sie die letzte Version oder den Master herunter (https://github.com/sl5net/Vosk-System-Listener/archive/master.zip) oder klonen Sie dieses Repository auf Ihren Computer.
+1. Laden Sie die letzte Version oder den Master herunter (https://github.com/sl5net/SL5-aura-service/archive/master.zip) oder klonen Sie dieses Repository auf Ihren Computer.
 2. Führen Sie das einmalige Setup-Skript für Ihr Betriebssystem aus.
 
 Die Setup-Skripte kümmern sich um alles: Systemabhängigkeiten, Python-Umgebung und das Herunterladen der erforderlichen Modelle und Tools (~4 GB) direkt von unseren GitHub-Releases für maximale Geschwindigkeit.
@@ -162,7 +161,7 @@ Ein einziges Skript erledigt alles. Es startet den Haupt-Diktierdienst und den D
 #### Unter Windows
 Das Starten des Dienstes ist ein **zweistufiger manueller Prozess**:
 
-1. **Starten Sie den Hauptdienst:** Führen Sie „start_dictation_v2.0.bat“ aus. oder starten Sie von „.venv“ aus den Dienst mit „python3“.
+1. **Starten Sie den Hauptdienst:** Führen Sie „start_aura.bat“ aus. oder starten Sie von „.venv“ aus den Dienst mit „python3“.
 
 ### 2. Konfigurieren Sie Ihren Hotkey
 
@@ -240,7 +239,7 @@ Die Modularität des Systems ermöglicht eine robuste Erweiterung über das Plug
 
 Die Verarbeitungs-Engine hält sich strikt an eine **hierarchische Prioritätskette**:
 
-1. **Ladereihenfolge der Module (hohe Priorität):** Regeln, die aus Kernsprachpaketen (de-DE, en-US) geladen werden, haben Vorrang vor Regeln, die aus dem Verzeichnis „plugins/“ geladen werden (die in alphabetischer Reihenfolge zuletzt geladen werden).
+1. **Ladereihenfolge der Module (hohe Priorität):** Regeln, die aus Kernsprachpaketen (de-DE, en-US) geladen werden, haben Vorrang vor Regeln, die aus dem Verzeichnis „plugins/“ geladen werden (die alphabetisch zuletzt geladen werden).
   
 2. **Reihenfolge in der Datei (Mikropriorität):** Innerhalb einer bestimmten Kartendatei (FUZZY_MAP_pre.py) werden Regeln streng nach **Zeilennummer** (von oben nach unten) verarbeitet.
   
@@ -257,7 +256,7 @@ Hier finden Sie eine Liste der wichtigsten Skripte zum Einrichten, Aktualisieren
 * `update.bat`: Durchsuchen Sie diese aus dem Projektordner **holen Sie sich den neuesten Code und die neuesten Abhängigkeiten**.
 
 ### Ausführen der Anwendung
-* „start_dictation_v2.0.bat“: Ein primäres Skript zum **Starten des Diktierdienstes**.
+* „start_aura.bat“: Ein primäres Skript zum **Starten des Diktierdienstes**.
 
 ### Kern- und Hilfsskripte
 * „aura_engine.py“: Der Kern-Python-Dienst (normalerweise von einem der oben genannten Skripte gestartet).
@@ -289,7 +288,6 @@ Unsere primäre Engine für Offline-Spracherkennung und Audioverarbeitung.
 │├ 1. `normalize_punctuation.py` (Standardisiert die Zeichensetzung nach der Transkription) 🐧 🍏 🪟  
 │├ 2. **Intelligente Vorkorrektur** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules-delang.md)) 🐧 🍏 🪟  
 ││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte (on_match_exec) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
-*   **Kontextsensitive Regeln:** Begrenzen Sie Regeln auf bestimmte Anwendungen. Mit `only_in_windows` stellen Sie sicher, dass eine Regel nur dann feuert, wenn ein bestimmter Fenstertitel (z. B. „Konsole“, „Editor“ oder „Browser“) aktiv ist. Dies funktioniert plattformübergreifend (Linux, Windows, macOS).
 ││ * **Kaskadierende Ausführung:** Regeln werden nacheinander verarbeitet und ihre Auswirkungen sind **kumulativ**. Spätere Regeln gelten für Text, der durch frühere Regeln geändert wurde.  
 ││ * **Stoppkriterium mit höchster Priorität:** Wenn eine Regel eine **Vollständige Übereinstimmung** (^...$) erreicht, stoppt die gesamte Verarbeitungspipeline für dieses Token sofort. Dieser Mechanismus ist für die Implementierung zuverlässiger Sprachbefehle von entscheidender Bedeutung.  
 │├ 3. `correct_text_by_lingualtool.py` (Integriert LanguageTool zur Grammatik-/Stilkorrektur) 🐧 🍏 🪟  
@@ -389,7 +387,7 @@ Funktionen, die sich derzeit in der Entwicklung oder im Entwurfsstatus befinden.
 ![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
   
-![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
+![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
 
 
 # Gebrauchte Modelle:
@@ -423,9 +421,3 @@ Wenn Sie dieses Tool nützlich finden, denken Sie bitte darüber nach, uns einen
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
-
-
-
-IgnorePkg = linux66-nvidia-575xx nvidia-575xx-utils lib32-nvidia-575xx-utils
-
-nvidia-575xx-settings mhwd-nvidia-575xx
