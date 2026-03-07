@@ -69,4 +69,23 @@ Start with Koan 01 and work your way up.
 - Rules in `FUZZY_MAP_pre.py` run **before** spell checking – good for fixing STT errors
 - Rules in `FUZZY_MAP.py` run **after** spell checking – good for formatting
 - Backup files (`.peter_backup`) are created automatically before any change
-- Use `peter.py` to let an AI work through the koans automatically
+- Use `tools/ai/peter.py` to let an AI work through the koans automatically
+
+## Quick Rule Entry – Oma Mode
+
+The fastest way to add a new rule is to just type a plain word into a map file:
+
+```
+oma
+```
+
+The system detects the `NameError` and automatically converts it into a valid rule:
+
+```python
+FUZZY_MAP_pre = [
+    ('oma', 'oma'),
+]
+```
+
+Then edit the replacement as needed. Works for multiple words at once.
+Only works on files smaller than 1KB. See `docs/Developer_Guide/AutoFixModule.md` for details.
