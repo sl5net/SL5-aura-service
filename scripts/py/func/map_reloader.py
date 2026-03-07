@@ -121,15 +121,12 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     # logger.info(f"🗑️ Deleting old module reference for {module_name} from sys.modules.")
                     del sys.modules[module_name]
 
-                # scripts/py/func/map_reloader.py:106
-                # 3. FORCE GARBAGE COLLECTION
-                # Placed outside to always clean up before re-import
-                gc.collect()
+                    # 3. FORCE GARBAGE COLLECTION (only when actually reloading)
+                    gc.collect()
+                    clear_regex_cache()
+                    if log_all_map_reloaded:
+                        logger.info(" Forced garbage collection before re-import.")
 
-                clear_regex_cache()
-
-                if log_all_map_reloaded:
-                    logger.info("🗑️ Forced garbage collection before re-import.")
                 # --- END OF CLEANUP ---
 
                 # log_all_changes = True

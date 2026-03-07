@@ -77,7 +77,7 @@ def start_uvicorn_service(host, port, module_path):
         module_path,
         "--host", host,
         "--port", str(port),
-        "--reload"
+        # "--reload"  # Disabled: causes ~7s latency due to i18n file watcher
     ]
 
     try:
