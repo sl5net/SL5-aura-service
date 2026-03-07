@@ -186,7 +186,7 @@ import requests
 PIPER_SERVER_HOST = '127.0.0.1'
 PIPER_SERVER_PORT = 5002
 PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
-PIPER_SPEAK_FILE = os.path.expanduser("~/projects/py/TTS/speak_file.py")
+# PIPER_SPEAK_FILE = os.path.expanduser("~/projects/py/TTS/speak_file.py")
 
 import webbrowser  # Zum Öffnen der GitHub-Seite
 
@@ -217,7 +217,7 @@ def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
                 try:
                     with open('/tmp/speak_server_input.txt', 'w') as f:
                         f.write(text)
-                    requests.post(PIPER_SERVER_URL, verify=False, timeout=60)
+                    requests.post(PIPER_SERVER_URL, verify=False, timeout=60)  # nosec B501 - localhost only
                     return
                 except requests.exceptions.ConnectionError:
                     print("  !! Piper Server nicht erreichbar — Fallback zu espeak")
