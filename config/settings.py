@@ -94,6 +94,12 @@ if current_user == 'SL5.de':
 
 # config/settings.py
 PLUGIN_HELPER_TTS_ENABLED = True
+
+PIPER_SERVER_PATH = "~/projects/py/TTS"
+PIPER_SERVER_URL = "http://127.0.0.1:5002/speak"
+# Timeout Server-anser (in Sec):
+PIPER_SERVER_TIMEOUT = 2.0
+
 USE_AS_PRIMARY_SPEAK = "piper"
 # USE_AS_PRIMARY_SPEAK = "ESPEAK"
 USE_ESPEAK_FALLBACK = True

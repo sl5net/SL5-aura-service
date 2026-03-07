@@ -8,6 +8,7 @@ from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
 from scripts.py.func.config.dynamic_settings import DynamicSettings
 
+import time
 
 _speech_lock = threading.Lock()
 
@@ -15,10 +16,13 @@ PIPER_SERVER_HOST = '127.0.0.1'
 PIPER_SERVER_PORT = 5002
 PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
 
+from pathlib import Path
 
-def piper_speak_via_server(text: str) -> bool:
+
+def piper_speak_via_server(text: str):
     return speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False)
 
+# scripts/py/func/audio/piper_speak_via_server.py:22
 def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
     if not text or not globals().get('SPEECH_ENABLED', True):
         return None
@@ -27,7 +31,21 @@ def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
         try:
             with open('/tmp/speak_server_input.txt', 'w') as f:
                 f.write(text)
-            requests.post(PIPER_SERVER_URL, verify=False, timeout=60)
+            requests.post(PIPER_SERVER_URL, verify=False, timeout=60)  # nosec B501 - localhost only
+
+            time.sleep(.1)
+
+            p = Path("/tmp/speak_server_input.txt")
+            try:
+                p.unlink()
+                print(f"Deleted: {p}")
+            except FileNotFoundError:
+                print(f"File not found: {p}")
+            except PermissionError:
+                print(f"Permission denied: {p}")
+            except OSError as e:
+                print(f"Error deleting {p}: {e}")
+
             return
         except requests.exceptions.ConnectionError:
             print("Piper Error !! Piper Server nicht erreichbar — Fallback zu espeak")

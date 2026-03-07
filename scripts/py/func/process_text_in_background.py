@@ -66,7 +66,8 @@ GLOBAL_FUZZY_MAP = [] # noqa: F824
 
 GLOBAL_debug_skip_list=False
 
-from .config.regex_cache import REGEX_COMPILE_CACHE
+# from .config.regex_cache import REGEX_COMPILE_CACHE
+from .config.regex_cache import get_cached_regex
 
 from .get_compiled_regex import get_compiled_regex
 
@@ -1935,17 +1936,11 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             # 1. Flags extrahieren für den Cache-Key
             flags = options_dict.get('flags', re.IGNORECASE)
-            cache_key = (regex_pattern, flags)
 
-            # 2. Cache-Check oder Kompilierung
-            if cache_key not in REGEX_COMPILE_CACHE:
-                try:
-                    REGEX_COMPILE_CACHE[cache_key] = re.compile(regex_pattern, flags=flags)
-                except re.error as e:
-                    logger_instance.error(f"Invalid regex: {regex_pattern} - {e}")
-                    continue
+            # from scripts.py.func.config.regex_cache import get_cached_regex
+            compiled_regex = get_cached_regex(regex_pattern, flags)
 
-            compiled_regex = REGEX_COMPILE_CACHE[cache_key]
+            # compiled_regex = REGEX_COMPILE_CACHE[cache_key]
 
             # 3. Nutzung des kompilierte Objekts (viel schneller!)
             try:

@@ -135,13 +135,13 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
         logger.info("\nService interrupted by user.")
     except Exception as e:
         logger.error(f"FATAL ERROR {e} in main loop:", exc_info=True)
-    # finally:
-    #    observer.stop()
-    #    observer.join()
+    finally:
+        observer.stop()
+        observer.join()
 
-    #    logger.info("Waiting for all background threads to finish...")
-    #    for t in active_threads:
-    #        t.join()
+        # logger.info("Waiting for all background threads to finish...")
+        # for t in active_threads:
+        #     t.join()
 
 
 def start_background_model_loader(logger, config, loaded_models):

@@ -350,8 +350,9 @@ def _get_mute_state_macos(logger):
         return False
     # logger.info(f"312: Audio Manager PID: {os.getpid()}")
     try:
-        cmd = "osascript -e 'input volume of (get volume settings)'"
-        result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+        result = subprocess.run(['osascript', '-e', 'input volume of (get volume settings)'],shell=False, check=True, capture_output=True, text=True)
+
+        # result = subprocess.run(cmd, shell=False, check=True, capture_output=True, text=True)
         return int(result.stdout.strip()) == 0
     except Exception:
         logger.info("Failed to get macOS microphone mute state.", exc_info=True)
