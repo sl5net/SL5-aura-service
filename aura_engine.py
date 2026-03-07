@@ -178,7 +178,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 
 setup_project_structure(PROJECT_ROOT)
 
-LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"
+LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
 
 
 if platform.system() == "Windows":
@@ -234,7 +234,7 @@ OUTPUT_FILE = TMP_DIR / "sl5_aura" / "tts_output" / "tts_output.txt"
 
 HEARTBEAT_FILE = TMP_DIR / "sl5_aura" / "aura_engine.heartbeat"
 PIDFILE = TMP_DIR / "sl5_aura" / "aura_engine.pid"
-LOG_FILE = Path("log/aura_engine.log")
+# LOG_FILE = Path("log/aura_engine.log")
 
 core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
 

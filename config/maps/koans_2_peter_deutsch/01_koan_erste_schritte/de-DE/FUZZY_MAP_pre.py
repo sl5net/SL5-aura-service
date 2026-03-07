@@ -1,4 +1,3 @@
-# config/maps/koans_2_peter_deutsch/01_koan_erste_schritte/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 # Regel-Format: ('Ersatztext', r'muster', schwellwert, flags)
 # Logik: Top-Down, erster Treffer gewinnt. Fullmatch (^...$) stoppt die Pipeline.

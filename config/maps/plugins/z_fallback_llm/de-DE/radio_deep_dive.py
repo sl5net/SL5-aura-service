@@ -19,7 +19,19 @@ VERSION = "1.1.0"
 # AUTHOR: AI Assistant for sl5net
 
 # --- CONFIGURATION ---
-MODEL_NAME = "llama3.2:latest"
+def _load_model_from_config():
+    """Liest Modellname aus config/internal/ai_model.txt, fallback: llama3.2:latest"""
+    from pathlib import Path as _Path
+    # radio liegt in config/maps/plugins/z_fallback_llm/de-DE/
+    # 5 Ebenen hoch = Repo-Root
+    cfg = _Path(__file__).parents[4] / "config" / "internal" / "ai_model.txt"
+    if cfg.exists():
+        model = cfg.read_text(encoding="utf-8").strip().splitlines()[0].strip()
+        if model:
+            return model
+    return "llama3.2:latest"
+
+MODEL_NAME = _load_model_from_config()
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 
 OPEN_BROWSER = True  # Setze auf False für Massen-Generierung im Hintergrund
