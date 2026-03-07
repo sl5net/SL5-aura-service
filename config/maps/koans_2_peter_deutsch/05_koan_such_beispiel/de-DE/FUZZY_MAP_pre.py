@@ -1,0 +1,52 @@
+# config/maps/koans_deutsch/05_koan_such_beispiel/de-DE/FUZZY_MAP_pre.py
+# its using https://github.com/scrollmapper/bible_databases/tree/master/formats/sqlite
+
+import re # noqa: F401
+# Regel-Format: ('Ersatztext', r'muster', schwellwert, flags)
+# Logik: Top-Down, erster Treffer gewinnt. Fullmatch (^...$) stoppt die Pipeline.
+
+from pathlib import Path
+
+CONFIG_DIR = Path(__file__).parent
+
+einleitung = """
+Für diese technische Demonstration benötigen wir ein komplexes, öffentlich verfügbares Dataset in einem gängigen Format (hier: SQLite). Die Bibel dient uns in diesem Zusammenhang lediglich als ein bekanntes, frei verfügbares und vielschichtiges Beispieldokument zur Veranschaulichung von Datenbankabfragen und Recherche-Logiken.
+
+Ich möchte betonen, dass es in dieser Einheit nicht um theologische, religiöse oder inhaltliche Interpretationen geht. Unser Fokus liegt rein auf der Implementierung und der Anwendung zur Analyse von strukturierten Textdaten.
+
+Der entscheidende Punkt ist die Verfügbarkeit solcher Daten. Viele historische und kulturelle Texte, wie auch die Bibel in verschiedenen Übersetzungen, sind glücklicherweise als Open-Source-Datenbestände verfügbar, was uns die technische Arbeit ermöglicht. Wir könnten an dieser Stelle ebenso gut ein juristisches Kompendium oder einen wissenschaftlichen Fachartikel analysieren.
+
+Bitte fragen Sie Ihren Admin, das er
+aura.sl5.de:8831
+einschaltet. Dies demonstriert die Nutzung von Aura auch Online für Web-Seiten.
+Diese Demo-Seite ( aura.sl5.de:8831 ) wird nur auf Anfrage aktiviert.
+
+"""
+
+# PETER-AUFGABE fuer Koan: 05_koan_such_beispiel
+# Es gibt EINE auskommentierte Regel.
+# -> Entferne das '#' um sie zu aktivieren.
+# -> Was passiert danach in der Pipeline?
+FUZZY_MAP_pre = [
+    # === General Terms (Case-Insensitive) ===
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
+    # Importing to know:
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
+    # - first is read first imported, lower rules maybe not get read.
+
+    #TODO: Untere Zeile aktivieren, duch entfernen des Kommentar Symbols
+    #('suche in Ruth kapitel 1 vers 1', fr'^.*$', 90, {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+
+    #
+
+    #TODO: Was passiert jetzt?
+
+    # EXAMPLE: suche in x text kapitel 123 vfdph text 123
+    ('bible suche', r'^suche in (?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'bible_search.py']
+    }),
+
+    #TODO: Könnten sie noch ein paar andere Suchmöglichkeiten erfinden?
+
+]
