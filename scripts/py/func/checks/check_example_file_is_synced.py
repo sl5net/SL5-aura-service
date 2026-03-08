@@ -37,7 +37,8 @@ def check_example_file_is_synced(project_root: Path):
 
     if not settings_file.is_file():
         # No local settings, no need to check.
-        print(f"INFO: Skipping sync check, '{settings_file.name}' not found.")
+        print(f"INFO: 🤔 Skipping sync check, '{settings_file.name}' not found.")
+        print(f"INFO: 🤔 No local settings, no need to check.")
         return
 
     try:

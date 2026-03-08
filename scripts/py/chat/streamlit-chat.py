@@ -219,8 +219,7 @@ with st.sidebar:
 st.info('https://github.com/sl5net/SL5-aura-service/blob/master/docs/README/README-delang.md')
 st.info('https://pad.ccc-mannheim.de/p/kihelfer')
 
-st.markdown(r"""[![asciicast](https://asciinema.org/a/FpyPjWnfPpvY9AZ8.svg)](https://asciinema.org/a/FpyPjWnfPpvY9AZ8)""")
-
+st.markdown(r"""![Terminal Demo](demo_fast.gif)""")
 
 example_text = "Aura Was ist das Besondere an SL5 Aura"
 st.markdown(r"""### Beispiel-Eingaben:""")
