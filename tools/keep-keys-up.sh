@@ -44,20 +44,44 @@ case "$XDG_SESSION_TYPE" in
         ;;
 esac
 
+#!/usr/bin/env bash
+
 # --- Hilfsfunktion: Prüfe ob Tasten physisch gedrückt sind (nur X11) ---
 any_key_physically_pressed() {
-    # Wir prüfen ALLE Geräte, die 'key' im Namen haben
-    local ids
-    ids=$(xinput list --id-only | xargs)
-    for id in $ids; do
+    # Prüfe ob xinput verfügbar ist
+    if ! command -v xinput >/dev/null 2>&1; then
+        echo "Fehler: xinput nicht gefunden." >&2
+        return 2
+    fi
+
+    # Prüfe ob wir ein X-Display haben
+    if [ -z "${DISPLAY:-}" ]; then
+        echo "Fehler: DISPLAY nicht gesetzt. Vermutlich keine X11-Session." >&2
+        return 2
+    fi
+
+    # Hole IDs; handle leerer Ausgabe sicher
+    local ids id
+    # Verwende read loop statt xargs, damit bei leerer Ausgabe nichts passiert
+    ids="$(xinput list --id-only 2>/dev/null)"
+    if [ -z "$ids" ]; then
+        # Keine Geräte gefunden -> keine Taste gedrückt (oder kein X)
+        return 1
+    fi
+
+    while IFS= read -r id; do
+        # Skip empty lines (sicherheitsmaßnahme)
+        [ -z "$id" ] && continue
+
         # Falls das Gerät den Status nicht liefern kann, ignorieren wir Fehler
         if xinput query-state "$id" 2>/dev/null | grep -q "key\[.*\]=down"; then
             return 0 # Eine Taste ist IRGENDWO gedrückt
         fi
-    done
+    done <<<"$ids"
+
     return 1
 }
-
+t
 # --- Hauptschleife ---
 echo "keep-keys-up läuft (PID $$). Interval: ${SLEEP_BETWEEN_CHECKS}s"
 
