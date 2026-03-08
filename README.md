@@ -24,7 +24,7 @@ Note: Many texts are machine-generated translations of the original English docu
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/demo_fast.gif)
 
-### 🎥 Video Tutorial: How to crash SL5 Aura?
+### 🎥 Video Tutorial
 [![SL5 Aura (v0.16.1): HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *(Alternativer Link: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
