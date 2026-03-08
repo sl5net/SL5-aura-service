@@ -12,6 +12,11 @@ FUZZY_MAP_pre = [
     #TODO: Nur eine Aufgabe:
     #  Entferne das '#' vor der Regel unten.
     #  Was passiert? Warum stoppt die Pipeline danach?
+
+    # Hallo Testessenhi 01_koan_erste__schritte
+    #hi 01_koan_erste__schritte
+    #
+
     # ('hi 01_koan_erste__schritte', r'^.*$'),
 
 ]

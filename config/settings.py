@@ -15,6 +15,7 @@ current_user = user_name = USER_NAME = str(current_user) # fallbacks
 # e.g., the wrapper script enforcement.
 DEV_MODE = 1
 DEV_MODE_all_processing = 0
+DEV_MODE_show_window_title_stuff = 0
 
 # --- Input Settings ---
 # Default for X11 is 'xdotool'. Default for Wayland is 'dotool'.

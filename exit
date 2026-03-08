@@ -1,0 +1,11 @@
+{"version":3,"term":{"cols":77,"rows":12,"type":"xterm-256color","version":"Konsole 25.12.1","theme":{"fg":"#17a88b","bg":"#1e2229","palette":"#000000:#b21818:#18b218:#b26818:#1818b2:#b218b2:#18b2b2:#b2b2b2:#686868:#ff5454:#54ff54:#ffff54:#5454ff:#ff54ff:#54ffff:#ffffff"}},"timestamp":1772934635,"env":{"SHELL":"/bin/bash"}}
+[0.006, "o", "\u001b]0;seeh@ms7c37:~/projects/py/STT\u0007"]
+[0.000, "o", "\u001b[?2004h"]
+[0.000, "o", "\u001b[01;32m[seeh@ms7c37\u001b[01;37m STT\u001b[01;32m]$\u001b[00m "]
+[13.280, "o", "e"]
+[0.422, "o", "x"]
+[2.296, "o", "i"]
+[0.287, "o", "t"]
+[0.529, "o", "\r\n\u001b[?2004l\r"]
+[0.000, "o", "exit\r\n"]
+[0.001, "x", "0"]
