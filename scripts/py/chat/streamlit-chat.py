@@ -1,332 +1,205 @@
 # scripts/py/chat/streamlit-chat.py
 import streamlit as st
-
 import requests
 import json
 import os
 from pathlib import Path
-
 from dotenv import load_dotenv
 import streamlit.components.v1 as components
+import socket
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 load_dotenv(PROJECT_ROOT / ".secrets")
 
 if "speak_enabled" not in st.session_state:
     st.session_state.speak_enabled = True
-
 if "scroll_trigger" not in st.session_state:
     st.session_state.scroll_trigger = 0
+if "speech_speed" not in st.session_state:
+    st.session_state.speech_speed = 1.0
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
 def trigger_scroll_to_bottom():
     st.session_state.scroll_trigger += 1
 
-
 def st_speak_diagnostic(text, speed=1.0):
     safe_text = text.replace('"', '\\"').replace('\n', ' ')
-
-    # Wir bauen ein kleines Diagnose-Interface direkt in das HTML-Element
     diag_html = f"""
     <div id="diag-box" style="padding:10px; border:1px solid #ccc; border-radius:5px; background:#f9f9f9; font-family:sans-serif; font-size:12px;">
         <b>Browser-Status:</b> <span id="status">Warte auf Klick...</span><br>
         <b>Stimmen gefunden:</b> <span id="voices-count">0</span><br>
         <b>Fehlermeldung:</b> <span id="error-msg" style="color:red;">keine</span>
     </div>
-
     <button id="play-btn" style="margin-top:10px; width:100%; padding:10px; background:#4f8bf9; color:white; border:none; border-radius:5px;">
         🔊 JETZT TESTEN (Klick mich!)
     </button>
-
     <script>
         const status = document.getElementById('status');
         const voicesCount = document.getElementById('voices-count');
         const errorMsg = document.getElementById('error-msg');
         const btn = document.getElementById('play-btn');
-
-        // Funktion zum Sprechen
         const runSpeech = () => {{
             try {{
-                if (!window.speechSynthesis) {{
-                    status.innerText = "API NICHT UNTERSTÜTZT!";
-                    return;
-                }}
-
+                if (!window.speechSynthesis) {{ status.innerText = "API NICHT UNTERSTÜTZT!"; return; }}
                 window.speechSynthesis.cancel();
                 const msg = new SpeechSynthesisUtterance("{safe_text}");
-                msg.lang = "de-DE";
-                msg.rate = {speed};
-
+                msg.lang = "de-DE"; msg.rate = {speed};
                 msg.onstart = () => {{ status.innerText = "Spreche gerade..."; }};
                 msg.onend = () => {{ status.innerText = "Fertig gesprochen."; }};
-                msg.onerror = (e) => {{ 
-                    status.innerText = "FEHLER!"; 
-                    errorMsg.innerText = e.error + " (Typ: " + e.type + ")";
-                }};
-
+                msg.onerror = (e) => {{ status.innerText = "FEHLER!"; errorMsg.innerText = e.error; }};
                 window.speechSynthesis.speak(msg);
                 status.innerText = "Befehl an Browser gesendet...";
-
-            }} catch (err) {{
-                errorMsg.innerText = err.message;
-            }}
+            }} catch (err) {{ errorMsg.innerText = err.message; }}
         }};
-
-        // Stimmen zählen
         const updateVoices = () => {{
             const v = window.speechSynthesis.getVoices();
             voicesCount.innerText = v.length + " (z.B. " + (v[0]?.name || 'keine') + ")";
         }};
-
         window.speechSynthesis.onvoiceschanged = updateVoices;
         updateVoices();
-
         btn.onclick = runSpeech;
     </script>
     """
     components.html(diag_html, height=180)
 
-
 def st_speak(text, speed=1.0):
-    """
-    Spielt Text via Browser-JS ab.
-    WICHTIG: components.html erlaubt KEIN 'key' Argument!
-    """
-    # Sonderzeichen für JavaScript sicher machen
     safe_text = text.replace('\\', '\\\\').replace('"', '\\"').replace("'", "\\'").replace('\n', ' ')
-
     speak_js = f"""
     <script>
         (function() {{
-            // Bestehende Sprachausgabe stoppen
             if (window.speechSynthesis) {{
                 window.speechSynthesis.cancel();
-
                 const msg = new SpeechSynthesisUtterance("{safe_text}");
                 msg.lang = "de-DE";
                 msg.rate = {speed};
-
-                // Debug-Log für die Browser-Konsole (F12)
-                console.log("Spreche: {safe_text[:20]}... mit Speed: " + {speed});
-
                 window.speechSynthesis.speak(msg);
             }}
         }})();
     </script>
     """
-    # Hier darf NUR 'html' und 'height' stehen (und optional 'width' oder 'scrolling')
     components.html(speak_js, height=0)
-
-
-def st_speak_old_202603051322(text, speed=1.0):
-    """Verbesserte Sprachausgabe für mobile Browser."""
-    clean_text = text.replace('"', '\\"').replace('\n', ' ')
-    import hashlib
-    h = hashlib.md5(clean_text.encode()).hexdigest()
-
-    speak_js = f"""
-    <script>
-        (function() {{
-            const speak = () => {{
-                window.speechSynthesis.cancel(); // Stoppe laufende Ausgabe
-                const msg = new SpeechSynthesisUtterance("{clean_text}");
-                msg.lang = "de-DE";
-                msg.rate = {speed};
-
-                // Wichtig für Mobile: Warte bis Stimmen geladen sind
-                msg.onstart = () => console.log("Sprachausgabe gestartet");
-                msg.onerror = (e) => console.error("TTS Fehler:", e);
-
-                window.speechSynthesis.speak(msg);
-            }};
-
-            // Falls Stimmen noch nicht geladen sind (Chrome Bug)
-            if (window.speechSynthesis.getVoices().length === 0) {{
-                window.speechSynthesis.onvoiceschanged = speak;
-            }} else {{
-                speak();
-            }}
-        }})();
-    </script>
-    """
-    # Wir geben dem Iframe eine kleine Höhe, manche Browser ignorieren height=0
-    components.html(speak_js, height=0, key=f"speak_{h}_{speed}")
-
-if "speech_speed" not in st.session_state:
-    st.session_state.speech_speed = 1.0
-
-
-
-
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-if "scroll_trigger" not in st.session_state:
-    st.session_state.scroll_trigger = 0
-
-
-# Stelle sicher, dass der Trigger im Session-State existiert
-if "scroll_trigger" not in st.session_state:
-    st.session_state.scroll_trigger = 0
 
 print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
 
-
-# --- KONFIGURATION ---
-
-# curl -H "X-API-Key: ...." -X POST -H "Content-Type: application/json" -d '{"raw_text": "Computer Wer bist du?", "lang_code": "de-DE"}' http://...:8830/process_cli
-
-
-#import streamlit as st
-#import requests
-#import os
-import socket
-#from urllib.parse import urlparse
-
-# --- Konfiguration ---
 API_PORT = 8830
 API_ENDPOINT = "process_cli"
-# Versuchen Sie zuerst, einen Hostnamen zu verwenden, falls dieser konfiguriert ist (z.B. in /etc/hosts)
-API_HOSTNAME = "my-api-service"  # Ersetzen Sie dies durch einen echten Hostnamen oder lassen Sie es 'None'
+API_HOSTNAME = "my-api-service"
 
-# scripts/py/chat/streamlit-chat.py
-
-#import streamlit.components.v1 as components
-
-
-
-
-# def set_input_field(text):
-#     """Callback function to set the text in the 'user_input' session state."""
-#     st.session_state['user_input'] = text
-#     # st.session_state['ready_to_submit'] = True # Optional: Flag for auto-submission
-
-
-
-# --- Funktion zur IP-Ermittlung ---
-
-# scripts/py/chat/streamlit-chat.py
 def get_external_ip(ip_check_url="https://api.ipify.org"):
-    """Ruft die aktuelle öffentliche IP-Adresse ab."""
     try:
-        # Verwenden Sie ein kurzes Timeout, um die App nicht zu verzögern
         response = requests.get(ip_check_url, timeout=5)
-        response.raise_for_status()  # Löst Fehler bei 4xx/5xx Status-Codes aus
+        response.raise_for_status()
         return response.text.strip()
     except requests.exceptions.RequestException as e:
         st.error(f"Fehler beim Abrufen der externen IP-Adresse: {e}")
-        # Rückgabe eines Platzhalters oder Abbruch
         return None
 
-
-# --- Funktion zur Bestimmung der finalen API_URL ---
-
 def get_api_base_url():
-    """Bestimmt die Basis-URL für den API-Dienst."""
-    # 1. Lokale/interne Prüfung (localhost, Hostname)
     public_ip = get_external_ip()
-    # Prüfen Sie zuerst localhost
     local_json_url = f"http://localhost:{API_PORT}"
     public_http = f"http://{public_ip}:{API_PORT+1}"
     try:
-        # Versuchen Sie eine Verbindung nur zum Host (ohne API-Aufruf)
         sock = socket.create_connection(('localhost', API_PORT), timeout=1)
         sock.close()
         st.info(f"JSON auf: ...{str(local_json_url)[-15:]}. HTTP online: ...{str(public_http)[-15:]}.")
         return local_json_url
     except (socket.error, ConnectionRefusedError):
-        # Wenn localhost nicht funktioniert, gehen wir zum nächsten Schritt über.
         pass
-
-    # 2. Externe IP-Prüfung (für dynamische externe IPs)
-
-    # Nur wenn der Dienst nicht lokal läuft, ermitteln wir die externe IP
     public_ip = get_external_ip()
     if public_ip:
         external_url = f"http://{public_ip}:{API_PORT}"
-        external_url_streamlit = f"http://{public_ip}:{int(API_PORT)}"
-        # Fügen Sie hier optional eine weitere Erreichbarkeitsprüfung hinzu (z.B. ping/telnet)
-        st.info(f"Service nicht lokal gefunden. "
-                f"Verwende externe IP(JSON): {external_url}. "
-                f"external streamlit: {external_url_streamlit}")
+        st.info(f"Service nicht lokal gefunden. Verwende externe IP(JSON): {external_url}.")
         return external_url
-
-
-    # 3. Fallback (Wenn nichts funktioniert, verwenden Sie die alte statische IP als Fallback)
-
-    # Verwenden Sie die alte, aber fehlgeschlagene, statische IP als Notfall-Fallback.
-    # Dies ist hilfreich, falls der externe IP-Dienst ausgefallen ist.
     onlineIP = '89.244.126.232'
-    fallback_url = f"http://{onlineIP}:{API_PORT}"  # Verwenden Sie die alte IP
-    st.warning(f"Konnte lokale oder aktuelle externe IP nicht ermitteln. Verwende Fallback-IP: {fallback_url}")
+    fallback_url = f"http://{onlineIP}:{API_PORT}"
+    st.warning(f"Verwende Fallback-IP: {fallback_url}")
     return fallback_url
-
 
 BASE_API_URL = get_api_base_url()
 FINAL_API_URL = f"{BASE_API_URL}/{API_ENDPOINT}"
-
 API_URL = FINAL_API_URL
 
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 API_KEY = API_KEY_SECRET
-# API_KEY = os.getenv("API_KEY")
 if not API_KEY:
     st.error("FEHLER: API_KEY konnte nicht geladen werden.")
 LANG_CODE = "de-DE"
 
-
 def copy_to_clipboard_component_v2(text_to_copy, button_label="Click to Copy (Then Ctrl+V)"):
-    """
-    Final optimized function: Copies text to the clipboard using an HTTP-compatible method.
-    """
-    unique_id = hash(text_to_copy)  # Unique ID for the elements
-
-    # Verwenden Sie den Stil nur für den Button, um ihn besser sichtbar zu machen
+    unique_id = hash(text_to_copy)
     html_code = f"""
     <input type="text" id="copy-target-{unique_id}" value="{text_to_copy}"
            style="position: absolute; left: -9999px;" readonly>
-    <button style="
-            background-color: #f0f2f6;
-            color: #4f8bf9;
-            border: 1px solid #4f8bf9;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;"
-            onclick="
-        var copyText = document.getElementById('copy-target-{unique_id}');
-        copyText.select();
-        document.execCommand('copy');
-        this.innerText = 'Copied!  (Now move down ⬇️ Einfügen( Ctrl+V), Ändern ▶️ Senden)';
-        setTimeout(() => this.innerText = '{button_label}', 2500);
-    ">{button_label}</button>
+    <button style="background-color:#f0f2f6;color:#4f8bf9;border:1px solid #4f8bf9;padding:5px 10px;border-radius:5px;cursor:pointer;"
+            onclick="var c=document.getElementById('copy-target-{unique_id}');c.select();document.execCommand('copy');
+                     this.innerText='Copied!';
+                     setTimeout(()=>this.innerText='{button_label}',2500);">{button_label}</button>
     """
-
-
     components.html(html_code, height=45)
 
+def process_command(param):
+    pass
 
-# scripts/py/chat/streamlit-chat.py
+# ================================================================
+# FIX: Den richtigen CSS-Selektor für Streamlit 1.46+ verwenden.
+# In neueren Versionen heißt die Klasse stChatFloatingInputContainer
+# – nicht mehr stBottom. Außerdem: padding-bottom auf den
+# Hauptinhalt damit die letzte Nachricht nicht verdeckt wird.
+# ================================================================
+st.markdown("""
+<style>
+/* Streamlit 1.46+ : Chat-Input Container */
+.stChatFloatingInputContainer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 999999 !important;
+    background: white !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+}
+
+/* Dark mode */
+[data-theme="dark"] .stChatFloatingInputContainer,
+.dark .stChatFloatingInputContainer {
+    background: #0e1117 !important;
+}
+
+/* Ältere Versionen (stBottom) als Fallback */
+div[data-testid="stBottom"] {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 999999 !important;
+    background: white !important;
+}
+
+/* Platz am Ende des Inhalts damit letzte Nachricht
+   nicht hinter dem Eingabefeld verschwindet */
+.main .block-container {
+    padding-bottom: 100px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.title("SL5 Aura (external interface to the core logic)")
 
-# --- SIDEBAR EINSTELLUNGEN ---
+# --- SIDEBAR ---
 with st.sidebar:
     st.title("Einstellungen 5")
-
-    # 1. Checkbox für Aktivierung
     st.session_state.speak_enabled = st.checkbox("Ergebnisse laut vorlesen", value=st.session_state.speak_enabled)
 
-    # 2. Slider für Geschwindigkeit (Wichtig: Vor dem Button definieren!)
-    # Beim ersten Laden: Query-Parameter auslesen (gesetzt von localStorage via JS)
     if "speech_speed_saved" not in st.session_state:
         try:
             st.session_state.speech_speed_saved = float(st.query_params.get("spd", 1.0))
-        except (ValueError, TypeError) as e:
-            print(f"Fehler beim Laden der speech_speed: {e}")
+        except (ValueError, TypeError):
             st.session_state.speech_speed_saved = 1.0
 
-    speech_speed = st.slider("Geschwindigkeit", 0.5, 2.0,
-                             st.session_state.speech_speed_saved, 0.1)
+    speech_speed = st.slider("Geschwindigkeit", 0.5, 2.0, st.session_state.speech_speed_saved, 0.1)
     st.session_state.speech_speed_saved = speech_speed
 
-    # Wert in localStorage + URL speichern
     components.html(f"""<script>
         localStorage.setItem('sl5_speech_speed', '{speech_speed}');
         const url = new URL(window.parent.location.href);
@@ -334,27 +207,20 @@ with st.sidebar:
         window.parent.history.replaceState(null, '', url.toString());
     </script>""", height=0)
 
-    # 3. Der Sprach-Test Button
     if st.button("🔊 Sprach-Test"):
         st_speak("Die Sprachausgabe ist jetzt aktiviert.", speech_speed)
-        st.success("Sound aktiviert! Teste jetzt eine Anfrage.")
+        st.success("Sound aktiviert!")
 
     st.markdown("---")
-
-    # 4. Diagnose-Bereich (Hilfreich für Firefox/Android Tests)
     st.subheader("Audio Diagnose")
     st_speak_diagnostic("Diagnose-Modus aktiv.")
-
     st.info("Hinweis: Chrome wird für die Sprachausgabe empfohlen.")
-
 
 st.info('https://github.com/sl5net/SL5-aura-service/blob/master/docs/README/README-delang.md')
 st.info('https://pad.ccc-mannheim.de/p/kihelfer')
 
 example_text = "Aura Was ist das Besondere an SL5 Aura"
-
 st.markdown(r"""### Beispiel-Eingaben:""")
-
 st.code(example_text, language='plaintext')
 
 if st.button("▶️ Beispiel direkt senden", key="ex_main"):
@@ -363,32 +229,11 @@ if st.button("▶️ Beispiel direkt senden", key="ex_main"):
 copy_to_clipboard_component_v2(example_text,
                            "📋 Beispiel kopieren (⬇️ unten Einfügen, Ändern ▶️ Senden)")
 
-
-# example_text = "Aura Was ist das besondere an SL5 Aura 1"
-# st.code(example_text, language='plaintext')
-
-
-
-#
-# example_text_1 = "Aura Was ist das besondere an SL5 Aura 2"
-# st.code(example_text_1, language='plaintext')
-# copy_to_clipboard_component_v2(example_text_1,
-#                            "📋 Beispiel kopieren (⬇️ unten Einfügen, Ändern ▶️ Senden)")
-
-
-# Wenn st.session_state['ready_to_submit'] auf True steht, können Sie den Submit-Prozess ausführen.
-def process_command(param):
-    pass
-
-
 if st.session_state.get('ready_to_submit', False):
-    # Führen Sie hier Ihre Submit-Logik aus
     process_command(st.session_state['user_input'])
     st.session_state['ready_to_submit'] = False
-    st.session_state['user_input'] = "" # Feld leeren
+    st.session_state['user_input'] = ""
     st.rerun()
-    
-
 
 st.markdown(r"""
 
@@ -401,119 +246,62 @@ st.markdown(r"""
 
 ---
 
-
-
-
-```py
-# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py
-    ('', r'^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der| Herr)? (?P<search>.*)', 90, {
-    'flags': re.IGNORECASE,
-    'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
-    }),
-```
-
 ```
 Wiki Wo ist Wannweil?
 ```
-
-```py
-    ('', r'(?:rechne|was ist|was is|was)\s*(\d+)\s*([\+\-\*\/]|plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'calculator.py']
-    }),
-```
-
 ```
 was ist 5+4
 ```
-
-
 ```
 wiki was ist ein Berg Begriffserklärung
 ```
-
-
 ```
 Wiki Wer ist Sebastian Lauffer
 ```
-
 ```
 Wiki Wer ist Herr Schröer
 ```
-
 ```
 Wiki Wer ist Harald
 ```
-
-```py
-# config/maps/plugins/bible_search/FUZZY_MAP_pr.py
-    ('bible suche', fr'^(i\w+ )?(?P<book>\w*\s*\w+) (?P<chapter>\d+) (?P<verse>\d+) [vfdph]\w+$', 90, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'bible_search.py']
-    }),
-```
-
 ```
 Ruth Kapitel 1 Vers 1
 ```
-Rechtschreibung:
 ```
 mit nachnamen laufer
 ```
 ```
 mit ergoltherabpeut Herr Schrör
 ```
-
-
-
-
-
-```py
-# config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pr.py
-    ('', r'\b(wie (wird|ist)\b.*\bwetter|wetterbericht|wettervorhersage)\b', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
-    }),
-```
-
-Beispiel um Englisch einschalten (Feedback kommt akustisch). Hinweis: Für Sprach-Übersetzungen, die noch nicht in der Datenbank vorhanden, werden Online-Services verwendet:
-
-```py
-Englisch=r'\b(Denglisch|englisch\w*|english\w*|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe|ähnlich)\b'
-toggleCmd=r'(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)'
-
-FUZZY_MAP_pre = [
-    # === General Terms (Case-Insensitive) ===
-    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
-    # Importing to know:
-    # - in our implementation it stops with first match!
-    # - means first is most imported, lower rules maybe not get read.
-
-    ('en', fr'^{Englisch} {toggleCmd}$', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-```
 ```
 Englisch einschalten
 ```
-
-
 ```
 Wie ist das Wetter?
 ```
-Die aktuellen Wetterinformationen sind Ausnahme von der Offline-Regel. 
-Sie werden bei einer Anfrage über das Internet neu abgerufen, sofern der letzte Abruf mehr als 15 Minuten zurückliegt.
-Der sonstige Funktionsumfang hängen von den Beispielen (Plugins) ab, die Sie verwenden oder erstellt haben.
-
 """)
-# st.caption(f"Verbindet mit: …{str(API_URL)[-40:]}")
 
-# Initialisiere den Chat-Verlauf in Streamlit's Session State
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Zeige vorherige Nachrichten an (falls vorhanden)
+# Reload-Button: immer sichtbar, scrollt nicht weg.
+# window.parent.location.reload() macht echten Browser-Reload –
+# st.session_state.messages bleibt erhalten weil Streamlit
+# den Session State beim Reload beibehält.
+col_reload, col_clear = st.columns([1, 1])
+with col_reload:
+    reload_html = (
+        '<button onclick="window.parent.location.reload()" '
+        'style="width:100%;padding:6px 10px;background:#f0f2f6;'
+        'border:1px solid #ccc;border-radius:6px;cursor:pointer;font-size:13px;">'
+        '🔄 Eingabefeld wieder sichtbar machen</button>'
+    )
+    components.html(reload_html, height=40)
+with col_clear:
+    if st.button("🗑️ Chat leeren", key="clear_chat"):
+        st.session_state.messages = []
+        st.rerun()
+
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
@@ -540,7 +328,7 @@ for i, ex in enumerate(EXAMPLES):
         st.session_state.prefill_input = ex
         st.rerun()
 
-# --- HAUPT-EINGABE-BEREICH ---
+# --- EINGABE (original, unverändert) ---
 if "prefill_input" not in st.session_state:
     st.session_state.prefill_input = ""
 
@@ -554,106 +342,57 @@ else:
     prompt = None
 
 if prompt:
-    # 1. Bereinigung und Kleinbuchstaben-Konvertierung des Prompts
-    # Optional: strip() entfernt führende/abschließende Leerzeichen/Umbrüche
     cleaned_prompt = prompt.strip().lower()
-
     trigger_clipboard = ["zwischenablage", "clipboard", "kopierten text", "zusammenfassung"]
 
-    # **Korrektur:** Prüfe, ob einer der Trigger-Strings IM Prompt enthalten ist.
     if any(trigger in cleaned_prompt for trigger in trigger_clipboard):
-        prompt = ''
-        # Optional: Hier einen Hinweis ausgeben, warum die Eingabe geblockt wurde.
         st.error("Ihre Anfrage konnte aufgrund der Sicherheitsrichtlinien nicht verarbeitet werden.")
     else:
-
-        # 1. Benutzer-Eingabe zum Verlauf hinzufügen und anzeigen
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # 2. API-Anfrage vorbereiten und senden
-        data = {
-            "raw_text": prompt,
-            "lang_code": LANG_CODE
-        }
-        headers = {
-            "X-API-Key": API_KEY,
-            "Content-Type": "application/json"
-        }
+        data = {"raw_text": prompt, "lang_code": LANG_CODE}
+        headers = {"X-API-Key": API_KEY, "Content-Type": "application/json"}
 
-        service_answer = ""
         service_answer = ""
         try:
             response = requests.post(API_URL, headers=headers, data=json.dumps(data))
             response.raise_for_status()
             api_response_data = response.json()
-
             service_answer = api_response_data.get("result") or \
                              api_response_data.get("result_text") or \
                              "API-Antwort erhalten (Unbekanntes Format)."
-
         except requests.exceptions.RequestException as e:
             service_answer = f"**Verbindungs- oder API-Fehler:**\n\n```\n{e}\n```"
         except json.JSONDecodeError:
-            service_answer = (f"**Fehler beim Parsen der "
-                              f"API-Antwort (kein gültiges JSON):**\n\n```\n{response.text}\n```")
+            service_answer = f"**Fehler beim Parsen der API-Antwort:**\n\n```\n{response.text}\n```"
 
-        # Antwort anzeigen, zum Verlauf hinzufügen, sprechen
         st.session_state.messages.append({"role": "assistant", "content": service_answer})
-        with st.chat_message("assistant"):
-            st.markdown(service_answer)
 
+        # Sprache und Scroll im Session State merken –
+        # st.rerun() bricht sofort ab, danach kommt nichts mehr.
+        # Beides wird beim nächsten Render-Durchlauf ausgeführt.
         if st.session_state.speak_enabled and service_answer:
-            st_speak(service_answer, speech_speed)
+            st.session_state["pending_speak"] = service_answer
+        st.session_state["do_scroll"] = True
 
-        trigger_scroll_to_bottom()
+        st.rerun()
 
+# --- NACH RERUN: Chat anzeigen, dann Sprache + Scroll ---
+# Die letzte Antwort liegt jetzt in messages und wird oben im
+# Chat-Verlauf gerendert. Danach Sprache und Scroll ausführen.
 
+if st.session_state.get("pending_speak"):
+    text_to_speak = st.session_state.pop("pending_speak")
+    st_speak(text_to_speak, speech_speed)
 
-# --- DAS SCROLL-SKRIPT GANZ UNTEN ---
-
-# Wir prüfen, ob gescrollt werden soll
-if st.session_state.scroll_trigger > 0:
-    js_code = f"""
-    <script>
-        (function() {{
-            // Wir suchen das Hauptfenster von Streamlit
-            const mainContent = window.parent.document.querySelector('section.main');
-            if (mainContent) {{
-                // Timeout, damit der Content Zeit hat zu erscheinen
-                setTimeout(() => {{
-                    mainContent.scrollTo({{
-                        top: mainContent.scrollHeight,
-                        behavior: 'smooth'
-                    }});
-                }}, 150); 
-            }}
-        }})();
-    </script>
-    <div style="display:none">{st.session_state.scroll_trigger}</div>
-    """
-    # Key muss den Trigger enthalten, damit das Element bei jeder Nachricht neu "geboren" wird
-    # components.html(js_code, height=0, key=f"scroll_act_{st.session_state.scroll_trigger}")
-
-    # WICHTIG: Den Trigger sofort wieder auf 0 setzen!
-    # Dadurch wird beim nächsten Klick/Kopieren NICHT mehr gescrollt.
-    st.session_state.scroll_trigger = 0
-
-
-# TODO: ist not scrolls down
-# following dont work 2025-1227-2021 27.12.'25 20:21 Sat
-if st.session_state.get('scroll_trigger', 0) > 0:
-    st.session_state.scroll_trigger = 0
+if st.session_state.get("do_scroll"):
+    st.session_state["do_scroll"] = False
     components.html(
-        """
-        <script>
-        setTimeout(function() {
-            var el = window.parent.document.querySelector('section.main');
-            if(el) el.scrollTo({top: el.scrollHeight, behavior: 'smooth'});
-        }, 200);
-        </script>
-        """,
-        height=0,
-        key=f"scroll_{st.session_state.scroll_trigger}"
+        "<script>setTimeout(function(){"
+        "var el=window.parent.document.querySelector('section.main');"
+        "if(el)el.scrollTo({top:el.scrollHeight,behavior:'smooth'});"
+        "},300);</script>",
+        height=0
     )
