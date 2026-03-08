@@ -96,11 +96,13 @@ def start_uvicorn_service(host, port, module_path):
 
             # RUN_MODE="API_SERVICE"
 
-            readme = """ # noqa: F841
+            readme = "" # noqa: F841
+            readme = """
             In modules use import os and os.getenv('RUN_MODE') where needed.
             Move any import-time side effects into startup handlers or under if RUN_MODE == ... guards.
             """
-
+            readme = " "
+            print(readme)
 
             return process
 

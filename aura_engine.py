@@ -156,8 +156,6 @@ from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 
 
 
-# from  scripts.py.func.checks.self_tester import run_core_logic_self_test
-
 
 
 
@@ -1125,7 +1123,7 @@ else:
     jar_path_absolute = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
     internal_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}"
 
-    logger.info(f"start_languagetool_server(.. {str(jar_path_absolute)[-30:0]}, {internal_lt_url})")
+    logger.info(f"start_languagetool_server(logger, …{str(jar_path_absolute)[-30:0]}, {internal_lt_url})")
 
     # aura_engine.py:751
     languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url)

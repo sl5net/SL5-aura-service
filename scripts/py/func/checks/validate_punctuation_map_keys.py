@@ -11,9 +11,9 @@ def validate_punctuation_map_keys(project_root,logger):
     This check only runs in DEV_MODE to help developers avoid common errors.
     """
     logger.info("DEV_MODE: Running punctuation map key validation...")
-    maps_path = os.path.join(project_root, 'config', 'languagetool_server', 'maps')
+    maps_path = os.path.join(project_root, 'config', 'maps')
     if not os.path.isdir(maps_path):
-        logger.info(f"  -> Info: Maps directory not found at '{maps_path}', skipping check.")
+        logger.info(f"x -> Maps directory not found at …{str(maps_path)[-40:]}, skipping check.")
         return
 
     # Add project root to path for dynamic imports

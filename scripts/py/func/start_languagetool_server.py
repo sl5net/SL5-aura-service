@@ -143,7 +143,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
                                                 text=True,
                                                 encoding='utf-8', shell=False)
     except Exception as e:
-        logger.fatal(f"Failed to start LanguageTool Server process with shell=True: {e}")
+        logger.fatal(f"x Failed to start LanguageTool Server process with shell=True: {e}")
         return False
 
     # stdout=subprocess.PIPE,

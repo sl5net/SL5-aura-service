@@ -1603,10 +1603,11 @@ def process_text_in_background(logger,
             # KORREKTUR 2: Logge den Text, der WIRKLICH geschrieben wurde
 
             # process_text_in_background.py:1453 (process_text_in_background)
+            # …{str(unique_output_file)[-30:]}
             if privacy_taint_occurred:
-                logger.info(f"✅ 💾 THREAD: Successfully wrote to {unique_output_file} '***'")
+                logger.info(f"✅ 💾 THREAD: Successfully wrote to  …{str(unique_output_file)[-30:]} '***'")
             else:
-                logger.info(f"✅ 💾 THREAD: Successfully wrote to {unique_output_file} '{new_current_text}'")
+                logger.info(f"✅ 💾 THREAD: Successfully wrote to …{str(unique_output_file)[-30:]} '{new_current_text}'")
 
 
 

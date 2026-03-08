@@ -81,7 +81,7 @@ any_key_physically_pressed() {
 
     return 1
 }
-t
+
 # --- Hauptschleife ---
 echo "keep-keys-up läuft (PID $$). Interval: ${SLEEP_BETWEEN_CHECKS}s"
 

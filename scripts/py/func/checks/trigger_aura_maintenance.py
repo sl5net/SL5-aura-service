@@ -58,7 +58,7 @@ def _execute_maintenance_tasks(logger):
                 pass
 
         # 2. RADIO-AURA CACHE GENERIERUNG
-        logger.info(f"Maintenance: Checking Path: {radio_script}")
+        logger.info(f"Maintenance: Checking Path: …{str(radio_script)[-40:]}")
 
         if radio_script.exists():
             # Wir nutzen subprocess, um die venv-Umgebung und das if-main-Handling sauber zu trennen
@@ -135,7 +135,7 @@ def _execute_maintenance_tasks(logger):
                 # speak_fallback(msg, 'de-DE')
             else:
                 msg = 'Smoke Test Timeout '
-                logger.warning(f"Auto-Zip: ❌ {msg} für {root}")
+                logger.warning(f"Auto-Zip: ⌛ {msg} für {root}")
                 msg = f"Auto-Zip {msg} in {folder_nickname}"
 
                 # speak_fallback(msg, 'de-DE')

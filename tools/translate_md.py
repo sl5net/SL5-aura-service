@@ -70,7 +70,7 @@ def test_translation_links():
 
     for original, description in test_cases:
         modified = add_lang_to_md_links(original, test_lang)
-        print(f"{original:<40} | {modified:<40}")
+        print(f"…{str(original)[-40:]} | …{str(modified)[-40:]} | …{str(description)[-40:]}")
 
 
 
@@ -150,7 +150,7 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
 
 def process_file(filename):
     """Verarbeitet eine einzelne Markdown-Datei."""
-    print(f"Bearbeite Datei: '{filename}'")
+    print(f"Bearbeite Datei:  '…{str(filename)[-40:]}' ")
 
     with open(filename, 'r', encoding='utf-8') as f:
         original_lines = [line.rstrip('\n') for line in f.readlines()]
@@ -225,7 +225,7 @@ def process_file(filename):
 
 
         if os.path.exists(output_file):
-            print(f"   -> Überspringe '{output_file}' (existiert bereits).")
+            print(f"   -> Überspringe '…{str(output_file)[-40:]}' (existiert bereits).")
             continue
 
         print(f"   -> Übersetze nach '{lang}' -> '{output_file}'...")
@@ -348,12 +348,12 @@ def main():
                         for lang in TARGET_LANGS
                     )
                     if already_done:
-                        print(f"   -> Überspringe '{filename}' (alle Übersetzungen bereits vorhanden).")
+                        print(f"   -> Überspringe  '…{str(filename)[-40:]}' (alle Übersetzungen bereits vorhanden).")
                         continue
                     process_file(filename)
 
 
-            print(f"process_file({filename})")
+            print(f"process_file(…{str(filename)[-40:]})")
             process_file(filename)
             print("")
     print("----------------------------------------------------")

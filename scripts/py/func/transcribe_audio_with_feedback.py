@@ -325,7 +325,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
 
     device_id = get_device_id(device_name,logger)
-    logger.info(f"py/func/transcribe_audio_with_feedback.py:224 Using 🖥️ device name: {device_name} --> device_id: {device_id}")
+    # logger.info(f"…/py/func/transcribe_audio_with_feedback.py:224 Using 🖥️ device name: {device_name} --> device_id: {device_id}")
 
     # 1.2.'26 11:53 Sun: erhöhe den blocksize Parameter auf z.B. 16000 oder 24000
     # 1.2.'26 11:53 Sun: was 4800 > 10600
