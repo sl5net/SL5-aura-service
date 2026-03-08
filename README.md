@@ -20,10 +20,14 @@ Translations: This document also exists in [other languages](https://github.com/
 
 Note: Many texts are machine-generated translations of the original English documentation and are intended for general guidance only. In case of discrepancies or ambiguities, the English version always prevails. We welcome help from the community to improve this translation!
 
+### 📺 Terminal Demo (Asciinema)
 ![Terminal Demo](demo_fast.gif)
 
-[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
-( https://www.youtube.com/watch?v=BZCHonTqwUw or https://skipvids.com/?v=BZCHonTqwUw )
+### 🎥 Video Tutorial: How to crash SL5 Aura?
+[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+
+*(Alternativer Link: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+
 
 ## Key Features
 
