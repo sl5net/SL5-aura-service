@@ -53,6 +53,8 @@ echo "Using: $INPUT_METHOD"
 
 if [[ "$INPUT_METHOD" == "dotool" ]]; then
 
+  LANG_CODE=''
+
     # 1. Modellnamen lesen
     MODEL_PATH="config/model_name.txt"
     if [[ -f "$MODEL_PATH" ]]; then
