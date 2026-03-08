@@ -22,6 +22,8 @@ Note: Many texts are machine-generated translations of the original English docu
 
 ### 📺 Terminal Demo (Asciinema)
 
+[![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/demo_fast.gif)
+
 [![Terminal Demo]([https://github.com/sl5net/SL5-aura-service/raw/master/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/demo_fast.gif](https://github.com/sl5net/SL5-aura-service/blob/master/demo_fast.gif)
 
 
