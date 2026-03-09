@@ -41,10 +41,6 @@ import platform
 from scripts.py.func.config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
 
-# global last_signature_time
-
-# active_window_title = None
-global _active_window_title
 
 from .normalize_punctuation import normalize_punctuation
 from .map_reloader import auto_reload_modified_maps
@@ -55,6 +51,11 @@ from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_
 
 from .setup_initial_model import get_model_name_from_key
 
+
+# global last_signature_time
+
+# active_window_title = None
+global _active_window_title
 
 
 
