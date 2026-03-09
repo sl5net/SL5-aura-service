@@ -201,7 +201,8 @@ def handle_trigger(
             target_model_name = (project_root / "config/model_name.txt").read_text().strip()
             logger.info("----> Target model name: %s", target_model_name)
 
-            if not target_model_name: raise FileNotFoundError
+            if not target_model_name:
+                raise FileNotFoundError
 
             # Find the requested model among loaded ones
             for key, model_dict in loaded_models.items():
