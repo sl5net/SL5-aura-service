@@ -788,7 +788,8 @@ def execute(match_data):
 
             if cached_resp:
                 utils.log_debug(f"cached_resp: {cached_resp}")
-                if use_history: save_to_history(user_input_raw, cached_resp)
+                if use_history:
+                    save_to_history(user_input_raw, cached_resp)
 
                 utils.SUM_PER_CACHE = utils.SESSION_CACHE_HITS / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
                 sum_per_cache_str = f"{utils.SUM_PER_CACHE:.1f} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"

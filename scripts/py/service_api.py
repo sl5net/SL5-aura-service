@@ -9,12 +9,15 @@ from pathlib import Path
 from fastapi import FastAPI, Depends, Header, HTTPException, Request
 from fastapi.responses import JSONResponse
 from datetime import datetime
-def timestamp(): return datetime.now().strftime("%Y%m%d_%H%M%S")
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
 # Import der Kernfunktion
 from scripts.py.func.process_text_in_background import process_text_in_background
+
+
+def timestamp():
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 # --- 1. Setup & Konfiguration ---
