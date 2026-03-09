@@ -56,7 +56,7 @@ any_key_physically_pressed() {
 
     # Prüfe ob wir ein X-Display haben
     if [ -z "${DISPLAY:-}" ]; then
-        echo "Fehler: DISPLAY nicht gesetzt. Vermutlich keine X11-Session." >&2
+        # echo "Fehler: DISPLAY nicht gesetzt. Vermutlich keine X11-Session." >&2
         return 2
     fi
 

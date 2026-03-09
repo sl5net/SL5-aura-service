@@ -42,7 +42,16 @@ else
     if [[ -r "$path" ]]; then OVERRIDE=$(<"$path"); else OVERRIDE="ERROR_2026-0301-0913"; fi
 
     echo "DEBUG OVERRIDE: '$OVERRIDE'"
-    [[ "$OVERRIDE" == "dotool" ]] && INPUT_METHOD="dotool"
+    # [[ "$OVERRIDE" == "dotool" ]] && INPUT_METHOD="dotool"
+
+    if [[ "$OVERRIDE" == "dotool" ]]; then
+      if command -v dotool >/dev/null 2>&1; then
+          INPUT_METHOD="dotool"
+      else
+          echo "WARNING: dotool not found, falling back to xdotool"
+          INPUT_METHOD="xdotool"
+      fi
+    fi
 
     echo "🖥️  Display server: X11 detected. Using $INPUT_METHOD for text input."
 fi
@@ -200,8 +209,11 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
     log_message "Watcher starting. Watching $DIR_TO_WATCH in Linux/$DISPLAY_SERVER mode."
 
     while true; do
-        inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
-        sleep 0.1
+         inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
+
+#        FILE=$(inotifywait -q -e close_write "$DIR_TO_WATCH" --format '%w%f')
+#        [[ "$FILE" == *tts_output_* ]] || continue
+#        sleep 0.015 # if you have maybe problems with the grep may use this
 
         while IFS= read -r -d '' f; do
             [ -f "$f" ] || continue

@@ -847,7 +847,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                                 # Hole die Sprache aus dem Dictionary, mit einem Fallback auf die Standardsprache
                                 lang_for_tts = script_result.get("lang", "de-DE")
 
-                                handle_tts_fallback(new_current_text, lang_for_tts, logger)
+                                if not privacy_taint_occurred:
+                                    handle_tts_fallback(new_current_text, lang_for_tts, logger)
                                 logger.info(f"289: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
 
                             # WICHTIG: Dein Code beendet die Funktion hier nach dem ERSTEN Skript.
@@ -1596,8 +1597,9 @@ def process_text_in_background(logger,
             unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
 
             # KORREKTUR 1: Verwende die NEUEN Variablen für den Fallback
-            handle_tts_fallback(new_current_text, lang_for_tts, logger)
             if not privacy_taint_occurred:
+                handle_tts_fallback(new_current_text, lang_for_tts, logger)
+
                 log4DEV(f"handle_tts_fallback({new_current_text}, {lang_for_tts})",logger)
 
             # KORREKTUR 2: Logge den Text, der WIRKLICH geschrieben wurde
@@ -1815,6 +1817,11 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             # scripts/py/func/process_text_in_background.py -> apply_all_rules_until_stable :1471
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
 
+
+
+            rule_is_private = options_dict.get('is_private', False)
+
+
             if regex_pattern in [r'.+', r'.*', r'^.+$', r'^.*$']:
                 source_modname = options_dict.get('source_modname', '')
                 m = (f"🚨 WARNING: Dangerous Catch-all '{regex_pattern}' found in {source_modname}"
@@ -1830,7 +1837,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             # 1. Check Metadata from Injection (Primary Source)
             # scripts/py/func/process_text_in_background.py:1676 (apply_all_rules_until_stable)
-            rule_is_private = options_dict.get('is_private', False)
 
             # 2. Safety Fallback: Check Source Path if metadata is missing/False
             # (Only needed if rule_is_private is False)
@@ -2055,7 +2061,12 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                                         # Hole die Sprache aus dem Dictionary, mit einem Fallback auf die Standardsprache
                                         lang_for_tts = script_result.get("lang", "de-DE")
 
-                                        handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
+
+                                        if not privacy_taint_occurred:
+
+                                            handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
+
+
                                         logger_instance.info(f"1026: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger_instance)")
 
 
