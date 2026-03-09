@@ -86,4 +86,5 @@ def manage_audio_routing(mode, logger=None):
                     ["pactl", "load-module", "module-loopback", f"source={desktop_source}", f"sink={sink_name}"],
                     check=True)
     except Exception as e:
-        if logger: logger.error(f"Failed to manage audio routing on Linux: {e} | sink={sink_name}")
+        if logger:
+            logger.error(f"Failed to manage audio routing on Linux: {e} | sink={sink_name}")
