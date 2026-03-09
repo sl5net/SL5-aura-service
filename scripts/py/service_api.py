@@ -13,6 +13,10 @@ def timestamp(): return datetime.now().strftime("%Y%m%d_%H%M%S")
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
+# Import der Kernfunktion
+from scripts.py.func.process_text_in_background import process_text_in_background
+
+
 # --- 1. Setup & Konfiguration ---
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -38,8 +42,6 @@ app_logger.setLevel(logging.INFO)
 # Beispiel-URL für LanguageTool
 LT_URL = "http://localhost:8081/v2/check"
 
-# Import der Kernfunktion
-from scripts.py.func.process_text_in_background import process_text_in_background
 
 
 # --- 2. FastAPI Setup ---
