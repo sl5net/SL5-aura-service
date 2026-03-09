@@ -9,6 +9,13 @@ from pathlib import Path
 import subprocess
 import sys
 
+
+import platform
+
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+self_test_running = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+
+
 # scripts/py/func/checks/trigger_aura_maintenance.py:12
 REPO_ROOT = Path(__file__).resolve().parents[4]
 TEST_ROOTS = [
@@ -43,6 +50,12 @@ def trigger_aura_maintenance(logger):
 
 def _execute_maintenance_tasks(logger):
     from scripts.py.func.audio_manager import speak_inclusive_fallback
+
+    # Wait if self-test is running
+    if self_test_running.exists():
+        logger.info("Maintenance: Self-test is running, skipping maintenance tasks...")
+        return
+
     logger.info("!!! Maintenance Task Started !!!")
 
     """Zentraler Manager für Hintergrund-Aufgaben."""

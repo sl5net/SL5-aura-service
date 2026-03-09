@@ -20,8 +20,8 @@ if "speech_speed" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-def trigger_scroll_to_bottom():
-    st.session_state.scroll_trigger += 1
+# def trigger_scroll_to_bottom():
+#     st.session_state.scroll_trigger += 1
 
 def st_speak_diagnostic(text, speed=1.0):
     safe_text = text.replace('"', '\\"').replace('\n', ' ')

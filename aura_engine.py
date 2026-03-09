@@ -87,11 +87,11 @@ from scripts.py.func.checks.check_path_length import run_path_check
 from scripts.py.func.checks.espeak_check import espeak_check
 espeak_check(settings)
 
-
 from scripts.py.func.checks.check_settings_syntax import verify_plugin_notation
 verify_plugin_notation(settings.PLUGINS_ENABLED)
 
-
+if getattr(settings, 'KILL_EXTERNAL_LT_ON_START', False):
+    os.system("pkill -f '/app/LanguageTool/languagetool-server.jar'")
 
 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     # Check if the package is installed without actually importing it
@@ -641,8 +641,8 @@ else:
     # aura_log.unlink(missing_ok=True) ## seems problematic
 
 
-# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
-DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
+DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
+# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
 
 readme = """
 vosk-model-small-de-0.15
@@ -1192,6 +1192,7 @@ if settings.DEV_MODE :
         # logger.info(f"Auto-Zip: {core_logic_self_test_is_running_FILE} created near aura_engine.py:1183 -> run_core_logic_self_test() starts now") # its often more relevant to this Auto-Zip
         # time.sleep(0.05)
 
+        # aura_engine.py:1195
         self_test_start_time = time.time()
         log4DEV(f"Start run_core_logic_self_test( .. {lang_code}", logger)
 

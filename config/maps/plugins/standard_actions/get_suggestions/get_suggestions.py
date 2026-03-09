@@ -1,17 +1,25 @@
 # config/maps/plugins/standard_actions/get_suggestions/get_suggestions.py
 #!/usr/bin/env python3
 # file get_suggestions.py
+# Oben NUR standard imports:
 import sys
-import pyperclip
-import requests
-import subprocess
 import logging
-# import os
-import argparse
-import json
 import time
 from pathlib import Path
 from typing import Dict, Set, List
+
+# Lazy load - nur wenn wirklich gebraucht:
+def _load_heavy_deps():
+    global nltk, wordnet, cologne_encode, jellyfish, pyperclip, requests, subprocess, argparse, json
+    import nltk
+    from nltk.corpus import wordnet
+    from cologne_phonetics import encode as cologne_encode
+    import jellyfish
+    import pyperclip
+    import requests
+    import subprocess
+    import argparse
+    import json
 
 # --- Dependency Imports ---
 try:
@@ -227,6 +235,7 @@ def main():
         if LOCK_FILE.exists(): LOCK_FILE.unlink()
 
 if __name__ == "__main__":
+    _load_heavy_deps()
     main()
 
 # Bridge ( bridger | bridget | bridged | bridging | brutage )

@@ -1622,6 +1622,7 @@ def process_text_in_background(logger,
                     logger.warning(f"Auto-Zip: error {e} trigger_aura_maintenance ")
 
             # Hm ist gewünscht
+            # print(f'{Tem}')
 
         else:
             logger.warning("Nach der Plugin-Verarbeitung gab es keinen Text zum Ausgeben.")

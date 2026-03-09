@@ -6,6 +6,7 @@ import platform
 import gc # Added for forced garbage collection
 from pathlib import Path
 import os
+import time
 
 from pyzipper import zipfile
 
@@ -16,6 +17,8 @@ from .auto_fix_module import try_auto_fix_module
 from .validate_map_structure import check_map_health
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 LAST_MODIFIED_TIMES = {}  # noqa: F824
+
+# KNOWN_MAP_ATTRIBUTES = {'FUZZY_MAP_pre', 'FUZZY_MAP', 'PUNCTUATION_MAP', 'on_reload', 'on_folder_change'}
 
 
 
@@ -99,6 +102,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
             if current_mtime > last_mtime:
                 reload_performed = True
 
+                _reload_start_time = time.time()  # NEU
+
                 if last_mtime != 0:
                     if settings.DEV_MODE:
                         logger.info(f"🔄 Detected change in '{map_file_path}'. Reloading...")
@@ -139,9 +144,13 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     # We try to import. If it is a .key file, this MUST fail.
                     # -------------------------------------------------------
                     module_to_reload = importlib.import_module(module_name)
+
+                    # if not any(hasattr(module_to_reload, attr) for attr in KNOWN_MAP_ATTRIBUTES):
+                    #     logger.debug(f"⏩ Skipping reload — no map structure found: {module_name}")
+                    #     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+                    #     continue
+
                     importlib.reload(module_to_reload)
-
-
 
 
                     # Lifecycle Hook (only for valid modules)
@@ -155,8 +164,13 @@ def auto_reload_modified_maps(logger,run_mode_override):
                             logger.info(f"❌ 🚨 Error in on_reload() for '{module_name}': {hook_error}")
 
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
+
+                    _reload_duration = time.time() - _reload_start_time  # NEU
+                    if _reload_duration > 0.1:  # nur loggen wenn merklich langsam
+                        logger.info(f"⌚ slow? 🐌 map reload: {module_name} took {_reload_duration:.2f}s")
+
                     if log_all_map_reloaded or log_all_changes:
-                        logger.info(f"✅ Successfully reloaded '{module_name}'.")
+                        logger.info(f"✅ Successfully reloaded '{module_name} in  {_reload_duration:.2f}s'.")
 
                     # --- NEW CODE START ---
                     if log_all_map_reloaded or log_all_changes:

@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 from datetime import timedelta
 
+
+
 # --- Throttling Constants (Fixed Cooldown) ---
 # --- Constants for the Throttling Mechanism ---
 # FIXED_COOLDOWN_TIME = 1800.0  # 30 minutes in seconds
@@ -162,10 +164,15 @@ def run_function_with_throttling(
     try:
         # Pass all collected parameters to the core function
         core_logic_function(**func_params)
+
+
     except Exception as e:
         # If the core logic fails, we might still want to proceed with backoff,
         # but for a test, we might want to log the error and skip updating the state.
-        logger.error(f"Core function {core_logic_function.__name__} failed during execution: {e}")
+        # logger.error(f"Core function {core_logic_function.__name__} failed during execution: {e}")
+        import traceback
+        logger.error(f"Core function {core_logic_function.__name__} failed during execution: {e}\n{traceback.format_exc()}")
+
         return False # Execution failed, don't update backoff counter
 
     # Measure and log duration

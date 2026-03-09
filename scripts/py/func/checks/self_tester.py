@@ -375,7 +375,12 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     num_workers = max(1, os.cpu_count() // 2) #
 
     # scripts/py/func/checks/self_tester.py:383
-    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
+
+    import multiprocessing
+    ctx = multiprocessing.get_context("fork")
+    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
+    
+    # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
         # with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
         # Wir reduzieren auf 8 Worker (echte physikalische Kerne),
         # das ist oft effizienter für CPU-lastige Aufgaben als 16 oder 20.
@@ -417,7 +422,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     #     logger.info("Auto-Zip: Warte auf Thread...")
     #     auto_zip_thread.join(timeout=MAX_WAIT_SECONDS)
 
-
+    # scripts/py/func/checks/self_tester.py:420
     # 4. Summary
     duration = time.perf_counter() - start_time
     logger.info("=" * 40)
@@ -570,9 +575,19 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
 
         return actual2 == expected, raw_text, actual2, expected, description
 
+    #     logger.error(f"Core function {core_logic_function.__name__} failed during execution: {e}\n{traceback.format_exc()}")
+
+    # Neu:
     except Exception as e:
         import traceback
-        return False, "ERROR", f"{str(e)}\n{traceback.format_exc()}", "ERROR", "Process execution failed"
+        msg = f"Core function failed: {e}\n{traceback.format_exc()}"
+
+        return False, "ERROR", msg, "ERROR", "Process execution failed"
+
+    # Alt:
+    # except Exception as e:
+    #     import traceback
+    #     return False, "ERROR", f"{str(e)}\n{traceback.format_exc()}", "ERROR", "Process execution failed"
 
 def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, test_base_dir):
     raw_text, expected, description = test_data

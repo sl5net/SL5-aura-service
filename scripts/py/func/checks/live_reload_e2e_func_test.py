@@ -83,8 +83,21 @@ def execute_test_case_and_check(logger, lt_url, expected):
 def run_e2e_live_reload_func_test_v2(logger, lt_url):
 
 
+
     logger.info("-" * 50)
-    logger.info("✅ TEST (🏃🏿‍♀️‍➡️ 🔜 BACKUP/DELETE/RESTORE Map (live_reload_e2e_func_test .py)")
+
+    TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+    self_test_running = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+
+    logger.info(f"e2eTEST [PID {os.getpid()}] Starting e2e test...")
+
+    # Wait if self-test is running
+    if self_test_running.exists():
+        logger.info("e2eTEST : Self-test is running, skipping maintenance tasks...")
+        return
+
+
+    logger.info("✅ e2eTEST (🏃🏿‍♀️‍➡️ 🔜 BACKUP/DELETE/RESTORE Map (live_reload_e2e_func_test .py)")
 
     temp_dir.mkdir(parents=True, exist_ok=True)
 
@@ -102,7 +115,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     # logger.info(f"✅ Test: Phase 0: Creating Backup of: {MAP_TARGET_DIR.name}")
     try:
         shutil.copytree(MAP_TARGET_DIR, MAP_BACKUP_DIR)
-        logger.info("✅ Test: Phase 0: Backup created successfully of: {MAP_TARGET_DIR.name}.")
+        logger.info("✅ e2eTest: Phase 0: Backup created successfully of: {MAP_TARGET_DIR.name}.")
     except Exception as e:
         logger.error(f"❌ Test: Phase 0: Backup FAILED: {e} of: {MAP_TARGET_DIR.name}")
         return 1
@@ -126,7 +139,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     logger.info("✅ Test: Phase 1 PASSED: Rule is active.")
 
     # --- PHASE 2: LÖSCHEN (Disabling Rule) ---
-    logger.info(f"✅ Test: Phase 2: Deleting target map directory. {MAP_TARGET_DIR}")
+    logger.info(f"✅ e2eTest: Phase 2: Deleting target map directory. {MAP_TARGET_DIR}")
 
 
     try:
@@ -159,7 +172,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
 
 
 
-        logger.info("✅ Test: Phase 3 PASSED: Rule successfully deactivated. ")
+        logger.info("✅ e2eTest: Phase 3 PASSED: Rule successfully deactivated. ")
 
 
 
@@ -171,7 +184,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
 
 
     # --- PHASE 4: WIEDERHERSTELLEN (Reactivating Rule) ---
-    logger.info("Phase 4: Restoring original map directory from backup.")
+    logger.info("e2ePhase 4: Restoring original map directory from backup.")
 
     try:
         shutil.copytree(MAP_BACKUP_DIR, MAP_TARGET_DIR) # Copy back to the original location
@@ -194,13 +207,13 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     # scripts/py/func/checks/live_reload_e2e_func_test.py:166
     final_status = 0
     if success:
-        logger.info("✅ Phase 5 PASSED: Rule is active again.")
+        logger.info("✅ e2etest: Phase 5 PASSED: Rule is active again.")
     else:
         logger.error(f"❌ Phase 5 FAILED: Rule did not reactivate! Output: {actual_output}")
         final_status = 1
 
     # --- FINAL CLEANUP ---
     shutil.rmtree(MAP_BACKUP_DIR)
-    logger.info(f"{'✅ Phase 6 TEST COMPLETE SUCCESS 🎉🏆' if final_status == 0 else '❌ Phase 6 TEST COMPLETE FAILURE'}")
+    logger.info(f"{'✅ e2etest: Phase 6 TEST COMPLETE SUCCESS 🎉🏆' if final_status == 0 else '❌ Phase 6 TEST COMPLETE FAILURE'}")
     return final_status
 
