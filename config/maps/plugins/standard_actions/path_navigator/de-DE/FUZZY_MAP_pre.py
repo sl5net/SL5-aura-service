@@ -255,4 +255,15 @@ FUZZY_MAP_pre = [
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
+    # EXAMPLE: Ordner Baum
+    ("tree -d -I '__pycache__|.*|*.i18n' -L 4 > ~/t.txt; kate ~/t.txt;",
+    r'^(Ordner Baum)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+
+
+
+
+
 ]
