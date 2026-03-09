@@ -4,7 +4,6 @@ import logging
 import zipfile
 from pathlib import Path
 import pyzipper
-import logging
 
 from scripts.py.func.password_extract import _extract_password
 

@@ -52,20 +52,6 @@ from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_
 from .setup_initial_model import get_model_name_from_key
 
 
-# global last_signature_time
-
-# active_window_title = None
-global _active_window_title
-
-
-
-
-# scripts/py/func/process_text_in_background.py
-GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
-GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
-GLOBAL_FUZZY_MAP = [] # noqa: F824
-
-GLOBAL_debug_skip_list=False
 
 # from .config.regex_cache import REGEX_COMPILE_CACHE
 from .config.regex_cache import get_cached_regex
@@ -73,6 +59,19 @@ from .config.regex_cache import get_cached_regex
 from .get_compiled_regex import get_compiled_regex
 
 from typing import Union, Optional
+
+
+# global last_signature_time
+
+# active_window_title = None
+global _active_window_title
+
+# scripts/py/func/process_text_in_background.py
+GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
+GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
+GLOBAL_FUZZY_MAP = [] # noqa: F824
+
+GLOBAL_debug_skip_list=False
 
 
 
