@@ -7,6 +7,9 @@ import sys
 # def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
 import time
 
+from typing import Optional
+
+
 # Global cache to store results and timestamps per key_path
 # Structure: { key_path: { 'timestamp': float, 'data': bytes } }
 
@@ -28,7 +31,6 @@ if not hasattr(sys, CACHE_ATTR_NAME):
 #_password_context_cache = getattr(sys, CACHE_ATTR_NAME)
 # --------------------------------
 
-from typing import Optional
 
 # py/func/password_extract.py:33
 def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
