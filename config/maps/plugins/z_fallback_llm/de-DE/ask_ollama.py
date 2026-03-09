@@ -333,7 +333,8 @@ def get_clipboard_content():
     if not utils.BRIDGE_FILE.exists(): return None
     try:
         content = utils.BRIDGE_FILE.read_text(encoding='utf-8').strip()
-        if content: return content
+        if content:
+            return content
         return None
     except Exception:
         return None
