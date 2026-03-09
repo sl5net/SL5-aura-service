@@ -38,8 +38,6 @@ from .notify import notify
 import platform
 
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
 
 
 from .normalize_punctuation import normalize_punctuation
@@ -59,6 +57,9 @@ from .config.regex_cache import get_cached_regex
 from .get_compiled_regex import get_compiled_regex
 
 from typing import Union, Optional
+
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
 
 
 # global last_signature_time
