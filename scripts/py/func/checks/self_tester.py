@@ -380,7 +380,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     ctx = multiprocessing.get_context("fork")
     with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
     
-    # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
+        # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
         # with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
         # Wir reduzieren auf 8 Worker (echte physikalische Kerne),
         # das ist oft effizienter für CPU-lastige Aufgaben als 16 oder 20.
