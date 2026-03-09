@@ -74,11 +74,6 @@ from scripts.py.func.config.dynamic_settings import settings
 #   ohhh. 16.12.'25 19:43 Tue i have forgot diesaber the log server. omg
 #   from tools.simple_log_server import readme
 
-# --- Constants and Paths ---
-SCRIPT_DIR = Path(__file__).resolve().parent
-
-
-PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 
 
@@ -122,6 +117,11 @@ from scripts.py.func.main import main
 from scripts.py.func.create_required_folders import setup_project_structure
 
 
+# --- Constants and Paths ---
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+
+PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 
 
