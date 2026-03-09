@@ -163,7 +163,8 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
         if languagetool_process.poll() is not None:
             logger.fatal("LanguageTool process terminated unexpectedly.")
             _, stderr = languagetool_process.communicate()
-            if stderr: logger.error(f"LanguageTool STDERR:\n{stderr}")
+            if stderr:
+                logger.error(f"LanguageTool STDERR:\n{stderr}")
             return False
         time.sleep(1.0)
 

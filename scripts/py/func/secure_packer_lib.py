@@ -4,6 +4,7 @@ import logging
 import zipfile
 from pathlib import Path
 import pyzipper
+import logging
 
 from scripts.py.func.password_extract import _extract_password
 
@@ -215,10 +216,6 @@ zip_created_at = '{current_time}'
         logger.error(f"❌ CRITICAL EXCEPTION in SecurePacker: {e}", exc_info=True)
 
 
-# import os
-# import zipfile
-# import pyzipper
-import logging
 
 
 def zip_me(zip_path_outer, current_dir_or_single_file, password):
