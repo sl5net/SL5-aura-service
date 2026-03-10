@@ -7,7 +7,13 @@ import requests
 import time
 import sys
 import importlib
-from .config.dynamic_settings import settings
+from .config.dynamic_settings import DynamicSettings
+
+import os
+import psutil  # pip install psutil
+
+settings = DynamicSettings()
+
 
 # Sentinel object to indicate LT was already running.
 # The sentinel has the minimal methods (poll, terminate) to be safely passed
@@ -66,6 +72,25 @@ def _is_lt_server_responsive(url, timeout=1):
 
 
 
+
+def get_languagetool_jvm_args():
+    cpu_cores = os.cpu_count() or 4
+    ram_gb = psutil.virtual_memory().total / (1024 ** 3)
+
+    # Threads: 2× Kerne, aber min 2, max 16
+    threads = max(2, min(16, cpu_cores * 2))
+
+    # RAM: 25% für Start, 50% für Max – aber vernünftige Grenzen
+    xms_gb = max(1, int(ram_gb * 0.25))
+    xmx_gb = max(2, min(8, int(ram_gb * 0.50)))
+
+    return {
+        "xms": f"-Xms{xms_gb}G",
+        "xmx": f"-Xmx{xmx_gb}G",
+        "threads": str(threads),
+    }
+
+
 def start_languagetool_server(logger, languagetool_jar_path, base_url):
     # scripts/py/func/start_languagetool_server.py:70
     # 1. EARLY CHECK: Prevent double startup
@@ -119,16 +144,30 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
         # command_strOld = f'"{java_executable_path}" -jar "{languagetool_jar_path}" --port {port} --allow-origin "*"'
 
         # scripts/py/func/start_languagetool_server.py:121
+
+        args = get_languagetool_jvm_args()
+
         command_str = [
             java_executable_path,
-            "-Xms1G",  # Optional: Startet direkt mit 1GB (beschleunigt Warmup)
-            "-Xmx4G",  # Maximal 4GB RAM
+            args["xms"],
+            args["xmx"],
             "-jar", str(languagetool_jar_path),
             "--port", str(port),
-            "--threads", "16",  # Muss ein String sein!
+            "--threads", args["threads"],
             "--address", '127.0.0.1',
             "--allow-origin", "*"
         ]
+
+        # command_str = [
+        #     java_executable_path,
+        #     "-Xms1G",  # Optional: Startet direkt mit 1GB (beschleunigt Warmup)
+        #     "-Xmx4G",  # Maximal 4GB RAM
+        #     "-jar", str(languagetool_jar_path),
+        #     "--port", str(port),
+        #     "--threads", "16",  # Muss ein String sein!
+        #     "--address", '127.0.0.1',
+        #     "--allow-origin", "*"
+        # ]
 
         # FIX: Windows can get with PIPE Deadlocks
         # Optional: Use File when want read Logs
