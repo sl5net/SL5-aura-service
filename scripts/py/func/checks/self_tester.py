@@ -149,11 +149,39 @@ def case(input_text, expected, context='', lang='de-DE'):
 
 # import concurrent.futures
 
+def _wait_for_languagetool_ready(lt_url, logger, timeout=60, interval=2):
+    """Wait until LanguageTool server is ready to accept requests."""
+    import urllib.request
+    import urllib.error
+    
+    # health_url = f"{lt_url}/v2/languages"
+    health_url = f"{lt_url.rstrip('/').replace('/v2/check', '')}/v2/languages"
+    logger.info(f":st:⏳ Waiting for LanguageTool at {health_url} ...")
+
+    start = time.perf_counter()
+    while time.perf_counter() - start < timeout:
+        try:
+            with urllib.request.urlopen(health_url, timeout=3) as resp:
+                if resp.status == 200:
+                    elapsed = time.perf_counter() - start
+                    logger.info(f":st:✅ LanguageTool ready after {elapsed:.1f}s")
+                    return True
+        except Exception:
+            pass
+        time.sleep(interval)
+
+    logger.error(f"❌ LanguageTool not ready after {timeout}s – aborting.")
+    sys.exit(1)
+
+
+
 
 def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     """
 
     """
+    _wait_for_languagetool_ready(lt_url, logger)
+
     settings = DynamicSettings()
 
     backup_tts_enabled = settings.PLUGIN_HELPER_TTS_ENABLED
@@ -439,6 +467,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     # scripts/py/func/checks/self_tester.py:434
     # core_logic_self_test_is_running_FILE.unlink(missing_ok=True)
 
+    core_logic_self_test_is_running_file = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+    core_logic_self_test_is_running_file.unlink(missing_ok=True)
+
 
     if failed_count > 0:
         sys.exit(1)
@@ -532,13 +563,13 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         # scripts/py/func/checks/self_tester.py:523
 
 
-        # core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+        core_logic_self_test_is_running_file = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
 
         # Nach dem ersten Durchlauf: Flag setzen → Zip-Test weiß "jetzt kann ich prüfen"
 
-        # if not core_logic_self_test_is_running_FILE.exists():
-        #     core_logic_self_test_is_running_FILE.write_text(str(int(time.time())))
-        #     print(f"Auto-Zip: Flag created process_text_in_background was finished before")
+        if not core_logic_self_test_is_running_file.exists():
+            core_logic_self_test_is_running_file.write_text(str(int(time.time())))
+            print("Auto-Zip: Flag created process_text_in_background was finished before")
 
         # 5. Datei finden (nur in diesem privaten Task-Ordner!)
         output_files = list(worker_dir.glob("tts_output_*.txt"))
