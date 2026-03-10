@@ -25,7 +25,7 @@ def execute(match_data):
     report_file = root / "docs" / "bugfix" / "TODO" / "misrecognitions.md"
 
     # Begriffe, die wir ignorieren (da sie den Befehl selbst beschreiben)
-    triggers = ["fehler melden", "logge fehler", "das war falsch", "fehlermeldung", "fehler mail"]
+    triggers = ["fehler melden", "logge fehler", "das war falsch", "fehlermeldung", "fehlerbericht", "fehler mail", "erkältungswelle"]
 
     if not report_file.exists():
         returns ="error Reporting-File not exist"

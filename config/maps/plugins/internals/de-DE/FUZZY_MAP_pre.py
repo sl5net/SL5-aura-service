@@ -62,7 +62,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: "Fehler melden", "Logge Fehler", "Das war falsch"
     ('report_error',
-     r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|das war falsch|da stimmt was nicht|bug melden|bugreport|reisebericht|quelle fehlerbericht|freeride bericht|frede bericht|zelebriere|ticket erstellen|problem melden|da ist ein fehler|fehler bitte|hier der bericht|der bericht|fehler im bericht|das ist falsch|viele wissen|das ist ein bug)$', 100,
+     r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|erkältungswelle|das war falsch|da stimmt was nicht|bug melden|bugreport|reisebericht|quelle fehlerbericht|freeride bericht|frede bericht|zelebriere|ticket erstellen|problem melden|da ist ein fehler|fehler bitte|hier der bericht|der bericht|fehler im bericht|das ist falsch|viele wissen|das ist ein bug)$', 100,
      # min_accuracyzelebriereBerichtFehler bitteinternals>misrecognitionsBerichtinternals>misrecognitionss
 
      {
