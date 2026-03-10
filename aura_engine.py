@@ -86,8 +86,8 @@ from scripts.py.func.checks.check_settings_syntax import verify_plugin_notation
 verify_plugin_notation(settings.PLUGINS_ENABLED)
 
 if getattr(settings, 'KILL_COMPETING_LT_AND_ELOQUENT_ON_START', False):
-    os.system("pkill -f '/app/LanguageTool/languagetool-server.jar'")
     os.system("pkill -f 'eloquent'")
+    os.system("pkill -f '/app/LanguageTool/languagetool-server.jar'")
 
 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     # Check if the package is installed without actually importing it

@@ -9,7 +9,10 @@ import platform
 
 # Re-use utilities and core logic from the main self_tester context
 from ..process_text_in_background import process_text_in_background
-from ..config.dynamic_settings import settings
+from ..config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
+
 # from .config.dynamic_settings import settings
 
 TEST_INPUT = 'Recaps'

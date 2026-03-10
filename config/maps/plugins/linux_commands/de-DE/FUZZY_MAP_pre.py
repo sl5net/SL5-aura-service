@@ -137,7 +137,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: restart Watcher
-    ('pkill -f type_watcher; sleep 0.1; ./type_watcher_keep_alive.sh &', r'^(Watcher neu starten|restart Watcher)$', 85, # min_accuracy
+    ('pkill -f type_watcher; sleep 0.1; ./scripts/sh/type_watcher_keep_alive.sh &', r'^(Watcher neu starten|restart Watcher)$', 85, # min_accuracy
  {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']

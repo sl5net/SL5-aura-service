@@ -5,6 +5,10 @@ import pwd
 # My personal settings Example
 # This file is (maybe) ignored by Git.
 
+KILL_COMPETING_LT_AND_ELOQUENT_ON_START= 1
+
+PIPER_SERVER_PATH = "~/projects/py/TTS"
+
 
 SERVICE_START_OPTION = 0
 

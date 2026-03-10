@@ -6,7 +6,10 @@ import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-from .config.dynamic_settings import settings
+from .config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
+
 from .audio_manager import sound_program_loaded
 from .log_memory_details import log_memory_details
 from .press_trigger_button import press_trigger_button

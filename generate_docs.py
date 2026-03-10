@@ -9,7 +9,7 @@ import os
 DIRS_TO_SCAN = ['setup', 'config', 'githooks', 'update','scripts']
 FILES_IN_ROOT = [
     'start_aura.bat', 'update.bat', 'install_hooks.sh',
-    'type_watcher.ahk', 'type_watcher_keep_alive.sh'
+    'type_watcher.ahk', 'scripts/sh/type_watcher_keep_alive.sh'
 ]
 OUTPUT_FILENAME = 'utility_scripts.rst'
 

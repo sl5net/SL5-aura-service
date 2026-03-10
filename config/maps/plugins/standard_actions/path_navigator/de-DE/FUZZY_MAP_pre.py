@@ -115,6 +115,8 @@ else:
 PROJECT_ROOT_POSIX = Path(PROJECT_ROOT_DISPLAY_STR).as_posix()
 HOME_DIR_POSIX = Path(home_dir_str).as_posix()
 
+suche_text = 'grep -rn "test1\|string2\|READ_BACK" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__'
+
 FUZZY_MAP_pre = [
 
     # fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' --extensions 'py,sh,html' | xclip -selection cl
@@ -128,7 +130,17 @@ FUZZY_MAP_pre = [
      # EXAMPLE: suche file
      r'^(suche|search|find)\s+(file|datei)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+      'only_in_windows': ['Konsole', 'konsole', 'Console']
+      }),
+
+
+    (f"{suche_text}",
+     # EXAMPLE: suche text
+     r'^(suche|search|find)\s+(text|string)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+      'only_in_windows': ['Konsole', 'konsole', 'Console']}),
 
     (f"{fzf_in_gitRepo}",
      # EXAMPLE: file search
@@ -147,6 +159,7 @@ FUZZY_MAP_pre = [
 'only_in_windows': ['Konsole', 'konsole', 'Console',
         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
       }),
+
 
 
 

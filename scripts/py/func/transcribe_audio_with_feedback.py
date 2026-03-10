@@ -20,6 +20,11 @@ from scripts.py.func.audio_manager import speak_inclusive_fallback
 
 import platform
 
+from .config.dynamic_settings import DynamicSettings
+# from ..config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
+
 global AUTO_ENTER_AFTER_DICTATION_global  # noqa: F824
 
 
@@ -183,9 +188,6 @@ def get_device_id(device_setting, logger):
         return int(device_setting)
     return None
 
-from .config.dynamic_settings import settings
-
-# device_id = get_device_id(settings.AUDIO_INPUT_DEVICE)
 
 
 

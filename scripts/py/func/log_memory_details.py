@@ -1,7 +1,8 @@
 # file scripts/py/func/log_memory_details.py
 import os
 import psutil
-from .config.dynamic_settings import settings
+from .config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
 
 
 # --- Start of suggested DEBUG memory analysis snippet ---

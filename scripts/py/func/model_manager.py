@@ -23,8 +23,9 @@ import math
 
 from .check_memory_critical import check_memory_critical
 from .notify import notify
+from .config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
 
-from .config.dynamic_settings import settings
 
 import threading
 
@@ -186,4 +187,4 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
         return max_model_memory_footprint_mb
 
-
+    return None

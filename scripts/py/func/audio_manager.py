@@ -32,10 +32,13 @@ import threading
 import subprocess
 import logging
 
-from .config.dynamic_settings import settings
+from .config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
 
 
+import platform
 
+from pathlib import Path
 
 # perf(audio): optimize Windows interaction latency
 # - Moved heavy imports (comtypes, pycaw, numpy, pygame) to global scope.
@@ -44,12 +47,14 @@ from .config.dynamic_settings import settings
 # Global imports for heavy libraries to prevent runtime latency
 try:
     import numpy as np
-except ImportError:
+except ImportError as e:
+    print(f'error: {e}')
     np = None
 
 try:
     import pygame
-except ImportError:
+except ImportError as e:
+    print(f'error: {e}')
     pygame = None
 
 # Windows-specific performance imports
@@ -69,23 +74,7 @@ if os.name == 'nt':
         winsound = None
         logging.error("Windows audio dependencies (pycaw/comtypes) not found.")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 
 logger = logging.getLogger(__name__)
 
@@ -108,7 +97,17 @@ logger = logging.getLogger(__name__)
 def speak_inclusive_fallback(text_to_speak, language_code):
     """TTS helper for plugins"""
     if not settings.PLUGIN_HELPER_TTS_ENABLED:
+        logger.info("no PLUGIN_HELPER_TTS_ENABLED > skipping audio-speak ...")
         return  # Silent mode
+
+    # Wait if self-test is running
+    self_test_running = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+
+    if self_test_running.exists():
+        logger.info("Maintenance: Self-test is running, skipping audio-speak ...")
+        return
+
+
     """
     - Linux: espeak 
     - Windows: PowerShell (SAPI)
@@ -152,8 +151,8 @@ def speak_inclusive_fallback(text_to_speak, language_code):
             # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
         except FileNotFoundError:
             logger.info(f"fallback fouled '{command[0]}' no found. platform_name:{platform_name}")
-        except Exception as e:
-            logger.info(f" {e}")
+        except Exception as e202603092050:
+            logger.info(f" {e202603092050}")
 
     thread = threading.Thread(target=run_command)
     thread.daemon = True
@@ -249,8 +248,8 @@ if (sys.platform != "win32"
         #
         #     return pygame.mixer.Sound(buffer=samples)
 
-    except ImportError:
-        log.warning("pygame not found. Sound feedback will not work on non-Windows systems.")
+    except ImportError as e202603092051:
+        log.warning(f"pygame not found. Sound feedback will not work on non-Windows systems. {e202603092051}")
         # def play_beep(frequency, duration_ms):
         #     pass # No sound feedback if pygame is not available
 
@@ -258,9 +257,9 @@ if (sys.platform != "win32"
     # --- Platform-Specific Implementations ---
 
     # audio_manager.py:211
-    def _get_mute_state_windows(logger):
+    def _get_mute_state_windows(logger2):
         if os.getenv('CI'):
-            logger.info("CI env: Skipping hardware call.")
+            logger2.info("CI env: Skipping hardware call.")
             return False
 
         # logger.info(f"219: Audio Manager PID: {os.getpid()}")
@@ -270,7 +269,7 @@ if (sys.platform != "win32"
             volume = interface.QueryInterface(IAudioEndpointVolume)
             return volume.GetMute() == 1
         except Exception:
-            logger.info("Failed to get Windows microphone mute state.", exc_info=True)
+            logger.info("Failed to get Windows microphone mute state. Err: {e111}", exc_info=True)
             return None
 
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY

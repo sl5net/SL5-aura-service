@@ -153,7 +153,7 @@ def _wait_for_languagetool_ready(lt_url, logger, timeout=60, interval=2):
     """Wait until LanguageTool server is ready to accept requests."""
     import urllib.request
     import urllib.error
-    
+
     # health_url = f"{lt_url}/v2/languages"
     health_url = f"{lt_url.rstrip('/').replace('/v2/check', '')}/v2/languages"
     logger.info(f":st:⏳ Waiting for LanguageTool at {health_url} ...")

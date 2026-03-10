@@ -20,10 +20,10 @@ clear
 # This script acts as a watchdog for type_watcher.sh.
 # It runs it in an infinite loop, so if it ever crashes, it will be
 # automatically restarted after a 1-second delay.
-
+# scripts/sh/type_watcher_keep_alive.sh:23
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-LOG_DIR="$SCRIPT_DIR/log"
-LOGFILE="$LOG_DIR/type_watcher_keep_alive.sh"
+LOG_DIR="$SCRIPT_DIR/../../log"
+LOGFILE="$LOG_DIR/type_watcher_keep_alive.log"
 
 CONFIG_FILE_1="$SCRIPT_DIR/config/settings.py"
 CONFIG_FILE_2="$SCRIPT_DIR/config/settings_local.py"
@@ -64,10 +64,10 @@ while true; do
     else
         # It's not running, so it must have crashed. Start it.
         log_message "WATCHDOG: 'type_watcher.sh' is not running. Starting it now."
-        log_message "$SCRIPT_DIR/type_watcher.sh"
+        log_message "$SCRIPT_DIR/../../type_watcher.sh"
         echo log_message "WATCHDOG: 'type_watcher.sh' is not running. Starting it now "
-        echo $SCRIPT_DIR/type_watcher.sh
-        $SCRIPT_DIR/type_watcher.sh
+        echo $SCRIPT_DIR/../../type_watcher.sh
+        $SCRIPT_DIR/../../type_watcher.sh
     fi
 
     # Wait for a few seconds before checking again.

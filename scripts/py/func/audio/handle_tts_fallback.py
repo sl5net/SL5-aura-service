@@ -6,7 +6,26 @@ from ..audio_manager import speak_inclusive_fallback
 
 # scripts/py/func/audio/handle_tts_fallback.py:11
 
+from pathlib import Path
+import platform
+
+
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+
 def handle_tts_fallback(processed_text, LT_LANGUAGE, logger):
+
+    if not settings.PLUGIN_HELPER_TTS_ENABLED:
+        logger.info("no PLUGIN_HELPER_TTS_ENABLED > skipping audio-speak ...")
+        return False # Silent mode
+
+    # Wait if self-test is running
+    self_test_running = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
+
+    if self_test_running.exists():
+        logger.info("Maintenance: Self-test is running, skipping audio-speak ...")
+        return False
+
+
     # 1. Versuch via Piper Server (falls nicht ESPEAK primary)
     if settings.USE_AS_PRIMARY_SPEAK != "ESPEAK":
         if piper_speak_via_server(processed_text):

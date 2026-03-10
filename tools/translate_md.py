@@ -150,13 +150,13 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
 
 def process_file(filename):
     """Verarbeitet eine einzelne Markdown-Datei."""
-    print(f"Bearbeite Datei:  '…{str(filename)[-40:]}' ")
+    #print(f"Bearbeite Datei:  '…{str(filename)[-40:]}' ")
 
     with open(filename, 'r', encoding='utf-8') as f:
         original_lines = [line.rstrip('\n') for line in f.readlines()]
 
     # --- Schritt 0: Schütze komplette Markdown Links/Bilder ---
-    print("   -> Schritt 0: Schütze komplette Markdown Links/Bilder...")
+    #print("   -> Schritt 0: Schütze komplette Markdown Links/Bilder...")
     markdown_links = []
     def link_replacer(match):
         # ### GEÄNDERT: Verwendet das neue, sichere Format ###
@@ -166,10 +166,10 @@ def process_file(filename):
 
     link_regex = re.compile(r'!?(?:\[[^\]]*\])\((?:[^\)]*)\)')
     lines_step0 = [link_regex.sub(link_replacer, line) for line in original_lines]
-    print(f"      Markdown-Strukturen gefunden und ersetzt: {len(markdown_links)}")
+    #print(f"      Markdown-Strukturen gefunden und ersetzt: {len(markdown_links)}")
 
     # --- Schritt 1 & 2 & 3 bleiben identisch ---
-    print("   -> Schritt 1: Ersetze Hard-Breaks (zwei Leerzeichen) durch einen Platzhalter...")
+    #print("   -> Schritt 1: Ersetze Hard-Breaks (zwei Leerzeichen) durch einen Platzhalter...")
     lines_step1 = []
     hard_breaks_found_count = 0
     for line in lines_step0:
@@ -178,12 +178,12 @@ def process_file(filename):
             lines_step1.append(line[:-2] + HARD_BREAK_PLACEHOLDER)
         else:
             lines_step1.append(line)
-    print(f"      Hard-Breaks gefunden und ersetzt: {hard_breaks_found_count}")
+    #print(f"      Hard-Breaks gefunden und ersetzt: {hard_breaks_found_count}")
 
-    print("   -> Schritt 2: Schütze mittige '__' Zeichen...")
+    #print("   -> Schritt 2: Schütze mittige '__' Zeichen...")
     lines_step2 = [line.replace("__", DUNDER_PLACEHOLDER) for line in lines_step1]
 
-    print("   -> Schritt 3: Extrahiere Code-Blöcke...")
+    #print("   -> Schritt 3: Extrahiere Code-Blöcke...")
     lines_for_translation = []
     code_blocks = []
     in_code_block = False
@@ -202,12 +202,13 @@ def process_file(filename):
             current_block.append(line)
         else:
             lines_for_translation.append(line)
-    print(f"      Code-Blöcke extrahiert: {len(code_blocks)}")
+    #print(f"      Code-Blöcke extrahiert: {len(code_blocks)}")
 
     text_to_translate = "\n".join(lines_for_translation)
 
     # --- SCHLEIFE DURCH ZIELSPRACHEN ---
     base_name = os.path.splitext(filename)[0]
+    skipCount = 0
     for lang in TARGET_LANGS:
 
         # output_file = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
@@ -225,7 +226,8 @@ def process_file(filename):
 
 
         if os.path.exists(output_file):
-            print(f"   -> Überspringe '…{str(output_file)[-40:]}' (existiert bereits).")
+            # print(f"   -> Überspringe '…{str(output_file)[-40:]}' (existiert bereits).")
+            skipCount = skipCount + 1
             continue
 
         print(f"   -> Übersetze nach '{lang}' -> '{output_file}'...")
@@ -241,7 +243,7 @@ def process_file(filename):
 
         # --- WIEDERHERSTELLUNG IN UMGEKEHRTER REIHENFOLGE ---
 
-        print("      -> Schritt A: Stelle Code-Blöcke wieder her...")
+        #print("      -> Schritt A: Stelle Code-Blöcke wieder her...")
         restored_step_A = []
         code_block_idx = 0
         for line in translated_lines:
@@ -252,9 +254,9 @@ def process_file(filename):
                 restored_step_A.append(line)
 
         # ### GEÄNDERT: Logik zur Wiederherstellung der sicheren Platzhalter ###
-        print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her...")
+        #print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her...")
 # ### KORRIGIERT: Logik zur Wiederherstellung und Anpassung der Links ###
-        print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her und passe sie an...")
+        #print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her und passe sie an...")
         restored_step_B = []
         placeholder_regex = re.compile(r'(XMDLINK\d+X)')
 
@@ -281,10 +283,10 @@ def process_file(filename):
             restored_step_B.append(restored_line)
 
 
-        print("      -> Schritt C: Stelle mittige '__' wieder her...")
+        #print("      -> Schritt C: Stelle mittige '__' wieder her...")
         restored_step_C = [line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_B]
 
-        print(f"      -> Schritt D: Stelle {hard_breaks_found_count} Hard-Break(s) aus Platzhaltern wieder her...")
+        #print(f"      -> Schritt D: Stelle {hard_breaks_found_count} Hard-Break(s) aus Platzhaltern wieder her...")
         final_lines = [line.replace(HARD_BREAK_PLACEHOLDER, "  ") for line in restored_step_C]
 
         print(f"      -> Speichere Datei '{output_file}'...")
@@ -292,6 +294,7 @@ def process_file(filename):
             f.write("\n".join(final_lines))
 
         time.sleep(2)
+    #print(f'-> line 297: skipCount already translated: {skipCount}')
 
 def main():
 
@@ -308,8 +311,9 @@ def main():
     search_path = script_dir.parent / '**' / '*.md' # neu
 
 
-    print(f"---- {search_path} ------------------------------------------------")
+    #print(f"---- {search_path} ------------------------------------------------")
     # for filename in glob.glob(str(search_path)):
+    skipCount = 0
     for filename in glob.glob(str(search_path), recursive=True):
 
         path_parts = filename.split(os.sep)
@@ -348,15 +352,19 @@ def main():
                         for lang in TARGET_LANGS
                     )
                     if already_done:
-                        print(f"   -> Überspringe  '…{str(filename)[-40:]}' (alle Übersetzungen bereits vorhanden).")
+                        # print(f"   -> Überspringe  '…{str(filename)[-40:]}' (alle Übersetzungen bereits vorhanden).")
+                        skipCount = skipCount + 1
+
                         continue
                     process_file(filename)
 
 
-            print(f"process_file(…{str(filename)[-40:]})")
+            #print(f"process_file(…{str(filename)[-40:]})")
             process_file(filename)
-            print("")
-    print("----------------------------------------------------")
+            #print("")
+    print(f'->line 365: skipCount already translated: {skipCount}')
+
+    #print("----------------------------------------------------")
     print("Alle Übersetzungen abgeschlossen!")
 
 if __name__ == "__main__":

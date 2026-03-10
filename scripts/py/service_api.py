@@ -43,7 +43,7 @@ app_logger = logging.getLogger("fastapi_service")
 app_logger.setLevel(logging.INFO)
 
 # Beispiel-URL für LanguageTool
-LT_URL = "http://localhost:8081/v2/check"
+LT_URL = "http://localhost:8082/v2/check"
 
 
 
