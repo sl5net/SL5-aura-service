@@ -73,14 +73,22 @@ def execute(match_data):
 
         error_line = re.sub(r"(.)\1+", r"\1", error_line)
 
+
         # error_line = betwefen_first_last_hash_manual(error_line)
         try:
-            error_line = error_line.split("📢")[1]
+            # error_line = error_line.split("📢")[1]
+            error_line = error_line.rsplit("📢", 1)[1].strip()
         except Exception as e:
             print(e)
             returns= f"Fehler im Log gefunden.{e}"
             speak_inclusive_fallback(f"{returns}", 'de-DE')
 
+            return returns
+
+        # 2. Wenn gefiltert wurde (nur Trigger gefunden), besser erklären
+        if not error_line:
+            returns = "Fehler im Error-Report: Nichts gefunden. "
+            speak_inclusive_fallback(returns, 'de-DE')
             return returns
 
 

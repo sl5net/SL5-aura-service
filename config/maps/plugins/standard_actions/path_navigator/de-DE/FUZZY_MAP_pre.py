@@ -115,7 +115,7 @@ else:
 PROJECT_ROOT_POSIX = Path(PROJECT_ROOT_DISPLAY_STR).as_posix()
 HOME_DIR_POSIX = Path(home_dir_str).as_posix()
 
-suche_text = 'grep -rn "test1\|string2\|READ_BACK" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__'
+suche_text = r'grep -rn "test1\|string2\|READ_BACK" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__"'
 
 FUZZY_MAP_pre = [
 
@@ -134,10 +134,11 @@ FUZZY_MAP_pre = [
       'only_in_windows': ['Konsole', 'konsole', 'Console']
       }),
 
+    # suche nach text So gedachttext suche
 
     (f"{suche_text}",
      # EXAMPLE: suche text
-     r'^(suche|search|find)\s+(text|string)$',
+     r'^(?:suche(?:n|r|st)?|search|find)\b(?:\s+(?:nach|the))?\s+\b(?:text|string)s?\b|\b(?:text|string)s?\b(?:\s+(?:nach|the))?\s+\b(?:suche(?:n|r|st)?|search|find)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
       'only_in_windows': ['Konsole', 'konsole', 'Console']}),
