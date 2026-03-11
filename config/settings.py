@@ -13,7 +13,7 @@ current_user = user_name = USER_NAME = str(current_user) # fallbacks
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
-DEV_MODE = 1
+DEV_MODE = 0
 DEV_MODE_all_processing = 0
 DEV_MODE_show_window_title_stuff = 0
 DEV_MODE_show_when_private_map_found = 0
