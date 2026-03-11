@@ -4,6 +4,8 @@ import re
 import subprocess
 import time
 
+# scripts/py/func/checks/check_settings_usage.py:7
+
 # --- Configuration ---
 SETTINGS_FILE = "config/settings.py"
 # The base grep command you provided
@@ -97,9 +99,7 @@ def analyze_usages(defined_vars):
         print(f"❌ Finished with {missing_count} errors! Please check the list above. ⏱️duration: {duration:.3f}s")
     #print("="*40)
 
-
-
-if __name__ == "__main__":
+def check_settings_usage():
 
     # 1. Get definitions
     definitions = get_defined_settings()
@@ -109,5 +109,20 @@ if __name__ == "__main__":
         analyze_usages(definitions)
     else:
         print("🛑 Could not extract settings from config. Aborting.")
+
+
+
+
+if __name__ == "__main__":
+    check_settings_usage()
+
+    # 1. Get definitions
+    # definitions = get_defined_settings()
+
+    # # 2. Check usages
+    # if definitions:
+    #     analyze_usages(definitions)
+    # else:
+    #     print("🛑 Could not extract settings from config. Aborting.")
 
 

@@ -79,6 +79,8 @@ from scripts.py.func.config.dynamic_settings import settings
 
 from scripts.py.func.checks.check_path_length import run_path_check
 
+from scripts.py.func.checks.check_settings_usage import check_settings_usage
+
 from scripts.py.func.checks.espeak_check import espeak_check
 espeak_check(settings)
 
@@ -713,6 +715,9 @@ if settings.DEV_MODE :
 
 
 if settings.DEV_MODE :
+
+    check_settings_usage()
+
     try:
         # Create a copy of the current environment and set PYTHONPATH
         env = os.environ.copy()
