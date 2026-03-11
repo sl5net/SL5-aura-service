@@ -1,6 +1,6 @@
 # config/maps/plugins/wannweil/de-DE/check_trash.py
 
-# ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py
+#  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py
 #  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py
 # or use:
 #     ~/pr/py/STT    master *1 !2 ?1  python.sh ./config/maps/plugins/wannweil/de-DE/check_trash.py &
@@ -10,7 +10,7 @@ import sys
 import os
 import unicodedata
 import pdfplumber
-import datetime  # Nur das Modul importieren
+import datetime  # noqa: F811 Nur das Modul importieren
 import re
 import subprocess
 import csv
@@ -412,7 +412,9 @@ def check_csv_alerts():
 
 if __name__ == "__main__":
 
-    # from datetime import datetime
+    #check_csv_alerts()
+
+    from datetime import datetime # noqa: F811
 
     # True an Wochentagen, False an Samstag und Sonntag
     is_active = datetime.now().weekday() < 5

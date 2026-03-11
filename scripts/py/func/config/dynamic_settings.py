@@ -255,7 +255,7 @@ class DynamicSettings:
                         # if settings.DEV_MODE:
                         #     print("DEBUG: Local settings loaded.")
                     else:
-                        print("INFO: config.settings_local.py does not exist. Skipping local settings load.")
+                        print("INFO: config.settings_local.py does not exist. Skipping local settings load. scripts/py/func/config/dynamic_settings.py:258")
                         self._settings_local_module = None
                 except ModuleNotFoundError:
                     print("WARNING: config.settings_local module not found. This might indicate a path issue or missing file.")

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # File: ~/bin/keep-keys-up.sh
+# tools/keep-keys-up.sh:3
 # Purpose: Every few seconds send "keyup" for stuck modifier keys.
 #          Skips if user is actively pressing keys (to not interrupt text selection).
 
@@ -60,27 +61,28 @@ any_key_physically_pressed() {
         return 2
     fi
 
-    # Hole IDs; handle leerer Ausgabe sicher
-    local ids id
-    # Verwende read loop statt xargs, damit bei leerer Ausgabe nichts passiert
+    local ids id found_keys=""
     ids="$(xinput list --id-only 2>/dev/null)"
-    if [ -z "$ids" ]; then
-        # Keine Geräte gefunden -> keine Taste gedrückt (oder kein X)
-        return 1
-    fi
+    [ -z "$ids" ] && return 1
 
     while IFS= read -r id; do
-        # Skip empty lines (sicherheitsmaßnahme)
         [ -z "$id" ] && continue
-
-        # Falls das Gerät den Status nicht liefern kann, ignorieren wir Fehler
-        if xinput query-state "$id" 2>/dev/null | grep -q "key\[.*\]=down"; then
-            return 0 # Eine Taste ist IRGENDWO gedrückt
+        # Capture the specific key codes that are currently 'down'
+        local keys
+        keys=$(xinput query-state "$id" 2>/dev/null | grep "key\[.*\]=down")
+        if [ -n "$keys" ]; then
+            # Clean up the output (remove extra spaces/newlines) to show on one line
+            found_keys+="$(echo "$keys" | tr '\n' ' ')"
         fi
     done <<<"$ids"
 
+    if [ -n "$found_keys" ]; then
+        echo "$found_keys" # Output the keys found
+        return 0
+    fi
+
     return 1
-}
+  }
 
 # --- Hauptschleife ---
 echo "keep-keys-up läuft (PID $$). Interval: ${SLEEP_BETWEEN_CHECKS}s"
@@ -89,16 +91,19 @@ while true; do
     sleep "$SLEEP_BETWEEN_CHECKS"
 
     # Unter X11: Tasten-Druck prüfen → wenn aktiv, überspringen
+
     if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
-        if any_key_physically_pressed; then
-            echo "  [skip] Taste physisch gedrückt – warte auf Loslassen..."
-            # Warte bis alle Tasten losgelassen wurden (max 10s)
+        # Capture the output of the function into a variable
+        pressed_info=$(any_key_physically_pressed)
+        if [ $? -eq 0 ]; then
+            # Now we print the variable 'pressed_info' which contains the keys
+            echo "  [skip] keys physically pressed: $pressed_info – wait for release..."
+
             local_timeout=10
-            while any_key_physically_pressed && [ $local_timeout -gt 0 ]; do
+            while any_key_physically_pressed >/dev/null && [ $local_timeout -gt 0 ]; do
                 sleep 0.3
                 (( local_timeout-- )) || true
             done
-            # Nochmal kurz warten damit die Aktion (z.B. Markierung) abgeschlossen ist
             sleep 0.5
         fi
     fi

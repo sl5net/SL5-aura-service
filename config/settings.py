@@ -17,6 +17,8 @@ DEV_MODE = 1
 DEV_MODE_all_processing = 0
 DEV_MODE_show_window_title_stuff = 0
 DEV_MODE_show_when_private_map_found = 0
+DEV_MODE_memory = 0
+DEV_MODE_zip_processing = 0
 
 # --- Input Settings ---
 # Default for X11 is 'xdotool'. Default for Wayland is 'dotool'.
@@ -105,13 +107,12 @@ PIPER_SERVER_TIMEOUT = 2.0
 USE_AS_PRIMARY_SPEAK = "piper"
 # USE_AS_PRIMARY_SPEAK = "ESPEAK"
 USE_ESPEAK_FALLBACK = True
+ESPEAK_FALLBACK_AMPLITUDE = 80
 
 INPUT_METHOD="dotool"
 
-#testtest
+#testtesttest
 
-
-ESPEAK_FALLBACK_AMPLITUDE = 50
 
 # --- LanguageTool Server ---
 # Set to True to use an existing LT server. AT YOUR OWN RISK!
@@ -119,7 +120,7 @@ ESPEAK_FALLBACK_AMPLITUDE = 50
 USE_EXTERNAL_LANGUAGETOOL = False # Default: False
 
 # URL for the external server if the option above is True.
-# EXTERNAL_LANGUAGETOOL_URL = "http://127.0.0.1:8081"
+EXTERNAL_LANGUAGETOOL_URL = "http://127.0.0.1:8081"
 
 # config/settings.py
 # Settings for our internal server (if used)

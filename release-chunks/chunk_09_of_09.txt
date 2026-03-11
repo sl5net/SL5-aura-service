@@ -1,0 +1,254 @@
+Fasse die Änderungen in diesem Git-Diff Abschnitt kurz auf Englisch zusammen.
+Gruppiere nach: Neue Features, Bugfixes, Refactoring, Docs/Config.
+Nur Stichpunkte, maximal 15 Punkte. Dies ist Abschnitt 9 von 9:
+
+    +     script_location = Path(__file__).parent.resolve()
+    +     project_root = script_location.parents[1]
+    +     print(f"--- PATH ANALYSIS TOOL ---")
+    +     print(f"Script location: {script_location}")
+    +     print(f"Detected Project Root: {project_root}")
+    +     print("-" * 60)
+    +     max_internal_length = 0
+    +     longest_file_rel = ""
+    +     longest_file_abs = ""
+    +     print("Scanning project files...")
+    +     for root, dirs, files in os.walk(project_root):
+    +         if ".git" in dirs:
+    +             dirs.remove(".git")
+    +         for name in files:
+    +             abs_path = Path(root) / name
+    +             try:
+    +                 rel_path = abs_path.relative_to(project_root)
+    +                 rel_path_str = str(rel_path)
+    +                 current_internal_len = len(rel_path_str)
+    +                 if current_internal_len > max_internal_length:
+    +                     max_internal_length = current_internal_len
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: tools/tests/create_paths.sh  [nur Name, kein Diff]
+
+FILE: tools/translate_md.py
+  In logger = logging.getLogger():
+    + def test_translation_links():
+    +     test_lang = "de"
+    +     test_cases = [
+    +         ('[Normaler Link](about.md)', "Standard Markdown Link"),
+    +         ('[Link mit Anker](contact.md#form)', "Markdown Link mit Anker"),
+    +         ('[Die README](README.md)', "Spezialfall README"),
+    +         ('![Ein Bild](images/logo.png)', "Asset / Bild (kein MD)"),
+    +         ('[Extern](https://google.com)', "Absoluter Link (sollte gleich bleiben)"),
+    +         ('[Anker](#abschnitt)', "Interner Anker (sollte gleich bleiben)"),
+    +         ('[](../about-delang.md)', "Bereits korrigierter Link (Idempotenz)"),
+    +     ]
+    +     print(f"{'INPUT':<40} | {'OUTPUT':<40}")
+    +     print("-" * 85)
+    +     for original, description in test_cases:
+    +         modified = add_lang_to_md_links(original, test_lang)
+    +         print(f"…{str(original)[-40:]} | …{str(modified)[-40:]} | …{str(description)[-40:]}")
+  In def add_lang_to_md_links(line: str, lang: str) -> str::
+    +     markdown_link_pattern = re.compile(r'(\[!?.*?\])\((.*?)\)')
+  In def add_lang_to_md_links(line: str, lang: str) -> str::
+    +         if url.startswith(('http://', 'https://', '#', 'mailto:', '/')):
+  In def add_lang_to_md_links(line: str, lang: str) -> str::
+  In def add_lang_to_md_links(line: str, lang: str) -> str::
+  In def add_lang_to_md_links(line: str, lang: str) -> str::
+    +             if '.md' in path and f"-{lang}lang.md" not in path:
+    +                 new_path = f"{base_path}-{lang}lang.md{anchor}"
+    +             else:
+    +                 new_path = path
+  In def add_lang_to_md_links(line: str, lang: str) -> str::
+    +         new_path = f"../{new_path}"
+  In def add_lang_to_md_links(line: str, lang: str) -> str::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+    +     skipCount = 0
+  In def process_file(filename)::
+    +         i18n_dir = f"{base_name}.i18n"
+    +         os.makedirs(i18n_dir, exist_ok=True)
+    +         output_file = f"{i18n_dir}/{os.path.basename(base_name)}-{lang}lang.md"
+  In def process_file(filename)::
+    +             skipCount = skipCount + 1
+  In def process_file(filename)::
+  In def process_file(filename)::
+    +             if re.match(r'^__CODE_BLOCK_\d+__$', line.strip()) and code_block_idx < len(code_blocks):
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def process_file(filename)::
+  In def main()::
+  In def main()::
+    +     search_path = script_dir.parent / '**' / '*.md' # neu
+    +     skipCount = 0
+    +     for filename in glob.glob(str(search_path), recursive=True):
+    +         path_parts = filename.split(os.sep)
+    +         if any(part.startswith('.') for part in path_parts if part not in ['.', '..']):
+    +             continue
+    +         if any(ignored in path_parts for ignored in ["venv", "__pycache__", "node_modules"]):
+    +             continue
+  In def main()::
+    +         if re.search(r'-[a-z]{2,3}lang\.md$', filename):
+    +             continue
+    +         if ".i18n" in filename:
+  In def main()::
+  In def main()::
+  In def main()::
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: trigger-hotkeys.ahk
+    + ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
+    + ListLines(False)
+    + ; trigger_hotkey.ahk
+    + ; --- Configuration ---
+    + heartbeat_start_File := "c:\tmp\heartbeat_trigger_hotkey_start.txt"
+    + triggerFile := "c:\tmp\sl5_record.trigger"
+    + activeWinTitleFile := "c:\tmp\activeWinTitle.txt"
+    + ; --- Main Script Body ---
+    + myUniqueID := A_TickCount . "-" . Random(1000, 9999)
+    + try {
+    +     fileHandle := FileOpen(heartbeat_start_File, "w")
+    +     fileHandle.Write(myUniqueID)
+    +     fileHandle.Close()
+    + } catch as e {
+    +     MsgBox("FATAL: Could not write heartbeat file: " . e.Message, "Error", 16)
+    +     ExitApp
+    + }
+    + ; --- Self-Check at Startup ---
+    + Sleep(200) ; Give time for write operations
+    + try {
+    +     if FileExist(heartbeat_start_File) {
+    +         lastUniqueID := Trim(FileRead(heartbeat_start_File))
+    +         if (lastUniqueID != myUniqueID) {
+    +             ExitApp ; Newer instance exists, I must exit.
+    +         }
+    +     }
+    + } catch {
+    +     ; Ignore errors here, loop will handle it
+    + }
+    + SetTimer(CheckHeartbeatStart, 5000)
+    + ; =============================================================================
+    + ; SELF-TERMINATION VIA HEARTBEAT CHECK
+    + ; =============================================================================
+    + CheckHeartbeatStart() {
+    +     global heartbeat_start_File, myUniqueID
+    +     try {
+    +         local lastUniqueID := Trim(FileRead(heartbeat_start_File, "UTF-8"))
+    +         if (lastUniqueID != myUniqueID) {
+    +             ; New instance took over
+    +             ExitApp
+  In f11:::
+  In f11:::
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: type_watcher.ahk
+    + ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
+    + „Could not close the previous instance“ tritt genau dann auf, wenn ein Skript in einem Alertable State (SleepEx) oder einem tiefen DllCall (wie Folder-Watcher) feststeckt. AHKs Standardbefehl kann den Prozess dann nicht sauber beenden.
+    + watchDir := "C:\tmp\sl5_aura\tts_output"
+  In logDir := A_ScriptDir \log:
+    + autoEnterFlagPath := "C:\tmp\sl5_aura\sl5_auto_enter.flag"
+  In heartbeat_start_File := C:\tmp\heartbeat_type_watcher_start.txt:
+    + global processedZombies := Map() ; Key: FullPath, Value: Timestamp
+    + global isProcessingQueue := false
+    + global fileStates := Map() ; Mögliche Zustände: "queued", "processing", "done"
+    + ; Am Anfang des Skripts (bevor der Watcher startet)
+    + CleanTempFolder() {
+    +     global watchDir
+    +     Log("Cleaning up old session files...")
+    +     Loop Files, watchDir "\tts_output_*.txt" {
+    +         try {
+    +             FileDelete(A_LoopFileFullPath)
+    +         }
+    +     }
+    + }
+    + CleanTempFolder() ; Einmal beim Start ausführen
+  In try {:
+    + ; --- SendMode Event is safer than InputThenPlay on new Windows builds ---
+    + SendMode('Event')
+    + SetKeyDelay(10, 10)
+    + ; type_watcher.ahk:29
+  In global watcherNeedsRearm := false:
+    + global fileQueue := []
+    + global isProcessingQueue := false
+  In Sleep(200) ; Give a potential double-clicked instance time to act:
+    + Sleep(200)
+  In try {:
+    +             ExitApp ; other instance exists
+  In try {:
+    +     ExitApp
+  In try {:
+  In SetTimer(CheckHeartbeatStart, 5000):
+  In CheckHeartbeatStart() {:
+    +             Log("Newer instance detected. Terminating self.")
+  In CheckHeartbeatStart() {:
+  In DirCreate(logDir):
+    + Log("--- Script Started (v9.0 - Fixed Callback Freeze) ---")
+  In Log(Watching folder:  . watchDir):
+    + ; type_watcher.ahk:69
+  In CompletionRoutineProc := CallbackCreate(IOCompletionRoutine, F, 3):
+    + WatchFolder(watchDir)
+  In WatchFolder(watchDir) ; Initial arming:
+    + ProcessExistingFiles()
+  In Loop {:
+    +     ; This puts the script in "Alertable State" so callbacks can fire.
+  In ExitApp:
+    + ; LOGGING
+  In Log(message) {:
+  In Log(message) {:
+    + ; FILE QUEUING
+  In Log(message) {:
+    + QueueFile(filename) {
+    +     global fileStates ; <--- Diese Zeile oben in der Funktion hinzufügen, falls sie fehlt
+    +     if InStr(filename, "tts_output_") {
+    +         fullPath := watchDir "\" . filename
+    +         ; Wenn der Pfad in der Map ist (als "queued", "processing" oder Zeitstempel),
+  In ProcessExistingFiles() {:
+  In ProcessExistingFiles() {:
+  In ProcessExistingFiles() {:
+  In ProcessExistingFiles() {:
+  In ProcessExistingFiles() {:
+  In QueueFile(filename) {:
+  In QueueFile(filename) {:
+  In QueueFile(filename) {:
+  In QueueFile(filename) {:
+  In QueueFile(filename) {:
+  In TriggerQueueProcessing() {:
+  In TriggerQueueProcessing() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In ProcessQueue() {:
+  In WatchFolder(pFolder) {:
+  In WatchFolder(pFolder) {:
+  In ReArmWatcher() {:
+  In ReArmWatcher() {:
+  In ReArmWatcher() {:
+  In IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {:
+  In IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {:
+  In IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {:
+  In IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {:
+  In IOCompletionRoutine(dwErrorCode, dwNumberOfBytesTransfered, lpOverlapped) {:
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: type_watcher.sh  [nur Name, kein Diff]
+
+FILE: update.bat  [nur Name, kein Diff]
+
+FILE: update/update_for_windows_users.ps1  [nur Name, kein Diff]
+
+=== ENDE ===

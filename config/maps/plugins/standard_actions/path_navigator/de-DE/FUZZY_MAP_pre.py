@@ -115,7 +115,12 @@ else:
 PROJECT_ROOT_POSIX = Path(PROJECT_ROOT_DISPLAY_STR).as_posix()
 HOME_DIR_POSIX = Path(home_dir_str).as_posix()
 
-suche_text = r'grep -rn "test1\|string2\|READ_BACK" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__"'
+suche_text = r'grep -rn "text\|string" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__" | grep -v "/_" | grep -v "/docs" '
+
+"""
+grep -rn "suche datei" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__" | grep -v "/_"
+
+"""
 
 FUZZY_MAP_pre = [
 

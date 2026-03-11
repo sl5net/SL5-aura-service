@@ -1,0 +1,1017 @@
+Fasse die Änderungen in diesem Git-Diff Abschnitt kurz auf Englisch zusammen.
+Gruppiere nach: Neue Features, Bugfixes, Refactoring, Docs/Config.
+Nur Stichpunkte, maximal 15 Punkte. Dies ist Abschnitt 4 von 9:
+
+    +     return s[start:end].strip()
+    + def execute(match_data):
+    +     root = Path(__file__).resolve().parents[4]
+    +     log_file = root / "log" / "aura_engine.log"
+    +     report_file = root / "docs" / "bugfix" / "TODO" / "misrecognitions.md"
+    +     triggers = ["fehler melden", "logge fehler", "das war falsch", "fehlermeldung", "fehlerbericht", "fehler mail", "erkältungswelle"]
+    +     if not report_file.exists():
+    +         returns ="error Reporting-File not exist"
+    +         speak_inclusive_fallback(f"{returns}", 'de-DE')
+    +         return returns
+    +     try:
+    +         if not log_file.exists():
+    +             returns= "Log-Datei nicht gefunden."
+    +             speak_inclusive_fallback(f"{returns}", 'de-DE')
+    +             return returns
+    +         with open(log_file, "r", encoding="utf-8") as f:
+    +             lines = f.readlines()
+    +         error_line = None
+    +         for line in reversed(lines):
+    +             line_clean = line.strip()
+    +             if "chunk: 📢" in line_clean:
+    +                 is_trigger = any(t.lower() in line_clean.lower() for t in triggers)
+    +                 if not is_trigger:
+    +                     error_line = line_clean
+    +                     break
+    +         if not error_line:
+    +             returns= "Keine passende Fehl-Erkennung im Log gefunden."
+    +             speak_inclusive_fallback(f"{returns}", 'de-DE')
+    +             return returns
+    +         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    +         report_file.parent.mkdir(parents=True, exist_ok=True)
+    +         error_line = re.sub(r"(.)\1+", r"\1", error_line)
+    +         try:
+    +             error_line = error_line.rsplit("📢", 1)[1].strip()
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: config/maps/plugins/it-begriffe/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('JSON Datei', r'^\b(JSON|jagen|jacen|jason|schweifen)\s*(Datei|detail)(\b)$', 80, {'flags': re.IGNORECASE}),
+    +     ('JSON Export', r'^\b(jacen export)(\b)$', 80, {'flags': re.IGNORECASE}),
+    +     ('das LanguageTool', r'\b(das) (liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
+    +     ('LanguageTool', r'\b(liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
+    +     ("des LanguageTool's", r'\b(des link w\w+ tools)(\b)', 80, {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    +     ('Manjaro Linux', r'^(whatchado|Mönch|matcha wo) (Linux|Carolin\w*)$', 80, {'flags': re.IGNORECASE}),
+    +     ('Linux Manjaro', r'^(Linux) (man Karo|mal jaro|wird jaro|matcha rub)$', 80, {'flags': re.IGNORECASE}),
+    +     ('Linux Manjaro', r'^(Linux) ma\w*\s*\w*a\s*r[ou]m?$', 80, {'flags': re.IGNORECASE}),
+    +     ('Linux Manjaro', r'^(velux) (matcha|wird jaro|wird jaro|mit jaro)$', 80, {'flags': re.IGNORECASE}),
+    +     ('Linux Manjaro', r'^velux m\w+\s*[ou]$', 80, {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Programm geladen. Viel Spaß', r'^(Progra[m]+ loaded)$', 80, {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Python', r'^(\b)(B2026-0131-2125righton|breit schon|Fallschirm|peitschen)(\b)$', 75, {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('0 A.D.', r'\bzewa d\b', 82, {'flags': re.IGNORECASE}),
+    +     ('0 A.D. spiel', r'\bzewa d spiel\W*\b', 82, {'flags': re.IGNORECASE}),
+    +     ('GitHub SL5', r'\bgithub es sind 5\b', 82, {'flags': re.IGNORECASE}),
+
+FILE: config/maps/plugins/it-begriffe/php/codeigniter/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('~projects/php/codeigniter/', r'^\b(codeigniter|Gotik Dieter|gothic Dieter)(\b)$', 80, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('~projects/php/codeigniter/', r'^\b(code|gothic|Gotik)\s*(igniter|ignite|eignete|knipser|igniter|Dieter|Dieter|wird|Wii|nette)(\b)$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+
+FILE: config/maps/plugins/ki-maker-space/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('ki-maker.space', r'^(ki-maker|ki[\s]*make[\se]*space|k i [\s]*make[\s\w]*space|space|ki weckers|KI im weg ist|KI Säcke Espe|Kain weggesprengt|K \w*\s*make space|KI es|K i \w+ \w*|ki menkes)\s*\w*$', 60, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Gregor Schulte, 07071- 6395627 Gregor.Schulte@ki-maker.space', r'^(Gregor|Schulte|ki-maker.space)\s*\w*$', 80, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Bulsat', r'^(Büro ki-maker.space)\s*\w*$', 85, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+
+FILE: config/maps/plugins/linux_commands/de-DE/FUZZY_MAP_pre.py
+  In BenachrichtigungenPosition =:
+  In BenachrichtigungenPosition =:
+  In FUZZY_MAP_pre = [:
+    +     (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$', 75, {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('AutoKey', r'\bAuto k\b', 82, # min_accuracy
+    +  {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, # min_accuracy
+    +  {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, # min_accuracy
+    +  {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('find . -type f -path "*zip.py"', r'^(find files|finde Dateien|Suche Dateien)$', 80, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    +     ('pkill -f', r'^(kill process|Prozess beenden|pkill)$', 85, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('sed -i', r'^(sed replace|ersetze in Datei|sed Ersetzung)$', 80, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('cat -n', r'^(cat numbered|cat mit Zahlen|zeige nummeriert|Zeige numerisch)$', 80, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('find . -type f -exec file -b {} + | sort | uniq -c', r'^(alle) (Dateitypen|Metadaten)$', 80, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('grep -n "text" file | xclip -selection clipboard', r'^(grep nach Kate|suche und kopiere|grep in Zwischenablage)$', 80, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('pkill -f type_watcher; sleep 0.1; ./scripts/sh/type_watcher_keep_alive.sh &', r'^(Watcher neu starten|restart Watcher)$', 85, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('tail -20 ~/projects/py/STT/log/type_watcher.log', r'^(zeige letzte logs|show recent logs|letzte Log Einträge)$', 80, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('git show HEAD > gitDiff.txt; kate gitDiff.txt', r'^(zeige letzten Commit|show last commit|letzter Commit Diff)$', 85, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     ('ps aux | grep type_watcher', r'^(prüfe Watcher Prozesse|check Watcher processes|zeige Watcher Prozesse)$', 85, # min_accuracy
+    +  {
+  In FUZZY_MAP_pre = [:
+    +     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: config/maps/plugins/linux_commands/en-US/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('AutoKey', r'\bAuto k\b', 82, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ("gdu",
+  In FUZZY_MAP_pre = [:
+    +     ("ncdu",
+
+FILE: config/maps/plugins/numbers_to_digits/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('1', r'(\b|\d)(one)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('2', r'(\b|\d)(two)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('3', r'(\b|\d)(three)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('4', r'(\b|\d)(four)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('5', r'(\b|\d)(five)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('6', r'(\b|\d)(six)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('7', r'(\b|\d)(seven)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('8', r'(\b|\d)(eight)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('9', r'(\b|\d)(nine)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('10', r'(\b|\d)(ten)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('15', r'(\b|\d)(fifteen)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('0', r'(\b|\d)(null)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('1', r'(\b|\d)(eins)(\b|\d)', 99, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('2', r'(\b|\d)(zwei|Zuruf|zwo|u)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('3', r'(\b|\d)(drei)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('4', r'(\b|\d)(vier)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('5', r'(\b|\d)(fünf)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('6', r'(\b|\d)(sechs|schecks)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('7', r'(\b|\d)(sieben|schieben)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+    +     ('8', r'(\b|\d)(acht)(\b|\d)', 87, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: config/maps/plugins/standard_actions/bookmark_link_url_navigator/de-DE/Copy-Shop/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('Ferdinand-Lassalle-Straße 17-19, 72770 Reutlingen', r'^(Copy-Shop|Copyshop).*Betzingen\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Ferdinand-Lassalle-Straße 17-19, 72770 Reutlingen', r'^(Betzingen).*(Copy-Shop|Copyshop)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.openstreetmap.org/#map=18/48.491606/9.156450', r'^(Betzingen).*(Copy-Shop|Copyshop)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+
+FILE: config/maps/plugins/standard_actions/bookmark_link_url_navigator/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('https://events.ccc.de/search/?s=T%C3%BCbingen', r'^(CCC)\s*Veranstaltungen\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.bitsundso.de/bus982/transcript/', r'^(bus982)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://mastodon.social/@bitsundso', r'^bitsundso\b\s*(mastodon\w*)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://social.tchncs.de/@bitsundso@mastodon.social', r'^bitsundso\b\s*(tchncs\w*)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://mastodon.social/@bitsundso', r'^bitsundso\b\s*(Bluesky\w*)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.bitsundso.de/impressum/', r'^bitsundso\b\s*(impressum)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('info@undsoversum.de', r'^bitsundso\b\s*(Email)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.wueste-welle.de/broadcasts/livestream', r'^(Radio wüste welle live\w*|wüste welle live\w*)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.wueste-welle.de/', r'^(Radio wüste welle|wüste welle)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://lora924.de/livestream/live-horen/', r'^(LORA München\w*)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.freies-radio.de/', r'^(Freies Radio .*Stuttgart)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.youtube.com/gbsstuttgart', r'^(Archiv Freies Radio .*Stuttgart)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://regex101.com/', r'^(?:rege?x|reg ex|regex101|regex 101|reg-?ex101|reg\-?ex|reg ex|expression|regularexpression|reg(ular)?exp|reg(e|ä)x|reschex|resch-ex|reschex101|regex\s*tester|regexp\s*tester|regex\s*test|regex\s*seite|regex\s*seite|regecks|regeks|regeks101|regexseite|regexportal|regextool|regex\s*online|online\s*regex|regex\s*hilf(e|en)|regex\s*hilfe|regex\s*webseite|regex\s*website)\s*$', 60, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.bunterbuchladen.de/veranstaltungen', r'^(Bunter|Runter)\s*(Buchladen)\s*(Veranstaltungen)$', 60, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+
+FILE: config/maps/plugins/standard_actions/count_loud/count_loud.py
+  In import subprocess:
+  In def speak(text)::
+  In def on_folder_change_OFF(current_dir=None)::
+    +         speak_inclusive_fallback(f"out DE: {i}", 'en-US')
+
+FILE: config/maps/plugins/standard_actions/count_loud/de-DE/count_loud.py
+  In import subprocess:
+  In def on_file_load()::
+    +         speak_inclusive_fallback(f"in DE: {i}", 'de-DE')
+  In def on_plugin_load()::
+    +         speak_inclusive_fallback(f"in DE: {i}", 'de-DE')
+  In def on_reload()::
+    +         speak_inclusive_fallback(f"in DE: {i}", 'de-DE')
+  In def on_folder_change(current_dir=None)::
+    +         speak_inclusive_fallback(f"in DE: {i}", 'de-DE')
+
+FILE: config/maps/plugins/standard_actions/count_loud/de-DE/count_loud2.py
+  In import subprocess:
+  In def on_file_load()::
+    +     speak_inclusive_fallback("started 1", 'de-DE')
+  In def on_plugin_load()::
+    +     speak_inclusive_fallback("einmal nur 20", 'de-DE')
+
+FILE: config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('', r'^einen$', 100, {'flags': re.IGNORECASE}),
+    +     ('', r'^einens$', 100, {'flags': re.IGNORECASE}),
+    +     ('', r'^\s*einen\s*$', 100, {'flags': re.IGNORECASE}),
+    +     ('', r'^\s*einens\s*$', 100, {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    +     ("http://___:8831/",
+  In FUZZY_MAP_pre = [:
+    +         (?:Prüft|prüfe|früchte|trüffel|frevel|pro[ovb]e?|check|scan|test|validate)\s+(?:for\s+)? 
+  In FUZZY_MAP_pre = [:
+    +     ) 
+    +     $
+  In FUZZY_MAP_pre = [:
+    +     {'flags': re.IGNORECASE | re.VERBOSE,
+    +      'only_in_windows': ['Konsole', 'Terminal', 'Console', 'Code', 'VSC', 'Alacritty']
+    +      }
+  In FUZZY_MAP_pre = [:
+    +     ('blocked_Terminal',
+    +      r' disabled_2026-0117-1336___ ^.*$',
+    +      70,
+    +     {'flags': re.IGNORECASE | re.VERBOSE,
+    +      'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'Code', 'VSC', 'Alacritty']
+    +     }
+    +     ),
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    +         gemini | cheminée | gb\ dreht | kuchen\ gemini | gucken\ sie | 
+    +         (?:google|googeln|gogol|gucke|goris|gut|gb|kugeln|brooke|coral|cool|obwohl) \s+
+  In FUZZY_MAP_pre = [:
+    +             gb |
+  In FUZZY_MAP_pre = [:
+    +             gehe\ mit |
+    +             geben\ ihnen\ ein |
+    +             gibt |
+  In FUZZY_MAP_pre = [:
+    +             eminent |
+  In FUZZY_MAP_pre = [:
+    +             gaming\ nein | gaming | 
+  In FUZZY_MAP_pre = [:
+    +             jimmy\ nein 
+    +             jimmy\ knight|
+    +             jimmy\ lai |
+    +             jimmy\ neu |
+  In FUZZY_MAP_pre = [:
+    +             kapital | aviv | leicht | eingestuft | chapiteau | my\s+style | seminare | feminin | gemini\ ei |
+    +             will\ termine
+  In FUZZY_MAP_pre = [:
+    +         , 70, {
+    +        'flags': re.IGNORECASE,
+    +        'only_in_windows': [r'firefox', 'chrome', 'brave'],
+    +     }),
+  In FUZZY_MAP_pre = [:
+    +         'flags': re.IGNORECASE,
+    +         'only_in_windows': [r'firefox', 'chrome', 'brave'],
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    +     ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)\??$', 95, {
+    +         'flags': re.IGNORECASE,
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: config/maps/plugins/standard_actions/de-DE/shopping_list.py
+  In def execute(match_data)::
+    +     print("text_after_replacement")
+
+FILE: config/maps/plugins/standard_actions/de-DE/weather.py
+  In def execute(match_data)::
+    +     BASE_DIR_FOR_CACHE = Path(__file__).parent.parent.parent.parent.parent.parent # <- Korrigieren Sie dies auf Ihren stabilen TMP-Pfad!
+
+FILE: config/maps/plugins/standard_actions/de-DE/weather_config.ini  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/de-DE/wiki_search_online.py
+  In def get_robust_summary(search_term, lang_code=de)::
+    +         print("DEBUG: ✅ Scraping erfolgreich.")
+  In def get_robust_summary(search_term, lang_code=de)::
+    +     print("DEBUG: ❌ Scraping fehlgeschlagen.")
+
+FILE: config/maps/plugins/standard_actions/en-US/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('good evening', r'good Morning', 95, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LT_SKIP_RATIO_THRESHOLD']} ),
+
+FILE: config/maps/plugins/standard_actions/get_suggestions/en-US/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('good evening', r'good Morning', 95, # min_accuracy
+    +  {'flags': re.IGNORECASE, 'skip_list': ['LT_SKIP_RATIO_THRESHOLD']} ),
+
+FILE: config/maps/plugins/standard_actions/get_suggestions/get_suggestions.py
+  In import sys:
+  In import logging:
+  In from typing import Dict, Set, List:
+    + def _load_heavy_deps():
+    +     global nltk, wordnet, cologne_encode, jellyfish, pyperclip, requests, subprocess, argparse, json
+  In COOLDOWN_SECONDS = 2:
+    + LANGUAGETOOL_BASE_URL = "http://localhost:8081/v2/check"
+  In if __name__ == __main__::
+    +     _load_heavy_deps()
+
+FILE: config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
+  In CONFIG_DIR = Path(__file__).parent:
+    + nonsense_start_word = r'(?:(an|ein|eine|einen|essen)\s*)?'
+  In CONFIG_DIR = Path(__file__).parent:
+    + Englisch = fr'{nonsense_start_word}(Denglisch|englisch\w*|english\w*|endlich|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe|ähnlich)\b\s*'
+    + toggleCmd=r'\s*(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|abschaffen|abschied|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)\s*'
+  In FUZZY_MAP_pre = [:
+    +     ('en', fr'^{Englisch}{toggleCmd}$', 95, {
+  In FUZZY_MAP_pre = [:
+    +     ('de', r'^(\w*bersetzung|heizung|gewinnschätzungen) (deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)$', 95, {
+    +         'flags': re.IGNORECASE,
+    +         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    +     }),
+  In FUZZY_MAP_pre = [:
+    +     ('de', r'^(\w*bersetzung|heizung|zum) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)$', 95, {
+  In FUZZY_MAP_pre = [:
+    +     ('de', r'^(\w*besetzung) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)$', 95, {
+  In FUZZY_MAP_pre = [:
+    +     ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*bersetzung)\b', 95, {
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+
+FILE: config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py.off.backup.py
+    + readme = """
+    + 'Translate Shell .. is a versatile and powerful command-line translator that leverages the translation services of major providers like
+    + Google Translate,
+    + DeepL, and
+    + Microsoft Translator.
+    + Its design prioritizes ease of use and extensibility, making it an ideal companion for Linux and other Unix-like operating systems'
+    + (10.11.'25 18:58 Mon, https://itsfoss.gitlab.io/post/how-to-use-google-translate-from-commandline-in-linux/ )
+    + Arch-Users may use:
+    + source .venv/bin/activate
+    + pip install --upgrade pip
+    + yay -S translate-shell
+    + here's a list of common language codes you want use:
+    +     en: English
+    +     de: German
+    +     jp: Japanese
+    +     pr-br: Brazilian Portuguese
+    +     fr: French
+    +     es: Spanish
+    +     it: Italian
+    +     pt: European Portuguese
+    +     ru: Russian
+    +     nl: Dutch
+    +     zh-CN: Chinese (Simplified)
+    +     zh-TW: Chinese (Traditional)
+    +     pl: Polish
+    +     tr: Turkish
+    +     sv: Swedish
+    +     da: Danish
+    +     no: Norwegian
+    +     fi: Finnish
+    +     cs: Czech
+    +     hu: Hungarian
+    +     ro: Romanian
+    +     gr: Greek
+    +     th: Thai
+    +     ko: Korean
+    +     ar: Arabic
+    +     he: Hebrew
+    +     hi: Hindi
+    +     id: Indonesian
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: config/maps/plugins/standard_actions/language_translator/de-DE/toggle_translation_mode.py
+  In def speak(text)::
+    +     except Exception as e33:
+    +         print(f"33: STDOUT (TTS-Fallback): {e33}")
+    +         speak(f"33: STDOUT (TTS-Fallback): Fehler {e33}")
+  In def execute(match_data)::
+    +             backup_path = RULES_FILE_PATH.with_name(RULES_FILE_PATH.name + ".off.backup.py")
+    +             shutil.copy2(RULES_FILE_PATH, backup_path)
+
+FILE: config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py
+  In import sys:
+  In import logging:
+  In PYTHON_EXECUTABLE = project_dir / .venv / bin / python3:
+    + def get_current_signature(lang_target, window_title):
+    +     prefixes = LANGUAGE_PREFIXES
+    +     prefix = prefixes.get(lang_target.lower(), "")
+    +     current_time = time.time()
+    +     brand_text = ""
+    +     cooldown = 3600  # Default
+    +     if hasattr(settings, 'SIGNATURE_MAPPING'):
+    +         for pattern, config in settings.SIGNATURE_MAPPING.items():
+    +             if re.search(pattern, str(window_title), re.IGNORECASE):
+    +                 brand_text, cooldown = config
+    +                 break
+    +     if brand_text:
+    +         with SEQUENCE_LOCK:
+    +             last_time = SIGNATURE_TIMES.get(window_title, 0)
+    +             if (current_time - last_time > cooldown):
+    +                 SIGNATURE_TIMES[window_title] = current_time
+    +                 return f" {prefix} {brand_text}".strip()
+    +     return ""  # Cooldown aktiv -> Keine Signatur
+    + def get_smart_signature(lang_target, window_title):
+    +     prefix = LANGUAGE_PREFIXES.get(lang_target.lower(), LANGUAGE_PREFIXES["DEFAULT"])
+    +     active_sig_text = ""
+    +     active_cooldown = 3600
+    +     for pattern, config in SIGNATURE_MAPPING.items():
+    +         if re.search(pattern, str(window_title), re.IGNORECASE):
+    +             active_sig_text, active_cooldown = config
+    +             break
+    +     with SEQUENCE_LOCK:
+    +         current_time = time.time()
+    +         last_time = SIGNATURE_TIMES.get(window_title, 0)
+    +         if (current_time - last_time > active_cooldown):
+    +             SIGNATURE_TIMES[window_title] = current_time
+    +             full_sig = f"{prefix} {active_sig_text}".strip()
+    +             return full_sig
+    +     return ""  # Cooldown aktiv oder keine Signatur konfiguriert
+  In def execute(match_data)::
+  In def execute(match_data)::
+    +         _active_window_title = get_active_window_title_safe()
+    +         current_sig = ""  # Standard: Keine Signatur
+    +         _active_window_title = getattr(settings, 'active_window_title', 'Unknown')  # Falls verfügbar
+    +         current_sig = get_current_signature(lang_target, _active_window_title)
+    +         translated_text = f"{translated_text} (original:'{original_text}' {current_sig})."
+  In def execute(match_data)::
+  In def execute(match_data)::
+  In def execute(match_data)::
+    +         with open("/tmp/stt_debug_error.txt", "a") as f:
+  In def execute(match_data)::
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: config/maps/plugins/standard_actions/language_translator/en-US/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-arlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-delang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-eslang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-frlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-hilang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-jalang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-kolang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-pllang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-pt-BRlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-ptlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.i18n/CLI_Workflow_Tools-zh-CNlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
+  In import sys:
+  In else::
+  In for cmd in REQUIRED_COMMANDS::
+  In if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then:
+    +     else
+  In if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then:
+    +     else
+  In HOME_DIR_POSIX = Path(home_dir_str).as_posix():
+    + suche_text = r'grep -rn "test1\|string2\|READ_BACK" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__"'
+  In FUZZY_MAP_pre = [:
+    + FUZZY_MAP_pre = [
+  In FUZZY_MAP_pre = [:
+    +      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    +       'only_in_windows': ['Konsole', 'konsole', 'Console']
+    +       }),
+    +     (f"{suche_text}",
+    +      r'^(?:suche(?:n|r|st)?|search|find)\b(?:\s+(?:nach|the))?\s+\b(?:text|string)s?\b|\b(?:text|string)s?\b(?:\s+(?:nach|the))?\s+\b(?:suche(?:n|r|st)?|search|find)$',
+    +      90,
+    +      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    +       'only_in_windows': ['Konsole', 'konsole', 'Console']}),
+  In FUZZY_MAP_pre = [:
+    +     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    +      'only_in_windows': ['Konsole', 'konsole', 'Console']
+    +      }),
+  In FUZZY_MAP_pre = [:
+    +      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    + 'only_in_windows': ['Konsole', 'konsole', 'Console',
+    +         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+    +       }),
+  In FUZZY_MAP_pre = [:
+    +      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    + 'only_in_windows': ['Konsole', 'konsole', 'Console',
+    +         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+    +       }),
+  In FUZZY_MAP_pre = [:
+    +      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    +         'only_in_windows': ['Konsole', 'konsole', 'Console',
+    +         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+    +       }),
+  In FUZZY_MAP_pre = [:
+    +      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    +       'only_in_windows': ['Konsole', 'konsole', 'Console',
+    +                           r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+    +       }),
+  In FUZZY_MAP_pre = [:
+    +      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+  In FUZZY_MAP_pre = [:
+    +       'only_in_windows': ['Konsole', 'konsole', 'Console',
+    +                           r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+  In FUZZY_MAP_pre = [:
+    +       }),
+  In FUZZY_MAP_pre = [:
+    +      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+  In FUZZY_MAP_pre = [:
+    +       'only_in_windows': ['Konsole', 'konsole', 'Console',
+    +                           r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+  In FUZZY_MAP_pre = [:
+    +       }),
+  In FUZZY_MAP_pre = [:
+    +     ('config/', r'\bzopfig\b', 90,
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-arlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-delang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-eslang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-frlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-hilang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-jalang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-kolang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-pllang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-pt-BRlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-ptlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/KiwixOfflineArticleExtractor_PythonDockerkiwixK.i18n/KiwixOfflineArticleExtractor_PythonDockerkiwixK-zh-CNlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-arlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-delang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-eslang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-frlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-hilang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-jalang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-kolang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-pllang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-pt-BRlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-ptlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/explain_was_ist_ein_Haus_search.i18n/explain_was_ist_ein_Haus_search-zh-CNlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/standard_actions/wikipedia_local/de-DE/wikipedia_local.py
+  In from urllib.parse import quote, unquote:
+  In def execute(match_data)::
+    +         'sebastian',
+  In Sebastian Lauffer ist ein deutscher Diplom-Wirtschaftsinformatiker, Softwareentw:
+    +  Er ist bekannt für seine Arbeit im Open-Source-Bereich und die Entwicklung des Einrückungsstils „SL5small“ (September 2017). Lauffer verbindet in seiner Tätigkeit Softwareentwicklung mit Coaching. Seit 2001 unterrichtet er diverse Programmiersprachen. Als Gründer von SL5.de entwickelt er datenschutzfreundliche Open-Source-Software wie das Voice-Framework „SL5 Aura“.
+  In Er ist bekannt für seine Arbeit im Open-Source-Bereich und die Entwicklung des:
+    +  <ref>{{Internetquelle |url=https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil |titel=Wikipedia-Archiv: Einrückungsstil#SL5small-Stil |abruf=2017-12-29}}</ref>
+  In Er ist bekannt für seine Arbeit im Open-Source-Bereich und die Entwicklung des:
+    +  == Wirken ==
+    +  Lauffer verbindet in seiner Tätigkeit Softwareentwicklung mit Coaching. Seit 2001 unterrichtet er diverse Programmiersprachen. Als Gründer von SL5.de entwickelt er datenschutzfreundliche Open-Source-Software wie das Voice-Framework „SL5 Aura“.
+  In Lauffer verbindet in seiner Tätigkeit Softwareentwicklung mit Coaching. Seit 20:
+    +  Sebastian Lauffer hat zwischen 1991 und 1994 in seiner Freizeit PC-Spiele mit seinem Vater ein Spiel entwickelt.
+  In Sebastian Lauffer hat zwischen 1991 und 1994 in seiner Freizeit PC-Spiele mit se:
+    +  Spiel mit 13 jahren entwickelt:
+    +  Nachbau in JS: http://sl5.net/helper/js/paperscript/2p_r_13-09-03_23-52.html )
+    +  Nachbau in JS: https://www.youtube.com/watch?v=mIOnWFNfkPk )
+  In Nachbau in JS: https://www.youtube.com/watch?v=mIOnWFNfkPk ):
+    +  Der von Lauffer entwickelte '''SL5small-Stil''' ist ein platzsparender Einrückungsstil, der ursprünglich für die Skriptsprache AutoHotkey konzipiert wurde. Anstatt schließende Klammern jeweils in eine neue Zeile zu setzen, werden sie gesammelt am Ende des Blocks platziert, ähnlich wie in Lisp.<ref>{{Internetquelle |url=https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil |titel=Wikipedia-Archiv: Einrückungsstil#SL5small-Stil |abruf=2017-12-29}}</ref>
+  In Der von Lauffer entwickelte SL5small-Stil ist ein platzsparender Einrücku:
+    +  Seite „Einrückungsstil“. In: Wikipedia – Die freie Enzyklopädie. Bearbeitungsstand: 8. September 2017, 10:59 UTC. URL: Wikipedia archive.org Einrückungsstil#SL5small-Stil https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil (Abgerufen: 29. 12 2017, 20:01 UTC)
+
+FILE: config/maps/plugins/standard_actions/zip_all/de-DE/FUZZY_MAP_pre.py
+  In from pathlib import Path:
+  In from pathlib import Path:
+  In CONFIG_DIR = Path(__file__).parent:
+  In CONFIG_DIR = Path(__file__).parent:
+  In FUZZY_MAP_pre = [:
+    +     ('find all zips', r'''^(
+
+FILE: config/maps/plugins/standard_actions/zip_all/de-DE/zip.py
+  In def check_and_unpack_zips()::
+  In def check_and_unpack_zips()::
+
+FILE: config/maps/plugins/volkshochschule_tue/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('Timo', r'\b(ti\w+r|T\w+i\w+o)\b', 70, {'flags': re.IGNORECASE,
+    +         'only_in_windows': [r'mail',r'gmail',r'mail',r'posteingang']}),
+
+FILE: config/maps/plugins/vsp_rt/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('Torsten Hau,Katja Janssens,Harald Uetz,Juliana Kunrad', r'^\b(V\s*S\s*P|V\s*[FS]\s*B)\s*(Person\w+)\b$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Torsten Hau', r'^\b(V\s*S\s*P|V\s*[FS]\s*B|Frau\s*s\s*p)\s*(Geschäftsf\w+|Chef)\b$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Torsten Hau ist gerne mit dem MTB unterwegs', r'^(\w+ubis|Hobbys)\b.*(V\s*S\s*P|V\s*[FS]\s*B|Frau\s*s\s*p)\s*(Geschäftsf\w+|Chef)\b$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Herr Schröer', r'^(Herr Schröder|Herr hersteller|Herr Schröer|herr schrill)\b$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Schröer', r'^(Schrö\w*r|schwör\w*|schworen|schon besorgt)\b$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Ergotherapie Schröer', r'^Ergo\w* (Schrö\w*|schwör\w*|schworen|schon besorgt)\b$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Schröer Ergotherapie', r'^(Schrö\w*|schwör\w*|schworen|schon besorgt)\b Ergo\w*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Schröer Ergotherapie', r'^(Früher|Speyer) (eher|ergo|erst)\b$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+
+FILE: config/maps/plugins/wannweil/de-DE/Abfallterminuebersicht-01-12-2026-1.pdf
+    + %PDF-1.7
+    + 4 0 obj
+    + <<
+    + /Filter /FlateDecode
+    + /Length 21335
+    + >>
+    + stream
+    + x���A�"[�-ُQ��-����ת�
+��k����l��Up�d�"���GW3���_�\ο��_�������������v��t|��������~�s�����q=���_�q:�.ǯ������\������__�η��\����ï����G~ސ�V~���W�����������Ap���x<���.��_��|xu)ɍp8�-���)~���������o�������8��q<�s8����������g~�����R�����x4�s��i����?SS z:���_�|���zx�ۭPl��ǚ�V.
+    + �����
+    + |�����P(��?�c�+z�~�\�ߖ�?Q>������7gS0z�s�l��Y}�Ǡ߾~�s�ƞ�\<[�ħBqܚy��\��ų��?1Q��ͼ�V.
+    + ����xy���ߔo��zl��rQ�ga.���?R?�۩����E����x�n��ew�~=���_��)��=�x�~=��ùP��y�����g>�����W�#��S3/���=�8}=�aϼ~������E���\<[=�/��zn��rQ�ga.�����������E���\l�/��?������V�Ӷ����ų�y'u-������9/���=���_���W3/�����/�gs�}���=��C��n�K3/���=�8�R��<?~��;>�<�=�x�w-��Y����;�c��E���\<[O��Z��y����K�eg.
+    + �����z~��]�����9���\�Y���o����S>��ǯ���
+    + �@�|.�����:�ۭŜ��g>�֟S��8~�[��(��~6�֟S��8]�����?�o*sQ���l.���~"���������y�s�\�Y��G�s�/�y�����s��V.
+    + �,�ţ�����?�_�f��V.
+    + ������(�f��V���3��˹�F>(�.��z��K�g.�s�
+�l.._�7�Aq�����E���?��g��o��zk�;�����?��G��˽�#j�;��=󹸞�o�b����y{�s�l��/��[{�\[�
+�l.������򫽿`.�s�
+�l.������zh�/��=��o��?���쿕�4�����ڽ9�m��7�Eq����ų�{sp;���[�(����\�O���?},[��u���CN�Z�E�����u�����ï�fK�q���	�v�[��
+    + j�t������÷῎��Ir:5��/����?|#���
+    + ����@Lrz�\�-���	?lIrے���O��ږ0��Q�I(��=��D�"�@.
+    + ���ŧ�D~G
+    + �@����8��O��3�G(n��
+    + rQ����_�
+)���)��=��,�%v3�@���3���ZBa7
+    + �@�|:�k	��L(��=��<n_�\\�%
+rQ�g>����(�E�����	�
+Q(��=�i�SC�S0z��Y�O(l�B����g>���(�E���\�
+    + �P z�sQ�O(l�B�\�Y��P���(�3������WC�S0�iۋ���9�
+Q(��=��ڻ�{5D�@.�w?ss$
+    + �P z�sQ��NQ�N����g>���(�E���\�
+    + �P z�sQ�O(l�B�\�Y��������(�3��b|BaC
+    + �<�=�(�'6D�@.�C?�ss$
+    + �P ű�����,�N�>(6�_rQ��������N�㗺{Bd.
+    + �̿#�~�¶,�E�����W(l�B�\�Y���~�Ŗ��E���w�دPؖ�9Oc��;�l��$��8��/��=��,.vv�@.�s�S�.Ovv�@.��~��]�(��B�\�~��])�vv;sQ\����t>[��?(z�
+    + �<�=��,&06��@.�S���FQ6��@.���fs�(
+    + ��P Ź�fs�(
+    + ��P ť�fN���o烢���\��_\o�S��S�����\��OE��UQآ�9Oc��;R�h(lQC�\�~���(lQC�\[�S�vU���@.�s�S?��<[��?(�����E����u;��C�F���8n�V]p���.X$�ͺ�xMb�\0ɱ߮��$V� ����?����?���?�}U�
+<���IP���h�O>���[���{.�|���V�f�s�,
+    + �W%ErS�����6��V��M���ŧ�Y|�J��H���⯞��@n��,̅�,)�sI�\��ga.�gIA�K��H��\�ϒ�>��M�����%M*)��"=+sA3J
+    + �TR$7EzV�f2��@n��,̅�()hRI�\��ga.dFIA�J��H��\Ȍ��&��M�����%M*)��"=+sA3J
+    + �TR$7Ez^Q�yf�~]ڹx�����l-�:
+=ӹ�����Hn��s�+
+    + �\R$7Ez�sk�#�yE��/�;�W���Hn��,̅�,(�sA�\��ga.�gIA�K��H��\�ϒ�>��M������%}.)��"=+s��g���rS�ga.�gIA�K��:
+=s!?K
+    + �\R$7š�ڹ�}.)����O���>��Mq�v�yEA�K��H��wD~����Hn���|G�gIA�K��H��w�~�@n��,|G�gIA�K��:
+=��YR��"�)ҳ0�򳤠�%ErS���:�����%ErS|�;u�yEA�K�䦸�;u�yI!�
+    + 䦸�;u�yEA�K��:
+=�)?K
+    + �\R$7ũ�fs�+
+    + �\R$7��o���}.)����o���}.)����o���E{?*�k��,L��((dRA�\��ga:eFIA�J��8��lnXEA�J����m67���I%ErS��m67��h�eXM����u۩V	\0ǭ�g�� �Ʌ"��N[0�&�HI.�c���I��ə
+    + ���������"U$�PHR�����Ϗ�?�o#s�#L��F�[yl�k`�-�!ls����������oUC�\�y�Y����67�E��������oUC�\�Y��ٝ��ܝ��(�3��bgCa�
+    + �<�=�(v6���@.
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: config/maps/plugins/wannweil/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+    +     ('Kirchentellinsfurt', r'\b(Kirchen\s*teilen|Kirchentellinsfurt|klirrend hält)\b', 82, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.kirchentellinsfurt.de/de/kontakt', r'\b(Rathaus|Kontakt)\b\s*\b(Kirchen\s*teilen|Kirchentellinsfurt)\b', 82, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.kirchentellinsfurt.de/de/kontakt', r'\b(rathaus klirrend hält)\b', 82, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Wannweil', r'\b(wen\s*Welpe)\b', 82, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Wannweil', r'\b(wen\s*Welpe)\b', 82, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Wannweil', r'^\s*(Wannweil|Annweiler|wann\s*weil|Wann\s*wann\s*weil|Wann\s*war\s*Herr|Wann\s*war\s*er|An\s*weil|Wann\s*weine\w*|Wann\s*wein|Van\s*weil|wann was)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura|lauf|lauf war)\b', 82, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    +     ('pragmatic minds GmbH 2019', r'\b(Paradigma Minds)\b', 75, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash.py
+    + SMTP_SERVER = "smtp.gmail.com"
+    + SMTP_PORT = 465
+    + script_dir = os.path.dirname(os.path.abspath(__file__))
+    + env_path = os.path.join(script_dir, '.env')
+    + if os.path.exists(env_path):
+    +     load_dotenv(dotenv_path=env_path)
+    + else:
+    +     print(f"Hinweis: Keine .env Datei in {script_dir} gefunden.")
+    + SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+    + APP_PASSWORD = os.getenv("APP_PASSWORD")
+    + RECEIVER_EMAIL = "sl5softwarelab@gmail.com" # Wo die Mail hin soll
+    + def sanitize_to_ascii(s: str, maxlen: int = None) -> str:
+    +     """
+    +     - Unicode normalisieren (NFKD), diakritische Zeichen trennen
+    +     - Non-ASCII entfernen (oder ersetzen)
+    +     - Steuerzeichen außer \t,\n,\r entfernen
+    +     - Optional kürzen
+    +     """
+    +     if s is None:
+    +         return ''
+    +     s = unicodedata.normalize('NFKD', s)
+    +     s = ''.join(ch for ch in s if not unicodedata.combining(ch))
+    +     replacements = {
+    +         '\u2013': '-', '\u2014': '-', '\u2018': "'", '\u2019': "'",
+    +         '\u201c': '"', '\u201d': '"', '\u00A0': ' '
+    +     }
+    +     for k, v in replacements.items():
+    +         s = s.replace(k, v)
+    +     s = s.replace('\x00', '')
+    +     s = re.sub(r'[^\x09\x0A\x0D\x20-\x7E]', '', s)
+    +     s = re.sub(r'\s+', ' ', s).strip()
+    +     if maxlen and len(s) > maxlen:
+    +         s = s[:maxlen-3].rstrip() + '...'
+    +     return s
+    + def send_mail_notification(subject, body):
+    +     msg = EmailMessage()
+    +     msg.set_content(body)
+    +     msg['Subject'] = subject
+    +     msg['From'] = SENDER_EMAIL
+    +     msg['To'] = RECEIVER_EMAIL
+    ... (gekuerzt nach 40 Zeilen)
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-arlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-delang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-eslang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-frlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-hilang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-jalang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-kolang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-pllang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-pt-BRlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-ptlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.i18n/check_trash_Anleitung-zh-CNlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/check_trash_Anleitung.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/python.sh  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/wannweil/de-DE/shopping_list.py
+  In def execute(match_data)::
+    +     print("text_after_replacement")
+
+FILE: config/maps/plugins/web-radio-funk/de-DE/FUZZY_MAP_pre.py
+  In FUZZY_MAP_pre = [:
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+    +     ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(dein\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www1.wdr.de/daserste/presseclub/index.html', r'^(presseclub|pressig)\w*\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.wueste-welle.de/broadcasts/livestream', r'^(Radio wüste welle live\w*|wüste welle live\w*)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.wueste-welle.de/', r'^(Radio wüste welle|wüste welle)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://lora924.de/livestream/live-horen/', r'^(LORA München\w*)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.freies-radio.de/', r'^(Freies Radio .*Stuttgart)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+  In FUZZY_MAP_pre = [:
+    +     ('https://www.youtube.com/gbsstuttgart', r'^(Archiv Freies Radio .*Stuttgart)\s*$', 70, # min_accuracy
+    +  {'flags': re.IGNORECASE}),
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py
+  In Guten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).:
+    +         'flags': re.IGNORECASE,
+    +         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
+  In Es gibt keine Accounts, Passwörter, Logins.:
+    +         'flags': re.IGNORECASE,
+    +         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
+  In Es gibt keine Accounts, Passwörter, Logins.:
+    +     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100, # min_accuracy
+  In Es gibt keine Accounts, Passwörter, Logins.:
+    +     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100, # min_accuracy
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-arlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-delang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-eslang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-frlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-hilang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-jalang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-kolang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-pllang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-pt-BRlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-ptlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/Local_LLM_Integration.i18n/Local_LLM_Integration-zh-CNlang.md  [nur Name, kein Diff]
+
+FILE: config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.py
