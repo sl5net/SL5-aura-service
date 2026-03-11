@@ -53,7 +53,7 @@ else
       fi
     fi
 
-    echo "🖥️  Display server: X11 detected. Using $INPUT_METHOD for text input."
+    echo "🖥️  Display server: X11 detected. Using ⌨️ $INPUT_METHOD 🔣 for text  input."
 fi
 
 echo "Using: $INPUT_METHOD"
