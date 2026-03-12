@@ -915,7 +915,11 @@ def process_text_in_background(logger,
     _active_window_title = get_active_window_title_safe()
     # end = time.time()
     # duration = end - start # its about 3milliSeconds
-    if settings.DEV_MODE:
+    if settings.DEV_MODE or True:
+        # Becouse it's a new feature and we're not quite sure if it works very well on Windows, it's good to have output  (original:'weil es ein neues feature ist und wir noch nicht ganz sicher sind ob es auf windows sehr gut funktioniert ist es doch gut über eine ausgabe ' ). 12.3.'26 06:36 Thu
+
+        # It is also helpful when create rules if you know exactly which names are being used
+        # todo : set not always true maybe
         print(f"window_title: 🔵{_active_window_title} ")
 
     # start = time.time()
