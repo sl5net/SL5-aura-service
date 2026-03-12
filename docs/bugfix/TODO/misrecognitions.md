@@ -38,3 +38,9 @@ deutschlehrer
 deutsch webradio
 📢 2026-03-11 13:42:19:
 ich hab angefangen das der computer die aufgaben die während der förster schule gemacht haben von aleine löst
+📢 2026-03-11 16:39:49:
+natürlich nicht den zoras col
+📢 2026-03-12 05:39:04:
+rohre konfiguration
+📢 2026-03-12 06:22:35:
+ich werde bericht

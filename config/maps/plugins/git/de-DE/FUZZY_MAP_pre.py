@@ -24,8 +24,20 @@ commitGit = r'(Commit|Komet|Komik|Comics|Gummi|gummis|kommt|kommend|mit|hitch|ko
 FUZZY_MAP_pre = [
 
 
+
+    # EXAMPLE: versionsnummer
+    ('git describe --tags --abbrev=0', r'^(version number|versionsnummer)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+'only_in_windows': ['Konsole', 'konsole', 'Console',
+        r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+      }),
+
     # EXAMPLE: no verify
-    ('n --no-verify', r'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80, {'flags': re.IGNORECASE}),
+    ('n --no-verify', r'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80,      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+'only_in_windows': ['Konsole', 'konsole', 'Console',
+        r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+    }),
 
     #no-verifyno-verifyl --no-verifyNumeri fein
 
@@ -34,7 +46,11 @@ FUZZY_MAP_pre = [
     ('PUNCTUATION_MAP ', r'\b(punkt chemnitz)\b', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit
-    ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80,      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+'only_in_windows': ['Konsole', 'konsole', 'Console',
+        r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+    }),
+
 
     # happens very seldem :D 18.11.'25 17:53 Tue
     # EXAMPLE: Quarzwerk gibt komm Mitmensch
@@ -42,7 +58,11 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: gibt kaum mit
-    ('git commit ', r'\bgibt kaum mit\w*', 80, {'flags': re.IGNORECASE}),
+    ('git commit ', r'\bgibt kaum mit\w*', 80,     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+'only_in_windows': ['Konsole', 'konsole', 'Console',
+        r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+    }),
+
 
     # EXAMPLE: git commit
     ('git commit ', r'\bgit commit\b\s*', 80, {'flags': re.IGNORECASE}),
@@ -57,7 +77,11 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: git clone
-    ('git clone ', rf'^\s*{gitGit}\s+(klar|klon|clone)\s*$', 80, {'flags': re.IGNORECASE}),
+    ('git clone ', rf'^\s*{gitGit}\s+(klar|klon|clone)\s*$', 80,      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+'only_in_windows': ['Konsole', 'konsole', 'Console',
+        r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+    }),
+
 
     # git@github.com:kiwix/kiwix-tools.git
     #

@@ -18,6 +18,175 @@ import subprocess  # Added for espeak support
 VERSION = "1.1.0"
 # AUTHOR: AI Assistant for sl5net
 
+
+
+"""
+ToDo:
+us this somwhre:
+
+        exp_thread202603111649 = speak(speech_text202603111649, blocking=False)
+        print(speech_text202603111649)
+
+                speech_text202603111649 = generate_announcement_text(content)
+        # mod_thread = speak(speech_text202603111649, blocking=False,use_espeak=True)
+
+
+"""
+
+
+
+def get_markdown_context(f_path, max_headers=2):
+    """
+    Liest die Datei und extrahiert den Dateinamen sowie die ersten Überschriften.
+    """
+    headers = []
+    try:
+        with open(f_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                # Sucht nach Markdown-Überschriften (z.B. # Titel oder ## Untertitel)
+                match = re.match(r'^#+\s+(.*)', line)
+                if match:
+                    # Wir säubern die Header von eventuellen Markdown-Links oder Formatierungen
+                    clean_header = re.sub(r'\[(.*?)\]\(.*?\)', r'\1', match.group(1)).strip()
+                    headers.append(clean_header)
+                if len(headers) >= max_headers:
+                    break
+    except Exception:
+        pass
+
+    return {
+        "filename": os.path.basename(f_path).replace('_', ' ').replace('.md', ''),
+        "headers": headers
+    }
+
+def generate_announcement_text(f_path): # f_path
+    """
+    Erstellt einen natürlich klingenden deutschen Einleitungssatz.
+    """
+    context = get_markdown_context(f_path)
+
+    # Verschiedene Varianten für den Einstieg
+    opening_phrases = [
+        "Alles klar, schauen wir uns das mal an.",
+        "Ah, interessant. Hier haben wir das nächste Dokument.",
+        "So, als nächstes steht diese Aufgabe an.",
+        "Mal sehen, was wir hier als Nächstes bearbeiten müssen.",
+        "Ich öffne jetzt die Datei.",
+        "Kommen wir zum nächsten Punkt auf der Liste.",
+        "Oh, das sieht nach einem wichtigen Dokument aus."
+    ]
+
+    # Liste mit "Entwickler-Sprüchen" für die Abwechslung
+    intros = [ # noqa: F841
+
+        "Alright, let's see what we have here.",
+        "Ah, interesting. Next document on the list.",
+        "Okay, moving on to the next task.",
+        "Let's check out this one.",
+        "Next up is a document about...",
+        "Scanning the next file now. Let's focus.",
+        "Right, this looks like an important one."
+    ]
+
+    # Den Dateinamen einbauen (etwas natürlicher ausgesprochen)
+    file_intro = f"Es geht um die Datei {context['filename']}."
+
+    # Die Überschriften einbauen, falls vorhanden
+    header_info = ""
+    if context['headers']:
+        if len(context['headers']) == 1:
+            header_info = f" Das Hauptthema scheint {context['headers'][0]} zu sein."
+        else:
+            header_info = f" Darin geht es vor allem um {context['headers'][0]} und {context['headers'][1]}."
+
+    # Alles kombinieren
+    full_text = f"{random.choice(opening_phrases)} {file_intro}{header_info}"
+    return full_text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # --- CONFIGURATION ---
 def _load_model_from_config():
     """Liest Modellname aus config/internal/ai_model.txt, fallback: llama3.2:latest"""
@@ -271,6 +440,9 @@ def main():
     with open(target, 'r', encoding='utf-8') as f:
         content = f.read(4000)  # Slightly reduced to 4k for better stability
 
+
+
+
         # URL generieren und Browser öffnen
         doc_url = get_github_url(target)
         # NUR öffnen, wenn der Schalter aktiv ist
@@ -303,6 +475,11 @@ def main():
 
         # 3. AI Expert Round
         print("AI Expert is thinking...")
+
+
+
+
+
         a_prompt = f"Kontext: {content}\nFrage: {question}\n\nBeantworte die Frage kurz und prägnant auf Deutsch (max 3 Sätze)."
 
         answer = call_ollama(a_prompt, "Du bist ein technischer Experte für das Aura-System.")
