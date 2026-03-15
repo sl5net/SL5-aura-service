@@ -298,7 +298,7 @@ def test_trigger_no_word_cutoff():
 
         if output_file is None:
             pytest.fail(
-                f"Aura hat innerhalb von 30s keinen Output produziert.\n"
+                "Aura hat innerhalb von 30s keinen Output produziert.\n"
             )
 
         # --- Output lesen ---
