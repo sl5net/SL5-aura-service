@@ -45,9 +45,8 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-import sys
 import wave
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -333,14 +332,11 @@ def run_through_aura_pipeline(vosk_text: str, language: str) -> str:
     import logging
     import tempfile
     import time
-    import glob
 
     # print(f'LANGUAGETOOL_CHECK_URL:{LANGUAGETOOL_CHECK_URL}')
 
     # --- import Aura internals ---
     # in run_through_aura_pipeline(), before calling process_text_in_background:
-    model_name_file = Path("config/model_name.txt")
-    original_model = model_name_file.read_text().strip()
 
 
     try:
@@ -358,7 +354,6 @@ def run_through_aura_pipeline(vosk_text: str, language: str) -> str:
     # --- LanguageTool URL ---
     # None = LT disabled (Aura handles this gracefully, just skips LT step).
     # Override by setting env var AURA_LT_URL, e.g. "http://localhost:8010/v2"
-    import os
 
     # --- temp output dir (one per call, no cross-test pollution) ---
     with tempfile.TemporaryDirectory(prefix="sl5_aura_pytest_") as tmp:

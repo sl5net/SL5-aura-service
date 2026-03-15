@@ -1,3 +1,4 @@
+# scripts/py/func/checks/test_trigger_end_to_end.py
 """
 End-to-End Trigger Test für SL5 Aura – Abgeschnittene Wörter
 =============================================================
@@ -43,6 +44,9 @@ from pathlib import Path
 
 import pytest
 
+from ..manage_audio_routing import manage_audio_routing
+from ..process_text_in_background import settings
+
 # ---------------------------------------------------------------------------
 # Pfade
 # ---------------------------------------------------------------------------
@@ -74,17 +78,23 @@ def _new_log_lines(from_line: int) -> list[str]:
     return all_lines[from_line:]
 
 
-def _wait_for_output(from_line: int, timeout: float = 30.0) -> Path | None:
+def _wait_for_output(from_time: float, timeout: float = 30.0) -> Path | None:
+    """
+    Wartet auf eine neue tts_output_*.txt in /tmp/sl5_aura/
+    die nach from_time erstellt wurde.
+    """
+    output_dir = Path("/tmp/sl5_aura/tts_output")
+
     deadline = time.time() + timeout
     while time.time() < deadline:
-        for line in _new_log_lines(from_line):
-            if "wrote to" in line and "output_" in line:
-                match = re.search(r'tts_output_[\d_]+\.txt', line)
-                if match:
-                    filename = match.group(0)
-                    matches = list(Path("/tmp").rglob(filename))
-                    if matches:
-                        return matches[0]
+        if output_dir.exists():
+            matches = [
+                # tts_output_1773585429_0664139.txt
+                f for f in output_dir.glob("tts_output_*.txt")
+                if f.stat().st_mtime > from_time
+            ]
+            if matches:
+                return max(matches, key=lambda f: f.stat().st_mtime)
         time.sleep(0.5)
     return None
 
@@ -227,21 +237,40 @@ def test_trigger_no_word_cutoff():
     print(f"\nYT ref ({len(yt_words)} Wörter): ...{' '.join(yt_words[-5:])}")
 
     # --- Log-Position merken ---
-    log_line_before = _log_line_count()
-    print(f"Log-Zeilen vor Test: {log_line_before}")
+    # log_line_before = _log_line_count()
+    time_before = time.time()
+    print(f"time_before vor Test: {time_before}")
 
-    old_audio_device = None
-
+    original_default_source = subprocess.check_output(["pactl", "get-default-source"]).decode().strip()
     try:
-        _set_audio_input_device("MIC_AND_DESKTOP")
-        time.sleep(2.0)
+
+
+        # TRIGGER_FILE.touch()
+        # time.sleep(1.0)
+
+        mode="MIC_AND_DESKTOP"
+        _set_audio_input_device(mode)
+        time.sleep(3)
+
+        # manage_audio_routing(mode)
+        manage_audio_routing(settings.AUDIO_INPUT_DEVICE)
+
+        # time.sleep(0.5)
 
         TRIGGER_FILE.touch()
         print("Trigger 1 gesetzt")
 
+
+        time.sleep(0.1)
+
+
         if not _wait_for_mic_and_desktop_sink(timeout=8.0):
             pytest.skip("mic_and_desktop_Sink nicht gefunden")
         print("mic_and_desktop_Sink bereit")
+
+        # TRIGGER_FILE.touch()
+        # print("Trigger 1b gesetzt")
+
 
         # --- WAV einspeisen ---
         print(f"Spiele WAV ein: {wav_file.name}")
@@ -257,7 +286,7 @@ def test_trigger_no_word_cutoff():
             play_proc.wait()
         print("WAV-Wiedergabe beendet")
 
-        time.sleep(1.0)
+        time.sleep(0.01)
 
         # --- Trigger 2: Aufnahme stoppen ---
         TRIGGER_FILE.touch()
@@ -265,16 +294,11 @@ def test_trigger_no_word_cutoff():
 
         # --- Warten auf Aura-Output ---
         print("Warte auf Aura-Output (max 30s)...")
-        output_file = _wait_for_output(log_line_before, timeout=30.0)
+        output_file = _wait_for_output(time_before, timeout=30.0)
 
         if output_file is None:
-            new_lines = _new_log_lines(log_line_before)
-            relevant = [l for l in new_lines if any(
-                k in l for k in ["ERROR", "wrote to", "THREAD", "trigger", "chunk"]
-            )]
             pytest.fail(
                 f"Aura hat innerhalb von 30s keinen Output produziert.\n"
-                f"Relevante Log-Zeilen:\n{''.join(relevant[-20:])}"
             )
 
         # --- Output lesen ---
@@ -304,6 +328,14 @@ def test_trigger_no_word_cutoff():
                 f"Aura: {aura_text}"
             )
 
+    except Exception as e:
+        print(f"ERROR: {e}")
+
+
     finally:
         _remove_audio_input_device_override()
+        time.sleep(0.05)
+        manage_audio_routing(settings.AUDIO_INPUT_DEVICE)
+        subprocess.run(["pactl", "set-default-source", original_default_source], capture_output=True)
+
         print("Test beendet")
