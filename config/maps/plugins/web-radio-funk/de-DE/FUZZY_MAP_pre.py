@@ -70,7 +70,27 @@ FUZZY_MAP_pre = [
  {'flags': re.IGNORECASE}),
 
 
+    # EXAMPLE: twich
+    ('https://twitch-tools.rootonline.de/channel_previews.php?broadcaster_languages%5B%5D=DE&viewers_max=0&uptime_min=900&sort_by=channelIdDesc', r'^(twich|Switch)\.*(suche|Suche auf Twitter)\s*$', 70, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: twich
+    ('https://twitch-tools.rootonline.de/channel_previews.php?broadcaster_languages%5B%5D=DE&viewers_max=0&uptime_min=900&sort_by=channelIdDesc', r'^(suche|Suche auf)\s*(twich|Switch)\s*$', 70, {'flags': re.IGNORECASE}),
 
 ]
+
+"""
+    Twitch-Tools von CommanderRoot: Dies ist das mächtigste Werkzeug dafür.
+
+    Gehe auf die Seite, wähle bei
+
+vierter Eintrag:
+Language "German" aus.
+
+siebter Eintrag:
+    Setze bei Viewers (max) eine kleine Zahl ein (z. B. 1 oder 5).
+
+    Du erhältst sofort eine Liste mit Streamern, die gerade fast niemanden im Chat haben und sich riesig über ein „Hallo“ freuen.[1]
+
+Nobody.live: Diese Seite spezialisiert sich auf Streamer mit 0 Zuschauern. Man kann dort oben links die Sprache auf "Deutsch" filtern.[2]
+"""
 

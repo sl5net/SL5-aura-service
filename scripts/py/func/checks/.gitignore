@@ -1,0 +1,5 @@
+# Auto-downloaded audio clips and cached transcripts
+# These are local test artefacts, not source code.
+fixtures/youtube_clips/*.wav
+fixtures/youtube_clips/*_raw.*
+fixtures/youtube_clips/*.transcript.json

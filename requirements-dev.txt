@@ -10,3 +10,9 @@
 
 # black
 # pytest
+
+yt-dlp
+youtube-transcript-api
+vosk
+jiwer
+pytest
