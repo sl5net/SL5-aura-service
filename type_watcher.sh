@@ -132,9 +132,24 @@ xdotool_safe() {
     LC_ALL=C.UTF-8 timeout 1 xdotool "$@" || true
 }
 
-# --- START: Read Python config ---
+
+
+
+
+
+
+
+
+
+
+
+
 PROJECT_ROOT="$SCRIPT_DIR"
+
+# Default: Unix virtualenv layout
 PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python3"
+
+
 
 
 
@@ -219,17 +234,32 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
 
 
 
-        TYPE_WATCHER_ENABLED=$("$PYTHON_BIN" -c '
-        import sys, importlib
-        sys.path.insert(0, "'"$PROJECT_ROOT"'")
-        try:
-            cfg = importlib.import_module("config.settings_local")
-            val = getattr(cfg, "TYPE_WATCHER_ENABLED", True)
-        except ImportError:
-            val = True
-        # print stable string only
-        print("True" if bool(val) else "False")
-        ' 2>/dev/null || echo "True")
+
+# If running on Windows under a POSIX shell, prefer Windows venv layout
+case "$(uname -s 2>/dev/null || echo Unknown)" in
+  MINGW*|MSYS*|CYGWIN*)
+    # Git Bash / MSYS / Cygwin
+    PYTHON_BIN="$PROJECT_ROOT/.venv/Scripts/python.exe"
+    ;;
+  *)
+    # Linux/macOS/WSL use the Unix path above
+    ;;
+esac
+
+TYPE_WATCHER_ENABLED=$("$PYTHON_BIN" - <<'PY' 2>/dev/null || echo "True"
+import sys, importlib
+sys.path.insert(0, "$PROJECT_ROOT")
+try:
+    cfg = importlib.import_module("config.settings_local")
+    val = getattr(cfg, "TYPE_WATCHER_ENABLED", True)
+except ImportError:
+    val = True
+print("True" if bool(val) else "False")
+PY
+)
+
+echo "DEBUG: <$TYPE_WATCHER_ENABLED>"
+
 
         # Use the value
         if [[ "$TYPE_WATCHER_ENABLED" == "False" ]]; then
