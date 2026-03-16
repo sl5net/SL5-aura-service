@@ -194,7 +194,6 @@ WER    : 71.4%
 1. **Besseres Segment wählen** — `ffplay` nutzen um die genaue Sekunde zu finden wo klar gesprochen wird
 2. **LT-Status im Test prüfen** — `curl http://localhost:8010/v2/languages` vor dem Test
 3. **Modus C Tests hinzufügen** — Segmente wo bekannte Befehle gesprochen werden (`expected_output`)
-4. **`web-radio-funk` FUZZY_MAP_pre.py fixen** — hat einen Syntax-Fehler (unexpected indent line 81) der bei jedem Lauf geloggt wird
 
 ---
 ---
@@ -394,4 +393,3 @@ WER    : 71.4%
 1. **Choose a better segment** — use `ffplay` to find the exact second where speech is clear
 2. **Verify LT status before test** — `curl http://localhost:8010/v2/languages` before running
 3. **Add Mode C tests** — segments containing known voice commands (`expected_output`)
-4. **Fix `web-radio-funk` FUZZY_MAP_pre.py** — has a syntax error (unexpected indent line 81) logged on every run

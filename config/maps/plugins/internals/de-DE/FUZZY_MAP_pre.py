@@ -59,6 +59,7 @@ FUZZY_MAP_pre = [
      # EXAMPLE: Whatx  Aura  
      r'^(What\w*\b.*\bAura\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #
+    # Eva Konflikt präventionBericht Schöner Bericht Eva Gericht Sonderbericht
 
     # EXAMPLE: "Fehler melden", "Logge Fehler", "Das war falsch"
     ('report_error',

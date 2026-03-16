@@ -20,20 +20,20 @@ system conditions, making it robust and responsive.
 
 import math
 
+import threading
+
+import vosk
 
 from .check_memory_critical import check_memory_critical
 from .notify import notify
 from .config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
 
-
-import threading
-
-import vosk
 from vosk import SetLogLevel
 SetLogLevel(-1)
 # SetLogLevel(WARNINGS)
 # vosk.SetLogLevel(-1) # sadly it changes nothing (se, 15.12.'25 15:10 Mon )
+
+settings = DynamicSettings()
 
 
 
