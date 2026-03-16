@@ -1,3 +1,12 @@
+"""
+scripts/py/func/checks/test_trigger_end_to_end.py:2
+howto start example 16.3.'26 10:58 Mon:
+SDL_VIDEODRIVER=dummy .venv/bin/pytest scripts/py/func/checks/test_trigger_end_to_end.py -v -s 2>&1 | grep -E "Stream|WARNUNG|Aura|Trigger|Cleanup"
+
+Approach: set-default-source + move-source-output to route Aura stream to virtual sink.
+test_sink is created, activated, Aura stream moved there, WAV played into sink.
+Output files are read from OUTPUT_DIR after processing.
+"""
 from __future__ import annotations
 import subprocess
 import time
@@ -46,6 +55,23 @@ def _activate_sink(sink_name):
                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     time.sleep(0.5)
     proc.kill()
+
+
+def _wait_for_output(timeout=30.0):
+    """Waits until at least one non-empty, non-hallucination output file appears."""
+    halluzinationen = {"***", "nun", "einen", "und"}
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        output_files = sorted(OUTPUT_DIR.glob("*.txt"), key=lambda f: f.stat().st_mtime)
+        texts = []
+        for f in output_files:
+            content = f.read_text(encoding="utf-8-sig").strip()
+            if content and content not in halluzinationen:
+                texts.append(content)
+        if texts:
+            return texts
+        time.sleep(0.5)
+    return []
 
 
 def test_trigger_no_word_cutoff():
@@ -98,19 +124,12 @@ def test_trigger_no_word_cutoff():
         print("Sende Stopp-Trigger...")
         TRIGGER_FILE.touch()
 
-        # Wait for output
-        print("Warte auf Verarbeitung (15s)...")
-        time.sleep(15.0)
+        # Wait for output with polling loop
+        print("Warte auf Verarbeitung (max 30s)...")
+        texts = _wait_for_output(timeout=30.0)
 
-        # Read results
         output_files = sorted(OUTPUT_DIR.glob("*.txt"), key=lambda f: f.stat().st_mtime)
         print(f"Gefundene Dateien: {[f.name for f in output_files]}")
-
-        texts = []
-        for f in output_files:
-            content = f.read_text(encoding="utf-8-sig").strip()
-            if content and content not in ("***",):
-                texts.append(content)
 
         full_text = " ".join(texts).lower()
         print(f"ERGEBNIS-TEXT: '{full_text}'")
@@ -127,24 +146,14 @@ def test_trigger_no_word_cutoff():
 
     finally:
         print("\n--- Cleanup ---")
-        # Move stream back
         sid = _get_aura_stream_id()
         if sid:
             subprocess.run(["pactl", "move-source-output", sid, original_source],
                            capture_output=True)
-
-        # Restore default source
         subprocess.run(["pactl", "set-default-source", original_source], capture_output=True)
-
-        # Unmute hardware
         subprocess.run(["pactl", "set-source-mute", original_source, "0"], capture_output=True)
-
-        # Unload virtual sink
         subprocess.run(["pactl", "unload-module", "module-null-sink"], capture_output=True)
-
-        # Reset Aura
         TRIGGER_FILE.touch()
         time.sleep(0.5)
         TRIGGER_FILE.touch()
-
         print("Cleanup fertig.")
