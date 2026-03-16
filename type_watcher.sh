@@ -258,7 +258,7 @@ print("True" if bool(val) else "False")
 PY
 )
 
-echo "DEBUG: <$TYPE_WATCHER_ENABLED>"
+# echo "DEBUG: <$TYPE_WATCHER_ENABLED>"
 
 
         # Use the value
