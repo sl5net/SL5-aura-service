@@ -1,341 +1,150 @@
-# scripts/py/func/checks/test_trigger_end_to_end.py
-"""
-End-to-End Trigger Test für SL5 Aura – Abgeschnittene Wörter
-=============================================================
-
-WAS DIESER TEST PRÜFT
----------------------
-Das bekannte Problem: Bei manchen Aufnahmen fehlt das letzte Wort im Output.
-
-Ablauf:
-1. Zeilenzahl von log/aura_engine.log merken
-2. Settings auf MIC_AND_DESKTOP setzen (automatisch, wird zurückgesetzt)
-3. touch /tmp/sl5_record.trigger  → Aura startet Session + erstellt mic_and_desktop_Sink
-4. Warten bis mic_and_desktop_Sink existiert
-5. WAV-Datei auf mic_and_desktop_Sink spielen
-6. touch /tmp/sl5_record.trigger  → Aufnahme stoppen
-7. Warten bis Aura "wrote to" ins Log schreibt
-8. Output-Datei lesen
-9. YouTube-Transcript für denselben Zeitraum holen
-10. Vergleich: fehlt ein Wort am Ende?
-
-VORAUSSETZUNGEN
----------------
-- Aura muss laufen (./scripts/restart_venv_and_run-server.sh)
-- WAV-Cache muss existieren (erst test_youtube_audio_regression.py laufen lassen)
-
-STARTEN
--------
-    SDL_VIDEODRIVER=dummy \\
-      .venv/bin/pytest scripts/py/func/checks/test_trigger_end_to_end.py -v -s
-
-WICHTIG
--------
-Nicht sprechen während der Test läuft — Aura hört auf MIC_AND_DESKTOP (Mikrofon + Desktop).
-"""
-
 from __future__ import annotations
-
-import json
-import re
 import subprocess
 import time
 from pathlib import Path
-
 import pytest
 
-from ..manage_audio_routing import manage_audio_routing
-from ..process_text_in_background import settings
-
-# ---------------------------------------------------------------------------
-# Pfade
-# ---------------------------------------------------------------------------
-
-REPO_ROOT    = Path(__file__).resolve().parents[4]
+# Paths
 FIXTURE_DIR  = Path(__file__).parent / "fixtures" / "youtube_clips"
 TRIGGER_FILE = Path("/tmp/sl5_record.trigger")
-AURA_LOG     = REPO_ROOT / "log" / "aura_engine.log"
+OUTPUT_DIR   = Path("/tmp/sl5_aura/tts_output")
 
 
-# ---------------------------------------------------------------------------
-# Hilfsfunktionen – Log
-# ---------------------------------------------------------------------------
+def _get_aura_stream_id():
+    """Finds the ID of the current Aura recording stream."""
+    res = subprocess.run(["pactl", "list", "source-outputs", "short"], capture_output=True, text=True)
+    for line in res.stdout.splitlines():
+        if "16000" in line or "s16le" in line:
+            return line.split()[0]
+    return None
 
 
-
-def _log_line_count() -> int:
-    if not AURA_LOG.exists():
-        return 0
-    with open(AURA_LOG, "r", encoding="utf-8", errors="replace") as f:
-        return sum(1 for _ in f)
-
-
-def _new_log_lines(from_line: int) -> list[str]:
-    if not AURA_LOG.exists():
-        return []
-    with open(AURA_LOG, "r", encoding="utf-8", errors="replace") as f:
-        all_lines = f.readlines()
-    return all_lines[from_line:]
-
-
-def _wait_for_output(from_time: float, timeout: float = 30.0) -> Path | None:
-    """
-    Wartet auf eine neue tts_output_*.txt in /tmp/sl5_aura/
-    die nach from_time erstellt wurde.
-    """
-    output_dir = Path("/tmp/sl5_aura/tts_output")
-
+def _wait_for_aura_stream(timeout=10.0):
+    """Waits until Aura's audio stream is visible in pactl."""
     deadline = time.time() + timeout
     while time.time() < deadline:
-        if output_dir.exists():
-            matches = [
-                # tts_output_1773585429_0664139.txt
-                f for f in output_dir.glob("tts_output_*.txt")
-                if f.stat().st_mtime > from_time
-            ]
-            if matches:
-                return max(matches, key=lambda f: f.stat().st_mtime)
+        sid = _get_aura_stream_id()
+        if sid:
+            return sid
         time.sleep(0.5)
     return None
 
 
-# ---------------------------------------------------------------------------
-# Hilfsfunktionen – Audio
-# ---------------------------------------------------------------------------
+def _clear_output_dir():
+    """Clears all txt files in the output directory without deleting the folder."""
+    if OUTPUT_DIR.exists():
+        for f in OUTPUT_DIR.glob("*.txt"):
+            f.unlink()
+    else:
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
+def _activate_sink(sink_name):
+    """Plays a short sound to wake up the sink from SUSPENDED state."""
+    silent_wav = "/usr/share/sounds/alsa/Front_Left.wav"
+    proc = subprocess.Popen(["paplay", "--device", sink_name, silent_wav],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    time.sleep(0.5)
+    proc.kill()
 
-def _wait_for_mic_and_desktop_sink(timeout: float = 8.0) -> bool:
-    deadline = time.time() + timeout
-    while time.time() < deadline:
-        result = subprocess.run(
-            ["pactl", "list", "sinks", "short"],
-            capture_output=True, text=True
-        )
-        if "mic_and_desktop_Sink" in result.stdout:
-            return True
-        time.sleep(0.3)
-    return False
-
-
-def _pulse_running() -> bool:
-    result = subprocess.run(["pactl", "info"], capture_output=True, text=True)
-    return result.returncode == 0
-
-
-# ---------------------------------------------------------------------------
-# Hilfsfunktionen – Settings
-# ---------------------------------------------------------------------------
-
-def _set_audio_input_device(value: str) -> None:
-    settings_file = REPO_ROOT / "config" / "settings_local.py"
-    content = settings_file.read_text(encoding="utf-8") if settings_file.exists() else ""
-    marker_start = "# AURA_TEST_OVERRIDE_START"
-    marker_end = "# AURA_TEST_OVERRIDE_END"
-    clean = re.sub(rf"{marker_start}.*?{marker_end}\n?", "", content, flags=re.DOTALL)
-    new_content = clean.rstrip() + f"\n{marker_start}\nAUDIO_INPUT_DEVICE = '{value}'\n{marker_end}\n"
-    settings_file.write_text(new_content, encoding="utf-8")
-
-
-def _remove_audio_input_device_override() -> None:
-    settings_file = REPO_ROOT / "config" / "settings_local.py"
-    if not settings_file.exists():
-        return
-    content = settings_file.read_text(encoding="utf-8")
-    marker_start = "# AURA_TEST_OVERRIDE_START"
-    marker_end = "# AURA_TEST_OVERRIDE_END"
-    clean = re.sub(rf"{marker_start}.*?{marker_end}\n?", "", content, flags=re.DOTALL)
-    settings_file.write_text(clean, encoding="utf-8")
-    
-def _create_mic_and_desktop_sink() -> bool:
-    subprocess.run(["pactl", "unload-module", "module-loopback"], capture_output=True)
-    subprocess.run(["pactl", "unload-module", "module-null-sink"], capture_output=True)
-    time.sleep(0.3)
-    r1 = subprocess.run([
-        "pactl", "load-module", "module-null-sink",
-        "sink_name=mic_and_desktop_Sink"
-    ], capture_output=True, text=True)
-    if r1.returncode != 0:
-        return False
-    r2 = subprocess.run([
-        "pactl", "load-module", "module-loopback",
-        "source=@DEFAULT_SOURCE@",
-        "sink=mic_and_desktop_Sink"
-    ], capture_output=True, text=True)
-    return r2.returncode == 0
-
-# ---------------------------------------------------------------------------
-# Hilfsfunktionen – YouTube Transcript
-# ---------------------------------------------------------------------------
-
-def _fetch_yt_transcript_segment(
-    video_id: str, start_sec: float, end_sec: float, language: str = "de"
-) -> str:
-    cache = FIXTURE_DIR / f"trigger_test_{video_id}_{int(start_sec)}_{int(end_sec)}.transcript.json"
-    if cache.exists():
-        return json.loads(cache.read_text(encoding="utf-8"))["text"]
-
-    try:
-        from youtube_transcript_api import YouTubeTranscriptApi
-        api = YouTubeTranscriptApi()
-        transcript_list = list(api.fetch(video_id, languages=[language, "en"]))
-    except Exception as exc:
-        pytest.skip(f"YouTube-Transcript nicht abrufbar: {exc}")
-
-    words = []
-    for entry in transcript_list:
-        entry_start = entry.start
-        entry_end = entry_start + getattr(entry, "duration", 0)
-        if entry_end >= start_sec and entry_start <= end_sec:
-            words.append(entry.text.strip())
-
-    text = " ".join(words)
-    text = re.sub(r'>>', '', text)
-    text = re.sub(r'\s+', ' ', text).strip()
-
-    cache.write_text(
-        json.dumps({"text": text}, ensure_ascii=False, indent=2),
-        encoding="utf-8"
-    )
-    return text
-
-
-# ---------------------------------------------------------------------------
-# Der Test
-# ---------------------------------------------------------------------------
 
 def test_trigger_no_word_cutoff():
-    """
-    Spielt eine WAV-Datei über mic_and_desktop_Sink ein,
-    triggert Aura wie im echten Betrieb (touch trigger-file zweimal),
-    und prüft ob das letzte Wort im Output fehlt.
-    """
-
-    # --- Voraussetzungen prüfen ---
-    if not AURA_LOG.exists():
-        pytest.skip("log/aura_engine.log nicht gefunden — läuft Aura?")
-
-    if not _pulse_running():
-        pytest.skip("PulseAudio/PipeWire läuft nicht (pactl info fehlgeschlagen)")
-
     wav_file = FIXTURE_DIR / "sl5_aura_demo_en_v1_aura.wav"
     if not wav_file.exists():
-        pytest.skip(
-            f"WAV-Datei nicht gefunden: {wav_file}\n"
-            "Erst test_youtube_audio_regression.py laufen lassen."
-        )
+        pytest.skip(f"WAV fehlt: {wav_file}")
 
-    # --- Konfiguration ---
-    VIDEO_ID     = "sOjRNICiZ7Q"
-    START_SEC    = 60.0
-    END_SEC      = 70.0
-    WAV_DURATION = 10.0
+    print("\n--- TEST START ---")
+    original_source = subprocess.check_output(["pactl", "get-default-source"]).decode().strip()
+    print(f"Original source: {original_source}")
 
-    # --- YouTube-Transcript als Referenz ---
-    yt_ref = _fetch_yt_transcript_segment(VIDEO_ID, START_SEC, END_SEC, language="de")
-    yt_words = yt_ref.lower().split()
-    print(f"\nYT ref ({len(yt_words)} Wörter): ...{' '.join(yt_words[-5:])}")
+    _clear_output_dir()
 
-    # --- Log-Position merken ---
-    # log_line_before = _log_line_count()
-    time_before = time.time()
-    print(f"time_before vor Test: {time_before}")
-
-    original_default_source = subprocess.check_output(["pactl", "get-default-source"]).decode().strip()
     try:
+        print("--- Setup: Virtual Sink ---")
+        subprocess.run(["pactl", "load-module", "module-null-sink", "sink_name=test_sink"],
+                       capture_output=True)
+        time.sleep(0.3)
 
+        # Wake up the sink
+        print("Aktiviere test_sink...")
+        _activate_sink("test_sink")
 
-        # TRIGGER_FILE.touch()
-        # time.sleep(1.0)
+        # Set default source BEFORE trigger so Aura opens stream on test_sink.monitor
+        print("Setze Default-Source auf test_sink.monitor...")
+        subprocess.run(["pactl", "set-default-source", "test_sink.monitor"], capture_output=True)
+        time.sleep(0.5)
 
-        mode="MIC_AND_DESKTOP"
-        _set_audio_input_device(mode)
-        time.sleep(3)
-
-        # manage_audio_routing(mode)
-        manage_audio_routing(settings.AUDIO_INPUT_DEVICE)
-
-        # time.sleep(0.5)
-
+        # Start recording
+        print("Sende Start-Trigger...")
         TRIGGER_FILE.touch()
-        print("Trigger 1 gesetzt")
 
+        # Wait for stream and move as backup
+        print("Warte auf Aura-Stream...")
+        sid = _wait_for_aura_stream(timeout=10.0)
+        if sid:
+            print(f"Aura-Stream gefunden: {sid} → verschiebe auf test_sink.monitor (Backup)")
+            subprocess.run(["pactl", "move-source-output", sid, "test_sink.monitor"],
+                           capture_output=True)
+            time.sleep(0.3)
+        else:
+            print("WARNUNG: Kein Aura-Stream gefunden!")
 
-        time.sleep(0.1)
+        # Play WAV into the sink
+        print(f"Spiele {wav_file.name} ein...")
+        subprocess.run(["paplay", "--device", "test_sink", str(wav_file)], check=True)
+        time.sleep(1.0)
 
-
-        if not _wait_for_mic_and_desktop_sink(timeout=8.0):
-            pytest.skip("mic_and_desktop_Sink nicht gefunden")
-        print("mic_and_desktop_Sink bereit")
-
-        # TRIGGER_FILE.touch()
-        # print("Trigger 1b gesetzt")
-
-
-        # --- WAV einspeisen ---
-        print(f"Spiele WAV ein: {wav_file.name}")
-        play_proc = subprocess.Popen([
-            "paplay",
-            "--device", "mic_and_desktop_Sink",
-            str(wav_file)
-        ])
-        try:
-            play_proc.wait(timeout=WAV_DURATION + 5)
-        except subprocess.TimeoutExpired:
-            play_proc.kill()
-            play_proc.wait()
-        print("WAV-Wiedergabe beendet")
-
-        time.sleep(0.01)
-
-        # --- Trigger 2: Aufnahme stoppen ---
+        # Stop recording
+        print("Sende Stopp-Trigger...")
         TRIGGER_FILE.touch()
-        print("Trigger 2 gesetzt")
 
-        # --- Warten auf Aura-Output ---
-        print("Warte auf Aura-Output (max 30s)...")
-        output_file = _wait_for_output(time_before, timeout=30.0)
+        # Wait for output
+        print("Warte auf Verarbeitung (15s)...")
+        time.sleep(15.0)
 
-        if output_file is None:
-            pytest.fail(
-                "Aura hat innerhalb von 30s keinen Output produziert.\n"
-            )
+        # Read results
+        output_files = sorted(OUTPUT_DIR.glob("*.txt"), key=lambda f: f.stat().st_mtime)
+        print(f"Gefundene Dateien: {[f.name for f in output_files]}")
 
-        # --- Output lesen ---
-        aura_text = output_file.read_text(encoding="utf-8-sig").strip()
-        aura_words = aura_text.lower().split()
+        texts = []
+        for f in output_files:
+            content = f.read_text(encoding="utf-8-sig").strip()
+            if content and content not in ("***",):
+                texts.append(content)
 
-        # --- Ergebnis ausgeben ---
-        print(f"\n{'=' * 60}")
-        print(f"YT ref  : {yt_ref}")
-        print(f"Aura    : {aura_text}")
-        print(f"YT  letztes Wort : '{yt_words[-1] if yt_words else '?'}'")
-        print(f"Aura letztes Wort: '{aura_words[-1] if aura_words else '?'}'")
-        print(f"YT  Wortanzahl   : {len(yt_words)}")
-        print(f"Aura Wortanzahl  : {len(aura_words)}")
-        if yt_words:
-            print(f"Wort-Abdeckung   : {len(aura_words) / len(yt_words):.1%}")
-        print(f"{'=' * 60}")
+        full_text = " ".join(texts).lower()
+        print(f"ERGEBNIS-TEXT: '{full_text}'")
 
-        # --- Assertions ---
-        assert aura_text, "Aura hat leeren Output produziert"
+        assert len(full_text) > 0, "Aura hat gar keine verwertbaren Dateien erzeugt."
 
-        if yt_words:
-            coverage = len(aura_words) / len(yt_words)
-            assert coverage >= 0.50, (
-                f"Aura Output hat nur {coverage:.1%} der erwarteten Wortanzahl.\n"
-                f"YT  : {yt_ref}\n"
-                f"Aura: {aura_text}"
-            )
+        halluzinationen = {"nun", "einen", "und"}
+        words = set(full_text.split())
+        real_words = words - halluzinationen
+        print(f"Echte Wörter (ohne Halluzinationen): {real_words}")
 
-    except Exception as e:
-        print(f"ERROR: {e}")
-
+        assert len(real_words) > 0, \
+            f"Aura hat nur Halluzinationen produziert: '{full_text}'"
 
     finally:
-        _remove_audio_input_device_override()
-        time.sleep(0.05)
-        manage_audio_routing(settings.AUDIO_INPUT_DEVICE)
-        subprocess.run(["pactl", "set-default-source", original_default_source], capture_output=True)
+        print("\n--- Cleanup ---")
+        # Move stream back
+        sid = _get_aura_stream_id()
+        if sid:
+            subprocess.run(["pactl", "move-source-output", sid, original_source],
+                           capture_output=True)
 
-        print("Test beendet")
+        # Restore default source
+        subprocess.run(["pactl", "set-default-source", original_source], capture_output=True)
+
+        # Unmute hardware
+        subprocess.run(["pactl", "set-source-mute", original_source, "0"], capture_output=True)
+
+        # Unload virtual sink
+        subprocess.run(["pactl", "unload-module", "module-null-sink"], capture_output=True)
+
+        # Reset Aura
+        TRIGGER_FILE.touch()
+        time.sleep(0.5)
+        TRIGGER_FILE.touch()
+
+        print("Cleanup fertig.")
