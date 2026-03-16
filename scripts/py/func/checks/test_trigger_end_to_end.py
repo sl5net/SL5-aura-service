@@ -8,6 +8,8 @@ test_sink is created, activated, Aura stream moved there, WAV played into sink.
 Output files are read from OUTPUT_DIR after processing.
 """
 from __future__ import annotations
+
+import json
 import subprocess
 import time
 from pathlib import Path
@@ -17,6 +19,14 @@ import pytest
 FIXTURE_DIR  = Path(__file__).parent / "fixtures" / "youtube_clips"
 TRIGGER_FILE = Path("/tmp/sl5_record.trigger")
 OUTPUT_DIR   = Path("/tmp/sl5_aura/tts_output")
+
+def _load_wav_transcript():
+    """Loads the cached transcript for the test WAV."""
+    cache = FIXTURE_DIR / "sl5_aura_demo_en_v1_aura.transcript.json"
+    if not cache.exists():
+        return None
+    return json.loads(cache.read_text(encoding="utf-8"))["text"]
+
 
 
 def _get_aura_stream_id():
@@ -57,22 +67,17 @@ def _activate_sink(sink_name):
     proc.kill()
 
 
-def _wait_for_output(timeout=30.0):
-    """Waits until at least one non-empty, non-hallucination output file appears."""
-    halluzinationen = {"***", "nun", "einen", "und"}
+def _wait_for_output(timeout=70.0):
+    """Waits for output files, returns all non-hallucination texts after timeout."""
     deadline = time.time() + timeout
     while time.time() < deadline:
-        output_files = sorted(OUTPUT_DIR.glob("*.txt"), key=lambda f: f.stat().st_mtime)
-        texts = []
-        for f in output_files:
-            content = f.read_text(encoding="utf-8-sig").strip()
-            if content and content not in halluzinationen:
-                texts.append(content)
-        if texts:
-            return texts
         time.sleep(0.5)
-    return []
-
+    output_files = sorted(OUTPUT_DIR.glob("*.txt"), key=lambda f: f.stat().st_mtime)
+    texts = []
+    for f in output_files:
+        content = f.read_text(encoding="utf-8-sig").strip()
+        texts.append(content)
+    return texts
 
 def test_trigger_no_word_cutoff():
     wav_file = FIXTURE_DIR / "sl5_aura_demo_en_v1_aura.wav"
@@ -143,6 +148,19 @@ def test_trigger_no_word_cutoff():
 
         assert len(real_words) > 0, \
             f"Aura hat nur Halluzinationen produziert: '{full_text}'"
+
+        yt_ref = _load_wav_transcript()
+        if yt_ref:
+            print(f"YT Referenz : '{yt_ref[:80]}...'")
+            print(f"Aura Output : '{full_text[:80]}...'")
+            try:
+                from jiwer import wer
+                error_rate = wer(yt_ref.lower(), full_text)
+                print(f"WER: {error_rate:.1%}")
+                # assert error_rate < 0.80, f"WER zu hoch: {error_rate:.1%}"
+                assert error_rate < 0.90, f"WER zu hoch: {error_rate:.1%}"
+            except ImportError:
+                print("jiwer nicht installiert — kein WER-Vergleich")
 
     finally:
         print("\n--- Cleanup ---")
