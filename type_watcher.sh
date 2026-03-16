@@ -137,6 +137,13 @@ PROJECT_ROOT="$SCRIPT_DIR"
 PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python3"
 
 
+
+
+
+
+
+
+
 # Das kann unangenehm genehm sein, wenn man einmal längere Zeit die Shift Taste drücken möchte zum
 
 # Rarely needed, but acts as a safety net for stuck modifier keys.
@@ -209,6 +216,32 @@ elif [[ "$OS_TYPE" == "Linux" ]]; then
     log_message "Watcher starting. Watching $DIR_TO_WATCH in Linux/$DISPLAY_SERVER mode."
 
     while true; do
+
+
+
+        TYPE_WATCHER_ENABLED=$("$PYTHON_BIN" -c '
+        import sys, importlib
+        sys.path.insert(0, "'"$PROJECT_ROOT"'")
+        try:
+            cfg = importlib.import_module("config.settings_local")
+            val = getattr(cfg, "TYPE_WATCHER_ENABLED", True)
+        except ImportError:
+            val = True
+        # print stable string only
+        print("True" if bool(val) else "False")
+        ' 2>/dev/null || echo "True")
+
+        # Use the value
+        if [[ "$TYPE_WATCHER_ENABLED" == "False" ]]; then
+            echo "TYPE_WATCHER_ENABLED=False — exiting."
+            sleep 5
+            exit 0
+        fi
+
+
+
+
+
          inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
 
 #        FILE=$(inotifywait -q -e close_write "$DIR_TO_WATCH" --format '%w%f')

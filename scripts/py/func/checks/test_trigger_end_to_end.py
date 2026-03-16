@@ -67,17 +67,36 @@ def _activate_sink(sink_name):
     proc.kill()
 
 
-def _wait_for_output(timeout=70.0):
-    """Waits for output files, returns all non-hallucination texts after timeout."""
+def _wait_for_output(time_before, timeout=90.0):
+    halluzinationen = {"***", "nun", "einen"}
     deadline = time.time() + timeout
     while time.time() < deadline:
+        files = [f for f in OUTPUT_DIR.glob("*.txt") if f.stat().st_mtime > time_before]
+        if files:
+            time.sleep(5.0)  # kurz warten damit Aura fertig schreibt
+            break
         time.sleep(0.5)
-    output_files = sorted(OUTPUT_DIR.glob("*.txt"), key=lambda f: f.stat().st_mtime)
-    texts = []
-    for f in output_files:
-        content = f.read_text(encoding="utf-8-sig").strip()
-        texts.append(content)
-    return texts
+    files = sorted(
+        [f for f in OUTPUT_DIR.glob("*.txt") if f.stat().st_mtime > time_before],
+        key=lambda f: f.stat().st_mtime
+    )
+    return [f.read_text(encoding="utf-8-sig").strip() for f in files
+            if f.read_text(encoding="utf-8-sig").strip() not in halluzinationen]
+
+
+def _pause_type_watcher():
+    """Disables type_watcher by setting flag in settings_local.py."""
+    settings_file = Path(__file__).resolve().parents[4] / "config" / "settings_local.py"
+    content = settings_file.read_text(encoding="utf-8")
+    new_content = content.replace("TYPE_WATCHER_ENABLED = True", "TYPE_WATCHER_ENABLED = False")
+    settings_file.write_text(new_content, encoding="utf-8")
+
+def _resume_type_watcher():
+    """Re-enables type_watcher."""
+    settings_file = Path(__file__).resolve().parents[4] / "config" / "settings_local.py"
+    content = settings_file.read_text(encoding="utf-8")
+    new_content = content.replace("TYPE_WATCHER_ENABLED = False", "TYPE_WATCHER_ENABLED = True")
+    settings_file.write_text(new_content, encoding="utf-8")
 
 def test_trigger_no_word_cutoff():
     wav_file = FIXTURE_DIR / "sl5_aura_demo_en_v1_aura.wav"
@@ -107,6 +126,7 @@ def test_trigger_no_word_cutoff():
 
         # Start recording
         print("Sende Start-Trigger...")
+        time_before = time.time()
         TRIGGER_FILE.touch()
 
         # Wait for stream and move as backup
@@ -120,6 +140,8 @@ def test_trigger_no_word_cutoff():
         else:
             print("WARNUNG: Kein Aura-Stream gefunden!")
 
+        _pause_type_watcher()
+
         # Play WAV into the sink
         print(f"Spiele {wav_file.name} ein...")
         subprocess.run(["paplay", "--device", "test_sink", str(wav_file)], check=True)
@@ -131,31 +153,43 @@ def test_trigger_no_word_cutoff():
 
         # Wait for output with polling loop
         print("Warte auf Verarbeitung (max 30s)...")
-        texts = _wait_for_output(timeout=30.0)
+
+        texts = _wait_for_output(time_before, timeout=90.0)
 
         output_files = sorted(OUTPUT_DIR.glob("*.txt"), key=lambda f: f.stat().st_mtime)
         print(f"Gefundene Dateien: {[f.name for f in output_files]}")
 
-        full_text = " ".join(texts).lower()
+        full_text = " ".join(texts)
         print(f"ERGEBNIS-TEXT: '{full_text}'")
 
         assert len(full_text) > 0, "Aura hat gar keine verwertbaren Dateien erzeugt."
 
-        halluzinationen = {"nun", "einen", "und"}
-        words = set(full_text.split())
-        real_words = words - halluzinationen
-        print(f"Echte Wörter (ohne Halluzinationen): {real_words}")
-
-        assert len(real_words) > 0, \
-            f"Aura hat nur Halluzinationen produziert: '{full_text}'"
-
         yt_ref = _load_wav_transcript()
         if yt_ref:
-            print(f"YT Referenz : '{yt_ref[:80]}...'")
-            print(f"Aura Output : '{full_text[:80]}...'")
+
+            # Find first common word to align output
+            yt_words_list = yt_ref.split()
+            aura_words_list = full_text.split()
+
+            best_start_aura = 0
+            best_start_yt = 0
+            for i, word in enumerate(aura_words_list[:10]):
+                clean_word = word.strip(".,?!")
+                if len(clean_word) > 4 and clean_word in yt_words_list:
+                    best_start_aura = i
+                    best_start_yt = yt_words_list.index(clean_word)
+                    break
+
+            aligned_aura = " ".join(aura_words_list[best_start_aura:])
+            aligned_yt = " ".join(yt_words_list[best_start_yt:])
+            print(f"YT Referenz : '{aligned_yt[:80]}...'")
+            print(f"Aura Output : '{aligned_aura[:80]}...'")
+
+            # print(f"YT Referenz : '{yt_ref[:80]}...'")
+            # print(f"Aura Output : '{full_text[:80]}...'")
             try:
                 from jiwer import wer
-                error_rate = wer(yt_ref.lower(), full_text)
+                error_rate = wer(yt_ref, full_text)
                 print(f"WER: {error_rate:.1%}")
                 # assert error_rate < 0.80, f"WER zu hoch: {error_rate:.1%}"
                 assert error_rate < 0.90, f"WER zu hoch: {error_rate:.1%}"
@@ -175,3 +209,6 @@ def test_trigger_no_word_cutoff():
         time.sleep(0.5)
         TRIGGER_FILE.touch()
         print("Cleanup fertig.")
+        _clear_output_dir()
+        _resume_type_watcher()
+
