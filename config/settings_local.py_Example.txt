@@ -1,4 +1,6 @@
-# config/settings_local.py
+# config.settings_local.py
+TYPE_WATCHER_ENABLED = True
+
 import os
 import pwd
 
