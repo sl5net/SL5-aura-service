@@ -5,7 +5,6 @@
 # or use:
 #     ~/pr/py/STT    master *1 !2 ?1  python.sh ./config/maps/plugins/wannweil/de-DE/check_trash.py &
 
-
 import sys
 import os
 import unicodedata
@@ -19,8 +18,6 @@ import hashlib
 
 from email.message import EmailMessage
 from dotenv import load_dotenv
-
-
 
 # --- E-MAIL KONFIGURATION ---
 SMTP_SERVER = "smtp.gmail.com"
@@ -414,10 +411,8 @@ if __name__ == "__main__":
 
     #check_csv_alerts()
 
-    from datetime import datetime # noqa: F811
-
     # True an Wochentagen, False an Samstag und Sonntag
-    is_active = datetime.now().weekday() < 5
+    is_active = datetime.datetime.now().weekday() < 5
 
     if is_active:
         check_and_notify(force_test="test" in sys.argv)
