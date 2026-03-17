@@ -78,6 +78,6 @@ LOG_EXCLUDE_off = [
 ]
 # OPTIONAL: Wenn nicht leer, wird NUR das geloggt, was hier matcht (ONLY und oder logig: Mindes eines aus LOG_ONLY muss matchen)
 LOG_ONLY = [
-    # r"CRITICAL",
-    # r"📢📢📢 #",
+    r"CRITICAL",
+    r"📢📢📢 #",
 ]

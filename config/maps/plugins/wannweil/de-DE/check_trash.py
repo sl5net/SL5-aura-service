@@ -414,11 +414,7 @@ if __name__ == "__main__":
     # True an Wochentagen, False an Samstag und Sonntag
     is_active = datetime.datetime.now().weekday() < 5
 
+    is_active = False
+
     if is_active:
         check_and_notify(force_test="test" in sys.argv)
-    else:
-        print("nix 16.2.'26 Mon")
-        print("nix 16.2.'26 Mon")
-        print("nix 16.2.'26 Mon")
-        print("nix 16.2.'26 Mon")
-        print("nix 16.2.'26 Mon")

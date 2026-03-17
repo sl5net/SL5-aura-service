@@ -70,6 +70,13 @@ def _is_lt_server_responsive(url, timeout=1):
     except requests.exceptions.RequestException:
         return False
 
+    # backup
+    # return {
+    #     "xms": f"-Xms{xms_gb}G",
+    #     "xmx": f"-Xmx{xmx_gb}G",
+    #     "threads": str(threads),
+    # }
+    #
 
 
 
@@ -77,17 +84,29 @@ def get_languagetool_jvm_args():
     cpu_cores = os.cpu_count() or 4
     ram_gb = psutil.virtual_memory().total / (1024 ** 3)
 
-    # Threads: 2× Kerne, aber min 2, max 16
+    # Threads: 2× Kerne, min 2, max 16
     threads = max(2, min(16, cpu_cores * 2))
 
-    # RAM: 25% für Start, 50% für Max – aber vernünftige Grenzen
-    xms_gb = max(1, int(ram_gb * 0.25))
-    xmx_gb = max(2, min(8, int(ram_gb * 0.50)))
+    # Xms: klein halten → JVM startet schlank, GC hat Luft zum Atmen
+    # 5% RAM, min 512MB, max 2GB
+    xms_mb = max(512, min(2048, int(ram_gb * 0.05 * 1024)))
+
+    # Xmx: genug für Test-Runs
+    # 35% RAM, min 1GB, max 16GB
+    xmx_mb = max(1024, min(16384, int(ram_gb * 0.35 * 1024)))
 
     return {
-        "xms": f"-Xms{xms_gb}G",
-        "xmx": f"-Xmx{xmx_gb}G",
+        "xms": f"-Xms{xms_mb}m",
+        "xmx": f"-Xmx{xmx_mb}m",
         "threads": str(threads),
+        # G1GC: gibt RAM automatisch zurück nach Test-Runs (kein Neustart nötig)
+        "gc_flags": [
+            "-XX:+UseG1GC",
+            "-XX:MinHeapFreeRatio=10",   # unter 10% frei → GC expandiert
+            "-XX:MaxHeapFreeRatio=30",   # über 30% frei → JVM gibt RAM zurück
+            "-XX:MaxGCPauseMillis=200",  # weichere GC-Pausen → ruhigere Lüfter
+            "-XX:G1HeapRegionSize=16m",
+        ],
     }
 
 
@@ -151,6 +170,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
             java_executable_path,
             args["xms"],
             args["xmx"],
+            *args["gc_flags"],
             "-jar", str(languagetool_jar_path),
             "--port", str(port),
             "--threads", args["threads"],
