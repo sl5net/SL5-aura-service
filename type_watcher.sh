@@ -99,9 +99,12 @@ do_type() {
 # Helper: press Return key
 do_key_return() {
     if [[ "$INPUT_METHOD" == "dotool" ]]; then
-        printf 'key Return\n' | dotool
+        printf 'key enter\n' | dotool
     else
-        LC_ALL=C.UTF-8 timeout 1 xdotool key Return
+        # LC_ALL=C.UTF-8 timeout 1 xdotool key Return
+
+        LC_ALL=C.UTF-8 timeout 1 xdotool key --delay 100 Return
+
     fi
 }
 
@@ -408,9 +411,14 @@ PY
 
             # --- Conditional Enter Key ---
             window_title=$(get_active_window_title)
+
+            # echo "415: '$window_title' "
+
             if [[ -f "$AUTO_ENTER_FLAG" ]]; then
-                regexLine=$(cat "$AUTO_ENTER_FLAG")
-                if echo "$window_title" | grep -Eq "$regexLine"; then
+                # regexLine=$(cat "$AUTO_ENTER_FLAG")
+                regexLine=$(<"$AUTO_ENTER_FLAG" tr -d '\r\n')
+
+                if echo "$window_title" | grep -Eiq "$regexLine"; then
                     log_message "INFO: Auto-Enter is enabled. Pressing Return."
                     if [ -z "${CI:-}" ]; then
                         do_key_return

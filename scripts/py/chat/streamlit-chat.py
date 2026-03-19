@@ -315,15 +315,22 @@ EXAMPLES = [
     "Aura Was ist das Besondere an SL5 Aura",
     "Wiki Wo ist Wannweil?",
     "was ist 5+4",
+
     "wiki was ist ein Berg Begriffserklärung",
     "Wiki Wer ist Sebastian Lauffer",
     "Wiki Wer ist Herr Schröer",
+
     "Wiki Wer ist Harald",
     "Ruth Kapitel 1 Vers 1",
     "mit nachnamen laufer",
+
     "mit ergoltherabpeut Herr Schrör",
     "Englisch einschalten",
     "Wie ist das Wetter?",
+
+    "deutschlandradio", "gemini", "KI Kurse workshops",
+    "deutschlandradio", "gemini", "Chaos",
+    "openstreetmap", "gemini", "Chaos",
 ]
 st.markdown("**Beispiele direkt ausprobieren:**")
 cols = st.columns(3)

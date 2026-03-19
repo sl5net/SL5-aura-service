@@ -234,7 +234,7 @@ TRIGGER_FILE_PATH = "/tmp/sl5_record.trigger"
 # needs NO restart. implemented in the sh part. TODO implemt for windows:
 # use . for all Windows. Other examples:
 # AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "."
-AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist|Pi, your personal AI)"
+AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist)"
 # TODO implement for windows
 
 

@@ -2,6 +2,10 @@
 import re # noqa: F401
 from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
+
+
+aura1 ="(Aura|Aurora|laura|flora|dora|Ära|hurra|prora|Computer)"
+
 FUZZY_MAP_pre = [
     # Catch-all rule: Matches everything (.*) as the last resort.
     # It captures the whole text in group 1 to pass it to the script.
@@ -107,11 +111,12 @@ Es gibt keine Accounts, Passwörter, Logins.
     # Wenn Sie einen Teil des Regex matchen, aber NICHT in der Capturing Group haben möchten (was nützlich für das Extrahieren ist), verwenden Sie die Non-Capturing Group (?:...).
     # # https://ollama.com/download
     # EXAMPLE: Aura
-    ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100, # min_accuracy
+    ('ask_ollama', fr'^\s*{aura1}\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100, # min_accuracy
 
         {
         'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'ask_ollama_slow.py']
+        'on_match_exec': [CONFIG_DIR / 'ask_ollama_slow.py'],
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
         }
     ),
 

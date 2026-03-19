@@ -80,4 +80,7 @@ LOG_EXCLUDE_off = [
 LOG_ONLY = [
     r"CRITICAL",
     r"📢📢📢 #",
+    r"Title",
+    r"window",
+
 ]

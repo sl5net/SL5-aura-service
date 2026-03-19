@@ -77,12 +77,18 @@ FUZZY_MAP_pre = [
  {'flags': re.IGNORECASE}),
 
     # EXAMPLE: fred Kurse workshops
-    ('https://ki-maker.space/angebote/kurse-und-workshops', r'^(fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ).*(Kurse|workshops)$', 60, # min_accuracy
+    ('https://ki-maker.space/angebote/kurse-und-workshops', r'^(ki|fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ).*(Kurse|workshops)$', 60, # min_accuracy
  {'flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Python Buch
     ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, # min_accuracy
- {'flags': re.IGNORECASE})
+    {'flags': re.IGNORECASE}),
+
+    # EXAMPLE: openstreetmap
+    (r'https://www.openstreetmap.org/node/9879183939',
+     r'^openstreetmap$', 60, # min_accuracy
+    {'flags': re.IGNORECASE})
+
 ]
 

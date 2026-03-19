@@ -113,7 +113,7 @@ else:
     fzf_smart_file_finder = r"fzf"
 
 PROJECT_ROOT_POSIX = Path(PROJECT_ROOT_DISPLAY_STR).as_posix()
-HOME_DIR_POSIX = Path(home_dir_str).as_posix()
+einenHOME_DIR_POSIX = Path(home_dir_str).as_posix()
 
 suche_text = r'grep -rn "text\|string" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__" | grep -v "/_" | grep -v "/docs" '
 
@@ -121,6 +121,10 @@ suche_text = r'grep -rn "text\|string" --include="*.py" . | grep -v ".venv" | gr
 grep -rn "suche datei" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__" | grep -v "/_"
 
 """
+
+aura1=r"(Aura|Auer|Agora|Aurora|ora|hurra|Flora)"
+aura2=r"(Auras?|Laura|over|Dora|Horror)"
+aura3=r"(Aura|Auer|Aurora|Root|Aurora)"
 
 FUZZY_MAP_pre = [
 
@@ -187,7 +191,7 @@ FUZZY_MAP_pre = [
 
     (f'{PROJECT_ROOT_POSIX}',
      # EXAMPLE: Aura Pfad
-     r'^(Aura|Auer|Agora|Aurora|ora|hurra|Flora)\s+(Aura|Pfad)$',
+     rf'^{aura1}\s+(Aura|Pfad)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
 
@@ -249,7 +253,7 @@ FUZZY_MAP_pre = [
     # Navigiere zu Aura Config
     (f'cd "{Path(PROJECT_ROOT_POSIX, "config").as_posix()}"',
     # EXAMPLE: Navigiere Aura Konfiguration
-    r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Auer|Aurora|Root|Aurora)\s*Konf\w*$',
+    rf'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+{aura3}\s*Konf\w*$',
     90,
     {'flags': re.IGNORECASE,
      'skip_list': ['LanguageTool'],
@@ -265,9 +269,16 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Aura Konfig
     (f'{Path(PROJECT_ROOT_POSIX, "config", "settings.py").as_posix()}',
      # EXAMPLE: Aura
-     r'^(Auras?|Laura|over|Dora|Horror)\s+(Konf\w*|konzentration|settings?)$',
+     rf'^{aura2}\s+(Konf\w*|konzentration|settings?)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+    # EXAMPLE: Aura Lebenslauf
+    (f'{Path(PROJECT_ROOT_POSIX, "config", "maps","_privat","job","bewerbung","Lebenlauf-Sammlung","_Lebenslauf").as_posix()}',
+     rf'^{aura1}\s+(Lebenslauf)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
 
     (f"{Path(PROJECT_ROOT_POSIX, 'config','maps','koans_deutsch').as_posix()}",
     r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(könne|co eins)\s*(deutsch)\s*\w*$',
