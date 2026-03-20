@@ -18,7 +18,9 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: Aura
 """, r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(w\w{2,3}) (bist|machst)?(du)$', 100,
         {
-        'flags': re.IGNORECASE
+        'flags': re.IGNORECASE,
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
+
         }
     ),
 
@@ -43,7 +45,9 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: bist du da
 """, r'^\s*(bist du da|hörst du mich|kannst du mich hören|sprichst du mit mir)\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE
+        'flags': re.IGNORECASE,
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
+
         }
     ),
 
@@ -54,7 +58,9 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: Aura
 """, r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*(\!|\.|\?|$)(\s+.*)?$', 100,
         {
-        'flags': re.IGNORECASE
+        'flags': re.IGNORECASE,
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
+
         }
     ),
 
@@ -65,7 +71,8 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: was bist
 """, r'^\s*(was)\s+(bist|machst)\s+(du)\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE
+        'flags': re.IGNORECASE,
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
         }
     ),
 
@@ -76,7 +83,9 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: fang
 """, r'^\s*(fang|starte|beginn)\s+(an|mal)?\s*(zu sprechen|mit mir|ein gespräch)\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE
+        'flags': re.IGNORECASE,
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
+
         }
     ),
 
@@ -112,12 +121,11 @@ Es gibt keine Accounts, Passwörter, Logins.
     # # https://ollama.com/download
     # EXAMPLE: Aura
     ('ask_ollama', fr'^\s*{aura1}\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100, # min_accuracy
-
         {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'ask_ollama_slow.py'],
-        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
-        }
+            'flags': re.IGNORECASE,
+            'on_match_exec': [CONFIG_DIR / 'ask_ollama_slow.py'],
+            'exclude_windows': [ r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
+        } # noqa: E123
     ),
 
     # # https://ollama.com/download
