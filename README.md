@@ -5,7 +5,10 @@
 *   **Windows:** ✅ Fully supported (uses AutoHotkey/PowerShell).
 *   **macOS:** ✅ Fully supported (uses AppleScript).
 *   **Linux (X11/Xorg):** ✅ Fully supported.
-*   **Linux (Wayland):** ✅ Fully supported. 
+*   **Linux (Wayland):** ⚠️ Likely supported, but not fully tested.
+*   **Linux (CachyOS / Arch-based rolling release):** ⚠️ Partially supported.
+    Post-processing rules and LanguageTool correction currently not working reliably.
+    Investigation ongoing. Manjaro (also Arch-based) works correctly.
 
 
 Welcome to SL5 Aura Service! This document provides a quick overview of our key features and their operating system compatibility.
