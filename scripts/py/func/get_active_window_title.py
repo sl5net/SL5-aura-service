@@ -14,7 +14,21 @@ _X11_ENV_CACHE = None
 X11_CACHE_FILE = Path(tempfile.gettempdir()) / "sl5_aura" / "sl5_aura_x11_env.json"
 
 
-def get_active_window_title_atspi():
+def get_active_window_kde():
+    # Dieser Befehl fragt KWin direkt nach dem Titel des aktiven Fensters
+    cmd = "qdbus6 org.kde.KWin /KWin org.kde.KWin.activeWindow"
+    # Falls das nur eine ID liefert, ist dieser hier für den Text besser:
+    cmd_title = "qdbus6 org.kde.KWin /KWin org.kde.KWin.supportInformation"
+
+    try:
+        res = subprocess.check_output(cmd_title, shell=True, text=True)
+        for line in res.splitlines():
+            if "Active window title:" in line:
+                return line.split(":")[1].strip()
+    except:
+        return None
+
+def get_active_window_title_atspi_fallback():
     """
     Retrieves the title of the currently active window using the
     AT-SPI (Accessibility) Bus. This is the most reliable method for
@@ -27,6 +41,8 @@ def get_active_window_title_atspi():
 
     something else maybe important if you have problems:
     python -m venv .venv --system-site-packages
+
+    source .venv/bin/activate.fish
 
     don't forget:
     pip install PyGObject
@@ -48,6 +64,11 @@ def get_active_window_title_atspi():
     or shorter (maybe better)
     sudo pacman -S orca at-spi2-core
 
+
+    sudo pacman -S orca at-spi2-core. Das ist korrekt, aber unter Arch/CachyOS ist es oft zwingend erforderlich, das Paket python-gobject systemweit zu haben, damit die gi-Bindings (GObject Introspection) überhaupt mit den System-Bibliotheken kommunizieren können.
+
+    Ergänze python-gobject in der pacman Zeile. Ohne dieses Paket schlägt import gi in manchen Venvs fehl, wenn diese mit --system-site-packages erstellt wurden.
+
     kwriteconfig6 --file kaccessrc --group ScreenReader --key Enabled true
 
     echo "export QT_ACCESSIBILITY=1" >> ~/.bashrc
@@ -65,7 +86,6 @@ def get_active_window_title_atspi():
 
 
     """
-
     try:
         try:
             import gi
@@ -85,8 +105,25 @@ def get_active_window_title_atspi():
         return "Error: AT-SPI dependencies missing"
 
     # Initialize the Atspi Registry (0 = success)
-    if Atspi.init() != 0:
-        return "Error: Could not initialize Atspi"
+    # if Atspi.init() != 0:
+    #     return f"89: Error: Could not initialize Atspi {Atspi}"
+
+
+    # --- SCHRITT 2: Einmalige Initialisierung (hasattr Trick) ---
+    # Wir prüfen, ob wir an diese Funktion schon eine "Notiz" geklebt haben.
+    # 'hasattr' schaut nach: "Habe ich die Variable 'initialized' schon?"
+    if not hasattr(get_active_window_title_atspi_fallback, "initialized"):
+        # Dieser Block läuft NUR BEIM ERSTEN MAL!
+        if Atspi.init() == 0:
+            # Wir kleben die Notiz "initialized = True" an die Funktion
+            get_active_window_title_atspi_fallback.initialized = True
+        else:
+            get_active_window_title_atspi_fallback.initialized = False
+            return None
+
+
+
+
 
     # Get the root desktop object
     desktop = Atspi.get_desktop(0)
@@ -268,6 +305,57 @@ def get_linux_x11_env():
     return target_env
 
 
+def get_active_window_title_kde_wayland_qdbus():
+    """
+    Versucht den aktiven Fenstertitel direkt über KDE KWin (DBus) abzufragen.
+    Dies ist der zuverlässigste Weg unter Plasma 6 + Wayland.
+    """
+    try:
+        # qdbus6 ist der Standardbefehl unter Plasma 6
+        # Wir fragen die Support-Informationen ab, die den aktuellen Status enthalten
+        result = subprocess.run(
+            ["qdbus6", "org.kde.KWin", "/KWin", "org.kde.KWin.supportInformation"],
+            capture_output=True, text=True, timeout=1
+        )
+
+        if result.returncode == 0:
+            for line in result.stdout.splitlines():
+                if "Active window title:" in line:
+                    title = line.replace("Active window title:", "").strip()
+                    if title:
+                        return f"🔵(KWin) {title}"
+    except (subprocess.SubprocessError, FileNotFoundError):
+        # Falls qdbus6 nicht installiert ist oder fehlschlägt
+        pass
+    return None
+
+
+def get_active_window_title_kde_native():
+    """
+    Fragt KWin (Plasma 6) direkt über qdbus6 ab.
+    Das ist unter Wayland der stabilste Weg.
+    """
+    try:
+        # Wir fragen KWin nach den Support-Informationen
+        # timeout=0.5 sorgt dafür, dass das Skript nicht hängen bleibt
+        result = subprocess.run(
+            ["qdbus6", "org.kde.KWin", "/KWin", "org.kde.KWin.supportInformation"],
+            capture_output=True,
+            text=True,
+            timeout=0.5
+        )
+
+        if result.returncode == 0:
+            for line in result.stdout.splitlines():
+                if "Active window title:" in line:
+                    title = line.replace("Active window title:", "").strip()
+                    if title:
+                        return f"🔵App: {title}"  # Wir geben nur den Titel zurück
+    except Exception:
+        pass  # Wenn qdbus6 nicht da ist, gehen wir zum Fallback
+    return None
+
+
 def get_active_window_title_safe():
     """
     Gibt den Titel des aktiven Fensters zurück (lowercase).
@@ -303,7 +391,25 @@ def get_active_window_title_safe():
             # print(f'🔵🔵🔵{get_active_window_title_atspi()}🔵🔵🔵')
             # exit(1)
 
-            return get_active_window_title_atspi()
+            # 1. Priorität: Plasma 6 / Wayland (qdbus6)
+            title = get_active_window_title_kde_native()
+
+            # Versuch: KDE Native (Wayland optimiert)
+            # 2. Priorität: Falls der erste Weg versagt, nimm Atspi (aber leise)
+            if not title:
+                title = get_active_window_title_kde_wayland_qdbus()
+
+            if not title:
+                title = get_active_window_kde()
+
+            # 2. Versuch: Falls KDE nichts lieferte oder Fehler war, nimm Atspi
+            if title is None or "Error" in title:
+                title = get_active_window_title_atspi_fallback()
+
+            return title
+            
+
+            # return get_active_window_title_atspi()
 
             # try:
             #     # 1. Aktiven Fenster-Pfad über dbus-send holen (Standard-Tool)
