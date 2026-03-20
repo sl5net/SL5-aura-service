@@ -62,9 +62,6 @@ else
     echo "Service is not running."
 fi
 
-
-python3 -m venv .env
-
 echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
 python3 -m venv .venv
 source "$PROJECT_ROOT/.venv/bin/activate"
@@ -74,8 +71,58 @@ echo "Starting Python server from '$PROJECT_ROOT'..."
 
 echo "Starting service..."
 
+#    RSS (Resident Set Size): Das ist der tatsächliche RAM-Verbrauch in htop oder top. Mit mimalloc sollte dieser Wert nach einem anfänglichen Anstieg sehr stabil bleiben und bei Inaktivität des Services sogar leicht sinken (weil mimalloc Speicher aggressiver ans OS zurückgibt als die Standard-glibc).
+
+# Installation: sudo pacman -S mimalloc
+
 # export PYTHONDONTWRITEBYTECODE=1
+
+# Python environment settings
 export PYTHONUNBUFFERED=1
-PYTHONDONTWRITEBYTECODE=1 python3 "$SCRIPT_TO_START" &
+export PYTHONDONTWRITEBYTECODE=1
+
+# --- Memory Allocator Logic (mimalloc) ---
+MIMALLOC_FOUND=false
+
+# Check if we are on Windows (Git Bash / MSYS)
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
+    # On Windows, LD_PRELOAD does not work like on Linux.
+    # To use mimalloc on Windows, Python usually needs to be linked during compilation.
+    echo "Note: Memory allocator override (mimalloc) is skipped on Windows."
+else
+    # Potential paths for mimalloc on various Linux distributions
+    # 1. Arch Linux: /usr/lib/libmimalloc.so
+    # 2. Ubuntu/Debian: /usr/lib/x86_64-linux-gnu/libmimalloc.so.2 (or .so)
+    # 3. Manual installs: /usr/local/lib/libmimalloc.so
+    POSSIBLE_MIMALLOC_PATHS=(
+        "/usr/lib/libmimalloc.so"
+        "/usr/lib/x86_64-linux-gnu/libmimalloc.so"
+        "/usr/lib/x86_64-linux-gnu/libmimalloc.so.2"
+        "/usr/local/lib/libmimalloc.so"
+    )
+
+    for path in "${POSSIBLE_MIMALLOC_PATHS[@]}"; do
+        if [ -f "$path" ]; then
+            export LD_PRELOAD="$path"
+            MIMALLOC_FOUND=true
+            echo "Info: Using mimalloc for improved memory management ($path)."
+            break
+        fi
+    done
+
+    if [ "$MIMALLOC_FOUND" = false ]; then
+        echo "Warning: mimalloc library not found. Falling back to default allocator."
+        echo "Hint: Install it with 'sudo apt install libmimalloc-dev' (Ubuntu) or 'sudo pacman -S mimalloc' (Arch)."
+    fi
+fi
+
+# --- Start the Service ---
+echo "Starting $SCRIPT_TO_START..."
+python3 "$SCRIPT_TO_START" &
+
+#python3 "$SCRIPT_TO_START" &
+
+
+#PYTHONDONTWRITEBYTECODE=1 LD_PRELOAD=/usr/lib/libmimalloc.so python3 "$SCRIPT_TO_START" &
 
 
