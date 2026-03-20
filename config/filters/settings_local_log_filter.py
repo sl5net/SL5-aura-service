@@ -82,5 +82,6 @@ LOG_ONLY = [
     r"📢📢📢 #",
     r"Title",
     r"window",
+    r":st:",
 
 ]

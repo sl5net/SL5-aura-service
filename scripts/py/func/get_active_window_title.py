@@ -16,7 +16,7 @@ X11_CACHE_FILE = Path(tempfile.gettempdir()) / "sl5_aura" / "sl5_aura_x11_env.js
 
 def get_active_window_kde():
     # Dieser Befehl fragt KWin direkt nach dem Titel des aktiven Fensters
-    cmd = "qdbus6 org.kde.KWin /KWin org.kde.KWin.activeWindow"
+    # cmd = "qdbus6 org.kde.KWin /KWin org.kde.KWin.activeWindow"
     # Falls das nur eine ID liefert, ist dieser hier für den Text besser:
     cmd_title = "qdbus6 org.kde.KWin /KWin org.kde.KWin.supportInformation"
 
@@ -25,7 +25,8 @@ def get_active_window_kde():
         for line in res.splitlines():
             if "Active window title:" in line:
                 return line.split(":")[1].strip()
-    except:
+    except Exception as e:
+        print(f'29: {e}')
         return None
 
 def get_active_window_title_atspi_fallback():
