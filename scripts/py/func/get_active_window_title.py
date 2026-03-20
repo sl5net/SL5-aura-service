@@ -71,6 +71,8 @@ def get_active_window_title_atspi():
             import gi
         except ImportError:
             if os.environ.get("XDG_SESSION_TYPE") == "wayland" or os.environ.get("WAYLAND_DISPLAY"):
+                print("pip install PyGObject ")
+                print("pip install PyGObject ")
                 raise RuntimeError(
                     "PyGObject is required on Wayland sessions (e.g. to get actual Window-Title (s, 26.2.'26). Install it with: "
                     "pip install PyGObject"
