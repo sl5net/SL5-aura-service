@@ -955,10 +955,13 @@ def process_text_in_background(logger,
                 # Wir sind dran!
                 break
 
-            # if chunk_id < expected_id:
+            if chunk_id < expected_id:
                 # Wurde bereits verarbeitet/überholt (oder wir sind ein Duplikat). Abbrechen!
-                # logger.warning(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
-                # return
+                logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                return
 
             # Wir sind zu schnell. In den Cache legen und warten.
             # Nur alle N Iterationen loggen:

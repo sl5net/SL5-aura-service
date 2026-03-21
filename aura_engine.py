@@ -1169,8 +1169,8 @@ if settings.DEV_MODE :
     check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
 
-    # from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
-    # run_e2e_live_reload_func_test_v2(logger, active_lt_url)
+    from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
+    run_e2e_live_reload_func_test_v2(logger, active_lt_url)
 
     log4DEV('Script Start', logger)
 

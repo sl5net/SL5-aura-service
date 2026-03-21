@@ -63,7 +63,14 @@ else
 fi
 
 echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
-python3 -m venv .venv
+
+
+if [ ! -f "$PROJECT_ROOT/.venv/bin/python3" ]; then
+    echo "Creating virtual environment..."
+    python3 -m venv "$PROJECT_ROOT/.venv"
+fi
+
+
 source "$PROJECT_ROOT/.venv/bin/activate"
 
 echo "Starting Python server from '$PROJECT_ROOT'..."
@@ -121,10 +128,5 @@ echo "LD_PRELOAD=$LD_PRELOAD"  # ← zur Bestätigung
 # --- Start the Service ---
 echo "Starting $SCRIPT_TO_START..."
 python3 "$SCRIPT_TO_START" &
-
-#python3 "$SCRIPT_TO_START" &
-
-
-#PYTHONDONTWRITEBYTECODE=1 LD_PRELOAD=/usr/lib/libmimalloc.so python3 "$SCRIPT_TO_START" &
 
 
