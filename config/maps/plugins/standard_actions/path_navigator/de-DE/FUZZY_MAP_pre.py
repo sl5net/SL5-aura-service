@@ -123,10 +123,24 @@ grep -rn "suche datei" --include="*.py" . | grep -v ".venv" | grep -v "venv" | g
 """
 
 aura1=r"(Aura|Auer|Agora|Aurora|ora|hurra|Flora)"
-aura2=r"(Auras?|Laura|over|Dora|Horror)"
+aura2=r"(Auras?|Augen|Andere|Ära|auch|Eurer|Laura|Raue|over|obere|o a|Dora|eure|tore|Flora|ava|Horror|hurra|hoher|roter)"
 aura3=r"(Aura|Auer|Aurora|Root|Aurora)"
 
 FUZZY_MAP_pre = [
+
+    # ava konföderation
+    # EXAMPLE: Aura Konfig
+    (f'{Path(PROJECT_ROOT_POSIX, "config", "settings.py").as_posix()}',
+     # EXAMPLE: Aura
+     rf'^{aura2}\s+(Konf\w*|konzentration|settings?)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+        'only_in_windows': ['Konsole', 'konsole', 'Console',
+            r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung',
+            'double', 'Double Commander'],
+    }),
+
+
 
     # fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' --extensions 'py,sh,html' | xclip -selection cl
 
@@ -194,11 +208,10 @@ FUZZY_MAP_pre = [
      rf'^{aura1}\s+(Aura|Pfad)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
-
         'only_in_windows': ['Konsole', 'konsole', 'Console',
         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
-
-      }),
+      }
+     ),
 
     (f'{PROJECT_ROOT_POSIX}',
      # EXAMPLE: Raumfahrt
@@ -266,12 +279,6 @@ FUZZY_MAP_pre = [
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    # EXAMPLE: Aura Konfig
-    (f'{Path(PROJECT_ROOT_POSIX, "config", "settings.py").as_posix()}',
-     # EXAMPLE: Aura
-     rf'^{aura2}\s+(Konf\w*|konzentration|settings?)$',
-     90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: Aura Lebenslauf
     (f'{Path(PROJECT_ROOT_POSIX, "config", "maps","_privat","job","bewerbung","Lebenlauf-Sammlung","_Lebenslauf").as_posix()}',

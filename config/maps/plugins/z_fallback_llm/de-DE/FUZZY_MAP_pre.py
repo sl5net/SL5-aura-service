@@ -19,7 +19,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 """, r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(w\w{2,3}) (bist|machst)?(du)$', 100,
         {
         'flags': re.IGNORECASE,
-        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave','double'],
 
         }
     ),
@@ -59,7 +59,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 """, r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*(\!|\.|\?|$)(\s+.*)?$', 100,
         {
         'flags': re.IGNORECASE,
-        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
+        'exclude_windows': [r'element',r'firefox', r'chrome', r'brave','double'],
 
         }
     ),
@@ -124,7 +124,9 @@ Es gibt keine Accounts, Passwörter, Logins.
         {
             'flags': re.IGNORECASE,
             'on_match_exec': [CONFIG_DIR / 'ask_ollama_slow.py'],
-            'exclude_windows': [ r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
+            'exclude_windows': [ 'element','firefox', 'chrome', 'brave',
+                                 '.*double.*commander.*',
+                                 'double commander'],
         } # noqa: E123
     ),
 
@@ -134,7 +136,9 @@ Es gibt keine Accounts, Passwörter, Logins.
 
         {
         'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'ask_ollama.py']
+        'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
+        'exclude_windows': [ r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
+
         }
     )
 

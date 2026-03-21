@@ -13,6 +13,7 @@ current_user = user_name = USER_NAME = str(current_user) # fallbacks
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
+# DEV_MODE = 1  # ⚠️ Requires LOG_ONLY filter! See docs/dev_mode_setup.md
 DEV_MODE = 0
 DEV_MODE_all_processing = 0
 DEV_MODE_show_window_title_stuff = 0

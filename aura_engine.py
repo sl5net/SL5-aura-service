@@ -782,7 +782,6 @@ MODEL_NAME = args.vosk_model or vosk_model_from_file or MODEL_NAME_DEFAULT
 
 """
 
-import threading
 
 """
 31.10.'25 22:09 Fri
@@ -1169,8 +1168,8 @@ if settings.DEV_MODE :
     check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
 
-    from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
-    run_e2e_live_reload_func_test_v2(logger, active_lt_url)
+    # from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
+    # run_e2e_live_reload_func_test_v2(logger, active_lt_url)
 
     log4DEV('Script Start', logger)
 

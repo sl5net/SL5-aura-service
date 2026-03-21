@@ -1,6 +1,5 @@
 # config/filters/settings_local_log_filter.py
-LOG_EXCLUDE = []
-LOG_EXCLUDE4444 = [
+LOG_EXCLUDE = [
     r"▉",
     r"📦",
     r"PUNCTUATION_MAP",
@@ -78,13 +77,11 @@ LOG_EXCLUDE_off = [
 
 ]
 # OPTIONAL: Wenn nicht leer, wird NUR das geloggt, was hier matcht (ONLY und oder logig: Mindes eines aus LOG_ONLY muss matchen)
-LOG_ONLY = []
-LOG_ONLY111 = [
+LOG_ONLY = [
     r"Successfully",
     r"CRITICAL",
     r"📢📢📢 #",
     r"Title",
     r"window",
     r":st:",
-
 ]

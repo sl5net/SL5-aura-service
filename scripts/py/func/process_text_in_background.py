@@ -818,6 +818,15 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                     if is_private:
                         privacy_taint_occurred = True
 
+
+
+                    # exclude_windows check before executing script
+                    exclude_windows_list = options_dict.get('exclude_windows', [])
+                    if exclude_windows_list and _active_window_title:
+                        if any(re.search(p, str(_active_window_title), re.IGNORECASE)
+                               for p in exclude_windows_list):
+                            continue
+
                     on_match_exec_list = options_dict.get('on_match_exec', [])
 
                     # <<< ÄNDERUNG 3: Bereite das 'match_data'-Paket für die Skripte vor
@@ -1836,6 +1845,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
 
+
+
             rule_is_private = options_dict.get('is_private', False)
 
 
@@ -1877,7 +1888,15 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             exclude_windows_list = options_dict.get('exclude_windows', [])
             only_in_windows_list = options_dict.get('only_in_windows', [])
 
-            if settings.DEV_MODE_show_window_title_stuff:
+            if settings.DEV_MODE_show_window_title_stuff: # or settings.DEV_MODE:
+
+                # if not exclude_windows_list or not  only_in_windows_list :
+                #     m = f"1839🔵🔵 {options_dict}"
+                #     log4DEV(m, logger_instance)
+                #     logger_instance.info(m)
+
+
+
                 m_202602281126 = f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
                 logger_instance.info(m_202602281126)
                 logger_instance.info(f'🔴🔴🔴 exclude_windows_list: {exclude_windows_list}, '
@@ -1994,6 +2013,15 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                             'rule_options': options_dict
                         }
 
+
+                        # exclude_windows check before executing script
+                        exclude_windows_list = options_dict.get('exclude_windows', [])
+                        if exclude_windows_list and _active_window_title:
+                            if any(re.search(p, str(_active_window_title), re.IGNORECASE)
+                                   for p in exclude_windows_list):
+                                continue
+
+
                         # scripts/py/func/process_text_in_background.py:1897
                         on_match_exec_list = options_dict.get('on_match_exec', [])
                         for script_path in on_match_exec_list:
@@ -2055,6 +2083,19 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                                 'regex_match_obj': partial_match_obj,  # Verwende das neue partial_match_obj
                                 'rule_options': options_dict
                             }
+
+
+
+                            # exclude_windows check before executing script
+                            exclude_windows_list = options_dict.get('exclude_windows', [])
+                            if exclude_windows_list and _active_window_title:
+                                if any(re.search(p, str(_active_window_title), re.IGNORECASE)
+                                       for p in exclude_windows_list):
+                                    continue
+
+
+
+
 
                             on_match_exec_list = options_dict.get('on_match_exec', [])
                             for script_path in on_match_exec_list:
