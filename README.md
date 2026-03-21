@@ -5,11 +5,10 @@
 *   **Windows:** ✅ Fully supported (uses AutoHotkey/PowerShell).
 *   **macOS:** ✅ Fully supported (uses AppleScript).
 *   **Linux (X11/Xorg):** ✅ Fully supported.
-*   **Linux (Wayland):** ⚠️ Likely supported, but not fully tested.
-*   **Linux (CachyOS / Arch-based rolling release):** ⚠️ Partially supported.
-    Post-processing rules and LanguageTool correction currently not working reliably.
-    Investigation ongoing. Manjaro (also Arch-based) works correctly.
-
+*   **Linux (Wayland):** ✅ Fully supported (tested on KDE Plasma 6 / Wayland).
+*   **Linux (CachyOS / Arch-based rolling release):** ✅ Fully supported.
+    Requires mimalloc (`sudo pacman -S mimalloc`) due to glibc 2.43 compatibility.
+    
 
 Welcome to SL5 Aura Service! This document provides a quick overview of our key features and their operating system compatibility.
 
