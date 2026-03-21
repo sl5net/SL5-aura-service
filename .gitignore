@@ -50,6 +50,9 @@ type_watcher.log
 **/*.zip_log.py
 **/*.zip.py
 
+*.blob
+
+
 config/maps/2025/
 
 # config/maps/plugins/anki_quiz/de-DE/state.json
