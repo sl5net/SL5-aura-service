@@ -28,46 +28,51 @@ def get_session():
 
 
 def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) -> str:
-    if not text or not text.strip(): return text
+    if not text or not text.strip():
+        return text
 
-    # Hole die für diesen Prozess gültige Session
+    base_url = active_lt_url.rstrip('/')
+    if base_url.endswith('/v2'):
+        check_url = f"{base_url}/check"
+    elif not base_url.endswith('/v2/check'):
+        check_url = f"{base_url}/v2/check"
+    else:
+        check_url = base_url
+
     session = get_session()
-
     data = {'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1}
+
     try:
-        # Timeout leicht erhöhen für hohe Last
-        response = session.post(active_lt_url, data=data, timeout=8)
+        response = session.post(check_url, data=data, timeout=8)
         response.raise_for_status()
 
         matches = response.json().get('matches', [])
         if not matches:
             return text
 
-        # Korrektur-Logik (unverändert, aber effizienter)
         sorted_matches = sorted(matches, key=lambda m: m['offset'])
         new_text_parts, last_index = [], 0
 
         for match in sorted_matches:
-            # Überspringe Korrektur, wenn keine Replacements vorhanden sind
             if not match.get('replacements'):
                 continue
-
+            if match['offset'] < last_index:  # Überlappung verhindern
+                continue
             new_text_parts.append(text[last_index:match['offset']])
             new_text_parts.append(match['replacements'][0]['value'])
             last_index = match['offset'] + match['length']
 
         new_text_parts.append(text[last_index:])
-        corrected_text = "".join(new_text_parts)
-
-        return corrected_text
+        corrected = "".join(new_text_parts)
+        logger.debug("LT-Korrektur: %d Treffer verarbeitet.", len(sorted_matches))
+        return corrected
 
     except requests.exceptions.Timeout:
-        logger.error("  <- TIMEOUT: LT Server war zu langsam.")
+        logger.error("TIMEOUT: LT-Server zu langsam.")
         return text
     except requests.exceptions.RequestException as e:
-        logger.error(f"  <- ERROR: LanguageTool request failed: {e}")
+        logger.error("LanguageTool request failed: %s", e)
         return text
-
 
 
 

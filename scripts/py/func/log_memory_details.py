@@ -34,7 +34,7 @@ def log4DEV(text: str, logger):
 
 
                 # caller_file_and_line = f"XYZ:{os.path.relpath(frame_info.filename)}:{frame_info.lineno}"
-                caller_file_and_line = f"🍒 {os.path.relpath(caller_script_name)}:{caller_line}"
+                caller_file_and_line = f"🍒 {caller_script_name}:{caller_line}"
                 break # Found the caller, exit loop
             except Exception as e:
                 logger.debug(f"Error getting caller info: {e}")
@@ -74,7 +74,7 @@ def log_memory_details(stage: str, logger):
                 # Get the base name of the calling script
                 caller_script_name = os.path.basename(frame_info.filename)
                 # Get the full path of the calling script and its line number
-                caller_file_and_line = f"{os.path.relpath(frame_info.filename)}:{frame_info.lineno}"
+                caller_file_and_line = f"{os.path.basename(frame_info.filename)}:{frame_info.lineno}"
                 break # Found the caller, exit loop
             except Exception as e:
                 logger.debug(f"Error getting caller info: {e}")

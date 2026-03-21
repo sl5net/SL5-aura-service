@@ -24,25 +24,19 @@ FUZZY_MAP_pre = [
 
     # Folgende regel betrifft alles außer dem Wort Haus:
     # EXAMPLE: Haus
-    ('', r'^(?!Haus).*$', 5, # min_accuracy
- {'flags': re.IGNORECASE}),
+    # ('', r'^(?!Haus).*$', 5, {'flags': re.IGNORECASE}),
     #TestTestTestHausHausHausFrau ausHaus Baum unterGuten TagSchachmattSchachmatt
     #SchachmattSchachmatt
 
     # Folgende regel betrifft alles außer den Wörtern Schach,Matt:
     # EXAMPLE: Schach
-    ('', r'^(?!Schach|Matt|bad|Haus).*$', 5, # min_accuracy
- {'flags': re.IGNORECASE}),
+    # ('', r'^(?!Schach|Matt|bad|Haus).*$', 5, {'flags': re.IGNORECASE}),
     #SchachSchachHausSchachSchachBad
     #Schachmatt
 
     # EXAMPLE: Schach
-    ('Schachmatt', r'^(Schach|Matt|bad|Haus).*$', 5, # min_accuracy
- {'flags': re.IGNORECASE}),
+    # ('Schachmatt', r'^(Schach|Matt|bad|Haus).*$', 5, {'flags': re.IGNORECASE}),
     #SchachmattSchachmatt
-
-
-
 
 
 

@@ -20,8 +20,8 @@ def execute_packing_logic(current_dir, logger):
     Creates a 'Matryoshka-ZIP' with extensive debug logging.
     """
 
-    # log_everything = False
-    log_everything = True
+    log_everything = False
+    # log_everything = True
 
     current_dir_loop = current_dir
 
@@ -82,7 +82,7 @@ def execute_packing_logic(current_dir, logger):
 
                     for file in files:
                         # 2. EXCLUDE NOISE: Ignore hidden files and .pyc
-                        if file.startswith('.') or file.endswith('.pyc'):
+                        if file.startswith('.') or file.endswith('.pyc') or file.endswith('.blob') or file.endswith('.zip'):
                             continue
 
                         file_path = Path(root) / file

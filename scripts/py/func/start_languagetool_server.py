@@ -65,9 +65,16 @@ def _is_lt_server_responsive(url, timeout=1):
     """Checks if the LanguageTool server at the given URL is responsive."""
     try:
         # Check against a known lightweight endpoint
-        response = requests.get(f"{url}/v2/languages", timeout=timeout)
+        # response = requests.get(f"{url}/v2/languages", timeout=timeout)
+        response = requests.get(f"{url}/v2/languages", timeout=timeout, allow_redirects=True)
         return response.status_code == 200
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as e:
+        # logger.debug(f"LT Check failed: {e}")
+        print(f"LanguageTool(LT) Check failed: {e}")
+        return False
+    except Exception as e2:
+        # logger.debug(f"LT Check failed: {e}")
+        print(f"LanguageTool(LT) Check failed: {e2}")
         return False
 
     # backup
@@ -111,19 +118,22 @@ def get_languagetool_jvm_args():
 
 
 def start_languagetool_server(logger, languagetool_jar_path, base_url):
-    # scripts/py/func/start_languagetool_server.py:70
-    # 1. EARLY CHECK: Prevent double startup
-    port = base_url.split(':')[-1].split('/')[0]
-    # full_base_url = f"http://localhost:{port}"
-    full_base_url = f"http://127.0.0.1:{port}" # Using 127.0.0.1 explicitly to avoid Windows IPv6 localhost issues
+    # 1. Port extrahieren und URL säubern
+    # Falls base_url nur eine Zahl ist, mach eine URL draus
+    if base_url.isdigit():
+        port = base_url
+    else:
+        port = base_url.split(':')[-1].split('/')[0]
 
-    # scripts/py/func/start_languagetool_server.py:75
+    full_base_url = f"http://127.0.0.1:{port}"
 
 
-
-    if _is_lt_server_responsive(full_base_url, timeout=0.5):
-        logger.info(f"LanguageTool Server is ALREADY online at {full_base_url}. Skipping new startup (RAM optimization).")
-        return LT_ALREADY_RUNNING_SENTINEL # Return the sentinel object
+    # Wir prüfen /v2/languages (Standard) ODER einfach nur /v2
+    if _is_lt_server_responsive(full_base_url, timeout=0.5):  # Timeout etwas höher
+        logger.info(f"✅ LanguageTool Server is ALREADY online at {full_base_url}. Skipping startup.")
+        return LT_ALREADY_RUNNING_SENTINEL
+    else:
+        logger.info(f"x Failed: Checking for existing LanguageTool on {full_base_url}...")
 
     # 2. Check Java path (existing logic)
     try:

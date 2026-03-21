@@ -425,7 +425,7 @@ PY
                     fi
                 fi
             fi
-        done < <(find "$DIR_TO_WATCH" -maxdepth 1 -type f -name 'tts_output_*.txt' -print0)
+        done < <(find "$DIR_TO_WATCH" -maxdepth 1 -type f -name 'tts_output_*.txt' -print0 | sort -z)
     done
 
 else

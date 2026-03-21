@@ -916,7 +916,7 @@ def process_text_in_background(logger,
     # end = time.time()
     # duration = end - start # its about 3milliSeconds
     if settings.DEV_MODE or True:
-        # Becouse it's a new feature and we're not quite sure if it works very well on Windows, it's good to have output  (original:'weil es ein neues feature ist und wir noch nicht ganz sicher sind ob es auf windows sehr gut funktioniert ist es doch gut über eine ausgabe ' ). 12.3.'26 06:36 Thu
+        # Because it's a new feature and we're not quite sure if it works very well on Windows, it's good to have output  (original:'weil es ein neues feature ist und wir noch nicht ganz sicher sind ob es auf windows sehr gut funktioniert ist es doch gut über eine ausgabe ' ). 12.3.'26 06:36 Thu
 
         # It is also helpful when create rules if you know exactly which names are being used
         # todo : set not always true maybe
@@ -944,7 +944,8 @@ def process_text_in_background(logger,
         # --- KRITISCHE SEQUENZPRÜFUNG AM ANFANG DER FUNKTION ---
     if chunk_id > 0:
 
-        # 1. Warte-Loop, um die Reihenfolge zu garantieren
+        # 1. Warte-Loop, um die Reihenfolge zu garantieren scripts/py/func/process_text_in_background.py:947
+        wait_count = 0
         while True:
             expected_id = 0
             with SEQUENCE_LOCK:
@@ -954,13 +955,16 @@ def process_text_in_background(logger,
                 # Wir sind dran!
                 break
 
-            if chunk_id < expected_id:
+            # if chunk_id < expected_id:
                 # Wurde bereits verarbeitet/überholt (oder wir sind ein Duplikat). Abbrechen!
-                logger.warning(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
-                return
+                # logger.warning(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                # return
 
-                # Wir sind zu schnell. In den Cache legen und warten.
-            logger.info(f"ID {chunk_id} arrived early. Waiting for {expected_id}...")
+            # Wir sind zu schnell. In den Cache legen und warten.
+            # Nur alle N Iterationen loggen:
+            if wait_count % 100 == 0:
+                logger.info(f"ID {chunk_id} arrived early. Waiting for {expected_id}...")
+            wait_count += 1
 
             # --- CACHE: Legt uns in den Warte-Cache und wartet auf andere Threads, die abarbeiten ---
             with SEQUENCE_LOCK:
@@ -971,10 +975,14 @@ def process_text_in_background(logger,
             # Kurze, effiziente Wartezeit, um den Thread freizugeben
             time.sleep(0.005)
 
-            # --- Wenn der Cache-Eintrag nicht mehr da ist, wurde er von einem anderen Thread abgeholt ---
-            if chunk_id not in OUT_OF_ORDER_CACHE:
-                # Der Chunk wurde gerade von einem anderen Thread freigegeben, also neu prüfen.
-                continue
+            with SEQUENCE_LOCK:
+
+                # --- Wenn der Cache-Eintrag nicht mehr da ist, wurde er von einem anderen Thread abgeholt ---
+
+                if chunk_id not in OUT_OF_ORDER_CACHE:
+                    # Der Chunk wurde gerade von einem anderen Thread freigegeben, also neu prüfen.
+                    continue
+
 
                 # 2. Erfolgreich an der Reihe: Aktualisiere die letzte verarbeitete ID
         with SEQUENCE_LOCK:

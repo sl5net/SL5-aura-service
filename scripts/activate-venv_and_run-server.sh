@@ -116,6 +116,8 @@ else
     fi
 fi
 
+echo "LD_PRELOAD=$LD_PRELOAD"  # ← zur Bestätigung
+
 # --- Start the Service ---
 echo "Starting $SCRIPT_TO_START..."
 python3 "$SCRIPT_TO_START" &

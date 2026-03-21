@@ -364,8 +364,8 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
     import importlib
     import sys
 
-    log_everything = False
     # log_everything = True
+    log_everything = False
 
     # 1. Define the stop boundary
     # We stop scanning when we reach 'config/maps' to avoid scanning the whole project

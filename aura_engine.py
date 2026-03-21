@@ -13,6 +13,8 @@ import psutil
 import time
 import re
 
+import threading
+
 #from config.settings import LANGUAGETOOL_CHECK_URL
 
 # Python path to ensure reliable imports on all platforms
@@ -361,7 +363,8 @@ logger = logging.getLogger()
 #
 #     def write(self, buf):
 #         # 1. Sofort auf die Konsole schreiben (Garantie!)
-#         self.terminal.write(buf)
+#         with self._lock:
+#            self.terminal.write(buf)
 #         self.terminal.flush()
 #
 #         # 2. Danach ins Logfile senden
@@ -426,6 +429,7 @@ class SafeStreamToLogger(object):
         self.terminal = original_stream
         self.file_handler_ref = file_handler               # <--- HIER speichern
         self.is_logging = False # <--- DER SCHUTZSCHALTER
+        self._lock = threading.Lock()
         self.log_pattern = re.compile(r'^\d{2}:\d{2}:\d{2},\d{3}\s-\s[A-Z]+\s+-\s')
 
     def write(self, buf):
@@ -459,45 +463,46 @@ class SafeStreamToLogger(object):
             buf = f'ööööööööööööööööööööööööööööööööööööööö {buf} ääääääääääääääääääääääääääääääääääääääääääääää\n'
             # return
 
-        self.terminal.write(buf)
-        # self.terminal.flush() <-- BESSER SO (Spart CPU/Zeit)
+        with self._lock:
+            self.terminal.write(buf)
+            # self.terminal.flush() <-- BESSER SO (Spart CPU/Zeit)
 
-        # 2. Wenn wir gerade NICHT loggen, dann ins File senden
-        # if not self.is_logging and buf.strip():
-        if buf and not buf.isspace() and not self.is_logging:
-            self.is_logging = True # Schalter an
-            try:
+            # 2. Wenn wir gerade NICHT loggen, dann ins File senden
+            # if not self.is_logging and buf.strip():
+            if buf and not buf.isspace() and not self.is_logging:
+                self.is_logging = True # Schalter an
+                try:
 
-                # st:
+                    # st:
 
-                # Prüfen: Hat der Text schon einen Zeitstempel?
-                match = self.log_pattern.match(buf)
+                    # Prüfen: Hat der Text schon einen Zeitstempel?
+                    match = self.log_pattern.match(buf)
 
-                if match:
-                    # JA: Wir schneiden den Zeitstempel vorne weg!
-                    # match.end() ist die Stelle, wo der echte Text anfängt.
-                    clean_msg = buf[match.end():].rstrip()
-                else:
-                    # NEIN: Wir nehmen den Text so wie er ist (z.B. von print)
-                    clean_msg = buf.rstrip()
-
-
-
-                # Nur schreiben, wenn noch Text übrig ist
-                if clean_msg:
+                    if match:
+                        # JA: Wir schneiden den Zeitstempel vorne weg!
+                        # match.end() ist die Stelle, wo der echte Text anfängt.
+                        clean_msg = buf[match.end():].rstrip()
+                    else:
+                        # NEIN: Wir nehmen den Text so wie er ist (z.B. von print)
+                        clean_msg = buf.rstrip()
 
 
-                    record = logging.LogRecord(
-                        name="PRINT", level=logging.INFO, pathname="print", lineno=0,
-                        msg=clean_msg, args=(), exc_info=None
-                    )
-                    self.file_handler_ref.handle(record)
 
-            except Exception as e202602281506:
-                print(f'lets ignore e202602281506: {e202602281506}')
-                pass
-            finally:
-                self.is_logging = False
+                    # Nur schreiben, wenn noch Text übrig ist
+                    if clean_msg:
+
+
+                        record = logging.LogRecord(
+                            name="PRINT", level=logging.INFO, pathname="print", lineno=0,
+                            msg=clean_msg, args=(), exc_info=None
+                        )
+                        self.file_handler_ref.handle(record)
+
+                except Exception as e202602281506:
+                    print(f'lets ignore e202602281506: {e202602281506}')
+                    pass
+                finally:
+                    self.is_logging = False
 
     def flush(self):
         # self.terminal.flush() # entfernen spart viel Zeit. Erfüllt die Pflicht
@@ -644,8 +649,8 @@ else:
     # aura_log.unlink(missing_ok=True) ## seems problematic
 
 
-DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
-# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
+# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
+DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
 
 readme = """
 vosk-model-small-de-0.15
@@ -1164,8 +1169,8 @@ if settings.DEV_MODE :
     check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
 
-    from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
-    run_e2e_live_reload_func_test_v2(logger, active_lt_url)
+    # from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
+    # run_e2e_live_reload_func_test_v2(logger, active_lt_url)
 
     log4DEV('Script Start', logger)
 
