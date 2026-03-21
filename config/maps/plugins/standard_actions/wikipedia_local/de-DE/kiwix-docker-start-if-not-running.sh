@@ -1,73 +1,69 @@
 #!/bin/bash
 
-# Initialisierung und Information
-clear
-# Ausgabe des Skriptnamens
-echo "--- Starte: kiwix-docker-start-if-not-running.sh ---"
-ls *.zim
-echo ""
+# --- download: ---
+# cd ~/projects/py/STT/data/
+# Mit wget + Fortsetzung falls Abbruch:
+wget -c "https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_mini_2025-09.zim"
+# Oder mit aria2 (schneller, Multithreaded):
+aria2c -x 8 -s 8 "https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_mini_2025-09.zim"
 
-# --- KONFIGURATION (Nur diese Werte bei Bedarf ändern) ---
-# 1. Der reine Dateiname des ZIM-Archivs
-ZIM_FILE_host="wikipedia_de_all_mini_2025-09.zim"
-echo "ZIM_FILE_host=$ZIM_FILE_host"
 
-# 2. Der vollständige Pfad zur ZIM-Datei auf deinem PC
-ZIM_FILE_PATH_host="$(dirname "$0")/data/$ZIM_FILE_host"
-
-# 3. Identischer Name im Container
-CONTAINER_ZIM_NAME="$ZIM_FILE_host"
+# --- KONFIGURATION ---
+ZIM_FILE_NAME="wikipedia_de_all_mini_2025-09.zim"
 CONTAINER_NAME="kiwix_zim_server"
-
-# 4. Ports
 HOST_PORT="8080"
 CONTAINER_PORT="8080"
-# --- ENDE KONFIGURATION ---
 
+# 1. Absoluten Pfad zur Datei auf dem Host ermitteln
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# Gehe 6 Ebenen hoch zum Projekt-Root, dann in /data/
+ZIM_FILE_PATH_host="$(realpath "$SCRIPT_DIR/../../../../../../data/$ZIM_FILE_NAME")"
 
-echo "--- 1. Prüfe Status des Kiwix-Servers ($CONTAINER_NAME) auf Port $HOST_PORT..."
+echo "Prüfe Datei: $ZIM_FILE_PATH_host"
 
-# Prüfen, ob ein Container mit diesem Namen läuft
-if docker ps -f "name=$CONTAINER_NAME" | grep -q "$CONTAINER_NAME"; then
-    echo ""
-    echo "✅ Kiwix-Server läuft bereits."
-    echo "   URL: http://localhost:8080/viewer#wikipedia_de_all_mini_2025-09/Latein"
-    exit 0
+# --- SICHERHEITS-CHECK ---
+# Falls die Datei nicht existiert, DARF Docker nicht starten.
+# Sonst erstellt Docker einen ORDNER namens 'wikipedia...zim' auf deinem Host!
+if [ ! -f "$ZIM_FILE_PATH_host" ]; then
+    echo "❌ FEHLER: Die Datei $ZIM_FILE_PATH_host wurde nicht gefunden."
+    echo "Bitte prüfe, ob der Pfad (6 Ebenen hoch) wirklich stimmt."
+    exit 1
 fi
 
-# Prüfen, ob der Container gestoppt existiert (muss gelöscht werden, um Port neu zu belegen)
-if docker ps -a -f "name=$CONTAINER_NAME" | grep -q "$CONTAINER_NAME"; then
-    echo "⚠️ Gestoppte Instanz gefunden. Muss bereinigt werden, um Port $HOST_PORT freizugeben."
-    docker rm -f $CONTAINER_NAME > /dev/null
+# Prüfen, ob der Pfad versehentlich ein Verzeichnis ist (Docker-Fehler von vorherigen Versuchen)
+if [ -d "$ZIM_FILE_PATH_host" ]; then
+    echo "❌ FEHLER: $ZIM_FILE_PATH_host ist ein Verzeichnis, keine Datei!"
+    echo "Docker hat hier wohl einen leeren Ordner erstellt. Bitte lösche diesen Ordner:"
+    echo "rm -rf '$ZIM_FILE_PATH_host'"
+    exit 1
 fi
 
+# --- DOCKER BEREINIGUNG ---
+docker rm -f $CONTAINER_NAME > /dev/null 2>&1
 
-echo "--- 2. Starte Kiwix-Server im Docker-Container..."
+echo "--- Starte Kiwix-Server (Nur Datei-Mount) ---"
 
-# Führe den Docker-Befehl aus (Präzises Mounten der einzelnen Datei)
-CONTAINER_ID=$(docker run -d --name $CONTAINER_NAME -p $HOST_PORT:$CONTAINER_PORT \
-    -v "$ZIM_FILE_PATH_host":/data/$CONTAINER_ZIM_NAME \
-    ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port $CONTAINER_PORT /data/$CONTAINER_ZIM_NAME)
+# --- DOCKER RUN ---
+# Wir mounten NUR die eine Datei direkt in den Pfad /data/file.zim im Container
 
-sleep 4
+# Verzeichnis des ZIM-Files ermitteln
+ZIM_DIR_host="$(dirname "$ZIM_FILE_PATH_host")"
 
-# Finaler Prüfschritt
+docker run -d \
+    --name "$CONTAINER_NAME" \
+    --user "$(id -u):$(id -g)" \
+    -p "$HOST_PORT":"$CONTAINER_PORT" \
+    -v "$ZIM_DIR_host":/data:ro \
+    ghcr.io/kiwix/kiwix-tools \
+    kiwix-serve --port "$CONTAINER_PORT" /data/"$ZIM_FILE_NAME"
+
+sleep 3
+
+# Finaler Check
 if docker ps | grep -q "$CONTAINER_NAME"; then
-    echo ""
-    echo "✅ ERFOLG! Kiwix-Server gestartet."
-    echo "   URL: http://localhost:$HOST_PORT/viewer#$CONTAINER_ZIM_NAME/Krankenhaus_J%C3%BClich"
+    echo "✅ ERFOLG! Container läuft."
+    echo "URL: http://localhost:$HOST_PORT/"
 else
-    echo ""
-    echo "❌ FEHLER: Container ist sofort beendet. Siehe Logs für den Grund."
-    echo "--- AKTUELLE LOGS (Grund für Fehler) ---"
-    docker logs $CONTAINER_NAME
-    echo "----------------------------------------"
-
-    sudo systemctl start docker
-    echo "   docker daemon running?"
-    echo "sudo systemctl start docker"
-    echo "   Mögliche Gründe: 1. Port $HOST_PORT ist belegt."
-    echo "   2. ZIM-Datei korrupt oder Pfad falsch."
-
-
+    echo "❌ FEHLER: Start fehlgeschlagen. Logs:"
+    docker logs "$CONTAINER_NAME"
 fi
