@@ -1,5 +1,17 @@
 # System-Wide Offline Voice to Commands or Text, Pluggable System
 
+## Quick Start
+1. Download or clone this repository
+2. Run the setup script for your OS (see `setup/` folder):
+   - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
+   - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
+   - Linux (openSUSE): `bash setup/suse_setup.sh`
+   - macOS: `bash setup/macos_setup.sh`
+   - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
+3. Start Aura: `./scripts/restart_venv_and_run-server.sh`
+4. Press your hotkey and speak — **[full guide →](docs/GettingStarted.md)**
+
+
 **⚠️ System Requirements & Compatibility**
 
 *   **Windows:** ✅ Fully supported (uses AutoHotkey/PowerShell).
@@ -148,14 +160,14 @@ If you prefer not to install the client tools (AHK/CopyQ) or want to save disk s
 
 ```powershell
 # Core Setup only (No AHK, No CopyQ)
-setup\windows11_setup.bat
+setup/windows11_setup_with_ahk_copyq.bat
 
 # Exclude specific language models (saves space):
 # Exclude English:
-setup\windows11_setup.bat -Exclude "en"
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 
 # Exclude German and English:
-setup\windows11_setup.bat -Exclude "de,en"
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
 
 
