@@ -64,6 +64,7 @@ Start here:
 
 | Folder | What you learn |
 |---|---|
+| `00_koan_oma-modus` | Auto-Fix, first rule without regex |
 | `01_koan_erste_schritte` | Your first rule, pipeline basics |
 | `02_koan_listen` | Working with lists |
 | `03_koan_schwierige_namen` | Fuzzy matching for hard-to-recognize names |
@@ -81,5 +82,5 @@ Uncomment a rule, save, dictate the trigger phrase — done.
 | Full rule reference | `docs/FuzzyMapRuleGuide.md` |
 | Create your own plugin | `docs/CreatingNewPluginModules.md` |
 | Run Python scripts from rules | `docs/advanced-scripting.md` |
-| DEV_MODE + log filter setup | `docs/dev_mode_setup.md` |
+| DEV_MODE + log filter setup | `docs/Developer_Guide/dev_mode_setup.md` |
 | Context-aware rules (`only_in_windows`) | `docs/FuzzyMapRuleGuide.md` |
