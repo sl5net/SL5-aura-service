@@ -1,132 +1,139 @@
-# config.settings_local.py
-TYPE_WATCHER_ENABLED = True
+# config/settings_local.py
+# ============================================================
+# Personal settings — overrides config/settings.py
+# This file is ignored by Git (your changes are safe).
+#
+# GETTING STARTED:
+#   1. Copy this file to config/settings_local.py
+#   2. Uncomment and adjust the settings you want to change.
+#   All other settings will use the defaults from config/settings.py
+# ============================================================
 
 import os
 import pwd
 
-# My personal settings Example
-# This file is (maybe) ignored by Git.
+# --- User Detection (do not remove — used by integrity checks) ---
+current_user = pwd.getpwuid(os.getuid())[0]
 
-KILL_COMPETING_LT_AND_ELOQUENT_ON_START= 1
-
-PIPER_SERVER_PATH = "~/projects/py/TTS"
-
-
+# --- Service ---
+# 0 = Start normally
 SERVICE_START_OPTION = 0
 
+# Kill competing LanguageTool or Eloquent instances on startup
+KILL_COMPETING_LT_AND_ELOQUENT_ON_START = 0
+
+# Enable or disable the type watcher (client-side typing integration)
+TYPE_WATCHER_ENABLED = True
+
+# --- Language Model ---
+# Which Vosk model(s) should be preloaded at startup?
+# Available models are located in the models/ folder.
+# Preloading uses more RAM but reduces response time on first use.
+PRELOAD_MODELS = ["vosk-model-de-0.21"]
+# PRELOAD_MODELS = ["vosk-model-en-us-0.22"]
+# PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+
+# --- Recording Timing ---
+# How long Aura waits after the hotkey before starting to record (seconds)
+PRE_RECORDING_TIMEOUT = 6
+
+# How long Aura waits after a speech pause before processing (seconds)
+# Lower = faster response, but more sensitive to mid-sentence pauses.
+# Recommended: 1.0 – 2.0
+SPEECH_PAUSE_TIMEOUT = 1.5
+
+# --- Audio Input ---
+# 'SYSTEM_DEFAULT' uses your system's default microphone.
+# 'MIC_AND_DESKTOP' captures microphone + desktop audio (Linux only).
+AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
+
+# --- Notifications ---
+# 0 = Silent, 1 = Essential messages only, 2 = Verbose
 NOTIFICATION_LEVEL = 1
 
-soundMute = 1  # 1 is really recommended. to know when your recording is ended.
+# --- Sound Feedback ---
+# 1 = enabled (recommended: audio cues for start/stop recording)
+soundMute = 1
 soundUnMute = 1
 soundProgramLoaded = 1
 
-# Get username
-current_user = pwd.getpwuid(os.getuid())[0]
-if current_user == 'seeh':
-    DEV_MODE = True
-
-# Set to True to disable certain production checks for local development,
-# e.g., the wrapper script enforcement.
-DEV_MODE = False
-# DEV_MODE = False
-DEV_MODE_memory = False
-DEV_MODE_all_processing = False
-DEV_MODE_zip_processing = False
-DEV_MODE_show_window_title_stuff = 0
-DEV_MODE_show_when_private_map_found = 0
-
-PRELOAD_MODELS = ["vosk-model-de-0.21"]
-
-PLUGIN_HELPER_TTS_ENABLED = True
-
-signatur=''
-signatur1=f''
-signatur_pt_br=f''
-signatur_en=f''
-signatur_ar=f''
-signatur_ja=f''
-
-
-# --- Custom Correction Settings ---
-# Import the default dictionary from the main settings file.
-try:
-    from .settings import CORRECTIONS_ENABLED
-except ImportError:
-    CORRECTIONS_ENABLED = {} # Fallback in case the import fails
-
-# Update the dictionary with my personal preferences.
-# I want specialized legal and medical checks, but I don't want style advice.
-CORRECTIONS_ENABLED.update({
-    "git": True,
-})
-
-
-CORRECTIONS_ENABLED.update({
-})
-
-
-PRE_RECORDING_TIMEOUT = 12
-SPEECH_PAUSE_TIMEOUT = 1
-
-# for more poweruser mor in hurry:
-
-AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
-
-
-# needs NO restart:
-PRE_RECORDING_TIMEOUT = 6
-SPEECH_PAUSE_TIMEOUT = 2
-
-#test (original:'test', 🗣SL5。de╱Aura).
-if current_user == 'sl5':
-
-    # needs NO restart:
-    PRE_RECORDING_TIMEOUT = 4
-    SPEECH_PAUSE_TIMEOUT = 1
-
-
-
-# examples:
-# AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "."
-
-# needs NO restart. implemented in the sh part. TODO implemt for windows:
-AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist|Pi, your personal AI)"
-
+# --- Text Output ---
+# Character appended to the end of each dictated sentence.
+# Set to "" to disable.
 ADD_TO_SENCTENCE = "."
-# set ADD_TO_SENCTENCE = "" when you dont want it.
 
+# --- Auto-Enter After Dictation ---
+# Regex pattern of window titles where Aura automatically presses Enter
+# after dictation. Use "(ExampleAplicationThatNotExist)" to disable.
+AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist)"
+
+# --- Signature ---
+# Text appended to dictated output in certain applications (e.g. chat, email).
+# Leave empty to disable.
+signatur = ""
+signatur1 = f"{signatur}"
+signatur_en = f""
+signatur_ar = f""
+signatur_ja = f""
+signatur_pt_br = f""
+
+# --- Memory ---
+# Aura will stop loading models if free RAM drops below this threshold (MB).
 CRITICAL_THRESHOLD_MB = 1024 * 2
-# CRITICAL_THRESHOLD_MB = 28000 # (also 28 GB)
 
+# --- Text-to-Speech (optional) ---
+# Path to a local Piper TTS server for voice output.
+PIPER_SERVER_PATH = "~/path/to/piper"
+PLUGIN_HELPER_TTS_ENABLED = False
 USE_ESPEAK_FALLBACK = True
 ESPEAK_FALLBACK_AMPLITUDE = 80
 
-show_PLUGINS_ENABLED = True
+# --- LanguageTool Corrections ---
+# Override which correction categories are enabled.
+# Import defaults first, then update selectively.
+try:
+    from .settings import CORRECTIONS_ENABLED
+except ImportError:
+    CORRECTIONS_ENABLED = {}
 
-# --- Custom Client-Side Plugins ---
-# Enable or disable specific client-side behaviors (plugins).
-# The logic is handled by client scripts (e.g., type_watcher.sh, AutoKey).
-# These settings tell the backend service what to expect or how to format output.
-####     "github_corrections": True,         # Example from before ???
+# Example: enable git-specific corrections, disable style advice
+# CORRECTIONS_ENABLED.update({
+#     "git": True,
+# })
+
+# --- Plugins ---
+# Show active plugins in log output
+show_PLUGINS_ENABLED = False
+
+# Enable or disable specific plugins.
+# Keys not listed here use their defaults from config/settings.py
 PLUGINS_ENABLED = {
     "empty_all": False,
-    "git": True,
-    "wannweil": True,
-
-    "game/dealers_choice": False,
-    "game/0ad": False,
-    "game/": False,
-    "standard_actions/wikipedia_local/": False,
-    "ethiktagung": False,
-    "it-begriffe.php.codeigniter": False
-
-    "volkshochschule_tue": True,
-    "CCC_tue": True,
-    "vsp_rt": True,
-    "ki-maker-space": True,
-    "numbers_to_digits": True, # hundert|einhundert --> 100
+    "git": False,
+    "numbers_to_digits": False,      # e.g. "hundred" -> 100
     "digits_to_numbers": False,
-    "web-radio-funk": True,
+    "web-radio-funk": False,
+    "wannweil": False,
+    "CCC_tue": False,
+    "vsp_rt": False,
+    "ki-maker-space": False,
+    "volkshochschule_tue": False,
+    "ethiktagung": False,
     "it-begriffe": False,
-    "it-begriffe/php/codeigniter": True,
+    "it-begriffe/php/codeigniter": False,
+    "it-begriffe.php.codeigniter": False,
+    "standard_actions/wikipedia_local/": False,
+    "game/": False,
+    "game/0ad": False,
+    "game/dealers_choice": False,
 }
+
+# --- Developer Mode (advanced users only) ---
+# Enables additional log output and internal checks.
+# See docs/dev_mode_setup.md for setup instructions.
+DEV_MODE = False
+DEV_MODE_all_processing = False
+DEV_MODE_memory = False
+DEV_MODE_zip_processing = False
+DEV_MODE_show_window_title_stuff = False
+DEV_MODE_show_when_private_map_found = False

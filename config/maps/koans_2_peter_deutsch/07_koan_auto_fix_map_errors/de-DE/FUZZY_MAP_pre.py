@@ -1,4 +1,30 @@
 # config/maps/koans_deutsch/07_koan_auto_fix_map_errors/de-DE/FUZZY_MAP_pre.py
+import re  # noqa: F401
+FUZZY_MAP_pre = [
+    ('fuzzy1', 'handuch', 1, {'flags': re.IGNORECASE}),
+]
+
+# ============================================================
+# Koan 07: Auto-Fix — Aura repariert fehlerhafte Map-Dateien
+# ============================================================
+#
+# WAS ES TUT:
+#   Enthält eine Map-Datei ein "bare word" (kein Tupel-Format),
+#   korrigiert Auras Auto-Fix es beim Laden automatisch.
+#
+# WICHTIG:
+#   Auto-Fix funktioniert nur bei Dateien kleiner als ~1KB.
+#   Das ist Absicht — unkontrolliertes Umschreiben großer
+#   Map-Dateien wird so verhindert.
+#
+# AUFGABE:
+#   1. Füge ein einzelnes Wort in FUZZY_MAP_pre ein (kein Tupel):
+#        handuch
+#   2. Speichern. Aura korrigiert es automatisch zu einer gültigen Regel.
+#   3. Prüfe das Log auf "Auto-Fix".
+#
+# NÄCHSTER SCHRITT: Koan 08
+# ============================================================
 
 import re # noqa: F401
 # Regel-Format: ('Ersatztext', r'muster', schwellwert, flags)
@@ -10,37 +36,3 @@ import re # noqa: F401
 FUZZY_MAP_pre = [
     ('fuzzy1', 'handuch',1,{'flags': re.IGNORECASE}),
 ]
-
-"""
-Bitte schreiben Sie ein Wort in die erste Zeile vor den Anführungstrichen.
-
-Lernziel:
-
-Automatische Fehlerbehebung in Map-Plugins (z.B. NameError für nicht definierte Variablen)
-Umwandlung von "bare words" in gültige Tuples
-Header-Cleanup (Dubletten entfernen, Pfade aktualisieren)
-
-Beispiel für einen anderen Helfen der beim Schreiben hilft.
-
-LanguageTool ( https://languagetool.org/ )
-
-Bitte öffnen Sie das Fenster und diktieren Text in der Formular-Feld.
-
-Hier sind die Methoden, um auf Windows 11 zu prüfen, ob der LanguageTool im Hintegrund läuft:
-
-http://localhost:8081/v2/languages
-
-Erfolg: Du siehst eine JSON-Liste mit unterstützten Sprachen.
-
-netstat -ano | findstr 8081
-
-Get-CimInstance Win32_Process -Filter "CommandLine LIKE '%languagetool%'" | Select-Object ProcessId, CommandLine
-
-Per Browser (Funktionstest)
-Öffne diese URL im Browser:
-
-http://localhost:8081/v2/languages
-
-Erfolg: Du siehst eine JSON-Liste mit unterstützten Sprachen.
-
-"""

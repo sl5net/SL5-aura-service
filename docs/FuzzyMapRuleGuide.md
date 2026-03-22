@@ -85,3 +85,25 @@ FUZZY_MAP_pre = [
 2. Add your rule inside `FUZZY_MAP_pre = [...]`
 3. Save — Aura reloads automatically, no restart needed
 4. Dictate your trigger phrase and watch it fire
+
+
+## Recommended File Structure
+
+Put your rules **before** long comment blocks:
+```python
+# config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py
+import re  # noqa: F401
+# too<-from
+FUZZY_MAP_pre = [
+    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+]
+# ============================================================
+# Longer explanations, task descriptions, notes...
+# can be as long as needed — they go AFTER the rules.
+# ============================================================
+```
+
+**Why?** Aura's Auto-Fix scans only the first ~1KB of a file.
+If your rules appear after a long header, Auto-Fix cannot find or repair them.
+The path comment on line 1 is also recommended — it helps humans quickly identify the file.
+
