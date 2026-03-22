@@ -11,4 +11,4 @@ If you encounter any issues during installation or use, please don't hesitate to
 **When reporting an error, please include:**
 1. A screenshot of the error message.
 2. The content of the `log/` directory.
-3. Your Windows version.
+3. Your Mac/Linux/Windows/OS/... and version.

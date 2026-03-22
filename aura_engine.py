@@ -100,7 +100,7 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
         logging.info("At    ting to install 'fasttext-wheel' automatically...")
         try:
             subprocess.check_call([sys.executable, "-m", "pip", "install", "fasttext-wheel"])
-            logging.info("FastText installed successfully. Please restart the service to activate it.")
+            logging.info("INFO: FastText installed successfully. Please restart the service to activate it.")
             sys.exit()
         except subprocess.CalledProcessError:
             logging.error("Failed to install FastText. Please install it manually: pip install fasttext-wheel")
@@ -438,7 +438,7 @@ class SafeStreamToLogger(object):
 
         LOG_FILTER_refresh_if_needed()
 
-        if LOG_ONLY:
+        if LOG_FILTER_COMPILED_LOG_ONLY:
             if not any(p.search(buf) for p in LOG_FILTER_COMPILED_LOG_ONLY):
                 return
             # 1. shorten letts like #### or somthing. not needed here anymore as aye-catcher.

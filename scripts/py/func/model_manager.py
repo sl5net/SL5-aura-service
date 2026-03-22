@@ -23,6 +23,7 @@ import math
 import threading
 
 import vosk
+import re
 
 from .check_memory_critical import check_memory_critical
 from .notify import notify
@@ -88,7 +89,16 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
         notify("Memory Manager", f"Unloaded '{key_to_unload}' model. {_format_gb(avail_mb)} RAM free.")
         return max_model_memory_footprint_mb
 
-    desired_lang_keys = {name.split('-')[2] for name in desired_names}
+    # desired_lang_keys = {name.split('-')[2] for name in desired_names} # works not for e.g. vosk-model-small-de-0.21
+
+    desired_lang_keys = {
+        m.group(1)
+        for name in desired_names
+        if (m := re.search(r'vosk-model(?:-\w+)*-([a-z]{2})(?:-[a-z]{2})?-[\d.]+$', name))
+    }
+
+
+
     if set(loaded_models.keys()) == desired_lang_keys:
         # logger.info("All desired models are already loaded. Nothing to do.")
         return max_model_memory_footprint_mb

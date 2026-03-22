@@ -29,8 +29,21 @@ if [ "$detected_os" = "windows" ]; then
   echo "please start type_watcher.ahk"
   echo "please start trigger-hotkeys.ahk"
 else
+  # Dynami User-ID D-Bus
+  USER_ID=$(id -u)
+
+  # ony when DBUS_SESSION_BUS_ADDRESS
+  if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+      export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$USER_ID/bus"
+  fi
+
+  # DISPLAY XAUTHORITY
+  export DISPLAY="${DISPLAY:-:0}"
+  export XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}"
+
   $PROJECT_ROOT/scripts/sh/type_watcher_keep_alive.sh &
 fi
+
 
 
 set -e
@@ -40,7 +53,10 @@ HEARTBEAT_FILE="/tmp/$SCRIPT_firstName.heartbeat"
 SCRIPT_TO_START="$SCRIPT_DIR/../$SCRIPT_firstName.py"
 MAX_STALE_SECONDS=5
 
-export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
+# export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+
+
 export DISPLAY=:0
 export XAUTHORITY=${HOME}/.Xauthority
 export DICTATION_SERVICE_STARTED_CORRECTLY="true"
@@ -54,7 +70,7 @@ then
     if [ "$age" -lt "$MAX_STALE_SECONDS" ]
     then
         echo "Service appears to be running and healthy."
-        exit 0 
+        exit 0
     else
         echo "Service heartbeat is stale. Attempting to restart."
     fi

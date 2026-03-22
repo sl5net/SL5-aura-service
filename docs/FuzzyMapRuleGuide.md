@@ -78,3 +78,10 @@ FUZZY_MAP_pre = [
     # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
 ]
 ```
+
+## Your First Rule — Step by Step
+
+1. Open `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`
+2. Add your rule inside `FUZZY_MAP_pre = [...]`
+3. Save — Aura reloads automatically, no restart needed
+4. Dictate your trigger phrase and watch it fire

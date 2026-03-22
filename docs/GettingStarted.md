@@ -1,91 +1,85 @@
 # Getting Started with SL5 Aura
 
-## What is SL5 Aura?
+> **Prerequisites:** You have completed the setup script and configured your hotkey.
+> If not, see the [Installation section in README.md](../README.md#installation).
 
-SL5 Aura is an offline-first voice assistant that converts speech to text (STT) and applies configurable rules to clean, correct and transform the output.
+---
 
-It works without a GUI – everything runs via CLI or console.
+## Step 1: Your First Dictation
 
-## How it Works
+1. Start Aura (if not already running):
+   ```bash
+   ./scripts/restart_venv_and_run-server.sh
+   ```
+   Wait for the startup sound — that means Aura is ready.
 
-```
-Microphone → Vosk (STT) → Maps (Pre) → LanguageTool → Maps (Post) → Output
-```
+2. Click into any text field (editor, browser, terminal).
+3. Press your hotkey, say **"Hello World"**, press the hotkey again.
+4. Watch the text appear.
 
-1. **Vosk** converts your speech to raw text
-2. **Pre-Maps** clean and correct the text before spell checking
-3. **LanguageTool** fixes grammar and spelling
-4. **Post-Maps** apply final transformations
-5. **Output** is the final clean text (and optionally TTS)
+> **Nothing happened?** Check `log/aura_engine.log` for errors.
+> Common fix for CachyOS/Arch: `sudo pacman -S mimalloc`
 
-## Your First Steps
+---
 
-### 1. Start Aura
-```bash
-python main.py
-```
+## Step 2: Write Your First Rule
 
-### 2. Test with console input
-Type `s` followed by your text:
-```
-s hello world
-```
+The fastest way to add a personal rule:
 
-### 3. See a rule in action
-Open `config/maps/koans_deutsch/01_koan_erste_schritte/de-DE/FUZZY_MAP_pre.py`
+1. Open `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`
+2. Add a rule inside `FUZZY_MAP_pre = [...]`:
+   ```python
+   ('Hello World', r'hello world', 0, {'flags': re.IGNORECASE})
+   #  ^ output        ^ pattern        ^ threshold (ignored for regex)
+   ```
+3. **Save** — Aura reloads automatically. No restart needed.
+4. Dictate `hello world` and watch it become `Hello World`.
 
-Uncomment the rule inside and test again. What happens?
+> See `docs/FuzzyMapRuleGuide.md` for the full rule reference.
 
-## Understanding Rules
+### The Oma-Modus (Beginner Shortcut)
 
-Rules live in `config/maps/` in Python files called `FUZZY_MAP_pre.py` or `FUZZY_MAP.py`.
+Don't know regex yet? No problem.
 
-A rule looks like this:
-```python
-('Hello World', r'\bhello world\b', 0, {'flags': re.IGNORECASE})
-#   ^output        ^pattern          ^threshold  ^case-insensitive
-```
+1. Open any empty `FUZZY_MAP_pre.py` in the sandbox
+2. Write just a plain word on its own line (no quotes, no tuple):
+   ```
+   raspberry
+   ```
+3. Save — the Auto-Fix system detects the bare word and automatically
+   converts it into a valid rule entry.
+4. You can then edit the replacement text manually.
 
-The **output** comes first – you immediately see what the rule produces.
+This is called **Oma-Modus** — designed for users who want results without
+learning regex first.
 
-Rules are processed **top to bottom**. The first fullmatch (`^...$`) stops everything.
+---
 
-## Koans – Learning by Doing
+## Step 3: Learn with Koans
 
-Koans are small exercises in `config/maps/koans_deutsch/` and `config/maps/koans_english/`.
+Koans are small exercises that each teach one concept.
+They live in `config/maps/koans_deutsch/` and `config/maps/koans_english/`.
 
-Each koan teaches one concept:
+Start here:
 
-| Koan | Topic |
+| Folder | What you learn |
 |---|---|
-| 01_koan_erste_schritte | First rule, fullmatch, pipeline stop |
-| 02_koan_listen | Lists, multiple rules |
-| 03_koan_schwierige_namen | Difficult names, phonetic matching |
+| `01_koan_erste_schritte` | Your first rule, pipeline basics |
+| `02_koan_listen` | Working with lists |
+| `03_koan_schwierige_namen` | Fuzzy matching for hard-to-recognize names |
+| `04_koan_kleine_helfer` | Useful shortcuts |
 
-Start with Koan 01 and work your way up.
+Each koan folder contains a `FUZZY_MAP_pre.py` with commented examples.
+Uncomment a rule, save, dictate the trigger phrase — done.
 
-## Tips
+---
 
-- Rules in `FUZZY_MAP_pre.py` run **before** spell checking – good for fixing STT errors
-- Rules in `FUZZY_MAP.py` run **after** spell checking – good for formatting
-- Backup files (`.peter_backup`) are created automatically before any change
-- Use `tools/ai/peter.py` to let an AI work through the koans automatically
+## Step 4: Go Further
 
-## Quick Rule Entry – Oma Mode
-
-The fastest way to add a new rule is to just type a plain word into a map file:
-
-```
-oma
-```
-
-The system detects the `NameError` and automatically converts it into a valid rule:
-
-```python
-FUZZY_MAP_pre = [
-    ('oma', 'oma'),
-]
-```
-
-Then edit the replacement as needed. Works for multiple words at once.
-Only works on files smaller than 1KB. See `docs/Developer_Guide/AutoFixModule.md` for details.
+| What | Where |
+|---|---|
+| Full rule reference | `docs/FuzzyMapRuleGuide.md` |
+| Create your own plugin | `docs/CreatingNewPluginModules.md` |
+| Run Python scripts from rules | `docs/advanced-scripting.md` |
+| DEV_MODE + log filter setup | `docs/dev_mode_setup.md` |
+| Context-aware rules (`only_in_windows`) | `docs/FuzzyMapRuleGuide.md` |

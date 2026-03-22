@@ -1,25 +1,31 @@
-# config/maps/koans_english/02_koan_lists/en-US/FUZZY_MAP_pre.py
-import re # noqa: F401
+import re  # noqa: F401
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
-#    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+# ============================================================
+# Koan 02: Your First Regex Rule – On or Off?
+# ============================================================
+#
+# LEARNING GOAL:
+#   Regex rules can map multiple spoken words to one command.
+#   Here: letter groups control "on"/"off".
+#
+# TASK:
+#   Remove '#' from ONE rule below.
+#   Save – Aura reloads on the next hotkey trigger.
+#   Say a word starting with a-m (e.g. "hello")
+#   or one starting with n-z (e.g. "water").
+#
+# EXPECTED RESULT:
+#   "hello" → "on"
+#   "water" → "off"
+#
+# QUESTION TO THINK ABOUT:
+#   What happens if you activate both rules?
+#   Which one wins – and why?
+#
+# NEXT STEP: Koan 03
+# ============================================================
 
 FUZZY_MAP_pre = [
-
-    #TODO
-
-
-
-    # EXAMPLE: a-m  
-    #('on', r'^[a-m]+.*$' , 80, {'flags': re.IGNORECASE}),
-    # EXAMPLE: n-z  
-    #('off', r'^[n-z]+.*$' , 80, {'flags': re.IGNORECASE}),
-
-
-
+    # ('on',  r'^[a-m]+.*$', 80, {'flags': re.IGNORECASE}),
+    # ('off', r'^[n-z]+.*$', 80, {'flags': re.IGNORECASE}),
 ]
-

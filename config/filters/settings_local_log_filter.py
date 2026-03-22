@@ -1,6 +1,7 @@
 # config/filters/settings_local_log_filter.py
+# r"▉",
+
 LOG_EXCLUDE = [
-    r"▉",
     r"📦",
     r"PUNCTUATION_MAP",
     r"〃",
@@ -77,11 +78,32 @@ LOG_EXCLUDE_off = [
 
 ]
 # OPTIONAL: Wenn nicht leer, wird NUR das geloggt, was hier matcht (ONLY und oder logig: Mindes eines aus LOG_ONLY muss matchen)
+# LOG_ONLY = []
+# LOG_ONLY_off = [
+#     r"Successfully",
+#     r"CRITICAL",
+#     r"📢📢📢 #",
+#     r"Title",
+#     r"window",
+#     r":st:",
+# ]
+# LOG_ONLY = [
+#     r"oma",
+#     r"00_koan",
+#     r"Hallo Welt",
+#     r"hallo",
+#     r"map.*load\|load.*map",
+# ]
+
+
 LOG_ONLY = [
-    r"Successfully",
-    r"CRITICAL",
-    r"📢📢📢 #",
-    r"Title",
-    r"window",
-    r":st:",
+    r"oma",
+    r"00_koan",
+    r"Hallo Welt",
+    r"hallo",
+    r"load",
+    r"map",
+    r"🗺",
+    r"plugin",
+    r"koan",
 ]

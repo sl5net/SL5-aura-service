@@ -4,12 +4,27 @@
 import re # noqa: F401
 from pathlib import Path
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
-#    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+# ============================================================
+# Koan 06: Wikipedia-Suche per Sprache
+# ============================================================
+#
+# LERNZIEL:
+#   on_match_exec kann auch Online-APIs abfragen.
+#   Hier: Wikipedia-Suche per Sprachbefehl.
+#
+# AUFGABE:
+#   1. Aktiviere die Regel unten.
+#   2. Sprich: "Was ist Tübingen?"
+#
+# FEHLER? Prüfe das Log:
+#   grep "wikipedia" log/aura_engine.log | tail -10
+#
+# OFFLINE-VARIANTE:
+#   Siehe config/maps/plugins/standard_actions/wikipedia_local/
+#
+# NÄCHSTER SCHRITT: Koan 07
+# ============================================================
+
 
 CONFIG_DIR = Path(__file__).parent
 

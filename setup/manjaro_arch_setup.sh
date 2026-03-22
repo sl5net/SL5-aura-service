@@ -14,12 +14,6 @@ if [ ! -f "requirements.txt" ]; then
     exit 1
 fi
 
-
-
-# --- Argument Parsing for Exclusion ---
-EXCLUDE_LANGUAGES=""
-
-
 # --- Argument Parsing for Exclusion ---
 EXCLUDE_LANGUAGES=""
 

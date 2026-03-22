@@ -1,26 +1,27 @@
-# config/maps/koans_english/01_koan_first_steps/en-US/FUZZY_MAP_pre.py
-import re # noqa: F401
+import re  # noqa: F401
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
-#    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
-
-BTW = """
-'... regular expressions began in the 1950s... Different syntaxes for writing regular expressions have existed since the 1980s, one being the POSIX standard and another, widely used, being the Perl syntax.
-... Regular expressions are used in search engines, in search and replace dialogs of word processors and text editors, in text processing utilities ... and in lexical analysis. Regular expressions are supported in many programming languages. '
-( https://en.wikipedia.org/wiki/Regular_expression )
-
-You probably know it already somehow or a part of it.
-"""
+# ============================================================
+# Koan 01: Your First Rule – Welcome to Aura!
+# ============================================================
+#
+# PREREQUISITE: Aura is running and your hotkey is configured.
+# If not: see docs/GettingStarted.md
+#
+# TASK:
+#   Remove the '#' before the rule below.
+#   Save – Aura reloads on the next hotkey trigger.
+#   Press your hotkey and say: "hello world"
+#
+# EXPECTED RESULT:
+#   Aura types: "Hello World 01"
+#
+# WHY DOES THE PIPELINE STOP?
+#   The pattern r'^.*$' matches EVERYTHING – no further rules
+#   are checked after a full match. See docs/FuzzyMapRuleGuide.md
+#
+# NEXT STEP: Koan 02
+# ============================================================
 
 FUZZY_MAP_pre = [
-
-    #TODO
-    #('hi 01_koan_first_steps', r'^.*$', 80, {'flags': re.IGNORECASE}),
-
-
+    # ('Hello World 01', r'^hello world$', 0, {'flags': re.IGNORECASE}),
 ]
-

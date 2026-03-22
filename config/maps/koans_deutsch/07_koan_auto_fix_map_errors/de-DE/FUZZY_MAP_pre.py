@@ -1,5 +1,24 @@
 # config/maps/koans_deutsch/07_koan_auto_fix_map_errors/de-DE/FUZZY_MAP_pre.py
 
+# ============================================================
+# Koan 07: Auto-Fix & LanguageTool in der Praxis
+# ============================================================
+#
+# LERNZIEL:
+#   Fuzzy-Matching korrigiert Tippfehler in der Transkription.
+#   LanguageTool korrigiert Grammatik danach.
+#
+# AUFGABE:
+#   Sprich: "Handuch" (absichtlich falsch)
+#   Ergebnis: Aura korrigiert zu "fuzzy1", LT zu "Handbuch"?
+#
+# LanguageTool läuft?
+#   curl http://localhost:8082/v2/languages | head -3
+#
+# NÄCHSTER SCHRITT: Koan 08
+# ============================================================
+
+
 import re # noqa: F401
 
 FUZZY_MAP_pre = [

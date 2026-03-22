@@ -4,12 +4,25 @@
 import re # noqa: F401
 from pathlib import Path
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
-#    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+# ============================================================
+# Koan 05: Datenbanksuche per Sprache – on_match_exec
+# ============================================================
+#
+# LERNZIEL:
+#   Regeln können externe Python-Skripte ausführen.
+#   Hier: Datenbanksuche per Sprachbefehl.
+#
+# AUFGABE:
+#   Sprich: "suche in Ruth Kapitel 1 Vers 1"
+#
+# ERWARTETES ERGEBNIS:
+#   Aura führt bible_search.py aus und gibt den Vers aus.
+#
+# VORAUSSETZUNG:
+#   bible_search.py und GerElb1905.db liegen im selben Ordner.
+#
+# NÄCHSTER SCHRITT: Koan 06
+# ============================================================
 
 CONFIG_DIR = Path(__file__).parent
 

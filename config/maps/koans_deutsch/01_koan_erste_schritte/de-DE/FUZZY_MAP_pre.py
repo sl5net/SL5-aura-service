@@ -1,23 +1,31 @@
-import re # noqa: F401
+# config/maps/koans_deutsch/01_koan_erste_schritte/de-DE/FUZZY_MAP_pre.py
+import re  # noqa: F401
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
-#    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
-
+# too<-from
 FUZZY_MAP_pre = [
 
-    #TODO: Nur eine Aufgabe:
-    #  Entferne das '#' vor der Regel unten.
-    #  Was passiert? Warum stoppt die Pipeline danach?
+# ============================================================
+# Koan 01: Deine erste Regel – Willkommen bei Aura!
+# ============================================================
+#
+# Voraussetzung: Aura läuft bereits und dein Hotkey ist konfiguriert.
+# Falls nicht: siehe docs/GettingStarted.md
+#
+# AUFGABE:
+#   Entferne das '#' vor der Regel unten (Zeile mit 'hallo welt').
+#   Speichere die Datei. Aura lädt die Regel beim nächsten Tastendruck
+#   (Hotkey-Trigger) automatisch neu – im Ruhezustand schläft Aura komplett.
+#   Drücke dann deinen Hotkey und sprich: "hallo welt"
+#
+# ERWARTETES ERGEBNIS:
+#   Aura tippt: "Hallo Welt 01"
+#
+# WARUM STOPPT DIE PIPELINE DANACH?
+#   Das Muster r'^.*$' passt auf ALLES. Sobald diese Regel greift,
+#   wird keine weitere Regel mehr geprüft. Das ist der "Full Match Stop".
+#   Mehr dazu: docs/FuzzyMapRuleGuide.md
+#
+# ============================================================
 
-    # Hallo Testessenhi 01_koan_erste__schritte
-    #hi 01_koan_erste__schritte
-    #
-
-    # ('hi 01_koan_erste__schritte', r'^.*$'),
-
+    # ('Hallo Welt 01', r'^hallo welt$', 0, {'flags': re.IGNORECASE}),
 ]
-

@@ -92,6 +92,12 @@ Open a terminal in the project's root directory and run the script for your syst
 
 bash setup/{your-os}_setup.sh [OPTION]
 
+# For Arch-based systems (Manjaro, CachyOS, EndeavourOS, etc.):
+`bash setup/manjaro_arch_setup.sh`
+
+`sudo pacman -S mimalloc`
+
+
 # Examples:
 # Install everything (Default):
 # bash setup/manjaro_arch_setup.sh

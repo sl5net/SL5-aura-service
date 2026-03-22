@@ -1,22 +1,28 @@
-# config/maps/koans_english/05_koan_search_example/en-US/FUZZY_MAP_pre.py
-# using https://github.com/scrollmapper/bible_databases/tree/master/formats/sqlite
-
-import re # noqa: F401
+import re  # noqa: F401
 from pathlib import Path
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first.
-# 2. If no regex matches, a simple fuzzy match is performed.
+# ============================================================
+# Koan 05: Database Search by Voice – on_match_exec
+# ============================================================
+#
+# LEARNING GOAL:
+#   Rules can execute external Python scripts via on_match_exec.
+#   Here: database search by voice command.
+#
+# TASK:
+#   Say: "search in Ruth chapter 1 verse 1"
+#
+# EXPECTED RESULT:
+#   Aura runs bible_search.py and outputs the verse.
+#
+# PREREQUISITE:
+#   bible_search.py and GerElb1905.db are in the same folder.
+#
+# NEXT STEP: Koan 06
+# ============================================================
 
 CONFIG_DIR = Path(__file__).parent
 
-introduction = """
-For this technical demonstration, we require a complex, publicly available dataset in a standard format (SQLite). In this context, the Bible serves merely as a well-known, freely available, and multifaceted example document to illustrate database queries and research logic.
-
-I want to emphasize that this unit is not about theological or religious content. Our focus is purely on the implementation and application of analyzing structured text data.
-
-The key point is the availability of such data. Many historical and cultural texts are fortunately available as open-source datasets, which enables our technical work. We could just as easily analyze a legal compendium or a scientific journal here.
-"""
 
 FUZZY_MAP_pre = [
     # TODO: Activate the line below by removing the comment symbol '#'

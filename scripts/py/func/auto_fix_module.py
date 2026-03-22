@@ -49,7 +49,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
 
 
     # 1. Check file size (1KB = 1024 bytes)
-    if os.path.getsize(file_path) > 1024:
+    if os.path.getsize(file_path) > 1048:
         logger.info(f"Auto-fix skipped: {os.path.basename(file_path)} is too large (> 1KB).")
         return False
 
@@ -70,6 +70,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
             clean_path = file_path  # Fallback auf absolut
 
         correct_header = f"# {clean_path}\n"
+
 
         # 2. Existierenden Header prüfen/ersetzen
         if lines and lines[0].strip().startswith("#") and ".py" in lines[0]:
@@ -149,6 +150,10 @@ def _apply_fix_name_error(file_path, bad_name, logger):
         # scripts/py/func/auto_fix_module.py:136
         # --- HAUPTSCHLEIFE (Inhalt fixen) ---
             # scripts/py/func/auto_fix_module.py
+
+        already_closed = False
+
+
         for line in lines:
             original_line = line
             # Erkennt Wörter am Zeilenanfang (auch ohne Komma)
@@ -158,7 +163,12 @@ def _apply_fix_name_error(file_path, bad_name, logger):
             if match and match.group('name') not in [target_var, 'import', 're', 'True', 'False']:
                 current_word = match.group('name')
                 indent = line[:len(line) - len(line.lstrip())] or '    '
-                comment = "  " + match.group('comment') if match.group('comment') else ""
+                comment = ""
+                if not already_closed:
+                    already_closed = any(line.strip() == closing_bracket for line in new_lines)
+                # comment = "  " + match.group('comment') if match.group('comment') else ""
+                if already_closed:
+                    comment = f"  # TODO: move this line before the {closing_bracket}"
 
                 # seperator = ':' if 'PUNCTUATION_MAP.py' in filename else ','
 
@@ -167,7 +177,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
                     line = f"{indent}'{current_word}'{seperator} '{current_word}',{comment}\n"
                 else:
                     seperator = ','
-                    line = f"{indent}('{current_word}'{seperator} '{current_word}'),{comment}\n"
+                    line = f"{indent}('{current_word}'{seperator} '^{current_word}$'),{comment}\n"
 
                 # line = f"{indent}('{current_word}'{seperator} '{current_word}'),{comment}\n"
                 logger.info(f"   -> Bulk-Fix: {original_line.strip()} => {line.strip()}")
@@ -176,7 +186,26 @@ def _apply_fix_name_error(file_path, bad_name, logger):
             new_lines.append(line)
 
 
-        # --- NEU: KLAMMER SCHLIESSEN ] ---
+        # # --- NEU: Einträge nach ] vor ] verschieben ---
+        # closing_idx = None
+        # for i, l in enumerate(new_lines):
+        #     if l.strip() == closing_bracket:
+        #         closing_idx = i
+        #         break
+        # if closing_idx is not None:
+        #     after_closing = [l for l in new_lines[closing_idx+1:]
+        #                      if l.strip() and not l.strip().startswith('#')]
+        #     to_keep = [l for l in new_lines[closing_idx+1:]
+        #                if not l.strip() or l.strip().startswith('#')]
+        #     if after_closing:
+        #         new_lines = (new_lines[:closing_idx]
+        #                      + after_closing
+        #                      + [new_lines[closing_idx]]
+        #                      + to_keep)
+        #         fixed_content = True
+        # # --- NEU: KLAMMER SCHLIESSEN ] ---
+
+
         # Wenn wir oben die Liste geöffnet haben, müssen wir sie unten schließen,
         # sonst gibt es SyntaxError: unexpected EOF
 

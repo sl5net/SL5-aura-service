@@ -91,7 +91,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
 
             manage_models(logger, loaded_models, PRELOAD_MODELS, CRITICAL_THRESHOLD_MB, script_dir)
 
-            if is_first_loading: # scripts/py/func/main.py in while True:
+            if is_first_loading and loaded_models: # scripts/py/func/main.py in while True:
                 is_first_loading = False
                 # sound_mute()
                 sound_program_loaded()
@@ -152,21 +152,30 @@ def start_background_model_loader(logger, config, loaded_models):
     from scripts.py.func.model_manager import load_single_model  # Import inside
 
     def loader_thread_target():
-        # Hier deine Logik, um die zu ladenden Modelle zu finden
-        # (z.B. durch Scannen des 'models'-Verzeichnisses)
+
         models_to_load = {
-            "de": config["PROJECT_ROOT"] / "models/vosk-model-de-0.21",
-            "en": config["PROJECT_ROOT"] / "models/vosk-model-en-us-0.22"
+            path.split("model-")[1][:2]: config["PROJECT_ROOT"] / "models" / path
+            for path in config["PRELOAD_MODELS"]
         }
 
-        for lang_key, path in models_to_load.items():
-            load_single_model(logger, path, lang_key, loaded_models)
+        # models_to_load = {
+            # "de": config["PROJECT_ROOT"] / "models/vosk-model-de-0.21",
+            # "en": config["PROJECT_ROOT"] / "models/vosk-model-en-us-0.22"
+        #}
+        try:
+
+            for lang_key, path in models_to_load.items():
+                load_single_model(logger, path, lang_key, loaded_models)
+        except Exception as e:
+            logger.error(f"Failed to load model '{lang_key}': {e}")
+            logger.error("Hint: Run setup script or check models/ directory.")
+
 
     # --- START: ONE-TIME PRIORITIZATION ON STARTUP ---
     project_root = config["PROJECT_ROOT"]
     last_used_file = project_root / "config/model_name_lastused.txt"
 
-    start_background_model_loader(logger, config, loaded_models)
+    # start_background_model_loader(logger, config, loaded_models)
 
     try:
         if last_used_file.exists():
