@@ -12,7 +12,8 @@ import argparse
 
 # --- Configuration ---
 OWNER = "sl5net"
-REPO = "Vosk-System-Listener"
+# REPO = "Vosk-System-Listener" old 2026-0322-2233
+REPO = "SL5-aura-service"
 TAG = "v0.2.0"
 API_URL = f"https://api.github.com/repos/{OWNER}/{REPO}/releases/tags/{TAG}"
 # https://api.github.com/repos/sl5net/Vosk-System-Listener/releases/tags/v0.2.0
