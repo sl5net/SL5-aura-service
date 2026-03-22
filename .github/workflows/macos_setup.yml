@@ -1,22 +1,22 @@
 name: CI for macOS Setup
 
 on:
-
-  # Release
-  release:
-      types: [published]
-
-  # Run on pushes to the main branch
   push:
-    branches:
-      - master
-
-  # Also run on pull requests targeting the main branch
+    branches: [ master ]
+    paths:
+      - 'setup/**'
+      - 'requirements.txt'
+      - 'requirements-dev.txt'
+      - '.github/workflows/**'
   pull_request:
     branches:
       - master
+  release:
+    types: [published]
+
 
   workflow_dispatch:
+
 jobs:
   # Renamed job for clarity
   validate-macos-setup:

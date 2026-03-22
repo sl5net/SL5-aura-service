@@ -1,13 +1,21 @@
 name: CI for ubuntu Setup
-on:
 
+on:
   push:
     branches: [ master ]
-
-  # Release
+    paths:
+      - 'setup/**'
+      - 'requirements.txt'
+      - 'requirements-dev.txt'
+      - '.github/workflows/**'
+  pull_request:
+    branches:
+      - master
   release:
-      types: [published]
+    types: [published]
   workflow_dispatch:
+
+
 jobs:
   # Renamed job for clarity
   validate-ubuntu-setup:

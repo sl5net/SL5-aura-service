@@ -34,6 +34,27 @@ fi
 
 
 
+echo ""
+echo "--- Setup for Manjaro/Arch is complete! ---"
+echo ""
+
+echo "Optional: If you are running Wayland (e.g. KDE Plasma 6, CachyOS),"
+echo "  'dotool' is REQUIRED for system-wide text input."
+echo "  On X11 dotool is optional but recommended for better compatibility."
+echo "  Install with:"
+
+echo "  yay -S dotool"
+echo "  sudo gpasswd -a \$USER input"
+echo "  echo 'KERNEL==\"uinput\", GROUP=\"input\", MODE=\"0660\", OPTIONS+=\"static_node=uinput\"' | sudo tee /etc/udev/rules.d/80-dotool.rules"
+echo "  sudo udevadm control --reload-rules && sudo udevadm trigger"
+echo "  (Re-login required after group change)"
+echo "  Then set x11_input_method_OVERRIDE = 'dotool' in config/settings_local.py"
+echo ""
+echo "To start Aura:"
+echo "  ./scripts/restart_venv_and_run-server.sh"
+echo ""
+
+
 
 
 
