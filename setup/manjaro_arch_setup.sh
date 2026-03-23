@@ -289,34 +289,18 @@ fi
 
 
 
-echo "config dotool ..."
-sudo usermod -aG input $USER
-echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' | sudo tee /etc/udev/rules.d/80-dotool.rules
-sudo udevadm control --reload-rules && sudo udevadm trigger
-
-# Falls dotool noch fehlt (via AUR)
+# --- dotool setup ---
 if ! command -v dotool &> /dev/null; then
-    yay -S --noconfirm dotool
+    echo "--> Installing dotool via AUR..."
+    yay -S --noconfirm dotool || echo "WARNING: dotool install failed. See docs/LINUX_WAYLAND_dotool.md"
 fi
+sudo usermod -aG input $USER
+echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
+  | sudo tee /etc/udev/rules.d/80-dotool.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+echo "NOTE: Re-login required for input group to take effect."
+echo "See docs/LINUX_WAYLAND_dotool.md for details."
 
-
-echo "read docs/LINUX_WAYLAND.md"
-echo "docs/LINUX_WAYLAND.md"
-echo "docs/LINUX_WAYLAND.md"
-echo "docs/LINUX_WAYLAND.md"
-
-
-
-
-
-# --- 6. Completion ---
-echo ""
-echo "--- Setup for Manjaro/Arch is complete! ---"
-echo ""
-echo "To activate the environment and run the server, use the following commands:"
-echo "  source .venv/bin/activate"
-echo "  ./scripts/restart_venv_and_run-server.sh"
-echo ""
 
 
 
