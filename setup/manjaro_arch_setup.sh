@@ -285,6 +285,30 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 fi
 
+
+
+
+
+echo "config dotool ..."
+sudo usermod -aG input $USER
+echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' | sudo tee /etc/udev/rules.d/80-dotool.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+
+# Falls dotool noch fehlt (via AUR)
+if ! command -v dotool &> /dev/null; then
+    yay -S --noconfirm dotool
+fi
+
+
+echo "read docs/LINUX_WAYLAND.md"
+echo "docs/LINUX_WAYLAND.md"
+echo "docs/LINUX_WAYLAND.md"
+echo "docs/LINUX_WAYLAND.md"
+
+
+
+
+
 # --- 6. Completion ---
 echo ""
 echo "--- Setup for Manjaro/Arch is complete! ---"
@@ -293,3 +317,6 @@ echo "To activate the environment and run the server, use the following commands
 echo "  source .venv/bin/activate"
 echo "  ./scripts/restart_venv_and_run-server.sh"
 echo ""
+
+
+
