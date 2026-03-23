@@ -4,6 +4,7 @@
 1. Download or clone this repository
 2. Run the setup script for your OS (see `setup/` folder):
    - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
+   ===> read docs/LINUX_WAYLAND_dotool.md
    - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
    - Linux (openSUSE): `bash setup/suse_setup.sh`
    - macOS: `bash setup/macos_setup.sh`
