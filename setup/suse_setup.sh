@@ -289,6 +289,19 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 fi
 
+
+# --- dotool setup ---
+if ! command -v dotool &> /dev/null; then
+    echo "--> Installing dotool..."
+    sudo zypper install -y dotool || echo "WARNING: dotool not found in repos. Install manually. See docs/LINUX_WAYLAND_dotool.md"
+fi
+sudo usermod -aG input $USER
+echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
+  | sudo tee /etc/udev/rules.d/80-dotool.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+echo "NOTE: Re-login required for input group to take effect."
+echo "See docs/LINUX_WAYLAND_dotool.md for details."
+
 # --- 6. Completion ---
 echo ""
 echo "--- Setup for openSUSE is complete! ---"

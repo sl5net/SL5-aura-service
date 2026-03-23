@@ -277,6 +277,22 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 fi
 
+
+
+# --- dotool setup ---
+if ! command -v dotool &> /dev/null; then
+    echo "--> Installing dotool..."
+    sudo apt-get install -y dotool || echo "WARNING: dotool not in apt repos. Install manually. See docs/LINUX_WAYLAND_dotool.md"
+fi
+sudo usermod -aG input $USER
+echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
+  | sudo tee /etc/udev/rules.d/80-dotool.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+echo "NOTE: Re-login required for input group to take effect."
+echo "See docs/LINUX_WAYLAND_dotool.md for details."
+
+
+
 # --- 6. Completion ---
 echo ""
 echo "--- Setup for Ubuntu is complete! ---"
@@ -285,3 +301,4 @@ echo "To activate the environment and run the server, use the following commands
 echo "  source .venv/bin/activate"
 echo "  ./scripts/restart_venv_and_run-server.sh"
 echo ""
+
