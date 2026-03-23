@@ -106,4 +106,6 @@ LOG_ONLY = [
     r"🗺",
     r"plugin",
     r"koan",
+    r"window",
+
 ]
