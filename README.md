@@ -276,6 +276,8 @@ This architecture ensures that core system rules are protected, while project-sp
 Here is a list of the most important scripts to set up, update, and run the application on a Windows system.
 
 ### Setup & Update
+
+*   `chmod +x update.sh; ./update.sh`
 *   `setup/setup.bat`: The main script for the **initial one-time setup** of the environment.
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
