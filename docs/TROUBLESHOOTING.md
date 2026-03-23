@@ -34,6 +34,31 @@ tail -30 log/aura_engine.log
 | `No module named 'objgraph'` | `.venv` was recreated — reinstall: `pip install -r requirements.txt` |
 | `Address already in use` | Kill old process: `pkill -9 -f aura_engine` |
 | `Model not found` | Re-run setup to download missing models |
+| `pygame.mixer not available` | See "No Sound on Startup" below |
+
+---
+
+## Problem: No Sound on Startup (pygame.mixer)
+
+**Symptom:** Warning or error about `pygame.mixer` not available. Aura starts
+but plays no sounds.
+
+**Cause:** Your system's pygame build does not include audio support, or SDL2
+audio libraries are missing.
+
+**Fix on Arch/Manjaro:**
+```bash
+sudo pacman -S sdl2_mixer
+pip install pygame-ce --upgrade
+```
+
+**Fix on Ubuntu/Debian:**
+```bash
+sudo apt install libsdl2-mixer-2.0-0
+pip install pygame-ce --upgrade
+```
+
+Aura will continue to work without sound — this is not a fatal error.
 
 ---
 
@@ -80,8 +105,72 @@ If nothing appears, restart Aura:
 ls -la /tmp/sl5_record.trigger
 ```
 
-If the file is never created, your hotkey configuration (CopyQ / AHK) is not working.
-See the hotkey setup section in [README.md](../README.md#configure-your-hotkey).
+If the file is never created, your hotkey is not working — see below.
+
+---
+
+## Problem: Hotkey Not Working on Wayland
+
+**Symptom:** CopyQ is installed and configured, but pressing the hotkey does
+nothing on a Wayland session.
+
+**Cause:** CopyQ global hotkeys do not work reliably on Wayland without
+additional configuration. This affects KDE Plasma, GNOME, and other
+Wayland compositors.
+
+### Option 1: KDE System Settings (Recommended for KDE Plasma)
+
+1. Open **System Settings → Shortcuts → Custom Shortcuts**
+2. Create a new shortcut of type **Command/URL**
+3. Set the command to:
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+4. Assign your preferred key combination (e.g. `F9` or `Ctrl+Alt+Space`)
+
+### Option 2: dotool (Works on any Wayland compositor)
+
+```bash
+# Install dotool:
+sudo pacman -S dotool        # Arch/Manjaro
+# or
+sudo apt install dotool      # Ubuntu (if available)
+```
+
+Then use your desktop's shortcut manager to run:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### Option 3: ydotool
+
+```bash
+sudo pacman -S ydotool
+sudo systemctl enable --now ydotool
+```
+
+Then configure your shortcut to run:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### Option 4: GNOME (using dconf / GNOME Settings)
+
+1. Open **Settings → Keyboard → Custom Shortcuts**
+2. Add a new shortcut with command:
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+3. Assign a key combination
+
+### Option 5: CopyQ with Wayland fix
+
+Some Wayland compositors allow CopyQ to work if started with:
+```bash
+QT_QPA_PLATFORM=xcb copyq
+```
+
+This forces CopyQ to use XWayland, which supports global hotkeys.
 
 ---
 
