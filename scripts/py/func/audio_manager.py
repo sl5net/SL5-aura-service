@@ -248,7 +248,7 @@ if (sys.platform != "win32"
         #
         #     return pygame.mixer.Sound(buffer=samples)
 
-    except ImportError as e202603092051:
+    except (ImportError, NotImplementedError) as e202603092051:
         log.warning(f"pygame not found. Sound feedback will not work on non-Windows systems. {e202603092051}")
         # def play_beep(frequency, duration_ms):
         #     pass # No sound feedback if pygame is not available
