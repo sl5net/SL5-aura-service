@@ -59,28 +59,63 @@ fi
 echo "Using: $INPUT_METHOD"
 
 
+# bis 22.3.'26
+#if [[ "$INPUT_METHOD" == "dotool" ]]; then
+#  LANG_CODE=''
+#    # 1. Modellnamen lesen
+#    MODEL_PATH="config/model_name.txt"
+#    if [[ -f "$MODEL_PATH" ]]; then
+#        MODEL_NAME=$(cat "$MODEL_PATH")
+#        # Extrahiert den Teil nach 'model-' (z.B. 'de' aus 'vosk-model-de-0.21')
+#        LANG_CODE=$(echo "$MODEL_NAME" | sed -n 's/.*model-\([a-z]\{2\}\).*/\1/p')
+#    fi
+#    # 2. Fallback, falls Datei leer oder nicht da
+#    [[ -z "$LANG_CODE" ]] && LANG_CODE="de"
+#
+#    # 3. dotool mitteilen, welches Layout es nutzen soll
+#    export XKB_DEFAULT_LAYOUT="$LANG_CODE"
+#    export DOTOOL_XKB_LAYOUT="$LANG_CODE"
+#
+#    echo "🌍 Language detected: $LANG_CODE (Applied to dotool)"
+#fi
 
+# neu ? 2026-0323-1412 23.3.'26 14:12 Mon
+# --- dotool: Sprache & Daemon ---
 if [[ "$INPUT_METHOD" == "dotool" ]]; then
 
-  LANG_CODE=''
+    # 1. Pruefen ob dotool ueberhaupt installiert ist
+    if ! command -v dotool &>/dev/null; then
+        echo "WARNUNG: dotool nicht gefunden. Tippen unter Wayland nicht moeglich."
+        echo "  Installieren mit: yay -S dotool"
+        INPUT_METHOD="xdotool"  # Graceful Fallback
+    else
 
-    # 1. Modellnamen lesen
-    MODEL_PATH="config/model_name.txt"
-    if [[ -f "$MODEL_PATH" ]]; then
-        MODEL_NAME=$(cat "$MODEL_PATH")
-        # Extrahiert den Teil nach 'model-' (z.B. 'de' aus 'vosk-model-de-0.21')
-        LANG_CODE=$(echo "$MODEL_NAME" | sed -n 's/.*model-\([a-z]\{2\}\).*/\1/p')
+        # 2. Keyboard-Layout aus Modellname ermitteln
+        LANG_CODE=''
+        MODEL_PATH="config/model_name.txt"
+        if [[ -f "$MODEL_PATH" ]]; then
+            MODEL_NAME=$(cat "$MODEL_PATH")
+            LANG_CODE=$(echo "$MODEL_NAME" | sed -n 's/.*model-\([a-z]\{2\}\).*/\1/p')
+        fi
+        [[ -z "$LANG_CODE" ]] && LANG_CODE="de"
+        export XKB_DEFAULT_LAYOUT="$LANG_CODE"
+        export DOTOOL_XKB_LAYOUT="$LANG_CODE"
+        echo " Language detected: $LANG_CODE (Applied to dotool)"
+
+        # 3. dotoold Daemon starten falls noetig (nur wenn dotoold existiert)
+        if command -v dotoold &>/dev/null && ! pgrep -x "dotoold" >/dev/null 2>&1; then
+            echo "Aura: Starte dotoold Daemon..."
+            dotoold &
+            for i in {1..6}; do
+                sleep 0.5
+                pgrep -x "dotoold" >/dev/null 2>&1 && break
+            done
+        fi
+
     fi
+fi
 
-    # 2. Fallback, falls Datei leer oder nicht da
-    [[ -z "$LANG_CODE" ]] && LANG_CODE="de"
 
-    # 3. dotool mitteilen, welches Layout es nutzen soll
-    export XKB_DEFAULT_LAYOUT="$LANG_CODE"
-    export DOTOOL_XKB_LAYOUT="$LANG_CODE"
-
-    echo "🌍 Language detected: $LANG_CODE (Applied to dotool)"
-    fi
 
 
 do_type() {
