@@ -43,8 +43,6 @@ tail -30 log/aura_engine.log
 
 **Check stderr:**
 ```bash
-python3 "aura_engine.py" 2>/tmp/aura_stderr.log &
-
 cat /tmp/aura_stderr.log | tail -30
 ```
 
@@ -85,31 +83,7 @@ ls -la /tmp/sl5_record.trigger
 If the file is never created, your hotkey configuration (CopyQ / AHK) is not working.
 See the hotkey setup section in [README.md](../README.md#configure-your-hotkey).
 
-
-## Problem: Text Is Not Typed (Wayland)
-**Symptom:** Aura recognizes speech and logs show correct output, but no text
-appears in the target application.
-
-**Cause:** `xdotool` does not work system-wide on Wayland.
-
-**Fix:** Install `dotool` and enable it:
-```bash
-yay -S dotool
-sudo gpasswd -a $USER input
-echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' | sudo tee /etc/udev/rules.d/80-dotool.rules
-sudo udevadm control --reload-rules && sudo udevadm trigger
-```
-Re-login, then add to `config/settings_local.py`:
-```python
-x11_input_method_OVERRIDE = "dotool"
-```
-
-
-
-
-
-
-
+---
 
 ## Problem: Text Appears But Without Corrections
 
