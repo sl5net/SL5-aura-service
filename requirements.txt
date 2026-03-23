@@ -4,7 +4,7 @@ numpy==2.4.2
 objgraph==3.6.2
 pyarrow==22.0.0
 pydantic==2.12.5
-pygame==2.6.1
+pygame-ce>=2.5.0
 python-dotenv==1.2.1
 pyzipper==0.3.6
 sounddevice==0.5.2
