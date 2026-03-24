@@ -1,7 +1,10 @@
 import re
+import sys
 from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
+PROJECT_ROOT = CONFIG_DIR.parents[4]
+home_dir_str = str(Path.home())
 
 # Window titles of LibreOffice apps
 libreoffice_windows = ['soffice', 'LibreOffice', 'Writer', 'Calc', 'Impress']
@@ -181,5 +184,16 @@ FUZZY_MAP_pre = [
         'only_in_windows': libreoffice_windows,
         'on_match_exec': [CONFIG_DIR / 'libreoffice_actions.py'],
     }),
+
+    (f'kate {str(__file__).replace(home_dir_str, '~', 1)}',
+     # EXAMPLE: LibreOffice Konfigurationen
+     rf'^(LibreOffice)\s+([Kc]onf\w*|konzentration|g\w+situation|settings?|kur\w+ kr\w+tion|script\b\w*\s*\bgerettet|spr\w+t \w* \w*tet|ku\w+n g\w+ten)$',
+     90,
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+        'only_in_windows': ['Konsole', 'konsole', 'Console',
+            r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung',
+            'double', 'Double Commander'],
+    }),
+
 
 ]
