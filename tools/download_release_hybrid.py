@@ -201,14 +201,17 @@ def download_via_torrent(torrent_url: str, save_path: str) -> bool:
 # HTTP fallback dispatcher
 # ---------------------------------------------------------------------------
 
-def run_http_fallback() -> None:
+def run_http_fallback(exclude_list: list) -> None:
     """Call the existing HTTP download script as subprocess."""
     if not os.path.exists(HTTP_FALLBACK_SCRIPT):
         print(f"  Fallback script not found: {HTTP_FALLBACK_SCRIPT}")
         print("  Please run tools/download_all_packages.py manually.")
         return
     print(f"\n--- Running HTTP fallback: {HTTP_FALLBACK_SCRIPT} ---")
-    subprocess.run([sys.executable, HTTP_FALLBACK_SCRIPT], check=False)
+    cmd = [sys.executable, HTTP_FALLBACK_SCRIPT]
+    if exclude_list:
+        cmd += ["--exclude"] + exclude_list
+    subprocess.run(cmd, check=False)
 
 # ---------------------------------------------------------------------------
 # Package processing
@@ -443,7 +446,7 @@ def main() -> None:
         if not ok:
             all_ok = False
             print(f"  FAILED: {bn} — trying global HTTP fallback.")
-            run_http_fallback()
+            run_http_fallback(exclude_list)
             break
 
     if not any_torrent_used and not LIBTORRENT_AVAILABLE:
