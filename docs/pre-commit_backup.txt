@@ -4,6 +4,26 @@
 # -----------------------------------------------------------------------------
 # 1. QUALITY CHECK (Flake8)
 # -----------------------------------------------------------------------------
+
+echo "Running ruff auto-fix..."
+if [ -f .venv/bin/ruff ]; then
+  .venv/bin/ruff check --fix ./aura_engine.py ./scripts ./config 2>/dev/null || true
+fi
+
+# In pre-commit, nach ruff:
+echo "Running pylint (warnings only)..."
+
+# In pre-commit, statt ./aura_engine.py ./scripts ./config
+# only staged files prüfen:
+staged=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' | tr '\n' ' ')
+if [ -n "$staged" ]; then
+  .venv/bin/pylint $staged \
+    --disable=all,W0718 \
+    --enable=W0702,W0703,W0611,W0612 \
+    --exit-zero  # blockiert NIE den commit, nur Ausgabe
+fi
+
+
 echo "Running flake8 code quality check..."
 
 # Activate virtual environment if it exists
@@ -16,7 +36,8 @@ flake8 ./aura_engine.py ./scripts ./config
 
 # Abort commit if flake8 finds errors
 if [ $? -ne 0 ]; then
-  echo "COMMIT REJECTED: flake8 found issues."
+  echo "COMMIT REJECTED: flake8 found issues. May use noqa: "
+  echo "# noqa: "
   exit 1
 fi
 
