@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-25T00:23:47.984662+00:00",
+  "generated": "2026-03-25T18:54:18.562589+00:00",
   "tag": "v0.2.0",
   "packages": {
     "LanguageTool-6.6.zip": {
@@ -9,9 +9,9 @@
         "Z_LanguageTool-6.6.zip.part.ac"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/Z_LanguageTool-6.6.zip.part.aa",
-        "https://aura.sl5.de:8832/Z_LanguageTool-6.6.zip.part.ab",
-        "https://aura.sl5.de:8832/Z_LanguageTool-6.6.zip.part.ac"
+        "https://aura.sl5.de:8829/Z_LanguageTool-6.6.zip.part.aa",
+        "https://aura.sl5.de:8829/Z_LanguageTool-6.6.zip.part.ab",
+        "https://aura.sl5.de:8829/Z_LanguageTool-6.6.zip.part.ac"
       ]
     },
     "LanguageTool-6.6.zip.torrent": {
@@ -19,7 +19,7 @@
         "LanguageTool-6.6.zip.torrent"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/LanguageTool-6.6.zip.torrent"
+        "https://aura.sl5.de:8829/LanguageTool-6.6.zip.torrent"
       ]
     },
     "lid.176.zip": {
@@ -28,8 +28,8 @@
         "Z_lid.176.zip.part.ab"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/Z_lid.176.zip.part.aa",
-        "https://aura.sl5.de:8832/Z_lid.176.zip.part.ab"
+        "https://aura.sl5.de:8829/Z_lid.176.zip.part.aa",
+        "https://aura.sl5.de:8829/Z_lid.176.zip.part.ab"
       ]
     },
     "lid.176.zip.torrent": {
@@ -37,7 +37,7 @@
         "lid.176.zip.torrent"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/lid.176.zip.torrent"
+        "https://aura.sl5.de:8829/lid.176.zip.torrent"
       ]
     },
     "vosk-model-de-0.21.zip": {
@@ -64,26 +64,26 @@
         "Z_vosk-model-de-0.21.zip.part.at"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.aa",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ab",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ac",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ad",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ae",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.af",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ag",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ah",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ai",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.aj",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ak",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.al",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.am",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.an",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ao",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ap",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.aq",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.ar",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.as",
-        "https://aura.sl5.de:8832/Z_vosk-model-de-0.21.zip.part.at"
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.aa",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ab",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ac",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ad",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ae",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.af",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ag",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ah",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ai",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.aj",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ak",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.al",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.am",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.an",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ao",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ap",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.aq",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.ar",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.as",
+        "https://aura.sl5.de:8829/Z_vosk-model-de-0.21.zip.part.at"
       ]
     },
     "vosk-model-de-0.21.zip.torrent": {
@@ -91,7 +91,7 @@
         "vosk-model-de-0.21.zip.torrent"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/vosk-model-de-0.21.zip.torrent"
+        "https://aura.sl5.de:8829/vosk-model-de-0.21.zip.torrent"
       ]
     },
     "vosk-model-en-us-0.22.zip": {
@@ -117,25 +117,25 @@
         "Z_vosk-model-en-us-0.22.zip.part.as"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.aa",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ab",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ac",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ad",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ae",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.af",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ag",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ah",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ai",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.aj",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ak",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.al",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.am",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.an",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ao",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ap",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.aq",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.ar",
-        "https://aura.sl5.de:8832/Z_vosk-model-en-us-0.22.zip.part.as"
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.aa",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ab",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ac",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ad",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ae",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.af",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ag",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ah",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ai",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.aj",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ak",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.al",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.am",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.an",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ao",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ap",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.aq",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.ar",
+        "https://aura.sl5.de:8829/Z_vosk-model-en-us-0.22.zip.part.as"
       ]
     },
     "vosk-model-en-us-0.22.zip.torrent": {
@@ -143,7 +143,7 @@
         "vosk-model-en-us-0.22.zip.torrent"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/vosk-model-en-us-0.22.zip.torrent"
+        "https://aura.sl5.de:8829/vosk-model-en-us-0.22.zip.torrent"
       ]
     },
     "vosk-model-small-en-us-0.15.zip": {
@@ -151,7 +151,7 @@
         "Z_vosk-model-small-en-us-0.15.zip.part.aa"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/Z_vosk-model-small-en-us-0.15.zip.part.aa"
+        "https://aura.sl5.de:8829/Z_vosk-model-small-en-us-0.15.zip.part.aa"
       ]
     },
     "vosk-model-small-en-us-0.15.zip.torrent": {
@@ -159,7 +159,7 @@
         "vosk-model-small-en-us-0.15.zip.torrent"
       ],
       "urls": [
-        "https://aura.sl5.de:8832/vosk-model-small-en-us-0.15.zip.torrent"
+        "https://aura.sl5.de:8829/vosk-model-small-en-us-0.15.zip.torrent"
       ]
     }
   }
