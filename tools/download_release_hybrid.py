@@ -104,13 +104,16 @@ def load_local_manifest() -> dict:
         pass
     return {}
 
-def apply_manifest_urls(assets: list, manifest: dict) -> list:
+# def apply_manifest_urls(assets: list, manifest: dict) -> list:
+def apply_manifest_urls(assets: list, manifest: dict, port: str = "8829") -> list:
     """Replace browser_download_url in assets with local seed URLs from manifest."""
     if not manifest:
         return assets
     url_map = {}
     for pkg in manifest.values():
         for fname, url in zip(pkg.get('files', []), pkg.get('urls', [])):
+            if "aura.sl5.de" in url and f":{port}" not in url:
+                url = url.replace("aura.sl5.de", f"aura.sl5.de:{port}")
             url_map[fname] = url
     for asset in assets:
         if asset['name'] in url_map:
@@ -420,7 +423,9 @@ def main() -> None:
 
     assets = release_info.get("assets", [])
     manifest = load_local_manifest()
-    assets = apply_manifest_urls(assets, manifest)
+    # assets = apply_manifest_urls(assets, manifest)
+    assets = apply_manifest_urls(assets, manifest, port="8829")
+
     if not assets:
         print("No assets found in this release.")
         sys.exit(0)
