@@ -89,6 +89,34 @@ HTTP_FALLBACK_SCRIPT = os.path.join(
     os.path.dirname(__file__), "tools", "download_all_packages.py"
 )
 
+
+MANIFEST_URL = "https://raw.githubusercontent.com/sl5net/SL5-aura-service/feature/hybrid-torrent-downloader/tools/local_seed_manifest.json"
+
+def load_local_manifest() -> dict:
+    """Try to fetch local seed manifest from GitHub. Returns {} on failure."""
+    try:
+        r = requests.get(MANIFEST_URL, timeout=5)
+        if r.status_code == 200:
+            data = r.json()
+            print(f"  Local seed manifest found (generated: {data.get('generated', '?')})")
+            return data.get('packages', {})
+    except Exception:
+        pass
+    return {}
+
+def apply_manifest_urls(assets: list, manifest: dict) -> list:
+    """Replace browser_download_url in assets with local seed URLs from manifest."""
+    if not manifest:
+        return assets
+    url_map = {}
+    for pkg in manifest.values():
+        for fname, url in zip(pkg.get('files', []), pkg.get('urls', [])):
+            url_map[fname] = url
+    for asset in assets:
+        if asset['name'] in url_map:
+            asset['browser_download_url'] = url_map[asset['name']]
+            print(f"  Local URL: {asset['browser_download_url']}")
+    return assets
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -391,6 +419,8 @@ def main() -> None:
         sys.exit(1)
 
     assets = release_info.get("assets", [])
+    manifest = load_local_manifest()
+    assets = apply_manifest_urls(assets, manifest)
     if not assets:
         print("No assets found in this release.")
         sys.exit(0)
