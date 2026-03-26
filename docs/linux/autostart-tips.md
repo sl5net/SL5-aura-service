@@ -17,11 +17,17 @@ Den Befehl manuell anpassen
 `Exec=/pfad/zu/deinem/script.sh`
 
 **Schreibe:**
-`Exec=konsole --noclose -e /pfad/zu/deinem/script.sh`
 
-bez.
+xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
 
-`Exec=kate /pfad/zu/deinem/script.sh`
+oder
+
+Exec=kate /pfad/zu/deinem/script.sh
+
+oder
+
+Exec=konsole --noclose -e /pfad/zu/deinem/script.sh
+
 
 
 ### Warum hat die grafische Einstellung nicht funktioniert?
