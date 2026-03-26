@@ -123,16 +123,19 @@ grep -rn "suche datei" --include="*.py" . | grep -v ".venv" | grep -v "venv" | g
 """
 
 aura1=r"(Aura|Auer|Agora|Aurora|ora|hurra|Flora)"
-aura2=r"(Auras?|Augen|Andere|Ära|auch|Eurer|Laura|Raue|over|obere|o a|Dora|eure|tore|Flora|ava|Horror|hurra|hoher|roter)"
+aura2=r"(Auras?|Augen|woran|nora|orange|Andere|Ära|auch|Eurer|Laura|moral|Raue|over|obere|o a|samoa|Dora|eure|tore|Flora|ava|Horror|hurra|hoher|roter)"
 aura3=r"(Aura|Auer|Aurora|Root|Aurora)"
+
+# dora kurz dekoration
 
 FUZZY_MAP_pre = [
 
-    # ava konföderation
+    
+    # Aura konföderation
     # EXAMPLE: Aura Konfig
     (f'{Path(PROJECT_ROOT_POSIX, "config", "settings.py").as_posix()}',
      # EXAMPLE: Aura
-     rf'^{aura2}\s+(Konf\w*|konzentration|settings?)$',
+     rf'^{aura2}\s+(Konf\w*|konzentration|settings?|\w*\s*dekoration)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
         'only_in_windows': ['Konsole', 'konsole', 'Console',

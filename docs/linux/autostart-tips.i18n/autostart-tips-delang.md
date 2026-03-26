@@ -1,0 +1,31 @@
+Erstelle Autostart Eintrag über deine grafische Benutzeroberfläche für:
+
+restart_venv_and_run-server.sh.desktop  ✔
+aura_engine.log.desktop  
+
+Gehe in den Ordner: `~/.config/autostart/`
+
+öffne im Editor
+
+restart_venv_and_run-server.sh.desktop  ✔
+aura_engine.log.desktop  
+
+Den Befehl manuell anpassen
+
+**Anstatt:**
+`Exec=/pfad/zu/deinem/script.sh`
+
+**Schreibe:**
+`Exec=konsole --noclose -e /pfad/zu/deinem/script.sh`
+
+bez.
+
+`Exec=kate /pfad/zu/deinem/script.sh`
+
+
+### Warum hat die grafische Einstellung nicht funktioniert?
+
+In Plasma 6 gibt es gelegentlich Probleme mit der Zuweisung des „Default Terminals“ in der Startphase des Systems. Indem wir die „Konsole“ (das Standard-Terminal von KDE) direkt in die „Exec“-Zeile schreiben, umgehen wir die automatische Erkennung und erzwingen den Start.
+
+
+26.3.'26 08:16 Do
