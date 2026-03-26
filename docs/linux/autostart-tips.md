@@ -20,13 +20,11 @@ Den Befehl manuell anpassen
 
 xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
 
-oder
+Exec=kate /home/me/projects/py/STT/log/aura_engine.log
 
-Exec=kate /pfad/zu/deinem/script.sh
+Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
 
-oder
 
-Exec=konsole --noclose -e /pfad/zu/deinem/script.sh
 
 
 

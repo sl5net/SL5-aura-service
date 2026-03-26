@@ -76,18 +76,22 @@ LOG_EXCLUDE = [
     r"Yielding chunk",
     r"Stop signal received",
     r"Session has ended",
+    r"Maintenance",
+
 
 ]
 # OPTIONAL: Wenn nicht leer, wird NUR das geloggt, was hier matcht (ONLY und oder logig: Mindes eines aus LOG_ONLY muss matchen)
-LOG_ONLY = []
-# LOG_ONLY_off = [
-#     r"Successfully",
-#     r"CRITICAL",
-#     r"📢📢📢 #",
-#     r"Title",
-#     r"window",
-#     r":st:",
-# ]
+# LOG_ONLY = []
+LOG_ONLY = [
+     r"Successfully",
+     r"CRITICAL",
+     r"📢📢📢 #",
+     r"Title",
+     r"window",
+     r":st:",
+]
+
+
 # LOG_ONLY = [
 #     r"oma",
 #     r"00_koan",
