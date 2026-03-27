@@ -3,26 +3,49 @@ import re # noqa: F401
 from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
 # too<-from
+
+starten = r'starten|stab|start|staat|starb|spart|stab|starb|stadt|starb'
+Lernmodus= r'(Lernmodus|Training)'
+
 FUZZY_MAP_pre = [
     # 1. Notiere deine Optimierungs-Regel hier zuerst! (Ergebnis zuerst!)
-    #
+
+    (f'kate {str(__file__)}', rf'^(Lernmodus\s*{starten}|Training {starten}|Erkennungstraining|lärm wurdest stab|ihren modus {starten}|der modus {starten}|Grip Modus {starten}|trainingsstart|reading {starten}|heiligen staat|erkundungstour reading|bildungsprämie|sag rettungs training|quidditch training|führungstraining|gründungstreffen erkältungstee training|gründungs|bildungsträger|jörg velux training|der grillo training|gründungs training|erkältungstee ideen|der glättung streaming|erkältung training|erkältungstee ding|erkennung training|erkältungstee training|erkennung nicht|lab modus {starten}|leere modus {starten}|lernmodus starb|der modus stunden|für genuss training|lernmodus stab|der modus spart|home modus stab|renault modus {starten}|hallo xd reinigen|verkehr lostreten|danke lux training|lernmodul {starten}|werden modus {starten}|für quintus training|genuss trinken verkehr lostreten lernmodus starb|erkennung strähnig|leeren modus {starten}|lärm wurdest stab|er wurde {starten}|werden würdest|der bundesstaat|\w+\s*wurde {starten}|lernmodell {starten}|irgendwo modus {starten})$'),
+
+    #Lernmodell Stadt
 
 
 
-
-
+    #################################################
     # 2. aktiviere diese Regel
-    # ('COLLECT_UNMATCHED', r'^(.*)$', 10,{'on_match_exec':[CONFIG_DIR / '..' / 'collect_unmatched.py'],}),
+    # ('COLLECT_UNMATCHED', r'^(.*)$', 10,{'on_match_exec':[CONFIG_DIR / '..' / 'collect_unmatched.py']}),
+    #################################################
 
     #('Aura einschalten',r'^(Aura einschalten|oh ein einschalten|hurra einschalten|aura einschwenken|rohre eins 12|rohre einschalten|hurra einschl|uva einschalten|hurra ein schmied|hurra entscheiden|eure einschalten|horror in schweden|zora einschalten|aura entfalten|einschalten|aber einschalten|hurra einschränken|aura einschmelzen|cobra einschalten horror eintreffen hurra einschalten aura einschalten|hurra ritschel)$', 100,{'flags': re.IGNORECASE,}),
 
 
-    (f'kate {str(__file__)}', r'^(Lernmodus starten|Training starten|Erkennungstraining|ihren modus starten|der modus starten|trainingsstart|reading starten|heiligen staat|erkundungstour reading|bildungsprämie|sag rettungs training|quidditch training|führungstraining|gründungstreffen erkältungstee training|gründungs|bildungsträger|jörg velux training|der grillo training|gründungs training|erkältungstee ideen|der glättung streaming|erkältung training|erkältungstee ding|erkennung training|erkältungstee training|erkennung nicht|lab modus starten|leere modus starten|lernmodus starb|der modus stunden|für genuss training|lernmodus stab|der modus spart|home modus stab|renault modus starten|hallo xd reinigen|verkehr lostreten|danke lux training|lernmodul starten|werden modus starten|für quintus training|genuss trinken verkehr lostreten lernmodus starb|erkennung strähnig)$'),
 
+
+    #('Teleskop',r'^(Teleskop|tritt|tedesco|cellist|tennis|tourist|kredit|Program loaded|wurde es still|der modeste|der bundesstaaten werden würde stören|lernen modisch|ir modus starten|brutto|hilfe virus)$', 100,{'flags': re.IGNORECASE}),
+
+
+
+    #('Torpedo',r'^(Torpedo|trapez|schritt edel|präzise|trotz siedeln|druck peru|shop credo|trotzdem|krepieren)$', 100,{'flags': re.IGNORECASE}),
+
+    # ('Nexus',r'^(Nexus|wirkt|dick)$', 100,{'flags': re.IGNORECASE}),
+
+
+    # ('Kosmonaut',r'^(Kosmonaut|kurs wurden|großmutter|cosmo deutsch|busbud|kosmologie|gruss pilot|was wohl world|gus gus benutzen groß wurde|kosmodrom|brust nur laut|chris bedroht|grüßle|chris müller|fristlose mut|grüßt mir lot|grußwort hut|grußwort an|gruß pilot|es wurden)$', 100,{'flags': re.IGNORECASE}),
+
+    # ('Roboter',r'^(Roboter|wo bitte|oh britta|oh bitte)$', 100,{'flags': re.IGNORECASE}),
+
+
+    #('Oktopus',r'^(Oktopus|du)$', 100,{'flags': re.IGNORECASE}),
+
+    # ('teleskop',r'^(teleskop|gott|script ist|kryptos|durch|einen kaputten teleskop|chris|mein gott|crypto|grip|skripte|es|script)$', 100,{'flags': re.IGNORECASE,}),
 
 
 
 ]
 
-#Der Modus starten
 

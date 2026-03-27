@@ -392,7 +392,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                        ["einen"]):
                                     continue
 
-                            if any(w in partial_text.lower() for w in ["kaktus", "kakturs", "klapptisch", "kette", "kräftig", 'teppich']):
+                            if any(w in partial_text.lower() for w in ["teleskop", "tedesco", "cellist", "tennis" ]):
                                 if time.time() - last_toggle > 2.0:  # 2 sec cooldown
                                     last_toggle = time.time()
                                     if is_suspended:
@@ -418,11 +418,11 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         # Einen BantusMein nächstes Wetter
                         if is_suspended:
                             # Wir prüfen sofort das Teilergebnis auf das Wake-Word 🌵
-                            # "kakturs" oder "kaktus" - je nachdem wie du es aussprichst 🌵
+                            # "kakturs" oder "teleskop" - je nachdem wie du es aussprichst 🌵
 
                             if modus == 'remove suspend_flag only': # when using this mode: you need rules for start sleeping. mabe there: config/maps/wake-up/de-DE/FUZZY_MAP_pre.py:31
                                 # 🌵
-                                if "kakturs" in partial_text.lower() or "kaktus" in partial_text.lower():
+                                if "kakturs" in partial_text.lower() or "teleskop" in partial_text.lower():
                                     logger.info("🚀 Wake-Word erkannt! Aktiviere System...")
 
                                     # Flag-Datei löschen, damit das System wieder normal arbeitet

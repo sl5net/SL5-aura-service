@@ -1,4 +1,4 @@
-# de-DE/FUZZY_MAP_pre.py
+# config/maps/wake-up/de-DE/FUZZY_MAP_pre.py:1
 import re # noqa: F401
 from pathlib import Path
 
@@ -19,7 +19,10 @@ CONFIG_DIR = Path(__file__).parent
 
 nonsense_start_word = r'(?:(ein|eine|einen)\s*)?'
 
-kaktus = r'{nonsense_word}(kaktus|kaktos|kackt|kraft|kürzlich|taktus|captain|voss|frost|klapptisch|praktisch|korb|wie törn).*'
+# wakeword = r'{nonsense_word}(kaktus|kaktos|kackt|kraft|kürzlich|taktus|captain|voss|frost|klapptisch|praktisch|korb|wie törn).*'
+
+wakeword = r'{nonsense_word}(Teleskop|tritt|tedesco|cellist|tennis|tourist|kredit).*'
+
 
 #STT Active. Mute flag removed.Was hat, spuckt
 
@@ -28,9 +31,9 @@ kaktus = r'{nonsense_word}(kaktus|kaktos|kackt|kraft|kürzlich|taktus|captain|vo
 FUZZY_MAP_pre = [
 
     # guten tag das aufwachenkaktus einschalten 🌵
-    # bin bi kaktus aufwachen 🌵
+    # bin bi teleskop aufwachen 🌵
 
-    ('voss_start', fr'^({kaktus} höre nicht mit|{kaktus}wach auf|{kaktus}auf|{kaktus}aufwachen|{kaktus}wache|{kaktus}einschätzen|{kaktus}einschalten|{kaktus}aktiv|frost brach kracher|Vor krach auf|free square auf|frost quatsch auf|guten tag das aufwachen|{nonsense_start_word}kaktus woche aus|b\s*\w*\s*\bkaktus aufwachen)$', 89,
+    ('voss_start', fr'^({wakeword} höre nicht mit|{wakeword}wach auf|{wakeword}auf|{wakeword}aufwachen|{wakeword}wache|{wakeword}einschätzen|{wakeword}einschalten|{wakeword}aktiv|frost brach kracher|Vor krach auf|free square auf|frost quatsch auf|guten tag das aufwachen|{nonsense_start_word}teleskop woche aus|b\s*\w*\s*\bkaktus aufwachen)$', 89,
      {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
@@ -42,14 +45,14 @@ FUZZY_MAP_pre = [
     #
 
     # EXAMPLE: einschalfen phonetic misinterpretations 🌵
-    ('voss_stop', fr'^(?:{kaktus}|gratis|köpfe|hörtest)\s*(?:einschlagen|einschlafen|einschleppen|einsch\w*en|geschlossen|stop|schlafe|ciao).*$', 89,
+    ('voss_stop', fr'^(?:{wakeword}|gratis|köpfe|hörtest)\s*(?:einschlagen|einschlafen|einschleppen|einsch\w*en|geschlossen|stop|schlafe|ciao).*$', 89,
      {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
     }),
 
     # einen 🌵
-    ('voss_stop', fr'^(?:{kaktus}stop\w*|{nonsense_start_word}{kaktus}{nonsense_start_word}schlafe\w*|{kaktus}geh schlafe\w*|gute nacht|{kaktus}ciao|{kaktus}nen)$', 89,
+    ('voss_stop', fr'^(?:{wakeword}stop\w*|{nonsense_start_word}{wakeword}{nonsense_start_word}schlafe\w*|{wakeword}geh schlafe\w*|gute nacht|{wakeword}ciao|{wakeword}nen)$', 89,
      {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
