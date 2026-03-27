@@ -1,9 +1,9 @@
 # config/maps/plugins/wannweil/de-DE/check_trash.py
 
-#  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py
-#  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py
+#  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
+#  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
 # or use:
-#     ~/pr/py/STT    master *1 !2 ?1  python.sh ./config/maps/plugins/wannweil/de-DE/check_trash.py &
+# python.sh ./config/maps/plugins/wannweil/de-DE/check_trash.py &
 
 import sys
 import os
@@ -414,7 +414,9 @@ if __name__ == "__main__":
     # True an Wochentagen, False an Samstag und Sonntag
     is_active = datetime.datetime.now().weekday() < 5
 
-    is_active = False
+    # is_active = False
+    # is_active = True
+
 
     if is_active:
         check_and_notify(force_test="test" in sys.argv)

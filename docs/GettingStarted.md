@@ -51,7 +51,7 @@ Don't know regex yet? No problem.
 4. You can then edit the replacement text manually.
 
 This is called **Oma-Modus** — designed for users who want results without
-learning regex first.
+learning regex first .
 
 ---
 
@@ -84,3 +84,4 @@ Uncomment a rule, save, dictate the trigger phrase — done.
 | Run Python scripts from rules | `docs/advanced-scripting.md` |
 | DEV_MODE + log filter setup | `docs/Developer_Guide/dev_mode_setup.md` |
 | Context-aware rules (`only_in_windows`) | `docs/FuzzyMapRuleGuide.md` |
+
