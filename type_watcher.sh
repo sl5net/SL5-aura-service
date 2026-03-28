@@ -320,6 +320,17 @@ PY
         while IFS= read -r -d '' f; do
             [ -f "$f" ] || continue
 
+
+            # Skip and delete files older than 8 seconds
+            file_age=$(( $(date +%s) - $(stat -c %Y "$f") ))
+            if [ "$file_age" -gt 8 ]; then
+                rm -f "$f"
+                continue
+            fi
+
+            sleep 0.3
+
+
             mapfile -t lines < "$f"
             for line in "${lines[@]}"; do
                 trimmed_line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')

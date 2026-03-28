@@ -8,7 +8,6 @@ import sys
 # import concurrent.futures
 import os
 from pathlib import Path
-import subprocess
 
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
@@ -16,7 +15,6 @@ from ..audio_manager import speak_inclusive_fallback
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
 
-from ..start_languagetool_server import start_languagetool_server
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -556,7 +554,7 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
 
         print(f":st:🐣 [{index}] Imports ok")
 
-        current_file = Path(__file__).resolve()
+        # current_file = Path(__file__).resolve()
 
         # # 1. Manueller Import
         # ds_path = current_file.parents[1] / "config" / "dynamic_settings.py"
