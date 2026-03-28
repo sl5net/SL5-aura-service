@@ -17,8 +17,11 @@
 # - ./search_rules.sh ./docs    # uses provided path
 # - MAPS_DIR=/env/maps ./search_rules.sh
 
-# This preserves backward compatibility while making configuration explicit.
+# There is also a version for Windows PC (in this folder) that can do a little less : search_rules.ps1
 
+
+# This preserves backward compatibility while making configuration explicit.
+# (s, 28.3.'26 23:07 Sat)
 
 # -----------------------------------------------------------------------------
 # CONFIGURATION
