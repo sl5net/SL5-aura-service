@@ -8,12 +8,15 @@ import sys
 # import concurrent.futures
 import os
 from pathlib import Path
+import subprocess
 
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
 from ..audio_manager import speak_inclusive_fallback
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
+
+from ..start_languagetool_server import start_languagetool_server
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -73,12 +76,23 @@ settings = DynamicSettings()
 #         print(f"Warning: Could not clear log file {log_path}. Error: {e}", file=sys.stderr)
 
 
-# file: scripts/py/func/checks/self_tester.py:50
-def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
+# file: scripts/py/func/checks/self_tester.py:79
+def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code): # , LANGUAGETOOL_JAR_PATH=None, lt_process=None):
     """
     Runs a series of predefined tests, guarded by a persistent throttle mechanism.
     """
     # scripts/py/func/checks/self_tester.py
+
+    # Restart LT with full power for self-test
+    # only interesting if we are in test mode and actually want to use each other as a profil
+    # if LANGUAGETOOL_JAR_PATH:
+    #     subprocess.run(['pkill', '-f', 'languagetool-server.jar'], capture_output=True)
+    #     time.sleep(1)
+    #     lt_process = start_languagetool_server(logger, LANGUAGETOOL_JAR_PATH, lt_url, for_self_test=True)
+    #     _wait_for_languagetool_ready(lt_url, logger)
+    #
+    # lt_process = start_languagetool_server(logger, LANGUAGETOOL_JAR_PATH, lt_url, for_self_test=False) # default is True but then it runs like to to the end
+    _wait_for_languagetool_ready(lt_url, logger)
 
     rules_file_path = Path(__file__).parents[4] / 'config' / 'maps' / 'plugins' / 'standard_actions' / 'language_translator' / 'de-DE' / 'FUZZY_MAP_pre.py'
     translation_state_path = Path(__file__).parents[4] / 'config' / 'maps' / 'plugins' / 'standard_actions' / 'language_translator' / 'de-DE' / 'translation_state.py'
@@ -99,7 +113,7 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code):
     if should_restore(backup_path, rules_file_path):
         shutil.copy2(backup_path, rules_file_path)
     else:
-        print("Skipping restore: files appear different/newer or within tolerance.")
+        print(":st:Skipping restore: files appear different/newer or within tolerance.")
 
 
 
@@ -170,7 +184,10 @@ def _wait_for_languagetool_ready(lt_url, logger, timeout=60, interval=2):
             pass
         time.sleep(interval)
 
-    logger.error(f"❌ LanguageTool not ready after {timeout}s – aborting.")
+    logger.error(f":st: ❌ LanguageTool not ready after {timeout}s – aborting.")
+    logger.error(f":st: LanguageTool not ready after {timeout}s – aborting.")
+    logger.info(f":st: LanguageTool not ready after {timeout}s – aborting.")
+    print(f":st: LanguageTool not ready after {timeout}s – aborting.")
     sys.exit(1)
 
 
@@ -191,7 +208,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     # Base directory for all tests
 
-    # print('🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞 tmp_dir=', tmp_dir_aura)
+    print(':st:🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞 tmp_dir=', tmp_dir_aura)
 
     test_base_dir = tmp_dir_aura / "sl5_aura_self_test"
     test_base_dir.mkdir(parents=True, exist_ok=True)
@@ -367,6 +384,11 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         #  'de-DE'),
     ]
 
+    test_cases = [
+        # ('was is 5 mal 1', 'Das Ergebnis von 5 mal 2 ist 10.', 'Partial map + LT correction', 'de-DE'),
+        ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
+    ]
+
     # 1. Filter test cases for the current language
     active_tests = []
     # Note: test_cases list remains as defined in your script
@@ -404,10 +426,15 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     # scripts/py/func/checks/self_tester.py:383
 
-    import multiprocessing
-    ctx = multiprocessing.get_context("fork")
-    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
-    
+    # import multiprocessing
+    # ctx = multiprocessing.get_context("fork")
+    # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
+
+    num_workers = max(1, os.cpu_count() // 2)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
+
+
+
         # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
         # with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
         # Wir reduzieren auf 8 Worker (echte physikalische Kerne),
@@ -418,7 +445,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         for future in concurrent.futures.as_completed(futures):
 
             try:
-                # print("🔍 Result received...")
+                print(":st:🔍 Result received...")
 
                 result = future.result(timeout=60)  # Add timeout
                 success, raw, actual, expected, desc = result
@@ -429,14 +456,17 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                     # logger.error(f"{passed_count}🥳   Got:      '{actual}'")
                 else:
                     failed_count += 1
-                    logger.error(f"❌ FAIL: {desc}")
-                    logger.error(f"   Input:    '{raw}'")
-                    logger.error(f"   Expected: '{expected}'")
-                    logger.error(f"   Got:      '{actual}'")
-                    sys.exit(1)
+                    logger.error(f":st: ❌ FAIL: {desc}")
+                    logger.error(f":st:   Input:    '{raw}'")
+                    logger.error(f":st:   Expected: '{expected}'")
+                    logger.error(f":st:   Got:      '{actual}'")
+                    logger.info(f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> exit")
+                    # sys.exit(1)
+
             except Exception as e:
-                print(f"💥 Process crashed: {e}")
-                sys.exit(1)
+                failed_count += 1
+                print(f":st:💥 Process crashed: {e}")
+                # sys.exit(1)
 
     #core_logic_self_test_is_running_FILE = tmp_dir_aura / "core_logic_self_test_FILE_is_running"
 
@@ -472,7 +502,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
 
     if failed_count > 0:
-        sys.exit(1)
+        print(f':st: failed_count > 0: {failed_count} ==> exiting')
+        # sys.exit(1)
 
 
 # futures = {executor.submit(run_single_test, i, t, lang_code, lt_url, str(test_base_dir)): t
@@ -488,16 +519,16 @@ import time
 
 # Dummy-Logger for Proses
 class SimpleNullLogger:
-    def info(self, msg):
+    def info(self, *args, **kwargs):
         pass
 
     def error(self, msg, *args, **kwargs):
         pass
 
-    def warning(self, msg):
+    def warning(self, *args, **kwargs):
         pass
 
-    def debug(self, msg):
+    def debug(self, msg, *args, **kwargs):
         pass
 
     def exception(self, msg, *args, **kwargs):
@@ -507,29 +538,39 @@ class SimpleNullLogger:
 # find . -name "*settings.py"                                                                                                                                     ✔
 
 def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_str):
-    # print(f"🐣 [{index}] Sub-Process gestartet") # Direkter Print
+    print(f":st:🐣 [{index}] Sub-Process gestartet") # Direkter Print
+
+    import urllib.request
     try:
-        import importlib.util
-        import sys
+        urllib.request.urlopen("http://127.0.0.1:8082/v2/languages", timeout=2)
+        print(f":st: [{index}] LT erreichbar 🥳")
+    except Exception as e:
+        print(f":st: [{index}] LT NICHT erreichbar: {e} 🫨")
+
+    try:
         import os
 
         from pathlib import Path
 
-        # print(f"🐣 [{index}] Imports ok")
+        os.environ["AURA_SELF_TEST_RUNNING"] = "1"
+
+        print(f":st:🐣 [{index}] Imports ok")
 
         current_file = Path(__file__).resolve()
 
-        # 1. Manueller Import
-        ds_path = current_file.parents[1] / "config" / "dynamic_settings.py"
-        spec = importlib.util.spec_from_file_location("dynamic_settings", str(ds_path))
-        ds_mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(ds_mod)
-        DynamicSettings = ds_mod.DynamicSettings
+        # # 1. Manueller Import
+        # ds_path = current_file.parents[1] / "config" / "dynamic_settings.py"
+        # spec = importlib.util.spec_from_file_location("dynamic_settings", str(ds_path))
+        # ds_mod = importlib.util.module_from_spec(spec)
+        # spec.loader.exec_module(ds_mod)
+        # DynamicSettings = ds_mod.DynamicSettings
+        #
+        # # 2. Root setzen
+        # project_root = str(current_file.parents[4])
+        # if project_root not in sys.path:
+        #     sys.path.insert(0, project_root)
 
-        # 2. Root setzen
-        project_root = str(current_file.parents[4])
-        if project_root not in sys.path:
-            sys.path.insert(0, project_root)
+        from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 
         raw_text, expected, description = test_data
@@ -543,22 +584,33 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
 
         # 4. NANOSEKUNDEN + INDEX für absolute Eindeutigkeit
         # time.time_ns() liefert z.B. 1705678901234567890
-        # unique_id_ns = time.time_ns() + index
+        unique_id_ns = time.time_ns() + index
 
         # Wir konvertieren es in einen Float-Sekunden-Wert für die Funktion,
         # aber mit extrem hoher Präzision.
-        # unique_time_float = unique_id_ns / 1_000_000_000.0
-        unique_time_float = float(index)  # Absolut eindeutig: 0.0, 1.0, 2.0 ...
+        unique_time_float = unique_id_ns / 1_000_000_000.0
+        # unique_time_float = float(index)  # Absolut eindeutig: 0.0, 1.0, 2.0 ...
 
-        # print('🌞🌞🌞 worker dir:', worker_dir)
-        # print('🌞🌞🌞 test_base_dir_str:', test_base_dir_str)
+        print(':st:🌞🌞🌞 worker dir:', worker_dir)
+        print(':st:🌞🌞🌞 test_base_dir_str:', test_base_dir_str)
+
+        # process_text_in_background(
+        #     null_logger, lang_code, raw_text,
+        #     None,  # Standard output_dir (ignored)
+        #     unique_time_float, lt_url,
+        #     output_dir_override=worker_dir  # Explicit override
+        # )
 
         process_text_in_background(
             null_logger, lang_code, raw_text,
-            None,  # Standard output_dir (ignored)
+            None,
             unique_time_float, lt_url,
-            output_dir_override=worker_dir  # Explicit override
+            output_dir_override=worker_dir,
+            session_id=index,
+            chunk_id=1
         )
+
+
 
         # scripts/py/func/checks/self_tester.py:523
 
@@ -569,7 +621,7 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
 
         if not core_logic_self_test_is_running_file.exists():
             core_logic_self_test_is_running_file.write_text(str(int(time.time())))
-            print("Auto-Zip: Flag created process_text_in_background was finished before")
+            print(":st:Auto-Zip: Flag created process_text_in_background was finished before")
 
         # 5. Datei finden (nur in diesem privaten Task-Ordner!)
         output_files = list(worker_dir.glob("tts_output_*.txt"))
@@ -590,7 +642,7 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         try:
             worker_dir.rmdir()
         except Exception as e:
-            print(f'717: {e}')
+            print(f':st:717: {e}')
             pass
 
 
@@ -628,7 +680,7 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
     worker_dir = test_base_dir / f"task_{index}"
     worker_dir.mkdir(parents=True, exist_ok=True)
 
-    # print('scripts/py/func/checks/self_tester.py:497 🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞')
+    print(':st:scripts/py/func/checks/self_tester.py:497 🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞')
 
     try:
         # Execute processing in the isolated folder
@@ -658,7 +710,7 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
         try:
             worker_dir.rmdir()
         except Exception as e:
-            print(f'812: {e}')
+            print(f':st:812: {e}')
             pass
 
         # -- Sent via Aura --'

@@ -1,7 +1,9 @@
 # config/filters/settings_local_log_filter.py
 # r"▉",
 
-LOG_EXCLUDE_off = [
+LOG_EXCLUDE = []
+
+LOG_EXCLUDE_asdfsdf = [
     r"📦",
     r"PUNCTUATION_MAP",
     r"〃",
@@ -12,7 +14,7 @@ LOG_EXCLUDE_off = [
     r"#####",
 ]
 
-LOG_EXCLUDE = [
+LOG_EXCLUDE_fasdfsdfs = [
     r"heartbeat.*status: OK",
     r"cleaning up temp file",
     r"(?i)debug: rule \d+ skipped",
@@ -25,7 +27,7 @@ LOG_EXCLUDE = [
     r"📂",
     r"📦",
     # r"🚀",
-    r"❌",
+    # r"❌",
     r"🎯",
     r"🔍",
     r"⏱",
@@ -81,8 +83,8 @@ LOG_EXCLUDE = [
 
 ]
 # OPTIONAL: Wenn nicht leer, wird NUR das geloggt, was hier matcht (ONLY und oder logig: Mindes eines aus LOG_ONLY muss matchen)
-# LOG_ONLY = []
-LOG_ONLY = [
+LOG_ONLY = []
+LOG_ONLY_asfsdf = [
      r"Successfully",
      r"CRITICAL",
      r"📢📢📢 #",

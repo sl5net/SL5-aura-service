@@ -16,8 +16,8 @@ MAX_WAIT_TIME = 900.0
 # INITIAL_WAIT_TIME = 1.0
 # MAX_WAIT_TIME = 1.0
 
-# run_always_no_throttling_ignore_times = True
-run_always_no_throttling_ignore_times = False
+run_always_no_throttling_ignore_times = True
+# run_always_no_throttling_ignore_times = False
 
 # # tags: time inite minute seconds
 

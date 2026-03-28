@@ -879,12 +879,12 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
             if not current_rule_matched:
                 # logger.info(f"310: new: new_processed_text={new_processed_text}, threshold={threshold} , a_rule_matched={a_rule_matched}")
                 # , is in # file config/languagetool_server/PUNCTUATION_MAP.py
-                if type(new_processed_text) is int and new_processed_text == 0:
-                    # if log_all_processed_text:
-                    log4DEV(f'TODO: what to do here? new_processed_text={new_processed_text}',logger)
-                    # new_processed_text = ''
+                # if type(new_processed_text) is int and new_processed_text == 0:
+                # if log_all_processed_text:
+                # log4DEV(f'TODO: what to do here? new_processed_text={new_processed_text}',logger)
+                # new_processed_text = ''
                 new_processed_text = apply_fuzzy_replacement_logic(new_processed_text, replacement, threshold, logger)
-                log4DEV(f"new: new_processed_text={new_processed_text} , threshold={threshold} , a_rule_matched={a_rule_matched}",logger)
+                # log4DEV(f"new: new_processed_text={new_processed_text} , threshold={threshold} , a_rule_matched={a_rule_matched}",logger)
 
 
     log4DEV(f"new_processed_text: {new_processed_text} , a_rule_matched: {a_rule_matched}, skip_list: {skip_list}",logger)
@@ -907,6 +907,12 @@ def process_text_in_background(logger,
                                ):
     # scripts/py/func/process_text_in_background.py:588 (process_text_in_background)
 
+    # print(f':st: \nprocess_text_in_background:910 chunk_id={chunk_id} session_id={session_id} unmasked={unmasked}\n\n')
+
+    # log4DEV('hallo',logger)
+
+    # print(f':st: \nprocess_text_in_background:912 raw_text:{raw_text}')
+
     RUN_MODE = os.getenv('RUN_MODE')
     global settings
     global _active_window_title
@@ -924,6 +930,11 @@ def process_text_in_background(logger,
     _active_window_title = get_active_window_title_safe()
     # end = time.time()
     # duration = end - start # its about 3milliSeconds
+
+
+    # print(f':st: \nprocess_text_in_background:933 raw_text:{raw_text}')
+
+
     if settings.DEV_MODE or True:
         # Because it's a new feature and we're not quite sure if it works very well on Windows, it's good to have output  (original:'weil es ein neues feature ist und wir noch nicht ganz sicher sind ob es auf windows sehr gut funktioniert ist es doch gut über eine ausgabe ' ). 12.3.'26 06:36 Thu
 
@@ -936,6 +947,9 @@ def process_text_in_background(logger,
     # end = time.time()
     # duration = end - start
     # print(f"DISPLAY wt: {wt} duration: {duration} clipboard: {c}")
+
+    # print(f':st: \nprocess_text_in_background:949 raw_text:{raw_text}')
+
 
     privacy_taint_occurred = False
 
@@ -951,11 +965,17 @@ def process_text_in_background(logger,
 
 
         # --- KRITISCHE SEQUENZPRÜFUNG AM ANFANG DER FUNKTION ---
+
+    # print(f':st: \nprocess_text_in_background:967 raw_text:{raw_text}')
+
+
     if chunk_id > 0:
 
         # 1. Warte-Loop, um die Reihenfolge zu garantieren scripts/py/func/process_text_in_background.py:947
         wait_count = 0
         while True:
+            # print(f':st: \nprocess_text_in_background:975 raw_text:{raw_text}')
+
             expected_id = 0
             with SEQUENCE_LOCK:
                 expected_id = SESSION_LAST_PROCESSED.get(session_id, 0) + 1
@@ -981,8 +1001,7 @@ def process_text_in_background(logger,
             # --- CACHE: Legt uns in den Warte-Cache und wartet auf andere Threads, die abarbeiten ---
             with SEQUENCE_LOCK:
                 if chunk_id not in OUT_OF_ORDER_CACHE:
-                    OUT_OF_ORDER_CACHE[chunk_id] = (logger, LT_LANGUAGE, raw_text, output_dir, recording_time,
-                                                    active_lt_url, output_dir_override)
+                    OUT_OF_ORDER_CACHE[chunk_id] = (logger, LT_LANGUAGE, raw_text, output_dir, recording_time, active_lt_url, output_dir_override)
 
             # Kurze, effiziente Wartezeit, um den Thread freizugeben
             time.sleep(0.005)
@@ -999,6 +1018,10 @@ def process_text_in_background(logger,
                 # 2. Erfolgreich an der Reihe: Aktualisiere die letzte verarbeitete ID
         with SEQUENCE_LOCK:
             SESSION_LAST_PROCESSED[session_id] = chunk_id
+
+
+    # print(f':st: \nprocess_text_in_background:1021 raw_text:{raw_text}')
+
 
         # 3. Cache prüfen: Nachdem wir verarbeitet wurden, prüfen, ob wir Blocker für andere waren
         # Hier müsste ein weiterer Block hin, der den Cache aufräumt. (Wir implementieren das später)
@@ -1035,17 +1058,30 @@ def process_text_in_background(logger,
     else:
         unique_output_file = output_dir / f"tts_output_{timestamp}.txt" # else:
 
+
+
+
+    # print(f':st: \nprocess_text_in_background:1061\n')
+    # print(f':st: \nprocess_text_in_background:1062 output_dir_override:{output_dir_override} settings.DEV_MODE:{settings.DEV_MODE}\n')
+
     if settings.DEV_MODE: # some test. want check if we can change setting and get some setting correct back ( 2026-0104-1433 4.1.'26 14:33 Sun )
         # timestamp = str(recording_time).replace('.', '_')
 
-        if output_dir_override:
-            # unique_output_file = f"{output_dir_override}/tts_output_{timestamp}.txt"
+        # print(f':st: \nprocess_text_in_background:1061 output_dir_override:{output_dir_override}\n\n')
+
+
+        if output_dir_override: # z.B. /tmp/sl5_aura/sl5_aura_self_test/task_0/tts_output_1774694763_2155313.txt
             unique_output_file = output_dir_override / f"tts_output_{timestamp}.txt"
 
+            # print(f':st: \nprocess_text_in_background:1061 unique_output_file:{unique_output_file}\n\n')
+
+
+
             # output_dir_override: /tmp/sl5_aura/tts_output
-            # print(f"🌞🌞🌞 raw_text: {raw_text}")
-            # print(f"🌞🌞🌞 output_dir: {output_dir}")
-            # print(f"🌞🌞🌞 output_dir_override: {output_dir_override}")
+            print(f"🌞🌞🌞 \n raw_text: {raw_text} \n")
+            print(f"🌞🌞🌞 \n output_dir: {output_dir} \n")
+            print(f":st: 🌞🌞🌞  \n output_dir_override: {output_dir_override}\n ")
+            print(f":st: 🌞🌞🌞 unique_output_file: {unique_output_file}\n ")
             # sys.exit(1)
 
         else:
@@ -1059,6 +1095,9 @@ def process_text_in_background(logger,
                 log4DEV(f'raw_text:{raw_text}',logger)
             raw_text = settings.SPEECH_PAUSE_TIMEOUT
             unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
+            
+            # print(f':st: \nprocess_text_in_background:1089 raw_text:{raw_text}')
+            
             return raw_text
         if raw_text == '->AUDIO_INPUT_DEVICE<-':
             if not privacy_taint_occurred:
@@ -1069,6 +1108,7 @@ def process_text_in_background(logger,
             return raw_text
 
 
+    # print(f':st: \nprocess_text_in_background:1098 raw_text:{raw_text}')
 
 
 
@@ -1079,6 +1119,8 @@ def process_text_in_background(logger,
         raw_text = sanitize_transcription_start(raw_text)
         # if settings.DEV_MODE:
         #     logger.info(f"end sanitize_transcription_start")
+
+        # print(f':st: \nprocess_text_in_background:1123 raw_text:{raw_text}')
 
 
         # ZWNBSP
@@ -1094,6 +1136,9 @@ def process_text_in_background(logger,
         lang_code_predictions = ''
 
         # log4DEV(f"process_text_in_background.py:850 (process_text_in_background) raw_text:{raw_text}", logger)
+
+        # print(f':st: \nprocess_text_in_background:1128 raw_text:{raw_text}')
+
 
         if len(raw_text) > 0:
             try:
@@ -1137,12 +1182,20 @@ def process_text_in_background(logger,
                             (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
                             # load_maps_for_language(lang_code_predictions, logger)
 
+                    # print(f':st: \nprocess_text_in_background:1185 raw_text:{raw_text}')
+
+
             except Exception as e:
                 logger.info(f"❌❌❌ An exception in lang_code predictions  {e} lang_code: {lang_code_predictions} , LT_LANGUAGE: {LT_LANGUAGE}")
                 logger.info(f"❌❌❌ An exception in lang_code predictions  {e} lang_code: {lang_code_predictions} , LT_LANGUAGE: {LT_LANGUAGE}")
                 logger.info(f"❌❌❌ An exception in lang_code predictions  {e} lang_code: {lang_code_predictions} , LT_LANGUAGE: {LT_LANGUAGE}")
                 # lang_code_predictions = 'de'
-                exit(1)
+                # print(f':st: \nprocess_text_in_background:1172 raw_text:{raw_text} =====> exit')
+
+                sys.exit(1)
+
+        # print(f':st: \nprocess_text_in_background:1182 raw_text:{raw_text}')
+
 
         # scripts/py/func/process_text_in_background.py:898 (process_text_in_background)
         normalize_punctuation_changed = False
@@ -1151,6 +1204,11 @@ def process_text_in_background(logger,
 
             log4DEV(f"process_text_in_background.py:900 (process_text_in_background) raw_text:{raw_text}", logger)
         processed_text, was_exact_match = normalize_punctuation(raw_text, GLOBAL_PUNCTUATION_MAP, logger)
+
+        # print(f':st: \nprocess_text_in_background:1208 processed_text:"{processed_text}"')
+
+
+
         # if len(processed_text) != len(raw_text):
         if processed_text != raw_text:
             normalize_punctuation_changed = True
@@ -1165,6 +1223,9 @@ def process_text_in_background(logger,
             is_only_number =  processed_text.isdigit()
 
         # scripts/py/func/process_text_in_background.py
+
+        # print(f':st: \nprocess_text_in_background:1227 raw_text:"{raw_text}" processed_text:"{processed_text}"')
+
 
         #regex_pre_is_replacing_all = False
         regex_match_found_prev = False
@@ -1194,33 +1255,41 @@ def process_text_in_background(logger,
 
                 if not privacy_taint_occurred:
 
-                    log4DEV("Applying all rules until stable (default 'all' mode).", logger)
-                (new_processed_text
-                , regex_pre_is_replacing_all_maybe
-                , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(processed_text
-                , GLOBAL_FUZZY_MAP_PRE, logger)
+                    # log4DEV("Applying all rules until stable (default 'all' mode).", logger)
 
-                if not privacy_taint_occurred:
+                    # # print(f':st: \nprocess_text_in_background:1227 raw_text:"{raw_text}" processed_text:"{processed_text}"')
+                    print(f":st: \n processed_text={processed_text} 1261\n\n", logger)
 
-                    log4DEV(f"new_processed_text: {new_processed_text}"
-                        f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} "
-                        f" skip_list={skip_list}",logger)
+                    (new_processed_text
+                    , regex_pre_is_replacing_all_maybe
+                    , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(processed_text
+                    , GLOBAL_FUZZY_MAP_PRE, logger)
+
+                    print(f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} 1248\n\n", logger)
+
+
+
+
+                # if not privacy_taint_occurred:
+                    # log4DEV(f"new_processed_text: {new_processed_text}"
+                    #     f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} "
+                    #     f" skip_list={skip_list}",logger)
 
 
             regex_pre_is_replacing_all = regex_pre_is_replacing_all_maybe # and regex_match_found_prev
 
-            if not privacy_taint_occurred:
-                log4DEV(f"new_processed_text: {new_processed_text}"
-                    f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
-                    f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
-                    f" normalize_punctuation_changed_size={normalize_punctuation_changed}"
-                    f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
-                    f" regex_match_found_prev:{regex_match_found_prev}"
-                    f" skip_list={skip_list}",logger)
+            # if not privacy_taint_occurred:
+            #     log4DEV(f"new_processed_text: {new_processed_text}"
+            #         f" regex_pre_is_replacing_all:{regex_pre_is_replacing_all} "
+            #         f" regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}"
+            #         f" normalize_punctuation_changed_size={normalize_punctuation_changed}"
+            #         f" regex_pre_is_replacing_all_maybeTEST1:{regex_pre_is_replacing_all_maybeTEST1}"
+            #         f" regex_match_found_prev:{regex_match_found_prev}"
+            #         f" skip_list={skip_list}",logger)
 
-                log4DEV(f"new_processed_text:{new_processed_text}, regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}",logger)
-
-                log4DEV(f"LT_LANGUAGE = {LT_LANGUAGE} , SkipList=skip_list = {skip_list} , regex_pre_is_replacing_all_maybe ={regex_pre_is_replacing_all_maybe}",logger) #
+                # log4DEV(f"new_processed_text:{new_processed_text}, regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe}",logger)
+                #
+                # log4DEV(f"LT_LANGUAGE = {LT_LANGUAGE} , SkipList=skip_list = {skip_list} , regex_pre_is_replacing_all_maybe ={regex_pre_is_replacing_all_maybe}",logger) #
             if regex_pre_is_replacing_all:
                 if processed_text == 'english please' and LT_LANGUAGE == 'de-DE':
                     processed_text = 'Ok, lets write in english now.'
@@ -1244,19 +1313,31 @@ def process_text_in_background(logger,
                     f" and 📚📚'LanguageTool'📚📚 not in SkipList:{skip_list} "
                     f" and not ( ... {processed_text}",logger)
 
+            # print(f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} 1317\n\n", logger)
+
+
             # scripts/py/func/process_text_in_background.py:982 (process_text_in_background)
             if (not regex_pre_is_replacing_all and not is_only_number and 'LanguageTool' not in skip_list ):
+
+                print(f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} privacy_taint_occurred={privacy_taint_occurred} 1324\n\n", logger)
+
+
+
 
                 if new_processed_text ==0:
                     new_processed_text = processed_text
 
+                # print(f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} privacy_taint_occurred={privacy_taint_occurred} 1331\n\n", logger)
+
+
                 if not privacy_taint_occurred:
 
-                    log4DEV(f"and not 📚📚'LanguageTool'📚📚 in skip_list ==> {skip_list}"
-                        f" processed_text:{processed_text}"
-                        f" new_processed_text:{new_processed_text} ",logger)
+                    print(f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} privacy_taint_occurred={privacy_taint_occurred} 1336\n\n")
 
+                # print(f"and not LanguageTool new_processed_text: {new_processed_text} 1339 ")
 
+                # sys.stderr.write(f"1339 new_processed_text={new_processed_text}\n")
+                # sys.stderr.flush()
 
                 result_languagetool = correct_text_by_languagetool(
                     logger,
@@ -1264,6 +1345,8 @@ def process_text_in_background(logger,
                     LT_LANGUAGE,
                     new_processed_text).lstrip('\uFEFF')
 
+                # sys.stderr.write(f"1349 result_languagetool={result_languagetool}\n")
+                # sys.stderr.flush()
 
 
                 if getattr(settings, "DEV_MODE_memory", False):
@@ -1294,8 +1377,8 @@ def process_text_in_background(logger,
             # 477: SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
 
             regex_match_found = False
-            log4DEV(f'regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
-            log4DEV(f"skip_list: {skip_list}", logger)
+            # log4DEV(f'regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
+            # log4DEV(f"skip_list: {skip_list}", logger)
             if GLOBAL_debug_skip_list:
                 print(f'1051: skip_list={skip_list}')
             skip_list_backup = skip_list
@@ -1399,10 +1482,10 @@ def process_text_in_background(logger,
                     score = fuzz.token_set_ratio(processed_text.lower(), match_phrase.lower())
 
                     # DEBUG:
-                    if "marmela" in match_phrase.lower():
-                        log4DEV(
-                            f"DEBUG FUZZY CHECK: Input='{processed_text}' vs Rule='{match_phrase}' -> Score={score} (Threshold={threshold})",
-                            logger)
+                    # if "marmela" in match_phrase.lower():
+                    #     log4DEV(
+                    #         f"DEBUG FUZZY CHECK: Input='{processed_text}' vs Rule='{match_phrase}' -> Score={score} (Threshold={threshold})",
+                    #         logger)
 
                     if score >= threshold and score > best_score:
                         best_score = score
@@ -1414,9 +1497,14 @@ def process_text_in_background(logger,
                 else:
                     logger.info(f"👎best fuzzy score:{best_score}% for '{processed_text}'")
 
-        if new_processed_text:
-            log4DEV(f"SkipList: {skip_list} regex_match_found_prev:{regex_match_found_prev} regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} processed_text:{processed_text} "
-                    f"new_processed_text:{new_processed_text}",logger)
+
+        # print(f':st: \nprocess_text_in_background:1447 raw_text:{raw_text}')
+
+
+
+        # if new_processed_text:
+        #     log4DEV(f"SkipList: {skip_list} regex_match_found_prev:{regex_match_found_prev} regex_pre_is_replacing_all_maybe:{regex_pre_is_replacing_all_maybe} processed_text:{processed_text} "
+        #             f"new_processed_text:{new_processed_text}",logger)
         # 477: SkipList: ['LanguageTool'] regex_pre_is_replacing_all:True processed_text:git at new_processed_text:git add .
 
 
@@ -1510,7 +1598,12 @@ def process_text_in_background(logger,
             lang_for_tts = script_result.get("lang", LT_LANGUAGE)  # Fallback auf Originalsprache
 
         # scripts/py/func/process_text_in_background.py:1440
+
+        # print(f':st: \nprocess_text_in_background:1563 raw_text:{raw_text}')
+
         if new_current_text:
+
+            # print(f':st: \nprocess_text_in_background:1567 raw_text:{raw_text}')
 
             # scripts/py/func/process_text_in_background.py:1443
             if options_dict: # If it exists, no sub-module will be output. they have may its own signature.
@@ -1620,6 +1713,8 @@ def process_text_in_background(logger,
             # scripts/py/func/process_text_in_background.py:1591
             # DIESE ZEILE WAR SCHON RICHTIG:
             unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
+            # print(f':st: \nprocess_text_in_background:1672 raw_text:{raw_text}')
+
 
             # KORREKTUR 1: Verwende die NEUEN Variablen für den Fallback
             if not privacy_taint_occurred:
@@ -1658,8 +1753,14 @@ def process_text_in_background(logger,
 
         notify("Transcribed", "", "low", duration=1000, replace_tag="transcription_status")
 
+
+        # print(f':st: \nprocess_text_in_background:1696 raw_text:{raw_text}')
+
+
     except Exception as e:
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
+        print(f"FATAL: Error in processing thread: {e}")
+
         logger.error("scripts/py/func/process_text_in_background.py:1167  (process_text_in_background)")
         notify("FATAL: Error in processing thread", duration=4000, urgency="low")
     finally:
@@ -1675,20 +1776,32 @@ def process_text_in_background(logger,
         # 21:05:34,680 - INFO     - Attempting to load missing model: 'vosk-model-en-us-0.22'
         # 21:05:43,987 - INFO     - Learned new max model footprint: ~4.4GB
 
+        # print(f':st: \nprocess_text_in_background:1730 raw_text:{raw_text}')
+
+
         process = psutil.Process(os.getpid())
         mem_info = process.memory_info()
         rss_mb = mem_info.rss / (1024 * 1024)
+
+        # print(f':st: \nprocess_text_in_background:1737 raw_text:{raw_text}')
+
         if (rss_mb*0.4) > max_model_memory_footprint_mb_not_calculate:
+
+            # print(f':st: \nprocess_text_in_background:1735 raw_text:{raw_text}')
+
+
             # restart your script is a very common and effective fallback workaround for managing excessive memory usage
             logger.info(f"Fallback restart script: rss_mb={rss_mb}*2.5 > max_model_memory_footprint={max_model_memory_footprint_mb_not_calculate}")
             # restart script
             time.sleep(0.02)
             os.execv(sys.executable, ['python'] + sys.argv + ['restarted'])
 
-        auto_reload_modified_maps(logger,run_mode_override)
+        if not os.getenv("AURA_SELF_TEST_RUNNING"):
+            auto_reload_modified_maps(logger,run_mode_override)
+
+        # print(f':st: \nprocess_text_in_background:1753 raw_text:{raw_text}')
 
 
-# Hallo des Hallo Test
 
 # py/func/process_text_in_background.py:1196
 def sanitize_transcription_start(raw_text: str) -> str:

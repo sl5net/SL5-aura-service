@@ -87,20 +87,26 @@ def _is_lt_server_responsive(url, timeout=1):
 
 
 
-def get_languagetool_jvm_args():
+def get_languagetool_jvm_args(for_self_test=False):
     cpu_cores = os.cpu_count() or 4
     ram_gb = psutil.virtual_memory().total / (1024 ** 3)
 
-    # Threads: 2× Kerne, min 2, max 16
-    threads = max(2, min(16, cpu_cores * 2))
+    if for_self_test:
+        threads = cpu_cores * 2          # kein Cap bei 16
+        xms_mb = max(512, int(ram_gb * 0.1 * 1024))
+        xmx_mb = max(2048, int(ram_gb * 0.6 * 1024))  # 60% statt 35%
+    else:
 
-    # Xms: klein halten → JVM startet schlank, GC hat Luft zum Atmen
-    # 5% RAM, min 512MB, max 2GB
-    xms_mb = max(512, min(2048, int(ram_gb * 0.05 * 1024)))
+        # Threads: 2× Kerne, min 2, max 16
+        threads = max(2, min(16, cpu_cores * 2))
 
-    # Xmx: genug für Test-Runs
-    # 35% RAM, min 1GB, max 16GB
-    xmx_mb = max(1024, min(16384, int(ram_gb * 0.35 * 1024)))
+        # Xms: klein halten → JVM startet schlank, GC hat Luft zum Atmen
+        # 5% RAM, min 512MB, max 2GB
+        xms_mb = max(512, min(2048, int(ram_gb * 0.05 * 1024)))
+
+        # Xmx: genug für Test-Runs
+        # 35% RAM, min 1GB, max 16GB
+        xmx_mb = max(1024, min(16384, int(ram_gb * 0.35 * 1024)))
 
     return {
         "xms": f"-Xms{xms_mb}m",
@@ -117,7 +123,7 @@ def get_languagetool_jvm_args():
     }
 
 
-def start_languagetool_server(logger, languagetool_jar_path, base_url):
+def start_languagetool_server(logger, languagetool_jar_path, base_url, for_self_test=False):
     # 1. Port extrahieren und URL säubern
     # Falls base_url nur eine Zahl ist, mach eine URL draus
     if base_url.isdigit():
@@ -174,7 +180,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url):
 
         # scripts/py/func/start_languagetool_server.py:121
 
-        args = get_languagetool_jvm_args()
+        args = get_languagetool_jvm_args(for_self_test=for_self_test)
 
         command_str = [
             java_executable_path,

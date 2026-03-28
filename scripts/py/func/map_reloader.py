@@ -19,14 +19,17 @@ from .private_map_ex import _private_map_unpack
 from .auto_fix_module import try_auto_fix_module
 from .validate_map_structure import check_map_health
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
+
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 KNOWN_MAP_Names = {'FUZZY_MAP_pre', 'FUZZY_MAP', 'PUNCTUATION_MAP'}
 # KNOWN_MAP_ATTRIBUTES = {'FUZZY_MAP_pre', 'FUZZY_MAP', 'PUNCTUATION_MAP', 'on_reload', 'on_folder_change'}
 
 
-
 def auto_reload_modified_maps(logger,run_mode_override):
+
+    if os.getenv("AURA_SELF_TEST_RUNNING") == "1":
+        return  # Another thread is already reloading
 
     # its using:
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+# type_watcher.sh
 export DOTOOL_DELAY=0
 
 DOTOOL_PID=$!

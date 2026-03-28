@@ -20,6 +20,8 @@ import threading
 # Python path to ensure reliable imports on all platforms
 # This solves potential issues when running from a batch script on Windows
 
+os.environ["AURA_SELF_TEST_RUNNING"] = "0"
+
 
 # ==============================================================================
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
@@ -1141,7 +1143,7 @@ else:
     logger.info(f"start_languagetool_server(logger, …{str(jar_path_absolute)[-30:0]}, {internal_lt_url})")
 
     # aura_engine.py:751
-    languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url)
+    languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url, for_self_test=False)
 
     # NEU/CHANGE: Register atexit ONLY if a real process was started
     if languagetool_process and languagetool_process is not LT_ALREADY_RUNNING_SENTINEL:
@@ -1211,7 +1213,9 @@ if settings.DEV_MODE :
         self_test_start_time = time.time()
         log4DEV(f"Start run_core_logic_self_test( .. {lang_code}", logger)
 
-        run_core_logic_self_test(logger, TMP_DIR / "sl5_aura", active_lt_url,lang_code)
+        run_core_logic_self_test(logger, TMP_DIR / "sl5_aura", active_lt_url,lang_code) # , LANGUAGETOOL_JAR_PATH,lt_process=active_lt_url)
+
+        os.environ["AURA_SELF_TEST_RUNNING"] = "0"
 
 
         self_test_end_time = time.time()

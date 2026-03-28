@@ -9,7 +9,7 @@ settings = DynamicSettings()
 
 def log4DEV(text: str, logger):
     if not settings.DEV_MODE_all_processing:
-        # print('10:not DEV_MODE_all_processing: return')
+        # print('⛑️ 10:not DEV_MODE_all_processing: return')
         return
     import inspect
     caller_script_name = "unknown"
@@ -34,19 +34,19 @@ def log4DEV(text: str, logger):
 
 
                 # caller_file_and_line = f"XYZ:{os.path.relpath(frame_info.filename)}:{frame_info.lineno}"
-                caller_file_and_line = f"🍒 {caller_script_name}:{caller_line}"
+                caller_file_and_line = f"⛑️ {caller_script_name}:{caller_line}"
                 break # Found the caller, exit loop
             except Exception as e:
-                logger.debug(f"Error getting caller info: {e}")
+                logger.debug(f"⛑️ Error getting caller info: {e}")
                 pass # Continue to next frame if there's an issue with this one
 
     if not settings.DEV_MODE:
-        print('10:not settings.DEV_MODE: return')
+        print('⛑️ 10:not settings.DEV_MODE: return')
         return
 
 
     # Construct the log message for the memory details
-    logger.info(f"{caller_file_and_line} {text}")
+    logger.info(f"⛑️ {caller_file_and_line} {text}")
     # return caller_file_and_line, caller_script_name, caller_file_and_line
 
 
