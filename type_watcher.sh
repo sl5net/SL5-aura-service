@@ -328,7 +328,7 @@ PY
                 continue
             fi
 
-            sleep 0.3
+            sleep 0.4
 
 
             mapfile -t lines < "$f"
