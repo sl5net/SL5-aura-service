@@ -1,6 +1,25 @@
 #!/bin/bash
 # scripts/search_rules/search_rules.sh
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+#
+# Make MAPS_DIR configurable via positional arg or environment variable
+#
+# Use parameter expansion so the script keeps its hard-coded default but
+# allows overrides:
+#
+# - Priority: 1) first positional parameter ($1), 2) existing MAPS_DIR env var,
+#   3) hard-coded default "$PROJECT_ROOT/config/maps".
+# - Improves flexibility for CI, local overrides and testing without editing the script.
+# - Adds quoting and a directory existence check to fail early if the path is invalid.
+
+# Example usage:
+# - ./search_rules.sh                 # uses default
+# - ./search_rules.sh ./docs    # uses provided path
+# - MAPS_DIR=/env/maps ./search_rules.sh
+
+# This preserves backward compatibility while making configuration explicit.
+
+
 # -----------------------------------------------------------------------------
 # CONFIGURATION
 # -----------------------------------------------------------------------------
@@ -20,7 +39,17 @@ logger_info "Initializing search_rules.sh..."
 # -----------------------------------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
-MAPS_DIR="$PROJECT_ROOT/config/maps"
+
+MAPS_DIR="${1:-${MAPS_DIR:-$PROJECT_ROOT/config/maps}}"
+# MAPS_DIR="$PROJECT_ROOT/config/maps"
+
+
+if [[ ! -d "$MAPS_DIR" ]]; then
+    echo "MAPS_DIR '$MAPS_DIR' dont exist" >&2
+    exit 1
+fi
+
+
 export PROJECT_ROOT
 export REPO_URL
 logger_info "Editor configured: $PREFERRED_EDITOR"
