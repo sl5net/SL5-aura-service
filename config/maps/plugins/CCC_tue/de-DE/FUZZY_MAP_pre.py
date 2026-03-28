@@ -26,16 +26,22 @@ Wltes-Simon-Straße 4, Tübingen (Nahe Reutlinger Straße)
 https://www.openstreetmap.org/node/9879183939
 
 """
-
+from pathlib import Path
+import os
+PROJECT_ROOT = Path(os.environ["SL5NET_AURA_PROJECT_ROOT"])
 FUZZY_MAP_pre = [
-    # === General Terms (Case-Insensitive) ===
-    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
-    # Importing to know:
-    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
-    # - first is read first imported, lower rules maybe not get read.
 
+    ('https://pad.ccc-mannheim.de/p/1', r'^(chaos)\w*\s+.*pad.*$', 60,
+    {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: chaos x  Tübingen
+    ('https://pad.cttue.de/1', r'^(chaos)\w*\s+.*Tübingen.*$', 60, # min_accuracy
+    {'flags': re.IGNORECASE}),
 
+    #################################################
+    # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
+    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #################################################
 
 
     ('https://cttue.de',
@@ -48,12 +54,6 @@ FUZZY_MAP_pre = [
 
 
 
-    # EXAMPLE: chaos x  pad 
-    ('https://pad.ccc-mannheim.de/p/1', r'^(chaos)\w*\s+.*pad.*$', 60, # min_accuracy
- {'flags': re.IGNORECASE}),
-    # EXAMPLE: chaos x  Tübingen 
-    ('https://pad.cttue.de/1', r'^(chaos)\w*\s+.*Tübingen.*$', 60, # min_accuracy
- {'flags': re.IGNORECASE}),
 
 
 

@@ -8,17 +8,22 @@ FUZZY_MAP_FILE = Path(__file__).parent / "de-DE" / "FUZZY_MAP_pre.py"
 COLLECT_FILE   = Path(__file__).parent / ".." / ".." / ".." / "unmatched_list.txt"
 
 def execute(match_data: dict):
-    # text = match_data.get('original_text', '').strip()
+    # print(f'{match_data}')
 
-    text = match_data['regex_match_obj'].group(0).strip()
+    text = match_data['original_text']
+    file_rule_path = match_data['text_after_replacement']
+
+    print(f'file_rule_path: {file_rule_path}')
+
 
     if not text:
         print(f'ERROR: text empty {text}')
         return None
-    _add_variant_to_fuzzy_map(text)
+    _add_variant_to_fuzzy_map(file_rule_path, text)
     sys.exit(1)
 
-def _add_variant_to_fuzzy_map(text: str):
+def _add_variant_to_fuzzy_map(file_rule_path: str, text: str):
+    FUZZY_MAP_FILE = Path(file_rule_path)
     if not FUZZY_MAP_FILE.exists():
         return
     content = FUZZY_MAP_FILE.read_text(encoding="utf-8")

@@ -128,6 +128,8 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 
 PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
+# aura_engine.py:131
+os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
 
 
 # ==============================================================================
@@ -183,11 +185,7 @@ setup_project_structure(PROJECT_ROOT)
 
 LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
 
-
-if platform.system() == "Windows":
-    TMP_DIR = Path("C:/tmp")
-else:
-    TMP_DIR = Path("/tmp")
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 
 TRIGGER_FILE = TMP_DIR /  "sl5_record.trigger"
 HEARTBEAT_FILE = TMP_DIR / "sl5_aura" / "aura_engine.heartbeat"
@@ -228,10 +226,7 @@ LANGUAGETOOL_JAR_PATH = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
 
 suspicious_events = []
 if platform.system() == "Windows":
-    TMP_DIR = Path("C:/tmp")
     NOTIFY_SEND_PATH = None
-else:
-    TMP_DIR = Path("/tmp")
 OUTPUT_FILE = TMP_DIR / "sl5_aura" / "tts_output" / "tts_output.txt"
 # logging.info(f"Auto-Zip: ✅ Flag gesetzt - Self-Tests laufen")
 
@@ -765,6 +760,16 @@ atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
 
 with open(PIDFILE, 'w') as f:
     f.write(str(os.getpid()))
+
+
+
+# AURA_TMP = TMP_DIR / "sl5_aura"
+# aura_project_root_path = Path( AURA_TMP / "aura_project_root.path")
+# with open(aura_project_root_path, 'w') as f:
+#     f.write(str(PROJECT_ROOT))
+
+
+
 
 # --- Argument Parsing und Model-Setup ---
 MODEL_NAME_DEFAULT = "vosk-model-de-0.21" # fallback
