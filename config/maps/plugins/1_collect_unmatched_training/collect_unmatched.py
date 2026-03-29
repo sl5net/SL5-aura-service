@@ -41,7 +41,7 @@ def _add_variant_to_fuzzy_map(file_rule_path: str, text: str):
         return
 
     # Absoluten Offset im Gesamtinhalt berechnen
-    abs_start = match_line_start + match.start()
+    # abs_start = match_line_start + match.start()
     abs_end_g2 = match_line_start + match.end(2)
     abs_start_g2 = match_line_start + match.start(2)
 

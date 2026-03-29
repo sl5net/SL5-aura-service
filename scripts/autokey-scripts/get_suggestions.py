@@ -21,7 +21,7 @@ Mond
 keyboard.send_keys('<ctrl>+<left>')
 keyboard.send_keys('<ctrl>+<shift>+<right>')
 keyboard.send_keys('<ctrl>+c')
-time.sleep(0.2)
+time.csleep(0.2)
 keyboard.send_keys('<right>')
 
 home_dir = Path.home()

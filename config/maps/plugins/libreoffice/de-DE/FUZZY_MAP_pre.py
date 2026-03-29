@@ -14,7 +14,7 @@ libreoffice_windows = ['soffice', 'LibreOffice', 'Writer', 'Calc', 'Impress']
 
 fett = r'fett|fett\s*formatieren|text\s*fett|sid|fritz|schritt|fit|tritt|chef|script|setz|bold|old|bolt|pol|pools|bubbels|bols|borretsch|brot|holt|überholt|oh'
 
-unterstrichen = f"unterstreicht|unterstreichen|und streicheln|text unterstreichen|text unterstreichen unterstreichen|text unterstreicht"
+unterstrichen = "unterstreicht|unterstreichen|und streicheln|text unterstreichen|text unterstreichen unterstreichen|text unterstreicht"
 
 FUZZY_MAP_pre = [
 

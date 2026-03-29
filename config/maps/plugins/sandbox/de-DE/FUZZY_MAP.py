@@ -1,37 +1,31 @@
-# config/maps/plugins/sandbox/de-DE/FUZZY_MAP.py
-# config/languagetool_server/maps/  /de-DE/FUZZY_MAP.py
-# https://regex101.com/
-import re # noqa: F401
+# projects/py/STT/config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py
+import platform
+import re
+from pathlib import Path
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
-#    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
 
-FUZZY_MAP = [
-    # === General Terms (Case-Insensitive) ===
-    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
-    # Importing to know:
-    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
-    # - means first is most importend, lower rules maybe not get read.
+SEARCH_SCRIPT = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
 
+aura_reg = '(Aura|Auch|Aurora|laura|dora|Ära|hurra|prora|Orange|rohre|rohrer|doras|woran|Zauberer|ora|suche|uwe|obwohl|over|oh|bohrer|aurore|rum|ruhe|tore|rot|robe|buchen|hoch|horror|auren|samurai|roche|brauche|ohh|ore|anbraten brauche|k|raucher|aachen|aber|ohren|ohr|lorenz|hoa|tore zu|hey)'
+suche_reg = '(suche|suchen|zu|buch|buche)'
 
-    # EXAMPLE: Brighton
-    ('Python', r'^(\b)(Brighton|breit schon|Fallschirm|peitschen|Zeiten|Titan|Scheitern)(\b)$', 75, {'flags': re.IGNORECASE}),
+FUZZY_MAP_pre = [
 
+    #('ASp', fr'^(sd|glaskugel|hoa suche|tore zu buche|hey suche)$', 100, {'flags': re.IGNORECASE,}),
 
+    #('AS', fr'^{aura_reg}\b.*\b{suche_reg}$', 100, {'flags':re.IGNORECASE,}),
 
-    # a bit radial with following lines but i like it acually 17.11.'25 16:12 Mon
-    # EXAMPLE: Brighton
-    ('Python', r'(\b)(Brighton|peitschen|Titan)(\b)', 75, {'flags': re.IGNORECASE}),
+    #################################################
+    # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
+    #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[Path(PROJECT_ROOT) / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #################################################
 
-    # EXAMPLE: Zeiten prog
-    ('Python prog', r'\bZeiten prog', 80, {'flags': re.IGNORECASE}),
-
-    # EXAMPLE: ritual
-    ('Virtual environment', r'\b(ritual|Virtuell|virtual|witwe\w*|witwer|wird schon|wird schwer|wirtschaft|wildschwein)\w* (in |wei |im |ein )?(Environment|Weibe|white|weima|metall|wei|warm|wei mit|wirbeln|et Deibel|in Reiben|reiben|Hinweis)\w*\b', 75, {'flags': re.IGNORECASE}),
-
+    ('Suche wird gestartet...', fr'^{aura_reg}\b.*\b{suche_reg}$', 100, {
+       'flags': re.IGNORECASE,
+       'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    }),
 
 ]
