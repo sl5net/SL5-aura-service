@@ -1175,12 +1175,14 @@ VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
 vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
 lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
 
-
-try:
-    from scripts.py.welcome_wizard.main import run_wizard
-    run_wizard(lang_code)
-except Exception as e:
-    logger.warning(f"Aura Welcome Wizard err: {e}")
+if os.getenv('CI'):
+    logger.info("CI environment detected. Skipping Welcome Wizard.")
+else:
+    try:
+        from scripts.py.welcome_wizard.main import run_wizard
+        run_wizard(lang_code)
+    except Exception as e:
+        logger.warning(f"Aura Welcome Wizard err: {e}")
 
 if settings.DEV_MODE :
 
