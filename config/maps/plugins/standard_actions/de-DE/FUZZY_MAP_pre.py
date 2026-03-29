@@ -5,7 +5,7 @@ import platform
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-PROJECT_ROOT = PROJECT_ROOT_FILE.read_text(encoding="utf-8")
+PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
 
 
 CONFIG_DIR = Path(__file__).parent
@@ -43,9 +43,8 @@ geminiUrl = 'https://aistudio.google.com/prompts/new_chat'
 FUZZY_MAP_pre = [
 
     (f'{geminiUrl}', r'^(test|google geben d|google gebe die|google babydoll|google d|guru babybett|google google babydoll|google geben|google jubilee|google ist|ruhrgebiet|groupware gemini|google privileg|google gebe sie|google www|udp bitte|google ready|google babybay|gruppe gemini)$', 70, {
-       'flags': re.IGNORECASE,
-      'only_in_windows': [r'firefox', 'chrome', 'brave'],
-
+        'flags': re.IGNORECASE,
+        'only_in_windows': [r'firefox', 'chrome', 'brave'],
     }),
 
     #################################################
@@ -256,9 +255,9 @@ FUZZY_MAP_pre = [
     )
     \b.*$
     '''
-        , 70, {
-       'flags': re.IGNORECASE,
-       'only_in_windows': [r'firefox', 'chrome', 'brave'],
+        , 70,{
+        'flags': re.IGNORECASE,
+        'only_in_windows': [r'firefox', 'chrome', 'brave'],
     }),
 
 

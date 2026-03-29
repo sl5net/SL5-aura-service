@@ -19,6 +19,10 @@ current_user = pwd.getpwuid(os.getuid())[0]
 # 0 = Start normally
 SERVICE_START_OPTION = 0
 
+SHOW_SEARCH_ON_STARTUP = True
+# set False, for "silent"
+
+
 # Kill competing LanguageTool or Eloquent instances on startup
 KILL_COMPETING_LT_AND_ELOQUENT_ON_START = 0
 

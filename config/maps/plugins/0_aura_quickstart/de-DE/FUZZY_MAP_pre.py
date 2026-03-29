@@ -10,7 +10,7 @@ PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
 
 SEARCH_SCRIPT = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
 
-AURA_VARIANTS = '(Aura|Auch|Aurora|laura|dora|Ära|hurra|prora|Orange|rohre|rohrer|doras|woran|Zauberer|ora|suche|uwe|obwohl|over|oh|bohrer|aurore|rum|ruhe|tore|rot|robe|buchen|hoch|horror|auren|samurai|roche|brauche|ohh|ore|anbraten brauche|k|raucher|aachen|aber|ohren|ohr|lorenz)'
+AURA_VARIANTS = '(Aura|Auch|Aurora|laura|dora|Ära|hurra|prora|Orange|rohre|rohrer|doras|woran|Zauberer|ora|suche|uwe|obwohl|over|oh|bohrer|aurore|rum|ruhe|tore|rot|robe|buchen|hoch|horror|auren|samurai|roche|brauche|ohh|ore|anbraten brauche|k|raucher|aachen|aber|ohren|ohr|lorenz|huren|o)'
 FUZZY_MAP_pre = [
 
     #('ASp', fr'^(Aura|suche|raucher suchen|wo aura sucht|eure suche|orange|lorenz suchen)$', 100, {'flags': re.IGNORECASE,}),
@@ -27,13 +27,20 @@ FUZZY_MAP_pre = [
     #################################################
 
 
-    #('Suche wird gestartet...', fr'^{AURA_VARIANTS}\b.*\b(suche|zu|buch)$', 100, {
-    #    'flags': re.IGNORECASE,
-    #    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
-    #}),
+    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}\b.*\b(suche|zu|buch)$', 100, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    }),
 
-    #         'only_in_windows': ['Konsole', 'konsole', 'Console',
+    ('Suche wird gestartet...', fr'^(rohrohrzucker)$', 100, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    }),
+
+    #         'only_in_windows': ['Konsole', 'konsole', 'Console',Huren sucheO suche
     #Ohren suchenAber sucheAuch als du
+
+
 
 
 

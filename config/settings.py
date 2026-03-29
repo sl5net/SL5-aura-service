@@ -6,6 +6,9 @@ from scripts.py.func.determine_current_user import determine_current_user
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
 
+SHOW_SEARCH_ON_STARTUP = True
+# set False, for "silent"
+
 current_user,_ = determine_current_user()
 print(f'hi, hallo, welcome: {current_user}')
 current_user = user_name = USER_NAME = str(current_user) # fallbacks

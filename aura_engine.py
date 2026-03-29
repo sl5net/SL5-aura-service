@@ -1163,7 +1163,7 @@ else:
     active_lt_url = f"{settings.LANGUAGETOOL_CHECK_URL}"
 
 if not languagetool_process:
-    notify("Vosk Startup Error", "LanguageTool Server failed to start.", "critical")
+    notify("Aura Startup Error", "LanguageTool Server failed to start.", "critical")
     sys.exit(1)
 
 
@@ -1171,7 +1171,15 @@ if not languagetool_process:
 # sys.exit(1)
 
 
+VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
+vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
+lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
 
+try:
+    from scripts.py.welcome_wizard.main import run_wizard
+    run_wizard(lang_code)
+except Exception as e:
+    logger.warning(f"Aura Welcome Wizard err: {e}")
 
 if settings.DEV_MODE :
 
@@ -1195,11 +1203,8 @@ if settings.DEV_MODE :
     # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
 
     ##################### run_core_logic_self_test #############################
-    VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
-    vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
     #MODEL_NAME = MODEL_NAME_DEFAULT
 
-    lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
 
     # aura_engine.py:1175
     from scripts.py.func.checks.self_tester import run_core_logic_self_test, project_root
@@ -1284,7 +1289,6 @@ if settings.DEV_MODE :
 
         # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
         check_example_file_is_synced(SCRIPT_DIR)
-
 
 
 
