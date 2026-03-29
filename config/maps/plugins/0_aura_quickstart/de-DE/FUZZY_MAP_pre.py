@@ -1,4 +1,3 @@
-import re
 import os
 from pathlib import Path
 
@@ -18,7 +17,7 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),
 
-    (f'zyxü', r'^(zyxü)$', 10),
+    ('zyxü', r'^(zyxü)$', 10),
 
     #nixLernmodus DEAKTIVIERT. Ich diktiere jetzt wieder normal.Hurra Lernmodus einschalten
 

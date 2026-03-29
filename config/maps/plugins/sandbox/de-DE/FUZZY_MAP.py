@@ -23,9 +23,10 @@ FUZZY_MAP_pre = [
     #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[Path(PROJECT_ROOT) / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
     #################################################
 
-    ('Suche wird gestartet...', fr'^{aura_reg}\b.*\b{suche_reg}$', 100, {
-       'flags': re.IGNORECASE,
-       'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    ('Suche wird gestartet...', fr'^{aura_reg}\b.*\b{suche_reg}$', 100,
+    {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),
 
 ]

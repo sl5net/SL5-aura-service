@@ -29,8 +29,8 @@ FUZZY_MAP_pre = [
 
 
     ('Suche wird gestartet...', fr'^{AURA_VARIANTS}\b.*\b(suche|suchen|zu|buch)$', 100, {
-       'flags': re.IGNORECASE,
-       'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    'flags': re.IGNORECASE,
+    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),
 
     #         'only_in_windows': ['Konsole', 'konsole', 'Console',

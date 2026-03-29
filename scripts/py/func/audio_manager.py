@@ -180,8 +180,12 @@ if (sys.platform != "win32"
     and (settings.soundUnMute > 0 or settings.soundMute > 0)) \
         and not os.getenv('CI'):
     try:
-        pygame.mixer.init(frequency=44100, size=-16, channels=2)
-
+        # pygame.mixer.init(frequency=44100, size=-16, channels=2)
+        if hasattr(pygame, 'mixer') and pygame.mixer is not None:
+            pygame.mixer.init(frequency=44100, size=-16, channels=2)
+            sound_program_loaded = True
+        else:
+            log.warning("pygame.mixer not available (SDL-Prob?). Sound off.")
 
 
         # Pre-create a simple beep sound
@@ -450,7 +454,7 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
     for channels in [2, 1]:
         try:
             # Check if mixer needs (re)init
-            if pygame.mixer.get_init() is None:
+            if sound_program_loaded and pygame.mixer.get_init() is None:
                 pygame.mixer.init(frequency=sample_rate, size=-16, channels=channels)
 
             # Prepare data shape for channels

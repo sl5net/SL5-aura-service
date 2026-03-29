@@ -1,12 +1,10 @@
-import os
-import platform
 from pathlib import Path
 
 def execute(match_data):
     # 1. Projekt-Root finden (deine robuste Methode)
-    tmp_dir = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-    root_file = tmp_dir / "sl5_aura" / "sl5net_aura_project_root"
-    project_root = Path(root_file.read_text(encoding="utf-8").strip())
+    #tmp_dir = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+    #root_file = tmp_dir / "sl5_aura" / "sl5net_aura_project_root"
+    # project_root = Path(root_file.read_text(encoding="utf-8").strip())
 
     # 2. Die Map-Datei in diesem Ordner finden
     map_file = Path(__file__).parent / "FUZZY_MAP_pre.py"
