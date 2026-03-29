@@ -1,26 +1,32 @@
 # scripts/py/welcome_wizard/en-US/start.py
 import subprocess
+import platform
 from pathlib import Path
 
 def run(project_root):
-    # Path to the search script
-    search_script = project_root / "scripts" / "search_rules" / "search_rules.sh"
+    d = project_root / "scripts" / "search_rules"
+    search_script = d / "search_rules.bat" if platform.system() == "Windows" else d / "search_rules.sh"
+
+    # Target: Interactive tutorials (Koans)
+    # Adjust directory name if it's different in your repository
+    koan_dir = project_root / "config" / "maps" / "koans_deutsch"
 
     if not search_script.exists():
         return
 
-    # Welcome message for the user
-    welcome_msg = "=== AURA WELCOME ===\\n\\nAura is active. Press your hotkey to speak.\\n\\nI am opening the search for you now..."
+    welcome_msg = (
+        "=== WELCOME TO AURA ===\\n\\n"
+        "I've opened the interactive tutorials (Koans) for you.\\n"
+        "Pick a lesson and start exploring Aura!\\n"
+    )
 
-    # Start konsole (KDE/Manjaro). '--hold' keeps the window open.
-    # We display the welcome message, wait 2 seconds, then launch the search tool.
-    cmd = [
-        'konsole', '--hold', '-e', 'bash', '-c',
-        f'echo -e "{welcome_msg}"; sleep 2; bash {search_script}'
-    ]
+    if platform.system() == "Windows":
+        subprocess.Popen(['cmd', '/c', 'start', str(search_script), str(koan_dir)], start_new_session=True)
 
-    try:
+    else:
+        cmd = [
+            'konsole', '--hold', '-e', 'bash', '-c',
+            #f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}'
+            f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; exec bash'
+        ]
         subprocess.Popen(cmd, start_new_session=True)
-    except Exception as e:
-        print(f"Error starting the English Wizard: {e}")
-

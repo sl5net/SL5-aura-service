@@ -1,6 +1,5 @@
 # projects/py/STT/config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py
 import platform
-import re
 from pathlib import Path
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")

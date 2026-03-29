@@ -1,5 +1,8 @@
-# search_rules.ps1
+# scripts/search_rules/search_rules.ps1
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+param(
+    [string]$MAPS_DIR = ""
+)
 
 # -----------------------------------------------------------------------------
 # CONFIGURATION
@@ -27,6 +30,20 @@ logger_info "Initializing search_rules.ps1..."
 # -----------------------------------------------------------------------------
 $SCRIPT_DIR   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
+
+# 1. Pfad-Logik (Parameter > Umgebungsvariable > Default)
+if (-not $MAPS_DIR) { $MAPS_DIR = $env:MAPS_DIR }
+if (-not $MAPS_DIR) { $MAPS_DIR = "$PSScriptRoot\..\..\config\maps" }
+
+# Sicherstellen, dass der Pfad existiert
+if (-not (Test-Path $MAPS_DIR)) {
+    Write-Error "Pfad nicht gefunden: $MAPS_DIR"
+    exit 1
+}
+
+
+
+
 $MAPS_DIR     = Join-Path $PROJECT_ROOT "config\maps"
 
 if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
