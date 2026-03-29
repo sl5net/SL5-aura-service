@@ -1,14 +1,57 @@
+# config/maps/plugins/libreoffice/de-DE/FUZZY_MAP_pre.py:1
+import platform
 import re
 from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
-PROJECT_ROOT = CONFIG_DIR.parents[4]
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
 home_dir_str = str(Path.home())
 
 # Window titles of LibreOffice apps
 libreoffice_windows = ['soffice', 'LibreOffice', 'Writer', 'Calc', 'Impress']
 
+fett = r'fett|fett\s*formatieren|text\s*fett|sid|fritz|schritt|fit|tritt|chef|script|setz|bold|old|bolt|pol|pools|bubbels|bols|borretsch|brot|holt|überholt|oh'
+
+unterstrichen = f"unterstreicht|unterstreichen|und streicheln|text unterstreichen|text unterstreichen unterstreichen|text unterstreicht"
+
 FUZZY_MAP_pre = [
+
+    # ('uuuuu', fr'^(unterstreicht|unterstreichen|und streicheln|text unterstreichen|text unterstreichen unterstreichen|text unterstreicht)$', 85, {'flags': re.IGNORECASE,'only_in_windows': libreoffice_windows,}),
+
+
+    #('u2', fr'^\s*({unterstrichen}|text\s*{unterstrichen})\s*$', 85,{'flags': re.IGNORECASE,'only_in_windows': libreoffice_windows,}),
+
+
+    #################################################
+    # import platform
+    # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
+    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #################################################
+
+    # ('f', r'^(fett|fett\s*formatieren|text\s*fett|sid|fritz|schritt|fit|tritt|chef|script|setz|bold|old|bolt|pol|pools|bubbels|bols|borretsch|brot|holt|überholt|oh)$', 85, {'flags': re.IGNORECASE,}),
+
+
+
+
+
+    # Unterstrichen
+    ('lo unterstrichen', fr'^\s*({unterstrichen}|unterstrichen|unterstreichen|text\s*unterstrichen)\s*$', 85, {
+        'flags': re.IGNORECASE,
+        'only_in_windows': libreoffice_windows,
+        'on_match_exec': [CONFIG_DIR / 'libreoffice_actions.py'],
+    }),
+
+
+
+    # Fett
+    ('lo fett', fr'^({fett}|fett\s*formatieren|text\s*fett)$', 85, {
+        'flags': re.IGNORECASE,
+        'only_in_windows': libreoffice_windows,
+        'on_match_exec': [CONFIG_DIR / 'libreoffice_actions.py'],
+    }),
+
     # Speichern
     ('lo speichern', r'^\s*(speicher\w*|dokument\s*speichern)\s*$', 85, {
         'flags': re.IGNORECASE,
@@ -23,13 +66,6 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'libreoffice_actions.py'],
     }),
 
-    # Fett
-    ('lo fett', r'^\s*(fett|fett\s*formatieren|text\s*fett)\s*$', 85, {
-        'flags': re.IGNORECASE,
-        'only_in_windows': libreoffice_windows,
-        'on_match_exec': [CONFIG_DIR / 'libreoffice_actions.py'],
-    }),
-
     # Kursiv
     ('lo kursiv', r'^\s*(kursiv|kursiv\s*formatieren|text\s*kursiv)\s*$', 85, {
         'flags': re.IGNORECASE,
@@ -37,12 +73,6 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'libreoffice_actions.py'],
     }),
 
-    # Unterstrichen
-    ('lo unterstrichen', r'^\s*(unterstrichen|unterstreichen|text\s*unterstrichen)\s*$', 85, {
-        'flags': re.IGNORECASE,
-        'only_in_windows': libreoffice_windows,
-        'on_match_exec': [CONFIG_DIR / 'libreoffice_actions.py'],
-    }),
 
     # Neuer Absatz
     ('lo neuer absatz', r'^\s*(neuer?\s*absatz|neue\s*zeile|zeilenumbruch)\s*$', 85, {
