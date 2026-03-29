@@ -905,6 +905,9 @@ def process_text_in_background(logger,
                                session_id: int = 0,
                                unmasked = False
                                ):
+
+
+
     # scripts/py/func/process_text_in_background.py:588 (process_text_in_background)
 
     # print(f':st: \nprocess_text_in_background:910 chunk_id={chunk_id} session_id={session_id} unmasked={unmasked}\n\n')
@@ -933,6 +936,11 @@ def process_text_in_background(logger,
 
 
     # print(f':st: \nprocess_text_in_background:933 raw_text:{raw_text}')
+
+
+    if settings.DEV_MODE:
+        AURA_SELF_TEST_RUNNING = os.getenv("AURA_SELF_TEST_RUNNING")
+        logger.info(f'scripts/py/func/process_text_in_background.py:911 os.getenv("AURA_SELF_TEST_RUNNING"): {AURA_SELF_TEST_RUNNING}')
 
 
     if settings.DEV_MODE or True:

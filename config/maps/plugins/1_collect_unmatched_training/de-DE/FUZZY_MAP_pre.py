@@ -1,13 +1,19 @@
 # projects/py/STT/config/maps/plugins/1_collect_unmatched_training/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path
+import platform
 CONFIG_DIR = Path(__file__).parent
 # too<-from
 
 starten = r'starten|stab|start|staat|starb|straffen|spart|stab|starb|stadt|starb'
 Lernmodus= r'(Lernmodus|Training)'
 
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
 FUZZY_MAP_pre = [
+
+
     # 1. Notiere deine Optimierungs-Regel hier zuerst! (Ergebnis zuerst!)
 
 
@@ -16,7 +22,7 @@ FUZZY_MAP_pre = [
 
     #################################################
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
-    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[CONFIG_DIR / '..' / 'collect_unmatched.py']}),
+    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
     #################################################
 
     #('Aura einschalten',r'^(Aura einschalten|oh ein einschalten|hurra einschalten|aura einschwenken|rohre eins 12|rohre einschalten|hurra einschl|uva einschalten|hurra ein schmied|hurra entscheiden|eure einschalten|horror in schweden|zora einschalten|aura entfalten|einschalten|aber einschalten|hurra einschränken|aura einschmelzen|cobra einschalten horror eintreffen hurra einschalten aura einschalten|hurra ritschel)$', 100,{'flags': re.IGNORECASE,}),

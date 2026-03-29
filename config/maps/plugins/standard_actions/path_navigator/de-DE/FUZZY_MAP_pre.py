@@ -126,7 +126,7 @@ aura1=r"(Aura|Auer|Agora|Aurora|ora|hurra|Flora)"
 aura2=r"(Auras?|Augen|woran|nora|orange|Andere|Ära|auch|Eurer|Laura|moral|Raue|over|obere|o a|samoa|Dora|eure|tore|Flora|ava|Horror|hurra|hoher|roter)"
 aura3=r"(Aura|Auer|Aurora|Root|Aurora)"
 
-# dora kurz dekoration
+# Empfehlung: Für die Suche (insbesodere für die Kartensuche) auch folgende Skript verwenden: ./scripts/search_rules/search_rules.bat
 
 FUZZY_MAP_pre = [
 

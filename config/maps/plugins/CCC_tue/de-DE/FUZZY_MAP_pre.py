@@ -1,5 +1,6 @@
 # config/maps/plugins/CCC_tue/de-DE/FUZZY_MAP_pre.py
 # https://regex101.com/
+import platform
 import re # noqa: F401
 
 # This map uses a hybrid approach:
@@ -27,10 +28,16 @@ https://www.openstreetmap.org/node/9879183939
 
 """
 from pathlib import Path
-import os
-PROJECT_ROOT = Path(os.environ["SL5NET_AURA_PROJECT_ROOT"])
+
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+
+
 FUZZY_MAP_pre = [
 
+
+    # KürbisKübelSyltkorrektEbenso sind
     ('https://pad.ccc-mannheim.de/p/1', r'^(chaos)\w*\s+.*pad.*$', 60,
     {'flags': re.IGNORECASE}),
 
@@ -40,7 +47,7 @@ FUZZY_MAP_pre = [
 
     #################################################
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
-    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
     #################################################
 
 
@@ -51,6 +58,9 @@ FUZZY_MAP_pre = [
     ('https://cttue.de/doku.php?id=start#was_ansteht',
      # EXAMPLE: chaos
      r'^(chaos|Karls)\s+.*was.*an.*$', 60, {'flags': re.IGNORECASE}),
+
+
+
 
 
 

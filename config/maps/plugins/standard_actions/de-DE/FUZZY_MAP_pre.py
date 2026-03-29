@@ -1,13 +1,12 @@
 # config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path
+import platform
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
-#    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+PROJECT_ROOT = PROJECT_ROOT_FILE.read_text(encoding="utf-8")
+
 
 CONFIG_DIR = Path(__file__).parent
 
@@ -39,10 +38,25 @@ fuser -k 8830/tcp;fuser -k 8831/tcp
 
 flake8 = 'source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config'
 
+geminiUrl = 'https://aistudio.google.com/prompts/new_chat'
+
 FUZZY_MAP_pre = [
+
+    (f'{geminiUrl}', r'^(test|google geben d|google gebe die|google babydoll|google d|guru babybett|google google babydoll|google geben|google jubilee|google ist|ruhrgebiet|groupware gemini|google privileg|google gebe sie|google www|udp bitte|google ready|google babybay|gruppe gemini)$', 70, {
+       'flags': re.IGNORECASE,
+      'only_in_windows': [r'firefox', 'chrome', 'brave'],
+
+    }),
+
+    #################################################
+    # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
+    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[Path(PROJECT_ROOT) / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #################################################
+
 
     ('', r'^einen$', 100, {'flags': re.IGNORECASE}),
     ('', r'^einens$', 100, {'flags': re.IGNORECASE}),
+
 
     # === VOSK NOISE FIX ===
     # Das kleine Vosk-Modell halluziniert oft "einen" bei Stille/Atmen.
@@ -202,24 +216,11 @@ FUZZY_MAP_pre = [
     # EXAMPLE: gemini
     # ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google
 
-    # google seminar
-    # googeln jimmy nein
-    # google g mine
-    # googeln gehminuten gb dreht
-    # obwohl gehminuten
-    # gogol jimmy nein
     # https://aistudio.google.com/prompts/new_chat
-
-    # jimmy neu
-    # google gb
-    # google will termine
-    # google jimmy lai
-    # cool gemini
-
 
 
     # EXAMPLE: gemini
-    ('https://aistudio.google.com/prompts/new_chat', r'''(?ix)
+    (f'{geminiUrl}', r'''(?ix)
     ^ (?:
         gemini | cheminée | gb\ dreht | kuchen\ gemini | gucken\ sie | 
         (?:google|googeln|gogol|gucke|goris|gut|gb|kugeln|brooke|coral|cool|obwohl) \s+
@@ -376,12 +377,6 @@ FUZZY_MAP_pre = [
     }),
 
 
-    #
-
-
-
-    
-
     # EXAMPLE:   zur
     ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
         'flags': re.IGNORECASE,
@@ -427,15 +422,11 @@ FUZZY_MAP_pre = [
     }),
 
 
-
-
-
     # EXAMPLE: Show IP
     ('ip a', r'\b(Show IP)\b', 95, {
         'flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
-
 
 
     # EXAMPLE: diesesRegexWirdNiemalsMatchen123ABC
@@ -446,8 +437,6 @@ FUZZY_MAP_pre = [
     # 'flags': re.IGNORECASE,
     # 'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
     # }),
-
-#
 
 ]
 

@@ -1,7 +1,7 @@
 # config/filters/settings_local_log_filter.py
 # r"▉",
 
-LOG_EXCLUDE = []
+# LOG_EXCLUDE = []
 
 LOG_EXCLUDE_asdfsdf = [
     r"📦",
@@ -14,7 +14,7 @@ LOG_EXCLUDE_asdfsdf = [
     r"#####",
 ]
 
-LOG_EXCLUDE_fasdfsdfs = [
+LOG_EXCLUDE = [
     r"heartbeat.*status: OK",
     r"cleaning up temp file",
     r"(?i)debug: rule \d+ skipped",

@@ -20,7 +20,8 @@ import threading
 # Python path to ensure reliable imports on all platforms
 # This solves potential issues when running from a batch script on Windows
 
-os.environ["AURA_SELF_TEST_RUNNING"] = "0"
+# os.environ["AURA_SELF_TEST_RUNNING"] = "0"
+AURA_SELF_TEST_RUNNING = '/tmp/sl5_aura/aura_self_test_running.flag'
 
 
 # ==============================================================================
@@ -183,17 +184,22 @@ from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 
+
 setup_project_structure(PROJECT_ROOT)
 
 LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 
+PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
+
+
+
 TRIGGER_FILE = TMP_DIR /  "sl5_record.trigger"
 HEARTBEAT_FILE = TMP_DIR / "sl5_aura" / "aura_engine.heartbeat"
 PIDFILE = TMP_DIR / "sl5_aura" / "aura_engine.pid"
 LOCK_DIR = TMP_DIR / "sl5_aura" / "aura_lock"
-
 
 
 # backup settings.x11_input_method_OVERRIDE so linux/mac shell script can read this easier

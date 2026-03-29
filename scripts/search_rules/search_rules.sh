@@ -34,7 +34,8 @@ REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
 # LOGGING
 # -----------------------------------------------------------------------------
 function logger_info() {
-    echo "INFO: $1" >&2
+    echo "" >&2
+    # echo "INFO: $1" >&2 # for debuggin useful
 }
 logger_info "Initializing search_rules.sh..."
 # -----------------------------------------------------------------------------
@@ -45,6 +46,7 @@ PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 MAPS_DIR="${1:-${MAPS_DIR:-$PROJECT_ROOT/config/maps}}"
 # MAPS_DIR="$PROJECT_ROOT/config/maps"
+
 
 
 if [[ ! -d "$MAPS_DIR" ]]; then
