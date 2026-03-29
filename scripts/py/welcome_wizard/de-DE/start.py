@@ -1,7 +1,6 @@
 # scripts/py/welcome_wizard/de-DE/start.py
 import subprocess
 import platform
-from pathlib import Path
 
 def run(project_root):
     d = project_root / "scripts" / "search_rules"
