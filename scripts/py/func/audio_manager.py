@@ -493,8 +493,10 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
 
 
 
-
-def sound_program_loaded():
+# that's needed !!! from
+# scripts/py/func/main.py", line 97 !!
+# s, 29.3.'26 22:07 Sun
+def sound_program_loaded(): # noqa: F811
     if not getattr(settings, 'soundProgramLoaded', False):
         return
     _play_bent_sine_wave_or_beep(

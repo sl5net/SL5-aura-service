@@ -103,6 +103,8 @@ echo "--> Installing other core dependencies..."
 sudo pacman -S --noconfirm --needed \
     inotify-tools wget unzip portaudio xdotool
 
+sudo pacman -S --needed sdl2_mixer sdl2_ttf sdl2_image
+
 # --- 2. Python Virtual Environment ---
 # We check if the venv directory exists before creating it.
 if [ ! -d ".venv" ]; then
