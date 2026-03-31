@@ -262,7 +262,23 @@ def main():
     # ----------------------------------------------------
     print(f"Fetching release assets for {OWNER}/{REPO} tag {TAG}...")
     try:
-        release_info = requests.get(API_URL).json()
+        # release_info = requests.get(API_URL).json()
+        headers = {}
+        token = os.getenv('GITHUB_TOKEN')
+        if token:
+            headers['Authorization'] = f'Bearer {token}'
+        else:
+            print("  [WARN] No GITHUB_TOKEN found. Rate limit: 60/h (shared IP).")
+
+        response = requests.get(API_URL, headers=headers)
+        response.raise_for_status()
+
+        # Rate-Limit explizit prüfen und loggen:
+        remaining = response.headers.get('X-RateLimit-Remaining', '?')
+        print(f"  [INFO] GitHub API rate limit remaining: {remaining}")
+
+        release_info = response.json()
+
         assets = release_info.get('assets', [])
     except requests.exceptions.RequestException as e:
         print(f"Fatal Error: Could not connect to GitHub API. {e}")
@@ -299,11 +315,15 @@ def main():
             # Exclude=all: Überspringt alle nicht-obligatorischen Pakete
             is_excluded = True
 
+        # elif 'all' not in exclude_list:
+        #     # Check: 'vosk-model-de-0.21' -> 'de'
+        #     if 'de' in exclude_list and '-de-' in base_name:
+        #         is_excluded = True
+        #     if 'en' in exclude_list and ('-en-' in base_name or 'en-us' in base_name):
+        #         is_excluded = True
+
         elif 'all' not in exclude_list:
-            # Check: 'vosk-model-de-0.21' -> 'de'
-            if 'de' in exclude_list and '-de-' in base_name:
-                is_excluded = True
-            if 'en' in exclude_list and ('-en-' in base_name or 'en-us' in base_name):
+            if any(excl in base_name or base_name in excl for excl in exclude_list):
                 is_excluded = True
 
         if is_excluded:
