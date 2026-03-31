@@ -28,6 +28,11 @@ fi
 # --- End Argument Parsing ---
 should_remove_zips_after_unpack=true
 
+if [ -z "$EXCLUDE_LANGUAGES" ] && [ "${GITHUB_ACTIONS}" == "true" ]; then
+    EXCLUDE_LANGUAGES="de,en"
+    echo "--> GitHub Actions detected. Auto-excluding large models: $EXCLUDE_LANGUAGES"
+fi
+
 # --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
