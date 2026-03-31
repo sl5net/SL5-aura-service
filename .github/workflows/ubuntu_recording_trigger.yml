@@ -24,6 +24,32 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+
+      - name: Validate requirements.txt syntax
+        run: |
+          python3 -c "
+          import pkg_resources
+          with open('requirements.txt') as f:
+              lines = [l.strip() for l in f if l.strip() and not l.startswith('#')]
+          pkg_resources.require(lines)
+          print('✅ requirements.txt is valid')
+          "
+
+      - name: Test fresh install of requirements.txt
+        run: |
+          python3 -m venv /tmp/test_venv
+          /tmp/test_venv/bin/pip install -r requirements.txt
+          echo "✅ Fresh install successful"
+
+      - name: Run pre-commit hook (dry-run)
+        run: |
+          apt-get install -y unix2dos 2>/dev/null || true
+          bash .git/hooks/pre-commit
+          echo "✅ pre-commit hook passed"
+
+
+
+
       - name: Cache models and tools
         id: assets-cache
         uses: actions/cache@v4
