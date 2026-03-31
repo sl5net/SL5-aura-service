@@ -78,6 +78,8 @@ fi
 sed -i '/^scripts==/d' requirements.txt
 
 # Convert package names to lowercase
+
+# alt 2026-0331-2120:
 awk '/==/ {
     idx = index($0, "==")
     pkg = substr($0, 1, idx-1)
@@ -85,6 +87,7 @@ awk '/==/ {
     print tolower(pkg) "==" rest
 }
 !/==/ {print}' requirements.txt > requirements.txt.tmp && mv requirements.txt.tmp requirements.txt
+
 
 
 # --- PLATFORM-SPECIFIC FASTTEXT FIX ---

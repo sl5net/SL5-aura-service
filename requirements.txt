@@ -20,6 +20,8 @@ fasttext-wheel==0.9.2; sys_platform
 nltk==3.9.1
 fasttext-wheel==0.9.2; sys_platform 
 nltk==3.9.1
+fasttext-wheel==0.9.2; sys_platform 
+nltk==3.9.1
 psutil>=7.0.0
 requests>=2.28.0
 tqdm>=4.60.0
