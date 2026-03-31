@@ -105,11 +105,36 @@ ARCHIVE_CONFIG=(
     "vosk-model-de-0.21 vosk-model-de-0.21 ./models"
     "lid.176 lid.176.bin ./models"
 )
+new_str:
 DOWNLOAD_REQUIRED=false
+# --- Filter ARCHIVE_CONFIG based on EXCLUDE_LANGUAGES ---
+INSTALL_CONFIG=()
+for config_line in "${ARCHIVE_CONFIG[@]}"; do
+    read -r base_name final_name dest_path <<< "$config_line"
+    IS_MANDATORY=false
+    IS_EXCLUDED=false
+    if [[ "$base_name" == "LanguageTool-6.6" ]] || [[ "$base_name" == "lid.176" ]]; then
+        IS_MANDATORY=true
+    fi
+    if [ "$EXCLUDE_LANGUAGES" == "all" ] && [ "$IS_MANDATORY" = false ]; then
+        IS_EXCLUDED=true
+    elif [ "$IS_MANDATORY" = false ]; then
+        if [[ "$base_name" =~ vosk-model-de- ]] && [[ "$EXCLUDE_LANGUAGES" =~ de ]]; then
+            IS_EXCLUDED=true
+        fi
+        if [[ "$base_name" =~ vosk-model-en-us- ]] && [[ "$EXCLUDE_LANGUAGES" =~ en ]]; then
+            IS_EXCLUDED=true
+        fi
+    fi
+    if [ "$IS_EXCLUDED" = false ]; then
+        INSTALL_CONFIG+=("$config_line")
+    fi
+done
+# --- End Filter ---
 
 # --- Phase 1: Check and attempt to restore from local ZIP cache ---
 echo "    -> Phase 1: Checking and trying to restore from local cache..."
-for config_line in "${ARCHIVE_CONFIG[@]}"; do
+for config_line in "${INSTALL_CONFIG[@]}"; do
     read -r base_name final_name dest_path <<< "$config_line"
     target_path="$dest_path/$final_name"
     zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
@@ -146,7 +171,7 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
     echo "    -> Downloader finished. Retrying extraction..."
 
     # After downloading, we must re-check and extract anything that's still missing.
-    for config_line in "${ARCHIVE_CONFIG[@]}"; do
+    for config_line in "${INSTALL_CONFIG[@]}"; do
         read -r base_name final_name dest_path <<< "$config_line"
         target_path="$dest_path/$final_name"
         zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
