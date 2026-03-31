@@ -127,7 +127,8 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
     # Create the models directory before attempting to download files into it.
     mkdir -p ./models
 
-    ./.venv/bin/python tools/download_all_packages.py
+    ./.venv/bin/python tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
+
     echo "    -> Downloader finished. Retrying extraction..."
 
     # After downloading, we must re-check and extract anything that's still missing.
