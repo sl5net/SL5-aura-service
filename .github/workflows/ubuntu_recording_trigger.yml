@@ -78,7 +78,7 @@ jobs:
       - name: Install Linting Tools
         run: |
           python3 -m pip install --upgrade pip
-          pip install flake8 ruff pylint
+          pip install flake8 ruff pylint pipreqs
 
       - name: Run pre-commit hook (dry-run)
         run: |
