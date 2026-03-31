@@ -33,6 +33,15 @@ ENV/
 *.meta4
 *.aria2
 
+# old rest stuff
+.schluessel
+AlgoliaVerification.md
+Python_Tresor_Basis.apkg
+app.log
+conftest.py
+correct_text_by_languagetool
+heal_links_cascade.py
+
 
 dictate.py
 transcribe.py
