@@ -105,7 +105,6 @@ ARCHIVE_CONFIG=(
     "vosk-model-de-0.21 vosk-model-de-0.21 ./models"
     "lid.176 lid.176.bin ./models"
 )
-new_str:
 DOWNLOAD_REQUIRED=false
 # --- Filter ARCHIVE_CONFIG based on EXCLUDE_LANGUAGES ---
 INSTALL_CONFIG=()
