@@ -31,6 +31,7 @@ ENV/
 *.cast
 
 *.meta4
+*.aria2
 
 
 dictate.py
