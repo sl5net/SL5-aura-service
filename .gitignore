@@ -30,10 +30,12 @@ ENV/
 *.x
 *.cast
 
-*.meta4
-*.aria2
 
 # old rest stuff
+*.meta4
+wikipedia_de_all_mini_2025-09.zim.*
+*.aria2
+
 .schluessel
 AlgoliaVerification.md
 Python_Tresor_Basis.apkg
