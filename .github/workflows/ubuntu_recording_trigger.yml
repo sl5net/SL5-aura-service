@@ -7,7 +7,7 @@ on:
       - 'setup/**'
       - 'requirements.txt'
       - 'requirements-dev.txt'
-      - '.github/workflows/**'
+      - '.github/workflows/ubuntu_recording_trigger.yml'
   pull_request:
     branches:
       - master
@@ -42,8 +42,9 @@ jobs:
 
       - name: Run pre-commit hook (dry-run)
         run: |
-          apt-get install -y unix2dos 2>/dev/null || true
-          bash .git/hooks/pre-commit
+          sudo apt-get install -y unix2dos 2>/dev/null || true
+          bash ./githooks/pre-commit_BACKUP
+
           echo "✅ pre-commit hook passed"
 
 

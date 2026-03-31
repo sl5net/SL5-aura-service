@@ -9,7 +9,7 @@ on:
       - 'setup/**'
       - 'requirements.txt'
       - 'requirements-dev.txt'
-      - '.github/workflows/**'
+      - '.github/workflows/suse_setup.yml'
   pull_request:
     branches:
       - master

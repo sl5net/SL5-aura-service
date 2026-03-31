@@ -7,7 +7,7 @@ on:
       - 'setup/**'
       - 'requirements.txt'
       - 'requirements-dev.txt'
-      - '.github/workflows/**'
+      - '.github/workflows/ubuntu_setup.yml'
   pull_request:
     branches:
       - master
