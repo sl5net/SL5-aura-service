@@ -50,15 +50,15 @@ jobs:
 
 
       - name: Run macos_setup.sh
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
         # This assumes your script has `set -e` at the top for error handling
         # and a shebang `#!/bin/bash`
 
         run: |
 
-
-
           chmod +x ./setup/macos_setup.sh
-
 
           echo "--- DEBUG INFO START ---"
           pwd
