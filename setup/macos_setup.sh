@@ -13,8 +13,19 @@ if [ ! -f "requirements.txt" ]; then
     echo "cd .. ; ./setup/$SCRIPT_NAME"
     exit 1
 fi
-
-
+# --- Argument Parsing for Exclusion ---
+EXCLUDE_LANGUAGES=""
+for arg in "$@"; do
+    if [[ "$arg" =~ ^exclude:([a-zA-Z,]+)$ ]]; then
+        EXCLUDE_LANGUAGES="${BASH_REMATCH[1]}"
+    elif [[ "$arg" =~ ^exclude=([a-zA-Z,]+)$ ]]; then
+        EXCLUDE_LANGUAGES="${BASH_REMATCH[1]}"
+    fi
+done
+if [ -n "$EXCLUDE_LANGUAGES" ]; then
+    echo "--> Exclusion list detected: $EXCLUDE_LANGUAGES"
+fi
+# --- End Argument Parsing ---
 should_remove_zips_after_unpack=true
 
 # --- Make script location-independent ---
@@ -127,8 +138,11 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
     # Create the models directory before attempting to download files into it.
     mkdir -p ./models
 
-    ./.venv/bin/python tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
-
+    if [ -n "$EXCLUDE_LANGUAGES" ]; then
+        ./.venv/bin/python tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
+    else
+        ./.venv/bin/python tools/download_all_packages.py
+    fi
     echo "    -> Downloader finished. Retrying extraction..."
 
     # After downloading, we must re-check and extract anything that's still missing.
@@ -181,6 +195,10 @@ fi
 
 
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
+
+
+
+
 
 
 # --- 6. Completion ---
