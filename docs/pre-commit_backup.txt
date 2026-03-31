@@ -205,6 +205,13 @@ grep -v "sys_platform" requirements.txt | sort -u > requirements.txt.tmp
 grep "sys_platform" requirements.txt | sort -u >> requirements.txt.tmp
 mv requirements.txt.tmp requirements.txt
 
+echo "-r requirements.txt" > requirements-dev.txt
+echo "flake8" >> requirements-dev.txt
+echo "ruff" >> requirements-dev.txt
+echo "pylint" >> requirements-dev.txt
+echo "pipreqs" >> requirements-dev.txt
+
+
 # -----------------------------------------------------------------------------
 # 5. CLEANUP
 # -----------------------------------------------------------------------------
