@@ -80,5 +80,8 @@ case "$1" in
         # Default: Beides (für Abwärtskompatibilität)
         do_setup
         do_cleanup
+        sleep 1.5
+        do_setup
+        do_cleanup
         ;;
 esac
