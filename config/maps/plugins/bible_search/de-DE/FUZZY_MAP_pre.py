@@ -133,10 +133,10 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: erstex
-    ('1', r'\b(erste\w*|ernster)\b', 90, {
-        'flags': re.IGNORECASE,
-        'skip_list': ['LanguageTool'],
-    }),
+    # ('1', r'\b(erste\w*|ernster)\b', 90, {
+    #    'flags': re.IGNORECASE,
+    #    'skip_list': ['LanguageTool'],
+    #}),
     # EXAMPLE: zweitex
     ('2', r'\bzweite\w*\b', 90, {
         'flags': re.IGNORECASE,

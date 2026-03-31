@@ -30,6 +30,8 @@ ENV/
 *.x
 *.cast
 
+*.meta4
+
 
 dictate.py
 transcribe.py

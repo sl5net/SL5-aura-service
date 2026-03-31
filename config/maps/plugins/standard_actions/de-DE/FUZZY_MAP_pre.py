@@ -42,7 +42,7 @@ geminiUrl = 'https://aistudio.google.com/prompts/new_chat'
 
 FUZZY_MAP_pre = [
 
-    (f'{geminiUrl}', r'^(test|google geben d|google gebe die|google babydoll|google d|guru babybett|google google babydoll|google geben|google jubilee|google ist|ruhrgebiet|groupware gemini|google privileg|google gebe sie|google www|udp bitte|google ready|google babybay|gruppe gemini)$', 70, {
+    (f'{geminiUrl}', r'^(test|google geben d|google gebe die|google babydoll|google d|guru babybett|google google babydoll|google geben|google jubilee|google ist|ruhrgebiet|groupware gemini|google privileg|google gebe sie|google www|udp bitte|google ready|google babybay|gruppe gemini|google ermittelt|mit everyday|google gebe drei)$', 70, {
         'flags': re.IGNORECASE,
         'only_in_windows': [r'firefox', 'chrome', 'brave'],
     }),
