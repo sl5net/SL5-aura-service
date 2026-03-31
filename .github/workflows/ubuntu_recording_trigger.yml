@@ -3,12 +3,19 @@ on:
 
   push:
     branches: [ master ]
-
-  # Release
+    paths:
+      - 'setup/**'
+      - 'requirements.txt'
+      - 'requirements-dev.txt'
+      - '.github/workflows/**'
+  pull_request:
+    branches:
+      - master
   release:
     types: [published]
-
   workflow_dispatch:
+
+
 jobs:
   # Renamed job for clarity
   validate-ubuntu-setup:
@@ -17,14 +24,20 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Cache models and tools (stable key)
-        id: assets-cache # Give this step an ID
+      - name: Cache models and tools
+        id: assets-cache
         uses: actions/cache@v4
         with:
           path: |
+            ./tools/
             ./LanguageTool-6.6
             ./models/
-          key: ${{ runner.os }}-sl5-assets-v1
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
+          
+      - name: Update apt repositories
+        run: sudo apt-get update -y
 
       - name: Download assets if cache miss
         if: steps.assets-cache.outputs.cache-hit != 'true'
