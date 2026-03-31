@@ -51,17 +51,21 @@ echo "flake8 check passed."
 # find staged .bat files (cached)
 staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.bat$' || true)
 if [ -z "$staged_files" ]; then
-  exit 0
+  echo "No .bat files staged. Skipping CRLF conversion."
 fi
 
-# convert each file in the working tree, then restage
-for f in $staged_files; do
-  if [ -f "$f" ]; then
-    unix2dos "$f" >/dev/null 2>&1 || { echo "unix2dos failed on $f"; exit 1; }
-    git add "$f"
-  fi
-done
-
+# convert staged .bat files to CRLF and restage them
+staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.bat$' || true)
+if [ -n "$staged_files" ]; then
+  for f in $staged_files; do
+    if [ -f "$f" ]; then
+      unix2dos "$f" >/dev/null 2>&1 || { echo "unix2dos failed on $f"; exit 1; }
+      git add "$f"
+    fi
+  done
+else
+  echo "No .bat files staged. Skipping CRLF conversion."
+fi
 
 
 
@@ -102,6 +106,7 @@ cp aura_engine.py "$TMPDIR/"
 cp get_suggestions.py "$TMPDIR/"
 # Copy the entire 'scripts' directory to preserve import paths
 cp -r scripts "$TMPDIR/"
+cp -r tools "$TMPDIR/"
 
 
 echo "INFO: Generating requirements.txt (taking into account .pipreqs-whitelist.txt) ..."
@@ -144,6 +149,7 @@ echo "psutil>=7.0.0" >> requirements.txt
 echo "requests>=2.28.0" >> requirements.txt
 echo "tqdm>=4.60.0" >> requirements.txt
 echo "colorama>=0.4.0" >> requirements.txt
+echo "pygame" >> requirements.txt
 
 # C) PLATFORM-SPECIFIC FIXES
 
