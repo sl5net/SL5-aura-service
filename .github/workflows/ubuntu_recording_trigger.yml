@@ -40,12 +40,6 @@ jobs:
           /tmp/test_venv/bin/pip install -r requirements.txt
           echo "✅ Fresh install successful"
 
-      - name: Run pre-commit hook (dry-run)
-        run: |
-          sudo apt-get install -y unix2dos 2>/dev/null || true
-          source .venv/bin/activate
-          bash ./githooks/pre-commit_BACKUP
-          echo "✅ pre-commit hook passed"
 
 
 
@@ -81,6 +75,13 @@ jobs:
       - name: Run ubuntu_setup.sh (should now use local files)
         run: bash ./setup/ubuntu_setup.sh
         
+      - name: Run pre-commit hook (dry-run)
+        run: |
+          sudo apt-get install -y unix2dos 2>/dev/null || true
+          bash ./githooks/pre-commit_BACKUP
+          echo "✅ pre-commit hook passed"
+
+
       - name: Test Service Initialization
         run: |
           echo "--> Starting service in background..."
