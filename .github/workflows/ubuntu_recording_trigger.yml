@@ -75,10 +75,10 @@ jobs:
       - name: Run ubuntu_setup.sh (should now use local files)
         run: bash ./setup/ubuntu_setup.sh
 
-      - name: Install Linting Tools
+      - name: Install Development Dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip install flake8 ruff pylint pipreqs
+          pip install -r requirements-dev.txt
 
       - name: Run pre-commit hook (dry-run)
         run: |
