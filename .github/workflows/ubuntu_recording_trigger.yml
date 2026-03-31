@@ -43,8 +43,8 @@ jobs:
       - name: Run pre-commit hook (dry-run)
         run: |
           sudo apt-get install -y unix2dos 2>/dev/null || true
+          source .venv/bin/activate
           bash ./githooks/pre-commit_BACKUP
-
           echo "✅ pre-commit hook passed"
 
 
