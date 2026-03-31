@@ -220,8 +220,8 @@ def main():
     parser.add_argument("--exclude", type=str, nargs='*', default=[],
                         help="List of language codes to exclude, e.g. --exclude de en")
     args = parser.parse_args()
-    exclude_list = [x.strip().lower() for x in args.exclude]  # args.exclude is already a list
-
+    # exclude_list = [x.strip().lower() for x in args.exclude]  # args.exclude is already a list
+    exclude_list = [x.strip().lower() for x in args.exclude if x.strip()]
 
     # exclude_list = [x.strip().lower() for x in args.exclude.split(',')] if args.exclude else []
 
