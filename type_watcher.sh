@@ -202,7 +202,7 @@ PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python3"
 
 # Rarely needed, but acts as a safety net for stuck modifier keys.
 # Releases Alt/Ctrl/Shift/Super etc. every 15s without interrupting active key combos.
-$PROJECT_ROOT/tools/keep-keys-up.sh &
+$PROJECT_ROOT/tools/keep-keys-up.sh --init &
 
 # --- END: Read Python config ---
 
@@ -441,12 +441,13 @@ PY
 
                     CLEAN_CONTENT=$(printf '%s' "$SANITIZED" | sed "s/$PLACEHOLDER/$EMOJI/g")
 
-                        sleep 0.1
+                    sleep 0.4
 
                     do_type "$CLEAN_CONTENT"
+                    ($PROJECT_ROOT/tools/keep-keys-up.sh --cleanup &)
                     sleep 0.025
 
-                        sleep 2
+                    # # sleep 2
 
                     log_message "typed content of $f (dotool/timeout 1 xdotool hybrid)"
                     rm -f "$f"
