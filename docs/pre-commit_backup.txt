@@ -32,7 +32,8 @@ if [ -f .venv/bin/activate ]; then
 fi
 
 # Run flake8 on specific directories
-flake8 ./aura_engine.py ./scripts ./config
+# flake8 ./aura_engine.py ./scripts ./config
+./.venv/bin/flake8 ./aura_engine.py ./scripts ./config
 
 # Abort commit if flake8 finds errors
 if [ $? -ne 0 ]; then

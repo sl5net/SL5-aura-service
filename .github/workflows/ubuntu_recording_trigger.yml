@@ -78,7 +78,7 @@ jobs:
       - name: Install Development Dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip install -r requirements-dev.txt
+          .venv/bin/pip install -r requirements-dev.txt
 
       - name: Run pre-commit hook (dry-run)
         run: |
