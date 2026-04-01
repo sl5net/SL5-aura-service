@@ -17,8 +17,6 @@ fi
 eval $(python3 scripts/py/setup_config.py)
 echo "Wahl: $SELECTED_LANG | Zweit: $SECOND_LANG | Ohne: $EXCLUDE_LANGUAGES"
 
-exit
-
 echo ""
 echo "--- Setup for Manjaro/Arch is complete! ---"
 echo ""

@@ -14,12 +14,8 @@ if [ ! -f "requirements.txt" ]; then
     exit 1
 fi
 
-
-
 eval $(python3 scripts/py/setup_config.py)
 echo "Wahl: $SELECTED_LANG | Zweit: $SECOND_LANG | Ohne: $EXCLUDE_LANGUAGES"
-
-
 
 # --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
