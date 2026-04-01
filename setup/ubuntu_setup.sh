@@ -135,7 +135,7 @@ else
                 IS_EXCLUDED=true
             fi
             # Test auf 'en' im Namen und in der Ausschlussliste
-            if [[ "$base_name" =~ vosk-model-en-us- ]] && [[ "$EXCLUDE_LANGUAGES" =~ en ]]; then
+            if [[ "$base_name" =~ vosk-model-en-us- ]] && [[ "$EXCLUDE_LANGUAGES" =~ en ]] || [[ "$CI" == "true" ]]; then;
                 echo "    -> Excluding (en): $base_name"
                 IS_EXCLUDED=true
             fi
