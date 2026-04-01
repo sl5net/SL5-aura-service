@@ -2,7 +2,7 @@ name: CI for ubuntu Setup and Test Service Initialization
 on:
 
   push:
-    branches: [ master ]
+    branches: [ master, feature/cross-platform-setup-config ]
     paths:
       - 'setup/**'
       - 'requirements.txt'
