@@ -16,25 +16,8 @@ fi
 
 
 
-# --- Argument Parsing for Exclusion ---
-EXCLUDE_LANGUAGES=""
-
-# Parst Argumente wie 'exclude:de,en' oder 'exclude=all'
-for arg in "$@"; do
-    if [[ "$arg" =~ ^exclude:([a-zA-Z,]+)$ ]]; then
-        EXCLUDE_LANGUAGES="${BASH_REMATCH[1]}"
-    elif [[ "$arg" == "exclude=all" ]]; then
-        EXCLUDE_LANGUAGES="all"
-    fi
-done
-
-if [ -n "$EXCLUDE_LANGUAGES" ]; then
-    echo "--> Exclusion list detected: $EXCLUDE_LANGUAGES"
-fi
-
-# --- End Argument Parsing ---
-
-
+eval $(python3 scripts/py/setup_config.py)
+echo "Wahl: $SELECTED_LANG | Zweit: $SECOND_LANG | Ohne: $EXCLUDE_LANGUAGES"
 
 
 

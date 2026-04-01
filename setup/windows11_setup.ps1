@@ -3,17 +3,17 @@
 #  how to start:
 #  .\setup\windows11_setup.ps1 -Exclude "en" or .\setup\windows11_setup.ps1 -Exclude "de" or .\setup\windows11_setup.ps1 -Exclude "all".
 
-# --- Argument Parsing for Exclusion (NEW) ---
-param(
-    [string]$Exclude = $null
-)
+# --- Argument Parsing for Exclusion ---
 
 # --- Make script location-independent ---
 $ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
 Set-Location -Path $ProjectRoot
 Write-Host "--> Running setup from project root: $(Get-Location)"
 
-$EXCLUDE_LANGUAGES = $Exclude
+python scripts/py/setup_config.py | iex
+
+Write-Host "--> Auswahl: $SELECTED_LANG | $SECOND_LANG  | Ohne: $EXCLUDE_LANGUAGES"
+
 
 if (-not [string]::IsNullOrEmpty($EXCLUDE_LANGUAGES)) {
     Write-Host "--> Exclusion list detected: $EXCLUDE_LANGUAGES" -ForegroundColor Yellow

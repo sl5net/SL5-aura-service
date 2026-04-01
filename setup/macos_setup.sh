@@ -13,19 +13,10 @@ if [ ! -f "requirements.txt" ]; then
     echo "cd .. ; ./setup/$SCRIPT_NAME"
     exit 1
 fi
-# --- Argument Parsing for Exclusion ---
-EXCLUDE_LANGUAGES=""
-for arg in "$@"; do
-    if [[ "$arg" =~ ^exclude:([a-zA-Z,]+)$ ]]; then
-        EXCLUDE_LANGUAGES="${BASH_REMATCH[1]}"
-    elif [[ "$arg" =~ ^exclude=([a-zA-Z,]+)$ ]]; then
-        EXCLUDE_LANGUAGES="${BASH_REMATCH[1]}"
-    fi
-done
-if [ -n "$EXCLUDE_LANGUAGES" ]; then
-    echo "--> Exclusion list detected: $EXCLUDE_LANGUAGES"
-fi
-# --- End Argument Parsing ---
+
+eval $(python3 scripts/py/setup_config.py)
+echo "Wahl: $SELECTED_LANG | Zweit: $SECOND_LANG | Ohne: $EXCLUDE_LANGUAGES"
+
 should_remove_zips_after_unpack=true
 
 if [ -z "$EXCLUDE_LANGUAGES" ] && [ "${GITHUB_ACTIONS}" == "true" ]; then

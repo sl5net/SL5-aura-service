@@ -14,25 +14,10 @@ if [ ! -f "requirements.txt" ]; then
     exit 1
 fi
 
-# --- Argument Parsing for Exclusion ---
-EXCLUDE_LANGUAGES=""
+eval $(python3 scripts/py/setup_config.py)
+echo "Wahl: $SELECTED_LANG | Zweit: $SECOND_LANG | Ohne: $EXCLUDE_LANGUAGES"
 
-# Parst Argumente in den Formaten: exclude=all, exclude=de, exclude=en, exclude=de,en
-for arg in "$@"; do
-    # Prüft auf Formate: exclude=all, exclude=de, exclude=de,en (fängt alle Spracodes ab)
-    if [[ "$arg" =~ ^exclude=([a-zA-Z,]+)$ ]]; then
-        EXCLUDE_LANGUAGES="${BASH_REMATCH[1]}"
-    # Optional: Altes Format exclude:de,en beibehalten
-    elif [[ "$arg" =~ ^exclude:([a-zA-Z,]+)$ ]]; then
-        EXCLUDE_LANGUAGES="${BASH_REMATCH[1]}"
-    fi
-done
-
-if [ -n "$EXCLUDE_LANGUAGES" ]; then
-    echo "--> Exclusion list detected: $EXCLUDE_LANGUAGES"
-fi
-
-
+exit
 
 echo ""
 echo "--- Setup for Manjaro/Arch is complete! ---"
