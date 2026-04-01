@@ -2,6 +2,8 @@
 # Central configuration for the application
 # please see also: settings_local.py_Example.txt
 from scripts.py.func.determine_current_user import determine_current_user
+import os
+
 
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
@@ -99,6 +101,13 @@ PRELOAD_MODELS = ["vosk-model-de-0.21"]
 
 if current_user == 'SL5.de':
     PRELOAD_MODELS = ["vosk-model-de-0.21"]
+
+
+if os.environ.get('CI') == 'true':
+    # In der CI nutzen wir immer das kleine englische Modell
+    PRELOAD_MODELS = ["vosk-model-small-en-us-0.15"]
+
+
 
 # config/settings.py
 PLUGIN_HELPER_TTS_ENABLED = True
