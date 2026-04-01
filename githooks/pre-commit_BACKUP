@@ -32,7 +32,8 @@ if [ -f .venv/bin/activate ]; then
 fi
 
 # Run flake8 on specific directories
-flake8 ./aura_engine.py ./scripts ./config
+# flake8 ./aura_engine.py ./scripts ./config
+./.venv/bin/flake8 ./aura_engine.py ./scripts ./config
 
 # Abort commit if flake8 finds errors
 if [ $? -ne 0 ]; then
@@ -199,10 +200,26 @@ echo "jellyfish" >> requirements.txt
 echo "nltk==3.9.1" >> requirements.txt
 
 
+# E) DEDUPLICATION & SORT
+# Remove duplicate lines, keep sys_platform lines at the bottom
+grep -v "sys_platform" requirements.txt | sort -u > requirements.txt.tmp
+grep "sys_platform" requirements.txt | sort -u >> requirements.txt.tmp
+mv requirements.txt.tmp requirements.txt
+
+echo "-r requirements.txt" > requirements-dev.txt
+echo "flake8" >> requirements-dev.txt
+echo "ruff" >> requirements-dev.txt
+echo "pylint" >> requirements-dev.txt
+echo "pipreqs" >> requirements-dev.txt
+
+
 # -----------------------------------------------------------------------------
 # 5. CLEANUP
 # -----------------------------------------------------------------------------
 rm -rf "$TMPDIR"
 
+
 # Backup the hook for reference
-cp .git/hooks/pre-commit docs/pre-commit_backup.txt
+cp .git/hooks/pre-commit githooks/pre-commit_BACKUP
+
+
