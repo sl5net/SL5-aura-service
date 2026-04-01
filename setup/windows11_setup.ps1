@@ -431,6 +431,21 @@ if (-not (Test-Path "log")) {
     New-Item -Path $_ -ItemType File -Force | Out-Null
 }
 
+
+
+# --- set standard-Modell ---
+Write-Host "--> Configuring default model in config/model_name.txt..."
+$modelFile = "config\model_name.txt"
+
+if ($env:CI -eq "true") {
+    "vosk-model-small-en-us-0.15" | Set-Content -Path $modelFile
+} elseif ($SELECTED_LANG -eq "de") {
+    "vosk-model-de-0.21" | Set-Content -Path $modelFile
+} else {
+    Write-Host "Please check config/model_name.txt if you prefer a larger model. and read https://alphacephei.com/vosk/models"
+}
+
+
 # --- 10. Completion ---
 Write-Host ""
 Write-Host "------------------------------------------------------------------" -ForegroundColor Green
