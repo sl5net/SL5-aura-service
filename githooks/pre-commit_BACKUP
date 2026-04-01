@@ -103,7 +103,7 @@ mkdir "$TMPDIR"
 
 # Copy all relevant Python sources into the temp directory
 cp aura_engine.py "$TMPDIR/"
-cp get_suggestions.py "$TMPDIR/"
+# cp get_suggestions.py "$TMPDIR/"
 # Copy the entire 'scripts' directory to preserve import paths
 cp -r scripts "$TMPDIR/"
 cp -r tools "$TMPDIR/"
