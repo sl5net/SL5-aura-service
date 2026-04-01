@@ -219,5 +219,6 @@ echo "pipreqs" >> requirements-dev.txt
 rm -rf "$TMPDIR"
 
 # Backup the hook for reference
-cp .git/hooks/pre-commit githooks/pre-commit_BACKUP
-
+if [ "$CI" != "true" ]; then
+  cp .git/hooks/pre-commit githooks/pre-commit_BACKUP
+fi
