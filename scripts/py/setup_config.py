@@ -6,8 +6,8 @@ def get_country():
     try:
         with urllib.request.urlopen("https://ipapi.co/country/", timeout=2) as response:
             return response.read().decode().strip()
-    except:
-        return "Unknown"
+    except Exception as e:
+        return f"Unknown{e}"
 
 def timed_input(prompt, default, timeout=8):
     sys.stderr.write(f"{prompt} [{default}]: ")
@@ -28,7 +28,7 @@ primary = timed_input("Primary Language (STT/UI)", default_primary)
 secondary = timed_input("Secondary Language (e.g. en, fr, es)", "none")
 
 all_langs = ["de", "en", "fr", "es"]
-excludes = [l for l in all_langs if l != primary and l != secondary]
+excludes = [lang for lang in all_langs if lang != primary and lang != secondary]
 
 print(f"export SELECTED_LANG='{primary}'")
 print(f"export SECOND_LANG='{secondary}'")
