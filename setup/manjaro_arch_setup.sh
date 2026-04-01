@@ -17,6 +17,9 @@ fi
 eval $(python3 scripts/py/setup_config.py)
 echo "Wahl: $SELECTED_LANG | Zweit: $SECOND_LANG | Ohne: $EXCLUDE_LANGUAGES"
 
+
+
+
 echo ""
 echo "--- Setup for Manjaro/Arch is complete! ---"
 echo ""
@@ -270,6 +273,16 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 fi
 
+
+# --- Automatisches Setzen des Standard-Modells ---
+echo "--> Configuring default model in config/model_name.txt..."
+if [ "$CI" == "true" ]; then
+    echo "vosk-model-small-en-us-0.15" > config/model_name.txt
+elif [ "$SELECTED_LANG" == "de" ]; then
+    echo "vosk-model-de-0.21" > config/model_name.txt
+else
+    echo "Please set a vosk-model in config/model_name.txt e.g. vosk-model-en-us-0.22"
+fi
 
 
 

@@ -281,6 +281,18 @@ sudo udevadm control --reload-rules && sudo udevadm trigger
 echo "NOTE: Re-login required for input group to take effect."
 echo "See docs/LINUX_WAYLAND_dotool.md for details."
 
+
+# --- Automatisches Setzen des Standard-Modells ---
+echo "--> Configuring default model in config/model_name.txt..."
+if [ "$CI" == "true" ]; then
+    echo "vosk-model-small-en-us-0.15" > config/model_name.txt
+elif [ "$SELECTED_LANG" == "de" ]; then
+    echo "vosk-model-de-0.21" > config/model_name.txt
+else
+    echo "Please set a vosk-model in config/model_name.txt e.g. vosk-model-en-us-0.22"
+fi
+
+
 # --- 6. Completion ---
 echo ""
 echo "--- Setup for openSUSE is complete! ---"
