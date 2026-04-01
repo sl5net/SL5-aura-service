@@ -120,6 +120,16 @@ for config_line in "${ARCHIVE_CONFIG[@]}"; do
         if [[ "$base_name" =~ vosk-model-en-us- ]] && [[ "$EXCLUDE_LANGUAGES" =~ en ]]; then
             IS_EXCLUDED=true
         fi
+
+
+
+            if [[ "$base_name" == "vosk-model-en-us-0.22" ]] && ([[ "$EXCLUDE_LANGUAGES" =~ en ]] || [[ "$CI" == "true" ]]); then
+                echo "    -> Excluding large in CI (en): $base_name"
+                IS_EXCLUDED=true
+            fi
+
+
+
     fi
     if [ "$IS_EXCLUDED" = false ]; then
         INSTALL_CONFIG+=("$config_line")
