@@ -25,27 +25,36 @@
 
 # -----------------------------------------------------------------------------
 # CONFIGURATION
-# -----------------------------------------------------------------------------
-PREFERRED_EDITOR="kate"
-HISTORY_FILE="$HOME/.search_rules_history"
-DEFAULT_QUERY=".py pre # EXAMPLE:"
-REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
-# -----------------------------------------------------------------------------
-# LOGGING
-# -----------------------------------------------------------------------------
-function logger_info() {
-    echo "" >&2
-    # echo "INFO: $1" >&2 # for debuggin useful
-}
-logger_info "Initializing search_rules.sh..."
-# -----------------------------------------------------------------------------
-# SETUP
-# -----------------------------------------------------------------------------
+#
+
+
+
+# MAPS_DIR="$PROJECT_ROOT/config/maps"
+
+
+# 1. PFADE & VARIABLEN
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
+DEFAULT_QUERY=".py pre # EXAMPLE:"
+REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
 
-MAPS_DIR="${1:-${MAPS_DIR:-$PROJECT_ROOT/config/maps}}"
-# MAPS_DIR="$PROJECT_ROOT/config/maps"
+MAPS_DIR="${1:-${MAPS_DIR:-config/maps}}"
+HISTORY_FILE="$HOME/.search_rules_history"
+
+
+# 2. EDITOR FALLBACK LOGIC (Korrigierte Bash-Version deines Backups)
+get_preferred_editor() {
+    # Suche nach Linux- oder Windows-Executables (kompatibel mit Git Bash/WSL)
+    if command -v kate >/dev/null 2>&1; then echo "kate"; return; fi
+    if command -v code >/dev/null 2>&1; then echo "code"; return; fi
+    if command -v nano >/dev/null 2>&1; then echo "nano"; return; fi
+    if command -v notepad.exe >/dev/null 2>&1; then echo "notepad.exe"; return; fi
+    echo "vi" # Absoluter Linux-Standard-Fallback
+}
+PREFERRED_EDITOR=$(get_preferred_editor)
+
+logger_info "Initializing search_rules.sh..."
+
 
 
 
@@ -95,39 +104,40 @@ open_github() {
     xdg-open "$url"
 }
 export -f open_github
-# -----------------------------------------------------------------------------
-# SEARCH & SELECT
-# -----------------------------------------------------------------------------
-SELECTED_LINE=$(grep --color=never -rnH -I . "$MAPS_DIR" | \
-    fzf --delimiter : \
-        --history "$HISTORY_FILE" \
-        --query "$INITIAL_QUERY" \
-        --header $'Ctrl+G: GitHub | Ctrl+X: Zeile kopieren | Ctrl+O: Pfad kopieren | Ctrl+Z/Y: History | Enter: Editor' \
-        --bind 'ctrl-c:cancel' \
-        --bind 'ctrl-z:previous-history' \
-        --bind 'ctrl-y:next-history' \
-        --bind 'ctrl-p:previous-history' \
-        --bind 'ctrl-n:next-history' \
-        --bind 'ctrl-a:select-all' \
-        --bind 'ctrl-left:backward-word' \
-        --bind 'ctrl-right:forward-word' \
-        --bind 'ctrl-backspace:unix-word-rubout' \
-        --bind 'ctrl-delete:kill-word' \
-        --bind "ctrl-g:execute-silent(bash -c 'open_github {1} {2}')" \
-        --bind 'ctrl-x:execute-silent(echo {3..} | xclip -selection clipboard)' \
-        --bind 'ctrl-o:execute-silent(echo {1} | xclip -selection clipboard)' \
-        --preview "$PREVIEW_CMD" \
+#
+
+LANG_TAG="${2:-}" # Optionaler zweiter Parameter (z.B. "de")
+
+SELECTED_LINE=$(grep --color=never -rnH -I --include="${SEARCH_FILES_FILTER:-*}" . "$MAPS_DIR" | \
+    fzf --history="$HISTORY_FILE" \
+        --query="$INITIAL_QUERY" \
+        --header="Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
+        --delimiter=":" \
+        --bind="ctrl-z:previous-history" \
+        --bind="ctrl-y:next-history" \
+        --bind="ctrl-backspace:backward-kill-word" \
+        --bind="ctrl-g:execute-silent(f={1}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{2}\")" \
+        --bind='ctrl-x:execute-silent(echo {3..} | xclip -selection clipboard)' \
+        --bind='ctrl-a:execute-silent(awk -v t={2} "BEGIN {t=t+0} NR>t-5 && NR<t+5 {print \$0}" {1} | xclip -selection clipboard)' \
         --preview-window="up:50%" \
+        --preview='awk -v t={2} "BEGIN {t=t+0} NR>t-5 && NR<t+5 {printf \"%s%4d: %s\n\", (NR==t ? \">\" : \" \"), NR, \$0}" {1}' \
 )
-# -----------------------------------------------------------------------------
-# EXECUTION
-# -----------------------------------------------------------------------------
+# xdg-open
+
+# 5. EXECUTION (Robustes Öffnen)
 if [ -n "$SELECTED_LINE" ]; then
     FILE_PATH=$(echo "$SELECTED_LINE" | cut -d: -f1)
     LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
-    logger_info "Opening: $FILE_PATH at line $LINE_NUM"
-    "$PREFERRED_EDITOR" "$FILE_PATH:$LINE_NUM" &
+
+    case $PREFERRED_EDITOR in
+        kate) (kate "$FILE_PATH" --line "$LINE_NUM" & disown) ;;
+        code) (code --goto "$FILE_PATH:$LINE_NUM" & disown) ;;
+        notepad.exe) (notepad.exe "$FILE_PATH" &) ;;
+        *) ($PREFERRED_EDITOR "$FILE_PATH" & disown) ;;
+    esac > /dev/null 2>&1
+
+    sleep 0.1
     exit 0
-else
-    logger_info "No selection made."
 fi
+
+

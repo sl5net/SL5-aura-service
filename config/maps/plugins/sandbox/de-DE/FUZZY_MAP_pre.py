@@ -11,7 +11,7 @@ PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
 SEARCH_SCRIPT = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
 
 # Apparat suche Opera suche
-AURA_VARIANTS = '(Aura|Auch|Aurora|laura|dora|Ära|hurra|prora|Orange|rohre|rohrer|doras|woran|Zauberer|ora|suche|uwe|obwohl|over|oh|bohrer|aurore|rum|ruhe|tore|rot|robe|buchen|hoch|horror|auren|samurai|roche|brauche|ohh|ore|anbraten brauche|k|raucher|aachen|aber|ohren|ohr|lorenz|Opera|Apparat)'
+AURA_VARIANTS = '(Aura|eurer?|Auch|Aurora|Nora|laura|dora|Ära|hurra|prora|Orange|rohre|rohrer|dora|woran|Zauberer|ora|suche|uwe|obwohl|over|oh|bohrer|aurore|rum|ruhe|tore|rot|robe|buchen|hoch|horror|auren|samurai|roche|brauche|Oprah|ohh|ore|ora|anbraten brauche|k|raucher|aachen|aber|ohren|ohr|lorenz|loser|Opera|Apparat)'
 Auri_VARIANTS = '()'
 FUZZY_MAP_pre = [
 
@@ -29,17 +29,23 @@ FUZZY_MAP_pre = [
     #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[Path(PROJECT_ROOT) / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
     #################################################
 
-
-    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}\b.*\b(suche|suchen|zu|buch)$', 100, {
+    # Aura Suche
+    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*[^\w]?(suche|sucht|suchen|zu|buch|zug)$', 100, {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    }),
+    ('Suche wird gestartet...', fr'^(rohre zu|rohrer suche)$', 100, {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),
 
-    #         'only_in_windows': ['Konsole', 'konsole', 'Console',
-    #Ohren suchenAber sucheAuch als du
 
+    ('Handbuch wird durchsucht...', fr'^{AURA_VARIANTS}[^\w]?.*(dokumentation|Doku|handbuch|anleitung|hilfe suchen)$', 100, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [Path(__file__).resolve().parent /  'run_doc_search.py']
+    }),
 
-
+    #
 ]
 
-#Ohren sucheWo warst duHerr Ludwig
+#Ohren sucheWo warst duHerr LudwigHurra Doku bittetEure Dokumentationloser DokumentationDoha Doku bittet schwimmen Hurra DokumentationHurra Doku bitteDora DokumentationTore Dokumentation
