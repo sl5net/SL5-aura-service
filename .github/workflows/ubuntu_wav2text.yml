@@ -24,11 +24,6 @@ jobs:
           # xclip für das Clipboard, libnotify-bin für notify-send, xvfb für den virtuellen Screen
           sudo apt-get install -y xclip libnotify-bin xvfb dbus-x11
 
-      - name: Run transcription test
-        run: |
-          # Wir starten einen virtuellen X-Server UND eine D-Bus Session
-          xvfb-run dbus-run-session -- python tools/transcribe_test.py  # Pfad anpassen falls nötig
-
       - name: '1. Checkout Repository'
         uses: actions/checkout@v4
 
@@ -64,7 +59,8 @@ jobs:
       - name: '7. Run Transcription and Verify Output'
         run: |
           echo "INFO: Running transcription test..."
-          .venv/bin/python tools/transcribe_wavefile.py \
+
+          .venv/bin/python xvfb-run dbus-run-session -- tools/transcribe_wavefile.py \
             scripts/py/func/checks/test_audio_16k_en.wav \
             --vosk_model vosk-model-small-en-us-0.15 | grep "the first test sequence is now complete ready to proceed with the second phase"
 
