@@ -371,20 +371,94 @@ PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
 
 import webbrowser  # Zum Öffnen der GitHub-Seite
 
-def get_github_url(file_path):
-    """
-    Erstellt den passenden GitHub-Link aus dem lokalen Pfad.
-    """
-    rel_path = ""
-    # Pfad bereinigen für GitHub (master branch)
-    if "STT/" in str(file_path):
-        rel_path = str(file_path).split("STT/")[1]
-    elif "SL5-aura-service/" in str(file_path):
-        rel_path = str(file_path).split("SL5-aura-service/")[1]
 
-    if rel_path:
+from pathlib import Path
+
+def get_validated_github_url(stored_path):
+    """
+    Validiert einen Dateipfad aus der DB und findet die Datei, falls sie verschoben wurde.
+    Erzeugt daraus die korrekte GitHub-URL.
+    """
+    # 1. Projekt-Root sicher finden (Deine /tmp/ Methode)
+    try:
+        tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+        root_file = tmp_dir / "sl5_aura" / "sl5net_aura_project_root"
+        project_root = Path(root_file.read_text(encoding="utf-8").strip())
+    except Exception:
+        # Fallback falls die Datei fehlt
+        return None
+
+    # 2. Pfad normalisieren (~ expandieren)
+    full_path = Path(os.path.expanduser(stored_path))
+
+    # 3. GENERATIVE SUCHE: Falls Datei nicht am alten Ort existiert
+    if not full_path.exists():
+        filename = full_path.name
+        # Wir suchen rekursiv im Projekt nach dem Dateinamen
+        # Wir ignorieren dabei .git und .venv Ordner für die Performance
+        search_results = [
+            p for p in project_root.rglob(filename)
+            if ".venv" not in str(p) and ".git" not in str(p)
+        ]
+
+        if search_results:
+            # Wir nehmen den ersten Treffer, der existiert
+            full_path = search_results[0]
+        else:
+            # Datei ist wirklich unauffindbar
+            return None
+
+    # 4. GitHub URL aus dem (evtl. neuen) Pfad bauen
+    try:
+        # Pfad relativ zum Projekt-Root berechnen
+        rel_path = full_path.relative_to(project_root)
+        # GitHub Link bauen
         return f"https://github.com/sl5net/SL5-aura-service/blob/master/{rel_path}"
-    return None
+    except Exception:
+        return None
+
+
+def get_github_url(stored_path):
+    try:
+        tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+        root_file = tmp_dir / "sl5_aura" / "sl5net_aura_project_root"
+        project_root = Path(root_file.read_text(encoding="utf-8").strip())
+    except:
+        return None
+
+    # 1. Datei lokal finden (Self-Healing wie gehabt)
+    current_path = Path(os.path.expanduser(stored_path))
+    if not current_path.exists():
+        filename = current_path.name
+        found_files = [p for p in project_root.rglob(filename)
+                       if ".venv" not in str(p) and ".git" not in str(p)]
+        if found_files:
+            current_path = found_files[0]
+        else:
+            return None
+
+    # 2. PRÜFUNG: Kennt Git diese Datei überhaupt?
+    # Wir fragen Git, ob die Datei im Index ist (also online sein könnte)
+    try:
+        check = subprocess.run(
+            ['git', 'ls-files', '--error-unmatch', str(current_path)],
+            cwd=project_root,
+            capture_output=True, text=True
+        )
+        if check.returncode != 0:
+            # Datei ist nicht in Git (ignored oder noch nicht geadded)
+            print(f"INFO: Überspringe Link für {current_path.name} (nicht in Git/ignored)")
+            return None
+    except Exception:
+        pass # Falls Git-Befehl fehlschlägt
+
+    # 3. Link generieren
+    try:
+        rel_path = current_path.relative_to(project_root)
+        return f"https://github.com/sl5net/SL5-aura-service/blob/master/{rel_path}"
+    except Exception:
+        return None
+
 
 def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
     if not text or not globals().get('SPEECH_ENABLED', True):
