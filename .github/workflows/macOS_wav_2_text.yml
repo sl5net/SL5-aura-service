@@ -51,6 +51,5 @@ jobs:
           echo "INFO: Running transcription test..."
           .venv/bin/python tools/transcribe_wavefile.py \
             scripts/py/func/checks/test_audio_16k_en.wav \
-            --vosk_model vosk-model-small-en-us-0.15 | grep "zum nächsten"
+            --vosk_model vosk-model-small-en-us-0.15 | grep "the first test sequence is now complete ready to proceed with the second phase"
 
-            # vosk-model-small-de-0.15
