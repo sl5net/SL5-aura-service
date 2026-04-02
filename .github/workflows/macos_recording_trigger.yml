@@ -1,4 +1,5 @@
-name: CI for macOS Setup and Test Service Initialization
+name: CI macOS Recording Trigger
+
 on:
   push:
     branches: [ master, feature/cross-platform-setup-config ]
@@ -57,7 +58,13 @@ jobs:
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           fi
 
-      - name: Install Pygame dependencies via Homebrew
+
+
+
+
+
+
+     - name: Install Pygame dependencies via Homebrew
         run: brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf portmidi
 
       - name: Run macos_setup.sh
@@ -67,8 +74,36 @@ jobs:
           chmod +x ./setup/macos_setup.sh
           ./setup/macos_setup.sh
 
+      - name: Validate requirements.txt syntax
+        run: |
+          python3 -c "
+          from pip._internal.req import parse_requirements
+          from pip._internal.network.session import PipSession
+          list(parse_requirements('requirements.txt', session=PipSession()))
+          print('requirements.txt syntax is valid')
+          "
+
+      - name: Test fresh install of requirements.txt
+        run: |
+          python3 -m venv /tmp/test_venv
+          /tmp/test_venv/bin/pip install -r requirements.txt
+          echo "Fresh install successful"
+
       - name: Install Development Dependencies
         run: .venv/bin/pip install -r requirements-dev.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       - name: Run pre-commit hook (dry-run)
         run: |
