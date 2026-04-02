@@ -7,7 +7,9 @@ on:
   push:
     paths:
       - 'tools/transcribe_wavefile.py'
-      - 'tools/input-test.wav'
+      - 'scripts/py/func/checks/test_audio_16k_en.wav'
+      - '.github/workflows/ubuntu_wav2text.yml'
+
 
 jobs:
   test-transcription-tool:
