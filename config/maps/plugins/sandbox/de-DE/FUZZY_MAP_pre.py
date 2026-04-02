@@ -34,7 +34,7 @@ FUZZY_MAP_pre = [
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),
-    ('Suche wird gestartet...', fr'^(rohre zu|rohrer suche)$', 100, {
+    ('Suche wird gestartet...', r'^(rohre zu|rohrer suche)$', 100, {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),
