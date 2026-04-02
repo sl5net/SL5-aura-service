@@ -1,4 +1,4 @@
-name: 'Test: Transcription Tool Mac'
+name: 'CI macOS: wav → text'
 on:
   workflow_dispatch:
   push:
