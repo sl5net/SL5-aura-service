@@ -24,7 +24,7 @@ from config.settings import TRIGGER_FILE_PATH, SAMPLE_RATE
 # --- Basic Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 MODEL_PATH = "models/vosk-model-small-en-us-0.15"
-TEST_WAV_PATH = Path(__file__).resolve().parent / "test_audio_16k.wav"
+TEST_WAV_PATH = Path(__file__).resolve().parent / "test_audio_16k_en.wav"
 
 class MockRawInputStream:
     def __init__(self, samplerate, blocksize, dtype, channels, callback, device=None):
@@ -79,7 +79,7 @@ class TestDictationLogic(unittest.TestCase):
 
         """
         Tests if continuous speech (with short pauses) is correctly transcribed as a single chunk.
-        This test uses the current test_audio_16k.wav.
+        This test uses the current test_audio_16k_en.wav
         """
         logging.info("--- Starting test: transcription with short pause yields one chunk ---")
         recognizer = vosk.KaldiRecognizer(self.model, SAMPLE_RATE)
