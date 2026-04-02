@@ -289,7 +289,7 @@ if [ "$CI" == "true" ]; then
 elif [ "$SELECTED_LANG" == "de" ]; then
     echo "vosk-model-de-0.21" > config/model_name.txt
 else
-    echo "Please set a vosk-model in config/model_name.txt e.g. vosk-model-en-us-0.22"
+    echo "Please set a vosk-model in config/model_name.txt e.g. vosk-model-en-us-0.22 and check https://alphacephei.com/vosk/models"
 fi
 
 

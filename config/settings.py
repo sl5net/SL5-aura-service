@@ -104,7 +104,7 @@ if current_user == 'SL5.de':
 
 
 if os.environ.get('CI') == 'true':
-    # In der CI nutzen wir immer das kleine englische Modell
+    # In CI alwais use the smaller english Modell
     PRELOAD_MODELS = ["vosk-model-small-en-us-0.15"]
 
 

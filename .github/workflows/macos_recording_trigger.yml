@@ -1,0 +1,112 @@
+name: CI for macOS Setup and Test Service Initialization
+on:
+  push:
+    branches: [ master, feature/cross-platform-setup-config ]
+    paths:
+      - 'setup/**'
+      - 'requirements.txt'
+      - 'requirements-dev.txt'
+      - '.github/workflows/macos_recording_trigger.yml'
+  pull_request:
+    branches:
+      - master
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  validate-macos-setup:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Validate requirements.txt syntax
+        run: |
+          python3 -c "
+          from pip._internal.req import parse_requirements
+          from pip._internal.network.session import PipSession
+          list(parse_requirements('requirements.txt', session=PipSession()))
+          print('requirements.txt syntax is valid')
+          "
+
+      - name: Test fresh install of requirements.txt
+        run: |
+          python3 -m venv /tmp/test_venv
+          /tmp/test_venv/bin/pip install -r requirements.txt
+          echo "Fresh install successful"
+
+      - name: Cache models and tools
+        id: assets-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./tools/
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
+
+      - name: Install Xcode Command Line Tools
+        run: xcode-select --install || true
+
+      - name: Install Homebrew
+        run: |
+          if ! command -v brew &> /dev/null; then
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          fi
+
+      - name: Install Pygame dependencies via Homebrew
+        run: brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf portmidi
+
+      - name: Run macos_setup.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x ./setup/macos_setup.sh
+          ./setup/macos_setup.sh
+
+      - name: Install Development Dependencies
+        run: .venv/bin/pip install -r requirements-dev.txt
+
+      - name: Run pre-commit hook (dry-run)
+        run: |
+          brew install unix2dos 2>/dev/null || true
+          mkdir -p .git/hooks
+          cp githooks/pre-commit_BACKUP .git/hooks/pre-commit
+          bash ./githooks/pre-commit_BACKUP
+          echo "pre-commit hook passed"
+
+      - name: Test Service Initialization
+        run: |
+          echo "--> Starting service in background..."
+          bash ./scripts/restart_venv_and_run-server.sh > service_output.log 2>&1 &
+
+          echo "--> Waiting for successful model load..."
+          LOG_FILE="log/aura_engine.log"
+
+          for i in {1..20}; do
+            if grep -q "MODEL READY" "$LOG_FILE" 2>/dev/null; then
+              echo "Success: Service initialized and models are ready."
+              exit 0
+            fi
+            echo "Waiting... ($i/20)"
+            sleep 5
+          done
+
+          echo "Error: Service did not initialize successfully in time."
+          echo "--- Displaying service startup output ---"
+          cat service_output.log
+          echo "--- Displaying service log for debugging ---"
+          cat "$LOG_FILE" 2>/dev/null || echo "Log file not found."
+          exit 1
+
+      - name: Package Assets as Artifact (90 days)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sl5-assets-pack-macos
+          path: |
+            ./LanguageTool-6.6
+            ./models/

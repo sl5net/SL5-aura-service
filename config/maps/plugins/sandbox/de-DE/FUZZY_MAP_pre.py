@@ -12,19 +12,21 @@ SEARCH_SCRIPT = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
 
 # Apparat suche Opera suche
 AURA_VARIANTS = '(Aura|Auch|Aurora|laura|dora|Ära|hurra|prora|Orange|rohre|rohrer|doras|woran|Zauberer|ora|suche|uwe|obwohl|over|oh|bohrer|aurore|rum|ruhe|tore|rot|robe|buchen|hoch|horror|auren|samurai|roche|brauche|ohh|ore|anbraten brauche|k|raucher|aachen|aber|ohren|ohr|lorenz|Opera|Apparat)'
+Auri_VARIANTS = '()'
 FUZZY_MAP_pre = [
 
-    #('ASp', fr'^(lökjlkj)$', 100, {'flags': re.IGNORECASE,}),
+    #('ASp', fr'^(Auri)$', 100, {'flags': re.IGNORECASE,}),
 
     #('AS', fr'^{AURA_VARIANTS}\b.*\b(ölkjlkj|suchen|zu)$', 100, {'flags':re.IGNORECASE,}),
 
 
     #('A', fr'^{AURA_VARIANTS}\b.*\b(suche|zu)$', 100, {'flags': re.IGNORECASE,}),
     #ASASASAS
+    # ASp
 
     #################################################
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
-    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[Path(PROJECT_ROOT) / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[Path(PROJECT_ROOT) / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
     #################################################
 
 
