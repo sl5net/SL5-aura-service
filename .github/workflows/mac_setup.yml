@@ -7,7 +7,7 @@ on:
       - 'setup/**'
       - 'requirements.txt'
       - 'requirements-dev.txt'
-      - '.github/workflows/macos_setup.yml'
+      - '.github/workflows/mac_setup.yml'
   pull_request:
     branches:
       - master

@@ -7,7 +7,7 @@ on:
       - 'setup/**'
       - 'requirements.txt'
       - 'requirements-dev.txt'
-      - '.github/workflows/windows11_setup_bat.yml'
+      - '.github/workflows/win11_setup.yml'
   pull_request:
     branches:
       - master
