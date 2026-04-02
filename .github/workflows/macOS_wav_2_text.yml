@@ -5,6 +5,8 @@ on:
     paths:
       - 'tools/transcribe_wavefile.py'
       - 'scripts/py/func/checks/test_audio_16k.wav'
+      - '.github/workflows/transcription_tool_test_mac.yml'
+      - '.github/workflows/macOS_wav_2_text.yml'
 
 jobs:
   test-transcription-tool:
@@ -49,4 +51,4 @@ jobs:
           echo "INFO: Running transcription test..."
           .venv/bin/python tools/transcribe_wavefile.py \
             scripts/py/func/checks/test_audio_16k.wav \
-            --vosk_model models/vosk-model-de-0.21 | grep "zum nächsten"
+            --vosk_model vosk-model-de-0.21 | grep "zum nächsten"
