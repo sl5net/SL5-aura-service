@@ -52,3 +52,5 @@ jobs:
           .venv/bin/python tools/transcribe_wavefile.py \
             scripts/py/func/checks/test_audio_16k.wav \
             --vosk_model vosk-model-small-de-0.15 | grep "zum nächsten"
+
+            # vosk-model-small-de-0.15 vosk-model-small-de-0.15
