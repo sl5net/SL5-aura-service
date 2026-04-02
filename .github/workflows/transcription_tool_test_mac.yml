@@ -1,18 +1,14 @@
-# File: .github/workflows/transcription_tool_test_mac.yml
-
 name: 'Test: Transcription Tool Mac'
-
 on:
   workflow_dispatch:
   push:
     paths:
       - 'tools/transcribe_wavefile.py'
-      - 'tools/input-test.wav'
+      - 'scripts/py/func/checks/test_audio_16k.wav'
 
 jobs:
   test-transcription-tool:
     runs-on: macos-latest
-
     steps:
       - name: '1. Checkout Repository'
         uses: actions/checkout@v4
@@ -22,31 +18,31 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: 'Install System Dependencies'
+      - name: '3. Install System Dependencies'
         run: brew install ffmpeg portaudio openjdk
 
-      - name: '3. Install Python Dependencies'
+      - name: '4. Install Python Dependencies'
         run: |
           sed -i '' 's/vosk==0.3.45/vosk/' requirements.txt
           pip install -r requirements.txt
-          
+
       - name: '5. Cache Vosk Model'
         id: cache-vosk-model
         uses: actions/cache@v4
         with:
-          # Correct path for the cache
           path: models
           key: ${{ runner.os }}-vosk-model-de-v2
 
       - name: '6. Download and Unzip Model'
-        # This step is skipped if the cache was restored
         if: steps.cache-vosk-model.outputs.cache-hit != 'true'
         run: |
           wget -q https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/vosk-model-de-0.21.zip
-          mkdir models
+          mkdir -p models
           unzip -q vosk-model-de-0.21.zip -d models
 
       - name: '7. Run Transcription and Verify Output'
         run: |
           echo "INFO: Running transcription test..."
-          python tools/transcribe_wavefile.py tools/input-test.wav --vosk_model ../models/vosk-model-de-0.21 | grep "zum nächsten"
+          python tools/transcribe_wavefile.py \
+            scripts/py/func/checks/test_audio_16k.wav \
+            --vosk_model models/vosk-model-de-0.21 | grep "zum nächsten"
