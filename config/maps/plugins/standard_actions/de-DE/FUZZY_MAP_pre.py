@@ -40,12 +40,58 @@ flake8 = 'source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config'
 
 geminiUrl = 'https://aistudio.google.com/prompts/new_chat'
 
+
+
+# Wörter, die oft statt "Google" verstanden werden
+_google_prefix = r'(?:google|googeln?|gogol|gucke[n\s]*|goris|gut|gb|kugeln|brooke|coral|cool|obwohl)'
+
+# Wörter, die phonetisch nah an "Gemini" liegen
+_gemini_phonetics = (
+    r'(?:gemini|cheminée|g[\s-]?mine|gehminuten|gehe\s+mit|gibt|gaming|kriminell\w*|'
+    r'termin\w*|jimmy\s*(?:nein|knight|lai|neu)|germany|feminin|gewinner\w*|'
+    r'gewinn\s+ein|ge[hmw]\w*|g\s+bedeuten|g\s+wie\s+neu|seminar\w*)'
+)
+
+# Spezifische Studio-Variationen
+_studio_variants = r'(?:studi[ao]\w*|seminar\w*|style|stuhl|kapital|aviv|chapiteau)'
+
+# Völlige Fehlinterpretationen (Sonderfälle aus deinem ersten Block)
+_misc_errors = (
+    r'(?:ruhrgebiet|groupware|udp\s+bitte|ready|babybay|babydoll|jubilee|privileg|'
+    r'test|everyday|gebe\s+drei|gebe\s+dein|gb\s+daten)'
+)
+
+# Gemeinsame Konfiguration für alle
+_common_meta = {
+    'flags': re.IGNORECASE | re.VERBOSE,
+    'only_in_windows': ['firefox', 'chrome', 'brave'],
+}
+
+
+
 FUZZY_MAP_pre = [
 
-    (f'{geminiUrl}', r'^(test|google geben d|google gebe die|google babydoll|google d|guru babybett|google google babydoll|google geben|google jubilee|google ist|ruhrgebiet|groupware gemini|google privileg|google gebe sie|google www|udp bitte|google ready|google babybay|gruppe gemini|google ermittelt|mit everyday|google gebe drei)$', 70, {
-        'flags': re.IGNORECASE,
-        'only_in_windows': [r'firefox', 'chrome', 'brave'],
-    }),
+    (f'{geminiUrl}', rf'''(?ix)
+    ^ (?:
+        {_gemini_phonetics} |                     # Gemini direkt
+        {_misc_errors} |                         # Sonderfehler
+        {_google_prefix} \s+ (?:                 # Google + Anhang
+            {_gemini_phonetics} | 
+            {_studio_variants} | 
+            {_misc_errors} |
+            geben\ ihnen\ ein | recht | \w*minarett | dir\ bitte | b[\s-]?day
+        )
+    ) \b.*$
+    ''', 70, _common_meta),
+
+    # Eintrag für AI Studio (Block 3)
+    ('https://aistudio.google.com/prompts/new_chat', rf'''(?ix)
+    ^ chat\ mit\s+ (?:
+        {_gemini_phonetics} | 
+        chip | Kevin | Boot\ Gaming\ nein
+    ) \b.*$
+    ''', 70, _common_meta),
+
 
     #################################################
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
@@ -201,73 +247,6 @@ FUZZY_MAP_pre = [
 # 09:58:10,526 - INFO   - 📢📢📢 ### kugel gemini a ###
 # 09:58:25,797 - INFO   - 📢📢📢 ### google ###
 # 09:58:42,008 - INFO   - 📢📢📢 ### google gemini ###
-
-
-
-    #Google ein StudioGoogle my styleGoogle ist StudioGoogle StückGoogle my style
-    # google g bedeuten
-    # google gebe drei
-    # coral gaming nein
-    # google seminare
-    # gogol gemini ei
-    #https://aistudio.google.com/prompts/new_chathttps://aistudio.google.com/prompts/new_chat
-
-    # EXAMPLE: gemini
-    # ('https://aistudio.google.com/prompts/new_chat', r'^(gemini|cheminée|Google Jimmy|Gucke chapiteau|Google Tribüne|Google Termine|google ari studio|Google Aviv|google gewinnt|Google ein Studio|google it studio|google \w+ studio|google my style|Google
-
-    # https://aistudio.google.com/prompts/new_chat
-
-
-    # EXAMPLE: gemini
-    (f'{geminiUrl}', r'''(?ix)
-    ^ (?:
-        gemini | cheminée | gb\ dreht | kuchen\ gemini | gucken\ sie | 
-        (?:google|googeln|gogol|gucke|goris|gut|gb|kugeln|brooke|coral|cool|obwohl) \s+
-        (?:
-            gemini[\s\w]* |
-            g\ mine |
-            gb |
-            gehminuten |
-            gehe\ mit |
-            geben\ ihnen\ ein |
-            gibt |
-            will\ gemini\ a |
-            cheminée |
-            studi[ao]\w* |
-            seminar |
-            ein\ Studio | ein\ Stuhl |
-            eminent |
-            it\ studio | my\ style
-            ge[hmw]\w* | gemini\ recht | \w*minarett |
-            gaming\ nein | gaming | 
-            kriminell\w* |
-            dir\ bitte |
-            termin\w* |
-            b[\s-]?day |
-            jimmy\ nein 
-            jimmy\ knight|
-            jimmy\ lai |
-            jimmy\ neu |
-            grimmen\s*.*|grimmig|Germany|feminin|Gewinnern|gewinne|wieder|g bedeuten|gebe drei|gb daten|gewinn ein|gebe dein|kriminelle|gewitter|b day|g wie neu|coral gaming nein|geben innere|seminare|gemini\ ei|
-            kapital | aviv | leicht | eingestuft | chapiteau | my\s+style | seminare | feminin | gemini\ ei |
-            will\ termine
-        )
-    )
-    \b.*$
-    '''
-        , 70,{
-        'flags': re.IGNORECASE,
-        'only_in_windows': [r'firefox', 'chrome', 'brave'],
-    }),
-
-
-    # EXAMPLE: chat mit gemini
-    ('https://aistudio.google.com/prompts/new_chat', r'^chat mit\s+(gemini|cheminée|Boot Gaming nein|chip|Kevin)\b.*$', 70, {
-        'flags': re.IGNORECASE,
-        'only_in_windows': [r'firefox', 'chrome', 'brave'],
-    }),
-
-    # Google kriminelle
 
     # EXAMPLE: Suche
     ("('Rückgabe', r'Suche', 70, {'flags': re.IGNORECASE}),",
