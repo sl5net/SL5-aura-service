@@ -1,6 +1,6 @@
 # File: .github/workflows/transcription_tool_test.yml
 
-name: 'Test: Transcription Tool'
+name: 'ubuntu_wav2text.yml'
 
 on:
   workflow_dispatch:
@@ -16,6 +16,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Install CI Display Dependencies
+        run: |
+          sudo apt-get update
+          # xclip für das Clipboard, libnotify-bin für notify-send, xvfb für den virtuellen Screen
+          sudo apt-get install -y xclip libnotify-bin xvfb dbus-x11
+
+      - name: Run transcription test
+        run: |
+          # Wir starten einen virtuellen X-Server UND eine D-Bus Session
+          xvfb-run dbus-run-session -- python tools/transcribe_test.py  # Pfad anpassen falls nötig
+
       - name: '1. Checkout Repository'
         uses: actions/checkout@v4
 
