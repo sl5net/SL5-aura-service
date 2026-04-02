@@ -63,5 +63,6 @@ jobs:
           # xvfb-run startet die Umgebung, danach kommt der Befehl
           xvfb-run dbus-run-session -- .venv/bin/python tools/transcribe_wavefile.py \
             scripts/py/func/checks/test_audio_16k_en.wav \
-            --vosk_model models/vosk-model-small-en-us-0.15 | grep "the first test sequence"
+            --vosk_model vosk-model-small-en-us-0.15 | grep "the first test sequence is now complete ready to proceed with the second phase"
+
 
