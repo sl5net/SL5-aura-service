@@ -357,6 +357,8 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                             if is_listen_persistent:
                                 if any(w in partial_text.lower() for w in
                                        ["einen"]):
+                                    # partial_text = partial_text.replace("einen", "").strip()
+                                    recognizer.Reset()
                                     continue
 
                             if any(w in partial_text.lower() for w in ["teleskop", "tedesco", "cellist", "tennis" ]):
