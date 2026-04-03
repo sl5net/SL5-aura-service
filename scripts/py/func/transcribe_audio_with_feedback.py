@@ -21,6 +21,10 @@ from scripts.py.func.audio_manager import speak_inclusive_fallback
 import platform
 
 from .config.dynamic_settings import DynamicSettings
+try:
+    from aura_constants import WAKE_PHANTOM_REGEX
+except ImportError:
+    WAKE_PHANTOM_REGEX = ["einen"]
 # from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
 
@@ -354,10 +358,9 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         modus = 'toggle'
                         if modus == 'toggle' and ENABLE_WAKE_WORD:
 
-                            if is_listen_persistent:
-                                if any(w in partial_text.lower() for w in
-                                       ["einen"]):
-                                    # partial_text = partial_text.replace("einen", "").strip()
+
+                            if is_listen_persistent and is_suspended:
+                                if any(w in partial_text.lower() for w in WAKE_PHANTOM_REGEX):
                                     recognizer.Reset()
                                     continue
 
