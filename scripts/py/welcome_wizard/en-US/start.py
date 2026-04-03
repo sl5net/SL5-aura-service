@@ -13,11 +13,20 @@ def run(project_root):
     if not search_script.exists():
         return
 
-    welcome_msg = (
+    welcome_msg_20260402 = (
         "=== WELCOME TO AURA ===\\n\\n"
         "I've opened the interactive tutorials (Koans) for you.\\n"
         "Pick a lesson and start exploring Aura!\\n"
     )
+
+    welcome_msg = (
+        "=== WELCOME TO AURA 🔭 ===\\n\\n"
+        "Aura is your telescope for the PC: Control from a distance!\\n\\n"
+        "TIP: Say 'Teleskop' during recording to toggle the\\n"
+        "pause function (SUSPENDED) on or off.\\n\\n"
+        "Opening interactive tutorials (Koans) now..."
+    )
+
 
     if platform.system() == "Windows":
         subprocess.Popen(['cmd', '/c', 'start', str(search_script), str(koan_dir)], start_new_session=True)

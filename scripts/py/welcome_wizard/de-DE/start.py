@@ -10,11 +10,20 @@ def run(project_root):
     if not search_script.exists():
         return
 
-    welcome_msg = (
+    welcome_msg_20260402 = (
         "=== WILLKOMMEN BEI AURA ===\\n\\n"
         "Ich habe dir die interaktiven Uebungen (Koans) geoeffnet.\\n"
         "Suche dir eine Aufgabe aus und druecke ENTER um sie in Kate zu oeffnen.\\n"
     )
+
+    welcome_msg = (
+        "=== WILLKOMMEN BEI AURA 🔭 ===\\n\\n"
+        "Aura ist dein Teleskop fuer den PC: Steuerung aus der Ferne!\\n\\n"
+        "TIPP: Sag 'Teleskop' waehrend der Aufnahme, um die\\n"
+        "Pausen-Funktion (SUSPENDED) ein- oder auszuschalten.\\n\\n"
+        "Ich oeffne dir jetzt die Uebungen (Koans)..."
+    )
+
 
     if platform.system() == "Windows":
         # Wir übergeben das Koan-Verzeichnis an die .bat
