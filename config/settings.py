@@ -11,6 +11,8 @@ SERVICE_START_OPTION = 0
 SHOW_SEARCH_ON_STARTUP = True
 # set False, for "silent"
 
+ENABLE_WAKE_WORD = False
+
 current_user,_ = determine_current_user()
 print(f'hi, hallo, welcome: {current_user}')
 current_user = user_name = USER_NAME = str(current_user) # fallbacks

@@ -199,6 +199,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , AUTO_ENTER_AFTER_DICTATION_global
                                    ):
     last_toggle = 0
+    ENABLE_WAKE_WORD = False
 
     manage_audio_routing(settings.AUDIO_INPUT_DEVICE, logger)
 
@@ -231,6 +232,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
 
                     SPEECH_PAUSE_TIMEOUT = float(value_part)
+                elif stripped_line.startswith("ENABLE_WAKE_WORD"):
+                    value_part = line.split("=")[1].strip()
+                    value_part = value_part.split("#")[0].strip()
+                    ENABLE_WAKE_WORD = value_part.lower() == "true"
                 elif stripped_line.startswith("AUTO_ENTER_AFTER_DICTATION_REGEX_APPS"): # 1 means one Enter, 2 means Enter two times
                     value_part = line.split("=")[1].strip()  # get all behin =
                     value_part = value_part.split("#")[0].strip()  # get all before #
@@ -366,6 +371,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         # is_listen_persistent verwenden?
 
 
+                        suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")) / "sl5_aura" / "aura_vosk_suspended.flag"
+                        is_suspended = suspend_flag.exists()
+                        if not ENABLE_WAKE_WORD and is_suspended:
+                            continue
                         is_speech_finalized = recognizer.AcceptWaveform(data)
 
                         # 2. SOFORT das Partial Result prüfen (Wichtig für Wake-Words!)
@@ -385,7 +394,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
                         #Wie ist das bitteWie ist das bitteAktuell in Tübingen sind es 0 Grad, gefühlt wie -0 Grad. Die Vorhersage meldet: Wolkenlos.
                         modus = 'toggle'
-                        if modus == 'toggle':
+                        if modus == 'toggle' and ENABLE_WAKE_WORD:
 
                             if is_listen_persistent:
                                 if any(w in partial_text.lower() for w in
@@ -416,7 +425,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
                         # Wenn wir im "Warte-Modus" sind (z.B. durch dein suspend_flag geprüft)
                         # Einen BantusMein nächstes Wetter
-                        if is_suspended:
+                        if is_suspended and ENABLE_WAKE_WORD:
                             # Wir prüfen sofort das Teilergebnis auf das Wake-Word 🌵
                             # "kakturs" oder "teleskop" - je nachdem wie du es aussprichst 🌵
 
