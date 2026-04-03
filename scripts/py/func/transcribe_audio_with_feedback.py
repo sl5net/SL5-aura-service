@@ -210,59 +210,17 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
     unmute_microphone()
 
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-    local_config_path = PROJECT_ROOT / "config/settings_local.py" # scripts/py/func/transcribe_audio_with_feedback.py:207
-    default_config_path = PROJECT_ROOT / "config/settings.py"
-    config_to_read = local_config_path if local_config_path.exists() else default_config_path
-
-    try:
-        with open(PROJECT_ROOT / config_to_read, "r") as f:
-            for line in f:
-                stripped_line = line.strip()
-
-
-                if stripped_line.startswith("PRE_RECORDING_TIMEOUT"):
-                    value_part = line.split("=")[1].strip()  # get all behin =
-                    value_part = value_part.split("#")[0].strip()  # get all before #
-
-                    initial_silence_timeout = float(value_part)
-                elif stripped_line.startswith("SPEECH_PAUSE_TIMEOUT"):
-                    value_part = line.split("=")[1].strip()  # get all behin =
-                    value_part = value_part.split("#")[0].strip()  # get all before #
-
-
-                    SPEECH_PAUSE_TIMEOUT = float(value_part)
-                elif stripped_line.startswith("ENABLE_WAKE_WORD"):
-                    value_part = line.split("=")[1].strip()
-                    value_part = value_part.split("#")[0].strip()
-                    ENABLE_WAKE_WORD = value_part.lower() == "true"
-                elif stripped_line.startswith("AUTO_ENTER_AFTER_DICTATION_REGEX_APPS"): # 1 means one Enter, 2 means Enter two times
-                    value_part = line.split("=")[1].strip()  # get all behin =
-                    value_part = value_part.split("#")[0].strip()  # get all before #
-
-                    value_without_whitespaces = str(value_part)
-                    value_without_quotes = value_without_whitespaces.strip('"')
-                    AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = value_without_quotes
-
-                    if AUTO_ENTER_AFTER_DICTATION_REGEX_APPS != AUTO_ENTER_AFTER_DICTATION_global:
-                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION_REGEX_APPS} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION_REGEX_APPS: =====> {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
-                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION_REGEX_APPS} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION_REGEX_APPS: =====> {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
-                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION_REGEX_APPS} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION_REGEX_APPS: =====> {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
-                        logger.info(f"{AUTO_ENTER_AFTER_DICTATION_REGEX_APPS} != {AUTO_ENTER_AFTER_DICTATION_global} =====> Updated AUTO_ENTER_AFTER_DICTATION_REGEX_APPS: =====> {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
-                        # global AUTO_ENTER_AFTER_DICTATION_global
-                        AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
-                        # Define the path for the AutoEnter flag file
-                        AUTO_ENTER_FLAG_FILE = Path("/tmp/sl5_aura/sl5_auto_enter.flag")
-                        with open(AUTO_ENTER_FLAG_FILE, "w") as flag_f:
-                            flag_f.write(str(AUTO_ENTER_AFTER_DICTATION_REGEX_APPS))
-                        logger.info(f"AUTO_ENTER_AFTER_DICTATION_REGEX_APPS written to {AUTO_ENTER_FLAG_FILE}: {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
-
-
-    except (FileNotFoundError, ValueError, IndexError) as e:
-        logger.warning(f"Could not read local config override ({e}), continuing with defaults.")
-    except Exception as e:
-        logger.warning(f"warning: {e}")
-
+    # settings are read via DynamicSettings (settings object), which supports live reload
+    initial_silence_timeout = settings.PRE_RECORDING_TIMEOUT
+    SPEECH_PAUSE_TIMEOUT = settings.SPEECH_PAUSE_TIMEOUT
+    ENABLE_WAKE_WORD = settings.ENABLE_WAKE_WORD
+    AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
+    if AUTO_ENTER_AFTER_DICTATION_REGEX_APPS != AUTO_ENTER_AFTER_DICTATION_global:
+        AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
+        AUTO_ENTER_FLAG_FILE = Path("/tmp/sl5_aura/sl5_auto_enter.flag")
+        with open(AUTO_ENTER_FLAG_FILE, "w") as flag_f:
+            flag_f.write(str(AUTO_ENTER_AFTER_DICTATION_REGEX_APPS))
+        logger.info(f"AUTO_ENTER_AFTER_DICTATION_REGEX_APPS written to {AUTO_ENTER_FLAG_FILE}: {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
     logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")
     logger.info(f"AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = {AUTO_ENTER_AFTER_DICTATION_REGEX_APPS}")
 
