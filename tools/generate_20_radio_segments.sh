@@ -1,11 +1,20 @@
 #!/bin/bash
 # mass_generate_radio.sh - Generates multiple radio segments for the SL5-aura-service
 
+echo "maybe use:"
+echo "./tools/generate_20_radio_segments.sh --demo ; kate /tmp/sl5_aura/radio_output.txt"
+
 # --- CONFIGURATION ---
 PROJECT_DIR="$HOME/projects/py/STT"
 PYTHON_SCRIPT="config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
 VENV_PATH=".venv/bin/activate"
 ITERATIONS=200
+
+logg_of_runs = """
+start:
+2026-0402-2318
+"""
+
 
 # Navigate to project directory
 cd "$PROJECT_DIR" || { echo "Directory not found"; exit 1; }

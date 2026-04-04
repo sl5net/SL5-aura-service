@@ -68,7 +68,8 @@ if os.name == 'nt':
         # Pre-initialize COM once at module level to eliminate the 1s delay
         try:
             comtypes.CoInitialize()
-        except Exception:
+        except Exception as e202604030126:
+            print(f'error: {e202604030126}')
             pass
     except ImportError:
         winsound = None

@@ -423,7 +423,8 @@ def get_github_url(stored_path):
         tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
         root_file = tmp_dir / "sl5_aura" / "sl5net_aura_project_root"
         project_root = Path(root_file.read_text(encoding="utf-8").strip())
-    except:
+    except Exception as e:
+        print(f'error: {e}')
         return None
 
     # 1. Datei lokal finden (Self-Healing wie gehabt)

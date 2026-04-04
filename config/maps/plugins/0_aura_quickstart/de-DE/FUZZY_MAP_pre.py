@@ -1,19 +1,23 @@
 import os
+import platform
 from pathlib import Path
 
 # Fix für Pfade
 CONFIG_DIR = Path(__file__).parent
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-root_file = tmp_dir / "sl5_aura" / "sl5net_aura_project_root"
-PROJECT_ROOT = Path(root_file.read_text(encoding="utf-8").strip())
+
+PROJECT_ROOT = Path("/tmp/sl5_aura/sl5net_aura_project_root")
 
 
-aura_reg = '(Aura|Auch|Aurora|laura|dora|Ära|hurra|prora|Orange|rohre|rohrer|doras|woran|Zauberer|ora|suche|uwe|obwohl|over|oh|bohrer|aurore|rum|ruhe|tore|rot|robe|buchen|hoch|horror|auren|samurai|roche|brauche|ohh|ore|anbraten brauche|k|raucher|aachen|aber|ohren|ohr|lorenz|hoa|tore zu|hey|ovale|burgess)'
-
+# 3. Jetzt sauber importieren
+try:
+    from aura_constants import AURA_VARIANTS
+except ImportError:
+    # Fallback, falls die Datei fehlt
+    AURA_VARIANTS = r'(Aura|Auch|Aurora)'
 
 FUZZY_MAP_pre = [
     # --- Sprachsteuerung für den Lernmodus ---
-    ('Lernmodus...', fr'^{aura_reg}.*lernmodus (an\w*|ein\w*|aus\w*|starten|stoppen)$', 100, {
+    ('Lernmodus...', fr'^{AURA_VARIANTS}.*lernmodus (an\w*|ein\w*|aus\w*|starten|stoppen)$', 100, {
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),
 
@@ -23,4 +27,9 @@ FUZZY_MAP_pre = [
 
     # --- Training-Plugin (wird vom Skript oben ein/ausgeschaltet) ---
 #     (f'{str(__file__)}', r'^(.*|straßenbahn)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+
+
+    #
+
+
 ]

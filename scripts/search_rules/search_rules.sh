@@ -27,14 +27,15 @@
 # CONFIGURATION
 #
 
-
-
 # MAPS_DIR="$PROJECT_ROOT/config/maps"
 
 
 # 1. PFADE & VARIABLEN
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
+
+cd "$PROJECT_ROOT" || exit 1
+
 DEFAULT_QUERY=".py pre # EXAMPLE:"
 REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
 

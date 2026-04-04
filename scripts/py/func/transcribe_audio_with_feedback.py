@@ -21,16 +21,69 @@ from scripts.py.func.audio_manager import speak_inclusive_fallback
 import platform
 
 from .config.dynamic_settings import DynamicSettings
-try:
-    from aura_constants import WAKE_PHANTOM_REGEX
-except ImportError:
-    WAKE_PHANTOM_REGEX = ["einen"]
 # from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
 
 
-global AUTO_ENTER_AFTER_DICTATION_global  # noqa: F824
+# WAKE_PHANTOM
 
+import sys
+from pathlib import Path
+# Aktuell in Tübingen sind es 12 Grad, gefühlt wie 12 Grad. Die Vorhersage meldet: Leicht Bewölkt.
+# sys.path.insert(0, str(PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE"))
+
+# from Path(PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants") import WAKE_PHANTOM
+
+# import importlib
+# TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+# PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+# PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+# aura_constants_path = Path(PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
+# aura_constants_spec = importlib.util.spec_from_file_location("aura_constants_dyn", aura_constants_path)
+# aura_constants_module = importlib.util.module_from_spec(aura_constants_spec)
+# aura_constants_spec.loader.exec_module(aura_constants_module)
+# WAKE_PHANTOM = getattr(aura_constants_module, "WAKE_PHANTOM")
+
+
+# import importlib.util
+# TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+# PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+# PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+# aura_constants_path = Path(PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
+# aura_constants_spec = importlib.util.spec_from_file_location(aura_constants_path, aura_constants_path)
+# aura_constants_module = importlib.util.module_from_spec(aura_constants_spec)
+# WAKE_PHANTOM = getattr(aura_constants_module, "WAKE_PHANTOM")
+
+#
+# import runpy
+# TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+# prf = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+# PROJECT_ROOT = Path(prf.read_text(encoding="utf-8"))
+# acp = Path(PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
+# WAKE_PHANTOM = runpy.run_path(acp)["WAKE_PHANTOM"]
+#
+# TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+# PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+# PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+# aura_constants_path = Path(PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
+# WAKE_PHANTOM = (lambda p, n: (lambda m: getattr(m, n))(
+#     (lambda s: (lambda mod: (s.loader.exec_module(mod), mod)[1])(importlib.util.module_from_spec(s)))(
+#         importlib.util.spec_from_file_location(p.stem, p)
+#     )
+# ))(aura_constants_path, "WAKE_PHANTOM")
+
+import runpy
+PROJECT_ROOT = Path("C:/tmp" if platform.system()=="Windows" else "/tmp")/"sl5_aura"/"sl5net_aura_project_root"
+
+
+acp = Path(PROJECT_ROOT.read_text(encoding="utf-8").strip())/"config"/"maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+WAKE_PHANTOM = runpy.run_path(acp)["WAKE_PHANTOM"]
+
+
+
+global AUTO_ENTER_AFTER_DICTATION_global  # noqa: F824
+# Kann man das auch schöner schreibenJetzt immer wachOkay gutAktuell in Tübingen sind es 12 Grad, gefühlt wie 12 Grad. Die Vorhersage meldet: Leicht Bewölkt.
+#
 
 # 2. Logic for 48kHz to 16kHz
 NATIVE_RATE = 48000
@@ -358,13 +411,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         modus = 'toggle'
                         if modus == 'toggle' and ENABLE_WAKE_WORD:
 
+                            WAKE_WORD = 'teleskop'
 
-                            if is_listen_persistent and is_suspended:
-                                if any(w in partial_text.lower() for w in WAKE_PHANTOM_REGEX):
-                                    recognizer.Reset()
-                                    continue
 
-                            if any(w in partial_text.lower() for w in ["teleskop", "tedesco", "cellist", "tennis" ]):
+                            if any(w in partial_text.lower() for w in [WAKE_WORD, "tedesco", "cellist", "tennis" ]):
                                 if time.time() - last_toggle > 2.0:  # 2 sec cooldown
                                     last_toggle = time.time()
                                     if is_suspended:
@@ -385,6 +435,25 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                     # speak_fallback(f"Wake-Word", 'de-DE')
 
                                     continue
+
+
+                            if is_listen_persistent:
+                                # TODO: how long nobody has spoken?
+
+                                if time.time() - last_activity_time > 5.0 and len(partial_text.lower()) < len(WAKE_WORD):
+                                    recognizer.Reset()
+                                    continue
+
+
+                                if any(w in partial_text.lower() for w in WAKE_PHANTOM):
+
+                                    #if any(w in partial_text.lower() for w in
+                                    #       ["einen"]):
+                                    # partial_text = partial_text.replace("einen", "").strip()
+                                    recognizer.Reset()
+                                    continue
+
+
 
                         # Wenn wir im "Warte-Modus" sind (z.B. durch dein suspend_flag geprüft)
                         # Einen BantusMein nächstes Wetter

@@ -22,7 +22,7 @@ def timestamp():
 
 # --- 1. Setup & Konfiguration ---
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = Path("/tmp/sl5_aura/sl5net_aura_project_root")
 
 SECRETS_PATH = PROJECT_ROOT / ".secrets"
 print(f"DEBUG: Suche .secrets unter: {SECRETS_PATH}")

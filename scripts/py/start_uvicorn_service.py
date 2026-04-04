@@ -14,7 +14,8 @@ HOST = "0.0.0.0"
 PORT = 8830
 MODULE_PATH = "scripts.py.service_api:app"
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = Path("/tmp/sl5_aura/sl5net_aura_project_root")
+
 (PROJECT_ROOT / 'log').mkdir(exist_ok=True)
 LOG_FILE = PROJECT_ROOT / 'log' / "service_start.log"
 # ----------------------

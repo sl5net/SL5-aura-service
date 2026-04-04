@@ -22,6 +22,9 @@ SERVICE_START_OPTION = 0
 SHOW_SEARCH_ON_STARTUP = True
 # set False, for "silent"
 
+ENABLE_WAKE_WORD = False
+# ENABLE_WAKE_WORD = True: During an active recording session,
+# saying "Teleskop" toggles the system between active and suspended state.
 
 # Kill competing LanguageTool or Eloquent instances on startup
 KILL_COMPETING_LT_AND_ELOQUENT_ON_START = 0

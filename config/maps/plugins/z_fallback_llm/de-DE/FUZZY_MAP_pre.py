@@ -1,10 +1,21 @@
 # config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py
+import os
 import re # noqa: F401
+import runpy
 from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
 
 
-aura1 ="(Aura|Aurora|laura|flora|dora|Ära|hurra|prora|Computer)"
+# Pfad zu den Internals hinzufügen (erfordert PROJECT_ROOT)
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+INTERNAL_PATH = PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE"
+
+acp = Path(PROJECT_ROOT.read_text(encoding="utf-8").strip())/"config"/"maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+AURA_VARIANTS = runpy.run_path(acp)["WAKE_PHANTOM"]
+
+
+aura1 = AURA_VARIANTS
 
 FUZZY_MAP_pre = [
     # Catch-all rule: Matches everything (.*) as the last resort.

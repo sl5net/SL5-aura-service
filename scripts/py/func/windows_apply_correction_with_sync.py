@@ -39,7 +39,7 @@ def windows_apply_correction_with_sync():
         print("error: AutoHotkey not found!")
 
     # scripts/py/func/process_text_in_background.py:2013
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+    PROJECT_ROOT = Path("/tmp/sl5_aura/sl5net_aura_project_root")
 
     script_path = PROJECT_ROOT / "scripts" / "ahk" / "sync_editor.ahk"
 

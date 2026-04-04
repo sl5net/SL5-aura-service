@@ -9,6 +9,9 @@ The session-internal behavior is controlled by:
 ## Operational Logic
 Unlike a persistent background listener, Aura's STT engine (Vosk) only processes audio when a recording session has been triggered externally (e.g., via Hotkey).
 
+> **Aura is your telescope 🔭 for the PC: Control from a distance!**
+ 
+
 ### The In-Session Toggle ("Teleskop")
 When `ENABLE_WAKE_WORD` is set to **True**:
 1. **Trigger:** The user starts a session manually.
@@ -24,3 +27,5 @@ When `ENABLE_WAKE_WORD` is set to **False** (Default):
 ## Latency & Performance
 - **Instant Resume:** Because the `RawInputStream` remains open throughout the session, switching from SUSPENDED back to ACTIVE has **0ms additional latency**.
 - **Loop Timing:** The processing loop operates at a ~100ms interval (`q.get(timeout=0.1)`), ensuring near-instant response times.
+
+

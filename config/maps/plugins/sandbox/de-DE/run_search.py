@@ -16,12 +16,14 @@ def execute(match_data=None):
         return
     project_root = Path(root_file.read_text(encoding="utf-8").strip())
 
+
     # 2. Such-Skript und Terminal-Befehl wählen
     if is_windows:
         search_script = project_root / "scripts" / "search_rules" / "search_rules.bat"
         # Auf Windows schließt cmd automatisch nach Beenden der bat
-        cmd = ['cmd.exe', '/c', 'start', '/wait', str(search_script)]
+        terminal_cmd = ['cmd.exe', '/c', 'start', '/wait', str(search_script)]
         env = os.environ.copy()
+
     else:
         # search_script = project_root / "scripts" / "search_rules" / "search_rules.sh"
         search_script = project_root / "scripts" / "search_rules" / "search_rules.sh"
@@ -44,7 +46,12 @@ def execute(match_data=None):
 
         # CLEAN FIX: Wir rufen NUR das Such-Skript auf.
         # Ohne 'exec bash' schließt sich das Fenster sofort nach dem Skript.
-        cmd = [terminal, '-e', 'bash', str(search_script)]
+        # terminal_cmd = [terminal, '-e', 'bash', str(search_script)]
+
+        terminal_cmd = [
+            'systemd-run', '--user', '--collect', '--quiet', '--description=AuraSearch',
+            terminal, '-e', 'bash', '-c', f'bash "{search_script}";'
+        ]
 
 
 
@@ -59,7 +66,9 @@ def execute(match_data=None):
         env["DBUS_SESSION_BUS_ADDRESS"] = f"unix:path=/run/user/{uid}/bus"
 
     # 3. Starten
-    subprocess.Popen(cmd, start_new_session=True, env=env)
+    #
+
+    subprocess.Popen(terminal_cmd, start_new_session=True, env=env, cwd=str(project_root))
 
     # 4. Deine Aura-Pflicht-Sequenz (Sleep + Exit)
     print("Suche gestartet. Session wird beendet...")

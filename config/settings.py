@@ -12,6 +12,10 @@ SHOW_SEARCH_ON_STARTUP = True
 # set False, for "silent"
 
 ENABLE_WAKE_WORD = False
+# ENABLE_WAKE_WORD = True: During an active recording session,
+# saying "Teleskop" toggles the system between active and suspended state.
+
+
 
 current_user,_ = determine_current_user()
 print(f'hi, hallo, welcome: {current_user}')

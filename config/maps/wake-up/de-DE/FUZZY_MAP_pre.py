@@ -17,10 +17,11 @@ CONFIG_DIR = Path(__file__).parent
 #praktisch einschlafenWie ist das bitte
 # einenhaben gratis einschlafennun
 
-nonsense_start_word = r'(?:(ein|eine|einen)\s*)?'
 
 # wakeword = r'{nonsense_word}(kaktus|kaktos|kackt|kraft|kürzlich|taktus|captain|voss|frost|klapptisch|praktisch|korb|wie törn).*'
 
+# config/maps/wake-up/de-DE/FUZZY_MAP_pre.py:24
+nonsense_start_word = r'(?:(ein|eine|einen)\s*)?'
 wakeword = r'{nonsense_word}(Teleskop|tritt|tedesco|cellist|tennis|tourist|kredit).*'
 
 
