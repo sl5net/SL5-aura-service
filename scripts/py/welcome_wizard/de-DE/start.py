@@ -10,7 +10,7 @@ def run(project_root):
     if not search_script.exists():
         return
 
-    welcome_msg_20260402 = (
+    welcome_msg_20260402 = ( # noqa: F841
         "=== WILLKOMMEN BEI AURA ===\\n\\n"
         "Ich habe dir die interaktiven Uebungen (Koans) geoeffnet.\\n"
         "Suche dir eine Aufgabe aus und druecke ENTER um sie in Kate zu oeffnen.\\n"

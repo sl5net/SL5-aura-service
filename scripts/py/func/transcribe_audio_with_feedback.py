@@ -27,8 +27,6 @@ settings = DynamicSettings()
 
 # WAKE_PHANTOM
 
-import sys
-from pathlib import Path
 # Aktuell in Tübingen sind es 12 Grad, gefühlt wie 12 Grad. Die Vorhersage meldet: Leicht Bewölkt.
 # sys.path.insert(0, str(PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE"))
 

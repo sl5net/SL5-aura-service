@@ -1,5 +1,3 @@
-import os
-import platform
 from pathlib import Path
 
 # Fix für Pfade

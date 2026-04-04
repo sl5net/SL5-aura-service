@@ -13,7 +13,7 @@ def run(project_root):
     if not search_script.exists():
         return
 
-    welcome_msg_20260402 = (
+    welcome_msg_20260402 = ( # noqa: F841
         "=== WELCOME TO AURA ===\\n\\n"
         "I've opened the interactive tutorials (Koans) for you.\\n"
         "Pick a lesson and start exploring Aura!\\n"
