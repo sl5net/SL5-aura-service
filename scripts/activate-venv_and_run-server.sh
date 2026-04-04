@@ -7,6 +7,14 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 PROJECT_ROOT="$SCRIPT_DIR/.."
 
+
+PROJECT_ROOT=$(realpath "$SCRIPT_DIR/..")
+
+mkdir -p /tmp/sl5_aura
+
+sl5net_aura_project_root="/tmp/sl5_aura/sl5net_aura_project_root"
+echo "$PROJECT_ROOT" > "$sl5net_aura_project_root"
+
 os_type=$(uname -s)
 if [[ "$os_type" == "MINGW"* || "$os_type" == "CYGWIN"* || "$os_type" == "MSYS"* ]]; then
     # This is a Windows-based shell environment
