@@ -258,7 +258,8 @@ def get_files_needing_update(root_dir):
                    not (d.startswith('.') or d.startswith('_') or d in ['node_modules', 'venv', '__pycache__'])]
         for file in files:
             if file.endswith(".md"):
-                all_md_files.append(os.path.join(root, file))
+                if ".i18n" not in file or "-delang.md" in file:
+                    all_md_files.append(os.path.join(root, file))
 
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -503,6 +504,7 @@ def main():
     if not candidates:
         print("All documents are up to date.")
         return
+
 
     target = random.choice(candidates)
     target_pretty = target

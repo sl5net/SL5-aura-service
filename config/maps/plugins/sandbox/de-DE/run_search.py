@@ -50,7 +50,7 @@ def execute(match_data=None):
 
         terminal_cmd = [
             'systemd-run', '--user', '--collect', '--quiet', '--description=AuraSearch',
-            terminal, '-e', 'bash', '-c', f'bash "{search_script}";'
+            terminal, '-e', 'bash', '-c', f'bash "{search_script}" || sleep 5 ;'
         ]
 
 

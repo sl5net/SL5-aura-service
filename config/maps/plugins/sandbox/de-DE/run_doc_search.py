@@ -36,7 +36,7 @@ def execute(match_data=None):
     terminal_cmd = [
         'systemd-run', '--user', '--collect', '--quiet',
         'konsole', '-e', 'bash', '-c',
-        f'SEARCH_FILES_FILTER="{file_filter}" bash "{search_script}" "{docs_dir}" || sleep 10'
+        f'SEARCH_FILES_FILTER="{file_filter}" bash "{search_script}" "{docs_dir}" || sleep 5 ;'
     ]
 
     # 1. Locale erzwingen (behebt den ANSI_X3.4 Fehler)
