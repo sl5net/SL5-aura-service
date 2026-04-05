@@ -12,7 +12,7 @@ cd /d "%~dp0"
 
 :: start this script like: & .\start_aura.bat
 :: Version: v2.1
-;;
+::
 
 :: --- 2. Admin Rights Check ---
 echo [*] Checking for Administrator privileges
