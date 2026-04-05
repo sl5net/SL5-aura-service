@@ -3,8 +3,9 @@ import re # noqa: F401
 
 # too<-from
 FUZZY_MAP_pre = [
-    ('überraschung', r'^überraschung$'),
-    ('meine_funktion', r'^meine_funktion$'),
-    ('return 42', r'^return\ 42$'),
-    ('rote grütze', r'^rote\ grütze$'),
+    ('hallo', r'^hallo$'),
+    ('welt', r'^welt$'),
+    ('Robert', r'^Robert$'),
+    ('macht', r'^macht$'),
+    ('nix', r'^nix$'),
 ]
