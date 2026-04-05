@@ -49,9 +49,6 @@ else
     # pkill -f "$SERVICE_NAME_MAIN"
     pkill -9 "$SERVICE_NAME_MAIN"
     pkill -f "$SERVICE_NAME_WATCHER"
-    echo pkill -9 -f "$SERVICE_NAME_MAIN"
-    echo pkill -9 -f "$SERVICE_NAME_WATCHER"
-    echo pkill -9 -f "$SERVICE_NAME_WATCHER2"
 
     # realpath /tmp/../tmp/../tmp
     # /tmp

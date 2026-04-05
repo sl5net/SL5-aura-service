@@ -25,7 +25,7 @@ default_primary = "de" if country in ["DE", "AT", "CH"] else "en"
 # sys.stderr.write(f"Region: {country} | Default: {default_primary}\n")
 
 sys.stderr.write(f"Region detected: {country} | Suggested language: {default_primary}\n")
-sys.stderr.write(f"Press Enter to confirm, or type a different language code.\n")
+sys.stderr.write("Press Enter to confirm, or type a different language code.\n")
 
 primary = timed_input("Primary Language (e.g. de, en, fr) - auto-confirms in 8s", default_primary)
 
