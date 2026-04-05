@@ -1,5 +1,8 @@
 import os
 import re
+import ast
+import time
+import shutil
 
 # from pygments.styles.dracula import comment
 
@@ -47,9 +50,55 @@ def _apply_fix_name_error(file_path, bad_name, logger):
 
     logger.info(f"def _apply_fix_name_error( '{filename}' {bad_name} ...")
 
+    # 1. File age check: only fix files modified in the last 10 minutes
+    age = time.time() - os.path.getmtime(file_path)
+    if age > 600:
+        logger.info(f"Auto-fix skipped: {filename} is too old ({int(age)}s).")
+        return False
+
+    # 2. Read file
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            lines = content.splitlines(keepends=True)
+
+            # Abort if file contains real Python code
+            code_indicators = ['def ', 'class ', 'async def ', 'lambda ']
+            for line in lines:
+                stripped = line.strip()
+                if any(stripped.startswith(kw) for kw in code_indicators):
+                    logger.info(f"Auto-fix aborted: {filename} contains Python code ('{stripped[:30]}').")
+                    return False
+
+    except Exception as e:
+        logger.error(f"Auto-fix: could not read {filename}: {e}")
+        return False
+
+    # 3. ast.parse: if already valid Python, don't touch
+    try:
+        ast.parse(content)
+        logger.info(f"Auto-fix skipped: {filename} is already valid Python.")
+        return False
+    except SyntaxError:
+        pass  # proceed with fix
+
+    # 4. Smart ratio: valid tuples vs bare words
+    valid_tuples = sum(1 for line in lines if line.strip().startswith("('"))
+    bare_words = sum(1 for line in lines if re.match(r"^\s*[\w\u00c0-\u017e][\w\u00c0-\u017e\s\-]*\s*,?\s*$", line))
+    if valid_tuples > bare_words * 2:
+        logger.info(f"Auto-fix skipped: {filename} looks mostly complete ({valid_tuples} tuples, {bare_words} bare words).")
+        return False
+
+    # 5. Backup before fix
+    backup_path = file_path + ".auto_fix_backup"
+    shutil.copy2(file_path, backup_path)
+    logger.info(f"Auto-fix: backup created at {backup_path}")
+
+
+
 
     # 1. Check file size (1KB = 1024 bytes)
-    if os.path.getsize(file_path) > 1048:
+    if os.path.getsize(file_path) > 4096:
         logger.info(f"Auto-fix skipped: {os.path.basename(file_path)} is too large (> 1KB).")
         return False
 
@@ -154,13 +203,29 @@ def _apply_fix_name_error(file_path, bad_name, logger):
         already_closed = False
 
 
+
+        inside_list = False
         for line in lines:
             original_line = line
-            # Erkennt Wörter am Zeilenanfang (auch ohne Komma)
-            match = re.search(r"^\s*(?P<name>[a-zA-Z_]\w*)\s*,?\s*(?P<comment>#.*)?$", line)
+            stripped = line.strip()
 
-            # Falls ein "nacktes" Wort gefunden wurde (und es nicht die Map-Variable ist)
-            if match and match.group('name') not in [target_var, 'import', 're', 'True', 'False']:
+            # Track if we are inside the list definition
+            if re.search(rf"^\s*{target_var}\s*=\s*[\[\{{]", line):
+                inside_list = True
+            if stripped == closing_bracket:
+                inside_list = False
+                new_lines.append(line)
+                continue
+
+            # Only fix bare words inside the list
+            if not inside_list:
+                new_lines.append(line)
+                continue
+
+            match = re.search("^\\s*(?P<name>[\\w\u00c0-\u017e][\\w\u00c0-\u017e\\s\\-]*?)\\s*,?\\s*(?P<comment>#.*)?$", line)
+            if match and match.group('name').strip() not in [target_var, 'import', 're', 'True', 'False', 'import re', 'noqa']:
+
+                #if match and match.group('name') not in [target_var, 'import', 're', 'True', 'False']:
                 current_word = match.group('name')
                 indent = line[:len(line) - len(line.lstrip())] or '    '
                 comment = ""
@@ -177,7 +242,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
                     line = f"{indent}'{current_word}'{seperator} '{current_word}',{comment}\n"
                 else:
                     seperator = ','
-                    line = f"{indent}('{current_word}'{seperator} '^{current_word}$'),{comment}\n"
+                    line = f"{indent}('{current_word}'{seperator} r'^{re.escape(current_word)}$'),{comment}\n"
 
                 # line = f"{indent}('{current_word}'{seperator} '{current_word}'),{comment}\n"
                 logger.info(f"   -> Bulk-Fix: {original_line.strip()} => {line.strip()}")
