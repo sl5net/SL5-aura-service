@@ -8,7 +8,7 @@ echo "./tools/generate_20_radio_segments.sh --demo ; kate /tmp/sl5_aura/radio_ou
 PROJECT_DIR="$HOME/projects/py/STT"
 PYTHON_SCRIPT="config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
 VENV_PATH=".venv/bin/activate"
-ITERATIONS=200
+ITERATIONS=2000
 
 logg_of_runs = """
 start:

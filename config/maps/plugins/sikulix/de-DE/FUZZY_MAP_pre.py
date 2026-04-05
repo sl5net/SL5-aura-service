@@ -6,12 +6,17 @@ from pathlib import Path
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
+
+
 CONFIG_DIR = Path(__file__).parent
 
 sikulix_windows = ['sikulixide', 'SikuliX', 'Sikuli']
 
 FUZZY_MAP_pre = [
     # EXAMPLE: wait vanish waitVanish("image.png", 10)
+    #(f'sikulix', r'^(spekuliert|wie gut|svi gulli|c gulli|wie gulli|gulli|spekuliert x|spekulieren spiel collection swico ledig|schlick|swico d|shay gulli)$', 10,),
+    ('sikulix', r'^(spekuliert|svi gulli|c gulli|wie gulli|gulli|spekuliert x|schlick|swico d|shay gulli)$', 10,),
+
 
     #################################################
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)

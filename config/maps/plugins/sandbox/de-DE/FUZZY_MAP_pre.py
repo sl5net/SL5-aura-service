@@ -1,11 +1,16 @@
 # projects/py/STT/config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py
+import os
 import re
 from pathlib import Path
 import runpy
 
 # PROJECT_ROOT = Path("C:/tmp" if platform.system()=="Windows" else "/tmp")/"sl5_aura"/"sl5net_aura_project_root"
-PROJECT_ROOT = Path("/tmp/sl5_aura/sl5net_aura_project_root")
-acp = Path(PROJECT_ROOT.read_text(encoding="utf-8").strip())/"config"/"maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+
+#
+acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
 AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
 # WAKE_PHANTOM = runpy.run_path(acp)["WAKE_PHANTOM"]
 
@@ -25,7 +30,7 @@ FUZZY_MAP_pre = [
     #################################################
 
     # Aura Suche
-    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*(suche|sucht|suchen|zu|buch|zug)$', 100, {
+    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*(suche|sucht|suchen|buch|zug)$', 100, {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),

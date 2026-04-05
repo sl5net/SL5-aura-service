@@ -9,9 +9,11 @@ CONFIG_DIR = Path(__file__).parent
 # Pfad zu den Internals hinzufügen (erfordert PROJECT_ROOT)
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+
 INTERNAL_PATH = PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE"
 
-acp = Path(PROJECT_ROOT.read_text(encoding="utf-8").strip())/"config"/"maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
 AURA_VARIANTS = runpy.run_path(acp)["WAKE_PHANTOM"]
 
 

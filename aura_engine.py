@@ -131,6 +131,22 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 
 PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
+
+# PROJECT_ROOT = Path(__file__).resolve().parent
+
+
+setup_project_structure(PROJECT_ROOT)
+
+LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
+
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+
+PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
+
+
+
+
 # aura_engine.py:131
 os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
 
@@ -144,9 +160,6 @@ if str(PROJECT_ROOT) not in sys.path:
 
     project_root = PROJECT_ROOT
     sys.path.append(str(project_root))
-
-
-
 
 
 
@@ -181,18 +194,6 @@ from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 # ==============================================================================
 
 
-
-PROJECT_ROOT = Path(__file__).resolve().parent
-
-
-setup_project_structure(PROJECT_ROOT)
-
-LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
-
-TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-
-PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
 
 
 

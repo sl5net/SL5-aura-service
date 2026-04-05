@@ -1,9 +1,16 @@
+# config/maps/plugins/0_aura_quickstart/de-DE/FUZZY_MAP_pre.py
+import os
+import re # noqa: F401
 from pathlib import Path
 
 # Fix für Pfade
 CONFIG_DIR = Path(__file__).parent
 
-PROJECT_ROOT = Path("/tmp/sl5_aura/sl5net_aura_project_root")
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+
+
 
 
 # 3. Jetzt sauber importieren

@@ -1718,8 +1718,8 @@ def process_text_in_background(logger,
             new_current_text = sanitize_transcription_start(new_current_text)
 
 
-            # scripts/py/func/process_text_in_background.py:1591
             # DIESE ZEILE WAR SCHON RICHTIG:
+            # scripts/py/func/process_text_in_background.py:1591
             unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
             # print(f':st: \nprocess_text_in_background:1672 raw_text:{raw_text}')
 

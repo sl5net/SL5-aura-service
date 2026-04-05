@@ -5,6 +5,8 @@ from pathlib import Path
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+
 CONFIG_DIR = Path(__file__).parent
 
 sikulix_windows = ['sikulixide', 'SikuliX', 'Sikuli']

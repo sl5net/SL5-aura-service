@@ -9,6 +9,11 @@
 # --- Configuration ---
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+
+PROJECT_ROOT=$(realpath "$SCRIPT_DIR/..")
+
+
+
 SERVER_SCRIPT="$SCRIPT_DIR/activate-venv_and_run-server.sh"
 SERVICE_NAME_MAIN="aura_engine.py"
 

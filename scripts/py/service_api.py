@@ -22,7 +22,9 @@ def timestamp():
 
 # --- 1. Setup & Konfiguration ---
 
-PROJECT_ROOT = Path("/tmp/sl5_aura/sl5net_aura_project_root")
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
 
 SECRETS_PATH = PROJECT_ROOT / ".secrets"
 print(f"DEBUG: Suche .secrets unter: {SECRETS_PATH}")
@@ -128,7 +130,7 @@ async def process_text_command(request: ProcessRequest, valid: bool = Depends(ve
             "input_text": raw_text
         }
 
-    except Exception as e:
+    except Exception as e:  # noqa: W0718
         app_logger.error(f"Error during background process execution: {e}")
         return {
             "status": "error",
@@ -187,7 +189,7 @@ def process_text_cli(request: ProcessRequest, valid: bool = Depends(verify_api_k
                 request_output_dir.rmdir()
                 break
 
-        except Exception as e:
+        except OSError as e:
             app_logger.error(f"Fehler beim Auslesen des CLI-Ergebnisses: {e}")
             actual_result_text = f"[ERROR READING FILE: {e}]"
             break

@@ -24,6 +24,7 @@ PUNCTUATION_MAP = {
     # EXAMPLE: klammer zu
     'klammer zu': ')',
     # EXAMPLE: klammern zu
+    'klappe zu': ')',
     'klammern zu': ')',
     # EXAMPLE: spitze klammer
     'spitze klammer': '<>',

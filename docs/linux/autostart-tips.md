@@ -16,9 +16,11 @@ Den Befehl manuell anpassen
 **Anstatt:**
 `Exec=/pfad/zu/deinem/script.sh`
 
-**Schreibe:**
+**Beispiele Schreibe:**
 
 xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
+
+konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'    
 
 Exec=kate /home/me/projects/py/STT/log/aura_engine.log
 

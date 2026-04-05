@@ -14,7 +14,9 @@ HOST = "0.0.0.0"
 PORT = 8830
 MODULE_PATH = "scripts.py.service_api:app"
 
-PROJECT_ROOT = Path("/tmp/sl5_aura/sl5net_aura_project_root")
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
 
 (PROJECT_ROOT / 'log').mkdir(exist_ok=True)
 LOG_FILE = PROJECT_ROOT / 'log' / "service_start.log"
@@ -107,9 +109,8 @@ def start_uvicorn_service(host, port, module_path):
 
             return process
 
-
-    except Exception as e:
-        print(f"FEHLER: Uvicorn konnte nicht gestartet werden: {e}")
+    except (OSError, subprocess.SubprocessError) as e:
+        print(f"ERROR: Uvicorn cant startet: {e}")
 
 
 if __name__ == "__main__":

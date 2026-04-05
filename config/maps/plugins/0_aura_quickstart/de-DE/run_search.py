@@ -1,3 +1,4 @@
+import os
 import subprocess
 import time
 from pathlib import Path
@@ -8,7 +9,9 @@ def execute(match_data):
     # PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
     # PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
 
-    PROJECT_ROOT = Path("/tmp/sl5_aura/sl5net_aura_project_root")
+    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
 
     SEARCH_SCRIPT = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
 

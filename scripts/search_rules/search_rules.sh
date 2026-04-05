@@ -40,6 +40,7 @@ DEFAULT_QUERY=".py pre # EXAMPLE:"
 REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
 
 MAPS_DIR="${1:-${MAPS_DIR:-config/maps}}"
+[[ "$MAPS_DIR" != /* && "$MAPS_DIR" != ./* ]] && MAPS_DIR="./$MAPS_DIR"
 HISTORY_FILE="$HOME/.search_rules_history"
 
 
@@ -129,9 +130,10 @@ SELECTED_LINE=$(grep --color=never -rnH -I --include="${SEARCH_FILES_FILTER:-*}"
 if [ -n "$SELECTED_LINE" ]; then
     FILE_PATH=$(echo "$SELECTED_LINE" | cut -d: -f1)
     LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
+    echo "DEBUG: RAW=[$SELECTED_LINE] PATH=[$FILE_PATH] LINE=[$LINE_NUM]" > ./log/search_debug.log
 
     case $PREFERRED_EDITOR in
-        kate) (kate "$FILE_PATH" --line "$LINE_NUM" & disown) ;;
+        kate) nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 & ;;
         code) (code --goto "$FILE_PATH:$LINE_NUM" & disown) ;;
         notepad.exe) (notepad.exe "$FILE_PATH" &) ;;
         *) ($PREFERRED_EDITOR "$FILE_PATH" & disown) ;;
