@@ -1,4 +1,4 @@
-# config/maps/plugins/sandbox/de-DE/run_doc_search.py
+# /de-DE/run_doc_search.py
 import subprocess
 import os
 import time
@@ -34,5 +34,5 @@ def execute(match_data):
 
 if __name__ == "__main__":
     execute()
-# python3 ./config/maps/plugins/sandbox/de-DE/run_doc_search.py
+# python3 ./config/maps/plugins/   /de-DE/run_doc_search.py
 # Suche DokumentationAura Drucker bietet Schutz

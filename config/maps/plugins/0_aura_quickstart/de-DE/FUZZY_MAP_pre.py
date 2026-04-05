@@ -2,23 +2,16 @@
 import os
 import re # noqa: F401
 from pathlib import Path
+import runpy
 
-# Fix für Pfade
-CONFIG_DIR = Path(__file__).parent
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
+CONFIG_DIR = Path(__file__).parent
 
-
-
-
-# 3. Jetzt sauber importieren
-try:
-    from aura_constants import AURA_VARIANTS
-except ImportError:
-    # Fallback, falls die Datei fehlt
-    AURA_VARIANTS = r'(Aura|Auch|Aurora)'
+acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
 
 FUZZY_MAP_pre = [
     # --- Sprachsteuerung für den Lernmodus ---
@@ -26,15 +19,26 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),
 
-    ('zyxü', r'^(zyxü)$', 10),
-
-    #nixLernmodus DEAKTIVIERT. Ich diktiere jetzt wieder normal.Hurra Lernmodus einschalten
+    # ('zyäzwnyöxü', r'^(zyxü)$', 10),
 
     # --- Training-Plugin (wird vom Skript oben ein/ausgeschaltet) ---
-#     (f'{str(__file__)}', r'^(.*|straßenbahn)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    # (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+
+    # Aura Suche
+    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*(suche|sucht|suchen|buch|zug)$', 100, {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    }),
+
+    ('Suche wird gestartet...', r'^(rohre zu|rohrer suche)$', 100, {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    }),
 
 
-    #
-
+    ('Handbuch wird durchsucht...', fr'^{AURA_VARIANTS}[^\w]?.*(dokumentation|Doku|handbuch|anleitung|hilfe suchen)$', 100, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [Path(__file__).resolve().parent /  'run_doc_search.py']
+    }),
 
 ]
