@@ -130,7 +130,7 @@ SELECTED_LINE=$(grep --color=never -rnH -I --include="${SEARCH_FILES_FILTER:-*}"
 if [ -n "$SELECTED_LINE" ]; then
     FILE_PATH=$(echo "$SELECTED_LINE" | cut -d: -f1)
     LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
-    echo "DEBUG: RAW=[$SELECTED_LINE] PATH=[$FILE_PATH] LINE=[$LINE_NUM]" > ./log/search_debug.log
+#    echo "DEBUG: RAW=[$SELECTED_LINE] PATH=[$FILE_PATH] LINE=[$LINE_NUM]" > ./log/search_debug.log
 
     case $PREFERRED_EDITOR in
         kate) nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 & ;;

@@ -642,7 +642,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--demo', action='store_true')
     args = parser.parse_args()
-    
+
     parser.add_argument('--no-browser', action='store_true')
     if args.no_browser:
         OPEN_BROWSER = False
