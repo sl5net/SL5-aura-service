@@ -2,9 +2,10 @@
 import re  # noqa: F401
 # too<-from
 FUZZY_MAP_pre = [
-# Mehr dazu: docs/FuzzyMapRuleGuide.mdFUZZY_MAP_pre = [
     ('oma', '^oma$'),
 ]
+
+# Mehr dazu: docs/FuzzyMapRuleGuide.mdFUZZY_MAP_pre = [
 
 
 # ============================================================
