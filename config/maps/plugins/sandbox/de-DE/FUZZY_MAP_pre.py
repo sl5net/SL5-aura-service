@@ -1,7 +1,4 @@
 # projects/py/STT/config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py
-import os
-import re
-from pathlib import Path
 # import runpy
 
 # PROJECT_ROOT = Path("C:/tmp" if platform.system()=="Windows" else "/tmp")/"sl5_aura"/"sl5net_aura_project_root"

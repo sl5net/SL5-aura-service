@@ -29,12 +29,15 @@ def run(project_root):
         # Wir übergeben das Koan-Verzeichnis an die .bat
         # Windows handles background processes differently, usually no fix needed
         subprocess.Popen(['cmd', '/c', 'start', str(search_script), str(koan_dir)], start_new_session=True)
+
     else:
+        import os
+        env = os.environ.copy()
+        env.setdefault("DISPLAY", ":0")
+        env.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/1000/bus")
         cmd = [
             'konsole', '-e', 'bash', '-c',
-            f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; exec bash'
+            f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; sleep 5'
         ]
-        # FIX: Wir fügen '; exec bash' am Ende hinzu.
-        # Das ersetzt den Prozess am Ende durch eine echte, offene Shell.
-        subprocess.Popen(cmd, start_new_session=True)
-        # Auszug aus scripts/py/welcome_wizard/de-DE/start.py (Windows Sektion)
+        subprocess.Popen(cmd, start_new_session=True, env=env)
+
