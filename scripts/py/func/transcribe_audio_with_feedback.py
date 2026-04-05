@@ -71,10 +71,12 @@ settings = DynamicSettings()
 # ))(aura_constants_path, "WAKE_PHANTOM")
 
 import runpy
-PROJECT_ROOT = Path("C:/tmp" if platform.system()=="Windows" else "/tmp")/"sl5_aura"/"sl5net_aura_project_root"
 
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
 acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+
 WAKE_PHANTOM = runpy.run_path(acp)["WAKE_PHANTOM"]
 
 
@@ -159,17 +161,15 @@ def _get_downsampled_data(raw_data, input_rate, logger):
 
         # return data
 
-        #  noqa: F841
-        comments = """
-Lösung A (reshape) vermutlich technisch besser? #  noqa:
+        """
+Lösung A (reshape) vermutlich technisch besser?
 Warum?
 Bei Lösung B springst du im Zeitverlauf zwischen linkem und rechtem Kanal hin und her (L0, R1, L3, R4...).
 Das erzeugt Phasenfehler und Verzerrungen.
 Die Fehlerquote steigt, wenn links und rechts unterschiedliche Signale liegen (z. B. Stimme links, Musik rechts).
 Lösung A ist nimmst nur einen Kanal (Links).
 Wichtig: Bleib bei channels=2 im RawInputStream, sonst stürzt Lösung A mit einem Fehler ab!
-        """
-        comments2 = comments # noqa: F841
+        """ # noqa: F841
 
         # 1. Von Bytes zu Stereo-Array (2 Kanäle)
         audio_np = np.frombuffer(raw_data, dtype=np.int16).reshape(-1, 2)

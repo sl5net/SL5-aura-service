@@ -11,6 +11,7 @@ import sys
 
 
 import platform
+import os
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 self_test_running = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
@@ -76,7 +77,14 @@ def _execute_maintenance_tasks(logger):
         if radio_script.exists():
             # Wir nutzen subprocess, um die venv-Umgebung und das if-main-Handling sauber zu trennen
 
-            result = subprocess.run([sys.executable, str(radio_script)], capture_output=True, text=True, check=False)
+            #result = subprocess.run([sys.executable, str(radio_script)], capture_output=True, text=True, check=False)
+
+
+            env = os.environ.copy()
+            env.setdefault("DISPLAY", ":0")
+            env.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/1000/bus")
+
+            result = subprocess.run([sys.executable, str(radio_script), '--no-browser'], capture_output=True, text=True, check=False, env=env)
 
             output = result.stdout.strip()
             logger.info(f"Radio Generator Output: {output}")

@@ -370,7 +370,14 @@ PIPER_SERVER_PORT = 5002
 PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
 # PIPER_SPEAK_FILE = os.path.expanduser("~/projects/py/TTS/speak_file.py")
 
-import webbrowser  # Zum Öffnen der GitHub-Seite
+
+def open_url(url):
+    import os
+    import subprocess
+    env = os.environ.copy()
+    env.setdefault("DISPLAY", ":0")
+    env.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/1000/bus")
+    subprocess.Popen(["xdg-open", url], start_new_session=True, env=env)
 
 
 from pathlib import Path
@@ -525,7 +532,9 @@ def main():
         # NUR öffnen, wenn der Schalter aktiv ist
         if OPEN_BROWSER and doc_url:
             print(f"\n📖 Öffne Dokumentation im Browser: {doc_url}")
-            webbrowser.open(doc_url)
+            # webbrowser.open(doc_url)
+            open_url(doc_url)
+
         elif doc_url:
             print(f"\n🔗 Dokumentations-Link: {doc_url}")  # Nur Text-Ausgabe im Hintergrund-Modus
 
@@ -609,7 +618,8 @@ def DEMO_MODE():
     # 1. Dokument im Browser öffnen (falls Link vorhanden und Browser-Modus an)
     if globals().get('OPEN_BROWSER', True) and doc_url:
         print(f"\n📖 Öffne Dokumentation: {doc_url}")
-        webbrowser.open(doc_url)
+        # webbrowser.open(doc_url)
+        open_url(doc_url)
 
 
     print(f"\nMODERATOR: {question}")
@@ -629,8 +639,13 @@ def DEMO_MODE():
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
+
     parser.add_argument('--demo', action='store_true')
     args = parser.parse_args()
+    
+    parser.add_argument('--no-browser', action='store_true')
+    if args.no_browser:
+        OPEN_BROWSER = False
 
     init_db()
 
