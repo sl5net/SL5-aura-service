@@ -453,7 +453,9 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                     continue
 
 
-                                if any(w in p_t_l for w in WAKE_PHANTOM):
+                                if p_t_l.strip() in WAKE_PHANTOM:
+
+                                    #if any(w in p_t_l for w in WAKE_PHANTOM):
 
                                     #if any(w in partial_text.lower() for w in
                                     #       ["einen"]):
