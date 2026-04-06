@@ -263,12 +263,20 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
         # This would catch a NameError before it happens.
         logger.warning("AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.")
 
-    unmute_microphone()
 
     # settings are read via DynamicSettings (settings object), which supports live reload
     initial_silence_timeout = settings.PRE_RECORDING_TIMEOUT
     SPEECH_PAUSE_TIMEOUT = settings.SPEECH_PAUSE_TIMEOUT
     ENABLE_WAKE_WORD = settings.ENABLE_WAKE_WORD
+
+    suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")) / "sl5_aura" / "aura_vosk_suspended.flag"
+    is_suspended = suspend_flag.exists()
+
+
+    if not is_suspended or ENABLE_WAKE_WORD:
+        unmute_microphone()
+
+
     AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
     if AUTO_ENTER_AFTER_DICTATION_REGEX_APPS != AUTO_ENTER_AFTER_DICTATION_global:
         AUTO_ENTER_AFTER_DICTATION_global = AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
@@ -383,9 +391,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         # scripts/py/func/transcribe_audio_with_feedback.py:362
                         # is_listen_persistent verwenden?
 
-
                         suspend_flag = (Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")) / "sl5_aura" / "aura_vosk_suspended.flag"
                         is_suspended = suspend_flag.exists()
+
+
                         if not ENABLE_WAKE_WORD and is_suspended:
                             continue
                         is_speech_finalized = recognizer.AcceptWaveform(data)
