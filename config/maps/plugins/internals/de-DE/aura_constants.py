@@ -4,7 +4,7 @@
 # Sie fängt Rauschen und Fehlinterpretationen des Vosk-Modells ab.
 
 _variants = (
-    r'aachen|aber|anbraten brauche|Apparat|Ära|Auch|Aura|auren|Aurora|aurore|auer|'
+    r'aachen|aber|anbraten brauche|Apparat|Ära|Auch|Aura|auras|auren|Aurora|aurore|auer|'
     r'bohrer|brauche|buchen|burgess|dora|doras|eure|eurer|hey|hoa|hoch|horror|'
     r'hurra|k|laura|lorenz|loser|Nora|obwohl|oh|ohh|ohr|ohren|Opera|Oprah|offenbar|'
     r'Orange|ora|oradour|ore|ovh|ovale|over|prora|raucher|robe|roche|rohre|rohrer|rot|'

@@ -91,7 +91,7 @@ Watch the full 6-minute setup process:
 * **Download:** ~3 minutes
 * **Setup & First Start:** ~3 minutes (including Welcome Wizard)
 
-👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=ah2Kz7erR2c)**
+👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
 
 
 The setup is a two-step process:
