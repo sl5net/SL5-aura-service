@@ -14,10 +14,7 @@ acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_const
 AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
 
 FUZZY_MAP_pre = [
-
     # ('zyäzwnyöxü', r'^(zyxü)$', 10),
-
-
 
     # --- Sprachsteuerung für den Lernmodus ---
     ('Lernmodus...', fr'^{AURA_VARIANTS}.*lernmodus (an\w*|ein\w*|aus\w*|starten|stoppen)$', 100, {
@@ -28,8 +25,15 @@ FUZZY_MAP_pre = [
     # --- Training-Plugin (wird vom Skript oben ein/ausgeschaltet) ---
     # (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
 
+    # EXAMPLE: Aura Suche subject
+    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}\s+(such|suche|sucht|suchen|sure|buch|zug|stiefel|schlüchtern)\s+(?P<dirpath>\w+)$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [Path(__file__).resolve().parent / "run_search_subject.py"],
+    }),
+    # Oberstufe KonfigurationAura stiefel Kon   figuration
+
     # Aura Suche
-    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*(suche|sucht|suchen|buch|zug)$', 100, {
+    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*(such|suche|sucht|suchen|buch|zug)$', 100, {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),
@@ -45,6 +49,5 @@ FUZZY_MAP_pre = [
         'flags': re.IGNORECASE,
         'on_match_exec': [Path(__file__).resolve().parent /  'run_doc_search.py']
     }),
-
 
 ]
