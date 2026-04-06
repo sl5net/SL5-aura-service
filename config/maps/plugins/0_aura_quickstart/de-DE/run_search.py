@@ -17,7 +17,7 @@ def execute(match_data):
 
     cmd = [
         'konsole', '-e', 'bash', '-c',
-        f'bash "{SEARCH_SCRIPT}"; exec bash'
+        f'bash "{SEARCH_SCRIPT}"; sleep 5'
     ]
 
     # Start-Session entkoppeln, damit das Fenster unabhängig von Aura bleibt

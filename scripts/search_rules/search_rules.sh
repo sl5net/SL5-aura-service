@@ -23,6 +23,7 @@
 # This preserves backward compatibility while making configuration explicit.
 # (s, 28.3.'26 23:07 Sat)
 
+
 # -----------------------------------------------------------------------------
 # CONFIGURATION
 #
@@ -30,9 +31,20 @@
 # MAPS_DIR="$PROJECT_ROOT/config/maps"
 
 
+
 # 1. PFADE & VARIABLEN
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
+
+
+LOG_DIR="$PROJECT_ROOT/log"
+LOGFILE="$LOG_DIR/search_rules.sh.log"
+
+function logger_info() {
+    # echo "INFO: $1" >&2
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOGFILE"
+}
+
 
 cd "$PROJECT_ROOT" || exit 1
 
