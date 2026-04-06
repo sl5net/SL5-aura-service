@@ -1273,6 +1273,7 @@ def process_text_in_background(logger,
                     , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(processed_text
                     , GLOBAL_FUZZY_MAP_PRE, logger)
 
+                    # scripts/py/func/process_text_in_background.py:1276
                     print(f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} 1248\n\n", logger)
 
 

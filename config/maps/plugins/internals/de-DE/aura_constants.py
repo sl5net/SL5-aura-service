@@ -4,10 +4,10 @@
 # Sie fängt Rauschen und Fehlinterpretationen des Vosk-Modells ab.
 
 _variants = (
-    r'aachen|aber|anbraten brauche|Apparat|Ära|Auch|Aura|auren|Aurora|aurore|'
+    r'aachen|aber|anbraten brauche|Apparat|Ära|Auch|Aura|auren|Aurora|aurore|auer|'
     r'bohrer|brauche|buchen|burgess|dora|doras|eure|eurer|hey|hoa|hoch|horror|'
-    r'hurra|k|laura|lorenz|loser|Nora|obwohl|oh|ohh|ohr|ohren|Opera|Oprah|'
-    r'Orange|ora|ore|ovale|over|prora|raucher|robe|roche|rohre|rohrer|rot|'
+    r'hurra|k|laura|lorenz|loser|Nora|obwohl|oh|ohh|ohr|ohren|Opera|Oprah|offenbar|'
+    r'Orange|ora|oradour|ore|ovh|ovale|over|prora|raucher|robe|roche|rohre|rohrer|rot|'
     r'ruhe|rum|samurai|suche|tore|tore zu|uwe|woran|Zauberer'
 )
 AURA_VARIANTS = fr'({_variants})'

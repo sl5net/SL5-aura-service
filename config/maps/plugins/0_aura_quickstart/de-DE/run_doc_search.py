@@ -5,9 +5,6 @@ import time
 from pathlib import Path
 
 
-# Suche DokumenteAura DokumentationZuge Dokumentation oder Dokumentation
-#Hurra Doku bitteAura Dokumentationen eurer DokumentationKobra Dokumentation
-#Aura Dokumentation
 def execute(match_data):
     tmp_dir = Path("/tmp")
     PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
@@ -35,4 +32,3 @@ def execute(match_data):
 if __name__ == "__main__":
     execute()
 # python3 ./config/maps/plugins/   /de-DE/run_doc_search.py
-# Suche DokumentationAura Drucker bietet Schutz
