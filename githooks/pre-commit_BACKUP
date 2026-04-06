@@ -42,7 +42,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "flake8 check passed."
+echo "✅ flake8 check passed. ✅"
 
 
 

@@ -47,7 +47,7 @@ else
 
   # DISPLAY XAUTHORITY
   export DISPLAY="${DISPLAY:-:0}"
-  export XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}"
+  # XAUTHORITY wird weiter unten dynamisch gesetzt
 
   $PROJECT_ROOT/scripts/sh/type_watcher_keep_alive.sh &
 fi
@@ -66,7 +66,7 @@ export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
 
 
 export DISPLAY=:0
-export XAUTHORITY=${HOME}/.Xauthority
+if [ -f "$HOME/.Xauthority" ]; then export XAUTHORITY="$HOME/.Xauthority"; else XAUTH_TMP=$(ls -t /tmp/xauth_* 2>/dev/null | head -n 1); [ -n "$XAUTH_TMP" ] && export XAUTHORITY="$XAUTH_TMP"; fi
 export DICTATION_SERVICE_STARTED_CORRECTLY="true"
 
 if [ -f "$HEARTBEAT_FILE" ]

@@ -11,6 +11,9 @@ _variants = (
     r'ruhe|rum|samurai|suche|tore|tore zu|uwe|woran|Zauberer'
 )
 AURA_VARIANTS = fr'({_variants})'
+
+suche_reg = r'\b(suche|suchen|zu|buch)\b'
+
 # Eure Dokumentation
 # Wörter, die Vosk oft bei Stille/Rauschen halluziniert.
 # Diese führen in der persistenten Session zu einem Reset des Puffers.

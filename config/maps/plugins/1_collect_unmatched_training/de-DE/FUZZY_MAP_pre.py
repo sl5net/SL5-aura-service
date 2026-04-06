@@ -3,7 +3,8 @@ import re # noqa: F401
 from pathlib import Path
 import platform
 CONFIG_DIR = Path(__file__).parent
-# too<-from
+
+suche_reg = r'\b(suche|suchen|zu|buch)\b'
 
 starten = r'starten|stab|start|staat|starb|straffen|spart|stab|starb|stadt|starb'
 Lernmodus= r'(Lernmodus|Training)'
@@ -20,23 +21,29 @@ FUZZY_MAP_pre = [
     (f'kate {str(__file__)}', rf'^(lernmodus|Lernmodus\s*{starten}|led modus\s*{starten}|led modus\s*{starten}|Training {starten}|Erkennungstraining|lärm wurdest stab|ihren modus {starten}|der modus|der modus {starten}|Grip Modus {starten}|trainingsstart|reading {starten}|heiligen staat|erkundungstour reading|bildungsprämie|sag rettungs training|quidditch training|führungstraining|gründungstreffen erkältungstee training|gründungs|bildungsträger|jörg velux training|der grillo training|gründungs training|erkältungstee ideen|der glättung streaming|erkältung training|erkältungstee ding|erkennung training|erkältungstee training|erkennung nicht|lab modus {starten}|leere modus {starten}|lernmodus starb|der modus stunden|für genuss training|lernmodus stab|der modus spart|home modus stab|renault modus {starten}|hallo xd reinigen|verkehr lostreten|danke lux training|lernmodul {starten}|werden modus {starten}|für quintus training|genuss trinken verkehr lostreten lernmodus starb|erkennung strähnig|leeren modus {starten}|lärm wurdest stab|er wurde {starten}|werden würdest|der bundesstaat|\w+\s*wurde {starten}|lernmodell {starten})$'),
 
 
+    ('Suche wird gestartet...', fr'^{aura_reg}\b.*\b{suche_reg}$', 100,
+    {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    }),
+
+
+
+
     #################################################
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
     # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
     #################################################
 
+    # Some Teste Resulte commented here:
+
     #('Aura einschalten',r'^(Aura einschalten|oh ein einschalten|hurra einschalten|aura einschwenken|rohre eins 12|rohre einschalten|hurra einschl|uva einschalten|hurra ein schmied|hurra entscheiden|eure einschalten|horror in schweden|zora einschalten|aura entfalten|einschalten|aber einschalten|hurra einschränken|aura einschmelzen|cobra einschalten horror eintreffen hurra einschalten aura einschalten|hurra ritschel)$', 100,{'flags': re.IGNORECASE,}),
 
 
-
+    # ('teleskop',r'^(teleskop|kryptos|einen kaputten teleskop|crypto)$', 100,{'flags': re.IGNORECASE,}),
 
     #('Teleskop',r'^(Teleskop|tritt|tedesco|cellist|tennis|tourist|kredit|Program loaded|wurde es still|der modeste|der bundesstaaten werden würde stören|lernen modisch|ir modus starten|brutto|hilfe virus)$', 100,{'flags': re.IGNORECASE}),
 
-
-
-    #('Torpedo',r'^(Torpedo|trapez|schritt edel|präzise|trotz siedeln|druck peru|shop credo|trotzdem|krepieren)$', 100,{'flags': re.IGNORECASE}),
-
-    # ('Nexus',r'^(Nexus|wirkt|dick)$', 100,{'flags': re.IGNORECASE}),
 
 
     # ('Kosmonaut',r'^(Kosmonaut|kurs wurden|großmutter|cosmo deutsch|busbud|kosmologie|gruss pilot|was wohl world|gus gus benutzen groß wurde|kosmodrom|brust nur laut|chris bedroht|grüßle|chris müller|fristlose mut|grüßt mir lot|grußwort hut|grußwort an|gruß pilot|es wurden)$', 100,{'flags': re.IGNORECASE}),

@@ -5,7 +5,8 @@ import re # noqa: F401
 FUZZY_MAP_pre = [
     ('hallo', r'^hallo$'),
     ('welt', r'^welt$'),
-    ('Robert', r'^Robert$'),
-    ('macht', r'^macht$'),
-    ('nix', r'^nix$'),
+    ('milch', r'^milch$'),
+    ('testratsel', r'^ratsel$'),
+    ('rathaus4555555564654', r'^rathaus4555555564654$'),
+    ('ist', r'^ist$'),
 ]
