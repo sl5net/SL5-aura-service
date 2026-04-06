@@ -447,12 +447,13 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                             if is_listen_persistent:
                                 # TODO: how long nobody has spoken?
 
-                                if time.time() - last_activity_time > 5.0 and len(partial_text.lower()) < len(WAKE_WORD):
+                                p_t_l = partial_text.lower()
+                                if time.time() - last_activity_time > 5.0 and len(p_t_l) < len(WAKE_WORD) and not p_t_l.strip().startswith("w"): # often this words are wie, warum, .. whey
                                     recognizer.Reset()
                                     continue
 
 
-                                if any(w in partial_text.lower() for w in WAKE_PHANTOM):
+                                if any(w in p_t_l for w in WAKE_PHANTOM):
 
                                     #if any(w in partial_text.lower() for w in
                                     #       ["einen"]):
