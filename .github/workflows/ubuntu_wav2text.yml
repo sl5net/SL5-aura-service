@@ -46,7 +46,7 @@ jobs:
         with:
           # Correct path for the cache
           path: models
-          key: ${{ runner.os }}-vosk-model-de-v2
+          key: ${{ runner.os }}-vosk-model-small-en-us-0.15
 
       - name: '6. Run setup'
         # This step is skipped if the cache was restored
