@@ -20,7 +20,7 @@ def execute(match_data):
     dirpath = match_obj.group('dirpath').strip()
 
     # Sammlung: konsekration
-    print(f'_________________________')
+    print('_________________________')
     print(f'dirpath: {dirpath}')
 
 
@@ -35,10 +35,10 @@ def execute(match_data):
     current_lang = Path(__file__).parent.name.split("-")[0]
     file_filter = f"*-{current_lang}lang.md"
 
-    if docs_dir is 'config':
-        file_filter = f"settings*.py"
+    if docs_dir == 'config':
+        file_filter = "settings*.py"
     else:
-        file_filter = f"*.py"
+        file_filter = "*.py"
 #roter KonföderationAura schüchtern KonfigurationenDora suche KonfigurationOver such a good vibrationsO suche Konfiguration
 
 
