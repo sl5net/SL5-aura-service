@@ -2,9 +2,10 @@
 import re # noqa: F401
 from pathlib import Path
 import platform
+import runpy
+
 CONFIG_DIR = Path(__file__).parent
 
-suche_reg = r'\b(suche|suchen|zu|buch)\b'
 
 starten = r'starten|stab|start|staat|starb|straffen|spart|stab|starb|stadt|starb'
 Lernmodus= r'(Lernmodus|Training)'
@@ -12,6 +13,13 @@ Lernmodus= r'(Lernmodus|Training)'
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
 PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+
+acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
+suche_reg = runpy.run_path(acp)["suche_reg"]
+# suche_reg = r'\b(suche|suchen|zu|buch)\b'
+
+
 FUZZY_MAP_pre = [
 
 
@@ -21,7 +29,7 @@ FUZZY_MAP_pre = [
     (f'kate {str(__file__)}', rf'^(lernmodus|Lernmodus\s*{starten}|led modus\s*{starten}|led modus\s*{starten}|Training {starten}|Erkennungstraining|lärm wurdest stab|ihren modus {starten}|der modus|der modus {starten}|Grip Modus {starten}|trainingsstart|reading {starten}|heiligen staat|erkundungstour reading|bildungsprämie|sag rettungs training|quidditch training|führungstraining|gründungstreffen erkältungstee training|gründungs|bildungsträger|jörg velux training|der grillo training|gründungs training|erkältungstee ideen|der glättung streaming|erkältung training|erkältungstee ding|erkennung training|erkältungstee training|erkennung nicht|lab modus {starten}|leere modus {starten}|lernmodus starb|der modus stunden|für genuss training|lernmodus stab|der modus spart|home modus stab|renault modus {starten}|hallo xd reinigen|verkehr lostreten|danke lux training|lernmodul {starten}|werden modus {starten}|für quintus training|genuss trinken verkehr lostreten lernmodus starb|erkennung strähnig|leeren modus {starten}|lärm wurdest stab|er wurde {starten}|werden würdest|der bundesstaat|\w+\s*wurde {starten}|lernmodell {starten})$'),
 
 
-    ('Suche wird gestartet...', fr'^{aura_reg}\b.*\b{suche_reg}$', 100,
+    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}\b.*\b{suche_reg}$', 100,
     {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],

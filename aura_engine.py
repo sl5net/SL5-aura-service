@@ -1178,15 +1178,20 @@ lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
 
 
 if os.getenv('CI'):
-    logger.info("CI environment detected. Skipping Welcome Wizard.")
+    logger.info("CI environment detected. Skipping Welcome Wizard 🧙")
 elif settings.SHOW_SEARCH_ON_STARTUP:
+    logger.info("aura_engine.py:1183 show Welcome Wizard 🧙 ")
+    if settings.DEV_MODE:
+        logger.info(f"DISPLAY={os.getenv('DISPLAY')} | XAUTH={os.getenv('XAUTHORITY')} | DBUS={os.getenv('DBUS_SESSION_BUS_ADDRESS')} ")
+
     try:
         from scripts.py.welcome_wizard.main import run_wizard
         run_wizard(lang_code)
     except Exception as e:
-        logger.warning(f"Aura Welcome Wizard err: {e}")
+        logger.warning(f"1: Aura Welcome Wizard 🧙 err: {e}")
+        logger.info(f"2: Aura Welcome Wizard 🧙 err: {e}")
 
-if settings.DEV_MODE :
+if settings.DEV_MODE:
 
     from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
     from scripts.py.func.log_memory_details import log_memory_details,log4DEV

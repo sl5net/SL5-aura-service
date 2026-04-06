@@ -40,4 +40,3 @@ def run(project_root):
             f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; sleep 5'
         ]
         subprocess.Popen(cmd, start_new_session=True, env=env)
-
