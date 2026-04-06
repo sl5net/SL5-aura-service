@@ -22,13 +22,7 @@
 *   **Linux (CachyOS / Arch-based rolling release):** ✅ Fully supported.
     Requires mimalloc (`sudo pacman -S mimalloc`) due to glibc 2.43 compatibility.
     
-
-Welcome to SL5 Aura Service! This document provides a quick overview of our key features and their operating system compatibility.
-
-Aura isn't just a transcriber; it's a powerful, offline processing engine that transforms your voice into precise actions and text.
-
-It's a complete, **offline voice assistant** built on **Vosk** (for Speech-to-Text) and **LanguageTool** (for Grammar/Style), now featuring an optional **Local LLM (Ollama) Fallback** for creative responses and advanced fuzzy matching. It is designed for ultimate customization through a pluggable rule system and a dynamic scripting engine.
-
+SL5 Aura is a complete, **offline voice assistant** built on **Vosk** (for Speech-to-Text) and **LanguageTool** (for Grammar/Style), featuring an optional **Local LLM (Ollama) Fallback** for creative responses and advanced fuzzy matching. It transforms your voice into precise actions and text, designed for ultimate customization through a pluggable rule system and a dynamic scripting engine.
     
 Translations: This document also exists in [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n).
 
@@ -40,7 +34,7 @@ Note: Many texts are machine-generated translations of the original English docu
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
 ### 🎥 Video Tutorial
-[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+[![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *(Alternativer Link: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
 
@@ -266,7 +260,7 @@ You can customize the application's behavior by creating a local settings file.
 2.  Create a copy of `config/settings_local.py_Example.txt` and rename it to `config/settings_local.py`.
 3.  Edit `config/settings_local.py` (it overrides any setting from the main `config/settings.py` file).
 
-This `config/settings_local.py` file is (maybe) ignored by Git, so your personal changes (maybe) won't be overwritten by updates.
+This `config/settings_local.py` file is ignored by Git by default, so your personal changes won't be overwritten by updates.
 
 ### Plug-in Structure and Logic
 
@@ -419,7 +413,7 @@ Then maybe Double Click
 </details>
 
 
-### bit grafically look to see whats behind:
+### A graphical overview of the architecture:
 
 ![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
