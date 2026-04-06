@@ -86,7 +86,7 @@ For a complete technical reference, including all modules and scripts, please vi
 
 ## Installation
 
-### 🎥 Quick Installation Guide (Manjaro/Arch Video)
+### 🎥 Quick Installation without moderation (Manjaro/Arch Video)
 Watch the full 6-minute setup process:
 * **Download:** ~3 minutes
 * **Setup & First Start:** ~3 minutes (including Welcome Wizard)
