@@ -1,12 +1,5 @@
-#!/bin/bash
-
-# --- download: ---
-# cd ~/projects/py/STT/data/
-# Mit wget + Fortsetzung falls Abbruch:
-wget -c "https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_mini_2025-09.zim"
-# Oder mit aria2 (schneller, Multithreaded):
-aria2c -x 8 -s 8 "https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_mini_2025-09.zim"
-
+#!/usr/bin/env bash
+set -euo pipefail
 
 # --- KONFIGURATION ---
 ZIM_FILE_NAME="wikipedia_de_all_mini_2025-09.zim"
@@ -14,10 +7,50 @@ CONTAINER_NAME="kiwix_zim_server"
 HOST_PORT="8080"
 CONTAINER_PORT="8080"
 
-# 1. Absoluten Pfad zur Datei auf dem Host ermitteln
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# Gehe 6 Ebenen hoch zum Projekt-Root, dann in /data/
+# 1. Absoluter Pfad zur Datei auf dem Host ermitteln
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ZIM_FILE_PATH_host="$(realpath "$SCRIPT_DIR/../../../../../../data/$ZIM_FILE_NAME")"
+
+# 2. Download-URL
+ZIM_URL="https://download.kiwix.org/zim/wikipedia/$ZIM_FILE_NAME"
+
+# 3. Welcher Downloader ist verfügbar? (aria2c bevorzugt)
+if command -v aria2c >/dev/null 2>&1; then
+  DOWNLOADER="aria2c"
+elif command -v wget >/dev/null 2>&1; then
+  DOWNLOADER="wget"
+else
+  echo "Kein Downloader (aria2c oder wget) gefunden. Bitte installieren."
+  exit 1
+fi
+
+# Funktion: Datei herunterladen (resume/fallback)
+download_zim() {
+  mkdir -p "$(dirname "$ZIM_FILE_PATH_host")"
+  echo "Herunterladen: $ZIM_URL -> $ZIM_FILE_PATH_host (mit $DOWNLOADER)"
+  if [ "$DOWNLOADER" = "aria2c" ]; then
+    # -x 8 -s 8 für Multithread; --continue=true für Resume
+    aria2c --continue=true -x 8 -s 8 -d "$(dirname "$ZIM_FILE_PATH_host")" -o "$(basename "$ZIM_FILE_PATH_host")" "$ZIM_URL"
+  else
+    # wget -c resume; -O wird nur verwendet falls wir explizit Zielnamen wollen
+    wget -c -O "$ZIM_FILE_PATH_host" "$ZIM_URL"
+  fi
+}
+
+# 4. Conditional download: nur wenn Datei nicht existiert
+if [ -f "$ZIM_FILE_PATH_host" ]; then
+  echo "Datei existiert bereits: $ZIM_FILE_PATH_host — überspringe Download."
+else
+  echo "Datei nicht gefunden: $ZIM_FILE_PATH_host"
+  download_zim
+fi
+
+# Optional: kurze Validierung (Dateigröße > 0)
+if [ ! -s "$ZIM_FILE_PATH_host" ]; then
+  echo "Fehler: Datei ist nicht vorhanden oder leer nach dem Download: $ZIM_FILE_PATH_host"
+  exit 1
+fi
+
 
 echo "Prüfe Datei: $ZIM_FILE_PATH_host"
 
