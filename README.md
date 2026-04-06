@@ -86,6 +86,14 @@ For a complete technical reference, including all modules and scripts, please vi
 
 ## Installation
 
+### 🎥 Quick Installation Guide (Manjaro/Arch Video)
+Watch the full 6-minute setup process:
+* **Download:** ~3 minutes
+* **Setup & First Start:** ~3 minutes (including Welcome Wizard)
+
+👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=ah2Kz7erR2c)**
+
+
 The setup is a two-step process:
 1.  Download last Release or master ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) or clone this repository to your computer.
 2.  Run the one-time setup script for your operating system.
