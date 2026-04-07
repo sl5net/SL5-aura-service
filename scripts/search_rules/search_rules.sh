@@ -52,9 +52,18 @@ DEFAULT_QUERY=".py pre # EXAMPLE:"
 REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
 
 MAPS_DIR="${1:-${MAPS_DIR:-config/maps}}"
-[[ "$MAPS_DIR" != /* && "$MAPS_DIR" != ./* ]] && MAPS_DIR="./$MAPS_DIR"
-HISTORY_FILE="$HOME/.search_rules_history"
 
+echo "Line 54:" $MAPS_DIR
+
+if [[ $MAPS_DIR == /* || $MAPS_DIR == ./* || $MAPS_DIR == ~/* || $MAPS_DIR == "$HOME"/* || $MAPS_DIR == ~*  ]]; then
+  : # ok
+else
+  MAPS_DIR="./$MAPS_DIR"
+fi
+
+echo "Line 64:" $MAPS_DIR
+
+HISTORY_FILE="$HOME/.search_rules_history"
 
 # 2. EDITOR FALLBACK LOGIC (Korrigierte Bash-Version deines Backups)
 get_preferred_editor() {
@@ -70,13 +79,16 @@ PREFERRED_EDITOR=$(get_preferred_editor)
 logger_info "Initializing search_rules.sh..."
 
 
+# MAPS_DIR_DISPLAY=MAPS_DIR
+MAPS_DIR="${MAPS_DIR/#\~/$HOME}"
 
+#
 
 if [[ ! -d "$MAPS_DIR" ]]; then
     echo "MAPS_DIR '$MAPS_DIR' dont exist" >&2
+    sleep 5
     exit 1
 fi
-
 
 export PROJECT_ROOT
 export REPO_URL
@@ -138,20 +150,22 @@ SELECTED_LINE=$(grep --color=never -rnH -I --include="${SEARCH_FILES_FILTER:-*}"
 )
 # xdg-open
 
-# 5. EXECUTION (Robustes Öffnen)
+# 5. EXECUTION (Robustes Öffnen) #
 if [ -n "$SELECTED_LINE" ]; then
-    FILE_PATH=$(echo "$SELECTED_LINE" | cut -d: -f1)
+    FILE_PATH="$(echo "$SELECTED_LINE" | cut -d: -f1)"
     LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
-#    echo "DEBUG: RAW=[$SELECTED_LINE] PATH=[$FILE_PATH] LINE=[$LINE_NUM]" > ./log/search_debug.log
 
-    case $PREFERRED_EDITOR in
-        kate) nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 & ;;
-        code) (code --goto "$FILE_PATH:$LINE_NUM" & disown) ;;
-        notepad.exe) (notepad.exe "$FILE_PATH" &) ;;
-        *) ($PREFERRED_EDITOR "$FILE_PATH" & disown) ;;
-    esac > /dev/null 2>&1
-
-    sleep 0.1
+    # Prüfen, ob es ein PDF ist (Groß-/Kleinschreibung ignorieren)
+    if [[ "${FILE_PATH,,}" == *.pdf ]]; then
+        xdg-open "$FILE_PATH" > /dev/null 2>&1 &
+    else
+        # Normale Editor-Logik
+        case $PREFERRED_EDITOR in
+            kate) nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 & ;;
+            code) code --goto "$FILE_PATH:$LINE_NUM" ;;
+            *) $PREFERRED_EDITOR "$FILE_PATH" & disown ;;
+        esac
+    fi
     exit 0
 fi
 

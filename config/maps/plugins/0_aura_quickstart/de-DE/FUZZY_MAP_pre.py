@@ -12,8 +12,9 @@ CONFIG_DIR = Path(__file__).parent
 
 acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
 AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
-
+suche = r'(such|suche|suche du|sucht|suchen|sure|Schuhe|hoover|buch|zug|Zuge|stiefel|schlüchtern)'
 FUZZY_MAP_pre = [
+    #Doch wenn Zuge doch gewinnt
     # ('zyäzwnyöxü', r'^(zyxü)$', 10),
 
     # --- Sprachsteuerung für den Lernmodus ---
@@ -24,26 +25,33 @@ FUZZY_MAP_pre = [
 
     # --- Training-Plugin (wird vom Skript oben ein/ausgeschaltet) ---
     # (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #
+    # EXAMPLE: Aura Suche result #  Homer suche Dokumente
+    ('~/Dokumente', fr'^{AURA_VARIANTS}\s+{suche}\s+(?P<dirpath>\w+)$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
+    }),
 
+    # deprecated method? Maybe use run_search_the_result.py?
     # EXAMPLE: Aura Suche subject
-    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}\s+(such|suche|sucht|suchen|sure|buch|zug|stiefel|schlüchtern)\s+(?P<dirpath>\w+)$', 90, {
+    ('Suche Subject wird gestartet...', fr'^{AURA_VARIANTS}\s+{suche}\s+(?P<dirpath>\w+)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [Path(__file__).resolve().parent / "run_search_subject.py"],
     }),
-    # Oberstufe KonfigurationAura stiefel Kon   figuration
 
+    # deprecated method? Maybe use run_search_the_result.py?
     # Aura Suche
-    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*(such|suche|sucht|suchen|buch|zug)$', 100, {
-    'flags': re.IGNORECASE,
-    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
-    }),
+    # ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*{suche}$', 100, {
+    # 'flags': re.IGNORECASE,
+    # 'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    # }),
 
     ('Suche wird gestartet...', r'^(rohre zu|rohrer suche)$', 100, {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),
 
-    #
+    # deprecated method? Maybe use run_search_the_result.py?
     # Handbuch wird durchsucht...
     ('Handbuch wird durchsucht...', fr'^{AURA_VARIANTS}[^\w]?.*(doku\w*|handbuch\w*|anleitung\w*|gemündet|hilfe\w*|du güntert|der konvent touch|drucker mittels|logo mündel)\s*(zu|suchen|\w+)?$', 100, {
         'flags': re.IGNORECASE,

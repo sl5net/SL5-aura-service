@@ -196,6 +196,14 @@ INTEGRITY_CHECKS = {
 
     # --- Start of Ensures language selection is included ---
 
+    "scripts/activate-venv_and_run-server.sh": [
+        'if [ -f "$HOME/.Xauthority" ]; then export XAUTHORITY="$HOME/.Xauthority"; else XAUTH_TMP=$(ls -t /tmp/xauth_* 2>/dev/null | head -n 1); [ -n "$XAUTH_TMP" ] && export XAUTHORITY="$XAUTH_TMP"',
+        '$HOME/.Xauthority',
+        '/tmp/xauth_* 2',
+        '$XAUTH_TMP',
+        'export XAUTHORITY="$XAUTH_TMP"',
+    ],
+
     # Ensures language selection is included in the macOS setup.
     "setup/macos_setup.sh": [
         'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',

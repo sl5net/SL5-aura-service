@@ -1,4 +1,5 @@
 # /de-DE/run_doc_search.py
+import re
 import subprocess
 import os
 import time
@@ -17,19 +18,29 @@ def execute(match_data):
 
     match_obj = match_data['regex_match_obj']
 
-    dirpath = match_obj.group('dirpath').strip()
+    dirpath_spoken = match_obj.group('dirpath').strip()
 
     # Sammlung: konsekration
+    docs_dir = None
     print('_________________________')
-    print(f'dirpath: {dirpath}')
+    print(f'dirpath_spoken: {dirpath_spoken}')
+    assign_re = re.compile(r'^(?:Konfig\w*|config\w*|Konfiguration|konsekration)$', re.IGNORECASE)
+    m = assign_re.match(dirpath_spoken)
+    if m:
+        docs_dir = 'config'
+        file_filter = "*.py"
+    else:
+        assign_re = re.compile(r'^(?:Document\w*|Dokument\w*)$', re.IGNORECASE)
+        if m:
+            docs_dir = '~/Documents'
+            file_filter = "*.md"
 
+    # ~/Documents
 
-
-
-    docs_dir = dirpath
+    docs_dir = dirpath_spoken
 
     docs_dir = 'config'
-    print(f'hardcoded docs_dir: {docs_dir} , dirpath: {dirpath}')
+    print(f'hardcoded docs_dir: {docs_dir} , dirpath: {dirpath_spoken}')
     #
 
     current_lang = Path(__file__).parent.name.split("-")[0]
