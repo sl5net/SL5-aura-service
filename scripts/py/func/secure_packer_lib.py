@@ -26,7 +26,7 @@ def execute_packing_logic(current_dir, logger):
     current_dir_loop = current_dir
 
     if log_everything:
-        logger.info(f"========= current_dir:{str(current_dir)[-30:]} =========")
+        logger.info(f"========= current_dir: … {str(current_dir)[-30:]} =========")
         logger.info(f"🚀 secure_packer_lib triggered. current_dir:{str(current_dir)[-30:]}")
     try:
         # 1. PATH ANALYSIS
@@ -124,12 +124,12 @@ def execute_packing_logic(current_dir, logger):
 
         while stop_dir in current_dir_loop.parents: # or current_dir == stop_dir:
             if log_everything:
-                logger.info(f"🔍 Scanning for 🏃🏿‍♀️‍➡️ first 🔑key_file in {str(current_dir_loop)[-35:]}")
+                logger.info(f"🔍 Scanning for 🏃🏿‍♀️‍➡️ first 🔑key_file in …{str(current_dir_loop)[-35:]}")
 
             # Iterate over all .py files in this directory level
             for file_path in current_dir_loop.glob("*.py"):
                 if log_everything:
-                    logger.info(f"🔍:304 {str(file_path)[-35:]}")
+                    logger.info(f"🔍:304 …{str(file_path)[-35:]}")
 
                 if file_path.name.startswith('.'):
                     if log_everything:

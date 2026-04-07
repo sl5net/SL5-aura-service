@@ -18,7 +18,7 @@ def check_syntax(file_path):
 # scripts/py/func/checks/check_all_maps_syntax.py:18
 def check_folder_syntax(root_dir):
     # eite Datei:  …{str(filename)[-40:]}
-    print(f"INFO: Starting syntax check in directory:…{str(root_dir)[-30:]} ")
+    print(f"INFO: Starting syntax check in directory: …{str(root_dir)[-30:]} ")
     has_errors = False
     for subdir, _, files in os.walk(root_dir):
         for file in files:

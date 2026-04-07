@@ -398,7 +398,7 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
             if file_path.name.startswith('__'):
                 continue
             if log_everything:
-                logger.info(f"🔍 Scanning for lifecycle hooks in: {str(current_dir)[-35:]}")
+                logger.info(f"🔍 Scanning for lifecycle hooks in: …{str(current_dir)[-35:]}")
 
             if log_everything:
                 logger.info(f"🔍:304 ...{str(file_path)[-35:]}")
@@ -406,13 +406,13 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
             # Skip the file we just reloaded (avoid infinite loop or double execution)
             if file_path.resolve() == start_path.resolve():
                 if log_everything:
-                    logger.info(f"🔍:308 {str(file_path)[-35:]}")
+                    logger.info(f"🔍:308 …{str(file_path)[-35:]}")
                 continue
 
             # Skip hidden files (except maybe the ones explicitly needed, but usually hidden are keys)
             if file_path.name.startswith('.'):
                 if log_everything:
-                    logger.info(f"🔍:313 {str(file_path)[-35:]}")
+                    logger.info(f"🔍:313 …{str(file_path)[-35:]}")
                 continue
 
             try:

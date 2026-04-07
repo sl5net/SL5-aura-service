@@ -102,7 +102,7 @@ def get_api_base_url():
     try:
         sock = socket.create_connection(('localhost', API_PORT), timeout=1)
         sock.close()
-        st.info(f"JSON auf: ...{str(local_json_url)[-15:]}. HTTP online: ...{str(public_http)[-15:]}.")
+        st.info(f"JSON auf: …{str(local_json_url)[-15:]}. HTTP online: …{str(public_http)[-15:]}.")
         return local_json_url
     except (socket.error, ConnectionRefusedError):
         pass

@@ -286,7 +286,7 @@ def check_and_pack_zips():
             try:
                 packer_lib.execute_packing_logic(folder_path, logger)
             except Exception as e:
-                logger.info(f"⚠️ Error packing {str(folder_path)[-30:]}: {e}")
+                logger.info(f"⚠️ Error packing …{str(folder_path)[-30:]}: {e}")
 
 # --- HOOKS ---
 

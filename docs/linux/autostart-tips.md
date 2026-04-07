@@ -1,14 +1,15 @@
 
 Erstelle Autostart Eintrag über dein grafische Benutzeroberfläche für:
 
-restart_venv_and_run-server.sh.desktop                           ✔ 
+restart_venv_and_run-server.sh.desktop                          
+
 aura_engine.log.desktop  
 
 Gehe in den Ordner: `~/.config/autostart/` 
 
 öffne in Editor
 
-restart_venv_and_run-server.sh.desktop                           ✔ 
+restart_venv_and_run-server.sh.desktop                          
 aura_engine.log.desktop  
 
 Den Befehl manuell anpassen
@@ -18,11 +19,13 @@ Den Befehl manuell anpassen
 
 **Beispiele Schreibe:**
 
-xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
+Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
 
-konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'    
+`Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'`
 
-Exec=kate /home/me/projects/py/STT/log/aura_engine.log
+Exec=konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'    
+
+Exec=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
 
 Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
 
