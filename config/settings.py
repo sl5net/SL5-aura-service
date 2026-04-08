@@ -178,6 +178,7 @@ ADD_TO_SENCTENCE = "."
 # set ADD_TO_SENCTENCE = "" when you dont want it.
 
 REMOVE_SPACES_BETWEEN_NUMBERS = 0
+# or check the rules at the bottom: # config/maps/plugins/numbers_to_digits/de-DE/FUZZY_MAP_pre.py
 
 # Recording & Transcription
 SUSPICIOUS_TIME_WINDOW = 90
