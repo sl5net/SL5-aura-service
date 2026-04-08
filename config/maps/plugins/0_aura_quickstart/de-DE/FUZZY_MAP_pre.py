@@ -40,6 +40,13 @@ FUZZY_MAP_pre = [
         'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
     }),
 
+
+    # EXAMPLE: Aura config
+    (r'config', fr'^{AURA_VARIANTS}\s+(config\w*|konfig\w*)$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
+    }),
+
     # EXAMPLE: Aura Suche result #  Homer suche Dokumente
     ('~/Dokumente', fr'^{AURA_VARIANTS}\s+{suche}\s+(?P<dirpath>(dok\w+|ducken))$', 90, {
         'flags': re.IGNORECASE,

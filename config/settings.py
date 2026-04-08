@@ -177,6 +177,7 @@ PLUGINS_ENABLED = {
 ADD_TO_SENCTENCE = "."
 # set ADD_TO_SENCTENCE = "" when you dont want it.
 
+REMOVE_SPACES_BETWEEN_NUMBERS = True
 
 # Recording & Transcription
 SUSPICIOUS_TIME_WINDOW = 90

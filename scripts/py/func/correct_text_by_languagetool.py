@@ -59,6 +59,7 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
             if match['offset'] < last_index:  # Überlappung verhindern
                 continue
             new_text_parts.append(text[last_index:match['offset']])
+
             new_text_parts.append(match['replacements'][0]['value'])
             last_index = match['offset'] + match['length']
 

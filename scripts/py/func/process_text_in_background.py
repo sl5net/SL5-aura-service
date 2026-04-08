@@ -1575,7 +1575,11 @@ def process_text_in_background(logger,
             # All 88tested of 97 tests(all lang) passed! Great no test failed
             # 15:55:30,922 - INFO     - ----------------------------------------
             # 15:55:30,922 - INFO     - ⌚ self_test_readable_duration: 0:00:37.181278
+
         processed_text = result_languagetool if result_languagetool else new_processed_text if new_processed_text else processed_text
+
+        if getattr(settings, "REMOVE_SPACES_BETWEEN_NUMBERS", False):
+            processed_text = re.sub(r'(?<=\d)\s+(?=\d)', '', processed_text)
 
         if not privacy_taint_occurred:
             log4DEV(f"SkipList:{skip_list}"
@@ -1673,7 +1677,7 @@ def process_text_in_background(logger,
                         #     if app_name in _active_window_title:  # Sucht nach "0 A.D." im Titel
                         #         active_sig = sig
                         #         break
-
+                        #
                         if active_sig:
                             signature_cooldown = getattr(settings, 'SIGNATURE_COOLDOWN', 3600)
 
