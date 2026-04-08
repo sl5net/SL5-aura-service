@@ -137,6 +137,7 @@ FUZZY_MAP_pre = [
     ('tausend', r'\b(1000)\b', 89, # min_accuracy
  {'flags': re.IGNORECASE}),
 
+
 ]
 
 

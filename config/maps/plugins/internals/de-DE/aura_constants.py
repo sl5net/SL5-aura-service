@@ -3,6 +3,8 @@
 # Diese Liste kombiniert aura_reg und AURA_VARIANTS.
 # Sie fängt Rauschen und Fehlinterpretationen des Vosk-Modells ab.
 
+# auras
+
 _variants = (
     r'aachen|aber|anbraten brauche|Apparat|Ära|Auch|Aura|auras|auren|Aurora|aurore|auer|agora|'
     r'bohrer|brauche|buchen|burgess|cora|dora|doran|doras|eure|eurer|hey|hoa|hoch|horror|'
@@ -12,7 +14,7 @@ _variants = (
 )
 AURA_VARIANTS = fr'({_variants})'
 # Hurra zugedrücktOrangene suche Dokumenten
-suche_reg = r'\b(suche|suchen|zu|buch)\b'
+suche_reg = r'\b(suche|suchen|schufa|zu|buch)\b'
 
 # Eure Dokumentation
 # Wörter, die Vosk oft bei Stille/Rauschen halluziniert.
