@@ -24,14 +24,14 @@ def execute(match_data):
         file_filter = "settings*.py"
     elif docs_dir == '~/dokumente' or docs_dir == '~/Dokumente':
         docs_dir = '~/Dokumente'
-        file_filter = "*.pdf"
+        file_filter = "*.pdf|*.png|*.jpg"
     # elif docs_dir == '~/documents':
     #     docs_dir = '~/Documents'
     #     file_filter = "*.md"
     else:
-        file_filter = "*.pdf"
-        print('exit 2026-0407-1220')
-        exit(1)
+        file_filter = "*.py|*.txt|*.md"
+        print(f'exit docs_dir = {docs_dir} 2026-0407-1220')
+        # exit(1)Raus zu TriebwerkenOpa zurückÄra Suffixe
     #
     # Juras doofer DokumenteHurra suche du kommst Dora suche du kommst
     # current_lang = Path(__file__).parent.name.split("-")[0]

@@ -15,7 +15,7 @@ AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
 suche = r'(such|suche|suche du|sucht|suchen|sure|Schuhe|hoover|buch|zug|Zuge|stiefel|schlüchtern)'
 FUZZY_MAP_pre = [
     #Doch wenn Zuge doch gewinnt
-    # ('zyäzwnyöxü', r'^(zyxü)$', 10),
+    # ('zyäzwnyöxü', r'^(zyxü|sourcecode|quelltext|funkt|funktionen|methoden|sowas|beiden kuchen quelltext|funktion)$', 10),
 
     # --- Sprachsteuerung für den Lernmodus ---
     ('Lernmodus...', fr'^{AURA_VARIANTS}.*lernmodus (an\w*|ein\w*|aus\w*|starten|stoppen)$', 100, {
@@ -25,9 +25,23 @@ FUZZY_MAP_pre = [
 
     # --- Training-Plugin (wird vom Skript oben ein/ausgeschaltet) ---
     # (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
-    #
+
+    #Orange rot
+
+    # EXAMPLE: Aura sourcecode
+    ('scripts', fr'^{AURA_VARIANTS}\s*(als)?\s*(sourcecode|quelltext|schwarz quote|schwarz|funkt\w+|methoden|sowas|kuchen quelltext)$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
+    }),
+
+    # EXAMPLE: Aura suche sourcecode
+    (r'scripts', fr'^{AURA_VARIANTS}\s+{suche}\s+(sourcecode|quelltext|schwarz|schwarz # quote|funkt\w+|methoden|sowas|kuchen quelltext)$', 90, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
+    }),
+
     # EXAMPLE: Aura Suche result #  Homer suche Dokumente
-    ('~/Dokumente', fr'^{AURA_VARIANTS}\s+{suche}\s+(?P<dirpath>\w+)$', 90, {
+    ('~/Dokumente', fr'^{AURA_VARIANTS}\s+{suche}\s+(?P<dirpath>(dok\w+|ducken))$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
     }),
@@ -41,15 +55,16 @@ FUZZY_MAP_pre = [
 
     # deprecated method? Maybe use run_search_the_result.py?
     # Aura Suche
-    # ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*{suche}$', 100, {
-    # 'flags': re.IGNORECASE,
-    # 'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
-    # }),
-
-    ('Suche wird gestartet...', r'^(rohre zu|rohrer suche)$', 100, {
+    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*{suche}$', 100, {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),
+
+    ('Suche wird gestartet...', r'^(rohre zu|rohrer suche|orange hoch)$', 100, {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    }),
+
 
     # deprecated method? Maybe use run_search_the_result.py?
     # Handbuch wird durchsucht...
@@ -57,5 +72,5 @@ FUZZY_MAP_pre = [
         'flags': re.IGNORECASE,
         'on_match_exec': [Path(__file__).resolve().parent /  'run_doc_search.py']
     }),
-
+    #
 ]

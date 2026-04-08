@@ -53,15 +53,31 @@ REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
 
 MAPS_DIR="${1:-${MAPS_DIR:-config/maps}}"
 
-echo "Line 54:" $MAPS_DIR
+echo "Line 54:" $MAPS_DIR " pwd: " $PWD
 
 if [[ $MAPS_DIR == /* || $MAPS_DIR == ./* || $MAPS_DIR == ~/* || $MAPS_DIR == "$HOME"/* || $MAPS_DIR == ~*  ]]; then
-  : # ok
+  : # okOhh sowas guckenvoran SchwarzkopfAura schwarz
 else
+  # MAPS_DIR="$PROJECT_ROOT/$MAPS_DIR"
   MAPS_DIR="./$MAPS_DIR"
+  cd "$PROJECT_ROOT" || exit 1
+  echo "Line 63:" $MAPS_DIR " pwd: " $PWD
 fi
+#Aurora als Sourcecode
+#  $PROJECT_ROOTOrange schwarz QuoteGraz Wort
+# ./scripts/py/func  pwd:  /home/seeh/projects/py/STT
+#Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/seeh/projects/py/STT
+#/home/seeh/projects/py/STT/scripts/search_rules/search_rules.sh: Zeile 142: MAPS_DIR:: Kommando nicht gefundenOrange Rost
 
-echo "Line 64:" $MAPS_DIR
+#
+
+
+#
+
+
+
+
+echo "Line 64:" $MAPS_DIR " pwd: " $PWD
 
 HISTORY_FILE="$HOME/.search_rules_history"
 
@@ -132,9 +148,23 @@ open_github() {
 export -f open_github
 #
 
+echo "Line 137: MAPS_DIR: " $MAPS_DIR " pwd: " $PWD
+
+# Line 54: scripts/py/func  pwd:  /home/seeh/projects/py/STT
+# Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/seeh/projects/py/STT
+
+MAPS_DIR:  "scripts/py/func"
+
+#Hurra zurückwerfenJura Quelltext
+
+
+
+
+
+
 LANG_TAG="${2:-}" # Optionaler zweiter Parameter (z.B. "de")
 
-SELECTED_LINE=$(grep --color=never -rnH -I --include="${SEARCH_FILES_FILTER:-*}" . "$MAPS_DIR" | \
+SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/') . "$MAPS_DIR" | \
     fzf --history="$HISTORY_FILE" \
         --query="$INITIAL_QUERY" \
         --header="Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
@@ -148,16 +178,30 @@ SELECTED_LINE=$(grep --color=never -rnH -I --include="${SEARCH_FILES_FILTER:-*}"
         --preview-window="up:50%" \
         --preview='awk -v t={2} "BEGIN {t=t+0} NR>t-5 && NR<t+5 {printf \"%s%4d: %s\n\", (NR==t ? \">\" : \" \"), NR, \$0}" {1}' \
 )
-# xdg-open
+# xdg-openzoran suche ducken
 
 # 5. EXECUTION (Robustes Öffnen) #
 if [ -n "$SELECTED_LINE" ]; then
     FILE_PATH="$(echo "$SELECTED_LINE" | cut -d: -f1)"
     LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
 
-    # Prüfen, ob es ein PDF ist (Groß-/Kleinschreibung ignorieren)
-    if [[ "${FILE_PATH,,}" == *.pdf ]]; then
+    EXT="${FILE_PATH##*.}"
+    EXT="${EXT,,}"
+
+    BIN_EXTS="pdf png jpg jpeg gif webp mp4 mp3 zip tar gz 7z"
+
+    # Text-Format ?
+    MIME_TYPE=$(file --mime-type -b "$FILE_PATH")
+    echo "160: MIME_TYPE=$MIME_TYPE "
+
+    if [[ " $BIN_EXTS " =~ " $EXT " ]] || [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" ]]; then
+
+    #if [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" ]]; then
+        # Binär PDF etc. -> System-Standard
+        echo "xdg-open "$FILE_PATH" > /dev/null 2>&1 &"
         xdg-open "$FILE_PATH" > /dev/null 2>&1 &
+        sleep 8
+
     else
         # Normale Editor-Logik
         case $PREFERRED_EDITOR in
@@ -166,7 +210,10 @@ if [ -n "$SELECTED_LINE" ]; then
             *) $PREFERRED_EDITOR "$FILE_PATH" & disown ;;
         esac
     fi
-    exit 0
+    # exit 0
+
+    # PDF ?
+    # if [[ "${FILE_PATH,,}" == *.pdf ]]; then
 fi
 
 
