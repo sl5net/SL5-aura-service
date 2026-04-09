@@ -233,7 +233,7 @@ Und während ich euch hier das erzähle, sind schon wieder 100.000 € verschwun
         return full_summary
 
 
-# #100 Milliarden Euro, das ist der geschätzte Schaden, der durchSteuerhinterziehung jedes Jahr in Deutschland entsteht, jedes Jahr aufs Neue. Das sind 270 Millionen Euro pro Tag, 11 Millionen Euro proStunde. Und während ich euch hier das erzähle, sind schon wieder 100.000 E €verschwunden. ( Rede von Anne Brorhilker in der publica 2025 )100 Milliarden Euro, das ist der geschätzte Schaden, der durchSteuerhinterziehung jedes Jahr in Deutschland entsteht, jedes Jahr aufs Neue.Das sind 270 Millionen Euro pro Tag, 11 Millionen Euro pro Stunde.Und während ich euch hier das erzähle, sind schon wieder 100.000 € verschwunden. ( Rede von Anne Brorhilker in der re-publica 2025 )
+# 100 Milliarden Euro, das ist der geschätzte Schaden, der durchSteuerhinterziehung jedes Jahr in Deutschland entsteht, jedes Jahr aufs Neue. Das sind 270 Millionen Euro pro Tag, 11 Millionen Euro proStunde. Und während ich euch hier das erzähle, sind schon wieder 100.000 E €verschwunden. ( Rede von Anne Brorhilker in der publica 2025 )100 Milliarden Euro, das ist der geschätzte Schaden, der durchSteuerhinterziehung jedes Jahr in Deutschland entsteht, jedes Jahr aufs Neue.Das sind 270 Millionen Euro pro Tag, 11 Millionen Euro pro Stunde.Und während ich euch hier das erzähle, sind schon wieder 100.000 € verschwunden. ( Rede von Anne Brorhilker in der re-publica 2025 )
 
     if search_term=='Harald'.lower() or search_term=='Harald Uetz'.lower() or search_term=='Harald Uhd'.lower():
         full_summary = """

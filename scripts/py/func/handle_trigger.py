@@ -278,7 +278,7 @@ def handle_trigger(
                 # devices = sd.query_devices()
                 # for idx, device in enumerate(devices):
                 #     logger.info(f"🎤 {idx}: {device['name']} (input channels: {device['max_input_channels']}){temp}")
-                # # Standard-Input-Device check:
+                # Standard-Input-Device check:
                 # default_input_index = sd.default.device[0]
                 # default_input_device = sd.query_devices(default_input_index)
                 # logger.info(f"🎤Standard: {default_input_device['name']} (Index: {default_input_index})")

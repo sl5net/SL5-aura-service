@@ -16,7 +16,7 @@ get_lt_session = None
 
 
 def get_session():
-    # Wir speichern eine Session pro Prozess-ID (PID)
+    # We store one session per process ID (PID)
     pid = os.getpid()
     if pid not in _session_cache:
         session = requests.Session()
@@ -96,7 +96,7 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
 def get_lt_session_202601311817():
     global _lt_session
     if _lt_session is None:
-        # Diese Initialisierung findet jetzt erst im Subprozess statt
+        # This initialization now only takes place in the subprocess
         _lt_session = requests.Session()
         retries = Retry(total=2, backoff_factor=0.1)
         adapter = HTTPAdapter(pool_connections=10, pool_maxsize=10, max_retries=retries)
@@ -130,7 +130,7 @@ def correct_text_by_languagetool_202601311818(logger, active_lt_url, LT_LANGUAGE
     log_all_changes = True
 
     # 1. Daten-Payload optimieren
-    # Tipp: Deaktivieren Sie "picky" Regeln oder schränken Sie Kategorien ein
+    # Tip: Disable picky rules or restrict categories
     data = {
         'language': LT_LANGUAGE,
         'text': text,
@@ -142,7 +142,7 @@ def correct_text_by_languagetool_202601311818(logger, active_lt_url, LT_LANGUAGE
 
     try:
         # 2. Timeout senken (z.B. 5 Sekunden)
-        # Wenn der lokale Server länger braucht, ist er überlastet
+        # If the local server takes longer, it is overloaded
         lt_session = get_lt_session()
         response = lt_session.post(active_lt_url, data=data, timeout=5)
         response.raise_for_status()
@@ -151,12 +151,12 @@ def correct_text_by_languagetool_202601311818(logger, active_lt_url, LT_LANGUAGE
         if not matches:
             return text
 
-        # Korrektur-Logik (unverändert, aber effizienter)
+        # Correction logic (unchanged, but more efficient)
         sorted_matches = sorted(matches, key=lambda m: m['offset'])
         new_text_parts, last_index = [], 0
 
         for match in sorted_matches:
-            # Überspringe Korrektur, wenn keine Replacements vorhanden sind
+            # Skip correction if there are no replacements
             if not match.get('replacements'):
                 continue
 

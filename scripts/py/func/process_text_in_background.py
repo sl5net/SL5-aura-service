@@ -124,7 +124,7 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
     """
 
     if not basis_pfad.is_dir():
-        # print(f"Warnung: Pfad '{basis_pfad}' existiert nicht oder ist kein Ordner.")
+        # print(f"Warnung: path '{basis_pfad}' not exist or is no folder.")
         return
 
     # Liste, um die Unterordner für die nächste Rekursion zu speichern
@@ -228,7 +228,6 @@ fasttext_model = None # Ensure variable exists
 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     if not MODEL_PATH.exists():
         # Using logger that will be passed into the main function later
-        # This part of the code needs a logger instance to be available.
         logging.error(f"ERROR: Auto language detection is enabled, but model file is missing: {MODEL_PATH}")
         # Or ideally, log this with a logger instance.
     else:
@@ -265,23 +264,20 @@ def is_plugin_enabled(hierarchical_key, plugins_config):
     """
     current_key_parts = hierarchical_key.split('/')
 
-    # Wir bauen die Hierarchie von oben nach unten auf und prüfen jeden Schritt
-    # z.B. für "game/0ad" prüfen wir erst "game", dann "game/0ad"
+    #  root to top
+    # e.g. first "game/0ad" then "game/0ad"
     for i in range(len(current_key_parts)):
-        # Baue den aktuellen Key zusammen, z.B. erst 'game', dann 'game/0ad'
+        # Assemble the current key, e.g. first 'game', then 'game/0ad'
         current_key = "/".join(current_key_parts[:i + 1])
 
-
-
-
-        # Prüfe, ob dieser Key EXPLIZIT auf False gesetzt ist.
-        # .get(key, True) gibt True zurück, wenn der Key nicht existiert.
+        # Check whether this key is EXPLICITLY set to False.
+        # .get(key, True) returns True if the key does not exist.
         # Das entspricht deiner Regel "Kein Eintrag = True".
         if plugins_config.get(current_key) is False:
-            # Sobald wir ein 'False' in der Kette finden, ist die Entscheidung gefallen.
+            # As soon as we find a 'false' in the chain, the decision is made.
             return False
 
-    # Wenn wir die gesamte Hierarchie durchlaufen haben und kein einziges
+    # When we have gone through the entire hierarchy and not a single one
     # 'False' gefunden haben, ist das Modul aktiviert.
 
     # process_text_in_background.py:260 (is_plugin_enabled)
@@ -302,7 +298,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         from .log_memory_details import log_memory_details
         log_memory_details("next: auto_reload_modified_maps", logger)
 
-    # Zuerst alle Module im Speicher neu laden, um Änderungen zu erfassen
+    # First reload all modules in memory to capture changes
     auto_reload_modified_maps(logger,run_mode_override)
 
 
@@ -488,7 +484,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
                 if is_private:
                     for entry in module.FUZZY_MAP_pre:
-                        # Annahme: entry ist entweder Dict oder Tupel mit Dict am Ende
+                        # Assumption: entry is either Dict or a tuple with Dict at the end
                         if isinstance(entry, dict):
                             entry.update(injection_data)
                         elif isinstance(entry, (list, tuple)) and len(entry) > 0:
@@ -543,14 +539,14 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                 logger.info("🔧 Auto-Fix in Background-Loop finished! try Reload...")
                 try:
                     importlib.invalidate_caches()
-                    # Hier musst du schauen, wie das Modul im Original geladen wurde
+                    # Here you have to look at how the module was originally loaded
                     # Meistens so:
                     module = importlib.import_module(modname)
                     importlib.reload(module)
 
-                    # Wenn wir hier sind, hat es geklappt!
-                    # Je nach Logik musst du das Modul jetzt vielleicht zur Liste hinzufügen
-                    # oder einfach 'continue' machen, damit der nächste Loop-Durchlauf es sauber lädt.
+                    # If we are here, it worked!
+                    # Depending on your logic, you may now need to add the module to the list
+                    # or just do 'continue' so that the next loop run loads it cleanly.
                     logger.info("✅ Modul repaired. ")
 
                     if platform.system() == "Windows":
@@ -861,8 +857,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                                     handle_tts_fallback(new_current_text, lang_for_tts, logger)
                                 logger.info(f"289: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
 
-                            # WICHTIG: Dein Code beendet die Funktion hier nach dem ERSTEN Skript.
-                            # Das ist okay, wenn pro Regel nur ein Skript vorgesehen ist.
+                            # IMPORTANT: Your code here terminates the function after the FIRST script.
+                            # This is okay if there is only one script per rule.
 
                             if GLOBAL_debug_skip_list:
                                 print(f'708: skip_list={skip_list}')
@@ -989,19 +985,19 @@ def process_text_in_background(logger,
                 expected_id = SESSION_LAST_PROCESSED.get(session_id, 0) + 1
 
             if chunk_id == expected_id:
-                # Wir sind dran!
+                # It's our turn!
                 break
 
             if chunk_id < expected_id:
-                # Wurde bereits verarbeitet/überholt (oder wir sind ein Duplikat). Abbrechen!
+                # Has already been processed/refurbished (or we are a duplicate). Cancel!
                 logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
                 logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
                 logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
                 logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
                 return
 
-            # Wir sind zu schnell. In den Cache legen und warten.
-            # Nur alle N Iterationen loggen:
+            # We're too fast. Put it in the cache and wait.
+            # Log only every N iterations:
             if wait_count % 100 == 0:
                 logger.info(f"ID {chunk_id} arrived early. Waiting for {expected_id}...")
             wait_count += 1
@@ -1016,10 +1012,10 @@ def process_text_in_background(logger,
 
             with SEQUENCE_LOCK:
 
-                # --- Wenn der Cache-Eintrag nicht mehr da ist, wurde er von einem anderen Thread abgeholt ---
+                # --- If the cache entry is no longer there, it was picked up by another thread ---
 
                 if chunk_id not in OUT_OF_ORDER_CACHE:
-                    # Der Chunk wurde gerade von einem anderen Thread freigegeben, also neu prüfen.
+                    # The chunk was just shared by another thread, so check again.
                     continue
 
 
@@ -1031,8 +1027,8 @@ def process_text_in_background(logger,
     # print(f':st: \nprocess_text_in_background:1021 raw_text:{raw_text}')
 
 
-        # 3. Cache prüfen: Nachdem wir verarbeitet wurden, prüfen, ob wir Blocker für andere waren
-        # Hier müsste ein weiterer Block hin, der den Cache aufräumt. (Wir implementieren das später)
+        # 3. Check cache: After we are processed, check if we were blockers for others
+        # Another block would have to go here to clean up the cache. (We will implement this later)
 
     # --- ENDE DER SEQUENZPRÜFUNG ---
 
@@ -1265,7 +1261,7 @@ def process_text_in_background(logger,
 
                     # log4DEV("Applying all rules until stable (default 'all' mode).", logger)
 
-                    # # print(f':st: \nprocess_text_in_background:1227 raw_text:"{raw_text}" processed_text:"{processed_text}"')
+                    # print(f':st: \nprocess_text_in_background:1227 raw_text:"{raw_text}" processed_text:"{processed_text}"')
                     print(f":st: \n processed_text={processed_text} 1261\n\n", logger)
 
                     (new_processed_text
@@ -1463,9 +1459,6 @@ def process_text_in_background(logger,
                             logger.warning(f"❌ 707: FUZZY_MAP: '{match_phrase}'. Error: {e}")
 
             # Pass 2: If no regex matched, perform the FUZZY search as before.
-            # This code will only run if the loop above didn't find a regex match.
-
-
 
             if (not regex_pre_is_replacing_all
                     and not regex_pre_is_replacing_all_maybe
@@ -1590,7 +1583,7 @@ def process_text_in_background(logger,
 
         script_result = processed_text  # Wir starten mit dem Originaltext
 
-        # new_current_text wird das finale Ergebnis sein
+        # new_current_text will be the final result
 
         if not privacy_taint_occurred:
             log4DEV(f'processed_text={processed_text}', logger)
@@ -1598,9 +1591,9 @@ def process_text_in_background(logger,
         # lang_for_tts startet mit der Originalsprache
         lang_for_tts = LT_LANGUAGE
 
-        # --- Hier wird die Magie passieren ---
-        # (Dein Code, der das Plugin aufruft und script_result füllt, fehlt hier, aber das Ergebnis ist klar)
-        # Nehmen wir an, script_result ist jetzt das Dictionary vom Übersetzer
+        # --- This is where the magic will happen ---
+        # (Your code that calls the plugin and populates script_result is missing here, but the result is clear)
+        # Let's assume script_result is now the dictionary from the translator
 
         if isinstance(script_result, str):
             new_current_text = script_result
@@ -1645,7 +1638,7 @@ def process_text_in_background(logger,
 
                         if active_sig:
                             with SEQUENCE_LOCK:
-                                # 2. Nutze den spezifischen Cooldown für dieses Fenster
+                                # 2. Use the specific cooldown for this window
                                 last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
 
                                 if (current_time - last_time > active_cooldown):
@@ -1723,7 +1716,7 @@ def process_text_in_background(logger,
             new_current_text = sanitize_transcription_start(new_current_text)
 
 
-            # DIESE ZEILE WAR SCHON RICHTIG:
+            # THIS LINE WAS ALREADY CORRECT:
             # scripts/py/func/process_text_in_background.py:1591
             unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
             # print(f':st: \nprocess_text_in_background:1672 raw_text:{raw_text}')
@@ -1735,7 +1728,7 @@ def process_text_in_background(logger,
 
                 log4DEV(f"handle_tts_fallback({new_current_text}, {lang_for_tts})",logger)
 
-            # KORREKTUR 2: Logge den Text, der WIRKLICH geschrieben wurde
+            # CORRECTION 2: Log the text that was ACTUALLY written
 
             # process_text_in_background.py:1453 (process_text_in_background)
             # …{str(unique_output_file)[-30:]}
@@ -1783,7 +1776,7 @@ def process_text_in_background(logger,
                 log4DEV(f"✅ Background processing for '{raw_text[:20]}...' finished. ",logger)
             notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
 
-        # # scripts/py/func/process_text_in_background.py:433 TODO fallback:
+        # scripts/py/func/process_text_in_background.py:433 TODO fallback:
         max_model_memory_footprint_mb_not_calculate =  5000
 
         # 21:05:34,680 - INFO     - Attempting to load missing model: 'vosk-model-en-us-0.22'
@@ -1819,11 +1812,7 @@ def process_text_in_background(logger,
 # py/func/process_text_in_background.py:1196
 def sanitize_transcription_start(raw_text: str) -> str:
     """
-    ﻿test (original:'test', Voice Translation SL5.de/Aura ).
-    ZWNBSP
-
     cost: ~ 1 Microsecond (µs)
-
 
     Removes leading junk characters from a string, preserving any language.
 
@@ -2116,7 +2105,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 match_obj = compiled_regex.fullmatch(current_text)
 
                 if match_obj:
-                    # Der ursprüngliche Text, bevor irgendetwas geändert wird
+                    # The original text before anything is changed
                     original_text_for_script = current_text
                     # print(f"1571:🔎 🔎 🔎 original..={original_text_for_script} current_text={current_text}")
                     if not privacy_taint_occurred:
@@ -2190,7 +2179,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
                 else:  # Dieser Block wird ausgeführt, wenn es KEIN fullmatch gab
 
-                    # <<< ÄNDERUNG 3: Wir müssen hier explizit nach einem partiellen Match suchen, um das match_obj zu bekommen
+                    # <<< CHANGE 3: We need to explicitly search for a partial match here to get the match_obj
                     # partial_match_obj = re.search(regex_pattern, current_text, flags=flags)
                     partial_match_obj = compiled_regex.search(current_text)
 
@@ -2281,7 +2270,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
     if not made_a_change:
         if not privacy_taint_occurred:
             log4DEV(f"made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
-            #  z.b. "das ist ein test landet" hier. Es gibt auch (höchstwahrschienlich keine Regel hiervür. Also correkt.
+            # e.g. "this is a test lands" here. There is also (most likely) no rule about this. So correct.
             # logging.info('sys.exit(1) 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923')
             # sys.exit(1) # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 Test
             log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",

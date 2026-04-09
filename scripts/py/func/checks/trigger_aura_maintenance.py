@@ -61,7 +61,7 @@ def _execute_maintenance_tasks(logger):
 
     """Zentraler Manager für Hintergrund-Aufgaben."""
     try:
-        # 1. Throttling: Nur alle 10 Minuten einen Test machen
+        # 1. Throttling: Only take a test every 10 minutes
         now = time.time()
         if LAST_CHECK_FILE.exists():
             try:
@@ -75,7 +75,7 @@ def _execute_maintenance_tasks(logger):
         logger.info(f"Maintenance: Checking Path: …{str(radio_script)[-40:]}")
 
         if radio_script.exists():
-            # Wir nutzen subprocess, um die venv-Umgebung und das if-main-Handling sauber zu trennen
+            # We use subprocess to cleanly separate the venv environment and the if-main handling
 
             #result = subprocess.run([sys.executable, str(radio_script)], capture_output=True, text=True, check=False)
 
@@ -95,7 +95,7 @@ def _execute_maintenance_tasks(logger):
 
             else:
                 logger.info("Maintenance: Radio-Aura Cache wurde aktualisiert.")
-                # speak_fallback("Maintenance: Radio-Aura Cache wurde aktualisiert", 'de-DE')
+                # speak_fallback("Maintenance: Radio Aura Cache has been updated", 'de-DE')
 
             # subprocess.run([sys.executable, str(radio_script)], check=False)
             logger.info("Maintenance: Radio-Aura Cache fertig.")
@@ -108,7 +108,7 @@ def _execute_maintenance_tasks(logger):
         if translator_script.exists():
             logger.info(f"Maintenance: Starting Markdown Translator: {translator_script}")
 
-            # Startet den Translator. Da dieser bereits existierende Dateien überspringt,
+            # Starts the translator. Since this skips existing files,
             # ist der Aufruf effizient.
             res_trans = subprocess.run([sys.executable, str(translator_script)], capture_output=True, text=True, check=False)
 
@@ -138,12 +138,12 @@ def _execute_maintenance_tasks(logger):
         logger.info(f"Maintenance: Starting Smoke-Zip Test for: {root}")
 
         if _setup_scenario(root, logger):
-            # 4. Warten und Prüfen (Aura zippt im Vorbeigehen)
+            # 4. Wait and check (aura zips as you pass)
             success = False
             start_wait = time.time()
             expected_zip = root / EXPECTED_ZIP_NAME
 
-            # Wir geben Aura 30 Sekunden Zeit
+            # We give Aura 30 seconds
             while time.time() - start_wait < 30:
                 if expected_zip.exists():
                     success = True
@@ -175,7 +175,7 @@ def _execute_maintenance_tasks(logger):
 def _setup_scenario(root, logger):
     """Erstellt eine realistische Map-Struktur für den Test."""
     try:
-        # Sicherheitscheck: Parent muss existieren (sonst ist Aura nicht korrekt installiert)
+        # Security check: Parent must exist (otherwise Aura is not installed correctly)
         if not root.parent.exists():
             logger.error(f"Auto-Zip: Parent Pfad existiert nicht: {root.parent}")
             return False
@@ -184,14 +184,14 @@ def _setup_scenario(root, logger):
         root.mkdir(parents=True, exist_ok=True)
         (root / "__init__.py").write_text("# Container Init")
 
-        # 2. Den Ziel-Ordner erstellen (der gezippt werden soll)
+        # 2. Create the target folder (to be zipped)
         locked = root / "_locked_folder"
         locked.mkdir(parents=True, exist_ok=True)
 
         # 3. Notwendige Dateien für die Erkennung durch Aura
         (locked / "__init__.py").write_text("# module init\n")
 
-        # Eine nicht-leere .py Datei (wichtig für den Reloader/Packer)
+        # A non-empty .py file (important for the reloader/packer)
         content = "def on_reload():\n    pass\n\n# Auto-Generated Test File\n"
         (locked / "FUZZY_MAP_pre.py").write_text(content)
 

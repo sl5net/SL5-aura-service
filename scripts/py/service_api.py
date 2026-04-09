@@ -34,7 +34,7 @@ if not SECRETS_PATH.exists():
 load_dotenv(SECRETS_PATH)
 
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
-# Debug Print (Sollte in Produktion entfernt werden)
+# Debug Print (Should be removed in production)
 print(f"DEBUG: Loaded API Key (length {len(API_KEY_SECRET)}): '{API_KEY_SECRET[:5]}...'")
 
 # Temporärer Pfad
@@ -97,7 +97,7 @@ class ProcessRequest(BaseModel):
 
 # --- 3. Endpunkt-Definition ---
 
-# WICHTIG: Hier fehlte "Depends(verify_api_key)"!
+# IMPORTANT: “Depends(verify_api_key)” was missing here!
 @app.post("/process")
 async def process_text_command(request: ProcessRequest, valid: bool = Depends(verify_api_key)):
     """

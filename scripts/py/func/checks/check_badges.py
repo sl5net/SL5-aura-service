@@ -23,11 +23,9 @@ def check_badge_status(url):
 
         svg_text = response.text.lower()
 
-        # This is how we check if the badge is RED
         if 'failing' in svg_text or 'failed' in svg_text:
             return 'failing'
 
-        # This is how we check if the badge is GREEN
         if 'passing' in svg_text:
             return 'passing'
 
@@ -50,6 +48,7 @@ def check_badges(SCRIPT_DIR):
     if not urls:
         print("No GitHub badges found in README.md.")
         return
+
 
 
     print("--- Checking README Badges ---")

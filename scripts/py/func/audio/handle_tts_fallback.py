@@ -26,7 +26,7 @@ def handle_tts_fallback(processed_text, LT_LANGUAGE, logger):
         return False
 
 
-    # 1. Versuch via Piper Server (falls nicht ESPEAK primary)
+    # 1. Try via Piper Server (if not ESPEAK primary)
     if settings.USE_AS_PRIMARY_SPEAK != "ESPEAK":
         if piper_speak_via_server(processed_text):
             return True

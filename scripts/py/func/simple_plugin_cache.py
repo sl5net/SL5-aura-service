@@ -27,7 +27,7 @@ def _json_default_converter(obj):
 def get_cache_db_path(base_dir: Path) -> Path:
     """Returns the absolute path to the cache database file."""
     # Assuming the cache should live in a persistent location like the main tmp/log directory
-    # Existiert data/ nicht, wirft Python den Fehler – kein blindes Speichern mehr.
+    # If data/ does not exist, Python throws the error - no more blind saving.
     return base_dir.parent / "data" / CACHE_DB_FILE
     # return base_dir.parent / CACHE_DB_FILE
 
@@ -94,7 +94,7 @@ def get_cached_result(
                     logger.debug("CACHE HIT: Entry is 'eternal' (TTL=None). Skipping time check.")
                 return json.loads(cached_result_json)
 
-            # Drittens: Zeitbasierter Check (Wir sind uns sicher: Beide sind Zahlen)
+            # Third: Time-based check (We are sure: both are numbers)
             current_time = time.time()
             time_since_cache = current_time - cached_timestamp
 

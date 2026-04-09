@@ -15,9 +15,9 @@ X11_CACHE_FILE = Path(tempfile.gettempdir()) / "sl5_aura" / "sl5_aura_x11_env.js
 
 
 def get_active_window_kde():
-    # Dieser Befehl fragt KWin direkt nach dem Titel des aktiven Fensters
+    # This command directly asks KWin for the title of the active window
     # cmd = "qdbus6 org.kde.KWin /KWin org.kde.KWin.activeWindow"
-    # Falls das nur eine ID liefert, ist dieser hier für den Text besser:
+    # If this only provides an ID, this one is better for the text:
     cmd_title = "qdbus6 org.kde.KWin /KWin org.kde.KWin.supportInformation"
 
     try:
@@ -111,12 +111,12 @@ def get_active_window_title_atspi_fallback():
 
 
     # --- SCHRITT 2: Einmalige Initialisierung (hasattr Trick) ---
-    # Wir prüfen, ob wir an diese Funktion schon eine "Notiz" geklebt haben.
-    # 'hasattr' schaut nach: "Habe ich die Variable 'initialized' schon?"
+    # We check whether we have already attached a “note” to this function.
+    # 'hasattr' checks: "Do I have the variable 'initialized' yet?"
     if not hasattr(get_active_window_title_atspi_fallback, "initialized"):
-        # Dieser Block läuft NUR BEIM ERSTEN MAL!
+        # This block ONLY runs the FIRST TIME!
         if Atspi.init() == 0:
-            # Wir kleben die Notiz "initialized = True" an die Funktion
+            # We stick the note "initialized = True" to the function
             get_active_window_title_atspi_fallback.initialized = True
         else:
             get_active_window_title_atspi_fallback.initialized = False
@@ -223,7 +223,7 @@ def get_linux_x11_env():
     # B: Sniffer (/proc) - Jetzt robuster
     if not found_auth:
         try:
-            # Limitieren auf max 50 Versuche, damit wir nicht ewig in /proc hängen
+            # Limit to a maximum of 50 attempts so that we don't get stuck in /proc forever
             pids = [p for p in os.listdir('/proc') if p.isdigit()]
             # Sortieren, neuere PIDs zuerst (wahrscheinlicher GUI apps)
             pids.sort(key=lambda x: int(x), reverse=True)
@@ -231,7 +231,7 @@ def get_linux_x11_env():
             for pid in pids[:100]: # Nur die neuesten 100 Prozesse scannen
                 try:
                     # Timeout simulieren durch schnelles Lesen (non-blocking ist in Python schwer bei files)
-                    # Wir lesen einfach und fangen jeden Fehler ab
+                    # We just read and catch every mistake
                     env_path = f'/proc/{pid}/environ'
                     if not os.access(env_path, os.R_OK): continue
 
@@ -290,7 +290,7 @@ def get_linux_x11_env():
 
             # Erst öffnen/erstellen
             with open(X11_CACHE_FILE, "w") as f:
-                # DANN Rechte einschränken (nur Owner darf lesen/schreiben)
+                # THEN restrict rights (only owner is allowed to read/write)
                 try:
                     Path(X11_CACHE_FILE).chmod(0o600)
                     os.chmod(X11_CACHE_FILE, 0o600)
@@ -312,8 +312,8 @@ def get_active_window_title_kde_wayland_qdbus():
     Dies ist der zuverlässigste Weg unter Plasma 6 + Wayland.
     """
     try:
-        # qdbus6 ist der Standardbefehl unter Plasma 6
-        # Wir fragen die Support-Informationen ab, die den aktuellen Status enthalten
+        # qdbus6 is the default command under Plasma 6
+        # We query the support information which contains the current status
         result = subprocess.run(
             ["qdbus6", "org.kde.KWin", "/KWin", "org.kde.KWin.supportInformation"],
             capture_output=True, text=True, timeout=1
@@ -326,7 +326,7 @@ def get_active_window_title_kde_wayland_qdbus():
                     if title:
                         return f"🔵(KWin) {title}"
     except (subprocess.SubprocessError, FileNotFoundError):
-        # Falls qdbus6 nicht installiert ist oder fehlschlägt
+        # If qdbus6 is not installed or fails
         pass
     return None
 
@@ -337,8 +337,8 @@ def get_active_window_title_kde_native():
     Das ist unter Wayland der stabilste Weg.
     """
     try:
-        # Wir fragen KWin nach den Support-Informationen
-        # timeout=0.5 sorgt dafür, dass das Skript nicht hängen bleibt
+        # We ask KWin for the support information
+        # timeout=0.5 ensures that the script does not hang
         result = subprocess.run(
             ["qdbus6", "org.kde.KWin", "/KWin", "org.kde.KWin.supportInformation"],
             capture_output=True,
@@ -396,14 +396,14 @@ def get_active_window_title_safe():
             title = get_active_window_title_kde_native()
 
             # Versuch: KDE Native (Wayland optimiert)
-            # 2. Priorität: Falls der erste Weg versagt, nimm Atspi (aber leise)
+            # 2nd priority: If the first way fails, take Atspi (but quietly)
             if not title:
                 title = get_active_window_title_kde_wayland_qdbus()
 
             if not title:
                 title = get_active_window_kde()
 
-            # 2. Versuch: Falls KDE nichts lieferte oder Fehler war, nimm Atspi
+            # 2nd attempt: If KDE didn't deliver anything or there was an error, use Atspi
             if title is None or "Error" in title:
                 title = get_active_window_title_atspi_fallback()
 
@@ -413,14 +413,14 @@ def get_active_window_title_safe():
             # return get_active_window_title_atspi()
 
             # try:
-            #     # 1. Aktiven Fenster-Pfad über dbus-send holen (Standard-Tool)
+            # 1. Get active window path via dbus-send (standard tool)
             #     cmd_id = ["dbus-send", "--session", "--print-reply", "--dest=org.kde.KWin", "/KWin",
             #               "org.kde.KWin.activeWindow"]
             #     out_id = subprocess.check_output(cmd_id, stderr=subprocess.DEVNULL).decode()
             #     # Extrahiert den Pfad (z.B. /Windows/W1)
             #     win_path = out_id.split('objpath "')[1].split('"')[0]
             #
-            #     # 2. Titel (caption) für diesen Pfad holen
+            # 2. Get the title (caption) for this path
             #     cmd_title = ["dbus-send", "--session", "--print-reply", "--dest=org.kde.KWin", win_path,
             #                  "org.freedesktop.DBus.Properties.Get", "string:org.kde.KWin.Window", "string:caption"]
             #     out_title = subprocess.check_output(cmd_title, stderr=subprocess.DEVNULL).decode()
@@ -486,9 +486,9 @@ def get_active_window_title_safe():
                     print(f'201 {e}')
                     pass
 
-            # 3. Wenn es fehlschlägt: Cache könnte veraltet sein! # neue 17.1.'26 01:21 Sat Passiert vielleicht beim ein und ausloggen (nicht beim reboot)
+            # 3. If it fails: Cache might be out of date! # new 1/17/26 01:21 Sat Maybe happens when logging in and out (not when rebooting)
             if res is None:
-                # Wir löschen den globalen Cache und die Datei
+                # We delete the global cache and file
                 global _X11_ENV_CACHE
                 _X11_ENV_CACHE = None
                 if X11_CACHE_FILE.exists():
@@ -497,7 +497,7 @@ def get_active_window_title_safe():
                         print(f'111 {e}')
                         pass
 
-            # Wir holen das Environment FRISCH (neuer Scan)
+            # We get the environment FRESH (new scan)
             env = get_linux_x11_env()
             # Zweiter Versuch
             # res = try_get_title(env)

@@ -297,32 +297,32 @@ def ensure_init_files(current_dir: Path, logger):
     """
 
     # --- 1. Cache Logic (Ersetzt Time Throttling) ---
-    # Wir merken uns, welche Pfade wir schon "repariert" haben.
+    # We remember which paths we have already “repaired”.
     if not hasattr(ensure_init_files, 'checked_paths'):
         ensure_init_files.checked_paths = set()
 
-    # Wenn wir diesen Start-Ordner schon erledigt haben, brechen wir sofort ab.
+    # If we have already finished this start folder, we will abort immediately.
     # Das spart Performance in der Schleife.
     if current_dir in ensure_init_files.checked_paths:
         return True
 
-    # --- 2. SICHERE REKURSION NACH OBEN ---
+    # --- 2. SECURE UP RECURSION ---
 
     temp_path = current_dir.resolve()
     user_home = Path.home().resolve()
 
-    # Liste der Ordner-Namen, bei denen wir definitiv aufhören
+    # List of folder names we'll definitely stop at
     stop_markers = {'maps', 'config', 'STT', 'projects'}
 
     # Sicherheits-Limit: Max 10 Ebenen hoch
     for _ in range(10):
 
-        # Wenn wir diesen Pfad schonmal geprüft haben, können wir hier stoppen.
-        # (Wir wissen ja, dass wir von dort aus schonmal nach oben gewandert sind)
+        # If we've already checked this path, we can stop here.
+        # (We know that we have already hiked up from there)
         if temp_path in ensure_init_files.checked_paths:
             break
 
-        # NOTBREMSE 1: Wir sind im Home-Dir oder Root
+        # EMERGENCY BRAKE 1: We are in home dir or root
         if temp_path == user_home or temp_path == Path('/'):
             break
 
@@ -332,7 +332,7 @@ def ensure_init_files(current_dir: Path, logger):
         # Pfad als "erledigt" markieren
         ensure_init_files.checked_paths.add(temp_path)
 
-        # NOTBREMSE 2: Wir haben gerade 'maps' oder 'config' bearbeitet -> Fertig.
+        # EMERGENCY BRAKE 2: We just edited 'maps' or 'config' -> Done.
         if temp_path.name in stop_markers:
             break
 
@@ -450,7 +450,7 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                             logger.info("🔧 Fix wurde angewendet. Starte sofortigen Reload-Versuch...")
 
                             try:
-                                # WICHTIG: Caches leeren, damit Python merkt, dass die Datei auf der Platte neu ist
+                                # IMPORTANT: Clear caches so Python knows the file is new on disk
                                 importlib.invalidate_caches()
 
                                 # 2. Versuch: Erneuter Import
@@ -459,15 +459,15 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
 
                                 logger.info(f"✅ Reload good, Auto-Fix: {module_name}")
 
-                                # Hier machen wir weiter, als ob nichts passiert wäre
-                                # (Der Code unter dem try/except Block nutzt jetzt das reparierte 'module')
+                                # Here we carry on as if nothing happened
+                                # (The code under the try/except block now uses the repaired 'module')
                                 # Falls du danach Code hast, der 'module' nutzt, läuft er jetzt durch.
 
                             except Exception as retry_error:
                                 logger.info(f"error 🚨 ❌ Reload failed: retry_error: {retry_error}")
                                 continue  # Abbrechen für dieses Modul
                         else:
-                            # Kein Fix möglich -> Weiter zum nächsten
+                            # No fix possible -> move on to the next one
                             continue
 
                         if log_everything:

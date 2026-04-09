@@ -7,7 +7,7 @@
 #     try:
 #         from piper.voice import PiperVoice
 #         if _voice is None:
-#             # Modell einmalig laden
+# Load model once
 #             if not os.path.exists(model_path):
 #                 return False
 #             _voice = PiperVoice.load(model_path)

@@ -112,7 +112,7 @@ def get_languagetool_jvm_args(for_self_test=False):
         "xms": f"-Xms{xms_mb}m",
         "xmx": f"-Xmx{xmx_mb}m",
         "threads": str(threads),
-        # G1GC: gibt RAM automatisch zurück nach Test-Runs (kein Neustart nötig)
+        # G1GC: automatically returns RAM after test runs (no restart required)
         "gc_flags": [
             "-XX:+UseG1GC",
             "-XX:MinHeapFreeRatio=10",   # unter 10% frei → GC expandiert
@@ -134,7 +134,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url, for_self_
     full_base_url = f"http://127.0.0.1:{port}"
 
 
-    # Wir prüfen /v2/languages (Standard) ODER einfach nur /v2
+    # We check /v2/languages (default) OR just /v2
     if _is_lt_server_responsive(full_base_url, timeout=0.5):  # Timeout etwas höher
         logger.info(f"✅ LanguageTool Server is ALREADY online at {full_base_url}. Skipping startup.")
         return LT_ALREADY_RUNNING_SENTINEL

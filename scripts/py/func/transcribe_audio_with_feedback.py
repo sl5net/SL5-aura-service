@@ -82,7 +82,7 @@ WAKE_PHANTOM = runpy.run_path(acp)["WAKE_PHANTOM"]
 
 
 global AUTO_ENTER_AFTER_DICTATION_global  # noqa: F824
-# Kann man das auch schöner schreibenJetzt immer wachOkay gutAktuell in Tübingen sind es 12 Grad, gefühlt wie 12 Grad. Die Vorhersage meldet: Leicht Bewölkt.
+# Is there a better way to write that? Always awake now. Okay, good. It's currently 12 degrees in Tübingen, it feels like 12 degrees. The forecast says: Partly cloudy.
 #
 
 # 2. Logic for 48kHz to 16kHz
@@ -149,7 +149,7 @@ def _get_downsampled_data(raw_data, input_rate, logger):
 
         # Lösung B:
         # version before: 1.1.'26 12:19 Thu
-        # funktioniert aber ist kein echtes mono:
+        # works but it's not a real mono:
         logger.debug("Downsampling 48kHz Stereo to 16kHz Mono")
         audio_np = np.frombuffer(raw_data, dtype=np.int16)
         return audio_np[::3].tobytes()
@@ -223,7 +223,7 @@ def get_device_id(device_setting, logger):
     if pulse_id:
         return pulse_id
 
-    # 2. Adresse für diese Brücke festlegen
+    # 2. Set address for this bridge
     # if settings.AUDIO_INPUT_DEVICE == 'MIC_AND_DESKTOP':
     #     os.environ["PULSE_SOURCE"] = "mic_and_desktop_Sink.monitor"
     #     device_id = pulse_id
@@ -355,7 +355,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     device_id = get_device_id(device_name,logger)
     # logger.info(f"…/py/func/transcribe_audio_with_feedback.py:224 Using 🖥️ device name: {device_name} --> device_id: {device_id}")
 
-    # 1.2.'26 11:53 Sun: erhöhe den blocksize Parameter auf z.B. 16000 oder 24000
+    # 1.2.'26 11:53 Sun: increase the blocksize parameter to e.g. 16000 or 24000
     # 1.2.'26 11:53 Sun: was 4800 > 10600
 
     try:
@@ -399,7 +399,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                             continue
                         is_speech_finalized = recognizer.AcceptWaveform(data)
 
-                        # 2. SOFORT das Partial Result prüfen (Wichtig für Wake-Words!)
+                        # 2. IMMEDIATELY check the partial result (important for wake words!)
 
                         # if not vad.is_speech(frame):
                         #     continue
@@ -436,7 +436,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                         speak_inclusive_fallback("System SUSPENDED", 'en-US')
                                     recognizer.Reset()
 
-                                    # Sofort weitermachen (kein Yield nötig, oder "Bin wach" sagen)
+                                    # Continue immediately (no need to yield or say "I'm awake")
                                     last_activity_time = time.time()
 
                                     # speak_fallback(f"Wake-Word", 'de-DE')
@@ -465,25 +465,25 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
 
 
-                        # Wenn wir im "Warte-Modus" sind (z.B. durch dein suspend_flag geprüft)
+                        # If we are in "waiting mode" (e.g. checked by your suspend_flag)
                         # Einen BantusMein nächstes Wetter
                         if is_suspended and ENABLE_WAKE_WORD:
-                            # Wir prüfen sofort das Teilergebnis auf das Wake-Word 🌵
-                            # "kakturs" oder "teleskop" - je nachdem wie du es aussprichst 🌵
+                            # We immediately check the partial result for the wake word 🌵
+                            # "kakturs" or "telescope" - depending on how you pronounce it 🌵
 
                             if modus == 'remove suspend_flag only': # when using this mode: you need rules for start sleeping. mabe there: config/maps/wake-up/de-DE/FUZZY_MAP_pre.py:31
                                 # 🌵
                                 if "kakturs" in partial_text.lower() or "teleskop" in partial_text.lower():
                                     logger.info("🚀 Wake-Word erkannt! Aktiviere System...")
 
-                                    # Flag-Datei löschen, damit das System wieder normal arbeitet
+                                    # Delete flag file to make system work normally again
                                     suspend_flag.unlink(missing_ok=True)
 
-                                    # WICHTIG: Recognizer resetten, damit das Wake-Word
-                                    # nicht in die nächste Text-Ausgabe rutscht
+                                    # IMPORTANT: Reset the recognizer so that the wake word
+                                    # does not slip into the next text edition
                                     recognizer.Reset()
 
-                                    # Sofort weitermachen (kein Yield nötig, oder "Bin wach" sagen)
+                                    # Continue immediately (no need to yield or say "I'm awake")
                                     last_activity_time = time.time()
 
                                     # speak_fallback(f"Wake-Word", 'de-DE')
@@ -512,7 +512,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         pass
                     # --- Exit-Logik using VAD-Modus-Wechsel as fallback and also mute_microphone ---
 
-                    # 1. Prüfen, ob manueller Stopp angefordert wurde
+                    # 1. Check whether manual stop was requested
                     if not session_active_event.is_set() and not graceful_shutdown_initiated:
 
                         success = mute_microphone()
@@ -521,7 +521,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
                         logger.info("Manual stop detected. Resetting activity clock for graceful shutdown.")
 
-                        # --- HIER IST DIE GEWÜNSCHTE ÄNDERUNG ---
+                        # --- HERE IS THE CHANGE YOU WANT ---
                         logger.info("Switching VAD mode to 1 (aggressive) for final voice detection.")
                         vad.set_mode(1)
                         # --- ENDE DER ÄNDERUNG ---
@@ -533,7 +533,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                             current_timeout = 2.0
                         logger.info(f"Graceful shutdown initiated. Final timeout set to {current_timeout}s.")
 
-                    # 2. Prüfen auf Timeout
+                    # 2. Check for timeout
                     if not is_listen_persistent and time.time() - last_activity_time > current_timeout:
 
                         if is_suspended:

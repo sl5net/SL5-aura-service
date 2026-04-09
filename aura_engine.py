@@ -237,7 +237,7 @@ suspicious_events = []
 if platform.system() == "Windows":
     NOTIFY_SEND_PATH = None
 OUTPUT_FILE = TMP_DIR / "sl5_aura" / "tts_output" / "tts_output.txt"
-# logging.info(f"Auto-Zip: ✅ Flag gesetzt - Self-Tests laufen")
+# logging.info(f"Auto-Zip: ✅ flag set - self-tests running")
 
 HEARTBEAT_FILE = TMP_DIR / "sl5_aura" / "aura_engine.heartbeat"
 PIDFILE = TMP_DIR / "sl5_aura" / "aura_engine.pid"
@@ -366,7 +366,7 @@ logger = logging.getLogger()
 #         self.terminal = sys.__stdout__ # Das echte Terminal sichern
 #
 #     def write(self, buf):
-#         # 1. Sofort auf die Konsole schreiben (Garantie!)
+# 1. Write to Console Immediately (Guaranteed!)
 #         with self._lock:
 #            self.terminal.write(buf)
 #         self.terminal.flush()
@@ -374,9 +374,9 @@ logger = logging.getLogger()
 #         # 2. Danach ins Logfile senden
 #         if buf.strip():
 #             try:
-#                 # Hier nutzen wir den Logger nur fürs File
-#                 # (Falls der ConsoleHandler noch aktiv ist, könnte es doppelt kommen,
-#                 # aber besser doppelt als gar nicht)
+# Here we only use the logger for the file
+# (If the ConsoleHandler is still active, it could happen twice,
+# but better twice than not at all)
 #                 self.logger.info(buf.rstrip())
 #             except:
 #                 pass
@@ -456,7 +456,7 @@ class SafeStreamToLogger(object):
         is_core_logic_self_test_is_running = core_logic_self_test_is_running_FILE.exists()
         # is_core_logic_self_test_is_running = False
 
-        # 1. Immer sofort auf die Konsole schreiben (für dich sichtbar)
+        # 1. Always write to the console immediately (visible to you)
 
 
         if is_core_logic_self_test_is_running and ':st:' not in buf : # and buf[:3] == 'st:':
@@ -471,7 +471,7 @@ class SafeStreamToLogger(object):
             self.terminal.write(buf)
             # self.terminal.flush() <-- BESSER SO (Spart CPU/Zeit)
 
-            # 2. Wenn wir gerade NICHT loggen, dann ins File senden
+            # 2. If we are NOT logging, then send to the file
             # if not self.is_logging and buf.strip():
             if buf and not buf.isspace() and not self.is_logging:
                 self.is_logging = True # Schalter an
@@ -479,20 +479,20 @@ class SafeStreamToLogger(object):
 
                     # st:
 
-                    # Prüfen: Hat der Text schon einen Zeitstempel?
+                    # Check: Does the text already have a timestamp?
                     match = self.log_pattern.match(buf)
 
                     if match:
-                        # JA: Wir schneiden den Zeitstempel vorne weg!
+                        # JA: We're cutting out the timestamp at the front!
                         # match.end() ist die Stelle, wo der echte Text anfängt.
                         clean_msg = buf[match.end():].rstrip()
                     else:
-                        # NEIN: Wir nehmen den Text so wie er ist (z.B. von print)
+                        # NO: We take the text as it is (e.g. from print)
                         clean_msg = buf.rstrip()
 
 
 
-                    # Nur schreiben, wenn noch Text übrig ist
+                    # Only write if there is still text left
                     if clean_msg:
 
 
@@ -545,7 +545,7 @@ def formatTime(record, datefmt=None):
     return time_str + ms_str
 
 
-# 1. Wir erstellen eine Filter-Klasse
+# 1. We create a Filter class
 class DittoFilter(logging.Filter):
     def __init__(self):
         super().__init__()
@@ -561,10 +561,10 @@ class DittoFilter(logging.Filter):
             record.msg = "〃"
             record.args = ()
 
-            # WICHTIG: Wir aktualisieren self.last_msg HIER NICHT.
-            # Wir wollen, dass die nächste Zeile sich immer noch mit
+            # IMPORTANT: We DO NOT update self.last_msg HERE.
+            # We want the next line to still be with
             # dem Original (z.B. "Verbindung...") vergleicht und
-            # nicht mit dem Gänsefüßchen ("〃").
+            # not with the goosefoot ("〃").
         else:
             # Es ist eine neue Nachricht -> Speicher aktualisieren
             self.last_msg = current_msg
@@ -598,7 +598,7 @@ class FlushingFileHandler(logging.FileHandler):
 
 
 # file_handler = logging.FileHandler(f'{SCRIPT_DIR}/log/aura_engine.log', mode='a', encoding='utf-8')
-# Nutzen Sie diesen neuen Handler
+# Use this new handler
 file_handler = FlushingFileHandler(
     f'{SCRIPT_DIR}/log/aura_engine.log',
     mode='a',

@@ -107,7 +107,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     if MAP_BACKUP_DIR.is_dir():
         shutil.rmtree(MAP_BACKUP_DIR)
     elif MAP_BACKUP_DIR.exists():
-        # Sollte nur passieren, wenn es eine Datei mit dem Backup-Namen ist. Löschen.
+        # Should only happen if it's a file with the backup name. Delete.
         os.remove(MAP_BACKUP_DIR)
 
     temp_dir.mkdir(parents=True, exist_ok=True)
@@ -141,7 +141,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
         return 1
     logger.info("✅ Test: Phase 1 PASSED: Rule is active.")
 
-    # --- PHASE 2: LÖSCHEN (Disabling Rule) ---
+    # --- PHASE 2: DELETE (Disabling Rule) ---
     logger.info(f"✅ e2eTest: Phase 2: Deleting target map directory. {MAP_TARGET_DIR}")
 
 

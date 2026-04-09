@@ -1,7 +1,5 @@
 # scripts/py/func/checks/setup_validator.py
 #
-# This script contains functions to validate the application's environment
-# and perform static code analysis for quality checks.
 
 import os
 import sys

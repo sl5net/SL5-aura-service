@@ -50,7 +50,7 @@ def check_code_integrity(project_root, logger):
                         lines = f.readlines()
 
                     for line_num, line in enumerate(lines, 1):
-                        # Wir prüfen jede Zeile gegen die verbotenen Anfänge
+                        # We check every line against the forbidden beginnings
                         for unsafe_start in UNSAFE_LINE_STARTS:
                             # startswith prüft exakt den Anfang (Spalte 0)
                             if line.startswith(unsafe_start):
@@ -66,7 +66,7 @@ def check_code_integrity(project_root, logger):
                         if "integrity_rules.py" not in file:
                             for forbidden in FORBIDDEN_PATTERNS:
                                 if forbidden in line:
-                                    # Ausnahme: Wir erlauben es, wenn es ein Kommentar ist (startet mit #)
+                                    # Exception: We allow it if it is a comment (starts with #)
 
                                     logger.fatal("-" * 60)
                                     logger.fatal("FATAL SECURITY CHECK FAILED!")

@@ -144,8 +144,8 @@ def process_command(param):
 # ================================================================
 # FIX: Den richtigen CSS-Selektor für Streamlit 1.46+ verwenden.
 # In neueren Versionen heißt die Klasse stChatFloatingInputContainer
-# – nicht mehr stBottom. Außerdem: padding-bottom auf den
-# Hauptinhalt damit die letzte Nachricht nicht verdeckt wird.
+# – no longer stBottom. Also: padding bottom on the
+# Main content so that the last message is not obscured.
 # ================================================================
 st.markdown("""
 <style>
@@ -290,9 +290,9 @@ Wie ist das Wetter?
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Reload-Button: immer sichtbar, scrollt nicht weg.
+# Reload button: always visible, does not scroll away.
 # window.parent.location.reload() macht echten Browser-Reload –
-# st.session_state.messages bleibt erhalten weil Streamlit
+# st.session_state.messages is preserved because Streamlit
 # den Session State beim Reload beibehält.
 col_reload, col_clear = st.columns([1, 1])
 with col_reload:
@@ -385,15 +385,15 @@ if prompt:
 
         # Sprache und Scroll im Session State merken –
         # st.rerun() bricht sofort ab, danach kommt nichts mehr.
-        # Beides wird beim nächsten Render-Durchlauf ausgeführt.
+        # Both are executed on the next render pass.
         if st.session_state.speak_enabled and service_answer:
             st.session_state["pending_speak"] = service_answer
         st.session_state["do_scroll"] = True
 
         st.rerun()
 
-# --- NACH RERUN: Chat anzeigen, dann Sprache + Scroll ---
-# Die letzte Antwort liegt jetzt in messages und wird oben im
+# --- AFTER RERUN: Show chat, then language + scroll ---
+# The final answer is now in messages and will be at the top of the
 # Chat-Verlauf gerendert. Danach Sprache und Scroll ausführen.
 
 if st.session_state.get("pending_speak"):

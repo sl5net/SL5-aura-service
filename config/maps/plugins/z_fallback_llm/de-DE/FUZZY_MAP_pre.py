@@ -131,7 +131,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 
 
     # Wenn Sie einen Teil des Regex matchen, aber NICHT in der Capturing Group haben möchten (was nützlich für das Extrahieren ist), verwenden Sie die Non-Capturing Group (?:...).
-    # # https://ollama.com/download
+    # https://ollama.com/download
     # EXAMPLE: Aura
     ('ask_ollama', fr'^\s*{aura1}\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100, # min_accuracy
         {
@@ -143,7 +143,7 @@ Es gibt keine Accounts, Passwörter, Logins.
         } # noqa: E123
     ),
 
-    # # https://ollama.com/download
+    # https://ollama.com/download
     # EXAMPLE: Aura
     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100, # min_accuracy
 

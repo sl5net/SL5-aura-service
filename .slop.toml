@@ -1,0 +1,28 @@
+# .slop.toml – allowlist for check_slop_comments.py
+# Place in project root. Checked-in so the team shares the same baseline.
+
+[ignore_files]
+# Entire files exempt from slop-checking (e.g. generated, third-party, legacy).
+paths = [
+    # "scripts/py/func/some_generated_file.py",
+]
+
+# Per-file pattern allowlist.
+# 'file'    – suffix or substring match against the file path
+# 'pattern' – literal substring of the comment line that makes it legitimate
+# 'reason'  – documents WHY this is allowed (required for code review)
+
+[[allow]]
+file    = "scripts/py/func/map_reloader.py"
+pattern = "This checks ANY part of the path relative to maps_base_dir"
+reason  = "Explains non-obvious relative-path boundary condition"
+
+[[allow]]
+file    = "scripts/py/func/checks/self_tester.py"
+pattern = "NOTE: This does NOT close the logger handler, risking a race condition"
+reason  = "Race-condition warning, technical precision justifies the phrasing"
+
+[[allow]]
+file    = "scripts/py/func/checks/integrity_checker.py"
+pattern = "Ausnahme: Wir erlauben es, wenn es ein Kommentar ist"
+reason  = "Internal dev note, refactor tracked in issue #XX"

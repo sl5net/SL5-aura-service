@@ -1,5 +1,5 @@
 # config/maps/plugins/digits_to_numbers/de-DE/FUZZY_MAP_pre.py
-# # file config/maps/plugins/digits_to_numbers/FUZZY_MAP_pr.py
+# file config/maps/plugins/digits_to_numbers/FUZZY_MAP_pr.py
 import re
 
 # This map uses a hybrid approach:

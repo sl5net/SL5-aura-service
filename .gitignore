@@ -124,6 +124,7 @@ config/maps/**/_*
 
 tools/translate-shell_and_save/translations
 
+
 config/maps/plugins/z_fallback_llm/de-DE/llm_cache.db
 
 # to large

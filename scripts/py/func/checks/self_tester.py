@@ -341,7 +341,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
         # --- Abkürzungen ---
         ('zum beispiel', 'Zum Beispiel', 'Common abbreviation', 'de-DE'),
-        # Oder 'zum Beispiel' je nach gewünschtem Output
+        # Or 'for example' depending on the desired output
         ('unter anderem', 'Unter anderem', 'Common abbreviation', 'de-DE'),  # Oder 'unter anderem'
         ('respektive', 'respektive', 'Common abbreviation', 'de-DE'),  # Oder 'beziehungsweise'
         ('circa', 'circa', 'Common abbreviation', 'de-DE'),
@@ -377,8 +377,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         #  'Der kleine Junge spielt mit seinem neuen Spielzeug im Park', 'Detailed sentence', 'de-DE'),
         ('das wetter wird morgen sonnig mit temperaturen um die zwanzig grad',
          'Das Wetter wird morgen sonnig mit Temperaturen um die 20 Grad', '"digits_to_numbers": True', 'de-DE'),
-        # ('der chef hat gesagt wir sollen die präsentation bis freitag fertigstellen',
-        #  'Der Chef hat gesagt, wir sollen die Präsentation bis Freitag fertigstellen.', 'Indirect speech with comma',
+        # ('the boss said we should finish the presentation by Friday',
+        # 'The boss said we should finish the presentation by Friday.', 'Indirect speech with comma',
         #  'de-DE'),
     ]
 
@@ -417,8 +417,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES...")
 
     # ProcessPoolExecutor nutzt echte CPU-Kerne parallel
-    # Aber ACHTUNG: Das 'logger' Objekt kann oft nicht einfach in Prozesse kopiert werden.
-    # Wir übergeben None als Logger oder nutzen ein einfaches Print-Logging innerhalb.
+    # But ATTENTION: The 'logger' object often cannot be easily copied into processes.
+    # We pass None as a logger or use simple print logging within.
 
     num_workers = max(1, os.cpu_count() // 2) #
 
@@ -435,8 +435,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
         # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
         # with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
-        # Wir reduzieren auf 8 Worker (echte physikalische Kerne),
-        # das ist oft effizienter für CPU-lastige Aufgaben als 16 oder 20.
+        # We reduce to 8 workers (real physical cores),
+        # this is often more efficient for CPU-intensive tasks than 16 or 20.
         futures = {executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir)): t
                    for i, t in enumerate(active_tests)}
 
@@ -556,14 +556,14 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
 
         # current_file = Path(__file__).resolve()
 
-        # # 1. Manueller Import
+        # 1. Manueller Import
         # ds_path = current_file.parents[1] / "config" / "dynamic_settings.py"
         # spec = importlib.util.spec_from_file_location("dynamic_settings", str(ds_path))
         # ds_mod = importlib.util.module_from_spec(spec)
         # spec.loader.exec_module(ds_mod)
         # DynamicSettings = ds_mod.DynamicSettings
         #
-        # # 2. Root setzen
+        # 2. Root setzen
         # project_root = str(current_file.parents[4])
         # if project_root not in sys.path:
         #     sys.path.insert(0, project_root)
@@ -584,8 +584,8 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         # time.time_ns() liefert z.B. 1705678901234567890
         unique_id_ns = time.time_ns() + index
 
-        # Wir konvertieren es in einen Float-Sekunden-Wert für die Funktion,
-        # aber mit extrem hoher Präzision.
+        # We convert it to a float seconds value for the function,
+        # but with extremely high precision.
         unique_time_float = unique_id_ns / 1_000_000_000.0
         # unique_time_float = float(index)  # Absolut eindeutig: 0.0, 1.0, 2.0 ...
 
@@ -615,7 +615,7 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
 
         core_logic_self_test_is_running_file = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
 
-        # Nach dem ersten Durchlauf: Flag setzen → Zip-Test weiß "jetzt kann ich prüfen"
+        # After the first run: Set flag → Zip test white “now I can check”
 
         if not core_logic_self_test_is_running_file.exists():
             core_logic_self_test_is_running_file.write_text(str(int(time.time())))

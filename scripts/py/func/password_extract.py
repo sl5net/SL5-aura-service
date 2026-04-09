@@ -185,7 +185,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
         # py/func/password_extract.py:181 (ungefähr)
 
         # --- NEUE FALLE ANFANG ---
-        # sys.__stderr__.write("[DEBUG] Vor Cache-Schreiben. Funktion wird beendet.\n")
+        # sys.__stderr__.write("[DEBUG] Before cache write. Function is exiting.\n")
         # --- NEUE FALLE ENDE ---
 
 
@@ -203,7 +203,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
             return None
             # raise
 
-        # sys.__stderr__.write("[DEBUG] Nach Cache-Schreiben. Funktion wird beendet.\n")
+        # sys.__stderr__.write("[DEBUG] After cache write. Function is exiting.\n")
 
 
     return pw

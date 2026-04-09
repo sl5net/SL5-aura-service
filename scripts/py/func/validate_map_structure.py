@@ -4,7 +4,7 @@ import time
 
 def check_map_health(file_path, module, logger):
     try:
-        # DEBUG: Zeige mtime im Log, falls es nicht triggert
+        # DEBUG: Show mtime in log if it doesn't trigger
         mtime_diff = time.time() - os.path.getmtime(file_path)
         if mtime_diff > 3600:
             # logger.debug(f"Skipping health-check for {file_path} (too old: {int(mtime_diff)}s)")
@@ -40,22 +40,22 @@ def check_map_health(file_path, module, logger):
         item1 = str(entry[0])  # Sollte ID sein
         item2 = str(entry[1])  # Sollte Regex sein
 
-        # HEURISTIK: Feld 1 sieht nach Regex aus, Feld 2 nicht.
+        # HEURISTICS: Field 1 looks like regex, field 2 doesn't.
         if bool(re.search(regex_indicators, item1)) and not bool(re.search(regex_indicators, item2)):
 
-            # Wir suchen die Stelle im Text, wo beide vorkommen (in unmittelbarer Nähe)
-            # Wir suchen nach dem Muster: ( 'item1' , 'item2'  oder ( r'item1' , 'item2'
-            # Da die ID oft kurz ist ('id'), suchen wir nach der Kombination.
+            # We look for the place in the text where both occur (in the immediate vicinity)
+            # We are looking for the pattern: ( 'item1' , 'item2' or ( r'item1' , 'item2'
+            # Since the ID is often short ('id'), we look for the combination.
 
-            # Wir versuchen einen "Smart Swap" im Text
+            # We try a "smart swap" in the text
             if item1 in content and item2 in content:
-                # Wir suchen die Positionen
+                # We are looking for the positions
                 pos1 = content.find(item1)
                 pos2 = content.find(item2)
 
-                # Wenn item1 VOR item2 steht, ist es vertauscht (da item1 die Regex ist)
+                # If item1 is BEFORE item2, it is swapped (since item1 is the regex)
                 if pos1 != -1 and pos2 != -1 and pos1 < pos2:
-                    # Prüfen, ob sie nah beieinander liegen (max 200 Zeichen Abstand für Multi-line)
+                    # Check whether they are close to each other (max 200 characters apart for multi-line)
                     if (pos2 - pos1) < 200:
                         logger.warning(f"🛠️  Auto-Repair: Vertauschung in {os.path.basename(file_path)} gefunden!")
 
@@ -65,7 +65,7 @@ def check_map_health(file_path, module, logger):
                         map_entries[i] = tuple(new_entry)
 
                         # In-File Tausch
-                        # Wir nutzen einen Platzhalter, der sicher nicht im File vorkommt
+                        # We use a placeholder that certainly does not appear in the file
                         placeholder = "###_AURA_SWAP_###"
                         content = content.replace(item1, placeholder).replace(item2, item1).replace(placeholder, item2)
                         file_changed = True
@@ -85,17 +85,17 @@ def check_map_health(file_path, module, logger):
 # def check_map_health_online_repairing(file_path, module, logger):
 #     """
 #     Prüft frische Maps und tauscht Feld 1 und Feld 2 direkt in der Datei,
-#     wenn sie offensichtlich vertauscht wurden.
+# if they were obviously swapped.
 #     """
 #     try:
-#         # Nur Dateien prüfen, die jünger als 1 Stunde sind
+# Only check files less than 1 hour old
 #         if (time.time() - os.path.getmtime(file_path)) > 3600:
 #             return
 #     except Exception as e:
 #         print(f'2026-0301-1511 {e}')
 #         return
 #
-#     # Wir suchen nach deinen Listen (FUZZY_MAP_pre, etc.)
+# We are looking for your lists (FUZZY_MAP_pre, etc.)
 #     map_entries = None
 #     for name in ['FUZZY_MAP_pre', 'FUZZY_MAP_post', 'GLOBAL_FUZZY_MAP_PRE']:
 #         if hasattr(module, name):
@@ -124,7 +124,7 @@ def check_map_health(file_path, module, logger):
 #         # Feld 2 (normalerweise das Regex-Pattern)
 #         item2 = str(entry[1])
 #
-#         # Wenn Feld 1 Regex-Zeichen hat, Feld 2 aber "sauber" ist -> VERTAUSCHT
+# If field 1 has regex characters but field 2 is "clean" -> SWAPED
 #         if bool(re.search(regex_indicators, item1)) and not bool(re.search(regex_indicators, item2)):
 #             logger.warning(f"🛠️  Auto-Repair: Tausche ID und Pattern in {os.path.basename(file_path)}...")
 #
@@ -135,7 +135,7 @@ def check_map_health(file_path, module, logger):
 #
 #             # 2. Direkt in der Datei tauschen
 #             for idx, line in enumerate(file_lines):
-#                 # Wir suchen die Zeile, die beide Werte enthält
+# We are looking for the line that contains both values
 #                 if item1 in line and item2 in line:
 #                     # Sicherer Tausch in der Textzeile
 #                     placeholder = "##_TEMP_SWAP_##"
@@ -149,7 +149,7 @@ def check_map_health(file_path, module, logger):
 #     if file_needs_rewrite:
 #         with open(file_path, 'w', encoding='utf-8') as f:
 #             f.writelines(file_lines)
-#         logger.info(f"✅ Datei wurde automatisch korrigiert: {file_path}")
+# logger.info(f"✅ File was automatically corrected: {file_path}")
 
 
 
@@ -166,7 +166,7 @@ def check_map_health(file_path, module, logger):
 #         rule_id, pattern, priority, settings = entry[:4]
 #
 #         # HEURISTIK: Erkennt Vertauschung von ID und Regex
-#         # Wenn die ID Sonderzeichen enthält, die Regex aber wie ein einfacher Name aussieht
+# If the ID contains special characters but the regex looks like a simple name
 #         regex_indicators = r'[\^$|()\[\]\\]'
 #
 #         id_looks_like_regex = bool(re.search(regex_indicators, str(rule_id)))
@@ -175,7 +175,7 @@ def check_map_health(file_path, module, logger):
 #         if id_looks_like_regex and pattern_looks_like_id:
 #             logger.error(f"❌ [VERTAUSCHUNGS-ALARM] {file_path}:")
 #             logger.error(f"   In Eintrag {i} scheint die ID '{rule_id}' ein Regex-Pattern zu sein.")
-#             logger.error("   Prüfe, ob ID und Regex-Pattern vertauscht wurden!")
+# logger.error(" Check whether ID and regex pattern were swapped!")
 #             return False
 #
 #         # TYP-CHECK: Priority sollte eine Zahl sein

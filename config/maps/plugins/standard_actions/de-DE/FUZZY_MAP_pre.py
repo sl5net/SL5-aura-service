@@ -317,7 +317,7 @@ FUZZY_MAP_pre = [
 #         'flags': re.IGNORECASE,
 #         'on_match_exec': [CONFIG_DIR / 'calculator.py']
 #     }),
-# # Das Ergebnis von 5 plus 3 ist 8.
+# Das Ergebnis von 5 plus 3 ist 8.
 
 #
 

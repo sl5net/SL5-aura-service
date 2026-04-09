@@ -48,7 +48,7 @@ def send_request(text: str, lang: str, unmasked: bool):
             # Direkte Ausgabe des Ergebnistextes
             print(response_data.get("result_text", "FEHLER: Kein Ergebnis im Feld 'result_text'."))
         else:
-            # Bei Fehlern oder Timeouts die vollständige Antwort ausgeben
+            # In case of errors or timeouts, output the complete response
             print("Service-Antwort (Fehler/Timeout):")
             print(json.dumps(response_data, indent=4))
 

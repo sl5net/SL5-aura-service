@@ -25,13 +25,13 @@ LOG_FILE = PROJECT_ROOT / 'log' / "service_start.log"
 def find_and_kill_process_on_port(port):
     """Sucht nach Prozessen, die auf dem gegebenen TCP-Port lauschen und beendet diese."""
 
-    # psutil.net_connections() liefert alle Verbindungen, wir filtern nach LISTEN auf dem Port
+    # psutil.net_connections() returns all connections, we filter by LISTEN on the port
     for conn in psutil.net_connections(kind='inet'):
-        # Prüfen auf LISTEN-Status und passenden lokalen Port
+        # Check for LISTEN status and appropriate local port
         if conn.status == 'LISTEN' and conn.laddr.port == port:
             pid = conn.pid
 
-            # WICHTIG: Prüfen, ob der Prozess wirklich existiert und nicht nur ein Trace ist
+            # IMPORTANT: Check whether the process really exists and is not just a trace
             if psutil.pid_exists(pid):
                 try:
                     p = psutil.Process(pid)

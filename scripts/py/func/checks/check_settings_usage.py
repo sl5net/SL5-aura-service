@@ -119,7 +119,7 @@ if __name__ == "__main__":
     # 1. Get definitions
     # definitions = get_defined_settings()
 
-    # # 2. Check usages
+    # 2. Check usages
     # if definitions:
     #     analyze_usages(definitions)
     # else:

@@ -64,7 +64,7 @@ def execute_packing_logic(current_dir, logger):
         #
         # sys.exit(0)
 
-        # ... nach: 📦 zip_path_outer = parent_dir / zip_name_outer ...
+        # ... to: 📦 zip_path_outer = parent_dir / zip_name_outer ...
 
         # --- SMART TIMESTAMP CHECK (DEBUG VERSION) ---
         if zip_path_outer.exists():

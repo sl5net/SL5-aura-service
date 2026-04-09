@@ -167,7 +167,7 @@ class DynamicSettings:
         self._last_base_modified_time = os.path.getmtime(self._settings_file_path)
 
         # --- FIX START ---
-        # Prüfen, ob die lokale Datei existiert, bevor wir das Datum abfragen
+        # Check if the local file exists before we query the date
         if os.path.exists(self._settings_local_file_path):
             self._last_local_modified_time = os.path.getmtime(self._settings_local_file_path)
         else:
@@ -328,13 +328,13 @@ class DynamicSettings:
                     # if settings.DEV_MODE:
                     #     print("DEBUG: Resolving PLUGINS_ENABLED hierarchy...")
 
-                    # Das zusammengeführte Dictionary, bevor es aufgelöst wird
+                    # The merged Dictionary before it is resolved
                     raw_plugins_config = self.PLUGINS_ENABLED
 
                     # Ein neues Dictionary für die aufgelösten Zustände
                     resolved_plugins_config = {}
 
-                    # Wir müssen über eine Kopie der Keys iterieren, falls wir das dict ändern
+                    # We need to iterate over a copy of the keys in case we change the dict
                     all_plugin_keys = list(raw_plugins_config.keys())
 
                     for key in all_plugin_keys:
