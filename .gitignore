@@ -136,6 +136,9 @@ config/maps/plugins/z_fallback_llm/de-DE/llm_cache.db
 wikipedia_de_all_mini_2025-09.zim
 *.zim
 
+*.zim.meta4
+*.*.meta4
+
 
 **/__pycache__/
 *.pyc
