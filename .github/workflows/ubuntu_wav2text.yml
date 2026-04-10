@@ -59,10 +59,52 @@ jobs:
 
       - name: '7. Run Transcription and Verify Output'
         run: |
-          echo "INFO: Running transcription test..."
-          # xvfb-run startet die Umgebung, danach kommt der Befehl
+          echo "INFO: Verifying test files..."
+          if [ ! -f "scripts/py/func/checks/test_audio_16k_en.wav" ]; then
+            echo "ERROR: Audio file not found!"
+            exit 1
+          fi
+                  
+          echo "INFO: Runing transcription test..."
+          
+          
+          # 7.1. Run the script and capture output to a temporary file
+          # This ensures we see the errors even if grep fails later
+          # xvfb-run starts the venv, ten starts the command
+          
           xvfb-run dbus-run-session -- .venv/bin/python tools/transcribe_wavefile.py \
             scripts/py/func/checks/test_audio_16k_en.wav \
-            --vosk_model vosk-model-small-en-us-0.15 | grep "the first test sequence is now complete ready to proceed with the second phase"
+            --vosk_model vosk-model-small-en-us-0.15 > transcription_result.txt 2>&1
 
+          # 7.2. Capture the exit code of the python script
+          EXIT_CODE=$?
+          
+          # 7.3. Print the actual output to the GitHub Action log for debugging
+          echo "--- START OF TRANSCRIPTION OUTPUT ---"
+          cat transcription_result.txt
+          echo "--- END OF TRANSCRIPTION OUTPUT ---"
+          
+          # 7.4. Check if the script itself crashed
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "ERROR: Transcription script failed with exit code $EXIT_CODE"
+            exit $EXIT_CODE
+          fi
+                    
+          # 7.5. Perform the string check - part only
+          # look for a unique part of the phrase only
+          if grep -qi "second phase" transcription_result.txt; then
+            echo "SUCCESS: Found expected sequence in transcription."
+          else
+            echo "ERROR: Expected keyword not found in output."
+            exit 1
+          fi
+
+          # 7.6. Perform the string check
+          # look for a unique part of the phrase only
+          if grep "the first test sequence is now complete ready to proceed with the second phase" transcription_result.txt; then
+            echo "SUCCESS: Found expected transcription."
+          else
+            echo "ERROR: Expected transcription not found in transcription_result.txt"
+            exit 1
+          fi
 
