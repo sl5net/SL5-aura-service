@@ -1,8 +1,0 @@
-Erstelle aus diesen Teilzusammenfassungen professionelle Release Notes auf Englisch:
-
-- Kurzer Einleitungssatz was dieses Release bringt
-- Abschnitte: ✨ Neue Features | 🐛 Bugfixes | ♻️ Refactoring | 📝 Docs & Config
-- Duplikate zusammenfassen
-- Unwichtiges weglassen (WIP, Tippfehler-Commits, reine Import-Umzüge)
-
-=== HIER DIE GESAMMELTEN TEILZUSAMMENFASSUNGEN EINFÜGEN ===
