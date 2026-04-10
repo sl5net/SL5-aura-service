@@ -259,8 +259,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     manage_audio_routing(settings.AUDIO_INPUT_DEVICE, logger)
 
     if 'AUTO_ENTER_AFTER_DICTATION_global' not in globals():
-        # This checks if the global variable has been defined at all.
-        # This would catch a NameError before it happens.
+        # catch a NameError before it happens.
         logger.warning("AUTO_ENTER_AFTER_DICTATION_global is not defined in the global scope.")
 
 

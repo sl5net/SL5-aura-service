@@ -57,7 +57,6 @@ def notify(summary: str, body: str = "", urgency: str = "low", icon: str = None,
         elif system == "Windows":
             logger.debug("💬Windows notifications are not yet implemented.")
             # Placeholder for future Windows notification logic
-            # This could call the notification_watcher.ahk script
             pass
 
     except subprocess.TimeoutExpired:

@@ -580,7 +580,6 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 # Helper to check if a string contains regex special characters
 def is_regex_pattern(pattern):
-    # This is a simple heuristic. You can add more characters if needed.
     return any(char in pattern for char in r'^$*+?{}[]\|()")')
 
 
@@ -613,7 +612,7 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
 
     for word_in_text in words_in_text:
 
-        # We need to iterate over the words in `processed_text` and compare each to `replacement`.
+        # iterate over the words in `processed_text` and compare each to `replacement`.
         words_in_text = re.findall(r'\b\w+\b', processed_text)
         temp_text_for_fuzzy_replace = processed_text
 
@@ -639,10 +638,6 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
                             replacement +
                             temp_text_for_fuzzy_replace[start_index + original_word_length:]
                     )
-
-                    # scripts/py/func/process_text_in_background.py:560 (apply_fuzzy_replacement_logic)
-                    # angefangen noch ganz ohne funtion <=================================================
-                    # is_private = "/_" in source_path or "\\_" in source_path
 
                     found_fuzzy_match = True
                     logger.info(
@@ -786,8 +781,6 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                     # logger.info(
                     # f"🔁 464: '{new_text}'")
 
-                    # Hier wird es interessant: Wir behalten den alten und den neuen Text für die Skripte
-
                     original_text_before_rule = processed_text
                     log4DEV(f'original_text_before_rule = processed_text ===> {original_text_before_rule}',logger)
                     log4DEV(f'original_text_before_rule = processed_text ===> {original_text_before_rule} <- {processed_text}',logger)
@@ -840,7 +833,6 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                             # <<< ÄNDERUNG 4: Übergebe das 'match_data'-Dictionary
                             script_result = module.execute(match_data)  # Das Skript gibt den finalen Text zurück
 
-                            # lang_for_tts = "de-DE"  # Deine Standard-Systemsprache
 
                             new_current_text = ''
                             if isinstance(script_result, str):
@@ -940,7 +932,7 @@ def process_text_in_background(logger,
 
 
     if settings.DEV_MODE or True:
-        # Because it's a new feature and we're not quite sure if it works very well on Windows, it's good to have output  (original:'weil es ein neues feature ist und wir noch nicht ganz sicher sind ob es auf windows sehr gut funktioniert ist es doch gut über eine ausgabe ' ). 12.3.'26 06:36 Thu
+        # Because it's a new feature and we're not quite sure if it works very well on Windows, it's good to have output
 
         # It is also helpful when create rules if you know exactly which names are being used
         # todo : set not always true maybe
@@ -1667,7 +1659,7 @@ def process_text_in_background(logger,
                             log4DEV(f'🔵 window_title: {_active_window_title}',logger)
 
                         # for app_name, sig in settings.SIGNATURE_MAPPING.items():
-                        #     if app_name in _active_window_title:  # Sucht nach "0 A.D." im Titel
+                        #     if app_name in _active_window_title:
                         #         active_sig = sig
                         #         break
                         #
@@ -2222,7 +2214,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                                     script_result = module.execute(match_data)
 
                                     # Standardwerte initialisieren
-                                    # lang_for_tts = "de-DE"  # Deine Standard-Systemsprache
 
                                     if isinstance(script_result, str):
                                         new_current_text = script_result
@@ -2244,8 +2235,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
 
-                                # Dein restlicher Code für diesen Block
-                            made_a_change += 1
                             if not privacy_taint_occurred:
                                 log4DEV(
                                     f"834🚀🚀Iterative-All-Rules made_a_change={made_a_change} : '{original_text_for_script}' -> '{new_current_text}' (Pattern: '{regex_pattern}')",logger_instance)

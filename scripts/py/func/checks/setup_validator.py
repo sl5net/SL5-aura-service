@@ -200,7 +200,6 @@ def check_for_frequent_calls(parsed_trees, logger, threshold=3):
 # ==============================================================================
 
 if __name__ == "__main__":
-    # This block runs only when you execute the script directly
     # e.g., python scripts/py/func/checks/setup_validator.py
 
     # Setup a simple logger for direct execution

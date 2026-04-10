@@ -69,7 +69,6 @@ def setup_project_structure(project_root: Union[str, Path]):
             sys.exit(1) # Exit with an error code to fail the CI/CD job
 
 if __name__ == "__main__":
-    # This script expects the project root path as its first argument.
     # The setup.sh script will provide it.
     if len(sys.argv) < 2:
         print("FATAL ERROR: Project root path argument is missing.")

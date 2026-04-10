@@ -294,12 +294,12 @@ def _run_interactive(
             # Auto-skip: German comment but trans returned nothing useful
             if _wants_translation(h) and suggestion is None:
                 print(f"\n[{done}/{total}] :{h['line']}  [{label}] {h['reason']}")
-                print(f"  ⚠️  original : {h['text'][:110]}")
+                print(f"  ⚠️  original : \n{h['text'][:110]}")
                 print("  ⏭️  auto-skipped – not German or no translation available")
                 continue
 
             print(f"\n[{done}/{total}] :{h['line']}  [{label}] {h['reason']}")
-            print(f"  ⚠️  original : {h['text'][:110]}")
+            print(f"  ⚠️  original : \n{h['text'][:110]}")
 
             if suggestion:
                 print(f"  💡 suggested: {suggestion[:110]}")
@@ -321,6 +321,9 @@ def _run_interactive(
                 print("  → skipped")
 
             elif ch == "e":
+                print("edit ist buggy => exit => do it manually (s, 10.4.'26 20:03 Fri)")
+                sys.exit(1)
+
                 prefill = suggestion or h["text"]
                 print("  edit (modify and press Enter):")
                 print("  > ", end="", flush=True)

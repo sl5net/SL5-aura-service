@@ -193,8 +193,8 @@ if (sys.platform != "win32"
         # beep_sound_high = pygame.mixer.Sound(b'\x00\xff\x00\xff' * 100)  # Simple high-pitched wave
         # beep_sound_low = pygame.mixer.Sound(b'\x00\x00\xff\xff' * 100)   # Simple low-pitched wave
         # def play_beep(frequency, duration_ms):
-        #     # Pygame doesn't directly support frequency/duration for simple beeps like winsound.Beep.
-        #     # This is a very rough approximation for demonstration.
+        # Pygame doesn't directly support frequency/duration for simple beeps like winsound. Beep.
+        # very rough approximation for demonstration.
         #     if frequency > 700: # Arbitrary high freq threshold
         #         beep_sound_high.play()
         #     else:

@@ -148,7 +148,6 @@ INTEGRITY_CHECKS = {
 
 
 
-    # make sure buzzword Tests is in
     "type_watcher.sh": [
         "printf 'type %s",
         "printf 'key Return"

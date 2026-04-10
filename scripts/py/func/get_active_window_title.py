@@ -114,7 +114,6 @@ def get_active_window_title_atspi_fallback():
     # We check whether we have already attached a “note” to this function.
     # 'hasattr' checks: "Do I have the variable 'initialized' yet?"
     if not hasattr(get_active_window_title_atspi_fallback, "initialized"):
-        # This block ONLY runs the FIRST TIME!
         if Atspi.init() == 0:
             # We stick the note "initialized = True" to the function
             get_active_window_title_atspi_fallback.initialized = True

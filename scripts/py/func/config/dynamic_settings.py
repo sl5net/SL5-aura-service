@@ -334,7 +334,6 @@ class DynamicSettings:
                     # Ein neues Dictionary für die aufgelösten Zustände
                     resolved_plugins_config = {}
 
-                    # We need to iterate over a copy of the keys in case we change the dict
                     all_plugin_keys = list(raw_plugins_config.keys())
 
                     for key in all_plugin_keys:

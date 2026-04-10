@@ -164,7 +164,6 @@ def _check_gitignore_for_security(logger) -> bool:
         True if all required security rules are present, False otherwise.
     """
     # Assuming the main .gitignore is in the project's root directory (or equivalent base)
-    # We need to find the root of the project to locate the main .gitignore
     # Let's assume the root is two levels up from scripts/py/func/
     gitignore_path = Path(__file__).parents[3] / ".gitignore"
 
