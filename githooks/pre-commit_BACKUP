@@ -31,6 +31,9 @@ if [ -f .venv/bin/activate ]; then
   source .venv/bin/activate
 fi
 
+.venv/bin/python scripts/py/func/checks/check_slop_comments.py --sort-by=quality --fix
+echo "✅ check_slop_comments passed. ✅"
+
 # Run flake8 on specific directories
 # flake8 ./aura_engine.py ./scripts ./config
 ./.venv/bin/flake8 ./aura_engine.py ./scripts ./config
@@ -43,6 +46,10 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "✅ flake8 check passed. ✅"
+
+
+
+
 
 
 

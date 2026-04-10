@@ -6,6 +6,24 @@ import tomllib
 from collections import defaultdict
 from pathlib import Path
 
+"""
+Automates the enforcement of technical documentation standards by detecting
+low-signal or meta-discursive comment patterns:
+
+
+- Chat-session artifacts & placeholders (du/dein, "Hier wird es interessant", <====)
+- Non-technical qualifiers ("rough approximation for demonstration")
+- Narrative/Redundant styles ("This function does...", "You can")
+- exclude Localization files: comments outside xx-XX locale directories
+
+Features:
+- --fix: Interactive resolution with auto-translation via translate-shell
+- Interactive CLI: [Enter] accept, [e] edit, [d] delete, [a] allowlist, [q] quit
+- CI-Ready: Severity levels 1-3, --sort-by=quality, --strict exit codes
+- Config: Supports exclusion via .slop.toml
+
+"""
+
 #     (re.compile(r"#.*\(original:'[^\)]*'\)"),                                         "bilingual translation artifact",  3),
 
 
