@@ -34,10 +34,28 @@ set -e
 echo "--- Starting STT Setup for macOS ---"
 # setup/macos_setup.sh
 # --- 1. System Dependencies ---
+
+
+
+
+
+
+
+
 if ! command -v brew &> /dev/null; then
     echo "ERROR: Homebrew not found. Please install it from https://brew.sh"
     exit 1
 fi
+
+# create system symlink only after brew exists and openjdk is installed
+if ! brew list openjdk >/dev/null 2>&1; then
+  echo "--> Installing openjdk via Homebrew..."
+  brew install openjdk
+fi
+
+echo "--> Making system JDK symlink (so macOS/system tools find it)..."
+sudo ln -sfn "$(brew --prefix)/opt/openjdk/libexec/openjdk.jdk" /Library/Java/JavaVirtualMachines/openjdk.jdk
+
 echo "--> Checking for a compatible Java version (>=17)..."
 
 JAVA_OK=0
@@ -50,14 +68,16 @@ if command -v java &> /dev/null; then
         echo "    -> Found Java version $VERSION, but we need >=17."
     fi
 else
-    echo "    -> No Java executable found."
+  echo "    -> No Java executable found after install/symlink."
 fi
+
 if [ "$JAVA_OK" -eq 0 ]; then
     echo "    -> Installing a modern JDK via Homebrew..."
     brew install openjdk
 fi
 echo "--> Installing other core dependencies..."
 brew install fswatch wget unzip portaudio
+
 
 
 # --- 2. Python Virtual Environment ---
@@ -217,16 +237,7 @@ else
     echo "[INFO] fzf is already installed."
 fi
 
-
-
-
-
-
-
-
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
-
-
 
 # --- Automatisches Setzen des Standard-Modells ---
 echo "--> Configuring default model in config/model_name.txt..."
