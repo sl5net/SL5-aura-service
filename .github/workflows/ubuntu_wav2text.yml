@@ -67,7 +67,8 @@ jobs:
                   
           echo "INFO: Runing transcription test..."
           
-          
+          set +e
+
           # 7.1. Run the script and capture output to a temporary file
           # This ensures we see the errors even if grep fails later
           # xvfb-run starts the venv, ten starts the command
@@ -78,6 +79,7 @@ jobs:
 
           # 7.2. Capture the exit code of the python script
           EXIT_CODE=$?
+          set -e # Re-enable exit on error
           
           # 7.3. Print the actual output to the GitHub Action log for debugging
           echo "--- START OF TRANSCRIPTION OUTPUT ---"
