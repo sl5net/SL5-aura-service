@@ -7,9 +7,21 @@ CONTAINER_NAME="kiwix_zim_server"
 HOST_PORT="8080"
 CONTAINER_PORT="8080"
 
+if [ "${OS:-}" = "Windows_NT" ] || [ -n "${WINDIR:-}" ]; then
+  tmp_dir='C:/tmp'
+else
+  tmp_dir='/tmp'
+fi
+
+
+PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+
 # 1. Absoluter Pfad zur Datei auf dem Host ermitteln
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ZIM_FILE_PATH_host="$(realpath "$SCRIPT_DIR/../../../../../../data/$ZIM_FILE_NAME")"
+# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+ZIM_FILE_PATH_host="$(realpath "$PROJECT_ROOT/data/$ZIM_FILE_NAME")"
+
+# ZIM_FILE_PATH_host="$(realpath "$SCRIPT_DIR/../../../../../../data/$ZIM_FILE_NAME")"
 
 # 2. Download-URL
 ZIM_URL="https://download.kiwix.org/zim/wikipedia/$ZIM_FILE_NAME"
