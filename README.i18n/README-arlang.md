@@ -1,28 +1,45 @@
 # صوت غير متصل على مستوى النظام للأوامر أو الرسائل النصية، نظام قابل للتوصيل
 
+                                                     ## بداية سريعة
+           1. قم بتنزيل هذا المستودع أو استنساخه
+2. قم بتشغيل البرنامج النصي للإعداد لنظام التشغيل لديك (راجع مجلد "الإعداد/"):
+                   - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
+                                                 ===> 🧩 اقرأ [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-arlang.md)
+                        - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
+                               - Linux (openSUSE): `bash setup/suse_setup.sh`
+                 - نظام التشغيل macOS: `bash setup/macos_setup.sh`
+                   - ويندوز: `setup/windows11_setup_with_ahk_copyq.bat`
+                 3. ابدأ Aura: `./scripts/restart_venv_and_run-server.sh`
+4. اضغط على مفتاح التشغيل السريع وتحدث — **[full guide →](../docs/GettingStarted-arlang.md)**
+
+
                       **⚠️ متطلبات النظام والتوافق**
 
 * **Windows:** ✅ مدعوم بالكامل (يستخدم AutoHotkey/PowerShell).
        * **macOS:** ✅ مدعوم بالكامل (يستخدم AppleScript).
                        * **Linux (X11/Xorg):** ✅ مدعوم بالكامل.
-            * **لينكس (وايلاند):** ✅ مدعوم بالكامل.
-
-
-مرحبًا بك في خدمة SL5 Aura! يقدم هذا المستند نظرة عامة سريعة على ميزاتنا الرئيسية وتوافقها مع نظام التشغيل.
-
-الهالة ليست مجرد ناسخ؛ إنه محرك معالجة قوي وغير متصل بالإنترنت يحول صوتك إلى إجراءات ونصوص دقيقة.
-
-إنه **مساعد صوتي كامل غير متصل بالإنترنت** مبني على **Vosk** (لتحويل الكلام إلى نص) و**LanguageTool** (للقواعد النحوية/الأسلوب)، ويتميز الآن بوظيفة احتياطية **Local LLM (Ollama) اختيارية** للاستجابات الإبداعية والمطابقة الغامضة المتقدمة. إنه مصمم للتخصيص النهائي من خلال نظام قواعد قابل للتوصيل ومحرك برمجة نصية ديناميكي.
-
+* **Linux (Wayland):** ✅ مدعوم بالكامل (تم اختباره على KDE Plasma 6 / Wayland).
+* **Linux (إصدار متجدد قائم على CachyOS / Arch):** ✅ مدعوم بالكامل.
+يتطلب mimalloc (`sudo pacman -S mimalloc`) بسبب توافق glibc 2.43.
                                               اكس سبيس بريك اكس
-الترجمات: هذا المستند موجود أيضًا في [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
+SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل بالإنترنت** مبني على **Vosk** (لتحويل الكلام إلى نص) و**LanguageTool** (للقواعد النحوية/الأسلوب)، ويتميز بوظيفة احتياطية **Local LLM (Ollama) اختيارية** للاستجابات الإبداعية والمطابقة الغامضة المتقدمة. إنه يحول صوتك إلى إجراءات ونص دقيق، مصمم للتخصيص النهائي من خلال نظام قواعد قابل للتوصيل ومحرك برمجة نصية ديناميكي.
+                                              اكس سبيس بريك اكس
+الترجمات: هذا المستند موجود أيضًا في [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n).
 
 
 ملاحظة: العديد من النصوص عبارة عن ترجمات تم إنشاؤها آليًا للوثائق الإنجليزية الأصلية وهي مخصصة للإرشاد العام فقط. وفي حالة وجود تناقضات أو غموض، فإن النسخة الإنجليزية هي التي تسود دائمًا. نحن نرحب بالمساعدة من المجتمع لتحسين هذه الترجمة!
 
+                            ### 📺 العرض التجريبي للمحطة
 
-                      [![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
-( https://www.youtube.com/watch?v=BZCHonTqwUw أو https://skipvids.com/?v=BZCHonTqwUw )
+[![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
+
+> **نصيحة:** للحصول على تجربة طرفية أفضل، راجع [Zsh Integration](../docs/linux/zsh-integration-arlang.md).
+
+                                             ### 🎥 فيديو تعليمي
+                      [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+
+                                     *(الرابط البديل: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+
 
                                            ## الميزات الرئيسية
 
@@ -49,11 +66,11 @@
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
-                       [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
+                      [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
                                      **اقرأ هذا بلغات أخرى:**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-arlang.md) | [🇪🇸 Español](../README.i18n/README-eslang-arlang.md) | [🇫🇷 Français](../README.i18n/README-frlang-arlang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-arlang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-arlang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-arlang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-arlang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-arlang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-arlang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-arlang.md)
 
                                                                           ---
 
@@ -64,6 +81,14 @@
 
 
                                                                 ## تثبيت
+
+### 🎥 التثبيت السريع دون اعتدال (Manjaro/Arch Video)
+شاهد عملية الإعداد الكاملة التي تستغرق 6 دقائق:
+                                          * **التحميل:** ~3 دقائق
+* **الإعداد والبدء الأول:** ~3 دقائق (بما في ذلك معالج الترحيب)
+
+                                                          👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
+
 
                             الإعداد هو عملية من خطوتين:
 1. قم بتنزيل الإصدار الأخير أو الإصدار الرئيسي ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) أو انسخ هذا المستودع على جهاز الكمبيوتر الخاص بك.
@@ -83,6 +108,12 @@
 # (Note: Use bash or sh to execute the setup script)
 
 bash setup/{your-os}_setup.sh [OPTION]
+
+# For Arch-based systems (Manjaro, CachyOS, EndeavourOS, etc.):
+`bash setup/manjaro_arch_setup.sh`
+
+`sudo pacman -S mimalloc`
+
 
 # Examples:
 # Install everything (Default):
@@ -134,14 +165,14 @@ windows11_setup.bat -Exclude "en"
 
 ```powershell
 # Core Setup only (No AHK, No CopyQ)
-setup\windows11_setup.bat
+setup/windows11_setup_with_ahk_copyq.bat
 
 # Exclude specific language models (saves space):
 # Exclude English:
-setup\windows11_setup.bat -Exclude "en"
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 
 # Exclude German and English:
-setup\windows11_setup.bat -Exclude "de,en"
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
 
 
@@ -231,7 +262,7 @@ f11::
 2. قم بإنشاء نسخة من `config/settings_local.py_Example.txt` وأعد تسميتها إلى `config/settings_local.py`.
 3. قم بتحرير `config/settings_local.py` (يتجاوز أي إعداد من ملف `config/settings.py` الرئيسي).
 
-(ربما) يتم تجاهل هذا الملف `config/settings_local.py` بواسطة Git، لذلك لن يتم استبدال تغييراتك الشخصية (ربما) بالتحديثات.
+يتم تجاهل هذا الملف `config/settings_local.py` بواسطة Git افتراضيًا، لذلك لن يتم استبدال تغييراتك الشخصية بالتحديثات.
 
                     ### بنية البرنامج الإضافي ومنطقه
 
@@ -250,6 +281,8 @@ f11::
 فيما يلي قائمة بأهم البرامج النصية لإعداد التطبيق وتحديثه وتشغيله على نظام Windows.
 
                                           ### الإعداد والتحديث
+
+                                          * `chmod +x update.sh; ./update.sh`
 * `setup/setup.bat`: البرنامج النصي الرئيسي للإعداد الأولي للبيئة لمرة واحدة فقط.
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `تشغيل powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
@@ -286,7 +319,7 @@ f11::
 ││ * **سير العمل:** يقوم بتحميل أرشيفات ZIP المحمية بكلمة مرور. اكس سبيس بريك اكس
 │├ **معالجة النصوص وتصحيحها/** مجمعة حسب اللغة (على سبيل المثال، `de-DE`، `en-US`، ...) XSPACEbreakX
 │├ 1. `normalize_peptication.py` (توحيد علامات الترقيم بعد النسخ) 🐧 🍏 🪟XSPACEbreakX
-│├ 2. **التصحيح المسبق الذكي** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **التصحيح المسبق الذكي** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة (on_match_exec) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.  
 ││ * **التنفيذ المتتالي:** تتم معالجة القواعد بشكل تسلسلي وتكون تأثيراتها **تراكمية**. تنطبق القواعد اللاحقة على النص الذي تم تعديله بواسطة القواعد السابقة.XSPACEbreakX
 ││ * **معيار الإيقاف ذو الأولوية الأعلى:** إذا حققت القاعدة **تطابق كامل** (^...$)، فسيتوقف مسار المعالجة بالكامل لهذا الرمز المميز على الفور. تعتبر هذه الآلية ضرورية لتنفيذ الأوامر الصوتية الموثوقة.XSPACEbreakX
@@ -297,7 +330,7 @@ f11::
                           ││ * **الحالة:** تكامل LLM محلي.
 │└ 5. **التصحيح اللاحق الذكي** (`الخريطة الغامضة`)** – تحسين ما بعد LT** 🐧 🍏 🪟
 ││ * يتم تطبيقه بعد LanguageTool لتصحيح المخرجات الخاصة بـ LT. يتبع نفس منطق الأولوية المتتالي الصارم مثل طبقة التصحيح المسبق.XSPACEbreakX
-││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-arlang.md)) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات (API)، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
+││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة ([on_match_exec](../docs/advanced-scripting-arlang.md)) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات (API)، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
 ││ * **التراجع الضبابي:** يعمل **التحقق من التشابه الغامض** (الذي يتم التحكم فيه بواسطة عتبة، على سبيل المثال، 85%) بمثابة طبقة تصحيح الأخطاء ذات الأولوية الأدنى. يتم تنفيذه فقط في حالة فشل تشغيل القاعدة الحتمية/المتتالية السابقة بالكامل في العثور على تطابق (القاعدة_الحالية_تطابق خطأ)، مما يؤدي إلى تحسين الأداء عن طريق تجنب عمليات التحقق البطيئة الغامضة كلما أمكن ذلك.  
                            ├┬ **إدارة النماذج/** XSPACEbreakX
 │├─ `prioritize_model.py` (يعمل على تحسين تحميل/تفريغ النموذج بناءً على الاستخدام) 🐧 🍏 🪟XSPACEbreakX
@@ -328,7 +361,7 @@ f11::
 يرجى تحديد مربع الاختيار عند التثبيت لربطه بملفات السجل.  اكس سبيس بريك اكس
 https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
                                               اكس سبيس بريك اكس
-*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
+*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
 
                              ثم ربما انقر نقرًا مزدوجًا
                                                     "سجل/aura_engine.log".
@@ -382,9 +415,9 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefo
                                                           </التفاصيل>
 
 
-     ### انظر بشكل بياني لترى ما هو موجود خلفك:
+                      ### نظرة عامة رسومية على البنية:
 
-                                                                   ![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
+                                                                   ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
                                               اكس سبيس بريك اكس
                                                                    ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)

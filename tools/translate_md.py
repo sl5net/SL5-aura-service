@@ -225,10 +225,17 @@ def process_file(filename):
 
 
 
-        if os.path.exists(output_file):
+        # if os.path.exists(output_file):
             # print(f"   -> Überspringe '…{str(output_file)[-40:]}' (existiert bereits).")
+            #skipCount = skipCount + 1
+            #continue
+
+        output_path = Path(output_file)
+        if output_path.exists() and output_path.stat().st_mtime > Path(filename).stat().st_mtime:
             skipCount = skipCount + 1
             continue
+
+
 
         print(f"   -> Übersetze nach '{lang}' -> '{output_file}'...")
         try:
@@ -347,10 +354,17 @@ def main():
 
                     base_name = os.path.splitext(filename)[0]
                     # Prüfe ob ALLE Zielsprachen bereits im .i18n Ordner existieren
-                    already_done = all(
-                        os.path.exists(f"{base_name}.i18n/{os.path.basename(base_name)}-{lang}lang.md")
-                        for lang in TARGET_LANGS
-                    )
+                    # already_done = all(
+                    #    os.path.exists(f"{base_name}.i18n/{os.path.basename(base_name)}-{lang}lang.md")
+                    #    for lang in TARGET_LANGS
+                    #)
+
+                    def is_fresh(l):
+                        tr = Path(f"{base_name}.i18n/{os.path.basename(base_name)}-{l}lang.md")
+                        return tr.exists() and tr.stat().st_mtime > Path(filename).stat().st_mtime
+
+                    already_done = all(is_fresh(lang) for lang in TARGET_LANGS)
+
                     if already_done:
                         # print(f"   -> Überspringe  '…{str(filename)[-40:]}' (alle Übersetzungen bereits vorhanden).")
                         skipCount = skipCount + 1
