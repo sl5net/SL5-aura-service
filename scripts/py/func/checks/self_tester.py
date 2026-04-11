@@ -24,8 +24,11 @@ else:
 
 def check_translator_hijack_is_active(logger):
 
-    proj_dir = Path(__file__).parents[4]
-    path = proj_dir / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
+    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+
+    path = PROJECT_ROOT / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
 
     if not path.exists():
         logger.info(f"st:HIJACK: path {path} not exists!")

@@ -1,0 +1,100 @@
+# Integração macOS Zsh Shell
+
+> **Shell padrão desde o macOS Catalina (10.15).** Se você estiver no macOS Mojave ou anterior, consulte o guia [macOS Bash Integration](.././mac-bash-integration.i18n/mac-bash-integration-ptlang.md).
+
+Para facilitar a interação com a CLI STT (Speech-to-Text), você pode adicionar uma função de atalho ao seu `~/.zshrc`. Isso permite que você simplesmente digite `s "sua pergunta"` no terminal.
+
+## Instruções de configuração
+
+1. Abra sua configuração Zsh com um editor de sua preferência:
+   ```zsh
+   nano ~/.zshrc
+   open -e ~/.zshrc   # opens in TextEdit
+   ```
+
+2. Cole o seguinte bloco no final do arquivo:
+
+```zsh
+# --- STT Project Path Resolution ---
+unalias s 2>/dev/null
+s() {
+    if [ $# -eq 0 ]; then
+        echo "question <your question>"
+        return 1
+    fi
+    update_github_ip
+    local TEMP_FILE=$(mktemp)
+    local SHORT_TIMEOUT_SECONDS=2
+    local LONG_TIMEOUT_SECONDS=70
+    # Path shortcuts
+    local PY_EXEC="$PROJECT_ROOT/.venv/bin/python3"
+    local CLI_SCRIPT="$PROJECT_ROOT/scripts/py/cli_client.py"
+    # --- 1. try
+    timeout $SHORT_TIMEOUT_SECONDS \
+    "$PY_EXEC" -u "$CLI_SCRIPT" "$*" \
+    --lang "de-DE" --unmasked < /dev/null > "$TEMP_FILE" 2>&1
+    local EXIT_CODE=$?
+    local OUTPUT=$(cat "$TEMP_FILE")
+    rm "$TEMP_FILE"
+    if echo "$OUTPUT" | grep -q "Verbindungsfehler" || ! pgrep -f "streamlit-chat.py" > /dev/null; then
+        echo "Service-Check: Backend oder Frontend fehlt. Starte neu..."
+        start_service
+        echo '++++++++++++++++++++++++++++++++++++++++++++++++++'
+        local KIWIX_SCRIPT="$PROJECT_ROOT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh"
+        if [ -f "$KIWIX_SCRIPT" ]; then
+            bash "$KIWIX_SCRIPT"
+        fi
+        echo '++++++++++++++++++++++++++++++++++++++++++++++++++'
+        echo "BITTE ERNEUT EINGEBEN: s $*"
+        return 1
+    # 2. Timeout (124) OR success (0)
+    elif [ $EXIT_CODE -eq 124 ] || [ $EXIT_CODE -eq 0 ]; then
+        if [ $EXIT_CODE -eq 0 ]; then
+            echo "$OUTPUT"
+            return 0
+        fi
+        echo "answer > $SHORT_TIMEOUT_SECONDS sec. set Timeout= $LONG_TIMEOUT_SECONDS s..."
+        local TEMP_FILE_2=$(mktemp)
+        timeout $LONG_TIMEOUT_SECONDS \
+        "$PY_EXEC" -u "$CLI_SCRIPT" "$*" \
+        --lang "de-DE" --unmasked < /dev/null > "$TEMP_FILE_2" 2>&1
+        local EXIT_CODE_2=$?
+        local OUTPUT_2=$(cat "$TEMP_FILE_2")
+        rm "$TEMP_FILE_2"
+        echo "$OUTPUT_2"
+        if [ $EXIT_CODE_2 -ne 0 ]; then
+             echo "WARNUNG: Timeout > $LONG_TIMEOUT_SECONDS Sec. "
+        fi
+        return 0
+    else
+        echo "ERROR"
+        echo "$OUTPUT"
+        return $EXIT_CODE
+    fi
+}
+```
+
+3. Recarregue sua configuração:
+   ```zsh
+   source ~/.zshrc
+   ```
+
+## Notas específicas do macOS
+
+- **`timeout` não está integrado no macOS.** Instale-o via Homebrew antes de usar esta função:
+__CODE_BLOCO_3__
+Após a instalação, `timeout` está disponível como `gtimeout`. Adicione um alias ou substitua `timeout` por `gtimeout` na função acima:
+  ```zsh
+  brew install coreutils
+  ```
+Adicione o alias acima da função `s()` em seu `~/.zshrc`.
+
+- **`pgrep`** está disponível no macOS por padrão.
+
+- **Caminho Python**: Certifique-se de que seu ambiente virtual esteja configurado em `$PROJECT_ROOT/.venv`. Se você gerencia Python com `pyenv` ou `conda`, ajuste `PY_EXEC` de acordo.
+
+## Características
+
+- **Caminhos Dinâmicos**: Encontra automaticamente a raiz do projeto através do arquivo marcador `/tmp`.
+- **Auto-Restart**: Se o backend estiver inativo, ele tenta executar o `start_service` e os serviços locais da Wikipedia.
+- **Tempos limite inteligentes**: primeiro tenta uma resposta rápida de 2 segundos e depois volta para um modo de processamento profundo de 70 segundos.

@@ -1,6 +1,14 @@
 #!/bin/bash
 # .git/hooks/pre-commit
 
+
+# ---------------------------------------------------------------------------
+# Guard: block commit if a TRANSLATION_RULE is left un-commented
+# ---------------------------------------------------------------------------
+SCRIPT_DIR="$(git rev-parse --show-toplevel)/scripts/sh"
+bash "$SCRIPT_DIR/check_translator_hijack.sh" || exit 1
+
+
 # -----------------------------------------------------------------------------
 # 1. QUALITY CHECK (Flake8)
 # -----------------------------------------------------------------------------
