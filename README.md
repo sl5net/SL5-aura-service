@@ -33,6 +33,8 @@ Note: Many texts are machine-generated translations of the original English docu
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
+> **Tip:** For a better terminal experience, see [Zsh Integration](docs/linux/zsh-integration.md).
+
 ### 🎥 Video Tutorial
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 

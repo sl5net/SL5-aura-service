@@ -35,7 +35,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: deutschlandfunk
     # Einen  is somtimes noise of nothing
-    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, # min_accuracy
+    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor|deutschland frank)\s*$', 70, # min_accuracy
  {'flags': re.IGNORECASE}),
 
     # dein deutschlands
