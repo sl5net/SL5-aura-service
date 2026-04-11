@@ -4,13 +4,13 @@
 1. Laden Sie dieses Repository herunter oder klonen Sie es
 2. Führen Sie das Setup-Skript für Ihr Betriebssystem aus (siehe Ordner „setup/“):
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-delang.md) lesen
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-delang.md) lesen
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Starten Sie Aura: `./scripts/restart_venv_and_run-server.sh`
-4. Drücken Sie Ihren Hotkey und sprechen Sie – **[full guide →](../docs/GettingStarted-delang.md)**
+4. Drücken Sie Ihren Hotkey und sprechen Sie – **[full guide →](../docs/GettingStarted.i18n/GettingStarted-delang.md)**
 
 
 **⚠️ Systemanforderungen und Kompatibilität**
@@ -33,7 +33,7 @@ Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzunge
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Tipp:** Für ein besseres Terminalerlebnis siehe [Zsh Integration](../docs/linux/zsh-integration-delang.md).
+> **Tipp:** Für ein besseres Terminalerlebnis siehe [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-delang.md).
 
 ### 🎥 Video-Tutorial
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -319,7 +319,7 @@ Unsere primäre Engine für Offline-Spracherkennung und Audioverarbeitung.
 ││ * **Workflow:** Lädt passwortgeschützte ZIP-Archive.   
 │├ **Textverarbeitung und -korrektur/** Gruppiert nach Sprache (z. B. „de-DE“, „en-US“, ...)   
 │├ 1. `normalize_punctuation.py` (Standardisiert die Zeichensetzung nach der Transkription) 🐧 🍏 🪟  
-│├ 2. **Intelligente Vorkorrektur** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-delang.md)) 🐧 🍏 🪟  
+│├ 2. **Intelligente Vorkorrektur** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-delang.md)) 🐧 🍏 🪟  
 ││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte (on_match_exec) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
 ││ * **Kaskadierende Ausführung:** Regeln werden nacheinander verarbeitet und ihre Auswirkungen sind **kumulativ**. Spätere Regeln gelten für Text, der durch frühere Regeln geändert wurde.  
 ││ * **Stoppkriterium mit höchster Priorität:** Wenn eine Regel eine **Vollständige Übereinstimmung** (^...$) erreicht, stoppt die gesamte Verarbeitungspipeline für dieses Token sofort. Dieser Mechanismus ist für die Implementierung zuverlässiger Sprachbefehle von entscheidender Bedeutung.  
@@ -330,7 +330,7 @@ Unsere primäre Engine für Offline-Spracherkennung und Audioverarbeitung.
 ││ * **Status:** Lokale LLM-Integration.
 │└ 5. **Intelligente Nachkorrektur** („FuzzyMap“)** – Post-LT-Verfeinerung** 🐧 🍏 🪟
 ││ * Wird nach LanguageTool angewendet, um LT-spezifische Ausgaben zu korrigieren. Folgt der gleichen strengen kaskadierenden Prioritätslogik wie die Vorkorrekturschicht.  
-││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte ([on_match_exec](../docs/advanced-scripting-delang.md)) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
+││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-delang.md)) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
 ││ * **Fuzzy-Fallback:** Die **Fuzzy-Ähnlichkeitsprüfung** (gesteuert durch einen Schwellenwert, z. B. 85 %) fungiert als Fehlerkorrekturebene mit der niedrigsten Priorität. Es wird nur ausgeführt, wenn bei der gesamten vorherigen Ausführung der deterministischen/kaskadierenden Regel keine Übereinstimmung gefunden werden konnte (current_rule_matched ist False). Dadurch wird die Leistung optimiert, indem nach Möglichkeit langsame Fuzzy-Prüfungen vermieden werden.  
 ├┬ **Modellverwaltung/**   
 │├─ `prioritize_model.py` (Optimiert das Laden/Entladen von Modellen basierend auf der Nutzung) 🐧 🍏 🪟  
@@ -361,7 +361,7 @@ Skripte zum Einrichten, Testen und Ausführen von Diensten.
 Bitte aktivieren Sie das Kontrollkästchen bei der Installation, um eine Verknüpfung mit Protokolldateien herzustellen.    
 https://translate.google.com/translate?hl=en&sl=en&tl=de&u=https://glogg.bonnefon.org/     
   
-*Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-delang.md).*
+*Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-delang.md).*
 
 Dann vielleicht Double Click
 `log/aura_engine.log`

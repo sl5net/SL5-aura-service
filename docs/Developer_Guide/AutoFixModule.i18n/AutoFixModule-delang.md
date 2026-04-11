@@ -54,6 +54,20 @@ Es dann:
 - Die Datei muss in einem gültigen Sprachordner liegen (z. B. „de-DE/“)
 - Funktioniert für mehrere Wörter gleichzeitig (z. B. aus einer Telefonbuchliste)
 
+## Bekannte Probleme (nicht vollständig getestet)
+
+> ⚠️ Dieses Modul ist funktionsfähig, aber nicht umfassend getestet. Die folgenden Fälle funktionieren möglicherweise nicht richtig:
+
+- **Zahlen** – „5“ oder „6“ sind keine gültigen Python-Bezeichner, die automatische Korrektur kann sie möglicherweise nicht verarbeiten
+- **Sonderzeichen** – Wörter mit „-“, „.“ und Umlauten lösen möglicherweise keinen „NameError“ aus
+- **Einträge mit mehreren Wörtern** – „Thomas Mueller“ (mit Leerzeichen) verursacht „SyntaxError“ und nicht „NameError“, sodass die automatische Korrektur möglicherweise nicht ausgelöst wird
+- **Komma-getrennte Werte** – „drei, vier“ können unverändert eingefügt werden, ohne ein richtiges Tupel zu werden
+
+Wenn die automatische Korrektur nicht ausgelöst wird, fügen Sie die Regel manuell hinzu:
+```python
+('replacement', 'input word'),
+```
+
 ## Der „# too<-from“-Kommentar
 
 Dieser Kommentar wird automatisch als Erinnerung an die Regelrichtung hinzugefügt:

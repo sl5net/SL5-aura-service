@@ -9,6 +9,9 @@ El comportamiento interno de la sesión está controlado por:
 ## Lógica operativa
 A diferencia de un oyente en segundo plano persistente, el motor STT de Aura (Vosk) solo procesa audio cuando una sesión de grabación se ha activado externamente (por ejemplo, mediante una tecla de acceso rápido).
 
+> **Aura es tu telescopio 🔭 para PC: ¡Controla desde la distancia!**
+
+
 ### La alternancia durante la sesión ("Teleskop")
 Cuando `ENABLE_WAKE_WORD` se establece en **Verdadero**:
 1. **Activador:** El usuario inicia una sesión manualmente.

@@ -34,6 +34,28 @@ tail -30 log/aura_engine.log
 | `Nenhum módulo chamado 'objgraph'` | `.venv` foi recriado - reinstalação: `pip install -r requisitos.txt` |
 | `Endereço já em uso` | Elimine o processo antigo: `pkill -9 -f aura_engine` |
 | `Modelo não encontrado` | Execute novamente a configuração para baixar modelos ausentes |
+| `pygame.mixer não disponível` | Consulte "Sem som na inicialização" abaixo |
+
+---
+
+## Problema: Sem som na inicialização (pygame.mixer)
+
+**Sintoma:** Aviso ou erro sobre `pygame.mixer` não disponível. Aura começa
+mas não reproduz sons.
+
+**Causa:** A versão pygame do seu sistema não inclui suporte de áudio ou SDL2
+faltam bibliotecas de áudio.
+
+**Correção no Arch/Manjaro:**
+```bash
+sudo pacman -S sdl2_mixer
+pip install pygame-ce --upgrade
+```
+
+**Correção no Ubuntu/Debian:**
+__CODE_BLOCO_3__
+
+Aura continuará a funcionar sem som – este não é um erro fatal.
 
 ---
 
@@ -43,18 +65,19 @@ tail -30 log/aura_engine.log
 
 **Verifique stderr:**
 ```bash
-cat /tmp/aura_stderr.log | tail -30
+sudo apt install libsdl2-mixer-2.0-0
+pip install pygame-ce --upgrade
 ```
 
 **Se você vir `Segmentation Fault` ou `double free`:**
 
 Este é um problema conhecido em sistemas com glibc 2.43+ (CachyOS, Arch mais recente).
 
-__CODE_BLOCO_3__
+__CODE_BLOCO_5__
 
 mimalloc é usado automaticamente pelo script de início, se instalado. Confirme se está ativo – você deverá ver isto na inicialização:
 ```bash
-sudo pacman -S mimalloc
+cat /tmp/aura_stderr.log | tail -30
 ```
 
 ---
@@ -64,7 +87,9 @@ sudo pacman -S mimalloc
 **Sintoma:** Você pressiona a tecla de atalho, mas nada acontece: nenhum som, nenhum texto.
 
 **Verifique se o inspetor de arquivos está em execução:**
-__CODE_BLOCO_5__
+```bash
+sudo pacman -S mimalloc
+```
 
 Se nada aparecer, reinicie o Aura:
 ```
@@ -72,12 +97,74 @@ Info: Using mimalloc for improved memory management (/usr/lib/libmimalloc.so).
 ```
 
 **Verifique se o arquivo acionador está sendo criado:**
+__CODE_BLOCO_9__
+
+Se o arquivo nunca for criado, sua tecla de atalho não está funcionando – veja abaixo.
+
+---
+
+## Problema: a tecla de atalho não funciona no Wayland
+
+**Sintoma:** CopyQ está instalado e configurado, mas pressionar a tecla de atalho não
+nada em uma sessão de Wayland.
+
+**Causa:** As teclas de atalho globais do CopyQ não funcionam de maneira confiável no Wayland sem
+configuração adicional. Isso afeta o KDE Plasma, GNOME e outros
+Compositores Wayland.
+
+### Opção 1: Configurações do sistema KDE (recomendado para KDE Plasma)
+
+1. Abra **Configurações do sistema → Atalhos → Atalhos personalizados**
+2. Crie um novo atalho do tipo **Command/URL**
+3. Defina o comando para:
 ```bash
 pgrep -a type_watcher
 ```
+4. Atribua sua combinação de teclas preferida (por exemplo, `F9` ou `Ctrl+Alt+Space`)
 
-Se o arquivo nunca for criado, sua configuração de teclas de atalho (CopyQ/AHK) não está funcionando.
-Consulte a seção de configuração de teclas de atalho em [README.md](../../README.i18n/README-ptlang.md#configure-your-hotkey).
+### Opção 2: dotool (Funciona em qualquer compositor Wayland)
+
+```bash
+./scripts/restart_venv_and_run-server.sh
+```
+
+Em seguida, use o gerenciador de atalhos da sua área de trabalho para executar:
+```bash
+ls -la /tmp/sl5_record.trigger
+```
+
+### Opção 3: ydotool
+
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+
+Em seguida, configure seu atalho para executar:
+```bash
+# Install dotool:
+sudo pacman -S dotool        # Arch/Manjaro
+# or
+sudo apt install dotool      # Ubuntu (if available)
+```
+
+### Opção 4: GNOME (usando configurações dconf / GNOME)
+
+1. Abra **Configurações → Teclado → Atalhos personalizados**
+2. Adicione um novo atalho com o comando:
+```bash
+touch /tmp/sl5_record.trigger
+```
+3. Atribua uma combinação de teclas
+
+### Opção 5: CopyQ com correção do Wayland
+
+Alguns compositores Wayland permitem que o CopyQ funcione se iniciado com:
+```bash
+sudo pacman -S ydotool
+sudo systemctl enable --now ydotool
+```
+
+Isso força o CopyQ a usar o XWayland, que oferece suporte a teclas de atalho globais.
 
 ---
 
@@ -87,17 +174,19 @@ Consulte a seção de configuração de teclas de atalho em [README.md](../../RE
 
 **Verifique se o LanguageTool está em execução:**
 ```bash
-./scripts/restart_venv_and_run-server.sh
+touch /tmp/sl5_record.trigger
 ```
 
 Se isso retornar um erro, o LanguageTool não está em execução. Aura deveria começar
 automaticamente — verifique o log em busca de erros relacionados ao LanguageTool:
 
-__CODE_BLOCO_9__
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
 
 **Verifique o registro do LanguageTool:**
 ```bash
-ls -la /tmp/sl5_record.trigger
+QT_QPA_PLATFORM=xcb copyq
 ```
 
 ---

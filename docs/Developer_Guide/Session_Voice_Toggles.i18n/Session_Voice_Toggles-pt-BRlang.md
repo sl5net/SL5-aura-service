@@ -9,6 +9,9 @@ O comportamento interno da sessão é controlado por:
 ## Lógica Operacional
 Ao contrário de um ouvinte de fundo persistente, o mecanismo STT do Aura (Vosk) processa áudio apenas quando uma sessão de gravação foi acionada externamente (por exemplo, via Hotkey).
 
+> **Aura é o seu telescópio 🔭 para PC: controle à distância!**
+
+
 ### A alternância na sessão ("Teleskop")
 Quando `ENABLE_WAKE_WORD` está definido como **True**:
 1. **Acionador:** O usuário inicia uma sessão manualmente.

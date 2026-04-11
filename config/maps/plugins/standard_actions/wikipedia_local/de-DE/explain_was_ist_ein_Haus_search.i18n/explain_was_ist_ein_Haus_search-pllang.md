@@ -12,7 +12,7 @@ __KOD_BLOKU_0__
 
 * **Działanie:** Wprowadzone przez użytkownika „was ist ein haus” zostało pomyślnie dopasowane.
 * **Wynik (wewnętrzny):** System generuje wynik/etykietę „was ist ein haus (Begriffsklärung)”`.
-* **Kontynuacja:** Ponieważ `fullMatchStop` znajduje się na `listie_pominięć`, dopasowanie reguły **NIE ZATRZYMUJE się**. Proces przechodzi do następnej reguły, przenosząc *przekształconą* lub *oznaczoną* treść.
+* **Kontynuacja:** Ponieważ `fullMatchStop` znajduje się na `listie_pominięć`, dopasowanie reguły **NIE ZATRZYMUJE się**. Proces przechodzi do następnej reguły, niosąc *przekształconą* lub *oznaczoną* treść.
 
 #### 3. Zasada 2: Ogólna akcja/egzekucja
 

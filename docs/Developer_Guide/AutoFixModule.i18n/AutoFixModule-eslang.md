@@ -54,6 +54,20 @@ Entonces:
 - El archivo debe estar en una carpeta de idioma válido (por ejemplo, `de-DE/`)
 - Funciona para varias palabras a la vez (por ejemplo, de una lista de directorio telefónico)
 
+## Problemas conocidos (no probados completamente)
+
+> ⚠️ Este módulo es funcional pero no está probado exhaustivamente. Es posible que los siguientes casos no funcionen correctamente:
+
+- **Números** – `5` o `6` no son identificadores de Python válidos, es posible que la corrección automática no los maneje
+- **Caracteres especiales**: las palabras con `-`, `.`, las diéresis pueden no desencadenar un `NameError`
+- **Entradas de varias palabras**: `thomas mueller` (con espacio) provoca `SyntaxError`, no `NameError`, por lo que es posible que la corrección automática no se active
+- **Valores separados por comas** – `drei, vier` se puede insertar tal cual sin convertirse en una tupla adecuada
+
+Si la reparación automática no se activa, agregue la regla manualmente:
+```python
+('replacement', 'input word'),
+```
+
 ## El comentario `# también<-from`
 
 Este comentario se agrega automáticamente como recordatorio de la dirección de la regla:

@@ -5,6 +5,20 @@
 
 ---
 
+## Schritt 0: Konfigurieren Sie Ihren Hotkey
+
+Wählen Sie Ihre Plattform:
+
+**Linux/macOS** – Installieren Sie [CopyQ](https://github.com/hluk/CopyQ) und erstellen Sie einen Befehl mit einer globalen Verknüpfung:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+**Windows** – Verwenden Sie [AutoHotkey v2](https://www.autohotkey.com/) oder CopyQ. Das Setup-Skript installiert beide automatisch.
+Die Triggerdatei ist: „c:\tmp\sl5_record.trigger“.
+
+> Vollständige Details: [README.md#configure-your-hotkey](../../README.i18n/README-delang.md#configure-your-hotkey)
+
 ## Schritt 1: Ihr erstes Diktat
 
 1. Aura starten (falls noch nicht ausgeführt):

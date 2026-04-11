@@ -5,6 +5,20 @@
 
 ---
 
+## ステップ 0: ホットキーを設定する
+
+プラットフォームを選択してください:
+
+**Linux/macOS** - [CopyQ](https://github.com/hluk/CopyQ) をインストールし、グローバル ショートカットを使用してコマンドを作成します。
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+**Windows** — [AutoHotkey v2](https://www.autohotkey.com/) または CopyQ を使用します。セットアップ スクリプトは両方を自動的にインストールします。
+トリガーファイルは `c:\tmp\sl5_record.trigger` です。
+
+> 詳細: [README.md#configure-your-hotkey](../../README.i18n/README-jalang.md#configure-your-hotkey)
+
 ## ステップ 1: 最初のディクテーション
 
 1. Aura を起動します (まだ実行していない場合)。
@@ -42,7 +56,7 @@
 正規表現をまだ知りませんか?問題ない。
 
 1. サンドボックス内の空の「FUZZY_MAP_pre.py」を開きます。
-2. 単純な単語だけを 1 行に記述します (引用符やタプルは含めません)。
+2. 単独の行に単純な単語だけを書きます (引用符やタプルは含めません)。
    ```
    raspberry
    ```

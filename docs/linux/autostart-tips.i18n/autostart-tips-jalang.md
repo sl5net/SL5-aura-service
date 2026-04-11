@@ -1,13 +1,14 @@
 Erstelle Autostart Eintrag über dein grafische Benutzeroberfläche für:
 
-restart_venv_and_run-server.sh.desktop  ✔
+restart_venv_and_run-server.sh.desktop   
+
 aura_engine.log.desktop  
 
-オードナーでの話: `~/.config/autostart/`
+オードナーの洞窟: `~/.config/autostart/`
 
 エディターのオフネ
 
-restart_venv_and_run-server.sh.desktop  ✔
+restart_venv_and_run-server.sh.desktop   
 aura_engine.log.desktop  
 
 デン・ベフェール マヌエル・アンパッセン
@@ -15,12 +16,20 @@ aura_engine.log.desktop
 **アンシュタット:**
 `Exec=/pfad/zu/deinem/script.sh`
 
-**シュライベ:**
-`Exec=konsole --noclose -e /pfad/zu/deinem/script.sh`
+**シュライベの例:**
 
-ベズ。
+Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
 
-`Exec=kate /pfad/zu/deinem/script.sh`
+`Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'`
+
+Exec=konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'   
+
+Exec=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
+
+Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
+
+
+
 
 
 ### Warum の帽子は、グラフィックを楽しむのに最適ですか?

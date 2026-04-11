@@ -34,6 +34,31 @@ tail -30 log/aura_engine.log
 | `'objgraph' という名前のモジュールはありません` | `.venv` が再作成されました — 再インストール: `pip install -r required.txt` |
 | `アドレスはすでに使用されています` |古いプロセスを強制終了します: `pkill -9 -f aura_engine` |
 | `モデルが見つかりません` |セットアップを再実行して欠落しているモデルをダウンロードする |
+| `pygame.mixer は利用できません` |以下の「起動時に音が出ない」を参照してください。
+
+---
+
+## 問題: 起動時に音が出ない (pygame.mixer)
+
+**症状:** `pygame.mixer` に関する警告またはエラーが表示されません。オーラが始まる
+しかし音は鳴りません。
+
+**原因:** システムの pygame ビルドにはオーディオ サポートまたは SDL2 が含まれていません。
+オーディオライブラリがありません。
+
+**Arch/Manjaro を修正:**
+```bash
+sudo pacman -S sdl2_mixer
+pip install pygame-ce --upgrade
+```
+
+**Ubuntu/Debian での修正:**
+```bash
+sudo apt install libsdl2-mixer-2.0-0
+pip install pygame-ce --upgrade
+```
+
+Aura は音声なしでも動作し続けます。これは致命的なエラーではありません。
 
 ---
 
@@ -80,8 +105,72 @@ pgrep -a type_watcher
 ls -la /tmp/sl5_record.trigger
 ```
 
-ファイルが作成されない場合は、ホットキー設定 (CopyQ / AHK) が機能していません。
-[README.md](../../README.i18n/README-jalang.md#configure-your-hotkey) のホットキー設定セクションを参照してください。
+ファイルが作成されない場合は、ホットキーが機能しません。以下を参照してください。
+
+---
+
+## 問題: Wayland でホットキーが機能しない
+
+**症状:** CopyQ がインストールされ構成されているが、ホットキーを押すと、
+Wayland セッションでは何もありません。
+
+**原因:** CopyQ グローバル ホットキーは、これがないと Wayland で確実に機能しません。
+追加の構成。これは、KDE Plasma、GNOME、その他に影響します。
+Wayland コンポジター。
+
+### オプション 1: KDE システム設定 (KDE Plasma に推奨)
+
+1. **システム設定→ショートカット→カスタムショートカット**を開きます
+2. **Command/URL** タイプの新しいショートカットを作成します。
+3. コマンドを次のように設定します。
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+4. 好みのキーの組み合わせを割り当てます (例: 「F9」または「Ctrl+Alt+Space」)。
+
+### オプション 2: dotool (任意の Wayland コンポジターで動作します)
+
+```bash
+# Install dotool:
+sudo pacman -S dotool        # Arch/Manjaro
+# or
+sudo apt install dotool      # Ubuntu (if available)
+```
+
+次に、デスクトップのショートカット マネージャーを使用して以下を実行します。
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### オプション 3: ydotool
+
+```bash
+sudo pacman -S ydotool
+sudo systemctl enable --now ydotool
+```
+
+次に、実行するショートカットを設定します。
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### オプション 4: GNOME (dconf / GNOME 設定を使用)
+
+1. **[設定] → [キーボード] → [カスタム ショートカット]** を開きます。
+2. 次のコマンドを使用して新しいショートカットを追加します。
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+3. キーの組み合わせを割り当てます
+
+### オプション 5: Wayland 修正を含む CopyQ
+
+一部の Wayland コンポジターでは、次のコマンドで開始すると CopyQ が動作します。
+```bash
+QT_QPA_PLATFORM=xcb copyq
+```
+
+これにより、CopyQ はグローバル ホットキーをサポートする XWayland を使用するようになります。
 
 ---
 
@@ -94,7 +183,7 @@ ls -la /tmp/sl5_record.trigger
 curl -s http://127.0.0.1:8082/v2/languages | head -5
 ```
 
-これでエラーが返された場合は、LanguageTool が実行されていません。オーラが起動するはずです
+これによりエラーが返された場合は、LanguageTool が実行されていません。オーラが起動するはずです
 自動的に — LanguageTool に関連するエラーのログを確認します。
 
 ```bash
@@ -128,7 +217,7 @@ LOG_ONLY = [
 LOG_EXCLUDE = []
 ```
 
-ファイルを保存します — Aura はフィルターを自動的に再ロードします。再起動は必要ありません。
+ファイルを保存します — Aura はフィルターを自動的に再読み込みします。再起動は必要ありません。
 
 ---
 
@@ -165,7 +254,7 @@ if file.startswith('.') or file.endswith('.pyc') or file.endswith('.blob') or fi
    ```bash
    grep "Yielding chunk" log/aura_engine.log | tail -5
    ```
-4. 「only_in_windows」が設定されていて、間違ったウィンドウがアクティブになっていませんか?
+4. 「only_in_windows」が設定されており、間違ったウィンドウがアクティブになっていますか?
 5. より一般的なルールが最初に一致しますか?ルールは上から下に処理されます —
 一般的なルールの前に特定のルールを置きます。
 

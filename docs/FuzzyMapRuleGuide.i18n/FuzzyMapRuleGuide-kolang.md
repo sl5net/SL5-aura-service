@@ -54,7 +54,7 @@
 |---|---|---|
 | `FUZZY_MAP_pre.py` | 사전 언어 도구 | 맞춤법 검사 전에 적용됨 |
 | `FUZZY_MAP.py` | 포스트 언어 도구 | 맞춤법 검사 후 적용 |
-| 'PUNCTUATION_MAP.py' | 사전 언어 도구 | 구두점 규칙 |
+| PUNCTUATION_MAP.py` | 사전 언어 도구 | 구두점 규칙 |
 
 ## 팁
 
@@ -78,3 +78,31 @@ FUZZY_MAP_pre = [
     # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
 ]
 ```
+
+## 첫 번째 규칙 — 단계별
+
+1. `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`를 엽니다.
+2. `FUZZY_MAP_pre = [...]` 안에 규칙을 추가하세요.
+3. 저장 - Aura가 자동으로 다시 로드되므로 다시 시작할 필요가 없습니다.
+4. 트리거 문구를 받아쓰고 실행되는 것을 지켜보세요.
+
+
+## 권장 파일 구조
+
+긴 댓글 블록 **앞에** 규칙을 입력하세요.
+```python
+# config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py
+import re  # noqa: F401
+# too<-from
+FUZZY_MAP_pre = [
+    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+]
+# ============================================================
+# Longer explanations, task descriptions, notes...
+# can be as long as needed — they go AFTER the rules.
+# ============================================================
+```
+
+**이유는 무엇입니까?** Aura의 Auto-Fix는 파일의 처음 ~1KB만 검사합니다.
+규칙이 긴 헤더 뒤에 나타나는 경우 자동 수정에서는 해당 규칙을 찾거나 복구할 수 없습니다.
+1행의 경로 주석도 권장됩니다. 이는 사람이 파일을 빠르게 식별하는 데 도움이 됩니다.

@@ -1,13 +1,14 @@
 Erstelle Autostart Eintrag über dein grafische Benutzeroberfläche für:
 
-restart_venv_and_run-server.sh.desktop  ✔
+reiniciar_venv_and_run-server.sh.desktop   
+
 aura_engine.log.desktop  
 
 Aquí en el orden: `~/.config/autostart/`
 
 öffne en el editor
 
-restart_venv_and_run-server.sh.desktop  ✔
+reiniciar_venv_and_run-server.sh.desktop   
 aura_engine.log.desktop  
 
 Den Befehl manuell anpassen
@@ -15,12 +16,20 @@ Den Befehl manuell anpassen
 **Anstatt:**
 `Exec=/pfad/zu/deinem/script.sh`
 
-**Schreibe:**
-`Exec=konsole --noclose -e /pfad/zu/deinem/script.sh`
+**Beispiele Schreibe:**
 
-bez.
+Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
 
-`Exec=kate /pfad/zu/deinem/script.sh`
+`Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'`
+
+Exec=konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'   
+
+Ejecutivo=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
+
+Ejecutivo=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
+
+
+
 
 
 ### ¿Por qué la instalación gráfica no funciona?

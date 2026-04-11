@@ -5,6 +5,20 @@
 
 ---
 
+## Paso 0: Configura tu tecla de acceso rápido
+
+Elige tu plataforma:
+
+**Linux/macOS**: instale [CopyQ](https://github.com/hluk/CopyQ) y cree un comando con un acceso directo global:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+**Windows**: utilice [AutoHotkey v2](https://www.autohotkey.com/) o CopyQ. El script de instalación instala ambos automáticamente.
+El archivo desencadenante es: `c:\tmp\sl5_record.trigger`
+
+> Detalles completos: XMLDLINK3X
+
 ## Paso 1: Tu primer dictado
 
 1. Inicie Aura (si aún no se está ejecutando):

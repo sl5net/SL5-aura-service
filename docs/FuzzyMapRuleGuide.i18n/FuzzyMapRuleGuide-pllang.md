@@ -55,3 +55,20 @@ __KOD_BLOKU_5__
 ## Przykłady
 
 __KOD_BLOKU_6__
+
+## Twoja pierwsza zasada — krok po kroku
+
+1. Otwórz `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`
+2. Dodaj swoją regułę wewnątrz `FUZZY_MAP_pre = [...]`
+3. Zapisz — Aura ładuje się automatycznie, nie ma potrzeby ponownego uruchamiania
+4. Podyktuj frazę wyzwalającą i obserwuj, jak zadziała
+
+
+## Zalecana struktura plików
+
+Umieść swoje reguły **przed** długimi blokami komentarzy:
+__KOD_BLOKU_7__
+
+**Dlaczego?** Funkcja Auto-Fix firmy Aura skanuje tylko pierwszy ~1KB pliku.
+Jeśli reguły pojawiają się po długim nagłówku, funkcja Auto-Fix nie może ich znaleźć ani naprawić.
+Zalecany jest także komentarz do ścieżki w linii 1 — pomaga on szybko zidentyfikować plik.

@@ -34,6 +34,31 @@ tail -30 log/aura_engine.log
 | `Aucun module nommé 'objgraph'` | `.venv` a été recréé — réinstallez : `pip install -r Requirements.txt` |
 | `Adresse déjà utilisée` | Tuer l'ancien processus : `pkill -9 -f aura_engine` |
 | `Modèle introuvable` | Réexécutez l'installation pour télécharger les modèles manquants |
+| `pygame.mixer non disponible` | Voir « Aucun son au démarrage » ci-dessous |
+
+---
+
+## Problème : Pas de son au démarrage (pygame.mixer)
+
+**Symptôme :** Avertissement ou erreur concernant `pygame.mixer` non disponible. L'aura commence
+mais ne joue aucun son.
+
+**Cause :** La version Pygame de votre système n'inclut pas la prise en charge audio ni SDL2.
+les bibliothèques audio manquent.
+
+**Correction sur Arch/Manjaro :**
+```bash
+sudo pacman -S sdl2_mixer
+pip install pygame-ce --upgrade
+```
+
+**Correction sur Ubuntu/Debian :**
+```bash
+sudo apt install libsdl2-mixer-2.0-0
+pip install pygame-ce --upgrade
+```
+
+Aura continuera à fonctionner sans son — ce n'est pas une erreur fatale.
 
 ---
 
@@ -80,8 +105,72 @@ Si rien n'apparaît, redémarrez Aura :
 ls -la /tmp/sl5_record.trigger
 ```
 
-Si le fichier n'est jamais créé, votre configuration de raccourci clavier (CopyQ / AHK) ne fonctionne pas.
-Consultez la section de configuration des raccourcis clavier dans [README.md](../../README.i18n/README-frlang.md#configure-your-hotkey).
+Si le fichier n'est jamais créé, votre raccourci clavier ne fonctionne pas – voir ci-dessous.
+
+---
+
+## Problème : le raccourci clavier ne fonctionne pas sur Wayland
+
+**Symptôme :** CopyQ est installé et configuré, mais appuyer sur la touche de raccourci le fait
+rien sur une session Wayland.
+
+**Cause :** Les raccourcis clavier globaux CopyQ ne fonctionnent pas de manière fiable sur Wayland sans
+configuration supplémentaire. Cela affecte KDE Plasma, GNOME et autres
+Compositeurs Wayland.
+
+### Option 1 : Paramètres système KDE (recommandé pour KDE Plasma)
+
+1. Ouvrez **Paramètres système → Raccourcis → Raccourcis personnalisés**
+2. Créez un nouveau raccourci de type **Command/URL**
+3. Définissez la commande sur :
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+4. Attribuez votre combinaison de touches préférée (par exemple « F9 » ou « Ctrl+Alt+Espace »)
+
+### Option 2 : dotool (fonctionne sur n'importe quel compositeur Wayland)
+
+```bash
+# Install dotool:
+sudo pacman -S dotool        # Arch/Manjaro
+# or
+sudo apt install dotool      # Ubuntu (if available)
+```
+
+Utilisez ensuite le gestionnaire de raccourcis de votre bureau pour exécuter :
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### Option 3 : ydotool
+
+```bash
+sudo pacman -S ydotool
+sudo systemctl enable --now ydotool
+```
+
+Configurez ensuite votre raccourci pour qu'il s'exécute :
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### Option 4 : GNOME (en utilisant les paramètres dconf / GNOME)
+
+1. Ouvrez **Paramètres → Clavier → Raccourcis personnalisés**
+2. Ajoutez un nouveau raccourci avec la commande :
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+3. Attribuez une combinaison de touches
+
+### Option 5 : CopyQ avec le correctif Wayland
+
+Certains compositeurs Wayland permettent à CopyQ de fonctionner s'il est démarré avec :
+```bash
+QT_QPA_PLATFORM=xcb copyq
+```
+
+Cela oblige CopyQ à utiliser XWayland, qui prend en charge les raccourcis clavier globaux.
 
 ---
 

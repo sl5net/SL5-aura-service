@@ -5,6 +5,20 @@
 
 ---
 
+## 0단계: 단축키 구성
+
+플랫폼을 선택하세요:
+
+**Linux/macOS** — [CopyQ](https://github.com/hluk/CopyQ)를 설치하고 전역 단축키를 사용하여 명령을 만듭니다.
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+**Windows** — [AutoHotkey v2](https://www.autohotkey.com/) 또는 CopyQ를 사용합니다. 설치 스크립트는 두 가지를 모두 자동으로 설치합니다.
+트리거 파일은 `c:\tmp\sl5_record.trigger`입니다.
+
+> 전체 세부정보: [README.md#configure-your-hotkey](../../README.i18n/README-kolang.md#configure-your-hotkey)
+
 ## 1단계: 첫 번째 받아쓰기
 
 1. Aura를 시작합니다(아직 실행 중이 아닌 경우).

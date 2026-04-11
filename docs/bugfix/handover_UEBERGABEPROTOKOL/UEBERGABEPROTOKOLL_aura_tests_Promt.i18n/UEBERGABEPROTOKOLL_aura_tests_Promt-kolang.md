@@ -19,7 +19,7 @@ test_youtube_audio_regression.py ✅ funktioniert
 test_trigger_end_to_end.py ❌ Aura hört WAV nicht
 
 Kernproblem 문제:
-PipeWire의 사운드 장치는 PULSE_SOURCE 및 기본 소스 설정을 무시합니다. mic_and_desktop_Sink.monitor는 sounddevice.query_devices()에 있는 sichtbar에 있습니다. Nur pw-record funktioniert auf diesem 시스템.
+PipeWire의 사운드 장치는 PULSE_SOURCE 및 기본 소스 설정을 무시합니다. mic_and_desktop_Sink.monitor는 sounddevice.query_devices()에 있는 sichtbar에 있습니다. Nur pw-record funktioniert auf diesem System.
 내히스터 슈리트:
 settings_local.py setzen의 DEV_MODE_audio_routing=1, Aura neu starten, dann prüfen은 log/audio_routing_debug.log erscheint에 있었습니다.
 시스템은 derzeit empfindlich — 최소한의 änderungen입니다.

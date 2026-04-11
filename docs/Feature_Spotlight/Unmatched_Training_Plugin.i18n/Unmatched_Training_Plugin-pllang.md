@@ -1,4 +1,4 @@
-# Niezrównana wtyczka szkoleniowa (`a_collect_unmatched_training`)
+# Niezrównana wtyczka szkoleniowa (`1_collect_unmatched_training`)
 
 ## Zamiar
 
@@ -8,24 +8,30 @@ z biegiem czasu, ucząc się na niezrównanych wynikach rozpoznawania.
 
 ## Jak to działa
 
-1. Reguła catch-all `COLLECT_UNMATCHED` w `FUZZY_MAP_pre.py` uruchamia się, gdy
-żadna inna reguła nie pasowała do wprowadzania głosowego.
+1. Reguła typu catch-all „COLLECT_UNMATCHED” jest uruchamiana, gdy nie pasuje żadna inna reguła.
 2. `collect_unmatched.py` jest wywoływane poprzez `on_match_exec` z dopasowanym tekstem.
-3. Tekst jest dodawany do pliku „unmatched_list.txt” (oddzielonego pionkami).
-4. Wyrażenie regularne w `FUZZY_MAP_pre.py` zostaje automatycznie rozszerzone o nowy wariant.
+3. Wyrażenie regularne w wywołaniu `FUZZY_MAP_pre.py` jest automatycznie rozszerzane.
+
+## Użycie
+
+Dodaj tę regułę catch-all na końcu dowolnego pliku „FUZZY_MAP_pre.py”, który chcesz trenować:
+__KOD_BLOKU_0__
+
+Etykieta `f'{str(__file__)}'` informuje `collect_unmatched.py` dokładnie, które
+`FUZZY_MAP_pre.py` do aktualizacji — aby reguła była przenośna w dowolnej wtyczce.
 
 ## Wyłączanie wtyczki
 
-Kiedy zbierzesz wystarczającą ilość danych treningowych, wyłącz tę wtyczkę w następujący sposób:
+Kiedy zbierzesz wystarczającą ilość danych treningowych, wyłącz:
 
-- Dezaktywacja w ustawieniach Aury
+- Komentowanie zasady catch-all
+- Zmiana nazwy folderu na nieprawidłową nazwę (np. dodanie spacji)
 - Usunięcie folderu wtyczki z katalogu `maps`
-- Zmiana nazwy folderu na nieprawidłową nazwę (np. dodanie spacji: `a_collect unmatched_training`)
 
 ## Struktura pliku
-__KOD_BLOKU_0__
+__KOD_BLOKU_1__
 
 ## Notatka
 
-Wtyczka modyfikuje plik `FUZZY_MAP_pre.py` w czasie wykonywania. Pamiętaj, aby się zaangażować
-regularnie aktualizowany plik, aby zachować zebrane dane szkoleniowe.
+Wtyczka modyfikuje plik `FUZZY_MAP_pre.py` w czasie wykonywania. Zatwierdź zaktualizowane
+regularnie archiwizuj, aby zachować zebrane dane szkoleniowe.

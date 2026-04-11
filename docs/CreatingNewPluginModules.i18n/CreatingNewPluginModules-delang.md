@@ -55,6 +55,8 @@ Module sind **standardmäßig aktiviert**. Solange ein Modulordner in „config/
 
 Um ein Modul zu deaktivieren, müssen Sie einen Eintrag dafür im Wörterbuch „PLUGINS_ENABLED“ in Ihrer Einstellungsdatei hinzufügen und seinen Wert auf „False“ setzen.
 
+(Optional) Für Wahr/Falsch können Sie auch 1/0 verwenden. Dies ist jedoch ungewöhnlich und kann die Lesbarkeit beeinträchtigen.
+
 **Beispiel (`config/settings.py`):**
 ```python
 # A dictionary to explicitly control the state of modules.
@@ -87,10 +89,14 @@ Wenn ein Modul nicht im Wörterbuch „PLUGINS_ENABLED“ aufgeführt ist, gilt 
 
 * **Abkürzung für Enabling**
 Ihr Konfigurationssystem versteht auch, dass die Auflistung eines Modulschlüssels ohne Wert bedeutet, dass er aktiviert ist. Beispielsweise ist das Hinzufügen von „wannweil“ zum Wörterbuch dasselbe wie das Hinzufügen von „wannweil“: True“. Dies bietet eine praktische Abkürzung zum Aktivieren von Modulen.
-(Optional) Für True/False können Sie auch 1/0 verwenden. Dies ist jedoch unüblich und kann die Lesbarkeit beeinträchtigen.
+  
+(Optional) Für Wahr/Falsch können Sie auch 1/0 verwenden. Dies ist jedoch ungewöhnlich und kann die Lesbarkeit beeinträchtigen.
 
 * **Deaktivieren übergeordneter Module:** Das beabsichtigte Verhalten besteht darin, dass die Deaktivierung eines übergeordneten Moduls    sein sollte
 Deaktivieren Sie automatisch alle untergeordneten Module und Sprachunterordner. Beispielsweise sollte die Einstellung „standard_actions“: False verhindern, dass sowohl „de-DE“ als auch „en-US“ geladen werden. (27.10.'25 Mo)
   
 *   **Ziel**
 Ziel ist es, dieses System weiter zu verbessern. Beispielsweise wird eine Möglichkeit geschaffen, die Einstellungen des untergeordneten Moduls auch dann zu berücksichtigen, wenn das übergeordnete Modul deaktiviert ist, oder es werden komplexere Vererbungsregeln eingeführt. (27.10.'25 Mo)
+
+
+*Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-delang.md).*

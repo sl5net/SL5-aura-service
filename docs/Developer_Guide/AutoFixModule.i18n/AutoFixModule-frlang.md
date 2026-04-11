@@ -54,6 +54,20 @@ Il alors :
 - Le fichier doit être dans un dossier de langue valide (par exemple `de-DE/`)
 - Fonctionne pour plusieurs mots à la fois (par exemple à partir d'une liste d'annuaire téléphonique)
 
+## Problèmes connus (pas entièrement testés)
+
+> ⚠️ Ce module est fonctionnel mais testé de manière non exhaustive. Les cas suivants peuvent ne pas fonctionner correctement :
+
+- **Nombres** – `5` ou `6` ne sont pas des identifiants Python valides, la correction automatique peut ne pas les gérer
+- **Caractères spéciaux** – les mots avec `-`, `.`, les trémas ne peuvent pas déclencher une `NameError`
+- **Entrées multi-mots** – `thomas mueller` (avec espace) provoque `SyntaxError` et non `NameError`, donc la correction automatique peut ne pas se déclencher
+- **Valeurs séparées par des virgules** – `drei, vier` peut être inséré tel quel sans devenir un tuple approprié
+
+Si la correction automatique ne se déclenche pas, ajoutez la règle manuellement :
+```python
+('replacement', 'input word'),
+```
+
 ## Le commentaire `# aussi<-from`
 
 Ce commentaire est ajouté automatiquement pour rappeler le sens de la règle :

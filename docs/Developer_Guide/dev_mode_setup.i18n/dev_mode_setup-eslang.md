@@ -34,7 +34,7 @@ Agregue este comentario como recordatorio junto a su configuración DEV_MODE:
 DEV_MODE = 1  # ⚠️ Requires LOG_ONLY filter! See docs/dev_mode_setup.md
 ```
 
-## Causa principal
+## Causa raíz (ya que somos compatibles con Weyland)
 `SafeStreamToLogger` utiliza un `threading.Lock` para proteger las escrituras estándar.
 Bajo una carga de registro alta (DEV_MODE), la contención de bloqueo provoca interbloqueos en los sistemas
 con programación de subprocesos agresiva (por ejemplo, CachyOS con kernels/glibc más nuevos).

@@ -34,7 +34,7 @@ Fügen Sie diesen Kommentar als Erinnerung neben Ihrer DEV_MODE-Einstellung hinz
 DEV_MODE = 1  # ⚠️ Requires LOG_ONLY filter! See docs/dev_mode_setup.md
 ```
 
-## Grundursache
+## Grundursache (da wir mit Weyland kompatibel sind)
 „SafeStreamToLogger“ verwendet eine „threading.Lock“, um stdout-Schreibvorgänge zu schützen.
 Bei hoher Protokolllast (DEV_MODE) führt ein Sperrenkonflikt zu Deadlocks auf Systemen
 mit aggressiver Thread-Planung (z. B. CachyOS mit neueren Kerneln/glibc).

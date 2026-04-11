@@ -5,6 +5,20 @@
 
 ---
 
+## Etapa 0: Configure sua tecla de atalho
+
+Escolha sua plataforma:
+
+**Linux/macOS** — Instale o [CopyQ](https://github.com/hluk/CopyQ) e crie um comando com um atalho global:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+**Windows** — Use [AutoHotkey v2](https://www.autohotkey.com/) ou CopyQ. O script de configuração instala ambos automaticamente.
+O arquivo de gatilho é: `c:\tmp\sl5_record.trigger`
+
+> Detalhes completos: [README.md#configure-your-hotkey](../../README.i18n/README-pt-BRlang.md#configure-your-hotkey)
+
 ## Etapa 1: seu primeiro ditado
 
 1. Inicie o Aura (se ainda não estiver em execução):
@@ -14,7 +28,7 @@
 Aguarde o som de inicialização – isso significa que o Aura está pronto.
 
 2. Clique em qualquer campo de texto (editor, navegador, terminal).
-3. Pressione a tecla de atalho, diga **"Hello World"** e pressione a tecla de atalho novamente.
+3. Pressione sua tecla de atalho, diga **"Hello World"**, pressione a tecla de atalho novamente.
 4. Observe o texto aparecer.
 
 > **Nada aconteceu?** Verifique se há erros em `log/aura_engine.log`.
@@ -43,9 +57,7 @@ Ainda não conhece regex? Sem problemas.
 
 1. Abra qualquer `FUZZY_MAP_pre.py` vazio na sandbox
 2. Escreva apenas uma palavra simples em sua própria linha (sem aspas, sem tupla):
-   ```
-   raspberry
-   ```
+__CODE_BLOCO_3__
 3. Salvar — o sistema Auto-Fix detecta a palavra simples e automaticamente
 converte-o em uma entrada de regra válida.
 4. Você pode então editar o texto de substituição manualmente.

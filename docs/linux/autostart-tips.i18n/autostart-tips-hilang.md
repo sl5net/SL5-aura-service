@@ -1,13 +1,14 @@
 एर्स्टेले ऑटोस्टार्ट एक नया ग्राफिक लाभ प्राप्त करने के लिए:
 
-restart_venv_and_run-server.sh.desktop  ✔
+restart_venv_and_run-server.sh.desktop   
+
 aura_engine.log.desktop  
 
 डेन ऑर्डनर में: `~/.config/autostart/`
 
 संपादक में öffne
 
-restart_venv_and_run-server.sh.desktop  ✔
+restart_venv_and_run-server.sh.desktop   
 aura_engine.log.desktop  
 
 डेन बेफ़ेहल मैनुएल अनपासेन
@@ -15,12 +16,20 @@ aura_engine.log.desktop
 **अंस्टैट:**
 `Exec=/pfad/zu/deinem/script.sh`
 
-**श्रेइबे:**
-`Exec=konsole --noclose -e /pfad/zu/deinem/script.sh`
+**बेस्पीले श्रेइबे:**
 
-bez.
+Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
 
-`Exec=kate /pfad/zu/deinem/script.sh`
+`Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"''
+
+Exec=konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'   
+
+Exec=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
+
+Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
+
+
+
 
 
 ### क्या ग्राफ़िशे आइंस्टेलुंग काम नहीं कर रहा है?

@@ -34,7 +34,7 @@ LOG_EXCLUDE = []
 DEV_MODE = 1  # ⚠️ Requires LOG_ONLY filter! See docs/dev_mode_setup.md
 ```
 
-                                                   ## السبب الجذري
+## السبب الجذري (نظرًا لأننا متوافقون مع Weyland)
 يستخدم "SafeStreamToLogger" "threading.Lock" لحماية عمليات الكتابة القياسية.
 ضمن تحميل السجل العالي (DEV_MODE)، يتسبب التنافس على القفل في حدوث حالة توقف تام على الأنظمة
 مع جدولة سلسلة صارمة (على سبيل المثال، CachyOS مع نواة أحدث/glibc).

@@ -5,14 +5,26 @@
 
 ---
 
+## 步骤 0：配置您的热键
+
+选择您的平台：
+
+**Linux/macOS** — 安装 [CopyQ](https://github.com/hluk/CopyQ) 并使用全局快捷方式创建命令：
+__代码_块_0__
+
+**Windows** — 使用 [AutoHotkey v2](https://www.autohotkey.com/) 或 CopyQ。安装脚本会自动安装两者。
+触发器文件为：`c:\tmp\sl5_record.trigger`
+
+> 完整详情：[README.md#configure-your-hotkey](../../README.i18n/README-zh-CNlang.md#configure-your-hotkey)
+
 ## 第 1 步：你的第一次听写
 
 1. 启动 Aura（如果尚未运行）：
-__代码_块_0__
+__代码_块_1__
 等待启动声音 — 这意味着 Aura 已准备就绪。
 
-
-
+2. 单击任意文本字段（编辑器、浏览器、终端）。
+3. 按热键，说 **“Hello World”**，再次按热键。
 4. 观察文本出现。
 
 > **什么也没发生？** 检查 `log/aura_engine.log` 是否有错误。
@@ -26,7 +38,7 @@ __代码_块_0__
 
 1. 打开 `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`
 2. 在 `FUZZY_MAP_pre = [...]` 中添加一条规则：
-__代码_块_1__
+__代码_块_2__
 3. **保存** — Aura 自动重新加载。无需重新启动。
 4. 口述“hello world”并看着它变成“Hello World”。
 
@@ -38,12 +50,12 @@ __代码_块_1__
 
 1. 在沙箱中打开任何空的`FUZZY_MAP_pre.py`
 2. 在自己的行上只写一个简单的单词（没有引号，没有元组）：
-__代码_块_2__
+__代码_块_3__
 3. 保存 — Auto-Fix 系统检测到裸字并自动
 将其转换为有效的规则条目。
 4. 然后您可以手动编辑替换文本。
 
-这被称为 **Oma-Modus** — 专为那些想要在没有任何信息的情况下获得结果的用户而设计。
+这称为 **Oma-Modus** — 专为那些想要结果而无需
 首先学习正则表达式。
 
 ---
@@ -60,7 +72,7 @@ __代码_块_2__
 | `00_koan_oma-modus` |自动修复，无需正则表达式的第一条规则 |
 | `01_koan_erste_schritte` |您的第一条规则，管道基础知识 |
 | `02_koan_listen` |使用列表 |
-| `03_koan_schwierige_namen` |难以识别的名字的模糊匹配 |
+| `03_koan_schwierige_namen` |难以识别的名字的模糊匹配|
 | `04_koan_kleine_helfer` |有用的快捷键|
 
 每个 koan 文件夹都包含一个带有注释示例的“FUZZY_MAP_pre.py”。

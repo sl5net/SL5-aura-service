@@ -34,7 +34,7 @@ Ajoutez ce commentaire comme rappel à côté de votre paramètre DEV_MODE :
 DEV_MODE = 1  # ⚠️ Requires LOG_ONLY filter! See docs/dev_mode_setup.md
 ```
 
-## Cause première
+## Root Cause (puisque nous sommes compatibles avec Weyland)
 `SafeStreamToLogger` utilise un `threading.Lock` pour protéger les écritures sur la sortie standard.
 Sous une charge de journal élevée (DEV_MODE), les conflits de verrouillage provoquent des blocages sur les systèmes
 avec une planification de threads agressive (par exemple CachyOS avec des noyaux/glibc plus récents).

@@ -1,36 +1,60 @@
-(`a_collect_unmatched_training`) ﻪﻟ ﻞﻴﺜﻣ ﻻ﻿ ﺐﻳﺭﺪﺗ ﻖﺤﻠﻣ #
+# ملحق تدريب لا مثيل له (`1_collect_unmatched_training`)
 
-                                                                       ﺔﻳﺎﻏ ##
+                                                                  ## غاية
 
-   ﺎﻬﺘﻓﺎﺿﺇﻭ ﺔﻓﻭﺮﻌﻤﻟﺍ ﺮﻴﻏ ﺔﻴﺗﻮﺼﻟﺍ ﺕﻼ﻿ﺧﺪﻤﻟﺍ ﻊﻤﺠﺑ ﺎﻴًﺋﺎﻘﻠﺗ ﻲﻓﺎﺿﻹ﻿ﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﺍﺬﻫ ﻡﻮﻘﻳ
-      "ﻲﺗﺍﺬﻟﺍ ﺐﻳﺭﺪﺘﻟﺎﺑ" ﻡﺎﻈﻨﻠﻟ ﺢﻤﺴﻳ ﺍﺬﻫﻭ .regex ﺔﻀﻣﺎﻐﻟﺍ ﺔﻄﻳﺮﺨﻠﻟ ﺓﺪﻳﺪﺟ ﺕﺍﺮﻴﻐﺘﻤﻛ
-                    .ﺎﻬﻟ ﻞﻴﺜﻣ ﻻ﻿ ﻲﺘﻟﺍ ﻑﺮﻌﺘﻟﺍ ﺞﺋﺎﺘﻧ ﻦﻣ ﻢﻠﻌﺘﻟﺍ ﻝﻼ﻿ﺧ ﻦﻣ ﺖﻗﻮﻟﺍ ﺭﻭﺮﻤﺑ
+يقوم هذا البرنامج الإضافي تلقائيًا بجمع المدخلات الصوتية غير المعروفة وإضافتها
+كمتغيرات جديدة للخريطة الغامضة regex. وهذا يسمح للنظام "بالتدريب الذاتي"
+بمرور الوقت من خلال التعلم من نتائج التعرف التي لا مثيل لها.
 
-                                                                   ﻞﻤﻌﻳ ﻒﻴﻛ ##
+                                                           ## كيف يعمل
 
-ﺎﻣﺪﻨﻋ `FUZZY_MAP_pre.py` ﻲﻓ `COLLECT_UNMATCHED` ﻞﻜﻟﺍ ﻁﺎﻘﺘﻟﺍ ﺓﺪﻋﺎﻗ ﻞﻴﻌﻔﺗ ﻢﺘﻳ .1
-                                        .ﻲﺗﻮﺼﻟﺍ ﻝﺎﺧﺩﻹ﻿ﺍ ﻖﺑﺎﻄﺗ ﻯﺮﺧﺃ ﺓﺪﻋﺎﻗ ﺪﺟﻮﺗ ﻻ﻿
-      .ﻖﺑﺎﻄﻤﻟﺍ ﺺﻨﻟﺎﺑ `on_match_exec` ﺮﺒﻋ `collect_unmatched.py` ءﺎﻋﺪﺘﺳﺍ ﻢﺘﻳ .2
-              .(ﻪﻴﺟﻮﺗ ﺏﻮﺒﻧﺄﺑ ﻝﻮﺼﻔﻣ) "unmatched_list.txt" ﻰﻟﺇ ﺺﻨﻟﺍ ﺔﻓﺎﺿﺇ ﻢﺘﺗ .3
-    .ﺪﻳﺪﺠﻟﺍ ﺮﻴﻐﺘﻤﻟﺎﺑ ﺎﻴًﺋﺎﻘﻠﺗ `FUZZY_MAP_pre.py` ﻲﻓ ﻱﺩﺎﻌﻟﺍ ﺮﻴﺒﻌﺘﻟﺍ ﻊﻴﺳﻮﺗ ﻢﺘﻳ .4
+1. يتم تفعيل قاعدة التقاط الكل `COLLECT_UNMATCHED` في حالة عدم مطابقة أي قاعدة أخرى.
+2. يتم استدعاء `collect_unmatched.py` عبر `on_match_exec` بالنص المطابق.
+3. يتم توسيع التعبير العادي في الاستدعاء `FUZZY_MAP_pre.py` تلقائيًا.
 
-                                                     ﺪﻋﺎﺴﻤﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﻞﻴﻄﻌﺗ ##
+                                                        ## الاستخدام
 
- :ﺎﻣﺇ ﻲﻓﺎﺿﻹ﻿ﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﺍﺬﻫ ﻞﻴﻄﻌﺘﺑ ﻢﻗ ،ﺐﻳﺭﺪﺘﻟﺍ ﺕﺎﻧﺎﻴﺑ ﻦﻣ ﻲﻔﻜﻳ ﺎﻣ ﻊﻤﺠﺑ ﻡﻮﻘﺗ ﺎﻣﺪﻨﻋ
+أضف قاعدة استقبال الرسائل الخاطئة هذه في نهاية أي `FUZZY_MAP_pre.py` تريد تدريبه:
+```python
+from pathlib import Path
+import os
+PROJECT_ROOT = Path(os.environ["SL5NET_AURA_PROJECT_ROOT"])
 
-                                                Aura ﺕﺍﺩﺍﺪﻋﺇ ﻲﻓ ﻪﻄﻴﺸﻨﺗ ءﺎﻐﻟﺇ -
-                              ."ﻂﺋﺍﺮﺨﻟﺍ" ﻞﻴﻟﺩ ﻦﻣ ﺪﻋﺎﺴﻤﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﺪﻠﺠﻣ ﺔﻟﺍﺯﺇ -
-(`a_collect unmatched_training` :ﺔﻓﺎﺴﻣ ﻒﺿﺃ ،ﻝﺎﺜﻤﻟﺍ ﻞﻴﺒﺳ ﻰﻠﻋ) ﺢﻟﺎﺻ ﺮﻴﻏ ﻢﺳﺎﺑ ﺪﻠﺠ
+FUZZY_MAP_pre = [
+    # 1. Your rule to optimize (result first!)
+    ('Blumen orchestrieren',
+     r'^(Blumen giesen|Blumen gessen|Blumen essen)$', 100,
+     {'flags': re.IGNORECASE}
+    ),
 
-                                                                 ﻒﻠﻤﻟﺍ ﻞﻜﻴﻫ ##
+    #################################################
+    # 2. Activate this rule (place it after the rule you want to optimize)
+    (f'{str(__file__)}', r'^(.*)$', 10,
+     {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #################################################
+]
 ```
-a_collect_unmatched_training/
+
+تشير التسمية `f\'{str(__file__)}'' إلى `collect_unmatched.py` بالضبط
+`FUZZY_MAP_pre.py` للتحديث — بحيث تكون القاعدة قابلة للنقل عبر أي مكون إضافي.
+
+                                ## تعطيل البرنامج المساعد
+
+عندما تقوم بجمع ما يكفي من بيانات التدريب، قم بتعطيلها إما عن طريق:
+
+                          - التعليق على قاعدة الالتقاط
+- إعادة تسمية المجلد باسم غير صالح (مثل إضافة مسافة)
+- إزالة مجلد البرنامج المساعد من دليل "الخرائط".
+
+                                                       ## هيكل الملف
+```
+1_collect_unmatched_training/
 ├── collect_unmatched.py       # Plugin logic, called by engine
 └── de-DE/
-    └── FUZZY_MAP_pre.py       # Catch-all rule + growing regex variants
+    └── FUZZY_MAP_pre.py       # Example with catch-all rule
 ```
 
-                                                                     ﺔﻇﻮﺤﻠﻣ ##
+                                                              ## ملحوظة
 
-ﻡﺍﺰﺘﻟﻻ﻿ﺍ ﻦﻣ ﺪﻛﺄﺗ .ﻞﻴﻐﺸﺘﻟﺍ ﺖﻗﻭ ﻲﻓ `FUZZY_MAP_pre.py` ﻞﻳﺪﻌﺘﺑ ﻲﻓﺎﺿﻹ﻿ﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﻡﻮﻘﻳ
-                    .ﺔﻌﻤﺠﻤﻟﺍ ﺐﻳﺭﺪﺘﻟﺍ ﺕﺎﻧﺎﻴﺑ ﻰﻠﻋ ﻅﺎﻔﺤﻠﻟ ﻡﺎﻈﺘﻧﺎﺑ ﻒﻠﻤﻟﺍ ﺚﻳﺪﺤﺗ ﻢﺘﻳ
+يقوم البرنامج الإضافي بتعديل `FUZZY_MAP_pre.py` في وقت التشغيل. ارتكاب المحدثة
+قم بالملف بانتظام للحفاظ على بيانات التدريب التي تم جمعها.

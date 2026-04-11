@@ -54,11 +54,25 @@ Então:
 - O arquivo deve estar em uma pasta de idioma válida (por exemplo, `de-DE/`)
 - Funciona com várias palavras ao mesmo tempo (por exemplo, de uma lista telefônica)
 
+## Problemas conhecidos (não totalmente testados)
+
+> ⚠️ Este módulo é funcional, mas não foi testado exaustivamente. Os seguintes casos podem não funcionar corretamente:
+
+- **Números** – `5` ou `6` não são identificadores Python válidos, a correção automática pode não lidar com eles
+- **Caracteres especiais** – palavras com `-`, `.`, tremas não podem acionar um `NameError`
+- **Entradas com várias palavras** – `thomas mueller` (com espaço) causa `SyntaxError` e não `NameError`, então a correção automática pode não ser acionada
+- **Valores separados por vírgula** – `drei, vier` pode ser inserido como está sem se tornar uma tupla adequada
+
+Se a correção automática não for acionada, adicione a regra manualmente:
+__CODE_BLOCO_3__
+
 ## O comentário `# too<-from`
 
 Este comentário é adicionado automaticamente como um lembrete da direção da regra:
 
-__CODE_BLOCO_3__
+```python
+('replacement', 'input word'),
+```
 
 Significado: **saída** (também) ← **entrada** (de). A substituição vem primeiro.
 
@@ -68,13 +82,13 @@ Para `PUNCTUATION_MAP.py` a direção é invertida: `# from->too`
 
 Você pode colar várias palavras de uma vez:
 
-```
-too <- from
-```
+__CODE_BLOCO_5__
 
 Cada palavra simples se torna sua própria regra:
 
-__CODE_BLOCO_5__
+```
+too <- from
+```
 
 Em seguida, edite cada substituição conforme necessário.
 

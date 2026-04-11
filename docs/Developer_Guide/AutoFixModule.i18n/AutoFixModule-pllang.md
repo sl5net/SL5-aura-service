@@ -41,11 +41,23 @@ To wtedy:
 - Plik musi znajdować się w prawidłowym folderze językowym (np. `de-DE/`)
 - Działa dla wielu słów na raz (np. z listy książki telefonicznej)
 
+## Znane problemy (nie w pełni przetestowane)
+
+> ⚠️ Ten moduł jest funkcjonalny, ale nie został wyczerpująco przetestowany. Następujące przypadki mogą nie działać poprawnie:
+
+- **Liczby** – „5” lub „6” nie są prawidłowymi identyfikatorami Pythona, automatyczna naprawa może ich nie obsłużyć
+- **Znaki specjalne** – słowa z `-`, `.` i umlautami nie mogą powodować błędu `NameError`
+- **Wpisy wielowyrazowe** – „thomas mueller” (ze spacją) powoduje „SyntaxError”, a nie „NameError”, więc automatyczna naprawa może nie zostać uruchomiona
+- **Wartości oddzielone przecinkami** – `drei, vier` można wstawić w niezmienionej postaci, nie stając się właściwą krotką
+
+Jeśli automatyczna naprawa nie zostanie uruchomiona, dodaj regułę ręcznie:
+__KOD_BLOKU_3__
+
 ## Komentarz `# też<-od`
 
 Ten komentarz jest dodawany automatycznie jako przypomnienie kierunku reguły:
 
-__KOD_BLOKU_3__
+__KOD_BLOKU_4__
 
 Znaczenie: **wyjście** (też) ← **wejście** (z). Na pierwszym miejscu jest wymiana.
 
@@ -55,11 +67,11 @@ Dla `PUNCTUATION_MAP.py` kierunek jest odwrócony: `# od->też`
 
 Możesz wkleić wiele słów na raz:
 
-__KOD_BLOKU_4__
+__KOD_BLOKU_5__
 
 Każde nagie słowo staje się swoją własną zasadą:
 
-__KOD_BLOKU_5__
+__KOD_BLOKU_6__
 
 Następnie edytuj każde zastąpienie według potrzeb.
 

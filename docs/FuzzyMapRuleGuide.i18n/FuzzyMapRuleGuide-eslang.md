@@ -61,7 +61,7 @@
 - Poner reglas **específicas** antes que las **generales**
 - Utilice `^...$` fullmatch solo cuando desee detener todo procesamiento posterior
 - `FUZZY_MAP_pre.py` es ideal para correcciones antes de la revisión ortográfica
-- Pruebe las reglas con: `s su entrada de prueba` en la consola Aura
+- Reglas de prueba con: `s tu entrada de prueba` en la consola Aura
 - Las copias de seguridad se crean automáticamente como `.peter_backup`
 
 ## Ejemplos
@@ -78,3 +78,31 @@ FUZZY_MAP_pre = [
     # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
 ]
 ```
+
+## Tu primera regla: paso a paso
+
+1. Abra `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`
+2. Agregue su regla dentro de `FUZZY_MAP_pre = [...]`
+3. Guardar: Aura se recarga automáticamente, no es necesario reiniciar
+4. Dicta tu frase desencadenante y observa cómo se dispara
+
+
+## Estructura de archivos recomendada
+
+Coloque sus reglas **antes** de bloques de comentarios largos:
+```python
+# config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py
+import re  # noqa: F401
+# too<-from
+FUZZY_MAP_pre = [
+    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+]
+# ============================================================
+# Longer explanations, task descriptions, notes...
+# can be as long as needed — they go AFTER the rules.
+# ============================================================
+```
+
+**¿Por qué?** Auto-Fix de Aura escanea solo el primer ~1 KB de un archivo.
+Si sus reglas aparecen después de un encabezado largo, Auto-Fix no puede encontrarlas ni repararlas.
+También se recomienda el comentario de ruta en la línea 1: ayuda a los humanos a identificar rápidamente el archivo.

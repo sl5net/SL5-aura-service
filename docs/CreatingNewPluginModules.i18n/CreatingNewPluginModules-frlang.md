@@ -55,6 +55,8 @@ Les modules sont **activés par défaut**. Tant qu'un dossier de module existe d
 
 Pour désactiver un module, vous devez ajouter une entrée pour celui-ci dans le dictionnaire `PLUGINS_ENABLED` dans votre fichier de paramètres et définir sa valeur sur `False`.
 
+(Facultatif) Pour Vrai/Faux, vous pouvez également utiliser 1/0. Cependant, cela est rare et peut réduire la lisibilité.
+
 **Exemple (`config/settings.py`) :**
 ```python
 # A dictionary to explicitly control the state of modules.
@@ -87,9 +89,14 @@ Si un module n'est pas répertorié dans le dictionnaire `PLUGINS_ENABLED`, il e
 
 * **Raccourci pour activer**
 Votre système de configuration comprend également que lister une clé de module sans valeur implique qu'elle est activée. Par exemple, ajouter « wannweil » au dictionnaire revient à ajouter « wannweil : True ». Cela fournit un raccourci pratique pour activer les modules.
+  
+(Facultatif) Pour Vrai/Faux, vous pouvez également utiliser 1/0. Cependant, cela est rare et peut réduire la lisibilité.
 
 * **Désactivation des modules parents :** Le comportement prévu est que la désactivation d'un module parent devrait   
 désactiver automatiquement tous ses modules enfants et sous-dossiers de langue. Par exemple, définir `"standard_actions": False` devrait empêcher le chargement de `de-DE` et `en-US`. (27.10.'25 lundi)
   
 *   **but**
 L’objectif est d’améliorer encore ce système. Par exemple, fournir un moyen de respecter les paramètres du module enfant même si le parent est désactivé, ou introduire des règles d'héritage plus complexes. (27.10.'25 lundi)
+
+
+*Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-frlang.md) pour plus de détails.*

@@ -34,6 +34,31 @@ tail -30 log/aura_engine.log
 | `لا توجد وحدة باسم \'objgraph'' | تمت إعادة إنشاء `.venv` - أعد التثبيت: `pip install -r require.txt` |
 | `العنوان قيد الاستخدام بالفعل` | إنهاء العملية القديمة: `pkill -9 -f aura_engine` |
 | `لم يتم العثور على النموذج` | أعد تشغيل برنامج الإعداد لتنزيل النماذج المفقودة |
+| `pygame.mixer غير متوفر` | راجع "لا يوجد صوت عند بدء التشغيل" أدناه |
+
+                                                                          ---
+
+## المشكلة: لا يوجد صوت عند بدء التشغيل (pygame.mixer)
+
+**العَرَض:** التحذير أو الخطأ بشأن `pygame.mixer` غير متوفر. تبدأ الهالة
+                                      ولكن لا يلعب أي أصوات.
+
+**السبب:** لا يتضمن إصدار pygame لنظامك دعمًا صوتيًا أو SDL2
+                                المكتبات الصوتية مفقودة.
+
+                     ** الإصلاح على القوس / مانجارو: **
+```bash
+sudo pacman -S sdl2_mixer
+pip install pygame-ce --upgrade
+```
+
+                                     **الإصلاح على Ubuntu/Debian:**
+```bash
+sudo apt install libsdl2-mixer-2.0-0
+pip install pygame-ce --upgrade
+```
+
+سوف تستمر Aura في العمل بدون صوت — وهذا ليس خطأً فادحًا.
 
                                                                           ---
 
@@ -80,8 +105,72 @@ pgrep -a type_watcher
 ls -la /tmp/sl5_record.trigger
 ```
 
-إذا لم يتم إنشاء الملف مطلقًا، فهذا يعني أن تكوين مفتاح التشغيل السريع (CopyQ / AHK) لا يعمل.
-راجع قسم إعداد مفتاح التشغيل السريع في [README.md](../../README.i18n/README-arlang.md#configure-your-hotkey).
+إذا لم يتم إنشاء الملف مطلقًا، فهذا يعني أن مفتاح التشغيل السريع الخاص بك لا يعمل - انظر أدناه.
+
+                                                                          ---
+
+## المشكلة: مفتاح التشغيل السريع لا يعمل على Wayland
+
+**العَرَض:** تم تثبيت CopyQ وتكوينه، لكن الضغط على مفتاح التشغيل السريع يؤدي إلى ذلك
+                                           لا شيء في جلسة Wayland.
+
+**السبب:** لا تعمل مفاتيح التشغيل السريع العالمية CopyQ بشكل موثوق على Wayland بدونها
+تكوين إضافي. يؤثر هذا على KDE Plasma وGNOME وغيرها
+                                                   مؤلفو وايلاند.
+
+### الخيار 1: إعدادات نظام KDE (موصى بها لـ KDE Plasma)
+
+1. افتح **إعدادات النظام ← الاختصارات ← الاختصارات المخصصة**
+   2. قم بإنشاء اختصار جديد من النوع **Command/URL**
+                                               3. اضبط الأمر على:
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+4. قم بتعيين مجموعة المفاتيح المفضلة لديك (على سبيل المثال، `F9` أو `Ctrl+Alt+Space`)
+
+           ### الخيار 2: dotool (يعمل على أي مكون Wayland)
+
+```bash
+# Install dotool:
+sudo pacman -S dotool        # Arch/Manjaro
+# or
+sudo apt install dotool      # Ubuntu (if available)
+```
+
+ثم استخدم مدير الاختصارات على سطح المكتب لتشغيل:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+                                                  ### الخيار 3: ydotool
+
+```bash
+sudo pacman -S ydotool
+sudo systemctl enable --now ydotool
+```
+
+      ثم قم بتكوين الاختصار الخاص بك للتشغيل:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### الخيار 4: جنوم (باستخدام إعدادات dconf / جنوم)
+
+1. افتح **الإعدادات ← لوحة المفاتيح ← الاختصارات المخصصة**
+                        2. أضف اختصارًا جديدًا بالأمر:
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+                           3. قم بتعيين مجموعة المفاتيح
+
+                            ### الخيار 5: CopyQ مع إصلاح Wayland
+
+تسمح بعض أدوات تركيب Wayland لـ CopyQ بالعمل إذا بدأت بـ:
+```bash
+QT_QPA_PLATFORM=xcb copyq
+```
+
+وهذا يفرض على CopyQ استخدام XWayland، الذي يدعم مفاتيح الاختصار العالمية.
 
                                                                           ---
 

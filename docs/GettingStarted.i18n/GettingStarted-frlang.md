@@ -5,6 +5,20 @@
 
 ---
 
+## Étape 0 : Configurez votre raccourci clavier
+
+Choisissez votre plateforme :
+
+**Linux/macOS** — Installez [CopyQ](https://github.com/hluk/CopyQ) et créez une commande avec un raccourci global :
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+**Windows** — Utilisez [AutoHotkey v2](https://www.autohotkey.com/) ou CopyQ. Le script d'installation installe les deux automatiquement.
+Le fichier de déclenchement est : `c:\tmp\sl5_record.trigger`
+
+> Tous les détails : [README.md#configure-your-hotkey](../../README.i18n/README-frlang.md#configure-your-hotkey)
+
 ## Étape 1 : Votre première dictée
 
 1. Démarrez Aura (s'il n'est pas déjà en cours d'exécution) :

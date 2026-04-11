@@ -15,7 +15,7 @@ seeh kennt sein System sehr gut — zuhören und nicht Widesprechen ohne Beweis 
 
 当前位置：
 
-test_youtube_audio_regression.py ✅ 功能
+test_youtube_audio_regression.py ✅ 函数
 test_trigger_end_to_end.py ❌ Aura hört WAV nicht
 
 核心问题：

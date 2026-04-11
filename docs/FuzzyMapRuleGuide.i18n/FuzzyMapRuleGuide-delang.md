@@ -78,3 +78,31 @@ FUZZY_MAP_pre = [
     # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
 ]
 ```
+
+## Ihre erste Regel – Schritt für Schritt
+
+1. Öffnen Sie „config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py“.
+2. Fügen Sie Ihre Regel in „FUZZY_MAP_pre = [...]“ hinzu
+3. Speichern – Aura wird automatisch neu geladen, kein Neustart erforderlich
+4. Diktieren Sie Ihre Auslösephrase und beobachten Sie, wie sie ausgelöst wird
+
+
+## Empfohlene Dateistruktur
+
+Platzieren Sie Ihre Regeln **vor** langen Kommentarblöcken:
+```python
+# config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py
+import re  # noqa: F401
+# too<-from
+FUZZY_MAP_pre = [
+    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+]
+# ============================================================
+# Longer explanations, task descriptions, notes...
+# can be as long as needed — they go AFTER the rules.
+# ============================================================
+```
+
+**Warum?** Auras Auto-Fix scannt nur die ersten ca. 1 KB einer Datei.
+Wenn Ihre Regeln nach einer langen Kopfzeile angezeigt werden, kann Auto-Fix sie nicht finden oder reparieren.
+Der Pfadkommentar in Zeile 1 wird ebenfalls empfohlen – er hilft Benutzern, die Datei schnell zu identifizieren.

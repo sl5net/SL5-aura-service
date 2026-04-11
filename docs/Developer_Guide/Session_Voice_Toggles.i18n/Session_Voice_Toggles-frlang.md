@@ -9,6 +9,9 @@ Le comportement interne à la session est contrôlé par :
 ## Logique opérationnelle
 Contrairement à un écouteur persistant en arrière-plan, le moteur STT d'Aura (Vosk) ne traite l'audio que lorsqu'une session d'enregistrement a été déclenchée en externe (par exemple via Hotkey).
 
+> **Aura est votre télescope 🔭 pour PC : contrôlez à distance !**
+
+
 ### La bascule en session ("Teleskop")
 Lorsque `ENABLE_WAKE_WORD` est défini sur **True** :
 1. **Déclencheur :** L'utilisateur démarre une session manuellement.

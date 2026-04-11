@@ -9,6 +9,9 @@ Zachowanie wewnętrzne sesji jest kontrolowane przez:
 ## Logika operacyjna
 W przeciwieństwie do stałego słuchacza w tle, silnik STT (Vosk) Aury przetwarza dźwięk tylko wtedy, gdy sesja nagrywania została wyzwolona zewnętrznie (np. za pomocą klawisza skrótu).
 
+> **Aura to Twój teleskop 🔭 na PC: sterowanie na odległość!**
+
+
 ### Przełącznik w trakcie sesji („Teleskop”)
 Gdy `ENABLE_WAKE_WORD` jest ustawione na **True**:
 1. **Wyzwalacz:** Użytkownik rozpoczyna sesję ręcznie.

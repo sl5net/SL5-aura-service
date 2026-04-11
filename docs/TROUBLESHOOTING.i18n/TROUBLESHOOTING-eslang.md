@@ -34,6 +34,31 @@ tail -30 log/aura_engine.log
 | `Ningún módulo llamado 'objgraph'` | Se recreó `.venv` - reinstalar: `pip install -r requisitos.txt` |
 | `Dirección ya en uso` | Elimine el proceso anterior: `pkill -9 -f aura_engine` |
 | `Modelo no encontrado` | Vuelva a ejecutar la configuración para descargar los modelos que faltan |
+| `pygame.mixer no disponible` | Consulte "No hay sonido al iniciar" a continuación |
+
+---
+
+## Problema: No hay sonido al iniciar (pygame.mixer)
+
+**Síntoma:** Advertencia o error sobre `pygame.mixer` no disponible. Aura comienza
+pero no reproduce ningún sonido.
+
+**Causa:** La compilación de pygame de su sistema no incluye soporte de audio ni SDL2.
+Faltan bibliotecas de audio.
+
+**Arreglo en Arch/Manjaro:**
+```bash
+sudo pacman -S sdl2_mixer
+pip install pygame-ce --upgrade
+```
+
+**Solución en Ubuntu/Debian:**
+```bash
+sudo apt install libsdl2-mixer-2.0-0
+pip install pygame-ce --upgrade
+```
+
+Aura seguirá funcionando sin sonido; esto no es un error fatal.
 
 ---
 
@@ -80,8 +105,72 @@ Si no aparece nada, reinicie Aura:
 ls -la /tmp/sl5_record.trigger
 ```
 
-Si el archivo nunca se crea, la configuración de su tecla de acceso rápido (CopyQ/AHK) no funciona.
-Consulte la sección de configuración de teclas de acceso rápido en [README.md](../../README.i18n/README-eslang.md#configure-your-hotkey).
+Si el archivo nunca se crea, su tecla de acceso rápido no funciona; consulte a continuación.
+
+---
+
+## Problema: la tecla de acceso rápido no funciona en Wayland
+
+**Síntoma:** CopyQ está instalado y configurado, pero presionar la tecla de acceso rápido no
+nada en una sesión de Wayland.
+
+**Causa:** Las teclas de acceso rápido globales de CopyQ no funcionan de manera confiable en Wayland sin
+configuración adicional. Esto afecta a KDE Plasma, GNOME y otros
+Compositores de Wayland.
+
+### Opción 1: Configuración del sistema KDE (recomendado para KDE Plasma)
+
+1. Abra **Configuración del sistema → Accesos directos → Accesos directos personalizados**
+2. Cree un nuevo acceso directo de tipo **Comando/URL**
+3. Establezca el comando en:
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+4. Asigne su combinación de teclas preferida (por ejemplo, `F9` o `Ctrl+Alt+Espacio`)
+
+### Opción 2: dotool (funciona en cualquier compositor de Wayland)
+
+```bash
+# Install dotool:
+sudo pacman -S dotool        # Arch/Manjaro
+# or
+sudo apt install dotool      # Ubuntu (if available)
+```
+
+Luego use el administrador de accesos directos de su escritorio para ejecutar:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### Opción 3: ydotool
+
+```bash
+sudo pacman -S ydotool
+sudo systemctl enable --now ydotool
+```
+
+Luego configure su acceso directo para ejecutar:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### Opción 4: GNOME (usando la configuración de dconf/GNOME)
+
+1. Abra **Configuración → Teclado → Atajos personalizados**
+2. Agregue un nuevo acceso directo con el comando:
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+3. Asigna una combinación de teclas
+
+### Opción 5: CopyQ con corrección de Wayland
+
+Algunos compositores de Wayland permiten que CopyQ funcione si se inician con:
+```bash
+QT_QPA_PLATFORM=xcb copyq
+```
+
+Esto obliga a CopyQ a utilizar XWayland, que admite teclas de acceso rápido globales.
 
 ---
 
@@ -187,4 +276,4 @@ uname -a
 python3 --version
 ```
 
-Publicar en: [GitHub Issues](https://github.com/sl5net/SL5-aura-service/issues)
+Publicar en: XMLDLINK0X

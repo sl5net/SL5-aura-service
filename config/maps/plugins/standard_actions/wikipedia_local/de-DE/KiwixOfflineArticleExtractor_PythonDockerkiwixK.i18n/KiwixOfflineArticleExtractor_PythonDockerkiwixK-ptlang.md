@@ -8,7 +8,7 @@ Você deve ter o seguinte software instalado em seu sistema Manjaro:
 
 1. **Docker:** Para executar o servidor oficial `kiwix-tools` sem problemas de compilação.
 2. **Python 3:** Com um ambiente virtual (`venv`).
-3. **Um arquivo ZIM:** O banco de dados off-line da Wikipedia (por exemplo, `wikipedia_de_all_mini_2025-09.zim`).
+3. **Um arquivo ZIM:** O banco de dados off-line da Wikipédia (por exemplo, `wikipedia_de_all_mini_2025-09.zim`).
 
 ### 1. Configuração do sistema (Docker)
 

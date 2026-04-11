@@ -42,6 +42,8 @@ Moduły są **domyślnie włączone**. Jeśli w `config/maps/` istnieje folder m
 
 Aby wyłączyć moduł, musisz dodać dla niego wpis w słowniku `PLUGINS_ENABLED` w pliku ustawień i ustawić jego wartość na `False`.
 
+(Opcjonalnie) W przypadku prawdy/fałszu możesz także użyć 1/0. Jest to jednak rzadkie i może zmniejszyć czytelność.
+
 **Przykład (`config/settings.py`):**
 __KOD_BLOKU_1__
 ### Ważne uwagi projektowe
@@ -51,9 +53,14 @@ Jeśli moduł nie jest wymieniony w słowniku `PLUGINS_ENABLED`, domyślnie jest
 
 * **Skrót od Włączanie**
 Twój system konfiguracyjny rozumie również, że wypisanie klucza modułu bez wartości oznacza, że jest on włączony. Na przykład dodanie „wannweil” do słownika jest równoznaczne z dodaniem „wannweil”: True. Zapewnia to wygodny skrót umożliwiający włączanie modułów.
+XSPACEbreakX
+(Opcjonalnie) W przypadku prawdy/fałszu możesz także użyć 1/0. Jest to jednak rzadkie i może zmniejszyć czytelność.
 
 * **Wyłączanie modułów nadrzędnych:** Zamierzone zachowanie polega na tym, że wyłączenie modułu nadrzędnego powinno XSPACEbreakX
 automatycznie wyłącza wszystkie moduły podrzędne i podfoldery językowe. Na przykład ustawienie `"standard_actions": False` powinno uniemożliwić załadowanie zarówno `de-DE`, jak i `en-US`. (27.10.25 pon.)
 XSPACEbreakX
 *   **bramka**
 Celem jest dalsze udoskonalanie tego systemu. Na przykład umożliwienie respektowania ustawień modułu podrzędnego, nawet jeśli moduł nadrzędny jest wyłączony, lub wprowadzenie bardziej złożonych reguł dziedziczenia. (27.10.25 pon.)
+
+
+*Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-pllang.md).*

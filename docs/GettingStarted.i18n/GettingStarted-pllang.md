@@ -5,10 +5,22 @@
 
 ---
 
+## Krok 0: Skonfiguruj swój skrót
+
+Wybierz swoją platformę:
+
+**Linux/macOS** — Zainstaluj [CopyQ](https://github.com/hluk/CopyQ) i utwórz polecenie z globalnym skrótem:
+__KOD_BLOKU_0__
+
+**Windows** — Użyj [AutoHotkey v2](https://www.autohotkey.com/) lub CopyQ. Skrypt instalacyjny instaluje oba automatycznie.
+Plik wyzwalacza to: `c:\tmp\sl5_record.trigger`
+
+> Pełne szczegóły: [README.md#configure-your-hotkey](../../README.i18n/README-pllang.md#configure-your-hotkey)
+
 ## Krok 1: Twoje pierwsze dyktando
 
 1. Uruchom Aurę (jeśli jeszcze nie działa):
-__KOD_BLOKU_0__
+__KOD_BLOKU_1__
 Poczekaj na dźwięk uruchamiania — to oznacza, że Aura jest gotowa.
 
 2. Kliknij dowolne pole tekstowe (edytor, przeglądarka, terminal).
@@ -26,7 +38,7 @@ Najszybszy sposób dodania reguły osobistej:
 
 1. Otwórz `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`
 2. Dodaj regułę wewnątrz `FUZZY_MAP_pre = [...]`:
-__KOD_BLOKU_1__
+__KOD_BLOKU_2__
 3. **Zapisz** — Aura ładuje się automatycznie. Nie ma potrzeby ponownego uruchamiania.
 4. Podyktuj „Witaj świecie” i zobacz, jak zmienia się w „Hello World”.
 
@@ -38,7 +50,7 @@ Nie znasz jeszcze wyrażenia regularnego? Bez problemu.
 
 1. Otwórz pusty plik `FUZZY_MAP_pre.py` w piaskownicy
 2. Napisz zwykłe słowo w osobnej linii (bez cudzysłowów i krotki):
-__KOD_BLOKU_2__
+__KOD_BLOKU_3__
 3. Zapisz — system Auto-Fix automatycznie wykrywa samo słowo
 konwertuje go na prawidłowy wpis reguły.
 4. Następnie możesz ręcznie edytować tekst zastępczy.

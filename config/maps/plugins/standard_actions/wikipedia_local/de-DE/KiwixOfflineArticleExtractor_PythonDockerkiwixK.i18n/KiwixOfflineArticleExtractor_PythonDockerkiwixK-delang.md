@@ -70,7 +70,7 @@ Der Server läuft jetzt unter „http://localhost:8080“.
 
 ### 4. Das Artikelextraktionsskript
 
-Erstellen Sie eine Datei mit dem Namen „article_extractor.py“ und fügen Sie den folgenden endgültigen, funktionierenden Code hinein.
+Erstellen Sie eine Datei mit dem Namen „article_extractor.py“ und fügen Sie den folgenden endgültigen, funktionierenden Code ein.
 
 ```python
 import requests

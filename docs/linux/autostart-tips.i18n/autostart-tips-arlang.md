@@ -1,31 +1,40 @@
-:ـﻟ Eintrag über dein grafische Benutzeroberfläche ﺔﻴﺋﺎﻘﻠﺘﻟﺍ ﺔﻳﺍ
+البداية التلقائية Eintrag über dein grafische Benutzeroberfläche لـ:
 
-Restart_venv_and_run-server.sh.desktop  ✔
-aura_engine.log.desktopXSPACEﺮﺴﻛX
+                         Restart_venv_and_run-server.sh.desktop XSPACEكسرX
 
-                         `/config/autostart./~` :ﻒﻠﻤﻟﺍ ءﺎﺸﻧﺈﺑ ﻢﻗ
+                                         aura_engine.log.desktopXSPACEكسرX
 
-öffne ﺭﺮﺤﻤﻟﺍ ﻲﻓ
+                         قم بإنشاء الملف: `~/.config/autostart/`
 
-Restart_venv_and_run-server.sh.desktop  ✔
-aura_engine.log.desktopXSPACEﺮﺴﻛX
+                                                     öffne في المحرر
 
-                                         ﻦﻴﺳﺎﺒﻧﺃ ﻞﻳﻮﻧﺎﻣ ﻞﻴﻔﻴﺑ ﻥﺩ
+                         Restart_venv_and_run-server.sh.desktop XSPACEكسرX
+                                         aura_engine.log.desktopXSPACEكسرX
 
-                                                     **:ﺕﺎﺘﺴﻧﺍ**
-`Exec=/pfad/zu/deinem/script.sh`
+                                  دن بيفيل مانويل أنباسين
 
-                                                       **:ﺐﻳﺮﺷ**
-`Exec=konsole --no Close -e /pfad/zu/deinem/script.sh`
+                                                            **انستات:**
+                                             `Exec=/pfad/zu/deinem/script.sh`
 
-                                                            .ﺰﻴﺑ
+                                             **بيسبييلي شريبي:**
 
-`Exec=kate /pfad/zu/deinem/script.sh`
+Exec=xfce4-terminal -e \'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
+
+`Exec=xfce4-terminal -e \'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"''
+
+Exec=konsole -e \'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"' XSPACEbreakX
+
+                  Exec=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
+
+Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
 
 
-                          ؟ﻞﻤﻌﻳ ﻻ﻿ ﻱﺬﻟﺍ ﻲﻧﺎﻴﺒﻟﺍ ﻢﺳﺮﻟﺍ ﻦﻋ ﺍﺫﺎﻣ ###
-
-.ﺔﻳﺍﺪﺒﻟﺍ ﻲﻓ ءﺪﺒﻟﺍﻭ ﻲﺋﺎﻘﻠﺘﻟﺍ ﻞﻳﺪﺒﺘﻟﺎﺑ ﻚﻟﺫ ﺪﻌﺑ ﻡﻮﻘﻨﺳﻭ ،Exec"--Seil
 
 
-                                           ﺲﻴﻤﺨﻟﺍ 08:16 26'.26.3
+
+         ### ماذا عن الرسم البياني الذي لا يعمل؟
+
+تعد Plasma 6 مشكلة رائعة بسبب "المحطات الافتراضية" في مرحلة بدء الأنظمة. سيتم إرسال "وحدة التحكم" (das Standard-Terminal von KDE) مباشرة إلى "Exec"--Seile schreiben، وسنقوم بعد ذلك بالتبديل التلقائي والبدء في البداية.
+
+
+                                                 26.3.\'26 08:16 الخميس

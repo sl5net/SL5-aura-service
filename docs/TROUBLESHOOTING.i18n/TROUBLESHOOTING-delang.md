@@ -34,6 +34,31 @@ tail -30 log/aura_engine.log
 | `Kein Modul namens 'objgraph'` | „.venv“ wurde neu erstellt – Neuinstallation: „pip install -r require.txt“ |
 | `Adresse bereits verwendet` | Alten Prozess beenden: `pkill -9 -f aura_engine` |
 | „Modell nicht gefunden“ | Führen Sie das Setup erneut aus, um fehlende Modelle herunterzuladen |
+| `pygame.mixer nicht verfügbar` | Siehe „Kein Ton beim Start“ unten |
+
+---
+
+## Problem: Kein Ton beim Start (pygame.mixer)
+
+**Symptom:** Warnung oder Fehler bezüglich „pygame.mixer“ nicht verfügbar. Aura beginnt
+spielt aber keine Töne ab.
+
+**Ursache:** Der Pygame-Build Ihres Systems beinhaltet keine Audiounterstützung oder SDL2
+Audiobibliotheken fehlen.
+
+**Fix auf Arch/Manjaro:**
+```bash
+sudo pacman -S sdl2_mixer
+pip install pygame-ce --upgrade
+```
+
+**Fix auf Ubuntu/Debian:**
+```bash
+sudo apt install libsdl2-mixer-2.0-0
+pip install pygame-ce --upgrade
+```
+
+Aura funktioniert weiterhin ohne Ton – dies ist kein schwerwiegender Fehler.
 
 ---
 
@@ -80,8 +105,72 @@ Wenn nichts angezeigt wird, starten Sie Aura neu:
 ls -la /tmp/sl5_record.trigger
 ```
 
-Wenn die Datei nie erstellt wird, funktioniert Ihre Hotkey-Konfiguration (CopyQ / AHK) nicht.
-Weitere Informationen finden Sie im Abschnitt zur Hotkey-Einrichtung in [README.md](../../README.i18n/README-delang.md#configure-your-hotkey).
+Wenn die Datei nie erstellt wird, funktioniert Ihr Hotkey nicht – siehe unten.
+
+---
+
+## Problem: Hotkey funktioniert nicht auf Wayland
+
+**Symptom:** CopyQ ist installiert und konfiguriert, das Drücken des Hotkeys funktioniert jedoch
+nichts auf einer Wayland-Sitzung.
+
+**Ursache:** Die globalen Hotkeys von CopyQ funktionieren auf Wayland ohne nicht zuverlässig
+zusätzliche Konfiguration. Dies betrifft KDE Plasma, GNOME und andere
+Wayland-Komponisten.
+
+### Option 1: KDE-Systemeinstellungen (empfohlen für KDE Plasma)
+
+1. Öffnen Sie **Systemeinstellungen → Verknüpfungen → Benutzerdefinierte Verknüpfungen**
+2. Erstellen Sie eine neue Verknüpfung vom Typ **Befehl/URL**
+3. Stellen Sie den Befehl ein auf:
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+4. Weisen Sie Ihre bevorzugte Tastenkombination zu (z. B. „F9“ oder „Strg+Alt+Leertaste“)
+
+### Option 2: dotool (Funktioniert auf jedem Wayland-Compositor)
+
+```bash
+# Install dotool:
+sudo pacman -S dotool        # Arch/Manjaro
+# or
+sudo apt install dotool      # Ubuntu (if available)
+```
+
+Verwenden Sie dann den Verknüpfungsmanager Ihres Desktops, um Folgendes auszuführen:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### Option 3: ydotool
+
+```bash
+sudo pacman -S ydotool
+sudo systemctl enable --now ydotool
+```
+
+Konfigurieren Sie dann Ihre Verknüpfung für die Ausführung:
+```bash
+touch /tmp/sl5_record.trigger
+```
+
+### Option 4: GNOME (mit dconf / GNOME-Einstellungen)
+
+1. Öffnen Sie **Einstellungen → Tastatur → Benutzerdefinierte Verknüpfungen**
+2. Fügen Sie eine neue Verknüpfung mit dem folgenden Befehl hinzu:
+   ```bash
+   touch /tmp/sl5_record.trigger
+   ```
+3. Weisen Sie eine Tastenkombination zu
+
+### Option 5: CopyQ mit Wayland-Fix
+
+Einige Wayland-Compositors erlauben die Arbeit von CopyQ, wenn es mit Folgendem gestartet wird:
+```bash
+QT_QPA_PLATFORM=xcb copyq
+```
+
+Dadurch wird CopyQ gezwungen, XWayland zu verwenden, das globale Hotkeys unterstützt.
 
 ---
 

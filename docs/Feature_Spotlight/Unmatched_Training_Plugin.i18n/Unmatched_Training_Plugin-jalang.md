@@ -1,4 +1,4 @@
-# Unmatched トレーニング プラグイン (`a_collect_unmatched_training`)
+# Unmatched トレーニング プラグイン (`1_collect_unmatched_training`)
 
 ＃＃ 目的
 
@@ -8,29 +8,53 @@
 
 ## 仕組み
 
-1. `FUZZY_MAP_pre.py` の `COLLECT_UNMATCHED` キャッチオール ルールは、次の場合に起動します。
-音声入力に一致するルールは他にありませんでした。
+1. 他のルールが一致しない場合、`COLLECT_UNMATCHED` キャッチオール ルールが起動します。
 2. `collect_unmatched.py` は、一致したテキストを使用して `on_match_exec` 経由で呼び出されます。
-3. テキストが `unmatched_list.txt` (パイプ区切り) に追加されます。
-4. `FUZZY_MAP_pre.py` の正規表現は、新しいバリアントで自動的に拡張されます。
+3. 呼び出し元の `FUZZY_MAP_pre.py` 内の正規表現は自動的に拡張されます。
+
+＃＃ 使用法
+
+このキャッチオール ルールをトレーニングしたい `FUZZY_MAP_pre.py` の最後に追加します。
+```python
+from pathlib import Path
+import os
+PROJECT_ROOT = Path(os.environ["SL5NET_AURA_PROJECT_ROOT"])
+
+FUZZY_MAP_pre = [
+    # 1. Your rule to optimize (result first!)
+    ('Blumen orchestrieren',
+     r'^(Blumen giesen|Blumen gessen|Blumen essen)$', 100,
+     {'flags': re.IGNORECASE}
+    ),
+
+    #################################################
+    # 2. Activate this rule (place it after the rule you want to optimize)
+    (f'{str(__file__)}', r'^(.*)$', 10,
+     {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #################################################
+]
+```
+
+ラベル `f'{str(__file__)}' は、`collect_unmatched.py` に正確にそれを伝えます。
+`FUZZY_MAP_pre.py` を更新してください。そのため、ルールはどのプラグインにも移植可能です。
 
 ## プラグインを無効にする
 
-十分なトレーニング データを収集したら、次のいずれかの方法でこのプラグインを無効にします。
+十分なトレーニング データを収集したら、次のいずれかの方法で無効にします。
 
-- Aura 設定で無効化する
+- キャッチオール ルールをコメントアウトする
+- フォルダの名前を無効な名前に変更する（スペースを追加するなど）
 - `maps` ディレクトリからプラグイン フォルダーを削除する
-- 無効な名前でフォルダーの名前を変更します (例: スペースを追加します: `a_collect unmatched_training`)
 
 ## ファイル構造
 ```
-a_collect_unmatched_training/
+1_collect_unmatched_training/
 ├── collect_unmatched.py       # Plugin logic, called by engine
 └── de-DE/
-    └── FUZZY_MAP_pre.py       # Catch-all rule + growing regex variants
+    └── FUZZY_MAP_pre.py       # Example with catch-all rule
 ```
 
 ＃＃ 注記
 
-プラグインは実行時に `FUZZY_MAP_pre.py` を変更します。必ずコミットしてください
-収集されたトレーニング データを保存するためにファイルを定期的に更新します。
+プラグインは実行時に `FUZZY_MAP_pre.py` を変更します。更新されたものをコミットする
+定期的にファイルを作成して、収集したトレーニング データを保存します。

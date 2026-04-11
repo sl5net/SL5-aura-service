@@ -9,6 +9,9 @@ Das sitzungsinterne Verhalten wird gesteuert durch:
 ## Betriebslogik
 Im Gegensatz zu einem permanenten Hintergrund-Listener verarbeitet die STT-Engine (Vosk) von Aura Audio nur, wenn eine Aufnahmesitzung extern (z. B. per Hotkey) ausgelöst wurde.
 
+> **Aura ist Ihr Teleskop 🔭 für den PC: Steuerung aus der Ferne!**
+
+
 ### Der In-Session-Toggle („Teleskop“)
 Wenn „ENABLE_WAKE_WORD“ auf **True** gesetzt ist:
 1. **Auslöser:** Der Benutzer startet eine Sitzung manuell.

@@ -65,3 +65,22 @@ __CODE_BLOCO_5__
 ```python
 ('Note: ', r'^notiz\b', 0, {'flags': re.IGNORECASE})
 ```
+
+## Sua primeira regra - passo a passo
+
+1. Abra `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`
+2. Adicione sua regra dentro de `FUZZY_MAP_pre = [...]`
+3. Salvar – Aura recarrega automaticamente, não é necessário reiniciar
+4. Dite sua frase-gatilho e observe-a disparar
+
+
+## Estrutura de arquivo recomendada
+
+Coloque suas regras **antes** de longos blocos de comentários:
+```python
+('New York', r'\bnew york\b', 0, {'flags': re.IGNORECASE})
+```
+
+**Por quê?** O Auto-Fix do Aura verifica apenas o primeiro ~1KB de um arquivo.
+Se suas regras aparecerem após um cabeçalho longo, o Auto-Fix não poderá localizá-las ou repará-las.
+O comentário do caminho na linha 1 também é recomendado — ajuda os humanos a identificar rapidamente o arquivo.
