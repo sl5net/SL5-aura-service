@@ -1,28 +1,45 @@
 # Voz a comandos o texto sin conexión en todo el sistema, sistema conectable
 
+## Inicio rápido
+1. Descarga o clona este repositorio
+2. Ejecute el script de configuración para su sistema operativo (consulte la carpeta `setup/`):
+- Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
+===> 🧩 leer [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-eslang.md)
+- Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
+- Linux (openSUSE): `bash setup/suse_setup.sh`
+- macOS: `bash setup/macos_setup.sh`
+- Windows: `setup/windows11_setup_with_ahk_copyq.bat`
+3. Inicie Aura: `./scripts/restart_venv_and_run-server.sh`
+4. Presione su tecla de acceso rápido y hable: **[full guide →](../docs/GettingStarted-eslang.md)**
+
+
 **⚠️ Requisitos del sistema y compatibilidad**
 
 * **Windows:** ✅ Totalmente compatible (usa AutoHotkey/PowerShell).
 * **macOS:** ✅ Totalmente compatible (usa AppleScript).
 * **Linux (X11/Xorg):** ✅ Totalmente compatible.
-* **Linux (Wayland):** ✅ Totalmente compatible.
-
-
-¡Bienvenido al Servicio SL5 Aura! Este documento proporciona una descripción general rápida de nuestras funciones clave y su compatibilidad con el sistema operativo.
-
-Aura no es sólo un transcriptor; es un potente motor de procesamiento fuera de línea que transforma su voz en acciones y texto precisos.
-
-Es un completo **asistente de voz sin conexión** creado en **Vosk** (para voz a texto) y **LanguageTool** (para gramática/estilo), que ahora presenta un **Reserva local de LLM (Ollama)** opcional para respuestas creativas y concordancia difusa avanzada. Está diseñado para una máxima personalización a través de un sistema de reglas conectable y un motor de secuencias de comandos dinámico.
-
+* **Linux (Wayland):** ✅ Totalmente compatible (probado en KDE Plasma 6/Wayland).
+* **Linux (versión continua basada en CachyOS/Arch):** ✅ Totalmente compatible.
+Requiere mimalloc (`sudo pacman -S mimalloc`) debido a la compatibilidad con glibc 2.43.
   
-Traducciones: Este documento también existe en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs).
+SL5 Aura es un completo **asistente de voz fuera de línea** integrado en **Vosk** (para voz a texto) y **LanguageTool** (para gramática/estilo), que presenta un **Reserva local de LLM (Ollama)** opcional para respuestas creativas y concordancia difusa avanzada. Transforma su voz en acciones y texto precisos, diseñados para una máxima personalización a través de un sistema de reglas conectable y un motor de secuencias de comandos dinámico.
+  
+Traducciones: Este documento también existe en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n).
 
 
 Nota: Muchos textos son traducciones generadas automáticamente de la documentación original en inglés y están destinados únicamente a proporcionar orientación general. En caso de discrepancias o ambigüedades, siempre prevalecerá la versión en inglés. ¡Agradecemos la ayuda de la comunidad para mejorar esta traducción!
 
+### 📺 Demostración de terminal
 
-[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
-(https://www.youtube.com/watch?v=BZCHonTqwUw o https://skipvids.com/?v=BZCHonTqwUw)
+[![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
+
+> **Consejo:** Para una mejor experiencia con el terminal, consulte [Zsh Integration](../docs/linux/zsh-integration-eslang.md).
+
+### 🎥 Vídeotutorial
+[![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+
+*(Enlace alternativo: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+
 
 ## Características clave
 
@@ -53,7 +70,7 @@ Para obtener una referencia técnica completa, incluidos todos los módulos y sc
 
 **Lea esto en otros idiomas:**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-eslang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-eslang.md) | [🇪🇸 Español](../README.i18n/README-eslang.md) | [🇫🇷 Français](../README.i18n/README-frlang-eslang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-eslang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-eslang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-eslang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-eslang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-eslang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-eslang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-eslang.md)
 
 ---
 
@@ -64,6 +81,14 @@ Para obtener una referencia técnica completa, incluidos todos los módulos y sc
 
 
 ## Instalación
+
+### 🎥 Instalación rápida sin moderación (Manjaro/Arch Video)
+Vea el proceso de configuración completo de 6 minutos:
+* **Descargar:** ~3 minutos
+* **Configuración y primer inicio:** ~3 minutos (incluido el asistente de bienvenida)
+
+👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
+
 
 La configuración es un proceso de dos pasos:
 1. Descargue la última versión o master (https://github.com/sl5net/SL5-aura-service/archive/master.zip) o clone este repositorio en su computadora.
@@ -83,6 +108,12 @@ Abra una terminal en el directorio raíz del proyecto y ejecute el script para s
 # (Note: Use bash or sh to execute the setup script)
 
 bash setup/{your-os}_setup.sh [OPTION]
+
+# For Arch-based systems (Manjaro, CachyOS, EndeavourOS, etc.):
+`bash setup/manjaro_arch_setup.sh`
+
+`sudo pacman -S mimalloc`
+
 
 # Examples:
 # Install everything (Default):
@@ -134,14 +165,14 @@ Si prefiere no instalar las herramientas del cliente (AHK/CopyQ) o desea ahorrar
 
 ```powershell
 # Core Setup only (No AHK, No CopyQ)
-setup\windows11_setup.bat
+setup/windows11_setup_with_ahk_copyq.bat
 
 # Exclude specific language models (saves space):
 # Exclude English:
-setup\windows11_setup.bat -Exclude "en"
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 
 # Exclude German and English:
-setup\windows11_setup.bat -Exclude "de,en"
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
 
 
@@ -176,7 +207,7 @@ Cree un nuevo comando en CopyQ con un acceso directo global.
 touch /tmp/sl5_record.trigger
 ```
 
-**Comando para Windows cuando se usa [CopyQ](https://github.com/hluk/CopyQ):**
+**Comando para Windows cuando se utiliza [CopyQ](https://github.com/hluk/CopyQ):**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -217,7 +248,7 @@ f11::
 ```
 
 
-### 3. ¡Empieza a dictar!
+### 3. ¡Empiece a dictar!
 Haga clic en cualquier campo de texto, presione la tecla de acceso rápido y aparecerá una notificación "Escuchando...". Habla con claridad y luego haz una pausa. El texto corregido se escribirá por usted.
 
 ---
@@ -231,7 +262,7 @@ Puede personalizar el comportamiento de la aplicación creando un archivo de con
 2. Cree una copia de `config/settings_local.py_Example.txt` y cámbiele el nombre a `config/settings_local.py`.
 3. Edite `config/settings_local.py` (anula cualquier configuración del archivo principal `config/settings.py`).
 
-Este archivo `config/settings_local.py` es (tal vez) ignorado por Git, por lo que sus cambios personales (tal vez) no serán sobrescritos por las actualizaciones.
+Git ignora este archivo `config/settings_local.py` de forma predeterminada, por lo que sus cambios personales no serán sobrescritos por las actualizaciones.
 
 ### Estructura y lógica del complemento
 
@@ -250,6 +281,8 @@ Esta arquitectura garantiza que las reglas centrales del sistema estén protegid
 Aquí hay una lista de los scripts más importantes para configurar, actualizar y ejecutar la aplicación en un sistema Windows.
 
 ### Configuración y actualización
+
+* `chmod +x actualización.sh; ./actualización.sh`
 * `setup/setup.bat`: El script principal para la **configuración inicial única** del entorno.
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Ejecute powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
@@ -281,23 +314,23 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
   
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Servicio principal de Python que orquesta Aura) 🐧 🍏 🪟  
-├┬ **Recarga en vivo en vivo** (Configuración y mapas) 🐧 🍏 🪟  
+├┬ **Recarga en vivo** (Configuración y mapas) 🐧 🍏 🪟  
 │├ **Carga segura de mapas privados (integridad primero)** 🔒 🐧 🍏 🪟  
 ││ * **Flujo de trabajo:** Carga archivos ZIP protegidos con contraseña.   
 │├ **Procesamiento y corrección de texto/** Agrupado por idioma (p. ej., `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (Estandariza la puntuación post-transcripción) 🐧 🍏 🪟  
-│├ 2. **Precorrección inteligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-eslang.md)) 🐧 🍏 🪟  
+│├ 2. **Precorrección inteligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-eslang.md)) 🐧 🍏 🪟  
 ││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas (on_match_exec) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
 ││ * **Ejecución en cascada:** Las reglas se procesan secuencialmente y sus efectos son **acumulativos**. Las reglas posteriores se aplican al texto modificado por reglas anteriores.  
 ││ * **Criterio de detención de prioridad más alta:** Si una regla logra una **Coincidencia completa** (^...$), todo el proceso de procesamiento para ese token se detiene inmediatamente. Este mecanismo es fundamental para implementar comandos de voz confiables.  
 │├ 3. `correct_text_by_languagetool.py` (Integra LanguageTool para corrección de gramática/estilo) 🐧 🍏 🪟  
 │├ **4. Motor de reglas RegEx jerárquico con respaldo de IA de Ollama** 🐧 🍏 🪟  
-││ * **Control determinista:** Utiliza RegEx-Rule-Engine para control de texto y comandos precisos y de alta prioridad.  
+││ * **Control determinista:** Utiliza RegEx-Rule-Engine para comandos precisos y de alta prioridad y control de texto.  
 ││ * **Reserva de Ollama AI (LLM local):** Sirve como una verificación opcional de baja prioridad para **respuestas creativas, preguntas y respuestas y coincidencias aproximadas avanzadas** cuando no se cumple ninguna regla determinista.  
 ││ * **Estado:** Integración LLM local.
 │└ 5. **Postcorrección inteligente** (`FuzzyMap`)**– Refinamiento post-LT** 🐧 🍏 🪟
 ││ * Se aplica después de LanguageTool para corregir resultados específicos de LT. Sigue la misma lógica estricta de prioridad en cascada que la capa de corrección previa.  
-││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-eslang.md)) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
+││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas ([on_match_exec](../docs/advanced-scripting-eslang.md)) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
 ││ * **Refuerzo difuso:** La **Comprobación de similitud difusa** (controlada por un umbral, por ejemplo, 85%) actúa como la capa de corrección de errores de menor prioridad. Solo se ejecuta si toda la ejecución de la regla determinista/en cascada anterior no pudo encontrar una coincidencia (current_rule_matched es False), lo que optimiza el rendimiento evitando comprobaciones difusas lentas siempre que sea posible.  
 ├┬ **Gestión de modelos/**   
 │├─ `prioritize_model.py` (Optimiza la carga/descarga del modelo según el uso) 🐧 🍏 🪟  
@@ -312,11 +345,11 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
 │└─ `stop_languagetool_server.py` (Cierra el servidor LanguageTool) 🐧 🍏
 ├─ `monitor_mic.sh` (por ejemplo, para usar con auriculares sin usar teclado ni monitor) 🐧 🍏 🪟  
 
-
+### **Gestión de modelos y paquetes**  
 Herramientas para un manejo sólido de modelos de lenguaje grandes.  
 
-
-├─ **Descargador robusto de modelos** (fragmentos de versión de GitHub) 🐧 🍏 🪟  
+**Gestión de modelos/** 🐧 🍏 🪟  
+├─ **Descargador robusto de modelos** (fragmentos de lanzamiento de GitHub) 🐧 🍏 🪟  
 ├─ `split_and_hash.py` (Utilidad para que los propietarios de repositorios divida archivos grandes y genere sumas de verificación) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (Herramienta para que los usuarios finales descarguen, verifiquen y vuelvan a ensamblar archivos de varias partes) 🐧 🍏 🪟  
 
@@ -328,7 +361,7 @@ Scripts para la configuración, prueba y ejecución del servicio del entorno.
 Marque la casilla de verificación durante la instalación para asociar con archivos de registro.    
 https://translate.google.com/translate?hl=en&sl=en&tl=es&u=https://glogg.bonnefon.org/     
   
-*Consejo: Después de definir sus patrones de expresiones regulares, ejecute `python3 tools/map_tagger.py` para generar automáticamente ejemplos de búsqueda para las herramientas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-eslang.md) para obtener más detalles.*
+*Consejo: Después de definir sus patrones de expresiones regulares, ejecute `python3 tools/map_tagger.py` para generar automáticamente ejemplos de búsqueda para las herramientas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-eslang.md) para obtener más detalles.*
 
 Entonces tal vez haga doble clic
 `log/aura_engine.log`
@@ -382,9 +415,9 @@ Funciones actualmente en desarrollo o en estado de borrador.
 </detalles>
 
 
-### bit mira gráficamente para ver qué hay detrás:
+### Una descripción gráfica de la arquitectura:
 
-![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
+![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
   
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
@@ -407,9 +440,9 @@ Estos modelos comprimidos deben guardarse en la carpeta `modelos/`
 Esta tabla proporciona una descripción general de los diferentes modelos de Vosk, incluido su tamaño, velocidad o tasa de error de palabras, notas e información de licencia.
 
 
-- **Modelos Vosk:** XMLDLINK34X
+- **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Herramienta de idioma:**  
-(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
+(6.6) XMLDLINK41X
 
 **Licencia de LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 

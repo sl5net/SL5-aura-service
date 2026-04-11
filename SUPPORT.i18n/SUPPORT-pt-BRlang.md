@@ -11,4 +11,4 @@ Se você encontrar algum problema durante a instalação ou uso, não hesite em 
 **Ao relatar um erro, inclua:**
 1. Uma captura de tela da mensagem de erro.
 2. O conteúdo do diretório `log/`.
-3. Sua versão do Windows.
+3. Seu Mac/Linux/Windows/OS/... e versão.

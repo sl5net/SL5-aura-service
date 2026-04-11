@@ -1,28 +1,45 @@
 # सिस्टम-वाइड ऑफ़लाइन वॉयस टू कमांड या टेक्स्ट, प्लग करने योग्य सिस्टम
 
+## त्वरित शुरुआत
+1. इस रिपॉजिटरी को डाउनलोड या क्लोन करें
+2. अपने ओएस के लिए सेटअप स्क्रिप्ट चलाएँ ('सेटअप/' फ़ोल्डर देखें):
+- लिनक्स (आर्क/मंज़रो): `बैश सेटअप/मंज़रो_आर्क_सेटअप.श`
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-hilang.md) पढ़ें
+- लिनक्स (उबंटू/डेबियन): `बैश सेटअप/ubuntu_setup.sh`
+- लिनक्स (ओपनएसयूएसई): `बैश सेटअप/suse_setup.sh`
+- macOS: `बैश सेटअप/macos_setup.sh`
+- विंडोज़: `setup/windows11_setup_with_ahk_copyq.bat`
+3. आभा प्रारंभ करें: `./scripts/restart_venv_and_run-server.sh`
+4. अपनी हॉटकी दबाएं और बोलें - **[full guide →](../docs/GettingStarted-hilang.md)**
+
+
 **⚠️ सिस्टम आवश्यकताएँ और अनुकूलता**
 
 * **विंडोज़:** ✅ पूरी तरह से समर्थित (ऑटोहॉटकी/पावरशेल का उपयोग करता है)।
 * **macOS:** ✅ पूरी तरह से समर्थित (AppleScript का उपयोग करता है)।
 * **लिनक्स (X11/Xorg):** ✅ पूरी तरह से समर्थित।
-* *लिनक्स (वेलैंड):** ✅ पूरी तरह से समर्थित।
-
-
-SL5 आभा सेवा में आपका स्वागत है! यह दस्तावेज़ हमारी प्रमुख विशेषताओं और उनकी ऑपरेटिंग सिस्टम अनुकूलता का त्वरित अवलोकन प्रदान करता है।
-
-आभा सिर्फ एक प्रतिलेखक नहीं है; यह एक शक्तिशाली, ऑफ़लाइन प्रोसेसिंग इंजन है जो आपकी आवाज़ को सटीक क्रियाओं और टेक्स्ट में बदल देता है।
-
-यह एक पूर्ण, **ऑफ़लाइन वॉयस असिस्टेंट** है जो **वोस्क** (स्पीच-टू-टेक्स्ट के लिए) और **लैंग्वेजटूल** (व्याकरण/शैली के लिए) पर बनाया गया है, अब इसमें रचनात्मक प्रतिक्रियाओं और उन्नत फ़ज़ी मिलान के लिए एक वैकल्पिक **स्थानीय एलएलएम (ओलामा) फ़ॉलबैक** की सुविधा है। इसे प्लग करने योग्य नियम प्रणाली और एक गतिशील स्क्रिप्टिंग इंजन के माध्यम से अंतिम अनुकूलन के लिए डिज़ाइन किया गया है।
-
+* **लिनक्स (वेलैंड):** ✅ पूरी तरह से समर्थित (केडीई प्लाज्मा 6 / वेलैंड पर परीक्षण किया गया)।
+* **लिनक्स (कैचीओएस / आर्क-आधारित रोलिंग रिलीज):** ✅ पूरी तरह से समर्थित।
+Glibc 2.43 अनुकूलता के कारण mimalloc (`sudo pacman -S mimalloc`) की आवश्यकता है।
 Xस्पेसब्रेकX
-अनुवाद: यह दस्तावेज़ [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs) में भी मौजूद है।
+SL5 ऑरा एक पूर्ण, **ऑफ़लाइन वॉयस असिस्टेंट** है जो **वॉस्क** (स्पीच-टू-टेक्स्ट के लिए) और **लैंग्वेजटूल** (व्याकरण/शैली के लिए) पर निर्मित है, जिसमें रचनात्मक प्रतिक्रियाओं और उन्नत फ़ज़ी मिलान के लिए एक वैकल्पिक **स्थानीय एलएलएम (ओलामा) फ़ॉलबैक** की सुविधा है। यह आपकी आवाज़ को सटीक क्रियाओं और पाठ में बदल देता है, जिसे प्लग करने योग्य नियम प्रणाली और एक गतिशील स्क्रिप्टिंग इंजन के माध्यम से अंतिम अनुकूलन के लिए डिज़ाइन किया गया है।
+Xस्पेसब्रेकX
+अनुवाद: यह दस्तावेज़ [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n) में भी मौजूद है।
 
 
 ध्यान दें: कई पाठ मूल अंग्रेजी दस्तावेज़ के मशीन-जनित अनुवाद हैं और केवल सामान्य मार्गदर्शन के लिए हैं। विसंगतियों या अस्पष्टताओं के मामले में, अंग्रेजी संस्करण हमेशा मान्य होता है। इस अनुवाद को बेहतर बनाने के लिए हम समुदाय की मदद का स्वागत करते हैं!
 
+### 📺 टर्मिनल डेमो
 
-[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
-(https://www.youtube.com/watch?v=BZCHonTqwUw या https://skipvids.com/?v=BZCHonTqwUw)
+[![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
+
+> **टिप:** बेहतर टर्मिनल अनुभव के लिए, [Zsh Integration](../docs/linux/zsh-integration-hilang.md) देखें।
+
+### 🎥 वीडियो ट्यूटोरियल
+[![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+
+*(वैकल्पिक लिंक: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+
 
 ## प्रमुख विशेषताऐं
 
@@ -53,7 +70,7 @@ Xस्पेसब्रेकX
 
 **इसे अन्य भाषाओं में पढ़ें:**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-hilang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-hilang.md) | [🇪🇸 Español](../README.i18n/README-eslang-hilang.md) | [🇫🇷 Français](../README.i18n/README-frlang-hilang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-hilang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-hilang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-hilang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-hilang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-hilang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-hilang.md)
 
 ---
 
@@ -64,6 +81,14 @@ Xस्पेसब्रेकX
 
 
 ## स्थापना
+
+### 🎥 मॉडरेशन के बिना त्वरित इंस्टालेशन (मंजरो/आर्क वीडियो)
+पूरी 6 मिनट की सेटअप प्रक्रिया देखें:
+* **डाउनलोड करें:** ~3 मिनट
+* **सेटअप और पहली शुरुआत:** ~3 मिनट (स्वागत विज़ार्ड सहित)
+
+👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
+
 
 सेटअप दो चरणों वाली प्रक्रिया है:
 1. अंतिम रिलीज़ या मास्टर (https://github.com/sl5net/SL5-aura-service/archive/master.zip) डाउनलोड करें या इस रिपॉजिटरी को अपने कंप्यूटर पर क्लोन करें।
@@ -151,7 +176,7 @@ __कोड_ब्लॉक_5__
 2. `config/settings_local.py_Example.txt` की एक प्रति बनाएं और इसका नाम बदलकर `config/settings_local.py` कर दें।
 3. `config/settings_local.py` संपादित करें (यह मुख्य `config/settings.py` फ़ाइल से किसी भी सेटिंग को ओवरराइड करता है)।
 
-यह `config/settings_local.py` फ़ाइल Git द्वारा (शायद) अनदेखा कर दी गई है, इसलिए आपके व्यक्तिगत परिवर्तन (शायद) अपडेट द्वारा ओवरराइट नहीं किए जाएंगे।
+इस `config/settings_local.py` फ़ाइल को डिफ़ॉल्ट रूप से Git द्वारा अनदेखा किया जाता है, इसलिए आपके व्यक्तिगत परिवर्तन अपडेट द्वारा ओवरराइट नहीं किए जाएंगे।
 
 ### प्लग-इन संरचना और तर्क
 
@@ -170,6 +195,8 @@ Xस्पेसब्रेकX
 यहां विंडोज़ सिस्टम पर एप्लिकेशन को सेट अप करने, अपडेट करने और चलाने के लिए सबसे महत्वपूर्ण स्क्रिप्ट की एक सूची दी गई है।
 
 ### सेटअप और अद्यतन
+
+* `chmod +x update.sh; ./update.sh`
 * `setup/setup.bat`: पर्यावरण के **प्रारंभिक एक-बार सेटअप** के लिए मुख्य स्क्रिप्ट।
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `पॉवरशेल चलाएँ -कमांड "सेट-एक्ज़ीक्यूशनपॉलिसी -एक्ज़ीक्यूशनपॉलिसी बायपास -स्कोप प्रोसेस -फोर्स; .\setup\windows11_setup.ps1"`
 
@@ -206,7 +233,7 @@ Xस्पेसब्रेकX
 ││ * **वर्कफ़्लो:** पासवर्ड से सुरक्षित ज़िप संग्रह लोड करता है। Xस्पेसब्रेकX
 │├ **पाठ प्रसंस्करण और सुधार/** भाषा के आधार पर समूहीकृत (जैसे `डी-डीई`, `एन-यूएस`, ...)   
 │├ 1. `normalize_punctuation.py` (प्रतिलेखन के बाद विराम चिह्न को मानकीकृत करता है) 🐧 🍏 🪟  
-│├ 2. **इंटेलिजेंट प्री-करेक्शन** ('फ़ज़ीमैप प्री' - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-hilang.md)) 🐧 🍏 🪟  
+│├ 2. **इंटेलिजेंट प्री-करेक्शन** ('फ़ज़ीमैप प्री' - [The Primary Command Layer](../docs/CreatingNewPluginModules-hilang.md)) 🐧 🍏 🪟  
 ││ * **डायनेमिक स्क्रिप्ट निष्पादन:** नियम एपीआई कॉल, फ़ाइल I/O जैसी उन्नत कार्रवाइयां करने या डायनेमिक प्रतिक्रियाएं उत्पन्न करने के लिए कस्टम पायथन स्क्रिप्ट (on_match_exec) को ट्रिगर कर सकते हैं।  
 ││ * **कैस्केडिंग निष्पादन:** नियमों को क्रमिक रूप से संसाधित किया जाता है और उनके प्रभाव **संचयी** होते हैं। बाद के नियम पहले के नियमों द्वारा संशोधित पाठ पर लागू होते हैं।  
 ││ * **सर्वोच्च प्राथमिकता स्टॉप मानदंड:** यदि कोई नियम **पूर्ण मिलान** (^...$) प्राप्त करता है, तो उस टोकन के लिए संपूर्ण प्रसंस्करण पाइपलाइन तुरंत बंद हो जाती है। विश्वसनीय वॉयस कमांड को लागू करने के लिए यह तंत्र महत्वपूर्ण है।  
@@ -217,7 +244,7 @@ Xस्पेसब्रेकX
 ││ * **स्थिति:** स्थानीय एलएलएम एकीकरण।
 │└ 5. **इंटेलिजेंट पोस्ट-करेक्शन** (`फ़ज़ीमैप`)**– पोस्ट-एलटी रिफाइनमेंट** 🐧 🍏 🪟
 ││ * एलटी-विशिष्ट आउटपुट को सही करने के लिए लैंग्वेजटूल के बाद लागू किया गया। प्री-करेक्शन लेयर के समान सख्त कैस्केडिंग प्राथमिकता तर्क का पालन करता है।  
-││ * **डायनेमिक स्क्रिप्ट निष्पादन:** नियम एपीआई कॉल, फ़ाइल I/O जैसी उन्नत क्रियाएं करने या गतिशील प्रतिक्रियाएं उत्पन्न करने के लिए कस्टम पायथन स्क्रिप्ट ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-hilang.md)) को ट्रिगर कर सकते हैं।  
+││ * **डायनेमिक स्क्रिप्ट निष्पादन:** नियम एपीआई कॉल, फ़ाइल I/O जैसी उन्नत क्रियाएं करने या डायनेमिक प्रतिक्रियाएं उत्पन्न करने के लिए कस्टम पायथन स्क्रिप्ट ([on_match_exec](../docs/advanced-scripting-hilang.md)) को ट्रिगर कर सकते हैं।  
 ││ * **फ़ज़ी फ़ॉलबैक:** **फ़ज़ी समानता जांच** (एक सीमा द्वारा नियंत्रित, उदाहरण के लिए, 85%) सबसे कम प्राथमिकता वाली त्रुटि-सुधार परत के रूप में कार्य करती है। इसे केवल तभी निष्पादित किया जाता है जब संपूर्ण पूर्ववर्ती नियतात्मक/कैस्केडिंग नियम रन मिलान ढूंढने में विफल रहता है (current_rule_matched गलत है), जब भी संभव हो धीमी अस्पष्ट जांच से बचकर प्रदर्शन को अनुकूलित किया जाता है।  
 ├┬ **मॉडल प्रबंधन/**   
 │├─ `prioritize_model.py` (उपयोग के आधार पर मॉडल लोडिंग/अनलोडिंग को अनुकूलित करता है) 🐧 🍏 🪟  
@@ -248,7 +275,7 @@ Xस्पेसब्रेकX
 कृपया इंस्टॉल करते समय लॉग-फ़ाइलों से संबद्ध करने के लिए चेकबॉक्स को चेक करें।  Xस्पेसब्रेकX
 https://translate.google.com/translate?hl=en&sl=en&tl=hi&u=https://glogg.bonnefon.org/     
 Xस्पेसब्रेकX
-*टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, सीएलआई टूल के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 टूल्स/मैप_टैगर.py` चलाएं। विवरण के लिए [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-hilang.md) देखें।*
+*टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, सीएलआई टूल के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 टूल्स/मैप_टैगर.py` चलाएं। विवरण के लिए [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-hilang.md) देखें।*
 
 फिर शायद डबल क्लिक करें
 `लॉग/ऑरा_इंजन.लॉग`
@@ -300,9 +327,9 @@ __कोड_ब्लॉक_6__
 </विवरण>
 
 
-### ग्राफिक रूप से देखें कि पीछे क्या है:
+### वास्तुकला का एक चित्रमय अवलोकन:
 
-![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
+![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
 Xस्पेसब्रेकX
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)

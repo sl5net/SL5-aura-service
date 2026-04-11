@@ -11,4 +11,4 @@ Si encuentra algún problema durante la instalación o el uso, ¡no dude en comu
 **Cuando informe un error, incluya:**
 1. Una captura de pantalla del mensaje de error.
 2. El contenido del directorio `log/`.
-3. Tu versión de Windows.
+3. Su Mac/Linux/Windows/OS/... y versión.

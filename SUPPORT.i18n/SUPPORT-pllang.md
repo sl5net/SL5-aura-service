@@ -11,4 +11,4 @@ Jeśli podczas instalacji lub użytkowania napotkasz jakiekolwiek problemy, nie 
 **Zgłaszając błąd, podaj:**
 1. Zrzut ekranu komunikatu o błędzie.
 2. Zawartość katalogu `log/`.
-3. Twoja wersja systemu Windows.
+3. Twój Mac/Linux/Windows/OS/... i wersja.

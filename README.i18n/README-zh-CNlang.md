@@ -1,28 +1,45 @@
 # 系统范围内的离线语音命令或文本，可插拔系统
 
+## 快速入门
+1.下载或克隆此存储库
+2. 运行适用于您的操作系统的安装脚本（请参阅“setup/”文件夹）：
+- Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
+===> 🧩 阅读 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-zh-CNlang.md)
+- Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
+- Linux (openSUSE): `bash setup/suse_setup.sh`
+- macOS：`bash setup/macos_setup.sh`
+- Windows：`setup/windows11_setup_with_ahk_copyq.bat`
+3.启动Aura：`./scripts/restart_venv_and_run-server.sh`
+4. 按热键并说话 — **[full guide →](../docs/GettingStarted-zh-CNlang.md)**
+
+
 **⚠️系统要求和兼容性**
 
 * **Windows：** ✅ 完全支持（使用 AutoHotkey/PowerShell）。
 * **macOS：** ✅ 完全支持（使用 AppleScript）。
 * **Linux (X11/Xorg)：** ✅ 完全支持。
-* **Linux (Wayland)：** ✅ 完全支持。
-
-
-欢迎来到 SL5 Aura 服务！本文档快速概述了我们的主要功能及其操作系统兼容性。
-
-Aura 不仅仅是一个转录器；它也是一个转录器。它是一个强大的离线处理引擎，可以将您的声音转换为精确的动作和文本。
-
-它是一个完整的**离线语音助手**，基于**Vosk**（用于语音转文本）和**LanguageTool**（用于语法/风格）构建，现在具有可选的**本地 LLM (Ollama) 后备**，用于创意响应和高级模糊匹配。它旨在通过可插入规则系统和动态脚本引擎实现最终定制。
-
+* **Linux (Wayland)：** ✅ 完全支持（在 KDE Plasma 6 / Wayland 上测试）。
+* **Linux（CachyOS / 基于 Arch 的滚动版本）：** ✅ 完全支持。
+由于 glibc 2.43 兼容性，需要 mimalloc (`sudo pacman -S mimalloc`)。
 X空格符X
-翻译：该文档也存在于[other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs)中。
+SL5 Aura 是一款完整的**离线语音助手**，基于 **Vosk**（用于语音转文本）和 **LanguageTool**（用于语法/风格）构建，具有可选的**本地 LLM (Ollama) 后备**，用于创意响应和高级模糊匹配。它将您的声音转换为精确的操作和文本，旨在通过可插入的规则系统和动态脚本引擎实现最终定制。
+X空格符X
+翻译：该文档也存在于[other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n)中。
 
 
 注意：许多文本是原始英文文档的机器生成翻译，仅供一般指导。如有差异或歧义，始终以英文版本为准。我们欢迎社区帮助改进此翻译！
 
+### 📺 终端演示
 
-[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
-（ https://www.youtube.com/watch?v=BZCHonTqwUw 或 https://skipvids.com/?v=BZCHonTqwUw ）
+[![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
+
+> **提示：** 为了获得更好的终端体验，请参阅 [Zsh Integration](../docs/linux/zsh-integration-zh-CNlang.md)。
+
+### 🎥 视频教程
+[![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+
+*（替代链接：[skipvids.com](https://skipvids.com/?v=BZCHonTqwUw)）*
+
 
 ## 主要特点
 
@@ -53,7 +70,7 @@ X空格符X
 
 **阅读其他语言版本：**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-zh-CNlang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-zh-CNlang.md) | [🇪🇸 Español](../README.i18n/README-eslang-zh-CNlang.md) | [🇫🇷 Français](../README.i18n/README-frlang-zh-CNlang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-zh-CNlang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-zh-CNlang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-zh-CNlang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-zh-CNlang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-zh-CNlang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-zh-CNlang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang.md)
 
 ---
 
@@ -64,6 +81,14 @@ X空格符X
 
 
 ＃＃ 安装
+
+### 🎥 无需审核即可快速安装（Manjaro/Arch 视频）
+观看完整的 6 分钟设置过程：
+* **下载：** ~3 分钟
+* **设置和首次启动：** ~3 分钟（包括欢迎向导）
+
+👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
+
 
 设置过程分为两步：
 1. 下载最新版本或主版本 ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) 或将此存储库克隆到您的计算机。
@@ -151,7 +176,7 @@ __代码_块_5__
 2. 创建 `config/settings_local.py_Example.txt` 的副本并将其重命名为 `config/settings_local.py`。
 3. 编辑 `config/settings_local.py` （它会覆盖主 `config/settings.py` 文件中的任何设置）。
 
-Git（可能）会忽略此“config/settings_local.py”文件，因此您的个人更改（可能）不会被更新覆盖。
+默认情况下，Git 会忽略此 config/settings_local.py 文件，因此您的个人更改不会被更新覆盖。
 
 ### 插件结构和逻辑
 
@@ -170,6 +195,8 @@ X空格符X
 以下是在 Windows 系统上设置、更新和运行应用程序的最重要脚本的列表。
 
 ### 设置和更新
+
+* `chmod +x update.sh; ./更新.sh`
 * `setup/setup.bat`：环境的**初始一次性设置**的主脚本。
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `运行 powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
@@ -206,7 +233,7 @@ X空格符X
 │ │ * **工作流程：** 加载受密码保护的 ZIP 存档。 X空格符X
 │├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
-│├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
+│├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
 │ │ * **动态脚本执行：**规则可以触发自定义Python脚本（on_match_exec）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 │ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
 │ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
@@ -217,7 +244,7 @@ X空格符X
 │ │ * **状态：** 本地法学硕士整合。
 │└ 5. **智能后校正** (`FuzzyMap`)**– LT后细化** 🐧 🍏 🪟
 │ │ * 在 LanguageTool 之后应用以纠正 LT 特定的输出。遵循与预校正层相同的严格级联优先级逻辑。  
-││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
+││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](../docs/advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 ││ * **模糊回退：** **模糊相似性检查**（由阈值控制，例如 85%）充当最低优先级的纠错层。仅当前面的整个确定性/级联规则运行未能找到匹配项（current_rule_matched 为 False）时才会执行它，通过尽可能避免缓慢的模糊检查来优化性能。  
 ├┬ **模型管理/**   
 │├─ `prioritize_model.py` (根据使用情况优化模型加载/卸载) 🐧 🍏 🪟  
@@ -248,7 +275,7 @@ X空格符X
 安装时请选中该复选框以与日志文件关联。  X空格符X
 https://translate.google.com/translate?hl=en&sl=en&tl=zh-CN&u=https://glogg.bonnefon.org/     
 X空格符X
-*提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-zh-CNlang.md)。*
+*提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-zh-CNlang.md)。*
 
 然后也许双击
 `日志/aura_engine.log`
@@ -300,9 +327,9 @@ __代码_块_6__
 </详情>
 
 
-### 以图形方式查看后面的内容：
+### 架构的图形概述：
 
-![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
+![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
 X空格符X
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
@@ -318,8 +345,8 @@ X空格符X
 
 
 |型号|尺寸|字错误率/速度 |笔记|许可证|
-| ------------------------------------------------------------------------------------------ | ----| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
-| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型|阿帕奇2.0 |
+| ------------------------------------------------------------------------------------------ | ---- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型 |阿帕奇2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G| 9.83（Tuda-de 测试）<br/>24.00（播客）<br/>12.82（cv-测试）<br/>12.42（mls）<br/>33.26（mtedx）|德国大型电话和服务器模型|阿帕奇2.0 |
 
 此表提供了不同 Vosk 型号的概述，包括其大小、字错误率或速度、注释和许可证信息。

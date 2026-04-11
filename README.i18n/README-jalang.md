@@ -1,32 +1,49 @@
 # システム全体のオフライン音声からコマンドまたはテキストへのプラグイン可能なシステム
 
+## クイックスタート
+1. このリポジトリをダウンロードまたは複製します
+2. OS のセットアップ スクリプトを実行します (「setup/」フォルダーを参照)。
+- Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-jalang.md) を読む
+- Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
+- Linux (openSUSE): `bash setup/suse_setup.sh`
+- macOS: `bash setup/macos_setup.sh`
+- Windows: `setup/windows11_setup_with_ahk_copyq.bat`
+3. Aura を起動します: `./scripts/restart_venv_and_run-server.sh`
+4. ホットキーを押して話します — **[full guide →](../docs/GettingStarted-jalang.md)**
+
+
 **⚠️ システム要件と互換性**
 
 * **Windows:** ✅ 完全にサポートされています (AutoHotkey/PowerShell を使用)。
 * **macOS:** ✅ 完全にサポートされています (AppleScript を使用)。
 * **Linux (X11/Xorg):** ✅ 完全にサポートされています。
-* **Linux (Wayland):** ✅ 完全にサポートされています。
-
-
-SL5 オーラ サービスへようこそ!このドキュメントでは、主要な機能とそのオペレーティング システムの互換性の概要を説明します。
-
-Aura は単なる文字起こしではありません。これは、あなたの音声を正確なアクションとテキストに変換する強力なオフライン処理エンジンです。
-
-これは、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタイル用) に基づいて構築された完全な **オフライン音声アシスタント** であり、クリエイティブな応答と高度なファジー マッチングのためのオプションの **ローカル LLM (Ollama) フォールバック** を備えています。プラグイン可能なルール システムとダイナミック スクリプト エンジンを介して究極のカスタマイズができるように設計されています。
-
+* **Linux (Wayland):** ✅ 完全にサポートされています (KDE Plasma 6 / Wayland でテスト済み)。
+* **Linux (CachyOS / Arch ベースのローリング リリース):** ✅ 完全にサポートされています。
+glibc 2.43 との互換性のため、mimalloc (`sudo pacman -S mimalloc`) が必要です。
   
-翻訳: このドキュメントは [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/docs) にも存在します。
+SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタイル用) に基づいて構築された完全な **オフライン音声アシスタント** で、創造的な応答と高度なファジー マッチングのためのオプションの **ローカル LLM (Ollama) フォールバック** を備えています。あなたの音声を正確なアクションとテキストに変換し、プラグイン可能なルール システムとダイナミック スクリプト エンジンを通じて究極のカスタマイズを実現するように設計されています。
+  
+翻訳: このドキュメントは [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n) にも存在します。
 
 
 注: 多くのテキストは、元の英語ドキュメントの機械翻訳であり、一般的なガイダンスのみを目的としています。矛盾や曖昧な点がある場合には、常に英語版が優先されます。この翻訳を改善するためにコミュニティからの協力を歓迎します。
 
+### 📺 ターミナルデモ
 
-[![SL5 Aura (v0.16.1): HowTo crash SL5 Aura? -  seeh Hierarchical and Recursive Rule Engine](https://img.youtube.com/vi/d98ml86u68g/maxresdefault.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
-( https://www.youtube.com/watch?v=BZCHonTqwUw または https://skipvids.com/?v=BZCHonTqwUw )
+[![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
+
+> **ヒント:** 端末エクスペリエンスを向上させるには、[Zsh Integration](../docs/linux/zsh-integration-jalang.md) を参照してください。
+
+### 🎥 ビデオチュートリアル
+[![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+
+*(代替リンク: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+
 
 ## 主な機能
 
-* **オフライン&プライベート:** 100% ローカル。データがマシンから流出することはありません。
+* **オフラインとプライベート:** 100% ローカル。データがマシンから流出することはありません。
 * **ダイナミック スクリプト エンジン:** テキストの置換を超えた機能。ルールはカスタム Python スクリプト (「on_match_exec」) を実行して、API の呼び出し (Wikipedia の検索など)、ファイルの操作 (ToDo リストの管理など)、動的コンテンツの生成 (コンテキストを認識した電子メールの挨拶など) などの高度なアクションを実行できます。
 * **コンテキスト認識ルール:** ルールを特定のアプリケーションに制限します。 「only_in_windows」を使用すると、特定のウィンドウ タイトル (「ターミナル」、「VS Code」、または「ブラウザ」など) がアクティブな場合にのみルールがトリガーされるようにできます。これはクロスプラットフォーム (Linux、Windows、macOS) で動作します。
 * **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定され、コーディングではなく**構成が必要です**。
@@ -53,7 +70,7 @@ Aura は単なる文字起こしではありません。これは、あなたの
 
 **他の言語で読む:**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](docs/README/README-arlang.md) | [🇩🇪 Deutsch](docs/README/README-delang.md) | [🇪🇸 Español](docs/README/README-eslang.md) | [🇫🇷 Français](docs/README/README-frlang.md) | [🇮🇳 हिन्दी](docs/README/README-hilang.md) | [🇯🇵 日本語](docs/README/README-jalang.md) | [🇰🇷 한국어](docs/README/README-kolang.md) | [🇵🇱 Polski](docs/README/README-pllang.md) | [🇵🇹 Português](docs/README/README-ptlang.md) | [🇧🇷 Português Brasil](docs/README/README-pt-BRlang.md) | [🇨🇳 简体中文](docs/README/README-zh-CNlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-jalang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-jalang.md) | [🇪🇸 Español](../README.i18n/README-eslang-jalang.md) | [🇫🇷 Français](../README.i18n/README-frlang-jalang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-jalang.md) | [🇯🇵 日本語](../README.i18n/README-jalang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-jalang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-jalang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-jalang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-jalang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-jalang.md)
 
 ---
 
@@ -65,11 +82,19 @@ Aura は単なる文字起こしではありません。これは、あなたの
 
 ## インストール
 
+### 🎥 モデレーションなしのクイック インストール (Manjaro/Arch Video)
+6 分間のセットアップ プロセス全体をご覧ください。
+* **ダウンロード:** ~3 分
+* **セットアップと初回起動:** ~3 分 (ウェルカム ウィザードを含む)
+
+👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
+
+
 セットアップは 2 段階のプロセスです。
 1. 最後のリリースまたはマスター ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) をダウンロードするか、このリポジトリのクローンをコンピュータに作成します。
 2. オペレーティング システムのワンタイム セットアップ スクリプトを実行します。
 
-セットアップ スクリプトは、システムの依存関係、Python 環境、必要なモデルとツール (最大 4GB) を GitHub リリースから直接ダウンロードして最大速度を実現するなど、すべてを処理します。
+セットアップ スクリプトは、システムの依存関係、Python 環境、必要なモデルとツール (最大 4 GB) を GitHub リリースから直接ダウンロードして最大速度を実現するなど、すべてを処理します。
 
 
 #### Linux、macOS、および Windows の場合 (オプションの言語の除外あり)
@@ -83,6 +108,12 @@ Aura は単なる文字起こしではありません。これは、あなたの
 # (Note: Use bash or sh to execute the setup script)
 
 bash setup/{your-os}_setup.sh [OPTION]
+
+# For Arch-based systems (Manjaro, CachyOS, EndeavourOS, etc.):
+`bash setup/manjaro_arch_setup.sh`
+
+`sudo pacman -S mimalloc`
+
 
 # Examples:
 # Install everything (Default):
@@ -134,14 +165,14 @@ windows11_setup.bat -Exclude "en"
 
 ```powershell
 # Core Setup only (No AHK, No CopyQ)
-setup\windows11_setup.bat
+setup/windows11_setup_with_ahk_copyq.bat
 
 # Exclude specific language models (saves space):
 # Exclude English:
-setup\windows11_setup.bat -Exclude "en"
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 
 # Exclude German and English:
-setup\windows11_setup.bat -Exclude "de,en"
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
 
 
@@ -231,7 +262,7 @@ f11::
 2. `config/settings_local.py_Example.txt` のコピーを作成し、その名前を `config/settings_local.py` に変更します。
 3. `config/settings_local.py` を編集します (メインの `config/settings.py` ファイルの設定はすべて上書きされます)。
 
-この `config/settings_local.py` ファイルは Git によって (おそらく) 無視されるため、個人的な変更は (おそらく) 更新によって上書きされません。
+この「config/settings_local.py」ファイルはデフォルトでは Git によって無視されるため、個人的な変更は更新によって上書きされません。
 
 ### プラグインの構造とロジック
 
@@ -247,9 +278,11 @@ f11::
 このアーキテクチャにより、コア システム ルールが保護されると同時に、プロジェクト固有のルールまたはコンテキスト認識ルール (CodeIgniter やゲーム コントロールのルールなど) をプラグインを介して優先度の低い拡張機能として簡単に追加できます。
 ## Windows ユーザー向けの主要なスクリプト
 
-ここでは、Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを示します。
+Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを次に示します。
 
 ### セットアップとアップデート
+
+* `chmod +x update.sh; ./update.sh`
 * `setup/setup.bat`: 環境の **最初の 1 回限りのセットアップ**のためのメイン スクリプト。
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `powershell を実行します -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
@@ -286,7 +319,7 @@ OS 互換性の凡例:
 ││ * **ワークフロー:** パスワードで保護された ZIP アーカイブを読み込みます。   
 │§ **テキストの処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
 │§ 1. `normalize_punctuation.py` (文字起こし後の句読点を標準化) 🐧 🍏 🪟  
-│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
+│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
 ││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト (on_match_exec) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **カスケード実行:** ルールは順番に処理され、その効果は **累積的**です。以前のルールによって変更されたテキストには、後のルールが適用されます。  
 ││ * **最優先停止基準:** ルールが **完全一致** (^...$) に達すると、そのトークンの処理パイプライン全体が直ちに停止します。このメカニズムは、信頼性の高い音声コマンドを実装するために重要です。  
@@ -297,7 +330,7 @@ OS 互換性の凡例:
 ││ * **ステータス:** ローカル LLM 統合。
 │└ 5. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の洗練** 🐧 🍏 🪟
 ││ * LT 固有の出力を修正するために、LanguageTool の後に適用されます。前修正レイヤーと同じ厳密なカスケード優先順位ロジックに従います。  
-││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
+││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **ファジー フォールバック:** **ファジー類似性チェック** (しきい値、たとえば 85% によって制御される) は、優先度が最も低いエラー修正層として機能します。これは、先行する決定的/カスケード ルールの実行全体で一致が見つからなかった場合 (current_rule_matched が False) にのみ実行され、可能な限り遅いファジー チェックを回避することでパフォーマンスを最適化します。  
 §┬ **モデル管理/**   
 │§─ `prioritize_model.py` (使用状況に基づいてモデルのロード/アンロードを最適化します) 🐧 🍏 🪟  
@@ -328,7 +361,7 @@ OS 互換性の凡例:
 ログファイルと関連付けるには、インストール時にチェックボックスをオンにしてください。    
 https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
   
-*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-jalang.md) を参照してください。*
+*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-jalang.md) を参照してください。*
 
 それからダブルクリックしてください
 `log/aura_engine.log`
@@ -382,9 +415,9 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefo
 </詳細>
 
 
-### 少しグラフィックで見て、背後にあるものを確認してください。
+### アーキテクチャのグラフィカルな概要:
 
-![yappi_call_graph](doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
+![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
   
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)

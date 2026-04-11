@@ -11,4 +11,4 @@ Wenn Sie während der Installation oder Verwendung auf Probleme stoßen, zögern
 **Wenn Sie einen Fehler melden, geben Sie bitte Folgendes an:**
 1. Ein Screenshot der Fehlermeldung.
 2. Der Inhalt des Verzeichnisses „log/“.
-3. Ihre Windows-Version.
+3. Ihr Mac/Linux/Windows/OS/... und Ihre Version.

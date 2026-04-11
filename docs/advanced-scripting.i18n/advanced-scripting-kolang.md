@@ -1,12 +1,24 @@
 # 고급 규칙 작업: Python 스크립트 실행
 
-이 문서에서는 사용자 정의 Python 스크립트를 실행하여 간단한 텍스트 교체 규칙의 기능을 확장하는 방법을 설명합니다. 이 강력한 기능을 사용하면 동적 응답을 만들고, 파일과 상호 작용하고, 외부 API를 호출하고, 음성 인식 워크플로 내에서 직접 복잡한 논리를 구현할 수 있습니다.
+이 문서에서는 사용자 정의 Python 스크립트를 실행하여 간단한 텍스트 교체 규칙의 기능을 확장하는 방법을 설명합니다. 이 강력한 기능을 사용하면 동적 응답을 생성하고, 파일과 상호 작용하고, 외부 API를 호출하고, 음성 인식 워크플로 내에서 직접 복잡한 논리를 구현할 수 있습니다.
 
 ## 핵심 개념: `on_match_exec`
 
 단순히 텍스트를 바꾸는 대신, 이제 패턴이 일치할 때 하나 이상의 Python 스크립트를 실행하도록 규칙에 지시할 수 있습니다. 이는 규칙의 옵션 사전에 `on_match_exec` 키를 추가하여 수행됩니다.
 
-스크립트의 주요 작업은 일치 항목에 대한 정보를 받고, 작업을 수행하고, 새 텍스트로 사용될 최종 문자열을 반환하는 것입니다.
+서비스의 주요 임무는 일치에 대한 정보를 수신하는 것입니다.
+
+```
+match_data = {
+    'original_text': original_text_for_script,
+    'text_after_replacement': new_current_text,
+    'regex_match_obj': match_obj,  # Wir haben es bereits von re.fullmatch
+    'rule_options': options_dict
+}
+```
+
+그런 다음 작업을 수행하고 새 텍스트로 사용될 최종 문자열을 반환합니다.
+
 
 ### 규칙 구조
 
@@ -21,7 +33,7 @@ CONFIG_DIR = Path(__file__).parent
 
 FUZZY_MAP_pre = [
     (
-        None,  # The replacement string is often None, as the script generates the final text.
+        '',  # The replacement string is often , as the script generates the final text.
         r'what time is it', # The regex pattern to match.
         95, # The confidence threshold.
         {
@@ -32,7 +44,7 @@ FUZZY_MAP_pre = [
     ),
 ]
 ```
-**핵심 사항:**
+**핵심 포인트:**
 - `on_match_exec` 값은 **목록**이어야 합니다.
 - 스크립트는 맵 파일과 동일한 디렉터리에 위치하므로 `CONFIG_DIR / 'script_name.py'`가 경로를 정의하는 데 권장되는 방법입니다.
 
@@ -56,7 +68,7 @@ FUZZY_MAP_pre = [
 이 사전은 기본 애플리케이션과 스크립트 사이의 다리 역할을 합니다. 여기에는 다음 키가 포함되어 있습니다.
 
 * ``original_text'` (str): 현재 규칙의 대체가 적용되기 *전* 전체 텍스트 문자열입니다.
-* ``text_after_replacement'` (str): 규칙의 기본 대체 문자열이 적용된 *이후* 텍스트이지만 스크립트가 호출되기 *이전*입니다. (대체 항목이 `None`인 경우 `original_text`와 동일합니다.)
+* ``text_after_replacement'` (str): 규칙의 기본 대체 문자열이 적용된 *이후* 텍스트이지만 스크립트가 호출되기 *이전*입니다. (대체가 ``인 경우 `original_text`와 동일합니다.)
 * ``regex_match_obj'` (re.Match): 공식 Python 정규식 일치 개체입니다. 이는 **캡처 그룹**에 액세스하는 데 매우 강력합니다. `match_obj.group(1)`, `match_obj.group(2)` 등을 사용할 수 있습니다.
 * ``rule_options'`(dict): 스크립트를 트리거한 규칙에 대한 전체 옵션 사전입니다.
 
@@ -70,7 +82,7 @@ FUZZY_MAP_pre = [
 
 **1. 규칙(지도 파일에 있음):**
 ```python
-(None, r'\b(what time is it|uhrzeit)\b', 95, {
+('', r'\b(what time is it|uhrzeit)\b', 95, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'get_current_time.py']
 }),
@@ -101,7 +113,7 @@ def execute(match_data):
     return random.choice(responses)
 ```
 **용법:**
-> **입력:** "지금은 몇 시야?"
+> **입력:** "지금은 몇시입니까?"
 > **출력:** "안녕하세요! 현재 14시 30분입니다."
 
 ### 예 2: 간단한 계산기(캡처 그룹 사용)
@@ -110,7 +122,7 @@ def execute(match_data):
 
 **1. 규칙(지도 파일에 있음):**
 ```python
-(None, r'calculate (\d+) (plus|minus) (\d+)', 98, {
+('', r'calculate (\d+) (plus|minus) (\d+)', 98, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'calculator.py']
 }),
@@ -149,13 +161,13 @@ def execute(match_data):
 **1. 규칙(지도 파일에 있음):**
 ```python
 # Rule for adding items
-(None, r'add (.*) to the shopping list', 95, {
+('', r'add (.*) to the shopping list', 95, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),
 
 # Rule for showing the list
-(None, r'show the shopping list', 95, {
+('', r'show the shopping list', 95, {
     'flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),

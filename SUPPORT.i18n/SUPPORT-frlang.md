@@ -11,4 +11,4 @@ Si vous rencontrez des problèmes lors de l'installation ou de l'utilisation, n'
 **Lorsque vous signalez une erreur, veuillez inclure :**
 1. Une capture d'écran du message d'erreur.
 2. Le contenu du répertoire `log/`.
-3. Votre version de Windows.
+3. Votre Mac/Linux/Windows/OS/... et votre version.
