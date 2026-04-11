@@ -266,10 +266,6 @@ def check_and_notify(force_test=False):
     morgen = heute + datetime.timedelta(days=1)
 
 
-    # Debug Info für Terminal
-    # if force_test:
-    #     print(f"System-Check: Heute ist {heute.strftime('%d.%m.%Y')}.")
-
     check_csv_alerts()
 
     for t in termine_data:

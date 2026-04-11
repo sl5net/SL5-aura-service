@@ -35,8 +35,16 @@ def run(project_root):
         env = os.environ.copy()
         env.setdefault("DISPLAY", ":0")
         env.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/1000/bus")
+
+        from scripts.py.func.config.dynamic_settings import DynamicSettings
+        settings = DynamicSettings()
+
+        sleep_sec = 0
+        if settings.DEV_MODE:
+            sleep_sec = 5
+
         cmd = [
             'konsole', '-e', 'bash', '-c',
-            f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; sleep 5'
+            f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; sleep {sleep_sec}'
         ]
         subprocess.Popen(cmd, start_new_session=True, env=env)

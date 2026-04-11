@@ -52,10 +52,17 @@ def execute(match_data):
         file_filter = "*.py"
 #roter KonföderationAura schüchtern KonfigurationenDora suche KonfigurationOver such a good vibrationsO suche Konfiguration
 
+    from scripts.py.func.config.dynamic_settings import DynamicSettings
+    settings = DynamicSettings()
+
+    sleep_sec = 0
+    if settings.DEV_MODE:
+        sleep_sec = 5
+
 
     cmd = [
         'konsole', '-e', 'bash', '-c',
-        f'SEARCH_FILES_FILTER="{file_filter}" bash "{search_script}" "{docs_dir}"; sleep 5'
+        f'SEARCH_FILES_FILTER="{file_filter}" bash "{search_script}" "{docs_dir}"; sleep {sleep_sec}'
     ]
     subprocess.Popen(cmd, start_new_session=True, env=env)
     print("Suche wird im Terminal geoeffnet...")

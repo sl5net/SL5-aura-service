@@ -41,8 +41,8 @@ FUZZY_MAP_pre = [
     }),
 
 
-    # EXAMPLE: Aura config
-    (r'config', fr'^{AURA_VARIANTS}\s+(config\w*|konfig\w*)$', 90, {
+    # EXAMPLE: Aura Konfiguration
+    (r'config', fr'^{AURA_VARIANTS}\s+(config\w*|konfig\w*|Einstell\w*)$', 90, {
         'flags': re.IGNORECASE,
         'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
     }),

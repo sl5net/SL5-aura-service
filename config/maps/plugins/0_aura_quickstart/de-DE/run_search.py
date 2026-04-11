@@ -15,9 +15,16 @@ def execute(match_data):
 
     SEARCH_SCRIPT = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
 
+    from scripts.py.func.config.dynamic_settings import DynamicSettings
+    settings = DynamicSettings()
+
+    sleep_sec = 0
+    if settings.DEV_MODE:
+        sleep_sec = 5
+
     cmd = [
         'konsole', '-e', 'bash', '-c',
-        f'bash "{SEARCH_SCRIPT}"; sleep 5'
+        f'bash "{SEARCH_SCRIPT}"; sleep {sleep_sec}'
     ]
 
     # Start-Session entkoppeln, damit das Fenster unabhängig von Aura bleibt

@@ -36,10 +36,16 @@ def execute(match_data):
     # Juras doofer DokumenteHurra suche du kommst Dora suche du kommst
     # current_lang = Path(__file__).parent.name.split("-")[0]
     # file_filter = f"*-{current_lang}lang.md"
+    from scripts.py.func.config.dynamic_settings import DynamicSettings
+    settings = DynamicSettings()
+
+    sleep_sec = 0
+    if settings.DEV_MODE:
+        sleep_sec = 5
 
     cmd = [
         'konsole', '-e', 'bash', '-c',
-        f'SEARCH_FILES_FILTER="{file_filter}" bash "{search_script}" "{docs_dir}"; sleep 5'
+        f'SEARCH_FILES_FILTER="{file_filter}" bash "{search_script}" "{docs_dir}"; sleep {sleep_sec}'
     ]
     subprocess.Popen(cmd, start_new_session=True, env=env)
     print("Suche wird im Terminal geoeffnet...")
