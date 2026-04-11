@@ -16,8 +16,10 @@ def run_wizard(user_language="de-DE"):
 
     # Sprache normalisieren (de -> de-DE)
     lang_folder = user_language
-    if lang_folder == "de": lang_folder = "de-DE"
-    if lang_folder == "en": lang_folder = "en-US"
+    if lang_folder == "de":
+        lang_folder = "de-DE"
+    if lang_folder == "en":
+        lang_folder = "en-US"
 
     lang_script = base_path / lang_folder / "start.py"
 

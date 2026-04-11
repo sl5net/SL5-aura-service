@@ -20,6 +20,8 @@ from scripts.py.func.audio_manager import speak_inclusive_fallback
 
 import platform
 
+import runpy
+
 from .config.dynamic_settings import DynamicSettings
 # from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
@@ -70,7 +72,6 @@ settings = DynamicSettings()
 #     )
 # ))(aura_constants_path, "WAKE_PHANTOM")
 
-import runpy
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
