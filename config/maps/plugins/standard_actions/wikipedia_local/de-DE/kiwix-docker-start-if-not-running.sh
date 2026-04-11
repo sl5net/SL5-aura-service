@@ -12,8 +12,6 @@ if [ "${OS:-}" = "Windows_NT" ] || [ -n "${WINDIR:-}" ]; then
 else
   tmp_dir='/tmp'
 fi
-
-
 PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
 # 1. Absoluter Pfad zur Datei auf dem Host ermitteln
