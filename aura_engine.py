@@ -21,7 +21,7 @@ import threading
 # This solves potential issues when running from a batch script on Windows
 
 # os.environ["AURA_SELF_TEST_RUNNING"] = "0"
-AURA_SELF_TEST_RUNNING = '/tmp/sl5_aura/aura_self_test_running.flag'
+
 
 
 # ==============================================================================
@@ -140,9 +140,10 @@ setup_project_structure(PROJECT_ROOT)
 LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
 PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
+
+AURA_SELF_TEST_RUNNING =TMP_DIR / "sl5_aura" / "aura_self_test_running.flag"
 
 
 
@@ -653,8 +654,8 @@ else:
     # aura_log.unlink(missing_ok=True) ## seems problematic
 
 
-# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
-DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
+DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
+#DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
 
 readme = """
 vosk-model-small-de-0.15

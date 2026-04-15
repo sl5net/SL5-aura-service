@@ -39,7 +39,7 @@ _gemini_phonetics = (
     r'gewinn\s+ein|ge[hmw]\w*|g\s+bedeuten|g\s+wie\s+neu|seminar\w*)'
 )
 # Spezifische Studio-Variationen
-_studio_variants = r'(?:studi[ao]\w*|seminar\w*|style|stuhl|kapital|aviv|chapiteau)'
+_studio_variants = r'(?:studi[ao]\w*|seminar\w*|style|stuhl|kapital|aviv|chapiteau|bremen)'
 # Völlige Fehlinterpretationen (Sonderfälle aus deinem ersten Block)
 _misc_errors = (
     r'(?:ruhrgebiet|groupware|udp\s+bitte|ready|babybay|babydoll|jubilee|privileg|'

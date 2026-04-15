@@ -743,6 +743,21 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
             
             
             skip_list = options_dict.get('skip_list', [])
+            exclude_windows_list = options_dict.get('exclude_windows', [])
+            only_in_windows_list = options_dict.get('only_in_windows', [])
+
+            if _active_window_title:
+                if only_in_windows_list:
+                    if not any(re.search(p, str(_active_window_title), re.IGNORECASE)
+                           for p in only_in_windows_list):
+                        continue
+
+                if exclude_windows_list:
+                    if any(re.search(p, str(_active_window_title), re.IGNORECASE)
+                           for p in exclude_windows_list):
+                        continue
+
+
 
             if GLOBAL_debug_skip_list:
                 print(f'618: skip_list={skip_list}')

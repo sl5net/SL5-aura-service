@@ -6,7 +6,7 @@
 # auras
 
 _variants = (
-    r'aachen|aber|anbraten brauche|Apparat|Ära|Auch|Aura|auras|auren|Aurora|aurore|auer|agora|'
+    r'aachen|aber|a\wra|anbraten brauche|Apparat|Ära|Auch|Aura|auras|auren|Aurora|aurore|auer|agora|'
     r'bohrer|brauche|buchen|burgess|cora|dora|doran|doras|eure|eurer|hey|hoa|hoch|horror|'
     r'hurra|k|laura|lorenz|loser|Nora|obwohl|oh|ohh|ohr|ohren|Opera|Oprah|offenbar|'
     r'Orange|ora|oradour|ore|ovh|oha|o\s+a\s+|ovale|over|prora|raucher|robe|roche|rohre|rohrer|rot|'

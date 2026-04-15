@@ -150,7 +150,7 @@ INTEGRITY_CHECKS = {
 
     "type_watcher.sh": [
         "printf 'type %s",
-        "printf 'key Return"
+        "LC_ALL=C.UTF-8 timeout 1 xdotool key --delay 100 Return"
     ],
 
     "scripts/py/func/checks/self_tester.py": [
@@ -191,7 +191,6 @@ INTEGRITY_CHECKS = {
         'lstrip("/docs/',
     ],
 
-    # should_remove_zips_after_unpack=true It's eventually useful to have it sometimes longer but maybe not online and not at costumers
 
     # --- Start of Ensures language selection is included ---
 
@@ -203,29 +202,26 @@ INTEGRITY_CHECKS = {
         'export XAUTHORITY="$XAUTH_TMP"',
     ],
 
+    # should_remove_zips_after_unpack=true It's eventually useful to have it sometimes longer but maybe not online and not at costumers
+
     # Ensures language selection is included in the macOS setup.
     "setup/macos_setup.sh": [
         'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
-        'should_remove_zips_after_unpack=true'
     ],
 
     # Ensures language selection is included in the Ubuntu setup.
     "setup/ubuntu_setup.sh": [
         'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
-        'should_remove_zips_after_unpack=true'
-
     ],
 
     # Ensures language selection is included in the Manjaro/Arch setup.
     "setup/manjaro_arch_setup.sh": [
         'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
-        'should_remove_zips_after_unpack=true'
     ],
 
     # Ensures language selection is included in the Windows setup.
     "setup/windows11_setup.ps1": [
         'setup_initial_model.py',
-        '$should_remove_zips_after_unpack = $true'
     ],
 
     # --- End of Ensures language selection is included ---

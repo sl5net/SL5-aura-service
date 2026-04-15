@@ -130,10 +130,16 @@ PLUGINS_ENABLED = {
     "it-begriffe/php/codeigniter": False,
     "it-begriffe.php.codeigniter": False,
     "standard_actions/wikipedia_local/": False,
+    "standard_actions/standard_actions/path_navigator": False,
     "game/": False,
     "game/0ad": False,
     "game/dealers_choice": False,
+    "z_fallback_llm": False,
 }
+
+REMOVE_SPACES_BETWEEN_NUMBERS = 0
+# or check the rules at the bottom: # config/maps/plugins/numbers_to_digits/de-DE/FUZZY_MAP_pre.py
+
 
 # --- Developer Mode (advanced users only) ---
 # Enables additional log output and internal checks.

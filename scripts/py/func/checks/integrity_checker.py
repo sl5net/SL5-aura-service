@@ -22,11 +22,12 @@ def check_code_integrity(project_root, logger):
                 content = f.read()
 
             for fragment in fragments:
-                if fragment not in content:
+                if len(fragment)>0 and fragment not in content:
                     logger.fatal("-" * 60)
                     logger.fatal("FATAL INTEGRITY CHECK FAILED!")
                     logger.fatal(f"  File: {file_path}")
                     logger.fatal(f"❌ 🛑🛑🛑 Missing Fragment: '{fragment}'")
+                    logger.fatal(f"Missing Fragment: '{fragment}'")
                     logger.fatal("  This part of the code is critical and must not be changed.")
                     logger.fatal("-" * 60)
                     failed_checks += 1

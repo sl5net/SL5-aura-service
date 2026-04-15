@@ -266,7 +266,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
          'Bitte reservieren Sie einen Tisch für 2 Personen um 8 Uhr', 'Polite request with time and number',
          'de-DE'),
         ('eins', '1', 'maps/plugins/numbers_to_digits/de-DE/', 'de-DE'),
-        ('eins zwei', '1 2', 'maps/plugins/numbers_to_digits/de-DE/', 'de-DE'),
+        ('eins zwei', '12', 'maps/plugins/numbers_to_digits/de-DE/', 'de-DE'),
+        ('sieben achten neun', '789', 'maps/plugins/numbers_to_digits/de-DE/', 'de-DE'),
 
         ('Sekunde Lauffer', 'Sigune Lauffer', 'MAP Wannweil', 'de-DE'),
         ('mit nachnamen laufer', 'Mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),

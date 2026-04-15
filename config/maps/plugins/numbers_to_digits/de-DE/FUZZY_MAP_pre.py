@@ -17,28 +17,27 @@ FUZZY_MAP_pre = [
     # - first is read first imported, lower rules maybe not get read.
 
 
-
     # EXAMPLE: None
     ('1', r'(\b|\d)(one)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('2', r'(\b|\d)(two)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('3', r'(\b|\d)(three)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('4', r'(\b|\d)(four)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('5', r'(\b|\d)(five)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('6', r'(\b|\d)(six)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('7', r'(\b|\d)(seven)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('8', r'(\b|\d)(eight)(\b|\d)', 87, # min_accuracy
  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
@@ -54,20 +53,24 @@ FUZZY_MAP_pre = [
  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 #  eins2025-1005-1324 eins eins rein Hi Heinz eins
-# 5 3ich 5 fluss 4
+# 5 3ich 5 fluss 4nlosönun0eins null fünf
+
+    # EXAMPLE: null
+    ('0', r'^(null|nö|nun|los)$', 87,  # min_accuracy
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+    ('0', r'(\b|\d)(null)(\b|\d)', 87,  # min_accuracy
+     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: None
-    ('0', r'(\b|\d)(null)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-    # EXAMPLE: None
     ('1', r'(\b|\d)(eins)(\b|\d)', 99, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+        {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('2', r'(\b|\d)(zwei|Zuruf|zwo|u)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+        {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('3', r'(\b|\d)(drei)(\b|\d)', 87, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+        {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: None
     ('4', r'(\b|\d)(vier)(\b|\d)', 87, # min_accuracy
  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),

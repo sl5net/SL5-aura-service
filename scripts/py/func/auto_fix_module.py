@@ -42,7 +42,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
     # 1. File age check: only fix files modified in the last 10 minutes
     age = time.time() - os.path.getmtime(file_path)
     if age > 600:
-        logger.info(f"Auto-fix skipped: …{(file_path)[-30:]} is too old ({int(age)}s).")
+        # logger.info(f"Auto-fix skipped: …{(file_path)[-30:]} is too old ({int(age)}s).")
         return False
 
     # 2. Read file

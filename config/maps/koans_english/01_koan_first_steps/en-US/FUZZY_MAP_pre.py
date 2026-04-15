@@ -23,5 +23,5 @@ import re  # noqa: F401
 # ============================================================
 
 FUZZY_MAP_pre = [
-    # ('Hello World 01', r'^hello world$', 0, {'flags': re.IGNORECASE}),
+    #('Hello World 01', r'^hello world$', 0, {'flags': re.IGNORECASE}),
 ]

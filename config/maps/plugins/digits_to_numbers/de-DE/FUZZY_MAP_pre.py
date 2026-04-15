@@ -17,7 +17,11 @@ FUZZY_MAP_pre = [
     # - first is read first imported, lower rules maybe not get read.
 
     #  1  2  3  ein  2 3 test
+    #
 
+    # EXAMPLE: b 0 b
+    ('null', r'\b(0)\b', 89, # min_accuracy
+ {'flags': re.IGNORECASE}),
     # EXAMPLE: b 1 b
     ('one', r'\b(1)\b', 89, # min_accuracy
  {'flags': re.IGNORECASE}),
