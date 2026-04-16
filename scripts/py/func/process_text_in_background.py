@@ -22,6 +22,7 @@ from .get_active_window_title import get_active_window_title_safe
 from .log_memory_details import log4DEV
 from .state_manager import should_trigger_startup
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
+from .window_filter import is_window_title_skippable
 # Auto-Zip Smoke Test
 # scripts/py/func/process_text_in_background.py:25
 from .checks.trigger_aura_maintenance import trigger_aura_maintenance
@@ -664,6 +665,15 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         , fuzzy_map_pre
         , logger)
 
+    # if settings.DEV_MODE:
+    #     with open("/tmp/sl5_aura/debug_final_state.txt", "a") as f:
+    #         f.write(f"952: \n--- CALL at {time.strftime('%H:%M:%S')} ---\n")
+    #         f.write(f"Input-Text: '{processed_text}'\n")
+    #         f.write(f"Window-Title: '{_active_window_title}'\n")
+    #         f.write(f"Skip-List: {skip_list}\n")
+    #         f.write(f"New-Processed-Text: '{new_processed_text}'\n")
+    #         f.write("-" * 30 + "\n")
+
 
     #made_a_change_in_cycle = None
 
@@ -743,48 +753,52 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
             # Track global taint for this function execution
 
-                # ... (Jetzt kommt dein if is_private: Block) ...
+            # ... (Jetzt kommt dein if is_private: Block) ...
             # for replacement, match_phrase, threshold, options_dict in fuzzy_map_pre:
 
             # logger.info(f"252: 🔁??? threshold: '{threshold}' based on pattern '{match_phrase}'")
 
-
             flags = options_dict.get('flags', 0)  # Hier extrahierst du den INTEGER korrekt
 
-
-
-            exclude_windows_list = options_dict.get('exclude_windows', [])
             only_in_windows_list = options_dict.get('only_in_windows', [])
-
-            skip_this_regex_pattern = False
-            if only_in_windows_list:
-                skip_this_regex_pattern = True
-                show_debug_prints = True
-                for pattern in only_in_windows_list:
-                    compiled_p = get_compiled_regex(pattern, logger)
-                    if compiled_p and compiled_p.search(str(_active_window_title)):
-                        skip_this_regex_pattern = False
-                        if show_debug_prints:
-                            m_202601180206 = f"🔵 window_title: {_active_window_title} ◀️ {pattern[0:72]} …"
-                            logger.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
-                        break
-            if skip_this_regex_pattern:
+            exclude_windows_list = options_dict.get('exclude_windows', [])
+            if is_window_title_skippable(_active_window_title,only_in_list=only_in_windows_list, exclude_list=exclude_windows_list):
                 continue
 
+            # def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None):
 
-            skip_this_regex_pattern = False
-            if exclude_windows_list and _active_window_title:
-                show_debug_prints = False
-                for pattern in exclude_windows_list:
-                    compiled_p = get_compiled_regex(pattern,logger)
-                    if compiled_p and compiled_p.search(str(_active_window_title)):
-                        skip_this_regex_pattern = True
-                        if show_debug_prints:
-                            m_202601180206 = f"🔵 window_title: {_active_window_title} ◀️ {pattern[0:72]} …"
-                            logger.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
-                        break
-            if skip_this_regex_pattern:
-                continue
+
+
+
+            # skip_this_regex_pattern = False
+            # if only_in_windows_list:
+            #     skip_this_regex_pattern = True
+            #     show_debug_prints = True
+            #     for pattern in only_in_windows_list:
+            #         compiled_p = get_compiled_regex(pattern, logger)
+            #         if compiled_p and compiled_p.search(str(_active_window_title)):
+            #             skip_this_regex_pattern = False
+            #             if show_debug_prints:
+            #                 m_202601180206 = f"🔵 window_title: {_active_window_title} ◀️ {pattern[0:72]} …"
+            #                 logger.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
+            #             break
+            # if skip_this_regex_pattern:
+            #     continue
+            #
+            #
+            # skip_this_regex_pattern = False
+            # if exclude_windows_list and _active_window_title:
+            #     show_debug_prints = False
+            #     for pattern in exclude_windows_list:
+            #         compiled_p = get_compiled_regex(pattern,logger)
+            #         if compiled_p and compiled_p.search(str(_active_window_title)):
+            #             skip_this_regex_pattern = True
+            #             if show_debug_prints:
+            #                 m_202601180206 = f"🔵 window_title: {_active_window_title} ◀️ {pattern[0:72]} …"
+            #                 logger.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
+            #             break
+            # if skip_this_regex_pattern:
+            #     continue
 
 
 
@@ -833,9 +847,12 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
                     if new_text != original_text_before_rule:
 
-                        skip_list = options_dict.get('skip_list', [])
+                        # skip_list = options_dict.get('skip_list', [])
+                        rule_skip_list = options_dict.get('skip_list', [])
+
                         a_rule_matched = True
                         new_processed_text = new_text
+                        skip_list = rule_skip_list
 
                         if is_private:
                             logger.info(
@@ -936,8 +953,18 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
     # final_text = processed_text if a_rule_matched else new_processed_text
     # return final_text, a_rule_matched, skip_list, privacy_taint_occurred
 
-    # with open("/tmp/sl5_aura/debug_final_state.txt", "a") as f:
-    #     f.write(f"951: _active_window_title: {_active_window_title} TEXT: {processed_text} | SKIPS: {skip_list} | MATCH: {a_rule_matched}\n")
+    # --- FLIGHT RECORDER START ---
+    # if settings.DEV_MODE:
+    #     with open("/tmp/sl5_aura/debug_final_state.txt", "a") as f:
+    #         f.write(f"951: _active_window_title: {_active_window_title} TEXT: {processed_text} | SKIPS: {skip_list} | MATCH: {a_rule_matched}\n")
+    #         f.write(f"952: \n--- CALL at {time.strftime('%H:%M:%S')} ---\n")
+    #         f.write(f"Input-Text: '{processed_text}'\n")
+    #         f.write(f"Window-Title: '{_active_window_title}'\n")
+    #         f.write(f"Skip-List: {skip_list}\n")
+    #         f.write(f"Rule-Matched: {a_rule_matched}\n")
+    #         f.write(f"New-Processed-Text: '{new_processed_text}'\n")
+    #         f.write("-" * 30 + "\n")
+    # --- FLIGHT RECORDER END ---
 
     return new_processed_text, a_rule_matched, skip_list, privacy_taint_occurred
 
@@ -956,6 +983,20 @@ def process_text_in_background(logger,
                                session_id: int = 0,
                                unmasked = False
                                ):
+    global settings
+
+    if settings.DEV_MODE:
+        try:
+            with open("/tmp/sl5_aura/debug_api_entry.txt", "a") as f:
+                f.write(f"\n--- API ENTRY at {time.strftime('%H:%M:%S')} ---\n")
+                f.write(f"output_dir: '{output_dir}'\n")
+                f.write(f"Raw-Text: '{raw_text}'\n")
+                f.write(f"Length: {len(raw_text)}\n")
+                f.write(f"Hex: {raw_text.encode('utf-8').hex() if raw_text else 'None'}\n")
+        except Exception as e:
+            with open("/tmp/sl5_aura/debug_crash.txt", "a") as f:
+                f.write(f"CRASH: {str(e)}\n")
+
 
     # scripts/py/func/process_text_in_background.py:588 (process_text_in_background)
 
@@ -966,8 +1007,8 @@ def process_text_in_background(logger,
     # print(f':st: \nprocess_text_in_background:912 raw_text:{raw_text}')
 
     RUN_MODE = os.getenv('RUN_MODE')
-    global settings
     global _active_window_title
+
 
     output_dir_override = ensure_path(output_dir_override)
     output_dir = ensure_path(output_dir)
@@ -982,6 +1023,19 @@ def process_text_in_background(logger,
     _active_window_title = get_active_window_title_safe()
     # end = time.time()
     # duration = end - start # its about 3milliSeconds
+
+    if settings.DEV_MODE:
+        try:
+            with open("/tmp/sl5_aura/debug_api_entry.txt", "a") as f:
+                f.write(f"\n--- API ENTRY at {time.strftime('%H:%M:%S')} ---\n")
+                f.write(f"_active_window_title: '{_active_window_title}'\n")
+                f.write(f"output_dir: '{output_dir}'\n")
+                f.write(f"Raw-Text: '{raw_text}'\n")
+                f.write(f"Length: {len(raw_text)}\n")
+                f.write(f"Hex: {raw_text.encode('utf-8').hex() if raw_text else 'None'}\n")
+        except Exception as e:
+            with open("/tmp/sl5_aura/debug_crash.txt", "a") as f:
+                f.write(f"CRASH: {str(e)}\n")
 
 
     # print(f':st: \nprocess_text_in_background:933 raw_text:{raw_text}')
@@ -2068,21 +2122,26 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 logger_instance.info(f'🔴🔴🔴 exclude_windows_list: {exclude_windows_list}, '
                                      f'🔵🔵🔵 only_in_windows_list: {only_in_windows_list}')
 
+            only_in_windows_list = options_dict.get('only_in_windows', [])
+            exclude_windows_list = options_dict.get('exclude_windows', [])
+            if is_window_title_skippable(_active_window_title,only_in_list=only_in_windows_list, exclude_list=exclude_windows_list):
+                continue
+
             # --- EXCLUDE LIST CHECK ---
-            if exclude_windows_list and _active_window_title:
-                show_debug_prints = False
-                for pattern in exclude_windows_list:
-
-                    compiled_p = get_compiled_regex(pattern,logger_instance)
-
-                    if compiled_p and compiled_p.search(str(_active_window_title)):
-                        skip_this_regex_pattern = True
-
-                        if show_debug_prints:
-                            m_202601180206 = f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
-                            logger_instance.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
-
-                        break  # Ein Treffer reicht zum Überspringen
+            # if exclude_windows_list and _active_window_title:
+            #     show_debug_prints = False
+            #     for pattern in exclude_windows_list:
+            #
+            #         compiled_p = get_compiled_regex(pattern,logger_instance)
+            #
+            #         if compiled_p and compiled_p.search(str(_active_window_title)):
+            #             skip_this_regex_pattern = True
+            #
+            #             if show_debug_prints:
+            #                 m_202601180206 = f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
+            #                 logger_instance.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
+            #
+            #             break  # Ein Treffer reicht zum Überspringen
 
 
 
@@ -2113,23 +2172,23 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             #         if not found_match:
             #             skip_this_regex_pattern = True
 
-            if not skip_this_regex_pattern and only_in_windows_list:
-
-                show_debug_prints = False
-                m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
-
-                skip_this_regex_pattern = True
-                found_match = False
-                for pattern in only_in_windows_list:
-                    compiled_p = get_compiled_regex(pattern,logger_instance)
-                    if compiled_p and compiled_p.search(str(_active_window_title)):
-                        found_match = True
-                        break
-
-                if found_match:
-                    skip_this_regex_pattern = False
-                    if show_debug_prints:
-                        logger_instance.info(f'{only_in_windows_list} matched: 🥳 {m_202601180206}')
+            # if not skip_this_regex_pattern and only_in_windows_list:
+            #
+            #     show_debug_prints = False
+            #     m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
+            #
+            #     skip_this_regex_pattern = True
+            #     found_match = False
+            #     for pattern in only_in_windows_list:
+            #         compiled_p = get_compiled_regex(pattern,logger_instance)
+            #         if compiled_p and compiled_p.search(str(_active_window_title)):
+            #             found_match = True
+            #             break
+            #
+            #     if found_match:
+            #         skip_this_regex_pattern = False
+            #         if show_debug_prints:
+            #             logger_instance.info(f'{only_in_windows_list} matched: 🥳 {m_202601180206}')
 
 
             # if (not skip_this_regex_pattern
@@ -2147,8 +2206,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             #         skip_this_regex_pattern = True
 
 
-            if skip_this_regex_pattern:
-                continue
 
             if GLOBAL_debug_skip_list:
                 print(f'1476: skip_list_temp={skip_list_temp}')

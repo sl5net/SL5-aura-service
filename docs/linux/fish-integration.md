@@ -15,6 +15,11 @@ Fish shell stores functions as individual files. The recommended approach is to 
 2. Paste the following block into the file:
 
 ```fish
+
+
+please newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 function s --description "STT CLI shortcut"
     if test (count $argv) -eq 0

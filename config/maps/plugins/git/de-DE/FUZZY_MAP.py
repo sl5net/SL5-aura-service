@@ -47,6 +47,11 @@ FUZZY_MAP = [
     # EXAMPLE: komm mit
     (' Commit ', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: komm mit bitkom mit
+    (' Commit ', r'\bkomm\s*mit\b', 82, {'flags': re.IGNORECASE}),
+    ('git commit ', r'^bitkom mit$', 82,
+     {'flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+
     # EXAMPLE: kommen mit Message
     (' Commit Message', r'\bkommen\s*mit\s*Message\b', 82, {'flags': re.IGNORECASE}),
 
@@ -66,10 +71,13 @@ FUZZY_MAP = [
     # This one regex replaces 5 old entries.
 
     # EXAMPLE: git status
-    ('git status', r'^(glitschte|gliedstaaten|kickstart)$', 82, {'flags': re.IGNORECASE}),
+    ('git status', r'^(glitschte|gliedstaaten|kickstart|quietscht ab|es Status)$', 82,
+     {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+
 
     # EXAMPLE: git status
-    ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|statt|stade|dates)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('git status', r'^\s*(git|geht|gitter|kids)\s+(status|staates|statt|stade|dates)\s*$', 82,  {'flags': re.IGNORECASE,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+
 
     # --- git add . ---
     # geht statt
