@@ -711,6 +711,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
     #     regex_match_found_prev = True  # need to be then also true for historical reasons. to be compatible to rest of the code
     log4DEV(f"skip_list={skip_list} 🔁🔁🔁🔁🔁 full_text_replaced_by_rule: '{full_text_replaced_by_rule}' ",logger)
 
+
+    # print(f"\n[DEBUG-API] Window: '{_active_window_title}' | Text: '{processed_text}'")
+
     if new_processed_text:
         processed_text = new_processed_text
         log4DEV(f"251: 🔁🔁🔁🔁🔁 full_text_replaced_by_rule: '{full_text_replaced_by_rule}' ", logger)
@@ -719,7 +722,6 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         #for replacement, match_phrase, threshold, *flags_list, rule_mode in fuzzy_map_pre:
 
         for entry in fuzzy_map_pre:
-
 
             if len(entry) < 4:
                 entry =normalize_fuzzy_map_rule_entry(entry)
@@ -745,15 +747,6 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
             # for replacement, match_phrase, threshold, options_dict in fuzzy_map_pre:
 
             # logger.info(f"252: 🔁??? threshold: '{threshold}' based on pattern '{match_phrase}'")
-
-            if settings.DEV_MODE:
-                # --- DEBUG START ---
-                if "ist" in processed_text and "ein" in processed_text:
-                    print(f"\nDEBUG-API: Prüfe Regel '{match_phrase[:30]}...'")
-                    print(f"DEBUG-API: Window-Title: '{_active_window_title}'")
-                    print(f"DEBUG-API: Skip-List davor: {skip_list}")
-                # --- DEBUG END ---
-
 
 
             flags = options_dict.get('flags', 0)  # Hier extrahierst du den INTEGER korrekt
@@ -942,6 +935,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
     # final_text = processed_text if a_rule_matched else new_processed_text
     # return final_text, a_rule_matched, skip_list, privacy_taint_occurred
+
+    # with open("/tmp/sl5_aura/debug_final_state.txt", "a") as f:
+    #     f.write(f"951: _active_window_title: {_active_window_title} TEXT: {processed_text} | SKIPS: {skip_list} | MATCH: {a_rule_matched}\n")
 
     return new_processed_text, a_rule_matched, skip_list, privacy_taint_occurred
 
@@ -1710,7 +1706,6 @@ def process_text_in_background(logger,
                 if False and hasattr(settings, 'SIGNATURE_MAPPING'):
                     if type(new_current_text) is str and len(new_current_text) >= 11:
 
-                        # 1. Bestimme die richtige Signatur basierend auf dem Fenster
                         active_sig_default = settings.SIGNATURE_MAPPING.get("DEFAULT", "")
                         active_sig = active_sig_default
 
@@ -2108,6 +2103,19 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             #             logger_instance.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
 
             # --- ONLY IN LIST CHECK ---
+            # if not skip_this_regex_pattern and only_in_windows_list:
+            #     if not _active_window_title:
+            #         skip_this_regex_pattern = True
+            #     else:
+            #         found_match = False
+            #         for pattern in only_in_windows_list:
+            #             compiled_p = get_compiled_regex(pattern, logger_instance)
+            #             if compiled_p and compiled_p.search(str(_active_window_title)):
+            #                 found_match = True
+            #                 break
+            #         if not found_match:
+            #             skip_this_regex_pattern = True
+
             if (not skip_this_regex_pattern
                     and only_in_windows_list and _active_window_title):
 
@@ -2126,8 +2134,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     if show_debug_prints:
                         logger_instance.info(f'{only_in_windows_list} matched: 🥳 {m_202601180206}')
 
-                else:
-                    skip_this_regex_pattern = True
 
             # if (not skip_this_regex_pattern
             #         and only_in_windows_list and _active_window_title):
