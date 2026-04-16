@@ -13,6 +13,9 @@
           2. الصق الكتلة التالية في نهاية الملف:
 
 ```ksh
+
+please newest updates in zsh - verson
+
 # --- STT Project Path Resolution ---
 unalias s 2>/dev/null
 function s {
@@ -82,7 +85,7 @@ function s {
    . ~/.kshrc
    ```
 
-                                           ## ملاحظات خاصة بـKsh
+                                          ## ملاحظات خاصة بـ Ksh
 
 - يدعم Ksh بناء جملة `اسم الوظيفة { }` و`name() { }`؛ يتم استخدام الكلمة الأساسية "function" هنا للتوضيح.
 - `local` **غير** مدعوم في جميع متغيرات Ksh (على سبيل المثال `ksh88`). ولذلك يتم الإعلان عن المتغيرات في الوظيفة أعلاه بدون "محلي". إذا كنت تستخدم `mksh` أو `ksh93`، فيمكن استخدام `typeset` بدلاً من ذلك: `typeset TEMP_FILE=$(mktemp)`.

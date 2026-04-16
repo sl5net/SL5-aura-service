@@ -15,6 +15,11 @@ Los almacenes de conchas de pescado funcionan como archivos individuales. El enf
 2. Pegue el siguiente bloque en el archivo:
 
 ```fish
+
+
+please newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 function s --description "STT CLI shortcut"
     if test (count $argv) -eq 0

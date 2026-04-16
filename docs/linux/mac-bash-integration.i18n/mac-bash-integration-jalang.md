@@ -2,7 +2,7 @@
 
 > **macOS Catalina (10.15) より前のデフォルト シェル。** Catalina 以降、macOS にはデフォルト シェルとして Zsh が同梱されています。最新の Mac を使用していて、シェルを変更していない場合は、代わりに [macOS Zsh Integration](.././mac-zsh-integration.i18n/mac-zsh-integration-jalang.md) ガイドを参照してください。
 >
-> 現在のシェルは次のようにして確認できます。
+> 現在のシェルを次のように確認できます。
 >「バッシュ」
 > $SHELLをエコーする
 >「」
@@ -20,6 +20,10 @@ STT (Speech-to-Text) CLI との対話を容易にするために、`~/.bash_prof
 2. ファイルの最後に次のブロックを貼り付けます。
 
 ```bash
+
+please read newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 unalias s 2>/dev/null
 s() {

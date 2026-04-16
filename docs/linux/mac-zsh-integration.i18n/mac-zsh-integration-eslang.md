@@ -15,6 +15,10 @@ Para facilitar la interacción con la CLI STT (Voz a Texto), puede agregar una f
 2. Pegue el siguiente bloque al final del archivo:
 
 ```zsh
+
+please read newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 unalias s 2>/dev/null
 s() {

@@ -55,7 +55,6 @@ from .setup_initial_model import get_model_name_from_key
 # from .config.regex_cache import REGEX_COMPILE_CACHE
 from .config.regex_cache import get_cached_regex
 
-from .get_compiled_regex import get_compiled_regex
 
 from typing import Union, Optional
 
@@ -2104,7 +2103,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
 
-            skip_this_regex_pattern = False
+            # skip_this_regex_pattern = False
             exclude_windows_list = options_dict.get('exclude_windows', [])
             only_in_windows_list = options_dict.get('only_in_windows', [])
 

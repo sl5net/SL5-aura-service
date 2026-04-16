@@ -15,6 +15,11 @@
                      2. الصق الكتلة التالية في الملف:
 
 ```fish
+
+
+please newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 function s --description "STT CLI shortcut"
     if test (count $argv) -eq 0

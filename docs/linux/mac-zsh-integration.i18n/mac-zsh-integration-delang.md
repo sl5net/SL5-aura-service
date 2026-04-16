@@ -15,6 +15,10 @@ Um die Interaktion mit der STT-CLI (Speech-to-Text) zu vereinfachen, können Sie
 2. Fügen Sie den folgenden Block am Ende der Datei ein:
 
 ```zsh
+
+please read newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 unalias s 2>/dev/null
 s() {

@@ -2,7 +2,7 @@
 
 Um die Interaktion mit der STT-CLI (Speech-to-Text) zu vereinfachen, können Sie Ihrem Shell-Profil eine Verknüpfungsfunktion hinzufügen. Dadurch können Sie einfach „Ihre Frage“ in das Terminal eingeben.
 
-> **Hinweis:** Dash und andere strikte POSIX-Shells (`/bin/sh` auf Debian/Ubuntu ist standardmäßig Dash) unterstützen **nicht** das Schlüsselwort „local“ in allen Kontexten, Prozessersetzungen oder Arrays. Die folgende Funktion ist vollständig POSIX-kompatibel geschrieben.
+> **Note:** Dash and other strict POSIX shells (`/bin/sh` on Debian/Ubuntu is Dash by default) do **not** support the `local` keyword in all contexts, process substitution, or arrays. Die folgende Funktion ist vollständig POSIX-kompatibel geschrieben.
 
 ## Einrichtungsanweisungen
 
@@ -16,6 +16,10 @@ Um die Interaktion mit der STT-CLI (Speech-to-Text) zu vereinfachen, können Sie
 2. Fügen Sie den folgenden Block am Ende der Datei ein:
 
 ```sh
+
+please read newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 unalias s 2>/dev/null
 s() {

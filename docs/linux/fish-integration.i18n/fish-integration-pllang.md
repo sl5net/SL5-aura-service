@@ -4,7 +4,7 @@ Aby ułatwić interakcję z interfejsem CLI STT (Speech-to-Text), możesz dodać
 
 ## Instrukcje konfiguracji
 
-Skorupa ryb przechowuje funkcje jako osobne pliki. Zalecanym podejściem jest utworzenie dedykowanego pliku funkcji.
+Skorupa ryb przechowuje funkcje jako osobne pliki. Zalecanym podejściem jest utworzenie dedykowanego pliku funkcyjnego.
 
 1. Utwórz plik funkcyjny (katalog zostanie utworzony automatycznie, jeśli nie istnieje):
 __KOD_BLOKU_0__

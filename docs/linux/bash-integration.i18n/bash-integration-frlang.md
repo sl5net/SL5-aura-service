@@ -13,6 +13,9 @@ Pour faciliter l'interaction avec la CLI STT (Speech-to-Text), vous pouvez ajout
 2. Collez le bloc suivant à la fin du fichier :
 
 ```bash
+
+please read newest updates in zsh - verson
+
 # --- STT Project Path Resolution ---
 unalias s 2>/dev/null
 s() {
@@ -79,7 +82,7 @@ s() {
 
 > **Remarque :** Si vous utilisez Bash comme shell de connexion (par exemple via SSH), ajoutez également le même bloc à `~/.bash_profile`, ou sourcez `~/.bashrc` à partir de celui-ci :
 > ```bash
-> [ -f ~/.bashrc ] && source ~/.bashrc
+> [ -f ~/.bashrc ] && sources ~/.bashrc
 > ```
 
 ## Caractéristiques

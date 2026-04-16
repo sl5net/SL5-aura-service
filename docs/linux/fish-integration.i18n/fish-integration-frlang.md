@@ -15,6 +15,11 @@ Fish Shell stocke les fonctions sous forme de fichiers individuels. L'approche r
 2. Collez le bloc suivant dans le fichier :
 
 ```fish
+
+
+please newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 function s --description "STT CLI shortcut"
     if test (count $argv) -eq 0

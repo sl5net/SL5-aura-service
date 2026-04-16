@@ -20,6 +20,10 @@
           2. الصق الكتلة التالية في نهاية الملف:
 
 ```bash
+
+please read newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 unalias s 2>/dev/null
 s() {

@@ -17,6 +17,15 @@ Um die Interaktion mit der STT-CLI (Speech-to-Text) zu vereinfachen, können Sie
 
 unalias s 2>/dev/null
 s() {
+    LATEST_CHANGE=$(stat -c %Y /tmp/sl5_aura/sl5net_aura_project_root)
+    PID=$(pgrep -f "scripts.py.service_api" | head -n 1)
+    PROC_START=$(stat -c %Y /proc/$PID 2>/dev/null || echo 0)
+    if [ "$LATEST_CHANGE" -gt "$PROC_START" ]; then
+        echo "Code is newer. restart Api..."
+        pkill -9 -f uvicorn 2>/dev/null
+        start_service
+    fi
+
     if [ $# -eq 0 ]; then
         echo "question <your question>"
         return 1

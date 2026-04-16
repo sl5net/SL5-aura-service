@@ -15,6 +15,11 @@ Fischschalenspeicher fungieren als einzelne Dateien. Der empfohlene Ansatz beste
 2. Fügen Sie den folgenden Block in die Datei ein:
 
 ```fish
+
+
+please newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 function s --description "STT CLI shortcut"
     if test (count $argv) -eq 0

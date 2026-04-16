@@ -31,4 +31,4 @@ jobs:
       - name: Run Self-Test
         run: |
           export PYTHONPATH=$PYTHONPATH:.
-          .venv/bin/python3 scripts/py/func/checks/self_tester.py
+          .venv/bin/python3 -m scripts.py.func.checks.self_tester

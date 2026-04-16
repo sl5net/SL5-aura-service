@@ -15,6 +15,11 @@ A casca do peixe armazena funções como arquivos individuais. A abordagem recom
 2. Cole o seguinte bloco no arquivo:
 
 ```fish
+
+
+please newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 function s --description "STT CLI shortcut"
     if test (count $argv) -eq 0

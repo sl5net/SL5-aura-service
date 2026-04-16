@@ -13,6 +13,9 @@ Pour faciliter l'interaction avec la CLI STT (Speech-to-Text), vous pouvez ajout
 2. Collez le bloc suivant à la fin du fichier :
 
 ```ksh
+
+please newest updates in zsh - verson
+
 # --- STT Project Path Resolution ---
 unalias s 2>/dev/null
 function s {

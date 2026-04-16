@@ -15,6 +15,10 @@ STT(Speech-to-Text) CLI와 더 쉽게 상호작용하려면 `~/.zshrc`에 바로
 2. 파일 끝에 다음 블록을 붙여넣습니다.
 
 ```zsh
+
+please read newest updates in zsh - verson
+
+
 # --- STT Project Path Resolution ---
 unalias s 2>/dev/null
 s() {
