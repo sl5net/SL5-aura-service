@@ -1,0 +1,34 @@
+name: Aura Self-Test
+on: [push, workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache LanguageTool
+        id: cache-lt
+        uses: actions/cache@v4
+        with:
+          path: ./LanguageTool-6.6
+          key: ${{ runner.os }}-lt-6.6
+
+      - name: Download LanguageTool
+        if: steps.cache-lt.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
+          unzip LanguageTool-6.6.zip
+
+      - name: Run Setup
+        run: |
+          export CI=true
+          bash ./setup/ubuntu_setup.sh
+
+      - name: Install Dev Deps
+        run: .venv/bin/pip install -r requirements-dev.txt
+
+      - name: Run Self-Test
+        run: |
+          export PYTHONPATH=$PYTHONPATH:.
+          .venv/bin/python3 scripts/py/func/checks/self_tester.py

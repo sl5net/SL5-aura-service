@@ -957,8 +957,6 @@ def process_text_in_background(logger,
                                unmasked = False
                                ):
 
-
-
     # scripts/py/func/process_text_in_background.py:588 (process_text_in_background)
 
     # print(f':st: \nprocess_text_in_background:910 chunk_id={chunk_id} session_id={session_id} unmasked={unmasked}\n\n')
@@ -1838,7 +1836,6 @@ def process_text_in_background(logger,
 
         # print(f':st: \nprocess_text_in_background:1730 raw_text:{raw_text}')
 
-
         process = psutil.Process(os.getpid())
         mem_info = process.memory_info()
         rss_mb = mem_info.rss / (1024 * 1024)
@@ -2116,12 +2113,12 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             #         if not found_match:
             #             skip_this_regex_pattern = True
 
-            if (not skip_this_regex_pattern
-                    and only_in_windows_list and _active_window_title):
+            if not skip_this_regex_pattern and only_in_windows_list:
 
                 show_debug_prints = False
                 m_202601180206=f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
 
+                skip_this_regex_pattern = True
                 found_match = False
                 for pattern in only_in_windows_list:
                     compiled_p = get_compiled_regex(pattern,logger_instance)

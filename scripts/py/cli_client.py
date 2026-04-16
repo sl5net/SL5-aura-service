@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 SERVICE_URL = "http://127.0.0.1:8830/process_cli"
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 load_dotenv(PROJECT_ROOT / ".secrets")
-print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
+# print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 CLIENT_API_KEY = API_KEY_SECRET
 

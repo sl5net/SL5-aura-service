@@ -4,7 +4,6 @@ import re
 import subprocess
 import time
 from pathlib import Path
-import platform
 
 # scripts/py/func/checks/check_settings_usage.py:7
 
@@ -60,7 +59,6 @@ def analyze_usages(defined_vars):
     try:
         # Run the shell command
 
-        import shlex
 
         tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
         PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())

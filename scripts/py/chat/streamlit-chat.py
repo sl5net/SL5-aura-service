@@ -80,7 +80,7 @@ def st_speak(text, speed=1.0):
     """
     components.html(speak_js, height=0)
 
-print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
+# print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
 
 API_PORT = 8830
 API_ENDPOINT = "process_cli"

@@ -27,7 +27,7 @@ def get_active_window_kde():
                 return line.split(":")[1].strip()
     except Exception as e:
         print(f'29: {e}')
-        return None
+        return "NO_WINDOW_TITLE_30"
 
 def get_active_window_title_atspi_fallback():
     """
@@ -373,7 +373,7 @@ def get_active_window_title_safe():
             import ctypes
             hwnd = ctypes.windll.user32.GetForegroundWindow()
             length = ctypes.windll.user32.GetWindowTextLengthW(hwnd)
-            if length == 0: return None
+            if length == 0: return "NO_WINDOW_TITLE_374"
             buff = ctypes.create_unicode_buffer(length + 1)
             ctypes.windll.user32.GetWindowTextW(hwnd, buff, length + 1)
             return buff.value.lower()
@@ -508,7 +508,7 @@ def get_active_window_title_safe():
         print(f'178 {e}')
         pass
 
-    return None
+    return "NO_WINDOW_TITLE_511"
 
 
 # --- CLIPBOARD FUNKTIONEN ---
