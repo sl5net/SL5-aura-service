@@ -580,6 +580,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 # Helper to check if a string contains regex special characters
 def is_regex_pattern(pattern):
+    # This is a simple heuristic. You can add more characters if needed.
     return any(char in pattern for char in r'^$*+?{}[]\|()")')
 
 
@@ -612,7 +613,7 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
 
     for word_in_text in words_in_text:
 
-        # iterate over the words in `processed_text` and compare each to `replacement`.
+        # We need to iterate over the words in `processed_text` and compare each to `replacement`.
         words_in_text = re.findall(r'\b\w+\b', processed_text)
         temp_text_for_fuzzy_replace = processed_text
 
@@ -639,6 +640,10 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
                             temp_text_for_fuzzy_replace[start_index + original_word_length:]
                     )
 
+                    # scripts/py/func/process_text_in_background.py:560 (apply_fuzzy_replacement_logic)
+                    # angefangen noch ganz ohne funtion <=================================================
+                    # is_private = "/_" in source_path or "\\_" in source_path
+
                     found_fuzzy_match = True
                     logger.info(
                         f"🚀Fuzzy: '{processed_text}' -> '{temp_text_for_fuzzy_replace}' (Target: '{replacement}')")
@@ -658,6 +663,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
         processed_text
         , fuzzy_map_pre
         , logger)
+
+
     #made_a_change_in_cycle = None
 
     #log_all_processed_text = False and settings.DEV_MODE
@@ -739,23 +746,52 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
             # logger.info(f"252: 🔁??? threshold: '{threshold}' based on pattern '{match_phrase}'")
 
+            if settings.DEV_MODE:
+                # --- DEBUG START ---
+                if "ist" in processed_text and "ein" in processed_text:
+                    print(f"\nDEBUG-API: Prüfe Regel '{match_phrase[:30]}...'")
+                    print(f"DEBUG-API: Window-Title: '{_active_window_title}'")
+                    print(f"DEBUG-API: Skip-List davor: {skip_list}")
+                # --- DEBUG END ---
+
+
+
             flags = options_dict.get('flags', 0)  # Hier extrahierst du den INTEGER korrekt
-            
-            
-            skip_list = options_dict.get('skip_list', [])
+
+
+
             exclude_windows_list = options_dict.get('exclude_windows', [])
             only_in_windows_list = options_dict.get('only_in_windows', [])
 
-            if _active_window_title:
-                if only_in_windows_list:
-                    if not any(re.search(p, str(_active_window_title), re.IGNORECASE)
-                           for p in only_in_windows_list):
-                        continue
+            skip_this_regex_pattern = False
+            if only_in_windows_list:
+                skip_this_regex_pattern = True
+                show_debug_prints = True
+                for pattern in only_in_windows_list:
+                    compiled_p = get_compiled_regex(pattern, logger)
+                    if compiled_p and compiled_p.search(str(_active_window_title)):
+                        skip_this_regex_pattern = False
+                        if show_debug_prints:
+                            m_202601180206 = f"🔵 window_title: {_active_window_title} ◀️ {pattern[0:72]} …"
+                            logger.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
+                        break
+            if skip_this_regex_pattern:
+                continue
 
-                if exclude_windows_list:
-                    if any(re.search(p, str(_active_window_title), re.IGNORECASE)
-                           for p in exclude_windows_list):
-                        continue
+
+            skip_this_regex_pattern = False
+            if exclude_windows_list and _active_window_title:
+                show_debug_prints = False
+                for pattern in exclude_windows_list:
+                    compiled_p = get_compiled_regex(pattern,logger)
+                    if compiled_p and compiled_p.search(str(_active_window_title)):
+                        skip_this_regex_pattern = True
+                        if show_debug_prints:
+                            m_202601180206 = f"🔵 window_title: {_active_window_title} ◀️ {pattern[0:72]} …"
+                            logger.info(f'{exclude_windows_list} matched: 🥳 {m_202601180206}')
+                        break
+            if skip_this_regex_pattern:
+                continue
 
 
 
@@ -796,12 +832,17 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                     # logger.info(
                     # f"🔁 464: '{new_text}'")
 
+                    # Hier wird es interessant: Wir behalten den alten und den neuen Text für die Skripte
+
                     original_text_before_rule = processed_text
                     log4DEV(f'original_text_before_rule = processed_text ===> {original_text_before_rule}',logger)
                     log4DEV(f'original_text_before_rule = processed_text ===> {original_text_before_rule} <- {processed_text}',logger)
 
                     if new_text != original_text_before_rule:
 
+                        skip_list = options_dict.get('skip_list', [])
+                        a_rule_matched = True
+                        new_processed_text = new_text
 
                         if is_private:
                             logger.info(
@@ -817,7 +858,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                         processed_text = new_text # its a bit strange to replace same with same. but anyhow it should possible (4.12.'25 13:46 Thu)
 
 
-                    a_rule_matched = True
+                    # a_rule_matched = True
 
                     if is_private:
                         privacy_taint_occurred = True
@@ -848,6 +889,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                             # <<< ÄNDERUNG 4: Übergebe das 'match_data'-Dictionary
                             script_result = module.execute(match_data)  # Das Skript gibt den finalen Text zurück
 
+                            # lang_for_tts = "de-DE"  # Deine Standard-Systemsprache
 
                             new_current_text = ''
                             if isinstance(script_result, str):
@@ -894,7 +936,17 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
     if GLOBAL_debug_skip_list:
         print(f'731: skip_list={skip_list}')
+
+
+
+
+    # final_text = processed_text if a_rule_matched else new_processed_text
+    # return final_text, a_rule_matched, skip_list, privacy_taint_occurred
+
     return new_processed_text, a_rule_matched, skip_list, privacy_taint_occurred
+
+
+
 
 # scripts/py/func/process_text_in_background.py:864
 def process_text_in_background(logger,
@@ -947,7 +999,7 @@ def process_text_in_background(logger,
 
 
     if settings.DEV_MODE or True:
-        # Because it's a new feature and we're not quite sure if it works very well on Windows, it's good to have output
+        # Because it's a new feature and we're not quite sure if it works very well on Windows, it's good to have output  (original:'weil es ein neues feature ist und wir noch nicht ganz sicher sind ob es auf windows sehr gut funktioniert ist es doch gut über eine ausgabe ' ). 12.3.'26 06:36 Thu
 
         # It is also helpful when create rules if you know exactly which names are being used
         # todo : set not always true maybe
@@ -1674,7 +1726,7 @@ def process_text_in_background(logger,
                             log4DEV(f'🔵 window_title: {_active_window_title}',logger)
 
                         # for app_name, sig in settings.SIGNATURE_MAPPING.items():
-                        #     if app_name in _active_window_title:
+                        #     if app_name in _active_window_title:  # Sucht nach "0 A.D." im Titel
                         #         active_sig = sig
                         #         break
                         #
@@ -2229,6 +2281,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                                     script_result = module.execute(match_data)
 
                                     # Standardwerte initialisieren
+                                    # lang_for_tts = "de-DE"  # Deine Standard-Systemsprache
 
                                     if isinstance(script_result, str):
                                         new_current_text = script_result
@@ -2250,6 +2303,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
 
+                                # Dein restlicher Code für diesen Block
+                            made_a_change += 1
                             if not privacy_taint_occurred:
                                 log4DEV(
                                     f"834🚀🚀Iterative-All-Rules made_a_change={made_a_change} : '{original_text_for_script}' -> '{new_current_text}' (Pattern: '{regex_pattern}')",logger_instance)

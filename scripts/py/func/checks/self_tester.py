@@ -301,7 +301,16 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         ('der hund bellt', 'Der Hund bellt', 'Capitalization of article and noun', 'de-DE'),
         ('die katze schläft', 'Die Katze schläft', 'Capitalization of article and noun', 'de-DE'),
         ('ein haus und ein garten', 'Ein Haus und ein Garten', 'Capitalization of nouns', 'de-DE'),
-        ('heute ist montag', 'Heute ist Montag', 'Capitalization of day of the week', 'de-DE'),
+        ('heute ist montag', 'Heute ist Montag', 'Capitalization of day', 'de-DE'),
+        ('heute ist ein schöner tag', 'Heute ist ein schöner Tag ', 'Capitalization of day', 'de-DE'),
+        ('heute ist ein schöner tag zwei drei', 'Heute ist ein schöner Tag 23', 'Capitalization of day and number check', 'de-DE'),
+
+        ('zwei drei hunde sind im wald', '23 Hunde sind im Wald', 'Number at start + LT', 'de-DE'),
+        ('zwei zwei', '22', 'Multiple replacement check', 'de-DE'),
+        ('die antwort ist ein test', 'Die Antwort ist ein Test', 'Window filter provocation test', 'de-DE'),
+
+
+
         ('im sommer ist es warm', 'Im Sommer ist es warm', 'Capitalization of season', 'de-DE'),
 
         # --- Zahlen und Ziffern ---
@@ -386,10 +395,10 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         #  'de-DE'),
     ]
 
-    test_cases = [
-        # ('was is 5 mal 1', 'Das Ergebnis von 5 mal 2 ist 10.', 'Partial map + LT correction', 'de-DE'),
-        ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
-    ]
+    # test_cases = [
+    #     # ('was is 5 mal 1', 'Das Ergebnis von 5 mal 2 ist 10.', 'Partial map + LT correction', 'de-DE'),
+    #     ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
+    # ]
 
     # 1. Filter test cases for the current language
     active_tests = []
