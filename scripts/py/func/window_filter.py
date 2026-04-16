@@ -1,6 +1,9 @@
 import re
 
-def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None):
+from scripts.py.func.get_compiled_regex import get_compiled_regex
+
+
+def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None, logger=None):
     """
     Returns True if the current window title suggests the rule should be skipped.
     Follows Fail-Safe logic: if a window is required but none is found, it skips.
@@ -18,16 +21,21 @@ def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None
 
         found_match = False
         for pattern in only_in_list:
-            if re.search(pattern, title_str, re.IGNORECASE):
+            compiled_p = get_compiled_regex(pattern, logger)
+            if compiled_p and compiled_p.search(str(title_str)):
+            # if re.search(pattern, title_str, re.IGNORECASE):
                 found_match = True
                 break
         if not found_match:
             return True
 
     # 2. Check "Exclude" constraint
+
     if exclude_list and title_str:
         for pattern in exclude_list:
-            if re.search(pattern, title_str, re.IGNORECASE):
+            compiled_p = get_compiled_regex(pattern,logger)
+            if compiled_p and compiled_p.search(str(title_str)):
+                # if re.search(pattern, title_str, re.IGNORECASE):
                 return True
 
     return False

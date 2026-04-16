@@ -16,7 +16,7 @@ from scripts.py.func.config.regex_cache import REGEX_COMPILE_CACHE
 
 
 def get_compiled_regex(pattern, logger_instance, flags=0):
-    # Validierung: Ist pattern überhaupt ein String?
+    # is pattern a string?
     if not isinstance(pattern, (str, re.Pattern)):
         if logger_instance:
             logger_instance.error(f"❌ CRITICAL: pattern ist {type(pattern)} statt string! Wert: {pattern}")

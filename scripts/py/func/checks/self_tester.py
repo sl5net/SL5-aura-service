@@ -471,7 +471,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                     logger.error(f":st:   Input:    '{raw}'")
                     logger.error(f":st:   Expected: '{expected}'")
                     logger.error(f":st:   Got:      '{actual}'")
-                    logger.info(f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> exit")
+                    logger.info(f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> :) its oky no problem. try it better next time ;)")
+
+                    # logger.info(f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> exit")
                     # sys.exit(1)
 
             except Exception as e:

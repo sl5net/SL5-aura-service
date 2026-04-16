@@ -761,7 +761,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
             only_in_windows_list = options_dict.get('only_in_windows', [])
             exclude_windows_list = options_dict.get('exclude_windows', [])
-            if is_window_title_skippable(_active_window_title,only_in_list=only_in_windows_list, exclude_list=exclude_windows_list):
+            if is_window_title_skippable(_active_window_title,only_in_list=only_in_windows_list, exclude_list=exclude_windows_list,logger=logger):
                 continue
 
             # def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None):
@@ -2123,7 +2123,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             only_in_windows_list = options_dict.get('only_in_windows', [])
             exclude_windows_list = options_dict.get('exclude_windows', [])
-            if is_window_title_skippable(_active_window_title,only_in_list=only_in_windows_list, exclude_list=exclude_windows_list):
+            if is_window_title_skippable(_active_window_title,only_in_list=only_in_windows_list, exclude_list=exclude_windows_list,logger=logger_instance):
                 continue
 
             # --- EXCLUDE LIST CHECK ---
