@@ -9,6 +9,7 @@ import sys
 import os
 from pathlib import Path
 
+from peter_backup.peter import README_AI_PATH
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
 from ..audio_manager import speak_inclusive_fallback
@@ -274,7 +275,6 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         ('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'Partial map + LT correction', 'de-DE'),
         ('von sebastian laufer', 'Von Sebastian Lauffer', 'Partial map + LT correction', 'de-DE'),
         ('punkt', '.', 'Exact MAP match', 'de-DE'),
-        ('komma', ',', 'Exact MAP match'),
         # ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization', 'de-DE'),
         ('git at', 'git add .', 'Fuzzy map REGEX match', 'de-DE'),
         ('geht status', 'git status', 'Fuzzy map FUZZY string match', 'de-DE'),
@@ -284,7 +284,6 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
         # --- Grundlegende Satzzeichen ---
         ('punkt', '.', 'Exact MAP match for punctuation', 'de-DE'),
-        ('komma', ',', 'Exact MAP match for punctuation', 'de-DE'),
         ('fragezeichen', '?', 'Exact MAP match for punctuation', 'de-DE'),
         ('ausrufezeichen', '!', 'Exact MAP match for punctuation', 'de-DE'),
         ('doppelpunkt', ':', 'Exact MAP match for punctuation', 'de-DE'),
@@ -302,7 +301,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         ('die katze schläft', 'Die Katze schläft', 'Capitalization of article and noun', 'de-DE'),
         ('ein haus und ein garten', 'Ein Haus und ein Garten', 'Capitalization of nouns', 'de-DE'),
         ('heute ist montag', 'Heute ist Montag', 'Capitalization of day', 'de-DE'),
-        ('heute ist ein schöner tag', 'Heute ist ein schöner Tag ', 'Capitalization of day', 'de-DE'),
+        ('heute ist ein schöner tag', 'Heute ist ein schöner Tag', 'Capitalization of day', 'de-DE'),
         ('heute ist ein schöner tag zwei drei', 'Heute ist ein schöner Tag 23', 'Capitalization of day and number check', 'de-DE'),
 
         ('zwei drei hunde sind im wald', '23 Hunde sind im Wald', 'Number at start + LT', 'de-DE'),
@@ -319,7 +318,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         ('neun', '9', 'Numbers as digits', 'de-DE'),
         ('zehn', '10', 'Number as digit', 'de-DE'),
         # ('zweitausendunddreiundzwanzig', '2023', 'Year as digit', 'de-DE'),
+        ('komma', ',', 'Exact MAP match for punctuation', 'de-DE'),
         ('fünf komma', '5 ,', 'Decimal number', 'de-DE'),
+        ('fünf komma drei', '5 , 3', 'Decimal number', 'de-DE'),
         # ('minus drei', '- 3', 'Negative number', 'de-DE'),
 
         # --- Häufige Wörter und Phrasen ---
@@ -468,9 +469,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                 else:
                     failed_count += 1
                     logger.error(f":st: ❌ FAIL: {desc}")
-                    logger.error(f":st:   Input:    '{raw}'")
-                    logger.error(f":st:   Expected: '{expected}'")
-                    logger.error(f":st:   Got:      '{actual}'")
+                    logger.error(f":st:   Input: ---> '{raw}'")
+                    logger.error(f":st:   Expected:-> '{expected}'")
+                    logger.error(f":st:   Got: -----> '{actual}'")
                     logger.info(f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> :) its oky no problem. try it better next time ;)")
 
                     # logger.info(f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> exit")
@@ -498,12 +499,25 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     duration = time.perf_counter() - start_time
     logger.info("=" * 40)
     # m1 =f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}"
-    logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests")
+    logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
     m2=f"⌚ Total Duration: {duration:.2f} seconds"
     logger.info(f":st:⌚ Total Duration: {duration:.2f} seconds")
     speak_inclusive_fallback(f"{m2}", 'de-DE')# 'en-US') # 'de-DE')
-
     logger.info("-" * 40)
+
+    README = """
+# Example Results:
+## 17.4.'26 15:15 Fri
+59,741 - INFO   - :st:✅ Passed: 95 | ❌ Failed: 0 Tests
+15:08:59,741 - INFO   - :st:⌚ Total Duration: 6.52 seconds
+
+Passed: 95 | ❌ Failed: 0 Tests (hint search for: ❌ FAIL )
+15:17:25,615 - INFO   - :st:⌚ Total Duration: 6.45 seconds
+
+
+    """
+    logger.info("-" * 40)
+    logger.info(README)
 
     settings.PLUGIN_HELPER_TTS_ENABLED = backup_tts_enabled
 
@@ -778,3 +792,26 @@ def should_restore(backup: Path, target: Path,
 
     # If sizes are same (within tolerance) and mtimes close, optionally compare hashes
     return sha256(backup) != sha256(target)
+
+
+if __name__ == "__main__":
+    import logging
+
+    # Logger-Setup für die Konsole
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    test_logger = logging.getLogger("aura_self_test")
+
+    # Pfade vorbereiten
+    tmp_path = Path("/tmp/sl5_aura")
+    tmp_path.mkdir(parents=True, exist_ok=True)
+
+    # Standardwerte für GHA/CLI
+    lt_url = "http://localhost:8082"
+    lang = "de-DE"
+
+    print(f":st: Starting self-test (CLI mode) using {lt_url}...")
+    try:
+        run_core_logic_self_test(test_logger, tmp_path, lt_url, lang)
+    except Exception as e:
+        print(f":st: CRITICAL ERROR: {e}")
+        sys.exit(1)

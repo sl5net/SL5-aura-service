@@ -216,10 +216,21 @@ with st.sidebar:
     st_speak_diagnostic("Diagnose-Modus aktiv.")
     st.info("Hinweis: Chrome wird für die Sprachausgabe empfohlen.")
 
-st.info('https://github.com/sl5net/SL5-aura-service/blob/master/docs/README/README-delang.md')
-st.info('https://pad.ccc-mannheim.de/p/kihelfer')
+st.info('README deutsch: https://github.com/sl5net/SL5-aura-service/blob/master/README.i18n/README-delang.md')
 
-st.info('https://pad.fkn-systems.de/code/#/2/code/edit/jAbuTic-rjSNHcr4TLeDzxLq/')
+st.info('Pad Zusammenarbeit CCC Mannheim e.V.: https://pad.ccc-mannheim.de/p/kihelfer')
+
+st.info('CryptPad Zusammenarbeit: https://pad.fkn-systems.de/code/#/2/code/edit/jAbuTic-rjSNHcr4TLeDzxLq/')
+
+st.info('Gemini lernt Aura: https://www.youtube.com/watch?v=QEquh901pnc')
+
+
+
+st.info('Aura: Schnellinstallation: https://www.youtube.com/watch?v=29xiwIW1ZHQ')
+
+
+st.info('Aura: Radio AI-Talk (deutsch/english): https://www.youtube.com/watch?v=6W3ZLUNcV-U')
+st.info('Gemini lernt Aura: https://www.youtube.com/watch?v=QEquh901pnc')
 
 st.markdown(r"""[![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/demo_fast.gif)""")
 

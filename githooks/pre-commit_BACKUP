@@ -39,7 +39,7 @@ if [ -f .venv/bin/activate ]; then
   source .venv/bin/activate
 fi
 
-.venv/bin/python scripts/py/func/checks/check_comment_quality --sort-by=quality --fix
+.venv/bin/python scripts/py/func/checks/check_comment_quality.py --sort-by=quality --fix
 echo "✅ check_slop_comments passed. ✅"
 
 # Run flake8 on specific directories

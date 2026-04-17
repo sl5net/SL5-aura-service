@@ -1,4 +1,3 @@
-import re
 
 from scripts.py.func.get_compiled_regex import get_compiled_regex
 
@@ -23,7 +22,7 @@ def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None
         for pattern in only_in_list:
             compiled_p = get_compiled_regex(pattern, logger)
             if compiled_p and compiled_p.search(str(title_str)):
-            # if re.search(pattern, title_str, re.IGNORECASE):
+                # if re.search(pattern, title_str, re.IGNORECASE):
                 found_match = True
                 break
         if not found_match:
