@@ -8,8 +8,15 @@ from dotenv import load_dotenv
 import streamlit.components.v1 as components
 import socket
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+# PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+
+
 load_dotenv(PROJECT_ROOT / ".secrets")
+
 
 if "speak_enabled" not in st.session_state:
     st.session_state.speak_enabled = True
@@ -267,34 +274,7 @@ st.markdown(r"""
 Wiki Wo ist Wannweil?
 ```
 ```
-was ist 5+4
-```
-```
 wiki was ist ein Berg Begriffserklärung
-```
-```
-Wiki Wer ist Sebastian Lauffer
-```
-```
-Wiki Wer ist Herr Schröer
-```
-```
-Wiki Wer ist Harald
-```
-```
-Ruth Kapitel 1 Vers 1
-```
-```
-mit nachnamen laufer
-```
-```
-mit ergoltherabpeut Herr Schrör
-```
-```
-Englisch einschalten
-```
-```
-Wie ist das Wetter?
 ```
 """)
 
@@ -325,24 +305,18 @@ for message in st.session_state.messages:
 
 # --- BEISPIEL-BUTTONS ---
 EXAMPLES = [
-    "Aura Was ist das Besondere an SL5 Aura",
     "Wiki Wo ist Wannweil?",
     "was ist 5+4",
 
     "wiki was ist ein Berg Begriffserklärung",
     "Wiki Wer ist Sebastian Lauffer",
-    "Wiki Wer ist Herr Schröer",
 
-    "Wiki Wer ist Harald",
     "Ruth Kapitel 1 Vers 1",
     "mit nachnamen laufer",
 
-    "mit ergoltherabpeut Herr Schrör",
-    "Englisch einschalten",
     "Wie ist das Wetter?",
 
     "deutschlandradio", "gemini", "KI Kurse workshops",
-    "deutschlandradio", "gemini", "Chaos",
     "openstreetmap", "gemini", "Chaos",
 ]
 st.markdown("**Beispiele direkt ausprobieren:**")

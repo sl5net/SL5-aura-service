@@ -3,5 +3,6 @@ import re # noqa: F401
 
 # too<-from
 FUZZY_MAP_pre = [
-    ('rathaus4555555564654', r'^rathaus4555555564654$'),
+
+    ('Rübennase', r'^Rüben\ Nase$'),
 ]

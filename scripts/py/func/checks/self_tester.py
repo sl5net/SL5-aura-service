@@ -9,7 +9,6 @@ import sys
 import os
 from pathlib import Path
 
-from peter_backup.peter import README_AI_PATH
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
 from ..audio_manager import speak_inclusive_fallback
