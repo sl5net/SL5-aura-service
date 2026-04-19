@@ -16,11 +16,9 @@ ENABLE_WAKE_WORD = False
 # saying "Teleskop" toggles the system between active and suspended state.
 
 
-
 current_user,_ = determine_current_user()
 print(f'hi, hallo, welcome: {current_user}')
 current_user = user_name = USER_NAME = str(current_user) # fallbacks
-# logger.info("Current user successfully determined in a cross-platform manner.") # Add logger import if needed
 
 # Set to True to disable certain production checks for local development,
 # e.g., the wrapper script enforcement.
@@ -262,3 +260,5 @@ AUTO_ENTER_AFTER_DICTATION_REGEX_APPS = "(ExampleAplicationThatNotExist)"
 
 # Auto-detected Java path
 JAVA_EXECUTABLE_PATH = r"/usr/bin/java"
+
+LOG_delete_on_startup = True

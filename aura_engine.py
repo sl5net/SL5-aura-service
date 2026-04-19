@@ -870,6 +870,24 @@ if os.path.exists(MEMORY_LOG_PATH):
 
 
 
+if settings.LOG_delete_on_startup:
+    # how to delete all fles with extension(postfix) log in folder log with python?
+
+    log_dir = Path("log")   # folder named "log"
+    if not log_dir.is_dir():
+        raise SystemExit(f"{log_dir} does not exist or is not a directory")
+
+    # Dry-run: list files first
+    # print("Files to delete:")
+    # for p in log_dir.glob("*.log"):
+    #    print(p)
+
+    # Uncomment to actually delete:
+    for p in log_dir.rglob("*.log"):  # rglob is recursive
+        try:
+            p.unlink()
+        except Exception as e:
+            print(f"Failed to remove {p}: {e}")
 
 
 
