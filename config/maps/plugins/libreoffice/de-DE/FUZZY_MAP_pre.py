@@ -10,7 +10,7 @@ PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
 home_dir_str = str(Path.home())
 
 # Window titles of LibreOffice apps
-libreoffice_windows = ['soffice', 'LibreOffice', 'Writer', 'Calc', 'Impress']
+libreoffice_windows = ['soffice', 'LibreOffice', 'Writer', 'writer', 'Calc', 'calc', 'Impress']
 
 fett = r'fett|fett\s*formatieren|text\s*fett|sid|fritz|schritt|fit|tritt|chef|script|setz|bold|old|bolt|pol|pools|bubbels|bols|borretsch|brot|holt|überholt|oh'
 

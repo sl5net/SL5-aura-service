@@ -1,0 +1,26 @@
+adesso
+AI Platform Engineer / Cloud Engineer AI (all genders)
+company visual
+
+
+    AI-Plattformbetrieb: Eine zentrale AI-Plattform auf AWS entwickelst, integrierst und betreibst du, sodass AI-Anwendungen im Versicherungskontext zuverlässig, sicher und auditierbar produktiv genutzt werden können und sowohl Standard-LLMs als auch spezialisierte Modelle in Produkte und Prozesse integriert werden.
+    Backbone-Komponenten: Die notwendigen Plattformkomponenten für einen AI Backbone auf AWS baust du auf, betreibst diese und implementierst Infrastruktur für Tuning, Anpassung und Betrieb spezifischer LLMs.
+    LLM-Integration & Mandantentrennung: Standard-LLMs von Claude, OpenAI oder vergleichbare Services integrierst du in eine sichere und standardisierte Plattformarchitektur und setzt technische Maßnahmen zur Mandantentrennung bei Tuning, Datenhaltung, Zugriff und Ausführung um.
+    Context Layer & Tooling: Du entwickelst und betreibst mandantenbezogene Context Layer zur sicheren und performanten Bereitstellung relevanter Kontexte für AI-Anwendungen und stellst notwendige Toolings für AI Engineers bereit, die du in der produktiven Nutzung unterstützt.
+    Governance & Automatisierung: Lösungen für Governance, Logging, Metering, Observability und Kostenkontrolle der AI-Nutzung implementierst du und automatisierst Aufbau, Deployment und Betrieb der Plattform mit Infrastructure as Code und CI/CD, um Stabilität, Sicherheit, Skalierbarkeit und kontinuierliche Verbesserung sicherzustellen.
+    Interdisziplinäre Zusammenarbeit: Du arbeitest eng mit ArchitektInnen, Security- und Produktteams zusammen und sorgst dafür, dass LLMs, AI-Services und mandantenfähige Context Layer sicher, skalierbar und effizient bereitgestellt werden.
+
+
+Unternehmen: Afida GmbH
+
+Flexibilität: Hybrid, Vollzeit
+
+Reisetätigkeit: 0 - 25%
+
+Berufsfeld: Software Development, Cloud Technology, Artificial Intelligence
+
+Branche: Versicherung
+
+Recruiting Team
+
+recruiting@adesso-group.com

@@ -1,4 +1,4 @@
-
+# config/maps/plugins/libreoffice/de-DE/libreoffice_actions.py
 import subprocess
 import sys
 import re
