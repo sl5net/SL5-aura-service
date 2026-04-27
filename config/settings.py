@@ -7,9 +7,9 @@ import os
 
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
-
-SHOW_SEARCH_ON_STARTUP = True
 # set False, for "silent"
+# Option 11: experimental: ... and "System will reboot in 8 seconds."
+
 
 ENABLE_WAKE_WORD = False
 # ENABLE_WAKE_WORD = True: During an active recording session,

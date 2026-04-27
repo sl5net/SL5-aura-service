@@ -679,7 +679,7 @@ vosk-model-de-0.21
 """
 
 
-if settings.SERVICE_START_OPTION ==1:
+if settings.SERVICE_START_OPTION > 1:
     # Option 1: Start the service only on autostart (start parameter) and if there is an internet
 
     def check_internet_connection(host='https://sl5.de'):
@@ -714,7 +714,16 @@ if settings.SERVICE_START_OPTION ==1:
         m = "Service will not start due to no internet connection."
         print(m)
         logging.info(m)
-        sys.exit()
+
+        if settings.SERVICE_START_OPTION == 11:
+            m = "System will reboot in 8 seconds."
+            print(m)
+            logging.info(m)
+            time.sleep(8)
+            os.system('reboot')
+            os.system('sudo systemctl restart systemd')
+        else:
+            sys.exit(1)
 
 
 # Execute the check. The script will exit here if the setup is incomplete.
