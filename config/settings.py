@@ -8,7 +8,7 @@ import os
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
 # set False, for "silent"
-# Option 11: experimental: ... and "System will reboot in 8 seconds."
+# Option 11: experimental: System will reboot in 8 seconds when its offline.
 
 
 ENABLE_WAKE_WORD = False

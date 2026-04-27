@@ -18,6 +18,8 @@ current_user = pwd.getpwuid(os.getuid())[0]
 # --- Service ---
 # 0 = Start normally
 SERVICE_START_OPTION = 0
+# Option 1: Start the service only on when there is an internet connection.
+# Option 11: experimental: System will reboot in 8 seconds when its offline.
 
 SHOW_SEARCH_ON_STARTUP = True
 # set False, for "silent"
