@@ -504,8 +504,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         logger.info(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
 
     second_per_test = duration / len(active_tests)
-    if second_per_test > 0.09:
-        m1 = f"🛑 ALERT tests_per_second: expected tests per second < 0.1, got {second_per_test:.2f} second per test"
+    max202605042151 =  0.09
+    if second_per_test > max202605042151:
+        m1 = f"🛑 ALERT tests_per_second: expected second per test  > {max202605042151}, got {second_per_test:.3f} second per test"
         m2 = "🛑 mostly it was 6.45 to 7 seconds per 92 tests. Check README variable for more info. ==> exit"
         logger.critical(f"{m1} {m2}")
         logger.info(f"{m1} {m2}")
@@ -514,13 +515,12 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     m2=f"⌚ Total Duration: {duration:.2f} seconds (second_per_test:{second_per_test:.2f} s/test)"
     logger.info(f"pid:{os.getpid()} :st:{m2}")
-    speak_inclusive_fallback(f"{m2}", 'de-DE')# 'en-US') # 'de-DE')
+    speak_inclusive_fallback(f"{m2}", 'de-DE') # 'en-US') # 'de-DE')
 
-    logger.info("- %(threadName)s :st:⌚ maybe check: run_always_no_throttling_ignore_times = True/False ?")
-
-
-
-    logger.info("- %(threadName)s -" * 40)
+    import threading
+    thread_name = threading.current_thread().name
+    logger.info(f"- {thread_name} :st:⌚ maybe check: run_always_no_throttling_ignore_times = True/False ?")
+    logger.info(f"- {thread_name} -" * 40)
 
     README = """
 # Example Results (from scripts/py/func/checks/self_tester.py:525):
