@@ -251,13 +251,18 @@ STOP_WORDS_DE_EXTREME.update({
 # --- DATABASE LAYER ---
 def init_db():
     try:
-        conn = sqlite3.connect(DB_FILE)
+        # 1. Use a high timeout and enable WAL mode immediately
+        conn = sqlite3.connect(DB_FILE, timeout=90)
+        conn.execute("PRAGMA journal_mode=WAL;")
         c = conn.cursor()
+
+        # 2. Core tables
         c.execute('''CREATE TABLE IF NOT EXISTS prompts (
                         hash TEXT PRIMARY KEY,
                         prompt_text TEXT,
                         clean_input TEXT,
                         keywords TEXT,
+                        embedding BLOB,
                         last_used TIMESTAMP
                     )''')
         c.execute('''CREATE TABLE IF NOT EXISTS responses (
@@ -270,35 +275,28 @@ def init_db():
                         usage_count INTEGER DEFAULT 0,
                         FOREIGN KEY(prompt_hash) REFERENCES prompts(hash)
                     )''')
-        # Migrationen (silent fails if exists)
-        try: c.execute("ALTER TABLE responses ADD COLUMN rating INTEGER DEFAULT 5")
-        except Exception: pass
-        try: c.execute("ALTER TABLE responses ADD COLUMN comment TEXT")
-        except Exception: pass
-        try: c.execute("ALTER TABLE responses ADD COLUMN usage_count INTEGER DEFAULT 0")
-        except Exception: pass
-        try: c.execute("ALTER TABLE prompts ADD COLUMN clean_input TEXT")
-        except Exception: pass
-        try: c.execute("ALTER TABLE prompts ADD COLUMN keywords TEXT")
-        except Exception: pass
 
-        c.execute(f"UPDATE responses SET rating = {DEFAULT_RATING} WHERE rating = 0 AND comment IS NULL")
+        # 3. Only run migrations/views if we are not in a high-concurrency simulation
+        # or wrap them in a way that they don't crash the init
+        try:
+            # Check if we need to update ratings
+            c.execute(f"UPDATE responses SET rating = {DEFAULT_RATING} WHERE rating = 0 AND comment IS NULL")
 
-        c.execute("DROP VIEW IF EXISTS overview_readable")
-        c.execute('''
-            CREATE VIEW overview_readable AS
-            SELECT r.id, r.rating, r.usage_count, p.clean_input AS User_Frage, p.keywords, r.response_text, r.comment, r.created_at
-            FROM responses r LEFT JOIN prompts p ON r.prompt_hash = p.hash ORDER BY r.created_at DESC
-        ''')
-        c.execute("DROP VIEW IF EXISTS stats_most_asked")
-        c.execute('''
-            CREATE VIEW stats_most_asked AS
-            SELECT clean_input, COUNT(*) as context_variations, SUM(r.usage_count) as total_answers_served
-            FROM prompts p JOIN responses r ON p.hash = r.prompt_hash GROUP BY clean_input ORDER BY total_answers_served DESC
-        ''')
+            # Views are heavy on locks, only recreate if necessary
+            c.execute("DROP VIEW IF EXISTS overview_readable")
+            c.execute('''
+                CREATE VIEW overview_readable AS
+                SELECT r.id, r.rating, r.usage_count, p.clean_input AS User_Frage, p.keywords, r.response_text, r.comment, r.created_at
+                FROM responses r LEFT JOIN prompts p ON r.prompt_hash = p.hash ORDER BY r.created_at DESC
+            ''')
+        except sqlite3.OperationalError as e:
+            # If DB is locked, skip view recreation for this session
+            logging.warning(f"Skipping view recreation due to lock: {e}")
+
         conn.commit()
         conn.close()
     except Exception as e:
+        # This is where your line 302 error was caught
         log_debug(f"DB Init Error: {e}")
 
 

@@ -1,30 +1,27 @@
 # config/maps/plugins/z_fallback_llm/de-DE/simulate_conversation.py
-import sys
-import os
-import subprocess
-import psutil
-import time
 import datetime
+import logging
+import os
+import sys
+import time
+import psutil
+import subprocess
 
+from pathlib import Path
 
+# Eure PROJECT_ROOT Logik
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-#import re
-#import sys
-#from pathlib import Path
-#import subprocess
+# Pfad zum aktuellen Plugin-Verzeichnis für absolute Importe hinzufügen
+PLUGIN_DIR = str(PROJECT_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE")
+if PLUGIN_DIR not in sys.path:
+    sys.path.insert(0, PLUGIN_DIR)
 
-try:
-    # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
-    from . import utils
-    from . health_checks import check_db_statistics_and_exit_if_invalid
-    from . import ask_ollama
-
-except ImportError:
-    import utils
-    import health_checks  # noqa: F403 F401
-    import ask_ollama
-
-
+# Jetzt funktionieren absolute Importe ohne den Punkt (.)
+import utils
+import health_checks
+import ask_ollama
 
 # --- KONFIGURATION ---
 ROUNDS = 900  # Wie oft sollen sie hin und her reden?
@@ -50,6 +47,23 @@ ROUNDS = 900  # Wie oft sollen sie hin und her reden?
 
 
 # simulate_conversation.py
+
+log = logging.getLogger("simulate_conversation")
+GITHUB_BASE = "https://github.com/sl5net/SL5-aura-service/blob/master"
+
+def get_github_url(file_path):
+    """Erstellt den passenden GitHub-Link aus dem lokalen Pfad."""
+    rel_path = ""
+    if "STT/" in str(file_path):
+        rel_path = str(file_path).split("STT/")[1]
+    elif "SL5-aura-service/" in str(file_path):
+        rel_path = str(file_path).split("SL5-aura-service/")[1]
+    if rel_path:
+        url = f"{GITHUB_BASE}/{rel_path}"
+        log.debug(f"get_github_url: {file_path} -> {url}")
+        return url
+    log.warning(f"get_github_url: kein STT/ oder SL5-aura-service/ in Pfad: {file_path}")
+    return None
 
 
 # --- MOCK OBJEKT (Damit Aura denkt, es kommt vom Mikrofon) ---
@@ -338,7 +352,7 @@ if __name__ == "__main__":
 
 
 
-    check_db_statistics_and_exit_if_invalid()
+    health_checks.check_db_statistics_and_exit_if_invalid()
 
     main()
 

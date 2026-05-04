@@ -8,7 +8,7 @@
 _variants = (
     r'aachen|aber|a\wra|anbraten brauche|Apparat|Ära|Auch|Aura|auras|auren|Aurora|aurore|auer|agora|'
     r'bohrer|brauche|buchen|burgess|cora|dora|doran|doras|eure|eurer|hey|hoa|hoch|horror|'
-    r'hurra|k|laura|lorenz|loser|Nora|obwohl|oh|ohh|ohr|ohren|Opera|Oprah|offenbar|'
+    r'hurra|k|laura|lorenz|loser|Nora|obwohl|oh|ohh|ohr|ohren|Opera|oral|Oprah|offenbar|'
     r'Orange|ora|oradour|ore|ovh|oha|o\s+a\s+|ovale|over|prora|raucher|robe|roche|rohre|rohrer|rot|'
     r'ruhe|rum|samurai|suche|saurer|tore|Thora|tore zu|uwe|woran|jura|Zauberer|zoran|homer'
 )

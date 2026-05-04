@@ -1,5 +1,8 @@
 # config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.py
 # ask_ollama.py
+import datetime
+import os
+# import torch
 
 try:
     # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
@@ -37,6 +40,10 @@ import time
 from urllib.error import HTTPError, URLError
 
 import urllib.request
+
+
+# from sentence_transformers import SentenceTransformer, util
+
 
 # https://ollama.com/download
 
@@ -140,6 +147,196 @@ except ImportError:
 # Prompt 3: "Wieviel Häuser sind in dem Gebiet?"
 # Extreme Stemmed: "wieviel haus gebiet"
 
+# 1. Modell laden (lokal, ca. 80MB, sehr schnell)
+# 'all-MiniLM-L6-v2' ist der Industrie-Standard für schnelle lokale Suchen
+# model = SentenceTransformer('all-MiniLM-L6-v2')
+
+_model = None  # Globaler Cache für das Modell
+
+def get_embedding_model():
+    """
+    Lazy loader for the embedding model.
+    Only loads torch and the model into RAM when actually needed.
+    """
+    global _model
+    if _model is None:
+        utils.log_debug("🚀 Loading Embedding Model (Lazy Load)...")
+        from sentence_transformers import SentenceTransformer
+        _model = SentenceTransformer('all-MiniLM-L6-v2')
+    return _model
+
+
+# config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.py:153
+
+log = logging.getLogger("simulate_conversation")
+GITHUB_BASE = "https://github.com/sl5net/SL5-aura-service/blob/master"
+
+def get_github_url(file_path):
+    """Erstellt den passenden GitHub-Link aus dem lokalen Pfad."""
+    rel_path = ""
+    if "STT/" in str(file_path):
+        rel_path = str(file_path).split("STT/")[1]
+    elif "SL5-aura-service/" in str(file_path):
+        rel_path = str(file_path).split("SL5-aura-service/")[1]
+    if rel_path:
+        url = f"{GITHUB_BASE}/{rel_path}"
+        log.debug(f"get_github_url: {file_path} -> {url}")
+        return url
+    log.warning(f"get_github_url: kein STT/ oder SL5-aura-service/ in Pfad: {file_path}")
+    return None
+
+
+def save_to_aura_db(question, answer, file_path, use_semantics=False):
+    """
+    Version 1.2.0: Saves dialogue pairs including a semantic vector embedding.
+    Enables the 'Self-Learning' loop for the interactive chat.
+    """
+    prompt_hash = hashlib.md5(question.encode('utf-8')).hexdigest()
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    clean_input = question.lower().replace("?", "").strip()
+
+    embedding_blob = None
+    if use_semantics: # Nur für den interaktiven Chat aktivieren
+        import pickle
+        model = get_embedding_model()
+        embedding = model.encode(question)
+        embedding_blob = pickle.dumps(embedding)
+
+    github_link = get_github_url(file_path)
+
+    try:
+        # conn = sqlite3.connect(DB_PATH)
+        conn = sqlite3.connect(utils.DB_FILE, timeout=90)
+        conn.execute("PRAGMA journal_mode=WAL;")
+
+        cursor = conn.cursor()
+
+        # 1. In 'prompts' speichern - jetzt inklusive EMBEDDING
+        cursor.execute("""
+            INSERT OR IGNORE INTO prompts (hash, prompt_text, last_used, clean_input, keywords, embedding)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (prompt_hash, question, now, clean_input, "radio_deep_dive", embedding_blob))
+
+        # 2. In 'responses' speichern
+        cursor.execute("""
+            INSERT INTO responses (prompt_hash, response_text, created_at, usage_count, comment)
+            VALUES (?, ?, ?, ?, ?)
+        """, (prompt_hash, answer, now, 0, github_link))
+
+        # 3. Tracking-Tabelle aktualisieren
+        current_mtime = os.path.getmtime(file_path)
+        cursor.execute("""
+            INSERT OR REPLACE INTO radio_processed_files (file_path, last_mtime, last_generated)
+            VALUES (?, ?, ?)
+        """, (str(file_path), current_mtime, now))
+
+        conn.commit()
+        conn.close()
+        # utils.log_debug(f"✅ Gespeichert (inkl. Vektor): {question[:30]}...")
+    except Exception as e:
+        print(f"Database Error: {e}")
+
+
+def get_semantic_match(user_text):
+    # 1. Encode user input once
+
+    from sentence_transformers import util
+    model = get_embedding_model()
+    user_embedding = model.encode(user_text, convert_to_tensor=True)
+    try:
+        conn = sqlite3.connect(utils.DB_FILE, timeout=90)
+        c = conn.cursor()
+        # 2. Fetch PRE-CALCULATED embeddings (BLOBs)
+        c.execute("SELECT hash, embedding FROM prompts WHERE embedding IS NOT NULL")
+        rows = c.fetchall()
+        best_hash, max_sim = None, 0.0
+
+        SEMANTIC_THRESHOLD = 0.7  # Live-Betrieb
+        # SEMANTIC_THRESHOLD = -1.0 # Test alway match
+
+        for db_hash, blob in rows:
+            # 3. Load vector from BLOB (no model.encode here!)
+            import pickle
+            import torch
+            db_embedding = torch.from_numpy(pickle.loads(blob)).to(user_embedding.device)
+            # db_embedding = model.encode(user_text, convert_to_tensor=True)
+
+            similarity = util.cos_sim(user_embedding, db_embedding).item()
+
+            if similarity > max_sim:
+                max_sim, best_hash = similarity, db_hash
+        if best_hash and max_sim > SEMANTIC_THRESHOLD:
+            c.execute("SELECT response_text FROM responses WHERE prompt_hash=? LIMIT 1", (best_hash,))
+            res = c.fetchone()
+
+            conn.close()
+
+            if res:
+                utils.play_cache_hit_sound()
+                return res[0]
+        return None
+    except Exception as e:
+        utils.log_debug(f"Semantic Error: {e}")
+        return None
+
+
+# def get_semantic_match_22222(user_text):
+#     """
+#     Performs a semantic search for the best matching response.
+#     Uses Cosine Similarity to find matches even without exact keyword overlaps.
+#     """
+#     # utils.init_db()
+#
+#     # Convert user input into a vector embedding
+#     user_embedding = model.encode(user_text, convert_to_tensor=True)
+#
+#     try:
+#         conn = sqlite3.connect(utils.DB_FILE)
+#         c = conn.cursor()
+#         # Fetch pre-calculated embeddings from the database
+#         c.execute("SELECT hash, prompt_text FROM prompts")
+#         rows = c.fetchall()
+#
+#         utils.log_debug(f"DEBUG: Semantic Search loaded {len(rows)} embeddings from {utils.DB_FILE}")
+#
+#         best_hash = None
+#         max_similarity = 0.0
+#         threshold = 0.3
+#         threshold = -1.0
+#
+#         for row in rows:
+#             db_hash, db_text = row[0], row[1]
+#
+#             # Calculate semantic similarity
+#             db_embedding = model.encode(db_text, convert_to_tensor=True)
+#             similarity = util.cos_sim(user_embedding, db_embedding).item()
+#
+#             if similarity > max_similarity:
+#                 max_similarity = similarity
+#                 best_hash = db_hash
+#
+#         if best_hash and max_similarity > threshold:
+#             utils.log_debug(f"🧠 Semantischer Match! Score: {max_similarity:.2f}")
+#
+#             utils.log_debug(f"🚀 Instant Match gefunden! (Hash: {best_hash[:8]})")
+#
+#             c.execute(
+#                 "SELECT response_text FROM responses WHERE prompt_hash=? ORDER BY rating DESC, created_at DESC LIMIT 1",
+#                 (best_hash,))
+#             resp_row = c.fetchone()
+#             conn.close()
+#
+#             if resp_row:
+#                 utils.play_cache_hit_sound()
+#                 # return f"[SOFORT-MODUS]: {resp_row[0]}"
+#                 return f"{resp_row[0]}"
+#
+#             return db_text
+#
+#         return None
+#     except Exception as e:
+#         utils.log_debug(f"Semantic Error: {e}")
+#         return None
 
 # --- INSTANT MODE MATCHING ---
 def get_instant_match(user_text):
@@ -147,7 +344,7 @@ def get_instant_match(user_text):
     Sucht in der DB nach Keywords, die dem User-Text am ähnlichsten sind.
     Nutzt Python Set-Intersection (Schnittmenge) statt LLM.
     """
-    utils.init_db()
+    # utils.init_db()
 
     # 1. User Text in Worte zerlegen (einfache Normalisierung)
     # EXAMPLE: x s
@@ -316,17 +513,36 @@ def clean_text_for_typing(text):
 
 def get_readme_content():
     try:
-        current_path = Path(__file__).resolve()
-        for _ in range(6):
-            current_path = current_path.parent
-            readme_path = current_path / "README_AI-delang.md"
-            if readme_path.exists():
-                utils.log_debug(f"README gefunden: {readme_path}")
-                content = readme_path.read_text(encoding='utf-8').strip()
-                return content[:6000]
+        readme_path = Path(__file__).parent / "README_AI-delang.md"
+        if readme_path.exists():
+            return readme_path.read_text(encoding='utf-8').strip()[:6000]
+
+        hint = (
+            "README_AI-delang.md nicht gefunden.\n"
+            "Bitte erstelle sie mit einer großen AI (z.B. Claude/GPT) und folgendem Prompt:\n\n"
+            "---\n"
+            "Lies die Datei README.md dieses Projekts und erstelle daraus eine kompakte\n"
+            "Version für ein lokales Ollama-Modell (llama3.2, 3B Parameter).\n"
+            "Anforderungen:\n"
+            "- Max 2000 Zeichen\n"
+            "- Kein Markdown, nur Fließtext\n"
+            "- Fakten: Python, Regeln als Tupel in FUZZY_MAP_pre.py,\n"
+            "  Pipeline: Vosk → PUNCTUATION_MAP → FUZZY_MAP_pre → LanguageTool → FUZZY_MAP\n"
+            "- Trigger: /tmp/sl5_record.trigger\n"
+            "- Kein GUI, kein JSON, kein YAML\n"
+            "- Sprache: Deutsch, technisch, direkt\n"
+            "Speichern als README_AI-delang.md\n"
+            f"Speichern als: {readme_path}"
+            "---"
+        )
+        print(hint)
+        log.info(hint)
+
         return None
-    except Exception:
+    except Exception as e:
         return None
+        utils.log_debug(f"get readme Error: {e}")
+
 
 
 def get_clipboard_content():
@@ -422,6 +638,8 @@ def check_static_guardrails(text_raw):
 
 
 def execute(match_data):
+    print("\n--- DEBUG START 28.4.'26 21:31 Tue ---")
+
     # play_cache_hit_sound()
 
     secDauerSeitExecFunctionStart(reset=True)  # <--- Startschuss!
@@ -441,13 +659,16 @@ def execute(match_data):
         # Das funktioniert in Python re UND in Mock-Objekten.
         groups = match_obj.groups()
 
-        user_input_raw = (match_obj.group(2) if len(groups) >= 2 else
-                          match_obj.group(1) if len(groups) >= 1 else
-                          match_obj.group(0)).strip()
+        # user_input_raw = (match_obj.group(2) if len(groups) >= 2 else
+        #                   match_obj.group(1) if len(groups) >= 1 else
+        #                   match_obj.group(0)).strip()
+
+        # take always the last group
+        user_input_raw = groups[-1].strip() if groups else match_obj.group(0).strip()
         user_input_raw = user_input_raw.lower()
 
-        # utils.log_debug(f"⏱️{secDauerSeitExecFunctionStart()}s")
-        # utils.log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
+        utils.log_debug(f"⏱️{secDauerSeitExecFunctionStart()}s")
+        utils.log_debug(f"Input: {user_input_raw}:'{user_input_raw}'")
 
         if not user_input_raw: return "Nichts gehört."
 
@@ -480,6 +701,7 @@ def execute(match_data):
         if any(w in user_input_raw.lower() for w in instant_triggers):
             utils.log_debug("Mode: INSTANT REQUEST")
             instant_response = get_instant_match(user_input_raw)
+
             if instant_response:
                 return instant_response
             else:
@@ -621,10 +843,11 @@ def execute(match_data):
             "```\n\n"
 
             "User: Erstelle eine Catch-All Regel.\n"
-            "Aura: catch_all.py\n"
+            "Aura: FUZZY_MAP_pre.py\n"
+            "('immer Ergebnis', r'^.*$')\n"
             "```python\n"
             # EXAMPLE: None
-            "('Ersetzung', r'^.*$', 10, {})\n"
+            "('Ersetzung', r'^.*$')\n"
             "User: Erstelle Regel mit Plugin Wiki.\n"
             "Aura: wiki_plugin.py\n"
             "```python\n"
@@ -691,6 +914,80 @@ def execute(match_data):
             "```"
         )
 
+        AURA_NORMAL_PROFILE = (
+            "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte normal ausführlich und hilfreich. "
+            "Deine Antworten dürfen freundlicher sein und mehr Kontext liefern, aber bleibe präzise. "
+            "Du bist NICHT an die EXTREM-Kürze des Tech-Modus gebunden.\n\n"
+
+            "REGELN:\n"
+            "1. Sei hilfreich und informativ. Liefere eine komplette Antwort.\n"
+            "2. Wenn der Benutzer eine Konfiguration oder Regel erstellen will, antworte wie im Tech-Profil (Dateiname und Code-Block), aber füge eine kurze Erklärung hinzu.\n"
+            "3. Bei allgemeinen Fragen antworte in ganzen Sätzen und einem angenehmen Ton.\n\n"
+
+            "SYSTEM-WISSEN:\n"
+            "- Du hast Zugriff auf Config und Code-Logik. Siehe Tech-Profil für Details.\n"
+
+            "MUSTER-ANTWORTEN:\n"
+            "User: Was ist ein Haus?\n"
+            "Aura: Ein Haus ist ein dauerhaftes, überdachtes Bauwerk, das als Unterkunft oder Schutz dient.\n\n"
+
+            "User: Erstelle eine PUNCTUATION-Regel für Stern.\n"
+            "Aura: Gerne, hier ist die Regel für Stern:\n"
+            "```python\n"
+            "# PUNCTUATION-Tupel: (Suchwort, neues Wort)\n"
+            "'stern': '*'\n"
+            "```\n"
+        )
+
+
+        full_match_text = match_obj.group(0).lower()
+        slow_triggers = ["slow", "langsam", "genau", "gründlich", "normal"]
+        # is_slow_request = any(w in user_input_raw.lower() for w in slow_triggers)
+        is_slow_request = any(w in full_match_text for w in slow_triggers)
+
+        if is_slow_request:
+            utils.log_debug("Mode: SLOW/DETAILED")
+            system_role = AURA_NORMAL_PROFILE  # Der ausführliche Prompt
+            ollama_params = {
+                "temperature": 0.3,
+                "mirostat": 2,
+                "num_predict": 512
+            }
+            bypass_cache = True  # Im Slow-Mode immer frisch generieren
+        else:
+            system_role = AURA_TECH_PROFILE  # Der extrem kurze Prompt
+            ollama_params = {
+                "temperature": 0.1,
+                "num_predict": 100
+            }
+            bypass_cache = False  # Normaler Modus nutzt den semantischen Cache
+
+        print("\n--- DEBUG START 28.4.'26 21:31 Tue ---")
+        print(f"Raw Input: '{user_input_raw}'")
+        print(f"Is Slow Triggered: {is_slow_request}")
+        print(f"Selected Profile: {'NORMAL' if is_slow_request else 'TECH'}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         trigger_clipboard = ["zwischenablage", "clipboard", "kopierten text", "zusammenfassung"]
         trigger_readme = ["hilfe", "dokumentation", "readme", "read me", "wie funktioniert", "was kannst du"]
         no_cache_keywords = ["witz", "spruch", "zufall", "random"]
@@ -700,7 +997,7 @@ def execute(match_data):
         system_role = f"{AURA_TECH_PROFILE}"
         use_history = True
         input_lower = user_input_raw.lower()
-        bypass_cache = False
+        bypass_cache = bypass_cache
 
         # --- MODE DETECTION & KONTEXT LADEN ---
         # Hier bestimmen wir nur: Welcher Modus ist aktiv? Welcher Kontext wird geladen?
@@ -791,6 +1088,8 @@ def execute(match_data):
                 utils.log_debug(f"cached_resp: {cached_resp}")
                 if use_history:
                     save_to_history(user_input_raw, cached_resp)
+                    # target = utils.DB_FILE
+                    # save_to_aura_db(user_input_raw, cached_resp, target)
 
                 utils.SUM_PER_CACHE = utils.SESSION_CACHE_HITS / utils.SESSION_COUNT if utils.SESSION_COUNT > 0 else 0
                 sum_per_cache_str = f"{utils.SUM_PER_CACHE:.1f} {'📉' if utils.SUM_PER_CACHE < utils.SUM_PER_CACHE else '📈'}"
@@ -798,6 +1097,14 @@ def execute(match_data):
                 utils.SUM_PER_CACHE = utils.SUM_PER_CACHE
 
                 return cached_resp
+
+            # 2. NEU: Semantischer Fallback (wenn exakter Match fehlt/abgelaufen)
+            semantic_resp = get_semantic_match(user_input_raw)
+            if semantic_resp:
+                utils.log_debug("🎯 Semantic Cache Hit!")
+                utils.SESSION_CACHE_HITS += 1
+                return semantic_resp
+
 
             if expired:
                 utils.log_debug("♻️ Cache Entry EXPIRED.")
@@ -809,8 +1116,10 @@ def execute(match_data):
             "model": "llama3.2",
             "prompt": full_prompt_for_generation,
             "stream": False,
+            "keep_alive": 0,
             "options": {
                 "temperature": 0.1,
+                **ollama_params,
                 "top_k": 20,
                 "num_predict": 100,
                 "stop": ["User:", "Verlauf:", "System:", "Aura:"]
@@ -822,7 +1131,7 @@ def execute(match_data):
             req = urllib.request.Request(OLLAMA_API_URL, data=data, headers={'Content-Type': 'application/json'})
 
             # Timeout erhöht auf 120s für Sicherheit
-            with urllib.request.urlopen(req, timeout=120) as response:
+            with urllib.request.urlopen(req, timeout=90) as response:
                 api_response = json.loads(response.read().decode('utf-8'))
 
             utils.SUM_PER_CACHE = (utils.SESSION_CACHE_HITS / utils.SESSION_COUNT) if utils.SESSION_COUNT > 0 else 0
@@ -882,25 +1191,31 @@ def execute(match_data):
             if 'Fehler:' in response or '.json' in response:
                 response = answer_for_all_fallback
 
-            # --- SPEICHERN ---
+            # --- SPEICHERN (Nur wenn nicht im Bypass-Modus) ---
             if not bypass_cache:
-                # utils.log_debug(f"bypass_cache: {bypass_cache}")
-                # WICHTIG: Wir nutzen hier denselben hash_input_string (basierend auf Keywords),
-                # den wir oben zum Lesen benutzt haben!
-                # cache_response(hash_input_string, response, user_input_raw, keywords=keywords_str)
+                target = utils.DB_FILE
 
+                # Wir müssen sicherstellen, dass save_to_aura_db nicht abstürzt,
+                # wenn 'target' keine echte Datei ist.
+                try:
+                    # save_to_aura_db(user_input_raw, response, target)
+                    save_to_aura_db(user_input_raw, response, target, use_semantics=True)
+                except Exception as e:
+                    utils.log_debug(f"Speichern in DB fehlgeschlagen: {e}")
+
+                # Den klassischen Cache ebenfalls füttern
                 cache_core.cache_response(
                     tag_keyword=hash_input_string,
                     response_text=response,
                     clean_user_input=user_input_raw,
-                    hash_of_normalized_key=hash_of_normalized_key
+                    hash_of_normalized_key=hash_of_normalized_key,
                 )
 
+            # --- HISTORY (Immer am Ende, falls aktiviert) ---
             if use_history:
                 save_to_history(user_input_raw, response)
 
             return response
-
 
         # --- FEHLER BEHANDLUNG ---
         except HTTPError as e:

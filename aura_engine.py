@@ -321,31 +321,32 @@ class WindowsEmojiFilter(logging.Filter):
     def __init__(self):
         super().__init__()
         self.replacements = {
-            '🚀': '[▲]',  # Rakete als Pfeil
-            '🔁': '[⟳]',  # Loop als Kreispfeil
-            '📚': '[▉]',  # Buch als gefülltes Rechteck
-            '❌': '[■]',  # noqa: F601 Fehler als ausgefülltes Quadrat
-            '⚠️': '[!]',  # Warnung
-            '✅': '[✓]',  # OK, Haken
+            '🚀': '[▲]',
+            '🔁': '[⟳]',
+            '📚': '[▉]',
+            '❌': '[■]',  # noqa: F601
+            '⚠️': '[!]',
+            '✅': '[✓]',  #
             '👍': '[OK]',
             '👎': '[NO]',
-            '🎊': '[*]',  # Konfetti
-            '❌': '[x]',  # noqa: F601 Fehler, ausgefülltes Quadrat
+            '🎊': '[*]',
+            '❌': '[x]',  # noqa: F601
             '🎬': '[>]',  # Start, Play
-            '⏹️': '[■]',  # Stop, Quadrat
+            '⏹️': '[■]',
+            '🚫️': '[■]',
             '🏁': '[>]',  # Start
             '🔵': '●',  #
-            '🎤': '[◉]',  # Mikrofon
-            '🎙️': '[▣]',  # Studio-Mikrofon, gefüllter Kreis
-            '📢️': '[≡]',  # Lautsprecher (Klangwellen)
-            '💾': '[¥]',  # Diskette/Save, ausgefülltes Quadrat mit Rand
-            '📋': '[‗]',  # Zwischenablage, Unterstrich/Leiste
-            '🔳': '[□]',  # Nichts, leeres Quadrat
-            "👀": '[o_o]',  # Augen
-            '🚀': '[▲]',  # Rakete, Pfeil hoch
-            '🔁': '[⟳]',  # Wiederholen, Kreispfeil
-            '📚': '[▉]',  # Buch, gefülltes Rechteck
-            '⌚': '[(-)]',  # clock
+            '🎤': '[◉]',
+            '🎙️': '[▣]',
+            '📢️': '[≡]',
+            '💾': '[¥]',
+            '📋': '[‗]',
+            '🔳': '[□]',
+            "👀": '[o_o]',
+            '🚀': '[▲]',
+            '🔁': '[⟳]',
+            '📚': '[▉]',
+            '⌚': '[(-)]',
             '🗺️':'▀▄▀'
         # ▣▣■
                  #                 '🚀': '[>>>]',

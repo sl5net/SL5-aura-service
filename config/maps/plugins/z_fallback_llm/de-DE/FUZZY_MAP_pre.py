@@ -1,6 +1,6 @@
 # config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py
 import os
-import re # noqa: F401
+import re
 import runpy
 from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
@@ -14,7 +14,7 @@ PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_tex
 INTERNAL_PATH = PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE"
 
 acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
-AURA_VARIANTS = runpy.run_path(acp)["WAKE_PHANTOM"]
+AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
 
 
 aura1 = AURA_VARIANTS
@@ -23,6 +23,8 @@ FUZZY_MAP_pre = [
     # Catch-all rule: Matches everything (.*) as the last resort.
     # It captures the whole text in group 1 to pass it to the script.
 
+    # Wenn Sie einen Teil des Regex matchen, aber NICHT in der Capturing Group haben möchten (was nützlich für das Extrahieren ist), verwenden Sie die Non-Capturing Group (?:...).
+    # https://ollama.com/download
 
     # https://ollama.com/download
     ("""
@@ -33,7 +35,6 @@ Es gibt keine Accounts, Passwörter, Logins.
         {
         'flags': re.IGNORECASE,
         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave','double'],
-
         }
     ),
 
@@ -60,7 +61,6 @@ Es gibt keine Accounts, Passwörter, Logins.
         {
         'flags': re.IGNORECASE,
         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
-
         }
     ),
 
@@ -129,19 +129,18 @@ Es gibt keine Accounts, Passwörter, Logins.
     ),
 
 
-
-    # Wenn Sie einen Teil des Regex matchen, aber NICHT in der Capturing Group haben möchten (was nützlich für das Extrahieren ist), verwenden Sie die Non-Capturing Group (?:...).
-    # https://ollama.com/download
     # EXAMPLE: Aura
-    ('ask_ollama', fr'^\s*{aura1}\s*\b(?:normal|slow|langsam|genau|gründlich)\b\s*(.*)$', 100, # min_accuracy
-        {
-            'flags': re.IGNORECASE,
-            'on_match_exec': [CONFIG_DIR / 'ask_ollama_slow.py'],
-            'exclude_windows': [ 'element','firefox', 'chrome', 'brave',
-                                 '.*double.*commander.*',
-                                 'double commander'],
-        } # noqa: E123
-    ),
+    ('ask_ollama', fr'^\s*{aura1}\s*\b(?:normal|slow|Flow|flow|langsam|genau|gründlich)\b\s*(.*)$', 10,  # min_accuracy
+     {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
+
+        'exclude_windows': ['element', 'firefox', 'chrome', 'brave',
+                '.*double.*commander.*',
+                'double commander'],
+     }
+     ),
+
 
     # https://ollama.com/download
     # EXAMPLE: Aura
@@ -153,7 +152,10 @@ Es gibt keine Accounts, Passwörter, Logins.
         'exclude_windows': [ r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
 
         }
-    )
+    ),
+
+
+
 
 ]
 

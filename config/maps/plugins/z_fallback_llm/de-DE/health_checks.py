@@ -1,12 +1,21 @@
 # config/maps/plugins/z_fallback_llm/de-DE/health_checks.py
+import os
 import sys
+from pathlib import Path
+
+# Same logic here to ensure utils is found when called from simulate_conversation
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+plugin_dir = str(PROJECT_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE")
+
+if plugin_dir not in sys.path:
+    sys.path.insert(0, plugin_dir)
+
+import utils
 import sqlite3
 
 from nltk.stem.snowball import GermanStemmer
 GLOBAL_STEMMER = GermanStemmer()
-
-
-from . import utils
 
 def check_db_statistics_and_exit_if_invalid():
     """Prüft die DB-Statistiken (Total Hits > Unique Prompts) und bricht bei Inkonsistenz ab."""

@@ -409,6 +409,9 @@ if __name__ == "__main__":
 
     # True an Wochentagen, False an Samstag und Sonntag
     is_active = datetime.datetime.now().weekday() < 5
+    if not is_active:
+        is_active = datetime.datetime.now().weekday() == 6 # 6 probably sonday
+
 
     # is_active = False
     # is_active = True
