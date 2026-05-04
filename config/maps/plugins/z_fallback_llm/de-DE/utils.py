@@ -88,8 +88,7 @@ def format_duration(seconds):
 # format_duration(12.51)  -> '12.5s'
 # format_duration(65.43)  -> '1m:05.4s'
 
-
-log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
+log_formatter = logging.Formatter('%(asctime)s - %(threadName)s - %(levelname)-8s - %(message)s')
 log_formatter.formatTime = formatTime
 
 # Create, configure, and add the File Handler.

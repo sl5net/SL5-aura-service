@@ -131,32 +131,23 @@ Es gibt keine Accounts, Passwörter, Logins.
 
     # EXAMPLE: Aura
     ('ask_ollama', fr'^\s*{aura1}\s*\b(?:normal|slow|Flow|flow|langsam|genau|gründlich)\b\s*(.*)$', 10,  # min_accuracy
-     {
+        {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
-
-        'exclude_windows': ['element', 'firefox', 'chrome', 'brave',
-                '.*double.*commander.*',
-                'double commander'],
-     }
-     ),
+        'exclude_windows': ['element', 'firefox', 'chrome', 'brave','.*double.*commander.*','double commander'],
+        }
+    ),
 
 
     # https://ollama.com/download
     # EXAMPLE: Aura
     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100, # min_accuracy
-
         {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
-        'exclude_windows': [ r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
-
+            'flags': re.IGNORECASE,
+            'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
+            'exclude_windows': [r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
         }
     ),
-
-
-
-
 ]
 
 

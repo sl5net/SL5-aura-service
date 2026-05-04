@@ -250,6 +250,7 @@ HEARTBEAT_FILE = TMP_DIR / "sl5_aura" / "aura_engine.heartbeat"
 PIDFILE = TMP_DIR / "sl5_aura" / "aura_engine.pid"
 # LOG_FILE = Path("log/aura_engine.log")
 
+# aura_engine.py:253
 core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
 
 
@@ -585,13 +586,16 @@ ditto_filter = DittoFilter()
 
 
 
-log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
+# log_formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(message)s')
+
+log_formatter = logging.Formatter('%(asctime)s - %(threadName)s - %(levelname)s - %(message)s')
+
 log_formatter.formatTime = formatTime
 
 # Create, configure, and add the File Handler.
 
 
-
+# aura_engine.py:594
 class FlushingFileHandler(logging.FileHandler):
     def emit(self, record):
         try:
@@ -624,8 +628,8 @@ sys.stdout = SafeStreamToLogger(logger, sys.__stdout__, file_handler)
 
 
 # Create, configure, and add the Console Handler.
-console_handler = logging.StreamHandler(sys.stdout)
-#console_handler = logging.StreamHandler(sys.__stdout__)
+# console_handler = logging.StreamHandler(sys.stdout) # send it in the redirection
+console_handler = logging.StreamHandler(sys.__stdout__)
 
 console_handler.setFormatter(log_formatter)
 #console_handler.addFilter(ditto_filter)
@@ -633,6 +637,7 @@ console_handler.setFormatter(log_formatter)
 
 
 
+# aura_engine.py:636
 # Add the WindowsEmojiFilter to the file_handler
 if True:
 
@@ -894,7 +899,8 @@ if os.path.exists(MEMORY_LOG_PATH):
 if not memory_logger.handlers:
     memory_logger.setLevel(logging.INFO)
     file_handler = logging.FileHandler(MEMORY_LOG_PATH)
-    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
+    file_handler.setFormatter(logging.Formatter('%(asctime) - %(threadName)s - %(message)s'))
+
     memory_logger.addHandler(file_handler)
     # Prevent propagation to the root logger which might write to stdout/stderr
     memory_logger.propagate = False
