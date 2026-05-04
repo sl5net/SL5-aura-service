@@ -209,7 +209,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     # Base directory for all tests
 
-    print(':st:🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞 tmp_dir=', tmp_dir_aura)
+    print(':st:🌞🌞🌞🌞🌞 4.5.26 15:17 Mon 🌞🌞🌞🌞🌞🌞🌞 tmp_dir=', tmp_dir_aura)
 
     test_base_dir = tmp_dir_aura / "sl5_aura_self_test"
     test_base_dir.mkdir(parents=True, exist_ok=True)
@@ -498,14 +498,55 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     duration = time.perf_counter() - start_time
     logger.info("=" * 40)
     # m1 =f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}"
-    logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
-    m2=f"⌚ Total Duration: {duration:.2f} seconds"
-    logger.info(f":st:⌚ Total Duration: {duration:.2f} seconds")
-    speak_inclusive_fallback(f"{m2}", 'de-DE')# 'en-US') # 'de-DE')
-    logger.info("-" * 40)
+    if failed_count > 0:
+        logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
+    else:
+        logger.info(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
+
+    second_per_test = duration / len(active_tests)
+    max202605042151 =  0.09
+    if second_per_test > max202605042151:
+        m1 = f"🛑 ALERT tests_per_second: expected second per test  > {max202605042151}, got {second_per_test:.3f} second per test"
+        m2 = "🛑 mostly it was 6.45 to 7 seconds per 92 tests. Check README variable for more info. ==> exit"
+        logger.critical(f"{m1} {m2}")
+        logger.info(f"{m1} {m2}")
+        sys.exit(1)
+
+
+    m2=f"⌚ Total Duration: {duration:.2f} seconds (second_per_test:{second_per_test:.2f} s/test)"
+    logger.info(f"pid:{os.getpid()} :st:{m2}")
+    speak_inclusive_fallback(f"{m2}", 'de-DE') # 'en-US') # 'de-DE')
+
+    import threading
+    thread_name = threading.current_thread().name
+    logger.info(f"- {thread_name} :st:⌚ maybe check: run_always_no_throttling_ignore_times = True/False ?")
+    logger.info(f"- {thread_name} -" * 40)
 
     README = """
-# Example Results:
+# Example Results (from scripts/py/func/checks/self_tester.py:525):
+
+4.5.'26 14:07 Mon
+59,741 - INFO   - :st:✅ Passed: 95 | ❌ Failed: 0 Tests
+
+10 matches (10 checked) found in open files
+/home/seeh/projects/py/STT/log/aura_engine.log: 10
+19:49:59,063 - MainThread - INFO - :st:⌚ Total Duration: 7.65 seconds (second_per_test:0.08 s/test)
+1703: 27: 14:14:11,884 - INFO   - :st:⌚ Total Duration: 8.57 seconds
+1704: 27: 14:14:11,884 - INFO   - :st:⌚ Total Duration: 8.57 seconds
+1715: 25: 15:08:59,741 - INFO   - :st:⌚ Total Duration: 6.52 seconds
+1716: 25: 15:17:25,615 - INFO   - :st:⌚ Total Duration: 6.45 seconds
+1722: 25: 15:08:59,741 - INFO   - :st:⌚ Total Duration: 6.52 seconds
+1725: 25: 15:17:25,615 - INFO   - :st:⌚ Total Duration: 6.45 seconds
+1734: 25: 15:08:59,741 - INFO   - :st:⌚ Total Duration: 6.52 seconds
+1735: 25: 15:17:25,615 - INFO   - :st:⌚ Total Duration: 6.45 seconds
+1741: 25: 15:08:59,741 - INFO   - :st:⌚ Total Duration: 6.52 seconds
+1744: 25: 15:17:25,615 - INFO   - :st:⌚ Total Duration: 6.45 seconds
+
+15:08:59,741 - INFO   - :st:⌚ Total Duration: 6.52 seconds
+15:17:25,615 - INFO   - :st:⌚ Total Duration: 6.45 seconds
+
+
+
 ## 17.4.'26 15:15 Fri
 59,741 - INFO   - :st:✅ Passed: 95 | ❌ Failed: 0 Tests
 15:08:59,741 - INFO   - :st:⌚ Total Duration: 6.52 seconds
@@ -516,7 +557,9 @@ Passed: 95 | ❌ Failed: 0 Tests (hint search for: ❌ FAIL )
 
     """
     logger.info("-" * 40)
-    logger.info(README)
+    # logger.info(README)
+    formatted_readme = "\n".join([f"📜 {line}" for line in README.strip().splitlines()])
+    logger.info(f"History:\n{formatted_readme}")
 
     settings.PLUGIN_HELPER_TTS_ENABLED = backup_tts_enabled
 
@@ -528,7 +571,7 @@ Passed: 95 | ❌ Failed: 0 Tests (hint search for: ❌ FAIL )
 
 
     if failed_count > 0:
-        print(f':st: failed_count > 0: {failed_count} ==> exiting')
+        print(f'- %(threadName)s :st: failed_count > 0: {failed_count} ==> exiting')
         # sys.exit(1)
 
 
@@ -792,7 +835,7 @@ def should_restore(backup: Path, target: Path,
     # If sizes are same (within tolerance) and mtimes close, optionally compare hashes
     return sha256(backup) != sha256(target)
 
-
+# scripts/py/func/checks/self_tester.py:834
 if __name__ == "__main__":
     import logging
 

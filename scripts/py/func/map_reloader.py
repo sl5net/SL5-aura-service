@@ -30,7 +30,7 @@ KNOWN_MAP_Names = {'FUZZY_MAP_pre', 'FUZZY_MAP', 'PUNCTUATION_MAP'}
 def auto_reload_modified_maps(logger,run_mode_override):
 
     if os.getenv("AURA_SELF_TEST_RUNNING") == "1":
-        return  # Another thread is already reloading
+        return  # Skip reload
 
     # its using:
 
@@ -102,6 +102,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
             current_mtime = os.path.getmtime(map_file_key)
             last_mtime = LAST_MODIFIED_TIMES.get(map_file_key, 0)
 
+
             # CRITICAL CHECK: Reload if modified OR if it's a new file (last_mtime == 0)
             if last_mtime == 0:
                 map_file_path_obj = Path(map_file_path)
@@ -153,6 +154,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     # -------------------------------------------------------
                     module_to_reload = importlib.import_module(module_name)
 
+
+
                     # if not any(hasattr(module_to_reload, attr) for attr in KNOWN_MAP_ATTRIBUTES):
                     #     logger.debug(f"⏩ Skipping reload — no map structure found: {module_name}")
                     #     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
@@ -174,7 +177,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
 
                     _reload_duration = time.time() - _reload_start_time  # NEU
-                    if _reload_duration > 0.1:  # nur loggen wenn merklich langsam
+                    if _reload_duration > 0.1:  # log when slow
                         logger.info(f"⌚ slow? 🐌 map reload: {module_name} took {_reload_duration:.2f}s")
 
                         if module_name not in KNOWN_MAP_Names:
@@ -221,10 +224,15 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                         except Exception as retry_error:
                             logger.info(f"🚨 ❌ Fix failed: {retry_error}")
+                            LAST_MODIFIED_TIMES[map_file_key] = 0
 
+                    else:
+                        LAST_MODIFIED_TIMES[map_file_key] = 0
 
                 # scripts/py/func/map_reloader.py:151
                 except Exception as e:
+                    LAST_MODIFIED_TIMES[map_file_key] = 0
+
                     # -------------------------------------------------------
                     # EXCEPTION HANDLER -> PRIVATE MAP CHECK
                     # -------------------------------------------------------

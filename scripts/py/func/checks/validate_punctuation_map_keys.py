@@ -5,6 +5,7 @@ import sys
 import importlib
 # import ast
 
+# scripts/py/func/checks/validate_punctuation_map_keys.py:8
 def validate_punctuation_map_keys(project_root,logger):
     """
     Scans all language maps and warns if any PUNCTUATION_MAP contains non-lowercase keys.

@@ -59,7 +59,8 @@ def manage_audio_routing(mode, logger=None):
         return
     if mode == 'MIC_AND_DESKTOP':
         if is_mic_and_desktop_sink_active():
-            if logger: logger.debug("mic_and_desktop_Sink already active. Skipping setup.")
+            if logger:
+                logger.debug("mic_and_desktop_Sink already active. Skipping setup.")
             return
 
     sink_name = "mic_and_desktop_Sink"

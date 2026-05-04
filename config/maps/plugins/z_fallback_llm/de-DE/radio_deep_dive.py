@@ -340,9 +340,9 @@ def save_to_aura_db(question, answer, file_path):
 
         # 1. Save content to aura cache
         cursor.execute("""
-            INSERT OR IGNORE INTO prompts (hash, prompt_text, last_used, clean_input, keywords)
-            VALUES (?, ?, ?, ?, ?)
-        """, (prompt_hash, question, now, clean_input, "radio_deep_dive"))
+            INSERT OR IGNORE INTO prompts (hash, prompt_text, last_used, clean_input, keywords, embedding)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (prompt_hash, question, now, clean_input, "radio_deep_dive", None))
 
         cursor.execute("""
             INSERT INTO responses (prompt_hash, response_text, created_at, usage_count, comment)
@@ -350,11 +350,16 @@ def save_to_aura_db(question, answer, file_path):
         """, (prompt_hash, answer, now, 0, github_link))
 
         # 2. Update tracking table
-        current_mtime = os.path.getmtime(file_path)
+        if os.path.exists(file_path):
+            current_mtime = os.path.getmtime(file_path)
+        else:
+            current_mtime = 0  # Fallback
+
+        # current_mtime = os.path.getmtime(file_path)
         cursor.execute("""
             INSERT OR REPLACE INTO radio_processed_files (file_path, last_mtime, last_generated)
             VALUES (?, ?, ?)
-        """, (file_path, current_mtime, now))
+        """, (str(file_path), current_mtime, now))
 
         conn.commit()
         conn.close()
@@ -512,8 +517,15 @@ def main():
         print("All documents are up to date.")
         return
 
-
+    total = len(candidates)
     target = random.choice(candidates)
+
+    m = f"RADIO: [{total} offen] Verarbeite: {os.path.basename(target)}"
+    print(f"📻 {m}")
+    speak(m, blocking=True,use_espeak=True)
+
+
+
     target_pretty = target
     target_pretty = target_pretty.lstrip("/docs/")
     target_pretty = target_pretty.lstrip("/README.md")
@@ -641,9 +653,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--demo', action='store_true')
+    parser.add_argument('--no-browser', action='store_true')
+
     args = parser.parse_args()
 
-    parser.add_argument('--no-browser', action='store_true')
     if args.no_browser:
         OPEN_BROWSER = False
 

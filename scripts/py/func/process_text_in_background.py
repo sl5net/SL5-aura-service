@@ -198,7 +198,7 @@ def load_module_from_path(script_path, run_mode_override=None):
         return None    # Ignore folders that start with _
 
     print(
-        f"d####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
+        f"####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
 
     spec = importlib.util.spec_from_file_location(path.stem, path)
 
@@ -378,6 +378,10 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                 logger.warning(f"Could not determine plugin_name from modname: {modname}. Skipping.")
                 continue
 
+            MAP_FILE_NAMES = {"FUZZY_MAP", "FUZZY_MAP_pre", "PUNCTUATION_MAP"}
+            if modname.split(".")[-1] not in MAP_FILE_NAMES:
+                continue
+
             plugin_name_before, plugin_name = plugin_name, parts[-3]
             hierarchical_key = "/".join(parts[:-2])
 
@@ -387,6 +391,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 
             if not is_plugin_enabled(hierarchical_key, settings.PLUGINS_ENABLED):
+                logger.info(f"🚫🗺️ DISABLED: {hierarchical_key}")
                 if settings.DEV_MODE and plugin_name_before != plugin_name and log_all_map_ENABLED and False:
                     logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}...")
 
@@ -481,6 +486,14 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 
             if hasattr(module, 'FUZZY_MAP_pre'):
+
+                # NEU - direkt danach:
+                if 'z_fallback_llm' in modname:
+                    sys.stderr.write(f"DEBUG z_fallback_llm FUZZY_MAP_pre: {len(module.FUZZY_MAP_pre)} rules\n")
+                    for e in module.FUZZY_MAP_pre:
+                        sys.stderr.write(f"  rule: {str(e[1])[:80]}\n")
+                    sys.stderr.flush()
+
 
                 if is_private:
                     for entry in module.FUZZY_MAP_pre:
@@ -917,6 +930,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
                             # IMPORTANT: Your code here terminates the function after the FIRST script.
                             # This is okay if there is only one script per rule.
+
+                            sys.stderr.write(f"DEBUG 925: new_current_text='{new_current_text}'\n")
+                            sys.stderr.flush()
 
                             if GLOBAL_debug_skip_list:
                                 print(f'708: skip_list={skip_list}')

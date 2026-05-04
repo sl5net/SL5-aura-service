@@ -55,6 +55,9 @@ do
 
     python3 "$PYTHON_SCRIPT" $DEMO_FLAG >> /tmp/sl5_aura/radio_output.txt 2>/dev/null
 
+    # when debugging:
+    # python3 "$PYTHON_SCRIPT" $DEMO_FLAG >> /tmp/sl5_aura/radio_output.txt
+
     # Optional: Short sleep to let the system / Ollama cool down
     sleep 2
     echo "----------------------------------------------------"
