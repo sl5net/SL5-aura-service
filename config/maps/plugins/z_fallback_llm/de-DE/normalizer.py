@@ -6,12 +6,6 @@ import re
 
 #import hashlib
 
-try:
-    # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
-    from . import utils
-
-except ImportError:
-    import utils
 
 import sys
 from pathlib import Path
@@ -29,12 +23,25 @@ PROJECT_ROOT_DIR = CURRENT_FILE_DIR
 # except ImportError as e:
 #     print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
 #     utils.log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
-try:
-    from config.maps.plugins.standard_actions.get_suggestions import get_suggestions # noqa: F401
-except ImportError as e:
-    print(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")
-    utils.log_debug(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")
-    sys.exit(1)
+
+# config/maps/plugins/z_fallback_llm/de-DE/normalizer.py
+def _load_heavy_deps():
+    global get_suggestions, utils
+
+    try:
+        # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
+        from . import utils
+
+    except ImportError:
+        import utils
+
+
+    try:
+        from config.maps.plugins.standard_actions.get_suggestions import get_suggestions # noqa: F401
+    except ImportError as e:
+        print(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")
+        utils.log_debug(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")
+        sys.exit(1)
 
 # TODO: synonym verbessern
 

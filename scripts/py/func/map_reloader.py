@@ -177,7 +177,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     LAST_MODIFIED_TIMES[map_file_key] = current_mtime
 
                     _reload_duration = time.time() - _reload_start_time  # NEU
-                    if _reload_duration > 0.1:  # log when slow
+                    if _reload_duration > 0.01:  # log when slow
                         logger.info(f"⌚ slow? 🐌 map reload: {module_name} took {_reload_duration:.2f}s")
 
                         if module_name not in KNOWN_MAP_Names:
