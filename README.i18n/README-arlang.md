@@ -4,13 +4,13 @@
            1. قم بتنزيل هذا المستودع أو استنساخه
 2. قم بتشغيل البرنامج النصي للإعداد لنظام التشغيل لديك (راجع مجلد "الإعداد/"):
                    - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-                                                 ===> 🧩 اقرأ [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-arlang.md)
+                                                 ===> 🧩 اقرأ [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-arlang.md)
                         - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
                                - Linux (openSUSE): `bash setup/suse_setup.sh`
                  - نظام التشغيل macOS: `bash setup/macos_setup.sh`
                    - ويندوز: `setup/windows11_setup_with_ahk_copyq.bat`
                  3. ابدأ Aura: `./scripts/restart_venv_and_run-server.sh`
-4. اضغط على مفتاح التشغيل السريع وتحدث — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-arlang.md)**
+4. اضغط على مفتاح التشغيل السريع وتحدث — **[full guide →](../docs/GettingStarted-arlang.md)**
 
 
                       **⚠️ متطلبات النظام والتوافق**
@@ -33,7 +33,7 @@ SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل با
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **نصيحة:** للحصول على تجربة طرفية أفضل، راجع [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-arlang.md).
+> **نصيحة:** للحصول على تجربة طرفية أفضل، راجع [Zsh Integration](../docs/linux/zsh-integration-arlang.md).
 
                                              ### 🎥 فيديو تعليمي
                       [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -319,18 +319,19 @@ f11::
 ││ * **سير العمل:** يقوم بتحميل أرشيفات ZIP المحمية بكلمة مرور. اكس سبيس بريك اكس
 │├ **معالجة النصوص وتصحيحها/** مجمعة حسب اللغة (على سبيل المثال، `de-DE`، `en-US`، ...) XSPACEbreakX
 │├ 1. `normalize_peptication.py` (توحيد علامات الترقيم بعد النسخ) 🐧 🍏 🪟XSPACEbreakX
-│├ 2. **التصحيح المسبق الذكي** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **التصحيح المسبق الذكي** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة (on_match_exec) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.  
 ││ * **التنفيذ المتتالي:** تتم معالجة القواعد بشكل تسلسلي وتكون تأثيراتها **تراكمية**. تنطبق القواعد اللاحقة على النص الذي تم تعديله بواسطة القواعد السابقة.XSPACEbreakX
 ││ * **معيار الإيقاف ذو الأولوية الأعلى:** إذا حققت القاعدة **تطابق كامل** (^...$)، فسيتوقف مسار المعالجة بالكامل لهذا الرمز المميز على الفور. تعتبر هذه الآلية ضرورية لتنفيذ الأوامر الصوتية الموثوقة.XSPACEbreakX
 │├ 3. `correct_text_by_languagetool.py` (يدمج أداة اللغة لتصحيح القواعد النحوية/النمط) 🐧 🍏 🪟XSPACEbreakX
 │├ **4. محرك قواعد RegEx الهرمي مع تقنية Ollama AI الاحتياطية** 🐧 🍏 🪟XSPACEbreakX
 ││ * **التحكم الحتمي:** يستخدم RegEx-Rule-Engine للأوامر الدقيقة ذات الأولوية العالية والتحكم في النص.XSPACEbreakX
+│├ **المكون الإضافي لبحث المتجهات** (التحميل البطيء): يتيح البحث الدلالي عن طريق ربط تضمينات Vector المحلية مع الطبقة الاحتياطية Ollama/LLM 🐧XSPACEbreakX
 ││ * **Ollama AI (Local LLM) الاحتياطي:** بمثابة فحص اختياري منخفض الأولوية لـ **الإجابات الإبداعية، والأسئلة والأجوبة، والمطابقة الغامضة المتقدمة** في حالة عدم استيفاء أي قاعدة حتمية.XSPACEbreakX
                           ││ * **الحالة:** تكامل LLM محلي.
-│└ 5. **التصحيح اللاحق الذكي** (`الخريطة الغامضة`)** – تحسين ما بعد LT** 🐧 🍏 🪟
+│└ 5. **التصحيح اللاحق الذكي** (`FuzzyMap`)** – تحسين ما بعد LT** 🐧 🍏 🪟XSPACEbreakX
 ││ * يتم تطبيقه بعد LanguageTool لتصحيح المخرجات الخاصة بـ LT. يتبع نفس منطق الأولوية المتتالي الصارم مثل طبقة التصحيح المسبق.XSPACEbreakX
-││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-arlang.md)) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات (API)، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
+││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة ([on_match_exec](../docs/advanced-scripting-arlang.md)) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات (API)، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
 ││ * **التراجع الضبابي:** يعمل **التحقق من التشابه الغامض** (الذي يتم التحكم فيه بواسطة عتبة، على سبيل المثال، 85%) بمثابة طبقة تصحيح الأخطاء ذات الأولوية الأدنى. يتم تنفيذه فقط في حالة فشل تشغيل القاعدة الحتمية/المتتالية السابقة بالكامل في العثور على تطابق (القاعدة_الحالية_تطابق خطأ)، مما يؤدي إلى تحسين الأداء عن طريق تجنب عمليات التحقق البطيئة الغامضة كلما أمكن ذلك.  
                            ├┬ **إدارة النماذج/** XSPACEbreakX
 │├─ `prioritize_model.py` (يعمل على تحسين تحميل/تفريغ النموذج بناءً على الاستخدام) 🐧 🍏 🪟XSPACEbreakX
@@ -361,7 +362,7 @@ f11::
 يرجى تحديد مربع الاختيار عند التثبيت لربطه بملفات السجل.  اكس سبيس بريك اكس
 https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
                                               اكس سبيس بريك اكس
-*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
+*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
 
                              ثم ربما انقر نقرًا مزدوجًا
                                                     "سجل/aura_engine.log".
