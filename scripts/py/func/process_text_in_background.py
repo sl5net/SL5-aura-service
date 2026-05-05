@@ -487,12 +487,11 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
             if hasattr(module, 'FUZZY_MAP_pre'):
 
-                # NEU - direkt danach:
-                if 'z_fallback_llm' in modname:
-                    sys.stderr.write(f"DEBUG z_fallback_llm FUZZY_MAP_pre: {len(module.FUZZY_MAP_pre)} rules\n")
-                    for e in module.FUZZY_MAP_pre:
-                        sys.stderr.write(f"  rule: {str(e[1])[:80]}\n")
-                    sys.stderr.flush()
+                # if 'z_fallback_llm' in modname:
+                #     sys.stderr.write(f"DEBUG z_fallback_llm FUZZY_MAP_pre: {len(module.FUZZY_MAP_pre)} rules\n")
+                #     for e in module.FUZZY_MAP_pre:
+                #         sys.stderr.write(f"  rule: {str(e[1])[:80]}\n")
+                #     sys.stderr.flush()
 
 
                 if is_private:

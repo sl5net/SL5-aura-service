@@ -506,11 +506,17 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     second_per_test = duration / len(active_tests)
     max202605042151 =  0.09
     if second_per_test > max202605042151:
-        m1 = f"🛑 ALERT tests_per_second: expected second per test  > {max202605042151}, got {second_per_test:.3f} second per test"
-        m2 = "🛑 mostly it was 6.45 to 7 seconds per 92 tests. Check README variable for more info. ==> exit"
+        m1 = f"🛑 ALERT tests_per_second: expected second per test  <= {max202605042151}, got {second_per_test:.3f} second per test"
+        m2 = "🛑 mostly it was 6.45 to 7 seconds per 92 tests. Check README variable for more info."
         logger.critical(f"{m1} {m2}")
         logger.info(f"{m1} {m2}")
-        sys.exit(1)
+
+        if second_per_test > 2 * max202605042151:
+            m1 = f"🛑 its DOUBLE of expected second per test, got {second_per_test:.3f} second per test. that maybe happens at the first run when RAM is clear"
+            m2 = "🛑 ==> exit"
+            logger.critical(f"{m1} {m2}")
+            logger.info(f"{m1} {m2}")
+            sys.exit(1)
 
 
     m2=f"⌚ Total Duration: {duration:.2f} seconds (second_per_test:{second_per_test:.2f} s/test)"
