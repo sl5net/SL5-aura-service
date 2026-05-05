@@ -9,6 +9,7 @@ import sys
 import os
 from pathlib import Path
 
+from scripts.py.func.map_reloader import auto_reload_modified_maps
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
 from ..audio_manager import speak_inclusive_fallback
@@ -417,7 +418,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES...")
     # logger.info(f":st:Running {len(active_tests)} tests in parallel (ThreadPool)...")
-    start_time = time.perf_counter()
+
 
     # 2. Worker function with isolated sub-directory
 
@@ -427,36 +428,37 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     # Use 20 workers to fully saturate the 16-core Ryzen CPU
 
-    logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES...")
+
 
     # ProcessPoolExecutor nutzt echte CPU-Kerne parallel
     # But ATTENTION: The 'logger' object often cannot be easily copied into processes.
     # We pass None as a logger or use simple print logging within.
 
-    num_workers = max(1, os.cpu_count() // 2) #
 
     # scripts/py/func/checks/self_tester.py:383
 
     # import multiprocessing
+    import multiprocessing
     # ctx = multiprocessing.get_context("fork")
     # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
 
-    num_workers = max(1, os.cpu_count() // 2)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=num_workers) as executor:
 
 
 
-        # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
-        # with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
-        # We reduce to 8 workers (real physical cores),
-        # this is often more efficient for CPU-intensive tasks than 16 or 20.
+
+
+    import os
+    os.environ["AURA_SELF_TEST_RUNNING"] = "1"  # inherited by fork
+    start_time = time.perf_counter()
+    ctx = multiprocessing.get_context("fork")
+    num_workers = os.cpu_count()
+    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
         futures = {executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir)): t
                    for i, t in enumerate(active_tests)}
-
         for future in concurrent.futures.as_completed(futures):
 
             try:
-                print(":st:🔍 Result received...")
+                # print(":st:🔍 Result received...") # that may take 70ms, maybe. don't print always
 
                 result = future.result(timeout=60)  # Add timeout
                 success, raw, actual, expected, desc = result
@@ -614,23 +616,16 @@ class SimpleNullLogger:
 # find . -name "*settings.py"                                                                                                                                     ✔
 
 def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_str):
-    print(f":st:🐣 [{index}] Sub-Process gestartet") # Direkter Print
-
-    import urllib.request
-    try:
-        urllib.request.urlopen("http://127.0.0.1:8082/v2/languages", timeout=2)
-        print(f":st: [{index}] LT erreichbar 🥳")
-    except Exception as e:
-        print(f":st: [{index}] LT NICHT erreichbar: {e} 🫨")
+    # print(f":st:🐣 [{index}] Sub-Process gestartet") # Direkter Print
 
     try:
         import os
 
         from pathlib import Path
 
-        os.environ["AURA_SELF_TEST_RUNNING"] = "1"
+        # os.environ["AURA_SELF_TEST_RUNNING"] = "1"
 
-        print(f":st:🐣 [{index}] Imports ok")
+        # print(f":st:🐣 [{index}] Imports ok")
 
         # current_file = Path(__file__).resolve()
 
@@ -667,8 +662,8 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         unique_time_float = unique_id_ns / 1_000_000_000.0
         # unique_time_float = float(index)  # Absolut eindeutig: 0.0, 1.0, 2.0 ...
 
-        print(':st:🌞🌞🌞 worker dir:', worker_dir)
-        print(':st:🌞🌞🌞 test_base_dir_str:', test_base_dir_str)
+        # print(':st:🌞🌞🌞 worker dir:', worker_dir)
+        # print(':st:🌞🌞🌞 test_base_dir_str:', test_base_dir_str)
 
         # process_text_in_background(
         #     null_logger, lang_code, raw_text,

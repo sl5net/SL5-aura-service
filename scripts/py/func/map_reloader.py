@@ -30,7 +30,8 @@ KNOWN_MAP_Names = {'FUZZY_MAP_pre', 'FUZZY_MAP', 'PUNCTUATION_MAP'}
 def auto_reload_modified_maps(logger,run_mode_override):
 
     if os.getenv("AURA_SELF_TEST_RUNNING") == "1":
-        return  # Skip reload
+        return  # Skip reload during self-test
+
 
     # its using:
 
