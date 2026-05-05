@@ -9,7 +9,6 @@ import sys
 import os
 from pathlib import Path
 
-from scripts.py.func.map_reloader import auto_reload_modified_maps
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
 from ..audio_manager import speak_inclusive_fallback
@@ -506,7 +505,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         logger.info(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
 
     second_per_test = duration / len(active_tests)
-    max202605042151 =  0.09
+    max202605042151 =  0.07
     if second_per_test > max202605042151:
         m1 = f"🛑 ALERT tests_per_second: expected second per test  <= {max202605042151}, got {second_per_test:.3f} second per test"
         m2 = "🛑 mostly it was 6.45 to 7 seconds per 92 tests. Check README variable for more info."
@@ -532,6 +531,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     README = """
 # Example Results (from scripts/py/func/checks/self_tester.py:525):
+
+5.5.'26 21:07 Tue
+20:54:08,072 - MainThread - INFO - pid:211301 :st:⌚ Total Duration: 5.95 seconds (second_per_test:0.06 s/test)
 
 4.5.'26 14:07 Mon
 59,741 - INFO   - :st:✅ Passed: 95 | ❌ Failed: 0 Tests
