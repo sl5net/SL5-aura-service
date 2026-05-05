@@ -577,7 +577,7 @@ Passed: 95 | ❌ Failed: 0 Tests (hint search for: ❌ FAIL )
 
 
     if failed_count > 0:
-        print(f'- %(threadName)s :st: failed_count > 0: {failed_count} ==> exiting')
+        print(f':st: failed_count > 0: {failed_count} ==> exiting')
         # sys.exit(1)
 
 

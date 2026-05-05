@@ -326,9 +326,10 @@ Legend for OS Compatibility:
 │├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
 │├ **4. Hierarchical RegEx-Rule-Engine with Ollama AI Fallback** 🐧 🍏 🪟  
 ││ * **Deterministic Control:** Uses RegEx-Rule-Engine for precise, high-priority command and text control.  
+│├ **Vector-Search Plugin** (Lazy loading): Enables Semantic Search by connecting local Vector embeddings with the Ollama/LLM fallback layer 🐧  
 ││ * **Ollama AI (Local LLM) Fallback:** Serves as an optional, low-priority check for **creative answers, Q&A, and advanced Fuzzy Matching** when no deterministic rule is met.  
 ││ * **Status:** Local LLM integration.
-│└ 5. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟
+│└ 5. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟  
 ││ * Applied after LanguageTool to correct LT-specific outputs. Follows the same strict cascading priority logic as the Pre-Correction layer.  
 ││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts ([on_match_exec](docs/advanced-scripting.md)) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
 ││ * **Fuzzy Fallback:** The **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. It is only executed if the entire preceding deterministic/cascading rule run failed to find a match (current_rule_matched is False), optimizing performance by avoiding slow fuzzy checks whenever possible.  

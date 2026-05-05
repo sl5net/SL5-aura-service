@@ -666,8 +666,8 @@ else:
     # aura_log.unlink(missing_ok=True) ## seems problematic
 
 
-# DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = False
-DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST = True
+# DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = False
+DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = True
 
 readme = """
 vosk-model-small-de-0.15
@@ -1247,7 +1247,7 @@ if settings.DEV_MODE:
     # run_auto_zip_random_quick_check(logger, force_full=False)
 
 
-    if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
+    if not DISABLE_ALL_TEST_QuickStopTestsForSomeReasons:
 
         # logger.info(f"{core_logic_self_test_is_running_FILE} created near aura_engine.py:1183 -> run_core_logic_self_test() starts now")
         # logger.info(f"Auto-Zip: {core_logic_self_test_is_running_FILE} created near aura_engine.py:1183 -> run_core_logic_self_test() starts now") # its often more relevant to this Auto-Zip
@@ -1303,7 +1303,7 @@ if settings.DEV_MODE:
 
         parsed_trees = parse_all_files(PROJECT_ROOT, logger)
 
-    if not DISABLE_ALL_TEST_BECAUSE_WORKING_ON_ZIP_PACK_UNPACK_TEST:
+    if not DISABLE_ALL_TEST_QuickStopTestsForSomeReasons:
         check_for_unused_functions(parsed_trees, PROJECT_ROOT , logger)
         check_for_frequent_calls(parsed_trees, logger, threshold=1)
 
