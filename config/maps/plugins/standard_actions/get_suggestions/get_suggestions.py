@@ -21,16 +21,6 @@ def _load_heavy_deps():
     import argparse
     import json
 
-# --- Dependency Imports ---
-try:
-    import nltk
-    from nltk.corpus import wordnet
-    from cologne_phonetics import encode as cologne_encode
-    import jellyfish
-except ImportError as e:
-    print(f"Error: A required library is missing: {e}")
-    sys.exit(1)
-
 # --- Constants & Configuration ---
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = SCRIPT_DIR

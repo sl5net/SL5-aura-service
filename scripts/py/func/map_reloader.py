@@ -136,7 +136,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     del sys.modules[module_name]
 
                     # 3. FORCE GARBAGE COLLECTION (only when actually reloading)
-                    gc.collect()
+                    # gc.collect()
                     clear_regex_cache()
                     if log_all_map_reloaded:
                         logger.info(" Forced garbage collection before re-import.")

@@ -5,4 +5,6 @@ import re # noqa: F401
 FUZZY_MAP_pre = [
 
     ('Rübennase', r'^Rüben\ Nase$'),
+    ('Tennis', r'^Tennis$'),
 ]
+

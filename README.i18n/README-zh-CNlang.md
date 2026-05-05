@@ -82,7 +82,7 @@ X空格符X
 
 ＃＃ 安装
 
-### 🎥 无需审核即可快速安装（Manjaro/Arch 视频）
+
 观看完整的 6 分钟设置过程：
 * **下载：** ~3 分钟
 * **设置和首次启动：** ~3 分钟（包括欢迎向导）
@@ -101,7 +101,7 @@ X空格符X
 
 为了节省磁盘空间和带宽，您可以在安装过程中排除特定语言模型（“de”、“en”）或所有可选模型（“all”）。 **始终包含核心组件（LanguageTool、lid.176）。**
 
-在项目根目录中打开终端并运行适用于您的系统的脚本：
+在项目根目录中打开终端并运行适用于您系统的脚本：
 
 __代码_块_0__
 
@@ -115,7 +115,7 @@ __代码_块_0__
 1. 导航至“setup”文件夹。
 2. 双击 **`windows11_setup_with_ahk_copyq.bat`**。
 * *脚本会自动提示管理员权限。*
-* *它安装核心系统、语言模型、**AutoHotkey v2** 和 **CopyQ**。*
+
 3. 安装完成后，**Aura Dictation** 将自动启动。
 
 > **注意：** 您不需要预先安装Python或Git；脚本处理一切。
@@ -135,10 +135,10 @@ __代码_块_1__
 ### 1.启动服务
 
 #### 在 Linux 和 macOS 上
-一个脚本可以处理所有事情。它会在后台自动启动主要听写服务和文件观察器。
-__代码_块_2__
+A single script handles everything.它会在后台自动启动主要听写服务和文件观察器。
 
-#### 在 Windows 上
+
+
 启动服务是一个**两步手动过程**：
 
 1. **启动主服务：** 运行`start_aura.bat`。或使用“python3”从“.venv”服务启动
@@ -192,13 +192,13 @@ X空格符X
 这种架构确保核心系统规则受到保护，而特定于项目或上下文感知的规则（例如 CodeIgniter 或游戏控件的规则）可以通过插件轻松添加为低优先级扩展。
 ## Windows 用户的关键脚本
 
-以下是在 Windows 系统上设置、更新和运行应用程序的最重要脚本的列表。
+
 
 ### 设置和更新
 
 * `chmod +x update.sh; ./更新.sh`
 * `setup/setup.bat`：环境的**初始一次性设置**的主脚本。
-* [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `运行 powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
+
 
 * `update.bat` ：从项目文件夹运行这些**获取最新的代码和依赖项**。
 
@@ -234,15 +234,16 @@ X空格符X
 │├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
 │├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
-│ │ * **动态脚本执行：**规则可以触发自定义Python脚本（on_match_exec）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
+││ * **动态脚本执行：**规则可以触发自定义Python脚本（on_match_exec）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 │ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
 │ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
 │├ 3. ` Correct_text_by_languagetool.py` (集成LanguageTool用于语法/风格校正) 🐧 🍏 🪟  
 │├ **4.具有 Ollama AI 后备功能的分层正则表达式规则引擎** 🐧 🍏 🪟  
 │ │ * **确定性控制：** 使用 RegEx-Rule-Engine 进行精确、高优先级的命令和文本控制。  
+│├ **矢量搜索插件**（延迟加载）：通过将本地矢量嵌入与 Ollama/LLM 后备层连接来启用语义搜索 🐧  
 ││ * **Ollama AI（本地法学硕士）后备：** 在不满足确定性规则时，充当**创意答案、问答和高级模糊匹配**的可选、低优先级检查。  
 │ │ * **状态：** 本地法学硕士整合。
-│└ 5. **智能后校正** (`FuzzyMap`)**– LT后细化** 🐧 🍏 🪟
+│└ 5. **智能后期校正** (`FuzzyMap`)**– LT后细化** 🐧 🍏 🪟  
 │ │ * 在 LanguageTool 之后应用以纠正 LT 特定的输出。遵循与预校正层相同的严格级联优先级逻辑。  
 ││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 ││ * **模糊回退：** **模糊相似性检查**（由阈值控制，例如 85%）充当最低优先级的纠错层。仅当前面的整个确定性/级联规则运行未能找到匹配项（current_rule_matched 为 False）时才会执行它，通过尽可能避免缓慢的模糊检查来优化性能。  
@@ -365,4 +366,4 @@ X空格符X
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
-[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)P5kk00)
