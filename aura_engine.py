@@ -667,7 +667,8 @@ else:
 
 
 # DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = False
-DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = True
+# DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = True
+DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = False
 
 readme = """
 vosk-model-small-de-0.15

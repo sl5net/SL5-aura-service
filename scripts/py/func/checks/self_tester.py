@@ -10,8 +10,10 @@ import concurrent.futures
 import shutil
 import sys
 # import concurrent.futures
+
 import os
 from pathlib import Path
+from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
@@ -52,33 +54,8 @@ if project_root not in sys.path:
 # Note: In aura_engine.py this might be SCRIPT_DIR instead of project_root
 
 from .run_function_with_throttling import run_function_with_throttling
-from ..config.dynamic_settings import DynamicSettings
+# from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
-
-# def get_logger_file_path(logger_instance):
-    # "Retrieves the Path object for the first FileHandler."""
-    # for handler in logger_instance.handlers:
-    #     if isinstance(handler, FileHandler):
-    #         return Path(handler.baseFilename)
-    # return None
-
-# def simple_clear_log(log_path: Path):
-#     """
-#     Clears the log file using 'w' mode.
-#     NOTE: This does NOT close the logger handler, risking a race condition.
-#     """
-#     if log_path is None:
-#         print("Error: No log file path found.")
-#         return
-#
-#     try:
-#         # Open in write mode ('w') to truncate the file
-#         with open(log_path, 'w', encoding='utf-8'):
-#             pass
-#         print(f"Log '{log_path}' cleared successfully.")
-#     except Exception as e:
-#         # This catch handles FileNotFoundError and PermissionError/Lock issues
-#         print(f"Warning: Could not clear log file {log_path}. Error: {e}", file=sys.stderr)
 
 
 # file: scripts/py/func/checks/self_tester.py:79
@@ -88,15 +65,6 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code): # ,
     """
     # scripts/py/func/checks/self_tester.py
 
-    # Restart LT with full power for self-test
-    # only interesting if we are in test mode and actually want to use each other as a profil
-    # if LANGUAGETOOL_JAR_PATH:
-    #     subprocess.run(['pkill', '-f', 'languagetool-server.jar'], capture_output=True)
-    #     time.sleep(1)
-    #     lt_process = start_languagetool_server(logger, LANGUAGETOOL_JAR_PATH, lt_url, for_self_test=True)
-    #     _wait_for_languagetool_ready(lt_url, logger)
-    #
-    # lt_process = start_languagetool_server(logger, LANGUAGETOOL_JAR_PATH, lt_url, for_self_test=False) # default is True but then it runs like to to the end
     _wait_for_languagetool_ready(lt_url, logger)
 
     rules_file_path = Path(__file__).parents[4] / 'config' / 'maps' / 'plugins' / 'standard_actions' / 'language_translator' / 'de-DE' / 'FUZZY_MAP_pre.py'
@@ -161,8 +129,8 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code): # ,
     return test_executed
 
 # helper for use named Parameters
-def case(input_text, expected, context='', lang='de-DE'):
-    return (input_text, expected, context, lang)
+def case(input_text, expected, context='', lang='de-DE', lt=True, prio=2):
+    return (input_text, expected, context, lang, lt, prio)
 
 # file: scripts/py/func/checks/self_tester.py:79
 
@@ -221,182 +189,152 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     # run_auto_zip_sanity_check(logger) # runs asynchron and will run at the end to check if creating zips work
     # auto_zip_thread = run_auto_zip_sanity_check(logger)
 
-
     test_cases = [
-
-        # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected=f"{SPEECH_PAUSE_TIMEOUT_021}", context='proff if we can change settings 2026-0104-1435'),
-
-        #     ('lehrwart', 'leerworttest1'),
-        case(input_text='leerworttest', expected="leerworttest1", context='punctation map test', lang='de-DE'),
-
+        # --- Settings checks ---
+        case(input_text='leerworttest', expected="leerworttest1", context='punctation map test', lang='de-DE', lt=False,
+             prio=1),
         case(input_text='->AUDIO_INPUT_DEVICE<-', expected="SYSTEM_DEFAULT",
-             context='proff if we can change settings 2026-0104-1435'),
-        # case(input_text='->SPEECH_PAUSE_TIMEOUT<-', expected='7890', context='proff if we can change settings 2026-0104-1435'),
+             context='proff if we can change settings 2026-0104-1435', lt=False, prio=1),
 
-        ('Sebastian mit nachnamen', 'Sebastian mit Nachnamen',
-         'LT Uppercase. \n may check --> config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py',
-         'de-DE'),
+        # --- LT + MAP Kombinationen ---
+        case('Sebastian mit nachnamen', 'Sebastian mit Nachnamen',
+             'LT Uppercase. may check --> FUZZY_MAP_pre.py', lt=True, prio=2),
+        case(input_text='null', expected='0', context='MAP git', lt=False, prio=1),
+        case(input_text='über die konsole zu bedienen', expected='Über die Konsole zu bedienen', context='git', lt=True,
+             prio=2),
+        case(input_text='geht cobit', expected='git commit', context='FUZZY_MAP_pre git', lt=False, prio=1),
 
-        case(input_text='null', expected='0', context='git'),
-        case(input_text='über die konsole zu bedienen', expected='Über die Konsole zu bedienen', context='git'),
-        case(input_text='geht cobit', expected='git commit', context='git'),
-        ('geht staates', 'git status', '19.11.25 10:19 Wed', 'de-DE'),
-        ('ausrufezeichen', '!', 'Exact MAP match for punctuation', 'de-DE'),
+        # --- en-US ---
+        case('colours', 'colors', 'fix by LT', lang='en-US', lt=True, prio=1),
+        case('underilnes', 'underlines', 'fix by LT', lang='en-US', lt=True, prio=3),
+        case('too have', 'to have', 'fix by LT', lang='en-US', lt=True, prio=3),
+        case('5 PM in the afternoon', '5 PM', 'fix by LT', lang='en-US', lt=True, prio=2),
+        case('good nigt Mum', 'Good night Mum', 'Funny useless rule ;) just for testing', lang='en-US', lt=True,
+             prio=3),
+        case('thousand dollars.', '1000 dollars.', 'Number with unit', lang='en-US', lt=False, prio=2),
+        case('one and thousand dollars.', '1 and 1000 dollars.', 'Number with unit', lang='en-US', lt=False, prio=3),
 
-        # following differ when daytime chaning:
-        # ('good Morning people', 'hey all out there people', 'use a postRule. Funny useless rule ;) just for testing','en-US'),
-        ('colours', 'colors', 'fix by LT', 'en-US'),
-        ('underilnes', 'underlines', 'fix by LT', 'en-US'),
-        ('too have', 'to have', 'fix by LT', 'en-US'),
-        ('colours', 'colors', 'fix by LT', 'en-US'),
-        ('5 PM in the afternoon', '5 PM', 'fix by LT', 'en-US'),
+        # --- de-DE MAP + LT ---
+        case('tausend euro. Und euro großgeschrieben.', '1000 Euro. Und Euro großgeschrieben.',
+             'Number with unit', lt=True, prio=2),
+        case('was ist 5 plus 3', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', lt=False, prio=1),
+        case('bitte reservieren sie einen tisch für zwei personen um acht uhr',
+             'Bitte reservieren Sie einen Tisch für 2 Personen um 8 Uhr',
+             'Polite request with time and number', lt=True, prio=2),
 
-        ('good nigt Mum', 'Good night Mum', 'Funny useless rule ;) just for testing',
-         'en-US'),
-
-        # good evening dead Good evening them Good evening ought to get
-
-        ('thousand dollars.', '1000 dollars.', 'Number with unit',
-         'en-US'),
-        ('one and thousand dollars.', '1 and 1000 dollars.', 'Number with unit',
-         'en-US'),
-
-        ('tausend euro. Und euro großgeschrieben.', '1000 Euro. Und Euro großgeschrieben.', 'Number with unit',
-         'de-DE'),
-
-        ('was ist 5 plus 3', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', 'de-DE'),
-
-        ('bitte reservieren sie einen tisch für zwei personen um acht uhr',
-         'Bitte reservieren Sie einen Tisch für 2 Personen um 8 Uhr', 'Polite request with time and number',
-         'de-DE'),
-        ('eins', '1', 'maps/plugins/numbers_to_digits/de-DE/', 'de-DE'),
-        ('eins zwei', '12', 'maps/plugins/numbers_to_digits/de-DE/', 'de-DE'),
-        ('sieben acht neun', '789', 'maps/plugins/numbers_to_digits/de-DE/', 'de-DE'),
-
-        ('Sekunde Lauffer', 'Sigune Lauffer', 'MAP Wannweil', 'de-DE'),
-        ('mit nachnamen laufer', 'Mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
-        ('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'Partial map + LT correction', 'de-DE'),
-        ('von sebastian laufer', 'Von Sebastian Lauffer', 'Partial map + LT correction', 'de-DE'),
-        ('punkt', '.', 'Exact MAP match', 'de-DE'),
-        # ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization', 'de-DE'),
-        ('git at', 'git add .', 'Fuzzy map REGEX match', 'de-DE'),
-        ('geht status', 'git status', 'Fuzzy map FUZZY string match', 'de-DE'),
-        ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
-        ('sebastian laufer', 'Sebastian Lauffer', 'Exact MAP match', 'de-DE'),
-        ('Sekunde lauf war', 'Sigune Lauffer war', 'MAP Wannweil', 'de-DE'),
+        # --- Zahlen ---
+        case('eins', '1', 'numbers_to_digits', lt=False, prio=1),
+        case('eins zwei', '12', 'numbers_to_digits', lt=False, prio=3),
+        case('sieben acht neun', '789', 'numbers_to_digits', lt=False, prio=3),
+        case('zwei zwei', '22', 'Multiple replacement check', lt=False, prio=3),
+        case('sieben', '7', 'Numbers as digits', lt=False, prio=2),
+        case('acht', '8', 'Numbers as digits', lt=False, prio=3),
+        case('neun', '9', 'Numbers as digits', lt=False, prio=3),
+        case('zehn', '10', 'Number as digit', lt=False, prio=2),
+        case('komma', ',', 'Exact MAP punctuation', lt=False, prio=1),
+        case('fünf komma', '5 ,', 'Decimal number', lt=False, prio=2),
+        case('fünf komma drei', '5 , 3', 'Decimal number', lt=False, prio=3),
 
         # --- Grundlegende Satzzeichen ---
-        ('punkt', '.', 'Exact MAP match for punctuation', 'de-DE'),
-        ('fragezeichen', '?', 'Exact MAP match for punctuation', 'de-DE'),
-        ('ausrufezeichen', '!', 'Exact MAP match for punctuation', 'de-DE'),
-        ('doppelpunkt', ':', 'Exact MAP match for punctuation', 'de-DE'),
-        ('semikolon', ';', 'Exact MAP match for punctuation', 'de-DE'),
-        ('bindestrich', '-', 'Exact MAP match for punctuation', 'de-DE'),
-        ('gedankenstrich', '–', 'Exact MAP match for punctuation', 'de-DE'),  # Oder '-' je nach gewünschtem Output
-        ('klammer auf', '(', 'Exact MAP match for punctuation', 'de-DE'),
-        ('klammer zu', ')', 'Exact MAP match for punctuation', 'de-DE'),
+        case('punkt', '.', 'Exact MAP', lt=False, prio=1),
+        case('fragezeichen', '?', 'Exact MAP', lt=False, prio=3),
+        case('ausrufezeichen', '!', 'Exact MAP', lt=False, prio=2),
+        case('doppelpunkt', ':', 'Exact MAP', lt=False, prio=3),
+        case('semikolon', ';', 'Exact MAP', lt=False, prio=3),
+        case('bindestrich', '-', 'Exact MAP', lt=False, prio=3),
+        case('gedankenstrich', '–', 'Exact MAP', lt=False, prio=3),
+        case('klammer auf', '(', 'Exact MAP', lt=False, prio=3),
+        case('klammer zu', ')', 'Exact MAP', lt=False, prio=3),
 
-        # --- Groß- und Kleinschreibung (Satzanfang, Nomen) ---
-        # ('das ist ein test', 'Das ist ein Test', 'LanguageTool grammar/capitalization', 'de-DE'),
-        # ('guten morgen', 'Guten Morgen', 'Capitalization of greeting and noun', 'de-DE'),
-        ('ich heiße max', 'Ich heiße Max', 'Capitalization of pronoun and proper noun', 'de-DE'),
-        ('der hund bellt', 'Der Hund bellt', 'Capitalization of article and noun', 'de-DE'),
-        ('die katze schläft', 'Die Katze schläft', 'Capitalization of article and noun', 'de-DE'),
-        ('ein haus und ein garten', 'Ein Haus und ein Garten', 'Capitalization of nouns', 'de-DE'),
-        ('heute ist montag', 'Heute ist Montag', 'Capitalization of day', 'de-DE'),
-        ('heute ist ein schöner tag', 'Heute ist ein schöner Tag', 'Capitalization of day', 'de-DE'),
-        ('heute ist ein schöner tag zwei drei', 'Heute ist ein schöner Tag 23', 'Capitalization of day and number check', 'de-DE'),
+        # --- MAP Wannweil ---
+        case('Sekunde Lauffer', 'Sigune Lauffer', 'MAP Wannweil', lt=False, prio=1),
+        case('Sekunde lauf war', 'Sigune Lauffer war', 'MAP Wannweil', lt=False, prio=2),
 
-        ('zwei drei hunde sind im wald', '23 Hunde sind im Wald', 'Number at start + LT', 'de-DE'),
-        ('zwei zwei', '22', 'Multiple replacement check', 'de-DE'),
-        ('die antwort ist ein test', 'Die Antwort ist ein Test', 'Window filter provocation test', 'de-DE'),
+        # --- Partial MAP + LT ---
+        case('mit nachnamen laufer', 'Mit Nachnamen Lauffer', 'Partial map + LT', lt=True, prio=2),
+        case('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'Partial map + LT', lt=True, prio=2),
+        case('von sebastian laufer', 'Von Sebastian Lauffer', 'Partial map + LT', lt=True, prio=2),
+        case('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT', lt=True, prio=2),
+        case('sebastian laufer', 'Sebastian Lauffer', 'Exact MAP match', lt=False, prio=1),
 
+        # --- FUZZY_MAP_pre ---
+        case('git at', 'git add .', 'Fuzzy map REGEX match', lt=False, prio=1),
+        case('geht status', 'git status', 'Fuzzy map FUZZY string', lt=False, prio=1),
+        case('geht cobit', 'git commit', 'FUZZY_MAP_pre', lt=False, prio=1),
 
+        # --- Großschreibung via LT ---
+        case('ich heiße max', 'Ich heiße Max', 'Capitalization pronoun + proper noun', lt=True, prio=2),
+        case('der hund bellt', 'Der Hund bellt', 'Capitalization article + noun', lt=True, prio=1),
+        case('die katze schläft', 'Die Katze schläft', 'Capitalization article + noun', lt=True, prio=3),
+        case('ein haus und ein garten', 'Ein Haus und ein Garten', 'Capitalization nouns', lt=True, prio=2),
+        case('heute ist montag', 'Heute ist Montag', 'Capitalization day', lt=True, prio=1),
+        case('heute ist ein schöner tag', 'Heute ist ein schöner Tag', 'Capitalization day', lt=True, prio=3),
+        case('heute ist ein schöner tag zwei drei', 'Heute ist ein schöner Tag 23',
+             'Capitalization + number', lt=True, prio=3),
+        case('zwei drei hunde sind im wald', '23 Hunde sind im Wald', 'Number at start + LT', lt=True, prio=1),
+        case('die antwort ist ein test', 'Die Antwort ist ein Test', 'Window filter provocation', lt=True, prio=2),
+        case('im sommer ist es warm', 'Im Sommer ist es warm', 'Capitalization season', lt=True, prio=3),
 
-        ('im sommer ist es warm', 'Im Sommer ist es warm', 'Capitalization of season', 'de-DE'),
+        # --- Häufige Phrasen ---
+        case('danke schön', 'Danke schön', 'Common thanks', lt=True, prio=3),
+        case('bitte schön', 'Bitte schön', 'Common courtesy', lt=True, prio=3),
+        case('entschuldigung', 'Entschuldigung', 'Common apology', lt=True, prio=2),
+        case('ich verstehe', 'Ich verstehe', 'Common confirmation', lt=True, prio=3),
+        case('ich weiß nicht', 'Ich weiß nicht', 'Common uncertainty', lt=True, prio=2),
+        case('alles klar', 'Alles klar', 'Common affirmation', lt=True, prio=3),
+        case('auf wiedersehen', 'Auf Wiedersehen', 'Common farewell', lt=True, prio=2),
+        case('bis später', 'Bis später', 'Common farewell', lt=True, prio=3),
+        case('es ist kalt draußen', 'Es ist kalt draußen', 'Simple sentence', lt=True, prio=3),
+        case('was machst du heute', 'Was machst du heute', 'Common question', lt=True, prio=3),
+        case('kein problem', 'Kein Problem', 'Common phrase', lt=True, prio=2),
+        case('zum beispiel', 'Zum Beispiel', 'Common phrase', lt=True, prio=2),
+        case('und so weiter', 'Und so weiter', 'Common phrase', lt=True, prio=3),
+        case('einer nach dem anderen', 'Einer nach dem anderen', 'Idiomatic', lt=True, prio=3),
 
-        # --- Zahlen und Ziffern ---
-        ('sieben', '7', 'Numbers as digits', 'de-DE'),
-        ('acht', '8', 'Numbers as digits', 'de-DE'),
-        ('neun', '9', 'Numbers as digits', 'de-DE'),
-        ('zehn', '10', 'Number as digit', 'de-DE'),
-        # ('zweitausendunddreiundzwanzig', '2023', 'Year as digit', 'de-DE'),
-        ('komma', ',', 'Exact MAP match for punctuation', 'de-DE'),
-        ('fünf komma', '5 ,', 'Decimal number', 'de-DE'),
-        ('fünf komma drei', '5 , 3', 'Decimal number', 'de-DE'),
-        # ('minus drei', '- 3', 'Negative number', 'de-DE'),
-
-        # --- Häufige Wörter und Phrasen ---
-        # ('hallo wie geht es dir', 'Hallo, wie geht es dir', 'Common greeting and question', 'de-DE'),
-        ('danke schön', 'Danke schön', 'Common thanks', 'de-DE'),
-        ('bitte schön', 'Bitte schön', 'Common courtesy', 'de-DE'),
-        ('entschuldigung', 'Entschuldigung', 'Common apology', 'de-DE'),
-        ('ich verstehe', 'Ich verstehe', 'Common confirmation', 'de-DE'),
-        ('ich weiß nicht', 'Ich weiß nicht', 'Common uncertainty', 'de-DE'),
-        ('alles klar', 'Alles klar', 'Common affirmation', 'de-DE'),
-        ('auf wiedersehen', 'Auf Wiedersehen', 'Common farewell', 'de-DE'),
-        ('bis später', 'Bis später', 'Common farewell', 'de-DE'),
-        # ('ja genau', 'Ja, genau', 'Affirmation with comma', 'de-DE'),
-        # ('nein danke', 'Nein, danke', 'Refusal with thanks', 'de-DE'),
-        ('es ist kalt draußen', 'Es ist kalt draußen', 'Simple descriptive sentence', 'de-DE'),
-        ('was machst du heute', 'Was machst du heute', 'Common question', 'de-DE'),
-        ('kein problem', 'Kein Problem', 'Common phrase', 'de-DE'),
-        ('zum beispiel', 'Zum Beispiel', 'Common phrase', 'de-DE'),
-        ('und so weiter', 'Und so weiter', 'Common phrase', 'de-DE'),
-        ('einer nach dem anderen', 'Einer nach dem anderen', 'Idiomatic expression', 'de-DE'),
-
-        # --- Wörter mit Umlauten und Sonderzeichen ---
-        ('schön', 'schön', 'Word with Umlaut', 'de-DE'),
-        ('überall', 'überall', 'Word with Umlaut', 'de-DE'),
-        ('für', 'für', 'Word with Umlaut', 'de-DE'),
-        ('größer', 'größer', 'Word with Umlaut and Eszett', 'de-DE'),
-        ('straße', 'Straße', 'Word with Eszett and capitalization', 'de-DE'),
-        ('weiß', 'weiß', 'Word with Eszett', 'de-DE'),
-        ('füße', 'Füße', 'Word with Umlaut and capitalization', 'de-DE'),
-        ('müde', 'müde', 'Word with Umlaut', 'de-DE'),
-        ('hände', 'Hände', 'Word with Umlaut and capitalization', 'de-DE'),
+        # --- Umlaute ---
+        case('schön', 'schön', 'Umlaut – unverändert', lt=False, prio=3),
+        case('überall', 'überall', 'Umlaut – unverändert', lt=False, prio=3),
+        case('für', 'für', 'Umlaut – unverändert', lt=False, prio=3),
+        case('größer', 'größer', 'Umlaut+Eszett – unverändert', lt=False, prio=3),
+        case('weiß', 'weiß', 'Eszett – unverändert', lt=True, prio=3),
+        case('müde', 'müde', 'Umlaut – unverändert', lt=True, prio=3),
+        case('straße', 'Straße', 'Eszett + Großschreibung', lt=True, prio=2),
+        case('füße', 'Füße', 'Umlaut + Großschreibung', lt=True, prio=3),
+        case('hände', 'Hände', 'Umlaut + Großschreibung', lt=True, prio=3),
 
         # --- Abkürzungen ---
-        ('zum beispiel', 'Zum Beispiel', 'Common abbreviation', 'de-DE'),
-        # Or 'for example' depending on the desired output
-        ('unter anderem', 'Unter anderem', 'Common abbreviation', 'de-DE'),  # Oder 'unter anderem'
-        ('respektive', 'respektive', 'Common abbreviation', 'de-DE'),  # Oder 'beziehungsweise'
-        ('circa', 'circa', 'Common abbreviation', 'de-DE'),
-        ('doktor', 'Doktor', 'Common title abbreviation', 'de-DE'),
-        ('professor', 'Professor', 'Common title abbreviation', 'de-DE'),
-        # ('und so weiter', 'usw.', 'Common abbreviation', 'de-DE'),
-        ('zum schluss', 'Zum Schluss', 'Custom abbreviation example', 'de-DE'),  # Falls du eigene Abkürzungen hast
+        case('respektive', 'respektive', 'unverändert', lt=False, prio=3),
+        case('circa', 'circa', 'unverändert', lt=False, prio=3),
+        case('unter anderem', 'Unter anderem', 'Common abbreviation', lt=True, prio=2),
+        case('doktor', 'Doktor', 'Title abbreviation', lt=True, prio=2),
+        case('professor', 'Professor', 'Title abbreviation', lt=True, prio=3),
+        case('zum schluss', 'Zum Schluss', 'Custom abbreviation', lt=True, prio=3),
 
         # --- Fragen und Ausrufe ---
-        ('wie spät ist es', 'Wie spät ist es', 'Direct question', 'de-DE'),
-        ('wo finde ich toilette', 'Wo finde ich Toilette', 'Direct question', 'de-DE'),
-        ('das ist unglaublich', 'Das ist unglaublich', 'Exclamatory sentence', 'de-DE'),
-        ('hilfe', 'Hilfe', 'word', 'de-DE'),
-        ('was für ein tag', 'Was für ein Tag', 'Exclamatory phrase', 'de-DE'),
+        case('wie spät ist es', 'Wie spät ist es', 'Direct question', lt=True, prio=2),
+        case('wo finde ich toilette', 'Wo finde ich Toilette', 'Direct question', lt=True, prio=3),
+        case('das ist unglaublich', 'Das ist unglaublich', 'Exclamatory', lt=True, prio=3),
+        case('hilfe', 'Hilfe', 'word', lt=True, prio=2),
+        case('was für ein tag', 'Was für ein Tag', 'Exclamatory phrase', lt=True, prio=3),
+        case('stopp', 'stopp', 'unverändert', lt=False, prio=3),
 
-        # --- Einfache Befehle/Anweisungen (falls relevant) ---
-        ('gehe nach links', 'Gehe nach links', 'Simple command', 'de-DE'),
-        ('schalte das licht ein', 'Schalte das Licht ein', 'Simple command', 'de-DE'),
-        ('öffne die tür', 'Öffne die Tür', 'Simple command', 'de-DE'),
-        ('stopp', 'stopp', 'Simple command/exclamation', 'de-DE'),
-        ('wiederhole das bitte', 'Wiederhole das bitte', 'Request', 'de-DE'),
+        # --- Befehle ---
+        case('gehe nach links', 'Gehe nach links', 'Simple command', lt=True, prio=3),
+        case('schalte das licht ein', 'Schalte das Licht ein', 'Simple command', lt=True, prio=2),
+        case('öffne die tür', 'Öffne die Tür', 'Simple command', lt=True, prio=3),
+        case('wiederhole das bitte', 'Wiederhole das bitte', 'Request', lt=True, prio=3),
 
         # --- Komplexere Sätze ---
-        # ('ich gehe heute abend ins kino mit freunden', 'Ich gehe heute Abend ins Kino mit Freunden',
-        #  'Longer sentence with multiple nouns', 'de-DE'),
-        ('die sonne scheint auf die blumen', 'Die Sonne scheint auf die Blumen',
-         'Compound sentence', 'de-DE'),
-        ('obwohl es regnet ist die stimmung gut', 'Obwohl es regnet, ist die Stimmung gut',
-         'Sentence with subordinate clause and comma', 'de-DE'),
-        ('der kleine hund spielt mit seinem neuen spielzeug',
-         'Der kleine Hund spielt mit seinem neuen Spielzeug', 'Detailed sentence', 'de-DE'),
-        # ('der kleine junge spielt mit seinem neuen spielzeug im park',
-        #  'Der kleine Junge spielt mit seinem neuen Spielzeug im Park', 'Detailed sentence', 'de-DE'),
-        ('das wetter wird morgen sonnig mit temperaturen um die zwanzig grad',
-         'Das Wetter wird morgen sonnig mit Temperaturen um die 20 Grad', '"digits_to_numbers": True', 'de-DE'),
-        # ('the boss said we should finish the presentation by Friday',
-        # 'The boss said we should finish the presentation by Friday.', 'Indirect speech with comma',
-        #  'de-DE'),
+        case('die sonne scheint auf die blumen', 'Die Sonne scheint auf die Blumen',
+             'Compound sentence', lt=True, prio=2),
+        case('obwohl es regnet ist die stimmung gut', 'Obwohl es regnet, ist die Stimmung gut',
+             'Subordinate clause + comma', lt=True, prio=1),
+        case('der kleine hund spielt mit seinem neuen spielzeug',
+             'Der kleine Hund spielt mit seinem neuen Spielzeug',
+             'Detailed sentence', lt=True, prio=3),
+        case('das wetter wird morgen sonnig mit temperaturen um die zwanzig grad',
+             'Das Wetter wird morgen sonnig mit Temperaturen um die 20 Grad',
+             'digits_to_numbers + LT', lt=True, prio=2),
     ]
 
     # test_cases = [
@@ -405,18 +343,27 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     # ]
 
     # 1. Filter test cases for the current language
+    PRIO_CHANCE = {1: 1.0, 2: 0.8, 3: 0.3}
+    import random
     active_tests = []
-    # Note: test_cases list remains as defined in your script
     for test_case in test_cases:
-        if len(test_case) == 4:
+        if len(test_case) == 6:
+            raw_text, expected, description, check_lang, use_lt, prio = test_case
+            if check_lang == lang_code and random.random() < PRIO_CHANCE[prio]:
+                active_tests.append((raw_text, expected, description, use_lt))
+        elif len(test_case) == 5:
+            raw_text, expected, description, check_lang, use_lt = test_case
+            if check_lang == lang_code:
+                active_tests.append((raw_text, expected, description, use_lt))
+        elif len(test_case) == 4:
             raw_text, expected, description, check_lang = test_case
             if check_lang == lang_code:
-                active_tests.append((raw_text, expected, description))
+                active_tests.append((raw_text, expected, description, True))
         elif len(test_case) == 3:
-            active_tests.append(test_case)
-        # Add a default 'de-DE' for 2-tuple cases if they exist
+            active_tests.append((*test_case, True))
         elif len(test_case) == 2 and lang_code == 'de-DE':
-            active_tests.append((test_case[0], test_case[1], ''))
+            active_tests.append((test_case[0], test_case[1], '', True))
+
 
 
     logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES...")
@@ -455,36 +402,62 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     start_time = time.perf_counter()
     ctx = multiprocessing.get_context("fork")
     num_workers = os.cpu_count()
-    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
-        futures = {executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir)): t
-                   for i, t in enumerate(active_tests)}
-        for future in concurrent.futures.as_completed(futures):
+    # lt_workers = max(2, num_workers // 2)
 
+    lt_tests = [(r, e, d, True) for r, e, d, use_lt in active_tests if use_lt]
+    non_lt_tests = [(r, e, d, False) for r, e, d, use_lt in active_tests if not use_lt]
+    logger.info(f":st: Phase 1 – {len(non_lt_tests)} deterministic tests (max_workers={num_workers})")
+    logger.info(f":st: Phase 2 – {len(lt_tests)} LT-dependent tests   (max_workers=2)")
+
+    test_metrics = [] # To store (duration, description, success)
+
+    def _collect_results(futures_map):
+        nonlocal passed_count, failed_count
+        for future in concurrent.futures.as_completed(futures_map):
             try:
-                # print(":st:🔍 Result received...") # that may take 70ms, maybe. don't print always
+                result = future.result(timeout=60)
+                success, raw, actual, expected, desc, duration, use_lt = result
 
-                result = future.result(timeout=60)  # Add timeout
-                success, raw, actual, expected, desc = result
-                # success, raw, actual, expected, desc = future.result(timeout=60)
+                test_metrics.append({
+                    'duration': duration,
+                    'desc': desc,
+                    'input': raw,
+                    'success': success,
+                    'use_lt': use_lt
+                })
+
                 if success:
                     passed_count += 1
-                    # logger.error(f"{passed_count}🥳   Expected: '{expected}'")
-                    # logger.error(f"{passed_count}🥳   Got:      '{actual}'")
                 else:
                     failed_count += 1
-                    logger.error(f":st: ❌ FAIL: {desc}")
+                    logger.error(f":st:  FAIL: {desc} ({duration:.3f}s)")
                     logger.error(f":st:   Input: ---> '{raw}'")
                     logger.error(f":st:   Expected:-> '{expected}'")
                     logger.error(f":st:   Got: -----> '{actual}'")
-                    logger.info(f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> :) its oky no problem. try it better next time ;)")
-
-                    # logger.info(f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> exit")
-                    # sys.exit(1)
-
+                    logger.info(
+                        f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> :) its oky no problem. try it better next time ;)")
             except Exception as e:
                 failed_count += 1
-                print(f":st:💥 Process crashed: {e}")
-                # sys.exit(1)
+                print(f":st: Process crashed: {e}")
+
+    # Issue #94: submit non-LT tests first, then LT tests (single pool, stable)
+    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
+        futures = {}
+        for i, t in enumerate(non_lt_tests):
+            futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
+        for i, t in enumerate(lt_tests, start=len(non_lt_tests)):
+            futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
+        _collect_results(futures)
+
+
+
+
+
+
+
+
+
+
 
     #core_logic_self_test_is_running_FILE = tmp_dir_aura / "core_logic_self_test_FILE_is_running"
 
@@ -499,7 +472,24 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     #     auto_zip_thread.join(timeout=MAX_WAIT_SECONDS)
 
     # scripts/py/func/checks/self_tester.py:420
-    # 4. Summary
+
+    # 4.1 Detailed Performance Report at the very end
+    logger.info("=" * 40)
+    # logger.info(":st: PERFORMANCE REPORT (Slowest tests first):")
+    logger.info(f":st: {'STAT':<5} | {'TIME':<8} | {'LT':<4} | {'DESCRIPTION':<40} | {'INPUT'}")
+    # Sort by duration descending
+    sorted_metrics = sorted(test_metrics, key=lambda x: x['duration'], reverse=True)
+
+    for m in sorted_metrics:
+        status = "✅" if m['success'] else "❌"
+        lt_flag = "LT" if m['use_lt'] else "--"
+        logger.info(f":st: {status:<1} | {m['duration']:>6.3f}s | {lt_flag:<2} | {m['desc'][:40]:<40} | '{m['input']}'")
+
+
+    logger.info("=" * 40)
+
+
+    # 4.2 Summary
     duration = time.perf_counter() - start_time
     logger.info("=" * 40)
     # m1 =f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}"
@@ -509,7 +499,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         logger.info(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
 
     second_per_test = duration / len(active_tests)
-    max202605042151 =  0.07
+    max202605042151 =  0.078
     if second_per_test > max202605042151:
         m1 = f"🛑 ALERT tests_per_second: expected second per test  <= {max202605042151}, got {second_per_test:.3f} second per test"
         m2 = "🛑 mostly it was 6.45 to 7 seconds per 92 tests. Check README variable for more info."
@@ -623,11 +613,10 @@ class SimpleNullLogger:
 
 def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_str):
     # print(f":st:🐣 [{index}] Sub-Process gestartet") # Direkter Print
+    start_individual = time.perf_counter() # Start timing
+    raw_text, expected, description, use_lt = test_data
 
     try:
-        import os
-
-        from pathlib import Path
 
         # os.environ["AURA_SELF_TEST_RUNNING"] = "1"
 
@@ -647,10 +636,10 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         # if project_root not in sys.path:
         #     sys.path.insert(0, project_root)
 
-        from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 
-        raw_text, expected, description = test_data
+
+        # raw_text, expected, description = test_data
 
         # 3. Absolut isoliertes Verzeichnis (Task-Index im Namen)
         worker_dir = Path(test_base_dir_str) / f"task_{index}"
@@ -701,9 +690,17 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
             print(":st:Auto-Zip: Flag created process_text_in_background was finished before")
 
         # 5. Datei finden (nur in diesem privaten Task-Ordner!)
+
         output_files = list(worker_dir.glob("tts_output_*.txt"))
+
+        # ÄNDERN (ca. Zeile 539):
         if not output_files:
-            return False, raw_text, "[NO_FILE]", expected, description
+            duration = time.perf_counter() - start_individual
+            return False, raw_text, "[NO_FILE]", expected, description, duration, use_lt
+
+        # output_files = list(worker_dir.glob("tts_output_*.txt"))
+        # if not output_files:
+        #     return False, raw_text, "[NO_FILE]", expected, description
 
         result_file = output_files[0]
         with open(result_file, 'r', encoding='utf-8-sig') as f:
@@ -732,17 +729,19 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
             actual2 = actual  # no match -> keep original
 
 
+        duration = time.perf_counter() - start_individual
 
-        return actual2 == expected, raw_text, actual2, expected, description
+        return actual2 == expected, raw_text, actual2, expected, description, duration, use_lt
 
     #     logger.error(f"Core function {core_logic_function.__name__} failed during execution: {e}\n{traceback.format_exc()}")
 
     # Neu:
     except Exception as e:
         import traceback
+        duration = time.perf_counter() - start_individual
         msg = f"Core function failed: {e}\n{traceback.format_exc()}"
 
-        return False, "ERROR", msg, "ERROR", "Process execution failed"
+        return False, "ERROR", msg, "ERROR", "Process execution failed", duration, use_lt
 
     # Alt:
     # except Exception as e:
