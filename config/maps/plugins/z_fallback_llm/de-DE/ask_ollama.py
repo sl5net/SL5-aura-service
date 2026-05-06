@@ -1236,7 +1236,7 @@ def execute(match_data):
         except Exception as e:
             # Alle anderen Fehler
             utils.log_debug(f"API General Error: {e}")
-            # return "Ein interner Fehler ist aufgetreten."
+            # return "Ein  ist aufgetreten."
             return (
                 "Aura ist ein Offline-System (Sprache zu Aktion) ohne Benutzerverwaltung. "
                 "Es gibt keine Logins, Accounts. "
@@ -1249,10 +1249,10 @@ def execute(match_data):
 
 
 
-
+    # config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.py:1252
     except Exception as e:
         utils.log_debug(f"API Error: {e}")
-        return f"Interner Fehler: {str(e)}"
+        return f"Interner Fehler: {str(e)} (2026-0506-0626)"
 
 
 

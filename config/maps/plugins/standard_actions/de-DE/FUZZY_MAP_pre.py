@@ -49,7 +49,11 @@ _misc_errors = (
 _common_meta = {
     'flags': re.IGNORECASE | re.VERBOSE,
     'only_in_windows': ['firefox', 'chrome', 'brave'],
+    'exclude_windows': [r'element', r'mastodon', r'Mastodon'],
 }
+
+
+
 
 FUZZY_MAP_pre = [
     (f'{geminiUrl}', r'^(google geht nicht|google gehminuten|google laminat|google germany|google gemini ring|kuchen gemini|google camille|google mobile|google b d|google gewinne|google ermitteln|gucke bitte|uri gemini|google kriminelle|google gemindert|google g minder|google gewinnt|rülke bibel|google baby|google pay bitte|google gb d|google gewinde|google gemini|google g miller|google image|google everyday|google gaming|google gravity|google gebe die|google webinar|google g b|google gebe|google gebe d|google bitte|google gebe it|google g bitte|google gäbe die|google gibt|gary hewitt|google gebiet|google gerbig|google geht|gucci baby|google gebieten|groupwise wir bitten|korrekt bitte|google g b d|coric ihr baby|gucky cebit|google wirbel d|koppe gravity|google geht wieder|guck weg gebe d|gucke ja bitte|kuckuck hier bitte|cosi baby|gucke mir bitte|cookies hier bitte|google jubilee|google wirklich|google gebe dies|gucke wir bitte|gucke gebe sie|gucke gebe d|cookies übergeben|kuckuck ihr baby|kuckuck www|vogelgrippe|google g b day|koryphäe bitte|google gebiete|gucken wir wieder|gucken wir bitte|cuckold wer wieder|kuckuck erwidert|koryphäe baby|gruppe geben|gucke wie bitte|kuckuck liebe d|kuckuck weg|googelt ihr baby|curry gemini|google ihr baby|gurke ihr baby|uwe gewebe|google termine|google kredit|kuckuck evi d|ulrike b durch|google every bitte|google wird|google g mine|google bibel|gucke dir wie neu|okay jimmy|oh gut ginny|uwe g d|google kiwi|geht wieder|hotel geben|kollege wieder|google gebildet|google pay day|gucci gewinnen)$', 70, _common_meta),
@@ -96,7 +100,6 @@ FUZZY_MAP_pre = [
     ('', r'^\s*einen\s*$', 100, {'flags': re.IGNORECASE}),
     ('', r'^\s*einens\s*$', 100, {'flags': re.IGNORECASE}),
 
-    #Ich will einen Apfeleinen einen
 
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.

@@ -27,15 +27,14 @@ PROJECT_ROOT_DIR = CURRENT_FILE_DIR
 # config/maps/plugins/z_fallback_llm/de-DE/normalizer.py
 def _load_heavy_deps():
     global get_suggestions, utils
-
     try:
-        # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
         from . import utils
-
     except ImportError:
-        import utils
-
-
+        try:
+            import utils
+        except ImportError as e:
+            raise RuntimeError(f"utils konnte nicht importiert werden: {e}")
+            
     try:
         from config.maps.plugins.standard_actions.get_suggestions import get_suggestions # noqa: F401
     except ImportError as e:
@@ -106,6 +105,7 @@ def create_ultimate_cache_key(text):
 
 
 def extreme_standardize_prompt_text(text):
+    _load_heavy_deps()  # ensure utils is loaded
 
     # Den deutschen Stemmer initialisieren
 

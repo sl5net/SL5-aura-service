@@ -1,5 +1,9 @@
 # scripts/py/func/checks/self_tester.py
 
+# TODO:
+# 5.5.'26 21:32 Tue
+#  https://github.com/sl5net/SL5-aura-service/issues/94
+
 import platform
 import re
 import concurrent.futures
