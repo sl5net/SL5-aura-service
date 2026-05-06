@@ -34,7 +34,7 @@ def _load_heavy_deps():
             import utils
         except ImportError as e:
             raise RuntimeError(f"utils konnte nicht importiert werden: {e}")
-            
+
     try:
         from config.maps.plugins.standard_actions.get_suggestions import get_suggestions # noqa: F401
     except ImportError as e:

@@ -1146,6 +1146,9 @@ def execute(match_data):
 
             raw_text = api_response.get("response", "")
 
+            utils.log_debug(f"DEBUG: Unzensierte KI-Antwort: '{raw_text[:200]}...'")
+
+
             answer_for_all_fallback = (
                 "Aura Status: Offline-System, Single-User (Keine Logins/Accounts).\n"
                 "Pfade: Configs in 'config/', Regeln in 'config/maps/'.\n\n"

@@ -33,6 +33,11 @@ echo "--- Starting STT Setup for Debian/Ubuntu ---"
 
 sudo apt-get update -y
 
+sudo add-apt-repository universe -y
+sudo apt install pkg-config libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libfreetype-dev -y
+
+
+
 # setup/ubuntu_setup.sh
 # --- 1. System Dependencies ---
 # (This section remains unchanged)
