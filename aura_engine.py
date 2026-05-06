@@ -899,7 +899,7 @@ if os.path.exists(MEMORY_LOG_PATH):
 if not memory_logger.handlers:
     memory_logger.setLevel(logging.INFO)
     file_handler = logging.FileHandler(MEMORY_LOG_PATH)
-    file_handler.setFormatter(logging.Formatter('%(asctime) - %(threadName)s - %(message)s'))
+    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(threadName)s - %(message)s'))
 
     memory_logger.addHandler(file_handler)
     # Prevent propagation to the root logger which might write to stdout/stderr
