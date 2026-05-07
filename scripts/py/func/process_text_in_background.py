@@ -1490,7 +1490,7 @@ def process_text_in_background(logger,
                 if cached_res:
                     logger.info(f"🚀 Cache-Hit! Überspringe LT für: {text_before_lt}")
                     result_languagetool = cached_res
-                    # Hier muss ein Mechanismus greifen, der den folgenden LT-Block überspringt
+                    # A mechanism must be implemented here that skips the following LT block
                 else:
 
                     result_languagetool = correct_text_by_languagetool(
