@@ -32,6 +32,9 @@ from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CA
 
 
 from .correct_text_by_languagetool import correct_text_by_languagetool
+
+from .utils.aura_cache import get_cached_result, set_cached_result
+
 import re
 import time
 from thefuzz import fuzz
@@ -73,6 +76,7 @@ GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
 GLOBAL_debug_skip_list=False
+GLOBAL_LT_LANGUAGE = ""
 
 
 
@@ -462,14 +466,14 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
             #             # logger.error(m)
             #             logger.info(m)
 
-
             # --- Metadaten  ---
+            _module_file_path = getattr(module.__spec__, 'origin', None) if hasattr(module, '__spec__') else None
             injection_data = {
-                'source_modname': modname
+                'source_modname': modname,
+                'source_path': str(_module_file_path) if _module_file_path else modname
             }
             if is_private:
                 injection_data['is_private'] = True
-            # -----------------------------
 
             if hasattr(module, 'PUNCTUATION_MAP'):
 
@@ -494,15 +498,14 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                 #     sys.stderr.flush()
 
 
-                if is_private:
-                    for entry in module.FUZZY_MAP_pre:
-                        # Assumption: entry is either Dict or a tuple with Dict at the end
-                        if isinstance(entry, dict):
-                            entry.update(injection_data)
-                        elif isinstance(entry, (list, tuple)) and len(entry) > 0:
-                            last_item = entry[-1]
-                            if isinstance(last_item, dict):
-                                last_item.update(injection_data)
+                for entry in module.FUZZY_MAP_pre:
+                    # Assumption: entry is either Dict or a tuple with Dict at the end
+                    if isinstance(entry, dict):
+                        entry.update(injection_data)
+                    elif isinstance(entry, (list, tuple)) and len(entry) > 0:
+                        last_item = entry[-1]
+                        if isinstance(last_item, dict):
+                            last_item.update(injection_data)
 
                 fuzzy_map_pre.extend(module.FUZZY_MAP_pre)
             if hasattr(module, 'FUZZY_MAP'):
@@ -520,14 +523,11 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                         if is_private:
                             standardized_map.append(item + (injection_data.copy(),))
                         else:
-                            standardized_map.append(item + ({},))
+                            standardized_map.append(item + (injection_data.copy(),))
 
                     elif item_len == 4:
-
-                        if is_private:
-                            options_dict = item[3]
-                            options_dict.update(injection_data)
-
+                        options_dict = item[3]
+                        options_dict.update(injection_data)
                         standardized_map.append(item)
 
                     else:
@@ -829,7 +829,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
             # Flag to track if a match (regex or fuzzy) was found for the current iteration
             current_rule_matched = False
 
-
+            # scripts/py/func/process_text_in_background.py:835
             try:
 
                 # <<< ÄNDERUNG 1: Speichere das Ergebnis von re.search in 'match_obj'
@@ -998,6 +998,13 @@ def process_text_in_background(logger,
                                unmasked = False
                                ):
     global settings
+    global GLOBAL_LT_LANGUAGE
+    GLOBAL_LT_LANGUAGE = LT_LANGUAGE
+
+
+
+
+
 
     if settings.DEV_MODE:
         try:
@@ -1982,6 +1989,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                bool: True if a complete replacement of the text by a rule has taken place, indicating an early termination. False otherwise.
     """
     # log_all_changes = False and settings.DEV_MODE
+    global GLOBAL_LT_LANGUAGE
 
     skip_list = []
     privacy_taint_occurred = False
@@ -2234,6 +2242,20 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             # compiled_regex = REGEX_COMPILE_CACHE[cache_key]
 
             # 3. Nutzung des kompilierte Objekts (viel schneller!)
+            # --- AURA CACHE LOOKUP ---
+            _source_path = options_dict.get('source_path', '')
+            _cache_key_text = current_text
+            _cache_hit = False
+            if _source_path:
+                _cached = get_cached_result(current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
+                if _cached is not None:
+                    _cache_hit = True
+                    if _cached != current_text:
+                        current_text = _cached
+                        made_a_change_in_cycle = True
+            # --- END AURA CACHE LOOKUP ---
+            if _cache_hit:
+                continue
             try:
                 match_obj = compiled_regex.fullmatch(current_text)
 
@@ -2297,6 +2319,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                             print(f'1525: skip_list={skip_list}')
 
                         current_text = new_current_text  # Jetzt wird der finale Text zugewiesen
+                        # --- AURA CACHE SET ---
+                        if _source_path:
+                            set_cached_result(original_text_for_script, current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
+                        # --- END AURA CACHE SET ---
 
                         full_text_replaced_by_rule = True  # because was full-match
                         log4DEV(f"full_text_replaced_by_rule = {full_text_replaced_by_rule}",logger_instance)

@@ -18,7 +18,7 @@ from .private_map_ex import _private_map_unpack
 from .auto_fix_module import try_auto_fix_module
 from .validate_map_structure import check_map_health
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
-
+from .utils.aura_cache import cleanup_cache_on_reload
 settings = DynamicSettings()
 
 LAST_MODIFIED_TIMES = {}  # noqa: F824
@@ -112,6 +112,9 @@ def auto_reload_modified_maps(logger,run_mode_override):
             if current_mtime > last_mtime:
                 reload_performed = True
 
+                # scripts/py/func/map_reloader.py:115
+                cleanup_cache_on_reload(map_file_path, current_mtime)
+
                 _reload_start_time = time.time()  # NEU
 
                 if last_mtime != 0:
@@ -163,6 +166,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     #     continue
 
                     importlib.reload(module_to_reload)
+
+
 
 
                     # Lifecycle Hook (only for valid modules)
@@ -229,6 +234,10 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                     else:
                         LAST_MODIFIED_TIMES[map_file_key] = 0
+
+
+
+
 
                 # scripts/py/func/map_reloader.py:151
                 except Exception as e:
