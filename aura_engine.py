@@ -1240,7 +1240,7 @@ if settings.DEV_MODE:
 
 
     # aura_engine.py:1175
-    from scripts.py.func.checks.self_tester import run_core_logic_self_test, project_root
+    from scripts.py.func.checks.self_tester import run_core_logic_self_test
 
     # from scripts.py.func.checks.auto_zip_startup_test import run_auto_zip_sanity_check,run_auto_zip_random_quick_check
 

@@ -6,19 +6,28 @@ import platform
 from pathlib import Path
 from datetime import datetime
 
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
+
+
 README = '''
 python3 -c "import sqlite3; conn = sqlite3.connect('/tmp/sl5_aura/aura_result_cache.db'); print('count:', conn.execute('SELECT count(*) FROM aura_result_cache').fetchone()[0]); conn.close()"
 
 python3 -c "import sqlite3; conn = sqlite3.connect('/tmp/sl5_aura/aura_result_cache.db'); rows = conn.execute('SELECT rule_output, validity_type, validity_value FROM aura_result_cache').fetchall(); [print(r) for r in rows]; conn.close()"
 
+
+By using AI Assist, you agree to Stack Overflow’s Terms of Service and Privacy Policy. Powered with the help of OpenAI. For help or feedback, contact us and reference this conversation ID: a207d660-c478-45d0-9dd5-e3a571675c73
+
 '''
 
-if platform.system() == "Windows":
-    DB_DIR = Path("C:/tmp/sl5_aura")
-else:
-    DB_DIR = Path("/tmp/sl5_aura")
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-DB_PATH = DB_DIR / "aura_result_cache.db"
+DB_DIR = PROJECT_ROOT / settings.path_unencrypted_cash
+
+DB_PATH = DB_DIR / "_aura_result_cache.db"
+
 
 _DB_CONNECTION = None
 

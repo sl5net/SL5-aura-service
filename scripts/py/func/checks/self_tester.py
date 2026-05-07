@@ -13,7 +13,6 @@ import sys
 
 import os
 from pathlib import Path
-from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
@@ -21,6 +20,8 @@ from ..audio_manager import speak_inclusive_fallback
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
 
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -37,7 +38,7 @@ class TestPrio(IntEnum):
 
 def check_translator_hijack_is_active(logger):
 
-    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+    tmp_dir = TMP_DIR # Path("C:/tmp") if os.name == "nt" else Path("/tmp")
     PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
 
@@ -62,7 +63,6 @@ if project_root not in sys.path:
 
 from .run_function_with_throttling import run_function_with_throttling
 # from ..config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
 
 
 # file: scripts/py/func/checks/self_tester.py:79
