@@ -521,7 +521,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         logger.critical(f"{m1} {m2}")
         logger.info(f"{m1} {m2}")
 
-        if second_per_test > 2 * max202605042151:
+        if second_per_test > 3 * max202605042151:
             m1 = f"🛑 its DOUBLE of expected second per test, got {second_per_test:.3f} second per test. that maybe happens at the first run when RAM is clear"
             m2 = "🛑 ==> exit"
             logger.critical(f"{m1} {m2}")

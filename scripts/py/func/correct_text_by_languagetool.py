@@ -2,7 +2,6 @@
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-import os # Zum Erkennen des Prozesses
 
 
 # scripts/py/func/correct_text_by_languagetool.py:6
@@ -14,17 +13,73 @@ get_lt_session = None
 
 # scripts/py/func/correct_text_by_languagetool.py
 
+import sqlite3
+import hashlib
+import json
+# from typing import Optional
 
-def get_session():
-    # We store one session per process ID (PID)
-    pid = os.getpid()
-    if pid not in _session_cache:
-        session = requests.Session()
-        retries = Retry(total=2, backoff_factor=0.1)
-        adapter = HTTPAdapter(pool_connections=10, pool_maxsize=10, max_retries=retries)
-        session.mount('http://', adapter)
-        _session_cache[pid] = session
-    return _session_cache[pid]
+DB_PATH = "data/_languagetool_cache.db"
+
+def get_db_conn(path: str = DB_PATH) -> sqlite3.Connection:
+    conn = sqlite3.connect(path, timeout=30, isolation_level=None)  # autocommit off if you call begin
+    conn.execute("PRAGMA foreign_keys = ON")
+    conn.execute("PRAGMA journal_mode = WAL")
+    return conn
+
+def make_key(server_url: str, language: str, text: str) -> str:
+    h = hashlib.sha256()
+    # deterministic canonicalization
+    h.update(server_url.encode("utf-8"))
+    h.update(b"|")
+    h.update(language.encode("utf-8"))
+    h.update(b"|")
+    h.update(text.encode("utf-8"))
+    return h.hexdigest()
+
+def ensure_schema(conn: sqlite3.Connection) -> None:
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS lt_cache (
+        key TEXT PRIMARY KEY,
+        server_url TEXT NOT NULL,
+        language TEXT NOT NULL,
+        input_text TEXT NOT NULL,
+        corrected_text TEXT NOT NULL,
+        lt_response_json TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_lt_cache_server_lang ON lt_cache(server_url, language)")
+
+
+def corrected_from_matches(text: str, matches: list) -> str:
+    # same merge logic as your current code, but as a helper so we can reconstruct from cached JSON
+    if not matches:
+        return text
+    sorted_matches = sorted(matches, key=lambda m: m['offset'])
+    new_text_parts = []
+    last_index = 0
+    for match in sorted_matches:
+        if not match.get('replacements'):
+            continue
+        if match['offset'] < last_index:  # prevent overlapping
+            continue
+        new_text_parts.append(text[last_index:match['offset']])
+        new_text_parts.append(match['replacements'][0]['value'])
+        last_index = match['offset'] + match['length']
+    new_text_parts.append(text[last_index:])
+    return "".join(new_text_parts)
+
+
+# def get_session():
+#     # We store one session per process ID (PID)
+#     pid = os.getpid()
+#     if pid not in _session_cache:
+#         session = requests.Session()
+#         retries = Retry(total=2, backoff_factor=0.1)
+#         adapter = HTTPAdapter(pool_connections=10, pool_maxsize=10, max_retries=retries)
+#         session.mount('http://', adapter)
+#         _session_cache[pid] = session
+#     return _session_cache[pid]
 
 
 def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) -> str:
@@ -39,33 +94,42 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
     else:
         check_url = base_url
 
-    session = get_session()
-    data = {'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1}
+    conn = get_db_conn()
+    ensure_schema(conn)
 
+    key = make_key(check_url, LT_LANGUAGE, text)
+
+    # Try cache lookup
+    cur = conn.execute("SELECT corrected_text, lt_response_json FROM lt_cache WHERE key = ?", (key,))
+    row = cur.fetchone()
+    if row:
+        corrected_text, lt_json = row
+        logger.debug("LT cache hit (key=%s).", key)
+        # Optional: could validate JSON / re-run correction_from_matches if you want to update correction logic
+        return corrected_text
+
+    # Cache miss -> call LT
+    session = requests.Session()  # or use your get_session()
+    data = {'language': LT_LANGUAGE, 'text': text, 'maxSuggestions': 1}
     try:
         response = session.post(check_url, data=data, timeout=8)
         response.raise_for_status()
+        resp_json = response.json()
+        matches = resp_json.get('matches', [])
 
-        matches = response.json().get('matches', [])
-        if not matches:
-            return text
+        corrected = corrected_from_matches(text, matches)
 
-        sorted_matches = sorted(matches, key=lambda m: m['offset'])
-        new_text_parts, last_index = [], 0
+        # Persist to DB
+        lt_json_text = json.dumps(resp_json, ensure_ascii=False)
+        # Use a transaction to write
+        with conn:  # sqlite3 Connection supports context manager -> BEGIN/COMMIT
+            conn.execute(
+                "INSERT OR REPLACE INTO lt_cache (key, server_url, language, input_text, corrected_text, lt_response_json) "
+                "VALUES (?, ?, ?, ?, ?, ?)",
+                (key, check_url, LT_LANGUAGE, text, corrected, lt_json_text)
+            )
 
-        for match in sorted_matches:
-            if not match.get('replacements'):
-                continue
-            if match['offset'] < last_index:  # Überlappung verhindern
-                continue
-            new_text_parts.append(text[last_index:match['offset']])
-
-            new_text_parts.append(match['replacements'][0]['value'])
-            last_index = match['offset'] + match['length']
-
-        new_text_parts.append(text[last_index:])
-        corrected = "".join(new_text_parts)
-        logger.debug("LT-Korrektur: %d Treffer verarbeitet.", len(sorted_matches))
+        logger.debug("LT request cached (key=%s, matches=%d).", key, len(matches))
         return corrected
 
     except requests.exceptions.Timeout:
@@ -74,6 +138,8 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
     except requests.exceptions.RequestException as e:
         logger.error("LanguageTool request failed: %s", e)
         return text
+    finally:
+        conn.close()
 
 
 
@@ -92,18 +158,6 @@ def correct_text_by_languagetool(logger, active_lt_url, LT_LANGUAGE, text: str) 
 
 
 
-
-def get_lt_session_202601311817():
-    global _lt_session
-    if _lt_session is None:
-        # This initialization now only takes place in the subprocess
-        _lt_session = requests.Session()
-        retries = Retry(total=2, backoff_factor=0.1)
-        adapter = HTTPAdapter(pool_connections=10, pool_maxsize=10, max_retries=retries)
-        _lt_session.mount('http://', adapter)
-        _lt_session.mount('https://', adapter)
-
-    return _lt_session
 
 
 # Optimization for 16-Core CPU:

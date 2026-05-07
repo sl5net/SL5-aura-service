@@ -1989,7 +1989,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                bool: True if a complete replacement of the text by a rule has taken place, indicating an early termination. False otherwise.
     """
     # log_all_changes = False and settings.DEV_MODE
-    global GLOBAL_LT_LANGUAGE
+    # global GLOBAL_LT_LANGUAGE
 
     skip_list = []
     privacy_taint_occurred = False
@@ -2244,7 +2244,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             # 3. Nutzung des kompilierte Objekts (viel schneller!)
             # --- AURA CACHE LOOKUP ---
             _source_path = options_dict.get('source_path', '')
-            _cache_key_text = current_text
+            # _cache_key_text = current_text
             _cache_hit = False
             if _source_path:
                 _cached = get_cached_result(current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
