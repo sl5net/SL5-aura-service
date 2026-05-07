@@ -896,6 +896,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                     on_match_exec_list = options_dict.get('on_match_exec', [])
 
                     # <<< ÄNDERUNG 3: Bereite das 'match_data'-Paket für die Skripte vor
+                    # scripts/py/func/process_text_in_background.py:899
                     match_data = {
                         'original_text': original_text_before_rule,  # Der Text VOR der Regelanwendung
                         'text_after_replacement': new_text,  # Der Text NACH re.sub, aber VOR den Skripten
@@ -1099,6 +1100,11 @@ def process_text_in_background(logger,
         # --- KRITISCHE SEQUENZPRÜFUNG AM ANFANG DER FUNKTION ---
 
     # print(f':st: \nprocess_text_in_background:967 raw_text:{raw_text}')
+
+    # scripts/py/func/process_text_in_background.py:1103
+    _source_path = "SYSTEM_LT"  # Fallback
+    options_dict = {}  # Default-Caching
+    text_before_lt = raw_text  # bacup
 
 
     if chunk_id > 0:
@@ -1392,11 +1398,12 @@ def process_text_in_background(logger,
                     # print(f':st: \nprocess_text_in_background:1227 raw_text:"{raw_text}" processed_text:"{processed_text}"')
                     print(f":st: \n processed_text={processed_text} 1261\n\n", logger)
 
-                    (new_processed_text
+                    (_res_text
                     , regex_pre_is_replacing_all_maybe
                     , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(processed_text
                     , GLOBAL_FUZZY_MAP_PRE, logger)
 
+                    new_processed_text = _res_text if isinstance(_res_text, str) else processed_text
                     # scripts/py/func/process_text_in_background.py:1276
                     print(f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} 1248\n\n", logger)
 
@@ -1472,11 +1479,28 @@ def process_text_in_background(logger,
                 # sys.stderr.write(f"1339 new_processed_text={new_processed_text}\n")
                 # sys.stderr.flush()
 
-                result_languagetool = correct_text_by_languagetool(
-                    logger,
-                    active_lt_url,
-                    LT_LANGUAGE,
-                    new_processed_text).lstrip('\uFEFF')
+                # scripts/py/func/process_text_in_background.py:1481
+                # 1. Den Text "einfrieren", der an LT gehen soll
+                text_before_lt = new_processed_text
+
+                # 2. Im Cache nachsehen, ob wir dieses LT-Ergebnis schon kennen
+                cached_res = get_cached_result(text_before_lt, LT_LANGUAGE, _source_path, options_dict,
+                                               str(_active_window_title or ''))
+
+                if cached_res:
+                    logger.info(f"🚀 Cache-Hit! Überspringe LT für: {text_before_lt}")
+                    result_languagetool = cached_res
+                    # Hier muss ein Mechanismus greifen, der den folgenden LT-Block überspringt
+                else:
+
+                    result_languagetool = correct_text_by_languagetool(
+                        logger,
+                        active_lt_url,
+                        LT_LANGUAGE,
+                        new_processed_text).lstrip('\uFEFF')
+
+                    set_cached_result(text_before_lt, result_languagetool, LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
+                new_processed_text = result_languagetool
 
                 # sys.stderr.write(f"1349 result_languagetool={result_languagetool}\n")
                 # sys.stderr.flush()
@@ -1696,6 +1720,8 @@ def process_text_in_background(logger,
             # All 88tested of 97 tests(all lang) passed! Great no test failed
             # 15:55:30,922 - INFO     - ----------------------------------------
             # 15:55:30,922 - INFO     - ⌚ self_test_readable_duration: 0:00:37.181278
+
+
 
         processed_text = result_languagetool if result_languagetool else new_processed_text if new_processed_text else processed_text
 
@@ -1958,6 +1984,7 @@ def sanitize_transcription_start(raw_text: str) -> str:
 
     #if start_index == -1:
         #logging.info("No alphanumeric characters found. Returning empty string.")
+    global GLOBAL_LT_LANGUAGE
     #    return raw_text  # Or return raw_text if that's preferred
 
     # Slice from the first valid character and then perform other cleanup
@@ -1989,7 +2016,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                bool: True if a complete replacement of the text by a rule has taken place, indicating an early termination. False otherwise.
     """
     # log_all_changes = False and settings.DEV_MODE
-    global GLOBAL_LT_LANGUAGE
+    # global GLOBAL_LT_LANGUAGE
 
     skip_list = []
     privacy_taint_occurred = False
@@ -2244,7 +2271,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             # 3. Nutzung des kompilierte Objekts (viel schneller!)
             # --- AURA CACHE LOOKUP ---
             _source_path = options_dict.get('source_path', '')
-            _cache_key_text = current_text
             _cache_hit = False
             if _source_path:
                 _cached = get_cached_result(current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
@@ -2274,8 +2300,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     if new_current_text != original_text_for_script:
 
                         log4DEV(f"new..:'{new_current_text}' "
-                                f"!= original..:'{original_text_for_script}'",logging)
+                                f"!= original..:'{original_text_for_script}'",logger_instance)
 
+                        # scripts/py/func/process_text_in_background.py:2286
                         match_data = {
                             'original_text': original_text_for_script,
                             'text_after_replacement': new_current_text,
@@ -2298,14 +2325,14 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                             module = load_module_from_path(script_path)
                             if module and hasattr(module, 'execute'):
                                 # <<< ÄNDERUNG 2: Übergebe match_data und aktualisiere den Text
-                                new_current_text = module.execute(match_data)
-                                log4DEV(f"module:'{module}' new_current_text='{new_current_text}'",logging)
+                                script_res = module.execute(match_data); new_current_text = script_res if isinstance(script_res, str) else current_text; new_current_text = new_current_text if isinstance(new_current_text, str) else current_text
+                                log4DEV(f"module:'{module}' new_current_text='{new_current_text}'",logger_instance)
 
                         # <<< HINWEIS: Dein restlicher Code kann jetzt unverändert bleiben >>>
                         # Er verwendet new_current_text, das jetzt das finale Ergebnis aus den Skripten enthält.
 
                         if not privacy_taint_occurred:
-                            log4DEV(f"new..:'{new_current_text}' != original..:'{original_text_for_script}'",logging)
+                            log4DEV(f"new..:'{new_current_text}' != original..:'{original_text_for_script}'",logger_instance)
 
                         made_a_change_in_cycle = True
 
@@ -2315,11 +2342,18 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         made_a_change = made_a_change + 1
                         skip_list = skip_list_temp
 
+
+
                         if GLOBAL_debug_skip_list:
                             print(f'1525: skip_list={skip_list}')
 
                         current_text = new_current_text  # Jetzt wird der finale Text zugewiesen
                         # --- AURA CACHE SET ---
+                        # NEU: TODO: to many sideffects actually 7.5.'26 12:26 Thu
+                        # Am Ende der Pipeline:
+                        # set_cached_result(text_before_lt, current_text, lang_code, _source_path, options_dict, str(_active_window_title or ''))
+
+                        # ALT:
                         if _source_path:
                             set_cached_result(original_text_for_script, current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
                         # --- END AURA CACHE SET ---
@@ -2349,7 +2383,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
                         if new_current_text != original_text_for_script:
-
+                            # scripts/py/func/process_text_in_background.py:2366
                             # Erstelle das match_data-Dictionary für den partiellen Match
                             match_data = {
                                 'original_text': original_text_for_script,

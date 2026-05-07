@@ -41,7 +41,7 @@ def log4DEV(text: str, logger):
                 pass # Continue to next frame if there's an issue with this one
 
     if not settings.DEV_MODE:
-        print('⛑️ 10:not settings.DEV_MODE: return')
+        print('⛑️ 44:not settings.DEV_MODE: return')
         return
 
 

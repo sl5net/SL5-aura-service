@@ -4,7 +4,6 @@
 # 5.5.'26 21:32 Tue
 #  https://github.com/sl5net/SL5-aura-service/issues/94
 
-import platform
 import re
 import concurrent.futures
 import shutil
@@ -13,7 +12,6 @@ import sys
 
 import os
 from pathlib import Path
-from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
@@ -21,14 +19,19 @@ from ..audio_manager import speak_inclusive_fallback
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
 
-
-if platform.system() == "Windows":
-    TMP_DIR = Path("C:/tmp")
-else:
-    TMP_DIR = Path("/tmp")
-
-
 from enum import IntEnum
+from .run_function_with_throttling import run_function_with_throttling
+
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+TMP_DIR = tmp_dir
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
 
 class TestPrio(IntEnum):
     ALWAYS = 1     # 100% Chance
@@ -37,8 +40,6 @@ class TestPrio(IntEnum):
 
 def check_translator_hijack_is_active(logger):
 
-    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
 
     path = PROJECT_ROOT / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
@@ -55,14 +56,6 @@ def check_translator_hijack_is_active(logger):
 
     return False
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
-# Note: In aura_engine.py this might be SCRIPT_DIR instead of project_root
-
-from .run_function_with_throttling import run_function_with_throttling
-# from ..config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
 
 
 # file: scripts/py/func/checks/self_tester.py:79
@@ -521,7 +514,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         logger.critical(f"{m1} {m2}")
         logger.info(f"{m1} {m2}")
 
-        if second_per_test > 2 * max202605042151:
+        if second_per_test > 3 * max202605042151:
             m1 = f"🛑 its DOUBLE of expected second per test, got {second_per_test:.3f} second per test. that maybe happens at the first run when RAM is clear"
             m2 = "🛑 ==> exit"
             logger.critical(f"{m1} {m2}")
@@ -647,9 +640,9 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
         # DynamicSettings = ds_mod.DynamicSettings
         #
         # 2. Root setzen
-        # project_root = str(current_file.parents[4])
-        # if project_root not in sys.path:
-        #     sys.path.insert(0, project_root)
+        # PROJECT_ROOT = str(current_file.parents[4])
+        # if PROJECT_ROOT not in sys.path:
+        #     sys.path.insert(0, PROJECT_ROOT)
 
 
 

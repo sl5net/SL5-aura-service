@@ -61,20 +61,20 @@ def get_cached_result(rule_output, lang_code, map_path, rule_attrs, _active_wind
     Gibt den final_text zurück oder None.
     """
     # Variante 2: Explizites Cache-Verbot
-    if rule_attrs.get('cache') is False:
+    if rule_attrs and rule_attrs.get('cache') is False:
         return None
 
     cache_id = generate_cache_id(rule_output, lang_code, _active_window_title)
 
     # Bestimme Gültigkeit (Variante 3 vs Default)
-    manual_ts = rule_attrs.get('timestamp')
+    manual_ts = rule_attrs.get('timestamp') if rule_attrs else None
     if manual_ts:
         v_type = 1
         v_val = str(manual_ts)
     else:
         v_type = 0
         # Nutze mtime als Default (Variante 1)
-        v_val = str(os.path.getmtime(map_path))
+        v_val = str(os.path.getmtime(map_path)) if os.path.exists(map_path) else "0"
 
     with get_db_connection() as conn:
         cursor = conn.execute("""
@@ -95,14 +95,14 @@ def get_cached_result(rule_output, lang_code, map_path, rule_attrs, _active_wind
 
 def set_cached_result(rule_output, final_result, lang_code, map_path, rule_attrs, _active_window_title):
     """Speichert ein neues LT-Ergebnis im Cache."""
-    if rule_attrs.get('cache') is False:
+    if rule_attrs and rule_attrs.get('cache') is False:
         return
 
     cache_id = generate_cache_id(rule_output, lang_code, _active_window_title)
 
-    manual_ts = rule_attrs.get('timestamp')
+    manual_ts = rule_attrs.get('timestamp') if rule_attrs else None
     v_type = 1 if manual_ts else 0
-    v_val = str(manual_ts) if manual_ts else str(os.path.getmtime(map_path))
+    v_val = str(manual_ts) if manual_ts else (str(os.path.getmtime(map_path)) if os.path.exists(map_path) else "0")
 
     with get_db_connection() as conn:
         conn.execute("""
