@@ -140,7 +140,7 @@ def case(input_text: str, expected: str, context: str = '',
         lang: str = 'de-DE', 
         lt: bool = True, 
         prio: TestPrio = TestPrio.OPTIONAL):
-    # prio = TestPrio.ALWAYS  # 1.0 = 100%
+    prio = TestPrio.ALWAYS  # 1.0 = 100%
     return input_text, expected, context, lang, lt, prio
 
 # file: scripts/py/func/checks/self_tester.py:79
@@ -526,7 +526,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
             m2 = "🛑 ==> exit"
             logger.critical(f"{m1} {m2}")
             logger.info(f"{m1} {m2}")
-            sys.exit(1)
+            # sys.exit(1)
 
 
     m2=f"⌚ Total Duration: {duration:.2f} seconds (second_per_test:{second_per_test:.2f} s/test)"

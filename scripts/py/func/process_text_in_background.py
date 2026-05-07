@@ -1227,9 +1227,9 @@ def process_text_in_background(logger,
                 log4DEV(f'raw_text:{raw_text}',logger)
             raw_text = settings.SPEECH_PAUSE_TIMEOUT
             unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
-            
+
             # print(f':st: \nprocess_text_in_background:1089 raw_text:{raw_text}')
-            
+
             return raw_text
         if raw_text == '->AUDIO_INPUT_DEVICE<-':
             if not privacy_taint_occurred:
@@ -2243,13 +2243,20 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
             # 3. Nutzung des kompilierte Objekts (viel schneller!)
             # --- AURA CACHE LOOKUP ---
-            _source_path = options_dict.get('source_path', '')
+            # _source_path = options_dict.get('source_path', '')
+            if options_dict:
+                _source_path = options_dict.get('source_path', '')
+            else:
+                _source_path = ''
+
             # _cache_key_text = current_text
             _cache_hit = False
             if _source_path:
                 _cached = get_cached_result(current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
+                log4DEV(f"CACHE_LOOKUP: input='{current_text}' | source='{_source_path}'", logger_instance)
                 if _cached is not None:
                     _cache_hit = True
+                    log4DEV(f"CACHE_HIT: cached='{_cached}' | changed={_cached != current_text}", logger_instance)
                     if _cached != current_text:
                         current_text = _cached
                         made_a_change_in_cycle = True
@@ -2321,6 +2328,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         current_text = new_current_text  # Jetzt wird der finale Text zugewiesen
                         # --- AURA CACHE SET ---
                         if _source_path:
+                            log4DEV(f"CACHE_SET: original='{original_text_for_script}' | new='{current_text}'", logger_instance)
                             set_cached_result(original_text_for_script, current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
                         # --- END AURA CACHE SET ---
 

@@ -2,7 +2,6 @@
 import sqlite3
 import hashlib
 import os
-import platform
 from pathlib import Path
 from datetime import datetime
 
@@ -12,9 +11,9 @@ settings = DynamicSettings()
 
 
 README = '''
-python3 -c "import sqlite3; conn = sqlite3.connect('/tmp/sl5_aura/aura_result_cache.db'); print('count:', conn.execute('SELECT count(*) FROM aura_result_cache').fetchone()[0]); conn.close()"
+python3 -c "import sqlite3; conn = sqlite3.connect('data/_aura_result_cache.db'); print('count:', conn.execute('SELECT count(*) FROM aura_result_cache').fetchone()[0]); conn.close()"
 
-python3 -c "import sqlite3; conn = sqlite3.connect('/tmp/sl5_aura/aura_result_cache.db'); rows = conn.execute('SELECT rule_output, validity_type, validity_value FROM aura_result_cache').fetchall(); [print(r) for r in rows]; conn.close()"
+python3 -c "import sqlite3; conn = sqlite3.connect('data/_aura_result_cache.db'); rows = conn.execute('SELECT rule_output, validity_type, validity_value FROM aura_result_cache').fetchall(); [print(r) for r in rows]; conn.close()"
 
 
 By using AI Assist, you agree to Stack Overflow’s Terms of Service and Privacy Policy. Powered with the help of OpenAI. For help or feedback, contact us and reference this conversation ID: a207d660-c478-45d0-9dd5-e3a571675c73

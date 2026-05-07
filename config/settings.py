@@ -50,7 +50,9 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 
 # --- Notification Settings ---
 # Default for new users is the most verbose level.
-NOTIFICATION_LEVEL = 1 # 0=Silent, 1=Essential, 2=Verbose
+NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
+
+SHOW_SEARCH_ON_STARTUP = True
 
 SHOW_SEARCH_ON_STARTUP = True
 
@@ -168,6 +170,9 @@ if ratio < lt_skip_ratio_threshold: If the ratio is low (less than the safe thre
 """
 
 show_PLUGINS_ENABLED = True
+
+SHOW_SEARCH_ON_STARTUP = True
+
 
 PLUGINS_ENABLED = {
     "standard_actions/wikipedia_local": False,

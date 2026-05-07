@@ -58,7 +58,7 @@ AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
 
 # --- Notifications ---
 # 0 = Silent, 1 = Essential messages only, 2 = Verbose
-NOTIFICATION_LEVEL = 1
+NOTIFICATION_LEVEL = 0
 
 # --- Sound Feedback ---
 # 1 = enabled (recommended: audio cues for start/stop recording)
@@ -118,17 +118,17 @@ show_PLUGINS_ENABLED = False
 # Keys not listed here use their defaults from config/settings.py
 PLUGINS_ENABLED = {
     "empty_all": False,
-    "git": False,
-    "numbers_to_digits": False,      # e.g. "hundred" -> 100
+    "git": True,
+    "numbers_to_digits": True,      # e.g. "hundred" -> 100
     "digits_to_numbers": False,
     "web-radio-funk": False,
-    "wannweil": False,
+    "wannweil": True,
     "CCC_tue": False,
     "vsp_rt": False,
     "ki-maker-space": False,
     "volkshochschule_tue": False,
     "ethiktagung": False,
-    "it-begriffe": False,
+    "it-begriffe": True,
     "it-begriffe/php/codeigniter": False,
     "standard_actions/wikipedia_local": False,
     "standard_actions/standard_actions/path_navigator": False,
@@ -145,7 +145,7 @@ REMOVE_SPACES_BETWEEN_NUMBERS = 0
 # --- Developer Mode (advanced users only) ---
 # Enables additional log output and internal checks.
 # See docs/dev_mode_setup.md for setup instructions.
-DEV_MODE = False
+DEV_MODE = True
 DEV_MODE_all_processing = False
 DEV_MODE_memory = False
 DEV_MODE_zip_processing = False
