@@ -126,6 +126,10 @@ config/maps/**/.*
 # inside config/maps (this is our unencrypted working directory)
 config/maps/**/_*
 
+# Ignore all directories and files beginning with an underscore (_)
+# inside data (this is our unencrypted working directory)
+data/**/_*
+
 
 tools/translate-shell_and_save/translations
 

@@ -666,9 +666,8 @@ else:
     # aura_log.unlink(missing_ok=True) ## seems problematic
 
 
-# DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = False
-# DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = True
 DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = False
+# DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = True
 
 readme = """
 vosk-model-small-de-0.15
@@ -1241,7 +1240,7 @@ if settings.DEV_MODE:
 
 
     # aura_engine.py:1175
-    from scripts.py.func.checks.self_tester import run_core_logic_self_test, project_root
+    from scripts.py.func.checks.self_tester import run_core_logic_self_test
 
     # from scripts.py.func.checks.auto_zip_startup_test import run_auto_zip_sanity_check,run_auto_zip_random_quick_check
 

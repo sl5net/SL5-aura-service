@@ -50,7 +50,9 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 
 # --- Notification Settings ---
 # Default for new users is the most verbose level.
-NOTIFICATION_LEVEL = 1 # 0=Silent, 1=Essential, 2=Verbose
+NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
+
+SHOW_SEARCH_ON_STARTUP = True
 
 SHOW_SEARCH_ON_STARTUP = True
 
@@ -129,8 +131,12 @@ ESPEAK_FALLBACK_AMPLITUDE = 80
 
 INPUT_METHOD="dotool"
 
-#testtesttest
+# text results that are stored on your computer can maybe read by other users on your computer.
+# Where would you like to store unencrypted cache? For example, under Linux you can use the temporary directory, which is automatically deleted if the computer was rebooted (original:'unter linux können sie zum beispiel das temporäre verzeichnis verwenden welches automatisch gelöscht wird wenn der computer neu started' ).
 
+# It is possible to keep the data encrypted if you put an encrypted folder config/maps/_yourdata in it, which is then only encrypted in a encrypted zip and not in a open copy there.
+# This folder is automatically unpacked in before using (original:'dieser ordner wird automatisch ausgepackt' ). If you don't want them for a while, you have to delete them yourself (original:'eine zeitlang nicht wollen müssen sie sie selber löschen' ).
+path_unencrypted_cash = 'data'
 
 # --- LanguageTool Server ---
 # Set to True to use an existing LT server. AT YOUR OWN RISK!
@@ -165,9 +171,12 @@ if ratio < lt_skip_ratio_threshold: If the ratio is low (less than the safe thre
 
 show_PLUGINS_ENABLED = True
 
+SHOW_SEARCH_ON_STARTUP = True
+
+
 PLUGINS_ENABLED = {
-    "standard_actions/wikipedia_local": False,
     "standard_actions/count_loud": False,
+    "standard_actions/wikipedia_local": False,
     "game": False,
     "empty_all": False,
 }
