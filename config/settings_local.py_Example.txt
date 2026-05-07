@@ -130,7 +130,7 @@ PLUGINS_ENABLED = {
     "ethiktagung": False,
     "it-begriffe": False,
     "it-begriffe/php/codeigniter": False,
-    "standard_actions/wikipedia_local/": False,
+    "standard_actions/wikipedia_local": False,
     "standard_actions/standard_actions/path_navigator": False,
     "game/": False,
     "game/0ad": False,
