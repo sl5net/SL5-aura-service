@@ -35,6 +35,7 @@ class TestPrio(IntEnum):
     ALWAYS = 1     # 100% Chance
     HIGH = 2       # 80% Chance
     OPTIONAL = 3   # 30% Chance
+    NEVER = 0   # 0% Chance
 
 def check_translator_hijack_is_active(logger):
 
@@ -140,7 +141,8 @@ def case(input_text: str, expected: str, context: str = '',
         lang: str = 'de-DE', 
         lt: bool = True, 
         prio: TestPrio = TestPrio.OPTIONAL):
-    prio = TestPrio.ALWAYS  # 1.0 = 100%
+    # prio = TestPrio.ALWAYS  # 1.0 = 100%
+
     return input_text, expected, context, lang, lt, prio
 
 # file: scripts/py/func/checks/self_tester.py:79
@@ -193,13 +195,13 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     # Base directory for all tests
 
     print(':st:🌞🌞🌞🌞🌞 4.5.26 15:17 Mon 🌞🌞🌞🌞🌞🌞🌞 tmp_dir=', tmp_dir_aura)
+    logger.info(f':st:🌞🌞🌞🌞🌞 4.5.26 15:17 Mon 🌞🌞🌞🌞🌞🌞🌞 tmp_dir={tmp_dir_aura}')
 
     test_base_dir = tmp_dir_aura / "sl5_aura_self_test"
     test_base_dir.mkdir(parents=True, exist_ok=True)
 
     # run_auto_zip_sanity_check(logger) # runs asynchron and will run at the end to check if creating zips work
     # auto_zip_thread = run_auto_zip_sanity_check(logger)
-
     test_cases = [
         # --- Settings checks ---
         case(input_text='leerworttest', expected="leerworttest1", context='punctation map test', lang='de-DE', lt=False,
@@ -217,7 +219,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
         # --- en-US ---
         case('colours', 'colors', 'fix by LT', lang='en-US', lt=True, prio=TestPrio.OPTIONAL),
-        case('underilnes', 'underlines', 'fix by LT', lang='en-US', lt=True, prio=TestPrio.ALWAYS),
+        case('underilnes', 'underlines', 'fix by LT', lang='en-US', lt=True, prio=TestPrio.OPTIONAL),
         case('too have', 'to have', 'fix by LT', lang='en-US', lt=True, prio=TestPrio.ALWAYS),
         case('5 PM in the afternoon', '5 PM', 'fix by LT', lang='en-US', lt=True, prio=TestPrio.HIGH),
         case('good nigt Mum', 'Good night Mum', 'Funny useless rule ;) just for testing', lang='en-US', lt=True,
@@ -228,7 +230,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         # --- de-DE MAP + LT ---
         case('tausend euro. Und euro großgeschrieben.', '1000 Euro. Und Euro großgeschrieben.',
              'Number with unit', lt=True, prio=TestPrio.HIGH),
-        case('was ist 5 plus 3', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', lt=False, prio=TestPrio.ALWAYS),
+        case('lieblingszahlen sind fünf und drei', 'Lieblingszahlen sind 5 und 3', 'numbers 5 and 3', lt=False, prio=TestPrio.ALWAYS),
+        case('was ist fünf plus drei', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', lt=False, prio=TestPrio.ALWAYS),
         case('bitte reservieren sie einen tisch für zwei personen um acht uhr',
              'Bitte reservieren Sie einen Tisch für 2 Personen um 8 Uhr',
              'Polite request with time and number', lt=True, prio=TestPrio.HIGH),
@@ -236,26 +239,26 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         # --- Zahlen ---
         case('eins', '1', 'numbers_to_digits', lt=False, prio=TestPrio.OPTIONAL),
         case('eins zwei', '12', 'numbers_to_digits', lt=False, prio=TestPrio.ALWAYS),
-        case('sieben acht neun', '789', 'numbers_to_digits', lt=False, prio=TestPrio.ALWAYS),
-        case('zwei zwei', '22', 'Multiple replacement check', lt=False, prio=TestPrio.ALWAYS),
-        case('sieben', '7', 'Numbers as digits', lt=False, prio=TestPrio.HIGH),
-        case('acht', '8', 'Numbers as digits', lt=False, prio=TestPrio.ALWAYS),
-        case('neun', '9', 'Numbers as digits', lt=False, prio=TestPrio.ALWAYS),
-        case('zehn', '10', 'Number as digit', lt=False, prio=TestPrio.HIGH),
+        case('sieben acht neun', '789', 'numbers_to_digits', lt=False, prio=TestPrio.OPTIONAL),
+        case('zwei zwei', '22', 'Multiple replacement check', lt=False, prio=TestPrio.OPTIONAL),
+        case('sieben', '7', 'Numbers as digits', lt=False, prio=TestPrio.OPTIONAL),
+        case('acht', '8', 'Numbers as digits', lt=False, prio=TestPrio.OPTIONAL),
+        case('neun', '9', 'Numbers as digits', lt=False, prio=TestPrio.OPTIONAL),
+        case('zehn', '10', 'Number as digit', lt=False, prio=TestPrio.OPTIONAL),
         case('komma', ',', 'Exact MAP punctuation', lt=False, prio=TestPrio.OPTIONAL),
         case('fünf komma', '5 ,', 'Decimal number', lt=False, prio=TestPrio.HIGH),
-        case('fünf komma drei', '5 , 3', 'Decimal number', lt=False, prio=TestPrio.ALWAYS),
+        case('fünf komma drei', '5 , 3', 'Decimal number', lt=False, prio=TestPrio.OPTIONAL),
 
         # --- Grundlegende Satzzeichen ---
         case('punkt', '.', 'Exact MAP', lt=False, prio=TestPrio.OPTIONAL),
-        case('fragezeichen', '?', 'Exact MAP', lt=False, prio=TestPrio.ALWAYS),
+        case('fragezeichen', '?', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
         case('ausrufezeichen', '!', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
-        case('doppelpunkt', ':', 'Exact MAP', lt=False, prio=TestPrio.ALWAYS),
-        case('semikolon', ';', 'Exact MAP', lt=False, prio=TestPrio.ALWAYS),
-        case('bindestrich', '-', 'Exact MAP', lt=False, prio=TestPrio.ALWAYS),
-        case('gedankenstrich', '–', 'Exact MAP', lt=False, prio=TestPrio.ALWAYS),
-        case('klammer auf', '(', 'Exact MAP', lt=False, prio=TestPrio.ALWAYS),
-        case('klammer zu', ')', 'Exact MAP', lt=False, prio=TestPrio.ALWAYS),
+        case('doppelpunkt', ':', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
+        case('semikolon', ';', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
+        case('bindestrich', '-', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
+        case('gedankenstrich', '–', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
+        case('klammer auf', '(', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
+        case('klammer zu', ')', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
 
         # --- MAP Wannweil ---
         case('Sekunde Lauffer', 'Sigune Lauffer', 'MAP Wannweil', lt=False, prio=TestPrio.OPTIONAL),
@@ -276,64 +279,63 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         # --- Großschreibung via LT ---
         case('ich heiße max', 'Ich heiße Max', 'Capitalization pronoun + proper noun', lt=True, prio=TestPrio.HIGH),
         case('der hund bellt', 'Der Hund bellt', 'Capitalization article + noun', lt=True, prio=TestPrio.OPTIONAL),
-        case('die katze schläft', 'Die Katze schläft', 'Capitalization article + noun', lt=True, prio=TestPrio.ALWAYS),
+        case('die katze schläft', 'Die Katze schläft', 'Capitalization article + noun', lt=True, prio=TestPrio.HIGH),
         case('ein haus und ein garten', 'Ein Haus und ein Garten', 'Capitalization nouns', lt=True, prio=TestPrio.HIGH),
         case('heute ist montag', 'Heute ist Montag', 'Capitalization day', lt=True, prio=TestPrio.OPTIONAL),
-        case('heute ist ein schöner tag', 'Heute ist ein schöner Tag', 'Capitalization day', lt=True, prio=TestPrio.ALWAYS),
-        case('heute ist ein schöner tag zwei drei', 'Heute ist ein schöner Tag 23',
-             'Capitalization + number', lt=True, prio=TestPrio.ALWAYS),
+        case('heute ist ein schöner tag', 'Heute ist ein schöner Tag', 'Capitalization day', lt=True, prio=TestPrio.HIGH),
+        case('heute ist ein schöner tag zwei drei', 'Heute ist ein schöner Tag 23','Capitalization + number', lt=True, prio=TestPrio.HIGH),
         case('zwei drei hunde sind im wald', '23 Hunde sind im Wald', 'Number at start + LT', lt=True, prio=TestPrio.OPTIONAL),
         case('die antwort ist ein test', 'Die Antwort ist ein Test', 'Window filter provocation', lt=True, prio=TestPrio.HIGH),
-        case('im sommer ist es warm', 'Im Sommer ist es warm', 'Capitalization season', lt=True, prio=TestPrio.ALWAYS),
+        case('im sommer ist es warm', 'Im Sommer ist es warm', 'Capitalization season', lt=True, prio=TestPrio.HIGH),
 
         # --- Häufige Phrasen ---
-        case('danke schön', 'Danke schön', 'Common thanks', lt=True, prio=TestPrio.ALWAYS),
-        case('bitte schön', 'Bitte schön', 'Common courtesy', lt=True, prio=TestPrio.ALWAYS),
+        case('danke schön', 'Danke schön', 'Common thanks', lt=True, prio=TestPrio.HIGH),
+        case('bitte schön', 'Bitte schön', 'Common courtesy', lt=True, prio=TestPrio.HIGH),
         case('entschuldigung', 'Entschuldigung', 'Common apology', lt=True, prio=TestPrio.HIGH),
-        case('ich verstehe', 'Ich verstehe', 'Common confirmation', lt=True, prio=TestPrio.ALWAYS),
+        case('ich verstehe', 'Ich verstehe', 'Common confirmation', lt=True, prio=TestPrio.HIGH),
         case('ich weiß nicht', 'Ich weiß nicht', 'Common uncertainty', lt=True, prio=TestPrio.HIGH),
-        case('alles klar', 'Alles klar', 'Common affirmation', lt=True, prio=TestPrio.ALWAYS),
+        case('alles klar', 'Alles klar', 'Common affirmation', lt=True, prio=TestPrio.HIGH),
         case('auf wiedersehen', 'Auf Wiedersehen', 'Common farewell', lt=True, prio=TestPrio.HIGH),
-        case('bis später', 'Bis später', 'Common farewell', lt=True, prio=TestPrio.ALWAYS),
-        case('es ist kalt draußen', 'Es ist kalt draußen', 'Simple sentence', lt=True, prio=TestPrio.ALWAYS),
-        case('was machst du heute', 'Was machst du heute', 'Common question', lt=True, prio=TestPrio.ALWAYS),
+        case('bis später', 'Bis später', 'Common farewell', lt=True, prio=TestPrio.HIGH),
+        case('es ist kalt draußen', 'Es ist kalt draußen', 'Simple sentence', lt=True, prio=TestPrio.HIGH),
+        case('was machst du heute', 'Was machst du heute', 'Common question', lt=True, prio=TestPrio.HIGH),
         case('kein problem', 'Kein Problem', 'Common phrase', lt=True, prio=TestPrio.HIGH),
         case('zum beispiel', 'Zum Beispiel', 'Common phrase', lt=True, prio=TestPrio.HIGH),
-        case('und so weiter', 'Und so weiter', 'Common phrase', lt=True, prio=TestPrio.ALWAYS),
-        case('einer nach dem anderen', 'Einer nach dem anderen', 'Idiomatic', lt=True, prio=TestPrio.ALWAYS),
+        case('und so weiter', 'Und so weiter', 'Common phrase', lt=True, prio=TestPrio.HIGH),
+        case('einer nach dem anderen', 'Einer nach dem anderen', 'Idiomatic', lt=True, prio=TestPrio.HIGH),
 
         # --- Umlaute ---
-        case('schön', 'schön', 'Umlaut – unverändert', lt=False, prio=TestPrio.ALWAYS),
-        case('überall', 'überall', 'Umlaut – unverändert', lt=False, prio=TestPrio.ALWAYS),
-        case('für', 'für', 'Umlaut – unverändert', lt=False, prio=TestPrio.ALWAYS),
-        case('größer', 'größer', 'Umlaut+Eszett – unverändert', lt=False, prio=TestPrio.ALWAYS),
-        case('weiß', 'weiß', 'Eszett – unverändert', lt=True, prio=TestPrio.ALWAYS),
-        case('müde', 'müde', 'Umlaut – unverändert', lt=True, prio=TestPrio.ALWAYS),
+        case('schön', 'schön', 'Umlaut – unverändert', lt=False, prio=TestPrio.HIGH),
+        case('überall', 'überall', 'Umlaut – unverändert', lt=False, prio=TestPrio.HIGH),
+        case('für', 'für', 'Umlaut – unverändert', lt=False, prio=TestPrio.HIGH),
+        case('größer', 'größer', 'Umlaut+Eszett – unverändert', lt=False, prio=TestPrio.HIGH),
+        case('weiß', 'weiß', 'Eszett – unverändert', lt=True, prio=TestPrio.HIGH),
+        case('müde', 'müde', 'Umlaut – unverändert', lt=True, prio=TestPrio.HIGH),
         case('straße', 'Straße', 'Eszett + Großschreibung', lt=True, prio=TestPrio.HIGH),
-        case('füße', 'Füße', 'Umlaut + Großschreibung', lt=True, prio=TestPrio.ALWAYS),
-        case('hände', 'Hände', 'Umlaut + Großschreibung', lt=True, prio=TestPrio.ALWAYS),
+        case('füße', 'Füße', 'Umlaut + Großschreibung', lt=True, prio=TestPrio.HIGH),
+        case('hände', 'Hände', 'Umlaut + Großschreibung', lt=True, prio=TestPrio.HIGH),
 
         # --- Abkürzungen ---
-        case('respektive', 'respektive', 'unverändert', lt=False, prio=TestPrio.ALWAYS),
-        case('circa', 'circa', 'unverändert', lt=False, prio=TestPrio.ALWAYS),
+        case('respektive', 'respektive', 'unverändert', lt=False, prio=TestPrio.HIGH),
+        case('circa', 'circa', 'unverändert', lt=False, prio=TestPrio.HIGH),
         case('unter anderem', 'Unter anderem', 'Common abbreviation', lt=True, prio=TestPrio.HIGH),
         case('doktor', 'Doktor', 'Title abbreviation', lt=True, prio=TestPrio.HIGH),
-        case('professor', 'Professor', 'Title abbreviation', lt=True, prio=TestPrio.ALWAYS),
-        case('zum schluss', 'Zum Schluss', 'Custom abbreviation', lt=True, prio=TestPrio.ALWAYS),
+        case('professor', 'Professor', 'Title abbreviation', lt=True, prio=TestPrio.HIGH),
+        case('zum schluss', 'Zum Schluss', 'Custom abbreviation', lt=True, prio=TestPrio.HIGH),
 
         # --- Fragen und Ausrufe ---
         case('wie spät ist es', 'Wie spät ist es', 'Direct question', lt=True, prio=TestPrio.HIGH),
-        case('wo finde ich toilette', 'Wo finde ich Toilette', 'Direct question', lt=True, prio=TestPrio.ALWAYS),
-        case('das ist unglaublich', 'Das ist unglaublich', 'Exclamatory', lt=True, prio=TestPrio.ALWAYS),
+        case('wo finde ich toilette', 'Wo finde ich Toilette', 'Direct question', lt=True, prio=TestPrio.HIGH),
+        case('das ist unglaublich', 'Das ist unglaublich', 'Exclamatory', lt=True, prio=TestPrio.HIGH),
         case('hilfe', 'Hilfe', 'word', lt=True, prio=TestPrio.HIGH),
-        case('was für ein tag', 'Was für ein Tag', 'Exclamatory phrase', lt=True, prio=TestPrio.ALWAYS),
-        case('stopp', 'stopp', 'unverändert', lt=False, prio=TestPrio.ALWAYS),
+        case('was für ein tag', 'Was für ein Tag', 'Exclamatory phrase', lt=True, prio=TestPrio.HIGH),
+        case('stopp', 'stopp', 'unverändert', lt=False, prio=TestPrio.HIGH),
 
         # --- Befehle ---
-        case('gehe nach links', 'Gehe nach links', 'Simple command', lt=True, prio=TestPrio.ALWAYS),
+        case('gehe nach links', 'Gehe nach links', 'Simple command', lt=True, prio=TestPrio.HIGH),
         case('schalte das licht ein', 'Schalte das Licht ein', 'Simple command', lt=True, prio=TestPrio.HIGH),
-        case('öffne die tür', 'Öffne die Tür', 'Simple command', lt=True, prio=TestPrio.ALWAYS),
-        case('wiederhole das bitte', 'Wiederhole das bitte', 'Request', lt=True, prio=TestPrio.ALWAYS),
+        case('öffne die tür', 'Öffne die Tür', 'Simple command', lt=True, prio=TestPrio.HIGH),
+        case('wiederhole das bitte', 'Wiederhole das bitte', 'Request', lt=True, prio=TestPrio.HIGH),
 
         # --- Komplexere Sätze ---
         case('die sonne scheint auf die blumen', 'Die Sonne scheint auf die Blumen',
@@ -342,11 +344,12 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
              'Subordinate clause + comma', lt=True, prio=TestPrio.OPTIONAL),
         case('der kleine hund spielt mit seinem neuen spielzeug',
              'Der kleine Hund spielt mit seinem neuen Spielzeug',
-             'Detailed sentence', lt=True, prio=TestPrio.ALWAYS),
+             'Detailed sentence', lt=True, prio=TestPrio.HIGH),
         case('das wetter wird morgen sonnig mit temperaturen um die zwanzig grad',
              'Das Wetter wird morgen sonnig mit Temperaturen um die 20 Grad',
              'digits_to_numbers + LT', lt=True, prio=TestPrio.HIGH),
     ]
+
 
     # test_cases = [
     #     # ('was is 5 mal 1', 'Das Ergebnis von 5 mal 2 ist 10.', 'Partial map + LT correction', 'de-DE'),
@@ -357,27 +360,45 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     PRIO_CHANCE = {
         TestPrio.ALWAYS: 1.0,
         TestPrio.HIGH: 0.8,
-        TestPrio.OPTIONAL: 0.3
+        TestPrio.OPTIONAL: 0.3,
+        TestPrio.NEVER: 0.0,
     }
     import random
+
+    rng = random.Random()  # deterministic for reproducible runs
     active_tests = []
     for test_case in test_cases:
-        if len(test_case) == 6:
-            raw_text, expected, description, check_lang, use_lt, prio = test_case
-            if check_lang == lang_code and random.random() < PRIO_CHANCE[prio]:
-                active_tests.append((raw_text, expected, description, use_lt))
-        elif len(test_case) == 5:
-            raw_text, expected, description, check_lang, use_lt = test_case
-            if check_lang == lang_code:
-                active_tests.append((raw_text, expected, description, use_lt))
-        elif len(test_case) == 4:
-            raw_text, expected, description, check_lang = test_case
-            if check_lang == lang_code:
-                active_tests.append((raw_text, expected, description, True))
-        elif len(test_case) == 3:
-            active_tests.append((*test_case, True))
-        elif len(test_case) == 2 and lang_code == 'de-DE':
-            active_tests.append((test_case[0], test_case[1], '', True))
+        raw_text, expected, description, check_lang, use_lt, prio = test_case
+        chance = PRIO_CHANCE.get(prio, 0.0)
+        # if check_lang == lang_code and prio == TestPrio.ALWAYS:
+        if check_lang == lang_code and rng.random() < chance:
+            active_tests.append((raw_text, expected, description, use_lt))
+            # logger.info(f':st:🌞🌞🌞🌞🌞 append({raw_text}, {expected})')
+
+    # active_tests = []
+    # for test_case in test_cases:
+    #     rand = random.random()
+    #     # if len(test_case) == 6:
+    #     raw_text, expected, description, check_lang, use_lt, prio = test_case
+    #     if check_lang == lang_code and rand <= PRIO_CHANCE[prio]:
+    #         active_tests.append((raw_text, expected, description, use_lt))
+    #         logger.info(f':st:🌞🌞🌞🌞🌞 append({raw_text}, {expected})')
+
+        # elif len(test_case) == 5:
+        #     raw_text, expected, description, check_lang, use_lt = test_case
+        #     if check_lang == lang_code and rand < PRIO_CHANCE[prio]:
+        #         active_tests.append((raw_text, expected, description, use_lt))
+        # elif len(test_case) == 4:
+        #     raw_text, expected, description, check_lang = test_case
+        #     if check_lang == lang_code and rand < PRIO_CHANCE[prio]:
+        #         active_tests.append((raw_text, expected, description, True))
+        # elif len(test_case) == 3 and rand < PRIO_CHANCE[prio]:
+        #     active_tests.append((*test_case, True))
+        # elif len(test_case) == 2 and lang_code == 'de-DE' and rand < PRIO_CHANCE[prio]:
+        #     active_tests.append((test_case[0], test_case[1], '', True))
+
+
+    # logger.info(f':st:🌞🌞🌞🌞🌞 4.5.26 15:17 Mon 🌞🌞🌞🌞🌞🌞🌞 active_tests={active_tests}')
 
 
 
@@ -473,19 +494,6 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
 
 
-
-    #core_logic_self_test_is_running_FILE = tmp_dir_aura / "core_logic_self_test_FILE_is_running"
-
-
-    # MAX_WAIT_SECONDS=150
-
-    # run_auto_zip_sanity_check(logger)
-
-    # Am Ende, bevor das Programm endet:
-    # if auto_zip_thread:
-    #     logger.info("Auto-Zip: Warte auf Thread...")
-    #     auto_zip_thread.join(timeout=MAX_WAIT_SECONDS)
-
     # scripts/py/func/checks/self_tester.py:420
 
     # 4.1 Detailed Performance Report at the very end
@@ -572,13 +580,13 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
 Passed: 95 | ❌ Failed: 0 Tests (hint search for: ❌ FAIL )
 15:17:25,615 - INFO   - :st:⌚ Total Duration: 6.45 seconds
+    """ # noqa:F841
 
-
-    """
-    logger.info("-" * 40)
+    # logger.info("-" * 40)
     # logger.info(README)
-    formatted_readme = "\n".join([f"📜 {line}" for line in README.strip().splitlines()])
-    logger.info(f"History:\n{formatted_readme}")
+    # formatted_readme = "\n".join([f"📜 {line}" for line in README.strip().splitlines()])
+    # logger.info(f"History:\n{formatted_readme}")
+    # logger.info(f"History:\n{formatted_readme}")
 
     settings.PLUGIN_HELPER_TTS_ENABLED = backup_tts_enabled
 

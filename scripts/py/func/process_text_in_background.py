@@ -366,7 +366,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         if f".{lang_code}." not in modname:
             continue
 
-        log4DEV(f"############################## modname {modname}",logger)
+        # log4DEV(f"############################## modname {modname}",logger)
 
         # process_text_in_background.py:341 (load_maps_for_language)
 
@@ -2253,10 +2253,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
             _cache_hit = False
             if _source_path:
                 _cached = get_cached_result(current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
-                log4DEV(f"CACHE_LOOKUP: input='{current_text}' | source='{_source_path}'", logger_instance)
+                # log4DEV(f"CACHE_LOOKUP: input='{current_text}' | source='{_source_path}'", logger_instance)
                 if _cached is not None:
                     _cache_hit = True
-                    log4DEV(f"CACHE_HIT: cached='{_cached}' | changed={_cached != current_text}", logger_instance)
+                    # log4DEV(f"CACHE_HIT: cached='{_cached}' | changed={_cached != current_text}", logger_instance)
                     if _cached != current_text:
                         current_text = _cached
                         made_a_change_in_cycle = True
@@ -2280,8 +2280,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
                     if new_current_text != original_text_for_script:
 
-                        log4DEV(f"new..:'{new_current_text}' "
-                                f"!= original..:'{original_text_for_script}'",logging)
+                        # log4DEV(f"new..:'{new_current_text}' "
+                        #         f"!= original..:'{original_text_for_script}'",logging)
 
                         match_data = {
                             'original_text': original_text_for_script,
@@ -2304,9 +2304,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         for script_path in on_match_exec_list:
                             module = load_module_from_path(script_path)
                             if module and hasattr(module, 'execute'):
-                                # <<< ÄNDERUNG 2: Übergebe match_data und aktualisiere den Text
                                 new_current_text = module.execute(match_data)
-                                log4DEV(f"module:'{module}' new_current_text='{new_current_text}'",logging)
+                                # log4DEV(f"module:'{module}' new_current_text='{new_current_text}'",logging)
 
                         # <<< HINWEIS: Dein restlicher Code kann jetzt unverändert bleiben >>>
                         # Er verwendet new_current_text, das jetzt das finale Ergebnis aus den Skripten enthält.
@@ -2328,12 +2327,12 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                         current_text = new_current_text  # Jetzt wird der finale Text zugewiesen
                         # --- AURA CACHE SET ---
                         if _source_path:
-                            log4DEV(f"CACHE_SET: original='{original_text_for_script}' | new='{current_text}'", logger_instance)
+                            # log4DEV(f"CACHE_SET: original='{original_text_for_script}' | new='{current_text}'", logger_instance)
                             set_cached_result(original_text_for_script, current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
                         # --- END AURA CACHE SET ---
 
                         full_text_replaced_by_rule = True  # because was full-match
-                        log4DEV(f"full_text_replaced_by_rule = {full_text_replaced_by_rule}",logger_instance)
+                        # log4DEV(f"full_text_replaced_by_rule = {full_text_replaced_by_rule}",logger_instance)
 
                         if not privacy_taint_occurred:
                             log4DEV(f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} '{original_text_for_script}' ----> '{current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}",logger_instance)
@@ -2424,24 +2423,21 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
         if full_text_replaced_by_rule:
             made_a_change = True
-            log4DEV(f"made a_change: {made_a_change}",logger_instance)
-            logger_instance.info(
-                f"🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}, skip_list='{skip_list}'")
-
-
+            # log4DEV(f"made a_change: {made_a_change}",logger_instance)
+            # logger_instance.info(f"🚀Iterative-All-Rules: full_text_replaced_by_rule='{full_text_replaced_by_rule}, skip_list='{skip_list}'")
             break
 
         if not made_a_change_in_cycle:
             break
 
     if not made_a_change:
-        if not privacy_taint_occurred:
-            log4DEV(f"made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
-            # e.g. "this is a test lands" here. There is also (most likely) no rule about this. So correct.
-            # logging.info('sys.exit(1) 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923')
-            # sys.exit(1) # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 Test
-            log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",
-                    logger_instance)
+        # if not privacy_taint_occurred:
+        # log4DEV(f"made_a_change={made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
+        # e.g. "this is a test lands" here. There is also (most likely) no rule about this. So correct.
+        # logging.info('sys.exit(1) 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923')
+        # sys.exit(1) # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 Test
+        # log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
+
         return made_a_change, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
         # log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
     # 17:08:56,492 - INFO     - 758: made_a_change=True full_text_replaced_by_rule:False current_text:mit nachnamen Lauffer
@@ -2459,8 +2455,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
         # Check if LanguageTool is not already marked for skipping
         if 'LanguageTool' not in skip_list:
-            explain =f'ratio:{ratio} < {lt_skip_ratio_threshold}: If the text is short OR the change density is high (low ratio), skip LT.'
-            log4DEV(f"explain:{explain}",logger_instance)
+            # explain =f'ratio:{ratio} < {lt_skip_ratio_threshold}: If the text is short OR the change density is high (low ratio), skip LT.'
+            # log4DEV(f"explain:{explain}",logger_instance)
             # Add LT to the skip list
             skip_list.append('LanguageTool')
             log4DEV("skip_list.append('LanguageTool')",logger_instance)

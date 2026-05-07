@@ -136,6 +136,7 @@ PLUGINS_ENABLED = {
     "game/0ad": False,
     "game/dealers_choice": False,
     "z_fallback_llm": False,
+    "standard_actions/wikipedia_local": True,
 }
 
 REMOVE_SPACES_BETWEEN_NUMBERS = 0

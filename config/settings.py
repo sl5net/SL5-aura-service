@@ -175,8 +175,8 @@ SHOW_SEARCH_ON_STARTUP = True
 
 
 PLUGINS_ENABLED = {
-    "standard_actions/wikipedia_local": False,
     "standard_actions/count_loud": False,
+    "standard_actions/wikipedia_local": False,
     "game": False,
     "empty_all": False,
 }
