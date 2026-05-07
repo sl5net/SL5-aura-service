@@ -309,10 +309,10 @@ FUZZY_MAP_pre = [
 
     # Die Regex fängt zwei Zahlen (\d+) und einen Operator (plus|minus|mal|geteilt)
     # EXAMPLE: rechne
-    ('', r'(?:rechne|was ist|was is|was)\s*(\d+)\s*([\+\-\*\/]|plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'calculator.py']
-    }),
+        ('', r'(?:rechne|was ist|was is|was)\s*(\d+)\s*([\+\-\*\/]|plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
+            'flags': re.IGNORECASE,
+            'on_match_exec': [CONFIG_DIR / 'calculator.py']
+        }),
 
 
     # Die Regex fängt zwei Zahlen (\d+) und einen Operator (plus|minus|mal|geteilt)

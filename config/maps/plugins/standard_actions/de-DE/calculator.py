@@ -21,6 +21,7 @@ def execute(match_data):
                 return "Ich kann nicht durch Null teilen, das gibt nur Ärger."
             result = num1 / num2
 
+        # config/maps/plugins/standard_actions/de-DE/calculator.py:24
         return f"Das Ergebnis von {num1} {operator} {num2} ist {result}."
 
     except (IndexError, ValueError):
