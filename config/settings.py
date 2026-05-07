@@ -52,6 +52,7 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 # Default for new users is the most verbose level.
 NOTIFICATION_LEVEL = 1 # 0=Silent, 1=Essential, 2=Verbose
 
+SHOW_SEARCH_ON_STARTUP = True
 
 SIGNATURE_COOLDOWN = 50 # 600
 
