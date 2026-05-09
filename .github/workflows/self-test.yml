@@ -91,7 +91,7 @@ jobs:
           if [ ! -d "./LanguageTool-6.6" ]; then
             echo "--> LanguageTool missing. Downloading..."
           wget https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
-          unzip LanguageTool-6.6.zip
+          sudo unzip LanguageTool-6.6.zip
           else
             echo "✅ LanguageTool already exists."
           fi
