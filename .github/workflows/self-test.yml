@@ -21,6 +21,10 @@ jobs:
         run: |
           sudo mkdir -p /tmp/sl5_aura
           sudo chmod -R 777 /tmp/sl5_aura
+          
+          sudo mkdir -p $GITHUB_WORKSPACE/log
+          sudo chmod -R 777 $GITHUB_WORKSPACE/log
+          
           echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
           # echo "$GITHUB_WORKSPACE" > /tmp/sl5_aura/sl5net_aura_project_root
           echo "✅ Temp-Datei erstellt für Top-Level Importe."
