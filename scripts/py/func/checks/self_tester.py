@@ -494,11 +494,15 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         # Issue #94: non-LT parallel, LT sequential in CI
         lt_workers = 1 if is_ci else num_workers
 
+        if is_ci:
+            print(f":st: DEBUG for Pool1 non_lt_tests={len(non_lt_tests)}")
         with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
             futures = {}
             for i, t in enumerate(non_lt_tests):
                 futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
             _collect_results(futures)
+        if is_ci:
+            print(f":st: DEBUG behind Pool1")
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=lt_workers, mp_context=ctx) as executor:
             futures = {}
