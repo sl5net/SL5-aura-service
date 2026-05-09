@@ -21,8 +21,9 @@ from ..audio_manager import speak_inclusive_fallback
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
+from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
+
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -834,6 +835,10 @@ if __name__ == "__main__":
 
     lt_url = "http://localhost:8082"
     lang = "de-DE"
+
+    from ..process_text_in_background import load_maps_for_language
+
+    load_maps_for_language(lang, test_logger)
 
     print(f":st: Starting self-test (CLI mode) using {lt_url}...")
     try:
