@@ -55,7 +55,9 @@ jobs:
           python3 -m pip install --upgrade pip
           # python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk
           python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk \
-            thefuzz
+            thefuzz python-Levenshtein pyzipper
+
+          if [ -f requirements.txt ]; then python3 -m pip install -r requirements.txt; fi
 
       - name: Start LanguageTool Server
         run: |
