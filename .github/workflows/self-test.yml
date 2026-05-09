@@ -1,13 +1,10 @@
 name: Self-Test (Aura Logic)
-# .github/workflows/self-test.yml
 
 on:
   push:
     branches: [ master ]
-#    branches: [ master, main ]
   pull_request:
     branches: [ master ]
-#    branches: [ master, main ]
   workflow_dispatch:
 
 concurrency:
@@ -22,27 +19,22 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./tools/
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
 
       - name: Prepare Temp Directory and Config
         run: |
           sudo mkdir -p /tmp/sl5_aura
           sudo chmod -R 777 /tmp/sl5_aura
-          
-          sudo mkdir -p $GITHUB_WORKSPACE/log
-          sudo chmod -R 777 $GITHUB_WORKSPACE/log
-          
           echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
-          # echo "$GITHUB_WORKSPACE" > /tmp/sl5_aura/sl5net_aura_project_root
-          echo "✅ Temp-Datei erstellt für Top-Level Importe."
-
-
-          if [ -f "config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py" ]; then
-            echo "✅ German Fuzzy Map found."
-          else
-            echo "❌ German Fuzzy Map MISSING at config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py"
-            exit 1
-          fi
-
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -50,120 +42,44 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: Install System Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportaudio2 \
-            fzf xclip xvfb
+      - name: Update apt repositories
+        run: sudo apt-get update -y
 
-      - name: Install Python Dependencies
+      - name: Run Official Ubuntu Setup
+        run: bash ./setup/ubuntu_setup.sh
 
+      - name: Install Additional Test Dependencies
         run: |
+          sudo apt-get install -y xvfb xclip
           python3 -m pip install --upgrade pip
-          # Wir installieren die Kern-Abhängigkeiten explizit, falls sie in requirements.txt fehlen
-          python3 -m pip install psutil numpy pygame requests
-
-          # Falls vorhanden, den Rest aus den requirements laden
-          if [ -f requirements.txt ]; then python3 -m pip install -r requirements.txt; fi
-          if [ -f requirements-dev.txt ]; then python3 -m pip install -r requirements-dev.txt; fi
-
-
-      - name: Cache LanguageTool
-        id: lt-cache
-        uses: actions/cache@v4
-        with:
-          path: ./LanguageTool-6.6
-          # Wir springen auf v5, um ALLES Alte zu löschen
-          key: ${{ runner.os }}-languagetool-6.6-v5
-
-      - name: Ensure LanguageTool is present (Download if missing or corrupted)
-        run: |
-          # Wir prüfen direkt auf die JAR-Datei, nicht nur auf den Ordner
-          if [ ! -f "./LanguageTool-6.6/languagetool-server.jar" ]; then
-            echo "⚠️ LanguageTool missing or corrupted in cache. Downloading fresh..."
-            # Sicherstellen, dass keine Reste existieren
-            rm -rf ./LanguageTool-6.6
-            
-            wget -q https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
-            unzip -q LanguageTool-6.6.zip
-            
-            # Fix für Verschachtelung: Falls die Zip einen Ordner im Ordner erstellt
-            if [ -d "./LanguageTool-6.6/LanguageTool-6.6" ]; then
-              echo "Fixing nested directory structure..."
-              mv ./LanguageTool-6.6/LanguageTool-6.6/* ./LanguageTool-6.6/
-              rmdir ./LanguageTool-6.6/LanguageTool-6.6
-            fi
-          else
-            echo "✅ LanguageTool correctly restored from cache."
-          fi
-
-      - name: Verify LanguageTool and List Directory
-        run: |
-          if [ -f "./LanguageTool-6.6/languagetool-server.jar" ]; then
-            echo "✅ LanguageTool verified. Ready to start."
-            ls -l ./LanguageTool-6.6/*.jar
-          else
-            echo "❌ ERROR: languagetool-server.jar still missing!"
-            ls -R
-            exit 1
-          fi
-          
+          python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk
 
       - name: Start LanguageTool Server
         run: |
           java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
-          echo "Waiting for LanguageTool..."
-          sleep 50
-
-      - name: Install Dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-
-          pip install "numpy>=2.0.0"
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-
-      - name: Prepare Temp Directory and Project Root File
-        run: |
-          sudo mkdir -p /tmp/sl5_aura
-          sudo chmod -R 777 /tmp/sl5_aura
-
-          printf '%s' "$GITHUB_WORKSPACE" > /tmp/sl5_aura/sl5net_aura_project_root
-
-          touch scripts/__init__.py
-          touch scripts/py/__init__.py
-          touch scripts/py/func/__init__.py
-          touch scripts/py/func/checks/__init__.py
-
-          cp config/settings_local.py_Example.txt config/settings_local.py
-
-          echo "✅ /tmp/sl5_aura/sl5net_aura_project_root created as file."
-
+          sleep 10
 
       - name: Run Self-Tester with Final Guard
         env:
           PYTHONPATH: ${{ github.workspace }}
-          PYTHONUNBUFFERED: "1"
           CI: "true"
           DISPLAY: :99
-          PSUTIL_DEBUG: "0"
         run: |
           Xvfb :99 -screen 0 1024x768x24 &
-          
-          echo "=== DEBUG ==="
-          cat /tmp/sl5_aura/sl5net_aura_project_root
-          ls "$(cat /tmp/sl5_aura/sl5net_aura_project_root)/config/maps/plugins/standard_actions/language_translator/de-DE/" 2>&1 || echo "MAP PATH NOT FOUND"
-          echo "=== END DEBUG ==="
-          
-          # python3 -m scripts.py.func.checks.self_tester
-          
           python3 -m scripts.py.func.checks.self_tester | tee test_results.log
-
+          
           if grep -q "| 0 failed" test_results.log; then
             echo "✅ Final Guard: Success summary found. 0 tests failed."
           else
-            echo "❌ FINAL GUARD FAILURE: Success summary '| 0 failed' not found in log!"
-            echo "Check the output above for crashes or test failures."
+            echo "❌ FINAL GUARD FAILURE: Success summary '| 0 failed' not found!"
             exit 1
           fi
-          
+
+      - name: Package Assets as Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sl5-assets-pack-ubuntu-tester
+          path: |
+            ./LanguageTool-6.6
+            ./models/
