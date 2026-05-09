@@ -452,13 +452,12 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     # scripts/py/func/checks/self_tester.py:383
 
-    # import multiprocessing
     import multiprocessing
+    if is_ci:
+        print(":st: DEBUG multiprocessing imported")
+
     # ctx = multiprocessing.get_context("fork")
     # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
-
-
-
 
 
 
