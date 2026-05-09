@@ -52,6 +52,27 @@ Note: Many texts are machine-generated translations of the original English docu
 *   **Fully Automated:** Manages its own LanguageTool server (but you can use a external also). 
 *   **Blazing Fast:** Intelligent caching ensures instant "Listening..." notifications and fast processing.
 
+## 🔌 Ready-to-Use Integrations
+
+SL5-Aura comes with a vast ecosystem of over **100+ pre-configured plugins**. Here are some highlights:
+
+### OculiX / SikuliX IDE Voice Control
+SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE**. This integration allows you to "speak" your automation code.
+
+*   **Voice-to-Snippet:** Say "click", "wait", or "find all", and the service instantly types the correct Python code (e.g., `click("image.png")`) into the IDE.
+*   **Window-Aware:** The plugin is context-sensitive; it only activates when the OculiX/SikuliX window is focused.
+*   **Smart English Support:** Optimized for `en-US` with a special focus on non-native accents (e.g., German-English phonetics), ensuring high recognition accuracy for the global community.
+*   **Extensible:** Uses the easy-to-edit `FUZZY_MAP_pre.py` format.
+
+> **Status:** Recognized as a community-plugin by the OculiX team (see [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
+
+### LibreOffice IDE Voice Control
+
+### 0 A.D. Voice Control
+
+---
+
+
 ## Documentation
 
 For a complete technical reference, including all modules and scripts, please visit our official documentation page. It is automatically generated and always up-to-date.
@@ -65,6 +86,8 @@ For a complete technical reference, including all modules and scripts, please vi
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+[![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
