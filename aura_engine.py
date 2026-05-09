@@ -669,6 +669,9 @@ else:
 DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = False
 # DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = True
 
+if settings.DEV_MODE and DISABLE_ALL_TEST_QuickStopTestsForSomeReasons :
+    print(f'Hi DEV. BTW DISABLE_ALL_TEST_QuickStopTestsForSomeReasons is {DISABLE_ALL_TEST_QuickStopTestsForSomeReasons}')
+
 readme = """
 vosk-model-small-de-0.15
 17:36:26,230 - INFO     - >>> Core Logic Self-Test PASSED.

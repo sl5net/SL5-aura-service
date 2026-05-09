@@ -74,7 +74,7 @@ jobs:
         run: |
           java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
           echo "Waiting for LanguageTool..."
-          sleep 15
+          sleep 50
 
       - name: Install Dependencies
         run: |

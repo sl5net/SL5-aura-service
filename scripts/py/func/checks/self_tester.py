@@ -377,7 +377,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         chance = PRIO_CHANCE.get(prio, 0.0)
         # if check_lang == lang_code and prio == TestPrio.ALWAYS:
         if check_lang == lang_code and rng.random() < chance:
-            if is_ci and use_lt:
+            if False and is_ci and use_lt:
                 continue  # Skip in CI
             active_tests.append((raw_text, expected, description, use_lt))
             # logger.info(f':st:🌞🌞🌞🌞🌞 append({raw_text}, {expected})')
