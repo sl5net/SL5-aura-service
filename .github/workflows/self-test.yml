@@ -18,15 +18,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
           cache: 'pip'
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install "numpy>=2.1.0"
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          # Falls zusätzliche libs gebraucht werden:
-          pip install requests
 
       - name: Set up Java (for LanguageTool)
         uses: actions/setup-java@v4
@@ -41,17 +40,15 @@ jobs:
           # Startet LT im Hintergrund auf Port 8082
           java -cp LanguageTool-6.4/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
           echo "Waiting for LanguageTool..."
-          sleep 10
+          sleep 15
 
       - name: Prepare Temp Directories and Mock Config
         run: |
           # Dein Script erwartet bestimmte Dateien in /tmp
           sudo mkdir -p /tmp/sl5_aura/sl5net_aura_project_root
           sudo chmod -R 777 /tmp/sl5_aura
-          # Simuliere den Pfad zum Projekt-Root, den dein Script einliest:
           echo "$GITHUB_WORKSPACE" > /tmp/sl5_aura/sl5net_aura_project_root
 
-          # Erstelle notwendige Verzeichnisse, falls sie im Repo fehlen
           mkdir -p config/maps/plugins/standard_actions/language_translator/de-DE/
 
       - name: Run Self-Tester
