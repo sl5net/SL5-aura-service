@@ -52,12 +52,12 @@ jobs:
       - name: Install Additional Test Dependencies
         run: |
           sudo apt-get install -y xvfb xclip
-          python3 -m pip install --upgrade pip
-          # python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk
-          python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk \
-            thefuzz python-Levenshtein pyzipper
+          ./.venv/bin/python3 -m pip install --upgrade pip
+          # ./.venv/bin/python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk
+          # ./.venv/bin/python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk \
+          #  thefuzz python-Levenshtein pyzipper
 
-          if [ -f requirements.txt ]; then python3 -m pip install -r requirements.txt; fi
+          # if [ -f requirements.txt ]; then ./.venv/bin/python3 -m pip install -r requirements.txt; fi
 
 
       - name: Prepare Temp Directory and Project Root File
@@ -91,7 +91,7 @@ jobs:
           DISPLAY: :99
         run: |
           Xvfb :99 -screen 0 1024x768x24 &
-          python3 -m scripts.py.func.checks.self_tester | tee test_results.log
+          ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results.log
           
           if grep -q "| 0 failed" test_results.log; then
             echo "✅ Final Guard: Success summary found. 0 tests failed."
