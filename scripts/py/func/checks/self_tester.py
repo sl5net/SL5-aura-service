@@ -386,6 +386,10 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
             active_tests.append((raw_text, expected, description, use_lt))
             # logger.info(f':st:🌞🌞🌞🌞🌞 append({raw_text}, {expected})')
 
+    if is_ci:
+        print(f":st: DEBUG lang_code={lang_code} active_tests={len(active_tests)}")
+        logger.info(f":st: DEBUG lang_code={lang_code} active_tests={len(active_tests)}")
+
     # active_tests = []
     # for test_case in test_cases:
     #     rand = random.random()
@@ -408,8 +412,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         # elif len(test_case) == 2 and lang_code == 'de-DE' and rand < PRIO_CHANCE[prio]:
         #     active_tests.append((test_case[0], test_case[1], '', True))
 
-
-    # logger.info(f':st:🌞🌞🌞🌞🌞 4.5.26 15:17 Mon 🌞🌞🌞🌞🌞🌞🌞 active_tests={active_tests}')
+    if is_ci:
+        logger.info(f':st: active_tests={active_tests}')
 
 
 
