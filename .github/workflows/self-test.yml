@@ -81,13 +81,32 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ./LanguageTool-6.6
-          key: ${{ runner.os }}-languagetool-6.6
+#          key: ${{ runner.os }}-languagetool-6.6
+          key: ${{ runner.os }}-languagetool-6.6-v3
 
       - name: Download LanguageTool if cache miss
-        if: steps.lt-cache.outputs.cache-hit != 'true'
+#        if: steps.lt-cache.outputs.cache-hit != 'true'
+        if: steps.lt-cache.outputs.cache-hit != 'true' || (!hashFiles('./LanguageTool-6.6/languagetool-server.jar'))
         run: |
+          if [ ! -d "./LanguageTool-6.6" ]; then
+            echo "--> LanguageTool missing. Downloading..."
           wget https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
           unzip LanguageTool-6.6.zip
+          else
+            echo "✅ LanguageTool already exists."
+          fi
+
+      - name: Verify LanguageTool Installation
+        run: |
+          if [ -f "./LanguageTool-6.6/languagetool-server.jar" ]; then
+            echo "✅ LanguageTool ready at ./LanguageTool-6.6"
+          else
+            echo "❌ CRITICAL: LanguageTool-6.6/languagetool-server.jar not found!"
+            ls -R ./LanguageTool-6.6 || echo "Directory does not even exist."
+            exit 1
+          fi
+          
+          
 
       - name: Start LanguageTool Server
         run: |
