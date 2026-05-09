@@ -16,14 +16,21 @@ jobs:
         uses: actions/checkout@v4
 
 
-      - name: Prepare Temp Directory (Early)
+      - name: Prepare Temp Directory and Config
         run: |
           sudo mkdir -p /tmp/sl5_aura
           sudo chmod -R 777 /tmp/sl5_aura
-          # Erstelle die Datei sofort mit dem Pfad zum Workspace
-          echo "$GITHUB_WORKSPACE" > /tmp/sl5_aura/sl5net_aura_project_root
+          echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
+          # echo "$GITHUB_WORKSPACE" > /tmp/sl5_aura/sl5net_aura_project_root
           echo "✅ Temp-Datei erstellt für Top-Level Importe."
 
+
+          if [ -f "config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py" ]; then
+            echo "✅ German Fuzzy Map found."
+          else
+            echo "❌ German Fuzzy Map MISSING at config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py"
+            exit 1
+          fi
 
 
       - name: Set up Python
@@ -71,7 +78,6 @@ jobs:
       - name: Install Dependencies
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m scripts.py.func.checks.self_tester
 
           pip install "numpy>=2.0.0"
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
@@ -89,9 +95,13 @@ jobs:
 
           echo "✅ /tmp/sl5_aura/sl5net_aura_project_root created as file."
 
+
       - name: Run Self-Tester
         env:
           PYTHONPATH: ${{ github.workspace }}
+          PYTHONUNBUFFERED: "1"
           CI: "true"
+          PSUTIL_DEBUG: "0"
         run: |
           python3 -m scripts.py.func.checks.self_tester
+

@@ -12,6 +12,7 @@ import sys
 # import concurrent.futures
 
 import os
+import warnings
 from pathlib import Path
 
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
@@ -612,6 +613,7 @@ import time
 # import traceback
 # from pathlib import Path
 
+warnings.filterwarnings("ignore", category=RuntimeWarning, module="psutil")
 
 # Dummy-Logger for Proses
 
@@ -630,6 +632,9 @@ class SimpleNullLogger:
 
     def exception(self, msg, *args, **kwargs):
         pass
+
+    def __getattr__(self, name): return lambda *args, **kwargs: None
+    def __repr__(self): return ""
 
 # if somebody is confused send him:
 # find . -name "*settings.py"                                                                                                                                     ✔
@@ -873,11 +878,15 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     test_logger = logging.getLogger("aura_self_test")
 
-    # Pfade vorbereiten
     tmp_path = Path("/tmp/sl5_aura")
     tmp_path.mkdir(parents=True, exist_ok=True)
 
-    # Standardwerte für GHA/CLI
+    root_file = tmp_path / "sl5net_aura_project_root"
+    if not root_file.exists():
+        root_file.write_text(str(Path.cwd().absolute()))
+
+
+
     lt_url = "http://localhost:8082"
     lang = "de-DE"
 
