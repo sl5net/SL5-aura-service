@@ -475,7 +475,13 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     # lt_workers = max(2, num_workers // 2)
 
     lt_tests = [(r, e, d, True) for r, e, d, use_lt in active_tests if use_lt]
+    if is_ci:
+        print(f":st: DEBUG lt_tests={len(lt_tests)}")
+
     non_lt_tests = [(r, e, d, False) for r, e, d, use_lt in active_tests if not use_lt]
+    if is_ci:
+        print(f":st: DEBUG lt_tests={len(lt_tests)} non_lt_tests={len(non_lt_tests)}")
+
     if not is_ci:
         logger.info(f":st: Phase 1 – {len(non_lt_tests)} deterministic tests (max_workers={num_workers})")
         logger.info(f":st: Phase 2 – {len(lt_tests)} LT-dependent tests   (max_workers=2)")
