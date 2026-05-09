@@ -464,8 +464,14 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     os.environ["AURA_SELF_TEST_RUNNING"] = "1"  # inherited by fork
     start_time = time.perf_counter()
     # ctx = multiprocessing.get_context("fork")
+    if is_ci:
+        print(":st: DEBUG before ctx fork")
     ctx = multiprocessing.get_context("fork")
+    if is_ci:
+        print(f":st: DEBUG ctx={ctx} os.cpu_count()={os.cpu_count()}")
     num_workers = os.cpu_count()
+    if is_ci:
+        print(f":st: DEBUG ctx={ctx} num_workers={num_workers}")
     # lt_workers = max(2, num_workers // 2)
 
     lt_tests = [(r, e, d, True) for r, e, d, use_lt in active_tests if use_lt]
