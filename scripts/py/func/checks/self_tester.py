@@ -486,7 +486,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         logger.info(f":st: Phase 1 – {len(non_lt_tests)} deterministic tests (max_workers={num_workers})")
         logger.info(f":st: Phase 2 – {len(lt_tests)} LT-dependent tests   (max_workers=2)")
 
-    test_metrics = [] # To store (duration, description, success)
+    test_metrics = []
+    if is_ci:
+        print(":st: DEBUG before _collect_results def")
 
     def _collect_results(futures_map):
         nonlocal passed_count, failed_count
