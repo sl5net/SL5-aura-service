@@ -607,6 +607,9 @@ Passed: 95 | ❌ Failed: 0 Tests (hint search for: ❌ FAIL )
 
     if failed_count > 0:
         print(f':st: failed_count > 0: {failed_count} ==> exiting')
+        if is_ci == 'true':
+            sys.exit(1)
+
         # sys.exit(1)
 
 
