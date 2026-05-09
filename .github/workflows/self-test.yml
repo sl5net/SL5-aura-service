@@ -1,5 +1,7 @@
 name: Self-Test (Aura Logic)
 
+# .github/workflows/self-test.yml
+
 on:
   push:
     branches: [ master ]
