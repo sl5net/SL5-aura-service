@@ -67,45 +67,46 @@ jobs:
           if [ -f requirements.txt ]; then python3 -m pip install -r requirements.txt; fi
           if [ -f requirements-dev.txt ]; then python3 -m pip install -r requirements-dev.txt; fi
 
-      - name: Verify Cache Status
-        run: |
-          if [ -d "./LanguageTool-6.6" ]; then
-            echo "✅ LanguageTool directory exists (Restored from Cache or Downloaded)."
-          else
-            echo "❌ LanguageTool directory MISSING!"
-            exit 1
-          fi
 
       - name: Cache LanguageTool
         id: lt-cache
         uses: actions/cache@v4
         with:
           path: ./LanguageTool-6.6
-#          key: ${{ runner.os }}-languagetool-6.6
-          key: ${{ runner.os }}-languagetool-6.6-v3
+          # Wir springen auf v5, um ALLES Alte zu löschen
+          key: ${{ runner.os }}-languagetool-6.6-v5
 
-      - name: Download LanguageTool if cache miss
-#        if: steps.lt-cache.outputs.cache-hit != 'true'
-        if: steps.lt-cache.outputs.cache-hit != 'true' || (!hashFiles('./LanguageTool-6.6/languagetool-server.jar'))
+      - name: Ensure LanguageTool is present (Download if missing or corrupted)
         run: |
-          if [ ! -d "./LanguageTool-6.6" ]; then
-            echo "--> LanguageTool missing. Downloading..."
-          wget https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
-          sudo unzip LanguageTool-6.6.zip
+          # Wir prüfen direkt auf die JAR-Datei, nicht nur auf den Ordner
+          if [ ! -f "./LanguageTool-6.6/languagetool-server.jar" ]; then
+            echo "⚠️ LanguageTool missing or corrupted in cache. Downloading fresh..."
+            # Sicherstellen, dass keine Reste existieren
+            rm -rf ./LanguageTool-6.6
+            
+            wget -q https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
+            unzip -q LanguageTool-6.6.zip
+            
+            # Fix für Verschachtelung: Falls die Zip einen Ordner im Ordner erstellt
+            if [ -d "./LanguageTool-6.6/LanguageTool-6.6" ]; then
+              echo "Fixing nested directory structure..."
+              mv ./LanguageTool-6.6/LanguageTool-6.6/* ./LanguageTool-6.6/
+              rmdir ./LanguageTool-6.6/LanguageTool-6.6
+            fi
           else
-            echo "✅ LanguageTool already exists."
+            echo "✅ LanguageTool correctly restored from cache."
           fi
 
-      - name: Verify LanguageTool Installation
+      - name: Verify LanguageTool and List Directory
         run: |
           if [ -f "./LanguageTool-6.6/languagetool-server.jar" ]; then
-            echo "✅ LanguageTool ready at ./LanguageTool-6.6"
+            echo "✅ LanguageTool verified. Ready to start."
+            ls -l ./LanguageTool-6.6/*.jar
           else
-            echo "❌ CRITICAL: LanguageTool-6.6/languagetool-server.jar not found!"
-            ls -R ./LanguageTool-6.6 || echo "Directory does not even exist."
+            echo "❌ ERROR: languagetool-server.jar still missing!"
+            ls -R
             exit 1
           fi
-          
           
 
       - name: Start LanguageTool Server
