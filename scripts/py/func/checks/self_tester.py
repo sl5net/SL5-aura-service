@@ -295,7 +295,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         case('danke schön', 'Danke schön', 'Common thanks', lt=True, prio=TestPrio.HIGH),
         case('bitte schön', 'Bitte schön', 'Common courtesy', lt=True, prio=TestPrio.HIGH),
         case('entschuldigung', 'Entschuldigung', 'Common apology', lt=True, prio=TestPrio.HIGH),
-        case('ich verstehe', 'Ich verstehe', 'Common confirmation', lt=True, prio=TestPrio.HIGH),
+        case('ich verstehe', 'Ich verstehe', 'Common confirmation', lt=True, prio=TestPrio.ALWAYS),
         case('ich weiß nicht', 'Ich weiß nicht', 'Common uncertainty', lt=True, prio=TestPrio.HIGH),
         case('alles klar', 'Alles klar', 'Common affirmation', lt=True, prio=TestPrio.HIGH),
         case('auf wiedersehen', 'Auf Wiedersehen', 'Common farewell', lt=True, prio=TestPrio.HIGH),
@@ -369,9 +369,13 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     import random
 
 
-    rng = random.Random()  # deterministic for reproducible runs
-    active_tests = []
     is_ci = os.getenv('CI') == 'true'
+    if is_ci:
+        rng = random.Random(42) # deterministic for reproducible runs
+    else:
+        rng = random.Random(42) # deterministic for reproducible runs
+
+    active_tests = []
     for test_case in test_cases:
         raw_text, expected, description, check_lang, use_lt, prio = test_case
         chance = PRIO_CHANCE.get(prio, 0.0)
