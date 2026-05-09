@@ -31,11 +31,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-models-tools-
 
-      - name: Prepare Temp Directory and Config
-        run: |
-          sudo mkdir -p /tmp/sl5_aura
-          sudo chmod -R 777 /tmp/sl5_aura
-          echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
+#      - name: Prepare Temp Directory and Config
+#        run: |
+#          sudo mkdir -p /tmp/sl5_aura
+#          sudo chmod -R 777 /tmp/sl5_aura
+#          echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
 
       - name: Set up Python
         uses: actions/setup-python@v5
