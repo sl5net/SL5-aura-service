@@ -482,17 +482,20 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                 failed_count += 1
                 print(f":st: Process crashed: {e}")
 
-    # Issue #94: submit non-LT tests first, then LT tests (single pool, stable)
-    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
-        futures = {}
-        for i, t in enumerate(non_lt_tests):
-            futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
-        for i, t in enumerate(lt_tests, start=len(non_lt_tests)):
-            futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
-        _collect_results(futures)
+        # Issue #94: non-LT parallel, LT sequential in CI
+        lt_workers = 1 if is_ci else num_workers
 
+        with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
+            futures = {}
+            for i, t in enumerate(non_lt_tests):
+                futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
+            _collect_results(futures)
 
-
+        with concurrent.futures.ProcessPoolExecutor(max_workers=lt_workers, mp_context=ctx) as executor:
+            futures = {}
+            for i, t in enumerate(lt_tests, start=len(non_lt_tests)):
+                futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
+            _collect_results(futures)
 
 
 
