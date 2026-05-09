@@ -10,7 +10,7 @@ PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_tex
 
 CONFIG_DIR = Path(__file__).parent
 
-sikulix_windows = ['sikulixide', 'SikuliX', 'Sikuli']
+sikulix_windows = ['sikulixide', 'SikuliX', 'Sikuli', 'oculixide', 'OculiX']
 
 FUZZY_MAP_pre = [
     # EXAMPLE: wait vanish waitVanish("image.png", 10)

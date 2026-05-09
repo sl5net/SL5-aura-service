@@ -7,14 +7,21 @@ tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
 CONFIG_DIR = Path(__file__).parent
-sikulix_windows = ['sikulixide', 'SikuliX', 'Sikuli']
+sikulix_windows = ['sikulixide', 'SikuliX', 'Sikuli', 'oculixide', 'OculiX']
+
 
 FUZZY_MAP_pre = [
+
     # EXAMPLE: double click
     # Native: double click | German-Vosk: dabble, bubble, doppel
     ('doubleClick("image.png")', r'^\s*(double|dub|dabble|bubble|doppel|durable|dublin|dopple)\s*(click|klick|quick)\s*$', 85, {
         'flags': re.IGNORECASE, 'only_in_windows': sikulix_windows,
     }),
+
+    #################################################
+    # 2. activate this rule (behind the first rule you want to optimize)
+    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #################################################
 
     # EXAMPLE: right click
     # Native: right click | German-Vosk: write, white, light, rate, ride
