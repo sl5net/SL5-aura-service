@@ -641,6 +641,9 @@ class SimpleNullLogger:
 
 def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_str):
     # print(f":st:🐣 [{index}] Sub-Process gestartet") # Direkter Print
+
+    os.environ["PSUTIL_DEBUG"] = "0"
+
     start_individual = time.perf_counter() # Start timing
     raw_text, expected, description, use_lt = test_data
 
@@ -877,6 +880,7 @@ if __name__ == "__main__":
     # Logger-Setup für die Konsole
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     test_logger = logging.getLogger("aura_self_test")
+    test_logger.propagate = False # no dopple Logs
 
     tmp_path = Path("/tmp/sl5_aura")
     tmp_path.mkdir(parents=True, exist_ok=True)
