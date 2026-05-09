@@ -4,13 +4,13 @@
            1. قم بتنزيل هذا المستودع أو استنساخه
 2. قم بتشغيل البرنامج النصي للإعداد لنظام التشغيل لديك (راجع مجلد "الإعداد/"):
                    - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-                                                 ===> 🧩 اقرأ [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-arlang.md)
+                                                 ===> 🧩 اقرأ [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-arlang.md)
                         - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
                                - Linux (openSUSE): `bash setup/suse_setup.sh`
                  - نظام التشغيل macOS: `bash setup/macos_setup.sh`
                    - ويندوز: `setup/windows11_setup_with_ahk_copyq.bat`
                  3. ابدأ Aura: `./scripts/restart_venv_and_run-server.sh`
-4. اضغط على مفتاح التشغيل السريع وتحدث — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-arlang.md)**
+4. اضغط على مفتاح التشغيل السريع وتحدث — **[full guide →](../docs/GettingStarted-arlang.md)**
 
 
                       **⚠️ متطلبات النظام والتوافق**
@@ -33,7 +33,7 @@ SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل با
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **نصيحة:** للحصول على تجربة طرفية أفضل، راجع [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-arlang.md).
+> **نصيحة:** للحصول على تجربة طرفية أفضل، راجع [Zsh Integration](../docs/linux/zsh-integration-arlang.md).
 
                                              ### 🎥 فيديو تعليمي
                       [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -52,6 +52,28 @@ SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل با
 * ** مؤتمت بالكامل: ** يدير خادم LanguageTool الخاص به (ولكن يمكنك استخدام خادم خارجي أيضًا).
 * **سرعة فائقة:** يضمن التخزين المؤقت الذكي إشعارات "الاستماع..." الفورية والمعالجة السريعة.
 
+        ## 🔌 عمليات التكامل الجاهزة للاستخدام
+
+                      ### التحكم الصوتي في OculiX / SikuliX IDE
+يوفر SL5-Aura دعمًا صوتيًا من الدرجة الأولى لـ **OculiX** و **SikuliX IDE**. يتيح لك هذا التكامل "التحدث" برمز الأتمتة الخاص بك.
+
+* **صوت إلى مقتطف:** قل "انقر" أو "انتظر" أو "ابحث عن الكل"، وستقوم الخدمة على الفور بكتابة رمز Python الصحيح (على سبيل المثال، `click("image.png")`) في IDE.
+* **التعرف على النوافذ:** البرنامج المساعد حساس للسياق؛ يتم تنشيطه فقط عند التركيز على نافذة OculiX/SikuliX.
+* **دعم اللغة الإنجليزية الذكية:** مُحسَّن للعمل في "en-US" مع التركيز بشكل خاص على اللهجات غير الأصلية (مثل الصوتيات الألمانية-الإنجليزية)، مما يضمن دقة التعرف العالية للمجتمع العالمي.
+* **قابل للتوسيع:** يستخدم تنسيق `FUZZY_MAP_pre.py` سهل التحرير.
+
+> **الحالة:** تم الاعتراف به كمكون إضافي للمجتمع من قبل فريق OculiX (راجع [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
+
+                                ### التحكم الصوتي LibreOffice IDE
+
+                                           ### 0 م التحكم الصوتي
+
+### أكثر من ذلك بكثير. يرجى التحقق من الإضافات
+
+
+                                                                          ---
+
+
                                                             ## التوثيق
 
 للحصول على مرجع فني كامل، بما في ذلك جميع الوحدات والبرامج النصية، يرجى زيارة صفحة الوثائق الرسمية لدينا. يتم إنشاؤه تلقائيًا ويتم تحديثه دائمًا.
@@ -65,6 +87,8 @@ SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل با
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+                            [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
 
                       [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
@@ -319,7 +343,7 @@ f11::
 ││ * **سير العمل:** يقوم بتحميل أرشيفات ZIP المحمية بكلمة مرور. اكس سبيس بريك اكس
 │├ **معالجة النصوص وتصحيحها/** مجمعة حسب اللغة (على سبيل المثال، `de-DE`، `en-US`، ...) XSPACEbreakX
 │├ 1. `normalize_peptication.py` (توحيد علامات الترقيم بعد النسخ) 🐧 🍏 🪟XSPACEbreakX
-│├ 2. **التصحيح المسبق الذكي** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **التصحيح المسبق الذكي** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة (on_match_exec) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.  
 ││ * **التنفيذ المتتالي:** تتم معالجة القواعد بشكل تسلسلي وتكون تأثيراتها **تراكمية**. تنطبق القواعد اللاحقة على النص الذي تم تعديله بواسطة القواعد السابقة.XSPACEbreakX
 ││ * **معيار الإيقاف ذو الأولوية الأعلى:** إذا حققت القاعدة **تطابق كامل** (^...$)، فسيتوقف مسار المعالجة بالكامل لهذا الرمز المميز على الفور. تعتبر هذه الآلية ضرورية لتنفيذ الأوامر الصوتية الموثوقة.XSPACEbreakX
@@ -331,7 +355,7 @@ f11::
                           ││ * **الحالة:** تكامل LLM محلي.
 │└ 5. **التصحيح اللاحق الذكي** (`FuzzyMap`)** – تحسين ما بعد LT** 🐧 🍏 🪟XSPACEbreakX
 ││ * يتم تطبيقه بعد LanguageTool لتصحيح المخرجات الخاصة بـ LT. يتبع نفس منطق الأولوية المتتالي الصارم مثل طبقة التصحيح المسبق.XSPACEbreakX
-││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-arlang.md)) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات (API)، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
+││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة ([on_match_exec](../docs/advanced-scripting-arlang.md)) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات (API)، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
 ││ * **التراجع الضبابي:** يعمل **التحقق من التشابه الغامض** (الذي يتم التحكم فيه بواسطة عتبة، على سبيل المثال، 85%) بمثابة طبقة تصحيح الأخطاء ذات الأولوية الأدنى. يتم تنفيذه فقط في حالة فشل تشغيل القاعدة الحتمية/المتتالية السابقة بالكامل في العثور على تطابق (القاعدة_الحالية_تطابق خطأ)، مما يؤدي إلى تحسين الأداء عن طريق تجنب عمليات التحقق البطيئة الغامضة كلما أمكن ذلك.  
                            ├┬ **إدارة النماذج/** XSPACEbreakX
 │├─ `prioritize_model.py` (يعمل على تحسين تحميل/تفريغ النموذج بناءً على الاستخدام) 🐧 🍏 🪟XSPACEbreakX
@@ -362,7 +386,7 @@ f11::
 يرجى تحديد مربع الاختيار عند التثبيت لربطه بملفات السجل.  اكس سبيس بريك اكس
 https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
                                               اكس سبيس بريك اكس
-*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
+*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
 
                              ثم ربما انقر نقرًا مزدوجًا
                                                     "سجل/aura_engine.log".

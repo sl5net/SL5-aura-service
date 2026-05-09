@@ -4,13 +4,13 @@
 1. このリポジトリをダウンロードまたは複製します
 2. OS のセットアップ スクリプトを実行します (「setup/」フォルダーを参照)。
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-jalang.md) を読む
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-jalang.md) を読む
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Aura を起動します: `./scripts/restart_venv_and_run-server.sh`
-4. ホットキーを押して話します — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-jalang.md)**
+4. ホットキーを押して話します — **[full guide →](../docs/GettingStarted-jalang.md)**
 
 
 **⚠️ システム要件と互換性**
@@ -33,7 +33,7 @@ SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタ
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **ヒント:** 端末エクスペリエンスを向上させるには、[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-jalang.md) を参照してください。
+> **ヒント:** 端末エクスペリエンスを向上させるには、[Zsh Integration](../docs/linux/zsh-integration-jalang.md) を参照してください。
 
 ### 🎥 ビデオチュートリアル
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -46,11 +46,32 @@ SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタ
 * **オフラインとプライベート:** 100% ローカル。データがマシンから流出することはありません。
 * **ダイナミック スクリプト エンジン:** テキストの置換を超えた機能。ルールはカスタム Python スクリプト (「on_match_exec」) を実行して、API の呼び出し (Wikipedia の検索など)、ファイルの操作 (ToDo リストの管理など)、動的コンテンツの生成 (コンテキストを認識した電子メールの挨拶など) などの高度なアクションを実行できます。
 * **コンテキスト認識ルール:** ルールを特定のアプリケーションに制限します。 「only_in_windows」を使用すると、特定のウィンドウ タイトル (「ターミナル」、「VS Code」、または「ブラウザ」など) がアクティブな場合にのみルールがトリガーされるようにできます。これはクロスプラットフォーム (Linux、Windows、macOS) で動作します。
-* **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定されるため、コーディングではなく**構成が必要です**。
+* **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定され、コーディングではなく**構成が必要です**。
 * **控えめな RAM 使用量:** メモリをインテリジェントに管理し、十分な空き RAM がある場合にのみモデルをプリロードし、他のアプリケーション (PC ゲームなど) が常に優先されるようにします。
 * **クロスプラットフォーム:** Linux、macOS、および Windows で動作します。
 * **完全に自動化:** 独自の LanguageTool サーバーを管理します (ただし、外部を使用することもできます)。
 * **超高速:** インテリジェントなキャッシュにより、即時の「リッスン中...」通知と高速処理が保証されます。
+
+## 🔌 すぐに使える統合
+
+SL5-Aura には、**100 以上の事前設定されたプラグイン**からなる広大なエコシステムが付属しています。以下にいくつかのハイライトを示します。
+
+### OculiX / SikuliX IDE 音声コントロール
+SL5-Aura は、**OculiX** および **SikuliX IDE** に最上級の音声サポートを提供します。この統合により、自動化コードを「話す」ことができます。
+
+* **Voice-to-Snippet:** 「クリック」、「待機」、または「すべて検索」と言うと、サービスは正しい Python コード (例: `click("image.png")`) を即座に IDE に入力します。
+* **ウィンドウ対応:** プラグインはコンテキスト依存です。 OculiX/SikuliX ウィンドウがフォーカスされている場合にのみアクティブになります。
+* **スマート英語サポート:** 非ネイティブのアクセント (ドイツ語と英語の音声学など) に特に焦点を当てて「en-US」向けに最適化されており、グローバル コミュニティ向けに高い認識精度を保証します。
+* **拡張性:** 編集が簡単な `FUZZY_MAP_pre.py` 形式を使用します。
+
+> **ステータス:** OculiX チームによってコミュニティ プラグインとして認識されています ([Issue #204](https://github.com/oculix-org/Oculix/issues/204) を参照)。
+
+### LibreOffice IDE 音声コントロール
+
+### 西暦0年 ボイスコントロール
+
+---
+
 
 ## ドキュメント
 
@@ -65,6 +86,8 @@ SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタ
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+[![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
@@ -94,7 +117,7 @@ SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタ
 1. 最後のリリースまたはマスター ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) をダウンロードするか、このリポジトリのクローンをコンピュータに作成します。
 2. オペレーティング システムのワンタイム セットアップ スクリプトを実行します。
 
-セットアップ スクリプトは、システムの依存関係、Python 環境、必要なモデルとツール (最大 4 GB) を GitHub リリースから直接ダウンロードして最大速度を実現するなど、すべてを処理します。
+セットアップ スクリプトは、システムの依存関係、Python 環境、必要なモデルとツール (最大 4GB) を GitHub リリースから直接ダウンロードして最大速度を実現するなど、すべてを処理します。
 
 
 #### Linux、macOS、および Windows の場合 (オプションの言語の除外あり)
@@ -278,7 +301,7 @@ f11::
 このアーキテクチャにより、コア システム ルールが保護されると同時に、プロジェクト固有のルールまたはコンテキスト認識ルール (CodeIgniter やゲーム コントロールのルールなど) をプラグインを介して優先度の低い拡張機能として簡単に追加できます。
 ## Windows ユーザー向けの主要なスクリプト
 
-Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを次に示します。
+ここでは、Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを示します。
 
 ### セットアップとアップデート
 
@@ -319,7 +342,7 @@ OS 互換性の凡例:
 ││ * **ワークフロー:** パスワードで保護された ZIP アーカイブを読み込みます。   
 │§ **テキストの処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
 │§ 1. `normalize_punctuation.py` (文字起こし後の句読点を標準化) 🐧 🍏 🪟  
-│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
+│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
 ││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト (on_match_exec) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **カスケード実行:** ルールは順番に処理され、その効果は **累積的**です。以前のルールによって変更されたテキストには、後のルールが適用されます。  
 ││ * **最優先停止基準:** ルールが **完全一致** (^...$) に達すると、そのトークンの処理パイプライン全体が直ちに停止します。このメカニズムは、信頼性の高い音声コマンドを実装するために重要です。  
@@ -331,7 +354,7 @@ OS 互換性の凡例:
 ││ * **ステータス:** ローカル LLM 統合。
 │└ 5. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の改良** 🐧 🍏 🪟  
 ││ * LT 固有の出力を修正するために、LanguageTool の後に適用されます。前修正レイヤーと同じ厳密なカスケード優先順位ロジックに従います。  
-││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
+││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **ファジー フォールバック:** **ファジー類似性チェック** (しきい値、たとえば 85% によって制御される) は、優先度が最も低いエラー修正層として機能します。これは、先行する決定的/カスケード ルールの実行全体で一致が見つからなかった場合 (current_rule_matched が False) にのみ実行され、可能な限り遅いファジー チェックを回避することでパフォーマンスを最適化します。  
 §┬ **モデル管理/**   
 │§─ `prioritize_model.py` (使用状況に基づいてモデルのロード/アンロードを最適化します) 🐧 🍏 🪟  
@@ -362,7 +385,7 @@ OS 互換性の凡例:
 ログファイルと関連付けるには、インストール時にチェックボックスをオンにしてください。    
 https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
   
-*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-jalang.md) を参照してください。*
+*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-jalang.md) を参照してください。*
 
 それからダブルクリックしてください
 `log/aura_engine.log`
@@ -376,7 +399,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefo
 │§ Vosk-システム-リスナーの統合 🐧 🍏 🪟  
 │§ `scripts/monitor_mic.sh` (Linux 固有のマイクモニタリング) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey は認識されたテキストをリッスンし、システム全体で入力します) 🪟  
-━─ **CI/CD 自動化/**  
+└─ **CI/CD オートメーション/**  
 └─ 拡張された GitHub ワークフロー (インストール、テスト、ドキュメントのデプロイメント) 🐧 🍏 🪟 *(GitHub Actions で実行)*  
 
 ### **今後の/実験的な機能**  

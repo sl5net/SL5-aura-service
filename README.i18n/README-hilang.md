@@ -4,13 +4,13 @@
 1. इस रिपॉजिटरी को डाउनलोड या क्लोन करें
 2. अपने ओएस के लिए सेटअप स्क्रिप्ट चलाएँ ('सेटअप/' फ़ोल्डर देखें):
 - लिनक्स (आर्क/मंज़रो): `बैश सेटअप/मंज़रो_आर्क_सेटअप.श`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-hilang.md) पढ़ें
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-hilang.md) पढ़ें
 - लिनक्स (उबंटू/डेबियन): `बैश सेटअप/ubuntu_setup.sh`
 - लिनक्स (ओपनएसयूएसई): `बैश सेटअप/suse_setup.sh`
 - macOS: `बैश सेटअप/macos_setup.sh`
 - विंडोज़: `setup/windows11_setup_with_ahk_copyq.bat`
 3. आभा प्रारंभ करें: `./scripts/restart_venv_and_run-server.sh`
-4. अपनी हॉटकी दबाएं और बोलें - **[full guide →](../docs/GettingStarted.i18n/GettingStarted-hilang.md)**
+4. अपनी हॉटकी दबाएं और बोलें - **[full guide →](../docs/GettingStarted-hilang.md)**
 
 
 **⚠️ सिस्टम आवश्यकताएँ और अनुकूलता**
@@ -33,7 +33,7 @@ Xस्पेसब्रेकX
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **टिप:** बेहतर टर्मिनल अनुभव के लिए, [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-hilang.md) देखें।
+> **टिप:** बेहतर टर्मिनल अनुभव के लिए, [Zsh Integration](../docs/linux/zsh-integration-hilang.md) देखें।
 
 ### 🎥 वीडियो ट्यूटोरियल
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -52,6 +52,28 @@ Xस्पेसब्रेकX
 * **पूरी तरह से स्वचालित:** अपने स्वयं के लैंग्वेजटूल सर्वर को प्रबंधित करता है (लेकिन आप बाहरी का भी उपयोग कर सकते हैं)।
 * **तेज़ी से चमकना:** इंटेलिजेंट कैशिंग तुरंत "सुनना..." सूचनाएं और तेज़ प्रोसेसिंग सुनिश्चित करता है।
 
+## 🔌 उपयोग के लिए तैयार एकीकरण
+
+### ओकुलीएक्स / सिकुलीएक्स आईडीई वॉयस कंट्रोल
+SL5-Aura **OculiX** और **SiculiX IDE** के लिए प्रथम श्रेणी का ध्वनि समर्थन प्रदान करता है। यह एकीकरण आपको अपने स्वचालन कोड को "बोलने" की अनुमति देता है।
+
+* **वॉइस-टू-स्निपेट:** "क्लिक करें", "प्रतीक्षा करें", या "सभी ढूंढें" कहें, और सेवा तुरंत आईडीई में सही पायथन कोड टाइप करती है (उदाहरण के लिए, `क्लिक("image.png")`)।
+* **विंडो-अवेयर:** प्लगइन संदर्भ-संवेदनशील है; यह केवल तभी सक्रिय होता है जब OculiX/SiculiX विंडो पर ध्यान केंद्रित किया जाता है।
+* **स्मार्ट अंग्रेजी समर्थन:** गैर-देशी लहजे (उदाहरण के लिए, जर्मन-अंग्रेजी ध्वन्यात्मकता) पर विशेष ध्यान देने के साथ `एन-यूएस` के लिए अनुकूलित, वैश्विक समुदाय के लिए उच्च पहचान सटीकता सुनिश्चित करना।
+* **एक्स्टेंसिबल:** संपादित करने में आसान `FUZZY_MAP_pre.py` प्रारूप का उपयोग करता है।
+
+> **स्थिति:** OculiX टीम द्वारा एक समुदाय-प्लगइन के रूप में मान्यता प्राप्त ([Issue #204](https://github.com/oculix-org/Oculix/issues/204) देखें)।
+
+### लिबरऑफिस आईडीई वॉयस कंट्रोल
+
+### 0 ए.डी. आवाज नियंत्रण
+
+### बहुत अधिक। कृपया प्लगइन्स की जाँच करें
+
+
+---
+
+
 ## दस्तावेज़ीकरण
 
 सभी मॉड्यूल और स्क्रिप्ट सहित संपूर्ण तकनीकी संदर्भ के लिए, कृपया हमारे आधिकारिक दस्तावेज़ीकरण पृष्ठ पर जाएँ। यह स्वचालित रूप से उत्पन्न होता है और हमेशा अद्यतित रहता है।
@@ -65,6 +87,8 @@ Xस्पेसब्रेकX
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+[![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
@@ -173,7 +197,7 @@ __कोड_ब्लॉक_5__
 आप स्थानीय सेटिंग फ़ाइल बनाकर एप्लिकेशन के व्यवहार को अनुकूलित कर सकते हैं।
 
 1. `config/` निर्देशिका पर नेविगेट करें।
-2. `config/settings_local.py_Example.txt` की एक प्रति बनाएं और इसका नाम बदलकर `config/settings_local.py` कर दें।
+
 3. `config/settings_local.py` संपादित करें (यह मुख्य `config/settings.py` फ़ाइल से किसी भी सेटिंग को ओवरराइड करता है)।
 
 इस `config/settings_local.py` फ़ाइल को डिफ़ॉल्ट रूप से Git द्वारा अनदेखा किया जाता है, इसलिए आपके व्यक्तिगत परिवर्तन अपडेट द्वारा ओवरराइट नहीं किए जाएंगे।
@@ -233,7 +257,7 @@ Xस्पेसब्रेकX
 ││ * **वर्कफ़्लो:** पासवर्ड से सुरक्षित ज़िप संग्रह लोड करता है। Xस्पेसब्रेकX
 │├ **पाठ प्रसंस्करण और सुधार/** भाषा के आधार पर समूहीकृत (जैसे `डी-डीई`, `एन-यूएस`, ...)   
 │├ 1. `normalize_punctuation.py` (प्रतिलेखन के बाद विराम चिह्न को मानकीकृत करता है) 🐧 🍏 🪟  
-│├ 2. **इंटेलिजेंट प्री-करेक्शन** ('फ़ज़ीमैप प्री' - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-hilang.md)) 🐧 🍏 🪟  
+│├ 2. **इंटेलिजेंट प्री-करेक्शन** ('फ़ज़ीमैप प्री' - [The Primary Command Layer](../docs/CreatingNewPluginModules-hilang.md)) 🐧 🍏 🪟  
 ││ * **डायनेमिक स्क्रिप्ट निष्पादन:** नियम एपीआई कॉल, फ़ाइल I/O जैसी उन्नत कार्रवाइयां करने या डायनेमिक प्रतिक्रियाएं उत्पन्न करने के लिए कस्टम पायथन स्क्रिप्ट (on_match_exec) को ट्रिगर कर सकते हैं।  
 ││ * **कैस्केडिंग निष्पादन:** नियमों को क्रमिक रूप से संसाधित किया जाता है और उनके प्रभाव **संचयी** होते हैं। बाद के नियम पहले के नियमों द्वारा संशोधित पाठ पर लागू होते हैं।  
 ││ * **सर्वोच्च प्राथमिकता स्टॉप मानदंड:** यदि कोई नियम **पूर्ण मिलान** (^...$) प्राप्त करता है, तो उस टोकन के लिए संपूर्ण प्रसंस्करण पाइपलाइन तुरंत बंद हो जाती है। विश्वसनीय वॉयस कमांड को लागू करने के लिए यह तंत्र महत्वपूर्ण है।  
@@ -245,7 +269,7 @@ Xस्पेसब्रेकX
 ││ * **स्थिति:** स्थानीय एलएलएम एकीकरण।
 │└ 5. **इंटेलिजेंट पोस्ट-करेक्शन** (`फ़ज़ीमैप`)**– पोस्ट-एलटी रिफाइनमेंट** 🐧 🍏 🪟  
 ││ * एलटी-विशिष्ट आउटपुट को सही करने के लिए लैंग्वेजटूल के बाद लागू किया गया। प्री-करेक्शन लेयर के समान सख्त कैस्केडिंग प्राथमिकता तर्क का पालन करता है।  
-││ * **डायनेमिक स्क्रिप्ट निष्पादन:** नियम एपीआई कॉल, फ़ाइल I/O जैसी उन्नत क्रियाएं करने या डायनेमिक प्रतिक्रियाएं उत्पन्न करने के लिए कस्टम पायथन स्क्रिप्ट ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-hilang.md)) को ट्रिगर कर सकते हैं।  
+││ * **डायनामिक स्क्रिप्ट निष्पादन:** नियम एपीआई कॉल, फ़ाइल I/O जैसी उन्नत क्रियाएं करने या गतिशील प्रतिक्रियाएं उत्पन्न करने के लिए कस्टम पायथन स्क्रिप्ट ([on_match_exec](../docs/advanced-scripting-hilang.md)) को ट्रिगर कर सकते हैं।  
 ││ * **फ़ज़ी फ़ॉलबैक:** **फ़ज़ी समानता जांच** (एक सीमा द्वारा नियंत्रित, उदाहरण के लिए, 85%) सबसे कम प्राथमिकता वाली त्रुटि-सुधार परत के रूप में कार्य करती है। इसे केवल तभी निष्पादित किया जाता है जब संपूर्ण पूर्ववर्ती नियतात्मक/कैस्केडिंग नियम रन मिलान ढूंढने में विफल रहता है (current_rule_matched गलत है), जब भी संभव हो धीमी अस्पष्ट जांच से बचकर प्रदर्शन को अनुकूलित किया जाता है।  
 ├┬ **मॉडल प्रबंधन/**   
 │├─ `prioritize_model.py` (उपयोग के आधार पर मॉडल लोडिंग/अनलोडिंग को अनुकूलित करता है) 🐧 🍏 🪟  
@@ -276,7 +300,7 @@ Xस्पेसब्रेकX
 कृपया इंस्टॉल करते समय लॉग-फ़ाइलों से संबद्ध करने के लिए चेकबॉक्स को चेक करें।  Xस्पेसब्रेकX
 https://translate.google.com/translate?hl=en&sl=en&tl=hi&u=https://glogg.bonnefon.org/     
 Xस्पेसब्रेकX
-*टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, सीएलआई टूल के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 टूल्स/मैप_टैगर.py` चलाएं। विवरण के लिए [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-hilang.md) देखें।*
+*टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, सीएलआई टूल के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 टूल्स/मैप_टैगर.py` चलाएं। विवरण के लिए [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-hilang.md) देखें।*
 
 फिर शायद डबल क्लिक करें
 `लॉग/ऑरा_इंजन.लॉग`
