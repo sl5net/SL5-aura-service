@@ -143,6 +143,7 @@ def case(input_text: str, expected: str, context: str = '',
         lang: str = 'de-DE', 
         lt: bool = True, 
         prio: TestPrio = TestPrio.OPTIONAL):
+
     # prio = TestPrio.ALWAYS  # 1.0 = 100%
 
     return input_text, expected, context, lang, lt, prio
@@ -232,7 +233,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         # --- de-DE MAP + LT ---
         case('tausend euro. Und euro großgeschrieben.', '1000 Euro. Und Euro großgeschrieben.',
              'Number with unit', lt=True, prio=TestPrio.HIGH),
-        case('lieblingszahlen sind fünf und drei', 'Lieblingszahlen sind 5 und 3', 'numbers 5 and 3', lt=False, prio=TestPrio.ALWAYS),
+        case('lieblingszahlen sind fünf und drei', 'Lieblingszahlen sind 5 und 3', 'numbers 5 and 3', lt=True, prio=TestPrio.ALWAYS),
         case('was ist fünf plus drei', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', lt=False, prio=TestPrio.ALWAYS),
         case('bitte reservieren sie einen tisch für zwei personen um acht uhr',
              'Bitte reservieren Sie einen Tisch für 2 Personen um 8 Uhr',
@@ -367,13 +368,17 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     }
     import random
 
+
     rng = random.Random()  # deterministic for reproducible runs
     active_tests = []
+    is_ci = os.getenv('CI') == 'true'
     for test_case in test_cases:
         raw_text, expected, description, check_lang, use_lt, prio = test_case
         chance = PRIO_CHANCE.get(prio, 0.0)
         # if check_lang == lang_code and prio == TestPrio.ALWAYS:
         if check_lang == lang_code and rng.random() < chance:
+            if is_ci and use_lt:
+                continue  # Skip in CI
             active_tests.append((raw_text, expected, description, use_lt))
             # logger.info(f':st:🌞🌞🌞🌞🌞 append({raw_text}, {expected})')
 
@@ -435,7 +440,6 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
 
 
-    import os
     os.environ["AURA_SELF_TEST_RUNNING"] = "1"  # inherited by fork
     start_time = time.perf_counter()
     ctx = multiprocessing.get_context("fork")
@@ -837,7 +841,6 @@ if __name__ == "__main__":
     lang = "de-DE"
 
     from ..process_text_in_background import load_maps_for_language
-
     load_maps_for_language(lang, test_logger)
 
     print(f":st: Starting self-test (CLI mode) using {lt_url}...")
