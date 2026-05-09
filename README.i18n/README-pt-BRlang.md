@@ -52,6 +52,27 @@ Nota: Muitos textos são traduções geradas automaticamente da documentação o
 * **Totalmente Automatizado:** Gerencia seu próprio servidor LanguageTool (mas você também pode usar um externo).
 * **Extremamente rápido:** O cache inteligente garante notificações instantâneas de "escuta..." e processamento rápido.
 
+## 🔌 Integrações prontas para uso
+
+SL5-Aura vem com um vasto ecossistema de mais de **100 plug-ins pré-configurados**. Aqui estão alguns destaques:
+
+### Controle de voz OculiX / SikuliX IDE
+SL5-Aura oferece suporte de voz de primeira classe para **OculiX** e **SikuliX IDE**. Essa integração permite que você “fale” seu código de automação.
+
+* **Voice-to-Snippet:** Diga "clique", "espera" ou "encontrar tudo" e o serviço digita instantaneamente o código Python correto (por exemplo, `click("image.png")`) no IDE.
+* **Window-Aware:** O plugin é sensível ao contexto; ele só é ativado quando a janela OculiX/SikuliX está focada.
+* **Suporte inteligente para inglês:** Otimizado para `en-US` com foco especial em sotaques não nativos (por exemplo, fonética alemão-inglês), garantindo alta precisão de reconhecimento para a comunidade global.
+* **Extensível:** Usa o formato `FUZZY_MAP_pre.py` fácil de editar.
+
+> **Status:** Reconhecido como um plugin da comunidade pela equipe OculiX (veja [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
+
+### Controle de voz do LibreOffice IDE
+
+### 0 A.D. Controle de voz
+
+---
+
+
 ## Documentação
 
 Para uma referência técnica completa, incluindo todos os módulos e scripts, visite nossa página de documentação oficial. Ele é gerado automaticamente e está sempre atualizado.
@@ -65,6 +86,8 @@ Para uma referência técnica completa, incluindo todos os módulos e scripts, v
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+[![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
@@ -307,7 +330,7 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 ├─ **Tecla de atalho adaptativa (Iniciar/Parar)** 🐧 🍏 🪟  
 └─ **Troca instantânea de idioma** (Experimental via pré-carregamento de modelo) 🐧 🍏   
 
-**Utilitários do sistema/**   
+**Utilitários do Sistema/**   
 ├┬ **Gerenciamento de servidor LanguageTool/**   
 │├─ `start_languagetool_server.py` (inicializa o servidor LanguageTool local) 🐧 🍏 🪟  
 │└─ `stop_languagetool_server.py` (Desliga o servidor LanguageTool) 🐧 🍏
@@ -358,7 +381,7 @@ Recursos atualmente em desenvolvimento ou em status de rascunho.
 │ ├ **wannweil** (Mapa para localização Alemanha-Wannweil) 🐧 🍏 🪟  
 │ ├ **Poker Plugin (Draft)** (Controle de voz para aplicativos de pôquer) 🐧 🍏 🪟  
 │ └ **Plugin 0 A.D. (Draft)** (Controle de voz para jogo 0 A.D.) 🐧   
-├─ **Saída de som ao iniciar ou encerrar uma sessão** (descrição pendente) 🐧   
+├─ **Saída de som ao iniciar ou encerrar uma sessão** (Descrição pendente) 🐧   
 ├─ **Saída de fala para deficientes visuais** (Descrição pendente) 🐧 🍏 🪟  
 └─ **Protótipo SL5 Aura Android** (Ainda não totalmente offline) 📱  
 
@@ -421,7 +444,7 @@ Estes modelos compactados devem ser salvos na pasta `models/`
 Esta tabela fornece uma visão geral dos diferentes modelos Vosk, incluindo tamanho, taxa ou velocidade de erro de palavras, notas e informações de licença.
 
 
-**Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
+- **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Ferramenta de Idioma:**  
 (6.6)[https://languagetool.org/download/](https://languagetool.org/download/)
 

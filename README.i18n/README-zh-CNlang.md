@@ -52,6 +52,27 @@ X空格符X
 * **完全自动化：** 管理自己的 LanguageTool 服务器（但您也可以使用外部服务器）。
 * **极速：** 智能缓存可确保即时“正在收听...”通知和快速处理。
 
+## 🔌 即用型集成
+
+SL5-Aura 配备了一个庞大的生态系统，包含超过 **100 多个预配置插件**。以下是一些亮点：
+
+### OculiX / SikuliX IDE 语音控制
+SL5-Aura 为 **OculiX** 和 **SikuliX IDE** 提供一流的语音支持。这种集成允许您“说出”您的自动化代码。
+
+* **语音到片段：** 说“单击”、“等待”或“查找全部”，服务会立即在 IDE 中键入正确的 Python 代码（例如，`click("image.png")`）。
+* **Window-Aware：** 该插件是上下文相关的；它仅在 OculiX/SikuliX 窗口聚焦时激活。
+* **智能英语支持：** 针对“en-US”进行了优化，特别关注非母语口音（例如德语-英语语音），确保全球社区的高识别准确性。
+* **可扩展：** 使用易于编辑的“FUZZY_MAP_pre.py”格式。
+
+> **状态：** 被 OculiX 团队认可为社区插件（请参阅 [Issue #204](https://github.com/oculix-org/Oculix/issues/204)）。
+
+### LibreOffice IDE 语音控制
+
+### 0 A.D. 语音控制
+
+---
+
+
 ## 文档
 
 如需完整的技术参考，包括所有模块和脚本，请访问我们的官方文档页面。它是自动生成的并且始终是最新的。
@@ -65,6 +86,8 @@ X空格符X
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+[![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
@@ -82,7 +105,7 @@ X空格符X
 
 ＃＃ 安装
 
-
+### 🎥 无需审核即可快速安装（Manjaro/Arch 视频）
 观看完整的 6 分钟设置过程：
 * **下载：** ~3 分钟
 * **设置和首次启动：** ~3 分钟（包括欢迎向导）
@@ -101,7 +124,7 @@ X空格符X
 
 为了节省磁盘空间和带宽，您可以在安装过程中排除特定语言模型（“de”、“en”）或所有可选模型（“all”）。 **始终包含核心组件（LanguageTool、lid.176）。**
 
-在项目根目录中打开终端并运行适用于您系统的脚本：
+在项目根目录中打开终端并运行适用于您的系统的脚本：
 
 __代码_块_0__
 
@@ -115,7 +138,7 @@ __代码_块_0__
 1. 导航至“setup”文件夹。
 2. 双击 **`windows11_setup_with_ahk_copyq.bat`**。
 * *脚本会自动提示管理员权限。*
-
+* *它安装核心系统、语言模型、**AutoHotkey v2** 和 **CopyQ**。*
 3. 安装完成后，**Aura Dictation** 将自动启动。
 
 > **注意：** 您不需要预先安装Python或Git；脚本处理一切。
@@ -135,10 +158,10 @@ __代码_块_1__
 ### 1.启动服务
 
 #### 在 Linux 和 macOS 上
-A single script handles everything.它会在后台自动启动主要听写服务和文件观察器。
+一个脚本可以处理所有事情。它会在后台自动启动主要听写服务和文件观察器。
+__代码_块_2__
 
-
-
+#### 在 Windows 上
 启动服务是一个**两步手动过程**：
 
 1. **启动主服务：** 运行`start_aura.bat`。或使用“python3”从“.venv”服务启动
@@ -192,13 +215,13 @@ X空格符X
 这种架构确保核心系统规则受到保护，而特定于项目或上下文感知的规则（例如 CodeIgniter 或游戏控件的规则）可以通过插件轻松添加为低优先级扩展。
 ## Windows 用户的关键脚本
 
-
+以下是在 Windows 系统上设置、更新和运行应用程序的最重要脚本的列表。
 
 ### 设置和更新
 
 * `chmod +x update.sh; ./更新.sh`
 * `setup/setup.bat`：环境的**初始一次性设置**的主脚本。
-
+* [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `运行 powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
 * `update.bat` ：从项目文件夹运行这些**获取最新的代码和依赖项**。
 
@@ -234,7 +257,7 @@ X空格符X
 │├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
 │├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
-││ * **动态脚本执行：**规则可以触发自定义Python脚本（on_match_exec）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
+│ │ * **动态脚本执行：**规则可以触发自定义Python脚本（on_match_exec）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 │ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
 │ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
 │├ 3. ` Correct_text_by_languagetool.py` (集成LanguageTool用于语法/风格校正) 🐧 🍏 🪟  
@@ -278,8 +301,8 @@ https://translate.google.com/translate?hl=en&sl=en&tl=zh-CN&u=https://glogg.bonn
 X空格符X
 *提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-zh-CNlang.md)。*
 
-然后也许双击
-`日志/aura_engine.log`
+
+
 X空格符X
 X空格符X
 **DevHelpers/**  
@@ -347,7 +370,7 @@ X空格符X
 
 |型号|尺寸|字错误率/速度 |笔记|许可证|
 | ------------------------------------------------------------------------------------------ | ---- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
-| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型|阿帕奇2.0 |
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型 |阿帕奇2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G| 9.83（Tuda-de 测试）<br/>24.00（播客）<br/>12.82（cv-测试）<br/>12.42（mls）<br/>33.26（mtedx）|德国大型电话和服务器模型|阿帕奇2.0 |
 
 此表提供了不同 Vosk 型号的概述，包括其大小、字错误率或速度、注释和许可证信息。
@@ -366,4 +389,4 @@ X空格符X
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
-[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)P5kk00)
+[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
