@@ -47,7 +47,8 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportaudio2 fzf xclip
+          sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportaudio2 \
+            fzf xclip xvfb
 
       - name: Install Python Dependencies
 
@@ -113,16 +114,31 @@ jobs:
           echo "✅ /tmp/sl5_aura/sl5net_aura_project_root created as file."
 
 
-      - name: Run Self-Tester
+      - name: Run Self-Tester with Final Guard
         env:
           PYTHONPATH: ${{ github.workspace }}
           PYTHONUNBUFFERED: "1"
           CI: "true"
+          DISPLAY: :99
           PSUTIL_DEBUG: "0"
         run: |
+          Xvfb :99 -screen 0 1024x768x24 &
+          
           echo "=== DEBUG ==="
           cat /tmp/sl5_aura/sl5net_aura_project_root
           ls "$(cat /tmp/sl5_aura/sl5net_aura_project_root)/config/maps/plugins/standard_actions/language_translator/de-DE/" 2>&1 || echo "MAP PATH NOT FOUND"
           echo "=== END DEBUG ==="
-          python3 -m scripts.py.func.checks.self_tester
+          
+          # python3 -m scripts.py.func.checks.self_tester
+          
+          python3 -m scripts.py.func.checks.self_tester | tee test_results.log
 
+          if grep -q "| 0 failed" test_results.log; then
+            echo "✅ Final Guard: Success summary found. 0 tests failed."
+          else
+            echo "❌ FINAL GUARD FAILURE: Success summary '| 0 failed' not found in log!"
+            echo "Check the output above for crashes or test failures."
+            exit 1
+          fi
+          
+          

@@ -214,8 +214,10 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'libreoffice_actions.py'],
     }),
 
-    (f'kate {str(__file__).replace(home_dir_str, '~', 1)}',
-     # EXAMPLE: LibreOffice Konfigurationen
+    # (f'kate {str(__file__).replace(home_dir_str, '~', 1)}',
+    # EXAMPLE: LibreOffice Konfigurationen
+
+    ('kate ' + str(__file__).replace(home_dir_str, '~', 1),
      r'^(LibreOffice)\s+([Kc]onf\w*|konzentration|g\w+situation|settings?|kur\w+ kr\w+tion|script\b\w*\s*\bgerettet|spr\w+t \w* \w*tet|ku\w+n g\w+ten)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
