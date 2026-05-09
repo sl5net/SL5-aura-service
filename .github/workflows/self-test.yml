@@ -1,34 +1,62 @@
-name: Aura Self-Test
-on: [push, workflow_dispatch]
+name: Self-Test (Aura Logic)
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
 
 jobs:
-  test:
+  run-self-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Cache LanguageTool
-        id: cache-lt
-        uses: actions/cache@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          path: ./LanguageTool-6.6
-          key: ${{ runner.os }}-lt-6.6
+          python-version: '3.10'
+          cache: 'pip'
 
-      - name: Download LanguageTool
-        if: steps.cache-lt.outputs.cache-hit != 'true'
+      - name: Install Dependencies
         run: |
-          wget https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
-          unzip LanguageTool-6.6.zip
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # Falls zusätzliche libs gebraucht werden:
+          pip install requests
 
-      - name: Run Setup
+      - name: Set up Java (for LanguageTool)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install and Start LanguageTool
         run: |
-          export CI=true
-          bash ./setup/ubuntu_setup.sh
+          wget https://languagetool.org/download/LanguageTool-6.4.zip
+          unzip LanguageTool-6.4.zip
+          # Startet LT im Hintergrund auf Port 8082
+          java -cp LanguageTool-6.4/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
+          echo "Waiting for LanguageTool..."
+          sleep 10
 
-      - name: Install Dev Deps
-        run: .venv/bin/pip install -r requirements-dev.txt
-
-      - name: Run Self-Test
+      - name: Prepare Temp Directories and Mock Config
         run: |
-          export PYTHONPATH=$PYTHONPATH:.
-          .venv/bin/python3 -m scripts.py.func.checks.self_tester
+          # Dein Script erwartet bestimmte Dateien in /tmp
+          sudo mkdir -p /tmp/sl5_aura/sl5net_aura_project_root
+          sudo chmod -R 777 /tmp/sl5_aura
+          # Simuliere den Pfad zum Projekt-Root, den dein Script einliest:
+          echo "$GITHUB_WORKSPACE" > /tmp/sl5_aura/sl5net_aura_project_root
+
+          # Erstelle notwendige Verzeichnisse, falls sie im Repo fehlen
+          mkdir -p config/maps/plugins/standard_actions/language_translator/de-DE/
+
+      - name: Run Self-Tester
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          # Wir rufen direkt den __main__ Block deines Scripts auf
+          python scripts/py/func/checks/self_tester.py

@@ -35,8 +35,9 @@ fuser -k 8830/tcp;fuser -k 8831/tcp
 flake8 = 'source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config'
 geminiUrl = 'https://aistudio.google.com/prompts/new_chat'
 # Wörter, die oft statt "Google" verstanden werden
-_google_prefix = r'(?:google|googeln?|gogol|gucke[n\s]*|goris|gut|gb|kugeln|brooke|coral|cool|obwohl)'
+_google_prefix = r'(?:google|googeln?|gogol|guck|gucke[n\s]*|goris|gut|gb|kugeln|brooke|coral|cool|obwohl)'
 # Wörter, die phonetisch nah an "Gemini" liegen
+
 _gemini_phonetics = (
     r'(?:gemini|cheminée|g[\s-]?mine|gehminuten|gehe\s+mit|gibt|gaming|kriminell\w*|'
     r'termin\w*|jimmy\s*(?:nein|knight|lai|neu)|germany|feminin|gewinner\w*|'

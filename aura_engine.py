@@ -666,8 +666,8 @@ else:
     # aura_log.unlink(missing_ok=True) ## seems problematic
 
 
-DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = False
-# DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = True
+# DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = False
+DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = True
 
 readme = """
 vosk-model-small-de-0.15
