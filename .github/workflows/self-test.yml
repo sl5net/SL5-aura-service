@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Check out repository code
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -21,39 +21,44 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
+
+      - name: Cache LanguageTool
+        id: lt-cache
+        uses: actions/cache@v4
+        with:
+          path: ./LanguageTool-6.6
+          key: ${{ runner.os }}-languagetool-6.6
+
+      - name: Download LanguageTool if cache miss
+        if: steps.lt-cache.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/sl5net/SL5-aura-service/releases/download/v0.2.0.1/LanguageTool-6.6.zip
+          unzip LanguageTool-6.6.zip
+
+      - name: Start LanguageTool Server
+        run: |
+          java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
+          echo "Waiting for LanguageTool..."
+          sleep 10
+
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install "numpy>=2.1.0"
+          python3 -m pip install --upgrade pip
+
+          pip install "numpy>=2.0.0"
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
 
-      - name: Set up Java (for LanguageTool)
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Install and Start LanguageTool
+      - name: Prepare Temp Directory and Project Root File
         run: |
-          wget https://languagetool.org/download/LanguageTool-6.4.zip
-          unzip LanguageTool-6.4.zip
-          # Startet LT im Hintergrund auf Port 8082
-          java -cp LanguageTool-6.4/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
-          echo "Waiting for LanguageTool..."
-          sleep 15
-
-      - name: Prepare Temp Directories and Mock Config
-        run: |
-          # Dein Script erwartet bestimmte Dateien in /tmp
-          sudo mkdir -p /tmp/sl5_aura/sl5net_aura_project_root
+          sudo mkdir -p /tmp/sl5_aura
           sudo chmod -R 777 /tmp/sl5_aura
           echo "$GITHUB_WORKSPACE" > /tmp/sl5_aura/sl5net_aura_project_root
-
-          mkdir -p config/maps/plugins/standard_actions/language_translator/de-DE/
+          echo "✅ /tmp/sl5_aura/sl5net_aura_project_root created as file."
 
       - name: Run Self-Tester
         env:
           PYTHONPATH: ${{ github.workspace }}
+          CI: "true"
         run: |
-          # Wir rufen direkt den __main__ Block deines Scripts auf
-          python scripts/py/func/checks/self_tester.py
+          python3 scripts/py/func/checks/self_tester.py
