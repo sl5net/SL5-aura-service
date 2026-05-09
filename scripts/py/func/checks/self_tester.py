@@ -387,8 +387,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
             # logger.info(f':st:🌞🌞🌞🌞🌞 append({raw_text}, {expected})')
 
     if is_ci:
+
         print(f":st: DEBUG lang_code={lang_code} active_tests={len(active_tests)}")
-        logger.info(f":st: DEBUG lang_code={lang_code} active_tests={len(active_tests)}")
+        logger.info(f':st: DEBUG active_tests count={len(active_tests)}')
 
     # active_tests = []
     # for test_case in test_cases:
@@ -502,7 +503,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                 futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
             _collect_results(futures)
         if is_ci:
-            print(f":st: DEBUG behind Pool1")
+            print(":st: DEBUG behind Pool1")
 
         with concurrent.futures.ProcessPoolExecutor(max_workers=lt_workers, mp_context=ctx) as executor:
             futures = {}
