@@ -40,7 +40,6 @@ def get_db_connection():
     return _DB_CONNECTION
 
 def init_db():
-    """Initialisiert das Schema, falls die Datei neu ist."""
     with get_db_connection() as conn:
         conn.execute("""
             CREATE TABLE IF NOT EXISTS aura_result_cache (
@@ -59,29 +58,22 @@ def init_db():
         conn.commit()
 
 def generate_cache_id(rule_output, lang_code, _active_window_title=''):
-    """Erzeugt einen eindeutigen MD5-Key für Text, Sprache und Window-Titel."""
     raw_key = f"{lang_code}:{_active_window_title}:{rule_output}"
     return hashlib.md5(raw_key.encode('utf-8')).hexdigest()
 
 def get_cached_result(rule_output, lang_code, map_path, rule_attrs, _active_window_title):
-    """
-    Prüft, ob ein gültiges Ergebnis im Cache liegt.
-    Gibt den final_text zurück oder None.
-    """
-    # Variante 2: Explizites Cache-Verbot
+    # scripts/py/func/utils/aura_cache.py:64
     if rule_attrs.get('cache') is False:
         return None
 
     cache_id = generate_cache_id(rule_output, lang_code, _active_window_title)
 
-    # Bestimme Gültigkeit (Variante 3 vs Default)
     manual_ts = rule_attrs.get('timestamp')
     if manual_ts:
         v_type = 1
         v_val = str(manual_ts)
     else:
         v_type = 0
-        # Nutze mtime als Default (Variante 1)
         v_val = str(os.path.getmtime(map_path))
 
     with get_db_connection() as conn:
@@ -94,7 +86,6 @@ def get_cached_result(rule_output, lang_code, map_path, rule_attrs, _active_wind
         row = cursor.fetchone()
 
         if row:
-            # Update last_used (für den Janitor)
             conn.execute("UPDATE aura_result_cache SET last_used = ? WHERE cache_id = ?",
                          (datetime.now(), cache_id))
             return row['final_result']

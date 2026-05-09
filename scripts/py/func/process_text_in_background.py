@@ -897,20 +897,19 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
                     # <<< ÄNDERUNG 3: Bereite das 'match_data'-Paket für die Skripte vor
                     match_data = {
-                        'original_text': original_text_before_rule,  # Der Text VOR der Regelanwendung
-                        'text_after_replacement': new_text,  # Der Text NACH re.sub, aber VOR den Skripten
-                        'regex_match_obj': match_obj,  # Das entscheidende Match-Objekt!
-                        'rule_options': options_dict  # Die kompletten Optionen der Regel
+                        'original_text': original_text_before_rule,
+                        'text_after_replacement': new_text,
+                        'regex_match_obj': match_obj,
+                        'rule_options': options_dict
                     }
 
                     for script_path in on_match_exec_list:
                         module = load_module_from_path(script_path)
                         logger.info(f"360: script_path:'{script_path}'")
                         if hasattr(module, 'execute'):
-                            # <<< ÄNDERUNG 4: Übergebe das 'match_data'-Dictionary
-                            script_result = module.execute(match_data)  # Das Skript gibt den finalen Text zurück
+                            script_result = module.execute(match_data)
 
-                            # lang_for_tts = "de-DE"  # Deine Standard-Systemsprache
+                            # lang_for_tts = "de-DE"
 
                             new_current_text = ''
                             if isinstance(script_result, str):
@@ -918,17 +917,12 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                                 # lang_for_tts bleibt der Standardwert "de-DE"
 
                             elif isinstance(script_result, dict):
-                                # Fall 2: Dictionary mit Metadaten (unser Übersetzer-Plugin)
                                 new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
-                                # Hole die Sprache aus dem Dictionary, mit einem Fallback auf die Standardsprache
                                 lang_for_tts = script_result.get("lang", "de-DE")
 
                                 if not privacy_taint_occurred:
                                     handle_tts_fallback(new_current_text, lang_for_tts, logger)
                                 logger.info(f"289: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
-
-                            # IMPORTANT: Your code here terminates the function after the FIRST script.
-                            # This is okay if there is only one script per rule.
 
                             sys.stderr.write(f"DEBUG 925: new_current_text='{new_current_text}'\n")
                             sys.stderr.flush()
