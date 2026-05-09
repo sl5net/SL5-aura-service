@@ -1,4 +1,5 @@
 name: Self-Test (Aura Logic)
+# .github/workflows/self-test.yml
 
 on:
   push:
@@ -92,6 +93,7 @@ jobs:
           touch scripts/__init__.py
           touch scripts/py/__init__.py
           touch scripts/py/func/__init__.py
+          touch scripts/py/func/checks/__init__.py
 
           echo "✅ /tmp/sl5_aura/sl5net_aura_project_root created as file."
 
@@ -103,5 +105,9 @@ jobs:
           CI: "true"
           PSUTIL_DEBUG: "0"
         run: |
+          echo "=== DEBUG ==="
+          cat /tmp/sl5_aura/sl5net_aura_project_root
+          ls "$(cat /tmp/sl5_aura/sl5net_aura_project_root)/config/maps/plugins/standard_actions/language_translator/de-DE/" 2>&1 || echo "MAP PATH NOT FOUND"
+          echo "=== END DEBUG ==="
           python3 -m scripts.py.func.checks.self_tester
 
