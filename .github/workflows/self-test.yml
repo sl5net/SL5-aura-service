@@ -31,12 +31,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-models-tools-
 
-#      - name: Prepare Temp Directory and Config
-#        run: |
-#          sudo mkdir -p /tmp/sl5_aura
-#          sudo chmod -R 777 /tmp/sl5_aura
-#          echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -49,6 +43,15 @@ jobs:
       - name: Run Official Ubuntu Setup
         run: bash ./setup/ubuntu_setup.sh
 
+      - name: Prepare Bootstrap Pointer (The Master Key)
+        run: |
+#          sudo mkdir -p /tmp/sl5_aura
+#          sudo chmod -R 777 /tmp/sl5_aura
+          ./.venv/bin/python3 -c "from scripts.py.func.create_required_folders import setup_project_structure; setup_project_structure('${{ github.workspace }}')"          
+          
+          echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
+          cp config/settings_local.py_Example.txt config/settings_local.py
+
       - name: Install Additional Test Dependencies
         run: |
           sudo apt-get install -y xvfb xclip
@@ -58,11 +61,6 @@ jobs:
           #  thefuzz python-Levenshtein pyzipper
 
           # if [ -f requirements.txt ]; then ./.venv/bin/python3 -m pip install -r requirements.txt; fi
-
-
-      - name: Prepare Temp Directory and Project Root File
-        run: |
-          cp config/settings_local.py_Example.txt config/settings_local.py
 
       - name: Start LanguageTool Server
         run: |
@@ -77,7 +75,6 @@ jobs:
         run: |
           Xvfb :99 -screen 0 1024x768x24 &
 
-          ./.venv/bin/python3 -c "from scripts.py.func.create_required_folders import setup_project_structure; setup_project_structure('${{ github.workspace }}')"          
           ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results.log
           
           if grep -q "| 0 failed" test_results.log; then
