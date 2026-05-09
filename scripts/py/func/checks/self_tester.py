@@ -1,8 +1,5 @@
 # scripts/py/func/checks/self_tester.py
 import contextlib
-# TODO:
-# 5.5.'26 21:32 Tue
-#  https://github.com/sl5net/SL5-aura-service/issues/94
 
 import platform
 import re
@@ -520,24 +517,23 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                 failed_count += 1
                 print(f":st: Process crashed: {e}")
 
-        # Issue #94: non-LT parallel, LT sequential in CI
-        lt_workers = 1 if is_ci else num_workers
+    lt_workers = 1 if is_ci else num_workers
 
-        if is_ci:
-            print(f":st: DEBUG for Pool1 non_lt_tests={len(non_lt_tests)}")
-        with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
-            futures = {}
-            for i, t in enumerate(non_lt_tests):
-                futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
-            _collect_results(futures)
-        if is_ci:
-            print(":st: DEBUG behind Pool1")
+    if is_ci:
+        print(f":st: DEBUG before Pool1: lt_workers = {lt_workers} , non_lt_tests={len(non_lt_tests)}")
+    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
+        futures = {}
+        for i, t in enumerate(non_lt_tests):
+            futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
+        _collect_results(futures)
+    if is_ci:
+        print(":st: DEBUG behind Pool1")
 
-        with concurrent.futures.ProcessPoolExecutor(max_workers=lt_workers, mp_context=ctx) as executor:
-            futures = {}
-            for i, t in enumerate(lt_tests, start=len(non_lt_tests)):
-                futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
-            _collect_results(futures)
+    with concurrent.futures.ProcessPoolExecutor(max_workers=lt_workers, mp_context=ctx) as executor:
+        futures = {}
+        for i, t in enumerate(lt_tests, start=len(non_lt_tests)):
+            futures[executor.submit(run_single_test_process, i, t, lang_code, lt_url, str(test_base_dir))] = t
+        _collect_results(futures)
 
 
 
