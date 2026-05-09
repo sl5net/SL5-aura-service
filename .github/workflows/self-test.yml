@@ -3,10 +3,16 @@ name: Self-Test (Aura Logic)
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ master ]
+#    branches: [ master, main ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ master ]
+#    branches: [ master, main ]
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   run-self-test:
@@ -140,5 +146,4 @@ jobs:
             echo "Check the output above for crashes or test failures."
             exit 1
           fi
-          
           
