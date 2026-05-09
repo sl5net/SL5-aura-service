@@ -489,7 +489,11 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     def _collect_results(futures_map):
         nonlocal passed_count, failed_count
+        if is_ci:
+            print(f":st: DEBUG collecting {len(futures_map)} results...")
         for future in concurrent.futures.as_completed(futures_map):
+            if is_ci:
+                print(":st: DEBUG future completed, getting result...")
             try:
                 result = future.result(timeout=60)
                 success, raw, actual, expected, desc, duration, use_lt = result
@@ -572,9 +576,15 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     if failed_count > 0:
         if not is_ci:
             logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
+        else:
+            print(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
+
+
     else:
         if not is_ci:
             logger.info(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
+        else:
+            print(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
 
     second_per_test = duration / len(active_tests)
     max_local = 0.078
