@@ -62,22 +62,7 @@ jobs:
 
       - name: Prepare Temp Directory and Project Root File
         run: |
-          # sudo mkdir -p /tmp/sl5_aura
-          # sudo chmod -R 777 /tmp/sl5_aura
-
-          # printf '%s' "$GITHUB_WORKSPACE" > /tmp/sl5_aura/sl5net_aura_project_root
-
-          # touch scripts/__init__.py
-          # touch scripts/py/__init__.py
-          # touch scripts/py/func/__init__.py
-          # touch scripts/py/func/checks/__init__.py
-
           cp config/settings_local.py_Example.txt config/settings_local.py
-
-          # echo "✅ /tmp/sl5_aura/sl5net_aura_project_root created as file."
-
-
-
 
       - name: Start LanguageTool Server
         run: |
