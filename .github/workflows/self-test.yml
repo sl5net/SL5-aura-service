@@ -76,6 +76,8 @@ jobs:
           DISPLAY: :99
         run: |
           Xvfb :99 -screen 0 1024x768x24 &
+
+          ./.venv/bin/python3 -c "from scripts.py.func.create_required_folders import setup_project_structure; setup_project_structure('${{ github.workspace }}')"          
           ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results.log
           
           if grep -q "| 0 failed" test_results.log; then
