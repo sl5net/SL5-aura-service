@@ -54,7 +54,7 @@ _misc_errors = (
 _common_meta = {
     'flags': re.IGNORECASE | re.VERBOSE,
     'only_in_windows': ['firefox', 'chrome', 'brave'],
-    'exclude_windows': [r'element', r'mastodon', r'Mastodon'],
+    'exclude_windows': [r'element', r'mastodon', r'Mastodon', r'github', r'claude'],
 }
 
 
