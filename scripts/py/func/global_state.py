@@ -1,4 +1,5 @@
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+# scripts/py/func/global_state.py
 import threading
 
 # Lock to protect access to the sequence ID and the out-of-order cache
@@ -17,4 +18,18 @@ SESSION_LAST_PROCESSED = {}
 
 # scripts/py/func/global_state.py:18
 SIGNATURE_TIMES = {}
+
+
+last_recognitions = []
+
+def add_recognition(text: str):
+    """
+    Adds a new recognition text to the global state.
+    Keeps only the last 2 entries:
+    Index 0: The previous input (usually the one with the error)
+    Index 1: The current input (usually the command 'report error')
+    """
+    last_recognitions.append(text)
+    if len(last_recognitions) > 2:
+        last_recognitions.pop(0)
 

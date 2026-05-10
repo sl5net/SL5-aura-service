@@ -17,6 +17,7 @@ import sounddevice as sd
 import webrtcvad  # NEU: Import für Voice Activity Detection
 from scripts.py.func.audio_manager import speak_inclusive_fallback
 
+from scripts.py.func import global_state
 
 import platform
 
@@ -25,6 +26,7 @@ import runpy
 from .config.dynamic_settings import DynamicSettings
 # from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
+
 
 
 # WAKE_PHANTOM
@@ -110,7 +112,7 @@ VOSK_RATE = 16000
 
 
 
-
+# scripts/py/func/transcribe_audio_with_feedback.py:113
 def _handle_final_result(recognizer, logger):
     result = json.loads(recognizer.Result())
     text = result.get('text')
@@ -119,6 +121,11 @@ def _handle_final_result(recognizer, logger):
         logger.info(f"📢📢📢 ######################### {text} ##########################################")
         logger.info("📢📢📢             🎙️ 🎤 ")
         logger.info(f"📢📢📢-----> Yielding chunk: 📢 {text}")
+
+        try:
+            global_state.add_recognition(text)
+        except Exception as e:
+            logger.error(f"Could not save latest_recognition: {e}")
         return text
     return None
 

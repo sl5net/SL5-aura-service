@@ -1,4 +1,13 @@
-# Voix hors ligne à l'échelle du système vers des commandes ou du texte, système enfichable
+# SL5 Aura – Votre voix. Vos règles.
+
+> Cadre d'assistant vocal 100 % hors ligne, axé sur la confidentialité.  
+> Définissez exactement ce que fait votre voix - à partir d'un seul mot  
+> aux scripts Python complets. Pas de nuage. Aucune donnée ne quitte votre ordinateur.  
+> S'exécute dans un terminal, un navigateur ou en tant que service d'arrière-plan — sous Linux, macOS et Windows.
+
+| 👵 Débutant | 🎓 Apprenant | 🧑u200d💻 Développeur |
+|---|---|---|
+| Mode OMA : écrivez simplement un mot, Aura fait le reste | Apprenez avec Koans — un concept à la fois | Scripts Python complets, plugins, appels API |
 
 ## Démarrage rapide
 1. Téléchargez ou clonez ce référentiel
@@ -54,6 +63,8 @@ Remarque : De nombreux textes sont des traductions générées automatiquement 
 
 ## 🔌 Intégrations prêtes à l'emploi
 
+SL5-Aura est livré avec un vaste écosystème de plus de **100+ plugins préconfigurés**. Voici quelques faits saillants :
+
 ### Commande vocale OculiX / SikuliX IDE
 SL5-Aura offre une prise en charge vocale de première classe pour **OculiX** et **SikuliX IDE**. Cette intégration vous permet de « parler » votre code d'automatisation.
 
@@ -67,9 +78,6 @@ SL5-Aura offre une prise en charge vocale de première classe pour **OculiX** et
 ### Commande vocale de l'EDI LibreOffice
 
 ### 0 A.D. Commande vocale
-
-### bien plus encore. veuillez vérifier les plugins
-
 
 ---
 

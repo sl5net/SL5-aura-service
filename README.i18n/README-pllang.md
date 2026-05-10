@@ -1,4 +1,13 @@
-# Głos w trybie offline w całym systemie na polecenia lub tekst, system podłączany
+# SL5 Aura – Twój Głos. Twoje zasady.
+
+> W 100% offline, platforma asystentów głosowych dbająca o prywatność.XSPACEbreakX
+> Określ dokładnie, co robi Twój głos — od jednego słowaXSPACEbreakX
+> do pełnych skryptów Pythona. Brak chmury. Żadne dane nie opuszczają Twojego komputera.XSPACEbreakX
+> Działa w terminalu, przeglądarce lub jako usługa w tle — w systemach Linux, macOS i Windows.
+
+| 👵 Początkujący | 🎓 Uczeń | 🧑u200d💻 Programista |
+|---|---|---|
+| Tryb OMA: po prostu napisz słowo, Aura zajmie się resztą | Ucz się z Koanami — jedna koncepcja na raz | Pełne skrypty Pythona, wtyczki, wywołania API |
 
 ## Szybki start
 1. Pobierz lub sklonuj to repozytorium

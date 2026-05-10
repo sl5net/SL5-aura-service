@@ -1,4 +1,13 @@
-# Voz a comandos o texto sin conexión en todo el sistema, sistema conectable
+# SL5 Aura – Tu Voz. Tus reglas.
+
+> Marco de asistente de voz 100% fuera de línea y que prioriza la privacidad.  
+> Defina exactamente lo que hace su voz, a partir de una sola palabra  
+> a scripts completos de Python. Ninguna nube. No salen datos de su máquina.  
+> Se ejecuta en terminal, navegador o como servicio en segundo plano (en Linux, macOS y Windows).
+
+| 👵 Principiante | 🎓 Aprendiz | 🧑u200d💻 Desarrollador |
+|---|---|---|
+| Modo OMA: solo escribe una palabra, Aura hace el resto | Aprenda con Koans: un concepto a la vez | Secuencias de comandos Python completas, complementos, llamadas API |
 
 ## Inicio rápido
 1. Descarga o clona este repositorio
@@ -54,6 +63,8 @@ Nota: Muchos textos son traducciones generadas automáticamente de la documentac
 
 ## 🔌 Integraciones listas para usar
 
+SL5-Aura viene con un vasto ecosistema de más de **100+ complementos preconfigurados**. Aquí hay algunos aspectos destacados:
+
 ### Control de voz OculiX / SikuliX IDE
 SL5-Aura proporciona soporte de voz de primera clase para **OculiX** y **SikuliX IDE**. Esta integración le permite "decir" su código de automatización.
 
@@ -67,9 +78,6 @@ SL5-Aura proporciona soporte de voz de primera clase para **OculiX** y **SikuliX
 ### Control por voz de LibreOffice IDE
 
 ### 0 A.D. Control por voz
-
-### mucho más. por favor revisa los complementos
-
 
 ---
 

@@ -37,9 +37,10 @@ geminiUrl = 'https://aistudio.google.com/prompts/new_chat'
 # Wörter, die oft statt "Google" verstanden werden
 _google_prefix = r'(?:google|googeln?|gogol|guck|gucke[n\s]*|goris|gut|gb|kugeln|brooke|coral|cool|obwohl)'
 # Wörter, die phonetisch nah an "Gemini" liegen
+# google gremien
 
 _gemini_phonetics = (
-    r'(?:gemini|cheminée|g[\s-]?mine|gehminuten|gehe\s+mit|gibt|gaming|kriminell\w*|'
+    r'(?:gemini|gremien|cheminée|g[\s-]?mine|gehminuten|gehe\s+mit|gibt|gaming|kriminell\w*|'
     r'termin\w*|jimmy\s*(?:nein|knight|lai|neu)|germany|feminin|gewinner\w*|'
     r'gewinn\s+ein|ge[hmw]\w*|g\s+bedeuten|g\s+wie\s+neu|seminar\w*)'
 )
@@ -257,23 +258,11 @@ FUZZY_MAP_pre = [
     # EXAMPLE: reload
     ('reload', r'^(lot)$', 70, {'flags': re.IGNORECASE}),
 
-    #frei SlotPilotWhy notLot
-    # ReloadWie Lot
-
-
-
-
-#gewinne
-
-
-
 
     # EXAMPLE: Chat mit der e
     ('https://pi.ai/talk', r'^(Chat) mit (der e|AI|Terry|frei|ei|it|ari|3|a|der a)\b.*$', 70, {
         'flags': re.IGNORECASE
     }),
-
-#https://aistudio.google.com/prompts/new_chat
 
     # Regel für Python coding short
     # EXAMPLE: compact_python
@@ -282,7 +271,6 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'compact_python.py']
     }),
 
-    # nächstes wetter
 
     # Regel für die Wetterabfrage
     # EXAMPLE: wie ist das wetter

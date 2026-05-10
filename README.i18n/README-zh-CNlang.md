@@ -1,4 +1,13 @@
-# 系统范围内的离线语音命令或文本，可插拔系统
+# SL5 Aura – 你的声音。你的规则。
+
+> 100%离线、隐私优先的语音助手框架。  
+> 准确定义您的声音的作用 - 从一个单词  
+> 完整的 Python 脚本。没有云。没有数据离开您的计算机。  
+> 在 Linux、macOS 和 Windows 上的终端、浏览器或后台服务中运行。
+
+| 👵 初学者 | 🎓 学习者 | 🧑u200d💻 开发者 |
+|---|---|---|
+| OMA-模式：只需写一个字，Aura 即可完成剩下的工作 |与 Koans 一起学习 — 一次一个概念 |完整的 Python 脚本、插件、API 调用 |
 
 ## 快速入门
 1.下载或克隆此存储库
@@ -301,8 +310,8 @@ https://translate.google.com/translate?hl=en&sl=en&tl=zh-CN&u=https://glogg.bonn
 X空格符X
 *提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-zh-CNlang.md)。*
 
-
-
+然后也许双击
+`日志/aura_engine.log`
 X空格符X
 X空格符X
 **DevHelpers/**  
@@ -370,7 +379,7 @@ X空格符X
 
 |型号|尺寸|字错误率/速度 |笔记|许可证|
 | ------------------------------------------------------------------------------------------ | ---- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
-| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型 |阿帕奇2.0 |
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型|阿帕奇2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G| 9.83（Tuda-de 测试）<br/>24.00（播客）<br/>12.82（cv-测试）<br/>12.42（mls）<br/>33.26（mtedx）|德国大型电话和服务器模型|阿帕奇2.0 |
 
 此表提供了不同 Vosk 型号的概述，包括其大小、字错误率或速度、注释和许可证信息。

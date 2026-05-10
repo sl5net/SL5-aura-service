@@ -1,4 +1,13 @@
-# Systemweite Offline-Sprache zu Befehlen oder Text, steckbares System
+# SL5 Aura – Deine Stimme. Ihre Regeln.
+
+> 100 % offline, Datenschutz-First-Sprachassistenten-Framework.  
+> Definieren Sie genau, was Ihre Stimme tut – mit einem einzigen Wort  
+> zu vollständigen Python-Skripten. Keine Wolke. Keine Daten verlassen Ihren Computer.  
+> Läuft im Terminal, Browser oder als Hintergrunddienst – unter Linux, macOS und Windows.
+
+| 👵 Anfänger | 🎓 Lernender | 🧑u200d💻 Entwickler |
+|---|---|---|
+| OMA-Modus: Schreiben Sie einfach ein Wort, Aura erledigt den Rest | Lernen Sie mit Koans – ein Konzept nach dem anderen | Vollständige Python-Skripterstellung, Plugins, API-Aufrufe |
 
 ## Schnellstart
 1. Laden Sie dieses Repository herunter oder klonen Sie es
@@ -54,6 +63,8 @@ Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzunge
 
 ## 🔌 Gebrauchsfertige Integrationen
 
+SL5-Aura verfügt über ein riesiges Ökosystem von über **100+ vorkonfigurierten Plugins**. Hier einige Highlights:
+
 ### OculiX / SikuliX IDE-Sprachsteuerung
 SL5-Aura bietet erstklassige Sprachunterstützung für **OculiX** und **SikuliX IDE**. Diese Integration ermöglicht es Ihnen, Ihren Automatisierungscode zu „sprechen“.
 
@@ -67,9 +78,6 @@ SL5-Aura bietet erstklassige Sprachunterstützung für **OculiX** und **SikuliX 
 ### LibreOffice IDE-Sprachsteuerung
 
 ### 0 n. Chr. Sprachsteuerung
-
-### noch viel mehr. Bitte überprüfen Sie die Plugins
-
 
 ---
 

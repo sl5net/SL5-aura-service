@@ -1,3 +1,5 @@
+# config/maps/plugins/internals/report_error.py:1
+import os
 from sys import exit
 from datetime import datetime
 from pathlib import Path
@@ -5,6 +7,7 @@ import re
 
 from scripts.py.func.audio_manager import speak_inclusive_fallback
 
+from scripts.py.func import global_state
 
 def between_first_last_hash_manual(s: str) -> str:
     try:
@@ -14,95 +17,30 @@ def between_first_last_hash_manual(s: str) -> str:
         return ''
     return s[start:end].strip()
 
-# internals>misrecognitionsDie Wetterabfrage hat zu lange gedauert. Bitte versuche es später erneut.
-
 def execute(match_data):
-    # Pfad-Logik: Von .../internals/report_error.py zum Root
-    # config/maps/plugins/internals/report_error.py:19
-    # quelleZähle bürgenLog-Datei nicht gefunden.Philippinternals>misrecognitions
     root = Path(__file__).resolve().parents[4]
-    log_file = root / "log" / "aura_engine.log"
     report_file = root / "docs" / "bugfix" / "TODO" / "misrecognitions.md"
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    report_file.parent.mkdir(parents=True, exist_ok=True)
 
-    # Begriffe, die wir ignorieren (da sie den Befehl selbst beschreiben)
-    triggers = ["fehler melden", "logge fehler", "das war falsch", "fehlermeldung", "fehlerbericht", "fehler mail", "erkältungswelle"]
+    history = global_state.last_recognitions
 
-    if not report_file.exists():
-        returns ="error Reporting-File not exist"
+    if len(history) >= 2:
+        # Index 0 is the "previous" entry (the one that failed)
+        # Index 1 is the current "report error" command
+        error_line = history[0]
+    elif len(history) == 1:
+        error_line = history[0]
+    else:
+        error_line = "No recent input found in memory."
+        print(error_line)
+        returns= f"Error in Log found. {e}"
         speak_inclusive_fallback(f"{returns}", 'de-DE')
         return returns
 
 
+    # write in the TODO-list
+    with open(report_file, "a", encoding="utf-8") as f:
+        f.write(f"📢 {timestamp}:\n{error_line}\n")
+    return " internals>misrecognitions "
 
-    try:
-        if not log_file.exists():
-            returns= "Log-Datei nicht gefunden."
-            speak_inclusive_fallback(f"{returns}", 'de-DE')
-            return returns
-
-
-        with open(log_file, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-
-        # 1. Wir filtern nur Zeilen mit deinem Fehler-Präfix
-        # 2. Wir drehen die Liste um (reversed), um am Ende der Datei zu starten
-        error_line = None
-        for line in reversed(lines):
-            line_clean = line.strip()
-
-            # Suche nach deinem speziellen Log-Präfix
-            if "chunk: 📢" in line_clean:
-                # Prüfen: Ist das nur der Befehl selbst?
-                is_trigger = any(t.lower() in line_clean.lower() for t in triggers)
-
-                if not is_trigger:
-                    error_line = line_clean
-                    break
-
-        if not error_line:
-            returns= "Keine passende Fehl-Erkennung im Log gefunden."
-            speak_inclusive_fallback(f"{returns}", 'de-DE')
-            return returns
-
-
-        # Zeitstempel für die Markdown-Tabelle
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        # Sicherstellen, dass der Zielordner existiert
-        report_file.parent.mkdir(parents=True, exist_ok=True)
-
-        error_line = re.sub(r"(.)\1+", r"\1", error_line)
-
-
-        # error_line = betwefen_first_last_hash_manual(error_line)
-        try:
-            # error_line = error_line.split("📢")[1]
-            error_line = error_line.rsplit("📢", 1)[1].strip()
-        except Exception as e:
-            print(e)
-            returns= f"Fehler im Log gefunden.{e}"
-            speak_inclusive_fallback(f"{returns}", 'de-DE')
-
-            return returns
-
-        # 2. Wenn gefiltert wurde (nur Trigger gefunden), besser erklären
-        if not error_line:
-            returns = "Fehler im Error-Report: Nichts gefunden. "
-            speak_inclusive_fallback(returns, 'de-DE')
-            return returns
-
-
-
-
-        # In die TODO-Liste schreiben
-        with open(report_file, "a", encoding="utf-8") as f:
-            f.write(f"📢 {timestamp}:\n{error_line}\n")
-
-        return " internals>misrecognitions "
-
-    except Exception as e:
-
-        returns =f"error Reporting-Script: {str(e)}"
-        speak_inclusive_fallback(f"{returns}", 'de-DE')
-        exit(1)
-        return returns
