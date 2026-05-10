@@ -45,11 +45,11 @@ jobs:
 
       - name: Prepare Bootstrap Pointer (The Master Key)
         run: |
-          # sudo mkdir -p /tmp/sl5_aura
-          # sudo chmod -R 777 /tmp/sl5_aura
+          sudo mkdir -p /tmp/sl5_aura
+          sudo chmod -R 777 /tmp/sl5_aura
           echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
 
-          ./.venv/bin/python3 -c "from scripts.py.func.create_required_folders import setup_project_structure; setup_project_structure('${{ github.workspace }}')"          
+#          ./.venv/bin/python3 -c "from scripts.py.func.create_required_folders import setup_project_structure; setup_project_structure('${{ github.workspace }}')"
           
           cp config/settings_local.py_Example.txt config/settings_local.py
 
