@@ -142,6 +142,8 @@ PLUGINS_ENABLED = {
 REMOVE_SPACES_BETWEEN_NUMBERS = 0
 # or check the rules at the bottom: # config/maps/plugins/numbers_to_digits/de-DE/FUZZY_MAP_pre.py
 
+LOG_delete_on_startup = True
+LOG_in_selftest = False
 
 # --- Developer Mode (advanced users only) ---
 # Enables additional log output and internal checks.

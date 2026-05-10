@@ -18,9 +18,13 @@ from ..audio_manager import speak_inclusive_fallback
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
 
+# # scripts/py/func/global_state.py
+from .. import global_state
+
 from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
 
+is_ci = os.getenv('CI') == 'true'
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -37,7 +41,6 @@ class TestPrio(IntEnum):
     NEVER = 0   # 0% Chance
 
 def check_translator_hijack_is_active(logger):
-    is_ci = os.getenv('CI') == 'true'
     tmp_dir = TMP_DIR # Path("C:/tmp") if os.name == "nt" else Path("/tmp")
     PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
@@ -45,14 +48,14 @@ def check_translator_hijack_is_active(logger):
     path = PROJECT_ROOT / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
 
     if not path.exists():
-        if not is_ci:
+        if global_state.LOGGING_ENABLED:
             logger.info(f"st:HIJACK: path {path} not exists!")
         return False
 
     pattern = re.compile(r"#[ ]*TRANSLATION_RULE[ ]*\n[^\n]*#")
     for lineno, line in enumerate(path.read_text().splitlines(), start=1):
         if pattern.search(line):
-            if not is_ci:
+            if global_state.LOGGING_ENABLED:
                 logger.info(f"st:🚨 HIJACK: Rule in ..{str(path)[-30:]}{lineno} is active!")
             return lineno
 
@@ -74,7 +77,6 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code): # ,
     """
     # scripts/py/func/checks/self_tester.py
 
-    is_ci = os.getenv('CI') == 'true'
 
     _wait_for_languagetool_ready(lt_url, logger)
 
@@ -103,7 +105,7 @@ def run_core_logic_self_test(logger, tmp_dir_aura: Path, lt_url, lang_code): # ,
 
     lineno = check_translator_hijack_is_active(logger)
     if lineno and lineno>0:
-        if not is_ci:
+        if global_state.LOGGING_ENABLED:
             logger.info("st:self_tester.py exit exit exit")
             logger.info("st:75:🚨 HIJACK: rule is activ")
             logger.info(f"""
@@ -159,11 +161,10 @@ def _wait_for_languagetool_ready(lt_url, logger, timeout=60, interval=2):
     import urllib.request
     import urllib.error
 
-    is_ci = os.getenv('CI') == 'true'
 
     # health_url = f"{lt_url}/v2/languages"
     health_url = f"{lt_url.rstrip('/').replace('/v2/check', '')}/v2/languages"
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info(f":st:⏳ Waiting for LanguageTool at {health_url} ...")
 
     start = time.perf_counter()
@@ -172,14 +173,14 @@ def _wait_for_languagetool_ready(lt_url, logger, timeout=60, interval=2):
             with urllib.request.urlopen(health_url, timeout=3) as resp:
                 if resp.status == 200:
                     elapsed = time.perf_counter() - start
-                    if not is_ci:
+                    if global_state.LOGGING_ENABLED:
                         logger.info(f":st:✅ LanguageTool ready after {elapsed:.1f}s")
                     return True
         except Exception:
             pass
         time.sleep(interval)
 
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.error(f":st: ❌ LanguageTool not ready after {timeout}s – aborting.")
         logger.error(f":st: LanguageTool not ready after {timeout}s – aborting.")
         logger.info(f":st: LanguageTool not ready after {timeout}s – aborting.")
@@ -193,19 +194,24 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     """
 
     """
+
+
     _wait_for_languagetool_ready(lt_url, logger)
 
     settings = DynamicSettings()
-    is_ci = os.getenv('CI') == 'true'
     backup_tts_enabled = settings.PLUGIN_HELPER_TTS_ENABLED
     settings.PLUGIN_HELPER_TTS_ENABLED = False
+
+    if not settings.LOG_in_selftest or is_ci:
+        global_state.LOGGING_ENABLED = False
+
 
     # /home/seeh/projects/py/STT/scripts/py/func/checks/self_tester.py
 
     # Base directory for all tests
 
     print(':st:🌞🌞🌞🌞🌞 4.5.26 15:17 Mon 🌞🌞🌞🌞🌞🌞🌞 tmp_dir=', tmp_dir_aura)
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info(f':st:🌞🌞🌞🌞🌞 4.5.26 15:17 Mon 🌞🌞🌞🌞🌞🌞🌞 tmp_dir={tmp_dir_aura}')
 
     test_base_dir = tmp_dir_aura / "sl5_aura_self_test"
@@ -377,7 +383,6 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     import random
 
 
-    is_ci = os.getenv('CI') == 'true'
     if is_ci:
         rng = random.Random(42) # deterministic for reproducible runs
     else:
@@ -397,7 +402,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     if is_ci:
 
         print(f":st: DEBUG lang_code={lang_code} active_tests={len(active_tests)}")
-        if not is_ci:
+        if global_state.LOGGING_ENABLED:
             logger.info(f':st: DEBUG active_tests count={len(active_tests)}')
 
     # active_tests = []
@@ -427,7 +432,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
 
 
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES...")
     # if not is_ci: logger.info(f":st:Running {len(active_tests)} tests in parallel (ThreadPool)...")
 
@@ -479,7 +484,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     if is_ci:
         print(f":st: DEBUG lt_tests={len(lt_tests)} non_lt_tests={len(non_lt_tests)}")
 
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info(f":st: Phase 1 – {len(non_lt_tests)} deterministic tests (max_workers={num_workers})")
         logger.info(f":st: Phase 2 – {len(lt_tests)} LT-dependent tests   (max_workers=2)")
 
@@ -514,7 +519,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                     logger.error(f":st:   Input: ---> '{raw}'")
                     logger.error(f":st:   Expected:-> '{expected}'")
                     logger.error(f":st:   Got: -----> '{actual}'")
-                    if not is_ci:
+                    if global_state.LOGGING_ENABLED:
                         logger.info(
                         f":st: ==> Passed: {passed_count}, Failed: {failed_count} ==> :) its oky no problem. try it better next time ;)")
             except Exception as e:
@@ -541,6 +546,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
 
 
+    if not settings.LOG_in_selftest:
+        global_state.LOGGING_ENABLED = True
 
 
 
@@ -548,11 +555,11 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     # scripts/py/func/checks/self_tester.py:420
 
     # 4.1 Detailed Performance Report at the very end
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info("=" * 40)
     # if not is_ci:
     logger.info(":st: PERFORMANCE REPORT (Slowest tests first):")
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info(f":st: {'STAT':<5} | {'TIME':<8} | {'LT':<4} | {'DESCRIPTION':<40} | {'INPUT'}")
     # Sort by duration descending
     sorted_metrics = sorted(test_metrics, key=lambda x: x['duration'], reverse=True)
@@ -560,62 +567,61 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     for m in sorted_metrics:
         status = "✅" if m['success'] else "❌"
         lt_flag = "LT" if m['use_lt'] else "--"
-        if not is_ci:
+        if global_state.LOGGING_ENABLED:
             logger.info(f":st: {status:<1} | {m['duration']:>6.3f}s | {lt_flag:<2} | {m['desc'][:40]:<40} | '{m['input']}'")
 
 
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info("=" * 40)
 
 
     # 4.2 Summary
     duration = time.perf_counter() - start_time
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info("=" * 40)
     # m1 =f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}"
     if failed_count > 0:
-        if not is_ci:
+        if global_state.LOGGING_ENABLED:
             logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
         else:
             print(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
 
 
     else:
-        if not is_ci:
+        if global_state.LOGGING_ENABLED:
             logger.info(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
         else:
             print(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
 
     second_per_test = duration / len(active_tests)
     max_local = 0.078
-    is_ci = os.getenv('CI') == 'true'
     threshold = max_local * (10.0 if is_ci else 1.0)
     if second_per_test > threshold:
         m1 = f"🛑 ALERT tests_per_second: expected second per test  <= {max_local}, got {second_per_test:.3f} second per test"
         m2 = "🛑 mostly it was 6.45 to 7 seconds per 92 tests. Check README variable for more info."
         logger.critical(f"{m1} {m2}")
-        if not is_ci:
+        if global_state.LOGGING_ENABLED:
             logger.info(f"{m1} {m2}")
 
         if second_per_test > 3 * threshold and not os.getenv('CI'):
             m1 = f"🛑 its DOUBLE of expected second per test, got {second_per_test:.3f} second per test. that maybe happens at the first run when RAM is clear"
             m2 = "🛑 ==> exit"
             logger.critical(f"{m1} {m2}")
-            if not is_ci:
+            if global_state.LOGGING_ENABLED:
                 logger.info(f"{m1} {m2}")
             # sys.exit(1)
 
 
     m2=f"⌚ Total Duration: {duration:.2f} seconds (second_per_test:{second_per_test:.2f} s/test)"
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info(f"pid:{os.getpid()} :st:{m2}")
     speak_inclusive_fallback(f"{m2}", 'de-DE') # 'en-US') # 'de-DE')
 
     import threading
     thread_name = threading.current_thread().name
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info(f"- {thread_name} :st:⌚ maybe check: run_always_no_throttling_ignore_times = True/False ?")
-    if not is_ci:
+    if global_state.LOGGING_ENABLED:
         logger.info(f"- {thread_name} -" * 40)
 
     README = """
@@ -654,12 +660,11 @@ Passed: 95 | ❌ Failed: 0 Tests (hint search for: ❌ FAIL )
 15:17:25,615 - INFO   - :st:⌚ Total Duration: 6.45 seconds
     """ # noqa:F841
 
-    # if not is_ci:
-    logger.info("-" * 40)
-    # if not is_ci:
-    logger.info(README)
-    # formatted_readme = "\n".join([f"📜 {line}" for line in README.strip().splitlines()])
-    # if not is_ci:logger.info(f"History:\n{formatted_readme}")
+    if False and not is_ci:
+        logger.info("-" * 40)
+        formatted_readme = "\n".join([f"📜 {line}" for line in README.strip().splitlines()])
+        logger.info(f"History:\n{formatted_readme}")
+
     # if not is_ci:logger.info(f"History:\n{formatted_readme}")
 
     settings.PLUGIN_HELPER_TTS_ENABLED = backup_tts_enabled
@@ -716,7 +721,6 @@ class SimpleNullLogger:
 # find . -name "*settings.py"                                                                                                                                     ✔
 
 def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_str):
-    is_ci = os.getenv('CI') == 'true'
 
     # 1. CI-spezifische Noise-Unterdrückung
     if is_ci:

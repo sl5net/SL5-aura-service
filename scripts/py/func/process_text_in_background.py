@@ -12,6 +12,7 @@ from pathlib import Path
 
 import psutil
 
+from . import global_state
 #import shutil
 #import subprocess
 
@@ -149,20 +150,24 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
             if not init_datei.exists():
                 try:
                     init_datei.touch()
-                    logger.info(f"Repariert (Stufe {aktuelle_tiefe}): __init__.py erstellt in: {eintrag}")
+                    if global_state.LOGGING_ENABLED:
+                        logger.info(f"Repariert (Stufe {aktuelle_tiefe}): __init__.py erstellt in: {eintrag}")
                     reparierte_anzahl += 1
                 except OSError as e:
                     logger.error(
                         f"FEHLER: Konnte __init__.py in '{eintrag}' nicht erstellen: {e}")
             else:
-                logger.info(f"found init_datei in: {eintrag}")
+                if global_state.LOGGING_ENABLED:
+                    logger.info(f"found init_datei in: {eintrag}")
 
     # 2. Rekursion in die nächste Stufe (Ländercodes)
     if aktuelle_tiefe < max_tiefe:
-        logger.info(
-            f"🗺️ {aktuelle_tiefe} < {max_tiefe} ##########################################################################################################################################")
-        for unterordner in unterordner_zur_weitergabe:
+        if global_state.LOGGING_ENABLED:
             logger.info(
+                f"🗺️ {aktuelle_tiefe} < {max_tiefe} ##########################################################################################################################################")
+        for unterordner in unterordner_zur_weitergabe:
+            if global_state.LOGGING_ENABLED:
+                logger.info(
                 f"🗺️ {unterordner} OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
 
             # Rufe die Funktion für jeden Unterordner auf (z.B. Ländercode-Ordner)
@@ -294,7 +299,8 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         from .log_memory_details import log_memory_details
         log_memory_details("def load_maps_for_language", logger)
 
-    logger.info(f"🗺️Starting recursive map loading for language: {lang_code}, run_mode_override:{run_mode_override}")
+    if global_state.LOGGING_ENABLED:
+        logger.info(f"🗺️Starting recursive map loading for language: {lang_code}, run_mode_override:{run_mode_override}")
 
     settings.reload_settings()
 
@@ -395,9 +401,11 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 
             if not is_plugin_enabled(hierarchical_key, settings.PLUGINS_ENABLED):
-                logger.info(f"🚫🗺️ DISABLED: {hierarchical_key}")
+                if global_state.LOGGING_ENABLED:
+                    logger.info(f"🚫🗺️ DISABLED: {hierarchical_key}")
                 if settings.DEV_MODE and plugin_name_before != plugin_name and log_all_map_ENABLED and False:
-                    logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}...")
+                    if global_state.LOGGING_ENABLED:
+                        logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}...")
 
                     #basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps"
                     #eltern_pfad_maps = basis_pfad / hierarchical_key
@@ -482,9 +490,10 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                          f"Punctuation maps do NOT support privacy masking! "
                          f"Entries from this map will be logged in plain text. "
                          f"Please move sensitive rules to 'FUZZY_MAP'.")
-                    logger.info(m)
-                    logger.warning(m)
-                    print(m)
+                    if global_state.LOGGING_ENABLED:
+                        logger.info(m)
+                        logger.warning(m)
+                        print(m)
 
                 punctuation_map.update(module.PUNCTUATION_MAP)
 
@@ -548,7 +557,8 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                 file_path = spec.origin
 
             if 'file_path' in locals() and try_auto_fix_module(file_path, e, logger):
-                logger.info("🔧 Auto-Fix in Background-Loop finished! try Reload...")
+                if global_state.LOGGING_ENABLED:
+                    logger.info("🔧 Auto-Fix in Background-Loop finished! try Reload...")
                 try:
                     importlib.invalidate_caches()
                     # Here you have to look at how the module was originally loaded
@@ -559,7 +569,8 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                     # If we are here, it worked!
                     # Depending on your logic, you may now need to add the module to the list
                     # or just do 'continue' so that the next loop run loads it cleanly.
-                    logger.info("✅ Modul repaired. ")
+                    if global_state.LOGGING_ENABLED:
+                        logger.info("✅ Modul repaired. ")
 
                     if platform.system() == "Windows":
                         windows_apply_correction_with_sync()
@@ -567,19 +578,20 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                     continue
 
                 except Exception as retry_err:
-                    logger.error(f"❌ Reload gescheitert: {retry_err}")
-                    logger.info(f"❌ Reload gescheitert: {retry_err}")
-                    log4DEV(f"❌ Reload gescheitert: {retry_err}",logger)
+                    logger.error(f"❌ Reload failed: {retry_err}")
+                    logger.info(f"❌ Reload failed: {retry_err}")
+                    log4DEV(f"❌ Reload failed: {retry_err}",logger)
             # --- AUTO-FIX ENDE ---
 
 
 
     if settings.show_PLUGINS_ENABLED:
         enabled_modname_str = '▉'.join(ENABLED_modname_list)
-        logger.info(f"🗺️ ENABLED: ▉{enabled_modname_str}▉")
-    # englisch einschalten Hallo wie geht'senglisch einschaltenHallo wie geht's
+        if global_state.LOGGING_ENABLED:
+            logger.info(f"🗺️ ENABLED: ▉{enabled_modname_str}▉")
 
-    logger.info(f"🗺️ Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")
+    if global_state.LOGGING_ENABLED:
+        logger.info(f"🗺️ Map loading complete. Found {len(fuzzy_map_pre)} FUZZY_MAP_pre rules.")
 
     if getattr(settings, "DEV_MODE_memory", False):
         from scripts.py.func.log_memory_details import log_memory_details
@@ -636,8 +648,9 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
 
             if similarity_ratio >= similarity_threshold:
                 found_fuzzy_match = True
-                logger.info(
-                    f"✨Fuzzy Match found: '{word_in_text}' vs target '{replacement}' (Similarity: {similarity_ratio:.2f}, Threshold: {similarity_threshold:.2f})")
+                if global_state.LOGGING_ENABLED:
+                    logger.info(
+                        f"✨Fuzzy Match found: '{word_in_text}' vs target '{replacement}' (Similarity: {similarity_ratio:.2f}, Threshold: {similarity_threshold:.2f})")
                 # For simplicity, we'll use a direct string replace here.
                 # A more precise method might involve finding the exact span of the word in original text.
 
@@ -657,8 +670,9 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
                     # is_private = "/_" in source_path or "\\_" in source_path
 
                     found_fuzzy_match = True
-                    logger.info(
-                        f"🚀Fuzzy: '{processed_text}' -> '{temp_text_for_fuzzy_replace}' (Target: '{replacement}')")
+                    if global_state.LOGGING_ENABLED:
+                        logger.info(
+                            f"🚀Fuzzy: '{processed_text}' -> '{temp_text_for_fuzzy_replace}' (Target: '{replacement}')")
                     processed_text = temp_text_for_fuzzy_replace  # Update processed_text
                     # If one fuzzy match is enough for this rule, break the inner loop
                     break  # Break from inner word iteration
@@ -866,12 +880,14 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                         skip_list = rule_skip_list
 
                         if is_private:
-                            logger.info(
-                                f"apply_all_rules_may_until_stable -> 470: 🚀Regex_pre: '***' -> '***' (Pattern: '{match_phrase}')")
+                            if global_state.LOGGING_ENABLED:
+                                logger.info(
+                                    f"apply_all_rules_may_until_stable -> 470: 🚀Regex_pre: '***' -> '***' (Pattern: '{match_phrase}')")
                             processed_text = new_text
                         else:
-                            logger.info(
-                                f"apply_all_rules_may_until_stable -> 470: 🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
+                            if global_state.LOGGING_ENABLED:
+                                logger.info(
+                                    f"apply_all_rules_may_until_stable -> 470: 🚀Regex_pre: '{processed_text}' -> '{new_text}' (Pattern: '{match_phrase}')")
                             processed_text = new_text
                     else:
                         log4DEV(
@@ -905,7 +921,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
                     for script_path in on_match_exec_list:
                         module = load_module_from_path(script_path)
-                        logger.info(f"360: script_path:'{script_path}'")
+                        if global_state.LOGGING_ENABLED:
+                            logger.info(f"360: script_path:'{script_path}'")
                         if hasattr(module, 'execute'):
                             script_result = module.execute(match_data)
 
@@ -922,7 +939,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
 
                                 if not privacy_taint_occurred:
                                     handle_tts_fallback(new_current_text, lang_for_tts, logger)
-                                logger.info(f"289: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
+                                if global_state.LOGGING_ENABLED:
+                                    logger.info(f"289: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
 
                             sys.stderr.write(f"DEBUG 925: new_current_text='{new_current_text}'\n")
                             sys.stderr.flush()
@@ -1058,7 +1076,8 @@ def process_text_in_background(logger,
 
     if settings.DEV_MODE:
         AURA_SELF_TEST_RUNNING = os.getenv("AURA_SELF_TEST_RUNNING")
-        logger.info(f'scripts/py/func/process_text_in_background.py:911 os.getenv("AURA_SELF_TEST_RUNNING"): {AURA_SELF_TEST_RUNNING}')
+        if global_state.LOGGING_ENABLED:
+            logger.info(f'scripts/py/func/process_text_in_background.py:911 os.getenv("AURA_SELF_TEST_RUNNING"): {AURA_SELF_TEST_RUNNING}')
 
 
     if settings.DEV_MODE or True:
@@ -1081,7 +1100,8 @@ def process_text_in_background(logger,
 
     if RUN_MODE == "API_SERVICE" and unmasked is True:
         run_mode_override = "API_SERVICE_local"
-        logger.info(f"616: temporary run_mode_override={run_mode_override} (unmasked request).")
+        if global_state.LOGGING_ENABLED:
+            logger.info(f"616: temporary run_mode_override={run_mode_override} (unmasked request).")
     else:
         run_mode_override = RUN_MODE
 
@@ -1112,16 +1132,18 @@ def process_text_in_background(logger,
 
             if chunk_id < expected_id:
                 # Has already been processed/refurbished (or we are a duplicate). Cancel!
-                logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
-                logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
-                logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
-                logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                if global_state.LOGGING_ENABLED:
+                    logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                    logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                    logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
+                    logger.info(f"ID {chunk_id} skipped. Already processed up to {expected_id - 1}.")
                 return
 
             # We're too fast. Put it in the cache and wait.
             # Log only every N iterations:
             if wait_count % 100 == 0:
-                logger.info(f"ID {chunk_id} arrived early. Waiting for {expected_id}...")
+                if global_state.LOGGING_ENABLED:
+                    logger.info(f"ID {chunk_id} arrived early. Waiting for {expected_id}...")
             wait_count += 1
 
             # --- CACHE: Legt uns in den Warte-Cache und wartet auf andere Threads, die abarbeiten ---
@@ -1275,30 +1297,32 @@ def process_text_in_background(logger,
                 predictions = None
                 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
                     if not privacy_taint_occurred:
-
-                        logger.info(f"👀👀👀 Start lang_code predictions for: '{raw_text}'")
+                        if global_state.LOGGING_ENABLED:
+                            logger.info(f"👀👀👀 Start lang_code predictions for: '{raw_text}'")
                     # predictions = fasttext_model.predict(raw_text, threshold=threshold)
 
                 if predictions:
-                    logger.info(
-                        f"---------------------------> predictions: {predictions} , LT_LANGUAGE: {LT_LANGUAGE}")
+                    if global_state.LOGGING_ENABLED:
+                        logger.info(
+                            f"---------------------------> predictions: {predictions} , LT_LANGUAGE: {LT_LANGUAGE}")
                     if predictions[0] and predictions[0][0]:
                         lang_code_predictions = predictions[0][0].replace('__label__', '')
                         # logger.info(f"Raw prediction object: {predictions}")
 
                         if not privacy_taint_occurred:
-
-                            logger.info(f"👀👀👀 lang_code predictions of '{raw_text}': {lang_code_predictions} 👀")
+                            if global_state.LOGGING_ENABLED:
+                                logger.info(f"👀👀👀 lang_code predictions of '{raw_text}': {lang_code_predictions} 👀")
 
                         # get something like language_code = "en-US":
                         lang_code_predictions = guess_lt_language_from_model(logger, lang_code_predictions)
 
                         # if predictions and predictions[0]:
                         if LT_LANGUAGE != lang_code_predictions:
-                            logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
-                            logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
-                            logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
-                            logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
+                            if global_state.LOGGING_ENABLED:
+                                logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
+                                logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
+                                logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
+                                logger.info(f'❌❌❌  {lang_code_predictions} != {LT_LANGUAGE} old +++++++++++++++++++++')
 
                             LT_LANGUAGE = lang_code_predictions
 
@@ -1616,10 +1640,12 @@ def process_text_in_background(logger,
                         best_replacement = replacement
 
                 if best_replacement:
-                    logger.info(f"🎊{best_score}% Fuzzy found: Replacing '{processed_text}' with '{best_replacement}'")
+                    if global_state.LOGGING_ENABLED:
+                        logger.info(f"🎊{best_score}% Fuzzy found: Replacing '{processed_text}' with '{best_replacement}'")
                     processed_text = best_replacement.strip()
                 else:
-                    logger.info(f"👎best fuzzy score:{best_score}% for '{processed_text}'")
+                    if global_state.LOGGING_ENABLED:
+                        logger.info(f"👎best fuzzy score:{best_score}% for '{processed_text}'")
 
 
         # print(f':st: \nprocess_text_in_background:1447 raw_text:{raw_text}')
@@ -1854,9 +1880,11 @@ def process_text_in_background(logger,
             # process_text_in_background.py:1453 (process_text_in_background)
             # …{str(unique_output_file)[-30:]}
             if privacy_taint_occurred:
-                logger.info(f"✅ 💾 THREAD: Successfully wrote to  …{str(unique_output_file)[-30:]} '***'")
+                if global_state.LOGGING_ENABLED:
+                    logger.info(f"✅ 💾 THREAD: Successfully wrote to  …{str(unique_output_file)[-30:]} '***'")
             else:
-                logger.info(f"✅ 💾 THREAD: Successfully wrote to …{str(unique_output_file)[-30:]} '{new_current_text}'")
+                if global_state.LOGGING_ENABLED:
+                    logger.info(f"✅ 💾 THREAD: Successfully wrote to …{str(unique_output_file)[-30:]} '{new_current_text}'")
 
 
 
@@ -1917,7 +1945,8 @@ def process_text_in_background(logger,
 
 
             # restart your script is a very common and effective fallback workaround for managing excessive memory usage
-            logger.info(f"Fallback restart script: rss_mb={rss_mb}*2.5 > max_model_memory_footprint={max_model_memory_footprint_mb_not_calculate}")
+            if global_state.LOGGING_ENABLED:
+                logger.info(f"Fallback restart script: rss_mb={rss_mb}*2.5 > max_model_memory_footprint={max_model_memory_footprint_mb_not_calculate}")
             # restart script
             time.sleep(0.02)
             os.execv(sys.executable, ['python'] + sys.argv + ['restarted'])
@@ -2049,7 +2078,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                     m = f"🚨 INVALID RULE ENTRY found while working on rule text=📃{text}📄 "\
                         f"Type {type(rule_entry)}): {rule_entry}. Please check your map files!"
                     log4DEV(m,logger_instance)
-                    logger_instance.info(m)
+                    if global_state.LOGGING_ENABLED:
+                        logger_instance.info(m)
 
                 if GLOBAL_debug_skip_list:
                     print(f'1433: Processing rule {rule_entry} ')
@@ -2090,8 +2120,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                 source_modname = options_dict.get('source_modname', '')
                 m = (f"🚨 WARNING: Dangerous Catch-all '{regex_pattern}' found in {source_modname}"
                      f" =>will skip LanguageTool because not needed")
-                log4DEV(m, logger_instance)
-                logger_instance.info(m)
+                if global_state.LOGGING_ENABLED:
+                    log4DEV(m, logger_instance)
+                    logger_instance.info(m)
 
             skip_list_temp = options_dict.get('skip_list', [])
 
@@ -2134,9 +2165,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
 
                 m_202602281126 = f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
-                logger_instance.info(m_202602281126)
-                logger_instance.info(f'🔴🔴🔴 exclude_windows_list: {exclude_windows_list}, '
-                                     f'🔵🔵🔵 only_in_windows_list: {only_in_windows_list}')
+                if global_state.LOGGING_ENABLED:
+                    logger_instance.info(m_202602281126)
+                    logger_instance.info(f'🔴🔴🔴 exclude_windows_list: {exclude_windows_list}, '
+                                         f'🔵🔵🔵 only_in_windows_list: {only_in_windows_list}')
 
             only_in_windows_list = options_dict.get('only_in_windows', [])
             exclude_windows_list = options_dict.get('exclude_windows', [])
@@ -2399,8 +2431,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
 
                                             handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
 
-
-                                        logger_instance.info(f"1026: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger_instance)")
+                                        if global_state.LOGGING_ENABLED:
+                                            logger_instance.info(f"1026: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger_instance)")
 
 
 

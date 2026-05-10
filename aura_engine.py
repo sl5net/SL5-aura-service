@@ -15,6 +15,8 @@ import re
 
 import threading
 
+from scripts.py.func import global_state
+
 #from config.settings import LANGUAGETOOL_CHECK_URL
 
 # Python path to ensure reliable imports on all platforms
@@ -671,6 +673,8 @@ DISABLE_ALL_TEST_QuickStopTestsForSomeReasons = False
 
 if settings.DEV_MODE and DISABLE_ALL_TEST_QuickStopTestsForSomeReasons :
     print(f'Hi DEV. BTW DISABLE_ALL_TEST_QuickStopTestsForSomeReasons is {DISABLE_ALL_TEST_QuickStopTestsForSomeReasons}')
+
+global_state.LOGGING_ENABLED = settings.LOG_in_selftest
 
 readme = """
 vosk-model-small-de-0.15

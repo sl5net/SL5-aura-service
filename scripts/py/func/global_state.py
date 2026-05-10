@@ -8,6 +8,8 @@ SEQUENCE_LOCK = threading.Lock()
 # The last successfully processed chunk ID. All new output must be this ID + 1.
 LAST_PROCESSED_ID = 0
 
+LOGGING_ENABLED = True
+
 # Cache to store chunks that arrived out of order. Key is the expected ID (int), Value is the chunk data.
 OUT_OF_ORDER_CACHE = {}
 

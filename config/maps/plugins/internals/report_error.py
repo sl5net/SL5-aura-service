@@ -1,9 +1,6 @@
 # config/maps/plugins/internals/report_error.py:1
-import os
-from sys import exit
 from datetime import datetime
 from pathlib import Path
-import re
 
 from scripts.py.func.audio_manager import speak_inclusive_fallback
 
@@ -34,7 +31,7 @@ def execute(match_data):
     else:
         error_line = "No recent input found in memory."
         print(error_line)
-        returns= f"Error in Log found. {e}"
+        returns= "Error in Log found."
         speak_inclusive_fallback(f"{returns}", 'de-DE')
         return returns
 

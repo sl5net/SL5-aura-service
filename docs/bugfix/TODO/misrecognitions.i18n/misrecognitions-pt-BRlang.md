@@ -48,11 +48,3 @@ eu sou bericht
 o que está molhado
 📢 13/03/2026 14:36:38:
 configuração mais alta
-📢 10/05/2026 20:40:24:
-fehlermeldung
-📢 10/05/2026 20:40:43:
-fehlermeldung
-📢 10/05/2026 21:13:07:
-Zelebrieren
-📢 10/05/2026 21:14:34:
-fahrradfahren

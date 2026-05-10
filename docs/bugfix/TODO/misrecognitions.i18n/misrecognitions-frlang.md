@@ -48,9 +48,3 @@ je suis bericht
 Comment est-ce mouillé
 📢 2026-03-13 14:36:38 :
 quelle configuration
-📢 10/05/2026 20:40:24 :
-mélange de fehler
-📢 10/05/2026 20:40:43 :
-mélange de fehler
-📢 2026-05-10 21:13:07 :
-zébriers
