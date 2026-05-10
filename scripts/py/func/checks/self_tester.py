@@ -585,13 +585,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
             logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
         else:
             print(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
-
-
     else:
-        if global_state.LOGGING_ENABLED:
-            logger.info(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
-        else:
-            print(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
+        logger.info(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
+        print(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
 
     second_per_test = duration / len(active_tests)
     max_local = 0.078
