@@ -1,4 +1,13 @@
-# System-Wide Offline Voice to Commands or Text, Pluggable System
+# SL5 Aura – Your Voice. Your Rules.
+
+> 100% offline, privacy-first voice assistant framework.  
+> Define exactly what your voice does — from a single word  
+> to full Python scripts. No cloud. No data leaves your machine.  
+> Runs in terminal, browser, or as a background service — on Linux, macOS, and Windows.
+
+| 👵 Beginner | 🎓 Learner | 🧑‍💻 Developer |
+|---|---|---|
+| OMA-Mode: just write a word, Aura does the rest | Learn with Koans — one concept at a time | Full Python scripting, plugins, API calls |
 
 ## Quick Start
 1. Download or clone this repository
