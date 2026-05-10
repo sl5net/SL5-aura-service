@@ -5,6 +5,13 @@ on:
     types: [published, edited]
 
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v0.42.00)'
+        required: true
+      body:
+        description: 'Release notes body (paste full text)'
+        required: true
 
 jobs:
   lint-release-notes:
@@ -12,14 +19,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Fetch Release Body
         id: release
         env:
-          BODY: ${{ github.event.release.body }}
-          TAG:  ${{ github.event.release.tag_name }}
+          BODY: ${{ github.event.release.body || inputs.body }}
+          TAG:  ${{ github.event.release.tag_name || inputs.tag }}
         run: |
           echo "$BODY" > /tmp/release_body.txt
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
 
       - name: Run Lint Checks
         env:
