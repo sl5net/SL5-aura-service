@@ -53,12 +53,19 @@ git pushsound
                            #### 3. متقدم: إصدار آمن للفريق
 إذا قام العديد من المطورين بالدفع إلى نفس المستودع في وقت واحد، فقد يتتبع الأمر الافتراضي التشغيل الخاطئ. استخدم هذا الإصدار "الآمن للفرع" لمشاهدة فرعك الحالي فقط:
 
+                   ##### يتحقق من سير العمل الأول فقط:
+
 ```bash
 git config --global alias.pw '!git push && sleep 3 && gh run watch $(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq ".[0].databaseId") && espeak-ng "Workflow finished"'
 
 git config --global alias.pushsound '!git push && sleep 3 && (gh run watch $(gh run list --limit 1 --json databaseId --jq ".[0].databaseId") --exit-status && espeak-ng "workflow successful" || espeak-ng "workflow failed")'
 
 ```
+
+    ##### يتحقق من جميع سير العمل المسجل في GitHub
+
+git config --global alias.pushsound \'!f() { git Push && echo "في انتظار GitHub لتسجيل سير العمل..." && Sleep 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && للمعرف في $(gh run list --commit $SHA --jsondataId -q ".[].databaseId"); قم بعمل صدى "مشاهدة معرف سير العمل $..." && gh run watch $id --exit-status || النجاح = 1؛ منتهي؛ [ $SUCCESS -eq 0 ] && espeak-ng "كل عمليات سير العمل ناجحة" || espeak-ng "فشل سير عمل واحد على الأقل"; }; و'
+
 
                            ### استكشاف الأخطاء وإصلاحها
 * **"لم يتم العثور على عمليات تشغيل":** قمنا بتضمين "النوم 3" لأن GitHub يستغرق بعض الوقت لتسجيل الدفعة وبدء سير العمل. إذا كان لديك اتصال بطيء جدًا، فقد تحتاج إلى زيادة هذا إلى "النوم 5".

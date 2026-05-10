@@ -53,7 +53,14 @@ Você pode trocar a parte `espeak-ng` por outros tipos de alertas:
 #### 3. Avançado: Versão Team-Safe
 Se vários desenvolvedores estiverem enviando para o mesmo repositório simultaneamente, o comando padrão poderá rastrear a execução errada. Use esta versão "Branch-Safe" para monitorar apenas sua própria filial atual:
 
+##### verifica apenas o primeiro fluxo de trabalho:
+
 __CODE_BLOCO_3__
+
+##### verifica todos os fluxos de trabalho registrados no GitHub
+
+git config --global alias.pushsound '!f() { git push && echo "Aguardando o GitHub registrar fluxos de trabalho..." && sleep 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && for id in $(gh run list --commit $SHA --json databaseId -q ".[].databaseId"); do echo "Assistindo ao fluxo de trabalho $id..." && gh run watch $id --exit-status || SUCESSO=1; feito; [ $SUCCESS -eq 0 ] && espeak-ng "todos os fluxos de trabalho bem-sucedidos" || espeak-ng “pelo menos um fluxo de trabalho falhou”; }; f'
+
 
 ### Solução de problemas
 * **"Nenhuma execução encontrada":** Incluímos um `sleep 3` porque o GitHub leva um momento para registrar o push e iniciar o fluxo de trabalho. Se você tiver uma conexão muito lenta, pode ser necessário aumentar para `sleep 5`.

@@ -1,0 +1,129 @@
+name: Lint Release Notes
+
+on:
+  release:
+    types: [published, edited]
+
+jobs:
+  lint-release-notes:
+    name: Validate Release Notes Body
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Release Body
+        id: release
+        env:
+          BODY: ${{ github.event.release.body }}
+          TAG:  ${{ github.event.release.tag_name }}
+        run: |
+          echo "$BODY" > /tmp/release_body.txt
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Run Lint Checks
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          ERRORS=0
+          BODY=$(cat /tmp/release_body.txt)
+
+          fail() {
+            echo "::error::$1"
+            ERRORS=$((ERRORS + 1))
+          }
+
+          warn() {
+            echo "::warning::$1"
+          }
+
+          # ── HEADER CHECKS ────────────────────────────────────────────────
+
+          # Tag format: vX.XX.XX
+          if ! echo "$TAG" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            fail "Tag '$TAG' does not match expected format vX.XX.XX"
+          fi
+
+          # Body must NOT contain the redundant section header
+          if echo "$BODY" | grep -qF "Release Notes: v"; then
+            fail "Body contains redundant title 'Release Notes: v' — remove it, the GitHub title field is enough."
+          fi
+
+          # Architecture note must be present (kursiver Pflicht-Satz)
+          if ! echo "$BODY" | grep -qF "Rule Mappings take priority; semantic AI processing is opt-in at the plugin level."; then
+            fail "Missing required architecture note: '_Rule Mappings take priority; semantic AI processing is opt-in at the plugin level._'"
+          fi
+
+          # Overview section
+          if ! echo "$BODY" | grep -qF "#### Overview"; then
+            fail "Missing required section: '#### Overview'"
+          fi
+
+          # ── STRUCTURE CHECKS ─────────────────────────────────────────────
+
+          # Required sections
+          for SECTION in "#### New Features" "#### Technical Improvements" "## ❤️ Support the Project"; do
+            if ! echo "$BODY" | grep -qF "$SECTION"; then
+              fail "Missing required section: '$SECTION'"
+            fi
+          done
+
+          # Tagline
+          if ! echo "$BODY" | grep -qF "Ultra-Fast. Private. Self-Learning. Aura."; then
+            fail "Missing tagline: 'Ultra-Fast. Private. Self-Learning. Aura.'"
+          fi
+
+          # ── LINK CHECKS ──────────────────────────────────────────────────
+
+          # Ko-fi link
+          if ! echo "$BODY" | grep -qF "ko-fi.com"; then
+            fail "Missing Ko-fi support link."
+          fi
+
+          # Stripe link
+          if ! echo "$BODY" | grep -qF "buy.stripe.com"; then
+            fail "Missing Stripe donation link."
+          fi
+
+          # Changelog link must exist
+          if ! echo "$BODY" | grep -qF "Full Changelog"; then
+            fail "Missing 'Full Changelog' link."
+          fi
+
+          # Changelog link must contain current tag
+          if ! echo "$BODY" | grep -q "$TAG"; then
+            fail "Changelog link does not reference current tag '$TAG'."
+          fi
+
+          # Changelog link version range format: vX.XX.XX...vX.XX.XX
+          if ! echo "$BODY" | grep -qE 'v[0-9]+\.[0-9]+\.[0-9]+\.\.\.'"$TAG"; then
+            warn "Changelog link may be missing a valid version range (e.g. v0.41.00...${TAG})."
+          fi
+
+          # ── CONTENT CHECKS ───────────────────────────────────────────────
+
+          # Minimum body length (guard against empty releases)
+          BODY_LEN=${#BODY}
+          if [ "$BODY_LEN" -lt 300 ]; then
+            fail "Release body is too short (${BODY_LEN} chars). Minimum is 300 characters."
+          fi
+
+          # New Features section must not be empty
+          AFTER_FEATURES=$(echo "$BODY" | sed -n '/#### New Features/,/####/p' | tail -n +2 | head -n -1)
+          if [ -z "$(echo "$AFTER_FEATURES" | tr -d '[:space:]')" ]; then
+            fail "'#### New Features' section appears to be empty."
+          fi
+
+          # Technical Improvements section must not be empty
+          AFTER_TECH=$(echo "$BODY" | sed -n '/#### Technical Improvements/,/---/p' | tail -n +2 | head -n -1)
+          if [ -z "$(echo "$AFTER_TECH" | tr -d '[:space:]')" ]; then
+            fail "'#### Technical Improvements' section appears to be empty."
+          fi
+
+          # ── RESULT ───────────────────────────────────────────────────────
+
+          if [ "$ERRORS" -gt 0 ]; then
+            echo ""
+            echo "❌ Release notes lint failed with $ERRORS error(s). Please fix before publishing."
+            exit 1
+          else
+            echo "✅ Release notes lint passed. All checks OK."
+          fi

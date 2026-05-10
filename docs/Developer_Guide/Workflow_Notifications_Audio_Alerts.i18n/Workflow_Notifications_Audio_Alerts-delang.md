@@ -53,12 +53,19 @@ Sie können den Teil „espeak-ng“ gegen andere Arten von Warnungen austausche
 #### 3. Fortgeschritten: Teamsichere Version
 Wenn mehrere Entwickler gleichzeitig auf dasselbe Repository pushen, verfolgt der Standardbefehl möglicherweise die falsche Ausführung. Verwenden Sie diese „Branch-Safe“-Version, um nur Ihren eigenen aktuellen Zweig zu überwachen:
 
+##### prüft nur den ersten Worklow:
+
 ```bash
 git config --global alias.pw '!git push && sleep 3 && gh run watch $(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq ".[0].databaseId") && espeak-ng "Workflow finished"'
 
 git config --global alias.pushsound '!git push && sleep 3 && (gh run watch $(gh run list --limit 1 --json databaseId --jq ".[0].databaseId") --exit-status && espeak-ng "workflow successful" || espeak-ng "workflow failed")'
 
 ```
+
+##### prüft alle bei GitHub registrierten Workflows
+
+git config --global alias.pushsound '!f() { git push && echo "Warten darauf, dass GitHub Workflows registriert..." && sleep 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && for id in $(gh run list --commit $SHA --json DatabaseId -q ".[].databaseId"); do echo „Watching Workflow $id…“ && gh run watch $id --exit-status || ERFOLGREICH=1; Erledigt; [ $SUCCESS -eq 0 ] && espeak-ng „alle Workflows erfolgreich“ || espeak-ng „mindestens ein Workflow ist fehlgeschlagen“; }; F'
+
 
 ### Fehlerbehebung
 * **„Keine Läufe gefunden“:** Wir schließen „sleep 3“ ein, da GitHub einen Moment braucht, um den Push zu registrieren und den Workflow zu starten. Wenn Sie eine sehr langsame Verbindung haben, müssen Sie diese möglicherweise auf „Sleep 5“ erhöhen.

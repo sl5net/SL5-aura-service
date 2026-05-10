@@ -53,12 +53,19 @@ You can swap the `espeak-ng` part for other types of alerts:
 #### 3. Advanced: Team-Safe Version
 If multiple developers are pushing to the same repository simultaneously, the default command might track the wrong run. Use this "Branch-Safe" version to only watch your own current branch:
 
+##### checks the first worklow only:
+
 ```bash
 git config --global alias.pw '!git push && sleep 3 && gh run watch $(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq ".[0].databaseId") && espeak-ng "Workflow finished"'
 
 git config --global alias.pushsound '!git push && sleep 3 && (gh run watch $(gh run list --limit 1 --json databaseId --jq ".[0].databaseId") --exit-status && espeak-ng "workflow successful" || espeak-ng "workflow failed")'
 
 ```
+
+##### checks all GitHub registered workflows
+
+git config --global alias.pushsound '!f() { git push && echo "Waiting for GitHub to register workflows..." && sleep 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && for id in $(gh run list --commit $SHA --json databaseId -q ".[].databaseId"); do echo "Watching workflow $id..." && gh run watch $id --exit-status || SUCCESS=1; done; [ $SUCCESS -eq 0 ] && espeak-ng "all workflows successful" || espeak-ng "at least one workflow failed"; }; f'
+
 
 ### Troubleshooting
 *   **"No runs found":** We include a `sleep 3` because GitHub takes a moment to register the push and start the workflow. If you have a very slow connection, you might need to increase this to `sleep 5`.

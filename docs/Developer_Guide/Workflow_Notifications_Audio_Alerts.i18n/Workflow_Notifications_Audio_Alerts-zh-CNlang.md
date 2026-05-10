@@ -46,7 +46,14 @@ __代码_块_2__
 #### 3. 高级：团队安全版本
 如果多个开发人员同时推送到同一个存储库，默认命令可能会跟踪错误的运行。使用此“分支安全”版本仅监视您自己的当前分支：
 
+##### 仅检查第一个工作流：
+
 __代码_块_3__
+
+##### 检查所有 GitHub 注册的工作流程
+
+git config --global alias.pushsound '!f() { git push && echo "正在等待 GitHub 注册工作流程..." && sleep 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && for id in $(gh run list --commit $SHA --json databaseId -q ".[].databaseId"); do echo "正在观看工作流程 $id..." && gh run watch $id --exit-status ||成功=1；完毕; [ $SUCCESS -eq 0 ] && espeak-ng "所有工作流程成功" || espeak-ng“至少一个工作流程失败”； }; f'
+
 
 ### 故障排除
 * **“未找到运行”：** 我们包含“睡眠 3”，因为 GitHub 需要一些时间来注册推送并启动工作流程。如果您的连接速度非常慢，您可能需要将其增加到“睡眠 5”。

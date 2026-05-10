@@ -53,12 +53,19 @@ git pushsound
 #### 3. アドバンスト: チームセーフ バージョン
 複数の開発者が同じリポジトリに同時にプッシュしている場合、デフォルトのコマンドが間違った実行を追跡する可能性があります。自分の現在のブランチのみを監視するには、この「ブランチセーフ」バージョンを使用します。
 
+##### は最初のワークフローのみをチェックします。
+
 ```bash
 git config --global alias.pw '!git push && sleep 3 && gh run watch $(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq ".[0].databaseId") && espeak-ng "Workflow finished"'
 
 git config --global alias.pushsound '!git push && sleep 3 && (gh run watch $(gh run list --limit 1 --json databaseId --jq ".[0].databaseId") --exit-status && espeak-ng "workflow successful" || espeak-ng "workflow failed")'
 
 ```
+
+##### は、GitHub に登録されているすべてのワークフローをチェックします
+
+git config --global alias.pushsound '!f() { git Push && echo "GitHub がワークフローを登録するのを待っています..." && sleep 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && for id in $(gh run list --commit $SHA --json databaseId -q ".[].databaseId"); do echo "ワークフロー $id を監視しています..." && gh run watch $id --exit-status ||成功=1;終わり; [ $SUCCESS -eq 0 ] && espeak-ng "すべてのワークフローが成功しました" || espeak-ng "少なくとも 1 つのワークフローが失敗しました"; };ふ」
+
 
 ### トラブルシューティング
 * **「実行が見つかりませんでした」:** GitHub がプッシュを登録してワークフローを開始するのに時間がかかるため、「スリープ 3」を含めます。接続が非常に遅い場合は、これを「スリープ 5」に増やす必要があるかもしれません。

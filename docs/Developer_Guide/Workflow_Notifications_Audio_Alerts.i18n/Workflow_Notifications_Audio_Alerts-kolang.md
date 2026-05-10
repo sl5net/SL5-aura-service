@@ -53,12 +53,19 @@ git pushsound
 #### 3. 고급: 팀 안전 버전
 여러 개발자가 동일한 저장소에 동시에 푸시하는 경우 기본 명령이 잘못된 실행을 추적할 수 있습니다. 현재 분기만 보려면 이 "분기 안전" 버전을 사용하세요.
 
+#####는 첫 번째 워크플로만 확인합니다.
+
 ```bash
 git config --global alias.pw '!git push && sleep 3 && gh run watch $(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq ".[0].databaseId") && espeak-ng "Workflow finished"'
 
 git config --global alias.pushsound '!git push && sleep 3 && (gh run watch $(gh run list --limit 1 --json databaseId --jq ".[0].databaseId") --exit-status && espeak-ng "workflow successful" || espeak-ng "workflow failed")'
 
 ```
+
+#####은 GitHub에 등록된 모든 워크플로를 확인합니다.
+
+git config --global alias.pushsound '!f() { git push && echo "GitHub에서 워크플로를 등록하는 중..." && sleep 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && for id in $(gh run list --commit $SHA --json DatabaseId -q ".[].databaseId"); do echo "워크플로 $id를 보는 중..." && gh run watch $id --exit-status || 성공=1; 완료; [ $SUCCESS -eq 0 ] && espeak-ng "모든 워크플로가 성공했습니다" || espeak-ng "적어도 하나의 작업 흐름이 실패했습니다"; }; 에프'
+
 
 ### 문제 해결
 * **"실행을 찾을 수 없음":** GitHub가 푸시를 등록하고 워크플로를 시작하는 데 시간이 걸리기 때문에 'sleep 3'을 포함합니다. 연결 속도가 매우 느린 경우 'sleep 5'로 늘려야 할 수도 있습니다.

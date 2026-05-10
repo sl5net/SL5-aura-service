@@ -46,7 +46,14 @@ Możesz zamienić część `espeak-ng` na inne typy alertów:
 #### 3. Zaawansowane: Wersja bezpieczna dla zespołu
 Jeśli wielu programistów jednocześnie przesyła dane do tego samego repozytorium, domyślne polecenie może wyśledzić nieprawidłowe uruchomienie. Użyj tej wersji „Branch-Safe”, aby oglądać tylko swoją własną, bieżącą gałąź:
 
+##### sprawdza tylko pierwszy przebieg pracy:
+
 __KOD_BLOKU_3__
+
+##### sprawdza wszystkie przepływy pracy zarejestrowane w GitHub
+
+git config --global alias.pushsound '!f() { git push && echo "Oczekiwanie, aż GitHub zarejestruje przepływy pracy..." && usypianie 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && dla identyfikatora w $(gh run list --commit $SHA --json DatabaseId -q ".[].databaseId"); do echo "Oglądanie przepływu pracy $id..." && gh run watch $id --exit-status || SUKCES=1; zrobione; [ $SUCCESS -eq 0 ] && mówienie „wszystkie przepływy pracy zakończyły się pomyślnie” || espeak-ng "co najmniej jeden przepływ pracy nie powiódł się"; }; F'
+
 
 ### Rozwiązywanie problemów
 * **„Nie znaleziono żadnych uruchomień”:** Dołączamy „uśpienie 3”, ponieważ GitHub potrzebuje chwili na zarejestrowanie wypychania i rozpoczęcie przepływu pracy. Jeśli masz bardzo wolne połączenie, być może będziesz musiał zwiększyć tę wartość do „uśpienia 5”.

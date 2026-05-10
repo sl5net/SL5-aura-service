@@ -53,12 +53,19 @@ Puedes cambiar la parte `espeak-ng` por otros tipos de alertas:
 #### 3. Avanzado: versión segura para equipos
 Si varios desarrolladores ingresan al mismo repositorio simultáneamente, el comando predeterminado podría rastrear la ejecución incorrecta. Utilice esta versión "Branch-Safe" para ver únicamente su propia rama actual:
 
+##### comprueba solo el primer flujo de trabajo:
+
 ```bash
 git config --global alias.pw '!git push && sleep 3 && gh run watch $(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq ".[0].databaseId") && espeak-ng "Workflow finished"'
 
 git config --global alias.pushsound '!git push && sleep 3 && (gh run watch $(gh run list --limit 1 --json databaseId --jq ".[0].databaseId") --exit-status && espeak-ng "workflow successful" || espeak-ng "workflow failed")'
 
 ```
+
+##### comprueba todos los flujos de trabajo registrados en GitHub
+
+git config --global alias.pushsound '!f() { git push && echo "Esperando a que GitHub registre flujos de trabajo..." && sleep 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && for id in $(gh run list --commit $SHA --json DatabaseId -q ".[].databaseId"); hacer echo "Observando el flujo de trabajo $id..." && gh ejecutar watch $id --exit-status || ÉXITO=1; hecho; [ $SUCCESS -eq 0 ] && espeak-ng "todos los flujos de trabajo exitosos" || espeak-ng "al menos un flujo de trabajo falló"; }; F'
+
 
 ### Solución de problemas
 * **"No se encontraron ejecuciones":** Incluimos un `sleep 3` porque GitHub se toma un momento para registrar el envío e iniciar el flujo de trabajo. Si tiene una conexión muy lenta, es posible que deba aumentarla a "suspensión 5".

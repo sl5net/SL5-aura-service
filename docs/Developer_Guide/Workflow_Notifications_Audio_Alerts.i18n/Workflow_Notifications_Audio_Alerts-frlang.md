@@ -53,12 +53,19 @@ Vous pouvez échanger la partie `espeak-ng` contre d'autres types d'alertes :
 #### 3. Avancé : version Team-Safe
 Si plusieurs développeurs poussent simultanément vers le même référentiel, la commande par défaut peut suivre la mauvaise exécution. Utilisez cette version « Branch-Safe » pour surveiller uniquement votre propre branche actuelle :
 
+##### vérifie uniquement le premier workflow :
+
 ```bash
 git config --global alias.pw '!git push && sleep 3 && gh run watch $(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq ".[0].databaseId") && espeak-ng "Workflow finished"'
 
 git config --global alias.pushsound '!git push && sleep 3 && (gh run watch $(gh run list --limit 1 --json databaseId --jq ".[0].databaseId") --exit-status && espeak-ng "workflow successful" || espeak-ng "workflow failed")'
 
 ```
+
+##### vérifie tous les workflows enregistrés sur GitHub
+
+git config --global alias.pushsound '!f() { git push && echo "En attente que GitHub enregistre les workflows..." && sleep 5 && SHA=$(git rev-parse HEAD) && SUCCESS=0 && for id in $(gh run list --commit $SHA --json databaseId -q ".[].databaseId"); do echo "Regarder le workflow $id..." && gh run watch $id --exit-status || SUCCÈS=1 ; fait; [ $SUCCESS -eq 0 ] && espeak-ng "tous les workflows ont réussi" || en parlant "au moins un flux de travail a échoué" ; } ; f'
+
 
 ### Dépannage
 * **"Aucune exécution trouvée":** Nous incluons un "sleep 3" car GitHub prend un moment pour enregistrer le push et démarrer le flux de travail. Si votre connexion est très lente, vous devrez peut-être l'augmenter à « veille 5 ».
