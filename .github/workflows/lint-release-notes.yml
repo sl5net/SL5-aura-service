@@ -4,6 +4,8 @@ on:
   release:
     types: [published, edited]
 
+  workflow_dispatch:
+
 jobs:
   lint-release-notes:
     name: Validate Release Notes Body
