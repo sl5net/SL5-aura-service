@@ -61,6 +61,7 @@ jobs:
           # ./.venv/bin/python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk \
           #  thefuzz python-Levenshtein pyzipper
 
+
           # if [ -f requirements.txt ]; then ./.venv/bin/python3 -m pip install -r requirements.txt; fi
 
       - name: Start LanguageTool Server
