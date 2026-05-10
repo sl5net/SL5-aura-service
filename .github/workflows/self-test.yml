@@ -1,6 +1,5 @@
 name: Self-Test (Aura Logic)
 # .github/workflows/self-test.yml
-
 on:
   push:
     branches: [ master ]
@@ -40,18 +39,17 @@ jobs:
       - name: Update apt repositories
         run: sudo apt-get update -y
 
-      - name: Run Official Ubuntu Setup
-        run: bash ./setup/ubuntu_setup.sh
-
       - name: Prepare Bootstrap Pointer (The Master Key)
         run: |
           sudo mkdir -p /tmp/sl5_aura
           sudo chmod -R 777 /tmp/sl5_aura
           echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
-
-          #  ./.venv/bin/python3 -c "from scripts.py.func.create_required_folders import setup_project_structure; setup_project_structure('${{ github.workspace }}')"
           
           cp config/settings_local.py_Example.txt config/settings_local.py
+
+      - name: Run Official Ubuntu Setup
+        run: bash ./setup/ubuntu_setup.sh
+
 
       - name: Install Additional Test Dependencies
         run: |

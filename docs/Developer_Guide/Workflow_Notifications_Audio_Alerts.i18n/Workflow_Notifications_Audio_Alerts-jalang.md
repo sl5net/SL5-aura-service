@@ -6,7 +6,7 @@
 
 **GitHub CLI** と、テキスト読み上げエンジンまたはサウンド プレーヤーがシステムにインストールされている必要があります。
 
-
+**Manjaro / Arch Linux の場合:**
 ```bash
 sudo pacman -S github-cli espeak-ng
 gh auth login
@@ -55,6 +55,9 @@ git pushsound
 
 ```bash
 git config --global alias.pw '!git push && sleep 3 && gh run watch $(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq ".[0].databaseId") && espeak-ng "Workflow finished"'
+
+git config --global alias.pushsound '!git push && sleep 3 && (gh run watch $(gh run list --limit 1 --json databaseId --jq ".[0].databaseId") --exit-status && espeak-ng "workflow successful" || espeak-ng "workflow failed")'
+
 ```
 
 ### トラブルシューティング

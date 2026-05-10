@@ -55,6 +55,9 @@ Wenn mehrere Entwickler gleichzeitig auf dasselbe Repository pushen, verfolgt de
 
 ```bash
 git config --global alias.pw '!git push && sleep 3 && gh run watch $(gh run list --branch $(git branch --show-current) --limit 1 --json databaseId --jq ".[0].databaseId") && espeak-ng "Workflow finished"'
+
+git config --global alias.pushsound '!git push && sleep 3 && (gh run watch $(gh run list --limit 1 --json databaseId --jq ".[0].databaseId") --exit-status && espeak-ng "workflow successful" || espeak-ng "workflow failed")'
+
 ```
 
 ### Fehlerbehebung
