@@ -56,13 +56,6 @@ jobs:
       - name: Install Additional Test Dependencies
         run: |
           sudo apt-get install -y xvfb xclip
-          # ./.venv/bin/python3 -m pip install --upgrade pip
-          # ./.venv/bin/python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk
-          # ./.venv/bin/python3 -m pip install psutil numpy pygame requests pyperclip jellyfish nltk \
-          #  thefuzz python-Levenshtein pyzipper
-
-
-          # if [ -f requirements.txt ]; then ./.venv/bin/python3 -m pip install -r requirements.txt; fi
 
       - name: Start LanguageTool Server
         run: |
