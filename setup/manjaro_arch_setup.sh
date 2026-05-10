@@ -14,6 +14,10 @@ if [ ! -f "requirements.txt" ]; then
     exit 1
 fi
 
+# setup/manjaro_arch_setup.sh:17
+sudo pacman -Syu --noconfirm
+sudo pacman -S --noconfirm python python-pip
+
 eval $(python3 scripts/py/setup_config.py)
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
 

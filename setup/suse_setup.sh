@@ -16,6 +16,15 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
 #cd "$PROJECT_ROOT"
 
+
+# setup/suse_setup.sh:20
+
+echo "--> Refreshing repositories..."
+sudo zypper -n refresh
+echo "--> Installing Python essentials..."
+sudo zypper -n install python3 python3-pip python3-venv
+
+
 eval $(python3 scripts/py/setup_config.py)
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
 
@@ -50,15 +59,17 @@ if command -v java &> /dev/null; then
 else
     echo "    -> No Java executable found."
 fi
+
+echo "--> Installing core dependencies..."
+sudo zypper -n install \
+    inotify-tools wget unzip portaudio-devel python3-pip
+
+
 if [ "$JAVA_OK" -eq 0 ]; then
     echo "    -> Installing a modern JDK (>=17)..."
     # SUSE CHANGE: Use zypper instead of apt
     sudo zypper refresh && sudo zypper -n install java-21-openjdk
 fi
-echo "--> Installing other core dependencies..."
-# SUSE CHANGE: Use zypper and adjust package names
-sudo zypper -n install \
-    inotify-tools wget unzip portaudio-devel python3-pip
 
 
 # --- 2. Python Virtual Environment ---

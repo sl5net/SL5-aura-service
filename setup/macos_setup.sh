@@ -14,6 +14,12 @@ if [ ! -f "requirements.txt" ]; then
     exit 1
 fi
 
+if ! command -v brew &> /dev/null; then
+    echo "ERROR: Homebrew not found. Please install it from https://brew.sh"
+    exit 1
+fi
+brew update
+brew install python
 eval $(python3 scripts/py/setup_config.py)
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
 
@@ -42,10 +48,6 @@ echo "--- Starting STT Setup for macOS ---"
 
 
 
-if ! command -v brew &> /dev/null; then
-    echo "ERROR: Homebrew not found. Please install it from https://brew.sh"
-    exit 1
-fi
 
 # create system symlink only after brew exists and openjdk is installed
 if ! brew list openjdk >/dev/null 2>&1; then

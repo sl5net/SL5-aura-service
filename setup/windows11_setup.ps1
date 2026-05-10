@@ -10,9 +10,17 @@ $ProjectRoot = Split-Path -Path $PSScriptRoot -Parent
 Set-Location -Path $ProjectRoot
 Write-Host "--> Running setup from project root: $(Get-Location)"
 
+# setup/windows11_setup.ps1:13
+
+if (!(Get-Command python -ErrorAction SilentlyContinue)) {
+    Write-Host "--> Python not found. Installing via winget..."
+    winget install -e --id Python.Python.3.12 --accept-package-agreements --accept-source-agreements
+
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+}
 python scripts/py/setup_config.py | iex
 
-Write-Host "--> Auswahl: $SELECTED_LANG | $SECOND_LANG  | Ohne: $EXCLUDE_LANGUAGES"
+Write-Host "--> SELECTED_LANG: $SELECTED_LANG | $SECOND_LANG  | no langs: $EXCLUDE_LANGUAGES"
 
 
 if (-not [string]::IsNullOrEmpty($EXCLUDE_LANGUAGES)) {
