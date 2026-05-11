@@ -386,7 +386,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     if is_ci:
         rng = random.Random(42) # deterministic for reproducible runs
     else:
-        rng = random.Random(42) # deterministic for reproducible runs
+        rng = random.Random()
 
     active_tests = []
     for test_case in test_cases:
