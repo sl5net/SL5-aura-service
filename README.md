@@ -16,6 +16,8 @@
    ===> 🧩 read [docs/LINUX_WAYLAND_dotool](docs/LINUX_WAYLAND_dotool.md)
    - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
    - Linux (openSUSE): `bash setup/suse_setup.sh`
+   - Linux (NixOS): `nix-shell setup/shell.nix` then `bash setup/nixos_setup.sh`
+   ===> ⚠️ Experimental — untested by authors, feedback welcome!   
    - macOS: `bash setup/macos_setup.sh`
    - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Start Aura: `./scripts/restart_venv_and_run-server.sh`
@@ -30,6 +32,8 @@
 *   **Linux (Wayland):** ✅ Fully supported (tested on KDE Plasma 6 / Wayland).
 *   **Linux (CachyOS / Arch-based rolling release):** ✅ Fully supported.
     Requires mimalloc (`sudo pacman -S mimalloc`) due to glibc 2.43 compatibility.
+*   **Linux (NixOS):** 🧪 Experimental — community-contributed setup, not yet tested.
+    If you try it, please open an issue or PR with your findings!    
     
 SL5 Aura is a complete, **offline voice assistant** built on **Vosk** (for Speech-to-Text) and **LanguageTool** (for Grammar/Style), featuring an optional **Local LLM (Ollama) Fallback** for creative responses and advanced fuzzy matching. It transforms your voice into precise actions and text, designed for ultimate customization through a pluggable rule system and a dynamic scripting engine.
     
