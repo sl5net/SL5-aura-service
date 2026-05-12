@@ -16,6 +16,8 @@
 ===> 🧩 leia [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-pt-BRlang.md)
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
+- Linux (NixOS): `nix-shell setup/shell.nix` e depois `bash setup/nixos_setup.sh`
+===> ⚠️ Experimental — não testado pelos autores, feedback é bem-vindo!   
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Inicie o Aura: `./scripts/restart_venv_and_run-server.sh`
@@ -30,6 +32,8 @@
 * **Linux (Wayland):** ✅ Totalmente compatível (testado no KDE Plasma 6 / Wayland).
 * **Linux (lançamento contínuo baseado em CachyOS/Arch):** ✅ Totalmente suportado.
 Requer mimalloc (`sudo pacman -S mimalloc`) devido à compatibilidade com glibc 2.43.
+* **Linux (NixOS):** 🧪 Experimental — configuração contribuída pela comunidade, ainda não testada.
+Se você tentar, abra uma edição ou PR com suas descobertas!    
   
 SL5 Aura é um **assistente de voz off-line** completo baseado em **Vosk** (para fala em texto) e **LanguageTool** (para gramática/estilo), apresentando um **Local LLM (Ollama) Fallback** opcional para respostas criativas e correspondência difusa avançada. Ele transforma sua voz em ações e texto precisos, projetados para personalização definitiva por meio de um sistema de regras conectável e um mecanismo de script dinâmico.
   
@@ -339,7 +343,7 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 ├─ **Tecla de atalho adaptativa (Iniciar/Parar)** 🐧 🍏 🪟  
 └─ **Troca instantânea de idioma** (Experimental via pré-carregamento de modelo) 🐧 🍏   
 
-**Utilitários do Sistema/**   
+**Utilitários do sistema/**   
 ├┬ **Gerenciamento de servidor LanguageTool/**   
 │├─ `start_languagetool_server.py` (inicializa o servidor LanguageTool local) 🐧 🍏 🪟  
 │└─ `stop_languagetool_server.py` (Desliga o servidor LanguageTool) 🐧 🍏
@@ -390,7 +394,7 @@ Recursos atualmente em desenvolvimento ou em status de rascunho.
 │ ├ **wannweil** (Mapa para localização Alemanha-Wannweil) 🐧 🍏 🪟  
 │ ├ **Poker Plugin (Draft)** (Controle de voz para aplicativos de pôquer) 🐧 🍏 🪟  
 │ └ **Plugin 0 A.D. (Draft)** (Controle de voz para jogo 0 A.D.) 🐧   
-├─ **Saída de som ao iniciar ou encerrar uma sessão** (Descrição pendente) 🐧   
+├─ **Saída de som ao iniciar ou encerrar uma sessão** (descrição pendente) 🐧   
 ├─ **Saída de fala para deficientes visuais** (Descrição pendente) 🐧 🍏 🪟  
 └─ **Protótipo SL5 Aura Android** (Ainda não totalmente offline) 📱  
 

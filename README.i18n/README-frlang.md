@@ -16,6 +16,8 @@
 ===> 🧩 lire [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-frlang.md)
 - Linux (Ubuntu/Debian) : `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE) : `bash setup/suse_setup.sh`
+- Linux (NixOS) : `nix-shell setup/shell.nix` puis `bash setup/nixos_setup.sh`
+===> ⚠️ Expérimental — non testé par les auteurs, commentaires bienvenus !   
 - macOS : `bash setup/macos_setup.sh`
 - Windows : `setup/windows11_setup_with_ahk_copyq.bat`
 3. Démarrez Aura : `./scripts/restart_venv_and_run-server.sh`
@@ -30,6 +32,8 @@
 * **Linux (Wayland) :** ✅ Entièrement pris en charge (testé sur KDE Plasma 6 / Wayland).
 * **Linux (version continue basée sur CachyOS / Arch) :** ✅ Entièrement pris en charge.
 Nécessite mimalloc (`sudo pacman -S mimalloc`) en raison de la compatibilité avec la glibc 2.43.
+* **Linux (NixOS) :** 🧪 Expérimental — configuration fournie par la communauté, pas encore testée.
+Si vous l'essayez, veuillez ouvrir un problème ou un PR avec vos découvertes !    
   
 SL5 Aura est un **assistant vocal hors ligne** complet, basé sur **Vosk** (pour la synthèse vocale) et **LanguageTool** (pour la grammaire/le style), avec un **Local LLM (Ollama) Fallback** en option pour des réponses créatives et une correspondance floue avancée. Il transforme votre voix en actions et en texte précis, conçus pour une personnalisation ultime grâce à un système de règles enfichable et un moteur de script dynamique.
   

@@ -16,6 +16,8 @@
 ===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-kolang.md) 읽기
 - 리눅스(우분투/데비안): `bash setup/ubuntu_setup.sh`
 - Linux(openSUSE): `bash setup/suse_setup.sh`
+- Linux(NixOS): `nix-shell setup/shell.nix` 다음 `bash setup/nixos_setup.sh`
+===> ⚠️ 실험적 — 작성자의 테스트를 거치지 않았으며 피드백을 환영합니다! XSPACEbreakX
 - macOS: `bash setup/macos_setup.sh`
 - 윈도우: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Aura 시작: `./scripts/restart_venv_and_run-server.sh`
@@ -30,6 +32,8 @@
 * **Linux(Wayland):** ✅ 완전히 지원됩니다(KDE Plasma 6 / Wayland에서 테스트됨).
 * **Linux(CachyOS / Arch 기반 롤링 릴리스):** ✅ 완벽하게 지원됩니다.
 glibc 2.43 호환성으로 인해 mimalloc(`sudo pacman -S mimalloc`)이 필요합니다.
+* **Linux(NixOS):** 🧪 실험적 — 커뮤니티에서 제공한 설정이며 아직 테스트되지 않았습니다.
+시도해보시면 이슈를 공개하거나 결과를 PR해 주세요!  XSPACEbreakX
 XSPACEbreakX
 SL5 Aura는 **Vosk**(Speech-to-Text용) 및 **LanguageTool**(문법/스타일용)을 기반으로 구축된 완전한 **오프라인 음성 어시스턴트**이며, 창의적인 응답과 고급 퍼지 매칭을 위한 **로컬 LLM(Ollama) 대체** 옵션을 제공합니다. 플러그형 규칙 시스템과 동적 스크립팅 엔진을 통해 궁극적인 사용자 정의를 위해 설계된 음성을 정확한 동작과 텍스트로 변환합니다.
 XSPACEbreakX
@@ -180,7 +184,7 @@ windows11_setup.bat -Exclude "en"
 
 **읽기 및 실행을 위한 도구를 설치합니다. [CopyQ](https://github.com/hluk/CopyQ) 또는 [AutoHotkey v2](https://www.autohotkey.com/)**. 이는 텍스트 입력 감시자에게 필요합니다.
 
-설치는 완전 자동화되어 있으며 새로운 시스템에서 2개 모델을 사용할 경우 약 **8~10분** 정도 소요됩니다.
+설치는 완전 자동화되어 있으며 새 시스템에서 2개 모델을 사용할 경우 약 **8~10분** 정도 소요됩니다.
 
 1. `setup` 폴더로 이동합니다.
 2. **`windows11_setup_with_ahk_copyq.bat`**를 두 번 클릭합니다.
@@ -332,7 +336,7 @@ XSPACEbreakX
 
 ## 🚀 주요 기능 및 OS 호환성
 
-OS 호환성 범례:XSPACEbreakX
+OS 호환성에 대한 범례:XSPACEbreakX
 * 🐧 **Linux**(예: Arch, Ubuntu)XSPACEbreakX
 * 🍏 **macOS**XSPACEbreakX
 * 🪟 **윈도우**XSPACEbreakX
@@ -373,7 +377,7 @@ XSPACEbreakX
 └─ **즉각적인 언어 전환** (모델 사전 로드를 통한 실험) 🐧 🍏 XSPACEbreakX
 
 **시스템 유틸리티/** XSPACEbreakX
-├┬ **LanguageTool 서버 관리/** XSPACEbreakX
+├┬ **LanguageTool 서버 관리/**   
 │├─ `start_언어tool_server.py`(로컬 LanguageTool 서버 초기화) 🐧 🍏 🪟  
 │└─ `stop_언어tool_server.py` (LanguageTool 서버 종료) 🐧 🍏
 ├─ `monitor_mic.sh` (예: 키보드와 모니터를 사용하지 않고 헤드셋과 함께 사용) 🐧 🍏 🪟XSPACEbreakX

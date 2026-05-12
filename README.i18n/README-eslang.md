@@ -16,6 +16,8 @@
 ===> 🧩 leer [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-eslang.md)
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
+- Linux (NixOS): `nix-shell setup/shell.nix` y luego `bash setup/nixos_setup.sh`
+===> ⚠️ Experimental: no probado por los autores, ¡recibimos comentarios!   
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Inicie Aura: `./scripts/restart_venv_and_run-server.sh`
@@ -30,6 +32,8 @@
 * **Linux (Wayland):** ✅ Totalmente compatible (probado en KDE Plasma 6/Wayland).
 * **Linux (versión continua basada en CachyOS/Arch):** ✅ Totalmente compatible.
 Requiere mimalloc (`sudo pacman -S mimalloc`) debido a la compatibilidad con glibc 2.43.
+* **Linux (NixOS):** 🧪 Experimental: configuración aportada por la comunidad, aún no probada.
+Si lo prueba, abra un problema o PR con sus hallazgos.    
   
 SL5 Aura es un completo **asistente de voz fuera de línea** integrado en **Vosk** (para voz a texto) y **LanguageTool** (para gramática/estilo), que presenta un **Reserva local de LLM (Ollama)** opcional para respuestas creativas y concordancia difusa avanzada. Transforma su voz en acciones y texto precisos, diseñados para una máxima personalización a través de un sistema de reglas conectable y un motor de secuencias de comandos dinámico.
   
@@ -346,7 +350,7 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
   
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Servicio principal de Python que orquesta Aura) 🐧 🍏 🪟  
-├┬ **Recarga en vivo en vivo** (Configuración y mapas) 🐧 🍏 🪟  
+├┬ **Recarga en vivo** (Configuración y mapas) 🐧 🍏 🪟  
 │├ **Carga segura de mapas privados (integridad primero)** 🔒 🐧 🍏 🪟  
 ││ * **Flujo de trabajo:** Carga archivos ZIP protegidos con contraseña.   
 │├ **Procesamiento y corrección de texto/** Agrupado por idioma (p. ej., `de-DE`, `en-US`, ...)   
@@ -357,7 +361,7 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
 ││ * **Criterio de detención de prioridad más alta:** Si una regla logra una **Coincidencia completa** (^...$), todo el proceso de procesamiento para ese token se detiene inmediatamente. Este mecanismo es fundamental para implementar comandos de voz confiables.  
 │├ 3. `correct_text_by_languagetool.py` (Integra LanguageTool para corrección de gramática/estilo) 🐧 🍏 🪟  
 │├ **4. Motor de reglas RegEx jerárquico con respaldo de IA de Ollama** 🐧 🍏 🪟  
-││ * **Control determinista:** Utiliza RegEx-Rule-Engine para comandos precisos y de alta prioridad y control de texto.  
+││ * **Control determinista:** Utiliza RegEx-Rule-Engine para control de texto y comandos precisos y de alta prioridad.  
 │├ **Complemento de búsqueda de vectores** (carga diferida): habilita la búsqueda semántica conectando incrustaciones de vectores locales con la capa alternativa de Ollama/LLM 🐧  
 ││ * **Reserva de Ollama AI (LLM local):** Sirve como una verificación opcional de baja prioridad para **respuestas creativas, preguntas y respuestas y coincidencias aproximadas avanzadas** cuando no se cumple ninguna regla determinista.  
 ││ * **Estado:** Integración LLM local.
@@ -382,7 +386,7 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
 Herramientas para un manejo sólido de modelos de lenguaje grandes.  
 
 **Gestión de modelos/** 🐧 🍏 🪟  
-├─ **Descargador robusto de modelos** (fragmentos de versión de GitHub) 🐧 🍏 🪟  
+├─ **Descargador robusto de modelos** (fragmentos de lanzamiento de GitHub) 🐧 🍏 🪟  
 ├─ `split_and_hash.py` (Utilidad para que los propietarios de repositorios divida archivos grandes y genere sumas de verificación) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (Herramienta para que los usuarios finales descarguen, verifiquen y vuelvan a ensamblar archivos de varias partes) 🐧 🍏 🪟  
 

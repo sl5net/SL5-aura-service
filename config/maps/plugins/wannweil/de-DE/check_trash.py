@@ -1,5 +1,5 @@
 # config/maps/plugins/wannweil/de-DE/check_trash.py
-
+import logging
 #  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
 #  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
 # or use:
@@ -8,16 +8,63 @@
 import sys
 import os
 import unicodedata
+from pathlib import Path
+
 import pdfplumber
-import datetime  # noqa: F811 Nur das Modul importieren
+import datetime
 import re
 import subprocess
 import csv
 import smtplib
 import hashlib
+import time
 
 from email.message import EmailMessage
 from dotenv import load_dotenv
+
+
+
+class CustomFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        # dt_object = datetime.fromtimestamp(record.created)
+        dt_object = datetime.datetime.fromtimestamp(record.created)
+        # "The standard log format for asctime is '%Y-%m-%d %H:%M:%S,f'."
+        time_str_without_msecs = dt_object.strftime("%H:%M:%S")
+
+        milliseconds = int(record.msecs)
+        # "The 03d ensures that milliseconds are always three digits long (e.g. 001, 010, 123)"
+        formatted_time = f"{time_str_without_msecs},{milliseconds:03d}"
+
+        return formatted_time
+
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+LOG_DIR = PROJECT_ROOT / "log"
+LOG_FILE = LOG_DIR / "_check_trash.log"
+
+if not LOG_DIR.exists():
+    LOG_DIR.mkdir(exist_ok=True)
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Clear any pre-existing handlers to prevent duplicates.
+if len(logger.handlers) > 0:
+    logger.handlers.clear()
+
+# Create a shared formatter with the custom formatTime function.
+
+log_formatter = CustomFormatter('%(asctime)s - %(levelname)-8s - %(message)s')
+
+# Create, configure, and add the File Handler.
+#file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='w', encoding='utf-8')
+file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='a', encoding='utf-8')
+
+file_handler.setFormatter(log_formatter)
+logger.addHandler(file_handler)
+
+
 
 # --- E-MAIL KONFIGURATION ---
 SMTP_SERVER = "smtp.gmail.com"
@@ -49,6 +96,9 @@ def sanitize_to_ascii(s: str, maxlen: int = None) -> str:
     """
     if s is None:
         return ''
+
+
+
     # 1) Normalize (separate accents)
     s = unicodedata.normalize('NFKD', s)
     # 2) Remove combining marks (keeps base ascii letters)
@@ -64,10 +114,10 @@ def sanitize_to_ascii(s: str, maxlen: int = None) -> str:
     s = s.replace('\x00', '')
     s = re.sub(r'[^\x09\x0A\x0D\x20-\x7E]', '', s)
     # 5) Collapse whitespace
-    s = re.sub(r'\s+', ' ', s).strip()
+    s = re.sub(r'\s+', ' ', s or "").strip()
     # 6) Optional truncate
     if maxlen and len(s) > maxlen:
-        s = s[:maxlen-3].rstrip() + '...'
+        s = (s or "")[:maxlen - 3].rstrip() + '...'
     return s
 
 def send_mail_notification(subject, body):
@@ -290,8 +340,8 @@ def check_and_notify(force_test=False):
             datum_formatiert_espeak = n['datum'].strftime(f"{d.day}.{d.month}.") # Für Windows und Linux geeignet
             msg = f"{tag_name}, {datum_formatiert} ({' & '.join(n['namen'])}) | Nächste Abholung | MÜLL-VORSCHAU |"
             msg_espeak = f"{tag_name}, {datum_formatiert_espeak} ({' & '.join(n['namen'])}) | {tag_name}, ({' & '.join(n['namen'])}) "
-            msg_espeak_ohne_emojis = re.sub(r'[^\w\s.,!-]', '', msg_espeak).strip()
-
+            # msg_espeak_ohne_emojis = re.sub(r'[^\w\s.,!-]', '', msg_espeak).strip()
+            msg_espeak_ohne_emojis = re.sub(r'[^\w\s.,!-]', '', msg_espeak or "").strip()
 
             print(msg)
             os.system(f'notify-send "MÜLL-VORSCHAU" "{msg}"')
@@ -334,10 +384,40 @@ def check_csv_alerts():
 
                 # 1. Daten auslesen & Wildcards prüfen
                 # ---------------------------------------------------------
-                start_str = row.get('Start', '').strip()
-                end_str = row.get('End', '').strip()
-                modes = row.get('Modes', '').strip()
-                msg = row.get('Message', '').replace('"', '\\"')  # Anführungszeichen escapen
+
+                start_str = (row.get('Start') or "").strip()
+                end_str = (row.get('End') or "").strip()
+                modes = (row.get('Modes') or "").strip()
+                start_val = (row.get('Start') or "").strip()
+                end_val = (row.get('End') or "").strip()
+
+                if start_val in ('', '-', '*', '—', None):
+                    start_dt = datetime.datetime.now()
+                    start = start_dt
+                    start_val = start_dt.strftime("%Y-%m-%d %H:%M")
+                else:
+                    start = datetime.datetime.strptime(start_val, "%Y-%m-%d %H:%M")
+
+                if end_val:
+                    if end_val in ('', '-', '*', '—', None):
+                        if start_val:
+                            start_dt = datetime.datetime.strptime(start_val, "%Y-%m-%d %H:%M")
+                            end_dt = start_dt + datetime.timedelta(minutes=30)
+                            end_val = end_dt.strftime("%Y-%m-%d %H:%M")
+                    end = datetime.datetime.strptime(end_val, "%Y-%m-%d %H:%M")
+                else:
+                    end = None
+
+
+                msg = f"{(row.get('Message') or '').strip()}"
+                msg = msg.replace('"', '\\"')  # Anführungszeichen escapen
+
+
+
+                # start_str = row.get('Start', '').strip()
+                # end_str = row.get('End', '').strip()
+                # modes = row.get('Modes', '').strip()
+                # msg = row.get('Message', '').replace('"', '\\"')  # Anführungszeichen escapen
 
                 # Definition: Was gilt als "leeres" Datum? (Wildcard)
                 wildcards = ['', '_', '-']
@@ -396,7 +476,22 @@ def check_csv_alerts():
                         send_mail_notification(f"Alert: {msg}", msg)  # Mail darf Emojis behalten
             except Exception as e:
                 m = f"Fehler beim Parsen einer Alert-Zeile: {e}"
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
+                logger.info(m)
                 print(m)
+                time.sleep(1)
                 espeak(m, LANG_CODE)
 
 
@@ -410,7 +505,7 @@ if __name__ == "__main__":
     # True an Wochentagen, False an Samstag und Sonntag
     is_active = datetime.datetime.now().weekday() < 5
     if not is_active:
-        is_active = datetime.datetime.now().weekday() == 6 # 6 probably sonday
+        is_active = datetime.datetime.now().weekday() == 6 # 6 probably Sunday
 
 
     # is_active = False

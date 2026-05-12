@@ -16,6 +16,8 @@
 ===> 🧩 przeczytaj [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-pllang.md)
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
+- Linux (NixOS): `nix-shell setup/shell.nix`, a następnie `bash setup/nixos_setup.sh`
+===> ⚠️ Eksperymentalny — nietestowany przez autorów, opinie mile widziane! XSPACEbreakX
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Uruchom Aurę: `./scripts/restart_venv_and_run-server.sh`
@@ -30,6 +32,8 @@
 * **Linux (Wayland):** ✅ Pełne wsparcie (testowane na KDE Plasma 6 / Wayland).
 * **Linux (wersja krocząca oparta na CachyOS / Arch):** ✅ W pełni obsługiwane.
 Wymaga mimalloc (`sudo pacman -S mimalloc`) ze względu na kompatybilność z glibc 2.43.
+* **Linux (NixOS):** 🧪 Eksperymentalny — konfiguracja opracowana przez społeczność, jeszcze nie przetestowana.
+Jeśli spróbujesz, otwórz problem lub PR i opisz swoje ustalenia!  XSPACEbreakX
 XSPACEbreakX
 SL5 Aura to kompletny **asystent głosowy offline** zbudowany na bazie **Vosk** (dla zamiany mowy na tekst) i **LanguageTool** (dla gramatyki/stylu), wyposażony w opcjonalną funkcję **Local LLM (Ollama) Fallback** do kreatywnych odpowiedzi i zaawansowanego dopasowywania rozmytego. Przekształca Twój głos w precyzyjne działania i tekst, zaprojektowany z myślą o maksymalnej personalizacji poprzez podłączany system reguł i dynamiczny silnik skryptowy.
 XSPACEbreakX
@@ -284,7 +288,7 @@ XSPACEbreakX
 │└─ `setup_initial_model.py` (Konfiguruje pierwszą konfigurację modelu) 🐧 🍏 🪟XSPACEbreakX
 ├─ **Adaptacyjny limit czasu VAD** 🐧 🍏 🪟XSPACEbreakX
 ├─ **Adaptacyjny klawisz skrótu (Start/Stop)** 🐧 🍏 🪟XSPACEbreakX
-└─ **Natychmiastowe przełączanie języka** (eksperymentalnie poprzez wstępne ładowanie modelu) 🐧 🍏 XSPACEbreakX
+└─ **Natychmiastowa zmiana języka** (eksperymentalnie poprzez wstępne ładowanie modelu) 🐧 🍏 XSPACEbreakX
 
 **Narzędzia systemowe/** XSPACEbreakX
 ├┬ **Zarządzanie serwerem LanguageTool/** XSPACEbreakX
@@ -320,7 +324,7 @@ XSPACEbreakX
 │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
 ├┬ **Ogólnosystemowa integracja dyktowania/**XSPACEbreakX
 │├ Integracja Vosk-System-Słuchacz 🐧 🍏 🪟XSPACEbreakX
-│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧XSPACEbreakX
+│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey nasłuchuje rozpoznanego tekstu i wpisuje go w całym systemie) 🪟XSPACEbreakX
 └─ **Automatyka CI/CD/**XSPACEbreakX
 └─ Rozszerzone przepływy pracy GitHub (instalacja, testowanie, wdrażanie dokumentów) 🐧 🍏 🪟 *(Działa w akcjach GitHub)*XSPACEbreakX
@@ -343,7 +347,7 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 
 ---
 
-*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT) są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
+*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT), są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
 
 
 
@@ -398,4 +402,4 @@ Jeśli uznasz to narzędzie za przydatne, rozważ zakup nam kawy! Twoje wsparcie
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
-[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)00)

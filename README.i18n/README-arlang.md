@@ -16,6 +16,8 @@
                                                  ===> 🧩 اقرأ [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-arlang.md)
                         - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
                                - Linux (openSUSE): `bash setup/suse_setup.sh`
+- Linux (NixOS): `nix-shell setup/shell.nix` ثم `bash setup/nixos_setup.sh`.
+===> ⚠️ تجريبي — لم يتم اختباره من قبل المؤلفين، نرحب بالتعليقات! اكس سبيس بريك اكس
                  - نظام التشغيل macOS: `bash setup/macos_setup.sh`
                    - ويندوز: `setup/windows11_setup_with_ahk_copyq.bat`
                  3. ابدأ Aura: `./scripts/restart_venv_and_run-server.sh`
@@ -30,6 +32,8 @@
 * **Linux (Wayland):** ✅ مدعوم بالكامل (تم اختباره على KDE Plasma 6 / Wayland).
 * **Linux (إصدار متجدد قائم على CachyOS / Arch):** ✅ مدعوم بالكامل.
 يتطلب mimalloc (`sudo pacman -S mimalloc`) بسبب توافق glibc 2.43.
+* **Linux (NixOS):** 🧪 تجريبي — إعداد ساهم به المجتمع، ولم يتم اختباره بعد.
+إذا حاولت ذلك، يرجى فتح قضية أو العلاقات العامة مع النتائج التي توصلت إليها!  اكس سبيس بريك اكس
                                               اكس سبيس بريك اكس
 SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل بالإنترنت** مبني على **Vosk** (لتحويل الكلام إلى نص) و**LanguageTool** (للقواعد النحوية/الأسلوب)، ويتميز بوظيفة احتياطية **Local LLM (Ollama) اختيارية** للاستجابات الإبداعية والمطابقة الغامضة المتقدمة. إنه يحول صوتك إلى إجراءات ونص دقيق، مصمم للتخصيص النهائي من خلال نظام قواعد قابل للتوصيل ومحرك برمجة نصية ديناميكي.
                                               اكس سبيس بريك اكس
