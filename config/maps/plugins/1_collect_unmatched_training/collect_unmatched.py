@@ -1,13 +1,25 @@
 # config/maps/plugins/1_collect_unmatched_training/collect_unmatched.py
+import subprocess
 from pathlib import Path
 import re
 import sys
+
+# config/maps/plugins/1_collect_unmatched_training/collect_unmatched.py:6
+
+def speak(text):
+    """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
+    try:
+        subprocess.run(['espeak', '-v', 'en-US', text], check=True)
+    except Exception as e:
+        print(f"STDOUT (TTS-Fallback): {text} , {e}")
 
 
 FUZZY_MAP_FILE = Path(__file__).parent / "de-DE" / "FUZZY_MAP_pre.py"
 # COLLECT_FILE   = Path(__file__).parent / ".." / ".." / ".." / "unmatched_list.txt"
 
 def execute(match_data: dict):
+    speak("collect unmatched")
+
     text = match_data['original_text']
     file_rule_path = match_data['text_after_replacement']
 

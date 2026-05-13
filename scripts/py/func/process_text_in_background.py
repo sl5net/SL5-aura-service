@@ -550,7 +550,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
         except Exception as e:
 
-            # scripts/py/func/process_text_in_background.py:506
+            # scripts/py/func/process_text_in_background.py:553 in def load_maps_for_language
             file_path = None
             spec = importer.find_spec(modname)
             if spec and spec.origin:
@@ -582,6 +582,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                     logger.info(f"❌ Reload failed: {retry_err}")
                     log4DEV(f"❌ Reload failed: {retry_err}",logger)
             # --- AUTO-FIX ENDE ---
+
 
 
 

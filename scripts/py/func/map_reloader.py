@@ -214,13 +214,13 @@ def auto_reload_modified_maps(logger,run_mode_override):
                 except (NameError, SyntaxError) as e:
                     l = 215 # noqa: E741
                     # logger.error(f"L{l}:🚨 Error Import: {e}")
-                    logger.error(f"L{l}:🚨 Error in Map [{str(map_file_path)[-35:]}]: {e}")
+                    logger.error(f"L{l}:🚨 Error in Map …{str(map_file_path)[-35:]}: {e}")
                     e_lineno = ''
                     if isinstance(e, SyntaxError):
                         e_lineno = e.lineno
-                        logger.error(f"L{l} :🚨 Error in Map: …{str(e.filename)[-35:]}, Line {e_lineno}")
+                        logger.error(f"L{l} :🚨 Error in Map …{str(e.filename)[-35:]}, Line {e_lineno}")
                     else:
-                        logger.error(f"L{l} :🚨 Error in Map: …{str(e.filename)[-35:]} {e}")
+                        logger.error(f"L{l} :🚨 Error in Map …{str(e.filename)[-35:]} {e}")
                     l += 1
                     logger.error(f"L{l}: {module_name}")
                     l += 1
@@ -465,14 +465,13 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                         module = importlib.import_module(module_name)
                     except (ImportError, ModuleNotFoundError):
                         if log_everything:
-                            logger.info(f"ℹ️ Ignoring non-importable file: {module_name}")
+                            logger.info(f"ℹ️ Ignoring non-importable file: …{str(module_name)[-35:]}")
                         continue
 
                     # scripts/py/func/map_reloader.py:368
                     except (NameError, SyntaxError, Exception) as e:
-                        logger.error(f"🚨 Error Import: {e}")
-                        logger.info(f"🚨 Error Import: {e}")
-
+                        logger.error(f"🚨 Error in …{str(module_name)[-35:]}: {e}")
+                        # logger.info(f"🚨 Error in …{str(module_name)[-35:]}: {e}")
                         was_fixed = try_auto_fix_module(file_path, e, logger)
 
                         if was_fixed:
@@ -534,7 +533,7 @@ config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
                         continue
 
                     if log_everything:
-                        logger.info(f"🔗 Triggering upstream hook: 📜{module_name}.on_folder_change(start_path_current_dir:📂...{str(start_path_current_dir)[-35:]}")
+                        logger.info(f"🔗 Triggering upstream hook: 📜{module_name}.on_folder_change(start_path_current_dir:📂…{str(start_path_current_dir)[-35:]}")
                     try:
                         module.on_folder_change(start_path_current_dir)
                     except Exception as e:

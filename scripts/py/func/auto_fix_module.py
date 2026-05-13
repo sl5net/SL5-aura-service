@@ -12,32 +12,55 @@ def try_auto_fix_module(file_path, exception_obj, logger):
       1. Fixes missing header (file path, import re).
       2. Converts unknown word into a tuple ('word', 'word').
     """
+
+    if file_path is None or exception_obj is None:
+        return False, None
+
+    if isinstance(exception_obj, str):
+        logger.info("exception_obj, str -> return False")
+        return False, None
+
     if not os.path.exists(file_path):
         logger.info(f"{file_path} not found  -> return False")
-        return False
+        return False, None
     # FIX: Only allow specific map filenames
     filename = os.path.basename(file_path)
     if filename not in ["PUNCTUATION_MAP.py", "FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
         logger.info(f"{filename} not found  -> return False")
-        return False
+        return False, None
 
+    l = 32 # noqa: E741
     error_msg = str(exception_obj)
+    if isinstance(exception_obj, TypeError) and "not callable" in error_msg:
+        logger.error(f"L{l}: 🚨 Critical Syntax Hint  …{str(file_path)[-35:]}:")
+        logger.error(f"      👉 ERROR: {error_msg}")
+        logger.error("      💡 HINT: Did you forget a comma between rules in your map? "
+                     "Python thinks you want to call a tuple as a function!")
+
     # Check for NameError: "name 'lauffe' is not defined"
     if isinstance(exception_obj, NameError):
         match = re.search(r"name '(\w+)' is not defined", error_msg)
         if match:
             bad_name = match.group(1)
-            logger.info(f"Auto-Fix: NameError for '{bad_name}' detected. Repairing file...")
+            logger.info(f"Auto-Fix: NameError for '{bad_name}' detected. Repairing …{str(file_path)[-35:]}")
             return _apply_fix_name_error(file_path, bad_name, logger)
     else:
         return _apply_fix_name_error(file_path, None, logger)
-    logger.info(f"try_auto_fix_module({str(file_path)}, {str(exception_obj)}..) -> return False")
+
+    logger.info(f"try_auto_fix_module(…{str(file_path)[-35:]}, {str(exception_obj)}..) -> return False")
     return False
 
 
 def _apply_fix_name_error(file_path, bad_name, logger):
     filename = os.path.basename(file_path)
-    logger.info(f"def _apply_fix_name_error( '{filename}' {bad_name} ...")
+    is_private = False
+    if "._" in file_path or "/_" in file_path or "\\_" in file_path:
+        is_private = True
+
+    if is_private:
+        logger.info(f"def _apply_fix_name_error( '…{str(filename)[-55:]}', '{bad_name}', …")
+    else:
+        logger.info(f"def _apply_fix_name_error( '…{str(file_path)[-55:]}', '{bad_name}', …")
 
     # 1. File age check: only fix files modified in the last 10 minutes
     age = time.time() - os.path.getmtime(file_path)
@@ -126,7 +149,7 @@ def _apply_fix_name_error(file_path, bad_name, logger):
             temp = """import re # noqa: F401
 #from pathlib import Path as p;import os as o # noqa: E702
 #with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
-#(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}) # noqa: E702
+#(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
             """
             lines.insert(1, f"{temp}\n")
             fixed_content = True
