@@ -127,6 +127,8 @@ USE_AS_PRIMARY_SPEAK = "ESPEAK"
 USE_ESPEAK_FALLBACK = True
 ESPEAK_FALLBACK_AMPLITUDE = 80
 
+AUDIO_GUIDANCE_ENABLED=True
+
 INPUT_METHOD="dotool"
 
 # text results that are stored on your computer can maybe read by other users on your computer.

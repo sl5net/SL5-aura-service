@@ -66,6 +66,8 @@ soundMute = 1
 soundUnMute = 1
 soundProgramLoaded = 1
 
+AUDIO_GUIDANCE_ENABLED=1
+
 # --- Text Output ---
 # Character appended to the end of each dictated sentence.
 # Set to "" to disable.

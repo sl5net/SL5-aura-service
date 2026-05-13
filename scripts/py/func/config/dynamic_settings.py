@@ -349,7 +349,7 @@ class DynamicSettings:
                         # print("DEBUG: PLUGINS_ENABLED has been updated with resolved statuses.")
 
                         core_logic_self_test_is_running_FILE = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
-                        if not core_logic_self_test_is_running_FILE.exists():
+                        if not core_logic_self_test_is_running_FILE.exists() and settings.AUDIO_GUIDANCE_ENABLED:
                             speak_fallback('reload_settings: updated with resolved statuses')
 
 

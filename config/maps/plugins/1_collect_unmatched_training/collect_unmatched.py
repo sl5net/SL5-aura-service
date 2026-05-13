@@ -4,7 +4,10 @@ from pathlib import Path
 import re
 import sys
 
+from scripts.py.func.config.dynamic_settings import DynamicSettings
 # config/maps/plugins/1_collect_unmatched_training/collect_unmatched.py:6
+settings = DynamicSettings()
+
 
 def speak(text):
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
@@ -18,7 +21,8 @@ FUZZY_MAP_FILE = Path(__file__).parent / "de-DE" / "FUZZY_MAP_pre.py"
 # COLLECT_FILE   = Path(__file__).parent / ".." / ".." / ".." / "unmatched_list.txt"
 
 def execute(match_data: dict):
-    speak("collect unmatched")
+    if settings.AUDIO_GUIDANCE_ENABLED:
+        speak("collect unmatched")
 
     text = match_data['original_text']
     file_rule_path = match_data['text_after_replacement']
