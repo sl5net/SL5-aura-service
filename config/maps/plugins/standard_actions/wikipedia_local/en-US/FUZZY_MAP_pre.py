@@ -23,10 +23,7 @@ FUZZY_MAP_pre = [
     # - first is read first imported, lower rules maybe not get read.
 
 
-    # Regel für die WetterabfrageGoogle Jimmy datenGoogle ja bedeutenGoogle ja wiederGucke chapiteau a
-    #Google TribüneGoogle Termine Google arm StudioTestGoogle eiche Stühlen TestGoogle Aviv du
-    # Gucke gebiete
-    # google gemini a chat mit cheminée
+    # Regel für die Wetterabfrage
 
 
 ]

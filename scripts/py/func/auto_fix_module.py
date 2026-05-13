@@ -1,8 +1,21 @@
 import os
 import re
 import ast
+import subprocess
 import time
 import shutil
+
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
+
+def speak(text):
+    """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
+    try:
+        subprocess.run(['espeak', '-v', 'en-US', text], check=True)
+    except Exception as e:
+        print(f"STDOUT (TTS-Fallback): {text} , {e}")
+
 
 def try_auto_fix_module(file_path, exception_obj, logger):
     """
@@ -36,6 +49,8 @@ def try_auto_fix_module(file_path, exception_obj, logger):
         logger.error(f"      👉 ERROR: {error_msg}")
         logger.error("      💡 HINT: Did you forget a comma between rules in your map? "
                      "Python thinks you want to call a tuple as a function!")
+        if settings.AUDIO_GUIDANCE_ENABLED:
+            speak("ERROR: Did you forget a comma between rules in your map?")
 
     # Check for NameError: "name 'lauffe' is not defined"
     if isinstance(exception_obj, NameError):

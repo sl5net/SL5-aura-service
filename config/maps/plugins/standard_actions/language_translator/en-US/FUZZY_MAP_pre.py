@@ -22,17 +22,5 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
-
-    # Regel für die WetterabfrageGoogle Jimmy datenGoogle ja bedeutenGoogle ja wiederGucke chapiteau a
-    #Google TribüneGoogle Termine Google arm StudioTestGoogle eiche Stühlen TestGoogle Aviv du
-    # Gucke gebiete
-    # google gemini a chat mit cheminée
-
-    # ('good evening', r'good Morning', 95, # min_accuracy{'flags': re.IGNORECASE, 'skip_list': ['LT_SKIP_RATIO_THRESHOLD']} ),
-    #good Eventing Good morning this day
-    #Good morning
-
-
-
 ]
 

@@ -3,7 +3,6 @@ import re # noqa: F401
 
 from pathlib import Path as p;import os as o # noqa: E702
 with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
-(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
 
 CONFIG_DIR = p(__file__).parent
 readme = """
@@ -31,6 +30,23 @@ fuser -k 8830/tcp;fuser -k 8831/tcp
 flake8 = 'source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config'
 # Wörter, die oft statt "Google" verstanden werden
 FUZZY_MAP_pre = [
+
+
+    ('', r'^(asdfsdfs|wie ist das fett|Die erhaltenen Wetterdaten hatten ein unerwartetes Format.|wie ist das bett|wie ist das etwa|mir ist das wetter|nächstes bild|wie ist das zwitschern|nicht das wetter|nächstes|wie ist das|wie ist es|nächstes we|lies es)$', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
+    }),
+
+
+    # Regel für die Wetterabfrage
+    # EXAMPLE: wie ist das wetter
+    ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)\??$', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
+    }),
+
+    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
+
 
     ('', r'^einen$', 100, {'flags': re.IGNORECASE}),
     ('', r'^einens$', 100, {'flags': re.IGNORECASE}),
@@ -175,21 +191,12 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'renumber_clipboard_text.py']
     }),
 
-# todo:
-# 09:58:10,526 - INFO   - 📢📢📢 ### kugel gemini a ###
-# 09:58:25,797 - INFO   - 📢📢📢 ### google ###
-# 09:58:42,008 - INFO   - 📢📢📢 ### google gemini ###
 
     # EXAMPLE: Suche
     ("('Rückgabe', r'Suche', 70, {'flags': re.IGNORECASE}),",
      # EXAMPLE: Neue Regel
      r'^(Neue)\s+(Regel|RegEx)$',
      70, {'flags': re.IGNORECASE}),
-
-    #Neue regelNeue regelNeue regelwohnlich neuerenix', r'pattern', 70, {'flags': re.IGNORECASE}),'
-
-
-
 
 
     # EXAMPLE: reload
@@ -212,12 +219,6 @@ FUZZY_MAP_pre = [
     }),
 
 
-    # Regel für die Wetterabfrage
-    # EXAMPLE: wie ist das wetter
-    ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)\??$', 95, {
-        'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
-    }),
 
     # seltene unnötige falsch erennung abfangen
     # EXAMPLE: wie ist das wetter

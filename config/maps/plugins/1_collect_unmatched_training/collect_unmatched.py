@@ -69,3 +69,7 @@ def _add_variant_to_fuzzy_map(file_rule_path: str, text: str):
     new_content = content[:abs_start_g2] + "|".join(variants) + content[abs_end_g2:]
     FUZZY_MAP_FILE.write_text(new_content, encoding="utf-8")
 
+    if settings.AUDIO_GUIDANCE_ENABLED:
+        speak("unmatched is added to your map")
+
+
