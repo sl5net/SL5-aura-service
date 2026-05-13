@@ -212,9 +212,19 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
 
                 except (NameError, SyntaxError) as e:
-                    logger.error(f"151:🚨 Error Import: {e}")
-                    logger.error(f"151: {module_name}")
-                    logger.error(f"151: {relative_path}")
+                    l = 215 # noqa: E741
+                    # logger.error(f"L{l}:🚨 Error Import: {e}")
+                    logger.error(f"L{l}:🚨 Error in Map [{str(map_file_path)[-35:]}]: {e}")
+                    e_lineno = ''
+                    if isinstance(e, SyntaxError):
+                        e_lineno = e.lineno
+                        logger.error(f"L{l} :🚨 Error in Map: …{str(e.filename)[-35:]}, Line {e_lineno}")
+                    else:
+                        logger.error(f"L{l} :🚨 Error in Map: …{str(e.filename)[-35:]} {e}")
+                    l += 1
+                    logger.error(f"L{l}: {module_name}")
+                    l += 1
+                    logger.error(f"L{l}: {relative_path}")
                     was_fixed = try_auto_fix_module(relative_path, e, logger)
                     if was_fixed:
                         logger.info("🔧 Fix successful. Reload...")
@@ -229,7 +239,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
 
                         except Exception as retry_error:
-                            logger.info(f"🚨 ❌ Fix failed: {retry_error}")
+                            logger.info(f"🚨 ❌ Fix failed: {retry_error} in Map:  …{str(e.filename)[-35:]}, Line {e_lineno}")
                             LAST_MODIFIED_TIMES[map_file_key] = 0
 
                     else:
@@ -420,7 +430,7 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                 logger.info(f"🔍 Scanning for lifecycle hooks in: …{str(current_dir)[-35:]}")
 
             if log_everything:
-                logger.info(f"🔍:304 ...{str(file_path)[-35:]}")
+                logger.info(f"🔍:304 …{str(file_path)[-35:]}")
 
             # Skip the file we just reloaded (avoid infinite loop or double execution)
             if file_path.resolve() == start_path.resolve():

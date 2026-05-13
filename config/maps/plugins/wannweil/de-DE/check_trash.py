@@ -376,6 +376,7 @@ def check_csv_alerts():
         for row in reader:
             print(row)
 
+
             try:
                 # Nutze hier datetime.datetime.strptime
 
@@ -391,26 +392,45 @@ def check_csv_alerts():
                 start_val = (row.get('Start') or "").strip()
                 end_val = (row.get('End') or "").strip()
 
-                if start_val in ('', '-', '*', '—', None):
+                if start_val in ('', '_', '-'):
                     start_dt = datetime.datetime.now()
                     start = start_dt
                     start_val = start_dt.strftime("%Y-%m-%d %H:%M")
                 else:
                     start = datetime.datetime.strptime(start_val, "%Y-%m-%d %H:%M")
 
-                if end_val:
-                    if end_val in ('', '-', '*', '—', None):
-                        if start_val:
-                            start_dt = datetime.datetime.strptime(start_val, "%Y-%m-%d %H:%M")
-                            end_dt = start_dt + datetime.timedelta(minutes=30)
-                            end_val = end_dt.strftime("%Y-%m-%d %H:%M")
-                    end = datetime.datetime.strptime(end_val, "%Y-%m-%d %H:%M")
+                if end_val in ('', '_', '-'):
+                    end = datetime.datetime.max  # für immer gültig
                 else:
-                    end = None
+                    end = datetime.datetime.strptime(end_val, "%Y-%m-%d %H:%M")
 
+                # if end_val:
+                #     if end_val in ('', '_', '-'):
+                #         if start_val:
+                #             start_dt = datetime.datetime.strptime(start_val, "%Y-%m-%d %H:%M")
+                #             end_dt = start_dt + datetime.timedelta(minutes=30)
+                #             end_val = end_dt.strftime("%Y-%m-%d %H:%M")
+                #     end = datetime.datetime.strptime(end_val, "%Y-%m-%d %H:%M")
+                # else:
+                #     end = None
+                # else:
+                #     end = datetime.datetime.max  # "für immer gültig"
 
                 msg = f"{(row.get('Message') or '').strip()}"
                 msg = msg.replace('"', '\\"')  # Anführungszeichen escapen
+
+                # config/maps/plugins/wannweil/de-DE/check_trash.py:422
+                if "Biotonne" in msg:
+                    print('++++msg++++++msg+++++++msg++++++msg++++++++++++++++++')
+                    logger.info(f"DEBUG msg='{msg}' modes='{modes}'")
+                    print(f"DEBUG msg='{msg}' modes='{modes}'")
+                    print('++++msgmsg+++++++++++++++++++++++++++++++++++++')
+
+                if "Biotonne" in modes:
+                    print('++++msg++++++msg+++++++msg++++++msg++++++++++++++++++')
+                    logger.info(f"DEBUG msg='{msg}' modes='{modes}'")
+                    print(f"DEBUG msg='{msg}' modes='{modes}'")
+                    print('++++msgmsg+++++++++++++++++++++++++++++++++++++')
 
 
 
@@ -478,18 +498,6 @@ def check_csv_alerts():
                 m = f"Fehler beim Parsen einer Alert-Zeile: {e}"
                 logger.info(m)
                 logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
-                logger.info(m)
                 print(m)
                 time.sleep(1)
                 espeak(m, LANG_CODE)
@@ -500,6 +508,9 @@ def check_csv_alerts():
 
 if __name__ == "__main__":
 
+    print('tipp: ')
+    print('killall yad ; clear; source .venv/bin/activate; python3 config/maps/plugins/wannweil/de-DE/check_trash.py test;')
+
     #check_csv_alerts()
 
     # True an Wochentagen, False an Samstag und Sonntag
@@ -509,7 +520,7 @@ if __name__ == "__main__":
 
 
     # is_active = False
-    # is_active = True
+    is_active = True
 
 
     if is_active:
