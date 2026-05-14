@@ -48,6 +48,20 @@ function logger_info() {
 
 cd "$PROJECT_ROOT" || exit 1
 
+
+SEARCH_CLOSE_ON_OPEN = False=$("$PYTHON_BIN" - <<'PY' 2>/dev/null || echo "True"
+import sys, importlib
+try:
+    cfg = importlib.import_module("config.settings_local")
+    val = getattr(cfg, "SEARCH_CLOSE_ON_OPEN = False", True)
+except ImportError:
+    val = True
+print("True" if bool(val) else "False")
+PY
+)
+
+
+
 DEFAULT_QUERY=".py pre # EXAMPLE:"
 REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
 
@@ -164,6 +178,7 @@ MAPS_DIR:  "scripts/py/func"
 
 LANG_TAG="${2:-}" # Optionaler zweiter Parameter (z.B. "de")
 
+while true; do
 SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/') . "$MAPS_DIR" | \
     fzf --history="$HISTORY_FILE" \
         --query="$INITIAL_QUERY" \
@@ -219,6 +234,17 @@ if [ -n "$SELECTED_LINE" ]; then
 
     # PDF ?
     # if [[ "${FILE_PATH,,}" == *.pdf ]]; then
+
+    if [ "$SEARCH_CLOSE_ON_OPEN" = "True" ]; then
+        exit 0
+    fi
+
+else
+    exit 0
 fi
+
+done
+
+
 
 
