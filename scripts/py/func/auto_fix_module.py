@@ -59,14 +59,13 @@ def try_auto_fix_module(file_path, exception_obj, logger):
             bad_name = match.group(1)
             logger.info(f"Auto-Fix: NameError for '{bad_name}' detected. Repairing …{str(file_path)[-35:]}")
             return _apply_fix_name_error(file_path, bad_name, logger)
-    else:
-        return _apply_fix_name_error(file_path, None, logger)
 
-    logger.info(f"try_auto_fix_module(…{str(file_path)[-35:]}, {str(exception_obj)}..) -> return False")
+    # logger.info(f"try_auto_fix_module(…{str(file_path)[-35:]}, {str(exception_obj)}..) -> return False")
     return False
 
 
 def _apply_fix_name_error(file_path, bad_name, logger):
+    # scripts/py/func/auto_fix_module.py:70
     filename = os.path.basename(file_path)
     is_private = False
     if "._" in file_path or "/_" in file_path or "\\_" in file_path:

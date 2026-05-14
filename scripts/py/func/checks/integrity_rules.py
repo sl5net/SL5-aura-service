@@ -155,7 +155,6 @@ INTEGRITY_CHECKS = {
 
     "scripts/py/func/checks/self_tester.py": [
         "{failed_count} Tests",
-        " == expected"
     ],
 
     "scripts/py/func/model_manager.py": [

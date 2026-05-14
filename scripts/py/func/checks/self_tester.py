@@ -245,10 +245,11 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         case('one and thousand dollars.', '1 and 1000 dollars.', 'Number with unit', lang='en-US', lt=False, prio=TestPrio.ALWAYS),
 
         # --- de-DE MAP + LT ---
-        case('tausend euro. Und euro großgeschrieben.', '1000 Euro. Und Euro großgeschrieben.',
+        case('tausend euro. Und euro großgeschrieben.', r'1000 Euro\. Und Euro großgeschrieben.',
              'Number with unit', lt=True, prio=TestPrio.HIGH),
         case('lieblingszahlen sind fünf und drei', 'Lieblingszahlen sind 5 und 3', 'numbers 5 and 3', lt=True, prio=TestPrio.ALWAYS),
-        case('was ist fünf plus drei', 'Das Ergebnis von 5 plus 3 ist 8.', 'calc in MAP Wannweil', lt=False, prio=TestPrio.ALWAYS),
+        case('was ist fünf plus drei', r'Das Ergebnis von 5 plus 3 ist 8\.', 'calc in MAP Wannweil', lt=False, prio=TestPrio.ALWAYS),
+        case('wie ist das wetter', r'Aktuell in \w+ sind es.*', 'weather plugin', lt=False, prio=TestPrio.ALWAYS),
         case('bitte reservieren sie einen tisch für zwei personen um acht uhr',
              'Bitte reservieren Sie einen Tisch für 2 Personen um 8 Uhr',
              'Polite request with time and number', lt=True, prio=TestPrio.HIGH),
@@ -267,15 +268,15 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         case('fünf komma drei', '5 , 3', 'Decimal number', lt=False, prio=TestPrio.OPTIONAL),
 
         # --- Grundlegende Satzzeichen ---
-        case('punkt', '.', 'Exact MAP', lt=False, prio=TestPrio.OPTIONAL),
-        case('fragezeichen', '?', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
-        case('ausrufezeichen', '!', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
-        case('doppelpunkt', ':', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
-        case('semikolon', ';', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
-        case('bindestrich', '-', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
-        case('gedankenstrich', '–', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
-        case('klammer auf', '(', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
-        case('klammer zu', ')', 'Exact MAP', lt=False, prio=TestPrio.HIGH),
+        case('punkt', r'\.', 'Exact MAP .', lt=False, prio=TestPrio.OPTIONAL),
+        case('fragezeichen', r'\?', 'Exact MAP ?', lt=False, prio=TestPrio.HIGH),
+        case('ausrufezeichen', '!', 'Exact MAP !', lt=False, prio=TestPrio.HIGH),
+        case('doppelpunkt', ':', 'Exact MAP :', lt=False, prio=TestPrio.HIGH),
+        case('semikolon', ';', 'Exact MAP ;', lt=False, prio=TestPrio.HIGH),
+        case('bindestrich', r'\-', 'Exact MAP -', lt=False, prio=TestPrio.HIGH),
+        case('gedankenstrich', '–', 'Exact MAP --', lt=False, prio=TestPrio.HIGH),
+        case('klammer auf', r'\(', 'Exact MAP (', lt=False, prio=TestPrio.HIGH),
+        case('klammer zu', r'\)', 'Exact MAP )', lt=False, prio=TestPrio.HIGH),
 
         # --- MAP Wannweil ---
         case('Sekunde Lauffer', 'Sigune Lauffer', 'MAP Wannweil', lt=False, prio=TestPrio.OPTIONAL),
@@ -349,8 +350,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         case('stopp', 'stopp', 'unverändert', lt=False, prio=TestPrio.HIGH),
 
         # --- Befehle ---
-        case('gehe nach links', 'Gehe nach links', 'Simple command', lt=True, prio=TestPrio.HIGH),
-        case('schalte das licht ein', 'Schalte das Licht ein', 'Simple command', lt=True, prio=TestPrio.HIGH),
+        case('gehe nach links', 'Gehe nach links', 'Simple command: gehe nach links', lt=True, prio=TestPrio.HIGH),
+        case('schalte das licht ein', 'Schalte das Licht ein', 'Simple command: schalte das licht ein', lt=True, prio=TestPrio.HIGH),
         case('öffne die tür', 'Öffne die Tür', 'Simple command', lt=True, prio=TestPrio.HIGH),
         case('wiederhole das bitte', 'Wiederhole das bitte', 'Request', lt=True, prio=TestPrio.HIGH),
 
@@ -579,15 +580,22 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     duration = time.perf_counter() - start_time
     if global_state.LOGGING_ENABLED:
         logger.info("=" * 40)
-    # m1 =f"✅ Passed: {passed_count} | ❌ Failed: {failed_count}"
+    # m1 =f"✅ of {len(test_cases)} are {len(active_tests)} tested, passed: {passed_count} | ❌ Failed: {failed_count}"
     if failed_count > 0:
         if global_state.LOGGING_ENABLED:
-            logger.info(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
+            # logger.info(
+            # f":st: {len(active_tests)} of {len(test_cases)} tests active  |  ✅ Passed: {passed_count}  |  ❌ Failed: {failed_count}  (hint: search ❌ FAIL)")
+
+            logger.info(
+                f":st: {len(active_tests)} of {len(test_cases)} tests active  |  ✅ Passed: {passed_count}  |  ❌ not passed: {failed_count}  (hint: search ❌ FAIL)")
+
+            # logger.info(f":st:✅ of {len(test_cases)} are {len(active_tests)} tested, Passed: {passed_count} | ❌ not passed: {failed_count} Tests (hint search for: ❌ FAIL )")
         else:
-            print(f":st:✅ Passed: {passed_count} | ❌ Failed: {failed_count} Tests (hint search for: ❌ FAIL )")
+            print(f":st:✅ Passed: {passed_count} | ❌ not passed: {failed_count} Tests (hint search for: ❌ FAIL )")
     else:
-        logger.info(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
-        print(f":st:✅ Passed: all {passed_count} ✅ | {failed_count} failed 🙂")
+        msg = f":st: {len(active_tests)} of {len(test_cases)} tests active ✅ Passed: all {passed_count} ✅ | {failed_count} not passed 🙂"
+        logger.info(msg)
+        print(msg)
 
     second_per_test = duration / len(active_tests)
     max_local = 0.078
@@ -779,20 +787,13 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
                 worker_dir.rmdir()
             except Exception:
                 pass
-
             duration = time.perf_counter() - start_individual
-            return actual == expected, raw_text, actual, expected, description, duration, use_lt
+            return bool(re.fullmatch(expected, actual)), raw_text, actual, expected, description, duration, use_lt
 
-    except Exception as e:
+    except Exception as e791:
         import traceback
         duration = time.perf_counter() - start_individual
-        return False, "ERROR", f"{e}\n{traceback.format_exc()}", expected, description, duration, use_lt
-
-
-    # Alt:
-    # except Exception as e:
-    #     import traceback
-    #     return False, "ERROR", f"{str(e)}\n{traceback.format_exc()}", "ERROR", "Process execution failed"
+        return False, "ERROR", f"{e791}\n{traceback.format_exc()}", expected, description, duration, use_lt
 
 def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, test_base_dir):
     raw_text, expected, description = test_data
@@ -805,12 +806,6 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
     print(':st:scripts/py/func/checks/self_tester.py:497 🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞🌞')
 
     try:
-        # Execute processing in the isolated folder
-        # process_text_in_ background(
-        #     logger, lang_code, raw_text, worker_dir,
-        #     time.time(), lt_url, output_dir_override=worker_dir
-        # )
-
         # In this private folder, there will only be ONE tts_output_*.txt file
         output_files = list(worker_dir.glob("tts_output_*.txt"))
 
@@ -842,9 +837,7 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
             expected2 = expected[:m.start()]
         else:
             expected2 = expected  # no match -> keep original
-
-
-        return actual == expected2, raw_text, actual, expected2, description
+        return bool(re.fullmatch(expected, actual)), raw_text, actual, expected2, description
 
     except Exception as e:
         return False, raw_text, f"Error: {str(e)}", expected, description

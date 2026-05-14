@@ -943,6 +943,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                                 if global_state.LOGGING_ENABLED:
                                     logger.info(f"289: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
 
+                            if new_current_text:
+                                processed_text = new_current_text
+
                             sys.stderr.write(f"DEBUG 925: new_current_text='{new_current_text}'\n")
                             sys.stderr.flush()
 

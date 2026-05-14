@@ -15,7 +15,7 @@ _google_prefix = r'(?:google|googeln?|gogol|guck|gucke[n\s]*|goris|gut|gb|kugeln
 _gemini_phonetics = (
     r'(?:gemini|gremien|cheminée|g[\s-]?mine|gehminuten|gehe\s+mit|gibt|gaming|kriminell\w*|'
     r'termin\w*|jimmy\s*(?:nein|knight|lai|neu)|germany|feminin|gewinner\w*|'
-    r'gewinn\s+ein|ge[hmw]\w*|g\s+bedeuten|g\s+wie\s+neu|seminar\w*)'
+    r'gewinn\s+ein|ge[mw]\w*|g\s+bedeuten|g\s+wie\s+neu|seminar\w*)'
 )
 _common_metaVERBOSE = {
     'flags': re.IGNORECASE | re.VERBOSE,

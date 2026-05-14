@@ -16,8 +16,10 @@ def validate_setup(project_root, logger):
     logger.info("INFO: Running setup validation...")
     log_dir = os.path.join(project_root, 'log')
     if not os.path.isdir(log_dir):
-        logger.info("\nFATAL: Setup validation failed. The 'log' directory is missing.", file=sys.stderr)
-        logger.info("       Please run the appropriate setup script.", file=sys.stderr)
+        logger.info("\nFATAL: Setup validation failed. The 'log' directory is missing.")
+        logger.info("       Please run the appropriate setup script.")
+        logger.critical("\nFATAL: Setup validation failed. The 'log' directory is missing.")
+        logger.critical("       Please run the appropriate setup script.")
         sys.exit(1)
     logger.info("INFO: [OK] Setup validation successful.")
 
