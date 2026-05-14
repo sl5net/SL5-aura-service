@@ -17,14 +17,29 @@ CONFIG_DIR = Path(__file__).parent
 acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
 AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
 suche = r'(such|suche|suche du|sucht|suchen|sure|Schuhe|hoover|buch|zug|Zuge|stiefel|schlüchtern)'
+
+_meta_run_search_result = {
+    'flags': re.IGNORECASE,
+    'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
+}
+
 FUZZY_MAP_pre = [
-    #Doch wenn Zuge doch gewinnt
-    # ('zyäzwnyöxü', r'^(zyxü|sourcecode|quelltext|funkt|funktionen|methoden|sowas|beiden kuchen quelltext|funktion)$', 10),
+
+    ('log', fr'^(log|look|oh|oh hallo|oh ein ok)$', 70, _meta_run_search_result),
+
+
+    ('log', fr'^{AURA_VARIANTS}\s*(logik|logdateien|log-datei|logdateien|logging|rainer|ein rock|lockt hat|ein okt hat|log-datei|logdatei|eine logdatei|ein oktett|ein log-datei)$', 70, _meta_run_search_result),
+
+    # EXAMPLE: log
+    ('log', fr'^{AURA_VARIANTS}\s*(log|look)$', 70, _meta_run_search_result),
+
+    #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
 
     # --- Sprachsteuerung für den Lernmodus ---
     ('Lernmodus...', fr'^{AURA_VARIANTS}.*lernmodus (an\w*|ein\w*|aus\w*|starten|stoppen)$', 100, {
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),
+
 
 
     # --- Training-Plugin (wird vom Skript oben ein/ausgeschaltet) ---
@@ -85,5 +100,5 @@ FUZZY_MAP_pre = [
         'flags': re.IGNORECASE,
         'on_match_exec': [Path(__file__).resolve().parent /  'run_doc_search.py']
     }),
-    #
+
 ]

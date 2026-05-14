@@ -25,9 +25,12 @@ def execute(match_data):
     elif docs_dir == '~/dokumente' or docs_dir == '~/Dokumente':
         docs_dir = '~/Dokumente'
         file_filter = "*.pdf|*.png|*.jpg"
+    elif docs_dir == 'log':
+        file_filter = "*.log"
     # elif docs_dir == '~/documents':
     #     docs_dir = '~/Documents'
     #     file_filter = "*.md"
+    #
     else:
         file_filter = "*.py|*.txt|*.md"
         print(f'exit docs_dir = {docs_dir} 2026-0407-1220')
