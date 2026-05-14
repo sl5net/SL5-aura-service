@@ -148,7 +148,7 @@ INTEGRITY_CHECKS = {
 
 
 
-    "type_watcher.sh": [
+    "scripts/type_watcher/type_watcher.sh": [
         "printf 'type %s",
         "LC_ALL=C.UTF-8 timeout 1 xdotool key --delay 100 Return"
     ],

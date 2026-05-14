@@ -59,13 +59,13 @@ else
   find . -type f
 fi | fzf --style full --preview 'cat {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection clipboard
 """
-
+#
 
 FUZZY_MAP_pre = [
 
     (f'{Path(PROJECT_ROOT_FOR_MAP, "log", "aura_engine.log").as_posix()}',
     # EXAMPLE: Aura log
-    r'^(Aura |laura |dora |hurra |\w?aura |prora |zauberer |over a |oral )?(log-datei|L[o]+[gk]\w*|L[o]+[gk]\w*|L[o]+[gk]\w*|low|luck|lux|luft|b datei|voll gesorgt)$',
+    r'^(Aura |laura |dora |hurra |\w?aura |prora |zauberer |over a |oral )?(log-datei|L[o]+[gk]\w*|L[o]+[gk]\w*|L[o]+[gk]\w*|low|luck|lux|luft|b datei|voll gesorgt|Loch)$',
     95,
     {'flags': re.IGNORECASE,'skip_list': ['LanguageTool']}),
 

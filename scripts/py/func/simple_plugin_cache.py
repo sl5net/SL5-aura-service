@@ -7,6 +7,7 @@ from typing import Optional
 
 
 from typing import Any, Tuple
+import os
 
 # --- Configuration ---
 # NOTE: Using a static name for the cache DB ensures all plugins use the same file.
@@ -19,17 +20,11 @@ def _json_default_converter(obj):
         return str(obj)
     raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')
 
-# def get_cache_db_path(base_dir: Path) -> Path:
-#     p = Path(str(base_dir).replace("/config", "/data", 1))
-#     p.mkdir(parents=True, exist_ok=True)
-#     return p / CACHE_DB_FILE
-
 def get_cache_db_path(base_dir: Path) -> Path:
     """Returns the absolute path to the cache database file."""
-    # Assuming the cache should live in a persistent location like the main tmp/log directory
-    # If data/ does not exist, Python throws the error - no more blind saving.
-    return base_dir.parent / "data" / CACHE_DB_FILE
-    # return base_dir.parent / CACHE_DB_FILE
+    db_file_path = base_dir.parent / "data" / CACHE_DB_FILE
+    os.makedirs(os.path.dirname(db_file_path), exist_ok=True)
+    return db_file_path
 
 def get_cached_result(
         base_dir: Path,
@@ -105,13 +100,21 @@ def get_cached_result(
             # Cache Miss: Expired, falls through to return None
 
 
-                # Cache Miss: Expired
+            # Cache Miss: Expired
             if logger:
                 logger.debug("CACHE MISS: Entry expired.")
-
+    # except sqlite3.Error as e:
     except Exception as e:
+        print(
+            f"Cache read error! "
+            f"DB-Path: {os.path.abspath(db_path)} | "
+            f"CWD: {os.getcwd()} | "
+            f"Error: {e}"
+        )
+    # except Exception as e:
         # In a caching utility, errors should be swallowed or logged without stopping execution
-        print(f"Cache read error: {e}")
+        # scripts/py/func/simple_plugin_cache.py:114
+        # print(f"Cache read error: {e}")
 
     finally:
         if conn:

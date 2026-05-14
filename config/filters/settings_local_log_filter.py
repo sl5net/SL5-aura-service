@@ -1,9 +1,9 @@
 # config/filters/settings_local_log_filter.py
 # r"▉",
 
-LOG_EXCLUDE = []
+# LOG_EXCLUDE = []
 
-LOG_EXCLUDE_sdfsdf = [
+LOG_EXCLUDE = [
     r"📦",
     r"PUNCTUATION_MAP",
     r"〃",

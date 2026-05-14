@@ -8,8 +8,7 @@ import os
 # Configuration: Directories to scan for scripts
 DIRS_TO_SCAN = ['setup', 'config', 'githooks', 'update','scripts']
 FILES_IN_ROOT = [
-    'start_aura.bat', 'update.bat', 'install_hooks.sh',
-    'type_watcher.ahk', 'scripts/sh/type_watcher_keep_alive.sh'
+    'start_aura.bat', 'update.bat', 'install_hooks.sh'
 ]
 OUTPUT_FILENAME = 'utility_scripts.rst'
 

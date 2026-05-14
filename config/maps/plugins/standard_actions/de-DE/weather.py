@@ -17,13 +17,18 @@ CONFIG_FILE = Path(__file__).parent / 'weather_config.ini'
 
 WEATHER_TTL = 900 # 15 Minuten
 
-log_dir = PROJECT_ROOT / 'log' / 'weather_plugin'
+log_dir = PROJECT_ROOT / 'log'
 log_dir.mkdir(parents=True, exist_ok=True)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 fh = logging.FileHandler(log_dir / 'weather.log')
 fh.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logger.addHandler(fh)
+
+# config/maps/plugins/standard_actions/de-DE/weather.py:28
+CACHE_DIR_weather = p('/') / 'tmp' / 'sl5_aura' / 'weather_cache'
+CACHE_DIR_weather.mkdir(parents=True, exist_ok=True)
+# BASE_DIR_FOR_CACHE = CACHE_DIR
 
 
 def execute(match_data):
@@ -55,16 +60,13 @@ def execute(match_data):
     # Hier müsste base_dir korrekt übergeben werden. Für's Beispiel nehmen wir an, es ist der Plugin-Ordner.
 
     # --- 1. CACHE PRÜFEN (Key-Args sind die Parameter, die die Ausgabe bestimmen) ---
-    BASE_DIR_FOR_CACHE = Path(__file__).parent.parent.parent.parent.parent.parent # <- Korrigieren Sie dies auf Ihren stabilen TMP-Pfad!
 
-    CACHE_DIR = p('/') / 'tmp' / 'weather_cache'
-    CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
     cache_key_args = (city, lang)
 
     # Normaler Cache-Check
     try:
-        cached_response = get_cached_result(CACHE_DIR, 'get_weather', cache_key_args, WEATHER_TTL)
+        cached_response = get_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, WEATHER_TTL)
         if cached_response:
             return cached_response
     except Exception as e:
@@ -75,7 +77,7 @@ def execute(match_data):
 
     cache_key_args = (city, lang)
     cached_response = get_cached_result(
-        BASE_DIR_FOR_CACHE,
+        CACHE_DIR_weather,
         'get_weather',
         cache_key_args,
         WEATHER_TTL
@@ -110,7 +112,7 @@ def execute(match_data):
 
     except Exception as e:
         logger.warning(f"API Fehler: {e}. Versuche Stale-Cache.")
-        return get_cached_result(CACHE_DIR, 'get_weather', cache_key_args, ttl_seconds=None)
+        return get_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, ttl_seconds=None)
 
     # --- 3. EXCEPTION: FAILOVER AUF ABGELAUFENEN CACHE ---
     except (subprocess.CalledProcessError, json.JSONDecodeError, subprocess.TimeoutExpired, FileNotFoundError, Exception) as e:
@@ -122,7 +124,7 @@ def execute(match_data):
         # ZWEITER CACHE-ABRUF: Ohne TTL-Angabe (d.h., ttl_seconds=None)
         # Dies ruft den letzten gespeicherten Eintrag ab, egal wie alt er ist (ewiger Cache).
         stale_response = get_cached_result(
-            BASE_DIR_FOR_CACHE,
+            CACHE_DIR_weather,
             'get_weather',
             cache_key_args,
             logger=logger # Wichtig: TTL wird hier weggelassen/ist None
@@ -173,7 +175,7 @@ def execute(match_data):
 
         # --- ERFOLG: ERGEBNIS SPEICHERN ---
         set_cached_result(
-            BASE_DIR_FOR_CACHE,
+            CACHE_DIR_weather,
             'get_weather',
             cache_key_args,
             response

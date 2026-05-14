@@ -119,7 +119,7 @@ else:
 PROJECT_ROOT_POSIX = Path(PROJECT_ROOT_DISPLAY_STR).as_posix()
 HOME_DIR_POSIX = Path(home_dir_str).as_posix()
 
-suche_text = r'grep -rn "text\|string" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__" | grep -v "/_" | grep -v "/docs" '
+suche_text = r'grep -rn "text\|string" --include="*.py" . | grep -v ".venv"  | grep -v ".git" | grep -v "venv" | grep -v "__pycache__" | grep -v "/_" | grep -v "/docs" | grep -v "/doc_sources" | grep -v "/release-chunks" | grep -v "/data" '
 
 """
 grep -rn "suche datei" --include="*.py" . | grep -v ".venv" | grep -v "venv" | grep -v "__pycache__" | grep -v "/_"
@@ -163,8 +163,6 @@ FUZZY_MAP_pre = [
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
       'only_in_windows': ['Konsole', 'konsole', 'Console']
       }),
-
-    # suche nach text So gedachttext suche
 
     (f"{suche_text}",
      # EXAMPLE: suche text
