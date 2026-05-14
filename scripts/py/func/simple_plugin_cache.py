@@ -80,7 +80,8 @@ def get_cached_result(
 
             if cached_timestamp is None:
                 print("DEBUG: Cache entry found but timestamp is None. Treating as expired.")
-                logger.warning("CACHE ERROR: Timestamp is None. Treating as expired.")
+                if logger:
+                    logger.warning("CACHE ERROR: Timestamp is None. Treating as expired.")
                 return None
 
             # 2. Check TTL validity
@@ -95,7 +96,8 @@ def get_cached_result(
 
             if time_since_cache < ttl_seconds:
                 # Cache Hit: Valid
-                logger.info(f"CACHE HIT: Valid for {ttl_seconds - time_since_cache:.2f}s more.")
+                if logger:
+                    logger.info(f"CACHE HIT: Valid for {ttl_seconds - time_since_cache:.2f}s more.")
                 return json.loads(cached_result_json)
             # Cache Miss: Expired, falls through to return None
 
