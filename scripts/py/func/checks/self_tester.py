@@ -406,28 +406,6 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         if global_state.LOGGING_ENABLED:
             logger.info(f':st: DEBUG active_tests count={len(active_tests)}')
 
-    # active_tests = []
-    # for test_case in test_cases:
-    #     rand = random.random()
-    #     # if len(test_case) == 6:
-    #     raw_text, expected, description, check_lang, use_lt, prio = test_case
-    #     if check_lang == lang_code and rand <= PRIO_CHANCE[prio]:
-    #         active_tests.append((raw_text, expected, description, use_lt))
-    #         if not is_ci:    logger.info(f':st:🌞🌞🌞🌞🌞 append({raw_text}, {expected})')
-
-        # elif len(test_case) == 5:
-        #     raw_text, expected, description, check_lang, use_lt = test_case
-        #     if check_lang == lang_code and rand < PRIO_CHANCE[prio]:
-        #         active_tests.append((raw_text, expected, description, use_lt))
-        # elif len(test_case) == 4:
-        #     raw_text, expected, description, check_lang = test_case
-        #     if check_lang == lang_code and rand < PRIO_CHANCE[prio]:
-        #         active_tests.append((raw_text, expected, description, True))
-        # elif len(test_case) == 3 and rand < PRIO_CHANCE[prio]:
-        #     active_tests.append((*test_case, True))
-        # elif len(test_case) == 2 and lang_code == 'de-DE' and rand < PRIO_CHANCE[prio]:
-        #     active_tests.append((test_case[0], test_case[1], '', True))
-
     if is_ci:
         print(f':st: DEBUG active_tests count={len(active_tests)}')
 
@@ -435,34 +413,14 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     if global_state.LOGGING_ENABLED:
         logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES...")
-    # if not is_ci: logger.info(f":st:Running {len(active_tests)} tests in parallel (ThreadPool)...")
-
-
-    # 2. Worker function with isolated sub-directory
 
     # 3. Parallel Execution
     passed_count = 0
     failed_count = 0
 
-    # Use 20 workers to fully saturate the 16-core Ryzen CPU
-
-
-
-    # ProcessPoolExecutor nutzt echte CPU-Kerne parallel
-    # But ATTENTION: The 'logger' object often cannot be easily copied into processes.
-    # We pass None as a logger or use simple print logging within.
-
-
-    # scripts/py/func/checks/self_tester.py:383
-
     import multiprocessing
     if is_ci:
         print(":st: DEBUG multiprocessing imported")
-
-    # ctx = multiprocessing.get_context("fork")
-    # with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
-
-
 
     os.environ["AURA_SELF_TEST_RUNNING"] = "1"  # inherited by fork
     start_time = time.perf_counter()
@@ -475,7 +433,6 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     num_workers = os.cpu_count()
     if is_ci:
         print(f":st: DEBUG ctx={ctx} num_workers={num_workers}")
-    # lt_workers = max(2, num_workers // 2)
 
     lt_tests = [(r, e, d, True) for r, e, d, use_lt in active_tests if use_lt]
     if is_ci:
