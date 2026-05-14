@@ -53,6 +53,7 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
 
 SHOW_SEARCH_ON_STARTUP = True
+SEARCH_CLOSE_ON_OPEN = False
 
 SIGNATURE_COOLDOWN = 50 # 600
 
