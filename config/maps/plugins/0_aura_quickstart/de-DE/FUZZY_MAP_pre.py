@@ -21,11 +21,12 @@ suche = r'(such|suche|suche du|sucht|suchen|sure|Schuhe|hoover|buch|zug|Zuge|sti
 _meta_run_search_result = {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
+    'only_in_windows': [ r'\.py'],
 }
-
+# Sherlock
 FUZZY_MAP_pre = [
 
-    ('log', fr'^(log|look|oh|oh hallo|oh ein ok)$', 70, _meta_run_search_result),
+    ('log', r'^(log|look|oh|oh hallo|oh ein ok|Sherlock)$', 70, _meta_run_search_result),
 
 
     ('log', fr'^{AURA_VARIANTS}\s*(logik|logdateien|log-datei|logdateien|logging|rainer|ein rock|lockt hat|ein okt hat|log-datei|logdatei|eine logdatei|ein oktett|ein log-datei)$', 70, _meta_run_search_result),
