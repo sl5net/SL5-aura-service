@@ -1,17 +1,12 @@
 #!/bin/bash
-#
-# restart_venv_and_run-server.sh
-#
-# Final version: Correctly terminates ALL associated processes (main service and watcher)
-# and reliably waits for them to disappear before starting a new instance.
-
+# scripts/restart_venv_and_run-server.sh
 
 # --- Configuration ---
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-
 PROJECT_ROOT=$(realpath "$SCRIPT_DIR/..")
 
+cd "$PROJECT_ROOT" || { echo "Error cd $PROJECT_ROOT to Projekt-Root ==> exit"; exit 1; }
 
 
 SERVER_SCRIPT="$SCRIPT_DIR/activate-venv_and_run-server.sh"

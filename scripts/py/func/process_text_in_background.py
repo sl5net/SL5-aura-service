@@ -1115,7 +1115,7 @@ def process_text_in_background(logger,
 
     # print(f':st: \nprocess_text_in_background:967 raw_text:{raw_text}')
 
-
+    # scripts/py/func/process_text_in_background.py:1118
     if chunk_id > 0:
 
         # 1. Warte-Loop, um die Reihenfolge zu garantieren scripts/py/func/process_text_in_background.py:947
@@ -1153,6 +1153,7 @@ def process_text_in_background(logger,
                     OUT_OF_ORDER_CACHE[chunk_id] = (logger, LT_LANGUAGE, raw_text, output_dir, recording_time, active_lt_url, output_dir_override)
 
             # Kurze, effiziente Wartezeit, um den Thread freizugeben
+            # scripts/py/func/process_text_in_background.py:1156
             time.sleep(0.005)
 
             with SEQUENCE_LOCK:
@@ -1490,12 +1491,16 @@ def process_text_in_background(logger,
 
                 # sys.stderr.write(f"1339 new_processed_text={new_processed_text}\n")
                 # sys.stderr.flush()
-
-                result_languagetool = correct_text_by_languagetool(
-                    logger,
-                    active_lt_url,
-                    LT_LANGUAGE,
-                    new_processed_text).lstrip('\uFEFF')
+                try:
+                    # scripts/py/func/process_text_in_background.py:1494
+                    result_languagetool = correct_text_by_languagetool(
+                        logger,
+                        active_lt_url,
+                        LT_LANGUAGE,
+                        new_processed_text).lstrip('\uFEFF')
+                except Exception as e:
+                    logger.error(f"LanguageTool failed (DB error?), skipping correction: {e}")
+                    result_languagetool = new_processed_text
 
                 # sys.stderr.write(f"1349 result_languagetool={result_languagetool}\n")
                 # sys.stderr.flush()

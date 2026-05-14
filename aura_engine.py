@@ -142,7 +142,7 @@ PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 # PROJECT_ROOT = Path(__file__).resolve().parent
 
-
+# aura_engine.py:145
 setup_project_structure(PROJECT_ROOT)
 
 LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.

@@ -1,4 +1,5 @@
 # scripts/py/func/correct_text_by_languagetool.py:1
+
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -19,9 +20,17 @@ import json
 # from typing import Optional
 
 DB_PATH = "data/_languagetool_cache.db"
-
+# scripts/py/func/correct_text_by_languagetool.py:22
 def get_db_conn(path: str = DB_PATH) -> sqlite3.Connection:
-    conn = sqlite3.connect(path, timeout=30, isolation_level=None)  # autocommit off if you call begin
+    try:
+        conn = sqlite3.connect(path, timeout=30, isolation_level=None)  # autocommit off if you call begin
+    except sqlite3.OperationalError as e:
+        import os
+        print(f"DEBUG: path: {path}")
+        print(f"DEBUG: UID: {os.getlogin()} (UID: {os.getuid()})")
+        print(f"DEBUG: access: {os.access(os.path.dirname(path), os.W_OK)}")
+        raise e
+
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA journal_mode = WAL")
     return conn
