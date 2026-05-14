@@ -172,6 +172,11 @@ SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | 
         --bind="ctrl-z:previous-history" \
         --bind="ctrl-y:next-history" \
         --bind="ctrl-backspace:backward-kill-word" \
+        --bind="ctrl-delete:kill-word" \
+        --bind="ctrl-left:backward-word" \
+        --bind="ctrl-right:forward-word" \
+        --bind="home:beginning-of-line" \
+        --bind="end:end-of-line" \
         --bind="ctrl-g:execute-silent(f={1}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{2}\")" \
         --bind='ctrl-x:execute-silent(echo {3..} | xclip -selection clipboard)' \
         --bind='ctrl-a:execute-silent(awk -v t={2} "BEGIN {t=t+0} NR>t-5 && NR<t+5 {print \$0}" {1} | xclip -selection clipboard)' \
