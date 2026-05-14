@@ -23,6 +23,7 @@ SERVICE_START_OPTION = 0
 
 SHOW_SEARCH_ON_STARTUP = True
 # set False, for "silent"
+SEARCH_CLOSE_ON_OPEN = False
 
 ENABLE_WAKE_WORD = False
 # ENABLE_WAKE_WORD = True: During an active recording session,
