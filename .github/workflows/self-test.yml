@@ -65,6 +65,11 @@ jobs:
           java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
           sleep 10
 
+      - name: Initialize Eco-CI
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: start
+
       - name: Run Self-Tester with Final Guard
         env:
           PYTHONPATH: ${{ github.workspace }}
@@ -81,6 +86,11 @@ jobs:
             echo "❌ FINAL GUARD FAILURE: Success summary '| 0 failed' not found!"
             exit 1
           fi
+
+      - name: Estimate Energy Consumption
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: display-results
 
       - name: Package Assets as Artifact
         if: always()
