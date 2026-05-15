@@ -21,7 +21,8 @@ permissions:
   contents: write
 
 env:
-  DRY_RUN: ${{ inputs.dry_run != 'false' }}
+  DRY_RUN: ${{ inputs.dry_run == true || inputs.dry_run == 'true' }}
+
   MAX_AGE_DAYS: ${{ inputs.max_age_days || 180 }}
   MIN_BRANCHES: ${{ inputs.min_branches || 10 }}
 
