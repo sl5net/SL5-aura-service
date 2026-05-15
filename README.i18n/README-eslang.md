@@ -9,11 +9,13 @@
 |---|---|---|
 | Modo OMA: solo escribe una palabra, Aura hace el resto | Aprenda con Koans: un concepto a la vez | Secuencias de comandos Python completas, complementos, llamadas API |
 
+![Energy Consumption](https://metrics.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=self-test.yml)
+
 ## Inicio rápido
 1. Descarga o clona este repositorio
 2. Ejecute el script de configuración para su sistema operativo (consulte la carpeta `setup/`):
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 leer [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-eslang.md)
+===> 🧩 leer [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-eslang.md)
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS): `nix-shell setup/shell.nix` y luego `bash setup/nixos_setup.sh`
@@ -21,7 +23,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Inicie Aura: `./scripts/restart_venv_and_run-server.sh`
-4. Presione su tecla de acceso rápido y hable: **[full guide →](../docs/GettingStarted.i18n/GettingStarted-eslang.md)**
+4. Presione su tecla de acceso rápido y hable: **[full guide →](../docs/GettingStarted-eslang.md)**
 
 
 **⚠️ Requisitos del sistema y compatibilidad**
@@ -46,7 +48,7 @@ Nota: Muchos textos son traducciones generadas automáticamente de la documentac
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Consejo:** Para una mejor experiencia con el terminal, consulte [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-eslang.md).
+> **Consejo:** Para una mejor experiencia con el terminal, consulte [Zsh Integration](../docs/linux/zsh-integration-eslang.md).
 
 ### 🎥 Vídeotutorial
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -350,24 +352,24 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
   
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Servicio principal de Python que orquesta Aura) 🐧 🍏 🪟  
-├┬ **Recarga en vivo** (Configuración y mapas) 🐧 🍏 🪟  
+├┬ **Recarga en vivo en vivo** (Configuración y mapas) 🐧 🍏 🪟  
 │├ **Carga segura de mapas privados (integridad primero)** 🔒 🐧 🍏 🪟  
 ││ * **Flujo de trabajo:** Carga archivos ZIP protegidos con contraseña.   
 │├ **Procesamiento y corrección de texto/** Agrupado por idioma (p. ej., `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (Estandariza la puntuación post-transcripción) 🐧 🍏 🪟  
-│├ 2. **Precorrección inteligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-eslang.md)) 🐧 🍏 🪟  
+│├ 2. **Precorrección inteligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-eslang.md)) 🐧 🍏 🪟  
 ││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas (on_match_exec) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
 ││ * **Ejecución en cascada:** Las reglas se procesan secuencialmente y sus efectos son **acumulativos**. Las reglas posteriores se aplican al texto modificado por reglas anteriores.  
 ││ * **Criterio de detención de prioridad más alta:** Si una regla logra una **Coincidencia completa** (^...$), todo el proceso de procesamiento para ese token se detiene inmediatamente. Este mecanismo es fundamental para implementar comandos de voz confiables.  
 │├ 3. `correct_text_by_languagetool.py` (Integra LanguageTool para corrección de gramática/estilo) 🐧 🍏 🪟  
 │├ **4. Motor de reglas RegEx jerárquico con respaldo de IA de Ollama** 🐧 🍏 🪟  
-││ * **Control determinista:** Utiliza RegEx-Rule-Engine para control de texto y comandos precisos y de alta prioridad.  
+││ * **Control determinista:** Utiliza RegEx-Rule-Engine para comandos precisos y de alta prioridad y control de texto.  
 │├ **Complemento de búsqueda de vectores** (carga diferida): habilita la búsqueda semántica conectando incrustaciones de vectores locales con la capa alternativa de Ollama/LLM 🐧  
 ││ * **Reserva de Ollama AI (LLM local):** Sirve como una verificación opcional de baja prioridad para **respuestas creativas, preguntas y respuestas y coincidencias aproximadas avanzadas** cuando no se cumple ninguna regla determinista.  
 ││ * **Estado:** Integración LLM local.
 │└ 5. **Postcorrección inteligente** (`FuzzyMap`)**– Refinamiento post-LT** 🐧 🍏 🪟  
 ││ * Se aplica después de LanguageTool para corregir resultados específicos de LT. Sigue la misma lógica estricta de prioridad en cascada que la capa de corrección previa.  
-││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-eslang.md)) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
+││ * **Ejecución dinámica de secuencias de comandos:** Las reglas pueden activar secuencias de comandos Python personalizadas ([on_match_exec](../docs/advanced-scripting-eslang.md)) para realizar acciones avanzadas como llamadas API, E/S de archivos o generar respuestas dinámicas.  
 ││ * **Refuerzo difuso:** La **Comprobación de similitud difusa** (controlada por un umbral, por ejemplo, 85%) actúa como la capa de corrección de errores de menor prioridad. Solo se ejecuta si toda la ejecución de la regla determinista/en cascada anterior no pudo encontrar una coincidencia (current_rule_matched es False), lo que optimiza el rendimiento evitando comprobaciones difusas lentas siempre que sea posible.  
 ├┬ **Gestión de modelos/**   
 │├─ `prioritize_model.py` (Optimiza la carga/descarga del modelo según el uso) 🐧 🍏 🪟  
@@ -386,7 +388,7 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
 Herramientas para un manejo sólido de modelos de lenguaje grandes.  
 
 **Gestión de modelos/** 🐧 🍏 🪟  
-├─ **Descargador robusto de modelos** (fragmentos de lanzamiento de GitHub) 🐧 🍏 🪟  
+├─ **Descargador robusto de modelos** (fragmentos de versión de GitHub) 🐧 🍏 🪟  
 ├─ `split_and_hash.py` (Utilidad para que los propietarios de repositorios divida archivos grandes y genere sumas de verificación) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (Herramienta para que los usuarios finales descarguen, verifiquen y vuelvan a ensamblar archivos de varias partes) 🐧 🍏 🪟  
 
@@ -398,7 +400,7 @@ Scripts para la configuración, prueba y ejecución del servicio del entorno.
 Marque la casilla de verificación durante la instalación para asociar con archivos de registro.    
 https://translate.google.com/translate?hl=en&sl=en&tl=es&u=https://glogg.bonnefon.org/     
   
-*Consejo: Después de definir sus patrones de expresiones regulares, ejecute `python3 tools/map_tagger.py` para generar automáticamente ejemplos de búsqueda para las herramientas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-eslang.md) para obtener más detalles.*
+*Consejo: Después de definir sus patrones de expresiones regulares, ejecute `python3 tools/map_tagger.py` para generar automáticamente ejemplos de búsqueda para las herramientas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-eslang.md) para obtener más detalles.*
 
 Entonces tal vez haga doble clic
 `log/aura_engine.log`
@@ -479,7 +481,7 @@ Esta tabla proporciona una descripción general de los diferentes modelos de Vos
 
 - **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Herramienta de idioma:**  
-(6.6) XMLDLINK43X
+(6.6) XMLDLINK44X
 
 **Licencia de LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 

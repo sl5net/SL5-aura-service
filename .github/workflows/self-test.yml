@@ -5,26 +5,20 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
     paths-ignore:
       - '.github/workflows/**'
       - '**.md'
       - '**.yml'
   workflow_dispatch:
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
-
 permissions:
   pull-requests: write
   contents: read
-
 jobs:
   run-self-test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -59,10 +53,9 @@ jobs:
           sudo mkdir -p /tmp/sl5_aura
           sudo chmod -R 777 /tmp/sl5_aura
           echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
-          
           cp config/settings_local.py_Example.txt config/settings_local.py
 
-      - name: Measure Installation
+      - name: Measure Preparation
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
@@ -71,32 +64,26 @@ jobs:
       - name: Run Official Ubuntu Setup
         run: bash ./setup/ubuntu_setup.sh
 
-
       - name: Install Additional Test Dependencies
         run: |
           sudo apt-get install -y xvfb xclip
 
-      - name: Measure Installation
+      - name: Measure System Setup
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
           label: 'System Setup'
-
 
       - name: Start LanguageTool Server
         run: |
           java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
           sleep 10
 
-
-      - name: Measure Installation
+      - name: Measure LanguageTool Startup
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
           label: 'LanguageTool Startup'
-
-
-
 
       - name: Run Self-Tester with Final Guard
         env:
@@ -105,9 +92,8 @@ jobs:
           DISPLAY: :99
         run: |
           Xvfb :99 -screen 0 1024x768x24 &
-
           ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results.log
-          
+
           if grep -q "| 0 not passed" test_results.log; then
             echo "✅ Final Guard: Success summary found. 0 tests failed."
           else
@@ -115,19 +101,19 @@ jobs:
             exit 1
           fi
 
-      - name: Get Measurement
+      - name: Measure Core Logic Tests
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
           label: 'Core Logic Tests'
 
-      - name: Estimate Energy Consumption
+      - name: Display and Send Energy Results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
           pr-comment: true
           send-data: true
-          calculate-co2: true
+          calculate-co2: false  # External CO2 data often unavailable for GH runners
 
       - name: Package Assets as Artifact
         if: always()
@@ -137,3 +123,4 @@ jobs:
           path: |
             ./LanguageTool-6.6
             ./models/
+

@@ -9,6 +9,9 @@
 |---|---|---|
 | OMA-Mode: just write a word, Aura does the rest | Learn with Koans — one concept at a time | Full Python scripting, plugins, API calls |
 
+![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
+
+
 ## Quick Start
 1. Download or clone this repository
 2. Run the setup script for your OS (see `setup/` folder):
