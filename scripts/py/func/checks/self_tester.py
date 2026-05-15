@@ -390,11 +390,13 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         rng = random.Random()
 
     active_tests = []
+    skipped_lt_count = 0
     for test_case in test_cases:
         raw_text, expected, description, check_lang, use_lt, prio = test_case
         if check_lang != lang_code:
             continue
         if is_ci and use_lt:
+            skipped_lt_count += 1
             continue  # Skip lt in CI
         if is_ci:
             chance = 1
@@ -536,6 +538,8 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     if global_state.LOGGING_ENABLED:
         logger.info("=" * 40)
 
+    ci_hint = f" ({skipped_lt_count} LT-tests skipped in CI)" if is_ci and skipped_lt_count else ""
+
 
     # 4.2 Summary
     duration = time.perf_counter() - start_time
@@ -546,15 +550,15 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         if global_state.LOGGING_ENABLED:
             # logger.info(
             # f":st: {len(active_tests)} of {len(test_cases)} tests active  |  ✅ Passed: {passed_count}  |  ❌ Failed: {failed_count}  (hint: search ❌ FAIL)")
-
+            ci_hint = f" ({skipped_lt_count} LT-tests skipped in CI)" if is_ci and skipped_lt_count else ""
             logger.info(
-                f":st: {len(active_tests)} of {len(test_cases)} tests active  |  ✅ Passed: {passed_count}  |  ❌ not passed: {failed_count}  (hint: search ❌ FAIL)")
+                f":st: {len(active_tests)} of {len(test_cases)} tests active{ci_hint} |  ✅ Passed: {passed_count}  |  ❌ not passed: {failed_count}  (hint: search ❌ FAIL)")
 
             # logger.info(f":st:✅ of {len(test_cases)} are {len(active_tests)} tested, Passed: {passed_count} | ❌ not passed: {failed_count} Tests (hint search for: ❌ FAIL )")
         else:
-            print(f":st:✅ Passed: {passed_count} | ❌ not passed: {failed_count} Tests (hint search for: ❌ FAIL )")
+            print(f":st: {len(active_tests)} of {len(test_cases)} tests active{ci_hint} Passed: {passed_count} | ❌ not passed: {failed_count} Tests (hint search for: ❌ FAIL )")
     else:
-        msg = f":st: {len(active_tests)} of {len(test_cases)} tests active ✅ Passed: all {passed_count} ✅ | {failed_count} not passed 🙂"
+        msg = f":st: {len(active_tests)} of {len(test_cases)} tests active{ci_hint} ✅ Passed: all {passed_count} ✅ | {failed_count} not passed 🙂"
         logger.info(msg)
         print(msg)
 

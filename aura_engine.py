@@ -1,4 +1,6 @@
 # File: aura_engine.py
+import shutil
+
 import objgraph
 from datetime import datetime, timedelta
 
@@ -142,14 +144,26 @@ PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 # PROJECT_ROOT = Path(__file__).resolve().parent
 
-# aura_engine.py:145
-setup_project_structure(PROJECT_ROOT)
-
-LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
-
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
 PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
+_log_dir = PROJECT_ROOT / "log"
+
+if not _log_dir.exists():
+    shutil.copy(
+        PROJECT_ROOT_FILE / 'config' / 'filters' / '.backlock' / 'first_run' / 'settings_local_log_filter.py',
+        PROJECT_ROOT_FILE / 'config' / 'filters' / 'settings_local_log_filter.py'
+    )
+
+
+
+
+# aura_engine.py:145
+setup_project_structure(PROJECT_ROOT)
+
+
+LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
+
 
 AURA_SELF_TEST_RUNNING =TMP_DIR / "sl5_aura" / "aura_self_test_running.flag"
 
