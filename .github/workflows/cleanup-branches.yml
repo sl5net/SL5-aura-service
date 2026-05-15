@@ -1,0 +1,50 @@
+name: Cleanup Old Branches
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Delete old branches
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCHES=$(git for-each-ref --sort=committerdate --format='%(refname:short)' refs/remotes/origin/ | \
+                     grep -vE "^origin/(main|master|develop|stating)$" | \
+                     sed 's/origin\///')
+
+          COUNT=$(echo "$BRANCHES" | wc -w)
+
+          echo "Found $COUNT deletable branches."
+
+          if [ "$COUNT" -gt 10 ]; then
+            LIMIT=$((COUNT - 10))
+            echo "Deleting $LIMIT oldest branches..."
+
+            TO_DELETE=$(echo "$BRANCHES" | head -n "$LIMIT")
+
+            for BRANCH in $TO_DELETE; do
+              # 30 days?
+              LAST_DATE=$(git log -1 --format=%ct "origin/$BRANCH")
+              NOW=$(date +%s)
+              AGE=$(( (NOW - LAST_DATE) / 86400 ))
+
+              if [ "$AGE" -gt 30 ]; then
+                # echo "Deleting $BRANCH (Age: $AGE days)"
+                echo "Would delete $BRANCH"
+                # git push origin --delete "$BRANCH"
+              else
+                echo "Skipping $BRANCH (Too young: $AGE days)"
+              fi
+            done
+          else
+            echo "Total branches <= 10. Nothing to do."
+          fi

@@ -14,7 +14,7 @@ LOG_EXCLUDE = [
     r"#####",
 ]
 
-LOG_EXCLUDE = [
+LOG_EXCLUDE_asdf = [
     r"heartbeat.*status: OK",
     r"cleaning up temp file",
     r"(?i)debug: rule \d+ skipped",
@@ -83,7 +83,8 @@ LOG_EXCLUDE = [
 
 ]
 # OPTIONAL:
-LOG_ONLY = [
+LOG_ONLY = []
+LOG_ONLY_off_123 = [
      r"Successfully",
      r"CRITICAL",
      r"📢📢📢 #",
@@ -91,5 +92,28 @@ LOG_ONLY = [
      r"window",
      r":st:",
 ]
+# r"▉",
 
 
+# LOG_ONLY = [
+#     r"oma",
+#     r"00_koan",
+#     r"Hallo Welt",
+#     r"hallo",
+#     r"map.*load\|load.*map",
+# ]
+
+
+LOG_ONLY_off = [
+    r"oma",
+    r"00_koan",
+    r"Hallo Welt",
+    r"hallo",
+    r"load",
+    r"map",
+    r"🗺",
+    r"plugin",
+    r"koan",
+    r"window",
+
+]

@@ -8,13 +8,12 @@ LOG_EXCLUDE = [
     r"PUNCTUATION_MAP",
     r"〃",
     r"🗑",
-    r"process_text_in_background.py:365",
+    r"process_text_in_background.py",
     r"🗺Starting recursive map",
     r"🗺 Map loading complete",
-    r"#####",
 ]
 
-LOG_EXCLUDE_asdf = [
+LOG_EXCLUDE = [
     r"heartbeat.*status: OK",
     r"cleaning up temp file",
     r"(?i)debug: rule \d+ skipped",
@@ -83,37 +82,13 @@ LOG_EXCLUDE_asdf = [
 
 ]
 # OPTIONAL:
-LOG_ONLY = []
-LOG_ONLY_off_123 = [
+LOG_ONLY = [
      r"Successfully",
      r"CRITICAL",
-     r"📢📢📢 #",
+     r"📢",
      r"Title",
      r"window",
      r":st:",
 ]
-# r"▉",
 
 
-# LOG_ONLY = [
-#     r"oma",
-#     r"00_koan",
-#     r"Hallo Welt",
-#     r"hallo",
-#     r"map.*load\|load.*map",
-# ]
-
-
-LOG_ONLY_off = [
-    r"oma",
-    r"00_koan",
-    r"Hallo Welt",
-    r"hallo",
-    r"load",
-    r"map",
-    r"🗺",
-    r"plugin",
-    r"koan",
-    r"window",
-
-]
