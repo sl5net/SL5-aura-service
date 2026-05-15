@@ -12,9 +12,24 @@
 #   1.0.0 - Initiale Version
 # =============================================================================
 
+echo '
+Bitte warte auf zwei Nachrichten:
+1. Den Text meines letzten Releases (als Vorlage fuer Stil und Format)
+2. Die Git-Aenderungen seit dem letzten Release
+
+Antworte erst wenn du beide erhalten hast auf folgende Fragen:
+1. Soll ein neues Release von sl5net Aura erstellt werden? (ja/nein)
+2. Welche Versionsnummer? (major/minor/patch nach SemVer)
+3. Begruendung in 2-3 Saetzen
+
+https://github.com/sl5net/SL5-aura-service/releases/latest
+'
+
 MAX_LINES_PER_FILE=40
 SKIP_DELETED=true
 SKIP_COMMENTS=true
+NO_DIFF=false
+
 
 # Dateien die komplett übersprungen werden
 EXCLUDE_REGEX='\.(lock|min\.js|min\.css|map|pyc|pyo|snap|svg|png|jpg|jpeg|gif|ico|woff|woff2|ttf|eot|csv|tsv|xlsx|pb\.go|pb\.ts)$|^(dist|build|out|\.next|vendor|node_modules|__pycache__|migrations)/'
@@ -22,14 +37,14 @@ EXCLUDE_EXACT='package-lock.json|yarn.lock|pnpm-lock.yaml|go.sum|Pipfile.lock|po
 
 # Dateien bei denen NUR der Dateiname gezeigt wird, kein Diff-Inhalt
 # Gut für: .md in 20 Sprachen, config-files, translations etc.
-NAME_ONLY_REGEX='\.(md|txt|rst|po|pot|json|yaml|yml|toml|ini|cfg|conf|xml|html|htm|bat|ps1|sh)$'
+NAME_ONLY_REGEX='\.(md|txt|rst|po|pot|json|yml|toml|ini|cfg|conf|xml|html|htm|bat|ps1)$'
 
 find_last_release() {
   if [ -n "${FROM_REF:-}" ]; then echo "$FROM_REF"; return; fi
+  git fetch --tags --quiet 2>/dev/null || true
   local t
-  t=$(git tag --sort=-version:refname | grep -E '^v?[0-9]+\.[0-9]+' | head -1 || true)
-  [ -n "$t" ] && echo "$t" && return
-  t=$(git describe --tags --abbrev=0 2>/dev/null || true)
+  # Nach Commit-Datum sortieren, nicht nach Versionsnummer
+  t=$(git tag --sort=-creatordate | grep -E '^v?[0-9]+\.[0-9]+' | head -1 || true)
   [ -n "$t" ] && echo "$t" && return
   git rev-list --max-parents=0 HEAD
 }
@@ -75,6 +90,7 @@ while [[ $# -gt 0 ]]; do
     --keep-deleted)  SKIP_DELETED=false;      shift ;;
     --keep-comments) SKIP_COMMENTS=false;     shift ;;
     --full-content)  FULL_CONTENT=true;       shift ;;
+    --no-diff)       NO_DIFF=true;            shift ;;
     --help|-h)       usage; exit 0 ;;
     *) echo "Unbekannte Option: $1" >&2; usage >&2; exit 1 ;;
   esac
@@ -86,6 +102,85 @@ fi
 
 FROM_REF=$(find_last_release)
 TO_REF="${TO_REF:-HEAD}"
+
+
+# Auto no-diff bei vielen Commits
+AUTO_NO_DIFF_THRESHOLD=20
+if [ "$NO_DIFF" = false ]; then
+  AUTO_COMMIT_COUNT=$(git log "${FROM_REF}..${TO_REF}" --no-merges --oneline | wc -l)
+  if [ "$AUTO_COMMIT_COUNT" -gt "$AUTO_NO_DIFF_THRESHOLD" ]; then
+    NO_DIFF=true
+    echo "# INFO: $AUTO_COMMIT_COUNT Commits gefunden → --no-diff automatisch aktiviert" >&2
+  fi
+fi
+
+
+
+
+
+
+
+
+
+# === RELEASE-EMPFEHLUNG ======================================================
+echo "=== RELEASE-EMPFEHLUNG ==="
+
+COMMIT_COUNT=$(git log "${FROM_REF}..${TO_REF}" --no-merges --pretty="%s" | wc -l)
+CHANGED_FILES=$(git diff "${FROM_REF}..${TO_REF}" --name-only | grep -vE "$EXCLUDE_REGEX" | grep -vE "$EXCLUDE_EXACT" | wc -l)
+LAST_RELEASE_DAYS=$(( ( $(date +%s) - $(git log -1 --format=%ct "${FROM_REF}") ) / 86400 ))
+
+RECOMMEND="JA"
+REASON=""
+SEMVER="patch"
+
+# Zu wenig passiert
+if [ "$COMMIT_COUNT" -lt 2 ]; then
+  RECOMMEND="NEIN"
+  REASON="Nur $COMMIT_COUNT Commit(s) seit letztem Release."
+elif [ "$CHANGED_FILES" -lt 3 ]; then
+  RECOMMEND="NEIN"
+  REASON="Nur $CHANGED_FILES relevante Datei(en) geändert."
+elif [ "$LAST_RELEASE_DAYS" -lt 1 ]; then
+  RECOMMEND="NEIN"
+  REASON="Letztes Release war heute."
+fi
+
+# SemVer aus Conventional Commits
+if git log "${FROM_REF}..${TO_REF}" --no-merges --pretty="%s" | grep -qiE "BREAKING|BREAKING CHANGE"; then
+  SEMVER="MAJOR"
+elif git log "${FROM_REF}..${TO_REF}" --no-merges --pretty="%s" | grep -qiE "^feat"; then
+  SEMVER="minor"
+fi
+
+# Nur Docs/Config?
+CODE_FILES=$(git diff "${FROM_REF}..${TO_REF}" --name-only \
+  | grep -vE "$EXCLUDE_REGEX" \
+  | grep -vE "$EXCLUDE_EXACT" \
+  | grep -vE "$NAME_ONLY_REGEX" \
+  | wc -l)
+if [ "$CODE_FILES" -eq 0 ] && [ "$RECOMMEND" = "JA" ]; then
+  SEMVER="patch"
+  REASON="Nur Docs/Config geändert, kein echter Code."
+fi
+
+echo "  Commits seit Release : $COMMIT_COUNT"
+echo "  Geaenderte Dateien    : $CHANGED_FILES (davon Code: $CODE_FILES)"
+echo "  Tage seit Release    : $LAST_RELEASE_DAYS"
+echo ""
+echo "  Empfehlung  : $RECOMMEND"
+[ -n "$REASON" ] && echo "  Grund       : $REASON"
+
+
+if [ "$RECOMMEND" = "JA" ]; then
+  echo "  SemVer-Typ  : $SEMVER"
+  echo ""
+  echo "--- LLM PROMPT ---"
+  echo "1. Soll ein neues Release erstellt werden? (ja/nein)"
+  echo "2. Welche Versionsnummer? (major/minor/patch nach SemVer)"
+  echo "3. Begruendung in 2-3 Saetzen"
+  echo "------------------"
+fi
+
 
 # === HEADER ==================================================================
 echo "RELEASE DIFF REPORT"
@@ -116,7 +211,9 @@ done
 echo ""
 
 # === CODE-DIFF ===============================================================
-echo "=== CODE ÄNDERUNGEN ==="
+if $NO_DIFF; then
+  exit 0
+fi
 
 TMPFILE=$(mktemp)
 trap "rm -f $TMPFILE" EXIT
