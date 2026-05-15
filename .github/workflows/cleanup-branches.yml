@@ -11,16 +11,17 @@ on:
       max_age_days:
         description: 'Max branch age in days'
         type: number
-        default: 180
+        default: 120
       min_branches:
         description: 'Minimum branches to keep'
         type: number
-        default: 10
+        default: 9
 
 permissions:
   contents: write
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   DRY_RUN: ${{ inputs.dry_run != false && inputs.dry_run != 'false' }}
   MAX_AGE_DAYS: ${{ inputs.max_age_days || 180 }}
   MIN_BRANCHES: ${{ inputs.min_branches || 10 }}
