@@ -16,6 +16,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   run-self-test:
     runs-on: ubuntu-latest
@@ -68,7 +73,7 @@ jobs:
       - name: Initialize Eco-CI
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
-          task: start
+          task: start-measurement
 
       - name: Run Self-Tester with Final Guard
         env:
@@ -91,6 +96,7 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: display-results
+          pr-comment: true
 
       - name: Package Assets as Artifact
         if: always()
