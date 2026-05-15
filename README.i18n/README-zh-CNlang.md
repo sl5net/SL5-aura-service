@@ -1,5 +1,5 @@
-<span style="font-size:8em;float: right;">💠</span>
-
+<span style="font-size:8em;float: right;" title="SL5 Aura 标志">⬟</span>
+<span style="font-size:8em;float: right;" role="img" aria-label="SL5 Aura 徽标" title="SL5 Aura 徽标">⬟</span>
 # SL5 Aura – 你的声音。你的规则。
 
 > 100%离线、隐私优先的语音助手框架。  
