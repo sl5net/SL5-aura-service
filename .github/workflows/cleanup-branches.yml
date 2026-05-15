@@ -21,8 +21,7 @@ permissions:
   contents: write
 
 env:
-  DRY_RUN: ${{ inputs.dry_run == true || inputs.dry_run == 'true' }}
-
+  DRY_RUN: ${{ inputs.dry_run != false && inputs.dry_run != 'false' }}
   MAX_AGE_DAYS: ${{ inputs.max_age_days || 180 }}
   MIN_BRANCHES: ${{ inputs.min_branches || 10 }}
 
@@ -31,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           fetch-depth: 0
 
