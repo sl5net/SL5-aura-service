@@ -1,4 +1,4 @@
-<img src="/data/image/logo.svg" align="right" width="150" alt="SL5 Aura Logo">
+<img src="data/image/logo.svg" align="right" width="150" alt="SL5 Aura Logo">
 
 # SL5 Aura – Your Voice. Your Rules. ⬟
 
