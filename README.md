@@ -1,6 +1,6 @@
 <img src="/data/image/logo.svg" align="right" width="150" alt="SL5 Aura Logo">
 
-# SL5 Aura – Your Voice. Your Rules.
+# SL5 Aura – Your Voice. Your Rules. ⬟
 
 > 100% offline, privacy-first voice assistant framework.  
 > Define exactly what your voice does — from a single word  

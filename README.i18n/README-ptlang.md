@@ -1,5 +1,5 @@
-<span style="font-size:8em;float: right;">💠</span>
-
+<span style="font-size:8em;float: certo;" title="Logotipo SL5 Aura">⬟</span>
+<span style="font-size:8em;float: certo;" role="img" aria-label="Logo SL5 Aura" title="Logotipo SL5 Aura">⬟</span>
 # SL5 Aura – Sua Voz. Suas regras.
 
 > Estrutura de assistente de voz 100% offline e com privacidade em primeiro lugar.  
