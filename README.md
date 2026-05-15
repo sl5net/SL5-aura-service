@@ -9,7 +9,9 @@
 |---|---|---|
 | OMA-Mode: just write a word, Aura does the rest | Learn with Koans — one concept at a time | Full Python scripting, plugins, API calls |
 
+
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
+⚡ ~0.08 J per test (39 tests · measured with [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · no cloud compute
 
 ## Quick Start
 1. Download or clone this repository
