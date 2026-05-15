@@ -1,3 +1,4 @@
+<span style="font-size:8em;float: right;" role="img" aria-label="SL5 Aura Logo" title="SL5 Aura Logo">⬟</span>
 # SL5 Aura – Your Voice. Your Rules.
 
 > 100% offline, privacy-first voice assistant framework.  

@@ -1,3 +1,5 @@
+<span style="font-size:8em;float:right;">💠</span>
+
 # SL5 Aura – Twój Głos. Twoje zasady.
 
 > W 100% offline, platforma asystentów głosowych dbająca o prywatność.XSPACEbreakX
@@ -11,13 +13,13 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ ~0,08 J na test (39 testów · pomiar za pomocą [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · brak obliczeń w chmurze
+⚡ ~0,08 J na test (39 testów, 0,49 s na test · mierzone za pomocą [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · brak obliczeń w chmurze
 
 ## Szybki start
 1. Pobierz lub sklonuj to repozytorium
 2. Uruchom skrypt instalacyjny dla swojego systemu operacyjnego (zobacz folder `setup/`):
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 przeczytaj [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-pllang.md)
+===> 🧩 przeczytaj [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-pllang.md)
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS): `nix-shell setup/shell.nix`, a następnie `bash setup/nixos_setup.sh`
@@ -25,7 +27,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Uruchom Aurę: `./scripts/restart_venv_and_run-server.sh`
-4. Naciśnij klawisz skrótu i mów — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-pllang.md)**
+4. Naciśnij klawisz skrótu i mów — **[full guide →](../docs/GettingStarted-pllang.md)**
 
 
 **⚠️ Wymagania systemowe i kompatybilność**
@@ -50,7 +52,7 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Wskazówka:** Aby uzyskać lepszą obsługę terminala, zobacz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
+> **Wskazówka:** Aby uzyskać lepszą obsługę terminala, zobacz [Zsh Integration](../docs/linux/zsh-integration-pllang.md).
 
 ### 🎥 Samouczek wideo
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -273,7 +275,7 @@ XSPACEbreakX
 ││ * **Przebieg pracy:** Ładuje archiwa ZIP chronione hasłem. XSPACEbreakX
 │├ **Przetwarzanie i korekta tekstu/** Pogrupowane według języka (np. `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punstanding.py` (Standaryzuje interpunkcję po transkrypcji) 🐧 🍏 🪟XSPACEbreakX
-│├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty Pythona (on_match_exec) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
 ││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego przez wcześniejsze reguły.XSPACEbreakX
 ││ * **Kryterium zatrzymania o najwyższym priorytecie:** Jeśli reguła osiągnie **Pełne dopasowanie** (^...$), cały potok przetwarzania dla tego tokena zostanie natychmiast zatrzymany. Mechanizm ten ma kluczowe znaczenie dla realizacji niezawodnych poleceń głosowych.XSPACEbreakX
@@ -285,7 +287,7 @@ XSPACEbreakX
 ││ * **Status:** Lokalna integracja LLM.
 │└ 5. **Inteligentna korekta końcowa** (`FuzzyMap`)** – Udoskonalenie po LT** 🐧 🍏 🪟XSPACEbreakX
 ││ * Stosowane po LanguageTool w celu skorygowania wyników specyficznych dla LT. Działa zgodnie z tą samą ścisłą logiką priorytetów kaskadowych, co warstwa wstępnej korekty.XSPACEbreakX
-││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-pllang.md)) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python ([on_match_exec](../docs/advanced-scripting-pllang.md)) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
 ││ * **Fuzzy Fallback:** **Rozmyta kontrola podobieństwa** (kontrolowana przez próg, np. 85%) działa jako warstwa korekcji błędów o najniższym priorytecie. Jest wykonywana tylko wtedy, gdy w całym poprzedzającym uruchomieniu reguły deterministycznej/kaskadowej nie znaleziono dopasowania (bieżąca_rule_matched ma wartość False), optymalizując wydajność poprzez unikanie, jeśli to możliwe, powolnych kontroli rozmytych.XSPACEbreakX
 ├┬ **Zarządzanie modelami/** XSPACEbreakX
 │├─ `prioritize_model.py` (optymalizuje ładowanie/rozładowywanie modelu w oparciu o wykorzystanie) 🐧 🍏 🪟XSPACEbreakX
@@ -316,7 +318,7 @@ Skrypty do konfiguracji środowiska, testowania i wykonywania usług.XSPACEbreak
 Podczas instalacji zaznacz pole wyboru, aby powiązać je z plikami dziennika.  XSPACEbreakX
 https://translate.google.com/translate?hl=en&sl=en&tl=pl&u=https://glogg.bonnefon.org/     
 XSPACEbreakX
-*Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pllang.md).*
+*Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-pllang.md).*
 
 Wtedy może kliknij dwukrotnie
 `log/aura_engine.log`
@@ -388,7 +390,7 @@ Te spakowane modele muszą być zapisane w folderze `models/`
 | Modelka | Rozmiar | Poziom błędów/prędkość słów | Notatki | Licencja |
 | ------------------------------------------------------------------------------------------------ | ---- | -------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
 | [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1,8G | 5,69 (czysty test librispeech)<br/>6,05 (tedlium)<br/>29,78 (callcenter) | Dokładny ogólny model w języku angielskim w USA | Apache 2.0 |
-| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip)       | 1,9G | 9,83 (test Tuda-de)<br/>24,00 (podcast)<br/>12,82 (test CV)<br/>12,42 (mls)<br/>33,26 (mtedx) | Duży niemiecki model telefonii i serwerów | Apache 2.0 |
+| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1,9G | 9,83 (test Tuda-de)<br/>24,00 (podcast)<br/>12,82 (test CV)<br/>12,42 (mls)<br/>33,26 (mtedx) | Duży niemiecki model telefonii i serwerów | Apache 2.0 |
 
 Ta tabela zawiera przegląd różnych modeli Vosk, w tym ich rozmiar, współczynnik błędów lub prędkość, uwagi i informacje licencyjne.
 

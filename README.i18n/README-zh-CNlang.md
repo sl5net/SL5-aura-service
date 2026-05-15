@@ -11,7 +11,7 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ 每次测试约 0.08 J（39 次测试·使用 [Eco-CI](https://www.green-coding.io/projects/eco-ci/) 测量）·无云计算
+⚡ 每次测试约 0.08 J（39 次测试，每次测试 0.49 秒·使用 [Eco-CI](https://www.green-coding.io/projects/eco-ci/) 测量）·无云计算
 
 ## 快速入门
 1.下载或克隆此存储库
@@ -148,7 +148,7 @@ __代码_块_0__
 #### 对于 Windows
 使用管理员权限运行安装脚本。
 
-**安装一个用于读取和运行的工具，例如[CopyQ](https://github.com/hluk/CopyQ) or [AutoHotkey v2](https://www.autohotkey.com/)**.这是文本输入观察者所必需的。
+**安装一个用于读取和运行的工具，例如[CopyQ](https://github.com/hluk/CopyQ) 或 [AutoHotkey v2](https://www.autohotkey.com/)**。这是文本输入观察者所必需的。
 
 安装是完全自动化的，在新系统上使用 2 个型号时大约需要 **8-10 分钟**。
 

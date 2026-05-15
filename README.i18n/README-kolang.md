@@ -1,3 +1,5 @@
+<span style="font-size:8em;float: right;">💠</span>
+
 # SL5 아우라 - 너의 목소리. 귀하의 규칙.
 
 > 100% 오프라인, 개인 정보 보호 우선 음성 지원 프레임워크.  
@@ -11,13 +13,13 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ 테스트당 ~0.08J(39개 테스트 · [Eco-CI](https://www.green-coding.io/projects/eco-ci/)로 측정) · 클라우드 컴퓨팅 없음
+⚡ 테스트당 ~0.08J(39개 테스트, 테스트당 0.49초 · [Eco-CI](https://www.green-coding.io/projects/eco-ci/)로 측정) · 클라우드 컴퓨팅 없음
 
 ## 빠른 시작
 1. 이 저장소를 다운로드하거나 복제하세요.
 2. OS에 대한 설정 스크립트를 실행합니다(`setup/` 폴더 참조).
 - 리눅스(Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-kolang.md) 읽기
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-kolang.md) 읽기
 - 리눅스(우분투/데비안): `bash setup/ubuntu_setup.sh`
 - Linux(openSUSE): `bash setup/suse_setup.sh`
 - Linux(NixOS): `nix-shell setup/shell.nix` 다음 `bash setup/nixos_setup.sh`
@@ -25,7 +27,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - 윈도우: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Aura 시작: `./scripts/restart_venv_and_run-server.sh`
-4. 단축키를 누르고 말하세요 — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-kolang.md)**
+4. 단축키를 누르고 말하세요 — **[full guide →](../docs/GettingStarted-kolang.md)**
 
 
 **⚠️ 시스템 요구 사항 및 호환성**
@@ -50,7 +52,7 @@ XSPACEbreakX
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **팁:** 더 나은 터미널 경험을 위해서는 [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-kolang.md)를 참조하세요.
+> **팁:** 더 나은 터미널 경험을 위해서는 [Zsh Integration](../docs/linux/zsh-integration-kolang.md)를 참조하세요.
 
 ### 🎥 비디오 튜토리얼
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -359,7 +361,7 @@ XSPACEbreakX
 ││ * **워크플로:** 비밀번호로 보호된 ZIP 아카이브를 로드합니다. XSPACEbreakX
 │├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
-│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(on_match_exec)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **계단식 실행:** 규칙은 순차적으로 처리되며 해당 효과는 **누적**됩니다. 이후 규칙은 이전 규칙에 의해 수정된 텍스트에 적용됩니다.  
 ││ * **가장 높은 우선순위 중지 기준:** 규칙이 **완전 일치**(^...$)를 달성하면 해당 토큰에 대한 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 안정적인 음성 명령을 구현하는 데 중요합니다.  
@@ -371,7 +373,7 @@ XSPACEbreakX
 ││ * **상태:** 로컬 LLM 통합.
 │└ 5. **지능형 사후 수정**(`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟XSPACEbreakX
 ││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선순위 논리를 따릅니다.  
-││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
+││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../docs/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전 결정적/계단식 규칙 실행 전체가 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
 ├┬ **모델 관리/** XSPACEbreakX
 │├─ `prioritize_model.py` (사용에 따라 모델 로드/언로드 최적화) 🐧 🍏 🪟  
@@ -402,7 +404,7 @@ XSPACEbreakX
 로그 파일과 연결하려면 설치 시 확인란을 선택하세요.  XSPACEbreakX
 https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https://glogg.bonnefon.org/     
 XSPACEbreakX
-*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
+*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
 
 그럼 아마도 더블클릭이겠지
 `로그/aura_engine.log`
@@ -461,7 +463,7 @@ XSPACEbreakX
 ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
 XSPACEbreakX
-
+![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
 
 
 # 사용 모델:
@@ -485,9 +487,13 @@ XSPACEbreakX
 - **언어 도구:**XSPACEbreakX
 (6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
 
-
+**LanguageTool 라이센스:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ---
 
 ## 프로젝트 지원
 이 도구가 유용하다고 생각하시면 커피 한 잔 구입해 보시기 바랍니다! 귀하의 지원은 향후 개선을 촉진하는 데 도움이 됩니다.
+
+[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
+
+[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
