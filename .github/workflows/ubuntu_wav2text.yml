@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install CI Display Dependencies
         run: |
@@ -26,7 +26,7 @@ jobs:
           sudo apt-get install -y xclip libnotify-bin xvfb dbus-x11
 
       - name: '1. Checkout Repository'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: '2. Set up Python'
         uses: actions/setup-python@v5

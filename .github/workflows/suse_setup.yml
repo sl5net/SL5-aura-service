@@ -32,7 +32,7 @@ jobs:
         run: zypper -n --no-gpg-checks install git tar python311 python311-pip gcc13 gcc13-c++ make python311-devel
 
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
 
 
