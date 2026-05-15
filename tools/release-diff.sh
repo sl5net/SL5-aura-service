@@ -23,6 +23,16 @@ Antworte erst wenn du beide erhalten hast auf folgende Fragen:
 3. Begruendung in 2-3 Saetzen
 
 https://github.com/sl5net/SL5-aura-service/releases/latest
+
+
+WICHTIG: Schreibe den Release-Text ausschliesslich auf Englisch,
+genau wie die Vorlage die ich dir geschickt habe.
+
+Behalte folgende Elemente aus der Vorlage immer bei:
+- Den Slogan: _Ultra-Fast. Private. Self-Learning. Aura._
+- Den Support-Block (Star, Share, Donate) mit Ko-fi und Stripe Links unveraendert
+- Den "Full Changelog" Link am Ende (nur Versionsnummern anpassen)
+
 '
 
 MAX_LINES_PER_FILE=40
