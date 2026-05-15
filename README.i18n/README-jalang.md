@@ -1,5 +1,5 @@
-<span style="font-size:8em;float: right;">💠</span>
-
+<span style="font-size:8em;float: right;" title="SL5 オーラ ロゴ">⬟</span>
+<span style="font-size:8em;float: right;" role="img" aria-label="SL5 オーラ ロゴ" title="SL5 オーラ ロゴ">⬟</span>
 # SL5 オーラ – あなたの声。あなたのルール。
 
 > 100% オフライン、プライバシー最優先の音声アシスタント フレームワーク。  

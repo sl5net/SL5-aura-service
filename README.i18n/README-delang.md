@@ -1,5 +1,5 @@
-<span style="font-size:8em;float: right;">💠</span>
-
+<span style="font-size:8em;float: right;" title="SL5 Aura Logo">⬟</span>
+<span style="font-size:8em;float: right;" Role="img" aria-label="SL5 Aura Logo" title="SL5 Aura Logo">⬟</span>
 # SL5 Aura – Deine Stimme. Ihre Regeln.
 
 > 100 % offline, Datenschutz-First-Sprachassistenten-Framework.  

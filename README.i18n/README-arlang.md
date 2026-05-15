@@ -1,5 +1,5 @@
-<span style="font-size:8em;float: right;">💠</span>
-
+<span style="font-size:8em;float: right;" title="SL5 Aura Logo">⬟</span>
+<span style="font-size:8em;float: right;" role="img" aria-label="SL5 Aura Logo" title="SL5 Aura Logo">⬟</span>
                # SL5 هالة – صوتك. القواعد الخاصة بك.
 
 > غير متصل بالإنترنت بنسبة 100%، إطار عمل المساعد الصوتي الذي يولي الأولوية للخصوصية.XSPACEbreakX

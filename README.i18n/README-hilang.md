@@ -1,5 +1,5 @@
-<span style='font-size:8em;float:right;'>💠</span>
-
+<span style='font-size:8em;फ्लोट: दाएं;' title='SL5 आभा लोगो'>⬟</span>
+<span style='font-size:8em;फ्लोट: दाएं;' भूमिका = "img" aria-label = "SL5 आभा लोगो" शीर्षक = "SL5 आभा लोगो">⬟</span>
 # SL5 आभा - आपकी आवाज़। आपके नियम.
 
 > 100% ऑफ़लाइन, गोपनीयता-प्रथम वॉयस असिस्टेंट फ्रेमवर्क.  

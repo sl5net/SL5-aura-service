@@ -1,8 +1,4 @@
-<p align="right">
-  <svg width="120" height="120" viewBox="0 0 100 100">
-    <polygon points="50,5 95,39 78,94 22,94 5,39" fill="black" />
-  </svg>
-</p>
+<img src="/data/image/logo.svg" align="right" width="150" alt="SL5 Aura Logo">
 
 # SL5 Aura – Your Voice. Your Rules.
 

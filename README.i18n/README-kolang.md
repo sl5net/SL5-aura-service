@@ -1,5 +1,5 @@
-<span style="font-size:8em;float: right;">💠</span>
-
+<span style="font-size:8em;float: 오른쪽;" title="SL5 Aura 로고">⬟</span>
+<span style="font-size:8em;float: 오른쪽;" role="img" aria-label="SL5 Aura 로고" title="SL5 Aura 로고">⬟</span>
 # SL5 아우라 - 너의 목소리. 귀하의 규칙.
 
 > 100% 오프라인, 개인 정보 보호 우선 음성 지원 프레임워크.  
