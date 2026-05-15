@@ -9,8 +9,9 @@
 |---|---|---|
 | Modo OMA: solo escribe una palabra, Aura hace el resto | Aprenda con Koans: un concepto a la vez | Secuencias de comandos Python completas, complementos, llamadas API |
 
-![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 
+[![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
+⚡ ~0,08 J por prueba (39 pruebas · medido con [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · sin computación en la nube
 
 ## Inicio rápido
 1. Descarga o clona este repositorio
@@ -482,7 +483,7 @@ Esta tabla proporciona una descripción general de los diferentes modelos de Vos
 
 - **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Herramienta de idioma:**  
-(6.6) XMLDLINK44X
+(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
 
 **Licencia de LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 

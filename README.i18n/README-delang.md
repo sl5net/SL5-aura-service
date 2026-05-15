@@ -9,8 +9,9 @@
 |---|---|---|
 | OMA-Modus: Schreiben Sie einfach ein Wort, Aura erledigt den Rest | Lernen Sie mit Koans – ein Konzept nach dem anderen | Vollständige Python-Skripterstellung, Plugins, API-Aufrufe |
 
-![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 
+[![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
+⚡ ~0,08 J pro Test (39 Tests · gemessen mit [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · kein Cloud-Computing
 
 ## Schnellstart
 1. Laden Sie dieses Repository herunter oder klonen Sie es
@@ -49,7 +50,7 @@ Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzunge
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Tipp:** Für ein besseres Terminal-Erlebnis siehe [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-delang.md).
+> **Tipp:** Für ein besseres Terminalerlebnis siehe [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-delang.md).
 
 ### 🎥 Video-Tutorial
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)

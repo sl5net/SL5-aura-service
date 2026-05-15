@@ -9,7 +9,9 @@
 |---|---|---|
 | Tryb OMA: po prostu napisz słowo, Aura zajmie się resztą | Ucz się z Koanami — jedna koncepcja na raz | Pełne skrypty Pythona, wtyczki, wywołania API |
 
-![Energy Consumption](https://metrics.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=self-test.yml)
+
+[![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
+⚡ ~0,08 J na test (39 testów · pomiar za pomocą [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · brak obliczeń w chmurze
 
 ## Szybki start
 1. Pobierz lub sklonuj to repozytorium
@@ -50,7 +52,7 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 
 > **Wskazówka:** Aby uzyskać lepszą obsługę terminala, zobacz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
 
-
+### 🎥 Samouczek wideo
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *(Link alternatywny: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
@@ -386,7 +388,7 @@ Te spakowane modele muszą być zapisane w folderze `models/`
 | Modelka | Rozmiar | Poziom błędów/prędkość słów | Notatki | Licencja |
 | ------------------------------------------------------------------------------------------------ | ---- | -------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
 | [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1,8G | 5,69 (czysty test librispeech)<br/>6,05 (tedlium)<br/>29,78 (callcenter) | Dokładny ogólny model w języku angielskim w USA | Apache 2.0 |
-| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1,9G | 9,83 (test Tuda-de)<br/>24,00 (podcast)<br/>12,82 (test CV)<br/>12,42 (mls)<br/>33,26 (mtedx) | Duży niemiecki model telefonii i serwerów | Apache 2.0 |
+| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip)       | 1,9G | 9,83 (test Tuda-de)<br/>24,00 (podcast)<br/>12,82 (test CV)<br/>12,42 (mls)<br/>33,26 (mtedx) | Duży niemiecki model telefonii i serwerów | Apache 2.0 |
 
 Ta tabela zawiera przegląd różnych modeli Vosk, w tym ich rozmiar, współczynnik błędów lub prędkość, uwagi i informacje licencyjne.
 
@@ -404,4 +406,4 @@ Jeśli uznasz to narzędzie za przydatne, rozważ zakup nam kawy! Twoje wsparcie
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
-[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)3cIdRa1cobPR66P1LP5kk00)
+[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)

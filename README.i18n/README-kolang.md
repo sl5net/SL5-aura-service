@@ -9,7 +9,9 @@
 |---|---|---|
 | OMA 모드: 단어만 작성하면 나머지는 Aura가 수행합니다 | Koans로 배우기 - 한 번에 하나의 개념 | 전체 Python 스크립팅, 플러그인, API 호출 |
 
-![Energy Consumption](https://metrics.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=self-test.yml)
+
+[![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
+⚡ 테스트당 ~0.08J(39개 테스트 · [Eco-CI](https://www.green-coding.io/projects/eco-ci/)로 측정) · 클라우드 컴퓨팅 없음
 
 ## 빠른 시작
 1. 이 저장소를 다운로드하거나 복제하세요.
@@ -459,7 +461,7 @@ XSPACEbreakX
 ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
 XSPACEbreakX
-![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
+
 
 
 # 사용 모델:
@@ -483,13 +485,9 @@ XSPACEbreakX
 - **언어 도구:**XSPACEbreakX
 (6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
 
-**LanguageTool 라이센스:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
 
 ---
 
 ## 프로젝트 지원
 이 도구가 유용하다고 생각하시면 커피 한 잔 구입해 보시기 바랍니다! 귀하의 지원은 향후 개선을 촉진하는 데 도움이 됩니다.
-
-[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
-
-[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)

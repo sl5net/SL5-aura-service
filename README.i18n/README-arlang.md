@@ -9,7 +9,9 @@
                                                                 |---|---|---|
 | وضع OMA: فقط اكتب كلمة واحدة، وستقوم Aura بالباقي | تعلم مع Koans - مفهوم واحد في كل مرة | البرمجة النصية الكاملة لبايثون، والمكونات الإضافية، واستدعاءات واجهة برمجة التطبيقات |
 
+
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
+⚡ ~0.08 J لكل اختبار (39 اختبارًا · تم قياسها باستخدام [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · لا يوجد حساب سحابي
 
                                                      ## بداية سريعة
            1. قم بتنزيل هذا المستودع أو استنساخه
@@ -23,7 +25,7 @@
                  - نظام التشغيل macOS: `bash setup/macos_setup.sh`
                    - ويندوز: `setup/windows11_setup_with_ahk_copyq.bat`
                  3. ابدأ Aura: `./scripts/restart_venv_and_run-server.sh`
-4. اضغط على مفتاح التشغيل السريع الخاص بك وتحدث — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-arlang.md)**
+4. اضغط على مفتاح التشغيل السريع وتحدث — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-arlang.md)**
 
 
                       **⚠️ متطلبات النظام والتوافق**
@@ -92,7 +94,7 @@ SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل با
 
 للحصول على مرجع فني كامل، بما في ذلك جميع الوحدات والبرامج النصية، يرجى زيارة صفحة الوثائق الرسمية لدينا. يتم إنشاؤه تلقائيًا ويتم تحديثه دائمًا.
 
-                                                                    [**Go to Documentation >>**](https://sl5net.github.io/SL5-aura-service/)
+                                                                   [**Go to Documentation >>**](https://sl5net.github.io/SL5-aura-service/)
 
 
                                                     ### حالة البناء
