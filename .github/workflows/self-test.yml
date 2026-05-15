@@ -66,7 +66,7 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
-          label: 'Pre-Installation endet'
+          label: 'Preparation'
 
       - name: Run Official Ubuntu Setup
         run: bash ./setup/ubuntu_setup.sh
@@ -80,7 +80,7 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
-          label: 'Ubuntu Setup endet'
+          label: 'System Setup'
 
 
       - name: Start LanguageTool Server
@@ -93,7 +93,7 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
-          label: 'LanguageTool Server is started'
+          label: 'LanguageTool Startup'
 
 
 
@@ -119,7 +119,7 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
-          label: 'Aura Self-Test Logic'
+          label: 'Core Logic Tests'
 
       - name: Estimate Energy Consumption
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
