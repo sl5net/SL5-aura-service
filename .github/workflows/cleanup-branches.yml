@@ -7,7 +7,7 @@ on:
       dry_run:
         description: 'Dry run (no deletions)'
         type: boolean
-        default: false
+        default: true
       max_age_days:
         description: 'Max branch age in days'
         type: number
