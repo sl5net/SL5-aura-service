@@ -9,13 +9,13 @@
 |---|---|---|
 | OMA モード: 単語を書くだけで、残りは Aura が行います | Koans で学ぶ - 一度に 1 つのコンセプト |完全な Python スクリプト、プラグイン、API 呼び出し |
 
-![Energy Consumption](https://metrics.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=self-test.yml)
+[![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 
 ## クイックスタート
 1. このリポジトリをダウンロードまたは複製します
 2. OS のセットアップ スクリプトを実行します (「setup/」フォルダーを参照)。
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-jalang.md) を読む
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-jalang.md) を読む
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS): `nix-shell setup/shell.nix` の次に `bash setup/nixos_setup.sh`
@@ -23,7 +23,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Aura を起動します: `./scripts/restart_venv_and_run-server.sh`
-4. ホットキーを押して話します — **[full guide →](../docs/GettingStarted-jalang.md)**
+4. ホットキーを押して話します — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-jalang.md)**
 
 
 **⚠️ システム要件と互換性**
@@ -48,7 +48,7 @@ SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタ
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **ヒント:** 端末エクスペリエンスを向上させるには、[Zsh Integration](../docs/linux/zsh-integration-jalang.md) を参照してください。
+> **ヒント:** 端末エクスペリエンスを向上させるには、[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-jalang.md) を参照してください。
 
 ### 🎥 ビデオチュートリアル
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -316,7 +316,7 @@ f11::
 このアーキテクチャにより、コア システム ルールが保護されると同時に、プロジェクト固有のルールまたはコンテキスト認識ルール (CodeIgniter やゲーム コントロールのルールなど) をプラグインを介して優先度の低い拡張機能として簡単に追加できます。
 ## Windows ユーザー向けの主要なスクリプト
 
-Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを次に示します。
+ここでは、Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを示します。
 
 ### セットアップとアップデート
 
@@ -357,7 +357,7 @@ OS 互換性の凡例:
 ││ * **ワークフロー:** パスワードで保護された ZIP アーカイブを読み込みます。   
 │§ **テキストの処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
 │§ 1. `normalize_punctuation.py` (文字起こし後の句読点を標準化) 🐧 🍏 🪟  
-│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
+│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
 ││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト (on_match_exec) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **カスケード実行:** ルールは順番に処理され、その効果は **累積的**です。以前のルールによって変更されたテキストには、後のルールが適用されます。  
 ││ * **最優先停止基準:** ルールが **完全一致** (^...$) に達すると、そのトークンの処理パイプライン全体が直ちに停止します。このメカニズムは、信頼性の高い音声コマンドを実装するために重要です。  
@@ -369,7 +369,7 @@ OS 互換性の凡例:
 ││ * **ステータス:** ローカル LLM 統合。
 │└ 5. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の改良** 🐧 🍏 🪟  
 ││ * LT 固有の出力を修正するために、LanguageTool の後に適用されます。前修正レイヤーと同じ厳密なカスケード優先順位ロジックに従います。  
-││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
+││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **ファジー フォールバック:** **ファジー類似性チェック** (しきい値、たとえば 85% によって制御される) は、優先度が最も低いエラー修正層として機能します。これは、先行する決定的/カスケード ルールの実行全体で一致が見つからなかった場合 (current_rule_matched が False) にのみ実行され、可能な限り遅いファジー チェックを回避することでパフォーマンスを最適化します。  
 §┬ **モデル管理/**   
 │§─ `prioritize_model.py` (使用状況に基づいてモデルのロード/アンロードを最適化します) 🐧 🍏 🪟  
@@ -400,7 +400,7 @@ OS 互換性の凡例:
 ログファイルと関連付けるには、インストール時にチェックボックスをオンにしてください。    
 https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
   
-*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-jalang.md) を参照してください。*
+*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-jalang.md) を参照してください。*
 
 それからダブルクリックしてください
 `log/aura_engine.log`
@@ -426,7 +426,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefo
 │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟  
 (*プラグインのアクティブ化/非アクティブ化とその構成への変更は、サービスを再起動せずに次回の処理実行時に適用されます。*)  
 │ § **git コマンド** (git コマンド送信の音声制御) 🐧 🍏 🪟  
-
+│ § **vannweil** (ドイツ-ヴァンヴァイルの地図) 🐧 🍏 🪟  
 │ § **ポーカー プラグイン (ドラフト)** (ポーカー アプリケーションの音声制御) 🐧 🍏 🪟  
 │ └ **0 A.D. プラグイン (ドラフト)** (0 A.D. ゲームの音声コントロール) 🐧   
 §─ **セッション開始時または終了時のサウンド出力** (説明保留中) 🐧   

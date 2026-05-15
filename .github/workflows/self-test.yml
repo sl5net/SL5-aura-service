@@ -92,7 +92,26 @@ jobs:
           DISPLAY: :99
         run: |
           Xvfb :99 -screen 0 1024x768x24 &
+
+          START_TIME=$(date +%s.%N)
+
           ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results.log
+
+          END_TIME=$(date +%s.%N)
+          DURATION=$(awk "BEGIN {print $END_TIME - $START_TIME}")
+
+          TESTS_PASSED=$(grep -oP 'Passed: all \K[0-9]+' test_results.log || echo "unknown")
+
+          if [ "$TESTS_PASSED" != "0" ] && [ "$TESTS_PASSED" != "" ]; then
+            TIME_PER_TEST=$(awk "BEGIN {printf \"%.2f\", $DURATION / $TESTS_PASSED}")
+          else
+            TIME_PER_TEST="0"
+          fi
+
+          echo "TESTS_PASSED=$TESTS_PASSED" >> $GITHUB_ENV
+          echo "TIME_PER_TEST=$TIME_PER_TEST" >> $GITHUB_ENV
+
+
 
           if grep -q "| 0 not passed" test_results.log; then
             echo "✅ Final Guard: Success summary found. 0 tests failed."
@@ -105,7 +124,7 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: get-measurement
-          label: 'Core Logic Tests'
+          label: "Aura Core Logic (${{ env.TESTS_PASSED }} Tests, avg ${{ env.TIME_PER_TEST }}s/test)"
 
       - name: Display and Send Energy Results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4

@@ -9,6 +9,8 @@
 |---|---|---|
 | Modo OMA: basta escrever uma palavra, Aura faz o resto | Aprenda com Koans — um conceito de cada vez | Scripting Python completo, plug-ins, chamadas de API |
 
+![Energy Consumption](https://metrics.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=self-test.yml)
+
 ## Início rápido
 1. Baixe ou clone este repositório
 2. Execute o script de configuração do seu sistema operacional (consulte a pasta `setup/`):

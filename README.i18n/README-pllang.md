@@ -9,6 +9,8 @@
 |---|---|---|
 | Tryb OMA: po prostu napisz słowo, Aura zajmie się resztą | Ucz się z Koanami — jedna koncepcja na raz | Pełne skrypty Pythona, wtyczki, wywołania API |
 
+![Energy Consumption](https://metrics.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=self-test.yml)
+
 ## Szybki start
 1. Pobierz lub sklonuj to repozytorium
 2. Uruchom skrypt instalacyjny dla swojego systemu operacyjnego (zobacz folder `setup/`):
@@ -48,7 +50,7 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 
 > **Wskazówka:** Aby uzyskać lepszą obsługę terminala, zobacz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
 
-### 🎥 Samouczek wideo
+
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *(Link alternatywny: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
@@ -275,7 +277,7 @@ XSPACEbreakX
 ││ * **Kryterium zatrzymania o najwyższym priorytecie:** Jeśli reguła osiągnie **Pełne dopasowanie** (^...$), cały potok przetwarzania dla tego tokena zostanie natychmiast zatrzymany. Mechanizm ten ma kluczowe znaczenie dla realizacji niezawodnych poleceń głosowych.XSPACEbreakX
 │├ 3. `correct_text_by_languagetool.py` (integruje narzędzie LanguageTool do poprawiania gramatyki/stylu) 🐧 🍏 🪟XSPACEbreakX
 │├ **4. Hierarchiczny silnik reguł RegEx z rezerwą Ollama AI** 🐧 🍏 🪟XSPACEbreakX
-││ * **Kontrola deterministyczna:** wykorzystuje silnik RegEx-Rule-Engine do precyzyjnego sterowania poleceniami i tekstem o wysokim priorytecie.XSPACEbreakX
+││ * **Kontrola deterministyczna:** Wykorzystuje silnik RegEx-Rule-Engine do precyzyjnego sterowania poleceniami i tekstem o wysokim priorytecie.XSPACEbreakX
 │├ **Wtyczka Vector-Search** (Leniwe ładowanie): umożliwia wyszukiwanie semantyczne poprzez połączenie lokalnego osadzania wektorów z warstwą rezerwową Ollama/LLM 🐧XSPACEbreakX
 ││ * **Awaryjny algorytm Ollama AI (lokalny LLM):** służy jako opcjonalna kontrola o niskim priorytecie w przypadku **kreatywnych odpowiedzi, pytań i odpowiedzi oraz zaawansowanego dopasowywania rozmytego**, gdy nie jest spełniona żadna reguła deterministyczna.XSPACEbreakX
 ││ * **Status:** Lokalna integracja LLM.
@@ -288,7 +290,7 @@ XSPACEbreakX
 │└─ `setup_initial_model.py` (Konfiguruje pierwszą konfigurację modelu) 🐧 🍏 🪟XSPACEbreakX
 ├─ **Adaptacyjny limit czasu VAD** 🐧 🍏 🪟XSPACEbreakX
 ├─ **Adaptacyjny klawisz skrótu (Start/Stop)** 🐧 🍏 🪟XSPACEbreakX
-└─ **Natychmiastowa zmiana języka** (eksperymentalnie poprzez wstępne ładowanie modelu) 🐧 🍏 XSPACEbreakX
+└─ **Natychmiastowe przełączanie języka** (eksperymentalnie poprzez wstępne ładowanie modelu) 🐧 🍏 XSPACEbreakX
 
 **Narzędzia systemowe/** XSPACEbreakX
 ├┬ **Zarządzanie serwerem LanguageTool/** XSPACEbreakX
@@ -402,4 +404,4 @@ Jeśli uznasz to narzędzie za przydatne, rozważ zakup nam kawy! Twoje wsparcie
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
-[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)00)
+[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)3cIdRa1cobPR66P1LP5kk00)

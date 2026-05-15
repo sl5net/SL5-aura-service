@@ -2,12 +2,14 @@
 
 > 100% 오프라인, 개인 정보 보호 우선 음성 지원 프레임워크.  
 > 한 단어로 자신의 목소리가 하는 일을 정확하게 정의하세요.  
-> 전체 Python 스크립트로. 클라우드가 없습니다. 데이터가 컴퓨터 밖으로 나가지 않습니다.  
+> 전체 Python 스크립트. 클라우드가 없습니다. 데이터가 컴퓨터 밖으로 나가지 않습니다.  
 > Linux, macOS, Windows에서 터미널, 브라우저 또는 백그라운드 서비스로 실행됩니다.
 
 | 👵 초급 | 🎓 학습자 | 🧑u200d💻 개발자 |
 |---|---|---|
 | OMA 모드: 단어만 작성하면 나머지는 Aura가 수행합니다 | Koans로 배우기 - 한 번에 하나의 개념 | 전체 Python 스크립팅, 플러그인, API 호출 |
+
+![Energy Consumption](https://metrics.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=self-test.yml)
 
 ## 빠른 시작
 1. 이 저장소를 다운로드하거나 복제하세요.
@@ -133,7 +135,7 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 설정 스크립트는 시스템 종속성, Python 환경, 최대 속도를 위해 GitHub 릴리스에서 직접 필요한 모델 및 도구(~4GB) 다운로드 등 모든 것을 처리합니다.
 
 
-#### Linux, macOS, Windows용(선택적 언어 제외 포함)
+#### Linux, macOS 및 Windows용(선택적 언어 제외 포함)
 
 디스크 공간과 대역폭을 절약하기 위해 설정 중에 특정 언어 모델(`de`, `en`) 또는 모든 선택적 모델(`all`)을 제외할 수 있습니다. **핵심 구성요소(LanguageTool,lid.176)는 항상 포함됩니다.**
 
@@ -352,7 +354,7 @@ XSPACEbreakX
 ├─ `aura_engine.py`(Aura를 조정하는 주요 Python 서비스) 🐧 🍏 🪟  
 ├┬ **라이브 핫 리로드**(구성 및 맵) 🐧 🍏 🪟XSPACEbreakX
 │├ **보안된 비공개 지도 로드(무결성 우선)** 🔒 🐧 🍏 🪟XSPACEbreakX
-││ * **워크플로우:** 비밀번호로 보호된 ZIP 아카이브를 로드합니다. XSPACEbreakX
+││ * **워크플로:** 비밀번호로 보호된 ZIP 아카이브를 로드합니다. XSPACEbreakX
 │├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
 │├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
@@ -377,7 +379,7 @@ XSPACEbreakX
 └─ **즉각적인 언어 전환** (모델 사전 로드를 통한 실험) 🐧 🍏 XSPACEbreakX
 
 **시스템 유틸리티/** XSPACEbreakX
-├┬ **LanguageTool 서버 관리/**   
+├┬ **LanguageTool 서버 관리/** XSPACEbreakX
 │├─ `start_언어tool_server.py`(로컬 LanguageTool 서버 초기화) 🐧 🍏 🪟  
 │└─ `stop_언어tool_server.py` (LanguageTool 서버 종료) 🐧 🍏
 ├─ `monitor_mic.sh` (예: 키보드와 모니터를 사용하지 않고 헤드셋과 함께 사용) 🐧 🍏 🪟XSPACEbreakX

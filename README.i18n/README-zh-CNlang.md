@@ -9,6 +9,9 @@
 |---|---|---|
 | OMA-模式：只需写一个字，Aura 即可完成剩下的工作 |与 Koans 一起学习 — 一次一个概念 |完整的 Python 脚本、插件、API 调用 |
 
+![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
+
+
 ## 快速入门
 1.下载或克隆此存储库
 2. 运行适用于您的操作系统的安装脚本（请参阅“setup/”文件夹）：
@@ -46,7 +49,7 @@ X空格符X
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **提示：** 为了获得更好的终端体验，请参阅 [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-zh-CNlang.md)。
+> **提示：** 为了获得更好的终端体验，请参见[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-zh-CNlang.md)。
 
 ### 🎥 视频教程
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -271,7 +274,7 @@ X空格符X
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
 │├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
 │ │ * **动态脚本执行：**规则可以触发自定义Python脚本（on_match_exec）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
-│ │ * **级联执行：**规则按顺序处理，其效果是**累积的**。后面的规则适用于前面的规则修改的文本。  
+│ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
 │ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
 │├ 3. ` Correct_text_by_languagetool.py` (集成LanguageTool用于语法/风格校正) 🐧 🍏 🪟  
 │├ **4.具有 Ollama AI 后备功能的分层正则表达式规则引擎** 🐧 🍏 🪟  
@@ -391,7 +394,7 @@ X空格符X
 
 - **Vosk 型号：** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **语言工具：**  
-(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
+(6.6)[https://languagetool.org/download/](https://languagetool.org/download/)
 
 **LanguageTool许可证：** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
