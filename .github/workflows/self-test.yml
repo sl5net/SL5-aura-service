@@ -92,6 +92,12 @@ jobs:
             exit 1
           fi
 
+      - name: Get Measurement
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: get-measurement
+          label: 'Aura Self-Test Logic'
+
       - name: Estimate Energy Consumption
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
