@@ -106,16 +106,14 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
-[![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
 
-<div align="center">
-    <a href="https://github.com/sl5net/SL5-aura-service/stargazers">
-    <img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
-    </a>
-    <img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="License">
-</div>
+[![Stargazers](https://github.com/sl5net/SL5-aura-service/stargazers)](https://github.com/sl5net/SL5-aura-service/stargazers)
+[![License](https://img.shields.io/github/license/sl5net/SL5-aura-service")](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
+
+[![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
+
 
 **Lesen Sie dies in anderen Sprachen:**
 
