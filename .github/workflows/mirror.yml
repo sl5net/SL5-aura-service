@@ -1,0 +1,31 @@
+name: Mirror to Codeberg
+
+on:
+  push:
+    branches:
+      - '**'
+  delete:
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup SSH
+        env:
+          SSH_KEY: ${{ secrets.CODEBERG_MIRROR_PRIVATE }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H codeberg.org >> ~/.ssh/known_hosts
+
+      - name: Mirror to Codeberg
+        run: |
+          git remote add codeberg git@codeberg.org:seeh/SL5-aura-service.git
+          git push --mirror codeberg
