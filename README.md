@@ -96,10 +96,7 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 
 For a complete technical reference, including all modules and scripts, please visit our official documentation page. It is automatically generated and always up-to-date.
 
-[**Go to Documentation sl5net.github.io/SL5-aura-service >>**](https://sl5net.github.io/SL5-aura-service/)
-<a href="https://sl5net.github.io/SL5-aura-service/">
-<img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Go to Documentation >>">
-</a>
+[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### Build Status
