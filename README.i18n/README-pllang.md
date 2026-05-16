@@ -1,6 +1,6 @@
-<img src="/data/image/logo.svg" wyrównania="right" szerokość="150" alt="Logo SL5 Aura">
+<img src="data/image/logo.svg" wyrównaj="right" szerokość="150" alt="⬟ Logo SL5 Aura">
 
-# SL5 Aura – Twój Głos. Twoje zasady. ⬟
+# ⬟ SL5 Aura – Twój głos. Twoje zasady.
 
 > W 100% offline, platforma asystentów głosowych dbająca o prywatność.XSPACEbreakX
 > Określ dokładnie, co robi Twój głos — od jednego słowaXSPACEbreakX
@@ -96,21 +96,29 @@ SL5-Aura zapewnia pierwszorzędną obsługę głosową dla **OculiX** i **Sikuli
 
 Aby uzyskać pełne informacje techniczne, w tym wszystkie moduły i skrypty, odwiedź naszą oficjalną stronę dokumentacji. Jest generowany automatycznie i zawsze aktualny.
 
-[**Go to Documentation >>**](https://sl5net.github.io/SL5-aura-service/)
+👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### Stan kompilacji
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
-[![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
-[![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+[![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/mac_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
+[![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/win11_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
+<divlay="left">
+<a href="https://github.com/sl5net/SL5-aura-service/stargazers">
+<img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Obserwatorzy gwiazd">
+</a>
+<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="Licencja">
+<a href="https://sl5net.github.io/SL5-aura-service/">
+<img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Dokumentacja">
+</a>
+</div>
 
-[![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
-
-**Przeczytaj to w innych językach:**
+👉 **Przeczytaj to w innych językach:**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-pllang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-pllang.md) | [🇪🇸 Español](../README.i18n/README-eslang-pllang.md) | [🇫🇷 Français](../README.i18n/README-frlang-pllang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-pllang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-pllang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-pllang.md) | [🇵🇱 Polski](../README.i18n/README-pllang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-pllang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-pllang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-pllang.md)
 

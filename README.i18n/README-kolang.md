@@ -1,6 +1,6 @@
-<img src="/data/image/logo.svg" align="right" width="150" alt="SL5 Aura 로고">
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura 로고">
 
-# SL5 아우라 - 너의 목소리. 귀하의 규칙. ⬟
+# ⬟ SL5 Aura - 당신의 목소리. 귀하의 규칙.
 
 > 100% 오프라인, 개인 정보 보호 우선 음성 지원 프레임워크.  
 > 한 단어로 자신의 목소리가 하는 일을 정확하게 정의하세요.  
@@ -96,21 +96,29 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 
 모든 모듈과 스크립트를 포함한 전체 기술 참조를 보려면 공식 문서 페이지를 방문하세요. 자동으로 생성되며 항상 최신 상태를 유지합니다.
 
-[**Go to Documentation >>**](https://sl5net.github.io/SL5-aura-service/)
+👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### 빌드 상태
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
-[![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
-[![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+[![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/mac_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
+[![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/win11_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
+<div 정렬="왼쪽">
+<a href="https://github.com/sl5net/SL5-aura-service/stargazers">
+<img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
+</a>
+<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="라이센스">
+<a href="https://sl5net.github.io/SL5-aura-service/">
+<img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="문서">
+</a>
+</div>
 
-[![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
-
-**다른 언어로 읽어 보세요:**
+👉 **다른 언어로 읽어 보세요:**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-kolang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-kolang.md) | [🇪🇸 Español](../README.i18n/README-eslang-kolang.md) | [🇫🇷 Français](../README.i18n/README-frlang-kolang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-kolang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-kolang.md) | [🇰🇷 한국어](../README.i18n/README-kolang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-kolang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-kolang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-kolang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-kolang.md)
 

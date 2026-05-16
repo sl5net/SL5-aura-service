@@ -1,6 +1,6 @@
-<img src="/data/image/logo.svg" align="right" width="150" alt="SL5 Aura Logo">
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# SL5 Aura – Deine Stimme. Ihre Regeln. ⬟
+# ⬟ SL5 Aura – Deine Stimme. Ihre Regeln.
 
 > 100 % offline, Datenschutz-First-Sprachassistenten-Framework.  
 > Definieren Sie genau, was Ihre Stimme tut – mit einem einzigen Wort  
@@ -96,7 +96,7 @@ SL5-Aura bietet erstklassige Sprachunterstützung für **OculiX** und **SikuliX 
 
 Eine vollständige technische Referenz, einschließlich aller Module und Skripte, finden Sie auf unserer offiziellen Dokumentationsseite. Es wird automatisch generiert und ist immer aktuell.
 
-[**Go to Documentation >>**](https://sl5net.github.io/SL5-aura-service/)
+👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### Build-Status
@@ -106,7 +106,6 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/mac_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/win11_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
-
 
 [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
 <div align="left">
@@ -119,9 +118,7 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 </a>
 </div>
 
-
-
-**Lesen Sie dies in anderen Sprachen:**
+👉 **Lesen Sie dies in anderen Sprachen:**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-delang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang.md) | [🇪🇸 Español](../README.i18n/README-eslang-delang.md) | [🇫🇷 Français](../README.i18n/README-frlang-delang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-delang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-delang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-delang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-delang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-delang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-delang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-delang.md)
 
