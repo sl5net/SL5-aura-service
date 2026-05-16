@@ -15,15 +15,6 @@
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 ⚡ ~0,08 J pro Test (39 Tests, 0,49 s pro Test · gemessen mit [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · kein Cloud-Computing
 
-<br/>
-<div align="center">
-    <a href="https://github.com/sl5net/SL5-aura-service/stargazers">
-    <img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
-    </a>
-    <img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="License">
-</div>
-<br/>
-
 ## Schnellstart
 1. Laden Sie dieses Repository herunter oder klonen Sie es
 2. Führen Sie das Setup-Skript für Ihr Betriebssystem aus (siehe Ordner „setup/“):
@@ -116,6 +107,13 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
+
+<div align="center">
+    <a href="https://github.com/sl5net/SL5-aura-service/stargazers">
+    <img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
+    </a>
+    <img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="License">
+</div>
 
 [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 
