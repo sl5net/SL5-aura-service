@@ -1,6 +1,6 @@
-<img src="data/image/logo.svg" align="right" width="150" alt="SL5 Aura Logo">
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# SL5 Aura – Your Voice. Your Rules. ⬟
+# ⬟ SL5 Aura – Your Voice. Your Rules.
 
 > 100% offline, privacy-first voice assistant framework.  
 > Define exactly what your voice does — from a single word  
@@ -96,7 +96,7 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 
 For a complete technical reference, including all modules and scripts, please visit our official documentation page. It is automatically generated and always up-to-date.
 
-[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### Build Status

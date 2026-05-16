@@ -1,6 +1,6 @@
-<img src="/data/image/logo.svg" align="right" width="150" alt="SL5 Aura Logo">
+<img src="data/image/logo.svg" align="right" width="150" alt="Logo SL5 Aura ⬟">
 
-# SL5 Aura – Votre voix. Vos règles. ⬟
+# ⬟ SL5 Aura – Votre voix. Vos règles.
 
 > Cadre d'assistant vocal 100 % hors ligne, axé sur la confidentialité.  
 > Définissez exactement ce que fait votre voix - à partir d'un seul mot  
@@ -19,7 +19,7 @@
 1. Téléchargez ou clonez ce référentiel
 2. Exécutez le script d'installation pour votre système d'exploitation (voir le dossier `setup/`) :
 - Linux (Arch/Manjaro) : `bash setup/manjaro_arch_setup.sh`
-===> 🧩 lire [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-frlang.md)
+===> 🧩 lire [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-frlang.md)
 - Linux (Ubuntu/Debian) : `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE) : `bash setup/suse_setup.sh`
 - Linux (NixOS) : `nix-shell setup/shell.nix` puis `bash setup/nixos_setup.sh`
@@ -27,7 +27,7 @@
 - macOS : `bash setup/macos_setup.sh`
 - Windows : `setup/windows11_setup_with_ahk_copyq.bat`
 3. Démarrez Aura : `./scripts/restart_venv_and_run-server.sh`
-4. Appuyez sur votre touche de raccourci et parlez — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-frlang.md)**
+4. Appuyez sur votre touche de raccourci et parlez — **[full guide →](../docs/GettingStarted-frlang.md)**
 
 
 **⚠️ Configuration système requise et compatibilité**
@@ -52,7 +52,7 @@ Remarque : De nombreux textes sont des traductions générées automatiquement 
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Conseil :** Pour une meilleure expérience de terminal, consultez [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-frlang.md).
+> **Conseil :** Pour une meilleure expérience de terminal, consultez [Zsh Integration](../docs/linux/zsh-integration-frlang.md).
 
 ### 🎥 Tutoriel vidéo
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -96,19 +96,27 @@ SL5-Aura offre une prise en charge vocale de première classe pour **OculiX** et
 
 Pour une référence technique complète, y compris tous les modules et scripts, veuillez visiter notre page de documentation officielle. Il est généré automatiquement et toujours à jour.
 
-[**Go to Documentation >>**](https://sl5net.github.io/SL5-aura-service/)
+👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### État de la construction
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
-[![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
-[![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+[![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/mac_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
+[![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/win11_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
-
-[![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
+<div align="gauche">
+<a href="https://github.com/sl5net/SL5-aura-service/stargazers">
+<img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Observateurs d'étoiles">
+</a>
+<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="Licence">
+<a href="https://sl5net.github.io/SL5-aura-service/">
+<img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Documentation">
+</a>
+</div>
 
 **Lisez ceci dans d'autres langues :**
 
@@ -361,7 +369,7 @@ Notre principal moteur de reconnaissance vocale et de traitement audio hors lign
 ││ * **Workflow :** Charge les archives ZIP protégées par mot de passe.   
 │├ **Traitement et correction de texte/** Regroupés par langue ( par exemple `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardise la ponctuation après la transcription) 🐧 🍏 🪟  
-│├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
+│├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
 ││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés (on_match_exec) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Exécution en cascade :** Les règles sont traitées séquentiellement et leurs effets sont **cumulatifs**. Les règles ultérieures s'appliquent au texte modifié par les règles antérieures.  
 ││ * **Critère d'arrêt de priorité la plus élevée :** Si une règle obtient une **Correspondance complète** (^...$), l'ensemble du pipeline de traitement pour ce jeton s'arrête immédiatement. Ce mécanisme est essentiel pour implémenter des commandes vocales fiables.  
@@ -373,7 +381,7 @@ Notre principal moteur de reconnaissance vocale et de traitement audio hors lign
 ││ * **Statut :** Intégration LLM locale.
 │└ 5. **Post-correction intelligente** (`FuzzyMap`)** – Affinement post-LT** 🐧 🍏 🪟  
 ││ * Appliqué après LanguageTool pour corriger les sorties spécifiques à LT. Suit la même logique stricte de priorité en cascade que la couche de pré-correction.  
-││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-frlang.md)) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
+││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés ([on_match_exec](../docs/advanced-scripting-frlang.md)) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Fuzzy Fallback :** Le **Fuzzy Similarity Check** (contrôlé par un seuil, par exemple 85 %) agit comme la couche de correction d'erreurs la plus basse priorité. Elle n'est exécutée que si l'exécution complète de la règle déterministe/en cascade précédente n'a pas réussi à trouver une correspondance (current_rule_matched est False), optimisant ainsi les performances en évitant les vérifications floues lentes autant que possible.  
 ├┬ **Gestion des modèles/**   
 │├─ `prioritize_model.py` (Optimise le chargement/déchargement du modèle en fonction de l'utilisation) 🐧 🍏 🪟  
@@ -404,7 +412,7 @@ Scripts pour la configuration de l'environnement, les tests et l'exécution des 
 Veuillez cocher la case lors de l'installation pour l'associer aux fichiers journaux.    
 https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
   
-*Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
+*Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
 
 Alors peut-être double-cliquez
 `log/aura_engine.log`
