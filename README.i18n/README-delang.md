@@ -120,10 +120,16 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 <br/>
 <div align="center">
     <a href="https://github.com/sl5net/SL5-aura-service/stargazers">
-    <img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
+        <img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
     </a>
+
     <img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="License">
-    [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
+
+    <a href="https://sl5net.github.io/SL5-aura-service/">
+    <img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Documentation">
+    </a>
+
+
 </div>
 <br/>
 
