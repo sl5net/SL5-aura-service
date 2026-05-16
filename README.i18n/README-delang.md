@@ -107,7 +107,7 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/mac_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/win11_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
-[![Stargazers](https://github.com/sl5net/SL5-aura-service/stargazers)](https://github.com/sl5net/SL5-aura-service/stargazers)
+[![Stargazers](https://github.com/sl5net/SL5-aura-service/stargazers&logo=stargazers)](https://github.com/sl5net/SL5-aura-service/stargazers)
 
 [![License](https://img.shields.io/github/license/sl5net/SL5-aura-service?style=for-the-badge&logo=license")](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
@@ -123,6 +123,7 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
     <img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
     </a>
     <img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="License">
+    [![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
 </div>
 <br/>
 
