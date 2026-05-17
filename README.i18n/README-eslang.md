@@ -1,6 +1,6 @@
-<img src="/data/image/logo.svg" align="right" width="150" alt="Logotipo SL5 Aura">
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ Logotipo de SL5 Aura">
 
-# SL5 Aura – Tu Voz. Tus reglas. ⬟
+# ⬟ SL5 Aura – Tu Voz. Tus reglas.
 
 > Marco de asistente de voz 100% fuera de línea y que prioriza la privacidad.  
 > Defina exactamente lo que hace su voz, a partir de una sola palabra  
@@ -96,21 +96,29 @@ SL5-Aura proporciona soporte de voz de primera clase para **OculiX** y **SikuliX
 
 Para obtener una referencia técnica completa, incluidos todos los módulos y scripts, visite nuestra página de documentación oficial. Se genera automáticamente y siempre está actualizado.
 
-[**Go to Documentation >>**](https://sl5net.github.io/SL5-aura-service/)
+👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### Estado de compilación
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ)
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
-[![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
-[![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
+
+[![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/mac_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
+[![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/win11_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
+<div align="izquierda">
+<a href="https://github.com/sl5net/SL5-aura-service/stargazers">
+<img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Observadores de estrellas">
+</a>
+<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="Licencia">
+<a href="https://sl5net.github.io/SL5-aura-service/">
+<img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Documentación">
+</a>
+</div>
 
-[![Documentation](https://img.shields.io/badge/documentation-live-brightgreen)](https://sl5net.github.io/SL5-aura-service/)
-
-**Lea esto en otros idiomas:**
+👉 **Lea esto en otros idiomas:**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-eslang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-eslang.md) | [🇪🇸 Español](../README.i18n/README-eslang.md) | [🇫🇷 Français](../README.i18n/README-frlang-eslang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-eslang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-eslang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-eslang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-eslang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-eslang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-eslang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-eslang.md)
 
@@ -485,7 +493,7 @@ Esta tabla proporciona una descripción general de los diferentes modelos de Vos
 
 - **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Herramienta de idioma:**  
-(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
+(6.6) XMLDLINK44X
 
 **Licencia de LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 

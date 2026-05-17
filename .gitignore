@@ -65,6 +65,9 @@ plugin_call_cache.sqlite
 dictation.log
 get_suggestions.log
 type_watcher.log
+scripts/type_watcher/log/type_watcher_keep_alive.log
+
+**/*.log
 
 **/*.zip_log.py
 **/*.zip.py
