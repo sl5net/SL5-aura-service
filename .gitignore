@@ -169,3 +169,5 @@ docs_old/
 
 # Lokale Symlink
 settings
+orchestration/logs/
+orchestration/airflow.db
