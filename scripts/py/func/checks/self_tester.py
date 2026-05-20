@@ -1,4 +1,5 @@
 # scripts/py/func/checks/self_tester.py
+# scripts/py/func/checks/self_tester.py
 import contextlib
 
 import platform
@@ -226,25 +227,25 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         case(input_text='->AUDIO_INPUT_DEVICE<-', expected="SYSTEM_DEFAULT",
              context='proff if we can change settings 2026-0104-1435', lt=False, prio=TestPrio.OPTIONAL),
 
-        # --- LT + MAP Kombinationen ---
+        # --- LT (cached) + MAP Kombinationen ---
         case('Sebastian mit nachnamen', 'Sebastian mit Nachnamen',
-             'LT Uppercase. may check --> FUZZY_MAP_pre.py', lt=True, prio=TestPrio.HIGH),
+             'LT (cached) Uppercase. may check --> FUZZY_MAP_pre.py', lt=True, prio=TestPrio.HIGH),
         case(input_text='null', expected='0', context='MAP git', lt=False, prio=TestPrio.OPTIONAL),
         case(input_text='über die konsole zu bedienen', expected='Über die Konsole zu bedienen', context='git', lt=True,
              prio=TestPrio.HIGH),
         case(input_text='geht cobit', expected='git commit', context='FUZZY_MAP_pre git', lt=False, prio=TestPrio.OPTIONAL),
 
         # --- en-US ---
-        case('colours', 'colors', 'fix by LT', lang='en-US', lt=True, prio=TestPrio.OPTIONAL),
-        case('underilnes', 'underlines', 'fix by LT', lang='en-US', lt=True, prio=TestPrio.OPTIONAL),
-        case('too have', 'to have', 'fix by LT', lang='en-US', lt=True, prio=TestPrio.ALWAYS),
-        case('5 PM in the afternoon', '5 PM', 'fix by LT', lang='en-US', lt=True, prio=TestPrio.HIGH),
+        case('colours', 'colors', 'fix by LT (cached)', lang='en-US', lt=True, prio=TestPrio.OPTIONAL),
+        case('underilnes', 'underlines', 'fix by LT (cached)', lang='en-US', lt=True, prio=TestPrio.OPTIONAL),
+        case('too have', 'to have', 'fix by LT (cached)', lang='en-US', lt=True, prio=TestPrio.ALWAYS),
+        case('5 PM in the afternoon', '5 PM', 'fix by LT (cached)', lang='en-US', lt=True, prio=TestPrio.HIGH),
         case('good nigt Mum', 'Good night Mum', 'Funny useless rule ;) just for testing', lang='en-US', lt=True,
              prio=TestPrio.ALWAYS),
         case('thousand dollars.', '1000 dollars.', 'Number with unit', lang='en-US', lt=False, prio=TestPrio.HIGH),
         case('one and thousand dollars.', '1 and 1000 dollars.', 'Number with unit', lang='en-US', lt=False, prio=TestPrio.ALWAYS),
 
-        # --- de-DE MAP + LT ---
+        # --- de-DE MAP + LT (cached) ---
         case('tausend euro. Und euro großgeschrieben.', r'1000 Euro\. Und Euro großgeschrieben.',
              'Number with unit', lt=True, prio=TestPrio.HIGH),
         case('lieblingszahlen sind fünf und drei', 'Lieblingszahlen sind 5 und 3', 'numbers 5 and 3', lt=True, prio=TestPrio.ALWAYS),
@@ -282,11 +283,11 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         case('Sekunde Lauffer', 'Sigune Lauffer', 'MAP Wannweil', lt=False, prio=TestPrio.OPTIONAL),
         case('Sekunde lauf war', 'Sigune Lauffer war', 'MAP Wannweil', lt=False, prio=TestPrio.HIGH),
 
-        # --- Partial MAP + LT ---
-        case('mit nachnamen laufer', 'Mit Nachnamen Lauffer', 'Partial map + LT', lt=True, prio=TestPrio.HIGH),
-        case('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'Partial map + LT', lt=True, prio=TestPrio.HIGH),
-        case('von sebastian laufer', 'Von Sebastian Lauffer', 'Partial map + LT', lt=True, prio=TestPrio.HIGH),
-        case('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT', lt=True, prio=TestPrio.HIGH),
+        # --- Partial MAP + LT (cached) ---
+        case('mit nachnamen laufer', 'Mit Nachnamen Lauffer', 'Partial map + LT (cached)', lt=True, prio=TestPrio.HIGH),
+        case('Sebastian mit nachnamen', 'Sebastian mit Nachnamen', 'Partial map + LT (cached)', lt=True, prio=TestPrio.HIGH),
+        case('von sebastian laufer', 'Von Sebastian Lauffer', 'Partial map + LT (cached)', lt=True, prio=TestPrio.HIGH),
+        case('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT (cached)', lt=True, prio=TestPrio.HIGH),
         case('sebastian laufer', 'Sebastian Lauffer', 'Exact MAP match', lt=False, prio=TestPrio.OPTIONAL),
 
         # --- FUZZY_MAP_pre ---
@@ -294,7 +295,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         case('geht status', 'git status', 'Fuzzy map FUZZY string', lt=False, prio=TestPrio.ALWAYS),
         case('geht cobit', 'git commit', 'FUZZY_MAP_pre', lt=False, prio=TestPrio.OPTIONAL),
 
-        # --- Großschreibung via LT ---
+        # --- Großschreibung via LT (cached) ---
         case('ich heiße max', 'Ich heiße Max', 'Capitalization pronoun + proper noun', lt=True, prio=TestPrio.HIGH),
         case('der hund bellt', 'Der Hund bellt', 'Capitalization article + noun', lt=True, prio=TestPrio.OPTIONAL),
         case('die katze schläft', 'Die Katze schläft', 'Capitalization article + noun', lt=True, prio=TestPrio.HIGH),
@@ -302,7 +303,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         case('heute ist montag', 'Heute ist Montag', 'Capitalization day', lt=True, prio=TestPrio.OPTIONAL),
         case('heute ist ein schöner tag', 'Heute ist ein schöner Tag', 'Capitalization day', lt=True, prio=TestPrio.HIGH),
         case('heute ist ein schöner tag zwei drei', 'Heute ist ein schöner Tag 23','Capitalization + number', lt=True, prio=TestPrio.HIGH),
-        case('zwei drei hunde sind im wald', '23 Hunde sind im Wald', 'Number at start + LT', lt=True, prio=TestPrio.OPTIONAL),
+        case('zwei drei hunde sind im wald', '23 Hunde sind im Wald', 'Number at start + LT (cached)', lt=True, prio=TestPrio.OPTIONAL),
         case('die antwort ist ein test', 'Die Antwort ist ein Test', 'Window filter provocation', lt=True, prio=TestPrio.HIGH),
         case('im sommer ist es warm', 'Im Sommer ist es warm', 'Capitalization season', lt=True, prio=TestPrio.HIGH),
 
@@ -365,13 +366,13 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
              'Detailed sentence', lt=True, prio=TestPrio.HIGH),
         case('das wetter wird morgen sonnig mit temperaturen um die zwanzig grad',
              'Das Wetter wird morgen sonnig mit Temperaturen um die 20 Grad',
-             'digits_to_numbers + LT', lt=True, prio=TestPrio.HIGH),
+             'digits_to_numbers + LT (cached)', lt=True, prio=TestPrio.HIGH),
     ]
 
 
     # test_cases = [
-    #     # ('was is 5 mal 1', 'Das Ergebnis von 5 mal 2 ist 10.', 'Partial map + LT correction', 'de-DE'),
-    #     ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT correction', 'de-DE'),
+    #     # ('was is 5 mal 1', 'Das Ergebnis von 5 mal 2 ist 10.', 'Partial map + LT (cached) correction', 'de-DE'),
+    #     ('sebastian mit nachnamen laufer', 'Sebastian mit Nachnamen Lauffer', 'Partial map + LT (cached) correction', 'de-DE'),
     # ]
 
     # 1. Filter test cases for the current language
@@ -538,7 +539,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     if global_state.LOGGING_ENABLED:
         logger.info("=" * 40)
 
-    ci_hint = f" ({skipped_lt_count} LT-tests skipped in CI)" if is_ci and skipped_lt_count else ""
+    ci_hint = f" ({skipped_lt_count} LT (cached)-tests skipped in CI)" if is_ci and skipped_lt_count else ""
 
 
     # 4.2 Summary
@@ -550,7 +551,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         if global_state.LOGGING_ENABLED:
             # logger.info(
             # f":st: {len(active_tests)} of {len(test_cases)} tests active  |  ✅ Passed: {passed_count}  |  ❌ Failed: {failed_count}  (hint: search ❌ FAIL)")
-            ci_hint = f" ({skipped_lt_count} LT-tests skipped in CI)" if is_ci and skipped_lt_count else ""
+            ci_hint = f" ({skipped_lt_count} LT (cached)-tests skipped in CI)" if is_ci and skipped_lt_count else ""
             logger.info(
                 f":st: {len(active_tests)} of {len(test_cases)} tests active{ci_hint} |  ✅ Passed: {passed_count}  |  ❌ not passed: {failed_count}  (hint: search ❌ FAIL)")
 

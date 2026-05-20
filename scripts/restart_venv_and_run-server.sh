@@ -53,7 +53,7 @@ else
     echo SCRIPT_DIR=$SCRIPT_DIR
     echo PROJECT_ROOT=$PROJECT_ROOT
 
-    echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
+    echo "Activating virtual environment at '$PROJECT_ROOT/.venv'..."
     cd $PROJECT_ROOT
 
     # Sometimes it can help for performance (original:'manchmal kann es helfen aus performance Gründen').
