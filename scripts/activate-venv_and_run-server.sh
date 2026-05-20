@@ -111,6 +111,9 @@ echo "Starting service..."
 export PYTHONUNBUFFERED=1
 export PYTHONDONTWRITEBYTECODE=1
 
+export AIRFLOW__CORE__DAGS_FOLDER="$PROJECT_ROOT/orchestration/dags"
+# airflow scheduler # TODO its only protoype 20.5.'26 18:27 Wed
+
 # --- Memory Allocator Logic (mimalloc) ---
 MIMALLOC_FOUND=false
 
