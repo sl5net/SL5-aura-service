@@ -13,7 +13,7 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ ~0.08 J प्रति परीक्षण (39 परीक्षण, 0.49 प्रति परीक्षण · [Eco-CI](https://www.green-coding.io/projects/eco-ci/) से मापा गया) · कोई क्लाउड गणना नहीं
+⚡ ~0.08 J प्रति परीक्षण (39 परीक्षण, 0.49 प्रति परीक्षण · [Eco-CI](https://metrics.green-coding.io/index.html) से मापा गया) · कोई क्लाउड गणना नहीं
 
 ## त्वरित शुरुआत
 1. इस रिपॉजिटरी को डाउनलोड या क्लोन करें

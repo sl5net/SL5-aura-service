@@ -13,7 +13,7 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ ~0,08 J par test (39 tests, 0,49 s par test · mesuré avec [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · pas de calcul cloud
+⚡ ~0,08 J par test (39 tests, 0,49 s par test · mesuré avec [Eco-CI](https://metrics.green-coding.io/index.html)) · pas de calcul cloud
 
 ## Démarrage rapide
 1. Téléchargez ou clonez ce référentiel
@@ -443,7 +443,7 @@ Fonctionnalités actuellement en cours de développement ou à l'état de projet
 │ └ **0 A.D. Plugin (Draft)** (Commande vocale pour le jeu 0 A.D.) 🐧   
 ├─ **Sortie sonore au démarrage ou à la fin d'une session** (Description en attente) 🐧   
 ├─ **Sortie vocale pour les malvoyants** (Description en attente) 🐧 🍏 🪟  
-└─ **Prototype Android SL5 Aura** (Pas encore entièrement hors ligne) 📱  
+└─ **Prototype Android SL5 Aura** (Pas encore complètement hors ligne) 📱  
 
 ---
 

@@ -4,7 +4,7 @@
 
 > 100% 오프라인, 개인 정보 보호 우선 음성 지원 프레임워크.  
 > 한 단어로 자신의 목소리가 하는 일을 정확하게 정의하세요.  
-> 전체 Python 스크립트. 클라우드가 없습니다. 데이터가 컴퓨터 밖으로 나가지 않습니다.  
+> 전체 Python 스크립트로. 클라우드가 없습니다. 데이터가 컴퓨터 밖으로 나가지 않습니다.  
 > Linux, macOS, Windows에서 터미널, 브라우저 또는 백그라운드 서비스로 실행됩니다.
 
 | 👵 초급 | 🎓 학습자 | 🧑u200d💻 개발자 |
@@ -13,7 +13,7 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ 테스트당 ~0.08J(39개 테스트, 테스트당 0.49초 · [Eco-CI](https://www.green-coding.io/projects/eco-ci/)로 측정) · 클라우드 컴퓨팅 없음
+⚡ 테스트당 ~0.08J(39개 테스트, 테스트당 0.49초 · [Eco-CI](https://metrics.green-coding.io/index.html)로 측정) · 클라우드 컴퓨팅 없음
 
 ## 빠른 시작
 1. 이 저장소를 다운로드하거나 복제하세요.
@@ -36,7 +36,7 @@
 * **macOS:** ✅ 완전히 지원됩니다(AppleScript 사용).
 * **Linux(X11/Xorg):** ✅ 완전히 지원됩니다.
 * **Linux(Wayland):** ✅ 완전히 지원됩니다(KDE Plasma 6 / Wayland에서 테스트됨).
-* **Linux(CachyOS / Arch 기반 롤링 릴리스):** ✅ 완벽하게 지원됩니다.
+* **Linux(CachyOS / Arch 기반 롤링 릴리스):** ✅ 완전히 지원됩니다.
 glibc 2.43 호환성으로 인해 mimalloc(`sudo pacman -S mimalloc`)이 필요합니다.
 * **Linux(NixOS):** 🧪 실험적 — 커뮤니티에서 제공한 설정이며 아직 테스트되지 않았습니다.
 시도해보시면 이슈를 공개하거나 결과를 PR해 주세요!  XSPACEbreakX
@@ -68,7 +68,7 @@ XSPACEbreakX
 * **고도의 제어 변환 엔진:** 구성 중심의 고도로 사용자 정의 가능한 처리 파이프라인을 구현합니다. 규칙 우선순위, 명령 감지 및 텍스트 변환은 순전히 퍼지 맵의 규칙 순서에 따라 결정되며 **코딩이 아닌 구성**이 필요합니다.
 * **보수적인 RAM 사용:** 메모리를 지능적으로 관리하고 여유 RAM이 충분한 경우에만 모델을 사전 로드하여 다른 애플리케이션(예: PC 게임)이 항상 우선순위를 갖도록 합니다.
 * **크로스 플랫폼:** Linux, macOS, Windows에서 작동합니다.
-* **완전 자동화:** 자체 LanguageTool 서버를 관리합니다(단, 외부 서버도 사용할 수 있음).
+* **완전 자동화:** 자체 LanguageTool 서버를 관리합니다(그러나 외부 서버도 사용할 수 있음).
 * **매우 빠른 속도:** 지능형 캐싱은 즉각적인 "듣기..." 알림과 빠른 처리를 보장합니다.
 
 ## 🔌 즉시 사용 가능한 통합
@@ -147,7 +147,7 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 설정 스크립트는 시스템 종속성, Python 환경, 최대 속도를 위해 GitHub 릴리스에서 직접 필요한 모델 및 도구(~4GB) 다운로드 등 모든 것을 처리합니다.
 
 
-#### Linux, macOS 및 Windows용(선택적 언어 제외 포함)
+#### Linux, macOS, Windows용(선택적 언어 제외 포함)
 
 디스크 공간과 대역폭을 절약하기 위해 설정 중에 특정 언어 모델(`de`, `en`) 또는 모든 선택적 모델(`all`)을 제외할 수 있습니다. **핵심 구성요소(LanguageTool,lid.176)는 항상 포함됩니다.**
 
@@ -198,7 +198,7 @@ windows11_setup.bat -Exclude "en"
 
 **읽기 및 실행을 위한 도구를 설치합니다. [CopyQ](https://github.com/hluk/CopyQ) 또는 [AutoHotkey v2](https://www.autohotkey.com/)**. 이는 텍스트 입력 감시자에게 필요합니다.
 
-설치는 완전 자동화되어 있으며 새 시스템에서 2개 모델을 사용할 경우 약 **8~10분** 정도 소요됩니다.
+설치는 완전 자동화되어 있으며 새로운 시스템에서 2개 모델을 사용할 경우 약 **8~10분** 정도 소요됩니다.
 
 1. `setup` 폴더로 이동합니다.
 2. **`windows11_setup_with_ahk_copyq.bat`**를 두 번 클릭합니다.
@@ -350,7 +350,7 @@ XSPACEbreakX
 
 ## 🚀 주요 기능 및 OS 호환성
 
-OS 호환성에 대한 범례:XSPACEbreakX
+OS 호환성 범례:XSPACEbreakX
 * 🐧 **Linux**(예: Arch, Ubuntu)XSPACEbreakX
 * 🍏 **macOS**XSPACEbreakX
 * 🪟 **윈도우**XSPACEbreakX
@@ -391,7 +391,7 @@ XSPACEbreakX
 └─ **즉각적인 언어 전환** (모델 사전 로드를 통한 실험) 🐧 🍏 XSPACEbreakX
 
 **시스템 유틸리티/** XSPACEbreakX
-├┬ **LanguageTool 서버 관리/** XSPACEbreakX
+├┬ **LanguageTool 서버 관리/**   
 │├─ `start_언어tool_server.py`(로컬 LanguageTool 서버 초기화) 🐧 🍏 🪟  
 │└─ `stop_언어tool_server.py` (LanguageTool 서버 종료) 🐧 🍏
 ├─ `monitor_mic.sh` (예: 키보드와 모니터를 사용하지 않고 헤드셋과 함께 사용) 🐧 🍏 🪟XSPACEbreakX
