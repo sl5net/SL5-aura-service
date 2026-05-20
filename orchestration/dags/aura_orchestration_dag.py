@@ -31,11 +31,22 @@ from airflow.utils.trigger_rule import TriggerRule
 # Globale Konfiguration – per Airflow Variable überschreibbar
 # ---------------------------------------------------------------------------
 
-AURA_BASE_DIR   = Path(Variable.get("aura_base_dir",   default_var="/opt/aura"))
-ZIM_WATCH_DIR   = Path(Variable.get("zim_watch_dir",   default_var=str(AURA_BASE_DIR / "data/zim")))
-QUIZ_DB_PATH    = Path(Variable.get("quiz_db_path",    default_var=str(AURA_BASE_DIR / "data/quiz_db.json")))
-QUIZ_PUB_PATH   = Path(Variable.get("quiz_pub_path",   default_var=str(AURA_BASE_DIR / "published/quiz_db.json")))
-INDEX_BUILD_CMD = Variable.get("index_build_cmd",      default_var="echo '[SIMULATED] Rebuilding Aura search index…'")
+# Airflow Variables
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+AURA_BASE_DIR   = PROJECT_ROOT
+ZIM_WATCH_DIR   = PROJECT_ROOT / "data"
+QUIZ_DB_PATH    = PROJECT_ROOT / "config/maps/plugins/anki_quiz/de-DE/quiz_db.json"
+QUIZ_PUB_PATH   = PROJECT_ROOT / "config/maps/plugins/anki_quiz/de-DE/quiz_db_published.json"
+INDEX_BUILD_CMD = "echo '[SIMULATED] Rebuilding Aura search index…'"
+
+
+# AURA_BASE_DIR   = Path(Variable.get("aura_base_dir",   default_var="/opt/aura"))
+# ZIM_WATCH_DIR   = Path(Variable.get("zim_watch_dir",   default_var=str(AURA_BASE_DIR / "data/zim")))
+# QUIZ_DB_PATH    = Path(Variable.get("quiz_db_path",    default_var=str(AURA_BASE_DIR / "data/quiz_db.json")))
+# QUIZ_PUB_PATH   = Path(Variable.get("quiz_pub_path",   default_var=str(AURA_BASE_DIR / "published/quiz_db.json")))
+# INDEX_BUILD_CMD = Variable.get("index_build_cmd",      default_var="echo '[SIMULATED] Rebuilding Aura search index…'")
 
 log = logging.getLogger("aura.dag")
 
@@ -56,39 +67,21 @@ DEFAULT_ARGS: dict[str, Any] = {
 # ---------------------------------------------------------------------------
 
 QUIZ_SCHEMA: dict[str, Any] = {
-    "required_top_keys": ["version", "questions"],
-    "question_required_keys": ["id", "question", "options", "answer"],
+    "required_keys_per_item": ["display", "correct"],
     "min_questions": 1,
 }
 
-
-def _validate_quiz_schema(data: dict) -> list[str]:
-    """
-    Gibt eine Liste von Validierungsfehlern zurück.
-    Leere Liste → Schema ist korrekt.
-    """
+def _validate_quiz_schema(data: list) -> list[str]:
     errors: list[str] = []
-
-    # Top-Level-Keys prüfen
-    for key in QUIZ_SCHEMA["required_top_keys"]:
-        if key not in data:
-            errors.append(f"Fehlendes Top-Level-Feld: '{key}'")
-
-    questions = data.get("questions", [])
-    if not isinstance(questions, list):
-        errors.append("'questions' muss eine Liste sein.")
-        return errors  # früh abbrechen, weiteres wäre irreführend
-
-    if len(questions) < QUIZ_SCHEMA["min_questions"]:
+    if not isinstance(data, list):
+        errors.append("Root muss eine Liste sein.")
+        return errors
+    if len(data) < QUIZ_SCHEMA["min_questions"]:
         errors.append(f"Mindestens {QUIZ_SCHEMA['min_questions']} Frage(n) erforderlich.")
-
-    for i, q in enumerate(questions):
-        for field in QUIZ_SCHEMA["question_required_keys"]:
+    for i, q in enumerate(data):
+        for field in QUIZ_SCHEMA["required_keys_per_item"]:
             if field not in q:
                 errors.append(f"Frage[{i}]: Fehlendes Feld '{field}'.")
-        if "options" in q and not isinstance(q["options"], list):
-            errors.append(f"Frage[{i}]: 'options' muss eine Liste sein.")
-
     return errors
 
 
@@ -98,7 +91,7 @@ def _validate_quiz_schema(data: dict) -> list[str]:
 
 with DAG(
     dag_id="aura_wikipedia_update",
-    description="Prüft auf neue wikipedia_de.zim und baut den Aura-Suchindex neu.",
+    description="Prüft auf neue wikipedia_de_all_mini.zim und baut den Aura-Suchindex neu.",
     schedule="@daily",                          # täglich um Mitternacht
     start_date=datetime(2024, 1, 1),
     catchup=False,                              # kein Backfill vergangener Runs
@@ -112,16 +105,16 @@ with DAG(
     @task(task_id="check_new_zim_file")
     def check_new_zim_file() -> str:
         """
-        Sucht nach 'wikipedia_de.zim' im Watch-Verzeichnis.
+        Sucht nach 'wikipedia_de_all_mini.zim' im Watch-Verzeichnis.
         Gibt den vollständigen Pfad zurück, wenn gefunden.
         Wirft AirflowSkipException → alle nachgelagerten Tasks werden übersprungen.
         """
-        zim_path = ZIM_WATCH_DIR / "wikipedia_de.zim"
+        zim_path = ZIM_WATCH_DIR / "wikipedia_de_all_mini.zim"
         log.info("Suche ZIM-Datei unter: %s", zim_path)
 
         if not zim_path.exists():
             log.info("Keine neue ZIM-Datei gefunden. Pipeline wird übersprungen.")
-            raise AirflowSkipException("wikipedia_de.zim nicht vorhanden.")
+            raise AirflowSkipException("wikipedia_de_all_mini.zim nicht vorhanden.")
 
         file_size_mb = zim_path.stat().st_size / (1024 ** 2)
         log.info("ZIM-Datei gefunden: %s (%.1f MB)", zim_path, file_size_mb)
@@ -173,7 +166,7 @@ with DAG(
     # --- Task 1: Daten extrahieren ---
 
     @task(task_id="extract_quiz_data")
-    def extract_quiz_data() -> dict:
+    def extract_quiz_data() -> list:
         """
         Liest quiz_db.json ein und gibt den Inhalt als Dictionary zurück.
         Fehler beim Lesen → Task schlägt fehl (kein Retry sinnvoll → retries=0 wäre hier optional).
@@ -186,7 +179,7 @@ with DAG(
         with QUIZ_DB_PATH.open(encoding="utf-8") as fh:
             data = json.load(fh)
 
-        log.info("Erfolgreich geladen: %d Frage(n) gefunden.", len(data.get("questions", [])))
+        log.info("Erfolgreich geladen: %d Frage(n) gefunden.", len(data))
         return data   # → XCom (serialisiert als JSON)
 
     # --- Task 2: Schema validieren ---
