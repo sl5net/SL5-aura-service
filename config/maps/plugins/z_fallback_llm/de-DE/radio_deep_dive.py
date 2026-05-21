@@ -650,22 +650,25 @@ def DEMO_MODE():
 
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser()
 
-    parser.add_argument('--demo', action='store_true')
-    parser.add_argument('--no-browser', action='store_true')
+    # config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py:654
+    if True:
+        parser = argparse.ArgumentParser()
 
-    args = parser.parse_args()
+        parser.add_argument('--demo', action='store_true')
+        parser.add_argument('--no-browser', action='store_true')
 
-    if args.no_browser:
-        OPEN_BROWSER = False
+        args = parser.parse_args()
 
-    init_db()
+        if args.no_browser:
+            OPEN_BROWSER = False
 
-    if args.demo:
-        DEMO_MODE()
-    else:
-        main()
+        init_db()
+
+        if args.demo:
+            DEMO_MODE()
+        else:
+            main()
 
 
         
