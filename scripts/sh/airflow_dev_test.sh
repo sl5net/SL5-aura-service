@@ -36,7 +36,7 @@ export AIRFLOW__CORE__DAGS_FOLDER="$PROJECT_ROOT/orchestration/dags"
 
 # --- DAG parsen (schnellster Check) ---
 echo "\n${YELLOW}[1/3] Parse-Check...${NC}"
-python3 "$PROJECT_ROOT/orchestration/dags/aura_orchestration_dag.py" 2>&1 \
+"$PROJECT_ROOT/.venv/bin/python3" "$PROJECT_ROOT/orchestration/dags/aura_orchestration_dag.py" 2>&1 \
   | grep -v "DeprecatedImportWarning\|deprecated\|py.warnings" \
   | grep -v "^$" || true
 echo "${GREEN}✅ Parse OK${NC}"

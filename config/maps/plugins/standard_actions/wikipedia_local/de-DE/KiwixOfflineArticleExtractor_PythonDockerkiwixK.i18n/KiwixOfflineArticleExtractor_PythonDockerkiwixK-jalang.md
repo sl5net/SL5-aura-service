@@ -8,7 +8,7 @@ Manjaro システムには次のソフトウェアがインストールされて
 
 1. **Docker:** コンパイルの問題を発生させずに公式の `kiwix-tools` サーバーを実行します。
 2. **Python 3:** 仮想環境 (`venv`) を使用します。
-3. **ZIM ファイル:** オフラインの Wikipedia データベース (例: `wikipedia_de_all_mini_2025-09.zim`)。
+3. **ZIM ファイル:** オフラインの Wikipedia データベース (例: `wikipedia_de_all_mini.zim`)。
 
 ### 1. システムセットアップ (Docker)
 
@@ -49,7 +49,7 @@ pip install requests beautifulsoup4
 
 このスクリプトは、ポート `8080` で実行されている `kiwix-serve` に依存しています。このコマンドは、公式の安定した Docker イメージを使用し、現在のディレクトリ (ZIM ファイルを含む) をコンテナーにバインドします。
 
-**重要:** このコマンドを実行する前に、ZIM ファイル (例: `wikipedia_de_all_mini_2025-09.zim`) を `kiwix_cli` ディレクトリに配置してください。
+**重要:** このコマンドを実行する前に、ZIM ファイル (例: `wikipedia_de_all_mini.zim`) を `kiwix_cli` ディレクトリに配置してください。
 
 ```bash
 # Run the kiwix-serve command in the background (using -d)
@@ -62,7 +62,7 @@ code Bash
 
 docker rm -f $(docker ps -aq --filter ancestor=ghcr.io/kiwix/kiwix-tools)
 
-docker run --rm -d -p 8080:8080 -v ~/Downloads/wikipedia_de_all_mini_2025-09.zim:/data/wikipedia_de_all_mini_2025-09.zim ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port 8080 /data/wikipedia_de_all_mini_2025-09.zim
+docker run --rm -d -p 8080:8080 -v ~/Downloads/wikipedia_de_all_mini.zim:/data/wikipedia_de_all_mini.zim ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port 8080 /data/wikipedia_de_all_mini.zim
 
 
 ```
@@ -79,7 +79,7 @@ from urllib.parse import quote
 import re
 
 # --- CONFIGURATION (Change these values to match your ZIM file and server port) ---
-ZIM_FILE_NAME = "wikipedia_de_all_mini_2025-09.zim"
+ZIM_FILE_NAME = "wikipedia_de_all_mini.zim"
 BASE_SERVER_URL = "http://localhost:8080"
 ZIM_URL_PART = ZIM_FILE_NAME.replace('.zim', '')
 # --- END CONFIGURATION ---

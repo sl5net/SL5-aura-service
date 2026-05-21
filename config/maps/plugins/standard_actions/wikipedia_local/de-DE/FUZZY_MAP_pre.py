@@ -25,8 +25,9 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
+    # config/maps/plugins/standard_actions/wikipedia_local/de-DE/FUZZY_MAP_pre.py:28
     # EXAMPLE:  was ist ein haus
-    ("Wiki was ist ein haus (Begriffsklärung)", rf'^{wikipedia}was ist (ein|dein|den) haus$', 90,
+    ("Wiki was ist ein haus Begriffsklärung", rf'^{wikipedia}was ist (ein|dein|den) haus$', 90,
      {
     'flags': re.IGNORECASE,
     'skip_list': ['LanguageTool','fullMatchStop'],

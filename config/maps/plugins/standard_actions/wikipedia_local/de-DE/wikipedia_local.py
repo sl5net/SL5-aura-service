@@ -34,7 +34,7 @@ Bei der Suche nach Krankenhaus ist der fuzzy Match nicht ausreicend, weil er sol
 
 """
 
-ZIM_FILE_NAME = "wikipedia_de_all_mini_2025-09.zim"
+ZIM_FILE_NAME = "wikipedia_de_all_mini.zim"
 BASE_SERVER_URL = "http://localhost:8080"
 ZIM_URL_PART = ZIM_FILE_NAME.replace('.zim', '')
 LOG_FILE = os.path.expanduser("~/kiwix_debug.log")
@@ -179,6 +179,13 @@ def execute(match_data):
     user_term = match_data['regex_match_obj'].group('search').strip()
     user_term_norm = user_term.lower().replace("_", " ").strip()
 
+    # (zsh ä→ae, ö→oe, ü→ue)
+    user_term_norm = (user_term_norm
+                      .replace("ae", "ä")
+                      .replace("oe", "ö")
+                      .replace("ue", "ü")
+                      .replace("ss", "ß"))
+
 
 
 
@@ -217,7 +224,7 @@ def execute(match_data):
         'Schröer',
         'Ergotherapie'
     }
-
+    # config/maps/plugins/standard_actions/wikipedia_local/de-DE/wikipedia_local.py:220
     search_term = user_term_norm
 
     full_summary = ''
@@ -335,7 +342,7 @@ Versions-ID der Seite: 257156317
 Permanentlink: https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil
 Datum des Abrufs: 29. 12 2017, 20:01 UTC
         """
-
+    # config/maps/plugins/standard_actions/wikipedia_local/de-DE/wikipedia_local.py:338
     if not full_summary:
         article_path = _find_best_article_path_via_http_fuzzy(first_word, user_term, ZIM_FILE_NAME)
 

@@ -8,7 +8,7 @@ Auf Ihrem Manjaro-System muss die folgende Software installiert sein:
 
 1. **Docker:** Um den offiziellen „kiwix-tools“-Server ohne Kompilierungsprobleme auszuführen.
 2. **Python 3:** Mit einer virtuellen Umgebung („venv“).
-3. **Eine ZIM-Datei:** Die Offline-Wikipedia-Datenbank (z. B. „wikipedia_de_all_mini_2025-09.zim“).
+3. **Eine ZIM-Datei:** Die Offline-Wikipedia-Datenbank (z. B. „wikipedia_de_all_mini.zim“).
 
 ### 1. System-Setup (Docker)
 
@@ -49,7 +49,7 @@ pip install requests beautifulsoup4
 
 Das Skript basiert darauf, dass „kiwix-serve“ auf Port „8080“ ausgeführt wird. Dieser Befehl verwendet das offizielle, stabile Docker-Image und bindet Ihr aktuelles Verzeichnis (das die ZIM-Datei enthält) an den Container.
 
-**WICHTIG:** Platzieren Sie Ihre ZIM-Datei (z. B. „wikipedia_de_all_mini_2025-09.zim“) im Verzeichnis „kiwix_cli“, bevor Sie diesen Befehl ausführen.
+**WICHTIG:** Platzieren Sie Ihre ZIM-Datei (z. B. „wikipedia_de_all_mini.zim“) im Verzeichnis „kiwix_cli“, bevor Sie diesen Befehl ausführen.
 
 ```bash
 # Run the kiwix-serve command in the background (using -d)
@@ -62,7 +62,7 @@ code Bash
 
 docker rm -f $(docker ps -aq --filter ancestor=ghcr.io/kiwix/kiwix-tools)
 
-docker run --rm -d -p 8080:8080 -v ~/Downloads/wikipedia_de_all_mini_2025-09.zim:/data/wikipedia_de_all_mini_2025-09.zim ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port 8080 /data/wikipedia_de_all_mini_2025-09.zim
+docker run --rm -d -p 8080:8080 -v ~/Downloads/wikipedia_de_all_mini.zim:/data/wikipedia_de_all_mini.zim ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port 8080 /data/wikipedia_de_all_mini.zim
 
 
 ```
@@ -70,7 +70,7 @@ Der Server läuft jetzt unter „http://localhost:8080“.
 
 ### 4. Das Artikelextraktionsskript
 
-Erstellen Sie eine Datei mit dem Namen „article_extractor.py“ und fügen Sie den folgenden endgültigen, funktionierenden Code ein.
+Erstellen Sie eine Datei mit dem Namen „article_extractor.py“ und fügen Sie den folgenden endgültigen, funktionierenden Code hinein.
 
 ```python
 import requests
@@ -79,7 +79,7 @@ from urllib.parse import quote
 import re
 
 # --- CONFIGURATION (Change these values to match your ZIM file and server port) ---
-ZIM_FILE_NAME = "wikipedia_de_all_mini_2025-09.zim"
+ZIM_FILE_NAME = "wikipedia_de_all_mini.zim"
 BASE_SERVER_URL = "http://localhost:8080"
 ZIM_URL_PART = ZIM_FILE_NAME.replace('.zim', '')
 # --- END CONFIGURATION ---

@@ -64,7 +64,8 @@ else
     source .venv/bin/activate
     end_aura_enginePY="$PROJECT_ROOT/scripts/py/end_aura_engine.py"
     echo end_aura_enginePY=$end_aura_enginePY
-    python3 "$end_aura_enginePY" &
+#    python3 "$end_aura_enginePY" &
+    "$PROJECT_ROOT/.venv/bin/python3" "$end_aura_enginePY" &
 
 
 

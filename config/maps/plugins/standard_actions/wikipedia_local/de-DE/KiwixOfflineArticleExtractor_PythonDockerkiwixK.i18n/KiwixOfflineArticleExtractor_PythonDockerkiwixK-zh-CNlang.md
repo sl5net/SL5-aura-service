@@ -8,7 +8,7 @@
 
 1. **Docker：** 运行官方 `kiwix-tools` 服务器而不会出现编译问题。
 2. **Python 3：** 使用虚拟环境（`venv`）。
-3. **ZIM 文件：** 离线维基百科数据库（例如“wikipedia_de_all_mini_2025-09.zim”）。
+3. **ZIM 文件：** 离线维基百科数据库（例如，`wikipedia_de_all_mini.zim`）。
 
 ### 1.系统设置（Docker）
 
@@ -26,7 +26,7 @@ __代码_块_1__
 
 该脚本依赖于在端口“8080”上运行的“kiwix-serve”。此命令使用官方稳定的 Docker 映像，并将当前目录（包含 ZIM 文件）绑定到容器。
 
-**重要提示：** 在运行此命令之前，请将您的 ZIM 文件（例如“wikipedia_de_all_mini_2025-09.zim”）放入“kiwix_cli”目录中。
+**重要提示：** 在运行此命令之前，请将您的 ZIM 文件（例如“wikipedia_de_all_mini.zim”）放入“kiwix_cli”目录中。
 
 __代码_块_2__
 服务器现在正在“http://localhost:8080”上运行。
