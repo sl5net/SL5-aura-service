@@ -39,7 +39,7 @@
 * **Linux（CachyOS / 基于 Arch 的滚动版本）：** ✅ 完全支持。
 由于 glibc 2.43 兼容性，需要 mimalloc (`sudo pacman -S mimalloc`)。
 * **Linux (NixOS)：** 🧪 实验性 — 社区贡献的设置，尚未测试。
-If you try it, please open an issue or PR with your findings!  X空格符X
+如果您尝试一下，请用您的发现提出问题或 PR！  X空格符X
 X空格符X
 SL5 Aura 是一款完整的**离线语音助手**，基于 **Vosk**（用于语音转文本）和 **LanguageTool**（用于语法/风格）构建，具有可选的**本地 LLM (Ollama) 后备**，用于创意响应和高级模糊匹配。它将您的声音转换为精确的操作和文本，旨在通过可插入的规则系统和动态脚本引擎实现最终定制。
 X空格符X
