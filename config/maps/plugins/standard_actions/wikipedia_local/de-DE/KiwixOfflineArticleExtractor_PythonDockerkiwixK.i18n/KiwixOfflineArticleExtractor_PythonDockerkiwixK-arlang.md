@@ -8,7 +8,7 @@
 
 1. **Docker:** لتشغيل خادم kiwix-tools الرسمي دون مشاكل في الترجمة.
              2. **بايثون 3:** مع بيئة افتراضية (\'venv`).
-3. **ملف ZIM:** قاعدة بيانات ويكيبيديا غير المتصلة بالإنترنت (على سبيل المثال، `wikipedia_de_all_mini_2025-09.zim`).
+3. **ملف ZIM:** قاعدة بيانات ويكيبيديا غير المتصلة بالإنترنت (على سبيل المثال، `wikipedia_de_all_mini.zim`).
 
                      ### 1. إعداد النظام (عامل الميناء)
 
@@ -49,7 +49,7 @@ pip install requests beautifulsoup4
 
 يعتمد البرنامج النصي على تشغيل kiwix-serve على المنفذ 8080. يستخدم هذا الأمر صورة Docker الرسمية والمستقرة ويربط الدليل الحالي (الذي يحتوي على ملف ZIM) بالحاوية.
 
-**هام:** ضع ملف ZIM الخاص بك (على سبيل المثال، `wikipedia_de_all_mini_2025-09.zim`) في الدليل `kiwix_cli` قبل تشغيل هذا الأمر.
+**هام:** ضع ملف ZIM الخاص بك (على سبيل المثال، `wikipedia_de_all_mini.zim`) في الدليل `kiwix_cli` قبل تشغيل هذا الأمر.
 
 ```bash
 # Run the kiwix-serve command in the background (using -d)
@@ -62,7 +62,7 @@ code Bash
 
 docker rm -f $(docker ps -aq --filter ancestor=ghcr.io/kiwix/kiwix-tools)
 
-docker run --rm -d -p 8080:8080 -v ~/Downloads/wikipedia_de_all_mini_2025-09.zim:/data/wikipedia_de_all_mini_2025-09.zim ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port 8080 /data/wikipedia_de_all_mini_2025-09.zim
+docker run --rm -d -p 8080:8080 -v ~/Downloads/wikipedia_de_all_mini.zim:/data/wikipedia_de_all_mini.zim ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port 8080 /data/wikipedia_de_all_mini.zim
 
 
 ```
@@ -79,7 +79,7 @@ from urllib.parse import quote
 import re
 
 # --- CONFIGURATION (Change these values to match your ZIM file and server port) ---
-ZIM_FILE_NAME = "wikipedia_de_all_mini_2025-09.zim"
+ZIM_FILE_NAME = "wikipedia_de_all_mini.zim"
 BASE_SERVER_URL = "http://localhost:8080"
 ZIM_URL_PART = ZIM_FILE_NAME.replace('.zim', '')
 # --- END CONFIGURATION ---

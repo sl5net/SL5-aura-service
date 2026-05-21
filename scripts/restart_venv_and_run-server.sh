@@ -53,7 +53,7 @@ else
     echo SCRIPT_DIR=$SCRIPT_DIR
     echo PROJECT_ROOT=$PROJECT_ROOT
 
-    echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
+    echo "Activating virtual environment at '$PROJECT_ROOT/.venv'..."
     cd $PROJECT_ROOT
 
     # Sometimes it can help for performance (original:'manchmal kann es helfen aus performance Gründen').
@@ -64,7 +64,8 @@ else
     source .venv/bin/activate
     end_aura_enginePY="$PROJECT_ROOT/scripts/py/end_aura_engine.py"
     echo end_aura_enginePY=$end_aura_enginePY
-    python3 "$end_aura_enginePY" &
+#    python3 "$end_aura_enginePY" &
+    "$PROJECT_ROOT/.venv/bin/python3" "$end_aura_enginePY" &
 
 
 

@@ -519,8 +519,8 @@ if __name__ == "__main__":
         is_active = datetime.datetime.now().weekday() == 6 # 6 probably Sunday
 
 
-    # is_active = False
     is_active = True
+    # is_active = False
 
 
     if is_active:

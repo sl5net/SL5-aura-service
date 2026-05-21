@@ -49,7 +49,7 @@ else
   export DISPLAY="${DISPLAY:-:0}"
   # XAUTHORITY wird weiter unten dynamisch gesetzt
 
-  $PROJECT_ROOT/scripts/sh/type_watcher_keep_alive.sh &
+  $PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh &
 fi
 
 
@@ -86,11 +86,10 @@ else
     echo "Service is not running."
 fi
 
-echo "Activating virtual environment at '$PROJECT_ROOT/venv'..."
-
+echo "Activating virtual environment at '$PROJECT_ROOT/.venv'..."
 
 if [ ! -f "$PROJECT_ROOT/.venv/bin/python3" ]; then
-    echo "Creating virtual environment..."
+    echo "Virtual environment not found. Creating it at '$PROJECT_ROOT/.venv'..."
     python3 -m venv "$PROJECT_ROOT/.venv"
 fi
 
@@ -111,6 +110,10 @@ echo "Starting service..."
 # Python environment settings
 export PYTHONUNBUFFERED=1
 export PYTHONDONTWRITEBYTECODE=1
+
+export AIRFLOW__CORE__DAGS_FOLDER="$PROJECT_ROOT/orchestration/dags"
+export AIRFLOW_HOME="$PROJECT_ROOT/orchestration"
+# airflow scheduler # TODO its only protoype 20.5.'26 18:27 Wed
 
 # --- Memory Allocator Logic (mimalloc) ---
 MIMALLOC_FOUND=false
@@ -151,6 +154,7 @@ echo "LD_PRELOAD=$LD_PRELOAD"  # ← zur Bestätigung
 
 # --- Start the Service ---
 echo "Starting $SCRIPT_TO_START..."
-python3 "$SCRIPT_TO_START" &
+#python3 "$SCRIPT_TO_START" &
+"$PROJECT_ROOT/.venv/bin/python3" "$SCRIPT_TO_START" &
 
 

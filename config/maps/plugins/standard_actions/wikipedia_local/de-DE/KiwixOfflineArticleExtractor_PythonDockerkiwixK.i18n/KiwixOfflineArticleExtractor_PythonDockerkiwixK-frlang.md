@@ -8,7 +8,7 @@ Vous devez avoir le logiciel suivant installé sur votre système Manjaro :
 
 1. **Docker :** Pour exécuter le serveur officiel `kiwix-tools` sans problèmes de compilation.
 2. **Python 3 :** Avec un environnement virtuel (`venv`).
-3. **Un fichier ZIM :** La base de données Wikipédia hors ligne (par exemple, `wikipedia_de_all_mini_2025-09.zim`).
+3. **Un fichier ZIM :** La base de données Wikipédia hors ligne (par exemple, `wikipedia_de_all_mini.zim`).
 
 ### 1. Configuration du système (Docker)
 
@@ -49,7 +49,7 @@ pip install requests beautifulsoup4
 
 Le script s'appuie sur « kiwix-serve » exécuté sur le port « 8080 ». Cette commande utilise l'image Docker officielle et stable et lie votre répertoire actuel (contenant le fichier ZIM) au conteneur.
 
-**IMPORTANT :** Placez votre fichier ZIM (par exemple, `wikipedia_de_all_mini_2025-09.zim`) dans le répertoire `kiwix_cli` avant d'exécuter cette commande.
+**IMPORTANT :** Placez votre fichier ZIM (par exemple, `wikipedia_de_all_mini.zim`) dans le répertoire `kiwix_cli` avant d'exécuter cette commande.
 
 ```bash
 # Run the kiwix-serve command in the background (using -d)
@@ -62,7 +62,7 @@ code Bash
 
 docker rm -f $(docker ps -aq --filter ancestor=ghcr.io/kiwix/kiwix-tools)
 
-docker run --rm -d -p 8080:8080 -v ~/Downloads/wikipedia_de_all_mini_2025-09.zim:/data/wikipedia_de_all_mini_2025-09.zim ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port 8080 /data/wikipedia_de_all_mini_2025-09.zim
+docker run --rm -d -p 8080:8080 -v ~/Downloads/wikipedia_de_all_mini.zim:/data/wikipedia_de_all_mini.zim ghcr.io/kiwix/kiwix-tools /usr/local/bin/kiwix-serve --port 8080 /data/wikipedia_de_all_mini.zim
 
 
 ```
@@ -79,7 +79,7 @@ from urllib.parse import quote
 import re
 
 # --- CONFIGURATION (Change these values to match your ZIM file and server port) ---
-ZIM_FILE_NAME = "wikipedia_de_all_mini_2025-09.zim"
+ZIM_FILE_NAME = "wikipedia_de_all_mini.zim"
 BASE_SERVER_URL = "http://localhost:8080"
 ZIM_URL_PART = ZIM_FILE_NAME.replace('.zim', '')
 # --- END CONFIGURATION ---

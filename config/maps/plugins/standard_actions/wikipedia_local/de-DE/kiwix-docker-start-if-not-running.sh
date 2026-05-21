@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # --- KONFIGURATION ---
-ZIM_FILE_NAME="wikipedia_de_all_mini_2025-09.zim"
+ZIM_FILE_NAME="wikipedia_de_all_mini.zim"
 CONTAINER_NAME="kiwix_zim_server"
 HOST_PORT="8080"
 CONTAINER_PORT="8080"

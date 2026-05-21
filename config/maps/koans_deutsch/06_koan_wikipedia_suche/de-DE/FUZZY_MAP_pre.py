@@ -97,7 +97,7 @@ Nötige Speicherplatz zwischen 50 Gigabyte und 20 MB (Auswahl)
 
 Gute Wahl: 3,54 GB ohne Bilder:
 https://browse.library.kiwix.org/viewer#wikipedia_de_all_mini_2025-09
-https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_mini_2025-09.zim
+https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_mini.zim
 
 Eine der möglichen Variante der Nutzung ist über Docker:
 

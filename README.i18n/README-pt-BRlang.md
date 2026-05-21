@@ -1,4 +1,4 @@
-<img src="data/image/logo.svg" align="right" width="150" alt="Logotipo SL5 Aura ⬟">
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ Logotipo SL5 Aura">
 
 # ⬟ SL5 Aura – Sua Voz. Suas regras.
 
@@ -13,7 +13,7 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ ~0,08 J por teste (39 testes, 0,49s por teste · medido com [Eco-CI](https://www.green-coding.io/projects/eco-ci/)) · sem computação em nuvem
+⚡ ~0,08 J por teste (39 testes, 0,49s por teste · medido com [Eco-CI](https://metrics.green-coding.io/index.html)) · sem computação em nuvem
 
 ## Início rápido
 1. Baixe ou clone este repositório
@@ -118,7 +118,7 @@ Para uma referência técnica completa, incluindo todos os módulos e scripts, v
 </a>
 </div>
 
-**Leia isto em outros idiomas:**
+👉 **Leia isto em outros idiomas:**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-pt-BRlang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-pt-BRlang.md) | [🇪🇸 Español](../README.i18n/README-eslang-pt-BRlang.md) | [🇫🇷 Français](../README.i18n/README-frlang-pt-BRlang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-pt-BRlang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-pt-BRlang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-pt-BRlang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-pt-BRlang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-pt-BRlang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-pt-BRlang.md)
 
@@ -399,7 +399,7 @@ Então talvez clique duas vezes
 ### **Recursos futuros/experimentais**  
 Recursos atualmente em desenvolvimento ou em status de rascunho.  
 
-**Recursos experimentais/**  
+**Recursos Experimentais/**  
 ├─ **ENTER_AFTER_DICTATION_REGEX** Exemplo de regra de ativação "(ExampleAplicationThatNotExist|Pi, sua IA pessoal)" 🐧  
 ├┬Plugins  
 │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟  

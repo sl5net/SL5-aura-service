@@ -21,12 +21,21 @@ clear
 # It runs it in an infinite loop, so if it ever crashes, it will be
 # automatically restarted after a 1-second delay.
 # scripts/sh/type_watcher_keep_alive.sh:23
+
+if [ "${OS:-}" = "Windows_NT" ] || [ -n "${WINDIR:-}" ]; then
+  tmp_dir='C:/tmp'
+else
+  tmp_dir='/tmp'
+fi
+PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+
+
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-LOG_DIR="$SCRIPT_DIR/../type_watcher/log"
+LOG_DIR="$PROJECT_ROOT/log"
 LOGFILE="$LOG_DIR/type_watcher_keep_alive.log"
 
-CONFIG_FILE_1="$SCRIPT_DIR/config/settings.py"
-CONFIG_FILE_2="$SCRIPT_DIR/config/settings_local.py"
+CONFIG_FILE_1="$PROJECT_ROOT/config/settings.py"
+CONFIG_FILE_2="$PROJECT_ROOT/config/settings_local.py"
 
 # Initial timestamps
 ts1_old=$(stat -c %Y "$CONFIG_FILE_1" 2>/dev/null || echo 0)
@@ -64,10 +73,10 @@ while true; do
     else
         # It's not running, so it must have crashed. Start it.
         log_message "WATCHDOG: 'type_watcher.sh' is not running. Starting it now."
-        log_message "$SCRIPT_DIR/../type_watcher/type_watcher.sh"
+        log_message "scripts/type_watcher/type_watcher.sh"
         echo log_message "WATCHDOG: 'type_watcher.sh' is not running. Starting it now "
-        echo $SCRIPT_DIR/../type_watcher/type_watcher.sh
-        $SCRIPT_DIR/../type_watcher/type_watcher.sh
+        echo scripts/type_watcher/type_watcher.sh
+        $PROJECT_ROOT/scripts/type_watcher/type_watcher.sh
     fi
 
     # Wait for a few seconds before checking again.

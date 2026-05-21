@@ -8,7 +8,7 @@ Musisz mieć zainstalowane następujące oprogramowanie w swoim systemie Manjaro
 
 1. **Docker:** Aby uruchomić oficjalny serwer `kiwix-tools` bez problemów z kompilacją.
 2. **Python 3:** Ze środowiskiem wirtualnym (`venv`).
-3. **Plik ZIM:** Baza danych Wikipedii offline (np. `wikipedia_de_all_mini_2025-09.zim`).
+3. **Plik ZIM:** Baza danych Wikipedii offline (np. `wikipedia_de_all_mini.zim`).
 
 ### 1. Konfiguracja systemu (Docker)
 
@@ -26,7 +26,7 @@ __KOD_BLOKU_1__
 
 Skrypt opiera się na `kiwix-serve` działającym na porcie `8080`. To polecenie używa oficjalnego, stabilnego obrazu Dockera i wiąże bieżący katalog (zawierający plik ZIM) z kontenerem.
 
-**WAŻNE:** Przed uruchomieniem tego polecenia umieść plik ZIM (np. `wikipedia_de_all_mini_2025-09.zim`) w katalogu `kiwix_cli`.
+**WAŻNE:** Przed uruchomieniem tego polecenia umieść plik ZIM (np. `wikipedia_de_all_mini.zim`) w katalogu `kiwix_cli`.
 
 __KOD_BLOKU_2__
 Serwer działa teraz na `http://localhost:8080`.

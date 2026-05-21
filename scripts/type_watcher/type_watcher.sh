@@ -10,11 +10,20 @@ echo "typedelay 0" > /tmp/dotool_fifo
 
 set -euo pipefail
 
+if [ "${OS:-}" = "Windows_NT" ] || [ -n "${WINDIR:-}" ]; then
+  tmp_dir='C:/tmp'
+else
+  tmp_dir='/tmp'
+fi
+PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+
+
 DIR_TO_WATCH="/tmp/sl5_aura/tts_output"
 LOCKFILE="/tmp/sl5_aura/type_watcher.lock"
 
+
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-LOG_DIR="$SCRIPT_DIR/log"
+LOG_DIR="$PROJECT_ROOT/log"
 LOGFILE="$LOG_DIR/type_watcher.log"
 
 AUTO_ENTER_FLAG="/tmp/sl5_aura/sl5_auto_enter.flag"
@@ -183,7 +192,9 @@ xdotool_safe() {
 
 
 
-PROJECT_ROOT="$SCRIPT_DIR"
+# PROJECT_ROOT="$SCRIPT_DIR" old path till 18.5.'26
+
+
 
 # Default: Unix virtualenv layout
 PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python3"
@@ -202,7 +213,7 @@ PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python3"
 
 # Rarely needed, but acts as a safety net for stuck modifier keys.
 # Releases Alt/Ctrl/Shift/Super etc. every 15s without interrupting active key combos.
-$PROJECT_ROOT/tools/keep-keys-up.sh --init &
+$PROJECT_ROOT/scripts/type_watcher/tools/keep-keys-up.sh --init &
 
 # --- END: Read Python config ---
 
@@ -444,7 +455,7 @@ PY
                     sleep 0.4
 
                     do_type "$CLEAN_CONTENT"
-                    ($PROJECT_ROOT/tools/keep-keys-up.sh --cleanup &)
+                    ($PROJECT_ROOT/scripts/type_watcher/tools/keep-keys-up.sh --cleanup &)
                     sleep 0.025
 
                     # # sleep 2

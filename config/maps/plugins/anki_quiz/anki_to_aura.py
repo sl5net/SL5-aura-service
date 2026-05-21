@@ -17,6 +17,7 @@ BASE_DIR = Path(__file__).parent
 PLUGIN_DIR = Path("config/maps/plugins/anki_quiz")
 PLUGIN_DIR = Path("./")
 # Falls wir im 'tools' ordner sind, müssen wir hoch
+# config/maps/plugins/anki_quiz/anki_to_aura.py:20
 if not PLUGIN_DIR.exists():
     PLUGIN_DIR = Path("../config/maps/plugins/anki_quiz")
 
