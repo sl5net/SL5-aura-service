@@ -1,39 +1,69 @@
 # docs/Developer_Guide/Trino_Integration.md
-histoire | moins  ✔
-10093 docker rm trino 2>/dev/null ; docker run -d --name trino -p 8083:8080 trinodb/trino
-10094 journaux Docker trino -f | grep -m1 "SERVEUR DÉMARRÉ"
-10095 source .venv/bin/activer
-10096 pip installer trino
-10098 pip show trino
-10099 python3 -c "\nimport trino\nconn = trino.dbapi.connect(host='localhost', port=8083, user='aura')\ncur = conn.cursor()\ncur.execute('SELECT 1')\nprint('Trino connection:', cur.fetchone())\n"
+```markdown
+# Trino Integration Guide
 
+This document outlines the setup for Trino (SQL query engine) and the roadmap for migrating our configuration management to a centralized Trino-backed system.
 
+## Local Environment Setup
 
+### 1. Docker Installation & Image
+To ensure you have the latest image, pull it first:
+```bash
+docker pull trinodb/trino
+```
 
-Actuel :
-config.json ──────► Ebène 2 (Terminal)
-└──► Ebène 3 (Streamlit)
-└──► Ébène 3.5 (Web)
-↑
-ALLE lesen dieselbe Config
+### 2. Run Trino Container
+Start a local instance with port mapping (mapping internal `8080` to local `8083`):
+```bash
+docker rm trino 2>/dev/null || vrai
+docker run -d --name trino -p 8083:8080 trinodb/trino
+```
 
-Idée :
+Check logs to confirm the server is ready:
+```bash
+docker enregistre trino -f | grep -m1 "SERVEUR DÉMARRÉ"
+```
 
-Ébène 2 (Terminal) ─┐
-Ebène 3 (Streamlit) ─┼──► Trino ──► user_configs
-Ebène 3.5 (Web) ─┘ ├── terminal : traduction EN = vrai
-├── web : DE, kein traduire
-└── par utilisateur : remplacements propres
+### 3. Python Integration
+Install the official Trino client:
+```bash
+pip installer trino
+```
 
+Test the connection:
+```python
+importer du trino
+conn = trino.dbapi.connect(host='localhost', port=8083, user='aura')
+cur = conn.curseur()
+cur.execute('SELECT 1')
+print('Vérification de la connexion Trino :', cur.fetchone())
+```
 
+---
 
+## Configuration Architecture Roadmap
 
-configuration/
-├── settings.py ← Haupt-Config
-├── settings_local.py ← remplacements lokale
-├── settings_local.py_Example.txt
-├── settings_local.py_Example_user_...txt
-└── filtres/.backlock/first_run/
-└── settings_local_log_filter.py ← un seul "Context-Split"
+### Legacy State
+Currently, all layers read from a central `config.json`. This lacks flexibility for different execution contexts.
+`config.json` ———► Terminal / Streamlit / Web
 
-+ Divers JSON-Dateien et verschiedenen Orten
+### Future State: Centralized Context-Aware Config
+We are moving towards a Trino-backed configuration store (`user_configs`) to allow specific overrides per user and platform.
+
+**Logic Flow:**
+```text
+Couche 2 (Terminal) ─┐
+Couche 3 (Streamlit) ─┼──► Trino ──► Table : user_configs
+Couche 3.5 (Web) ─┘ ├── terminal : {traduction : vrai}
+├── web : {lang : "DE", traduction : false}
+└── identifiant_utilisateur : {custom_overrides}
+```
+
+### Current File Structure
+- `config/settings.py`: Main entry point.
+- `config/settings_local.py`: Local developer overrides (ignored by git).
+- `config/filters/`: Context-specific logging filters.
+
+---
+*Note: This integration is part of the Sl5 Aura ecosystem.*
+```

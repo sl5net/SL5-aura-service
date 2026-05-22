@@ -1,39 +1,69 @@
 # docs/Developer_Guide/Trino_Integration.md
-역사 | 덜  ✔
-10093 docker rm trino 2>/dev/null; docker run -d --name trino -p 8083:8080 trinodb/trino
-10094 docker 로그 trino -f | grep -m1 "서버가 시작되었습니다"
-10095 소스 .venv/bin/활성화
-10096 pip 설치 트리노
-10098 pip 쇼 트리노
-10099 python3 -c "\nimport trino\nconn = trino.dbapi.connect(host='localhost', port=8083, user='aura')\ncur = conn.cursor()\ncur.execute('SELECT 1')\nprint('Trino 연결:', cur.fetchone())\n"
+```markdown
+# Trino Integration Guide
 
+This document outlines the setup for Trino (SQL query engine) and the roadmap for migrating our configuration management to a centralized Trino-backed system.
 
+## Local Environment Setup
 
+### 1. Docker Installation & Image
+To ensure you have the latest image, pull it first:
+```bash
+도커 풀 trinodb/trino
+```
 
-현재:
-config.json ──────► Ebene 2 (터미널)
-└──► 에벤3(스트림라이트)
-└──► 에벤 3.5 (웹)
-↑
-모든 디젤 비 구성
+### 2. Run Trino Container
+Start a local instance with port mapping (mapping internal `8080` to local `8083`):
+```bash
+docker rm trino 2>/dev/null || 진실
+docker run -d --name trino -p 8083:8080 trinodb/trino
+```
 
-아이디어:
+Check logs to confirm the server is ready:
+```bash
+docker 로그 trino -f | grep -m1 "서버가 시작되었습니다"
+```
 
-에벤2(터미널) ─┐
-Ebene 3 (Streamlit) ─┼──► Trino ──► user_configs
-Ebene 3.5 (웹) ─┘ ├── 터미널: EN 번역 = true
-├── 웹: DE, kein 번역
-└── 사용자별: eigene 재정의
+### 3. Python Integration
+Install the official Trino client:
+```bash
+pip 설치 트리노
+```
 
+Test the connection:
+```python
+수입 트리노
+conn = trino.dbapi.connect(호스트='localhost', 포트=8083, user='aura')
+현재 = conn.cursor()
+cur.execute('선택 1')
+print('Trino 연결 확인:', cur.fetchone())
+```
 
+---
 
+## Configuration Architecture Roadmap
 
-구성/
-├── settings.py ← Haupt-Config
-├── settings_local.py ← lokale 재정의
-├── settings_local.py_Example.txt
-├── settings_local.py_Example_user_...txt
-└── 필터/.backlock/first_run/
-└── settings_local_log_filter.py ← einziger "Context-Split"
+### Legacy State
+Currently, all layers read from a central `config.json`. This lacks flexibility for different execution contexts.
+`config.json` ———► Terminal / Streamlit / Web
 
-+ 다양한 JSON 데이터 및 Orten 버전
+### Future State: Centralized Context-Aware Config
+We are moving towards a Trino-backed configuration store (`user_configs`) to allow specific overrides per user and platform.
+
+**Logic Flow:**
+```text
+레이어 2(터미널) ─┐
+레이어 3(Streamlit) ─┼──► Trino ──► 테이블: user_configs
+레이어 3.5(웹) ─┘ ├── 터미널: {번역: true}
+├── 웹: {lang: "DE", 번역: false}
+└── user_id: {custom_overrides}
+```
+
+### Current File Structure
+- `config/settings.py`: Main entry point.
+- `config/settings_local.py`: Local developer overrides (ignored by git).
+- `config/filters/`: Context-specific logging filters.
+
+---
+*Note: This integration is part of the Sl5 Aura ecosystem.*
+```

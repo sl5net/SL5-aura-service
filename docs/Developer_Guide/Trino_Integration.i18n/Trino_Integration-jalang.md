@@ -1,39 +1,69 @@
 # docs/Developer_Guide/Trino_Integration.md
-歴史 |少ない  ✔
-10093 docker rm trino 2>/dev/null; docker run -d --name trino -p 8083:8080 trinodb/trino
-10094 docker ログ trino -f | grep -m1 "サーバーが開始されました"
-10095 ソース .venv/bin/activate
+```markdown
+# Trino Integration Guide
 
-10098 ピップ ショー トリノ
-10099 python3 -c "\nimport trino\nconn = trino.dbapi.connect(host='localhost', port=8083, user='aura')\ncur = conn.cursor()\ncur.execute('SELECT 1')\nprint('Trino connection:', cur.fetchone())\n"
+This document outlines the setup for Trino (SQL query engine) and the roadmap for migrating our configuration management to a centralized Trino-backed system.
 
+## Local Environment Setup
 
+### 1. Docker Installation & Image
+To ensure you have the latest image, pull it first:
+```bash
+docker pull trinodb/trino
+```
 
+### 2. Run Trino Container
+Start a local instance with port mapping (mapping internal `8080` to local `8083`):
+```bash
+docker rm trino 2>/dev/null ||真実
+docker run -d --name trino -p 8083:8080 trinodb/trino
+```
 
-アクトゥエル:
-config.json ──────► Ebene 2 (ターミナル)
-└──► Ebene 3 (ストリームリット)
-└──► Ebene 3.5 (Web)
-↑
-ALLE lesen ディーゼル構成
+Check logs to confirm the server is ready:
+```bash
+docker ログ trino -f | grep -m1 "サーバーが開始されました"
+```
 
-イディー：
+### 3. Python Integration
+Install the official Trino client:
+```bash
+pip インストール トリノ
+```
 
-エベネ２（ターミナル）─┐
-Ebene 3 (Streamlit) ─┼─► Trino ──► user_configs
-Ebene 3.5 (Web) ─┘ §─ ターミナル: EN 翻訳 = true
-§── web: DE、kein 翻訳
-└── ユーザーごと: eigene オーバーライド
+Test the connection:
+```python
+輸入トリノ
+conn = trino.dbapi.connect(host='localhost'、port=8083、user='aura')
+cur = conn.cursor()
+cur.execute('SELECT 1')
+print('Trino 接続チェック:', cur.fetchone())
+```
 
+---
 
+## Configuration Architecture Roadmap
 
+### Legacy State
+Currently, all layers read from a central `config.json`. This lacks flexibility for different execution contexts.
+`config.json` ———► Terminal / Streamlit / Web
 
-構成/
-§── settings.py ← Haupt-Config
-§── settings_local.py ← lokale オーバーライド
-§── settings_local.py_Example.txt
-§── settings_local.py_Example_user_...txt
-└── フィルター/.backlock/first_run/
-└── settings_local_log_filter.py ← einziger "コンテキスト分割"
+### Future State: Centralized Context-Aware Config
+We are moving towards a Trino-backed configuration store (`user_configs`) to allow specific overrides per user and platform.
 
-+ 多様な JSON-Dateien と verschiedenen Orten
+**Logic Flow:**
+```text
+レイヤ 2 (端末) ─┐
+レイヤ 3 (Streamlit) ─┼─► Trino ──► テーブル: user_configs
+レイヤ 3.5 (Web) ─┘ §─ ターミナル: {translate: true}
+§── web: {lang: "DE"、translate: false}
+└── user_id: {custom_overrides}
+```
+
+### Current File Structure
+- `config/settings.py`: Main entry point.
+- `config/settings_local.py`: Local developer overrides (ignored by git).
+- `config/filters/`: Context-specific logging filters.
+
+---
+*Note: This integration is part of the Sl5 Aura ecosystem.*
+```

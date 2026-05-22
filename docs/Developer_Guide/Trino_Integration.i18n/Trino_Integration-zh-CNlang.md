@@ -1,39 +1,23 @@
 # 文档/Developer_Guide/Trino_Integration.md
-历史|少  ✔
-10093 docker rm trino 2>/dev/null; docker run -d --name trino -p 8083:8080 trinodb/trino
-10094 docker 日志 trino -f | grep -m1“服务器已启动”
-10095 源 .venv/bin/activate
-10096 pip 安装三诺
-10098 点显示三重奏
-10099 python3 -c "\nimport trino\nconn = trino.dbapi.connect(host='localhost', port=8083, user='aura')\ncur = conn.cursor()\ncur.execute('SELECT 1')\nprint('Trino 连接:', cur.fetchone())\n"
-
-
-
-
-现在：
-config.json ──────► Ebene 2 (终端)
-└──► Ebene 3 (Streamlit)
-└──► Ebene 3.5（网页版）
-↑
-ALLE 柴油机配置
-
-想法：
-
-Ebene 2 (终端) ─┐
-Ebene 3 (Streamlit) ─┼──► Trino ──► user_configs
-Ebene 3.5 (Web) ─┘ ├── 终端: EN 翻译 = true
-├── 网页：DE、kein翻译
-└── 每个用户：eigene 覆盖
-
-
-
-
-配置/
-├── settings.py ← Haupt-Config
-├── settings_local.py ← lokale 覆盖
-├──settings_local.py_Example.txt
-├──settings_local.py_Example_user_...txt
-└── 过滤器/.backlock/first_run/
-└── settings_local_log_filter.py ← einziger “上下文分割”
-
-+ 多样化的 JSON-Dateien 和 verschiedenen Orten
+__代码_块_0__
+docker 拉 trinodb/trino
+__代码_块_1__
+docker rm trino 2>/dev/null ||真的
+docker run -d --name trino -p 8083:8080 trinodb/trino
+__代码_块_2__
+docker 日志 trino -f | grep -m1“服务器已启动”
+__代码_块_3__
+pip 安装 Trino
+__代码_块_4__
+进口三诺
+conn = trino.dbapi.connect（主机='localhost'，端口=8083，用户='aura'）
+cur = conn.cursor()
+cur.execute('选择 1')
+print('Trino 连接检查：', cur.fetchone())
+__代码_块_5__
+第 2 层（终端）─┐
+第 3 层 (Streamlit) ─┼──► Trino ──► 表：user_configs
+3.5层（Web）─┘├──终端：{translate: true}
+├── web: {lang: "DE", 翻译: false}
+└── user_id: {custom_overrides}
+__代码_块_6__

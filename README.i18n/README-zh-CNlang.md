@@ -13,7 +13,7 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ 每次测试约 0.08 J（39 次测试，每次测试 0.49 秒·使用 [Eco-CI](https://metrics.green-coding.io/index.html) 测量）·无云计算
+⚡ **~2.87 J** 每次测试（39 次测试 @ 0.34 秒平均 · 使用 [Eco-CI](https://metrics.green-coding.io/index.html) 测量） · 无云计算
 
 ## 快速入门
 1.下载或克隆此存储库

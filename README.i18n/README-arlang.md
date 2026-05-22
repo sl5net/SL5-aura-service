@@ -13,7 +13,7 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ ~0.08 J لكل اختبار (39 اختبارًا، 0.49 ثانية لكل اختبار · تم القياس باستخدام [Eco-CI](https://metrics.green-coding.io/index.html)) · لا يوجد حساب سحابي
+⚡ **~2.87 J** لكل اختبار (39 اختبارًا بمتوسط 0.34 ثانية · تم القياس باستخدام [Eco-CI](https://metrics.green-coding.io/index.html)) · لا يوجد حساب سحابي
 
                                                      ## بداية سريعة
            1. قم بتنزيل هذا المستودع أو استنساخه

@@ -23,10 +23,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Initialize Eco-CI
-        uses: green-coding-solutions/eco-ci-energy-estimation@v4
-        with:
-          task: start-measurement
 
       - name: Cache models and tools
         uses: actions/cache@v4
@@ -55,11 +51,6 @@ jobs:
           echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
           cp config/settings_local.py_Example.txt config/settings_local.py
 
-      - name: Measure Preparation
-        uses: green-coding-solutions/eco-ci-energy-estimation@v4
-        with:
-          task: get-measurement
-          label: 'Preparation'
 
       - name: Run Official Ubuntu Setup
         run: bash ./setup/ubuntu_setup.sh
@@ -68,22 +59,18 @@ jobs:
         run: |
           sudo apt-get install -y xvfb xclip
 
-      - name: Measure System Setup
-        uses: green-coding-solutions/eco-ci-energy-estimation@v4
-        with:
-          task: get-measurement
-          label: 'System Setup'
 
       - name: Start LanguageTool Server
         run: |
           java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
           sleep 10
 
-      - name: Measure LanguageTool Startup
+
+      - name: Initialize Eco-CI
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
-          task: get-measurement
-          label: 'LanguageTool Startup'
+          task: start-measurement
+
 
       - name: Run Self-Tester with Final Guard
         env:

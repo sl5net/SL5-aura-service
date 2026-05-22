@@ -1,39 +1,46 @@
 # docs/Developer_Guide/Trino_Integration.md
-história | menos  ✔
-10093 docker rm trino 2>/dev/null; docker run -d --name trino -p 8083:8080 trinodb/trino
-10094 docker registra trino -f | grep -m1 "SERVIDOR INICIADO"
-10095 fonte .venv/bin/activate
-10096 pip instalar trino
-10098 pip mostrar trino
-10099 python3 -c "\nimport trino\nconn = trino.dbapi.connect(host='localhost', port=8083, user='aura')\ncur = conn.cursor()\ncur.execute('SELECT 1')\nprint('Conexão Trino:', cur.fetchone())\n"
+```markdown
+# Trino Integration Guide
 
+This document outlines the setup for Trino (SQL query engine) and the roadmap for migrating our configuration management to a centralized Trino-backed system.
 
+## Local Environment Setup
 
+### 1. Docker Installation & Image
+To ensure you have the latest image, pull it first:
+```bash
+docker pull trinodb/trino
+```
 
-Atual:
-config.json ──────► Ebene 2 (Terminal)
-└──► Ebene 3 (Streamlit)
-└──► Ebene 3.5 (Web)
-↑
-TODAS as configurações dieselbe
+### 2. Run Trino Container
+Start a local instance with port mapping (mapping internal `8080` to local `8083`):
+```bash
+docker rm trino 2>/dev/null || verdadeiro
+docker run -d --name trino -p 8083:8080 trinodb/trino
+```
 
-Idéia:
+Check logs to confirm the server is ready:
+```bash
+docker registra trino -f | grep -m1 "SERVIDOR INICIADO"
+__CODE_BLOCO_3__
+pip instalar trino
+```
 
-Ebene 2 (Terminal) ─┐
-Ebene 3 (Streamlit) ─┼──► Trino ──► user_configs
-Ebene 3.5 (Web) ─┘ ├── terminal: EN traduzir = verdadeiro
-├── web: DE, não traduz
-└── por usuário: substituições próprias
+### 3. Python Integration
+Install the official Trino client:
+```bash
+importar trino
+conn = trino.dbapi.connect(host='localhost', porta=8083, usuário='aura')
+cur = conn.cursor()
+cur.execute('SELECIONE 1')
+print('Verificação de conexão Trino:', cur.fetchone())
+__CODE_BLOCO_5__
+Camada 2 (Terminal) ─┐
+Camada 3 (Streamlit) ─┼──► Trino ──► Tabela: user_configs
+Camada 3.5 (Web) ─┘ ├── terminal: {traduzir: verdadeiro}
+├── web: {lang: "DE", tradução: falso}
+└── ID_do_usuário: {custom_overrides}
+```
 
-
-
-
-configuração/
-├── settings.py ← Haupt-Config
-├── settings_local.py ← substituições locais
-├── settings_local.py_Example.txt
-├── configurações_local.py_Example_user_...txt
-└── filtros/.backlock/first_run/
-└── settings_local_log_filter.py ← einziger "Divisão de contexto"
-
-+ Diversos JSON-Dateien e Verschiedenen Orten
+Test the connection:
+```python

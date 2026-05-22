@@ -13,7 +13,7 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ ~0,08 J na test (39 testów, 0,49 s na test · mierzone za pomocą [Eco-CI](https://metrics.green-coding.io/index.html)) · brak obliczeń w chmurze
+⚡ **~2,87 J** na test (39 testów przy średnio 0,34 s · pomiar za pomocą [Eco-CI](https://metrics.green-coding.io/index.html)) · brak obliczeń w chmurze
 
 ## Szybki start
 1. Pobierz lub sklonuj to repozytorium

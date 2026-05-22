@@ -13,7 +13,7 @@
 
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ 테스트당 ~0.08J(39개 테스트, 테스트당 0.49초 · [Eco-CI](https://metrics.green-coding.io/index.html)로 측정) · 클라우드 컴퓨팅 없음
+⚡ 테스트당 **~2.87 J**(39개 테스트 @ 0.34초 평균 · [Eco-CI](https://metrics.green-coding.io/index.html)로 측정) · 클라우드 컴퓨팅 없음
 
 ## 빠른 시작
 1. 이 저장소를 다운로드하거나 복제하세요.
