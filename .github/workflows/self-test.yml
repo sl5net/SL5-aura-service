@@ -71,7 +71,6 @@ jobs:
         with:
           task: start-measurement
 
-
       - name: Run Self-Tester with Final Guard
         env:
           PYTHONPATH: ${{ github.workspace }}
