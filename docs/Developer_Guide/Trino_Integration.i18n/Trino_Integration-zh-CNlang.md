@@ -1,5 +1,6 @@
 # 文档/Developer_Guide/Trino_Integration.md
 __代码_块_0__
+df -h //home 2>/dev/null   
 docker 拉 trinodb/trino
 __代码_块_1__
 docker rm trino 2>/dev/null ||真的

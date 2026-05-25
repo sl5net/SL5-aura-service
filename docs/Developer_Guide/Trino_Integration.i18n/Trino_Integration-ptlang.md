@@ -9,6 +9,7 @@ This document outlines the setup for Trino (SQL query engine) and the roadmap fo
 ### 1. Docker Installation & Image
 To ensure you have the latest image, pull it first:
 ```bash
+df -h //home 2>/dev/null   
 docker pull trinodb/trino
 ```
 

@@ -1,5 +1,6 @@
 # docs/Developer_Guide/Trino_Integration.md
 __KOD_BLOKU_0__
+df -h / /home 2>/dev/null XSPACEbreakX
 docker pull trinodb/trino
 __KOD_BLOKU_1__
 doker rm trino 2>/dev/null || PRAWDA
