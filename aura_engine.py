@@ -147,7 +147,11 @@ PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
 PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
+os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
+
 _log_dir = PROJECT_ROOT / "log"
+
+
 
 if not _log_dir.exists():
     shutil.copy(
@@ -170,8 +174,6 @@ AURA_SELF_TEST_RUNNING =TMP_DIR / "sl5_aura" / "aura_self_test_running.flag"
 
 
 
-# aura_engine.py:131
-os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
 
 
 # ==============================================================================
