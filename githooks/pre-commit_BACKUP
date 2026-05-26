@@ -2,6 +2,78 @@
 # .git/hooks/pre-commit
 
 
+
+# -----------------------------------------------------------------------------
+# GUARD: Check for empty or significantly reduced files in maps/
+# -----------------------------------------------------------------------------
+
+# Find staged files in maps/ (Added, Copied, Modified)
+staged_maps=$(git diff --cached --name-only --diff-filter=ACM | grep 'maps/' || true)
+
+if [ -n "$staged_maps" ]; then
+  for f in $staged_maps; do
+    # Get the exact byte size of the staged file
+    new_size=$(git cat-file -s ":$f" 2>/dev/null || echo 0)
+
+    # Get the exact byte size of the file in the previous commit (HEAD)
+    old_size=$(git cat-file -s "HEAD:$f" 2>/dev/null || echo 0)
+
+    warn=false
+    reason=""
+
+    # Condition 1: File is completely empty
+    if [ "$new_size" -eq 0 ]; then
+      warn=true
+      reason="File is completely empty (0 bytes)!"
+
+    # Condition 2: File size is less than 50% of its previous size
+    elif [ "$old_size" -gt 0 ]; then
+      threshold=$((old_size / 2))
+      if [ "$new_size" -lt "$threshold" ]; then
+        warn=true
+        reason="File size drastically reduced! (Old: ${old_size} bytes -> New: ${new_size} bytes)"
+      fi
+    fi
+
+    # Trigger warning and ask for user input
+    if [ "$warn" = true ]; then
+      echo -e "\n=================================================================="
+      echo -e "⚠️  WARNING: Suspicious file change detected!"
+      echo -e "File: $f"
+      echo -e "Reason: $reason"
+      echo -e "=================================================================="
+
+      # Attempt to read from the terminal.
+      # (If using a GUI client like VSCode where /dev/tty fails, it auto-aborts)
+      if read -p "Do you really want to commit this file? (y/N): " response < /dev/tty; then
+        case "$response" in
+          [yY][eE][sS]|[yY])
+              echo "Proceeding..."
+              ;;
+          *)
+              echo "Commit aborted by user. Please fix the file and try again."
+              exit 1
+              ;;
+        esac
+      else
+        echo "No terminal detected (GUI client?). Commit aborted to be safe."
+        echo "If you REALLY want to commit this, use: git commit -m 'msg' --no-verify"
+        exit 1
+      fi
+    fi
+  done
+fi
+
+
+
+
+
+
+
+
+
+
+
 # ---------------------------------------------------------------------------
 # Guard: block commit if a TRANSLATION_RULE is left un-commented
 # ---------------------------------------------------------------------------
