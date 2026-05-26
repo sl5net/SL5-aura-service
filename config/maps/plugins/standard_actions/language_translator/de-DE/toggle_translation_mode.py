@@ -1,10 +1,13 @@
 # config/maps/plugins/standard_actions/language_translator/de-DE/toggle_translation_mode.py
 # translation
+import os
 import shutil
 import sys
 from pathlib import Path
 import subprocess
 import re
+
+from scripts.py.func.db.trino_client import set_translation_state
 
 """
     Vorteile:
@@ -118,6 +121,8 @@ def execute(match_data):
             shutil.copy2(RULES_FILE_PATH, backup_path)
 
             new_state = 'on'
+
+
             print("new_state:", new_state)
             feedback_message = "translation mode is switched on (übersetzung modus wird eingeschaltet')"
             # Die Zeile einkommentieren (entferne führende '#' und Leerzeichen)
@@ -125,6 +130,9 @@ def execute(match_data):
             # lines[rule_line_index] = lines[rule_line_index].lstrip('#')
             lines[rule_line_index] = lines[rule_line_index].replace('#', '', 1)
 
+
+        INTERFACE = os.getenv("INTERFACE", "speech")
+        set_translation_state(INTERFACE, target_lang='en', state=new_state)
 
 
         # write back to the file

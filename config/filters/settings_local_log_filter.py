@@ -82,13 +82,6 @@ LOG_EXCLUDE = [
 
 ]
 # OPTIONAL:
-LOG_ONLY = [
-     r"Successfully",
-     r"CRITICAL",
-     r"📢",
-     r"Title",
-     r"window",
-     r":st:",
-]
+LOG_ONLY = []
 
 

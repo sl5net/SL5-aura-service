@@ -28,6 +28,8 @@ def get_translation_state(interface='terminal', target_lang='en'):
         SELECT state FROM memory.aura.translation_state
         WHERE interface = '{interface}'
         AND target_lang = '{target_lang}'
+        ORDER BY updated_at DESC
+        LIMIT 1
     """)
     row = cur.fetchone()
     return row[0] if row else 'off'

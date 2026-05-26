@@ -7,7 +7,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import streamlit.components.v1 as components
 import socket
-
+os.environ["INTERFACE"] = "web"
 # PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
@@ -103,6 +103,7 @@ def get_external_ip(ip_check_url="https://api.ipify.org"):
         return None
 
 def get_api_base_url():
+    os.environ["INTERFACE"] = "web"
     public_ip = get_external_ip()
     local_json_url = f"http://localhost:{API_PORT}"
     public_http = f"http://{public_ip}:{API_PORT+1}"
@@ -126,6 +127,8 @@ def get_api_base_url():
 BASE_API_URL = get_api_base_url()
 FINAL_API_URL = f"{BASE_API_URL}/{API_ENDPOINT}"
 API_URL = FINAL_API_URL
+
+
 
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 API_KEY = API_KEY_SECRET
@@ -350,7 +353,7 @@ if prompt:
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        data = {"raw_text": prompt, "lang_code": LANG_CODE}
+        data = {"raw_text": prompt, "lang_code": LANG_CODE, "interface": "web"}
         headers = {"X-API-Key": API_KEY, "Content-Type": "application/json"}
 
         service_answer = ""

@@ -93,6 +93,7 @@ class ProcessRequest(BaseModel):
     raw_text: str
     lang_code: str
     unmasked: bool = False
+    interface: str = 'terminal'
 
 
 # --- 3. Endpunkt-Definition ---
@@ -120,6 +121,7 @@ async def process_text_command(request: ProcessRequest, valid: bool = Depends(ve
             recording_time=recording_time,
             active_lt_url=active_lt_url,
             unmasked=unmasked,
+            interface='web',
         )
 
         app_logger.info(f"API-Request: Processing started for lang={lang_code}, unmasked={unmasked}, text='{raw_text[:30]}...'")
@@ -158,7 +160,7 @@ def process_text_cli(request: ProcessRequest, valid: bool = Depends(verify_api_k
     request_output_dir = TMP_DIR / "sl5_aura" / "tts_output" / unique_dir_name
     request_output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Prozess starten
+    # Process start
     process_text_in_background(
         logger=app_logger,
         LT_LANGUAGE=lang_code,
@@ -168,6 +170,7 @@ def process_text_cli(request: ProcessRequest, valid: bool = Depends(verify_api_k
         active_lt_url=active_lt_url,
         output_dir_override=request_output_dir,
         unmasked=unmasked,
+        interface=request.interface,
     )
 
 

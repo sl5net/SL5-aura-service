@@ -1,93 +1,79 @@
-# docs/Developer_Guide/Trino_Integration.md
+This is a great milestone! You’ve moved from theory to a working **Trino proof-of-concept** with persistent state in the `memory` catalog.
+
+To fix the translation issue, the logic in your `toggle_translation_mode.py` and `translate_from_to.py` likely still looks at the local `config.json` instead of querying Trino.
+
+Here is the updated documentation and the commit message.
+
+### 1. Git Commit
+```text
+docs: update Trino guide with live table examples and state management logic
+```
+
+### 2. Updated `docs/Developer_Guide/Trino_Integration.md`
+
 ```markdown
 # Trino Integration Guide
 
-This document outlines the setup for Trino (SQL query engine) and the roadmap for migrating our configuration management to a centralized Trino-backed system.
-
 ## Local Environment Setup
 
-start docker
+### 1. Docker & Image
 ```bash
-sudo systemctl start docker && docker ps
-ls -la /var/run/docker.sock
-
-```
-
-check if trino runns:
-```bash
-docker ps -a | grep trino
-```
-
-if it not runs (Exited) run it:
-```bash
-docker start trino
-docker logs trino -f | grep -m1 "SERVER STARTED"
-```
-
-check GUI:
-```bash
-http://localhost:8083
-```
-
-### 1. Docker Installation & Image
-To ensure you have the latest image, pull it first:
-```bash
-df -h / /home 2>/dev/null    
 docker pull trinodb/trino
-```
-
-### 2. Run Trino Container
-Start a local instance with port mapping (mapping internal `8080` to local `8083`):
-```bash
 docker rm trino 2>/dev/null || true
 docker run -d --name trino -p 8083:8080 trinodb/trino
-```
-
-Check logs to confirm the server is ready:
-```bash
+# Wait for:
 docker logs trino -f | grep -m1 "SERVER STARTED"
 ```
 
-### 3. Python Integration
-Install the official Trino client:
+### 2. Client Installation
 ```bash
 pip install trino
 ```
 
-Test the connection:
+## State Management (Live Example)
+
+We use the `memory` catalog for fast, session-based state management. Below is how to interact with the `translation_state` table.
+
+### Insert & Query State
+This example uses `determine_current_user` to handle multi-user environments:
+
 ```python
+from scripts.py.func.determine_current_user import determine_current_user
 import trino
-conn = trino.dbapi.connect(host='localhost', port=8083, user='aura')
+
+current_user, _ = determine_current_user()
+conn = trino.dbapi.connect(host='localhost', port=8083, user=current_user)
 cur = conn.cursor()
-cur.execute('SELECT 1')
-print('Trino connection check:', cur.fetchone())
+
+# Update state for different contexts
+cur.execute(f'''
+    INSERT INTO memory.aura.translation_state (context, lang, state, updated_at) 
+    VALUES ('terminal', 'en', 'off', CURRENT_TIMESTAMP)
+''')
+
+# Fetch current settings
+cur.execute('SELECT * FROM memory.aura.translation_state')
+rows = cur.fetchall()
+print(rows)
 ```
 
----
+## Troubleshooting: Why is it still translating?
 
-## Configuration Architecture Roadmap
+If the Terminal or Streamlit still translates despite the Trino state being `off`, check these files:
 
-### Legacy State
-Currently, all layers read from a central `config.json`. This lacks flexibility for different execution contexts.
-`config.json` ———► Terminal / Streamlit / Web
+1.  **`config/maps/plugins/.../toggle_translation_mode.py`**: Ensure this script sends an `INSERT` or `UPDATE` to Trino instead of just modifying a local variable.
+2.  **`translate_from_to.py`**: This script needs to perform a `SELECT state FROM memory.aura.translation_state WHERE context = 'terminal'` before proceeding with the translation logic.
+3.  **Config Priority**: Ensure Trino values override the static `config.json`.
 
-### Future State: Centralized Context-Aware Config
-We are moving towards a Trino-backed configuration store (`user_configs`) to allow specific overrides per user and platform.
-
-**Logic Flow:**
-```text
-Layer 2 (Terminal)   ─┐
-Layer 3 (Streamlit)  ─┼──► Trino ──► Table: user_configs
-Layer 3.5 (Web)      ─┘              ├── terminal: {translate: true}
-                                     ├── web:      {lang: "DE", translate: false}
-                                     └── user_id:  {custom_overrides}
+## Current Configuration Roadmap
+- [x] Trino Container Running
+- [x] Manual Table Creation/Insertion
+- [ ] Refactor `translate_from_to.py` to fetch state from Trino
+- [ ] Implement user-specific overrides
 ```
 
-### Current File Structure
-- `config/settings.py`: Main entry point.
-- `config/settings_local.py`: Local developer overrides (ignored by git).
-- `config/filters/`: Context-specific logging filters.
-
----
-*Note: This integration is part of the Sl5 Aura ecosystem.*
-```
+### Tips for your next steps:
+*   **The "Double State" Problem:** Your `fetchall()` output shows multiple entries for 'terminal' (`on` and `off`). Trino's `memory` connector doesn't enforce primary keys. 
+*   **Fix:** In your `translate_from_to.py`, always query the **newest** entry:
+    `SELECT state FROM memory.aura.translation_state WHERE context = 'terminal' ORDER BY updated_at DESC LIMIT 1`
+*   **Automation:** You should modify `scripts/py/func/determine_current_user.py` or a similar helper to provide a `get_trino_config(context)` function that you can call inside your translation plugins.

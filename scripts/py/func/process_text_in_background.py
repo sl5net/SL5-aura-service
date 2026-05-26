@@ -685,11 +685,9 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
     return processed_text
 
 
-def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
+def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger, interface):
     new_processed_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred = apply_all_rules_until_stable(
-        processed_text
-        , fuzzy_map_pre
-        , logger)
+        processed_text, fuzzy_map_pre, logger, interface)
 
     # if settings.DEV_MODE:
     #     with open("/tmp/sl5_aura/debug_final_state.txt", "a") as f:
@@ -917,7 +915,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger):
                         'original_text': original_text_before_rule,
                         'text_after_replacement': new_text,
                         'regex_match_obj': match_obj,
-                        'rule_options': options_dict
+                        'rule_options': options_dict,
+                        'interface': interface
                     }
 
                     for script_path in on_match_exec_list:
@@ -1011,7 +1010,8 @@ def process_text_in_background(logger,
                                output_dir_override = None,
                                chunk_id: int = 0,
                                session_id: int = 0,
-                               unmasked = False
+                               unmasked = False,
+                               interface: str = 'speech'
                                ):
     global settings
     global GLOBAL_LT_LANGUAGE
@@ -1418,9 +1418,11 @@ def process_text_in_background(logger,
                     (new_processed_text
                     , regex_pre_is_replacing_all_maybe
                     , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(processed_text
-                    , GLOBAL_FUZZY_MAP_PRE, logger)
+                    , GLOBAL_FUZZY_MAP_PRE, logger,interface)
 
-                    # scripts/py/func/process_text_in_background.py:1276
+
+                    # scripts/py/func/process_text_
+                    # in_background.py:1276
                     print(f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} 1248\n\n", logger)
 
 
@@ -2003,7 +2005,7 @@ def sanitize_transcription_start(raw_text: str) -> str:
 
 
 
-def apply_all_rules_until_stable(text, rules_map, logger_instance):
+def apply_all_rules_until_stable(text, rules_map, logger_instance, interface):
     """
     Applies all rules from the given rules_map iteratively to the text until the text no longer changes after a complete pass through all the rules.
     Replaces the entire match of the regex without group references with the replacement_text.
@@ -2322,7 +2324,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                             'original_text': original_text_for_script,
                             'text_after_replacement': new_current_text,
                             'regex_match_obj': match_obj,  # Wir haben es bereits von re.fullmatch
-                            'rule_options': options_dict
+                            'rule_options': options_dict,
+                            'interface': interface
                         }
 
 
@@ -2396,8 +2399,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance):
                             match_data = {
                                 'original_text': original_text_for_script,
                                 'text_after_replacement': new_current_text,
-                                'regex_match_obj': partial_match_obj,  # Verwende das neue partial_match_obj
-                                'rule_options': options_dict
+                                'regex_match_obj': partial_match_obj,
+                                'rule_options': options_dict,
+                                'interface': interface
                             }
 
 
