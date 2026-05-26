@@ -171,7 +171,7 @@ from pathlib import Path; import os; PROJECT_ROOT = Path(os.environ["SL5NET_AURA
             fixed_content = True
         # --- HEADER CLEANUP END ---
 
-        README = """
+        README = """ # noqa: F841
         old before 26.5.'26 13:34 Tue
         
         #from pathlib import Path as p;import os as o # noqa: E702
@@ -179,7 +179,7 @@ from pathlib import Path; import os; PROJECT_ROOT = Path(os.environ["SL5NET_AURA
 
         The only edge case: if someone ever runs a map file standalone outside the engine, the env os.environ var won't be set. You can guard that with os.environ.get(...) and a clear error message, but that's a minor concern.
 
-        """  # noqa: F841
+        """ # noqa: F841
 
         # --- LIST DEFINITION ---
         target_var = "FUZZY_MAP_pre" if "_pre" in filename \

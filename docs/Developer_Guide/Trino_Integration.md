@@ -6,6 +6,29 @@ This document outlines the setup for Trino (SQL query engine) and the roadmap fo
 
 ## Local Environment Setup
 
+start docker
+```bash
+sudo systemctl start docker && docker ps
+ls -la /var/run/docker.sock
+
+```
+
+check if trino runns:
+```bash
+docker ps -a | grep trino
+```
+
+if it not runs (Exited) run it:
+```bash
+docker start trino
+docker logs trino -f | grep -m1 "SERVER STARTED"
+```
+
+check GUI:
+```bash
+http://localhost:8083
+```
+
 ### 1. Docker Installation & Image
 To ensure you have the latest image, pull it first:
 ```bash
