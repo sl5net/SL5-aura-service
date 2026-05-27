@@ -1174,6 +1174,9 @@ suspend_flag.unlink(missing_ok=True)
 # LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
 
 
+if settings.TRINO_ENABLED:
+    from scripts.py.func.db.init_trino_db import init_all as init_trino
+    init_trino()
 
 
 active_lt_url = None

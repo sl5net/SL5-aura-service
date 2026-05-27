@@ -15,7 +15,7 @@ from config import settings
 from scripts.py.func.get_active_window_title import get_active_window_title_safe
 from config.settings import LANGUAGE_PREFIXES, SIGNATURE_MAPPING
 from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
-from scripts.py.func.db.trino_client import get_translation_state
+from scripts.py.func.db.trino_client import get_feature_state, get_target_lang
 
 
 TRANSLATE_SCRIPT = project_dir / 'tools' / 'simple_translate.py'
@@ -77,10 +77,14 @@ def execute(match_data):
 
     # 1. Trino: State fuer dieses Interface pruefen
     try:
-        state = get_translation_state(interface=match_data.get("interface", "terminal"), target_lang='en')
-        lang_target = 'en'
-        if state != 'on':
-            return original_text  # Modus aus fuer dieses Interface
+        INTERFACE = os.getenv("INTERFACE", "speech")
+        feature_state = get_feature_state(interface=INTERFACE, feature='translation')
+        if feature_state != 'on':
+            return original_text
+        lang_target = get_target_lang(interface=INTERFACE)
+        if lang_target is None:
+            return original_text
+
     except Exception as e:
         # Fallback: translation_state.py falls Trino nicht erreichbar
         logger.warning(f"Trino nicht erreichbar, Fallback auf STATE_FILE: {e}")
