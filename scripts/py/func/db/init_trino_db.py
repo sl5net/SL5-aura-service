@@ -37,9 +37,9 @@ def start_trino_if_needed():
         return False
 
     print("[init_trino_db] Waiting for Trino to be ready...")
-    for i in range(30):
+    for i in range(90):
         logs = subprocess.run(
-            ['docker', 'logs', 'trino', '--tail', '20'],
+            ['docker', 'logs', 'trino', '--tail', '500'],
             capture_output=True, text=True
         )
         if 'SERVER STARTED' in logs.stdout or 'SERVER STARTED' in logs.stderr:

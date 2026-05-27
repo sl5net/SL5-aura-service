@@ -18,6 +18,7 @@ import re
 import threading
 
 from scripts.py.func import global_state
+from scripts.py.func.config.dynamic_settings import settings
 
 #from config.settings import LANGUAGETOOL_CHECK_URL
 
@@ -76,8 +77,7 @@ from pathlib import Path
 
 
 
-# aura_engine.py:59
-from scripts.py.func.config.dynamic_settings import settings
+
 
 if settings.LOG_delete_on_startup:
 
@@ -100,6 +100,20 @@ from scripts.py.func.checks.espeak_check import espeak_check
 espeak_check(settings)
 
 from scripts.py.func.checks.check_settings_syntax import verify_plugin_notation
+
+if settings.TRINO_ENABLED:
+    from scripts.py.func.db.init_trino_db import init_all as init_trino
+    def async_trino_init():
+        try:
+            init_trino()
+        except Exception as e:
+            print(f"[AURA ENGINE] WARNING: Failed to initialize Trino database: {e}")
+            print("[AURA ENGINE] Database features may be unavailable.")
+
+    trino_thread = threading.Thread(target=async_trino_init, daemon=True)
+    trino_thread.start()
+    print("[AURA ENGINE] Trino database initialization started asynchronously in the background...")
+
 verify_plugin_notation(settings.PLUGINS_ENABLED)
 
 if getattr(settings, 'KILL_COMPETING_LT_AND_ELOQUENT_ON_START', False):
@@ -135,6 +149,8 @@ from scripts.py.func.main import main
 from scripts.py.func.create_required_folders import setup_project_structure
 
 
+
+
 # --- Constants and Paths ---
 SCRIPT_DIR = Path(__file__).resolve().parent
 
@@ -148,6 +164,7 @@ TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
 PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
 os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
+
 
 _log_dir = PROJECT_ROOT / "log"
 
@@ -1174,9 +1191,6 @@ suspend_flag.unlink(missing_ok=True)
 # LT_LANGUAGE = guess_lt_language_from_model(MODEL_NAME)
 
 
-if settings.TRINO_ENABLED:
-    from scripts.py.func.db.init_trino_db import init_all as init_trino
-    init_trino()
 
 
 active_lt_url = None

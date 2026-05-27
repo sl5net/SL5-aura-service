@@ -9,7 +9,6 @@ from scripts.py.func.db.aura_state import (
     get_all_status,
     enable_translation,
     disable_translation,
-    set_language,
 )
 
 st.set_page_config(page_title="Aura Admin", page_icon="⚙️", layout="wide")
@@ -34,7 +33,7 @@ for status in statuses:
         st.write(f"🌐 {language}")
     with col4:
         if translation == 'on':
-            if st.button(f"Disable", key=f"disable_{interface}"):
+            if st.button("Disable", key=f"disable_{interface}"):
                 disable_translation(interface)
                 st.rerun()
         else:
@@ -43,7 +42,7 @@ for status in statuses:
                 ['en', 'de', 'fr', 'es', 'pt-BR', 'ja', 'ar'],
                 key=f"lang_{interface}"
             )
-            if st.button(f"Enable", key=f"enable_{interface}"):
+            if st.button("Enable", key=f"enable_{interface}"):
                 enable_translation(interface, lang=lang_input)
                 st.rerun()
 
