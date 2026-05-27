@@ -1,10 +1,20 @@
 # config/maps/plugins/standard_actions/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
+import runpy
+
 
 from pathlib import Path as p;import os as o # noqa: E702
 with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
+
+
+
 CONFIG_DIR = p(__file__).parent
+
+acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
+
+
 readme = """
 source .venv/bin/activate
 pip install --upgrade pip
@@ -42,8 +52,15 @@ FUZZY_MAP_pre = [
     # EXAMPLE: wie ist das wetter
     ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)\??$', 95, {
         'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
+        'on_match_exec': [CONFIG_DIR / 'weather.py']
     }),
+
+    # EXAMPLE: Aura Admin öffnen open admin panel.
+    ('', rf'^{AURA_VARIANTS} Admin\w*\b.*$', 95, {
+        'flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'open_admin.py']
+    }),
+
 
     # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
 
