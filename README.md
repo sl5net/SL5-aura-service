@@ -483,6 +483,8 @@ Then maybe double-click
 
 </details>
 
+<details>
+<summary>Experimental Features</summary>
     
 ### **Upcoming / Experimental Features**  
     Features currently under development or in draft status.  
@@ -503,7 +505,7 @@ Then maybe double-click
 ---
 
 *(Note: Specific Linux distributions like Arch (ARL) or Ubuntu (UBT) are covered by the general Linux 🐧 symbol. Detailed distinctions might be covered in installation guides.)*
-
+</details>
 
 <details>
 <summary>Click to see the command used to generate this script list</summary>
