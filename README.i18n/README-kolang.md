@@ -10,16 +10,19 @@
 | 👵 초급 | 🎓 학습자 | 🧑u200d💻 개발자 |
 |---|---|---|
 | OMA 모드: 단어만 작성하면 나머지는 Aura가 수행합니다 | Koans로 배우기 - 한 번에 하나의 개념 | 전체 Python 스크립팅, 플러그인, API 호출 |
-
+| 🗄️ 상태 관리 | Trino + Airflow 오케스트레이션, fzf, CopyQ, 음성/터미널 명령, 브라우저 UI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 ⚡ 테스트당 **~2.87 J**(39개 테스트 @ 0.34초 평균 · [Eco-CI](https://metrics.green-coding.io/index.html)로 측정) · 클라우드 컴퓨팅 없음
+
+<상세>
+<summary>빠른 시작</summary>
 
 ## 빠른 시작
 1. 이 저장소를 다운로드하거나 복제하세요.
 2. OS에 대한 설정 스크립트를 실행합니다(`setup/` 폴더 참조).
 - 리눅스(Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-kolang.md) 읽기
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-kolang.md) 읽기
 - 리눅스(우분투/데비안): `bash setup/ubuntu_setup.sh`
 - Linux(openSUSE): `bash setup/suse_setup.sh`
 - Linux(NixOS): `nix-shell setup/shell.nix` 다음 `bash setup/nixos_setup.sh`
@@ -27,7 +30,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - 윈도우: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Aura 시작: `./scripts/restart_venv_and_run-server.sh`
-4. 단축키를 누르고 말하세요 — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-kolang.md)**
+4. 단축키를 누르고 말하세요 — **[full guide →](../docs/GettingStarted-kolang.md)**
 
 
 **⚠️ 시스템 요구 사항 및 호환성**
@@ -36,7 +39,7 @@
 * **macOS:** ✅ 완전히 지원됩니다(AppleScript 사용).
 * **Linux(X11/Xorg):** ✅ 완전히 지원됩니다.
 * **Linux(Wayland):** ✅ 완전히 지원됩니다(KDE Plasma 6 / Wayland에서 테스트됨).
-* **Linux(CachyOS / Arch 기반 롤링 릴리스):** ✅ 완전히 지원됩니다.
+* **Linux(CachyOS / Arch 기반 롤링 릴리스):** ✅ 완벽하게 지원됩니다.
 glibc 2.43 호환성으로 인해 mimalloc(`sudo pacman -S mimalloc`)이 필요합니다.
 * **Linux(NixOS):** 🧪 실험적 — 커뮤니티에서 제공한 설정이며 아직 테스트되지 않았습니다.
 시도해보시면 이슈를 공개하거나 결과를 PR해 주세요!  XSPACEbreakX
@@ -48,17 +51,26 @@ XSPACEbreakX
 
 참고: 많은 텍스트는 원래 영어 문서를 기계로 생성한 번역이며 일반적인 지침으로만 사용됩니다. 불일치나 모호성이 있는 경우에는 항상 영어 버전이 우선합니다. 이 번역을 개선하기 위한 커뮤니티의 도움을 환영합니다!
 
+</세부사항>
+
+<상세>
+<summary>데모</summary>
+
 ### 📺 터미널 데모
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **팁:** 더 나은 터미널 경험을 위해서는 [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-kolang.md)를 참조하세요.
+> **팁:** 더 나은 터미널 경험을 위해서는 [Zsh Integration](../docs/linux/zsh-integration-kolang.md)를 참조하세요.
 
 ### 🎥 비디오 튜토리얼
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *(대체 링크: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
 
+</세부사항>
+
+<상세>
+<summary>주요 기능</summary>
 
 ## 주요 기능
 
@@ -68,9 +80,16 @@ XSPACEbreakX
 * **고도의 제어 변환 엔진:** 구성 중심의 고도로 사용자 정의 가능한 처리 파이프라인을 구현합니다. 규칙 우선순위, 명령 감지 및 텍스트 변환은 순전히 퍼지 맵의 규칙 순서에 따라 결정되며 **코딩이 아닌 구성**이 필요합니다.
 * **보수적인 RAM 사용:** 메모리를 지능적으로 관리하고 여유 RAM이 충분한 경우에만 모델을 사전 로드하여 다른 애플리케이션(예: PC 게임)이 항상 우선순위를 갖도록 합니다.
 * **크로스 플랫폼:** Linux, macOS, Windows에서 작동합니다.
-* **완전 자동화:** 자체 LanguageTool 서버를 관리합니다(그러나 외부 서버도 사용할 수 있음).
+* **완전 자동화:** 자체 LanguageTool 서버를 관리합니다(그러나 외부 서버도 사용할 수 있습니다).
 * **매우 빠른 속도:** 지능형 캐싱은 즉각적인 "듣기..." 알림과 빠른 처리를 보장합니다.
+* **Trino를 통한 동적 상태 관리:** 인터페이스 인식 구성 엔진
+`음성`, `터미널` 및 `웹`에 대한 설정을 분리합니다.
+다른 사람에게 영향을 미칩니다. 실시간 **관리 대시보드**(포트 8084)가 포함되어 있습니다.
+</세부사항>
 
+<상세>
+<summary> 🔌 즉시 사용 가능한 통합</summary>
+XSPACEbreakX
 ## 🔌 즉시 사용 가능한 통합
 
 SL5-Aura는 **100개 이상의 사전 구성된 플러그인**으로 구성된 방대한 생태계와 함께 제공됩니다. 다음은 몇 가지 주요 내용입니다.
@@ -91,6 +110,11 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 
 ---
 
+</세부사항>
+
+
+<상세>
+<summary>문서</summary>
 
 ## 문서
 
@@ -118,17 +142,16 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 </a>
 </div>
 
+</세부사항>
+
 👉 **다른 언어로 읽어 보세요:**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-kolang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-kolang.md) | [🇪🇸 Español](../README.i18n/README-eslang-kolang.md) | [🇫🇷 Français](../README.i18n/README-frlang-kolang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-kolang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-kolang.md) | [🇰🇷 한국어](../README.i18n/README-kolang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-kolang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-kolang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-kolang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-kolang.md)
 
 ---
 
-
-
-
-
-
+<상세>
+<summary>설치</summary>
 
 ## 설치
 
@@ -189,16 +212,16 @@ setup/windows11_setup.ps1 -Exclude [OPTION]
 # Exclude German and English models:
 # setup/windows11_setup.ps1 -Exclude "de,en"
 
-# Or (recommend) - Start des BAT: 
+# Or (recommend) - Run the BAT file: 
 windows11_setup.bat -Exclude "en"
 ```
 
 #### 윈도우의 경우
 관리자 권한으로 설정 스크립트를 실행합니다.
 
-**읽기 및 실행을 위한 도구를 설치합니다. [CopyQ](https://github.com/hluk/CopyQ) 또는 [AutoHotkey v2](https://www.autohotkey.com/)**. 이는 텍스트 입력 감시자에게 필요합니다.
+**읽고 실행하려면 [CopyQ](https://github.com/hluk/CopyQ) 또는 [AutoHotkey v2](https://www.autohotkey.com/)와 같은 도구를 설치하세요**. 이는 텍스트 입력 감시자에게 필요합니다.
 
-설치는 완전 자동화되어 있으며 새로운 시스템에서 2개 모델을 사용할 경우 약 **8~10분** 정도 소요됩니다.
+설치는 완전 자동화되어 있으며 새 시스템에서 2개 모델을 사용할 경우 약 **8~10분** 정도 소요됩니다.
 
 1. `setup` 폴더로 이동합니다.
 2. **`windows11_setup_with_ahk_copyq.bat`**를 두 번 클릭합니다.
@@ -225,8 +248,12 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
 
-
 ---
+</세부사항>
+
+
+<상세>
+<summary>사용</summary>
 
 ## 용법
 
@@ -301,8 +328,13 @@ f11::
 ### 3. 받아쓰기를 시작하세요!
 텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추세요. 수정된 텍스트가 자동으로 입력됩니다.
 
+</세부사항>
+
 ---
 
+
+<상세>
+<summary>고급 구성(선택 사항)</summary>
 
 ## 고급 구성(선택 사항)
 
@@ -326,6 +358,17 @@ XSPACEbreakX
 XSPACEbreakX
 
 이 아키텍처는 핵심 시스템 규칙이 보호되는 동시에 프로젝트별 또는 상황 인식 규칙(예: CodeIgniter 또는 게임 컨트롤의 규칙)을 플러그인을 통해 우선순위가 낮은 확장으로 쉽게 추가할 수 있도록 보장합니다.
+
+</세부사항>
+
+<상세>
+<summary>Windows 사용자를 위한 주요 스크립트</summary>
+
+
+
+
+
+
 ## Windows 사용자를 위한 주요 스크립트
 
 다음은 Windows 시스템에서 애플리케이션을 설정, 업데이트 및 실행하는 데 가장 중요한 스크립트 목록입니다.
@@ -336,7 +379,7 @@ XSPACEbreakX
 * `setup/setup.bat`: 환경의 **초기 일회성 설정**을 위한 기본 스크립트입니다.
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `powershell 실행 -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
-* `update.bat` : 프로젝트 폴더에서 이를 실행합니다. **최신 코드와 종속성을 가져옵니다**.
+* `update.bat` : 프로젝트 폴더에서 이를 실행하여 **최신 코드와 종속성을 가져옵니다**.
 
 ### 애플리케이션 실행
 * `start_aura.bat`: **받아쓰기 서비스를 시작**하는 기본 스크립트입니다.
@@ -345,10 +388,14 @@ XSPACEbreakX
 * `aura_engine.py`: 핵심 Python 서비스(일반적으로 위 스크립트 중 하나에 의해 시작됨).
 * `get_suggestions.py`: 특정 기능을 위한 도우미 스크립트입니다.
 
+</세부사항>
 
 
 
 ## 🚀 주요 기능 및 OS 호환성
+
+<상세>
+<summary>OS 호환성 전설</summary>
 
 OS 호환성 범례:XSPACEbreakX
 * 🐧 **Linux**(예: Arch, Ubuntu)XSPACEbreakX
@@ -358,19 +405,28 @@ OS 호환성 범례:XSPACEbreakX
 
 ---
 
+</세부사항>
+
+
+
+
+
 ### **핵심 음성-텍스트(Aura) 엔진**
 오프라인 음성 인식 및 오디오 처리를 위한 기본 엔진입니다.
 
 XSPACEbreakX
+<상세>
+<summary>오라 코어</summary>
+
 **Aura-Core/** 🐧 🍏 🪟XSPACEbreakX
 ├─ `aura_engine.py`(Aura를 조정하는 주요 Python 서비스) 🐧 🍏 🪟  
 ├┬ **라이브 핫 리로드**(구성 및 맵) 🐧 🍏 🪟XSPACEbreakX
 │├ **보안된 비공개 지도 로드(무결성 우선)** 🔒 🐧 🍏 🪟XSPACEbreakX
-││ * **워크플로:** 비밀번호로 보호된 ZIP 아카이브를 로드합니다. XSPACEbreakX
+││ * **워크플로우:** 비밀번호로 보호된 ZIP 아카이브를 로드합니다. XSPACEbreakX
 │├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
-│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
-││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(on_match_exec)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
+│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
+││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(`on_match_exec`)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **계단식 실행:** 규칙은 순차적으로 처리되며 해당 효과는 **누적**됩니다. 이후 규칙은 이전 규칙에 의해 수정된 텍스트에 적용됩니다.  
 ││ * **가장 높은 우선순위 중지 기준:** 규칙이 **완전 일치**(^...$)를 달성하면 해당 토큰에 대한 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 안정적인 음성 명령을 구현하는 데 중요합니다.  
 │├ 3. `corright_text_by_언어tool.py` (문법/스타일 교정을 위한 LanguageTool 통합) 🐧 🍏 🪟  
@@ -381,17 +437,21 @@ XSPACEbreakX
 ││ * **상태:** 로컬 LLM 통합.
 │└ 5. **지능형 사후 수정**(`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟XSPACEbreakX
 ││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선순위 논리를 따릅니다.  
-││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
+││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../docs/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전 결정적/계단식 규칙 실행 전체가 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
 ├┬ **모델 관리/** XSPACEbreakX
 │├─ `prioritize_model.py` (사용에 따라 모델 로드/언로드 최적화) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (최초 모델 설정 구성) 🐧 🍏 🪟  
 ├─ **적응형 VAD 시간 초과** 🐧 🍏 🪟XSPACEbreakX
 ├─ **적응형 단축키(시작/중지)** 🐧 🍏 🪟XSPACEbreakX
-└─ **즉각적인 언어 전환** (모델 사전 로드를 통한 실험) 🐧 🍏 XSPACEbreakX
+├─ **즉각적인 언어 전환** (모델 사전 로드를 통한 실험) 🐧 🍏 XSPACEbreakX
+├─ **Airflow Orchestration** (DAG 기반 워크플로 자동화) 🐧 🍏 🪟
+│ Docker 필요 · UI: `http://localhost:8081` 🐧 🍏 🪟XSPACEbreakX
+├─ **Trino State Engine** (음성/터미널/웹별 인터페이스 인식 구성) 🐧 🍏 🪟
+└─ Docker 필요 · 관리 UI: `http://localhost:8084` 🐧 🍏 🪟XSPACEbreakX
 
 **시스템 유틸리티/** XSPACEbreakX
-├┬ **LanguageTool 서버 관리/**   
+├┬ **LanguageTool 서버 관리/** XSPACEbreakX
 │├─ `start_언어tool_server.py`(로컬 LanguageTool 서버 초기화) 🐧 🍏 🪟  
 │└─ `stop_언어tool_server.py` (LanguageTool 서버 종료) 🐧 🍏
 ├─ `monitor_mic.sh` (예: 키보드와 모니터를 사용하지 않고 헤드셋과 함께 사용) 🐧 🍏 🪟XSPACEbreakX
@@ -404,6 +464,11 @@ XSPACEbreakX
 ├─ `split_and_hash.py`(저장소 소유자가 대용량 파일을 분할하고 체크섬을 생성하는 유틸리티) 🐧 🍏 🪟  
 └─ `download_all_packages.py`(최종 사용자가 여러 부분으로 구성된 파일을 다운로드, 확인 및 재조립할 수 있는 도구) 🐧 🍏 🪟  
 
+</세부사항>
+
+
+<상세>
+<summary>개발 및 배포 도우미</summary>
 
 ### **개발 및 배포 도우미**XSPACEbreakX
 환경 설정, 테스트, 서비스 실행을 위한 스크립트입니다.  
@@ -412,11 +477,10 @@ XSPACEbreakX
 로그 파일과 연결하려면 설치 시 확인란을 선택하세요.  XSPACEbreakX
 https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https://glogg.bonnefon.org/     
 XSPACEbreakX
-*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
+*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
 
-그럼 아마도 더블클릭이겠지
+그런 다음 두 번 클릭해 보세요.
 `로그/aura_engine.log`
-XSPACEbreakX
 XSPACEbreakX
 **DevHelpers/**XSPACEbreakX
 ├┬ **가상 환경 관리/**XSPACEbreakX
@@ -429,6 +493,11 @@ XSPACEbreakX
 └─ **CI/CD 자동화/**XSPACEbreakX
 └─ 확장된 GitHub 워크플로(설치, 테스트, 문서 배포) 🐧 🍏 🪟 *(GitHub Actions에서 실행)*XSPACEbreakX
 
+</세부사항>
+
+<상세>
+<summary>실험적 기능</summary>
+XSPACEbreakX
 ### **향후/실험적 기능**XSPACEbreakX
 현재 개발 중이거나 초안 상태인 기능입니다.  
 
@@ -448,14 +517,7 @@ XSPACEbreakX
 ---
 
 *(참고: Arch(ARL) 또는 Ubuntu(UBT)와 같은 특정 Linux 배포판에는 일반 Linux 🐧 기호가 표시됩니다. 자세한 차이점은 설치 가이드에서 다룰 수 있습니다.)*
-
-
-
-
-
-
-
-
+</세부사항>
 
 <상세>
 <summary>이 스크립트 목록을 생성하는 데 사용된 명령을 보려면 클릭하세요.</summary>
@@ -465,6 +527,8 @@ XSPACEbreakX
 ```
 </세부사항>
 
+<상세>
+<summary>아키텍처의 그래픽 개요</summary>
 
 ### 아키텍처의 그래픽 개요:
 
@@ -472,13 +536,16 @@ XSPACEbreakX
 
 XSPACEbreakX
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
+</세부사항>
 
+<상세>
+<summary>사용된 모델</summary>
 
 # 사용 모델:
 
 권장 사항: Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1의 모델을 사용하십시오(아마도 더 빠름).
 
-이 압축된 모델은 'models/' 폴더에 저장되어야 합니다.
+압축된 모델은 'models/' 폴더에 저장해야 합니다.
 
 `mv vosk-model-*.zip 모델/`
 
@@ -498,6 +565,7 @@ XSPACEbreakX
 **LanguageTool 라이센스:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ---
+</세부사항>
 
 ## 프로젝트 지원
 이 도구가 유용하다고 생각하시면 커피 한 잔 구입해 보시기 바랍니다! 귀하의 지원은 향후 개선을 촉진하는 데 도움이 됩니다.

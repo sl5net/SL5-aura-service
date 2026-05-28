@@ -10,16 +10,19 @@
 | 👵 初学者 | 🎓 学习者 | 🧑u200d💻 开发者 |
 |---|---|---|
 | OMA-模式：只需写一个字，Aura 即可完成剩下的工作 |与 Koans 一起学习 — 一次一个概念 |完整的 Python 脚本、插件、API 调用 |
-
+| 🗄️ 状态管理 | Trino + Airflow 编排、fzf、CopyQ、语音/终端命令、浏览器 UI
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 ⚡ **~2.87 J** 每次测试（39 次测试 @ 0.34 秒平均 · 使用 [Eco-CI](https://metrics.green-coding.io/index.html) 测量） · 无云计算
+
+<详情>
+<summary>快速入门</summary>
 
 ## 快速入门
 1.下载或克隆此存储库
 2. 运行适用于您的操作系统的安装脚本（请参阅“setup/”文件夹）：
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 阅读 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-zh-CNlang.md)
+===> 🧩 阅读 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-zh-CNlang.md)
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS)：`nix-shell setup/shell.nix` 然后 `bash setup/nixos_setup.sh`
@@ -27,7 +30,7 @@
 - macOS：`bash setup/macos_setup.sh`
 - Windows：`setup/windows11_setup_with_ahk_copyq.bat`
 3.启动Aura：`./scripts/restart_venv_and_run-server.sh`
-4. 按热键并说话 — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-zh-CNlang.md)**
+4. 按热键并说话 — **[full guide →](../docs/GettingStarted-zh-CNlang.md)**
 
 
 **⚠️系统要求和兼容性**
@@ -48,17 +51,26 @@ X空格符X
 
 注意：许多文本是原始英文文档的机器生成翻译，仅供一般指导。如有差异或歧义，始终以英文版本为准。我们欢迎社区帮助改进此翻译！
 
+</详情>
+
+<详情>
+<摘要>演示</摘要>
+
 ### 📺 终端演示
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **提示：** 为了获得更好的终端体验，请参见[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-zh-CNlang.md)。
+> **提示：** 为了获得更好的终端体验，请参见[Zsh Integration](../docs/linux/zsh-integration-zh-CNlang.md)。
 
 ### 🎥 视频教程
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *（替代链接：[skipvids.com](https://skipvids.com/?v=BZCHonTqwUw)）*
 
+</详情>
+
+<详情>
+<摘要>主要功能</摘要>
 
 ## 主要特点
 
@@ -70,7 +82,14 @@ X空格符X
 * **跨平台：** 适用于 Linux、macOS 和 Windows。
 * **完全自动化：** 管理自己的 LanguageTool 服务器（但您也可以使用外部服务器）。
 * **极速：** 智能缓存可确保即时“正在收听...”通知和快速处理。
+* **通过 Trino 进行动态状态管理：** 接口感知配置引擎
+分离 `speech`、`terminal` 和 `web` 的设置 — 更改一个而不需要
+影响其他人。包括实时**管理仪表板**（端口 8084）。
+</详情>
 
+<详情>
+<summary> 🔌 即用型集成</summary>
+X空格符X
 ## 🔌 即用型集成
 
 SL5-Aura 配备了一个庞大的生态系统，包含超过 **100 多个预配置插件**。以下是一些亮点：
@@ -91,6 +110,11 @@ SL5-Aura 为 **OculiX** 和 **SikuliX IDE** 提供一流的语音支持。这种
 
 ---
 
+</详情>
+
+
+<详情>
+<摘要>文档</摘要>
 
 ## 文档
 
@@ -118,17 +142,16 @@ SL5-Aura 为 **OculiX** 和 **SikuliX IDE** 提供一流的语音支持。这种
 </a>
 </div>
 
+</详情>
+
 👉 **阅读其他语言版本：**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-zh-CNlang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-zh-CNlang.md) | [🇪🇸 Español](../README.i18n/README-eslang-zh-CNlang.md) | [🇫🇷 Français](../README.i18n/README-frlang-zh-CNlang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-zh-CNlang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-zh-CNlang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-zh-CNlang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-zh-CNlang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-zh-CNlang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-zh-CNlang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang.md)
 
 ---
 
-
-
-
-
-
+<详情>
+<摘要>安装</摘要>
 
 ＃＃ 安装
 
@@ -158,7 +181,7 @@ __代码_块_0__
 #### 对于 Windows
 使用管理员权限运行安装脚本。
 
-**安装一个用于读取和运行的工具，例如[CopyQ](https://github.com/hluk/CopyQ) 或 [AutoHotkey v2](https://www.autohotkey.com/)**。这是文本输入观察者所必需的。
+**安装读取和运行工具，例如[CopyQ](https://github.com/hluk/CopyQ)或[AutoHotkey v2](https://www.autohotkey.com/)**。这是文本输入观察者所必需的。
 
 安装是完全自动化的，在新系统上使用 2 个型号时大约需要 **8-10 分钟**。
 
@@ -177,8 +200,12 @@ __代码_块_0__
 
 __代码_块_1__
 
-
 ---
+</详情>
+
+
+<详情>
+<摘要>用法</摘要>
 
 ＃＃ 用法
 
@@ -215,8 +242,13 @@ __代码_块_5__
 ### 3. 开始听写！
 单击任何文本字段，按热键，将出现“正在收听...”通知。说清楚，然后停顿。系统将为您输入更正后的文本。
 
+</详情>
+
 ---
 
+
+<详情>
+<summary>高级配置（可选）</summary>
 
 ## 高级配置（可选）
 
@@ -240,6 +272,12 @@ X空格符X
 X空格符X
 
 这种架构确保核心系统规则受到保护，而特定于项目或上下文感知的规则（例如 CodeIgniter 或游戏控件的规则）可以通过插件轻松添加为低优先级扩展。
+
+</详情>
+
+<详情>
+<summary>Windows 用户的关键脚本</summary>
+
 ## Windows 用户的关键脚本
 
 以下是在 Windows 系统上设置、更新和运行应用程序的最重要脚本的列表。
@@ -250,7 +288,7 @@ X空格符X
 * `setup/setup.bat`：环境的**初始一次性设置**的主脚本。
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `运行 powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
-* `update.bat` ：从项目文件夹运行这些**获取最新的代码和依赖项**。
+* `update.bat` ：从项目文件夹运行它以**获取最新的代码和依赖项**。
 
 ### 运行应用程序
 * `start_aura.bat`：**启动听写服务**的主要脚本。
@@ -259,8 +297,11 @@ X空格符X
 * `aura_engine.py`：核心 Python 服务（通常由上述脚本之一启动）。
 * `get_suggestions.py`：用于特定功能的帮助程序脚本。
 
+</详情>
 
 
+<详情>
+<summary>Windows 用户的关键脚本</summary>
 
 ## 🚀 主要功能和操作系统兼容性
 
@@ -271,11 +312,14 @@ X空格符X
 * 📱 **Android**（针对移动设备特定功能）  
 
 ---
-
+</详情>
 ### **核心语音转文本 (Aura) 引擎**
 我们用于离线语音识别和音频处理的主要引擎。
 
 X空格符X
+<详情>
+<summary>光环核心</summary>
+
 **光环核心/** 🐧 🍏 🪟  
 ├─ `aura_engine.py`（编排 Aura 的主要 Python 服务）🐧 🍏 🪟  
 ├┬ **实时热重载**（配置和地图）🐧🍏🪟  
@@ -283,8 +327,8 @@ X空格符X
 │ │ * **工作流程：** 加载受密码保护的 ZIP 存档。 X空格符X
 │├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
-│├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
-│ │ * **动态脚本执行：**规则可以触发自定义Python脚本（on_match_exec）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
+│├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
+││ * **动态脚本执行：**规则可以触发自定义Python脚本（`on_match_exec`）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 │ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
 │ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
 │├ 3. ` Correct_text_by_languagetool.py` (集成LanguageTool用于语法/风格校正) 🐧 🍏 🪟  
@@ -295,14 +339,18 @@ X空格符X
 │ │ * **状态：** 本地法学硕士整合。
 │└ 5. **智能后期校正** (`FuzzyMap`)**– LT后细化** 🐧 🍏 🪟  
 │ │ * 在 LanguageTool 之后应用以纠正 LT 特定的输出。遵循与预校正层相同的严格级联优先级逻辑。  
-││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
+││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](../docs/advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 ││ * **模糊回退：** **模糊相似性检查**（由阈值控制，例如 85%）充当最低优先级的纠错层。仅当前面的整个确定性/级联规则运行未能找到匹配项（current_rule_matched 为 False）时才会执行它，通过尽可能避免缓慢的模糊检查来优化性能。  
 ├┬ **模型管理/**   
 │├─ `prioritize_model.py` (根据使用情况优化模型加载/卸载) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (配置首次模型设置) 🐧 🍏 🪟  
 ├─ **自适应 VAD 超时** 🐧 🍏 🪟  
 ├─ **自适应热键（开始/停止）** 🐧 🍏 🪟  
-└─ **即时语言切换**（通过模型预加载进行实验）🐧 🍏   
+├─ **即时语言切换**（通过模型预加载进行实验）🐧 🍏   
+├─ **Airflow Orchestration**（基于 DAG 的工作流程自动化）🐧 🍏 🪟
+│ 需要 Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
+├─ **Trino 状态引擎**（每个语音/终端/网络的接口感知配置）🐧 🍏 🪟
+└─ 需要 Docker · 管理界面：`http://localhost:8084` 🐧 🍏 🪟  
 
 **系统实用程序/**   
 ├┬ **LanguageTool 服务器管理/**   
@@ -318,6 +366,11 @@ X空格符X
 ├─ `split_and_hash.py` （仓库所有者分割大文件并生成校验和的实用程序）🐧 🍏 🪟  
 └─ `download_all_packages.py` （供最终用户下载、验证和重新组装多部分文件的工具） 🐧 🍏 🪟  
 
+</详情>
+
+
+<详情>
+<summary>开发和部署助手</summary>
 
 ### **开发和部署助手**  
 用于环境设置、测试和服务执行的脚本。  
@@ -326,11 +379,10 @@ X空格符X
 安装时请选中该复选框以与日志文件关联。  X空格符X
 https://translate.google.com/translate?hl=en&sl=en&tl=zh-CN&u=https://glogg.bonnefon.org/     
 X空格符X
-*提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-zh-CNlang.md)。*
+*提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-zh-CNlang.md)。*
 
 然后也许双击
 `日志/aura_engine.log`
-X空格符X
 X空格符X
 **DevHelpers/**  
 ├┬ **虚拟环境管理/**  
@@ -343,6 +395,11 @@ X空格符X
 └─ **CI/CD 自动化/**  
 └─ 扩展的 GitHub 工作流程（安装、测试、文档部署）🐧 🍏 🪟 *（在 GitHub 操作上运行）*  
 
+</详情>
+
+<详情>
+<summary>实验特性</summary>
+X空格符X
 ### **即将推出/实验性功能**  
 目前正在开发或处于草稿状态的功能。  
 
@@ -362,14 +419,7 @@ X空格符X
 ---
 
 *（注意：通用 Linux 🐧 符号涵盖了特定的 Linux 发行版，例如 Arch (ARL) 或 Ubuntu (UBT)。安装指南中可能会介绍详细的区别。）*
-
-
-
-
-
-
-
-
+</详情>
 
 <详情>
 <summary>点击查看生成此脚本列表所使用的命令</summary>
@@ -377,6 +427,8 @@ X空格符X
 __代码_块_6__
 </详情>
 
+<详情>
+<summary>架构的图形概述</summary>
 
 ### 架构的图形概述：
 
@@ -384,20 +436,23 @@ __代码_块_6__
 
 X空格符X
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
+</详情>
 
+<详情>
+<summary>使用过的型号</summary>
 
 # 使用的型号：
 
 建议：使用 Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 中的模型（可能更快）
 
-此Ziped模型必须保存到“models/”文件夹中
+这些压缩的模型必须保存到“models/”文件夹中
 
 `mv vosk-model-*.zip 模型/`
 
 
 |型号|尺寸|字错误率/速度 |笔记|许可证|
 | ------------------------------------------------------------------------------------------ | ---- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
-| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型|阿帕奇2.0 |
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型 |阿帕奇2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G| 9.83（Tuda-de 测试）<br/>24.00（播客）<br/>12.82（cv-测试）<br/>12.42（mls）<br/>33.26（mtedx）|德国大型电话和服务器模型|阿帕奇2.0 |
 
 此表提供了不同 Vosk 型号的概述，包括其大小、字错误率或速度、注释和许可证信息。
@@ -410,6 +465,7 @@ X空格符X
 **LanguageTool许可证：** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ---
+</详情>
 
 ## 支持该项目
 如果您觉得这个工具有用，请考虑给我们买杯咖啡！您的支持有助于推动未来的改进。

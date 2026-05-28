@@ -203,7 +203,7 @@ def _load_model_from_config():
 MODEL_NAME = _load_model_from_config()
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 
-OPEN_BROWSER = True  # Setze auf False für Massen-Generierung im Hintergrund
+OPEN_BROWSER = True
 
 SPEECH_ENABLED = True
 BLOCKING_SPEECH = False # Set to True to wait for speech to finish before next step
@@ -385,6 +385,10 @@ PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
 #     subprocess.Popen(["xdg-open", url], start_new_session=True, env=env)
 
 def open_url(url):
+
+    if not OPEN_BROWSER:
+        return
+
     import os
     import subprocess
 
