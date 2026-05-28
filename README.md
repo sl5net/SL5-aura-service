@@ -15,6 +15,9 @@
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 ⚡ **~2.87 J** per test (39 tests @ 0.34s avg · measured with [Eco-CI](https://metrics.green-coding.io/index.html)) · no cloud compute
 
+<details>
+<summary>Quick Start</summary>
+
 ## Quick Start
 1. Download or clone this repository
 2. Run the setup script for your OS (see `setup/` folder):
@@ -48,6 +51,8 @@ Translations: This document also exists in [other languages](https://github.com/
 
 Note: Many texts are machine-generated translations of the original English documentation and are intended for general guidance only. In case of discrepancies or ambiguities, the English version always prevails. We welcome help from the community to improve this translation!
 
+</details>
+
 ### 📺 Terminal Demo 
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
@@ -61,6 +66,7 @@ Note: Many texts are machine-generated translations of the original English docu
 
 <details>
 <summary>Key Features</summary>
+
 ## Key Features
 
 *   **Offline & Private:** 100% local. No data ever leaves your machine.
