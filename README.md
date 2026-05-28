@@ -326,6 +326,9 @@ Click in any text field, press your hotkey, and a "Listening..." notification wi
 ---
 
 
+<details>
+<summary>Advanced Configuration (Optional)</summary>
+
 ## Advanced Configuration (Optional)
 
 You can customize the application's behavior by creating a local settings file.
@@ -348,6 +351,9 @@ The processing engine strictly adheres to a **Hierarchical Priority Chain**:
     
 
 This architecture ensures that core system rules are protected, while project-specific or context-aware rules (like those for CodeIgniter or game controls) can be easily added as low-priority extensions via plug-ins.
+
+</details>
+
 <details>
 <summary>Key Scripts for Windows Users</summary>
 
