@@ -10,7 +10,7 @@
 | 👵 Beginner | 🎓 Learner | 🧑‍💻 Developer |
 |---|---|---|
 | OMA-Mode: just write a word, Aura does the rest | Learn with Koans — one concept at a time | Full Python scripting, plugins, API calls |
-
+| 🗄️ State Management | Trino + Airflow orchestration, fzf, CopyQ, voice/terminal commands, browser UIs |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 ⚡ **~2.87 J** per test (39 tests @ 0.34s avg · measured with [Eco-CI](https://metrics.green-coding.io/index.html)) · no cloud compute
@@ -57,9 +57,10 @@ Note: Many texts are machine-generated translations of the original English docu
 ### 🎥 Video Tutorial
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
-*(Alternativer Link: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+*(Alternative link: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
 
-
+<details>
+<summary>Key Features</summary>
 ## Key Features
 
 *   **Offline & Private:** 100% local. No data ever leaves your machine.
@@ -68,9 +69,14 @@ Note: Many texts are machine-generated translations of the original English docu
 *  **High-Control Transformation Engine:** Implements a configuration-driven, highly customizable processing pipeline. Rule priority, command detection, and text transformations are determined purely by the sequential order of rules in the Fuzzy Maps, requiring **configuration, not coding**.
 *   **Conservative RAM Usage:** Intelligently manages memory, preloading models only if enough free RAM is available, ensuring other applications (like your PC games) always have priority.
 *   **Cross-Platform:** Works on Linux, macOS, and Windows.
-*   **Fully Automated:** Manages its own LanguageTool server (but you can use a external also). 
+*   **Fully Automated:** Manages its own LanguageTool server (but you can also use an external one). 
 *   **Blazing Fast:** Intelligent caching ensures instant "Listening..." notifications and fast processing.
+*   **Dynamic State Management via Trino:** Interface-aware configuration engine 
+    separates settings for `speech`, `terminal`, and `web` — change one without 
+    affecting the others. Includes a real-time **Admin Dashboard** (port 8084).
+</details>
 
+    
 ## 🔌 Ready-to-Use Integrations
 
 SL5-Aura comes with a vast ecosystem of over **100+ pre-configured plugins**. Here are some highlights:
@@ -141,7 +147,7 @@ Watch the full 6-minute setup process:
 
 
 The setup is a two-step process:
-1.  Download last Release or master ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) or clone this repository to your computer.
+1.  Download the latest Release or master ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) or clone this repository to your computer.
 2.  Run the one-time setup script for your operating system.
 
 The setup scripts handle everything: system dependencies, Python environment, and downloading the necessary models and tools (~4GB) directly from our GitHub Releases for maximum speed.
@@ -189,14 +195,14 @@ setup/windows11_setup.ps1 -Exclude [OPTION]
 # Exclude German and English models:
 # setup/windows11_setup.ps1 -Exclude "de,en"
 
-# Or (recommend) - Start des BAT: 
+# Or (recommend) - Run the BAT file: 
 windows11_setup.bat -Exclude "en"
 ```
 
 #### For Windows
 Run the setup script with administrator privileges.
 
-**Install a tool for read and run e.g. [CopyQ](https://github.com/hluk/CopyQ) or [AutoHotkey v2](https://www.autohotkey.com/)**. This is required for the text-typing watcher.
+**Install a tool to read and run, e.g., [CopyQ](https://github.com/hluk/CopyQ) or [AutoHotkey v2](https://www.autohotkey.com/)**. This is required for the text-typing watcher.
 
 The installation is fully automated and takes about **8-10 minutes** when using 2 Models on a fresh system.
 
@@ -336,7 +342,7 @@ Here is a list of the most important scripts to set up, update, and run the appl
 *   `setup/setup.bat`: The main script for the **initial one-time setup** of the environment.
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
-*   `update.bat` : Rund these from Project folder **get the latest code and dependencies**.
+*   `update.bat` : Run this from the project folder to **get the latest code and dependencies**.
 
 ### Running the Application
 *   `start_aura.bat`: A primary script to **start the dictation service**.
@@ -362,6 +368,8 @@ Legend for OS Compatibility:
     Our primary engine for offline speech recognition and audio processing.
 
     
+<details>
+<summary>Aura-Core</summary>
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
@@ -370,7 +378,7 @@ Legend for OS Compatibility:
 │├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
 │├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](docs/CreatingNewPluginModules.md)) 🐧 🍏 🪟  
-││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (on_match_exec) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (`on_match_exec`) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
 ││ * **Cascading Execution:** Rules are processed sequentially and their effects are **cumulative**. Later rules apply to text modified by earlier rules.  
 ││ * **Highest Priority Stop Criterion:** If a rule achieves a **Full Match** (^...$), the entire processing pipeline for that token stops immediately. This mechanism is critical for implementing reliable voice commands.  
 │├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
@@ -388,7 +396,12 @@ Legend for OS Compatibility:
 │└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
 ├─ **Adaptive VAD Timeout** 🐧 🍏 🪟  
 ├─ **Adaptive Hotkey (Start/Stop)** 🐧 🍏 🪟  
-└─ **Instant Language Switching** (Experimental via model preloading) 🐧 🍏   
+├─ **Instant Language Switching** (Experimental via model preloading) 🐧 🍏         
+├─ **Airflow Orchestration** (DAG-based workflow automation) 🐧 🍏 🪟
+│   Requires Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
+├─ **Trino State Engine** (Interface-aware config per speech/terminal/web) 🐧 🍏 🪟
+└─  Requires Docker · Admin UI: `http://localhost:8084` 🐧 🍏 🪟  
+</details>
 
 **SystemUtilities/**   
 ├┬ **LanguageTool Server Management/**   
@@ -414,9 +427,8 @@ https://glogg.bonnefon.org/
     
 *Tip: After defining your regex patterns, run `python3 tools/map_tagger.py` to automatically generate searchable examples for the CLI tools. See [Map Maintenance Tools](docs/Developer_Guide/Map_Maintenance_Tools.md) for details.*
 
-Then maybe Double Click 
+Then maybe double-click 
 `log/aura_engine.log`
-    
     
 **DevHelpers/**  
 ├┬ **Virtual Environment Management/**  
@@ -478,7 +490,7 @@ Then maybe Double Click
 
 Recommendation: use models from Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (probably faster)
 
-This Ziped models must be saved into `models/` folder
+These zipped models must be saved into `models/` folder
 
 `mv vosk-model-*.zip models/`
 
@@ -505,5 +517,4 @@ If you find this tool useful, please consider buying us a coffee! Your support h
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
-
 
