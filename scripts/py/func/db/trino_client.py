@@ -2,7 +2,6 @@
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parents[4]))
-import trino
 from datetime import datetime, timezone
 from scripts.py.func.determine_current_user import determine_current_user
 
@@ -13,6 +12,7 @@ TRINO_SCHEMA = 'aura'
 
 
 def get_connection():
+    import trino
     current_user, _ = determine_current_user()
     return trino.dbapi.connect(
         host=TRINO_HOST,
