@@ -1,70 +1,103 @@
-# docs/Developer_Guide/Trino_Integration.md
-```markdown
-# Trino Integration Guide
+# Intégration Trino — Guide du développeur
 
-This document outlines the setup for Trino (SQL query engine) and the roadmap for migrating our configuration management to a centralized Trino-backed system.
+## Architecture
+Interfaces Aura :
+parole → INTERFACE=parole (repli par défaut dans .py)
+terminal → INTERFACE=terminal (explicite dans s() zshrc)
+web → INTERFACE=web (explicite dans start_service)
+↓
+aura_state.py ← API de haut niveau pour les développeurs
+↓
+trino_client.py ← opérations de base de données de bas niveau
+↓
+Catalogue mémoire Trino
+memory.aura.features ← traduction activée/désactivée par interface
+memory.aura.translation_state ← langue cible par interface
 
-## Local Environment Setup
+## Configuration locale
 
-### 1. Docker Installation & Image
-To ensure you have the latest image, pull it first:
+### 1. Docker
+
 ```bash
-df -h / /home 2>/dev/null   
 docker pull trinodb/trino
-```
-
-### 2. Run Trino Container
-Start a local instance with port mapping (mapping internal `8080` to local `8083`):
-```bash
-docker rm trino 2>/dev/null || vrai
 docker run -d --name trino -p 8083:8080 trinodb/trino
+docker logs trino -f | grep -m1 "SERVER STARTED"
 ```
 
-Check logs to confirm the server is ready:
+### 2. Client Python
+
 ```bash
-docker enregistre trino -f | grep -m1 "SERVEUR DÉMARRÉ"
+source .venv/bin/activate
+pip install trino
 ```
 
-### 3. Python Integration
-Install the official Trino client:
+### 3. Initialisation de la base de données (appelée automatiquement au démarrage d'Aura)
+
 ```bash
-pip installer trino
+python3 scripts/py/func/db/init_trino_db.py
 ```
 
-Test the connection:
+## API de développeur — aura_state.py
+
 ```python
-importer du trino
-conn = trino.dbapi.connect(host='localhost', port=8083, user='aura')
-cur = conn.curseur()
-cur.execute('SELECT 1')
-print('Vérification de la connexion Trino :', cur.fetchone())
+from scripts.py.func.db.aura_state import (
+    enable_translation,
+    disable_translation,
+    set_language,
+    get_current_language,
+    is_translation_enabled,
+    get_all_status,
+)
+
+# Enable translation for speech interface
+enable_translation('speech', lang='en')
+
+# Check status
+is_translation_enabled('speech')  # True
+get_current_language('speech')    # 'en'
+
+# Disable
+disable_translation('speech')
+
+# All interfaces
+get_all_status()
+# [
+#   {'interface': 'speech',   'translation': 'on',  'language': 'en'},
+#   {'interface': 'terminal', 'translation': 'off', 'language': None},
+#   {'interface': 'web',      'translation': 'off', 'language': None},
+# ]
 ```
 
----
+## Interface utilisateur d'administration
 
-## Configuration Architecture Roadmap
+http://localhost:8084
 
-### Legacy State
-Currently, all layers read from a central `config.json`. This lacks flexibility for different execution contexts.
-`config.json` ———► Terminal / Streamlit / Web
-
-### Future State: Centralized Context-Aware Config
-We are moving towards a Trino-backed configuration store (`user_configs`) to allow specific overrides per user and platform.
-
-**Logic Flow:**
-```text
-Couche 2 (Terminal) ─┐
-Couche 3 (Streamlit) ─┼──► Trino ──► Table : user_configs
-Couche 3.5 (Web) ─┘ ├── terminal : {traduction : vrai}
-├── web : {lang : "DE", traduction : false}
-└── identifiant_utilisateur : {custom_overrides}
+Commencer:
+```bash
+streamlit run scripts/py/chat/streamlit-admin.py --server.port 8084
 ```
 
-### Current File Structure
-- `config/settings.py`: Main entry point.
-- `config/settings_local.py`: Local developer overrides (ignored by git).
-- `config/filters/`: Context-specific logging filters.
+## Interface utilisateur Trino (moniteur de requêtes)
 
----
-*Note: This integration is part of the Sl5 Aura ecosystem.*
-```
+http://localhost:8083/ui/
+
+scripts/py/func/db/
+├── init.py
+├── trino_client.py ← bas niveau : obtenir/définir feature_state, target_lang
+├── init_trino_db.py ← démarrage : démarrage Docker + schéma + tables
+└── aura_state.py ← API de haut niveau pour les développeurs
+scripts/py/chat/
+└── streamlit-admin.py ← Interface utilisateur d'administration sur le port 8084
+
+
+## Feuille de route
+
+- [x] Trino fonctionnant dans Docker
+- [x] Client Python connecté
+- [x] DB initialisée au démarrage d'Aura
+- [x] État de traduction compatible avec l'interface
+- [x] Web (Streamlit) séparé de la parole/terminal
+- [x] Interface utilisateur d'administration sur le port 8084
+- [ ] terminal et parole totalement indépendants
+- [ ] Remplacements spécifiques à l'utilisateur (multi-utilisateurs)
+- [ ] Stockage persistant (remplacer le catalogue de mémoire)

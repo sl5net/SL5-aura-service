@@ -11,25 +11,30 @@
                          Restart_venv_and_run-server.sh.desktop XSPACEكسرX
                                          aura_engine.log.desktopXSPACEكسرX
 
-                                  دن بيفيل مانويل أنباسين
+                                    دن بيفيل مانويل أنباسن
 
                                                             **انستات:**
                                              `Exec=/pfad/zu/deinem/script.sh`
 
                                              **بيسبييلي شريبي:**
 
-Exec=xfce4-terminal -e \'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
-
-`Exec=xfce4-terminal -e \'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"''
-
-Exec=konsole -e \'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"' XSPACEbreakX
-
-                  Exec=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
-
-Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
-
-
-
+                                             [إدخال سطح المكتب]
+                                                           تعليق[ar_GB]=
+                                                              التعليق=
+Exec=konsole -e bash -c \'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ]; ثم ردد "الهالة تعمل بالفعل."; وإلا المس /tmp/sl5_aura/sl5net_aura_project_root; /home/......../projects/py/STT/scripts/restart_venv_and_run-server.sh; فاي؛ إكسيك زش'
+                                                الاسم العام[en_GB]=
+                                                       الاسم العام=
+                                                    أيقونة = نص-x-log
+                                                                 نوع Mime=
+                                                الاسم[en_GB]=aura_engine
+                                                       الاسم=aura_engine
+                                                                المسار=
+                                                           StartupNotify=true
+                                                        المحطة = خطأ
+                                                    النوع=التطبيق
+                                               X-KDE-AutostartScript=صحيح
+                                                   X-KDE-SubstituteUID=خطأ
+                                               X-KDE-اسم المستخدم=
 
 
          ### ماذا عن الرسم البياني الذي لا يعمل؟

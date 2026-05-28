@@ -1,70 +1,103 @@
-# docs/Developer_Guide/Trino_Integration.md
-```markdown
-# Trino Integration Guide
+# Trino 統合 — 開発者ガイド
 
-This document outlines the setup for Trino (SQL query engine) and the roadmap for migrating our configuration management to a centralized Trino-backed system.
+＃＃ 建築
+オーラインターフェイス:
+speech → INTERFACE=speech (.py のデフォルトのフォールバック)
+端末 → INTERFACE=端末 (s() zshrc で明示)
+web → INTERFACE=web (start_service で明示)
+↓
+aura_state.py ← 開発者向けの高レベル API
+↓
+trino_client.py ← 低レベルの DB 操作
+↓
+Trino メモリ カタログ
+Memory.aura.features ← インターフェイスごとの変換のオン/オフ
+Memory.aura.translation_state ← インターフェースごとのターゲット言語
 
-## Local Environment Setup
+## ローカルセットアップ
 
-### 1. Docker Installation & Image
-To ensure you have the latest image, pull it first:
+### 1. ドッカー
+
 ```bash
-df -h / /home 2>/dev/null   
 docker pull trinodb/trino
-```
-
-### 2. Run Trino Container
-Start a local instance with port mapping (mapping internal `8080` to local `8083`):
-```bash
-docker rm trino 2>/dev/null ||真実
 docker run -d --name trino -p 8083:8080 trinodb/trino
+docker logs trino -f | grep -m1 "SERVER STARTED"
 ```
 
-Check logs to confirm the server is ready:
+### 2. Python クライアント
+
 ```bash
-docker ログ trino -f | grep -m1 "サーバーが開始されました"
+source .venv/bin/activate
+pip install trino
 ```
 
-### 3. Python Integration
-Install the official Trino client:
+### 3. DB 初期化 (Aura 起動時に自動的に呼び出されます)
+
 ```bash
-pip インストール トリノ
+python3 scripts/py/func/db/init_trino_db.py
 ```
 
-Test the connection:
+## 開発者 API — aura_state.py
+
 ```python
-輸入トリノ
-conn = trino.dbapi.connect(host='localhost'、port=8083、user='aura')
-cur = conn.cursor()
-cur.execute('SELECT 1')
-print('Trino 接続チェック:', cur.fetchone())
+from scripts.py.func.db.aura_state import (
+    enable_translation,
+    disable_translation,
+    set_language,
+    get_current_language,
+    is_translation_enabled,
+    get_all_status,
+)
+
+# Enable translation for speech interface
+enable_translation('speech', lang='en')
+
+# Check status
+is_translation_enabled('speech')  # True
+get_current_language('speech')    # 'en'
+
+# Disable
+disable_translation('speech')
+
+# All interfaces
+get_all_status()
+# [
+#   {'interface': 'speech',   'translation': 'on',  'language': 'en'},
+#   {'interface': 'terminal', 'translation': 'off', 'language': None},
+#   {'interface': 'web',      'translation': 'off', 'language': None},
+# ]
 ```
 
----
+## 管理者 UI
 
-## Configuration Architecture Roadmap
+http://ローカルホスト:8084
 
-### Legacy State
-Currently, all layers read from a central `config.json`. This lacks flexibility for different execution contexts.
-`config.json` ———► Terminal / Streamlit / Web
-
-### Future State: Centralized Context-Aware Config
-We are moving towards a Trino-backed configuration store (`user_configs`) to allow specific overrides per user and platform.
-
-**Logic Flow:**
-```text
-レイヤ 2 (端末) ─┐
-レイヤ 3 (Streamlit) ─┼─► Trino ──► テーブル: user_configs
-レイヤ 3.5 (Web) ─┘ §─ ターミナル: {translate: true}
-§── web: {lang: "DE"、translate: false}
-└── user_id: {custom_overrides}
+始める：
+```bash
+streamlit run scripts/py/chat/streamlit-admin.py --server.port 8084
 ```
 
-### Current File Structure
-- `config/settings.py`: Main entry point.
-- `config/settings_local.py`: Local developer overrides (ignored by git).
-- `config/filters/`: Context-specific logging filters.
+## Trino UI (クエリ モニター)
 
----
-*Note: This integration is part of the Sl5 Aura ecosystem.*
-```
+http://localhost:8083/ui/
+
+スクリプト/py/func/db/
+§── init.py
+§── trino_client.py ← 低レベル: feature_state、target_lang の取得/設定
+§── init_trino_db.py ← 起動: Docker 起動 + スキーマ + テーブル
+└── aura_state.py ← 開発者向けの高レベル API
+スクリプト/py/チャット/
+└── streamlit-admin.py ← ポート 8084 の管理 UI
+
+
+## ロードマップ
+
+- [x] Docker で実行されている Trino
+- [x] Python クライアントが接続されました
+- [x] Aura 起動時に DB が初期化されました
+- [x] インターフェイス対応の変換状態
+- [x] 音声/端末から分離された Web (Streamlit)
+- [x] ポート 8084 の管理 UI
+- [ ] 端子と音声は完全に独立しています
+- [ ] ユーザー固有の上書き (マルチユーザー)
+- [ ] 永続ストレージ (メモリ カタログを置き換えます)

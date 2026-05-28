@@ -18,18 +18,23 @@ aura_engine.log.desktop
 
 **贝斯皮埃莱·施赖贝：**
 
-Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
-
-`Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'`
-
-Exec=konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'   
-
-Exec=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
-
-Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
-
-
-
+[桌面入口]
+评论[zh_CN]=
+评论=
+Exec=konsole -e bash -c 'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ];然后回显“光环已经运行。”；否则触摸/tmp/sl5_aura/sl5net_aura_project_root； /home/......../projects/py/STT/scripts/restart_venv_and_run-server.sh;菲；执行 zsh'
+通用名称[en_GB]=
+通用名称=
+图标=文本-x-log
+哑剧类型=
+名称[en_GB]=aura_engine
+名称=aura_engine
+路径=
+启动通知=true
+终端=假
+类型=应用
+X-KDE-AutostartScript=true
+X-KDE-SubstituteUID=false
+X-KDE-用户名=
 
 
 ### Warum hat die grafische Einstellung nicht funktioniert？

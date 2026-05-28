@@ -104,7 +104,7 @@ def init_all():
             print("[init_trino_db] WARNING: Trino docker start failed, skipping DB init.")
             return
 
-        # Hier warten wir aktiv, bis der Port wirklich antwortet
+        # Here we actively wait until the port actually responds
         if not wait_for_trino_connection(90):
             print("[init_trino_db] WARNING: Trino not reachable, skipping DB init.")
             return

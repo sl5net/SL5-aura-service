@@ -1,24 +1,65 @@
-# docs/Developer_Guide/Trino_Integration.md
+# Integracja Trino — Przewodnik programisty
+
+## Architektura
+Interfejsy Aury:
+mowa → INTERFEJS=mowa (domyślny powrót w .py)
+terminal → INTERFEJS=terminal (jawnie w s() zshrc)
+web → INTERFACE=web (jawnie w start_service)
+↓
+aura_state.py ← API wysokiego poziomu dla programistów
+↓
+trino_client.py ← operacje na bazach danych niskiego poziomu
+↓
+Katalog pamięci Trino
+memory.aura.features ← włączanie/wyłączanie tłumaczenia na interfejs
+memory.aura.translation_state ← język docelowy na interfejs
+
+## Konfiguracja lokalna
+
+### 1. Okno dokowane
+
 __KOD_BLOKU_0__
-df -h / /home 2>/dev/null XSPACEbreakX
-docker pull trinodb/trino
+
+### 2. Klient Pythona
+
 __KOD_BLOKU_1__
-doker rm trino 2>/dev/null || PRAWDA
-docker run -d --name trino -p 8083:8080 trinodb/trino
+
+### 3. Inicjalizacja DB (wywoływana automatycznie przy uruchomieniu Aury)
+
 __KOD_BLOKU_2__
-dzienniki dokowane trino -f | grep -m1 „SERWER URUCHOMIONY”
+
+## API programisty — aura_state.py
+
 __KOD_BLOKU_3__
-pip zainstaluj trino
+
+## Interfejs administratora
+
+http://localhost:8084
+
+Start:
 __KOD_BLOKU_4__
-importuj trino
-conn = trino.dbapi.connect(host='localhost', port=8083, użytkownik='aura')
-cur = połączenie.kursor()
-cur.execute('WYBIERZ 1')
-print('Sprawdzanie połączenia Trino:', cur.fetchone())
-__KOD_BLOKU_5__
-Warstwa 2 (Terminal) ─┐
-Warstwa 3 (Streamlit) ─┼── ► Trino ── ► Tabela: user_configs
-Warstwa 3.5 (sieć) ─┘ ├── terminal: {translate: true}
-├── web: {język: „DE”, tłumacz: fałsz}
-└── identyfikator_użytkownika: {custom_overrides}
-__KOD_BLOKU_6__
+
+## Interfejs użytkownika Trino (monitor zapytań)
+
+http://localhost:8083/ui/
+
+skrypty/py/func/db/
+├── init.py
+├── trino_client.py ← niski poziom: pobierz/ustaw stan_funkcji, język_docelowy
+├── init_trino_db.py ← uruchomienie: uruchomienie Dockera + schemat + tabele
+└── aura_state.py ← API wysokiego poziomu dla programistów
+skrypty/py/chat/
+└── streamlit-admin.py ← Interfejs administratora na porcie 8084
+
+
+## Plan działania
+
+- [x] Trino działające w Dockerze
+- [x] Klient Pythona podłączony
+- [x] DB zainicjowany przy uruchomieniu Aury
+- [x] Stan tłumaczenia obsługujący interfejs
+- [x] Sieć (Streamlit) oddzielona od mowy/terminalu
+- [x] Interfejs administratora na porcie 8084
+- [ ] terminal i mowa w pełni niezależne
+- [ ] Zastąpienia specyficzne dla użytkownika (wielu użytkowników)
+- [ ] Pamięć trwała (wymień katalog pamięci)

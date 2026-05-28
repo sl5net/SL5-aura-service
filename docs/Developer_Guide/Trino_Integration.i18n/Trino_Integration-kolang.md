@@ -1,70 +1,103 @@
-# docs/Developer_Guide/Trino_Integration.md
-```markdown
-# Trino Integration Guide
+# Trino 통합 — 개발자 가이드
 
-This document outlines the setup for Trino (SQL query engine) and the roadmap for migrating our configuration management to a centralized Trino-backed system.
+## 건축학
+Aura 인터페이스:
+음성 → INTERFACE=음성(.py의 기본 대체)
+터미널 → INTERFACE=터미널 (s() zshrc에 명시적)
+웹 → INTERFACE=웹(start_service에 명시적)
+↓
+aura_state.py ← 개발자를 위한 고급 API
+↓
+trino_client.py ← 하위 수준 DB 작업
+↓
+Trino 메모리 카탈로그
+memory.aura.features ← 인터페이스별 번역 켜기/끄기
+memory.aura.translation_state ← 인터페이스별 대상 언어
 
-## Local Environment Setup
+## 로컬 설정
 
-### 1. Docker Installation & Image
-To ensure you have the latest image, pull it first:
+### 1. 도커
+
 ```bash
-df -h / /home 2>/dev/null   
-도커 풀 trinodb/trino
-```
-
-### 2. Run Trino Container
-Start a local instance with port mapping (mapping internal `8080` to local `8083`):
-```bash
-docker rm trino 2>/dev/null || 진실
+docker pull trinodb/trino
 docker run -d --name trino -p 8083:8080 trinodb/trino
+docker logs trino -f | grep -m1 "SERVER STARTED"
 ```
 
-Check logs to confirm the server is ready:
+### 2. Python 클라이언트
+
 ```bash
-docker 로그 trino -f | grep -m1 "서버가 시작되었습니다"
+source .venv/bin/activate
+pip install trino
 ```
 
-### 3. Python Integration
-Install the official Trino client:
+### 3. DB 초기화(Aura 시작 시 자동 호출)
+
 ```bash
-pip 설치 트리노
+python3 scripts/py/func/db/init_trino_db.py
 ```
 
-Test the connection:
+## 개발자 API — aura_state.py
+
 ```python
-수입 트리노
-conn = trino.dbapi.connect(호스트='localhost', 포트=8083, user='aura')
-현재 = conn.cursor()
-cur.execute('선택 1')
-print('Trino 연결 확인:', cur.fetchone())
+from scripts.py.func.db.aura_state import (
+    enable_translation,
+    disable_translation,
+    set_language,
+    get_current_language,
+    is_translation_enabled,
+    get_all_status,
+)
+
+# Enable translation for speech interface
+enable_translation('speech', lang='en')
+
+# Check status
+is_translation_enabled('speech')  # True
+get_current_language('speech')    # 'en'
+
+# Disable
+disable_translation('speech')
+
+# All interfaces
+get_all_status()
+# [
+#   {'interface': 'speech',   'translation': 'on',  'language': 'en'},
+#   {'interface': 'terminal', 'translation': 'off', 'language': None},
+#   {'interface': 'web',      'translation': 'off', 'language': None},
+# ]
 ```
 
----
+## 관리 UI
 
-## Configuration Architecture Roadmap
+http://localhost:8084
 
-### Legacy State
-Currently, all layers read from a central `config.json`. This lacks flexibility for different execution contexts.
-`config.json` ———► Terminal / Streamlit / Web
-
-### Future State: Centralized Context-Aware Config
-We are moving towards a Trino-backed configuration store (`user_configs`) to allow specific overrides per user and platform.
-
-**Logic Flow:**
-```text
-레이어 2(터미널) ─┐
-레이어 3(Streamlit) ─┼──► Trino ──► 테이블: user_configs
-레이어 3.5(웹) ─┘ ├── 터미널: {번역: true}
-├── 웹: {lang: "DE", 번역: false}
-└── user_id: {custom_overrides}
+시작:
+```bash
+streamlit run scripts/py/chat/streamlit-admin.py --server.port 8084
 ```
 
-### Current File Structure
-- `config/settings.py`: Main entry point.
-- `config/settings_local.py`: Local developer overrides (ignored by git).
-- `config/filters/`: Context-specific logging filters.
+## Trino UI(쿼리 모니터)
 
----
-*Note: This integration is part of the Sl5 Aura ecosystem.*
-```
+http://localhost:8083/ui/
+
+스크립트/py/func/db/
+├── init.py
+├── trino_client.py ← 하위 수준: feature_state, target_lang 가져오기/설정
+├── init_trino_db.py ← 시작: Docker 시작 + 스키마 + 테이블
+└── aura_state.py ← 개발자를 위한 고수준 API
+스크립트/py/chat/
+└── streamlit-admin.py ← 포트 8084의 관리 UI
+
+
+## 로드맵
+
+- [x] Docker에서 실행되는 Trino
+- [x] Python 클라이언트가 연결됨
+- [x] Aura 시작 시 DB 초기화
+- [x] 인터페이스 인식 번역 상태
+- [x] 음성/터미널에서 분리된 웹(Streamlit)
+- [x] 포트 8084의 관리 UI
+- [ ] 터미널과 음성이 완전히 독립적입니다.
+- [ ] 사용자별 재정의(다중 사용자)
+- [ ] 영구 스토리지(메모리 카탈로그 교체)

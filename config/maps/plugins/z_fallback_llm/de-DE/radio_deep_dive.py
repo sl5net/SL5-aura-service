@@ -410,7 +410,7 @@ def open_url(url):
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL
         )
-    except Exception as e:
+    except Exception:
         # Fallback
         import webbrowser
         webbrowser.open(url)

@@ -18,18 +18,23 @@ Den Befehl manuell anpassen
 
 **Voir les exemples :**
 
-Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
-
-`Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'`
-
-Exec=konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'   
-
-Exec=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
-
-Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
-
-
-
+[Entrée du bureau]
+Commentaire[fr_GB]=
+Commentaire=
+Exec=konsole -e bash -c 'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ]; puis echo "l'aura fonctionne déjà."; sinon, touchez /tmp/sl5_aura/sl5net_aura_project_root ; /home/......../projects/py/STT/scripts/restart_venv_and_run-server.sh; fi; exécutif zsh'
+GenericName[en_GB]=
+Nom générique =
+Icône = texte-x-log
+TypeMime=
+Nom[fr_GB]=aura_engine
+Nom=aura_engine
+Chemin=
+StartupNotify = vrai
+Terminal=faux
+Type=Application
+X-KDE-AutostartScript=true
+X-KDE-SubstituteUID = faux
+Nom d'utilisateur X-KDE=
 
 
 ### Pourquoi l'installation graphique n'est-elle pas fonctionnelle ?
