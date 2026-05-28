@@ -364,6 +364,11 @@ This architecture ensures that core system rules are protected, while project-sp
 <details>
 <summary>Key Scripts for Windows Users</summary>
 
+
+
+
+
+
 ## Key Scripts for Windows Users
 
 Here is a list of the most important scripts to set up, update, and run the application on a Windows system.
@@ -386,10 +391,11 @@ Here is a list of the most important scripts to set up, update, and run the appl
 </details>
 
 
-<details>
-<summary>Key Scripts for Windows Users</summary>
 
 ## 🚀 Key Features & OS Compatibility
+
+<details>
+<summary>Legend for OS Compatibility</summary>
 
 Legend for OS Compatibility:  
 *   🐧 **Linux** (e.g., Arch, Ubuntu)  
@@ -398,7 +404,13 @@ Legend for OS Compatibility:
 *   📱 **Android** (for mobile-specific features)  
 
 ---
+
 </details>
+
+
+
+
+
 ### **Core Speech-to-Text (Aura) Engine**
     Our primary engine for offline speech recognition and audio processing.
 
