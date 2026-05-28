@@ -107,6 +107,8 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 
 ---
 
+<details>
+<summary>Documentation</summary>
 
 ## Documentation
 
@@ -134,17 +136,16 @@ For a complete technical reference, including all modules and scripts, please vi
 </a>
 </div>
 
+</details>
+
 👉 **Read this in other languages:**
 
 [🇬🇧 English](README.md) | [🇸🇦 العربية](README.i18n/README-arlang.md) | [🇩🇪 Deutsch](README.i18n/README-delang.md) | [🇪🇸 Español](README.i18n/README-eslang.md) | [🇫🇷 Français](README.i18n/README-frlang.md) | [🇮🇳 हिन्दी](README.i18n/README-hilang.md) | [🇯🇵 日本語](README.i18n/README-jalang.md) | [🇰🇷 한국어](README.i18n/README-kolang.md) | [🇵🇱 Polski](README.i18n/README-pllang.md) | [🇵🇹 Português](README.i18n/README-ptlang.md) | [🇧🇷 Português Brasil](README.i18n/README-pt-BRlang.md) | [🇨🇳 简体中文](README.i18n/README-zh-CNlang.md)
 
 ---
 
-
-
-
-
-
+<details>
+<summary>Installation</summary>
 
 ## Installation
 
@@ -240,9 +241,12 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 # Exclude German and English:
 setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
-
+</details>
 
 ---
+
+<details>
+<summary>Usage</summary>
 
 ## Usage
 
@@ -316,6 +320,8 @@ f11::
 
 ### 3. Start Dictating!
 Click in any text field, press your hotkey, and a "Listening..." notification will appear. Speak clearly, then pause. The corrected text will be typed for you.
+
+</details>
 
 ---
 
@@ -416,7 +422,6 @@ Legend for OS Compatibility:
 │   Requires Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
 ├─ **Trino State Engine** (Interface-aware config per speech/terminal/web) 🐧 🍏 🪟
 └─  Requires Docker · Admin UI: `http://localhost:8084` 🐧 🍏 🪟  
-</details>
 
 **SystemUtilities/**   
 ├┬ **LanguageTool Server Management/**   
@@ -432,6 +437,11 @@ Legend for OS Compatibility:
 ├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
 
+</details>
+
+
+<details>
+<summary>Development & Deployment Helpers</summary>
 
 ### **Development & Deployment Helpers**  
     Scripts for environment setup, testing, and service execution.  
@@ -456,6 +466,9 @@ Then maybe double-click
 └─ **CI/CD Automation/**  
     └─ Expanded GitHub Workflows (Installation, testing, docs deployment) 🐧 🍏 🪟 *(Runs on GitHub Actions)*  
 
+</details>
+
+    
 ### **Upcoming / Experimental Features**  
     Features currently under development or in draft status.  
 
@@ -475,13 +488,6 @@ Then maybe double-click
 ---
 
 *(Note: Specific Linux distributions like Arch (ARL) or Ubuntu (UBT) are covered by the general Linux 🐧 symbol. Detailed distinctions might be covered in installation guides.)*
-
-
-
-
-
-
-
 
 
 <details>
