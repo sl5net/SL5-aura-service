@@ -19,7 +19,7 @@ def get_clean_env():
 def execute(match_data):
     port = 8084
 
-    plugin_path = Path(__file__).resolve()
+    # plugin_path = Path(__file__).resolve()
     # project_root = plugin_path.parents[6]
 
     tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")

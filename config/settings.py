@@ -132,9 +132,7 @@ AUDIO_GUIDANCE_ENABLED=True
 
 INPUT_METHOD="dotool"
 
-TRINO_ENABLED = True
-TRINO_HOST = 'localhost'
-TRINO_PORT = 8083
+TRINO_ENABLED = False
 
 
 # text results that are stored on your computer can maybe read by other users on your computer.

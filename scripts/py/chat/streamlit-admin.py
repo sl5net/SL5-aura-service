@@ -122,7 +122,7 @@ if not db_ready:
 
     st.stop()  # Stoppt hier sauber und zeigt kein unvollständiges Dashboard
 
-# --- Normaler Dashboard-Code (Läuft nur, wenn alles gesund ist) ---
+# --- Normal Dashboard Code (Only runs when everything is healthy) ---
 st.title("⚙️ Aura Admin Dashboard")
 st.subheader("Translation State")
 

@@ -35,6 +35,10 @@ KILL_COMPETING_LT_AND_ELOQUENT_ON_START = 0
 # Enable or disable the type watcher (client-side typing integration)
 TYPE_WATCHER_ENABLED = True
 
+TRINO_ENABLED = 1
+TRINO_HOST = 'localhost'
+TRINO_PORT = 8083
+
 # --- Language Model ---
 # Which Vosk model(s) should be preloaded at startup?
 # Available models are located in the models/ folder.
