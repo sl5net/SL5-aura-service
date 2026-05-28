@@ -515,6 +515,8 @@ Then maybe double-click
 ```
 </details>
 
+<details>
+<summary>A graphical overview of the architecture</summary>
 
 ### A graphical overview of the architecture:
 
@@ -522,7 +524,10 @@ Then maybe double-click
 
       
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](doc_sources/dependencies.svg)
+</details>
 
+<details>
+<summary>Used Models</summary>
 
 # Used Models:
 
@@ -548,6 +553,7 @@ This table provides an overview of different Vosk models, including their size, 
 **License of LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ---
+</details>
 
 ## Support the Project
 If you find this tool useful, please consider buying us a coffee! Your support helps fuel future improvements.
