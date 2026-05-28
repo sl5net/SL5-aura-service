@@ -332,6 +332,9 @@ The processing engine strictly adheres to a **Hierarchical Priority Chain**:
     
 
 This architecture ensures that core system rules are protected, while project-specific or context-aware rules (like those for CodeIgniter or game controls) can be easily added as low-priority extensions via plug-ins.
+<details>
+<summary>Key Scripts for Windows Users</summary>
+
 ## Key Scripts for Windows Users
 
 Here is a list of the most important scripts to set up, update, and run the application on a Windows system.
@@ -351,6 +354,7 @@ Here is a list of the most important scripts to set up, update, and run the appl
 *   `aura_engine.py`: The core Python service (usually started by one of the scripts above).
 *   `get_suggestions.py`: A helper script for specific functionalities.
 
+</details>
 
 
 
@@ -370,6 +374,7 @@ Legend for OS Compatibility:
     
 <details>
 <summary>Aura-Core</summary>
+
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
