@@ -82,6 +82,8 @@ Note: Many texts are machine-generated translations of the original English docu
     affecting the others. Includes a real-time **Admin Dashboard** (port 8084).
 </details>
 
+<details>
+<summary> 🔌 Ready-to-Use Integrations</summary>
     
 ## 🔌 Ready-to-Use Integrations
 
@@ -100,6 +102,8 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 ### LibreOffice IDE Voice Control
 
 ### 0 A.D. Voice Control
+
+</details>
 
 ---
 
