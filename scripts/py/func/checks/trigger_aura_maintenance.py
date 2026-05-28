@@ -28,7 +28,7 @@ EXPECTED_ZIP_NAME = "locked_folder.zip"
 LAST_CHECK_FILE = Path("/tmp/sl5_aura/last_smoke_zip_check")
 
 # radio_script = REPO_ROOT / "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
-radio_script = REPO_ROOT / "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
+radio_script = REPO_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE" / "radio_deep_dive.py"
 translator_script = REPO_ROOT / "tools" / "translate_md.py"
 heal_links_cascade_script = REPO_ROOT / "heal_links_cascade.py"
 
@@ -78,7 +78,7 @@ def _execute_maintenance_tasks(logger):
             # We use subprocess to cleanly separate the venv environment and the if-main handling
 
             #result = subprocess.run([sys.executable, str(radio_script)], capture_output=True, text=True, check=False)
-
+            # scripts/py/func/checks/trigger_aura_maintenance.py:81
 
             env = os.environ.copy()
             env.setdefault("DISPLAY", ":0")

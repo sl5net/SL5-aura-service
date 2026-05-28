@@ -385,7 +385,6 @@ PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
 #     subprocess.Popen(["xdg-open", url], start_new_session=True, env=env)
 
 def open_url(url):
-
     if not OPEN_BROWSER:
         return
 
@@ -414,7 +413,8 @@ def open_url(url):
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL
         )
-    except Exception:
+    except Exception as e:
+        print(f'open_url: {e}')
         # Fallback
         import webbrowser
         webbrowser.open(url)

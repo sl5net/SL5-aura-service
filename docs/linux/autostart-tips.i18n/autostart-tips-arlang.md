@@ -11,7 +11,7 @@
                          Restart_venv_and_run-server.sh.desktop XSPACEكسرX
                                          aura_engine.log.desktopXSPACEكسرX
 
-                                    دن بيفيل مانويل أنباسن
+                                  دن بيفيل مانويل أنباسين
 
                                                             **انستات:**
                                              `Exec=/pfad/zu/deinem/script.sh`

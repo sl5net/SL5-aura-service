@@ -10,10 +10,13 @@
 | 👵 Początkujący | 🎓 Uczeń | 🧑u200d💻 Programista |
 |---|---|---|
 | Tryb OMA: po prostu napisz słowo, Aura zajmie się resztą | Ucz się z Koanami — jedna koncepcja na raz | Pełne skrypty Pythona, wtyczki, wywołania API |
-
+| 🗄️Zarządzanie państwem | Orkiestracja Trino + Airflow, fzf, CopyQ, polecenia głosowe/terminalowe, interfejsy użytkownika przeglądarki |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 ⚡ **~2,87 J** na test (39 testów przy średnio 0,34 s · pomiar za pomocą [Eco-CI](https://metrics.green-coding.io/index.html)) · brak obliczeń w chmurze
+
+<szczegóły>
+<summary>Szybki start</summary>
 
 ## Szybki start
 1. Pobierz lub sklonuj to repozytorium
@@ -48,6 +51,11 @@ Tłumaczenia: Ten dokument istnieje również w [other languages](https://github
 
 Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumentacji w języku angielskim i mają one wyłącznie charakter ogólny. W przypadku rozbieżności lub niejasności, zawsze obowiązuje wersja angielska. Czekamy na pomoc społeczności w ulepszaniu tego tłumaczenia!
 
+</details>
+
+<szczegóły>
+<summary>Demo</summary>
+
 ### 📺 Wersja demonstracyjna terminala
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
@@ -59,6 +67,10 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 
 *(Link alternatywny: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
 
+</details>
+
+<szczegóły>
+<summary>Kluczowe funkcje</summary>
 
 ## Kluczowe funkcje
 
@@ -70,7 +82,14 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 * **Wiele platform:** działa na systemach Linux, macOS i Windows.
 * **W pełni zautomatyzowany:** Zarządza własnym serwerem LanguageTool (ale możesz także użyć zewnętrznego).
 * **Niezwykła szybkość:** Inteligentne buforowanie zapewnia natychmiastowe powiadomienia „Słuchanie…” i szybkie przetwarzanie.
+* **Dynamiczne zarządzanie stanem poprzez Trino:** Silnik konfiguracyjny obsługujący interfejs
+oddziela ustawienia dla „mowy”, „terminalu” i „sieci” — zmień je bez
+wpływając na innych. Zawiera **panel administracyjny** działający w czasie rzeczywistym (port 8084).
+</details>
 
+<szczegóły>
+<summary> 🔌 Gotowe integracje</summary>
+XSPACEbreakX
 ## 🔌 Gotowe do użycia integracje
 
 SL5-Aura zawiera rozległy ekosystem ponad **100+ wstępnie skonfigurowanych wtyczek**. Oto kilka najważniejszych wydarzeń:
@@ -91,6 +110,11 @@ SL5-Aura zapewnia pierwszorzędną obsługę głosową dla **OculiX** i **Sikuli
 
 ---
 
+</details>
+
+
+<szczegóły>
+<summary>Dokumentacja</summary>
 
 ## Dokumentacja
 
@@ -118,17 +142,16 @@ Aby uzyskać pełne informacje techniczne, w tym wszystkie moduły i skrypty, od
 </a>
 </div>
 
+</details>
+
 👉 **Przeczytaj to w innych językach:**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-pllang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-pllang.md) | [🇪🇸 Español](../README.i18n/README-eslang-pllang.md) | [🇫🇷 Français](../README.i18n/README-frlang-pllang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-pllang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-pllang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-pllang.md) | [🇵🇱 Polski](../README.i18n/README-pllang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-pllang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-pllang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-pllang.md)
 
 ---
 
-
-
-
-
-
+<szczegóły>
+<summary>Instalacja</summary>
 
 ## Instalacja
 
@@ -141,7 +164,7 @@ Obejrzyj cały 6-minutowy proces konfiguracji:
 
 
 Konfiguracja jest procesem dwuetapowym:
-1. Pobierz ostatnią wersję lub master (https://github.com/sl5net/SL5-aura-service/archive/master.zip) lub sklonuj to repozytorium na swój komputer.
+1. Pobierz najnowszą wersję lub wersję master (https://github.com/sl5net/SL5-aura-service/archive/master.zip) lub sklonuj to repozytorium na swój komputer.
 2. Uruchom jednorazowy skrypt instalacyjny dla swojego systemu operacyjnego.
 
 Skrypty instalacyjne obsługują wszystko: zależności systemowe, środowisko Python i pobieranie niezbędnych modeli i narzędzi (~4 GB) bezpośrednio z naszych wydań GitHub w celu uzyskania maksymalnej szybkości.
@@ -158,7 +181,7 @@ __KOD_BLOKU_0__
 #### Dla systemu Windows
 Uruchom skrypt instalacyjny z uprawnieniami administratora.
 
-**Zainstaluj narzędzie do odczytu i uruchamiania, np. [CopyQ](https://github.com/hluk/CopyQ) lub [AutoHotkey v2](https://www.autohotkey.com/)**. Jest to wymagane dla obserwatora wpisując tekst.
+**Zainstaluj narzędzie do odczytu i uruchomienia, np. [CopyQ](https://github.com/hluk/CopyQ) lub [AutoHotkey v2](https://www.autohotkey.com/)**. Jest to wymagane dla obserwatora wpisując tekst.
 
 Instalacja jest w pełni zautomatyzowana i zajmuje około **8-10 minut** w przypadku użycia 2 modeli w nowym systemie.
 
@@ -177,8 +200,12 @@ Jeśli nie chcesz instalować narzędzi klienckich (AHK/CopyQ) lub chcesz zaoszc
 
 __KOD_BLOKU_1__
 
-
 ---
+</details>
+
+
+<szczegóły>
+<summary>Użycie</summary>
 
 ## Użycie
 
@@ -215,8 +242,13 @@ __KOD_BLOKU_5__
 ### 3. Zacznij dyktować!
 Kliknij dowolne pole tekstowe, naciśnij klawisz skrótu, a pojawi się powiadomienie „Słucham…”. Mów wyraźnie, a potem pauzuj. Poprawiony tekst zostanie wpisany za Ciebie.
 
+</details>
+
 ---
 
+
+<szczegóły>
+<summary>Konfiguracja zaawansowana (opcjonalnie)</summary>
 
 ## Zaawansowana konfiguracja (opcjonalnie)
 
@@ -240,6 +272,17 @@ XSPACEbreakX
 XSPACEbreakX
 
 Architektura ta zapewnia ochronę podstawowych reguł systemowych, podczas gdy reguły specyficzne dla projektu lub kontekstowe (takie jak te dla CodeIgniter lub kontroli gier) można łatwo dodać jako rozszerzenia o niskim priorytecie za pośrednictwem wtyczek.
+
+</details>
+
+<szczegóły>
+<summary>Kluczowe skrypty dla użytkowników systemu Windows</summary>
+
+
+
+
+
+
 ## Kluczowe skrypty dla użytkowników systemu Windows
 
 Oto lista najważniejszych skryptów do konfigurowania, aktualizowania i uruchamiania aplikacji w systemie Windows.
@@ -250,7 +293,7 @@ Oto lista najważniejszych skryptów do konfigurowania, aktualizowania i urucham
 * `setup/setup.bat`: Główny skrypt do **wstępnej jednorazowej konfiguracji** środowiska.
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Uruchom PowerShell -Polecenie "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
-* `update.bat`: Uruchom je z folderu projektu **pobierz najnowszy kod i zależności**.
+* `update.bat`: Uruchom to z folderu projektu, aby **uzyskać najnowszy kod i zależności**.
 
 ### Uruchamianie aplikacji
 * `start_aura.bat`: Podstawowy skrypt do **uruchamiania usługi dyktowania**.
@@ -259,10 +302,14 @@ Oto lista najważniejszych skryptów do konfigurowania, aktualizowania i urucham
 * `aura_engine.py`: podstawowa usługa Pythona (zwykle uruchamiana przez jeden z powyższych skryptów).
 * `get_suggestions.py`: Skrypt pomocniczy dla określonych funkcjonalności.
 
+</details>
 
 
 
 ## 🚀 Kluczowe funkcje i zgodność z systemem operacyjnym
+
+<szczegóły>
+<summary>Legenda dotycząca zgodności systemu operacyjnego</summary>
 
 Legenda dotycząca zgodności systemu operacyjnego:XSPACEbreakX
 * 🐧 **Linux** (np. Arch, Ubuntu)XSPACEbreakX
@@ -272,10 +319,19 @@ Legenda dotycząca zgodności systemu operacyjnego:XSPACEbreakX
 
 ---
 
+</details>
+
+
+
+
+
 ### **Podstawowy silnik zamiany mowy na tekst (Aura)**
 Nasz główny silnik do rozpoznawania mowy w trybie offline i przetwarzania dźwięku.
 
 XSPACEbreakX
+<szczegóły>
+<summary>Rdzeń Aury</summary>
+
 **Aura-Rdzeń/** 🐧 🍏 🪟XSPACEbreakX
 ├─ `aura_engine.py` (Główna usługa Pythona zarządzająca Aurą) 🐧 🍏 🪟XSPACEbreakX
 ├┬ **Przeładuj na żywo** (konfiguracja i mapy) 🐧 🍏 🪟XSPACEbreakX
@@ -284,8 +340,8 @@ XSPACEbreakX
 │├ **Przetwarzanie i korekta tekstu/** Pogrupowane według języka (np. `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punstanding.py` (Standaryzuje interpunkcję po transkrypcji) 🐧 🍏 🪟XSPACEbreakX
 │├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟XSPACEbreakX
-││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty Pythona (on_match_exec) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
-││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego wcześniejszymi regułami.XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** Reguły mogą uruchamiać niestandardowe skrypty Pythona (`on_match_exec`) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
+││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego przez wcześniejsze reguły.XSPACEbreakX
 ││ * **Kryterium zatrzymania o najwyższym priorytecie:** Jeśli reguła osiągnie **Pełne dopasowanie** (^...$), cały potok przetwarzania dla tego tokena zostanie natychmiast zatrzymany. Mechanizm ten ma kluczowe znaczenie dla realizacji niezawodnych poleceń głosowych.XSPACEbreakX
 │├ 3. `correct_text_by_languagetool.py` (integruje narzędzie LanguageTool do poprawiania gramatyki/stylu) 🐧 🍏 🪟XSPACEbreakX
 │├ **4. Hierarchiczny silnik reguł RegEx z rezerwą Ollama AI** 🐧 🍏 🪟XSPACEbreakX
@@ -302,7 +358,11 @@ XSPACEbreakX
 │└─ `setup_initial_model.py` (Konfiguruje pierwszą konfigurację modelu) 🐧 🍏 🪟XSPACEbreakX
 ├─ **Adaptacyjny limit czasu VAD** 🐧 🍏 🪟XSPACEbreakX
 ├─ **Adaptacyjny klawisz skrótu (Start/Stop)** 🐧 🍏 🪟XSPACEbreakX
-└─ **Natychmiastowe przełączanie języka** (eksperymentalnie poprzez wstępne ładowanie modelu) 🐧 🍏 XSPACEbreakX
+├─ **Natychmiastowe przełączanie języka** (eksperymentalnie poprzez wstępne ładowanie modelu) 🐧 🍏 XSPACEbreakX
+├─ **Orkiestracja przepływu powietrza** (automatyzacja przepływu pracy oparta na DAG) 🐧 🍏 🪟
+│ Wymaga Dockera · Interfejs użytkownika: `http://localhost:8081` 🐧 🍏 🪟XSPACEbreakX
+├─ **Trino State Engine** (konfiguracja uwzględniająca interfejs dla mowy/terminalu/sieci) 🐧 🍏 🪟
+└─ Wymaga Dockera · Interfejs administratora: `http://localhost:8084` 🐧 🍏 🪟XSPACEbreakX
 
 **Narzędzia systemowe/** XSPACEbreakX
 ├┬ **Zarządzanie serwerem LanguageTool/** XSPACEbreakX
@@ -318,6 +378,11 @@ Narzędzia do niezawodnej obsługi dużych modeli językowych.XSPACEbreakX
 ├─ `split_and_hash.py` (Narzędzie dla właścicieli repozytoriów umożliwiające dzielenie dużych plików i generowanie sum kontrolnych) 🐧 🍏 🪟XSPACEbreakX
 └─ `download_all_packages.py` (Narzędzie dla użytkowników końcowych do pobierania, weryfikowania i ponownego składania plików wieloczęściowych) 🐧 🍏 🪟XSPACEbreakX
 
+</details>
+
+
+<szczegóły>
+<summary>Pomocnicy w zakresie programowania i wdrażania</summary>
 
 ### **Pomocnicy w programowaniu i wdrażaniu**XSPACEbreakX
 Skrypty do konfiguracji środowiska, testowania i wykonywania usług.XSPACEbreakX
@@ -328,9 +393,8 @@ https://translate.google.com/translate?hl=en&sl=en&tl=pl&u=https://glogg.bonnefo
 XSPACEbreakX
 *Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pllang.md).*
 
-Wtedy może kliknij dwukrotnie
+Następnie może kliknij dwukrotnie
 `log/aura_engine.log`
-XSPACEbreakX
 XSPACEbreakX
 **Pomocnicy deweloperów/**XSPACEbreakX
 ├┬ **Zarządzanie środowiskiem wirtualnym/**XSPACEbreakX
@@ -338,11 +402,16 @@ XSPACEbreakX
 │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
 ├┬ **Ogólnosystemowa integracja dyktowania/**XSPACEbreakX
 │├ Integracja Vosk-System-Słuchacz 🐧 🍏 🪟XSPACEbreakX
-│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧XSPACEbreakX
+│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey nasłuchuje rozpoznanego tekstu i wpisuje go w całym systemie) 🪟XSPACEbreakX
 └─ **Automatyka CI/CD/**XSPACEbreakX
 └─ Rozszerzone przepływy pracy GitHub (instalacja, testowanie, wdrażanie dokumentów) 🐧 🍏 🪟 *(Działa w akcjach GitHub)*XSPACEbreakX
 
+</details>
+
+<szczegóły>
+<summary>Funkcje eksperymentalne</summary>
+XSPACEbreakX
 ### **Nadchodzące/eksperymentalne funkcje**XSPACEbreakX
 Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 
@@ -361,15 +430,8 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 
 ---
 
-*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT), są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
-
-
-
-
-
-
-
-
+*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT) są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
+</details>
 
 <szczegóły>
 <summary>Kliknij, aby zobaczyć polecenie użyte do wygenerowania tej listy skryptów</summary>
@@ -377,6 +439,8 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 __KOD_BLOKU_6__
 </details>
 
+<szczegóły>
+<summary>Graficzny przegląd architektury</summary>
 
 ### Graficzny przegląd architektury:
 
@@ -384,13 +448,16 @@ __KOD_BLOKU_6__
 
 XSPACEbreakX
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
+</details>
 
+<szczegóły>
+<summary>Używane modele</summary>
 
 # Używane modele:
 
 Zalecenie: użyj modeli z Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (prawdopodobnie szybciej)
 
-Te spakowane modele muszą być zapisane w folderze `models/`
+Te spakowane modele należy zapisać w folderze `models/`
 
 `mv vosk-model-*.zip models/`
 
@@ -410,6 +477,7 @@ Ta tabela zawiera przegląd różnych modeli Vosk, w tym ich rozmiar, współczy
 **Licencja na LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ---
+</details>
 
 ## Wesprzyj projekt
 Jeśli uznasz to narzędzie za przydatne, rozważ zakup nam kawy! Twoje wsparcie pomaga w napędzaniu przyszłych ulepszeń.

@@ -1,6 +1,6 @@
 Erstelle Autostart Eintrag über dein grafische Benutzeroberfläche para:
 
-
+restart_venv_and_run-server.sh.desktop   
 
 aura_engine.log.desktop  
 
@@ -39,7 +39,7 @@ X-KDE-Nome de usuário=
 
 ### Warum hat die grafische Einstellung nicht funktioniert?
 
-No Plasma 6, o problema é resolvido com o ajuste dos "terminais padrão" na fase inicial do sistema. Indem wir `konsole` (das Standard-Terminal von KDE) direkt in die `Exec`-Zeile schreiben, umgehen wir die automatische Erkennung und erzwingen den Start.
+No Plasma 6, o problema é resolvido com o ajuste dos "terminais padrão" na fase inicial do sistema. Indem wir `konsole` (o Terminal Padrão do KDE) diretamente na tela `Exec`-Zeile, umgehen wir the automatische Erkennung und start.
 
 
 26.3.'26 08:16 Qui

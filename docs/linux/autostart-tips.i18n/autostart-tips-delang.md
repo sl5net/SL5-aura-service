@@ -18,23 +18,23 @@ Den Befehl manuell anpassen
 
 **Beispiele Schreibe:**
 
-[Desktop Entry]
-Comment[en_GB]=
-Comment=
-Exec=konsole -e bash -c 'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ]; then echo "aura already runs."; else touch /tmp/sl5_aura/sl5net_aura_project_root; /home/......../projects/py/STT/scripts/restart_venv_and_run-server.sh; fi; exec zsh'
+[Desktop-Eintrag]
+Kommentar[en_GB]=
+Kommentar=
+Exec=konsole -e bash -c 'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ]; dann echo „Aura läuft bereits.“; sonst touch /tmp/sl5_aura/sl5net_aura_project_root; /home/......../projects/py/STT/scripts/restart_venv_and_run-server.sh; fi; exec zsh'
 GenericName[en_GB]=
-GenericName=
+Allgemeiner Name=
 Icon=text-x-log
 MimeType=
 Name[en_GB]=aura_engine
 Name=aura_engine
-Path=
+Pfad=
 StartupNotify=true
 Terminal=false
-Type=Application
+Typ=Anwendung
 X-KDE-AutostartScript=true
 X-KDE-SubstituteUID=false
-X-KDE-Username=
+X-KDE-Benutzername=
 
 
 ### Warum hat die grafische Einstellung nicht funktioniert?
