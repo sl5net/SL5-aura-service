@@ -1,4 +1,5 @@
 """
+scripts/py/func/db/init_trino_db.py
 Initializes Trino in-memory database with required schemas, tables and default values.
 Called once at Aura engine startup.
 """

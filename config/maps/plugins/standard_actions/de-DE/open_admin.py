@@ -20,7 +20,10 @@ def execute(match_data):
     port = 8084
 
     plugin_path = Path(__file__).resolve()
-    project_root = plugin_path.parents[6]  # Pfad zu ~/projects/py/STT
+    # project_root = plugin_path.parents[6]
+
+    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+    project_root = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
     if os.name == 'nt':  # Windows
         streamlit_bin = project_root / ".venv" / "Scripts" / "streamlit.exe"
