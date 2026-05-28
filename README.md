@@ -108,9 +108,10 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 
 ### 0 A.D. Voice Control
 
+---
+
 </details>
 
----
 
 <details>
 <summary>Documentation</summary>
@@ -246,9 +247,10 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 # Exclude German and English:
 setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
-</details>
 
 ---
+</details>
+
 
 <details>
 <summary>Usage</summary>
@@ -384,6 +386,8 @@ Here is a list of the most important scripts to set up, update, and run the appl
 </details>
 
 
+<details>
+<summary>Key Scripts for Windows Users</summary>
 
 ## 🚀 Key Features & OS Compatibility
 
@@ -394,7 +398,7 @@ Legend for OS Compatibility:
 *   📱 **Android** (for mobile-specific features)  
 
 ---
-
+</details>
 ### **Core Speech-to-Text (Aura) Engine**
     Our primary engine for offline speech recognition and audio processing.
 
