@@ -10,16 +10,19 @@
 | 👵 Anfänger | 🎓 Lernender | 🧑u200d💻 Entwickler |
 |---|---|---|
 | OMA-Modus: Schreiben Sie einfach ein Wort, Aura erledigt den Rest | Lernen Sie mit Koans – ein Konzept nach dem anderen | Vollständige Python-Skripterstellung, Plugins, API-Aufrufe |
-
+| 🗄️ Staatsverwaltung | Trino + Airflow-Orchestrierung, fzf, CopyQ, Sprach-/Terminalbefehle, Browser-Benutzeroberflächen |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 ⚡ **~2,87 J** pro Test (39 Tests bei durchschnittlich 0,34 s · gemessen mit [Eco-CI](https://metrics.green-coding.io/index.html)) · kein Cloud-Computing
+
+<Details>
+<summary>Schnellstart</summary>
 
 ## Schnellstart
 1. Laden Sie dieses Repository herunter oder klonen Sie es
 2. Führen Sie das Setup-Skript für Ihr Betriebssystem aus (siehe Ordner „setup/“):
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-delang.md) lesen
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-delang.md) lesen
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS): `nix-shell setup/shell.nix`, dann `bash setup/nixos_setup.sh`
@@ -27,7 +30,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Starten Sie Aura: `./scripts/restart_venv_and_run-server.sh`
-4. Drücken Sie Ihren Hotkey und sprechen Sie – **[full guide →](../docs/GettingStarted.i18n/GettingStarted-delang.md)**
+4. Drücken Sie Ihren Hotkey und sprechen Sie – **[full guide →](../docs/GettingStarted-delang.md)**
 
 
 **⚠️ Systemanforderungen und Kompatibilität**
@@ -48,17 +51,26 @@ SL5 Aura ist ein vollständiger **Offline-Sprachassistent**, der auf **Vosk** (f
 
 Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzungen der englischen Originaldokumentation, die lediglich der allgemeinen Orientierung dienen. Im Falle von Unstimmigkeiten oder Unklarheiten ist stets die englische Version maßgebend. Wir freuen uns über die Hilfe der Community, um diese Übersetzung zu verbessern!
 
+</details>
+
+<Details>
+<summary>Demo</summary>
+
 ### 📺 Terminal-Demo
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Tipp:** Für ein besseres Terminalerlebnis siehe [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-delang.md).
+> **Tipp:** Für ein besseres Terminalerlebnis siehe [Zsh Integration](../docs/linux/zsh-integration-delang.md).
 
 ### 🎥 Video-Tutorial
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *(Alternativer Link: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
 
+</details>
+
+<Details>
+<summary>Hauptfunktionen</summary>
 
 ## Hauptmerkmale
 
@@ -70,7 +82,14 @@ Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzunge
 * **Plattformübergreifend:** Funktioniert unter Linux, macOS und Windows.
 * **Vollautomatisch:** Verwaltet seinen eigenen LanguageTool-Server (Sie können aber auch einen externen verwenden).
 * **Blitzschnell:** Intelligentes Caching sorgt für sofortige „Listening…“-Benachrichtigungen und schnelle Verarbeitung.
+* **Dynamisches Zustandsmanagement über Trino:** Schnittstellenbewusste Konfigurations-Engine
+trennt die Einstellungen für „Sprache“, „Terminal“ und „Web“ – ändern Sie eine ohne
+die anderen beeinflussen. Enthält ein Echtzeit-Admin-Dashboard (Port 8084).
+</details>
 
+<Details>
+<summary> 🔌 Einsatzbereite Integrationen</summary>
+  
 ## 🔌 Gebrauchsfertige Integrationen
 
 SL5-Aura verfügt über ein riesiges Ökosystem von über **100+ vorkonfigurierten Plugins**. Hier einige Highlights:
@@ -91,6 +110,11 @@ SL5-Aura bietet erstklassige Sprachunterstützung für **OculiX** und **SikuliX 
 
 ---
 
+</details>
+
+
+<Details>
+<summary>Dokumentation</summary>
 
 ## Dokumentation
 
@@ -118,17 +142,16 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 </a>
 </div>
 
+</details>
+
 👉 **Lesen Sie dies in anderen Sprachen:**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-delang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang.md) | [🇪🇸 Español](../README.i18n/README-eslang-delang.md) | [🇫🇷 Français](../README.i18n/README-frlang-delang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-delang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-delang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-delang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-delang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-delang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-delang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-delang.md)
 
 ---
 
-
-
-
-
-
+<Details>
+<summary>Installation</summary>
 
 ## Installation
 
@@ -141,7 +164,7 @@ Sehen Sie sich den gesamten 6-minütigen Einrichtungsprozess an:
 
 
 Die Einrichtung ist ein zweistufiger Prozess:
-1. Laden Sie die letzte Version oder den Master herunter (https://github.com/sl5net/SL5-aura-service/archive/master.zip) oder klonen Sie dieses Repository auf Ihren Computer.
+1. Laden Sie die neueste Version oder den neuesten Master herunter (https://github.com/sl5net/SL5-aura-service/archive/master.zip) oder klonen Sie dieses Repository auf Ihren Computer.
 2. Führen Sie das einmalige Setup-Skript für Ihr Betriebssystem aus.
 
 Die Setup-Skripte kümmern sich um alles: Systemabhängigkeiten, Python-Umgebung und das Herunterladen der erforderlichen Modelle und Tools (~4 GB) direkt von unseren GitHub-Releases für maximale Geschwindigkeit.
@@ -189,7 +212,7 @@ setup/windows11_setup.ps1 -Exclude [OPTION]
 # Exclude German and English models:
 # setup/windows11_setup.ps1 -Exclude "de,en"
 
-# Or (recommend) - Start des BAT: 
+# Or (recommend) - Run the BAT file: 
 windows11_setup.bat -Exclude "en"
 ```
 
@@ -225,8 +248,12 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
 
-
 ---
+</details>
+
+
+<Details>
+<summary>Nutzung</summary>
 
 ## Nutzung
 
@@ -301,8 +328,13 @@ f11::
 ### 3. Beginnen Sie mit dem Diktieren!
 Klicken Sie in ein beliebiges Textfeld, drücken Sie Ihren Hotkey und die Benachrichtigung „Zuhören…“ wird angezeigt. Sprechen Sie deutlich und machen Sie dann eine Pause. Der korrigierte Text wird für Sie getippt.
 
+</details>
+
 ---
 
+
+<Details>
+<summary>Erweiterte Konfiguration (optional)</summary>
 
 ## Erweiterte Konfiguration (optional)
 
@@ -326,6 +358,17 @@ Die Verarbeitungs-Engine hält sich strikt an eine **hierarchische Prioritätske
   
 
 Diese Architektur stellt sicher, dass Kernsystemregeln geschützt sind, während projektspezifische oder kontextbezogene Regeln (wie die für CodeIgniter oder Spielsteuerungen) einfach über Plug-Ins als Erweiterungen mit niedriger Priorität hinzugefügt werden können.
+
+</details>
+
+<Details>
+<summary>Schlüsselskripts für Windows-Benutzer</summary>
+
+
+
+
+
+
 ## Wichtige Skripte für Windows-Benutzer
 
 Hier finden Sie eine Liste der wichtigsten Skripte zum Einrichten, Aktualisieren und Ausführen der Anwendung auf einem Windows-System.
@@ -336,7 +379,7 @@ Hier finden Sie eine Liste der wichtigsten Skripte zum Einrichten, Aktualisieren
 * „setup/setup.bat“: Das Hauptskript für die **erste einmalige Einrichtung** der Umgebung.
 *
 
-* `update.bat`: Durchsuchen Sie diese aus dem Projektordner **holen Sie sich den neuesten Code und die neuesten Abhängigkeiten**.
+* „update.bat“: Führen Sie dies aus dem Projektordner aus, um **den neuesten Code und die neuesten Abhängigkeiten abzurufen**.
 
 ### Ausführen der Anwendung
 * „start_aura.bat“: Ein primäres Skript zum **Starten des Diktierdienstes**.
@@ -345,10 +388,14 @@ Hier finden Sie eine Liste der wichtigsten Skripte zum Einrichten, Aktualisieren
 * „aura_engine.py“: Der Kern-Python-Dienst (normalerweise von einem der oben genannten Skripte gestartet).
 * „get_suggestions.py“: Ein Hilfsskript für bestimmte Funktionen.
 
+</details>
 
 
 
 ## 🚀 Hauptfunktionen und Betriebssystemkompatibilität
+
+<Details>
+<summary>Legende für Betriebssystemkompatibilität</summary>
 
 Legende zur Betriebssystemkompatibilität:  
 * 🐧 **Linux** (z. B. Arch, Ubuntu)  
@@ -358,10 +405,19 @@ Legende zur Betriebssystemkompatibilität:
 
 ---
 
+</details>
+
+
+
+
+
 ### **Kern-Speech-to-Text-Engine (Aura)**
 Unsere primäre Engine für Offline-Spracherkennung und Audioverarbeitung.
 
   
+<Details>
+<summary>Aura-Core</summary>
+
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Haupt-Python-Dienst, der Aura orchestriert) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Konfiguration & Karten) 🐧 🍏 🪟  
@@ -369,8 +425,8 @@ Unsere primäre Engine für Offline-Spracherkennung und Audioverarbeitung.
 ││ * **Workflow:** Lädt passwortgeschützte ZIP-Archive.   
 │├ **Textverarbeitung und -korrektur/** Gruppiert nach Sprache (z. B. „de-DE“, „en-US“, ...)   
 │├ 1. `normalize_punctuation.py` (Standardisiert die Zeichensetzung nach der Transkription) 🐧 🍏 🪟  
-│├ 2. **Intelligente Vorkorrektur** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-delang.md)) 🐧 🍏 🪟  
-││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte (on_match_exec) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
+│├ 2. **Intelligente Vorkorrektur** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-delang.md)) 🐧 🍏 🪟  
+││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte („on_match_exec“) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
 ││ * **Kaskadierende Ausführung:** Regeln werden nacheinander verarbeitet und ihre Auswirkungen sind **kumulativ**. Spätere Regeln gelten für Text, der durch frühere Regeln geändert wurde.  
 ││ * **Stoppkriterium mit höchster Priorität:** Wenn eine Regel eine **Vollständige Übereinstimmung** (^...$) erreicht, stoppt die gesamte Verarbeitungspipeline für dieses Token sofort. Dieser Mechanismus ist für die Implementierung zuverlässiger Sprachbefehle von entscheidender Bedeutung.  
 │├ 3. `correct_text_by_lingualtool.py` (Integriert LanguageTool zur Grammatik-/Stilkorrektur) 🐧 🍏 🪟  
@@ -381,14 +437,18 @@ Unsere primäre Engine für Offline-Spracherkennung und Audioverarbeitung.
 ││ * **Status:** Lokale LLM-Integration.
 │└ 5. **Intelligente Nachkorrektur** (`FuzzyMap`)**– Post-LT-Verfeinerung** 🐧 🍏 🪟  
 ││ * Wird nach LanguageTool angewendet, um LT-spezifische Ausgaben zu korrigieren. Folgt der gleichen strengen kaskadierenden Prioritätslogik wie die Vorkorrekturschicht.  
-││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-delang.md)) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
+││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte ([on_match_exec](../docs/advanced-scripting-delang.md)) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
 ││ * **Fuzzy-Fallback:** Die **Fuzzy-Ähnlichkeitsprüfung** (gesteuert durch einen Schwellenwert, z. B. 85 %) fungiert als Fehlerkorrekturebene mit der niedrigsten Priorität. Es wird nur ausgeführt, wenn bei der gesamten vorherigen Ausführung der deterministischen/kaskadierenden Regel keine Übereinstimmung gefunden werden konnte (current_rule_matched ist False). Dadurch wird die Leistung optimiert, indem nach Möglichkeit langsame Fuzzy-Prüfungen vermieden werden.  
 ├┬ **Modellverwaltung/**   
 │├─ `prioritize_model.py` (Optimiert das Laden/Entladen von Modellen basierend auf der Nutzung) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (Konfiguriert die erstmalige Modelleinrichtung) 🐧 🍏 🪟  
 ├─ **Adaptives VAD-Timeout** 🐧 🍏 🪟  
 ├─ **Adaptiver Hotkey (Start/Stopp)** 🐧 🍏 🪟  
-└─ **Sofortige Sprachumschaltung** (Experimentell über Modell-Vorladen) 🐧 🍏   
+├─ **Sofortige Sprachumschaltung** (Experimentell über Modell-Vorladen) 🐧 🍏   
+├─ **Airflow Orchestration** (DAG-basierte Workflow-Automatisierung) 🐧 🍏 🪟
+│ Erfordert Docker · Benutzeroberfläche: „http://localhost:8081“ 🐧 🍏 🪟  
+├─ **Trino State Engine** (Schnittstellenfähige Konfiguration pro Sprache/Terminal/Web) 🐧 🍏 🪟
+└─ Erfordert Docker · Admin-Benutzeroberfläche: „http://localhost:8084“ 🐧 🍏 🪟  
 
 **SystemUtilities/**   
 ├┬ **LanguageTool Server Management/**   
@@ -404,6 +464,11 @@ Tools für den robusten Umgang mit großen Sprachmodellen.
 ├─ `split_and_hash.py` (Dienstprogramm für Repo-Besitzer zum Teilen großer Dateien und Generieren von Prüfsummen) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (Tool für Endbenutzer zum Herunterladen, Überprüfen und erneuten Zusammensetzen mehrteiliger Dateien) 🐧 🍏 🪟  
 
+</details>
+
+
+<Details>
+<summary>Entwicklungs- und Bereitstellungshelfer</summary>
 
 ### **Entwicklungs- und Bereitstellungshelfer**  
 Skripte zum Einrichten, Testen und Ausführen von Diensten.  
@@ -412,11 +477,10 @@ Skripte zum Einrichten, Testen und Ausführen von Diensten.
 Bitte aktivieren Sie das Kontrollkästchen bei der Installation, um eine Verknüpfung mit Protokolldateien herzustellen.    
 https://translate.google.com/translate?hl=en&sl=en&tl=de&u=https://glogg.bonnefon.org/     
   
-*Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-delang.md).*
+*Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-delang.md).*
 
-Dann vielleicht Double Click
+Dann vielleicht einen Doppelklick machen
 `log/aura_engine.log`
-  
   
 **DevHelpers/**  
 ├┬ **Virtuelle Umgebungsverwaltung/**  
@@ -429,6 +493,11 @@ Dann vielleicht Double Click
 └─ **CI/CD-Automatisierung/**  
 └─ Erweiterte GitHub-Workflows (Installation, Tests, Bereitstellung von Dokumenten) 🐧 🍏 🪟 *(Läuft auf GitHub-Aktionen)*  
 
+</details>
+
+<Details>
+<summary>Experimentelle Funktionen</summary>
+  
 ### **Kommende/experimentelle Funktionen**  
 Funktionen, die sich derzeit in der Entwicklung oder im Entwurfsstatus befinden.  
 
@@ -448,14 +517,7 @@ Funktionen, die sich derzeit in der Entwicklung oder im Entwurfsstatus befinden.
 ---
 
 *(Hinweis: Bestimmte Linux-Distributionen wie Arch (ARL) oder Ubuntu (UBT) werden durch das allgemeine Linux-Symbol 🐧 abgedeckt. Detaillierte Unterscheidungen werden möglicherweise in Installationshandbüchern behandelt.)*
-
-
-
-
-
-
-
-
+</details>
 
 <Details>
 <summary>Klicken Sie hier, um den Befehl anzuzeigen, der zum Generieren dieser Skriptliste verwendet wurde</summary>
@@ -465,6 +527,8 @@ Funktionen, die sich derzeit in der Entwicklung oder im Entwurfsstatus befinden.
 ```
 </details>
 
+<Details>
+<summary>Eine grafische Übersicht über die Architektur</summary>
 
 ### Ein grafischer Überblick über die Architektur:
 
@@ -472,13 +536,16 @@ Funktionen, die sich derzeit in der Entwicklung oder im Entwurfsstatus befinden.
 
   
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
+</details>
 
+<Details>
+<summary>Gebrauchte Modelle</summary>
 
 # Gebrauchte Modelle:
 
 Empfehlung: Modelle von Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 verwenden (wahrscheinlich schneller)
 
-Diese komprimierten Modelle müssen im Ordner „models/“ gespeichert werden
+Diese gezippten Modelle müssen im Ordner „models/“ gespeichert werden
 
 `mv vosk-model-*.zip models/`
 
@@ -498,6 +565,7 @@ Diese Tabelle bietet einen Überblick über verschiedene Vosk-Modelle, einschlie
 **Lizenz von LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ---
+</details>
 
 ## Unterstützen Sie das Projekt
 Wenn Sie dieses Tool nützlich finden, denken Sie bitte darüber nach, uns einen Kaffee zu spenden! Ihre Unterstützung trägt dazu bei, zukünftige Verbesserungen voranzutreiben.

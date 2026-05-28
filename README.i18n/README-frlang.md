@@ -10,16 +10,19 @@
 | 👵 Débutant | 🎓 Apprenant | 🧑u200d💻 Développeur |
 |---|---|---|
 | Mode OMA : écrivez simplement un mot, Aura fait le reste | Apprenez avec Koans — un concept à la fois | Scripts Python complets, plugins, appels API |
-
+| 🗄️ Gestion de l'État | Orchestration Trino + Airflow, fzf, CopyQ, commandes vocales/terminal, interfaces utilisateur du navigateur |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 ⚡ **~2,87 J** par test (39 tests à 0,34 s en moyenne · mesuré avec [Eco-CI](https://metrics.green-coding.io/index.html)) · pas de calcul cloud
+
+<détails>
+<summary>Démarrage rapide</summary>
 
 ## Démarrage rapide
 1. Téléchargez ou clonez ce référentiel
 2. Exécutez le script d'installation pour votre système d'exploitation (voir le dossier `setup/`) :
 - Linux (Arch/Manjaro) : `bash setup/manjaro_arch_setup.sh`
-===> 🧩 lire [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-frlang.md)
+===> 🧩 lire [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-frlang.md)
 - Linux (Ubuntu/Debian) : `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE) : `bash setup/suse_setup.sh`
 - Linux (NixOS) : `nix-shell setup/shell.nix` puis `bash setup/nixos_setup.sh`
@@ -27,7 +30,7 @@
 - macOS : `bash setup/macos_setup.sh`
 - Windows : `setup/windows11_setup_with_ahk_copyq.bat`
 3. Démarrez Aura : `./scripts/restart_venv_and_run-server.sh`
-4. Appuyez sur votre touche de raccourci et parlez — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-frlang.md)**
+4. Appuyez sur votre touche de raccourci et parlez — **[full guide →](../docs/GettingStarted-frlang.md)**
 
 
 **⚠️ Configuration système requise et compatibilité**
@@ -48,17 +51,26 @@ Traductions : Ce document existe également dans [other languages](https://githu
 
 Remarque : De nombreux textes sont des traductions générées automatiquement de la documentation originale en anglais et sont uniquement destinés à des conseils généraux. En cas de divergences ou d'ambiguïtés, la version anglaise prévaut toujours. Nous apprécions l’aide de la communauté pour améliorer cette traduction !
 
+</détails>
+
+<détails>
+<summary>Démo</summary>
+
 ### 📺 Démo du terminal
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Conseil :** Pour une meilleure expérience de terminal, consultez [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-frlang.md).
+> **Conseil :** Pour une meilleure expérience de terminal, consultez [Zsh Integration](../docs/linux/zsh-integration-frlang.md).
 
 ### 🎥 Tutoriel vidéo
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *(Lien alternatif : [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
 
+</détails>
+
+<détails>
+<summary>Principales fonctionnalités</summary>
 
 ## Principales fonctionnalités
 
@@ -70,7 +82,14 @@ Remarque : De nombreux textes sont des traductions générées automatiquement 
 * **Multiplateforme :** Fonctionne sous Linux, macOS et Windows.
 * **Entièrement automatisé :** Gère son propre serveur LanguageTool (mais vous pouvez également en utiliser un externe).
 * **Blazing Fast :** La mise en cache intelligente garantit des notifications instantanées « Écoute … » et un traitement rapide.
+* **Gestion dynamique de l'état via Trino :** Moteur de configuration prenant en charge l'interface
+sépare les paramètres pour « parole », « terminal » et « web » - en modifiez-un sans
+affectant les autres. Comprend un **Tableau de bord d'administration** en temps réel (port 8084).
+</détails>
 
+<détails>
+<summary> 🔌 Intégrations prêtes à l'emploi</summary>
+  
 ## 🔌 Intégrations prêtes à l'emploi
 
 SL5-Aura est livré avec un vaste écosystème de plus de **100+ plugins préconfigurés**. Voici quelques faits saillants :
@@ -91,6 +110,11 @@ SL5-Aura offre une prise en charge vocale de première classe pour **OculiX** et
 
 ---
 
+</détails>
+
+
+<détails>
+<summary>Documentation</summary>
 
 ##Documents
 
@@ -118,17 +142,16 @@ Pour une référence technique complète, y compris tous les modules et scripts,
 </a>
 </div>
 
+</détails>
+
 👉 **Lisez ceci dans d'autres langues :**
 
 [🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-frlang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-frlang.md) | [🇪🇸 Español](../README.i18n/README-eslang-frlang.md) | [🇫🇷 Français](../README.i18n/README-frlang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-frlang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-frlang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-frlang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-frlang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-frlang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-frlang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-frlang.md)
 
 ---
 
-
-
-
-
-
+<détails>
+<summary>Installation</summary>
 
 ##Installation
 
@@ -189,14 +212,14 @@ setup/windows11_setup.ps1 -Exclude [OPTION]
 # Exclude German and English models:
 # setup/windows11_setup.ps1 -Exclude "de,en"
 
-# Or (recommend) - Start des BAT: 
+# Or (recommend) - Run the BAT file: 
 windows11_setup.bat -Exclude "en"
 ```
 
 #### Pour Windows
 Exécutez le script d'installation avec les privilèges d'administrateur.
 
-**Installez un outil pour lire et exécuter, par ex. [CopyQ](https://github.com/hluk/CopyQ) ou [AutoHotkey v2](https://www.autohotkey.com/)**. Ceci est requis pour l’observateur de saisie de texte.
+**Installez un outil pour lire et exécuter, par exemple [CopyQ](https://github.com/hluk/CopyQ) ou [AutoHotkey v2](https://www.autohotkey.com/)**. Ceci est requis pour l’observateur de saisie de texte.
 
 L'installation est entièrement automatisée et prend environ **8 à 10 minutes** lors de l'utilisation de 2 modèles sur un nouveau système.
 
@@ -225,8 +248,12 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
 
-
 ---
+</détails>
+
+
+<détails>
+<summary>Utilisation</summary>
 
 ## Utilisation
 
@@ -301,8 +328,13 @@ f11::
 ### 3. Commencez à dicter !
 Cliquez dans n'importe quel champ de texte, appuyez sur votre touche de raccourci et une notification "Écoute..." apparaîtra. Parlez clairement, puis faites une pause. Le texte corrigé sera tapé pour vous.
 
+</détails>
+
 ---
 
+
+<détails>
+<summary>Configuration avancée (facultatif)</summary>
 
 ## Configuration avancée (facultatif)
 
@@ -326,6 +358,17 @@ Le moteur de traitement adhère strictement à une **Chaîne de priorités hiér
   
 
 Cette architecture garantit que les règles de base du système sont protégées, tandis que les règles spécifiques au projet ou sensibles au contexte (comme celles de CodeIgniter ou des contrôles de jeu) peuvent être facilement ajoutées en tant qu'extensions de faible priorité via des plug-ins.
+
+</détails>
+
+<détails>
+<summary>Scripts clés pour les utilisateurs Windows</summary>
+
+
+
+
+
+
 ## Scripts clés pour les utilisateurs Windows
 
 Voici une liste des scripts les plus importants pour configurer, mettre à jour et exécuter l'application sur un système Windows.
@@ -336,7 +379,7 @@ Voici une liste des scripts les plus importants pour configurer, mettre à jour 
 * `setup/setup.bat` : Le script principal pour la **configuration initiale unique** de l'environnement.
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Exécutez PowerShell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
-* `update.bat` : exécutez-les à partir du dossier Projet **obtenez le dernier code et les dernières dépendances**.
+* `update.bat` : exécutez ceci à partir du dossier du projet pour **obtenir le dernier code et les dernières dépendances**.
 
 ### Exécution de l'application
 * `start_aura.bat` : Un script principal pour **démarrer le service de dictée**.
@@ -345,10 +388,14 @@ Voici une liste des scripts les plus importants pour configurer, mettre à jour 
 * `aura_engine.py` : le service Python principal (généralement démarré par l'un des scripts ci-dessus).
 * `get_suggestions.py` : Un script d'assistance pour des fonctionnalités spécifiques.
 
+</détails>
 
 
 
 ## 🚀 Principales fonctionnalités et compatibilité du système d'exploitation
+
+<détails>
+<summary>Légende de compatibilité du système d'exploitation</summary>
 
 Légende de compatibilité du système d'exploitation :   
 * 🐧 **Linux** (par exemple, Arch, Ubuntu)  
@@ -358,10 +405,19 @@ Légende de compatibilité du système d'exploitation :
 
 ---
 
+</détails>
+
+
+
+
+
 ### **Moteur principal de synthèse vocale (Aura)**
 Notre principal moteur de reconnaissance vocale et de traitement audio hors ligne.
 
   
+<détails>
+<summary>Aura-Core</summary>
+
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (service Python principal orchestrant Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Configuration et cartes) 🐧 🍏 🪟  
@@ -369,8 +425,8 @@ Notre principal moteur de reconnaissance vocale et de traitement audio hors lign
 ││ * **Workflow :** Charge les archives ZIP protégées par mot de passe.   
 │├ **Traitement et correction de texte/** Regroupés par langue ( par exemple `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardise la ponctuation après la transcription) 🐧 🍏 🪟  
-│├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
-││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés (on_match_exec) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
+│├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
+││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés (`on_match_exec`) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Exécution en cascade :** Les règles sont traitées séquentiellement et leurs effets sont **cumulatifs**. Les règles ultérieures s'appliquent au texte modifié par les règles antérieures.  
 ││ * **Critère d'arrêt de priorité la plus élevée :** Si une règle obtient une **Correspondance complète** (^...$), l'ensemble du pipeline de traitement pour ce jeton s'arrête immédiatement. Ce mécanisme est essentiel pour implémenter des commandes vocales fiables.  
 │├ 3. `correct_text_by_lingualtool.py` (Intègre LanguageTool pour la correction de grammaire/style) 🐧 🍏 🪟  
@@ -381,14 +437,18 @@ Notre principal moteur de reconnaissance vocale et de traitement audio hors lign
 ││ * **Statut :** Intégration LLM locale.
 │└ 5. **Post-correction intelligente** (`FuzzyMap`)** – Affinement post-LT** 🐧 🍏 🪟  
 ││ * Appliqué après LanguageTool pour corriger les sorties spécifiques à LT. Suit la même logique stricte de priorité en cascade que la couche de pré-correction.  
-││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-frlang.md)) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
+││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés ([on_match_exec](../docs/advanced-scripting-frlang.md)) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
 ││ * **Fuzzy Fallback :** Le **Fuzzy Similarity Check** (contrôlé par un seuil, par exemple 85 %) agit comme la couche de correction d'erreurs la plus basse priorité. Elle n'est exécutée que si l'exécution complète de la règle déterministe/en cascade précédente n'a pas réussi à trouver une correspondance (current_rule_matched est False), optimisant ainsi les performances en évitant les vérifications floues lentes autant que possible.  
 ├┬ **Gestion des modèles/**   
 │├─ `prioritize_model.py` (Optimise le chargement/déchargement du modèle en fonction de l'utilisation) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (Configure la première configuration du modèle) 🐧 🍏 🪟  
 ├─ **Délai d'expiration VAD adaptatif** 🐧 🍏 🪟  
 ├─ **Raccourci clavier adaptatif (Démarrer/Arrêter)** 🐧 🍏 🪟  
-└─ **Changement de langue instantané** (expérimental via le préchargement du modèle) 🐧 🍏   
+├─ **Changement de langue instantané** (expérimental via le préchargement du modèle) 🐧 🍏   
+├─ **Airflow Orchestration** (automatisation du flux de travail basée sur DAG) 🐧 🍏 🪟
+│ Nécessite Docker · UI : `http://localhost:8081` 🐧 🍏 🪟  
+├─ **Trino State Engine** (configuration prenant en charge l'interface par parole/terminal/web) 🐧 🍏 🪟
+└─ Nécessite Docker · Interface utilisateur d'administration : `http://localhost:8084` 🐧 🍏 🪟  
 
 **Utilitaires système/**   
 ├┬ **Gestion du serveur LanguageTool/**   
@@ -404,6 +464,11 @@ Outils pour une gestion robuste des grands modèles de langage.
 ├─ `split_and_hash.py` (Utilitaire permettant aux propriétaires de dépôts de diviser des fichiers volumineux et de générer des sommes de contrôle) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (outil permettant aux utilisateurs finaux de télécharger, vérifier et réassembler des fichiers en plusieurs parties) 🐧 🍏 🪟  
 
+</détails>
+
+
+<détails>
+<summary>Aide au développement et au déploiement</summary>
 
 ### **Aide au développement et au déploiement**  
 Scripts pour la configuration de l'environnement, les tests et l'exécution des services.  
@@ -412,11 +477,10 @@ Scripts pour la configuration de l'environnement, les tests et l'exécution des 
 Veuillez cocher la case lors de l'installation pour l'associer aux fichiers journaux.    
 https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
   
-*Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
+*Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
 
 Alors peut-être double-cliquez
 `log/aura_engine.log`
-  
   
 **DevHelpers/**  
 ├┬ **Gestion de l'environnement virtuel/**  
@@ -429,6 +493,11 @@ Alors peut-être double-cliquez
 └─ **Automation CI/CD/**  
 └─ Workflows GitHub étendus (installation, tests, déploiement de documents) 🐧 🍏 🪟 *(S'exécute sur les actions GitHub)*  
 
+</détails>
+
+<détails>
+<summary>Fonctionnalités expérimentales</summary>
+  
 ### **Fonctionnalités à venir/expérimentales**  
 Fonctionnalités actuellement en cours de développement ou à l'état de projet.  
 
@@ -448,14 +517,7 @@ Fonctionnalités actuellement en cours de développement ou à l'état de projet
 ---
 
 *(Remarque : des distributions Linux spécifiques comme Arch (ARL) ou Ubuntu (UBT) sont couvertes par le symbole général Linux 🐧. Des distinctions détaillées peuvent être couvertes dans les guides d'installation.)*
-
-
-
-
-
-
-
-
+</détails>
 
 <détails>
 <summary>Cliquez pour voir la commande utilisée pour générer cette liste de scripts</summary>
@@ -465,6 +527,8 @@ Fonctionnalités actuellement en cours de développement ou à l'état de projet
 ```
 </détails>
 
+<détails>
+<summary>Un aperçu graphique de l'architecture</summary>
 
 ### Un aperçu graphique de l'architecture :
 
@@ -472,13 +536,16 @@ Fonctionnalités actuellement en cours de développement ou à l'état de projet
 
   
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
+</détails>
 
+<détails>
+<summary>Modèles utilisés</summary>
 
 # Modèles utilisés :
 
 Recommandation : utilisez les modèles de Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (probablement plus rapide)
 
-Ces modèles zippés doivent être enregistrés dans le dossier `models/`
+Ces modèles compressés doivent être enregistrés dans le dossier `models/`
 
 `mv vosk-model-*.zip modèles/`
 
@@ -498,6 +565,7 @@ Ce tableau donne un aperçu des différents modèles Vosk, y compris leur taille
 **Licence de LanguageTool :** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ---
+</détails>
 
 ## Soutenez le projet
 Si vous trouvez cet outil utile, pensez à nous offrir un café ! Votre soutien contribue à alimenter les améliorations futures.
