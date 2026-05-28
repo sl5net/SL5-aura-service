@@ -1,10 +1,13 @@
 # config/maps/plugins/standard_actions/language_translator/de-DE/toggle_translation_mode.py
 # translation
+import os
 import shutil
 import sys
 from pathlib import Path
 import subprocess
 import re
+
+from scripts.py.func.db.trino_client import set_feature_state, set_target_lang
 
 """
     Vorteile:
@@ -118,6 +121,8 @@ def execute(match_data):
             shutil.copy2(RULES_FILE_PATH, backup_path)
 
             new_state = 'on'
+
+
             print("new_state:", new_state)
             feedback_message = "translation mode is switched on (übersetzung modus wird eingeschaltet')"
             # Die Zeile einkommentieren (entferne führende '#' und Leerzeichen)
@@ -125,6 +130,10 @@ def execute(match_data):
             # lines[rule_line_index] = lines[rule_line_index].lstrip('#')
             lines[rule_line_index] = lines[rule_line_index].replace('#', '', 1)
 
+
+        INTERFACE = os.getenv("INTERFACE", "speech")
+        set_target_lang(INTERFACE, target_lang=target_lang)
+        set_feature_state(INTERFACE, feature='translation', state=new_state)
 
 
         # write back to the file
@@ -139,9 +148,9 @@ def execute(match_data):
         #(Path(__file__).parent / 'RELOAD_RULES.trigger').touch()
         # print("Reload-Trigger was set.")
 
-        with open(Path(__file__).parent / 'translation_state.py', "w") as file:
-            target_lang_as_variable_key = target_lang.strip().replace('-', '_')
-            file.write(f"{target_lang_as_variable_key}='{new_state}'")
+        # with open(Path(__file__).parent / 'translation_state.py', "w") as file:
+        #     target_lang_as_variable_key = target_lang.strip().replace('-', '_')
+        #     file.write(f"{target_lang_as_variable_key}='{new_state}'")
 
         return ' ' # text that is result. if you let it empty text you have spoken was written. if you want a empty result write ' '  because its intern not empty and will than accepted.
 

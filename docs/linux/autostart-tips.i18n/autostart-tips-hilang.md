@@ -13,23 +13,28 @@ aura_engine.log.desktop
 
 डेन बेफ़ेहल मैनुएल अनपासेन
 
-**अंस्टैट:**
+**अन्स्टैट:**
 `Exec=/pfad/zu/deinem/script.sh`
 
 **बेस्पीले श्रेइबे:**
 
-Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
-
-`Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"''
-
-Exec=konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'   
-
-Exec=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
-
-Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
-
-
-
+[डेस्कटॉप प्रविष्टि]
+टिप्पणी[en_GB]=
+टिप्पणी=
+Exec=konsole -e bash -c 'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ]; फिर प्रतिध्वनि "आभा पहले से ही चल रही है"; अन्यथा /tmp/sl5_aura/sl5net_aura_project_root को स्पर्श करें; /home/......../projects/py/STT/scripts/restart_venv_and_run-server.sh; फाई; कार्यकारी zsh'
+जेनेरिकनाम[en_GB]=
+सामान्य नाम =
+चिह्न=टेक्स्ट-x-लॉग
+माइम प्रकार =
+नाम[en_GB]=aura_engine
+नाम=आभा_इंजन
+पथ=
+स्टार्टअपनोटिफ़ाई = सत्य
+टर्मिनल=झूठा
+प्रकार=आवेदन
+एक्स-केडीई-ऑटोस्टार्टस्क्रिप्ट = सत्य
+एक्स-केडीई-विकल्पयूआईडी=गलत
+एक्स-केडीई-उपयोगकर्ता नाम =
 
 
 ### क्या ग्राफ़िशे आइंस्टेलुंग काम नहीं कर रहा है?

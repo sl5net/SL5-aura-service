@@ -132,12 +132,18 @@ AUDIO_GUIDANCE_ENABLED=True
 
 INPUT_METHOD="dotool"
 
+TRINO_ENABLED = False
+
+
 # text results that are stored on your computer can maybe read by other users on your computer.
 # Where would you like to store unencrypted cache? For example, under Linux you can use the temporary directory, which is automatically deleted if the computer was rebooted (original:'unter linux können sie zum beispiel das temporäre verzeichnis verwenden welches automatisch gelöscht wird wenn der computer neu started' ).
 
 # It is possible to keep the data encrypted if you put an encrypted folder config/maps/_yourdata in it, which is then only encrypted in a encrypted zip and not in a open copy there.
 # This folder is automatically unpacked in before using (original:'dieser ordner wird automatisch ausgepackt' ). If you don't want them for a while, you have to delete them yourself (original:'eine zeitlang nicht wollen müssen sie sie selber löschen' ).
 path_unencrypted_cash = 'data'
+
+
+
 
 # --- LanguageTool Server ---
 # Set to True to use an existing LT server. AT YOUR OWN RISK!

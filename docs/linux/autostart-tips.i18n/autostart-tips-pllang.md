@@ -18,18 +18,23 @@ Den Befehl Manuell Anpassen
 
 **Beispiele Schreibe:**
 
-Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"'
-
-`Exec=xfce4-terminal -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"''
-
-Exec=konsole -e 'bash -c "/home/seeh/projects/py/STT/scripts/restart_venv_and_run-server.sh && bash"' XSPACEbreakX
-
-Exec=Exec=kate /home/me/projects/py/STT/log/aura_engine.log
-
-Exec=kate /home/me/projects/py/STT/config/filters/settings_local_log_filter.py
-
-
-
+[Wpis na pulpicie]
+Komentarz[en_GB]=
+Komentarz=
+Exec=konsole -e bash -c 'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ]; następnie powtórz „aura już działa.”; w przeciwnym razie dotknij /tmp/sl5_aura/sl5net_aura_project_root; /home/....../projects/py/STT/scripts/restart_venv_and_run-server.sh; fi; wykonanie zsh'
+Nazwa ogólna[en_GB]=
+Nazwa ogólna=
+Ikona=tekst-x-log
+Typ MIME=
+Nazwa[en_GB]=aura_engine
+Nazwa=aura_engine
+Ścieżka=
+StartupNotify=true
+Terminal=fałsz
+Typ=Zastosowanie
+X-KDE-AutostartScript=true
+X-KDE-SubstituteUID=false
+Nazwa użytkownika X-KDE=
 
 
 ### Warum hat die grafische Einstellung nicht funktioniert?

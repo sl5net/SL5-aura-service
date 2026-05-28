@@ -376,13 +376,44 @@ PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
 # PIPER_SPEAK_FILE = os.path.expanduser("~/projects/py/TTS/speak_file.py")
 
 
+# def open_url(url):
+#     import os
+#     import subprocess
+#     env = os.environ.copy()
+#     env.setdefault("DISPLAY", ":0")
+#     env.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/1000/bus")
+#     subprocess.Popen(["xdg-open", url], start_new_session=True, env=env)
+
 def open_url(url):
     import os
     import subprocess
+
     env = os.environ.copy()
+
     env.setdefault("DISPLAY", ":0")
-    env.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/1000/bus")
-    subprocess.Popen(["xdg-open", url], start_new_session=True, env=env)
+
+    try:
+        uid = os.getuid()
+    except AttributeError:
+        uid = 1000  # Fallback für Windows, falls getuid nicht existiert
+
+    env.setdefault("DBUS_SESSION_BUS_ADDRESS", f"unix:path=/run/user/{uid}/bus")
+
+    for key in ['LD_LIBRARY_PATH', 'LD_PRELOAD', 'PYTHONPATH', 'PYTHONHOME', 'VIRTUAL_ENV']:
+        env.pop(key, None)
+
+    try:
+        subprocess.Popen(
+            ["xdg-open", url],
+            start_new_session=True,
+            env=env,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+    except Exception:
+        # Fallback
+        import webbrowser
+        webbrowser.open(url)
 
 
 from pathlib import Path

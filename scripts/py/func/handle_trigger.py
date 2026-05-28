@@ -106,11 +106,14 @@ def session_thread_target(logger):
                     logger.info(f"Chunk ID {current_chunk_id}: Starting processing for '{text_chunk[:30]}...'")
 
                 # Start the thread as before, but pass the ID and Session ID
+                TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+                output_dir = TMP_DIR / "sl5_aura" / "tts_output"
                 thread = threading.Thread(
                     target=process_text_in_background,
-                    args=(logger, lt_language, text_chunk, TMP_DIR,
-                          time.time(), active_lt_url, None,  # Existing arguments
-                          current_chunk_id, session_id)
+                    args=(logger, lt_language, text_chunk, output_dir,
+                          time.time(), lt_language, None,  # Existing arguments
+                          current_chunk_id, session_id),
+                    kwargs = {'interface': 'speech'}
                 )
                 thread.start()
 
@@ -254,7 +257,8 @@ def handle_trigger(
                     output_dir = TMP_DIR / "sl5_aura" / "tts_output"
                     thread = threading.Thread(target=process_text_in_background,
                                               args=(logger, lt_language, text_chunk, output_dir,
-                                                    time.time(), active_lt_url))
+                                                    time.time(), active_lt_url),
+                                              kwargs = {'interface': 'speech'})
                     thread.start()
 
                 if not dictation_session_active.is_set():

@@ -70,8 +70,7 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:
           task: start-measurement
-          
-          
+
       - name: Run Self-Tester with Final Guard
         env:
           PYTHONPATH: ${{ github.workspace }}

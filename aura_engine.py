@@ -1,16 +1,42 @@
 # File: aura_engine.py
-import shutil
-
-import objgraph
-from datetime import datetime, timedelta
-
 import os
 import sys
+# ==============================================================================
+# --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
+# Ensures the engine actually runs inside its .venv to avoid dependency issues.
+# The 'VIRTUAL_ENV' variable is a standard indicator for an active venv.
+# only active when you use explicit source .venv/bin/activate
+
+if 'VIRTUAL_ENV' not in os.environ:
+    # only active when you use explicit source .venv/bin/activate
+    # some use as other method: sys.prefix == sys.base_prefix
+    print(
+        "\n❌ [AURA ENGINE] FATAL: Python virtual environment not activated!",
+        file=sys.stderr
+    )
+    if os.name == 'nt':  # Windows
+        print(
+            "👉 Please start Aura using the official Windows batch script:",
+            file=sys.stderr
+        )
+        print("   start_aura.bat\n", file=sys.stderr)
+    else:  # Linux / macOS
+        print(
+            "👉 Please start Aura using the recommended startup script:",
+            file=sys.stderr
+        )
+        print("   ./scripts/restart_venv_and_run-server.sh", file=sys.stderr)
+        print("\n   Or the alternative activation script:", file=sys.stderr)
+        print("   ./scripts/activate-venv_and_run-server.sh\n", file=sys.stderr)
+
+        # aura_engine.py:44 'VIRTUAL_ENV' not
+    sys.exit(1)
+# ==============================================================================
+import shutil
+import objgraph
+from datetime import datetime, timedelta
 import subprocess
-
 import signal
-
-
 import psutil
 import time
 import re
@@ -18,6 +44,7 @@ import re
 import threading
 
 from scripts.py.func import global_state
+from scripts.py.func.config.dynamic_settings import settings
 
 #from config.settings import LANGUAGETOOL_CHECK_URL
 
@@ -25,45 +52,6 @@ from scripts.py.func import global_state
 # This solves potential issues when running from a batch script on Windows
 
 # os.environ["AURA_SELF_TEST_RUNNING"] = "0"
-
-
-
-# ==============================================================================
-# --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
-# The script MUST run inside its virtual environment to find dependencies.
-# The 'VIRTUAL_ENV' variable is a standard indicator for an active venv.
-
-if 'VIRTUAL_ENV' not in os.environ:
-    print(
-        "\nFATAL: Python virtual environment not activated!",
-        file=sys.stderr
-    )
-    print(
-        "       Please activate it first. On Linux/macOS, run:",
-        file=sys.stderr
-    )
-    print("       source .venv/bin/activate", file=sys.stderr)
-    print(
-        "       Then, you can run the script: python aura_engine.py",
-        file=sys.stderr
-    )
-
-    print("       Or (recommended) run:", file=sys.stderr)
-    print(
-        "       scripts/restart_venv_and_run-server.sh or run scripts/activate-venv_and_run-server.sh",
-        file=sys.stderr
-    )
-    # aura_engine.py:44 'VIRTUAL_ENV' not
-    sys.exit(1)
-
-
-
-# ==============================================================================
-
-
-
-
-
 
 import sys
 import os
@@ -74,10 +62,6 @@ import platform
 import importlib
 from pathlib import Path
 
-
-
-# aura_engine.py:59
-from scripts.py.func.config.dynamic_settings import settings
 
 if settings.LOG_delete_on_startup:
 
@@ -100,6 +84,20 @@ from scripts.py.func.checks.espeak_check import espeak_check
 espeak_check(settings)
 
 from scripts.py.func.checks.check_settings_syntax import verify_plugin_notation
+
+if settings.TRINO_ENABLED:
+    from scripts.py.func.db.init_trino_db import init_all as init_trino
+    def async_trino_init():
+        try:
+            init_trino()
+        except Exception as e:
+            print(f"[AURA ENGINE] WARNING: Failed to initialize Trino database: {e}")
+            print("[AURA ENGINE] Database features may be unavailable.")
+
+    trino_thread = threading.Thread(target=async_trino_init, daemon=True)
+    trino_thread.start()
+    print("[AURA ENGINE] Trino database initialization started asynchronously in the background...")
+
 verify_plugin_notation(settings.PLUGINS_ENABLED)
 
 if getattr(settings, 'KILL_COMPETING_LT_AND_ELOQUENT_ON_START', False):
@@ -135,6 +133,8 @@ from scripts.py.func.main import main
 from scripts.py.func.create_required_folders import setup_project_structure
 
 
+
+
 # --- Constants and Paths ---
 SCRIPT_DIR = Path(__file__).resolve().parent
 
@@ -147,7 +147,12 @@ PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
 PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
+os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
+
+
 _log_dir = PROJECT_ROOT / "log"
+
+
 
 if not _log_dir.exists():
     shutil.copy(
@@ -170,8 +175,6 @@ AURA_SELF_TEST_RUNNING =TMP_DIR / "sl5_aura" / "aura_self_test_running.flag"
 
 
 
-# aura_engine.py:131
-os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
 
 
 # ==============================================================================

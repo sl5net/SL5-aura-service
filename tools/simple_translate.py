@@ -1,8 +1,12 @@
-# Speichern unter dem neuen Namen, z.B. in Ihrem 'tools'-Verzeichnis
-# als: .../tools/simple_translate.py
+# tools/simple_translate.py
 
 import subprocess
 import sys
+
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).parent))
+from looks_like_secret import looks_like_secret
 
 TRANSLATION_COMMAND = "trans"
 
@@ -14,6 +18,9 @@ def translate_text(text: str, target_lang: str) -> (str | None, str | None):
     """
     if not text.strip():
         return "", None # Leerer Input, kein Fehler
+
+    if looks_like_secret(text):
+        return text
 
     # '-b' für "brief mode" (nur die Übersetzung)
     # '--no-ansi' entfernt Farbcodes
