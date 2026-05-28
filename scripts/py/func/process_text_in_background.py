@@ -1413,7 +1413,7 @@ def process_text_in_background(logger,
                     # log4DEV("Applying all rules until stable (default 'all' mode).", logger)
 
                     # print(f':st: \nprocess_text_in_background:1227 raw_text:"{raw_text}" processed_text:"{processed_text}"')
-                    print(f":st: \n processed_text={processed_text} 1261\n\n", logger)
+                    print(f":st: \n processed_text={processed_text} \n\n", logger)
 
                     (new_processed_text
                     , regex_pre_is_replacing_all_maybe
