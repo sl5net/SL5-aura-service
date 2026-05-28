@@ -1,16 +1,42 @@
 # File: aura_engine.py
-import shutil
-
-import objgraph
-from datetime import datetime, timedelta
-
 import os
 import sys
+# ==============================================================================
+# --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
+# Ensures the engine actually runs inside its .venv to avoid dependency issues.
+# The 'VIRTUAL_ENV' variable is a standard indicator for an active venv.
+# only active when you use explicit source .venv/bin/activate
+
+if 'VIRTUAL_ENV' not in os.environ:
+    # only active when you use explicit source .venv/bin/activate
+    # some use as other method: sys.prefix == sys.base_prefix
+    print(
+        "\n❌ [AURA ENGINE] FATAL: Python virtual environment not activated!",
+        file=sys.stderr
+    )
+    if os.name == 'nt':  # Windows
+        print(
+            "👉 Please start Aura using the official Windows batch script:",
+            file=sys.stderr
+        )
+        print("   start_aura.bat\n", file=sys.stderr)
+    else:  # Linux / macOS
+        print(
+            "👉 Please start Aura using the recommended startup script:",
+            file=sys.stderr
+        )
+        print("   ./scripts/restart_venv_and_run-server.sh", file=sys.stderr)
+        print("\n   Or the alternative activation script:", file=sys.stderr)
+        print("   ./scripts/activate-venv_and_run-server.sh\n", file=sys.stderr)
+
+        # aura_engine.py:44 'VIRTUAL_ENV' not
+    sys.exit(1)
+# ==============================================================================
+import shutil
+import objgraph
+from datetime import datetime, timedelta
 import subprocess
-
 import signal
-
-
 import psutil
 import time
 import re
@@ -27,45 +53,6 @@ from scripts.py.func.config.dynamic_settings import settings
 
 # os.environ["AURA_SELF_TEST_RUNNING"] = "0"
 
-
-
-# ==============================================================================
-# --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
-# The script MUST run inside its virtual environment to find dependencies.
-# The 'VIRTUAL_ENV' variable is a standard indicator for an active venv.
-
-if 'VIRTUAL_ENV' not in os.environ:
-    print(
-        "\nFATAL: Python virtual environment not activated!",
-        file=sys.stderr
-    )
-    print(
-        "       Please activate it first. On Linux/macOS, run:",
-        file=sys.stderr
-    )
-    print("       source .venv/bin/activate", file=sys.stderr)
-    print(
-        "       Then, you can run the script: python aura_engine.py",
-        file=sys.stderr
-    )
-
-    print("       Or (recommended) run:", file=sys.stderr)
-    print(
-        "       scripts/restart_venv_and_run-server.sh or run scripts/activate-venv_and_run-server.sh",
-        file=sys.stderr
-    )
-    # aura_engine.py:44 'VIRTUAL_ENV' not
-    sys.exit(1)
-
-
-
-# ==============================================================================
-
-
-
-
-
-
 import sys
 import os
 import atexit
@@ -74,9 +61,6 @@ import logging
 import platform
 import importlib
 from pathlib import Path
-
-
-
 
 
 if settings.LOG_delete_on_startup:
