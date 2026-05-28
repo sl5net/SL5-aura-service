@@ -53,6 +53,9 @@ Note: Many texts are machine-generated translations of the original English docu
 
 </details>
 
+<details>
+<summary>Demo</summary>
+
 ### 📺 Terminal Demo 
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
@@ -63,6 +66,8 @@ Note: Many texts are machine-generated translations of the original English docu
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *(Alternative link: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+
+</details>
 
 <details>
 <summary>Key Features</summary>
