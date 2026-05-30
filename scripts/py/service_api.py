@@ -1,13 +1,17 @@
 # file: scripts/py/service_api.py
-
+import subprocess
 import time
 import os
 import logging
 from pathlib import Path
 
+import os
+import socket
+import subprocess
+
 # Imports
 from fastapi import FastAPI, Depends, Header, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse, HTMLResponse
 from datetime import datetime
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -63,6 +67,107 @@ def verify_api_key(x_api_key: str = Header(None, alias="X-API-Key")):
             detail="Ungültiger oder fehlender X-API-Key Header. Zugriff verweigert."
         )
     return True
+
+
+def is_port_open(port: int) -> bool:
+    """Check if a specific port is already accepting TCP connections."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('localhost', port)) == 0
+
+@app.get("/admin")
+def open_admin_panel():
+    """
+    On-Demand Gateway to the Aura Admin Dashboard.
+    Detects if Streamlit is installed, auto-installs it if missing,
+    spawns the background server, and redirects the browser.
+    """
+    port = 8084
+
+    # 1. If the Admin Dashboard is already running, redirect immediately
+    if is_port_open(port):
+        return RedirectResponse(url=f"http://localhost:{port}")
+
+    # 2. If not running, resolve paths to verify installation
+    project_root = Path(__file__).resolve().parents[2]
+
+    if os.name == 'nt':  # Windows
+        streamlit_bin = project_root / ".venv" / "Scripts" / "streamlit.exe"
+    else:  # Linux / Mac
+        streamlit_bin = project_root / ".venv" / "bin" / "streamlit"
+
+    # 3. Auto-install Streamlit on-demand if it is missing
+    if not streamlit_bin.exists():
+        from scripts.py.func.try_auto_install_package import try_auto_install_package
+        # We pass the existing app_logger from service_api.py
+        success = try_auto_install_package('streamlit', logger=app_logger)
+        if not success:
+            return HTMLResponse(
+                content="<h3>Error: Failed to auto-install Streamlit. Please verify requirements-web.txt.</h3>",
+                status_code=500
+            )
+
+    script_path = project_root / "scripts" / "py" / "chat" / "streamlit-admin.py"
+
+    # 4. Start the Streamlit server in the background
+    subprocess.Popen(
+        [str(streamlit_bin), "run", str(script_path), "--server.port", str(port)],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True
+    )
+
+    # 5. Return a styled loading page that auto-refreshes to /admin after 3 seconds
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Aura Admin Initializing</title>
+        <meta http-equiv="refresh" content="3; url=/admin">
+        <style>
+            body {{
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                background-color: #0e1117;
+                color: #ffffff;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }}
+            .spinner {{
+                border: 4px solid rgba(255, 255, 255, 0.1);
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                border-left-color: #ff4b4b;
+                animation: spin 1s linear infinite;
+                margin-bottom: 20px;
+            }}
+            @keyframes spin {{
+                0% {{ transform: rotate(0deg); }}
+                100% {{ transform: rotate(360deg); }}
+            }}
+            h2 {{
+                font-weight: 400;
+                margin: 0 0 10px 0;
+            }}
+            p {{
+                color: #a3a8b4;
+                margin: 0;
+                font-size: 14px;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="spinner"></div>
+        <h2>Initializing Aura Admin Dashboard...</h2>
+        <p>Installing dependencies and starting the dashboard server. Please wait a moment.</p>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content, status_code=200)
+
 
 # --- SICHERHEITS-MIDDLEWARE (Nur Unterstrich-Regel) ---
 @app.middleware("http")

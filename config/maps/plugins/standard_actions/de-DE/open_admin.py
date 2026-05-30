@@ -1,4 +1,5 @@
 # config/maps/plugins/standard_actions/de-DE/open_admin.py
+import logging
 import subprocess
 import socket
 import time
@@ -15,12 +16,8 @@ def get_clean_env():
         env.pop(key, None)
     return env
 
-
 def execute(match_data):
     port = 8084
-
-    # plugin_path = Path(__file__).resolve()
-    # project_root = plugin_path.parents[6]
 
     tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
     project_root = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
@@ -29,6 +26,14 @@ def execute(match_data):
         streamlit_bin = project_root / ".venv" / "Scripts" / "streamlit.exe"
     else:  # Linux / Mac
         streamlit_bin = project_root / ".venv" / "bin" / "streamlit"
+
+    # Check if streamlit is installed, and auto-install if missing
+    if not streamlit_bin.exists():
+        from scripts.py.func.try_auto_install_package import try_auto_install_package
+        # We let the function fallback to print() since no logger is active here
+        success = try_auto_install_package('streamlit',logger=logging)
+        if not success:
+            return "Failed to auto-install optional package Streamlit. Please install it manually."
 
     script_path = project_root / "scripts" / "py" / "chat" / "streamlit-admin.py"
 
@@ -52,7 +57,6 @@ def execute(match_data):
                              env=clean_env)
         except Exception as e:
             try:
-                # open (macOS)
                 print(e)
                 subprocess.Popen(["open", f"http://localhost:{port}"],
                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,

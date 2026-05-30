@@ -36,9 +36,12 @@ def get_feature_state(interface='speech', feature='translation'):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(f"""
-        SELECT state FROM memory.aura.features
-        WHERE interface = '{interface}'
-        AND feature = '{feature}'
+    SELECT f.state 
+    FROM memory.aura.features f
+    INNER JOIN memory.aura.translation_state t 
+      ON f.interface = t.interface
+    WHERE f.interface = '{interface}'
+      AND f.feature = '{feature}'
     """)
     row = cur.fetchone()
     return row[0] if row else 'off'

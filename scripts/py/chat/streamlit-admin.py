@@ -3,6 +3,17 @@
 import re
 import sys
 from pathlib import Path
+from importlib import metadata
+import logging
+logger = logging.getLogger(__name__)
+try:
+    ver = metadata.version("streamlit")
+    print("streamlit version:", ver)
+except metadata.PackageNotFoundError:
+    print("streamlit nicht installiert")
+    from scripts.py.func.try_auto_install_package import try_auto_install_package
+    try_auto_install_package('streamlit',logger=logger)
+
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parents[3]))
@@ -32,6 +43,7 @@ try:
         get_all_status,
         enable_translation,
         disable_translation,
+        ensure_fuzzy_map_in_sync,
     )
 
     statuses = get_all_status()
@@ -44,7 +56,7 @@ except Exception as e:
         error_category = "connection_refused"
 
     # elif "schema 'aura' does not exist" in err_msg_lower:
-    elif re.search(r"schema .* does not exist", err_msg_lower):
+    elif re.search(r"(schema|table) .* does not exist", err_msg_lower):
 
         from scripts.py.func.db.init_trino_db import init_all as init_trino
         try:
@@ -143,6 +155,7 @@ for status in statuses:
         if translation == 'on':
             if st.button("Disable", key=f"disable_{interface}"):
                 disable_translation(interface)
+                ensure_fuzzy_map_in_sync(interface)
                 st.rerun()
         else:
             lang_input = st.selectbox(
@@ -152,6 +165,7 @@ for status in statuses:
             )
             if st.button("Enable", key=f"enable_{interface}"):
                 enable_translation(interface, lang=lang_input)
+                ensure_fuzzy_map_in_sync(interface)
                 st.rerun()
 
 st.divider()

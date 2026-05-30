@@ -9,6 +9,8 @@ import time
 import subprocess
 import datetime
 
+from scripts.py.func.db.aura_state import ensure_fuzzy_map_in_sync
+
 sys.path.insert(0, str(Path(__file__).parents[4]))
 from scripts.py.func.db.trino_client import get_connection
 
@@ -100,6 +102,9 @@ def init_translation_state_table():
 
 def init_all():
     print("[init_trino_db] Starting Trino DB initialization...")
+
+    ensure_fuzzy_map_in_sync()
+
     try:
         if not start_trino_if_needed():
             print("[init_trino_db] WARNING: Trino docker start failed, skipping DB init.")

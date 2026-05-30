@@ -1,3 +1,4 @@
+# scripts/py/func/auto_fix_module.py
 import os
 import re
 import ast

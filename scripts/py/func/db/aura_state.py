@@ -63,6 +63,47 @@ def get_all_status():
     """Get full status for all interfaces."""
     return [get_interface_status(i) for i in INTERFACES]
 
+def ensure_fuzzy_map_in_sync(interface='speech'):
+    """
+    Ensures FUZZY_MAP_pre.py translation rule matches Trino state.
+    Called at startup and after Admin UI changes.
+    """
+    import re
+    from pathlib import Path
+
+    RULES_FILE_PATH = Path(__file__).parents[4] / \
+        'config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py'
+    RULE_ANCHOR = '# TRANSLATION_RULE'
+
+    if not RULES_FILE_PATH.exists():
+        print(f"[aura_state] WARNING: FUZZY_MAP_pre.py not found at {RULES_FILE_PATH}")
+        return
+
+    should_be_active = is_translation_enabled(interface)
+
+    lines = RULES_FILE_PATH.read_text(encoding='utf-8').splitlines()
+    for i, line in enumerate(lines):
+        if RULE_ANCHOR in line:
+            rule_line_index = i + 1
+            if rule_line_index >= len(lines):
+                break
+            is_active = not lines[rule_line_index].strip().startswith('#')
+
+            if should_be_active and not is_active:
+                # activate
+                lines[rule_line_index] = lines[rule_line_index].replace('#', '', 1)
+                RULES_FILE_PATH.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+                print(f"[aura_state] FUZZY_MAP rule ACTIVATED for interface={interface}")
+            elif not should_be_active and is_active:
+                # deactivate
+                lines[rule_line_index] = re.sub(r'^(\s*)(.*)', r'\1#\2', lines[rule_line_index])
+                RULES_FILE_PATH.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+                print(f"[aura_state] FUZZY_MAP rule DEACTIVATED for interface={interface}")
+            else:
+                print(f"[aura_state] FUZZY_MAP already in sync for interface={interface}")
+            break
+
+
 
 if __name__ == '__main__':
     print("=== Aura State ===")

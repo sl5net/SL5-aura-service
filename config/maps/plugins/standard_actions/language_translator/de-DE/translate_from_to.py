@@ -74,18 +74,19 @@ def execute(match_data):
     logger = logging.getLogger(__name__)
 
 
-
-    # 1. Trino: State fuer dieses Interface pruefen
     try:
         INTERFACE = os.getenv("INTERFACE", "speech")
+        # print(f"DEBUG translate_from_to: INTERFACE={INTERFACE}")
         feature_state = get_feature_state(interface=INTERFACE, feature='translation')
+        # print(f"DEBUG translate_from_to: feature_state={feature_state}")
         if feature_state != 'on':
             return original_text
         lang_target = get_target_lang(interface=INTERFACE)
+        # print(f"DEBUG translate_from_to: lang_target={lang_target}")
         if lang_target is None:
             return original_text
-
     except Exception as e:
+        # print(f"DEBUG translate_from_to: EXCEPTION={e}")
         # Fallback: translation_state.py falls Trino nicht erreichbar
         logger.warning(f"Trino nicht erreichbar, Fallback auf STATE_FILE: {e}")
         STATE_FILE = Path(__file__).parent / 'translation_state.py'
@@ -96,7 +97,6 @@ def execute(match_data):
             return original_text
         key, _ = content.split('=', 1)
         lang_target = key.strip().replace('_', '-')
-
     logger.info(f'Translating to {lang_target} (interface={match_data.get("interface", "terminal")})')
 
     # 2. Cache pruefen
