@@ -11,7 +11,7 @@ TRINO_CATALOG = 'memory'
 TRINO_SCHEMA = 'aura'
 
 
-def get_connection():
+def get_connection(schema=TRINO_SCHEMA):
     import trino
     current_user, _ = determine_current_user()
     return trino.dbapi.connect(
@@ -19,7 +19,7 @@ def get_connection():
         port=TRINO_PORT,
         user=current_user,
         catalog=TRINO_CATALOG,
-        schema=TRINO_SCHEMA,
+        schema=schema,
     )
 
 

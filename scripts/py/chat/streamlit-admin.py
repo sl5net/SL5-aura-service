@@ -56,11 +56,22 @@ except Exception as e:
         error_category = "connection_refused"
 
     # elif "schema 'aura' does not exist" in err_msg_lower:
-    elif re.search(r"(schema|table) .* does not exist", err_msg_lower):
-
+    elif re.search(r"(schema|table|column) .* (does not exist|cannot be resolved)", err_msg_lower):
         from scripts.py.func.db.init_trino_db import init_all as init_trino
+
         try:
             init_trino()
+
+            # Wait up to 5s for Trino to acknowledge the new schema/tables
+            import time
+
+            for _ in range(10):
+                try:
+                    get_all_status()  # Test-Abfrage der Tabellen
+                    break
+                except Exception:
+                    time.sleep(0.5)
+
             st.rerun()
         except Exception as e:
             st.error(f"Auto-init failed: {e}")

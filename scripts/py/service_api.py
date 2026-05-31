@@ -1,13 +1,13 @@
-# file: scripts/py/service_api.py
+# scripts/py/service_api.py
 import subprocess
+import sys
 import time
 import os
 import logging
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-import os
 import socket
-import subprocess
 
 # Imports
 from fastapi import FastAPI, Depends, Header, HTTPException, Request
@@ -23,6 +23,17 @@ from scripts.py.func.process_text_in_background import process_text_in_backgroun
 def timestamp():
     return datetime.now().strftime("%Y%m%d_%H%M%S")
 
+import datetime
+from pathlib import Path
+def log_msg(msg):
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    from pathlib import Path as p
+    import os as o  # noqa: E702
+    with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+    f = PROJECT_ROOT / "log" / "streamlit-admin.log"
+    with open(('C:/tmp' if o.name == 'nt' else '/tmp') + '/sl5_aura/sl5net_aura_project_root',
+              encoding='utf-8') as f: PROJECT_ROOT = p(f.read().strip())  # noqa: E702
+
 
 # --- 1. Setup & Konfiguration ---
 
@@ -31,15 +42,15 @@ PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_tex
 
 
 SECRETS_PATH = PROJECT_ROOT / ".secrets"
-print(f"DEBUG: Suche .secrets unter: {SECRETS_PATH}")
+log_msg(f"DEBUG: Suche .secrets unter: {SECRETS_PATH}")
 
 if not SECRETS_PATH.exists():
-    print("FEHLER: .secrets Datei existiert NICHT am erwarteten Ort.")
+    log_msg("FEHLER: .secrets Datei existiert NICHT am erwarteten Ort.")
 load_dotenv(SECRETS_PATH)
 
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 # Debug Print (Should be removed in production)
-print(f"DEBUG: Loaded API Key (length {len(API_KEY_SECRET)}): '{API_KEY_SECRET[:5]}...'")
+log_msg(f"DEBUG: Loaded API Key (length {len(API_KEY_SECRET)}): '{API_KEY_SECRET[:5]}...'")
 
 # Temporärer Pfad
 TMP_DIR = Path(os.environ.get("TMPDIR", "/tmp")) / "sl5_aura_service"
@@ -59,7 +70,7 @@ app = FastAPI()
 
 def verify_api_key(x_api_key: str = Header(None, alias="X-API-Key")):
     # Debug Prints
-    # print(f"API_KEY_SECRET: {repr(API_KEY_SECRET)[:4]}...")
+    # log_msg(f"API_KEY_SECRET: {repr(API_KEY_SECRET)[:4]}...")
 
     if x_api_key is None or x_api_key != API_KEY_SECRET:
         raise HTTPException(
@@ -106,6 +117,7 @@ def open_admin_panel():
                 status_code=500
             )
 
+    # scripts/py/service_api.py:119
     script_path = project_root / "scripts" / "py" / "chat" / "streamlit-admin.py"
 
     # 4. Start the Streamlit server in the background
@@ -117,14 +129,14 @@ def open_admin_panel():
     )
 
     # 5. Return a styled loading page that auto-refreshes to /admin after 3 seconds
-    html_content = f"""
+    html_content = """
     <!DOCTYPE html>
     <html>
     <head>
         <title>Aura Admin Initializing</title>
         <meta http-equiv="refresh" content="3; url=/admin">
         <style>
-            body {{
+            body {
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
                 background-color: #0e1117;
                 color: #ffffff;
@@ -134,8 +146,8 @@ def open_admin_panel():
                 justify-content: center;
                 height: 100vh;
                 margin: 0;
-            }}
-            .spinner {{
+            }
+            .spinner {
                 border: 4px solid rgba(255, 255, 255, 0.1);
                 width: 50px;
                 height: 50px;
@@ -143,20 +155,20 @@ def open_admin_panel():
                 border-left-color: #ff4b4b;
                 animation: spin 1s linear infinite;
                 margin-bottom: 20px;
-            }}
-            @keyframes spin {{
-                0% {{ transform: rotate(0deg); }}
-                100% {{ transform: rotate(360deg); }}
-            }}
-            h2 {{
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            h2 {
                 font-weight: 400;
                 margin: 0 0 10px 0;
-            }}
-            p {{
+            }
+            p {
                 color: #a3a8b4;
                 margin: 0;
                 font-size: 14px;
-            }}
+            }
         </style>
     </head>
     <body>

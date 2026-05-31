@@ -1,4 +1,12 @@
 # config/maps/plugins/standard_actions/de-DE/open_admin.py
+"""
+Aura Admin Interface Launcher Plugin.
+
+- Dynamically resolves the project root directory.
+- Verifies if 'streamlit' is installed; if missing, triggers a silent on-demand installation from 'requirements-web.txt'.
+- Spawns the Streamlit admin server (port 8084) in the background if it is not already running.
+- Securely launches the default system web browser (clearing local virtualenv library paths on Linux/macOS to prevent browser crashes) to display the Admin Dashboard.
+"""
 import logging
 import subprocess
 import socket
@@ -37,11 +45,12 @@ def execute(match_data):
 
     script_path = project_root / "scripts" / "py" / "chat" / "streamlit-admin.py"
 
-    if not is_port_open(port):
+    log_file = project_root / "log" / "streamlit-admin.log"
+    with open(log_file, "a", encoding="utf-8") as lf:
         subprocess.Popen(
             [str(streamlit_bin), "run", str(script_path), "--server.port", str(port)],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            stdout=lf,
+            stderr=lf,
             start_new_session=True
         )
         time.sleep(1.5)

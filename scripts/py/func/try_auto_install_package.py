@@ -1,5 +1,4 @@
 # scripts/py/func/try_auto_install_package.py
-import os
 import re
 import sys
 import subprocess
