@@ -1,20 +1,36 @@
 # scripts/py/chat/streamlit-admin.py
 # Aura Admin Interface — Port 8084
+import os
 import re
 import sys
 from pathlib import Path
 from importlib import metadata
 import logging
+
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/{__name__}.log', mode='a', encoding='utf-8')
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(file_handler)
+
+
 logger = logging.getLogger(__name__)
 try:
     ver = metadata.version("streamlit")
     print("streamlit version:", ver)
 except metadata.PackageNotFoundError:
-    print("streamlit nicht installiert")
+    print("streamlit not installed")
     from scripts.py.func.try_auto_install_package import try_auto_install_package
     try_auto_install_package('streamlit',logger=logger)
 
 import streamlit as st
+
+
+
 
 sys.path.insert(0, str(Path(__file__).parents[3]))
 
@@ -45,32 +61,74 @@ try:
         disable_translation,
         ensure_fuzzy_map_in_sync,
     )
-
     statuses = get_all_status()
     db_ready = True
-except Exception as e:
-    connection_error_details = str(e)
+except Exception as init_e:
+    connection_error_details = str(init_e)
     err_msg_lower = connection_error_details.lower()
 
-    if "connection refused" in err_msg_lower or "failed to establish a new connection" in err_msg_lower or "max retries exceeded" in err_msg_lower:
-        error_category = "connection_refused"
 
-    # elif "schema 'aura' does not exist" in err_msg_lower:
-    elif re.search(r"(schema|table) .* does not exist", err_msg_lower):
 
-        from scripts.py.func.db.init_trino_db import init_all as init_trino
-        try:
-            init_trino()
-            st.rerun()
-        except Exception as e:
-            st.error(f"Auto-init failed: {e}")
+
+    # Detect if the error is a connection failure or a missing schema/table/column
+    is_conn_error = "connection refused" in err_msg_lower or "failed to establish a new connection" in err_msg_lower or "max retries exceeded" in err_msg_lower
+    is_schema_error = re.search(r"(schema|table|column) .* (does not exist|cannot be resolved)", err_msg_lower)
+
+    if is_conn_error or is_schema_error:
+        if not st.session_state.get('_db_init_attempted'):
+
+
+
+
+
+            st.session_state['_db_init_attempted'] = True
+            from scripts.py.func.db.init_trino_db import init_all_sync
+            try:
+                init_all_sync()
+                st.rerun()
+                # statuses = get_all_status()
+
+                # st.rerun()
+            except Exception as init_e:
+                import sys, traceback
+                file = __file__
+                st.error(f"""
+                Auto-init failed 
+                
+                __file__= 
+                
+                {__file__.replace(str(PROJECT_ROOT), "")[1:]}:82
+    
+                __name__= {__name__}
+                
+                
+                scripts.py.func.db.init_trino_db 
+                
+                import init_all as init_trino
+                
+                 \n\n {init_e}
+                """)
+                # traceback.print_exc(file=sys.stdout)
+                st.info(f"{traceback.format_exc().replace(str(PROJECT_ROOT), "")}")
+
+                st.stop()
+        else:
+            import datetime
+            now = datetime.datetime.now().strftime("%H:%M:%S")
+            st.error(f"[{now}] DB init already attempted this session — still failing. Reload the page manually to retry.")
+            if getattr(settings, "DEV_MODE", False):
+                logger.info('tip:  fuser -k 8084/tcp   ')
+                logger.info('tip:  tail -n 30 log/scripts.py.func.db.init_trino_db.log   ')
+                st.exception(connection_error_details)
+                st.stop()
+            else:
+                logger.info('you not in DEV mode')
             st.stop()
-
 
 if not db_ready:
     if error_category == "connection_refused":
         st.title("🔌 Database Connection Refused")
-        st.error("The Aura Admin Dashboard cannot connect to the Trino database on port 8083.")
+        st.error("The Aura Admin Dashboard cannot connect to the Trino database on port 8083. (scripts/py/chat/streamlit-admin.py)")
         st.markdown("""
         ### 🔍 Why did this happen?
         Trino is **enabled** in your settings, but the database port is closed. 

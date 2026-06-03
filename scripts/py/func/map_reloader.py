@@ -475,7 +475,7 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                         was_fixed = try_auto_fix_module(file_path, e, logger)
 
                         if was_fixed:
-                            logger.info("🔧 Fix wurde angewendet. Starte sofortigen Reload-Versuch...")
+                            logger.info(f"🔧 …{str(module_name)[-35:]} Fix wurde angewendet. Starte sofortigen Reload-Versuch...")
 
                             try:
                                 # IMPORTANT: Clear caches so Python knows the file is new on disk

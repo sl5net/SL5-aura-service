@@ -39,7 +39,11 @@ def execute(match_data):
 
     if not is_port_open(port):
         subprocess.Popen(
-            [str(streamlit_bin), "run", str(script_path), "--server.port", str(port)],
+            [
+                str(streamlit_bin), "run", str(script_path),
+                "--server.port", str(port),
+                "--server.fileWatcherType", "poll",  # ← split here
+            ],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             start_new_session=True

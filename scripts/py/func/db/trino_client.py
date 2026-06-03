@@ -4,14 +4,27 @@ import sys
 sys.path.insert(0, str(Path(__file__).parents[4]))
 from datetime import datetime, timezone
 from scripts.py.func.determine_current_user import determine_current_user
+from scripts.py.func.ensure_package import ensure_package
 
 TRINO_HOST = 'localhost'
 TRINO_PORT = 8083
 TRINO_CATALOG = 'memory'
 TRINO_SCHEMA = 'aura'
 
+async def open_trino_connection(schema=TRINO_SCHEMA):
+    aiotrino = ensure_package("aiotrino")
+    current_user, _ = determine_current_user()
+    return aiotrino.dbapi.connect(
+        host=TRINO_HOST,
+        port=TRINO_PORT,
+        user=current_user,
+        catalog=TRINO_CATALOG,
+        schema=schema,
+    )
 
-def get_connection():
+# scripts/py/func/db/trino_client.py:25
+def get_connection(schema=TRINO_SCHEMA):
+    """For synchronous runtime callers (trino_client helpers, Streamlit)."""
     import trino
     current_user, _ = determine_current_user()
     return trino.dbapi.connect(
@@ -19,7 +32,7 @@ def get_connection():
         port=TRINO_PORT,
         user=current_user,
         catalog=TRINO_CATALOG,
-        schema=TRINO_SCHEMA,
+        schema=schema,
     )
 
 
