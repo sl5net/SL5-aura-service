@@ -13,7 +13,8 @@ Supports:
 Usage:
   python scripts/py/chat/install_shortcut.py
 """
-import stat, sys
+import stat
+import sys
 from pathlib import Path
 
 ROOT     = Path(__file__).resolve().parents[3]          # …/sl5-aura/

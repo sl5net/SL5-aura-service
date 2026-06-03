@@ -5,9 +5,7 @@ import os
 import logging
 from pathlib import Path
 
-import os
 import socket
-import subprocess
 
 # Imports
 from fastapi import FastAPI, Depends, Header, HTTPException, Request
@@ -117,14 +115,14 @@ def open_admin_panel():
     )
 
     # 5. Return a styled loading page that auto-refreshes to /admin after 3 seconds
-    html_content = f"""
+    html_content = """
     <!DOCTYPE html>
     <html>
     <head>
         <title>Aura Admin Initializing</title>
         <meta http-equiv="refresh" content="3; url=/admin">
         <style>
-            body {{
+            body {
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
                 background-color: #0e1117;
                 color: #ffffff;
@@ -134,8 +132,8 @@ def open_admin_panel():
                 justify-content: center;
                 height: 100vh;
                 margin: 0;
-            }}
-            .spinner {{
+            }
+            .spinner {
                 border: 4px solid rgba(255, 255, 255, 0.1);
                 width: 50px;
                 height: 50px;
@@ -143,20 +141,20 @@ def open_admin_panel():
                 border-left-color: #ff4b4b;
                 animation: spin 1s linear infinite;
                 margin-bottom: 20px;
-            }}
-            @keyframes spin {{
-                0% {{ transform: rotate(0deg); }}
-                100% {{ transform: rotate(360deg); }}
-            }}
-            h2 {{
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            h2 {
                 font-weight: 400;
                 margin: 0 0 10px 0;
-            }}
-            p {{
+            }
+            p {
                 color: #a3a8b4;
                 margin: 0;
                 font-size: 14px;
-            }}
+            }
         </style>
     </head>
     <body>

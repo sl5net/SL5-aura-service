@@ -12,7 +12,7 @@ import logging
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    import trino
+    pass
 
 
 sys.path.insert(0, str(Path(__file__).parents[4]))
@@ -163,7 +163,7 @@ async def init_features_table(conn=None):
         await conn.commit()
 
     finally:
-    #     await conn.close()
+        # await conn.close()
         logger.info('Trino JVM connection not closed.')
 
 async def init_translation_state_table(conn=None):
@@ -187,7 +187,6 @@ async def init_translation_state_table(conn=None):
 # scripts/py/func/db/init_trino_db.py:181
 def init_all_sync() -> None:
     """Synchronous entry point for Streamlit / non-async callers."""
-    import time
     import asyncio
     time.sleep(1)
     for _ in range(60):
@@ -212,7 +211,7 @@ async def init_all():
             return
 
         # ok, msg = await init_schema(catalog=TRINO_CATALOG, schema=TRINO_SCHEMA)
-        # Eine Verbindung für alle:
+        # A connection for everyone:
         conn = await open_trino_connection(schema='default')
         try:
             ok, msg = await init_schema(conn, TRINO_CATALOG, TRINO_SCHEMA)
@@ -222,7 +221,7 @@ async def init_all():
             await init_features_table(conn)
             await init_translation_state_table(conn)
         finally:
-        #     await conn.close()
+            # await conn.close()
             logger.info('Trino DB initialization complete.')
 
 

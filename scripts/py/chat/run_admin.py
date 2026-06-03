@@ -7,7 +7,11 @@ Double-click entry point (via .desktop / .bat shortcut).
 Starts FastAPI :8830 + Streamlit :8084 only when cold, then opens the browser.
 No persistent background servers needed at boot — zero idle footprint.
 """
-import socket, subprocess, sys, time, webbrowser
+import socket
+import subprocess
+import sys
+import time
+import webbrowser
 from pathlib import Path
 
 # ── Resolve venv Python regardless of working directory ──────────────────────
