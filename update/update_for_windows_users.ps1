@@ -7,6 +7,8 @@ $ErrorActionPreference = 'Stop'
 $installDir = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $tempDir = Join-Path $env:TEMP "sl5_update_temp"
 
+$localShaPath = Join-Path $installDir "update\.last_commit_sha"
+
 # Detect the active branch name from the folder name
 $folderName = Split-Path -Leaf $installDir
 $branch = "master"
@@ -21,6 +23,30 @@ if ($folderName -match "^SL5-aura-service-(.+)$") {
 }
 
 $repoUrl = "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/$branch.zip"
+
+
+# 2. Check latest commit SHA from GitHub API to prevent redundant downloads
+$remoteSha = ""
+try {
+    $apiUrl = "https://api.github.com/repos/sl5net/SL5-aura-service/commits/$branch"
+    $response = Invoke-RestMethod -Uri $apiUrl -UseBasicParsing
+    $remoteSha = $response.sha
+} catch {
+    Write-Host "WARNING: Could not fetch updates info from GitHub. Proceeding with download..." -ForegroundColor Yellow
+}
+
+
+if ($remoteSha -and (Test-Path $localShaPath)) {
+    $localSha = (Get-Content $localShaPath).Trim()
+    if ($localSha -eq $remoteSha) {
+        Write-Host "Aura is already up to date! ($branch branch is at commit $localSha)" -ForegroundColor Green
+        if (-not ($env:CI -eq 'true')) {
+            Read-Host -Prompt "Press Enter to exit"
+        }
+        exit 0
+    }
+}
+
 
 
 
@@ -134,6 +160,12 @@ del "%~f0"
     $batchPath = Join-Path $installDir "_finalize_update.bat"
     Set-Content -Path $batchPath -Value $batchScript
     # update/update_for_windows_users.ps1:110
+
+    # Save the new commit SHA locally for the next run
+    if ($remoteSha) {
+        Set-Content -Path $localShaPath -Value $remoteSha
+    }
+
     # 7. Launch the batch script and exit this PowerShell script
     Write-Host "INFO: Handing over to final updater script. This window will close." -ForegroundColor Yellow
     Start-Process cmd.exe -ArgumentList "/C `"$batchPath`""
