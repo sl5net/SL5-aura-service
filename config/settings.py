@@ -134,6 +134,11 @@ INPUT_METHOD="dotool"
 
 TRINO_ENABLED = False
 
+# Admin Gateway: lightweight FastAPI service on ADMIN_GATEWAY_PORT.
+# When enabled, stays always-on and spawns the Streamlit admin UI on demand.
+# Allows cold-start access via browser bookmark without manual startup.
+ADMIN_GATEWAY_ENABLED = True
+ADMIN_GATEWAY_PORT = 8830
 
 # text results that are stored on your computer can maybe read by other users on your computer.
 # Where would you like to store unencrypted cache? For example, under Linux you can use the temporary directory, which is automatically deleted if the computer was rebooted (original:'unter linux können sie zum beispiel das temporäre verzeichnis verwenden welches automatisch gelöscht wird wenn der computer neu started' ).

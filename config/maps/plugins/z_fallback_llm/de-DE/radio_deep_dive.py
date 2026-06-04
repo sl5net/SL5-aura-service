@@ -687,7 +687,7 @@ if __name__ == "__main__":
     import argparse
 
     # config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py:654
-    if False:
+    if True:
         parser = argparse.ArgumentParser()
 
         parser.add_argument('--demo', action='store_true')

@@ -10,12 +10,12 @@ from pathlib import Path
 
 # --- KONFIGURATION ---
 HOST = "0.0.0.0"
-# PORT = 8000
-PORT = 8830
 MODULE_PATH = "scripts.py.service_api:app"
-
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+sys.path.insert(0, str(PROJECT_ROOT))
+from config.settings import ADMIN_GATEWAY_ENABLED, ADMIN_GATEWAY_PORT
+PORT = ADMIN_GATEWAY_PORT
 
 
 (PROJECT_ROOT / 'log').mkdir(exist_ok=True)
@@ -114,6 +114,9 @@ def start_uvicorn_service(host, port, module_path):
 
 
 if __name__ == "__main__":
+    if not ADMIN_GATEWAY_ENABLED:
+        print("INFO: Admin Gateway disabled in settings. Exiting.")
+        sys.exit(0)
     ensure_dependencies()
 
     print(f"--- Service Start Skript ({time.strftime('%Y-%m-%d %H:%M:%S')}) ---")
