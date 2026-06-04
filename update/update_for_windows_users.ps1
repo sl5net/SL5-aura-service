@@ -41,7 +41,7 @@ if ($remoteSha -and (Test-Path $localShaPath)) {
     if ($localSha -eq $remoteSha) {
         Write-Host "Aura is already up to date! ($branch branch is at commit $localSha)" -ForegroundColor Green
         if (-not ($env:CI -eq 'true')) {
-            Read-Host -Prompt "Press Enter to exit"
+            Read-Host -Prompt "Press Enter to exit (optional)"
         }
         exit 0
     }
