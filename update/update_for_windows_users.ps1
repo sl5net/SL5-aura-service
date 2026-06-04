@@ -9,20 +9,28 @@ $tempDir = Join-Path $env:TEMP "sl5_update_temp"
 
 $localShaPath = Join-Path $installDir "update\.last_commit_sha"
 
-# Detect the active branch name from the folder name
-$folderName = Split-Path -Leaf $installDir
+
+
+# Detect the active branch from either the current folder or the parent folder
+$folder1 = Split-Path -Leaf $installDir
+$folder2 = Split-Path -Leaf (Split-Path -Parent $installDir)
+
 $branch = "master"
-if ($folderName -match "^SL5-aura-service-(.+)$") {
-    $rawBranch = $Matches[1]
-    # Reconstruct branch slashes from GitHub zipball dash formatting
-    if ($rawBranch -match "^(feature|experimental|bugfix|fix|hotfix)-(.*)$") {
-        $branch = "$($Matches[1])/$($Matches[2])"
-    } else {
-        $branch = $rawBranch
+foreach ($f in @($folder1, $folder2)) {
+    if ($f -match "^SL5-aura-service-(.+)$") {
+        $rawBranch = $Matches[1]
+        # Reconstruct branch slashes from GitHub zipball dash formatting
+        if ($rawBranch -match "^(feature|experimental|bugfix|fix|hotfix)-(.*)$") {
+            $branch = "$($Matches[1])/$($Matches[2])"
+        } else {
+            $branch = $rawBranch
+        }
+        break
     }
 }
 
 $repoUrl = "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/$branch.zip"
+
 
 
 # 2. Check latest commit SHA from GitHub API to prevent redundant downloads
