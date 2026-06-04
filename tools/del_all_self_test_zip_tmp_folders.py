@@ -19,7 +19,7 @@ Erklärung / Hinweise
 
 
 
-lunuxcmds = """
+lunuxcmds = r"""
 
 
 
