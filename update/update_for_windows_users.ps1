@@ -1,4 +1,4 @@
-# file: update/update_for_windows_users.ps1
+# update/update_for_windows_users.ps1
 # Description: Downloads the latest version and updates the application
 #              while preserving user settings. For non-developer use.
 
@@ -106,7 +106,7 @@ try {
     }
     # 6. Create a final batch script to perform the file replacement and update dependencies
 #    $installerName = "setup\windows11_setup.bat"
-    $installerName = "setup\windows11_setup_with_ahk_copyq.bat"
+    $installerName = "setup\windows11_setup_with_ahk_copyq_fzf_glogg.bat"
 
     $batchScript = @'
 @echo off
