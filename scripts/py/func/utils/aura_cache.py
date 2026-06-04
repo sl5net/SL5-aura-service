@@ -21,14 +21,7 @@ By using AI Assist, you agree to Stack Overflow’s Terms of Service and Privacy
 '''
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-root_file = tmp_dir / "sl5_aura" / "sl5net_aura_project_root"
-
-if root_file.exists():
-    PROJECT_ROOT = Path(root_file.read_text().strip())
-else:
-    # Safe fallback if the bootstrap file does not exist yet (e.g., fresh installations)
-    PROJECT_ROOT = Path(__file__).resolve().parents[4]
-
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
 DB_DIR = PROJECT_ROOT / settings.path_unencrypted_cash
 

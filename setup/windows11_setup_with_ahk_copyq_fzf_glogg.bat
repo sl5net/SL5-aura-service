@@ -18,6 +18,11 @@ REM --- ADMIN CHECK END ---
 
 cd /d "%~dp0"
 
+
+if not exist "C:\tmp\sl5_aura" mkdir "C:\tmp\sl5_aura"
+echo %cd%> "C:\tmp\sl5_aura\sl5net_aura_project_root"
+
+
 REM 1. Call the existing core setup script
 REM Now running with Admin rights, so the PS1 won't try to crash-elevate itself.
 

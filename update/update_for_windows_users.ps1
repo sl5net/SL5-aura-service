@@ -1,12 +1,28 @@
-# file: update/update_for_windows_users.ps1                                       
+# file: update/update_for_windows_users.ps1
 # Description: Downloads the latest version and updates the application
 #              while preserving user settings. For non-developer use.
 
 $ErrorActionPreference = 'Stop'
-$repoUrl = "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip"
 
 $installDir = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $tempDir = Join-Path $env:TEMP "sl5_update_temp"
+
+# Detect the active branch name from the folder name
+$folderName = Split-Path -Leaf $installDir
+$branch = "master"
+if ($folderName -match "^SL5-aura-service-(.+)$") {
+    $rawBranch = $Matches[1]
+    # Reconstruct branch slashes from GitHub zipball dash formatting
+    if ($rawBranch -match "^(feature|experimental|bugfix|fix|hotfix)-(.*)$") {
+        $branch = "$($Matches[1])/$($Matches[2])"
+    } else {
+        $branch = $rawBranch
+    }
+}
+
+$repoUrl = "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/$branch.zip"
+
+
 
 Write-Host "--- SL5 Aura Updater ---" -ForegroundColor Cyan
 Write-Host "This will download the latest version and replace all application files."
@@ -50,8 +66,8 @@ try {
     # 4. Extract the archive
     Write-Host "INFO: Extracting update..."
     Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
-    $extractedFolder = Get-ChildItem -Path $tempDir -Directory | Where-Object { $_.Name -like '*-master' } | Select-Object -First 1
-    if (-not $extractedFolder) { throw "Could not find extracted '*-master' folder." }
+    $extractedFolder = Get-ChildItem -Path $tempDir -Directory | Select-Object -First 1
+    if (-not $extractedFolder) { throw "Could not find extracted folder inside temp directory." }
 
     # 5. Restore local settings into the new version
 
