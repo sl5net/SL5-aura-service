@@ -249,8 +249,17 @@ $MasterConfig = @(
 )
 
 # --- Filter Configuration based on EXCLUDE_LANGUAGES (NEW) ---
+# --- Filter Configuration based on EXCLUDE_LANGUAGES (NEW) ---
 $INSTALL_CONFIG = @()
-$ExcludeList = @($EXCLUDE_LANGUAGES.Split(',') | ForEach-Object { $_.Trim().ToLower() })
+
+# Safely resolve environment variable and handle null/empty values
+$rawExcludes = $env:EXCLUDE_LANGUAGES
+if ([string]::IsNullOrEmpty($rawExcludes)) {
+    $ExcludeList = @()
+} else {
+    $ExcludeList = @($rawExcludes.Split(',') | ForEach-Object { $_.Trim().ToLower() })
+}
+
 
 if ($ExcludeList.Count -eq 0 -or $ExcludeList[0] -eq "") {
     # No exclusion, use master list
