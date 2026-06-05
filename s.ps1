@@ -42,10 +42,10 @@ $exitCode = $res[0]
 $output = $res[1]
 
 # Service Check: Verify if connection failed or if Streamlit is missing
-$streamlitProc = Get-Process -Name "python" -ErrorAction SilentlyContinue |
-    Where-Object { $_.CommandLine -like "*streamlit-chat*" }
+$engineProc = Get-Process -Name "python" -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -like "*aura_engine.py*" }
 
-if ($output -like "*Verbindungsfehler*" -or -not $streamlitProc) {
+if ($output -like "*Verbindungsfehler*" -or -not $engineProc) {
     Write-Host "Service-Check: Backend or Frontend missing. Restarting..."
     & "$projectRoot\setup\windows11_setup_with_ahk_copyq_fzf_glogg.bat"
 
