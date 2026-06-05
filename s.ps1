@@ -11,7 +11,15 @@ if (-not $query) {
 
 # Resolve project root dynamically from the bootstrap pointer
 $rootFile = "C:\tmp\sl5_aura\sl5net_aura_project_root"
-$projectRoot = if (Test-Path $rootFile) { (Get-Content $rootFile).Trim() } else { $PSScriptRoot }
+
+$projectRoot = if (Test-Path $rootFile) {
+    $rawPath = (Get-Content $rootFile).Trim()
+    # If the path ends with \setup, dynamically resolve the parent directory
+    if ($rawPath.EndsWith("\setup")) { Split-Path -Parent $rawPath } else { $rawPath }
+} else {
+    $PSScriptRoot
+}
+
 $pyExec = "$projectRoot\.venv\Scripts\python.exe"
 $cliScript = "$projectRoot\scripts\py\cli_client.py"
 
