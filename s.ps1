@@ -1,7 +1,14 @@
-if [ $# -eq 0 ]; then
-    echo "question <your question>"
-    return 1
-fi
+# s.ps1
+param(
+    [Parameter(ValueFromRemainingArguments=$true)]
+    [string[]]$ArgsList
+)
+$query = $ArgsList -join " "
+if (-not $query) {
+    Write-Host "question <your question>"
+    exit 1
+}
+
 
 local TEMP_FILE=$(mktemp)
 local SHORT_TIMEOUT_SECONDS=2
