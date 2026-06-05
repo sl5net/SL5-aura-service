@@ -91,6 +91,18 @@ else:
 
     excludes_str = ",".join(excludes)
 
-print(f"export SELECTED_LANG='{primary}'")
-print(f"export SECOND_LANG='{secondary}'")
-print(f"export EXCLUDE_LANGUAGES='{excludes_str}'")
+# print(f"export SELECTED_LANG='{primary}'")
+# print(f"export SECOND_LANG='{secondary}'")
+# print(f"export EXCLUDE_LANGUAGES='{excludes_str}'")
+
+import os
+if os.name == 'nt':
+    # PowerShell environment variable syntax for Windows
+    print(f"$env:SELECTED_LANG='{primary}'")
+    print(f"$env:SECOND_LANG='{secondary}'")
+    print(f"$env:EXCLUDE_LANGUAGES='{excludes_str}'")
+else:
+    # Bash/Zsh environment variable syntax for Linux/macOS
+    print(f"export SELECTED_LANG='{primary}'")
+    print(f"export SECOND_LANG='{secondary}'")
+    print(f"export EXCLUDE_LANGUAGES='{excludes_str}'")
