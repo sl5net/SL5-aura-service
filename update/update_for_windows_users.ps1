@@ -1,4 +1,4 @@
-# update/update_for_windows_users.ps1
+# update/update_for_windows_users.ps1  
 # Description: Downloads the latest version and updates the application
 #              while preserving user settings. For non-developer use.
 
