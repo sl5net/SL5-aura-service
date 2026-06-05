@@ -5,7 +5,8 @@
 $ErrorActionPreference = 'Stop'
 
 $installDir = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$tempDir = Join-Path $env:TEMP "sl5_update_temp"
+# $tempDir = Join-Path $env:TEMP "sl5_update_temp"
+$tempDir = "C:\tmp\sl5_upd"
 
 $localShaPath = Join-Path $installDir "update\.last_commit_sha"
 
@@ -102,13 +103,15 @@ try {
 
     # 4. Extract the archive
     Write-Host "INFO: Extracting update..."
-    Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
+
+    # Load .NET Compression and extract safely without dotfile bugs
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempDir)
+
     $extractedFolder = Get-ChildItem -Path $tempDir -Directory | Select-Object -First 1
     if (-not $extractedFolder) { throw "Could not find extracted folder inside temp directory." }
 
     # 5. Restore local settings into the new version
-
-
 
     if (Test-Path $backupPath) {
         Write-Host "INFO: Restoring your local settings into the new version..." -ForegroundColor Green

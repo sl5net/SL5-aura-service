@@ -1,6 +1,7 @@
+# scripts/py/setup_config.py
 import urllib.request
 import sys
-import select
+# import select
 
 def get_country():
     try:
@@ -9,15 +10,48 @@ def get_country():
     except Exception as e:
         return f"Unknown{e}"
 
+
 def timed_input(prompt, default, timeout=8):
+    import os
+    import time
     sys.stderr.write(f"{prompt} [{default}]: ")
     sys.stderr.flush()
-    rlist, _, _ = select.select([sys.stdin], [], [], timeout)
-    if rlist:
-        res = sys.stdin.readline().strip()
-        return res if res else default
-    sys.stderr.write("\n")
-    return default
+
+    if os.name == 'nt':
+        # Windows native timed input using msvcrt
+        import msvcrt
+        start_time = time.time()
+        input_chars = []
+        while True:
+            if msvcrt.kbhit():
+                char = msvcrt.getwche()
+                if char in ('\r', '\n'):  # Enter key pressed
+                    sys.stderr.write("\n")
+                    sys.stderr.flush()
+                    res = ''.join(input_chars).strip()
+                    return res if res else default
+                elif char == '\b':  # Backspace handling
+                    if input_chars:
+                        input_chars.pop()
+                        sys.stderr.write(' \b')
+                        sys.stderr.flush()
+                else:
+                    input_chars.append(char)
+            if (time.time() - start_time) > timeout:
+                sys.stderr.write("\n")
+                sys.stderr.flush()
+                return default
+            time.sleep(0.05)
+    else:
+        # Linux/macOS standard select.select input
+        import select
+        rlist, _, _ = select.select([sys.stdin], [], [], timeout)
+        if rlist:
+            res = sys.stdin.readline().strip()
+            return res if res else default
+        sys.stderr.write("\n")
+        sys.stderr.flush()
+        return default
 
 country = get_country()
 default_primary = "de" if country in ["DE", "AT", "CH"] else "en"
