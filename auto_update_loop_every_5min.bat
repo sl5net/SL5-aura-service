@@ -1,8 +1,8 @@
 @echo off
 setlocal
 
-:: Resolve the absolute project root path dynamically
-for %%i in ("%~dp0.") do set "PROJECT_ROOT=%%~fi"
+:: Resolve the absolute parent directory of the script's folder
+for %%A in ("%~dp0.") do for %%B in ("%%~dpA.") do set "PROJECT_ROOT=%%~fB"
 
 :: Define the PowerShell update script path
 set "UPDATE_SCRIPT=%PROJECT_ROOT%\update\update_for_windows_users.ps1"
