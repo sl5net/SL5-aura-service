@@ -13,9 +13,8 @@ if (-not $query) {
 $rootFile = "C:\tmp\sl5_aura\sl5net_aura_project_root"
 
 $projectRoot = if (Test-Path $rootFile) {
-    $rawPath = (Get-Content $rootFile).Trim()
-    # If the path ends with \setup, dynamically resolve the parent directory
-    if ($rawPath.EndsWith("\setup")) { Split-Path -Parent $rawPath } else { $rawPath }
+    $p = (Get-Content $rootFile).Trim()
+    if ($p.EndsWith("\setup")) { Split-Path -Parent $p } else { $p }
 } else {
     $PSScriptRoot
 }
@@ -41,20 +40,25 @@ $res = Invoke-AuraQuery 2
 $exitCode = $res[0]
 $output = $res[1]
 
-# Service Check: Verify if connection failed or if Streamlit is missing
-$engineProc = Get-Process -Name "python" -ErrorAction SilentlyContinue |
-    Where-Object { $_.CommandLine -like "*aura_engine.py*" }
+# Service Check: If connection failed, auto-start the API on-demand
+if ($output -like "*Verbindungsfehler*") {
+    Write-Host "Aura API is offline. Waking up background services..."
 
-if ($output -like "*Verbindungsfehler*" -or -not $engineProc) {
-    Write-Host "Service-Check: Backend or Frontend missing. Restarting..."
-    & "$projectRoot\setup\windows11_setup_with_ahk_copyq_fzf_glogg.bat"
+    $startScript = "$projectRoot\scripts\py\start_uvicorn_service.py"
+    if (Test-Path $startScript) {
+        # Start the Uvicorn/FastAPI service silently in the background
+        Start-Process -FilePath $pyExec -ArgumentList $startScript -NoNewWindow
+        Start-Sleep -Seconds 2
+    } else {
+        Write-Host "Error: Uvicorn startup script not found."
+        exit 1
+    }
 
-    $kiwix = "$projectRoot\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
-    if (Test-Path $kiwix) { bash $kiwix }
-
-    Write-Host "--------------------------------------------------"
-    Write-Host "PLEASE RE-ENTER: s $query"
-    exit 1
+    # Auto-retry the query now that the API is running
+    Write-Host "Retrying query..."
+    $resRetry = Invoke-AuraQuery 70
+    Write-Host $resRetry[1]
+    exit 0
 }
 
 if ($exitCode -eq 0) {
@@ -62,7 +66,7 @@ if ($exitCode -eq 0) {
     exit 0
 }
 
-# 2. Try with long timeout (70 seconds)
+# 2. Try with long timeout (70 seconds) if first run timed out
 Write-Host "answer > 2 sec. setting Timeout = 70 s..."
 $resLong = Invoke-AuraQuery 70
 Write-Host $resLong[1]
