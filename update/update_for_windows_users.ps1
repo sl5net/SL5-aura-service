@@ -95,7 +95,10 @@ try {
     # 3. Download the latest version
     $zipPath = Join-Path $tempDir "latest.zip"
     Write-Host "INFO: Downloading latest version from GitHub..."
-    Invoke-WebRequest -Uri $repoUrl -OutFile $zipPath
+
+    #  .NET WebClient download
+    $webClient = New-Object System.Net.WebClient
+    $webClient.DownloadFile($repoUrl, $zipPath)
 
     # 4. Extract the archive
     Write-Host "INFO: Extracting update..."
