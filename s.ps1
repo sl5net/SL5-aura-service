@@ -35,15 +35,23 @@ function Invoke-AuraQuery($timeout) {
     return @(if ($completed) { 0 } else { 124 }, ($out -join "`n"))
 }
 
-# 1. Try with short timeout (2 seconds)
-$res = Invoke-AuraQuery 2
-$exitCode = $res[0]
-$output = $res[1]
 
-# Service Check: If connection failed, auto-start the API on-demand
-if ($output -like "*Verbindungsfehler*") {
+# 1. Microsecond TCP port check to detect offline API instantly
+$socket = New-Object System.Net.Sockets.TcpClient
+$apiOpen = $false
+try {
+    $socket.Connect("127.0.0.1", 8830)
+    if ($socket.Connected) {
+        $apiOpen = $true
+    }
+    $socket.Close()
+} catch {
+    $apiOpen = $false
+}
+
+# 2. Wake up API on-demand if port 8830 is closed
+if (-not $apiOpen) {
     Write-Host "Aura API is offline. Waking up background services..."
-
     $startScript = "$projectRoot\scripts\py\start_uvicorn_service.py"
     if (Test-Path $startScript) {
         # Start the Uvicorn/FastAPI service silently in the background
@@ -53,13 +61,13 @@ if ($output -like "*Verbindungsfehler*") {
         Write-Host "Error: Uvicorn startup script not found."
         exit 1
     }
-
-    # Auto-retry the query now that the API is running
-    Write-Host "Retrying query..."
-    $resRetry = Invoke-AuraQuery 70
-    Write-Host $resRetry[1]
-    exit 0
 }
+
+# 1. Try with short timeout (2 seconds)
+$res = Invoke-AuraQuery 2
+$exitCode = $res[0]
+$output = $res[1]
+
 
 if ($exitCode -eq 0) {
     Write-Host $output
