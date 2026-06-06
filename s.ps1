@@ -55,7 +55,10 @@ if (-not $apiOpen) {
     $startScript = "$projectRoot\scripts\py\start_uvicorn_service.py"
     if (Test-Path $startScript) {
         # Start the Uvicorn/FastAPI service silently in the background
-        Start-Process -FilePath $pyExec -ArgumentList $startScript -NoNewWindow
+        # Start-Process -FilePath $pyExec -ArgumentList $startScript -NoNewWindow
+
+        Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $projectRoot
+
         Start-Sleep -Seconds 2
     } else {
         Write-Host "Error: Uvicorn startup script not found."
