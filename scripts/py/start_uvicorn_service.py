@@ -83,6 +83,7 @@ def start_uvicorn_service(host, port, module_path):
         # "--reload"  # Disabled: causes ~7s latency due to i18n file watcher
     ]
 
+    # scripts/py/start_uvicorn_service.py:86
     try:
         with LOG_FILE.open('a', encoding='utf-8') as log_f:
 
@@ -92,7 +93,7 @@ def start_uvicorn_service(host, port, module_path):
                 cwd=PROJECT_ROOT,
                 stdout=log_f,
                 stderr=log_f,
-                preexec_fn=os.setsid,
+                preexec_fn=None if os.name == 'nt' else os.setsid,
                 env=env
             )
             print(f"INFO: Uvicorn-Prozess (PID: {process.pid}) gestartet. Logs in {LOG_FILE}")
