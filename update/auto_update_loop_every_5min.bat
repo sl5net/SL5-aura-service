@@ -2,7 +2,7 @@
 setlocal
 
 :: Resolve the absolute parent directory of the script's folder
-for %%A in ("%~dp0.") do for %%B in ("%%~dpA.") do set "PROJECT_ROOT=%%~fB"
+set /p PROJECT_ROOT=<"C:\tmp\sl5_aura\sl5net_aura_project_root"
 
 :: Define the PowerShell update script path
 set "UPDATE_SCRIPT=%PROJECT_ROOT%\update\update_for_windows_users.ps1"

@@ -7,7 +7,8 @@ set -e
 
 # --- Configuration ---
 REPO_URL="https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip"
-INSTALL_DIR="$(cd "$(dirname "$0")" && pwd)"
+#INSTALL_DIR="$(cd "$(dirname "$0")" && pwd)"
+INSTALL_DIR="$(cat /tmp/sl5_aura/sl5net_aura_project_root)"
 
 TEMP_DIR=$(mktemp -d)
 

@@ -40,7 +40,7 @@ call "%~dp0setup\fix_permissions.bat"
 ::    -File: Specifies the script to execute.
 :run_script
 echo Starting the update process...
-powershell.exe -ExecutionPolicy Bypass -File "%~dp0update\update_for_windows_users.ps1"
+powershell.exe -ExecutionPolicy Bypass -File "%~dp0update_for_windows_users.ps1"
 
 echo.
 echo The update script has finished. This window can be closed.
