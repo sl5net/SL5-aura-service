@@ -4,14 +4,15 @@
 
 $ErrorActionPreference = 'Stop'
 
+$rootFile = "C:\tmp\sl5_aura\sl5net_aura_project_root"
+$installDir = (Get-Content $rootFile -Raw).Trim()
+
 
 # $tempDir = Join-Path $env:TEMP "sl5_update_temp"
 $tempDir = "C:\tmp\sl5_upd"
 
 $localShaPath = Join-Path $installDir "update\.last_commit_sha"
 
-$rootFile = "C:\tmp\sl5_aura\sl5net_aura_project_root"
-$installDir = (Get-Content $rootFile).Trim()
 
 
 # Detect the active branch from either the current folder or the parent folder
