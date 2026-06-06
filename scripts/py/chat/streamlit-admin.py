@@ -110,7 +110,7 @@ except Exception as init_e:
                  \n\n {init_e}
                 """)
                 # traceback.print_exc(file=sys.stdout)
-                st.info(f"{traceback.format_exc().replace(str(PROJECT_ROOT), "")}")
+                st.info(f"{traceback.format_exc().replace(str(PROJECT_ROOT), '')}")
 
                 st.stop()
         else:
