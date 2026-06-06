@@ -48,7 +48,7 @@ print(msg)
 st.set_page_config(page_title="Aura Admin", page_icon="⚙️", layout="wide")
 
 
-if settings.TRINO_ENABLED != 1 and not settings.TRINO_ENABLED is True and not settings.TRINO_ENABLED:
+if settings.TRINO_ENABLED != 1 and settings.TRINO_ENABLED is not True and not settings.TRINO_ENABLED:
     st.title("⚙️ Aura Admin Dashboard")
     st.info(f"Trino database features are currently disabled in your settings (`TRINO_ENABLED = {settings.TRINO_ENABLED}`).")
     st.markdown("""

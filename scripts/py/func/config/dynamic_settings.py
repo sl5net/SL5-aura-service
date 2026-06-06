@@ -10,7 +10,7 @@ from pathlib import Path
 from threading import RLock
 import platform
 
-# py/func/config/dynamic_settings.py:11
+# scripts/py/func/config/dynamic_settings.py:11
 project_root = Path(__file__).resolve().parents[4]
 
 from config import settings
@@ -94,7 +94,7 @@ logger.addHandler(file_handler)
 
 
 # Cross-platform logic to determine the current user's name:
-if sys.platform.startswith('win'):
+if os.name == "nt":
     # On Windows, use the USERNAME environment variable.
     current_user = os.environ.get('USERNAME')
     # logger.info("Determined current_user using Windows environment variables.") # Add log later if needed
