@@ -1,6 +1,7 @@
 # scripts/py/func/db/trino_client.py
 from pathlib import Path
 import sys
+import logging
 sys.path.insert(0, str(Path(__file__).parents[4]))
 from datetime import datetime, timezone
 from scripts.py.func.determine_current_user import determine_current_user
@@ -25,7 +26,14 @@ async def open_trino_connection(schema=TRINO_SCHEMA):
 # scripts/py/func/db/trino_client.py:25
 def get_connection(schema=TRINO_SCHEMA):
     """For synchronous runtime callers (trino_client helpers, Streamlit)."""
-    import trino
+
+    try:
+        import trino
+    except ModuleNotFoundError:
+        from scripts.py.func.try_auto_install_package import try_auto_install_package
+        try_auto_install_package('trino',logger=logging)
+        import trino
+
     current_user, _ = determine_current_user()
     return trino.dbapi.connect(
         host=TRINO_HOST,
