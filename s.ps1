@@ -1,7 +1,4 @@
 # s.ps1
-
-$env:PYTHONUTF8 = "1"
-
 param(
     [Parameter(ValueFromRemainingArguments=$true)]
     [string[]]$ArgsList
@@ -11,6 +8,9 @@ if (-not $query) {
     Write-Host "question <your question>"
     exit 1
 }
+
+$env:PYTHONUTF8 = "1"
+
 
 # Resolve project root dynamically from the bootstrap pointer
 $rootFile = "C:\tmp\sl5_aura\sl5net_aura_project_root"
