@@ -28,26 +28,29 @@ except metadata.PackageNotFoundError:
     try_auto_install_package('streamlit',logger=logger)
 
 import streamlit as st
+from scripts.py.func.config.dynamic_settings import settings
 
-msg = f"DEBUG 1 CWD: {os.getcwd()}"
+
+# scripts/py/chat/streamlit-admin.py:32
+msg = f"DEBUG 1 CWD: {os.getcwd()}, settings.TRINO_ENABLED:{settings.TRINO_ENABLED}"
 logger.info(msg)
 print(msg)
 
-# scripts/py/chat/streamlit-admin.py:36
+# scripts/py/chat/streamlit-admin.py:37
 sys.path.insert(0, str(Path(__file__).parents[3]))
 
-msg = f"DEBUG 2 CWD: {os.getcwd()}"
+# scripts/py/chat/streamlit-admin.py:40
+msg = f"DEBUG 2 CWD: {os.getcwd()}, settings.TRINO_ENABLED:{settings.TRINO_ENABLED}"
 logger.info(msg)
 print(msg)
 
 
 st.set_page_config(page_title="Aura Admin", page_icon="⚙️", layout="wide")
 
-from scripts.py.func.config.dynamic_settings import settings
 
-if not getattr(settings, "TRINO_ENABLED", False):
+if settings.TRINO_ENABLED != 1 and not settings.TRINO_ENABLED is True and not settings.TRINO_ENABLED:
     st.title("⚙️ Aura Admin Dashboard")
-    st.info("Trino database features are currently disabled in your settings (`TRINO_ENABLED = False`).")
+    st.info(f"Trino database features are currently disabled in your settings (`TRINO_ENABLED = {settings.TRINO_ENABLED}`).")
     st.markdown("""
     To use the dynamic database-driven state management and dynamic translation configurations, 
     please enable Trino in your `settings_local.py` or dynamic settings.
