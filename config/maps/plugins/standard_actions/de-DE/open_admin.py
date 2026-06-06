@@ -46,6 +46,7 @@ def execute(match_data):
             ],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
+            cwd = project_root,
             start_new_session=True
         )
         time.sleep(1.5)
