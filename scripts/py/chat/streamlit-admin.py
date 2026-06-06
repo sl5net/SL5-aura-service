@@ -29,10 +29,17 @@ except metadata.PackageNotFoundError:
 
 import streamlit as st
 
+msg = f"DEBUG 1 CWD: {os.getcwd()}"
+logger.info(msg)
+print(msg)
 
-
-
+# scripts/py/chat/streamlit-admin.py:36
 sys.path.insert(0, str(Path(__file__).parents[3]))
+
+msg = f"DEBUG 2 CWD: {os.getcwd()}"
+logger.info(msg)
+print(msg)
+
 
 st.set_page_config(page_title="Aura Admin", page_icon="⚙️", layout="wide")
 

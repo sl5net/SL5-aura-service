@@ -60,6 +60,7 @@ if (-not $apiOpen) {
         # Start the Uvicorn/FastAPI service silently in the background
         # Start-Process -FilePath $pyExec -ArgumentList $startScript -NoNewWindow
 
+#       Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $projectRoot
         Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $projectRoot
 
         Start-Sleep -Seconds 2
