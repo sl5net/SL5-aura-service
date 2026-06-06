@@ -1,4 +1,4 @@
-# scripts/type_watcher/type_watcher.ahk Requires AutoHotkey v2.0
+#Requires AutoHotkey v2.0
 
 #SingleInstance Off
 ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
