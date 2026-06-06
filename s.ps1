@@ -1,4 +1,7 @@
 # s.ps1
+
+$env:PYTHONUTF8 = "1"
+
 param(
     [Parameter(ValueFromRemainingArguments=$true)]
     [string[]]$ArgsList
