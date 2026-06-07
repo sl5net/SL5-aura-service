@@ -81,6 +81,60 @@ statuses = []
 connection_error_details = ""
 error_category = "generic"
 
+import os
+import time
+import urllib.request
+
+
+def wake_up_docker_and_trino_or_get_error():
+    # --- WINDOWS ON-DEMAND WAKEUP ---
+    trine_is_running = False
+    if os.name == 'nt':
+        docker_check = subprocess.run(["docker", "info"], capture_output=True, text=True)
+
+        if docker_check.returncode != 0:
+            print("🚀 Docker schläft. Starte Docker Desktop On-Demand...")
+            # Docker Desktop im Hintergrund starten (Standardpfad)
+            docker_path = r"C:\Program Files\Docker\Docker\Docker Desktop.exe"
+            if os.path.exists(docker_path):
+                # os.startfile weckt die exe ohne das Terminal zu blockieren
+                os.startfile(docker_path)
+
+                # Warten, bis die Docker-Engine antwortet (Timeout ca. 30-40 Sek.)
+            for _ in range(20):
+                time.sleep(2)
+                if subprocess.run(["docker", "info"], capture_output=True).returncode == 0:
+                    print("✅ Docker Engine ist jetzt wach!")
+                    break
+
+        # 2. Jetzt, wo Docker sicher läuft, wecken wir den Trino-Container
+        print("Starte Trino Container...")
+        subprocess.run(["docker", "start", "trino"], capture_output=True)
+
+        # 3. Warten, bis Trino auf Port 8083 wirklich Anfragen annimmt
+        for _ in range(15):
+            time.sleep(2)
+            try:
+                # Schneller Ping auf die Trino API
+                urllib.request.urlopen("http://localhost:8083/v1/info", timeout=2)
+                print("✅ Trino ist voll erreichbar!")
+                trine_is_running = True
+                break
+            except Exception:
+                pass
+
+    # --- LINUX ON-DEMAND WAKEUP ---
+    else:
+        subprocess.run(["docker", "start", "trino"], capture_output=True)
+        time.sleep(2)  # Kurze Atempause für Trino
+
+    if trine_is_running:
+        return None
+    else:
+        return f"trino is not running. trine_is_running={trine_is_running} "
+
+
+
 try:
     from scripts.py.func.db.aura_state import (
         get_all_status,
@@ -128,6 +182,14 @@ except Exception as init_e:
 
         if not st.session_state.get('_db_init_attempted'):
             st.session_state['_db_init_attempted'] = True
+            trino_eror = wake_up_docker_and_trino_or_get_error()
+            if trino_eror:
+                msg = trino_eror
+                logger.info(msg)
+                print(msg)
+                st.info(msg)
+            st.stop()
+
             from scripts.py.func.db.init_trino_db import init_all_sync
             try:
                 init_all_sync()
