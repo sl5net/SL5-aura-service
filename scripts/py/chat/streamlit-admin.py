@@ -29,8 +29,11 @@ except metadata.PackageNotFoundError:
 
 import streamlit as st
 
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 sys.path.insert(0, str(Path(__file__).parents[3]))
 st.info(f"DEBUG SYS.PATH: {sys.path}")
