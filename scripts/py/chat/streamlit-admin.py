@@ -88,9 +88,11 @@ import urllib.request
 
 def wake_up_docker_and_trino_or_get_error():
     # --- WINDOWS ON-DEMAND WAKEUP ---
+    from subprocess import run
+
     trine_is_running = False
     if os.name == 'nt':
-        docker_check = subprocess.run(["docker", "info"], capture_output=True, text=True)
+        docker_check = run(["docker", "info"], capture_output=True, text=True)
 
         if docker_check.returncode != 0:
             print("🚀 Docker schläft. Starte Docker Desktop On-Demand...")
@@ -103,13 +105,13 @@ def wake_up_docker_and_trino_or_get_error():
                 # Warten, bis die Docker-Engine antwortet (Timeout ca. 30-40 Sek.)
             for _ in range(20):
                 time.sleep(2)
-                if subprocess.run(["docker", "info"], capture_output=True).returncode == 0:
+                if run(["docker", "info"], capture_output=True).returncode == 0:
                     print("✅ Docker Engine ist jetzt wach!")
                     break
 
-        # 2. Jetzt, wo Docker sicher läuft, wecken wir den Trino-Container
+        # 2. Now that Docker is safely running, let's wake up the Trino container
         print("Starte Trino Container...")
-        subprocess.run(["docker", "start", "trino"], capture_output=True)
+        run(["docker", "start", "trino"], capture_output=True)
 
         # 3. Warten, bis Trino auf Port 8083 wirklich Anfragen annimmt
         for _ in range(15):
@@ -125,7 +127,7 @@ def wake_up_docker_and_trino_or_get_error():
 
     # --- LINUX ON-DEMAND WAKEUP ---
     else:
-        subprocess.run(["docker", "start", "trino"], capture_output=True)
+        run(["docker", "start", "trino"], capture_output=True)
         time.sleep(2)  # Kurze Atempause für Trino
 
     if trine_is_running:
@@ -145,19 +147,20 @@ try:
     statuses = get_all_status()
     db_ready = True
 except Exception as init_e:
+    from subprocess import run
+
     connection_error_details = str(init_e)
     err_msg_lower = connection_error_details.lower()
 
     # --- NEU: Late-Binding / On-Demand Installation für das 'trino' Paket ---
     if "no module named 'trino'" in err_msg_lower:
         import sys
-        import subprocess
         import importlib
 
         st.info("📦 Trino-Modul wird On-Demand installiert. Bitte warten...")
         try:
             # OS-unabhängige Installation ins aktuelle .venv
-            subprocess.run([sys.executable, "-m", "pip", "install", "trino"], check=True)
+            run([sys.executable, "-m", "pip", "install", "trino"], check=True)
             # IMPORTANT for Windows: Clear the module cache so that Python sees the new package immediately!
             importlib.invalidate_caches()
 

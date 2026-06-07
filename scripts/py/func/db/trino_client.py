@@ -7,7 +7,6 @@ import logging
 from datetime import datetime, timezone
 from scripts.py.func.determine_current_user import determine_current_user
 from scripts.py.func.ensure_package import ensure_package
-from scripts.py.func.main import settings
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
