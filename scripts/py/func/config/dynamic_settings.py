@@ -10,16 +10,17 @@ from pathlib import Path
 from threading import RLock
 import platform
 
-import sys
-import os
+# py/func/config/dynamic_settings.py:11
+project_root = Path(__file__).resolve().parents[4]
 
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
-from scripts.py.func.config.dynamic_settings import settings
+from config import settings
 
-TMP_DIR = tmp_dir
+if platform.system() == "Windows":
+    TMP_DIR = Path("C:/tmp")
+    NOTIFY_SEND_PATH = None
+else:
+    TMP_DIR = Path("/tmp")
+
 
 # scripts/py/func/config/dynamic_settings.py:18
 DEV_MODE = DEV_MODE_all_processing = DEV_MODE_memory = False
@@ -93,7 +94,7 @@ logger.addHandler(file_handler)
 
 
 # Cross-platform logic to determine the current user's name:
-if os.name == "nt":
+if sys.platform.startswith('win'):
     # On Windows, use the USERNAME environment variable.
     current_user = os.environ.get('USERNAME')
     # logger.info("Determined current_user using Windows environment variables.") # Add log later if needed

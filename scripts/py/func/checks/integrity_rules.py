@@ -16,7 +16,9 @@ Format:
 
 UNSAFE_LINE_STARTS = [
     "from config.settings_local import",
-    "import config.settings_local"
+    "from config.settings import",
+    "from config import",
+    "import config.settings_local",
 ]
 
 
