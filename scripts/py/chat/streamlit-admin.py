@@ -34,7 +34,7 @@ if PROJECT_ROOT not in sys.path:
 
 sys.path.insert(0, str(Path(__file__).parents[3]))
 st.info(f"DEBUG SYS.PATH: {sys.path}")
-st.info("DEBUG scripts/py/chat/streamlit-admin.py")
+st.info(f"DEBUG {Path(__file__).resolve().relative_to(PROJECT_ROOT)}")
 st.info(f"DEBUG PROJECT_ROOT = {PROJECT_ROOT}")
 st.info("DEBUG 'from scripts.py.func.config.dynamic_settings import settings'")
 
@@ -45,6 +45,8 @@ from scripts.py.func.config.dynamic_settings import settings
 msg = f"DEBUG 1 CWD: {os.getcwd()}, settings.TRINO_ENABLED:{settings.TRINO_ENABLED}"
 logger.info(msg)
 print(msg)
+st.info(msg)
+
 
 
 
@@ -52,12 +54,13 @@ print(msg)
 msg = f"DEBUG 2 CWD: {os.getcwd()}, settings.TRINO_ENABLED:{settings.TRINO_ENABLED}"
 logger.info(msg)
 print(msg)
+st.info(msg)
 
 
 st.set_page_config(page_title="Aura Admin", page_icon="⚙️", layout="wide")
 
 
-if settings.TRINO_ENABLED != 1 and settings.TRINO_ENABLED is not True and not settings.TRINO_ENABLED:
+if not getattr(settings, "TRINO_ENABLED", False):
     st.title("⚙️ Aura Admin Dashboard")
     st.info(f"Trino database features are currently disabled in your settings (`TRINO_ENABLED = {settings.TRINO_ENABLED}`).")
     st.markdown("""
@@ -86,20 +89,39 @@ except Exception as init_e:
     connection_error_details = str(init_e)
     err_msg_lower = connection_error_details.lower()
 
+    # --- NEU: Late-Binding / On-Demand Installation für das 'trino' Paket ---
+    if "no module named 'trino'" in err_msg_lower:
+        import sys
+        import subprocess
+        import importlib
 
+        st.info("📦 Trino-Modul wird On-Demand installiert. Bitte warten...")
+        try:
+            # OS-unabhängige Installation ins aktuelle .venv
+            subprocess.run([sys.executable, "-m", "pip", "install", "trino"], check=True)
+            # WICHTIG für Windows: Modul-Cache leeren, damit Python das neue Paket sofort sieht!
+            importlib.invalidate_caches()
 
+            # Seite sofort neu laden, um im zweiten Anlauf erfolgreich zu verbinden
+            st.rerun()
+        except Exception as pip_e:
+            st.error(f"❌ Fehler bei der On-Demand-Installation von Trino:\n\n{pip_e}")
+            st.stop()
+    # ------------------------------------------------------------------------
 
     # Detect if the error is a connection failure or a missing schema/table/column
     is_conn_error = "connection refused" in err_msg_lower or "failed to establish a new connection" in err_msg_lower or "max retries exceeded" in err_msg_lower
     is_schema_error = re.search(r"(schema|table|column) .* (does not exist|cannot be resolved)", err_msg_lower)
 
+
     if is_conn_error or is_schema_error:
+
+
+
+
+
+
         if not st.session_state.get('_db_init_attempted'):
-
-
-
-
-
             st.session_state['_db_init_attempted'] = True
             from scripts.py.func.db.init_trino_db import init_all_sync
             try:
