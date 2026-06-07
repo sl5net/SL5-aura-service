@@ -85,57 +85,91 @@ import os
 import time
 import urllib.request
 
+import os
+from subprocess import run
+
 
 def wake_up_docker_and_trino_or_get_error():
-    # --- WINDOWS ON-DEMAND WAKEUP ---
-    from subprocess import run
-
+    use_shell = True if os.name == 'nt' else False
     trine_is_running = False
+
+    # --- WINDOWS ON-DEMAND WAKEUP ---
     if os.name == 'nt':
-        docker_check = run(["docker", "info"], capture_output=True, text=True, shell=True)
+        # 1. Check whether Docker is installed and accessible at all
+        docker_check = run(["docker", "info"], capture_output=True, text=True, shell=use_shell)
 
         if docker_check.returncode != 0:
             print("🚀 Docker schläft. Starte Docker Desktop On-Demand...")
-            # Docker Desktop im Hintergrund starten (Standardpfad)
-            docker_path = r"C:\Program Files\Docker\Docker\Docker Desktop.exe"
-            if os.path.exists(docker_path):
-                # os.startfile weckt die exe ohne das Terminal zu blockieren
-                os.startfile(docker_path)
 
-                # Warten, bis die Docker-Engine antwortet (Timeout ca. 30-40 Sek.)
+            # Check whether the path to Docker Desktop exists
+            docker_path = r"C:\Program Files\Docker\Docker\Docker Desktop.exe"
+            if not os.path.exists(docker_path):
+                return (
+                    f"Docker Desktop ist nicht aktiv und wurde im Standardpfad "
+                    f"'{docker_path}' nicht gefunden. Bitte installiere Docker Desktop "
+                    f"oder starte es manuell."
+                )
+
+            # Docker Desktop starten
+            os.startfile(docker_path)
+
+            # Warten, bis die Docker-Engine antwortet (Timeout ca. 40 Sek.)
+            engine_ready = False
             for _ in range(20):
                 time.sleep(2)
-                if run(["docker", "info"], capture_output=True,shell=True).returncode == 0:
+                if run(["docker", "info"], capture_output=True, shell=use_shell).returncode == 0:
+                    engine_ready = True
                     print("✅ Docker Engine ist jetzt wach!")
                     break
 
-        # 2. Now that Docker is safely running, let's wake up the Trino container
-        print("Starte Trino Container...")
-        run(["docker", "start", "trino"], capture_output=True,shell=True)
+            if not engine_ready:
+                return (
+                    "Docker Desktop wurde gestartet, aber die Docker Engine "
+                    "wurde innerhalb von 40 Sekunden nicht betriebsbereit (docker info fehlgeschlagen)."
+                )
 
-        # 3. Warten, bis Trino auf Port 8083 wirklich Anfragen annimmt
-        for _ in range(15):
-            time.sleep(2)
-            try:
-                # Schneller Ping auf die Trino API
-                urllib.request.urlopen("http://localhost:8083/v1/info", timeout=2)
-                print("✅ Trino ist voll erreichbar!")
-                trine_is_running = True
-                break
-            except Exception:
-                pass
+        # 2. Start the Trino container and check for errors
+        print("Starte Trino Container...")
+        start_container = run(["docker", "start", "trino"], capture_output=True, text=True, shell=use_shell)
+
+        if start_container.returncode != 0:
+            # Die echte Fehlermeldung von Docker ausgeben (z.B. "No such container: trino")
+            docker_error = start_container.stderr.strip() if start_container.stderr else "Unbekannter Docker-Fehler."
+            return f"Fehler beim Starten des Containers 'trino'. Docker-Meldung:\n'{docker_error}'"
 
     # --- LINUX ON-DEMAND WAKEUP ---
     else:
-        run(["docker", "start", "trino"], capture_output=True)
-        time.sleep(2)  # Kurze Atempause für Trino
+        start_container = run(["docker", "start", "trino"], capture_output=True, text=True)
+        if start_container.returncode != 0:
+            docker_error = start_container.stderr.strip() if start_container.stderr else "Unbekannter Docker-Fehler."
+            return f"[Linux] Fehler beim Starten des Containers 'trino':\n'{docker_error}'"
 
+    # --- GEMEINSAMES WARTEN AUF TRINO PORT 8083 (Windows & Linux) ---
+    print("Warte auf Trino Port 8083...")
+    last_connection_error = "Keine Verbindung aufgebaut."
+
+    max_retries = 30
+    sleep_time = 2
+    for _ in range(max_retries):
+        time.sleep(sleep_time)
+        try:
+            # Schneller API-Ping
+            urllib.request.urlopen("http://localhost:8083/v1/info", timeout=2)
+            print("✅ Trino ist voll erreichbar!")
+            trine_is_running = True
+            break
+        except Exception as e:
+            # Letzten Fehler merken, falls das Timeout abläuft
+            last_connection_error = str(e)
+
+    # --- FINALES ERGEBNIS ---
     if trine_is_running:
         return None
     else:
-        return f"trino is not running. trine_is_running={trine_is_running} "
-
-
+        return (
+            f"Trino-Container läuft zwar, aber der Port 8083 antwortet nicht "
+            f"innerhalb des Timeouts (ca. {max_retries * sleep_time} Sek). Letzter API-Fehler: {last_connection_error}"
+        )
 
 try:
     from scripts.py.func.db.aura_state import (
@@ -147,7 +181,6 @@ try:
     statuses = get_all_status()
     db_ready = True
 except Exception as init_e:
-    from subprocess import run
 
     connection_error_details = str(init_e)
     err_msg_lower = connection_error_details.lower()
