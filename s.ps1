@@ -14,8 +14,8 @@ $pointerFile = "$tmp_dir\sl5_aura\sl5net_aura_project_root"
 $PROJECT_ROOT = (Get-Content -Path $pointerFile -Raw).Trim()
 
 $env:PYTHONUTF8 = "1"
-$env:PYTHONPATH = $PROJECT_ROOT   # <-- DAS ist der Gamechanger!
-$rootFile = PROJECT_ROOT
+$env:PYTHONPATH = $PROJECT_ROOT
+$rootFile = $PROJECT_ROOT
 
 $pyExec = "$PROJECT_ROOT\.venv\Scripts\python.exe"
 $cliScript = "$PROJECT_ROOT\scripts\py\cli_client.py"
