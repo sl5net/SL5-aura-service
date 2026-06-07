@@ -8,7 +8,24 @@ import psutil
 import time
 from pathlib import Path
 
-from scripts.py.func.process_text_in_background import settings
+import sys
+import os
+
+# 1. Den Projekt-Root über deine zuverlässige Temp-Datei ermitteln
+# Da wir hier auf Linux sind, reicht /tmp
+root_pointer_file = "/tmp/sl5_aura/sl5net_aura_project_root"
+
+if os.path.exists(root_pointer_file):
+    with open(root_pointer_file, 'r', encoding='utf-8') as f:
+        PROJECT_ROOT = f.read().strip()
+
+    # 2. Den Pfad dem System aufzwingen!
+    if PROJECT_ROOT not in sys.path:
+        sys.path.insert(0, PROJECT_ROOT)
+
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
 
 # --- KONFIGURATION ---
 HOST = "0.0.0.0"
