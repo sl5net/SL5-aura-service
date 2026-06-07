@@ -10,17 +10,16 @@ from pathlib import Path
 from threading import RLock
 import platform
 
-# scripts/py/func/config/dynamic_settings.py:11
-project_root = Path(__file__).resolve().parents[4]
+import sys
+import os
 
-from config import settings
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+from scripts.py.func.config.dynamic_settings import settings
 
-if platform.system() == "Windows":
-    TMP_DIR = Path("C:/tmp")
-    NOTIFY_SEND_PATH = None
-else:
-    TMP_DIR = Path("/tmp")
-
+TMP_DIR = tmp_dir
 
 # scripts/py/func/config/dynamic_settings.py:18
 DEV_MODE = DEV_MODE_all_processing = DEV_MODE_memory = False
