@@ -29,6 +29,11 @@ except metadata.PackageNotFoundError:
 
 import streamlit as st
 
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+sys.path.insert(0, str(Path(__file__).parents[3]))
+st.info(f"DEBUG SYS.PATH: {sys.path}")
 st.info("DEBUG scripts/py/chat/streamlit-admin.py")
 st.info(f"DEBUG PROJECT_ROOT = {PROJECT_ROOT}")
 st.info("DEBUG 'from scripts.py.func.config.dynamic_settings import settings'")
@@ -41,8 +46,7 @@ msg = f"DEBUG 1 CWD: {os.getcwd()}, settings.TRINO_ENABLED:{settings.TRINO_ENABL
 logger.info(msg)
 print(msg)
 
-# scripts/py/chat/streamlit-admin.py:37
-sys.path.insert(0, str(Path(__file__).parents[3]))
+
 
 # scripts/py/chat/streamlit-admin.py:40
 msg = f"DEBUG 2 CWD: {os.getcwd()}, settings.TRINO_ENABLED:{settings.TRINO_ENABLED}"
