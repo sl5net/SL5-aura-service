@@ -1,4 +1,4 @@
-# file: scripts/py/func/transcribe_audio_with_feedback.py
+# scripts/py/func/transcribe_audio_with_feedback.py
 
 import queue
 import json
@@ -7,7 +7,6 @@ from pathlib import Path
 import os
 
 import numpy as np
-from config.settings import SAMPLE_RATE
 from .notify import notify
 from .audio_manager import mute_microphone, unmute_microphone
 from .manage_audio_routing import manage_audio_routing
@@ -24,10 +23,9 @@ import platform
 import runpy
 
 from .config.dynamic_settings import DynamicSettings
-# from ..config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
 
-
+SAMPLE_RATE = settings.SAMPLE_RATE
 
 # WAKE_PHANTOM
 

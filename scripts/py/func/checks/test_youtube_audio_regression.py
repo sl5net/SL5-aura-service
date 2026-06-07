@@ -53,7 +53,10 @@ from typing import Optional
 import pytest
 import re
 
-from config.settings import LANGUAGETOOL_CHECK_URL
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
+LANGUAGETOOL_CHECK_URL = settings.LANGUAGETOOL_CHECK_URL
 
 
 def maybe_clear_cache():

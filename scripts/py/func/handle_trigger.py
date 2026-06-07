@@ -13,7 +13,9 @@ import vosk
 from .config.dynamic_settings import DynamicSettings
 settings = DynamicSettings()
 
-from config.settings import PRE_RECORDING_TIMEOUT, SPEECH_PAUSE_TIMEOUT, SAMPLE_RATE
+PRE_RECORDING_TIMEOUT = settings.PRE_RECORDING_TIMEOUT
+SPEECH_PAUSE_TIMEOUT = settings.SPEECH_PAUSE_TIMEOUT
+SAMPLE_RATE = settings.SAMPLE_RATE
 
 from .model_manager import MODELS_LOCK
 from vosk import SetLogLevel

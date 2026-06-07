@@ -7,8 +7,9 @@ import re # noqa: F401
 # Regel-Format: ('Ersatztext', r'muster', schwellwert, flags)
 # Logik: Top-Down, erster Treffer gewinnt. Fullmatch (^...$) stoppt die Pipeline.
 
-from config import settings
-user_name = getattr(settings, "USER_NAME", "[Name fehlt]")
+
+user_name = "USER_NAME"
+# user_name = getattr(settings, "USER_NAME", "[Name fehlt]")
 
 # too<-from
 # PETER-AUFGABE fuer Koan: 09_personal_signature
