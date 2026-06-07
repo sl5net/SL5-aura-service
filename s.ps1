@@ -9,21 +9,16 @@ if (-not $query) {
     exit 1
 }
 
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
 $env:PYTHONUTF8 = "1"
+$env = os.environ.copy()
+$env["PYTHONPATH"] = PROJECT_ROOT
+$rootFile = PROJECT_ROOT
 
-
-# Resolve project root dynamically from the bootstrap pointer
-$rootFile = "C:\tmp\sl5_aura\sl5net_aura_project_root"
-
-$projectRoot = if (Test-Path $rootFile) {
-    $p = (Get-Content $rootFile).Trim()
-    if ($p.EndsWith("\setup")) { Split-Path -Parent $p } else { $p }
-} else {
-    $PSScriptRoot
-}
-
-$pyExec = "$projectRoot\.venv\Scripts\python.exe"
-$cliScript = "$projectRoot\scripts\py\cli_client.py"
+$pyExec = "$PROJECT_ROOT\.venv\Scripts\python.exe"
+$cliScript = "$PROJECT_ROOT\scripts\py\cli_client.py"
 
 # Helper function to run the python query with a native PowerShell timeout
 function Invoke-AuraQuery($timeout) {
@@ -55,13 +50,13 @@ try {
 # 2. Wake up API on-demand if port 8830 is closed
 if (-not $apiOpen) {
     Write-Host "Aura API is offline. Waking up background services..."
-    $startScript = "$projectRoot\scripts\py\start_uvicorn_service.py"
+    $startScript = "$PROJECT_ROOT\scripts\py\start_uvicorn_service.py"
     if (Test-Path $startScript) {
         # Start the Uvicorn/FastAPI service silently in the background
         # Start-Process -FilePath $pyExec -ArgumentList $startScript -NoNewWindow
 
-#       Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $projectRoot
-        Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $projectRoot
+#       Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $PROJECT_ROOT
+        Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $PROJECT_ROOT
 
         Start-Sleep -Seconds 2
     } else {

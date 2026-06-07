@@ -28,6 +28,11 @@ except metadata.PackageNotFoundError:
     try_auto_install_package('streamlit',logger=logger)
 
 import streamlit as st
+
+st.info(f"DEBUG scripts/py/chat/streamlit-admin.py")
+st.info(f"DEBUG PROJECT_ROOT = {PROJECT_ROOT}")
+st.info(f"DEBUG 'from scripts.py.func.config.dynamic_settings import settings'")
+
 from scripts.py.func.config.dynamic_settings import settings
 
 
