@@ -9,16 +9,19 @@ if (-not $query) {
     exit 1
 }
 
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+$tmp_dir = "C:\tmp"
+$pointerFile = "$tmp_dir\sl5_aura\sl5net_aura_project_root"
+$PROJECT_ROOT = (Get-Content -Path $pointerFile -Raw).Trim()
 
 $env:PYTHONUTF8 = "1"
-$env = os.environ.copy()
-$env["PYTHONPATH"] = PROJECT_ROOT
+$env:PYTHONPATH = $PROJECT_ROOT   # <-- DAS ist der Gamechanger!
 $rootFile = PROJECT_ROOT
 
 $pyExec = "$PROJECT_ROOT\.venv\Scripts\python.exe"
 $cliScript = "$PROJECT_ROOT\scripts\py\cli_client.py"
+
+Write-Host "Setze PYTHONPATH auf: $env:PYTHONPATH"
+Write-Host "Starte Python mit: $pyExec"
 
 # Helper function to run the python query with a native PowerShell timeout
 function Invoke-AuraQuery($timeout) {
