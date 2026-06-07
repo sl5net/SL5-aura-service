@@ -41,8 +41,10 @@ st.info(f"DEBUG {Path(__file__).resolve().relative_to(PROJECT_ROOT)}")
 st.info(f"DEBUG PROJECT_ROOT = {PROJECT_ROOT}")
 st.info("DEBUG 'from scripts.py.func.config.dynamic_settings import settings'")
 
-from scripts.py.func.config.dynamic_settings import settings
-
+# scripts/py/chat/streamlit-admin.py:44
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+st.info(f"DEBUG settings.DEV_MODE: {settings.DEV_MODE}")
 
 # scripts/py/chat/streamlit-admin.py:32
 msg = f"DEBUG 1 CWD: {os.getcwd()}, settings.TRINO_ENABLED:{settings.TRINO_ENABLED}"

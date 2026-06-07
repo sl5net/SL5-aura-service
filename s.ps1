@@ -17,6 +17,8 @@ $env:PYTHONUTF8 = "1"
 $env:PYTHONPATH = $PROJECT_ROOT
 $rootFile = $PROJECT_ROOT
 
+Set-Location -Path $PROJECT_ROOT
+
 $pyExec = "$PROJECT_ROOT\.venv\Scripts\python.exe"
 $cliScript = "$PROJECT_ROOT\scripts\py\cli_client.py"
 
