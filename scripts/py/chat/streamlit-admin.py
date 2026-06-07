@@ -99,7 +99,7 @@ except Exception as init_e:
         try:
             # OS-unabhängige Installation ins aktuelle .venv
             subprocess.run([sys.executable, "-m", "pip", "install", "trino"], check=True)
-            # WICHTIG für Windows: Modul-Cache leeren, damit Python das neue Paket sofort sieht!
+            # IMPORTANT for Windows: Clear the module cache so that Python sees the new package immediately!
             importlib.invalidate_caches()
 
             # Seite sofort neu laden, um im zweiten Anlauf erfolgreich zu verbinden
