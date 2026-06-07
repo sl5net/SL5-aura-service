@@ -92,7 +92,7 @@ def wake_up_docker_and_trino_or_get_error():
 
     trine_is_running = False
     if os.name == 'nt':
-        docker_check = run(["docker", "info"], capture_output=True, text=True)
+        docker_check = run(["docker", "info"], capture_output=True, text=True, shell=True)
 
         if docker_check.returncode != 0:
             print("🚀 Docker schläft. Starte Docker Desktop On-Demand...")
@@ -105,13 +105,13 @@ def wake_up_docker_and_trino_or_get_error():
                 # Warten, bis die Docker-Engine antwortet (Timeout ca. 30-40 Sek.)
             for _ in range(20):
                 time.sleep(2)
-                if run(["docker", "info"], capture_output=True).returncode == 0:
+                if run(["docker", "info"], capture_output=True,shell=True).returncode == 0:
                     print("✅ Docker Engine ist jetzt wach!")
                     break
 
         # 2. Now that Docker is safely running, let's wake up the Trino container
         print("Starte Trino Container...")
-        run(["docker", "start", "trino"], capture_output=True)
+        run(["docker", "start", "trino"], capture_output=True,shell=True)
 
         # 3. Warten, bis Trino auf Port 8083 wirklich Anfragen annimmt
         for _ in range(15):
