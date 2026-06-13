@@ -7,7 +7,10 @@ from pathlib import Path
 import subprocess
 import re
 
-from scripts.py.func.db.trino_client import set_feature_state, set_target_lang
+from scripts.py.func.config.dynamic_settings import settings
+
+if settings.TRINO_ENABLED:
+    from scripts.py.func.db.trino_client import set_feature_state, set_target_lang
 
 """
     Vorteile:
@@ -105,11 +108,10 @@ def execute(match_data):
             speak("Fehler: Die Übersetzungsregel konnte nicht konfiguriert werden.")
             return
 
-        # Zustand umschalten und Feedback geben
         if current_state == 'on':
             new_state = 'off'
             feedback_message = "translation mode is switched off (übersetzung modus wird ausgeschaltet')"
-            # Die Zeile auskommentieren
+            # comment out rule in this rule file
             # lines[rule_line_index] = '#' + lines[rule_line_index]
             lines[rule_line_index] = re.sub(r'^(\s*)(.*)', r'\1#\2', lines[rule_line_index])
         else: # current_state is 'off'
@@ -132,29 +134,37 @@ def execute(match_data):
 
 
         INTERFACE = os.getenv("INTERFACE", "speech")
-        set_target_lang(INTERFACE, target_lang=target_lang)
-        set_feature_state(INTERFACE, feature='translation', state=new_state)
 
+        trino_is_used = False
+
+        if settings.TRINO_ENABLED:
+            try:
+                set_target_lang(INTERFACE, target_lang=target_lang)
+                set_feature_state(INTERFACE, feature='translation', state=new_state)
+                trino_is_used = True
+                print("Trino-Updated.")
+            except Exception as trino_err:
+                print(f"note: optional Trino-Service ignored. ({trino_err})")
+                trino_is_used = False
 
         # write back to the file
         RULES_FILE_PATH.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
-        print(f"Status geändert zu: {new_state.upper()}. Regel-Datei wurde aktualisiert.")
+        print(f"state now: {new_state.upper()}. rule-file updated.")
         speak(feedback_message)
 
-        # --- WICHTIG: SCHRITT 3 ---
-        # Signalisiere der Hauptanwendung, dass sie die Regeln neu laden soll.
-        # Eine einfache Methode ist, eine "Trigger-Datei" zu erstellen.
-        #(Path(__file__).parent / 'RELOAD_RULES.trigger').touch()
-        # print("Reload-Trigger was set.")
+        if not trino_is_used:
+            (Path(__file__).parent / 'RELOAD_RULES.trigger').touch()
+            print("Reload-Trigger was set.")
 
-        # with open(Path(__file__).parent / 'translation_state.py', "w") as file:
-        #     target_lang_as_variable_key = target_lang.strip().replace('-', '_')
-        #     file.write(f"{target_lang_as_variable_key}='{new_state}'")
+            with open(Path(__file__).parent / 'translation_state.py', "w") as file:
+                target_lang_as_variable_key = target_lang.strip().replace('-', '_')
+                file.write(f"{target_lang_as_variable_key}='{new_state}'")
 
         return ' ' # text that is result. if you let it empty text you have spoken was written. if you want a empty result write ' '  because its intern not empty and will than accepted.
 
+
     except Exception as e:
-        error_msg = f"Ein Fehler ist aufgetreten: {e}"
+        error_msg = f"Error: {e}"
         print(error_msg, file=sys.stderr)
         speak(f"Es gab einen Fehler beim Ändern der Konfiguration. {e}")
