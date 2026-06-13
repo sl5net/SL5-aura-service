@@ -13,7 +13,7 @@ geminiUrl = 'https://aistudio.google.com/prompts/new_chat'
 
 _google_prefix = r'(?:google|googeln?|gogol|guck|gucke[n\s]*|goris|gut|gb|kugeln|brooke|coral|cool|obwohl)'
 _gemini_phonetics = (
-    r'(?:gemini|gremien|cheminée|g[\s-]?mine|gehminuten|gehe\s+mit|gibt|gaming|kriminell\w*|'
+    r'(?:gemini|emily|gremien|cheminée|g[\s-]?mine|gehminuten|gehe\s+mit|gibt|gaming|kriminell\w*|'
     r'termin\w*|jimmy\s*(?:nein|knight|lai|neu)|germany|feminin|gewinner\w*|'
     r'gewinn\s+ein|ge[mw]\w*|g\s+bedeuten|g\s+wie\s+neu|seminar\w*)'
 )

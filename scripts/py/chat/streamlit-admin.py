@@ -296,8 +296,9 @@ if not db_ready:
         ```bash
         sudo systemctl stop docker.service
         sudo systemctl disable docker.service
-        sudo systemctl enable docker.socket
+        sudo systemctl enable --now docker.socket
         sudo systemctl start docker.socket
+        sudo usermod -aG docker $USER
         ```
         **Make it update-safe (Linux Arch/Manjaro users):**
         Package updates can sometimes reset the socket configuration. To prevent this, create a persistent local override:

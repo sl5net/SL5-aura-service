@@ -101,7 +101,7 @@ https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_mini.zim
 
 Eine der möglichen Variante der Nutzung ist über Docker:
 
-sudo systemctl start docker
+sudo systemctl enable --now docker.socket
 
 Jetzt, da der Inhalt als Webseite verfügbar ist, kann Ihr Python-Skript ihn wie jede andere Webseite verarbeiten.
 
