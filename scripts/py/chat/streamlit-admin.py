@@ -224,7 +224,7 @@ except Exception as init_e:
                 logger.info(msg)
                 print(msg)
                 st.info(msg)
-            st.stop()
+                st.stop()
 
             from scripts.py.func.db.init_trino_db import init_all_sync
             try:
