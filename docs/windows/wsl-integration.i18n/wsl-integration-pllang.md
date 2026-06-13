@@ -12,7 +12,7 @@ Otwórz PowerShell lub CMD **jako administrator** i uruchom:
 
 __KOD_BLOKU_0__
 
-To domyślnie instaluje WSL2 z Ubuntu. Uruchom ponownie komputer po wyświetleniu monitu.
+To domyślnie instaluje WSL2 z Ubuntu. Po wyświetleniu monitu uruchom ponownie maszynę.
 
 Aby zainstalować konkretną dystrybucję:
 
@@ -35,7 +35,7 @@ __KOD_BLOKU_4__
 Po uruchomieniu WSL otwórz terminal Linux i postępuj zgodnie z **przewodnikiem po powłoce Linuksa** dla preferowanej powłoki:
 
 | Powłoka | Przewodnik |
-|-------|-------|
+|------|-------|
 | Bash (domyślnie WSL) | [bash-integration.md](../../linux/bash-integration.i18n/bash-integration-pllang.md) |
 | Zsz | [zsh-integration.md](../../linux/zsh-integration.i18n/zsh-integration-pllang.md) |
 | Ryba | [fish-integration.md](../../linux/fish-integration.i18n/fish-integration-pllang.md) |
@@ -78,6 +78,22 @@ __KOD_BLOKU_9__
 
 Ustaw swoją dystrybucję WSL jako profil domyślny w ustawieniach terminala Windows, aby uzyskać najbardziej płynne działanie.
 
+### Docker na żądanie (Linux)
+
+Aby zaoszczędzić zasoby systemowe, możesz skonfigurować Dockera tak, aby uruchamiał się tylko wtedy, gdy jest to wymagane (np. gdy Aura żąda bazy danych Trino), zamiast stale działać w tle.
+
+Uruchom następujące polecenia, aby wyłączyć ciągłą usługę w tle i zamiast tego włączyć „aktywację gniazda”:
+
+__KOD_BLOKU_10__
+
+**Zapewnij bezpieczeństwo aktualizacji (użytkownicy Linux Arch/Manjaro):**
+Aktualizacje pakietów mogą czasami zresetować konfigurację gniazda. Aby temu zapobiec, utwórz trwałe lokalne zastąpienie:
+
+__KOD_BLOKU_11__
+Upewnij się, że następujące linie są obecne i nie są skomentowane (usuń `#`), a następnie zapisz i wyjdź:
+__KOD_BLOKU_12__
+
+
 ### Docker i Kiwix w WSL
 
 Skrypt pomocniczy Kiwix („kiwix-docker-start-if-not-running.sh”) wymaga Dockera. Zainstaluj Docker Desktop dla Windows i włącz integrację WSL 2:
@@ -85,15 +101,15 @@ Skrypt pomocniczy Kiwix („kiwix-docker-start-if-not-running.sh”) wymaga Dock
 1. Pobierz i zainstaluj [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 2. W Docker Desktop → Ustawienia → Zasoby → Integracja WSL włącz dystrybucję WSL.
 3. Sprawdź w WSL:
-__KOD_BLOKU_10__
+__KOD_BLOKU_13__
 
 ### Wywołanie funkcji WSL `s` z Windows (opcjonalnie)
 
 Jeśli chcesz wywołać skrót `s` z okna CMD systemu Windows lub PowerShell bez otwierania terminala WSL, możesz go owinąć:
 
-__KOD_BLOKU_11__
+__KOD_BLOKU_14__
 
-__KOD_BLOKU_12__
+__KOD_BLOKU_15__
 
 > Flaga `-i` ładuje interaktywną powłokę, dzięki czemu `~/.bashrc` (i funkcja `s`) są pobierane automatycznie.
 

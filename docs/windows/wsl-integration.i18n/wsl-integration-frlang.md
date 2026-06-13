@@ -106,6 +106,31 @@ winget install Microsoft.WindowsTerminal
 
 Définissez votre distribution WSL comme profil par défaut dans les paramètres du terminal Windows pour l'expérience la plus transparente.
 
+### Docker à la demande (Linux)
+
+Pour économiser les ressources système, vous pouvez configurer Docker pour qu'il démarre uniquement lorsque cela est nécessaire (par exemple, lorsqu'Aura demande la base de données Trino), plutôt que de s'exécuter constamment en arrière-plan.
+
+Exécutez les commandes suivantes pour désactiver le service en arrière-plan continu et activer « l'activation du socket » à la place :
+
+```bash
+sudo systemctl disable docker.service
+sudo systemctl enable docker.socket
+sudo systemctl start docker.socket
+```
+
+**Faites en sorte qu'il soit sécurisé pour les mises à jour (utilisateurs de Linux Arch/Manjaro) :**
+Les mises à jour de packages peuvent parfois réinitialiser la configuration du socket. Pour éviter cela, créez un remplacement local persistant :
+
+```bash
+sudo systemctl edit docker.socket
+```
+Assurez-vous que les lignes suivantes sont présentes et non commentées (supprimez le « # ), puis enregistrez et quittez :
+```ini
+[Install]
+WantedBy=sockets.target
+```
+
+
 ### Docker et Kiwix dans WSL
 
 Le script d'assistance Kiwix (`kiwix-docker-start-if-not-running.sh`) nécessite Docker. Installez Docker Desktop pour Windows et activez l'intégration WSL 2 :

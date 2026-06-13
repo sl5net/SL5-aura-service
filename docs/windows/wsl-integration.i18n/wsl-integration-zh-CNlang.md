@@ -78,6 +78,22 @@ __代码_块_9__
 
 在 Windows 终端设置中将 WSL 发行版设置为默认配置文件，以获得最无缝的体验。
 
+### Docker 按需 (Linux)
+
+为了节省系统资源，您可以将 Docker 配置为仅在需要时启动（例如，当 Aura 请求 Trino 数据库时），而不是在后台持续运行。
+
+运行以下命令以禁用连续后台服务并启用“套接字激活”：
+
+__代码_块_10__
+
+**使其更新安全（Linux Arch/Manjaro 用户）：**
+包更新有时会重置套接字配置。为了防止这种情况，创建一个持久的本地覆盖：
+
+__代码_块_11__
+确保以下行存在且未注释（删除“#”），然后保存并退出：
+__代码_块_12__
+
+
 ### WSL 中的 Docker 和 Kiwix
 
 Kiwix 帮助程序脚本（`kiwix-docker-start-if-not-running.sh`）需要 Docker。安装适用于 Windows 的 Docker Desktop 并启用 WSL 2 集成：
@@ -85,15 +101,15 @@ Kiwix 帮助程序脚本（`kiwix-docker-start-if-not-running.sh`）需要 Docke
 1.下载并安装[Docker Desktop](https://www.docker.com/products/docker-desktop/)。
 2. 在 Docker Desktop → 设置 → 资源 → WSL 集成中，启用 WSL 发行版。
 3.在WSL内部验证：
-__代码_块_10__
+__代码_块_13__
 
 ### 从 Windows 调用 WSL `s` 函数（可选）
 
 如果您想在不打开 WSL 终端的情况下从 Windows CMD 或 PowerShell 窗口调用 `s` 快捷方式，您可以将其包装：
 
-__代码_块_11__
+__代码_块_14__
 
-__代码_块_12__
+__代码_块_15__
 
 > `-i` 标志加载一个交互式 shell，以便自动获取您的 `~/.bashrc` （和 `s` 函数）。
 

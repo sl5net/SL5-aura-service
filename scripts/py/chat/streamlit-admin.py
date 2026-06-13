@@ -299,6 +299,17 @@ if not db_ready:
         sudo systemctl enable docker.socket
         sudo systemctl start docker.socket
         ```
+        **Make it update-safe (Linux Arch/Manjaro users):**
+        Package updates can sometimes reset the socket configuration. To prevent this, create a persistent local override:
+        
+        ```bash
+        sudo systemctl edit docker.socket
+        ```
+        Ensure the following lines are present and uncommented (remove the `#`), then save and exit:
+        ```ini
+        [Install]
+        WantedBy=sockets.target
+        ```
         """)
 
     elif error_category == "schema_missing":
