@@ -1,5 +1,5 @@
 @echo off
-:: file: update.bat
+:: update/update.bat
 :: Description: One-click updater for Windows users.
 :: This script requests admin rights and then runs the main PowerShell update script.
 
