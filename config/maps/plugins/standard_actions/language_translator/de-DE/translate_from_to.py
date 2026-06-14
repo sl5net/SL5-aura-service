@@ -11,11 +11,18 @@ project_dir = Path(__file__).parent.parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_dir))
 
 from scripts.py.func.global_state import SIGNATURE_TIMES, SEQUENCE_LOCK
-from config import settings
+
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+
+
 from scripts.py.func.get_active_window_title import get_active_window_title_safe
-from config.settings import LANGUAGE_PREFIXES, SIGNATURE_MAPPING
 from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
 from scripts.py.func.db.trino_client import get_feature_state, get_target_lang
+
+settings = DynamicSettings()
+
+LANGUAGE_PREFIXES = settings.LANGUAGE_PREFIXES
+SIGNATURE_MAPPING = settings.SIGNATURE_MAPPING
 
 
 TRANSLATE_SCRIPT = project_dir / 'tools' / 'simple_translate.py'

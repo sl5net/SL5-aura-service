@@ -106,11 +106,36 @@ winget install Microsoft.WindowsTerminal
 
 最もシームレスなエクスペリエンスを実現するには、Windows ターミナル設定で WSL ディストリビューションをデフォルトのプロファイルとして設定します。
 
+### Docker オンデマンド (Linux)
+
+システム リソースを節約するために、Docker をバックグラウンドで常に実行するのではなく、必要なとき (Aura が Trino データベースを要求したときなど) にのみ起動するように設定できます。
+
+次のコマンドを実行して、継続的なバックグラウンド サービスを無効にし、代わりに「ソケット アクティベーション」を有効にします。
+
+```bash
+sudo systemctl disable docker.service
+sudo systemctl enable docker.socket
+sudo systemctl start docker.socket
+```
+
+**安全に更新できるようにします (Linux Arch/Manjaro ユーザー):**
+パッケージの更新によりソケット構成がリセットされる場合があります。これを防ぐには、永続的なローカル オーバーライドを作成します。
+
+```bash
+sudo systemctl edit docker.socket
+```
+次の行が存在し、コメントが解除されていることを確認し (「#」を削除)、保存して終了します。
+```ini
+[Install]
+WantedBy=sockets.target
+```
+
+
 ### WSL 内の Docker と Kiwix
 
 Kiwix ヘルパー スクリプト (`kiwix-docker-start-if-not-running.sh`) には Docker が必要です。 Docker Desktop for Windows をインストールし、WSL 2 統合を有効にします。
 
-1. [Docker Desktop](https://www.docker.com/products/docker-desktop/)をダウンロードしてインストールします。
+1.[Docker Desktop](https://www.docker.com/products/docker-desktop/)をダウンロードしてインストールします。
 2. [Docker Desktop] → [設定] → [リソース] → [WSL 統合] で、WSL ディストリビューションを有効にします。
 3. WSL 内で確認します。
    ```bash

@@ -1,4 +1,5 @@
 @echo off
+:: start_aura.bat:2
 setlocal
 title SL5 Aura - One-Click Starter
 
@@ -96,7 +97,7 @@ start "" "%AHK_EXE%" "%~dp0scripts\notification_watcher.ahk" >nul 2>&1
 echo DBG18: started notification_watcher
 start "" "%AHK_EXE%" "%~dp0trigger-hotkeys.ahk" >nul 2>&1
 echo DBG19: started trigger-hotkeys
-start "" "%AHK_EXE%" "%~dp0type_watcher.ahk" >nul 2>&1
+start "" "%AHK_EXE%" "%~dp0scripts\type_watcher\type_watcher.ahk" >nul 2>&1
 echo DBG20: started type_watcher
 
 echo DBG21: checking errorlevel=%errorlevel%

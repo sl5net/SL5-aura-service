@@ -19,7 +19,12 @@ import sys
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
 from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
-from config.settings import TRIGGER_FILE_PATH, SAMPLE_RATE
+
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
+TRIGGER_FILE_PATH = settings.TRIGGER_FILE_PATH
+SAMPLE_RATE = settings.SAMPLE_RATE
 
 # --- Basic Configuration ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

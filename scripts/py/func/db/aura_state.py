@@ -6,9 +6,15 @@ Readable interface for developers — wraps trino_client.py low-level operations
 Usage:
     from scripts.py.func.db.aura_state import enable_translation, disable_translation, get_interface_status
 """
+import os
 from pathlib import Path
 import sys
-sys.path.insert(0, str(Path(__file__).parents[4]))
+
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from scripts.py.func.db.trino_client import (
     get_feature_state,

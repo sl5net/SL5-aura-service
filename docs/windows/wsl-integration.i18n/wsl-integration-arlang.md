@@ -106,6 +106,31 @@ winget install Microsoft.WindowsTerminal
 
 قم بتعيين توزيع WSL الخاص بك كملف التعريف الافتراضي في إعدادات Windows Terminal للحصول على تجربة أكثر سلاسة.
 
+                       ### عامل ميناء عند الطلب (لينكس)
+
+لحفظ موارد النظام، يمكنك تكوين Docker ليبدأ فقط عند الحاجة (على سبيل المثال، عندما تطلب Aura قاعدة بيانات Trino)، بدلاً من التشغيل باستمرار في الخلفية.
+
+قم بتشغيل الأوامر التالية لتعطيل خدمة الخلفية المستمرة وتمكين "تنشيط المقبس" بدلاً من ذلك:
+
+```bash
+sudo systemctl disable docker.service
+sudo systemctl enable docker.socket
+sudo systemctl start docker.socket
+```
+
+**اجعله آمنًا للتحديث (مستخدمو Linux Arch/Manjaro):**
+يمكن لتحديثات الحزمة في بعض الأحيان إعادة تعيين تكوين مأخذ التوصيل. لمنع ذلك، قم بإنشاء تجاوز محلي مستمر:
+
+```bash
+sudo systemctl edit docker.socket
+```
+تأكد من وجود الأسطر التالية وعدم التعليق عليها (أزل `#`)، ثم احفظ واخرج:
+```ini
+[Install]
+WantedBy=sockets.target
+```
+
+
                                               ### Docker وKiwix داخل WSL
 
 يتطلب البرنامج النصي المساعد Kiwix (`kiwix-docker-start-if-not-running.sh`) وجود Docker. قم بتثبيت Docker Desktop لنظام التشغيل Windows وتمكين تكامل WSL 2:

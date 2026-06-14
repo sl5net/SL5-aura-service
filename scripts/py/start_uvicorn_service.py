@@ -8,15 +8,35 @@ import psutil
 import time
 from pathlib import Path
 
+
+# 1. Determine the project root via your reliable temp file
+# Since we are on Linux here, /tmp is sufficient
+root_pointer_file = "/tmp/sl5_aura/sl5net_aura_project_root"
+
+if os.path.exists(root_pointer_file):
+    with open(root_pointer_file, 'r', encoding='utf-8') as f:
+        PROJECT_ROOT = f.read().strip()
+
+    # 2. Den Pfad dem System aufzwingen!
+    if PROJECT_ROOT not in sys.path:
+        sys.path.insert(0, PROJECT_ROOT)
+
+from scripts.py.func.config.dynamic_settings import DynamicSettings
+settings = DynamicSettings()
+
+
 # --- KONFIGURATION ---
 HOST = "0.0.0.0"
 MODULE_PATH = "scripts.py.service_api:app"
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-sys.path.insert(0, str(PROJECT_ROOT))
-from config.settings import ADMIN_GATEWAY_ENABLED, ADMIN_GATEWAY_PORT
-PORT = ADMIN_GATEWAY_PORT
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
+ADMIN_GATEWAY_ENABLED = settings.ADMIN_GATEWAY_ENABLED
+ADMIN_GATEWAY_PORT = settings.ADMIN_GATEWAY_PORT
+
+PORT = ADMIN_GATEWAY_PORT
 
 (PROJECT_ROOT / 'log').mkdir(exist_ok=True)
 LOG_FILE = PROJECT_ROOT / 'log' / "service_start.log"
@@ -83,6 +103,7 @@ def start_uvicorn_service(host, port, module_path):
         # "--reload"  # Disabled: causes ~7s latency due to i18n file watcher
     ]
 
+    # scripts/py/start_uvicorn_service.py:86
     try:
         with LOG_FILE.open('a', encoding='utf-8') as log_f:
 
@@ -92,7 +113,7 @@ def start_uvicorn_service(host, port, module_path):
                 cwd=PROJECT_ROOT,
                 stdout=log_f,
                 stderr=log_f,
-                preexec_fn=os.setsid,
+                preexec_fn=None if os.name == 'nt' else os.setsid,
                 env=env
             )
             print(f"INFO: Uvicorn-Prozess (PID: {process.pid}) gestartet. Logs in {LOG_FILE}")

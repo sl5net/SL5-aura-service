@@ -1,10 +1,18 @@
 # scripts/py/func/db/trino_client.py
+import os
 from pathlib import Path
 import sys
-sys.path.insert(0, str(Path(__file__).parents[4]))
+import logging
+# sys.path.insert(0, str(Path(__file__).parents[4]))
 from datetime import datetime, timezone
 from scripts.py.func.determine_current_user import determine_current_user
 from scripts.py.func.ensure_package import ensure_package
+
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 TRINO_HOST = 'localhost'
 TRINO_PORT = 8083
@@ -25,7 +33,14 @@ async def open_trino_connection(schema=TRINO_SCHEMA):
 # scripts/py/func/db/trino_client.py:25
 def get_connection(schema=TRINO_SCHEMA):
     """For synchronous runtime callers (trino_client helpers, Streamlit)."""
-    import trino
+
+    try:
+        import trino
+    except ModuleNotFoundError:
+        from scripts.py.func.try_auto_install_package import try_auto_install_package
+        try_auto_install_package('trino',logger=logging)
+        import trino
+
     current_user, _ = determine_current_user()
     return trino.dbapi.connect(
         host=TRINO_HOST,

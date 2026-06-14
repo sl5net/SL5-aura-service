@@ -5,7 +5,7 @@ import re # noqa: F401
 #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
 
 
-from config import settings
+#from config import settings
 
 
 # ============================================================
@@ -26,7 +26,8 @@ from config import settings
 # NÄCHSTER SCHRITT: Koan 10
 # ============================================================
 
-user_name = getattr(settings, "USER_NAME", "[Name fehlt]")
+# user_name = getattr(settings, "USER_NAME", "[Name fehlt]")
+user_name = "USER_NAME"
 
 FUZZY_MAP_pre = [
     (f"Mit freundlichen Grüßen, {user_name}\n", r"^(viele grüße|beste grüße|mit freundlichen grüßen)\w*$"),

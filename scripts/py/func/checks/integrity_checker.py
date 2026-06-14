@@ -43,6 +43,8 @@ def check_code_integrity(project_root, logger):
         if "venv" in dirs: dirs.remove("venv")
 
         for file in files:
+            if 'dynamic_settings.py' in file:
+                continue
             if file.endswith(".py") or file.endswith(".bat") or file.endswith(".ps1"):
                 full_path = os.path.join(root, file)
 

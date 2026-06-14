@@ -1,12 +1,66 @@
-# file: update/update_for_windows_users.ps1                                       
+# update/update_for_windows_users.ps1
 # Description: Downloads the latest version and updates the application
 #              while preserving user settings. For non-developer use.
 
 $ErrorActionPreference = 'Stop'
-$repoUrl = "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip"
 
-$installDir = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$tempDir = Join-Path $env:TEMP "sl5_update_temp"
+$rootFile = "C:\tmp\sl5_aura\sl5net_aura_project_root"
+$installDir = (Get-Content $rootFile -Raw).Trim()
+
+
+# $tempDir = Join-Path $env:TEMP "sl5_update_temp"
+$tempDir = "C:\tmp\sl5_upd"
+
+$localShaPath = Join-Path $installDir "update\.last_commit_sha"
+
+
+
+# Detect the active branch from either the current folder or the parent folder
+$folder1 = Split-Path -Leaf $installDir
+$folder2 = Split-Path -Leaf (Split-Path -Parent $installDir)
+
+$branch = "master"
+foreach ($f in @($folder1, $folder2)) {
+    if ($f -match "^SL5-aura-service-(.+)$") {
+        $rawBranch = $Matches[1]
+        # Reconstruct branch slashes from GitHub zipball dash formatting
+        if ($rawBranch -match "^(feature|experimental|bugfix|fix|hotfix)-(.*)$") {
+            $branch = "$($Matches[1])/$($Matches[2])"
+        } else {
+            $branch = $rawBranch
+        }
+        break
+    }
+}
+
+$repoUrl = "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/$branch.zip"
+
+
+
+# 2. Check latest commit SHA from GitHub API to prevent redundant downloads
+$remoteSha = ""
+try {
+    $apiUrl = "https://api.github.com/repos/sl5net/SL5-aura-service/commits/$branch"
+    $response = Invoke-RestMethod -Uri $apiUrl -UseBasicParsing
+    $remoteSha = $response.sha
+} catch {
+    Write-Host "WARNING: Could not fetch updates info from GitHub. Proceeding with download..." -ForegroundColor Yellow
+}
+
+
+if ($remoteSha -and (Test-Path $localShaPath)) {
+    $localSha = (Get-Content $localShaPath).Trim()
+    if ($localSha -eq $remoteSha) {
+        Write-Host "Aura is already up to date! ($branch branch is at commit $localSha)" -ForegroundColor Green
+        if (-not ($env:CI -eq 'true')) {
+            Read-Host -Prompt "Press Enter to exit"
+        }
+        exit 0
+    }
+}
+
+
+
 
 Write-Host "--- SL5 Aura Updater ---" -ForegroundColor Cyan
 Write-Host "This will download the latest version and replace all application files."
@@ -45,17 +99,22 @@ try {
     # 3. Download the latest version
     $zipPath = Join-Path $tempDir "latest.zip"
     Write-Host "INFO: Downloading latest version from GitHub..."
-    Invoke-WebRequest -Uri $repoUrl -OutFile $zipPath
+
+    #  .NET WebClient download
+    $webClient = New-Object System.Net.WebClient
+    $webClient.DownloadFile($repoUrl, $zipPath)
 
     # 4. Extract the archive
     Write-Host "INFO: Extracting update..."
-    Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
-    $extractedFolder = Get-ChildItem -Path $tempDir -Directory | Where-Object { $_.Name -like '*-master' } | Select-Object -First 1
-    if (-not $extractedFolder) { throw "Could not find extracted '*-master' folder." }
+
+    # Load .NET Compression and extract safely without dotfile bugs
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $tempDir)
+
+    $extractedFolder = Get-ChildItem -Path $tempDir -Directory | Select-Object -First 1
+    if (-not $extractedFolder) { throw "Could not find extracted folder inside temp directory." }
 
     # 5. Restore local settings into the new version
-
-
 
     if (Test-Path $backupPath) {
         Write-Host "INFO: Restoring your local settings into the new version..." -ForegroundColor Green
@@ -64,7 +123,7 @@ try {
     }
     # 6. Create a final batch script to perform the file replacement and update dependencies
 #    $installerName = "setup\windows11_setup.bat"
-    $installerName = "setup\windows11_setup_with_ahk_copyq.bat"
+    $installerName = "setup\windows11_setup_with_ahk_copyq_fzf_glogg.bat"
 
     $batchScript = @'
 @echo off
@@ -118,6 +177,12 @@ del "%~f0"
     $batchPath = Join-Path $installDir "_finalize_update.bat"
     Set-Content -Path $batchPath -Value $batchScript
     # update/update_for_windows_users.ps1:110
+
+    # Save the new commit SHA locally for the next run
+    if ($remoteSha) {
+        Set-Content -Path $localShaPath -Value $remoteSha
+    }
+
     # 7. Launch the batch script and exit this PowerShell script
     Write-Host "INFO: Handing over to final updater script. This window will close." -ForegroundColor Yellow
     Start-Process cmd.exe -ArgumentList "/C `"$batchPath`""

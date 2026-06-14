@@ -97,6 +97,31 @@ __CODE_BLOCO_9__
 
 Defina sua distribuição WSL como o perfil padrão nas configurações do Terminal do Windows para uma experiência mais perfeita.
 
+### Docker sob demanda (Linux)
+
+Para economizar recursos do sistema, você pode configurar o Docker para iniciar somente quando necessário (por exemplo, quando o Aura solicitar o banco de dados Trino), em vez de executar constantemente em segundo plano.
+
+Execute os seguintes comandos para desativar o serviço contínuo em segundo plano e ativar a "ativação de soquete":
+
+```bash
+export PROJECT_ROOT="/mnt/c/Projects/stt"
+```
+
+**Torne-o seguro para atualização (usuários Linux Arch/Manjaro):**
+Às vezes, as atualizações de pacotes podem redefinir a configuração do soquete. Para evitar isso, crie uma substituição local persistente:
+
+```bash
+cd "$PROJECT_ROOT"
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+Certifique-se de que as seguintes linhas estejam presentes e sem comentários (remova o `#`), salve e saia:
+```powershell
+winget install Microsoft.WindowsTerminal
+```
+
+
 ### Docker e Kiwix dentro do WSL
 
 O script auxiliar Kiwix (`kiwix-docker-start-if-not-running.sh`) requer Docker. Instale o Docker Desktop para Windows e habilite a integração WSL 2:
@@ -105,7 +130,9 @@ O script auxiliar Kiwix (`kiwix-docker-start-if-not-running.sh`) requer Docker. 
 2. Em Docker Desktop → Configurações → Recursos → Integração WSL, habilite sua distribuição WSL.
 3. Verifique dentro do WSL:
 ```bash
-export PROJECT_ROOT="/mnt/c/Projects/stt"
+sudo systemctl disable docker.service
+sudo systemctl enable docker.socket
+sudo systemctl start docker.socket
 ```
 
 ### Chamando a função WSL `s` do Windows (opcional)
@@ -113,14 +140,12 @@ export PROJECT_ROOT="/mnt/c/Projects/stt"
 Se quiser invocar o atalho `s` de uma janela CMD do Windows ou PowerShell sem abrir um terminal WSL, você pode envolvê-lo:
 
 ```bash
-cd "$PROJECT_ROOT"
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+sudo systemctl edit docker.socket
 ```
 
-```powershell
-winget install Microsoft.WindowsTerminal
+```ini
+[Install]
+WantedBy=sockets.target
 ```
 
 > O sinalizador `-i` carrega um shell interativo para que seu `~/.bashrc` (e a função `s`) seja obtido automaticamente.

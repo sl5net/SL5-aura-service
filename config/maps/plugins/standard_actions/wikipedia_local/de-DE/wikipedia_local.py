@@ -16,7 +16,7 @@ import socket
 """
 
 sudo systemctl start docker
-sudo systemctl enable docker
+sudo systemctl enable --now docker.socket
 http://localhost:8080/viewer#wikipedia_de_all_mini_2025-09/Automobil
 
 Findet leider nur

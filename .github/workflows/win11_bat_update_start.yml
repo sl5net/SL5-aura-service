@@ -38,7 +38,7 @@ jobs:
         run: cmd.exe /c "setup\windows11_setup.bat"
 
       - name: Run update.bat
-        run: cmd.exe /c "call update.bat"
+        run: cmd.exe /c "call update/update.bat"
       
       - name: Start server and verify process
         run: |

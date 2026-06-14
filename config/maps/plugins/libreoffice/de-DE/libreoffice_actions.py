@@ -43,7 +43,9 @@ def execute(match_data):
     PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
     PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
 
-    sys.path.insert(0, str(PROJECT_ROOT))
+    if str(PROJECT_ROOT) not in sys.path:
+        sys.path.insert(0, str(PROJECT_ROOT))
+
     from scripts.py.func.audio_manager import speak_inclusive_fallback
 
     text = match_data.get('original_text', '').strip().lower()

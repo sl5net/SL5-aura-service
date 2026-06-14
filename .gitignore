@@ -56,6 +56,7 @@ transcribe.py
 
 
 **/translation_state.py
+**/RELOAD_RULES.trigger
 
 config/plugin_call_cache.sqlite
 plugin_call_cache.sqlite
