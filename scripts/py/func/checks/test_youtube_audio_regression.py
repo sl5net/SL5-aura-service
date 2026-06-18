@@ -53,8 +53,7 @@ from typing import Optional
 import pytest
 import re
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from scripts.py.func.config.dynamic_settings import settings
 
 LANGUAGETOOL_CHECK_URL = settings.LANGUAGETOOL_CHECK_URL
 

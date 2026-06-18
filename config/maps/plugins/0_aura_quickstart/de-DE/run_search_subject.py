@@ -52,8 +52,7 @@ def execute(match_data):
         file_filter = "*.py"
 #roter KonföderationAura schüchtern KonfigurationenDora suche KonfigurationOver such a good vibrationsO suche Konfiguration
 
-    from scripts.py.func.config.dynamic_settings import DynamicSettings
-    settings = DynamicSettings()
+    from scripts.py.func.config.dynamic_settings import settings
 
     sleep_sec = 0
     if settings.DEV_MODE:

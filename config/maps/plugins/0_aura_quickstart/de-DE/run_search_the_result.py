@@ -39,8 +39,7 @@ def execute(match_data):
     # Juras doofer DokumenteHurra suche du kommst Dora suche du kommst
     # current_lang = Path(__file__).parent.name.split("-")[0]
     # file_filter = f"*-{current_lang}lang.md"
-    from scripts.py.func.config.dynamic_settings import DynamicSettings
-    settings = DynamicSettings()
+    from scripts.py.func.config.dynamic_settings import settings
 
     sleep_sec = 0
     if settings.DEV_MODE:

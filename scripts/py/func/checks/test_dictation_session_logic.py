@@ -20,8 +20,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
 from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from scripts.py.func.config.dynamic_settings import settings
 
 TRIGGER_FILE_PATH = settings.TRIGGER_FILE_PATH
 SAMPLE_RATE = settings.SAMPLE_RATE

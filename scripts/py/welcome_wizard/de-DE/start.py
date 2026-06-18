@@ -36,8 +36,7 @@ def run(project_root):
         env.setdefault("DISPLAY", ":0")
         env.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/1000/bus")
 
-        from scripts.py.func.config.dynamic_settings import DynamicSettings
-        settings = DynamicSettings()
+        from scripts.py.func.config.dynamic_settings import settings
 
         sleep_sec = 0
         if settings.DEV_MODE:

@@ -42,8 +42,7 @@ st.info(f"DEBUG PROJECT_ROOT = {PROJECT_ROOT}")
 st.info("DEBUG 'from scripts.py.func.config.dynamic_settings import settings'")
 
 # scripts/py/chat/streamlit-admin.py:44
-from scripts.py.func.config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from scripts.py.func.config.dynamic_settings import settings
 st.info(f"DEBUG settings.DEV_MODE: {settings.DEV_MODE}")
 
 # scripts/py/chat/streamlit-admin.py:32

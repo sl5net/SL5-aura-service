@@ -32,8 +32,7 @@ import threading
 import subprocess
 import logging
 
-from .config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from .config.dynamic_settings import settings
 
 
 import platform

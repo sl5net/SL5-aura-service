@@ -1,4 +1,4 @@
-# file: scripts/py/func/checks/integrity_rules.py
+# scripts/py/func/checks/integrity_rules.py
 
 """
 This file defines critical code fragments that must exist in specific files.
@@ -177,15 +177,13 @@ INTEGRITY_CHECKS = {
     # germen umlauts needs this to could read correct for e.g. from script like autokey
     # Ensures critical text processing logic is present.
     "scripts/py/func/process_text_in_background.py": [
-        "settings = DynamicSettings()",
+        ".config.dynamic_settings import settings",
         "new_text = re.sub(",
         'encoding="utf-8-sig"',
         'f"✅ Background processing for',
         'f"✅ 💾 THREAD: Successfully wrote to '
     ],
-    # settings = DynamicSettings() is important ! check the fist rule in self_tester and try it to change it 2026-0104-1829 4.1.'26 18:29 Sun
-
-
+    # settings import is important! check the first rule in self_tester and try to change it'
 
     "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py": [
         'espeak-ng',

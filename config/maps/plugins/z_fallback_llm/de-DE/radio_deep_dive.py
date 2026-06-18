@@ -686,8 +686,7 @@ def DEMO_MODE():
 if __name__ == "__main__":
     import argparse
 
-    from scripts.py.func.config.dynamic_settings import DynamicSettings
-    settings = DynamicSettings()
+    from scripts.py.func.config.dynamic_settings import settings
 
     # config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py:654
     if settings.radio_deep_dive_ENABLED:

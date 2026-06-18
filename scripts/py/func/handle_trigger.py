@@ -10,8 +10,7 @@ from pathlib import Path
 
 import vosk
 
-from .config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from .config.dynamic_settings import settings
 
 PRE_RECORDING_TIMEOUT = settings.PRE_RECORDING_TIMEOUT
 SPEECH_PAUSE_TIMEOUT = settings.SPEECH_PAUSE_TIMEOUT
