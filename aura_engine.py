@@ -4,8 +4,8 @@ import sys
 # ==============================================================================
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK & AUTO-BOOTSTRAP ---
 # Ensures the engine actually runs inside its .venv to avoid dependency issues.
-import scripts.py.bootstrap_venv
 # ==============================================================================
+import scripts.py.bootstrap_venv
 import shutil
 import objgraph
 from datetime import datetime, timedelta
@@ -27,8 +27,6 @@ from scripts.py.func.config.dynamic_settings import settings
 
 # os.environ["AURA_SELF_TEST_RUNNING"] = "0"
 
-import sys
-import os
 import atexit
 import requests
 import logging
