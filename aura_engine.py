@@ -2,35 +2,9 @@
 import os
 import sys
 # ==============================================================================
-# --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK ---
+# --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK & AUTO-BOOTSTRAP ---
 # Ensures the engine actually runs inside its .venv to avoid dependency issues.
-# The 'VIRTUAL_ENV' variable is a standard indicator for an active venv.
-# only active when you use explicit source .venv/bin/activate
-
-if 'VIRTUAL_ENV' not in os.environ:
-    # only active when you use explicit source .venv/bin/activate
-    # some use as other method: sys.prefix == sys.base_prefix
-    print(
-        "\n❌ [AURA ENGINE] FATAL: Python virtual environment not activated!",
-        file=sys.stderr
-    )
-    if os.name == 'nt':  # Windows
-        print(
-            "👉 Please start Aura using the official Windows batch script:",
-            file=sys.stderr
-        )
-        print("   start_aura.bat\n", file=sys.stderr)
-    else:  # Linux / macOS
-        print(
-            "👉 Please start Aura using the recommended startup script:",
-            file=sys.stderr
-        )
-        print("   ./scripts/restart_venv_and_run-server.sh", file=sys.stderr)
-        print("\n   Or the alternative activation script:", file=sys.stderr)
-        print("   ./scripts/activate-venv_and_run-server.sh\n", file=sys.stderr)
-
-        # aura_engine.py:44 'VIRTUAL_ENV' not
-    sys.exit(1)
+import scripts.py.bootstrap_venv
 # ==============================================================================
 import shutil
 import objgraph

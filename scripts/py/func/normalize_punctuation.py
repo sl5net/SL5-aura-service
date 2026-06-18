@@ -5,7 +5,7 @@ from typing import Tuple
 
 from .log_memory_details import log4DEV
 
-# from scripts.py.func.config.dynamic_settings import settings
+from scripts.py.func.config.dynamic_settings import settings
 
 
 
