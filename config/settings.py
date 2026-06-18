@@ -132,7 +132,7 @@ AUDIO_GUIDANCE_ENABLED=True
 
 INPUT_METHOD="dotool"
 
-TRINO_ENABLED = True
+TRINO_ENABLED = False
 
 # Admin Gateway: lightweight FastAPI service on ADMIN_GATEWAY_PORT.
 # When enabled, stays always-on and spawns the Streamlit admin UI on demand.
