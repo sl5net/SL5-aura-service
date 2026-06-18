@@ -1,6 +1,5 @@
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from scripts.py.func.config.dynamic_settings import settings
 from .piper_speak_via_server import piper_speak_via_server
 from ..audio_manager import speak_inclusive_fallback
 

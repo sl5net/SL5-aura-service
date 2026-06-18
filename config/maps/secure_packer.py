@@ -1,11 +1,10 @@
 # config/maps/secure_packer.py
 import logging
 from pathlib import Path
-from scripts.py.func.config.dynamic_settings import DynamicSettings
+from scripts.py.func.config.dynamic_settings import settings
 
 # may read: https://github.com/sl5net/SL5-aura-service/tree/master/docs/Feature_Spotlight/zip
 
-settings = DynamicSettings()
 # Import the new library
 from scripts.py.func import secure_packer_lib
 

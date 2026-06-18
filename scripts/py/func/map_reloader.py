@@ -10,7 +10,7 @@ import time
 
 from pyzipper import zipfile
 
-from .config.dynamic_settings import DynamicSettings
+from .config.dynamic_settings import settings
 
 
 from .log_memory_details import log4DEV
@@ -19,7 +19,6 @@ from .auto_fix_module import try_auto_fix_module
 from .validate_map_structure import check_map_health
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 from .utils.aura_cache import cleanup_cache_on_reload
-settings = DynamicSettings()
 
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 

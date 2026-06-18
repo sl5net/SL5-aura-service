@@ -21,8 +21,7 @@ if os.path.exists(root_pointer_file):
     if PROJECT_ROOT not in sys.path:
         sys.path.insert(0, PROJECT_ROOT)
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from scripts.py.func.config.dynamic_settings import settings
 
 
 # --- KONFIGURATION ---

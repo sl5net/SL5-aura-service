@@ -22,8 +22,7 @@ import platform
 
 import runpy
 
-from .config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from .config.dynamic_settings import settings
 
 SAMPLE_RATE = settings.SAMPLE_RATE
 

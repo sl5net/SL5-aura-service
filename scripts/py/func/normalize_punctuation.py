@@ -5,9 +5,8 @@ from typing import Tuple
 
 from .log_memory_details import log4DEV
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
+# from scripts.py.func.config.dynamic_settings import settings
 
-settings = DynamicSettings()
 
 
 def normalize_punctuation(text: str, punctuation_map: dict, logger2) -> Tuple[str, bool]:

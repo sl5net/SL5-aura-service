@@ -4,9 +4,6 @@ import sys
 import threading
 
 
-from ..config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
-from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 import time
 

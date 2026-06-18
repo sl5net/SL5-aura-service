@@ -62,8 +62,7 @@ from .config.regex_cache import get_cached_regex
 
 from typing import Union, Optional
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from scripts.py.func.config.dynamic_settings import settings
 
 
 # global last_signature_time
@@ -1013,7 +1012,7 @@ def process_text_in_background(logger,
                                unmasked = False,
                                interface: str = 'speech'
                                ):
-    global settings
+    # global settings
     global GLOBAL_LT_LANGUAGE
     GLOBAL_LT_LANGUAGE = LT_LANGUAGE
 
@@ -1200,7 +1199,6 @@ def process_text_in_background(logger,
     options_dict = None
     log4DEV(f"skip_list: {skip_list}", logger)
 
-    settings = DynamicSettings()
 
     # scripts/py/func/process_text_in_background.py:978
     # timestamp = int(time.time() * 1000)

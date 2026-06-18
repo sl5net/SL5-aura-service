@@ -4,9 +4,8 @@ from pathlib import Path
 import re
 import sys
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
+from scripts.py.func.config.dynamic_settings import settings
 # config/maps/plugins/1_collect_unmatched_training/collect_unmatched.py:6
-settings = DynamicSettings()
 
 
 def speak(text):

@@ -15,8 +15,7 @@ def execute(match_data):
 
     SEARCH_SCRIPT = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
 
-    from scripts.py.func.config.dynamic_settings import DynamicSettings
-    settings = DynamicSettings()
+    from scripts.py.func.config.dynamic_settings import settings
 
     sleep_sec = 0
     if settings.DEV_MODE:

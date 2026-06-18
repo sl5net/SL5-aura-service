@@ -22,8 +22,7 @@ from ..process_text_in_background import process_text_in_background
 # # scripts/py/func/global_state.py
 from .. import global_state
 
-from ..config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from ..config.dynamic_settings import settings
 
 is_ci = os.getenv('CI') == 'true'
 
@@ -68,7 +67,7 @@ if project_root not in sys.path:
 # Note: In aura_engine.py this might be SCRIPT_DIR instead of project_root
 
 from .run_function_with_throttling import run_function_with_throttling
-# from ..config.dynamic_settings import DynamicSettings
+# from ..config.dynamic_settings import settings
 
 
 # file: scripts/py/func/checks/self_tester.py:79
@@ -199,7 +198,6 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
     _wait_for_languagetool_ready(lt_url, logger)
 
-    settings = DynamicSettings()
     backup_tts_enabled = settings.PLUGIN_HELPER_TTS_ENABLED
     settings.PLUGIN_HELPER_TTS_ENABLED = False
 
@@ -711,7 +709,6 @@ def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_s
             stack.enter_context(contextlib.redirect_stderr(fnull))
 
         with stack:
-            settings = DynamicSettings()
             null_logger = SimpleNullLogger()
             unique_time_float = (time.time_ns() + index) / 1_000_000_000.0
 

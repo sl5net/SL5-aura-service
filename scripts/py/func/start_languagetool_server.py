@@ -7,12 +7,11 @@ import requests
 import time
 import sys
 import importlib
-from .config.dynamic_settings import DynamicSettings
+from .config.dynamic_settings import settings
 
 import os
 import psutil  # pip install psutil
 
-settings = DynamicSettings()
 
 
 # Sentinel object to indicate LT was already running.

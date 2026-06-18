@@ -5,8 +5,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-from scripts.py.func.config.dynamic_settings import DynamicSettings
-settings = DynamicSettings()
+from scripts.py.func.config.dynamic_settings import settings
 
 
 
