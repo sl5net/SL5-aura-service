@@ -1229,10 +1229,10 @@ def process_text_in_background(logger,
 
 
             # output_dir_override: /tmp/sl5_aura/tts_output
-            print(f"🌞🌞🌞 \n raw_text: {raw_text} \n")
-            print(f"🌞🌞🌞 \n output_dir: {output_dir} \n")
-            print(f":st: 🌞🌞🌞  \n output_dir_override: {output_dir_override}\n ")
-            print(f":st: 🌞🌞🌞 unique_output_file: {unique_output_file}\n ")
+            # print(f"🌞🌞🌞 \n raw_text: {raw_text} \n")
+            # print(f"🌞🌞🌞 \n output_dir: {output_dir} \n")
+            # print(f":st: 🌞🌞🌞  \n output_dir_override: {output_dir_override}\n ")
+            # print(f":st: 🌞🌞🌞 unique_output_file: {unique_output_file}\n ")
             # sys.exit(1)
 
         else:
