@@ -4,8 +4,16 @@ from pathlib import Path; import os; PROJECT_ROOT = Path(os.environ["SL5NET_AURA
 
 # too<-from
 FUZZY_MAP_pre = [
-    # ('nix', r'^(nix|laut|Programm geladen. Viel Spaß|mit guten|english einschalten|finish einschalten)$'),
+    # Start-Regel: Triggert die Gruppe 'sandbox_test' bei "start sandbox"
+    ('Sandbox:', r'^sta\w* .*box.*', 100, {'group_start': 'sandbox_test'}),
 
-    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
+    # Innere Regel 1: Ersetzt "apfel" durch "birne" (wenn vorhanden)
+    ('birne', r'apfel', 100, {}),
 
+    # Innere Regel 2: Ersetzt "banane" (wenn vorhanden), sonst wird "banane" angehängt!
+    ('banane', r'banane', 100, {}),
+
+    # Passiver End-Marker für 'sandbox_test'
+    (None, r'', 100, {'group_end': 'sandbox_test'}),
 ]
+

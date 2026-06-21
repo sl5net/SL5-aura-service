@@ -608,6 +608,7 @@ def is_regex_pattern(pattern):
     return any(char in pattern for char in r'^$*+?{}[]\|()")')
 
 
+
 def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger):
     # is called in apply_all_rules_may_until_stable(
 
@@ -684,24 +685,13 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
     return processed_text
 
 
-def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger, interface):
+def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
+        interface,run_pipeline_callback=None, is_inner_rule=False):
     new_processed_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred = apply_all_rules_until_stable(
-        processed_text, fuzzy_map_pre, logger, interface)
-
-    # if settings.DEV_MODE:
-    #     with open("/tmp/sl5_aura/debug_final_state.txt", "a") as f:
-    #         f.write(f"952: \n--- CALL at {time.strftime('%H:%M:%S')} ---\n")
-    #         f.write(f"Input-Text: '{processed_text}'\n")
-    #         f.write(f"Window-Title: '{_active_window_title}'\n")
-    #         f.write(f"Skip-List: {skip_list}\n")
-    #         f.write(f"New-Processed-Text: '{new_processed_text}'\n")
-    #         f.write("-" * 30 + "\n")
-
-
-    #made_a_change_in_cycle = None
-
-    #log_all_processed_text = False and settings.DEV_MODE
-
+    processed_text, fuzzy_map_pre, logger, interface,
+    run_pipeline_callback=run_pipeline_callback,
+    is_inner_rule=is_inner_rule
+    )
     is_private = False
     if privacy_taint_occurred:
         is_private = True
@@ -759,9 +749,10 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger, inte
             if len(entry) < 4:
                 entry =normalize_fuzzy_map_rule_entry(entry)
 
-
-
             replacement, match_phrase, threshold, options_dict = entry
+
+            if replacement is None:
+                continue
 
             # 1. Try to determine privacy from options
             # Assuming 'options_dict' is defined earlier in the loop (it usually is)
@@ -999,7 +990,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger, inte
 
 
 
-# scripts/py/func/process_text_in_background.py:864
+# scripts/py/func/process_text_in_background.py:1002
 def process_text_in_background(logger,
                                LT_LANGUAGE,
                                raw_text,
@@ -1010,13 +1001,13 @@ def process_text_in_background(logger,
                                chunk_id: int = 0,
                                session_id: int = 0,
                                unmasked = False,
-                               interface: str = 'speech'
+                               interface: str = 'speech',
+                               custom_rules = None
                                ):
-    # global settings
     global GLOBAL_LT_LANGUAGE
     GLOBAL_LT_LANGUAGE = LT_LANGUAGE
 
-
+    new_current_text = None
 
 
 
@@ -1118,7 +1109,8 @@ def process_text_in_background(logger,
     # print(f':st: \nprocess_text_in_background:967 raw_text:{raw_text}')
 
     # scripts/py/func/process_text_in_background.py:1118
-    if chunk_id > 0:
+    # if chunk_id > 0:
+    if chunk_id > 0 and custom_rules is None:  # protect for Makro-Rekursion
 
         # 1. Warte-Loop, um die Reihenfolge zu garantieren scripts/py/func/process_text_in_background.py:947
         wait_count = 0
@@ -1183,8 +1175,16 @@ def process_text_in_background(logger,
 
     global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP
 
-    # scripts/py/func/process_text_in_background.py:167 (process_text_in_background)
-    new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger,run_mode_override)
+    if custom_rules is not None:
+        new_punctuation = []
+        new_fuzzy_pre = custom_rules
+        new_fuzzy = []
+    else:
+        # scripts/py/func/process_text_in_background.py:1176 (process_text_in_background)
+        new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger, run_mode_override)
+
+    # scripts/py/func/process_text_in_background.py:1176 (process_text_in_background)
+    # new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger,run_mode_override)
 
     if getattr(settings, "DEV_MODE_all_processing", False):
         logger.info(f"📍new_punctuation={new_punctuation}")
@@ -1407,22 +1407,38 @@ def process_text_in_background(logger,
                 # if true call iteratively all rules
 
                 if not privacy_taint_occurred:
-
                     # log4DEV("Applying all rules until stable (default 'all' mode).", logger)
 
                     # print(f':st: \nprocess_text_in_background:1227 raw_text:"{raw_text}" processed_text:"{processed_text}"')
                     print(f":st: \n processed_text={processed_text} \n\n", logger)
 
+                    # --- CALLBACK for RECURSION ---
+                    def run_pipeline_callback(text, rule):
+                        return process_text_in_background(
+                            logger, LT_LANGUAGE, text,
+                            output_dir, recording_time, active_lt_url,
+                            output_dir_override=output_dir_override,
+                            chunk_id=chunk_id, session_id=session_id,
+                            unmasked=unmasked, interface=interface,
+                            custom_rules=[rule]
+                        )
+
+                    # Aufruf mit den neuen Parametern run_pipeline_callback und is_inner_rule
                     (new_processed_text
-                    , regex_pre_is_replacing_all_maybe
-                    , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(processed_text
-                    , GLOBAL_FUZZY_MAP_PRE, logger,interface)
+                         , regex_pre_is_replacing_all_maybe
+                         , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
+                        processed_text,
+                        GLOBAL_FUZZY_MAP_PRE,
+                        logger,
+                        interface,
+                        run_pipeline_callback=run_pipeline_callback,
+                        is_inner_rule=(custom_rules is not None)
+                    )
 
-
-                    # scripts/py/func/process_text_
-                    # in_background.py:1276
-                    print(f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} 1248\n\n", logger)
-
+                    # scripts/py/func/process_text_in_background.py:1420
+                    print(
+                        f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} 1248\n\n",
+                        logger)
 
 
 
@@ -1873,13 +1889,14 @@ def process_text_in_background(logger,
 
 
             # THIS LINE WAS ALREADY CORRECT:
-            # scripts/py/func/process_text_in_background.py:1591
-            unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
+            # scripts/py/func/process_text_in_background.py:1891
+            if custom_rules is None:
+                unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
             # print(f':st: \nprocess_text_in_background:1672 raw_text:{raw_text}')
 
 
             # KORREKTUR 1: Verwende die NEUEN Variablen für den Fallback
-            if not privacy_taint_occurred:
+            if not privacy_taint_occurred and custom_rules is None:
                 handle_tts_fallback(new_current_text, lang_for_tts, logger)
 
                 log4DEV(f"handle_tts_fallback({new_current_text}, {lang_for_tts})",logger)
@@ -1965,7 +1982,7 @@ def process_text_in_background(logger,
 
         # print(f':st: \nprocess_text_in_background:1753 raw_text:{raw_text}')
 
-
+    return new_current_text if new_current_text else processed_text
 
 # py/func/process_text_in_background.py:1196
 def sanitize_transcription_start(raw_text: str) -> str:
@@ -2003,7 +2020,8 @@ def sanitize_transcription_start(raw_text: str) -> str:
 
 
 
-def apply_all_rules_until_stable(text, rules_map, logger_instance, interface):
+def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, run_pipeline_callback=None, is_inner_rule=False):
+
     """
     Applies all rules from the given rules_map iteratively to the text until the text no longer changes after a complete pass through all the rules.
     Replaces the entire match of the regex without group references with the replacement_text.
@@ -2117,6 +2135,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface):
 
             # scripts/py/func/process_text_in_background.py -> apply_all_rules_until_stable :1471
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
+            if replacement_text is None:
+                continue
 
 
 
@@ -2360,7 +2380,28 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface):
                         if GLOBAL_debug_skip_list:
                             print(f'1525: skip_list={skip_list}')
 
+                        current_text = new_current_text  # final Text
+
                         current_text = new_current_text  # Jetzt wird der finale Text zugewiesen
+
+                        # --- MAKRO-group-LOGIK START ---
+                        group_start = options_dict.get('group_start') if isinstance(options_dict, dict) else None
+                        if group_start and run_pipeline_callback:
+                            current_idx = rules_map.index(rule_entry)
+                            group_end_idx = -1
+                            for k in range(current_idx + 1, len(rules_map)):
+                                k_options = rules_map[k][3] if len(rules_map[k]) > 3 else {}
+                                if isinstance(k_options, dict) and k_options.get('group_end') == group_start:
+                                    group_end_idx = k
+                                    break
+
+                            if group_end_idx != -1:
+                                group_rules = rules_map[current_idx + 1: group_end_idx]
+                                for inner_rule in group_rules:
+                                    current_text = run_pipeline_callback(current_text, inner_rule)
+                        # --- MAKRO-group-LOGIK ENDE ---
+
+
                         # --- AURA CACHE SET ---
                         if _source_path:
                             # log4DEV(f"CACHE_SET: original='{original_text_for_script}' | new='{current_text}'", logger_instance)
@@ -2380,6 +2421,20 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface):
                             break
 
                 else:  # Dieser Block wird ausgeführt, wenn es KEIN fullmatch gab
+
+                    # NO MATCH AT ALL
+                    if is_inner_rule and replacement_text:
+                        original_text_for_script = current_text
+                        new_current_text = f"{current_text} {replacement_text}".strip()
+
+                        if not privacy_taint_occurred:
+                            log4DEV(f"INNER_RULE APPEND: '{original_text_for_script}' -> '{new_current_text}'",
+                                    logger_instance)
+
+                        current_text = new_current_text
+                        made_a_change_in_cycle = True
+                        made_a_change += 1
+
 
                     # <<< CHANGE 3: We need to explicitly search for a partial match here to get the match_obj
                     # partial_match_obj = re.search(regex_pattern, current_text, flags=flags)
@@ -2465,6 +2520,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface):
             break
 
         if not made_a_change_in_cycle:
+            break
+
+        if is_inner_rule:
             break
 
     if not made_a_change:

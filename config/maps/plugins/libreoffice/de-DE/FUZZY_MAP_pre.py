@@ -14,6 +14,8 @@ libreoffice_windows = ['soffice', 'LibreOffice', 'Writer', 'writer', 'Calc', 'ca
 
 fett = r'fett|fett\s*formatieren|text\s*fett|sid|fritz|schritt|fit|tritt|chef|script|setz|bold|old|bolt|pol|pools|bubbels|bols|borretsch|brot|holt|überholt|oh'
 
+duenn = r'dünn|dünn'
+
 unterstrichen = "unterstreicht|unterstreichen|und streicheln|text unterstreichen|text unterstreichen unterstreichen|text unterstreicht"
 
 FUZZY_MAP_pre = [
@@ -46,7 +48,7 @@ FUZZY_MAP_pre = [
 
 
     # Fett
-    ('lo fett', fr'^({fett}|fett\s*formatieren|text\s*fett)$', 85, {
+    ('lo fett', fr'^({fett}|{duenn}|({fett}|{duenn})\s*formatieren|text\s*({fett}|{duenn}))$', 85, {
         'flags': re.IGNORECASE,
         'only_in_windows': libreoffice_windows,
         'on_match_exec': [CONFIG_DIR / 'libreoffice_actions.py'],
