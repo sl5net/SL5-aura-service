@@ -8,3 +8,4 @@ __CODE_ब्लॉक_1__
 chmod +xcopy_zips.sh
 ./copy_zips.sh
 __CODE_ब्लॉक_2__
+mkdir -p .... /zip_backup/.stfolder

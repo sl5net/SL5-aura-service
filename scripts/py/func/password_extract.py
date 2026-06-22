@@ -177,7 +177,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
         logger.info(f'⚠️ Extraction of this 🔒 encrypted 📦 ZIP is restricted (fist 5 are not only letters) to Aura only 🏗️ external extraction will fail🛑. Context: … {str(key_path)[-45:]} (PID {process_id})')
     else:
         # py/func/password_extract.py:176
-        logger.info('🌍 This 🔒 encrypted 📦 ZIP file is portable (fist 5 are letters): External extraction 📤 supported.')
+        logger.info('🌍 This 🔒 encrypted 📦 ZIP file is PORTABLE (fist 5 are letters): External extraction 📤 supported. Context: … {str(key_path)[-45:]} (PID {process_id})')
 
         # py/func/password_extract.py:180
         # Update the persistent cache

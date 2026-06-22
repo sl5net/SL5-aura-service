@@ -12,22 +12,23 @@ PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_
 
 #PROJECT_ROOT="(realpath"(realpath"(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
+SOURCE_DIR="$(realpath "$PROJECT_ROOT/config/maps")"
 TARGET_DIR="$(realpath "$PROJECT_ROOT/../zip_backup")"
 # ----------------------
+
+mkdir -p "$TARGET_DIR"
+
 
 if [ ! -d "$SOURCE_DIR" ]; then
     echo "error:  '$SOURCE_DIR' SOURCE_DIR not existiert."
     exit 1
 fi
 
-mkdir -p "$TARGET_DIR"
-
-SOURCE_DIR=$(realpath "$SOURCE_DIR")
-TARGET_DIR=$(realpath "$TARGET_DIR")
 
 echo "start copy..."
 echo "s: $SOURCE_DIR"
 echo "t: $TARGET_DIR"
+
 
 cd "$SOURCE_DIR" || exit 1
 
