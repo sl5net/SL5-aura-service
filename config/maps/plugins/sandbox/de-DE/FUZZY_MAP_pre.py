@@ -4,6 +4,6 @@ from pathlib import Path; import os; PROJECT_ROOT = Path(os.environ["SL5NET_AURA
 
 # too<-from
 FUZZY_MAP_pre = [
-
+    # ('nix', r'^(nix|laut|Programm geladen. Viel Spaß|mit guten|english einschalten|finish einschalten)$'),
 ]
 

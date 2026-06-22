@@ -1448,7 +1448,6 @@ def process_text_in_background(logger,
                     # log4DEV("Applying all rules until stable (default 'all' mode).", logger)
 
                     # print(f':st: \nprocess_text_in_background:1227 raw_text:"{raw_text}" processed_text:"{processed_text}"')
-                    print(f":st: \n processed_text={processed_text} \n\n", logger)
 
                     # --- CALLBACK for RECURSION ---
                     def run_pipeline_callback(text, rule):
@@ -1472,12 +1471,6 @@ def process_text_in_background(logger,
                         run_pipeline_callback=run_pipeline_callback,
                         is_inner_rule=(custom_rules is not None)
                     )
-
-                    # scripts/py/func/process_text_in_background.py:1420
-                    print(
-                        f":st: \n new_processed_text={new_processed_text} processed_text={processed_text} 1248\n\n",
-                        logger)
-
 
 
                 # if not privacy_taint_occurred:
