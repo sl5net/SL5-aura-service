@@ -2430,6 +2430,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                                 group_rules = rules_map[current_idx + 1: group_end_idx]
                                 for inner_rule in group_rules:
                                     current_text = run_pipeline_callback(current_text, inner_rule)
+
+
                         # --- MAKRO-group-LOGIK ENDE ---
 
 
