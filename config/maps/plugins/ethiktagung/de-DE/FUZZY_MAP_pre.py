@@ -19,6 +19,7 @@ Workshop Nr.4.: Übernahme menschlicher Tätigkeit im Sozialunternehmen durch Te
 """
 
 FUZZY_MAP_pre = [
+
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
