@@ -6,12 +6,7 @@ else
   tmp_dir='/tmp'
 fi
 
-
-SOURCE_DIR="/home/seeh/projects/py/STT/config/maps"
-
-
-TARGET_DIR="/tmp/sl5_aura/zip_backup"
-TARGET_DIR="/home/seeh/projects/py/zip_backup/"
+# TARGET_DIR="/tmp/sl5_aura/zip_backup" # dont work
 
 PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
@@ -40,7 +35,9 @@ cd "$SOURCE_DIR" || exit 1
 # -type f: Nur Dateien finden (keine Ordner direkt)
 # -iname "*.zip": Sucht nach .zip-Dateien (Groß-/Kleinschreibung wird ignoriert)
 # --parents: Kopiert die Datei inklusive ihres relativen Pfads in das Zielverzeichnis
-find . -type f -iname "*.zip" -exec cp --parents -v {} "$TARGET_DIR" \;
+# find . -type f -iname "*.zip" -exec cp --parents -v {} "$TARGET_DIR" \;
+find . -type d -name '_*' -prune -o -type f -iname '*.zip' -print -exec rsync --relative -R {} "$TARGET_DIR"/ \;
 
-echo "finised"
+
+echo "Mirroring completed successfully!"
 
