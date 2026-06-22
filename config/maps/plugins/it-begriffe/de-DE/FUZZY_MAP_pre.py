@@ -14,12 +14,28 @@ import re # noqa: F401
 #    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
+# config/maps/plugins/it-begriffe/de-DE/FUZZY_MAP_pre.py:17
 FUZZY_MAP_pre = [
+    ('debugABZxxx', r'debugABZ'),  # ← komplett standalone, keine Gruppe
+
+    # Start-Regel: Triggert die Gruppe 'sandbox_test' bei "start sandbox"
+    ('Sandbox', r'^sta\w* .*box.*', 100, {'group_start': 'sandbox_test'}),
+
+    # Innere Regel 1: Ersetzt "apfel" durch "birne" (wenn vorhanden)
+    ('birne', r'apfel'),
+
+    # Innere Regel 2: Ersetzt "banane" (wenn vorhanden), sonst wird "banane" angehängt!
+    ('banane', r'banane'),
+
+    # Passiver End-Marker für 'sandbox_test'
+    (None, r'', 100, {'group_end': 'sandbox_test'}),
+
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
+
 
 
     ('JSON Datei', r'^\b(JSON|jagen|jacen|jason|schweifen)\s*(Datei|detail)(\b)$', 80, {'flags': re.IGNORECASE}),

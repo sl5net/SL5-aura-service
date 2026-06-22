@@ -7,6 +7,7 @@ import pkgutil
 import sys
 
 import importlib.util
+from datetime import datetime
 from pathlib import Path
 # from platform import system
 
@@ -264,23 +265,13 @@ curl --data "language=de-DE&text=das stimmt unsere ist nicht absolut fehlerfrei"
 
 
 def is_plugin_enabled(hierarchical_key, plugins_config):
-    """
-
-    Prüft, ob ein Plugin aktiviert ist. Ein Plugin ist DEAKTIVIERT,
-    wenn es selbst oder irgendein übergeordnetes Modul in der Hierarchie
-    explizit auf `False` gesetzt ist. In allen anderen Fällen ist es AKTIVIERT.
-    """
     current_key_parts = hierarchical_key.split('/')
-
     #  root to top
     # e.g. first "game/0ad" then "game/0ad"
     for i in range(len(current_key_parts)):
         # Assemble the current key, e.g. first 'game', then 'game/0ad'
         current_key = "/".join(current_key_parts[:i + 1])
 
-        # Check whether this key is EXPLICITLY set to False.
-        # .get(key, True) returns True if the key does not exist.
-        # Das entspricht deiner Regel "Kein Eintrag = True".
         if plugins_config.get(current_key) is False:
             # As soon as we find a 'false' in the chain, the decision is made.
             return False
@@ -290,6 +281,35 @@ def is_plugin_enabled(hierarchical_key, plugins_config):
 
     # process_text_in_background.py:260 (is_plugin_enabled)
     return True
+
+_plugin_state_cache: dict = {'siglen': -1, 'last_write': 0.0}
+
+def _write_plugin_state_log(enabled, disabled, rule_count, run_mode_override):
+    # Signatur nur aus stabilen Daten (kein Timestamp)
+    sig    = f"{rule_count}|{sorted(enabled)}|{sorted(disabled)}|{run_mode_override}"
+    siglen = len(sig)
+    now    = time.monotonic()
+
+    # Both guards: skip if strlen equals OR last write < 60s
+    if (siglen == _plugin_state_cache['siglen'] or
+            now - _plugin_state_cache['last_write'] < 60):
+        return
+
+    LOG_DIR = PROJECT_ROOT / "log"
+    log_path = Path( LOG_DIR / 'plugins_state.log')
+    content = (
+        f"# {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        f" | run_mode={run_mode_override or 'None'}\n\n"
+        f"FUZZY_MAP_pre: {rule_count} rules loaded\n\n"
+        "✅ ENABLED:\n"  + "".join(f"   {k}\n" for k in sorted(enabled))  +
+        "\n🚫 DISABLED:\n" + "".join(f"   {k}\n" for k in sorted(disabled))
+    )
+
+    log_path.write_text(content, encoding='utf-8')
+    _plugin_state_cache['siglen']     = siglen
+    _plugin_state_cache['last_write'] = now
+
+
 
 
 def load_maps_for_language(lang_code, logger, run_mode_override=None):
@@ -329,9 +349,12 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         maps_package = importlib.import_module('config.maps')
         log4DEV("whats this?", logger)
 
+    # scripts/py/func/process_text_in_background.py:332 in load_maps_for_language()
+
     plugin_name_before = ''
     plugin_name = ''
     ENABLED_modname_list = []
+    DISABLED_modname_list = []
 
     if run_mode_override:
         RUN_MODE = run_mode_override
@@ -383,6 +406,10 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         log_all_map_ENABLED = True and settings.DEV_MODE
         hierarchical_key = None
         if ".plugins." in modname:
+
+            logger.info(
+                f"🔍 PLUGINS_ENABLED-Check: key={hierarchical_key!r}, value={settings.PLUGINS_ENABLED.get(hierarchical_key, '(not set)')}")
+
             if len(parts := modname.split('.plugins.', 1)[1].split('.')) < 2:
                 logger.warning(f"Could not determine plugin_name from modname: {modname}. Skipping.")
                 continue
@@ -402,13 +429,16 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
             if not is_plugin_enabled(hierarchical_key, settings.PLUGINS_ENABLED):
                 if global_state.LOGGING_ENABLED:
                     logger.info(f"🚫🗺️ DISABLED: {hierarchical_key}")
-                if settings.DEV_MODE and plugin_name_before != plugin_name and log_all_map_ENABLED and False:
+                if (settings.show_PLUGINS_DISABLED
+                        and plugin_name_before != plugin_name ):
                     if global_state.LOGGING_ENABLED:
                         logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}...")
 
                     #basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps"
                     #eltern_pfad_maps = basis_pfad / hierarchical_key
                     # repariere_pakete_mit_laenderkuerzeln(logger, eltern_pfad_maps, max_tiefe=1)
+
+                    DISABLED_modname_list.append(hierarchical_key)
 
                 continue
 
@@ -598,6 +628,14 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         log_memory_details("next: return punctuation_map, fuzzy_map_pre, fuzzy_map", logger)
 
     # process_text_in_background.py:502 (load_maps_for_language)
+
+    _write_plugin_state_log(
+        enabled=ENABLED_modname_list,
+        disabled=DISABLED_modname_list,
+        rule_count=len(fuzzy_map_pre),
+        run_mode_override=run_mode_override
+    )
+
     return punctuation_map, fuzzy_map_pre, fuzzy_map
 
 
