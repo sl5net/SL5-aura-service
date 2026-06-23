@@ -49,7 +49,11 @@ function logger_info() {
 cd "$PROJECT_ROOT" || exit 1
 
 
-SEARCH_CLOSE_ON_OPEN = False=$("$PYTHON_BIN" - <<'PY' 2>/dev/null || echo "True"
+
+# SEARCH_CLOSE_ON_OPEN=False=$("$PYTHON_BIN" - <<'PY' 2>/dev/null || echo "True"
+
+SEARCH_CLOSE_ON_OPEN=$("$PYTHON_BIN" - <<'PY' 2>/dev/null || echo "True"
+
 import sys, importlib
 try:
     cfg = importlib.import_module("config.settings_local")
@@ -167,7 +171,7 @@ echo "Line 137: MAPS_DIR: " $MAPS_DIR " pwd: " $PWD
 # Line 54: scripts/py/func  pwd:  /home/seeh/projects/py/STT
 # Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/seeh/projects/py/STT
 
-MAPS_DIR:  "scripts/py/func"
+# MAPS_DIR:  "scripts/py/func"
 
 #Hurra zurückwerfenJura Quelltext
 
@@ -176,14 +180,17 @@ MAPS_DIR:  "scripts/py/func"
 
 
 
-LANG_TAG="${2:-}" # Optionaler zweiter Parameter (z.B. "de")
+
+LANG_TAG="${2:-}"
 
 while true; do
-SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/') . "$MAPS_DIR" | \
+# Wir starten fzf mit --expect, damit wir verschiedene Tasten abfangen können
+FZF_OUTPUT=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/') . "$MAPS_DIR" | \
     fzf --history="$HISTORY_FILE" \
         --query="$INITIAL_QUERY" \
-        --header="Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
+        --header="Enter: Run (Execute) | Ctrl+E: Open in Editor | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
         --delimiter=":" \
+        --expect="ctrl-e" \
         --bind="ctrl-z:previous-history" \
         --bind="ctrl-y:next-history" \
         --bind="ctrl-backspace:backward-kill-word" \
@@ -194,57 +201,114 @@ SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | 
         --bind="end:end-of-line" \
         --bind="ctrl-g:execute-silent(f={1}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{2}\")" \
         --bind='ctrl-x:execute-silent(echo {3..} | xclip -selection clipboard)' \
-        --bind='ctrl-a:execute-silent(awk -v t={2} "BEGIN {t=t+0} NR>t-5 && NR<t+5 {print \$0}" {1} | xclip -selection clipboard)' \
+        --bind='ctrl-a:execute-silent(python3 '"$SCRIPT_DIR"'/preview_rule.py {1} {2} | xclip -selection clipboard)' \
         --preview-window="up:50%" \
-        --preview='awk -v t={2} "BEGIN {t=t+0} NR>t-5 && NR<t+5 {printf \"%s%4d: %s\n\", (NR==t ? \">\" : \" \"), NR, \$0}" {1}' \
+        --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {1} {2}' \
 )
-# xdg-openzoran suche ducken
 
-# 5. EXECUTION (Robustes Öffnen) #
-if [ -n "$SELECTED_LINE" ]; then
-    FILE_PATH="$(echo "$SELECTED_LINE" | cut -d: -f1)"
-    LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
+# Wenn fzf abgebrochen wurde (ESC)
+if [ -z "$FZF_OUTPUT" ]; then
+    exit 0
+fi
 
+# fzf gibt bei --expect zuerst die gedrückte Taste aus, danach das ausgewählte Element
+KEY=$(echo "$FZF_OUTPUT" | head -n 1)
+SELECTED_LINE=$(echo "$FZF_OUTPUT" | tail -n +2)
+
+if [ -z "$SELECTED_LINE" ]; then
+    exit 0
+fi
+
+FILE_PATH="$(echo "$SELECTED_LINE" | cut -d: -f1)"
+LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
+
+
+# --- AKTION 1: ENTER GEdrückt -> REGEL AUSFÜHREN ---
+if [ -z "$KEY" ]; then
+    # Extrahiere den Trigger-Begriff mit unserem Python-Skript
+    QUERY=$(python3 "$SCRIPT_DIR/preview_rule.py" --extract "$FILE_PATH" "$LINE_NUM")
+
+    if [ -n "$QUERY" ]; then
+        logger_info "Executing rule via detached setsid into tts_output: s \"$QUERY\""
+
+        # Variablen exportieren, damit sie in der neuen setsid-Shell verfügbar sind
+        export QUERY
+        export LOGFILE
+
+        # setsid startet eine komplett neue Session im Hintergrund, wodurch konsole sofort schließt!
+        setsid bash -c '
+            logger_info() {
+                echo "$(date "+%Y-%m-%d %H:%M:%S") - $1" >> "$LOGFILE"
+            }
+
+            logger_info "=== FZF TRIGGER BACKGROUND (setsid) START ==="
+            logger_info "QUERY: $QUERY"
+
+            sleep 0.4
+
+            logger_info "Running: s \"$QUERY\""
+            # Führt '"'s'"' aus
+            OUTPUT=$(zsh -i -c "s \"$QUERY\"")
+            EXIT_CODE=$?
+
+            logger_info "Exit Code: $EXIT_CODE"
+            logger_info "Raw Output: '\''$OUTPUT'\''"
+
+            if [ -n "$OUTPUT" ]; then
+                CLEAN_OUTPUT=$(echo "$OUTPUT" | tail -n 1)
+                logger_info "Cleaned Output (last line): '\''$CLEAN_OUTPUT'\''"
+
+                TARGET_FILE="/tmp/sl5_aura/tts_output/tts_output_fzf_$$.txt"
+                logger_info "Writing to: $TARGET_FILE"
+
+                echo "$CLEAN_OUTPUT" > "$TARGET_FILE"
+
+                if [ -f "$TARGET_FILE" ]; then
+                    logger_info "SUCCESS: File successfully created."
+                else
+                    logger_info "ERROR: Failed to create file!"
+                fi
+            else
+                logger_info "ERROR: Output of s is empty!"
+            fi
+            logger_info "=== FZF TRIGGER BACKGROUND (setsid) END ==="
+        ' >/dev/null 2>&1 &
+
+        # Terminal-Popup sofort beenden
+        exit 0
+    else
+        logger_info "No '# EXAMPLE:' found to execute. Falling back to editor."
+        echo "No '# EXAMPLE:' found. Opening in editor instead..."
+        KEY="ctrl-e"
+        sleep 1
+    fi
+fi
+
+# --- AKTION 2: CTRL+E GEdrückt -> EDITOR ÖFFNEN (Ihr Original-Code) ---
+if [ "$KEY" = "ctrl-e" ]; then
     EXT="${FILE_PATH##*.}"
     EXT="${EXT,,}"
-
     BIN_EXTS="pdf png jpg jpeg gif webp mp4 mp3 zip tar gz 7z"
 
-    # Text-Format ?
     MIME_TYPE=$(file --mime-type -b "$FILE_PATH")
-    echo "160: MIME_TYPE=$MIME_TYPE "
+    echo "MIME_TYPE=$MIME_TYPE "
+
+    logger_info "Editing file: $FILE_PATH at line $LINE_NUM"
 
     if [[ " $BIN_EXTS " =~ " $EXT " ]] || [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" ]]; then
-
-    #if [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" ]]; then
-        # Binär PDF etc. -> System-Standard
-        echo "xdg-open "$FILE_PATH" > /dev/null 2>&1 &"
         xdg-open "$FILE_PATH" > /dev/null 2>&1 &
         sleep 8
-
     else
-        # Normale Editor-Logik
         case $PREFERRED_EDITOR in
             kate) nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 & ;;
             code) code --goto "$FILE_PATH:$LINE_NUM" ;;
             *) $PREFERRED_EDITOR "$FILE_PATH" & disown ;;
         esac
     fi
-    # exit 0
+fi
 
-    # PDF ?
-    # if [[ "${FILE_PATH,,}" == *.pdf ]]; then
-
-    if [ "$SEARCH_CLOSE_ON_OPEN" = "True" ]; then
-        exit 0
-    fi
-
-else
+if [ "$SEARCH_CLOSE_ON_OPEN" = "True" ]; then
     exit 0
 fi
 
 done
-
-
-
-
