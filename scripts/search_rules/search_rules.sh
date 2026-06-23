@@ -244,7 +244,7 @@ if [ -z "$KEY" ]; then
             logger_info "=== FZF TRIGGER BACKGROUND (setsid) START ==="
             logger_info "QUERY: $QUERY"
 
-            sleep 0.4
+            sleep 0.1
 
             logger_info "Running: s \"$QUERY\""
             # Führt '"'s'"' aus
