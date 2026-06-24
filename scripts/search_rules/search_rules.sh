@@ -236,43 +236,17 @@ if [ -z "$KEY" ]; then
         export LOGFILE
 
         # setsid startet eine komplett neue Session im Hintergrund, wodurch konsole sofort schließt!
-        setsid bash -c '
-            logger_info() {
-                echo "$(date "+%Y-%m-%d %H:%M:%S") - $1" >> "$LOGFILE"
-            }
 
-            logger_info "=== FZF TRIGGER BACKGROUND (setsid) START ==="
-            logger_info "QUERY: $QUERY"
-
-            sleep 0.1
-
-            logger_info "Running: s \"$QUERY\""
-            # Führt '"'s'"' aus
-            OUTPUT=$(zsh -i -c "s \"$QUERY\"")
-            EXIT_CODE=$?
-
-            logger_info "Exit Code: $EXIT_CODE"
-            logger_info "Raw Output: '\''$OUTPUT'\''"
-
-            if [ -n "$OUTPUT" ]; then
-                CLEAN_OUTPUT=$(echo "$OUTPUT" | tail -n 1)
-                logger_info "Cleaned Output (last line): '\''$CLEAN_OUTPUT'\''"
-
-                TARGET_FILE="/tmp/sl5_aura/tts_output/tts_output_fzf_$$.txt"
-                logger_info "Writing to: $TARGET_FILE"
-
-                echo "$CLEAN_OUTPUT" > "$TARGET_FILE"
-
-                if [ -f "$TARGET_FILE" ]; then
-                    logger_info "SUCCESS: File successfully created."
-                else
-                    logger_info "ERROR: Failed to create file!"
-                fi
-            else
-                logger_info "ERROR: Output of s is empty!"
-            fi
-            logger_info "=== FZF TRIGGER BACKGROUND (setsid) END ==="
-        ' >/dev/null 2>&1 &
+        systemd-run --user --collect --quiet \
+            -E LOGFILE="$LOGFILE" -E QUERY="$QUERY" \
+            bash -c '
+            export PYTHONUTF8=1 LANG=de_DE.UTF-8 LC_ALL=de_DE.UTF-8
+            logger_info() { echo "$(date "+%Y-%m-%d %H:%M:%S") - $1" >> "$LOGFILE"; }
+            OUTPUT=$(zsh -i -c "s \"$QUERY\"" 2>&1)
+            logger_info "RAW: $OUTPUT"
+            CLEAN_OUTPUT=$(echo "$OUTPUT" | tail -n 1)
+            echo "$CLEAN_OUTPUT" > "/tmp/sl5_aura/tts_output/tts_output_fzf_$$.txt"
+        '
 
         # Terminal-Popup sofort beenden
         exit 0
