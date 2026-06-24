@@ -112,6 +112,9 @@ PREFERRED_EDITOR=$(get_preferred_editor)
 
 logger_info "Initializing search_rules.sh..."
 
+export LANG="C.UTF-8"
+export LC_ALL="C.UTF-8"
+export PYTHONUTF8=1
 
 # MAPS_DIR_DISPLAY=MAPS_DIR
 MAPS_DIR="${MAPS_DIR/#\~/$HOME}"
@@ -123,6 +126,8 @@ if [[ ! -d "$MAPS_DIR" ]]; then
     sleep 5
     exit 1
 fi
+
+
 
 export PROJECT_ROOT
 export REPO_URL
@@ -186,11 +191,12 @@ LANG_TAG="${2:-}"
 while true; do
 # Wir starten fzf mit --expect, damit wir verschiedene Tasten abfangen können
 FZF_OUTPUT=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/') . "$MAPS_DIR" | \
-    fzf --history="$HISTORY_FILE" \
+    fzf --print-query \
+        --history="$HISTORY_FILE" \
         --query="$INITIAL_QUERY" \
-        --header="Enter: Run (Execute) | Ctrl+E: Open in Editor | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
+        --header="Enter: Run Selected | Ctrl+R: Run Raw Typed | Ctrl+E: Open in Editor | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
         --delimiter=":" \
-        --expect="ctrl-e" \
+        --expect="ctrl-e,ctrl-r" \
         --bind="ctrl-z:previous-history" \
         --bind="ctrl-y:next-history" \
         --bind="ctrl-backspace:backward-kill-word" \
@@ -212,8 +218,20 @@ if [ -z "$FZF_OUTPUT" ]; then
 fi
 
 # fzf gibt bei --expect zuerst die gedrückte Taste aus, danach das ausgewählte Element
-KEY=$(echo "$FZF_OUTPUT" | head -n 1)
-SELECTED_LINE=$(echo "$FZF_OUTPUT" | tail -n +2)
+QUERY_TYPED=$(echo "$FZF_OUTPUT" | sed -n '1p')
+KEY=$(echo "$FZF_OUTPUT" | sed -n '2p')
+SELECTED_LINE=$(echo "$FZF_OUTPUT" | sed -n '3p')
+
+# DEBUG-Einträge für das Logfile:
+logger_info "DEBUG: KEY='$KEY' QUERY_TYPED='$QUERY_TYPED'"
+logger_info "DEBUG_RAW: '$FZF_OUTPUT'"
+
+if [ "$KEY" = "ctrl-r" ] && [ -n "$QUERY_TYPED" ]; then
+    logger_info "Executing raw typed query directly: $QUERY_TYPED"
+    # Ruft cli_client.py direkt über das .venv auf – ganz ohne die Zsh-Konsole!
+    setsid "$PROJECT_ROOT/.venv/bin/python3" "$PROJECT_ROOT/scripts/py/cli_client.py" "$QUERY_TYPED" --lang "de-DE" --unmasked >/dev/null 2>&1 &
+    exit 0
+fi
 
 if [ -z "$SELECTED_LINE" ]; then
     exit 0
