@@ -1,5 +1,9 @@
 #!/bin/bash
 # scripts/search_rules/search_rules.sh
+
+# TODO 25.6.'26 17:33 Thu: use
+# scripts/search_rules/search_helpers.sh
+
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 #
 # Make MAPS_DIR configurable via positional arg or environment variable
