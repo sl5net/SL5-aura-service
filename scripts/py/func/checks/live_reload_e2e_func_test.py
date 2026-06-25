@@ -21,8 +21,10 @@ LANG_CODE = 'de-DE'
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
 MAP_TARGET_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "standard_actions"
 
-MAP_BACKUP_DIR = PROJECT_ROOT / "standard_actions_backup_temp"
+# MAP_BACKUP_DIR = PROJECT_ROOT / "standard_actions_backup_temp"
 # TEMP_DIR = PROJECT_ROOT / "log"
+temp_dir = (Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp"))
+MAP_BACKUP_DIR = temp_dir / "sl5_aura" / "standard_actions_backup_temp"  # ← /tmp/
 
 temp_dir = (Path("C:/tmp") if platform.system() == "Windows" else Path(
     "/tmp"))
@@ -101,7 +103,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
 
     logger.info("✅ e2eTEST (🏃🏿‍♀️‍➡️ 🔜 BACKUP/DELETE/RESTORE Map (live_reload_e2e_func_test .py)")
 
-    temp_dir.mkdir(parents=True, exist_ok=True)
+    # temp_dir.mkdir(parents=True, exist_ok=True)
 
     if MAP_BACKUP_DIR.is_dir():
         shutil.rmtree(MAP_BACKUP_DIR)
@@ -109,7 +111,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
         # Should only happen if it's a file with the backup name. Delete.
         os.remove(MAP_BACKUP_DIR)
 
-    temp_dir.mkdir(parents=True, exist_ok=True)
+    # temp_dir.mkdir(parents=True, exist_ok=True)
     if MAP_BACKUP_DIR.exists():
         shutil.rmtree(str( MAP_BACKUP_DIR))
 
