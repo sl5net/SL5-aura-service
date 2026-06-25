@@ -227,10 +227,19 @@ logger_info "DEBUG: KEY='$KEY' QUERY_TYPED='$QUERY_TYPED'"
 logger_info "DEBUG_RAW: '$FZF_OUTPUT'"
 
 if [ "$KEY" = "ctrl-r" ] && [ -n "$QUERY_TYPED" ]; then
-    logger_info "Executing raw typed query directly: $QUERY_TYPED"
-    # Ruft cli_client.py direkt über das .venv auf – ganz ohne die Zsh-Konsole!
-    setsid "$PROJECT_ROOT/.venv/bin/python3" "$PROJECT_ROOT/scripts/py/cli_client.py" "$QUERY_TYPED" --lang "de-DE" --unmasked >/dev/null 2>&1 &
+    logger_info "Executing raw typed query via native python: $QUERY_TYPED"
+    setsid "$PROJECT_ROOT/.venv/bin/python3" "$SCRIPT_DIR/run_palette_command.py" "$QUERY_TYPED" >/dev/null 2>&1 &
     exit 0
+elif [ -z "$KEY" ] && [ -n "$SELECTED_LINE" ]; then
+    FILE_PATH="$(echo "$SELECTED_LINE" | cut -d: -f1)"
+    LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
+    QUERY=$(python3 "$SCRIPT_DIR/preview_rule.py" --extract "$FILE_PATH" "$LINE_NUM")
+
+    if [ -n "$QUERY" ]; then
+        logger_info "Executing selected rule via native python: $QUERY"
+        setsid "$PROJECT_ROOT/.venv/bin/python3" "$SCRIPT_DIR/run_palette_command.py" "$QUERY" >/dev/null 2>&1 &
+        exit 0
+    fi
 fi
 
 if [ -z "$SELECTED_LINE" ]; then
