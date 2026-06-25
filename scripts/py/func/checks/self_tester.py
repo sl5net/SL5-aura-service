@@ -1,5 +1,4 @@
 # scripts/py/func/checks/self_tester.py
-# scripts/py/func/checks/self_tester.py
 import contextlib
 
 import platform
