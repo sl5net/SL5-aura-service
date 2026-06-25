@@ -169,10 +169,9 @@ def process_file(filepath):
             # print(f"2026-0108-1436: {filepath} : {i}")
             # sys.exit(1)
 
-        if match and not has_tag_before:
-            # found_pattern = match.group(1)
-            found_pattern = match.group('p').strip()
 
+        if match and not has_tag_before:
+            found_pattern = match.group('p').strip()
 
             if not found_pattern:
                 new_lines.append(line)
@@ -190,7 +189,6 @@ def process_file(filepath):
                 new_lines.append(line)
                 continue
 
-
             success = suggestion is not None
             display_suggestion = suggestion if success else "(Kein Vorschlag)"
 
@@ -198,12 +196,10 @@ def process_file(filepath):
                 new_lines.append(line)
                 continue
 
-            # print(f"\n--- {os.path.basename(filepath)} | Zeile {i+1} ---")
             print(f"\n--- {filepath} | Zeile {i+1} ---")
             print(f"Pattern:   {found_pattern}")
 
-            # Ausgabe Farbe für Vorschlag
-            color_code = "\033[92m" if success else "" # Grün
+            color_code = "\033[92m" if success else ""
             reset_code = "\033[0m" if success else ""
             print(f"Vorschlag: {color_code}'{display_suggestion}'{reset_code}")
 
@@ -211,18 +207,15 @@ def process_file(filepath):
             if not success: prompt_parts.append("'sa' (skip failures)")
 
             if args.yes:
-                # im automatischen Modus: benutze Vorschlag falls vorhanden, sonst skip
                 if success:
                     final_example = suggestion
                 else:
                     new_lines.append(line)
                     continue
             else:
-
                 print(f"[{' | '.join(prompt_parts)}]")
                 user_input = input("> ").strip()
 
-                # --- Input Logic ---
                 if user_input.lower() == 'q':
                     print("Beendet.")
                     sys.exit(0)
@@ -243,9 +236,44 @@ def process_file(filepath):
                     new_lines.append(line)
                     continue
 
-            # Schreiben
-            indent = line[:len(line) - len(line.lstrip())]
-            new_lines.append(f"{indent}# EXAMPLE: {final_example}\n")
+            # --- NEUER TEIL: Bestimme Anchor (Tuple-Anfang) ---
+            # Suche rückwärts die nächste nicht-leere, nicht-comment Zeile
+            anchor_idx = i
+            for j in range(i - 1, -1, -1):
+                prev = lines[j].strip()
+                if not prev or prev.startswith('#'):
+                    continue
+                anchor_idx = j
+                break
+
+            # Wenn die vorherige nicht-leere Zeile mit '(' beginnt, setzen wir das EXAMPLE
+            # vor dieser Zeile (Tupelanfang). Sonst vor der aktuellen Zeile.
+            anchor_is_tuple_start = lines[anchor_idx].lstrip().startswith('(')
+            insert_at_idx = anchor_idx if anchor_is_tuple_start else i
+
+            # Prüfe, ob bereits ein Tag/Example direkt davor existiert
+            has_tag_before_anchor = (insert_at_idx > 0) and (
+                "# EXAMPLE:" in lines[insert_at_idx - 1] or "# TAGS:" in lines[insert_at_idx - 1]
+            )
+
+            if has_tag_before_anchor:
+                # Wenn schon ein Tag vorhanden, nichts tun (nur die aktuelle Zeile normal hinzufügen)
+                new_lines.append(line)
+                continue
+
+            # Insert: berechne Einrückung anhand der Ankerzeile
+            indent = lines[insert_at_idx][:len(lines[insert_at_idx]) - len(lines[insert_at_idx].lstrip())]
+            example_line = f"{indent}# EXAMPLE: {final_example}\n"
+
+            # Wir haben bereits new_lines für alle Zeilen < i angefügt. Füge das Example
+            # an der entsprechenden Position in new_lines ein.
+            if insert_at_idx <= len(new_lines):
+                new_lines.insert(insert_at_idx, example_line)
+            else:
+                # Fallback: falls unerwartet, einfach vor current line anhängen
+                new_lines.append(example_line)
+
+            # Aktuelle Zeile anhängen
             new_lines.append(line)
             modified = True
             print("-> Gespeichert.")

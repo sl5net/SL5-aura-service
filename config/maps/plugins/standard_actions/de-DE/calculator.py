@@ -1,5 +1,5 @@
 # config/maps/plugins/standard_actions/de-DE/calculator.py
-# STT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/calculator.py
+# config/maps/plugins/standard_actions/wikipedia_local/de-DE/calculator.py
 def execute(match_data):
     """ Führt eine einfache Berechnung durch, basierend auf Regex-Gruppen. """
     try:

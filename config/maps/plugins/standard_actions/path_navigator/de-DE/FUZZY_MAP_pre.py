@@ -138,7 +138,6 @@ FUZZY_MAP_pre = [
     # Aura konföderation
     # EXAMPLE: Aura Konfig
     (f'{Path(PROJECT_ROOT_POSIX, "config", "settings.py").as_posix()}',
-     # EXAMPLE: Aura
      rf'^{aura2}\s+(Konf\w*|konzentration|settings?|\w*\s*dekoration)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
@@ -156,23 +155,23 @@ FUZZY_MAP_pre = [
     # https://junegunn.github.io/fzf/
 
 
+    # EXAMPLE: suche file
     (f"{fzf_smart_file_finder}",
-     # EXAMPLE: suche file
      r'^(suche|search|find)\s+(file|datei)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
       'only_in_windows': ['Konsole', 'konsole', 'Console']
       }),
 
+    # EXAMPLE: suche text
     (f"{suche_text}",
-     # EXAMPLE: suche text
      r'^(?:suche(?:n|r|st)?|search|find)\b(?:\s+(?:nach|the))?\s+\b(?:text|string)s?\b|\b(?:text|string)s?\b(?:\s+(?:nach|the))?\s+\b(?:suche(?:n|r|st)?|search|find)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
       'only_in_windows': ['Konsole', 'konsole', 'Console']}),
 
+    # EXAMPLE: file search
     (f"{fzf_in_gitRepo}",
-     # EXAMPLE: file search
     r'^(file|datei|Details) (suche|search|find)$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
@@ -180,8 +179,8 @@ FUZZY_MAP_pre = [
      }),
 
     # sometimes here (18.11.'25 10:36 Tue) stt undstand wrong this is quickfix:
+    # EXAMPLE: suche Datei
     (f"{fzf_smart_file_finder}",
-     # EXAMPLE: suche Datei
      r'^(falsche|somit datei|suche data|suche Datei|navigiere datei|suche Dateien|datei suche\w*|so geleitet hat|sorry datei)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
@@ -196,8 +195,8 @@ FUZZY_MAP_pre = [
     # following works with fzf (highliy recomande to have, s.18.11.'25 09:00 Tue)
     # https://junegunn.github.io/fzf/
     # sorry datei
+    # EXAMPLE: suche alles
     (f"{fzf_smart_file_finder}",
-     # EXAMPLE: suche alles
      r'^(suche|search|find)\s+(alles|everything|überall|everywhere|everything)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
@@ -208,8 +207,8 @@ FUZZY_MAP_pre = [
 
     #fzf --style full --preview 'fzf-preview.sh {}' --bind 'focus:transform-header:file --brief {}' | xclip -selection cl'
 
+    # EXAMPLE: Aura Pfad
     (f'{PROJECT_ROOT_POSIX}',
-     # EXAMPLE: Aura Pfad
      rf'^{aura1}\s+(Aura|Pfad)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
@@ -218,8 +217,8 @@ FUZZY_MAP_pre = [
       }
      ),
 
+    # EXAMPLE: Raumfahrt
     (f'{PROJECT_ROOT_POSIX}',
-     # EXAMPLE: Raumfahrt
      r'^(Raumfahrt)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
@@ -230,8 +229,8 @@ FUZZY_MAP_pre = [
       }),
 
 
+    # EXAMPLE: home Dir
     (f'{HOME_DIR_POSIX}',
-     # EXAMPLE: home Dir
      r'^(home|heimat|user)\s+(Pfad|Dir\w*)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
@@ -241,8 +240,8 @@ FUZZY_MAP_pre = [
 
       }),
 
+    # EXAMPLE: 0ad config
     (f'{HOME_DIR_POSIX}/.config/0ad/config/',
-     # EXAMPLE: 0ad config
      r'^(Joa|zero ein|zero|februar|fiera|fira|fever|fewo|führer|tyrannei|februar|wieweit|hierbei|hierbei|zebra|silva|fiera|give|cio|in|sie|sie war|syrer|seo|cyra|chihuahua|hier mal|sie wollen|über|weberei|rohrer)\s+(d|die|aed|it|die|di|dir|aed)\s+(Konflik|Konflikt|Konfiguration|konflikten|config|conflict)$',
      90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
@@ -263,8 +262,8 @@ FUZZY_MAP_pre = [
       }),
 
     # skiplist
+    # EXAMPLE: skip_list
     ("'skip_list': ['LanguageTool','fullMatchStop','only_in_windows']",
-     # EXAMPLE: skip_list
      r'^(skip_list|skip_list|skip list|script bläst|lässt|script lässt|squibb lässt|es lässt|es gibt les|scribbles|es gibt list|es gibt bläst|script list|skype lässt|skype list|gpl list)$', 90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 

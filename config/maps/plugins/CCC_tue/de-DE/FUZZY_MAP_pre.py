@@ -55,12 +55,12 @@ FUZZY_MAP_pre = [
     #################################################
 
 
+    # EXAMPLE: chaos
     ('https://cttue.de',
-     # EXAMPLE: chaos
      r'^(chaos|Graues|Karls|raus) (treff|trifft) (tübingen|Typ)\s*\w*$', 60, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: chaos
     ('https://cttue.de/doku.php?id=start#was_ansteht',
-     # EXAMPLE: chaos
      r'^(chaos|Karls)\s+.*was.*an.*$', 60, {'flags': re.IGNORECASE}),
 
 
