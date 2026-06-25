@@ -43,7 +43,7 @@
     Requires mimalloc (`sudo pacman -S mimalloc`) due to glibc 2.43 compatibility.
 *   **Linux (NixOS):** 🧪 Experimental — community-contributed setup, not yet tested.
     If you try it, please open an issue or PR with your findings!    
-*   **Linux (Manjaro):** New / experimental : A system-wide hotkey opens an fzf-like, keyboard-driven interface so you can run Aura commands from anywhere on the desktop (completely decoupled from the active window). This hotkey-driven launcher is currently implemented and tested on Linux (Manjaro); other distributions may work but require the setup described in `setup/`. See the Hotkey & Launcher section in docs for configuration and troubleshooting.    
+*   **Linux (Manjaro):** New / experimental : A system-wide hotkey opens an fzf-like, keyboard-driven interface so you can run Aura commands from anywhere on the desktop (completely decoupled from the active window). This hotkey-driven launcher is currently implemented and tested on Linux (Manjaro); other distributions may work but require the setup . See in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md)    
 
 
     
