@@ -268,19 +268,15 @@ FUZZY_MAP_pre = [
      r'^(skip_list|skip_list|skip list|script bläst|lässt|script lässt|squibb lässt|es lässt|es gibt les|scribbles|es gibt list|es gibt bläst|script list|skype lässt|skype list|gpl list)$', 90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    # Navigiere zu Aura Config
-    (f'cd "{Path(PROJECT_ROOT_POSIX, "config").as_posix()}"',
     # EXAMPLE: Navigiere Aura Konfiguration
-    rf'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+{aura3}\s*Konf\w*$',
+    (f'cd "{Path(PROJECT_ROOT_POSIX, "config").as_posix()}"', rf'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+{aura3}\s*Konf\w*$',
     90,
     {'flags': re.IGNORECASE,
      'skip_list': ['LanguageTool'],
      }),
 
     # EXAMPLE: Navigiere zu Aura
-    (f'cd "{PROJECT_ROOT_POSIX}"',
-    # EXAMPLE: Navigiere
-    r'^(Navigiere|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Aurora|Autoren)$',
+    (f'cd "{PROJECT_ROOT_POSIX}"', r'^(Navigiere|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Autoren)$',
     90,
     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
