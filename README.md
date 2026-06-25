@@ -43,6 +43,9 @@
     Requires mimalloc (`sudo pacman -S mimalloc`) due to glibc 2.43 compatibility.
 *   **Linux (NixOS):** 🧪 Experimental — community-contributed setup, not yet tested.
     If you try it, please open an issue or PR with your findings!    
+*   New: A system-wide hotkey opens an fzf-like, keyboard-driven interface so you can run Aura commands from anywhere on the desktop (completely decoupled from the active window). This hotkey-driven launcher is currently implemented and tested on Linux (Manjaro); other distributions may work but require the setup described in `setup/`. See the Hotkey & Launcher section in docs for configuration and troubleshooting.
+
+
     
 SL5 Aura is a complete, **offline voice assistant** built on **Vosk** (for Speech-to-Text) and **LanguageTool** (for Grammar/Style), featuring an optional **Local LLM (Ollama) Fallback** for creative responses and advanced fuzzy matching. It transforms your voice into precise actions and text, designed for ultimate customization through a pluggable rule system and a dynamic scripting engine.
     
