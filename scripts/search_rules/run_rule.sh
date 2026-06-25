@@ -16,6 +16,14 @@ F_OUT=$(grep -rnH -I $FILT . "$M_DIR" | \
     fzf --print-query \
         --history="$H_FILE" --query="$IQ" \
         --header="Enter: Run | Ctrl+E: Edit" --delimiter=":" \
+        --bind="ctrl-z:previous-history" \
+        --bind="ctrl-y:next-history" \
+        --bind="ctrl-backspace:backward-kill-word" \
+        --bind="ctrl-delete:kill-word" \
+        --bind="ctrl-left:backward-word" \
+        --bind="ctrl-right:forward-word" \
+        --bind="home:beginning-of-line" \
+        --bind="end:end-of-line" \
         --expect="ctrl-e" \
         --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {1} {2}' \
 )
