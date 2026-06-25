@@ -11,6 +11,7 @@ LOG_EXCLUDE = [
     r"process_text_in_background.py",
     r"🗺Starting recursive map",
     r"🗺 Map loading complete",
+    'fail🛑'
 ]
 
 LOG_EXCLUDE = [

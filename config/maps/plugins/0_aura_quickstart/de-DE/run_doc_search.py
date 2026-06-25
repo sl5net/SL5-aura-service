@@ -34,8 +34,6 @@ def execute(match_data):
     exit(1)
 
 
-
-
 if __name__ == "__main__":
     execute()
 # python3 ./config/maps/plugins/   /de-DE/run_doc_search.py

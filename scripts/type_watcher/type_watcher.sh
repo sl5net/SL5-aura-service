@@ -1,5 +1,5 @@
 #!/bin/bash
-# type_watcher.sh
+# scripts/type_watcher/type_watcher.sh
 export DOTOOL_DELAY=0
 
 DOTOOL_PID=$!
@@ -339,7 +339,9 @@ PY
                 continue
             fi
 
-            sleep 0.4
+#            sleep 1
+#            sleep 0.4
+            sleep 0.02
 
 
             mapfile -t lines < "$f"

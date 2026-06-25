@@ -1,5 +1,9 @@
 #!/bin/bash
 # scripts/search_rules/search_rules.sh
+
+# TODO 25.6.'26 17:33 Thu: use
+# scripts/search_rules/search_helpers.sh
+
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 #
 # Make MAPS_DIR configurable via positional arg or environment variable
@@ -79,9 +83,9 @@ else
 fi
 #Aurora als Sourcecode
 #  $PROJECT_ROOTOrange schwarz QuoteGraz Wort
-# ./scripts/py/func  pwd:  /home/seeh/projects/py/STT
-#Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/seeh/projects/py/STT
-#/home/seeh/projects/py/STT/scripts/search_rules/search_rules.sh: Zeile 142: MAPS_DIR:: Kommando nicht gefundenOrange Rost
+# ./scripts/py/func  pwd:  /home/bob/projects/py/STT
+#Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/bob/projects/py/STT
+#/home/bob/projects/py/STT/scripts/search_rules/search_rules.sh: Zeile 142: MAPS_DIR:: Kommando nicht gefundenOrange Rost
 
 #
 
@@ -164,8 +168,8 @@ export -f open_github
 
 echo "Line 137: MAPS_DIR: " $MAPS_DIR " pwd: " $PWD
 
-# Line 54: scripts/py/func  pwd:  /home/seeh/projects/py/STT
-# Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/seeh/projects/py/STT
+# Line 54: scripts/py/func  pwd:  /home/bob/projects/py/STT
+# Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/bob/projects/py/STT
 
 MAPS_DIR:  "scripts/py/func"
 
@@ -244,7 +248,6 @@ else
 fi
 
 done
-
 
 
 
