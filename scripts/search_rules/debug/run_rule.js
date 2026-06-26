@@ -8,12 +8,10 @@ var tmpBase  = isWin ? 'C:/tmp' : '/tmp';
 var rootFile = File(tmpBase + '/sl5_aura/sl5net_aura_project_root');
 
 var project_root = '';
-
 if (rootFile.open()) {
     project_root = str(rootFile.readAll()).trim();
     rootFile.close();
 }
-
 
 // --- 3. Launch ---
 if (isWin) {
