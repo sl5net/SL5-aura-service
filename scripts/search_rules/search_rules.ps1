@@ -64,7 +64,7 @@ if (Test-Path $HISTORY_FILE) {
 # DATA GATHERING
 # -----------------------------------------------------------------------------
 logger_info "Scanning $MAPS_DIR ..."
-$SearchData = Get-ChildItem -Path $MAPS_DIR -Recurse -File |
+$SearchData = Get-ChildItem -Path $MAPS_DIR -Recurse -File -Include "*.py" |
               Select-String -Pattern ".*" |
               ForEach-Object { "$($_.Path):$($_.LineNumber):$($_.Line)" }
 
