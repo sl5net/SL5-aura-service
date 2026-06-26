@@ -1,7 +1,6 @@
 # check_vectors.py
 import sqlite3
 import pickle
-from pathlib import Path
 
 try:
     from .utils import init_db, DB_FILE
