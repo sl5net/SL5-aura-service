@@ -43,6 +43,9 @@
 Wymaga mimalloc (`sudo pacman -S mimalloc`) ze względu na kompatybilność z glibc 2.43.
 * **Linux (NixOS):** 🧪 Eksperymentalny — konfiguracja opracowana przez społeczność, jeszcze nie przetestowana.
 Jeśli spróbujesz, otwórz problem lub PR i opisz swoje ustalenia!  XSPACEbreakX
+* **Linux (Manjaro):** Nowość/eksperyment: Ogólnosystemowy klawisz skrótu otwiera interfejs przypominający fzf, sterowany klawiaturą, dzięki czemu możesz uruchamiać polecenia Aury z dowolnego miejsca na pulpicie (całkowicie oddzielone od aktywnego okna). Ten program uruchamiający sterowany klawiszami skrótu jest obecnie zaimplementowany i przetestowany w systemie Linux (Manjaro); inne dystrybucje mogą działać, ale wymagają konfiguracji. Zobacz w 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-pllang.md) XSPACEbreakX
+
+
 XSPACEbreakX
 SL5 Aura to kompletny **asystent głosowy offline** zbudowany na bazie **Vosk** (dla zamiany mowy na tekst) i **LanguageTool** (dla gramatyki/stylu), wyposażony w opcjonalną funkcję **Local LLM (Ollama) Fallback** do kreatywnych odpowiedzi i zaawansowanego dopasowywania rozmytego. Przekształca Twój głos w precyzyjne działania i tekst, zaprojektowany z myślą o maksymalnej personalizacji poprzez podłączany system reguł i dynamiczny silnik skryptowy.
 XSPACEbreakX
@@ -60,7 +63,7 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Wskazówka:** Aby uzyskać lepszą obsługę terminala, zobacz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
+> **Wskazówka:** Aby uzyskać lepsze wrażenia z terminala, zobacz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
 
 ### 🎥 Samouczek wideo
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -88,7 +91,7 @@ wpływając na innych. Zawiera **panel administracyjny** działający w czasie r
 </details>
 
 <szczegóły>
-<summary> 🔌 Gotowe integracje</summary>
+<summary> 🔌 Gotowe do użycia integracje</summary>
 XSPACEbreakX
 ## 🔌 Gotowe do użycia integracje
 
@@ -345,7 +348,7 @@ XSPACEbreakX
 ││ * **Kryterium zatrzymania o najwyższym priorytecie:** Jeśli reguła osiągnie **Pełne dopasowanie** (^...$), cały potok przetwarzania dla tego tokena zostanie natychmiast zatrzymany. Mechanizm ten ma kluczowe znaczenie dla realizacji niezawodnych poleceń głosowych.XSPACEbreakX
 │├ 3. `correct_text_by_languagetool.py` (integruje narzędzie LanguageTool do poprawiania gramatyki/stylu) 🐧 🍏 🪟XSPACEbreakX
 │├ **4. Hierarchiczny silnik reguł RegEx z rezerwą Ollama AI** 🐧 🍏 🪟XSPACEbreakX
-││ * **Kontrola deterministyczna:** Wykorzystuje silnik RegEx-Rule-Engine do precyzyjnego sterowania poleceniami i tekstem o wysokim priorytecie.XSPACEbreakX
+││ * **Kontrola deterministyczna:** wykorzystuje silnik RegEx-Rule-Engine do precyzyjnego sterowania poleceniami i tekstem o wysokim priorytecie.XSPACEbreakX
 │├ **Wtyczka Vector-Search** (Leniwe ładowanie): umożliwia wyszukiwanie semantyczne poprzez połączenie lokalnego osadzania wektorów z warstwą rezerwową Ollama/LLM 🐧XSPACEbreakX
 ││ * **Awaryjny algorytm Ollama AI (lokalny LLM):** służy jako opcjonalna kontrola o niskim priorytecie w przypadku **kreatywnych odpowiedzi, pytań i odpowiedzi oraz zaawansowanego dopasowywania rozmytego**, gdy nie jest spełniona żadna reguła deterministyczna.XSPACEbreakX
 ││ * **Status:** Lokalna integracja LLM.

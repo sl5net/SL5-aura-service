@@ -43,6 +43,9 @@
 由于 glibc 2.43 兼容性，需要 mimalloc (`sudo pacman -S mimalloc`)。
 * **Linux (NixOS)：** 🧪 实验性 — 社区贡献的设置，尚未测试。
 如果您尝试一下，请用您的发现提出问题或 PR！  X空格符X
+* **Linux (Manjaro)：** 新/实验性：系统范围的热键打开类似 fzf 的键盘驱动界面，以便您可以从桌面上的任何位置运行 Aura 命令（与活动窗口完全解耦）。这个热键驱动的启动器目前在 Linux (Manjaro) 上实现和测试；其他发行版可能也可以工作，但需要进行设置。参见👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-zh-CNlang.md)   
+
+
 X空格符X
 SL5 Aura 是一款完整的**离线语音助手**，基于 **Vosk**（用于语音转文本）和 **LanguageTool**（用于语法/风格）构建，具有可选的**本地 LLM (Ollama) 后备**，用于创意响应和高级模糊匹配。它将您的声音转换为精确的操作和文本，旨在通过可插入的规则系统和动态脚本引擎实现最终定制。
 X空格符X
@@ -278,6 +281,11 @@ X空格符X
 <详情>
 <summary>Windows 用户的关键脚本</summary>
 
+
+
+
+
+
 ## Windows 用户的关键脚本
 
 以下是在 Windows 系统上设置、更新和运行应用程序的最重要脚本的列表。
@@ -300,10 +308,11 @@ X空格符X
 </详情>
 
 
-<详情>
-<summary>Windows 用户的关键脚本</summary>
 
 ## 🚀 主要功能和操作系统兼容性
+
+<详情>
+<summary>操作系统兼容性图例</summary>
 
 操作系统兼容性图例：  
 * 🐧 **Linux**（例如 Arch、Ubuntu）  
@@ -312,7 +321,13 @@ X空格符X
 * 📱 **Android**（针对移动设备特定功能）  
 
 ---
+
 </详情>
+
+
+
+
+
 ### **核心语音转文本 (Aura) 引擎**
 我们用于离线语音识别和音频处理的主要引擎。
 
@@ -328,7 +343,7 @@ X空格符X
 │├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
 │├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
-││ * **动态脚本执行：**规则可以触发自定义Python脚本（`on_match_exec`）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
+││ * **动态脚本执行：** 规则可以触发自定义 Python 脚本 (`on_match_exec`) 来执行高级操作，如 API 调用、文件 I/O 或生成动态响应。  
 │ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
 │ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
 │├ 3. ` Correct_text_by_languagetool.py` (集成LanguageTool用于语法/风格校正) 🐧 🍏 🪟  
@@ -452,7 +467,7 @@ X空格符X
 
 |型号|尺寸|字错误率/速度 |笔记|许可证|
 | ------------------------------------------------------------------------------------------ | ---- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
-| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型 |阿帕奇2.0 |
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型|阿帕奇2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G| 9.83（Tuda-de 测试）<br/>24.00（播客）<br/>12.82（cv-测试）<br/>12.42（mls）<br/>33.26（mtedx）|德国大型电话和服务器模型|阿帕奇2.0 |
 
 此表提供了不同 Vosk 型号的概述，包括其大小、字错误率或速度、注释和许可证信息。

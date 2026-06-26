@@ -43,6 +43,9 @@
 Nécessite mimalloc (`sudo pacman -S mimalloc`) en raison de la compatibilité avec la glibc 2.43.
 * **Linux (NixOS) :** 🧪 Expérimental — configuration fournie par la communauté, pas encore testée.
 Si vous l'essayez, veuillez ouvrir un problème ou un PR avec vos découvertes !    
+* **Linux (Manjaro) :** Nouveau / expérimental : un raccourci clavier à l'échelle du système ouvre une interface pilotée par clavier de type fzf afin que vous puissiez exécuter des commandes Aura depuis n'importe où sur le bureau (complètement découplé de la fenêtre active). Ce lanceur piloté par raccourci clavier est actuellement implémenté et testé sur Linux (Manjaro) ; d'autres distributions peuvent fonctionner mais nécessitent la configuration. Voir dans 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-frlang.md)   
+
+
   
 SL5 Aura est un **assistant vocal hors ligne** complet, basé sur **Vosk** (pour la synthèse vocale) et **LanguageTool** (pour la grammaire/le style), avec un **Local LLM (Ollama) Fallback** en option pour des réponses créatives et une correspondance floue avancée. Il transforme votre voix en actions et en texte précis, conçus pour une personnalisation ultime grâce à un système de règles enfichable et un moteur de script dynamique.
   
@@ -512,7 +515,7 @@ Fonctionnalités actuellement en cours de développement ou à l'état de projet
 │ └ **0 A.D. Plugin (Draft)** (Commande vocale pour le jeu 0 A.D.) 🐧   
 ├─ **Sortie sonore au démarrage ou à la fin d'une session** (Description en attente) 🐧   
 ├─ **Sortie vocale pour les malvoyants** (Description en attente) 🐧 🍏 🪟  
-└─ **Prototype Android SL5 Aura** (Pas encore complètement hors ligne) 📱  
+└─ **Prototype Android SL5 Aura** (Pas encore entièrement hors ligne) 📱  
 
 ---
 

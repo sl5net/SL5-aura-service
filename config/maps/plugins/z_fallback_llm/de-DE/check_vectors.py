@@ -1,9 +1,17 @@
+# check_vectors.py
 import sqlite3
 import pickle
 from pathlib import Path
 
-DB = Path(__file__).parent / "llm_cache.db"
-conn = sqlite3.connect(DB)
+try:
+    from .utils import init_db, DB_FILE
+except ImportError:
+    from utils import init_db, DB_FILE
+
+# Ensure the database and its tables exist before querying
+init_db()
+
+conn = sqlite3.connect(DB_FILE)
 row = conn.execute("SELECT clean_input, embedding FROM prompts WHERE embedding IS NOT NULL LIMIT 1").fetchone()
 conn.close()
 

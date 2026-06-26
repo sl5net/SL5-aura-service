@@ -43,6 +43,9 @@
 Requer mimalloc (`sudo pacman -S mimalloc`) devido à compatibilidade com glibc 2.43.
 * **Linux (NixOS):** 🧪 Experimental — configuração contribuída pela comunidade, ainda não testada.
 Se você tentar, abra uma edição ou PR com suas descobertas!    
+* **Linux (Manjaro):** Novo / experimental: uma tecla de atalho em todo o sistema abre uma interface semelhante a fzf, controlada por teclado, para que você possa executar comandos do Aura de qualquer lugar na área de trabalho (completamente dissociado da janela ativa). Este iniciador baseado em teclas de atalho está atualmente implementado e testado em Linux (Manjaro); outras distribuições podem funcionar, mas requerem configuração. Veja em 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-ptlang.md)   
+
+
   
 SL5 Aura é um **assistente de voz off-line** completo baseado em **Vosk** (para fala em texto) e **LanguageTool** (para gramática/estilo), apresentando um **Local LLM (Ollama) Fallback** opcional para respostas criativas e correspondência difusa avançada. Ele transforma sua voz em ações e texto precisos, projetados para personalização definitiva por meio de um sistema de regras conectável e um mecanismo de script dinâmico.
   
@@ -331,6 +334,11 @@ Essa arquitetura garante que as regras básicas do sistema sejam protegidas, enq
 <detalhes>
 <summary>Scripts-chave para usuários do Windows</summary>
 
+
+
+
+
+
 ## Scripts principais para usuários do Windows
 
 Aqui está uma lista dos scripts mais importantes para configurar, atualizar e executar o aplicativo em um sistema Windows.
@@ -353,10 +361,11 @@ Aqui está uma lista dos scripts mais importantes para configurar, atualizar e e
 </detalhes>
 
 
-<detalhes>
-<summary>Scripts-chave para usuários do Windows</summary>
 
 ## 🚀 Principais recursos e compatibilidade de sistema operacional
+
+<detalhes>
+<summary>Legenda de compatibilidade de sistema operacional</summary>
 
 Legenda para compatibilidade de sistema operacional:  
 * 🐧 **Linux** (por exemplo, Arch, Ubuntu)  
@@ -365,7 +374,13 @@ Legenda para compatibilidade de sistema operacional:
 * 📱 **Android** (para recursos específicos para dispositivos móveis)  
 
 ---
+
 </detalhes>
+
+
+
+
+
 ### **Motor principal de conversão de fala em texto (Aura)**
 Nosso principal mecanismo para reconhecimento de fala offline e processamento de áudio.
 
@@ -405,7 +420,7 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 ├─ **Trino State Engine** (configuração com reconhecimento de interface por fala/terminal/web) 🐧 🍏 🪟
 └─ Requer Docker · UI de administrador: `http://localhost:8084` 🐧 🍏 🪟  
 
-**Utilitários do Sistema/**   
+**Utilitários do sistema/**   
 ├┬ **Gerenciamento de servidor LanguageTool/**   
 │├─ `start_languagetool_server.py` (inicializa o servidor LanguageTool local) 🐧 🍏 🪟  
 │└─ `stop_languagetool_server.py` (Desliga o servidor LanguageTool) 🐧 🍏
@@ -465,7 +480,7 @@ Recursos atualmente em desenvolvimento ou em status de rascunho.
 │ ├ **wannweil** (Mapa para localização Alemanha-Wannweil) 🐧 🍏 🪟  
 │ ├ **Poker Plugin (Draft)** (Controle de voz para aplicativos de pôquer) 🐧 🍏 🪟  
 │ └ **Plugin 0 A.D. (Draft)** (Controle de voz para jogo 0 A.D.) 🐧   
-├─ **Saída de som ao iniciar ou encerrar uma sessão** (descrição pendente) 🐧   
+├─ **Saída de som ao iniciar ou encerrar uma sessão** (Descrição pendente) 🐧   
 ├─ **Saída de fala para deficientes visuais** (Descrição pendente) 🐧 🍏 🪟  
 └─ **Protótipo SL5 Aura Android** (Ainda não totalmente offline) 📱  
 

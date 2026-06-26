@@ -1,3 +1,4 @@
+# scripts/py/welcome_wizard/main.py
 import platform
 import importlib.util
 from pathlib import Path

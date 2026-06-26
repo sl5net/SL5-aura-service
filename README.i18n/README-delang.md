@@ -43,6 +43,9 @@
 Erfordert mimalloc („sudo pacman -S mimalloc“) aufgrund der Glibc 2.43-Kompatibilität.
 * **Linux (NixOS):** 🧪 Experimentell – von der Community bereitgestelltes Setup, noch nicht getestet.
 Wenn Sie es versuchen, eröffnen Sie bitte eine Ausgabe oder PR mit Ihren Ergebnissen!    
+* **Linux (Manjaro):** Neu/experimentell: Ein systemweiter Hotkey öffnet eine fzf-ähnliche, tastaturgesteuerte Oberfläche, sodass Sie Aura-Befehle von überall auf dem Desktop ausführen können (völlig entkoppelt vom aktiven Fenster). Dieser Hotkey-gesteuerte Launcher wird derzeit unter Linux (Manjaro) implementiert und getestet; Andere Distributionen funktionieren möglicherweise, erfordern jedoch das Setup. Siehe in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-delang.md)   
+
+
   
 SL5 Aura ist ein vollständiger **Offline-Sprachassistent**, der auf **Vosk** (für Speech-to-Text) und **LanguageTool** (für Grammatik/Stil) basiert und über einen optionalen **Local LLM (Ollama) Fallback** für kreative Antworten und erweitertes Fuzzy-Matching verfügt. Es wandelt Ihre Stimme in präzise Aktionen und Texte um und ist durch ein steckbares Regelsystem und eine dynamische Skript-Engine für die ultimative Anpassung konzipiert.
   
@@ -120,7 +123,7 @@ SL5-Aura bietet erstklassige Sprachunterstützung für **OculiX** und **SikuliX 
 
 Eine vollständige technische Referenz, einschließlich aller Module und Skripte, finden Sie auf unserer offiziellen Dokumentationsseite. Es wird automatisch generiert und ist immer aktuell.
 
-👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### Build-Status
