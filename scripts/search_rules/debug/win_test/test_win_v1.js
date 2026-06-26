@@ -1,0 +1,18 @@
+copyq:
+// test with: copyq eval "$(cat test_win_v1.js)"
+var isWin = !!String(env("WINDIR"));
+
+var tmpBase = isWin ? 'C:/tmp' : '/tmp';
+var rootFile = File(tmpBase + '/sl5_aura/sl5net_aura_project_root');
+
+var root = '';
+if (rootFile.open()) {
+    root = str(rootFile.readAll()).trim();
+    rootFile.close();
+}
+
+if (isWin) {
+    var bat = root.replace(/\//g, '\\') + '\\scripts\\search_rules\\search_rules.bat';
+    execute('cmd.exe', '/c', 'start', '', bat);
+}
+

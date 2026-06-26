@@ -1,5 +1,6 @@
 copyq:
-var isWin = false, f = File('/tmp/sl5_aura/sl5net_aura_project_root');
+var isWin = !!String(env("WINDIR"));
+var f = File('/tmp/sl5_aura/sl5net_aura_project_root');
 var r = f.open() ? str(f.readAll()).trim() : (isWin ? 'C:/projects/py/STT' : '~/projects/py/STT');
 f.close();
 if (isWin) {
