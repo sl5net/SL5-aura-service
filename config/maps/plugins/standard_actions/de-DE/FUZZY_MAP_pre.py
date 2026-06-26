@@ -48,7 +48,6 @@ FUZZY_MAP_pre = [
     }),
 
 
-    # Regel für die Wetterabfrage
     # EXAMPLE: wie ist das wetter
     ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)\??$', 95, {
         'flags': re.IGNORECASE,

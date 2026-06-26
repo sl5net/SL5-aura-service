@@ -37,6 +37,11 @@ FUZZY_MAP_pre = [
     # einen hörtest einschlafen
     # deutschland vor dein deutschlands
 
+    # threema web
+    ('https://web.threema.com/', r'^(web\s*)?(threema)\s*(web)?$', 70, # min_accuracy
+ {'flags': re.IGNORECASE}),
+
+
     # EXAMPLE: deutschlandfunk
     # Einen  is somtimes noise of nothing
     ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor|deutschland frank|deutschlands)\s*$', 70, # min_accuracy

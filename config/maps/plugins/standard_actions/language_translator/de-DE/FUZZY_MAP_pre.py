@@ -69,7 +69,6 @@ standards.
 
 CONFIG_DIR = Path(__file__).parent
 
-# englisch einschalten
 nonsense_start_word = r'(?:(an|ein|eine|einen|essen)\s*)?'
 
 # EXAMPLE: Denglisch
@@ -84,7 +83,7 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
-    # EXAMPLE: Englisch Switch
+    # EXAMPLE: Englisch aktiviere
     ('en', fr'^{Englisch}{toggleCmd}$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
@@ -151,7 +150,6 @@ FUZZY_MAP_pre = [
     #Organisch aktivierenگرمایش را خاموش کنید (original:'heizung ausschalten').
 
 
-    # übersetzung ausschalten
     # EXAMPLE: übersetzung: ausschalten deaktivieren toggle
     ('de', r'^(\w*bersetzung|heizung|gewinnschätzungen) (deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)$', 95, {
         'flags': re.IGNORECASE,

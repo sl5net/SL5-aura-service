@@ -47,7 +47,7 @@ copyq:
 
 var tmp_dir = '/tmp';
 var rootFile = File(tmp_dir + '/sl5_aura/sl5net_aura_project_root');
-var project_root = '';
+var project_root = '';g
 
 if (rootFile.open()) {
     project_root = str(rootFile.readAll()).trim();
@@ -60,7 +60,7 @@ var cmd = ''
     + 'export LANG="de_DE.UTF-8"; '
     + 'export LC_ALL="de_DE.UTF-8"; '
     + 'export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"; '
-    + 'export SEARCH_FILES_FILTER="FUZZY_MAP_pre.py"; '
+    + 'export SEARCH_FILES_FILTER="FUZZY_MAP*.py"; '
     + 'setsid konsole -e bash "' + search_script + '" '
     + '</dev/null >/dev/null 2>&1 & disown';
 
