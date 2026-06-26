@@ -17,6 +17,6 @@ set TARGET_DIR=%~1
 if "%TARGET_DIR%"=="" set TARGET_DIR=%SCRIPT_DIR%..\..\config\maps
 
 :: Set policy and run the script in one command
-powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; & '.\search_rules.ps1'" "%TARGET_DIR%"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& '.\search_rules.ps1'" "%TARGET_DIR%"
 
 exit /b
