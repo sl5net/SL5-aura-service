@@ -58,7 +58,8 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
 
         class TriggerEventHandler(FileSystemEventHandler):
             def on_any_event(self, event):
-                if event.src_path == str(trigger_file_path.resolve()):
+                # if event.src_path == str(trigger_file_path.resolve()):
+                if Path(event.src_path).resolve() == trigger_file_path.resolve():
                     trigger_event.set()
 
 
