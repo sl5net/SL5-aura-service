@@ -25,7 +25,7 @@ var cmd = ''
     + 'export LANG="de_DE.UTF-8"; '
     + 'export LC_ALL="de_DE.UTF-8"; '
     + 'export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"; '
-    + 'export SEARCH_FILES_FILTER="*.py|*.txt|*.md"; '
+    + 'export SEARCH_FILES_FILTER=".*py|*.md"; '
     + 'setsid konsole -e bash "' + search_script + '" '
     + '</dev/null >/dev/null 2>&1 & disown';
 
@@ -60,7 +60,7 @@ var cmd = ''
     + 'export LANG="de_DE.UTF-8"; '
     + 'export LC_ALL="de_DE.UTF-8"; '
     + 'export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"; '
-    + 'export SEARCH_FILES_FILTER="*.py|*.txt|*.md"; '
+    + 'export SEARCH_FILES_FILTER="FUZZY_MAP_pre.py"; '
     + 'setsid konsole -e bash "' + search_script + '" '
     + '</dev/null >/dev/null 2>&1 & disown';
 
