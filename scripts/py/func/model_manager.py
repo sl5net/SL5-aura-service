@@ -158,7 +158,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             # read 2025-1013-1734.txt in home path
             # read 2025-1013-1734.txt in home path
 
-        logger.info(f"Attempting to ⏳ load missing model: '{model_name}'")
+        logger.info(f"Loading ⏳ local model: '{model_name}'")
         try:
 
             _, avail_before = check_memory_critical(threshold_mb)

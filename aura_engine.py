@@ -83,7 +83,7 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
         try:
             subprocess.check_call([sys.executable, "-m", "pip", "install", "fasttext-wheel"])
             logging.info("INFO: FastText installed successfully. Please restart the service to activate it.")
-            sys.exit()
+            sys.exit(0)
         except subprocess.CalledProcessError:
             logging.error("Failed to install FastText. Please install it manually: pip install fasttext-wheel")
             sys.exit(1)
