@@ -36,7 +36,7 @@ import platform
 import importlib
 from pathlib import Path
 
-# PREREQUISITE: Write project root early to prevent import crashes in submodules when move the project to other folder
+# PREREQUISITE: Write project root early to prevent import crashes in submodules when the project was moved to other folder
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")

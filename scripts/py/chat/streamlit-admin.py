@@ -196,7 +196,6 @@ except Exception as init_e:
             # IMPORTANT for Windows: Clear the module cache so that Python sees the new package immediately!
             importlib.invalidate_caches()
 
-            # Seite sofort neu laden, um im zweiten Anlauf erfolgreich zu verbinden
             st.rerun()
         except Exception as pip_e:
             st.error(f"❌ Fehler bei der On-Demand-Installation von Trino:\n\n{pip_e}")

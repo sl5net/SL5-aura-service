@@ -705,7 +705,6 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
                     )
 
                     # scripts/py/func/process_text_in_background.py:560 (apply_fuzzy_replacement_logic)
-                    # angefangen noch ganz ohne funtion <=================================================
                     # is_private = "/_" in source_path or "\\_" in source_path
 
                     found_fuzzy_match = True
@@ -891,7 +890,6 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
                     # logger.info(
                     # f"🔁 464: '{new_text}'")
 
-                    # Hier wird es interessant: Wir behalten den alten und den neuen Text für die Skripte
 
                     original_text_before_rule = processed_text
                     log4DEV(f'original_text_before_rule = processed_text ===> {original_text_before_rule}',logger)
@@ -2535,7 +2533,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
 
 
-                                # Dein restlicher Code für diesen Block
                             made_a_change += 1
                             if not privacy_taint_occurred:
                                 log4DEV(
