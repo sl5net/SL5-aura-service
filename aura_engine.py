@@ -1370,7 +1370,14 @@ if __name__ == "__main__":
 
     # Pass the complete, unified config to main()
     loaded_models = {}
-    main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url)
+    try:
+        main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url)
+        # Pass the complete, unified config to main()
+    except BaseException as e:
+        logger.error(f"🚨 CRITICAL BASE EXCEPTION: {type(e).__name__}: {e}", exc_info=True)
+        raise
+
+        
 
 
 logger.info("🏁 end of file aura_engine.py reached - logic fell through!")
