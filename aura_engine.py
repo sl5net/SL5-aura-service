@@ -1,6 +1,9 @@
 # File: aura_engine.py
 import os
 import sys
+
+
+
 # ==============================================================================
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK & AUTO-BOOTSTRAP ---
 # Ensures the engine actually runs inside its .venv to avoid dependency issues.
@@ -32,6 +35,15 @@ import logging
 import platform
 import importlib
 from pathlib import Path
+
+# PREREQUISITE: Write project root early to prevent import crashes in submodules when move the project to other folder
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
+TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
+PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
+os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
+
 
 
 if settings.LOG_delete_on_startup:
@@ -107,18 +119,12 @@ from scripts.py.func.create_required_folders import setup_project_structure
 
 
 # --- Constants and Paths ---
-SCRIPT_DIR = Path(__file__).resolve().parent
 
 
-PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
 
 # PROJECT_ROOT = Path(__file__).resolve().parent
 
-TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
-os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
 
 
 _log_dir = PROJECT_ROOT / "log"
