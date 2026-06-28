@@ -1,3 +1,6 @@
+# Test preview helper manually
+# powershell -NoProfile -File ".\scripts\search_rules\fzf_helpers\preview.ps1" "C:\stt1\STT\config\maps\somefile.py" 12
+
 param(
     [string]$file,
     [int]$line
