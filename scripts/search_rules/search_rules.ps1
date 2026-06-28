@@ -14,7 +14,7 @@ $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 $ErrorActionPreference = 'Stop'
 $LOGFILE = Join-Path $env:USERPROFILE "search_rules_ps1_debug.log"
 function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
-DBG "Script started. PSVersion: $($PSVersionTable.PSVersion)"
+DBG "Script started."
 
 
 # MAPS_DIR priority: param > env MAPS_DIR > default relative to project root
