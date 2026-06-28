@@ -96,6 +96,41 @@ $f11::
 
 
 ; ------------------------------------------------------------------
+; F12 -> Launch Search Rules / Command Palette on Windows
+; ------------------------------------------------------------------
+*$f12::
+{
+    static lastPress := 0
+    if (A_TickCount - lastPress < 900) ; Debounce protection
+        return
+    lastPress := A_TickCount
+
+    project_root_file := "c:\tmp\sl5_aura\sl5net_aura_project_root"
+    if not FileExist(project_root_file) {
+        MsgBox("Error: Project root file not found at " . project_root_file, "Aura Error", 16)
+        return
+    }
+
+    try {
+        project_root := Trim(FileRead(project_root_file, "UTF-8"))
+        bat_dir := project_root . "\scripts\search_rules"
+        bat_path := bat_dir . "\search_rules.bat"
+
+        if not FileExist(bat_path) {
+            MsgBox("Error: Batch script not found at " . bat_path, "Aura Error", 16)
+            return
+        }
+
+        ; Run the batch file with the correct working directory
+        Run('"' . bat_path . '"', bat_dir)
+    } catch as e {
+        MsgBox("Error launching Search Rules: " . e.Message, "Aura Error", 16)
+    }
+}
+
+
+
+; ------------------------------------------------------------------
 ; STRG+Q -> CopyQ Window/Fenster toggle/umschalten (Anzeigen/Verstecken)
 ; ------------------------------------------------------------------
 $^q::
