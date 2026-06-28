@@ -40,6 +40,7 @@ if (-not (Test-Path $HISTORY_FILE)) {
     }
 }
 
+# Debug: print the path so you can verify (remove in production)
 Write-Host "Using history file: $HISTORY_FILE"
 
 $DEFAULT_QUERY  = ".py pre # EXAMPLE:"
