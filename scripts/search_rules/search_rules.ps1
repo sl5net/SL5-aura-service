@@ -98,9 +98,15 @@ foreach ($pat in $SearchFilesFilter -split '\|') {
 }
 
 # Gather matches
-$SearchData = Get-ChildItem -Path $MAPS_DIR -Recurse -File -Include $IncludePatterns |
-    Select-String -Pattern ".*" |
-    ForEach-Object { "{0}:{1}:{2}" -f $_.Path, $_.LineNumber, $_.Line.Trim() }
+#$SearchData = Get-ChildItem -Path $MAPS_DIR -Recurse -File -Include $IncludePatterns |
+#    Select-String -Pattern ".*" |
+#    ForEach-Object { "{0}:{1}:{2}" -f $_.Path, $_.LineNumber, $_.Line.Trim() }
+
+$patterns = @('FUZZY_MAP_pre.py','OTHER_pre.py')
+$files = foreach ($p in $patterns) {
+    Get-ChildItem -Path $MAPS_DIR -Recurse -Filter $p -File -ErrorAction SilentlyContinue
+}
+$SearchData = $files | Select-String -Pattern ".*" | ForEach-Object { "{0}:{1}:{2}" -f $_.Path, $_.LineNumber, $_.Line.Trim() }
 
 if (-not $SearchData) {
     logger_info "No searchable files found in $MAPS_DIR"
