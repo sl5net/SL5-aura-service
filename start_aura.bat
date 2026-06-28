@@ -1,5 +1,5 @@
 @echo off
-:: start_aura.bat:2
+:: start_aura.bat
 set PYTHONUTF8=1
 set LANG=de_DE.UTF-8
 set LC_ALL=de_DE.UTF-8
@@ -126,10 +126,8 @@ echo [INFO] Starting the Python STT backend service...
 
 call .venv\Scripts\activate
 
-:: python -u aura_engine.py
-:: python -X utf8 -u aura_engine.py
+.\.venv\Scripts\python.exe -u aura_engine.py
 
-PYTHONUTF8=1 LANG=de_DE.UTF-8 LC_ALL=de_DE.UTF-8 ./.venv/Scripts/python.exe aura_engine.py
 
 echo [INFO] Waiting 5 seconds for the service to initialize...
 %SystemRoot%\System32\timeout.exe /t 5

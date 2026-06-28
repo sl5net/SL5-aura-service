@@ -1,4 +1,4 @@
-# File: scripts/py/func/main.py
+# scripts/py/func/main.py
 
 import threading
 import time
@@ -134,15 +134,20 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
                     logger.info("Ignoring debounced trigger press.")
 
 
+
     except KeyboardInterrupt:
-        logger.info("\nService interrupted by user.")
+        print("!!! KEYBOARD INTERRUPT DETECTED !!!")
+        logger.info("\nscripts/py/func/main.py:140 \nService interrupted by user.")
     except Exception as e:
+        import traceback
+        print(f"\n!!! MAIN LOOP CRASHED WITH EXCEPTION: {e} !!!\n")
+        traceback.print_exc()
         logger.error(f"FATAL ERROR {e} in main loop:", exc_info=True)
+        logger.info("\nscripts/py/func/main.py:146\nService interrupted by user.")
     finally:
         observer.stop()
         observer.join()
-
-        # logger.info("Waiting for all background threads to finish...")
+        logger.info("scripts/py/func/main.py:150\nWaiting for all background threads to finish...")
         # for t in active_threads:
         #     t.join()
 
