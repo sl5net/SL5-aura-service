@@ -192,7 +192,8 @@ while ($true) {
     if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
         $FILE_PATH = $Matches[1]
         $LINE_NUM  = [int]$Matches[2]
-        logger_info "Selected: $FILE_PATH:$LINE_NUM"
+#         logger_info "Selected: $FILE_PATH:$LINE_NUM"
+        logger_info "Selected: $($FILE_PATH):$LINE_NUM".
 
         # extension based binary check
         $ext = [System.IO.Path]::GetExtension($FILE_PATH).TrimStart('.').ToLower()
