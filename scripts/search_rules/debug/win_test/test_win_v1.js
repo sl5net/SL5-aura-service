@@ -1,5 +1,5 @@
 // test with:
-// & "C:\Program Files\CopyQ\copyq.exe" eval (Get-Content -Raw -Path scripts\search_rules\debug\win_test\test_win_v1.js)
+// & copyq eval (Get-Content -Raw -Path scripts\search_rules\debug\win_test\test_win_v1.js)
 print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
 
 // copyq:
