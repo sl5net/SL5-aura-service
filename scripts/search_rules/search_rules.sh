@@ -52,8 +52,10 @@ function logger_info() {
 
 cd "$PROJECT_ROOT" || exit 1
 
+# SEARCH_CLOSE_ON_OPEN = False=$("$PYTHON_BIN" - <<'PY' 2>/dev/null || echo "True"
 
-SEARCH_CLOSE_ON_OPEN = False=$("$PYTHON_BIN" - <<'PY' 2>/dev/null || echo "True"
+
+SEARCH_CLOSE_ON_OPEN=$("$PYTHON_BIN" - <<'PY' 2>/dev/null || echo "True"
 import sys, importlib
 try:
     cfg = importlib.import_module("config.settings_local")
@@ -164,16 +166,9 @@ open_github() {
     xdg-open "$url"
 }
 export -f open_github
-#
 
 echo "Line 137: MAPS_DIR: " $MAPS_DIR " pwd: " $PWD
 
-# Line 54: scripts/py/func  pwd:  /home/bob/projects/py/STT
-# Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/bob/projects/py/STT
-
-MAPS_DIR:  "scripts/py/func"
-
-#Hurra zurückwerfenJura Quelltext
 
 
 
