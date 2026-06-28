@@ -7,7 +7,7 @@ while ($true) {
     git pull
 
     # Write-Host "2. Running CopyQ test script..." -ForegroundColor Yellow
-    & "C:\Program Files\CopyQ\copyq.exe" eval (Get-Content -Raw -Path scripts\search_rules\debug\win_test\test_win_v1.js)
+    # & "C:\Program Files\CopyQ\copyq.exe" eval (Get-Content -Raw -Path scripts\search_rules\debug\win_test\test_win_v1.js)
 
     # Write-Host "3. Verification log:" -ForegroundColor Yellow
     if (Test-Path C:\tmp\copyq_debug.txt) {
