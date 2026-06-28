@@ -127,10 +127,12 @@ echo [INFO] Starting the Python STT backend service...
 call .venv\Scripts\activate
 
 :: python -u aura_engine.py
-python -X utf8 -u aura_engine.py
+:: python -X utf8 -u aura_engine.py
+
+PYTHONUTF8=1 LANG=de_DE.UTF-8 LC_ALL=de_DE.UTF-8 ./.venv/Scripts/python.exe aura_engine.py
 
 echo [INFO] Waiting 5 seconds for the service to initialize...
-timeout /t 5 >nul
+%SystemRoot%\System32\timeout.exe /t 5
 
 echo [INFO] Verifying service status via log file...
 findstr /C:"Setup validation successful" "log\aura_engine.log" >nul 2>&1
