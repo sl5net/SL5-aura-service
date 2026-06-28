@@ -2,6 +2,7 @@
 # powershell -NoProfile -File ".\scripts\search_rules\fzf_helpers\preview.ps1" "C:\stt1\STT\config\maps\somefile.py" 12
 
 # Teste fzf mit minimal preview-Arg:
+# 'c:\stt1\STT\config\maps\file.py:12:some text' | fzf.exe --delimiter ":" --preview "powershell -NoProfile -File `"$helperPreview`" '{1}' '{2}'"
 
 param(
     [string]$file,
