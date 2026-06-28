@@ -7,7 +7,7 @@ param(
 # -----------------------------------------------------------------------------
 # CONFIGURATION & DEFAULTS
 # -----------------------------------------------------------------------------
-$HOME = $env:USERPROFILE
+$My_HOME = [Environment]::GetFolderPath("UserProfile")
 $SCRIPT_DIR   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 
@@ -26,7 +26,7 @@ if (-not $MAPS_DIR) {
     exit 1
 }
 
-$HISTORY_FILE   = Join-Path $HOME ".search_rules_history"
+$HISTORY_FILE   = Join-Path $My_HOME ".search_rules_history"
 $DEFAULT_QUERY  = ".py pre # EXAMPLE:"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
 if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
