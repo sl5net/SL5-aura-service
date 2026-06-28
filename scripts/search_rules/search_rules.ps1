@@ -108,8 +108,8 @@ $files = foreach ($p in $patterns) {
 }
 $SearchData = $files | Select-String -Pattern ".*" | ForEach-Object { "{0}:{1}:{2}" -f $_.Path, $_.LineNumber, $_.Line.Trim() }
 
-#Teste lokal, ob nur gewünschte Dateien gefunden werden:
-
+# Teste lokal, ob nur gewünschte Dateien gefunden werden:
+# Get-ChildItem -Path $MAPS_DIR -Recurse -Filter 'FUZZY_MAP_pre.py' -File | Select-Object FullName
 
 if (-not $SearchData) {
     logger_info "No searchable files found in $MAPS_DIR"
