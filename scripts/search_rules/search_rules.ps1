@@ -210,6 +210,9 @@ while ($true) {
 
 
 } catch {
+    DBG "UNHANDLED ERROR: $($_.Exception.Message)"
+    DBG "STACK: $($_.Exception.StackTrace)"
+
     logger_info  "UNHANDLED ERROR: $($_.Exception.Message)"
     logger_info  "STACK: $($_.Exception.StackTrace)"
     Write-Host "ERROR: $($_.Exception.Message)" -ForegroundColor Red
