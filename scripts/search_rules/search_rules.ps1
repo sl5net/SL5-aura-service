@@ -126,21 +126,49 @@ $fzfArgs = @(
     "--preview-window", "up:50%"
 )
 
-# Bind keys:
-# - ctrl-z / ctrl-y history navigation (fzf builtin names: previous-history/next-history)
-# - ctrl-g: open GitHub (execute-silent Start-Process)
-# - ctrl-x: copy whole matched line to clipboard (clip.exe)
-# - ctrl-a: copy preview context (we use the same preview code to output to clipboard)
+
+
+
+
+# safe: build binds as literal strings (single quotes) and avoid {3..} expansion by wrapping in single quotes
 $binds = @()
-$binds += "ctrl-z:previous-history"
-$binds += "ctrl-y:next-history"
-# ctrl-g: open github in background
-$openGithubCmd = "execute-silent(powerShell -NoProfile -Command `"param(\$f,\$l,\$repo) \$rel = (Resolve-Path -LiteralPath \$f).ProviderPath.Replace((Resolve-Path -LiteralPath '$PROJECT_ROOT').ProviderPath + [System.IO.Path]::DirectorySeparatorChar,''); \$url = '{0}' -f (\$repo + '/' + \$rel -replace '\\','/' + '#L' + \$l); Start-Process \$url`" -f $REPO_URL
-$binds += "ctrl-g:$openGithubCmd"
-# ctrl-x: copy line
-$binds += "ctrl-x:execute-silent(echo {3..} | clip.exe)"
-# ctrl-a: copy preview context
-$binds += "ctrl-a:execute-silent(powershell -NoProfile -Command {0})" -f ('"{0} {1} | clip.exe"' -f $PreviewCmd.TrimEnd(' '), '{1} {2}')
+$binds += 'ctrl-z:previous-history'
+$binds += 'ctrl-y:next-history'
+# ctrl-g: open github (use double quotes inside execute-silent but escape for PS)
+$openGithub = "execute-silent(powershell -NoProfile -Command `""$([string]::Format('Start-Process {0}', '{REPO_PLACEHOLDER}'))`" )"
+# --- simpler approach: open via helper script to avoid complex escaping
+$helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
+# create helper file content (only once) that receives args: file line repo
+@"
+param(\$file,\$line,\$repo)
+\$rel = \$file.Replace('$PROJECT_ROOT' + [System.IO.Path]::DirectorySeparatorChar, '').Replace('\\','/')
+\$url = \"{0}/\$rel#L\$line\" -f \$repo
+Start-Process \$url
+"@ | Out-File -FilePath $helperOpenGithub -Encoding utf8
+
+$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
+
+# ctrl-x: copy line -> use Set-Clipboard, keep fzf placeholder {3..} literal by wrapping in single quotes inside the executed PS command
+$binds += "ctrl-x:execute-silent(powershell -NoProfile -Command `""('{3..}' ) | Set-Clipboard`" )"
+
+# ctrl-a: copy preview/context -> call helper to extract context and pipe to clipboard
+$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
+@"
+param(\$file,\$line)
+\$l = [int]\$line
+\$lines = Get-Content -LiteralPath \$file -ErrorAction SilentlyContinue
+\$start = [Math]::Max(0,\$l-6)
+\$end = [Math]::Min(\$lines.Count-1,\$l+4)
+\$out = for (\$i=\$start; \$i -le \$end; \$i++) {
+    if (\$i -eq \$l-1) { \"> {0,4}: {1}\" -f (\$i+1), \$lines[\$i] } else { \"  {0,4}: {1}\" -f (\$i+1), \$lines[\$i] }
+}
+\$out -join \"`n\" | Set-Clipboard
+"@ | Out-File -FilePath $helperCopyPreview -Encoding utf8
+
+$binds += "ctrl-a:execute-silent(powershell -NoProfile -File `"$helperCopyPreview`" '{1}' '{2}')"
+
+
+
 
 $fzfArgs += @("--bind", ($binds -join ","))
 
