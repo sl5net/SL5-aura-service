@@ -11,7 +11,9 @@ from threading import RLock
 import platform
 
 # py/func/config/dynamic_settings.py:11
-project_root = Path(__file__).resolve().parents[4]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+if not (PROJECT_ROOT / "config" / "settings.py").exists() and (Path.cwd() / "config" / "settings.py").exists():
+    PROJECT_ROOT = Path.cwd()
 
 from config import settings
 
@@ -66,7 +68,6 @@ class CustomFormatter(logging.Formatter):
 
         return formatted_time
 
-PROJECT_ROOT = Path(__file__).resolve().parents[4]
 LOG_DIR = PROJECT_ROOT / "log"
 LOG_FILE = LOG_DIR / "dynamic_settings.log"
 
