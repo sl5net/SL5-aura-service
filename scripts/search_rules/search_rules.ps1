@@ -25,6 +25,8 @@ $DEFAULT_QUERY  = ".py pre # EXAMPLE:"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
 if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
 
+try {
+
 # Try to detect repo URL for GitHub open (prefer git remote)
 $REPO_URL = $env:GITHUB_BASE_URL
 if (-not $REPO_URL) {
@@ -136,6 +138,7 @@ $binds += "ctrl-a:execute-silent(powershell -NoProfile -Command {0})" -f ('"{0} 
 
 $fzfArgs += @("--bind", ($binds -join ","))
 
+
 # -----------------------------------------------------------------------------
 # Interactive loop
 # -----------------------------------------------------------------------------
@@ -197,5 +200,15 @@ while ($true) {
         break
     }
 }
+
+
+} catch {
+    logger_info  "UNHANDLED ERROR: $($_.Exception.Message)"
+    logger_info  "STACK: $($_.Exception.StackTrace)"
+    Write-Host "ERROR: $($_.Exception.Message)" -ForegroundColor Red
+    Read-Host "Press ENTER to exit (debug)"
+    exit 1
+}
+
 
 logger_info "Done."
