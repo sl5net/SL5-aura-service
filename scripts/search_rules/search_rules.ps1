@@ -125,25 +125,61 @@ if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
 #}
 #Write-Host "Initial fzf query: $QUERY"
 
+#$DEFAULT_QUERY = ".py pre # EXAMPLE:"
+#$QUERY = $DEFAULT_QUERY
+#
+#try {
+#    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction Stop
+#    if ($lines) {
+#        $last = $lines | Where-Object { $_.Trim().Length -gt 0 } | Select-Object -Last 1
+#        if ($last) { $QUERY = $last } else { $QUERY = $DEFAULT_QUERY }
+#    } else {
+#        $QUERY = $DEFAULT_QUERY
+#    }
+#} catch {
+#    Write-Warning ("Could not read history file {0}: {1}" -f $HISTORY_FILE, $_.Exception.Message)
+#    $QUERY = $DEFAULT_QUERY
+#}
+#
+#Write-Host "Initial fzf query: $QUERY"
+
+
+
+# --- Load initial query from history, but ignore overly long / suspicious entries ---
 $DEFAULT_QUERY = ".py pre # EXAMPLE:"
 $QUERY = $DEFAULT_QUERY
 
+# Ensure HISTORY_FILE is set; example: $HISTORY_FILE = Join-Path $PROJECT_ROOT ".search_rules_history"
+if (-not $HISTORY_FILE) {
+    $HISTORY_FILE = Join-Path $env:USERPROFILE ".search_rules_history"
+}
+
 try {
-    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction Stop
-    if ($lines) {
-        $last = $lines | Where-Object { $_.Trim().Length -gt 0 } | Select-Object -Last 1
-        if ($last) { $QUERY = $last } else { $QUERY = $DEFAULT_QUERY }
-    } else {
-        $QUERY = $DEFAULT_QUERY
+    if (Test-Path $HISTORY_FILE) {
+        # Read with UTF-8 (avoid encoding gibberish)
+        $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction SilentlyContinue
+        if ($lines) {
+            # Select the last non-empty line
+            $last = $lines | Where-Object { $_.Trim().Length -gt 0 } | Select-Object -Last 1
+            if ($last) {
+                $trimmed = $last.Trim()
+                # Only accept history entries of reasonable length
+                $maxLen = 60
+                if ($trimmed.Length -le $maxLen) {
+                    $QUERY = $trimmed
+                } else {
+                    Write-Verbose "History entry too long ($($trimmed.Length) chars); using default query."
+                    $QUERY = $DEFAULT_QUERY
+                }
+            }
+        }
     }
 } catch {
     Write-Warning ("Could not read history file {0}: {1}" -f $HISTORY_FILE, $_.Exception.Message)
     $QUERY = $DEFAULT_QUERY
 }
 
-Write-Host "Initial fzf query: $QUERY"
-
-
+Write-Host ("Initial fzf query: {0}" -f $QUERY)
 
 
 
