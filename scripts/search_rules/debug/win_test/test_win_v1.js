@@ -2,10 +2,14 @@ copyq:
 // test with: copyq eval "$(cat test_win_v1.js)"
 var isWin = !!String(env("WINDIR"));
 
-var tmpBase = isWin ? 'C:/tmp' : '/tmp';
-var rootFile = File(tmpBase + '/sl5_aura/sl5net_aura_project_root');
+var tmpBase = isWin ? 'C:\\tmp' : '/tmp';
+var rootFile = '';
+if (isWin) {
+    rootFile = File(tmpBase + '\\sl5_aura\\sl5net_aura_project_root');
+else{
+    rootFile = File(tmpBase + '/sl5_aura/sl5net_aura_project_root');
+}
 
-var root = '';
 if (rootFile.open()) {
     root = str(rootFile.readAll()).trim();
     rootFile.close();

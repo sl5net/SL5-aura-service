@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+# tools/export_to_copyq.py
 readme = """
 The script operates in read-only mode regarding your file system:
 It reads your map files (.py) and settings_local.py only to extract data.
