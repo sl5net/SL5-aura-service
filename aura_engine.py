@@ -1189,13 +1189,22 @@ else:
 
 if not languagetool_process:
     logger.error("=" * 80)
-    logger.error("🚨 CRITICAL STARTUP ERROR: LanguageTool Server failed to start or connect.")
+    logger.error("🚨 CRITICAL STARTUP WARNING: LanguageTool Server failed to start or connect.")
     logger.error("To resolve this issue on Windows:")
     logger.error("  1. Ensure Java (java.exe) is installed and available in your system PATH.")
-    logger.error("  2. Ensure port 8082 is not blocked or in use by another application.")
-    logger.error("  3. Or verify the Java / LanguageTool installation setup.")
+    logger.error(f"  2. Ensure port {settings.LANGUAGETOOL_PORT} is not blocked or in use by another application.")
     logger.error("=" * 80)
-    notify("Aura Startup Error", "LanguageTool Server failed to start.", "critical")
+    notify("Aura Startup Warning", "LanguageTool Server failed to start.", "warning")
+
+    # Safe acoustic warning
+    try:
+        from scripts.py.func.audio_manager import speak_inclusive_fallback
+
+        speak_inclusive_fallback("Language Tool is offline", "en-US")
+    except Exception as tts_err:
+        logger.warning(f"Could not speak LanguageTool warning: {tts_err}")
+
+    # Bypassed exit to allow graceful startup without LanguageTool
     # sys.exit(1)
 
 # print(f'settings.DEV_MODE={settings.DEV_MODE}')
