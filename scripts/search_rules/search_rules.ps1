@@ -27,6 +27,19 @@ if (-not $MAPS_DIR) {
 }
 
 $HISTORY_FILE   = Join-Path $MY_HOME ".search_rules_history"
+
+# If the file doesn't exist, create an empty UTF8 file (no BOM)
+if (-not (Test-Path $HISTORY_FILE)) {
+    # On older PowerShell versions -Encoding utf8 may add BOM; try utf8NoBOM when available
+    try {
+        # pwsh/core supports utf8NoBOM
+        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8NoBOM -Force
+    } catch {
+        # fallback for Windows PowerShell
+        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8 -Force
+    }
+}
+
 $DEFAULT_QUERY  = ".py pre # EXAMPLE:"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
 if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
