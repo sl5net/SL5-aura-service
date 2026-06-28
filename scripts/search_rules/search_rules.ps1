@@ -7,7 +7,7 @@ param(
 # -----------------------------------------------------------------------------
 # CONFIGURATION & DEFAULTS
 # -----------------------------------------------------------------------------
-$HOME = [Environment]::GetFolderPath("UserProfile")
+$HOME = $env:USERPROFILE
 $SCRIPT_DIR   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 
