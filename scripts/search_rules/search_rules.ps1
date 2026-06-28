@@ -79,10 +79,19 @@ if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
 # -----------------------------------------------------------------------------
 # INITIAL QUERY / HISTORY
 # -----------------------------------------------------------------------------
-$QUERY = $DEFAULT_QUERY
+#$QUERY = $DEFAULT_QUERY
+#if (Test-Path $HISTORY_FILE) {
+#    $last = Get-Content $HISTORY_FILE -ErrorAction SilentlyContinue | Where-Object { $_ -ne "" } | Select-Object -Last 1
+#    if ($last) { $QUERY = $last }
+#}
+
+# Robust
 if (Test-Path $HISTORY_FILE) {
-    $last = Get-Content $HISTORY_FILE -ErrorAction SilentlyContinue | Where-Object { $_ -ne "" } | Select-Object -Last 1
-    if ($last) { $QUERY = $last }
+    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction SilentlyContinue
+    $last = $lines | Where-Object { $_ -ne "" } | Select-Object -Last 1
+    if ($last) { $QUERY = $last } else { $QUERY = $DEFAULT_QUERY }
+} else {
+    $QUERY = $DEFAULT_QUERY
 }
 
 # -----------------------------------------------------------------------------
