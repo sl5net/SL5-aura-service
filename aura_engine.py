@@ -790,6 +790,7 @@ files_to_clean = [HEARTBEAT_FILE, PIDFILE, TRIGGER_FILE]
 atexit.register(lambda: cleanup(logger, files_to_clean))
 atexit.register(lambda: stop_languagetool_server(logger, languagetool_process))
 
+
 with open(PIDFILE, 'w') as f:
     f.write(str(os.getpid()))
 
@@ -1173,7 +1174,7 @@ else:
 
     logger.info(f"start_languagetool_server(logger, …{str(jar_path_absolute)[-30:0]}, {internal_lt_url})")
 
-    # aura_engine.py:751
+    # aura_engine.py:1176
     languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url, for_self_test=False)
 
     # NEU/CHANGE: Register atexit ONLY if a real process was started

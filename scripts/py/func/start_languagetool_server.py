@@ -1,5 +1,5 @@
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
-# file: scripts/py/func/start_languagetool_server.py
+# scripts/py/func/start_languagetool_server.py
 
 from pathlib import Path
 import subprocess
@@ -60,30 +60,28 @@ def _update_settings_file(logger, java_path):
     if settings.DEV_MODE:
         logger.info(f"Settings file updated. Java path set to: {java_path}")
 
-def _is_lt_server_responsive(url, timeout=1):
+def _is_lt_server_responsive(url, timeout=0.9, logger=None):
     """Checks if the LanguageTool server at the given URL is responsive."""
     try:
         # Check against a known lightweight endpoint
         # response = requests.get(f"{url}/v2/languages", timeout=timeout)
         response = requests.get(f"{url}/v2/languages", timeout=timeout, allow_redirects=True)
         return response.status_code == 200
-    except requests.exceptions.RequestException as e:
-        # logger.debug(f"LT Check failed: {e}")
+    except Exception as e:
         print(f"LanguageTool(LT) Check failed: {e}")
-        return False
-    except Exception as e2:
-        # logger.debug(f"LT Check failed: {e}")
-        print(f"LanguageTool(LT) Check failed: {e2}")
-        return False
+        if logger:
+            logger.debug(f"LanguageTool(LT) Check failed: {e}")
 
-    # backup
-    # return {
-    #     "xms": f"-Xms{xms_gb}G",
-    #     "xmx": f"-Xmx{xmx_gb}G",
-    #     "threads": str(threads),
-    # }
-    #
-
+        # Safe acoustic warning
+        try:
+            from scripts.py.func.audio_manager import speak_inclusive_fallback
+            speak_inclusive_fallback("Language Tool is offline", "en-US")
+        except Exception as tts_err:
+            if logger:
+                logger.warning(f"Could not speak LanguageTool warning: {tts_err}")
+            else:
+                print(f"Could not speak LanguageTool warning: {tts_err}")
+        return False
 
 
 def get_languagetool_jvm_args(for_self_test=False):
@@ -134,7 +132,8 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url, for_self_
 
 
     # We check /v2/languages (default) OR just /v2
-    if _is_lt_server_responsive(full_base_url, timeout=0.5):  # Timeout etwas höher
+    if _is_lt_server_responsive(full_base_url, timeout=0.5, logger=logger):
+
         logger.info(f"✅ LanguageTool Server is ALREADY online at {full_base_url}. Skipping startup.")
         return LT_ALREADY_RUNNING_SENTINEL
     else:
