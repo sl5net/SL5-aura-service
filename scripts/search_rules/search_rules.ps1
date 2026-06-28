@@ -250,8 +250,8 @@ $fzfArgs = @(
 # safe: build binds as literal strings (single quotes) and avoid {3..} expansion by wrapping in single quotes
 $binds = @()
 # add word-editing keybinds for fzf query line editing
-$binds += 'ctrl-backspace:backward-kill-word'
-#$binds += 'ctrl-left:backward-word' # unsupported key: ctrl-backspace
+#$binds += 'ctrl-backspace:backward-kill-word' # unsupported key: ctrl-backspace
+$binds += 'ctrl-left:backward-word'
 $binds += 'ctrl-right:forward-word'
 # ctrl-\ as kill-line (note: backslash needs no extra escaping inside single-quoted PS string)
 $binds += 'ctrl-\\:kill-line'
