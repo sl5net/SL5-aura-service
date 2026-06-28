@@ -11,6 +11,12 @@ $HOME = [Environment]::GetFolderPath("UserProfile")
 $SCRIPT_DIR   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 
+$ErrorActionPreference = 'Stop'
+$LOGFILE = Join-Path $env:USERPROFILE "search_rules_ps1_debug.log"
+function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
+DBG "Script started. PSVersion: $($PSVersionTable.PSVersion)"
+
+
 # MAPS_DIR priority: param > env MAPS_DIR > default relative to project root
 if (-not $MAPS_DIR) { $MAPS_DIR = $env:MAPS_DIR }
 if (-not $MAPS_DIR) { $MAPS_DIR = Join-Path $PROJECT_ROOT "config\maps" }
