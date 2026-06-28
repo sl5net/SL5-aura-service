@@ -1,15 +1,10 @@
 #Requires AutoHotkey v2.0
-; trigger-hotkeys.ahk:2 trigger-hotkeys.ahk:2 trigger-hotkeys.ahk:2
+; trigger-hotkeys.ahk
 ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
 #SingleInstance Off
-
 #UseHook True
-
 ListLines(False)
-
-
 ; trigger_hotkey.ahk
-
 /**
  * @file trigger-hotkeys.ahk
  * @description Captures global hotkeys (F10/F11) to control the STT service.
@@ -17,7 +12,6 @@ ListLines(False)
  * https://www.autohotkey.com/docs/v2/Language.htm#comments
  *
  */
-
 
 ; --- Configuration ---
 heartbeat_start_File := "c:\tmp\heartbeat_trigger_hotkey_start.txt"
