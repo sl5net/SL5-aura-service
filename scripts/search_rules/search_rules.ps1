@@ -143,6 +143,11 @@ try {
 
 Write-Host "Initial fzf query: $QUERY"
 
+
+
+
+
+
 # -----------------------------------------------------------------------------
 # Prepare Search Data - use Get-ChildItem + Select-String to produce "path:line:content"
 # -----------------------------------------------------------------------------
