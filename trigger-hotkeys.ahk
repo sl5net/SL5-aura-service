@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-
+; trigger-hotkeys.ahk:2 trigger-hotkeys.ahk:2 trigger-hotkeys.ahk:2
 ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
 #SingleInstance Off
 
