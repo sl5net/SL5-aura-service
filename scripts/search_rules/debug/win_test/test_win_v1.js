@@ -6,7 +6,7 @@ if (debugFile.open('w')) {
     debugFile.write('test_win_v1.js:6 hi);
     // debugFile.close();
 }
-print('test')
+print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA test BBBBBBBBBBBBBBBBB')
 var isWin = !!String(env("WINDIR"));
 
 var tmpBase = isWin ? 'C:\\tmp' : '/tmp';
