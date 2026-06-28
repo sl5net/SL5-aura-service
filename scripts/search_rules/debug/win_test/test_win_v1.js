@@ -10,6 +10,7 @@ if (isWin) {
     rootFile = File(tmpBase + '/sl5_aura/sl5net_aura_project_root');
 }
 
+var root = '';
 if (rootFile.open()) {
     root = str(rootFile.readAll()).trim();
     rootFile.close();
