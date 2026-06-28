@@ -68,7 +68,7 @@ function Get-PreferredEditor {
     if (Get-Command "nano" -ErrorAction SilentlyContinue) { return "nano" }
     return "notepad.exe"
 }
-$EDITOR = Get-PreferredEditor()
+$EDITOR = Get-PreferredEditor
 logger_info "Editor configured: $EDITOR"
 
 if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
