@@ -1377,7 +1377,7 @@ if __name__ == "__main__":
         logger.error(f"🚨 CRITICAL BASE EXCEPTION: {type(e).__name__}: {e}", exc_info=True)
         raise
 
-        
+
 
 
 logger.info("🏁 end of file aura_engine.py reached - logic fell through!")

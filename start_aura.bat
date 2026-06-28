@@ -1,5 +1,9 @@
 @echo off
 :: start_aura.bat:2
+set PYTHONUTF8=1
+set LANG=de_DE.UTF-8
+set LC_ALL=de_DE.UTF-8
+
 setlocal
 title SL5 Aura - One-Click Starter
 
