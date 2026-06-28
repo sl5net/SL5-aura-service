@@ -102,13 +102,13 @@ if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
 #}
 
 # Robust
-if (Test-Path $HISTORY_FILE) {
-    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction SilentlyContinue
-    $last = $lines | Where-Object { $_ -ne "" } | Select-Object -Last 1
-    if ($last) { $QUERY = $last } else { $QUERY = $DEFAULT_QUERY }
-} else {
-    $QUERY = $DEFAULT_QUERY
-}
+#if (Test-Path $HISTORY_FILE) {
+#    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction SilentlyContinue
+#    $last = $lines | Where-Object { $_ -ne "" } | Select-Object -Last 1
+#    if ($last) { $QUERY = $last } else { $QUERY = $DEFAULT_QUERY }
+#} else {
+#    $QUERY = $DEFAULT_QUERY
+#}
 
 # -----------------------------------------------------------------------------
 # Prepare Search Data - use Get-ChildItem + Select-String to produce "path:line:content"
