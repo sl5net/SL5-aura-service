@@ -1200,6 +1200,7 @@ VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
 vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
 lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
 
+logger.info(f"lang_code: {lang_code}")
 
 if os.getenv('CI'):
     logger.info("CI environment detected. Skipping Welcome Wizard 🧙")
@@ -1374,6 +1375,7 @@ if __name__ == "__main__":
         main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url)
         # Pass the complete, unified config to main()
     except BaseException as e:
+        logger.info(f"🚨 CRITICAL BASE EXCEPTION: {type(e).__name__}: {e}", exc_info=True)
         logger.error(f"🚨 CRITICAL BASE EXCEPTION: {type(e).__name__}: {e}", exc_info=True)
         raise
 
