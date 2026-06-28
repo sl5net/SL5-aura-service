@@ -40,6 +40,8 @@ if (-not (Test-Path $HISTORY_FILE)) {
     }
 }
 
+Write-Host "Using history file: $HISTORY_FILE"
+
 $DEFAULT_QUERY  = ".py pre # EXAMPLE:"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
 if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
