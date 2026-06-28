@@ -110,6 +110,22 @@ if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
 #    $QUERY = $DEFAULT_QUERY
 #}
 
+# Load last non-empty history line as initial query
+$DEFAULT_QUERY = ".py pre # EXAMPLE:"
+$QUERY = $DEFAULT_QUERY
+try {
+    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction SilentlyContinue
+    if ($lines) {
+        $last = $lines | Where-Object { $_.Trim().Length -gt 0 } | Select-Object -Last 1
+        if ($last) { $QUERY = $last }
+    }
+} catch {
+    Write-Warning "Could not read history file $HISTORY_FILE: $($_.Exception.Message)"
+    $QUERY = $DEFAULT_QUERY
+}
+Write-Host "Initial fzf query: $QUERY"
+
+
 # -----------------------------------------------------------------------------
 # Prepare Search Data - use Get-ChildItem + Select-String to produce "path:line:content"
 # -----------------------------------------------------------------------------
