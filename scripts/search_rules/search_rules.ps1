@@ -112,7 +112,9 @@ $SearchData = $files | Select-String -Pattern ".*" | ForEach-Object { "{0}:{1}:{
 # Get-ChildItem -Path $MAPS_DIR -Recurse -Filter 'FUZZY_MAP_pre.py' -File | Select-Object FullName
 
 #Teste die ganze Pipeline:
-#  
+# Get-ChildItem -Path $MAPS_DIR -Recurse -Filter 'FUZZY_MAP_pre.py' -File |
+#  Select-String -Pattern ".*" |
+#  ForEach-Object { "{0}:{1}:{2}" -f $_.Path, $_.LineNumber, $_.Line } | Out-Host
 
 if (-not $SearchData) {
     logger_info "No searchable files found in $MAPS_DIR"
