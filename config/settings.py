@@ -183,6 +183,9 @@ if ratio < lt_skip_ratio_threshold: If the ratio is low (less than the safe thre
 
 show_PLUGINS_ENABLED = True
 
+show_PLUGINS_DISABLED = True
+
+
 PLUGINS_ENABLED = {
     "standard_actions/count_loud": False,
     "standard_actions/wikipedia_local": False,
