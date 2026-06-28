@@ -111,7 +111,10 @@ if (-not $SearchData) {
 # Helper: Preview function content for fzf (PowerShell one-liner)
 # -----------------------------------------------------------------------------
 # We'll use a small inline powershell command that receives {1}={file} {2}={line}
-$PreviewCmd = 'powershell -NoProfile -Command "param($f,$l); $l=[int]$l; Get-Content -Raw -LiteralPath $f -ErrorAction SilentlyContinue -Encoding UTF8 | Out-String | Select-String -Pattern ''(?s).{0,0}'' | Out-Null; $lines=(Get-Content -LiteralPath $f -ErrorAction SilentlyContinue); $start=[Math]::Max(0,$l-6); $end=[Math]::Min($lines.Count-1,$l+4); for ($i=$start; $i -le $end; $i++){ if ($i -eq $l-1) {Write-Output ("> {0,4}: {1}" -f ($i+1), $lines[$i]) } else {Write-Output ("  {0,4}: {1}" -f ($i+1), $lines[$i]) } }" -- '
+
+$PreviewCmd = 'powershell -NoProfile -Command "& { param($f,$l) $l=[int]$l; $lines = Get-Content -LiteralPath $f -ErrorAction SilentlyContinue; $start=[Math]::Max(0,$l-6); $end=[Math]::Min($lines.Count-1,$l+4); for ($i=$start;$i -le $end;$i++){ if ($i -eq $l-1){ Write-Output ("> {0,4}: {1}" -f ($i+1), $lines[$i]) } else { Write-Output ("  {0,4}: {1}" -f ($i+1), $lines[$i]) } } }"'
+
+#$PreviewCmd = 'powershell -NoProfile -Command "param($f,$l); $l=[int]$l; Get-Content -Raw -LiteralPath $f -ErrorAction SilentlyContinue -Encoding UTF8 | Out-String | Select-String -Pattern ''(?s).{0,0}'' | Out-Null; $lines=(Get-Content -LiteralPath $f -ErrorAction SilentlyContinue); $start=[Math]::Max(0,$l-6); $end=[Math]::Min($lines.Count-1,$l+4); for ($i=$start; $i -le $end; $i++){ if ($i -eq $l-1) {Write-Output ("> {0,4}: {1}" -f ($i+1), $lines[$i]) } else {Write-Output ("  {0,4}: {1}" -f ($i+1), $lines[$i]) } }" -- '
 
 # -----------------------------------------------------------------------------
 # FZF command arguments (with history, preview, binds)
