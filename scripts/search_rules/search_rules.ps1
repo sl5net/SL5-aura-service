@@ -135,8 +135,10 @@ $binds = @()
 $binds += 'ctrl-z:previous-history'
 $binds += 'ctrl-y:next-history'
 # ctrl-g: open github (use double quotes inside execute-silent but escape for PS)
-$openGithub = "execute-silent(powershell -NoProfile -Command `''""$([string]::Format('Start-Process {0}', '{REPO_PLACEHOLDER}'))`" )"
-# --- simpler approach: open via helper script to avoid complex escaping
+
+$helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
+$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
+
 $helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
 # create helper file content (only once) that receives args: file line repo
 @"
