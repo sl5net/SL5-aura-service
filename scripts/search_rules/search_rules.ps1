@@ -108,6 +108,9 @@ $files = foreach ($p in $patterns) {
 }
 $SearchData = $files | Select-String -Pattern ".*" | ForEach-Object { "{0}:{1}:{2}" -f $_.Path, $_.LineNumber, $_.Line.Trim() }
 
+#Teste lokal, ob nur gewünschte Dateien gefunden werden:
+
+
 if (-not $SearchData) {
     logger_info "No searchable files found in $MAPS_DIR"
     exit 1
