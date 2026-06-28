@@ -1,6 +1,7 @@
-copyq:
-// test with: copyq eval "$(cat test_win_v1.js)"
+// test with:
+// & "C:\Program Files\CopyQ\copyq.exe" eval (Get-Content -Raw -Path scripts\search_rules\debug\win_test\test_win_v1.js)
 
+copyq:
 var debugFile = File('C:\\tmp\\copyq_debug.txt');
 if (debugFile.open('w')) {
     debugFile.write('test_win_v1.js:6 hi);
@@ -9,10 +10,10 @@ if (debugFile.open('w')) {
 print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA test BBBBBBBBBBBBBBBBB')
 var isWin = !!String(env("WINDIR"));
 
-var tmpBase = isWin ? 'C:\\tmp' : '/tmp';
+var tmpBase = isWin ? 'C:\tmp' : '/tmp';
 var rootFile = '';
 if (isWin) {
-    rootFile = File(tmpBase + '\\sl5_aura\\sl5net_aura_project_root');
+    rootFile = File(tmpBase + '\sl5_aura\sl5net_aura_project_root');
 }else{
     rootFile = File(tmpBase + '/sl5_aura/sl5net_aura_project_root');
     debugFile.write('test_win_v1.js:6 hi);
