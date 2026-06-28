@@ -4,7 +4,7 @@
 copyq:
 var debugFile = File('C:\\tmp\\copyq_debug.txt');
 if (debugFile.open('w')) {
-    debugFile.write('test_win_v1.js:6 hi);
+    debugFile.write('test_win_v1.js:6 hi');
     // debugFile.close();
 }
 print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA test BBBBBBBBBBBBBBBBB')
