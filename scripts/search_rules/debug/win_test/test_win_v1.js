@@ -1,7 +1,7 @@
 copyq:
 // test with: copyq eval "$(cat test_win_v1.js)"
 
-var debugFile = File('C:/tmp/copyq_debug.txt');
+var debugFile = File('C:\\tmp\\copyq_debug.txt');
 if (debugFile.open('w')) {
     debugFile.write('test_win_v1.js:6 hi);
     // debugFile.close();
