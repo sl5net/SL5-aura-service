@@ -1,7 +1,7 @@
 // test with:
 // & "C:\Program Files\CopyQ\copyq.exe" eval (Get-Content -Raw -Path scripts\search_rules\debug\win_test\test_win_v1.js)
 
-copyq:
+// copyq:
 var debugFile = File('C:\\tmp\\copyq_debug.txt');
 if (debugFile.open('w')) {
     debugFile.write('test_win_v1.js:6 hi');
