@@ -52,6 +52,7 @@ heal_links_cascade.py
 dictate.py
 transcribe.py
 
+autosync_push.sh
 
 
 **/translation_state.py
