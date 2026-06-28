@@ -429,7 +429,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
             if not is_plugin_enabled(hierarchical_key, settings.PLUGINS_ENABLED):
                 if global_state.LOGGING_ENABLED:
                     logger.info(f"🚫🗺️ DISABLED: {hierarchical_key}")
-                if (settings.show_PLUGINS_DISABLED
+                if (getattr(settings, 'show_PLUGINS_DISABLED', True)
                         and plugin_name_before != plugin_name ):
                     if global_state.LOGGING_ENABLED:
                         logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}...")
