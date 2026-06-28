@@ -6,7 +6,7 @@ var tmpBase = isWin ? 'C:\\tmp' : '/tmp';
 var rootFile = '';
 if (isWin) {
     rootFile = File(tmpBase + '\\sl5_aura\\sl5net_aura_project_root');
-else{
+}else{
     rootFile = File(tmpBase + '/sl5_aura/sl5net_aura_project_root');
 }
 
