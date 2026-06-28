@@ -251,7 +251,7 @@ $fzfArgs = @(
 $binds = @()
 # add word-editing keybinds for fzf query line editing
 $binds += 'ctrl-backspace:backward-kill-word'
-$binds += 'ctrl-left:backward-word'
+#$binds += 'ctrl-left:backward-word' # unsupported key: ctrl-backspace
 $binds += 'ctrl-right:forward-word'
 # ctrl-\ as kill-line (note: backslash needs no extra escaping inside single-quoted PS string)
 $binds += 'ctrl-\\:kill-line'
@@ -375,6 +375,22 @@ while ($true) {
     Write-Host "ERROR: $($_.Exception.Message)" -ForegroundColor Red
     Read-Host "Press ENTER to exit (debug)"
     exit 1
+}
+
+# Pause at the end so GUI-launched runs don't close immediately
+try {
+    # Only prompt if this session is interactive or specifically launched via GUI wrapper.
+    # You can set an env var (e.g. AHK_LAUNCHED=1) in the .bat if you only want it then.
+    $ahkLaunched = $env:AHK_LAUNCHED -eq '1'
+    if ($ahkLaunched -or -not $Host.UI.RawUI.KeyAvailable) {
+        Write-Host ""
+        Write-Host "Press ENTER to exit..." -ForegroundColor Yellow
+        [void][System.Console]::ReadLine()
+    }
+} catch {
+    # fallback: always wait for Enter
+    Write-Host "Press ENTER to exit..."
+    [void][System.Console]::ReadLine()
 }
 
 
