@@ -81,7 +81,7 @@ if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
 # -----------------------------------------------------------------------------
 $QUERY = $DEFAULT_QUERY
 if (Test-Path $HISTORY_FILE) {
-    $last = Get-Content $HISTORY_FILE -ErrorAction SilentlyContinue | Select-Object -Last 1
+    $last = Get-Content $HISTORY_FILE -ErrorAction SilentlyContinue | Where-Object { $_ -ne "" } | Select-Object -Last 1
     if ($last) { $QUERY = $last }
 }
 
