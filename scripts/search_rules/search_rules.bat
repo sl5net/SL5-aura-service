@@ -18,5 +18,6 @@ if "%TARGET_DIR%"=="" set TARGET_DIR=%SCRIPT_DIR%..\..\config\maps
 
 :: Set policy and run the script in one command
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& '.\search_rules.ps1'" "%TARGET_DIR%"
+pause
 
 exit /b
