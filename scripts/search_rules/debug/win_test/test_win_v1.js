@@ -25,7 +25,8 @@ if (rootFile.open()) {
 }
 
 if (isWin) {
-    var bat = root.replace(/\//g, '\\') + '\\scripts\\search_rules\\search_rules.bat';
+    // var bat = root.replace(/\//g, '\\') + '\\scripts\\search_rules\\search_rules.bat';
+    var bat = root + '/scripts/search_rules/search_rules.bat';
     execute('cmd.exe', '/c', 'start', '', bat);
 }
 
