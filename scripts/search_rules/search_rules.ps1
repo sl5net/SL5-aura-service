@@ -120,7 +120,7 @@ try {
         if ($last) { $QUERY = $last }
     }
 } catch {
-    Write-Warning "Could not read history file $HISTORY_FILE: $($_.Exception.Message)"
+    Write-Warning "Could not read history file $HISTORY_FILE"
     $QUERY = $DEFAULT_QUERY
 }
 Write-Host "Initial fzf query: $QUERY"
