@@ -206,7 +206,10 @@ while ($true) {
     }
 
     # append to history file
-    $SELECTED_LINE | Out-File -FilePath $HISTORY_FILE -Append -Encoding UTF8
+#    $SELECTED_LINE | Out-File -FilePath $HISTORY_FILE -Append -Encoding UTF8
+
+    $SELECTION_LOG = Join-Path $HOME "search_rules_selections.log"
+    $SELECTED_LINE | Out-File -FilePath $SELECTION_LOG -Append -Encoding UTF8
 
     # parse path:line:content
     if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
