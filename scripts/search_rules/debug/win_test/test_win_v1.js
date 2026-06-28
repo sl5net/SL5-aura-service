@@ -13,7 +13,7 @@ var isWin = !!String(env("WINDIR"));
 var tmpBase = isWin ? 'C:\\tmp' : '/tmp';
 var rootFile = '';
 if (isWin) {
-    rootFile = File(tmpBase + '\sl5_aura\sl5net_aura_project_root');
+    rootFile = File(tmpBase + '\\sl5_aura\\sl5net_aura_project_root');
 }else{
     rootFile = File(tmpBase + '/sl5_aura/sl5net_aura_project_root');
     debugFile.write('test_win_v1.js:6 hi);
