@@ -362,7 +362,7 @@ while ($true) {
             $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "pythonw" }
             DBG "DEBUG: Executing run_palette_command: $PYW_EXE $RUN_CMD with query: '$EXEC_QUERY'"
             try {
-                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
+                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -NoNewWindow -WindowStyle Hidden
             } catch {
                 DBG "DEBUG: Start-Process failed: $_"
             }
