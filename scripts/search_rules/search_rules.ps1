@@ -246,8 +246,12 @@ Start-Process \$url
 $binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
 
 # ctrl-x: copy line -> use Set-Clipboard, keep fzf placeholder {3..} literal by wrapping in single quotes inside the executed PS command
+#$helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
+#$binds += "ctrl-x:execute-silent(powershell -NoProfile -File `"$helperCopyLine`" '{1}' '{2}' '{3..}')"
+
 $helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
-$binds += "ctrl-x:execute-silent(powershell -NoProfile -File `"$helperCopyLine`" '{1}' '{2}' '{3..}')"
+$binds += "ctrl-x:execute-silent(powershell -NoProfile -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
+
 # ctrl-a: copy preview/context -> call helper to extract context and pipe to clipboard
 $helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
 @"
