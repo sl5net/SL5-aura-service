@@ -281,11 +281,13 @@ while ($true) {
         break
     }
 
+
     # Explizites Aufsplitten stellt sicher, dass Leerzeilen als leere Strings im Array verbleiben
     $F_OUT = $F_OUT_RAW -split '\r?\n'
 
     $QUERY_TYPED   = if ($F_OUT.Count -gt 0) { $F_OUT[0] } else { "" }
     $KEY           = if ($F_OUT.Count -gt 1) { $F_OUT[1] } else { "" }
+    
     $SELECTED_LINE = if ($F_OUT.Count -gt 2) { $F_OUT[2] } else { "" }
 
     DBG "DEBUG: QUERY_TYPED='$QUERY_TYPED' | KEY='$KEY' | SELECTED_LINE='$SELECTED_LINE'"
