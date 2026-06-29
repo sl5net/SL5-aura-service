@@ -405,8 +405,8 @@ def speak_fallback(text_to_speak, language_code="en-US"):
             "stderr": subprocess.DEVNULL
         }
         if os.name == 'nt':
-            DETACHED_PROCESS = 0x00000008
-            popen_kwargs['creationflags'] = DETACHED_PROCESS
+            detached_process = 0x00000008
+            popen_kwargs['creationflags'] = detached_process
         try:
             subprocess.Popen(command, **popen_kwargs)
             # logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}...' ")
