@@ -322,7 +322,11 @@ while ($true) {
             }
         }
 
-        if (-not $EXEC_QUERY) { $EXEC_QUERY = $QUERY_TYPED }
+        if (-not $EXEC_QUERY) {
+            $EXEC_QUERY = $QUERY_TYPED
+            DBG "DEBUG: Fallback to typed query: '$EXEC_QUERY'"
+        }
+        
         if ($EXEC_QUERY) {
             $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
             $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
