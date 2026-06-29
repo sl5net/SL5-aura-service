@@ -102,6 +102,30 @@ except Exception as e:
 # -----------------------------------------------------------------------------
 
 
+def validate_and_cleanup_example(logger, example, regex_str, file_info):
+    try:
+        # replace e.g. {select} temporary  .* for validatoin-Matching
+        clean_regex = re.sub(r"\{[^}]+\}", r".*", regex_str)
+        compiled_rx = re.compile(clean_regex, re.IGNORECASE)
+    except Exception as e:
+        print(f"logger.info: Invalid regex '{regex_str}' in {file_info}: {e}")
+        return example
+
+    if compiled_rx.search(example):
+        return example
+
+    words = example.split()
+    cleaned_words = [w for w in words if len(w) > 1 or w.lower() in ['a', 'i']]
+    simplified = " ".join(cleaned_words)
+
+    if simplified != example and compiled_rx.search(simplified):
+        print(f"logger.info: WARNING: Example '{example}' did not match regex in {file_info}.")
+        print(f"  -> Automatically simplified to: '{simplified}'")
+        return simplified
+
+    print(f"logger.info: WARNING: Example '{example}' still does not match regex '{regex_str}' in {file_info} after cleanup attempt.")
+    return example
+
 # -----------------------------------------------------------------------------
 # EXTRACTION
 # -----------------------------------------------------------------------------
@@ -154,32 +178,33 @@ def collect_examples():
                 file_count += 1
                 try:
                     with open(file_path, 'r', encoding='utf-8') as f:
-                        # Vor der Schleife definieren:
-                        # Findet: ('gesprochen', 'geschrieben')
-                        regex_tuple = re.compile(r"^\s*\(\s*['\"]([^'\"]+)['\"]\s*,\s*['\"]([^'\"]+)['\"]\s*\)")
+                        lines = f.readlines()
 
-
-                        # Innerhalb der with open(...) as f: Schleife:
-                        for line in f:
+                        for i, line in enumerate(lines):
                             found_items = []
-
                             match_ex = regex_example.search(line)
-
                             f2 = os.path.basename(f.name)
 
-                            # print(f"{clean_rel_path} -> {line} -> {f2} ")
-                            # if not f2:
-                            #     print(f"error: {clean_rel_path} -> {line} -> {f2} ")
-                            #     sys.exit(1)
-
                             if match_ex:
-                                found_items.append(match_ex.group(1).strip())
-                            elif f2 == "PUNCTUATION_MAP.py":
-                                # Findet alle 'keys' vor einem Doppelpunkt (auch mehrere pro Zeile)
-                                found_items.extend(re.findall(r"['\"]([^'\"]+)['\"]\s*:", line))
+                                example_text = match_ex.group(1).strip()
+                                regex_found = ""
+                                # Durchsuche die nächsten Zeilen nach dem zugehörigen Regex-Muster
+                                for j in range(i + 1, min(i + 5, len(lines))):
+                                    next_line = lines[j].strip()
+                                    if not next_line or next_line.startswith("#"):
+                                        continue
+                                    match_rx = re.search(r"r(['\"])(.*?)\1", next_line)
+                                    if match_rx:
+                                        regex_found = match_rx.group(2)
+                                        break
 
-                                # print(f"logger.info: Found {len(found_items)} items in {file_path}")
-                                # sys.exit(1)
+                                if regex_found:
+                                    example_text = validate_and_cleanup_example(None, example_text, regex_found,
+                                                                                f"{clean_rel_path}:{i + 1}")
+
+                                found_items.append(example_text)
+                            elif f2 == "PUNCTUATION_MAP.py":
+                                found_items.extend(re.findall(r"['\"]([^'\"]+)['\"]\s*:", line))
 
                             for content in found_items:
                                 total_tags_found += 1
@@ -188,6 +213,9 @@ def collect_examples():
                                 for tag in current_tags:
                                     if tag not in examples[content]:
                                         examples[content].append(tag)
+
+
+
 
                 except Exception as e202601081103:
                     print(f"logger.info: Warning at {file}: {e202601081103}")
