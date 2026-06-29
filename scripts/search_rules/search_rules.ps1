@@ -273,7 +273,10 @@ $fzfArgs += @("--bind", ($binds -join ","))
 while ($true) {
     # Out-String bewahrt alle Roh-Newlines und Leerzeilen der FZF-Ausgabe
     $F_OUT_RAW = $SearchData | fzf.exe @fzfArgs | Out-String
-    if ($LASTEXITCODE -eq 130 -or [string]::IsNullOrEmpty($F_OUT_RAW)) { break }
+    if ($LASTEXITCODE -eq 130 -or [string]::IsNullOrEmpty($F_OUT_RAW)) {
+        DBG "DEBUG: FZF cancelled or returned empty."
+        break
+    }
 
     # Explizites Aufsplitten stellt sicher, dass Leerzeilen als leere Strings im Array verbleiben
     $F_OUT = $F_OUT_RAW -split '\r?\n'
