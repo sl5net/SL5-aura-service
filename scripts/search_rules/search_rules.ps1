@@ -271,8 +271,12 @@ $fzfArgs += @("--bind", ($binds -join ","))
 #------------------------------------------------------------------------
 
 while ($true) {
-    $F_OUT = $SearchData | fzf.exe @fzfArgs
-    if ($LASTEXITCODE -eq 130 -or -not $F_OUT) { break }
+    # Out-String bewahrt alle Roh-Newlines und Leerzeilen der FZF-Ausgabe
+    $F_OUT_RAW = $SearchData | fzf.exe @fzfArgs | Out-String
+    if ($LASTEXITCODE -eq 130 -or [string]::IsNullOrEmpty($F_OUT_RAW)) { break }
+
+    # Explizites Aufsplitten stellt sicher, dass Leerzeilen als leere Strings im Array verbleiben
+    $F_OUT = $F_OUT_RAW -split '\r?\n'
 
     $QUERY_TYPED   = if ($F_OUT.Count -gt 0) { $F_OUT[0] } else { "" }
     $KEY           = if ($F_OUT.Count -gt 1) { $F_OUT[1] } else { "" }
