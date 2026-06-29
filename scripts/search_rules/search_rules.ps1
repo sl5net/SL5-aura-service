@@ -290,7 +290,7 @@ while ($true) {
     $F_OUT_RAW = $SearchData | fzf.exe @fzfArgs | Out-String
     if ($LASTEXITCODE -eq 130 -or [string]::IsNullOrEmpty($F_OUT_RAW)) {
         DBG "DEBUG: FZF cancelled or returned empty."
-        break
+        exit 0
     }
 
 
