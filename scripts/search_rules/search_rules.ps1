@@ -12,8 +12,11 @@ $SCRIPT_DIR   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 
 $ErrorActionPreference = 'Stop'
-$LOGFILE = Join-Path $env:USERPROFILE "search_rules_ps1_debug.log"
+$LOG_DIR = Join-Path $PROJECT_ROOT "log"
+if (-not (Test-Path $LOG_DIR)) { [void](New-Item -ItemType Directory -Path $LOG_DIR -Force) }
+$LOGFILE = Join-Path $LOG_DIR "search_rules_ps1_debug.log"
 function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
+
 DBG "Script started."
 
 
