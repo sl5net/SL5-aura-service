@@ -101,7 +101,7 @@ if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
 
 
 # --- Load initial query from history, but ignore overly long / suspicious entries ---
-$DEFAULT_QUERY = ".py pre # EXAMPLE:"
+$DEFAULT_QUERY = "# EXAMPLE:"
 $QUERY = $DEFAULT_QUERY
 
 # Ensure HISTORY_FILE is set; example: $HISTORY_FILE = Join-Path $PROJECT_ROOT ".search_rules_history"
