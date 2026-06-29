@@ -405,6 +405,7 @@ def speak_fallback(text_to_speak, language_code="en-US"):
             "stderr": subprocess.DEVNULL
         }
         if os.name == 'nt':
+            
             popen_kwargs['creationflags'] = 0x08000000
         try:
             subprocess.Popen(command, **popen_kwargs)
