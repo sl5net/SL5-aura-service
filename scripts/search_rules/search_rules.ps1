@@ -11,10 +11,30 @@ $MY_HOME = [Environment]::GetFolderPath("UserProfile")
 $SCRIPT_DIR   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 
+$ENABLE_LOGGING = $true
+
 $ErrorActionPreference = 'Stop'
-$LOGFILE = Join-Path $env:USERPROFILE "search_rules_ps1_debug.log"
-function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
+$LOG_DIR = Join-Path $PROJECT_ROOT "log"
+if (-not (Test-Path $LOG_DIR)) { [void](New-Item -ItemType Directory -Path $LOG_DIR -Force) }
+$LOGFILE = Join-Path $LOG_DIR "search_rules_ps1_debug.log"
+#function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
+
+function DBG {
+    param($m)
+    if ($ENABLE_LOGGING) {
+        "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8
+    }
+}
+
 DBG "Script started."
+DBG "EXACT RUNNING PATH: $($MyInvocation.MyCommand.Definition)"
+
+
+$PYTHON_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+if (-not (Test-Path $PYTHON_BIN)) { $PYTHON_BIN = "python.exe" }
+$PYTHONW_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
+if (-not (Test-Path $PYTHONW_BIN)) { $PYTHONW_BIN = $PYTHON_BIN }
+
 
 
 # MAPS_DIR priority: param > env MAPS_DIR > default relative to project root
@@ -43,7 +63,7 @@ if (-not (Test-Path $HISTORY_FILE)) {
 # Debug: print the path so you can verify (remove in production)
 Write-Host "Using history file: $HISTORY_FILE"
 
-$DEFAULT_QUERY  = ".py pre # EXAMPLE:"
+$DEFAULT_QUERY = "Lauffer"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
 if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
 
@@ -92,62 +112,8 @@ if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-# -----------------------------------------------------------------------------
-# INITIAL QUERY / HISTORY
-# -----------------------------------------------------------------------------
-#$QUERY = $DEFAULT_QUERY
-#if (Test-Path $HISTORY_FILE) {
-#    $last = Get-Content $HISTORY_FILE -ErrorAction SilentlyContinue | Where-Object { $_ -ne "" } | Select-Object -Last 1
-#    if ($last) { $QUERY = $last }
-#}
-
-# Robust
-#if (Test-Path $HISTORY_FILE) {
-#    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction SilentlyContinue
-#    $last = $lines | Where-Object { $_ -ne "" } | Select-Object -Last 1
-#    if ($last) { $QUERY = $last } else { $QUERY = $DEFAULT_QUERY }
-#} else {
-#    $QUERY = $DEFAULT_QUERY
-#}
-
-# Load last non-empty history line as initial query
-#$DEFAULT_QUERY = ".py pre # EXAMPLE:"
-#$QUERY = $DEFAULT_QUERY
-#try {
-#    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction SilentlyContinue
-#    if ($lines) {
-#        $last = $lines | Where-Object { $_.Trim().Length -gt 0 } | Select-Object -Last 1
-#        if ($last) { $QUERY = $last }
-#    }
-#} catch {
-#    Write-Warning "Could not read history file $HISTORY_FILE"
-#    $QUERY = $DEFAULT_QUERY
-#}
-#Write-Host "Initial fzf query: $QUERY"
-
-#$DEFAULT_QUERY = ".py pre # EXAMPLE:"
-#$QUERY = $DEFAULT_QUERY
-#
-#try {
-#    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction Stop
-#    if ($lines) {
-#        $last = $lines | Where-Object { $_.Trim().Length -gt 0 } | Select-Object -Last 1
-#        if ($last) { $QUERY = $last } else { $QUERY = $DEFAULT_QUERY }
-#    } else {
-#        $QUERY = $DEFAULT_QUERY
-#    }
-#} catch {
-#    Write-Warning ("Could not read history file {0}: {1}" -f $HISTORY_FILE, $_.Exception.Message)
-#    $QUERY = $DEFAULT_QUERY
-#}
-#
-#Write-Host "Initial fzf query: $QUERY"
-
-
 
 # --- Load initial query from history, but ignore overly long / suspicious entries ---
-$DEFAULT_QUERY = ".py pre # EXAMPLE:"
-$QUERY = $DEFAULT_QUERY
 
 # Ensure HISTORY_FILE is set; example: $HISTORY_FILE = Join-Path $PROJECT_ROOT ".search_rules_history"
 if (-not $HISTORY_FILE) {
@@ -179,7 +145,7 @@ try {
     $QUERY = $DEFAULT_QUERY
 }
 
-Write-Host ("Initial fzf query: {0}" -f $QUERY)
+#Write-Host ("Initial fzf query: {0}" -f $QUERY)
 
 
 
@@ -226,22 +192,35 @@ if (-not $SearchData) {
 # We'll use a small inline powershell command that receives {1}={file} {2}={line}
 
 $helperPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\preview.ps1'
-$fzfArgs += @("--preview", "powershell -NoProfile -File `"$helperPreview`" '{1}' '{2}'", "--preview-window", "up:50%")
+#$fzfArgs += @("--preview", "powershell -NoProfile -File `"$helperPreview`" '{1}' '{2}'", "--preview-window", "up:50%")
+#    "--with-nth", "3..",
+
+$fzfArgs = @(
+    "--print-query",
+    "--expect", "ctrl-r",
+    "--delimiter", ":",
+    "--with-nth", "4..",
+    "--query", $QUERY,
+    "--history", $HISTORY_FILE,
+    "--header", "Enter: Edit | Ctrl+R: Execute | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line"
+#    "--preview", "powershell -NoProfile -File `"$helperPreview`" '{1}:{2}' '{3}'",
+#    "--preview-window", "up:50%"
+)
 
 #$PreviewCmd = 'powershell -NoProfile -Command "param($f,$l); $l=[int]$l; Get-Content -Raw -LiteralPath $f -ErrorAction SilentlyContinue -Encoding UTF8 | Out-String | Select-String -Pattern ''(?s).{0,0}'' | Out-Null; $lines=(Get-Content -LiteralPath $f -ErrorAction SilentlyContinue); $start=[Math]::Max(0,$l-6); $end=[Math]::Min($lines.Count-1,$l+4); for ($i=$start; $i -le $end; $i++){ if ($i -eq $l-1) {Write-Output ("> {0,4}: {1}" -f ($i+1), $lines[$i]) } else {Write-Output ("  {0,4}: {1}" -f ($i+1), $lines[$i]) } }" -- '
 
 # -----------------------------------------------------------------------------
 # FZF command arguments (with history, preview, binds)
 # -----------------------------------------------------------------------------
-$fzfArgs = @(
-    "--delimiter", ":",
-    "--with-nth", "3..",              # show matched line content primarily
-    "--query", $QUERY,
-    "--history", $HISTORY_FILE,
-    "--header", "Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line",
-    "--preview", $PreviewCmd + '{1} {2}',
-    "--preview-window", "up:50%"
-)
+#$fzfArgs = @(
+#    "--delimiter", ":",
+#    "--with-nth", "3..",              # show matched line content primarily
+#    "--query", $QUERY,
+#    "--history", $HISTORY_FILE,
+#    "--header", "Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line",
+#    "--preview", $PreviewCmd + '{1} {2}',
+#    "--preview-window", "up:50%"
+#)
 
 
 
@@ -250,20 +229,22 @@ $fzfArgs = @(
 # safe: build binds as literal strings (single quotes) and avoid {3..} expansion by wrapping in single quotes
 $binds = @()
 # add word-editing keybinds for fzf query line editing
-$binds += 'ctrl-backspace:backward-kill-word'
-$binds += 'ctrl-left:backward-word'
-$binds += 'ctrl-right:forward-word'
+#$binds += 'ctrl-backspace:backward-kill-word' # unsupported key: ctrl-backspace
+$binds += 'alt-backspace:backward-kill-word' # cmd.exe: unsupported key
+#$binds += 'ctrl-left:backward-word' # cmd.exe: unsupported key
+#$binds += 'ctrl-right:forward-word' # cmd.exe: unsupported key
 # ctrl-\ as kill-line (note: backslash needs no extra escaping inside single-quoted PS string)
-$binds += 'ctrl-\\:kill-line'
+# $binds += 'ctrl-\\:kill-line'  # cmd.exe: unsupported key ctrl-\\
 $binds += 'ctrl-z:previous-history'
 $binds += 'ctrl-y:next-history'
 # ctrl-g: open github (use double quotes inside execute-silent but escape for PS)
 
-$helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
-$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
+#$helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
+#$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
 
 $helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
-# create helper file content (only once) that receives args: file line repo
+$binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL')"
+
 @"
 param(\$file,\$line,\$repo)
 \$rel = \$file.Replace('$PROJECT_ROOT' + [System.IO.Path]::DirectorySeparatorChar, '').Replace('\\','/')
@@ -271,13 +252,22 @@ param(\$file,\$line,\$repo)
 Start-Process \$url
 "@ | Out-File -FilePath $helperOpenGithub -Encoding utf8
 
-$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
+$binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
 
 # ctrl-x: copy line -> use Set-Clipboard, keep fzf placeholder {3..} literal by wrapping in single quotes inside the executed PS command
+#$helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
+#$binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File `"$helperCopyLine`" '{1}' '{2}' '{3..}')"
+
 $helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
-$binds += "ctrl-x:execute-silent(powershell -NoProfile -File `"$helperCopyLine`" '{1}' '{2}' '{3..}')"
+$binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
+
 # ctrl-a: copy preview/context -> call helper to extract context and pipe to clipboard
+#$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
+
+# ctrl-a: copy preview/context
 $helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
+$binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperCopyPreview' '{1}:{2}' '{3}')"
+
 @"
 param(\$file,\$line)
 \$l = [int]\$line
@@ -290,7 +280,7 @@ param(\$file,\$line)
 \$out -join \"`n\" | Set-Clipboard
 "@ | Out-File -FilePath $helperCopyPreview -Encoding utf8
 
-$binds += "ctrl-a:execute-silent(powershell -NoProfile -File `"$helperCopyPreview`" '{1}' '{2}')"
+$binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File `"$helperCopyPreview`" '{1}' '{2}')"
 
 
 
@@ -298,26 +288,95 @@ $binds += "ctrl-a:execute-silent(powershell -NoProfile -File `"$helperCopyPrevie
 $fzfArgs += @("--bind", ($binds -join ","))
 
 
+
 #------------------------------------------------------------------------
 # Interactive loop
 #------------------------------------------------------------------------
 
 while ($true) {
-    $SELECTED_LINE = $SearchData | fzf.exe @fzfArgs
-
-    if (-not $SELECTED_LINE) {
-        logger_info "No selection made. Exiting."
-        break
+    # Out-String bewahrt alle Roh-Newlines und Leerzeilen der FZF-Ausgabe
+    $F_OUT_RAW = $SearchData | fzf.exe @fzfArgs | Out-String
+    if ($LASTEXITCODE -eq 130 -or [string]::IsNullOrEmpty($F_OUT_RAW)) {
+        DBG "DEBUG: FZF cancelled or returned empty."
+        exit 0
     }
 
-    # append to history file
-#    $SELECTED_LINE | Out-File -FilePath $HISTORY_FILE -Append -Encoding UTF8
 
-    $SELECTION_LOG = Join-Path $HOME "search_rules_selections.log"
-    $SELECTED_LINE | Out-File -FilePath $SELECTION_LOG -Append -Encoding utf8
+    # Explizites Aufsplitten stellt sicher, dass Leerzeilen als leere Strings im Array verbleiben
+    $F_OUT = $F_OUT_RAW -split '\r?\n'
 
+    $QUERY_TYPED   = if ($F_OUT.Count -gt 0) { $F_OUT[0] } else { "" }
+    $KEY           = if ($F_OUT.Count -gt 1) { $F_OUT[1] } else { "" }
+    $SELECTED_LINE = if ($F_OUT.Count -gt 2) { $F_OUT[2] } else { "" }
+
+    $SELECTION_LOG = Join-Path $PROJECT_ROOT "log\search_rules_selections.log"
+    if ($SELECTED_LINE) {
+        $SELECTED_LINE | Out-File -FilePath $SELECTION_LOG -Append -Encoding utf8
+    }
+
+    DBG "DEBUG: QUERY_TYPED='$QUERY_TYPED' | KEY='$KEY' | SELECTED_LINE='$SELECTED_LINE'"
+
+    if (-not $SELECTED_LINE -and -not ($KEY -eq "ctrl-r" -and $QUERY_TYPED)) {
+        DBG "DEBUG: Exit due to no valid selection."
+         exit 0
+    }
+
+    if ($SELECTED_LINE) {
+        $SELECTED_LINE | Out-File -FilePath (Join-Path $HOME "search_rules_selections.log") -Append -Encoding utf8
+    }
+
+    if ($KEY -eq "ctrl-r") {
+        DBG "DEBUG: Ctrl-R keypress detected! Entering execution block."
+
+        $EXEC_QUERY = ""
+
+        if ($SELECTED_LINE -and ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$')) {
+            $FILE_PATH = $Matches[1]
+            $LINE_NUM  = $Matches[2]
+            DBG "DEBUG: Regex match success. File: $FILE_PATH | Line: $LINE_NUM"
+
+            $PREVIEW_PY = Join-Path $SCRIPT_DIR "preview_rule.py"
+            $PY = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+            if (Test-Path $PREVIEW_PY) {
+                $PY_EXE = if (Test-Path $PY) { $PY } else { "python" }
+                DBG "DEBUG: Running: $PY_EXE $PREVIEW_PY --extract $FILE_PATH $LINE_NUM"
+                try {
+                    $EXEC_QUERY = (& $PY_EXE "$PREVIEW_PY" --extract $FILE_PATH $LINE_NUM).Trim()
+                    DBG "DEBUG: Extracted query outcome: '$EXEC_QUERY'"
+                } catch {
+                    DBG "DEBUG: Python extract execution failed: $_"
+                }
+            } else {
+                DBG "DEBUG: preview_rule.py NOT found at path $PREVIEW_PY"
+            }
+        }
+
+        if (-not $EXEC_QUERY) {
+            $EXEC_QUERY = $QUERY_TYPED
+            DBG "DEBUG: Fallback to typed query: '$EXEC_QUERY'"
+        }
+
+       if ($EXEC_QUERY) {
+            $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
+            $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
+            $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "pythonw" }
+            DBG "DEBUG: Executing run_palette_command: $PYW_EXE $RUN_CMD with query: '$EXEC_QUERY'"
+            try {
+                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -NoNewWindow
+            } catch {
+                DBG "DEBUG: Start-Process failed: $_"
+            }
+        }
+        if ($SEARCH_CLOSE_ON_OPEN -eq "True") {
+            exit 0
+        } else { Start-Sleep -Milliseconds 300; continue }
+    }
     # parse path:line:content
     if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
+
+
+
+
         $FILE_PATH = $Matches[1]
         $LINE_NUM  = [int]$Matches[2]
 #         logger_info "Selected: $FILE_PATH:$LINE_NUM"
@@ -348,7 +407,7 @@ while ($true) {
                 "code"      { Start-Process "code" -ArgumentList "--goto","$FILE_PATH`:$LINE_NUM" }
                 "nano"      { # try opening in Windows Terminal / WSL? fallback: open notepad if not available
                     if (Get-Command "wt.exe" -ErrorAction SilentlyContinue) {
-                        Start-Process "wt.exe" -ArgumentList "powershell -NoProfile -Command nano `"$FILE_PATH`""
+                        Start-Process "wt.exe" -ArgumentList "powershell -NoProfile -WindowStyle Hidden -Command nano `"$FILE_PATH`""
                     } else {
                         Start-Process "notepad.exe" -ArgumentList "`"$FILE_PATH`""
                     }
@@ -357,7 +416,7 @@ while ($true) {
             }
         }
 
-        if ($SEARCH_CLOSE_ON_OPEN -eq "True") { break }
+        if ($SEARCH_CLOSE_ON_OPEN -eq "True") { exit 0 }
         else { Start-Sleep -Milliseconds 300 } # small sleep then reopen fzf
     } else {
         logger_info "Could not parse selection: $SELECTED_LINE"
@@ -376,6 +435,22 @@ while ($true) {
     Read-Host "Press ENTER to exit (debug)"
     exit 1
 }
+
+# Pause at the end so GUI-launched runs don't close immediately
+#try {
+#    # Only prompt if this session is interactive or specifically launched via GUI wrapper.
+#    # You can set an env var (e.g. AHK_LAUNCHED=1) in the .bat if you only want it then.
+#    $ahkLaunched = $env:AHK_LAUNCHED -eq '1'
+#    if ($ahkLaunched -or -not $Host.UI.RawUI.KeyAvailable) {
+#        Write-Host ""
+#        Write-Host "Press ENTER to exit..." -ForegroundColor Yellow
+#        [void][System.Console]::ReadLine()
+#    }
+#} catch {
+#    # fallback: always wait for Enter
+#    Write-Host "Press ENTER to exit..."
+#    [void][System.Console]::ReadLine()
+#}
 
 
 logger_info "Done."
