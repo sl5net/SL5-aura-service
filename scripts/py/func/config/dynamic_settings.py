@@ -405,6 +405,7 @@ def speak_fallback(text_to_speak, language_code="en-US"):
             "stderr": subprocess.DEVNULL
         }
         if os.name == 'nt':
+            # scripts/py/func/config/dynamic_settings.py:408
             detached_process = 0x00000008
             popen_kwargs['creationflags'] = detached_process
         try:
