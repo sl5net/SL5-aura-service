@@ -400,12 +400,16 @@ def speak_fallback(text_to_speak, language_code="en-US"):
         return
 
     def run_command():
+        popen_kwargs = {
+            "stdout": subprocess.DEVNULL,
+            "stderr": subprocess.DEVNULL
+        }
+        if os.name == 'nt':
+            # scripts/py/func/config/dynamic_settings.py:408
+            detached_process = 0x00000008
+            popen_kwargs['creationflags'] = detached_process
         try:
-            subprocess.Popen(
-                command,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL
-            )
+            subprocess.Popen(command, **popen_kwargs)
             # logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}...' ")
             # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
             # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")

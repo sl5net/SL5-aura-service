@@ -49,15 +49,19 @@ if (-not $MAPS_DIR) {
 $HISTORY_FILE   = Join-Path $MY_HOME ".search_rules_history"
 
 # If the file doesn't exist, create an empty UTF8 file (no BOM)
+#if (-not (Test-Path $HISTORY_FILE)) {
+#    # On older PowerShell versions -Encoding utf8 may add BOM; try utf8NoBOM when available
+#    try {
+#        # pwsh/core supports utf8NoBOM
+#        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8NoBOM -Force
+#    } catch {
+#        # fallback for Windows PowerShell
+#        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8 -Force
+#    }
+#}
+
 if (-not (Test-Path $HISTORY_FILE)) {
-    # On older PowerShell versions -Encoding utf8 may add BOM; try utf8NoBOM when available
-    try {
-        # pwsh/core supports utf8NoBOM
-        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8NoBOM -Force
-    } catch {
-        # fallback for Windows PowerShell
-        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8 -Force
-    }
+    [System.IO.File]::WriteAllText($HISTORY_FILE, [string]::Empty)
 }
 
 # Debug: print the path so you can verify (remove in production)
@@ -130,7 +134,7 @@ try {
             if ($last) {
                 $trimmed = $last.Trim()
                 # Only accept history entries of reasonable length
-                $maxLen = 60
+                $maxLen = 200
                 if ($trimmed.Length -le $maxLen) {
                     $QUERY = $trimmed
                 } else {
@@ -197,12 +201,12 @@ $helperPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\preview.ps1'
 
 $fzfArgs = @(
     "--print-query",
-    "--expect", "ctrl-r",
+    "--expect", "ctrl-r,ctrl-e",
     "--delimiter", ":",
     "--with-nth", "4..",
-    "--query", $QUERY,
-    "--history", $HISTORY_FILE,
-    "--header", "Enter: Edit | Ctrl+R: Execute | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line"
+    "--query=$QUERY",
+    "--header=Enter: Edit | Ctrl+R: Execute | Ctrl+E: Run typed | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line"
+#    "--header", "Enter: Edit | Ctrl+R: Execute | Ctrl+E: Run typed | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line"
 #    "--preview", "powershell -NoProfile -File `"$helperPreview`" '{1}:{2}' '{3}'",
 #    "--preview-window", "up:50%"
 )
@@ -309,6 +313,14 @@ while ($true) {
     $KEY           = if ($F_OUT.Count -gt 1) { $F_OUT[1] } else { "" }
     $SELECTED_LINE = if ($F_OUT.Count -gt 2) { $F_OUT[2] } else { "" }
 
+    if ($QUERY_TYPED) {
+        $last_query = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction SilentlyContinue | Where-Object { $_.Trim().Length -gt 0 } | Select-Object -Last 1
+        if ($QUERY_TYPED -ne $last_query) {
+            $QUERY_TYPED | Out-File -FilePath $HISTORY_FILE -Append -Encoding utf8
+        }
+    }
+
+
     $SELECTION_LOG = Join-Path $PROJECT_ROOT "log\search_rules_selections.log"
     if ($SELECTED_LINE) {
         $SELECTED_LINE | Out-File -FilePath $SELECTION_LOG -Append -Encoding utf8
@@ -325,12 +337,15 @@ while ($true) {
         $SELECTED_LINE | Out-File -FilePath (Join-Path $HOME "search_rules_selections.log") -Append -Encoding utf8
     }
 
-    if ($KEY -eq "ctrl-r") {
-        DBG "DEBUG: Ctrl-R keypress detected! Entering execution block."
+    if ($KEY -eq "ctrl-r" -or $KEY -eq "ctrl-e") {
+        DBG "DEBUG: Execution keypress detected: $KEY"
 
         $EXEC_QUERY = ""
 
-        if ($SELECTED_LINE -and ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$')) {
+#        if ($SELECTED_LINE -and ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$')) {
+
+        if ($KEY -eq "ctrl-r" -and $SELECTED_LINE -and ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$')) {
+
             $FILE_PATH = $Matches[1]
             $LINE_NUM  = $Matches[2]
             DBG "DEBUG: Regex match success. File: $FILE_PATH | Line: $LINE_NUM"
@@ -351,6 +366,7 @@ while ($true) {
             }
         }
 
+        # scripts/search_rules/search_rules.ps1:357
         if (-not $EXEC_QUERY) {
             $EXEC_QUERY = $QUERY_TYPED
             DBG "DEBUG: Fallback to typed query: '$EXEC_QUERY'"
@@ -362,7 +378,8 @@ while ($true) {
             $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "pythonw" }
             DBG "DEBUG: Executing run_palette_command: $PYW_EXE $RUN_CMD with query: '$EXEC_QUERY'"
             try {
-                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -NoNewWindow
+#                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -NoNewWindow
+                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
             } catch {
                 DBG "DEBUG: Start-Process failed: $_"
             }
