@@ -242,11 +242,8 @@ $binds += 'ctrl-y:next-history'
 #$helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
 #$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
 
-#$helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
-#$binds += "ctrl-g:execute-silent(powershell -NoProfile -File '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL')"
-
 $helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
-$binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden -Command `"& { & '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL' }`")"
+$binds += "ctrl-g:execute-silent(powershell -NoProfile -File '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL')"
 
 @"
 param(\$file,\$line,\$repo)
@@ -261,25 +258,15 @@ $binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub
 #$helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
 #$binds += "ctrl-x:execute-silent(powershell -NoProfile -File `"$helperCopyLine`" '{1}' '{2}' '{3..}')"
 
-#$helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
-#$binds += "ctrl-x:execute-silent(powershell -NoProfile -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
-
-# ctrl-x: copy line
 $helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
-$binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden -Command `"& { & '$helperCopyLine' '{1}:{2}' '{3}' '{4..}' }`")"
+$binds += "ctrl-x:execute-silent(powershell -NoProfile -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
 
 # ctrl-a: copy preview/context -> call helper to extract context and pipe to clipboard
 #$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
 
 # ctrl-a: copy preview/context
-#$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
-#$binds += "ctrl-a:execute-silent(powershell -NoProfile -File '$helperCopyPreview' '{1}:{2}' '{3}')"
-
-# ctrl-a: copy preview/context
 $helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
-$binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden -Command `"& { & '$helperCopyPreview' '{1}:{2}' '{3}' }`")"
-
-# $fzfArgs += @("--bind", ($binds -join ","))
+$binds += "ctrl-a:execute-silent(powershell -NoProfile -File '$helperCopyPreview' '{1}:{2}' '{3}')"
 
 @"
 param(\$file,\$line)
