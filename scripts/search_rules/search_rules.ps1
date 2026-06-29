@@ -243,7 +243,7 @@ $binds += 'ctrl-y:next-history'
 #$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
 
 $helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
-$binds += "ctrl-g:execute-silent(powershell -NoProfile -File '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL')"
+$binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL')"
 
 @"
 param(\$file,\$line,\$repo)
@@ -252,21 +252,21 @@ param(\$file,\$line,\$repo)
 Start-Process \$url
 "@ | Out-File -FilePath $helperOpenGithub -Encoding utf8
 
-$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
+$binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
 
 # ctrl-x: copy line -> use Set-Clipboard, keep fzf placeholder {3..} literal by wrapping in single quotes inside the executed PS command
 #$helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
-#$binds += "ctrl-x:execute-silent(powershell -NoProfile -File `"$helperCopyLine`" '{1}' '{2}' '{3..}')"
+#$binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File `"$helperCopyLine`" '{1}' '{2}' '{3..}')"
 
 $helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
-$binds += "ctrl-x:execute-silent(powershell -NoProfile -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
+$binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
 
 # ctrl-a: copy preview/context -> call helper to extract context and pipe to clipboard
 #$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
 
 # ctrl-a: copy preview/context
 $helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
-$binds += "ctrl-a:execute-silent(powershell -NoProfile -File '$helperCopyPreview' '{1}:{2}' '{3}')"
+$binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperCopyPreview' '{1}:{2}' '{3}')"
 
 @"
 param(\$file,\$line)
@@ -280,7 +280,7 @@ param(\$file,\$line)
 \$out -join \"`n\" | Set-Clipboard
 "@ | Out-File -FilePath $helperCopyPreview -Encoding utf8
 
-$binds += "ctrl-a:execute-silent(powershell -NoProfile -File `"$helperCopyPreview`" '{1}' '{2}')"
+$binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File `"$helperCopyPreview`" '{1}' '{2}')"
 
 
 
@@ -407,7 +407,7 @@ while ($true) {
                 "code"      { Start-Process "code" -ArgumentList "--goto","$FILE_PATH`:$LINE_NUM" }
                 "nano"      { # try opening in Windows Terminal / WSL? fallback: open notepad if not available
                     if (Get-Command "wt.exe" -ErrorAction SilentlyContinue) {
-                        Start-Process "wt.exe" -ArgumentList "powershell -NoProfile -Command nano `"$FILE_PATH`""
+                        Start-Process "wt.exe" -ArgumentList "powershell -NoProfile -WindowStyle Hidden  -Command nano `"$FILE_PATH`""
                     } else {
                         Start-Process "notepad.exe" -ArgumentList "`"$FILE_PATH`""
                     }
