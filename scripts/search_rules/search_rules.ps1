@@ -297,6 +297,7 @@ while ($true) {
     }
 
     if ($KEY -eq "ctrl-r") {
+        DBG "DEBUG: Ctrl-R keypress detected! Entering execution block."
         $EXEC_QUERY = ""
         if ($SELECTED_LINE -and ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$')) {
             $PREVIEW_PY = Join-Path $SCRIPT_DIR "preview_rule.py"
