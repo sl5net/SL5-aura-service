@@ -272,8 +272,13 @@ $binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden -Comm
 #$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
 
 # ctrl-a: copy preview/context
+#$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
+#$binds += "ctrl-a:execute-silent(powershell -NoProfile -File '$helperCopyPreview' '{1}:{2}' '{3}')"
+
+# ctrl-a: copy preview/context
 $helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
-$binds += "ctrl-a:execute-silent(powershell -NoProfile -File '$helperCopyPreview' '{1}:{2}' '{3}')"
+$binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden -Command `"& { & '$helperCopyPreview' '{1}:{2}' '{3}' }`")"
+
 
 @"
 param(\$file,\$line)
