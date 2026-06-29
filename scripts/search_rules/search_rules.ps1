@@ -251,11 +251,11 @@ $fzfArgs = @(
 $binds = @()
 # add word-editing keybinds for fzf query line editing
 #$binds += 'ctrl-backspace:backward-kill-word' # unsupported key: ctrl-backspace
-$binds += 'alt-backspace:backward-kill-word'
-#$binds += 'ctrl-left:backward-word'
-#$binds += 'ctrl-right:forward-word'
+$binds += 'alt-backspace:backward-kill-word' # cmd.exe: unsupported key
+#$binds += 'ctrl-left:backward-word' # cmd.exe: unsupported key
+#$binds += 'ctrl-right:forward-word' # cmd.exe: unsupported key
 # ctrl-\ as kill-line (note: backslash needs no extra escaping inside single-quoted PS string)
-$binds += 'ctrl-\\:kill-line'
+# $binds += 'ctrl-\\:kill-line'  # cmd.exe: unsupported key ctrl-\\
 $binds += 'ctrl-z:previous-history'
 $binds += 'ctrl-y:next-history'
 # ctrl-g: open github (use double quotes inside execute-silent but escape for PS)
