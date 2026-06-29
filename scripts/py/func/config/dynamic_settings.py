@@ -407,13 +407,7 @@ def speak_fallback(text_to_speak, language_code="en-US"):
         if os.name == 'nt':
             popen_kwargs['creationflags'] = 0x08000000
         try:
-
-            subprocess.Popen(
-                command,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-                creationflags = 0x08000000  # hint show blinking DOS-window
-            )
+            subprocess.Popen(command, **popen_kwargs)
             # logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}...' ")
             # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
             # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
