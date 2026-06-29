@@ -11,7 +11,7 @@ $MY_HOME = [Environment]::GetFolderPath("UserProfile")
 $SCRIPT_DIR   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 
-$ENABLE_LOGGING = $false
+$ENABLE_LOGGING = $true
 
 $ErrorActionPreference = 'Stop'
 $LOG_DIR = Join-Path $PROJECT_ROOT "log"
