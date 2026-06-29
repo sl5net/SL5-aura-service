@@ -326,15 +326,20 @@ while ($true) {
             $EXEC_QUERY = $QUERY_TYPED
             DBG "DEBUG: Fallback to typed query: '$EXEC_QUERY'"
         }
-        
-        if ($EXEC_QUERY) {
+
+       if ($EXEC_QUERY) {
             $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
             $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
-            Start-Process -FilePath (if (Test-Path $PYW) { $PYW } else { "python" }) -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
+            $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
+            DBG "DEBUG: Executing run_palette_command: $PYW_EXE $RUN_CMD with query: '$EXEC_QUERY'"
+            try {
+                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
+            } catch {
+                DBG "DEBUG: Start-Process failed: $_"
+            }
         }
         if ($SEARCH_CLOSE_ON_OPEN -eq "True") { break } else { Start-Sleep -Milliseconds 300; continue }
     }
-
     # parse path:line:content
     if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
 
