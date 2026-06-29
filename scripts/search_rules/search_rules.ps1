@@ -136,7 +136,7 @@ try {
     $QUERY = $DEFAULT_QUERY
 }
 
-Write-Host ("Initial fzf query: {0}" -f $QUERY)
+#Write-Host ("Initial fzf query: {0}" -f $QUERY)
 
 
 
