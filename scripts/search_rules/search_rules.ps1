@@ -302,7 +302,10 @@ while ($true) {
         $EXEC_QUERY = ""
 
         if ($SELECTED_LINE -and ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$')) {
-        
+            $FILE_PATH = $Matches[1]
+            $LINE_NUM  = $Matches[2]
+            DBG "DEBUG: Regex match success. File: $FILE_PATH | Line: $LINE_NUM"
+
             $PREVIEW_PY = Join-Path $SCRIPT_DIR "preview_rule.py"
             $PY = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
             if (Test-Path $PREVIEW_PY) {
