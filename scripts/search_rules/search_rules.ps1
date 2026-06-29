@@ -242,8 +242,11 @@ $binds += 'ctrl-y:next-history'
 #$helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
 #$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
 
+#$helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
+#$binds += "ctrl-g:execute-silent(powershell -NoProfile -File '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL')"
+
 $helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
-$binds += "ctrl-g:execute-silent(powershell -NoProfile -File '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL')"
+$binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden -Command `"& { & '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL' }`")"
 
 @"
 param(\$file,\$line,\$repo)
