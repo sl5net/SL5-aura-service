@@ -287,8 +287,12 @@ while ($true) {
 
     $QUERY_TYPED   = if ($F_OUT.Count -gt 0) { $F_OUT[0] } else { "" }
     $KEY           = if ($F_OUT.Count -gt 1) { $F_OUT[1] } else { "" }
-    
     $SELECTED_LINE = if ($F_OUT.Count -gt 2) { $F_OUT[2] } else { "" }
+
+    $SELECTION_LOG = Join-Path $PROJECT_ROOT "log\search_rules_selections.log"
+    if ($SELECTED_LINE) {
+        $SELECTED_LINE | Out-File -FilePath $SELECTION_LOG -Append -Encoding utf8
+    }
 
     DBG "DEBUG: QUERY_TYPED='$QUERY_TYPED' | KEY='$KEY' | SELECTED_LINE='$SELECTED_LINE'"
 
