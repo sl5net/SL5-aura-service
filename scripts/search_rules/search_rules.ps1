@@ -310,7 +310,7 @@ while ($true) {
 
     if (-not $SELECTED_LINE -and -not ($KEY -eq "ctrl-r" -and $QUERY_TYPED)) {
         DBG "DEBUG: Exit due to no valid selection."
-        break
+         exit 0
     }
 
     if ($SELECTED_LINE) {
