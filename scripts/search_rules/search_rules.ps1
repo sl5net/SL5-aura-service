@@ -408,7 +408,7 @@ while ($true) {
             }
         }
 
-        if ($SEARCH_CLOSE_ON_OPEN -eq "True") { break }
+        if ($SEARCH_CLOSE_ON_OPEN -eq "True") { exit 0 }
         else { Start-Sleep -Milliseconds 300 } # small sleep then reopen fzf
     } else {
         logger_info "Could not parse selection: $SELECTED_LINE"
