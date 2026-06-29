@@ -271,21 +271,43 @@ $fzfArgs += @("--bind", ($binds -join ","))
 #------------------------------------------------------------------------
 
 while ($true) {
-    $SELECTED_LINE = $SearchData | fzf.exe @fzfArgs
+    $F_OUT = $SearchData | fzf.exe @fzfArgs
+    if ($LASTEXITCODE -eq 130 -or -not $F_OUT) { break }
 
-    if (-not $SELECTED_LINE) {
-        logger_info "No selection made. Exiting."
-        break
+    $QUERY_TYPED   = if ($F_OUT.Count -gt 0) { $F_OUT[0] } else { "" }
+    $KEY           = if ($F_OUT.Count -gt 1) { $F_OUT[1] } else { "" }
+    $SELECTED_LINE = if ($F_OUT.Count -gt 2) { $F_OUT[2] } else { "" }
+
+    if (-not $SELECTED_LINE -and -not ($KEY -eq "ctrl-r" -and $QUERY_TYPED)) { break }
+
+    if ($SELECTED_LINE) {
+        $SELECTED_LINE | Out-File -FilePath (Join-Path $HOME "search_rules_selections.log") -Append -Encoding utf8
     }
 
-    # append to history file
-#    $SELECTED_LINE | Out-File -FilePath $HISTORY_FILE -Append -Encoding UTF8
-
-    $SELECTION_LOG = Join-Path $HOME "search_rules_selections.log"
-    $SELECTED_LINE | Out-File -FilePath $SELECTION_LOG -Append -Encoding utf8
+    if ($KEY -eq "ctrl-r") {
+        $EXEC_QUERY = ""
+        if ($SELECTED_LINE -and ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$')) {
+            $PREVIEW_PY = Join-Path $SCRIPT_DIR "preview_rule.py"
+            $PY = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+            if (Test-Path $PREVIEW_PY) {
+                $EXEC_QUERY = (& (if (Test-Path $PY) { $PY } else { "python" }) "$PREVIEW_PY" --extract $Matches[1] $Matches[2]).Trim()
+            }
+        }
+        if (-not $EXEC_QUERY) { $EXEC_QUERY = $QUERY_TYPED }
+        if ($EXEC_QUERY) {
+            $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
+            $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
+            Start-Process -FilePath (if (Test-Path $PYW) { $PYW } else { "python" }) -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
+        }
+        if ($SEARCH_CLOSE_ON_OPEN -eq "True") { break } else { Start-Sleep -Milliseconds 300; continue }
+    }
 
     # parse path:line:content
     if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
+
+    
+
+
         $FILE_PATH = $Matches[1]
         $LINE_NUM  = [int]$Matches[2]
 #         logger_info "Selected: $FILE_PATH:$LINE_NUM"
