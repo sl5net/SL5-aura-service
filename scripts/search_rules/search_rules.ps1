@@ -18,6 +18,7 @@ $LOGFILE = Join-Path $LOG_DIR "search_rules_ps1_debug.log"
 function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
 
 DBG "Script started."
+DBG "EXACT RUNNING PATH: $($MyInvocation.MyCommand.Definition)"
 
 
 $PYTHON_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
