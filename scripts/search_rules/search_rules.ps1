@@ -309,10 +309,19 @@ while ($true) {
             $PREVIEW_PY = Join-Path $SCRIPT_DIR "preview_rule.py"
             $PY = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
             if (Test-Path $PREVIEW_PY) {
+                $PY_EXE = if (Test-Path $PY) { $PY } else { "python" }
                 DBG "DEBUG: Running: $PY_EXE $PREVIEW_PY --extract $FILE_PATH $LINE_NUM"
-                $EXEC_QUERY = (& (if (Test-Path $PY) { $PY } else { "python" }) "$PREVIEW_PY" --extract $Matches[1] $Matches[2]).Trim()
+                try {
+                    $EXEC_QUERY = (& $PY_EXE "$PREVIEW_PY" --extract $FILE_PATH $LINE_NUM).Trim()
+                    DBG "DEBUG: Extracted query outcome: '$EXEC_QUERY'"
+                } catch {
+                    DBG "DEBUG: Python extract execution failed: $_"
+                }
+            } else {
+                DBG "DEBUG: preview_rule.py NOT found at path $PREVIEW_PY"
             }
         }
+
         if (-not $EXEC_QUERY) { $EXEC_QUERY = $QUERY_TYPED }
         if ($EXEC_QUERY) {
             $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
