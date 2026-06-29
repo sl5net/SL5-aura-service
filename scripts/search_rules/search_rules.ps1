@@ -194,8 +194,8 @@ $fzfArgs = @(
     "--query", $QUERY,
     "--history", $HISTORY_FILE,
     "--header", "Enter: Edit | Ctrl+R: Execute | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line",
-    "--preview", "powershell -NoProfile -File `"$helperPreview`" '{1}:{2}' '{3}'",
-    "--preview-window", "up:50%"
+#    "--preview", "powershell -NoProfile -File `"$helperPreview`" '{1}:{2}' '{3}'",
+#    "--preview-window", "up:50%"
 )
 
 #$PreviewCmd = 'powershell -NoProfile -Command "param($f,$l); $l=[int]$l; Get-Content -Raw -LiteralPath $f -ErrorAction SilentlyContinue -Encoding UTF8 | Out-String | Select-String -Pattern ''(?s).{0,0}'' | Out-Null; $lines=(Get-Content -LiteralPath $f -ErrorAction SilentlyContinue); $start=[Math]::Max(0,$l-6); $end=[Math]::Min($lines.Count-1,$l+4); for ($i=$start; $i -le $end; $i++){ if ($i -eq $l-1) {Write-Output ("> {0,4}: {1}" -f ($i+1), $lines[$i]) } else {Write-Output ("  {0,4}: {1}" -f ($i+1), $lines[$i]) } }" -- '
