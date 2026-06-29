@@ -261,8 +261,12 @@ $binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub
 #$helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
 #$binds += "ctrl-x:execute-silent(powershell -NoProfile -File `"$helperCopyLine`" '{1}' '{2}' '{3..}')"
 
+#$helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
+#$binds += "ctrl-x:execute-silent(powershell -NoProfile -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
+
+# ctrl-x: copy line
 $helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
-$binds += "ctrl-x:execute-silent(powershell -NoProfile -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
+$binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden -Command `"& { & '$helperCopyLine' '{1}:{2}' '{3}' '{4..}' }`")"
 
 # ctrl-a: copy preview/context -> call helper to extract context and pipe to clipboard
 #$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
