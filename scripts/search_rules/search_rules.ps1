@@ -285,6 +285,8 @@ while ($true) {
     $KEY           = if ($F_OUT.Count -gt 1) { $F_OUT[1] } else { "" }
     $SELECTED_LINE = if ($F_OUT.Count -gt 2) { $F_OUT[2] } else { "" }
 
+    DBG "DEBUG: QUERY_TYPED='$QUERY_TYPED' | KEY='$KEY' | SELECTED_LINE='$SELECTED_LINE'"
+
     if (-not $SELECTED_LINE -and -not ($KEY -eq "ctrl-r" -and $QUERY_TYPED)) { break }
 
     if ($SELECTED_LINE) {
