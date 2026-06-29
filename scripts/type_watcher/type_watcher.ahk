@@ -244,7 +244,29 @@ CleanupZombies() {
 }
 
 
+; AHK v2 Helper: Blockiert das Tippen, solange ein Terminal-Fenster im Fokus ist
+WaitForTerminal() {
+    while (true) {
+        try {
+            activeProc := WinGetProcessName("A")
+            activeClass := WinGetClass("A")
+        } catch {
+            break ; Falls kurzzeitig kein aktives Fenster ermittelt werden kann
+        }
 
+        isTerminal := (activeProc = "cmd.exe"
+                    || activeProc = "powershell.exe"
+                    || activeProc = "pwsh.exe"
+                    || activeProc = "WindowsTerminal.exe"
+                    || activeClass = "ConsoleWindowClass"
+                    || activeClass = "CASCADIA_HOSTING_WINDOW_CLASS")
+
+        if (!isTerminal) {
+            break ; Kein Terminal aktiv -> Schleife verlassen
+        }
+        Sleep(50) ; 50 Millisekunden warten
+    }
+}
 
 
 
