@@ -400,7 +400,14 @@ def speak_fallback(text_to_speak, language_code="en-US"):
         return
 
     def run_command():
+        popen_kwargs = {
+            "stdout": subprocess.DEVNULL,
+            "stderr": subprocess.DEVNULL
+        }
+        if os.name == 'nt':
+            popen_kwargs['creationflags'] = 0x08000000
         try:
+
             subprocess.Popen(
                 command,
                 stdout=subprocess.DEVNULL,
