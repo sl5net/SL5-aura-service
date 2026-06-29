@@ -305,7 +305,7 @@ while ($true) {
     # parse path:line:content
     if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
 
-    
+
 
 
         $FILE_PATH = $Matches[1]
