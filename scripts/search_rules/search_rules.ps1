@@ -253,7 +253,7 @@ $binds = @()
 #$binds += 'ctrl-backspace:backward-kill-word' # unsupported key: ctrl-backspace
 $binds += 'alt-backspace:backward-kill-word'
 #$binds += 'ctrl-left:backward-word'
-$binds += 'ctrl-right:forward-word'
+#$binds += 'ctrl-right:forward-word'
 # ctrl-\ as kill-line (note: backslash needs no extra escaping inside single-quoted PS string)
 $binds += 'ctrl-\\:kill-line'
 $binds += 'ctrl-z:previous-history'
