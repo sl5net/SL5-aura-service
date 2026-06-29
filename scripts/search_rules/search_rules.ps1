@@ -359,7 +359,9 @@ while ($true) {
                 DBG "DEBUG: Start-Process failed: $_"
             }
         }
-        if ($SEARCH_CLOSE_ON_OPEN -eq "True") { break } else { Start-Sleep -Milliseconds 300; continue }
+        if ($SEARCH_CLOSE_ON_OPEN -eq "True") {
+            exit 0
+        } else { Start-Sleep -Milliseconds 300; continue }
     }
     # parse path:line:content
     if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
