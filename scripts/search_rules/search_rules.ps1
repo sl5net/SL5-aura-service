@@ -253,7 +253,12 @@ $helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
 $binds += "ctrl-x:execute-silent(powershell -NoProfile -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
 
 # ctrl-a: copy preview/context -> call helper to extract context and pipe to clipboard
+#$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
+
+# ctrl-a: copy preview/context
 $helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
+$binds += "ctrl-a:execute-silent(powershell -NoProfile -File '$helperCopyPreview' '{1}:{2}' '{3}')"
+
 @"
 param(\$file,\$line)
 \$l = [int]\$line
