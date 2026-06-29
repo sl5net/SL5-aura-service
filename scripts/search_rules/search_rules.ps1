@@ -195,7 +195,7 @@ $helperPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\preview.ps1'
 #$fzfArgs += @("--preview", "powershell -NoProfile -File `"$helperPreview`" '{1}' '{2}'", "--preview-window", "up:50%")
 #    "--with-nth", "3..",
 
-$fzfArgs = @(
+$fzfArgs = execute-silent(
     "--print-query",
     "--expect", "ctrl-r",
     "--delimiter", ":",
