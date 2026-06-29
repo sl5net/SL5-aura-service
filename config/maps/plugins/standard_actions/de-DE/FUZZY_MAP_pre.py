@@ -263,7 +263,7 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'calculator.py']
     }),
 
-    # EXAMPLE:   Wer ist der Beste x Schachspieler 
+    # EXAMPLE:   Wer ist der Beste Schachspieler
     ("Sebastian Lauffer aus Wannweil (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?(Beste[\w]? Schachspieler.*)$', 90, {
     'flags': re.IGNORECASE
     }),
