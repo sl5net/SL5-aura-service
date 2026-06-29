@@ -205,15 +205,15 @@ $fzfArgs = @(
 # -----------------------------------------------------------------------------
 # FZF command arguments (with history, preview, binds)
 # -----------------------------------------------------------------------------
-$fzfArgs = @(
-    "--delimiter", ":",
-    "--with-nth", "3..",              # show matched line content primarily
-    "--query", $QUERY,
-    "--history", $HISTORY_FILE,
-    "--header", "Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line",
-    "--preview", $PreviewCmd + '{1} {2}',
-    "--preview-window", "up:50%"
-)
+#$fzfArgs = @(
+#    "--delimiter", ":",
+#    "--with-nth", "3..",              # show matched line content primarily
+#    "--query", $QUERY,
+#    "--history", $HISTORY_FILE,
+#    "--header", "Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line",
+#    "--preview", $PreviewCmd + '{1} {2}',
+#    "--preview-window", "up:50%"
+#)
 
 
 
@@ -278,7 +278,7 @@ $binds += "ctrl-a:execute-silent(powershell -NoProfile -File `"$helperCopyPrevie
 
 
 
-$fzfArgs += @("--bind", ($binds -join ","))
+#$fzfArgs += @("--bind", ($binds -join ","))
 
 
 #------------------------------------------------------------------------
