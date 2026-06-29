@@ -286,7 +286,7 @@ $binds += "ctrl-a:execute-silent(powershell -NoProfile -File `"$helperCopyPrevie
 
 
 $fzfArgs += @("--bind", ($binds -join ","))
-execute-silent
+
 
 
 #------------------------------------------------------------------------
