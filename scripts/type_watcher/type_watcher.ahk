@@ -304,6 +304,7 @@ ProcessQueue() {
                 fileStates[fullPath] := A_TickCount
                 Log("Typing content from " . fullPath)
 
+                WaitForTerminal() ; protects write in terminals that are rests of fzf GUI winows. its a dirty quick fix when it was started by fzf GUI
                 SendText(content)
 
                 ; Erfolg! Status auf "done" setzen
