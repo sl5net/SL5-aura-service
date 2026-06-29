@@ -309,6 +309,7 @@ while ($true) {
             $PREVIEW_PY = Join-Path $SCRIPT_DIR "preview_rule.py"
             $PY = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
             if (Test-Path $PREVIEW_PY) {
+                DBG "DEBUG: Running: $PY_EXE $PREVIEW_PY --extract $FILE_PATH $LINE_NUM"
                 $EXEC_QUERY = (& (if (Test-Path $PY) { $PY } else { "python" }) "$PREVIEW_PY" --extract $Matches[1] $Matches[2]).Trim()
             }
         }
