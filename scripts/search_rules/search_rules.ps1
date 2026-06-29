@@ -17,6 +17,13 @@ if (-not (Test-Path $LOG_DIR)) { [void](New-Item -ItemType Directory -Path $LOG_
 $LOGFILE = Join-Path $LOG_DIR "search_rules_ps1_debug.log"
 function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
 
+function DBG {
+    param($m)
+    if ($ENABLE_LOGGING) {
+        "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8
+    }
+}
+
 DBG "Script started."
 DBG "EXACT RUNNING PATH: $($MyInvocation.MyCommand.Definition)"
 
