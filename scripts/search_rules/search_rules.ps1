@@ -17,7 +17,7 @@ $ErrorActionPreference = 'Stop'
 $LOG_DIR = Join-Path $PROJECT_ROOT "log"
 if (-not (Test-Path $LOG_DIR)) { [void](New-Item -ItemType Directory -Path $LOG_DIR -Force) }
 $LOGFILE = Join-Path $LOG_DIR "search_rules_ps1_debug.log"
-function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
+#function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
 
 function DBG {
     param($m)
