@@ -194,7 +194,7 @@ $fzfArgs = @(
     "--query", $QUERY,
     "--history", $HISTORY_FILE,
     "--header", "Enter: Edit | Ctrl+R: Execute | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line",
-    "--preview", $PreviewCmd + '{1} {2}',
+    "--preview", "powershell -NoProfile -File `"$helperPreview`" '{1}:{2}' '{3}'",
     "--preview-window", "up:50%"
 )
 
