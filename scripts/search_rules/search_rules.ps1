@@ -287,7 +287,10 @@ while ($true) {
 
     DBG "DEBUG: QUERY_TYPED='$QUERY_TYPED' | KEY='$KEY' | SELECTED_LINE='$SELECTED_LINE'"
 
-    if (-not $SELECTED_LINE -and -not ($KEY -eq "ctrl-r" -and $QUERY_TYPED)) { break }
+    if (-not $SELECTED_LINE -and -not ($KEY -eq "ctrl-r" -and $QUERY_TYPED)) {
+        DBG "DEBUG: Exit due to no valid selection."
+        break
+    }
 
     if ($SELECTED_LINE) {
         $SELECTED_LINE | Out-File -FilePath (Join-Path $HOME "search_rules_selections.log") -Append -Encoding utf8
