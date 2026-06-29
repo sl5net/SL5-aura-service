@@ -54,7 +54,7 @@ if (-not (Test-Path $HISTORY_FILE)) {
 # Debug: print the path so you can verify (remove in production)
 Write-Host "Using history file: $HISTORY_FILE"
 
-$DEFAULT_QUERY  = "Lauffer"
+$DEFAULT_QUERY = "Lauffer"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
 if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
 
