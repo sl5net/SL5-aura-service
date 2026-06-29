@@ -168,9 +168,9 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gitschtal
     ('git status', r'^\s*(gitschtal|glitschte|quatscht hatte|quitscht|quitscht werden|Geht tat uns)\s+$', 80, # min_accuracy
-     {'flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+     {'flags': re.IGNORECASE}),
 
-    #geht statisch
+    # , 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']
 
 
     # --- git add . --- git add .
