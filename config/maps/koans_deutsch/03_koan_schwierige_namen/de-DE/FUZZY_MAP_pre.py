@@ -23,6 +23,11 @@
 # ============================================================
 
 FUZZY_MAP_pre = [
+
+
+    ('Tante Emmelie', r'^(Tante|tandy|Und|an der|and in|und wie) (Emmelie|emil\w*|Amélie|vivien)*$'),
+
+
     # Exakter Match (präzise aber fragil):
     # ('Super :) Gratulation', r'^Ihre Hochwohlgeborenste.*Schlesien.*$'),
 
