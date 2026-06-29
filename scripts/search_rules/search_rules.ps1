@@ -17,6 +17,13 @@ function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGF
 DBG "Script started."
 
 
+$PYTHON_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+if (-not (Test-Path $PYTHON_BIN)) { $PYTHON_BIN = "python.exe" }
+$PYTHONW_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
+if (-not (Test-Path $PYTHONW_BIN)) { $PYTHONW_BIN = $PYTHON_BIN }
+
+
+
 # MAPS_DIR priority: param > env MAPS_DIR > default relative to project root
 if (-not $MAPS_DIR) { $MAPS_DIR = $env:MAPS_DIR }
 if (-not $MAPS_DIR) { $MAPS_DIR = Join-Path $PROJECT_ROOT "config\maps" }
