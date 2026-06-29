@@ -407,7 +407,7 @@ while ($true) {
                 "code"      { Start-Process "code" -ArgumentList "--goto","$FILE_PATH`:$LINE_NUM" }
                 "nano"      { # try opening in Windows Terminal / WSL? fallback: open notepad if not available
                     if (Get-Command "wt.exe" -ErrorAction SilentlyContinue) {
-                        Start-Process "wt.exe" -ArgumentList "powershell -NoProfile -WindowStyle Hidden  -Command nano `"$FILE_PATH`""
+                        Start-Process "wt.exe" -ArgumentList "powershell -NoProfile -WindowStyle Hidden -Command nano `"$FILE_PATH`""
                     } else {
                         Start-Process "notepad.exe" -ArgumentList "`"$FILE_PATH`""
                     }
