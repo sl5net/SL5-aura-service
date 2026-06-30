@@ -25,7 +25,6 @@ FUZZY_MAP_pre = [
 
     # End of Name Sub-Section
     (None, r'', 100, {'group_end': 'name_details'}),
-    (None, r'', 100, {'group_end': 'name_details'}),
 
     # -------------------------------------------------------------------------
     # SUB-SECTION 2: CONTACT DETAILS (Nested Macro)
@@ -42,12 +41,10 @@ FUZZY_MAP_pre = [
 
     # End of Contact Sub-Section
     (None, r'', 100, {'group_end': 'contact_details'}),
-    (None, r'', 100, {'group_end': 'contact_details'}),
 
     # =========================================================================
     # OUTER MACRO END
     # =========================================================================
     # Passive end marker to terminate the main private section macro.
-    (None, r'', 100, {'group_end': 'private_section'})
     (None, r'', 100, {'group_end': 'private_section'})
 ]
