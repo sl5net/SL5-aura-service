@@ -1,4 +1,4 @@
-# File: aura_engine.py
+# aura_engine.py
 import os
 import sys
 
@@ -8,6 +8,7 @@ import sys
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK & AUTO-BOOTSTRAP ---
 # Ensures the engine actually runs inside its .venv to avoid dependency issues.
 # ==============================================================================
+import scripts.py.bootstrap_venv
 import shutil
 import objgraph
 from datetime import datetime, timedelta
@@ -44,6 +45,14 @@ PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
 PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
 os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
 
+# Clean up search history file on startup for privacy (relevant in windows OS systems)
+history_file = TMP_DIR / "sl5_aura" / "search_rules_history.txt"
+if history_file.exists():
+    try:
+        history_file.unlink()
+    except Exception as e:
+        print(f"Ok. NP. {e}")
+        pass
 
 
 if settings.LOG_delete_on_startup:

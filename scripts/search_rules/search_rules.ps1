@@ -46,7 +46,13 @@ if (-not $MAPS_DIR) {
     exit 1
 }
 
-$HISTORY_FILE   = Join-Path $MY_HOME ".search_rules_history"
+#$HISTORY_FILE   = Join-Path $MY_HOME ".search_rules_history"
+$TMP_DIR = if ($env:SystemDrive) { "C:\tmp" } else { "/tmp" }
+$AURA_TEMP = Join-Path $TMP_DIR "sl5_aura"
+if (-not (Test-Path $AURA_TEMP)) {
+    New-Item -ItemType Directory -Force -Path $AURA_TEMP | Out-Null
+}
+$HISTORY_FILE = Join-Path $AURA_TEMP "search_rules_history.txt"
 
 # If the file doesn't exist, create an empty UTF8 file (no BOM)
 #if (-not (Test-Path $HISTORY_FILE)) {
@@ -120,8 +126,12 @@ if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
 # --- Load initial query from history, but ignore overly long / suspicious entries ---
 
 # Ensure HISTORY_FILE is set; example: $HISTORY_FILE = Join-Path $PROJECT_ROOT ".search_rules_history"
+#if (-not $HISTORY_FILE) {
+#    $HISTORY_FILE = Join-Path $env:USERPROFILE ".search_rules_history"
+#}
 if (-not $HISTORY_FILE) {
-    $HISTORY_FILE = Join-Path $env:USERPROFILE ".search_rules_history"
+    $TMP_DIR = if ($env:SystemDrive) { "C:\tmp" } else { "/tmp" }
+    $HISTORY_FILE = Join-Path $TMP_DIR "sl5_aura\search_rules_history.txt"
 }
 
 try {
