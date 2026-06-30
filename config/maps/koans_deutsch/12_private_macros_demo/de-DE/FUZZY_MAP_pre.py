@@ -23,20 +23,26 @@ FUZZY_MAP_pre = [
     # EXAMPLE: nachname
     ('Mustermann', r'nachname', 100, {}),
 
+    # EXAMPLE: nixleA
+    ('nixA', r'nixleA', 100, {}),
+    # EXAMPLE: nixleB
+    ('nixB', r'nixleB', 100, {}),
+
+
     # End of Name Sub-Section
     (None, r'', 100, {'group_end': 'name_details'}),
 
     # -------------------------------------------------------------------------
     # SUB-SECTION 2: CONTACT DETAILS (Nested Macro)
     # -------------------------------------------------------------------------
-    # EXAMPLE: kontaktdetails
     # Appends the section header 'Kontakt:' if the trigger word 'kontaktdetails' is not in the text.
+    # EXAMPLE: kontaktdetails
     ('Kontakt:', r'kontaktdetails', 100, {'group_start': 'contact_details'}),
 
-    # EXAMPLE: e-mail-adresse
     # Standard rules inside the contact sub-section:
-    # EXAMPLE: telefonnummer
+    # EXAMPLE: e-mail-adresse
     ('max.mustermann@example.de', r'e-mail-adresse', 100, {}),
+    # EXAMPLE: telefonnummer
     ('+49 170 1234567', r'telefonnummer', 100, {}),
 
     # End of Contact Sub-Section

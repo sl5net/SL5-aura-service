@@ -32,7 +32,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: Roboter
-    ('test',r'^(Roboter|wo bitte|oh britta|oh bitte|ok|das sind|gut im fußball)$', 100,{'flags': re.IGNORECASE}),
+    # ('test',r'^(Roboter|wo bitte|oh britta|oh bitte|ok|das sind|gut im fußball|jetzt aktiv)$', 100,{'flags': re.IGNORECASE}),
 
 
     #################################################

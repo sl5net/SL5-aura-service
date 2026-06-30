@@ -43,6 +43,8 @@ import argparse
 
 parser = argparse.ArgumentParser(description="Map tagger (non-interactive option)")
 parser.add_argument("--yes", "-y", action="store_true", help="Automatically accept suggestions / skip prompts")
+parser.add_argument("filter_path", nargs="?", default=None, help="Optional path or filename to filter scanning")
+
 args = parser.parse_args()
 
 if args.yes:
@@ -121,7 +123,7 @@ def has_tag_before_anchor(lines, i):
     for k in range(i - 1, -1, -1):
         prev_line = lines[k].strip()
         if not prev_line:
-            continue
+            break
         if prev_line.startswith("#"):
             if "# EXAMPLE:" in prev_line or "# TAGS:" in prev_line:
                 return True
@@ -226,6 +228,7 @@ def process_file(filepath):
 
             if not found_pattern:
                 new_lines.append(line)
+                continue
 
 
             # Skip lines that are purely comments or empty
@@ -401,7 +404,21 @@ def main():
 
 
             time.sleep(.005)
+
+            long_path = f'{root}/{file}'
+            # print(f'{root}')
+            # print(f'{file}')
+            # exit(0)
             if file.endswith(".py"):
+                if args.filter_path:
+                    if args.filter_path not in long_path:
+                        # print(f"{args.filter_path}")
+                        # koans_deutsch/12_private_macros_demo/de-DE
+                        # print(f"-> Skipping '{long_path}'")
+                        # exit(0)
+                        continue
+
+                print(f'414 process: {long_path}')
                 process_file(os.path.join(root, file))
     print("\n finished / Fertig.")
 
