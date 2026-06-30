@@ -37,6 +37,11 @@ FORBIDDEN_PATTERNS = [
 
 INTEGRITY_CHECKS = {
 
+    'aura_engine.py': [
+        'import scripts.py.bootstrap_venv'
+    ],
+
+
     'README.md': [
         'setup/windows11_setup.ps1',
         'https://www.autohotkey.com/',
