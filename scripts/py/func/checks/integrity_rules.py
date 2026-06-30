@@ -38,7 +38,8 @@ FORBIDDEN_PATTERNS = [
 INTEGRITY_CHECKS = {
 
     'aura_engine.py': [
-        'import scripts.py.bootstrap_venv'
+        'import bootstrap_hello',
+        'import bootstrap_hello()'
     ],
 
 

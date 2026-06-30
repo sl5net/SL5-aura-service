@@ -51,3 +51,6 @@ else:
     # Ensure VIRTUAL_ENV environment variable is populated for sub-processes or other parts of the app
     if 'VIRTUAL_ENV' not in os.environ:
         os.environ['VIRTUAL_ENV'] = sys.prefix
+
+def bootstrap_hello():
+    print('bootstrap_venv is implemeted')

@@ -8,8 +8,11 @@ import sys
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK & AUTO-BOOTSTRAP ---
 # Ensures the engine actually runs inside its .venv to avoid dependency issues.
 # import scripts.py.bootstrap_venv
+# from scripts.py.bootstrap_venv import bootstrap_hello
+# bootstrap_hello() # its a dummy hello to prevent removed by linter
 # ==============================================================================
-import scripts.py.bootstrap_venv
+from scripts.py.bootstrap_venv import bootstrap_hello
+bootstrap_hello()
 import shutil
 import objgraph
 from datetime import datetime, timedelta
