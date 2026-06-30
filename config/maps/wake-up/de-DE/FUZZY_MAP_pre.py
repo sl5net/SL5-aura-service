@@ -1,4 +1,4 @@
-# config/maps/wake-up/de-DE/FUZZY_MAP_pre.py:1
+# config/maps/wake-up/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 #from pathlib import Path as p;import os as o # noqa: E702
 #with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
@@ -38,6 +38,7 @@ FUZZY_MAP_pre = [
     # guten tag das aufwachenkaktus einschalten 🌵
     # bin bi teleskop aufwachen 🌵
 
+    # EXAMPLE: wakeword höre nicht mit
     ('voss_start', fr'^({wakeword} höre nicht mit|{wakeword}wach auf|{wakeword}auf|{wakeword}aufwachen|{wakeword}wache|{wakeword}einschätzen|{wakeword}einschalten|{wakeword}aktiv|frost brach kracher|Vor krach auf|free square auf|frost quatsch auf|guten tag das aufwachen|{nonsense_start_word}teleskop woche aus|b\s*\w*\s*\bkaktus aufwachen)$', 89,
      {
         'flags': re.IGNORECASE,
@@ -57,6 +58,7 @@ FUZZY_MAP_pre = [
     }),
 
     # einen 🌵
+    # EXAMPLE: wakeword stop
     ('voss_stop', fr'^(?:{wakeword}stop\w*|{nonsense_start_word}{wakeword}{nonsense_start_word}schlafe\w*|{wakeword}geh schlafe\w*|gute nacht|{wakeword}ciao|{wakeword}nen)$', 89,
      {
         'flags': re.IGNORECASE,
@@ -65,6 +67,7 @@ FUZZY_MAP_pre = [
 
     # einen hörtest einschlafen
     #e
+    # EXAMPLE: nonsense_start_word hörtest einschlafen
     ('voss_stop', fr'^{nonsense_start_word}\s*(hörtest einschlafen|sehen könntest einschlafen)$', 89,
      {
         'flags': re.IGNORECASE,
@@ -72,6 +75,7 @@ FUZZY_MAP_pre = [
     }),
     # 18:40:16,502 - INFO     - 📢📢📢 ######################### gratis einstellen ##########################################
     # stramg i said kakrus and it unsestands gratis ...
+    # EXAMPLE: gratis geschlossen
     ('voss_stop', r'^(gratis) (geschlossen|einstellen)$', 89,
     {
         'flags': re.IGNORECASE,

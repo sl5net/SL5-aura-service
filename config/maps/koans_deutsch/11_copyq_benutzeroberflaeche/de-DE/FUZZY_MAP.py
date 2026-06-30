@@ -1,4 +1,4 @@
-# config/maps/koans_deutsch/11_CopyQ_Benutzeroberflaeche/de-DE/FUZZY_MAP.py
+# config/maps/koans_deutsch/11_copyq_benutzeroberflaeche/de-DE/FUZZY_MAP.py
 import re # noqa: F401
 
 # too<-from

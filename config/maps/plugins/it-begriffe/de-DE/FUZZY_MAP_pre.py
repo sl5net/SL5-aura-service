@@ -16,18 +16,23 @@ import re # noqa: F401
 
 # config/maps/plugins/it-begriffe/de-DE/FUZZY_MAP_pre.py:17
 FUZZY_MAP_pre = [
+    # EXAMPLE: debugABZ
     ('debugABZxxx', r'debugABZ'),  # ← komplett standalone, keine Gruppe
 
     # Start-Regel: Triggert die Gruppe 'sandbox_test' bei "start sandbox"
+    # EXAMPLE: sta box
     ('Sandbox', r'^sta\w* .*box.*', 100, {'group_start': 'sandbox_test'}),
 
     # Innere Regel 1: Ersetzt "apfel" durch "birne" (wenn vorhanden)
+    # EXAMPLE: apfel
     ('birne', r'apfel'),
 
     # Innere Regel 2: Ersetzt "banane" (wenn vorhanden), sonst wird "banane" angehängt!
+    # EXAMPLE: banane
     ('banane', r'banane'),
 
     # Passiver End-Marker für 'sandbox_test'
+    (None, r'', 100, {'group_end': 'sandbox_test'}),
     (None, r'', 100, {'group_end': 'sandbox_test'}),
 
     # === General Terms (Case-Insensitive) ===
@@ -37,33 +42,36 @@ FUZZY_MAP_pre = [
     # - first is read first imported, lower rules maybe not get read.
 
 
+    # EXAMPLE: JSON Datei
 
-    ('JSON Datei', r'^\b(JSON|jagen|jacen|jason|schweifen)\s*(Datei|detail)(\b)$', 80, {'flags': re.IGNORECASE}),
+    ('JSON Datei', r'^\b(JSON(\sDatei)?|jagen|jacen|jason|schweifen)\s*(Datei|detail)(\b)$', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: JSON Export
 
-    ('JSON Export', r'^\b(jacen export)(\b)$', 80, {'flags': re.IGNORECASE}),
+    ('JSON Export', r'^\b(JSON Export|jacen export)(\b)$', 80, {'flags': re.IGNORECASE}),
 
 
     #Mal ausprobieren
 
     # das liquid Stuhl
+    # EXAMPLE: das LanguageTool
     # LanguageTool
-    ('das LanguageTool', r'\b(das) (liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
+    # EXAMPLE: liquid Stuhl
+    ('das LanguageTool', r'\b(das) (LanguageTool|liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
     ('LanguageTool', r'\b(liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
 
     # des link wich tools
+    # EXAMPLE: LanguageTool
 
-    ("des LanguageTool's", r'\b(des link w\w+ tools)(\b)', 80, {'flags': re.IGNORECASE}),
+    ("des LanguageTool's", r'\b(LanguageTool|des link w\w+ tools)(\b)', 80, {'flags': re.IGNORECASE}),
 
 
-    #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
-    # matcha wo linux
-    # EXAMPLE: whatchado
+    # EXAMPLE: Manjaro
 
-    ('Manjaro Linux', r'^(whatchado|Mönch|matcha wo) (Linux|Carolin\w*)$', 80, {'flags': re.IGNORECASE}),
+    ('Manjaro Linux', r'^(Manjaro|whatchado|Mönch|matcha wo) (Linux|Carolin\w*)$', 80, {'flags': re.IGNORECASE}),
 
     #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
     # EXAMPLE: Linux Manjaro
-    ('Linux Manjaro', r'^(Linux) (man Karo|mal jaro|wird jaro|matcha rub)$', 80, {'flags': re.IGNORECASE}),
+    ('Linux Manjaro', r'^(Linux) (Manjaro|man Karo|mal jaro|wird jaro|matcha rub)$', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Linux Manjaro
     ('Linux Manjaro', r'^(Linux) ma\w*\s*\w*a\s*r[ou]m?$', 80, {'flags': re.IGNORECASE}),
@@ -71,7 +79,7 @@ FUZZY_MAP_pre = [
 
     #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
     # EXAMPLE: Linux Manjarovelux
-    ('Linux Manjaro', r'^(velux) (matcha|wird jaro|wird jaro|mit jaro)$', 80, {'flags': re.IGNORECASE}),
+    ('Linux Manjaro', r'^(Linux|velux) (Manjaro|matcha|wird jaro|wird jaro|mit jaro)$', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Linux Manjarovelux
     ('Linux Manjaro', r'^velux m\w+\s*[ou]$', 80, {'flags': re.IGNORECASE}),
@@ -104,7 +112,7 @@ FUZZY_MAP_pre = [
     ('Logfile', r'^(\b)(Logfile)(\b)$', 80, {'flags': re.IGNORECASE}),
 
     # EXAMPLE: Relief
-    ('release', r'^(\b)(Relief|release|Relief|wer dies)(\b)$', 75, {'flags': re.IGNORECASE}),
+    ('release', r'^(\b)(release|Relief|release|Relief|wer dies)(\b)$', 75, {'flags': re.IGNORECASE}),
 
 #Virtuell in Weibern
 #Ritual in Deibel

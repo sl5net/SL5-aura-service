@@ -1,3 +1,4 @@
+# config/maps/koans_deutsch/03_koan_schwierige_namen/de-DE/FUZZY_MAP_pre.py
 # ============================================================
 # Koan 03: Schwierige Namen – Fuzzy Matching in der Praxis
 # ============================================================
@@ -25,6 +26,7 @@
 FUZZY_MAP_pre = [
 
 
+    # EXAMPLE: Tante
     ('Tante Emmelie', r'^(Tante|tandy|Und|an der|and in|und wie) (Emmelie|emil\w*|Amélie|vivien)*$'),
 
 

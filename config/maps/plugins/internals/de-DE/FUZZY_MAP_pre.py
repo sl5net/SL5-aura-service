@@ -12,6 +12,7 @@ current_user,_ = determine_current_user()
 FUZZY_MAP_pre = [
 
 
+    # EXAMPLE: Aktueller user
     (f'{current_user}', r'^Aktueller user$'),
 
     (f'{current_user}', '^Benutzer$',),
@@ -71,6 +72,7 @@ FUZZY_MAP_pre = [
          'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
      }),
 
+    # EXAMPLE: FVW eihä h l er
     ('report_error',
      r'\b(?:(?:[FVW][eihä]h?l[er]{1,2}|Wähler|Feller|Vierer|Völer|Phäler)\s?(?:be?richt|bricht|licht|richt))\b', 100,
      {
@@ -87,6 +89,7 @@ if current_user in ['seeh']:
 
 
         # Regel B: Niedrige Hürde (10%)
+        # EXAMPLE: Super fragill
         ("Niedrige Genauigkeit erkannt", r'^(Super fragill|Servus fragil)$', 10,
          {
              'flags': re.IGNORECASE,
@@ -95,6 +98,7 @@ if current_user in ['seeh']:
 
         #Super fragilsuper Superfrau gebenServus fragilSo BefragungKübra fragil
 
+        # EXAMPLE: fehler melden
         ('report_error',
          r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|das war falsch|da stimmt was nicht|bug melden|bugreport|ticket erstellen|problem melden|da ist ein fehler|das ist falsch|das ist ein bug)$', 100,
          # min_accuracy

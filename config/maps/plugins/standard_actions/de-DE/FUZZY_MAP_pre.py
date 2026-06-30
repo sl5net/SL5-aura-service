@@ -42,7 +42,8 @@ flake8 = 'source .venv/bin/activate;flake8 ./aura_engine.py ./scripts ./config'
 FUZZY_MAP_pre = [
 
 
-    ('', r'^(asdfsdfs|wie ist das fett|Die erhaltenen Wetterdaten hatten ein unerwartetes Format.|wie ist das bett|wie ist das etwa|mir ist das wetter|nächstes bild|wie ist das zwitschern|nicht das wetter|nächstes|wie ist das|wie ist es|nächstes we|lies es)$', 95, {
+    # EXAMPLE: wie ist das wetter
+    ('', r'^(wie ist das wetter|wie ist das fett|Die erhaltenen Wetterdaten hatten ein unerwartetes Format.|wie ist das bett|wie ist das etwa|mir ist das wetter|nächstes bild|wie ist das zwitschern|nicht das wetter|nächstes|wie ist das|wie ist es|nächstes we|lies es)$', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     }),
@@ -64,7 +65,9 @@ FUZZY_MAP_pre = [
     # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
 
 
+    # EXAMPLE: einen
     ('', r'^einen$', 100, {'flags': re.IGNORECASE}),
+    # EXAMPLE: einens
     ('', r'^einens$', 100, {'flags': re.IGNORECASE}),
 
 
@@ -75,7 +78,9 @@ FUZZY_MAP_pre = [
     # ('', r'^einen$', 100, {'flags': re.IGNORECASE}),
     # ('', r'^einens$', 100, {'flags': re.IGNORECASE}),
 
+    # EXAMPLE: einen
     ('', r'^\s*einen\s*$', 100, {'flags': re.IGNORECASE}),
+    # EXAMPLE: einens
     ('', r'^\s*einens\s*$', 100, {'flags': re.IGNORECASE}),
 
 

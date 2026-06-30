@@ -1,3 +1,4 @@
+# config/maps/koans_english/03_koan_difficult_names/en-US/FUZZY_MAP_pre.py
 import re  # noqa: F401
 
 # ============================================================
@@ -32,6 +33,7 @@ FUZZY_MAP_pre = [
     # ('Success!', r'^.*Xenochronistic Chronology.*$', 90, {'flags': re.IGNORECASE}),
 
     # Fuzzy match for the name:
+    # EXAMPLE: Countess
     ('Phonetics mastered!', r'^.*(Countess|Mondes|kund des|Kaum des).*$', 90, {'flags': re.IGNORECASE}),
 ]
 

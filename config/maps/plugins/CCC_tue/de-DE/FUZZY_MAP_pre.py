@@ -42,6 +42,7 @@ FUZZY_MAP_pre = [
 
 
     # KürbisKübelSyltkorrektEbenso sind
+    # EXAMPLE: chaos pad
     ('https://pad.ccc-mannheim.de/p/1', r'^(chaos)\w*\s+.*pad.*$', 60,
     {'flags': re.IGNORECASE}),
 
