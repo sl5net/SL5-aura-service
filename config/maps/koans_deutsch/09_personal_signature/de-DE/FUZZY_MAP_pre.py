@@ -30,5 +30,6 @@ import re # noqa: F401
 user_name = "USER_NAME"
 
 FUZZY_MAP_pre = [
+    # EXAMPLE: viele grüße
     (f"Mit freundlichen Grüßen, {user_name}\n", r"^(viele grüße|beste grüße|mit freundlichen grüßen)\w*$"),
 ]

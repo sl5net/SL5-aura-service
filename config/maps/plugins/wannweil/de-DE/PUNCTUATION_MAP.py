@@ -2,5 +2,6 @@
 # German - Common, Mishearings
 
 PUNCTUATION_MAP = {
+    # EXAMPLE: leerworttest
     'leerworttest': 'leerworttest1',
 }

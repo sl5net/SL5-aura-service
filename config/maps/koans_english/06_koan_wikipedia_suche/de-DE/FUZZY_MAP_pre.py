@@ -1,3 +1,4 @@
+# config/maps/koans_english/06_koan_wikipedia_suche/de-DE/FUZZY_MAP_pre.py
 import re  # noqa: F401
 from pathlib import Path
 

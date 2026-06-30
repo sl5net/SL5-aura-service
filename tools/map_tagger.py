@@ -8,10 +8,12 @@ import time
 
 # optional:
 # .\\.venv\Scripts\python.exe tools\map_tagger.py --yes
+# .venv/bin/python tools/map_tagger.py
+
 
 
 # -----------------------------------------------------------------------------
-# KONFIGURATION
+# config
 # -----------------------------------------------------------------------------
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -29,6 +31,12 @@ try:
     HAS_EXREX = True
 except ImportError:
     HAS_EXREX = False
+    print("Error: tools/map_tagger.py requires the 'exrex' library.")
+    print("Please install it in your virtual environment using:")
+    print("source .venv/bin/activate")
+    print("pip install exrex")
+    print(".venv/bin/python tools/map_tagger.py")
+    sys.exit(1)
 
 
 import argparse
@@ -37,73 +45,66 @@ parser = argparse.ArgumentParser(description="Map tagger (non-interactive option
 parser.add_argument("--yes", "-y", action="store_true", help="Automatically accept suggestions / skip prompts")
 args = parser.parse_args()
 
-# global setzen (z.B. nach PARSER)
 if args.yes:
     SKIP_ALL_FAILURES = True  # oder separate FLAG_AUTOMATIC = True
 
 
 # -----------------------------------------------------------------------------
-# LOGIK: Smart Sanitizer
+# Smart Sanitizer
 # -----------------------------------------------------------------------------
 def sanitize_regex_part(text):
-    """
-    Verwandelt einen Regex-Schnipsel in lesbaren Text.
-    Ersetzt abstrakte Muster durch konkrete Platzhalter.
-    # """
     s = text
 
-    # 1. Bekannte Regex-Klassen durch lesbare Beispiele ersetzen
-    # Reihenfolge ist wichtig!
+    s = s.replace(r'\b', '')    # Remove word boundaries to prevent 'b' character leak
+
+
+    # the order is important
     s = s.replace(r'\d+', '123')
     s = s.replace(r'\d', '1')
 
-    s = s.replace(r'\w+', 'text')
-    s = s.replace(r'\w', 'x')
+    s = s.replace(r'\w*', '')   # Omit \w* entirely
+    s = s.replace(r'\w+', 'n')  # Replace \w+ with natural verb ending 'n'
+    s = s.replace(r'\w', 'x')   # Keep single \w as 'x'
 
     s = s.replace(r'\s+', ' ')
     s = s.replace(r'\s*', ' ')
-    s = s.replace(r'\w*', ' ')
+    s = s.replace(r'\s', ' ')
 
     s = s.replace(r'.+', '.')
     s = s.replace(r'.*', '')
 
-    # 2. Übrige Regex-Syntax entfernen (Klammern, Sonderzeichen)
-    # Wir behalten nur Buchstaben, Zahlen, Umlaute, Bindestriche und Leerzeichen.
+    s = re.sub(r'\?', '', s)
+
+    s = re.sub(r'\[([a-zA-Z0-9üöäÜÖÄß])[^\]]*\]', r'\1', s)
     s = re.sub(r'[^a-zA-Z0-9 äöüÄÖÜß\-_]', ' ', s)
 
-    # 3. Doppelte Leerzeichen entfernen und trimmen
+    s = re.sub(r'\{\d*,?\d*\}', '', s)
+
+
+
     s = re.sub(r'\s+', ' ', s).strip()
 
     return s
 
 def get_smart_suggestion(pattern):
-    """
-    Versucht, das beste Beispiel zu finden.
-    Priorität:
-    1. Der erste Teil des Patterns (vor der Pipe |), bereinigt um Regex-Syntax.
-    2. Fallback auf exrex, falls das Ergebnis leer ist.
-    """
-
-    # Äußere Klammern entfernen: (A|B) -> A|B
     clean_pat = pattern.strip()
-    if clean_pat.startswith("(") and clean_pat.endswith(")"):
-        clean_pat = clean_pat[1:-1]
+    # if clean_pat.startswith("(") and clean_pat.endswith(")"):
+    #     clean_pat = clean_pat[1:-1]
 
-    # Am ersten Pipe splitten
-    # (Dies ist robust genug für deine Wortlisten)
     first_part = clean_pat.split('|')[0]
-
-    # VERSUCH 1: Den ersten Teil lesbar machen (Deine Idee + Platzhalter)
     sanitized = sanitize_regex_part(first_part)
 
-    # Wenn dabei was Sinnvolles rauskommt (mindestens 2 Zeichen), nehmen wir das!
     if len(sanitized) >= 2:
         return sanitized
 
     # VERSUCH 2: exrex (Fallback für sehr abstrakte Dinge)
+    # if HAS_EXREX:
+    #     try:
+    #         candidates = list(exrex.generate(pattern, limit=10))
     if HAS_EXREX:
         try:
-            candidates = list(exrex.generate(pattern, limit=10))
+            exrex_pattern = pattern.replace(r'\b', '').replace('^', '').replace('$', '')
+            candidates = list(exrex.generate(exrex_pattern, limit=10))
             if not candidates: return None
             # Nimm das Kürzeste
             candidates.sort(key=lambda s: (len(s), s))
@@ -114,7 +115,24 @@ def get_smart_suggestion(pattern):
     return None
 
 # -----------------------------------------------------------------------------
-# HAUPTPROGRAMM
+def has_tag_before_anchor(lines, i):
+    """Scans backward to find if an EXAMPLE or TAGS comment already exists for the current rule."""
+    tuple_start_count = 0
+    for k in range(i - 1, -1, -1):
+        prev_line = lines[k].strip()
+        if not prev_line:
+            continue
+        if prev_line.startswith("#"):
+            if "# EXAMPLE:" in prev_line or "# TAGS:" in prev_line:
+                return True
+        else:
+            if prev_line.startswith("("):
+                tuple_start_count += 1
+                if tuple_start_count > 1:
+                    break  # Boundary to previous rule reached
+            elif prev_line.endswith("),") or prev_line.endswith("})"):
+                break  # Boundary to previous rule reached
+    return False
 # -----------------------------------------------------------------------------
 def process_file(filepath):
     global SKIP_ALL_FAILURES
@@ -125,6 +143,7 @@ def process_file(filepath):
 
 
     modified = False
+    shift_offset = 0
 
     # 1. Ensure File Header (Relative Path)
     rel_path = os.path.relpath(filepath, PROJECT_ROOT)
@@ -139,29 +158,32 @@ def process_file(filepath):
         modified = True
         print(f"Header updated in: {rel_path}")
 
-
-
-
-
     new_lines = []
 
-
-
-    # Findet: PATTERN = r"..."
+    # PATTERN = r"..."
     # regex_finder = re.compile(r'=\s*r["\']([\^"\']+)["\']')
     regex_finder = re.compile(r'[:=,\(\s]\s*(?:fr|rf|r)(?P<q>"{3}|\'{3}|"|\')(?P<p>.*?)(?P=q)', re.DOTALL)
 
-    # Findet Dictionary-Keys: 'key':
+    # Dictionary-Keys: 'key':
     dict_finder = re.compile(r"^\s*(?P<q>['\"])(?P<p>[^'\"]+)(?P=q)\s*:")
 
 
 
     for i, line in enumerate(lines):
         time.sleep(.005)
-        match = regex_finder.search(line)
 
-        # Prüfen, ob Tag/Example davor existiert
-        has_tag_before = (i > 0) and ("# EXAMPLE:" in lines[i-1] or "# TAGS:" in lines[i-1])
+        # Skip lines with no indentation (e.g., global variables or list definitions)
+        if line.strip() and not line.startswith(' ') and not line.startswith('\t'):
+            new_lines.append(line)
+            continue
+
+        # match = regex_finder.search(line)
+        matches = list(regex_finder.finditer(line))
+        match = matches[-1] if matches else None
+
+        # has_tag_before = (i > 0) and ("# EXAMPLE:" in lines[i-1] or "# TAGS:" in lines[i-1])
+        has_tag_before = has_tag_before_anchor(lines, i)
+        # print(f'DEBUG has_tag_before: {has_tag_before}')
 
         if not match and "PUNCTUATION_MAP.py" in filepath:
             match = dict_finder.search(line)
@@ -172,10 +194,39 @@ def process_file(filepath):
 
         if match and not has_tag_before:
             found_pattern = match.group('p').strip()
+            # print(f'tools/map_tagger.py:164 found_pattern={found_pattern}')
+
+
+            # --- NEU: Strukturelle Prüfung auf Regel-Tupel (Klammer-Prüfung) ---
+            anchor_idx = i
+            for j in range(i - 1, -1, -1):
+                prev = lines[j].strip()
+                if not prev or prev.startswith('#'):
+                    continue
+                anchor_idx = j
+                break
+
+            anchor_is_tuple_start = lines[anchor_idx].lstrip().startswith('(')
+            current_is_tuple_start = line.lstrip().startswith('(')
+
+            # Skip if neither the current line nor the anchor line starts with '(' (not a rule tuple)
+            if not anchor_is_tuple_start and not current_is_tuple_start:
+                new_lines.append(line)
+                continue
+            # -------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
 
             if not found_pattern:
                 new_lines.append(line)
-                continue
+
 
             # Skip lines that are purely comments or empty
             stripped = line.strip()
@@ -183,25 +234,39 @@ def process_file(filepath):
                 new_lines.append(line)
                 continue
 
-            # Smart Suggestion holen
+            # get Smart Suggestion
             suggestion = str(get_smart_suggestion(found_pattern)).strip()
+            # suggestion = validate_and_cleanup_example(suggestion,  , )
+            suggestion = validate_and_cleanup_example(suggestion, found_pattern, f"{filepath}:{i+1}")
+
             if not suggestion:
                 new_lines.append(line)
                 continue
 
-            success = suggestion is not None
-            display_suggestion = suggestion if success else "(Kein Vorschlag)"
+            success = (suggestion is not None and suggestion != 'None')
+            display_suggestion = suggestion if success else "(no Suggestion)"
 
             if not success and SKIP_ALL_FAILURES:
                 new_lines.append(line)
                 continue
 
-            print(f"\n--- {filepath} | Zeile {i+1} ---")
-            print(f"Pattern:   {found_pattern}")
+            # remove PROJECT_ROOT from filepath in print
+            if filepath.startswith(PROJECT_ROOT):
+                filepath_short = filepath[len(PROJECT_ROOT):].lstrip("/")  # remove leading slash if present
+            else:
+                filepath_short = filepath
+
+            print(f"\n_________________\n{filepath_short}:{i+1}")
+            # print(f"Pattern:   {found_pattern}")
+            if not found_pattern:
+                print(f'line: {line.strip()}')
+                continue
 
             color_code = "\033[92m" if success else ""
             reset_code = "\033[0m" if success else ""
-            print(f"Vorschlag: {color_code}'{display_suggestion}'{reset_code}")
+            print(f'line: {line.strip()}')
+            print(f"Pattern:   {found_pattern}")
+            print(f"Suggestion: {color_code}'{display_suggestion}'{reset_code}")
 
             prompt_parts = ["ENTER (nehmen)", "Text (eigenes)", "'s' (skip)", "'q' (quit)"]
             if not success: prompt_parts.append("'sa' (skip failures)")
@@ -236,44 +301,58 @@ def process_file(filepath):
                     new_lines.append(line)
                     continue
 
-            # --- NEUER TEIL: Bestimme Anchor (Tuple-Anfang) ---
-            # Suche rückwärts die nächste nicht-leere, nicht-comment Zeile
-            anchor_idx = i
-            for j in range(i - 1, -1, -1):
-                prev = lines[j].strip()
-                if not prev or prev.startswith('#'):
-                    continue
-                anchor_idx = j
-                break
+                if final_example:
+                    final_example = validate_and_cleanup_example(final_example, found_pattern, f"{filepath}:{i+1}")
 
-            # Wenn die vorherige nicht-leere Zeile mit '(' beginnt, setzen wir das EXAMPLE
-            # vor dieser Zeile (Tupelanfang). Sonst vor der aktuellen Zeile.
-            anchor_is_tuple_start = lines[anchor_idx].lstrip().startswith('(')
-            insert_at_idx = anchor_idx if anchor_is_tuple_start else i
+            # anchor_idx = i
+            # for j in range(i - 1, -1, -1):
+            #     prev = lines[j].strip()
+            #     if not prev or prev.startswith('#'):
+            #         continue
+            #     anchor_idx = j
+            #     break
 
-            # Prüfe, ob bereits ein Tag/Example direkt davor existiert
-            has_tag_before_anchor = (insert_at_idx > 0) and (
-                "# EXAMPLE:" in lines[insert_at_idx - 1] or "# TAGS:" in lines[insert_at_idx - 1]
-            )
+            insert_at_idx = i
+            if not lines[i].lstrip().startswith('('):
+                # Only search backwards for the tuple start if current line is not the start
+                for j in range(i - 1, -1, -1):
+                    prev = lines[j].strip()
+                    if not prev or prev.startswith('#'):
+                        continue
+                    if prev.startswith('('):
+                        insert_at_idx = j
+                    break
 
-            if has_tag_before_anchor:
-                # Wenn schon ein Tag vorhanden, nichts tun (nur die aktuelle Zeile normal hinzufügen)
+            # anchor_is_tuple_start = lines[anchor_idx].lstrip().startswith('(')
+            # insert_at_idx = anchor_idx if anchor_is_tuple_start else i
+
+
+            has_tag_before = has_tag_before_anchor(lines, i)
+            # print(f'DEBUG has_tag_before: {has_tag_before}')
+
+            if has_tag_before:
                 new_lines.append(line)
                 continue
 
-            # Insert: berechne Einrückung anhand der Ankerzeile
+
             indent = lines[insert_at_idx][:len(lines[insert_at_idx]) - len(lines[insert_at_idx].lstrip())]
             example_line = f"{indent}# EXAMPLE: {final_example}\n"
 
-            # Wir haben bereits new_lines für alle Zeilen < i angefügt. Füge das Example
-            # an der entsprechenden Position in new_lines ein.
-            if insert_at_idx <= len(new_lines):
-                new_lines.insert(insert_at_idx, example_line)
-            else:
-                # Fallback: falls unerwartet, einfach vor current line anhängen
-                new_lines.append(example_line)
+            # if insert_at_idx <= len(new_lines):
+            #     new_lines.insert(insert_at_idx, example_line)
+            # else:
+            #     # Fallback:
+            #     new_lines.append(example_line)
 
-            # Aktuelle Zeile anhängen
+            insert_pos = insert_at_idx + shift_offset
+            if insert_pos <= len(new_lines):
+                new_lines.insert(insert_pos, example_line)
+                shift_offset += 1
+            else:
+                new_lines.append(example_line)
+                shift_offset += 1
+
+
             new_lines.append(line)
             modified = True
             print("-> Gespeichert.")
@@ -285,9 +364,31 @@ def process_file(filepath):
         with open(filepath, 'w', encoding='utf-8') as f:
             f.writelines(new_lines)
 
+def validate_and_cleanup_example(example, regex_str, file_info):
+    try:
+        clean_regex = re.sub(r"\{[^}]+\}", r".*", regex_str)
+        compiled_rx = re.compile(clean_regex, re.IGNORECASE)
+    except Exception as e:
+        print(f"Warning: Invalid regex '{regex_str}' in {file_info}: {e}")
+        return example
+
+    if compiled_rx.search(example):
+        return example
+
+    words = example.split()
+    cleaned_words = [w for w in words if len(w) > 1 or w.lower() in ['a', 'i']]
+    simplified = " ".join(cleaned_words)
+
+    if simplified != example and compiled_rx.search(simplified):
+        print(f"-> Automatically simplified example to: '{simplified}'")
+        return simplified
+
+    print(f"-> WARNING: Example '{example}' still does not match regex '{regex_str}' in {file_info} after cleanup!")
+    return example
+
 def main():
     if not os.path.isdir(MAPS_DIR):
-        print(f"Fehler: '{MAPS_DIR}' nicht gefunden.")
+        print(f"Fehler: '{MAPS_DIR}' nothing found.")
         sys.exit(1)
 
     print(f"Scanne {MAPS_DIR} ...")
@@ -305,4 +406,9 @@ def main():
     print("\n finished / Fertig.")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        # fallback for cases where KeyboardInterrupt is delivered
+        print("\nInterrupted (KeyboardInterrupt). Exiting.")
+        sys.exit(0)

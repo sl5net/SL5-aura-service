@@ -1,4 +1,4 @@
-# config/maps/koans_deutsch/02_koan_listen/de-DE/FUZZY_MAP.py
+# config/maps/koans_2_peter_deutsch/02_koan_listen/de-DE/FUZZY_MAP.py
 # config/languagetool_server/maps/de-DE/FUZZY_MAP.py
 import re # noqa: F401
 # Regel-Format: ('Ersatztext', r'muster', schwellwert, flags)

@@ -1,4 +1,4 @@
-# config/maps/koans_deutsch/02_koan_listen/de-DE/FUZZY_MAP_pre.py
+# config/maps/koans_2_peter_deutsch/02_koan_listen/de-DE/FUZZY_MAP_pre.py
 
 import re # noqa: F401
 #from pathlib import Path as p;import os as o # noqa: E702

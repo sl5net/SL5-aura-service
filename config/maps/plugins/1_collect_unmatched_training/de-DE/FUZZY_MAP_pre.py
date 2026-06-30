@@ -1,3 +1,4 @@
+# config/maps/plugins/1_collect_unmatched_training/de-DE/FUZZY_MAP_pre.py
 # projects/py/STT/config/maps/plugins/1_collect_unmatched_training/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 #from pathlib import Path as p;import os as o # noqa: E702
@@ -30,9 +31,11 @@ FUZZY_MAP_pre = [
     # 1. Notiere deine Optimierungs-Regel hier zuerst! (Ergebnis zuerst!)
 
 
+    # EXAMPLE: lernmodus
     (f'kate {str(__file__)}', rf'^(lernmodus|Lernmodus\s*{starten}|led modus\s*{starten}|led modus\s*{starten}|Training {starten}|Erkennungstraining|lärm wurdest stab|ihren modus {starten}|der modus|der modus {starten}|Grip Modus {starten}|trainingsstart|reading {starten}|heiligen staat|erkundungstour reading|bildungsprämie|sag rettungs training|quidditch training|führungstraining|gründungstreffen erkältungstee training|gründungs|bildungsträger|jörg velux training|der grillo training|gründungs training|erkältungstee ideen|der glättung streaming|erkältung training|erkältungstee ding|erkennung training|erkältungstee training|erkennung nicht|lab modus {starten}|leere modus {starten}|lernmodus starb|der modus stunden|für genuss training|lernmodus stab|der modus spart|home modus stab|renault modus {starten}|hallo xd reinigen|verkehr lostreten|danke lux training|lernmodul {starten}|werden modus {starten}|für quintus training|genuss trinken verkehr lostreten lernmodus starb|erkennung strähnig|leeren modus {starten}|lärm wurdest stab|er wurde {starten}|werden würdest|der bundesstaat|\w+\s*wurde {starten}|lernmodell {starten})$'),
 
 
+    # EXAMPLE: AURA_VARIANTS suche_reg
     ('Suche wird gestartet...', fr'^{AURA_VARIANTS}\b.*\b{suche_reg}$', 100,
     {
     'flags': re.IGNORECASE,

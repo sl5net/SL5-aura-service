@@ -38,6 +38,7 @@ FUZZY_MAP_pre = [
     # deutschland vor dein deutschlands
 
     # threema web
+    # EXAMPLE: web threema web
     ('https://web.threema.com/', r'^(web\s*)?(threema)\s*(web)?$', 70, # min_accuracy
  {'flags': re.IGNORECASE}),
 
@@ -48,6 +49,7 @@ FUZZY_MAP_pre = [
  {'flags': re.IGNORECASE}),
 
     # dein deutschlands
+    # EXAMPLE: dein deutschlandfunk
     ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(dein\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, # min_accuracy
  {'flags': re.IGNORECASE}),
 

@@ -15,9 +15,9 @@ FUZZY_MAP_pre = [
     # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
     #################################################
 
-    # EXAMPLE: doble clic
+    # EXAMPLE: doubleClick
     # Native: doble clic | Vosk-EN-Logic: double click, bubble click
-    ('doubleClick("image.png")', r'^\s*(doble\s*clic|double\s*clic|clic\s*doble|dub\s*clic|double\s*click)\s*$', 85, {
+    ('doubleClick("image.png")', r'^\s*(doubleClick|doble\s*clic|double\s*clic|clic\s*doble|dub\s*clic|double\s*click)\s*$', 85, {
         'flags': re.IGNORECASE, 'only_in_windows': sikulix_windows,
     }),
 

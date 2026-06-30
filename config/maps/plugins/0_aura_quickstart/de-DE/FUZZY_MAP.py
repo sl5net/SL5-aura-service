@@ -1,4 +1,4 @@
-# config/maps/plugins/sandbox/de-DE/FUZZY_MAP.py
+# config/maps/plugins/0_aura_quickstart/de-DE/FUZZY_MAP.py
 # config/languagetool_server/maps/  /de-DE/FUZZY_MAP.py
 # https://regex101.com/
 import re # noqa: F401

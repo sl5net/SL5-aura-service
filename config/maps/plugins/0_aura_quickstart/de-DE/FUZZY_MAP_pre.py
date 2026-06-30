@@ -21,14 +21,17 @@ suche = r'(such|suche|suche du|sucht|suchen|sure|Schuhe|hoover|buch|zug|Zuge|sti
 _meta_run_search_result = {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
+    # EXAMPLE: py
     'only_in_windows': [ r'\.py'],
 }
 # Sherlock
 FUZZY_MAP_pre = [
 
+    # EXAMPLE: log
     ('log', r'^(log|look|oh|oh hallo|oh ein ok|Sherlock)$', 70, _meta_run_search_result),
 
 
+    # EXAMPLE: log
     ('log', fr'^{AURA_VARIANTS}\s*(logik|logdateien|log-datei|logdateien|logging|rainer|ein rock|lockt hat|ein okt hat|log-datei|logdatei|eine logdatei|ein oktett|ein log-datei)$', 70, _meta_run_search_result),
 
     # EXAMPLE: log
@@ -84,11 +87,13 @@ FUZZY_MAP_pre = [
 
     # deprecated method? Maybe use run_search_the_result.py?
     # Aura Suche
+    # EXAMPLE: AURA_VARIANTS x suche
     ('Suche wird gestartet...', fr'^{AURA_VARIANTS}[^\w]?.*{suche}$', 100, {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
     }),
 
+    # EXAMPLE: rohre zu
     ('Suche wird gestartet...', r'^(rohre zu|rohrer suche|orange hoch)$', 100, {
     'flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
@@ -97,6 +102,7 @@ FUZZY_MAP_pre = [
 
     # deprecated method? Maybe use run_search_the_result.py?
     # Handbuch wird durchsucht...
+    # EXAMPLE: AURA_VARIANTS x dokux
     ('Handbuch wird durchsucht...', fr'^{AURA_VARIANTS}[^\w]?.*(doku\w*|handbuch\w*|anleitung\w*|gemündet|hilfe\w*|du güntert|der konvent touch|drucker mittels|logo mündel)\s*(zu|suchen|\w+)?$', 100, {
         'flags': re.IGNORECASE,
         'on_match_exec': [Path(__file__).resolve().parent /  'run_doc_search.py']

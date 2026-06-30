@@ -1,4 +1,4 @@
-# config/maps/plugins/wannweil/de-DE/FUZZY_MAP.py
+# config/maps/wake-up/de-DE/FUZZY_MAP.py
 import re # noqa: F401
 
 # This map uses a hybrid approach:

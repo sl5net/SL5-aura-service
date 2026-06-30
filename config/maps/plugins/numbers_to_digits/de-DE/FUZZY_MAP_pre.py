@@ -59,6 +59,7 @@ FUZZY_MAP_pre = [
     ('0', r'^(null|nö|nun|los)$', 87,  # min_accuracy
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
+    # EXAMPLE: null
     ('0', r'(\b|\d)(null)(\b|\d)', 87,  # min_accuracy
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
@@ -188,9 +189,11 @@ FUZZY_MAP_pre = [
 
 
     # JOIN_NUMBERS_EVERYWHERE: Zieht Ziffern immer zusammen, wenn sie benachbart sind. works not as fullmachtch (somwhere in your string)
+    # EXAMPLE: 1 1
     (r'\1', r'(\d)\s+(?=\d)', 95, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # JOIN_NUMBERS_AT_END: Zieht Ziffern zusammen, wenn danach nur noch Zahlen/Spaces folgen
+    # (r'', r'(?=[\d ]+$)(?<=\d)\s+(?=\d)', 95, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']})
     # (r'', r'(?=[\d ]+$)(?<=\d)\s+(?=\d)', 95, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']})
 
     # REMOVE 1 SPACES BETWEEN 2 NUMBERS fullmachtch

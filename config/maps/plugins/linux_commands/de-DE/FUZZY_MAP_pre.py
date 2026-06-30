@@ -204,6 +204,7 @@ FUZZY_MAP_pre = [
 
 
     # git diff small
+    # EXAMPLE: git diff
     ('git diff -U0 > /tmp/aura_small_diff.txt && kate /tmp/aura_small_diff.txt',
      r'^(git diff)$', 85, # min_accuracy
  {

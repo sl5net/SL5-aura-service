@@ -1,4 +1,4 @@
-# config/maps/koans_deutsch/07_koan_auto_fix_map_errors/de-DE/FUZZY_MAP_pre.py
+# config/maps/koans_2_peter_deutsch/07_koan_auto_fix_map_errors/de-DE/FUZZY_MAP_pre.py
 import re  # noqa: F401
 FUZZY_MAP_pre = [
     ('fuzzy1', 'handuch', 1, {'flags': re.IGNORECASE}),

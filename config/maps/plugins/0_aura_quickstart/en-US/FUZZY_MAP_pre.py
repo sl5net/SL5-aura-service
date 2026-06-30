@@ -1,3 +1,4 @@
+# config/maps/plugins/0_aura_quickstart/en-US/FUZZY_MAP_pre.py
 # TIP: Just type a word below this line (e.g., banana) and save.
 import os
 from pathlib import Path
@@ -13,9 +14,11 @@ FUZZY_MAP_pre = [
     # TIP: Just type a word below this line (e.g., banana) and save.
 
     # --- Learning Mode Toggle ---
+    # EXAMPLE: auralearning mode on
     ('Learning mode...', r'^aura.*learning mode (on|off|start|stop)$', 100, {
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),
+    # EXAMPLE: zyxü
 
     ('zyxü', r'^(zyxü)$', 10),
 

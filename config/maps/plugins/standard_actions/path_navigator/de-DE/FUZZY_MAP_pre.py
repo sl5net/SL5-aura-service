@@ -1,3 +1,4 @@
+# config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
 # projects/py/STT/config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 #from pathlib import Path as p;import os as o # noqa: E702
@@ -287,6 +288,7 @@ FUZZY_MAP_pre = [
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
+    # EXAMPLE: Navigiere
     (f"{Path(PROJECT_ROOT_POSIX, 'config','maps','koans_deutsch').as_posix()}",
     r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(könne|co eins)\s*(deutsch)\s*\w*$',
      90,
