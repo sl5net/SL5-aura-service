@@ -27,12 +27,18 @@ logger.addHandler(fh)
 CACHE_DIR_weather = p('/') / 'tmp' / 'sl5_aura' / 'weather_cache'
 CACHE_DIR_weather.mkdir(parents=True, exist_ok=True)
 
+# Aktuell in reutlingen sind es 25 Grad, gefuehlt wie 27 Grad. Die Vorhersage meldet: Leicht Bewölkt.
+# Aktuell in reutlingen sind es 25 Grad, gefuehlt wie 27 Grad. Die Vorhersage meldet: Leicht Bewölkt.
 
 def execute(match_data):
     """
     Ruft die aktuelle Wettervorhersage für einen vordefinierten Ort ab
     und gibt eine menschenlesbare Zusammenfassung zurück.
     """
+
+    logger.info("--- Weather Execute Call ---")
+    logger.info(f"Type of match_data: {type(match_data)}")
+    logger.info(f"Content of match_data: {repr(match_data)}")
 
     # 1. Konfiguration einlesen
     if not CONFIG_FILE.exists():
@@ -49,11 +55,26 @@ def execute(match_data):
 
     cache_key_args = (city, lang)
 
-    # 2. Cache prüfen (frisch)
+    # 2. Match-Daten auswerten und Cache pruefen
+    matched_text = ""
+    if isinstance(match_data, dict) and 'regex_match_obj' in match_data:
+        match_obj = match_data['regex_match_obj']
+        logger.info(f"regex_match_obj type: {type(match_obj)}")
+        matched_text = match_obj.group(0).lower()
+    elif hasattr(match_data, 'group'):
+        matched_text = match_data.group(0).lower()
+
+    logger.info(f"Extracted matched_text: '{matched_text}'")
+
+    is_tomorrow = "morgen" in matched_text
+    logger.info(f"is_tomorrow evaluated to: {is_tomorrow}")
+
+    cache_key_args = (city, lang, is_tomorrow)
+
     try:
         cached_response = get_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, WEATHER_TTL)
         if cached_response:
-            logger.info("CACHE HIT – kein API-Aufruf nötig.")
+            logger.info("CACHE HIT - kein API-Aufruf noetig.")
             return cached_response
     except Exception as e:
         logger.error(f"Fehler beim Cache-Lesezugriff: {e}")
@@ -75,53 +96,69 @@ def execute(match_data):
             timeout=10
         )
         weather_data = json.loads(result.stdout)
-
     except FileNotFoundError:
         logger.error("curl nicht gefunden.")
         return "Fehler: Das Programm 'curl' wurde nicht gefunden. Bitte installiere es."
-
     except subprocess.TimeoutExpired:
         logger.warning("API-Timeout. Versuche Stale-Cache.")
-
     except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
         logger.warning(f"API-Fehler ({type(e).__name__}). Versuche Stale-Cache.")
-
     except Exception as e:
         logger.warning(f"Unbekannter Fehler beim API-Aufruf ({type(e).__name__}: {e}). Versuche Stale-Cache.")
 
     # 4. Failover auf abgelaufenen Cache, falls API-Aufruf fehlschlug
     if weather_data is None:
         try:
-            stale_response = get_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, ttl_seconds=None,logger=logger)
+            stale_response = get_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, ttl_seconds=None,
+                                               logger=logger)
             if stale_response:
-                if logger:
-                    logger.warning(" (stale) Cache Fallback.")
-                else:
-                    print(" (stale) Cache Fallback.")
+                logger.warning(" (stale) Cache Fallback.")
                 return stale_response
         except Exception as e:
             logger.error(f"Fehler beim Stale-Cache-Lesezugriff: {e}")
-        return f"Ich konnte die Wetterdaten für '{city}' leider nicht abrufen und habe keinen Cache."
+        return f"Ich konnte die Wetterdaten fuer '{city}' leider nicht abrufen und habe keinen Cache."
 
     # 5. JSON verarbeiten und Antwort bauen
     try:
-        current_condition = weather_data['current_condition'][0]
-
-        temp_c       = current_condition.get('temp_C', '?')
-        feels_like_c = current_condition.get('FeelsLikeC', '?')
-
-        lang_key = f'lang_{lang}'
-        description_list = current_condition.get(lang_key) or current_condition.get('weatherDesc')
-
-        if description_list and len(description_list) > 0:
-            description = description_list[0].get('value', 'Keine Beschreibung verfügbar')
-        else:
+        if is_tomorrow:
+            tomorrow_weather = weather_data['weather'][1]
+            max_temp = tomorrow_weather.get('maxtempC', '?')
+            min_temp = tomorrow_weather.get('mintempC', '?')
+            hourly_list = tomorrow_weather.get('hourly', [])
             description = "Wetterzustand unbekannt"
 
-        response = (
-            f"Aktuell in {city} sind es {temp_c} Grad, gefühlt wie {feels_like_c} Grad. "
-            f"Die Vorhersage meldet: {description}."
-        )
+            # Mittags-Prognose (12:00 Uhr ist Index 4 im 3-Stunden-Raster)
+            if len(hourly_list) > 4:
+                midday = hourly_list[4]
+            elif len(hourly_list) > 0:
+                midday = hourly_list[len(hourly_list) // 2]
+            else:
+                midday = None
+
+            if midday:
+                lang_key = f'lang_{lang}'
+                description_list = midday.get(lang_key) or midday.get('weatherDesc')
+                if description_list and len(description_list) > 0:
+                    description = description_list[0].get('value', 'Keine Beschreibung verfuegbar')
+
+            response = (
+                f"Morgen in {city} liegt die Temperatur zwischen {min_temp} und {max_temp} Grad. "
+                f"Die Vorhersage meldet: {description}."
+            )
+        else:
+            current_condition = weather_data['current_condition'][0]
+            temp_c = current_condition.get('temp_C', '?')
+            feels_like_c = current_condition.get('FeelsLikeC', '?')
+            lang_key = f'lang_{lang}'
+            description_list = current_condition.get(lang_key) or current_condition.get('weatherDesc')
+            if description_list and len(description_list) > 0:
+                description = description_list[0].get('value', 'Keine Beschreibung verfuegbar')
+            else:
+                description = "Wetterzustand unbekannt"
+            response = (
+                f"Aktuell in {city} sind es {temp_c} Grad, gefuehlt wie {feels_like_c} Grad. "
+                f"Die Vorhersage meldet: {description}."
+            )
 
         # 6. Ergebnis in Cache schreiben
         try:
@@ -129,9 +166,7 @@ def execute(match_data):
             logger.info("Ergebnis erfolgreich in Cache geschrieben.")
         except Exception as e:
             logger.error(f"Fehler beim Cache-Schreibzugriff: {e}")
-
         return response
-
     except (KeyError, IndexError) as e:
         logger.error(f"Strukturfehler im JSON: {e}")
         return f"Die erhaltenen Wetterdaten hatten ein unerwartetes Format oder der Ort '{city}' wurde nicht gefunden."
