@@ -643,7 +643,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
 # Helper to check if a string contains regex special characters
 def is_regex_pattern(pattern):
-    # This is a simple heuristic. You can add more characters if needed.
+    # simple heuristic
     return any(char in pattern for char in r'^$*+?{}[]\|()")')
 
 

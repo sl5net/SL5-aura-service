@@ -100,17 +100,35 @@ if [[ "$INPUT_METHOD" == "dotool" ]]; then
         INPUT_METHOD="xdotool"  # Graceful Fallback
     else
 
-        # 2. Keyboard-Layout aus Modellname ermitteln
+        # 2. Keyboard-Layout from Modellname
         LANG_CODE=''
         MODEL_PATH="config/model_name.txt"
         if [[ -f "$MODEL_PATH" ]]; then
             MODEL_NAME=$(cat "$MODEL_PATH")
             LANG_CODE=$(echo "$MODEL_NAME" | sed -n 's/.*model-\([a-z]\{2\}\).*/\1/p')
         fi
-        [[ -z "$LANG_CODE" ]] && LANG_CODE="de"
-        export XKB_DEFAULT_LAYOUT="$LANG_CODE"
-        export DOTOOL_XKB_LAYOUT="$LANG_CODE"
-        echo " Language detected: $LANG_CODE (Applied to dotool)"
+
+
+
+       [[ -z "$LANG_CODE" ]] && LANG_CODE="de"
+
+        # Map ISO language codes to valid X11 XKB layout symbols
+        case "$LANG_CODE" in
+            "en") XKB_LAYOUT="us" ;;
+            "ja") XKB_LAYOUT="jp" ;;
+            "zh") XKB_LAYOUT="cn" ;;
+            "hi") XKB_LAYOUT="in" ;;
+            *)    XKB_LAYOUT="$LANG_CODE" ;;
+        esac
+
+        export XKB_DEFAULT_LAYOUT="$XKB_LAYOUT"
+        export DOTOOL_XKB_LAYOUT="$XKB_LAYOUT"
+        echo " Language detected: $LANG_CODE (Mapped to layout: $XKB_LAYOUT)"
+
+
+
+
+
 
         # 3. dotoold Daemon starten falls noetig (nur wenn dotoold existiert)
         if command -v dotoold &>/dev/null && ! pgrep -x "dotoold" >/dev/null 2>&1; then
