@@ -2,6 +2,8 @@ import os
 import sys
 from pathlib import Path
 
+# scripts.py.bootstrap_venv
+
 # Robust detection of active virtual environment (PEP 405)
 in_venv = (sys.prefix != sys.base_prefix) or ('VIRTUAL_ENV' in os.environ)
 
@@ -52,5 +54,6 @@ else:
     if 'VIRTUAL_ENV' not in os.environ:
         os.environ['VIRTUAL_ENV'] = sys.prefix
 
+# scripts.py.bootstrap_venv bootstrap_hello
 def bootstrap_hello():
     print('bootstrap_venv is implemeted')
