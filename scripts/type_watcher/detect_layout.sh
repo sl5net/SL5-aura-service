@@ -3,17 +3,7 @@
 # test:
 # bash -x ./scripts/type_watcher/detect_layout.sh
 
-# 2. Keyboard-Layout from Modellname
-XKB_LAYOUT=''
-MODEL_PATH="config/model_name.txt"
-if [[ -f "$MODEL_PATH" ]]; then
-    MODEL_NAME=$(cat "$MODEL_PATH")
-    XKB_LAYOUT=$(echo "$MODEL_NAME" | sed -n 's/.*model-\([a-z]\{2\}\).*/\1/p')
-fi
-
 [[ -z "$XKB_LAYOUT" ]] && XKB_LAYOUT="de"
-
-LANG_CODE="${LANG_CODE:-de}"
 
 uname_s=$(uname -s)
 
@@ -60,7 +50,7 @@ fi
 
 export XKB_DEFAULT_LAYOUT="$XKB_LAYOUT"
 export DOTOOL_XKB_LAYOUT="$XKB_LAYOUT"
-echo "Language detected: $LANG_CODE (Mapped to layout: $XKB_LAYOUT)" >&2
+echo "layout: $XKB_LAYOUT" >&2
 echo "$XKB_LAYOUT"
 
 
