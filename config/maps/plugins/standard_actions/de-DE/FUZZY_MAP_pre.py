@@ -43,8 +43,8 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: wie ist das wetter
-    ('', r'^(wie ist das wetter|wie ist das fett|Die erhaltenen Wetterdaten hatten ein unerwartetes Format.|wie ist das bett|wie ist das etwa|mir ist das wetter|nächstes bild|wie ist das zwitschern|nicht das wetter|nächstes|wie ist das|wie ist es|nächstes we|lies es)$', 95, {
-        'flags': re.IGNORECASE,
+    ('', r'^(wie ist das wetter|wie wird das wetter|wie das wetter morgen|wetter morgen|wie ist das fett|Die erhaltenen Wetterdaten hatten ein unerwartetes Format.|wie ist das bett|wie ist das etwa|mir ist das wetter|naechstes bild|wie ist das zwitschern|nicht das wetter|naechstes|wie ist das|wie ist es|naechstes we|lies es)$', 95, {
+             'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     }),
 
