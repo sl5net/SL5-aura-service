@@ -1,14 +1,13 @@
 #!/bin/bash
 # scripts/type_watcher/type_watcher.sh
 export DOTOOL_DELAY=0
-
 DOTOOL_PID=$!
+set -euo pipefail
 
 # typedelay direkt nach Start setzen
 sleep 0.1  # kurz warten bis dotool bereit ist
 echo "typedelay 0" > /tmp/dotool_fifo
 
-set -euo pipefail
 
 if [ "${OS:-}" = "Windows_NT" ] || [ -n "${WINDIR:-}" ]; then
   tmp_dir='C:/tmp'
@@ -100,70 +99,32 @@ if [[ "$INPUT_METHOD" == "dotool" ]]; then
         INPUT_METHOD="xdotool"  # Graceful Fallback
     else
 
-        # 2. Keyboard-Layout from Modellname
-        LANG_CODE=''
-        MODEL_PATH="config/model_name.txt"
-        if [[ -f "$MODEL_PATH" ]]; then
-            MODEL_NAME=$(cat "$MODEL_PATH")
-            LANG_CODE=$(echo "$MODEL_NAME" | sed -n 's/.*model-\([a-z]\{2\}\).*/\1/p')
-        fi
+
+        echo "11111111111111111111111111111111111"
 
 
-
-       [[ -z "$LANG_CODE" ]] && LANG_CODE="de"
-
-
-               XKB_LAYOUT="de"   # default fallback
-        LANG_CODE="${LANG_CODE:-de}"
-
-        uname_s=$(uname -s)
-
-        if [[ "$uname_s" == "Darwin" ]]; then
-            # macOS: use compiled helper get_macos_layout (see get_macos_layout.c)
-            if command -v ./get_macos_layout &>/dev/null || command -v get_macos_layout &>/dev/null; then
-                if command -v get_macos_layout &>/dev/null; then
-                    MAC_SRC=$(get_macos_layout 2>/dev/null)
-                else
-                    MAC_SRC=$(./get_macos_layout 2>/dev/null)
-                fi
-
-                if [[ -n "$MAC_SRC" ]]; then
-                    # map common macOS input source IDs to layout codes
-                    case "$MAC_SRC" in
-                        *German*|*keylayout.German*|*com.apple.keylayout.German*) XKB_LAYOUT="de" ;;
-                        *US*|*keylayout.US*|*com.apple.keylayout.US*|*com.apple.keylayout.ABC*) XKB_LAYOUT="us" ;;
-                        *com.apple.keylayout.Japanese*|*keylayout.Japanese*) XKB_LAYOUT="jp" ;;
-                        *com.apple.keylayout.Australian*|*Australian*) XKB_LAYOUT="au" ;;
-                        *)
-                            # Try to extract last segment: com.apple.keylayout.German -> German -> de
-                            SHORT=$(echo "$MAC_SRC" | sed -n 's/.*\.keylayout\.\([A-Za-z]*\).*/\1/p')
-                            if [[ "$SHORT" == "German" ]]; then XKB_LAYOUT="de"; fi
-                            ;;
-                    esac
-                fi
-            else
-                echo "WARN: get_macos_layout helper not found; bitte get_macos_layout.c kompilieren."
+        DETECT_HELPER="$PROJECT_ROOT/scripts/type_watcher/detect_layout.sh"
+        # 2. Detect layout via helper in the same dir as this script
+        if [[ -x "$DETECT_HELPER" ]]; then
+            if ! XKB_LAYOUT="$("$DETECT_HELPER" 2>/dev/null)"; then
+                echo "WARN: detect_layout helper failed; using fallback 'de'" >&2
+                XKB_LAYOUT="de"
             fi
-
         else
-            # Linux: systemd localectl
-            if command -v localectl &>/dev/null; then
-                DETECTED=$(localectl status | grep "X11 Layout" | sed -n 's/.*Layout:[[:space:]]*\([a-z]\{2\}\).*/\1/p')
-                [[ -n "$DETECTED" ]] && XKB_LAYOUT="$DETECTED"
-            fi
-
-            # Fallback: setxkbmap (X11)
-            if [[ "$XKB_LAYOUT" == "de" ]] && command -v setxkbmap &>/dev/null; then
-                DETECTED=$(setxkbmap -query 2>/dev/null | grep "layout" | sed -n 's/.*layout:[[:space:]]*\([a-z]\{2\}\).*/\1/p')
-                [[ -n "$DETECTED" ]] && XKB_LAYOUT="$DETECTED"
+            echo "WARN: $DETECT_HELPER not found or not executable; attempting PATH or fallback" >&2
+            if command -v detect_layout.sh &>/dev/null; then
+                XKB_LAYOUT="$(detect_layout.sh 2>/dev/null)" || XKB_LAYOUT="de"
+            else
+                XKB_LAYOUT="de"
             fi
         fi
-
         export XKB_DEFAULT_LAYOUT="$XKB_LAYOUT"
         export DOTOOL_XKB_LAYOUT="$XKB_LAYOUT"
-        echo "Language detected: $LANG_CODE (Mapped to layout: $XKB_LAYOUT)"
 
-
+        echo "XKB_LAYOUT=$XKB_LAYOUT"
+        echo "XKB_DEFAULT_LAYOUT=$XKB_DEFAULT_LAYOUT"
+        echo "DOTOOL_XKB_LAYOUT=$DOTOOL_XKB_LAYOUT"
+        echo "2222222222222222222222222222222222222222222222"
 
 
 
