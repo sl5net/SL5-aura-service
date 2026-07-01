@@ -15,7 +15,7 @@ FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=
 F_OUT=$(grep -rnH -I $FILT . "$M_DIR" | \
     fzf --print-query \
         --history="$H_FILE" --query="$IQ" \
-        --header="Enter: Run | Ctrl+E: Edit" --delimiter=":" \
+        --header="Enter/Ctrl+R: Run | Ctrl+E: Edit" --delimiter=":" \
         --bind="ctrl-z:previous-history" \
         --bind="ctrl-y:next-history" \
         --bind="ctrl-backspace:backward-kill-word" \
@@ -24,29 +24,37 @@ F_OUT=$(grep -rnH -I $FILT . "$M_DIR" | \
         --bind="ctrl-right:forward-word" \
         --bind="home:beginning-of-line" \
         --bind="end:end-of-line" \
-        --expect="ctrl-e" \
+        --expect="ctrl-e,ctrl-r" \
         --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {1} {2}' \
 )
 [[ -z "$F_OUT" ]] && exit 0
 QUERY_TYPED=$(echo "$F_OUT" | sed -n '1p')
+#QUERY_TYPED=$(echo "$F_OUT" | sed -n '1p' | tr -d '\r')
 KEY=$(echo "$F_OUT" | sed -n '2p')
 SEL=$(echo "$F_OUT" | sed -n '3p')
+#SEL=$(echo "$F_OUT" | sed -n '3p' | tr -d '\r')
+logger_info "DBG typed='$QUERY_TYPED' key='$KEY' sel='$SEL'"
 
 
 # NEW 25.6.'26 16:10 Thu
 SEL=$(echo "$F_OUT" | sed -n '3p')
 logger_info "DBG typed='$QUERY_TYPED' key='$KEY' sel='$SEL'"
-if [[ -z "$KEY" ]]; then
+if [[ -z "$KEY" || "$KEY" = "ctrl-r" ]]; then
+
     QUERY=""
-    if [[ -n "$SEL" ]]; then
+    if [[ -z "$KEY" && -n "$SEL" ]]; then
+        # Enter gedrückt -> extrahiere Template der markierten Zeile
         F_PATH="$(echo "$SEL" | cut -d: -f1)"
         L_NUM="$(echo "$SEL" | cut -d: -f2)"
         QUERY=$(python3 "$SCRIPT_DIR/preview_rule.py" --extract "$F_PATH" "$L_NUM")
         logger_info "DBG extract='$QUERY'"
     fi
     if [[ -z "$QUERY" ]]; then
+        # Ctrl+R gedrückt (oder Extraktion leer) -> nutze eingetippten Text direkt
         QUERY="$QUERY_TYPED"
     fi
+    logger_info "DBG final_query='$QUERY' py_exists=$(test -f "$PROJECT_ROOT/.venv/bin/python3" && echo yes || echo NO)"
+
     logger_info "DBG final_query='$QUERY' py_exists=$(test -f "$PROJECT_ROOT/.venv/bin/python3" && echo yes || echo NO)"
     if [[ -n "$QUERY" ]]; then
         logger_info "Executing: $QUERY"

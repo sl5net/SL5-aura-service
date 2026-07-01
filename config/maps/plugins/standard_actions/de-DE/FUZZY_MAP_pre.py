@@ -43,18 +43,26 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: wie ist das wetter
-    ('', r'^(wie (?:ist) das wetter|wie ist das fett|wie ist das bett|wie ist das etwa|mir ist das wetter|naechstes bild|wie ist das zwitschern|nicht das wetter|naechstes|wie ist das|wie ist es|naechstes we|lies es)$'
+    ('',
+     r'^(wie (?:ist|wird) das wetter(?: morgen)?|wie das wetter morgen|wie ist das fett|Die erhaltenen Wetterdaten hatten ein unerwartetes Format.|wie ist das bett|wie ist das etwa|mir ist das wetter|naechstes bild|wie ist das zwitschern|nicht das wetter|naechstes|wie ist das|wie ist es|naechstes we|lies es)$'
     , 95, {
              'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     }),
 
-    # EXAMPLE: wie wird das wetter morgen
-    ('', r'^(wie (?:ist|wird) das wetter(?: morgen)?|wie das wetter morgen)$'
-    , 95, {
-             'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
-    }),
+    # # EXAMPLE: wie ist das wetter
+    # ('', r'^(wie (?:ist) das wetter|wie ist das fett|wie ist das bett|wie ist das etwa|mir ist das wetter|naechstes bild|wie ist das zwitschern|nicht das wetter|naechstes|wie ist das|wie ist es|naechstes we|lies es)$'
+    # , 95, {
+    #          'flags': re.IGNORECASE,
+    #     'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
+    # }),
+
+    # # EXAMPLE: wie wird das wetter morgen
+    # ('', r'^(wie (?:ist|wird) das wetter(?: morgen)?|wie das wetter morgen)$'
+    # , 95, {
+    #          'flags': re.IGNORECASE,
+    #     'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
+    # }),
 
 
     # EXAMPLE: wie ist das wetter
