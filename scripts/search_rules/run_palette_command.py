@@ -1,85 +1,74 @@
+#!/usr/bin/env python3
 # scripts/search_rules/run_palette_command.py:1
 import sys
+import json
+import urllib.request
 import os
+import socket
+import subprocess
 import time
-import traceback
-import builtins
-import logging
-
 from pathlib import Path
 
-# Sichert, dass der Log-Pfad korrekt aufgelöst wird
-SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent
-LOG_FILE_PATH = PROJECT_ROOT / 'log' / 'heavy_imports.log'
-
-if not hasattr(builtins, "_logged_heavy_imports"):
-    builtins._logged_heavy_imports = set()
-
-_original_import = builtins.__import__
-def _hook_import(name, *args, **kwargs):
-    targets = ('pandas', 'scipy', 'pygame', 'audio_manager', 'sklearn', 'nltk', 'trino', 'vosk', 'sounddevice', 'watchdog')
-    if name in targets and name not in builtins._logged_heavy_imports:
-        builtins._logged_heavy_imports.add(name)
-        try:
-            trigger_file = "Unknown"
-            trigger_line = 0
-            for frame in reversed(traceback.extract_stack()):
-                if "site-packages" not in frame.filename and "frozen" not in frame.filename and "run_palette_command" not in frame.filename:
-                    trigger_file = frame.filename
-                    trigger_line = frame.lineno
-                    break
-            with open(LOG_FILE_PATH, "a", encoding="utf-8") as f_log:
-                f_log.write(f"📢 HEAVY IMPORT DETECTED: '{name}' imported by '{trigger_file}' on line {trigger_line}\n")
-        except Exception:
-            pass
-    return _original_import(name, *args, **kwargs)
-builtins.__import__ = _hook_import
-
-# 1. Projekt-Root ermitteln und in den Python-Pfad eintragen
-SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent
-sys.path.append(str(PROJECT_ROOT))
-
-# 2. Standard-Logger aufbauen (unterdrückt Log-Meldungen im Terminal)
-logger = logging.getLogger("AuraPalette")
-logger.addHandler(logging.NullHandler())
-
-try:
-    from scripts.py.func.process_text_in_background import process_text_in_background
-    from scripts.py.func.config.dynamic_settings import settings
-except ImportError as e:
-    print(f"Error importing Aura modules: {e}", file=sys.stderr)
-    sys.exit(1)
+def is_api_running():
+    try:
+        with socket.create_connection(("127.0.0.1", 8830), timeout=0.1):
+            return True
+    except Exception: return False
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: run_palette_command.py <text_command>")
-        sys.exit(1)
+    if len(sys.argv) < 2: sys.exit(0)
+    query = sys.argv[1]
+    SCRIPT_DIR = Path(__file__).resolve().parent
+    PROJECT_ROOT = SCRIPT_DIR.parent.parent
+    secrets_path = PROJECT_ROOT / ".secrets"
+    api_key = "DEVELOPMENT_KEY_PLACEHOLDER"
+    if secrets_path.exists():
+        try:
+            with open(secrets_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip().startswith("SERVICE_API_KEY="):
+                        api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                        break
+        except Exception: pass
 
-    raw_text = sys.argv[1]
-    lang_code = "de-DE"
+    if not is_api_running():
+        print("🚀 Starting FastAPI Uvicorn Service in background...", flush=True)
+        kwargs = {"start_new_session": True} if os.name != "nt" else {"creationflags": 0x00000008}
+        subprocess.Popen(
+            [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, **kwargs
+        )
+        for _ in range(40):
+            if is_api_running(): break
+            time.sleep(0.1)
 
-    # 3. LanguageTool-URL dynamisch aus den Einstellungen laden
-    lt_url = getattr(settings, 'active_lt_url', None)
-
-    # 4. Output-Verzeichnis für den Type-Watcher auflösen
-    is_windows = (os.name == 'nt')
-    tmp_dir = Path("C:/tmp") if is_windows else Path("/tmp")
-    output_dir = tmp_dir / "sl5_aura" / "tts_output"
-
-    # 5. Natives Aura-Backend synchron ausführen (erzeugt tts_output_*.txt automatisch)
-    process_text_in_background(
-        logger,
-        lang_code,
-        raw_text,
-        None,
-        time.time(),
-        lt_url,
-        output_dir_override=str(output_dir),
-        session_id=999,
-        chunk_id=1
+    # payload = {"raw_text": query, "lang_code": "de-DE", "unmasked": False}
+    payload = {"raw_text": query, "lang_code": "de-DE", "unmasked": False, "interface": "speech"}
+    data = json.dumps(payload).encode("utf-8")
+    url = "http://127.0.0.1:8830/process_cli"
+    req = urllib.request.Request(
+        url, data=data,
+        headers={"X-API-Key": api_key, "Content-Type": "application/json"},
+        method="POST"
     )
+    try:
+        with urllib.request.urlopen(req, timeout=120) as response:
+            res_data = json.loads(response.read().decode("utf-8"))
+            if res_data.get("status") == "completed":
+                result_text = res_data.get("result_text", "")
+                print(result_text)
+
+                # Schreibe die Ausgabedatei für Hintergrund-Watcher (Master-Kompatibilität)
+                tmp_dir = Path("C:/tmp") if os.name == 'nt' else Path("/tmp")
+                output_dir = tmp_dir / "sl5_aura" / "tts_output"
+                output_dir.mkdir(parents=True, exist_ok=True)
+                out_file = output_dir / f"tts_output_{int(time.time() * 1000)}.txt"
+                with open(out_file, "w", encoding="utf-8") as f:
+                    f.write(result_text)
+            else:
+                print(f"Service-Antwort (Fehler): {res_data}")
+    except Exception as e:
+        print(f"Verbindungsfehler (Port 8830): {e}", file=sys.stderr)
 
 if __name__ == '__main__':
     main()
