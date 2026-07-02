@@ -33,7 +33,14 @@ def main():
 
     if not is_api_running():
         print("🚀 Starting FastAPI Uvicorn Service in background...", flush=True)
-        kwargs = {"start_new_session": True} if os.name != "nt" else {"creationflags": 0x00000008}
+        # CREATE_NO_WINDOW = 0x08000000
+        DETACHED_PROCESS = '0x00000008' # noqa: F841
+
+        # CREATE_NEW_PROCESS_GROUP = '0x00000200'
+        # flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+        flags = subprocess.DETACHED_PROCESS
+        kwargs = {"start_new_session": True} if os.name != "nt" else {"creationflags": flags}
+
         subprocess.Popen(
             [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, **kwargs
