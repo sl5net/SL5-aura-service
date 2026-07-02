@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 # scripts/search_rules/run_palette_command.py:1
-import sys, json, urllib.request, os, socket, subprocess, time
+import sys
+import json
+import urllib.request
+import os
+import socket
+import subprocess
+import time
 from pathlib import Path
 
 def is_api_running():
