@@ -58,7 +58,9 @@ def main():
                     if line.strip().startswith("SERVICE_API_KEY="):
                         api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
                         break
-        except Exception: pass
+        except Exception as e20260702_1707:
+            print(f'e20260702_1707: {e20260702_1707}')
+
 
     if not is_api_running():
         print("🚀 Starting FastAPI Uvicorn Service in background...", flush=True)
