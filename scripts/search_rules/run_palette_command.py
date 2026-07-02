@@ -43,6 +43,10 @@ def main():
     #         stdout=lf, stderr=lf, **kwargs
     #     )
 
+    env = os.environ.copy()
+    env["PYTHONUTF8"] = "1"  # erzwingt UTF-8 Mode für den Kindprozess
+    env["PYTHONIOENCODING"] = "utf-8:replace"  # Fallback, falls PYTHONUTF8 nicht greift
+
     if secrets_path.exists():
         try:
             with open(secrets_path, "r", encoding="utf-8") as f:
@@ -71,7 +75,7 @@ def main():
 
         subprocess.Popen(
             [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, **kwargs
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,  env=env, **kwargs
         )
         for _ in range(40):
             if is_api_running(): break
