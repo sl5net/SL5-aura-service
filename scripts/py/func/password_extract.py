@@ -166,45 +166,30 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
                 if log_everything:
                     logger.info("✓ Found password in plaintext line.")
                 # return pw
+
+    process_id = os.getpid()  # Get the current Process ID
+
+
     if not pw:
         logger.warning(f"⚠ No valid password pattern found in ..{key_path}")
     if pw and not is_fist5are_letters:
         pw = mirror_outside_in_bytes(pw,9)
         # scripts/py/func/password_extract.py:91
 
-        process_id = os.getpid()  # Get the current Process ID
 
         logger.info(f'⚠️ Extraction of this 🔒 encrypted 📦 ZIP is restricted (fist 5 are not only letters) to Aura only 🏗️ external extraction will fail🛑. Context: … {str(key_path)[-45:]} (PID {process_id})')
     else:
-        # py/func/password_extract.py:176
-        logger.info('🌍 This 🔒 encrypted 📦 ZIP file is PORTABLE (fist 5 are letters): External extraction 📤 supported. Context: … {str(key_path)[-45:]} (PID {process_id})')
+        logger.info(f'🌍 This 🔒 encrypted 📦 ZIP file is PORTABLE (fist 5 are letters): External extraction 📤 supported. Context: … {str(key_path)[-45:]} (PID {process_id})')
 
-        # py/func/password_extract.py:180
-        # Update the persistent cache
-
-        # py/func/password_extract.py:181 (ungefähr)
-
-        # --- NEUE FALLE ANFANG ---
-        # sys.__stderr__.write("[DEBUG] Before cache write. Function is exiting.\n")
-        # --- NEUE FALLE ENDE ---
-
-
-        try:
-            cache[normalized_key] = {
-                'timestamp': current_time,
-                'pw': pw
-                ,
-            }
-
-        except Exception as e:
-            sys.__stderr__.write(f"\n[FATAL] Cache Crash: {e}\n")
-            logger.info(
-                'f"\n[FATAL] Cache Crash: {e}\n"')
-            return None
-            # raise
-
-        # sys.__stderr__.write("[DEBUG] After cache write. Function is exiting.\n")
-
+    try:
+        cache[normalized_key] = {
+            'timestamp': current_time,
+            'pw': pw
+        }
+    except Exception as e:
+        sys.__stderr__.write(f"\n[FATAL] Cache Crash: {e}\n")
+        logger.info(f"\n[FATAL] Cache Crash: {e}\n")
+        return None
 
     return pw
 

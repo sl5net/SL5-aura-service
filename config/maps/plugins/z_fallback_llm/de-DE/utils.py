@@ -122,22 +122,6 @@ def log_debug(text):
         logger.error(f" {e}")
     # sys.exit(1)
 
-
-try:
-    from nltk.stem.snowball import GermanStemmer
-except ImportError as e:
-    msg = f"""
-    Have you .venv activate ?
-    E.g.
-    source .venv/bin/activate
-    --------------
-    {e}
-    """
-    print(msg)
-    log_debug(msg)
-
-
-
 PLUGIN_DIR = Path(__file__).parent
 MEMORY_FILE = PLUGIN_DIR / "conversation_history.json"
 BRIDGE_FILE = Path("/tmp/aura_clipboard.txt")
@@ -145,8 +129,17 @@ DB_FILE = PLUGIN_DIR / "llm_cache.db"
 
 
 
+class LazyGermanStemmer:
+    def __init__(self):
+        self._stemmer = None
+    def stem(self, *args, **kwargs):
+        if self._stemmer is None:
+            from nltk.stem.snowball import GermanStemmer
+            self._stemmer = GermanStemmer()
+        return self._stemmer.stem(*args, **kwargs)
+GLOBAL_STEMMER = LazyGermanStemmer()
 
-GLOBAL_STEMMER = GermanStemmer()
+
 
 CURRENT_FILE_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT_DIR = CURRENT_FILE_DIR

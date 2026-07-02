@@ -44,17 +44,9 @@ from pathlib import Path
 # (24.12.'25 18:34 Wed, https://github.com/sl5net/SL5-aura-service/commit/c95c4929f77c950ae59a7eb2ac38dc76b616d1e8 )
 
 # Global imports for heavy libraries to prevent runtime latency
-try:
-    import numpy as np
-except ImportError as e:
-    print(f'error: {e}')
-    np = None
 
-try:
-    import pygame
-except ImportError as e:
-    print(f'error: {e}')
-    pygame = None
+# scripts/py/func/audio_manager.py
+
 
 # Windows-specific performance imports
 if os.name == 'nt':
@@ -174,6 +166,12 @@ def convert_lang_code_for_espeak(long_code: str) -> str:
 log = logging.getLogger(__name__)
 if not log.handlers:
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+try:
+    import pygame
+except ImportError as e:
+    print(f'error: {e}')
+    pygame = None
 
 # Fallback for systems without winsound (e.g., Linux, macOS)
 if (sys.platform != "win32"
@@ -424,6 +422,18 @@ def is_microphone_muted(logger=None):
 
 # scripts/py/func/audio_manager.py:370
 def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logger=None):
+    try:
+        import numpy as np
+    except ImportError as e:
+        print(f'error: {e}')
+        np = None
+
+    try:
+        import numpy as np
+    except ImportError as e:
+        print(f'error: {e}')
+        np = None
+
     """
     Ultra-robust sound playback with multi-stage fallbacks:
     1. Stereo Pygame (2 channels)
@@ -689,13 +699,3 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         log.info("\nTest aborted by user.")
-
-
-
-
-
-
-
-
-
-

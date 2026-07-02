@@ -2,7 +2,7 @@
 from datetime import datetime
 from pathlib import Path
 
-from scripts.py.func.audio_manager import speak_inclusive_fallback
+
 
 from scripts.py.func import global_state
 
@@ -15,6 +15,7 @@ def between_first_last_hash_manual(s: str) -> str:
     return s[start:end].strip()
 
 def execute(match_data):
+    from scripts.py.func.audio_manager import speak_inclusive_fallback
     root = Path(__file__).resolve().parents[4]
     report_file = root / "docs" / "bugfix" / "TODO" / "misrecognitions.md"
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

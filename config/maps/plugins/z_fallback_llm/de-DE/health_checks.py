@@ -14,8 +14,15 @@ if plugin_dir not in sys.path:
 import utils
 import sqlite3
 
-from nltk.stem.snowball import GermanStemmer
-GLOBAL_STEMMER = GermanStemmer()
+class LazyGermanStemmer:
+    def __init__(self):
+        self._stemmer = None
+    def stem(self, *args, **kwargs):
+        if self._stemmer is None:
+            from nltk.stem.snowball import GermanStemmer
+            self._stemmer = GermanStemmer()
+        return self._stemmer.stem(*args, **kwargs)
+GLOBAL_STEMMER = LazyGermanStemmer()
 
 def check_db_statistics_and_exit_if_invalid():
     """Prüft die DB-Statistiken (Total Hits > Unique Prompts) und bricht bei Inkonsistenz ab."""

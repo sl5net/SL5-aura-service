@@ -3,9 +3,10 @@ import os
 import platform
 from pathlib import Path
 
-from scripts.py.func.audio_manager import speak_inclusive_fallback
 
 def execute(match_data):
+    from scripts.py.func.audio_manager import speak_inclusive_fallback
+
     """
     Inverted Logic: If the flag exists, the Aura is SUSPENDED.
     Default behavior remains 'active' without core source changes.

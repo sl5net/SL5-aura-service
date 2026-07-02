@@ -3,7 +3,7 @@
 
 # LOG_EXCLUDE = []
 
-LOG_EXCLUDE = [
+LOG_EXCLUDE_20260702_1135 = [
     r"📦",
     r"PUNCTUATION_MAP",
     r"〃",

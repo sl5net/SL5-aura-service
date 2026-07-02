@@ -1,7 +1,6 @@
 
 from scripts.py.func.config.dynamic_settings import settings
 from .piper_speak_via_server import piper_speak_via_server
-from ..audio_manager import speak_inclusive_fallback
 
 # scripts/py/func/audio/handle_tts_fallback.py:11
 
@@ -12,6 +11,7 @@ import platform
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 
 def handle_tts_fallback(processed_text, LT_LANGUAGE, logger):
+    from ..audio_manager import speak_inclusive_fallback
 
     if not settings.PLUGIN_HELPER_TTS_ENABLED:
         logger.info("no PLUGIN_HELPER_TTS_ENABLED > skipping audio-speak ...")

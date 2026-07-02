@@ -52,12 +52,9 @@ def _private_map_unpack(map_file_key: str, logger) -> bool:
         # try unzip all zips with this
         for item in os.listdir(map_dir):
             path_item = os.path.join(map_dir, item)
-
-            if item.lower().endswith('.zip') and os.path.isfile(path_item):
-                zip_file = path_item
-                # logger.info(f"scripts/py/func/map_reloader.py:244: {map_file_key} > zip found: {zip_file}")
-            if not zip_file:
+            if not (item.lower().endswith('.zip') and os.path.isfile(path_item)):
                 continue
+            zip_file = path_item
 
             zip_name_base = Path(zip_file).stem
             if zip_name_base.startswith('_'):
@@ -69,6 +66,26 @@ def _private_map_unpack(map_file_key: str, logger) -> bool:
             if os.path.exists(target_maps_dir):
                 # logger.info(f'scripts/py/func/map_reloader.py:244: {map_file_key} > {item} || {target_maps_dir} already unpacked -> return True')
                 continue
+
+            # CHECK FAILED UNPACK BACKOFF
+            import time
+            tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+            failed_cache_dir = tmp_dir / "sl5_aura" / "failed_unpack_cache"
+            failed_cache_dir.mkdir(parents=True, exist_ok=True)
+            cache_file = failed_cache_dir / f"{Path(zip_file).name}.fail"
+
+            if cache_file.exists():
+                try:
+                    with open(cache_file, "r") as f_cache:
+                        parts = f_cache.read().strip().split("\n")
+                        last_fail = float(parts[0])
+                        fail_count = int(parts[1]) if len(parts) > 1 else 1
+                    backoff_time = min(30 * (2 ** (fail_count - 1)), 3600)
+                    elapsed = time.time() - last_fail
+                    if elapsed < backoff_time:
+                        continue
+                except Exception:
+                    pass
 
             # UNPACKING LOGIC (Matryoshka-Support)
             temp_unpack_dir = os.path.join(map_dir, f".__tmp_unpack_{os.getpid()}")
@@ -140,12 +157,29 @@ def _private_map_unpack(map_file_key: str, logger) -> bool:
 
 
             except Exception as e:
-                logger.error(f"❌ ZIP/Unpack Error (Wrong Password?): {e}")
+                logger.error(f" ZIP/Unpack Error (Wrong Password?): {e}")
+                # Save failure to cache for backoff
+                try:
+                    import time
+                    fail_count = 1
+                    if cache_file.exists():
+                        with open(cache_file, "r") as f_cache:
+                            parts = f_cache.read().strip().split("\n")
+                            fail_count = int(parts[1]) + 1 if len(parts) > 1 else 2
+                    with open(cache_file, "w") as f_cache:
+                        f_cache.write(f"{time.time()}\n{fail_count}")
+                except Exception:
+                    pass
                 # Cleanup on failure
                 if os.path.exists(temp_unpack_dir):
                     shutil.rmtree(temp_unpack_dir)
                 continue
-
+            # Cleanup Temp Dir on Success
+            if cache_file.exists():
+                try:
+                    cache_file.unlink()
+                except Exception:
+                    pass
             # Cleanup Temp Dir on Success
             if os.path.exists(temp_unpack_dir):
                 shutil.rmtree(temp_unpack_dir)

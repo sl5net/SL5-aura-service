@@ -14,7 +14,7 @@ from pathlib import Path
 
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
-from ..audio_manager import speak_inclusive_fallback
+
 # from ..log_memory_details import log4DEV
 from ..process_text_in_background import process_text_in_background
 
@@ -190,6 +190,7 @@ def _wait_for_languagetool_ready(lt_url, logger, timeout=60, interval=2):
 
 
 def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
+    from ..audio_manager import speak_inclusive_fallback
     """
 
     """

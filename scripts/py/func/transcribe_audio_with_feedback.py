@@ -14,7 +14,7 @@ from .log_memory_details import log4DEV
 import sounddevice as sd
 
 import webrtcvad  # NEU: Import für Voice Activity Detection
-from scripts.py.func.audio_manager import speak_inclusive_fallback
+
 
 from scripts.py.func import global_state
 
@@ -258,6 +258,8 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                                    , session_active_event
                                    , AUTO_ENTER_AFTER_DICTATION_global
                                    ):
+    from scripts.py.func.audio_manager import speak_inclusive_fallback
+
     last_toggle = 0
     ENABLE_WAKE_WORD = False
 

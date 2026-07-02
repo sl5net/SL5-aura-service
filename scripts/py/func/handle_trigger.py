@@ -27,7 +27,7 @@ dictation_session_active = threading.Event()
 active_transcription_thread = None
 
 from .process_text_in_background import process_text_in_background
-from .transcribe_audio_with_feedback import transcribe_audio_with_feedback
+
 from .guess_lt_language_from_model import guess_lt_language_from_model
 from .audio_manager import unmute_microphone, mute_microphone
 from .microphone_status_too_log import log_microphone_status
@@ -84,7 +84,7 @@ def session_thread_target(logger):
         found_key = list(loaded_models.keys())[0]
         selected_model = loaded_models[found_key]
 
-
+        from .transcribe_audio_with_feedback import transcribe_audio_with_feedback
         text_chunk_iterator = transcribe_audio_with_feedback(
             logger,
             recognizer,
@@ -154,6 +154,7 @@ def handle_trigger(
         recording_time,
         active_lt_url
 , session_id=None):
+    from .transcribe_audio_with_feedback import transcribe_audio_with_feedback
     global active_transcription_thread
 
     # --- ACTION 1: STOP an ongoing session ---

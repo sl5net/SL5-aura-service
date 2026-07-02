@@ -1,10 +1,40 @@
-#!/usr/bin/env python3
-# scripts/search_rules/run_palette_command.py
+# scripts/search_rules/run_palette_command.py:1
 import sys
 import os
 import time
+import traceback
+import builtins
 import logging
+
 from pathlib import Path
+
+# Sichert, dass der Log-Pfad korrekt aufgelöst wird
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent
+LOG_FILE_PATH = PROJECT_ROOT / 'log' / 'heavy_imports.log'
+
+if not hasattr(builtins, "_logged_heavy_imports"):
+    builtins._logged_heavy_imports = set()
+
+_original_import = builtins.__import__
+def _hook_import(name, *args, **kwargs):
+    targets = ('pandas', 'scipy', 'pygame', 'audio_manager', 'sklearn', 'nltk', 'trino', 'vosk', 'sounddevice', 'watchdog')
+    if name in targets and name not in builtins._logged_heavy_imports:
+        builtins._logged_heavy_imports.add(name)
+        try:
+            trigger_file = "Unknown"
+            trigger_line = 0
+            for frame in reversed(traceback.extract_stack()):
+                if "site-packages" not in frame.filename and "frozen" not in frame.filename and "run_palette_command" not in frame.filename:
+                    trigger_file = frame.filename
+                    trigger_line = frame.lineno
+                    break
+            with open(LOG_FILE_PATH, "a", encoding="utf-8") as f_log:
+                f_log.write(f"📢 HEAVY IMPORT DETECTED: '{name}' imported by '{trigger_file}' on line {trigger_line}\n")
+        except Exception:
+            pass
+    return _original_import(name, *args, **kwargs)
+builtins.__import__ = _hook_import
 
 # 1. Projekt-Root ermitteln und in den Python-Pfad eintragen
 SCRIPT_DIR = Path(__file__).resolve().parent

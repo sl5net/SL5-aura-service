@@ -17,7 +17,6 @@ from scripts.py.func.config.dynamic_settings import DynamicSettings
 
 from scripts.py.func.get_active_window_title import get_active_window_title_safe
 from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
-from scripts.py.func.db.trino_client import get_feature_state, get_target_lang
 
 settings = DynamicSettings()
 
@@ -82,6 +81,8 @@ def execute(match_data):
 
 
     try:
+        from scripts.py.func.db.trino_client import get_feature_state, get_target_lang
+
         INTERFACE = os.getenv("INTERFACE", "speech")
         # print(f"DEBUG translate_from_to: INTERFACE={INTERFACE}")
         feature_state = get_feature_state(interface=INTERFACE, feature='translation')
