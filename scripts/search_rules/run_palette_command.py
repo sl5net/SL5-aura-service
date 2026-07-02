@@ -8,6 +8,9 @@ import socket
 import subprocess
 import time
 from pathlib import Path
+import logging
+logger = logging.getLogger()
+
 
 def is_api_running():
     try:
@@ -21,7 +24,25 @@ def main():
     SCRIPT_DIR = Path(__file__).resolve().parent
     PROJECT_ROOT = SCRIPT_DIR.parent.parent
     secrets_path = PROJECT_ROOT / ".secrets"
-    api_key = "DEVELOPMENT_KEY_PLACEHOLDER"
+
+    if secrets_path.exists():
+        try:
+            with open(secrets_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip().startswith("SERVICE_API_KEY="):
+                        api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                        break
+        except Exception as e20260702_1708:
+            print(f'e20260702_1708: {e20260702_1708}')
+
+
+    # DEBUG_LOG = PROJECT_ROOT / "log" / "palette_launch_debug.log"
+    # with open(DEBUG_LOG, "a", encoding="utf-8") as lf:
+    #     subprocess.Popen(
+    #         [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
+    #         stdout=lf, stderr=lf, **kwargs
+    #     )
+
     if secrets_path.exists():
         try:
             with open(secrets_path, "r", encoding="utf-8") as f:
@@ -40,6 +61,13 @@ def main():
         # flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
         flags = subprocess.DETACHED_PROCESS
         kwargs = {"start_new_session": True} if os.name != "nt" else {"creationflags": flags}
+
+        DEBUG_LOG = PROJECT_ROOT / "log" / "palette_launch_debug.log"
+        with open(DEBUG_LOG, "a", encoding="utf-8") as lf:
+            subprocess.Popen(
+                [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
+                stdout=lf, stderr=lf, **kwargs
+            )
 
         subprocess.Popen(
             [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
