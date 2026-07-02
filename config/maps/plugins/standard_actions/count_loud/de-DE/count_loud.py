@@ -5,7 +5,6 @@ import subprocess
 
 RULES_FILE_PATH = Path(__file__).parent / 'FUZZY_MAP_pre.py'
 def speak(text):
-    from scripts.py.func.audio_manager import speak_inclusive_fallback
     """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         subprocess.run(['espeak', '-v', 'de', text], check=True)

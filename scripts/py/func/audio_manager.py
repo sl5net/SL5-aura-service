@@ -43,9 +43,40 @@ from pathlib import Path
 # - Moved heavy imports (comtypes, pycaw, numpy, pygame) to global scope.
 # (24.12.'25 18:34 Wed, https://github.com/sl5net/SL5-aura-service/commit/c95c4929f77c950ae59a7eb2ac38dc76b616d1e8 )
 
-# Global imports for heavy libraries to prevent runtime latency
 
-# scripts/py/func/audio_manager.py
+from typing import Any
+
+pygame: Any = None
+np: Any = None
+_audio_dependencies_loaded = False
+
+
+def _init_audio_dependencies():
+    global pygame, np, _audio_dependencies_loaded, sound_program_loaded
+    if _audio_dependencies_loaded:
+        return True
+    try:
+        import numpy as np
+        import pygame
+    except ImportError as e:
+        log.warning(f"Audio dependencies (numpy/pygame) failed to load: {e}")
+        return False
+
+    if (sys.platform != "win32"
+        and (settings.soundUnMute > 0 or settings.soundMute > 0)) \
+            and not os.getenv('CI'):
+        try:
+            if hasattr(pygame, 'mixer') and pygame.mixer is not None:
+                pygame.mixer.init(frequency=44100, size=-16, channels=2)
+                sound_program_loaded = True
+            else:
+                log.warning("pygame.mixer not available (SDL-Prob?). Sound off.")
+        except Exception as e:
+            log.warning(f"pygame.mixer init failed: {e}")
+
+    _audio_dependencies_loaded = True
+    return True
+
 
 
 # Windows-specific performance imports
@@ -166,12 +197,6 @@ def convert_lang_code_for_espeak(long_code: str) -> str:
 log = logging.getLogger(__name__)
 if not log.handlers:
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-try:
-    import pygame
-except ImportError as e:
-    print(f'error: {e}')
-    pygame = None
 
 # Fallback for systems without winsound (e.g., Linux, macOS)
 if (sys.platform != "win32"
@@ -422,17 +447,7 @@ def is_microphone_muted(logger=None):
 
 # scripts/py/func/audio_manager.py:370
 def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logger=None):
-    try:
-        import numpy as np
-    except ImportError as e:
-        print(f'error: {e}')
-        np = None
-
-    try:
-        import numpy as np
-    except ImportError as e:
-        print(f'error: {e}')
-        np = None
+    _init_audio_dependencies()
 
     """
     Ultra-robust sound playback with multi-stage fallbacks:
@@ -461,7 +476,9 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
     soft_waveform = (waveform * envelope).astype(np.int16)
 
     # Fallback Chain Logic
-    for channels in [2, 1]:
+    channels_list = [2, 1] if pygame is not None else []
+    for channels in channels_list:
+        # for channels in [2, 1]:
         try:
             # Check if mixer needs (re)init
             if sound_program_loaded and pygame.mixer.get_init() is None:

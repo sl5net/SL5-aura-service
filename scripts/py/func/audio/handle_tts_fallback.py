@@ -11,8 +11,6 @@ import platform
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 
 def handle_tts_fallback(processed_text, LT_LANGUAGE, logger):
-    from ..audio_manager import speak_inclusive_fallback
-
     if not settings.PLUGIN_HELPER_TTS_ENABLED:
         logger.info("no PLUGIN_HELPER_TTS_ENABLED > skipping audio-speak ...")
         return False # Silent mode
@@ -27,12 +25,15 @@ def handle_tts_fallback(processed_text, LT_LANGUAGE, logger):
 
     # 1. Try via Piper Server (if not ESPEAK primary)
     if settings.USE_AS_PRIMARY_SPEAK != "ESPEAK":
+        from ..audio_manager import speak_inclusive_fallback
         if piper_speak_via_server(processed_text):
             return True
         logger.warning("Primary TTS failed. Trying Fallback...")
 
     # 2. Fallback zu Espeak
     if settings.USE_ESPEAK_FALLBACK:
+        from ..audio_manager import speak_inclusive_fallback # noqa: F811
+
         speak_inclusive_fallback(processed_text, LT_LANGUAGE)
         return True
     return False
