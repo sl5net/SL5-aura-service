@@ -8,6 +8,11 @@ import psutil
 import time
 from pathlib import Path
 
+import os
+
+os.environ["PYTHONUTF8"] = "1"
+os.environ["PYTHONIOENCODING"] = "utf-8:replace"
+
 
 # 1. Determine the project root via your reliable temp file
 # Since we are on Linux here, /tmp is sufficient

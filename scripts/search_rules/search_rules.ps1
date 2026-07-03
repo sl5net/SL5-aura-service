@@ -7,6 +7,10 @@ param(
 # -----------------------------------------------------------------------------
 # CONFIGURATION & DEFAULTS
 # -----------------------------------------------------------------------------
+
+$env:PYTHONUTF8 = "1"
+$env:PYTHONIOENCODING = "utf-8:replace"
+
 $MY_HOME = [Environment]::GetFolderPath("UserProfile")
 $SCRIPT_DIR   = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
@@ -16,7 +20,10 @@ $ENABLE_LOGGING = $true
 $ErrorActionPreference = 'Stop'
 $LOG_DIR = Join-Path $PROJECT_ROOT "log"
 if (-not (Test-Path $LOG_DIR)) { [void](New-Item -ItemType Directory -Path $LOG_DIR -Force) }
-$LOGFILE = Join-Path $LOG_DIR "search_rules_ps1_debug.log"
+
+$ScriptName = [System.IO.Path]::GetFileNameWithoutExtension((Get-Variable MyInvocation -Scope Script).Value.MyCommand.Path)
+$LOGFILE = Join-Path $LOG_DIR "${ScriptName}.log"
+
 #function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
 
 function DBG {
@@ -32,11 +39,12 @@ DBG "EXACT RUNNING PATH: $($MyInvocation.MyCommand.Definition)"
 
 $PYTHON_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
 if (-not (Test-Path $PYTHON_BIN)) { $PYTHON_BIN = "python.exe" }
-$PYTHONW_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
+#$PYTHONW_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
+$PYTHONW_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
 if (-not (Test-Path $PYTHONW_BIN)) { $PYTHONW_BIN = $PYTHON_BIN }
 
 
-
+# scripts/search_rules/search_rules.ps1:42
 # MAPS_DIR priority: param > env MAPS_DIR > default relative to project root
 if (-not $MAPS_DIR) { $MAPS_DIR = $env:MAPS_DIR }
 if (-not $MAPS_DIR) { $MAPS_DIR = Join-Path $PROJECT_ROOT "config\maps" }
@@ -404,19 +412,54 @@ while ($true) {
             DBG "DEBUG: Fallback to typed query: '$EXEC_QUERY'"
         }
 
+        DBG "EXEC_QUERY: '$EXEC_QUERY'"
+
+#        DBG "DEBUG: try Executing run_palette_command: PYW_EXE:$PYW_EXE RUN_CMD:$RUN_CMD with query: '$EXEC_QUERY'"
+
        if ($EXEC_QUERY) {
             $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
-            $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
-            $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "pythonw" }
-            DBG "DEBUG: Executing run_palette_command: $PYW_EXE $RUN_CMD with query: '$EXEC_QUERY'"
+            $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+            $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
+
+            DBG "RUN_CMD: $RUN_CMD"
+            DBG "PYW_EXE: $PYW_EXE"
+            DBG "RUN_CMD exists: $(Test-Path $RUN_CMD)"
+            DBG "PYW_EXE exists: $(Test-Path $PYW_EXE)"
+            DBG "EXEC_QUERY: '$EXEC_QUERY'"
+
+
             try {
+
+                DBG "Calling Start-Process..."
+
+                $proc = Start-Process `
+                    -FilePath $PYW_EXE `
+                    -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" `
+                    -WindowStyle Hidden `
+                    -PassThru
+
+                DBG "Start-Process returned."
+                DBG "PID: $($proc.Id)"
+
+                Start-Sleep -Milliseconds 200
+
+                DBG "HasExited: $($proc.HasExited)"
+
+                if ($proc.HasExited) {
+                    DBG "ExitCode: $($proc.ExitCode)"
+                }
+
+
+
+
 #                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -NoNewWindow
-                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
+#                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
             } catch {
                 DBG "DEBUG: Start-Process failed: $_"
             }
         }
         if ($SEARCH_CLOSE_ON_OPEN -eq "True") {
+            DBG "DEBUG: $SEARCH_CLOSE_ON_OPEN is true -> exit 0"
             exit 0
         } else { Start-Sleep -Milliseconds 300; continue }
     }
