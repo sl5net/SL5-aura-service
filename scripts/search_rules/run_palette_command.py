@@ -79,10 +79,10 @@ def main():
                 stdout=lf, stderr=lf, **kwargs
             )
 
-        subprocess.Popen(
-            [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,  env=env, **kwargs
-        )
+        # subprocess.Popen(
+        #     [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
+        #     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,  env=env, **kwargs
+        # )
         for _ in range(40):
             if is_api_running(): break
             time.sleep(0.1)
