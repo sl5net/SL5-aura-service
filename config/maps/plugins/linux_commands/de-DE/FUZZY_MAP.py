@@ -1,5 +1,4 @@
 # config/maps/plugins/linux_commands/de-DE/FUZZY_MAP.py
-# config/languagetool_server/maps/  /de-DE/FUZZY_MAP.py
 # https://regex101.com/
 import re # noqa: F401
 
@@ -18,7 +17,11 @@ FUZZY_MAP = [
     # - means first is most importend, lower rules maybe not get read.
 
 
-    # EXAMPLE: Brighton
+    # EXAMPLE: Nummeriere Datei
+    ("nl -ba search_rules.ps1 | sed -n '385,435p'", r'^(Nummeriere Datei)$', 75, {'flags': re.IGNORECASE}),
+
+
+    ('Brighton', r'^Brighton$'),
     ('Python', r'^(\b)(Brighton|breit schon|Fallschirm|peitschen|Zeiten|Titan|Scheitern)(\b)$', 75, {'flags': re.IGNORECASE}),
 
 

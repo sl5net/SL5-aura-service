@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-
+;scripts/type_watcher/type_watcher.ahk
 #SingleInstance Off
 ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
 /**
