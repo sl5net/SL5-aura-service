@@ -41,9 +41,12 @@ os.environ["PYTHONIOENCODING"] = "utf-8:replace"
 log_file = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
 log_file.parent.mkdir(parents=True, exist_ok=True)
 
+do_log = False
+
 def log(msg):
-    with open(log_file, "a", encoding="utf-8") as f:
-        f.write(msg + "\n")
+    if do_log:
+        with open(log_file, "a", encoding="utf-8") as f:
+            f.write(msg + "\n")
 
 def is_api_running():
     try:

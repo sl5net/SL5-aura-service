@@ -8,7 +8,6 @@ import psutil
 import time
 from pathlib import Path
 
-import os
 
 os.environ["PYTHONUTF8"] = "1"
 os.environ["PYTHONIOENCODING"] = "utf-8:replace"
