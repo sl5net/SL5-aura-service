@@ -43,6 +43,10 @@ import platform
 import importlib
 from pathlib import Path
 
+from scripts.py.set_secrets_to_DEFAULT_CONTENT import demo_secrets
+SECRETS_PATH = Path(".secrets")
+demo_secrets()
+
 # PREREQUISITE: Write project root early to prevent import crashes in submodules when the project was moved to other folder
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
