@@ -114,15 +114,28 @@ $f11::
     try {
         project_root := Trim(FileRead(project_root_file, "UTF-8"))
         bat_dir := project_root . "\scripts\search_rules"
-        bat_path := bat_dir . "\search_rules.bat"
+;        bat_path := bat_dir . "\search_rules.bat"
+        ps_path := bat_dir . "\search_rules.ps1"
 
-        if not FileExist(bat_path) {
-            MsgBox("Error: Batch script not found at " . bat_path, "Aura Error", 16)
+;        if not FileExist(bat_path) {
+;            MsgBox("Error: Batch script not found at " . bat_path, "Aura Error", 16)
+;            return
+;        }
+        if not FileExist(ps_path) {
+            MsgBox("Error: ps1 script not found at " . ps_path, "Aura Error", 16)
             return
         }
 
-        ; Run the batch file with the correct working directory
-        Run('"' . bat_path . '"', bat_dir)
+        ; OLD Run the batch file with the correct working directory
+        ; Run('"' . bat_path . '"', bat_dir)
+
+        ; Neu: 3.7.'26 13:50 Fri
+
+        Run('powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' . ps_path . '"', bat_dir, , &psPID)
+        if WinWait("ahk_pid " . psPID, , 3) {
+            WinActivate("ahk_pid " . psPID)
+        }
+
     } catch as e {
         MsgBox("Error launching Search Rules: " . e.Message, "Aura Error", 16)
     }

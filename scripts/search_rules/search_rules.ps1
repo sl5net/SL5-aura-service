@@ -307,6 +307,28 @@ $fzfArgs += @("--bind", ($binds -join ","))
 # Interactive loop
 #------------------------------------------------------------------------
 
+# Fokus-Sicherung vor dem Start des FZF-Prozesses (Optimierte Option A)
+Start-Sleep -Milliseconds 50
+$focusType = @"
+using System;
+using System.Runtime.InteropServices;
+public class WinFocusHelper {
+    [DllImport("user32.dll")]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll")]
+    public static extern IntPtr SetFocus(IntPtr hWnd);
+}
+"@
+try {
+    Add-Type -TypeDefinition $focusType -ErrorAction SilentlyContinue
+} catch {}
+
+$hwnd = (Get-Process -Id $PID).MainWindowHandle
+if ($hwnd -ne [IntPtr]::Zero) {
+    [WinFocusHelper]::SetForegroundWindow($hwnd) | Out-Null
+    [WinFocusHelper]::SetFocus($hwnd) | Out-Null
+}
+
 while ($true) {
     # Out-String bewahrt alle Roh-Newlines und Leerzeilen der FZF-Ausgabe
     $F_OUT_RAW = $SearchData | fzf.exe @fzfArgs | Out-String
