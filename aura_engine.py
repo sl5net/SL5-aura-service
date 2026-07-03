@@ -1216,7 +1216,7 @@ if not languagetool_process:
     try:
         from scripts.py.func.audio_manager import speak_inclusive_fallback
 
-        speak_inclusive_fallback("Language Tool is offline", "en-US")
+        speak_inclusive_fallback("wait for Language Tool", "en-US")
     except Exception as tts_err:
         logger.warning(f"Could not speak LanguageTool warning: {tts_err}")
 

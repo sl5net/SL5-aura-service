@@ -75,7 +75,7 @@ def _is_lt_server_responsive(url, timeout=0.9, logger=None):
         # Safe acoustic warning
         try:
             from scripts.py.func.audio_manager import speak_inclusive_fallback
-            speak_inclusive_fallback("Language Tool is offline", "en-US")
+            speak_inclusive_fallback("wait for Language Tool", "en-US")
         except Exception as tts_err:
             if logger:
                 logger.warning(f"Could not speak LanguageTool warning: {tts_err}")
