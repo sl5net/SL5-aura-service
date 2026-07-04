@@ -92,7 +92,7 @@ log_formatter = logging.Formatter('%(asctime)s - %(threadName)s - %(message)s')
 log_formatter.formatTime = formatTime
 
 # Create, configure, and add the File Handler.
-file_handler = logging.FileHandler(f'{LOG_FILE}', mode='w')
+file_handler = logging.FileHandler(f'{LOG_FILE}', mode='w', encoding="utf-8")
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
 

@@ -20,7 +20,7 @@ log_dir = PROJECT_ROOT / 'log'
 log_dir.mkdir(parents=True, exist_ok=True)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-fh = logging.FileHandler(log_dir / 'weather.log')
+fh = logging.FileHandler(log_dir / 'weather.log', encoding="utf-8")
 fh.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logger.addHandler(fh)
 

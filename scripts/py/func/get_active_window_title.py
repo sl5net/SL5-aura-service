@@ -21,7 +21,7 @@ def get_active_window_kde():
     cmd_title = "qdbus6 org.kde.KWin /KWin org.kde.KWin.supportInformation"
 
     try:
-        res = subprocess.check_output(cmd_title, shell=True, text=True)
+        res = subprocess.check_output(cmd_title, shell=True, text=True, encoding="utf-8")
         for line in res.splitlines():
             if "Active window title:" in line:
                 return line.split(":")[1].strip()
@@ -315,7 +315,7 @@ def get_active_window_title_kde_wayland_qdbus():
         # We query the support information which contains the current status
         result = subprocess.run(
             ["qdbus6", "org.kde.KWin", "/KWin", "org.kde.KWin.supportInformation"],
-            capture_output=True, text=True, timeout=1
+            capture_output=True, text=True, encoding="utf-8", timeout=1
         )
 
         if result.returncode == 0:
@@ -342,6 +342,7 @@ def get_active_window_title_kde_native():
             ["qdbus6", "org.kde.KWin", "/KWin", "org.kde.KWin.supportInformation"],
             capture_output=True,
             text=True,
+            encoding="utf-8",
             timeout=0.5
         )
 
@@ -463,7 +464,9 @@ def get_active_window_title_safe():
                         stderr=subprocess.DEVNULL, env=env, timeout=1.5
                     )
                     # return res.decode("utf-8", errors='ignore').strip().lower()
-                    return res.decode('cp1252', errors='replace').strip().lower()
+                    # return res.decode('cp1252', errors='replace').strip().lower()
+                    return res.decode("utf-8", errors='replace').strip().lower()
+
                 except Exception as e:
                     print(f'145 {e}')
                     pass
@@ -474,7 +477,8 @@ def get_active_window_title_safe():
                     active_id = subprocess.check_output(
                         ["xprop", "-root", "_NET_ACTIVE_WINDOW"],
                         stderr=subprocess.DEVNULL, env=env, timeout=1.5
-                    ).decode().split()[-1]
+                    # ).decode().split()[-1]
+                    ).decode("utf-8", errors="replace").split()[-1]
 
                     res = subprocess.check_output(
                         ["xprop", "-id", active_id, "WM_NAME"],

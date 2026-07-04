@@ -919,7 +919,7 @@ if os.path.exists(MEMORY_LOG_PATH):
 # Ensure the logger hasn't already been configured by accident (common in Python)
 if not memory_logger.handlers:
     memory_logger.setLevel(logging.INFO)
-    file_handler = logging.FileHandler(MEMORY_LOG_PATH)
+    file_handler = logging.FileHandler(MEMORY_LOG_PATH, encoding="utf-8")
     file_handler.setFormatter(logging.Formatter('%(asctime)s - %(threadName)s - %(message)s'))
 
     memory_logger.addHandler(file_handler)
