@@ -123,7 +123,7 @@ def main():
 
         # CREATE_NEW_PROCESS_GROUP = '0x00000200'
         # flags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
-        flags = subprocess.DETACHED_PROCESS
+        flags = subprocess.DETACHED_PROCESS if os.name == 'nt' else ''
         kwargs = {"start_new_session": True} if os.name != "nt" else {"creationflags": flags}
 
         DEBUG_LOG = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
