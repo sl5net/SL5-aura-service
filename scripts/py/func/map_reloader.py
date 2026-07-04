@@ -82,7 +82,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
             # Security Check: Prevent loading of private maps (starting with _) in API mode
             # This checks ANY part of the path relative to maps_base_dir
-            # func/map_reloader.py:54: auto_reload_modified_maps(logger,run_mode_override)
+            # scripts/py/func/map_reloader.py:85 auto_reload_modified_maps(logger,run_mode_override)
             if run_mode_override == "API_SERVICE":
                 try:
                     # Get path relative to /config/maps to check subfolders

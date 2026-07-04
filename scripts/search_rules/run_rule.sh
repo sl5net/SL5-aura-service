@@ -65,8 +65,19 @@ if [[ -z "$KEY" || "$KEY" = "ctrl-r" ]]; then
     logger_info "65: final_query='$QUERY' py_exists=$(test -f "$PROJECT_ROOT/.venv/bin/python3" && echo yes || echo NO)"
     if [[ -n "$QUERY" ]]; then
         logger_info "67: Executing: $QUERY"
-        logger_info "$PROJECT_ROOT/.venv/bin/python3 $SCRIPT_DIR/run_palette_command.py $QUERY >> $LOGFILE 2>&1 &"
-        nohup "$PROJECT_ROOT/.venv/bin/python3" "$SCRIPT_DIR/run_palette_command.py" "$QUERY" >> "$LOGFILE" 2>&1 &
+
+        run_palette_path="$PROJECT_ROOT/scripts/search_rules/run_palette_command.py"
+        python3_path="$PROJECT_ROOT/.venv/bin/python3"
+
+        logger_info " "
+        logger_info " "
+        logger_info " "
+        logger_info "$python3_path $run_palette_path '$QUERY'"
+        logger_info " "
+        logger_info " "
+        logger_info " "
+
+        nohup "$python3_path" "$run_palette_path" "$QUERY" >> "$LOGFILE" 2>&1 &
         BG_PID=$!
         disown $BG_PID
         logger_info "72: DBG spawned pid=$BG_PID"

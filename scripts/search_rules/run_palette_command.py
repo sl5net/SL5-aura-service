@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
-# scripts/search_rules/run_palette_command.py:
+# scripts/search_rules/run_palette_command.py
 import sys
+
+how_test_from_linux = """
+Examples:
+
+.venv/bin/python3 scripts/search_rules/run_palette_command.py 'bester Schachspieler'
+
+.venv/bin/python3 scripts/search_rules/run_palette_command.py 'was 5 plus 3'
+
+"""
 
 if getattr(sys, "stdout", None) is not None:
     encoding = getattr(sys.stdout, "encoding", None)
@@ -22,6 +31,7 @@ from pathlib import Path
 import logging
 logger = logging.getLogger()
 
+
 try:
     tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
     PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
@@ -29,14 +39,10 @@ except Exception as e:
     print(e)
     raise
 
-# tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-# PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+log_file = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
 
 os.environ["PYTHONUTF8"] = "1"
 os.environ["PYTHONIOENCODING"] = "utf-8:replace"
-
-log_file = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
-log_file.parent.mkdir(parents=True, exist_ok=True)
 
 do_log = False
 
@@ -54,6 +60,8 @@ def is_api_running():
         return False
 
 def main():
+    global log_file
+
     if len(sys.argv) < 2:
         query = "Läuf"
     else:
@@ -90,8 +98,8 @@ def main():
 
     log(f"secrets_path exists: {secrets_path.exists()}\n")
 
-    # DEBUG_LOG = PROJECT_ROOT / "log" / "palette_launch_debug.log"
-    # with open(DEBUG_LOG, "a", encoding="utf-8") as lf:
+    # log_file = PROJECT_ROOT / "log" / "palette_launch_debug.log"
+    # with open(log_file, "a", encoding="utf-8") as lf:
     #     subprocess.Popen(
     #         [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
     #         stdout=lf, stderr=lf, **kwargs
@@ -123,8 +131,7 @@ def main():
         flags = subprocess.DETACHED_PROCESS if os.name == 'nt' else ''
         kwargs = {"start_new_session": True} if os.name != "nt" else {"creationflags": flags}
 
-        DEBUG_LOG = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
-        with open(DEBUG_LOG, "a", encoding="utf-8") as lf:
+        with open(log_file, "a", encoding="utf-8") as lf:
             subprocess.Popen(
                 [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
                 stdout=lf, stderr=lf, **kwargs
@@ -156,7 +163,8 @@ def main():
 
 
     # payload = {"raw_text": query, "lang_code": "de-DE", "unmasked": False}
-    payload = {"raw_text": query, "lang_code": "de-DE", "unmasked": False, "interface": "speech"}
+    payload = {"raw_text": query, "lang_code": "de-DE", "unmasked": True, "interface": "speech"}
+    
     data = json.dumps(payload).encode("utf-8")
     url = "http://127.0.0.1:8830/process_cli"
     req = urllib.request.Request(
@@ -173,8 +181,6 @@ def main():
                 tmp_dir = Path("C:/tmp") if os.name == 'nt' else Path("/tmp")
                 output_dir = tmp_dir / "sl5_aura" / "tts_output"
 
-                log_file = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
-                log_file.parent.mkdir(parents=True, exist_ok=True)
 
                 with open(log_file, "a", encoding="utf-8") as lf:
                     log(f"--- try ({time.strftime('%H:%M:%S')}) ---\n")
