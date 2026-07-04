@@ -11,7 +11,6 @@ if getattr(sys, "stdout", None) is not None:
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 import json
 import urllib.request
@@ -26,10 +25,8 @@ logger = logging.getLogger()
 try:
     tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
     PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-except Exception:
-    import traceback
-    with open(r"C:\tmp\sl5_aura\run_palette_import_error.log", "w", encoding="utf-8") as f:
-        traceback.print_exc(file=f)
+except Exception as e:
+    print(e)
     raise
 
 # tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")

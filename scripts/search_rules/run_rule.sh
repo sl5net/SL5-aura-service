@@ -38,33 +38,42 @@ logger_info "DBG typed='$QUERY_TYPED' key='$KEY' sel='$SEL'"
 
 # NEW 25.6.'26 16:10 Thu
 SEL=$(echo "$F_OUT" | sed -n '3p')
-logger_info "DBG typed='$QUERY_TYPED' key='$KEY' sel='$SEL'"
+logger_info "41: DBG typed='$QUERY_TYPED' key='$KEY' sel='$SEL'"
 if [[ -z "$KEY" || "$KEY" = "ctrl-r" ]]; then
-
+    logger_info "43: KEY=$KEY"
     QUERY=""
     if [[ -z "$KEY" && -n "$SEL" ]]; then
-        # Enter gedrückt -> extrahiere Template der markierten Zeile
+
         F_PATH="$(echo "$SEL" | cut -d: -f1)"
         L_NUM="$(echo "$SEL" | cut -d: -f2)"
+
+        logger_info "50: Enter pressed -> use"
+        logger_info "$F_PATH:$L_NUM"
+
+        # scripts/search_rules/run_rule.sh:49
         QUERY=$(python3 "$SCRIPT_DIR/preview_rule.py" --extract "$F_PATH" "$L_NUM")
-        logger_info "DBG extract='$QUERY'"
+        logger_info "python3 '$SCRIPT_DIR/preview_rule.py' --extract '$F_PATH' '$L_NUM'"
+        logger_info "56: DBG extract='$QUERY'"
+
     fi
     if [[ -z "$QUERY" ]]; then
-        # Ctrl+R gedrückt (oder Extraktion leer) -> nutze eingetippten Text direkt
+        logger_info "55: Ctrl+R pressed use typed query (QUERY_TYPED)"
         QUERY="$QUERY_TYPED"
     fi
-    logger_info "DBG final_query='$QUERY' py_exists=$(test -f "$PROJECT_ROOT/.venv/bin/python3" && echo yes || echo NO)"
 
-    logger_info "DBG final_query='$QUERY' py_exists=$(test -f "$PROJECT_ROOT/.venv/bin/python3" && echo yes || echo NO)"
+
+    logger_info "65: final_query='$QUERY' py_exists=$(test -f "$PROJECT_ROOT/.venv/bin/python3" && echo yes || echo NO)"
     if [[ -n "$QUERY" ]]; then
-        logger_info "Executing: $QUERY"
+        logger_info "67: Executing: $QUERY"
+        logger_info "$PROJECT_ROOT/.venv/bin/python3 $SCRIPT_DIR/run_palette_command.py $QUERY >> $LOGFILE 2>&1 &"
         nohup "$PROJECT_ROOT/.venv/bin/python3" "$SCRIPT_DIR/run_palette_command.py" "$QUERY" >> "$LOGFILE" 2>&1 &
         BG_PID=$!
         disown $BG_PID
-        logger_info "DBG spawned pid=$BG_PID"
+        logger_info "72: DBG spawned pid=$BG_PID"
         exit 0
     fi
-    logger_info "DBG no query to execute"
+    logger_info "75: no query to execute"
+
     exit 0
 fi
 

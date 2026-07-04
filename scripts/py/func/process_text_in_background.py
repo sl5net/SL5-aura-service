@@ -677,7 +677,7 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
 
     for word_in_text in words_in_text:
 
-        # We need to iterate over the words in `processed_text` and compare each to `replacement`.
+        # iterate over the words in `processed_text` and compare each to `replacement`.
         words_in_text = re.findall(r'\b\w+\b', processed_text)
         temp_text_for_fuzzy_replace = processed_text
 
@@ -1869,7 +1869,7 @@ def process_text_in_background(logger,
                             log4DEV(f'🔵 window_title: {_active_window_title}',logger)
 
                         # for app_name, sig in settings.SIGNATURE_MAPPING.items():
-                        #     if app_name in _active_window_title:  # Sucht nach "0 A.D." im Titel
+                        #     if app_name in _active_window_title:
                         #         active_sig = sig
                         #         break
                         #
@@ -2410,9 +2410,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                         if GLOBAL_debug_skip_list:
                             print(f'1525: skip_list={skip_list}')
 
-                        current_text = new_current_text  # final Text
+                        current_text = new_current_text
 
-                        current_text = new_current_text  # Jetzt wird der finale Text zugewiesen
+                        current_text = new_current_text
 
                         # --- MAKRO-group-LOGIK START ---
                         group_start = options_dict.get('group_start') if isinstance(options_dict, dict) else None
@@ -2511,8 +2511,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
                                     script_result = module.execute(match_data)
 
-                                    # Standardwerte initialisieren
-                                    # lang_for_tts = "de-DE"  # Deine Standard-Systemsprache
 
                                     if isinstance(script_result, str):
                                         new_current_text = script_result
