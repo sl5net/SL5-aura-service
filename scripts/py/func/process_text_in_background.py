@@ -2412,8 +2412,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
                         current_text = new_current_text
 
-                        current_text = new_current_text
-
                         # --- MAKRO-group-LOGIK START ---
                         group_start = options_dict.get('group_start') if isinstance(options_dict, dict) else None
                         if group_start and run_pipeline_callback:

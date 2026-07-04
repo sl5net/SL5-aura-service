@@ -120,7 +120,7 @@ echo "✅ check_slop_comments passed. ✅"
 
 # Abort commit if flake8 finds errors
 if [ $? -ne 0 ]; then
-  echo "COMMIT REJECTED: flake8 found issues. May use noqa: "
+  echo "🚨🚨🚨 COMMIT REJECTED: flake8 found issues. May use noqa: "
   echo "# noqa: "
   exit 1
 fi
