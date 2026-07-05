@@ -241,32 +241,20 @@ FUZZY_MAP_pre = [
 
       }),
 
-    # EXAMPLE: 0ad config
-    (f'{HOME_DIR_POSIX}/.config/0ad/config/',
-     r'^(Joa|zero ein|zero|februar|fiera|fira|fever|fewo|führer|tyrannei|februar|wieweit|hierbei|hierbei|zebra|silva|fiera|give|cio|in|sie|sie war|syrer|seo|cyra|chihuahua|hier mal|sie wollen|über|weberei|rohrer)\s+(d|die|aed|it|die|di|dir|aed)\s+(Konflik|Konflikt|Konfiguration|konflikten|config|conflict)$',
-     90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    # EXAMPLE: zopfig
+    # ('config/', r'^zopfig$', 90,
+    #  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    #   'only_in_windows': ['Konsole', 'konsole', 'Console',
+    #                       r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+    #     }),
 
-      'only_in_windows': ['Konsole', 'konsole', 'Console',
-                          r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
-
-      }),
-
-    # bzopfig
-    # EXAMPLE: bzopfig b
-    ('config/', r'\bzopfig\b', 90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
-
-      'only_in_windows': ['Konsole', 'konsole', 'Console',
-                          r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
-
-      }),
-
-    # skiplist
-    # EXAMPLE: skip_list
+    # EXAMPLE: skiplist
     ("'skip_list': ['LanguageTool','fullMatchStop','only_in_windows']",
      r'^(skip_list|skip_list|skip list|script bläst|lässt|script lässt|squibb lässt|es lässt|es gibt les|scribbles|es gibt list|es gibt bläst|script list|skype lässt|skype list|gpl list)$', 90,
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+
+
 
     # EXAMPLE: Navigiere Aura Konfiguration
     (f'cd "{Path(PROJECT_ROOT_POSIX, "config").as_posix()}"', rf'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+{aura3}\s*Konf\w*$',
