@@ -23,7 +23,6 @@ FUZZY_MAP_pre = [
      ('90', r'^90$'),
      {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-
     # EXAMPLE: 0ad AppImage
     (r'tilde/Apps/0ad-0.28.0-x86_64.AppImage',
      rf'^{zad}\s+App\w+$',
