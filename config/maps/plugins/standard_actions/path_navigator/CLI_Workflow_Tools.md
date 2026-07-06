@@ -1,11 +1,31 @@
-### Markdown Document: `STT/settings/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.md`
+# CLI Workflow Tools Installation Guide
 
-```markdown
-CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+Some actions in the path navigator plugin rely on external command-line utilities to perform fuzzy searches, list files, and manipulate the clipboard. If these tools are missing, you will see a warning in the system console.
 
-# CLI Workflow Tools: FZF to Kate Integration
+Below are the installation instructions for each supported operating system.
 
-This document describes a high-efficiency command-line workflow that leverages the fuzzy file search implemented in the `path_navigator` plugin to quickly open files in the Kate editor.
+## Required Utilities
+
+* **`fzf`**: General-purpose command-line fuzzy finder.
+* **`find`** (or `fd`): Standard file-searching utility.
+* **Clipboard Tool**: Used to pipe output directly to your system clipboard.
+  * **Linux:** `xclip` (requires X11 environment).
+  * **macOS:** `pbcopy` (pre-installed).
+  * **Windows:** `clip` (pre-installed).
+* **`file`**: Determines file types for full terminal previews.
+
+---
+
+## Installation Instructions
+
+### 1. Linux (Arch / Manjaro)
+Since your system runs on Manjaro, you can install the required packages using `pacman`:
+
+```bash
+sudo pacman -S fzf findutils xclip file
+```
+
+
 
 ## 1. Fast File Selection (Aura Command)
 
