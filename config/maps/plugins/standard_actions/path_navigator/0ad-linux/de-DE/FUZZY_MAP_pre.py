@@ -1,5 +1,8 @@
 # config/maps/plugins/standard_actions/path_navigator/0ad-linux/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
+from pathlib import Path
+CONFIG_DIR = Path(__file__).parent
+
 zad_variants = [
     "0ad", "zad", "aed", "chihuahua", "cio", "cyra", "d", "di", "die", "dir",
     "februar", "fever", "fewo", "fiera", "fira", "führer", "give",

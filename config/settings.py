@@ -189,7 +189,7 @@ show_PLUGINS_DISABLED = True
 PLUGINS_ENABLED = {
     "standard_actions/count_loud": False,
     "standard_actions/wikipedia_local": False,
-    "game": False,
+    "game": True,
     "empty_all": False,
 }
 # count_loud▉
