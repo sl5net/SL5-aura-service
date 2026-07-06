@@ -1,7 +1,7 @@
 # config/maps/plugins/game/0ad/de-DE/FUZZY_MAP_pre.py
 # https://regex101.com/
 import re # noqa: F401
-from pathlib import Path as p;import os as o # noqa: E702
+from pathlib import Path as p # noqa: E702
 CONFIG_DIR = p(__file__).parent
 
 #with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702

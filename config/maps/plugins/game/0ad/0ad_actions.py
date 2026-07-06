@@ -49,11 +49,11 @@ def execute(match_data):
     import platform
     from pathlib import Path
 
-    print(f'0ad_actions.py:19')
-    print(f'0ad_actions.py:19')
-    print(f'0ad_actions.py:19')
-    print(f'0ad_actions.py:19')
-    print(f'0ad_actions.py:19')
+    print('0ad_actions.py:19')
+    print('0ad_actions.py:19')
+    print('0ad_actions.py:19')
+    print('0ad_actions.py:19')
+    print('0ad_actions.py:19')
 
     from scripts.py.func.audio_manager import speak_inclusive_fallback
     speak_inclusive_fallback("wait 0ad", "en-US")
