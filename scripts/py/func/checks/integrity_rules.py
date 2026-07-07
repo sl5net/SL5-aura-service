@@ -28,6 +28,7 @@ UNSAFE_LINE_STARTS = [
 # 11:05:48,817 - CRITICAL - ❌ Forbidden Pattern detected: 'pathlib.Path'
 FORBIDDEN_PATTERNS = [
     "if settings.DEV_MODE_memory:",
+    "subprocess.run(['dotool'], input=command, text=True)",
     # "pathlib.Path",
     "if settings.DEV_MODE_all_processing:",
     'AutoHotkey.exe" "%',
@@ -36,6 +37,11 @@ FORBIDDEN_PATTERNS = [
 
 
 INTEGRITY_CHECKS = {
+
+    'config/maps/plugins/game/0ad/0ad_actions.py': [
+        "subprocess.run(['dotool'], input=command, text=True, check=True)",
+        "raise Exception('no text after replacement')",
+    ],
 
     'aura_engine.py': [
         'from scripts.py.bootstrap_venv import bootstrap_hello',
