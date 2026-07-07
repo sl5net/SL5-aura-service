@@ -1,7 +1,11 @@
 #!/bin/bash
 # setup/suse_setup.sh
 # Run this setup script from the project's root directory.
-set -uo pipefail
+# NOTE: intentionally no `set -u` here -- later parts of this script rely on
+# variables like $SELECTED_LANG, $SECOND_LANG, $EXCLUDE_LANGUAGES, and $CI
+# potentially being unset and expanding to empty. Errors during the
+# package/compiler resolution below are instead handled with explicit
+# checks and `exit 1`.
 
 SCRIPT_NAME=$(basename "$0")
 # Check if the script is run from the project root.
