@@ -225,7 +225,7 @@ FUZZY_MAP_pre = [
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
-         'cache': False
+         # 'cache': False
      }),
 
     # EXAMPLE: gather fruit
@@ -237,7 +237,7 @@ FUZZY_MAP_pre = [
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
-         'cache': False
+         # 'cache': False
      }),
 
     # EXAMPLE: gather meat
@@ -249,7 +249,7 @@ FUZZY_MAP_pre = [
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
-         'cache': False
+         # 'cache': False
      }),
 
 
@@ -262,7 +262,7 @@ FUZZY_MAP_pre = [
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
-         'cache': False
+         # 'cache': False
      }),
 
     # EXAMPLE: gather metal
@@ -274,7 +274,7 @@ FUZZY_MAP_pre = [
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
-         'cache': False
+         # 'cache': False
      }),
 
 
