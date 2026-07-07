@@ -1,37 +1,53 @@
-### Markdown 文档：`STT/settings/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.md`
+# CLI 工作流程工具安装指南
+
+路径导航器插件中的某些操作依赖于外部命令行实用程序来执行模糊搜索、列出文件和操作剪贴板。如果缺少这些工具，您将在系统控制台中看到警告。
+
+以下是每个支持的操作系统的安装说明。
+
+## 所需的实用程序
+
+* **`fzf`**：通用命令行模糊查找器。
+* **`find`**（或`fd`）：标准文件搜索实用程序。
+* **剪贴板工具**：用于将输出直接传输到系统剪贴板。
+* **Linux:** `xclip`（需要 X11 环境）。
+* **macOS：** `pbcopy`（预安装）。
+* **Windows：** `clip`（预安装）。
+* **`文件`**：确定完整终端预览的文件类型。
+
+---
+
+## 安装说明
+
+### 1. Linux (Arch / Manjaro)
+由于您的系统在 Manjaro 上运行，因此您可以使用 pacman 安装所需的软件包：
 
 __代码_块_0__
-# Kate 中从系统剪贴板打开文件路径的函数
-函数 k {
-# 检查 xclip 是否可用
-如果 ！命令 -v xclip &> /dev/null;然后
-echo“错误：需要xclip但未安装。”
-返回1
-菲
-X空格符X
-# 1. 获取剪贴板内容
-CLIPBOARD_CONTENT=$(xclip -选择剪贴板-o 2>/dev/null)
-X空格符X
-# 检查剪贴板是否为空
-如果[ -z "${CLIPBOARD_CONTENT}" ];然后
-echo“错误：剪贴板为空。没有可打开的内容。”
-返回1
-菲
 
-# 2. 检查多行内容（确保仅使用单个文件路径）
-LINE_COUNT=$(回显“${CLIPBOARD_CONTENT}”| wc -l)
-X空格符X
-如果[“${LINE_COUNT}”-gt 1];然后
-echo“错误：剪贴板包含${LINE_COUNT}行。仅支持单行文件路径。”
-返回1
-菲
-X空格符X
-# 3. 执行前打印命令（用户反馈）
-回声“凯特\”$ {CLIPBOARD_CONTENT} \“”
-X空格符X
-# 4.最终执行
-# 内容周围的双引号正确处理带有空格的文件名。
-# '&' 在后台运行命令，释放终端。
-凯特“${CLIPBOARD_CONTENT}”&
-}
+
+
+## 1. 快速文件选择（Aura 命令）
+
+`path_navigator` 操作使用以下 Git 感知的 `fzf` 命令。其目的是将文件路径直接输出到系统剪贴板中。
+
+**命令逻辑：**
+- 在 Git 存储库中使用 `git ls-files`（不包括被忽略的文件）。
+- 退回到“查找”。 -在 Git 存储库外部键入 f`。
+- 使用“xclip -selection剪贴板”将选定的路径输出到剪贴板。
+
+## 2. 快速文件执行（“k”函数）
+
+为了完成循环，使用了自定义 shell 函数“k”。该函数从剪贴板获取路径并立即打开“kate”中的文件。
+
+＃＃＃ 执行
+
+将以下函数添加到 shell 的配置文件中（例如 `~/.bashrc`、`~/.zshrc`）：
+
 __代码_块_1__
+
+＃＃＃ 用法
+
+1. 使用 `path_navigator` 命令（例如，在触发工具中输入 `search file`）。
+2. 查找并选择所需的文件（例如`src/main/config.py`）。
+3. 在终端中，输入“k”并按 **ENTER**。
+4. 文件立即在 Kate 中打开。
+__代码_块_2__

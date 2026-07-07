@@ -1,69 +1,89 @@
-### Documento Markdown: `STT/settings/maps/plugins/standard_actions/path_navigator/CLI_Workflow_Tools.md`
+# Guia de instalação das ferramentas de fluxo de trabalho CLI
 
-```markdown
-CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+Algumas ações no plugin path navigator dependem de utilitários de linha de comando externos para realizar pesquisas difusas, listar arquivos e manipular a área de transferência. Se essas ferramentas estiverem faltando, você verá um aviso no console do sistema.
 
-# CLI Workflow Tools: FZF to Kate Integration
+Abaixo estão as instruções de instalação para cada sistema operacional compatível.
 
-This document describes a high-efficiency command-line workflow that leverages the fuzzy file search implemented in the `path_navigator` plugin to quickly open files in the Kate editor.
+## Utilitários necessários
 
-## 1. Fast File Selection (Aura Command)
+* **`fzf`**: Localizador difuso de linha de comando de uso geral.
+* **`find`** (ou `fd`): Utilitário padrão de busca de arquivos.
+* **Ferramenta de área de transferência**: usada para canalizar a saída diretamente para a área de transferência do sistema.
+* **Linux:** `xclip` (requer ambiente X11).
+* **macOS:** `pbcopy` (pré-instalado).
+* **Windows:** `clip` (pré-instalado).
+* **`file`**: Determina os tipos de arquivo para visualizações completas do terminal.
 
-The `path_navigator` action uses the following Git-aware `fzf` command. Its purpose is to output a file path directly into the system clipboard.
+---
 
-**Command Logic:**
-- Uses `git ls-files` inside a Git repository (excludes ignored files).
-- Falls back to `find . -type f` outside a Git repository.
-- Outputs the selected path to the clipboard using `xclip -selection clipboard`.
+## Instruções de instalação
 
-## 2. Fast File Execution (The 'k' Function)
-
-To complete the loop, the custom shell function `k` is used. This function takes the path from the clipboard and instantly opens the file in `kate`.
-
-### Implementation
-
-Add the following function to your shell's configuration file (e.g., `~/.bashrc`, `~/.zshrc`):
+### 1.Linux (Arch/Manjaro)
+Como seu sistema roda em Manjaro, você pode instalar os pacotes necessários usando `pacman`:
 
 ```bash
-# Função para abrir um caminho de arquivo da área de transferência do sistema no Kate
-função k {
-# Verifique se o xclip está disponível
-se ! comando -v xclip &> /dev/null; então
-echo "Erro: o xclip é necessário, mas não está instalado."
-retornar 1
-fi
-  
-# 1. Obtenha o conteúdo da área de transferência
-CLIPBOARD_CONTENT=$(xclip -selection clipboard -o 2>/dev/null)
-  
-# Verifica se a área de transferência está vazia
-se [ -z "${CLIPBOARD_CONTENT}"]; então
-echo "Erro: a área de transferência está vazia. Nada para abrir."
-retornar 1
-fi
+sudo pacman -S fzf findutils xclip file
+```
 
-# 2. Verifique o conteúdo multilinha (garante que apenas um único caminho de arquivo seja usado)
-LINE_COUNT=$(echo "${CLIPBOARD_CONTENT}" | wc -l)
-  
-se [ "${LINE_COUNT}" -gt 1 ]; então
-echo "Erro: a área de transferência contém ${LINE_COUNT} linhas. Somente caminhos de arquivo de linha única são suportados."
-retornar 1
-fi
-  
-# 3. Imprima o comando antes da execução (Feedback do usuário)
-eco "kate \"${CLIPBOARD_CONTENT}\""
-  
-# 4. Execução Final
-# As aspas duplas ao redor do conteúdo tratam nomes de arquivos com espaços corretamente.
-# O '&' executa o comando em segundo plano, liberando o terminal.
-Kate "${CLIPBOARD_CONTENT}" &
+
+
+## 1. Seleção rápida de arquivo (comando Aura)
+
+A ação `path_navigator` usa o seguinte comando `fzf` compatível com Git. Seu objetivo é gerar um caminho de arquivo diretamente na área de transferência do sistema.
+
+**Lógica de comando:**
+- Usa `git ls-files` dentro de um repositório Git (exclui arquivos ignorados).
+- Volta para `encontrar . -type f` fora de um repositório Git.
+- Produz o caminho selecionado para a área de transferência usando `xclip -selection clipboard`.
+
+## 2. Execução rápida de arquivos (a função 'k')
+
+Para completar o loop, a função shell personalizada `k` é usada. Esta função segue o caminho da área de transferência e abre instantaneamente o arquivo em `kate`.
+
+### Implementação
+
+Adicione a seguinte função ao arquivo de configuração do seu shell (por exemplo, `~/.bashrc`, `~/.zshrc`):
+
+```bash
+# Function to open a file path from the system clipboard in Kate
+function k {
+    # Check if xclip is available
+    if ! command -v xclip &> /dev/null; then
+        echo "Error: xclip is required but not installed."
+        return 1
+    fi
+    
+    # 1. Get clipboard content
+    CLIPBOARD_CONTENT=$(xclip -selection clipboard -o 2>/dev/null)
+    
+    # Check if clipboard is empty
+    if [ -z "${CLIPBOARD_CONTENT}" ]; then
+        echo "Error: Clipboard is empty. Nothing to open."
+        return 1
+    fi
+
+    # 2. Check for multiline content (ensures only a single file path is used)
+    LINE_COUNT=$(echo "${CLIPBOARD_CONTENT}" | wc -l)
+    
+    if [ "${LINE_COUNT}" -gt 1 ]; then
+        echo "Error: Clipboard contains ${LINE_COUNT} lines. Only single-line file paths are supported."
+        return 1
+    fi
+    
+    # 3. Print the command before execution (User Feedback)
+    echo "kate \"${CLIPBOARD_CONTENT}\""
+    
+    # 4. Final Execution
+    # The double quotes around the content handle filenames with spaces correctly.
+    # The '&' runs the command in the background, freeing the terminal.
+    kate "${CLIPBOARD_CONTENT}" &
 }
 ```
 
-### Usage
+### Uso
 
-1.  Use the `path_navigator` command (e.g., type `search file` in your trigger tool).
-2.  Find and select the desired file (e.g., `src/main/config.py`).
-3.  In your terminal, type `k` and press **ENTER**.
-4.  The file opens instantly in Kate.
-```
+1. Use o comando `path_navigator` (por exemplo, digite `search file` em sua ferramenta de gatilho).
+2. Encontre e selecione o arquivo desejado (por exemplo, `src/main/config.py`).
+3. Em seu terminal, digite `k` e pressione **ENTER**.
+4. O arquivo abre instantaneamente no Kate.
+__CODE_BLOCK_2__

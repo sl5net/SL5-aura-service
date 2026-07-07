@@ -228,9 +228,7 @@ else:
     print(f"export EXCLUDE_LANGUAGES='{excludes_str}'")
 
 # --- New: show docs/doc_sources/i18n counts and ask about deletions ---
-repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))  # adjust if script location differs
-# If you prefer script to run relative to current working dir, use os.getcwd() instead:
-repo_root = os.getcwd()
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 info = find_folder_counts(repo_root)
 print("")  # spacer

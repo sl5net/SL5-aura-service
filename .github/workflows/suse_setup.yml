@@ -5,7 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'setup/**'
+      - 'setup/suse_setup.sh'
       - 'requirements.txt'
       - 'requirements-dev.txt'
       - '.github/workflows/suse_setup.yml'
@@ -15,8 +15,6 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-
-
 
 jobs:
   validate-suse-setup:
@@ -59,9 +57,16 @@ jobs:
           $SUDO zypper -n refresh
 
           # Package names shift between Leap releases. Rather than hardcoding
-          # one release's names (which is what broke this job), probe a list
-          # of candidate sets, newest/most-specific first, and use the first
-          # one that fully resolves against the enabled repos.
+          # one release's names, probe candidate sets and use the first one
+          # where every package actually exists in the enabled repos.
+          #
+          # IMPORTANT: existence is checked with `zypper search --match-exact`,
+          # a read-only, side-effect-free query, parsed by its printed output --
+          # not by trusting `zypper install --dry-run`'s exit code, which has
+          # known inconsistent behavior across zypper versions (see
+          # https://github.com/openSUSE/zypper/issues/539) and previously
+          # caused every candidate here to be rejected even when the packages
+          # were installable.
           PY_CANDIDATES=(
             "python3 python3-pip python3-devel python3-venv"
             "python311 python311-pip python311-devel python311-venv"
@@ -74,43 +79,65 @@ jobs:
           )
           COMMON="git tar make"
 
+          pkg_exists() {
+            local pkg="$1" out
+            out=$(zypper -n search --match-exact "$pkg" 2>/dev/null) || true
+            grep -qw -- "$pkg" <<< "$out"
+          }
+
           pick_working_set() {
             # $1 = name of caller's result variable, remaining args = candidate sets
             local __result_var="$1"; shift
             local set
             for set in "$@"; do
-              local ok=true pkg
+              local ok=true pkg missing=""
               for pkg in $set; do
-                if ! zypper -n install --dry-run $pkg >/dev/null 2>&1; then
+                if ! pkg_exists "$pkg"; then
                   ok=false
+                  missing="$pkg"
                   break
                 fi
               done
               if [ "$ok" = true ]; then
                 printf -v "$__result_var" '%s' "$set"
                 return 0
+              else
+                echo "  -> candidate set rejected ('$missing' not found): $set"
               fi
             done
             return 1
           }
 
+          echo "--> Resolving a usable python package set..."
           PY_SET=""
           if ! pick_working_set PY_SET "${PY_CANDIDATES[@]}"; then
             echo "::error::No usable python package set resolved for this image"
             exit 1
           fi
+          echo "    Selected: $PY_SET"
 
+          echo "--> Resolving a usable gcc package set..."
           GCC_SET=""
           if ! pick_working_set GCC_SET "${GCC_CANDIDATES[@]}"; then
             echo "::error::No usable gcc package set resolved for this image"
             exit 1
           fi
+          echo "    Selected: $GCC_SET"
 
           echo "Installing: $COMMON $PY_SET $GCC_SET"
           $SUDO zypper -n install $COMMON $PY_SET $GCC_SET
 
-          PY_BIN=$(awk '{print $1}' <<< "$PY_SET")
-          echo "Resolved interpreter package: $PY_BIN"
+          PY_PKG=$(awk '{print $1}' <<< "$PY_SET")
+          # Map package name -> actual interpreter binary name. "python3" is
+          # always the right binary name, but versioned packages like
+          # python311/python310 install as /usr/bin/python3.11 /python3.10,
+          # not literally "python311".
+          case "$PY_PKG" in
+            python3) PY_BIN="python3" ;;
+            python3[0-9][0-9]) PY_BIN="python3.${PY_PKG#python3}" ;;
+            *) PY_BIN="$PY_PKG" ;;
+          esac
+          echo "Resolved interpreter package: $PY_PKG -> binary: $PY_BIN"
           echo "PY_BIN=$PY_BIN" >> "$GITHUB_ENV"
 
       - name: Cache models and tools
