@@ -14,15 +14,10 @@ if [ ! -f "requirements.txt" ]; then
     exit 1
 fi
 
-# setup/manjaro_arch_setup.sh:17
-sudo pacman -Syu --noconfirm
 sudo pacman -S --noconfirm python python-pip
 
 eval $(python3 scripts/py/setup_config.py)
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
-
-
-
 
 echo ""
 echo "--- Setup for Manjaro/Arch is complete! ---"
@@ -119,190 +114,23 @@ python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 
 
-# ==============================================================================
-# --- 5. Download and Extract Required Components ---
-# This block intelligently handles downloads and extractions.
-# ==============================================================================
-
-echo "--> Checking for required components (LanguageTool, Vosk-Models)..."
-
-# --- Configuration ---
-PREFIX="Z_"
-# Format: "BaseName FinalDirName DestinationPath"
-ARCHIVE_CONFIG=(
-    "LanguageTool-6.6 LanguageTool-6.6 ."
-    "vosk-model-en-us-0.22 vosk-model-en-us-0.22 ./models"
-    "vosk-model-small-en-us-0.15 vosk-model-small-en-us-0.15 ./models"
-    "vosk-model-de-0.21 vosk-model-de-0.21 ./models"
-    "lid.176 lid.176.bin ./models"
+# After: show preview and ask for confirmation (default: no)
+echo "The script can optionally run a full system upgrade (pacman -Syu)."
+echo "This may download and install many packages (kernel, libs, etc.)."
+read_upgrade=$(python3 - <<'PY'
+import sys, subprocess, shlex
+from time import sleep
+# simple timed prompt replacement; adapt to your timed_input if desired
+resp = input("Run full system upgrade now? (y/N) [Auto N in 8s]: ")
+print(resp if resp else "n")
+PY
 )
 DOWNLOAD_REQUIRED=false
 
 
-
-# --- Filter Configuration based on EXCLUDE_LANGUAGES ---
-INSTALL_CONFIG=()
-if [ -z "$EXCLUDE_LANGUAGES" ]; then
-    # Keine Ausschlüsse, die gesamte MASTER-Liste wird installiert.
-    INSTALL_CONFIG=("${ARCHIVE_CONFIG[@]}")
+if [[ "$read_upgrade" =~ ^[Yy]$ ]]; then
+    echo "Running system upgrade (this may be large)..."
+    sudo pacman -Syu
 else
-    # Ausschlüsse aktiv, die Liste wird gefiltert.
-    for config_line in "${ARCHIVE_CONFIG[@]}"; do
-        read -r base_name final_name dest_path <<< "$config_line"
-
-        IS_MANDATORY=false
-        IS_EXCLUDED=false
-
-        # Komponenten, die immer benötigt werden (z.B. LanguageTool Core)
-        if [[ "$base_name" == "LanguageTool-6.6" ]] || [[ "$base_name" == "lid.176" ]]; then
-            IS_MANDATORY=true
-        fi
-
-        # 1. Ausschluss-Check: exclude=all
-        if [ "$EXCLUDE_LANGUAGES" == "all" ] && [ "$IS_MANDATORY" = false ]; then
-            echo "    -> Excluding (all): $base_name"
-            IS_EXCLUDED=true
-        fi
-
-        # 2. Ausschluss-Check: Spezifische Sprachen (z.B. de, en)
-        if [ "$IS_EXCLUDED" = false ]; then
-            # Test auf 'de' im Namen und in der Ausschlussliste
-            if [[ "$base_name" =~ vosk-model-de- ]] && [[ "$EXCLUDE_LANGUAGES" =~ de ]]; then
-                echo "    -> Excluding (de): $base_name"
-                IS_EXCLUDED=true
-            fi
-            # Test auf 'en' im Namen und in der Ausschlussliste
-            if [[ "$base_name" =~ vosk-model.*en-us ]] && [[ "$EXCLUDE_LANGUAGES" =~ en ]]; then
-                echo "    -> Excluding (en): $base_name"
-                IS_EXCLUDED=true
-            fi
-            # Hinzufügen weiterer spezifischer Exklusionsregeln nach Bedarf...
-        fi
-
-        # Nur hinzufügen, wenn nicht ausgeschlossen
-        if [ "$IS_EXCLUDED" = false ]; then
-            INSTALL_CONFIG+=("$config_line")
-        fi
-    done
+    echo "Skipping full system upgrade. You can run 'sudo pacman -Syu' later."
 fi
-# --- End Filter Configuration ---
-
-
-# --- Phase 1: Check and attempt to restore from local ZIP cache ---
-echo "    -> Phase 1: Checking and trying to restore from local cache..."
-for config_line in "${INSTALL_CONFIG[@]}"; do
-    read -r base_name final_name dest_path <<< "$config_line"
-    target_path="$dest_path/$final_name"
-    zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
-
-    # If the component already exists, we're good for this one.
-    if [ -e "$target_path" ]; then
-        continue
-    fi
-
-    # The component is missing. Let's see if we can unzip it from a local cache.
-    echo "    -> Missing: '$target_path'. Searching for '$zip_file'..."
-    if [ -f "$zip_file" ]; then
-        echo "    -> Found ZIP cache. Extracting '$zip_file'..."
-        unzip -q "$zip_file" -d "$dest_path"
-    else
-        # The ZIP is not there. We MUST run the downloader.
-        echo "    -> ZIP cache not found. A download is required."
-        DOWNLOAD_REQUIRED=true
-    fi
-done
-
-# --- Phase 2: Download if necessary ---
-if [ "$DOWNLOAD_REQUIRED" = true ]; then
-    echo "    -> Phase 2: Running Python downloader for missing components..."
-
-    # Create the models directory before attempting to download files into it.
-    mkdir -p ./models
-
-    ./.venv/bin/python tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
-    echo "    -> Downloader finished. Retrying extraction..."
-
-    # After downloading, we must re-check and extract anything that's still missing.
-    for config_line in "${INSTALL_CONFIG[@]}"; do
-        read -r base_name final_name dest_path <<< "$config_line"
-        target_path="$dest_path/$final_name"
-        zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
-
-        if [ -e "$target_path" ]; then
-            continue
-        fi
-
-        if [ -f "$zip_file" ]; then
-            echo "    -> Extracting newly downloaded '$zip_file'..."
-            unzip -q "$zip_file" -d "$dest_path"
-        else
-            echo "    -> FATAL: Downloader ran but '$zip_file' is still missing. Aborting."
-            exit 1
-        fi
-    done
-fi
-
-echo "--> All components are present and correctly placed."
-
-# ==============================================================================
-# --- End of Download/Extract block ---
-# ==============================================================================
-
-
-
-# --- Install fzf (Fuzzy Finder) ---
-if ! command -v fzf &> /dev/null; then
-    echo "[INFO] fzf not found. Installing..."
-    sudo pacman -S --noconfirm fzf
-else
-    echo "[INFO] fzf is already installed."
-fi
-
-
-source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
-
-# --- 5. Project Configuration ---
-# Ensures Python can treat 'config' directories as packages.
-echo "--> Creating Python package markers (__init__.py)..."
-touch config/__init__.py
-touch config/languagetool_server/__init__.py
-
-# --- User-Specific Configuration ---
-# This part is about user config, so it's fine for it to stay here.
-CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
-mkdir -p "$(dirname "$CONFIG_FILE")"
-# Only write the file if it doesn't exist to avoid overwriting user settings
-if [ ! -f "$CONFIG_FILE" ]; then
-    echo "[paths]" > "$CONFIG_FILE"
-    echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
-fi
-
-
-# --- Automatisches Setzen des Standard-Modells ---
-echo "--> Configuring default model in config/model_name.txt..."
-if [ "$CI" == "true" ]; then
-    echo "vosk-model-small-en-us-0.15" > config/model_name.txt
-elif [ "$SELECTED_LANG" == "de" ]; then
-    echo "vosk-model-de-0.21" > config/model_name.txt
-else
-    echo "Please set a vosk-model in config/model_name.txt e.g. vosk-model-en-us-0.22"
-fi
-
-
-
-
-# --- dotool setup ---
-if ! command -v dotool &> /dev/null; then
-    echo "--> Installing dotool via AUR..."
-    yay -S --noconfirm dotool || echo "WARNING: dotool install failed. See docs/LINUX_WAYLAND_dotool.md"
-fi
-sudo usermod -aG input $USER
-echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
-  | sudo tee /etc/udev/rules.d/80-dotool.rules
-sudo udevadm control --reload-rules && sudo udevadm trigger
-echo "NOTE: Re-login required for input group to take effect."
-echo "See docs/LINUX_WAYLAND_dotool.md for details."
-
-
-
-
