@@ -1,6 +1,7 @@
 #!/bin/bash
 # setup/suse_setup.sh
 # Run this setup script from the project's root directory.
+set -uo pipefail
 
 SCRIPT_NAME=$(basename "$0")
 # Check if the script is run from the project root.
@@ -16,66 +17,159 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
 #cd "$PROJECT_ROOT"
 
+# This script may run as a normal user (with sudo) or as root in a
+# container/CI runner with no sudo binary installed at all. Guard every
+# privileged call through $SUDO instead of assuming sudo exists.
+if command -v sudo >/dev/null 2>&1; then
+  SUDO="sudo"
+else
+  SUDO=""
+fi
 
 # setup/suse_setup.sh:20
 
 echo "--> Refreshing repositories..."
-sudo zypper -n refresh
+$SUDO zypper -n refresh
 
-echo "--> Installing Python essentials (robust) ..."
-# candidate package sets (space-separated groups)
-CANDIDATES=(
+echo "--> Resolving Python and compiler packages (robust across openSUSE releases) ..."
+# Package names shift between openSUSE releases -- e.g. Leap 16.0 moved the
+# base interpreter to the versioned "python313" package (companion pip/devel
+# packages still use the unversioned "python3-" alias), while older Leap
+# releases used "python311"/"python310"/"python3" directly, and gcc moved
+# from unversioned "gcc"/"gcc-c++" to versioned "gccNN"/"gccNN-c++".
+# Rather than hardcoding one release's names, probe candidate sets (newest
+# first) and use the first one that fully resolves in the enabled repos.
+#
+# Existence is checked with `zypper search --match-exact`, a read-only,
+# side-effect-free query parsed from its printed output -- NOT by trusting
+# `zypper install --dry-run`'s exit code, which has known inconsistent
+# behavior across zypper versions (see https://github.com/openSUSE/zypper/issues/539).
+PY_CANDIDATES=(
+  "python313 python3-pip python3-devel"
+  "python313 python313-pip python313-devel"
+  "python311 python3-pip python3-devel"
   "python311 python311-pip python311-devel python311-venv"
   "python310 python310-pip python310-devel python310-venv"
-  "python3 python3-pip python3-venv python3-devel"
+  "python3 python3-pip python3-devel python3-venv"
+  "python3 python3-pip python3-devel"
   "python3 python3-base python3-devel"
 )
+GCC_CANDIDATES=(
+  "gcc15 gcc15-c++"
+  "gcc14 gcc14-c++"
+  "gcc13 gcc13-c++"
+  "gcc12 gcc12-c++"
+  "gcc gcc-c++"
+)
+COMMON="git tar make"
 
-COMMON="git tar gcc gcc-c++ make"
+# Optional: if running under GitHub Actions, also surface results in the
+# job summary. Harmless no-op standalone (GITHUB_STEP_SUMMARY unset -> /dev/null).
+SUMMARY="${GITHUB_STEP_SUMMARY:-/dev/null}"
+{
+  echo "### Package resolution diagnostics"
+  echo
+  echo "| Package | Found? |"
+  echo "|---|---|"
+} >> "$SUMMARY"
 
-installed=false
+pkg_exists() {
+  local pkg="$1" out
+  out=$(zypper -n search --match-exact "$pkg" 2>&1) || true
+  if grep -qw -- "$pkg" <<< "$out"; then
+    echo "| $pkg | yes |" >> "$SUMMARY"
+    return 0
+  else
+    echo "| $pkg | **no** |" >> "$SUMMARY"
+    return 1
+  fi
+}
 
-for candidate in "${PKG_CANDIDATES[@]}"; do
-  # check availability of all package names in candidate
-  ok=true
-  for pkg in $candidate; do
-    # zypper se -s will return non-zero if not found; we ignore stdout and check exit code
-    if ! zypper se -s --match-exact "$pkg" >/dev/null 2>&1; then
-      ok=false
-      break
+pick_working_set() {
+  # $1 = name of caller's result variable, remaining args = candidate sets
+  local __result_var="$1"; shift
+  local set
+  for set in "$@"; do
+    echo "  -> Trying candidate set: $set"
+    local ok=true pkg
+    for pkg in $set; do
+      if ! pkg_exists "$pkg"; then
+        ok=false
+        echo "     Package '$pkg' not found -- rejecting this candidate set."
+        break
+      fi
+    done
+    if [ "$ok" = true ]; then
+      printf -v "$__result_var" '%s' "$set"
+      return 0
     fi
   done
+  return 1
+}
 
-  if [ "$ok" = true ]; then
-    echo "Installing: $COMMON $candidate"
-    zypper -n install $COMMON $candidate
-    installed=true
-    break
-  else
-    echo "  -> Not all packages in candidate set available: $candidate"
-  fi
-done
+PY_SET=""
+if ! pick_working_set PY_SET "${PY_CANDIDATES[@]}"; then
+  echo "ERROR: No usable python package set resolved for this system."
+  echo "See the table above for exactly which packages were tried and missing."
+  echo "You may need to enable an additional repo, e.g. for older Leap releases:"
+  echo "  $SUDO zypper addrepo -f https://download.opensuse.org/repositories/devel:languages:python/openSUSE_Leap_15.5/ devel:languages:python"
+  echo "  $SUDO zypper refresh"
+  exit 1
+fi
+echo "--> Selected python set: $PY_SET"
 
+GCC_SET=""
+if ! pick_working_set GCC_SET "${GCC_CANDIDATES[@]}"; then
+  echo "ERROR: No usable gcc package set resolved for this system."
+  exit 1
+fi
+echo "--> Selected gcc set: $GCC_SET"
 
-if [ "$installed" = false ]; then
-  echo "  -> Could not find a full distro package set for python/pip. Will fall back to system python + venv bootstrap."
-  if ! command -v python3 >/dev/null 2>&1; then
-    echo "ERROR: python3 not found in PATH. Consider adding the appropriate OBS repo or installing Python manually."
-    echo "Suggestion: enable a Python repo (example for openSUSE Leap – adapt to your distro):"
-    echo "  sudo zypper addrepo -f https://download.opensuse.org/repositories/devel:languages:python/openSUSE_Leap_15.5/ devel:languages:python"
-    echo "  sudo zypper refresh"
+echo "Installing: $COMMON $PY_SET $GCC_SET"
+$SUDO zypper -n install $COMMON $PY_SET $GCC_SET
+
+# Map resolved package name -> actual interpreter/compiler binary names.
+# Versioned packages (python313, gcc15, ...) install as python3.13/gcc-15,
+# not literally "python313"/"gcc15".
+PY_PKG=$(awk '{print $1}' <<< "$PY_SET")
+case "$PY_PKG" in
+  python3) PY_BIN="python3" ;;
+  python3[0-9][0-9]) PY_BIN="python3.${PY_PKG#python3}" ;;
+  *) PY_BIN="$PY_PKG" ;;
+esac
+
+GCC_PKG=$(awk '{print $1}' <<< "$GCC_SET")
+case "$GCC_PKG" in
+  gcc) CC="gcc"; CXX="g++" ;;
+  gcc[0-9][0-9]) GCC_VER="${GCC_PKG#gcc}"; CC="gcc-${GCC_VER}"; CXX="g++-${GCC_VER}" ;;
+  *) CC="$GCC_PKG"; CXX="$GCC_PKG" ;;
+esac
+
+echo "--> Verifying resolved interpreter/compiler are actually callable..."
+for bin in "$PY_BIN" "$CC" "$CXX"; do
+  if ! command -v "$bin" >/dev/null 2>&1; then
+    echo "ERROR: expected binary '$bin' (from package '$PY_PKG'/'$GCC_PKG') is not on PATH."
     exit 1
   fi
-fi
+done
+"$PY_BIN" --version
+"$CC" --version | head -1
+"$CXX" --version | head -1
+
+# Export so every later step in this script -- and any pip build that shells
+# out to a C/C++ compiler (e.g. building wheels like fasttext) -- picks up
+# the real, versioned compiler instead of a missing/non-functional "cc".
+export CC CXX
+
+eval $(./.venv/bin/python scripts/py/setup_config.py 2>/dev/null) || eval $($PY_BIN scripts/py/setup_config.py)
+echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
 
 
 # Ensure virtualenv exists and pip is available inside it
 if [ ! -d ".venv" ]; then
   echo "--> Creating Python virtual environment in './.venv'..."
-  python3 -m venv .venv
+  "$PY_BIN" -m venv .venv
 fi
-
-
 
 echo "--> Ensuring pip is available in the venv and upgrading packaging tools..."
 # Try ensurepip first, then upgrade pip/setuptools/wheel via venv python
@@ -84,10 +178,6 @@ echo "--> Ensuring pip is available in the venv and upgrading packaging tools...
 
 echo "--> Installing project Python requirements..."
 ./.venv/bin/python -m pip install -r requirements.txt
-
-eval $(./.venv/bin/python scripts/py/setup_config.py) || eval $(python3 scripts/py/setup_config.py)
-echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
-
 
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
@@ -103,7 +193,6 @@ echo "--- Starting STT Setup for openSUSE ---"
 set -e
 
 # --- 1. System Dependencies ---
-# (This section remains unchanged)
 echo "--> Checking for a compatible Java version (>=17)..."
 JAVA_OK=0
 if command -v java &> /dev/null; then
@@ -119,37 +208,33 @@ else
 fi
 
 echo "--> Installing core dependencies..."
-sudo zypper -n install \
-    inotify-tools wget unzip portaudio-devel python3-pip
+$SUDO zypper -n install \
+    inotify-tools wget unzip portaudio-devel
 
 
 if [ "$JAVA_OK" -eq 0 ]; then
     echo "    -> Installing a modern JDK (>=17)..."
-    # SUSE CHANGE: Use zypper instead of apt
-    sudo zypper refresh && sudo zypper -n install java-21-openjdk
+    $SUDO zypper refresh && $SUDO zypper -n install java-21-openjdk
 fi
 
 
 # --- 2. Python Virtual Environment ---
-# (This section remains unchanged)
+# (Already created above, kept here for standalone-script compatibility.)
 if [ ! -d ".venv" ]; then
     echo "--> Creating Python virtual environment in './.venv'..."
-    python3 -m venv .venv
+    "$PY_BIN" -m venv .venv
 else
     echo "--> Virtual environment already exists. Skipping creation."
 fi
 
 # --- 3. Python Requirements ---
-# (This section remains unchanged)
+# (Already installed above; re-run is a fast no-op if nothing changed.)
 echo "--> Installing Python requirements into the virtual environment..."
 ./.venv/bin/pip install -r requirements.txt
 
 # --- 4. Project Structure and Configuration ---
 echo "--> Setting up project directories and initial files..."
-# THIS IS THE KEY CHANGE. We call the Python script and pass the current
-# working directory (which is the project root) as an argument.
-# This one command replaces all old 'mkdir' and 'touch' commands for the project structure.
-python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
+"$PY_BIN" "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 
 
@@ -308,7 +393,7 @@ echo "--> All components are present and correctly placed."
 # --- Install fzf (Fuzzy Finder) ---
 if ! command -v fzf &> /dev/null; then
     echo "[INFO] fzf not found. Installing..."
-    sudo zypper install -y fzf
+    $SUDO zypper install -y fzf
 else
     echo "[INFO] fzf is already installed."
 fi
@@ -341,12 +426,12 @@ fi
 # --- dotool setup ---
 if ! command -v dotool &> /dev/null; then
     echo "--> Installing dotool..."
-    sudo zypper install -y dotool || echo "WARNING: dotool not found in repos. Install manually. See docs/LINUX_WAYLAND_dotool.md"
+    $SUDO zypper install -y dotool || echo "WARNING: dotool not found in repos. Install manually. See docs/LINUX_WAYLAND_dotool.md"
 fi
-sudo usermod -aG input $USER
+$SUDO usermod -aG input $USER
 echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
-  | sudo tee /etc/udev/rules.d/80-dotool.rules
-sudo udevadm control --reload-rules && sudo udevadm trigger
+  | $SUDO tee /etc/udev/rules.d/80-dotool.rules
+$SUDO udevadm control --reload-rules && $SUDO udevadm trigger
 echo "NOTE: Re-login required for input group to take effect."
 echo "See docs/LINUX_WAYLAND_dotool.md for details."
 
