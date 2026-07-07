@@ -1,5 +1,4 @@
-# .github/workflows/ci_suse_setup.yml
-
+# .github/workflows/suse_setup.yml
 name: CI for Suse Setup
 
 on:
@@ -23,47 +22,96 @@ jobs:
   validate-suse-setup:
     runs-on: ubuntu-latest
 
-    # This is the key change: Run all steps inside a Suse Docker container
+    # Pin the tag. "opensuse/leap:latest" silently moved from 15.x to 16.0
+    # and broke this job (python311 folded into python3, gccNN metapackages
+    # dropped in favor of the unversioned gcc/gcc-c++ alias). Pinning makes
+    # future distro bumps a deliberate, reviewable diff instead of a
+    # surprise red build.
     container:
-      image: opensuse/leap:latest
+      image: opensuse/leap:16.0
 
     steps:
 
-      - name: Debug user
+      - name: Debug environment
         run: |
           whoami
           id
-          command -v sudo || echo "sudo not found"
+          command -v sudo || echo "sudo not found (expected: container runs as root)"
           uname -a
           cat /etc/os-release || true
 
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Refresh and install Python/build deps (sudo if available)
+      - name: Install Python/build deps (robust across Leap releases)
         shell: bash
         run: |
           set -euo pipefail
-    
-          # prefer using sudo if present, otherwise run as-is (CI containers may already be root)
+
+          # This container runs as root with no sudo binary at all -- guard
+          # every privileged call instead of assuming sudo exists.
           if command -v sudo >/dev/null 2>&1; then
             SUDO="sudo"
           else
             SUDO=""
           fi
-    
-          # refresh repos
+
           $SUDO zypper -n refresh
-    
-          # Try python311 first, fallback to python3
-          if zypper se -s --match-exact python311 >/dev/null 2>&1; then
-            echo "Installing python311 set..."
-            $SUDO zypper -n install git tar python311 python311-pip gcc13 gcc13-c++ make python311-devel
-          else
-            echo "Installing generic python3 set..."
-            $SUDO zypper -n install git tar python3 python3-pip python3-venv gcc gcc-c++ make python3-devel
+
+          # Package names shift between Leap releases. Rather than hardcoding
+          # one release's names (which is what broke this job), probe a list
+          # of candidate sets, newest/most-specific first, and use the first
+          # one that fully resolves against the enabled repos.
+          PY_CANDIDATES=(
+            "python3 python3-pip python3-devel python3-venv"
+            "python311 python311-pip python311-devel python311-venv"
+            "python310 python310-pip python310-devel python310-venv"
+          )
+          GCC_CANDIDATES=(
+            "gcc gcc-c++"
+            "gcc13 gcc13-c++"
+            "gcc12 gcc12-c++"
+          )
+          COMMON="git tar make"
+
+          pick_working_set() {
+            # $1 = name of caller's result variable, remaining args = candidate sets
+            local __result_var="$1"; shift
+            local set
+            for set in "$@"; do
+              local ok=true pkg
+              for pkg in $set; do
+                if ! zypper -n install --dry-run $pkg >/dev/null 2>&1; then
+                  ok=false
+                  break
+                fi
+              done
+              if [ "$ok" = true ]; then
+                printf -v "$__result_var" '%s' "$set"
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          PY_SET=""
+          if ! pick_working_set PY_SET "${PY_CANDIDATES[@]}"; then
+            echo "::error::No usable python package set resolved for this image"
+            exit 1
           fi
 
+          GCC_SET=""
+          if ! pick_working_set GCC_SET "${GCC_CANDIDATES[@]}"; then
+            echo "::error::No usable gcc package set resolved for this image"
+            exit 1
+          fi
+
+          echo "Installing: $COMMON $PY_SET $GCC_SET"
+          $SUDO zypper -n install $COMMON $PY_SET $GCC_SET
+
+          PY_BIN=$(awk '{print $1}' <<< "$PY_SET")
+          echo "Resolved interpreter package: $PY_BIN"
+          echo "PY_BIN=$PY_BIN" >> "$GITHUB_ENV"
 
       - name: Cache models and tools
         uses: actions/cache@v4
@@ -75,24 +123,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-suse-models-tools-
 
-
       - name: Run suse_setup.sh
-
-        # FIX: Force the build system to use the g++-13 compiler
-        env:
-          CXX: g++-13
-
         run: |
-          # The container runs as root, so 'sudo' is not needed and not installed.
-          # We remove all "sudo " calls from the script before executing it.
+          # No sudo in this container -- strip every "sudo " call before running.
           sed -i 's/sudo //g' ./setup/suse_setup.sh
 
-          sed -i 's/python3 -m venv .venv/python3.11 -m venv .venv/' ./setup/suse_setup.sh
+          # Use whichever interpreter the previous step actually resolved,
+          # instead of hardcoding python3.11.
+          sed -i "s/python3 -m venv .venv/${PY_BIN} -m venv .venv/g" ./setup/suse_setup.sh
 
           bash ./setup/suse_setup.sh
 
-
-      # Upload artifacts with a new name
       - name: Package Assets as Artifact
         if: always()
         uses: actions/upload-artifact@v4
