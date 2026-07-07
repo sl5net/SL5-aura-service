@@ -326,9 +326,10 @@ PY
                 continue
             fi
 
-#            sleep 1
-#            sleep 0.4
-            sleep 0.02
+#            sleep 1 # 7.7.'26 07:58 Tue its okay but feels smarer when text is typed super quick
+            sleep 0.4
+            # sleep 0.02 # works in 99% 7.7.'26 07:57 Tue maybe responsable for sometimes double letters
+            # thats time beeween sentences (not time beetwee words)
 
 
             mapfile -t lines < "$f"
