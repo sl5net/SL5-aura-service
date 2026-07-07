@@ -5,7 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'setup/suse_setup.sh'
+      - 'setup/**'
       - 'requirements.txt'
       - 'requirements-dev.txt'
       - '.github/workflows/suse_setup.yml'
@@ -60,6 +60,10 @@ jobs:
           # one release's names, probe candidate sets and use the first one
           # where every package actually exists in the enabled repos.
           #
+          # NOTE: unlike Debian/Ubuntu, openSUSE does not split "venv" into
+          # its own subpackage -- ensurepip/venv ship inside the base python3
+          # package. So we do NOT require a "-venv" package to exist.
+          #
           # IMPORTANT: existence is checked with `zypper search --match-exact`,
           # a read-only, side-effect-free query, parsed by its printed output --
           # not by trusting `zypper install --dry-run`'s exit code, which has
@@ -68,9 +72,9 @@ jobs:
           # caused every candidate here to be rejected even when the packages
           # were installable.
           PY_CANDIDATES=(
-            "python3 python3-pip python3-devel python3-venv"
-            "python311 python311-pip python311-devel python311-venv"
-            "python310 python310-pip python310-devel python310-venv"
+            "python3 python3-pip python3-devel"
+            "python311 python311-pip python311-devel"
+            "python310 python310-pip python310-devel"
           )
           GCC_CANDIDATES=(
             "gcc gcc-c++"
@@ -79,10 +83,26 @@ jobs:
           )
           COMMON="git tar make"
 
+          SUMMARY="${GITHUB_STEP_SUMMARY:-/dev/null}"
+          {
+            echo "### Package resolution diagnostics (opensuse/leap:16.0)"
+            echo
+            echo "| Candidate set | Package | Found? |"
+            echo "|---|---|---|"
+          } >> "$SUMMARY"
+
           pkg_exists() {
             local pkg="$1" out
-            out=$(zypper -n search --match-exact "$pkg" 2>/dev/null) || true
-            grep -qw -- "$pkg" <<< "$out"
+            out=$(zypper -n search --match-exact "$pkg" 2>&1) || true
+            echo "  zypper search --match-exact '$pkg':"
+            echo "$out" | sed 's/^/    /'
+            if grep -qw -- "$pkg" <<< "$out"; then
+              echo "| current | $pkg | yes |" >> "$SUMMARY"
+              return 0
+            else
+              echo "| current | $pkg | **no** |" >> "$SUMMARY"
+              return 1
+            fi
           }
 
           pick_working_set() {
@@ -90,19 +110,19 @@ jobs:
             local __result_var="$1"; shift
             local set
             for set in "$@"; do
+              echo "-> Trying candidate set: $set"
               local ok=true pkg missing=""
               for pkg in $set; do
                 if ! pkg_exists "$pkg"; then
                   ok=false
                   missing="$pkg"
+                  echo "::warning::Package '$pkg' not found -- rejecting candidate set: $set"
                   break
                 fi
               done
               if [ "$ok" = true ]; then
                 printf -v "$__result_var" '%s' "$set"
                 return 0
-              else
-                echo "  -> candidate set rejected ('$missing' not found): $set"
               fi
             done
             return 1
@@ -111,7 +131,7 @@ jobs:
           echo "--> Resolving a usable python package set..."
           PY_SET=""
           if ! pick_working_set PY_SET "${PY_CANDIDATES[@]}"; then
-            echo "::error::No usable python package set resolved for this image"
+            echo "::error::No usable python package set resolved for this image. See job summary / warnings above for exactly which packages were missing."
             exit 1
           fi
           echo "    Selected: $PY_SET"
@@ -119,7 +139,7 @@ jobs:
           echo "--> Resolving a usable gcc package set..."
           GCC_SET=""
           if ! pick_working_set GCC_SET "${GCC_CANDIDATES[@]}"; then
-            echo "::error::No usable gcc package set resolved for this image"
+            echo "::error::No usable gcc package set resolved for this image. See job summary / warnings above for exactly which packages were missing."
             exit 1
           fi
           echo "    Selected: $GCC_SET"
