@@ -18,9 +18,28 @@ if ! command -v brew &> /dev/null; then
     echo "ERROR: Homebrew not found. Please install it from https://brew.sh"
     exit 1
 fi
+
+# Refresh Homebrew metadata (non-destructive)
 brew update
-brew install python
-eval $(python3 scripts/py/setup_config.py)
+
+# Prompt before performing a full brew upgrade (which may download many packages)
+read -t 8 -p "Run 'brew upgrade' now? This may download many packages. (y/N) [Auto N in 8s]: " _resp || _resp="n"
+if [[ "$_resp" =~ ^[Yy]$ ]]; then
+    brew upgrade
+else
+    echo "Skipping 'brew upgrade'. You can run it later if desired."
+fi
+# Install python only if missing
+if ! command -v python3 >/dev/null 2>&1; then
+    echo "Installing python via brew..."
+    brew install python
+else
+    echo "python3 already installed: $(python3 --version)"
+fi
+
+#eval $(python3 scripts/py/setup_config.py)
+
+eval $(./.venv/bin/python scripts/py/setup_config.py) || eval $(python3 scripts/py/setup_config.py)
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
 
 should_remove_zips_after_unpack=true
@@ -83,13 +102,14 @@ brew install fswatch wget unzip portaudio
 
 
 # --- 2. Python Virtual Environment ---
-# We check if the venv directory exists before creating it.
+
+
+# Ensure virtualenv use pattern is safe: create venv before any pip usage in later steps
 if [ ! -d ".venv" ]; then
     echo "--> Creating Python virtual environment in './.venv'..."
-    python3 -m venv .venv
-else
-    echo "--> Virtual environment already exists. Skipping creation."
+    python3 -m venv .venv || { echo "ERROR: failed to create venv"; exit 1; }
 fi
+
 
 # --- 3. Python Requirements ---
 echo "--> Preparing requirements for macOS..."

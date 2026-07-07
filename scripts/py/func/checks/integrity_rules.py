@@ -32,6 +32,20 @@ FORBIDDEN_PATTERNS = [
     # "pathlib.Path",
     "if settings.DEV_MODE_all_processing:",
     'AutoHotkey.exe" "%',
+    "sudo pacman -Syu",
+    "apt-get upgrade -y",
+    "apt full-upgrade -y",
+    # macOS / Homebrew related forbidden patterns:
+    "brew update",
+    "brew upgrade",
+    "brew upgrade --casks",
+    "brew upgrade --all",
+    # system software updates / macOS installer:
+    "softwareupdate -i -a",
+    "softwareupdate --install --all",
+    "sudo softwareupdate -i -a",
+    "sudo /usr/sbin/softwareupdate -i -a",
+    "sudo installer -pkg",
 ]
 
 
