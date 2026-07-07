@@ -28,11 +28,40 @@ jobs:
       image: opensuse/leap:latest
 
     steps:
-      - name: Install required dependencies
-        run: zypper -n --no-gpg-checks install git tar python311 python311-pip gcc13 gcc13-c++ make python311-devel
 
       - name: Check out repository code
         uses: actions/checkout@v4
+
+      - name: Refresh zypper repositories
+        run: sudo zypper -n refresh
+
+
+      - name: Install Python and build deps (try python311 first, fallback to python3)
+        shell: bash
+        run: |
+          set -euo pipefail
+        
+          # Common build deps (single list)
+          COMMON="git tar gcc gcc-c++ make"
+          
+          # Candidate package sets (first successful set will be used)
+          if zypper se -s --match-exact python311 >/dev/null 2>&1; then
+              echo "python311 is available; installing python311 set..."
+              sudo zypper -n install $COMMON python311 python311-pip python311-devel
+          else
+              echo "python311 not available; installing generic python3 set..."
+              sudo zypper -n install $COMMON python3 python3-pip python3-venv python3-devel
+          fi
+          
+        
+
+
+      - name: zypper -n install
+        run: zypper -n install git tar python3 python3-pip python3-venv gcc gcc-c++ make python3-devel
+
+      - name: Install required dependencies
+        run: zypper -n --no-gpg-checks install git tar python311 python311-pip gcc13 gcc13-c++ make python311-devel
+
 
 
 
