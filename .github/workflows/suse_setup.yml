@@ -1,12 +1,11 @@
-# .github/workflows/ci_suse_setup.yml
-
+# .github/workflows/suse_setup.yml
 name: CI for Suse Setup
 
 on:
   push:
     branches: [ master ]
     paths:
-      - 'setup/**'
+      - 'setup/suse_setup.sh'
       - 'requirements.txt'
       - 'requirements-dev.txt'
       - '.github/workflows/suse_setup.yml'
@@ -17,53 +16,31 @@ on:
     types: [published]
   workflow_dispatch:
 
-
-
 jobs:
   validate-suse-setup:
     runs-on: ubuntu-latest
 
-    # This is the key change: Run all steps inside a Suse Docker container
+    # Pin the tag. "opensuse/leap:latest" silently moved from 15.x to 16.0
+    # and broke this job in the past (package names shift between releases).
+    # Pinning makes future distro bumps a deliberate, reviewable diff instead
+    # of a surprise red build. setup/suse_setup.sh itself now resolves the
+    # correct package/compiler names dynamically, so it also stays correct
+    # across Leap versions if this tag is bumped later.
     container:
-      image: opensuse/leap:latest
+      image: opensuse/leap:16.0
 
     steps:
 
-      - name: Debug user
+      - name: Debug environment
         run: |
           whoami
           id
-          command -v sudo || echo "sudo not found"
+          command -v sudo || echo "sudo not found (expected: container runs as root)"
           uname -a
           cat /etc/os-release || true
 
       - name: Check out repository code
         uses: actions/checkout@v4
-
-      - name: Refresh and install Python/build deps (sudo if available)
-        shell: bash
-        run: |
-          set -euo pipefail
-    
-          # prefer using sudo if present, otherwise run as-is (CI containers may already be root)
-          if command -v sudo >/dev/null 2>&1; then
-            SUDO="sudo"
-          else
-            SUDO=""
-          fi
-    
-          # refresh repos
-          $SUDO zypper -n refresh
-    
-          # Try python311 first, fallback to python3
-          if zypper se -s --match-exact python311 >/dev/null 2>&1; then
-            echo "Installing python311 set..."
-            $SUDO zypper -n install git tar python311 python311-pip gcc13 gcc13-c++ make python311-devel
-          else
-            echo "Installing generic python3 set..."
-            $SUDO zypper -n install git tar python3 python3-pip python3-venv gcc gcc-c++ make python3-devel
-          fi
-
 
       - name: Cache models and tools
         uses: actions/cache@v4
@@ -75,24 +52,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-suse-models-tools-
 
-
       - name: Run suse_setup.sh
-
-        # FIX: Force the build system to use the g++-13 compiler
-        env:
-          CXX: g++-13
-
         run: |
-          # The container runs as root, so 'sudo' is not needed and not installed.
-          # We remove all "sudo " calls from the script before executing it.
-          sed -i 's/sudo //g' ./setup/suse_setup.sh
-
-          sed -i 's/python3 -m venv .venv/python3.11 -m venv .venv/' ./setup/suse_setup.sh
-
+          # No sudo needed here: the script itself detects sudo's absence
+          # and runs privileged commands directly since this container runs
+          # as root. Package/compiler resolution also happens inside the
+          # script now, so nothing needs to be patched in from the workflow.
           bash ./setup/suse_setup.sh
 
-
-      # Upload artifacts with a new name
       - name: Package Assets as Artifact
         if: always()
         uses: actions/upload-artifact@v4

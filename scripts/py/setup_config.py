@@ -104,12 +104,12 @@ def find_folder_counts(root):
 
 def print_counts(info):
     print("Repository documentation summary:")
-    print(f"  docs folder exists: {info['docs_exists']}, files: {len(info['docs_files'])}")
-    print(f"  doc_sources folder exists: {info['doc_sources_exists']}, files: {len(info['doc_sources_files'])}")
+    print("  docs folder exists: {info['docs_exists']}, files: {len(info['docs_files'])}", file=sys.stderr)
+    print("  doc_sources folder exists: {info['doc_sources_exists']}, files: {len(info['doc_sources_files'])}", file=sys.stderr)
     if info['i18n_folders']:
         print("  i18n folders found:")
         for k, v in info['i18n_folders'].items():
-            print(f"    {k} -> {len(v)} .md files")
+            print("    {k} -> {len(v)} .md files", file=sys.stderr)
     else:
         print("  no .i18n folders found.")
 
@@ -118,9 +118,9 @@ def delete_path(path):
     # safe delete with shutil.rmtree
     if os.path.exists(path):
         shutil.rmtree(path)
-        print(f"Deleted: {path}")
+        print("Deleted: {path}")
     else:
-        print(f"Not found (so not deleted): {path}")
+        print("Not found (so not deleted): {path}", file=sys.stderr)
 
 
 def delete_non_primary_md(info, primary):
@@ -219,18 +219,16 @@ else:
 
 # Print environment variables as before
 if os.name == 'nt':
-    print(f"$env:SELECTED_LANG='{primary}'")
-    print(f"$env:SECOND_LANG='{secondary}'")
-    print(f"$env:EXCLUDE_LANGUAGES='{excludes_str}'")
+    print("$env:SELECTED_LANG='{primary}'")
+    print("$env:SECOND_LANG='{secondary}'")
+    print("$env:EXCLUDE_LANGUAGES='{excludes_str}'")
 else:
-    print(f"export SELECTED_LANG='{primary}'")
-    print(f"export SECOND_LANG='{secondary}'")
-    print(f"export EXCLUDE_LANGUAGES='{excludes_str}'")
+    print("export SELECTED_LANG='{primary}'")
+    print("export SECOND_LANG='{secondary}'")
+    print("export EXCLUDE_LANGUAGES='{excludes_str}'")
 
 # --- New: show docs/doc_sources/i18n counts and ask about deletions ---
-repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))  # adjust if script location differs
-# If you prefer script to run relative to current working dir, use os.getcwd() instead:
-repo_root = os.getcwd()
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 info = find_folder_counts(repo_root)
 print("")  # spacer
@@ -252,18 +250,18 @@ if info['docs_exists'] or info['doc_sources_exists']:
         if ans_partial in ("y", "yes"):
             deleted, skipped = delete_non_primary_md(info, primary)
             print("")
-            print(f"Deleted {len(deleted)} files (attempted).")
+            print("Deleted {len(deleted)} files (attempted).", file=sys.stderr)
             if deleted:
                 for d in deleted:
-                    print(f"  - {d}")
+                    print("  - {d}", file=sys.stderr)
             if skipped:
-                print(f"{len(skipped)} entries skipped or failed:")
+                print("{len(skipped)} entries skipped or failed:", file=sys.stderr)
                 for s in skipped[:50]:
                     if isinstance(s, tuple):
-                        print(f"  - {s[0]}: {s[1]}")
+                        print("  - {s[0]}: {s[1]}", file=sys.stderr)
                     else:
-                        print(f"  - {s}")
+                        print("  - {s}", file=sys.stderr)
 else:
-    print("No docs or doc_sources folders detected; nothing to delete.")
+    print("No docs or doc_sources folders detected; nothing to delete.", file=sys.stderr)
 
 # End
