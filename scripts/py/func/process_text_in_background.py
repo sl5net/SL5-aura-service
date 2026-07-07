@@ -30,7 +30,9 @@ from .window_filter import is_window_title_skippable
 from .checks.trigger_aura_maintenance import trigger_aura_maintenance
 # scripts/py/func/process_text_in_background.py:27
 # scripts/py/func/process_text_in_background.py:25
-from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES
+from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES, resolve_execute_only
+
+
 
 
 from .correct_text_by_languagetool import correct_text_by_languagetool
@@ -76,9 +78,38 @@ GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
 GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
-GLOBAL_debug_skip_list=False
 GLOBAL_LT_LANGUAGE = ""
 
+
+from typing import Any
+
+
+
+def _str_to_bool(val: Any) -> bool:
+    if isinstance(val, bool):
+        return val
+    if val is None:
+        return False
+    s = str(val).strip().lower()
+    return s in ("1", "true", "t", "yes", "y", "on")
+
+# def resolve_execute_only(options: Mapping[str, Any])->bool:
+#     if getattr(SEQUENCE_LOCK, 'execute_only_event').is_set():
+#         return True
+#     if 'execute_only' not in options:
+#         return getattr(SEQUENCE_LOCK, 'execute_only_event').is_set()
+#     if _str_to_bool(options.get('execute_only')):
+#         getattr(SEQUENCE_LOCK, 'execute_only_event').set()
+#         return True
+#     return getattr(SEQUENCE_LOCK, 'execute_only_event').is_set()
+
+# def resolve_execute_only_OLD_20260707_0042(options: Mapping[str, Any], current_flag: bool) -> bool:
+#     if current_flag:
+#         return True
+#     if 'execute_only' not in options:
+#         return current_flag
+#     return _str_to_bool(options.get('execute_only'))
+#
 
 
 def ensure_path(p: Union[str, os.PathLike, Path, None]) -> Optional[Path]:
@@ -181,6 +212,7 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
 
 # This is your function at line 17
 def load_module_from_path(script_path, run_mode_override=None):
+    GLOBAL_debug_skip_list = getattr(global_state.SEQUENCE_LOCK, 'execute_only', False)
     if GLOBAL_debug_skip_list:
         print(f'86: run_mode_override: {run_mode_override}')
 
@@ -304,6 +336,7 @@ def _write_plugin_state_log(enabled, disabled, rule_count, run_mode_override):
         "✅ ENABLED:\n"  + "".join(f"   {k}\n" for k in sorted(enabled))  +
         "\n🚫 DISABLED:\n" + "".join(f"   {k}\n" for k in sorted(disabled))
     )
+
 
     log_path.write_text(content, encoding='utf-8')
     _plugin_state_cache['siglen']     = siglen
@@ -650,6 +683,8 @@ def is_regex_pattern(pattern):
 
 def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger):
     # is called in apply_all_rules_may_until_stable(
+    if getattr(global_state.SEQUENCE_LOCK, 'execute_only', False):
+        return ''
 
     log_all_processed_text = settings.DEV_MODE and False
 
@@ -730,6 +765,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
     run_pipeline_callback=run_pipeline_callback,
     is_inner_rule=is_inner_rule
     )
+
     is_private = False
     if privacy_taint_occurred:
         is_private = True
@@ -737,7 +773,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
         if settings.DEV_MODE_show_when_private_map_found:
             log4DEV("is_private: 📚Found module candidate", logger)
 
-    if GLOBAL_debug_skip_list:
+    if getattr(SEQUENCE_LOCK, 'execute_only', False):
 
         print(f'567: skip_list={skip_list}')
 
@@ -746,7 +782,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
         #made_a_change_in_cycle = False
         log4DEV("new_processed_text is return ... None", logger)
 
-        if GLOBAL_debug_skip_list:
+        if getattr(SEQUENCE_LOCK, 'execute_only', False):
             print(f'574: skip_list={skip_list}')
 
         return new_processed_text, None, skip_list, privacy_taint_occurred
@@ -760,8 +796,13 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
         # regex_pre_is_replacing_all_maybeTEST1 = True
         log4DEV(f"242: 🔁??? new_processed_text: {new_processed_text}", logger)
 
-        if GLOBAL_debug_skip_list:
+        if getattr(SEQUENCE_LOCK, 'execute_only', False):
             print(f'585: skip_list={skip_list} | {new_processed_text} ')
+
+        if getattr(SEQUENCE_LOCK, 'execute_only', False):
+            new_processed_text = ''
+
+
 
         return new_processed_text, True, skip_list, privacy_taint_occurred
 
@@ -783,6 +824,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
         #for replacement, match_phrase, threshold, *flags_list, rule_mode in fuzzy_map_pre:
 
         for entry in fuzzy_map_pre:
+
+            if getattr(SEQUENCE_LOCK, 'execute_only', False):
+                break
 
             if len(entry) < 4:
                 entry =normalize_fuzzy_map_rule_entry(entry)
@@ -814,6 +858,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
             only_in_windows_list = options_dict.get('only_in_windows', [])
             exclude_windows_list = options_dict.get('exclude_windows', [])
+            #execute_only  = options_dict.get('execute_only', False)
             if is_window_title_skippable(_active_window_title,only_in_list=only_in_windows_list, exclude_list=exclude_windows_list,logger=logger):
                 continue
 
@@ -854,7 +899,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
 
 
-            if GLOBAL_debug_skip_list:
+            if getattr(SEQUENCE_LOCK, 'execute_only', False):
                 print(f'618: skip_list={skip_list}')
 
             # logger.info(f"248: threshold={threshold} , skip_list: {skip_list}")
@@ -975,10 +1020,15 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
                             sys.stderr.write(f"DEBUG 925: new_current_text='{new_current_text}'\n")
                             sys.stderr.flush()
 
-                            if GLOBAL_debug_skip_list:
+                            if getattr(SEQUENCE_LOCK, 'execute_only', False):
                                 print(f'708: skip_list={skip_list}')
 
                             # return processed_text, a_rule_matched, skip_list # in
+
+                            if getattr(SEQUENCE_LOCK, 'execute_only', False):
+                                processed_text = ''
+                                a_rule_matched = True
+
                             return processed_text, a_rule_matched, skip_list, privacy_taint_occurred
 
                     log4DEV(f"a_rule_matched({a_rule_matched}) -> break",logger)
@@ -1000,7 +1050,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
     log4DEV(f"new_processed_text: {new_processed_text} , a_rule_matched: {a_rule_matched}, skip_list: {skip_list}",logger)
 
-    if GLOBAL_debug_skip_list:
+    if getattr(SEQUENCE_LOCK, 'execute_only', False):
         print(f'731: skip_list={skip_list}')
 
 
@@ -1022,7 +1072,10 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
     #         f.write("-" * 30 + "\n")
     # --- FLIGHT RECORDER END ---
 
-    return new_processed_text, a_rule_matched, skip_list, privacy_taint_occurred
+    if getattr(SEQUENCE_LOCK, 'execute_only', False):
+        return '', True, skip_list, privacy_taint_occurred
+    else:
+        return new_processed_text, a_rule_matched, skip_list, privacy_taint_occurred
 
 
 
@@ -1042,10 +1095,11 @@ def process_text_in_background(logger,
                                custom_rules = None
                                ):
     global GLOBAL_LT_LANGUAGE
+
     GLOBAL_LT_LANGUAGE = LT_LANGUAGE
 
     new_current_text = None
-
+    processed_text = None
 
 
 
@@ -1155,7 +1209,7 @@ def process_text_in_background(logger,
             # print(f':st: \nprocess_text_in_background:975 raw_text:{raw_text}')
 
             expected_id = 0
-            with SEQUENCE_LOCK:
+            with SEQUENCE_LOCK.lock:
                 expected_id = SESSION_LAST_PROCESSED.get(session_id, 0) + 1
 
             if chunk_id == expected_id:
@@ -1179,7 +1233,7 @@ def process_text_in_background(logger,
             wait_count += 1
 
             # --- CACHE: Legt uns in den Warte-Cache und wartet auf andere Threads, die abarbeiten ---
-            with SEQUENCE_LOCK:
+            with SEQUENCE_LOCK.lock:
                 if chunk_id not in OUT_OF_ORDER_CACHE:
                     OUT_OF_ORDER_CACHE[chunk_id] = (logger, LT_LANGUAGE, raw_text, output_dir, recording_time, active_lt_url, output_dir_override)
 
@@ -1187,7 +1241,7 @@ def process_text_in_background(logger,
             # scripts/py/func/process_text_in_background.py:1156
             time.sleep(0.005)
 
-            with SEQUENCE_LOCK:
+            with SEQUENCE_LOCK.lock:
 
                 # --- If the cache entry is no longer there, it was picked up by another thread ---
 
@@ -1197,7 +1251,7 @@ def process_text_in_background(logger,
 
 
                 # 2. Erfolgreich an der Reihe: Aktualisiere die letzte verarbeitete ID
-        with SEQUENCE_LOCK:
+        with SEQUENCE_LOCK.lock:
             SESSION_LAST_PROCESSED[session_id] = chunk_id
 
 
@@ -1282,7 +1336,8 @@ def process_text_in_background(logger,
 
                 log4DEV(f'raw_text:{raw_text}',logger)
             raw_text = settings.SPEECH_PAUSE_TIMEOUT
-            unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
+            if not getattr(SEQUENCE_LOCK, 'execute_only', False):
+                unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
 
             # print(f':st: \nprocess_text_in_background:1089 raw_text:{raw_text}')
 
@@ -1450,26 +1505,31 @@ def process_text_in_background(logger,
 
                     # --- CALLBACK for RECURSION ---
                     def run_pipeline_callback(text, rule):
-                        return process_text_in_background(
-                            logger, LT_LANGUAGE, text,
-                            output_dir, recording_time, active_lt_url,
-                            output_dir_override=output_dir_override,
-                            chunk_id=chunk_id, session_id=session_id,
-                            unmasked=unmasked, interface=interface,
-                            custom_rules=[rule]
-                        )
 
-                    # Aufruf mit den neuen Parametern run_pipeline_callback und is_inner_rule
-                    (new_processed_text
-                         , regex_pre_is_replacing_all_maybe
-                         , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
-                        processed_text,
-                        GLOBAL_FUZZY_MAP_PRE,
-                        logger,
-                        interface,
-                        run_pipeline_callback=run_pipeline_callback,
-                        is_inner_rule=(custom_rules is not None)
-                    )
+                        if getattr(SEQUENCE_LOCK, 'execute_only', False):
+                            return ''
+                        else:
+                            return process_text_in_background(
+                                logger, LT_LANGUAGE, text,
+                                output_dir, recording_time, active_lt_url,
+                                output_dir_override=output_dir_override,
+                                chunk_id=chunk_id, session_id=session_id,
+                                unmasked=unmasked, interface=interface,
+                                custom_rules=[rule]
+                            )
+
+                    if not getattr(SEQUENCE_LOCK, 'execute_only', False):
+                        # Aufruf mit den neuen Parametern run_pipeline_callback und is_inner_rule
+                        (new_processed_text
+                             , regex_pre_is_replacing_all_maybe
+                             , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
+                            processed_text,
+                            GLOBAL_FUZZY_MAP_PRE,
+                            logger,
+                            interface,
+                            run_pipeline_callback=run_pipeline_callback,
+                            is_inner_rule=(custom_rules is not None)
+                        )
 
 
                 # if not privacy_taint_occurred:
@@ -1585,7 +1645,7 @@ def process_text_in_background(logger,
             regex_match_found = False
             # log4DEV(f'regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
             # log4DEV(f"skip_list: {skip_list}", logger)
-            if GLOBAL_debug_skip_list:
+            if getattr(SEQUENCE_LOCK, 'execute_only', False):
                 print(f'1051: skip_list={skip_list}')
             skip_list_backup = skip_list
             options_dict = None
@@ -1606,8 +1666,9 @@ def process_text_in_background(logger,
 
                     flags = options_dict.get('flags', 0)  # Standardwert ist 0, wenn kein Flag angegeben
                     #log4DEV(f"skip_list: {skip_list}", logger)
-                    skip_list = options_dict.get('skip_list', [])  # Standardwert ist leere Liste
-                    if GLOBAL_debug_skip_list:
+                    skip_list = options_dict.get('skip_list', [])
+
+                    if getattr(SEQUENCE_LOCK, 'execute_only', False):
                         print(f'1070: skip_list={skip_list}')
                     #log4DEV(f"skip_list: {skip_list}", logger)
 
@@ -1673,7 +1734,7 @@ def process_text_in_background(logger,
 
                 log4DEV(f"skip_list_backup: {skip_list_backup}", logger)
                 skip_list=skip_list_backup
-                if GLOBAL_debug_skip_list:
+                if getattr(SEQUENCE_LOCK, 'execute_only', False):
                     print(f'1132: skip_list={skip_list}')
 
                 # for replacement, match_phrase, threshold in fuzzy_map:
@@ -1840,7 +1901,7 @@ def process_text_in_background(logger,
 
 
                         if active_sig:
-                            with SEQUENCE_LOCK:
+                            with SEQUENCE_LOCK.lock:
                                 # 2. Use the specific cooldown for this window
                                 last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
 
@@ -1876,7 +1937,7 @@ def process_text_in_background(logger,
                         if active_sig:
                             signature_cooldown = getattr(settings, 'SIGNATURE_COOLDOWN', 3600)
 
-                            with SEQUENCE_LOCK:
+                            with SEQUENCE_LOCK.lock:
                                 last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
                                 current_time = time.time()
 
@@ -1898,7 +1959,7 @@ def process_text_in_background(logger,
 
                         signature_cooldown = getattr(settings, 'SIGNATURE_COOLDOWN', 3600)
 
-                        with SEQUENCE_LOCK:
+                        with SEQUENCE_LOCK.lock:
                             last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
                             current_time = time.time()
 
@@ -1915,13 +1976,18 @@ def process_text_in_background(logger,
 
             # scripts/py/func/process_text_in_background.py:1566
 
+
+
             new_current_text = sanitize_transcription_start(new_current_text)
 
 
             # THIS LINE WAS ALREADY CORRECT:
             # scripts/py/func/process_text_in_background.py:1891
+
             if custom_rules is None:
-                unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
+
+                if not getattr(SEQUENCE_LOCK, 'execute_only', False):
+                    unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
             # print(f':st: \nprocess_text_in_background:1672 raw_text:{raw_text}')
 
 
@@ -1968,6 +2034,7 @@ def process_text_in_background(logger,
         # print(f':st: \nprocess_text_in_background:1696 raw_text:{raw_text}')
 
 
+
     except Exception as e:
         logger.error(f"FATAL: Error in processing thread: {e}", exc_info=True)
         print(f"FATAL: Error in processing thread: {e}")
@@ -2012,6 +2079,9 @@ def process_text_in_background(logger,
 
         # print(f':st: \nprocess_text_in_background:1753 raw_text:{raw_text}')
 
+    if getattr(SEQUENCE_LOCK, 'execute_only', False):
+        return ''
+
     return new_current_text if new_current_text else processed_text
 
 # py/func/process_text_in_background.py:1196
@@ -2051,6 +2121,7 @@ def sanitize_transcription_start(raw_text: str) -> str:
 
 
 def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, run_pipeline_callback=None, is_inner_rule=False):
+
 
     """
     Applies all rules from the given rules_map iteratively to the text until the text no longer changes after a complete pass through all the rules.
@@ -2121,7 +2192,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
         for rule_entry in rules_map:
 
-            if GLOBAL_debug_skip_list:
+            if getattr(SEQUENCE_LOCK, 'execute_only', False):
                 print(f'1420: Processing rule {rule_entry}')
 
 
@@ -2138,7 +2209,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                     if global_state.LOGGING_ENABLED:
                         logger_instance.info(m)
 
-                if GLOBAL_debug_skip_list:
+                if getattr(SEQUENCE_LOCK, 'execute_only', False):
                     print(f'1433: Processing rule {rule_entry} ')
 
                 continue
@@ -2147,7 +2218,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                 rule_entry = normalize_fuzzy_map_rule_entry(rule_entry)
 
 
-            if len(rule_entry) != 4:
+            if len(rule_entry) > 5:
                 print("____________________________________________")
                 print("____________________________________________")
                 print("____________________________________________")
@@ -2168,11 +2239,13 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
             if replacement_text is None:
                 continue
 
-
-
-
+            # logger_instance.info(f'2189 regex_pattern={regex_pattern}')
+            # logger_instance.info(f'2190 rule_entry={rule_entry}')
+            # logger_instance.info(f'2191 options_dict={options_dict}')
 
             rule_is_private = options_dict.get('is_private', False)
+
+
 
 
             if regex_pattern in [r'.+', r'.*', r'^.+$', r'^.*$']:
@@ -2314,12 +2387,13 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
 
 
-            if GLOBAL_debug_skip_list:
+            if getattr(SEQUENCE_LOCK, 'execute_only', False):
                 print(f'1476: skip_list_temp={skip_list_temp}')
                 print(f'1476: skip_list_temp={options_dict}')
 
             # 1. Flags extrahieren für den Cache-Key
             flags = options_dict.get('flags', re.IGNORECASE)
+
 
             # from scripts.py.func.config.regex_cache import get_cached_regex
             compiled_regex = get_cached_regex(regex_pattern, flags)
@@ -2387,6 +2461,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
                         # scripts/py/func/process_text_in_background.py:1897
                         on_match_exec_list = options_dict.get('on_match_exec', [])
+
+
                         for script_path in on_match_exec_list:
                             module = load_module_from_path(script_path)
                             if module and hasattr(module, 'execute'):
@@ -2407,7 +2483,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                         made_a_change = made_a_change + 1
                         skip_list = skip_list_temp
 
-                        if GLOBAL_debug_skip_list:
+                        if getattr(SEQUENCE_LOCK, 'execute_only', False):
                             print(f'1525: skip_list={skip_list}')
 
                         current_text = new_current_text
@@ -2444,7 +2520,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                         if not privacy_taint_occurred:
                             log4DEV(f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} '{original_text_for_script}' ----> '{current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}",logger_instance)
 
-                        if GLOBAL_debug_skip_list:
+                        if getattr(SEQUENCE_LOCK, 'execute_only', False):
                             print(f'1534: skip_list={skip_list}')
 
                         if 'fullMatchStop' not in skip_list:
@@ -2504,31 +2580,27 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                             for script_path in on_match_exec_list:
                                 module = load_module_from_path(script_path)
                                 if module and hasattr(module, 'execute'):
-                                    # Übergebe match_data und aktualisiere den Text
-                                    # new_current_text = module.execute(match_data)
-
                                     script_result = module.execute(match_data)
 
+                                    with SEQUENCE_LOCK.lock:
+                                        resolve_execute_only(options_dict)
 
-                                    if isinstance(script_result, str):
-                                        new_current_text = script_result
-                                        # lang_for_tts bleibt der Standardwert "de-DE"
+                                    if getattr(SEQUENCE_LOCK, 'execute_only', False):
+                                        new_current_text = '  '
+                                    else:
+                                        if isinstance(script_result, str):
+                                            new_current_text = script_result
+                                            # lang_for_tts stays default "de-DE"
 
-                                    elif isinstance(script_result, dict):
-                                        # Fall 2: Dictionary mit Metadaten (unser Übersetzer-Plugin)
-                                        new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
-                                        # Hole die Sprache aus dem Dictionary, mit einem Fallback auf die Standardsprache
-                                        lang_for_tts = script_result.get("lang", "de-DE")
-
-
-                                        if not privacy_taint_occurred:
-
-                                            handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
-
-                                        if global_state.LOGGING_ENABLED:
-                                            logger_instance.info(f"1026: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger_instance)")
-
-
+                                        elif isinstance(script_result, dict):
+                                            # Case 2: Dictionary Metadata (translator-Plugin)
+                                            new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
+                                            lang_for_tts = script_result.get("lang", "de-DE")
+                                            if not privacy_taint_occurred:
+                                                handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
+                                            # if global_state.LOGGING_ENABLED:
+                                            if getattr(SEQUENCE_LOCK, 'execute_only', False):
+                                                logger_instance.info(f"1026: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger_instance)")
 
                             made_a_change += 1
                             if not privacy_taint_occurred:
@@ -2559,6 +2631,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
         # logging.info('sys.exit(1) 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923')
         # sys.exit(1) # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 Test
         # log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
+
+        if getattr(SEQUENCE_LOCK, 'execute_only', False):
+            full_text_replaced_by_rule = True
 
         return made_a_change, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
         # log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
@@ -2600,6 +2675,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                 f"full_text_replaced_by_rule:{full_text_replaced_by_rule} "
                 f"current_text:{current_text}",logger_instance)
     # 17:08:56,492 - INFO     - 758: made_a_change=True full_text_replaced_by_rule:False current_text:mit nachnamen Lauffer
+
+    if getattr(SEQUENCE_LOCK, 'execute_only', False):
+        current_text = ''
+        full_text_replaced_by_rule = ''
 
     return current_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
 

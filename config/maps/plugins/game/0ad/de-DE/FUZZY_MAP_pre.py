@@ -35,7 +35,7 @@ FUZZY_MAP_pre = [
     ('f', r'^\s*(baue|baue|power|our|build|\w+ild)\s*(fehlt|field|feld)\s*$', 15, {'flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD']}),
 
     # EXAMPLE: baue Lagerhaus
-    ('baue Lagerhaus', r'^\s*(\w+au\w+|baue|power|our|build|\w+ild)\s*(\w*lager|Storeh)\w*\s*$', 15, {'flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD']}),
+    #('baue Lagerhaus', r'^\s*(\w+au\w+|baue|power|our|build|\w+ild)\s*(\w*lager|Storeh)\w*\s*$', 15, {'flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD']}),
 
 
 
@@ -224,6 +224,8 @@ FUZZY_MAP_pre = [
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'execute_only': True,
+         'cache': False
      }),
 
     # EXAMPLE: gather fruit
@@ -234,6 +236,8 @@ FUZZY_MAP_pre = [
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'execute_only': True,
+         'cache': False
      }),
 
     # EXAMPLE: gather meat
@@ -244,17 +248,21 @@ FUZZY_MAP_pre = [
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'execute_only': True,
+         'cache': False
      }),
 
 
     # EXAMPLE: gather stein
     ('gather stone',
-     r'^(gather\s*)?(stein\w*|stadt|stopp|starten|rock|fels|quarry|stone)$',
+     r'^(gather\s*)?(stein\w*|stadt|stopp|start|starten|stabil|stört|steigt|streit|rock|fels|quarry|stone)$',
      85,
      {
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'execute_only': True,
+         'cache': False
      }),
 
     # EXAMPLE: gather metal
@@ -265,6 +273,8 @@ FUZZY_MAP_pre = [
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'execute_only': True,
+         'cache': False
      }),
 
 

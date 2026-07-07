@@ -55,7 +55,7 @@ def session_thread_target(logger):
 
     try:
         # Initialize session counter
-        with SEQUENCE_LOCK:
+        with SEQUENCE_LOCK.lock:
             SESSION_LAST_PROCESSED[session_id] = 0
             session_chunk_counter = 0  # Reset for this new session
 
@@ -99,7 +99,7 @@ def session_thread_target(logger):
                 # text_detected = 1
 
                 # --- CRITICAL: ASSIGN SEQUENCE ID AND START THREAD ---
-                with SEQUENCE_LOCK:
+                with SEQUENCE_LOCK.lock:
                     session_chunk_counter += 1
                     current_chunk_id = session_chunk_counter
 
@@ -125,7 +125,7 @@ def session_thread_target(logger):
     finally:
         # --- CLEANUP LOCK STATE ---
         if session_id is not None:
-            with SEQUENCE_LOCK:
+            with SEQUENCE_LOCK.lock:
                 if session_id in SESSION_LAST_PROCESSED:
                     del SESSION_LAST_PROCESSED[session_id]
             # Note: We keep OUT_OF_ORDER_CACHE items until they time out/are picked up
@@ -295,7 +295,7 @@ def handle_trigger(
         finally:
             # --- CLEANUP LOCK STATE ---
             if session_id is not None:
-                with SEQUENCE_LOCK:
+                with SEQUENCE_LOCK.lock:
                     if session_id in SESSION_LAST_PROCESSED:
                         del SESSION_LAST_PROCESSED[session_id]
                 # Note: We keep OUT_OF_ORDER_CACHE items until they time out/are picked up

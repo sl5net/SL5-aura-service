@@ -42,7 +42,7 @@ def get_current_signature(lang_target, window_title):
                 break
 
     if brand_text:
-        with SEQUENCE_LOCK:
+        with SEQUENCE_LOCK.lock:
             last_time = SIGNATURE_TIMES.get(window_title, 0)
             if (current_time - last_time > cooldown):
                 SIGNATURE_TIMES[window_title] = current_time
@@ -60,7 +60,7 @@ def get_smart_signature(lang_target, window_title):
             active_sig_text, active_cooldown = config
             break
 
-    with SEQUENCE_LOCK:
+    with SEQUENCE_LOCK.lock:
         current_time = time.time()
         last_time = SIGNATURE_TIMES.get(window_title, 0)
         if (current_time - last_time > active_cooldown):
