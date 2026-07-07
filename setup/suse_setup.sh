@@ -21,14 +21,69 @@ PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
 
 echo "--> Refreshing repositories..."
 sudo zypper -n refresh
-echo "--> Installing Python essentials..."
-sudo zypper -n install python3 python3-pip python3-venv
+
+echo "--> Installing Python essentials (robust) ..."
+# candidate package sets (space-separated groups)
+PKG_CANDIDATES=(
+  "python311 python311-devel python311-pip"
+  "python3 python3-devel python3-pip"
+  "python3 python3-devel python3-pip python3-venv"
+)
+
+installed=false
+
+for candidate in "${PKG_CANDIDATES[@]}"; do
+  # check availability of all package names in candidate
+  ok=true
+  for pkg in $candidate; do
+    # zypper se -s will return non-zero if not found; we ignore stdout and check exit code
+    if ! zypper se -s --match-exact "$pkg" >/dev/null 2>&1; then
+      ok=false
+      break
+    fi
+  done
+
+  if [ "$ok" = true ]; then
+    echo "  -> Installing: $candidate"
+    sudo zypper -n install $candidate
+    installed=true
+    break
+  else
+    echo "  -> Not all packages in candidate set available: $candidate"
+  fi
+done
 
 
-eval $(python3 scripts/py/setup_config.py)
+if [ "$installed" = false ]; then
+  echo "  -> Could not find a full distro package set for python/pip. Will fall back to system python + venv bootstrap."
+  if ! command -v python3 >/dev/null 2>&1; then
+    echo "ERROR: python3 not found in PATH. Consider adding the appropriate OBS repo or installing Python manually."
+    echo "Suggestion: enable a Python repo (example for openSUSE Leap – adapt to your distro):"
+    echo "  sudo zypper addrepo -f https://download.opensuse.org/repositories/devel:languages:python/openSUSE_Leap_15.5/ devel:languages:python"
+    echo "  sudo zypper refresh"
+    exit 1
+  fi
+fi
+
+
+# Ensure virtualenv exists and pip is available inside it
+if [ ! -d ".venv" ]; then
+  echo "--> Creating Python virtual environment in './.venv'..."
+  python3 -m venv .venv
+fi
+
+
+
+echo "--> Ensuring pip is available in the venv and upgrading packaging tools..."
+# Try ensurepip first, then upgrade pip/setuptools/wheel via venv python
+./.venv/bin/python -m ensurepip --upgrade 2>/dev/null || true
+./.venv/bin/python -m pip install --upgrade pip setuptools wheel
+
+echo "--> Installing project Python requirements..."
+./.venv/bin/python -m pip install -r requirements.txt
+
+eval $(./.venv/bin/python scripts/py/setup_config.py) || eval $(python3 scripts/py/setup_config.py)
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
-
-
 
 
 
