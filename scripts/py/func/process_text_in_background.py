@@ -1519,7 +1519,7 @@ def process_text_in_background(logger,
                             )
 
                     if not getattr(SEQUENCE_LOCK, 'execute_only', False):
-                        # Aufruf mit den neuen Parametern run_pipeline_callback und is_inner_rule
+                        # is_inner_rule
                         (new_processed_text
                              , regex_pre_is_replacing_all_maybe
                              , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
