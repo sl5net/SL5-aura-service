@@ -24,11 +24,14 @@ sudo zypper -n refresh
 
 echo "--> Installing Python essentials (robust) ..."
 # candidate package sets (space-separated groups)
-PKG_CANDIDATES=(
-  "python311 python311-devel python311-pip"
-  "python3 python3-devel python3-pip"
-  "python3 python3-devel python3-pip python3-venv"
+CANDIDATES=(
+  "python311 python311-pip python311-devel python311-venv"
+  "python310 python310-pip python310-devel python310-venv"
+  "python3 python3-pip python3-venv python3-devel"
+  "python3 python3-base python3-devel"
 )
+
+COMMON="git tar gcc gcc-c++ make"
 
 installed=false
 
@@ -44,8 +47,8 @@ for candidate in "${PKG_CANDIDATES[@]}"; do
   done
 
   if [ "$ok" = true ]; then
-    echo "  -> Installing: $candidate"
-    sudo zypper -n install $candidate
+    echo "Installing: $COMMON $candidate"
+    zypper -n install $COMMON $candidate
     installed=true
     break
   else
