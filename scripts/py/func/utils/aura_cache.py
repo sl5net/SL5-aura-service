@@ -96,6 +96,9 @@ def set_cached_result(rule_output, final_result, lang_code, map_path, rule_attrs
     if rule_attrs.get('cache') is False:
         return
 
+    if final_result is None:
+        final_result = ''
+
     cache_id = generate_cache_id(rule_output, lang_code, _active_window_title)
 
     manual_ts = rule_attrs.get('timestamp')

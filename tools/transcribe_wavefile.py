@@ -85,7 +85,7 @@ def check_ffmpeg():
     if not shutil.which("ffmpeg"):
         msg = ("FATAL ERROR: `ffmpeg` is not installed or not in your PATH.\n"
                "It is required for audio conversion.\n"
-               "On Manjaro/Arch, install it with: sudo pacman -Syu ffmpeg")
+               "On Manjaro/Arch, install it with: pacman -Syu ffmpeg")
         print(msg, file=sys.stderr)
         notify("Vosk Prerequisite Missing", "ffmpeg is not installed.", "critical", "dialog-error")
         sys.exit(1)

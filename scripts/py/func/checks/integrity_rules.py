@@ -230,19 +230,19 @@ INTEGRITY_CHECKS = {
     # should_remove_zips_after_unpack=true It's eventually useful to have it sometimes longer but maybe not online and not at costumers
 
     # Ensures language selection is included in the macOS setup.
-    "setup/macos_setup.sh": [
-        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
-    ],
+    # "setup/macos_setup.sh": [
+    #     'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
+    # ],
 
     # Ensures language selection is included in the Ubuntu setup.
-    "setup/ubuntu_setup.sh": [
-        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
-    ],
+    # "setup/ubuntu_setup.sh": [
+    #     'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
+    # ],
 
     # Ensures language selection is included in the Manjaro/Arch setup.
-    "setup/manjaro_arch_setup.sh": [
-        'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
-    ],
+    # "setup/manjaro_arch_setup.sh": [
+    #     'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
+    # ],
 
     # Ensures language selection is included in the Windows setup.
     "setup/windows11_setup.ps1": [

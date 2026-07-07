@@ -53,10 +53,10 @@ def add_recognition(text: str) -> None:
             _last_recognitions.pop(0)
 
 
-def get_last_recognitions() -> list:
-    """Return a shallow copy of the last recognitions (thread-safe)."""
-    with SEQUENCE_LOCK.lock:
-        return list(_last_recognitions)
+# def get_last_recognitions() -> list:
+#     """Return a shallow copy of the last recognitions (thread-safe)."""
+#     with SEQUENCE_LOCK.lock:
+#         return list(_last_recognitions)
 
 
 # Helper for parsing string/various representations to bool
@@ -98,33 +98,33 @@ def resolve_execute_only(options: Dict[str, Any]) -> bool:
 
 
 # Example helpers to update/check LAST_PROCESSED_ID safely
-def get_last_processed_id() -> int:
-    with SEQUENCE_LOCK.lock:
-        return LAST_PROCESSED_ID
+# def get_last_processed_id() -> int:
+#     with SEQUENCE_LOCK.lock:
+#         return LAST_PROCESSED_ID
 
 
-def set_last_processed_id(new_id: int) -> None:
-    global LAST_PROCESSED_ID
-    with SEQUENCE_LOCK.lock:
-        LAST_PROCESSED_ID = new_id
+# def set_last_processed_id(new_id: int) -> None:
+#     global LAST_PROCESSED_ID
+#     with SEQUENCE_LOCK.lock:
+#         LAST_PROCESSED_ID = new_id
 
 
 # Helpers for OUT_OF_ORDER_CACHE and SESSION_LAST_PROCESSED (always use lock)
-def cache_out_of_order(expected_id: int, chunk_data: Any) -> None:
-    with SEQUENCE_LOCK.lock:
-        OUT_OF_ORDER_CACHE[expected_id] = chunk_data
+# def cache_out_of_order(expected_id: int, chunk_data: Any) -> None:
+#     with SEQUENCE_LOCK.lock:
+#         OUT_OF_ORDER_CACHE[expected_id] = chunk_data
 
 
-def pop_out_of_order(expected_id: int) -> Any:
-    with SEQUENCE_LOCK.lock:
-        return OUT_OF_ORDER_CACHE.pop(expected_id, None)
+# def pop_out_of_order(expected_id: int) -> Any:
+#     with SEQUENCE_LOCK.lock:
+#         return OUT_OF_ORDER_CACHE.pop(expected_id, None)
 
 
-def set_session_last_processed(session_id: Any, chunk_id: int) -> None:
-    with SEQUENCE_LOCK.lock:
-        SESSION_LAST_PROCESSED[session_id] = chunk_id
+# def set_session_last_processed(session_id: Any, chunk_id: int) -> None:
+#     with SEQUENCE_LOCK.lock:
+#         SESSION_LAST_PROCESSED[session_id] = chunk_id
 
 
-def get_session_last_processed(session_id: Any) -> int:
-    with SEQUENCE_LOCK.lock:
-        return SESSION_LAST_PROCESSED.get(session_id, 0)
+# def get_session_last_processed(session_id: Any) -> int:
+#     with SEQUENCE_LOCK.lock:
+#         return SESSION_LAST_PROCESSED.get(session_id, 0)

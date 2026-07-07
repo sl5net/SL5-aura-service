@@ -212,9 +212,6 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
 
 # This is your function at line 17
 def load_module_from_path(script_path, run_mode_override=None):
-    GLOBAL_debug_skip_list = getattr(global_state.SEQUENCE_LOCK, 'execute_only', False)
-    if GLOBAL_debug_skip_list:
-        print(f'86: run_mode_override: {run_mode_override}')
 
     path = Path(script_path)
 

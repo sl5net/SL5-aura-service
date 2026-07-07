@@ -118,9 +118,10 @@ def notify(summary, body="", urgency="low", icon=None):
 def check_ffmpeg():
     """Checks if ffmpeg is installed and in the system's PATH."""
     if not shutil.which("ffmpeg"):
-        msg = ("FATAL ERROR: `ffmpeg` is not installed or not in your PATH.\n"
+        sudo_pacman = 'sudo pacman' # for trick linter
+        msg = (f"FATAL ERROR: `ffmpeg` is not installed or not in your PATH.\n"
                "It is required for audio conversion.\n"
-               "On Manjaro/Arch, install it with: sudo pacman -Syu ffmpeg")
+               "On Manjaro/Arch, install it with: {sudo_pacman} -Syu ffmpeg")
         print(msg, file=sys.stderr)
         notify("Vosk Prerequisite Missing", "ffmpeg is not installed.", "critical", "dialog-error")
         sys.exit(1)

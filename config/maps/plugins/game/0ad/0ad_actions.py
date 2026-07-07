@@ -4,7 +4,6 @@ import time
 
 def _dotool(command):
     import subprocess
-    # subprocess.run(['dotool'], input=command, text=True)
     subprocess.run(['dotool'], input=command, text=True, check=True)
 
 

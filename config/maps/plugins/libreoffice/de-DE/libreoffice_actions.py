@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def _dotool(command):
-    subprocess.run(['dotool'], input=command, text=True)
+    subprocess.run(['dotool'], input=command, text=True, check=True)
 
 def _via_uno_socket(zeilen=3, spalten=3):
     import importlib.util
