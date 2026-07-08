@@ -1502,7 +1502,9 @@ def process_text_in_background(logger,
                                 is_inner_rule=(custom_rules is not None)
                             )
                         except SilentException:
-                            pass
+                            time.sleep(0.1)
+                            return ' '
+                            # pass
 
 
                 # if not privacy_taint_occurred:

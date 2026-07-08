@@ -247,7 +247,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather stein
     ('gather stone',
-     r'^(gather\s*)?(stein\w*|darin|steig\w*|stadt|stacheln|stopp|start|starten|stabil|stört|steigt|streit|rock|fels|quarry|stone)$',
+     r'^(gather\s*)?(stein\w*|darin|steig\w*|stahl|stadt|stacheln|stopp|start|starten|stabil|stört|steigt|streit|strafe|rock|fels|quarry|stone)$',
      85,
      {
          'flags': re.IGNORECASE,
