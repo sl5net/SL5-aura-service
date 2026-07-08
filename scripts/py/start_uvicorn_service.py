@@ -7,6 +7,7 @@ import subprocess
 import psutil
 import time
 from pathlib import Path
+from scripts.py.func.config.dynamic_settings import settings
 
 
 os.environ["PYTHONUTF8"] = "1"
@@ -25,7 +26,6 @@ if os.path.exists(root_pointer_file):
     if PROJECT_ROOT not in sys.path:
         sys.path.insert(0, PROJECT_ROOT)
 
-from scripts.py.func.config.dynamic_settings import settings
 
 
 # --- KONFIGURATION ---

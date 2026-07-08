@@ -12,19 +12,10 @@ import vosk
 
 from .config.dynamic_settings import settings
 
-PRE_RECORDING_TIMEOUT = settings.PRE_RECORDING_TIMEOUT
-SPEECH_PAUSE_TIMEOUT = settings.SPEECH_PAUSE_TIMEOUT
-SAMPLE_RATE = settings.SAMPLE_RATE
 
 from .model_manager import MODELS_LOCK
 from vosk import SetLogLevel
 import platform
-
-SetLogLevel(-1) # sadly it changes nothing (se, 15.12.'25 15:10 Mon )
-
-# In scripts/py/func/handle_trigger.py
-dictation_session_active = threading.Event()
-active_transcription_thread = None
 
 from .process_text_in_background import process_text_in_background
 
@@ -33,6 +24,18 @@ from .audio_manager import unmute_microphone, mute_microphone
 from .microphone_status_too_log import log_microphone_status
 
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED
+
+PRE_RECORDING_TIMEOUT = settings.PRE_RECORDING_TIMEOUT
+SPEECH_PAUSE_TIMEOUT = settings.SPEECH_PAUSE_TIMEOUT
+SAMPLE_RATE = settings.SAMPLE_RATE
+
+
+SetLogLevel(-1) # sadly it changes nothing (se, 15.12.'25 15:10 Mon )
+
+# In scripts/py/func/handle_trigger.py
+dictation_session_active = threading.Event()
+active_transcription_thread = None
+
 # Global sequence counter for the current session (must be synchronized)
 
 global text_detected
@@ -63,7 +66,8 @@ def session_thread_target(logger):
         target_model_name = (project_root / "config/model_name.txt").read_text().strip()
         logger.info("----> Target model name: %s", target_model_name)
         
-        if not target_model_name: raise FileNotFoundError
+        if not target_model_name:
+            raise FileNotFoundError
 
         # Find the requested model among loaded ones
         for key, model_dict in loaded_models.items():

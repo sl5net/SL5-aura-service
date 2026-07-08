@@ -67,6 +67,8 @@ from typing import Union, Optional
 
 from scripts.py.func.config.dynamic_settings import settings
 
+from typing import Any
+
 
 # global last_signature_time
 
@@ -81,7 +83,6 @@ GLOBAL_FUZZY_MAP = [] # noqa: F824
 GLOBAL_LT_LANGUAGE = ""
 
 
-from typing import Any
 
 
 
