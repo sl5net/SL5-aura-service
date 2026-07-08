@@ -228,9 +228,11 @@ FUZZY_MAP_pre = [
          # 'cache': False
      }),
 
+    # früchten
+
     # EXAMPLE: gather fruit
     ('gather fruit',
-     r'^\s*(beere\w*|bier|baby|obst|fruit|Äpfel|Apfel|Birnen|berries|quarry)\s*$',
+     r'^\s*(beere\w*|bier|baby|obst|fruit|früchte[n]?|Äpfel[n]?|Apfel|Birne[n]?|berries|quarry)\s*$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -255,7 +257,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather stein
     ('gather stone',
-     r'^(gather\s*)?(stein\w*|stadt|stopp|start|starten|stabil|stört|steigt|streit|rock|fels|quarry|stone)$',
+     r'^(gather\s*)?(stein\w*|stadt|stacheln|stopp|start|starten|stabil|stört|steigt|streit|rock|fels|quarry|stone)$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -267,7 +269,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather metal
     ('gather metal',
-     r'^(gather\s*)?(met\w+|mat\w+|metall|mit|zitat|metal|matcha|günther)$',
+     r'^(gather\s*)?(met\w+|mat\w+|metall|mit|zitat|metal|matcha|günther|ethan)$',
      85,
      {
          'flags': re.IGNORECASE,

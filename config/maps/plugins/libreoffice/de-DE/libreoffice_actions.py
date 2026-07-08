@@ -95,5 +95,10 @@ def execute(match_data):
     elif re.search(r'makro|macro', text):        _dotool('key alt+F8')
     elif re.search(r'zoom', text):               _dotool('key ctrl+0')
 
-    sys.exit(1) # we need stoü this thread becouse we dont want any work on it by aura. at this place all good. np.
+    # we need stop this thread because we don't want any work on it by aura. at this place all good. np. better use Exception . sys.exit(1)  also works but not recommended
     #return '' # if we use return '' it will write the original text
+    try:
+        raise Exception('no text after replacement')
+    finally:
+        pass
+

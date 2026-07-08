@@ -32,7 +32,11 @@ def execute(match_data: dict):
         print(f'ERROR: text empty {text}')
         return None
     _add_variant_to_fuzzy_map(file_rule_path, text)
-    sys.exit(1)
+    try:
+        raise Exception('no text after replacement')
+    finally:
+        pass
+
 
 def _add_variant_to_fuzzy_map(file_rule_path: str, text: str):
     FUZZY_MAP_FILE = Path(file_rule_path)
