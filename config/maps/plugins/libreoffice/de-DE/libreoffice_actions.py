@@ -97,8 +97,5 @@ def execute(match_data):
 
     # we need stop this thread because we don't want any work on it by aura. at this place all good. np. better use Exception . sys.exit(1)  also works but not recommended
     #return '' # if we use return '' it will write the original text
-    try:
-        raise Exception('no text after replacement')
-    finally:
-        pass
+    raise Exception('no text after replacement')
 

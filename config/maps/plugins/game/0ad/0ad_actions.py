@@ -70,7 +70,4 @@ def execute(match_data):
         press_plus_multiple_times(4)
     elif 'metal' in text_after_replacement:
         press_plus_multiple_times(5)
-    try:
-        raise Exception('no text after replacement')
-    finally:
-        pass
+    raise Exception('no text after replacement')

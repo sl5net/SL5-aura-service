@@ -245,7 +245,8 @@ def get_linux_x11_env():
                     for item in env_data.split(b'\0'):
                         if b'=' in item:
                             parts = item.decode('utf-8', errors='ignore').split('=', 1)
-                            if len(parts) == 2: proc_env[parts[0]] = parts[1]
+                            if len(parts) == 2:
+                                proc_env[parts[0]] = parts[1]
 
                     if 'DISPLAY' in proc_env and 'XAUTHORITY' in proc_env:
                         if os.path.exists(proc_env['XAUTHORITY']):

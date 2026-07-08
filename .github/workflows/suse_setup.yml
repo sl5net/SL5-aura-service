@@ -5,10 +5,10 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/suse_setup.yml'
       - 'setup/suse_setup.sh'
       - 'requirements.txt'
       - 'requirements-dev.txt'
-      - '.github/workflows/suse_setup.yml'
   pull_request:
     branches:
       - master
