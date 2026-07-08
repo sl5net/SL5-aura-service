@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 # scripts/search_rules/run_palette_command.py
 import sys
+import json
+import urllib.request
+import os
+import socket
+import subprocess
+import time
+from pathlib import Path
+import logging
+
 
 how_test_from_linux = """
 Examples:
@@ -21,14 +30,6 @@ if getattr(sys, "stdout", None) is not None:
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-import json
-import urllib.request
-import os
-import socket
-import subprocess
-import time
-from pathlib import Path
-import logging
 logger = logging.getLogger()
 
 
