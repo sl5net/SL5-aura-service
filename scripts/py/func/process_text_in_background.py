@@ -3,19 +3,15 @@ import difflib
 import logging
 import os
 import pkgutil
-#import pprint
 import sys
 
 import importlib.util
 from datetime import datetime
 from pathlib import Path
-# from platform import system
 
 import psutil
 
 from . import global_state
-#import shutil
-#import subprocess
 
 from .audio.handle_tts_fallback import handle_tts_fallback
 
@@ -25,15 +21,8 @@ from .log_memory_details import log4DEV
 from .state_manager import should_trigger_startup
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 from .window_filter import is_window_title_skippable
-# Auto-Zip Smoke Test
-# scripts/py/func/process_text_in_background.py:25
 from .checks.trigger_aura_maintenance import trigger_aura_maintenance
-# scripts/py/func/process_text_in_background.py:27
-# scripts/py/func/process_text_in_background.py:25
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES, resolve_execute_only
-
-
-
 
 from .correct_text_by_languagetool import correct_text_by_languagetool
 
@@ -681,8 +670,11 @@ def is_regex_pattern(pattern):
 
 def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger):
     # is called in apply_all_rules_may_until_stable(
-    if getattr(global_state.SEQUENCE_LOCK, 'execute_only', False):
-        return ''
+
+    if SEQUENCE_LOCK.execute_only_event.is_set():
+        execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
+        print(f'676: execute_only={execute_only}')
+        return '20260708_1947 no text after replacement'
 
     log_all_processed_text = settings.DEV_MODE and False
 
@@ -771,17 +763,13 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
         if settings.DEV_MODE_show_when_private_map_found:
             log4DEV("is_private: 📚Found module candidate", logger)
 
-    if getattr(SEQUENCE_LOCK, 'execute_only', False):
-
-        print(f'567: skip_list={skip_list}')
+    if SEQUENCE_LOCK.execute_only_event.is_set():
+        return '20260708_1949 no text after replacement', True, skip_list, privacy_taint_occurred
 
     a_rule_matched = False
     if new_processed_text is False:
         #made_a_change_in_cycle = False
         log4DEV("new_processed_text is return ... None", logger)
-
-        if getattr(SEQUENCE_LOCK, 'execute_only', False):
-            print(f'574: skip_list={skip_list}')
 
         return new_processed_text, None, skip_list, privacy_taint_occurred
 
@@ -794,11 +782,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
         # regex_pre_is_replacing_all_maybeTEST1 = True
         log4DEV(f"242: 🔁??? new_processed_text: {new_processed_text}", logger)
 
-        if getattr(SEQUENCE_LOCK, 'execute_only', False):
-            print(f'585: skip_list={skip_list} | {new_processed_text} ')
-
-        if getattr(SEQUENCE_LOCK, 'execute_only', False):
-            new_processed_text = ''
+        if SEQUENCE_LOCK.execute_only_event.is_set():
+            new_processed_text = '20260708_1950 no text after replacement'
 
 
 
@@ -823,7 +808,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
         for entry in fuzzy_map_pre:
 
-            if getattr(SEQUENCE_LOCK, 'execute_only', False):
+            if SEQUENCE_LOCK.execute_only_event.is_set():
                 break
 
             if len(entry) < 4:
@@ -896,9 +881,6 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
             #     continue
 
 
-
-            if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                print(f'618: skip_list={skip_list}')
 
             # logger.info(f"248: threshold={threshold} , skip_list: {skip_list}")
 
@@ -1007,7 +989,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
                                 new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
                                 lang_for_tts = script_result.get("lang", "de-DE")
 
-                                if not privacy_taint_occurred:
+                                execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
+                                if not privacy_taint_occurred and not execute_only:
                                     handle_tts_fallback(new_current_text, lang_for_tts, logger)
                                 if global_state.LOGGING_ENABLED:
                                     logger.info(f"289: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger)")
@@ -1018,13 +1001,10 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
                             sys.stderr.write(f"DEBUG 925: new_current_text='{new_current_text}'\n")
                             sys.stderr.flush()
 
-                            if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                                print(f'708: skip_list={skip_list}')
-
                             # return processed_text, a_rule_matched, skip_list # in
 
-                            if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                                processed_text = ''
+                            if SEQUENCE_LOCK.execute_only_event.is_set():
+                                processed_text = '20260708_1951 no text after replacement'
                                 a_rule_matched = True
 
                             return processed_text, a_rule_matched, skip_list, privacy_taint_occurred
@@ -1048,30 +1028,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
     log4DEV(f"new_processed_text: {new_processed_text} , a_rule_matched: {a_rule_matched}, skip_list: {skip_list}",logger)
 
-    if getattr(SEQUENCE_LOCK, 'execute_only', False):
-        print(f'731: skip_list={skip_list}')
-
-
-
-
-    # final_text = processed_text if a_rule_matched else new_processed_text
-    # return final_text, a_rule_matched, skip_list, privacy_taint_occurred
-
-    # --- FLIGHT RECORDER START ---
-    # if settings.DEV_MODE:
-    #     with open("/tmp/sl5_aura/debug_final_state.txt", "a") as f:
-    #         f.write(f"951: _active_window_title: {_active_window_title} TEXT: {processed_text} | SKIPS: {skip_list} | MATCH: {a_rule_matched}\n")
-    #         f.write(f"952: \n--- CALL at {time.strftime('%H:%M:%S')} ---\n")
-    #         f.write(f"Input-Text: '{processed_text}'\n")
-    #         f.write(f"Window-Title: '{_active_window_title}'\n")
-    #         f.write(f"Skip-List: {skip_list}\n")
-    #         f.write(f"Rule-Matched: {a_rule_matched}\n")
-    #         f.write(f"New-Processed-Text: '{new_processed_text}'\n")
-    #         f.write("-" * 30 + "\n")
-    # --- FLIGHT RECORDER END ---
-
-    if getattr(SEQUENCE_LOCK, 'execute_only', False):
-        return '', True, skip_list, privacy_taint_occurred
+    if SEQUENCE_LOCK.execute_only_event.is_set():
+        return '20260708_1948 no text after replacement', True, skip_list, privacy_taint_occurred
     else:
         return new_processed_text, a_rule_matched, skip_list, privacy_taint_occurred
 
@@ -1092,6 +1050,7 @@ def process_text_in_background(logger,
                                interface: str = 'speech',
                                custom_rules = None
                                ):
+
     global GLOBAL_LT_LANGUAGE
 
     GLOBAL_LT_LANGUAGE = LT_LANGUAGE
@@ -1334,7 +1293,7 @@ def process_text_in_background(logger,
 
                 log4DEV(f'raw_text:{raw_text}',logger)
             raw_text = settings.SPEECH_PAUSE_TIMEOUT
-            if not getattr(SEQUENCE_LOCK, 'execute_only', False):
+            if not SEQUENCE_LOCK.execute_only_event.is_set():
                 unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
 
             # print(f':st: \nprocess_text_in_background:1089 raw_text:{raw_text}')
@@ -1504,8 +1463,9 @@ def process_text_in_background(logger,
                     # --- CALLBACK for RECURSION ---
                     def run_pipeline_callback(text, rule):
 
-                        if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                            return ''
+
+                        if SEQUENCE_LOCK.execute_only_event.is_set():
+                            return '20260708_1952 no text after replacement'
                         else:
                             return process_text_in_background(
                                 logger, LT_LANGUAGE, text,
@@ -1516,18 +1476,33 @@ def process_text_in_background(logger,
                                 custom_rules=[rule]
                             )
 
-                    if not getattr(SEQUENCE_LOCK, 'execute_only', False):
+
+
+                    if not SEQUENCE_LOCK.execute_only_event.is_set():
                         # is_inner_rule
-                        (new_processed_text
-                             , regex_pre_is_replacing_all_maybe
-                             , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
-                            processed_text,
-                            GLOBAL_FUZZY_MAP_PRE,
-                            logger,
-                            interface,
-                            run_pipeline_callback=run_pipeline_callback,
-                            is_inner_rule=(custom_rules is not None)
-                        )
+                        execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
+                        logging.info(f"1522: execute_only={execute_only}")
+                        logging.info(f"1522: execute_only={execute_only}")
+
+
+
+                        logging.info(f"1523: execute_only={execute_only}")
+                        logging.info(f"1523: execute_only={execute_only}")
+
+                        from scripts.py.func.global_state import SilentException
+                        try:
+                            (new_processed_text
+                                 , regex_pre_is_replacing_all_maybe
+                                 , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
+                                processed_text,
+                                GLOBAL_FUZZY_MAP_PRE,
+                                logger,
+                                interface,
+                                run_pipeline_callback=run_pipeline_callback,
+                                is_inner_rule=(custom_rules is not None)
+                            )
+                        except SilentException:
+                            pass
 
 
                 # if not privacy_taint_occurred:
@@ -1643,8 +1618,6 @@ def process_text_in_background(logger,
             regex_match_found = False
             # log4DEV(f'regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
             # log4DEV(f"skip_list: {skip_list}", logger)
-            if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                print(f'1051: skip_list={skip_list}')
             skip_list_backup = skip_list
             options_dict = None
             log4DEV(f"skip_list_backup: {skip_list_backup}", logger)
@@ -1666,8 +1639,13 @@ def process_text_in_background(logger,
                     #log4DEV(f"skip_list: {skip_list}", logger)
                     skip_list = options_dict.get('skip_list', [])
 
-                    if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                        print(f'1070: skip_list={skip_list}')
+                    if SEQUENCE_LOCK.execute_only_event.is_set():
+                        execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
+                        print(f'1684: execute_only={execute_only}')
+                        SEQUENCE_LOCK.execute_only_event.clear()
+
+                        return '20260708_1937 no text after replacement'
+
                     #log4DEV(f"skip_list: {skip_list}", logger)
 
                     # ... Rest deiner Logik
@@ -1732,8 +1710,6 @@ def process_text_in_background(logger,
 
                 log4DEV(f"skip_list_backup: {skip_list_backup}", logger)
                 skip_list=skip_list_backup
-                if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                    print(f'1132: skip_list={skip_list}')
 
                 # for replacement, match_phrase, threshold in fuzzy_map:
                 for replacement, match_phrase, threshold, *_ in GLOBAL_FUZZY_MAP:
@@ -1984,13 +1960,14 @@ def process_text_in_background(logger,
 
             if custom_rules is None:
 
-                if not getattr(SEQUENCE_LOCK, 'execute_only', False):
+                if not SEQUENCE_LOCK.execute_only_event.is_set():
                     unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
             # print(f':st: \nprocess_text_in_background:1672 raw_text:{raw_text}')
 
 
             # KORREKTUR 1: Verwende die NEUEN Variablen für den Fallback
-            if not privacy_taint_occurred and custom_rules is None:
+            execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
+            if not privacy_taint_occurred and custom_rules is None and not execute_only:
                 handle_tts_fallback(new_current_text, lang_for_tts, logger)
 
                 log4DEV(f"handle_tts_fallback({new_current_text}, {lang_for_tts})",logger)
@@ -2077,8 +2054,8 @@ def process_text_in_background(logger,
 
         # print(f':st: \nprocess_text_in_background:1753 raw_text:{raw_text}')
 
-    if getattr(SEQUENCE_LOCK, 'execute_only', False):
-        return ''
+    if SEQUENCE_LOCK.execute_only_event.is_set():
+        return '20260708_1940 no text after replacement'
 
     return new_current_text if new_current_text else processed_text
 
@@ -2190,8 +2167,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
         for rule_entry in rules_map:
 
-            if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                print(f'1420: Processing rule {rule_entry}')
+            execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
+            if SEQUENCE_LOCK.execute_only_event.is_set():
+                print(f'1420: execute_only:{execute_only}')
+                break
 
 
 
@@ -2206,9 +2185,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                     log4DEV(m,logger_instance)
                     if global_state.LOGGING_ENABLED:
                         logger_instance.info(m)
-
-                if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                    print(f'1433: Processing rule {rule_entry} ')
 
                 continue
 
@@ -2385,10 +2361,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
 
 
-            if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                print(f'1476: skip_list_temp={skip_list_temp}')
-                print(f'1476: skip_list_temp={options_dict}')
-
             # 1. Flags extrahieren für den Cache-Key
             flags = options_dict.get('flags', re.IGNORECASE)
 
@@ -2466,6 +2438,20 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                             if module and hasattr(module, 'execute'):
                                 new_current_text = module.execute(match_data)
                                 # log4DEV(f"module:'{module}' new_current_text='{new_current_text}'",logging)
+                                # time.sleep(1)
+
+                        with SEQUENCE_LOCK.lock:
+                            resolve_execute_only(options_dict)
+                        logging.info(f"_________________________________")
+                        execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
+                        logging.info(f"2489: execute_only={execute_only}")
+                        logging.info(f"__________________________________")
+                        # logging.info(f"2411: flags={flags}")
+
+                        if SEQUENCE_LOCK.execute_only_event.is_set():
+                            current_text = '20260708_1943 no text after replacement'
+                            full_text_replaced_by_rule = current_text
+                            return current_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
 
                         # <<< HINWEIS: Dein restlicher Code kann jetzt unverändert bleiben >>>
                         # Er verwendet new_current_text, das jetzt das finale Ergebnis aus den Skripten enthält.
@@ -2480,9 +2466,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
                         made_a_change = made_a_change + 1
                         skip_list = skip_list_temp
-
-                        if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                            print(f'1525: skip_list={skip_list}')
 
                         current_text = new_current_text
 
@@ -2517,9 +2500,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
                         if not privacy_taint_occurred:
                             log4DEV(f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} '{original_text_for_script}' ----> '{current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}",logger_instance)
-
-                        if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                            print(f'1534: skip_list={skip_list}')
 
                         if 'fullMatchStop' not in skip_list:
                             break
@@ -2580,11 +2560,11 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                                 if module and hasattr(module, 'execute'):
                                     script_result = module.execute(match_data)
 
-                                    with SEQUENCE_LOCK.lock:
-                                        resolve_execute_only(options_dict)
+                                    # with SEQUENCE_LOCK.lock:
+                                    #     resolve_execute_only(options_dict)
 
-                                    if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                                        new_current_text = '  '
+                                    if SEQUENCE_LOCK.execute_only_event.is_set():
+                                        new_current_text = '20260708_1944 no text after replacement'
                                     else:
                                         if isinstance(script_result, str):
                                             new_current_text = script_result
@@ -2594,11 +2574,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                                             # Case 2: Dictionary Metadata (translator-Plugin)
                                             new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
                                             lang_for_tts = script_result.get("lang", "de-DE")
-                                            if not privacy_taint_occurred:
+                                            if not privacy_taint_occurred and not execute_only:
                                                 handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
                                             # if global_state.LOGGING_ENABLED:
-                                            if getattr(SEQUENCE_LOCK, 'execute_only', False):
-                                                logger_instance.info(f"1026: handle_tts_fallback({new_current_text}, {lang_for_tts}, logger_instance)")
 
                             made_a_change += 1
                             if not privacy_taint_occurred:
@@ -2630,7 +2608,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
         # sys.exit(1) # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 # 2025-1016-1923 Test
         # log4DEV(f"🚀🚀🚀skip_list:{skip_list} made_a_change:{made_a_change} full_text_replaced_by_rule:{full_text_replaced_by_rule} current_text:{current_text}",logger_instance)
 
-        if getattr(SEQUENCE_LOCK, 'execute_only', False):
+        if SEQUENCE_LOCK.execute_only_event.is_set():
             full_text_replaced_by_rule = True
 
         return made_a_change, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
@@ -2674,9 +2652,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                 f"current_text:{current_text}",logger_instance)
     # 17:08:56,492 - INFO     - 758: made_a_change=True full_text_replaced_by_rule:False current_text:mit nachnamen Lauffer
 
-    if getattr(SEQUENCE_LOCK, 'execute_only', False):
-        current_text = ''
-        full_text_replaced_by_rule = ''
+    if SEQUENCE_LOCK.execute_only_event.is_set():
+        current_text = '20260708_1945 no text after replacement'
+        full_text_replaced_by_rule = current_text
 
     return current_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
 

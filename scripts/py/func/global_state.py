@@ -97,6 +97,9 @@ def resolve_execute_only(options: Dict[str, Any]) -> bool:
     return SEQUENCE_LOCK.execute_only_event.is_set()
 
 
+class SilentException(Exception):
+    pass
+
 # Example helpers to update/check LAST_PROCESSED_ID safely
 # def get_last_processed_id() -> int:
 #     with SEQUENCE_LOCK.lock:

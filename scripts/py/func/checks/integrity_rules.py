@@ -31,6 +31,7 @@ FORBIDDEN_PATTERNS = [
     "subprocess.run(['dotool'], input=command, text=True)",
     # "pathlib.Path",
     "if settings.DEV_MODE_all_processing:",
+    "= getattr(SEQUENCE_LOCK, 'execute_only', False)",
     'AutoHotkey.exe" "%',
     "sudo pacman -Syu",
     "apt-get upgrade -y",
@@ -54,7 +55,7 @@ INTEGRITY_CHECKS = {
 
     'config/maps/plugins/game/0ad/0ad_actions.py': [
         "subprocess.run(['dotool'], input=command, text=True, check=True)",
-        "raise Exception('no text after replacement')",
+        "raise Exception('",
     ],
 
     'aura_engine.py': [

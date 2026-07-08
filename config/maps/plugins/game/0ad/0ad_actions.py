@@ -1,5 +1,4 @@
 # config/maps/plugins/game/0ad/0ad_actions.py
-import time
 
 
 def _dotool(command):
@@ -19,10 +18,6 @@ def press_plus_multiple_times(count):
     chained_commands = "\n".join(command_list)
     _dotool(chained_commands)
 
-    time.sleep(2)
-    speak_inclusive_fallback(f"count is {count}", "en-US")
-
-
 def press_plus_multiple_times_slow(count):
     from scripts.py.func.audio_manager import speak_inclusive_fallback
 
@@ -35,12 +30,6 @@ def press_plus_multiple_times_slow(count):
         # _dotool('key kpplus') # ++++
         _dotool('key rightbrace')
 
-        # time.sleep(0.01)
-
-    time.sleep(2)
-    speak_inclusive_fallback(f"count is {count}", "en-US")
-
-
 def execute(match_data):
     import sys
     import platform
@@ -48,7 +37,6 @@ def execute(match_data):
     print('0ad_actions.py:19')
 
     from scripts.py.func.audio_manager import speak_inclusive_fallback
-    speak_inclusive_fallback("wait 0ad", "en-US")
 
     TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
     PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
@@ -60,6 +48,9 @@ def execute(match_data):
     text_after_replacement = match_data['text_after_replacement']
     print(f'0ad_actions.py:27 -> text_after_replacement: {text_after_replacement}')
 
+    speak_inclusive_fallback(f"lets go {text_after_replacement}", "en-US")
+
+
     if 'wood' in text_after_replacement:
         press_plus_multiple_times(1)
     if 'fruit' in text_after_replacement:
@@ -70,4 +61,6 @@ def execute(match_data):
         press_plus_multiple_times(4)
     elif 'metal' in text_after_replacement:
         press_plus_multiple_times(5)
-    raise Exception('no text after replacement')
+
+    from scripts.py.func.global_state import SilentException
+    raise SilentException()

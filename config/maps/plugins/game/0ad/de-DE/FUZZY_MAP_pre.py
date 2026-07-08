@@ -210,7 +210,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather wood
     ('gather wood',
-     r'^(gather\s*)?(wood|hol\w+|hui|ruhig|bridge|{baum}|bäume|tree|rollen|fritz)$',
+     fr'^(gather\s*)?(wood|hol\w*|roll|rhön|hui|heute|ruhig|bridge|{baum}|bäume|tree|rollen|fritz)$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -222,7 +222,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather fruit
     ('gather fruit',
-     r'^\s*(beere\w*|bier|baby|obst|fruit|früchte[n]?|Äpfel[n]?|Apfel|Birne[n]?|berries|quarry)\s*$',
+     r'^\s*(beere\w*|bill|bier|baby|obst|fruit|früchte[n]?|Äpfel[n]?|Apfel|Birne[n]?|berries|quarry)\s*$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -234,7 +234,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather meat
     ('gather meat',
-     r'^(fleisch|jagd|ihr habt|meat)$',
+     r'^(fleisch|jagd|jacken|ja|ihr habt|meat)$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -247,7 +247,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather stein
     ('gather stone',
-     r'^(gather\s*)?(stein\w*|stadt|stacheln|stopp|start|starten|stabil|stört|steigt|streit|rock|fels|quarry|stone)$',
+     r'^(gather\s*)?(stein\w*|darin|steig\w*|stadt|stacheln|stopp|start|starten|stabil|stört|steigt|streit|rock|fels|quarry|stone)$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -259,7 +259,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather metal
     ('gather metal',
-     r'^(gather\s*)?(met\w+|mat\w+|metall|mit|zitat|metal|matcha|günther|ethan)$',
+     r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|matcha|günther|ethan|italien|mit metall|hat)$',
      85,
      {
          'flags': re.IGNORECASE,
