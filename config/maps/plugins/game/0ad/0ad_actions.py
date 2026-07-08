@@ -7,7 +7,6 @@ def _dotool(command):
 
 
 def press_plus_multiple_times(count):
-    from scripts.py.func.audio_manager import speak_inclusive_fallback
 
     command_list = []
     for i in range(count):
@@ -19,7 +18,6 @@ def press_plus_multiple_times(count):
     _dotool(chained_commands)
 
 def press_plus_multiple_times_slow(count):
-    from scripts.py.func.audio_manager import speak_inclusive_fallback
 
     for _ in range(count):
         # echo "key plus" | dotool

@@ -2442,10 +2442,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
                         with SEQUENCE_LOCK.lock:
                             resolve_execute_only(options_dict)
-                        logging.info(f"_________________________________")
+                        logging.info("_________________________________")
                         execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
                         logging.info(f"2489: execute_only={execute_only}")
-                        logging.info(f"__________________________________")
+                        logging.info("__________________________________")
                         # logging.info(f"2411: flags={flags}")
 
                         if SEQUENCE_LOCK.execute_only_event.is_set():
