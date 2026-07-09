@@ -4,8 +4,8 @@ import re # noqa: F401
 from pathlib import Path as p # noqa: E702
 CONFIG_DIR = p(__file__).parent
 
-#with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
-#(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
+from pathlib import Path as p;import os as o # noqa: E702
+with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
 
 # This map uses a hybrid approach:
@@ -233,7 +233,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather meat
     ('gather meat',
-     r'^(fleisch|jagd|jagen|jacken|ja|ja gut|ihr habt|meat)$',
+     r'^(fleisch|jagd|jagen|jacken|ja|ja gut|ihr habt|meat|wetter|welche amen|ritt|stollen)$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -254,6 +254,18 @@ FUZZY_MAP_pre = [
          'execute_only': True,
          # 'cache': False
      }),
+
+    #################################################
+    #################################################
+    #################################################
+    # TODE: Check 1_collect_unmatched_training in seprate Branch 9.7.'26 11:31 Thu
+    #################################################
+    # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
+    # (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [
+    #     PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py'],
+    #     'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
+    # }),
+    #################################################
 
     # EXAMPLE: gather metal
     ('gather metal',

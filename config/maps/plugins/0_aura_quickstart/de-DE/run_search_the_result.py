@@ -6,9 +6,8 @@ from pathlib import Path
 
 
 def execute(match_data):
-    tmp_dir = Path("/tmp")
-    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-
+    from pathlib import Path as p;import os as o # noqa: E702
+    with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
     search_script = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
     env = os.environ.copy()
@@ -58,5 +57,5 @@ def execute(match_data):
 
 
 if __name__ == "__main__":
-    execute()
+    execute('')
 # python3 ./config/maps/plugins/   /de-DE/run_doc_search.py

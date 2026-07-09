@@ -2,6 +2,7 @@
 import subprocess
 from pathlib import Path
 import re
+import sys
 
 from scripts.py.func.config.dynamic_settings import settings
 # config/maps/plugins/1_collect_unmatched_training/collect_unmatched.py:6
@@ -31,8 +32,7 @@ def execute(match_data: dict):
         print(f'ERROR: text empty {text}')
         return None
     _add_variant_to_fuzzy_map(file_rule_path, text)
-    raise Exception('no text after replacement')
-
+    sys.exit(1)
 
 def _add_variant_to_fuzzy_map(file_rule_path: str, text: str):
     FUZZY_MAP_FILE = Path(file_rule_path)

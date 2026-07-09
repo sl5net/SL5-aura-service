@@ -1486,7 +1486,7 @@ def process_text_in_background(logger,
 
 
 
-                        logging.info(f"1523: execute_only={execute_only}")
+                        # logging.info(f"1523: execute_only={execute_only}")
                         logging.info(f"1523: execute_only={execute_only}")
 
                         from scripts.py.func.global_state import SilentException

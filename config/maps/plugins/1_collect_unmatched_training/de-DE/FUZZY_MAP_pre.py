@@ -8,51 +8,33 @@ import re # noqa: F401
 from pathlib import Path
 import platform
 import runpy
-
 CONFIG_DIR = Path(__file__).parent
-
 
 starten = r'starten|stab|start|staat|starb|straffen|spart|stab|starb|stadt|starb'
 Lernmodus= r'(Lernmodus|Training)'
 
-TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+from pathlib import Path as p;import os as o # noqa: E702
+with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
 acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
 AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
 suche_reg = runpy.run_path(acp)["suche_reg"]
 # suche_reg = r'\b(suche|suchen|zu|buch)\b'
 
-
 FUZZY_MAP_pre = [
-
-
-    # 1. Notiere deine Optimierungs-Regel hier zuerst! (Ergebnis zuerst!)
-
-
-    # EXAMPLE: Roboter
-    # ('test',r'^(Roboter|wo bitte|oh britta|oh bitte|ok|das sind|gut im fußball|jetzt aktiv)$', 100,{'flags': re.IGNORECASE}),
-
-
     #################################################
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
     # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
     #################################################
-
-
     # EXAMPLE: lernmodus
     (f'kate {str(__file__)}', rf'^(lernmodus|Lernmodus\s*{starten}|led modus\s*{starten}|led modus\s*{starten}|Training {starten}|Erkennungstraining|lärm wurdest stab|ihren modus {starten}|der modus|der modus {starten}|Grip Modus {starten}|trainingsstart|reading {starten}|heiligen staat|erkundungstour reading|bildungsprämie|sag rettungs training|quidditch training|führungstraining|gründungstreffen erkältungstee training|gründungs|bildungsträger|jörg velux training|der grillo training|gründungs training|erkältungstee ideen|der glättung streaming|erkältung training|erkältungstee ding|erkennung training|erkältungstee training|erkennung nicht|lab modus {starten}|leere modus {starten}|lernmodus starb|der modus stunden|für genuss training|lernmodus stab|der modus spart|home modus stab|renault modus {starten}|hallo xd reinigen|verkehr lostreten|danke lux training|lernmodul {starten}|werden modus {starten}|für quintus training|genuss trinken verkehr lostreten lernmodus starb|erkennung strähnig|leeren modus {starten}|lärm wurdest stab|er wurde {starten}|werden würdest|der bundesstaat|\w+\s*wurde {starten}|lernmodell {starten})$'),
 
-
     # EXAMPLE: AURA_VARIANTS suche_reg
-    ('Suche wird gestartet...', fr'^{AURA_VARIANTS}\b.*\b{suche_reg}$', 100,
-    {
-    'flags': re.IGNORECASE,
-    'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
-    }),
-
-
+    # ('Suche wird gestartet...', fr'^{AURA_VARIANTS}\b.*\b{suche_reg}$', 100,
+    # {
+    # 'flags': re.IGNORECASE,
+    # 'on_match_exec': [Path(__file__).resolve().parent / "run_search.py"],
+    # }),
 
     # Some Teste Resulte commented here:
 
@@ -69,12 +51,9 @@ FUZZY_MAP_pre = [
 
     # ('Roboter',r'^(Roboter|wo bitte|oh britta|oh bitte)$', 100,{'flags': re.IGNORECASE}),
 
-
     #('Oktopus',r'^(Oktopus|du)$', 100,{'flags': re.IGNORECASE}),
 
     # ('teleskop',r'^(teleskop|gott|script ist|kryptos|durch|einen kaputten teleskop|chris|mein gott|crypto|grip|skripte|es|script)$', 100,{'flags': re.IGNORECASE,}),
-
-
 
 ]
 
