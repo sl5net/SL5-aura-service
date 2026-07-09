@@ -6,7 +6,6 @@ import re # noqa: F401
 #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
 
 from pathlib import Path
-import platform
 import runpy
 CONFIG_DIR = Path(__file__).parent
 
