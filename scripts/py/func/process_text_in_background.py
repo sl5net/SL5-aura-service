@@ -1492,8 +1492,8 @@ def process_text_in_background(logger,
                         from scripts.py.func.global_state import SilentException
                         try:
                             (new_processed_text
-                                 , regex_pre_is_replacing_all_maybe
-                                 , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
+                                    , regex_pre_is_replacing_all_maybe
+                                    , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
                                 processed_text,
                                 GLOBAL_FUZZY_MAP_PRE,
                                 logger,
@@ -1502,10 +1502,8 @@ def process_text_in_background(logger,
                                 is_inner_rule=(custom_rules is not None)
                             )
                         except SilentException:
-                            time.sleep(0.1)
-                            return ' '
-                            # pass
-
+                            time.sleep(0.005)
+                            return '20260709_0439 no text after replacement'
 
                 # if not privacy_taint_occurred:
                     # log4DEV(f"new_processed_text: {new_processed_text}"

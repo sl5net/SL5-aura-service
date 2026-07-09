@@ -217,12 +217,11 @@ FUZZY_MAP_pre = [
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
-         # 'cache': False
      }),
 
     # EXAMPLE: gather fruit
     ('gather fruit',
-     r'^\s*(beere\w*|bill|bier|baby|obst|fruit|früchte[n]?|Äpfel[n]?|Apfel|Birne[n]?|berries|quarry)\s*$',
+     r'^\s*(er|b|beere\w*|gehring|bill|bier|baby|obst|fruit|früchte[n]?|Äpfel[n]?|Apfel|Birne[n]?|berries|quarry)\s*$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -234,14 +233,13 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather meat
     ('gather meat',
-     r'^(fleisch|jagd|jacken|ja|ihr habt|meat)$',
+     r'^(fleisch|jagd|jagen|jacken|ja|ja gut|ihr habt|meat)$',
      85,
      {
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
-         # 'cache': False
      }),
 
 
@@ -259,14 +257,13 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather metal
     ('gather metal',
-     r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|matcha|günther|ethan|italien|mit metall|hat)$',
+     r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|bachelor|matcha|günther|ethan|italien|mit metall|hat|nein)$',
      85,
      {
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
-         # 'cache': False
      }),
 
 
