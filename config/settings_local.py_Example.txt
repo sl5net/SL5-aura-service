@@ -12,6 +12,9 @@
 import os
 import pwd
 
+# copies to / "data" / "_privat_zip"
+copy_zip_files_when_source_newer = False
+
 # --- User Detection (do not remove — used by integrity checks) ---
 current_user = pwd.getpwuid(os.getuid())[0]
 
