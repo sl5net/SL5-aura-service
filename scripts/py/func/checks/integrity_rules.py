@@ -50,12 +50,17 @@ FORBIDDEN_PATTERNS = [
 ]
 
 
-
 INTEGRITY_CHECKS = {
 
     'config/maps/plugins/game/0ad/0ad_actions.py': [
         "subprocess.run(['dotool'], input=command, text=True, check=True)",
         # "raise Exception('",
+    ],
+
+    '.gitignore': [
+        'data/**/_*',
+        'config/maps/**/_*',
+        'config/maps/**/.*',
     ],
 
     'aura_engine.py': [
