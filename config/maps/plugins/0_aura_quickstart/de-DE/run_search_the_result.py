@@ -2,7 +2,6 @@
 import subprocess
 import os
 import time
-from pathlib import Path
 
 
 def execute(match_data):

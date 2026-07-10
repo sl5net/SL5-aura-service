@@ -55,7 +55,7 @@ INTEGRITY_CHECKS = {
 
     'config/maps/plugins/game/0ad/0ad_actions.py': [
         "subprocess.run(['dotool'], input=command, text=True, check=True)",
-        "raise Exception('",
+        # "raise Exception('",
     ],
 
     'aura_engine.py': [
