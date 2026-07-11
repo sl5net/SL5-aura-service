@@ -38,6 +38,7 @@ SIGNATURE_TIMES: Dict[Any, float] = {}
 _last_recognitions = []
 _MAX_RECOGNITIONS = 2
 
+last_recognitions = []
 
 def add_recognition(text: str) -> None:
     """
