@@ -548,10 +548,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                             pass
                         else:
                             message1 = f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached)."
-                            message2 = f"Is your Microphone off ? or Microphone muted?"
-                            logger.info(message1)
+                            message2 = "Is your Microphone off ? or Microphone muted?"
+                            logger.info(message1 + message2)
                             mute_microphone(logger, onlySound=True)
-                            speak_inclusive_fallback(message1 + message2 , 'en-US')
+                            speak_inclusive_fallback(message2 , 'en-US')
                             # "Mute" sound: quick down-bending tone
                             break
 
