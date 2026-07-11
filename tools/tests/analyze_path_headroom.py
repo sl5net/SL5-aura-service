@@ -1,28 +1,6 @@
-"""
-    Run the script: py
-
+README = r"""
+Run the script: py
 tools/tests/analyze_path_headroom.py
-
-    Result: It will tell you exactly:
-
-        Which file is the "culprit" (the longest one).
-
-        How many characters your installation folder (e.g. C:\Users\...\Downloads\Project) currently uses.
-
-        How many characters it is allowed to have max.
-
-Example Output:
-code Text
-
-Longest internal file:   ...\models\vosk-model-de-0.21\rescore\G.fst
-Internal path length:    45 characters
-------------------------------------------------------------
-Maximum allowed length
-for Project Root Folder: 214 characters
-------------------------------------------------------------
-Current Root Path:       C:\Users\User\Downloads\Very_Long_Folder_Name\Project
-Current Root Length:     230 characters
-------------------------------------------------------------
 ❌ CRITICAL FAIL: The path is already too long by 16 characters!
 """
 

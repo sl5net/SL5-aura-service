@@ -1,4 +1,4 @@
-## Création de nouveaux modules de plugin
+## Création de nouveaux modules de plugin ( docs/CreatingNewPluginModules.md )
 
 Notre framework utilise un puissant système de découverte automatique pour charger les modules de règles. Cela rend l'ajout de nouveaux ensembles de commandes simple et propre, sans avoir besoin d'enregistrer manuellement chaque nouveau composant. Ce guide explique comment créer, structurer et gérer vos propres modules personnalisés.
 
@@ -99,4 +99,39 @@ désactiver automatiquement tous ses modules enfants et sous-dossiers de langue.
 L’objectif est d’améliorer encore ce système. Par exemple, fournir un moyen de respecter les paramètres du module enfant même si le parent est désactivé, ou introduire des règles d'héritage plus complexes. (27.10.'25 lundi)
 
 
+  
+  
+  
+t1- Es ist in der Tat wesentlich benutzerfreundlicher and komfortabler, die Steuerung über die Sprachbefehle direct in diesem Dokumentationsabschnitt hervorzuheben [1].
+
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (comme « Aura, Lernmodus einschalten / ausschalten ») et les détails, comme « toggle_learning.py » das Aus- et Einkommentieren automatisiert [2].
+
+
+### Activation du mode d'apprentissage (formation inégalée)
+
+Pour permettre à votre module personnalisé d'apprendre automatiquement des phrases non reconnues lorsque le "Lernmodus" (Mode d'apprentissage) est actif, vous pouvez ajouter une règle fourre-tout au **tout en bas** de votre liste `FUZZY_MAP_pre`.
+
+Cette règle appelle le plugin d'entraînement sans correspondance lorsqu'aucune autre règle spécifique de votre fichier ne correspond :
+
+```python
+    # --- Training-Plugin (dynamically toggled by the learning mode) ---
+    (f'{str(__file__)}', r'^(.*)$', 10, {
+        'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
+    }),
+```
+
+Le plugin de formation utilise `f'{str(__file__)}'` pour localiser votre fichier et ajouter automatiquement la phrase non reconnue au premier groupe de règles disponible (comme votre groupe de commandes principal).
+
+#### Basculer le mode d'apprentissage via les commandes vocales
+
+Au lieu de modifier les fichiers manuellement, le moyen le plus confortable de gérer cette fonctionnalité consiste à utiliser les commandes vocales intégrées :
+
+* **Pour activer :** Dites *"Aura, mode d'apprentissage activé"* ou *"Aura, Lernmodus starten"*.
+* **Pour désactiver :** Dites *"Aura, mode d'apprentissage désactivé"* ou *"Aura, Lernmodus stoppen"*.
+
+Ces commandes déclenchent `toggle_learning.py` en arrière-plan, qui commente ou décommente automatiquement les lignes fourre-tout dans vos fichiers de carte actifs.
+  
+  
+  
+  
 *Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-frlang.md) pour plus de détails.*

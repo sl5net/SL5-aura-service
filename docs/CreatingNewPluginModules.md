@@ -1,4 +1,4 @@
-## Creating New Plugin Modules
+## Creating New Plugin Modules ( docs/CreatingNewPluginModules.md )
 
 Our framework uses a powerful auto-discovery system to load rule modules. This makes adding new sets of commands simple and clean, without needing to manually register every new component. This guide explains how to create, structure, and manage your own custom modules.
 
@@ -99,5 +99,40 @@ PLUGINS_ENABLED = {
     The goal is to enhance this system further. For example, providing a way for child module settings to be respected even if the parent is disabled, or introducing more complex inheritance rules. (27.10.'25 Mon)
 
 
+    
+    
+    
+t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direkt in diesem Dokumentationsabschnitt hervorzuheben [1].
+
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (wie „Aura, Lernmodus einschalten / ausschalten“) und erklären kurz, wie `toggle_learning.py` das Aus- und Einkommentieren automatisiert [2].
+
+
+### Enabling the Learning Mode (Unmatched Training)
+
+To allow your custom module to automatically learn unrecognized phrases when the "Lernmodus" (Learning Mode) is active, you can append a catch-all rule at the **very bottom** of your `FUZZY_MAP_pre` list. 
+
+This rule invokes the unmatched training plugin when no other specific rule in your file matches:
+
+```python
+    # --- Training-Plugin (dynamically toggled by the learning mode) ---
+    (f'{str(__file__)}', r'^(.*)$', 10, {
+        'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
+    }),
+```
+
+The training plugin uses `f'{str(__file__)}'` to locate your file and automatically append the unrecognized phrase to the first available rule group (like your main command group).
+
+#### Toggling the Learning Mode via Voice Commands
+
+Instead of editing files manually, the most comfortable way to manage this feature is via built-in voice commands:
+
+*   **To Enable:** Say *"Aura, learning mode on"* or *"Aura, Lernmodus starten"*.
+*   **To Disable:** Say *"Aura, learning mode off"* or *"Aura, Lernmodus stoppen"*.
+
+These commands trigger `toggle_learning.py` behind the scenes, which automatically comments or uncomments the catch-all lines across your active map files.
+    
+    
+    
+    
 *Tip: After defining your regex patterns, run `python3 tools/map_tagger.py` to automatically generate searchable examples for the CLI tools. See [Map Maintenance Tools](../Developer_Guide/Map_Maintenance_Tools.md) for details.*
 

@@ -1,4 +1,4 @@
-## Neue Plugin-Module erstellen
+## Neue Plugin-Module erstellen (docs/CreatingNewPluginModules.md)
 
 Unser Framework verwendet ein leistungsstarkes Auto-Discovery-System zum Laden von Regelmodulen. Dadurch ist das Hinzufügen neuer Befehlssätze einfach und sauber, ohne dass jede neue Komponente manuell registriert werden muss. In diesem Leitfaden wird erläutert, wie Sie Ihre eigenen benutzerdefinierten Module erstellen, strukturieren und verwalten.
 
@@ -99,4 +99,39 @@ Deaktivieren Sie automatisch alle untergeordneten Module und Sprachunterordner. 
 Ziel ist es, dieses System weiter zu verbessern. Beispielsweise wird eine Möglichkeit geschaffen, die Einstellungen des untergeordneten Moduls auch dann zu berücksichtigen, wenn das übergeordnete Modul deaktiviert ist, oder es werden komplexere Vererbungsregeln eingeführt. (27.10.'25 Mo)
 
 
+  
+  
+  
+t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direkt in diesem Dokumentationsabschnitt hervorzuheben [1].
+
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (wie „Aura, Lernmodus einschalten / ausschalten“) und erklären kurz, wie `toggle_learning.py` das Aus- und Einkommen automatisiert [2].
+
+
+### Aktivieren des Lernmodus (unübertroffenes Training)
+
+Damit Ihr benutzerdefiniertes Modul automatisch unbekannte Phrasen lernen kann, wenn der „Lernmodus“ aktiv ist, können Sie ganz unten an Ihrer „FUZZY_MAP_pre“-Liste eine Sammelregel anhängen.
+
+Diese Regel ruft das nicht übereinstimmende Trainings-Plugin auf, wenn keine andere spezifische Regel in Ihrer Datei übereinstimmt:
+
+```python
+    # --- Training-Plugin (dynamically toggled by the learning mode) ---
+    (f'{str(__file__)}', r'^(.*)$', 10, {
+        'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
+    }),
+```
+
+Das Trainings-Plugin verwendet „f'{str(__file__)}“, um Ihre Datei zu finden und den nicht erkannten Satz automatisch an die erste verfügbare Regelgruppe (wie Ihre Hauptbefehlsgruppe) anzuhängen.
+
+#### Umschalten des Lernmodus über Sprachbefehle
+
+Anstatt Dateien manuell zu bearbeiten, lässt sich diese Funktion am bequemsten über integrierte Sprachbefehle verwalten:
+
+* **Zur Aktivierung:** Sagen Sie *„Aura, Lernmodus ein“* oder *„Aura, Lernmodus starten“*.
+* **Zum Deaktivieren:** Sagen Sie *„Aura, Lernmodus aus“* oder *„Aura, Lernmodus stoppen“*.
+
+Diese Befehle lösen hinter den Kulissen „toggle_learning.py“ aus, das die Catch-All-Zeilen in Ihren aktiven Kartendateien automatisch kommentiert oder auskommentiert.
+  
+  
+  
+  
 *Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-delang.md).*

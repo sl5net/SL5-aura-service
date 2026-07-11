@@ -1,9 +1,9 @@
-# config/maps/plugins/1_collect_unmatched_training/de-DE/FUZZY_MAP_pre.py
-# projects/py/STT/config/maps/plugins/1_collect_unmatched_training/de-DE/FUZZY_MAP_pre.py
+
+
 import re # noqa: F401
 #from pathlib import Path as p;import os as o # noqa: E702
 #with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
-#(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
+
 
 from pathlib import Path
 import runpy
@@ -23,7 +23,7 @@ suche_reg = runpy.run_path(acp)["suche_reg"]
 FUZZY_MAP_pre = [
     #################################################
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
-    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+
     #################################################
     # EXAMPLE: lernmodus
     (f'kate {str(__file__)}', rf'^(lernmodus|Lernmodus\s*{starten}|led modus\s*{starten}|led modus\s*{starten}|Training {starten}|Erkennungstraining|lärm wurdest stab|ihren modus {starten}|der modus|der modus {starten}|Grip Modus {starten}|trainingsstart|reading {starten}|heiligen staat|erkundungstour reading|bildungsprämie|sag rettungs training|quidditch training|führungstraining|gründungstreffen erkältungstee training|gründungs|bildungsträger|jörg velux training|der grillo training|gründungs training|erkältungstee ideen|der glättung streaming|erkältung training|erkältungstee ding|erkennung training|erkältungstee training|erkennung nicht|lab modus {starten}|leere modus {starten}|lernmodus starb|der modus stunden|für genuss training|lernmodus stab|der modus spart|home modus stab|renault modus {starten}|hallo xd reinigen|verkehr lostreten|danke lux training|lernmodul {starten}|werden modus {starten}|für quintus training|genuss trinken verkehr lostreten lernmodus starb|erkennung strähnig|leeren modus {starten}|lärm wurdest stab|er wurde {starten}|werden würdest|der bundesstaat|\w+\s*wurde {starten}|lernmodell {starten})$'),

@@ -1,4 +1,4 @@
-## Tworzenie nowych modułów wtyczek
+## Tworzenie nowych modułów wtyczek ( docs/CreatingNewPluginModules.md )
 
 Nasz framework wykorzystuje potężny system automatycznego wykrywania do ładowania modułów reguł. Dzięki temu dodawanie nowych zestawów poleceń jest proste i przejrzyste, bez konieczności ręcznego rejestrowania każdego nowego komponentu. W tym przewodniku wyjaśniono, jak tworzyć, organizować i zarządzać własnymi modułami niestandardowymi.
 
@@ -63,4 +63,34 @@ XSPACEbreakX
 Celem jest dalsze udoskonalanie tego systemu. Na przykład umożliwienie respektowania ustawień modułu podrzędnego, nawet jeśli moduł nadrzędny jest wyłączony, lub wprowadzenie bardziej złożonych reguł dziedziczenia. (27.10.25 pon.)
 
 
+XSPACEbreakX
+XSPACEbreakX
+XSPACEbreakX
+t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direkt in diesem Dokumentationsabschnitt hervorzuheben [1].
+
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (wie „Aura, Lernmodus einschalten / ausschalten”) i erklären kurz, wie `toggle_learning.py` das Aus- und Einkommentieren automatisiert [2].
+
+
+### Włączanie trybu uczenia się (niezrównany trening)
+
+Aby pozwolić Twojemu modułowi na automatyczne uczenie się nierozpoznanych fraz, gdy aktywny jest "Lernmodus" (tryb uczenia się), możesz dodać regułę catch-all na **na samym dole** listy `FUZZY_MAP_pre`.
+
+Ta reguła wywołuje niedopasowaną wtyczkę szkoleniową, gdy żadna inna konkretna reguła w Twoim pliku nie pasuje:
+
+__KOD_BLOKU_2__
+
+Wtyczka szkoleniowa używa `f'{str(__file__)}'` do zlokalizowania pliku i automatycznego dołączenia nierozpoznanej frazy do pierwszej dostępnej grupy reguł (takiej jak główna grupa poleceń).
+
+#### Przełączanie trybu nauki za pomocą poleceń głosowych
+
+Zamiast ręcznej edycji plików najwygodniejszym sposobem zarządzania tą funkcją jest użycie wbudowanych poleceń głosowych:
+
+* **Aby włączyć:** powiedz *„Aura, tryb uczenia się włączony”* lub *„Aura, Lernmodus starten”*.
+* **Aby wyłączyć:** powiedz *„Aura, tryb uczenia się wyłączony”* lub *„Aura, zatrzymanie Lernmodus”*.
+
+Te polecenia uruchamiają w tle plik `toggle_learning.py`, który automatycznie komentuje lub odkomentuje linie catch-all w aktywnych plikach map.
+XSPACEbreakX
+XSPACEbreakX
+XSPACEbreakX
+XSPACEbreakX
 *Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-pllang.md).*

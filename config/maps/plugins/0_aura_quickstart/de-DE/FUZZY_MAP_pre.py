@@ -27,7 +27,7 @@ _meta_run_search_result = {
 FUZZY_MAP_pre = [
 
     # EXAMPLE: log
-    ('log', r'^(log|look)$', 70, _meta_run_search_result),
+    ('log', r'^(log|look|Programm geladen. Viel Spaß|woran lernmodus deaktivieren|ausprobieren|blumenkohl|das ist überraschend)$', 70, _meta_run_search_result),
 
     # EXAMPLE: log
     ('log', fr'^{AURA_VARIANTS}\s*(logik|logdateien|log-datei|logdateien|logging|rainer|ein rock|lockt hat|ein okt hat|log-datei|logdatei|eine logdatei|ein oktett|ein log-datei)$', 70, _meta_run_search_result),
@@ -36,15 +36,14 @@ FUZZY_MAP_pre = [
     ('log', fr'^{AURA_VARIANTS}\s*(log|look)$', 70, _meta_run_search_result),
 
     # EXAMPLE: Lernmodus einschalten ausschalten
-    ('Lernmodus...', fr'^{AURA_VARIANTS}.*lernmodus (an\w*|ein\w*|aus\w*|starten|stoppen)\s*\w*$', 100, {
+    ('Lernmodus...', fr'^{AURA_VARIANTS}.*lernmodus (an\w*|ein\w*|aus\w*|starten|stoppen|aktivier\w+|DEAKTIVIER\w*)\s*\w*$', 100, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),
 
 
-
     # --- Training-Plugin (wird vom Skript oben ein/ausgeschaltet) ---
-#     (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+
 
     #Orange rot
 
