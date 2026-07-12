@@ -1,354 +1,214 @@
 # config/maps/plugins/1_collect_unmatched_training/collect_unmatched.py
+"""
+Handles unmatched user input by updating the FUZZY_MAP_pre.py file that
+contains the catch-all rule which triggered this script.
+
+Behaviour:
+- If no catch-all rule (identified by the string 'collect_unmatched' inside
+  its on_match_exec path) is found -> do nothing.
+- If a catch-all rule is found and there is a rule before it -> add the
+  unmatched text as a new alternative to that previous rule's regex group.
+- If a catch-all rule is found and there is no rule before it -> insert a
+  template rule ('nix', r'^(nix)$') right before the catch-all rule.
+"""
+
 import ast
-import logging
-import os
-import shutil
-import subprocess
+import re
 import sys
 from pathlib import Path
 
-import libcst as cst
 
-
-
-# ---------------------------------------------------------------------------
-# Logging setup
-# ---------------------------------------------------------------------------
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-logger.setLevel(logging.INFO)
-
-log_dir = PROJECT_ROOT / "log"
-log_dir.mkdir(parents=True, exist_ok=True)
-file_handler = logging.FileHandler(
-    f"{log_dir}/{__name__}.log", mode="a", encoding="utf-8"
-)
-file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
-logger.addHandler(file_handler)
-
-
-# ---------------------------------------------------------------------------
-# TTS helper
-# ---------------------------------------------------------------------------
-def speak(text: str) -> None:
-    """Speak text via a TTS engine and echo it to stdout."""
-    print(text)
-    logger.info("TTS speak: %s", text)
-    try:
-        subprocess.run(["espeak", "-v", "en-US", text], check=True)
-    except Exception as exc:
-        logger.warning("TTS fallback: %s — %s", text, exc)
-        print(f"STDOUT (TTS fallback): {text}  —  {exc}")
-
-
-# ---------------------------------------------------------------------------
-# Path constants
-# ---------------------------------------------------------------------------
-FUZZY_MAP_FILE = Path(__file__).parent / "de-DE" / "FUZZY_MAP_pre.py"
-
-
-# ---------------------------------------------------------------------------
-# Regex helpers
-# ---------------------------------------------------------------------------
-def _split_top_level_pipes(pattern: str) -> list[str]:
-    parts = []
-    buffer = []
-    depth = 0
-    for char in pattern:
-        if char == "(":
-            depth += 1
-            buffer.append(char)
-        elif char == ")":
-            depth = max(0, depth - 1)
-            buffer.append(char)
-        elif char == "|" and depth == 0:
-            parts.append("".join(buffer).strip())
-            buffer = []
-        else:
-            buffer.append(char)
-    parts.append("".join(buffer).strip())
-    return parts
-
-
-def _find_last_capturing_group(pattern: str) -> tuple[str, str, str] | None:
-    depth = 0
-    end = -1
-    for i in range(len(pattern) - 1, -1, -1):
-        char = pattern[i]
-        if char == ")":
-            if depth == 0:
-                end = i
-            depth += 1
-        elif char == "(":
-            depth -= 1
-            if depth == 0 and end != -1:
-                prefix = pattern[:i]
-                core = pattern[i + 1 : end]
-                suffix = pattern[end + 1 :]
-                return prefix, core, suffix
-    return None
-
-
-def _build_new_pattern(old_pattern: str, new_variant: str) -> str | None:
-    group = _find_last_capturing_group(old_pattern)
-    if group:
-        prefix, inner, suffix = group
-        if "|" in inner:
-            parts = _split_top_level_pipes(inner)
-            if new_variant in parts:
-                return None
-            parts.append(new_variant)
-            return f"{prefix}({'|'.join(parts)}){suffix}"
-        if new_variant == inner.strip():
-            return None
-        return f"{prefix}({inner}|{new_variant}){suffix}"
-
-    if "|" in old_pattern:
-        parts = _split_top_level_pipes(old_pattern)
-        if new_variant in parts:
-            return None
-        parts.append(new_variant)
-        return "|".join(parts)
-
-    has_start = old_pattern.startswith("^")
-    has_end = old_pattern.endswith("$")
-    body = old_pattern[1:-1] if (has_start and has_end) else old_pattern
-    new_body = f"({body}|{new_variant})"
-    return ("^" if has_start else "") + new_body + ("$" if has_end else "")
-
-
-def _build_new_pattern_for_formatted_string_fragment(pattern_text: str, new_variant: str) -> str | None:
-    """
-    Special version for FormattedString fragments.
-    The pattern_text may end with ')$' or similar suffixes that belong to the outer group.
-    """
-    last_paren = pattern_text.rfind(")")
-    if last_paren == -1:
-        if new_variant in pattern_text:
-            return None
-        return pattern_text + "|" + new_variant
-
-    before_paren = pattern_text[:last_paren]
-    after_paren = pattern_text[last_paren:]
-
-    if "|" in before_paren:
-        parts = _split_top_level_pipes(before_paren)
-        if new_variant in parts:
-            return None
-        parts.append(new_variant)
-        return "|".join(parts) + after_paren
-
-    if new_variant == before_paren.strip():
-        return None
-
-    return f"{before_paren}|{new_variant}{after_paren}"
-
-
-# ---------------------------------------------------------------------------
-# libcst transformer
-# ---------------------------------------------------------------------------
-class FuzzyMapTransformer(cst.CSTTransformer):
-    """
-    Walks an assignment to FUZZY_MAP_pre and appends *new_variant* to the
-    **first** regex pattern found inside a tuple at index 1.
-    """
-
-    def __init__(self, new_variant: str) -> None:
-        super().__init__()
-        self._new_variant = new_variant
-        self._modified = False
-
-    @property
-    def modified(self) -> bool:
-        return self._modified
-
-    def leave_Assign(
-        self, original_node: cst.Assign, updated_node: cst.Assign
-    ) -> cst.Assign:
-        if not self._is_fuzzy_map_target(original_node.targets):
-            return updated_node
-
-        rhs = original_node.value
-        if not isinstance(rhs, cst.List) or not rhs.elements:
-            return updated_node
-
-        first = rhs.elements[0]
-        updated_first = self._process_list_element(first)
-
-        if not self._modified:
-            return updated_node
-
-        new_elements = [updated_first] + list(rhs.elements[1:])
-        new_rhs = rhs.with_changes(elements=new_elements)
-        return updated_node.with_changes(value=new_rhs)
-
-    def _is_fuzzy_map_target(self, targets: list[cst.BaseExpression]) -> bool:
-        for target in targets:
-            if isinstance(target, cst.AssignTarget) and isinstance(
-                target.target, cst.Name
-            ):
-                if target.target.value == "FUZZY_MAP_pre":
-                    return True
-        return False
-
-    def _process_list_element(self, element: cst.BaseExpression) -> cst.BaseExpression:
-        if not isinstance(element.value, cst.Tuple):
-            return element
-
-        tup = element.value
-        if len(tup.elements) < 2:
-            return element
-
-        pattern_node = tup.elements[1].value
-
-        # Handle SimpleString ('...' or r'...')
-        if isinstance(pattern_node, cst.SimpleString):
-            raw = pattern_node.value  # e.g. "r'^(nix|...)$'"
-            try:
-                pattern_text = ast.literal_eval(raw)
-            except Exception:
-                pattern_text = raw.strip("\"'")
-                if pattern_text.startswith(("r'", "R'", 'r"', 'R"')):
-                    pattern_text = pattern_text[2:]
-                elif pattern_text.startswith(("u'", "U'", 'u"', 'U"')):
-                    pattern_text = pattern_text[2:]
-                elif pattern_text.startswith(("ur'", "UR'", 'ur"', 'UR"')):
-                    pattern_text = pattern_text[3:]
-            new_pattern = _build_new_pattern(pattern_text, self._new_variant)
-            if new_pattern is None:
-                return element
-
-            new_literal = cst.SimpleString(f"r'{new_pattern}'")
-            new_tuple_elements = list(tup.elements)
-            new_tuple_elements[1] = tup.elements[1].with_changes(value=new_literal)
-            new_tuple = tup.with_changes(elements=new_tuple_elements)
-            self._modified = True
-            return element.with_changes(value=new_tuple)
-
-        # Handle FormattedString (f'...' or fr'...')
-        elif isinstance(pattern_node, cst.FormattedString):
-            return self._process_formatted_string_pattern(element, tup, pattern_node)
-
-        return element
-
-    def _process_formatted_string_pattern(
-        self, element: cst.BaseExpression, tup: cst.Tuple, pattern_node: cst.FormattedString
-    ) -> cst.BaseExpression:
-        """
-        Modify a FormattedString pattern by appending the new variant
-        to the last FormattedStringText part, keeping expressions intact.
-        """
-        if not pattern_node.parts:
-            return element
-
-        last_text_idx = -1
-        for i, part in enumerate(pattern_node.parts):
-            if isinstance(part, cst.FormattedStringText):
-                last_text_idx = i
-
-        if last_text_idx == -1:
-            return element
-
-        last_text_part = pattern_node.parts[last_text_idx]
-        pattern_text = last_text_part.value
-
-        new_pattern_text = _build_new_pattern_for_formatted_string_fragment(
-            pattern_text, self._new_variant
-        )
-        if new_pattern_text is None:
-            return element
-
-        new_parts = list(pattern_node.parts)
-        new_parts[last_text_idx] = last_text_part.with_changes(value=new_pattern_text)
-
-        new_formatted = pattern_node.with_changes(parts=new_parts)
-        new_tuple_elements = list(tup.elements)
-        new_tuple_elements[1] = tup.elements[1].with_changes(value=new_formatted)
-        new_tuple = tup.with_changes(elements=new_tuple_elements)
-
-        self._modified = True
-        return element.with_changes(value=new_tuple)
-
-
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
-def add_variant_to_fuzzy_map(file_path: Path, new_variant: str) -> bool:
-    file_path = Path(file_path)
-    logger.info("add_variant_to_fuzzy_map called: file=%s variant=%r", file_path, new_variant)
-
-    if not file_path.exists():
-        logger.error("File does not exist: %s", file_path)
-        return False
-
-    backup = file_path.with_suffix(file_path.suffix + ".bak")
-    shutil.copy2(file_path, backup)
-    logger.info("Backup created: %s", backup)
-
-    source = file_path.read_text(encoding="utf-8")
-    logger.info("Source file read: %d bytes", len(source))
-
-    module = cst.parse_module(source)
-    logger.info("CST module parsed successfully")
-
-    transformer = FuzzyMapTransformer(new_variant)
-    new_module = module.visit(transformer)
-
-    if not transformer.modified:
-        logger.warning("No modification made — variant %r may already exist", new_variant)
-        return False
-
-    new_src = new_module.code
-    file_path.write_text(new_src, encoding="utf-8")
-    logger.info("File written: %s (%d bytes)", file_path, len(new_src))
-    return True
-
-
-# ---------------------------------------------------------------------------
-# Plugin entry point
-# ---------------------------------------------------------------------------
-def execute(match_data: dict) -> None:
-    logger.info("execute() called with match_data keys: %s", list(match_data.keys()))
-
-    text = match_data.get("original_text", "")
-    logger.info("original_text: %r", text)
-
-    if not text or "Lernmodus" in text:
-        logger.info("Skipping — text empty or contains 'Lernmodus'")
-        return None
-
-    file_rule_path = match_data.get("text_after_replacement")
-    logger.info("text_after_replacement (file_rule_path): %s", file_rule_path)
-
+def execute(match_data: dict):
+    text = match_data['original_text']
+    file_rule_path = match_data['text_after_replacement']
+    print(f'file_rule_path: {file_rule_path}')
     if not text:
-        logger.error("text is empty")
-        print(f"ERROR: text is empty — {text!r}")
+        print(f'ERROR: text empty {text}')
+        return None
+    _collect_unmatched(file_rule_path, text)
+    sys.exit(1)
+
+
+def _collect_unmatched(file_rule_path: str, text: str):
+    fuzzy_map_file = Path(file_rule_path)
+    if not fuzzy_map_file.exists():
+        return
+
+    content = fuzzy_map_file.read_text(encoding="utf-8")
+
+    entries = _get_fuzzy_map_entries(content)
+    if entries is None or not entries:
+        return
+
+    catch_all_index = _find_catch_all_index(content, entries)
+    if catch_all_index is None:
+        # No catch-all rule present -> do nothing
+        return
+
+    if catch_all_index > 0:
+        # There is a rule before the catch-all -> modify it
+        prev_start, prev_end = entries[catch_all_index - 1]
+        _add_variant_to_rule(fuzzy_map_file, content, prev_start, prev_end, text)
+    else:
+        # No rule before the catch-all -> insert a template rule
+        catch_all_start, _ = entries[catch_all_index]
+        _insert_template_rule(fuzzy_map_file, content, catch_all_start)
+
+
+def _get_fuzzy_map_entries(content: str):
+    """
+    Parse the file and return a list of (start_offset, end_offset) tuples,
+    one per top-level element of the FUZZY_MAP_pre list, in source order.
+    Using ast instead of line-based regex so multi-line rules (e.g. rules
+    with nested dicts spanning several lines) are handled correctly.
+    """
+    try:
+        tree = ast.parse(content)
+    except SyntaxError:
         return None
 
-    if not file_rule_path:
-        msg = (
-            "ERROR: no file_rule_path in match_data. "
-            "A catch-all rule may have intercepted this text. "
-            "Run: python3 tools/find_catch_all_in_fuzzy_maps.py"
-        )
-        logger.error(msg)
-        speak(msg)
+    list_node = None
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name) and target.id == 'FUZZY_MAP_pre':
+                    if isinstance(node.value, ast.List):
+                        list_node = node.value
+                        break
+        if list_node is not None:
+            break
+
+    if list_node is None:
         return None
 
-    speak("collect unmatched")
+    line_offsets = [0]
+    for line in content.splitlines(keepends=True):
+        line_offsets.append(line_offsets[-1] + len(line))
 
-    success = add_variant_to_fuzzy_map(file_rule_path, text)
-    if success:
-        logger.info("SUCCESS — exiting with code 1 to trigger reload")
-        sys.exit(1)
+    def to_offset(lineno, col):
+        return line_offsets[lineno - 1] + col
 
-    msg = (
-        f"WARNING: Could not add {text!r} to {file_rule_path}. "
-        "Run: python3 tools/find_catch_all_in_fuzzy_maps.py"
-    )
-    logger.warning(msg)
-    speak(msg)
+    entries = []
+    for el in list_node.elts:
+        start = to_offset(el.lineno, el.col_offset)
+        end = to_offset(el.end_lineno, el.end_col_offset)
+        entries.append((start, end))
+    return entries
+
+
+def _find_catch_all_index(content: str, entries):
+    """
+    The catch-all rule is identified by the literal string 'collect_unmatched'
+    appearing somewhere inside its source span (e.g. in the on_match_exec path).
+    """
+    marker_pos = content.find('collect_unmatched')
+    if marker_pos == -1:
+        return None
+    for i, (start, end) in enumerate(entries):
+        if start <= marker_pos < end:
+            return i
     return None
+
+
+def _add_variant_to_rule(fuzzy_map_file: Path, content: str, start: int, end: int, text: str):
+    rule_source = content[start:end]
+
+    group_span = _find_trailing_group_span(rule_source)
+    if group_span is None:
+        print(f'WARNING: could not locate the trailing "(...)$ " group in previous rule, skipping: {rule_source[:80]!r}')
+        return
+    group_start, group_end = group_span  # offsets (within rule_source) of the group's inner content
+
+    group_text = rule_source[group_start:group_end]
+    variants = group_text.split("|")
+    if text in variants:
+        return
+    variants.append(text)
+
+    abs_start = start + group_start
+    abs_end = start + group_end
+
+    new_content = content[:abs_start] + "|".join(variants) + content[abs_end:]
+    fuzzy_map_file.write_text(new_content, encoding="utf-8")
+
+
+def _find_trailing_group_span(rule_source: str):
+    """
+    Locate the last regex group, i.e. "(...)", that sits directly before the
+    final '$' anchor inside the rule's pattern string literal. This is the
+    group new variants get appended to.
+
+    Works regardless of how complex the rest of the pattern is (optional
+    prefix groups, f-string placeholders like {baum}, nested groups, ...),
+    by scanning backwards from the closing ')' and counting paren balance
+    instead of assuming the whole pattern is just "^(...)$ ".
+
+    Returns (start, end) offsets (within rule_source) of the group's inner
+    content (i.e. right after '(' and right before the matching ')'), or
+    None if no such group could be found.
+    """
+    # Find the start of the pattern string literal: an optional string
+    # prefix (r/f/fr/rf), a quote char, then the '^' anchor.
+    literal_re = re.compile(r"[a-zA-Z]{0,2}(['\"])\^")
+    lit_match = literal_re.search(rule_source)
+    if not lit_match:
+        return None
+    quote_char = lit_match.group(1)
+    pattern_start = lit_match.end()  # position right after '^'
+
+    # Find the matching closing quote (naive: patterns here don't contain
+    # the delimiting quote character itself).
+    quote_end = rule_source.find(quote_char, pattern_start)
+    if quote_end == -1:
+        return None
+
+    pattern_text = rule_source[pattern_start - 1:quote_end]  # includes leading '^'
+
+    # Find the last unescaped '$' in the pattern text.
+    dollar_pos = pattern_text.rfind('$')
+    if dollar_pos == -1 or dollar_pos == 0:
+        return None
+    if pattern_text[dollar_pos - 1] == '\\':
+        return None  # escaped '$', not the end anchor
+
+    if pattern_text[dollar_pos - 1] != ')':
+        return None  # pattern doesn't end in a group right before '$'
+
+    close_paren_pos = dollar_pos - 1
+
+    # Walk backwards from close_paren_pos to find the matching '(',
+    # respecting nesting and skipping escaped parens (\( \)).
+    depth = 0
+    open_paren_pos = None
+    i = close_paren_pos
+    while i >= 0:
+        ch = pattern_text[i]
+        escaped = i > 0 and pattern_text[i - 1] == '\\'
+        if ch == ')' and not escaped:
+            depth += 1
+        elif ch == '(' and not escaped:
+            depth -= 1
+            if depth == 0:
+                open_paren_pos = i
+                break
+        i -= 1
+
+    if open_paren_pos is None:
+        return None
+
+    # Convert positions (relative to pattern_text, which starts at
+    # pattern_start - 1 within rule_source) back to rule_source offsets.
+    base = pattern_start - 1
+    group_start = base + open_paren_pos + 1
+    group_end = base + close_paren_pos
+    return group_start, group_end
+
+
+def _insert_template_rule(fuzzy_map_file: Path, content: str, catch_all_start: int):
+    line_start = content.rfind('\n', 0, catch_all_start) + 1
+    indent_match = re.match(r'[ \t]*', content[line_start:catch_all_start])
+    indent = indent_match.group() if indent_match else ''
+
+    template_line = f"{indent}('nix', r'^(nix)$'),\n"
+    new_content = content[:line_start] + template_line + content[line_start:]
+    fuzzy_map_file.write_text(new_content, encoding="utf-8")

@@ -34,6 +34,7 @@ def find_all_fuzzy_map_files(root: Path) -> list[Path]:
     return list(root.rglob("FUZZY_MAP_pre.py"))
 
 
+
 def scan_file_for_catch_all(path: Path) -> list[tuple[int, str]]:
     """Return (line_number, line_text) for every catch-all match in the file."""
     try:
@@ -44,6 +45,10 @@ def scan_file_for_catch_all(path: Path) -> list[tuple[int, str]]:
 
     matches = []
     for i, line in enumerate(lines, 1):
+        # IGNORE lines that are fully commented out (first non-space char is '#')
+        if re.match(r'^\s*#', line):
+            continue
+
         for pat in CATCH_ALL_PATTERNS:
             if pat.search(line):
                 matches.append((i, line.strip()))

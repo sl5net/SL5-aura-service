@@ -69,7 +69,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather metal test
     ('gather metal',
-     r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|bachelor|matcha|günther|ethan|italien|mit metall)$',
+     r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|bachelor|matcha|günther|ethan|italien|mit metall|gift)$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -79,5 +79,6 @@ FUZZY_MAP_pre = [
      }),
 
 
+    #ok
 
 ]

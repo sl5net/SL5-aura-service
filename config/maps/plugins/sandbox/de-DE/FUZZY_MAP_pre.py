@@ -7,5 +7,9 @@ with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_roo
 # too<-from
 FUZZY_MAP_pre = [
 
-    (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+
+
+    ('nix', r'^(nix)$'),
+
+
 ]
