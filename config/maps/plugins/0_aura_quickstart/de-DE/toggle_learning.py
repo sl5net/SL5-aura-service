@@ -135,7 +135,8 @@ def execute(match_data):
                     idx = content.rfind("]")
                     if idx != -1:
                         leading_ws = get_leading_whitespace_before_pos(content, idx)
-
+                        if not leading_ws:
+                            leading_ws = "    "
                         new_rule = leading_ws + r"(f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']})," + "\n\n"
                         new_content = content[:idx] + new_rule + content[idx:]
 
