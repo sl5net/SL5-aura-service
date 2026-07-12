@@ -1,7 +1,9 @@
-# config/maps/plugins/game/0ad/de-DE/FUZZY_MAP_pre.py
-# https://regex101.com/
+# config/maps/plugins/game/0ad/gather/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 from pathlib import Path as p;import os as o # noqa: E702
+with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+
+# https://regex101.com/
 
 CONFIG_DIR = p(__file__).parent
 
@@ -23,7 +25,9 @@ FUZZY_MAP_pre = [
      }),
 
     # asldfkjasödlfsa dfnoch ein testasdfsjdflksdöfsdj
-    #sdddfgd festasdsdsadfsdf asdfasödkfjashfdasdfsadfsdf
+    #sdddfgd festasdsdsadfsdf asdfasödkfjashfdasdfsadfsdfschlittschuhläufer
+
+    #fußballsauto fußball
 
     # EXAMPLE: gather fruit
     ('gather fruit',
@@ -64,7 +68,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather metal
     ('gather metal',
-     r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|bachelor|matcha|günther|ethan|italien|mit metall|hat|nein)$',
+     r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|bachelor|matcha|günther|ethan|italien|mit metall)$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -72,5 +76,8 @@ FUZZY_MAP_pre = [
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
      }),
+    # bloomingville vsdddddddddddddddf 
+
+
 
 ]

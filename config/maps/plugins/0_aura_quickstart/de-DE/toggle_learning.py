@@ -65,9 +65,11 @@ def execute(match_data):
             if is_turning_off:
                 if not line.strip().startswith("#"):
 
-                    leading_ws = get_leading_whitespace_of_line(line)
+                    # leading_ws = get_leading_whitespace_of_line(line)
 
-                    new_lines.append(leading_ws + "# " + line.strip())
+                    # new_lines.append(leading_ws + "# " + line.strip())
+                    # we just not add this line anymore. map is then less messy
+
                     status = "Lernmodus DEAKTIVIERT."
                 else:
                     new_lines.append(line)
@@ -104,7 +106,7 @@ def execute(match_data):
                         map_file.write_text(new_content, encoding="utf-8")
                         if settings.AUDIO_GUIDANCE_ENABLED:
                             speak("unmatched is added to your map")
-                        return f"unmatched is added to your map (20260711_2331) …{str(candidate_path)[-30:0]}"
+                        return f"unmatched is added to your map …{str(map_file)[-30:0]} (20260711_2331)"
 
     map_file.write_text("\n".join(new_lines), encoding="utf-8")
 

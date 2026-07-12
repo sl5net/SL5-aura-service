@@ -303,7 +303,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
         if LAST_MODIFIED_TIMES:
             newest_file_path = max(LAST_MODIFIED_TIMES, key=LAST_MODIFIED_TIMES.get)
-            logger.info(f"LAST_MODIFIED_TIMES:{LAST_MODIFIED_TIMES}")
+            # logger.info(f"LAST_MODIFIED_TIMES:{LAST_MODIFIED_TIMES}")
             logger.info(f"newest_file_path:{newest_file_path}")
 
 
