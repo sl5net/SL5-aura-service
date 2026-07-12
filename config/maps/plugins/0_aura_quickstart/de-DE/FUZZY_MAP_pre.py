@@ -35,8 +35,9 @@ FUZZY_MAP_pre = [
     # EXAMPLE: log
     ('log', fr'^{AURA_VARIANTS}\s*(log|look)$', 70, _meta_run_search_result),
 
+    # config/maps/plugins/0_aura_quickstart/de-DE/FUZZY_MAP_pre.py:38
     # EXAMPLE: Lernmodus einschalten ausschalten
-    ('Lernmodus...', fr'^{AURA_VARIANTS}.*lernmodus (an\w*|ein\w*|aus\w*|starten|stoppen|aktivier\w+|DEAKTIVIER\w*)\s*\w*$', 100, {
+    ('Lernmodus...', fr'^{AURA_VARIANTS}.*(lern|leeren|lernen)\s*(modus) (an\w*|ein\w*|aus\w*|ausschalten|abschalten|starten|stoppen|aktivier\w+|DEAKTIVIER\w*)\s*\w*$', 100, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),

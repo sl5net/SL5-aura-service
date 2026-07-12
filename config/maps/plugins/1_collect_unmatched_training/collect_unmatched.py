@@ -62,7 +62,7 @@ def _add_variant_to_fuzzy_map(file_rule_path: str, text: str) -> bool:
             target_path = expanded_path
 
     if not target_path:
-        msg = "Fehler: Keine Karte zum Lernen bekannt."
+        msg = "Error: no Map for learning known."
         print(f"ERROR: {msg}")
         try:
             speak(msg)
@@ -106,6 +106,16 @@ def _add_variant_to_fuzzy_map(file_rule_path: str, text: str) -> bool:
             break
 
     if not match:
+        # Append new rule if list exists
+        if "FUZZY_MAP_pre = [" in content:
+            idx = content.rfind("]")
+            if idx != -1:
+                new_rule = f"    ('log', r'^({text})$', 70, _meta_run_search_result),\n"
+                new_content = content[:idx] + new_rule + content[idx:]
+                FUZZY_MAP_FILE.write_text(new_content, encoding="utf-8")
+                if settings.AUDIO_GUIDANCE_ENABLED:
+                    speak("unmatched is added to your map")
+                return True
         return False
 
     if match_type == 'alts':
@@ -122,7 +132,7 @@ def _add_variant_to_fuzzy_map(file_rule_path: str, text: str) -> bool:
             return False
         abs_start = match_line_start + match.start()
         abs_end   = match_line_start + match.end()
-        new_content = content[:abs_start] + f"r'^({existing}|{text}|Programm geladen. Viel Spaß|Program loaded)$'" + content[abs_end:]
+        new_content = content[:abs_start] + f"r'^({existing}|{text}|Program geladen. Viel Spaß|Program loaded)$'" + content[abs_end:]
 
     FUZZY_MAP_FILE.write_text(new_content, encoding="utf-8")
     if settings.AUDIO_GUIDANCE_ENABLED:
