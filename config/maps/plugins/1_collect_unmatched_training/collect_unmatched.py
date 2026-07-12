@@ -8,7 +8,6 @@ from pathlib import Path
 
 import libcst as cst
 
-from scripts.py.func.config.dynamic_settings import settings
 
 
 # ---------------------------------------------------------------------------

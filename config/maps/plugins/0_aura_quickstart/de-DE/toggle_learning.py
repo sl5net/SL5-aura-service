@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 
 from scripts.py.func.config.dynamic_settings import settings
-from scripts.py.func.utils.get_leading_whitespace import get_leading_whitespace_before_pos,get_leading_whitespace_of_line
+from scripts.py.func.utils.get_leading_whitespace import get_leading_whitespace_before_pos
 
 def speak(text):
     try:
