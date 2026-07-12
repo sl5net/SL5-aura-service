@@ -3,59 +3,9 @@ import subprocess
 from pathlib import Path
 
 from scripts.py.func.config.dynamic_settings import settings
-
-import re
-from pathlib import Path
-
-def get_leading_whitespace_of_line(line: str) -> str:
-    """
-    Gibt die führenden Whitespaces (Tabs oder Spaces) der übergebenen Zeile zurück.
-    Leerstring, wenn keine führenden Whitespaces vorhanden sind.
-    """
-    m = re.match(r"\s*", line)
-    return m.group() if m else ""
-
-# Wenn du die Einrückung aus dem Inhalt ermitteln willst (z.B. letzte Listeneintrag-Zeile)
-def get_leading_whitespace_before_pos(content: str, pos: int, fallback: str = "    ") -> str:
-    """
-    Suche die letzte nicht-leere Zeile vor pos und gib deren führende Whitespaces zurück.
-    Wenn nichts passendes gefunden wird, wird fallback zurückgegeben.
-    """
-    # Begrenze pos sicher innerhalb content
-    pos = max(0, min(len(content), pos))
-    # Finde Zeilenanfang der Zeile, die pos enthält
-    line_start = content.rfind("\n", 0, pos)
-    if line_start == -1:
-        line_start = 0
-    else:
-        line_start += 1
-
-    # Gehe rückwärts, bis wir eine nicht-leere Zeile finden oder am Anfang sind
-    search_pos = line_start
-    while True:
-        # Finde Zeilenende
-        next_nl = content.find("\n", search_pos)
-        if next_nl == -1 or next_nl >= pos:
-            next_nl = pos
-        line = content[search_pos:next_nl]
-        if line.strip() != "":
-            return get_leading_whitespace_of_line(line)
-        # gehe zur vorherigen Zeile
-        prev_nl = content.rfind("\n", 0, search_pos - 1)
-        if prev_nl == -1:
-            # prüfe von Anfang bis search_pos
-            if content[:search_pos].strip() == "":
-                return fallback
-            search_pos = 0
-        else:
-            search_pos = prev_nl + 1
-        if search_pos == 0:
-            # letzte Chance: erste Zeile
-            first_line = content[:pos].splitlines()[0] if content[:pos].splitlines() else ""
-            return get_leading_whitespace_of_line(first_line) if first_line else fallback
+from scripts.py.func.utils.get_leading_whitespace import get_leading_whitespace_before_pos,get_leading_whitespace_of_line
 
 def speak(text):
-    """Gibt Text über ein TTS-System aus. Passen Sie den Befehl ggf. an."""
     try:
         subprocess.run(['espeak', '-v', 'en-US', text], check=True)
     except Exception as e:
@@ -63,9 +13,9 @@ def speak(text):
 
 def execute(match_data):
     # its from config/maps/plugins/0_aura_quickstart/de-DE/FUZZY_MAP_pre.py
-    # EXAMPLE: Lernmodus einschalten ausschalten
+    # german EXAMPLE: Lernmodus einschalten ausschalten
+    # english EXAMPLE: learn-mode enable disable
 
-    # 2. Die Map-Datei in diesem Ordner finden
     import os
     tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
     last_edited_file = tmp_dir / "sl5_aura" / "last_edited_map.txt"
@@ -73,7 +23,7 @@ def execute(match_data):
     if not candidate_path.exists():
         speak(f"Can't find {last_edited_file}")
         print(f"Can't find {last_edited_file}")
-        return f"Error reading last_edited_map.txt"
+        return "Error reading last_edited_map.txt"
 
 
     # map_file = Path(__file__).parent / "FUZZY_MAP_pre.py"
@@ -96,16 +46,16 @@ def execute(match_data):
     new_lines = []
     status = "Keine Änderung vorgenommen."
 
-    # Logik: An- oder Ausschalten
-    is_turning_off = any(word in original_text for word in ["aus", "ab", "stopp", "beende", "deakti"])
+    is_turning_off = any(word in original_text for word in ["aus", "ab", "stopp", "beende", "dea", "dis"])
 
     if is_turning_off:
         try:
             if last_edited_file.exists():
                 last_edited_file.unlink()
-            speak("last edited file is deleted.")
+            if settings.AUDIO_GUIDANCE_ENABLED:
+                speak("last edited file is deleted.")
 
-        except Exception as e:
+        except Exception:
             speak(f"Error deleting {last_edited_file}")
             print(f"Error deleting {last_edited_file}")
             pass
@@ -123,18 +73,13 @@ def execute(match_data):
                     new_lines.append(line)
                     status = "Lernmodus is already deaktivated"
             else:
-                # Aktivieren: Nur wenn es auskommentiert ist
+                # remove comment
                 if line.strip().startswith("#"):
-                    # Wir suchen die Position des ersten '#'
                     idx = line.find("#")
-                    # Wir nehmen alles VOR dem '#' (die originale Einrückung)
                     prefix = line[:idx]
-                    # Wir nehmen alles NACH dem '#' und entfernen EIN optionales Leerzeichen
                     suffix = line[idx+1:]
                     if suffix.startswith(" "):
                         suffix = suffix[1:]
-
-                    # Wir setzen es wieder zusammen: Einrückung + originaler Code
                     new_lines.append(prefix + suffix)
                     status = "Lernmodus AKTIVIERT."
                 else:
@@ -145,7 +90,6 @@ def execute(match_data):
             if is_turning_off:
                 new_lines.append(line)
             if not is_turning_off:
-
                 status = "Learn-modus rule not found. it will be added now."
                 new_lines.append(line)
 
@@ -162,14 +106,8 @@ def execute(match_data):
                             speak("unmatched is added to your map")
                         return f"unmatched is added to your map (20260711_2331) …{str(candidate_path)[-30:0]}"
 
-
     map_file.write_text("\n".join(new_lines), encoding="utf-8")
-
-
 
     if settings.AUDIO_GUIDANCE_ENABLED:
         speak("unmatched is added to your map")
-
-
     return status
-
