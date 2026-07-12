@@ -5,6 +5,52 @@ from pathlib import Path
 from scripts.py.func.config.dynamic_settings import settings
 from scripts.py.func.utils.get_leading_whitespace import get_leading_whitespace_before_pos
 
+# ---
+# Required imports that must exist in every FUZZY_MAP_pre.py
+# ---
+_REQUIRED_IMPORTS = [
+    "from pathlib import Path as p;import os as o # noqa: E702",
+    "with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702",
+]
+
+
+def _ensure_required_imports(content: str) -> str:
+    """
+    Ensure the two required import lines exist at the top of the file.
+    Insert them right after the first import block if missing.
+    """
+    lines = content.splitlines()
+
+    # Check if imports already exist (whitespace-insensitive)
+    content_flat = content.replace(" ", "").replace("\t", "")
+    missing = []
+    for req in _REQUIRED_IMPORTS:
+        req_flat = req.replace(" ", "").replace("\t", "")
+        if req_flat not in content_flat:
+            missing.append(req)
+
+    if not missing:
+        return content
+
+    # Find the end of the initial import block
+    last_import_idx = -1
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped.startswith("import ") or stripped.startswith("from "):
+            last_import_idx = i
+
+    # Insert missing imports after the last import line
+    insert_idx = last_import_idx + 1 if last_import_idx >= 0 else 0
+
+    to_insert = []
+    if insert_idx > 0 and lines[insert_idx - 1].strip():
+        to_insert.append("")
+    to_insert.extend(missing)
+    to_insert.append("")
+
+    new_lines = lines[:insert_idx] + to_insert + lines[insert_idx:]
+    return "\n".join(new_lines)
+
 def speak(text):
     try:
         subprocess.run(['espeak', '-v', 'en-US', text], check=True)
@@ -103,7 +149,12 @@ def execute(match_data):
 
                         new_rule = leading_ws + r"(f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']})," + "\n\n"
                         new_content = content[:idx] + new_rule + content[idx:]
+
+                        # Ensure required imports exist before writing
+                        new_content = _ensure_required_imports(new_content)
+
                         map_file.write_text(new_content, encoding="utf-8")
+
                         if settings.AUDIO_GUIDANCE_ENABLED:
                             speak("unmatched is added to your map")
                         return f"unmatched is added to your map …{str(map_file)[-30:0]} (20260711_2331)"
