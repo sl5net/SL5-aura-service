@@ -94,17 +94,6 @@ def execute(match_data):
 
     is_turning_off = any(word in original_text for word in ["aus", "ab", "stopp", "beende", "dea", "dis"])
 
-    if is_turning_off:
-        try:
-            if last_edited_file.exists():
-                last_edited_file.unlink()
-            if settings.AUDIO_GUIDANCE_ENABLED:
-                speak("last edited file is deleted.")
-
-        except Exception:
-            speak(f"Error deleting {last_edited_file}")
-            print(f"Error deleting {last_edited_file}")
-            pass
 
     for line in lines:
         if training_plugin_string in line:
@@ -160,6 +149,19 @@ def execute(match_data):
                         return f"unmatched is added to your map …{str(map_file)[-30:0]} (20260711_2331)"
 
     map_file.write_text("\n".join(new_lines), encoding="utf-8")
+
+    if is_turning_off:
+        try:
+            if last_edited_file.exists():
+                last_edited_file.unlink()
+            if settings.AUDIO_GUIDANCE_ENABLED:
+                speak("last edited file is deleted.")
+
+        except Exception:
+            speak(f"Error deleting {last_edited_file}")
+            print(f"Error deleting {last_edited_file}")
+            pass
+
 
     if settings.AUDIO_GUIDANCE_ENABLED:
         speak("unmatched is added to your map")

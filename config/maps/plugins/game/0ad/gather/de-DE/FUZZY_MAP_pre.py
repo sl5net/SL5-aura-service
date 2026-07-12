@@ -15,7 +15,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: gather wood
     ('gather wood',
-     fr'^(gather\s*)?(wood|hol\w*|roll|rhön|hui|heute|ruhig|bridge|{baum}|bäume|tree|rollen|fritz)$',
+     fr'^(gather\s*)?(wood|hol\w*|roll|rhön|hui|heute|ruhig|bridge|{baum}|bäume|tree|rollen)$',
      85,
      {
          'flags': re.IGNORECASE,
@@ -24,6 +24,7 @@ FUZZY_MAP_pre = [
          'execute_only': True,
      }),
 
+    # unmatched is added to your map  (331)
     # asldfkjasödlfsa dfnoch ein testasdfsjdflksdöfsdj
     #sdddfgd festasdsdsadfsdf asdfasödkfjashfdasdfsadfsdfschlittschuhläufer
 
@@ -64,9 +65,9 @@ FUZZY_MAP_pre = [
          # 'cache': False
      }),
 
-    #################################################
+    # Wie jetzt ist die aktuelle KarteTanz ist wirkt würdig
 
-    # EXAMPLE: gather metal
+    # EXAMPLE: gather metal test
     ('gather metal',
      r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|bachelor|matcha|günther|ethan|italien|mit metall)$',
      85,
@@ -76,8 +77,8 @@ FUZZY_MAP_pre = [
          'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
          'execute_only': True,
      }),
-    # bloomingville vsdddddddddddddddf 
 
 
+     (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
 
 ]

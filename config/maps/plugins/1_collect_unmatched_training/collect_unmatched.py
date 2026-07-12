@@ -1,4 +1,5 @@
 # config/maps/plugins/1_collect_unmatched_training/collect_unmatched.py
+import ast
 import logging
 import os
 import shutil
@@ -205,12 +206,17 @@ class FuzzyMapTransformer(cst.CSTTransformer):
 
         # Handle SimpleString ('...' or r'...')
         if isinstance(pattern_node, cst.SimpleString):
-            raw = pattern_node.value
+            raw = pattern_node.value  # e.g. "r'^(nix|...)$'"
             try:
-                pattern_text = cst.helpers.parse_expression(raw).eval({})
+                pattern_text = ast.literal_eval(raw)
             except Exception:
                 pattern_text = raw.strip("\"'")
-
+                if pattern_text.startswith(("r'", "R'", 'r"', 'R"')):
+                    pattern_text = pattern_text[2:]
+                elif pattern_text.startswith(("u'", "U'", 'u"', 'U"')):
+                    pattern_text = pattern_text[2:]
+                elif pattern_text.startswith(("ur'", "UR'", 'ur"', 'UR"')):
+                    pattern_text = pattern_text[3:]
             new_pattern = _build_new_pattern(pattern_text, self._new_variant)
             if new_pattern is None:
                 return element
