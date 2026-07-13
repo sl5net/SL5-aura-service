@@ -1,4 +1,4 @@
-## 新しいプラグイン モジュールの作成
+## 新しいプラグイン モジュールの作成 ( docs/CreatingNewPluginModules.md )
 
 私たちのフレームワークは、強力な自動検出システムを使用してルール モジュールを読み込みます。これにより、すべての新しいコンポーネントを手動で登録する必要がなく、新しいコマンド セットの追加が簡単かつクリーンになります。このガイドでは、独自のカスタム モジュールを作成、構造、管理する方法について説明します。
 
@@ -99,4 +99,39 @@ PLUGINS_ENABLED = {
 目標は、このシステムをさらに強化することです。たとえば、親が無効になっている場合でも子モジュールの設定が尊重される方法を提供したり、より複雑な継承ルールを導入したりできます。 (27.10.'25 月)
 
 
+  
+  
+  
+t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direkt in dieem Dokumentationsabschnitt hervorzuheben [1]。
+
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (wie ``Aura, Lernmodus einschalten / ausschalten'') および erklären kurz、wie `toggle_learning.py` das Aus- und Einkcommentieren automatisiert [2]。
+
+
+### 学習モードの有効化 (比類のないトレーニング)
+
+「Lernmodus」（学習モード）がアクティブなときにカスタム モジュールが認識できないフレーズを自動的に学習できるようにするには、`FUZZY_MAP_pre` リストの **一番下** にキャッチオール ルールを追加できます。
+
+このルールは、ファイル内の他の特定のルールが一致しない場合に、一致しないトレーニング プラグインを呼び出します。
+
+```python
+    # --- Training-Plugin (dynamically toggled by the learning mode) ---
+    (f'{str(__file__)}', r'^(.*)$', 10, {
+        'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
+    }),
+```
+
+トレーニング プラグインは、「f'{str(__file__)}」を使用してファイルを検索し、認識できないフレーズを最初に使用可能なルール グループ (メイン コマンド グループなど) に自動的に追加します。
+
+#### 音声コマンドによる学習モードの切り替え
+
+ファイルを手動で編集する代わりに、この機能を管理する最も快適な方法は、組み込みの音声コマンドを使用することです。
+
+* **有効にするには:** *「Aura、学習モードがオン」* または *「Aura、Lernmodus starten」* と言います。
+* **無効にするには:** *「オーラ、学習モードオフ」* または *「オーラ、学習モード停止」* と言います。
+
+これらのコマンドは舞台裏で「toggle_learning.py」をトリガーし、アクティブなマップ ファイル全体のキャッチオール行を自動的にコメント化またはコメント解除します。
+  
+  
+  
+  
 *ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-jalang.md) を参照してください。*

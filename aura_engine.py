@@ -1251,8 +1251,11 @@ elif settings.SHOW_SEARCH_ON_STARTUP:
         logger.warning(f"1: Aura Welcome Wizard 🧙 err: {e}")
         logger.info(f"2: Aura Welcome Wizard 🧙 err: {e}")
 
-if settings.DEV_MODE:
+if settings.copy_zip_files_when_source_newer:
+    from tools.copy_zip_files_when_source_newer import copy_zip_files_when_source_newer
+    copy_zip_files_when_source_newer()
 
+if settings.DEV_MODE:
     from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
     from scripts.py.func.log_memory_details import log_memory_details,log4DEV
 

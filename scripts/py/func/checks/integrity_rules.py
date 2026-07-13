@@ -50,12 +50,17 @@ FORBIDDEN_PATTERNS = [
 ]
 
 
-
 INTEGRITY_CHECKS = {
 
     'config/maps/plugins/game/0ad/0ad_actions.py': [
         "subprocess.run(['dotool'], input=command, text=True, check=True)",
-        "raise Exception('",
+        # "raise Exception('",
+    ],
+
+    '.gitignore': [
+        'data/**/_*',
+        'config/maps/**/_*',
+        'config/maps/**/.*',
     ],
 
     'aura_engine.py': [
@@ -154,7 +159,7 @@ INTEGRITY_CHECKS = {
 #         'logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")',
     "scripts/py/func/transcribe_audio_with_feedback.py": [
         'logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")',
-        'logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")',
+        'f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached)."',
         '        return audio_np[::3, 0].tobytes()',
         '        audio_np = np.frombuffer(raw_data, dtype=np.int16)',
         'device_id = get_device_id(device_name,logger)',

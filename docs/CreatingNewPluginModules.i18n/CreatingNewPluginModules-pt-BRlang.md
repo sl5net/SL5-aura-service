@@ -1,4 +1,4 @@
-## Criando novos módulos de plug-in
+## Criando novos módulos de plug-in ( docs/CreatingNewPluginModules.md )
 
 Nossa estrutura usa um poderoso sistema de descoberta automática para carregar módulos de regras. Isso torna a adição de novos conjuntos de comandos simples e limpa, sem a necessidade de registrar manualmente cada novo componente. Este guia explica como criar, estruturar e gerenciar seus próprios módulos personalizados.
 
@@ -55,6 +55,8 @@ Os módulos estão **ativados por padrão**. Enquanto existir uma pasta de módu
 
 Para desabilitar um módulo, você deve adicionar uma entrada para ele no dicionário `PLUGINS_ENABLED` em seu arquivo de configurações e definir seu valor como `False`.
 
+(Opcional) Para Verdadeiro/Falso, você também pode usar 1/0. No entanto, isso é incomum e pode reduzir a legibilidade.
+
 **Exemplo (`config/settings.py`):**
 ```python
 # A dictionary to explicitly control the state of modules.
@@ -87,9 +89,49 @@ Se um módulo não estiver listado no dicionário `PLUGINS_ENABLED`, ele será c
 
 * **Abreviação de Habilitação**
 Seu sistema de configuração também entende que listar uma chave de módulo sem valor implica que ela está habilitada. Por exemplo, adicionar `"wannweil"` ao dicionário é o mesmo que adicionar `"wannweil": True`. Isso fornece um atalho conveniente para habilitar módulos.
+  
+(Opcional) Para Verdadeiro/Falso, você também pode usar 1/0. No entanto, isso é incomum e pode reduzir a legibilidade.
 
 * **Desabilitando Módulos Pai:** O comportamento pretendido é que desabilitar um módulo pai deve   
 desabilita automaticamente todos os seus módulos filhos e subpastas de idioma. Por exemplo, definir `"standard_actions": False` deve impedir o carregamento de `de-DE` e `en-US`. (27.10.'25 seg)
   
 *   **meta**
 O objetivo é aprimorar ainda mais esse sistema. Por exemplo, fornecer uma maneira de respeitar as configurações do módulo filho mesmo se o pai estiver desabilitado ou introduzir regras de herança mais complexas. (27.10.'25 seg)
+
+
+  
+  
+  
+t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direkt in diesem Dokumentationsabschnitt hervorzuheben [1].
+
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (como „Aura, Lernmodus einschalten / ausschalten“) e erklären kurz, como `toggle_learning.py` das Aus- und Einkommentieren automatisiert [2].
+
+
+### Habilitando o modo de aprendizagem (treinamento incomparável)
+
+Para permitir que seu módulo personalizado aprenda automaticamente frases não reconhecidas quando o "Lernmodus" (modo de aprendizagem) estiver ativo, você pode anexar uma regra abrangente no **parte inferior** da sua lista `FUZZY_MAP_pre`.
+
+Esta regra invoca o plugin de treinamento incomparável quando nenhuma outra regra específica em seu arquivo corresponde:
+
+```python
+    # --- Training-Plugin (dynamically toggled by the learning mode) ---
+    (f'{str(__file__)}', r'^(.*)$', 10, {
+        'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
+    }),
+```
+
+O plugin de treinamento usa `f'{str(__file__)}'` para localizar seu arquivo e anexar automaticamente a frase não reconhecida ao primeiro grupo de regras disponível (como seu grupo de comando principal).
+
+#### Alternando o modo de aprendizagem por meio de comandos de voz
+
+Em vez de editar arquivos manualmente, a maneira mais confortável de gerenciar esse recurso é por meio de comandos de voz integrados:
+
+* **Para ativar:** Diga *"Aura, modo de aprendizagem ativado"* ou *"Aura, Lernmodus starten"*.
+* **Para desativar:** Diga *"Aura, modo de aprendizagem desativado"* ou *"Aura, Lernmodus stoppen"*.
+
+Esses comandos acionam `toggle_learning.py` nos bastidores, que comenta ou descomenta automaticamente as linhas abrangentes em seus arquivos de mapa ativos.
+  
+  
+  
+  
+*Dica: depois de definir seus padrões regex, execute `python3 tools/map_tagger.py` para gerar automaticamente exemplos pesquisáveis para as ferramentas CLI. Consulte [Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-pt-BRlang.md) para obter detalhes.*

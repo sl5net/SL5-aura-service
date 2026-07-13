@@ -29,10 +29,21 @@ _common_meta = {
 }
 FUZZY_MAP_pre = [
 
-    # EXAMPLE: notebook Notebook arm
+    # EXAMPLE: AI notebook Notebook arm
     ('https://notebooklm.google', r'^notebook (lm|ai|arm)( google)?$', 75, {'flags': re.IGNORECASE}),
 
-    # EXAMPLE:     https://www.kimi.com/en
+    # EXAMPLE: AI deepseek
+    ('https://chat.deepseek.com/', r'^deepseek?$', 75, {'flags': re.IGNORECASE}),
+
+
+
+    # kimi chinesischen KI-Unternehmen Besonders gut in : lange Texte verarbeiten
+
+
+
+    # EXAMPLE:     AI kimi chat
+    ('https://www.kimi.com/en/', r'^(ai\s*)?kimi$', 75, {'flags': re.IGNORECASE}),
+
 
 
     # EXAMPLE: google gemini
@@ -41,8 +52,8 @@ FUZZY_MAP_pre = [
 
 
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
-    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[p(PROJECT_ROOT) / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
 
+    # EXAMPLE: geminiUrl
     (f'{geminiUrl}', rf'''(?ix)
     ^ (?:
         {_gemini_phonetics} |                     # Gemini direkt
@@ -56,19 +67,12 @@ FUZZY_MAP_pre = [
     ) \b.*$
     ''', 70, _common_metaVERBOSE),
 
-    # Eintrag für AI Studio (Block 3)
+    # EXAMPLE: AI Studio
     (f'{geminiUrl}', rf'''(?ix)
     ^ chat\ mit\s+ (?:
         {_gemini_phonetics} |
         chip | Kevin | Boot\ Gaming\ nein
     ) \b.*$
     ''', 70, _common_metaVERBOSE),
-
-    # todo:
-    # 09:58:10,526 - INFO   - 📢📢📢 ### kugel gemini a ###
-    # 09:58:25,797 - INFO   - 📢📢📢 ### google ###
-    # 09:58:42,008 - INFO   - 📢📢📢 ### google gemini ###
-
-
 
 ]

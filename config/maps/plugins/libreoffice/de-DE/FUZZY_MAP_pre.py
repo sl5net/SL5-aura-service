@@ -29,7 +29,7 @@ FUZZY_MAP_pre = [
     #################################################
     # import platform
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
-    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+
     #################################################
 
     # ('f', r'^(fett|fett\s*formatieren|text\s*fett|sid|fritz|schritt|fit|tritt|chef|script|setz|bold|old|bolt|pol|pools|bubbels|bols|borretsch|brot|holt|überholt|oh)$', 85, {'flags': re.IGNORECASE,}),

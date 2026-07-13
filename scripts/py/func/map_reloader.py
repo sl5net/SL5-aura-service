@@ -114,9 +114,25 @@ def auto_reload_modified_maps(logger,run_mode_override):
                 # scripts/py/func/map_reloader.py:115
                 cleanup_cache_on_reload(map_file_path, current_mtime)
 
+                # Write path immediately when map change is detected
+# Write only if it is a user map, not our own quickstart module
+
                 _reload_start_time = time.time()  # NEU
 
                 if last_mtime != 0:
+
+                    if (True
+                     and "0_aura_quickstart" not in str(map_file_path)
+                     and "self_test" not in str(map_file_path)
+                     and map_file_path.stem in KNOWN_MAP_Names):
+
+                        try:
+                            tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+                            last_edited_file = tmp_dir / "sl5_aura" / "last_edited_map.txt"
+                            last_edited_file.write_text(str(map_file_path), encoding="utf-8")
+                        except Exception as e:
+                            logger.error(f"Failed to write last edited map path: {e}")
+
                     if settings.DEV_MODE:
                         logger.info(f"🔄 Detected change in '{map_file_path}'. Reloading...")
 
@@ -283,12 +299,33 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     map_file_path = Path(map_file_path)
                     ensure_init_files(map_file_path.parent, logger)
 
-        # scripts/py/func/map_reloader.py:155
+        # scripts/py/func/map_reloader.py:286
+
+        if LAST_MODIFIED_TIMES:
+            newest_file_path = max(LAST_MODIFIED_TIMES, key=LAST_MODIFIED_TIMES.get)
+            # logger.info(f"LAST_MODIFIED_TIMES:{LAST_MODIFIED_TIMES}")
+            logger.info(f"newest_file_path:{newest_file_path}")
 
 
         # Optional: Final cleanup if any reload occurred
         if reload_performed:
+            logger.info("reload_performed")
+
+            # Record only the path of the actual newest modified map file
+            # try:
+            #     if LAST_MODIFIED_TIMES:
+            #         newest_file_path = max(LAST_MODIFIED_TIMES, key=LAST_MODIFIED_TIMES.get)
+            #         tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+            #         last_edited_file = tmp_dir / "sl5_aura" / "last_edited_map.txt"
+            #         # last_edited_file.parent.mkdir(parents=True, exist_ok=True)
+            #         last_edited_file.write_text(str(newest_file_path), encoding="utf-8")
+            # except Exception as e:
+            #     logger.error(f"Failed to write last edited map path: {e}")
+
+
             gc.collect()
+            # if log_all_map_reloaded:
+            #     logger.info(" Final garbage collection after map scan.")
 
             # if log_all_map_reloaded:
             #     logger.info("🗑️ Final garbage collection after map scan.")

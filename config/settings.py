@@ -191,6 +191,7 @@ PLUGINS_ENABLED = {
     "standard_actions/wikipedia_local": False,
     "game": True,
     "empty_all": False,
+    "1_collect_unmatched_training": True,
 }
 # count_loud▉
 

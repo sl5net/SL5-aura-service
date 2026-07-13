@@ -12,7 +12,7 @@ sikulix_windows = ['sikulixide', 'SikuliX', 'Sikuli', 'oculixide', 'OculiX']
 FUZZY_MAP_pre = [
     #################################################
     # 2. ative esta regra (atrás da primeira regra que você deseja otimizar)
-    # (f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+
     #################################################
 
     # EXAMPLE: clique duplo

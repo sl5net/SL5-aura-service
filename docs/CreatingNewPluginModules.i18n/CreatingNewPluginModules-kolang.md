@@ -1,4 +1,4 @@
-## 새로운 플러그인 모듈 생성
+## 새 플러그인 모듈 만들기( docs/CreatingNewPluginModules.md )
 
 우리 프레임워크는 강력한 자동 검색 시스템을 사용하여 규칙 모듈을 로드합니다. 이를 통해 모든 새 구성요소를 수동으로 등록할 필요 없이 새 명령 세트를 간단하고 깔끔하게 추가할 수 있습니다. 이 가이드에서는 사용자 정의 모듈을 생성, 구성 및 관리하는 방법을 설명합니다.
 
@@ -45,7 +45,7 @@ config/
 
 ### 구성에서 모듈 관리
 
-시스템은 최소한의 구성이 필요하도록 설계되었습니다.
+시스템은 최소한의 구성만 필요하도록 설계되었습니다.
 
 #### 모듈 활성화(기본값)
 
@@ -99,4 +99,39 @@ XSPACEbreakX
 목표는 이 시스템을 더욱 강화하는 것입니다. 예를 들어, 상위 모듈이 비활성화된 경우에도 하위 모듈 설정을 준수할 수 있는 방법을 제공하거나 더 복잡한 상속 규칙을 도입합니다. (27.10.'25 월)
 
 
+XSPACEbreakX
+XSPACEbreakX
+XSPACEbreakX
+t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direkt in diesem Dokumentationsabschnitt hervorzuheben [1].
+
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle("Aura, Lernmodus einschalten / ausschalten") 및 Erklären kurz, "toggle_learning.py" das Aus- und Einkommentieren automatisiert [2].
+
+
+### 학습 모드 활성화(Unmatched Training)
+
+"Lernmodus"(학습 모드)가 활성화되었을 때 사용자 정의 모듈이 인식할 수 없는 문구를 자동으로 학습할 수 있도록 하려면 `FUZZY_MAP_pre` 목록의 **맨 아래**에 포괄적인 규칙을 추가할 수 있습니다.
+
+이 규칙은 파일에 일치하는 다른 특정 규칙이 없을 때 일치하지 않는 교육 플러그인을 호출합니다.
+
+```python
+    # --- Training-Plugin (dynamically toggled by the learning mode) ---
+    (f'{str(__file__)}', r'^(.*)$', 10, {
+        'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
+    }),
+```
+
+교육 플러그인은 `f'{str(__file__)}'`를 사용하여 파일을 찾고 인식할 수 없는 문구를 사용 가능한 첫 번째 규칙 그룹(예: 기본 명령 그룹)에 자동으로 추가합니다.
+
+#### 음성 명령을 통해 학습 모드 전환
+
+파일을 수동으로 편집하는 대신 이 기능을 관리하는 가장 편안한 방법은 내장된 음성 명령을 사용하는 것입니다.
+
+* **활성화하려면:** *"Aura, 학습 모드 켜짐"* 또는 *"Aura, Lernmodus 시작"*이라고 말합니다.
+* **비활성화하려면:** *"Aura, 학습 모드 꺼짐"* 또는 *"Aura, Lernmodus stoppen"*이라고 말합니다.
+
+이 명령은 백그라운드에서 `toggle_learning.py`를 실행하여 활성 지도 파일 전체에 걸쳐 포괄적인 줄에 자동으로 주석을 달거나 주석을 제거합니다.
+XSPACEbreakX
+XSPACEbreakX
+XSPACEbreakX
+XSPACEbreakX
 *팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-kolang.md)를 참조하세요.*

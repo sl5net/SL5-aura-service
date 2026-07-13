@@ -148,6 +148,7 @@ Es gibt keine Accounts, Passwörter, Logins.
             'exclude_windows': [r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
         }
     ),
+
 ]
 
 

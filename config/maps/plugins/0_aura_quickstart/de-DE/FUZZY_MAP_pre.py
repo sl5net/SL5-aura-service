@@ -3,7 +3,6 @@ import os
 import re # noqa: F401
 #from pathlib import Path as p;import os as o # noqa: E702
 #with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
-#(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
 
 from pathlib import Path
 import runpy
@@ -28,8 +27,7 @@ _meta_run_search_result = {
 FUZZY_MAP_pre = [
 
     # EXAMPLE: log
-    ('log', r'^(log|look|oh|oh hallo|oh ein ok|Sherlock)$', 70, _meta_run_search_result),
-
+    ('log', r'^(log|look|Programm geladen. Viel Spaß|woran lernmodus deaktivieren|ausprobieren|blumenkohl|das ist überraschend)$', 70, _meta_run_search_result),
 
     # EXAMPLE: log
     ('log', fr'^{AURA_VARIANTS}\s*(logik|logdateien|log-datei|logdateien|logging|rainer|ein rock|lockt hat|ein okt hat|log-datei|logdatei|eine logdatei|ein oktett|ein log-datei)$', 70, _meta_run_search_result),
@@ -37,17 +35,18 @@ FUZZY_MAP_pre = [
     # EXAMPLE: log
     ('log', fr'^{AURA_VARIANTS}\s*(log|look)$', 70, _meta_run_search_result),
 
-    #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
+    # config/maps/plugins/0_aura_quickstart/de-DE/FUZZY_MAP_pre.py:38
+    # aura lernen wodurch abschleifen
 
-    # --- Sprachsteuerung für den Lernmodus ---
-    ('Lernmodus...', fr'^{AURA_VARIANTS}.*lernmodus (an\w*|ein\w*|aus\w*|starten|stoppen)$', 100, {
+    # EXAMPLE: Lernmodus einschalten ausschalten
+    ('Lernmodus...', fr'^{AURA_VARIANTS}.*(lern|leeren|lernen|Lärm|Herr)\s*(modus|wodurch) (an\w*|ein\w*|aus\w*|aussch\w+|absch\w+|starten|stoppen|aktivier\w+|DEAKTIVIER\w*)\s*\w*$', 100, {
+        'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),
 
 
-
     # --- Training-Plugin (wird vom Skript oben ein/ausgeschaltet) ---
-    # (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+
 
     #Orange rot
 
