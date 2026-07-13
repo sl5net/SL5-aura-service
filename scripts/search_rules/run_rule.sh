@@ -7,6 +7,12 @@ M_DIR="${1:-${MAPS_DIR:-config/maps}}"
 M_DIR="${M_DIR/#\~/$HOME}"
 [[ ! -d "$M_DIR" ]] && exit 1
 H_FILE="$HOME/.search_rules_history"
+
+cp "$H_FILE" "$H_FILE.bak"
+
+# Deduplicate
+tac "$H_FILE" | awk '!seen[$0]++' | tac > "$H_FILE.tmp" && mv "$H_FILE.tmp" "$H_FILE"
+
 IQ=".py pre # EXAMPLE:"
 [ -s "$H_FILE" ] && IQ=$(tail -n 1 "$H_FILE")
 
