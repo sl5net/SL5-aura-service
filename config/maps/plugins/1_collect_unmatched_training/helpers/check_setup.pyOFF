@@ -154,7 +154,7 @@ def _run_live_functional_test(itr_file: Path):
         try:
             module.insert_template_rule(fixture, content, catch_all_start, "Federball")
         except TypeError as e:
-            print(f"  => FAILURE: calling insert_template_rule(..., text='Federball') raised:")
+            print("  => FAILURE: calling insert_template_rule(..., text='Federball') raised:")
             print(f"     {e}")
             print("     This means the loaded function does not accept a 'text' argument at all")
             print("     -> an OLD version of insert_template_rule.py is being executed.")

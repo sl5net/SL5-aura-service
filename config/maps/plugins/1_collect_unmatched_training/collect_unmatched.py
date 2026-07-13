@@ -9,18 +9,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent / 'helpers'))
 
-from process_unmatched_text import process_unmatched_text  # noqa: E402
-import process_unmatched_text as _put_module  # noqa: E402
-import insert_template_rule as _itr_module  # noqa: E402
-
+from .helpers.process_unmatched_text import process_unmatched_text
 
 def execute(match_data: dict):
-    # --- TEMPORARY DEBUG, remove once the issue is found ---
-    print(f'DEBUG collect_unmatched.py __file__: {Path(__file__).resolve()}')
-    print(f'DEBUG process_unmatched_text loaded from: {Path(_put_module.__file__).resolve()}')
-    print(f'DEBUG insert_template_rule loaded from: {Path(_itr_module.__file__).resolve()}')
-    print(f'DEBUG match_data: {match_data!r}')
-    # --- end debug ---
 
     text = match_data['original_text']
     file_rule_path = match_data['text_after_replacement']

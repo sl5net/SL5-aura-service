@@ -5,10 +5,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from get_fuzzy_map_entries import get_fuzzy_map_entries  # noqa: E402
-from find_catch_all_index import find_catch_all_index  # noqa: E402
-from add_variant_to_rule import add_variant_to_rule  # noqa: E402
-from insert_template_rule import insert_template_rule  # noqa: E402
+from get_fuzzy_map_entries import get_fuzzy_map_entries
+from find_catch_all_index import find_catch_all_index
+from add_variant_to_rule import add_variant_to_rule
+from insert_template_rule import insert_template_rule
 
 
 def process_unmatched_text(file_rule_path: str, text: str):
