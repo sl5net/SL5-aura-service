@@ -78,6 +78,34 @@ if (-not (Test-Path $HISTORY_FILE)) {
     [System.IO.File]::WriteAllText($HISTORY_FILE, [string]::Empty)
 }
 
+
+
+# Deduplizieren: letztes Vorkommen behalten, Reihenfolge beibehalten
+if (Test-Path $HISTORY_FILE) {
+    $lines = Get-Content -Path $HISTORY_FILE -Encoding utf8 -ErrorAction SilentlyContinue |
+        Where-Object { $_.Trim().Length -gt 0 }
+
+    # Reverse, dann erstes Vorkommen = letztes im Original
+    [array]::Reverse($lines)
+    $seen = @{}
+    $deduped = foreach ($line in $lines) {
+        if (-not $seen.ContainsKey($line)) {
+            $seen[$line] = $true
+            $line
+        }
+    }
+    # Zurückdrehen
+    [array]::Reverse($deduped)
+
+    # In-place überschreiben
+    $deduped | Set-Content -Path $HISTORY_FILE -Encoding utf8
+}
+
+
+
+
+
+
 # Debug: print the path so you can verify (remove in production)
 Write-Host "Using history file: $HISTORY_FILE"
 
