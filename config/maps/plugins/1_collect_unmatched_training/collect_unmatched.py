@@ -9,7 +9,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent / 'helpers'))
 
-from .helpers.process_unmatched_text import process_unmatched_text
+helpers_dir = str((Path(__file__).resolve().parent / "helpers"))
+if helpers_dir not in sys.path:
+    sys.path.insert(0, helpers_dir)
+
+
+from process_unmatched_text import process_unmatched_text
 
 def execute(match_data: dict):
 

@@ -1,15 +1,12 @@
 """Orchestrate the update of a FUZZY_MAP_pre.py file for an unmatched text."""
 
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-
+# helpers4collect_unmatched
 from get_fuzzy_map_entries import get_fuzzy_map_entries
 from find_catch_all_index import find_catch_all_index
 from add_variant_to_rule import add_variant_to_rule
 from insert_template_rule import insert_template_rule
-
 
 def process_unmatched_text(file_rule_path: str, text: str):
     """

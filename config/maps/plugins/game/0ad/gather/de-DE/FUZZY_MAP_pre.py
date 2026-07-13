@@ -24,9 +24,6 @@ FUZZY_MAP_pre = [
          'execute_only': True,
      }),
 
-    # (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
-
-
     # unmatched is added to your map  (331)
     # asldfkjasödlfsa dfnoch ein testasdfsjdflksdöfsdj
     #sdddfgd festasdsdsadfsdf asdfasödkfjashfdasdfsadfsdfschlittschuhläufer

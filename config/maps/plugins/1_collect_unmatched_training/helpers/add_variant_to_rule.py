@@ -1,9 +1,7 @@
 """Append a new text variant to an existing rule's trailing regex group."""
 
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
 
 from find_trailing_group_span import find_trailing_group_span  # noqa: E402
 

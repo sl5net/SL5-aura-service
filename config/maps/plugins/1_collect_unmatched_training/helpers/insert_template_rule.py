@@ -1,10 +1,28 @@
-"""Insert a template rule right before the catch-all rule."""
+"""
+insert_template_rule.py
+Insert a template rule right before the catch-all rule."""
 
 import re
+import os
 from pathlib import Path
+import logging
+
+try:
+    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+except Exception as e:
+    print(e)
+    raise
+
+log_file = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
+
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+logger = logging.getLogger(log_file)
 
 
 def insert_template_rule(fuzzy_map_file: Path, content: str, catch_all_start: int, text: str = "nix"):
+
+    from scripts.py.func.audio.handle_tts_fallback import handle_tts_fallback
     """
     Insert a template rule for `text`, e.g. ('nix', r'^(nix)$'), on its own
     line, directly before the catch-all rule (matching its indentation),
@@ -35,3 +53,6 @@ def insert_template_rule(fuzzy_map_file: Path, content: str, catch_all_start: in
     template_line = f"{indent}({label}, {pattern_literal}),\n"
     new_content = content[:line_start] + template_line + content[line_start:]
     fuzzy_map_file.write_text(new_content, encoding="utf-8")
+
+    lang_for_tts = "de-DE"
+    handle_tts_fallback(str(fuzzy_map_file), lang_for_tts, logger)
