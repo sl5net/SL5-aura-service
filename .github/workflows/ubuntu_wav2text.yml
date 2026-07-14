@@ -42,7 +42,7 @@ jobs:
 
       - name: '5. Cache Vosk Model'
         id: cache-vosk-model
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           # Correct path for the cache
           path: models
