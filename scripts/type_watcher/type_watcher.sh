@@ -121,7 +121,8 @@ do_type() {
         # export XKB_DEFAULT_LAYOUT=de
         # export DOTOOL_XKB_LAYOUT=de
 
-        printf 'typedelay 2\ntype %s\n' "$text" | dotool
+#        printf 'typedelay 2\ntype %s\n' "$text" | dotool
+      { printf 'typedelay 2\ntype %s\n' "$text"; sleep 0.05; } | dotool
     else
         LC_ALL=C.UTF-8 timeout 1 xdotool type --clearmodifiers --delay 12 "$text"
     fi
@@ -131,7 +132,8 @@ do_type() {
 # Helper: press Return key
 do_key_return() {
     if [[ "$INPUT_METHOD" == "dotool" ]]; then
-        printf 'key enter\n' | dotool
+#        printf 'key enter\n' | dotool
+      { printf 'key enter\n'; sleep 0.05; } | dotool
     else
         # LC_ALL=C.UTF-8 timeout 1 xdotool key Return
 
@@ -485,8 +487,14 @@ fi
 cleanup() {
     timeout 1 xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R 2>/dev/null || true
     # dotool: alle Modifier explizit loslassen
-    if [[ "$DISPLAY_SERVER" == "dotool" ]]; then
-        printf 'key shift:up\nkey ctrl:up\nkey alt:up\n' | dotool 2>/dev/null || true
+#    if [[ "$DISPLAY_SERVER" == "dotool" ]]; then
+#        printf 'key shift:up\nkey ctrl:up\nkey alt:up\n' | dotool 2>/dev/null || true
+#    fi
+
+    if [[ "${DISPLAY_SERVER:-}" == "dotool" || "${INPUT_METHOD:-}" == "dotool" ]]; then
+#       printf 'key shift:up\nkey ctrl:up\nkey alt:up\n' | dotool 2>/dev/null || true
+      { printf 'key shift:up\nkey ctrl:up\nkey alt:up\n'; sleep 0.05; } | dotool 2>/dev/null || true
     fi
+
 }
 trap cleanup EXIT INT TERM
