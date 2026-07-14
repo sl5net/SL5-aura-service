@@ -69,7 +69,7 @@ jobs:
 
 
       - name: Initialize Eco-CI
-        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        uses: green-coding-solutions/eco-ci-energy-estimation@v5
         with:
           task: start-measurement
 
@@ -109,13 +109,13 @@ jobs:
           fi
 
       - name: Measure Core Logic Tests
-        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        uses: green-coding-solutions/eco-ci-energy-estimation@v5
         with:
           task: get-measurement
           label: "Aura Core Logic (${{ env.TESTS_PASSED }} Tests, avg ${{ env.TIME_PER_TEST }}s/test)"
 
       - name: Display and Send Energy Results
-        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        uses: green-coding-solutions/eco-ci-energy-estimation@v5
         with:
           task: display-results
           pr-comment: true
