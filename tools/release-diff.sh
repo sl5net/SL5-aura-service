@@ -1,37 +1,37 @@
 #!/bin/bash
 # =============================================================================
-# release-diff.sh — Code-Änderungen seit letztem Release, LLM-optimiert
+# release-diff.sh — Code changes since the last release, LLM-optimized
 # Version: 1.6.0
 # Changelog:
-#   1.6.0 - Name-only Filter: bestimmte Dateitypen zeigen nur Dateiname, kein Diff
-#            (md, txt, json, yaml etc. erzeugen viel Rauschen bei i18n-Projekten)
-#   1.5.0 - Fix: Exclude via Dateiname-Filter nach dem Diff (pathspec war unzuverlässig)
-#   1.4.0 - Fix: Exclude-Pathspec von :! zu :(exclude) geändert
-#   1.3.0 - Subshell-Bug gefixt; Commits dedupliziert
-#   1.2.0 - Filter-Flags: --keep-deleted, --keep-comments, --max-lines
-#   1.0.0 - Initiale Version
+#   1.6.0 - Name-only filter: specific file types show only the filename, not the diff
+#            (md, txt, json, yaml, etc., generate a lot of noise in i18n projects)
+#   1.5.0 - Fix: Exclusion via filename filter applied after the diff (pathspec was unreliable)
+#   1.4.0 - Fix: Changed exclude pathspec from :! to :(exclude)
+#   1.3.0 - Fixed subshell bug; deduplicated commits
+#   1.2.0 - Filter flags: --keep-deleted, --keep-comments, --max-lines
+#   1.0.0 - Initial version
 # =============================================================================
 
 echo '
-Bitte warte auf zwei Nachrichten:
-1. Den Text meines letzten Releases (als Vorlage fuer Stil und Format)
-2. Die Git-Aenderungen seit dem letzten Release
+Please wait for two messages:
+1. The text of my last release (as a template for style and format)
+2. The Git changes since the last release
 
-Antworte erst wenn du beide erhalten hast auf folgende Fragen:
-1. Soll ein neues Release von sl5net Aura erstellt werden? (ja/nein)
-2. Welche Versionsnummer? (major/minor/patch nach SemVer)
-3. Begruendung in 2-3 Saetzen
+Do not answer the following questions until you have received both:
+1. Should a new release of sl5net Aura be created? (yes/no)
+2. Which version number? (major/minor/patch according to SemVer)
+3. Justification in 2-3 sentences
 
-https://github.com/sl5net/SL5-aura-service/releases/latest
+github sl5net/SL5-aura-service/releases/latest
 
 
-WICHTIG: Schreibe den Release-Text ausschliesslich auf Englisch,
-genau wie die Vorlage die ich dir geschickt habe.
+IMPORTANT: Write the release text exclusively in English,
+exactly like the template I sent you.
 
-Behalte folgende Elemente aus der Vorlage immer bei:
-- Den Slogan: _Ultra-Fast. Private. Self-Learning. Aura._
-- Den Support-Block (Star, Share, Donate) mit Ko-fi und Stripe Links unveraendert
-- Den "Full Changelog" Link am Ende (nur Versionsnummern anpassen)
+Always retain the following elements from the template:
+- The slogan: _Ultra-Fast. Private. Self-Learning. Aura._
+- Keep the support block (Star, Share, Donate) with Ko-fi and Stripe links unchanged
+- Keep the "Full Changelog" link at the end (update version numbers only)
 
 '
 
@@ -173,21 +173,22 @@ if [ "$CODE_FILES" -eq 0 ] && [ "$RECOMMEND" = "JA" ]; then
   REASON="Nur Docs/Config geändert, kein echter Code."
 fi
 
-echo "  Commits seit Release : $COMMIT_COUNT"
-echo "  Geaenderte Dateien    : $CHANGED_FILES (davon Code: $CODE_FILES)"
-echo "  Tage seit Release    : $LAST_RELEASE_DAYS"
+echo "  Commits since release : $COMMIT_COUNT"
+echo "  Changed files         : $CHANGED_FILES (of which code: $CODE_FILES)"
+echo "  Days since release    : $LAST_RELEASE_DAYS"
 echo ""
-echo "  Empfehlung  : $RECOMMEND"
+echo "  Recommendation        : $RECOMMEND"
+
 [ -n "$REASON" ] && echo "  Grund       : $REASON"
 
 
 if [ "$RECOMMEND" = "JA" ]; then
   echo "  SemVer-Typ  : $SEMVER"
   echo ""
-  echo "--- LLM PROMPT ---"
-  echo "1. Soll ein neues Release erstellt werden? (ja/nein)"
-  echo "2. Welche Versionsnummer? (major/minor/patch nach SemVer)"
-  echo "3. Begruendung in 2-3 Saetzen"
+echo "--- LLM PROMPT ---"
+echo "1. Should a new release be created? (yes/no)"
+echo "2. Which version number? (major/minor/patch according to SemVer)"
+echo "3. Reason in 2-3 sentences"
   echo "------------------"
 fi
 
@@ -208,8 +209,9 @@ git log "${FROM_REF}..${TO_REF}" \
 echo ""
 echo ""
 
-# === DATEI-STATISTIK =========================================================
-echo "=== GEÄNDERTE DATEIEN ==="
+# === FILE STATISTICS =========================================================
+echo "=== CHANGED FILES ==="
+
 git diff "${FROM_REF}..${TO_REF}" --name-only | while IFS= read -r f; do
   is_excluded_file "$f" && continue
   if ! $FULL_CONTENT && is_name_only_file "$f"; then
