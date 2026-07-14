@@ -99,7 +99,7 @@ if [[ "$INPUT_METHOD" == "dotool" ]]; then
         # echo "DOTOOL_XKB_LAYOUT=$DOTOOL_XKB_LAYOUT"
 
 
-        # 3. dotoold Daemon starten falls noetig (nur wenn dotoold existiert)
+        # 3. dotoold Daemon starting if needed  (only when dotoold exists)
         if command -v dotoold &>/dev/null && ! pgrep -x "dotoold" >/dev/null 2>&1; then
             echo "Aura: Starte dotoold Daemon..."
             dotoold &
@@ -122,7 +122,7 @@ do_type() {
         # export DOTOOL_XKB_LAYOUT=de
 
 #        printf 'typedelay 2\ntype %s\n' "$text" | dotool
-      { printf 'typedelay 2\ntype %s\n' "$text"; sleep 0.05; } | dotool
+      { printf 'typedelay 1\ntype %s\n' "$text"; sleep 0.05; } | dotool
     else
         LC_ALL=C.UTF-8 timeout 1 xdotool type --clearmodifiers --delay 12 "$text"
     fi
@@ -328,10 +328,10 @@ PY
                 continue
             fi
 
-#            sleep 1 # 7.7.'26 07:58 Tue its okay but feels smarer when text is typed super quick
-            sleep 0.4
-            # sleep 0.02 # works in 99% 7.7.'26 07:57 Tue maybe responsable for sometimes double letters
-            # thats time beeween sentences (not time beetwee words)
+#            sleep 1 # 7.7.'26 07:58 Tue its okay but feels smarter when text is typed super quick
+#            sleep 0.4
+             sleep 0.02 # re-enabled at 14.7.'26 19:52 Tue
+            # that's time between sentences (not time between words)
 
 
             mapfile -t lines < "$f"
