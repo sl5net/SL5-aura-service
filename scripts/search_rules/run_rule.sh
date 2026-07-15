@@ -37,10 +37,13 @@ AWK_SCRIPT='{
 
     while (match(short_path, /\/[a-z]{2}-[A-Z]{2}\//)) {
         lang_letter = substr(short_path, RSTART + 1, 1);
-        short_path = substr(short_path, 1, RSTART) lang_letter "…/" substr(short_path, RSTART + RLENGTH);
+#        short_path = substr(short_path, 1, RSTART) lang_letter "…/" substr(short_path, RSTART + RLENGTH);
+        short_path = substr(short_path, 1, RSTART) "…/" substr(short_path, RSTART + RLENGTH);
+        # removed lang_letter 15.7.26 22:00 Wed because user knows the lang self
     }
     if (length(short_path) > 40) {
-        short_path = "…" substr(short_path, length(short_path) - 38);
+#        short_path = "…" substr(short_path, length(short_path) - 38);
+        short_path = substr(short_path, length(short_path) - 38);
     }
 
     gsub(/FUZZY_MAP_pre\.py/, "…", short_path);
