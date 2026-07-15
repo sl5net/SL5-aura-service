@@ -32,8 +32,9 @@ AWK_SCRIPT='{
     full_path = $1;
     line = $2;
     content = substr($0, index($0, ":" line ":") + length(line) + 2);
-
+    gsub(/^[ \t]+/, "", content);
     short_path = full_path;
+
     while (match(short_path, /\/[a-z]{2}-[A-Z]{2}\//)) {
         lang_letter = substr(short_path, RSTART + 1, 1);
         short_path = substr(short_path, 1, RSTART) lang_letter "…/" substr(short_path, RSTART + RLENGTH);
@@ -41,6 +42,8 @@ AWK_SCRIPT='{
     if (length(short_path) > 40) {
         short_path = "…" substr(short_path, length(short_path) - 38);
     }
+
+    gsub(/FUZZY_MAP_pre\.py/, "…", short_path);
 
     # Align the path and line to 45 characters, then append the rule content
     display = sprintf("%-45s | %s", short_path ":" line, content);
