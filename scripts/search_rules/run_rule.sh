@@ -45,11 +45,10 @@ AWK_SCRIPT='{
 
     gsub(/FUZZY_MAP_pre\.py/, "…", short_path);
 
-    # Align the path and line to 45 characters, then append the rule content
-    display = sprintf("%-45s | %s", short_path ":" line, content);
+    # Combine the path and line with the rule content using a simple separator
+    display = short_path ":" line " | " content;
     # Print tab-separated fields for fzf
     print display "\t" full_path "\t" line;
-#    print display " " full_path " " line;
 
 }'
 
@@ -73,6 +72,7 @@ fi
 
 F_OUT=$(echo "$SEARCH_INPUT" | awk -F: "$AWK_SCRIPT" | \
     fzf --print-query \
+        --no-hscroll \
         --delimiter=$'\t' \
         --history="$H_FILE" --query="$IQ" \
         --header="Enter/Ctrl+R: Run | Ctrl+E: Edit" \
