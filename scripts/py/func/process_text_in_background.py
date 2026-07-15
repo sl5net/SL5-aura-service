@@ -1231,6 +1231,10 @@ def process_text_in_background(logger,
         # scripts/py/func/process_text_in_background.py:1176 (process_text_in_background)
         new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger, run_mode_override)
 
+        # Write active maps cache for search_rules filter
+        _write_active_maps_cache(LT_LANGUAGE, new_fuzzy_pre, new_fuzzy, new_punctuation)
+
+
     # scripts/py/func/process_text_in_background.py:1176 (process_text_in_background)
     # new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger,run_mode_override)
 
@@ -2058,6 +2062,84 @@ def process_text_in_background(logger,
         return '20260708_1940 no text after replacement'
 
     return new_current_text if new_current_text else processed_text
+
+
+def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_map):
+    """
+    Writes currently loaded and filtered maps to a JSON cache.
+    Read by scripts/search_rules/filter_maps_by_reality.py.
+    """
+    import json
+    from pathlib import Path
+
+    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+    cache_dir = tmp_dir / "sl5_aura"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    cache_file = cache_dir / "active_maps_cache.json"
+
+    cache_data = {
+        "language": lang_code,
+        "timestamp": time.time(),
+        "files": {}
+    }
+
+    def _extract_rule_info(entry):
+        if len(entry) < 4:
+            return None
+        replacement, match_phrase, threshold, options_dict = entry
+        source_path = options_dict.get('source_path', '')
+        source_modname = options_dict.get('source_modname', '')
+
+        line_num = 1
+        if source_path and os.path.exists(source_path):
+            try:
+                with open(source_path, 'r', encoding='utf-8', errors='ignore') as f:
+                    for i, line in enumerate(f, 1):
+                        if match_phrase in line:
+                            line_num = i
+                            break
+            except Exception:
+                pass
+
+        return {
+            "line": line_num,
+            "match_phrase": match_phrase,
+            "replacement": str(replacement) if replacement else "",
+            "threshold": threshold,
+            "options": {
+                "only_in_windows": options_dict.get('only_in_windows', []),
+                "exclude_windows": options_dict.get('exclude_windows', []),
+                "skip_list": options_dict.get('skip_list', []),
+                "flags": options_dict.get('flags', 0),
+                "is_private": options_dict.get('is_private', False),
+                "source_modname": source_modname,
+                "source_path": source_path,
+            }
+        }
+
+    all_entries = list(fuzzy_map_pre) + list(fuzzy_map)
+    file_rules = {}
+
+    for entry in all_entries:
+        rule_info = _extract_rule_info(entry)
+        if not rule_info:
+            continue
+        source_path = rule_info["options"].get("source_path", "")
+        if not source_path:
+            continue
+        if source_path not in file_rules:
+            file_rules[source_path] = []
+        file_rules[source_path].append(rule_info)
+
+    cache_data["files"] = file_rules
+
+    try:
+        with open(cache_file, "w", encoding="utf-8") as f:
+            json.dump(cache_data, f, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+
+    
 
 # py/func/process_text_in_background.py:1196
 def sanitize_transcription_start(raw_text: str) -> str:

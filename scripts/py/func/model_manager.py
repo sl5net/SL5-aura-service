@@ -1,4 +1,4 @@
-# file: scripts/py/func/model_manager.py
+# scripts/py/func/model_manager.py
 """
 This module provides a dynamic, stateful model manager designed to run
 continuously within the main service loop.
@@ -168,7 +168,33 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
             loaded_models[lang_key] = loaded_model
 
+
+
+
+
+            loaded_models[lang_key] = loaded_model
+
+            # Sync model_name.txt with actually loaded model
+            from pathlib import Path
+            import os
+            tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+            project_root = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text(encoding="utf-8").strip())
+            model_name_file = project_root / "config" / "model_name.txt"
+            try:
+                current_in_file = model_name_file.read_text(encoding="utf-8").strip() if model_name_file.exists() else ""
+                if current_in_file != model_name:
+                    model_name_file.write_text(model_name, encoding="utf-8")
+            except Exception:
+                pass
+
             footprint = avail_before - avail_after
+
+
+
+
+
+
+
 
             if footprint > max_model_memory_footprint_mb:
                 max_model_memory_footprint_mb = footprint
