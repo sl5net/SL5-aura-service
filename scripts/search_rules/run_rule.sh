@@ -38,7 +38,8 @@ AWK_SCRIPT='{
     gsub(proot, "⬟", short_path);
     gsub(/\/de-DE\//, "️🇩🇪", short_path);
     gsub(/\/en-US\//, "️🇬🇧", short_path);
-    gsub(/config\/maps/, "🗺️", short_path);
+    gsub(/config\/maps\//, "🗺️", short_path);
+    gsub(/plugins\//, "🧩", short_path);
 
     while (match(short_path, /\/[a-z]{2}-[A-Z]{2}\//)) {
         lang_letter = substr(short_path, RSTART + 1, 1);
