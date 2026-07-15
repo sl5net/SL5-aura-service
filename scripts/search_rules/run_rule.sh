@@ -86,11 +86,15 @@ F_OUT=$(echo "$SEARCH_INPUT" | awk -F: "$AWK_SCRIPT" | \
         --bind="ctrl-delete:kill-word" \
         --bind="ctrl-left:backward-word" \
         --bind="ctrl-right:forward-word" \
+        --bind="ctrl-up:up+up+up+up+up" \
+        --bind="ctrl-down:down+down+down+down+down" \
         --bind="home:beginning-of-line" \
         --bind="end:end-of-line" \
         --expect="ctrl-e,ctrl-r" \
         --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {2} {3}' \
 )
+
+  
 [[ -z "$F_OUT" ]] && exit 0
 QUERY_TYPED=$(echo "$F_OUT" | sed -n '1p')
 #QUERY_TYPED=$(echo "$F_OUT" | sed -n '1p' | tr -d '\r')
