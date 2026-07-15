@@ -34,6 +34,11 @@ AWK_SCRIPT='{
     content = substr($0, index($0, ":" line ":") + length(line) + 2);
     gsub(/^[ \t]+/, "", content);
     short_path = full_path;
+#    gsub($PROJECT_ROOT, "R", short_path);
+    gsub(proot, "⬟", short_path);
+    gsub(/\/de-DE\//, "️🇩🇪", short_path);
+    gsub(/\/en-US\//, "️🇬🇧", short_path);
+    gsub(/config\/maps/, "🗺️", short_path);
 
     while (match(short_path, /\/[a-z]{2}-[A-Z]{2}\//)) {
         lang_letter = substr(short_path, RSTART + 1, 1);
@@ -46,6 +51,8 @@ AWK_SCRIPT='{
         short_path = substr(short_path, length(short_path) - 38);
     }
 
+    # config/maps/_privat/job/bewerbung/de-DE/FUZZY_MAP_pre.py:95
+#    gsub(/config\/maps/, "🗺️", short_path);
     gsub(/FUZZY_MAP_pre\.py/, "…", short_path);
 
     # Combine the path and line with the rule content using a simple separator
@@ -73,7 +80,10 @@ else
     SEARCH_INPUT=$(grep -irnH -I $FILT . "$M_DIR")
 fi
 
-F_OUT=$(echo "$SEARCH_INPUT" | awk -F: "$AWK_SCRIPT" | \
+#F_OUT=$(echo "$SEARCH_INPUT" | awk -F: "$AWK_SCRIPT" |
+#
+F_OUT=$(echo "$SEARCH_INPUT" | awk -F: -v proot="$PROJECT_ROOT" "$AWK_SCRIPT" | \
+
     fzf --print-query \
         --no-hscroll \
         --delimiter=$'\t' \
@@ -94,7 +104,7 @@ F_OUT=$(echo "$SEARCH_INPUT" | awk -F: "$AWK_SCRIPT" | \
         --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {2} {3}' \
 )
 
-  
+
 [[ -z "$F_OUT" ]] && exit 0
 QUERY_TYPED=$(echo "$F_OUT" | sed -n '1p')
 #QUERY_TYPED=$(echo "$F_OUT" | sed -n '1p' | tr -d '\r')
