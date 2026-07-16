@@ -131,7 +131,15 @@ $f11::
 
         ; Neu: 3.7.'26 13:50 Fri
 
-        Run('powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' . ps_path . '"', bat_dir, , &psPID)
+
+
+        ; Run('powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' . ps_path . '"', bat_dir, , &psPID)
+          Run('wt.exe powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' . ps_path . '"', bat_dir, , &psPID)
+
+        ; if WinWait("ahk_class CASCADIA_HOSTING_WINDOW_CLASS", , 3) {
+        ;     WinActivate("ahk_class CASCADIA_HOSTING_WINDOW_CLASS")
+        ; }
+
         if WinWait("ahk_pid " . psPID, , 3) {
             WinActivate("ahk_pid " . psPID)
         }
@@ -141,7 +149,9 @@ $f11::
     }
 }
 
-
+#HotIf WinActive("ahk_class CASCADIA_HOSTING_WINDOW_CLASS")
+^Backspace::Send("!{Backspace}")
+#HotIf
 
 ; ------------------------------------------------------------------
 ; STRG+Q -> CopyQ Window/Fenster toggle/umschalten (Anzeigen/Verstecken)

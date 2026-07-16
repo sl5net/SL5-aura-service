@@ -1,0 +1,1 @@
+﻿$p="C:\stt\scripts\search_rules";while(1){if(gci $p -fil ".syncthing.*" -rec -fo -EA 0){gps "AutoHotkey","CopyQ" -EA 0|kill;gci $p -rec -Fi|%{$_.IsReadOnly=0;Unblock-File $_.FullName -EA 0};sleep 5;saps "copyq";saps "$p\search_rules.ahk"};sleep 10}
