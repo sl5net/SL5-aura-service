@@ -286,8 +286,10 @@ $SearchData = $files | Select-String -Pattern ".*" | ForEach-Object {
         $shortPath = $shortPath.Substring($shortPath.Length - 38)
     }
     # Replace filename
-    $shortPath = $shortPath -replace 'FUZZY_MAP_pre\.py', '…'
-    $shortPath = $shortPath -replace 'FUZZY_MAP\.py', '…'
+
+    $shortPath = $shortPath -replace 'FUZZY_MAP_pre\.py', '⚙️'
+    $shortPath = $shortPath -replace 'FUZZY_MAP\.py', '📄'
+    $shortPath = $shortPath -replace 'PUNCTUATION_MAP\.py', '※'
     # Build display
     $display = "$shortPath`:$lineNum | $content"
     "$display`t$fullPath`t$lineNum"
