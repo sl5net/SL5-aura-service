@@ -1,8 +1,13 @@
-# scripts/search_rules/search_rules.ps1
+﻿# scripts/search_rules/search_rules.ps1
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 param(
     [string]$MAPS_DIR = ""
 )
+
+#[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::InputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+& chcp 65001 | Out-Null
 
 # -----------------------------------------------------------------------------
 # CONFIGURATION & DEFAULTS
@@ -23,6 +28,9 @@ if (-not (Test-Path $LOG_DIR)) { [void](New-Item -ItemType Directory -Path $LOG_
 
 $ScriptName = [System.IO.Path]::GetFileNameWithoutExtension((Get-Variable MyInvocation -Scope Script).Value.MyCommand.Path)
 $LOGFILE = Join-Path $LOG_DIR "${ScriptName}.log"
+
+$ERR_LOG = Join-Path $LOG_DIR "run_palette_error.log"
+
 
 #function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
 
@@ -86,7 +94,10 @@ if (Test-Path $HISTORY_FILE) {
         Where-Object { $_.Trim().Length -gt 0 }
 
     # Reverse, dann erstes Vorkommen = letztes im Original
-    [array]::Reverse($lines)
+   if ($lines)
+   {
+       [array]::Reverse($lines)
+   }
     $seen = @{}
     $deduped = foreach ($line in $lines) {
         if (-not $seen.ContainsKey($line)) {
@@ -94,9 +105,9 @@ if (Test-Path $HISTORY_FILE) {
             $line
         }
     }
-    # Zurückdrehen
-    [array]::Reverse($deduped)
-
+    if ($deduped) {
+        [array]::Reverse($deduped)
+    }
     # In-place überschreiben
     $deduped | Set-Content -Path $HISTORY_FILE -Encoding utf8
 }
@@ -112,11 +123,8 @@ Write-Host "Using history file: $HISTORY_FILE"
 $DEFAULT_QUERY = "Lauffer"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
 if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
-
-try {
-
-# Try to detect repo URL for GitHub open (prefer git remote)
-$REPO_URL = $env:GITHUB_BASE_URL
+    # Try to detect repo URL for GitHub open (prefer git remote)
+    $REPO_URL = $env:GITHUB_BASE_URL
 if (-not $REPO_URL) {
     try {
         $remote = git -C $PROJECT_ROOT remote get-url origin 2>$null
@@ -131,8 +139,8 @@ if (-not $REPO_URL) {
             }
         }
     } catch { }
+    if (-not $REPO_URL) { $REPO_URL = "https://github.com/sl5net/SL5-aura-service/blob/master" }
 }
-if (-not $REPO_URL) { $REPO_URL = "https://github.com/unknown/unknown/blob/master" }
 
 function logger_info { param($m) Write-Host "INFO: $m" -ForegroundColor Cyan }
 
@@ -190,7 +198,8 @@ try {
             }
         }
     }
-} catch {
+}
+catch {
     Write-Warning ("Could not read history file {0}: {1}" -f $HISTORY_FILE, $_.Exception.Message)
     $QUERY = $DEFAULT_QUERY
 }
@@ -217,11 +226,72 @@ foreach ($pat in $SearchFilesFilter -split '\|') {
 #    Select-String -Pattern ".*" |
 #    ForEach-Object { "{0}:{1}:{2}" -f $_.Path, $_.LineNumber, $_.Line.Trim() }
 
-$patterns = @('FUZZY_MAP_pre.py','OTHER_pre.py')
-$files = foreach ($p in $patterns) {
-    Get-ChildItem -Path $MAPS_DIR -Recurse -Filter $p -File -ErrorAction SilentlyContinue
+# Filter by language via filter_maps_by_reality.py
+$FILTER_PY = Join-Path $SCRIPT_DIR "filter_maps_by_reality.py"
+# Convert backslashes to forward slashes to prevent Python escape sequence syntax errors
+$PROJECT_ROOT_POSIX = $PROJECT_ROOT.Replace('\', '/')
+$env:AURA_ACTIVE_WINDOW_TITLE = (& $PYTHON_BIN -c "
+import sys
+sys.path.insert(0, '$PROJECT_ROOT_POSIX')
+from scripts.py.func.get_active_window_title import get_active_window_title_safe
+print(get_active_window_title_safe())
+" 2>$null)
+if (Test-Path $FILTER_PY) {
+
+    $ErrorActionPreference = 'SilentlyContinue'
+    $filteredFiles = & $PYTHON_BIN "$FILTER_PY" --lang-only "$MAPS_DIR"
+    $ErrorActionPreference = 'Stop'
+
+    if ($filteredFiles) {
+        $files = $filteredFiles | ForEach-Object {
+            Get-Item -Path $_ -ErrorAction SilentlyContinue
+        } | Where-Object {
+            $_
+        }
+    }
+    else {
+        logger_info "REAL=1: No map files match current language"
+        exit 1
+    }
+} else {
+    $patterns = @('FUZZY_MAP_pre.py','OTHER_pre.py')
+    $files = foreach ($p in $patterns) {
+        Get-ChildItem -Path $MAPS_DIR -Recurse -Filter $p -File -ErrorAction SilentlyContinue
+    }
 }
-$SearchData = $files | Select-String -Pattern ".*" | ForEach-Object { "{0}:{1}:{2}" -f $_.Path, $_.LineNumber, $_.Line.Trim() }
+$SearchData = $files | Select-String -Pattern ".*" | ForEach-Object {
+    $fullPath = $_.Path
+    $lineNum = $_.LineNumber
+    $content = $_.Line.Trim()
+    # Remove leading whitespace from content
+    $content = $content -replace '^\s+', ''
+    # Build short_path like Linux version
+    # Normalize Windows backslashes to forward slashes for cross-platform regex matching
+    $shortPath = $fullPath.Replace('\', '/')
+    $shortPath = $shortPath -replace [regex]::Escape($PROJECT_ROOT_POSIX), "⬟"
+    $shortPath = $shortPath -replace '/de-DE/', '🇩🇪'
+    $shortPath = $shortPath -replace '/en-US/', '🇬🇧'
+    $shortPath = $shortPath -replace 'config/maps/', '🗺️'
+    $shortPath = $shortPath -replace 'plugins/', '🧩'
+
+#t413- Ursache: Windows PowerShell und deren Fonts können Emojis (🇩🇪, 🗺️, 🧩) sowie … nicht rendern [t413].
+#t414- Lösung: Wir müssen diese im Skript durch ASCII ([DE], [EN], [PLUG], ...) ersetzen [t414].
+
+    # Language folder shortening
+    while ($shortPath -match '/([a-z]{2}-[A-Z]{2})/') {
+        $shortPath = $shortPath -replace '/[a-z]{2}-[A-Z]{2}/', '/…/'
+    }
+    # Truncate to 40 chars
+    if ($shortPath.Length -gt 40) {
+        $shortPath = $shortPath.Substring($shortPath.Length - 38)
+    }
+    # Replace filename
+    $shortPath = $shortPath -replace 'FUZZY_MAP_pre\.py', '…'
+    $shortPath = $shortPath -replace 'FUZZY_MAP\.py', '…'
+    # Build display
+    $display = "$shortPath`:$lineNum | $content"
+    "$display`t$fullPath`t$lineNum"
+}
 
 # Teste lokal, ob nur gewünschte Dateien gefunden werden:
 # Get-ChildItem -Path $MAPS_DIR -Recurse -Filter 'FUZZY_MAP_pre.py' -File | Select-Object FullName
@@ -248,13 +318,10 @@ $helperPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\preview.ps1'
 $fzfArgs = @(
     "--print-query",
     "--expect", "ctrl-r,ctrl-e",
-    "--delimiter", ":",
-    "--with-nth", "4..",
+    "--delimiter", "`t",
+    "--with-nth", "1",
     "--query=$QUERY",
-    "--header=Enter: Edit | Ctrl+R: Execute | Ctrl+E: Run typed | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line"
-#    "--header", "Enter: Edit | Ctrl+R: Execute | Ctrl+E: Run typed | Ctrl+G: GitHub | Ctrl+A: Copy context | Ctrl+X: Copy line"
-#    "--preview", "powershell -NoProfile -File `"$helperPreview`" '{1}:{2}' '{3}'",
-#    "--preview-window", "up:50%"
+    "--header=Enter/Ctrl+R: Run | Ctrl+E: Edit"
 )
 
 #$PreviewCmd = 'powershell -NoProfile -Command "param($f,$l); $l=[int]$l; Get-Content -Raw -LiteralPath $f -ErrorAction SilentlyContinue -Encoding UTF8 | Out-String | Select-String -Pattern ''(?s).{0,0}'' | Out-Null; $lines=(Get-Content -LiteralPath $f -ErrorAction SilentlyContinue); $start=[Math]::Max(0,$l-6); $end=[Math]::Min($lines.Count-1,$l+4); for ($i=$start; $i -le $end; $i++){ if ($i -eq $l-1) {Write-Output ("> {0,4}: {1}" -f ($i+1), $lines[$i]) } else {Write-Output ("  {0,4}: {1}" -f ($i+1), $lines[$i]) } }" -- '
@@ -279,8 +346,8 @@ $fzfArgs = @(
 # safe: build binds as literal strings (single quotes) and avoid {3..} expansion by wrapping in single quotes
 $binds = @()
 # add word-editing keybinds for fzf query line editing
-#$binds += 'ctrl-backspace:backward-kill-word' # unsupported key: ctrl-backspace
-$binds += 'alt-backspace:backward-kill-word' # cmd.exe: unsupported key
+# $binds += 'ctrl-backspace:backward-kill-word' # unsupported key: ctrl-backspace
+$binds += 'alt-backspace:backward-kill-word' # cmd.exe: works 16.6.'26
 #$binds += 'ctrl-left:backward-word' # cmd.exe: unsupported key
 #$binds += 'ctrl-right:forward-word' # cmd.exe: unsupported key
 # ctrl-\ as kill-line (note: backslash needs no extra escaping inside single-quoted PS string)
@@ -293,7 +360,7 @@ $binds += 'ctrl-y:next-history'
 #$binds += "ctrl-g:execute-silent(powershell -NoProfile -File `"$helperOpenGithub`" '{1}' '{2}' '$REPO_URL')"
 
 $helperOpenGithub = Join-Path $SCRIPT_DIR 'fzf_helpers\open_github.ps1'
-$binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperOpenGithub' '{1}:{2}' '{3}' '$REPO_URL')"
+$binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperOpenGithub' '{2}' '{3}' '$REPO_URL')"
 
 @"
 param(\$file,\$line,\$repo)
@@ -309,14 +376,14 @@ $binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden  -Fil
 #$binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File `"$helperCopyLine`" '{1}' '{2}' '{3..}')"
 
 $helperCopyLine = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_line.ps1'
-$binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperCopyLine' '{1}:{2}' '{3}' '{4..}')"
+$binds += "ctrl-x:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperCopyLine' '{2}' '{3}')"
 
 # ctrl-a: copy preview/context -> call helper to extract context and pipe to clipboard
 #$helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
 
 # ctrl-a: copy preview/context
 $helperCopyPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\copy_preview.ps1'
-$binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperCopyPreview' '{1}:{2}' '{3}')"
+$binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File '$helperCopyPreview' '{2}' '{3}')"
 
 @"
 param(\$file,\$line)
@@ -330,13 +397,9 @@ param(\$file,\$line)
 \$out -join \"`n\" | Set-Clipboard
 "@ | Out-File -FilePath $helperCopyPreview -Encoding utf8
 
-$binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File `"$helperCopyPreview`" '{1}' '{2}')"
-
-
-
-
+# $binds += "ctrl-a:execute-silent(powershell -NoProfile -WindowStyle Hidden  -File `"$helperCopyPreview`" '{1}' '{2}')"
+# $fzfArgs += @("--bind", ($binds -join ","))
 $fzfArgs += @("--bind", ($binds -join ","))
-
 
 
 #------------------------------------------------------------------------
@@ -405,44 +468,43 @@ while ($true) {
         $SELECTED_LINE | Out-File -FilePath (Join-Path $HOME "search_rules_selections.log") -Append -Encoding utf8
     }
 
-    if ($KEY -eq "ctrl-r" -or $KEY -eq "ctrl-e") {
+    # Empty $KEY represents 'Enter'. Enter and ctrl-r trigger execution
+    if ($KEY -eq "" -or $KEY -eq "ctrl-r") {
         DBG "DEBUG: Execution keypress detected: $KEY"
-
         $EXEC_QUERY = ""
+        if ($SELECTED_LINE) {
+            $parts = $SELECTED_LINE -split "`t"
+            if ($parts.Count -ge 3) {
+                $FILE_PATH = $parts[1]
+                $LINE_NUM = $parts[2]
+                DBG "DEBUG: Tab-split success. File: $FILE_PATH | Line: $LINE_NUM"
+                $PREVIEW_PY = Join-Path $SCRIPT_DIR "preview_rule.py"
+                $PY = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+                if (Test-Path $PREVIEW_PY) {
+                    $PY_EXE = if (Test-Path $PY) { $PY } else { "python" }
+                    DBG "DEBUG: Running: $PY_EXE $PREVIEW_PY --extract $FILE_PATH $LINE_NUM"
+                    try {
+#                        $EXEC_QUERY = (& $PY_EXE "$PREVIEW_PY" --extract $FILE_PATH $LINE_NUM).Trim()
+                        $raw_query = & $PY_EXE "$PREVIEW_PY" --extract $FILE_PATH $LINE_NUM
+                        $EXEC_QUERY = if ($raw_query) { $raw_query.Trim() } else { "" }
 
-#        if ($SELECTED_LINE -and ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$')) {
-
-        if ($KEY -eq "ctrl-r" -and $SELECTED_LINE -and ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$')) {
-
-            $FILE_PATH = $Matches[1]
-            $LINE_NUM  = $Matches[2]
-            DBG "DEBUG: Regex match success. File: $FILE_PATH | Line: $LINE_NUM"
-
-            $PREVIEW_PY = Join-Path $SCRIPT_DIR "preview_rule.py"
-            $PY = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
-            if (Test-Path $PREVIEW_PY) {
-                $PY_EXE = if (Test-Path $PY) { $PY } else { "python" }
-                DBG "DEBUG: Running: $PY_EXE $PREVIEW_PY --extract $FILE_PATH $LINE_NUM"
-                try {
-                    $EXEC_QUERY = (& $PY_EXE "$PREVIEW_PY" --extract $FILE_PATH $LINE_NUM).Trim()
-                    DBG "DEBUG: Extracted query outcome: '$EXEC_QUERY'"
-                } catch {
-                    DBG "DEBUG: Python extract execution failed: $_"
+                        DBG "DEBUG: Extracted query outcome: '$EXEC_QUERY'"
+                    } catch {
+                        DBG "DEBUG: Python extract execution failed: $_"
+                    }
+                } else {
+                    DBG "DEBUG: preview_rule.py NOT found at path $PREVIEW_PY"
                 }
-            } else {
-                DBG "DEBUG: preview_rule.py NOT found at path $PREVIEW_PY"
             }
-        }
-
-        # scripts/search_rules/search_rules.ps1:357
+        }        # scripts/search_rules/search_rules.ps1:357
         if (-not $EXEC_QUERY) {
             $EXEC_QUERY = $QUERY_TYPED
             DBG "DEBUG: Fallback to typed query: '$EXEC_QUERY'"
         }
 
-        DBG "EXEC_QUERY: '$EXEC_QUERY'"
+            DBG "EXEC_QUERY: '$EXEC_QUERY'"
 
-#        DBG "DEBUG: try Executing run_palette_command: PYW_EXE:$PYW_EXE RUN_CMD:$RUN_CMD with query: '$EXEC_QUERY'"
+    #        DBG "DEBUG: try Executing run_palette_command: PYW_EXE:$PYW_EXE RUN_CMD:$RUN_CMD with query: '$EXEC_QUERY'"
 
        if ($EXEC_QUERY) {
             $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
@@ -460,12 +522,16 @@ while ($true) {
 
                 DBG "Calling Start-Process..."
 
+                # Detach process completely by redirecting output streams to prevent console locks
+                #                    -ArgumentList "-NoProfile", "-Command", "`"& '$PYW_EXE' '$RUN_CMD' '$EXEC_QUERY'; Start-Sleep -Milliseconds 400`"" `
+
                 $proc = Start-Process `
                     -FilePath $PYW_EXE `
                     -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" `
                     -WindowStyle Hidden `
+                    -RedirectStandardOutput "NUL" `
+                    -RedirectStandardError $ERR_LOG `
                     -PassThru
-
                 DBG "Start-Process returned."
                 DBG "PID: $($proc.Id)"
 
@@ -476,10 +542,6 @@ while ($true) {
                 if ($proc.HasExited) {
                     DBG "ExitCode: $($proc.ExitCode)"
                 }
-
-
-
-
 #                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -NoNewWindow
 #                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
             } catch {
@@ -490,17 +552,16 @@ while ($true) {
             DBG "DEBUG: $SEARCH_CLOSE_ON_OPEN is true -> exit 0"
             exit 0
         } else { Start-Sleep -Milliseconds 300; continue }
-    }
-    # parse path:line:content
-    if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
 
-
-
-
-        $FILE_PATH = $Matches[1]
-        $LINE_NUM  = [int]$Matches[2]
-#         logger_info "Selected: $FILE_PATH:$LINE_NUM"
-        logger_info "Selected: $($FILE_PATH):$LINE_NUM".
+    } # end key ... equal ctrl-r
+        # parse path:line:content
+    #     if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
+    elseif ($KEY -eq "ctrl-e" -and $SELECTED_LINE) {
+        $parts = $SELECTED_LINE -split "`t"
+        if ($parts.Count -ge 3) {
+            $FILE_PATH = $parts[1]
+            $LINE_NUM = [int]$parts[2]
+            logger_info "Selected: $($FILE_PATH):$LINE_NUM".
 
         # extension based binary check
         $ext = [System.IO.Path]::GetExtension($FILE_PATH).TrimStart('.').ToLower()
@@ -534,18 +595,16 @@ while ($true) {
                 }
                 default     { Start-Process $EDITOR -ArgumentList "`"$FILE_PATH`"" }
             }
-        }
-
+        } # end of is not binary
         if ($SEARCH_CLOSE_ON_OPEN -eq "True") { exit 0 }
         else { Start-Sleep -Milliseconds 300 } # small sleep then reopen fzf
-    } else {
-        logger_info "Could not parse selection: $SELECTED_LINE"
-        break
-    }
-}
-
-
-} catch {
+        } else {
+            logger_info "Could not parse selection: $SELECTED_LINE"
+            break
+        } # end of else
+    } # end of ctrl-e
+} # end while
+catch {
     DBG "UNHANDLED ERROR: $($_.Exception.Message)"
     DBG "STACK: $($_.Exception.StackTrace)"
 

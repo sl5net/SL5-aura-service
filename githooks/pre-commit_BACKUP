@@ -133,27 +133,132 @@ echo "✅ flake8 check passed. ✅"
 
 
 
+changed=0
+# helper: safe iterator over staged filenames matching a suffix
+staged_files_with_suffix() {
+  suffix="$1"
+  git diff --cached --name-only -z | \
+    while IFS= read -r -d '' f; do
+      case "$f" in
+        *"$suffix") printf '%s\0' "$f" ;;
+      esac
+    done
+}
 
-# convert staged .bat files to CRLF and restage them
-
-# find staged .bat files (cached)
-staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.bat$' || true)
-if [ -z "$staged_files" ]; then
-  echo "No .bat files staged. Skipping CRLF conversion."
-fi
-
-# convert staged .bat files to CRLF and restage them
-staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.bat$' || true)
-if [ -n "$staged_files" ]; then
-  for f in $staged_files; do
-    if [ -f "$f" ]; then
-      unix2dos "$f" >/dev/null 2>&1 || { echo "unix2dos failed on $f"; exit 1; }
-      git add "$f"
-    fi
-  done
+# 1) Convert staged .bat files to CRLF
+if command -v unix2dos >/dev/null 2>&1; then
+  converter="unix2dos -q"
 else
-  echo "No .bat files staged. Skipping CRLF conversion."
+  converter=""  # fall back to python conversion below
 fi
+
+while IFS= read -r -d '' f; do
+  [ -f "$f" ] || continue
+  if [ -n "$converter" ]; then
+    # run converter on working tree and check if it changed bytes
+    before_hash=$(git hash-object -w --no-filters --stdin < "$f" 2>/dev/null || true)
+    # Copy, convert in-place
+    unix2dos -q "$f" >/dev/null 2>&1 || true
+    # If file changed, restage
+    git add -- "$f"
+    changed=1
+  else
+    # Pure-Python conversion to CRLF (safe: only rewrite if changes)
+    tmp=$(mktemp)
+    python3 - "$f" "$tmp" <<'PY' || rc=$?
+import sys,io
+p=sys.argv[1]; tmp=sys.argv[2]
+with open(p, 'rb') as r:
+    data=r.read()
+# Convert lone LF to CRLF, leave CRLF alone
+new = data.replace(b'\r\n', b'\n').replace(b'\n', b'\r\n')
+if new!=data:
+    with open(tmp,'wb') as w:
+        w.write(new)
+    sys.exit(0)  # signal that tmp contains new content
+else:
+    sys.exit(1)  # no change
+PY
+    rc=${rc:-$?}
+    if [ "$rc" -eq 0 ]; then
+      mv "$tmp" "$f"
+      git add -- "$f"
+      changed=1
+    else
+      rm -f "$tmp"
+    fi
+  fi
+done < <(staged_files_with_suffix ".bat")
+
+# 2) Convert staged .ps1 files to UTF-8 with BOM
+while IFS= read -r -d '' f; do
+  [ -f "$f" ] || continue
+  # Read file bytes, detect UTF-8 BOM, and write with BOM only if needed
+  python3 - "$f" <<'PY'
+import sys,os
+p=sys.argv[1]
+with open(p,'rb') as b:
+    data=b.read()
+# If already has UTF-8 BOM, leave alone
+BOM = b'\xef\xbb\xbf'
+if data.startswith(BOM):
+    sys.exit(1)
+# Try decode as utf-8 (if fails, do nothing)
+try:
+    text=data.decode('utf-8')
+except Exception:
+    sys.exit(1)
+# Write back with BOM + utf-8 bytes
+with open(p,'wb') as b:
+    b.write(BOM + text.encode('utf-8'))
+sys.exit(0)
+PY
+  rc=$?
+  if [ "$rc" -eq 0 ]; then
+    git add -- "$f"
+    changed=1
+  fi
+done < <(staged_files_with_suffix ".ps1")
+
+if [ "$changed" -eq 1 ]; then
+  cat <<'MSG' >&2
+pre-commit: Some staged files were modified (line endings/encoding).
+They have been restaged. Please review changes and re-run the commit.
+MSG
+  exit 1
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

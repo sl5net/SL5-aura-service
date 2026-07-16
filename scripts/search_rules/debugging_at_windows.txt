@@ -1,0 +1,8 @@
+
+
+
+Das -NoExit hält das Fenster offen, damit der Fehler sichtbar wird.
+
+powershell -NoExit -File "C:\stt\scripts\search_rules\search_rules.ps1"
+
+
