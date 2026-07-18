@@ -22,6 +22,8 @@ $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 
 $ENABLE_LOGGING = $true
 
+
+
 $ErrorActionPreference = 'Stop'
 $LOG_DIR = Join-Path $PROJECT_ROOT "log"
 if (-not (Test-Path $LOG_DIR)) { [void](New-Item -ItemType Directory -Path $LOG_DIR -Force) }
@@ -32,7 +34,20 @@ $LOGFILE = Join-Path $LOG_DIR "${ScriptName}.log"
 $ERR_LOG = Join-Path $LOG_DIR "run_palette_error.log"
 
 
+#$ERR_LOG_backup_20260718_1005 = Join-Path $LOG_DIR "run_palette_error.log"
+#    $proc = Start-Process `
+#        -FilePath $PYW_EXE `
+#        -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" `
+#        -WindowStyle Hidden `
+#        -RedirectStandardOutput "NUL" `
+#        -RedirectStandardError $ERR_LOG `
+#        -PassThru
+
+
+
 #function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
+
+
 
 function DBG {
     param($m)
@@ -118,7 +133,7 @@ if (Test-Path $HISTORY_FILE) {
 
 
 # Debug: print the path so you can verify (remove in production)
-Write-Host "Using history file: $HISTORY_FILE"
+# Write-Host "Using history file: $HISTORY_FILE"
 
 $DEFAULT_QUERY = "# EXAMPLE:"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
@@ -142,11 +157,11 @@ if (-not $REPO_URL) {
     if (-not $REPO_URL) { $REPO_URL = "https://github.com/sl5net/SL5-aura-service/blob/master" }
 }
 
-function logger_info { param($m) Write-Host "INFO: $m" -ForegroundColor Cyan }
+function logger_info { return 0; param($m) Write-Host "INFO: $m" -ForegroundColor Cyan }
 
-logger_info "Initializing search_rules.ps1..."
-logger_info "Project root: $PROJECT_ROOT"
-logger_info "Target maps dir: $MAPS_DIR"
+#logger_info "Initializing search_rules.ps1..."
+#logger_info "Project root: $PROJECT_ROOT"
+# logger_info "Target maps dir: $MAPS_DIR"
 
 # -----------------------------------------------------------------------------
 # EDITOR FALLBACK LOGIC
@@ -159,7 +174,7 @@ function Get-PreferredEditor {
     return "notepad.exe"
 }
 $EDITOR = Get-PreferredEditor
-logger_info "Editor configured: $EDITOR"
+# logger_info "Editor configured: $EDITOR"
 
 if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
     Write-Error "fzf.exe not found in PATH. Please install fzf."
@@ -508,38 +523,63 @@ while ($true) {
 
     #        DBG "DEBUG: try Executing run_palette_command: PYW_EXE:$PYW_EXE RUN_CMD:$RUN_CMD with query: '$EXEC_QUERY'"
 
-        if ($EXEC_QUERY) {
-            $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
-            $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
-            $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
-
-            DBG "RUN_CMD: $RUN_CMD"
-            DBG "PYW_EXE: $PYW_EXE"
-            DBG "RUN_CMD exists: $(Test-Path $RUN_CMD)"
-            DBG "PYW_EXE exists: $(Test-Path $PYW_EXE)"
-            DBG "EXEC_QUERY: '$EXEC_QUERY'"
 
 
-        try {
-            DBG "Launching background process..."
+if ($EXEC_QUERY) {
+    $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
+    $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+    $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
 
-            # 2. Use .NET ProcessStartInfo for completely detached, non-blocking execution
-            $psi = [System.Diagnostics.ProcessStartInfo]::new()
-            $psi.FileName = $PYW_EXE
-            $psi.Arguments = "`"$RUN_CMD`" `"$EXEC_QUERY`""
-            $psi.UseShellExecute = $false
-            $psi.CreateNoWindow = $true
+    try {
+        DBG "Launching completely hidden background process..."
 
-            $proc = [System.Diagnostics.Process]::Start($psi)
+        # Erstellt das COM-Objekt, das alle Fenster-Typen im Prozessbaum erzwingend versteckt
+        $wshell = New-Object -ComObject WScript.Shell
 
-            DBG "Start-Process returned cleanly."
-            DBG "PID: $($proc.Id)"
-        } catch {
-            DBG "DEBUG: Failed to start background Python script: $_"
-        }
+        # Parameter: Befehl, 0 (Fenster verstecken), $true (Synchron blockieren)
+        $exitCode = $wshell.Run("`"$PYW_EXE`" `"$RUN_CMD`" `"$EXEC_QUERY`"", 0, $true)
+
+        DBG "Process finished cleanly with exit code: $exitCode"
+    } catch {
+        DBG "DEBUG: Failed to start background Python script: $_"
+    }
+}
 
 
-       }
+################################ works hast the same effect 18.7.'26 10:46 Sat
+#if ($EXEC_QUERY) {
+#
+#    $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
+#    $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+#    $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
+#
+#    DBG "RUN_CMD: $RUN_CMD"
+#    DBG "PYW_EXE: $PYW_EXE"
+#    DBG "EXEC_QUERY: '$EXEC_QUERY'"
+#
+#    try {
+#        DBG "Launching completely hidden background process..."
+#
+#        $psi = [System.Diagnostics.ProcessStartInfo]::new()
+#        $psi.FileName = $PYW_EXE
+#        $psi.Arguments = "`"$RUN_CMD`" `"$EXEC_QUERY`""
+#        $psi.UseShellExecute = $false
+#        $psi.CreateNoWindow = $true  # Verhindert, dass das CMD-Fenster erscheint
+#
+#        # Diese 3 Zeilen verhindern, dass der Prozess dein Terminal blockiert oder stört
+#        $psi.RedirectStandardOutput = $true
+#        $psi.RedirectStandardError = $true
+#        $psi.RedirectStandardInput = $true
+#
+#        $proc = [System.Diagnostics.Process]::Start($psi)
+#
+#        DBG "Start-Process returned cleanly."
+#        DBG "PID: $($proc.Id)"
+#    } catch {
+#        DBG "DEBUG: Failed to start background Python script: $_"
+#    }
+#}
+
        if ($SEARCH_CLOSE_ON_OPEN -eq "True") {
             DBG "DEBUG: $SEARCH_CLOSE_ON_OPEN is true -> exit 0"
             exit 0
