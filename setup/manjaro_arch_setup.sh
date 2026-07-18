@@ -117,14 +117,11 @@ python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 # After: show preview and ask for confirmation (default: no)
 echo "The script can optionally run a full system upgrade (pacman -Syu)."
 echo "This may download and install many packages (kernel, libs, etc.)."
-read_upgrade=$(python3 - <<'PY'
-import sys, subprocess, shlex
-from time import sleep
-# simple timed prompt replacement; adapt to your timed_input if desired
-resp = input("Run full system upgrade now? (y/N) [Auto N in 8s]: ")
-print(resp if resp else "n")
-PY
-)
+
+# Use native bash read with timeout to avoid python stdin EOF error
+read -t 8 -p "Run full system upgrade now? (y/N) [Auto N in 8s]: " read_upgrade
+read_upgrade=${read_upgrade:-n}
+
 DOWNLOAD_REQUIRED=false
 
 
