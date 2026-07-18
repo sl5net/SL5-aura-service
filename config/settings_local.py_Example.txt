@@ -38,6 +38,10 @@ KILL_COMPETING_LT_AND_ELOQUENT_ON_START = 0
 # Enable or disable the type watcher (client-side typing integration)
 TYPE_WATCHER_ENABLED = True
 
+radio_deep_dive_ENABLED = False
+show_PLUGINS_DISABLED = True
+
+
 TRINO_ENABLED = 1
 TRINO_HOST = 'localhost'
 TRINO_PORT = 8083

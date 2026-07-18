@@ -42,7 +42,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE:     AI kimi chat
-    ('https://www.kimi.com/en/', r'^(ai\s*)?kimi$', 75, {'flags': re.IGNORECASE}),
+    ('https://www.kimi.com/en/', r'^(ai\s*)?kimi( chat)?$', 75, {'flags': re.IGNORECASE}),
 
 
 

@@ -54,8 +54,27 @@ AWK_SCRIPT='{
 
     # config/maps/_privat/job/bewerbung/de-DE/FUZZY_MAP_pre.py:95
 #    gsub(/config\/maps/, "🗺️", short_path);
-    gsub(/FUZZY_MAP_pre\.py/, "…", short_path);
 
+#    gsub(/FUZZY_MAP_pre\.py/, "⏪", short_path);
+#    gsub(/FUZZY_MAP\.py/, "⏩", short_path);
+#    gsub(/PUNCTUATION_MAP\.py/, "🔣", short_path);
+
+    gsub(/FUZZY_MAP_pre\.py/, "⚙️", short_path);
+    gsub(/FUZZY_MAP\.py/, "📄", short_path);
+    gsub(/PUNCTUATION_MAP\.py/, "※", short_path);
+
+#    gsub(/FUZZY_MAP_pre\.py/, "📋", short_path);
+#    gsub(/FUZZY_MAP\.py/, "📄", short_path);
+#    gsub(/PUNCTUATION_MAP\.py/, "📝", short_path);
+
+#    gsub(/FUZZY_MAP_pre\.py/, "«", short_path);
+#    gsub(/FUZZY_MAP\.py/, "»", short_path);
+#    gsub(/PUNCTUATION_MAP\.py/, "※", short_path);
+#
+#    gsub(/FUZZY_MAP_pre\.py/, "📃", short_path);
+#    gsub(/FUZZY_MAP\.py/, "📄", short_path);
+#    gsub(/PUNCTUATION_MAP\.py/, "📝", short_path);
+#
     # Combine the path and line with the rule content using a simple separator
     display = short_path ":" line " | " content;
     # Print tab-separated fields for fzf

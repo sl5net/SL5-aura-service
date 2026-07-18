@@ -1,4 +1,4 @@
-﻿# scripts/search_rules/search_rules.ps1
+# scripts/search_rules/search_rules.ps1
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 param(
     [string]$MAPS_DIR = ""
@@ -22,6 +22,8 @@ $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 
 $ENABLE_LOGGING = $true
 
+
+
 $ErrorActionPreference = 'Stop'
 $LOG_DIR = Join-Path $PROJECT_ROOT "log"
 if (-not (Test-Path $LOG_DIR)) { [void](New-Item -ItemType Directory -Path $LOG_DIR -Force) }
@@ -32,7 +34,20 @@ $LOGFILE = Join-Path $LOG_DIR "${ScriptName}.log"
 $ERR_LOG = Join-Path $LOG_DIR "run_palette_error.log"
 
 
+#$ERR_LOG_backup_20260718_1005 = Join-Path $LOG_DIR "run_palette_error.log"
+#    $proc = Start-Process `
+#        -FilePath $PYW_EXE `
+#        -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" `
+#        -WindowStyle Hidden `
+#        -RedirectStandardOutput "NUL" `
+#        -RedirectStandardError $ERR_LOG `
+#        -PassThru
+
+
+
 #function DBG { param($m) "$(Get-Date -Format o) - $m" | Out-File -FilePath $LOGFILE -Append -Encoding utf8 }
+
+
 
 function DBG {
     param($m)
@@ -62,7 +77,6 @@ if (-not $MAPS_DIR) {
     exit 1
 }
 
-#$HISTORY_FILE   = Join-Path $MY_HOME ".search_rules_history"
 $TMP_DIR = if ($env:SystemDrive) { "C:\tmp" } else { "/tmp" }
 $AURA_TEMP = Join-Path $TMP_DIR "sl5_aura"
 if (-not (Test-Path $AURA_TEMP)) {
@@ -70,23 +84,9 @@ if (-not (Test-Path $AURA_TEMP)) {
 }
 $HISTORY_FILE = Join-Path $AURA_TEMP "search_rules_history.txt"
 
-# If the file doesn't exist, create an empty UTF8 file (no BOM)
-#if (-not (Test-Path $HISTORY_FILE)) {
-#    # On older PowerShell versions -Encoding utf8 may add BOM; try utf8NoBOM when available
-#    try {
-#        # pwsh/core supports utf8NoBOM
-#        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8NoBOM -Force
-#    } catch {
-#        # fallback for Windows PowerShell
-#        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8 -Force
-#    }
-#}
-
 if (-not (Test-Path $HISTORY_FILE)) {
     [System.IO.File]::WriteAllText($HISTORY_FILE, [string]::Empty)
 }
-
-
 
 # Deduplizieren: letztes Vorkommen behalten, Reihenfolge beibehalten
 if (Test-Path $HISTORY_FILE) {
@@ -118,9 +118,9 @@ if (Test-Path $HISTORY_FILE) {
 
 
 # Debug: print the path so you can verify (remove in production)
-Write-Host "Using history file: $HISTORY_FILE"
+# Write-Host "Using history file: $HISTORY_FILE"
 
-$DEFAULT_QUERY = "Lauffer"
+$DEFAULT_QUERY = "# EXAMPLE:"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
 if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
     # Try to detect repo URL for GitHub open (prefer git remote)
@@ -142,11 +142,11 @@ if (-not $REPO_URL) {
     if (-not $REPO_URL) { $REPO_URL = "https://github.com/sl5net/SL5-aura-service/blob/master" }
 }
 
-function logger_info { param($m) Write-Host "INFO: $m" -ForegroundColor Cyan }
+function logger_info { return 0; param($m) Write-Host "INFO: $m" -ForegroundColor Cyan }
 
-logger_info "Initializing search_rules.ps1..."
-logger_info "Project root: $PROJECT_ROOT"
-logger_info "Target maps dir: $MAPS_DIR"
+#logger_info "Initializing search_rules.ps1..."
+#logger_info "Project root: $PROJECT_ROOT"
+# logger_info "Target maps dir: $MAPS_DIR"
 
 # -----------------------------------------------------------------------------
 # EDITOR FALLBACK LOGIC
@@ -159,7 +159,7 @@ function Get-PreferredEditor {
     return "notepad.exe"
 }
 $EDITOR = Get-PreferredEditor
-logger_info "Editor configured: $EDITOR"
+# logger_info "Editor configured: $EDITOR"
 
 if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
     Write-Error "fzf.exe not found in PATH. Please install fzf."
@@ -286,8 +286,10 @@ $SearchData = $files | Select-String -Pattern ".*" | ForEach-Object {
         $shortPath = $shortPath.Substring($shortPath.Length - 38)
     }
     # Replace filename
-    $shortPath = $shortPath -replace 'FUZZY_MAP_pre\.py', '…'
-    $shortPath = $shortPath -replace 'FUZZY_MAP\.py', '…'
+
+    $shortPath = $shortPath -replace 'FUZZY_MAP_pre\.py', '⚙️'
+    $shortPath = $shortPath -replace 'FUZZY_MAP\.py', '📄'
+    $shortPath = $shortPath -replace 'PUNCTUATION_MAP\.py', '※'
     # Build display
     $display = "$shortPath`:$lineNum | $content"
     "$display`t$fullPath`t$lineNum"
@@ -317,6 +319,7 @@ $helperPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\preview.ps1'
 
 $fzfArgs = @(
     "--print-query",
+    "--history=$HISTORY_FILE",
     "--expect", "ctrl-r,ctrl-e",
     "--delimiter", "`t",
     "--with-nth", "1",
@@ -506,52 +509,67 @@ while ($true) {
 
     #        DBG "DEBUG: try Executing run_palette_command: PYW_EXE:$PYW_EXE RUN_CMD:$RUN_CMD with query: '$EXEC_QUERY'"
 
-       if ($EXEC_QUERY) {
-            $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
-            $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
-            $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
-
-            DBG "RUN_CMD: $RUN_CMD"
-            DBG "PYW_EXE: $PYW_EXE"
-            DBG "RUN_CMD exists: $(Test-Path $RUN_CMD)"
-            DBG "PYW_EXE exists: $(Test-Path $PYW_EXE)"
-            DBG "EXEC_QUERY: '$EXEC_QUERY'"
 
 
-            try {
+if ($EXEC_QUERY) {
+    $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
+    $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+    $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
 
-                DBG "Calling Start-Process..."
+    try {
+        DBG "Launching completely hidden background process..."
 
-                # Detach process completely by redirecting output streams to prevent console locks
-                #                    -ArgumentList "-NoProfile", "-Command", "`"& '$PYW_EXE' '$RUN_CMD' '$EXEC_QUERY'; Start-Sleep -Milliseconds 400`"" `
+        # Erstellt das COM-Objekt, das alle Fenster-Typen im Prozessbaum erzwingend versteckt
+        $wshell = New-Object -ComObject WScript.Shell
 
-                $proc = Start-Process `
-                    -FilePath $PYW_EXE `
-                    -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" `
-                    -WindowStyle Hidden `
-                    -RedirectStandardOutput "NUL" `
-                    -RedirectStandardError $ERR_LOG `
-                    -PassThru
-                DBG "Start-Process returned."
-                DBG "PID: $($proc.Id)"
+        # Parameter: Befehl, 0 (Fenster verstecken), $true (Synchron blockieren)
+        $exitCode = $wshell.Run("`"$PYW_EXE`" `"$RUN_CMD`" `"$EXEC_QUERY`"", 0, $true)
 
-                Start-Sleep -Milliseconds 200
+        DBG "Process finished cleanly with exit code: $exitCode"
+    } catch {
+        DBG "DEBUG: Failed to start background Python script: $_"
+    }
+}
 
-                DBG "HasExited: $($proc.HasExited)"
 
-                if ($proc.HasExited) {
-                    DBG "ExitCode: $($proc.ExitCode)"
-                }
-#                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -NoNewWindow
-#                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
-            } catch {
-                DBG "DEBUG: Start-Process failed: $_"
-            }
-        }
-        if ($SEARCH_CLOSE_ON_OPEN -eq "True") {
+################################ works hast the same effect 18.7.'26 10:46 Sat
+#if ($EXEC_QUERY) {
+#
+#    $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
+#    $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+#    $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
+#
+#    DBG "RUN_CMD: $RUN_CMD"
+#    DBG "PYW_EXE: $PYW_EXE"
+#    DBG "EXEC_QUERY: '$EXEC_QUERY'"
+#
+#    try {
+#        DBG "Launching completely hidden background process..."
+#
+#        $psi = [System.Diagnostics.ProcessStartInfo]::new()
+#        $psi.FileName = $PYW_EXE
+#        $psi.Arguments = "`"$RUN_CMD`" `"$EXEC_QUERY`""
+#        $psi.UseShellExecute = $false
+#        $psi.CreateNoWindow = $true  # Verhindert, dass das CMD-Fenster erscheint
+#
+#        # Diese 3 Zeilen verhindern, dass der Prozess dein Terminal blockiert oder stört
+#        $psi.RedirectStandardOutput = $true
+#        $psi.RedirectStandardError = $true
+#        $psi.RedirectStandardInput = $true
+#
+#        $proc = [System.Diagnostics.Process]::Start($psi)
+#
+#        DBG "Start-Process returned cleanly."
+#        DBG "PID: $($proc.Id)"
+#    } catch {
+#        DBG "DEBUG: Failed to start background Python script: $_"
+#    }
+#}
+
+       if ($SEARCH_CLOSE_ON_OPEN -eq "True") {
             DBG "DEBUG: $SEARCH_CLOSE_ON_OPEN is true -> exit 0"
             exit 0
-        } else { Start-Sleep -Milliseconds 300; continue }
+       } else { Start-Sleep -Milliseconds 300; continue }
 
     } # end key ... equal ctrl-r
         # parse path:line:content

@@ -2,10 +2,10 @@
 適切な地域: {country} |ヴォルシュラーク: {default_primary}
 
 # テキストヘルプ
-ターミナル モードのコードを変更します (Keine Sprachen)。
+ターミナル モードのコードを変更します (No languages)。
 
 # プロンプト_p
-Primäre Sprache (de, en... oder 'n' für nein, keine Sprache) - 8 Sekunden の自動化ツール
+Primary language (de, en... or 'n' for no, no language) - 8 Sekunden の自動化ツール
 
 # プロンプト_s
 Sekundäre Sprache (または 'none' デフォルト) - 8 Sekunden での自動実行

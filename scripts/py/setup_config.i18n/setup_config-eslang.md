@@ -2,10 +2,10 @@
 Región escrita: {país} | Vorschlag: {default_primary}
 
 # texto_ayuda
-Sprachcode se utiliza o se utiliza para el modo terminal (Keine Sprachen).
+Sprachcode se utiliza o se utiliza para el modo terminal (No languages).
 
 # mensaje_p
-Primäre Sprache (de, en... oder 'n' für nein, keine Sprache) - automatische Bestätigung in 8 Sekunden
+Primary language (de, en... or 'n' for no, no language) - automatische Bestätigung in 8 Sekunden
 
 # mensajes_s
 Sekundäre Sprache (o 'none' predeterminado): mejora automática en 8 segundos

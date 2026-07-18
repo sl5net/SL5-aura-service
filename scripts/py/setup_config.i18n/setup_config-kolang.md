@@ -2,10 +2,10 @@
 지역 지정: {국가} | Vorschlag: {default_primary}
 
 # 텍스트_도움말
-Sprachcode wählen oder 'n' für Terminal-Modus(Keine Sprachen).
+Sprachcode wählen oder 'n' für Terminal-Modus(No languages).
 
 # 프롬프트_p
-Primäre Sprache (de, en... oder 'n' für nein, keine Sprache) - automatische Bestätigung in 8 Sekunden
+Primary language (de, en... or 'n' for no, no language) - automatische Bestätigung in 8 Sekunden
 
 # 프롬프트_s
 Sekundäre Sprache(oder 'none' 기본값) - automatische Bestätigung in 8 Sekunden
