@@ -2,10 +2,10 @@
 地区：{国家} |原始状态：{default_primary}
 
 # 文本帮助
-终端模式的语言代码 (Keine Sprachen)。
+终端模式的语言代码 (No languages)。
 
 # 提示_p
-Primäre Sprache (de, en... oder 'n' für nein, keine Sprache) - 8 Sekunden 中的自动最佳表达
+Primary language (de, en... or 'n' for no, no language) - 8 Sekunden 中的自动最佳表达
 
 # 提示_s
 Sekundäre Sprache（或“无”默认）- 8 Sekunden 中的自动最佳提示

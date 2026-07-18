@@ -2,10 +2,10 @@
 Região Erkannt: {país} | Início: {default_primary}
 
 #text_help
-Sprachcode wählen ou 'n' für Terminal-Modus (Keine Sprachen).
+Sprachcode wählen ou 'n' für Terminal-Modus (No languages).
 
 # prompt_p
-Primäre Sprache (de, en... oder 'n' für nein, keine Sprache) - Bestätigung automático em 8 segundos
+Primary language (de, en... or 'n' for no, no language) - Bestätigung automático em 8 segundos
 
 # prompt_s
 Sekundäre Sprache (ou 'none' Default) - atualização automática em 8 segundos

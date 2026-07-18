@@ -2,10 +2,10 @@
 Région concernée : {pays} | Choix : {default_primary}
 
 # text_help
-Sprachcode wählen oder 'n' für Terminal-Modus (Keine Sprachen).
+Sprachcode wählen oder 'n' für Terminal-Modus (No languages).
 
 # prompt_p
-Primäre Sprache (de, en... oder 'n' für nein, keine Sprache) - Commande automatique en 8 secondes
+Primary language (de, en... or 'n' for no, no language) - Commande automatique en 8 secondes
 
 # invite_s
 Seconde étape (ou « aucun » par défaut) - Commande automatique en 8 secondes

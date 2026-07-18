@@ -2,10 +2,10 @@
 Obecny region: {kraj} | Vorschlag: {default_primary}
 
 # pomoc tekstowa
-Sprachcode wählen oder 'n' für Terminal-Modus (Keine Sprachen).
+Sprachcode wählen oder 'n' für Terminal-Modus (No languages).
 
 # podpowiedź_p
-Primäre Sprache (de, en... oder 'n' für nein, keine Sprache) - automatische Bestätigung in 8 Sekunden
+Primary language (de, en... or 'n' for no, no language) - automatische Bestätigung in 8 Sekunden
 
 # podpowiedzi
 Sekundäre Sprache (lub „brak” domyślnie) - automatische Bestätigung w 8 sekundach

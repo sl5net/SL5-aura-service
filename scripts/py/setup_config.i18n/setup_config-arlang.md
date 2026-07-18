@@ -2,7 +2,7 @@
  المنطقة الممكنة: {country} | فورشلاغ: {default_primary}
 
                                                            #نص_مساعدة
-           Sprachcode wählen oder \'n' für Terminal-Modus (Keine Sprachen).
+           Sprachcode wählen oder \'n' für Terminal-Modus (No languages).
 
                                                                 # موجه_ص
 Primäre Sprache (de, en... oder \'n' für nein, keine Sprache) - تحديد تلقائي في 8 ثواني

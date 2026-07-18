@@ -363,15 +363,15 @@ def find_folder_counts(root):
 
 
 def print_counts(info):
-    print(f"Repository documentation summary:")
+    print("Repository documentation summary:")
     print(f"  docs folder exists: {info['docs_exists']}, files: {len(info['docs_files'])}", file=sys.stderr)
     print(f"  doc_sources folder exists: {info['doc_sources_exists']}, files: {len(info['doc_sources_files'])}", file=sys.stderr)
     if info['i18n_folders']:
-        print(f"  i18n folders found:")
+        print("  i18n folders found:")
         for k, v in info['i18n_folders'].items():
             print(f"    {k} -> {len(v)} .md files", file=sys.stderr)
     else:
-        print(f"  no .i18n folders found.")
+        print("  no .i18n folders found.")
 
 
 def delete_path(path):
@@ -478,9 +478,9 @@ else:
 # --- New: show docs/doc_sources/i18n counts and ask about deletions ---
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 info = find_folder_counts(repo_root)
-print(f"")  # spacer
+print("")  # spacer
 print_counts(info)
-print(f"")
+print("")
 # Ask whether user wants to delete entire docs and/or doc_sources
 if info['docs_exists'] or info['doc_sources_exists']:
     # default to 'n' (no) after timeout
@@ -495,7 +495,7 @@ if info['docs_exists'] or info['doc_sources_exists']:
         ans_partial = timed_input("Delete only docs md files that are NOT the selected primary language? (y/n)", "n", timeout=8).lower()
         if ans_partial in ("y", "yes"):
             deleted, skipped = delete_non_primary_md(info, primary)
-            print(f"")
+            print("")
             print(f"Deleted {len(deleted)} files (attempted).", file=sys.stderr)
             if deleted:
                 for d in deleted:
@@ -508,5 +508,5 @@ if info['docs_exists'] or info['doc_sources_exists']:
                     else:
                         print(f"  - {s}", file=sys.stderr)
 else:
-    print(f"No docs or doc_sources folders detected; nothing to delete.", file=sys.stderr)
+    print("No docs or doc_sources folders detected; nothing to delete.", file=sys.stderr)
 # End
