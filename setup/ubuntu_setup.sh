@@ -88,12 +88,10 @@ echo "--> Setting up project directories and initial files..."
 python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 # ==============================================================================
-# --- 5. Download and Extract Required Components ---
+# --- 4.1. Download and Extract Required Components ---
 # This block intelligently handles downloads and extractions.
-# ==============================================================================
 echo "--> Checking for required components (LanguageTool, Vosk-Models)..."
-# --- Download/Extract block ---
-source "$SCRIPT_DIR/download_and_extract_helper.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/download_and_extract_helper.sh"
 # ==============================================================================
 
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"

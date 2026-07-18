@@ -1,3 +1,4 @@
+# download_and_extract_helper.sh
 # --- Configuration ---
 PREFIX="Z_"
 # Format: "BaseName FinalDirName DestinationPath"
