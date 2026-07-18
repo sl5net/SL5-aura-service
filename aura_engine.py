@@ -1251,7 +1251,7 @@ elif settings.SHOW_SEARCH_ON_STARTUP:
         logger.warning(f"1: Aura Welcome Wizard 🧙 err: {e}")
         logger.info(f"2: Aura Welcome Wizard 🧙 err: {e}")
 
-if settings.copy_zip_files_when_source_newer:
+if getattr(settings, "copy_zip_files_when_source_newer", False):
     from tools.copy_zip_files_when_source_newer import copy_zip_files_when_source_newer
     copy_zip_files_when_source_newer()
 
