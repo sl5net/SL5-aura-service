@@ -1,4 +1,8 @@
 #Requires AutoHotkey v2.0
+CoordMode("Mouse", "Screen")
+CoordMode("Caret", "Screen")
+CoordMode("Pixel", "Screen")
+
 ; trigger-hotkeys.ahk
 ; #SingleInstance Force ; is buggy, using Heartbeat mechanism instead
 #SingleInstance Off
@@ -103,6 +107,7 @@ return top_edge
 ; F12 -> Launch Search Rules / Command Palette on Windows
 ; ------------------------------------------------------------------
 *$f12::
+*$#y::
 {
     static lastPress := 0
     if (A_TickCount - lastPress < 900) ; Debounce protection

@@ -77,7 +77,6 @@ if (-not $MAPS_DIR) {
     exit 1
 }
 
-#$HISTORY_FILE   = Join-Path $MY_HOME ".search_rules_history"
 $TMP_DIR = if ($env:SystemDrive) { "C:\tmp" } else { "/tmp" }
 $AURA_TEMP = Join-Path $TMP_DIR "sl5_aura"
 if (-not (Test-Path $AURA_TEMP)) {
@@ -85,23 +84,9 @@ if (-not (Test-Path $AURA_TEMP)) {
 }
 $HISTORY_FILE = Join-Path $AURA_TEMP "search_rules_history.txt"
 
-# If the file doesn't exist, create an empty UTF8 file (no BOM)
-#if (-not (Test-Path $HISTORY_FILE)) {
-#    # On older PowerShell versions -Encoding utf8 may add BOM; try utf8NoBOM when available
-#    try {
-#        # pwsh/core supports utf8NoBOM
-#        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8NoBOM -Force
-#    } catch {
-#        # fallback for Windows PowerShell
-#        "" | Out-File -FilePath $HISTORY_FILE -Encoding utf8 -Force
-#    }
-#}
-
 if (-not (Test-Path $HISTORY_FILE)) {
     [System.IO.File]::WriteAllText($HISTORY_FILE, [string]::Empty)
 }
-
-
 
 # Deduplizieren: letztes Vorkommen behalten, Reihenfolge beibehalten
 if (Test-Path $HISTORY_FILE) {
@@ -334,6 +319,7 @@ $helperPreview = Join-Path $SCRIPT_DIR 'fzf_helpers\preview.ps1'
 
 $fzfArgs = @(
     "--print-query",
+    "--history=$HISTORY_FILE",
     "--expect", "ctrl-r,ctrl-e",
     "--delimiter", "`t",
     "--with-nth", "1",
