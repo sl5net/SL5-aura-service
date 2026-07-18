@@ -1,4 +1,4 @@
-﻿# scripts/search_rules/search_rules.ps1
+# scripts/search_rules/search_rules.ps1
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 param(
     [string]$MAPS_DIR = ""
