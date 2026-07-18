@@ -94,6 +94,10 @@ $f11::
     SetTimer(() => ToolTip(), -1500)
 }
 
+def calc_y(mouse_y, offset, height):
+    bottom_edge = mouse_y - offset
+    top_edge = bottom_edge - height
+return top_edge
 
 ; ------------------------------------------------------------------
 ; F12 -> Launch Search Rules / Command Palette on Windows
@@ -134,19 +138,40 @@ $f11::
 
 
         ; Run('powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' . ps_path . '"', bat_dir, , &psPID)
-          Run('wt.exe powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' . ps_path . '"', bat_dir, , &psPID)
 
         ; if WinWait("ahk_class CASCADIA_HOSTING_WINDOW_CLASS", , 3) {
         ;     WinActivate("ahk_class CASCADIA_HOSTING_WINDOW_CLASS")
         ; }
 
-        if WinWait("ahk_pid " . psPID, , 3) {
-            WinActivate("ahk_pid " . psPID)
+        Run('wt.exe powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' . ps_path . '"', bat_dir, , &psPID)
+        if (targetHWND := WinWait("powershell.exe", , 5)) {
+            WinActivate(targetHWND)
+
+
+			CoordMode("Mouse", "Screen")
+			CoordMode("Caret", "Screen")
+			CoordMode("Pixel", "Screen")
+
+            MouseGetPos(&mouseX, &mouseY)
+            WinGetPos(&currentX, &currentY, &currentW, , targetHWND)
+            targetX := currentX
+            targetHeight := 300
+            targetY := mouseY - 10 - targetHeight
+			Sleep(10)
+			WinSetAlwaysOnTop(true, targetHWND)
+
+            WinMove(targetX, targetY, currentW, targetHeight, targetHWND)
+			Sleep(10)
+            WinMove(targetX, targetY, currentW, targetHeight, targetHWND)
+			Sleep(10)
+            WinMove(targetX, targetY, currentW, targetHeight, targetHWND)
         }
 
     } catch as e {
         MsgBox("Error launching Search Rules: " . e.Message, "Aura Error", 16)
     }
+
+
 }
 
 #HotIf WinActive("ahk_class CASCADIA_HOSTING_WINDOW_CLASS")
