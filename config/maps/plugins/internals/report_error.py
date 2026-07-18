@@ -32,7 +32,7 @@ def execute(match_data):
     else:
         error_line = "No recent input found in memory."
         print(error_line)
-        returns= "Error in Log found."
+        returns= "Error in Log found (20260718_1100)."
         speak_inclusive_fallback(f"{returns}", 'de-DE')
         return returns
 

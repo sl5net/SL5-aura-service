@@ -136,12 +136,9 @@ return top_edge
         ; Neu: 3.7.'26 13:50 Fri
 
 
-
+        callerHWND := WinExist("A")
         ; Run('powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' . ps_path . '"', bat_dir, , &psPID)
 
-        ; if WinWait("ahk_class CASCADIA_HOSTING_WINDOW_CLASS", , 3) {
-        ;     WinActivate("ahk_class CASCADIA_HOSTING_WINDOW_CLASS")
-        ; }
 
         Run('wt.exe powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' . ps_path . '"', bat_dir, , &psPID)
         if (targetHWND := WinWait("powershell.exe", , 5)) {
@@ -165,13 +162,21 @@ return top_edge
             WinMove(targetX, targetY, currentW, targetHeight, targetHWND)
 			Sleep(10)
             WinMove(targetX, targetY, currentW, targetHeight, targetHWND)
+
+
+            ; 4. WAIT for this specific search terminal window to close
+            WinWaitClose(targetHWND)
+
+            ; 5. Once it closed, immediately refocus your original working window!
+            if WinExist(callerHWND) {
+                WinActivate(callerHWND)
+            }
+
         }
 
     } catch as e {
         MsgBox("Error launching Search Rules: " . e.Message, "Aura Error", 16)
     }
-
-
 }
 
 #HotIf WinActive("ahk_class CASCADIA_HOSTING_WINDOW_CLASS")
