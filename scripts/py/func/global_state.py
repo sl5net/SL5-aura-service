@@ -47,7 +47,7 @@ def add_recognition(text: str) -> None:
     Index 0: Previous input
     Index 1: Current input
     """
-    # This function may be called from multiple threads. Protect writes.
+    # Protect other threads write to it
     with SEQUENCE_LOCK.lock:
         _last_recognitions.append(text)
         if len(_last_recognitions) > _MAX_RECOGNITIONS:

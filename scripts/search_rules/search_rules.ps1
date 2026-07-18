@@ -120,7 +120,7 @@ if (Test-Path $HISTORY_FILE) {
 # Debug: print the path so you can verify (remove in production)
 Write-Host "Using history file: $HISTORY_FILE"
 
-$DEFAULT_QUERY = "Lauffer"
+$DEFAULT_QUERY = "# EXAMPLE:"
 $SEARCH_CLOSE_ON_OPEN = $env:SEARCH_CLOSE_ON_OPEN
 if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
     # Try to detect repo URL for GitHub open (prefer git remote)
@@ -508,7 +508,7 @@ while ($true) {
 
     #        DBG "DEBUG: try Executing run_palette_command: PYW_EXE:$PYW_EXE RUN_CMD:$RUN_CMD with query: '$EXEC_QUERY'"
 
-       if ($EXEC_QUERY) {
+        if ($EXEC_QUERY) {
             $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
             $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
             $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
@@ -520,40 +520,30 @@ while ($true) {
             DBG "EXEC_QUERY: '$EXEC_QUERY'"
 
 
-            try {
+        try {
+            DBG "Launching background process..."
 
-                DBG "Calling Start-Process..."
+            # 2. Use .NET ProcessStartInfo for completely detached, non-blocking execution
+            $psi = [System.Diagnostics.ProcessStartInfo]::new()
+            $psi.FileName = $PYW_EXE
+            $psi.Arguments = "`"$RUN_CMD`" `"$EXEC_QUERY`""
+            $psi.UseShellExecute = $false
+            $psi.CreateNoWindow = $true
 
-                # Detach process completely by redirecting output streams to prevent console locks
-                #                    -ArgumentList "-NoProfile", "-Command", "`"& '$PYW_EXE' '$RUN_CMD' '$EXEC_QUERY'; Start-Sleep -Milliseconds 400`"" `
+            $proc = [System.Diagnostics.Process]::Start($psi)
 
-                $proc = Start-Process `
-                    -FilePath $PYW_EXE `
-                    -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" `
-                    -WindowStyle Hidden `
-                    -RedirectStandardOutput "NUL" `
-                    -RedirectStandardError $ERR_LOG `
-                    -PassThru
-                DBG "Start-Process returned."
-                DBG "PID: $($proc.Id)"
-
-                Start-Sleep -Milliseconds 200
-
-                DBG "HasExited: $($proc.HasExited)"
-
-                if ($proc.HasExited) {
-                    DBG "ExitCode: $($proc.ExitCode)"
-                }
-#                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -NoNewWindow
-#                Start-Process -FilePath $PYW_EXE -ArgumentList "`"$RUN_CMD`"", "`"$EXEC_QUERY`"" -WindowStyle Hidden
-            } catch {
-                DBG "DEBUG: Start-Process failed: $_"
-            }
+            DBG "Start-Process returned cleanly."
+            DBG "PID: $($proc.Id)"
+        } catch {
+            DBG "DEBUG: Failed to start background Python script: $_"
         }
-        if ($SEARCH_CLOSE_ON_OPEN -eq "True") {
+
+
+       }
+       if ($SEARCH_CLOSE_ON_OPEN -eq "True") {
             DBG "DEBUG: $SEARCH_CLOSE_ON_OPEN is true -> exit 0"
             exit 0
-        } else { Start-Sleep -Milliseconds 300; continue }
+       } else { Start-Sleep -Milliseconds 300; continue }
 
     } # end key ... equal ctrl-r
         # parse path:line:content
