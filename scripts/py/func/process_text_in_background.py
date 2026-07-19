@@ -1485,13 +1485,13 @@ def process_text_in_background(logger,
                     if not SEQUENCE_LOCK.execute_only_event.is_set():
                         # is_inner_rule
                         execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
-                        logging.info(f"1522: execute_only={execute_only}")
-                        logging.info(f"1522: execute_only={execute_only}")
+                        # logging.info(f"1522: execute_only={execute_only}")
+                        # logging.info(f"1522: execute_only={execute_only}")
 
 
 
                         # logging.info(f"1523: execute_only={execute_only}")
-                        logging.info(f"1523: execute_only={execute_only}")
+                        # logging.info(f"1523: execute_only={execute_only}")
 
                         from scripts.py.func.global_state import SilentException
                         try:
@@ -1645,7 +1645,7 @@ def process_text_in_background(logger,
 
                     if SEQUENCE_LOCK.execute_only_event.is_set():
                         execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
-                        print(f'1684: execute_only={execute_only}')
+                        # print(f'1684: execute_only={execute_only}')
                         SEQUENCE_LOCK.execute_only_event.clear()
 
                         return '20260708_1937 no text after replacement'
@@ -2526,7 +2526,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                             resolve_execute_only(options_dict)
                         logging.info("_________________________________")
                         execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
-                        logging.info(f"2489: execute_only={execute_only}")
+                        # logging.info(f"2489: execute_only={execute_only}")
                         logging.info("__________________________________")
                         # logging.info(f"2411: flags={flags}")
 
