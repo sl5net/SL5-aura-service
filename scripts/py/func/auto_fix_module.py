@@ -32,16 +32,17 @@ def try_auto_fix_module(file_path, exception_obj, logger):
 
     if isinstance(exception_obj, str):
         logger.info("exception_obj, str -> return False")
-        return False, None
+        return False
 
     if not os.path.exists(file_path):
         logger.info(f"{file_path} not found  -> return False")
-        return False, None
+        return False
     # FIX: Only allow specific map filenames
     filename = os.path.basename(file_path)
     if filename not in ["PUNCTUATION_MAP.py", "FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
         logger.info(f"{filename} not found  -> return False")
-        return False, None
+        return False
+
 
     ln = 32 # noqa: E741
     error_msg = str(exception_obj)

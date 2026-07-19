@@ -17,7 +17,8 @@ except Exception as e:
 log_file = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
-logger = logging.getLogger(log_file)
+logger = logging.getLogger(str(log_file))
+logger.setLevel(logging.DEBUG)
 
 
 def insert_template_rule(fuzzy_map_file: Path, content: str, catch_all_start: int, text: str = "nix"):

@@ -1,14 +1,14 @@
 #تم اكتشاف_النص
- المنطقة الممكنة: {country} | فورشلاغ: {default_primary}
+المنطقة المكتشفة: {country} | الاقتراح: {default_primary}
 
                                                            #نص_مساعدة
-           Sprachcode wählen oder \'n' für Terminal-Modus (No languages).
+حدد رمز اللغة أو "n" للوضع الطرفي (بدون لغات).
 
                                                                 # موجه_ص
-Primäre Sprache (de, en... oder \'n' für nein, keine Sprache) - تحديد تلقائي في 8 ثواني
+اللغة الأساسية (de، en... أو \'n' for none) - التأكيد التلقائي خلال 8 ثوانٍ
 
                                                                  # موجه_s
-Sekundäre Sprache (أو "لا شيء" افتراضي) - تحديد تلقائي في 8 ثواني
+اللغة الثانوية (أو الافتراضي "لا شيء") - التأكيد التلقائي خلال 8 ثوانٍ
 
                                                   #تم اكتشاف_النص
 المنطقة المكتشفة: {country} | المقترح: {default_primary}

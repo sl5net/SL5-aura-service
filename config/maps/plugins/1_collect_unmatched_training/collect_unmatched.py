@@ -25,4 +25,4 @@ def execute(match_data: dict):
         print(f'ERROR: text empty {text}')
         return None
     process_unmatched_text(file_rule_path, text)
-    sys.exit(1)
+    raise Exception('no text after replacement')

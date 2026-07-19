@@ -1,14 +1,14 @@
 # 텍스트_감지됨
-지역 지정: {국가} | Vorschlag: {default_primary}
+감지된 지역: {국가} | 제안: {default_primary}
 
 # 텍스트_도움말
-Sprachcode wählen oder 'n' für Terminal-Modus(No languages).
+터미널 모드(언어 없음)의 경우 언어 코드 또는 'n'을 선택하십시오.
 
 # 프롬프트_p
-Primary language (de, en... or 'n' for no, no language) - automatische Bestätigung in 8 Sekunden
+기본 언어(de, en... 또는 없음의 경우 'n') - 8초 내에 자동 확인
 
 # 프롬프트_s
-Sekundäre Sprache(oder 'none' 기본값) - automatische Bestätigung in 8 Sekunden
+보조 언어(또는 '없음' 기본값) – 8초 안에 자동 확인
 
 # 텍스트_감지됨
 감지된 지역: {국가} | 제안: {default_primary}

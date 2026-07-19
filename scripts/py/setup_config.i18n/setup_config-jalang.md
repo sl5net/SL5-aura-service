@@ -1,14 +1,14 @@
 # text_detected
-適切な地域: {country} |ヴォルシュラーク: {default_primary}
+検出された地域: {国} |提案: {default_primary}
 
 # テキストヘルプ
-ターミナル モードのコードを変更します (No languages)。
+言語コードを選択するか、ターミナル モード (言語なし) の場合は「n」を選択します。
 
 # プロンプト_p
-Primary language (de, en... or 'n' for no, no language) - 8 Sekunden の自動化ツール
+第一言語 (de、en...、またはなしの場合は「n」) – 8 秒以内に自動確認
 
 # プロンプト_s
-Sekundäre Sprache (または 'none' デフォルト) - 8 Sekunden での自動実行
+第 2 言語 (またはデフォルトは「なし」) – 8 秒以内に自動確認
 
 # text_detected
 検出された地域: {国} |推奨: {default_primary}

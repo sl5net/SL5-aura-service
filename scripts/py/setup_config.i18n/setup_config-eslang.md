@@ -1,14 +1,14 @@
 # texto_detectado
-Región escrita: {país} | Vorschlag: {default_primary}
+Región detectada: {país} | Sugerencia: {default_primary}
 
 # texto_ayuda
-Sprachcode se utiliza o se utiliza para el modo terminal (No languages).
+Seleccione el código de idioma o 'n' para el modo terminal (sin idiomas).
 
 # mensaje_p
-Primary language (de, en... or 'n' for no, no language) - automatische Bestätigung in 8 Sekunden
+Idioma principal (de, en... o 'n' para ninguno): confirmación automática en 8 segundos
 
 # mensajes_s
-Sekundäre Sprache (o 'none' predeterminado): mejora automática en 8 segundos
+Idioma secundario (o predeterminado 'ninguno'): confirmación automática en 8 segundos
 
 # texto_detectado
 Región detectada: {país} | Sugerido: {default_primary}

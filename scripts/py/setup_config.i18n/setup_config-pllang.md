@@ -1,14 +1,14 @@
 # wykryto_tekst
-Obecny region: {kraj} | Vorschlag: {default_primary}
+Wykryty region: {kraj} | Sugestia: {default_primary}
 
 # pomoc tekstowa
-Sprachcode wählen oder 'n' für Terminal-Modus (No languages).
+Wybierz kod języka lub „n” dla trybu terminala (bez języków).
 
 # podpowiedź_p
-Primary language (de, en... or 'n' for no, no language) - automatische Bestätigung in 8 Sekunden
+Język podstawowy (de, en... lub „n” w przypadku braku) – automatyczne potwierdzenie w ciągu 8 sekund
 
 # podpowiedzi
-Sekundäre Sprache (lub „brak” domyślnie) - automatische Bestätigung w 8 sekundach
+Język dodatkowy (lub domyślnie „brak”) – automatyczne potwierdzenie w ciągu 8 sekund
 
 # wykryto_tekst
 Wykryty region: {kraj} | Sugerowane: {default_primary}

@@ -1,19 +1,19 @@
 #text_detectado
-Região Erkannt: {país} | Início: {default_primary}
+Região detectada: {country} | Sugestão: {default_primary}
 
 #text_help
-Sprachcode wählen ou 'n' für Terminal-Modus (No languages).
+Selecione o código do idioma ou 'n' para o modo terminal (sem idiomas).
 
 # prompt_p
-Primary language (de, en... or 'n' for no, no language) - Bestätigung automático em 8 segundos
+Idioma principal (de, en... ou 'n' para nenhum) – confirmação automática em 8 segundos
 
 # prompt_s
-Sekundäre Sprache (ou 'none' Default) - atualização automática em 8 segundos
+Idioma secundário (ou padrão 'nenhum') – confirmação automática em 8 segundos
 
 #text_detectado
-Região detectada: {país} | Sugerido: {default_primary}
+Região detectada: {country} | Sugerido: {default_primary}
 
-#text_help
+#texto_ajuda
 Selecione o idioma ou digite 'n' para Modo Terminal (Sem Idiomas).
 
 # prompt_p
