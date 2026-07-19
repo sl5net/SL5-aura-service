@@ -116,7 +116,7 @@ python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 # --- 4.1. Download and Extract Required Components ---
 # This block intelligently handles downloads and extractions.
 echo "--> Checking for required components (LanguageTool, Vosk-Models)..."
-source "$(dirname "${BASH_SOURCE[0]}")/download_and_extract_helper.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
 # ==============================================================================
 
 
