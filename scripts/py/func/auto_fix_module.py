@@ -43,10 +43,10 @@ def try_auto_fix_module(file_path, exception_obj, logger):
         logger.info(f"{filename} not found  -> return False")
         return False, None
 
-    l = 32 # noqa: E741
+    ln = 32 # noqa: E741
     error_msg = str(exception_obj)
     if isinstance(exception_obj, TypeError) and "not callable" in error_msg:
-        logger.error(f"L{l}: 🚨 Critical Syntax Hint  …{str(file_path)[-35:]}:")
+        logger.error(f"L{ln}: 🚨 Critical Syntax Hint  …{str(file_path)[-35:]}:")
         logger.error(f"      👉 ERROR: {error_msg}")
         logger.error("      💡 HINT: Did you forget a comma between rules in your map? "
                      "Python thinks you want to call a tuple as a function!")

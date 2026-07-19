@@ -1,14 +1,14 @@
 # text_detected
-Region erkannt: {country} | Vorschlag: {default_primary}
+Region detected: {country} | Suggestion: {default_primary}
 
 # text_help
-Sprachcode wählen oder 'n' für Terminal-Modus (Keine Sprachen).
+Select language code or 'n' for terminal mode (no languages).
 
 # prompt_p
-Primäre Sprache (de, en... oder 'n' für nein, keine Sprache) - automatische Bestätigung in 8 Sekunden
+Primary language (de, en... or 'n' for none) – automatic confirmation in 8 seconds
 
 # prompt_s
-Sekundäre Sprache (oder 'none' Default) - automatische Bestätigung in 8 Sekunden
+Secondary language (or 'none' default) – automatic confirmation in 8 seconds
 
 # text_detected
 Region detected: {country} | Suggested: {default_primary}

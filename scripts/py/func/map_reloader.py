@@ -227,19 +227,18 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
 
                 except (NameError, SyntaxError) as e:
-                    l = 215 # noqa: E741
-                    # logger.error(f"L{l}:🚨 Error Import: {e}")
-                    logger.error(f"L{l}:🚨 Error in Map …{str(map_file_path)[-35:]}: {e}")
+                    ln = 215 # noqa: E741
+                    logger.error(f"L{ln}:🚨 Error in Map …{str(map_file_path)[-35:]}: {e}")
                     e_lineno = ''
                     if isinstance(e, SyntaxError):
                         e_lineno = e.lineno
-                        logger.error(f"L{l} :🚨 Error in Map …{str(e.filename)[-35:]}, Line {e_lineno}")
+                        logger.error(f"L{ln} :🚨 Error in Map …{str(e.filename)[-35:]}, Line {e_lineno}")
                     else:
-                        logger.error(f"L{l} :🚨 Error in Map …{str(e.filename)[-35:]} {e}")
-                    l += 1
-                    logger.error(f"L{l}: {module_name}")
-                    l += 1
-                    logger.error(f"L{l}: {relative_path}")
+                        logger.error(f"L{ln} :🚨 Error in Map …{str(e.filename)[-35:]} {e}")
+                    ln += 1
+                    logger.error(f"L{ln}: {module_name}")
+                    ln += 1
+                    logger.error(f"L{ln}: {relative_path}")
                     was_fixed = try_auto_fix_module(relative_path, e, logger)
                     if was_fixed:
                         logger.info("🔧 Fix successful. Reload...")
