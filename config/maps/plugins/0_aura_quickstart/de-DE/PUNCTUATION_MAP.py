@@ -2,12 +2,4 @@
 
 # from->too
 PUNCTUATION_MAP = {
-    # EXAMPLE: hallo
-    # EXAMPLE: welt
-    # EXAMPLE: nix
-    # EXAMPLE: gut
-    'hallo': 'hallo',
-    'welt': 'welt',
-    'nix': 'nix',
-    'gut': 'gut',
 }

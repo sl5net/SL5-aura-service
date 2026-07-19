@@ -2,8 +2,4 @@
 
 # from->too
 PUNCTUATION_MAP = {
-    'hallo': 'hallo',
-    'welt': 'welt',
-    'nix': 'nix',
-    'gut': 'gut',
 }
