@@ -28,7 +28,7 @@ def try_auto_fix_module(file_path, exception_obj, logger):
     """
 
     if file_path is None or exception_obj is None:
-        return False, None
+        return False
 
     if isinstance(exception_obj, str):
         logger.info("exception_obj, str -> return False")
