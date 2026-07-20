@@ -20,7 +20,7 @@ FUZZY_MAP_pre = [
      {
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
-         'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
      }),
 
@@ -37,7 +37,7 @@ FUZZY_MAP_pre = [
      {
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
-         'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
          # 'cache': False
      }),
@@ -49,7 +49,7 @@ FUZZY_MAP_pre = [
      {
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
-         'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
      }),
 
@@ -60,7 +60,7 @@ FUZZY_MAP_pre = [
      {
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
-         'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
          # 'cache': False
      }),
@@ -74,7 +74,7 @@ FUZZY_MAP_pre = [
      {
          'flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
-         'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
+         'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
      }),
 
