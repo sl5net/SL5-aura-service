@@ -57,6 +57,12 @@ INTEGRITY_CHECKS = {
         # "raise Exception('",
     ],
 
+    'config/maps/plugins/1_collect_unmatched_training/collect_unmatched.py': [
+        "sys.path.insert(0, str(Path(__file__).parent / 'helpers'))",
+        "{__name__}.log",
+        "raise Exception('",
+    ],
+
     '.gitignore': [
         'data/**/_*',
         'config/maps/**/_*',

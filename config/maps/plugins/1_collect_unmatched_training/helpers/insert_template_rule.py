@@ -1,3 +1,4 @@
+# config/maps/plugins/1_collect_unmatched_training/helpers/insert_template_rule.py:1
 """
 insert_template_rule.py
 Insert a template rule right before the catch-all rule."""
@@ -7,12 +8,8 @@ import os
 from pathlib import Path
 import logging
 
-try:
-    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-except Exception as e:
-    print(e)
-    raise
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
 log_file = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
 

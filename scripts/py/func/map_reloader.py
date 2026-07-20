@@ -234,7 +234,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
                         e_lineno = e.lineno
                         logger.error(f"L{ln} :🚨 Error in Map …{str(e.filename)[-35:]}, Line {e_lineno}")
                     else:
-                        logger.error(f"L{ln} :🚨 Error in Map …{str(e.filename)[-35:]} {e}")
+                        logger.error(f"L{ln} :🚨 Error in Map …{str(map_file_path)[-35:]} {e}")
+
                     ln += 1
                     logger.error(f"L{ln}: {module_name}")
                     ln += 1
@@ -253,7 +254,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
 
                         except Exception as retry_error:
-                            logger.info(f"🚨 ❌ Fix failed: {retry_error} in Map:  …{str(e.filename)[-35:]}, Line {e_lineno}")
+                            logger.info(
+                                f"🚨 ❌ Fix failed: {retry_error} in Map:  …{str(map_file_path)[-35:]}, Line {e_lineno}")
                             LAST_MODIFIED_TIMES[map_file_key] = 0
 
                     else:

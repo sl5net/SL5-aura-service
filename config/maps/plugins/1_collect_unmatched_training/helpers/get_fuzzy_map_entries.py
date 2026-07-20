@@ -1,6 +1,28 @@
+# config/maps/plugins/1_collect_unmatched_training/helpers/get_fuzzy_map_entries.py
 """Parse a FUZZY_MAP_pre.py file's source and locate its top-level rule entries."""
 
 import ast
+import logging
+import os
+from pathlib import Path
+
+_tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+PROJECT_ROOT = Path((_tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+log_dir = PROJECT_ROOT / "log"
+_logger = logging.getLogger(__name__)
+_logger.setLevel(logging.INFO)
+_logger.propagate = False  # don't bubble up to the root logger / aura_engine.log
+
+if not _logger.handlers:
+    _handler = logging.FileHandler(str(log_dir / f"{__name__}.log"))
+    _handler.setFormatter(logging.Formatter(
+        "%(asctime)s,%(msecs)03d - %(threadName)s - %(levelname)s - %(message)s",
+        datefmt="%H:%M:%S",
+    ))
+    _logger.addHandler(_handler)
+def log(msg: str) -> None:
+    logging.info(msg)
 
 
 def get_fuzzy_map_entries(content: str):
@@ -44,6 +66,20 @@ def get_fuzzy_map_entries(content: str):
     entries = []
     for el in list_node.elts:
         start = to_offset(el.lineno, el.col_offset)
-        end = to_offset(el.end_lineno, el.end_col_offset)
+
+        # https://stackoverflow.com/ai-assist/shared/decccb81-1cfb-4907-84d1-1dc13a1763df
+        seg = ast.get_source_segment(content, el)
+        if seg is not None:
+            end = start + len(seg)
+        else:
+            # fallback: use start (zero-length) or skip
+            end = start
+
+        # end = to_offset(el.end_lineno, el.end_col_offset)
         entries.append((start, end))
+
+    log(f'entries={entries}')
+    for i, (s, e) in enumerate(entries):
+        log(f'entry {i}: repr={content[s:e]!r}')
+
     return entries

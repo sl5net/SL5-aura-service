@@ -1,3 +1,4 @@
+# config/maps/plugins/1_collect_unmatched_training/helpers/find_catch_all_index.py
 """Locate the catch-all rule among a FUZZY_MAP_pre list's entries."""
 
 
@@ -13,6 +14,6 @@ def find_catch_all_index(content: str, entries: list):
     if marker_pos == -1:
         return None
     for i, (start, end) in enumerate(entries):
-        if start <= marker_pos < end:
+        if 'collect_unmatched' in content[start:end]:
             return i
     return None

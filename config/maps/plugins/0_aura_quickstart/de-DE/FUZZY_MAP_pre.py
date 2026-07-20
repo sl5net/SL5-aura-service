@@ -39,10 +39,11 @@ FUZZY_MAP_pre = [
     # aura lernen wodurch abschleifen
 
     # EXAMPLE: Lernmodus einschalten ausschalten
-    ('Lernmodus...', fr'^{AURA_VARIANTS}.*(lern|leeren|lernen|Lärm|Herr)\s*(modus|wodurch) (an\w*|ein\w*|aus\w*|aussch\w+|absch\w+|starten|stoppen|aktivier\w+|DEAKTIVIER\w*)\s*\w*$', 100, {
+    ('Lernmodus...', fr'^({AURA_VARIANTS}|Lauer leer).*(lern|leeren|lernen|Lärm|Herr)?\s*(modus|mode|muss|wodurch)\s*(an\w*|ein\w*|aus\w*|aussch\w+|absch\w+|starten|stoppen|aktivier\w+|DEAKTIVIER\w*)?\s*\w*$', 100, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),
+
 
 
     # --- Training-Plugin (wird vom Skript oben ein/ausgeschaltet) ---

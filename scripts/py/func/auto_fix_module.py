@@ -163,11 +163,11 @@ def _apply_fix_name_error(file_path, bad_name, logger):
         has_import = any("import re" in line for line in lines[:5])
         if not has_import and filename in ["FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
             temp = """import re # noqa: F401
-from pathlib import Path; import os; PROJECT_ROOT = Path(os.environ["SL5NET_AURA_PROJECT_ROOT"]) # noqa: E702
-# if you run a map file standalone outside the engine read: ('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8')
-            
+from pathlib import Path as p;import os as o # noqa: E702
+with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+
 #(f'{str(__file__)}', r'^(.*)$', 10,{'on_match_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
-            """
+                        """
             lines.insert(1, f"{temp}\n")
             fixed_content = True
         # --- HEADER CLEANUP END ---
