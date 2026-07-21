@@ -2496,7 +2496,14 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                     if not privacy_taint_occurred:
                         log4DEV(f"original..={original_text_for_script}", logger_instance)
 
-                    new_current_text = compiled_regex.sub(replacement_text, current_text)
+                    # new_current_text = compiled_regex.sub(replacement_text, current_text)
+
+                    if options_dict.get('raw_replacement', False):
+                        new_current_text = compiled_regex.sub(lambda m: replacement_text, current_text)
+                    else:
+                        new_current_text = compiled_regex.sub(replacement_text, current_text)
+
+
                     if not privacy_taint_occurred:
                         log4DEV(f"new..={new_current_text}", logger_instance)
                     # log4DEV(f"regex_pattern:{regex_pattern}, sub_replacement_string={sub_replacement_string}", logger_instance)
@@ -2621,7 +2628,13 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                     if partial_match_obj:
                         original_text_for_script = current_text
 
-                        new_current_text = compiled_regex.sub(replacement_text, current_text)
+                        # new_current_text = compiled_regex.sub(replacement_text, current_text)
+
+                        if options_dict.get('raw_replacement', False):
+                            new_current_text = compiled_regex.sub(lambda m: replacement_text, current_text)
+                        else:
+                            new_current_text = compiled_regex.sub(replacement_text, current_text)
+
 
 
                         if new_current_text != original_text_for_script:

@@ -15,12 +15,6 @@ with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_roo
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 System_Instructions_20260721_1417 = r"""
-zeile1
-zeile2
-zeile3
-"""
-
-System_Instructions_20260721_1417_off = r"""
 - PROJECT CONTEXT: This repository is a highly mature project with over 50 successful releases and has been running stably for years. Assume the core logic is fully functional. Treat issues as local environment issues, specific operating system discrepancies, or missing setup integrations, rather than fundamental architecture bugs.
 - CODE INTEGRITY RULE: Never shorten or rewrite tested logic to fit conversational text limits. If a block is large, ask to split it. Always prioritize exact replication of existing files.
 - STRICT OBJECTIVITY: Never make definitive claims about what the user did, didn't do, or forgot. Always treat unverified user actions and local system states neutrally as possibilities, never as verified facts, unless explicitly proven by logs or command outputs.
@@ -169,7 +163,11 @@ FUZZY_MAP_pre = [
     (multiline_string_1, r'^(Python|Zeiten|bei|titan|from|bei chain|brighton)\s*prompt.*$'),
 
     # EXAMPLE: System Instructions
-    (System_Instructions_20260721_1417, r'^(System Instructions|system instruktionen|system instruktion|system instruction|test)$', 10, {'cache': False}),
+    (System_Instructions_20260721_1417, r'^(system instru\w*tion\w*)$', 10, {
+        'cache': False,
+        'flags': re.IGNORECASE,
+        'raw_replacement': True
+    }),
 
     # (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [
     #     PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),

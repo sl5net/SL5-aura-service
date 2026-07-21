@@ -117,6 +117,28 @@ export INPUT_METHOD
 
 do_type() {
     local text="$1"
+    local len=${#text}
+
+    if [ "$len" -gt 300 ]; then
+        if [[ "$DISPLAY_SERVER" == "wayland" ]] && command -v wl-copy &>/dev/null; then
+            printf '%s' "$text" | wl-copy
+            if [[ "$INPUT_METHOD" == "dotool" ]]; then
+                { echo "key ctrl+v"; sleep 0.05; } | dotool
+            else
+                LC_ALL=C.UTF-8 timeout 1 xdotool key ctrl+v
+            fi
+            return
+        elif [[ "$DISPLAY_SERVER" == "x11" ]] && command -v xclip &>/dev/null; then
+            printf '%s' "$text" | xclip -selection clipboard
+            if [[ "$INPUT_METHOD" == "dotool" ]]; then
+                { echo "key ctrl+v"; sleep 0.05; } | dotool
+            else
+                LC_ALL=C.UTF-8 timeout 1 xdotool key ctrl+v
+            fi
+            return
+        fi
+    fi
+
     if [[ "$INPUT_METHOD" == "dotool" ]]; then
         {
             echo "typedelay 1"
@@ -127,7 +149,7 @@ do_type() {
                 else
                     echo "key enter"
                 fi
-                echo "type $line"
+                printf 'type %s\n' "$line"
             done <<< "$text"
             sleep 0.05
         } | dotool
