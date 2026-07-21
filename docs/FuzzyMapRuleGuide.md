@@ -6,12 +6,39 @@
 ('replacement', r'regex_pattern', threshold, {'flags': re.IGNORECASE})
 ```
 
-| Position | Name | Description |
+| Position | Name | Description                                                                      |
 |---|---|---|
 | 1 | replacement | The output text after the rule matches |
 | 2 | pattern | Regex or fuzzy string to match against |
-| 3 | threshold | Ignored for regex rules. Used for fuzzy matching (0–100) |
-| 4 | flags | `{'flags': re.IGNORECASE}` for case-insensitive, `0` for case-sensitive |
+| 3 | threshold | For regex rules: ignored. For fuzzy rules: minimum match score (0–100) |
+| 4 | options | Optional dictionary (see "Options Reference" below). Use `0` or omit for defaults |
+### Raw Replacements
+By default (`False`), replacement strings are processed by Python's `re.sub()`, which supports using regex backreferences like `\1` or `\2` to insert captured groups (for example: `(r'\1', r'(\d)\s+(?=\d)', 95)`). 
+If your replacement is a multiline string or contains unescaped backslashes (such as code templates or paths) and should be preserved exactly as-is, enable `'raw_replacement': True` in the options dictionary:
+```python
+(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+```
+
+### Available user-configurable options:
+
+*   **`flags`** (integer): Regex flags used during pattern compilation.
+    *Example:* `{'flags': re.IGNORECASE}`
+*   **`raw_replacement`** (boolean): When `True`, the replacement text is treated as a pure string literal and bypassed by Python's `re.sub` backslash parsing. Crucial for multiline prompts or strings with unescaped backslashes (`\`).
+    *Example:* `{'raw_replacement': True}`
+*   **`cache`** (boolean): Toggles the AURA result cache. Set to `False` for rules that generate dynamic output (e.g., current time, random jokes) to ensure they are evaluated fresh on every match.
+    *Example:* `{'cache': False}`
+*   **`skip_list`** (list of strings): Specifies post-processing pipeline modules to skip when this rule matches.
+    *Example:* `{'skip_list': ['LanguageTool']}` (skips grammar checking)
+*   **`only_in_windows`** (string/regex): Restricts the rule to only trigger if the active window title matches this pattern.
+    *Example:* `{'only_in_windows': 'google ai studio'}`
+*   **`exclude_windows`** (string/regex): Prevents the rule from triggering if the active window title matches this pattern.
+    *Example:* `{'exclude_windows': 'Terminal'}`
+*   **`on_match_exec`** (list of Path/string objects): Paths to scripts/plugins that should be executed when this rule matches (used heavily by catch-all and fallback rules).
+    *Example:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+
+## Pipeline Logic
+- Rules are processed **top-down**
+
 
 ## Pipeline Logic
 

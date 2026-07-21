@@ -10,8 +10,35 @@
 |---|---|---|
 | 1 | Ersatz | Der Ausgabetext nach der Regel stimmt mit | überein
 | 2 | Muster | Regex oder Fuzzy-String zum Vergleich mit |
-| 3 | Schwelle | Wird für Regex-Regeln ignoriert. Wird für Fuzzy-Matching verwendet (0–100) |
-| 4 | Flaggen | `{'flags': re.IGNORECASE}` für Groß-/Kleinschreibung, `0` für Groß-/Kleinschreibung |
+| 3 | Schwelle | Für Regex-Regeln: ignoriert. Für Fuzzy-Regeln: Mindestübereinstimmungspunktzahl (0–100) |
+| 4 | Optionen | Optionales Wörterbuch (siehe „Optionsreferenz“ unten). Für Standardwerte | verwenden Sie „0“ oder lassen es weg
+### Roher Ersatz
+Standardmäßig („False“) werden Ersetzungszeichenfolgen von Pythons „re.sub()“ verarbeitet, das die Verwendung von Regex-Rückverweisen wie „\1“ oder „\2“ zum Einfügen erfasster Gruppen unterstützt (zum Beispiel: „(r'\1‘, r‘(\d)\s+(?=\d)‘, 95)‘).
+Wenn Ihre Ersetzung eine mehrzeilige Zeichenfolge ist oder Backslashes ohne Escapezeichen enthält (z. B. Codevorlagen oder Pfade) und genau so beibehalten werden soll, wie sie ist, aktivieren Sie „raw_replacement“: True im Optionswörterbuch:
+```python
+(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+```
+
+### Verfügbare vom Benutzer konfigurierbare Optionen:
+
+* **`Flags`** (Ganzzahl): Regex-Flags, die während der Musterkompilierung verwendet werden.
+*Beispiel:* `{'flags': re.IGNORECASE}`
+* **`raw_replacement`** (boolean): Bei „True“ wird der Ersetzungstext als reines String-Literal behandelt und durch Pythons „re.sub“-Backslash-Analyse umgangen. Entscheidend für mehrzeilige Eingabeaufforderungen oder Zeichenfolgen mit Backslashes ohne Escapezeichen (`\`).
+*Beispiel:* `{'raw_replacement': True}`
+* **`cache`** (boolean): Schaltet den AURA-Ergebniscache um. Für Regeln, die dynamische Ausgaben generieren (z. B. aktuelle Uhrzeit, zufällige Witze), auf „False“ setzen, um sicherzustellen, dass sie bei jedem Spiel neu ausgewertet werden.
+*Beispiel:* `{'cache': False}`
+* **`skip_list`** (Liste von Zeichenfolgen): Gibt Nachbearbeitungs-Pipeline-Module an, die übersprungen werden sollen, wenn diese Regel übereinstimmt.
+*Beispiel:* `{'skip_list': ['LanguageTool']}` (überspringt die Grammatikprüfung)
+* **`only_in_windows`** (String/Regex): Beschränkt die Regel so, dass sie nur dann ausgelöst wird, wenn der Titel des aktiven Fensters mit diesem Muster übereinstimmt.
+*Beispiel:* `{'only_in_windows': 'google ai studio'}`
+* **`exclude_windows`** (String/Regex): Verhindert, dass die Regel ausgelöst wird, wenn der Titel des aktiven Fensters mit diesem Muster übereinstimmt.
+*Beispiel:* `{'exclude_windows': 'Terminal'}`
+* **`on_match_exec`** (Liste von Pfad-/String-Objekten): Pfade zu Skripten/Plugins, die ausgeführt werden sollen, wenn diese Regel übereinstimmt (wird häufig von Catch-All- und Fallback-Regeln verwendet).
+*Beispiel:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+
+## Pipeline-Logik
+- Regeln werden **top-down** verarbeitet
+
 
 ## Pipeline-Logik
 

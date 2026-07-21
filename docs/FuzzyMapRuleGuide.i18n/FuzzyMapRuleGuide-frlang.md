@@ -10,8 +10,35 @@
 |---|---|---|
 | 1 | remplacement | Le texte de sortie après la correspondance de la règle |
 | 2 | modèle | Regex ou chaîne floue à comparer |
-| 3 | seuil | Ignoré pour les règles regex. Utilisé pour la correspondance floue (0–100) |
-| 4 | drapeaux | `{'flags' : re.IGNORECASE}` pour insensible à la casse, `0` pour sensible à la casse |
+| 3 | seuil | Pour les règles regex : ignorées. Pour les règles floues : score de correspondance minimum (0–100) |
+| 4 | options | Dictionnaire facultatif (voir « Référence des options » ci-dessous). Utilisez « 0 » ou omettez les valeurs par défaut |
+### Remplacements bruts
+Par défaut (`False`), les chaînes de remplacement sont traitées par `re.sub()` de Python, qui prend en charge l'utilisation de références arrière d'expression régulière comme `\1` ou `\2` pour insérer des groupes capturés (par exemple : `(r'\1', r'(\d)\s+(?=\d)', 95)`).
+Si votre remplacement est une chaîne multiligne ou contient des barres obliques inverses non échappées (telles que des modèles de code ou des chemins) et doit être conservé exactement tel quel, activez « raw_replacement : True » dans le dictionnaire d'options :
+```python
+(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+```
+
+### Options configurables par l'utilisateur disponibles :
+
+* **`flags`** (entier) : indicateurs Regex utilisés lors de la compilation du modèle.
+*Exemple :* `{'flags' : re.IGNORECASE}`
+* **`raw_replacement`** (booléen) : Lorsque `True`, le texte de remplacement est traité comme une chaîne littérale pure et contourné par l'analyse de la barre oblique inverse `re.sub` de Python. Crucial pour les invites multilignes ou les chaînes avec des barres obliques inverses non échappées (`\`).
+*Exemple :* `{'raw_replacement' : True}`
+* **`cache`** (booléen) : bascule le cache des résultats AURA. Définissez sur « False » pour les règles qui génèrent une sortie dynamique (par exemple, l'heure actuelle, des blagues aléatoires) afin de garantir qu'elles sont évaluées à nouveau à chaque match.
+*Exemple :* `{'cache' : Faux}`
+* **`skip_list`** (liste de chaînes) : Spécifie les modules de pipeline de post-traitement à ignorer lorsque cette règle correspond.
+*Exemple :* `{'skip_list' : ['LanguageTool']}` (ignore la vérification grammaticale)
+* **`only_in_windows`** (string/regex) : restreint la règle au déclenchement uniquement si le titre de la fenêtre active correspond à ce modèle.
+*Exemple :* `{'only_in_windows' : 'google ai studio'}`
+* **`exclude_windows`** (string/regex) : empêche la règle de se déclencher si le titre de la fenêtre active correspond à ce modèle.
+*Exemple :* `{'exclude_windows' : 'Terminal'}`
+* **`on_match_exec`** (liste des objets Path/string) : chemins vers les scripts/plugins qui doivent être exécutés lorsque cette règle correspond (fortement utilisé par les règles fourre-tout et de secours).
+*Exemple :* `{'on_match_exec' : [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+
+## Logique du pipeline
+- Les règles sont traitées **de haut en bas**
+
 
 ## Logique du pipeline
 

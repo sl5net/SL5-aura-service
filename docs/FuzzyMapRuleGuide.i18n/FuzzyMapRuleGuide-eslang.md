@@ -10,8 +10,35 @@
 |---|---|---|
 | 1 | reemplazo | El texto de salida después de la regla coincide con |
 | 2 | patrón | Regex o cadena difusa para comparar |
-| 3 | umbral | Ignorado por reglas de expresiones regulares. Se utiliza para coincidencias aproximadas (0–100) |
-| 4 | banderas | `{'flags': re.IGNORECASE}` para que no distinga entre mayúsculas y minúsculas, `0` para que distinga entre mayúsculas y minúsculas |
+| 3 | umbral | Para reglas de expresiones regulares: ignoradas. Para reglas difusas: puntuación mínima de coincidencia (0–100) |
+| 4 | opciones | Diccionario opcional (consulte "Referencia de opciones" a continuación). Utilice `0` u omítalo para los valores predeterminados |
+### Reemplazos crudos
+De forma predeterminada (`False`), las cadenas de reemplazo son procesadas por `re.sub()` de Python, que admite el uso de referencias inversas de expresiones regulares como `\1` o `\2` para insertar grupos capturados (por ejemplo: `(r'\1', r'(\d)\s+(?=\d)', 95)`).
+Si su reemplazo es una cadena de varias líneas o contiene barras invertidas sin escape (como plantillas de código o rutas de acceso) y debe conservarse exactamente como está, habilite `'raw_replacement': True` en el diccionario de opciones:
+```python
+(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+```
+
+### Opciones disponibles configurables por el usuario:
+
+* **`flags`** (entero): indicadores Regex utilizados durante la compilación del patrón.
+*Ejemplo:* `{'flags': re.IGNORECASE}`
+* **`raw_replacement`** (booleano): cuando es `True`, el texto de reemplazo se trata como una cadena literal pura y se omite mediante el análisis de barra invertida `re.sub` de Python. Es crucial para mensajes de varias líneas o cadenas con barras invertidas sin escape (`\`).
+*Ejemplo:* `{'raw_replacement': Verdadero}`
+* **`cache`** (booleano): alterna la caché de resultados de AURA. Establezca en "False" las reglas que generan resultados dinámicos (por ejemplo, hora actual, chistes aleatorios) para garantizar que se evalúen de nuevo en cada partido.
+*Ejemplo:* `{'caché': Falso}`
+* **`skip_list`** (lista de cadenas): especifica los módulos de canalización de posprocesamiento que se omitirán cuando esta regla coincida.
+*Ejemplo:* `{'skip_list': ['LanguageTool']}` (omite la revisión gramatical)
+* **`only_in_windows`** (cadena/expresión regular): restringe la regla para que solo se active si el título de la ventana activa coincide con este patrón.
+*Ejemplo:* `{'only_in_windows': 'google ai studio'}`
+* **`exclude_windows`** (cadena/expresión regular): evita que la regla se active si el título de la ventana activa coincide con este patrón.
+*Ejemplo:* `{'exclude_windows': 'Terminal'}`
+* **`on_match_exec`** (lista de rutas/objetos de cadena): rutas a scripts/complementos que deben ejecutarse cuando esta regla coincide (utilizada en gran medida por reglas generales y alternativas).
+*Ejemplo:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+
+## Lógica de canalización
+- Las reglas se procesan **de arriba hacia abajo**
+
 
 ## Lógica de canalización
 
