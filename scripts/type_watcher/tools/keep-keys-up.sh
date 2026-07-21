@@ -59,7 +59,8 @@ do_cleanup() {
     xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R Super_L Super_R ISO_Level3_Shift Num_Lock 2>/dev/null
 #    xdotool keyup Alt_L Alt_R Control_L Control_R Shift_L Shift_R Super_L Super_R ISO_Level3_Shift Num_Lock 2>/dev/null
 
-    # dotool: free all keys (if dotool is Input-Backend)
+    # dotool: free all keys (if dotool is Input-Backend) docs/bugfix/NOTES_type_watcher_stuck_key_dotool.md
+    # docs/bugfix/NOTES_type_watcher_stuck_key_dotool.md
     if [[ "${INPUT_METHOD:-}" == "dotool" ]] && command -v dotool >/dev/null 2>&1; then
         printf 'keyup shift ctrl alt a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 minus equal leftbrace rightbrace semicolon apostrophe grave backslash comma dot slash space enter tab backspace kp0 kp1 kp2 kp3 kp4 kp5 kp6 kp7 kp8 kp9 kpdot kpplus kpminus kpasterisk kpslash kpenter\n' | dotool 2>/dev/null
     fi

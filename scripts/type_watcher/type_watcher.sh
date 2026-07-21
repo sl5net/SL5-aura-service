@@ -118,11 +118,19 @@ export INPUT_METHOD
 do_type() {
     local text="$1"
     if [[ "$INPUT_METHOD" == "dotool" ]]; then
-        # export XKB_DEFAULT_LAYOUT=de
-        # export DOTOOL_XKB_LAYOUT=de
-
-#        printf 'typedelay 2\ntype %s\n' "$text" | dotool
-      { printf 'typedelay 1\ntype %s\n' "$text"; sleep 0.05; } | dotool
+        {
+            echo "typedelay 1"
+            local first=true
+            while IFS= read -r line || [[ -n "$line" ]]; do
+                if [ "$first" = true ]; then
+                    first=false
+                else
+                    echo "key enter"
+                fi
+                echo "type $line"
+            done <<< "$text"
+            sleep 0.05
+        } | dotool
     else
         LC_ALL=C.UTF-8 timeout 1 xdotool type --clearmodifiers --delay 12 "$text"
     fi
