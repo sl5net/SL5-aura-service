@@ -3,11 +3,12 @@
 
 # LOG_EXCLUDE = []
 
-LOG_EXCLUDE_20260702_1135 = [
+LOG_EXCLUDE = [
     r"📦",
     r"PUNCTUATION_MAP",
     r"〃",
     r"🗑",
+    r"no text after replacement",
     r"process_text_in_background.py",
     r"🗺Starting recursive map",
     r"🗺 Map loading complete",

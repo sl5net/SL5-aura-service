@@ -17,7 +17,11 @@ user_name = "USER_NAME"
 # -> Erstelle eine sinnvolle neue Regel fuer diesen Koan.
 FUZZY_MAP_pre = [
     # EXAMPLE: mfg
-    (f"Mit freundlichen Grüßen, {user_name}\n", r"^(mfg|viele grüße|best regards|Mit freundlichen Grüßen|Baum)\w*$"),
+    (f"Mit freundlichen Grüßen, {user_name}\n", r"^(mfg|best regards|Mit freundlichen Grüßen|Baum)\w*$", 55, {
+        'flags': re.IGNORECASE,
+        'only_in_windows': 'koans_2_peter_deutsch',
+        },
+    ),
 
     # === FUZZY MATCHING TEST ===
     # Wort: Marmelade -> Ersetzung: LECKER

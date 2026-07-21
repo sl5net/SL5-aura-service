@@ -113,7 +113,7 @@ if [[ "$INPUT_METHOD" == "dotool" ]]; then
 fi
 
 
-
+export INPUT_METHOD
 
 do_type() {
     local text="$1"
@@ -493,8 +493,13 @@ cleanup() {
 
     if [[ "${DISPLAY_SERVER:-}" == "dotool" || "${INPUT_METHOD:-}" == "dotool" ]]; then
 #       printf 'key shift:up\nkey ctrl:up\nkey alt:up\n' | dotool 2>/dev/null || true
-      { printf 'key shift:up\nkey ctrl:up\nkey alt:up\n'; sleep 0.05; } | dotool 2>/dev/null || true
+      { printf 'key shift:up ctrl:up alt:up a:up b:up c:up d:up e:up f:up g:up h:up i:up j:up k:up l:up m:up n:up o:up p:up q:up r:up s:up t:up u:up v:up w:up x:up y:up z:up 1:up 2:up 3:up 4:up 5:up 6:up 7:up 8:up 9:up 0:up minus:up equal:up leftbrace:up rightbrace:up semicolon:up apostrophe:up grave:up backslash:up comma:up dot:up slash:up space:up enter:up tab:up backspace:up kp0:up kp1:up kp2:up kp3:up kp4:up kp5:up kp6:up kp7:up kp8:up kp9:up kpdot:up kpplus:up kpminus:up kpasterisk:up kpslash:up kpenter:up\n'; sleep 0.05; } | dotool 2>/dev/null || true
+
+        # following is may not solid without the little gab between the keys
+#      { printf 'keyup shift ctrl alt a b c d e f g h i j k l m n o p q r s t u v w x y z 1 2 3 4 5 6 7 8 9 0 minus equal leftbrace rightbrace semicolon apostrophe grave backslash comma dot slash space enter tab backspace kp0 kp1 kp2 kp3 kp4 kp5 kp6 kp7 kp8 kp9 kpdot kpplus kpminus kpasterisk kpslash kpenter\n'; sleep 0.05; } | dotool 2>/dev/null || true
+
     fi
 
 }
 trap cleanup EXIT INT TERM
+
