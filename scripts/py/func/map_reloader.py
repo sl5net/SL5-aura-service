@@ -112,7 +112,29 @@ def auto_reload_modified_maps(logger,run_mode_override):
                 reload_performed = True
 
                 # scripts/py/func/map_reloader.py:115
-                cleanup_cache_on_reload(map_file_path, current_mtime)
+                
+                # Convert to relative path for consistent cache keys
+                rel_map_path = map_file_path
+                try:
+                    rel_map_path = map_file_path.relative_to(project_root)
+                except ValueError:
+                    pass  # Already relative or outside project_root
+                cleanup_cache_on_reload(rel_map_path, current_mtime)
+
+
+                # Remove stale .pyc if it is newer than the .py source
+                _pycache_dir = map_file_path.parent / "__pycache__"
+                if _pycache_dir.is_dir():
+                    _stem = map_file_path.stem
+                    for _pyc_file in _pycache_dir.glob(f"{_stem}*.pyc"):
+                        if _pyc_file.stat().st_mtime > current_mtime:
+                            try:
+                                _pyc_file.unlink()
+                                logger.info(f" Removed stale .pyc: {_pyc_file.name}")
+                            except OSError:
+                                pass
+
+
 
                 # Write path immediately when map change is detected
 # Write only if it is a user map, not our own quickstart module
@@ -141,6 +163,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                 relative_path = map_file_path.relative_to(project_root)
                 module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
+
+                logger.info(f"map_reloader module_name: {module_name!r}")
 
                 log_all_map_reloaded = settings.DEV_MODE_all_processing
 

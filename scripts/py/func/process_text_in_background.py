@@ -388,6 +388,8 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
             prefix=maps_package.__name__ + '.',
             onerror=lambda x: None):
 
+        if "09_personal_signature" in modname:
+            logger.info(f"load_maps_for_language modname: {modname!r}")
 
         is_private = False
 
@@ -526,9 +528,19 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
             # --- Metadaten  ---
             _module_file_path = getattr(module.__spec__, 'origin', None) if hasattr(module, '__spec__') else None
+
+            # Store relative path for consistent cache keys
+            _src_path = modname
+            if _module_file_path:
+                _mp = str(_module_file_path)
+                try:
+                    _src_path = str(Path(_mp).relative_to(PROJECT_ROOT))
+                except ValueError:
+                    _src_path = _mp
+
             injection_data = {
                 'source_modname': modname,
-                'source_path': str(_module_file_path) if _module_file_path else modname
+                'source_path': _src_path
             }
             if is_private:
                 injection_data['is_private'] = True

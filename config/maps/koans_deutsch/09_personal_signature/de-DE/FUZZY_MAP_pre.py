@@ -27,9 +27,12 @@ import re # noqa: F401
 # ============================================================
 
 # user_name = getattr(settings, "USER_NAME", "[Name fehlt]")
-user_name = "USER_NAME"
-
+user_name = "Sebastian"
 FUZZY_MAP_pre = [
     # EXAMPLE: viele grüße
-    (f"Mit freundlichen Grüßen, {user_name}\n", r"^(viele grüße|beste grüße|mit freundlichen grüßen)\w*$"),
+    # (f"Mit freundlichen Grüßen, {user_name}\n", r"^(beste grüße|mit freundlichen grüßen)\w*$"),
+
+    # Viele Gruße
+    (f"Viele Grüße {user_name}\n", r"^(viele gr.ße|jede gr.ße)$",
+    81, {'flags': re.IGNORECASE}),
 ]

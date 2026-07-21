@@ -1,4 +1,4 @@
-# aura_cache.py
+# scripts/py/func/utils/aura_cache.py
 import sqlite3
 import hashlib
 import os
@@ -95,6 +95,8 @@ def set_cached_result(rule_output, final_result, lang_code, map_path, rule_attrs
     """Speichert ein neues LT-Ergebnis im Cache."""
     if rule_attrs.get('cache') is False:
         return
+    if Path(map_path).is_absolute():
+        raise ValueError(f"aura_cache: map_path must be relative, got absolute: {map_path}")
 
     if final_result is None:
         final_result = ''
@@ -115,7 +117,9 @@ def set_cached_result(rule_output, final_result, lang_code, map_path, rule_attrs
 
 
 def cleanup_cache_on_reload(map_path, new_mtime):
-    """Löscht veraltete mtime-basierte Einträge beim Neuladen einer Map."""
+    """Deletes stale mtime-based entries when a map is reloaded."""
+    if Path(map_path).is_absolute():
+        raise ValueError(f"aura_cache: map_path must be relative, got absolute: {map_path}")
     with get_db_connection() as conn:
         conn.execute("""
             DELETE FROM aura_result_cache

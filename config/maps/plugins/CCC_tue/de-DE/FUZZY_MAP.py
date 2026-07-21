@@ -15,6 +15,6 @@ FUZZY_MAP = [
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
     # Importing to know:
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
-    # - means first is most importend, lower rules maybe not get read.
+    # - means first is most important, lower rules maybe not get read.
 
 ]
