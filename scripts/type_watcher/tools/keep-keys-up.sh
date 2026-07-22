@@ -46,7 +46,7 @@ any_key_physically_pressed() {
 }
 
 do_cleanup() {
-    # Falls der User gerade physisch Tasten drückt, kurz warten oder abbrechen
+    # if User is press physical keys, wait or dtop
     if [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
         local retry=0
         while any_key_physically_pressed && [ $retry -lt 5 ]; do

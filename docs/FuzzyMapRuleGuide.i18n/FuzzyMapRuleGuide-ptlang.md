@@ -10,8 +10,35 @@
 |---|---|---|
 | 1 | substituição | O texto de saída após a regra corresponder |
 | 2 | padrão | Regex ou string difusa para correspondência |
-| 3 | limiar | Ignorado para regras de regex. Usado para correspondência difusa (0–100) |
-| 4 | bandeiras | `{'flags': re.IGNORECASE}` para não diferenciar maiúsculas de minúsculas, `0` para diferenciar maiúsculas de minúsculas |
+| 3 | limiar | Para regras regex: ignorado. Para regras difusas: pontuação mínima de correspondência (0–100) |
+| 4 | opções | Dicionário opcional (veja "Referência de opções" abaixo). Use `0` ou omita os padrões |
+### Substituições brutas
+Por padrão (`False`), as strings de substituição são processadas pelo `re.sub()` do Python, que suporta o uso de referências anteriores de regex como `\1` ou `\2` para inserir grupos capturados (por exemplo: `(r'\1', r'(\d)\s+(?=\d)', 95)`).
+Se a sua substituição for uma string multilinha ou contém barras invertidas sem escape (como modelos de código ou caminhos) e deve ser preservada exatamente como está, habilite `'raw_replacement': True` no dicionário de opções:
+```python
+(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+```
+
+### Opções configuráveis pelo usuário disponíveis:
+
+* **`flags`** (inteiro): Flags Regex usados durante a compilação do padrão.
+*Exemplo:* `{'flags': re.IGNORECASE}`
+* **`raw_replacement`** (booleano): Quando `True`, o texto de substituição é tratado como uma string literal pura e ignorado pela análise de barra invertida `re.sub` do Python. Crucial para prompts multilinhas ou strings com barras invertidas sem escape (`\`).
+*Exemplo:* `{'raw_replacement': True}`
+* **`cache`** (booleano): Alterna o cache de resultados do AURA. Defina como `False` para regras que geram resultados dinâmicos (por exemplo, horário atual, piadas aleatórias) para garantir que sejam avaliadas de forma atualizada em cada partida.
+*Exemplo:* `{'cache': False}`
+* **`skip_list`** (lista de strings): Especifica módulos de pipeline de pós-processamento a serem ignorados quando esta regra corresponder.
+*Exemplo:* `{'skip_list': ['LanguageTool']}` (ignora a verificação gramatical)
+* **`only_in_windows`** (string/regex): Restringe a regra para ser acionada apenas se o título da janela ativa corresponder a esse padrão.
+*Exemplo:* `{'only_in_windows': 'google ai studio'}`
+* **`exclude_windows`** (string/regex): Impede que a regra seja acionada se o título da janela ativa corresponder a esse padrão.
+*Exemplo:* `{'exclude_windows': 'Terminal'}`
+* **`on_match_exec`** (lista de objetos Path/string): Caminhos para scripts/plugins que devem ser executados quando esta regra corresponder (muito usado por regras catch-all e fallback).
+*Exemplo:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+
+## Lógica de pipeline
+- As regras são processadas **de cima para baixo**
+
 
 ## Lógica de pipeline
 
@@ -28,21 +55,21 @@
 ```
 
 ### Combine múltiplas variantes
+__CODE_BLOCO_3__
+
+### Fullmatch – interrompe o pipeline
 ```python
 ('OpenAI', r'\bopen\s*ai\b', 0, {'flags': re.IGNORECASE})
 ```
-
-### Fullmatch – interrompe o pipeline
-__CODE_BLOCO_3__
 ⚠️ Isso combina com **tudo**. O pipeline para aqui. As regras anteriores ainda têm prioridade.
 
 ### Corresponde ao início da entrada
+__CODE_BLOCO_5__
+
+### Corresponde à frase exata
 ```python
 ('hello koan', r'^.*$', 0, {'flags': re.IGNORECASE})
 ```
-
-### Corresponde à frase exata
-__CODE_BLOCO_5__
 
 ## Locais de arquivos
 
