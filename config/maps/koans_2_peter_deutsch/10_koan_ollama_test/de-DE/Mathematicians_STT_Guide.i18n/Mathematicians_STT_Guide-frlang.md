@@ -17,7 +17,7 @@ ou des noms empruntés à d'autres langues.
 | Hilbert | Hilbert | généralement correct, juste des majuscules |
 | chantre | Chantre | généralement correct, juste des majuscules |
 | poincaré, poincaré | Poincaré | accent manque souvent |
-| noether, nôter | Noéther | tréma souvent manqué |
+| noether, nöter | Noéther | tréma souvent manqué |
 
 ## Exemples de règles
 
@@ -35,7 +35,7 @@ FUZZY_MAP_pre = [
 
 Ces corrections devraient avoir lieu dans `FUZZY_MAP_pre.py` (avant LanguageTool),
 parce que LanguageTool pourrait "corriger" un nom mal orthographié en un autre mauvais mot.
-Mieux vaut d'abord le corriger, puis laisser LanguageTool vérifier la grammaire.
+Mieux vaut d'abord le réparer, puis laisser LanguageTool vérifier la grammaire.
 
 ## Tests
 

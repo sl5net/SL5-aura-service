@@ -57,7 +57,7 @@ __CODE_ब्लॉक_2__
 __CODE_ब्लॉक_3__
 
 ### सिस्टम प्रॉम्प्ट (व्यक्तित्व)
-आप `system_instruction` को समायोजित करके आभा को एक व्यक्तित्व दे सकते हैं:
+You can give Aura a personality by adjusting the `system_instruction`:
 > "आप एक विज्ञान-फाई फिल्म के व्यंग्यात्मक सहायक हैं।"
 
 ---

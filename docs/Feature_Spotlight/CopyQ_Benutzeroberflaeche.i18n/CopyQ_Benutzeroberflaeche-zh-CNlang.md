@@ -22,7 +22,7 @@ in die Zwischenablage zu Bringen und dort zu verwalten。
 ## 导出到copyq.py
 
 Das 脚本 `tools/export_to_copyq.py` 位于 Map-Dateien des Repos（只读）
-
+并发送 Regeln als strukturierte Items 和 CopyQ。
 
 **内容：** Das Script verändert keine Dateien im Repo – es sendet nur Kommandos
 一个外部 CopyQ-Prozess。
@@ -62,8 +62,8 @@ Diese Regel greift auch insidehalb eines längeren Satzes (kein Fullmatch)。
 ## 典型的 STT-Fehler bei“CopyQ”
 
 Vosk erkennt“CopyQ”经常是：
-- `复制提示`
-- `kopie ku`
+
+
 - `复制队列`
 - `kopi q`
 

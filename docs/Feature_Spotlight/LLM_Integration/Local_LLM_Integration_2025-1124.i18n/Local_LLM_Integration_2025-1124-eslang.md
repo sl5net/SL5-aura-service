@@ -93,7 +93,7 @@ cmd = ["ollama", "run", "mistral", full_prompt]
 ```
 
 ### Aviso del sistema (Persona)
-Puedes darle personalidad a Aura ajustando `system_instruction`:
+You can give Aura a personality by adjusting the `system_instruction`:
 > "Eres un asistente sarcástico de una película de ciencia ficción".
 
 ---

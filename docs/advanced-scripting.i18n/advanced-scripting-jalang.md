@@ -6,7 +6,19 @@
 
 テキストを単に置き換えるのではなく、パターンが一致した場合に 1 つ以上の Python スクリプトを実行するようにルールに指示できるようになりました。これは、「on_match_exec」キーをルールのオプション辞書に追加することによって行われます。
 
-スクリプトの主な仕事は、一致に関する情報を受け取り、アクションを実行し、新しいテキストとして使用される最終文字列を返すことです。
+サービスの主な仕事は、試合に関する情報を受信することです。
+
+```
+match_data = {
+    'original_text': original_text_for_script,
+    'text_after_replacement': new_current_text,
+    'regex_match_obj': match_obj,  # Wir haben es bereits von re.fullmatch
+    'rule_options': options_dict
+}
+```
+
+次に、アクションを実行し、新しいテキストとして使用される最終的な文字列を返します。
+
 
 ### ルールの構造
 
@@ -21,7 +33,7 @@ CONFIG_DIR = Path(__file__).parent
 
 FUZZY_MAP_pre = [
     (
-        None,  # The replacement string is often None, as the script generates the final text.
+        '',  # The replacement string is often , as the script generates the final text.
         r'what time is it', # The regex pattern to match.
         95, # The confidence threshold.
         {
@@ -53,10 +65,10 @@ FUZZY_MAP_pre = [
 
 ### `match_data` ディクショナリ
 
-この辞書は、メイン アプリケーションとスクリプトの間の橋渡しとなります。これには次のキーが含まれています。
+この辞書は、メイン アプリケーションとスクリプトの間の橋渡しとなります。これには次のキーが含まれます。
 
-* `'original_text'` (str): 現在のルールからの置換が適用される「前の」フルテキスト文字列。
-* `'text_after_replacement'` (文字列): ルールの基本置換文字列が適用された「後」、ただしスクリプトが呼び出される「前」のテキスト。 (置換が「なし」の場合、これは「original_text」と同じになります)。
+* `'original_text'` (str): 現在のルールからの置換が適用される *前の* フルテキスト文字列。
+* `'text_after_replacement'` (文字列): ルールの基本置換文字列が適用された「後」、ただしスクリプトが呼び出される「前」のテキスト。 (置換が``の場合、これは`original_text`と同じになります)。
 * `'regex_match_obj'` (re.Match): 公式の Python 正規表現一致オブジェクト。これは、**キャプチャ グループ**にアクセスする場合に非常に強力です。 `match_obj.group(1)`、`match_obj.group(2)`などを使用できます。
 * `'rule_options'` (dict): スクリプトをトリガーしたルールの完全なオプション辞書。
 
@@ -70,7 +82,7 @@ FUZZY_MAP_pre = [
 
 **1.ルール (マップ ファイル内):**
 ```python
-(None, r'\b(what time is it|uhrzeit)\b', 95, {
+('', r'\b(what time is it|uhrzeit)\b', 95, {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'get_current_time.py']
 }),
@@ -110,7 +122,7 @@ def execute(match_data):
 
 **1.ルール (マップ ファイル内):**
 ```python
-(None, r'calculate (\d+) (plus|minus) (\d+)', 98, {
+('', r'calculate (\d+) (plus|minus) (\d+)', 98, {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'calculator.py']
 }),
@@ -149,13 +161,13 @@ def execute(match_data):
 **1.ルール (マップ ファイル内):**
 ```python
 # Rule for adding items
-(None, r'add (.*) to the shopping list', 95, {
+('', r'add (.*) to the shopping list', 95, {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),
 
 # Rule for showing the list
-(None, r'show the shopping list', 95, {
+('', r'show the shopping list', 95, {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),

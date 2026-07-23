@@ -91,7 +91,7 @@ Você pode facilmente trocar o modelo em `ask_ollama.py` (por exemplo, para `mis
 __CODE_BLOCO_3__
 
 ### Prompt do sistema (persona)
-Você pode dar personalidade ao Aura ajustando o `system_instruction`:
+You can give Aura a personality by adjusting the `system_instruction`:
 > "Você é um assistente sarcástico de um filme de ficção científica."
 
 ---

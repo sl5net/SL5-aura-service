@@ -6,13 +6,18 @@ W tym dokumencie opisano, jak rozszerzyć funkcjonalność prostych reguł zamia
 
 Zamiast po prostu zastępować tekst, możesz teraz nakazać regule wykonanie jednego lub większej liczby skryptów Pythona, gdy pasuje do wzorca. Odbywa się to poprzez dodanie klucza `on_match_exec` do słownika opcji reguły.
 
-Podstawowym zadaniem skryptu jest otrzymanie informacji o dopasowaniu, wykonanie akcji i zwrócenie końcowego ciągu znaków, który zostanie użyty jako nowy tekst.
+Podstawowym zadaniem Serwisu jest otrzymywanie informacji o meczu:
+
+__KOD_BLOKU_0__
+
+Następnie wykonaj akcję i zwróć końcowy ciąg znaków, który zostanie użyty jako nowy tekst.
+
 
 ### Struktura reguł
 
 Reguła z akcją skryptową wygląda następująco:
 
-__KOD_BLOKU_0__
+__KOD_BLOKU_1__
 **Kluczowe punkty:**
 - Wartość `on_match_exec` musi być **listą**.
 - Skrypty znajdują się w tym samym katalogu, co plik mapy, dlatego też `CONFIG_DIR / 'nazwa_skryptu.py'' jest zalecanym sposobem zdefiniowania ścieżki.
@@ -37,7 +42,7 @@ Jest to standardowy punkt wejścia dla wszystkich wykonywalnych skryptów. Syste
 Słownik ten stanowi pomost pomiędzy aplikacją główną a skryptem. Zawiera następujące klucze:
 
 * `'oryginalny_tekst'` (str): Pełny ciąg tekstowy *przed* zastosowaniem jakiejkolwiek zamiany z bieżącej reguły.
-* `'text_after_replacement'` (str): Tekst *po* zastosowaniu podstawowego ciągu zastępującego reguły, ale *przed* wywołaniem skryptu. (Jeśli zamianą jest „Brak”, będzie ona taka sama jak „oryginalny_tekst”).
+* `'text_after_replacement'` (str): Tekst *po* zastosowaniu podstawowego ciągu zastępującego reguły, ale *przed* wywołaniem skryptu. (Jeśli zamianą jest ``, będzie to to samo, co `oryginalny_tekst`).
 * `'regex_match_obj'` (re.Match): Oficjalny obiekt dopasowania wyrażenia regularnego w języku Python. Jest to niezwykle przydatne przy uzyskiwaniu dostępu do **grup przechwytywania**. Możesz użyć `match_obj.group(1)`, `match_obj.group(2)` itp.
 * `'rule_options'` (dykt): Kompletny słownik opcji dla reguły, która uruchomiła skrypt.
 
@@ -50,10 +55,10 @@ Słownik ten stanowi pomost pomiędzy aplikacją główną a skryptem. Zawiera n
 Ten skrypt zwraca spersonalizowane powitanie na podstawie pory dnia.
 
 **1. Zasada (w pliku mapy):**
-__KOD_BLOKU_1__
+__KOD_BLOKU_2__
 
 **2. Skrypt (`get_current_time.py`):**
-__KOD_BLOKU_2__
+__KOD_BLOKU_3__
 **Stosowanie:**
 > **Wejście:** „która jest godzina”
 > **Wyjście:** „Dzień dobry! Obecnie jest 14:30”.
@@ -63,10 +68,10 @@ __KOD_BLOKU_2__
 Ten skrypt używa grup przechwytywania z wyrażenia regularnego do wykonania obliczeń.
 
 **1. Zasada (w pliku mapy):**
-__KOD_BLOKU_3__
+__KOD_BLOKU_4__
 
 **2. Skrypt (`calculator.py`):**
-__KOD_BLOKU_4__
+__KOD_BLOKU_5__
 **Stosowanie:**
 > **Wejście:** „oblicz 55 plus 10”
 > **Wyjście:** „Wynik to 65.”
@@ -76,22 +81,22 @@ __KOD_BLOKU_4__
 Ten przykład pokazuje, jak jeden skrypt może obsłużyć wiele poleceń (dodawanie, wyświetlanie) poprzez sprawdzanie oryginalnego tekstu użytkownika i jak może utrwalać dane poprzez zapisywanie do pliku.
 
 **1. Zasady (w pliku mapy):**
-__KOD_BLOKU_5__
+__KOD_BLOKU_6__
 
 **2. Skrypt (`shopping_list.py`):**
-__KOD_BLOKU_6__
+__KOD_BLOKU_7__
 **Stosowanie:**
 > **Wejście 1:** „dodaj mleko do listy zakupów”
 > **Wyjście 1:** „OK, dodałem „mleko” do listy zakupów.”
 >
 > **Wejście 2:** „pokaż listę zakupów”
-> **Wyjście 2:** „Na liście masz: mleko”.
+> **Wyjście 2:** „Na liście masz: mleko.”
 
 ---
 
 ## Najlepsze praktyki
 
 - **Jedno zadanie na skrypt:** Koncentruj skrypty na jednym zadaniu (np. `calculator.py` tylko oblicza).
-- **Obsługa błędów:** Zawsze otaczaj logikę skryptu blokiem „try...except”, aby zapobiec awarii całej aplikacji. Zwróć przyjazny dla użytkownika komunikat o błędzie z bloku „z wyjątkiem”.
+- **Obsługa błędów:** Zawsze umieszczaj logikę skryptu w bloku „try...except”, aby zapobiec awarii całej aplikacji. Zwróć przyjazny dla użytkownika komunikat o błędzie z bloku „z wyjątkiem”.
 - **Biblioteki zewnętrzne:** Możesz używać bibliotek zewnętrznych (takich jak `requests` lub `wikipedia-api`), ale musisz upewnić się, że są one zainstalowane w Twoim środowisku Pythona (`pip install <nazwa-biblioteki>`).
 - **Bezpieczeństwo:** Należy pamiętać, że ta funkcja może wykonać dowolny kod Pythona. Używaj wyłącznie skryptów z zaufanych źródeł.

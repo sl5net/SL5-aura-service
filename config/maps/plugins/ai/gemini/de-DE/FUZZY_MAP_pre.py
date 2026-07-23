@@ -19,13 +19,15 @@ _gemini_phonetics = (
 )
 _common_metaVERBOSE = {
     'command_flags': re.IGNORECASE | re.VERBOSE,
-    'only_in_windows': [r'^mozilla firefox$', r'chrome', r'brave', r'fuzzy_map_pre', r'kate'],
-    'exclude_windows': [r'element', r'mastodon', r'Mastodon', r'github', r'claude', r'google ai'],
+    'window_ignore_case': False,
+    'only_in_windows': [r'^Mozilla Firefox$', r'Chrome', r'Brave', r'FUZZY_MAP_pre', r'Kate'],
+    'exclude_windows': [r'Element', r'Mastodon', r'GitHub', r'Claude', r'Google AI'],
 }
 _common_meta = {
     'command_flags': re.IGNORECASE,
-    'only_in_windows': [r'^mozilla firefox$', r'chrome', r'brave', r'fuzzy_map_pre'],
-    'exclude_windows': [r'element', r'- mozilla firefox', r'mastodon', r'Mastodon', r'github', r'claude', r'google ai'],
+    'window_ignore_case': False,
+    'only_in_windows': [r'^Mozilla Firefox$', r'Chrome', r'Brave', r'FUZZY_MAP_pre', r'Kate'],
+    'exclude_windows': [r'Element', r'Mastodon', r'GitHub', r'Claude', r'Google AI'],
 }
 FUZZY_MAP_pre = [
 

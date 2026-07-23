@@ -29,10 +29,12 @@ Wenn Ihre Ersetzung eine mehrzeilige Zeichenfolge ist oder Backslashes ohne Esca
 *Beispiel:* `{'cache': False}`
 * **`skip_list`** (Liste von Zeichenfolgen): Gibt Nachbearbeitungs-Pipeline-Module an, die übersprungen werden sollen, wenn diese Regel übereinstimmt.
 *Beispiel:* `{'skip_list': ['LanguageTool']}` (überspringt die Grammatikprüfung)
-* **`only_in_windows`** (String/Regex): Beschränkt die Regel so, dass sie nur dann ausgelöst wird, wenn der Titel des aktiven Fensters mit diesem Muster übereinstimmt.
-*Beispiel:* `{'only_in_windows': 'google ai studio'}`
-* **`exclude_windows`** (String/Regex): Verhindert, dass die Regel ausgelöst wird, wenn der Titel des aktiven Fensters mit diesem Muster übereinstimmt.
-*Beispiel:* `{'exclude_windows': 'Terminal'}`
+* **`only_in_windows`** (Liste der Regex-Strings): Beschränkt die Regel so, dass sie nur dann ausgelöst wird, wenn der Titel des aktiven Fensters mit einem der angegebenen Muster übereinstimmt.
+*Beispiel:* `{'only_in_windows': [r'^Mozilla Firefox$', r'Chrome']}`
+* **`exclude_windows`** (Liste der Regex-Strings): Verhindert, dass die Regel ausgelöst wird, wenn der Titel des aktiven Fensters mit einem der angegebenen Muster übereinstimmt.
+*Beispiel:* `{'exclude_windows': [r'Terminal', r'Claude']}`
+* **`window_ignore_case`** (boolean): Steuert, ob der Fensterabgleich („only_in_windows“ / „exclude_windows“) ohne Berücksichtigung der Groß-/Kleinschreibung („True“) oder unter Berücksichtigung der Groß-/Kleinschreibung („False“) ausgewertet wird. Wenn es weggelassen wird, wird auf die globale Einstellung „LOWERCASE_WINDOW_TITLES“ in „config/settings.py“ zurückgegriffen.
+*Beispiel:* `{'window_ignore_case': False}`
 * **`on_match_exec`** (Liste von Pfad-/String-Objekten): Pfade zu Skripten/Plugins, die ausgeführt werden sollen, wenn diese Regel übereinstimmt (wird häufig von Catch-All- und Fallback-Regeln verwendet).
 *Beispiel:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 

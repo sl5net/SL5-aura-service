@@ -72,7 +72,7 @@ __代码_块_3__
 | `00_koan_oma-modus` |自动修复，无需正则表达式的第一条规则 |
 | `01_koan_erste_schritte` |您的第一条规则，管道基础知识 |
 | `02_koan_listen` |使用列表 |
-| `03_koan_schwierige_namen` |难以识别的名字的模糊匹配|
+| `03_koan_schwierige_namen` |难以识别的名字的模糊匹配 |
 | `04_koan_kleine_helfer` |有用的快捷键|
 
 每个 koan 文件夹都包含一个带有注释示例的“FUZZY_MAP_pre.py”。
@@ -84,7 +84,7 @@ __代码_块_3__
 
 |什么 |哪里 |
 |---|---|
-|完整规则参考| `docs/FuzzyMapRuleGuide.md` |
+|完整规则参考 | `docs/FuzzyMapRuleGuide.md` |
 |创建您自己的插件 | `docs/CreatingNewPluginModules.md` |
 |从规则运行 Python 脚本 | `docs/advanced-scripting.md` |
 | DEV_MODE + 日志过滤器设置 | `docs/Developer_Guide/dev_mode_setup.md` |

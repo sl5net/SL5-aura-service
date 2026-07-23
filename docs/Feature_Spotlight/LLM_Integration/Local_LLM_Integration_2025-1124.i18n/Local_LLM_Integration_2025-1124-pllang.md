@@ -57,7 +57,7 @@ Możesz łatwo zamienić model w `ask_ollama.py` (np. na `mistral` w celu uzyska
 __KOD_BLOKU_3__
 
 ### Podpowiedź systemowa (osoba)
-Możesz nadać Aurze osobowość, dostosowując `instrukcję_systemową`:
+You can give Aura a personality by adjusting the `system_instruction`:
 > „Jesteś sarkastycznym asystentem z filmu science-fiction”.
 
 ---

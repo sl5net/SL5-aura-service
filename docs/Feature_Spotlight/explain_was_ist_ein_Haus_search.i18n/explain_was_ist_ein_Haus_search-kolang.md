@@ -6,7 +6,7 @@ XSPACEbreakX
 
 #### 1. 입력: "was ist ein haus"
 
-#### 2. 규칙 1: 라벨링/변환
+#### 2. 규칙 1: 라벨링/변형
 
 ```python
 ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,

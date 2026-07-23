@@ -17,8 +17,8 @@ __KOD_BLOKU_1__
 
 ### Dostępne opcje konfigurowane przez użytkownika:
 
-* **`flagi`** (liczba całkowita): Flagi wyrażeń regularnych używane podczas kompilacji wzorca.
-*Przykład:* `{'flagi': re.IGNORECASE}`
+* **`command_flags`** (liczba całkowita): Flagi wyrażeń regularnych używane podczas kompilacji wzorca.
+*Przykład:* `{'command_flags': re.IGNORECASE}`
 * **`raw_replacement`** (boolean): Gdy `True`, tekst zastępczy jest traktowany jako czysty literał łańcuchowy i pomijany przez analizę składniową ukośnika odwrotnego `re.sub` w Pythonie. Ma kluczowe znaczenie w przypadku podpowiedzi wielowierszowych lub ciągów znaków z ukośnikami odwrotnymi bez ucieczki (`\`).
 *Przykład:* `{'raw_replacement': True}`
 * **`cache`** (boolean): Przełącza pamięć podręczną wyników AURA. Ustaw na „Fałsz” dla reguł generujących dynamiczne dane wyjściowe (np. bieżący czas, losowe dowcipy), aby mieć pewność, że są one oceniane na nowo w każdym meczu.

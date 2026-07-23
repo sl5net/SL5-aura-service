@@ -57,7 +57,7 @@ __代码_块_2__
 __代码_块_3__
 
 ### 系统提示（角色）
-你可以通过调整`system_instruction`来赋予Aura个性：
+You can give Aura a personality by adjusting the `system_instruction`:
 > “你是科幻电影中的讽刺助手。”
 
 ---

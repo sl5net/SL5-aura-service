@@ -852,9 +852,11 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
             command_flags = options_dict.get('command_flags', 0)  # Hier extrahierst du den INTEGER korrekt
 
             only_in_windows_list = options_dict.get('only_in_windows', [])
+
             exclude_windows_list = options_dict.get('exclude_windows', [])
-            #execute_only  = options_dict.get('execute_only', False)
-            if is_window_title_skippable(_active_window_title,only_in_list=only_in_windows_list, exclude_list=exclude_windows_list,logger=logger):
+            window_ignore_case = options_dict.get('window_ignore_case', None)
+            if is_window_title_skippable(_active_window_title, only_in_list=only_in_windows_list, exclude_list=exclude_windows_list, logger=logger, ignore_case=window_ignore_case):
+
                 continue
 
             # def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None):
@@ -2372,8 +2374,10 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
             only_in_windows_list = options_dict.get('only_in_windows', [])
             exclude_windows_list = options_dict.get('exclude_windows', [])
-            if is_window_title_skippable(_active_window_title,only_in_list=only_in_windows_list, exclude_list=exclude_windows_list,logger=logger_instance):
-                continue
+
+            window_ignore_case = options_dict.get('window_ignore_case', None)
+
+            if is_window_title_skippable(_active_window_title, only_in_list=only_in_windows_list, exclude_list=exclude_windows_list, logger=logger_instance, ignore_case=window_ignore_case):                continue
 
             # --- EXCLUDE LIST CHECK ---
             # if exclude_windows_list and _active_window_title:

@@ -88,7 +88,7 @@ Si su reemplazo es una cadena de varias líneas o contiene barras invertidas sin
 - Poner reglas **específicas** antes que las **generales**
 - Utilice `^...$` fullmatch solo cuando desee detener todo procesamiento posterior
 - `FUZZY_MAP_pre.py` es ideal para correcciones antes de la revisión ortográfica
-- Reglas de prueba con: `s tu entrada de prueba` en la consola Aura
+- Pruebe las reglas con: `s su entrada de prueba` en la consola Aura
 - Las copias de seguridad se crean automáticamente como `.peter_backup`
 
 ## Ejemplos

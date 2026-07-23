@@ -6,7 +6,19 @@ Este documento describe cómo ampliar la funcionalidad de reglas simples de reem
 
 En lugar de simplemente reemplazar texto, ahora puede indicarle a una regla que ejecute uno o más scripts de Python cuando su patrón coincida. Esto se hace agregando una clave `on_match_exec` al diccionario de opciones de la regla.
 
-El trabajo principal del script es recibir información sobre la coincidencia, realizar una acción y devolver una cadena final que se utilizará como nuevo texto.
+La función principal del Servicio es recibir información sobre el partido:
+
+```
+match_data = {
+    'original_text': original_text_for_script,
+    'text_after_replacement': new_current_text,
+    'regex_match_obj': match_obj,  # Wir haben es bereits von re.fullmatch
+    'rule_options': options_dict
+}
+```
+
+Y luego, realice una acción y devuelva una cadena final que se utilizará como nuevo texto.
+
 
 ### Estructura de reglas
 
@@ -21,7 +33,7 @@ CONFIG_DIR = Path(__file__).parent
 
 FUZZY_MAP_pre = [
     (
-        None,  # The replacement string is often None, as the script generates the final text.
+        '',  # The replacement string is often , as the script generates the final text.
         r'what time is it', # The regex pattern to match.
         95, # The confidence threshold.
         {
@@ -56,7 +68,7 @@ Este es el punto de entrada estándar para todos los scripts ejecutables. El sis
 Este diccionario es el puente entre la aplicación principal y su script. Contiene las siguientes claves:
 
 * `'original_text'` (cadena): La cadena de texto completo *antes* de aplicar cualquier reemplazo de la regla actual.
-* `'text_after_replacement'` (cadena): El texto *después* de que se aplicó la cadena de reemplazo básica de la regla, pero *antes* de que se llamara su script. (Si el reemplazo es `Ninguno`, será lo mismo que `original_text`).
+* `'text_after_replacement'` (cadena): El texto *después* de que se aplicó la cadena de reemplazo básica de la regla, pero *antes* de que se llamara su script. (Si el reemplazo es ``, será lo mismo que `original_text`).
 * `'regex_match_obj'` (re.Match): El objeto oficial de coincidencia de expresiones regulares de Python. Esto es extremadamente poderoso para acceder a **grupos de captura**. Puede utilizar `match_obj.group(1)`, `match_obj.group(2)`, etc.
 * `'rule_options'` (dict): El diccionario de opciones completo para la regla que activó el script.
 
@@ -70,7 +82,7 @@ Este script devuelve un saludo personalizado según la hora del día.
 
 **1. La regla (en su archivo de mapa):**
 ```python
-(None, r'\b(what time is it|uhrzeit)\b', 95, {
+('', r'\b(what time is it|uhrzeit)\b', 95, {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'get_current_time.py']
 }),
@@ -110,7 +122,7 @@ Este script utiliza grupos de captura de la expresión regular para realizar un 
 
 **1. La regla (en su archivo de mapa):**
 ```python
-(None, r'calculate (\d+) (plus|minus) (\d+)', 98, {
+('', r'calculate (\d+) (plus|minus) (\d+)', 98, {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'calculator.py']
 }),
@@ -149,13 +161,13 @@ Este ejemplo muestra cómo un script puede manejar múltiples comandos (agregar,
 **1. Las reglas (en su archivo de mapa):**
 ```python
 # Rule for adding items
-(None, r'add (.*) to the shopping list', 95, {
+('', r'add (.*) to the shopping list', 95, {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),
 
 # Rule for showing the list
-(None, r'show the shopping list', 95, {
+('', r'show the shopping list', 95, {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),

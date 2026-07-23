@@ -43,4 +43,4 @@ Essa configuração é uma maneira elegante de lidar com consultas ambíguas ou 
 
 Isso confirma que a exclusão de `fullMatchStop` é **essencial** para permitir que a primeira regra pré-processe e enriqueça a consulta antes que ela seja acionada pela regra de execução de uso geral.
 
-(sl5,4.12.'25 12:24 Qui)
+(sl5,4.12.'25 12:24 qui)

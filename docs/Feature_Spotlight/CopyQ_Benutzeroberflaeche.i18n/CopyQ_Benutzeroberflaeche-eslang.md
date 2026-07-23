@@ -6,7 +6,7 @@ CopyQ es un administrador de portapapeles diferente con una lista de archivos de
 Er speichert eine History aller kopierten Inhalte und erlaubt Zugriff per Kommandozeile,
 Python-Script o Tastenkürzel.
 
-Para SL5 Aura es CopyQ el primer trabajo con texto escrito
+Para SL5 Aura es CopyQ el primer trabajo en la escritura del texto
 in die Zwischenablage zu Bringen und dort zu verwalten.
 
 ## Fechas relevantes en el repositorio

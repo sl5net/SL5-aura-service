@@ -1,8 +1,10 @@
+import re
 
+from scripts.py.func.config.dynamic_settings import settings
 from scripts.py.func.get_compiled_regex import get_compiled_regex
 
 
-def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None, logger=None):
+def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None, logger=None,ignore_case=None):
     """
     Returns True if the current window title suggests the rule should be skipped.
     Follows Fail-Safe logic: if a window is required but none is found, it skips.
@@ -12,27 +14,27 @@ def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None
 
     title_str = str(active_title) if active_title else ""
 
+    if ignore_case is None:
+        ignore_case = getattr(settings, "LOWERCASE_WINDOW_TITLES", False)
+    flags = re.IGNORECASE if ignore_case else 0
+
     # 1. Check "Only In" constraint
     if only_in_list:
         # If we need a specific window but have no title -> Skip
         if not title_str:
             return True
-
         found_match = False
         for pattern in only_in_list:
-            compiled_p = get_compiled_regex(pattern, logger)
+            compiled_p = get_compiled_regex(pattern, logger, flags=flags)
             if compiled_p and compiled_p.search(str(title_str)):
-                # if re.search(pattern, title_str, re.IGNORECASE):
                 found_match = True
                 break
         if not found_match:
             return True
-
     # 2. Check "Exclude" constraint
-
     if exclude_list and title_str:
         for pattern in exclude_list:
-            compiled_p = get_compiled_regex(pattern,logger)
+            compiled_p = get_compiled_regex(pattern, logger, flags=flags)
             if compiled_p and compiled_p.search(str(title_str)):
                 # if re.search(pattern, title_str, re.IGNORECASE):
                 return True

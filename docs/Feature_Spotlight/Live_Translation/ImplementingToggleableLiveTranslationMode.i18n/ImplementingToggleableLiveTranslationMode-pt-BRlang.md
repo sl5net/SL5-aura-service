@@ -19,7 +19,7 @@ Configurar isso envolve adicionar duas regras ao seu arquivo `FUZZY_MAP_pre.py` 
 ```
 Quando você diz "Übersetzung einschalten" (Ativar tradução), o script `toggle_translation_mode.py` é executado.
 
-**2. A Regra de Tradução:** Esta é uma regra "pega-tudo" que, quando ativa, corresponde a qualquer texto e o envia para o script de tradução.
+**2. A regra de tradução:** Esta é uma regra "pega-tudo" que, quando ativa, corresponde a qualquer texto e o envia para o script de tradução.
 
 ```python
     # ANCHOR: The following line is controlled by the toggle script.

@@ -29,10 +29,12 @@ If your replacement is a multiline string or contains unescaped backslashes (suc
     *Example:* `{'cache': False}`
 *   **`skip_list`** (list of strings): Specifies post-processing pipeline modules to skip when this rule matches.
     *Example:* `{'skip_list': ['LanguageTool']}` (skips grammar checking)
-*   **`only_in_windows`** (string/regex): Restricts the rule to only trigger if the active window title matches this pattern.
-    *Example:* `{'only_in_windows': 'google ai studio'}`
-*   **`exclude_windows`** (string/regex): Prevents the rule from triggering if the active window title matches this pattern.
-    *Example:* `{'exclude_windows': 'Terminal'}`
+*   **`only_in_windows`** (list of regex strings): Restricts the rule to only trigger if the active window title matches one of the specified patterns.
+    *Example:* `{'only_in_windows': [r'^Mozilla Firefox$', r'Chrome']}`
+*   **`exclude_windows`** (list of regex strings): Prevents the rule from triggering if the active window title matches one of the specified patterns.
+    *Example:* `{'exclude_windows': [r'Terminal', r'Claude']}`
+*   **`window_ignore_case`** (boolean): Controls whether window matching (`only_in_windows` / `exclude_windows`) is evaluated case-insensitively (`True`) or case-sensitively (`False`). If omitted, falls back to the global setting `LOWERCASE_WINDOW_TITLES` in `config/settings.py`.
+    *Example:* `{'window_ignore_case': False}`
 *   **`on_match_exec`** (list of Path/string objects): Paths to scripts/plugins that should be executed when this rule matches (used heavily by catch-all and fallback rules).
     *Example:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
