@@ -17,23 +17,23 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: double clic
     ('doubleClick("image.png")', r'^\s*(double\s*clic|double\s*cliquer?|double\s*cliquez|double\s*clics)\s*$', 85, {
-        'flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
+        'command_flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
     }),
     # EXAMPLE: clic droit
     ('rightClick("image.png")', r'^\s*(clic\s*droit|cliquer?\s*droit|cliquez\s*droit|droit\s*clic)\s*$', 85, {
-        'flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
+        'command_flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
     }),
     # EXAMPLE: clic
     ('click("image.png")', r'^\s*(clic|clique|cliquez|cliquer|clics)\s*$', 85, {
-        'flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
+        'command_flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
     }),
     # EXAMPLE: attend (wait)
     ('wait("image.png", 10)', r'^\s*(attend|attendre|attendez|pause|attente)\s*$', 85, {
-        'flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
+        'command_flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
     }),
     # EXAMPLE: tape (type)
     ('type("text")', r'^\s*(tape|taper|tapez|écris|écrire|écrivez|saisir|saisie)\s*$', 85, {
-        'flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
+        'command_flags': re.IGNORECASE, 'only_in_windows': ['sikulixide', 'SikuliX', 'oculixide', 'OculiX'],
     }),
 
 

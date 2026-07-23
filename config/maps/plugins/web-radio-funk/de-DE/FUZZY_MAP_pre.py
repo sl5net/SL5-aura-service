@@ -24,7 +24,7 @@ import re # noqa: F401
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 FUZZY_MAP_pre = [
@@ -40,52 +40,52 @@ FUZZY_MAP_pre = [
     # threema web
     # EXAMPLE: web threema web
     ('https://web.threema.com/', r'^(web\s*)?(threema)\s*(web)?$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: deutschlandfunk
     # Einen  is somtimes noise of nothing
     ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor|deutschland frank|deutschlands)\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # dein deutschlands
     # EXAMPLE: dein deutschlandfunk
     ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(dein\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor)\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: presseclub
     ('https://www1.wdr.de/daserste/presseclub/index.html', r'^(presseclub|pressig)\w*\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
 
 
     # EXAMPLE: Radio wüste welle livex
     ('https://www.wueste-welle.de/broadcasts/livestream', r'^(Radio wüste welle live\w*|wüste welle live\w*)\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Radio wüste welle
     ('https://www.wueste-welle.de/', r'^(Radio wüste welle|wüste welle)\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: LORA Münchenx
     ('https://lora924.de/livestream/live-horen/', r'^(LORA München\w*)\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Freies Radio  Stuttgart
     ('https://www.freies-radio.de/', r'^(Freies Radio .*Stuttgart)\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Archiv Freies Radio  Stuttgart
     ('https://www.youtube.com/gbsstuttgart', r'^(Archiv Freies Radio .*Stuttgart)\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: twich
-    ('https://twitch-tools.rootonline.de/channel_previews.php?broadcaster_languages%5B%5D=DE&viewers_max=0&uptime_min=900&sort_by=channelIdDesc', r'^(twich|Switch)\.*(suche|Suche auf Twitter)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://twitch-tools.rootonline.de/channel_previews.php?broadcaster_languages%5B%5D=DE&viewers_max=0&uptime_min=900&sort_by=channelIdDesc', r'^(twich|Switch)\.*(suche|Suche auf Twitter)\s*$', 70, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: twich
-    ('https://twitch-tools.rootonline.de/channel_previews.php?broadcaster_languages%5B%5D=DE&viewers_max=0&uptime_min=900&sort_by=channelIdDesc', r'^(suche|Suche auf)\s*(twich|Switch)\s*$', 70, {'flags': re.IGNORECASE}),
+    ('https://twitch-tools.rootonline.de/channel_previews.php?broadcaster_languages%5B%5D=DE&viewers_max=0&uptime_min=900&sort_by=channelIdDesc', r'^(suche|Suche auf)\s*(twich|Switch)\s*$', 70, {'command_flags': re.IGNORECASE}),
 
 ]
 

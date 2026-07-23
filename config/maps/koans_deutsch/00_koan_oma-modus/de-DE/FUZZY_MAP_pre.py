@@ -28,4 +28,4 @@ FUZZY_MAP_pre = [
 #
 # NÄCHSTER SCHRITT:
 #   Ändere das Wort zu einem Tupel mit eigener Ausgabe:
-#      ('Himbeere', '^Blume$', 0, {'flags': re.IGNORECASE})
+#      ('Himbeere', '^Blume$', 0, {'command_flags': re.IGNORECASE})

@@ -18,7 +18,7 @@ FUZZY_MAP_pre = [
      fr'^(gather\s*)?(wood|hol\w*|roll|rhön|hui|heute|ruhig|bridge|{baum}|bäume|tree|rollen)$',
      85,
      {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
@@ -35,7 +35,7 @@ FUZZY_MAP_pre = [
      r'^\s*(er|b|beere\w*|gehring|bill|bier|baby|obst|fruit|früchte[n]?|Äpfel[n]?|Apfel|Birne[n]?|berries|quarry)\s*$',
      85,
      {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
@@ -47,7 +47,7 @@ FUZZY_MAP_pre = [
      r'^(fleisch|jagd|jagen|jacken|ja|ja gut|ihr habt|meat|wetter|welche amen|ritt|stollen)$',
      85,
      {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
@@ -58,7 +58,7 @@ FUZZY_MAP_pre = [
      r'^(gather\s*)?(stein\w*|darin|steig\w*|stahl|stadt|stacheln|stopp|start|starten|stabil|stört|steigt|streit|strafe|rock|fels|quarry|stone)$',
      85,
      {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
@@ -72,7 +72,7 @@ FUZZY_MAP_pre = [
      r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|bachelor|matcha|günther|ethan|italien|mit metall|gift)$',
      85,
      {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
          'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
          'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,

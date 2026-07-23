@@ -24,12 +24,12 @@ The key point is the availability of such data. Many historical and cultural tex
 
 FUZZY_MAP_pre = [
     # TODO: Activate the line below by removing the comment symbol '#'
-    #('search in Ruth chapter 1 verse 1', fr'^.*$', 90, {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    #('search in Ruth chapter 1 verse 1', fr'^.*$', 90, {'command_flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
     # EXAMPLE: search in [book] chapter [number] verse [number]
     ('(bible) search', r'^search in (?P<book>\w*[ ]?\w+) chapter (?P<chapter>\d+) [v]\w+ (?P<verse>\d+)$', 90,
     {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 

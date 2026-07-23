@@ -26,39 +26,39 @@ FUZZY_MAP_pre = [
 #  Helps the Tool to switch to English
     # EXAMPLE: englisch
     ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # EXAMPLE: s switch to english x s
     ('english please', r'^\s*(switch to english\s*\w*)\s*$', 82, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: Doppelpunkt
     (':', r'\bDoppelpunkt\b', 82, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
     # EXAMPLE: kwink wir nieren
     ('quinquillieren', r'\b(kwink wir nieren|swing wie lire|klingt wie lire|kwink wir dir)\b', 82, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: fragezeichen
     ('??', r'\s+(fragezeichen|fragen|fragend|frage|fragt)\s*$', 80, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     # EXAMPLE: ausrufezeichen
     ('!', r'\b(ausrufezeichen)\b', 80, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: Sondermüll
     ('Sondermüll!', r'\b(Sondermüll)\b', 80, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
     # EXAMPLE: Unterschied Aura
     ('Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commands', r'^(Unterschied\b.*\bAura\b|Auras? .*\badvantage\b).*$', 80, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     ('SL5 Aura is a System-Wide, Offline Voice Automation and Command Framework. It instantly turns spoken words into commands, hotkeys, or text, with 100% privacy guarantee due to its offline operation. Its core is a powerful, scriptable RegEx Rule Engine that allows developers to create deeply customizable, multi-step workflows for professional and system-level automation.',
      # EXAMPLE: Whatx  Aura  
-     r'^(What\w*\b.*\bAura\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     r'^(What\w*\b.*\bAura\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #
     # Eva Konflikt präventionBericht Schöner Bericht Eva Gericht Sonderbericht
 
@@ -68,7 +68,7 @@ FUZZY_MAP_pre = [
      # min_accuracyzelebriereBerichtFehler bitteinternals>misrecognitionsBerichtinternals>misrecognitionss
 
      {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
      }),
 
@@ -76,7 +76,7 @@ FUZZY_MAP_pre = [
     ('report_error',
      r'\b(?:(?:[FVW][eihä]h?l[er]{1,2}|Wähler|Feller|Vierer|Völer|Phäler)\s?(?:be?richt|bricht|licht|richt))\b', 100,
      {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
      }),
 
@@ -92,7 +92,7 @@ if current_user in ['seeh']:
         # EXAMPLE: Super fragill
         ("Niedrige Genauigkeit erkannt", r'^(Super fragill|Servus fragil)$', 10,
          {
-             'flags': re.IGNORECASE,
+             'command_flags': re.IGNORECASE,
          }
          ),
 
@@ -104,7 +104,7 @@ if current_user in ['seeh']:
          # min_accuracy
 
          {
-             'flags': re.IGNORECASE,
+             'command_flags': re.IGNORECASE,
              'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
          })
     ]

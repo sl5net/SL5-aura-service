@@ -95,7 +95,7 @@ Vous pouvez également utiliser "CopyQ" :
 Plusieurs modèles de textures pour `FUZZY_MAP_pre.py` :
 
 ```python
-('CopyQ', r'\b(copy\s*q(ue|ue?ue)?|kopi\s*q)\b', 0, {'flags': re.IGNORECASE}),
+('CopyQ', r'\b(copy\s*q(ue|ue?ue)?|kopi\s*q)\b', 0, {'command_flags': re.IGNORECASE}),
 ```
 
 ## pyperclip comme Python-Alternative

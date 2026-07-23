@@ -3,7 +3,7 @@
 ## Format de règle
 
 ```python
-('replacement', r'regex_pattern', threshold, {'flags': re.IGNORECASE})
+('replacement', r'regex_pattern', threshold, {'command_flags': re.IGNORECASE})
 ```
 
 | Poste | Nom | Descriptif |
@@ -16,13 +16,13 @@
 Par défaut (`False`), les chaînes de remplacement sont traitées par `re.sub()` de Python, qui prend en charge l'utilisation de références arrière d'expression régulière comme `\1` ou `\2` pour insérer des groupes capturés (par exemple : `(r'\1', r'(\d)\s+(?=\d)', 95)`).
 Si votre remplacement est une chaîne multiligne ou contient des barres obliques inverses non échappées (telles que des modèles de code ou des chemins) et doit être conservé exactement tel quel, activez « raw_replacement : True » dans le dictionnaire d'options :
 ```python
-(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+(System_Instructions, r'^(system instructions)$', 10, {'command_flags': re.IGNORECASE, 'raw_replacement': True})
 ```
 
 ### Options configurables par l'utilisateur disponibles :
 
-* **`flags`** (entier) : indicateurs Regex utilisés lors de la compilation du modèle.
-*Exemple :* `{'flags' : re.IGNORECASE}`
+* **`command_flags`** (entier) : indicateurs Regex utilisés lors de la compilation du modèle.
+*Exemple :* `{'command_flags' : re.IGNORECASE}`
 * **`raw_replacement`** (booléen) : Lorsque `True`, le texte de remplacement est traité comme une chaîne littérale pure et contourné par l'analyse de la barre oblique inverse `re.sub` de Python. Crucial pour les invites multilignes ou les chaînes avec des barres obliques inverses non échappées (`\`).
 *Exemple :* `{'raw_replacement' : True}`
 * **`cache`** (booléen) : bascule le cache des résultats AURA. Définissez sur « False » pour les règles qui génèrent une sortie dynamique (par exemple, l'heure actuelle, des blagues aléatoires) afin de garantir qu'elles sont évaluées à nouveau à chaque match.
@@ -51,28 +51,28 @@ Si votre remplacement est une chaîne multiligne ou contient des barres obliques
 
 ### Faire correspondre un seul mot (limite du mot)
 ```python
-('Python', r'\bpython\b', 0, {'flags': re.IGNORECASE})
+('Python', r'\bpython\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Faire correspondre plusieurs variantes
 ```python
-('OpenAI', r'\bopen\s*ai\b', 0, {'flags': re.IGNORECASE})
+('OpenAI', r'\bopen\s*ai\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Fullmatch – arrête le pipeline
 ```python
-('hello koan', r'^.*$', 0, {'flags': re.IGNORECASE})
+('hello koan', r'^.*$', 0, {'command_flags': re.IGNORECASE})
 ```
 ⚠️ Cela correspond à **tout**. Le pipeline s'arrête ici. Les règles antérieures restent prioritaires.
 
 ### Faire correspondre le début de l'entrée
 ```python
-('Note: ', r'^notiz\b', 0, {'flags': re.IGNORECASE})
+('Note: ', r'^notiz\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Correspond à l'expression exacte
 ```python
-('New York', r'\bnew york\b', 0, {'flags': re.IGNORECASE})
+('New York', r'\bnew york\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ## Emplacements des fichiers
@@ -96,13 +96,13 @@ Si votre remplacement est une chaîne multiligne ou contient des barres obliques
 ```python
 FUZZY_MAP_pre = [
     # Correct a common STT mistake
-    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'flags': re.IGNORECASE}),
+    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Expand abbreviation
-    ('zum Beispiel', r'\bzb\b', 0, {'flags': re.IGNORECASE}),
+    ('zum Beispiel', r'\bzb\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Stop pipeline for testing
-    # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
+    # ('test koan', r'^.*$', 0, {'command_flags': re.IGNORECASE}),
 ]
 ```
 
@@ -122,7 +122,7 @@ Mettez vos règles **avant** les longs blocs de commentaires :
 import re  # noqa: F401
 # too<-from
 FUZZY_MAP_pre = [
-    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+    ('My Rule', r'my rule', 0, {'command_flags': re.IGNORECASE}),
 ]
 # ============================================================
 # Longer explanations, task descriptions, notes...

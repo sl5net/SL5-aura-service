@@ -20,5 +20,5 @@ CONFIG_DIR = Path(__file__).parent
 # FRAGE: Was passiert wenn du etwas sagst? Schau danach in: log/aura_engine.log
 
 FUZZY_MAP_pre = [
-    #('Was ist Tübingen?', fr'^.*$', 90, {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    #('Was ist Tübingen?', fr'^.*$', 90, {'command_flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 ]

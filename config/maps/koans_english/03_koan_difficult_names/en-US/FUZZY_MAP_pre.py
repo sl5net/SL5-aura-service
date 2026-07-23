@@ -27,14 +27,14 @@ import re  # noqa: F401
 
 FUZZY_MAP_pre = [
     # Exact match (precise but fragile):
-    # ('Great job!', r'^Your Most Noble Excellency.*$', 90, {'flags': re.IGNORECASE}),
+    # ('Great job!', r'^Your Most Noble Excellency.*$', 90, {'command_flags': re.IGNORECASE}),
 
     # Flexible match:
-    # ('Success!', r'^.*Xenochronistic Chronology.*$', 90, {'flags': re.IGNORECASE}),
+    # ('Success!', r'^.*Xenochronistic Chronology.*$', 90, {'command_flags': re.IGNORECASE}),
 
     # Fuzzy match for the name:
     # EXAMPLE: Countess
-    ('Phonetics mastered!', r'^.*(Countess|Mondes|kund des|Kaum des).*$', 90, {'flags': re.IGNORECASE}),
+    ('Phonetics mastered!', r'^.*(Countess|Mondes|kund des|Kaum des).*$', 90, {'command_flags': re.IGNORECASE}),
 ]
 
 difficultNames = """

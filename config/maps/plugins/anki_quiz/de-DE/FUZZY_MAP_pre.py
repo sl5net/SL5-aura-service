@@ -14,7 +14,7 @@ readme = r"""
   'Antwort 2',                                       # Index 0 (Ergebnis)
   r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?(z\w*)$',    # Index 1 (Regex Pattern)
   100,                                               # Index 2 (Threshold/Score)
-  {'flags': re.IGNORECASE, ...}                      # Index 3 (Options Dict)
+  {'command_flags': re.IGNORECASE, ...}                      # Index 3 (Options Dict)
 """
 
 
@@ -22,13 +22,13 @@ FUZZY_MAP_pre = [
     # EXAMPLE: die Antwort e ist e
     ('Antwort 1',
      r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?(e\w*)$', 100,
-    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+    {'command_flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
      'only_in_windows': [r'quizprotokoll\.md']}),
 
     # EXAMPLE: die Antwort e ist z
     ('Antwort 2',
      r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?(z\w*)$', 100,
-    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+    {'command_flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
      'only_in_windows': [r'quizprotokoll\.md'] }),
 
 
@@ -39,7 +39,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: die Antwort e ist df
     ('Antwort 3',
      r'^(?:die\s+)?Antwort(e)\s*(?:ist\s+)?([df]\w*)$', 100,
-    {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+    {'command_flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
      'only_in_windows': [r'quizprotokoll\.md']
      }),
 
@@ -50,20 +50,20 @@ FUZZY_MAP_pre = [
     # Erlaubt Sätze wie: "Richtig ist 1", "Ich nehme die Eins", "Lösung 1die"
     # ('Antwort 1',
     #  r'.*(?:(?<!\d)1(?!\d)|eins?|eine|one|ers(?:te|tens)?).*', 100,
-    # {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    # {'command_flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
     # Antwort 2
     # Findet: "2", "zwei", "zwo", "two", "zweite", "zweitens"
     # Findet auch dein Beispiel: "richtig ist 2die lösung ist 2"
     # ('Antwort 2',
     #  r'.*(?:(?<!\d)2(?!\d)|zwei|zwo|two|zweit(?:e|ens)?).*', 100,
-    # {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    # {'command_flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
     # Antwort 3
     # Findet: "3", "drei", "three", "dritte", "drittens"
     # ('Antwort 3',
     #  r'.*(?:(?<!\d)3(?!\d)|drei|three|dritt(?:e|ens)?).*', 100,
-    # {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    # {'command_flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
     # Wir definieren eine Liste von Signalwörtern, die vor der Zahl stehen müssen.
     # (?i) macht es case-insensitive (wird eh durch flags gesetzt, aber zur Sicherheit).
@@ -77,7 +77,7 @@ FUZZY_MAP_pre = [
     ('Antwort 1',
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(1|eins|ein|one|erste)(?!\d).*',
      100,
-     {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
       'only_in_windows': [r'quizprotokoll\.md']
      }),
 
@@ -89,7 +89,7 @@ FUZZY_MAP_pre = [
     ('Antwort 2',
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(2|zwei|zwo|two|zweite)(?!\d).*',
      100,
-     {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
       'only_in_windows': [r'quizprotokoll\.md']
       }),
 
@@ -99,7 +99,7 @@ FUZZY_MAP_pre = [
     ('Antwort 3',
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(3|drei|rein|three|dritte)(?!\d).*',
      100,
-     {'flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
       'only_in_windows': [r'quizprotokoll\.md']
       }),
 

@@ -13,7 +13,7 @@
 ```python
 # Rule to turn the translation mode on or off
     ('', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|einschalten|deaktivieren|ausschalten|toggle|Dogge|doppelt)\b', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 ```
@@ -24,7 +24,7 @@
 ```python
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
+    ('', r'.+', 5, {'command_flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 ```
 여기서 핵심은 '# TRANSLATION_RULE' 주석입니다. 이는 토글 스크립트가 그 아래의 규칙을 찾고 수정하는 데 사용하는 "앵커" 역할을 합니다.
 

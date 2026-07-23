@@ -13,7 +13,7 @@ Configurar esto implica agregar dos reglas a su archivo `FUZZY_MAP_pre.py` y cre
 ```python
 # Rule to turn the translation mode on or off
     ('', r'^(portugiesisch|übersetzung|übersetzer) (aktivieren|aktiviert|aktiv|einschalten|deaktivieren|ausschalten|toggle|Dogge|doppelt)\b', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 ```
@@ -24,7 +24,7 @@ Cuando dices "Übersetzung einschalten" (Activar traducción), se ejecuta el scr
 ```python
     # ANCHOR: The following line is controlled by the toggle script.
     # TRANSLATION_RULE
-    ('', r'.+', 5, {'flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
+    ('', r'.+', 5, {'command_flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 ```
 La clave aquí es el comentario `# TRANSLATION_RULE`. Esto actúa como un "ancla" que el script de alternancia utiliza para buscar y modificar la regla debajo de él.
 

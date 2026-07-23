@@ -10,7 +10,7 @@ from pathlib import Path # noqa: F401
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 FUZZY_MAP_pre = [

@@ -16,17 +16,17 @@ FUZZY_MAP_pre = [
     # bitsundso website bus982
     # EXAMPLE: Copy-Shop
     ('Ferdinand-Lassalle-Straße 17-19, 72770 Reutlingen', r'^(Copy-Shop|Copyshop).*Betzingen\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPEL: Copyshop Betzingen Industriegebiet
     # EXAMPLE: Betzingen Copy-Shop
     ('Ferdinand-Lassalle-Straße 17-19, 72770 Reutlingen', r'^(Betzingen).*(Copy-Shop|Copyshop)\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPEL: Copyshop Betzingen Industriegebiet
     # EXAMPLE: Betzingen Copy-Shop
     ('https://www.openstreetmap.org/#map=18/48.491606/9.156450', r'^(Betzingen).*(Copy-Shop|Copyshop)\s*$', 70, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
 
 ]

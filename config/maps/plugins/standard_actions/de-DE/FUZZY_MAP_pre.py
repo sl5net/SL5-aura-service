@@ -46,34 +46,34 @@ FUZZY_MAP_pre = [
     ('',
      r'^(wie (?:ist|wird) das wetter(?: morgen)?|wie das wetter morgen|wie ist das fett|Die erhaltenen Wetterdaten hatten ein unerwartetes Format.|wie ist das bett|wie ist das etwa|mir ist das wetter|naechstes bild|wie ist das zwitschern|nicht das wetter|naechstes|wie ist das|wie ist es|naechstes we|lies es)$'
     , 95, {
-             'flags': re.IGNORECASE,
+             'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     }),
 
     # # EXAMPLE: wie ist das wetter
     # ('', r'^(wie (?:ist) das wetter|wie ist das fett|wie ist das bett|wie ist das etwa|mir ist das wetter|naechstes bild|wie ist das zwitschern|nicht das wetter|naechstes|wie ist das|wie ist es|naechstes we|lies es)$'
     # , 95, {
-    #          'flags': re.IGNORECASE,
+    #          'command_flags': re.IGNORECASE,
     #     'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     # }),
 
     # # EXAMPLE: wie wird das wetter morgen
     # ('', r'^(wie (?:ist|wird) das wetter(?: morgen)?|wie das wetter morgen)$'
     # , 95, {
-    #          'flags': re.IGNORECASE,
+    #          'command_flags': re.IGNORECASE,
     #     'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     # }),
 
 
     # EXAMPLE: wie ist das wetter
     ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)\??$', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'weather.py']
     }),
 
     # EXAMPLE: Aura Admin öffnen open admin panel.
     ('', rf'^{AURA_VARIANTS} Admin\w*\b.*$', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'open_admin.py']
     }),
 
@@ -82,22 +82,22 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: einen
-    ('', r'^einen$', 100, {'flags': re.IGNORECASE}),
+    ('', r'^einen$', 100, {'command_flags': re.IGNORECASE}),
     # EXAMPLE: einens
-    ('', r'^einens$', 100, {'flags': re.IGNORECASE}),
+    ('', r'^einens$', 100, {'command_flags': re.IGNORECASE}),
 
 
     # === VOSK NOISE FIX ===
     # Das kleine Vosk-Modell halluziniert oft "einen" bei Stille/Atmen.
     # Wenn der Input EXAKT nur "einen" ist, wird er ignoriert.
     # (Wer wirklich "einen" sagen will, sagt meist "Ich will einen..." -> das bleibt erhalten)
-    # ('', r'^einen$', 100, {'flags': re.IGNORECASE}),
-    # ('', r'^einens$', 100, {'flags': re.IGNORECASE}),
+    # ('', r'^einen$', 100, {'command_flags': re.IGNORECASE}),
+    # ('', r'^einens$', 100, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: einen
-    ('', r'^\s*einen\s*$', 100, {'flags': re.IGNORECASE}),
+    ('', r'^\s*einen\s*$', 100, {'command_flags': re.IGNORECASE}),
     # EXAMPLE: einens
-    ('', r'^\s*einens\s*$', 100, {'flags': re.IGNORECASE}),
+    ('', r'^\s*einens\s*$', 100, {'command_flags': re.IGNORECASE}),
 
 
     # === General Terms (Case-Insensitive) ===
@@ -115,7 +115,7 @@ FUZZY_MAP_pre = [
      # EXAMPLE: wie
      r'^(wie|was)( ist meine).*(IP|IP-Adresse|IP Adresse)$',
      100, {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
      }),
 
     #Start de Wikipedia
@@ -125,7 +125,7 @@ FUZZY_MAP_pre = [
      # EXAMPLE: starte
      r'^(starte|Start de ).*(kiwix|Wikipedia)$',
      100, {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
      }),
 
     # http://___:8831/
@@ -139,7 +139,7 @@ FUZZY_MAP_pre = [
      # EXAMPLE: öffne
      r'^(öffne|öffentlich).*(der )?(stream)(lit|life| litt| Lied| neu| net| lebt| lebt| liebt)\s*(webseite|webpage)?$',
      100, {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
      }),
 
     #Starte Streamlit
@@ -153,7 +153,7 @@ FUZZY_MAP_pre = [
      # EXAMPLE: starte
      r'^(starte|statt|state|stabiles).*(der )?(stream)(lit|life| litt| Lied| neu| net| lebt| lebt| liebt| List)$',
      100, {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
      }),
 
 
@@ -162,14 +162,14 @@ FUZZY_MAP_pre = [
      # EXAMPLE: frage   client
      r'^(frage)\b.*(client)$',
      100, {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
      }),
 
 
     (f'{flake8}',
      # EXAMPLE: frage   proof for syntac errors
      r'^(proof for syntac errors|proof errors|proof syntac|Regeln prüfen)$',
-     100, { 'flags': re.IGNORECASE }),
+     100, { 'command_flags': re.IGNORECASE }),
 
     (
     f'{flake8}',
@@ -186,7 +186,7 @@ FUZZY_MAP_pre = [
     $
     ''',
     100,
-    {'flags': re.IGNORECASE | re.VERBOSE,
+    {'command_flags': re.IGNORECASE | re.VERBOSE,
      'only_in_windows': ['Konsole', 'Terminal', 'Console', 'Code', 'VSC', 'Alacritty']
      }
     ),
@@ -199,7 +199,7 @@ FUZZY_MAP_pre = [
      # EXAMPLE: Terminal blocked
      r' disabled_2026-0117-1336___ ^.*$',
      70,
-    {'flags': re.IGNORECASE | re.VERBOSE,
+    {'command_flags': re.IGNORECASE | re.VERBOSE,
      'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'Code', 'VSC', 'Alacritty']
     }
     ),
@@ -211,47 +211,47 @@ FUZZY_MAP_pre = [
      # EXAMPLE: Clipboard
      r'^(Clipboard|Zwischenablage|Zeile\w*|Text neu) (nummeriere\w*|suggerieren|dumme geritten|operieren|nummerieren|nummerieren)$',
      70, {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'renumber_clipboard_text.py']
      }),
     ('',
      # EXAMPLE: nummerierex
      r'^(nummeriere\w*|suggerieren|dumme geritten|operieren|nummerieren|nummerieren)\b\s*(?:!die)?(Clipboard|Zwischenablage|Zeile\w*|Text neu)$',
      70, {
-         'flags': re.IGNORECASE,
+         'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'renumber_clipboard_text.py']
      }),
 
     # EXAMPLE: Zeilex nummerierex
     ('', r'^(Zeile\w* nummeriere\w*|Zeilen suggerieren|Zeile dumme geritten|zeile\w* operieren|Text neu nummerieren|Zwischenablage nummerieren|Laufende Zeilennummern einfügen|Zeilennummern aktualisieren|teile reparieren|keine nummerieren|Zeilesuggerieren)$', 70, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'renumber_clipboard_text.py']
     }),
 
 
     # EXAMPLE: Suche
-    ("('Rückgabe', r'Suche', 70, {'flags': re.IGNORECASE}),",
+    ("('Rückgabe', r'Suche', 70, {'command_flags': re.IGNORECASE}),",
      # EXAMPLE: Neue Regel
      r'^(Neue)\s+(Regel|RegEx)$',
-     70, {'flags': re.IGNORECASE}),
+     70, {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: reload
-    ('reload', r'\b(w lot|Why not|wie lot|Velo|free slot)\b', 70, {'flags': re.IGNORECASE}),
+    ('reload', r'\b(w lot|Why not|wie lot|Velo|free slot)\b', 70, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: reload
-    ('reload', r'^(lot)$', 70, {'flags': re.IGNORECASE}),
+    ('reload', r'^(lot)$', 70, {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Chat mit der e
     ('https://pi.ai/talk', r'^(Chat) mit (der e|AI|Terry|frei|ei|it|ari|3|a|der a)\b.*$', 70, {
-        'flags': re.IGNORECASE
+        'command_flags': re.IGNORECASE
     }),
 
     # Regel für Python coding short
     # EXAMPLE: compact_python
     ('', r'^(compact_python|Kompakt fein|Kompakt Brighton|Kompakt bei)$', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'compact_python.py']
     }),
 
@@ -260,51 +260,51 @@ FUZZY_MAP_pre = [
     # seltene unnötige falsch erennung abfangen
     # EXAMPLE: wie ist das wetter
     ('', r'^(wie ist das bett)|(wie ist es fett)$', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'weather.py'] # Passe den Pfad ggf. an
     }),
 
 
     # EXAMPLE: anrede
     ('anrede', r'^(anrede|begrüßung|neue email|Neue E-Mail|Schreibe anrede\w*|Schreibe begrüßung)$', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         # Ruft unser neues Skript auf
         'on_match_exec': [CONFIG_DIR / 'greeting_generator.py']
     }),
 
     # EXAMPLE: uhrtext
-    ('', r'^uhr\w+', 75, {'flags': re.IGNORECASE,
+    ('', r'^uhr\w+', 75, {'command_flags': re.IGNORECASE,
                           'on_match_exec': [CONFIG_DIR / 'get_current_time.py'] }),
     # Das Ergebnis von 5 plus 3 ist 8.
 
     # Die Regex fängt zwei Zahlen (\d+) und einen Operator (plus|minus|mal|geteilt)
     # EXAMPLE: rechne
     ('', r'(?:rechne|was ist|was is|was)\s*(\d+)\s*([\+\-\*\/]|plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'calculator.py']
     }),
 
     # EXAMPLE:   Wer ist der Beste x Schachspieler 
     ("Sebastian Lauffer aus Wannweil (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?(Beste[\w]? Schachspieler.*)$', 90, {
-    'flags': re.IGNORECASE
+    'command_flags': re.IGNORECASE
     }),
 
     # EXAMPLE:   Wer ist s der s herr schröer
     ("Herr Schröer ist ein netter, bisschen vergesslicher, Ergotherapeut. (fun-fake msg, 2025)", r'^.*(Wer ist)?\s*(der)?\s*(herr)?\s*\b(schröer)$', 90, {
-    'flags': re.IGNORECASE
+    'command_flags': re.IGNORECASE
     }),
 
 
     # EXAMPLE:   zur
     ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
     }),
 
     # Regel zum Anzeigen
     # EXAMPLE: zeige die einkaufsliste
     ('', r'zeige die einkaufsliste', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
     }),
 
@@ -313,46 +313,46 @@ FUZZY_MAP_pre = [
     # --- Rule for the Chess Commentator ---
     # This rule listens for various forms of negative self-talk during a game.
     # EXAMPLE: fehler
-    ( 'schach_kommentator_negativ', r'^\b(fehler|mist|So ein Mist|verdammt|scheiße|blöd|dumm|idiot|nicht aufgepasst|ärgerlich|ach komm|das wars|verloren|ich geb\w? auf)\b$', 90, { 'flags': re.IGNORECASE, 'on_match_exec': [CONFIG_DIR / 'chess_commentator.py'] }),
+    ( 'schach_kommentator_negativ', r'^\b(fehler|mist|So ein Mist|verdammt|scheiße|blöd|dumm|idiot|nicht aufgepasst|ärgerlich|ach komm|das wars|verloren|ich geb\w? auf)\b$', 90, { 'command_flags': re.IGNORECASE, 'on_match_exec': [CONFIG_DIR / 'chess_commentator.py'] }),
 
 
     # Benötigt eigentlich keine übersetzung funktioniert auch so schon (15.11.'25 13:48 Sat)
     # EXAMPLE: Konsole
     ('konsole', r'^(Konsole)$', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
     # EXAMPLE: Konsole
     ('konsole', r'\b(Konsole)\b', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
     # EXAMPLE: krieg x
     ('regex', r'\b(krieg x|rekik|mike x|rick x|Recaps)\b', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
 
     # EXAMPLE: hot reload
     ('hot reload', r'\b(hat)\s+(Reload)\b', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
 
 
     # EXAMPLE: Show IP
     ('ip a', r'\b(Show IP)\b', 95, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     }),
 
 
     # EXAMPLE: diesesRegexWirdNiemalsMatchen123ABC
-    ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, {'flags': re.IGNORECASE}),
+    ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, {'command_flags': re.IGNORECASE}),
 
 
     # ('', '^(?!Computer|Aura).*(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist) ([a-z]+.*)', 90, {
-    # 'flags': re.IGNORECASE,
+    # 'command_flags': re.IGNORECASE,
     # 'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
     # }),
 

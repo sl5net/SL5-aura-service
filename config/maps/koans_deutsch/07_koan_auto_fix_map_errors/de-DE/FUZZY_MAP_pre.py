@@ -26,7 +26,7 @@ import re # noqa: F401
 
 
 FUZZY_MAP_pre = [
-    ('fuzzy1', 'handuch',1,{'flags': re.IGNORECASE}),
+    ('fuzzy1', 'handuch',1,{'command_flags': re.IGNORECASE}),
 ]
 
 

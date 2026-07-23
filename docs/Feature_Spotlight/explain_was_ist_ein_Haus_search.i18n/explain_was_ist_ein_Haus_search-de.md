@@ -15,7 +15,7 @@ Hier ist die Erklärung, was passiert und wofür die Kombination dieser Regeln g
 ```python
 ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 
  {
-'flags': re.IGNORECASE,
+'command_flags': re.IGNORECASE,
 'skip_list': ['LanguageTool','fullMatchStop'],
 }),
 ```
@@ -24,7 +24,7 @@ Hier ist die Erklärung, was passiert und wofür die Kombination dieser Regeln g
 | :--- | :--- | :--- |
 | **`"was ist ein haus (Begriffsklärung)"`** | Dies ist der **Ausgabe-Text** oder der **interne Bezeichner** (Label), der generiert wird, wenn die Regel zutrifft. | **Vorverarbeitung.** Er liefert dem nachfolgenden Prozess einen präziser formulierten Suchbegriff. |
 | **`r'^.*was ist ein haus$'`** | Die **Reguläre Expression**. Sie sucht nach der exakten Phrase "was ist ein haus" am Ende der Eingabe. | **Präzises Matching.** Definiert die genaue Benutzereingabe, die diese spezifische Regel auslöst. |
-| **`'flags': re.IGNORECASE`** | **Case-Insensitive Match.** Groß- und Kleinschreibung wird ignoriert. | |
+| **`'command_flags': re.IGNORECASE`** | **Case-Insensitive Match.** Groß- und Kleinschreibung wird ignoriert. | |
 | **`'skip_list': ['fullMatchStop']`** | **Dies ist der Schlüssel.** Normalerweise stoppt das System die Regelsuche, sobald eine fullMatch gefunden wird. Durch das Hinzufügen von `fullMatchStop` zur `skip_list` wird dieser **Stopp explizit verhindert**. | **Regelkette/Vorverarbeitung.** Es stellt sicher, dass die Verarbeitung **fortgesetzt** wird und die nächste Regel (die allgemeine Suche) den *markierten* Text verarbeiten kann. |
 
 **Zusammenfassend:** Diese Regel fängt die spezifische Frage ab, **markiert** den resultierenden Text mit der notwendigen **` (Begriffsklärung)`-Ergänzung** und leitet ihn zur weiteren Verarbeitung weiter.
@@ -35,7 +35,7 @@ Hier ist die Erklärung, was passiert und wofür die Kombination dieser Regeln g
 
 ```python
 ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der)? (?P<search>.*)', {
-'flags': re.IGNORECASE,
+'command_flags': re.IGNORECASE,
 'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
 }),
 ```

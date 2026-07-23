@@ -11,7 +11,7 @@ import re # noqa: F401
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 BenachrichtigungenPosition = """
@@ -41,21 +41,21 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Benachritext stoeren
     (f'{BenachrichtigungenPosition}', r'^Benachri\w+ stoeren$'),
     # EXAMPLE: Benachrichtigtext Position
-    (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$', 75, {'flags': re.IGNORECASE}),
+    (f'{BenachrichtigungenPosition}', r'^Benachrichtig\w+ Position$', 75, {'command_flags': re.IGNORECASE}),
 
 
 
     # EXAMPLE: AutoKey
     ('AutoKey', r'\bAuto k\b', 82, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: pipe
     ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: pipe
     ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # === Linux/Unix Commands ===
 
@@ -64,14 +64,14 @@ FUZZY_MAP_pre = [
      # EXAMPLE: folder size
      r'^(folder size|directory size|disk usage|storage hog|gdu|disk full)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # Examples: disk space
     ("ncdu",
      # EXAMPLE: check storage
      r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
 ]

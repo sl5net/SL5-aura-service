@@ -111,16 +111,16 @@ def ensure_path(p: Union[str, os.PathLike, Path, None]) -> Optional[Path]:
 
 def normalize_fuzzy_map_rule_entry(entry):
     if len(entry) == 2:
-        return *entry, 75, {'flags': re.IGNORECASE}
+        return *entry, 75, {'command_flags': re.IGNORECASE}
     if len(entry) == 3:
         if isinstance(entry[2], dict):
             # Fall: (Ersatz, Pattern, {Optionen}) -> Die 0 (Schwelle) fehlt!
             return entry[0], entry[1], 100, entry[2]
         else:
             # Fall: (Ersatz, Pattern, Schwelle) -> Die Optionen fehlen!
-            return entry[0], entry[1], entry[2], {'flags': re.IGNORECASE}
+            return entry[0], entry[1], entry[2], {'command_flags': re.IGNORECASE}
 
-        # return (*entry, {'flags': re.IGNORECASE})
+        # return (*entry, {'command_flags': re.IGNORECASE})
 
 
     return entry
@@ -849,7 +849,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
             # logger.info(f"252: 🔁??? threshold: '{threshold}' based on pattern '{match_phrase}'")
 
-            flags = options_dict.get('flags', 0)  # Hier extrahierst du den INTEGER korrekt
+            command_flags = options_dict.get('command_flags', 0)  # Hier extrahierst du den INTEGER korrekt
 
             only_in_windows_list = options_dict.get('only_in_windows', [])
             exclude_windows_list = options_dict.get('exclude_windows', [])
@@ -911,7 +911,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
             try:
 
                 # <<< ÄNDERUNG 1: Speichere das Ergebnis von re.search in 'match_obj'
-                match_obj = re.search(match_phrase, processed_text, flags=flags)
+                match_obj = re.search(match_phrase, processed_text, flags=command_flags)
 
                 # <<< ÄNDERUNG 2: Prüfe, ob 'match_obj' existiert
                 if match_obj:
@@ -923,7 +923,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
                         match_phrase,
                         replacement.strip(),
                         processed_text,
-                        flags=flags
+                        flags=command_flags
                     )
                     # logger.info(
                     # f"🔁 464: '{new_text}'")
@@ -1139,7 +1139,7 @@ def process_text_in_background(logger,
 
         # It is also helpful when create rules if you know exactly which names are being used
         # todo : set not always true maybe
-        print(f"window_title: 🔵{_active_window_title} ")
+        print(f"window_title: 🔵 '{_active_window_title}' ")
 
     # start = time.time()
     # wt = get_active_window_title_safe()
@@ -1651,7 +1651,7 @@ def process_text_in_background(logger,
                     #     f' match_phrase:{match_phrase}'
                     #     f' threshold:{threshold}')
 
-                    flags = options_dict.get('flags', 0)  # Standardwert ist 0, wenn kein Flag angegeben
+                    command_flags = options_dict.get('command_flags', 0)  # Standardwert ist 0, wenn kein Flag angegeben
                     #log4DEV(f"skip_list: {skip_list}", logger)
                     skip_list = options_dict.get('skip_list', [])
 
@@ -1684,7 +1684,7 @@ def process_text_in_background(logger,
                                 log4DEV("Skipping regex matching because result_languagetool is None.", logger)
                                 continue
 
-                            if not re.search(match_phrase, result_languagetool, flags=flags):
+                            if not re.search(match_phrase, result_languagetool, flags=command_flags):
                                 continue
                             if not privacy_taint_occurred:
                                 log4DEV(f"🔁Regex in: '{result_languagetool}' --> '{replacement}' based on pattern '{match_phrase}'",logger)
@@ -1693,7 +1693,7 @@ def process_text_in_background(logger,
                                 match_phrase,
                                 replacement.strip(),
                                 result_languagetool,
-                                flags=flags
+                                flags=command_flags
                             )
 
                             if new_text != result_languagetool:
@@ -2122,7 +2122,7 @@ def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_ma
                 "only_in_windows": options_dict.get('only_in_windows', []),
                 "exclude_windows": options_dict.get('exclude_windows', []),
                 "skip_list": options_dict.get('skip_list', []),
-                "flags": options_dict.get('flags', 0),
+                "command_flags": options_dict.get('command_flags', 0),
                 "is_private": options_dict.get('is_private', False),
                 "source_modname": source_modname,
                 "source_path": source_path,
@@ -2456,11 +2456,11 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
 
             # 1. Flags extrahieren für den Cache-Key
-            flags = options_dict.get('flags', re.IGNORECASE)
+            command_flags = options_dict.get('command_flags', re.IGNORECASE)
 
 
             # from scripts.py.func.config.regex_cache import get_cached_regex
-            compiled_regex = get_cached_regex(regex_pattern, flags)
+            compiled_regex = get_cached_regex(regex_pattern, command_flags)
 
             # compiled_regex = REGEX_COMPILE_CACHE[cache_key]
 

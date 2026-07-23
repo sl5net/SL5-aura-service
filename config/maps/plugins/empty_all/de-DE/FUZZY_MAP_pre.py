@@ -10,7 +10,7 @@ import re # noqa: F401
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 # too<-from
@@ -24,32 +24,32 @@ FUZZY_MAP_pre = [
     # Kumulation: Regeln (kumulieren) so das vielleicht nur die letzte Regeln sichbar wird. Beispiele:
 
     # Folgende regel betrifft alles:
-    # ('---', r'^.*$', 5, # min_accuracy {'flags': re.IGNORECASE}),
+    # ('---', r'^.*$', 5, # min_accuracy {'command_flags': re.IGNORECASE}),
 
     # Folgende regel betrifft alles außer dem Wort Haus:
     # EXAMPLE: Haus
-    # ('', r'^(?!Haus).*$', 5, {'flags': re.IGNORECASE}),
+    # ('', r'^(?!Haus).*$', 5, {'command_flags': re.IGNORECASE}),
     #TestTestTestHausHausHausFrau ausHaus Baum unterGuten TagSchachmattSchachmatt
     #SchachmattSchachmatt
 
     # Folgende regel betrifft alles außer den Wörtern Schach,Matt:
     # EXAMPLE: Schach
-    # ('', r'^(?!Schach|Matt|bad|Haus).*$', 5, {'flags': re.IGNORECASE}),
+    # ('', r'^(?!Schach|Matt|bad|Haus).*$', 5, {'command_flags': re.IGNORECASE}),
     #SchachSchachHausSchachSchachBad
     #Schachmatt
 
     # EXAMPLE: Schach
-    # ('Schachmatt', r'^(Schach|Matt|bad|Haus).*$', 5, {'flags': re.IGNORECASE}),
+    # ('Schachmatt', r'^(Schach|Matt|bad|Haus).*$', 5, {'command_flags': re.IGNORECASE}),
     #SchachmattSchachmatt
 
 
 
-    ('LECKER_EXAKT', 'Marmelade', 100, {'flags': re.IGNORECASE}),
+    ('LECKER_EXAKT', 'Marmelade', 100, {'command_flags': re.IGNORECASE}),
     # Marmelade MarmeladeLECKER_EXAKT
 
     # Test 2: Tolerante Regel (Tippfehler erlaubt)
     # 'Marmelada' oder 'Marmelad' sollte auch erkannt werden.
-    # ('LECKER_FUZZY', 'Marmelade', 1, {'flags': re.IGNORECASE}),
+    # ('LECKER_FUZZY', 'Marmelade', 1, {'command_flags': re.IGNORECASE}),
 
     #Marmelade Marmelade Mammon Mammon Mama Marion Málaga
     # Mama MarionA lager mal mager

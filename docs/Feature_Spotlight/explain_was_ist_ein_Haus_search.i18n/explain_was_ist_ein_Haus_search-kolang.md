@@ -10,7 +10,7 @@ XSPACEbreakX
 
 ```python
 ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool','fullMatchStop']})
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool','fullMatchStop']})
 ```
 
 * **조치:** 사용자 입력 `"was ist ein haus"`가 성공적으로 일치되었습니다.
@@ -21,7 +21,7 @@ XSPACEbreakX
 
 ```python
 ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der)? (?P<search>.*)', 90, {
-'flags': re.IGNORECASE,
+'command_flags': re.IGNORECASE,
 'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
 })
 ```

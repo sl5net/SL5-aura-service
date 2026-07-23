@@ -3,7 +3,7 @@
 ## 규칙 형식
 
 ```python
-('replacement', r'regex_pattern', threshold, {'flags': re.IGNORECASE})
+('replacement', r'regex_pattern', threshold, {'command_flags': re.IGNORECASE})
 ```
 
 | 위치 | 이름 | 설명 |
@@ -16,13 +16,13 @@
 기본적으로(`False`) 대체 문자열은 Python의 `re.sub()`에 의해 처리됩니다. 이는 `\1` 또는 `\2`와 같은 정규식 역참조를 사용하여 캡처된 그룹을 삽입하는 것을 지원합니다(예: `(r'\1', r'(\d)\s+(?=\d)', 95)`).
 대체 항목이 여러 줄 문자열이거나 이스케이프되지 않은 백슬래시(예: 코드 템플릿 또는 경로)를 포함하고 있는 그대로 정확하게 보존해야 하는 경우 옵션 사전에서 `'raw_replacement': True`를 활성화하세요.
 ```python
-(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+(System_Instructions, r'^(system instructions)$', 10, {'command_flags': re.IGNORECASE, 'raw_replacement': True})
 ```
 
 ### 사용 가능한 사용자 구성 옵션:
 
-* **`flags`** (정수): 패턴 컴파일 중에 사용되는 정규식 플래그입니다.
-*예:* `{'flags': re.IGNORECASE}`
+* **`command_flags`** (정수): 패턴 컴파일 중에 사용되는 정규식 플래그입니다.
+*예:* `{'command_flags': re.IGNORECASE}`
 * **`raw_replacement`** (부울): `True`인 경우 대체 텍스트는 순수 문자열 리터럴로 처리되고 Python의 `re.sub` 백슬래시 구문 분석을 통해 무시됩니다. 이스케이프 처리되지 않은 백슬래시(`\`)가 있는 문자열이나 여러 줄 프롬프트에 매우 중요합니다.
 *예:* `{'raw_replacement': True}`
 * **`cache`** (부울): AURA 결과 캐시를 토글합니다. 동적 출력(예: 현재 시간, 무작위 농담)을 생성하는 규칙에 대해 'False'로 설정하면 모든 일치에서 새로 평가됩니다.
@@ -51,28 +51,28 @@
 
 ### 단일 단어 일치(단어 경계)
 ```python
-('Python', r'\bpython\b', 0, {'flags': re.IGNORECASE})
+('Python', r'\bpython\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### 여러 변형 일치
 ```python
-('OpenAI', r'\bopen\s*ai\b', 0, {'flags': re.IGNORECASE})
+('OpenAI', r'\bopen\s*ai\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Fullmatch – 파이프라인을 중지합니다.
 ```python
-('hello koan', r'^.*$', 0, {'flags': re.IGNORECASE})
+('hello koan', r'^.*$', 0, {'command_flags': re.IGNORECASE})
 ```
 ⚠️ **모든 항목**과 일치합니다. 파이프라인은 여기서 멈춥니다. 이전 규칙은 여전히 우선순위를 갖습니다.
 
 ### 입력 시작 일치
 ```python
-('Note: ', r'^notiz\b', 0, {'flags': re.IGNORECASE})
+('Note: ', r'^notiz\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### 정확한 구문 일치
 ```python
-('New York', r'\bnew york\b', 0, {'flags': re.IGNORECASE})
+('New York', r'\bnew york\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ## 파일 위치
@@ -96,13 +96,13 @@
 ```python
 FUZZY_MAP_pre = [
     # Correct a common STT mistake
-    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'flags': re.IGNORECASE}),
+    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Expand abbreviation
-    ('zum Beispiel', r'\bzb\b', 0, {'flags': re.IGNORECASE}),
+    ('zum Beispiel', r'\bzb\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Stop pipeline for testing
-    # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
+    # ('test koan', r'^.*$', 0, {'command_flags': re.IGNORECASE}),
 ]
 ```
 
@@ -122,7 +122,7 @@ FUZZY_MAP_pre = [
 import re  # noqa: F401
 # too<-from
 FUZZY_MAP_pre = [
-    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+    ('My Rule', r'my rule', 0, {'command_flags': re.IGNORECASE}),
 ]
 # ============================================================
 # Longer explanations, task descriptions, notes...

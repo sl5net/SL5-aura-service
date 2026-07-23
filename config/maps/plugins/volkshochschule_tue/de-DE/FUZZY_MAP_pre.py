@@ -6,7 +6,7 @@ import re
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 """
@@ -24,33 +24,33 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
     # EXAMPLE: titextr
-    ('Timo Stösser', r'^(ti\w+r|T\w+i\w+o)\s+(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Stoffe|Schlösser|stöße|stöpsel|Störche)$', 7, {'flags': re.IGNORECASE}),
+    ('Timo Stösser', r'^(ti\w+r|T\w+i\w+o)\s+(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Stoffe|Schlösser|stöße|stöpsel|Störche)$', 7, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: titextr
-    ('Timo', r'\b(ti\w+r|T\w+i\w+o)\b', 70, {'flags': re.IGNORECASE,
+    ('Timo', r'\b(ti\w+r|T\w+i\w+o)\b', 70, {'command_flags': re.IGNORECASE,
         'only_in_windows': [r'mail',r'gmail',r'mail',r'posteingang']}),
 
     # EXAMPLE: stäfa
-    ('Stösser', r'^(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Schlösser|stöße|stöpsel|Störche)$', 70, {'flags': re.IGNORECASE}),
+    ('Stösser', r'^(stäfa|steffen|stripper|stefan|stürz\w*|stötz\w*|Sturz|stösse|Schlösser|stöße|stöpsel|Störche)$', 70, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: fachbereichsleiter
-    ('Fachbereichsleitung', r'^(fachbereichsleiter)$', 60, {'flags': re.IGNORECASE}),
+    ('Fachbereichsleitung', r'^(fachbereichsleiter)$', 60, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: texttxn Buch
-    ('Python-Buch', r'^(\w+t\wn Buch)$', 60, {'flags': re.IGNORECASE}),
+    ('Python-Buch', r'^(\w+t\wn Buch)$', 60, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Python Buch
-    ('Python-Buch', r'^(Python Buch)$', 60, {'flags': re.IGNORECASE}),
+    ('Python-Buch', r'^(Python Buch)$', 60, {'command_flags': re.IGNORECASE}),
     # EXAMPLE: Btextixttext Buch
-    ('Python-Buch', r'^(B\w+i\wt\w+ Buch)$', 60, {'flags': re.IGNORECASE}),
+    ('Python-Buch', r'^(B\w+i\wt\w+ Buch)$', 60, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Python-Buch
-    ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, {'flags': re.IGNORECASE}),
+    ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, {'command_flags': re.IGNORECASE}),
 
-    # ('Kursleiterschulung', r'^(Kursleiter\s*schu\w*| Dozenten Schulung  Dozenten Fortbildung)$', 60, {'flags': re.IGNORECASE})
+    # ('Kursleiterschulung', r'^(Kursleiter\s*schu\w*| Dozenten Schulung  Dozenten Fortbildung)$', 60, {'command_flags': re.IGNORECASE})
 
     # EXAMPLE: Kursleiter
-    ('Kursleiterschulung', r'^(Kursleiter|Dozenten)[\w\s]*(\s*schu\w*|Fortbildung)$', 60, {'flags': re.IGNORECASE})
+    ('Kursleiterschulung', r'^(Kursleiter|Dozenten)[\w\s]*(\s*schu\w*|Fortbildung)$', 60, {'command_flags': re.IGNORECASE})
 
 ]
 

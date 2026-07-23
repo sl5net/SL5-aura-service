@@ -18,17 +18,17 @@ FUZZY_MAP_pre = [
     (r'tilde/.config/0ad/config/',
      rf'^{zad}\s+[ck]onf\w+$',
      ('90', r'^90$'),
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: 0ad mods
     (r'tilde/.local/share/0ad/mods',
      rf'^{zad}\s+mod[s]?$',
      ('90', r'^90$'),
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: 0ad AppImage
     (r'tilde/Apps/0ad-0.28.0-x86_64.AppImage',
      rf'^{zad}\s+App\w+$',
      ('90', r'^90$'),
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 ]

@@ -114,6 +114,8 @@ if os.environ.get('CI') == 'true':
     PRELOAD_MODELS = ["vosk-model-small-en-us-0.15"]
 
 
+LOWERCASE_WINDOW_TITLES = True  # Set to False to enable case-sensitive window matching
+
 
 # config/settings.py
 PLUGIN_HELPER_TTS_ENABLED = True

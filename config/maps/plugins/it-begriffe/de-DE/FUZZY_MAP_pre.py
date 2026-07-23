@@ -11,7 +11,7 @@ import re # noqa: F401
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 # config/maps/plugins/it-begriffe/de-DE/FUZZY_MAP_pre.py:17
@@ -44,10 +44,10 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: JSON Datei
 
-    ('JSON Datei', r'^\b(JSON(\sDatei)?|jagen|jacen|jason|schweifen)\s*(Datei|detail)(\b)$', 80, {'flags': re.IGNORECASE}),
+    ('JSON Datei', r'^\b(JSON(\sDatei)?|jagen|jacen|jason|schweifen)\s*(Datei|detail)(\b)$', 80, {'command_flags': re.IGNORECASE}),
     # EXAMPLE: JSON Export
 
-    ('JSON Export', r'^\b(JSON Export|jacen export)(\b)$', 80, {'flags': re.IGNORECASE}),
+    ('JSON Export', r'^\b(JSON Export|jacen export)(\b)$', 80, {'command_flags': re.IGNORECASE}),
 
 
     #Mal ausprobieren
@@ -56,33 +56,33 @@ FUZZY_MAP_pre = [
     # EXAMPLE: das LanguageTool
     # LanguageTool
     # EXAMPLE: liquid Stuhl
-    ('das LanguageTool', r'\b(das) (LanguageTool|liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
-    ('LanguageTool', r'\b(liquid Stuhl)(\b)', 80, {'flags': re.IGNORECASE}),
+    ('das LanguageTool', r'\b(das) (LanguageTool|liquid Stuhl)(\b)', 80, {'command_flags': re.IGNORECASE}),
+    ('LanguageTool', r'\b(liquid Stuhl)(\b)', 80, {'command_flags': re.IGNORECASE}),
 
     # des link wich tools
     # EXAMPLE: LanguageTool
 
-    ("des LanguageTool's", r'\b(LanguageTool|des link w\w+ tools)(\b)', 80, {'flags': re.IGNORECASE}),
+    ("des LanguageTool's", r'\b(LanguageTool|des link w\w+ tools)(\b)', 80, {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Manjaro
 
-    ('Manjaro Linux', r'^(Manjaro|whatchado|Mönch|matcha wo) (Linux|Carolin\w*)$', 80, {'flags': re.IGNORECASE}),
+    ('Manjaro Linux', r'^(Manjaro|whatchado|Mönch|matcha wo) (Linux|Carolin\w*)$', 80, {'command_flags': re.IGNORECASE}),
 
     #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
     # EXAMPLE: Linux Manjaro
-    ('Linux Manjaro', r'^(Linux) (Manjaro|man Karo|mal jaro|wird jaro|matcha rub)$', 80, {'flags': re.IGNORECASE}),
+    ('Linux Manjaro', r'^(Linux) (Manjaro|man Karo|mal jaro|wird jaro|matcha rub)$', 80, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Linux Manjaro
-    ('Linux Manjaro', r'^(Linux) ma\w*\s*\w*a\s*r[ou]m?$', 80, {'flags': re.IGNORECASE}),
+    ('Linux Manjaro', r'^(Linux) ma\w*\s*\w*a\s*r[ou]m?$', 80, {'command_flags': re.IGNORECASE}),
 
 
     #Mönch CarolinMit CarolinWenn CarolineManjaro Linux
     # EXAMPLE: Linux Manjarovelux
-    ('Linux Manjaro', r'^(Linux|velux) (Manjaro|matcha|wird jaro|wird jaro|mit jaro)$', 80, {'flags': re.IGNORECASE}),
+    ('Linux Manjaro', r'^(Linux|velux) (Manjaro|matcha|wird jaro|wird jaro|mit jaro)$', 80, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Linux Manjarovelux
-    ('Linux Manjaro', r'^velux m\w+\s*[ou]$', 80, {'flags': re.IGNORECASE}),
+    ('Linux Manjaro', r'^velux m\w+\s*[ou]$', 80, {'command_flags': re.IGNORECASE}),
 
     # velux m\w+\s*[ou]
 
@@ -97,22 +97,22 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: Debatte ausgaben
-    ('Debug-Ausgaben', r'^(Debatte ausgaben)$', 80, {'flags': re.IGNORECASE}),
+    ('Debug-Ausgaben', r'^(Debatte ausgaben)$', 80, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: program loaded
-    ('Programm geladen. Viel Spaß', r'^(Progra[m]+ loaded)$', 80, {'flags': re.IGNORECASE}),
+    ('Programm geladen. Viel Spaß', r'^(Progra[m]+ loaded)$', 80, {'command_flags': re.IGNORECASE}),
 
 
 
 
     # EXAMPLE: Logdatei
-    ('Logdatei', r'^(Logdatei|Kochdatei|log-datei)$', 80, {'flags': re.IGNORECASE}),
+    ('Logdatei', r'^(Logdatei|Kochdatei|log-datei)$', 80, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Logfile
-    ('Logfile', r'^(\b)(Logfile)(\b)$', 80, {'flags': re.IGNORECASE}),
+    ('Logfile', r'^(\b)(Logfile)(\b)$', 80, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Relief
-    ('release', r'^(\b)(release|Relief|release|Relief|wer dies)(\b)$', 75, {'flags': re.IGNORECASE}),
+    ('release', r'^(\b)(release|Relief|release|Relief|wer dies)(\b)$', 75, {'command_flags': re.IGNORECASE}),
 
 #Virtuell in Weibern
 #Ritual in Deibel
@@ -132,7 +132,7 @@ FUZZY_MAP_pre = [
 #
 
     # EXAMPLE: Virtuell
-    ('Virtual environment', r'\b(Virtuell|virtual|witwe\w*|witwer|wird schon|wird schwer|wirtschaft|wildschwein)\w* (in |wei |im )?(Weibe|white|weima|metall|wei|warm|wei mit|wirbeln|räumen|beweise|wallet)\w*\b', 75, {'flags': re.IGNORECASE,
+    ('Virtual environment', r'\b(Virtuell|virtual|witwe\w*|witwer|wird schon|wird schwer|wirtschaft|wildschwein)\w* (in |wei |im )?(Weibe|white|weima|metall|wei|warm|wei mit|wirbeln|räumen|beweise|wallet)\w*\b', 75, {'command_flags': re.IGNORECASE,
             'skip_list': ['LanguageTool'],
     }),
 
@@ -158,60 +158,60 @@ FUZZY_MAP_pre = [
 #ützensagTitan wird hier in einem Ritual Environment mitverwendet
 
     # EXAMPLE: Brighton
-    ('Python', r'^(\b)(B2026-0131-2125righton|breit schon|Fallschirm|peitschen)(\b)$', 75, {'flags': re.IGNORECASE}),
+    ('Python', r'^(\b)(B2026-0131-2125righton|breit schon|Fallschirm|peitschen)(\b)$', 75, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: beiden wird hier in einem Virtual environment mitverwendet
-    ('Python wird hier in einer Virtual environment verwendet', r'^(beiden wird hier in einem Virtual environment mitverwendet|Beiden wird hier in einer wird für den falle verwendet|Weiterhin wird hier in einem virtuell in bei mit verwendet|Halten wird jedwedem Witwe wird Weibe verwenden|titan wird hier in einem virtual in weibe verwendet|beiden wird hier in einem virtuell in wei mitverwendet)$', 75, {'flags': re.IGNORECASE}),
+    ('Python wird hier in einer Virtual environment verwendet', r'^(beiden wird hier in einem Virtual environment mitverwendet|Beiden wird hier in einer wird für den falle verwendet|Weiterhin wird hier in einem virtuell in bei mit verwendet|Halten wird jedwedem Witwe wird Weibe verwenden|titan wird hier in einem virtual in weibe verwendet|beiden wird hier in einem virtuell in wei mitverwendet)$', 75, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: sdf b bytes charme b
-    ('PyCharm', r'^sdf(\b)(bytes charme)(\b)$', 75, {'flags': re.IGNORECASE}),
+    ('PyCharm', r'^sdf(\b)(bytes charme)(\b)$', 75, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: d fahl
-    ('default', r'^(\b)(d fahl)(\b)$', 75, {'flags': re.IGNORECASE}),
+    ('default', r'^(\b)(d fahl)(\b)$', 75, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Dringen
-    ('String', r'^(\b)(Dringen)(\b)$', 75, {'flags': re.IGNORECASE}),
+    ('String', r'^(\b)(Dringen)(\b)$', 75, {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Kot abschnittt
-    ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'flags': re.IGNORECASE}),
+    ('Code Abschnitt', r'\bKot\s*abschnittt\b', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: lobt Case
-    ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
+    ('lowerCase', r'\blobt\s*Case\b', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: stob Button
-    ('StopButton', r'\bstob\s*Button\b', 82, {'flags': re.IGNORECASE}),
+    ('StopButton', r'\bstob\s*Button\b', 82, {'command_flags': re.IGNORECASE}),
     # EXAMPLE: lobt Case
-    ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
+    ('lowerCase', r'\blobt\s*Case\b', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: AutoKey
-    ('AutoKey', r'\bAuto k\b', 82, {'flags': re.IGNORECASE}),
+    ('AutoKey', r'\bAuto k\b', 82, {'command_flags': re.IGNORECASE}),
     # EXAMPLE: 0 A.D.
-    ('0 A.D.', r'\bzewa d\b', 82, {'flags': re.IGNORECASE}),
+    ('0 A.D.', r'\bzewa d\b', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: 0 A.D. spiel
-    ('0 A.D. spiel', r'\bzewa d spiel\W*\b', 82, {'flags': re.IGNORECASE}),
+    ('0 A.D. spiel', r'\bzewa d spiel\W*\b', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: 0 A.D. spiel
-    ('GitHub SL5', r'\bgithub es sind 5\b', 82, {'flags': re.IGNORECASE}),
+    ('GitHub SL5', r'\bgithub es sind 5\b', 82, {'command_flags': re.IGNORECASE}),
 
 
 
 
     # EXAMPLE: bild prozess
-    ('Build Prozess', r'\bbild prozess\b', 82, {'flags': re.IGNORECASE}),
+    ('Build Prozess', r'\bbild prozess\b', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: opensource
-    ('opensource', r'\bopensource\b', 75, {'flags': re.IGNORECASE}),
+    ('opensource', r'\bopensource\b', 75, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: pipe
-    ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, {'flags': re.IGNORECASE}),
+    ('|', r'\b(pipe|pipe symbol|paid symbol|treib symbol|Paypal Symbol|pep|prep simba|treib simba|Paypal Simba)\b', 75, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: pipe
-    ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, {'flags': re.IGNORECASE}),
+    ('|', r'\b(pipe|pipe|paid|treib|Paypal|pep|prep|treib|Paypal) (symbol|simba|simpel|simbel|schimmer|SIM)\b', 75, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: at
-    ('@', r'\b(at|ed) (symbol|simba|simpel|simbel|schimmer|SIM|shampoo|schimpfwort|Zeichen)\b', 75, {'flags': re.IGNORECASE}),
+    ('@', r'\b(at|ed) (symbol|simba|simpel|simbel|schimmer|SIM|shampoo|schimpfwort|Zeichen)\b', 75, {'command_flags': re.IGNORECASE}),
 # ed shampoo denSchätzchen wurdenEr schimpft
 #HiPaypalPaid symbolPepWeib SymbolTreib SymbolPythonPaypal SymbolWeibchenbrät SimbaWeibchenPaypal Simbafeit SchimpfTreibt simpelVeit SchimmelPep Schimmer
 #Häppchenbei SIMPaypal SIMHalb SIMPep simpel||Plätzchenbacken

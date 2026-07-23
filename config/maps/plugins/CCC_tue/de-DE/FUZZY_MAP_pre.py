@@ -11,7 +11,7 @@ import re # noqa: F401
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 """
@@ -44,11 +44,11 @@ FUZZY_MAP_pre = [
     # KürbisKübelSyltkorrektEbenso sind
     # EXAMPLE: chaos pad
     ('https://pad.ccc-mannheim.de/p/1', r'^(chaos)\w*\s+.*pad.*$', 60,
-    {'flags': re.IGNORECASE}),
+    {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: chaos x  Tübingen
     ('https://pad.cttue.de/1', r'^(chaos)\w*\s+.*Tübingen.*$', 60, # min_accuracy
-    {'flags': re.IGNORECASE}),
+    {'command_flags': re.IGNORECASE}),
 
     #################################################
     # 2. aktiviere diese Regel (hinter die erste regen die du optimieren willst)
@@ -58,11 +58,11 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: chaos
     ('https://cttue.de',
-     r'^(chaos|Graues|Karls|raus) (treff|trifft) (tübingen|Typ)\s*\w*$', 60, {'flags': re.IGNORECASE}),
+     r'^(chaos|Graues|Karls|raus) (treff|trifft) (tübingen|Typ)\s*\w*$', 60, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: chaos
     ('https://cttue.de/doku.php?id=start#was_ansteht',
-     r'^(chaos|Karls)\s+.*was.*an.*$', 60, {'flags': re.IGNORECASE}),
+     r'^(chaos|Karls)\s+.*was.*an.*$', 60, {'command_flags': re.IGNORECASE}),
 
 
 
@@ -74,36 +74,36 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: chaos
     ('https://pad.cttue.de/cttue-meta#', r'^(chaos|Karls)\w*\s+.*Sitzungsprot.*$', 60, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: chaos
     ('https://cttue.de/doku.php?id=events:past', r'^(chaos|Karls)\s+.* \bVerg.*$', 60, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: fred vettel
     ('06.03.-08.03.2026 Uni Stuttgart selfnet.de/uplink INCO guserav Selfnet e.V. Mastodon', r'^(Stuttgart|Selfnet|Mastodon)(\s*\w*\s*\b)(Stuttgart|ccc)$', 60, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # https://events.ccc.de/congress/2025/hub/de/wiki/event-vorstellungen
 
 
     # EXAMPLE: fred vettel
     ('https://ki-maker.space/', r'^(fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ)$', 60, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: fred Kurse workshops
     ('https://ki-maker.space/angebote/kurse-und-workshops', r'^(ki|fred|fett|vettel)(\s*\w*\s*\b)(tübingen|typ).*(Kurse|workshops)$', 60, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Python Buch
     ('Python-Buch', r'^([PBW]\w+i\w*t\w*e\w* Buch)$', 60, # min_accuracy
-    {'flags': re.IGNORECASE}),
+    {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: openstreetmap
     (r'https://www.openstreetmap.org/node/9879183939',
      r'^openstreetmap$', 60, # min_accuracy
-    {'flags': re.IGNORECASE})
+    {'command_flags': re.IGNORECASE})
 
 ]
 

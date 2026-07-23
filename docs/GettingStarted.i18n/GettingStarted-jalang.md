@@ -43,7 +43,7 @@ touch /tmp/sl5_record.trigger
 1.「config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py」を開きます。
 2. `FUZZY_MAP_pre = [...]` 内にルールを追加します。
    ```python
-   ('Hello World', r'hello world', 0, {'flags': re.IGNORECASE})
+   ('Hello World', r'hello world', 0, {'command_flags': re.IGNORECASE})
    #  ^ output        ^ pattern        ^ threshold (ignored for regex)
    ```
 3. **保存** — Aura は自動的にリロードされます。再起動は必要ありません。

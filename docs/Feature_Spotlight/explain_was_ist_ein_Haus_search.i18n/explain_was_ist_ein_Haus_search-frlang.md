@@ -10,7 +10,7 @@ la première règle pour **Input Transformation** et **Labeling** avant que l'ac
 
 ```python
 ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool','fullMatchStop']})
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool','fullMatchStop']})
 ```
 
 * **Action :** L'entrée utilisateur `"was ist ein haus"` correspond avec succès.
@@ -21,7 +21,7 @@ la première règle pour **Input Transformation** et **Labeling** avant que l'ac
 
 ```python
 ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der)? (?P<search>.*)', 90, {
-'flags': re.IGNORECASE,
+'command_flags': re.IGNORECASE,
 'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
 })
 ```

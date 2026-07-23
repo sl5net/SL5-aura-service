@@ -3,7 +3,7 @@
 ## Formato de regla
 
 ```python
-('replacement', r'regex_pattern', threshold, {'flags': re.IGNORECASE})
+('replacement', r'regex_pattern', threshold, {'command_flags': re.IGNORECASE})
 ```
 
 | Posición | Nombre | Descripción |
@@ -16,13 +16,13 @@
 De forma predeterminada (`False`), las cadenas de reemplazo son procesadas por `re.sub()` de Python, que admite el uso de referencias inversas de expresiones regulares como `\1` o `\2` para insertar grupos capturados (por ejemplo: `(r'\1', r'(\d)\s+(?=\d)', 95)`).
 Si su reemplazo es una cadena de varias líneas o contiene barras invertidas sin escape (como plantillas de código o rutas de acceso) y debe conservarse exactamente como está, habilite `'raw_replacement': True` en el diccionario de opciones:
 ```python
-(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+(System_Instructions, r'^(system instructions)$', 10, {'command_flags': re.IGNORECASE, 'raw_replacement': True})
 ```
 
 ### Opciones disponibles configurables por el usuario:
 
-* **`flags`** (entero): indicadores Regex utilizados durante la compilación del patrón.
-*Ejemplo:* `{'flags': re.IGNORECASE}`
+* **`command_flags`** (entero): indicadores Regex utilizados durante la compilación del patrón.
+*Ejemplo:* `{'command_flags': re.IGNORECASE}`
 * **`raw_replacement`** (booleano): cuando es `True`, el texto de reemplazo se trata como una cadena literal pura y se omite mediante el análisis de barra invertida `re.sub` de Python. Es crucial para mensajes de varias líneas o cadenas con barras invertidas sin escape (`\`).
 *Ejemplo:* `{'raw_replacement': Verdadero}`
 * **`cache`** (booleano): alterna la caché de resultados de AURA. Establezca en "False" las reglas que generan resultados dinámicos (por ejemplo, hora actual, chistes aleatorios) para garantizar que se evalúen de nuevo en cada partido.
@@ -51,28 +51,28 @@ Si su reemplazo es una cadena de varias líneas o contiene barras invertidas sin
 
 ### Coincidir con una sola palabra (límite de palabra)
 ```python
-('Python', r'\bpython\b', 0, {'flags': re.IGNORECASE})
+('Python', r'\bpython\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Coincidir con múltiples variantes
 ```python
-('OpenAI', r'\bopen\s*ai\b', 0, {'flags': re.IGNORECASE})
+('OpenAI', r'\bopen\s*ai\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Fullmatch – detiene el proceso
 ```python
-('hello koan', r'^.*$', 0, {'flags': re.IGNORECASE})
+('hello koan', r'^.*$', 0, {'command_flags': re.IGNORECASE})
 ```
 ⚠️ Esto coincide con **todo**. El oleoducto se detiene aquí. Las normas anteriores siguen teniendo prioridad.
 
 ### Coincidir con el inicio de la entrada
 ```python
-('Note: ', r'^notiz\b', 0, {'flags': re.IGNORECASE})
+('Note: ', r'^notiz\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Coincide con la frase exacta
 ```python
-('New York', r'\bnew york\b', 0, {'flags': re.IGNORECASE})
+('New York', r'\bnew york\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ## Ubicaciones de archivos
@@ -96,13 +96,13 @@ Si su reemplazo es una cadena de varias líneas o contiene barras invertidas sin
 ```python
 FUZZY_MAP_pre = [
     # Correct a common STT mistake
-    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'flags': re.IGNORECASE}),
+    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Expand abbreviation
-    ('zum Beispiel', r'\bzb\b', 0, {'flags': re.IGNORECASE}),
+    ('zum Beispiel', r'\bzb\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Stop pipeline for testing
-    # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
+    # ('test koan', r'^.*$', 0, {'command_flags': re.IGNORECASE}),
 ]
 ```
 
@@ -122,7 +122,7 @@ Coloque sus reglas **antes** de bloques de comentarios largos:
 import re  # noqa: F401
 # too<-from
 FUZZY_MAP_pre = [
-    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+    ('My Rule', r'my rule', 0, {'command_flags': re.IGNORECASE}),
 ]
 # ============================================================
 # Longer explanations, task descriptions, notes...

@@ -25,7 +25,7 @@ FUZZY_MAP_pre = [
         r'what time is it', # The regex pattern to match.
         95, # The confidence threshold.
         {
-            'flags': re.IGNORECASE,
+            'command_flags': re.IGNORECASE,
             # The new key: a list of script files to execute.
             'on_match_exec': [CONFIG_DIR / 'get_current_time.py']
         }
@@ -71,7 +71,7 @@ Este script retorna uma saudação personalizada com base na hora do dia.
 **1. A regra (no seu arquivo de mapa):**
 ```python
 (None, r'\b(what time is it|uhrzeit)\b', 95, {
-    'flags': re.IGNORECASE,
+    'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'get_current_time.py']
 }),
 ```
@@ -114,7 +114,7 @@ __CODE_BLOCO_3__
 **2. O script (`calculator.py`):**
 ```python
 (None, r'calculate (\d+) (plus|minus) (\d+)', 98, {
-    'flags': re.IGNORECASE,
+    'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'calculator.py']
 }),
 ```

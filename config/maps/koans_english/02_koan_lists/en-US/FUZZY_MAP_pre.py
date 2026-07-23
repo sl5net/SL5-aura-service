@@ -27,6 +27,6 @@ import re  # noqa: F401
 # ============================================================
 
 FUZZY_MAP_pre = [
-    # ('on',  r'^[a-m]+.*$', 80, {'flags': re.IGNORECASE}),
-    # ('off', r'^[n-z]+.*$', 80, {'flags': re.IGNORECASE}),
+    # ('on',  r'^[a-m]+.*$', 80, {'command_flags': re.IGNORECASE}),
+    # ('off', r'^[n-z]+.*$', 80, {'command_flags': re.IGNORECASE}),
 ]

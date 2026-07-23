@@ -3,7 +3,7 @@
 ## Rule Format
 
 ```python
-('replacement', r'regex_pattern', threshold, {'flags': re.IGNORECASE})
+('replacement', r'regex_pattern', threshold, {'command_flags': re.IGNORECASE})
 ```
 
 | Position | Name | Description                                                                      |
@@ -16,13 +16,13 @@
 By default (`False`), replacement strings are processed by Python's `re.sub()`, which supports using regex backreferences like `\1` or `\2` to insert captured groups (for example: `(r'\1', r'(\d)\s+(?=\d)', 95)`). 
 If your replacement is a multiline string or contains unescaped backslashes (such as code templates or paths) and should be preserved exactly as-is, enable `'raw_replacement': True` in the options dictionary:
 ```python
-(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+(System_Instructions, r'^(system instructions)$', 10, {'command_flags': re.IGNORECASE, 'raw_replacement': True})
 ```
 
 ### Available user-configurable options:
 
-*   **`flags`** (integer): Regex flags used during pattern compilation.
-    *Example:* `{'flags': re.IGNORECASE}`
+*   **`command_flags`** (integer): Regex flags used during pattern compilation.
+    *Example:* `{'command_flags': re.IGNORECASE}`
 *   **`raw_replacement`** (boolean): When `True`, the replacement text is treated as a pure string literal and bypassed by Python's `re.sub` backslash parsing. Crucial for multiline prompts or strings with unescaped backslashes (`\`).
     *Example:* `{'raw_replacement': True}`
 *   **`cache`** (boolean): Toggles the AURA result cache. Set to `False` for rules that generate dynamic output (e.g., current time, random jokes) to ensure they are evaluated fresh on every match.
@@ -51,28 +51,28 @@ If your replacement is a multiline string or contains unescaped backslashes (suc
 
 ### Match a single word (word boundary)
 ```python
-('Python', r'\bpython\b', 0, {'flags': re.IGNORECASE})
+('Python', r'\bpython\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Match multiple variants
 ```python
-('OpenAI', r'\bopen\s*ai\b', 0, {'flags': re.IGNORECASE})
+('OpenAI', r'\bopen\s*ai\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Fullmatch – stops the pipeline
 ```python
-('hello koan', r'^.*$', 0, {'flags': re.IGNORECASE})
+('hello koan', r'^.*$', 0, {'command_flags': re.IGNORECASE})
 ```
 ⚠️ This matches **everything**. The pipeline stops here. Earlier rules still have priority.
 
 ### Match start of input
 ```python
-('Note: ', r'^notiz\b', 0, {'flags': re.IGNORECASE})
+('Note: ', r'^notiz\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Match exact phrase
 ```python
-('New York', r'\bnew york\b', 0, {'flags': re.IGNORECASE})
+('New York', r'\bnew york\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ## File Locations
@@ -96,13 +96,13 @@ If your replacement is a multiline string or contains unescaped backslashes (suc
 ```python
 FUZZY_MAP_pre = [
     # Correct a common STT mistake
-    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'flags': re.IGNORECASE}),
+    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Expand abbreviation
-    ('zum Beispiel', r'\bzb\b', 0, {'flags': re.IGNORECASE}),
+    ('zum Beispiel', r'\bzb\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Stop pipeline for testing
-    # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
+    # ('test koan', r'^.*$', 0, {'command_flags': re.IGNORECASE}),
 ]
 ```
 
@@ -122,7 +122,7 @@ Put your rules **before** long comment blocks:
 import re  # noqa: F401
 # too<-from
 FUZZY_MAP_pre = [
-    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+    ('My Rule', r'my rule', 0, {'command_flags': re.IGNORECASE}),
 ]
 # ============================================================
 # Longer explanations, task descriptions, notes...

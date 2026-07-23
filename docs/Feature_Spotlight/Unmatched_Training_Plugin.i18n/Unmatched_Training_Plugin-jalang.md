@@ -24,7 +24,7 @@ FUZZY_MAP_pre = [
     # 1. Your rule to optimize (result first!)
     ('Blumen orchestrieren',
      r'^(Blumen giesen|Blumen gessen|Blumen essen)$', 100,
-     {'flags': re.IGNORECASE}
+     {'command_flags': re.IGNORECASE}
     ),
 
     #################################################

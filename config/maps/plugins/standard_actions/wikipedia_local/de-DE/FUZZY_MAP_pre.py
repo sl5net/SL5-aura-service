@@ -10,7 +10,7 @@ from pathlib import Path
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 CONFIG_DIR = Path(__file__).parent
@@ -29,13 +29,13 @@ FUZZY_MAP_pre = [
     # EXAMPLE:  was ist ein haus
     ("Wiki was ist ein haus Begriffsklärung", rf'^{wikipedia}was ist (ein|dein|den) haus$', 90,
      {
-    'flags': re.IGNORECASE,
+    'command_flags': re.IGNORECASE,
     'skip_list': ['LanguageTool','fullMatchStop'],
     }),
 
 
     # EXAMPLE: Computer
-    ('', rf'^(?!Computer|Aura){wikipedia}(?:suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| dein| den| die| das| der| Herr)* (?P<search>.*)', 90, { 'flags': re.IGNORECASE,
+    ('', rf'^(?!Computer|Aura){wikipedia}(?:suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| dein| den| die| das| der| Herr)* (?P<search>.*)', 90, { 'command_flags': re.IGNORECASE,
      'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
 
@@ -44,7 +44,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: Computer
     ('', rf'^(?!Computer|Aura){wikipedia}(?: ein| die| das| der| Herr)? (?P<search>.*)', 90, {
-    'flags': re.IGNORECASE,
+    'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
     }),
 

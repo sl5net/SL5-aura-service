@@ -41,7 +41,7 @@ FUZZY_MAP_pre = [
 
 
     #TODO: Untere Zeile aktivieren, duch entfernen des Kommentar Symbols
-    #('Was ist Tübingen?', fr'^.*$', 90, {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    #('Was ist Tübingen?', fr'^.*$', 90, {'command_flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
 ]
 

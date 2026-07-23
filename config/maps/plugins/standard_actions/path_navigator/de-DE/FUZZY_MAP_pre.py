@@ -141,7 +141,7 @@ FUZZY_MAP_pre = [
     (f'{Path(PROJECT_ROOT_POSIX, "config", "settings.py").as_posix()}',
      rf'^{aura2}\s+(Konf\w*|konzentration|settings?|\w*\s*dekoration)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
         'only_in_windows': ['Konsole', 'konsole', 'Console',
             r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung',
             'double', 'Double Commander'],
@@ -160,7 +160,7 @@ FUZZY_MAP_pre = [
     (f"{fzf_smart_file_finder}",
      r'^(suche|search|find)\s+(file|datei)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
       'only_in_windows': ['Konsole', 'konsole', 'Console']
       }),
 
@@ -168,14 +168,14 @@ FUZZY_MAP_pre = [
     (f"{suche_text}",
      r'^(?:suche(?:n|r|st)?|search|find)\b(?:\s+(?:nach|the))?\s+\b(?:text|string)s?\b|\b(?:text|string)s?\b(?:\s+(?:nach|the))?\s+\b(?:suche(?:n|r|st)?|search|find)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
       'only_in_windows': ['Konsole', 'konsole', 'Console']}),
 
     # EXAMPLE: file search
     (f"{fzf_in_gitRepo}",
     r'^(file|datei|Details) (suche|search|find)$',
     90,
-    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
      'only_in_windows': ['Konsole', 'konsole', 'Console']
      }),
 
@@ -184,7 +184,7 @@ FUZZY_MAP_pre = [
     (f"{fzf_smart_file_finder}",
      r'^(falsche|somit datei|suche data|suche Datei|navigiere datei|suche Dateien|datei suche\w*|so geleitet hat|sorry datei)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
 'only_in_windows': ['Konsole', 'konsole', 'Console',
         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
       }),
@@ -200,7 +200,7 @@ FUZZY_MAP_pre = [
     (f"{fzf_smart_file_finder}",
      r'^(suche|search|find)\s+(alles|everything|überall|everywhere|everything)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
 'only_in_windows': ['Konsole', 'konsole', 'Console',
         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
 
@@ -212,7 +212,7 @@ FUZZY_MAP_pre = [
     (f'{PROJECT_ROOT_POSIX}',
      rf'^{aura1}\s+(Aura|Pfad)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
         'only_in_windows': ['Konsole', 'konsole', 'Console',
         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
       }
@@ -222,7 +222,7 @@ FUZZY_MAP_pre = [
     (f'{PROJECT_ROOT_POSIX}',
      r'^(Raumfahrt)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
 
       'only_in_windows': ['Konsole', 'konsole', 'Console',
                           r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
@@ -234,7 +234,7 @@ FUZZY_MAP_pre = [
     (f'{HOME_DIR_POSIX}',
      r'^(home|heimat|user)\s+(Pfad|Dir\w*)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
 
       'only_in_windows': ['Konsole', 'konsole', 'Console',
                           r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
@@ -243,7 +243,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: zopfig
     # ('config/', r'^zopfig$', 90,
-    #  {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    #  {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
     #   'only_in_windows': ['Konsole', 'konsole', 'Console',
     #                       r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
     #     }),
@@ -251,7 +251,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: skiplist
     ("'skip_list': ['LanguageTool','fullMatchStop','only_in_windows']",
      r'^(skip_list|skip_list|skip list|script bläst|lässt|script lässt|squibb lässt|es lässt|es gibt les|scribbles|es gibt list|es gibt bläst|script list|skype lässt|skype list|gpl list)$', 90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
 
@@ -259,34 +259,34 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Navigiere Aura Konfiguration
     (f'cd "{Path(PROJECT_ROOT_POSIX, "config").as_posix()}"', rf'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+{aura3}\s*Konf\w*$',
     90,
-    {'flags': re.IGNORECASE,
+    {'command_flags': re.IGNORECASE,
      'skip_list': ['LanguageTool'],
      }),
 
     # EXAMPLE: Navigiere zu Aura
     (f'cd "{PROJECT_ROOT_POSIX}"', r'^(Navigiere|Pfad|Path to|navi gerät)( zu\w*)?\s+(Aura|Aurora|Root|Autoren)$',
     90,
-    {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
     # EXAMPLE: Aura Lebenslauf
     (f'{Path(PROJECT_ROOT_POSIX, "config", "maps","_privat","job","bewerbung","Lebenlauf-Sammlung","_Lebenslauf").as_posix()}',
      rf'^{aura1}\s+(Lebenslauf)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
     # EXAMPLE: Navigiere
     (f"{Path(PROJECT_ROOT_POSIX, 'config','maps','koans_deutsch').as_posix()}",
     r'^(Navigiere\w*|Pfad|Path to|navi gerät)( zu\w*)?\s+(könne|co eins)\s*(deutsch)\s*\w*$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     # EXAMPLE: Ordner Baum
     ("tree -d -I '__pycache__|.*|*.i18n' -L 9 -N > ~/t.txt; kate ~/t.txt;",
      r'^(Ordner\s*Baum)$',
      90,
-     {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
 

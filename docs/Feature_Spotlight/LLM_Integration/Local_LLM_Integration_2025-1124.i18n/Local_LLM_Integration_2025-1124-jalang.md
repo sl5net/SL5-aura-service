@@ -50,7 +50,7 @@ CONFIG_DIR = Path(__file__).parent
 FUZZY_MAP_pre = [
     # Trigger: "Aura" + any text
     ('ask_ollama', r'^\s*(Aura|Aurora|Laura)\s+(.*)$', 100, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         # 'skip_list': ['LanguageTool'], # Optional: Performance boost
         'on_match_exec': [CONFIG_DIR / 'ask_ollama.py']
     }),

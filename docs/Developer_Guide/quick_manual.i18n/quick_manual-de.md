@@ -54,7 +54,7 @@ Trotz des Namens ist dieses Attribut **betriebssystemunabhängig**. Es dient daz
         r'\b(pipe|treib symbol)\b', 
         75, 
         {
-            'flags': re.IGNORECASE,
+            'command_flags': re.IGNORECASE,
             'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']
         }
     ),

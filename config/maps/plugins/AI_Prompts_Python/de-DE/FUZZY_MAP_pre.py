@@ -11,7 +11,7 @@ with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_roo
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 System_Instructions_20260721_1417 = r"""
@@ -165,7 +165,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: System Instructions
     (System_Instructions_20260721_1417, r'^(system instru\w*tion\w*)$', 10, {
         'cache': False,
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'raw_replacement': True
     }),
 
@@ -271,7 +271,7 @@ Input: "Wir waren in Kirchentellinsfurt und sahen, dass Kirchen teilen nicht ein
 Input: "Rechnung von Paradigma Minds eingetroffen."
 # EXAMPLE: b Paradigma Minds
 Output: ('pragmatic minds GmbH 2019', r'\b(Paradigma Minds|pragmatic minds)\b', 75, # min_accuracy
- {'flags': re.IGNORECASE})
+ {'command_flags': re.IGNORECASE})
 
 Verarbeite nun die Zwischenablage:
 """

@@ -37,5 +37,5 @@ FUZZY_MAP_pre = [
     # ('Super :) Gratulation', r'^Ihre Hochwohlgeboren.*$'),
 
     # Fuzzy Match für den Namen:
-    # ('Grafin erkannt!', r'^.*gr[äa]fin.*$', 0, {'flags': re.IGNORECASE}),
+    # ('Grafin erkannt!', r'^.*gr[äa]fin.*$', 0, {'command_flags': re.IGNORECASE}),
 ]

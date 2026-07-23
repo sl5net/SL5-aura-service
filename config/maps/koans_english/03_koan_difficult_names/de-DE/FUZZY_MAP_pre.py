@@ -86,15 +86,15 @@ FUZZY_MAP_pre = [
     # TODO: Help match these tongue-twisters.
 
     # Maybe like this for the title?
-    # ('Great job!', r'^Your Most Noble Excellency.*$', 90, {'flags': re.IGNORECASE}),
+    # ('Great job!', r'^Your Most Noble Excellency.*$', 90, {'command_flags': re.IGNORECASE}),
 
     # Or a partial match?
-    # ('Success!', r'^.*Xenochronistic Chronology.*$', 90, {'flags': re.IGNORECASE}),
+    # ('Success!', r'^.*Xenochronistic Chronology.*$', 90, {'command_flags': re.IGNORECASE}),
 
     # And for the name?
     # EXAMPLE: Countess
     ('Phonetics mastered!', r'^.*(Countess|Mondes|kund des|Kaum des|kund des|count tess).*$', 90, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 ]
 
 #Kaum deskund deskund des

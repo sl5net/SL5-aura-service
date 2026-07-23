@@ -37,7 +37,7 @@ FUZZY_MAP_pre = [
         r'what time is it', # The regex pattern to match.
         95, # The confidence threshold.
         {
-            'flags': re.IGNORECASE,
+            'command_flags': re.IGNORECASE,
             # The new key: a list of script files to execute.
             'on_match_exec': [CONFIG_DIR / 'get_current_time.py']
         }
@@ -83,7 +83,7 @@ This script returns a personalized greeting based on the time of day.
 **1. The Rule (in your map file):**
 ```python
 ('', r'\b(what time is it|uhrzeit)\b', 95, {
-    'flags': re.IGNORECASE,
+    'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'get_current_time.py']
 }),
 ```
@@ -123,7 +123,7 @@ This script uses capture groups from the regex to perform a calculation.
 **1. The Rule (in your map file):**
 ```python
 ('', r'calculate (\d+) (plus|minus) (\d+)', 98, {
-    'flags': re.IGNORECASE,
+    'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'calculator.py']
 }),
 ```
@@ -162,13 +162,13 @@ This example shows how one script can handle multiple commands (adding, showing)
 ```python
 # Rule for adding items
 ('', r'add (.*) to the shopping list', 95, {
-    'flags': re.IGNORECASE,
+    'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),
 
 # Rule for showing the list
 ('', r'show the shopping list', 95, {
-    'flags': re.IGNORECASE,
+    'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR / 'shopping_list.py']
 }),
 ```

@@ -6,7 +6,7 @@ import re
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 FUZZY_MAP_pre = [
@@ -18,32 +18,32 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: call
     ('c', r'^\s*(call|check)\s*$', 85, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # EXAMPLE: raise s
     ('r', r'^\s*(raise)\s*$', 85, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # EXAMPLE: fold s
     ('f', r'^\s*(fold)\s*$', 85, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # EXAMPLE: discard s
     ('d', r'^\s*(discard)\s*$', 85, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # EXAMPLE: bet s
     ('b', r'^\s*(bet)\s*$', 85, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # EXAMPLE: exchange s
     ('x', r'^\s*(exchange)\s*$', 85, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # Amount keys
     # EXAMPLE: 100
     ('1', r'^\s*(100|one hundred)\s*$', 85, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # EXAMPLE: 280
     ('2', r'^\s*(280|two fifty)\s*$', 85, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
     # EXAMPLE: 80
     ('3', r'^\s*(80|fifty)\s*$', 85, # min_accuracy
- {'flags': re.IGNORECASE}),
+ {'command_flags': re.IGNORECASE}),
 
 
 ]

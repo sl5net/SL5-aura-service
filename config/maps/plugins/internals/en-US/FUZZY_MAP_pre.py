@@ -6,7 +6,7 @@ import re
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 FUZZY_MAP_pre = [
@@ -19,43 +19,43 @@ FUZZY_MAP_pre = [
     # Deutsche p Nun sprechen wir durch
 
     #  Helps the Tool to switch to German
-    # {'flags': {'flags': re.IGNORECASE}, 'skip_list': ['filter1', 'filter4']}
+    # {'flags': {'command_flags': re.IGNORECASE}, 'skip_list': ['filter1', 'filter4']}
     # EXAMPLE: deutsche pizza
-    ('Deutsch bitte', r'^\s*(deutsche) (pizza|pigeons|putin|bit|p)\s*$', 82, {'flags': re.IGNORECASE}),
+    ('Deutsch bitte', r'^\s*(deutsche) (pizza|pigeons|putin|bit|p)\s*$', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: lobtCase
-    ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
+    ('lowerCase', r'\blobt\s*Case\b', 82, {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: lobtCase
-    ('lowerCase', r'\blobt\s*Case\b', 82, {'flags': re.IGNORECASE}),
+    ('lowerCase', r'\blobt\s*Case\b', 82, {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Manjaro
-    ('Manjaro', r'\b(Manjaro|much whole|munchau|mon travel|Mann schaue|Manchu|Much\s*whole)\b', 82, {'flags': re.IGNORECASE}),
+    ('Manjaro', r'\b(Manjaro|much whole|munchau|mon travel|Mann schaue|Manchu|Much\s*whole)\b', 82, {'command_flags': re.IGNORECASE}),
 # Much whole Mon travel
 # One troll Michelle Mann schaue
 
 
-#    ('.', r'^\s*(punkt|pup)\s*$', 82, {'flags': re.IGNORECASE}),
+#    ('.', r'^\s*(punkt|pup)\s*$', 82, {'command_flags': re.IGNORECASE}),
 
 
-#    ('zwei', r'ein|eins', 60, {'flags': re.IGNORECASE}),
-#    ('drei', r'zwei', 60, {'flags': re.IGNORECASE}),
+#    ('zwei', r'ein|eins', 60, {'command_flags': re.IGNORECASE}),
+#    ('drei', r'zwei', 60, {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: Unterschied Aura
-    ('Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commands', r'^(Unterschied\b.*\bAura\b|Auras? .*\badvantage\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    ('Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commands', r'^(Unterschied\b.*\bAura\b|Auras? .*\badvantage\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
     ('SL5 Aura is a System-Wide, Offline Voice Automation and Command Framework. It instantly turns spoken words into commands, hotkeys, or text, with 100% privacy guarantee due to its offline operation. Its core is a powerful, scriptable RegEx Rule Engine that allows developers to create deeply customizable, multi-step workflows for professional and system-level automation.',
      # EXAMPLE: Whats Aura
-     r'^(What\w*\b.*\bAura\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     r'^(What\w*\b.*\bAura\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #What is aura What is aura
 
 
     # EXAMPLE:  Aura Strength
-    ('SL5 Aura (Strength): Recursive, Hierarchical Rule Engine with Live Parsing and RegEx. Inheritance and Sub-folders (e.g., game/0ad, it-begriffe/php/codeigniter) enable modular, maintainable plugins.100% GDPR-Compliance and Developer-Friendly Design for complex, long-term projects. Conclusion: Aura is the Architect Solution for privacy-compliant, specialized, and scalable voice control.', r'^(.*\bAura.*\bStrength\b).*$', 80, {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    ('SL5 Aura (Strength): Recursive, Hierarchical Rule Engine with Live Parsing and RegEx. Inheritance and Sub-folders (e.g., game/0ad, it-begriffe/php/codeigniter) enable modular, maintainable plugins.100% GDPR-Compliance and Developer-Friendly Design for complex, long-term projects. Conclusion: Aura is the Architect Solution for privacy-compliant, specialized, and scalable voice control.', r'^(.*\bAura.*\bStrength\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #
 
 

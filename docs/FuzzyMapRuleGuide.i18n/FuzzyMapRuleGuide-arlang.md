@@ -3,7 +3,7 @@
                                                  ## تنسيق القاعدة
 
 ```python
-('replacement', r'regex_pattern', threshold, {'flags': re.IGNORECASE})
+('replacement', r'regex_pattern', threshold, {'command_flags': re.IGNORECASE})
 ```
 
                                    | الموقف | الاسم | الوصف |
@@ -16,7 +16,7 @@
 افتراضيًا (`False`)، تتم معالجة السلاسل البديلة بواسطة `re.sub()` في Python، والذي يدعم استخدام المراجع الخلفية للتعبيرات العادية مثل `\1` أو `\2` لإدراج المجموعات الملتقطة (على سبيل المثال: `(r\'\1', r'(\d)\s+(?=\d)', 95)`).
 إذا كان البديل الخاص بك عبارة عن سلسلة متعددة الأسطر أو يحتوي على خطوط مائلة عكسية غير قابلة للإلغاء (مثل قوالب التعليمات البرمجية أو المسارات) ويجب الحفاظ عليه تمامًا كما هو، فقم بتمكين `\'raw_replacement': True` في قاموس الخيارات:
 ```python
-(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+(System_Instructions, r'^(system instructions)$', 10, {'command_flags': re.IGNORECASE, 'raw_replacement': True})
 ```
 
 ### الخيارات المتاحة القابلة للتكوين من قبل المستخدم:
@@ -51,28 +51,28 @@
 
                  ### مطابقة كلمة واحدة (حدود الكلمة)
 ```python
-('Python', r'\bpython\b', 0, {'flags': re.IGNORECASE})
+('Python', r'\bpython\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
                                  ### مطابقة متغيرات متعددة
 ```python
-('OpenAI', r'\bopen\s*ai\b', 0, {'flags': re.IGNORECASE})
+('OpenAI', r'\bopen\s*ai\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
                              ### Fullmatch – يوقف خط الأنابيب
 ```python
-('hello koan', r'^.*$', 0, {'flags': re.IGNORECASE})
+('hello koan', r'^.*$', 0, {'command_flags': re.IGNORECASE})
 ```
 ⚠️ هذا يطابق **كل شيء**. يتوقف خط الأنابيب هنا. القواعد السابقة لا تزال لها الأولوية.
 
                                    ### مطابقة بداية الإدخال
 ```python
-('Note: ', r'^notiz\b', 0, {'flags': re.IGNORECASE})
+('Note: ', r'^notiz\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
                                    ### تطابق العبارة بالضبط
 ```python
-('New York', r'\bnew york\b', 0, {'flags': re.IGNORECASE})
+('New York', r'\bnew york\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
                                                  ## مواقع الملفات
@@ -96,13 +96,13 @@
 ```python
 FUZZY_MAP_pre = [
     # Correct a common STT mistake
-    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'flags': re.IGNORECASE}),
+    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Expand abbreviation
-    ('zum Beispiel', r'\bzb\b', 0, {'flags': re.IGNORECASE}),
+    ('zum Beispiel', r'\bzb\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Stop pipeline for testing
-    # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
+    # ('test koan', r'^.*$', 0, {'command_flags': re.IGNORECASE}),
 ]
 ```
 
@@ -122,7 +122,7 @@ FUZZY_MAP_pre = [
 import re  # noqa: F401
 # too<-from
 FUZZY_MAP_pre = [
-    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+    ('My Rule', r'my rule', 0, {'command_flags': re.IGNORECASE}),
 ]
 # ============================================================
 # Longer explanations, task descriptions, notes...

@@ -10,7 +10,7 @@ from pathlib import Path
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 CONFIG_DIR = Path(__file__).parent
@@ -26,7 +26,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: good Morning
     ('good evening', r'good Morning', 95, # min_accuracy
- {'flags': re.IGNORECASE, 'skip_list': ['LT_SKIP_RATIO_THRESHOLD']} ),
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LT_SKIP_RATIO_THRESHOLD']} ),
     #good Eventing Good morning this day
     #
 

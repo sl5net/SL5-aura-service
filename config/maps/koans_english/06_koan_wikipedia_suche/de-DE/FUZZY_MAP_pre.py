@@ -27,7 +27,7 @@ CONFIG_DIR = Path(__file__).parent
 
 FUZZY_MAP_pre = [
     # ('What is London?', r'^what is (?P<topic>.+)\?$', 90, {
-    #     'flags': re.IGNORECASE,
+    #     'command_flags': re.IGNORECASE,
     #     'on_match_exec': [CONFIG_DIR / 'wiki_search.py']
     # }),
 ]

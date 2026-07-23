@@ -3,7 +3,7 @@
 ## Regelformat
 
 ```python
-('replacement', r'regex_pattern', threshold, {'flags': re.IGNORECASE})
+('replacement', r'regex_pattern', threshold, {'command_flags': re.IGNORECASE})
 ```
 
 | Position | Name | Beschreibung |
@@ -16,13 +16,13 @@
 Standardmäßig („False“) werden Ersetzungszeichenfolgen von Pythons „re.sub()“ verarbeitet, das die Verwendung von Regex-Rückverweisen wie „\1“ oder „\2“ zum Einfügen erfasster Gruppen unterstützt (zum Beispiel: „(r'\1‘, r‘(\d)\s+(?=\d)‘, 95)‘).
 Wenn Ihre Ersetzung eine mehrzeilige Zeichenfolge ist oder Backslashes ohne Escapezeichen enthält (z. B. Codevorlagen oder Pfade) und genau so beibehalten werden soll, wie sie ist, aktivieren Sie „raw_replacement“: True im Optionswörterbuch:
 ```python
-(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+(System_Instructions, r'^(system instructions)$', 10, {'command_flags': re.IGNORECASE, 'raw_replacement': True})
 ```
 
 ### Verfügbare vom Benutzer konfigurierbare Optionen:
 
-* **`Flags`** (Ganzzahl): Regex-Flags, die während der Musterkompilierung verwendet werden.
-*Beispiel:* `{'flags': re.IGNORECASE}`
+* **`command_flags`** (Ganzzahl): Regex-Flags, die während der Musterkompilierung verwendet werden.
+*Beispiel:* `{'command_flags': re.IGNORECASE}`
 * **`raw_replacement`** (boolean): Bei „True“ wird der Ersetzungstext als reines String-Literal behandelt und durch Pythons „re.sub“-Backslash-Analyse umgangen. Entscheidend für mehrzeilige Eingabeaufforderungen oder Zeichenfolgen mit Backslashes ohne Escapezeichen (`\`).
 *Beispiel:* `{'raw_replacement': True}`
 * **`cache`** (boolean): Schaltet den AURA-Ergebniscache um. Für Regeln, die dynamische Ausgaben generieren (z. B. aktuelle Uhrzeit, zufällige Witze), auf „False“ setzen, um sicherzustellen, dass sie bei jedem Spiel neu ausgewertet werden.
@@ -51,28 +51,28 @@ Wenn Ihre Ersetzung eine mehrzeilige Zeichenfolge ist oder Backslashes ohne Esca
 
 ### Übereinstimmung mit einem einzelnen Wort (Wortgrenze)
 ```python
-('Python', r'\bpython\b', 0, {'flags': re.IGNORECASE})
+('Python', r'\bpython\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Passen Sie mehrere Varianten an
 ```python
-('OpenAI', r'\bopen\s*ai\b', 0, {'flags': re.IGNORECASE})
+('OpenAI', r'\bopen\s*ai\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Fullmatch – stoppt die Pipeline
 ```python
-('hello koan', r'^.*$', 0, {'flags': re.IGNORECASE})
+('hello koan', r'^.*$', 0, {'command_flags': re.IGNORECASE})
 ```
 ⚠️ Das passt zu **allem**. Die Pipeline stoppt hier. Frühere Regeln haben weiterhin Vorrang.
 
 ### Beginn der Eingabe anpassen
 ```python
-('Note: ', r'^notiz\b', 0, {'flags': re.IGNORECASE})
+('Note: ', r'^notiz\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Passt genau zu der Phrase
 ```python
-('New York', r'\bnew york\b', 0, {'flags': re.IGNORECASE})
+('New York', r'\bnew york\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ## Dateispeicherorte
@@ -96,13 +96,13 @@ Wenn Ihre Ersetzung eine mehrzeilige Zeichenfolge ist oder Backslashes ohne Esca
 ```python
 FUZZY_MAP_pre = [
     # Correct a common STT mistake
-    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'flags': re.IGNORECASE}),
+    ('Raspberry Pi', r'\braspberry\s*pie?\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Expand abbreviation
-    ('zum Beispiel', r'\bzb\b', 0, {'flags': re.IGNORECASE}),
+    ('zum Beispiel', r'\bzb\b', 0, {'command_flags': re.IGNORECASE}),
 
     # Stop pipeline for testing
-    # ('test koan', r'^.*$', 0, {'flags': re.IGNORECASE}),
+    # ('test koan', r'^.*$', 0, {'command_flags': re.IGNORECASE}),
 ]
 ```
 
@@ -122,7 +122,7 @@ Platzieren Sie Ihre Regeln **vor** langen Kommentarblöcken:
 import re  # noqa: F401
 # too<-from
 FUZZY_MAP_pre = [
-    ('My Rule', r'my rule', 0, {'flags': re.IGNORECASE}),
+    ('My Rule', r'my rule', 0, {'command_flags': re.IGNORECASE}),
 ]
 # ============================================================
 # Longer explanations, task descriptions, notes...

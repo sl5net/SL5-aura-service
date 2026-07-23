@@ -53,7 +53,7 @@ FUZZY_MAP_pre = [
 
 
     #TODO: Untere Zeile aktivieren, duch entfernen des Kommentar Symbols
-    #('suche in Ruth kapitel 1 vers 1', fr'^.*$', 90, {'flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
+    #('suche in Ruth kapitel 1 vers 1', fr'^.*$', 90, {'command_flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
     #
 
@@ -62,7 +62,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: suche in x text kapitel 123 vfdph text 123
     ('bible suche', r'^suche in (?P<book>\w*[ ]?\w+) kapitel (?P<chapter>\d+) [vfdph]\w+ (?P<verse>\d+)$', 90, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'bible_search.py']
     }),
 

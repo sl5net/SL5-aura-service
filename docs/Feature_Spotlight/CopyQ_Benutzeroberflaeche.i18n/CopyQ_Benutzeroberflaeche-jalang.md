@@ -95,7 +95,7 @@ Vosk erkennt "CopyQ" は次のとおりです。
 `FUZZY_MAP_pre.py` のコレクトゥル レーゲルの例:
 
 ```python
-('CopyQ', r'\b(copy\s*q(ue|ue?ue)?|kopi\s*q)\b', 0, {'flags': re.IGNORECASE}),
+('CopyQ', r'\b(copy\s*q(ue|ue?ue)?|kopi\s*q)\b', 0, {'command_flags': re.IGNORECASE}),
 ```
 
 ## pyperclip als Python 代替

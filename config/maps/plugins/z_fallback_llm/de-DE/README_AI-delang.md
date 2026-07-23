@@ -32,7 +32,7 @@ PLUGINS_ENABLED = {'z_fallback_llm': True, 'game/0ad': False}
 
 BEISPIEL vollständige Regel mit Plugin:
 ('ask_ollama', r'^\s*Aura\s+(?:langsam|genau)\s+(.*)$', 10,
- {'flags': re.IGNORECASE, 'on_match_exec': [Path('ask_ollama.py')]})
+ {'command_flags': re.IGNORECASE, 'on_match_exec': [Path('ask_ollama.py')]})
 
 WICHTIG: Erfinde keine GUI-Elemente, keine Benutzerkonten, keine Netzwerkfunktionen.
 Aura ist headless. Interaktion nur via Mikrofon und Terminal-Log.

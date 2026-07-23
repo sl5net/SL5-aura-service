@@ -10,7 +10,7 @@ from pathlib import Path
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 #    Structure: ('replacement', r'regex_pattern', threshold, flags)
 #    - The threshold is ignored for regex.
-#    - flags: Use {'flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 #
@@ -41,7 +41,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: wakeword höre nicht mit
     ('voss_start', fr'^({wakeword} höre nicht mit|{wakeword}wach auf|{wakeword}auf|{wakeword}aufwachen|{wakeword}wache|{wakeword}einschätzen|{wakeword}einschalten|{wakeword}aktiv|frost brach kracher|Vor krach auf|free square auf|frost quatsch auf|guten tag das aufwachen|{nonsense_start_word}teleskop woche aus|b\s*\w*\s*\bkaktus aufwachen)$', 89,
      {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
     }),
 
@@ -53,7 +53,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: einschalfen phonetic misinterpretations 🌵
     ('voss_stop', fr'^(?:{wakeword}|gratis|köpfe|hörtest)\s*(?:einschlagen|einschlafen|einschleppen|einsch\w*en|geschlossen|stop|schlafe|ciao).*$', 89,
      {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
     }),
 
@@ -61,7 +61,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: wakeword stop
     ('voss_stop', fr'^(?:{wakeword}stop\w*|{nonsense_start_word}{wakeword}{nonsense_start_word}schlafe\w*|{wakeword}geh schlafe\w*|gute nacht|{wakeword}ciao|{wakeword}nen)$', 89,
      {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
     }),
 
@@ -70,7 +70,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: nonsense_start_word hörtest einschlafen
     ('voss_stop', fr'^{nonsense_start_word}\s*(hörtest einschlafen|sehen könntest einschlafen)$', 89,
      {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
     }),
     # 18:40:16,502 - INFO     - 📢📢📢 ######################### gratis einstellen ##########################################
@@ -78,7 +78,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: gratis geschlossen
     ('voss_stop', r'^(gratis) (geschlossen|einstellen)$', 89,
     {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'set_vosk_active.py']
     }),
 

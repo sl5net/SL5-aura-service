@@ -3,7 +3,7 @@
 ## Formato da regra
 
 ```python
-('replacement', r'regex_pattern', threshold, {'flags': re.IGNORECASE})
+('replacement', r'regex_pattern', threshold, {'command_flags': re.IGNORECASE})
 ```
 
 | Posição | Nome | Descrição |
@@ -16,13 +16,13 @@
 Por padrão (`False`), as strings de substituição são processadas pelo `re.sub()` do Python, que suporta o uso de referências anteriores de regex como `\1` ou `\2` para inserir grupos capturados (por exemplo: `(r'\1', r'(\d)\s+(?=\d)', 95)`).
 Se a sua substituição for uma string multilinha ou contém barras invertidas sem escape (como modelos de código ou caminhos) e deve ser preservada exatamente como está, habilite `'raw_replacement': True` no dicionário de opções:
 ```python
-(System_Instructions, r'^(system instructions)$', 10, {'flags': re.IGNORECASE, 'raw_replacement': True})
+(System_Instructions, r'^(system instructions)$', 10, {'command_flags': re.IGNORECASE, 'raw_replacement': True})
 ```
 
 ### Opções configuráveis pelo usuário disponíveis:
 
-* **`flags`** (inteiro): Flags Regex usados durante a compilação do padrão.
-*Exemplo:* `{'flags': re.IGNORECASE}`
+* **`command_flags`** (inteiro): Flags Regex usados durante a compilação do padrão.
+*Exemplo:* `{'command_flags': re.IGNORECASE}`
 * **`raw_replacement`** (booleano): Quando `True`, o texto de substituição é tratado como uma string literal pura e ignorado pela análise de barra invertida `re.sub` do Python. Crucial para prompts multilinhas ou strings com barras invertidas sem escape (`\`).
 *Exemplo:* `{'raw_replacement': True}`
 * **`cache`** (booleano): Alterna o cache de resultados do AURA. Defina como `False` para regras que geram resultados dinâmicos (por exemplo, horário atual, piadas aleatórias) para garantir que sejam avaliadas de forma atualizada em cada partida.
@@ -51,7 +51,7 @@ Se a sua substituição for uma string multilinha ou contém barras invertidas s
 
 ### Corresponder a uma única palavra (limite da palavra)
 ```python
-('Python', r'\bpython\b', 0, {'flags': re.IGNORECASE})
+('Python', r'\bpython\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ### Combine múltiplas variantes
@@ -59,7 +59,7 @@ __CODE_BLOCO_3__
 
 ### Fullmatch – interrompe o pipeline
 ```python
-('OpenAI', r'\bopen\s*ai\b', 0, {'flags': re.IGNORECASE})
+('OpenAI', r'\bopen\s*ai\b', 0, {'command_flags': re.IGNORECASE})
 ```
 ⚠️ Isso combina com **tudo**. O pipeline para aqui. As regras anteriores ainda têm prioridade.
 
@@ -68,7 +68,7 @@ __CODE_BLOCO_5__
 
 ### Corresponde à frase exata
 ```python
-('hello koan', r'^.*$', 0, {'flags': re.IGNORECASE})
+('hello koan', r'^.*$', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ## Locais de arquivos
@@ -90,7 +90,7 @@ __CODE_BLOCO_5__
 ## Exemplos
 
 ```python
-('Note: ', r'^notiz\b', 0, {'flags': re.IGNORECASE})
+('Note: ', r'^notiz\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 ## Sua primeira regra - passo a passo
@@ -105,7 +105,7 @@ __CODE_BLOCO_5__
 
 Coloque suas regras **antes** de longos blocos de comentários:
 ```python
-('New York', r'\bnew york\b', 0, {'flags': re.IGNORECASE})
+('New York', r'\bnew york\b', 0, {'command_flags': re.IGNORECASE})
 ```
 
 **Por quê?** O Auto-Fix do Aura verifica apenas o primeiro ~1KB de um arquivo.

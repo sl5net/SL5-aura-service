@@ -43,7 +43,7 @@ La forma más rápida de agregar una regla personal:
 1. Abra `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`
 2. Agregue una regla dentro de `FUZZY_MAP_pre = [...]`:
    ```python
-   ('Hello World', r'hello world', 0, {'flags': re.IGNORECASE})
+   ('Hello World', r'hello world', 0, {'command_flags': re.IGNORECASE})
    #  ^ output        ^ pattern        ^ threshold (ignored for regex)
    ```
 3. **Guardar**: Aura se recarga automáticamente. No es necesario reiniciar.

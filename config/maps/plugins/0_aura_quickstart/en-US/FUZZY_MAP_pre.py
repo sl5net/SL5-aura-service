@@ -17,7 +17,7 @@ FUZZY_MAP_pre = [
     # --- Learning Mode Toggle ---
     # EXAMPLE: auralearning mode on
     ('Learning mode...', r'^aura.*learning mode (on|off|start|stop)$', 100, {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
     }),
     # EXAMPLE: zyxü

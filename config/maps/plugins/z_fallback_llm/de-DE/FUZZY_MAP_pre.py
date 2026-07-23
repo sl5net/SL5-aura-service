@@ -33,7 +33,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: Aura
 """, r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(w\w{2,3}) (bist|machst)?(du)$', 100,
         {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave','double'],
         }
     ),
@@ -48,7 +48,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: hallo
 """, r'^\s*(hallo|hi|hey|guten tag|servus)\s+(Aura|Aurora|Computer)\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE
+        'command_flags': re.IGNORECASE
         }
     ),
 
@@ -59,7 +59,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: bist du da
 """, r'^\s*(bist du da|hörst du mich|kannst du mich hören|sprichst du mit mir)\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
         }
     ),
@@ -71,7 +71,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: Aura
 """, r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s*(\!|\.|\?|$)(\s+.*)?$', 100,
         {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave','double'],
 
         }
@@ -84,7 +84,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: was bist
 """, r'^\s*(was)\s+(bist|machst)\s+(du)\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
         }
     ),
@@ -96,7 +96,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: fang
 """, r'^\s*(fang|starte|beginn)\s+(an|mal)?\s*(zu sprechen|mit mir|ein gespräch)\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
 
         }
@@ -108,7 +108,7 @@ Guten Morgen. Ich bin Aura ein Offline-System (Sprache zu Aktion).
 # EXAMPLE: hallo
 """, r'^\s*(hallo|hi|hey|guten (morgen))\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
         }
     ),
@@ -123,7 +123,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 # EXAMPLE: hallo
 """, r'^\s*(hallo|hi|hey|guten (tag|abend|morgen))\s*(\!|\.|\?|$)', 100,
         {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'exclude_windows': [r'element',r'firefox', r'chrome', r'brave'],
         }
     ),
@@ -132,7 +132,7 @@ Es gibt keine Accounts, Passwörter, Logins.
     # EXAMPLE: Aura
     ('ask_ollama', fr'^\s*{aura1}\s*\b(?:normal|slow|Flow|flow|langsam|genau|gründlich)\b\s*(.*)$', 10,  # min_accuracy
         {
-        'flags': re.IGNORECASE,
+        'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
         'exclude_windows': ['element', 'firefox', 'chrome', 'brave','.*double.*commander.*','double commander'],
         }
@@ -143,7 +143,7 @@ Es gibt keine Accounts, Passwörter, Logins.
     # EXAMPLE: Aura
     ('ask_ollama', r'^\s*(Aura|Aurora|laura|dora|Ära|hurra|prora|Computer)\s+(.*)$', 100, # min_accuracy
         {
-            'flags': re.IGNORECASE,
+            'command_flags': re.IGNORECASE,
             'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
             'exclude_windows': [r'element',r'firefox', r'chrome', r'brave',r'doublecmd',r'double commander'],
         }

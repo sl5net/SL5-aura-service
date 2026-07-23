@@ -18,22 +18,22 @@ _gemini_phonetics = (
     r'gewinn\s+ein|ge[mw]\w*|g\s+bedeuten|g\s+wie\s+neu|seminar\w*)'
 )
 _common_metaVERBOSE = {
-    'flags': re.IGNORECASE | re.VERBOSE,
-    'only_in_windows': [r'firefox', r'chrome', r'brave', r'fuzzy_map_pre', r'kate'],
+    'command_flags': re.IGNORECASE | re.VERBOSE,
+    'only_in_windows': [r'^mozilla firefox$', r'chrome', r'brave', r'fuzzy_map_pre', r'kate'],
     'exclude_windows': [r'element', r'mastodon', r'Mastodon', r'github', r'claude', r'google ai'],
 }
 _common_meta = {
-    'flags': re.IGNORECASE,
-    'only_in_windows': [r'firefox', r'chrome', r'brave', r'fuzzy_map_pre'],
-    'exclude_windows': [r'element', r'mastodon', r'Mastodon', r'github', r'claude', r'google ai'],
+    'command_flags': re.IGNORECASE,
+    'only_in_windows': [r'^mozilla firefox$', r'chrome', r'brave', r'fuzzy_map_pre'],
+    'exclude_windows': [r'element', r'- mozilla firefox', r'mastodon', r'Mastodon', r'github', r'claude', r'google ai'],
 }
 FUZZY_MAP_pre = [
 
     # EXAMPLE: AI notebook Notebook arm
-    ('https://notebooklm.google', r'^notebook (lm|ai|arm)( google)?$', 75, {'flags': re.IGNORECASE}),
+    ('https://notebooklm.google', r'^notebook (lm|ai|arm)( google)?$', 75, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: AI deepseek
-    ('https://chat.deepseek.com/', r'^deepseek?$', 75, {'flags': re.IGNORECASE}),
+    ('https://chat.deepseek.com/', r'^deepseek?$', 75, {'command_flags': re.IGNORECASE}),
 
 
 
@@ -42,7 +42,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE:     AI kimi chat
-    ('https://www.kimi.com/en/', r'^(ai\s*)?kimi( chat)?$', 75, {'flags': re.IGNORECASE}),
+    ('https://www.kimi.com/en/', r'^(ai\s*)?kimi( chat)?$', 75, {'command_flags': re.IGNORECASE}),
 
 
 

@@ -95,7 +95,7 @@ Vosk erkennt "CopyQ"는 종종 다음과 같습니다:
 `FUZZY_MAP_pre.py`에 대한 Mögliche Korrektur-Regel:
 
 ```python
-('CopyQ', r'\b(copy\s*q(ue|ue?ue)?|kopi\s*q)\b', 0, {'flags': re.IGNORECASE}),
+('CopyQ', r'\b(copy\s*q(ue|ue?ue)?|kopi\s*q)\b', 0, {'command_flags': re.IGNORECASE}),
 ```
 
 ## pyperclip은 Python-Alternative 역할을 합니다.

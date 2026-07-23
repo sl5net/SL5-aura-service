@@ -19,7 +19,7 @@ The `execute_only` attribute is an experimental configuration option designed fo
  r'^(gather\s*)?(met\w+|mat\w+|metall|mit|zitat|metal|matcha|günther)$',
  85,
  {
-     'flags': re.IGNORECASE,
+     'command_flags': re.IGNORECASE,
      'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
      'on_match_exec': [CONFIG_DIR / '..' / '0ad_actions.py'],
      'execute_only': True, # Experimental: Fast execution, does not halt the rule-chain.

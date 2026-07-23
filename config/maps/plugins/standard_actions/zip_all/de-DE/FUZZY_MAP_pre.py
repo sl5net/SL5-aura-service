@@ -36,7 +36,7 @@ FUZZY_MAP_pre = [
             |
             jagen aktualisieren
             )$''', 90, {
-                'flags': re.IGNORECASE | re.VERBOSE,
+                'command_flags': re.IGNORECASE | re.VERBOSE,
                 'on_match_exec': [CONFIG_DIR / 'zip.py']
             }
         ),

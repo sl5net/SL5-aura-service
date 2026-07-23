@@ -27,5 +27,5 @@ FUZZY_MAP_pre = [
 #
 # ============================================================
 
-    # ('Hallo Welt 01', r'^hallo welt$', 0, {'flags': re.IGNORECASE}),
+    # ('Hallo Welt 01', r'^hallo welt$', 0, {'command_flags': re.IGNORECASE}),
 ]

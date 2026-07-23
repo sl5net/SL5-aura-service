@@ -10,7 +10,7 @@ die erste Regel für **Eingabetransformation** und **Beschriftung**, bevor die l
 
 ```python
 ("was ist ein haus (Begriffsklärung)", r'^.*was ist ein haus$', 90,
- {'flags': re.IGNORECASE, 'skip_list': ['LanguageTool','fullMatchStop']})
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool','fullMatchStop']})
 ```
 
 * **Aktion:** Die Benutzereingabe „was ist ein haus“ wurde erfolgreich abgeglichen.
@@ -21,7 +21,7 @@ die erste Regel für **Eingabetransformation** und **Beschriftung**, bevor die l
 
 ```python
 ('', r'(suche auf wikipedia nach|was sind|was ist|wer ist|wo ist|Wie groß ist)( ein| die| das| der)? (?P<search>.*)', 90, {
-'flags': re.IGNORECASE,
+'command_flags': re.IGNORECASE,
 'on_match_exec': [CONFIG_DIR / 'wikipedia_local.py']
 })
 ```

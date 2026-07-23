@@ -11,7 +11,7 @@ To disable this safety check for a specific rule, add the identifier to the `ski
 
 ```python
 ('command_name', r'^(regex for command)$', 95, {
-     'flags': re.IGNORECASE,
+     'command_flags': re.IGNORECASE,
      # This explicitly tells the system to ignore the ratio check and use LT
      'skip_list': ['LanguageTool', 'LT_SKIP_RATIO_THRESHOLD'],
      'on_match_exec': [CONFIG_DIR / 'script.py']

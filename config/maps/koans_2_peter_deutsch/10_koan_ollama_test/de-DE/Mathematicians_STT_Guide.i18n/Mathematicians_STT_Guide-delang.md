@@ -23,11 +23,11 @@ oder aus anderen Sprachen entlehnte Namen.
 
 ```python
 FUZZY_MAP_pre = [
-    ('Gauß', r'\bgau[sß]{1,2}\b', 0, {'flags': re.IGNORECASE}),
-    ('Euler', r'\b(oiler|oyler|euler)\b', 0, {'flags': re.IGNORECASE}),
-    ('Leibniz', r'\bleib(nitz|niz|nits)\b', 0, {'flags': re.IGNORECASE}),
-    ('Riemann', r'\bri{1,2}e?mann?\b', 0, {'flags': re.IGNORECASE}),
-    ('Noether', r'\bn[oö]e?th?er\b', 0, {'flags': re.IGNORECASE}),
+    ('Gauß', r'\bgau[sß]{1,2}\b', 0, {'command_flags': re.IGNORECASE}),
+    ('Euler', r'\b(oiler|oyler|euler)\b', 0, {'command_flags': re.IGNORECASE}),
+    ('Leibniz', r'\bleib(nitz|niz|nits)\b', 0, {'command_flags': re.IGNORECASE}),
+    ('Riemann', r'\bri{1,2}e?mann?\b', 0, {'command_flags': re.IGNORECASE}),
+    ('Noether', r'\bn[oö]e?th?er\b', 0, {'command_flags': re.IGNORECASE}),
 ]
 ```
 
