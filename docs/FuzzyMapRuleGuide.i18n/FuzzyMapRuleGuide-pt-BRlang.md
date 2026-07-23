@@ -29,10 +29,12 @@ Se a sua substituição for uma string multilinha ou contém barras invertidas s
 *Exemplo:* `{'cache': False}`
 * **`skip_list`** (lista de strings): Especifica módulos de pipeline de pós-processamento a serem ignorados quando esta regra corresponder.
 *Exemplo:* `{'skip_list': ['LanguageTool']}` (ignora a verificação gramatical)
-* **`only_in_windows`** (string/regex): Restringe a regra para ser acionada apenas se o título da janela ativa corresponder a esse padrão.
-*Exemplo:* `{'only_in_windows': 'google ai studio'}`
-* **`exclude_windows`** (string/regex): Impede que a regra seja acionada se o título da janela ativa corresponder a esse padrão.
-*Exemplo:* `{'exclude_windows': 'Terminal'}`
+* **`only_in_windows`** (lista de strings regex): Restringe a regra para ser acionada apenas se o título da janela ativa corresponder a um dos padrões especificados.
+*Exemplo:* `{'only_in_windows': [r'^Mozilla Firefox$', r'Chrome']}`
+* **`exclude_windows`** (lista de strings regex): Impede que a regra seja acionada se o título da janela ativa corresponder a um dos padrões especificados.
+*Exemplo:* `{'exclude_windows': [r'Terminal', r'Claude']}`
+* **`window_ignore_case`** (booleano): Controla se a correspondência de janela (`only_in_windows` / `exclude_windows`) é avaliada sem distinção entre maiúsculas e minúsculas (`True`) ou com distinção entre maiúsculas e minúsculas (`False`). Se omitido, volta para a configuração global `LOWERCASE_WINDOW_TITLES` em `config/settings.py`.
+*Exemplo:* `{'window_ignore_case': False}`
 * **`on_match_exec`** (lista de objetos Path/string): Caminhos para scripts/plugins que devem ser executados quando esta regra corresponder (muito usado por regras catch-all e fallback).
 *Exemplo:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 

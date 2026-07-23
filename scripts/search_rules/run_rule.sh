@@ -85,7 +85,8 @@ AWK_SCRIPT='{
 #
 
 while true; do
-FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/')
+#FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/')
+FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --glob=/g; s/^/--glob=/')
 
 if [[ "$REAL" == "1" ]]; then
     MAP_FILES=$(python3 "$SCRIPT_DIR/filter_maps_by_reality.py" --lang-only "$M_DIR")
@@ -95,7 +96,9 @@ if [[ "$REAL" == "1" ]]; then
     fi
 #    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 grep -irnH -I $FILT .)
 #    SEARCH_INPUT=$(echo "$MAP_FILES" | rg --null -n --files | xargs -0 rg -n "$FILT")
-    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 rg -nH "^")
+#    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 rg -nH "^")
+    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 rg -nH $FILT "^")
+
 else
     SEARCH_INPUT=$(grep -irnH -I $FILT . "$M_DIR")
 fi

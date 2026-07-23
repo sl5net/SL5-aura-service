@@ -25,10 +25,12 @@ __KOD_BLOKU_1__
 *Przykład:* `{'cache': Fałsz}`
 * **`skip_list`** (lista ciągów znaków): Określa moduły potoku przetwarzania końcowego, które mają zostać pominięte, gdy pasuje ta reguła.
 *Przykład:* `{'skip_list': ['LanguageTool']}` (pomija sprawdzanie gramatyki)
-* **`only_in_windows`** (string/regex): Ogranicza regułę do uruchomienia tylko wtedy, gdy tytuł aktywnego okna pasuje do tego wzorca.
-*Przykład:* `{'only_in_windows': 'google ai studio'}`
-* **`exclude_windows`** (string/regex): Zapobiega uruchomieniu reguły, jeśli tytuł aktywnego okna pasuje do tego wzorca.
-*Przykład:* `{'exclude_windows': 'Terminal'}`
+* **`only_in_windows`** (lista ciągów wyrażeń regularnych): Ogranicza regułę do uruchomienia tylko wtedy, gdy tytuł aktywnego okna pasuje do jednego z określonych wzorców.
+*Przykład:* `{'only_in_windows': [r'^Mozilla Firefox$', r'Chrome']}`
+* **`exclude_windows`** (lista ciągów wyrażeń regularnych): Zapobiega uruchomieniu reguły, jeśli tytuł aktywnego okna pasuje do jednego z określonych wzorców.
+*Przykład:* `{'exclude_windows': [r'Terminal', r'Claude']}`
+* **`window_ignore_case`** (boolean): Kontroluje, czy dopasowanie okna (`only_in_windows` / `exclude_windows`) jest oceniane bez uwzględniania wielkości liter (`True`) czy z rozróżnianiem wielkości liter (`False`). Jeśli zostanie pominięty, powraca do ustawienia globalnego `LOWERCASE_WINDOW_TITLES` w `config/settings.py`.
+*Przykład:* `{'window_ignore_case': Fałsz}`
 * **`on_match_exec`** (lista obiektów Path/string): Ścieżki do skryptów/wtyczek, które powinny zostać wykonane, gdy ta reguła zostanie dopasowana (często używane przez reguły catch-all i fallback).
 *Przykład:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 

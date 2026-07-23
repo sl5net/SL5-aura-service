@@ -25,10 +25,12 @@ __代码_块_1__
 *示例：* `{'cache': False}`
 * **`skip_list`**（字符串列表）：指定当此规则匹配时要跳过的后处理管道模块。
 *示例：* `{'skip_list': ['LanguageTool']}`（跳过语法检查）
-* **`only_in_windows`**（字符串/正则表达式）：限制规则仅在活动窗口标题与此模式匹配时触发。
-*示例：* `{'only_in_windows': 'google ai studio'}`
-* **`exclude_windows`**（字符串/正则表达式）：如果活动窗口标题与此模式匹配，则防止触发规则。
-*示例：* `{'exclude_windows': '终端'}`
+* **`only_in_windows`**（正则表达式字符串列表）：将规则限制为仅在活动窗口标题与指定模式之一匹配时触发。
+*示例：* `{'only_in_windows': [r'^Mozilla Firefox$', r'Chrome']}`
+* **`exclude_windows`**（正则表达式字符串列表）：如果活动窗口标题与指定模式之一匹配，则防止触发规则。
+*示例：* `{'exclude_windows': [r'Terminal', r'Claude']}`
+* **`window_ignore_case`**（布尔值）：控制窗口匹配（`only_in_windows` / `exclude_windows`）是否不区分大小写（`True`）或区分大小写（`False`）进行评估。如果省略，则回退到“config/settings.py”中的全局设置“LOWERCASE_WINDOW_TITLES”。
+*示例：* `{'window_ignore_case': False}`
 * **`on_match_exec`**（路径/字符串对象列表）：当此规则匹配时应执行的脚本/插件的路径（由捕获所有和回退规则大量使用）。
 *示例：* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 

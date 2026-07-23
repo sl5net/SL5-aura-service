@@ -29,10 +29,12 @@ Si votre remplacement est une chaîne multiligne ou contient des barres obliques
 *Exemple :* `{'cache' : Faux}`
 * **`skip_list`** (liste de chaînes) : Spécifie les modules de pipeline de post-traitement à ignorer lorsque cette règle correspond.
 *Exemple :* `{'skip_list' : ['LanguageTool']}` (ignore la vérification grammaticale)
-* **`only_in_windows`** (string/regex) : restreint la règle au déclenchement uniquement si le titre de la fenêtre active correspond à ce modèle.
-*Exemple :* `{'only_in_windows' : 'google ai studio'}`
-* **`exclude_windows`** (string/regex) : empêche la règle de se déclencher si le titre de la fenêtre active correspond à ce modèle.
-*Exemple :* `{'exclude_windows' : 'Terminal'}`
+* **`only_in_windows`** (liste de chaînes regex) : restreint la règle au déclenchement uniquement si le titre de la fenêtre active correspond à l'un des modèles spécifiés.
+*Exemple :* `{'only_in_windows' : [r'^Mozilla Firefox$', r'Chrome']}`
+* **`exclude_windows`** (liste de chaînes regex) : empêche la règle de se déclencher si le titre de la fenêtre active correspond à l'un des modèles spécifiés.
+*Exemple :* `{'exclude_windows' : [r'Terminal', r'Claude']}`
+* **`window_ignore_case`** (booléen) : contrôle si la correspondance de fenêtre (`only_in_windows` / `exclude_windows`) est évaluée sans tenir compte de la casse (`True`) ou en tenant compte de la casse (`False`). En cas d'omission, revient au paramètre global `LOWERCASE_WINDOW_TITLES` dans `config/settings.py`.
+*Exemple :* `{'window_ignore_case' : False}`
 * **`on_match_exec`** (liste des objets Path/string) : chemins vers les scripts/plugins qui doivent être exécutés lorsque cette règle correspond (fortement utilisé par les règles fourre-tout et de secours).
 *Exemple :* `{'on_match_exec' : [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 

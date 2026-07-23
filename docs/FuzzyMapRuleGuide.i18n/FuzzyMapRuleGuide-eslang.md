@@ -29,10 +29,12 @@ Si su reemplazo es una cadena de varias líneas o contiene barras invertidas sin
 *Ejemplo:* `{'caché': Falso}`
 * **`skip_list`** (lista de cadenas): especifica los módulos de canalización de posprocesamiento que se omitirán cuando esta regla coincida.
 *Ejemplo:* `{'skip_list': ['LanguageTool']}` (omite la revisión gramatical)
-* **`only_in_windows`** (cadena/expresión regular): restringe la regla para que solo se active si el título de la ventana activa coincide con este patrón.
-*Ejemplo:* `{'only_in_windows': 'google ai studio'}`
-* **`exclude_windows`** (cadena/expresión regular): evita que la regla se active si el título de la ventana activa coincide con este patrón.
-*Ejemplo:* `{'exclude_windows': 'Terminal'}`
+* **`only_in_windows`** (lista de cadenas de expresiones regulares): restringe la regla para que solo se active si el título de la ventana activa coincide con uno de los patrones especificados.
+*Ejemplo:* `{'only_in_windows': [r'^Mozilla Firefox$', r'Chrome']}`
+* **`exclude_windows`** (lista de cadenas de expresiones regulares): evita que la regla se active si el título de la ventana activa coincide con uno de los patrones especificados.
+*Ejemplo:* `{'exclude_windows': [r'Terminal', r'Claude']}`
+* **`window_ignore_case`** (booleano): controla si la coincidencia de ventanas (`only_in_windows` / `exclude_windows`) se evalúa sin distinguir entre mayúsculas y minúsculas (`True`) o sin distinguir entre mayúsculas y minúsculas (`False`). Si se omite, vuelve a la configuración global `LOWERCASE_WINDOW_TITLES` en `config/settings.py`.
+*Ejemplo:* `{'window_ignore_case': Falso}`
 * **`on_match_exec`** (lista de rutas/objetos de cadena): rutas a scripts/complementos que deben ejecutarse cuando esta regla coincide (utilizada en gran medida por reglas generales y alternativas).
 *Ejemplo:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 

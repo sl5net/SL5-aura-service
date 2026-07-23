@@ -29,10 +29,12 @@
 *예:* `{'캐시': 거짓}`
 * **`skip_list`** (문자열 목록): 이 규칙이 일치할 때 건너뛸 후처리 파이프라인 모듈을 지정합니다.
 *예:* `{'skip_list': ['LanguageTool']}`(문법 검사 건너뛰기)
-* **`only_in_windows`** (문자열/정규식): 활성 창 제목이 이 패턴과 일치하는 경우에만 트리거되도록 규칙을 제한합니다.
-*예:* `{'only_in_windows': 'google ai studio'}`
-* **`exclude_windows`** (문자열/정규식): 활성 창 제목이 이 패턴과 일치하는 경우 규칙이 트리거되지 않도록 합니다.
-*예:* `{'exclude_windows': '터미널'}`
+* **`only_in_windows`**(정규식 문자열 목록): 활성 창 제목이 지정된 패턴 중 하나와 일치하는 경우에만 트리거되도록 규칙을 제한합니다.
+*예:* `{'only_in_windows': [r'^Mozilla Firefox$', r'Chrome']}`
+* **`exclude_windows`** (정규식 문자열 목록): 활성 창 제목이 지정된 패턴 중 하나와 일치하는 경우 규칙이 트리거되지 않도록 합니다.
+*예:* `{'exclude_windows': [r'Terminal', r'Claude']}`
+* **`window_ignore_case`** (부울): 창 일치(`only_in_windows` / `exclude_windows`)가 대소문자를 구분하지 않고(`True`) 또는 대소문자를 구분하여(`False`) 평가되는지 여부를 제어합니다. 생략하면 `config/settings.py`의 전역 설정 `LOWERCASE_WINDOW_TITLES`로 대체됩니다.
+*예:* `{'window_ignore_case': False}`
 * **`on_match_exec`** (경로/문자열 개체 목록): 이 규칙이 일치할 때 실행되어야 하는 스크립트/플러그인에 대한 경로입니다(포괄 규칙과 폴백 규칙에서 많이 사용됨).
 *예:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
