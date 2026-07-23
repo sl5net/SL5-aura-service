@@ -8,7 +8,7 @@ with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_roo
 FUZZY_MAP_pre = [
 
     # EXAMPLE: alarm
-    ('ö', fr'^(alarm|anhand|na|an|anlass|alle|anna|la|hallo|alarm senden|alarm auslöst|alarm auslösen|alarm senden alarm auslösen alarm auslösen anhang|alarmglocke läuten|alarmglocken|druck lloyd|arme glocke läuten alarmglocken glockenläuten|glockenläuten|glocke läuten|glocken läuten die glocke läuten alle ins|ali|alarm vorbei|anhaben verbreiten|bedrohung beendet)$',
+    ('ö', r'^(alarm|anhand|na|an|anlass|alle|anna|la|hallo|alarm senden|alarm auslöst|alarm auslösen|alarm senden alarm auslösen alarm auslösen anhang|alarmglocke läuten|alarmglocken|druck lloyd|arme glocke läuten alarmglocken glockenläuten|glockenläuten|glocke läuten|glocken läuten die glocke läuten alle ins|ali|alarm vorbei|anhaben verbreiten|bedrohung beendet)$',
      85,
      {
          'command_flags': re.IGNORECASE,
