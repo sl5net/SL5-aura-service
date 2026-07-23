@@ -359,10 +359,6 @@ def get_active_window_title_kde_native():
 
 
 def get_active_window_title_safe():
-    """
-    Gibt den Titel des aktiven Fensters zurück (lowercase).
-    Funktioniert auf Windows und Linux (auch als Service/Root).
-    """
     try:
         # --- WINDOWS ---
         if sys.platform == 'win32':
@@ -466,7 +462,7 @@ def get_active_window_title_safe():
                     )
                     # return res.decode("utf-8", errors='ignore').strip().lower()
                     # return res.decode('cp1252', errors='replace').strip().lower()
-                    return res.decode("utf-8", errors='replace').strip().lower()
+                    return res.decode("utf-8", errors='replace').strip()
 
                 except Exception as e:
                     print(f'145 {e}')
@@ -485,7 +481,7 @@ def get_active_window_title_safe():
                         ["xprop", "-id", active_id, "WM_NAME"],
                         stderr=subprocess.DEVNULL, env=env, timeout=1.5
                     )
-                    return res.decode("utf-8").split('=', 1)[-1].strip().strip('"').lower()
+                    return res.decode("utf-8").split('=', 1)[-1].strip().strip('"')
                 except Exception as e:
                     print(f'201 {e}')
                     pass
