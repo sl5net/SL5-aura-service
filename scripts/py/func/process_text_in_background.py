@@ -1050,7 +1050,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
 
 
-# scripts/py/func/process_text_in_background.py:1002
+# scripts/py/func/process_text_in_background.py:1053
 def process_text_in_background(logger,
                                LT_LANGUAGE,
                                raw_text,
