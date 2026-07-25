@@ -201,6 +201,10 @@ PLUGINS_ENABLED = {
 ADD_TO_SENCTENCE = "."
 # set ADD_TO_SENCTENCE = "" when you dont want it.
 
+FILE4REPLACEMENT_USE = True
+FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL = False
+FILE4REPLACEMENT_PREFIX_CHARS = ('-', '.') # empty list/None = allow any non-alpha leading char. Default is ('-', '.')
+
 REMOVE_SPACES_BETWEEN_NUMBERS = 0
 # or check the rules at the bottom: # config/maps/plugins/numbers_to_digits/de-DE/FUZZY_MAP_pre.py
 
