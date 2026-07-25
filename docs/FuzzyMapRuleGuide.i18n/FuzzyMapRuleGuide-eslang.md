@@ -12,6 +12,14 @@
 | 2 | patrón | Regex o cadena difusa para comparar |
 | 3 | umbral | Para reglas de expresiones regulares: ignoradas. Para reglas difusas: puntuación mínima de coincidencia (0–100) |
 | 4 | opciones | Diccionario opcional (consulte "Referencia de opciones" a continuación). Utilice `0` u omítalo para los valores predeterminados |
+
+### Reemplazos basados en archivos
+Si "reemplazo" comienza con un prefijo configurado en "FILE4REPLACEMENT_ALLOWED_PREFIXES"
+(predeterminado: `-` o `.`), Aura lo trata como un nombre de archivo y busca su contenido en el
+directorio del complemento en lugar de usar la cadena literal. Esto guarda secretos (contraseñas,
+Claves API) fuera del código fuente.
+Consulte [File_Based_Replacement.md](../../Feature_Spotlight/Secure_Private_Maps/File_Based_Replacement-eslang.md) para obtener más detalles.
+
 ### Reemplazos crudos
 De forma predeterminada (`False`), las cadenas de reemplazo son procesadas por `re.sub()` de Python, que admite el uso de referencias inversas de expresiones regulares como `\1` o `\2` para insertar grupos capturados (por ejemplo: `(r'\1', r'(\d)\s+(?=\d)', 95)`).
 Si su reemplazo es una cadena de varias líneas o contiene barras invertidas sin escape (como plantillas de código o rutas de acceso) y debe conservarse exactamente como está, habilite `'raw_replacement': True` en el diccionario de opciones:
@@ -90,7 +98,7 @@ Si su reemplazo es una cadena de varias líneas o contiene barras invertidas sin
 - Poner reglas **específicas** antes que las **generales**
 - Utilice `^...$` fullmatch solo cuando desee detener todo procesamiento posterior
 - `FUZZY_MAP_pre.py` es ideal para correcciones antes de la revisión ortográfica
-- Pruebe las reglas con: `s su entrada de prueba` en la consola Aura
+- Reglas de prueba con: `s tu entrada de prueba` en la consola Aura
 - Las copias de seguridad se crean automáticamente como `.peter_backup`
 
 ## Ejemplos

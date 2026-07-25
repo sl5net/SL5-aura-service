@@ -12,6 +12,14 @@
 | 2 | Muster | Regex oder Fuzzy-String zum Vergleich mit |
 | 3 | Schwelle | Für Regex-Regeln: ignoriert. Für Fuzzy-Regeln: Mindestübereinstimmungspunktzahl (0–100) |
 | 4 | Optionen | Optionales Wörterbuch (siehe „Optionsreferenz“ unten). Für Standardwerte | verwenden Sie „0“ oder lassen es weg
+
+### Dateibasierte Ersetzungen
+Wenn „Ersatz“ mit einem in „FILE4REPLACEMENT_ALLOWED_PREFIXES“ konfigurierten Präfix beginnt
+(Standard: `-` oder `.`), Aura behandelt es als Dateinamen und sucht nach seinem Inhalt im
+Plugin-Verzeichnis, anstatt die Literalzeichenfolge zu verwenden. Dadurch bleiben Geheimnisse (Passwörter,
+API-Schlüssel) aus dem Quellcode.
+Weitere Informationen finden Sie unter [File_Based_Replacement.md](../../Feature_Spotlight/Secure_Private_Maps/File_Based_Replacement-delang.md).
+
 ### Roher Ersatz
 Standardmäßig („False“) werden Ersetzungszeichenfolgen von Pythons „re.sub()“ verarbeitet, das die Verwendung von Regex-Rückverweisen wie „\1“ oder „\2“ zum Einfügen erfasster Gruppen unterstützt (zum Beispiel: „(r'\1‘, r‘(\d)\s+(?=\d)‘, 95)‘).
 Wenn Ihre Ersetzung eine mehrzeilige Zeichenfolge ist oder Backslashes ohne Escapezeichen enthält (z. B. Codevorlagen oder Pfade) und genau so beibehalten werden soll, wie sie ist, aktivieren Sie „raw_replacement“: True im Optionswörterbuch:

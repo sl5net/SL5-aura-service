@@ -10,8 +10,16 @@ __代码_块_0__
 | 2 |图案|要匹配的正则表达式或模糊字符串 |
 | 3 |阈值|对于正则表达式规则：忽略。对于模糊规则：最低匹配分数 (0–100) |
 | 4 |选项 |可选字典（请参阅下面的“选项参考”）。使用“0”或省略默认值 |
+
+### 基于文件的替换
+如果“替换”以“FILE4REPLACMENT_ALLOWED_PREFIXES”中配置的前缀开头
+（默认值：`-` 或 `.`），Aura 将其视为文件名并在
+插件的目录而不是使用文字字符串。这可以保守秘密（密码、
+API 密钥）不在源代码中。
+详细信息请参见[File_Based_Replacement.md](../../Feature_Spotlight/Secure_Private_Maps/File_Based_Replacement-zh-CNlang.md)。
+
 ### 原始替换
-默认情况下（`False`），替换字符串由 Python 的 `re.sub()` 处理，它支持使用正则表达式反向引用，如 `\1` 或 `\2` 来插入捕获的组（例如：`(r'\1', r'(\d)\s+(?=\d)', 95)`）。
+默认情况下（“False”），替换字符串由 Python 的“re.sub()”处理，它支持使用“\1”或“\2”等正则表达式反向引用来插入捕获的组（例如：“(r'\1', r'(\d)\s+(?=\d)', 95)”）。
 如果您的替换是多行字符串或包含未转义的反斜杠（例如代码模板或路径）并且应完全按原样保留，请在选项字典中启用 `'raw_replacement': True`：
 __代码_块_1__
 
@@ -21,7 +29,7 @@ __代码_块_1__
 *示例：* `{'command_flags': re.IGNORECASE}`
 * **`raw_replacement`**（布尔值）：当为“True”时，替换文本被视为纯字符串文字，并被 Python 的“re.sub”反斜杠解析绕过。对于多行提示或带有未转义反斜杠（`\`）的字符串至关重要。
 *示例：* `{'raw_replacement': True}`
-* **`cache`**（布尔值）：切换 AURA 结果缓存。对于生成动态输出（例如当前时间、随机笑话）的规则设置为“False”，以确保在每场比赛中对它们进行最新评估。
+* **`cache`**（布尔值）：切换 AURA 结果缓存。对于生成动态输出（例如，当前时间、随机笑话）的规则设置为“False”，以确保在每场比赛中对它们进行最新评估。
 *示例：* `{'cache': False}`
 * **`skip_list`**（字符串列表）：指定当此规则匹配时要跳过的后处理管道模块。
 *示例：* `{'skip_list': ['LanguageTool']}`（跳过语法检查）
@@ -31,7 +39,7 @@ __代码_块_1__
 *示例：* `{'exclude_windows': [r'Terminal', r'Claude']}`
 * **`window_ignore_case`**（布尔值）：控制窗口匹配（`only_in_windows` / `exclude_windows`）是否不区分大小写（`True`）或区分大小写（`False`）进行评估。如果省略，则回退到“config/settings.py”中的全局设置“LOWERCASE_WINDOW_TITLES”。
 *示例：* `{'window_ignore_case': False}`
-* **`on_match_exec`**（路径/字符串对象列表）：当此规则匹配时应执行的脚本/插件的路径（由捕获所有和回退规则大量使用）。
+* **`on_match_exec`**（路径/字符串对象列表）：当此规则匹配时应执行的脚本/插件的路径（由捕获所有和后备规则大量使用）。
 *示例：* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## 管道逻辑
@@ -67,7 +75,7 @@ __代码_块_6__
 
 |文件 |相|描述 |
 |---|---|---|
-| `FUZZY_MAP_pre.py` |预语言工具 |在拼写检查之前应用 |
+| `FUZZY_MAP_pre.py` | Pre-LanguageTool |在拼写检查之前应用 |
 | `FUZZY_MAP.py` |后语言工具 |拼写检查后应用 |
 | `PUNCTUATION_MAP.py` |预语言工具 |标点符号规则 |
 

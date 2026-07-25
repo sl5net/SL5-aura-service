@@ -12,6 +12,14 @@
 | 2 | padrão | Regex ou string difusa para correspondência |
 | 3 | limiar | Para regras regex: ignorado. Para regras difusas: pontuação mínima de correspondência (0–100) |
 | 4 | opções | Dicionário opcional (veja "Referência de opções" abaixo). Use `0` ou omita os padrões |
+
+### Substituições baseadas em arquivo
+Se `replacement` começar com um prefixo configurado em `FILE4REPLACEMENT_ALLOWED_PREFIXES`
+(padrão: `-` ou `.`), Aura o trata como um nome de arquivo e procura seu conteúdo no
+diretório do plugin em vez de usar a string literal. Isso mantém segredos (senhas,
+Chaves de API) fora do código-fonte.
+Consulte [File_Based_Replacement.md](../../Feature_Spotlight/Secure_Private_Maps/File_Based_Replacement-pt-BRlang.md) para obter detalhes.
+
 ### Substituições brutas
 Por padrão (`False`), as strings de substituição são processadas pelo `re.sub()` do Python, que suporta o uso de referências anteriores de regex como `\1` ou `\2` para inserir grupos capturados (por exemplo: `(r'\1', r'(\d)\s+(?=\d)', 95)`).
 Se a sua substituição for uma string multilinha ou contém barras invertidas sem escape (como modelos de código ou caminhos) e deve ser preservada exatamente como está, habilite `'raw_replacement': True` no dicionário de opções:

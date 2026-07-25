@@ -1,6 +1,6 @@
 # Przewodnik po zasadach FUZZY_MAP
 
-##Format reguły
+## Format reguły
 
 __KOD_BLOKU_0__
 
@@ -10,8 +10,16 @@ __KOD_BLOKU_0__
 | 2 | wzór | Regex lub ciąg rozmyty do dopasowania do |
 | 3 | próg | W przypadku reguł wyrażeń regularnych: ignorowane. W przypadku reguł rozmytych: minimalny wynik dopasowania (0–100) |
 | 4 | opcje | Słownik opcjonalny (patrz „Informacje o opcjach” poniżej). Użyj `0` lub pomiń dla wartości domyślnych |
+
+### Zastąpienia oparte na plikach
+Jeśli „zastąpienie” zaczyna się od prefiksu skonfigurowanego w „FILE4REPLACEMENT_ALLOWED_PREFIXES”
+(domyślnie: `-` lub `.`), Aura traktuje go jako nazwę pliku i wyszukuje jego zawartość w
+katalog wtyczki zamiast używać dosłownego ciągu znaków. Dzięki temu tajemnice (hasła,
+klucze API) z kodu źródłowego.
+Aby uzyskać szczegółowe informacje, zobacz [File_Based_Replacement.md](../../Feature_Spotlight/Secure_Private_Maps/File_Based_Replacement-pllang.md).
+
 ### Surowe zamienniki
-Domyślnie (`False`) ciągi zastępcze są przetwarzane przez funkcję `re.sub()` w Pythonie, która obsługuje używanie odwołań zwrotnych do wyrażeń regularnych, takich jak `\1` lub `\2`, aby wstawić przechwycone grupy (na przykład: `(r'\1', r'(\d)\s+(?=\d)', 95)`.
+Domyślnie (`False`) ciągi zastępcze są przetwarzane przez funkcję `re.sub()` w Pythonie, która obsługuje użycie odwołań zwrotnych do wyrażeń regularnych, takich jak `\1` lub `\2`, aby wstawić przechwycone grupy (na przykład: `(r'\1', r'(\d)\s+(?=\d)', 95)`).
 Jeśli zamiana jest ciągiem wielowierszowym lub zawiera ukośniki odwrotne bez ucieczki (takie jak szablony kodu lub ścieżki) i powinna zostać zachowana dokładnie tak, jak jest, włącz opcję „raw_replacement”: True w słowniku opcji:
 __KOD_BLOKU_1__
 

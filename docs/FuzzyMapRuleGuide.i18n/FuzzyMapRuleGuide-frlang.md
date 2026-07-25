@@ -12,6 +12,14 @@
 | 2 | modèle | Regex ou chaîne floue à comparer |
 | 3 | seuil | Pour les règles regex : ignorées. Pour les règles floues : score de correspondance minimum (0–100) |
 | 4 | options | Dictionnaire facultatif (voir « Référence des options » ci-dessous). Utilisez « 0 » ou omettez les valeurs par défaut |
+
+### Remplacements basés sur des fichiers
+Si `remplacement` commence par un préfixe configuré dans `FILE4REPLACEMENT_ALLOWED_PREFIXES`
+(par défaut : `-` ou `.`), Aura le traite comme un nom de fichier et recherche son contenu dans le
+répertoire du plugin au lieu d'utiliser la chaîne littérale. Cela garde des secrets (mots de passe,
+Clés API) hors code source.
+Voir [File_Based_Replacement.md](../../Feature_Spotlight/Secure_Private_Maps/File_Based_Replacement-frlang.md) pour plus de détails.
+
 ### Remplacements bruts
 Par défaut (`False`), les chaînes de remplacement sont traitées par `re.sub()` de Python, qui prend en charge l'utilisation de références arrière d'expression régulière comme `\1` ou `\2` pour insérer des groupes capturés (par exemple : `(r'\1', r'(\d)\s+(?=\d)', 95)`).
 Si votre remplacement est une chaîne multiligne ou contient des barres obliques inverses non échappées (telles que des modèles de code ou des chemins) et doit être conservé exactement tel quel, activez « raw_replacement : True » dans le dictionnaire d'options :
