@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
 cd "$(git rev-parse --show-toplevel)"
+
+OUTSIDE_TEST_FILE="tools/tests/TEST_FILE4REPLACEMENT.txt"
+echo "--- Creating on-the-fly test file: $OUTSIDE_TEST_FILE ---"
+echo "Empty page!!" > "$OUTSIDE_TEST_FILE"
 
 SETTINGS_FILE="config/settings_local.py"
 MAP_FILE="config/maps/plugins/TEST_FILE4REPLACEMENT/de-DE/FUZZY_MAP_pre.py"

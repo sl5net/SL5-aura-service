@@ -10,7 +10,7 @@ def resolve_file_replacement(replacement, options_dict, logger=None):
     if not isinstance(replacement, str) or not replacement or not options_dict:
         return replacement
 
-    prefixes = tuple(getattr(settings, 'FILE4REPLACEMENT_PREFIX_CHARS', ()) or ())
+    prefixes = tuple(getattr(settings, 'FILE4REPLACEMENT_ALLOWED_PREFIXES', ()) or ())
     if prefixes:
         if not replacement.startswith(prefixes):
             return replacement
@@ -31,6 +31,14 @@ def resolve_file_replacement(replacement, options_dict, logger=None):
             if logger:
                 logger.error(error_msg)
             return error_msg
+
+        deny_prefixes = tuple(getattr(settings, 'FILE4REPLACEMENT_DENY_PREFIXES', ()) or ())
+        if deny_prefixes and candidate_file.startswith(deny_prefixes):
+            error_msg = f"Rejected denied path prefix: '{replacement}'"
+            if logger:
+                logger.error(error_msg)
+            return error_msg
+
         if os.path.isfile(candidate_file):
             with open(candidate_file, 'r', encoding='utf-8') as f:
                 file_content = f.read().strip()

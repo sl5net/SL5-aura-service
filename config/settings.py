@@ -203,7 +203,16 @@ ADD_TO_SENCTENCE = "."
 
 FILE4REPLACEMENT_USE = True
 FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL = False
-FILE4REPLACEMENT_PREFIX_CHARS = ('-', '.') # empty list/None = allow any non-alpha leading char. Default is ('-', '.')
+FILE4REPLACEMENT_ALLOWED_PREFIXES = ('-', '.') # empty list/None = allow any non-alpha leading char. Default is ('-', '.')
+FILE4REPLACEMENT_DENY_PREFIXES = (
+    "/etc",
+    "/proc",
+    "/dev",
+    "/var/lib",
+    "/root",
+    "C:\\Windows",
+    "C:\\Program Files",
+)
 
 REMOVE_SPACES_BETWEEN_NUMBERS = 0
 # or check the rules at the bottom: # config/maps/plugins/numbers_to_digits/de-DE/FUZZY_MAP_pre.py
