@@ -22,7 +22,7 @@ from .state_manager import should_trigger_startup
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 from .window_filter import is_window_title_skippable
 from .checks.trigger_aura_maintenance import trigger_aura_maintenance
-from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES, resolve_execute_only,LOGGING_ENABLED
+from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES, resolve_execute_only
 
 from .process_text_in_background_helper.resolve_file_replacement import resolve_file_replacement
 
