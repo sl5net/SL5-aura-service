@@ -64,7 +64,7 @@ Sie kennen Regex noch nicht? Kein Problem.
 wandelt es in einen gültigen Regeleintrag um.
 4. Anschließend können Sie den Ersetzungstext manuell bearbeiten.
 
-Dies nennt sich **Oma-Modus** – konzipiert für Benutzer, die ohne Ergebnisse Ergebnisse erzielen möchten
+Dies wird als **Oma-Modus** bezeichnet – konzipiert für Benutzer, die ohne Ergebnisse Ergebnisse erzielen möchten
 Ich lerne zuerst Regex.
 
 ---

@@ -9,7 +9,9 @@
 
 | 👵 Anfänger | 🎓 Lernender | 🧑u200d💻 Entwickler |
 |---|---|---|
-| OMA-Modus: Schreiben Sie einfach ein Wort, Aura erledigt den Rest | Lernen Sie mit Koans – ein Konzept nach dem anderen | Vollständige Python-Skripterstellung, Plugins, API-Aufrufe |
+
+
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-delang.md#the-oma-modus-beginner-shortcut): Schreiben Sie einfach ein Wort, Aura erledigt den Rest | Lernen Sie mit Koans – ein Konzept nach dem anderen | Vollständige Python-Skripterstellung, Plugins, API-Aufrufe |
 | 🗄️ Staatsverwaltung | Trino + Airflow-Orchestrierung, fzf, CopyQ, Sprach-/Terminalbefehle, Browser-Benutzeroberflächen |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -43,7 +45,7 @@
 Erfordert mimalloc („sudo pacman -S mimalloc“) aufgrund der Glibc 2.43-Kompatibilität.
 * **Linux (NixOS):** 🧪 Experimentell – von der Community bereitgestelltes Setup, noch nicht getestet.
 Wenn Sie es versuchen, eröffnen Sie bitte eine Ausgabe oder PR mit Ihren Ergebnissen!    
-* **Linux (Manjaro):** Neu/experimentell: Ein systemweiter Hotkey öffnet eine fzf-ähnliche, tastaturgesteuerte Oberfläche, sodass Sie Aura-Befehle von überall auf dem Desktop ausführen können (völlig entkoppelt vom aktiven Fenster). Dieser Hotkey-gesteuerte Launcher wird derzeit unter Linux (Manjaro) implementiert und getestet; Andere Distributionen funktionieren möglicherweise, erfordern jedoch das Setup. Siehe in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-delang.md)   
+* **Linux (Manjaro):** Neu/experimentell: Ein systemweiter Hotkey öffnet eine fzf-ähnliche, tastaturgesteuerte Oberfläche, sodass Sie Aura-Befehle von überall auf dem Desktop ausführen können (völlig entkoppelt vom aktiven Fenster). Dieser Hotkey-gesteuerte Launcher wird derzeit unter Linux (Manjaro) implementiert und getestet. Andere Distributionen funktionieren möglicherweise, erfordern jedoch das Setup. Siehe in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-delang.md)   
 
 
   
@@ -78,7 +80,7 @@ Hinweis: Bei vielen Texten handelt es sich um maschinell erstellte Übersetzunge
 ## Hauptmerkmale
 
 * **Offline und privat:** 100 % lokal. Keine Daten verlassen jemals Ihren Computer.
-* **Dynamic Scripting Engine:** Gehen Sie über das Ersetzen von Text hinaus. Regeln können benutzerdefinierte Python-Skripte („on_match_exec“) ausführen, um erweiterte Aktionen wie das Aufrufen von APIs (z. B. Wikipedia durchsuchen), die Interaktion mit Dateien (z. B. das Verwalten einer Aufgabenliste) oder das Generieren dynamischer Inhalte (z. B. eine kontextbezogene E-Mail-Begrüßung) durchzuführen.
+* **Dynamic Scripting Engine:** Gehen Sie über das Ersetzen von Text hinaus. Regeln können benutzerdefinierte Python-Skripte („on_match_exec“) ausführen, um erweiterte Aktionen wie das Aufrufen von APIs (z. B. Wikipedia durchsuchen), die Interaktion mit Dateien (z. B. eine Aufgabenliste verwalten) oder das Generieren dynamischer Inhalte (z. B. eine kontextbezogene E-Mail-Begrüßung) durchzuführen.
 * **Kontextsensitive Regeln:** Regeln auf bestimmte Anwendungen beschränken. Mit „only_in_windows“ können Sie sicherstellen, dass eine Regel nur dann ausgelöst wird, wenn ein bestimmter Fenstertitel (z. B. „Terminal“, „VS-Code“ oder „Browser“) aktiv ist. Dies funktioniert plattformübergreifend (Linux, Windows, macOS).
 * **High-Control Transformation Engine:** Implementiert eine konfigurationsgesteuerte, hochgradig anpassbare Verarbeitungspipeline. Regelpriorität, Befehlserkennung und Texttransformationen werden ausschließlich durch die Reihenfolge der Regeln in den Fuzzy Maps bestimmt und erfordern **Konfiguration, keine Codierung**.
 * **Konservative RAM-Nutzung:** Verwaltet den Speicher intelligent und lädt Modelle nur dann vor, wenn genügend freier RAM verfügbar ist, um sicherzustellen, dass andere Anwendungen (wie Ihre PC-Spiele) immer Vorrang haben.
@@ -102,7 +104,7 @@ SL5-Aura bietet erstklassige Sprachunterstützung für **OculiX** und **SikuliX 
 
 * **Voice-to-Snippet:** Sagen Sie „Klick“, „Warten“ oder „Alle finden“, und der Dienst gibt sofort den richtigen Python-Code (z. B. „click("image.png")`) in die IDE ein.
 * **Window-Aware:** Das Plugin ist kontextsensitiv; Es wird nur aktiviert, wenn das OculiX/SikuliX-Fenster fokussiert ist.
-* **Intelligente Englischunterstützung:** Optimiert für „en-US“ mit besonderem Fokus auf nicht-muttersprachliche Akzente (z. B. deutsch-englische Phonetik), um eine hohe Erkennungsgenauigkeit für die globale Community zu gewährleisten.
+* **Intelligente Englischunterstützung:** Optimiert für „en-US“ mit besonderem Fokus auf nicht-muttersprachliche Akzente (z. B. Deutsch-Englisch-Phonetik), um eine hohe Erkennungsgenauigkeit für die globale Community zu gewährleisten.
 * **Erweiterbar:** Verwendet das einfach zu bearbeitende Format „FUZZY_MAP_pre.py“.
 
 > **Status:** Vom OculiX-Team als Community-Plugin anerkannt (siehe [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
@@ -123,7 +125,7 @@ SL5-Aura bietet erstklassige Sprachunterstützung für **OculiX** und **SikuliX 
 
 Eine vollständige technische Referenz, einschließlich aller Module und Skripte, finden Sie auf unserer offiziellen Dokumentationsseite. Es wird automatisch generiert und ist immer aktuell.
 
-👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 
 ### Build-Status
@@ -441,7 +443,7 @@ Unsere primäre Engine für Offline-Spracherkennung und Audioverarbeitung.
 │└ 5. **Intelligente Nachkorrektur** (`FuzzyMap`)**– Post-LT-Verfeinerung** 🐧 🍏 🪟  
 ││ * Wird nach LanguageTool angewendet, um LT-spezifische Ausgaben zu korrigieren. Folgt der gleichen strengen kaskadierenden Prioritätslogik wie die Vorkorrekturschicht.  
 ││ * **Dynamische Skriptausführung:** Regeln können benutzerdefinierte Python-Skripte ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-delang.md)) auslösen, um erweiterte Aktionen wie API-Aufrufe, Datei-E/A auszuführen oder dynamische Antworten zu generieren.  
-││ * **Fuzzy-Fallback:** Die **Fuzzy-Ähnlichkeitsprüfung** (gesteuert durch einen Schwellenwert, z. B. 85 %) fungiert als Fehlerkorrekturebene mit der niedrigsten Priorität. Es wird nur ausgeführt, wenn bei der gesamten vorherigen Ausführung der deterministischen/kaskadierenden Regel keine Übereinstimmung gefunden werden konnte (current_rule_matched ist False). Dadurch wird die Leistung optimiert, indem nach Möglichkeit langsame Fuzzy-Prüfungen vermieden werden.  
+││ * **Fuzzy-Fallback:** Die **Fuzzy-Ähnlichkeitsprüfung** (gesteuert durch einen Schwellenwert, z. B. 85 %) fungiert als Fehlerkorrekturebene mit der niedrigsten Priorität. Es wird nur ausgeführt, wenn bei der gesamten vorherigen Ausführung der deterministischen/kaskadierenden Regel keine Übereinstimmung gefunden wurde (current_rule_matched ist „False“). Dadurch wird die Leistung optimiert, indem nach Möglichkeit langsame Fuzzy-Prüfungen vermieden werden.  
 ├┬ **Modellverwaltung/**   
 │├─ `prioritize_model.py` (Optimiert das Laden/Entladen von Modellen basierend auf der Nutzung) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (Konfiguriert die erstmalige Modelleinrichtung) 🐧 🍏 🪟  
@@ -478,7 +480,7 @@ Skripte zum Einrichten, Testen und Ausführen von Diensten.
 
 *Tipp: Mit glogg können Sie reguläre Ausdrücke verwenden, um in Ihren Protokolldateien nach interessanten Ereignissen zu suchen.*   
 Bitte aktivieren Sie das Kontrollkästchen bei der Installation, um eine Verknüpfung mit Protokolldateien herzustellen.    
-https://translate.google.com/translate?hl=en&sl=en&tl=de&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=de&u=https://glogg.bonnefon.org/     
   
 *Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-delang.md).*
 

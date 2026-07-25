@@ -9,7 +9,9 @@
 
 | 👵 Iniciante | 🎓 Aluno | 🧑u200d💻 Desenvolvedor |
 |---|---|---|
-| Modo OMA: basta escrever uma palavra, Aura faz o resto | Aprenda com Koans — um conceito de cada vez | Scripting Python completo, plug-ins, chamadas de API |
+
+
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-ptlang.md#the-oma-modus-beginner-shortcut) : basta escrever uma palavra, Aura faz o resto | Aprenda com Koans — um conceito de cada vez | Scripting Python completo, plug-ins, chamadas de API |
 | 🗄️ Gestão Estadual | Orquestração Trino + Airflow, fzf, CopyQ, comandos de voz/terminal, UIs de navegador |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -105,7 +107,7 @@ SL5-Aura oferece suporte de voz de primeira classe para **OculiX** e **SikuliX I
 * **Suporte inteligente para inglês:** Otimizado para `en-US` com foco especial em sotaques não nativos (por exemplo, fonética alemão-inglês), garantindo alta precisão de reconhecimento para a comunidade global.
 * **Extensível:** Usa o formato `FUZZY_MAP_pre.py` fácil de editar.
 
-> **Status:** Reconhecido como um plugin da comunidade pela equipe OculiX (veja [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
+> **Status:** Reconhecido como plugin da comunidade pela equipe OculiX (veja [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
 
 ### Controle de voz do LibreOffice IDE
 
@@ -139,7 +141,7 @@ Para uma referência técnica completa, incluindo todos os módulos e scripts, v
 <a href="https://github.com/sl5net/SL5-aura-service/stargazers">
 <img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
 </a>
-<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="Licença">
+<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="License">
 <a href="https://sl5net.github.io/SL5-aura-service/">
 <img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Documentação">
 </a>
@@ -445,7 +447,7 @@ Scripts para configuração de ambiente, teste e execução de serviço.
 
 *Dica: glogg permite que você use expressões regulares para pesquisar eventos interessantes em seus arquivos de log.*   
 Marque a caixa de seleção ao instalar para associar aos arquivos de log.    
-https://translate.google.com/translate?hl=en&sl=en&tl=pt&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=pt&u=https://glogg.bonnefon.org/     
   
 *Dica: depois de definir seus padrões regex, execute `python3 tools/map_tagger.py` para gerar automaticamente exemplos pesquisáveis para as ferramentas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-ptlang.md) para obter detalhes.*
 
@@ -471,7 +473,7 @@ Então talvez clique duas vezes
 ### **Recursos futuros/experimentais**  
 Recursos atualmente em desenvolvimento ou em status de rascunho.  
 
-**Recursos experimentais/**  
+**Recursos Experimentais/**  
 ├─ **ENTER_AFTER_DICTATION_REGEX** Exemplo de regra de ativação "(ExampleAplicationThatNotExist|Pi, sua IA pessoal)" 🐧  
 ├┬Plugins  
 │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟  
@@ -480,7 +482,7 @@ Recursos atualmente em desenvolvimento ou em status de rascunho.
 │ ├ **wannweil** (Mapa para localização Alemanha-Wannweil) 🐧 🍏 🪟  
 │ ├ **Poker Plugin (Draft)** (Controle de voz para aplicativos de pôquer) 🐧 🍏 🪟  
 │ └ **Plugin 0 A.D. (Draft)** (Controle de voz para jogo 0 A.D.) 🐧   
-├─ **Saída de som ao iniciar ou encerrar uma sessão** (Descrição pendente) 🐧   
+├─ **Saída de som ao iniciar ou encerrar uma sessão** (descrição pendente) 🐧   
 ├─ **Saída de fala para deficientes visuais** (Descrição pendente) 🐧 🍏 🪟  
 └─ **Protótipo SL5 Aura Android** (Ainda não totalmente offline) 📱  
 
@@ -541,7 +543,7 @@ Esses modelos compactados devem ser salvos na pasta `models/`
 Esta tabela fornece uma visão geral dos diferentes modelos Vosk, incluindo tamanho, taxa ou velocidade de erro de palavras, notas e informações de licença.
 
 
-- **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
+**Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Ferramenta de Idioma:**  
 (6.6)[https://languagetool.org/download/](https://languagetool.org/download/)
 

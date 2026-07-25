@@ -48,14 +48,14 @@ __代码_块_2__
 
 还不知道正则表达式？没问题。
 
-1. 在沙箱中打开任何空的`FUZZY_MAP_pre.py`
+1. 在沙盒中打开任何空的`FUZZY_MAP_pre.py`
 2. 在自己的行上只写一个简单的单词（没有引号，没有元组）：
 __代码_块_3__
 3. 保存 — Auto-Fix 系统检测到裸字并自动
 将其转换为有效的规则条目。
 4. 然后您可以手动编辑替换文本。
 
-这称为 **Oma-Modus** — 专为那些想要结果而无需
+这被称为**奶奶模式**——专为那些想要在没有任何信息的情况下获得结果的用户而设计。
 首先学习正则表达式。
 
 ---
@@ -84,7 +84,7 @@ __代码_块_3__
 
 |什么 |哪里 |
 |---|---|
-|完整规则参考 | `docs/FuzzyMapRuleGuide.md` |
+|完整规则参考| `docs/FuzzyMapRuleGuide.md` |
 |创建您自己的插件 | `docs/CreatingNewPluginModules.md` |
 |从规则运行 Python 脚本 | `docs/advanced-scripting.md` |
 | DEV_MODE + 日志过滤器设置 | `docs/Developer_Guide/dev_mode_setup.md` |

@@ -62,7 +62,7 @@ __CODE_BLOCO_3__
 converte-o em uma entrada de regra válida.
 4. Você pode então editar o texto de substituição manualmente.
 
-Isso é chamado de **Oma-Modus** — projetado para usuários que desejam resultados sem
+Isso é chamado de **modo vovó** — projetado para usuários que desejam resultados sem
 aprendendo regex primeiro.
 
 ---

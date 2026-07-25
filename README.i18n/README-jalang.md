@@ -9,7 +9,9 @@
 
 | 👵 初心者 | 🎓 学習者 | 🧑u200d💻 開発者 |
 |---|---|---|
-| OMA モード: 単語を書くだけで、残りは Aura が行います | Koans で学ぶ - 一度に 1 つのコンセプト |完全な Python スクリプト、プラグイン、API 呼び出し |
+
+
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-jalang.md#the-oma-modus-beginner-shortcut) : 単語を書くだけで、残りは Aura がやってくれます | Koans で学ぶ - 一度に 1 つのコンセプト |完全な Python スクリプト、プラグイン、API 呼び出し |
 | 🗄️ 状態管理 | Trino + Airflow オーケストレーション、fzf、CopyQ、音声/端末コマンド、ブラウザ UI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -47,7 +49,7 @@ glibc 2.43 との互換性のため、mimalloc (`sudo pacman -S mimalloc`) が�
 
 
   
-SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタイル用) に基づいて構築された完全な **オフライン音声アシスタント** で、創造的な応答と高度なファジー マッチングのためのオプションの **ローカル LLM (Ollama) フォールバック** を備えています。あなたの音声を正確なアクションとテキストに変換し、プラグイン可能なルール システムとダイナミック スクリプト エンジンを通じて究極のカスタマイズを実現するように設計されています。
+SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタイル用) に基づいて構築された完全な **オフライン音声アシスタント** で、創造的な応答と高度なファジー マッチングのためのオプションの **ローカル LLM (Ollama) フォールバック** を備えています。あなたの声を正確なアクションとテキストに変換し、プラグイン可能なルール システムとダイナミック スクリプト エンジンを通じて究極のカスタマイズを実現するように設計されています。
   
 翻訳: このドキュメントは [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n) にも存在します。
 
@@ -80,7 +82,7 @@ SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタ
 * **オフラインとプライベート:** 100% ローカル。データがマシンから流出することはありません。
 * **ダイナミック スクリプト エンジン:** テキストの置換を超えた機能。ルールはカスタム Python スクリプト (「on_match_exec」) を実行して、API の呼び出し (Wikipedia の検索など)、ファイルの操作 (ToDo リストの管理など)、動的コンテンツの生成 (コンテキストを認識した電子メールの挨拶など) などの高度なアクションを実行できます。
 * **コンテキスト認識ルール:** ルールを特定のアプリケーションに制限します。 「only_in_windows」を使用すると、特定のウィンドウ タイトル (「ターミナル」、「VS Code」、または「ブラウザ」など) がアクティブな場合にのみルールがトリガーされるようにできます。これはクロスプラットフォーム (Linux、Windows、macOS) で動作します。
-* **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定され、コーディングではなく**構成が必要です**。
+* **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定されるため、コーディングではなく**構成が必要です**。
 * **控えめな RAM 使用量:** メモリをインテリジェントに管理し、十分な空き RAM がある場合にのみモデルをプリロードし、他のアプリケーション (PC ゲームなど) が常に優先されるようにします。
 * **クロスプラットフォーム:** Linux、macOS、および Windows で動作します。
 * **完全に自動化:** 独自の LanguageTool サーバーを管理します (ただし、外部サーバーを使用することもできます)。
@@ -102,7 +104,7 @@ SL5-Aura は、**OculiX** および **SikuliX IDE** に最上級の音声サポ�
 
 * **Voice-to-Snippet:** 「クリック」、「待機」、または「すべて検索」と言うと、サービスは正しい Python コード (例: `click("image.png")`) を即座に IDE に入力します。
 * **ウィンドウ対応:** プラグインはコンテキスト依存です。 OculiX/SikuliX ウィンドウがフォーカスされている場合にのみアクティブになります。
-* **スマート英語サポート:** 非ネイティブのアクセント (ドイツ語と英語の音声学など) に特に焦点を当てて「en-US」向けに最適化されており、グローバル コミュニティ向けに高い認識精度を保証します。
+* **スマート英語サポート:** 非ネイティブのアクセント (ドイツ語と英語の音声など) に特に焦点を当てて「en-US」向けに最適化されており、グローバル コミュニティ向けに高い認識精度を保証します。
 * **拡張可能:** 編集が簡単な `FUZZY_MAP_pre.py` 形式を使用します。
 
 > **ステータス:** OculiX チームによってコミュニティ プラグインとして認識されています ([Issue #204](https://github.com/oculix-org/Oculix/issues/204) を参照)。
@@ -170,7 +172,7 @@ SL5-Aura は、**OculiX** および **SikuliX IDE** に最上級の音声サポ�
 1. 最新のリリースまたはマスター ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) をダウンロードするか、このリポジトリのクローンをコンピュータに作成します。
 2. オペレーティング システムのワンタイム セットアップ スクリプトを実行します。
 
-セットアップ スクリプトは、システムの依存関係、Python 環境、必要なモデルとツール (最大 4 GB) を GitHub リリースから直接ダウンロードして最大速度を実現するなど、すべてを処理します。
+セットアップ スクリプトは、システムの依存関係、Python 環境、必要なモデルとツール (最大 4GB) を GitHub リリースから直接ダウンロードして最大速度を実現するなど、すべてを処理します。
 
 
 #### Linux、macOS、および Windows の場合 (オプションの言語の除外あり)
@@ -355,7 +357,7 @@ f11::
 
 処理エンジンは **階層的な優先順位チェーン** に厳密に従っています。
 
-1. **モジュールのロード順序 (高優先度):** コア言語パック (de-DE、en-US) からロードされたルールは、plugins/ ディレクトリからロードされたルール (アルファベット順で最後にロードされる) より優先されます。
+1. **モジュールのロード順序 (高優先度):** コア言語パック (de-DE、en-US) からロードされたルールは、plugins/ ディレクトリ (アルファベット順で最後にロードされる) からロードされたルールよりも優先されます。
   
 2. **ファイル内順序 (マイクロ優先度):** 特定のマップ ファイル (FUZZY_MAP_pre.py) 内では、ルールは **行番号** (上から下) によって厳密に処理されます。
   
@@ -374,7 +376,7 @@ f11::
 
 ## Windows ユーザー向けの主要なスクリプト
 
-Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを次に示します。
+ここでは、Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを示します。
 
 ### セットアップとアップデート
 
@@ -426,7 +428,7 @@ OS 互換性の凡例:
 §┬ **ライブ ホットリロード** (構成とマップ) 🐧 🍏 🪟  
 │§ **安全なプライベート マップの読み込み (整合性優先)** 🔒 🐧 🍏 🪟  
 ││ * **ワークフロー:** パスワードで保護された ZIP アーカイブを読み込みます。   
-│§ **テキストの処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
+│§ **テキスト処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
 │§ 1. `normalize_punctuation.py` (文字起こし後の句読点を標準化) 🐧 🍏 🪟  
 │§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
 ││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト (「on_match_exec」) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
@@ -438,8 +440,8 @@ OS 互換性の凡例:
 │§ **Vector-Search Plugin** (遅延読み込み): ローカルの Vector 埋め込みを Ollama/LLM フォールバック レイヤーに接続することでセマンティック検索を有効にします 🐧  
 ││ * **Ollama AI (ローカル LLM) フォールバック:** 決定論的なルールが満たされない場合、**創造的な回答、Q&A、および高度なファジー マッチング**のオプションの優先度の低いチェックとして機能します。  
 ││ * **ステータス:** ローカル LLM 統合。
-│└ 5. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の改良** 🐧 🍏 🪟  
-││ * LT 固有の出力を修正するために、LanguageTool の後に適用されます。前修正レイヤーと同じ厳密なカスケード優先順位ロジックに従います。  
+│└ 5. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の洗練** 🐧 🍏 🪟  
+││ * LT 固有の出力を修正するために LanguageTool の後に適用されます。前修正レイヤーと同じ厳密なカスケード優先順位ロジックに従います。  
 ││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **ファジー フォールバック:** **ファジー類似性チェック** (しきい値、たとえば 85% によって制御される) は、優先度が最も低いエラー修正層として機能します。これは、先行する決定的/カスケード ルールの実行全体で一致が見つからなかった場合 (current_rule_matched が False) にのみ実行され、可能な限り遅いファジー チェックを回避することでパフォーマンスを最適化します。  
 §┬ **モデル管理/**   
@@ -478,7 +480,7 @@ OS 互換性の凡例:
 
 *ヒント: glogg を使用すると、正規表現を使用してログ ファイル内の興味深いイベントを検索できます。*   
 ログファイルと関連付けるには、インストール時にチェックボックスをオンにしてください。    
-https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
   
 *ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-jalang.md) を参照してください。*
 
@@ -493,7 +495,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefo
 │§ Vosk-システム-リスナーの統合 🐧 🍏 🪟  
 │§ `scripts/monitor_mic.sh` (Linux 固有のマイクモニタリング) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey は認識されたテキストをリッスンし、システム全体で入力します) 🪟  
-━─ **CI/CD 自動化/**  
+└─ **CI/CD オートメーション/**  
 └─ 拡張された GitHub ワークフロー (インストール、テスト、ドキュメントのデプロイメント) 🐧 🍏 🪟 *(GitHub Actions で実行)*  
 
 </詳細>
@@ -563,7 +565,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefo
 
 - **Vosk モデル:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **言語ツール:**  
-(6.6)[https://languagetool.org/download/](https://languagetool.org/download/)
+(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
 
 **LanguageTool のライセンス:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 

@@ -9,7 +9,9 @@
 
 | 👵 Débutant | 🎓 Apprenant | 🧑u200d💻 Développeur |
 |---|---|---|
-| Mode OMA : écrivez simplement un mot, Aura fait le reste | Apprenez avec Koans — un concept à la fois | Scripts Python complets, plugins, appels API |
+
+
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-frlang.md#the-oma-modus-beginner-shortcut) : écrivez simplement un mot, Aura fait le reste | Apprenez avec Koans — un concept à la fois | Scripts Python complets, plugins, appels API |
 | 🗄️ Gestion de l'État | Orchestration Trino + Airflow, fzf, CopyQ, commandes vocales/terminal, interfaces utilisateur du navigateur |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -49,7 +51,7 @@ Si vous l'essayez, veuillez ouvrir un problème ou un PR avec vos découvertes 
   
 SL5 Aura est un **assistant vocal hors ligne** complet, basé sur **Vosk** (pour la synthèse vocale) et **LanguageTool** (pour la grammaire/le style), avec un **Local LLM (Ollama) Fallback** en option pour des réponses créatives et une correspondance floue avancée. Il transforme votre voix en actions et en texte précis, conçus pour une personnalisation ultime grâce à un système de règles enfichable et un moteur de script dynamique.
   
-Traductions : Ce document existe également dans [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n).
+Traductions : Ce document existe également en [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n).
 
 
 Remarque : De nombreux textes sont des traductions générées automatiquement de la documentation originale en anglais et sont uniquement destinés à des conseils généraux. En cas de divergences ou d'ambiguïtés, la version anglaise prévaut toujours. Nous apprécions l’aide de la communauté pour améliorer cette traduction !
@@ -329,7 +331,7 @@ f11::
 
 
 ### 3. Commencez à dicter !
-Cliquez dans n'importe quel champ de texte, appuyez sur votre touche de raccourci et une notification "Écoute..." apparaîtra. Parlez clairement, puis faites une pause. Le texte corrigé sera tapé pour vous.
+Cliquez dans n'importe quel champ de texte, appuyez sur votre touche de raccourci et une notification « Écoute… » apparaîtra. Parlez clairement, puis faites une pause. Le texte corrigé sera tapé pour vous.
 
 </détails>
 
@@ -478,7 +480,7 @@ Scripts pour la configuration de l'environnement, les tests et l'exécution des 
 
 *Astuce : glogg vous permet d'utiliser des expressions régulières pour rechercher des événements intéressants dans vos fichiers journaux.*   
 Veuillez cocher la case lors de l'installation pour l'associer aux fichiers journaux.    
-https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
   
 *Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
 

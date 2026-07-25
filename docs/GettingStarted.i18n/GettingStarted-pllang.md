@@ -55,7 +55,7 @@ __KOD_BLOKU_3__
 konwertuje go na prawidłowy wpis reguły.
 4. Następnie możesz ręcznie edytować tekst zastępczy.
 
-Nazywa się to **Oma-Modus** — przeznaczony dla użytkowników, którzy chcą wyników bez
+Nazywa się to **trybem babci** — przeznaczonym dla użytkowników, którzy chcą rezultatów bez niego
 najpierw naucz się wyrażeń regularnych.
 
 ---

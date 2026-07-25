@@ -9,7 +9,9 @@
 
 | 👵 초급 | 🎓 학습자 | 🧑u200d💻 개발자 |
 |---|---|---|
-| OMA 모드: 단어만 작성하면 나머지는 Aura가 수행합니다 | Koans로 배우기 - 한 번에 하나의 개념 | 전체 Python 스크립팅, 플러그인, API 호출 |
+
+
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-kolang.md#the-oma-modus-beginner-shortcut) : 단어만 작성하면 나머지는 Aura가 수행합니다 | Koans로 배우기 - 한 번에 하나의 개념 | 전체 Python 스크립팅, 플러그인, API 호출 |
 | 🗄️ 상태 관리 | Trino + Airflow 오케스트레이션, fzf, CopyQ, 음성/터미널 명령, 브라우저 UI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -95,7 +97,7 @@ XSPACEbreakX
 XSPACEbreakX
 ## 🔌 즉시 사용 가능한 통합
 
-SL5-Aura는 **100개 이상의 사전 구성된 플러그인**으로 구성된 방대한 생태계와 함께 제공됩니다. 다음은 몇 가지 주요 내용입니다.
+SL5-Aura는 **100개 이상의 사전 구성된 플러그인**으로 구성된 광범위한 에코시스템과 함께 제공됩니다. 다음은 몇 가지 주요 내용입니다.
 
 ### OculiX / SikuliX IDE 음성 제어
 SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지원을 제공합니다. 이 통합을 통해 자동화 코드를 "말"할 수 있습니다.
@@ -173,7 +175,7 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 설정 스크립트는 시스템 종속성, Python 환경, 최대 속도를 위해 GitHub 릴리스에서 직접 필요한 모델 및 도구(~4GB) 다운로드 등 모든 것을 처리합니다.
 
 
-#### Linux, macOS, Windows용(선택적 언어 제외 포함)
+#### Linux, macOS 및 Windows용(선택적 언어 제외 포함)
 
 디스크 공간과 대역폭을 절약하기 위해 설정 중에 특정 언어 모델(`de`, `en`) 또는 모든 선택적 모델(`all`)을 제외할 수 있습니다. **핵심 구성요소(LanguageTool,lid.176)는 항상 포함됩니다.**
 
@@ -228,7 +230,7 @@ windows11_setup.bat -Exclude "en"
 
 1. `setup` 폴더로 이동합니다.
 2. **`windows11_setup_with_ahk_copyq.bat`**를 두 번 클릭합니다.
-* *스크립트는 관리자 권한을 묻는 메시지를 자동으로 표시합니다.*
+* *스크립트가 자동으로 관리자 권한을 묻는 메시지를 표시합니다.*
 * *핵심 시스템, 언어 모델, **AutoHotkey v2** 및 **CopyQ**를 설치합니다.*
 3. 설치가 완료되면 **Aura Dictation**이 자동으로 실행됩니다.
 
@@ -329,7 +331,7 @@ f11::
 
 
 ### 3. 받아쓰기를 시작하세요!
-텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추십시오. 수정된 텍스트가 자동으로 입력됩니다.
+텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추세요. 수정된 텍스트가 자동으로 입력됩니다.
 
 </세부사항>
 
@@ -355,9 +357,9 @@ f11::
 
 처리 엔진은 **계층적 우선순위 체인**을 엄격하게 준수합니다.
 
-1. **모듈 로드 순서(높은 우선순위):** 핵심 언어 팩(de-DE, en-US)에서 로드된 규칙은 플러그인/ 디렉터리에서 로드된 규칙(마지막 알파벳순으로 로드됨)보다 우선합니다.
+1. **모듈 로드 순서(높은 우선순위):** 핵심 언어 팩(de-DE, en-US)에서 로드된 규칙은 플러그인/ 디렉터리에서 로드된 규칙(알파벳순으로 마지막으로 로드됨)보다 우선합니다.
 XSPACEbreakX
-2. **파일 내 순서(마이크로 우선순위):** 지정된 맵 파일(FUZZY_MAP_pre.py) 내에서 규칙은 **라인 번호**(위에서 아래로)에 따라 엄격하게 처리됩니다.
+2. **파일 내 순서(마이크로 우선순위):** 지정된 맵 파일(FUZZY_MAP_pre.py) 내에서 규칙은 **줄 번호**(위에서 아래로)에 따라 엄격하게 처리됩니다.
 XSPACEbreakX
 
 이 아키텍처는 핵심 시스템 규칙이 보호되는 동시에 프로젝트별 또는 상황 인식 규칙(예: CodeIgniter 또는 게임 컨트롤의 규칙)을 플러그인을 통해 우선순위가 낮은 확장으로 쉽게 추가할 수 있도록 보장합니다.
@@ -478,7 +480,7 @@ XSPACEbreakX
 
 *팁: glogg를 사용하면 정규식을 사용하여 로그 파일에서 흥미로운 이벤트를 검색할 수 있습니다.*   
 로그 파일과 연결하려면 설치 시 확인란을 선택하세요.  XSPACEbreakX
-https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=ko&u=https://glogg.bonnefon.org/     
 XSPACEbreakX
 *팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
 

@@ -9,7 +9,9 @@
 
 | 👵 初学者 | 🎓 学习者 | 🧑u200d💻 开发者 |
 |---|---|---|
-| OMA-模式：只需写一个字，Aura 即可完成剩下的工作 |与 Koans 一起学习 — 一次一个概念 |完整的 Python 脚本、插件、API 调用 |
+
+
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-zh-CNlang.md#the-oma-modus-beginner-shortcut)：只需写一个字，剩下的由 Aura 完成 |与 Koans 一起学习 — 一次一个概念 |完整的 Python 脚本、插件、API 调用 |
 | 🗄️ 状态管理 | Trino + Airflow 编排、fzf、CopyQ、语音/终端命令、浏览器 UI
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -170,7 +172,7 @@ SL5-Aura 为 **OculiX** 和 **SikuliX IDE** 提供一流的语音支持。这种
 1. 下载最新版本或主版本 ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) 或将此存储库克隆到您的计算机。
 2. 运行适用于您的操作系统的一次性安装脚本。
 
-安装脚本处理一切：系统依赖项、Python 环境，以及直接从我们的 GitHub 版本下载必要的模型和工具（~4GB）以获得最大速度。
+设置脚本处理一切：系统依赖项、Python 环境，以及直接从我们的 GitHub 版本下载必要的模型和工具（~4GB）以获得最大速度。
 
 
 #### 适用于 Linux、macOS 和 Windows（具有可选语言排除）
@@ -343,7 +345,7 @@ X空格符X
 │├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
 │├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
-││ * **动态脚本执行：** 规则可以触发自定义 Python 脚本 (`on_match_exec`) 来执行高级操作，如 API 调用、文件 I/O 或生成动态响应。  
+││ * **动态脚本执行：**规则可以触发自定义Python脚本（`on_match_exec`）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 │ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
 │ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
 │├ 3. ` Correct_text_by_languagetool.py` (集成LanguageTool用于语法/风格校正) 🐧 🍏 🪟  
@@ -371,7 +373,7 @@ X空格符X
 ├┬ **LanguageTool 服务器管理/**   
 │├─ `start_languagetool_server.py` (初始化本地 LanguageTool 服务器) 🐧 🍏 🪟  
 │└─ `stop_languagetool_server.py` (关闭 LanguageTool 服务器) 🐧 🍏
-├─ `monitor_mic.sh` （例如，与耳机一起使用，而不使用键盘和显示器） 🐧 🍏 🪟  
+├─ `monitor_mic.sh` （例如，用于耳机而不使用键盘和显示器）🐧 🍏 🪟  
 
 ### **模型和包管理**  
 用于稳健处理大型语言模型的工具。  
@@ -392,7 +394,7 @@ X空格符X
 
 *提示：glogg 使您能够使用正则表达式在日志文件中搜索有趣的事件。*   
 安装时请选中该复选框以与日志文件关联。  X空格符X
-https://translate.google.com/translate?hl=en&sl=en&tl=zh-CN&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=zh-CN&u=https://glogg.bonnefon.org/     
 X空格符X
 *提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-zh-CNlang.md)。*
 
@@ -406,7 +408,7 @@ X空格符X
 ├┬ **全系统听写集成/**  
 │├ Vosk-系统-监听器集成 🐧 🍏 🪟  
 │├ `scripts/monitor_mic.sh` (Linux 专用麦克风监控) 🐧  
-│└ `scripts/type_watcher.ahk` （AutoHotkey 侦听已识别的文本并在系统范围内将其输入）🪟  
+│└ `scripts/type_watcher.ahk` （AutoHotkey 监听已识别的文本并在系统范围内将其输入）🪟  
 └─ **CI/CD 自动化/**  
 └─ 扩展的 GitHub 工作流程（安装、测试、文档部署）🐧 🍏 🪟 *（在 GitHub 操作上运行）*  
 

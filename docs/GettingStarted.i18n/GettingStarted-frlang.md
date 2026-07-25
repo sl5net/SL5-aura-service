@@ -64,7 +64,7 @@ Vous ne connaissez pas encore les regex ? Aucun problème.
 le convertit en une entrée de règle valide.
 4. Vous pouvez ensuite modifier manuellement le texte de remplacement.
 
-C'est ce qu'on appelle **Oma-Modus** — conçu pour les utilisateurs qui souhaitent des résultats sans
+C'est ce qu'on appelle le **mode grand-mère** — conçu pour les utilisateurs qui souhaitent des résultats sans
 apprendre d'abord les regex.
 
 ---

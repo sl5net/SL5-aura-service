@@ -64,7 +64,7 @@ La forma más rápida de agregar una regla personal:
 lo convierte en una entrada de regla válida.
 4. Luego podrás editar el texto de reemplazo manualmente.
 
-Esto se llama **Oma-Modus** y está diseñado para usuarios que desean resultados sin
+Esto se llama **modo abuela** y está diseñado para usuarios que desean resultados sin
 aprender expresiones regulares primero.
 
 ---

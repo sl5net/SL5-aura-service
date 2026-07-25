@@ -9,7 +9,9 @@
 
 | 👵 Początkujący | 🎓 Uczeń | 🧑u200d💻 Programista |
 |---|---|---|
-| Tryb OMA: po prostu napisz słowo, Aura zajmie się resztą | Ucz się z Koanami — jedna koncepcja na raz | Pełne skrypty Pythona, wtyczki, wywołania API |
+
+
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-pllang.md#the-oma-modus-beginner-shortcut) : po prostu napisz słowo, Aura zajmie się resztą | Ucz się z Koanami — jedna koncepcja na raz | Pełne skrypty Pythona, wtyczki, wywołania API |
 | 🗄️Zarządzanie państwem | Orkiestracja Trino + Airflow, fzf, CopyQ, polecenia głosowe/terminalowe, interfejsy użytkownika przeglądarki |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -63,7 +65,7 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Wskazówka:** Aby uzyskać lepsze wrażenia z terminala, zobacz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
+> **Wskazówka:** Aby uzyskać lepszą obsługę terminala, zobacz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
 
 ### 🎥 Samouczek wideo
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -79,7 +81,7 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 
 * **Offline i prywatnie:** 100% lokalnie. Żadne dane nigdy nie opuszczają Twojej maszyny.
 * **Dynamiczny silnik skryptowy:** Wyjdź poza zastępowanie tekstu. Reguły mogą uruchamiać niestandardowe skrypty Pythona (`on_match_exec`) w celu wykonywania zaawansowanych działań, takich jak wywoływanie interfejsów API (np. przeszukiwanie Wikipedii), interakcja z plikami (np. zarządzanie listą zadań do wykonania) lub generowanie zawartości dynamicznej (np. kontekstowe powitanie e-mail).
-* **Reguły uwzględniające kontekst:** Ogranicz reguły do określonych aplikacji. Używając opcji `only_in_windows`, możesz mieć pewność, że reguła zostanie wyzwolona tylko wtedy, gdy aktywny będzie określony tytuł okna (np. „Terminal”, „Kod VS” lub „Przeglądarka”). Działa to na wielu platformach (Linux, Windows, macOS).
+* **Reguły uwzględniające kontekst:** Ogranicz reguły do określonych aplikacji. Używając opcji `only_in_windows`, możesz mieć pewność, że reguła zostanie uruchomiona tylko wtedy, gdy określony tytuł okna (np. „Terminal”, „Kod VS” lub „Przeglądarka”) jest aktywny. Działa to na wielu platformach (Linux, Windows, macOS).
 * **Silnik transformacji o wysokim poziomie kontroli:** implementuje oparty na konfiguracji, wysoce konfigurowalny potok przetwarzania. Priorytet reguł, wykrywanie poleceń i transformacje tekstu są określane wyłącznie na podstawie kolejności reguł w Fuzzy Maps, co wymaga **konfiguracji, a nie kodowania**.
 * **Oszczędne wykorzystanie pamięci RAM:** Inteligentnie zarządza pamięcią, wstępnie ładując modele tylko wtedy, gdy dostępna jest wystarczająca ilość wolnej pamięci RAM, zapewniając, że inne aplikacje (takie jak gry komputerowe) zawsze mają priorytet.
 * **Wiele platform:** działa na systemach Linux, macOS i Windows.
@@ -336,7 +338,7 @@ XSPACEbreakX
 <summary>Rdzeń Aury</summary>
 
 **Aura-Rdzeń/** 🐧 🍏 🪟XSPACEbreakX
-├─ `aura_engine.py` (Główna usługa Pythona zarządzająca Aurą) 🐧 🍏 🪟XSPACEbreakX
+├─ `aura_engine.py` (główna usługa Pythona zarządzająca Aurą) 🐧 🍏 🪟XSPACEbreakX
 ├┬ **Przeładuj na żywo** (konfiguracja i mapy) 🐧 🍏 🪟XSPACEbreakX
 │├ **Bezpieczne ładowanie prywatnej mapy (na pierwszym miejscu jest integralność)** 🔒 🐧 🍏 🪟XSPACEbreakX
 ││ * **Przebieg pracy:** Ładuje archiwa ZIP chronione hasłem. XSPACEbreakX
@@ -392,7 +394,7 @@ Skrypty do konfiguracji środowiska, testowania i wykonywania usług.XSPACEbreak
 
 *Wskazówka: glogg umożliwia używanie wyrażeń regularnych do wyszukiwania interesujących zdarzeń w plikach dziennika.* XSPACEbreakX
 Podczas instalacji zaznacz pole wyboru, aby powiązać je z plikami dziennika.  XSPACEbreakX
-https://translate.google.com/translate?hl=en&sl=en&tl=pl&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=pl&u=https://glogg.bonnefon.org/     
 XSPACEbreakX
 *Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pllang.md).*
 
@@ -405,7 +407,7 @@ XSPACEbreakX
 │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
 ├┬ **Ogólnosystemowa integracja dyktowania/**XSPACEbreakX
 │├ Integracja Vosk-System-Słuchacz 🐧 🍏 🪟XSPACEbreakX
-│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧  
+│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧XSPACEbreakX
 │└ `scripts/type_watcher.ahk` (AutoHotkey nasłuchuje rozpoznanego tekstu i wpisuje go w całym systemie) 🪟XSPACEbreakX
 └─ **Automatyka CI/CD/**XSPACEbreakX
 └─ Rozszerzone przepływy pracy GitHub (instalacja, testowanie, wdrażanie dokumentów) 🐧 🍏 🪟 *(Działa w akcjach GitHub)*XSPACEbreakX
@@ -428,12 +430,12 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 │ ├ **Wtyczka pokerowa (wersja robocza)** (Sterowanie głosowe w aplikacjach pokerowych) 🐧 🍏 🪟XSPACEbreakX
 │ └ **Wtyczka 0 A.D. (wersja robocza)** (Sterowanie głosowe dla gry 0 A.D.) 🐧 XSPACEbreakX
 ├─ **Wyjście dźwięku podczas rozpoczynania lub kończenia sesji** (opis w toku) 🐧 XSPACEbreakX
-├─ **Mowa dla osób niedowidzących** (opis w oczekiwaniu na opis) 🐧 🍏 🪟XSPACEbreakX
+├─ **Mowa dla osób niedowidzących** (opis w toku) 🐧 🍏 🪟XSPACEbreakX
 └─ **Prototyp Androida SL5 Aura** (jeszcze nie w pełni offline) 📱XSPACEbreakX
 
 ---
 
-*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT) są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
+*(Uwaga: określone dystrybucje Linuksa, takie jak Arch (ARL) lub Ubuntu (UBT), są oznaczone ogólnym symbolem Linuksa 🐧. Szczegółowe rozróżnienia mogą być omówione w przewodnikach instalacji.)*
 </details>
 
 <szczegóły>
