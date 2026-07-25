@@ -12,6 +12,14 @@
 | 2 | pattern | Regex or fuzzy string to match against |
 | 3 | threshold | For regex rules: ignored. For fuzzy rules: minimum match score (0–100) |
 | 4 | options | Optional dictionary (see "Options Reference" below). Use `0` or omit for defaults |
+
+### File-Based Replacements
+If `replacement` starts with a prefix configured in `FILE4REPLACEMENT_ALLOWED_PREFIXES`
+(default: `-` or `.`), Aura treats it as a filename and looks up its content in the
+plugin's directory instead of using the literal string. This keeps secrets (passwords,
+API keys) out of source code.
+See [File_Based_Replacement.md](../Feature_Spotlight/Secure_Private_Maps/File_Based_Replacement.md) for details.
+
 ### Raw Replacements
 By default (`False`), replacement strings are processed by Python's `re.sub()`, which supports using regex backreferences like `\1` or `\2` to insert captured groups (for example: `(r'\1', r'(\d)\s+(?=\d)', 95)`). 
 If your replacement is a multiline string or contains unescaped backslashes (such as code templates or paths) and should be preserved exactly as-is, enable `'raw_replacement': True` in the options dictionary:
