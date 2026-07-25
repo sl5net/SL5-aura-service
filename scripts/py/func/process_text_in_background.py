@@ -22,7 +22,9 @@ from .state_manager import should_trigger_startup
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 from .window_filter import is_window_title_skippable
 from .checks.trigger_aura_maintenance import trigger_aura_maintenance
-from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES, resolve_execute_only
+from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES, resolve_execute_only,LOGGING_ENABLED
+
+from .process_text_in_background_helper.resolve_file_replacement import resolve_file_replacement
 
 from .correct_text_by_languagetool import correct_text_by_languagetool
 
@@ -63,6 +65,8 @@ from typing import Any
 
 # active_window_title = None
 global _active_window_title
+
+global LAST_REMOVED_PREFIX
 
 # scripts/py/func/process_text_in_background.py
 GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
@@ -831,6 +835,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
             if replacement is None:
                 continue
 
+            replacement = resolve_file_replacement(replacement, options_dict, logger)
             # 1. Try to determine privacy from options
             # Assuming 'options_dict' is defined earlier in the loop (it usually is)
             source_modname = options_dict.get('source_modname', '')
@@ -1642,6 +1647,7 @@ def process_text_in_background(logger,
             if not regex_pre_is_replacing_all and not is_only_number:
                 log4DEV(f'in fuzzy_map: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
                 for replacement, match_phrase, threshold, options_dict in GLOBAL_FUZZY_MAP:
+                    replacement = resolve_file_replacement(replacement, options_dict, logger)
 
                     if not privacy_taint_occurred:
                         log4DEV(f'for {replacement}, {match_phrase} ... in fuzzy_map:', logger)
@@ -2155,7 +2161,7 @@ def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_ma
 
     
 
-# py/func/process_text_in_background.py:1196
+# scripts/py/func/process_text_in_background.py:2163
 def sanitize_transcription_start(raw_text: str) -> str:
     """
     cost: ~ 1 Microsecond (µs)
@@ -2305,9 +2311,14 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
             # 🔵
 
             # scripts/py/func/process_text_in_background.py -> apply_all_rules_until_stable :1471
+# scripts/py/func/process_text_in_background.py -> apply_all_rules_until_stable :1471
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
             if replacement_text is None:
                 continue
+
+            replacement_text = resolve_file_replacement(replacement_text, options_dict, logger_instance)
+
+
 
             # logger_instance.info(f'2189 regex_pattern={regex_pattern}')
             # logger_instance.info(f'2190 rule_entry={rule_entry}')
