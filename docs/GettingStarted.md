@@ -64,7 +64,7 @@ Don't know regex yet? No problem.
    converts it into a valid rule entry.
 4. You can then edit the replacement text manually.
 
-This is called **Oma-Modus** — designed for users who want results without
+This is called **grandma-mode** — designed for users who want results without
 learning regex first .
 
 ---

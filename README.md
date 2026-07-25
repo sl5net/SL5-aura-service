@@ -9,7 +9,9 @@
 
 | 👵 Beginner | 🎓 Learner | 🧑‍💻 Developer |
 |---|---|---|
-| OMA-Mode: just write a word, Aura does the rest | Learn with Koans — one concept at a time | Full Python scripting, plugins, API calls |
+
+
+| [grandma-mode](docs/GettingStarted.md#the-oma-modus-beginner-shortcut) : just write a word, Aura does the rest | Learn with Koans — one concept at a time | Full Python scripting, plugins, API calls |
 | 🗄️ State Management | Trino + Airflow orchestration, fzf, CopyQ, voice/terminal commands, browser UIs |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
