@@ -206,7 +206,35 @@ if [[ "$KEY" = "ctrl-e" && -n "$SEL" ]]; then
 #    F_PATH="$(echo "$SEL" | cut -f3)"
 #    L_NUM="$(echo "$SEL" | cut -f2)"
     # F_PATH and L_NUM are already correctly extracted globally above
-    (nohup kate "$F_PATH" --line "$L_NUM" >/dev/null 2>&1 & disown || $PREFERRED_EDITOR "$F_PATH" & disown)
+
+    # old before 26.7.'26 10:09 Sun
+    #    (nohup kate "$F_PATH" --line "$L_NUM" >/dev/null 2>&1 & disown || $PREFERRED_EDITOR "$F_PATH" & disown)
+
+#    nohup "$PREFERRED_EDITOR" "$F_PATH" --line "$L_NUM" >/dev/null 2>&1 & # asks for crate file named like linenumber, opens cudatext with correct file in wrong line
+
+#    nohup "$PREFERRED_EDITOR" "$F_PATH" "/n=$L_NUM" >/dev/null 2>&1 & # asks for crate file named like linenumber, opens cudatext with correct file in wrong line
+
+#    nohup "$PREFERRED_EDITOR" "$F_PATH" "/n=$L_NUM" >/dev/null 2>&1 & #  asks for crate file named like linenumber, opens cudatext with correct file in wrong line
+
+#    nohup "$PREFERRED_EDITOR" "$F_PATH" --line="$L_NUM" >/dev/null 2>&1 & # opens cudatext with correct file in wrong line
+
+    if [[ "$PREFERRED_EDITOR" = "cudatext" ]]; then
+      nohup "$PREFERRED_EDITOR" "$F_PATH@$L_NUM" >/dev/null 2>&1 &
+      # cudatext --help : Filenames can be with "@line" or "@line@column" suffix to place caret.
+    else
+      nohup "$PREFERRED_EDITOR" "$F_PATH" --line="$L_NUM" >/dev/null 2>&1 &
+    fi
+
+
+
+
+
+#    nohup "$PREFERRED_EDITOR" "$F_PATH:20" ... >/dev/null 2>&1 & # opens tries open a file $F_PATH:20
+
+#nohup "$PREFERRED_EDITOR" "$F_PATH:$L_NUM" >/dev/null 2>&1 & # opens tries open a file $F_PATH:$L_NUM that of course not exist
+
+#nohup "$PREFERRED_EDITOR" "$F_PATH" /n="$L_NUM" >/dev/null 2>&1 & # File not found: "/n=20" Create it?
+
 #    (nohup kate "$F_PATH" --line "$L_NUM" >/dev/null 2>&1 & disown || $PREFERRED_EDITOR "$F_PATH" & disown)
 fi
 done
