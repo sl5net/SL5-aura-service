@@ -34,9 +34,7 @@ def log(msg: str) -> None:
 
 def process_unmatched_text(file_rule_path: str, text: str):
     """
-    Update the FUZZY_MAP_pre.py file at `file_rule_path` so it can match
-    `text` next time:
-
+    FUZZY_MAP_pre.py
     - No catch-all rule found -> do nothing.
     - Catch-all rule found, with a rule before it -> add `text` as a new
       alternative to that previous rule's trailing regex group.
@@ -45,12 +43,15 @@ def process_unmatched_text(file_rule_path: str, text: str):
     """
 
     log(f'20260720_1942 called with argv={sys.argv}\n')
+    log(f'DEBUG process_unmatched_text: file_rule_path={repr(file_rule_path)}')
 
     fuzzy_map_file = Path(file_rule_path)
-    if not fuzzy_map_file.exists():
-        log('ABORT: file does not exist')
-        return
+    if not fuzzy_map_file.is_absolute():
+        fuzzy_map_file = PROJECT_ROOT / fuzzy_map_file
 
+    if not fuzzy_map_file.exists():
+        log(f"ABORT: file does not exist: fuzzy_map_file: …{str(fuzzy_map_file)[-30:]}")
+        return
     content = fuzzy_map_file.read_text(encoding="utf-8")
 
     entries = get_fuzzy_map_entries(content)

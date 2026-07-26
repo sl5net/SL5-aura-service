@@ -1,4 +1,5 @@
 # config/maps/plugins/0_aura_quickstart/de-DE/toggle_learning.py
+import os
 import subprocess
 from pathlib import Path
 
@@ -62,10 +63,15 @@ def execute(match_data):
     # german EXAMPLE: Lernmodus einschalten ausschalten
     # english EXAMPLE: learn-mode enable disable
 
-    import os
+    project_root = os.environ.get('SL5NET_AURA_PROJECT_ROOT', '')
+    maps_base_dir = Path(project_root) / "config" / "maps"
+
     tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
     last_edited_file = tmp_dir / "sl5_aura" / "last_edited_map.txt"
-    candidate_path = Path(last_edited_file.read_text(encoding="utf-8").strip()).expanduser()
+    candidate_path1 = Path(last_edited_file.read_text(encoding="utf-8").strip()).expanduser()
+    candidate_path = maps_base_dir / candidate_path1
+
+
     if not candidate_path.exists():
         speak(f"Can't find {last_edited_file}")
         print(f"Can't find {last_edited_file}")
@@ -147,7 +153,7 @@ def execute(match_data):
 
                         if settings.AUDIO_GUIDANCE_ENABLED:
                             speak("unmatched is added to your map")
-                        return f"unmatched is added to your map …{str(map_file)[-30:0]} (20260711_2331)"
+                        return f"unmatched is added to your map …{str(map_file)[-30:]} (20260711_2331)"
 
     map_file.write_text("\n".join(new_lines), encoding="utf-8")
 

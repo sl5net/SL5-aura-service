@@ -36,8 +36,10 @@ FUZZY_MAP_pre = [
     ('log', fr'^{AURA_VARIANTS}\s*(log|look)$', 70, _meta_run_search_result),
 
     # config/maps/plugins/0_aura_quickstart/de-DE/FUZZY_MAP_pre.py:38
-    # aura lernen wodurch abschleifen
+    # lernen wodurch einschalten
 
+
+    # aura lernen wodurch abschleifen
     # EXAMPLE: Lernmodus einschalten ausschalten
     ('Lernmodus...', fr'^({AURA_VARIANTS}|Lauer leer).*(lern|leeren|lernen|Lärm|Herr)?\s*(modus|mode|muss|wodurch)\s*(an\w*|ein\w*|aus\w*|aussch\w+|absch\w+|starten|stoppen|aktivier\w+|DEAKTIVIER\w*)?\s*\w*$', 100, {
         'command_flags': re.IGNORECASE,

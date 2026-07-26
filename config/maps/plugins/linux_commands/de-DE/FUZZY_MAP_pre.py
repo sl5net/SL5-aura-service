@@ -255,9 +255,24 @@ FUZZY_MAP_pre = [
 
     # Examples: disk space
     ("ncdu",
-        # EXAMPLE: check storage
         r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
      90,
      {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+
+
+    # Examples: disk space
+    ("ncdu",
+        r'^(check storage|ncdu|launch ncdu|how big are the folders|disk space)$',
+     90,
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+
+    # Examples: rofi window switcher
+    ("rofi -show window -window-hide-active-window -window-format '{t}' -window-match-fields title true -sort", r'^(rofi|window switcher|switcher)$',
+     90,
+     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+
+
+
+
 
 ]
