@@ -36,7 +36,7 @@ if not _logger.handlers:
     _logger.addHandler(_handler)
 
 def log(msg: str) -> None:
-    logging.info(msg)
+    _logger.info(msg)
 
 
 def execute(match_data: dict):
