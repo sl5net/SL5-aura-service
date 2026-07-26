@@ -18,6 +18,8 @@ from .audio.handle_tts_fallback import handle_tts_fallback
 from .auto_fix_module import try_auto_fix_module
 from .get_active_window_title import get_active_window_title_safe
 from .log_memory_details import log4DEV
+from .process_text_in_background_helper.load_module_from_path import load_module_from_path
+from .process_text_in_background_helper.run_on_match_exec import run_on_match_exec
 from .state_manager import should_trigger_startup
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 from .window_filter import is_window_title_skippable
@@ -205,46 +207,6 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
     return reparierte_anzahl
 
 # This is your function at line 17
-def load_module_from_path(script_path, run_mode_override=None):
-
-    path = Path(script_path)
-
-    # scripts/py/func/process_text_in_background.py:88
-    if run_mode_override:
-        RUN_MODE = run_mode_override
-    else:
-        RUN_MODE = os.getenv('RUN_MODE')  # returns None or the value
-
-
-    if RUN_MODE == "API_SERVICE" and path.parent.name.startswith('_'):
-        print(
-            f"a####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
-        return None
-    if RUN_MODE == "API_SERVICE" and path.parent.parent.name.startswith('_'):
-        print(
-            f"b####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
-        return None
-    if RUN_MODE == "API_SERVICE" and path.parent.parent.parent.name.startswith('_'):
-        print(
-            f"c####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
-        return None    # Ignore folders that start with _
-
-    print(
-        f"####### map_file_path={path.parent.parent.parent.parent.name} {path.parent.parent.parent.name} {path.parent.parent.name} {path.parent.name} {path.name} ++++++++++++++++++++++++")
-
-    spec = importlib.util.spec_from_file_location(path.stem, path)
-
-    # <<< FIX 1: Add this check right here
-    if spec is None:
-        # Log this error to know which script failed
-        logging.error(f"Could not create module spec for path: {script_path}")
-        return None
-
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-
-
-    return module
 
 
 # from config.settings import ENABLE_AUTO_LANGUAGE_DETECTION, ADD_TO_SENCTENCE
@@ -835,7 +797,9 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
             if replacement is None:
                 continue
 
-            replacement = resolve_file_replacement(replacement, options_dict, logger)
+            # DEACTIVATED HERE to preserve raw path for plugins:
+            # replacement = resolve_file_replacement(replacement, options_dict, logger)
+
             # 1. Try to determine privacy from options
             # Assuming 'options_dict' is defined earlier in the loop (it usually is)
             source_modname = options_dict.get('source_modname', '')
@@ -917,22 +881,42 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
             # scripts/py/func/process_text_in_background.py:835
             try:
 
-                # <<< ÄNDERUNG 1: Speichere das Ergebnis von re.search in 'match_obj'
                 match_obj = re.search(match_phrase, processed_text, flags=command_flags)
 
-                # <<< ÄNDERUNG 2: Prüfe, ob 'match_obj' existiert
                 if match_obj:
                     # logger.info(
                     #     f"🔁 455: Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
 
-                    # Die Ersetzung bleibt genau gleich
                     new_text = re.sub(
                         match_phrase,
                         replacement.strip(),
                         processed_text,
                         flags=command_flags
                     )
-                    # logger.info(
+                    original_text_before_rule = processed_text
+
+                    on_match_exec_list = options_dict.get('on_match_exec', [])
+                    match_data = {
+                        'original_text': original_text_before_rule,
+                        'text_after_replacement': new_text,
+                        'regex_match_obj': match_obj,
+                        'rule_options': options_dict,
+                        'interface': interface
+                    }
+
+                    script_result = run_on_match_exec(on_match_exec_list, match_data, logger)
+                    new_current_text = ''
+                    if isinstance(script_result, str):
+                        new_current_text = script_result
+
+                    # 3. Späte Auflösung (nur falls kein Abbruch durch Exception erfolgte)
+                    resolved_replacement = resolve_file_replacement(replacement, options_dict, logger)
+                    new_text = re.sub(
+                        match_phrase,
+                        resolved_replacement.strip(),
+                        processed_text,
+                        flags=command_flags
+                    )                    # logger.info(
                     # f"🔁 464: '{new_text}'")
 
 
@@ -2316,7 +2300,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
             if replacement_text is None:
                 continue
 
-            replacement_text = resolve_file_replacement(replacement_text, options_dict, logger_instance)
 
 
 
@@ -2545,16 +2528,22 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                                 continue
 
 
-                        # scripts/py/func/process_text_in_background.py:1897
+                        # scripts/py/func/process_text_in_background.py:2530
                         on_match_exec_list = options_dict.get('on_match_exec', [])
 
+                        # scripts/py/func/process_text_in_background.py:2533
+                        script_result = run_on_match_exec(on_match_exec_list, match_data, logger_instance)
+                        if script_result is not None:
+                            new_current_text = script_result
 
-                        for script_path in on_match_exec_list:
-                            module = load_module_from_path(script_path)
-                            if module and hasattr(module, 'execute'):
-                                new_current_text = module.execute(match_data)
+                        # for script_path in on_match_exec_list:
+                        #     module = load_module_from_path(script_path)
+                        #     if module and hasattr(module, 'execute'):
+                        #         new_current_text = module.execute(match_data)
                                 # log4DEV(f"module:'{module}' new_current_text='{new_current_text}'",logging)
                                 # time.sleep(1)
+
+                        new_current_text = resolve_file_replacement(new_current_text, options_dict, logger_instance)
 
                         with SEQUENCE_LOCK.lock:
                             resolve_execute_only(options_dict)
@@ -2674,31 +2663,27 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
 
 
-
+                            # scripts/py/func/process_text_in_background.py:2659
 
                             on_match_exec_list = options_dict.get('on_match_exec', [])
-                            for script_path in on_match_exec_list:
-                                module = load_module_from_path(script_path)
-                                if module and hasattr(module, 'execute'):
-                                    script_result = module.execute(match_data)
+                            script_result = run_on_match_exec(on_match_exec_list, match_data, logger_instance)
 
-                                    # with SEQUENCE_LOCK.lock:
-                                    #     resolve_execute_only(options_dict)
+                            if SEQUENCE_LOCK.execute_only_event.is_set():
+                                new_current_text = '20260708_1944 no text after replacement'
+                            else:
+                                if isinstance(script_result, str):
+                                    new_current_text = script_result
+                                    # lang_for_tts stays default "de-DE"
 
-                                    if SEQUENCE_LOCK.execute_only_event.is_set():
-                                        new_current_text = '20260708_1944 no text after replacement'
-                                    else:
-                                        if isinstance(script_result, str):
-                                            new_current_text = script_result
-                                            # lang_for_tts stays default "de-DE"
-
-                                        elif isinstance(script_result, dict):
-                                            # Case 2: Dictionary Metadata (translator-Plugin)
-                                            new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
-                                            lang_for_tts = script_result.get("lang", "de-DE")
-                                            if not privacy_taint_occurred and not execute_only:
-                                                handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
+                                elif isinstance(script_result, dict):
+                                    # Case 2: Dictionary Metadata (translator-Plugin)
+                                    new_current_text = script_result.get("text")  # Hole den Text aus dem Dictionary
+                                    lang_for_tts = script_result.get("lang", "de-DE")
+                                    if not privacy_taint_occurred and not execute_only:
+                                        handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
                                             # if global_state.LOGGING_ENABLED:
+
+
 
                             made_a_change += 1
                             if not privacy_taint_occurred:
