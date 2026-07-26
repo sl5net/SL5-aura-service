@@ -1191,7 +1191,7 @@ else:
     jar_path_absolute = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
     internal_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}"
 
-    logger.info(f"start_languagetool_server(logger, …{str(jar_path_absolute)[-30:0]}, {internal_lt_url})")
+    logger.info(f"start_languagetool_server(logger, …{str(jar_path_absolute)[-30:]}, {internal_lt_url})")
 
     # aura_engine.py:1176
     languagetool_process = start_languagetool_server(logger, jar_path_absolute, internal_lt_url, for_self_test=False)

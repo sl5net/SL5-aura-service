@@ -79,14 +79,14 @@ def auto_reload_modified_maps(logger,run_mode_override):
             if map_file_path.name == "__init__":
                 continue
 
+            # Get path relative to /config/maps to check subfolders
+            relative_path = map_file_path.relative_to(maps_base_dir)
 
             # Security Check: Prevent loading of private maps (starting with _) in API mode
             # This checks ANY part of the path relative to maps_base_dir
             # scripts/py/func/map_reloader.py:85 auto_reload_modified_maps(logger,run_mode_override)
             if run_mode_override == "API_SERVICE":
                 try:
-                    # Get path relative to /config/maps to check subfolders
-                    relative_path = map_file_path.relative_to(maps_base_dir)
 
                     # Check if any folder in the structure starts with "_"
                     if any(part.startswith('_') for part in relative_path.parts):
@@ -151,7 +151,9 @@ def auto_reload_modified_maps(logger,run_mode_override):
                         try:
                             tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
                             last_edited_file = tmp_dir / "sl5_aura" / "last_edited_map.txt"
-                            last_edited_file.write_text(str(map_file_path), encoding="utf-8")
+                            # last_edited_file.write_text(str(map_file_path), encoding="utf-8") # till 26.7.'26 14:12 Sun
+                            last_edited_file.write_text(str(relative_path), encoding="utf-8")
+
                         except Exception as e:
                             logger.error(f"Failed to write last edited map path: {e}")
 
