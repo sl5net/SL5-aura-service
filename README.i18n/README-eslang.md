@@ -9,7 +9,9 @@
 
 | 👵 Principiante | 🎓 Aprendiz | 🧑u200d💻 Desarrollador |
 |---|---|---|
-| Modo OMA: solo escribe una palabra, Aura hace el resto | Aprenda con Koans: un concepto a la vez | Secuencias de comandos Python completas, complementos, llamadas API |
+
+
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-eslang.md#the-oma-modus-beginner-shortcut): sólo escribe una palabra, Aura hace el resto | Aprenda con Koans: un concepto a la vez | Secuencias de comandos Python completas, complementos, llamadas API |
 | 🗄️Gestión Estatal | Trino + Orquestación de flujo de aire, fzf, CopyQ, comandos de voz/terminal, interfaces de usuario del navegador |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -63,7 +65,7 @@ Nota: Muchos textos son traducciones generadas automáticamente de la documentac
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Consejo:** Para una mejor experiencia con el terminal, consulte [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-eslang.md).
+> **Consejo:** Para una mejor experiencia de terminal, consulte [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-eslang.md).
 
 ### 🎥 Vídeotutorial
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -102,7 +104,7 @@ SL5-Aura proporciona soporte de voz de primera clase para **OculiX** y **SikuliX
 
 * **Voice-to-Snippet:** Diga "hacer clic", "esperar" o "buscar todo" y el servicio escribirá instantáneamente el código Python correcto (por ejemplo, `hacer clic("image.png")`) en el IDE.
 * **Consciente de ventanas:** El complemento es sensible al contexto; solo se activa cuando la ventana de OculiX/SikuliX está enfocada.
-* **Soporte inteligente de inglés:** Optimizado para `en-US` con un enfoque especial en acentos no nativos (por ejemplo, fonética alemán-inglés), lo que garantiza una alta precisión de reconocimiento para la comunidad global.
+* **Soporte de inglés inteligente:** Optimizado para `en-US` con un enfoque especial en acentos no nativos (por ejemplo, fonética alemán-inglés), lo que garantiza una alta precisión de reconocimiento para la comunidad global.
 * **Extensible:** Utiliza el formato `FUZZY_MAP_pre.py` fácil de editar.
 
 > **Estado:** Reconocido como complemento comunitario por el equipo de OculiX (ver [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
@@ -478,7 +480,7 @@ Scripts para la configuración, prueba y ejecución del servicio del entorno.
 
 *Consejo: glogg le permite utilizar expresiones regulares para buscar eventos interesantes en sus archivos de registro.*   
 Marque la casilla de verificación durante la instalación para asociar con archivos de registro.    
-https://translate.google.com/translate?hl=en&sl=en&tl=es&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=es&u=https://glogg.bonnefon.org/     
   
 *Consejo: Después de definir sus patrones de expresiones regulares, ejecute `python3 tools/map_tagger.py` para generar automáticamente ejemplos de búsqueda para las herramientas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-eslang.md) para obtener más detalles.*
 
@@ -563,7 +565,7 @@ Esta tabla proporciona una descripción general de los diferentes modelos de Vos
 
 - **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Herramienta de idioma:**  
-(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
+(6.6) XMLDLINK46X
 
 **Licencia de LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 

@@ -207,5 +207,6 @@ if [[ "$KEY" = "ctrl-e" && -n "$SEL" ]]; then
 #    L_NUM="$(echo "$SEL" | cut -f2)"
     # F_PATH and L_NUM are already correctly extracted globally above
     (nohup kate "$F_PATH" --line "$L_NUM" >/dev/null 2>&1 & disown || $PREFERRED_EDITOR "$F_PATH" & disown)
+#    (nohup kate "$F_PATH" --line "$L_NUM" >/dev/null 2>&1 & disown || $PREFERRED_EDITOR "$F_PATH" & disown)
 fi
 done
