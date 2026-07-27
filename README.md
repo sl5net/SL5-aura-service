@@ -127,6 +127,8 @@ For a complete technical reference, including all modules and scripts, please vi
 
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
+### Feature Spotlights
+- [Interactive Rule Search & Run](docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.md) — Dual-pane `fzf` rule search, live context previews, instant command execution via `Enter`/`Ctrl+R`, and editor integration via `Ctrl+E`. Supported by a global hotkey (`Super+S`) and multiple dedicated search-environments pre-configured via voice commands.
 
 ### Build Status
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
