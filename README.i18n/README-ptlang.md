@@ -127,6 +127,8 @@ Para uma referência técnica completa, incluindo todos os módulos e scripts, v
 
 👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
+### Destaques de recursos
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-ptlang.md) — Pesquisa de regras `fzf` em painel duplo, visualizações de contexto ao vivo, execução instantânea de comandos via `Enter`/`Ctrl+R` e integração de editor via `Ctrl+E`. Suportado por uma tecla de atalho global (`Super+S`) e vários ambientes de pesquisa dedicados pré-configurados através de comandos de voz.
 
 ### Status da compilação
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ)
@@ -482,7 +484,7 @@ Recursos atualmente em desenvolvimento ou em status de rascunho.
 │ ├ **wannweil** (Mapa para localização Alemanha-Wannweil) 🐧 🍏 🪟  
 │ ├ **Poker Plugin (Draft)** (Controle de voz para aplicativos de pôquer) 🐧 🍏 🪟  
 │ └ **Plugin 0 A.D. (Draft)** (Controle de voz para jogo 0 A.D.) 🐧   
-├─ **Saída de som ao iniciar ou encerrar uma sessão** (descrição pendente) 🐧   
+├─ **Saída de som ao iniciar ou encerrar uma sessão** (Descrição pendente) 🐧   
 ├─ **Saída de fala para deficientes visuais** (Descrição pendente) 🐧 🍏 🪟  
 └─ **Protótipo SL5 Aura Android** (Ainda não totalmente offline) 📱  
 
@@ -543,7 +545,7 @@ Esses modelos compactados devem ser salvos na pasta `models/`
 Esta tabela fornece uma visão geral dos diferentes modelos Vosk, incluindo tamanho, taxa ou velocidade de erro de palavras, notas e informações de licença.
 
 
-**Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
+- **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
 - **Ferramenta de Idioma:**  
 (6.6)[https://languagetool.org/download/](https://languagetool.org/download/)
 

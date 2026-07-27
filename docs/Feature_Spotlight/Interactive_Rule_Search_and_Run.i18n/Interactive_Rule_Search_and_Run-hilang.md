@@ -14,3 +14,5 @@
 - **Windows PowerShell (`search_rules.ps1`):** सहयोगी उपकरण हल्के टर्मिनल खोज क्षमताएं प्रदान करता है।
 
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_20260727_155546.png)
+
+![Interactive Rule Search Console](.././assets/interactive_rule_search_wie_wetter_heute20260727.png)

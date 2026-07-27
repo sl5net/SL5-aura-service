@@ -14,3 +14,5 @@
 - **Windows PowerShell(`search_rules.ps1`):** 가벼운 터미널 검색 기능을 제공하는 도우미 도구입니다.
 
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_20260727_155546.png)
+
+![Interactive Rule Search Console](.././assets/interactive_rule_search_wie_wetter_heute20260727.png)

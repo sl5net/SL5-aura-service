@@ -127,6 +127,8 @@ SL5-Aura 为 **OculiX** 和 **SikuliX IDE** 提供一流的语音支持。这种
 
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
+### 特色亮点
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-zh-CNlang.md) — 双窗格“fzf”规则搜索、实时上下文预览、通过“Enter”/“Ctrl+R”即时命令执行以及通过“Ctrl+E”进行编辑器集成。由全局热键（“Super+S”）和通过语音命令预先配置的多个专用搜索环境支持。
 
 ### 构建状态
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )

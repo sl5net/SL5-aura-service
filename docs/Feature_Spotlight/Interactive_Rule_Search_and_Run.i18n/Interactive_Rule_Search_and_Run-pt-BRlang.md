@@ -14,3 +14,5 @@ Este destaque destaca o sistema interativo de busca e execução de regras, unin
 - **Windows PowerShell (`search_rules.ps1`):** Ferramenta complementar que fornece recursos leves de pesquisa de terminal.
 
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_20260727_155546.png)
+
+![Interactive Rule Search Console](.././assets/interactive_rule_search_wie_wetter_heute20260727.png)

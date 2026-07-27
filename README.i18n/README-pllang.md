@@ -127,6 +127,9 @@ Aby uzyskać pełne informacje techniczne, w tym wszystkie moduły i skrypty, od
 
 👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
+### Wyróżnione funkcje
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pllang.md) — Dwupanelowe wyszukiwanie reguł `fzf`, podgląd kontekstu na żywo, natychmiastowe wykonywanie poleceń poprzez `Enter`/`Ctrl+R` i integracja z edytorem poprzez `Ctrl+E` (zintegrowane z globalnym skrótem klawiszowym `Super+S` i poleceniami wyszukiwania głosowego).
+
 
 ### Stan kompilacji
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
@@ -271,7 +274,7 @@ Modułowość systemu pozwala na solidną rozbudowę poprzez katalog plugins/.
 
 Silnik przetwarzający ściśle przestrzega **hierarchicznego łańcucha priorytetów**:
 
-1. **Kolejność ładowania modułów (wysoki priorytet):** Reguły załadowane z podstawowych pakietów językowych (de-DE, en-US) mają pierwszeństwo przed regułami załadowanymi z katalogu plugins/ (które ładują się jako ostatnie w kolejności alfabetycznej).
+1. **Kolejność ładowania modułów (wysoki priorytet):** Reguły ładowane z podstawowych pakietów językowych (de-DE, en-US) mają pierwszeństwo przed regułami ładowanymi z katalogu plugins/ (które ładują się jako ostatnie w kolejności alfabetycznej).
 XSPACEbreakX
 2. **Kolejność w pliku (mikropriorytet):** W dowolnym pliku mapy (FUZZY_MAP_pre.py) reguły są przetwarzane ściśle według **numeru wiersza** (od góry do dołu).
 XSPACEbreakX
@@ -407,7 +410,7 @@ XSPACEbreakX
 │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
 ├┬ **Ogólnosystemowa integracja dyktowania/**XSPACEbreakX
 │├ Integracja Vosk-System-Słuchacz 🐧 🍏 🪟XSPACEbreakX
-│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧XSPACEbreakX
+│├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficzne dla Linuksa) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey nasłuchuje rozpoznanego tekstu i wpisuje go w całym systemie) 🪟XSPACEbreakX
 └─ **Automatyka CI/CD/**XSPACEbreakX
 └─ Rozszerzone przepływy pracy GitHub (instalacja, testowanie, wdrażanie dokumentów) 🐧 🍏 🪟 *(Działa w akcjach GitHub)*XSPACEbreakX

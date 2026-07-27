@@ -14,3 +14,5 @@
 - **Windows PowerShell (`search_rules.ps1`)：** 提供轻量级终端搜索功能的配套工具。
 
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_20260727_155546.png)
+
+![Interactive Rule Search Console](.././assets/interactive_rule_search_wie_wetter_heute20260727.png)

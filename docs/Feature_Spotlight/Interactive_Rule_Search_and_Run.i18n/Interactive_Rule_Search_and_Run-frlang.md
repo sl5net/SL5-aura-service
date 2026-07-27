@@ -14,3 +14,5 @@ Ce projecteur met en lumière le système interactif de recherche et d'exécutio
 - **Windows PowerShell (`search_rules.ps1`) :** Outil compagnon offrant des fonctionnalités de recherche de terminal légères.
 
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_20260727_155546.png)
+
+![Interactive Rule Search Console](.././assets/interactive_rule_search_wie_wetter_heute20260727.png)

@@ -14,3 +14,5 @@ In diesem Spotlight wird das interaktive Regelsuch- und Ausführungssystem hervo
 - **Windows PowerShell (`search_rules.ps1`):** Begleittool mit einfachen Terminalsuchfunktionen.
 
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_20260727_155546.png)
+
+![Interactive Rule Search Console](.././assets/interactive_rule_search_wie_wetter_heute20260727.png)
