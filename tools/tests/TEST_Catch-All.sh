@@ -7,7 +7,7 @@ set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
 SETTINGS_FILE_TRAP="config/settings_local.py"
-MAP_FILE_TRAP="config/maps/plugins/TEST_FILE4REPLACEMENT/de-DE/FUZZY_MAP_pre.py"
+MAP_FILE_TRAP="config/maps/plugins/TEST/FILE4REPLACEMENT/de-DE/FUZZY_MAP_pre.py"
 cleanup() {
     git checkout -- "$MAP_FILE_TRAP" 2>/dev/null || true
     sed -i 's/^DEV_MODE_all_processing = 1/DEV_MODE_all_processing = 0/' "$SETTINGS_FILE_TRAP" 2>/dev/null || true
@@ -19,7 +19,7 @@ echo "--- Enabling DEV_MODE_all_processing ---"
 
 
 SETTINGS_FILE="config/settings_local.py"
-MAP_FILE="config/maps/plugins/TEST_FILE4REPLACEMENT/de-DE/FUZZY_MAP_pre.py"
+MAP_FILE="config/maps/plugins/TEST/FILE4REPLACEMENT/de-DE/FUZZY_MAP_pre.py"
 
 sed -i 's/^DEV_MODE_all_processing = 0/DEV_MODE_all_processing = 1/' "$SETTINGS_FILE"
 

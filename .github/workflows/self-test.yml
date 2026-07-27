@@ -122,6 +122,14 @@ jobs:
         run: |
           ./.venv/bin/python3 -m scripts.py.func.checks.catch_all_training_e2e_test
 
+      - name: Run file4replacement E2E Test
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          CI: "true"
+          DISPLAY: :99
+        run: |
+          ./.venv/bin/python3 -m scripts.py.func.checks.file4replacement_e2e_test
+
       - name: Display and Send Energy Results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:

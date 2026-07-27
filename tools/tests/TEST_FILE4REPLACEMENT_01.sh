@@ -11,7 +11,7 @@ echo "--- Creating on-the-fly test file: $OUTSIDE_TEST_FILE ---"
 echo "Blumenkohl sagt hallo" > "$OUTSIDE_TEST_FILE"
 
 SETTINGS_FILE="config/settings_local.py"
-MAP_FILE="config/maps/plugins/TEST_FILE4REPLACEMENT/de-DE/FUZZY_MAP_pre.py"
+MAP_FILE="config/maps/plugins/TEST/FILE4REPLACEMENT/de-DE/FUZZY_MAP_pre.py"
 
 echo "--- Enabling DEV_MODE_all_processing ---"
 sed -i 's/^DEV_MODE_all_processing = 0/DEV_MODE_all_processing = 1/' "$SETTINGS_FILE"
