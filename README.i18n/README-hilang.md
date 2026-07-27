@@ -11,7 +11,7 @@
 |---|---|---|
 
 
-| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-hilang.md#the-oma-modus-beginner-shortcut) : बस एक शब्द लिखें, ऑरा बाकी काम कर देती है | कोअन्स के साथ सीखें - एक समय में एक अवधारणा | पूर्ण पायथन स्क्रिप्टिंग, प्लगइन्स, एपीआई कॉल |
+| [grandma-mode](../docs/GettingStarted-hilang.md#the-oma-modus-beginner-shortcut) : बस एक शब्द लिखें, ऑरा बाकी काम कर देती है | कोअन्स के साथ सीखें - एक समय में एक अवधारणा | पूर्ण पायथन स्क्रिप्टिंग, प्लगइन्स, एपीआई कॉल |
 | 🗄️ राज्य प्रबंधन | ट्रिनो + एयरफ्लो ऑर्केस्ट्रेशन, एफजेडएफ, कॉपीक्यू, वॉयस/टर्मिनल कमांड, ब्राउज़र यूआई |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -24,7 +24,7 @@
 1. इस रिपॉजिटरी को डाउनलोड या क्लोन करें
 2. अपने ओएस के लिए सेटअप स्क्रिप्ट चलाएँ ('सेटअप/' फ़ोल्डर देखें):
 - लिनक्स (आर्क/मंज़रो): `बैश सेटअप/मंज़रो_आर्क_सेटअप.श`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-hilang.md) पढ़ें
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-hilang.md) पढ़ें
 - लिनक्स (उबंटू/डेबियन): `बैश सेटअप/ubuntu_setup.sh`
 - लिनक्स (ओपनएसयूएसई): `बैश सेटअप/suse_setup.sh`
 - लिनक्स (निक्सओएस): `निक्स-शेल सेटअप/शेल.निक्स` फिर `बैश सेटअप/निक्सोस_सेटअप.श`
@@ -32,7 +32,7 @@
 - macOS: `बैश सेटअप/macos_setup.sh`
 - विंडोज़: `setup/windows11_setup_with_ahk_copyq.bat`
 3. आभा प्रारंभ करें: `./scripts/restart_venv_and_run-server.sh`
-4. अपनी हॉटकी दबाएं और बोलें - **[full guide →](../docs/GettingStarted.i18n/GettingStarted-hilang.md)**
+4. अपनी हॉटकी दबाएं और बोलें - **[full guide →](../docs/GettingStarted-hilang.md)**
 
 
 **⚠️ सिस्टम आवश्यकताएँ और अनुकूलता**
@@ -45,7 +45,7 @@
 Glibc 2.43 अनुकूलता के कारण mimalloc (`sudo pacman -S mimalloc`) की आवश्यकता है।
 * **लिनक्स (निक्सओएस):** 🧪 प्रायोगिक - समुदाय-योगदान सेटअप, अभी तक परीक्षण नहीं किया गया है।
 यदि आप इसे आज़माते हैं, तो कृपया अपने निष्कर्षों के साथ एक मुद्दा या पीआर खोलें!  Xस्पेसब्रेकX
-* **लिनक्स (मंजारो):** नया/प्रयोगात्मक: एक सिस्टम-वाइड हॉटकी एक fzf-जैसा, कीबोर्ड-संचालित इंटरफ़ेस खोलता है ताकि आप डेस्कटॉप पर कहीं से भी ऑरा कमांड चला सकें (सक्रिय विंडो से पूरी तरह से अलग)। यह हॉटकी-चालित लॉन्चर वर्तमान में लिनक्स (मंज़रो) पर कार्यान्वित और परीक्षण किया गया है; अन्य वितरण काम कर सकते हैं लेकिन सेटअप की आवश्यकता है। 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-hilang.md)    में देखें
+* **लिनक्स (मंजारो):** नया/प्रयोगात्मक: एक सिस्टम-वाइड हॉटकी एक fzf-जैसा, कीबोर्ड-संचालित इंटरफ़ेस खोलता है ताकि आप डेस्कटॉप पर कहीं से भी ऑरा कमांड चला सकें (सक्रिय विंडो से पूरी तरह से अलग)। यह हॉटकी-चालित लॉन्चर वर्तमान में लिनक्स (मंज़रो) पर कार्यान्वित और परीक्षण किया गया है; अन्य वितरण काम कर सकते हैं लेकिन सेटअप की आवश्यकता है। 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-hilang.md)    में देखें
 
 
 Xस्पेसब्रेकX
@@ -65,7 +65,7 @@ Xस्पेसब्रेकX
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **टिप:** बेहतर टर्मिनल अनुभव के लिए, [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-hilang.md) देखें।
+> **टिप:** बेहतर टर्मिनल अनुभव के लिए, [Zsh Integration](../docs/linux/zsh-integration-hilang.md) देखें।
 
 ### 🎥 वीडियो ट्यूटोरियल
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -127,6 +127,8 @@ SL5-Aura **OculiX** और **SiculiX IDE** के लिए प्रथम श�
 
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
+### फ़ीचर स्पॉटलाइट
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-hilang.md) - दोहरे फलक `fzf` नियम खोज, लाइव संदर्भ पूर्वावलोकन, `Enter`/`Ctrl+R` के माध्यम से त्वरित कमांड निष्पादन, और `Ctrl+E` के माध्यम से संपादक एकीकरण। वैश्विक हॉटकी (`सुपर+एस`) और वॉयस कमांड के माध्यम से पूर्व-कॉन्फ़िगर किए गए कई समर्पित खोज-वातावरण द्वारा समर्थित।
 
 ### स्थिति बनाएं
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ)
@@ -344,7 +346,7 @@ Xस्पेसब्रेकX
 ││ * **वर्कफ़्लो:** पासवर्ड से सुरक्षित ज़िप संग्रह लोड करता है। Xस्पेसब्रेकX
 │├ **पाठ प्रसंस्करण और सुधार/** भाषा के आधार पर समूहीकृत (जैसे `डी-डीई`, `एन-यूएस`, ...)   
 │├ 1. `normalize_punctuation.py` (प्रतिलेखन के बाद विराम चिह्न को मानकीकृत करता है) 🐧 🍏 🪟  
-│├ 2. **इंटेलिजेंट प्री-करेक्शन** ('फ़ज़ीमैप प्री' - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-hilang.md)) 🐧 🍏 🪟  
+│├ 2. **इंटेलिजेंट प्री-करेक्शन** ('फ़ज़ीमैप प्री' - [The Primary Command Layer](../docs/CreatingNewPluginModules-hilang.md)) 🐧 🍏 🪟  
 ││ * **डायनेमिक स्क्रिप्ट निष्पादन:** नियम एपीआई कॉल, फ़ाइल I/O जैसी उन्नत कार्रवाइयां करने या डायनेमिक प्रतिक्रियाएं उत्पन्न करने के लिए कस्टम पायथन स्क्रिप्ट (`on_match_exec`) को ट्रिगर कर सकते हैं।  
 ││ * **कैस्केडिंग निष्पादन:** नियमों को क्रमिक रूप से संसाधित किया जाता है और उनके प्रभाव **संचयी** होते हैं। बाद के नियम पहले के नियमों द्वारा संशोधित पाठ पर लागू होते हैं।  
 ││ * **सर्वोच्च प्राथमिकता स्टॉप मानदंड:** यदि कोई नियम **पूर्ण मिलान** (^...$) प्राप्त करता है, तो उस टोकन के लिए संपूर्ण प्रसंस्करण पाइपलाइन तुरंत बंद हो जाती है। विश्वसनीय वॉयस कमांड को लागू करने के लिए यह तंत्र महत्वपूर्ण है।  
@@ -356,7 +358,7 @@ Xस्पेसब्रेकX
 ││ * **स्थिति:** स्थानीय एलएलएम एकीकरण।
 │└ 5. **इंटेलिजेंट पोस्ट-करेक्शन** (`फ़ज़ीमैप`)**– पोस्ट-एलटी रिफाइनमेंट** 🐧 🍏 🪟  
 ││ * एलटी-विशिष्ट आउटपुट को सही करने के लिए लैंग्वेजटूल के बाद लागू किया गया। प्री-करेक्शन लेयर के समान सख्त कैस्केडिंग प्राथमिकता तर्क का पालन करता है।  
-││ * **डायनेमिक स्क्रिप्ट निष्पादन:** नियम एपीआई कॉल, फ़ाइल I/O जैसी उन्नत क्रियाएं करने या डायनेमिक प्रतिक्रियाएं उत्पन्न करने के लिए कस्टम पायथन स्क्रिप्ट ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-hilang.md)) को ट्रिगर कर सकते हैं।  
+││ * **डायनेमिक स्क्रिप्ट निष्पादन:** नियम एपीआई कॉल, फ़ाइल I/O जैसी उन्नत क्रियाएं करने या गतिशील प्रतिक्रियाएं उत्पन्न करने के लिए कस्टम पायथन स्क्रिप्ट ([on_match_exec](../docs/advanced-scripting-hilang.md)) को ट्रिगर कर सकते हैं।  
 ││ * **फ़ज़ी फ़ॉलबैक:** **फ़ज़ी समानता जांच** (एक सीमा द्वारा नियंत्रित, उदाहरण के लिए, 85%) सबसे कम प्राथमिकता वाली त्रुटि-सुधार परत के रूप में कार्य करती है। इसे केवल तभी निष्पादित किया जाता है जब संपूर्ण पूर्ववर्ती नियतात्मक/कैस्केडिंग नियम रन मिलान ढूंढने में विफल रहता है (current_rule_matched गलत है), जब भी संभव हो धीमी अस्पष्ट जांच से बचकर प्रदर्शन को अनुकूलित किया जाता है।  
 ├┬ **मॉडल प्रबंधन/**   
 │├─ `prioritize_model.py` (उपयोग के आधार पर मॉडल लोडिंग/अनलोडिंग को अनुकूलित करता है) 🐧 🍏 🪟  
@@ -396,7 +398,7 @@ Xस्पेसब्रेकX
 कृपया इंस्टॉल करते समय लॉग-फ़ाइलों से संबद्ध करने के लिए चेकबॉक्स को चेक करें।  Xस्पेसब्रेकX
 https://translate.google.com/translate?hl=de&sl=en&tl=hi&u=https://glogg.bonnefon.org/     
 Xस्पेसब्रेकX
-*टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, सीएलआई टूल के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 टूल्स/मैप_टैगर.py` चलाएं। विवरण के लिए [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-hilang.md) देखें।*
+*टिप: अपने रेगेक्स पैटर्न को परिभाषित करने के बाद, सीएलआई टूल के लिए स्वचालित रूप से खोज योग्य उदाहरण उत्पन्न करने के लिए `python3 टूल्स/मैप_टैगर.py` चलाएं। विवरण के लिए [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-hilang.md) देखें।*
 
 फिर शायद डबल-क्लिक करें
 `लॉग/ऑरा_इंजन.लॉग`
