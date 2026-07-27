@@ -114,6 +114,14 @@ jobs:
           task: get-measurement
           label: "Aura Core Logic (${{ env.TESTS_PASSED }} Tests, avg ${{ env.TIME_PER_TEST }}s/test)"
 
+      - name: Run Catch-All Training E2E Test
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          CI: "true"
+          DISPLAY: :99
+        run: |
+          ./.venv/bin/python3 -m scripts.py.func.checks.catch_all_training_e2e_test
+
       - name: Display and Send Energy Results
         uses: green-coding-solutions/eco-ci-energy-estimation@v4
         with:

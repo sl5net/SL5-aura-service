@@ -150,7 +150,7 @@ def get_suggestions_from_lt(word: str, language: str) -> List[str]:
         return []
 
 def get_english_synonyms(word: str) -> List[str]:
-    synonyms = {l.name().replace('_', ' ') for s in wordnet.synsets(word) for l in s.lemmas()} # noqa: E741
+    synonyms = {le.name().replace('_', ' ') for sy in wordnet.synsets(word) for le in sy.lemmas()} # noqa: E741
     synonyms.discard(word.lower())
     return list(synonyms)[:NUM_SUGGESTIONS]
 

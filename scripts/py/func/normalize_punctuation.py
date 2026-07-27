@@ -1,13 +1,8 @@
 # script/py/func/normalize_punctuation.py
-
 import re
 from typing import Tuple
-
 from .log_memory_details import log4DEV
-
 from scripts.py.func.config.dynamic_settings import settings # noqa: F401
-
-
 
 def normalize_punctuation(text: str, punctuation_map: dict, logger2) -> Tuple[str, bool]:
     global settings # noqa: F824
