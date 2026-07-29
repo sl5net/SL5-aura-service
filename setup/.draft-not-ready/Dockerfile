@@ -1,4 +1,4 @@
-# Use Ubuntu 22.04 LTS as stable base
+# Use Ubuntu LTS as stable base
 FROM ubuntu:22.04
 
 # Prevent interactive prompts during package installation
