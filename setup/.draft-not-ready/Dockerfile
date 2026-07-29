@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     sudo \
     scdoc \
     libxkbcommon-dev \
+    software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 
 # Build dotool from source
