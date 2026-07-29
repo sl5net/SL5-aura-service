@@ -4,29 +4,25 @@ FROM ubuntu:22.04
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Java, Xvfb, Xclip, Go, Python, and build dependencies
+# Install absolute minimum system dependencies for Aura type_watcher and dotool
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     python3-venv \
     git \
     inotify-tools \
-    xdotool \
-    xvfb \
-    xclip \
-    openjdk-17-jre-headless \
     build-essential \
     golang-go \
     sudo \
-    curl \
-    wget \
+    scdoc \
+    libxkbcommon-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Build dotool from source
-RUN git clone https://git.sr.ht/~bignup/dotool /tmp/dotool && \
+RUN git clone https://git.sr.ht/~geb/dotool /tmp/dotool && \
     cd /tmp/dotool && \
-    make && \
-    make install && \
+    ./build.sh && \
+    ./build.sh install && \
     rm -rf /tmp/dotool
 
 # Create input group and non-root runner user with sudo rights
