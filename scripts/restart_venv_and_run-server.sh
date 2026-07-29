@@ -56,16 +56,18 @@ else
     echo "Activating virtual environment at '$PROJECT_ROOT/.venv'..."
     cd $PROJECT_ROOT
 
-    # Sometimes it can help for performance (original:'manchmal kann es helfen aus performance Gründen').
-    # to loose all cash files (original:'wenn alle cash files entgernt werden').
-    find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+#    find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+
+    # https://stackoverflow.com/ai-assist/chat/2ca510cd-662e-444c-8a95-73b3826771df
+    find . -type d -name "__pycache__" -prune -exec rm -rf {} +
+    find . -type f \( -name "*.pyc" -o -name "*.pyo" \) -delete
 
     python3 -m venv .venv
     source .venv/bin/activate
     end_aura_enginePY="$PROJECT_ROOT/scripts/py/end_aura_engine.py"
     echo end_aura_enginePY=$end_aura_enginePY
 #    python3 "$end_aura_enginePY" &
-    "$PROJECT_ROOT/.venv/bin/python3" "$end_aura_enginePY" &
+    "$PROJECT_ROOT/.venv/bin/python3" "$end_aura_enginePY"
 
 
 

@@ -18,7 +18,7 @@ Please wait for two messages:
 2. The Git changes since the last release
 
 Do not answer the following questions until you have received both:
-1. Should a new release of sl5net Aura be created? (yes/no)
+1. Should a new release of sl5net Aura be created? (which title? / no release?)
 2. Which version number? (major/minor/patch according to SemVer)
 3. Justification in 2-3 sentences
 

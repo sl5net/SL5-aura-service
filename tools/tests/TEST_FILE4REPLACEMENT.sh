@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+#### /usr/bin/env bash
+
+deprecated
+
+we use now python3 for this 29.7.'26 19:28 Wed
+
 
 # tools/tests/TEST_FILE4REPLACEMENT.sh:3
 
