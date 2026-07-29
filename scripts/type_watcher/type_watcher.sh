@@ -289,11 +289,13 @@ if [ -e "$LOCKFILE" ]; then
         msg="Watcher already runs (PID: $pid). Exiting."
         echo "$msg"
         log_message "$msg"
+        cleanup
         exit 0
     fi
     rm -f "$LOCKFILE"
 fi
 echo $$ > "$LOCKFILE"
+cleanup
 trap 'rm -f "$LOCKFILE"' EXIT
 
 # --- Wait for directory ---
@@ -373,6 +375,7 @@ PY
         if [[ "$TYPE_WATCHER_ENABLED" == "False" ]]; then
             echo "TYPE_WATCHER_ENABLED=False — exiting."
             sleep 5
+            cleanup
             exit 0
         fi
 
@@ -550,6 +553,7 @@ PY
 
 else
     echo "ERROR: Unsupported operating system '$OS_TYPE'. Exiting."
+    cleanup
     exit 1
 fi
 
