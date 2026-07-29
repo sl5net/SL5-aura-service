@@ -2,7 +2,7 @@ name: Self-Test (Container Aura & Input)
 # .github/workflows/self-test-container.yml
 on:
   push:
-    branches: [ master ]
+    branches: [ master, ci/container-dotool-test ]
   pull_request:
     branches: [ master ]
     paths-ignore:
