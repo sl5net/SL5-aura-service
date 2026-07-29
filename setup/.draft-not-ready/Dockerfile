@@ -39,11 +39,9 @@ RUN mkdir -p /tmp/sl5_aura && \
 
 WORKDIR /app
 
-WORKDIR /app
-
 # Copy the repository files and set permissions
 COPY --chown=runner:runner . /app
-RUN chown runner:runner /app
+RUN rm -rf /app/.venv && chown -R runner:runner /app
 
 USER runner
 
