@@ -45,7 +45,10 @@ RUN rm -rf /app/.venv && chown -R runner:runner /app
 
 USER runner
 
-# Ensure local example config is copied and run official Ubuntu setup
+# Run diagnostics to verify user identity, directory ownership, and write permissions
+RUN whoami && ls -ld /app && mkdir -p /app/test_write && rm -rf /app/test_write
+
+# Initialize configuration and Python virtual environment
 RUN cp -f config/settings_local.py_Example.txt config/settings_local.py || true && \
     if [ -f ./setup/ubuntu_setup.sh ]; then bash ./setup/ubuntu_setup.sh; fi
 
