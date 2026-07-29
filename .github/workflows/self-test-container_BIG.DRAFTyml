@@ -1,0 +1,133 @@
+name: Self-Test (Container Aura & Input)
+# .github/workflows/self-test-container.yml
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '.github/workflows/**'
+      - '**.md'
+      - '**.yml'
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  pull-requests: write
+  contents: read
+jobs:
+  run-self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Collect Workflow Telemetry
+        uses: catchpoint/workflow-telemetry-action@v2
+
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./tools/
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
+
+      - name: Load uinput kernel module on Host
+        run: |
+          sudo modprobe uinput
+          sudo chmod 666 /dev/uinput
+
+      - name: Build Aura Test Docker Image
+        run: |
+          docker build -t aura-tester -f setup/.draft-not-ready/Dockerfile .
+
+      - name: Start Aura Test Container
+        run: |
+          docker run -d --name aura-container \
+            --privileged \
+            --device /dev/uinput \
+            -v ${{ github.workspace }}:/app \
+            -e DISPLAY=:99 \
+            aura-tester \
+            tail -f /dev/null
+
+      - name: Initialize Eco-CI
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: start-measurement
+
+      - name: Start LanguageTool Server in Container
+        run: |
+          docker exec -d aura-container bash -c 'java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &'
+          sleep 10
+
+      - name: Run Self-Tester with Final Guard in Container
+        env:
+          CI: "true"
+        run: |
+          # Start Xvfb inside the container and execute the self_tester script
+          docker exec aura-container bash -c '
+            Xvfb :99 -screen 0 1024x768x24 &
+            PYTHONPATH=/app ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results.log
+          '
+
+          # Copy results log to host for parsing passed tests stats
+          docker cp aura-container:/app/test_results.log ./test_results.log
+
+          START_TIME=$(date +%s.%N)
+          END_TIME=$(date +%s.%N)
+          DURATION=$(awk "BEGIN {print $END_TIME - $START_TIME}")
+
+          TESTS_PASSED=$(grep -oP 'Passed: all \K[0-9]+' test_results.log || echo "unknown")
+
+          if [ "$TESTS_PASSED" != "0" ] && [ "$TESTS_PASSED" != "" ]; then
+            TIME_PER_TEST=$(awk "BEGIN {printf \"%.2f\", $DURATION / $TESTS_PASSED}")
+          else
+            TIME_PER_TEST="0"
+          fi
+
+          echo "TESTS_PASSED=$TESTS_PASSED" >> $GITHUB_ENV
+          echo "TIME_PER_TEST=$TIME_PER_TEST" >> $GITHUB_ENV
+
+          if grep -q "| 0 not passed" test_results.log; then
+            echo "✅ Final Guard: Success summary found. 0 tests failed."
+          else
+            echo "❌ FINAL GUARD FAILURE: Success summary '| 0 failed' not found!"
+            exit 1
+          fi
+
+      - name: Measure Core Logic Tests
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: get-measurement
+          label: "Aura Container Logic (${{ env.TESTS_PASSED }} Tests, avg ${{ env.TIME_PER_TEST }}s/test)"
+
+      - name: Run Catch-All Training E2E Test in Container
+        run: |
+          docker exec aura-container bash -c 'PYTHONPATH=/app ./.venv/bin/python3 -m scripts.py.func.checks.catch_all_training_e2e_test'
+
+      - name: Run file4replacement E2E Test in Container
+        run: |
+          docker exec aura-container bash -c 'PYTHONPATH=/app ./.venv/bin/python3 -m scripts.py.func.checks.file4replacement_e2e_test'
+
+      - name: Display and Send Energy Results
+        uses: green-coding-solutions/eco-ci-energy-estimation@v4
+        with:
+          task: display-results
+          pr-comment: true
+          send-data: true
+          calculate-co2: false
+
+      - name: Package Assets as Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sl5-assets-pack-ubuntu-tester
+          path: |
+            ./LanguageTool-6.6
+            ./models/
