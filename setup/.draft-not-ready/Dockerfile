@@ -32,7 +32,7 @@ RUN groupadd -f input && \
     usermod -aG input runner && \
     echo "runner ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Prepare Bootstrap Pointer (The Master Key) for Aura
+# Prepare Bootstrap Pointer (The Master Key)
 RUN mkdir -p /tmp/sl5_aura && \
     chmod -R 777 /tmp/sl5_aura && \
     echo "/app" > /tmp/sl5_aura/sl5net_aura_project_root
@@ -45,8 +45,8 @@ RUN rm -rf /app/.venv && chown -R runner:runner /app
 
 USER runner
 
-# Cache-breaker to force diagnostic execution and show output in build logs
-RUN echo "Force build update 2" && whoami && ls -la /app
+# Run diagnostics to verify user identity, directory ownership, and write permissions
+RUN echo "Force build update 3" && whoami && ls -la /app
 
 # Test if runner can manually create a python venv here in a clean directory
 RUN python3 -m venv /app/.venv_test_manual && rm -rf /app/.venv_test_manual
@@ -55,5 +55,5 @@ RUN python3 -m venv /app/.venv_test_manual && rm -rf /app/.venv_test_manual
 RUN cp -f config/settings_local.py_Example.txt config/settings_local.py || true && \
     if [ -f ./setup/ubuntu_setup.sh ]; then bash ./setup/ubuntu_setup.sh; fi
 
-ENV DISPLAY=:99
+# Default to bash shell
 CMD ["bash"]
