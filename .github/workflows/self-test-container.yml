@@ -1,0 +1,78 @@
+name: Self-Test (Container Aura & Input)
+# .github/workflows/self-test-container.yml
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '.github/workflows/**'
+      - '**.md'
+      - '**.yml'
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  pull-requests: write
+  contents: read
+jobs:
+  run-input-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Load uinput kernel module on Host
+        run: |
+          sudo modprobe uinput
+          sudo chmod 666 /dev/uinput
+
+      - name: Build Aura Test Docker Image
+        run: |
+          docker build -t aura-tester -f setup/.draft-not-ready/Dockerfile .
+
+      - name: Start Aura Test Container
+        run: |
+          docker run -d --name aura-container \
+            --privileged \
+            --device /dev/uinput \
+            -v ${{ github.workspace }}:/app \
+            aura-tester \
+            tail -f /dev/null
+
+      - name: Run E2E Input Simulation Test
+        run: |
+          # Execute the typing simulation inside the running container
+          docker exec aura-container bash -c '
+            # Prepare configuration override to force dotool input method
+            mkdir -p /tmp/sl5_aura/settings_py_backup
+            echo "dotool" > /tmp/sl5_aura/settings_py_backup/x11_input_method_OVERRIDE.txt
+
+            # Start type_watcher in the background
+            bash scripts/type_watcher/type_watcher.sh &
+            WATCHER_PID=$!
+            sleep 3
+
+            # Verify that the watcher started successfully and did not crash
+            if ! kill -0 $WATCHER_PID 2>/dev/null; then
+              echo "❌ ERROR: Watcher failed to start!"
+              exit 1
+            fi
+
+            # Simulate incoming long text file (the weather forecast)
+            mkdir -p /tmp/sl5_aura/tts_output
+            echo "Aktuell in reutlingen sind es 31 Grad, gefuehlt wie 30 Grad. Die Vorhersage meldet: Sonnig." > /tmp/sl5_aura/tts_output/tts_output_99999.txt
+
+            # Give it enough time to fully process and type the text
+            sleep 6
+
+            # Verify that the watcher is still running (proves it did not exit with status 124/set -e)
+            if ! kill -0 $WATCHER_PID 2>/dev/null; then
+              echo "❌ ERROR: Watcher crashed while or after typing the long text!"
+              exit 1
+            fi
+
+            echo "✅ SUCCESS: Watcher successfully completed typing without crashes!"
+            kill $WATCHER_PID
+          '
