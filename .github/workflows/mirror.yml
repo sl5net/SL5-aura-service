@@ -2,8 +2,7 @@ name: Mirror to Codeberg
 
 on:
   push:
-    branches:
-      - '**'
+    branches: [ master ]
   delete:
   workflow_dispatch:
 
