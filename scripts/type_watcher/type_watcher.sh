@@ -199,7 +199,7 @@ do_type() {
             sleep 0.05
         } | dotool
     else
-        LC_ALL=C.UTF-8 timeout 1 xdotool type --clearmodifiers --delay 12 "$text"
+        LC_ALL=C.UTF-8 timeout 10 xdotool type --clearmodifiers --delay 12 "$text"
     fi
 }
 
