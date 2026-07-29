@@ -1,7 +1,6 @@
 #!/bin/bash
 # scripts/type_watcher/type_watcher.sh
 export DOTOOL_DELAY=0
-DOTOOL_PID=$!
 set -euo pipefail
 
 # --- Optional debug trace: set TYPE_WATCHER_DEBUG=1 to enable ---
@@ -23,12 +22,10 @@ else
 fi
 PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
-
 DIR_TO_WATCH="/tmp/sl5_aura/tts_output"
 LOCKFILE="/tmp/sl5_aura/type_watcher.lock"
-
-
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
 LOG_DIR="$PROJECT_ROOT/log"
 LOGFILE="$LOG_DIR/type_watcher.log"
 
@@ -149,10 +146,19 @@ cleanup() {
     fi
 
 }
-
-
+trap_exit_handler() {
+    cleanup
+    if [ -f "${LOCKFILE:-}" ]; then
+        local file_pid
+        file_pid=$(cat "$LOCKFILE" 2>/dev/null || echo "")
+        if [ "$file_pid" = "$$" ]; then
+            rm -f "$LOCKFILE"
+        fi
+    fi
+}
 cleanup
-trap cleanup EXIT INT TERM
+trap trap_exit_handler EXIT
+trap cleanup INT TERM
 
 do_type() {
     local text="$1"
@@ -296,7 +302,6 @@ if [ -e "$LOCKFILE" ]; then
 fi
 echo $$ > "$LOCKFILE"
 cleanup
-trap 'rm -f "$LOCKFILE"' EXIT
 
 # --- Wait for directory ---
 while [ ! -d "$DIR_TO_WATCH" ]; do
@@ -375,7 +380,6 @@ PY
         if [[ "$TYPE_WATCHER_ENABLED" == "False" ]]; then
             echo "TYPE_WATCHER_ENABLED=False — exiting."
             sleep 5
-            cleanup
             exit 0
         fi
 
@@ -553,7 +557,6 @@ PY
 
 else
     echo "ERROR: Unsupported operating system '$OS_TYPE'. Exiting."
-    cleanup
     exit 1
 fi
 
