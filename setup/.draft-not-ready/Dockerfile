@@ -45,8 +45,11 @@ RUN rm -rf /app/.venv && chown -R runner:runner /app
 
 USER runner
 
-# Run diagnostics to verify user identity, directory ownership, and write permissions
-RUN whoami && ls -ld /app && mkdir -p /app/test_write && rm -rf /app/test_write
+# Cache-breaker to force diagnostic execution and show output in build logs
+RUN echo "Force build update 2" && whoami && ls -la /app
+
+# Test if runner can manually create a python venv here in a clean directory
+RUN python3 -m venv /app/.venv_test_manual && rm -rf /app/.venv_test_manual
 
 # Initialize configuration and Python virtual environment
 RUN cp -f config/settings_local.py_Example.txt config/settings_local.py || true && \
