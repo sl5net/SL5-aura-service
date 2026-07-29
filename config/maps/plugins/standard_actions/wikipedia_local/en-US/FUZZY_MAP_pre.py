@@ -22,9 +22,5 @@ FUZZY_MAP_pre = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - first is read first imported, lower rules maybe not get read.
 
-
-    # Regel für die Wetterabfrage
-
-
 ]
 

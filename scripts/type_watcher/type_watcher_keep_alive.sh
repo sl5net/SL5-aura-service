@@ -76,6 +76,7 @@ while true; do
         log_message "scripts/type_watcher/type_watcher.sh"
         echo log_message "WATCHDOG: 'type_watcher.sh' is not running. Starting it now "
         echo scripts/type_watcher/type_watcher.sh
+        export TYPE_WATCHER_DEBUG=1
         $PROJECT_ROOT/scripts/type_watcher/type_watcher.sh
     fi
 

@@ -4,6 +4,14 @@ export DOTOOL_DELAY=0
 DOTOOL_PID=$!
 set -euo pipefail
 
+# --- Optional debug trace: set TYPE_WATCHER_DEBUG=1 to enable ---
+if [[ "${TYPE_WATCHER_DEBUG:-0}" == "1" ]]; then
+    mkdir -p /tmp/sl5_aura 2>/dev/null
+    exec 2>>/tmp/sl5_aura/type_watcher_debug.log
+    echo "=== $(date '+%Y-%m-%d %H:%M:%S') NEW RUN (PID $$) ===" >&2
+    set -x
+fi
+
 # typedelay direkt nach Start setzen
 sleep 0.1  # kurz warten bis dotool bereit ist
 echo "typedelay 0" > /tmp/dotool_fifo
@@ -144,7 +152,7 @@ cleanup() {
 
 
 cleanup
-
+trap cleanup EXIT INT TERM
 
 do_type() {
     local text="$1"
@@ -372,7 +380,7 @@ PY
 
 
 
-         inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | grep -q "tts_output_"
+         inotifywait -q -e create,close_write "$DIR_TO_WATCH" --format '%f' | { grep -q "tts_output_" || true; }
 
 #        FILE=$(inotifywait -q -e close_write "$DIR_TO_WATCH" --format '%w%f')
 #        [[ "$FILE" == *tts_output_* ]] || continue
@@ -545,5 +553,4 @@ else
     exit 1
 fi
 
-trap cleanup EXIT INT TERM
 

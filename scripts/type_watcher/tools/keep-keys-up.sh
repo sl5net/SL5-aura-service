@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
-# tools/keep-keys-up.sh
+# scripts/type_watcher/tools/keep-keys-up.sh
 
 # --- Singleton via flock ---
+LOG_DIR_KKU="$(dirname "$0")/../../../log"
+LOGFILE_KKU="$LOG_DIR_KKU/keep-keys-up.log"
+
+# Timeout selection (5s): longest known lock-holding path is: in the current version: do_setup; do_cleanup; sleep 1.5; do_setup; do_cleanup)—involving two `sleep 1.5` calls plus processing time, realistically under 4s. A 5s timeout provides a buffer without unnecessarily delaying the calling `type_watcher.sh` main loop (which launches `--cleanup &` as a background process—line 511—and thus does not block the main loop).
+
 exec 9>/tmp/keep-keys-up.lock
-flock -n 9 || { exit 0; } # Beenden, wenn bereits eine Instanz läuft
+if ! flock -w 5 9; then
+    mkdir -p "$LOG_DIR_KKU" 2>/dev/null
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - SKIPPED: lock timeout after 5s (args: $*)" >> "$LOGFILE_KKU" 2>/dev/null
+    exit 0
+fi
 
 # --- DISPLAY sicherstellen ---
 : "${DISPLAY:=:0}"
