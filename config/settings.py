@@ -89,7 +89,7 @@ LANGUAGE_PREFIXES = {
 
 # Format: { "Regex-Pattern": ( "Signatur-Text", Cooldown_in_Sekunden ) }
 SIGNATURE_MAPPING = {
-    r"0 a\.d\.": ("SL5net >> Aura", 1),        # 14400 = 4 h autocivp/moddata/autocivP_IconNames_README.txt
+    r"0 a\.d\.": ("SL5net >> Aura", 14401),        # 14401 = 4 h + 1 sec :D autocivp/moddata/autocivP_IconNames_README.txt
     r"Matrix|Discord": ("🗣SL5net ⟫ Aura", 3600),   # 1 Stunde für Chat
     r"Outlook|Mail": ("-- Sent via Aura --", 86400), # 1 Tag für E-Mails
     r"|gmail": ("", 86400), # 1 Tag für E-Mails
