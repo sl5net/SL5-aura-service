@@ -7,6 +7,8 @@ CONFIG_DIR = p(__file__).parent
 from pathlib import Path as p;import os as o # noqa: E702
 with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
+farm = r'f\w*a\w*m'
+
 FUZZY_MAP_pre = [
 
     # === General Terms (Case-Insensitive) ===
@@ -47,7 +49,8 @@ FUZZY_MAP_pre = [
     # build farm
 
     # EXAMPLE: baue farm
-    ('f', r'^\s*(baue\s*farm|bau\s*farm|farm\s*bauen|build\s*farm|farm)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # ('f', r'^\s*(baue\s*farm|bau\s*farm|farm\s*bauen|build\s*farm|farm|frahm|f\w*a\w*m)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    ('f', fr'^\s*(baue\s*{farm}|bau\s*{farm}|{farm}\s*bauen|build\s*{farm}|{farm})\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
     # build farmstead (zwei Farmen)
 
     # EXAMPLE: baue farmstead

@@ -15,7 +15,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: holz
     ('gather wood',
-     fr'^(gather\s*)?(wood|hol\w*|roll|rhön|hui|heute|ruhig|bridge|{baum}|bäume|tree|rollen)$',
+     fr'^(gather\s*)?(wood|hol\w*|roll|rhön|hui|heute|ruhig|bridge|bridges|{baum}|bäume|tree|rollen|ranch|rötz|ruiz|rülpst|uns)$',
      85,
      {
          'command_flags': re.IGNORECASE,
