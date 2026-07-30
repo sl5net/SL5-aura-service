@@ -114,7 +114,15 @@ FUZZY_MAP_pre = [
     # EXAMPLE: alt n nicht militar
 
     # EXAMPLE: alt n non military
-    ('alt+n', r'^\s*(alt|ald)\s*\+?\s*n(on\s*military|nicht\s*militär|zivilisten)?\s*$', 20, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # ('alt+n', r'^\s*(alt|ald)\s*\+?\s*n(on\s*military|nicht\s*militär|zivilisten)?\s*$', 20, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
+    # EXAMPLE: alles markieren zzzz
+    ('ctrl+alt', r'^(zzzz|xyz|alles markieren|alles|alles markieren).*$',
+        85, {
+        'command_flags': re.IGNORECASE,
+        'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
+        'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
+        'execute_only': True,
+    }),
 
 ]
