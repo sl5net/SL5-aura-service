@@ -30,3 +30,5 @@ END{
   cmd | getline timestr; close(cmd)
   print best_hash, timestr
 }'
+
+echo "git diff --stat YOURHASH HEAD -- . ':(exclude)*.md'"

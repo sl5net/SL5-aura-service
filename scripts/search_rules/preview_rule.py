@@ -4,6 +4,22 @@ import sys
 import os
 import sqlite3
 
+import re
+
+def extract_pattern(file_path, line_num):
+    try:
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            lines = f.readlines()
+        start_idx = min(line_num - 1, len(lines) - 1)
+        end_idx = min(len(lines), start_idx + 6)
+        block = "".join(lines[start_idx:end_idx])
+        match = re.search(r"r(['\"])(.*?)\1", block)
+        if match:
+            return match.group(2)
+    except Exception:
+        pass
+    return None
+
 def supports_color():
     return sys.stdout.isatty()
 
@@ -57,7 +73,6 @@ def print_smart_cache_preview(file_path, line_num, project_root):
     else:
         search_path = f"%{os.path.basename(file_path)}"
 
-    # 2. Den Code-Kontext als Textblock für das Text-Matching einlesen
     context_text = ""
     try:
         with open(abs_file_path, 'r', encoding='utf-8', errors='ignore') as f:
@@ -74,13 +89,11 @@ def print_smart_cache_preview(file_path, line_num, project_root):
         return
 
     try:
-        # Datenbank im Read-Only-Modus öffnen, um Locks zu vermeiden
         db_uri = f"file:{db_path}?mode=ro"
         conn = sqlite3.connect(db_uri, uri=True, timeout=5)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        # Alle Einträge für diese Map-Datei abfragen
         cursor.execute(
             "SELECT rule_output, final_result, validity_value, cache_id FROM aura_result_cache WHERE map_path LIKE ?",
             (search_path,)
@@ -92,7 +105,6 @@ def print_smart_cache_preview(file_path, line_num, project_root):
             rule_output = row['rule_output']
             final_result = row['final_result']
 
-            # Wenn die Ausgabe der Regel im Code vorkommt, haben wir ein Match!
             if rule_output and rule_output.strip() and rule_output.strip() in context_text:
                 matched_rows.append(row)
             elif final_result and final_result.strip() and final_result.strip() in context_text:
@@ -108,13 +120,14 @@ def print_smart_cache_preview(file_path, line_num, project_root):
                 print(f"{COLOR_BLUE}Cache ID:{COLOR_RESET}        {row['cache_id']}")
                 print("-" * 30)
         else:
-            # Falls kein direkter Treffer im Code, schauen wir, ob wir das # EXAMPLE: als Trigger nutzen können
             example = extract_example(file_path, line_num)
             if example:
+                pattern = extract_pattern(file_path, line_num)
+                if pattern and not re.search(pattern, example, re.IGNORECASE):
+                    print(f"{COLOR_RED}⚠ EXAMPLE '{example}' not match Regex{COLOR_RESET}")
                 print(f"{COLOR_YELLOW}No cached execution found in code context for trigger: '{example}'{COLOR_RESET}")
             else:
                 print(f"{COLOR_YELLOW}No cached output matches this code context.{COLOR_RESET}")
-
         conn.close()
     except Exception as e:
         print(f"Database error: {e}")

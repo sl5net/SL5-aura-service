@@ -64,7 +64,7 @@ def execute(match_data):
 
     if 'wood' in text_after_replacement:
         press_plus_multiple_times(1)
-        speak_inclusive_fallback(f"wood", "en-US")
+        speak_inclusive_fallback("wood", "en-US")
 
     if 'fruit' in text_after_replacement:
         press_plus_multiple_times(2)
@@ -75,7 +75,7 @@ def execute(match_data):
     elif 'metal' in text_after_replacement:
         press_plus_multiple_times(5)
     elif 'ctrl+alt' in text_after_replacement:
-        speak_inclusive_fallback(f"DEBUG test lets go", "en-US")
+        speak_inclusive_fallback("DEBUG test lets go", "en-US")
 
         _dotool('keydown leftctrl\nkeydown leftalt\nkeyup leftalt\nkeyup leftctrl')
         # _dotool('key ctrl+alt')

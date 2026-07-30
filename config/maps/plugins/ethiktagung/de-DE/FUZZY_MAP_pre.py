@@ -75,7 +75,7 @@ FUZZY_MAP_pre = [
     ('Leonie Bauer, Psychotherapeutin PP.rt Klinik für Psychiatrie und Psychosomatik, Reutlingen', r'^\s*Leoni\w?\s+(Bau\w*)\s*$', 80, # min_accuracy
  {'command_flags': re.IGNORECASE}),
 
-    # EXAMPLE: matt
+    # EXAMPLE: matt Holz
     ('Martin Holzke, Zentralbereichsleitung Pflege und Medizin, Regionaldirektor Ravensburg-Bodensee, ZfP Südwürttemberg', r'^(matt|Martin)\s+(Holz\s*\w*|ke|hol\w+)$', 80, # min_accuracy
  {'command_flags': re.IGNORECASE}),
 
