@@ -74,6 +74,23 @@ def execute(match_data):
         press_plus_multiple_times(4)
     elif 'metal' in text_after_replacement:
         press_plus_multiple_times(5)
+
+    elif text_after_replacement.startswith('kp'):
+        direction_map = {
+            'kp8': 'kp8', 'north': 'kp8', 'norden': 'kp8',
+            'kp2': 'kp2', 'south': 'kp2', 'sueden': 'kp2',
+            'kp6': 'kp6', 'east': 'kp6', 'osten': 'kp6',
+            'kp4': 'kp4', 'west': 'kp4', 'westen': 'kp4',
+            'kp9': 'kp9', 'northeast': 'kp9', 'nordosten': 'kp9',
+            'kp7': 'kp7', 'northwest': 'kp7', 'nordwesten': 'kp7',
+            'kp3': 'kp3', 'southeast': 'kp3', 'suedosten': 'kp3',
+            'kp1': 'kp1', 'southwest': 'kp1', 'suedwesten': 'kp1',
+        }
+        for token, kp_key in direction_map.items():
+            if token in text_after_replacement.lower():
+                _dotool(f'key {kp_key}')
+                break
+
     elif 'ctrl+alt' in text_after_replacement:
         speak_inclusive_fallback("DEBUG test lets go", "en-US")
 

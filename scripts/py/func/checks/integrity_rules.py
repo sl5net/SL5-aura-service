@@ -160,6 +160,10 @@ INTEGRITY_CHECKS = {
         '"standard_actions/wikipedia_local": True,',
     ],
 
+    'scripts/search_rules/preview_rule.py': [
+        'print(f"{COLOR_RED}⚠ EXAMPLE \'{example}\' not match Regex{COLOR_RESET}")',
+    ],
+
     #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")
 #         'logger.info(f"initial_timeout , timeout: {initial_silence_timeout} , {SPEECH_PAUSE_TIMEOUT}")',
 #         'logger.info(f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached).")',
