@@ -68,14 +68,23 @@ def execute(match_data):
 
     if 'fruit' in text_after_replacement:
         press_plus_multiple_times(2)
+        speak_inclusive_fallback("fruit", "en-US")
+
     if 'meat' in text_after_replacement:
         press_plus_multiple_times(3)
+        speak_inclusive_fallback("meat", "en-US")
+
     elif 'stone' in text_after_replacement:
         press_plus_multiple_times(4)
+        speak_inclusive_fallback("stone", "en-US")
+
     elif 'metal' in text_after_replacement:
         press_plus_multiple_times(5)
+        speak_inclusive_fallback("metal", "en-US")
+
 
     elif text_after_replacement.startswith('kp'):
+        speak_inclusive_fallback(text_after_replacement, "en-US")
         direction_map = {
             'kp8': 'kp8', 'north': 'kp8', 'norden': 'kp8',
             'kp2': 'kp2', 'south': 'kp2', 'sueden': 'kp2',
@@ -91,8 +100,23 @@ def execute(match_data):
                 _dotool(f'key {kp_key}')
                 break
 
+
+    elif text_after_replacement.startswith('camera_'):
+        camera_map = {
+            'camera_up': 'alt+Up',
+            'camera_down': 'alt+Down',
+            'camera_left': 'alt+Left',
+            'camera_right': 'alt+Right',
+        }
+        key_cmd = camera_map.get(text_after_replacement)
+        if key_cmd:
+            _dotool(f'key {key_cmd}')
+            speak_inclusive_fallback("camera", "en-US")
+
+
+
     elif 'ctrl+alt' in text_after_replacement:
-        speak_inclusive_fallback("DEBUG test lets go", "en-US")
+        speak_inclusive_fallback("select all", "en-US")
 
         _dotool('keydown leftctrl\nkeydown leftalt\nkeyup leftalt\nkeyup leftctrl')
         # _dotool('key ctrl+alt')

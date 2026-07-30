@@ -116,8 +116,8 @@ FUZZY_MAP_pre = [
     # EXAMPLE: alt n non military
     # ('alt+n', r'^\s*(alt|ald)\s*\+?\s*n(on\s*military|nicht\s*militär|zivilisten)?\s*$', 20, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
-    # EXAMPLE: alles markieren zzzz
-    ('ctrl+alt', r'^(zzzz|xyz|alles markieren|alles|alles markieren).*$',
+    # EXAMPLE: alles markieren
+    ('ctrl+alt', r'^(alle\w* ma\w+).*$',
         85, {
         'command_flags': re.IGNORECASE,
         'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],

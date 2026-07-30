@@ -13,7 +13,7 @@ baum = r'baum|warum'
 
 FUZZY_MAP_pre = [
 
-    # EXAMPLE: gather wood
+    # EXAMPLE: holz
     ('gather wood',
      fr'^(gather\s*)?(wood|hol\w*|roll|rhön|hui|heute|ruhig|bridge|{baum}|bäume|tree|rollen)$',
      85,
@@ -30,7 +30,7 @@ FUZZY_MAP_pre = [
 
     #fußballsauto fußball
 
-    # EXAMPLE: gather fruit
+    # EXAMPLE: früchte
     ('gather fruit',
      r'^\s*(er|b|beere\w*|gehring|bill|bier|baby|obst|fruit|früchte[n]?|Äpfel[n]?|Apfel|Birne[n]?|berries|quarry)\s*$',
      85,
@@ -42,7 +42,7 @@ FUZZY_MAP_pre = [
          # 'cache': False
      }),
 
-    # EXAMPLE: gather meat
+    # EXAMPLE: fleisch
     ('gather meat',
      r'^(fleisch|jagd|jagen|jacken|ja|ja gut|ihr habt|meat|wetter|welche amen|ritt|stollen)$',
      85,
@@ -53,7 +53,7 @@ FUZZY_MAP_pre = [
          'execute_only': True,
      }),
 
-    # EXAMPLE: gather stein
+    # EXAMPLE: stein
     ('gather stone',
      r'^(gather\s*)?(stein\w*|darin|steig\w*|stahl|stadt|stacheln|stopp|start|starten|stabil|stört|steigt|streit|strafe|rock|fels|quarry|stone)$',
      85,
@@ -67,7 +67,7 @@ FUZZY_MAP_pre = [
 
     # Wie jetzt ist die aktuelle KarteTanz ist wirkt würdig
 
-    # EXAMPLE: gather metal test
+    # EXAMPLE: metal
     ('gather metal',
      r'^(gather\s*)?(met\w+|mat\w+|metall|gold|groll|mit|zitat|metal|bachelor|matcha|günther|ethan|italien|mit metall|gift)$',
      85,
@@ -77,9 +77,6 @@ FUZZY_MAP_pre = [
          'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],
          'execute_only': True,
      }),
-
-
-    #okdOral Herr Modus einschaltendd
 
 
 ]
