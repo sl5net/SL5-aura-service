@@ -88,18 +88,24 @@ def execute(match_data):
         timer = threading.Timer(delay, _auto_select)
         timer.daemon = True
         timer.start()
+    if False:
+        print('')
+    elif 'f,f' in text_after_replacement:
+        speak_inclusive_fallback("farm", "en-US")
+        _dotool('key f\nkey f')
+        _schedule_idle_select()
 
-    if 'wood' in text_after_replacement:
+    elif 'wood' in text_after_replacement:
         press_plus_multiple_times(1)
         speak_inclusive_fallback("wood", "en-US")
         _schedule_idle_select()
 
-    if 'fruit' in text_after_replacement:
+    elif 'fruit' in text_after_replacement:
         press_plus_multiple_times(2)
         speak_inclusive_fallback("fruit", "en-US")
         _schedule_idle_select()
 
-    if 'meat' in text_after_replacement:
+    elif 'meat' in text_after_replacement:
         press_plus_multiple_times(3)
         speak_inclusive_fallback("meat", "en-US")
         _schedule_idle_select()

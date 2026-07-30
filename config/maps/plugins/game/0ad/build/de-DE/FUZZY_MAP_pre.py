@@ -7,13 +7,16 @@ CONFIG_DIR = p(__file__).parent
 from pathlib import Path as p;import os as o # noqa: E702
 with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
-farm = r'f\w*a\w*m|fa\w*en|fa|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am'
+baue = r'(\waue|bauer|bauens|build|bei|anbau\w*|aber|bürohilfe|paul|paulus|warum|warhols)'
+farm = r'f\w*a\w*m|fa\w*en|fa|farmstead|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am|zahn'
+bauernhof = r'(b\w+\s*hof|bauch)\s*'
+
 feld = r'(\w*feld|paul|felsen|fällt|fell|fest|filmt|hält|sind|will|verhilft|powershell)'
-baue = r'(baue|bauer|bauens|bei|anbau\w*|bürohilfe|paul|paulus|warum|warhols)'
-bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält|ausfällt|warum es will|warum filmt|alles rund)'
+bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält|ausfällt|warum es will|warum filmt|alles rund|oh accounts|auch im kornfeld|eure kornfeld)'
 
 acker_nonsens = r'(kopfschmerzen|barack obama|drucker pflanzen|acab)'
 
+ignore_this_fill_words = r'(\b\w{1,3}\b\s*)?'
 
 
 FUZZY_MAP_pre = [
@@ -64,12 +67,15 @@ FUZZY_MAP_pre = [
 
     # this is recommended: 30.7.'26 16:50 Thu works best.
     # EXAMPLE: getreide pflanzen
-    ('f', fr'^\s*(kartoffel\w*|weizen\w*|getreide\w*|acker\w*|salat\w*|feld)\s*(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('f', fr'^({baue}\s*)?(kartoffel\w*|weizen\w*|getreide\w*|acker\w*|salat\w*|blume\w*|garten|kornfeld\w*|feld\w*)\s*{ignore_this_fill_words}(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+
+
 
     # build farmstead (zwei Farmen)
 
-    # EXAMPLE: baue farms
-    ('f,f', fr'^\s*(baue\s*farmstead|baue\s*{farm}|bau\s*farmstead|farmstead\s*bauen|build\s*farmstead|farmstead|zwei\s*farmen)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # EXAMPLE: baue farm
+    ('f,f', fr'^({baue}\s*)?{ignore_this_fill_words}?({bauernhof}|{farm})\s*$', 15, {'command_flags': re.IGNORECASE,
+    'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'],'execute_only': True}),
     # build fortress (drei Farmen)
 
     # EXAMPLE: baue festung
