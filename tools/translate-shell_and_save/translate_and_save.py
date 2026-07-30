@@ -9,6 +9,10 @@ from slugify import slugify
 # pip install python-slugify
 
 """
+TRANSLATION NOTE: The translation function
+sudo pacman -S translate-shell
+uses external online services (translate-shell). When this function is used, the text to be translated leaves your device and is subject to the privacy policies of the respective third-party provider (e.g., Google Translate). Do not use this function for confidential or internal data.
+
 HINWEIS ZUR ÜBERSETZUNG: Die Übersetzungsfunktion
 sudo pacman -S translate-shell
  nutzt externe Online-Dienste (translate-shell). Wenn diese Funktion verwendet wird, verlässt der zu übersetzende Text Ihr Gerät und unterliegt den Datenschutzrichtlinien des jeweiligen Drittanbieters (z.B. Google Translate). Verwenden Sie diese Funktion nicht für vertrauliche oder interne Daten.
@@ -49,11 +53,6 @@ import shlex
 
 
 def copy_selection_to_clipboard() -> bool:
-    """
-    Kopiert den aktuell markierten Text (Primary Selection) in die
-    Zwischenablage (Clipboard Selection), um ihn danach mit pyperclip.paste()
-    lesen zu können. (Linux-spezifisch, nutzt xclip).
-    """
     try:
         # Befehl 1: Kopiere die Primary Selection (Auswahl)
         # in die Clipboard Selection (Strg+C)
@@ -63,16 +62,7 @@ def copy_selection_to_clipboard() -> bool:
             check=True,
             text=True
         )
-        # Die Ausgabe des ersten Kommandos muss nun in das Clipboard gepipet werden.
-        # Da dies kompliziert ist, vereinfachen wir: xclip -i liest von stdin.
-        # Aber das ist in Python fehleranfällig.
 
-        # Der einfachste Weg: Simulate Strg+C via xdotool, ABER: xdotool ist extern.
-
-        # WIR NUTZEN STATT DESSEN DIE ROBUSTE XCLIP KETTE DIREKT:
-        # xclip -o | xclip -i -selection c
-
-        # Wir müssen es in Bash ausführen, um die Pipe zu nutzen
         subprocess.run(
             "xclip -o | xclip -i -selection c",
             shell=True,
@@ -97,20 +87,18 @@ def copy_selection_to_clipboard() -> bool:
 
 def translate_text(text: str, target_lang: str) -> str:
     """
-    Übersetzt Text mithilfe von 'translate-shell' (trans),
-    indem die Argumente direkt übergeben werden.
+    use 'translate-shell' (trans),
     """
     target_lang = target_lang.lower()
     if target_lang == 'pt':
         target_lang = 'pt-br'
 
     if target_lang not in ['de', 'en', 'pt', 'pt-br']:
-         return f"[Fehler: Zielssprache '{target_lang}' wird nicht unterstützt.]"
+         return f"[ERROR: target_lang: '{target_lang}' not suported]"
 
     if not text.strip():
         return ""
 
-    # Verwendung der stabilen Argumentenübergabe für trans
     cmd_args = [TRANSLATION_COMMAND, "-b", "--no-ansi", "-t", target_lang, text]
 
     try:
@@ -143,17 +131,15 @@ def save_translation_as_file(original_text, translated_text, base_lang_code):
     if not translated_text:
         return f"Fehler: Übersetzungstext ({base_lang_code}) ist leer.", False
 
-    # Dateinamen-Basis (Slug) basiert auf der aktuellen Übersetzung
     slug_base = translated_text[:100]
     filename_slug = slugify(slug_base, max_length=MAX_SLUG_LENGTH)
 
     target_filepath = os.path.join(STORAGE_DIR, f"{filename_slug}.txt")
 
-    # Annahme: Der Originaltext (PT) wird immer als PT markiert
     file_content = (
-        f"--- Original ---\n"
+        f"--- org ---\n"
         f"{original_text}\n\n"
-        f"--- Übersetzung ({base_lang_code.upper()}) ---\n"
+        f"--- trans ({base_lang_code.upper()}) ---\n"
         f"{translated_text}\n"
     )
 
@@ -161,13 +147,11 @@ def save_translation_as_file(original_text, translated_text, base_lang_code):
         with open(target_filepath, 'w', encoding='utf-8') as f:
             f.write(file_content)
 
-        return f"Erfolg: Gespeichert als '{filename_slug}.txt'", True
+        return f"OK: saved '{filename_slug}.txt'", True
     except Exception as e:
-        return f"Fehler beim Speichern: {e}", False
+        return f"ERROR saving: {e}", False
 
-
-# === HAUPTPROGRAMM ===
-
+#
 if __name__ == "__main__":
 
 
@@ -177,7 +161,7 @@ if __name__ == "__main__":
 
     LOG_FILE_PATH = "/tmp/speak_error.log"
 
-    # Nutzung: script.py [clipboard|TEXT] [TARGET_LANG] [OPTIONAL: SAVE]
+    # script.py [clipboard|TEXT] [TARGET_LANG] [OPTIONAL: SAVE]
     if len(sys.argv) < 3:
         print("Usage: python3 translate_and_save.py [clipboard|TEXT] [TARGET_LANG] [SAVE|NOSAVE]", file=sys.stderr)
         sys.exit(1)
@@ -188,11 +172,9 @@ if __name__ == "__main__":
     target_lang = sys.argv[2]
     should_save = len(sys.argv) > 3 and sys.argv[3].upper() == 'SAVE'
 
-    # 1. Text besorgen (PT Original oder was auch immer in der Zwischenablage ist)
     text_to_translate = ""
     if input_source.lower() in ['clipboard', '-clipboard']:
 
-        # NEU: Kopiere zuerst die Auswahl in das Clipboard, falls noch nicht geschehen
         if not copy_selection_to_clipboard():
             sys.exit(1)
 
@@ -200,37 +182,30 @@ if __name__ == "__main__":
         try:
             text_to_translate = pyperclip.paste()
         except pyperclip.PyperclipException as e:
-            print(f"[Fehler beim Lesen der Zwischenablage: {e}]", file=sys.stderr)
+            print(f"[ERROR read pyperclip: {e}]", file=sys.stderr)
             sys.exit(1)
     else:
         text_to_translate = input_source
 
-    # 2. Übersetzen
     translated_result = translate_text(text_to_translate, target_lang)
 
-    # Prüfen auf Übersetzungsfehler
     if translated_result.startswith("[Fehler"):
         print(translated_result, file=sys.stderr)
         sys.exit(1)
 
-    # 3. Speichern, falls angefordert
     if should_save:
-        # HINWEIS: Wir nehmen an, dass der Text_to_translate der PT-Originaltext ist,
-        # der in der Datenbank gespeichert werden soll.
+
         save_msg, save_success = save_translation_as_file(text_to_translate, translated_result, target_lang)
 
-        # Optional: Gib die Speichernachricht zusätzlich aus (oder logge sie)
-        # print(save_msg)
 
-   # 4. SPRACHAUSGABE (Der kritische neue Teil)
     temp_file_path = None
     try:
-        # a) Erstelle temporäre Datei und schreibe deutschen Text hinein
+        # a) temp file
         with tempfile.NamedTemporaryFile(mode='w', delete=False, encoding='utf-8') as tmp:
             tmp.write(translated_result)
             temp_file_path = tmp.name # $f ist nun temp_file_path
 
-        # b) Befehl ausführen: python3 "$speak_file_path" "$temp_file_path" > log
+        # b) python3 "$speak_file_path" "$temp_file_path" > log
 
         # -c "python3 /home/seeh/projects/py/TTS/speak_file.py %f > /tmp/speak_error.log 2>&1"
 
@@ -244,11 +219,9 @@ if __name__ == "__main__":
             subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT, check=False)
 
     except Exception as e:
-        # Fehler beim Speak-Prozess wird nur geloggt, aber Hauptprozess läuft weiter
-        print(f"[Warnung: Fehler bei TTS-Ausgabe: {e}]", file=sys.stderr)
+        print(f"[Warnung: TTS: {e}]", file=sys.stderr)
 
     finally:
-        # c) Temporäre Datei aufräumen
 
         print(f"python_bin={python_bin} SPEAK_SCRIPT_PATH={SPEAK_SCRIPT_PATH} temp_file_path={temp_file_path}")
 
@@ -257,7 +230,6 @@ if __name__ == "__main__":
             os.remove(temp_file_path)
 
 
-    # 5. Ergebnis ausgeben (immer, wenn erfolgreich übersetzt)
     pyperclip.copy(translated_result)
     print(translated_result)
 
