@@ -67,7 +67,7 @@ def _init_audio_dependencies():
             and not os.getenv('CI'):
         try:
             if hasattr(pygame, 'mixer') and pygame.mixer is not None:
-                pygame.mixer.init(frequency=44100, size=-16, channels=2)
+                pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
                 sound_program_loaded = True
             else:
                 log.warning("pygame.mixer not available (SDL-Prob?). Sound off.")
@@ -205,7 +205,7 @@ if (sys.platform != "win32"
     try:
         # pygame.mixer.init(frequency=44100, size=-16, channels=2)
         if hasattr(pygame, 'mixer') and pygame.mixer is not None:
-            pygame.mixer.init(frequency=44100, size=-16, channels=2)
+            pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
             sound_program_loaded = True
         else:
             log.warning("pygame.mixer not available (SDL-Prob?). Sound off.")
@@ -462,9 +462,9 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
     n_samples = int(sample_rate * duration_ms / 1000)
 
     # 1. Generate smooth phase-integrated waveform (Chirp)
-    freqs = np.linspace(start_freq, end_freq, n_samples)
+    freq_s = np.linspace(start_freq, end_freq, n_samples)
     dt = 2.0 / sample_rate
-    phases = 2 * np.pi * np.cumsum(freqs) * dt
+    phases = 2 * np.pi * np.cumsum(freq_s) * dt
     waveform = np.sin(phases) * 32767 * final_volume
 
     # 2. Apply Soft-Envelope (Fade-in/out) to prevent clicking
