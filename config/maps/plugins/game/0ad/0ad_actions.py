@@ -25,12 +25,11 @@ def log(msg: str) -> None:
 
 
 def _dotool(command):
-    import subprocess
     subprocess.run(['dotool'], input=command, text=True, check=True)
-
+    # helpful tips: dotool --list-keys | grep -iE "period|dot|full"
 
 def press_plus_multiple_times(count):
-
+    # helpful tips: dotool --list-keys | grep -iE "period|dot|full"
     command_list = []
     for i in range(count):
         # Verwenden Sie 'rightbrace' für das deutsche Layout ohne Shift-Modifier
@@ -41,7 +40,7 @@ def press_plus_multiple_times(count):
     _dotool(chained_commands)
 
 def press_plus_multiple_times_slow(count):
-
+    # helpful tips: dotool --list-keys | grep -iE "period|dot|full"
     for _ in range(count):
         # echo "key plus" | dotool
         # dotool: WARNING: impossible key for layout: plus
@@ -52,6 +51,7 @@ def press_plus_multiple_times_slow(count):
         _dotool('key rightbrace')
 
 def execute(match_data):
+    # helpful tips: dotool --list-keys | grep -iE "period|dot|full"
     import sys
     log(f'0ad_actions.py:19 execute called: {match_data}\n')
 
@@ -67,12 +67,20 @@ def execute(match_data):
         import threading
 
         def _auto_select():
+            # helpful tips: dotool --list-keys | grep -iE "period|dot|full"
             # _dotool('key alt+numbersign')
             # _dotool('key alt+.')
             # _dotool('keydown leftalt\n.\nkeyup leftalt')
             # _dotool('key leftalt period')
             # _dotool('keydown leftalt\nkey period\nkeyup leftalt')
-            _dotool('keydown leftalt\nkey dot\nkeyup leftalt')
+
+
+            # _dotool('keydown leftalt\nkey dot\nkeyup leftalt') # works 30.7.'26 14:26 Thu
+
+            # _dotool('keydown leftalt\nkey rightbrace\nkeyup leftalt') macht ganz oder markiert alle??
+            _dotool('keydown leftalt\nkey backslash\nkeyup leftalt')
+
+
             # subprocess.run(['xdotool', 'key', '--clearmodifiers', 'Alt+period'], check=False)
             speak_inclusive_fallback("idle worker selected", "en-US")
 

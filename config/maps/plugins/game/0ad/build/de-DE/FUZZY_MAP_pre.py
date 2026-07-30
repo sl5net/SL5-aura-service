@@ -8,6 +8,10 @@ from pathlib import Path as p;import os as o # noqa: E702
 with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
 farm = r'f\w*a\w*m|fa\w*en|fa|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am'
+feld = r'(\w*feld|paul|felsen|fällt|fell|fest|hält|sind|will|verhilft)'
+baue = r'(baue|bauer|bauens|bei|paul|paulus|warum|warhols)'
+bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält)'
+
 
 FUZZY_MAP_pre = [
 
@@ -48,14 +52,14 @@ FUZZY_MAP_pre = [
     ('b', r'^\s*(baue\s*baracke|bau\s*baracke|baracke\s*bauen|build\s*barrack|barrack|barack)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
     # build farm
 
-    # EXAMPLE: baue farm
+    # EXAMPLE: baue feld
     # ('f', r'^\s*(baue\s*farm|bau\s*farm|farm\s*bauen|build\s*farm|farm|frahm|f\w*a\w*m)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
-    ('f', fr'^\s*(baue\s*{farm}|bau\s*{farm}|{farm}\s*bauen|build\s*{farm}|{farm})\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('f', fr'^\s*({bauefeld_nonsens}|{baue}\s*{feld}|bau\s*{feld}|{feld}\s*bauen|build\s*{feld}|{feld})\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
     # build farmstead (zwei Farmen)
 
-    # EXAMPLE: baue farmstead
-    ('f,f', r'^\s*(baue\s*farmstead|bau\s*farmstead|farmstead\s*bauen|build\s*farmstead|farmstead|zwei\s*farmen)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # EXAMPLE: baue farms
+    ('f,f', fr'^\s*(baue\s*farmstead|baue\s*{farm}|bau\s*farmstead|farmstead\s*bauen|build\s*farmstead|farmstead|zwei\s*farmen)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
     # build fortress (drei Farmen)
 
     # EXAMPLE: baue festung
