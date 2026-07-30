@@ -75,10 +75,11 @@ def execute(match_data):
             # _dotool('keydown leftalt\nkey period\nkeyup leftalt')
 
 
-            # _dotool('keydown leftalt\nkey dot\nkeyup leftalt') # works 30.7.'26 14:26 Thu
 
             # _dotool('keydown leftalt\nkey rightbrace\nkeyup leftalt') macht ganz oder markiert alle??
-            _dotool('keydown leftalt\nkey backslash\nkeyup leftalt')
+
+            # _dotool('keydown leftalt\nkey dot\nkeyup leftalt') # works 30.7.'26 14:26 Thu
+            _dotool('keydown leftalt\nkey backslash\nkeyup leftalt') # works 30.7.'26 15:05 Thu
 
 
             # subprocess.run(['xdotool', 'key', '--clearmodifiers', 'Alt+period'], check=False)

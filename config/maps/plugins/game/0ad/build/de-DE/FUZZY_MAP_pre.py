@@ -8,9 +8,12 @@ from pathlib import Path as p;import os as o # noqa: E702
 with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
 farm = r'f\w*a\w*m|fa\w*en|fa|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am'
-feld = r'(\w*feld|paul|felsen|fällt|fell|fest|hält|sind|will|verhilft)'
-baue = r'(baue|bauer|bauens|bei|paul|paulus|warum|warhols)'
-bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält)'
+feld = r'(\w*feld|paul|felsen|fällt|fell|fest|filmt|hält|sind|will|verhilft|powershell)'
+baue = r'(baue|bauer|bauens|bei|anbau\w*|bürohilfe|paul|paulus|warum|warhols)'
+bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält|ausfällt|warum es will|warum filmt|alles rund)'
+
+acker_nonsens = r'(kopfschmerzen|barack obama|drucker pflanzen|acab)'
+
 
 
 FUZZY_MAP_pre = [
@@ -54,7 +57,14 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: baue feld
     # ('f', r'^\s*(baue\s*farm|bau\s*farm|farm\s*bauen|build\s*farm|farm|frahm|f\w*a\w*m)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
-    ('f', fr'^\s*({bauefeld_nonsens}|{baue}\s*{feld}|bau\s*{feld}|{feld}\s*bauen|build\s*{feld}|{feld})\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # ('f', fr'^\s*({bauefeld_nonsens}|{baue}\s*{feld}|bau\s*{feld}|{feld}\s*bauen|build\s*{feld}|{feld})\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+
+    # EXAMPLE: acker pflanzen
+    # ('f', fr'^\s*({acker_nonsens}|acker\s*bauen|acker|pflanz\w*|pflanze\s*feld)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+
+    # this is recommended: 30.7.'26 16:50 Thu works best.
+    # EXAMPLE: getreide pflanzen
+    ('f', fr'^\s*(kartoffel\w*|weizen\w*|getreide\w*|acker\w*|salat\w*|feld)\s*(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
     # build farmstead (zwei Farmen)
 
