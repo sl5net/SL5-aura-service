@@ -13,6 +13,12 @@ from pathlib import Path
 # ==============================================================================
 #           Intelligenter Markdown-Übersetzer (Python-Version)
 # ==============================================================================
+
+# 3. Überspringe bereits übersetzte Dateien (Suffix-Check)
+# if re.search(r'-[a-z]{2,3}lang\.md$', filename):
+# continue
+
+
 #
 # Version 7.1: Verwendet einen "kugelsicheren" Platzhalter für Links (z.B.
 #              XMDLINK20X), um zu verhindern, dass der Übersetzer den

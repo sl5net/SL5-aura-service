@@ -2,6 +2,21 @@
 
 Diese Anleitung listet alle verfügbaren Sprachbefehle für 0 A.D. auf. Sprich einen der genannten Beispielsätze, während 0 A.D. das aktive Fenster ist.
 
+
+Anleitung der Sprachbefehle für deutsch-sprachige 0 A.D. Spieler
+die folgendes Nutzen:
+
+https://play0ad.com/
+https://github.com/sl5net/autocivp
+
+sehr zu empfehlen!
+
+https://gitlab.com/4trik/ModernGUI
+
+(S, 30.7.'26 17:39 Thu)
+
+
+
 ## Kamera-Steuerung
 
 | Sprich | Aktion |
