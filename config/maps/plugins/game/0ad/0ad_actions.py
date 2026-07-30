@@ -71,7 +71,9 @@ def execute(match_data):
             # _dotool('key alt+.')
             # _dotool('keydown leftalt\n.\nkeyup leftalt')
             # _dotool('key leftalt period')
-            subprocess.run(['xdotool', 'key', '--clearmodifiers', 'Alt+period'], check=False)
+            # _dotool('keydown leftalt\nkey period\nkeyup leftalt')
+            _dotool('keydown leftalt\nkey dot\nkeyup leftalt')
+            # subprocess.run(['xdotool', 'key', '--clearmodifiers', 'Alt+period'], check=False)
             speak_inclusive_fallback("idle worker selected", "en-US")
 
         timer = threading.Timer(delay, _auto_select)

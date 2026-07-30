@@ -7,7 +7,7 @@ CONFIG_DIR = p(__file__).parent
 from pathlib import Path as p;import os as o # noqa: E702
 with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
-farm = r'f\w*a\w*m|fa\w*en|fahren|farben|frau|frauen|fragen|haben|am'
+farm = r'f\w*a\w*m|fa\w*en|fa|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am'
 
 FUZZY_MAP_pre = [
 
