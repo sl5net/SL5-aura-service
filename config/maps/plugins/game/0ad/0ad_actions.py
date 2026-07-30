@@ -1,6 +1,7 @@
 # config/maps/plugins/game/0ad/0ad_actions.py
 import logging
 import os
+import subprocess
 from pathlib import Path
 
 _tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
@@ -62,26 +63,49 @@ def execute(match_data):
     text_after_replacement = match_data['text_after_replacement']
     log(f'0ad_actions.py:27 -> text_after_replacement: {text_after_replacement}')
 
+    def _schedule_idle_select(delay=8):
+        import threading
+
+        def _auto_select():
+            # _dotool('key alt+numbersign')
+            # _dotool('key alt+.')
+            # _dotool('keydown leftalt\n.\nkeyup leftalt')
+            # _dotool('key leftalt period')
+            subprocess.run(['xdotool', 'key', '--clearmodifiers', 'Alt+period'], check=False)
+            speak_inclusive_fallback("idle worker selected", "en-US")
+
+        timer = threading.Timer(delay, _auto_select)
+        timer.daemon = True
+        timer.start()
+
     if 'wood' in text_after_replacement:
         press_plus_multiple_times(1)
         speak_inclusive_fallback("wood", "en-US")
+        _schedule_idle_select()
 
     if 'fruit' in text_after_replacement:
         press_plus_multiple_times(2)
         speak_inclusive_fallback("fruit", "en-US")
+        _schedule_idle_select()
 
     if 'meat' in text_after_replacement:
         press_plus_multiple_times(3)
         speak_inclusive_fallback("meat", "en-US")
+        _schedule_idle_select()
 
     elif 'stone' in text_after_replacement:
         press_plus_multiple_times(4)
         speak_inclusive_fallback("stone", "en-US")
+        _schedule_idle_select()
 
     elif 'metal' in text_after_replacement:
         press_plus_multiple_times(5)
         speak_inclusive_fallback("metal", "en-US")
+        _schedule_idle_select()
 
+    elif len(text_after_replacement) == 1 and text_after_replacement.isalpha():
+        _dotool(f'key {text_after_replacement}')
+        _schedule_idle_select()
 
     elif text_after_replacement.startswith('kp'):
         speak_inclusive_fallback(text_after_replacement, "en-US")
@@ -99,7 +123,7 @@ def execute(match_data):
             if token in text_after_replacement.lower():
                 _dotool(f'key {kp_key}')
                 break
-
+        _schedule_idle_select()
 
     elif text_after_replacement.startswith('camera_'):
         camera_map = {
