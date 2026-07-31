@@ -31,6 +31,8 @@ LOGFILE="$LOG_DIR/type_watcher.log"
 
 AUTO_ENTER_FLAG="/tmp/sl5_aura/sl5_auto_enter.flag"
 
+
+
 INPUT_METHOD=""
 
 # --- Detect Wayland or X11 ---
@@ -43,15 +45,18 @@ else
     INPUT_METHOD="xdotool"
 
 
-    # read file if readable, else set default
-    timeout=20
-    file='/tmp/sl5_aura/aura_engine.heartbeat'
-    if inotifywait -q -t "$timeout" -e modify,close_write,create "$(dirname "$file")"; then
-      echo "heartbeat change found $(dirname "$file")"
-    fi
-
     backup_settings_x11_input_method_OVERRIDE_PATH="/tmp/sl5_aura/settings_py_backup/x11_input_method_OVERRIDE.txt"
     path="$backup_settings_x11_input_method_OVERRIDE_PATH"
+
+    # Only wait for heartbeat if override file is not yet readable
+    if [[ ! -r "$path" ]]; then
+        timeout=20
+        file='/tmp/sl5_aura/aura_engine.heartbeat'
+        if inotifywait -q -t "$timeout" -e modify,close_write,create "$(dirname "$file")" 2>/dev/null; then
+            echo "heartbeat change found $(dirname "$file")"
+        fi
+    fi
+
     if [[ -r "$path" ]]; then OVERRIDE=$(<"$path"); else OVERRIDE="ERROR_2026-0301-0913"; fi
 
     echo "DEBUG OVERRIDE: '$OVERRIDE'"
@@ -301,7 +306,7 @@ if [ -e "$LOCKFILE" ]; then
     rm -f "$LOCKFILE"
 fi
 echo $$ > "$LOCKFILE"
-cleanup
+#cleanup
 
 # --- Wait for directory ---
 while [ ! -d "$DIR_TO_WATCH" ]; do
@@ -399,11 +404,12 @@ PY
 
             # Skip and delete files older than 8 seconds
             file_age=$(( $(date +%s) - $(stat -c %Y "$f") ))
+#            if [ "$file_age" -gt 8 ]; then
             if [ "$file_age" -gt 8 ]; then
                 rm -f "$f"
                 continue
             fi
-
+            MAX_AGE=8
 #            sleep 1 # 7.7.'26 07:58 Tue its okay but feels smarter when text is typed super quick
 #            sleep 0.4
              sleep 0.02 # re-enabled at 14.7.'26 19:52 Tue

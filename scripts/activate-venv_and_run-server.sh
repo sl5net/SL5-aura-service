@@ -28,29 +28,11 @@ fi
 # Kill any existing watcher instances to prevent ghost processes and lockfile conflicts
 pkill -f "type_watcher.sh" || true
 pkill -f "type_watcher_keep_alive.sh" || true
+rm -f /tmp/sl5_aura/type_watcher.lock /tmp/sl5_aura/type_watcher_keep_alive.lock 2>/dev/null || true
 
 # guarantee that no stale
 # processes from old paths or failed lockfile cleanups interfere with the new # instance. It is the most reliable way to handle path renames without leaving background processes behind.
 
-
-if [ "$detected_os" = "windows" ]; then
-  echo "please start type_watcher.ahk"
-  echo "please start trigger-hotkeys.ahk"
-else
-  # Dynami User-ID D-Bus
-  USER_ID=$(id -u)
-
-  # ony when DBUS_SESSION_BUS_ADDRESS
-  if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
-      export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$USER_ID/bus"
-  fi
-
-  # DISPLAY XAUTHORITY
-  export DISPLAY="${DISPLAY:-:0}"
-  # XAUTHORITY wird weiter unten dynamisch gesetzt
-
-  $PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh &
-fi
 
 
 
@@ -156,5 +138,30 @@ echo "LD_PRELOAD=$LD_PRELOAD"  # ← zur Bestätigung
 echo "Starting $SCRIPT_TO_START..."
 #python3 "$SCRIPT_TO_START" &
 "$PROJECT_ROOT/.venv/bin/python3" "$SCRIPT_TO_START" &
+
+
+
+if [ "$detected_os" = "windows" ]; then
+  echo "please start type_watcher.ahk"
+  echo "please start trigger-hotkeys.ahk"
+else
+  # Dynami User-ID D-Bus
+  USER_ID=$(id -u)
+
+  # ony when DBUS_SESSION_BUS_ADDRESS
+  if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+      export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$USER_ID/bus"
+  fi
+
+  # DISPLAY XAUTHORITY
+  export DISPLAY="${DISPLAY:-:0}"
+  # XAUTHORITY wird weiter unten dynamisch gesetzt
+
+#  $PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh & # then it was not running at first dictation!! 31.7.'26 10:45 Fri
+  # echo 'nohup "$PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh" >/dev/null 2>&1 &'
+
+  nohup "$PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh" >/dev/null 2>&1 &
+fi
+
 
 

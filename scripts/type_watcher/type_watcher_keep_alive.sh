@@ -66,8 +66,9 @@ while true; do
         ts2_old=$ts2_new
     fi
 
-
-    if pgrep -f "type_watcher.sh" | grep -qv "$$"; then
+    LOCKFILE="/tmp/sl5_aura/type_watcher.lock"
+    if [ -f "$LOCKFILE" ] && kill -0 "$(cat "$LOCKFILE" 2>/dev/null)" 2>/dev/null; then
+        #    if pgrep -f "type_watcher\.sh$" >/dev/null; then
         # It's running, do nothing.
         :
     else
