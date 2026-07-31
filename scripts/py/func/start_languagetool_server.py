@@ -63,10 +63,13 @@ def _update_settings_file(logger, java_path):
 def _is_lt_server_responsive(url, timeout=0.9, logger=None):
     """Checks if the LanguageTool server at the given URL is responsive."""
     try:
-        # Check against a known lightweight endpoint
-        # response = requests.get(f"{url}/v2/languages", timeout=timeout)
-        response = requests.get(f"{url}/v2/languages", timeout=timeout, allow_redirects=True)
-        return response.status_code == 200
+        response = requests.post(
+            f"{url}/v2/check",
+            data={'language': 'de-DE', 'text': 'test'},
+            timeout=timeout,
+            allow_redirects=True
+        )
+        return response.status_code == 200 and "software" in response.text
     except Exception as e:
         print(f"LanguageTool(LT) Check failed: {e}")
         if logger:
