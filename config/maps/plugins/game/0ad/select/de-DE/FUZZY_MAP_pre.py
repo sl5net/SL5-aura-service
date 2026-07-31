@@ -7,6 +7,14 @@ CONFIG_DIR = p(__file__).parent
 from pathlib import Path as p;import os as o # noqa: E702
 with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
+
+
+
+
+
+infanterie = r'(inf\w*\s*(rie|try)|infanterie|infantry|infra try|die infanterie)'
+
+
 FUZZY_MAP_pre = [
 
     # EXAMPLE: select iddle
@@ -125,4 +133,29 @@ FUZZY_MAP_pre = [
         'execute_only': True,
     }),
 
+
+
+
+
+
+
+    # EXAMPLE: Infanterie
+    ('select_infantry', fr'^\s*({infanterie}|fussvolk|fusstruppen|{infanterie})\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # EXAMPLE: speertraeger
+    ('select_pikemen', r'^\s*(speertr[äa]ger|pikentr[äa]ger|phalanx|pikemen)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # EXAMPLE: kavallerie
+    ('select_cavalry', r'^\s*(kavallerie|reiter|reiterei|cavalry)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # EXAMPLE: bogenschuetzen
+    ('select_archers', r'^\s*(bogensch[üu]tzen|sch[üu]tzen|pl[äa]nkler|archers)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # EXAMPLE: schwertkaempfer
+    ('select_swordsmen', r'^\s*(schwertk[äae]+mpfer|schwerter|swordsmen)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # EXAMPLE: elefanten
+    ('select_elephants', r'^\s*(elefanten|elefant|elephants)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # EXAMPLE: katapulte
+    ('select_catapults', r'^\s*(katapulte|katapult|belagerung|catapults)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # EXAMPLE: heiler
+    ('select_healers', r'^\s*(heiler|priester|healers)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+
 ]
+
+

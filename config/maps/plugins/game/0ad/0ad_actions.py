@@ -109,6 +109,36 @@ def execute(match_data):
         _dotool(f'key {cmd}')
         _schedule_idle_select()
 
+
+    elif text_after_replacement in ['aa', 'aaa', 'aaaa', 'aaaaa']:
+        cmd = ' '.join(['a'] * len(text_after_replacement))
+        _dotool(f'key {cmd}')
+        _schedule_idle_select()
+
+    elif text_after_replacement.startswith('select_'):
+        select_map = {
+            'select_infantry': ('i', 'infantry'),
+            'select_pikemen': ('p', 'pikemen'),
+            'select_cavalry': ('c', 'cavalry'),
+            'select_archers': ('a', 'archers'),
+            'select_swordsmen': ('s', 'swordsmen'),
+            'select_elephants': ('e', 'elephants'),
+            'select_catapults': ('k', 'catapults'),
+            'select_healers': ('h', 'healers'),
+        }
+        item = select_map.get(text_after_replacement)
+        if item:
+            key_letter, spoken_label = item
+            speak_inclusive_fallback(f"select {spoken_label}", "en-US")
+            _dotool(f'keydown leftalt\nkey {key_letter}\nkeyup leftalt')
+
+
+
+
+
+
+
+
     elif 'wood' in text_after_replacement:
         press_plus_multiple_times(1)
         speak_inclusive_fallback("wood", "en-US")
