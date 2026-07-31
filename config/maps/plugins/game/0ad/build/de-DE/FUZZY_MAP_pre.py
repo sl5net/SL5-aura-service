@@ -22,6 +22,9 @@ ignore_this_fill_words = r'(\b\w{1,3}\b\s*)?'
 
 festung = r'\s*(festung|f\w+\s*\w*|fährst du|\w+\s*um|ist um|stumm|wird stumm|schluss|fortress|festung|fortress)\s*'
 
+turm = r'\s*(turm|tor|tower)\s*'
+turmtype = r'\s*(verteidigungs|stein|stein|wehr|defense)\s*'
+
 FUZZY_MAP_pre = [
 
     # === General Terms (Case-Insensitive) ===
@@ -88,5 +91,8 @@ FUZZY_MAP_pre = [
     ('fff', fr'^\s*({baue}\s*{festung}|{festung}\s*{baue})$', 15,
      {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
       'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+
+    # EXAMPLE: baue turm
+    ('dd', fr'^\s*({baue}{turmtype}{turm}|{turm}|{turmtype}{turm}{baue}|{turmtype}{turm})$', 15, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
 ]

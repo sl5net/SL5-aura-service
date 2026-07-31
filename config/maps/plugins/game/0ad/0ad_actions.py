@@ -100,6 +100,11 @@ def execute(match_data):
         _dotool('key f\nkey f\nkey f')
         _schedule_idle_select()
 
+    elif text_after_replacement == 'dd':
+        _dotool('key d\nkey d\nkey')
+        _schedule_idle_select()
+
+
     elif 'wood' in text_after_replacement:
         press_plus_multiple_times(1)
         speak_inclusive_fallback("wood", "en-US")
