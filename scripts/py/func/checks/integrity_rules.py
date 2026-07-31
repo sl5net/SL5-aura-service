@@ -71,7 +71,8 @@ INTEGRITY_CHECKS = {
 
     'aura_engine.py': [
         'from scripts.py.bootstrap_venv import bootstrap_hello',
-        'bootstrap_hello()'
+        'bootstrap_hello()',
+        'atexit.register(stop_audio_manager)'
     ],
 
 
@@ -177,7 +178,8 @@ INTEGRITY_CHECKS = {
     ],
 
     "scripts/py/func/audio_manager.py": [
-        "if not settings.PLUGIN_HELPER_TTS_ENABLED:"
+        "if not settings.PLUGIN_HELPER_TTS_ENABLED:",
+        "buffer=512",
     ],
 
 

@@ -493,7 +493,8 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
             sound = pygame.sndarray.make_sound(final_data)
             sound.play()
             pygame.time.wait(duration_ms + 10)
-            pygame.mixer.quit()
+            del sound, final_data
+            # pygame.mixer.quit() # TODO: experimental removed: 31.7.'26 08:36 Fri watch this over hours. if ram little increase
             return True # Success!
 
         except Exception as e:
@@ -565,6 +566,48 @@ def sound_unmute(active_logger):
         volume=0.2,
         logger=active_logger
     )
+
+
+# def stop_audio_manager_20260731_0846():
+#     global _audio_dependencies_loaded, pygame
+#     if pygame and hasattr(pygame, 'mixer') and pygame.mixer and pygame.mixer.get_init():
+#         try:
+#             pygame.mixer.quit()
+#         except Exception as e2:
+#             if logger:
+#                 logger.error(f"pygame failed in mixer.quit (channels={pygame.get_channels()}): {e2}")
+#             pass
+#     _audio_dependencies_loaded = False
+
+
+def stop_audio_manager():
+    """
+    Safely stop pygame audio: stop channels/music, then quit mixer and mark
+    audio dependencies as unloaded.
+    """
+    global _audio_dependencies_loaded
+
+    try:
+        if pygame is None:
+            return
+
+        if getattr(pygame, "mixer", None) and pygame.mixer.get_init():
+            try:
+                pygame.mixer.music.stop()
+                pygame.mixer.stop()
+            except Exception as stop_err:
+                if 'logger' in globals() and logger:
+                    logger.warning(f"Failed to stop mixer playback: {stop_err!r}")
+
+            try:
+                pygame.mixer.quit()
+            except Exception as quit_err:
+                if 'logger' in globals() and logger:
+                    logger.error(f"pygame.mixer.quit() failed: {quit_err!r}")
+    finally:
+        _audio_dependencies_loaded = False
+
+
 
 
 def mute_microphone(logger=None, onlySound=False):
