@@ -9,7 +9,9 @@ with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_roo
 
 baue = r'(\waue|bauer|bauens|build|bei|anbau\w*|aber|bürohilfe|paul|paulus|warum|warhols)'
 farm = r'f\w*a\w*m|fa\w*en|fa|farmstead|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am|zahn'
-bauernhof = r'(b\w+\s*hof|bauch)\s*'
+bauernhof = r'(b\w+\s*hof|bauch|rosenhof)\s*'
+
+
 
 feld = r'(\w*feld|paul|felsen|fällt|fell|fest|filmt|hält|sind|will|verhilft|powershell)'
 bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält|ausfällt|warum es will|warum filmt|alles rund|oh accounts|auch im kornfeld|eure kornfeld)'
@@ -18,6 +20,7 @@ acker_nonsens = r'(kopfschmerzen|barack obama|drucker pflanzen|acab)'
 
 ignore_this_fill_words = r'(\b\w{1,3}\b\s*)?'
 
+festung = r'\s*(festung|f\w+\s*\w*|fährst du|\w+\s*um|ist um|stumm|wird stumm|schluss|fortress|festung|fortress)\s*'
 
 FUZZY_MAP_pre = [
 
@@ -79,6 +82,11 @@ FUZZY_MAP_pre = [
     # build fortress (drei Farmen)
 
     # EXAMPLE: baue festung
-    ('f,f,f', r'^\s*(baue\s*festung|bau\s*festung|festung\s*bauen|build\s*fortress|fortress|drei\s*farmen)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
-    # ... weitere Bau-Befehle nach diesem Muster
+    # ('f,f,f', r'^\s*(baue\s*festung|bau\s*festung|festung\s*bauen|build\s*fortress|fortress|drei\s*farmen)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+
+    # EXAMPLE: baue festung
+    ('fff', fr'^\s*({baue}\s*{festung}|{festung}\s*{baue})$', 15,
+     {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
+      'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+
 ]

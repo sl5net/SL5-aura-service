@@ -95,6 +95,11 @@ def execute(match_data):
         _dotool('key f\nkey f')
         _schedule_idle_select()
 
+    elif 'fff' in text_after_replacement:
+        speak_inclusive_fallback("fortress", "en-US")
+        _dotool('key f\nkey f\nkey f')
+        _schedule_idle_select()
+
     elif 'wood' in text_after_replacement:
         press_plus_multiple_times(1)
         speak_inclusive_fallback("wood", "en-US")

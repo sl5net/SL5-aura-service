@@ -11,7 +11,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: CCC Veranstaltungen events Tübingen
-    ('https://events.ccc.de/search/?s=T%C3%BCbingen', r'^(CCC)\s*Veranstaltungen\s*$', 70, # min_accuracy
+    ('https://events.ccc.de/search/?s=T%C3%BCbingen', r'^(CCC)\s*Veranstaltungen\s*(events Tübingen)?$', 70, # min_accuracy
  {'command_flags': re.IGNORECASE}),
 
     # bitsundso website bus982

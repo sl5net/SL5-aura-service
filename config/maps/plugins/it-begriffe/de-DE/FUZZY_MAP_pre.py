@@ -185,7 +185,7 @@ FUZZY_MAP_pre = [
     ('lowerCase', r'\blobt\s*Case\b', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: AutoKey
-    ('AutoKey', r'\bAuto k\b', 82, {'command_flags': re.IGNORECASE}),
+    ('AutoKey', r'\bAuto\s*k\w+\b', 82, {'command_flags': re.IGNORECASE}),
     # EXAMPLE: 0 A.D.
     ('0 A.D.', r'\bzewa d\b', 82, {'command_flags': re.IGNORECASE}),
 

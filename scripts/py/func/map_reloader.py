@@ -166,7 +166,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                 relative_path = map_file_path.relative_to(project_root)
                 module_name = str(relative_path.with_suffix('')).replace(os.path.sep, '.')
 
-                logger.info(f"map_reloader module_name: {module_name!r}")
+                # logger.info(f"map_reloader module_name: {module_name!r}")
 
                 log_all_map_reloaded = settings.DEV_MODE_all_processing
 
