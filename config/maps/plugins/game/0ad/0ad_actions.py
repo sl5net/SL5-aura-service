@@ -104,6 +104,10 @@ def execute(match_data):
         _dotool('key d\nkey d\nkey')
         _schedule_idle_select()
 
+    elif text_after_replacement in ['aa', 'aaa', 'aaaa', 'aaaaa']:
+        cmd = ' '.join(['a\nkey'] * len(text_after_replacement))
+        _dotool(f'key {cmd}')
+        _schedule_idle_select()
 
     elif 'wood' in text_after_replacement:
         press_plus_multiple_times(1)
