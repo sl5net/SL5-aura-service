@@ -869,8 +869,8 @@ if __name__ == "__main__":
     load_maps_for_language(lang, test_logger)
 
     print(f":st: Starting self-test (CLI mode) using {lt_url}...")
-    print(f":st: gh workflow run self-test.yml")
-    print(f":st: gh run list --workflow=self-test.yml")
+    print(":st: gh workflow run self-test.yml")
+    print(":st: gh run list --workflow=self-test.yml")
     try:
         run_core_logic_self_test(test_logger, tmp_path, lt_url, lang)
     except Exception as e:
