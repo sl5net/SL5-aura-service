@@ -2,7 +2,7 @@
 
 # ⬟ SL5 Aura – Tu Voz. Tus reglas.
 
-> Marco de asistente de voz 100% fuera de línea y que prioriza la privacidad.  
+> Marco de asistente de voz 100 % fuera de línea y que prioriza la privacidad.  
 > Defina exactamente lo que hace su voz, a partir de una sola palabra  
 > a scripts completos de Python. Ninguna nube. No salen datos de su máquina.  
 > Se ejecuta en terminal, navegador o como servicio en segundo plano (en Linux, macOS y Windows).
@@ -40,7 +40,7 @@
 * **Windows:** ✅ Totalmente compatible (usa AutoHotkey/PowerShell).
 * **macOS:** ✅ Totalmente compatible (usa AppleScript).
 * **Linux (X11/Xorg):** ✅ Totalmente compatible.
-* **Linux (Wayland):** ✅ Totalmente compatible (probado en KDE Plasma 6/Wayland).
+* **Linux (Wayland):** ✅ Totalmente compatible (probado en KDE Plasma 6 / Wayland).
 * **Linux (versión continua basada en CachyOS/Arch):** ✅ Totalmente compatible.
 Requiere mimalloc (`sudo pacman -S mimalloc`) debido a la compatibilidad con glibc 2.43.
 * **Linux (NixOS):** 🧪 Experimental: configuración aportada por la comunidad, aún no probada.
@@ -127,6 +127,8 @@ Para obtener una referencia técnica completa, incluidos todos los módulos y sc
 
 👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
+### Funciones destacadas
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-eslang.md): búsqueda de reglas `fzf` de doble panel, vistas previas de contexto en vivo, ejecución instantánea de comandos mediante `Enter`/`Ctrl+R` e integración del editor mediante `Ctrl+E`. Compatible con una tecla de acceso rápido global (`Super+S`) y múltiples entornos de búsqueda dedicados preconfigurados mediante comandos de voz.
 
 ### Estado de compilación
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ)
@@ -362,7 +364,7 @@ El motor de procesamiento se adhiere estrictamente a una **Cadena de prioridad j
 2. **Orden en el archivo (microprioridad):** Dentro de cualquier archivo de mapa determinado (FUZZY_MAP_pre.py), las reglas se procesan estrictamente por **número de línea** (de arriba a abajo).
   
 
-Esta arquitectura garantiza que las reglas centrales del sistema estén protegidas, mientras que las reglas específicas del proyecto o contextuales (como las de CodeIgniter o los controles del juego) se pueden agregar fácilmente como extensiones de baja prioridad a través de complementos.
+Esta arquitectura garantiza que las reglas centrales del sistema estén protegidas, mientras que las reglas específicas del proyecto o que tienen en cuenta el contexto (como las de CodeIgniter o los controles del juego) se pueden agregar fácilmente como extensiones de baja prioridad mediante complementos.
 
 </detalles>
 
@@ -425,7 +427,7 @@ Nuestro motor principal para el reconocimiento de voz y el procesamiento de audi
 
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Servicio principal de Python que orquesta Aura) 🐧 🍏 🪟  
-├┬ **Recarga en vivo** (Configuración y mapas) 🐧 🍏 🪟  
+├┬ **Recarga en vivo en vivo** (Configuración y mapas) 🐧 🍏 🪟  
 │├ **Carga segura de mapas privados (integridad primero)** 🔒 🐧 🍏 🪟  
 ││ * **Flujo de trabajo:** Carga archivos ZIP protegidos con contraseña.   
 │├ **Procesamiento y corrección de texto/** Agrupado por idioma (p. ej., `de-DE`, `en-US`, ...)   
@@ -480,7 +482,7 @@ Scripts para la configuración, prueba y ejecución del servicio del entorno.
 
 *Consejo: glogg le permite utilizar expresiones regulares para buscar eventos interesantes en sus archivos de registro.*   
 Marque la casilla de verificación durante la instalación para asociar con archivos de registro.    
-https://translate.google.com/translate?hl=de&sl=en&tl=es&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=en&sl=en&tl=es&u=https://glogg.bonnefon.org/     
   
 *Consejo: Después de definir sus patrones de expresiones regulares, ejecute `python3 tools/map_tagger.py` para generar automáticamente ejemplos de búsqueda para las herramientas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-eslang.md) para obtener más detalles.*
 
@@ -563,9 +565,9 @@ Estos modelos comprimidos deben guardarse en la carpeta `modelos/`
 Esta tabla proporciona una descripción general de los diferentes modelos de Vosk, incluido su tamaño, velocidad o tasa de error de palabras, notas e información de licencia.
 
 
-- **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
+- **Modelos Vosk:** XMLDLINK46X
 - **Herramienta de idioma:**  
-(6.6) XMLDLINK46X
+(6.6) XMLDLINK47X
 
 **Licencia de LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 

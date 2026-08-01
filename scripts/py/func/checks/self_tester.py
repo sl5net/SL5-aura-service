@@ -528,7 +528,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     sorted_metrics = sorted(test_metrics, key=lambda x: x['duration'], reverse=True)
 
     for m in sorted_metrics:
-        status = "✅" if m['success'] else "❌"
+        status = "✅ OK" if m['success'] else "❌ FAIL"
         lt_flag = "LT" if m['use_lt'] else "--"
         if global_state.LOGGING_ENABLED:
             logger.info(f":st: {status:<1} | {m['duration']:>6.3f}s | {lt_flag:<2} | {m['desc'][:40]:<40} | '{m['input']}'")

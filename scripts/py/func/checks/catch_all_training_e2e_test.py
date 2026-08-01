@@ -147,6 +147,11 @@ def run_catch_all_training_e2e_test(logger, lt_url):
 
 
     try:
+
+        # --- PHASE 0: BACKUP ---
+        logger.info("catchAllTest: Phase 0: Backing up map file.")
+        shutil.copy2(MAP_TARGET_FILE, MAP_BACKUP_FILE)
+        
         # --- PHASE 1: INSERT CATCH-ALL RULE ---
         logger.info("catchAllTest: Phase 1: Inserting catch-all rule into map file.")
         _insert_catch_all_rule(MAP_TARGET_FILE)

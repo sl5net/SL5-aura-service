@@ -19,7 +19,8 @@ EXPECTED_OUTPUT = 'regex'
 LANG_CODE = 'de-DE'
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
-MAP_TARGET_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "standard_actions"
+# MAP_TARGET_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "standard_actions"
+MAP_TARGET_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "standard_actions" / "calculator"
 
 # MAP_BACKUP_DIR = PROJECT_ROOT / "standard_actions_backup_temp"
 # TEMP_DIR = PROJECT_ROOT / "log"
@@ -118,7 +119,9 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     # --- PHASE 0: PREPARATION (Backup) ---
     # logger.info(f"✅ Test: Phase 0: Creating Backup of: {MAP_TARGET_DIR.name}")
     try:
-        shutil.copytree(MAP_TARGET_DIR, MAP_BACKUP_DIR)
+        shutil.copytree(MAP_TARGET_DIR, MAP_BACKUP_DIR,
+                        ignore=shutil.ignore_patterns('__pycache__'))
+
         logger.info("✅ e2eTest: Phase 0: Backup created successfully of: {MAP_TARGET_DIR.name}.")
     except Exception as e:
         logger.error(f"❌ Test: Phase 0: Backup FAILED: {e} of: {MAP_TARGET_DIR.name}")
@@ -137,7 +140,10 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     if not success:
         logger.error(f"❌ Phase 1 FAILED: Rule '{TEST_INPUT}' did not work. Test cannot proceed. Output: {actual_output}")
         # RESTORE THE SYSTEM BEFORE EXITING ON FAILURE
-        shutil.copytree(MAP_BACKUP_DIR, MAP_TARGET_DIR, dirs_exist_ok=True)
+
+        shutil.copytree(MAP_BACKUP_DIR, MAP_TARGET_DIR, dirs_exist_ok=True,
+                        ignore=shutil.ignore_patterns( '__pycache__'))
+
         shutil.rmtree(MAP_BACKUP_DIR)
         return 1
     logger.info("✅ Test: Phase 1 PASSED: Rule is active.")
@@ -151,7 +157,9 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     except Exception as e:
         logger.error(f"❌ Deletion FAILED: {e}")
         # RESTORE THE SYSTEM BEFORE EXITING ON FAILURE
-        shutil.copytree(MAP_BACKUP_DIR, MAP_TARGET_DIR)
+        shutil.copytree(MAP_BACKUP_DIR, MAP_TARGET_DIR,
+                        ignore=shutil.ignore_patterns('__pycache__'))
+
         shutil.rmtree(MAP_BACKUP_DIR)
         return 1
 
@@ -192,6 +200,7 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
 
     try:
         shutil.copytree(MAP_BACKUP_DIR, MAP_TARGET_DIR) # Copy back to the original location
+        shutil.copytree(MAP_BACKUP_DIR, MAP_TARGET_DIR, ignore=shutil.ignore_patterns('__pycache__'))
     except Exception as e:
         logger.error(f"❌ Restore FAILED: {e}")
         return 1
