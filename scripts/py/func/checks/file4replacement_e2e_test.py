@@ -59,7 +59,7 @@ PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_tex
 TEST_FILE4_path = PROJECT_ROOT / "tools" / "tests" / "TEST_FILE4REPLACEMENT.txt"
 
 FUZZY_MAP_pre = [
-    ('.Zebra.txt', r'^(Zebra|7)$', 85,
+    ('.Zebra.txt', r'^(Zebra)$', 85,
      {'command_flags': re.IGNORECASE,
       'cache': False,
       }
