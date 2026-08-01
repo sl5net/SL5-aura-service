@@ -33,6 +33,6 @@ FUZZY_MAP_pre = [
     # (f"Mit freundlichen Grüßen, {user_name}\n", r"^(beste grüße|mit freundlichen grüßen)\w*$"),
 
     # Viele Gruße
-    (f"Viele Grüße {user_name}\n", r"^(viele gr.ße|jede gr.ße)$",
-    81, {'command_flags': re.IGNORECASE}),
+    # (f"Viele Grüße {user_name}\n", r"^(viele gr.ße|jede gr.ße)$",
+    # 81, {'command_flags': re.IGNORECASE}),
 ]

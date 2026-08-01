@@ -195,8 +195,11 @@ FUZZY_MAP_pre = [
     # EXAMPLE: 0 A.D. spiel
     ('GitHub SL5', r'\bgithub es sind 5\b', 82, {'command_flags': re.IGNORECASE}),
 
-
-
+    # EXAMPLE: krieg x
+    ('regex', r'\b(krieg x|rekik|mike x|rick x|Recaps)\b', 95, {
+        'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool']
+    }),
 
     # EXAMPLE: bild prozess
     ('Build Prozess', r'\bbild prozess\b', 82, {'command_flags': re.IGNORECASE}),

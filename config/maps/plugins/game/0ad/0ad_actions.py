@@ -115,6 +115,9 @@ def execute(match_data):
         _dotool(f'key {cmd}')
         _schedule_idle_select()
 
+    elif text_after_replacement in ['select iddle', 'select_idle']:
+        _schedule_idle_select()
+
     elif text_after_replacement.startswith('select_'):
         select_map = {
             'select_infantry': ('i', 'infantry'),
