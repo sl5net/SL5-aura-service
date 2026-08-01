@@ -1,4 +1,4 @@
-# config/maps/plugins/game/0ad/de-DE/FUZZY_MAP_pre.py
+# config/maps/plugins/game/0ad/build/de-DE/FUZZY_MAP_pre.py
 # https://regex101.com/
 import re # noqa: F401
 from pathlib import Path as p # noqa: E702
@@ -7,23 +7,25 @@ CONFIG_DIR = p(__file__).parent
 from pathlib import Path as p;import os as o # noqa: E702
 with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
-baue = r'(\waue|bauer|bauens|build|bei|anbau\w*|aber|bürohilfe|paul|paulus|warum|warhols)'
+zad_title = ['0ad', '0AD', '0 a.d.', '0 a.d']
+
+baue = r'(\s*(\w+au\w+|\waue|bauer\w|bauens|build|bei|anbau\w*|aber|bürohilfe|paul|paulus|warum|warhols|power|our|build|\w+ild)\s*)'
 farm = r'f\w*a\w*m|fa\w*en|fa|farmstead|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am|zahn'
-bauernhof = r'(b\w+\s*hof|bauch|rosenhof)\s*'
-
-
+bauernhof = r'(\s*(b\w+\s*hof|bauch|rosenhof)\s*)'
 
 feld = r'(\w*feld|paul|felsen|fällt|fell|fest|filmt|hält|sind|will|verhilft|powershell)'
 bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält|ausfällt|warum es will|warum filmt|alles rund|oh accounts|auch im kornfeld|eure kornfeld)'
 
 acker_nonsens = r'(kopfschmerzen|barack obama|drucker pflanzen|acab)'
 
+kaserne = r'(Katze|klasse|Kaserne|aracke|barrack\w?)'
+
 ignore_this_fill_words = r'(\b\w{1,3}\b\s*)?'
 
-festung = r'\s*(festung|f\w+\s*\w*|fährst du|\w+\s*um|ist um|stumm|wird stumm|schluss|fortress|festung|fortress)\s*'
+festung = r'(\s*(festung|f\w+\s*\w*|fährst du|\w+\s*um|ist um|stumm|wird stumm|schluss|fortress|festung|fortress)\s*)'
 
-turm = r'\s*(turm|tor|tower)\s*'
-turmtype = r'\s*(verteidigungs|stein|stein|wehr|defense)\s*'
+turm = r'(\s*(turm|tor|tower)\s*)'
+turmtype = r'(\s*(verteidigungs|stein|stein|wehr|defense)\s*)'
 
 FUZZY_MAP_pre = [
 
@@ -34,13 +36,13 @@ FUZZY_MAP_pre = [
     # - means first is most importend, lower rules maybe not get read.
 
     # EXAMPLE: baue Haus
-    # ('baue Haus', r'^\s*(baue|baue|power|our|build|\w+ild)\s*(\w*aus|House)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    ('h', fr'^{baue}?(\waus|House)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
     # EXAMPLE: baue feld
     # ('f', r'^\s*(baue|baue|power|our|build|\w+ild)\s*(fehlt|field|feld)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
     # EXAMPLE: baue Lagerhaus
-    # ('baue Lagerhaus', r'^\s*(\w+au\w+|baue|power|our|build|\w+ild)\s*(\w*lager|Storeh)\w*\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    ('s', fr'^{baue}?(\w*lager|Storeh)\w*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
 
 
@@ -58,10 +60,8 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: build markt
-    ('m', r'^\s*(baue\s*markt|bau\s*markt|markt\s*bauen|build\s*market|market)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    ('m', fr'^{baue}?(markt|bau\s*markt|markt\s*bauen|build\s*market|market)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
-    # build barrack
-    ('b', r'^\s*(baue\s*baracke|bau\s*baracke|baracke\s*bauen|build\s*barrack|barrack|barack)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
     # build farm
 
     # EXAMPLE: baue feld
@@ -73,8 +73,7 @@ FUZZY_MAP_pre = [
 
     # this is recommended: 30.7.'26 16:50 Thu works best.
     # EXAMPLE: getreide pflanzen
-    ('f', fr'^({baue}\s*)?(kartoffel\w*|weizen\w*|getreide\w*|acker\w*|salat\w*|blume\w*|garten|kornfeld\w*|feld\w*)\s*{ignore_this_fill_words}(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
-
+    ('f', fr'^({baue}\s*)?(kartoffel\w*|weizen\w*|getreide\w*|acker\w*|salat\w*|blume\w*|garten|conf|kornfeld\w*|feld\w*)\s*{ignore_this_fill_words}(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
 
     # build farmstead (zwei Farmen)
@@ -88,9 +87,13 @@ FUZZY_MAP_pre = [
     # ('f,f,f', r'^\s*(baue\s*festung|bau\s*festung|festung\s*bauen|build\s*fortress|fortress|drei\s*farmen)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
     # EXAMPLE: baue festung
-    ('fff', fr'^\s*({baue}\s*{festung}|{festung}\s*{baue})$', 15,
+    ('fff', fr'^({baue}{festung}|{festung}\s*{baue})$', 15,
      {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
       'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+
+    # EXAMPLE: Kaserne
+    ('b', fr'^({baue}?{kaserne}|{kaserne}{baue}?)$', 20,
+     {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title}),
 
     # EXAMPLE: baue turm
     ('dd', fr'^\s*({baue}{turmtype}{turm}|{turm}|{turmtype}{turm}{baue}|{turmtype}{turm})$', 15, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),

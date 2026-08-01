@@ -11,8 +11,8 @@ zad_title = ['0ad', '0AD', '0 a.d.', '0 a.d']
 
 infanterie = r'(inf\w*\s*(rie|try)|infanterie|infantry|infra try|die infanterie)'
 # config/maps/plugins/game/0ad/select/de-DE/FUZZY_MAP_pre.py
-select = r'\s*(select|benedikt|\we\w+[ck]\w+t|selbst|schlägt)\s*'
-iddle = r'\s*(iddle|iddle|edel|i[dts]|\wi\w+le\w+|unt[äa]tig\w*|arbeiter\w*|arbeitslos\w*|also|erhalte)\s*'
+select = r'(\s*(select|benedikt|\we\w+[ck]\w+t|selbst|schlägt)\s*)'
+iddle = r'(\s*(iddle|iddle|edel|i[dts]|\wi\w+le\w+|unt[äa]tig\w*|arbeiter\w*|arbeitslos\w*|also|erhalte)\s*)'
 FUZZY_MAP_pre = [
     # EXAMPLE: select iddle
     ('select iddle', fr'^({select}{iddle}|{iddle}|{select}).*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
