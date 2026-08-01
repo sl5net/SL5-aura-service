@@ -14,7 +14,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: rechne
     ('', r'(?:rechne|was ist|was is|was)\s*(\d+)\s*([\+\-\*\/]|plus|minus|mal|geteilt durch)\s*(\d+)', 95, {
         'flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'calculator.py']
+        'on_match_exec': [CONFIG_DIR / '..' /  'calculator.py']
     }),
 ]
 
