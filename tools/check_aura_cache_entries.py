@@ -17,7 +17,7 @@ def main():
     print(f"Count: {len(rows)}")
     for r in rows:
         print(f"  rule={str(r['rule_output'])[:50]} | result={str(r['final_result'])[:50]} | v_val={r['validity_value']}")
-
+    # tools/check_aura_cache_entries.py:21
     print("\n=== Simulate cleanup_cache_on_reload ===")
     map_path = "config/maps/koans_deutsch/09_personal_signature/de-DE/FUZZY_MAP_pre.py"
     new_mtime = str(os.path.getmtime(map_path)) if os.path.exists(map_path) else "N/A"
