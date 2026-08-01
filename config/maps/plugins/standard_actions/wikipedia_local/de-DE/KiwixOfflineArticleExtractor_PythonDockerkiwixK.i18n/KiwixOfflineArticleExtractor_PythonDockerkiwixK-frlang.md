@@ -47,7 +47,7 @@ pip install requests beautifulsoup4
 
 ### 3. Exécution du serveur Kiwix (la dépendance principale)
 
-Le script s'appuie sur « kiwix-serve » exécuté sur le port « 8080 ». Cette commande utilise l'image Docker officielle et stable et lie votre répertoire actuel (contenant le fichier ZIM) au conteneur.
+The script relies on `kiwix-serve` running on port `8080`. Cette commande utilise l'image Docker officielle et stable et lie votre répertoire actuel (contenant le fichier ZIM) au conteneur.
 
 **IMPORTANT :** Placez votre fichier ZIM (par exemple, `wikipedia_de_all_mini.zim`) dans le répertoire `kiwix_cli` avant d'exécuter cette commande.
 

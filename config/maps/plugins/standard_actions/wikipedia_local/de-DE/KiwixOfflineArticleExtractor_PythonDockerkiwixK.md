@@ -1,18 +1,18 @@
-## Kiwix 오프라인 기사 추출기(Python/Docker/kiwix-serve)
+## Kiwix Offline Article Extractor (Python/Docker/kiwix-serve)
 
-이 문서는 Docker 컨테이너 내에서 실행되는 `kiwix-serve` 웹 서버를 사용하여 오프라인 ZIM 파일에서 Wikipedia 기사의 전체 텍스트를 추출하는 Python 스크립트를 설정하고 사용하기 위한 단계별 가이드를 제공합니다.
+This document provides a step-by-step guide to set up and use a Python script that extracts the full, clean text of a Wikipedia article from an offline ZIM file using the `kiwix-serve` web server running inside a Docker container.
 
-### 전제 조건
+### Prerequisites
 
-Manjaro 시스템에 다음 소프트웨어가 설치되어 있어야 합니다.
+You must have the following software installed on your Manjaro system:
 
-1. **Docker:** 컴파일 문제 없이 공식 `kiwix-tools` 서버를 실행합니다.
-2. **Python 3:** 가상 환경(`venv`) 사용.
-3. **ZIM 파일:** 오프라인 Wikipedia 데이터베이스(예: `wikipedia_de_all_mini.zim`).
+1.  **Docker:** To run the official `kiwix-tools` server without compilation issues.
+2.  **Python 3:** With a virtual environment (`venv`).
+3.  **A ZIM File:** The offline Wikipedia database (e.g., `wikipedia_de_all_mini.zim`).
 
-### 1. 시스템 설정(Docker)
+### 1. System Setup (Docker)
 
-Docker 서비스가 설치되어 실행 중인지 확인하세요.
+Ensure the Docker service is installed and running.
 
 ```bash
 # 1. Install Docker on Manjaro
@@ -28,9 +28,9 @@ sudo usermod -aG docker $USER
 # NOTE: You must log out and log back in (or reboot) for the group change to take effect.
 ```
 
-### 2. Python 환경 설정
+### 2. Python Environment Setup
 
-Python 가상 환경을 설정하고 필요한 라이브러리를 설치합니다.
+Set up your Python virtual environment and install the necessary libraries.
 
 ```bash
 # Create a new directory for your project (e.g., 'kiwix_cli')
@@ -45,11 +45,11 @@ source .venv/bin/activate
 pip install requests beautifulsoup4
 ```
 
-### 3. Kiwix 서버 실행(핵심 종속성)
+### 3. Running the Kiwix Server (The Core Dependency)
 
-이 스크립트는 '8080' 포트에서 실행되는 'kiwix-serve'를 사용합니다. 이 명령은 공식적인 안정적인 Docker 이미지를 사용하고 현재 디렉터리(ZIM 파일 포함)를 컨테이너에 바인딩합니다.
+The script relies on `kiwix-serve` running on port `8080`. This command uses the official, stable Docker image and binds your current directory (containing the ZIM file) to the container.
 
-**중요:** 이 명령을 실행하기 전에 ZIM 파일(예: `wikipedia_de_all_mini.zim`)을 `kiwix_cli` 디렉터리에 넣으세요.
+**IMPORTANT:** Place your ZIM file (e.g., `wikipedia_de_all_mini.zim`) in the `kiwix_cli` directory before running this command.
 
 ```bash
 # Run the kiwix-serve command in the background (using -d)
@@ -66,11 +66,11 @@ docker run --rm -d -p 8080:8080 -v ~/Downloads/wikipedia_de_all_mini.zim:/data/w
 
 
 ```
-이제 서버는 `http://localhost:8080`에서 실행 중입니다.
+The server is now running on `http://localhost:8080`.
 
-### 4. 기사 추출 스크립트
+### 4. The Article Extraction Script
 
-`article_extractor.py`라는 파일을 만들고 다음 최종 작업 코드를 여기에 붙여넣습니다.
+Create a file named `article_extractor.py` and paste the following final, working code into it.
 
 ```python
 import requests
@@ -208,15 +208,15 @@ if __name__ == '__main__':
     print(text_fail)
 ```
 
-### 5. 적용 및 정리
+### 5. Application and Cleanup
 
-1. **스크립트를 실행합니다.**
+1.  **Run the script:**
     ```bash
     python article_extractor.py
     ```
 
-2. **Docker 서버를 중지합니다(완료되면):**
-Docker 컨테이너를 중지해야 합니다. 그렇지 않으면 포트 8080을 계속 사용합니다.
+2.  **Stop the Docker Server (when finished):**
+    You must stop the Docker container, otherwise it keeps using port 8080.
     ```bash
     # Find the container ID (or just the first few characters)
     docker ps 
@@ -224,5 +224,5 @@ Docker 컨테이너를 중지해야 합니다. 그렇지 않으면 포트 8080�
     # Stop the container
     docker stop <CONTAINER_ID>
     ```
-XSPACEbreakX
-XSPACEbreakX
+    
+    

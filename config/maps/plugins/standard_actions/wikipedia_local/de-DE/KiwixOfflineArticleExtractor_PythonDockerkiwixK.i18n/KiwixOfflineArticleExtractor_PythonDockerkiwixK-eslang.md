@@ -1,6 +1,6 @@
 ## Extractor de artículos sin conexión de Kiwix (Python/Docker/kiwix-serve)
 
-Este documento proporciona una guía paso a paso para configurar y utilizar una secuencia de comandos Python que extrae el texto limpio y completo de un artículo de Wikipedia de un archivo ZIM sin conexión utilizando el servidor web `kiwix-serve` que se ejecuta dentro de un contenedor Docker.
+Este documento proporciona una guía paso a paso para configurar y utilizar una secuencia de comandos Python que extrae el texto completo y limpio de un artículo de Wikipedia de un archivo ZIM sin conexión utilizando el servidor web `kiwix-serve` que se ejecuta dentro de un contenedor Docker.
 
 ### Requisitos previos
 
