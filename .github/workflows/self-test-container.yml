@@ -70,6 +70,8 @@ jobs:
             # Verify that the watcher is still running (proves it did not exit with status 124/set -e)
             if ! kill -0 $WATCHER_PID 2>/dev/null; then
               echo "❌ ERROR: Watcher crashed while or after typing the long text!"
+              echo "--- log/type_watcher.log ---"
+              cat log/type_watcher.log || echo "no log file found"
               exit 1
             fi
 

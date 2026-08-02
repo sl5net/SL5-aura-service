@@ -76,7 +76,7 @@ FUZZY_MAP_pre = [
     ('git commit ', r'\bgittern komet\b\s*', 80, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit Text in english
-    ('git commit Text in english', rf'\bein {gitGit}\b\s*\b{commitGit} text in english\b', 80, {'command_flags': re.IGNORECASE}),
+    ('bitte commit Text in english', rf'\bein {gitGit}\b\s*\b{commitGit} text in english\b', 80, {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: git clone
