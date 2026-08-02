@@ -9,7 +9,8 @@ with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_roo
 
 zad_title = ['0ad', '0AD', '0 a.d.', '0 a.d']
 
-infanterie = r'(inf\w*\s*(rie|try)|infanterie|infantry|infra try|die infanterie)'
+infanterie = r'(inf\w*\s*(rie|try)|infanterie|infantry|infra try|die infanterie|fussvolk|fusstruppen|in\s*fr\w+t\s*\w|ihn\s*fr\w+)'
+
 # config/maps/plugins/game/0ad/select/de-DE/FUZZY_MAP_pre.py
 select = r'(\s*(select|benedikt|\we\w+[ck]\w+t|selbst|schlägt)\s*)'
 iddle = r'(\s*(iddle|iddle|edel|i[dts]|\wi\w+le\w+|unt[äa]tig\w*|arbeiter\w*|arbeitslos\w*|also|erhalte)\s*)'
@@ -128,21 +129,21 @@ FUZZY_MAP_pre = [
     }),
 
     # EXAMPLE: Infanterie
-    ('select_infantry', fr'^\s*({infanterie}|fussvolk|fusstruppen|{infanterie})\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('select_infantry', fr'^{select}?{infanterie}$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
     # EXAMPLE: speertraeger
-    ('select_pikemen', r'^\s*(speertr[äa]ger|pikentr[äa]ger|phalanx|pikemen)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('select_pikemen', r'^{select}?(speertr[äa]ger|pikentr[äa]ger|phalanx|pikemen)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
     # EXAMPLE: kavallerie
-    ('select_cavalry', r'^\s*(kavallerie|reiter|reiterei|cavalry)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('select_cavalry', r'^{select}?(kavallerie|reiter|reiterei|cavalry)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
     # EXAMPLE: bogenschuetzen
-    ('select_archers', r'^\s*(bogensch[üu]tzen|sch[üu]tzen|pl[äa]nkler|archers)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('select_archers', r'^{select}?(bogensch[üu]tzen|sch[üu]tzen|pl[äa]nkler|archers)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
     # EXAMPLE: schwertkaempfer
-    ('select_swordsmen', r'^\s*(schwertk[äae]+mpfer|schwerter|swordsmen)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('select_swordsmen', r'^{select}?(schwertk[äae]+mpfer|schwerter|swordsmen)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
     # EXAMPLE: elefanten
-    ('select_elephants', r'^\s*(elefanten|elefant|elephants)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('select_elephants', r'^{select}?(elefanten|elefant|elephants)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
     # EXAMPLE: katapulte
-    ('select_catapults', r'^\s*(katapulte|katapult|belagerung|catapults)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('select_catapults', r'^{select}?(katapulte|katapult|belagerung|catapults)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
     # EXAMPLE: heiler
-    ('select_healers', r'^\s*(heiler|priester|healers)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('select_healers', r'^{select}?(heiler|priester|healers)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
 ]
 

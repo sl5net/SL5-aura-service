@@ -18,7 +18,7 @@ bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält|ausfällt|warum es 
 
 acker_nonsens = r'(kopfschmerzen|barack obama|drucker pflanzen|acab)'
 
-kaserne = r'(Katze|klasse|Kaserne|aracke|barrack\w?)'
+kaserne = r'(Katze|klasse|\wa\werne|aracke|barrack\w?)'
 
 ignore_this_fill_words = r'(\b\w{1,3}\b\s*)?'
 
@@ -73,7 +73,7 @@ FUZZY_MAP_pre = [
 
     # this is recommended: 30.7.'26 16:50 Thu works best.
     # EXAMPLE: getreide pflanzen
-    ('f', fr'^({baue}\s*)?(kartoffel\w*|weizen\w*|getreide\w*|acker\w*|salat\w*|blume\w*|garten|conf|kornfeld\w*|feld\w*)\s*{ignore_this_fill_words}(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    ('f', fr'^({baue}\s*)?(kartoffel\w*|weizen\w*|getreide\w*|acker\w*|salat\w*|blume\w*|\wumen|garten|conf|kornfeld\w*|feld\w*)\s*{ignore_this_fill_words}(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
 
     # build farmstead (zwei Farmen)

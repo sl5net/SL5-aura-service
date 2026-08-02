@@ -354,9 +354,9 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
             prefix=maps_package.__name__ + '.',
             onerror=lambda x: None):
 
-        if "09_personal_signature" in modname:
-            logger.info("🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑")
-            logger.info(f"'09_personal_signature' in modname; load_maps_for_language modname: {modname!r}")
+        # if "09_personal_signature" in modname:
+        #     logger.info("🛑🛑🛑🛑🛑 scripts/py/func/process_text_in_background.py:358 🛑🛑🛑🛑🛑🛑🛑🛑🛑")
+        #     logger.info(f"'09_personal_signature' in modname; load_maps_for_language modname: {modname!r}")
 
         is_private = False
 
