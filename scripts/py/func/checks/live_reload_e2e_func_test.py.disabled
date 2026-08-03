@@ -194,19 +194,25 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
         pass
 
 
-
-    # --- PHASE 4: WIEDERHERSTELLEN (Reactivating Rule) ---
+    # scripts/py/func/checks/live_reload_e2e_func_test.py:197
+    # --- PHASE 4: (Reactivating Rule) ---
     logger.info("e2ePhase 4: Restoring original map directory from backup.")
 
     try:
-        shutil.copytree(MAP_BACKUP_DIR, MAP_TARGET_DIR) # Copy back to the original location
-        shutil.copytree(MAP_BACKUP_DIR, MAP_TARGET_DIR, ignore=shutil.ignore_patterns('__pycache__'))
+        shutil.copytree(
+            MAP_BACKUP_DIR,
+            MAP_TARGET_DIR,
+            dirs_exist_ok=True,
+            copy_function=shutil.copy2,
+            ignore=shutil.ignore_patterns('__pycache__')
+        )
+
     except Exception as e:
         logger.error(f"❌ Restore FAILED: {e}")
         return 1
 
     logger.info("Waiting for Live Reload to fully process restoration.")
-    time.sleep(0.010)
+    time.sleep(0.500)
 
     # --- PHASE 5: END-PRÜFUNG (Must Work) ---
     logger.info("Phase 5: Re-activation check: Rule MUST be active again.")

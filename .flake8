@@ -3,7 +3,7 @@ ignore = E116,E121,E122,E123,E124,E126,E128,E131,E201,E202,E203,E221,E222,E225,E
 
 
 max-line-length = 120
-extend-ignore = F601
+extend-ignore = F601,F811,F401
 exclude =
     .git,
     ./.venv

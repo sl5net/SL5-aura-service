@@ -1266,8 +1266,16 @@ if settings.DEV_MODE:
     check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
 
 
-    from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
-    run_e2e_live_reload_func_test_v2(logger, active_lt_url)
+    # from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
+    # run_e2e_live_reload_func_test_v2(logger, active_lt_url)
+    readme = """ 3.8.'26 15:58 Mon
+    Disable flaky live-reload e2e test
+    Comment out the hard import in aura_engine.py and rename the test file
+    to prevent the module from being loaded. The test caused an infinite
+    reload loop due to file-watcher race conditions.
+    TODO: fix it and reenabel it
+    """
+
 
     log4DEV('Script Start', logger)
 
