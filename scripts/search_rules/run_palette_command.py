@@ -56,8 +56,8 @@ def is_api_running():
     try:
         with socket.create_connection(("127.0.0.1", 8830), timeout=0.1):
             return True
-    except Exception as e:
-        print(e)
+    except (socket.timeout, ConnectionRefusedError, OSError) as e20260803_1425:
+        print(e20260803_1425)
         return False
 
 def main():
@@ -84,7 +84,7 @@ def main():
                         api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
                         log(f"API key loaded successfully (length: {len(api_key)} characters).\n")
                         break
-        except Exception as e20260702_1708:
+        except (FileNotFoundError, PermissionError, KeyError, ValueError) as e20260702_1708:
             print(f'e20260702_1708: {e20260702_1708}')
             log(f'e20260702_1708: {e20260702_1708}')
     else:
@@ -117,7 +117,7 @@ def main():
                     if line.strip().startswith("SERVICE_API_KEY="):
                         api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
                         break
-        except Exception as e20260702_1707:
+        except (FileNotFoundError, PermissionError, IndexError) as e20260702_1707:
             print(f'e20260702_1707: {e20260702_1707}')
 
     if not is_api_running():
@@ -194,7 +194,7 @@ def main():
                         log(f"success: file wrote -> {out_file}\n")
                     except PermissionError as pe:
                         log(f"ERROR (rights): {pe}\n")
-                    except Exception as ex:
+                    except (OSError, ValueError, TypeError) as ex:
                         log(f"ERROR : {ex}\n")
             else:
                 print(f"ERROR Service-answer : {res_data}")

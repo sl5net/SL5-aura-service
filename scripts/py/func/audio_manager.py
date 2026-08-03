@@ -53,6 +53,8 @@ _audio_dependencies_loaded = False
 
 def _init_audio_dependencies():
     global pygame, np, _audio_dependencies_loaded, sound_program_loaded
+    sound_program_loaded = False
+
     if _audio_dependencies_loaded:
         return True
     try:
@@ -117,7 +119,7 @@ logger = logging.getLogger(__name__)
 
 
 # scripts/py/func/audio_manager.py:54
-def speak_inclusive_fallback(text_to_speak, language_code):
+def speak_inclusive_fallback(text_to_speak, language_code): # noqa: F811
     """TTS helper for plugins"""
     if not settings.PLUGIN_HELPER_TTS_ENABLED:
         logger.info("no PLUGIN_HELPER_TTS_ENABLED > skipping audio-speak ...")
