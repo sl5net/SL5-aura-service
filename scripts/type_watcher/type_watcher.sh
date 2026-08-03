@@ -543,7 +543,8 @@ PY
             rm -f "$f"
 
             # --- Conditional Enter Key ---
-            window_title=$(get_active_window_title)
+#            window_title=$(get_active_window_title)
+            window_title=$(get_active_window_title || true)
 
             # echo "415: '$window_title' "
 
