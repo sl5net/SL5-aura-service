@@ -1,3 +1,4 @@
+# .github/workflows/mac_recording_trigger.yml
 name: CI macOS Recording Trigger
 
 on:

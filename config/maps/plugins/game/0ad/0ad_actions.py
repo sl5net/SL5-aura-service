@@ -50,6 +50,7 @@ def press_plus_multiple_times_slow(count):
         # _dotool('key kpplus') # ++++
         _dotool('key rightbrace')
 
+
 def execute(match_data):
     # helpful tips: dotool --list-keys | grep -iE "period|dot|full"
     import sys
@@ -63,7 +64,12 @@ def execute(match_data):
     text_after_replacement = match_data['text_after_replacement']
     log(f'0ad_actions.py:27 -> text_after_replacement: {text_after_replacement}')
 
-    def _schedule_idle_select(delay=8):
+    def _idle_select(do_speak= False):
+        _dotool('keydown leftalt\nkey backslash\nkeyup leftalt')  # works 30.7.'26 15:05 Thu
+        if do_speak:
+            speak_inclusive_fallback("idle worker selected", "en-US")
+
+    def _schedule_idle_select(delay=8, do_speak= False):
         import threading
 
         def _auto_select():
@@ -79,44 +85,71 @@ def execute(match_data):
             # _dotool('keydown leftalt\nkey rightbrace\nkeyup leftalt') macht ganz oder markiert alle??
 
             # _dotool('keydown leftalt\nkey dot\nkeyup leftalt') # works 30.7.'26 14:26 Thu
-            _dotool('keydown leftalt\nkey backslash\nkeyup leftalt') # works 30.7.'26 15:05 Thu
+            # _dotool('keydown leftalt\nkey backslash\nkeyup leftalt') # works 30.7.'26 15:05 Thu
+            _idle_select(do_speak)
+
 
 
             # subprocess.run(['xdotool', 'key', '--clearmodifiers', 'Alt+period'], check=False)
-            speak_inclusive_fallback("idle worker selected", "en-US")
 
         timer = threading.Timer(delay, _auto_select)
         timer.daemon = True
         timer.start()
     if False:
         print('')
-    elif 'f,f' in text_after_replacement:
-        speak_inclusive_fallback("farm", "en-US")
+    elif 'h' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("haus wurde gesprochen", "en-US")
+        _schedule_idle_select()
+    elif 's' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("store-haus", "en-US")
+        _schedule_idle_select()
+    elif 'f' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("field", "en-US")
+        _schedule_idle_select()
+    elif 'b' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("barrack", "en-US")
+        _schedule_idle_select()
+    elif 'm' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("markt", "en-US")
+        _schedule_idle_select()
+    elif 'a' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("arsenal", "en-US")
+        _schedule_idle_select()
+    elif 'ff' == text_after_replacement:
+        _idle_select()
         _dotool('key f\nkey f')
+        speak_inclusive_fallback("farm", "en-US")
         _schedule_idle_select()
-
-    elif 'fff' in text_after_replacement:
-        speak_inclusive_fallback("fortress", "en-US")
+    elif 'fff' == text_after_replacement:
+        _idle_select()
         _dotool('key f\nkey f\nkey f')
+        speak_inclusive_fallback("fortress", "en-US")
         _schedule_idle_select()
-
     elif text_after_replacement == 'dd':
+        _idle_select()
         _dotool('key d\nkey d\nkey')
         _schedule_idle_select()
 
     elif text_after_replacement in ['aa', 'aaa', 'aaaa', 'aaaaa']:
         cmd = ' '.join(['a\nkey'] * len(text_after_replacement))
-        _dotool(f'key {cmd}')
-        _schedule_idle_select()
-
-
-    elif text_after_replacement in ['aa', 'aaa', 'aaaa', 'aaaaa']:
-        cmd = ' '.join(['a'] * len(text_after_replacement))
+        _idle_select()
         _dotool(f'key {cmd}')
         _schedule_idle_select()
 
     elif text_after_replacement in ['select iddle', 'select_idle']:
-        _schedule_idle_select()
+        _idle_select()
 
     elif text_after_replacement.startswith('select_'):
         select_map = {
@@ -143,36 +176,41 @@ def execute(match_data):
 
 
     elif 'wood' in text_after_replacement:
+        _idle_select()
         press_plus_multiple_times(1)
         speak_inclusive_fallback("wood", "en-US")
         _schedule_idle_select()
 
     elif 'fruit' in text_after_replacement:
+        _idle_select()
         press_plus_multiple_times(2)
         speak_inclusive_fallback("fruit", "en-US")
         _schedule_idle_select()
 
     elif 'meat' in text_after_replacement:
+        _idle_select()
         press_plus_multiple_times(3)
         speak_inclusive_fallback("meat", "en-US")
         _schedule_idle_select()
 
     elif 'stone' in text_after_replacement:
+        _idle_select()
         press_plus_multiple_times(4)
         speak_inclusive_fallback("stone", "en-US")
         _schedule_idle_select()
 
     elif 'metal' in text_after_replacement:
+        _idle_select()
         press_plus_multiple_times(5)
         speak_inclusive_fallback("metal", "en-US")
         _schedule_idle_select()
 
     elif len(text_after_replacement) == 1 and text_after_replacement.isalpha():
+        _idle_select()
         _dotool(f'key {text_after_replacement}')
         _schedule_idle_select()
 
     elif text_after_replacement.startswith('kp'):
-        speak_inclusive_fallback(text_after_replacement, "en-US")
         direction_map = {
             'kp8': 'kp8', 'north': 'kp8', 'norden': 'kp8',
             'kp2': 'kp2', 'south': 'kp2', 'sueden': 'kp2',
@@ -183,11 +221,12 @@ def execute(match_data):
             'kp3': 'kp3', 'southeast': 'kp3', 'suedosten': 'kp3',
             'kp1': 'kp1', 'southwest': 'kp1', 'suedwesten': 'kp1',
         }
+        _schedule_idle_select()
         for token, kp_key in direction_map.items():
             if token in text_after_replacement.lower():
                 _dotool(f'key {kp_key}')
                 break
-        _schedule_idle_select()
+        speak_inclusive_fallback(text_after_replacement, "en-US")
 
     elif text_after_replacement.startswith('camera_'):
         camera_map = {
@@ -204,9 +243,10 @@ def execute(match_data):
 
 
     elif 'ctrl+alt' in text_after_replacement:
-        speak_inclusive_fallback("select all", "en-US")
 
         _dotool('keydown leftctrl\nkeydown leftalt\nkeyup leftalt\nkeyup leftctrl')
+        speak_inclusive_fallback("select all", "en-US")
+
         # _dotool('key ctrl+alt')
         # _dotool('key ctrl:down alt:down alt:up ctrl:up') # dotool dont know this syntax: dotool --list-keys | grep -iE "^(ctrl|alt|leftctrl|leftalt)"
         # _dotool('key leftctrl:down\nkey leftalt:down\nkey leftalt:up\nkey leftctrl:up')
