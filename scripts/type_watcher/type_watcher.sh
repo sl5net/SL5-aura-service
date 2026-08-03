@@ -543,8 +543,10 @@ PY
             rm -f "$f"
 
             # --- Conditional Enter Key ---
-#            window_title=$(get_active_window_title)
             window_title=$(get_active_window_title || true)
+            if [[ -z "$window_title" ]]; then
+                log_message "INFO: No active window title detected (headless/CI or no window focused)."
+            fi
 
             # echo "415: '$window_title' "
 
