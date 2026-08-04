@@ -161,6 +161,7 @@ def execute(match_data):
             'select_elephants': ('e', 'elephants'),
             'select_catapults': ('k', 'catapults'),
             'select_healers': ('h', 'healers'),
+            'select_women': ('w', 'woman'),
         }
         item = select_map.get(text_after_replacement)
         if item:
