@@ -30,7 +30,7 @@ select = r'(\s*(select|benedikt|\we\w+[ck]\w+t|selbst|schlägt)\s*)'
 iddle = r'(\s*(iddle|iddle|edel|i[dts]|\wi\w+le\w+|unt[äa]tig\w*|arbeiter\w*|arbeitslos\w*|also|erhalte)\s*)'
 FUZZY_MAP_pre = [
     # EXAMPLE: select iddle
-    ('select iddle', fr'^{select}?({iddle}|{iddle}|{select}?).*$', 20, _common_meta),
+    # ('select iddle', fr'^{select}?({iddle}|{iddle}|{select}?).*$', 20, _common_meta),
 
     # EXAMPLE: seltext frauen
     ('select_women', fr'^{select}?(fr\w+|Bauarbeite\w*|Bürger\w*|Arbeiter\w*|Unterstüt\w*|alt\s*w|alt\s*wo|alt\s*fr|ald\s*women)$', 20, _common_meta),

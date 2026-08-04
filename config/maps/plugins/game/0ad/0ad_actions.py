@@ -122,6 +122,11 @@ def execute(match_data):
         _dotool(f'key {text_after_replacement}')
         speak_inclusive_fallback("markt", "en-US")
         _schedule_idle_select()
+    elif 't' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("temple", "en-US")
+        _schedule_idle_select()
     elif 'a' == text_after_replacement:
         _idle_select()
         _dotool(f'key {text_after_replacement}')
@@ -166,8 +171,8 @@ def execute(match_data):
         item = select_map.get(text_after_replacement)
         if item:
             key_letter, spoken_label = item
-            speak_inclusive_fallback(f"select {spoken_label}", "en-US")
             _dotool(f'keydown leftalt\nkey {key_letter}\nkeyup leftalt')
+            speak_inclusive_fallback(f"select {spoken_label}", "en-US")
 
 
 
