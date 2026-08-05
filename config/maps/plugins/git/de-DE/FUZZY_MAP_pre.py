@@ -21,7 +21,6 @@ gitGit = r'(git|Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate|geht[^\
 
 # ein kit mit text in english
 
-
 # EXAMPLE: Commit
 commitGit = r'(Commit|Komet|Komik|Comics|Gummi|gummis|kommt|kommend|mit|hitch|komm|Kometen|kubicki|komisch|gewinnen|gromit|komme|kubis|cobit|cubic|beach|gemütlich|quitt|google)'
 
@@ -38,7 +37,7 @@ FUZZY_MAP_pre = [
       }),
 
     # EXAMPLE: no verify
-    ('n --no-verify', r'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80,      {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    ('n --no-verify', r'^(no|nur|nö|nur|novell|Numeri) (frei|verify|fall|very far|fein)$', 80,    {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
 'only_in_windows': ['Konsole', 'konsole', 'Console',
         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
     }),
@@ -50,7 +49,7 @@ FUZZY_MAP_pre = [
     ('PUNCTUATION_MAP ', r'\b(punkt chemnitz)\b', 80, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: git commit
-    ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80,      {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],}),
+    ('git commit ', rf'^\s*{gitGit}\s+{commitGit}\s*$', 80,    {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],}),
     # here only_in_windows is romoved becouse its tested in the sel-test, and we maybe in some other windows 17.4.'26 15:08 Fri
 
 
@@ -60,7 +59,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: gibt kaum mit
-    ('git commit ', r'\bgibt kaum mit\w*', 80,     {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    ('git commit ', r'\bgibt kaum mit\w*', 80,   {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
 'only_in_windows': ['Konsole', 'konsole', 'Console',
         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
     }),
@@ -80,7 +79,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: git clone
-    ('git clone ', rf'^\s*{gitGit}\s+(klar|klon|clone)\s*$', 80,      {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
+    ('git clone ', rf'^\s*{gitGit}\s+(klar|klon|clone)\s*$', 80,    {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
 'only_in_windows': ['Konsole', 'konsole', 'Console',
         r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
     }),
@@ -98,31 +97,28 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: pull requests
     ('pull requests', r'^\s*(pull\s*requests?|Pullover\s*Quest)\s*$', 82, # min_accuracy
- {'command_flags': re.IGNORECASE}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: pull requests
     ('pull requests', r'\b(null|pull) requests\b', 82, # min_accuracy
- {'command_flags': re.IGNORECASE}),
-
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: er brach
     ('er branch', r'er\b (brach|Prime)\b', 82, # min_accuracy
- {'command_flags': re.IGNORECASE}),
-
-
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: Feature prince
     ('feature branch ', r'\bFeature\s*prince\b', 82, # min_accuracy
- {'command_flags': re.IGNORECASE}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: Feature prince
     ('feature branch ', r'\bFeature\s*(prince|ranch)\b', 82, # min_accuracy
- {'command_flags': re.IGNORECASE}),
+   {'command_flags': re.IGNORECASE}),
 
 
     # EXAMPLE: git checkout
     ('git checkout ', r'^\s*(git|geht)\s+(Git Checkout|Check-out)\s*$', 80, # min_accuracy
- {'command_flags': re.IGNORECASE}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: git checkout
     ('git checkout ', r'^\s*(kitschiger|Geht Tscheka)\s*$', 80, # min_accuracy
@@ -136,14 +132,14 @@ FUZZY_MAP_pre = [
  {'command_flags': re.IGNORECASE}),
     # EXAMPLE: Commit
     (' Commit ', r'\bkomm\s*mit\b\s*', 82, # min_accuracy
- {'command_flags': re.IGNORECASE}),
+           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
     # EXAMPLE: Commit Message
     (' Commit Message ', r'\bkommen\s*mit\s*Message\b', 82, # min_accuracy
- {'command_flags': re.IGNORECASE}),
+           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: neues Release
     ('neues Release ', r'\bneues\s*(Release|Verlies)\b', 82, # min_accuracy
- {'command_flags': re.IGNORECASE}),
+           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
 
 
@@ -156,19 +152,19 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: git status
     ('git status ', r'^\s*(Geht|Sie geht|git|get|gitter|glitch|Gliedstaat|kids|kate)\s+(status|Staat|staates|statisch|staatlich|start|startet|starten|stadel|dates)\s*$', 82, # min_accuracy
-     {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: Gliedstaaten
     ('git status ', r'^\s*(Gliedstaat|Gliedstaaten|Jetzt Stadt|Geht Staat ist|geht status)\s+(ist)\s*$', 80, # min_accuracy
-     {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: Gliedstaat
     ('git status ', r'^\s*(Gliedstaat|Kickstarter|Jetzt startet)\s*$', 80, # min_accuracy
-     {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: gitschtal
     ('git status', r'^\s*(gitschtal|glitschte|quatscht hatte|quitscht|quitscht werden|Quatscht hatte|Geht tat uns)\s+$', 80, # min_accuracy
-     {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     #geht statisch
 
@@ -177,7 +173,7 @@ FUZZY_MAP_pre = [
     # Gitta hat
     # EXAMPLE: git add .
     ('git add .', r'^\s*(git|geht[^\s]*|geh|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|jetzt|App|er hat)\s*(\.|\bpunkt\b)?\s*$', 82, # min_accuracy
- {'command_flags': re.IGNORECASE}),
+           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
     # EXAMPLE: Gitterbett
     ('git add .', r'^\s*(Gitterbett|Geht er hin|kredit|quitte hat)\s*$', 78, # min_accuracy
