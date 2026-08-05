@@ -122,7 +122,22 @@ def execute(match_data):
         _dotool(f'key {text_after_replacement}')
         speak_inclusive_fallback("markt", "en-US")
         _schedule_idle_select()
+    elif 'n' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("forge", "en-US")
+        _schedule_idle_select()
     elif 't' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("sentry_tower", "en-US")
+        _schedule_idle_select()
+    elif 'tt' == text_after_replacement:
+        _idle_select()
+        _dotool(f'key {text_after_replacement}')
+        speak_inclusive_fallback("defense_tower", "en-US")
+        _schedule_idle_select()
+    elif 'ttt' == text_after_replacement:
         _idle_select()
         _dotool(f'key {text_after_replacement}')
         speak_inclusive_fallback("temple", "en-US")

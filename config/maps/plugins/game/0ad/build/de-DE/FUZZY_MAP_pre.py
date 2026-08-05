@@ -55,73 +55,75 @@ FUZZY_MAP_pre = [
     # EXAMPLE: getreide pflanzen
     ('f',
      fr'^\s*({baue}\s*)?({pflanze}(\s+{feld})?|{feld})\s*{ignore_this_fill_words}(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$',
-     15, _common_meta),
+     99, _common_meta),
 
     # haben
 
     # EXAMPLE: baue Haus
-    ('h', fr'^{baue}?(\waus|House|\wau\w|haben)$', 15, _common_meta),
+    ('h', fr'^{baue}?(\waus|House|\wau\w|haben)$', 99, _common_meta),
 
     # EXAMPLE: baue feld
-    # ('f', r'^\s*(baue|baue|power|our|build|\w+ild)\s*(fehlt|field|feld)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # ('f', r'^\s*(baue|baue|power|our|build|\w+ild)\s*(fehlt|field|feld)\s*$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
     # EXAMPLE: baue Lagerhaus
-    ('s', fr'^{baue}?(([^wz]\w*)?lager([\sh]*aus)?|Storeh|\w+g[\sh]*aus)\w*$', 15, _common_meta),
+    ('s', fr'^{baue}?(([^wz]\w*)?lager([\sh]*aus)?|Storeh|\w+g[\sh]*aus)\w*$', 99, _common_meta),
 
     # EXAMPLE: baue Baracke
-    # ('baue Baracke', r'^\s*(baue|baue|Build)\s+(Ba\w+)$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # ('baue Baracke', r'^\s*(baue|baue|Build)\s+(Ba\w+)$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
     # EXAMPLE: baue Baracke
-    # ('baue Baracke', r'^\s*(\w+au\w+|Build)\s+(Ba\w+e)$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # ('baue Baracke', r'^\s*(\w+au\w+|Build)\s+(Ba\w+e)$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
     # EXAMPLE: baue Baracke
-    # ('baue Baracke', r'^\s*(\w+au\w+|build|wild|bild)\s+([pb]a[rc]\w+)$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # ('baue Baracke', r'^\s*(\w+au\w+|build|wild|bild)\s+([pb]a[rc]\w+)$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
     # EXAMPLE: baue hause
-    # ('baue Haus', r'^\s*(baue\s*h?aus|bau\s*h?aus|h?aus\s*bauen|build\s*h?ouse|house)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # ('baue Haus', r'^\s*(baue\s*h?aus|bau\s*h?aus|h?aus\s*bauen|build\s*h?ouse|house)\s*$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
 
 
     # EXAMPLE: build markt
-    ('m', fr'^{baue}?(markt|bau\s*markt|markt\s*bauen|build\s*market|market)\s*$', 15, _common_meta),
+    ('m', fr'^{baue}?(markt|bau\s*markt|markt\s*bauen|build\s*market|market)\s*$', 99, _common_meta),
 
     # schmiede
-    # EXAMPLE: build forge
-    ('n', fr'^{baue}?(Schmie?d\w*|forge)\s*$', 15, _common_meta),
 
-    # build farm
+    # EXAMPLE: schmiede
+    # EXAMPLE: baue schmiede
+    # EXAMPLE: build forge
+    ('n', fr'^{baue}?(s(ch)?m\w*|forge)\s*$', 99, _common_meta),
 
     # EXAMPLE: baue feld
-    # ('f', r'^\s*(baue\s*farm|bau\s*farm|farm\s*bauen|build\s*farm|farm|frahm|f\w*a\w*m)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
-    # ('f', fr'^\s*({bauefeld_nonsens}|{baue}\s*{feld}|bau\s*{feld}|{feld}\s*bauen|build\s*{feld}|{feld})\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # ('f', r'^\s*(baue\s*farm|bau\s*farm|farm\s*bauen|build\s*farm|farm|frahm|f\w*a\w*m)\s*$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # ('f', fr'^\s*({bauefeld_nonsens}|{baue}\s*{feld}|bau\s*{feld}|{feld}\s*bauen|build\s*{feld}|{feld})\s*$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
     # EXAMPLE: acker pflanzen
-    # ('f', fr'^\s*({acker_nonsens}|acker\s*bauen|acker|pflanz\w*|pflanze\s*feld)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # ('f', fr'^\s*({acker_nonsens}|acker\s*bauen|acker|pflanz\w*|pflanze\s*feld)\s*$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
 
     # EXAMPLE: baue arsenal
-    ('a', fr'^({baue}?{arsenal}|{arsenal}\s*{baue}?)$', 15, _common_meta),
+    ('a', fr'^({baue}?{arsenal}|{arsenal}\s*{baue}?)$', 99, _common_meta),
 
     # build farmstead (zwei Farmen)
 
     # EXAMPLE: baue farm
-    ('ff', fr'^({baue}\s*)?{ignore_this_fill_words}?({bauernhof}|{farm})\s*$', 15, _common_meta),
+    # EXAMPLE: baue bauernhof
+    ('ff', fr'^({baue}\s*)?{ignore_this_fill_words}?({bauernhof}|{farm})\s*$', 99, _common_meta),
     # build fortress (drei Farmen)
 
     # EXAMPLE: baue festung
-    # ('fff', r'^\s*(baue\s*festung|bau\s*festung|festung\s*bauen|build\s*fortress|fortress|drei\s*farmen)\s*$', 15, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
+    # ('fff', r'^\s*(baue\s*festung|bau\s*festung|festung\s*bauen|build\s*fortress|fortress|drei\s*farmen)\s*$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
     # EXAMPLE: baue festung
-    ('fff', fr'^({baue}{festung}|{festung}\s*{baue})$', 15, _common_meta ),
+    ('fff', fr'^({baue}{festung}|{festung}\s*{baue})$', 99, _common_meta ),
 
 
     # EXAMPLE: Kaserne
     ('b', fr'^({baue}?{kaserne}|{kaserne}{baue}?)$', 20, _common_meta),
 
     # EXAMPLE: Tempel
-    ('t', fr'^({baue}?{tempel}|{tempel}{baue}?)$', 20, _common_meta),
+    ('ttt', fr'^({baue}?{tempel}|{tempel}{baue}?)$', 20, _common_meta),
 
     # EXAMPLE: baue turm
-    ('dd', fr'^\s*({baue}{turmtype}{turm}|{turm}|{turmtype}{turm}{baue}|{turmtype}{turm})$', 15, _common_meta),
+    ('t', fr'^\s*({baue}{turmtype}?{turm}|{turm}|{turmtype}{turm}{baue}|{turmtype}?{turm})$', 99, _common_meta),
 
 ]
