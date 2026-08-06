@@ -100,10 +100,9 @@ SIGNATURE_MAPPING = {
 
 # --- Language Model Preloading ---
 # A list of Vosk model folder names to preload at startup if memory allows.
-# PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
-PRELOAD_MODELS = ["vosk-model-de-0.21"]
-
-
+PRELOAD_MODELS = ["vosk-model-de-0.21", "vosk-model-en-us-0.22"] # e.g. ["vosk-model-de-0.21", "vosk-model-en-us-0.22"]
+#PRELOAD_MODELS = ["vosk-model-de-0.21"]
+#PRELOAD_MODELS = ["vosk-model-de-tuda-0.6-900k"]
 
 if current_user == 'SL5.de':
     PRELOAD_MODELS = ["vosk-model-de-0.21"]

@@ -134,12 +134,13 @@ def execute(match_data):
         _schedule_idle_select()
     elif 'tt' == text_after_replacement:
         _idle_select()
-        _dotool(f'key {text_after_replacement}')
+        _dotool('key t\nkey t')
         speak_inclusive_fallback("defense_tower", "en-US")
         _schedule_idle_select()
     elif 'ttt' == text_after_replacement:
         _idle_select()
         _dotool(f'key {text_after_replacement}')
+        _dotool('key t\nkey t\nkey t')
         speak_inclusive_fallback("temple", "en-US")
         _schedule_idle_select()
     elif 'a' == text_after_replacement:

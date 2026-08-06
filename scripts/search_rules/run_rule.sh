@@ -111,7 +111,7 @@ F_OUT=$(echo "$SEARCH_INPUT" | awk -F: -v proot="$PROJECT_ROOT" "$AWK_SCRIPT" | 
         --no-hscroll \
         --delimiter=$'\t' \
         --history="$H_FILE" --query="$IQ" \
-        --header="Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit" \
+        --header="Caller:$AURA_ACTIVE_WINDOW_TITLE |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit"  \
         --with-nth=1 \
         --bind="ctrl-z:previous-history" \
         --bind="ctrl-y:next-history" \

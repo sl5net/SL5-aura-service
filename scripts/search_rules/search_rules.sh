@@ -103,7 +103,6 @@ HISTORY_FILE="$HOME/.search_rules_history"
 
 # 2. EDITOR FALLBACK LOGIC (Korrigierte Bash-Version deines Backups)
 get_preferred_editor() {
-    # Suche nach Linux- oder Windows-Executables (kompatibel mit Git Bash/WSL)
     if command -v kate >/dev/null 2>&1; then echo "kate"; return; fi
     if command -v code >/dev/null 2>&1; then echo "code"; return; fi
     if command -v nano >/dev/null 2>&1; then echo "nano"; return; fi
@@ -181,7 +180,7 @@ while true; do
 SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/') . "$MAPS_DIR" | \
     fzf --history="$HISTORY_FILE" \
         --query="$INITIAL_QUERY" \
-        --header="Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
+        --header="Caller:.. | Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
         --delimiter=":" \
         --bind="ctrl-z:previous-history" \
         --bind="ctrl-y:next-history" \

@@ -1,5 +1,9 @@
 # ध्वनि आदेश 0 A.D.
 
+#टिप (6.8.'26 11:22 गुरु)
+कृपया मॉरीशस सिव का उपयोग करें। तो आप बाधा डाल सकते हैं कि आपके सभी कर्मचारी हमेशा व्यस्त रहते हैं और कभी भी कुछ नया करने के लिए स्वतंत्र नहीं होते हैं।
+
+
 उदाहरण:
 
-https://translate.google.com/translate?hl=de&sl=en&tl=hi&u=https://www.youtube.com/watch?v=oZ2_b0TpgG0
+https://translate.google.com/translate?hl=en&sl=en&tl=hi&u=https://www.youtube.com/watch?v=oZ2_b0TpgG0

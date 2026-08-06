@@ -33,7 +33,8 @@ acker_nonsens = r'(kopfschmerzen|barack obama|drucker pflanzen|acab)'
 
 kaserne = r'(kaserne|\wa[\s\w]*[äei]rn?e|Katze|klasse|\wa\werne|\w*aracke|barrack\w?|Truppenunterkunft)'
 
-tempel = r'(Tempel|Tipp|campen|Tim)'
+tempel = r'(Tempel|Temp\w*|Tipp|campen|\w[öae]mp\wl|Jampil|Tim)'
+
 
 # kas     erne
 # was\s+w äre
@@ -60,13 +61,13 @@ FUZZY_MAP_pre = [
     # haben
 
     # EXAMPLE: baue Haus
-    ('h', fr'^{baue}?(\waus|House|\wau\w|haben)$', 99, _common_meta),
+    ('h', fr'^{baue}?(\waus|House|\wau\w|haben|Hopp|Hase|Rust)$', 99, _common_meta),
 
     # EXAMPLE: baue feld
     # ('f', r'^\s*(baue|baue|power|our|build|\w+ild)\s*(fehlt|field|feld)\s*$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
 
     # EXAMPLE: baue Lagerhaus
-    ('s', fr'^{baue}?(([^wz]\w*)?lager([\sh]*aus)?|Storeh|\w+g[\sh]*aus)\w*$', 99, _common_meta),
+    ('s', fr'^{baue}?(([^wz]\w*)?lager([\shr]*aus)?|Storeh|\w+g[\shr]*aus)\w*$', 99, _common_meta),
 
     # EXAMPLE: baue Baracke
     # ('baue Baracke', r'^\s*(baue|baue|Build)\s+(Ba\w+)$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),

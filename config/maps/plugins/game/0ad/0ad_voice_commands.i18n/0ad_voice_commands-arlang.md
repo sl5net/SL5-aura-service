@@ -1,5 +1,9 @@
 #الأوامر الصوتية 0 م
 
+                                     # نصيحة (6.8.26 11:22 الخميس)
+يرجى استخدام موريشيوس المدنية. حتى تتمكن من منع جميع العاملين لديك من الانشغال دائمًا وعدم الحرية أبدًا في القيام بشيء جديد.
+
+
                                                                     مثال:
 
-https://translate.google.com/translate?hl=de&sl=en&tl=ar&u=https://www.youtube.com/watch?v=oZ2_b0TpgG0
+https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://www.youtube.com/watch?v=oZ2_b0TpgG0
