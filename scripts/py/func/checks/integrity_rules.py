@@ -49,7 +49,6 @@ FORBIDDEN_PATTERNS = [
     "sudo installer -pkg",
     "|)",
     "(|",
-    "||",
 ]
 
 

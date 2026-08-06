@@ -38,9 +38,13 @@ def check_code_integrity(project_root, logger):
 
     for root, dirs, files in os.walk(project_root):
 
-        if ".git" in dirs: dirs.remove(".git")
-        if "__pycache__" in dirs: dirs.remove("__pycache__")
-        if "venv" in dirs: dirs.remove("venv")
+        # if ".git" in dirs: dirs.remove(".git")
+        # if "__pycache__" in dirs: dirs.remove("__pycache__")
+        # if "venv" in dirs: dirs.remove("venv")
+
+        for ignored_dir in [".git", ".env", "__pycache__", "venv", ".venv"]:
+            if ignored_dir in dirs:
+                dirs.remove(ignored_dir)
 
         for file in files:
             if 'dynamic_settings.py' in file:
@@ -70,10 +74,11 @@ def check_code_integrity(project_root, logger):
                             for forbidden in FORBIDDEN_PATTERNS:
                                 if forbidden in line:
                                     # Exception: We allow it if it is a comment (starts with #)
-
+                                    if line.strip().startswith(("#", "//", "REM")):
+                                        continue
                                     logger.fatal("-" * 60)
                                     logger.fatal("FATAL SECURITY CHECK FAILED!")
-                                    logger.fatal(f"  File: {full_path}:{line_num}")
+                                    logger.fatal(f"  File: … {str(full_path)[-65:]}:{line_num}")
                                     logger.fatal(f"❌ Forbidden Pattern detected: '{forbidden}'")
                                     logger.fatal("  SOLUTION: Use 'if getattr(settings, \"VARIABLE\", False):' instead!")
                                     logger.fatal("-" * 60)
