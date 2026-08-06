@@ -100,7 +100,7 @@ def execute(match_data):
     elif 'h' == text_after_replacement:
         _idle_select()
         _dotool(f'key {text_after_replacement}')
-        speak_inclusive_fallback("haus wurde gesprochen", "en-US")
+        speak_inclusive_fallback("haus", "en-US")
         _schedule_idle_select()
     elif 's' == text_after_replacement:
         _idle_select()
@@ -183,6 +183,29 @@ def execute(match_data):
             'select_catapults': ('k', 'catapults'),
             'select_healers': ('h', 'healers'),
             'select_women': ('w', 'woman'),
+            'select_military': ('m', 'military'),
+        }
+        item = select_map.get(text_after_replacement)
+        if item:
+            key_letter, spoken_label = item
+            _dotool(f'keydown leftalt\nkey {key_letter}\nkeyup leftalt')
+            speak_inclusive_fallback(f"select {spoken_label}", "en-US")
+
+
+
+
+    elif text_after_replacement.startswith('alt+'):
+        select_map = {
+            'select_infantry': ('i', 'infantry'),
+            'select_pikemen': ('p', 'pikemen'),
+            'select_cavalry': ('c', 'cavalry'),
+            'select_archers': ('a', 'archers'),
+            'select_swordsmen': ('s', 'swordsmen'),
+            'select_elephants': ('e', 'elephants'),
+            'select_catapults': ('k', 'catapults'),
+            'select_healers': ('h', 'healers'),
+            'select_women': ('w', 'woman'),
+            'select_military': ('m', 'military'),
         }
         item = select_map.get(text_after_replacement)
         if item:

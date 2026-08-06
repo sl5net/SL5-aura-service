@@ -22,7 +22,7 @@ _common_meta = {
 
 baue = r'(\s*(\w+au\w+|\waue|bauer\w|bauens|build|bei|anbau\w*|aber|bürohilfe|paul|paulus|warum|warhols|power|our|build|\w+ild)\s*)'
 farm = r'f\w*a\w*m|fa\w*en|fa|farmstead|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am|zahn'
-bauernhof = r'(\s*(b\w+\s*hof|bauch|rosenhof|braun)\s*)'
+bauernhof = r'(\s*(b\w+\s*(hof|haus)|bauch|rosenhof|Bauherrn|braun)\s*)'
 
 feld = r'(\w*feld|korns\w*|paul|felsen|fällt|zählt|fell|fest|filmt|hält|sind|will|verhilft|powershell|gröbenzell)'
 bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält|ausfällt|warum es will|warum filmt|alles rund|oh accounts|auch im kornfeld|eure kornfeld)'
@@ -44,12 +44,16 @@ ignore_this_fill_words = r'(\b\w{1,3}\b\s*)?'
 
 festung = r'(\s*(festung|f\w+\s*\w*|fährst du|\w+\s*um|ist um|stumm|wird stumm|schluss|fortress|festung|fortress)\s*)'
 
-arsenal = r'(arsenal|Zeughaus|Waffenlager|waffen|waffenladen|waffenla\w+|lassen lab|also nennt|personell|\w+rsonell|zu nennen|na hat|zwei chaos)'
+arsenal = r'(arsenal|aufnahme|Zeug\s*haus|Waffen\s*lager|waffen|waffen\s*laden|waffen\s*la\w+|lassen lab|also nennt|personell|\w+rsonell|zu nennen|na hat|zwei chaos|a von nähere)'
 
 turm = r'(\s*(turm|tor|tower)\s*)'
 turmtype = r'(\s*(verteidigungs|stein|stein|wehr|defense)\s*)'
 
 FUZZY_MAP_pre = [
+    # EXAMPLE: baue Haus
+    #            ('h', fr'^{baue}?(\w?aus|House|\wau[^\se]*|haben|Hopp|Hase|Rust|Rau|Baujahr|Raumes)$',
+    ('h', fr'^(?!bauern?){baue}?(\w?aus|House|\wau[^\se]*|haben|Hopp|Hase|Rust|Rau|Baujahr|Raumes)$',
+     99, _common_meta),
 
     # fr'^({baue}\s*)?(kartoffel\w*|(weizen\s*)*weizen\w*|\wei\w+en[\s\w]*will|(getreide\s*)+\w*|acker\w*|(salat\s*)+\w*|blume\w*|\wumen|garten|conf|korn{feld}\w*|{feld}\w*)\s*{ignore_this_fill_words}(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$',
 
@@ -60,8 +64,6 @@ FUZZY_MAP_pre = [
 
     # haben
 
-    # EXAMPLE: baue Haus
-    ('h', fr'^{baue}?(\waus|House|\wau\w|haben|Hopp|Hase|Rust)$', 99, _common_meta),
 
     # EXAMPLE: baue feld
     # ('f', r'^\s*(baue|baue|power|our|build|\w+ild)\s*(fehlt|field|feld)\s*$', 99, {'command_flags': re.IGNORECASE,'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d']}),
@@ -84,7 +86,7 @@ FUZZY_MAP_pre = [
 
 
     # EXAMPLE: build markt
-    ('m', fr'^{baue}?(markt|bau\s*markt|markt\s*bauen|build\s*market|market)\s*$', 99, _common_meta),
+    ('m', fr'^{baue}?(ma|mar[ck]t?|bau\s*markt|markt\s*bauen|build\s*market|market)\s*$', 99, _common_meta),
 
     # schmiede
 

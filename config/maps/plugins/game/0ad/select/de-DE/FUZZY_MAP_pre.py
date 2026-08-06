@@ -22,18 +22,40 @@ _common_meta = {
     'execute_only': True
 }
 
+# infranken
+# in front drehen
+# in\s*fr\w*nt\w+
+# infanterie
 
-infanterie = r'(inf\w*\s*(rie|try)|infanterie|infantry|infra try|die infanterie|fussvolk|fusstruppen|in\s*fr\w+t\s*\w|ihn\s*fr\w+)'
+# ins rind
+# in[\w\s]r\w+
+
+infanterie = r'(in[\w\s]r\w+|inf\w*\s*(rie|try|ken)|infra\w*|infanterie|in\s*fr\w*nt\w+|infantry|infra try|die infanterie|fussvolk|fusstruppen|in\s*fr\w+t\s*\w|ihn\s*fr\w+|\s*i\w*[nm]\s*fr\w+|\w*\s*infra)'
 
 # config/maps/plugins/game/0ad/select/de-DE/FUZZY_MAP_pre.py
-select = r'(\s*(select|benedikt|\we\w+[ck]\w+t|selbst|schlägt)\s*)'
-iddle = r'(\s*(iddle|iddle|edel|i[dts]|\wi\w+le\w+|unt[äa]tig\w*|arbeiter\w*|arbeitslos\w*|also|erhalte)\s*)'
-FUZZY_MAP_pre = [
-    # EXAMPLE: select iddle
-    # ('select iddle', fr'^{select}?({iddle}|{iddle}|{select}?).*$', 20, _common_meta),
+# skelett in fremden
+# entdeckt in fremd
+# skelett infanterie
 
-    # EXAMPLE: seltext frauen
-    ('select_women', fr'^{select}?(fr\w+|Bauarbeite\w*|Bürger\w*|Arbeiter\w*|Unterstüt\w*|alt\s*w|alt\s*wo|alt\s*fr|ald\s*women)$', 20, _common_meta),
+# arbeiter auswählen
+
+# mir der igel brocke
+
+waehl = r'(Mail|\w*wähl\w*|auslese\w*|nehme\w*|mag|markiere|mir der)'
+
+select1 = r'(select|s\w*ele\w*t+|\w*eckt|benedikt|a|\we\w+[ck]\w+t|\w*legt|selbst|schlägt|s\w+el\w*e|quelle)'
+
+# leckt ins rind
+
+select = fr'(\s*({select1}|{waehl})\s*)'
+
+iddle = r'(\s*(iddle|iddle|edel|i[gdts]|\wi\w+le\w+|unt[äa]tig\w*|arbeite\w*|arbeitslos\w*|also|erhalte)\s*)'
+FUZZY_MAP_pre = [
+    # EXAMPLE: wähle iddle
+    ('select iddle', fr'^{select}?({iddle}|{iddle}|{select}?).*$', 20, _common_meta),
+
+    # EXAMPLE: wähle arbeiter
+    ('select_women', fr'^{select}?(fr\w+|Bauarbeite\w*|Bürger\w*|arbeite\w*|aber|Unterstüt\w*|alt\s*w|alt\s*wo|alt\s*fr|ald\s*women)$', 20, _common_meta),
 
     # EXAMPLE: seltext woman
     ('select_women', r'^\s*sel\w+$', 20, _common_meta_NO_on_match_exec),
@@ -67,11 +89,13 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: alt woman
     ('alt+w', r'^\s*(alt|ald)\s*\+?\s*w(oman|frau)?\s*$', 20, _common_meta_NO_on_match_exec),
+
     # alt+ I = select infrantrie
 
-    # EXAMPLE: alt infantry
-    ('alt+i', r'^\s*(alt|ald)\s*\+?\s*i(nfanterie|infantry)?\s*$', 20, _common_meta_NO_on_match_exec),
-    # Alt+ P = select Pikeman, Spearman, Fanatic (Gruppe von Lanzenkämpfern/Nahkämpfern)
+
+
+
+
 
     # EXAMPLE: alt Spearman
     ('alt+p', r'^\s*(alt|ald)\s*\+?\s*p(ikeman|spearman|fanatic|lanzenkämpfer)?\s*$', 20, _common_meta_NO_on_match_exec),
@@ -125,10 +149,15 @@ FUZZY_MAP_pre = [
     # (baue auf|baue|power|our|build|\w+ild)
 
     # EXAMPLE: alt military
-    ('alt+m', r'^\s*(alt|ald)\s*\+?\s*m(ilitär|military|alle\s*militärs)?\s*$', 20, _common_meta_NO_on_match_exec),
+    ('alt+x', r'^(alt|ald)\s*\+?\s*m(ilit|ilit|m|x)\w+$', 20, _common_meta_NO_on_match_exec),
+
+    # militär
 
     # EXAMPLE: alt military
-    ('alt+x_military', r'^\s*(alt|ald)\s*\+?\s*x(militär|military|alle\s*militärs)?\s*$', 20, _common_meta_NO_on_match_exec), # Alternative für X, falls es sich auf Militär bezieht
+    ('alt+x', r'^{select}?(\w*ilit\w*)$', 20, _common_meta_NO_on_match_exec),
+
+    # EXAMPLE: alt military
+    ('alt+x', r'^\s*(alt|ald)\s*\+?\s*x(militär|military|alle\s*militärs)?\s*$', 20, _common_meta_NO_on_match_exec), # Alternative für X, falls es sich auf Militär bezieht
     # Alt+ N = select all non military
 
     # EXAMPLE: alt n nicht militar
@@ -138,6 +167,10 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: alles markieren
     ('ctrl+alt', r'^(alle\w* ma\w+).*$', 85, _common_meta),
+
+    # EXAMPLE: alt infantry
+    # ('alt+i', r'^\s*(alt|ald)\s*\+?\s*i(nfanterie|infantry)?\s*$', 20, _common_meta_NO_on_match_exec),
+    # Alt+ P = select Pikeman, Spearman, Fanatic (Gruppe von Lanzenkämpfern/Nahkämpfern)
 
     # EXAMPLE: Infanterie
     ('select_infantry', fr'^{select}?{infanterie}$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': zad_title, 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),

@@ -42,9 +42,11 @@ FUZZY_MAP_pre = [
          # 'cache': False
      }),
 
+    # \w+ \w*a\w+en
+
     # EXAMPLE: fleisch
     ('gather meat',
-     r'^(fleisch|jagd|jagen|jacken|ja|ja gut|ihr habt|meat|wetter|welche amen|ritt|stollen|\w+\s\wagen|wir hatten)$',
+     r'^(fleisch|jagd|jagen|\w+ \w*a\w+en|\w+ \w+a\w+en|jacken|ja|ja gut|ihr habt|meat|wetter|welche amen|ritt|stollen|\w+\s\wagen|wir hatten)$',
      85,
      {
          'command_flags': re.IGNORECASE,
