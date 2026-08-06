@@ -1,4 +1,4 @@
-# config/maps/plugins/game/0ad/de-DE/FUZZY_MAP_pre.py
+# config/maps/plugins/game/0ad/select/de-DE/FUZZY_MAP_pre.py
 # https://regex101.com/
 import re # noqa: F401
 from pathlib import Path as p # noqa: E702
@@ -52,7 +52,7 @@ select = fr'(\s*({select1}|{waehl})\s*)'
 iddle = r'(\s*(iddle|iddle|edel|i[gdts]|\wi\w+le\w+|unt[äa]tig\w*|arbeite\w*|arbeitslos\w*|also|erhalte)\s*)'
 FUZZY_MAP_pre = [
     # EXAMPLE: wähle iddle
-    ('select iddle', fr'^{select}?({iddle}|{iddle}|{select}?).*$', 20, _common_meta),
+    ('select iddle', fr'^{select}?({iddle}|{iddle}|{select}?)$', 20, _common_meta),
 
     # EXAMPLE: wähle arbeiter
     ('select_women', fr'^{select}?(fr\w+|Bauarbeite\w*|Bürger\w*|arbeite\w*|aber|Unterstüt\w*|alt\s*w|alt\s*wo|alt\s*fr|ald\s*women)$', 20, _common_meta),

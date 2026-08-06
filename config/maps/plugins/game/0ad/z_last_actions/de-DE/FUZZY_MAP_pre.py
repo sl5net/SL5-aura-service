@@ -13,7 +13,6 @@ _common_meta = {
 }
 FUZZY_MAP_pre = [
     # EXAMPLE: dont use other recognitions
-    ('', r'^.*$',85,{         'command_flags': re.IGNORECASE,
-         'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'],
-     }),
+    ('', r'^.*$',85,_common_meta),
 ]
+

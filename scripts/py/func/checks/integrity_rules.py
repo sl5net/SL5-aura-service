@@ -47,6 +47,9 @@ FORBIDDEN_PATTERNS = [
     "sudo softwareupdate -i -a",
     "sudo /usr/sbin/softwareupdate -i -a",
     "sudo installer -pkg",
+    "|)",
+    "(|",
+    "||",
 ]
 
 

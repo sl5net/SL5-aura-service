@@ -14,16 +14,16 @@ FUZZY_MAP_pre = [
 
     # nur
 
-    # EXAMPLE: nach norden
+    # EXAMPLE: nach oben
     ('kp8', fr'^{nach}(no[^wo]*|nur|oben|hoch)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
-    # EXAMPLE: nach süden
+    # EXAMPLE: nach unten
     ('kp2', fr'^\s*{nach}(s[üu]d\w*|unten|runter)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
-    # EXAMPLE: nach osten
-    ('kp6', fr'^\s*{nach}(o\w*|rehts)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
+    # EXAMPLE: nach rechts
+    ('kp6', fr'^\s*{nach}(o\w*|rechts|rehts|richt)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
-    # EXAMPLE: nach westen
+    # EXAMPLE: nach links
     ('kp4', fr'^\s*{nach}(west\w*|mist|links)\s*$', 20, {'command_flags': re.IGNORECASE, 'only_in_windows': ['0ad', '0AD', '0 a.d.', '0 a.d'], 'on_match_exec': [CONFIG_DIR / '..' / '..' / '0ad_actions.py'], 'execute_only': True}),
 
     # EXAMPLE: nach nordosten

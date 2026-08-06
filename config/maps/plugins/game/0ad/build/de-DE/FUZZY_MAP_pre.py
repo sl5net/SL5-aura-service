@@ -20,7 +20,7 @@ _common_meta = {
 
 
 
-baue = r'(\s*(\w+au\w+|\waue|bauer\w|bauens|build|bei|anbau\w*|aber|bürohilfe|paul|paulus|warum|warhols|power|our|build|\w+ild)\s*)'
+baue = r'(\s*(\w+au\w+|auto|\waue|bauer\w|bauens|build|bei|bike|anbau\w*|aber|bürohilfe|paul|paulus|warum|warhols|power|our|ich|build|\w+ild|white)\s*)'
 farm = r'f\w*a\w*m|fa\w*en|fa|farmstead|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am|zahn'
 bauernhof = r'(\s*(b\w+\s*(hof|haus)|bauch|rosenhof|Bauherrn|braun)\s*)'
 
@@ -46,7 +46,9 @@ festung = r'(\s*(festung|f\w+\s*\w*|fährst du|\w+\s*um|ist um|stumm|wird stumm|
 
 arsenal = r'(arsenal|aufnahme|Zeug\s*haus|Waffen\s*lager|waffen|waffen\s*laden|waffen\s*la\w+|lassen lab|also nennt|personell|\w+rsonell|zu nennen|na hat|zwei chaos|a von nähere)'
 
-turm = r'(\s*(turm|tor|tower)\s*)'
+# tour
+
+turm = r'(\s*(turm|tun|tor|tour|tower)\s*)'
 turmtype = r'(\s*(verteidigungs|stein|stein|wehr|defense)\s*)'
 
 FUZZY_MAP_pre = [

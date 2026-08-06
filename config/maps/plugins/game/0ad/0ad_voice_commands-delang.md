@@ -91,28 +91,28 @@ Diese Befehle funktionieren aktuell nur mit englischen oder gemischten Begriffen
 
 | Sprich (aktuell) | Aktion |
 |---|---|
-| "select iddle" | Untätige Einheit auswählen |
+| "wähle iddle" | Untätige Einheit auswählen |
 | "seltext woman" | Weibliche Einheit auswählen |
-| "select house" | Haus auswählen |
-| "select markt" | Markt auswählen |
+| "wähle house" | Haus auswählen |
+| "wähle markt" | Markt auswählen |
 | "control barack" | Baracke steuern/auswählen |
 | "farm" | Farm/Bauernhof auswählen |
 | "control Storehouse" | Lagerhaus steuern/auswählen |
 | "control alles" | Alle Gebäude steuern/auswählen |
-| "alt woman" | Weibliche Einheiten-Gruppe (Alt-Taste) |
-| "alt infantry" | Infanterie-Gruppe (Alt-Taste) |
-| "alt Spearman" | Speerträger-Gruppe (Alt-Taste) |
-| "alt Cavalry" | Kavallerie-Gruppe (Alt-Taste) |
-| "alt slinger" | Schleuderer-Gruppe (Alt-Taste) |
-| "alt Swordman" | Schwertkämpfer-Gruppe (Alt-Taste) |
-| "alt elephant" | Elefanten-Gruppe (Alt-Taste) |
-| "alt katapult" | Katapult-Gruppe (Alt-Taste) |
-| "alt heiler" | Heiler-Gruppe (Alt-Taste) |
+| "wähle woman" | Weibliche Einheiten-Gruppe (Alt-Taste) |
+| "wähle infantry" | Infanterie-Gruppe (Alt-Taste) |
+| "wähle Spearman" | Speerträger-Gruppe (Alt-Taste) |
+| "wähle Cavalry" | Kavallerie-Gruppe (Alt-Taste) |
+| "wähle slinger" | Schleuderer-Gruppe (Alt-Taste) |
+| "wähle Swordman" | Schwertkämpfer-Gruppe (Alt-Taste) |
+| "wähle elephant" | Elefanten-Gruppe (Alt-Taste) |
+| "wähle katapult" | Katapult-Gruppe (Alt-Taste) |
+| "wähle heiler" | Heiler-Gruppe (Alt-Taste) |
 | "nowoundedonly" | Nur nicht-verwundete Einheiten auswählen |
-| "alt d dangerous elephants" | Gefährliche Elefanten-Gruppe (Alt-Taste) |
-| "alt v siege" | Belagerungswaffen-Gruppe (Alt-Taste) |
-| "alt military" | Militär-Gruppe (Alt-Taste) |
-| "alt n nicht militar" / "alt n non military" | Nicht-militärische Gruppe (Alt-Taste) |
+| "wähle d dangerous elephants" | Gefährliche Elefanten-Gruppe (Alt-Taste) |
+| "wähle v siege" | Belagerungswaffen-Gruppe (Alt-Taste) |
+| "wähle military" | Militär-Gruppe (Alt-Taste) |
+| "wähle n nicht militar" / "alt n non military" | Nicht-militärische Gruppe (Alt-Taste) |
 | "baue hause" | Haus bauen (alternative Schreibweise) |
 | "build markt" | Markt bauen |
 
