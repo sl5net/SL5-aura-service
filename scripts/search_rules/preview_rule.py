@@ -138,7 +138,7 @@ def print_window_active_status(file_path, line_num):
     active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
     if not active_win:
         return
-    print(f"⬟:Aura 📄:map 🧩:plugin ⚙️:pre ※:punct 〃:same")
+    print("⬟:Aura 📄:map 🧩:plugin ⚙️:pre ※:punct 〃:same")
     print(f"=== 🔵 [{active_win}] ===")
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
