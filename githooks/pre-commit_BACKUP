@@ -12,8 +12,6 @@ staged_maps=$(git diff --cached --name-only --diff-filter=ACM | grep 'maps/' || 
 
 if [ -n "$staged_maps" ]; then
   for f in $staged_maps; do
-
-
     # Get the exact byte size of the staged file
     new_size=$(git cat-file -s ":$f" 2>/dev/null || echo 0)
 
@@ -23,16 +21,17 @@ if [ -n "$staged_maps" ]; then
     warn=false
     reason=""
 
-
     # Condition 1: File is completely empty
     if [ "$new_size" -eq 0 ]; then
       warn=true
       reason="File is completely empty (0 bytes)!"
+
       # Skip empty-file check for any __init__.py files
       base=$(basename "$f")
       if [ "$base" = "__init__.py" ]; then
         warn=false
       fi
+
 
 
     # Condition 2: File size is less than 50% of its previous size

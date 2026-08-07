@@ -97,6 +97,10 @@ def get_cached_result(rule_output, lang_code, map_path, rule_attrs, _active_wind
     return None
 
 def set_cached_result(rule_output, final_result, lang_code, map_path, rule_attrs, _active_window_title, is_full_match=False):
+
+    # if rule_attrs.get('cache') is False or rule_attrs.get('execute_only') is True or rule_attrs.get('on_match_exec'):
+    #     return
+
     if rule_attrs.get('cache') is False:
         return
     if Path(map_path).is_absolute():

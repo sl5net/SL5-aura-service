@@ -1042,18 +1042,18 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
 # scripts/py/func/process_text_in_background.py:1043
 def process_text_in_background(logger,
-                               LT_LANGUAGE,
-                               raw_text,
-                               output_dir,
-                               recording_time,
-                               active_lt_url,
-                               output_dir_override = None,
-                               chunk_id: int = 0,
-                               session_id: int = 0,
-                               unmasked = False,
-                               interface: str = 'speech',
-                               custom_rules = None
-                               ):
+       LT_LANGUAGE,
+       raw_text,
+       output_dir,
+       recording_time,
+       active_lt_url,
+       output_dir_override = None,
+       chunk_id: int = 0,
+       session_id: int = 0,
+       unmasked = False,
+       interface: str = 'speech',
+       custom_rules = None
+       ):
 
     global GLOBAL_LT_LANGUAGE
 
@@ -2272,7 +2272,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
             if not isinstance(rule_entry, (tuple, list)):
                 # scripts/py/func/process_text_in_background.py:1634 (apply_all_rules_until_stable)
                 if not privacy_taint_occurred:
-                    m = f"🚨 INVALID RULE ENTRY found while working on rule text=📃{text}📄 "\
+                    m = f"🚨 INVALID RULE ENTRY found while working on rule text=📃{text}📄 " \
                         f"Type {type(rule_entry)}): {rule_entry}. Please check your map files!"
                     log4DEV(m,logger_instance)
                     if global_state.LOGGING_ENABLED:
@@ -2301,7 +2301,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
             # 🔵
 
             # scripts/py/func/process_text_in_background.py -> apply_all_rules_until_stable :1471
-# scripts/py/func/process_text_in_background.py -> apply_all_rules_until_stable :1471
+            # scripts/py/func/process_text_in_background.py -> apply_all_rules_until_stable :1471
             replacement_text, regex_pattern, threshold, options_dict = rule_entry
             if replacement_text is None:
                 continue
@@ -2347,8 +2347,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
             # 4. Logging (Simplified)
             # if rule_is_private:
-                # if settings.DEV_MODE:
-                #    logger_instance.info(f"🔒 Apply Private Rule (Source: ...)")
+            # if settings.DEV_MODE:
+            #    logger_instance.info(f"🔒 Apply Private Rule (Source: ...)")
 
 
 
@@ -2477,19 +2477,22 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                 _source_path = ''
 
             # _cache_key_text = current_text
+            # log4DEV(f"CACHE_LOOKUP: input='{current_text}' | source='{_source_path}'", logger_instance)
+            # log4DEV(f"CACHE_HIT: cached='{_cached}' | changed={_cached != current_text}", logger_instance)
             _cache_hit = False
             if _source_path:
-                _cached = get_cached_result(current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
-                # log4DEV(f"CACHE_LOOKUP: input='{current_text}' | source='{_source_path}'", logger_instance)
-                if _cached is not None:
+
+                _cached_res = get_cached_result(current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
+                if _cached_res is not None:
+                    _cached, _is_full = _cached_res if isinstance(_cached_res, tuple) else (_cached_res, False)
                     _cache_hit = True
-                    # log4DEV(f"CACHE_HIT: cached='{_cached}' | changed={_cached != current_text}", logger_instance)
                     if _cached != current_text:
-                        if compiled_regex.fullmatch(current_text):
+                        if _is_full:
                             full_text_replaced_by_rule = True
                             return _cached, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
                         current_text = _cached
                         made_a_change_in_cycle = True
+
             # --- END AURA CACHE LOOKUP ---
             if _cache_hit:
                 continue
@@ -2549,8 +2552,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                         #     module = load_module_from_path(script_path)
                         #     if module and hasattr(module, 'execute'):
                         #         new_current_text = module.execute(match_data)
-                                # log4DEV(f"module:'{module}' new_current_text='{new_current_text}'",logging)
-                                # time.sleep(1)
+                        # log4DEV(f"module:'{module}' new_current_text='{new_current_text}'",logging)
+                        # time.sleep(1)
 
                         new_current_text = resolve_file_replacement(new_current_text, options_dict, logger_instance)
 
@@ -2602,15 +2605,17 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
                         # --- MAKRO-group-LOGIK ENDE ---
 
+                        full_text_replaced_by_rule = True  # because was full-match
+                        # log4DEV(f"full_text_replaced_by_rule = {full_text_replaced_by_rule}",logger_instance)
 
                         # --- AURA CACHE SET ---
                         if _source_path:
                             # log4DEV(f"CACHE_SET: original='{original_text_for_script}' | new='{current_text}'", logger_instance)
-                            set_cached_result(original_text_for_script, current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
-                        # --- END AURA CACHE SET ---
+                            is_full = bool(full_text_replaced_by_rule)
 
-                        full_text_replaced_by_rule = True  # because was full-match
-                        # log4DEV(f"full_text_replaced_by_rule = {full_text_replaced_by_rule}",logger_instance)
+                            set_cached_result(original_text_for_script, current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''), is_full_match=is_full)
+                            # --- END AURA CACHE SET ---
+
 
                         if not privacy_taint_occurred:
                             log4DEV(f"🚀🚀 skip_list:{skip_list} 🚀🚀🚀819: made_a_change={made_a_change} '{original_text_for_script}' ----> '{current_text}' (Pattern: '{regex_pattern}') Iterative-All-Rules FULL_REPLACE:{full_text_replaced_by_rule}",logger_instance)
@@ -2690,7 +2695,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                                     lang_for_tts = script_result.get("lang", "de-DE")
                                     if not privacy_taint_occurred and not execute_only:
                                         handle_tts_fallback(new_current_text, lang_for_tts, logger_instance)
-                                            # if global_state.LOGGING_ENABLED:
+                                        # if global_state.LOGGING_ENABLED:
 
 
 

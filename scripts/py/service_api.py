@@ -192,6 +192,7 @@ async def block_sensitive_folders(request: Request, call_next):
 
 
 # Pydantic Modell
+# scripts/py/service_api.py:195
 class ProcessRequest(BaseModel):
     raw_text: str
     lang_code: str
