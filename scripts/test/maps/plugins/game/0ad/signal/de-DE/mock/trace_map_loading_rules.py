@@ -20,13 +20,13 @@ global_state.DEV_MODE_all_processing = 1
 
 original_info = logger.info
 
-def custom_info(msg, *args, **kwargs):
-    msg_str = str(msg)
-    if any(k in msg_str for k in ["map_file_path", "Executing on_match_exec", "Regex_pre", "Pattern", "apply_all_rules"]):
-        print(f"[RULE_MATCH_LOG] {msg_str}")
-    original_info(msg, *args, **kwargs)
+# def custom_info(msg, *args, **kwargs):
+#     msg_str = str(msg)
+#     if any(k in msg_str for k in ["map_file_path", "Executing on_match_exec", "Regex_pre", "Pattern", "apply_all_rules"]):
+#         print(f"[RULE_MATCH_LOG] {msg_str}")
+#     original_info(msg, *args, **kwargs)
 
-logger.info = custom_info
+# logger.info = custom_info
 
 from scripts.py.func.process_text_in_background import process_text_in_background
 

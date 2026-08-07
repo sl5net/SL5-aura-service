@@ -138,7 +138,8 @@ def print_window_active_status(file_path, line_num):
     active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
     if not active_win:
         return
-    print(f"=== ACTIVE WINDOW: [{active_win}] ===")
+    print("⬟:Aura 📄:map 🧩:plugin ⚙️:pre ※:punct 〃:same")
+    print(f"=== 🔵 [{active_win}] ===")
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
@@ -154,11 +155,31 @@ def print_window_active_status(file_path, line_num):
     except Exception as e:
         print(f"Window status error: {e}")
 
+def print_file_header(file_path):
+    """Prints the last 68 characters of the file path in the preview header."""
+    clean_path = str(file_path).replace("\\", "/")
+    if len(clean_path) > 68:
+        display_path = "…" + clean_path[-45:]
+    else:
+        display_path = clean_path
+    print(f"[{display_path}] : FILE  ===")
+
+    
+def save_last_selected_path(file_path):
+    """Saves the highlighted map file path for fzf scoped reload state."""
+    try:
+        state_file = os.path.join(os.path.expanduser("~"), ".search_rules_last_path")
+        with open(state_file, "w", encoding="utf-8") as f:
+            f.write(os.path.abspath(file_path))
+    except Exception:
+        pass
 
 def main():
     if len(sys.argv) < 3:
         print("Usage: preview_rule.py [--extract] <file_path> <line_num>")
         sys.exit(1)
+
+    save_last_selected_path(sys.argv[1])
 
     if sys.argv[1] == '--extract':
         file_path = sys.argv[2]
@@ -174,6 +195,7 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(os.path.dirname(script_dir))
 
+    print_file_header(file_path)
     print_window_active_status(file_path, line_num)
     print_code_context(file_path, line_num)
     print_smart_cache_preview(file_path, line_num, project_root)

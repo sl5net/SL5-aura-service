@@ -3,12 +3,16 @@
 source "$(dirname "${BASH_SOURCE[0]}")/search_helpers.sh"
 cd "$PROJECT_ROOT" || exit 1
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export SCRIPT_DIR
+export PROJECT_ROOT
+
+FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --glob=/g; s/^/--glob=/')
+export FILT
+
 REAL="${REAL:-1}"
 M_DIR="${1:-${MAPS_DIR:-config/maps}}"
 M_DIR="${M_DIR/#\~/$HOME}"
-[[ ! -d "$M_DIR" ]] && exit 1
-
-# Capture window title BEFORE fzf starts
 
 if [ -z "${AURA_ACTIVE_WINDOW_TITLE:-}" ]; then
   AURA_ACTIVE_WINDOW_TITLE=$(python3 -c "
@@ -28,9 +32,9 @@ cp "$H_FILE" "$H_FILE.bak"
 tac "$H_FILE" | awk '!seen[$0]++' | tac > "$H_FILE.tmp" && mv "$H_FILE.tmp" "$H_FILE"
 
 IQ=".py pre # EXAMPLE:"
+
 [ -s "$H_FILE" ] && IQ=$(tail -n 1 "$H_FILE")
 
-# Define the AWK script in a variable to prevent Bash command-substitution parenthesis parsing bugs
 AWK_SCRIPT='{
     full_path = $1;
     line = $2;
@@ -38,87 +42,89 @@ AWK_SCRIPT='{
     gsub(/^[ \t]+/, "", content);
     if (length(content) == 0) next;
     short_path = full_path;
-#    gsub($PROJECT_ROOT, "R", short_path);
+
     gsub(proot, "⬟", short_path);
-    gsub(/\/de-DE\//, "️🇩🇪", short_path);
-    gsub(/\/en-US\//, "️🇬🇧", short_path);
+    gsub(/\/de-DE\//, "🇩🇪", short_path);
+    gsub(/\/en-US\//, "🇬🇧", short_path);
     gsub(/config\/maps\//, "🗺️", short_path);
     gsub(/plugins\//, "🧩", short_path);
-
-    while (match(short_path, /\/[a-z]{2}-[A-Z]{2}\//)) {
-        lang_letter = substr(short_path, RSTART + 1, 1);
-#        short_path = substr(short_path, 1, RSTART) lang_letter "…/" substr(short_path, RSTART + RLENGTH);
-        short_path = substr(short_path, 1, RSTART) "…/" substr(short_path, RSTART + RLENGTH);
-        # removed lang_letter 15.7.26 22:00 Wed because user knows the lang self
-    }
-    if (length(short_path) > 40) {
-#        short_path = "…" substr(short_path, length(short_path) - 38);
-        short_path = substr(short_path, length(short_path) - 38);
-    }
-
-    # config/maps/_privat/job/bewerbung/de-DE/FUZZY_MAP_pre.py:95
-#    gsub(/config\/maps/, "🗺️", short_path);
-
-#    gsub(/FUZZY_MAP_pre\.py/, "⏪", short_path);
-#    gsub(/FUZZY_MAP\.py/, "⏩", short_path);
-#    gsub(/PUNCTUATION_MAP\.py/, "🔣", short_path);
 
     gsub(/FUZZY_MAP_pre\.py/, "⚙️", short_path);
     gsub(/FUZZY_MAP\.py/, "📄", short_path);
     gsub(/PUNCTUATION_MAP\.py/, "※", short_path);
 
-#    gsub(/FUZZY_MAP_pre\.py/, "📋", short_path);
-#    gsub(/FUZZY_MAP\.py/, "📄", short_path);
-#    gsub(/PUNCTUATION_MAP\.py/, "📝", short_path);
 
-#    gsub(/FUZZY_MAP_pre\.py/, "«", short_path);
-#    gsub(/FUZZY_MAP\.py/, "»", short_path);
-#    gsub(/PUNCTUATION_MAP\.py/, "※", short_path);
-#
-#    gsub(/FUZZY_MAP_pre\.py/, "📃", short_path);
-#    gsub(/FUZZY_MAP\.py/, "📄", short_path);
-#    gsub(/PUNCTUATION_MAP\.py/, "📝", short_path);
-#
-    # Combine the path and line with the rule content using a simple separator
-    display = short_path ":" line " | " content;
-    # Print tab-separated fields for fzf
+    if (use_ditto == "1") {
+        display_path = (full_path == prev_full_path ? "〃" : short_path);
+        prev_full_path = full_path;
+    } else {
+        display_path = short_path;
+    }
+
+    display = display_path ":" line " | " content;
     print display "\t" full_path "\t" line;
-
 }'
 
-#
-
-while true; do
-#FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/')
-FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --glob=/g; s/^/--glob=/')
-
-if [[ "$REAL" == "1" ]]; then
-    MAP_FILES=$(python3 "$SCRIPT_DIR/filter_maps_by_reality.py" --lang-only "$M_DIR")
-    if [[ -z "$MAP_FILES" ]]; then
-        logger_info "REAL=1: No map files match current language"
-        exit 1
+get_scoped_search_input() {
+    local state_file="$HOME/.search_rules_last_path"
+    local scope_dir=""
+    if [ -f "$state_file" ]; then
+        local last_path
+        last_path=$(cat "$state_file" 2>/dev/null)
+        if [ -n "$last_path" ] && [ -f "$last_path" ]; then
+            scope_dir=$(dirname $(dirname "$last_path"))
+        fi
     fi
-#    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 grep -irnH -I $FILT .)
-#    SEARCH_INPUT=$(echo "$MAP_FILES" | rg --null -n --files | xargs -0 rg -n "$FILT")
-#    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 rg -nH "^")
-    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 rg -nH $FILT "^")
+    if [ -z "$scope_dir" ] || [ ! -d "$scope_dir" ]; then
+        scope_dir="$PROJECT_ROOT/config/maps"
+    fi
+    rg -nH $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="1" "$AWK_SCRIPT"
+}
 
-else
-    SEARCH_INPUT=$(grep -irnH -I $FILT . "$M_DIR")
+if [ "${1:-}" = "--load-full" ]; then
+    rg -nH $FILT "^" "$PROJECT_ROOT/config/maps" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="0" "$AWK_SCRIPT"
+    exit 0
 fi
 
-#F_OUT=$(echo "$SEARCH_INPUT" | awk -F: "$AWK_SCRIPT" |
-#
-F_OUT=$(echo "$SEARCH_INPUT" | awk -F: -v proot="$PROJECT_ROOT" "$AWK_SCRIPT" | \
+if [ "${1:-}" = "--load-scoped" ]; then
+    get_scoped_search_input
+    exit 0
+fi
 
+if [ -n "$IQ" ]; then
+    INIT_INPUT=$(bash "$SCRIPT_DIR/run_rule.sh" --load-full)
+    INIT_STATE="non-empty"
+else
+    INIT_INPUT=$(get_scoped_search_input)
+    INIT_STATE="empty"
+fi
+
+
+F_OUT=$(echo "$INIT_INPUT" | \
     fzf --print-query \
         --no-hscroll \
+        --layout=reverse \
         --delimiter=$'\t' \
+        --bind="start:execute-silent(echo $INIT_STATE > /tmp/fzf_query_state)" \
+        --bind="change:transform:
+            q="{q}"
+            state=\$(cat /tmp/fzf_query_state 2>/dev/null || echo empty)
+            echo \"\$(date +%H:%M:%S.%N) change fired q='\$q' state='\$state'\" >> /tmp/fzf_transform_debug.log
+            if [ -n \"\$q\" ] && [ \"\$state\" = \"empty\" ]; then
+                printf 'non-empty' > /tmp/fzf_query_state
+                echo \"\$(date +%H:%M:%S.%N) -> reload load-full\" >> /tmp/fzf_transform_debug.log
+                printf 'reload(bash \$SCRIPT_DIR/run_rule.sh --load-full)'
+            elif [ -z \"\$q\" ] && [ \"\$state\" = \"non-empty\" ]; then
+                printf 'empty' > /tmp/fzf_query_state
+                echo \"\$(date +%H:%M:%S.%N) -> reload load-scoped\" >> /tmp/fzf_transform_debug.log
+                printf 'reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)'
+            fi" \
         --history="$H_FILE" --query="$IQ" \
-        --header="Caller:$AURA_ACTIVE_WINDOW_TITLE |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit"  \
+        --header="🔵${AURA_ACTIVE_WINDOW_TITLE:0:4}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Scope"  \
         --with-nth=1 \
         --bind="ctrl-z:previous-history" \
         --bind="ctrl-y:next-history" \
+        --bind="alt-g:clear-query" \
         --bind="ctrl-backspace:backward-kill-word" \
         --bind="ctrl-delete:kill-word" \
         --bind="ctrl-left:backward-word" \
@@ -131,13 +137,9 @@ F_OUT=$(echo "$SEARCH_INPUT" | awk -F: -v proot="$PROJECT_ROOT" "$AWK_SCRIPT" | 
         --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {2} {3}' \
 )
 
-
 [[ -z "$F_OUT" ]] && exit 0
 QUERY_TYPED=$(echo "$F_OUT" | sed -n '1p')
-#QUERY_TYPED=$(echo "$F_OUT" | sed -n '1p' | tr -d '\r')
 KEY=$(echo "$F_OUT" | sed -n '2p')
-#SEL=$(echo "$F_OUT" | sed -n '3p') # 15.7.'26 08:40 Wed
-#SEL=$(echo "$F_OUT" | sed -n '3p' | tr -d '\r')
 
 SEL=$(echo "$F_OUT" | sed -n '3p')
 if [[ -n "$SEL" ]]; then
@@ -150,48 +152,26 @@ fi
 
 logger_info "DBG typed='$QUERY_TYPED' key='$KEY' sel='$SEL'"
 
-SEL=$(echo "$F_OUT" | sed -n '3p')
-logger_info "41: DBG typed='$QUERY_TYPED' key='$KEY' sel='$SEL'"
 if [[ -z "$KEY" || "$KEY" = "ctrl-r" ]]; then
     logger_info "43: KEY=$KEY"
     QUERY=""
     if [[ -z "$KEY" && -n "$SEL" ]]; then
-
-#        F_PATH="$(echo "$SEL" | cut -d: -f1)"
-#        L_NUM="$(echo "$SEL" | cut -d: -f2)"
-#        logger_info "50: Enter pressed -> use"
-
-        # F_PATH and L_NUM are already correctly extracted globally above
         logger_info "50: Enter pressed -> use"
         logger_info "$F_PATH:$L_NUM"
-
-        # scripts/search_rules/run_rule.sh:49
         QUERY=$(python3 "$SCRIPT_DIR/preview_rule.py" --extract "$F_PATH" "$L_NUM")
         logger_info "python3 '$SCRIPT_DIR/preview_rule.py' --extract '$F_PATH' '$L_NUM'"
         logger_info "56: DBG extract='$QUERY'"
-
     fi
     if [[ -z "$QUERY" ]]; then
         logger_info "55: Ctrl+R pressed use typed query (QUERY_TYPED)"
         QUERY="$QUERY_TYPED"
     fi
 
-
     logger_info "65: final_query='$QUERY' py_exists=$(test -f "$PROJECT_ROOT/.venv/bin/python3" && echo yes || echo NO)"
     if [[ -n "$QUERY" ]]; then
         logger_info "67: Executing: $QUERY"
-
         run_palette_path="$PROJECT_ROOT/scripts/search_rules/run_palette_command.py"
         python3_path="$PROJECT_ROOT/.venv/bin/python3"
-
-        logger_info " "
-        logger_info " "
-        logger_info " "
-        logger_info "$python3_path $run_palette_path '$QUERY'"
-        logger_info " "
-        logger_info " "
-        logger_info " "
-
         nohup "$python3_path" "$run_palette_path" "$QUERY" >> "$LOGFILE" 2>&1 &
         BG_PID=$!
         disown $BG_PID
@@ -199,46 +179,17 @@ if [[ -z "$KEY" || "$KEY" = "ctrl-r" ]]; then
         exit 0
     fi
     logger_info "75: no query to execute"
-
     exit 0
 fi
 
-
-
-
 if [[ "$KEY" = "ctrl-e" && -n "$SEL" ]]; then
-#    F_PATH="$(echo "$SEL" | cut -f3)"
-#    L_NUM="$(echo "$SEL" | cut -f2)"
-    # F_PATH and L_NUM are already correctly extracted globally above
-
-    # old before 26.7.'26 10:09 Sun
-    #    (nohup kate "$F_PATH" --line "$L_NUM" >/dev/null 2>&1 & disown || $PREFERRED_EDITOR "$F_PATH" & disown)
-
-#    nohup "$PREFERRED_EDITOR" "$F_PATH" --line "$L_NUM" >/dev/null 2>&1 & # asks for crate file named like linenumber, opens cudatext with correct file in wrong line
-
-#    nohup "$PREFERRED_EDITOR" "$F_PATH" "/n=$L_NUM" >/dev/null 2>&1 & # asks for crate file named like linenumber, opens cudatext with correct file in wrong line
-
-#    nohup "$PREFERRED_EDITOR" "$F_PATH" "/n=$L_NUM" >/dev/null 2>&1 & #  asks for crate file named like linenumber, opens cudatext with correct file in wrong line
-
-#    nohup "$PREFERRED_EDITOR" "$F_PATH" --line="$L_NUM" >/dev/null 2>&1 & # opens cudatext with correct file in wrong line
-
+    logger_info "178: ctrl-e entered editor='$PREFERRED_EDITOR' path='$F_PATH' line='$L_NUM'"
     if [[ "$PREFERRED_EDITOR" = "cudatext" ]]; then
-      nohup "$PREFERRED_EDITOR" "$F_PATH@$L_NUM" >/dev/null 2>&1 &
-      # cudatext --help : Filenames can be with "@line" or "@line@column" suffix to place caret.
+      nohup "$PREFERRED_EDITOR" "$F_PATH@$L_NUM" >> "$LOGFILE" 2>&1 &
     else
-      nohup "$PREFERRED_EDITOR" "$F_PATH" --line="$L_NUM" >/dev/null 2>&1 &
+      nohup "$PREFERRED_EDITOR" "$F_PATH" --line="$L_NUM" >> "$LOGFILE" 2>&1 &
     fi
-
-
-
-
-
-#    nohup "$PREFERRED_EDITOR" "$F_PATH:20" ... >/dev/null 2>&1 & # opens tries open a file $F_PATH:20
-
-#nohup "$PREFERRED_EDITOR" "$F_PATH:$L_NUM" >/dev/null 2>&1 & # opens tries open a file $F_PATH:$L_NUM that of course not exist
-
-#nohup "$PREFERRED_EDITOR" "$F_PATH" /n="$L_NUM" >/dev/null 2>&1 & # File not found: "/n=20" Create it?
-
-#    (nohup kate "$F_PATH" --line "$L_NUM" >/dev/null 2>&1 & disown || $PREFERRED_EDITOR "$F_PATH" & disown)
+    logger_info "185: spawned pid=$!"
 fi
-done
+
+
