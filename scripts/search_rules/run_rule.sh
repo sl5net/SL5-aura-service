@@ -9,13 +9,16 @@ M_DIR="${M_DIR/#\~/$HOME}"
 [[ ! -d "$M_DIR" ]] && exit 1
 
 # Capture window title BEFORE fzf starts
-AURA_ACTIVE_WINDOW_TITLE=$(python3 -c "
-import sys
-sys.path.insert(0, '$PROJECT_ROOT')
-from scripts.py.func.get_active_window_title import get_active_window_title_safe
-print(get_active_window_title_safe())
-" 2>/dev/null)
-export AURA_ACTIVE_WINDOW_TITLE
+
+if [ -z "${AURA_ACTIVE_WINDOW_TITLE:-}" ]; then
+  AURA_ACTIVE_WINDOW_TITLE=$(python3 -c "
+  import sys
+  sys.path.insert(0, '$PROJECT_ROOT')
+  from scripts.py.func.get_active_window_title import get_active_window_title_safe
+  print(get_active_window_title_safe())
+  " 2>/dev/null)
+  export AURA_ACTIVE_WINDOW_TITLE
+fi
 
 H_FILE="$HOME/.search_rules_history"
 
