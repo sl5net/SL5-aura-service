@@ -3,6 +3,12 @@
 source "$(dirname "${BASH_SOURCE[0]}")/search_helpers.sh"
 cd "$PROJECT_ROOT" || exit 1
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export SCRIPT_DIR
+export PROJECT_ROOT
+FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --glob=/g; s/^/--glob=/')
+export FILT
+
 REAL="${REAL:-1}"
 M_DIR="${1:-${MAPS_DIR:-config/maps}}"
 M_DIR="${M_DIR/#\~/$HOME}"
@@ -73,14 +79,22 @@ AWK_SCRIPT='{
 
 #    gsub(/FUZZY_MAP_pre\.py/, "«", short_path);
 #    gsub(/FUZZY_MAP\.py/, "»", short_path);
-#    gsub(/PUNCTUATION_MAP\.py/, "※", short_path);
+#    gsub(/PUNCTUATION_MAP\.py/, "※", short_path);[-
 #
 #    gsub(/FUZZY_MAP_pre\.py/, "📃", short_path);
 #    gsub(/FUZZY_MAP\.py/, "📄", short_path);
 #    gsub(/PUNCTUATION_MAP\.py/, "📝", short_path);
 #
+
+#   Code before: 7.8.26 14:00 Fri
+#    display_path = (short_path == prev_short_path ? "〃" : short_path);
+#    prev_short_path = short_path;
+
+
+    display_path = (full_path == prev_full_path ? "〃" : short_path);
+    prev_full_path = full_path;
     # Combine the path and line with the rule content using a simple separator
-    display = short_path ":" line " | " content;
+    display = display_path ":" line " | " content;
     # Print tab-separated fields for fzf
     print display "\t" full_path "\t" line;
 
@@ -92,6 +106,16 @@ while true; do
 #FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/')
 FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --glob=/g; s/^/--glob=/')
 
+if [ "${1:-}" = "--load-full" ]; then
+    rg -nH $FILT "^" "$PROJECT_ROOT/config/maps" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" "$AWK_SCRIPT"
+    exit 0
+fi
+
+if [ "${1:-}" = "--load-scoped" ]; then
+    get_scoped_search_input
+    exit 0
+fi
+
 if [[ "$REAL" == "1" ]]; then
     MAP_FILES=$(python3 "$SCRIPT_DIR/filter_maps_by_reality.py" --lang-only "$M_DIR")
     if [[ -z "$MAP_FILES" ]]; then
@@ -101,19 +125,54 @@ if [[ "$REAL" == "1" ]]; then
 #    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 grep -irnH -I $FILT .)
 #    SEARCH_INPUT=$(echo "$MAP_FILES" | rg --null -n --files | xargs -0 rg -n "$FILT")
 #    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 rg -nH "^")
-    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 rg -nH $FILT "^")
+#    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 rg -nH $FILT "^")
 
+    SEARCH_INPUT=$(echo "$MAP_FILES" | tr '\n' '\0' | xargs -0 rg -nH --sort=path $FILT "^")
 else
     SEARCH_INPUT=$(grep -irnH -I $FILT . "$M_DIR")
 fi
 
 #F_OUT=$(echo "$SEARCH_INPUT" | awk -F: "$AWK_SCRIPT" |
 #
-F_OUT=$(echo "$SEARCH_INPUT" | awk -F: -v proot="$PROJECT_ROOT" "$AWK_SCRIPT" | \
+#F_OUT=$(echo "$SEARCH_INPUT" | awk -F: -v proot="$PROJECT_ROOT" "$AWK_SCRIPT" | \
 
+
+get_scoped_search_input() {
+    local state_file="$HOME/.search_rules_last_path"
+    local scope_dir=""
+    if [ -f "$state_file" ]; then
+        local last_path
+        last_path=$(cat "$state_file" 2>/dev/null)
+        if [ -n "$last_path" ] && [ -f "$last_path" ]; then
+            scope_dir=$(dirname $(dirname "$last_path"))
+        fi
+    fi
+    if [ -z "$scope_dir" ] || [ ! -d "$scope_dir" ]; then
+        scope_dir="$PROJECT_ROOT/config/maps"
+    fi
+    rg -nH $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" "$AWK_SCRIPT"
+}
+
+F_OUT=$(get_scoped_search_input | \
     fzf --print-query \
         --no-hscroll \
+        --no-sort \
+        --layout=reverse \
         --delimiter=$'\t' \
+        --bind="start:execute-silent(echo empty > /tmp/fzf_query_state)" \
+        --bind="change:transform:
+            q={q}
+            state=\$(cat /tmp/fzf_query_state 2>/dev/null || echo empty)
+
+            if [ -n \"\$q\" ] && [ \"\$state\" = \"empty\" ]; then
+                echo \"non-empty\" > /tmp/fzf_query_state
+                echo \"reload(bash \\\"\$SCRIPT_DIR/run_rule.sh\\\" --load-full)\"
+            elif [ -z \"\$q\" ] && [ \"\$state\" = \"non-empty\" ]; then
+                echo \"empty\" > /tmp/fzf_query_state
+                echo \"reload(bash \\\"\$SCRIPT_DIR/run_rule.sh\\\" --load-scoped)\"
+            fi" \
+
+
         --history="$H_FILE" --query="$IQ" \
         --header="Caller:$AURA_ACTIVE_WINDOW_TITLE |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit"  \
         --with-nth=1 \
