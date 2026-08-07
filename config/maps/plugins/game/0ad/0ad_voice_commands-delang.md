@@ -1,5 +1,16 @@
 # Sprachbefehle für 0 A.D.
 
+
+# debuggomg tips:
+
+delete some cache etries
+
+python3 -c "import sqlite3; conn = sqlite3.connect('data/_aura_result_cache.db'); cur = conn.cursor(); cur.execute(\"DELETE FROM aura_result_cache WHERE rule_output LIKE '%alarm%' OR final_result LIKE '%ö%'\"); conn.commit(); print('Deleted rows:', cur.rowcount); conn.close()"
+Deleted rows: 1
+
+# Anleitung
+
+
 Diese Anleitung listet alle verfügbaren Sprachbefehle für 0 A.D. auf. Sprich einen der genannten Beispielsätze, während 0 A.D. das aktive Fenster ist.
 
 

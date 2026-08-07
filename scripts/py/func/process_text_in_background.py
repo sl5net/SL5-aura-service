@@ -1040,7 +1040,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
 
 
-# scripts/py/func/process_text_in_background.py:1053
+# scripts/py/func/process_text_in_background.py:1043
 def process_text_in_background(logger,
                                LT_LANGUAGE,
                                raw_text,
@@ -1649,9 +1649,9 @@ def process_text_in_background(logger,
                     skip_list = options_dict.get('skip_list', [])
 
                     if SEQUENCE_LOCK.execute_only_event.is_set():
-                        execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
-                        # print(f'1684: execute_only={execute_only}')
                         SEQUENCE_LOCK.execute_only_event.clear()
+                        # execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
+                        # print(f'1684: execute_only={execute_only}')
 
                         return '20260708_1937 no text after replacement'
 
@@ -2066,7 +2066,12 @@ def process_text_in_background(logger,
     if SEQUENCE_LOCK.execute_only_event.is_set():
         return '20260708_1940 no text after replacement'
 
-    return new_current_text if new_current_text else processed_text
+    # return new_current_text if new_current_text else processed_text
+    try:
+        return new_current_text if new_current_text else processed_text
+    finally:
+        # Clear execute_only lock when finishing text processing session
+        SEQUENCE_LOCK.execute_only_event.clear()
 
 
 def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_map):
@@ -2480,6 +2485,9 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                     _cache_hit = True
                     # log4DEV(f"CACHE_HIT: cached='{_cached}' | changed={_cached != current_text}", logger_instance)
                     if _cached != current_text:
+                        if compiled_regex.fullmatch(current_text):
+                            full_text_replaced_by_rule = True
+                            return _cached, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
                         current_text = _cached
                         made_a_change_in_cycle = True
             # --- END AURA CACHE LOOKUP ---
