@@ -36,6 +36,7 @@ AWK_SCRIPT='{
     line = $2;
     content = substr($0, index($0, ":" line ":") + length(line) + 2);
     gsub(/^[ \t]+/, "", content);
+    if (length(content) == 0) next;
     short_path = full_path;
 #    gsub($PROJECT_ROOT, "R", short_path);
     gsub(proot, "⬟", short_path);
