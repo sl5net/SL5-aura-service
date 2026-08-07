@@ -49,10 +49,15 @@ def init_db():
                 map_path TEXT NOT NULL,
                 validity_type INTEGER DEFAULT 0,
                 validity_value TEXT NOT NULL,
+                is_full_match INTEGER DEFAULT 0,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 last_used DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        try:
+            conn.execute("ALTER TABLE aura_result_cache ADD COLUMN is_full_match INTEGER DEFAULT 0")
+        except sqlite3.OperationalError:
+            pass
         conn.execute("CREATE INDEX IF NOT EXISTS idx_map_cleanup ON aura_result_cache (map_path, validity_type)")
         conn.commit()
 
@@ -77,7 +82,7 @@ def get_cached_result(rule_output, lang_code, map_path, rule_attrs, _active_wind
 
     with get_db_connection() as conn:
         cursor = conn.execute("""
-            SELECT final_result FROM aura_result_cache
+            SELECT final_result, is_full_match FROM aura_result_cache
             WHERE cache_id = ?
               AND validity_type = ?
               AND validity_value = ?
@@ -87,12 +92,11 @@ def get_cached_result(rule_output, lang_code, map_path, rule_attrs, _active_wind
         if row:
             conn.execute("UPDATE aura_result_cache SET last_used = ? WHERE cache_id = ?",
                          (datetime.now(), cache_id))
-            return row['final_result']
-
+            is_full = bool(row['is_full_match']) if 'is_full_match' in row.keys() else False
+            return row['final_result'], is_full
     return None
 
-def set_cached_result(rule_output, final_result, lang_code, map_path, rule_attrs, _active_window_title):
-    """Speichert ein neues LT-Ergebnis im Cache."""
+def set_cached_result(rule_output, final_result, lang_code, map_path, rule_attrs, _active_window_title, is_full_match=False):
     if rule_attrs.get('cache') is False:
         return
     if Path(map_path).is_absolute():
@@ -107,12 +111,13 @@ def set_cached_result(rule_output, final_result, lang_code, map_path, rule_attrs
     v_type = 1 if manual_ts else 0
     v_val = str(manual_ts) if manual_ts else str(os.path.getmtime(map_path))
 
+    full_match_int = 1 if is_full_match else 0
     with get_db_connection() as conn:
         conn.execute("""
             INSERT OR REPLACE INTO aura_result_cache
-            (cache_id, rule_output, final_result, lang_code, map_path, validity_type, validity_value, last_used)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (cache_id, rule_output, final_result, lang_code, map_path, v_type, v_val, datetime.now()))
+            (cache_id, rule_output, final_result, lang_code, map_path, validity_type, validity_value, is_full_match, last_used)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (cache_id, rule_output, final_result, lang_code, map_path, v_type, v_val, full_match_int, datetime.now()))
         conn.commit()
 
 

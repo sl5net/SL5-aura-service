@@ -1,0 +1,5 @@
+# .venv/bin/python scripts/py/clear_alarm_cache.py
+python3 -c "import sqlite3; conn = sqlite3.connect('data/_aura_result_cache.db'); cur = conn.cursor(); cur.execute(\"DELETE FROM aura_result_cache WHERE rule_output LIKE '%alarm%' OR final_result LIKE '%ö%'\"); conn.commit(); print('Deleted rows:', cur.rowcount); conn.close()"
+
+python3 -c "import sqlite3; conn = sqlite3.connect('data/_aura_result_cache.db'); rows = conn.execute(\"SELECT * FROM aura_result_cache WHERE rule_output LIKE '%alarm%' OR final_result LIKE '%ö%'\").fetchall(); [print(r) for r in rows]; conn.close()"
+

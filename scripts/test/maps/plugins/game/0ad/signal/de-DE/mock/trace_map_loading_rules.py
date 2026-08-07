@@ -1,0 +1,46 @@
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+import logging
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+logger = logging.getLogger("trace_rules")
+
+import scripts.py.func.get_active_window_title as gawt
+import scripts.py.func.process_text_in_background as ptib
+
+gawt.get_active_window_title_safe = lambda: "0 A.D."
+ptib.get_active_window_title_safe = lambda: "0 A.D."
+
+from scripts.py.func import global_state
+global_state.LOGGING_ENABLED = True
+global_state.DEV_MODE_all_processing = 1
+
+original_info = logger.info
+
+def custom_info(msg, *args, **kwargs):
+    msg_str = str(msg)
+    if any(k in msg_str for k in ["map_file_path", "Executing on_match_exec", "Regex_pre", "Pattern", "apply_all_rules"]):
+        print(f"[RULE_MATCH_LOG] {msg_str}")
+    original_info(msg, *args, **kwargs)
+
+logger.info = custom_info
+
+from scripts.py.func.process_text_in_background import process_text_in_background
+
+print("--- START TRACE FOR MATCHED RULE ---")
+output_dir = PROJECT_ROOT / "tmp" / "debug_output"
+output_dir.mkdir(parents=True, exist_ok=True)
+
+result = process_text_in_background(
+    logger=logger,
+    LT_LANGUAGE="de-DE",
+    raw_text="alarm",
+    output_dir=output_dir,
+    recording_time=0.0,
+    active_lt_url=""
+)
+
+print("\n--- TRACE COMPLETE ---")
