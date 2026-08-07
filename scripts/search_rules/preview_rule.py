@@ -132,6 +132,29 @@ def print_smart_cache_preview(file_path, line_num, project_root):
     except Exception as e:
         print(f"Database error: {e}")
 
+
+def print_window_active_status(file_path, line_num):
+    """Prints text status indicators showing whether rule matches AURA_ACTIVE_WINDOW_TITLE."""
+    active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
+    if not active_win:
+        return
+    print(f"=== ACTIVE WINDOW: [{active_win}] ===")
+    try:
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read()
+        if "only_in_windows" in content:
+            win_clean = active_win.lower()
+            if any(w in content.lower() for w in ["0ad", "0 a.d.", win_clean]):
+                print(">>> STATUS: MATCHES ACTIVE WINDOW <<<")
+            else:
+                print(">>> STATUS: WINDOW MISMATCH <<<")
+        else:
+            print(">>> STATUS: GLOBAL RULE (All windows) <<<")
+        print()
+    except Exception as e:
+        print(f"Window status error: {e}")
+
+
 def main():
     if len(sys.argv) < 3:
         print("Usage: preview_rule.py [--extract] <file_path> <line_num>")
@@ -151,8 +174,10 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(os.path.dirname(script_dir))
 
+    print_window_active_status(file_path, line_num)
     print_code_context(file_path, line_num)
     print_smart_cache_preview(file_path, line_num, project_root)
 
 if __name__ == '__main__':
     main()
+    

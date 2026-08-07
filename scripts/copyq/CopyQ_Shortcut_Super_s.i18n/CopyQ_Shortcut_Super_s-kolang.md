@@ -41,11 +41,14 @@ if (rootFile.open()) {
 
 var search_script = project_root + '/scripts/search_rules/run_rule.sh';
 
+var active_win_title = str(execute('bash', '-c', 'xdotool getactivewindow getwindowname 2>/dev/null || true').stdout).trim();
+
 var cmd = ''
     + 'export LANG="de_DE.UTF-8"; '
     + 'export LC_ALL="de_DE.UTF-8"; '
     + 'export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"; '
     + 'export SEARCH_FILES_FILTER="*.py|*.txt|*.md"; '
+    + 'export AURA_ACTIVE_WINDOW_TITLE="' + active_win_title + '"; '
     + 'setsid konsole -e bash "' + search_script + '" '
     + '</dev/null >/dev/null 2>&1 & disown';
 
