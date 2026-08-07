@@ -138,7 +138,8 @@ def print_window_active_status(file_path, line_num):
     active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
     if not active_win:
         return
-    print(f"=== ACTIVE WINDOW: [{active_win}] ===")
+    print(f"⬟:Aura 📄:map 🧩:plugin ⚙️:pre ※:punct 〃:same")
+    print(f"=== 🔵 [{active_win}] ===")
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
@@ -158,7 +159,7 @@ def print_file_header(file_path):
     """Prints the last 68 characters of the file path in the preview header."""
     clean_path = str(file_path).replace("\\", "/")
     if len(clean_path) > 68:
-        display_path = "…" + clean_path[-55:]
+        display_path = "…" + clean_path[-45:]
     else:
         display_path = clean_path
     print(f"[{display_path}] : FILE  ===")
