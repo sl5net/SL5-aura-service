@@ -132,13 +132,14 @@ def print_smart_cache_preview(file_path, line_num, project_root):
     except Exception as e:
         print(f"Database error: {e}")
 
-
 def print_window_active_status(file_path, line_num):
     """Prints text status indicators showing whether rule matches AURA_ACTIVE_WINDOW_TITLE."""
     active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
     if not active_win:
         return
-    print("⬟:Aura 📄:map 🧩:plugin ⚙️:pre ※:punct 〃:same")
+    print(f"📜 ⏵ ⬟…{get_proot_display()} 🗺️map 🧩plugin |※.punct ⚙️pre 📄post| 🔐sec 〃same")
+
+    # print("⬟:proot 📄:map 🧩:plugin ※:punct ⚙️:pre 📄:post 〃:same")
     print(f"=== 🔵 [{active_win}] ===")
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
@@ -162,7 +163,21 @@ def print_file_header(file_path):
         display_path = "…" + clean_path[-45:]
     else:
         display_path = clean_path
-    print(f"[{display_path}] : FILE  ===")
+
+
+    icon_symbol_dict = {
+        "PUNCTUATION_MAP.py": "※",
+        "FUZZY_MAP_pre.py" : "⚙️",
+        "FUZZY_MAP.py": "📄",
+    }
+    icon_symbol = next(
+        (symbol for name, symbol in icon_symbol_dict.items() if name in clean_path),
+        "🔴"  # default fallback
+    )
+    if "/_" in clean_path:
+        icon_symbol += "🔐"
+
+    print(f"{icon_symbol} {display_path}] {icon_symbol}")
 
     
 def save_last_selected_path(file_path):
@@ -173,6 +188,34 @@ def save_last_selected_path(file_path):
             f.write(os.path.abspath(file_path))
     except Exception:
         pass
+
+
+def get_proot_display():
+    """Reads current PROOT-State and returns it shortened for display."""
+    project_root = os.environ.get('SL5NET_AURA_PROJECT_ROOT', '')
+    try:
+        state_file = os.path.join(os.path.expanduser("~"), ".search_rules_proot")
+        with open(state_file, "r", encoding="utf-8") as f:
+            proot_path = f.read().strip()
+        base = os.path.join(project_root, "config", "maps")
+        # Normalisieren und absolute Pfade vergleichen
+        proot_path_abs = os.path.normpath(os.path.abspath(os.path.expanduser(proot_path)))
+        base_abs = os.path.normpath(os.path.abspath(base))
+        if proot_path_abs == base_abs:
+            return "/"
+        # Wenn proot sich innerhalb von base befindet, liefere den relativen Pfad
+        try:
+            rel = os.path.relpath(proot_path_abs, base_abs)
+            # relpath liefert '..' Teile, wenn außerhalb; wir wollen nur innerhalb behalten
+            if not rel.startswith(os.pardir):
+                return rel
+        except Exception:
+            pass
+        # Fallback: original (oder absolute) Pfad
+        return proot_path
+    except Exception:
+        return "?"
+
 
 def main():
     if len(sys.argv) < 3:

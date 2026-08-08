@@ -1,5 +1,8 @@
 #!/bin/bash
 # scripts/search_rules/run_rule.sh
+
+####
+
 source "$(dirname "${BASH_SOURCE[0]}")/search_helpers.sh"
 cd "$PROJECT_ROOT" || exit 1
 
@@ -25,7 +28,21 @@ if [ -z "${AURA_ACTIVE_WINDOW_TITLE:-}" ]; then
 fi
 
 H_FILE="$HOME/.search_rules_history"
+PROOT_STATE_FILE="$HOME/.search_rules_proot"
+[ -f "$PROOT_STATE_FILE" ] || echo "$PROJECT_ROOT/config/maps" > "$PROOT_STATE_FILE"
 
+GITIGNORE_STATE_FILE="$HOME/.search_rules_respect_gitignore"
+[ -f "$GITIGNORE_STATE_FILE" ] || echo "0" > "$GITIGNORE_STATE_FILE"
+
+get_ignore_flag() {
+    local respect
+    respect=$(cat "$GITIGNORE_STATE_FILE" 2>/dev/null)
+    if [ "$respect" = "1" ]; then
+        echo ""
+    else
+        echo "--no-ignore"
+    fi
+}
 cp "$H_FILE" "$H_FILE.bak"
 
 # Deduplicate
@@ -66,25 +83,20 @@ AWK_SCRIPT='{
 }'
 
 get_scoped_search_input() {
-    local state_file="$HOME/.search_rules_last_path"
-    local scope_dir=""
-    if [ -f "$state_file" ]; then
-        local last_path
-        last_path=$(cat "$state_file" 2>/dev/null)
-        if [ -n "$last_path" ] && [ -f "$last_path" ]; then
-            scope_dir=$(dirname $(dirname "$last_path"))
-        fi
-    fi
-    if [ -z "$scope_dir" ] || [ ! -d "$scope_dir" ]; then
-        scope_dir="$PROJECT_ROOT/config/maps"
-    fi
-    rg -nH $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="1" "$AWK_SCRIPT"
+    local scope_dir
+    scope_dir=$(cat "$PROOT_STATE_FILE" 2>/dev/null)
+    [ -z "$scope_dir" ] || [ ! -d "$scope_dir" ] && scope_dir="$PROJECT_ROOT/config/maps"
+    rg -nH $(get_ignore_flag) $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="1" "$AWK_SCRIPT"
 }
 
+
 if [ "${1:-}" = "--load-full" ]; then
-    rg -nH $FILT "^" "$PROJECT_ROOT/config/maps" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="0" "$AWK_SCRIPT"
+    FULL_ROOT=$(cat "$PROOT_STATE_FILE" 2>/dev/null)
+    [ -z "$FULL_ROOT" ] || [ ! -d "$FULL_ROOT" ] && FULL_ROOT="$PROJECT_ROOT/config/maps"
+    rg -nH $(get_ignore_flag) $FILT "^" "$FULL_ROOT" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="0" "$AWK_SCRIPT"
     exit 0
 fi
+
 
 if [ "${1:-}" = "--load-scoped" ]; then
     get_scoped_search_input
@@ -99,28 +111,24 @@ else
     INIT_STATE="empty"
 fi
 
+#        ${AFFEN_DEBUG:+--bind="change:execute-silent(echo \"\$(date +%H:%M:%S) live_query='{q}' count={}\" >> $PROJECT_ROOT/log/test_affenbrotbaum.sh.log)"} \
+
+
+#         --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps)" \
+
 
 F_OUT=$(echo "$INIT_INPUT" | \
     fzf --print-query \
         --no-hscroll \
         --layout=reverse \
         --delimiter=$'\t' \
-        --bind="start:execute-silent(echo $INIT_STATE > /tmp/fzf_query_state)" \
-        --bind="change:transform:
-            q="{q}"
-            state=\$(cat /tmp/fzf_query_state 2>/dev/null || echo empty)
-            echo \"\$(date +%H:%M:%S.%N) change fired q='\$q' state='\$state'\" >> /tmp/fzf_transform_debug.log
-            if [ -n \"\$q\" ] && [ \"\$state\" = \"empty\" ]; then
-                printf 'non-empty' > /tmp/fzf_query_state
-                echo \"\$(date +%H:%M:%S.%N) -> reload load-full\" >> /tmp/fzf_transform_debug.log
-                printf 'reload(bash \$SCRIPT_DIR/run_rule.sh --load-full)'
-            elif [ -z \"\$q\" ] && [ \"\$state\" = \"non-empty\" ]; then
-                printf 'empty' > /tmp/fzf_query_state
-                echo \"\$(date +%H:%M:%S.%N) -> reload load-scoped\" >> /tmp/fzf_transform_debug.log
-                printf 'reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)'
-            fi" \
+        --bind="alt-g:clear-query" \
+        --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh)+reload(bash \$SCRIPT_DIR/run_rule.sh --load-full)" \
+        --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps)+reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)" \
+        --bind="shift-right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh reset \$PROJECT_ROOT/config/maps)" \
+        --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$HOME/.search_rules_last_path)))\")+clear-query+reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)" \
         --history="$H_FILE" --query="$IQ" \
-        --header="🔵${AURA_ACTIVE_WINDOW_TITLE:0:4}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Scope"  \
+        --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+I: Gitignore | 2xClick: Set | RClick: Up | ShiftRClick: Reset"  \
         --with-nth=1 \
         --bind="ctrl-z:previous-history" \
         --bind="ctrl-y:next-history" \
