@@ -155,7 +155,7 @@ if [ "$ONE_PER_FILE_STATE" = "1" ]; then
         DITO_STATE="1"
         SORT_OPT="--no-sort"
     fi
-
+    echo "$DITO_STATE" > "$HOME/.search_rules_ditto"
     F_OUT=$(echo "$INIT_INPUT" | \
         fzf --print-query \
             --no-hscroll \
