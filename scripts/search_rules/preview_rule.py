@@ -192,8 +192,7 @@ def print_window_active_status(file_path, line_num):
         print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin")
         print(f"🗺️ .../{get_proot_display()}")
         print("📜 ※.punct ⚙️pre 📄post| 〃same")
-        print(f"📜 F1: Legend | Alt+G:Ditto[{icon_g}] | Alt+F:1/File[{icon_f}] | Alt+I:Gitignore[{icon_i}]")
-        # print(f"📜 F1: Legend | Alt+G:Ditto | Alt+F:1/File[{icon_f}] | Alt+I:Gitignore[{icon_i}]")
+        print(f"📜 F1:📜 Alt+G:{icon_g} Alt+F:1/File:{icon_f} Alt+I:{icon_i}")
         print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")
         print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
     else:
