@@ -160,6 +160,15 @@ def get_ditto_status():
     except Exception:
         return "OFF"
 
+def get_single_gui_status():
+    """Reads single gui state from file and returns ON or OFF."""
+    state_file = os.path.join(os.path.expanduser("~"), ".search_rules_single_gui")
+    try:
+        with open(state_file, "r", encoding="utf-8") as f:
+            return "ON" if f.read().strip() == "1" else "OFF"
+    except Exception:
+        return "ON"
+
 def print_window_active_status(file_path, line_num):
     """Prints text status indicators showing whether rule matches AURA_ACTIVE_WINDOW_TITLE."""
     active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
@@ -186,13 +195,17 @@ def print_window_active_status(file_path, line_num):
         gitignore_st = get_gitignore_status()
         one_pf_st = get_one_per_file_status()
         ditto_st = get_ditto_status()
-        icon_f = "✅" if one_pf_st == "ON" else "□"
+        single_gui_st = get_single_gui_status()
+        # ﹘ "﹘" else "͹≣"
+        # ﹘
+        icon_f = "﹘" if one_pf_st == "ON" else "≣"
         icon_i = "🔐" if gitignore_st == "ON" else "🔓Ո"
         icon_g = "〃" if ditto_st == "ON" else "⬟"
+        icon_u = "🎯" if single_gui_st == "ON" else "⁘"
         print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin")
         print(f"🗺️ .../{get_proot_display()}")
         print("📜 ※.punct ⚙️pre 📄post| 〃same")
-        print(f"📜 F1:📜 Alt+G:{icon_g} Alt+F:1/File:{icon_f} Alt+I:{icon_i}")
+        print(f"📜 F1:📜 Alt+G:{icon_g} Alt+F:{icon_f} Alt+I:{icon_i} Alt+U:{icon_u}")
         print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")
         print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
     else:
@@ -237,7 +250,7 @@ def print_file_header(file_path):
 
     print(f"{icon_symbol} {display_path}] {icon_symbol}")
 
-    
+
 def save_last_selected_path(file_path):
     """Saves the highlighted map file path for fzf scoped reload state."""
     try:

@@ -40,9 +40,29 @@ GITIGNORE_STATE_FILE="$HOME/.search_rules_respect_gitignore"
 ONE_PER_FILE_STATE_FILE="$HOME/.search_rules_one_per_file"
 [ -f "$ONE_PER_FILE_STATE_FILE" ] || echo "0" > "$ONE_PER_FILE_STATE_FILE"
 
+SINGLE_GUI_STATE_FILE="$HOME/.search_rules_single_gui"
+[ -f "$SINGLE_GUI_STATE_FILE" ] || echo "1" > "$SINGLE_GUI_STATE_FILE"
+
 get_one_per_file_flag() {
     cat "$ONE_PER_FILE_STATE_FILE" 2>/dev/null || echo "0"
 }
+
+get_single_gui_flag() {
+    cat "$SINGLE_GUI_STATE_FILE" 2>/dev/null || echo "1"
+}
+
+if [ "${1:-}" != "--load-full" ] && [ "${1:-}" != "--load-scoped" ]; then
+    if [ "$(get_single_gui_flag)" = "1" ]; then
+        MY_PID=$$
+        for pid in $(pgrep -f "run_rule.sh"); do
+            if [ "$pid" -ne "$MY_PID" ] && [ "$pid" -ne "$BASHPID" ] && [ "$pid" -ne "$PPID" ]; then
+                if ! pgrep -P "$MY_PID" 2>/dev/null | grep -q "^${pid}$"; then
+                    kill -9 "$pid" 2>/dev/null || true
+                fi
+            fi
+        done
+    fi
+fi
 
 get_ignore_flag() {
     local respect
@@ -176,6 +196,7 @@ if [ "$ONE_PER_FILE_STATE" = "1" ]; then
             --bind="alt-g:execute-silent(echo restart > $RESTART_MARKER)+clear-query+abort" \
             --bind="alt-f:$ALT_F_ACTION" \
             --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
+            --bind="alt-u:execute-silent(bash \$SCRIPT_DIR/toggle_single_gui.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$HOME/.search_rules_last_path)))\"; echo restart > $RESTART_MARKER)+clear-query+abort" \
             --bind="alt-r:execute-silent(bash \$SCRIPT_DIR/proot_control.sh reset \$PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
