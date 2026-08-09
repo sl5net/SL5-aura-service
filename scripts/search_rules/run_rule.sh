@@ -143,6 +143,10 @@ CURRENT_QUERY="$IQ"
                     echo \"\$q\" > ${RESTART_MARKER}.query
                     echo restart > $RESTART_MARKER
                     echo 'abort'
+                elif [ -z \"\$q\" ] && [ \"$DITO_STATE\" = \"0\" ]; then
+                    echo \"\" > ${RESTART_MARKER}.query
+                    echo restart > $RESTART_MARKER
+                    echo 'abort'
                 fi" \
             --bind="alt-g:execute-silent(echo restart > $RESTART_MARKER)+clear-query+abort" \
             --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
