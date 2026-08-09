@@ -79,7 +79,7 @@ AWK_SCRIPT='{
         } else {
             ditto_count = 0;
         }
-        if (ditto_count >= 5) {
+        if (ditto_count >= 10) {
             display_path = short_path;
             ditto_count = 0;
         } else if (full_path == prev_full_path) {

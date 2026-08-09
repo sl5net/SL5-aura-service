@@ -154,8 +154,11 @@ def print_window_active_status(file_path, line_num):
     except Exception:
         legend_on = True
     if legend_on:
-        print(f"📜 ⏵ ⬟…{get_proot_display()} 🗺️map 🧩plugin |※.punct ⚙️pre 📄post| 🔐sec 〃same")
-        print("F1:📜 Legend | Alt+G:Ditto | Alt+I:Gitignore | Alt+R:ResetPROOT | 2xClick:SetPROOT | RClick:Up")
+        print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin")
+        print(f"🗺️ …/{get_proot_display()}/…")
+        print("📜 ※.punct ⚙️pre 📄post| 🔐sec 〃same")
+        print("📜 F1: Legend | Alt+G:Ditto | Alt+I:Gitignore")
+        print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")
         print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
     else:
         print("F1: show 📜 Legend")
@@ -220,24 +223,32 @@ def get_proot_display():
         with open(state_file, "r", encoding="utf-8") as f:
             proot_path = f.read().strip()
         base = os.path.join(project_root, "config", "maps")
-        # Normalisieren und absolute Pfade vergleichen
         proot_path_abs = os.path.normpath(os.path.abspath(os.path.expanduser(proot_path)))
         base_abs = os.path.normpath(os.path.abspath(base))
+        proj_abs = os.path.normpath(os.path.abspath(project_root))
+
         if proot_path_abs == base_abs:
-            return "/"
-        # Wenn proot sich innerhalb von base befindet, liefere den relativen Pfad
+            return "config/maps"
+
         try:
-            rel = os.path.relpath(proot_path_abs, base_abs)
-            # relpath liefert '..' Teile, wenn außerhalb; wir wollen nur innerhalb behalten
-            if not rel.startswith(os.pardir):
-                return rel
+            rel_base = os.path.relpath(proot_path_abs, base_abs)
+            if not rel_base.startswith(os.pardir):
+                return f"config/maps/{rel_base}"
         except Exception:
             pass
-        # Fallback: original (oder absolute) Pfad
+
+        try:
+            rel_proj = os.path.relpath(proot_path_abs, proj_abs)
+            if not rel_proj.startswith(os.pardir):
+                return rel_proj
+        except Exception:
+            pass
+
         return proot_path
     except Exception:
-        return "?"
+        return ""
 
+    
 
 def main():
     if len(sys.argv) < 3:
