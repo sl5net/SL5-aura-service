@@ -129,7 +129,23 @@ fi
 RESTART_MARKER="/tmp/.search_rules_restart_$$"
 rm -f "$RESTART_MARKER"
 CURRENT_QUERY="$IQ"
-  while true; do
+while true; do
+    ONE_PER_FILE_STATE=$(get_one_per_file_flag)
+
+if [ "$ONE_PER_FILE_STATE" = "1" ]; then
+        ALT_F_ACTION="transform:
+            bash \$SCRIPT_DIR/toggle_one_per_file.sh
+            echo restart > $RESTART_MARKER
+            echo 'abort'"
+    else
+        ALT_F_ACTION="transform:
+            echo {q} > ${RESTART_MARKER}.saved_query
+            echo \"\" > ${RESTART_MARKER}.query
+            bash \$SCRIPT_DIR/toggle_one_per_file.sh
+            echo restart > $RESTART_MARKER
+            echo 'abort'"
+    fi
+
     if [ -n "$CURRENT_QUERY" ]; then
         INIT_INPUT=$(bash "$SCRIPT_DIR/run_rule.sh" --load-full)
         DITO_STATE="0"
@@ -158,7 +174,7 @@ CURRENT_QUERY="$IQ"
                     echo 'abort'
                 fi" \
             --bind="alt-g:execute-silent(echo restart > $RESTART_MARKER)+clear-query+abort" \
-            --bind="alt-f:execute-silent(bash \$SCRIPT_DIR/toggle_one_per_file.sh; echo restart > $RESTART_MARKER)+clear-query+abort" \
+            --bind="alt-f:$ALT_F_ACTION" \
             --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$HOME/.search_rules_last_path)))\"; echo restart > $RESTART_MARKER)+clear-query+abort" \
@@ -184,11 +200,23 @@ CURRENT_QUERY="$IQ"
 
     if [ -f "$RESTART_MARKER" ]; then
         rm -f "$RESTART_MARKER"
-        CURRENT_QUERY=$(cat "${RESTART_MARKER}.query" 2>/dev/null)
-        rm -f "${RESTART_MARKER}.query"
+
+        if [ -s "${RESTART_MARKER}.saved_query" ]; then
+            SAVED_QUERY=$(cat "${RESTART_MARKER}.saved_query")
+            rm -f "${RESTART_MARKER}.saved_query"
+        fi
+
+        ONE_PER_FILE_STATE=$(get_one_per_file_flag)
+        if [ "$ONE_PER_FILE_STATE" = "0" ] && [ -n "$SAVED_QUERY" ]; then
+            CURRENT_QUERY="$SAVED_QUERY"
+            SAVED_QUERY=""
+        elif [ -f "${RESTART_MARKER}.query" ]; then
+            CURRENT_QUERY=$(cat "${RESTART_MARKER}.query" 2>/dev/null)
+            rm -f "${RESTART_MARKER}.query"
+        fi
+
         continue
     fi
-
     break
 done
 rm -f "$RESTART_MARKER"
