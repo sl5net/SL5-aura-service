@@ -37,6 +37,13 @@ PROOT_STATE_FILE="$HOME/.search_rules_proot"
 GITIGNORE_STATE_FILE="$HOME/.search_rules_respect_gitignore"
 [ -f "$GITIGNORE_STATE_FILE" ] || echo "0" > "$GITIGNORE_STATE_FILE"
 
+ONE_PER_FILE_STATE_FILE="$HOME/.search_rules_one_per_file"
+[ -f "$ONE_PER_FILE_STATE_FILE" ] || echo "0" > "$ONE_PER_FILE_STATE_FILE"
+
+get_one_per_file_flag() {
+    cat "$ONE_PER_FILE_STATE_FILE" 2>/dev/null || echo "0"
+}
+
 get_ignore_flag() {
     local respect
     respect=$(cat "$GITIGNORE_STATE_FILE" 2>/dev/null)
@@ -46,6 +53,7 @@ get_ignore_flag() {
         echo "--no-ignore"
     fi
 }
+
 cp "$H_FILE" "$H_FILE.bak"
 
 # Deduplicate
@@ -68,17 +76,18 @@ AWK_SCRIPT='{
     gsub(/\/en-US\//, "🇬🇧", short_path);
     gsub(/config\/maps\//, "🗺️", short_path);
     gsub(/plugins\//, "🧩", short_path);
-
-    gsub(/FUZZY_MAP_pre\.py/, "⚙️", short_path);
+    if (one_per_file == "1") {
+        if (full_path == prev_full_path) next;
+    }    gsub(/FUZZY_MAP_pre\.py/, "⚙️", short_path);
     gsub(/FUZZY_MAP\.py/, "📄", short_path);
     gsub(/PUNCTUATION_MAP\.py/, "※", short_path);
-
     if (use_ditto == "1") {
-        if (full_path == prev_full_path) {
+        if (full_path == prev_full_path_ditto) {
             ditto_count++;
         } else {
             ditto_count = 0;
         }
+
         if (ditto_count >= 10) {
             display_path = short_path;
             ditto_count = 0;
@@ -100,14 +109,14 @@ get_scoped_search_input() {
     local scope_dir
     scope_dir=$(cat "$PROOT_STATE_FILE" 2>/dev/null)
     [ -z "$scope_dir" ] || [ ! -d "$scope_dir" ] && scope_dir="$PROJECT_ROOT/config/maps"
-    rg -nH $(get_ignore_flag) $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="1" "$AWK_SCRIPT"
+    rg -nH $(get_ignore_flag) $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="1" -v one_per_file="$(get_one_per_file_flag)" "$AWK_SCRIPT"
 }
 
 
 if [ "${1:-}" = "--load-full" ]; then
     FULL_ROOT=$(cat "$PROOT_STATE_FILE" 2>/dev/null)
     [ -z "$FULL_ROOT" ] || [ ! -d "$FULL_ROOT" ] && FULL_ROOT="$PROJECT_ROOT/config/maps"
-    rg -nH $(get_ignore_flag) $FILT "^" "$FULL_ROOT" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="0" "$AWK_SCRIPT"
+    rg -nH $(get_ignore_flag) $FILT "^" "$FULL_ROOT" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$PROJECT_ROOT" -v use_ditto="0" -v one_per_file="$(get_one_per_file_flag)" "$AWK_SCRIPT"
     exit 0
 fi
 
@@ -149,13 +158,14 @@ CURRENT_QUERY="$IQ"
                     echo 'abort'
                 fi" \
             --bind="alt-g:execute-silent(echo restart > $RESTART_MARKER)+clear-query+abort" \
+            --bind="alt-f:execute-silent(bash \$SCRIPT_DIR/toggle_one_per_file.sh; echo restart > $RESTART_MARKER)+clear-query+abort" \
             --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$HOME/.search_rules_last_path)))\"; echo restart > $RESTART_MARKER)+clear-query+abort" \
             --bind="alt-r:execute-silent(bash \$SCRIPT_DIR/proot_control.sh reset \$PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --history="$H_FILE" --query="$CURRENT_QUERY" \
             --with-nth=1 \
-            --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3} |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | 2xClick: Set | RClick: Up | Alt+R: Reset | F1: Legend"  \
+            --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3} |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+F: 1/File | 2xClick: Set | RClick: Up | Alt+R: Reset | F1: Legend"  \
             --bind="f1:execute-silent(bash \$SCRIPT_DIR/toggle_legend.sh)+refresh-preview" \
             --bind="ctrl-z:previous-history" \
             --bind="ctrl-y:next-history" \
