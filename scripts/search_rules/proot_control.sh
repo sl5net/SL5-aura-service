@@ -1,6 +1,10 @@
 #!/bin/bash
 # scripts/search_rules/proot_control.sh
-PROOT_STATE_FILE="$HOME/.search_rules_proot"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+PROOT_STATE_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_proot"
+
 ACTION="$1"
 BASE_ROOT="$2"
 NEW_PROOT="$3"

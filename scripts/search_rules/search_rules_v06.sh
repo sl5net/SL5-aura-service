@@ -6,7 +6,7 @@
 # CONFIGURATION
 # -----------------------------------------------------------------------------
 PREFERRED_EDITOR="kate"
-HISTORY_FILE="$HOME/.search_rules_history"
+HISTORY_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
 DEFAULT_QUERY=".py pre"
 
 # GITHUB CONFIGURATION

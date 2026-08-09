@@ -99,7 +99,7 @@ fi
 
 echo "Line 64:" $MAPS_DIR " pwd: " $PWD
 
-HISTORY_FILE="$HOME/.search_rules_history"
+HISTORY_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
 
 # 2. EDITOR FALLBACK LOGIC (Korrigierte Bash-Version deines Backups)
 get_preferred_editor() {

@@ -16,6 +16,8 @@ export REPO_URL
 FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --glob=/g; s/^/--glob=/')
 export FILT
 
+mkdir -p "$PROJECT_ROOT/data/_search_rules_state"
+
 REAL="${REAL:-1}"
 M_DIR="${1:-${MAPS_DIR:-config/maps}}"
 M_DIR="${M_DIR/#\~/$HOME}"
@@ -30,20 +32,20 @@ if [ -z "${AURA_ACTIVE_WINDOW_TITLE:-}" ]; then
   export AURA_ACTIVE_WINDOW_TITLE
 fi
 
-H_FILE="$HOME/.search_rules_history"
-PROOT_STATE_FILE="$HOME/.search_rules_proot"
+H_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
+PROOT_STATE_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_proot"
 [ -f "$PROOT_STATE_FILE" ] || echo "$PROJECT_ROOT/config/maps" > "$PROOT_STATE_FILE"
 
-GITIGNORE_STATE_FILE="$HOME/.search_rules_respect_gitignore"
+GITIGNORE_STATE_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_respect_gitignore"
 [ -f "$GITIGNORE_STATE_FILE" ] || echo "0" > "$GITIGNORE_STATE_FILE"
 #
-#ONE_PER_FILE_STATE_FILE="$HOME/.search_rules_one_per_file"
+#ONE_PER_FILE_STATE_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_one_per_file"
 #[ -f "$ONE_PER_FILE_STATE_FILE" ] || echo "0" > "$ONE_PER_FILE_STATE_FILE"
 
-ONE_PER_FILE_STATE_FILE="$HOME/.search_rules_one_per_file"
-echo "0" > "$ONE_PER_FILE_STATE_FILE"
+ONE_PER_FILE_STATE_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_one_per_file"
+[ -f "$ONE_PER_FILE_STATE_FILE" ] || echo "0" > "$ONE_PER_FILE_STATE_FILE"
 
-SINGLE_GUI_STATE_FILE="$HOME/.search_rules_single_gui"
+SINGLE_GUI_STATE_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_single_gui"
 [ -f "$SINGLE_GUI_STATE_FILE" ] || echo "1" > "$SINGLE_GUI_STATE_FILE"
 
 get_one_per_file_flag() {
@@ -178,7 +180,7 @@ if [ "$ONE_PER_FILE_STATE" = "1" ]; then
         DITO_STATE="1"
         SORT_OPT="--no-sort"
     fi
-    echo "$DITO_STATE" > "$HOME/.search_rules_ditto"
+    echo "$DITO_STATE" > "$PROJECT_ROOT/data/_search_rules_state/.search_rules_ditto"
     F_OUT=$(echo "$INIT_INPUT" | \
         fzf --print-query \
             --no-hscroll \
@@ -201,7 +203,7 @@ if [ "$ONE_PER_FILE_STATE" = "1" ]; then
             --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="alt-u:execute-silent(bash \$SCRIPT_DIR/toggle_single_gui.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
-            --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$HOME/.search_rules_last_path)))\"; echo restart > $RESTART_MARKER)+clear-query+abort" \
+            --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$PROJECT_ROOT/data/_search_rules_state/.search_rules_last_path)))\"; echo restart > $RESTART_MARKER)+clear-query+abort" \
             --bind="alt-r:execute-silent(bash \$SCRIPT_DIR/proot_control.sh reset \$PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --history="$H_FILE" --query="$CURRENT_QUERY" \
             --with-nth=1 \

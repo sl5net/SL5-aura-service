@@ -132,9 +132,16 @@ def print_smart_cache_preview(file_path, line_num, project_root):
     except Exception as e:
         print(f"Database error: {e}")
 
+
+def get_state_dir():
+    """Returns absolute path to internal state directory."""
+    project_root = os.environ.get('PROJECT_ROOT') or os.environ.get('SL5NET_AURA_PROJECT_ROOT') or ''
+    return os.path.join(project_root, "data", "_search_rules_state")
+
+
 def get_gitignore_status():
     """Reads gitignore state from file and returns ON or OFF."""
-    state_file = os.path.join(os.path.expanduser("~"), ".search_rules_respect_gitignore")
+    state_file = os.path.join(get_state_dir(), ".search_rules_respect_gitignore")
     try:
         with open(state_file, "r", encoding="utf-8") as f:
             return "ON" if f.read().strip() == "1" else "OFF"
@@ -144,60 +151,70 @@ def get_gitignore_status():
 
 def get_one_per_file_status():
     """Reads one-per-file state from file and returns ON or OFF."""
-    state_file = os.path.join(os.path.expanduser("~"), ".search_rules_one_per_file")
+    state_file = os.path.join(get_state_dir(), ".search_rules_one_per_file")
     try:
         with open(state_file, "r", encoding="utf-8") as f:
             return "ON" if f.read().strip() == "1" else "OFF"
     except Exception:
         return "OFF"
 
-def get_ditto_status():
-    """Reads ditto state from file and returns ON or OFF."""
-    state_file = os.path.join(os.path.expanduser("~"), ".search_rules_ditto")
-    try:
-        with open(state_file, "r", encoding="utf-8") as f:
-            return "ON" if f.read().strip() == "1" else "OFF"
-    except Exception:
-        return "OFF"
 
 def get_single_gui_status():
     """Reads single gui state from file and returns ON or OFF."""
-    state_file = os.path.join(os.path.expanduser("~"), ".search_rules_single_gui")
+    state_file = os.path.join(get_state_dir(), ".search_rules_single_gui")
     try:
         with open(state_file, "r", encoding="utf-8") as f:
             return "ON" if f.read().strip() == "1" else "OFF"
     except Exception:
         return "ON"
 
+
+def get_ditto_status():
+    """Reads ditto state from file and returns ON or OFF."""
+    state_file = os.path.join(get_state_dir(), ".search_rules_ditto")
+    try:
+        with open(state_file, "r", encoding="utf-8") as f:
+            return "ON" if f.read().strip() == "1" else "OFF"
+    except Exception:
+        return "OFF"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def get_legend_status():
+    """Reads legend state from file and returns True if legend is ON."""
+    state_file = os.path.join(get_state_dir(), ".search_rules_legend_state")
+    try:
+        with open(state_file, "r", encoding="utf-8") as f:
+            return f.read().strip() == "1"
+    except Exception:
+        return True
+
+
+
+
 def print_window_active_status(file_path, line_num):
     """Prints text status indicators showing whether rule matches AURA_ACTIVE_WINDOW_TITLE."""
-    active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
-    if not active_win:
-        return
-
-    # legend_state_file = os.path.join(os.path.expanduser("~"), ".search_rules_legend_state")
-    # try:
-    #     with open(legend_state_file, "r", encoding="utf-8") as f:
-    #         legend_on = f.read().strip() != "off"
-    # except Exception:
-    #     legend_on = True
-    # if legend_on:
-    #     print(f"📜 ⏵ ⬟…{get_proot_display()} 🗺️map 🧩plugin |※.punct ⚙️pre 📄post| 〃same")
-
-    legend_state_file = os.path.join(os.path.expanduser("~"), ".search_rules_legend_state")
-    try:
-        with open(legend_state_file, "r", encoding="utf-8") as f:
-            legend_on = f.read().strip() != "off"
-    except Exception:
-        legend_on = True
+    legend_on = get_legend_status()
 
     if legend_on:
         gitignore_st = get_gitignore_status()
         one_pf_st = get_one_per_file_status()
         ditto_st = get_ditto_status()
         single_gui_st = get_single_gui_status()
-        # ﹘ "﹘" else "͹≣"
-        # ﹘
+
         icon_f = "≣" if one_pf_st == "OFF" else "﹘"
         icon_i = "🔐" if gitignore_st == "ON" else "🔓Ո"
         icon_g = "〃" if ditto_st == "ON" else "⬟"
@@ -210,23 +227,10 @@ def print_window_active_status(file_path, line_num):
         print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
     else:
         print("F1: show 📜 Legend")
-    # print("⬟:proot 📄:map 🧩:plugin ※:punct ⚙️:pre 📄:post 〃:same")
-    print(f"=== 🔵 [{active_win}] ===")
-    try:
-        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
-            content = f.read()
-        if "only_in_windows" in content:
-            win_clean = active_win.lower()
-            if any(w in content.lower() for w in ["0ad", "0 a.d.", win_clean]):
-                print(">>> STATUS: MATCHES ACTIVE WINDOW <<<")
-            else:
-                print(">>> STATUS: WINDOW MISMATCH <<<")
-        else:
-            print(">>> STATUS: GLOBAL RULE (All windows) <<<")
-        print()
-    except Exception as e:
-        print(f"Window status error: {e}")
 
+    active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
+    if not active_win:
+        return
 def print_file_header(file_path):
     """Prints the last 68 characters of the file path in the preview header."""
     clean_path = str(file_path).replace("\\", "/")
