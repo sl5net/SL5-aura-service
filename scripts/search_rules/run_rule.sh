@@ -73,9 +73,20 @@ AWK_SCRIPT='{
     gsub(/FUZZY_MAP\.py/, "📄", short_path);
     gsub(/PUNCTUATION_MAP\.py/, "※", short_path);
 
-
     if (use_ditto == "1") {
-        display_path = (full_path == prev_full_path ? "〃" : short_path);
+        if (full_path == prev_full_path) {
+            ditto_count++;
+        } else {
+            ditto_count = 0;
+        }
+        if (ditto_count >= 5) {
+            display_path = short_path;
+            ditto_count = 0;
+        } else if (full_path == prev_full_path) {
+            display_path = "〃";
+        } else {
+            display_path = short_path;
+        }
         prev_full_path = full_path;
     } else {
         display_path = short_path;
@@ -106,48 +117,67 @@ if [ "${1:-}" = "--load-scoped" ]; then
     exit 0
 fi
 
-if [ -n "$IQ" ]; then
-    INIT_INPUT=$(bash "$SCRIPT_DIR/run_rule.sh" --load-full)
-    INIT_STATE="non-empty"
-else
-    INIT_INPUT=$(get_scoped_search_input)
-    INIT_STATE="empty"
-fi
+RESTART_MARKER="/tmp/.search_rules_restart_$$"
+rm -f "$RESTART_MARKER"
+CURRENT_QUERY="$IQ"
+  while true; do
+    if [ -n "$CURRENT_QUERY" ]; then
+        INIT_INPUT=$(bash "$SCRIPT_DIR/run_rule.sh" --load-full)
+        DITO_STATE="0"
+        SORT_OPT=""
+    else
+        INIT_INPUT=$(get_scoped_search_input)
+        DITO_STATE="1"
+        SORT_OPT="--no-sort"
+    fi
 
-#        ${AFFEN_DEBUG:+--bind="change:execute-silent(echo \"\$(date +%H:%M:%S) live_query='{q}' count={}\" >> $PROJECT_ROOT/log/test_affenbrotbaum.sh.log)"} \
+    F_OUT=$(echo "$INIT_INPUT" | \
+        fzf --print-query \
+            --no-hscroll \
+            --layout=reverse \
+            $SORT_OPT \
+            --delimiter=$'\t' \
+            --bind="change:transform:
+                q={q}
+                if [ -n \"\$q\" ] && [ \"$DITO_STATE\" = \"1\" ]; then
+                    echo \"\$q\" > ${RESTART_MARKER}.query
+                    echo restart > $RESTART_MARKER
+                    echo 'abort'
+                fi" \
+            --bind="alt-g:execute-silent(echo restart > $RESTART_MARKER)+clear-query+abort" \
+            --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
+            --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
+            --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$HOME/.search_rules_last_path)))\"; echo restart > $RESTART_MARKER)+clear-query+abort" \
+            --bind="alt-r:execute-silent(bash \$SCRIPT_DIR/proot_control.sh reset \$PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
+            --history="$H_FILE" --query="$CURRENT_QUERY" \
+            --with-nth=1 \
+            --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3} |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | 2xClick: Set | RClick: Up | Alt+R: Reset | F1: Legend"  \
+            --bind="f1:execute-silent(bash \$SCRIPT_DIR/toggle_legend.sh)+refresh-preview" \
+            --bind="ctrl-z:previous-history" \
+            --bind="ctrl-y:next-history" \
+            --bind="ctrl-backspace:backward-kill-word" \
+            --bind="ctrl-delete:kill-word" \
+            --bind="ctrl-left:backward-word" \
+            --bind="ctrl-right:forward-word" \
+            --bind="ctrl-up:up+up+up+up+up" \
+            --bind="ctrl-down:down+down+down+down+down" \
+            --bind="home:beginning-of-line" \
+            --bind="end:end-of-line" \
+            --bind="ctrl-g:execute-silent(f={2}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{3}\")" \
+            --expect="ctrl-e,ctrl-r" \
+            --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {2} {3}' \
+    )
 
+    if [ -f "$RESTART_MARKER" ]; then
+        rm -f "$RESTART_MARKER"
+        CURRENT_QUERY=$(cat "${RESTART_MARKER}.query" 2>/dev/null)
+        rm -f "${RESTART_MARKER}.query"
+        continue
+    fi
 
-#         --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps)" \
-
-
-F_OUT=$(echo "$INIT_INPUT" | \
-    fzf --print-query \
-        --no-hscroll \
-        --layout=reverse \
-        --delimiter=$'\t' \
-        --bind="alt-g:clear-query" \
-        --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh)+reload(bash \$SCRIPT_DIR/run_rule.sh --load-full)" \
-        --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps)+reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)" \
-        --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$HOME/.search_rules_last_path)))\")+clear-query+reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)" \
-        --history="$H_FILE" --query="$IQ" \
-        --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+I: Gitignore | 2xClick: Set | RClick: Up | ShiftRClick: Reset"  \
-        --with-nth=1 \
-        --bind="ctrl-z:previous-history" \
-        --bind="ctrl-y:next-history" \
-        --bind="alt-g:clear-query" \
-        --bind="ctrl-backspace:backward-kill-word" \
-        --bind="ctrl-delete:kill-word" \
-        --bind="ctrl-left:backward-word" \
-        --bind="ctrl-right:forward-word" \
-        --bind="ctrl-up:up+up+up+up+up" \
-        --bind="ctrl-down:down+down+down+down+down" \
-        --bind="home:beginning-of-line" \
-        --bind="end:end-of-line" \
-        --bind="ctrl-g:execute-silent(f={2}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{3}\")" \
-        --expect="ctrl-e,ctrl-r" \
-        --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {2} {3}' \
-)
-
+    break
+done
+rm -f "$RESTART_MARKER"
 [[ -z "$F_OUT" ]] && exit 0
 QUERY_TYPED=$(echo "$F_OUT" | sed -n '1p')
 KEY=$(echo "$F_OUT" | sed -n '2p')
@@ -202,5 +232,3 @@ if [[ "$KEY" = "ctrl-e" && -n "$SEL" ]]; then
     fi
     logger_info "185: spawned pid=$!"
 fi
-
-

@@ -137,7 +137,29 @@ def print_window_active_status(file_path, line_num):
     active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
     if not active_win:
         return
-    print(f"📜 ⏵ ⬟…{get_proot_display()} 🗺️map 🧩plugin |※.punct ⚙️pre 📄post| 🔐sec 〃same")
+
+    # legend_state_file = os.path.join(os.path.expanduser("~"), ".search_rules_legend_state")
+    # try:
+    #     with open(legend_state_file, "r", encoding="utf-8") as f:
+    #         legend_on = f.read().strip() != "off"
+    # except Exception:
+    #     legend_on = True
+    # if legend_on:
+    #     print(f"📜 ⏵ ⬟…{get_proot_display()} 🗺️map 🧩plugin |※.punct ⚙️pre 📄post| 🔐sec 〃same")
+
+    legend_state_file = os.path.join(os.path.expanduser("~"), ".search_rules_legend_state")
+    try:
+        with open(legend_state_file, "r", encoding="utf-8") as f:
+            legend_on = f.read().strip() != "off"
+    except Exception:
+        legend_on = True
+    if legend_on:
+        print(f"📜 ⏵ ⬟…{get_proot_display()} 🗺️map 🧩plugin |※.punct ⚙️pre 📄post| 🔐sec 〃same")
+        print("F1:📜 Legend | Alt+G:Ditto | Alt+I:Gitignore | Alt+R:ResetPROOT | 2xClick:SetPROOT | RClick:Up")
+        print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
+    else:
+        print("F1: show 📜 Legend")
+
 
     # print("⬟:proot 📄:map 🧩:plugin ※:punct ⚙️:pre 📄:post 〃:same")
     print(f"=== 🔵 [{active_win}] ===")
