@@ -36,9 +36,12 @@ PROOT_STATE_FILE="$HOME/.search_rules_proot"
 
 GITIGNORE_STATE_FILE="$HOME/.search_rules_respect_gitignore"
 [ -f "$GITIGNORE_STATE_FILE" ] || echo "0" > "$GITIGNORE_STATE_FILE"
+#
+#ONE_PER_FILE_STATE_FILE="$HOME/.search_rules_one_per_file"
+#[ -f "$ONE_PER_FILE_STATE_FILE" ] || echo "0" > "$ONE_PER_FILE_STATE_FILE"
 
 ONE_PER_FILE_STATE_FILE="$HOME/.search_rules_one_per_file"
-[ -f "$ONE_PER_FILE_STATE_FILE" ] || echo "0" > "$ONE_PER_FILE_STATE_FILE"
+echo "0" > "$ONE_PER_FILE_STATE_FILE"
 
 SINGLE_GUI_STATE_FILE="$HOME/.search_rules_single_gui"
 [ -f "$SINGLE_GUI_STATE_FILE" ] || echo "1" > "$SINGLE_GUI_STATE_FILE"

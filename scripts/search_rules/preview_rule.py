@@ -198,7 +198,7 @@ def print_window_active_status(file_path, line_num):
         single_gui_st = get_single_gui_status()
         # ﹘ "﹘" else "͹≣"
         # ﹘
-        icon_f = "﹘" if one_pf_st == "ON" else "≣"
+        icon_f = "≣" if one_pf_st == "OFF" else "﹘"
         icon_i = "🔐" if gitignore_st == "ON" else "🔓Ո"
         icon_g = "〃" if ditto_st == "ON" else "⬟"
         icon_u = "🎯" if single_gui_st == "ON" else "⁘"
