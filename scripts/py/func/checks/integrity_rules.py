@@ -163,6 +163,15 @@ INTEGRITY_CHECKS = {
         '"standard_actions/wikipedia_local": True,',
     ],
 
+    'scripts/search_rules/search_rules.sh': [
+        r'--bind="ctrl-g:execute-silent(f={1}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{2}\")"',
+    ],
+    'scripts/search_rules/run_rule.sh': [
+        r'--bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps)+reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)"',
+        r'--bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$HOME/.search_rules_last_path)))\")+clear-query+reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)"'
+        r'--bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh)+reload(bash \$SCRIPT_DIR/run_rule.sh --load-full)"'
+        r'--bind="ctrl-g:execute-silent(f={2}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{3}\")"',
+    ],
     'scripts/search_rules/preview_rule.py': [
         'print(f"{COLOR_RED}⚠ EXAMPLE \'{example}\' not match Regex{COLOR_RESET}")',
     ],

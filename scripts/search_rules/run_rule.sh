@@ -7,8 +7,11 @@ source "$(dirname "${BASH_SOURCE[0]}")/search_helpers.sh"
 cd "$PROJECT_ROOT" || exit 1
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_URL="https://github.com/sl5net/SL5-aura-service/blob/master"
+
 export SCRIPT_DIR
 export PROJECT_ROOT
+export REPO_URL
 
 FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --glob=/g; s/^/--glob=/')
 export FILT
@@ -125,7 +128,6 @@ F_OUT=$(echo "$INIT_INPUT" | \
         --bind="alt-g:clear-query" \
         --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh)+reload(bash \$SCRIPT_DIR/run_rule.sh --load-full)" \
         --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$PROJECT_ROOT/config/maps)+reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)" \
-        --bind="shift-right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh reset \$PROJECT_ROOT/config/maps)" \
         --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$HOME/.search_rules_last_path)))\")+clear-query+reload(bash \$SCRIPT_DIR/run_rule.sh --load-scoped)" \
         --history="$H_FILE" --query="$IQ" \
         --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+I: Gitignore | 2xClick: Set | RClick: Up | ShiftRClick: Reset"  \
@@ -141,6 +143,7 @@ F_OUT=$(echo "$INIT_INPUT" | \
         --bind="ctrl-down:down+down+down+down+down" \
         --bind="home:beginning-of-line" \
         --bind="end:end-of-line" \
+        --bind="ctrl-g:execute-silent(f={2}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{3}\")" \
         --expect="ctrl-e,ctrl-r" \
         --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {2} {3}' \
 )
