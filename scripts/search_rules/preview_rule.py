@@ -132,6 +132,25 @@ def print_smart_cache_preview(file_path, line_num, project_root):
     except Exception as e:
         print(f"Database error: {e}")
 
+def get_gitignore_status():
+    """Reads gitignore state from file and returns ON or OFF."""
+    state_file = os.path.join(os.path.expanduser("~"), ".search_rules_respect_gitignore")
+    try:
+        with open(state_file, "r", encoding="utf-8") as f:
+            return "ON" if f.read().strip() == "1" else "OFF"
+    except Exception:
+        return "OFF"
+
+
+def get_one_per_file_status():
+    """Reads one-per-file state from file and returns ON or OFF."""
+    state_file = os.path.join(os.path.expanduser("~"), ".search_rules_one_per_file")
+    try:
+        with open(state_file, "r", encoding="utf-8") as f:
+            return "ON" if f.read().strip() == "1" else "OFF"
+    except Exception:
+        return "OFF"
+
 def print_window_active_status(file_path, line_num):
     """Prints text status indicators showing whether rule matches AURA_ACTIVE_WINDOW_TITLE."""
     active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
@@ -153,17 +172,20 @@ def print_window_active_status(file_path, line_num):
             legend_on = f.read().strip() != "off"
     except Exception:
         legend_on = True
+
     if legend_on:
+        gitignore_st = get_gitignore_status()
+        one_pf_st = get_one_per_file_status()
+        icon_f = "✅" if one_pf_st == "ON" else "□"
+        icon_i = "🔐" if gitignore_st == "ON" else "🔓Ո"
         print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin")
-        print(f"🗺️ …/{get_proot_display()}/…")
+        print(f"🗺️ .../{get_proot_display()}")
         print("📜 ※.punct ⚙️pre 📄post| 🔐sec 〃same")
-        print("📜 F1: Legend | Alt+G:Ditto | Alt+I:Gitignore")
+        print(f"📜 F1: Legend | Alt+G:Ditto | Alt+F:1/File[{icon_f}] | Alt+I:Gitignore[{icon_i}]")
         print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")
         print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
     else:
         print("F1: show 📜 Legend")
-
-
     # print("⬟:proot 📄:map 🧩:plugin ※:punct ⚙️:pre 📄:post 〃:same")
     print(f"=== 🔵 [{active_win}] ===")
     try:
