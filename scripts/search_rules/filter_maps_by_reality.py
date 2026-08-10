@@ -10,11 +10,11 @@ from pathlib import Path
 
 # --- PATH LOGIC (cross-platform) ---
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text(encoding="utf-8").strip())
+SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text(encoding="utf-8").strip())
 CACHE_FILE = tmp_dir / "sl5_aura" / "active_maps_cache.json"
 
 # --- LOGGING ---
-log_file = PROJECT_ROOT / "log" / "search_rules" / f"{Path(__file__).stem}.log"
+log_file = SL5NET_AURA_PROJECT_ROOT / "log" / "search_rules" / f"{Path(__file__).stem}.log"
 log_file.parent.mkdir(parents=True, exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
@@ -39,7 +39,7 @@ def guess_lt_language_from_model(model_name):
 
 
 def get_current_language():
-    model_file = PROJECT_ROOT / "config" / "model_name.txt"
+    model_file = SL5NET_AURA_PROJECT_ROOT / "config" / "model_name.txt"
     if not model_file.exists():
         logger.warning("model_name.txt not found, defaulting to de-DE")
         return "de-DE"
@@ -80,7 +80,7 @@ def is_window_title_skippable(active_title, only_in_list=None, exclude_list=None
 
 def get_active_window_title():
     try:
-        sys.path.insert(0, str(PROJECT_ROOT))
+        sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
         from scripts.py.func.get_active_window_title import get_active_window_title_safe
         return get_active_window_title_safe()
     except Exception as e:

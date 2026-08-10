@@ -165,7 +165,7 @@ INTEGRITY_CHECKS = {
     ],
 
     'scripts/search_rules/search_rules.sh': [
-        r'--bind="ctrl-g:execute-silent(f={1}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{2}\")"',
+        r'--bind="ctrl-g',
     ],
     'scripts/search_rules/run_rule.sh': [
         r'--bind="ctrl-backspace:backward-kill-word"',

@@ -2,8 +2,8 @@
 # scripts/search_rules/proot_control.sh
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
-PROOT_STATE_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_proot"
+SL5NET_AURA_PROJECT_ROOT="${SL5NET_AURA_PROJECT_ROOT:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+PROOT_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_proot"
 
 ACTION="$1"
 BASE_ROOT="$2"

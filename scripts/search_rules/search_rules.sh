@@ -38,7 +38,7 @@
 
 # 1. PFADE & VARIABLEN
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
+SL5NET_AURA_PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 
 LOG_DIR="$PROJECT_ROOT/log"
@@ -99,7 +99,7 @@ fi
 
 echo "Line 64:" $MAPS_DIR " pwd: " $PWD
 
-HISTORY_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
+HISTORY_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
 
 # 2. EDITOR FALLBACK LOGIC (Korrigierte Bash-Version deines Backups)
 get_preferred_editor() {
@@ -125,7 +125,7 @@ if [[ ! -d "$MAPS_DIR" ]]; then
     exit 1
 fi
 
-export PROJECT_ROOT
+export SL5NET_AURA_PROJECT_ROOT
 export REPO_URL
 logger_info "Editor configured: $PREFERRED_EDITOR"
 logger_info "Project root: $PROJECT_ROOT"
@@ -190,7 +190,7 @@ SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | 
         --bind="ctrl-right:forward-word" \
         --bind="home:beginning-of-line" \
         --bind="end:end-of-line" \
-        --bind="ctrl-g:execute-silent(f={1}; rel=\${f#\$PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{2}\")" \
+        --bind="ctrl-g:execute-silent(f={1}; rel=\${f#\$SL5NET_AURA_PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{2}\")" \
         --bind='ctrl-x:execute-silent(echo {3..} | xclip -selection clipboard)' \
         --bind='ctrl-a:execute-silent(awk -v t={2} "BEGIN {t=t+0} NR>t-5 && NR<t+5 {print \$0}" {1} | xclip -selection clipboard)' \
         --preview-window="up:50%" \

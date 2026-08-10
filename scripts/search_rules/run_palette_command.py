@@ -35,12 +35,12 @@ logger = logging.getLogger()
 
 try:
     tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+    SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 except Exception as e:
     print(e)
     raise
 
-log_file = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
+log_file = SL5NET_AURA_PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
 
 os.environ["PYTHONUTF8"] = "1"
 os.environ["PYTHONIOENCODING"] = "utf-8:replace"
@@ -68,7 +68,7 @@ def main():
     else:
         query = sys.argv[1]
 
-    secrets_path = PROJECT_ROOT / ".secrets"
+    secrets_path = SL5NET_AURA_PROJECT_ROOT / ".secrets"
 
     # Initialize debug logging for pythonw.exe execution
     log(f"\n--- Script execution started ({time.strftime('%Y-%m-%d %H:%M:%S')}) ---\n")
@@ -92,17 +92,17 @@ def main():
         raise RuntimeError("Missing SERVICE_API_KEY")
 
     if not api_key:
-        log_file = PROJECT_ROOT / "log" / "run_palette_command.log"
+        log_file = SL5NET_AURA_PROJECT_ROOT / "log" / "run_palette_command.log"
         with open(log_file, "a", encoding="utf-8") as lf:
             log("ERROR: API key not loaded\n")
         raise RuntimeError("API key missing")
 
     log(f"secrets_path exists: {secrets_path.exists()}\n")
 
-    # log_file = PROJECT_ROOT / "log" / "palette_launch_debug.log"
+    # log_file = SL5NET_AURA_PROJECT_ROOT / "log" / "palette_launch_debug.log"
     # with open(log_file, "a", encoding="utf-8") as lf:
     #     subprocess.Popen(
-    #         [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
+    #         [sys.executable, str(SL5NET_AURA_PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
     #         stdout=lf, stderr=lf, **kwargs
     #     )
 
@@ -134,12 +134,12 @@ def main():
 
         with open(log_file, "a", encoding="utf-8") as lf:
             subprocess.Popen(
-                [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
+                [sys.executable, str(SL5NET_AURA_PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
                 stdout=lf, stderr=lf, **kwargs
             )
 
         # subprocess.Popen(
-        #     [sys.executable, str(PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
+        #     [sys.executable, str(SL5NET_AURA_PROJECT_ROOT / "scripts" / "py" / "start_uvicorn_service.py")],
         #     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,  env=env, **kwargs
         # )
         # for _ in range(40):
