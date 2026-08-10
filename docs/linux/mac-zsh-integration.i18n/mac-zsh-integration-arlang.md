@@ -31,8 +31,8 @@ s() {
     local SHORT_TIMEOUT_SECONDS=2
     local LONG_TIMEOUT_SECONDS=70
     # Path shortcuts
-    local PY_EXEC="$PROJECT_ROOT/.venv/bin/python3"
-    local CLI_SCRIPT="$PROJECT_ROOT/scripts/py/cli_client.py"
+    local PY_EXEC="$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3"
+    local CLI_SCRIPT="$SL5NET_AURA_PROJECT_ROOT/scripts/py/cli_client.py"
     # --- 1. try
     timeout $SHORT_TIMEOUT_SECONDS \
     "$PY_EXEC" -u "$CLI_SCRIPT" "$*" \
@@ -44,7 +44,7 @@ s() {
         echo "Service-Check: Backend oder Frontend fehlt. Starte neu..."
         start_service
         echo '++++++++++++++++++++++++++++++++++++++++++++++++++'
-        local KIWIX_SCRIPT="$PROJECT_ROOT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh"
+        local KIWIX_SCRIPT="$SL5NET_AURA_PROJECT_ROOT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh"
         if [ -f "$KIWIX_SCRIPT" ]; then
             bash "$KIWIX_SCRIPT"
         fi
@@ -97,7 +97,7 @@ s() {
 
 - **`pgrep`** متاح على نظام التشغيل macOS بشكل افتراضي.
 
-- **مسار بايثون**: تأكد من إعداد بيئتك الافتراضية على `$PROJECT_ROOT/.venv`. إذا كنت تدير لغة Python باستخدام `pyenv` أو `conda`، فاضبط `PY_EXEC` وفقًا لذلك.
+- **مسار بايثون**: تأكد من إعداد بيئتك الافتراضية على `$SL5NET_AURA_PROJECT_ROOT/.venv`. إذا كنت تدير لغة Python باستخدام `pyenv` أو `conda`، فاضبط `PY_EXEC` وفقًا لذلك.
 
                                                                   ## سمات
 

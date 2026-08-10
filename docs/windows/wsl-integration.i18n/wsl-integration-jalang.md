@@ -73,10 +73,10 @@ Windows ドライブは `/mnt/` の下にマウントされます。
 /mnt/d/   # → D:\
 ```
 
-プロジェクトが Windows ファイルシステム (例: `C:\Projects\stt`) 上にある場合は、`PROJECT_ROOT` を次のように設定します。
+プロジェクトが Windows ファイルシステム (例: `C:\Projects\stt`) 上にある場合は、`SL5NET_AURA_PROJECT_ROOT` を次のように設定します。
 
 ```bash
-export PROJECT_ROOT="/mnt/c/Projects/stt"
+export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 ```
 
 この行を `~/.bashrc` (またはシェルの同等のもの) の `s()` 関数の**上**に追加します。
@@ -88,13 +88,13 @@ export PROJECT_ROOT="/mnt/c/Projects/stt"
 WSL 内で標準の Linux 仮想環境を作成して使用します。
 
 ```bash
-cd "$PROJECT_ROOT"
+cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-関数内の `PY_EXEC` パス (`$PROJECT_ROOT/.venv/bin/python3`) はそのままで正しく動作します。
+関数内の `PY_EXEC` パス (`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) はそのままで正しく動作します。
 
 ### Windows ターミナルから `s` を実行する
 
@@ -162,6 +162,6 @@ wsl bash -i -c "s %*"
 ＃＃ 特徴
 
 - **完全な Linux 互換性**: すべての Unix ツール (`timeout`、`pgrep`、`mktemp`、`grep`) はネイティブに動作します。回避策は必要ありません。
-- **動的パス**: シェル設定に設定された `PROJECT_ROOT` 変数を介してプロジェクト ルートを自動的に検索します。
+- **動的パス**: シェル設定に設定された `SL5NET_AURA_PROJECT_ROOT` 変数を介してプロジェクト ルートを自動的に検索します。
 - **自動再起動**: バックエンドがダウンしている場合、「start_service」とローカルの Wikipedia サービスの実行を試みます (Docker が実行されている必要があります)。
 - **スマート タイムアウト**: 最初に 2 秒の素早い応答を試み、その後 70 秒の詳細な処理モードに戻ります。

@@ -9,7 +9,7 @@ MAPS_DIR is configurable via positional arg or environment variable
 script keeps its hard-coded default but allows overrides:
 
 - Priority: 1) first positional parameter ($1), 2) existing MAPS_DIR env var,
-  3) hard-coded default "$PROJECT_ROOT/config/maps".
+  3) hard-coded default "$SL5NET_AURA_PROJECT_ROOT/config/maps".
 - Improves flexibility for CI, local overrides and testing without editing the script.
 - Adds quoting and a directory existence check to fail early if the path is invalid.
 

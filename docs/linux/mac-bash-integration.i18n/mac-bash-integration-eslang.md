@@ -36,8 +36,8 @@ s() {
     local SHORT_TIMEOUT_SECONDS=2
     local LONG_TIMEOUT_SECONDS=70
     # Path shortcuts
-    local PY_EXEC="$PROJECT_ROOT/.venv/bin/python3"
-    local CLI_SCRIPT="$PROJECT_ROOT/scripts/py/cli_client.py"
+    local PY_EXEC="$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3"
+    local CLI_SCRIPT="$SL5NET_AURA_PROJECT_ROOT/scripts/py/cli_client.py"
     # --- 1. try
     timeout $SHORT_TIMEOUT_SECONDS \
     "$PY_EXEC" -u "$CLI_SCRIPT" "$*" \
@@ -49,7 +49,7 @@ s() {
         echo "Service-Check: Backend oder Frontend fehlt. Starte neu..."
         start_service
         echo '++++++++++++++++++++++++++++++++++++++++++++++++++'
-        local KIWIX_SCRIPT="$PROJECT_ROOT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh"
+        local KIWIX_SCRIPT="$SL5NET_AURA_PROJECT_ROOT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh"
         if [ -f "$KIWIX_SCRIPT" ]; then
             bash "$KIWIX_SCRIPT"
         fi
@@ -111,7 +111,7 @@ Agregue el alias encima de la función `s()` en su `~/.bash_profile`.
   brew install bash
   ```
 
-- **Ruta de Python**: asegúrese de que su entorno virtual esté configurado en `$PROJECT_ROOT/.venv`. Si administra Python con `pyenv` o `conda`, ajuste `PY_EXEC` en consecuencia.
+- **Ruta de Python**: asegúrese de que su entorno virtual esté configurado en `$SL5NET_AURA_PROJECT_ROOT/.venv`. Si administra Python con `pyenv` o `conda`, ajuste `PY_EXEC` en consecuencia.
 
 ## Características
 

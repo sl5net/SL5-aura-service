@@ -47,9 +47,9 @@ call update_github_ip.bat
 set SHORT_TIMEOUT_SECONDS=2
 set LONG_TIMEOUT_SECONDS=70
 
-:: Path shortcuts (adjust PROJECT_ROOT to your actual path if not set as env var)
-set "PY_EXEC=%PROJECT_ROOT%\.venv\Scripts\python.exe"
-set "CLI_SCRIPT=%PROJECT_ROOT%\scripts\py\cli_client.py"
+:: Path shortcuts (adjust SL5NET_AURA_PROJECT_ROOT to your actual path if not set as env var)
+set "PY_EXEC=%SL5NET_AURA_PROJECT_ROOT%\.venv\Scripts\python.exe"
+set "CLI_SCRIPT=%SL5NET_AURA_PROJECT_ROOT%\scripts\py\cli_client.py"
 
 :: Create a temp file
 set "TEMP_FILE=%TEMP%\stt_output_%RANDOM%.txt"
@@ -91,7 +91,7 @@ goto :check_exit
 echo Service-Check: Backend oder Frontend fehlt. Starte neu...
 call start_service.bat
 echo ++++++++++++++++++++++++++++++++++++++++++++++++++
-set "KIWIX_SCRIPT=%PROJECT_ROOT%\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
+set "KIWIX_SCRIPT=%SL5NET_AURA_PROJECT_ROOT%\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
 if exist "%KIWIX_SCRIPT%" (
     bash "%KIWIX_SCRIPT%"
 )
@@ -151,7 +151,7 @@ s your question here
 ## CMD 固有の注意事項
 
 - **ネイティブ プロセス タイムアウトなし**: CMD には、Unix の「タイムアウト」に相当するものがありません。このスクリプトは、タイムアウト ロジックを PowerShell の `WaitForExit` にインラインで委任します。 PowerShell が利用可能である必要があります (最新のすべての Windows システムにあります)。
-- **`PROJECT_ROOT`**: システム プロパティを介してこれを永続的なユーザー環境変数として設定するか、`.bat` ファイル内のパスをハードコードします。
+- **`SL5NET_AURA_PROJECT_ROOT`**: システム プロパティを介してこれを永続的なユーザー環境変数として設定するか、`.bat` ファイル内のパスをハードコードします。
 - **ヘルパー スクリプト**: `update_github_ip.bat` と `start_service.bat` が `PATH` または `%USERPROFILE%\bin` に存在する必要があります。これらは、CMD の「update_github_ip」および「start_service」シェル関数に相当します。
 - **Kiwix スクリプト用の `bash`**: WSL がインストールされている場合、CMD で `bash` が利用可能になり、`.sh` スクリプトが直接実行されます。それ以外の場合は、「kiwix-docker-start-if-not-running.sh」を同等の「.bat」に適応させます。
 - **引用符の処理**: CMD には厳密かつ脆弱な引用規則があります。クエリに特殊文字 (`&`、`|`、`>`、`<`) が含まれている場合は、クエリ全体を二重引用符で囲みます: `s "your & question"`。
@@ -159,6 +159,6 @@ s your question here
 
 ＃＃ 特徴
 
-- **動的パス**: `PROJECT_ROOT` 環境変数を介してパスを自動的に解決します。
+- **動的パス**: `SL5NET_AURA_PROJECT_ROOT` 環境変数を介してパスを自動的に解決します。
 - **自動再起動**: バックエンドがダウンしている場合、`start_service.bat` を呼び出し、ローカルの Wikipedia サービスの開始を試みます。
 - **スマート タイムアウト**: 最初に 2 秒の素早い応答を試み、その後 70 秒の詳細な処理モードに戻ります。

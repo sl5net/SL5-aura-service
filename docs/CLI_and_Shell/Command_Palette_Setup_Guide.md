@@ -27,7 +27,7 @@ copyq:
 var isWindows = false;
 var tmp_dir = isWindows ? 'C:/tmp' : '/tmp';
 
-// Dynamically resolve PROJECT_ROOT from Aura temp configuration
+// Dynamically resolve SL5NET_AURA_PROJECT_ROOT from Aura temp configuration
 var rootFile = File(tmp_dir + '/sl5_aura/sl5net_aura_project_root');
 var project_root = '';
 

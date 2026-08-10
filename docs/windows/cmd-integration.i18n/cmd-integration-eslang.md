@@ -47,9 +47,9 @@ call update_github_ip.bat
 set SHORT_TIMEOUT_SECONDS=2
 set LONG_TIMEOUT_SECONDS=70
 
-:: Path shortcuts (adjust PROJECT_ROOT to your actual path if not set as env var)
-set "PY_EXEC=%PROJECT_ROOT%\.venv\Scripts\python.exe"
-set "CLI_SCRIPT=%PROJECT_ROOT%\scripts\py\cli_client.py"
+:: Path shortcuts (adjust SL5NET_AURA_PROJECT_ROOT to your actual path if not set as env var)
+set "PY_EXEC=%SL5NET_AURA_PROJECT_ROOT%\.venv\Scripts\python.exe"
+set "CLI_SCRIPT=%SL5NET_AURA_PROJECT_ROOT%\scripts\py\cli_client.py"
 
 :: Create a temp file
 set "TEMP_FILE=%TEMP%\stt_output_%RANDOM%.txt"
@@ -91,7 +91,7 @@ goto :check_exit
 echo Service-Check: Backend oder Frontend fehlt. Starte neu...
 call start_service.bat
 echo ++++++++++++++++++++++++++++++++++++++++++++++++++
-set "KIWIX_SCRIPT=%PROJECT_ROOT%\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
+set "KIWIX_SCRIPT=%SL5NET_AURA_PROJECT_ROOT%\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
 if exist "%KIWIX_SCRIPT%" (
     bash "%KIWIX_SCRIPT%"
 )
@@ -151,7 +151,7 @@ s your question here
 ## Notas específicas de CMD
 
 - **Sin tiempo de espera de proceso nativo**: CMD no tiene equivalente al "tiempo de espera" de Unix. Este script delega la lógica de tiempo de espera en línea a `WaitForExit` de PowerShell. PowerShell debe estar disponible (está en todos los sistemas Windows modernos).
-- **`PROJECT_ROOT`**: configúrelo como una variable de entorno de usuario permanente a través de Propiedades del sistema, o codifique la ruta en el archivo `.bat`.
+- **`SL5NET_AURA_PROJECT_ROOT`**: configúrelo como una variable de entorno de usuario permanente a través de Propiedades del sistema, o codifique la ruta en el archivo `.bat`.
 - **Scripts de ayuda**: `update_github_ip.bat` y `start_service.bat` deben existir en su `PATH` o en `%USERPROFILE%\bin`. Estos son los equivalentes CMD de las funciones de shell `update_github_ip` y `start_service`.
 - **`bash` para el script Kiwix**: si WSL está instalado, `bash` está disponible en CMD y el script `.sh` se ejecutará directamente. De lo contrario, adapte `kiwix-docker-start-if-not-running.sh` a un equivalente `.bat`.
 - **Manejo de cotizaciones**: CMD tiene reglas de cotización estrictas y frágiles. Si su consulta contiene caracteres especiales (`&`, `|`, `>`, `<`), incluya toda la consulta entre comillas dobles: `s "su & pregunta"`.
@@ -159,6 +159,6 @@ s your question here
 
 ## Características
 
-- **Rutas dinámicas**: Resuelve rutas automáticamente a través de la variable de entorno `PROJECT_ROOT`.
+- **Rutas dinámicas**: Resuelve rutas automáticamente a través de la variable de entorno `SL5NET_AURA_PROJECT_ROOT`.
 - **Reinicio automático**: si el backend no funciona, llama a `start_service.bat` e intenta iniciar los servicios locales de Wikipedia.
 - **Tiempos de espera inteligentes**: primero intenta una respuesta rápida de 2 segundos y luego vuelve a un modo de procesamiento profundo de 70 segundos.

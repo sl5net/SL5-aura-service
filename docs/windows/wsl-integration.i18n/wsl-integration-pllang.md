@@ -54,7 +54,7 @@ Twoje dyski Windows są zamontowane w `/mnt/`:
 
 __KOD_BLOKU_6__
 
-Jeśli Twój projekt znajduje się w systemie plików Windows (np. `C:\Projects\stt`), ustaw `PROJECT_ROOT` na:
+Jeśli Twój projekt znajduje się w systemie plików Windows (np. `C:\Projects\stt`), ustaw `SL5NET_AURA_PROJECT_ROOT` na:
 
 __KOD_BLOKU_7__
 
@@ -68,7 +68,7 @@ Utwórz i używaj standardowego środowiska wirtualnego Linux w WSL:
 
 __KOD_BLOKU_8__
 
-Ścieżka `PY_EXEC` w funkcji (`$PROJECT_ROOT/.venv/bin/python3`) będzie działać poprawnie bez zmian.
+Ścieżka `PY_EXEC` w funkcji (`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) będzie działać poprawnie bez zmian.
 
 ### Uruchamianie „s” z terminala Windows
 
@@ -116,6 +116,6 @@ __KOD_BLOKU_15__
 ## Cechy
 
 - **Pełna kompatybilność z Linuksem**: Wszystkie narzędzia uniksowe (`timeout`, `pgrep`, `mktemp`, `grep`) działają natywnie — nie są potrzebne żadne obejścia.
-- **Ścieżki dynamiczne**: Automatycznie znajduje katalog główny projektu poprzez zmienną `PROJECT_ROOT` ustawioną w konfiguracji powłoki.
+- **Ścieżki dynamiczne**: Automatycznie znajduje katalog główny projektu poprzez zmienną `SL5NET_AURA_PROJECT_ROOT` ustawioną w konfiguracji powłoki.
 - **Auto-Restart**: Jeśli backend nie działa, próbuje uruchomić `start_service` i lokalne usługi Wikipedii (musi być uruchomiony Docker).
 - **Inteligentne limity czasu**: Najpierw próbuje uzyskać szybką reakcję w ciągu 2 sekund, a następnie powraca do trybu głębokiego przetwarzania trwającego 70 sekund.

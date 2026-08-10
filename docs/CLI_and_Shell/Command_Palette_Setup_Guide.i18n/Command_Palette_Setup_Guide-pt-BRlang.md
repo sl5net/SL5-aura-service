@@ -1,6 +1,6 @@
 # Paleta de comandos e guia de pesquisa de mapas
 
-Este guia explica como configurar e usar a **Paleta de Comandos** independente de local e em todo o sistema para SL5 Aura. Ele permite que você pesquise suas regras de mapa de forma interativa, veja visualizações de execução ao vivo do cache SQLite local e digite instantaneamente a saída selecionada em seu cursor ativo.
+Este guia explica como configurar e usar a **Paleta de Comandos** independente de local em todo o sistema para SL5 Aura. Ele permite que você pesquise suas regras de mapa de forma interativa, veja visualizações de execução ao vivo do cache SQLite local e digite instantaneamente a saída selecionada em seu cursor ativo.
 
 ## Pré-requisitos
 

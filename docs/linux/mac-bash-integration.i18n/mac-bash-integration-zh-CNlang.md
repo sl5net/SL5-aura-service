@@ -35,7 +35,7 @@ __代码_块_5__
 - **macOS 附带 Bash 3.2**（由于 GPLv3 许可证）。该功能与 Bash 3.2+ 完全兼容。如果您需要 Bash 5，请通过 Homebrew 安装它：
 __代码_块_6__
 
-- **Python 路径**：确保您的虚拟环境设置在“$PROJECT_ROOT/.venv”。如果您使用“pyenv”或“conda”管理Python，请相应地调整“PY_EXEC”。
+- **Python 路径**：确保您的虚拟环境设置在“$SL5NET_AURA_PROJECT_ROOT/.venv”。如果您使用“pyenv”或“conda”管理Python，请相应地调整“PY_EXEC”。
 
 ＃＃ 特征
 

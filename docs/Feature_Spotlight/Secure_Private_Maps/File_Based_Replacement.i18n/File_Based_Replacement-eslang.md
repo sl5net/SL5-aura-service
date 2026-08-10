@@ -52,7 +52,7 @@ anula):
 El expediente se resuelve de la siguiente manera:
 
 1. La `ruta_fuente` del complemento (grabada automáticamente por el cargador de mapas) es
-unido contra `PROJECT_ROOT` (leído del `SL5NET_AURA_PROJECT_ROOT`
+unido contra `SL5NET_AURA_PROJECT_ROOT` (leído del `SL5NET_AURA_PROJECT_ROOT`
 variable de entorno) para obtener el directorio del complemento.
 2. El valor de "reemplazo" se une a ese directorio.
 3. A menos que `FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL` sea `True`, la ruta resuelta

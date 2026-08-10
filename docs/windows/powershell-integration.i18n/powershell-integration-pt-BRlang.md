@@ -54,8 +54,8 @@ function s {
     $LONG_TIMEOUT_SECONDS  = 70
 
     # Path shortcuts
-    $PY_EXEC   = "$env:PROJECT_ROOT\.venv\Scripts\python.exe"
-    $CLI_SCRIPT = "$env:PROJECT_ROOT\scripts\py\cli_client.py"
+    $PY_EXEC   = "$env:SL5NET_AURA_PROJECT_ROOT\.venv\Scripts\python.exe"
+    $CLI_SCRIPT = "$env:SL5NET_AURA_PROJECT_ROOT\scripts\py\cli_client.py"
 
     $TempFile = [System.IO.Path]::GetTempFileName()
 
@@ -85,7 +85,7 @@ function s {
         Start-Service-STT   # equivalent of start_service
         Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        $KiwixScript = "$env:PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
+        $KiwixScript = "$env:SL5NET_AURA_PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
         if (Test-Path $KiwixScript) {
             bash $KiwixScript
         }
@@ -134,7 +134,7 @@ function s {
 ## Notas específicas do Windows
 
 - **Caminho Python**: No Windows, o binário do ambiente virtual está em `.venv\Scripts\python.exe` em vez de `.venv/bin/python3`. Ajuste `$PY_EXEC` se sua configuração for diferente.
-- **Variável de ambiente `PROJECT_ROOT`**: Defina isso nas variáveis de ambiente do seu sistema ou adicione a seguinte linha acima da função em seu perfil:
+- **Variável de ambiente `SL5NET_AURA_PROJECT_ROOT`**: Defina isso nas variáveis de ambiente do seu sistema ou adicione a seguinte linha acima da função em seu perfil:
 __CODE_BLOCO_5__
 - **`timeout` / `mktemp`**: Essas ferramentas Unix não estão disponíveis nativamente. O script acima usa equivalentes nativos do PowerShell (`WaitForExit` com tempo limite de milissegundos e `GetTempFileName()`).
 - **`pgrep`**: Substituído por `Get-Process -Name "streamlit"`.
@@ -144,6 +144,6 @@ __CODE_BLOCO_5__
 
 ## Características
 
-- **Caminhos Dinâmicos**: Encontra automaticamente a raiz do projeto através da variável de ambiente `PROJECT_ROOT`.
+- **Caminhos Dinâmicos**: Encontra automaticamente a raiz do projeto através da variável de ambiente `SL5NET_AURA_PROJECT_ROOT`.
 - **Auto-Restart**: Se o backend estiver inativo, ele tenta executar o `Start-Service-STT` e os serviços locais da Wikipedia.
 - **Tempos limite inteligentes**: primeiro tenta uma resposta rápida de 2 segundos e depois volta para um modo de processamento profundo de 70 segundos.

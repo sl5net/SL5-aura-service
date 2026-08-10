@@ -73,10 +73,10 @@ Ihre Windows-Laufwerke werden unter „/mnt/“ gemountet:
 /mnt/d/   # → D:\
 ```
 
-Wenn sich Ihr Projekt im Windows-Dateisystem befindet (z. B. „C:\Projects\stt“), setzen Sie „PROJECT_ROOT“ auf:
+Wenn sich Ihr Projekt im Windows-Dateisystem befindet (z. B. „C:\Projects\stt“), setzen Sie „SL5NET_AURA_PROJECT_ROOT“ auf:
 
 ```bash
-export PROJECT_ROOT="/mnt/c/Projects/stt"
+export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 ```
 
 Fügen Sie diese Zeile zu Ihrem „~/.bashrc“ (oder dem Äquivalent für Ihre Shell) **über** der Funktion „s()“ hinzu.
@@ -88,13 +88,13 @@ Fügen Sie diese Zeile zu Ihrem „~/.bashrc“ (oder dem Äquivalent für Ihre 
 Erstellen und verwenden Sie eine standardmäßige virtuelle Linux-Umgebung innerhalb der WSL:
 
 ```bash
-cd "$PROJECT_ROOT"
+cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Der Pfad „PY_EXEC“ in der Funktion („$PROJECT_ROOT/.venv/bin/python3“) funktioniert unverändert korrekt.
+Der Pfad „PY_EXEC“ in der Funktion („$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3“) funktioniert unverändert korrekt.
 
 ### Ausführen von „s“ über das Windows-Terminal
 
@@ -162,6 +162,6 @@ wsl bash -i -c "s %*"
 ## Merkmale
 
 - **Volle Linux-Kompatibilität**: Alle Unix-Tools („timeout“, „pgrep“, „mktemp“, „grep“) funktionieren nativ – keine Problemumgehungen erforderlich.
-- **Dynamische Pfade**: Findet automatisch das Projektstammverzeichnis über die Variable „PROJECT_ROOT“, die in Ihrer Shell-Konfiguration festgelegt ist.
+- **Dynamische Pfade**: Findet automatisch das Projektstammverzeichnis über die Variable „SL5NET_AURA_PROJECT_ROOT“, die in Ihrer Shell-Konfiguration festgelegt ist.
 - **Automatischer Neustart**: Wenn das Backend ausgefallen ist, versucht es, „start_service“ und lokale Wikipedia-Dienste auszuführen (Docker muss ausgeführt werden).
 - **Intelligente Zeitüberschreitungen**: Versucht zunächst eine schnelle 2-Sekunden-Reaktion und fällt dann auf einen 70-Sekunden-Tiefverarbeitungsmodus zurück.

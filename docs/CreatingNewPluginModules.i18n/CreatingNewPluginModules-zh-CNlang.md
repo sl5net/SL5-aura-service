@@ -24,7 +24,7 @@
 * **警告：** 如果您使用“german”或“english_rules”等非标准名称，系统将忽略该文件夹或将其视为单独的、非特定于语言的模块。
 
 **4.添加您的规则文件**
-将您的规则文件（例如“FUZZY_MAP_pre.py”）放入适当的语言子文件夹中。最简单的开始方法是复制现有语言模块文件夹的内容以用作模板。
+将规则文件（例如“FUZZY_MAP_pre.py”）放入适当的语言子文件夹中。最简单的开始方法是复制现有语言模块文件夹的内容以用作模板。
 
 ### 目录结构示例
 
@@ -66,9 +66,9 @@ X空格符X
 X空格符X
 X空格符X
 X空格符X
-t1- Es ist in der Tat wesentzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direct in diesem Dokumentationsabschnitt hervorzuheben [1]。
+t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direct in diesem Dokumentationsabschnitt hervorzuheben [1]。
 
-t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tastenbzw。 Sprachsteuerungsbefehle（即“Aura，Lernmodus einschalten / ausschalten”）和erklären kurz，即“toggle_learning.py”das Aus- und Einkommentieren automatisiert [2]。
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tastenbzw。 Sprachsteuerungsbefehle（即“Aura，Lernmodus einschalten / ausschalten”）和erklären kurz，即`toggle_learning.py` das Aus- und Einkommentieren automatisiert [2]。
 
 
 ### 启用学习模式（无与伦比的训练）

@@ -40,7 +40,7 @@ __KOD_BLOKU_1__
 * **`window_ignore_case`** (boolean): Kontroluje, czy dopasowanie okna (`only_in_windows` / `exclude_windows`) jest oceniane bez uwzględniania wielkości liter (`True`) czy z rozróżnianiem wielkości liter (`False`). Jeśli zostanie pominięty, powraca do ustawienia globalnego `LOWERCASE_WINDOW_TITLES` w `config/settings.py`.
 *Przykład:* `{'window_ignore_case': Fałsz}`
 * **`on_match_exec`** (lista obiektów Path/string): Ścieżki do skryptów/wtyczek, które powinny zostać wykonane, gdy ta reguła zostanie dopasowana (często używane przez reguły catch-all i fallback).
-*Przykład:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+*Przykład:* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## Logika potoku
 - Reguły są przetwarzane **z góry na dół**

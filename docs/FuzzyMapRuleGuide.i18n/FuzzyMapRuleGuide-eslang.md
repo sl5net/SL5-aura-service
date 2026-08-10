@@ -44,7 +44,7 @@ Si su reemplazo es una cadena de varias líneas o contiene barras invertidas sin
 * **`window_ignore_case`** (booleano): controla si la coincidencia de ventanas (`only_in_windows` / `exclude_windows`) se evalúa sin distinguir entre mayúsculas y minúsculas (`True`) o sin distinguir entre mayúsculas y minúsculas (`False`). Si se omite, vuelve a la configuración global `LOWERCASE_WINDOW_TITLES` en `config/settings.py`.
 *Ejemplo:* `{'window_ignore_case': Falso}`
 * **`on_match_exec`** (lista de rutas/objetos de cadena): rutas a scripts/complementos que deben ejecutarse cuando esta regla coincide (utilizada en gran medida por reglas generales y alternativas).
-*Ejemplo:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+*Ejemplo:* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## Lógica de canalización
 - Las reglas se procesan **de arriba hacia abajo**

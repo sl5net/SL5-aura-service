@@ -54,7 +54,7 @@ __代码_块_5__
 
 __代码_块_6__
 
-如果您的项目位于 Windows 文件系统上（例如“C:\Projects\stt”），请将“PROJECT_ROOT”设置为：
+如果您的项目位于 Windows 文件系统上（例如“C:\Projects\stt”），请将“SL5NET_AURA_PROJECT_ROOT”设置为：
 
 __代码_块_7__
 
@@ -68,7 +68,7 @@ __代码_块_7__
 
 __代码_块_8__
 
-函数中的“PY_EXEC”路径（“$PROJECT_ROOT/.venv/bin/python3”）将按原样正常工作。
+函数中的“PY_EXEC”路径（“$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3”）将按原样正常工作。
 
 ### 从 Windows 终端运行 `s`
 
@@ -116,6 +116,6 @@ __代码_块_15__
 ＃＃ 特征
 
 - **完全 Linux 兼容性**：所有 Unix 工具（`timeout`、`pgrep`、`mktemp`、`grep`）都可以本机工作 — 无需解决方法。
-- **动态路径**：通过 shell 配置中设置的“PROJECT_ROOT”变量自动查找项目根目录。
+- **动态路径**：通过 shell 配置中设置的“SL5NET_AURA_PROJECT_ROOT”变量自动查找项目根目录。
 - **自动重启**：如果后端关闭，它会尝试运行 `start_service` 和本地维基百科服务（Docker 必须正在运行）。
 - **智能超时**：首先尝试 2 秒快速响应，然后退回到 70 秒深度处理模式。

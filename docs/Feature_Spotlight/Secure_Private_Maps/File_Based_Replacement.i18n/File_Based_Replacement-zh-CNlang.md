@@ -48,7 +48,7 @@ __代码_块_1__
 文件解析如下：
 
 1.插件的`source_path`（由地图加载器自动记录）是
-加入“PROJECT_ROOT”（从“SL5NET_AURA_PROJECT_ROOT”读取
+加入“SL5NET_AURA_PROJECT_ROOT”（从“SL5NET_AURA_PROJECT_ROOT”读取
 环境变量）来获取插件的目录。
 2. `replacement` 值被加入到该目录中。
 3. 除非`FILE4REPLACMENT_ALLOW_PATH_TRAVERSAL`为`True`，否则解析的路径

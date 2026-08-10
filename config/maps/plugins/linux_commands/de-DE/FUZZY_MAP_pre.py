@@ -197,17 +197,36 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: count lines in aura script
     ('wc -l ~/projects/py/STT/type_watcher.sh', r'^(zähle Watcher Zeilen|count Watcher lines|wie lang ist Watcher|Wie lange ist Hodscha)$', 80, # min_accuracy
- {
+     {
         'command_flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
 
+    # config/maps/plugins/linux_commands/de-DE/FUZZY_MAP_pre.py:205
+    # EXAMPLE: git status kurz
+    ( 'clear;git diff --shortstat',
+        r'^(git\s+(status|diff)?\s*kurz|git  kurz|git status short|git statistik|git übersicht)$',
+      {
+          'command_flags': re.IGNORECASE,
+          'skip_list': ['LanguageTool']
+          , 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+
+
+    # EXAMPLE: git diff dirstat
+    ( 'clear;git diff --dirstat',
+        r'^(git\s+(status|diff)?\s*dirstat|git\s+dirstat|git\s+ordner\s+statistik|git\s+verzeichnis\s+übersicht)$',
+        {
+            'command_flags': re.IGNORECASE,
+            'skip_list': ['LanguageTool'],
+            'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console'],
+        },
+    ),
 
     # git diff small
     # EXAMPLE: git diff
-    ('git diff -U0 > /tmp/aura_small_diff.txt && kate /tmp/aura_small_diff.txt',
+    ('clear;git diff -U0 > /tmp/aura_small_diff.txt && kate /tmp/aura_small_diff.txt',
      r'^(git diff)$', 85, # min_accuracy
- {
+    {
          'command_flags': re.IGNORECASE,
          'skip_list': ['LanguageTool']
          , 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
@@ -215,7 +234,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: sounddevice to kate editor
     ('./.venv/bin/python3 -m sounddevice > /tmp/aura_devices.txt && kate /tmp/aura_devices.txt',
      r'^(sound kate)$', 85, # min_accuracy
- {
+    {
          'command_flags': re.IGNORECASE,
          'skip_list': ['LanguageTool']
      , 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
@@ -224,7 +243,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: edit aura config
     ('kate ~/projects/py/STT/config/settings_local.py', r'^(editiere lokale Config|edit local config|öffne lokale Einstellungen)$', 85, # min_accuracy
- {
+    {
         'command_flags': re.IGNORECASE,
         'skip_list': ['LanguageTool']
     ,'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),

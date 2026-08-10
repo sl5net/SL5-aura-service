@@ -44,7 +44,7 @@ If your replacement is a multiline string or contains unescaped backslashes (suc
 *   **`window_ignore_case`** (boolean): Controls whether window matching (`only_in_windows` / `exclude_windows`) is evaluated case-insensitively (`True`) or case-sensitively (`False`). If omitted, falls back to the global setting `LOWERCASE_WINDOW_TITLES` in `config/settings.py`.
     *Example:* `{'window_ignore_case': False}`
 *   **`on_match_exec`** (list of Path/string objects): Paths to scripts/plugins that should be executed when this rule matches (used heavily by catch-all and fallback rules).
-    *Example:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+    *Example:* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## Pipeline Logic
 - Rules are processed **top-down**

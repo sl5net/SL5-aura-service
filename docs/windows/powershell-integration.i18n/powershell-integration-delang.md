@@ -50,8 +50,8 @@ function s {
     $LONG_TIMEOUT_SECONDS  = 70
 
     # Path shortcuts
-    $PY_EXEC   = "$env:PROJECT_ROOT\.venv\Scripts\python.exe"
-    $CLI_SCRIPT = "$env:PROJECT_ROOT\scripts\py\cli_client.py"
+    $PY_EXEC   = "$env:SL5NET_AURA_PROJECT_ROOT\.venv\Scripts\python.exe"
+    $CLI_SCRIPT = "$env:SL5NET_AURA_PROJECT_ROOT\scripts\py\cli_client.py"
 
     $TempFile = [System.IO.Path]::GetTempFileName()
 
@@ -81,7 +81,7 @@ function s {
         Start-Service-STT   # equivalent of start_service
         Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        $KiwixScript = "$env:PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
+        $KiwixScript = "$env:SL5NET_AURA_PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
         if (Test-Path $KiwixScript) {
             bash $KiwixScript
         }
@@ -136,9 +136,9 @@ function s {
 ## Windows-spezifische Hinweise
 
 - **Python-Pfad**: Unter Windows befindet sich die Binärdatei der virtuellen Umgebung unter „.venv\Scripts\python.exe“ statt unter „.venv/bin/python3“. Passen Sie „$PY_EXEC“ an, wenn Ihr Setup davon abweicht.
-- **Umgebungsvariable „PROJECT_ROOT“**: Legen Sie dies in Ihren Systemumgebungsvariablen fest oder fügen Sie die folgende Zeile über der Funktion in Ihrem Profil hinzu:
+- **Umgebungsvariable „SL5NET_AURA_PROJECT_ROOT“**: Legen Sie dies in Ihren Systemumgebungsvariablen fest oder fügen Sie die folgende Zeile über der Funktion in Ihrem Profil hinzu:
   ```powershell
-  $env:PROJECT_ROOT = "C:\path\to\your\project"
+  $env:SL5NET_AURA_PROJECT_ROOT = "C:\path\to\your\project"
   ```
 - **`timeout` / `mktemp`**: Diese Unix-Tools sind nicht nativ verfügbar. Das obige Skript verwendet PowerShell-native Äquivalente („WaitForExit“ mit einem Millisekunden-Timeout und „GetTempFileName()“).
 - **`pgrep`**: Ersetzt durch `Get-Process -Name "streamlit"`.
@@ -148,6 +148,6 @@ function s {
 
 ## Merkmale
 
-- **Dynamische Pfade**: Findet automatisch das Projektstammverzeichnis über die Umgebungsvariable „PROJECT_ROOT“.
+- **Dynamische Pfade**: Findet automatisch das Projektstammverzeichnis über die Umgebungsvariable „SL5NET_AURA_PROJECT_ROOT“.
 - **Automatischer Neustart**: Wenn das Backend ausgefallen ist, versucht es, „Start-Service-STT“ und lokale Wikipedia-Dienste auszuführen.
 - **Intelligente Zeitüberschreitungen**: Versucht zunächst eine schnelle 2-Sekunden-Reaktion und fällt dann auf einen 70-Sekunden-Tiefverarbeitungsmodus zurück.

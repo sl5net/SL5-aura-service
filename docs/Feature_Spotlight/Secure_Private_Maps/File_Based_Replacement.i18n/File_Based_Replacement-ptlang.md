@@ -52,7 +52,7 @@ substituições):
 O arquivo é resolvido da seguinte forma:
 
 1. O `source_path` do plugin (gravado automaticamente pelo carregador de mapa) é
-juntou-se a `PROJECT_ROOT` (lido em `SL5NET_AURA_PROJECT_ROOT`
+juntou-se a `SL5NET_AURA_PROJECT_ROOT` (lido em `SL5NET_AURA_PROJECT_ROOT`
 variável de ambiente) para obter o diretório do plugin.
 2. O valor `replacement` é adicionado a esse diretório.
 3. A menos que `FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL` seja `True`, o caminho resolvido

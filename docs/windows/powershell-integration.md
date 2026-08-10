@@ -50,8 +50,8 @@ function s {
     $LONG_TIMEOUT_SECONDS  = 70
 
     # Path shortcuts
-    $PY_EXEC   = "$env:PROJECT_ROOT\.venv\Scripts\python.exe"
-    $CLI_SCRIPT = "$env:PROJECT_ROOT\scripts\py\cli_client.py"
+    $PY_EXEC   = "$env:SL5NET_AURA_PROJECT_ROOT\.venv\Scripts\python.exe"
+    $CLI_SCRIPT = "$env:SL5NET_AURA_PROJECT_ROOT\scripts\py\cli_client.py"
 
     $TempFile = [System.IO.Path]::GetTempFileName()
 
@@ -81,7 +81,7 @@ function s {
         Start-Service-STT   # equivalent of start_service
         Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        $KiwixScript = "$env:PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
+        $KiwixScript = "$env:SL5NET_AURA_PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
         if (Test-Path $KiwixScript) {
             bash $KiwixScript
         }
@@ -136,9 +136,9 @@ function s {
 ## Windows-Specific Notes
 
 - **Python path**: On Windows, the virtual environment binary is at `.venv\Scripts\python.exe` instead of `.venv/bin/python3`. Adjust `$PY_EXEC` if your setup differs.
-- **`PROJECT_ROOT` environment variable**: Set this in your system environment variables, or add the following line above the function in your profile:
+- **`SL5NET_AURA_PROJECT_ROOT` environment variable**: Set this in your system environment variables, or add the following line above the function in your profile:
   ```powershell
-  $env:PROJECT_ROOT = "C:\path\to\your\project"
+  $env:SL5NET_AURA_PROJECT_ROOT = "C:\path\to\your\project"
   ```
 - **`timeout` / `mktemp`**: These Unix tools are not available natively. The script above uses PowerShell-native equivalents (`WaitForExit` with a millisecond timeout and `GetTempFileName()`).
 - **`pgrep`**: Replaced with `Get-Process -Name "streamlit"`.
@@ -148,6 +148,6 @@ function s {
 
 ## Features
 
-- **Dynamic Paths**: Automatically finds the project root via the `PROJECT_ROOT` environment variable.
+- **Dynamic Paths**: Automatically finds the project root via the `SL5NET_AURA_PROJECT_ROOT` environment variable.
 - **Auto-Restart**: If the backend is down, it attempts to run `Start-Service-STT` and local Wikipedia services.
 - **Smart Timeouts**: Tries a quick 2-second response first, then falls back to a 70-second deep processing mode.
