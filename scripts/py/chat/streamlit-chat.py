@@ -10,9 +10,9 @@ import socket
 os.environ["INTERFACE"] = "web"
 # PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+from scripts.py.func.get_project_root import get_aura_project_root
 
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 
 load_dotenv(PROJECT_ROOT / ".secrets")

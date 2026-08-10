@@ -14,22 +14,17 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     pass
 
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+from scripts.py.func.get_project_root import get_aura_project_root
 
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 from scripts.py.func.db.trino_client import (open_trino_connection
 , TRINO_CATALOG, TRINO_SCHEMA)
 
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger.setLevel(logging.INFO)
-file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/{__name__}.log', mode='a', encoding='utf-8')
+file_handler = logging.FileHandler(f'{SL5NET_AURA_PROJECT_ROOT}/log/{__name__}.log', mode='a', encoding='utf-8')
 file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logger.addHandler(file_handler)
 

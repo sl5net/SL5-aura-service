@@ -19,29 +19,32 @@ root_pointer_file = "/tmp/sl5_aura/sl5net_aura_project_root"
 
 if os.path.exists(root_pointer_file):
     with open(root_pointer_file, 'r', encoding='utf-8') as f:
-        PROJECT_ROOT = f.read().strip()
+        SL5NET_AURA_PROJECT_ROOT = f.read().strip()
 
     # 2. Den Pfad dem System aufzwingen!
-    if PROJECT_ROOT not in sys.path:
-        sys.path.insert(0, PROJECT_ROOT)
+    if SL5NET_AURA_PROJECT_ROOT not in sys.path:
+        sys.path.insert(0, SL5NET_AURA_PROJECT_ROOT)
 
 from scripts.py.func.config.dynamic_settings import settings # ! Dont move this import mor up!! 8.7.'26 16:43 Wed Important!
 
-# --- KONFIGURATION ---
+# --- config ---
 HOST = "0.0.0.0"
 MODULE_PATH = "scripts.py.service_api:app"
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+
+if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
 ADMIN_GATEWAY_ENABLED = settings.ADMIN_GATEWAY_ENABLED
 ADMIN_GATEWAY_PORT = settings.ADMIN_GATEWAY_PORT
 
 PORT = ADMIN_GATEWAY_PORT
 
-(PROJECT_ROOT / 'log').mkdir(exist_ok=True)
-LOG_FILE = PROJECT_ROOT / 'log' / "service_start.log"
+(SL5NET_AURA_PROJECT_ROOT / 'log').mkdir(exist_ok=True)
+LOG_FILE = SL5NET_AURA_PROJECT_ROOT / 'log' / "service_start.log"
 # ----------------------
 
 def find_and_kill_process_on_port(port):
@@ -112,7 +115,7 @@ def start_uvicorn_service(host, port, module_path):
             # Subprocess.Popen startet den Befehl im Hintergrund
             process = subprocess.Popen(
                 command,
-                cwd=PROJECT_ROOT,
+                cwd=SL5NET_AURA_PROJECT_ROOT,
                 stdout=log_f,
                 stderr=log_f,
                 preexec_fn=None if os.name == 'nt' else os.setsid,

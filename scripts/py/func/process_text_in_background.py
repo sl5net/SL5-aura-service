@@ -213,8 +213,10 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
 
 
 # Assumes 'models' directory is at the project root, parallel to 'scripts'
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-MODEL_PATH = PROJECT_ROOT / "models" / "lid.176.bin"
+from scripts.py.func.get_project_root import get_aura_project_root
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+
+MODEL_PATH = SL5NET_AURA_PROJECT_ROOT / "models" / "lid.176.bin"
 
 
 
@@ -280,7 +282,7 @@ def _write_plugin_state_log(enabled, disabled, rule_count, run_mode_override):
             now - _plugin_state_cache['last_write'] < 60):
         return
 
-    LOG_DIR = PROJECT_ROOT / "log"
+    LOG_DIR = SL5NET_AURA_PROJECT_ROOT / "log"
     log_path = Path( LOG_DIR / 'plugins_state.log')
     content = (
         f"# {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
@@ -501,7 +503,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
             if _module_file_path:
                 _mp = str(_module_file_path)
                 try:
-                    _src_path = str(Path(_mp).relative_to(PROJECT_ROOT))
+                    _src_path = str(Path(_mp).relative_to(SL5NET_AURA_PROJECT_ROOT))
                 except ValueError:
                     _src_path = _mp
 
@@ -1389,7 +1391,7 @@ def process_text_in_background(logger,
                             # get something like 'en-US': 'vosk-model-en-us-0.22':
                             model_name = get_model_name_from_key(lang_code_predictions)
 
-                            (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
+                            (SL5NET_AURA_PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
                             # load_maps_for_language(lang_code_predictions, logger)
 
                     # print(f':st: \nprocess_text_in_background:1185 raw_text:{raw_text}')
@@ -1538,14 +1540,14 @@ def process_text_in_background(logger,
                     processed_text = 'Ok, lets write in english now.'
                     LT_LANGUAGE =  'en-US' # 'de-DE'
                     model_name = get_model_name_from_key(LT_LANGUAGE)
-                    (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
+                    (SL5NET_AURA_PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
                     # load_maps_for_language(LT_LANGUAGE, logger)
 
                 elif processed_text == 'Deutsch bitte':
                     processed_text = 'Klar, jetzt Deutsch.'
                     LT_LANGUAGE =  'de-DE' # 'en-US' # 'de-DE'
                     model_name = get_model_name_from_key(LT_LANGUAGE)
-                    (PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
+                    (SL5NET_AURA_PROJECT_ROOT / "config" / "model_name.txt").write_text(model_name)
                     # load_maps_for_language(LT_LANGUAGE, logger)
                     # Switched to English mill ﻿ Deutsche Putin the
 

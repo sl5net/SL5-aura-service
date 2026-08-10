@@ -10,10 +10,10 @@ from pathlib import Path
 from threading import RLock
 import platform
 
-# py/func/config/dynamic_settings.py:11
-PROJECT_ROOT = Path(__file__).resolve().parents[4]
-if not (PROJECT_ROOT / "config" / "settings.py").exists() and (Path.cwd() / "config" / "settings.py").exists():
-    PROJECT_ROOT = Path.cwd()
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 from config import settings
 
@@ -68,7 +68,7 @@ class CustomFormatter(logging.Formatter):
 
         return formatted_time
 
-LOG_DIR = PROJECT_ROOT / "log"
+LOG_DIR = SL5NET_AURA_PROJECT_ROOT / "log"
 LOG_FILE = LOG_DIR / "dynamic_settings.log"
 
 if not LOG_DIR.exists():
@@ -87,7 +87,7 @@ log_formatter = CustomFormatter('%(asctime)s - %(levelname)-8s - %(message)s')
 
 # Create, configure, and add the File Handler.
 #file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='w', encoding='utf-8')
-file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='a', encoding='utf-8')
+file_handler = logging.FileHandler(f'{SL5NET_AURA_PROJECT_ROOT}/log/dynamic_settings.log', mode='a', encoding='utf-8')
 
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)
@@ -160,7 +160,7 @@ class DynamicSettings:
         return cls._instance
 
     def _init_settings(self):
-        config_dir = PROJECT_ROOT / "config"
+        config_dir = SL5NET_AURA_PROJECT_ROOT / "config"
 
         self._settings_file_path = str(config_dir / "settings.py")
         self._settings_local_file_path = str(config_dir / "settings_local.py")

@@ -59,9 +59,8 @@ def analyze_usages(defined_vars):
     try:
         # Run the shell command
 
-
-        tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-        PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+        from scripts.py.func.get_project_root import get_project_root
+        PROJECT_ROOT = get_project_root()
 
         cmd = [
             "grep", "-rnP",

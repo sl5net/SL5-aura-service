@@ -5,7 +5,7 @@ import os
 import sqlite3
 
 import re
-from scripts.py.func.get_project_root import get_project_root
+from scripts.py.func.get_project_root import get_aura_project_root
 def extract_pattern(file_path, line_num):
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
@@ -134,7 +134,7 @@ def print_smart_cache_preview(file_path, line_num, project_root):
 
 def get_state_dir():
     """Returns absolute path to internal state directory."""
-    project_root = get_project_root()
+    project_root = get_aura_project_root()
     state_dir = os.path.join(str(project_root), "data", "_search_rules_state")
     os.makedirs(state_dir, exist_ok=True)
     return state_dir

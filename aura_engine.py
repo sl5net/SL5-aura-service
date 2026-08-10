@@ -48,12 +48,16 @@ SECRETS_PATH = Path(".secrets")
 demo_secrets()
 
 # PREREQUISITE: Write project root early to prevent import crashes in submodules when the project was moved to other folder
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-PROJECT_ROOT_FILE.write_text(str(PROJECT_ROOT), encoding="utf-8")
-os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(PROJECT_ROOT)
+PROJECT_ROOT_FILE.write_text(str(SL5NET_AURA_PROJECT_ROOT), encoding="utf-8")
+os.environ["SL5NET_AURA_PROJECT_ROOT"] = str(SL5NET_AURA_PROJECT_ROOT)
 
 # Clean up search history file on startup for privacy (relevant in windows OS systems)
 history_file = TMP_DIR / "sl5_aura" / "search_rules_history.txt"
@@ -146,7 +150,7 @@ from scripts.py.func.create_required_folders import setup_project_structure
 
 
 
-_log_dir = PROJECT_ROOT / "log"
+_log_dir = SL5NET_AURA_PROJECT_ROOT / "log"
 
 
 
@@ -160,10 +164,10 @@ if not _log_dir.exists():
 
 
 # aura_engine.py:145
-setup_project_structure(PROJECT_ROOT)
+setup_project_structure(SL5NET_AURA_PROJECT_ROOT)
 
 
-LOG_FILE = PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
+LOG_FILE = SL5NET_AURA_PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
 
 
 AURA_SELF_TEST_RUNNING =TMP_DIR / "sl5_aura" / "aura_self_test_running.flag"
@@ -177,10 +181,10 @@ AURA_SELF_TEST_RUNNING =TMP_DIR / "sl5_aura" / "aura_self_test_running.flag"
 # --- PRE-RUN SETUP VALIDATION ---
 
 # aura_engine.py:123
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
-    project_root = PROJECT_ROOT
+    project_root = SL5NET_AURA_PROJECT_ROOT
     sys.path.append(str(project_root))
 
 
@@ -226,7 +230,7 @@ LOCK_DIR = TMP_DIR / "sl5_aura" / "aura_lock"
 
 
 # backup settings.x11_input_method_OVERRIDE so linux/mac shell script can read this easier
-settings_py_PATH = PROJECT_ROOT / 'config' / 'settings.py'
+settings_py_PATH = SL5NET_AURA_PROJECT_ROOT / 'config' / 'settings.py'
 settings_py_backup_DIR = TMP_DIR / "sl5_aura" / "settings_py_backup"
 
 settings_py_backup_PATH = TMP_DIR / "sl5_aura" / "settings_py_backup"
@@ -248,7 +252,7 @@ with open(path, "w", encoding="utf-8") as f:
 
 
 
-LANGUAGETOOL_JAR_PATH = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
+LANGUAGETOOL_JAR_PATH = SL5NET_AURA_PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
 
 
 
@@ -274,7 +278,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 LANGUAGETOOL_JAR_PATH = f"{SCRIPT_DIR}/LanguageTool-6.6/languagetool-server.jar"
 
 
-if not run_path_check(PROJECT_ROOT,LOCK_DIR):
+if not run_path_check(SL5NET_AURA_PROJECT_ROOT, LOCK_DIR):
     print("\nFATAL: Path too long. See logs above.", file=sys.stderr)
     sys.exit(1)
 
@@ -1103,7 +1107,7 @@ def system_memory_watchdog(logging):
                 if script_name:
                     restart_script_path=''
                     try:
-                        restart_script_path = os.path.join(PROJECT_ROOT, 'scripts', script_name)
+                        restart_script_path = os.path.join(SL5NET_AURA_PROJECT_ROOT, 'scripts', script_name)
                         logging.info(f"restart in '{sys.platform}' using  {restart_script_path}")
                         subprocess.Popen([restart_script_path], shell=True) # shell=True ist für Windows sicherer
                         logging.info("Prozess will end, hope it helps restarting.")
@@ -1191,8 +1195,8 @@ if settings.USE_EXTERNAL_LANGUAGETOOL:
         logger.fatal("External LanguageTool server did not respond. Is it running?")
         sys.exit(1)
 else:
-    PROJECT_ROOT = Path(__file__).resolve().parent
-    jar_path_absolute = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
+    SL5NET_AURA_PROJECT_ROOT = Path(__file__).resolve().parent
+    jar_path_absolute = SL5NET_AURA_PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
     internal_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}"
 
     logger.info(f"start_languagetool_server(logger, …{str(jar_path_absolute)[-30:]}, {internal_lt_url})")
@@ -1353,12 +1357,12 @@ if settings.DEV_MODE:
         validate_setup(SCRIPT_DIR, logger)
 
 
-        PROJECT_ROOT = SCRIPT_DIR  # In this structure, SCRIPT_DIR is PROJECT_ROOT
+        SL5NET_AURA_PROJECT_ROOT = SCRIPT_DIR  # In this structure, SCRIPT_DIR is PROJECT_ROOT
 
-        parsed_trees = parse_all_files(PROJECT_ROOT, logger)
+        parsed_trees = parse_all_files(SL5NET_AURA_PROJECT_ROOT, logger)
 
     if not DISABLE_ALL_TEST_QuickStopTestsForSomeReasons:
-        check_for_unused_functions(parsed_trees, PROJECT_ROOT , logger)
+        check_for_unused_functions(parsed_trees, SL5NET_AURA_PROJECT_ROOT, logger)
         check_for_frequent_calls(parsed_trees, logger, threshold=1)
 
         check_installer_sizes()
@@ -1398,7 +1402,7 @@ if __name__ == "__main__":
         "HEARTBEAT_FILE": HEARTBEAT_FILE,
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
-        "PROJECT_ROOT": PROJECT_ROOT,
+        "PROJECT_ROOT": SL5NET_AURA_PROJECT_ROOT,
         "AUTO_ENTER_AFTER_DICTATION_REGEX_APPS": settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS,
         "languagetool_process": active_lt_url
     })

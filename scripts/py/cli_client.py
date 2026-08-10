@@ -7,8 +7,12 @@ import os # noqa: F811
 from dotenv import load_dotenv
 # file: scripts/py/cli_client.py
 SERVICE_URL = "http://127.0.0.1:8830/process_cli"
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-load_dotenv(PROJECT_ROOT / ".secrets")
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+
+load_dotenv(SL5NET_AURA_PROJECT_ROOT / ".secrets")
 # print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 CLIENT_API_KEY = API_KEY_SECRET
