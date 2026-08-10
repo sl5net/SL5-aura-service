@@ -1,3 +1,4 @@
+from scripts.py.func.get_project_root import get_aura_project_root
 import logging
 import os
 
@@ -6,12 +7,12 @@ if __name__ == "__main__":
     import sys
     from pathlib import Path
 
-    # 1. Get PROJECT_ROOT using your project's specific logic
+    # 1. Get SL5NET_AURA_PROJECT_ROOT using your project's specific logic
     tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+    SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
     # 2. Define the path to this plugin's directory
-    PLUGIN_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE"
+    PLUGIN_DIR = SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE"
 
     # 3. Add PLUGIN_DIR to sys.path to allow absolute imports of sibling modules
     if str(PLUGIN_DIR) not in sys.path:

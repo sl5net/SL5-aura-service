@@ -1,4 +1,5 @@
 # config/maps/plugins/wannweil/de-DE/check_trash.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import logging
 #  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
 #  ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
@@ -38,9 +39,9 @@ class CustomFormatter(logging.Formatter):
         return formatted_time
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-LOG_DIR = PROJECT_ROOT / "log"
+LOG_DIR = SL5NET_AURA_PROJECT_ROOT / "log"
 LOG_FILE = LOG_DIR / "_check_trash.log"
 
 if not LOG_DIR.exists():
@@ -58,8 +59,8 @@ if len(logger.handlers) > 0:
 log_formatter = CustomFormatter('%(asctime)s - %(levelname)-8s - %(message)s')
 
 # Create, configure, and add the File Handler.
-#file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='w', encoding='utf-8')
-file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/dynamic_settings.log', mode='a', encoding='utf-8')
+#file_handler = logging.FileHandler(f'{SL5NET_AURA_PROJECT_ROOT}/log/dynamic_settings.log', mode='w', encoding='utf-8')
+file_handler = logging.FileHandler(f'{SL5NET_AURA_PROJECT_ROOT}/log/dynamic_settings.log', mode='a', encoding='utf-8')
 
 file_handler.setFormatter(log_formatter)
 logger.addHandler(file_handler)

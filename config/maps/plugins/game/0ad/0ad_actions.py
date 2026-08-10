@@ -1,13 +1,14 @@
 # config/maps/plugins/game/0ad/0ad_actions.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import logging
 import os
 import subprocess
 from pathlib import Path
 
 _tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((_tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-log_dir = PROJECT_ROOT / "log"
+log_dir = SL5NET_AURA_PROJECT_ROOT / "log"
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
 _logger.propagate = False  # don't bubble up to the root logger / aura_engine.log
@@ -58,8 +59,8 @@ def execute(match_data):
 
     from scripts.py.func.audio_manager import speak_inclusive_fallback
 
-    if str(PROJECT_ROOT) not in sys.path:
-        sys.path.insert(0, str(PROJECT_ROOT))
+    if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
+        sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
     text_after_replacement = match_data['text_after_replacement']
     log(f'0ad_actions.py:27 -> text_after_replacement: {text_after_replacement}')

@@ -35,10 +35,10 @@ Bei der Suche nach Krankenhaus ist der fuzzy Match nicht ausreicend, weil er sol
 """
 
 from pathlib import Path as p;import os as o # noqa: E702
-with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
 
-ZIM_FILE_NAME = PROJECT_ROOT / 'data' / 'wikipedia_de_all_mini.zim'
+ZIM_FILE_NAME = SL5NET_AURA_PROJECT_ROOT / 'data' / 'wikipedia_de_all_mini.zim'
 ZIM_URL_PART = ZIM_FILE_NAME.name.replace('.zim', '')
 BASE_SERVER_URL = "http://localhost:8080"
 LOG_FILE = os.path.expanduser("~/kiwix_debug.log")

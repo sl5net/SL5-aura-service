@@ -10,13 +10,13 @@ from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_re
 
 from pathlib import Path as p; import os as o  # noqa: E702
 with open(('C:/tmp' if o.name == 'nt' else '/tmp') + '/sl5_aura/sl5net_aura_project_root', encoding='utf-8') as f:
-    PROJECT_ROOT = p(f.read().strip())  # noqa: E702
+    SL5NET_AURA_PROJECT_ROOT = p(f.read().strip())  # noqa: E702
 
 CONFIG_FILE = Path(__file__).parent / 'weather_config.ini'
 
 WEATHER_TTL = 900  # 15 Minuten
 
-log_dir = PROJECT_ROOT / 'log'
+log_dir = SL5NET_AURA_PROJECT_ROOT / 'log'
 log_dir.mkdir(parents=True, exist_ok=True)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

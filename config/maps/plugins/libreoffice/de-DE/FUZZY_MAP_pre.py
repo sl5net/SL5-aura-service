@@ -1,4 +1,5 @@
 # config/maps/plugins/libreoffice/de-DE/FUZZY_MAP_pre.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import platform
 import re
 from pathlib import Path
@@ -6,7 +7,7 @@ from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 home_dir_str = str(Path.home())
 
 # Window titles of LibreOffice apps

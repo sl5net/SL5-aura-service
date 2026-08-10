@@ -3,7 +3,7 @@
 # Beispiel: https://www.it-begriffe.de/#L
 import re # noqa: F401
 from pathlib import Path as p;import os as o # noqa: E702
-with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
 
 
@@ -58,7 +58,7 @@ grep -rn "search_string" --include="*.py" . | grep -v ".venv" | grep -v "venv" |
 * Never assume that program behavior has changed if the code, environment, and inputs are unchanged. Treat previously observed failures as still reproducible until verified otherwise.
 * Enforce UTF-8 (`PYTHONUTF8=1`) for Python execution when relevant.
 * Never use a bare `except:` in Python.
-* Use structured logging and write log files to `PROJECT_ROOT/log/[ScriptFile].log`.
+* Use structured logging and write log files to `SL5NET_AURA_PROJECT_ROOT/log/[ScriptFile].log`.
 * Always provide complete relative file paths whenever referencing files.
 * Never reference line numbers without also specifying the corresponding file path.
 * Never output or reference absolute user-specific paths (for example `/home/...` or `C:\Users\...`).
@@ -170,7 +170,7 @@ FUZZY_MAP_pre = [
     }),
 
     # (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [
-    #     PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+    #     SL5NET_AURA_PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
 
     #
 

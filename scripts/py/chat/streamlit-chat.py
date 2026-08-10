@@ -1,4 +1,7 @@
 # scripts/py/chat/streamlit-chat.py
+import sys
+from pathlib import Path
+
 import streamlit as st
 import requests
 import json
@@ -9,9 +12,15 @@ import socket
 os.environ["INTERFACE"] = "web"
 # PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
-from scripts.py.func.get_project_root import get_aura_project_root
 
-SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+os.environ["INTERFACE"] = "web"
+
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
+
 
 
 load_dotenv(SL5NET_AURA_PROJECT_ROOT / ".secrets")

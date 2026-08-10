@@ -11,7 +11,7 @@ from scripts.py.func.utils.get_leading_whitespace import get_leading_whitespace_
 # ---
 _REQUIRED_IMPORTS = [
     "from pathlib import Path as p;import os as o # noqa: E702",
-    "with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702",
+    "with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702",
 ]
 
 
@@ -143,7 +143,7 @@ def execute(match_data):
                         leading_ws = get_leading_whitespace_before_pos(content, idx)
                         if not leading_ws:
                             leading_ws = "    "
-                        new_rule = leading_ws + r"(f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']})," + "\n\n"
+                        new_rule = leading_ws + r"(f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']})," + "\n\n"
                         new_content = content[:idx] + new_rule + content[idx:]
 
                         # Ensure required imports exist before writing

@@ -1,4 +1,5 @@
 # /de-DE/run_doc_search.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import subprocess
 import os
 import time
@@ -6,11 +7,10 @@ from pathlib import Path
 
 
 def execute(match_data):
-    tmp_dir = Path("/tmp")
-    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+    SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 
-    search_script = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
+    search_script = SL5NET_AURA_PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
     env = os.environ.copy()
     env.setdefault("DISPLAY", ":0")
     env.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/1000/bus")

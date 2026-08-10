@@ -3,15 +3,16 @@
 insert_template_rule.py
 Insert a template rule right before the catch-all rule."""
 
+from scripts.py.func.get_project_root import get_aura_project_root
 import re
 import os
 from pathlib import Path
 import logging
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-log_file = PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
+log_file = SL5NET_AURA_PROJECT_ROOT / "log" / f"{Path(__file__).stem}.log"
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(str(log_file))
