@@ -1,5 +1,6 @@
 # scripts/py/chat/streamlit-chat.py
 import sys
+from pathlib import Path
 
 import streamlit as st
 import requests
