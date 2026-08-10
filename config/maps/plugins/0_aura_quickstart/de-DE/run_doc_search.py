@@ -7,7 +7,6 @@ from pathlib import Path
 
 
 def execute(match_data):
-    tmp_dir = Path("/tmp")
     SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 

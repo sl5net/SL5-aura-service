@@ -1,15 +1,12 @@
 from scripts.py.func.get_project_root import get_aura_project_root
-import os
 import subprocess
 import time
-from pathlib import Path
 
 def execute(match_data):
     # TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
     # PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
     # SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
     SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 

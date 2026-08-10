@@ -3,8 +3,6 @@ from scripts.py.func.get_project_root import get_aura_project_root
 import subprocess
 import sys
 import re
-import platform
-from pathlib import Path
 
 
 def _dotool(command):
@@ -40,8 +38,6 @@ def _check_kde_hotkey_conflict(shortcut: str) -> bool:
     except Exception:
         return False
 def execute(match_data):
-    TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-    PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
     SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
     if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
