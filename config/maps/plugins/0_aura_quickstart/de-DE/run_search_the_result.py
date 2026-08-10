@@ -6,9 +6,9 @@ import time
 
 def execute(match_data):
     from pathlib import Path as p;import os as o # noqa: E702
-    with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+    with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
-    search_script = PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
+    search_script = SL5NET_AURA_PROJECT_ROOT / "scripts" / "search_rules" / "search_rules.sh"
     env = os.environ.copy()
     env.setdefault("DISPLAY", ":0")
     env.setdefault("DBUS_SESSION_BUS_ADDRESS", "unix:path=/run/user/1000/bus")

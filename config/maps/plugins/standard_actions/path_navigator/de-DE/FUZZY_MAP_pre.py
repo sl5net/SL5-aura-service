@@ -2,7 +2,7 @@
 # projects/py/STT/config/maps/plugins/standard_actions/path_navigator/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401
 #from pathlib import Path as p;import os as o # noqa: E702
-#with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+#with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
 
 
@@ -48,10 +48,10 @@ for cmd in REQUIRED_COMMANDS:
         #sys.exit(1)
 
 CONFIG_DIR = Path(__file__).parent
-PROJECT_ROOT = CONFIG_DIR.parents[5]
+SL5NET_AURA_PROJECT_ROOT = CONFIG_DIR.parents[5]
 
 home_dir_str = str(Path.home())
-project_root_str_full = str(PROJECT_ROOT)
+project_root_str_full = str(SL5NET_AURA_PROJECT_ROOT)
 
 # 1. Tilde Replacement POSIX (Linux/Mac)
 if sys.platform != 'win32' and project_root_str_full.startswith(home_dir_str):

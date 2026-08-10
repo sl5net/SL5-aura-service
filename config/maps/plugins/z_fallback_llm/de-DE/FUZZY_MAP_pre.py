@@ -1,4 +1,5 @@
 # config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import os
 import re
 import runpy
@@ -6,14 +7,14 @@ from pathlib import Path
 CONFIG_DIR = Path(__file__).parent
 
 
-# Pfad zu den Internals hinzufügen (erfordert PROJECT_ROOT)
+# Pfad zu den Internals hinzufügen (erfordert SL5NET_AURA_PROJECT_ROOT)
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 
-INTERNAL_PATH = PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE"
+INTERNAL_PATH = SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE"
 
-acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+acp = SL5NET_AURA_PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
 AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
 
 

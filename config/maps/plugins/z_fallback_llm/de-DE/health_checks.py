@@ -1,12 +1,13 @@
 # config/maps/plugins/z_fallback_llm/de-DE/health_checks.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import os
 import sys
 from pathlib import Path
 
 # Same logic here to ensure utils is found when called from simulate_conversation
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-plugin_dir = str(PROJECT_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE")
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+plugin_dir = str(SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE")
 
 if plugin_dir not in sys.path:
     sys.path.insert(0, plugin_dir)

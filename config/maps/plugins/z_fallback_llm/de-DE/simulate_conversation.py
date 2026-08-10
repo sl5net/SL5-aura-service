@@ -1,4 +1,5 @@
 # config/maps/plugins/z_fallback_llm/de-DE/simulate_conversation.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import datetime
 import logging
 import os
@@ -9,12 +10,12 @@ import subprocess
 
 from pathlib import Path
 
-# Eure PROJECT_ROOT Logik
+# Eure SL5NET_AURA_PROJECT_ROOT Logik
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 # Pfad zum aktuellen Plugin-Verzeichnis für absolute Importe hinzufügen
-PLUGIN_DIR = str(PROJECT_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE")
+PLUGIN_DIR = str(SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE")
 if PLUGIN_DIR not in sys.path:
     sys.path.insert(0, PLUGIN_DIR)
 

@@ -1,4 +1,5 @@
 # config/maps/plugins/libreoffice/de-DE/libreoffice_actions.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import subprocess
 import sys
 import re
@@ -41,10 +42,10 @@ def _check_kde_hotkey_conflict(shortcut: str) -> bool:
 def execute(match_data):
     TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
     PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-    PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+    SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-    if str(PROJECT_ROOT) not in sys.path:
-        sys.path.insert(0, str(PROJECT_ROOT))
+    if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
+        sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
     from scripts.py.func.audio_manager import speak_inclusive_fallback
 

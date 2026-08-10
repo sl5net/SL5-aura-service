@@ -1,10 +1,11 @@
 # config/maps/plugins/sikulix/en-US/FUZZY_MAP_pre.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import os
 import re
 from pathlib import Path
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 CONFIG_DIR = Path(__file__).parent
 sikulix_windows = ['sikulixide', 'SikuliX', 'Sikuli', 'oculixide', 'OculiX']

@@ -3,6 +3,7 @@
 Entry point invoked (via on_match_exec) when the catch-all rule matches.
 Delegates the actual file-update logic to helpers/process_unmatched_text.py.
 """
+from scripts.py.func.get_project_root import get_aura_project_root
 import logging
 import sys
 from pathlib import Path
@@ -20,9 +21,9 @@ from process_unmatched_text import process_unmatched_text
 
 
 _tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((_tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-log_dir = PROJECT_ROOT / "log"
+log_dir = SL5NET_AURA_PROJECT_ROOT / "log"
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
 _logger.propagate = False  # don't bubble up to the root logger / aura_engine.log

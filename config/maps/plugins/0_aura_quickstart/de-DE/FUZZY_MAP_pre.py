@@ -1,19 +1,20 @@
 # config/maps/plugins/0_aura_quickstart/de-DE/FUZZY_MAP_pre.py
+from scripts.py.func.get_project_root import get_aura_project_root
 import os
 import re # noqa: F401
 #from pathlib import Path as p;import os as o # noqa: E702
-#with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+#with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
 from pathlib import Path
 import runpy
 
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 CONFIG_DIR = Path(__file__).parent
 
-acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+acp = SL5NET_AURA_PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
 AURA_VARIANTS = runpy.run_path(acp)["AURA_VARIANTS"]
 suche = r'(such|suche|suche du|sucht|suchen|sure|Schuhe|hoover|buch|zug|Zuge|stiefel|schlüchtern)'
 
