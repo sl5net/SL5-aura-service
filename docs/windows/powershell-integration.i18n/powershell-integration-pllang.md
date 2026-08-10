@@ -31,7 +31,7 @@ __KOD_BLOKU_4__
 ## Uwagi specyficzne dla systemu Windows
 
 - **Ścieżka Pythona**: W systemie Windows plik binarny środowiska wirtualnego znajduje się pod adresem `.venv\Scripts\python.exe` zamiast `.venv/bin/python3`. Dostosuj `$PY_EXEC`, jeśli Twoja konfiguracja jest inna.
-- **Zmienna środowiskowa `PROJECT_ROOT`**: Ustaw tę opcję w systemowych zmiennych środowiskowych lub dodaj następujący wiersz nad funkcją w swoim profilu:
+- **Zmienna środowiskowa `SL5NET_AURA_PROJECT_ROOT`**: Ustaw tę opcję w systemowych zmiennych środowiskowych lub dodaj następujący wiersz nad funkcją w swoim profilu:
 __KOD_BLOKU_5__
 - **`timeout` / `mktemp`**: Te narzędzia uniksowe nie są dostępne natywnie. Powyższy skrypt używa odpowiedników natywnych dla PowerShell („WaitForExit” z milisekundowym limitem czasu i „GetTempFileName()”).
 - **`pgrep`**: Zastąpione przez `Get-Process -Name „streamlit”`.
@@ -41,6 +41,6 @@ __KOD_BLOKU_5__
 
 ## Cechy
 
-- **Ścieżki dynamiczne**: Automatycznie znajduje katalog główny projektu poprzez zmienną środowiskową `PROJECT_ROOT`.
+- **Ścieżki dynamiczne**: Automatycznie znajduje katalog główny projektu poprzez zmienną środowiskową `SL5NET_AURA_PROJECT_ROOT`.
 - **Auto-Restart**: Jeśli backend nie działa, próbuje uruchomić `Start-Service-STT` i lokalne usługi Wikipedii.
 - **Inteligentne limity czasu**: Najpierw próbuje uzyskać szybką reakcję w ciągu 2 sekund, a następnie powraca do trybu głębokiego przetwarzania trwającego 70 sekund.

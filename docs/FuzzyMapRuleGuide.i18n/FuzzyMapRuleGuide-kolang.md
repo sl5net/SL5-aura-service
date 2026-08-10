@@ -44,7 +44,7 @@ API 키)를 소스 코드에서 가져옵니다.
 * **`window_ignore_case`** (부울): 창 일치(`only_in_windows` / `exclude_windows`)가 대소문자를 구분하지 않고(`True`) 또는 대소문자를 구분하여(`False`) 평가되는지 여부를 제어합니다. 생략하면 `config/settings.py`의 전역 설정 `LOWERCASE_WINDOW_TITLES`로 대체됩니다.
 *예:* `{'window_ignore_case': False}`
 * **`on_match_exec`** (경로/문자열 개체 목록): 이 규칙이 일치할 때 실행되어야 하는 스크립트/플러그인에 대한 경로입니다(포괄 규칙과 폴백 규칙에서 많이 사용됨).
-*예:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+*예:* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## 파이프라인 로직
 - 규칙은 **하향식**으로 처리됩니다.

@@ -34,8 +34,8 @@ function s --description "STT CLI shortcut"
     set LONG_TIMEOUT_SECONDS 70
 
     # Path shortcuts
-    set PY_EXEC "$PROJECT_ROOT/.venv/bin/python3"
-    set CLI_SCRIPT "$PROJECT_ROOT/scripts/py/cli_client.py"
+    set PY_EXEC "$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3"
+    set CLI_SCRIPT "$SL5NET_AURA_PROJECT_ROOT/scripts/py/cli_client.py"
 
     # --- 1. try
     timeout $SHORT_TIMEOUT_SECONDS \
@@ -49,7 +49,7 @@ function s --description "STT CLI shortcut"
         echo "Service-Check: Backend oder Frontend fehlt. Starte neu..."
         start_service
         echo '++++++++++++++++++++++++++++++++++++++++++++++++++'
-        set KIWIX_SCRIPT "$PROJECT_ROOT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh"
+        set KIWIX_SCRIPT "$SL5NET_AURA_PROJECT_ROOT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh"
         if test -f "$KIWIX_SCRIPT"
             bash "$KIWIX_SCRIPT"
         end

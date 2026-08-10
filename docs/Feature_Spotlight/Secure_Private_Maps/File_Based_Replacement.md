@@ -52,7 +52,7 @@ overrides):
 The file is resolved as follows:
 
 1. The plugin's `source_path` (recorded automatically by the map loader) is
-   joined against `PROJECT_ROOT` (read from the `SL5NET_AURA_PROJECT_ROOT`
+   joined against `SL5NET_AURA_PROJECT_ROOT` (read from the `SL5NET_AURA_PROJECT_ROOT`
    environment variable) to get the plugin's directory.
 2. The `replacement` value is joined onto that directory.
 3. Unless `FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL` is `True`, the resolved path

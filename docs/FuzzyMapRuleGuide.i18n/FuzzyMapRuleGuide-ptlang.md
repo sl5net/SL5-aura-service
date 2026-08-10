@@ -44,7 +44,7 @@ Se a sua substituição for uma string multilinha ou contém barras invertidas s
 * **`window_ignore_case`** (booleano): Controla se a correspondência de janela (`only_in_windows` / `exclude_windows`) é avaliada sem distinção entre maiúsculas e minúsculas (`True`) ou com distinção entre maiúsculas e minúsculas (`False`). Se omitido, volta para a configuração global `LOWERCASE_WINDOW_TITLES` em `config/settings.py`.
 *Exemplo:* `{'window_ignore_case': False}`
 * **`on_match_exec`** (lista de objetos Path/string): Caminhos para scripts/plugins que devem ser executados quando esta regra corresponder (muito usado por regras catch-all e fallback).
-*Exemplo:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+*Exemplo:* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## Lógica de pipeline
 - As regras são processadas **de cima para baixo**

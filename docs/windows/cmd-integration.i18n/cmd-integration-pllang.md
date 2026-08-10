@@ -33,7 +33,7 @@ __KOD_BLOKU_3__
 ## Uwagi specyficzne dla CMD
 
 - **Brak natywnego limitu czasu procesu**: CMD nie ma odpowiednika uniksowego limitu czasu. Ten skrypt deleguje logikę limitu czasu do funkcji „WaitForExit” programu PowerShell. PowerShell musi być dostępny (jest we wszystkich nowoczesnych systemach Windows).
-- **`PROJECT_ROOT`**: Ustaw tę opcję jako stałą zmienną środowiskową użytkownika poprzez Właściwości systemu lub zakoduj na stałe ścieżkę w pliku `.bat`.
+- **`SL5NET_AURA_PROJECT_ROOT`**: Ustaw tę opcję jako stałą zmienną środowiskową użytkownika poprzez Właściwości systemu lub zakoduj na stałe ścieżkę w pliku `.bat`.
 - **Skrypty pomocnicze**: `update_github_ip.bat` i `start_service.bat` muszą istnieć w Twojej `PATH` lub w `%USERPROFILE%\bin`. Są to odpowiedniki CMD funkcji powłoki `update_github_ip` i `start_service`.
 - **`bash` dla skryptu Kiwix**: Jeśli zainstalowany jest WSL, `bash` jest dostępny w CMD i skrypt `.sh` zostanie uruchomiony bezpośrednio. W przeciwnym razie dostosuj `kiwix-docker-start-if-not-running.sh` do odpowiednika `.bat`.
 - **Obsługa ofert**: CMD ma rygorystyczne i niestabilne zasady dotyczące kwotowań. Jeśli zapytanie zawiera znaki specjalne (`&`, `|`, `>`, `<`), umieść całe zapytanie w cudzysłowie: `s "Twoje i pytanie"`.
@@ -41,6 +41,6 @@ __KOD_BLOKU_3__
 
 ## Cechy
 
-- **Ścieżki dynamiczne**: Automatycznie rozpoznaje ścieżki poprzez zmienną środowiskową `PROJECT_ROOT`.
+- **Ścieżki dynamiczne**: Automatycznie rozpoznaje ścieżki poprzez zmienną środowiskową `SL5NET_AURA_PROJECT_ROOT`.
 - **Auto-Restart**: Jeśli backend nie działa, wywołuje `start_service.bat` i próbuje uruchomić lokalne usługi Wikipedii.
 - **Inteligentne limity czasu**: Najpierw próbuje uzyskać szybką reakcję w ciągu 2 sekund, a następnie powraca do trybu głębokiego przetwarzania trwającego 70 sekund.

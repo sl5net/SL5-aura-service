@@ -52,7 +52,7 @@ Aura は、プラグイン自身のディレクトリを基準にしてそのフ
 ファイルは次のように解決されます。
 
 1. プラグインの `source_path` (マップ ローダーによって自動的に記録される) は次のとおりです。
-`PROJECT_ROOT` に対して結合されました (`SL5NET_AURA_PROJECT_ROOT` から読み取ります)
+`SL5NET_AURA_PROJECT_ROOT` に対して結合されました (`SL5NET_AURA_PROJECT_ROOT` から読み取ります)
 環境変数) を使用してプラグインのディレクトリを取得します。
 2. 「replacement」値がそのディレクトリに結合されます。
 3. `FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL` が `True` でない限り、解決されたパス

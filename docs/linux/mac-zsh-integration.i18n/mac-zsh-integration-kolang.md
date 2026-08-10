@@ -31,8 +31,8 @@ s() {
     local SHORT_TIMEOUT_SECONDS=2
     local LONG_TIMEOUT_SECONDS=70
     # Path shortcuts
-    local PY_EXEC="$PROJECT_ROOT/.venv/bin/python3"
-    local CLI_SCRIPT="$PROJECT_ROOT/scripts/py/cli_client.py"
+    local PY_EXEC="$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3"
+    local CLI_SCRIPT="$SL5NET_AURA_PROJECT_ROOT/scripts/py/cli_client.py"
     # --- 1. try
     timeout $SHORT_TIMEOUT_SECONDS \
     "$PY_EXEC" -u "$CLI_SCRIPT" "$*" \
@@ -44,7 +44,7 @@ s() {
         echo "Service-Check: Backend oder Frontend fehlt. Starte neu..."
         start_service
         echo '++++++++++++++++++++++++++++++++++++++++++++++++++'
-        local KIWIX_SCRIPT="$PROJECT_ROOT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh"
+        local KIWIX_SCRIPT="$SL5NET_AURA_PROJECT_ROOT/config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh"
         if [ -f "$KIWIX_SCRIPT" ]; then
             bash "$KIWIX_SCRIPT"
         fi
@@ -97,7 +97,7 @@ s() {
 
 - **`pgrep`**은 macOS에서 기본적으로 사용할 수 있습니다.
 
-- **Python 경로**: 가상 환경이 `$PROJECT_ROOT/.venv`에 설정되어 있는지 확인하세요. `pyenv` 또는 `conda`로 Python을 관리하는 경우 그에 따라 `PY_EXEC`를 조정하세요.
+- **Python 경로**: 가상 환경이 `$SL5NET_AURA_PROJECT_ROOT/.venv`에 설정되어 있는지 확인하세요. `pyenv` 또는 `conda`로 Python을 관리하는 경우 그에 따라 `PY_EXEC`를 조정하세요.
 
 ## 특징
 

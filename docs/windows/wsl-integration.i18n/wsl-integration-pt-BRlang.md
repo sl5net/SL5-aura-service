@@ -66,7 +66,7 @@ Suas unidades do Windows estão montadas em `/mnt/`:
 wsl --set-version <DistroName> 2
 ```
 
-Se o seu projeto reside no sistema de arquivos do Windows (por exemplo, `C:\Projects\stt`), defina `PROJECT_ROOT` como:
+Se o seu projeto reside no sistema de arquivos do Windows (por exemplo, `C:\Projects\stt`), defina `SL5NET_AURA_PROJECT_ROOT` como:
 
 ```bash
 nano ~/.bashrc
@@ -87,7 +87,7 @@ Crie e use um ambiente virtual Linux padrão dentro do WSL:
 /mnt/d/   # → D:\
 ```
 
-O caminho `PY_EXEC` na função (`$PROJECT_ROOT/.venv/bin/python3`) funcionará corretamente como está.
+O caminho `PY_EXEC` na função (`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) funcionará corretamente como está.
 
 ### Executando `s` no Terminal do Windows
 
@@ -104,14 +104,14 @@ Para economizar recursos do sistema, você pode configurar o Docker para iniciar
 Execute os seguintes comandos para desativar o serviço contínuo em segundo plano e ativar a "ativação de soquete":
 
 ```bash
-export PROJECT_ROOT="/mnt/c/Projects/stt"
+export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 ```
 
 **Torne-o seguro para atualização (usuários Linux Arch/Manjaro):**
 Às vezes, as atualizações de pacotes podem redefinir a configuração do soquete. Para evitar isso, crie uma substituição local persistente:
 
 ```bash
-cd "$PROJECT_ROOT"
+cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -153,6 +153,6 @@ WantedBy=sockets.target
 ## Características
 
 - **Compatibilidade total com Linux**: Todas as ferramentas Unix (`timeout`, `pgrep`, `mktemp`, `grep`) funcionam nativamente — não são necessárias soluções alternativas.
-- **Caminhos Dinâmicos**: Encontra automaticamente a raiz do projeto através da variável `PROJECT_ROOT` definida na configuração do seu shell.
+- **Caminhos Dinâmicos**: Encontra automaticamente a raiz do projeto através da variável `SL5NET_AURA_PROJECT_ROOT` definida na configuração do seu shell.
 - **Auto-Restart**: Se o backend estiver inativo, ele tenta executar o `start_service` e os serviços locais da Wikipedia (o Docker deve estar em execução).
 - **Tempos limite inteligentes**: primeiro tenta uma resposta rápida de 2 segundos e depois volta para um modo de processamento profundo de 70 segundos.

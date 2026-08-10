@@ -73,10 +73,10 @@ Sus unidades de Windows están montadas en `/mnt/`:
 /mnt/d/   # → D:\
 ```
 
-Si su proyecto se encuentra en el sistema de archivos de Windows (por ejemplo, `C:\Projects\stt`), configure `PROJECT_ROOT` en:
+Si su proyecto se encuentra en el sistema de archivos de Windows (por ejemplo, `C:\Projects\stt`), configure `SL5NET_AURA_PROJECT_ROOT` en:
 
 ```bash
-export PROJECT_ROOT="/mnt/c/Projects/stt"
+export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 ```
 
 Agregue esta línea a su `~/.bashrc` (o el equivalente para su shell) **arriba** de la función `s()`.
@@ -88,13 +88,13 @@ Agregue esta línea a su `~/.bashrc` (o el equivalente para su shell) **arriba**
 Cree y utilice un entorno virtual Linux estándar dentro de WSL:
 
 ```bash
-cd "$PROJECT_ROOT"
+cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-La ruta `PY_EXEC` en la función ($PROJECT_ROOT/.venv/bin/python3`) funcionará correctamente tal como está.
+La ruta `PY_EXEC` en la función ($SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) funcionará correctamente tal como está.
 
 ### Ejecutando `s` desde la terminal de Windows
 
@@ -162,6 +162,6 @@ wsl bash -i -c "s %*"
 ## Características
 
 - **Compatibilidad total con Linux**: todas las herramientas de Unix (`timeout`, `pgrep`, `mktemp`, `grep`) funcionan de forma nativa, no se necesitan soluciones alternativas.
-- **Rutas dinámicas**: encuentra automáticamente la raíz del proyecto a través de la variable `PROJECT_ROOT` configurada en su configuración de shell.
+- **Rutas dinámicas**: encuentra automáticamente la raíz del proyecto a través de la variable `SL5NET_AURA_PROJECT_ROOT` configurada en su configuración de shell.
 - **Reinicio automático**: si el backend está inactivo, intenta ejecutar `start_service` y los servicios locales de Wikipedia (Docker debe estar ejecutándose).
 - **Tiempos de espera inteligentes**: primero intenta una respuesta rápida de 2 segundos y luego vuelve a un modo de procesamiento profundo de 70 segundos.

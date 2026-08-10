@@ -73,10 +73,10 @@ Vos lecteurs Windows sont montés sous `/mnt/` :
 /mnt/d/   # → D:\
 ```
 
-Si votre projet réside sur le système de fichiers Windows (par exemple `C:\Projects\stt`), définissez `PROJECT_ROOT` sur :
+Si votre projet réside sur le système de fichiers Windows (par exemple `C:\Projects\stt`), définissez `SL5NET_AURA_PROJECT_ROOT` sur :
 
 ```bash
-export PROJECT_ROOT="/mnt/c/Projects/stt"
+export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 ```
 
 Ajoutez cette ligne à votre `~/.bashrc` (ou l'équivalent pour votre shell) **au-dessus** de la fonction `s()`.
@@ -88,13 +88,13 @@ Ajoutez cette ligne à votre `~/.bashrc` (ou l'équivalent pour votre shell) **a
 Créez et utilisez un environnement virtuel Linux standard dans WSL :
 
 ```bash
-cd "$PROJECT_ROOT"
+cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Le chemin `PY_EXEC` dans la fonction (`$PROJECT_ROOT/.venv/bin/python3`) fonctionnera correctement tel quel.
+Le chemin `PY_EXEC` dans la fonction (`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) fonctionnera correctement tel quel.
 
 ### Exécuter `s` depuis le terminal Windows
 
@@ -162,6 +162,6 @@ wsl bash -i -c "s %*"
 ## Caractéristiques
 
 - **Compatibilité totale avec Linux** : tous les outils Unix (`timeout`, `pgrep`, `mktemp`, `grep`) fonctionnent de manière native — aucune solution de contournement n'est nécessaire.
-- **Chemins dynamiques** : recherche automatiquement la racine du projet via la variable `PROJECT_ROOT` définie dans la configuration de votre shell.
+- **Chemins dynamiques** : recherche automatiquement la racine du projet via la variable `SL5NET_AURA_PROJECT_ROOT` définie dans la configuration de votre shell.
 - **Auto-Restart** : si le backend est en panne, il tente d'exécuter `start_service` et les services Wikipédia locaux (Docker doit être en cours d'exécution).
 - **Smart Timeouts** : essaie d'abord une réponse rapide de 2 secondes, puis revient à un mode de traitement approfondi de 70 secondes.

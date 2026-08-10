@@ -50,8 +50,8 @@ function s {
     $LONG_TIMEOUT_SECONDS  = 70
 
     # Path shortcuts
-    $PY_EXEC   = "$env:PROJECT_ROOT\.venv\Scripts\python.exe"
-    $CLI_SCRIPT = "$env:PROJECT_ROOT\scripts\py\cli_client.py"
+    $PY_EXEC   = "$env:SL5NET_AURA_PROJECT_ROOT\.venv\Scripts\python.exe"
+    $CLI_SCRIPT = "$env:SL5NET_AURA_PROJECT_ROOT\scripts\py\cli_client.py"
 
     $TempFile = [System.IO.Path]::GetTempFileName()
 
@@ -81,7 +81,7 @@ function s {
         Start-Service-STT   # equivalent of start_service
         Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        $KiwixScript = "$env:PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
+        $KiwixScript = "$env:SL5NET_AURA_PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
         if (Test-Path $KiwixScript) {
             bash $KiwixScript
         }
@@ -136,9 +136,9 @@ function s {
                  ## ملاحظات خاصة بنظام التشغيل Windows
 
 - **مسار بايثون**: في نظام التشغيل Windows، يكون الملف الثنائي للبيئة الافتراضية هو `.venv\Scripts\python.exe` بدلاً من `.venv/bin/python3`. اضبط `$PY_EXEC` إذا كان الإعداد الخاص بك مختلفًا.
-- **`PROJECT_ROOT` متغير البيئة**: قم بتعيين هذا في متغيرات بيئة النظام لديك، أو قم بإضافة السطر التالي أعلى الوظيفة في ملف التعريف الخاص بك:
+- **`SL5NET_AURA_PROJECT_ROOT` متغير البيئة**: قم بتعيين هذا في متغيرات بيئة النظام لديك، أو قم بإضافة السطر التالي أعلى الوظيفة في ملف التعريف الخاص بك:
   ```powershell
-  $env:PROJECT_ROOT = "C:\path\to\your\project"
+  $env:SL5NET_AURA_PROJECT_ROOT = "C:\path\to\your\project"
   ```
 - **`timeout` / `mktemp`**: أدوات Unix هذه غير متوفرة محليًا. يستخدم البرنامج النصي أعلاه مكافئات PowerShell الأصلية (`WaitForExit` مع مهلة بالمللي ثانية و`GetTempFileName()`).
    - **`pgrep`**: تم استبداله بـ `Get-Process -Name "streamlit"`.
@@ -148,6 +148,6 @@ function s {
 
                                                                   ## سمات
 
-- **المسارات الديناميكية**: يتم العثور على جذر المشروع تلقائيًا عبر متغير البيئة `PROJECT_ROOT`.
+- **المسارات الديناميكية**: يتم العثور على جذر المشروع تلقائيًا عبر متغير البيئة `SL5NET_AURA_PROJECT_ROOT`.
 - **إعادة التشغيل التلقائي**: إذا كانت الواجهة الخلفية معطلة، فإنها تحاول تشغيل "Start-Service-STT" وخدمات ويكيبيديا المحلية.
 - **المهلات الذكية**: حاول الاستجابة السريعة لمدة ثانيتين أولاً، ثم ارجع إلى وضع المعالجة العميقة لمدة 70 ثانية.

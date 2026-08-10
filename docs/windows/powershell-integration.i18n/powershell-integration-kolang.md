@@ -50,8 +50,8 @@ function s {
     $LONG_TIMEOUT_SECONDS  = 70
 
     # Path shortcuts
-    $PY_EXEC   = "$env:PROJECT_ROOT\.venv\Scripts\python.exe"
-    $CLI_SCRIPT = "$env:PROJECT_ROOT\scripts\py\cli_client.py"
+    $PY_EXEC   = "$env:SL5NET_AURA_PROJECT_ROOT\.venv\Scripts\python.exe"
+    $CLI_SCRIPT = "$env:SL5NET_AURA_PROJECT_ROOT\scripts\py\cli_client.py"
 
     $TempFile = [System.IO.Path]::GetTempFileName()
 
@@ -81,7 +81,7 @@ function s {
         Start-Service-STT   # equivalent of start_service
         Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        $KiwixScript = "$env:PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
+        $KiwixScript = "$env:SL5NET_AURA_PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
         if (Test-Path $KiwixScript) {
             bash $KiwixScript
         }
@@ -136,9 +136,9 @@ function s {
 ## Windows 관련 참고사항
 
 - **Python 경로**: Windows에서 가상 환경 바이너리는 `.venv/bin/python3` 대신 `.venv\Scripts\python.exe`에 있습니다. 설정이 다른 경우 `$PY_EXEC`를 조정하세요.
-- **`PROJECT_ROOT` 환경 변수**: 시스템 환경 변수에서 이를 설정하거나 프로필의 함수 위에 다음 줄을 추가합니다.
+- **`SL5NET_AURA_PROJECT_ROOT` 환경 변수**: 시스템 환경 변수에서 이를 설정하거나 프로필의 함수 위에 다음 줄을 추가합니다.
   ```powershell
-  $env:PROJECT_ROOT = "C:\path\to\your\project"
+  $env:SL5NET_AURA_PROJECT_ROOT = "C:\path\to\your\project"
   ```
 - **`timeout` / `mktemp`**: 이러한 Unix 도구는 기본적으로 사용할 수 없습니다. 위의 스크립트는 PowerShell 기본 항목(밀리초 시간 제한이 있는 'WaitForExit' 및 'GetTempFileName()')을 사용합니다.
 - **`pgrep`**: `Get-Process -Name "streamlit"`로 대체되었습니다.
@@ -148,6 +148,6 @@ function s {
 
 ## 특징
 
-- **동적 경로**: `PROJECT_ROOT` 환경 변수를 통해 프로젝트 루트를 자동으로 찾습니다.
+- **동적 경로**: `SL5NET_AURA_PROJECT_ROOT` 환경 변수를 통해 프로젝트 루트를 자동으로 찾습니다.
 - **자동 재시작**: 백엔드가 다운되면 'Start-Service-STT' 및 로컬 Wikipedia 서비스 실행을 시도합니다.
 - **스마트 타임아웃**: 먼저 빠른 2초 응답을 시도한 다음 70초 심층 처리 모드로 돌아갑니다.

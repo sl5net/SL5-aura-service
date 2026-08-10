@@ -48,7 +48,7 @@ zastępuje):
 Plik jest rozwiązywany w następujący sposób:
 
 1. Ścieżka_źródłowa wtyczki (zapisywana automatycznie przez moduł ładujący mapy) to
-połączone z `PROJECT_ROOT` (czytane z `SL5NET_AURA_PROJECT_ROOT`
+połączone z `SL5NET_AURA_PROJECT_ROOT` (czytane z `SL5NET_AURA_PROJECT_ROOT`
 zmienna środowiskowa), aby uzyskać katalog wtyczki.
 2. Wartość „zamienna” jest dołączana do tego katalogu.
 3. Jeśli „FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL” nie ma wartości „True”, rozwiązana ścieżka

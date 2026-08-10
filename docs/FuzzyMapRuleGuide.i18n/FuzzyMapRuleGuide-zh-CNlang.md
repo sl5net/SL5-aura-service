@@ -40,7 +40,7 @@ __代码_块_1__
 * **`window_ignore_case`**（布尔值）：控制窗口匹配（`only_in_windows` / `exclude_windows`）是否不区分大小写（`True`）或区分大小写（`False`）进行评估。如果省略，则回退到“config/settings.py”中的全局设置“LOWERCASE_WINDOW_TITLES”。
 *示例：* `{'window_ignore_case': False}`
 * **`on_match_exec`**（路径/字符串对象列表）：当此规则匹配时应执行的脚本/插件的路径（由捕获所有和后备规则大量使用）。
-*示例：* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+*示例：* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## 管道逻辑
 - 规则的处理**自上而下**

@@ -73,10 +73,10 @@ Windows 드라이브는 `/mnt/`에 마운트됩니다:
 /mnt/d/   # → D:\
 ```
 
-프로젝트가 Windows 파일 시스템(예: `C:\Projects\stt`)에 있는 경우 `PROJECT_ROOT`를 다음으로 설정하세요.
+프로젝트가 Windows 파일 시스템(예: `C:\Projects\stt`)에 있는 경우 `SL5NET_AURA_PROJECT_ROOT`를 다음으로 설정하세요.
 
 ```bash
-export PROJECT_ROOT="/mnt/c/Projects/stt"
+export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 ```
 
 이 줄을 `~/.bashrc`(또는 쉘에 해당하는 항목) `s()` 함수 **위**에 추가하세요.
@@ -88,13 +88,13 @@ export PROJECT_ROOT="/mnt/c/Projects/stt"
 WSL 내에서 표준 Linux 가상 환경을 만들고 사용합니다.
 
 ```bash
-cd "$PROJECT_ROOT"
+cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-함수(`$PROJECT_ROOT/.venv/bin/python3`)의 `PY_EXEC` 경로는 있는 그대로 올바르게 작동합니다.
+함수(`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`)의 `PY_EXEC` 경로는 있는 그대로 올바르게 작동합니다.
 
 ### Windows 터미널에서 `s` 실행
 
@@ -162,6 +162,6 @@ wsl bash -i -c "s %*"
 ## 특징
 
 - **완전한 Linux 호환성**: 모든 Unix 도구(`timeout`, `pgrep`, `mktemp`, `grep`)는 기본적으로 작동하므로 해결 방법이 필요하지 않습니다.
-- **동적 경로**: 셸 구성에 설정된 `PROJECT_ROOT` 변수를 통해 프로젝트 루트를 자동으로 찾습니다.
+- **동적 경로**: 셸 구성에 설정된 `SL5NET_AURA_PROJECT_ROOT` 변수를 통해 프로젝트 루트를 자동으로 찾습니다.
 - **자동 재시작**: 백엔드가 다운되면 'start_service' 및 로컬 Wikipedia 서비스를 실행하려고 시도합니다(Docker가 실행 중이어야 함).
 - **스마트 타임아웃**: 먼저 빠른 2초 응답을 시도한 다음 70초 심층 처리 모드로 돌아갑니다.

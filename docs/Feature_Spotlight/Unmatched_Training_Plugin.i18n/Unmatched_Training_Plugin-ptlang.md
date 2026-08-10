@@ -16,9 +16,10 @@ ao longo do tempo, aprendendo com resultados de reconhecimento incomparáveis.
 
 Adicione esta regra abrangente no final de qualquer `FUZZY_MAP_pre.py` que você deseja treinar:
 ```python
+from scripts.py.func.get_project_root import get_aura_project_root
 from pathlib import Path
 import os
-PROJECT_ROOT = Path(os.environ["SL5NET_AURA_PROJECT_ROOT"])
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 FUZZY_MAP_pre = [
     # 1. Your rule to optimize (result first!)
@@ -30,7 +31,7 @@ FUZZY_MAP_pre = [
     #################################################
     # 2. Activate this rule (place it after the rule you want to optimize)
     (f'{str(__file__)}', r'^(.*)$', 10,
-     {'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+     {'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
     #################################################
 ]
 ```

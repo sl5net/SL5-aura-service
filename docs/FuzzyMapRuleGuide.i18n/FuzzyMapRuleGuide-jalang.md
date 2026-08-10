@@ -44,7 +44,7 @@ API キー) がソース コードから外れています。
 * **`window_ignore_case`** (ブール値): ウィンドウのマッチング (`only_in_windows` / `exclude_windows`) を大文字と小文字を区別せずに評価する (`True`) か、大文字と小文字を区別して評価する (`False`) かを制御します。省略した場合は、`config/settings.py` のグローバル設定 `LOWERCASE_WINDOW_TITLES` に戻ります。
 *例:* `{'window_ignore_case': False}`
 * **`on_match_exec`** (パス/文字列オブジェクトのリスト): このルールが一致した場合に実行されるスクリプト/プラグインへのパス (キャッチオール ルールとフォールバック ルールで頻繁に使用されます)。
-*例:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+*例:* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## パイプライン ロジック
 - ルールは**トップダウン**で処理されます

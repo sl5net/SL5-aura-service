@@ -44,7 +44,7 @@ Si votre remplacement est une chaîne multiligne ou contient des barres obliques
 * **`window_ignore_case`** (booléen) : contrôle si la correspondance de fenêtre (`only_in_windows` / `exclude_windows`) est évaluée sans tenir compte de la casse (`True`) ou en tenant compte de la casse (`False`). En cas d'omission, revient au paramètre global `LOWERCASE_WINDOW_TITLES` dans `config/settings.py`.
 *Exemple :* `{'window_ignore_case' : False}`
 * **`on_match_exec`** (liste des objets Path/string) : chemins vers les scripts/plugins qui doivent être exécutés lorsque cette règle correspond (fortement utilisé par les règles fourre-tout et de secours).
-*Exemple :* `{'on_match_exec' : [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+*Exemple :* `{'on_match_exec' : [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## Logique du pipeline
 - Les règles sont traitées **de haut en bas**

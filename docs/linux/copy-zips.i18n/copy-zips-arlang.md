@@ -9,11 +9,11 @@ fi
 
 # TARGET_DIR="/tmp/sl5_aura/zip_backup" # dont work
 
-PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+SL5NET_AURA_PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
-#PROJECT_ROOT="(realpath"(realpath"(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+#SL5NET_AURA_PROJECT_ROOT="(realpath"(realpath"(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
-TARGET_DIR="$(realpath "$PROJECT_ROOT/../zip_backup")"
+TARGET_DIR="$(realpath "$SL5NET_AURA_PROJECT_ROOT/../zip_backup")"
 # ----------------------
 
 if [ ! -d "$SOURCE_DIR" ]; then

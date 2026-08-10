@@ -26,7 +26,7 @@ __代码_块_4__
 
 - **`pgrep`** 默认在 macOS 上可用。
 
-- **Python 路径**：确保您的虚拟环境设置在“$PROJECT_ROOT/.venv”。如果您使用“pyenv”或“conda”管理Python，请相应地调整“PY_EXEC”。
+- **Python 路径**：确保您的虚拟环境设置在“$SL5NET_AURA_PROJECT_ROOT/.venv”。如果您使用“pyenv”或“conda”管理Python，请相应地调整“PY_EXEC”。
 
 ＃＃ 特征
 

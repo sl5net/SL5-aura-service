@@ -11,7 +11,7 @@ __代码_块_0__
 
 __代码_块_1__
 
-
+3. 确保 Ksh 加载您的配置文件。在 `~/.profile` 中添加或验证：
 __代码_块_2__
 
 4. 重新加载您的配置：
@@ -20,7 +20,7 @@ __代码_块_3__
 ## Ksh-特定注释
 
 - Ksh 支持 `function name { }` 和 `name() { }` 语法；为了清楚起见，此处使用“function”关键字。
-- 所有 Ksh 变体（例如“ksh88”）**不**支持“local”。因此，上面函数中的变量声明时没有使用“local”。如果您使用的是`mksh`或`ksh93`，可以使用`typeset`来代替：`typeset TEMP_FILE=$(mktemp)`。
+- 所有 Ksh 变体（例如“ksh88”）均不支持“local”。因此，上面函数中的变量声明时没有使用“local”。如果您使用的是“mksh”或“ksh93”，则可以使用“typeset”来代替：“typeset TEMP_FILE=$(mktemp)”。
 - “ENV”变量控制交互式会话的 Ksh 源文件，类似于“.bashrc”。
 
 ＃＃ 特征

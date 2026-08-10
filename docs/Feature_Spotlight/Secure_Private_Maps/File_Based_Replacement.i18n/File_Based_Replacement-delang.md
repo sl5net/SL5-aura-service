@@ -52,7 +52,7 @@ Konfiguriert in „config/settings.py“ (oder „config/settings_local.py“ f�
 Die Datei wird wie folgt aufgelöst:
 
 1. Der „source_path“ des Plugins (automatisch vom Kartenlader aufgezeichnet) ist
-verbunden gegen „PROJECT_ROOT“ (gelesen aus „SL5NET_AURA_PROJECT_ROOT“)
+verbunden gegen „SL5NET_AURA_PROJECT_ROOT“ (gelesen aus „SL5NET_AURA_PROJECT_ROOT“)
 Umgebungsvariable), um das Verzeichnis des Plugins abzurufen.
 2. Der „Ersatz“-Wert wird diesem Verzeichnis hinzugefügt.
 3. Sofern „FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL“ nicht „True“ ist, der aufgelöste Pfad

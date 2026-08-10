@@ -50,8 +50,8 @@ function s {
     $LONG_TIMEOUT_SECONDS  = 70
 
     # Path shortcuts
-    $PY_EXEC   = "$env:PROJECT_ROOT\.venv\Scripts\python.exe"
-    $CLI_SCRIPT = "$env:PROJECT_ROOT\scripts\py\cli_client.py"
+    $PY_EXEC   = "$env:SL5NET_AURA_PROJECT_ROOT\.venv\Scripts\python.exe"
+    $CLI_SCRIPT = "$env:SL5NET_AURA_PROJECT_ROOT\scripts\py\cli_client.py"
 
     $TempFile = [System.IO.Path]::GetTempFileName()
 
@@ -81,7 +81,7 @@ function s {
         Start-Service-STT   # equivalent of start_service
         Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-        $KiwixScript = "$env:PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
+        $KiwixScript = "$env:SL5NET_AURA_PROJECT_ROOT\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
         if (Test-Path $KiwixScript) {
             bash $KiwixScript
         }
@@ -136,9 +136,9 @@ function s {
 ## Notes spécifiques à Windows
 
 - **Chemin Python** : sous Windows, le binaire de l'environnement virtuel se trouve dans `.venv\Scripts\python.exe` au lieu de `.venv/bin/python3`. Ajustez `$PY_EXEC` si votre configuration diffère.
-- **Variable d'environnement `PROJECT_ROOT`** : définissez-la dans les variables d'environnement de votre système ou ajoutez la ligne suivante au-dessus de la fonction dans votre profil :
+- **Variable d'environnement `SL5NET_AURA_PROJECT_ROOT`** : définissez-la dans les variables d'environnement de votre système ou ajoutez la ligne suivante au-dessus de la fonction dans votre profil :
   ```powershell
-  $env:PROJECT_ROOT = "C:\path\to\your\project"
+  $env:SL5NET_AURA_PROJECT_ROOT = "C:\path\to\your\project"
   ```
 - **`timeout` / `mktemp`** : Ces outils Unix ne sont pas disponibles nativement. Le script ci-dessus utilise des équivalents natifs PowerShell (`WaitForExit` avec un délai d'attente d'une milliseconde et `GetTempFileName()`).
 - **`pgrep`** : remplacé par `Get-Process -Name "streamlit"`.
@@ -148,6 +148,6 @@ function s {
 
 ## Caractéristiques
 
-- **Chemins dynamiques** : trouve automatiquement la racine du projet via la variable d'environnement `PROJECT_ROOT`.
+- **Chemins dynamiques** : trouve automatiquement la racine du projet via la variable d'environnement `SL5NET_AURA_PROJECT_ROOT`.
 - **Auto-Restart** : si le backend est en panne, il tente d'exécuter `Start-Service-STT` et les services Wikipédia locaux.
 - **Smart Timeouts** : essaie d'abord une réponse rapide de 2 secondes, puis revient à un mode de traitement approfondi de 70 secondes.

@@ -18,7 +18,7 @@
 1. **CopyQ**를 열고 `F6`을 누르세요(또는 **Commands** / **Befehle**로 이동).
 2. **추가**(Hinzufügen)를 클릭하고 이름을 `Aura Command Palette`로 지정합니다.
 3. 원하는 **전역 바로가기**(예: `Meta+S` 또는 `Ctrl+Alt+S`)를 설정합니다.
-4. **유형**을 `명령`(Befehl)으로 설정합니다.
+4. **유형**을 `Command`(Befehl)로 설정합니다.
 5. 명령 상자에 다음 JavaScript 코드를 붙여넣습니다.
 
 __CODE_BLOCK_0__

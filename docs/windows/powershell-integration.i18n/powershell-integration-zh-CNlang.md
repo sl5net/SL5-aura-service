@@ -31,7 +31,7 @@ __代码_块_4__
 ## Windows 特定注释
 
 - **Python 路径**：在 Windows 上，虚拟环境二进制文件位于“.venv\Scripts\python.exe”，而不是“.venv/bin/python3”。如果您的设置不同，请调整“$PY_EXEC”。
-- **`PROJECT_ROOT` 环境变量**：在系统环境变量中设置此变量，或在配置文件中的函数上方添加以下行：
+- **`SL5NET_AURA_PROJECT_ROOT` 环境变量**：在系统环境变量中设置此变量，或在配置文件中的函数上方添加以下行：
 __代码_块_5__
 - **`timeout` / `mktemp`**：这些 Unix 工具本身不可用。上面的脚本使用 PowerShell 原生等效项（带有毫秒超时的“WaitForExit”和“GetTempFileName()”）。
 - **`pgrep`**：替换为 `Get-Process -Name "streamlit"`。
@@ -41,6 +41,6 @@ __代码_块_5__
 
 ＃＃ 特征
 
-- **动态路径**：通过“PROJECT_ROOT”环境变量自动查找项目根目录。
+- **动态路径**：通过“SL5NET_AURA_PROJECT_ROOT”环境变量自动查找项目根目录。
 - **自动重启**：如果后端关闭，它会尝试运行“Start-Service-STT”和本地维基百科服务。
 - **智能超时**：首先尝试 2 秒快速响应，然后退回到 70 秒深度处理模式。

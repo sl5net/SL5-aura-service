@@ -116,7 +116,7 @@ Esta regla invoca el complemento de entrenamiento inigualable cuando ninguna otr
 ```python
     # --- Training-Plugin (dynamically toggled by the learning mode) ---
     (f'{str(__file__)}', r'^(.*)$', 10, {
-        'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
+        'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
     }),
 ```
 

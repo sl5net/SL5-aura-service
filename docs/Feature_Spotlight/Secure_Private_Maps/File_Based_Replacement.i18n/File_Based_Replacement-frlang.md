@@ -52,7 +52,7 @@ remplacements) :
 Le dossier est résolu comme suit :
 
 1. Le `source_path` du plugin (enregistré automatiquement par le chargeur de carte) est
-joint à `PROJECT_ROOT` (lu depuis `SL5NET_AURA_PROJECT_ROOT`
+joint à `SL5NET_AURA_PROJECT_ROOT` (lu depuis `SL5NET_AURA_PROJECT_ROOT`
 variable d'environnement) pour obtenir le répertoire du plugin.
 2. La valeur de « remplacement » est jointe à ce répertoire.
 3. Sauf si `FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL` est `True`, le chemin résolu

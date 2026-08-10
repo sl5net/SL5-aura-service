@@ -15,12 +15,12 @@ __KOD_BLOKU_1__
 __KOD_BLOKU_2__
 
 > **Uwaga:** Jeśli używasz Bash jako powłoki logowania (np. przez SSH), dodaj także ten sam blok do `~/.bash_profile` lub pobierz z niego `~/.bashrc`:
-> ```bzdura
+> ```walka
 > [ -f ~/.bashrc ] && źródło ~/.bashrc
 > ```
 
 ## Cechy
 
 - **Ścieżki dynamiczne**: Automatycznie znajduje katalog główny projektu za pomocą pliku znacznika `/tmp`.
-- **Automatyczny restart**: Jeśli backend nie działa, próbuje uruchomić `start_service` i lokalne usługi Wikipedii.
+- **Auto-Restart**: Jeśli backend nie działa, próbuje uruchomić `start_service` i lokalne usługi Wikipedii.
 - **Inteligentne limity czasu**: Najpierw próbuje uzyskać szybką reakcję w ciągu 2 sekund, a następnie powraca do trybu głębokiego przetwarzania trwającego 70 sekund.

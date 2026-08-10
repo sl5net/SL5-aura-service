@@ -35,7 +35,7 @@ __KOD_BLOKU_5__
 - **macOS jest dostarczany z Bash 3.2** (ze względu na licencję GPLv3). Ta funkcja jest w pełni kompatybilna z Bash 3.2+. Jeśli potrzebujesz Bash 5, zainstaluj go poprzez Homebrew:
 __KOD_BLOKU_6__
 
-- **Ścieżka Pythona**: Upewnij się, że środowisko wirtualne jest skonfigurowane w `$PROJECT_ROOT/.venv`. Jeśli zarządzasz Pythonem za pomocą `pyenv` lub `conda`, dostosuj odpowiednio `PY_EXEC`.
+- **Ścieżka Pythona**: Upewnij się, że środowisko wirtualne jest skonfigurowane w `$SL5NET_AURA_PROJECT_ROOT/.venv`. Jeśli zarządzasz Pythonem za pomocą `pyenv` lub `conda`, dostosuj odpowiednio `PY_EXEC`.
 
 ## Cechy
 

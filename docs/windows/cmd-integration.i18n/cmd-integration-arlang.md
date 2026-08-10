@@ -47,9 +47,9 @@ call update_github_ip.bat
 set SHORT_TIMEOUT_SECONDS=2
 set LONG_TIMEOUT_SECONDS=70
 
-:: Path shortcuts (adjust PROJECT_ROOT to your actual path if not set as env var)
-set "PY_EXEC=%PROJECT_ROOT%\.venv\Scripts\python.exe"
-set "CLI_SCRIPT=%PROJECT_ROOT%\scripts\py\cli_client.py"
+:: Path shortcuts (adjust SL5NET_AURA_PROJECT_ROOT to your actual path if not set as env var)
+set "PY_EXEC=%SL5NET_AURA_PROJECT_ROOT%\.venv\Scripts\python.exe"
+set "CLI_SCRIPT=%SL5NET_AURA_PROJECT_ROOT%\scripts\py\cli_client.py"
 
 :: Create a temp file
 set "TEMP_FILE=%TEMP%\stt_output_%RANDOM%.txt"
@@ -91,7 +91,7 @@ goto :check_exit
 echo Service-Check: Backend oder Frontend fehlt. Starte neu...
 call start_service.bat
 echo ++++++++++++++++++++++++++++++++++++++++++++++++++
-set "KIWIX_SCRIPT=%PROJECT_ROOT%\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
+set "KIWIX_SCRIPT=%SL5NET_AURA_PROJECT_ROOT%\config\maps\plugins\standard_actions\wikipedia_local\de-DE\kiwix-docker-start-if-not-running.sh"
 if exist "%KIWIX_SCRIPT%" (
     bash "%KIWIX_SCRIPT%"
 )
@@ -151,7 +151,7 @@ s your question here
                                           ## ملاحظات خاصة بـ CMD
 
 - **لا توجد مهلة للعملية الأصلية**: لا يحتوي CMD على ما يعادل "مهلة" Unix. يقوم هذا البرنامج النصي بتفويض منطق المهلة المضمّن إلى "WaitForExit" الخاص بـ PowerShell. يجب أن يكون PowerShell متاحًا (موجود على جميع أنظمة Windows الحديثة).
-- **`PROJECT_ROOT`**: قم بتعيين هذا كمتغير بيئة مستخدم دائم عبر خصائص النظام، أو قم بترميز المسار في ملف `.bat`.
+- **`SL5NET_AURA_PROJECT_ROOT`**: قم بتعيين هذا كمتغير بيئة مستخدم دائم عبر خصائص النظام، أو قم بترميز المسار في ملف `.bat`.
 - **البرامج النصية المساعدة**: يجب أن يكون `update_github_ip.bat` و`start_service.bat` موجودين في `PATH` أو في `%USERPROFILE%\bin`. هذه هي مكافئات CMD لوظائف الصدفة `update_github_ip` و`start_service`.
 - **`bash` لبرنامج Kiwix النصي**: إذا تم تثبيت WSL، فسيكون `bash` متاحًا في CMD وسيتم تشغيل البرنامج النصي `.sh` مباشرة. بخلاف ذلك، قم بتعديل `kiwix-docker-start-if-not-running.sh` إلى ما يعادل `.bat`.
 - **التعامل مع عرض الأسعار**: لدى CMD قواعد عرض أسعار صارمة وهشة. إذا كان استعلامك يحتوي على أحرف خاصة (`&`، `|`، `>`، `<`)، فقم بلف الاستعلام بالكامل بين علامتي اقتباس مزدوجتين: `s "your & question"`.
@@ -159,6 +159,6 @@ s your question here
 
                                                                   ## سمات
 
-- **المسارات الديناميكية**: تعمل على حل المسارات تلقائيًا عبر متغير البيئة `PROJECT_ROOT`.
+- **المسارات الديناميكية**: تعمل على حل المسارات تلقائيًا عبر متغير البيئة `SL5NET_AURA_PROJECT_ROOT`.
 - **إعادة التشغيل التلقائي**: إذا كانت الواجهة الخلفية معطلة، فسيتم استدعاء "start_service.bat" ومحاولة بدء تشغيل خدمات ويكيبيديا المحلية.
 - **المهلات الذكية**: حاول الاستجابة السريعة لمدة ثانيتين أولاً، ثم ارجع إلى وضع المعالجة العميقة لمدة 70 ثانية.

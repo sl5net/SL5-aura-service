@@ -73,10 +73,10 @@ source ~/.bashrc
 /mnt/d/   # → D:\
 ```
 
-إذا كان مشروعك موجودًا على نظام ملفات Windows (على سبيل المثال، `C:\Projects\stt`)، فاضبط `PROJECT_ROOT` على:
+إذا كان مشروعك موجودًا على نظام ملفات Windows (على سبيل المثال، `C:\Projects\stt`)، فاضبط `SL5NET_AURA_PROJECT_ROOT` على:
 
 ```bash
-export PROJECT_ROOT="/mnt/c/Projects/stt"
+export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 ```
 
 أضف هذا السطر إلى `~/.bashrc` (أو ما يعادله لـ Shell الخاص بك) **فوق** الدالة `s()`.
@@ -88,13 +88,13 @@ export PROJECT_ROOT="/mnt/c/Projects/stt"
 قم بإنشاء واستخدام بيئة Linux الافتراضية القياسية داخل WSL:
 
 ```bash
-cd "$PROJECT_ROOT"
+cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-سيعمل المسار `PY_EXEC` في الوظيفة (`$PROJECT_ROOT/.venv/bin/python3`) بشكل صحيح كما هو.
+سيعمل المسار `PY_EXEC` في الوظيفة (`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) بشكل صحيح كما هو.
 
                                      ### تشغيل `s` من Windows Terminal
 
@@ -162,6 +162,6 @@ wsl bash -i -c "s %*"
                                                                   ## سمات
 
 - **توافق كامل مع Linux**: تعمل جميع أدوات Unix (`timeout`، `pgrep`، `mktemp`، `grep`) بشكل أصلي - لا حاجة إلى حلول بديلة.
-- **المسارات الديناميكية**: يتم العثور على جذر المشروع تلقائيًا عبر المتغير `PROJECT_ROOT` المعين في تكوين الصدفة الخاص بك.
+- **المسارات الديناميكية**: يتم العثور على جذر المشروع تلقائيًا عبر المتغير `SL5NET_AURA_PROJECT_ROOT` المعين في تكوين الصدفة الخاص بك.
 - **إعادة التشغيل التلقائي**: إذا كانت الواجهة الخلفية معطلة، فستحاول تشغيل "start_service" وخدمات Wikipedia المحلية (يجب أن يكون Docker قيد التشغيل).
 - **المهلات الذكية**: حاول الاستجابة السريعة لمدة ثانيتين أولاً، ثم ارجع إلى وضع المعالجة العميقة لمدة 70 ثانية.

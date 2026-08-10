@@ -68,7 +68,7 @@ XSPACEbreakX
 XSPACEbreakX
 t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direkt in diesem Dokumentationsabschnitt hervorzuheben [1].
 
-t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (wie „Aura, Lernmodus einschalten / ausschalten”) i erklären kurz, wie `toggle_learning.py` das Aus- und Einkommentieren automatisiert [2].
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (czyli „Aura, Lernmodus einschalten / ausschalten”) i erklären kurz, czyli `toggle_learning.py` das Aus- und Einkommentieren automatisiert [2].
 
 
 ### Włączanie trybu uczenia się (niezrównany trening)

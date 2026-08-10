@@ -52,7 +52,7 @@ Aura는 플러그인 자체 디렉토리를 기준으로 해당 파일 이름을
 파일은 다음과 같이 해석됩니다.
 
 1. 플러그인의 `source_path`(맵 로더에 의해 자동으로 기록됨)는 다음과 같습니다.
-`PROJECT_ROOT`에 대해 조인되었습니다(`SL5NET_AURA_PROJECT_ROOT`에서 읽음).
+`SL5NET_AURA_PROJECT_ROOT`에 대해 조인되었습니다(`SL5NET_AURA_PROJECT_ROOT`에서 읽음).
 환경 변수)를 사용하여 플러그인 디렉터리를 가져옵니다.
 2. 'replacement' 값이 해당 디렉터리에 결합됩니다.
 3. `FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL`이 `True`가 아닌 경우 확인된 경로

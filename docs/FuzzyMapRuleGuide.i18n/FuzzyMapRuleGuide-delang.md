@@ -44,7 +44,7 @@ Wenn Ihre Ersetzung eine mehrzeilige Zeichenfolge ist oder Backslashes ohne Esca
 * **`window_ignore_case`** (boolean): Steuert, ob der Fensterabgleich („only_in_windows“ / „exclude_windows“) ohne Berücksichtigung der Groß-/Kleinschreibung („True“) oder unter Berücksichtigung der Groß-/Kleinschreibung („False“) ausgewertet wird. Wenn es weggelassen wird, wird auf die globale Einstellung „LOWERCASE_WINDOW_TITLES“ in „config/settings.py“ zurückgegriffen.
 *Beispiel:* `{'window_ignore_case': False}`
 * **`on_match_exec`** (Liste von Pfad-/String-Objekten): Pfade zu Skripten/Plugins, die ausgeführt werden sollen, wenn diese Regel übereinstimmt (wird häufig von Catch-All- und Fallback-Regeln verwendet).
-*Beispiel:* `{'on_match_exec': [PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+*Beispiel:* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
 
 ## Pipeline-Logik
 - Regeln werden **top-down** verarbeitet
