@@ -6,7 +6,6 @@ Readable interface for developers — wraps trino_client.py low-level operations
 Usage:
     from scripts.py.func.db.aura_state import enable_translation, disable_translation, get_interface_status
 """
-import os
 from pathlib import Path
 import sys
 
@@ -76,7 +75,6 @@ def ensure_fuzzy_map_in_sync(interface='speech'):
     Called at startup and after Admin UI changes.
     """
     import re
-    from pathlib import Path
 
     RULES_FILE_PATH = Path(__file__).parents[4] / \
         'config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py'

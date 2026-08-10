@@ -2,9 +2,6 @@
 scripts/py/func/db/init_trino_db.py
 Initializes Trino in-memory database with required schemas, tables and default values.
 """
-import os
-from pathlib import Path
-import sys
 import time
 import subprocess
 import datetime

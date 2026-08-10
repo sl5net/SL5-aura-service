@@ -3,7 +3,6 @@ import streamlit as st
 import requests
 import json
 import os
-from pathlib import Path
 from dotenv import load_dotenv
 import streamlit.components.v1 as components
 import socket
@@ -15,7 +14,7 @@ from scripts.py.func.get_project_root import get_aura_project_root
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 
-load_dotenv(PROJECT_ROOT / ".secrets")
+load_dotenv(SL5NET_AURA_PROJECT_ROOT / ".secrets")
 
 
 if "speak_enabled" not in st.session_state:

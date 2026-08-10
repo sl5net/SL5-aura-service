@@ -6,7 +6,6 @@ import sys
 import subprocess
 import psutil
 import time
-from pathlib import Path
 
 
 os.environ["PYTHONUTF8"] = "1"

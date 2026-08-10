@@ -1,5 +1,4 @@
 # scripts/py/cli_client.py
-from pathlib import Path
 import requests
 import json
 import argparse

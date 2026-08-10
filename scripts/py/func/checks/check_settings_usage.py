@@ -3,7 +3,6 @@ import os
 import re
 import subprocess
 import time
-from pathlib import Path
 
 # scripts/py/func/checks/check_settings_usage.py:7
 

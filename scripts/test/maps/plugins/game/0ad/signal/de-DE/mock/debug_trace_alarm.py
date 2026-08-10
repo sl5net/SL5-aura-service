@@ -1,5 +1,4 @@
 import sys
-from pathlib import Path
 
 
 from scripts.py.func.get_project_root import get_aura_project_root

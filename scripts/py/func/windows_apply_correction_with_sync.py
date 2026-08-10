@@ -5,7 +5,6 @@ import shutil
 
 import subprocess
 import time
-from pathlib import Path
 
 windows_apply_correction_LAST_NOTIFY_TIME = 0
 
