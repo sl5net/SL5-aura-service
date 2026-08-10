@@ -14,7 +14,6 @@ from datetime import datetime
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
-# Import der Kernfunktion
 from scripts.py.func.process_text_in_background import process_text_in_background
 
 
@@ -22,13 +21,11 @@ def timestamp():
     return datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
-# --- 1. Setup & Konfiguration ---
+from scripts.py.func.get_project_root import get_aura_project_root
 
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-
-SECRETS_PATH = PROJECT_ROOT / ".secrets"
+SECRETS_PATH = SL5NET_AURA_PROJECT_ROOT / ".secrets"
 print(f"DEBUG: Suche .secrets unter: {SECRETS_PATH}")
 
 if not SECRETS_PATH.exists():
@@ -39,14 +36,13 @@ API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER"
 # Debug Print (Should be removed in production)
 print(f"DEBUG: Loaded API Key (length {len(API_KEY_SECRET)}): '{API_KEY_SECRET[:5]}...'")
 
-# Temporärer Pfad
 TMP_DIR = Path(os.environ.get("TMPDIR", "/tmp")) / "sl5_aura_service"
 TMP_DIR.mkdir(parents=True, exist_ok=True)
 
 app_logger = logging.getLogger("fastapi_service")
 app_logger.setLevel(logging.INFO)
 
-# Beispiel-URL für LanguageTool
+#  LanguageTool
 LT_URL = "http://localhost:8082/v2/check"
 
 

@@ -32,9 +32,12 @@ TEST_UNMATCHED_WORD = "Sandbank"
 LANG_CODE = "de-DE"
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-PROJECT_ROOT = Path((TMP_DIR / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-PLUGIN_PARENT_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "TEST"
+from scripts.py.func.get_project_root import get_aura_project_root
+
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+
+PLUGIN_PARENT_DIR = SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "TEST"
 ACTIVE_DIR_NAME = "catch_all_training_e2e_test"
 DISABLED_DIR_NAME = ". catch_all_training_e2e_test"  # leading ". " keeps this out of
                                                         # normal map loading between test
@@ -47,7 +50,7 @@ MAP_TARGET_FILE = ACTIVE_DIR / "de-DE" / "FUZZY_MAP_pre.py"
 MAP_BACKUP_FILE = TMP_DIR / "sl5_aura" / "catch_all_training_e2e_test_FUZZY_MAP_pre_backup.py"
 
 CATCH_ALL_ON_MATCH_EXEC_PATH = (
-    PROJECT_ROOT / "config" / "maps" / "plugins" / "1_collect_unmatched_training" / "collect_unmatched.py"
+        SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "1_collect_unmatched_training" / "collect_unmatched.py"
 )
 
 

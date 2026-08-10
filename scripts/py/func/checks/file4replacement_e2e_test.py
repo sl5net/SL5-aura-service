@@ -30,9 +30,12 @@ from ..config.dynamic_settings import settings
 LANG_CODE = "de-DE"
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-PROJECT_ROOT = Path((TMP_DIR / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-PLUGIN_PARENT_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "TEST"
+from scripts.py.func.get_project_root import get_aura_project_root
+
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+
+PLUGIN_PARENT_DIR = SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "TEST"
 ACTIVE_DIR_NAME = "file4replacement"
 DISABLED_DIR_NAME = ". file4replacement"  # leading ". " keeps this out of
                                             # normal map loading between test
@@ -46,7 +49,7 @@ ZEBRA_FIXTURE_CONTENT = "Zebra file replacement content"
 
 # Absolute-path fixture lives outside the plugin dir on purpose, reused
 # as-is from the legacy tools/tests/TEST_FILE4REPLACEMENT.sh setup.
-EXTERNAL_FIXTURE_FILE = PROJECT_ROOT / "tools" / "tests" / "TEST_FILE4REPLACEMENT.txt"
+EXTERNAL_FIXTURE_FILE = SL5NET_AURA_PROJECT_ROOT / "tools" / "tests" / "TEST_FILE4REPLACEMENT.txt"
 
 DEFAULT_MAP_CONTENT = '''# config/maps/plugins/TEST/file4replacement/de-DE/FUZZY_MAP_pre.py
 import re # noqa: F401

@@ -8,12 +8,15 @@ from importlib import metadata
 import logging
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger.setLevel(logging.INFO)
-file_handler = logging.FileHandler(f'{PROJECT_ROOT}/log/{__name__}.log', mode='a', encoding='utf-8')
+file_handler = logging.FileHandler(f'{SL5NET_AURA_PROJECT_ROOT}/log/{__name__}.log', mode='a', encoding='utf-8')
 file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logger.addHandler(file_handler)
 
@@ -30,15 +33,15 @@ except metadata.PackageNotFoundError:
 import streamlit as st
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
 sys.path.insert(0, str(Path(__file__).parents[3]))
 st.info(f"DEBUG SYS.PATH: {sys.path}")
-st.info(f"DEBUG {Path(__file__).resolve().relative_to(PROJECT_ROOT)}")
-st.info(f"DEBUG PROJECT_ROOT = {PROJECT_ROOT}")
+st.info(f"DEBUG {Path(__file__).resolve().relative_to(SL5NET_AURA_PROJECT_ROOT)}")
+st.info(f"DEBUG PROJECT_ROOT = {SL5NET_AURA_PROJECT_ROOT}")
 st.info("DEBUG 'from scripts.py.func.config.dynamic_settings import settings'")
 
 # scripts/py/chat/streamlit-admin.py:44
@@ -240,7 +243,7 @@ except Exception as init_e:
                 
                 __file__= 
                 
-                {__file__.replace(str(PROJECT_ROOT), "")[1:]}:82
+                {__file__.replace(str(SL5NET_AURA_PROJECT_ROOT), "")[1:]}:82
     
                 __name__= {__name__}
                 
@@ -252,7 +255,7 @@ except Exception as init_e:
                  \n\n {init_e}
                 """)
                 # traceback.print_exc(file=sys.stdout)
-                st.info(f"{traceback.format_exc().replace(str(PROJECT_ROOT), '')}")
+                st.info(f"{traceback.format_exc().replace(str(SL5NET_AURA_PROJECT_ROOT), '')}")
 
                 st.stop()
         else:

@@ -5,7 +5,6 @@ import shutil
 
 import subprocess
 import time
-from pathlib import Path
 
 windows_apply_correction_LAST_NOTIFY_TIME = 0
 
@@ -39,11 +38,11 @@ def windows_apply_correction_with_sync():
         print("error: AutoHotkey not found!")
 
     # scripts/py/func/process_text_in_background.py:2013
-    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+    from scripts.py.func.get_project_root import get_aura_project_root
 
+    SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-    script_path = PROJECT_ROOT / "scripts" / "ahk" / "sync_editor.ahk"
+    script_path = SL5NET_AURA_PROJECT_ROOT / "scripts" / "ahk" / "sync_editor.ahk"
 
     # subprocess.run([ahk_path, script_path, "save"])
 

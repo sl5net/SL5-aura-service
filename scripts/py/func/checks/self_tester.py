@@ -40,11 +40,10 @@ class TestPrio(IntEnum):
     NEVER = 0   # 0% Chance
 
 def check_translator_hijack_is_active(logger):
-    tmp_dir = TMP_DIR # Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-    PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+    from scripts.py.func.get_project_root import get_aura_project_root
+    SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-
-    path = PROJECT_ROOT / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
+    path = SL5NET_AURA_PROJECT_ROOT / "config"  / "maps" / "plugins" / "standard_actions" / "language_translator" / "de-DE" / "FUZZY_MAP_pre.py"
 
     if not path.exists():
         if global_state.LOGGING_ENABLED:

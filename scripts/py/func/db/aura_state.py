@@ -6,15 +6,15 @@ Readable interface for developers — wraps trino_client.py low-level operations
 Usage:
     from scripts.py.func.db.aura_state import enable_translation, disable_translation, get_interface_status
 """
-import os
 from pathlib import Path
 import sys
 
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+from scripts.py.func.get_project_root import get_aura_project_root
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+
+if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
 from scripts.py.func.db.trino_client import (
     get_feature_state,
@@ -75,7 +75,6 @@ def ensure_fuzzy_map_in_sync(interface='speech'):
     Called at startup and after Admin UI changes.
     """
     import re
-    from pathlib import Path
 
     RULES_FILE_PATH = Path(__file__).parents[4] / \
         'config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py'

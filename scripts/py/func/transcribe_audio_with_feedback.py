@@ -72,10 +72,11 @@ SAMPLE_RATE = settings.SAMPLE_RATE
 # ))(aura_constants_path, "WAKE_PHANTOM")
 
 
-tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+from scripts.py.func.get_project_root import get_aura_project_root
 
-acp = PROJECT_ROOT / "config" / "maps"/"plugins"/"internals"/"de-DE"/"aura_constants.py"
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+
+acp = SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
 
 WAKE_PHANTOM = runpy.run_path(acp)["WAKE_PHANTOM"]
 

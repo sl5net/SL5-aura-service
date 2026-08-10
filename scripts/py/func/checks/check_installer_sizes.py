@@ -67,8 +67,12 @@ def check_file_sizes(base_dir: Path, primary_group: list[str], secondary_group: 
 
 def check_installer_sizes():
     """Defines the configuration and runs the check."""
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
-    SETUP_DIR = PROJECT_ROOT / "setup"
+    from scripts.py.func.get_project_root import get_aura_project_root
+    SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+    
+    SETUP_DIR = SL5NET_AURA_PROJECT_ROOT / "setup"
+    
+    
 
     primary_files = ["macos_setup.sh", "ubuntu_setup.sh", "manjaro_arch_setup.sh",'suse_setup.sh']
     secondary_files = ["windows11_setup.ps1"]
