@@ -14,14 +14,20 @@ from pathlib import Path
 
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
+
+from scripts.py.func.process_text_in_background import process_text_in_background
 
 # from ..log_memory_details import log4DEV
-from ..process_text_in_background import process_text_in_background
+# from ..process_text_in_background import process_text_in_background
 
 # # scripts/py/func/global_state.py
-from .. import global_state
+from scripts.py.func import global_state
 
-from ..config.dynamic_settings import settings
+from scripts.py.func.config.dynamic_settings import settings
 
 is_ci = os.getenv('CI') == 'true'
 
@@ -64,7 +70,7 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 # Note: In aura_engine.py this might be SCRIPT_DIR instead of project_root
 
-from .run_function_with_throttling import run_function_with_throttling
+from scripts.py.func.checks.run_function_with_throttling import run_function_with_throttling
 # from ..config.dynamic_settings import settings
 
 
@@ -864,7 +870,7 @@ if __name__ == "__main__":
     lt_url = "http://localhost:8082"
     lang = "de-DE"
 
-    from ..process_text_in_background import load_maps_for_language
+    from scripts.py.func.process_text_in_background import load_maps_for_language
     load_maps_for_language(lang, test_logger)
 
     print(f":st: Starting self-test (CLI mode) using {lt_url}...")
