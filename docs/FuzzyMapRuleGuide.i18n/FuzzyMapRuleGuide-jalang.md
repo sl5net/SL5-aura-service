@@ -121,12 +121,12 @@ FUZZY_MAP_pre = [
 1.「config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py」を開きます。
 2. `FUZZY_MAP_pre = [...]` 内にルールを追加します。
 3. 保存 — Aura は自動的にリロードされます。再起動は必要ありません。
-4. トリガーフレーズを口述し、それが発火するのを見てください
+4. トリガーフレーズを口述し、それが発火するのを観察します
 
 
 ## 推奨されるファイル構造
 
-ルールを長いコメント ブロックの前**に置きます。
+ルールを長いコメント ブロックの**前**に置きます。
 ```python
 # config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py
 import re  # noqa: F401

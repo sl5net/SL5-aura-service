@@ -8,13 +8,13 @@ else
   tmp_dir='/tmp'
 fi
 
-PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+SL5NET_AURA_PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
-#PROJECT_ROOT="(realpath"(realpath"(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+#SL5NET_AURA_PROJECT_ROOT="(realpath"(realpath"(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
-SOURCE_DIR="$(realpath "$PROJECT_ROOT/config/maps")"
-#TARGET_DIR="$(realpath "$PROJECT_ROOT/../zip_backup")"
-TARGET_DIR="$(realpath "$PROJECT_ROOT/data/_privat_zip")"
+SOURCE_DIR="$(realpath "$SL5NET_AURA_PROJECT_ROOT/config/maps")"
+#TARGET_DIR="$(realpath "$SL5NET_AURA_PROJECT_ROOT/../zip_backup")"
+TARGET_DIR="$(realpath "$SL5NET_AURA_PROJECT_ROOT/data/_privat_zip")"
 # ----------------------
 
 mkdir -p "$TARGET_DIR"

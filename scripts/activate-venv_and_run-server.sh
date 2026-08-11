@@ -5,15 +5,15 @@
 SCRIPT_firstName="aura_engine"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-# PROJECT_ROOT="$SCRIPT_DIR/.."
+# SL5NET_AURA_PROJECT_ROOT="$SCRIPT_DIR/.."
 
 
-PROJECT_ROOT=$(realpath "$SCRIPT_DIR/..")
+SL5NET_AURA_PROJECT_ROOT=$(realpath "$SCRIPT_DIR/..")
 
 mkdir -p /tmp/sl5_aura
 
 sl5net_aura_project_root="/tmp/sl5_aura/sl5net_aura_project_root"
-echo "$PROJECT_ROOT" > "$sl5net_aura_project_root"
+echo "$SL5NET_AURA_PROJECT_ROOT" > "$sl5net_aura_project_root"
 
 os_type=$(uname -s)
 if [[ "$os_type" == "MINGW"* || "$os_type" == "CYGWIN"* || "$os_type" == "MSYS"* ]]; then
@@ -68,17 +68,17 @@ else
     echo "Service is not running."
 fi
 
-echo "Activating virtual environment at '$PROJECT_ROOT/.venv'..."
+echo "Activating virtual environment at '$SL5NET_AURA_PROJECT_ROOT/.venv'..."
 
-if [ ! -f "$PROJECT_ROOT/.venv/bin/python3" ]; then
-    echo "Virtual environment not found. Creating it at '$PROJECT_ROOT/.venv'..."
-    python3 -m venv "$PROJECT_ROOT/.venv"
+if [ ! -f "$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3" ]; then
+    echo "Virtual environment not found. Creating it at '$SL5NET_AURA_PROJECT_ROOT/.venv'..."
+    python3 -m venv "$SL5NET_AURA_PROJECT_ROOT/.venv"
 fi
 
 
-source "$PROJECT_ROOT/.venv/bin/activate"
+source "$SL5NET_AURA_PROJECT_ROOT/.venv/bin/activate"
 
-echo "Starting Python server from '$PROJECT_ROOT'..."
+echo "Starting Python server from '$SL5NET_AURA_PROJECT_ROOT'..."
 # We run the python script using its absolute path to be safe
 
 echo "Starting service..."
@@ -93,8 +93,8 @@ echo "Starting service..."
 export PYTHONUNBUFFERED=1
 export PYTHONDONTWRITEBYTECODE=1
 
-export AIRFLOW__CORE__DAGS_FOLDER="$PROJECT_ROOT/orchestration/dags"
-export AIRFLOW_HOME="$PROJECT_ROOT/orchestration"
+export AIRFLOW__CORE__DAGS_FOLDER="$SL5NET_AURA_PROJECT_ROOT/orchestration/dags"
+export AIRFLOW_HOME="$SL5NET_AURA_PROJECT_ROOT/orchestration"
 # airflow scheduler # TODO its only protoype 20.5.'26 18:27 Wed
 
 # --- Memory Allocator Logic (mimalloc) ---
@@ -137,7 +137,7 @@ echo "LD_PRELOAD=$LD_PRELOAD"  # ← zur Bestätigung
 # --- Start the Service ---
 echo "Starting $SCRIPT_TO_START..."
 #python3 "$SCRIPT_TO_START" &
-"$PROJECT_ROOT/.venv/bin/python3" "$SCRIPT_TO_START" &
+"$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3" "$SCRIPT_TO_START" &
 
 
 
@@ -157,10 +157,10 @@ else
   export DISPLAY="${DISPLAY:-:0}"
   # XAUTHORITY wird weiter unten dynamisch gesetzt
 
-#  $PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh & # then it was not running at first dictation!! 31.7.'26 10:45 Fri
-  # echo 'nohup "$PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh" >/dev/null 2>&1 &'
+#  $SL5NET_AURA_PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh & # then it was not running at first dictation!! 31.7.'26 10:45 Fri
+  # echo 'nohup "$SL5NET_AURA_PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh" >/dev/null 2>&1 &'
 
-  nohup "$PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh" >/dev/null 2>&1 &
+  nohup "$SL5NET_AURA_PROJECT_ROOT/scripts/type_watcher/type_watcher_keep_alive.sh" >/dev/null 2>&1 &
 fi
 
 

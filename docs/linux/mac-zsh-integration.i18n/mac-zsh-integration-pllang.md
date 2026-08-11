@@ -26,10 +26,10 @@ Dodaj alias nad funkcją `s()` w pliku `~/.zshrc`.
 
 - **`pgrep`** jest domyślnie dostępny na macOS.
 
-- **Ścieżka Pythona**: Upewnij się, że środowisko wirtualne jest skonfigurowane w `$SL5NET_AURA_PROJECT_ROOT/.venv`. Jeśli zarządzasz Pythonem za pomocą `pyenv` lub `conda`, dostosuj odpowiednio `PY_EXEC`.
+- **Ścieżka Pythona**: Upewnij się, że środowisko wirtualne jest skonfigurowane pod adresem `$SL5NET_AURA_PROJECT_ROOT/.venv`. Jeśli zarządzasz Pythonem za pomocą `pyenv` lub `conda`, dostosuj odpowiednio `PY_EXEC`.
 
 ## Cechy
 
 - **Ścieżki dynamiczne**: Automatycznie znajduje katalog główny projektu za pomocą pliku znacznika `/tmp`.
-- **Automatyczny restart**: Jeśli backend nie działa, próbuje uruchomić `start_service` i lokalne usługi Wikipedii.
+- **Auto-Restart**: Jeśli backend nie działa, próbuje uruchomić `start_service` i lokalne usługi Wikipedii.
 - **Inteligentne limity czasu**: Najpierw próbuje uzyskać szybką reakcję w ciągu 2 sekund, a następnie powraca do trybu głębokiego przetwarzania trwającego 70 sekund.

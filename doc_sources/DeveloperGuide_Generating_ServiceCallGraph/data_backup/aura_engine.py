@@ -115,14 +115,14 @@ from scripts.py.func.create_required_folders import setup_project_structure
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 
-PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is PROJECT_ROOT
+SL5NET_AURA_PROJECT_ROOT = SCRIPT_DIR # In this structure, SCRIPT_DIR is SL5NET_AURA_PROJECT_ROOT
 
 
 # ==============================================================================
 # --- PRE-RUN SETUP VALIDATION ---
 
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
 # We add the 'scripts' directory to the path to import our custom validator.
 
@@ -152,7 +152,7 @@ from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 
 
 
-setup_project_structure(PROJECT_ROOT)
+setup_project_structure(SL5NET_AURA_PROJECT_ROOT)
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -162,15 +162,15 @@ else:
 TRIGGER_FILE = TMP_DIR / "sl5_record.trigger"
 HEARTBEAT_FILE = TMP_DIR / "aura_engine.heartbeat"
 PIDFILE = TMP_DIR / "aura_engine.pid"
-LOG_FILE = PROJECT_ROOT / "log/aura_engine.log"
+LOG_FILE = SL5NET_AURA_PROJECT_ROOT / "log/aura_engine.log"
 
 
 
 
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent
-LANGUAGETOOL_JAR_PATH = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
+SL5NET_AURA_PROJECT_ROOT = Path(__file__).resolve().parent
+LANGUAGETOOL_JAR_PATH = SL5NET_AURA_PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
 
 
 suspicious_events = []
@@ -456,8 +456,8 @@ if settings.USE_EXTERNAL_LANGUAGETOOL:
         logger.fatal("External LanguageTool server did not respond. Is it running?")
         sys.exit(1)
 else:
-    PROJECT_ROOT = Path(__file__).resolve().parent
-    jar_path_absolute = PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
+    SL5NET_AURA_PROJECT_ROOT = Path(__file__).resolve().parent
+    jar_path_absolute = SL5NET_AURA_PROJECT_ROOT / settings.LANGUAGETOOL_RELATIVE_PATH
     internal_lt_url = f"http://localhost:{settings.LANGUAGETOOL_PORT}"
 
     logger.info(f"start_languagetool_server(logger, {jar_path_absolute}, {internal_lt_url})")
@@ -521,11 +521,11 @@ if settings.DEV_MODE :
     validate_setup(SCRIPT_DIR, logger)
 
 
-    PROJECT_ROOT = SCRIPT_DIR  # In this structure, SCRIPT_DIR is PROJECT_ROOT
+    SL5NET_AURA_PROJECT_ROOT = SCRIPT_DIR  # In this structure, SCRIPT_DIR is SL5NET_AURA_PROJECT_ROOT
 
-    parsed_trees = parse_all_files(PROJECT_ROOT, logger)
+    parsed_trees = parse_all_files(SL5NET_AURA_PROJECT_ROOT, logger)
 
-    check_for_unused_functions(parsed_trees, PROJECT_ROOT , logger)
+    check_for_unused_functions(parsed_trees, SL5NET_AURA_PROJECT_ROOT , logger)
     check_for_frequent_calls(parsed_trees, logger)
 
     check_installer_sizes()
@@ -566,7 +566,7 @@ if __name__ == "__main__":
         "HEARTBEAT_FILE": HEARTBEAT_FILE,
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
-        "PROJECT_ROOT": PROJECT_ROOT,
+        "SL5NET_AURA_PROJECT_ROOT": SL5NET_AURA_PROJECT_ROOT,
         "AUTO_ENTER_AFTER_DICTATION_REGEX_APPS": settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS
     })
 

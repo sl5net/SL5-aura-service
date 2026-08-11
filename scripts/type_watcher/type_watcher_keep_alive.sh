@@ -27,15 +27,15 @@ if [ "${OS:-}" = "Windows_NT" ] || [ -n "${WINDIR:-}" ]; then
 else
   tmp_dir='/tmp'
 fi
-PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+SL5NET_AURA_PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-LOG_DIR="$PROJECT_ROOT/log"
+LOG_DIR="$SL5NET_AURA_PROJECT_ROOT/log"
 LOGFILE="$LOG_DIR/type_watcher_keep_alive.log"
 
-CONFIG_FILE_1="$PROJECT_ROOT/config/settings.py"
-CONFIG_FILE_2="$PROJECT_ROOT/config/settings_local.py"
+CONFIG_FILE_1="$SL5NET_AURA_PROJECT_ROOT/config/settings.py"
+CONFIG_FILE_2="$SL5NET_AURA_PROJECT_ROOT/config/settings_local.py"
 
 # Initial timestamps
 ts1_old=$(stat -c %Y "$CONFIG_FILE_1" 2>/dev/null || echo 0)
@@ -78,7 +78,7 @@ while true; do
         echo log_message "WATCHDOG: 'type_watcher.sh' is not running. Starting it now "
         echo scripts/type_watcher/type_watcher.sh
         export TYPE_WATCHER_DEBUG=1
-        $PROJECT_ROOT/scripts/type_watcher/type_watcher.sh
+        $SL5NET_AURA_PROJECT_ROOT/scripts/type_watcher/type_watcher.sh
     fi
 
     # Wait for a few seconds before checking again.

@@ -21,7 +21,7 @@ Dentro de la carpeta de su nuevo módulo, debe crear subcarpetas para cada idiom
 
 * **Convención de nomenclatura:** Los nombres de estas subcarpetas **deben ser códigos de idioma y configuración regional válidos**. El sistema utiliza estos nombres para cargar las reglas correctas para el idioma activo.
 * **Ejemplos correctos:** `de-DE`, `en-US`, `en-GB`, `pt-BR`
-* **Advertencia:** Si utiliza un nombre no estándar como `alemán` o `inglés_rules`, el sistema ignorará la carpeta o la tratará como un módulo separado, no específico de un idioma.
+* **Advertencia:** Si usa un nombre no estándar como `alemán` o `inglés_rules`, el sistema ignorará la carpeta o la tratará como un módulo separado, no específico de un idioma.
 
 **4. Agregue sus archivos de reglas**
 Coloque sus archivos de reglas (por ejemplo, `FUZZY_MAP_pre.py`) dentro de la subcarpeta del idioma apropiado. La forma más sencilla de comenzar es copiar el contenido de una carpeta de módulo de idioma existente para utilizarlo como plantilla.
@@ -120,7 +120,7 @@ Esta regla invoca el complemento de entrenamiento inigualable cuando ninguna otr
     }),
 ```
 
-El complemento de entrenamiento usa `f'{str(__file__)}'` para ubicar su archivo y agregar automáticamente la frase no reconocida al primer grupo de reglas disponible (como su grupo de comandos principal).
+El complemento de capacitación usa `f'{str(__file__)}'` para ubicar su archivo y agregar automáticamente la frase no reconocida al primer grupo de reglas disponible (como su grupo de comandos principal).
 
 #### Alternar el modo de aprendizaje mediante comandos de voz
 

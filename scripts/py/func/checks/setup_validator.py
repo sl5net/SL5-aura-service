@@ -155,7 +155,7 @@ def check_for_frequent_calls(parsed_trees, logger, threshold=3):
         'content', 'cmd', 'unmute_microphone', 'LT_LANGUAGE',
         'get_model_name_from_key', 'sub', 'flags', 'Event', 'Thread', 'data',
         'threshold_mb', 'generic_visit', 'node', 'visit', 'tree',
-        'assertEqual', 'PROJECT_ROOT', 'register', 'stop_languagetool_server',
+        'assertEqual', 'SL5NET_AURA_PROJECT_ROOT', 'register', 'stop_languagetool_server',
         'languagetool_process', 'unlink', 'guess_lt_language_from_model',
         'TMP_DIR', 'lang_code', 'getattr', 'key', 'main', 'Popen',
         'is_microphone_muted', 'mute_microphone', 'input', 'MODEL_PATH',

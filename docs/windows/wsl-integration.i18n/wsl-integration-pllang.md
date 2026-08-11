@@ -1,6 +1,6 @@
 # Integracja WSL (podsystem Windows dla systemu Linux).
 
-WSL umożliwia uruchomienie pełnego środowiska Linux bezpośrednio w systemie Windows. Po skonfigurowaniu integracja z powłoką STT działa **identycznie jak przewodniki Linux Bash lub Zsh** — nie jest wymagana żadna adaptacja specyficzna dla systemu Windows dla samej funkcji powłoki.
+WSL umożliwia uruchomienie pełnego środowiska Linux bezpośrednio w systemie Windows. Po skonfigurowaniu integracja powłoki STT działa **identycznie z przewodnikami Linux Bash lub Zsh** — nie jest wymagana żadna adaptacja specyficzna dla systemu Windows dla samej funkcji powłoki.
 
 > **Zalecane dla:** użytkowników systemu Windows, którzy znają terminal Linux lub którzy mają już zainstalowaną wersję WSL do prac programistycznych. WSL zapewnia najwierniejsze wrażenia i najmniejszą liczbę kompromisów w zakresie kompatybilności.
 
@@ -35,7 +35,7 @@ __KOD_BLOKU_4__
 Po uruchomieniu WSL otwórz terminal Linux i postępuj zgodnie z **przewodnikiem po powłoce Linuksa** dla preferowanej powłoki:
 
 | Powłoka | Przewodnik |
-|------|-------|
+|-------|-------|
 | Bash (domyślnie WSL) | [bash-integration.md](../../linux/bash-integration.i18n/bash-integration-pllang.md) |
 | Zsz | [zsh-integration.md](../../linux/zsh-integration.i18n/zsh-integration-pllang.md) |
 | Ryba | [fish-integration.md](../../linux/fish-integration.i18n/fish-integration-pllang.md) |

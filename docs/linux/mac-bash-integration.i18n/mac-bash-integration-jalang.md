@@ -1,8 +1,8 @@
 # macOS Bash シェルの統合
 
-> **macOS Catalina (10.15) より前のデフォルト シェル。** Catalina 以降、macOS にはデフォルト シェルとして Zsh が同梱されています。最新の Mac を使用していて、シェルを変更していない場合は、代わりに [macOS Zsh Integration](.././mac-zsh-integration.i18n/mac-zsh-integration-jalang.md) ガイドを参照してください。
+> **macOS Catalina (10.15) より前のデフォルト シェル。** Catalina 以降、macOS にはデフォルト シェルとして Zsh が付属しています。最新の Mac を使用していてシェルを変更していない場合は、代わりに [macOS Zsh Integration](.././mac-zsh-integration.i18n/mac-zsh-integration-jalang.md) ガイドを参照してください。
 >
-> 現在のシェルを次のように確認できます。
+> 現在のシェルは次のようにして確認できます。
 >「バッシュ」
 > $SHELLをエコーする
 >「」

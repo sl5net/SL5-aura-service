@@ -163,29 +163,30 @@ fi
 while IFS= read -r -d '' f; do
   [ -f "$f" ] || continue
   if [ -n "$converter" ]; then
-    # run converter on working tree and check if it changed bytes
-    before_hash=$(git hash-object -w --no-filters --stdin < "$f" 2>/dev/null || true)
-    # Copy, convert in-place
+    before_hash=$(git hash-object "$f" 2>/dev/null || true)
     unix2dos -q "$f" >/dev/null 2>&1 || true
-    # If file changed, restage
-    git add -- "$f"
-    changed=1
+    after_hash=$(git hash-object "$f" 2>/dev/null || true)
+
+    # Only restage and mark changed IF the bytes actually changed!
+    if [ "$before_hash" != "$after_hash" ]; then
+      git add -- "$f"
+      changed=1
+    fi
   else
-    # Pure-Python conversion to CRLF (safe: only rewrite if changes)
+    # Pure-Python conversion to CRLF
     tmp=$(mktemp)
     python3 - "$f" "$tmp" <<'PY' || rc=$?
 import sys,io
 p=sys.argv[1]; tmp=sys.argv[2]
 with open(p, 'rb') as r:
     data=r.read()
-# Convert lone LF to CRLF, leave CRLF alone
 new = data.replace(b'\r\n', b'\n').replace(b'\n', b'\r\n')
 if new!=data:
     with open(tmp,'wb') as w:
         w.write(new)
-    sys.exit(0)  # signal that tmp contains new content
+    sys.exit(0)
 else:
-    sys.exit(1)  # no change
+    sys.exit(1)
 PY
     rc=${rc:-$?}
     if [ "$rc" -eq 0 ]; then
@@ -197,7 +198,6 @@ PY
     fi
   fi
 done < <(staged_files_with_suffix ".bat")
-
 # 2) Convert staged .ps1 files to UTF-8 with BOM
 while IFS= read -r -d '' f; do
   [ -f "$f" ] || continue

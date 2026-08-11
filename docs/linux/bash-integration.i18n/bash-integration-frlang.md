@@ -82,7 +82,7 @@ s() {
 
 > **Remarque :** Si vous utilisez Bash comme shell de connexion (par exemple via SSH), ajoutez également le même bloc à `~/.bash_profile`, ou sourcez `~/.bashrc` à partir de celui-ci :
 > ```bash
-> [ -f ~/.bashrc ] && sources ~/.bashrc
+> [ -f ~/.bashrc ] && source ~/.bashrc
 > ```
 
 ## Caractéristiques

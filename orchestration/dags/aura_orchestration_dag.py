@@ -33,12 +33,12 @@ from airflow.utils.trigger_rule import TriggerRule
 
 # Airflow Variables
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-AURA_BASE_DIR   = PROJECT_ROOT
-ZIM_WATCH_DIR   = PROJECT_ROOT / "data"
-QUIZ_DB_PATH    = PROJECT_ROOT / "config/maps/plugins/anki_quiz/de-DE/quiz_db.json"
-QUIZ_PUB_PATH   = PROJECT_ROOT / "config/maps/plugins/anki_quiz/de-DE/quiz_db_published.json"
+AURA_BASE_DIR   = SL5NET_AURA_PROJECT_ROOT
+ZIM_WATCH_DIR   = SL5NET_AURA_PROJECT_ROOT / "data"
+QUIZ_DB_PATH    = SL5NET_AURA_PROJECT_ROOT / "config/maps/plugins/anki_quiz/de-DE/quiz_db.json"
+QUIZ_PUB_PATH   = SL5NET_AURA_PROJECT_ROOT / "config/maps/plugins/anki_quiz/de-DE/quiz_db_published.json"
 INDEX_BUILD_CMD = "echo '[SIMULATED] Rebuilding Aura search index…'"
 
 

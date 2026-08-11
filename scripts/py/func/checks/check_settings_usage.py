@@ -14,7 +14,7 @@ SETTINGS_FILE = "config/settings.py"
 
 
 # GREP_COMMAND = (
-#     f'grep -rnP "\\bsettings\\.([a-zA-Z0-9_]+)(?!\\s*\\()\\b" --include="{PROJECT_ROOT}*.py" . '
+#     f'grep -rnP "\\bsettings\\.([a-zA-Z0-9_]+)(?!\\s*\\()\\b" --include="{SL5NET_AURA_PROJECT_ROOT}*.py" . '
 #     '| grep -v ".venv" | grep -v "venv" | grep -v "__pycache__" | grep -v "/_" | grep -v "/docs" | grep -v "/doc_sources"'
 # )
 
@@ -59,14 +59,14 @@ def analyze_usages(defined_vars):
         # Run the shell command
 
         from scripts.py.func.get_project_root import get_project_root
-        PROJECT_ROOT = get_project_root()
+        SL5NET_AURA_PROJECT_ROOT = get_project_root()
 
         cmd = [
             "grep", "-rnP",
             "--include=*.py",
             "--exclude-dir=.venv,venv,.env,__pycache__,_*,docs,doc_sources",
             r'\bsettings\.([a-zA-Z0-9_]+)(?!\s*\()\b',
-            str(PROJECT_ROOT)
+            str(SL5NET_AURA_PROJECT_ROOT)
         ]
         result = subprocess.run(cmd, capture_output=True, text=True)
         lines = result.stdout.splitlines()

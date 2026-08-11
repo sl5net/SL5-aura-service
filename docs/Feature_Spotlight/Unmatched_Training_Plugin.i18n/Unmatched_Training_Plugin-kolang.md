@@ -1,4 +1,4 @@
-# 일치하지 않는 교육 플러그인(`1_collect_unmatched_training`)
+# 비교할 수 없는 교육 플러그인(`1_collect_unmatched_training`)
 
 ## 목적
 
@@ -57,5 +57,5 @@ FUZZY_MAP_pre = [
 
 ## 메모
 
-플러그인은 런타임에 `FUZZY_MAP_pre.py`를 수정합니다. 업데이트된 내용을 커밋
+플러그인은 런타임에 `FUZZY_MAP_pre.py`를 수정합니다. 업데이트된 커밋
 수집된 훈련 데이터를 보존하기 위해 정기적으로 파일을 제출하세요.

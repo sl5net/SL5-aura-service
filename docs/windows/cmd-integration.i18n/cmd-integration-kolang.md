@@ -1,6 +1,6 @@
 # 명령 프롬프트(CMD) 통합(Windows)
 
-Windows 명령 프롬프트에서 STT(Speech-to-Text) CLI와 더 쉽게 상호 작용하려면 `s.bat` 배치 파일을 만들어 `PATH`에 배치할 수 있습니다. 이를 통해 CMD 창에 '질문''을 간단히 입력할 수 있습니다.
+Windows 명령 프롬프트에서 STT(Speech-to-Text) CLI와 더 쉽게 상호 작용하려면 `s.bat` 배치 파일을 만들어 `PATH`에 배치할 수 있습니다. 이를 통해 CMD 창에 '질문'을 간단히 입력할 수 있습니다.
 
 > **참고:** CMD(cmd.exe)는 레거시 Windows 셸이며 PowerShell 또는 Unix 셸에 비해 상당한 제한이 있습니다. 보다 풍부한 경험을 위해서는 [PowerShell Integration](.././powershell-integration.i18n/powershell-integration-kolang.md) 또는 [WSL Integration](.././wsl-integration.i18n/wsl-integration-kolang.md)를 대신 사용하는 것이 좋습니다.
 

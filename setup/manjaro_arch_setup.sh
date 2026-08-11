@@ -54,8 +54,8 @@ echo ""
 
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
-cd "$PROJECT_ROOT"
+SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+cd "$SL5NET_AURA_PROJECT_ROOT"
 
 echo "--> Running setup from project root: $(pwd)"
 # --- End of location-independent block ---

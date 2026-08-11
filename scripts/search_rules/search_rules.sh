@@ -12,7 +12,7 @@
 # allows overrides:
 #
 # - Priority: 1) first positional parameter ($1), 2) existing MAPS_DIR env var,
-#   3) hard-coded default "$PROJECT_ROOT/config/maps".
+#   3) hard-coded default "$SL5NET_AURA_PROJECT_ROOT/config/maps".
 # - Improves flexibility for CI, local overrides and testing without editing the script.
 # - Adds quoting and a directory existence check to fail early if the path is invalid.
 
@@ -32,7 +32,7 @@
 # CONFIGURATION
 #
 
-# MAPS_DIR="$PROJECT_ROOT/config/maps"
+# MAPS_DIR="$SL5NET_AURA_PROJECT_ROOT/config/maps"
 
 
 
@@ -41,7 +41,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SL5NET_AURA_PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 
-LOG_DIR="$PROJECT_ROOT/log"
+LOG_DIR="$SL5NET_AURA_PROJECT_ROOT/log"
 LOGFILE="$LOG_DIR/search_rules.sh.log"
 
 function logger_info() {
@@ -50,7 +50,7 @@ function logger_info() {
 }
 
 
-cd "$PROJECT_ROOT" || exit 1
+cd "$SL5NET_AURA_PROJECT_ROOT" || exit 1
 
 # SEARCH_CLOSE_ON_OPEN = False=$("$PYTHON_BIN" - <<'PY' 2>/dev/null || echo "True"
 
@@ -78,9 +78,9 @@ echo "Line 54:" $MAPS_DIR " pwd: " $PWD
 if [[ $MAPS_DIR == /* || $MAPS_DIR == ./* || $MAPS_DIR == ~/* || $MAPS_DIR == "$HOME"/* || $MAPS_DIR == ~*  ]]; then
   : # okOhh sowas guckenvoran SchwarzkopfAura schwarz
 else
-  # MAPS_DIR="$PROJECT_ROOT/$MAPS_DIR"
+  # MAPS_DIR="$SL5NET_AURA_PROJECT_ROOT/$MAPS_DIR"
   MAPS_DIR="./$MAPS_DIR"
-  cd "$PROJECT_ROOT" || exit 1
+  cd "$SL5NET_AURA_PROJECT_ROOT" || exit 1
   echo "Line 63:" $MAPS_DIR " pwd: " $PWD
 fi
 #Aurora als Sourcecode
@@ -128,7 +128,7 @@ fi
 export SL5NET_AURA_PROJECT_ROOT
 export REPO_URL
 logger_info "Editor configured: $PREFERRED_EDITOR"
-logger_info "Project root: $PROJECT_ROOT"
+logger_info "Project root: $SL5NET_AURA_PROJECT_ROOT"
 logger_info "Target maps directory: $MAPS_DIR"
 if ! command -v fzf &> /dev/null; then
     logger_info "Error: fzf is not installed."
@@ -159,7 +159,7 @@ logger_info "Starting interactive search..."
 open_github() {
     local file_path="$1"
     local line_num="$2"
-    local rel="${file_path#$PROJECT_ROOT/}"
+    local rel="${file_path#$SL5NET_AURA_PROJECT_ROOT/}"
     local url="$REPO_URL/$rel#L$line_num"
     logger_info "Opening GitHub: $url"
     xdg-open "$url"

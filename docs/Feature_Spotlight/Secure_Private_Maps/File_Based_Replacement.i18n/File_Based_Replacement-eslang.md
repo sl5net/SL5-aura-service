@@ -1,7 +1,7 @@
 # FUNCIÓN DESTACADA: Reemplazos de reglas basadas en archivos
 
 Este documento describe cómo mantener valores confidenciales (contraseñas, claves API, tokens)
-del código fuente `FUZZY_MAP_pre` / `FUZZY_MAP` y del historial de Git cargando el
+fuera del código fuente `FUZZY_MAP_pre` / `FUZZY_MAP` y del historial de Git cargando el
 Texto de "reemplazo" de un archivo separado en tiempo de ejecución en lugar de codificarlo.
 
 Esto es especialmente útil durante transmisiones en vivo o pantallas compartidas, donde el mapa

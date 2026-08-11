@@ -8,8 +8,8 @@ from pathlib import Path
 
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
-root_dir = PROJECT_ROOT
+SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+root_dir = SL5NET_AURA_PROJECT_ROOT
 helpers_dir = root_dir / "config" / "maps" / "plugins" / "1_collect_unmatched_training" / "helpers"
 if str(helpers_dir) not in sys.path:
     sys.path.insert(0, str(helpers_dir))
@@ -26,7 +26,7 @@ System_Instructions_20260721_1417 = "dummy instruction string"
 FUZZY_MAP_pre = [
     (System_Instructions_20260721_1417, r'^(Python|System Instructions)$'),
     (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [
-        PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+        SL5NET_AURA_PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
 ]
 """
         # Mock file content containing a string literal
@@ -34,7 +34,7 @@ FUZZY_MAP_pre = [
 FUZZY_MAP_pre = [
     ('System_Instructions_20260721_1417', r'^(Python|System Instructions)$'),
     (f'{str(__file__)}', r'^(.*)$', 10, {'on_match_exec': [
-        PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
+        SL5NET_AURA_PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}),
 ]
 """
 

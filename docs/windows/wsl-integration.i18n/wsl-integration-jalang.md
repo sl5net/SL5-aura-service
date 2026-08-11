@@ -73,7 +73,7 @@ Windows ドライブは `/mnt/` の下にマウントされます。
 /mnt/d/   # → D:\
 ```
 
-プロジェクトが Windows ファイルシステム (例: `C:\Projects\stt`) 上にある場合は、`SL5NET_AURA_PROJECT_ROOT` を次のように設定します。
+プロジェクトが Windows ファイルシステム (例 `C:\Projects\stt`) 上にある場合は、`SL5NET_AURA_PROJECT_ROOT` を次のように設定します。
 
 ```bash
 export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"

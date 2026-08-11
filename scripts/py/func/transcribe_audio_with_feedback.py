@@ -29,15 +29,15 @@ SAMPLE_RATE = settings.SAMPLE_RATE
 # WAKE_PHANTOM
 
 # Aktuell in Tübingen sind es 12 Grad, gefühlt wie 12 Grad. Die Vorhersage meldet: Leicht Bewölkt.
-# sys.path.insert(0, str(PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE"))
+# sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE"))
 
-# from Path(PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants") import WAKE_PHANTOM
+# from Path(SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants") import WAKE_PHANTOM
 
 # import importlib
 # TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 # PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-# PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
-# aura_constants_path = Path(PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
+# SL5NET_AURA_PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+# aura_constants_path = Path(SL5NET_AURA_PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
 # aura_constants_spec = importlib.util.spec_from_file_location("aura_constants_dyn", aura_constants_path)
 # aura_constants_module = importlib.util.module_from_spec(aura_constants_spec)
 # aura_constants_spec.loader.exec_module(aura_constants_module)
@@ -47,8 +47,8 @@ SAMPLE_RATE = settings.SAMPLE_RATE
 # import importlib.util
 # TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 # PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-# PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
-# aura_constants_path = Path(PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
+# SL5NET_AURA_PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+# aura_constants_path = Path(SL5NET_AURA_PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
 # aura_constants_spec = importlib.util.spec_from_file_location(aura_constants_path, aura_constants_path)
 # aura_constants_module = importlib.util.module_from_spec(aura_constants_spec)
 # WAKE_PHANTOM = getattr(aura_constants_module, "WAKE_PHANTOM")
@@ -57,14 +57,14 @@ SAMPLE_RATE = settings.SAMPLE_RATE
 # import runpy
 # TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 # prf = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-# PROJECT_ROOT = Path(prf.read_text(encoding="utf-8"))
-# acp = Path(PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
+# SL5NET_AURA_PROJECT_ROOT = Path(prf.read_text(encoding="utf-8"))
+# acp = Path(SL5NET_AURA_PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
 # WAKE_PHANTOM = runpy.run_path(acp)["WAKE_PHANTOM"]
 #
 # TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 # PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
-# PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
-# aura_constants_path = Path(PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
+# SL5NET_AURA_PROJECT_ROOT = Path(PROJECT_ROOT_FILE.read_text(encoding="utf-8"))
+# aura_constants_path = Path(SL5NET_AURA_PROJECT_ROOT) / "config" / "maps" / "plugins" / "internals" / "de-DE" / "aura_constants.py"
 # WAKE_PHANTOM = (lambda p, n: (lambda m: getattr(m, n))(
 #     (lambda s: (lambda mod: (s.loader.exec_module(mod), mod)[1])(importlib.util.module_from_spec(s)))(
 #         importlib.util.spec_from_file_location(p.stem, p)

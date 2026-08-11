@@ -41,7 +41,7 @@ if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
 sys.path.insert(0, str(Path(__file__).parents[3]))
 st.info(f"DEBUG SYS.PATH: {sys.path}")
 st.info(f"DEBUG {Path(__file__).resolve().relative_to(SL5NET_AURA_PROJECT_ROOT)}")
-st.info(f"DEBUG PROJECT_ROOT = {SL5NET_AURA_PROJECT_ROOT}")
+st.info(f"DEBUG SL5NET_AURA_PROJECT_ROOT = {SL5NET_AURA_PROJECT_ROOT}")
 st.info("DEBUG 'from scripts.py.func.config.dynamic_settings import settings'")
 
 # scripts/py/chat/streamlit-admin.py:47

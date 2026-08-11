@@ -96,7 +96,7 @@ Ihr Konfigurationssystem versteht auch, dass die Auflistung eines Modulschlüsse
 Deaktivieren Sie automatisch alle untergeordneten Module und Sprachunterordner. Beispielsweise sollte die Einstellung „standard_actions“: False verhindern, dass sowohl „de-DE“ als auch „en-US“ geladen werden. (27.10.'25 Mo)
   
 *   **Ziel**
-Ziel ist es, dieses System weiter zu verbessern. Beispielsweise wird eine Möglichkeit geschaffen, die Einstellungen des untergeordneten Moduls auch dann zu berücksichtigen, wenn das übergeordnete Modul deaktiviert ist, oder es werden komplexere Vererbungsregeln eingeführt. (27.10.'25 Mo)
+Ziel ist es, dieses System weiter zu verbessern. Beispielsweise bieten wir eine Möglichkeit, die Einstellungen untergeordneter Module auch dann zu berücksichtigen, wenn das übergeordnete Modul deaktiviert ist, oder führen komplexere Vererbungsregeln ein. (27.10.'25 Mo)
 
 
   
@@ -104,7 +104,7 @@ Ziel ist es, dieses System weiter zu verbessern. Beispielsweise wird eine Mögli
   
 t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direkt in diesem Dokumentationsabschnitt hervorzuheben [1].
 
-t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (wie „Aura, Lernmodus einschalten / ausschalten“) und erklären kurz, wie `toggle_learning.py` das Aus- und Einkommen automatisiert [2].
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (wie „Aura, Lernmodus einschalten / ausschalten“) und erklären kurz, wie `toggle_learning.py` das Aus- und Einkommentieren automatisiert [2].
 
 
 ### Aktivieren des Lernmodus (unübertroffenes Training)
@@ -120,7 +120,7 @@ Diese Regel ruft das nicht übereinstimmende Trainings-Plugin auf, wenn keine an
     }),
 ```
 
-Das Trainings-Plugin verwendet „f'{str(__file__)}“, um Ihre Datei zu finden und den nicht erkannten Satz automatisch an die erste verfügbare Regelgruppe (wie Ihre Hauptbefehlsgruppe) anzuhängen.
+Das Trainings-Plugin verwendet „f'{str(__file__)}“, um Ihre Datei zu finden und die nicht erkannte Phrase automatisch an die erste verfügbare Regelgruppe (wie Ihre Hauptbefehlsgruppe) anzuhängen.
 
 #### Umschalten des Lernmodus über Sprachbefehle
 

@@ -148,6 +148,6 @@ function s {
 
 ## Caractéristiques
 
-- **Chemins dynamiques** : trouve automatiquement la racine du projet via la variable d'environnement `SL5NET_AURA_PROJECT_ROOT`.
+- **Chemins dynamiques** : recherche automatiquement la racine du projet via la variable d'environnement `SL5NET_AURA_PROJECT_ROOT`.
 - **Auto-Restart** : si le backend est en panne, il tente d'exécuter `Start-Service-STT` et les services Wikipédia locaux.
 - **Smart Timeouts** : essaie d'abord une réponse rapide de 2 secondes, puis revient à un mode de traitement approfondi de 70 secondes.

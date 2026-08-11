@@ -146,7 +146,7 @@ from scripts.py.func.create_required_folders import setup_project_structure
 
 
 
-# PROJECT_ROOT = Path(__file__).resolve().parent
+# SL5NET_AURA_PROJECT_ROOT = Path(__file__).resolve().parent
 
 
 
@@ -826,7 +826,7 @@ with open(PIDFILE, 'w') as f:
 # AURA_TMP = TMP_DIR / "sl5_aura"
 # aura_project_root_path = Path( AURA_TMP / "aura_project_root.path")
 # with open(aura_project_root_path, 'w') as f:
-#     f.write(str(PROJECT_ROOT))
+#     f.write(str(SL5NET_AURA_PROJECT_ROOT))
 
 
 
@@ -1357,7 +1357,7 @@ if settings.DEV_MODE:
         validate_setup(SCRIPT_DIR, logger)
 
 
-        SL5NET_AURA_PROJECT_ROOT = SCRIPT_DIR  # In this structure, SCRIPT_DIR is PROJECT_ROOT
+        SL5NET_AURA_PROJECT_ROOT = SCRIPT_DIR  # In this structure, SCRIPT_DIR is SL5NET_AURA_PROJECT_ROOT
 
         parsed_trees = parse_all_files(SL5NET_AURA_PROJECT_ROOT, logger)
 
@@ -1402,7 +1402,7 @@ if __name__ == "__main__":
         "HEARTBEAT_FILE": HEARTBEAT_FILE,
         "PIDFILE": PIDFILE,
         "TRIGGER_FILE": TRIGGER_FILE,
-        "PROJECT_ROOT": SL5NET_AURA_PROJECT_ROOT,
+        "SL5NET_AURA_PROJECT_ROOT": SL5NET_AURA_PROJECT_ROOT,
         "AUTO_ENTER_AFTER_DICTATION_REGEX_APPS": settings.AUTO_ENTER_AFTER_DICTATION_REGEX_APPS,
         "languagetool_process": active_lt_url
     })

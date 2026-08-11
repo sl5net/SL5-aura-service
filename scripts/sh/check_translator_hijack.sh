@@ -62,7 +62,7 @@ done
 set -euo pipefail
 
 # ---------------------------------------------------------------------------
-# 1. Resolve PROJECT_ROOT from the /tmp marker file
+# 1. Resolve SL5NET_AURA_PROJECT_ROOT from the /tmp marker file
 # ---------------------------------------------------------------------------
 if [ "${OS:-}" = "Windows_NT" ] || [ -n "${WINDIR:-}" ]; then
     tmp_dir='C:/tmp'
@@ -74,18 +74,18 @@ MARKER_FILE="$tmp_dir/sl5_aura/sl5net_aura_project_root"
 
 if [[ ! -f "$MARKER_FILE" ]]; then
     echo "[hijack-check] INFO: marker file not found: $MARKER_FILE"
-    echo "[hijack-check] Skipping check (service not running / PROJECT_ROOT unknown)."
+    echo "[hijack-check] Skipping check (service not running / SL5NET_AURA_PROJECT_ROOT unknown)."
     exit 0
 fi
 
-PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$MARKER_FILE")")"
+SL5NET_AURA_PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$MARKER_FILE")")"
 
-echo "[hijack-check] PROJECT_ROOT = $PROJECT_ROOT"
+echo "[hijack-check] SL5NET_AURA_PROJECT_ROOT = $SL5NET_AURA_PROJECT_ROOT"
 
 # ---------------------------------------------------------------------------
 # 2. Build path to the file we want to guard
 # ---------------------------------------------------------------------------
-FUZZY_MAP="$PROJECT_ROOT/config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py"
+FUZZY_MAP="$SL5NET_AURA_PROJECT_ROOT/config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py"
 
 echo "[hijack-check] Target file : $FUZZY_MAP"
 

@@ -140,7 +140,7 @@ function s {
   ```powershell
   $env:SL5NET_AURA_PROJECT_ROOT = "C:\path\to\your\project"
   ```
-- **`timeout` / `mktemp`**: これらの Unix ツールはネイティブでは使用できません。上記のスクリプトは、PowerShell ネイティブの同等のもの (ミリ秒のタイムアウトを備えた `WaitForExit` と `GetTempFileName()`) を使用しています。
+- **`timeout` / `mktemp`**: これらの Unix ツールはネイティブでは使用できません。上記のスクリプトは、PowerShell ネイティブの同等のもの (ミリ秒のタイムアウトを指定した `WaitForExit` と `GetTempFileName()`) を使用しています。
 - **`pgrep`**: `Get-Process -Name "streamlit"` に置き換えられました。
 - **`start_service` / `update_github_ip`**: これらは、同じプロファイル ファイル内の `s` 関数の前に PowerShell 関数 (`Start-Service-STT`、`Update-GithubIp`) として定義する必要があります。
 - **WSL Kiwix スクリプト**: `bash` が (WSL 経由で) 利用可能な場合、`.sh` ヘルパー スクリプトはそのまま実行されます。それ以外の場合は、それを `.ps1` または `.bat` に相当するものに適応させます。

@@ -136,7 +136,7 @@ function s {
 ## Windows-spezifische Hinweise
 
 - **Python-Pfad**: Unter Windows befindet sich die Binärdatei der virtuellen Umgebung unter „.venv\Scripts\python.exe“ statt unter „.venv/bin/python3“. Passen Sie „$PY_EXEC“ an, wenn Ihr Setup davon abweicht.
-- **Umgebungsvariable „SL5NET_AURA_PROJECT_ROOT“**: Legen Sie dies in Ihren Systemumgebungsvariablen fest oder fügen Sie die folgende Zeile über der Funktion in Ihrem Profil hinzu:
+- Umgebungsvariable „SL5NET_AURA_PROJECT_ROOT“**: Legen Sie dies in Ihren Systemumgebungsvariablen fest oder fügen Sie die folgende Zeile über der Funktion in Ihrem Profil hinzu:
   ```powershell
   $env:SL5NET_AURA_PROJECT_ROOT = "C:\path\to\your\project"
   ```
@@ -144,7 +144,7 @@ function s {
 - **`pgrep`**: Ersetzt durch `Get-Process -Name "streamlit"`.
 - **`start_service` / `update_github_ip`**: Diese müssen als PowerShell-Funktionen („Start-Service-STT“, „Update-GithubIp“) in derselben Profildatei vor der Funktion „s“ definiert werden.
 - **WSL-Kiwix-Skript**: Wenn „bash“ verfügbar ist (über WSL), wird das „.sh“-Hilfsskript unverändert ausgeführt. Andernfalls passen Sie es an ein „.ps1“- oder „.bat“-Äquivalent an.
-- **Mehrere PowerShell-Versionen**: „$PROFILE“ verweist auf unterschiedliche Dateien für Windows PowerShell 5.1 und PowerShell 7. Um zu überprüfen, welche Profildatei aktiv ist, führen Sie „$PROFILE“ in jeder Version aus.
+- **Mehrere PowerShell-Versionen**: „$PROFILE“ verweist auf verschiedene Dateien für Windows PowerShell 5.1 und PowerShell 7. Um zu überprüfen, welche Profildatei aktiv ist, führen Sie „$PROFILE“ in jeder Version aus.
 
 ## Merkmale
 

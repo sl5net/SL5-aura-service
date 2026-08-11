@@ -45,7 +45,7 @@ config/
 
                             ### إدارة الوحدات في التكوين
 
-تم تصميم النظام ليتطلب الحد الأدنى من التكوين.
+تم تصميم النظام بحيث يتطلب الحد الأدنى من التكوين.
 
                           #### تمكين الوحدات (الافتراضي)
 
@@ -93,10 +93,10 @@ PLUGINS_ENABLED = {
 (اختياري) بالنسبة إلى True/False، يمكنك أيضًا استخدام 1/0. ومع ذلك، هذا غير شائع ويمكن أن يقلل من سهولة القراءة.
 
 * **تعطيل الوحدات الأصلية:** السلوك المقصود هو أن تعطيل الوحدة الأصلية يجب أن يكون XSPACEbreakX
-قم تلقائيًا بتعطيل جميع الوحدات الفرعية ومجلدات اللغة الفرعية الخاصة بها. على سبيل المثال، يجب أن يؤدي إعداد `"standard_actions": False إلى منع تحميل كل من `de-DE` و`en-US`. (27.10.25 الإثنين)
+قم تلقائيًا بتعطيل جميع الوحدات الفرعية ومجلدات اللغة الفرعية الخاصة به. على سبيل المثال، إعداد `"standard_actions": False` يجب أن يمنع تحميل كل من `de-DE` و`en-US`. (27.10.25 الإثنين)
                                               اكس سبيس بريك اكس
                                                                *   **هدف**
-الهدف هو تعزيز هذا النظام بشكل أكبر. على سبيل المثال، توفير طريقة لاحترام إعدادات الوحدة الفرعية حتى إذا تم تعطيل الأصل، أو تقديم قواعد وراثة أكثر تعقيدًا. (27.10.25 الإثنين)
+الهدف هو تعزيز هذا النظام بشكل أكبر. على سبيل المثال، توفير طريقة لاحترام إعدادات الوحدة الفرعية حتى لو تم تعطيل الأصل، أو تقديم قواعد وراثة أكثر تعقيدًا. (27.10.25 الإثنين)
 
 
                                               اكس سبيس بريك اكس
@@ -104,14 +104,14 @@ PLUGINS_ENABLED = {
                                               اكس سبيس بريك اكس
 t1- Es ist in der Tat wesentlich benutzerfreundlicher und comfortabler، die Steuerung über die Sprachbefehle direkt in diesem Dokumentationsabschnitt Hervorzuheben [1].
 
-t2- Wir erweitern den Entwurf um eine clare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (مثل "Aura, Lernmodus einschalten / ausschalten") وتعلم اللغات، مثل `toggle_learning.py` من Aus- und Eincommentieren تلقائيًا [2].
+t2- Wir erweitern den Entwurf um eine clare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (مثل "Aura, Lernmodus einschalten / ausschalten") ودائرة التعلم، مثل `toggle_learning.py` من Aus- und Eincommentieren تلقائيًا [2].
 
 
            ### تمكين وضع التعلم (تدريب لا مثيل له)
 
 للسماح لوحدتك المخصصة بتعلم العبارات غير المعروفة تلقائيًا عندما يكون "Lernmodus" (وضع التعلم) نشطًا، يمكنك إلحاق قاعدة استقبال الرسائل الخاطئة في **أقصى أسفل** قائمة `FUZZY_MAP_pre`.
 
-تستدعي هذه القاعدة البرنامج الإضافي للتدريب الذي لا مثيل له عندما لا تتطابق أي قاعدة محددة أخرى في ملفك:
+تستدعي هذه القاعدة المكوّن الإضافي للتدريب الذي لا مثيل له عندما لا تتطابق أي قاعدة محددة أخرى في ملفك:
 
 ```python
     # --- Training-Plugin (dynamically toggled by the learning mode) ---

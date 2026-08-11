@@ -33,7 +33,7 @@ Se a sua substituição for uma string multilinha ou contém barras invertidas s
 *Exemplo:* `{'command_flags': re.IGNORECASE}`
 * **`raw_replacement`** (booleano): Quando `True`, o texto de substituição é tratado como uma string literal pura e ignorado pela análise de barra invertida `re.sub` do Python. Crucial para prompts multilinhas ou strings com barras invertidas sem escape (`\`).
 *Exemplo:* `{'raw_replacement': True}`
-* **`cache`** (booleano): Alterna o cache de resultados do AURA. Defina como `False` para regras que geram resultados dinâmicos (por exemplo, horário atual, piadas aleatórias) para garantir que sejam avaliadas de forma atualizada em cada partida.
+* **`cache`** (booleano): Alterna o cache de resultados do AURA. Defina como `False` para regras que geram resultados dinâmicos (por exemplo, hora atual, piadas aleatórias) para garantir que sejam avaliadas de forma atualizada em cada partida.
 *Exemplo:* `{'cache': False}`
 * **`skip_list`** (lista de strings): Especifica módulos de pipeline de pós-processamento a serem ignorados quando esta regra corresponder.
 *Exemplo:* `{'skip_list': ['LanguageTool']}` (ignora a verificação gramatical)

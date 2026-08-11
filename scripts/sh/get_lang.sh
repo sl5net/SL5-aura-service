@@ -7,9 +7,9 @@ set -e
 # --- Path Definitions ---
 # The script is in "scripts/sh/", so we need to go up two levels to the project root.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$SCRIPT_DIR/../.."
-MODEL_DIR="$PROJECT_ROOT/models"
-CONFIG_DIR="$PROJECT_ROOT/config"
+SL5NET_AURA_PROJECT_ROOT="$SCRIPT_DIR/../.."
+MODEL_DIR="$SL5NET_AURA_PROJECT_ROOT/models"
+CONFIG_DIR="$SL5NET_AURA_PROJECT_ROOT/config"
 SETTINGS_LOCAL_PATH="$CONFIG_DIR/settings_local.py"
 
 

@@ -2,15 +2,15 @@
 setlocal
 
 :: Resolve the absolute parent directory of the script's folder
-set /p PROJECT_ROOT=<"C:\tmp\sl5_aura\sl5net_aura_project_root"
+set /p SL5NET_AURA_PROJECT_ROOT=<"C:\tmp\sl5_aura\sl5net_aura_project_root"
 
 :: Define the PowerShell update script path
-set "UPDATE_SCRIPT=%PROJECT_ROOT%\update\update_for_windows_users.ps1"
+set "UPDATE_SCRIPT=%SL5NET_AURA_PROJECT_ROOT%\update\update_for_windows_users.ps1"
 
 echo.
 echo ====================================================================
 echo SL5 Aura Auto-Updater (5-min interval)
-echo Monitoring branch: %PROJECT_ROOT%
+echo Monitoring branch: %SL5NET_AURA_PROJECT_ROOT%
 echo To stop, close this window or press Ctrl+C.
 echo ====================================================================
 echo.

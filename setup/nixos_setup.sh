@@ -37,8 +37,8 @@ set -e
 
 # --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
-cd "$PROJECT_ROOT"
+SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+cd "$SL5NET_AURA_PROJECT_ROOT"
 echo "--> Running setup from project root: $(pwd)"
 
 # --- Language config ---
@@ -189,7 +189,7 @@ echo "    -> Phase 1: Checking and trying to restore from local cache..."
 for config_line in "${INSTALL_CONFIG[@]}"; do
     read -r base_name final_name dest_path <<< "$config_line"
     target_path="$dest_path/$final_name"
-    zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
+    zip_file="$SL5NET_AURA_PROJECT_ROOT/${PREFIX}${base_name}.zip"
 
     if [ -e "$target_path" ]; then continue; fi
 
@@ -213,7 +213,7 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
     for config_line in "${INSTALL_CONFIG[@]}"; do
         read -r base_name final_name dest_path <<< "$config_line"
         target_path="$dest_path/$final_name"
-        zip_file="$PROJECT_ROOT/${PREFIX}${base_name}.zip"
+        zip_file="$SL5NET_AURA_PROJECT_ROOT/${PREFIX}${base_name}.zip"
 
         if [ -e "$target_path" ]; then continue; fi
 

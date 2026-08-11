@@ -15,7 +15,7 @@ if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
 load_dotenv(SL5NET_AURA_PROJECT_ROOT / ".secrets")
-# print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
+# print("Loading .secrets from:", SL5NET_AURA_PROJECT_ROOT / ".secrets")
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 CLIENT_API_KEY = API_KEY_SECRET
 

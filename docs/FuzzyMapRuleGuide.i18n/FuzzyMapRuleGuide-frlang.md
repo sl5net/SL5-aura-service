@@ -39,7 +39,7 @@ Si votre remplacement est une chaîne multiligne ou contient des barres obliques
 *Exemple :* `{'skip_list' : ['LanguageTool']}` (ignore la vérification grammaticale)
 * **`only_in_windows`** (liste de chaînes regex) : restreint la règle au déclenchement uniquement si le titre de la fenêtre active correspond à l'un des modèles spécifiés.
 *Exemple :* `{'only_in_windows' : [r'^Mozilla Firefox$', r'Chrome']}`
-* **`exclude_windows`** (liste de chaînes regex) : empêche la règle de se déclencher si le titre de la fenêtre active correspond à l'un des modèles spécifiés.
+* **`exclude_windows`** (liste de chaînes regex) : empêche la règle de se déclencher si le titre de la fenêtre active correspond à l'un des modèles spécifiés.
 *Exemple :* `{'exclude_windows' : [r'Terminal', r'Claude']}`
 * **`window_ignore_case`** (booléen) : contrôle si la correspondance de fenêtre (`only_in_windows` / `exclude_windows`) est évaluée sans tenir compte de la casse (`True`) ou en tenant compte de la casse (`False`). En cas d'omission, revient au paramètre global `LOWERCASE_WINDOW_TITLES` dans `config/settings.py`.
 *Exemple :* `{'window_ignore_case' : False}`
@@ -99,7 +99,7 @@ Si votre remplacement est une chaîne multiligne ou contient des barres obliques
 - Utilisez `^...$` fullmatch uniquement lorsque vous souhaitez arrêter tout traitement ultérieur
 - `FUZZY_MAP_pre.py` est idéal pour les corrections avant la vérification orthographique
 - Testez les règles avec : "votre entrée de test" dans la console Aura
-- Les sauvegardes sont créées automatiquement sous `.peter_backup`
+- Les sauvegardes sont créées automatiquement sous le nom `.peter_backup`
 
 ## Exemples
 

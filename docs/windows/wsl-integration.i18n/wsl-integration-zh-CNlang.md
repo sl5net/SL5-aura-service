@@ -1,6 +1,6 @@
 # WSL（适用于 Linux 的 Windows 子系统）集成
 
-WSL 允许您直接在 Windows 上运行完整的 Linux 环境。设置完成后，STT shell 集成的工作方式**与 Linux Bash 或 Zsh 指南相同** — shell 功能本身不需要针对 Windows 进行特定的调整。
+WSL 允许您直接在 Windows 上运行完整的 Linux 环境。设置完成后，STT shell 集成的工作方式**与 Linux Bash 或 Zsh 指南相同** — shell 功能本身无需针对 Windows 进行调整。
 
 > **推荐给：** 熟悉 Linux 终端或已安装 WSL 进行开发工作的 Windows 用户。 WSL 提供最忠实的体验和最少的兼容性妥协。
 
@@ -105,7 +105,7 @@ __代码_块_13__
 
 ### 从 Windows 调用 WSL `s` 函数（可选）
 
-如果您想在不打开 WSL 终端的情况下从 Windows CMD 或 PowerShell 窗口调用 `s` 快捷方式，您可以将其包装：
+如果您想从 Windows CMD 或 PowerShell 窗口调用“s”快捷方式而不打开 WSL 终端，您可以将其包装：
 
 __代码_块_14__
 

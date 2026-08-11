@@ -91,7 +91,7 @@ API 키)를 소스 코드에서 가져옵니다.
 |---|---|---|
 | `FUZZY_MAP_pre.py` | 사전 언어 도구 | 맞춤법 검사 전에 적용됨 |
 | `FUZZY_MAP.py` | 포스트 언어 도구 | 맞춤법 검사 후 적용 |
-| 'PUNCTUATION_MAP.py' | 사전 언어 도구 | 구두점 규칙 |
+| PUNCTUATION_MAP.py` | 사전 언어 도구 | 구두점 규칙 |
 
 ## 팁
 
@@ -116,7 +116,7 @@ FUZZY_MAP_pre = [
 ]
 ```
 
-## 첫 번째 규칙 - 단계별
+## 첫 번째 규칙 — 단계별
 
 1. `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`를 엽니다.
 2. `FUZZY_MAP_pre = [...]` 안에 규칙을 추가하세요.

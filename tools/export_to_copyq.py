@@ -44,7 +44,7 @@ COPYQ_PATH_TAB_NAME = "SL5-Paths"
 
 TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+SL5NET_AURA_PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 
 MAPS_DIR = os.path.join(TOOL_DIR, "..", "config", "maps")
@@ -173,7 +173,7 @@ def collect_examples():
         for file in files:
             if file in TARGET_FILES:
                 file_path = os.path.join(root, file)
-                clean_rel_path = os.path.relpath(file_path, PROJECT_ROOT)
+                clean_rel_path = os.path.relpath(file_path, SL5NET_AURA_PROJECT_ROOT)
                 active_paths.append(clean_rel_path)
                 file_count += 1
                 try:

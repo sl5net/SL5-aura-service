@@ -29,7 +29,7 @@ __KOD_BLOKU_1__
 *Przykład:* `{'command_flags': re.IGNORECASE}`
 * **`raw_replacement`** (boolean): Gdy `True`, tekst zastępczy jest traktowany jako czysty literał łańcuchowy i pomijany przez analizę składniową ukośnika odwrotnego `re.sub` w Pythonie. Ma kluczowe znaczenie w przypadku podpowiedzi wielowierszowych lub ciągów znaków z ukośnikami odwrotnymi bez ucieczki (`\`).
 *Przykład:* `{'raw_replacement': True}`
-* **`cache`** (boolean): Przełącza pamięć podręczną wyników AURA. Ustaw na „Fałsz” dla reguł generujących dynamiczne dane wyjściowe (np. bieżący czas, losowe dowcipy), aby mieć pewność, że są one oceniane na nowo w każdym meczu.
+* **`cache`** (boolean): Przełącza pamięć podręczną wyników AURA. Ustaw na „Fałsz” dla reguł generujących dane dynamiczne (np. bieżący czas, losowe dowcipy), aby mieć pewność, że są one oceniane na nowo w każdym meczu.
 *Przykład:* `{'cache': Fałsz}`
 * **`skip_list`** (lista ciągów znaków): Określa moduły potoku przetwarzania końcowego, które mają zostać pominięte, gdy pasuje ta reguła.
 *Przykład:* `{'skip_list': ['LanguageTool']}` (pomija sprawdzanie gramatyki)
@@ -37,7 +37,7 @@ __KOD_BLOKU_1__
 *Przykład:* `{'only_in_windows': [r'^Mozilla Firefox$', r'Chrome']}`
 * **`exclude_windows`** (lista ciągów wyrażeń regularnych): Zapobiega uruchomieniu reguły, jeśli tytuł aktywnego okna pasuje do jednego z określonych wzorców.
 *Przykład:* `{'exclude_windows': [r'Terminal', r'Claude']}`
-* **`window_ignore_case`** (boolean): Kontroluje, czy dopasowanie okna (`only_in_windows` / `exclude_windows`) jest oceniane bez uwzględniania wielkości liter (`True`) czy z rozróżnianiem wielkości liter (`False`). Jeśli zostanie pominięty, powraca do ustawienia globalnego `LOWERCASE_WINDOW_TITLES` w `config/settings.py`.
+* **`window_ignore_case`** (boolean): Kontroluje, czy dopasowanie okna (`only_in_windows` / `exclude_windows`) jest oceniane bez rozróżniania wielkości liter (`True`) czy z rozróżnianiem wielkości liter (`False`). Jeśli zostanie pominięty, powraca do ustawienia globalnego `LOWERCASE_WINDOW_TITLES` w `config/settings.py`.
 *Przykład:* `{'window_ignore_case': Fałsz}`
 * **`on_match_exec`** (lista obiektów Path/string): Ścieżki do skryptów/wtyczek, które powinny zostać wykonane, gdy ta reguła zostanie dopasowana (często używane przez reguły catch-all i fallback).
 *Przykład:* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`

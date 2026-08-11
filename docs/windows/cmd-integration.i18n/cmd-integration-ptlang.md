@@ -16,7 +16,7 @@ mkdir %USERPROFILE%\bin
 
 Abra **Propriedades do Sistema → Variáveis de Ambiente** e adicione `%USERPROFILE%\bin` à variável `PATH` do seu usuário.
 
-Como alternativa, execute isso em um prompt CMD elevado (entra em vigor após reabrir o CMD):
+Como alternativa, execute-o em um prompt CMD elevado (entra em vigor após reabrir o CMD):
 
 ```cmd
 setx PATH "%USERPROFILE%\bin;%PATH%"
@@ -153,7 +153,7 @@ __CODE_BLOCO_3__
 - **Scripts auxiliares**: `update_github_ip.bat` e `start_service.bat` devem existir em seu `PATH` ou em `%USERPROFILE%\bin`. Estes são os equivalentes CMD das funções shell `update_github_ip` e `start_service`.
 - **`bash` para o script Kiwix**: Se o WSL estiver instalado, `bash` estará disponível no CMD e o script `.sh` será executado diretamente. Caso contrário, adapte `kiwix-docker-start-if-not-running.sh` para um equivalente `.bat`.
 - **Tratamento de cotações**: o CMD tem regras de cotação rígidas e frágeis. Se sua consulta contiver caracteres especiais (`&`, `|`, `>`, `<`), coloque toda a consulta entre aspas duplas: `s "sua & pergunta"`.
-- **limitação `set /p`**: `set /p` só lê a primeira linha de um arquivo. Para saída multilinha, use `type` para imprimir o arquivo diretamente (como feito na ramificação de longo tempo limite).
+- **limitação `set /p`**: `set /p` só lê a primeira linha de um arquivo. Para saída multilinha, use `type` para imprimir o arquivo diretamente (como feito na ramificação de tempo limite longo).
 
 ## Características
 
