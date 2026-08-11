@@ -66,8 +66,8 @@ AWK_SCRIPT='{
     }    gsub(/FUZZY_MAP_pre\.py/, "⚙️", short_path);
     gsub(/FUZZY_MAP\.py/, "📄", short_path);
     gsub(/PUNCTUATION_MAP\.py/, "※", short_path);
-    if (use_ditto == "1") {
-        if (full_path == prev_full_path_ditto) {
+if (use_ditto == "1") {
+        if (full_path == prev_full_path) {
             ditto_count++;
         } else {
             ditto_count = 0;
