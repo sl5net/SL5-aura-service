@@ -1,12 +1,15 @@
-# Windows Batch-Dateien MÜSSEN immer CRLF sein (auch auf Linux)
+# Global fallback: auto-detect text files and enforce LF
+* text=auto eol=lf
+
+# Windows Batch scripts require CRLF
 *.bat text eol=crlf
 *.cmd text eol=crlf
 
-# PowerShell Skripte (sicher ist sicher)
+# PowerShell scripts
 *.ps1 text eol=crlf
 
-# Linux Shell Skripte MÜSSEN immer LF sein (sonst gehen sie auf Linux kaputt)
+# Shell scripts must use LF to avoid syntax errors on Linux
 *.sh text eol=lf
 
-# Python Dateien behandelt Git automatisch richtig (auto)
-*.py text auto
+# Python source files enforce LF (PEP 8 standard)
+*.py text eol=lf
