@@ -1,6 +1,6 @@
 # Intégration de l'invite de commande (CMD) (Windows)
 
-Pour faciliter l'interaction avec la CLI STT (Speech-to-Text) à partir de l'invite de commande Windows, vous pouvez créer un fichier batch « s.bat » et le placer sur votre « PATH ». Cela vous permet de taper simplement « votre question » dans n'importe quelle fenêtre CMD.
+Pour faciliter l'interaction avec la CLI STT (Speech-to-Text) à partir de l'invite de commande Windows, vous pouvez créer un fichier batch « s.bat » et le placer sur votre « PATH ». Cela vous permet de taper simplement « votre question » dans n'importe quelle fenêtre CMD.
 
 > **Remarque :** CMD (cmd.exe) est l'ancien shell Windows et présente des limitations importantes par rapport aux shells PowerShell ou Unix. Pour une expérience plus riche, envisagez plutôt d'utiliser le [PowerShell Integration](.././powershell-integration.i18n/powershell-integration-frlang.md) ou le [WSL Integration](.././wsl-integration.i18n/wsl-integration-frlang.md).
 

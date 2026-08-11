@@ -8,9 +8,9 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
 # Import the core engine processor
 from scripts.py.func.process_text_in_background import process_text_in_background

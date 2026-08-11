@@ -5,7 +5,7 @@ z kodu źródłowego `FUZZY_MAP_pre` / `FUZZY_MAP` i historii Git, ładując
 „zastępowanie” tekstu z osobnego pliku w czasie wykonywania, zamiast kodowania go na stałe.
 
 Jest to szczególnie przydatne podczas transmisji na żywo lub udostępniania ekranu, gdy mapa jest wyświetlana
-Sam kod źródłowy może być widoczny, ale plik, do którego się odwołuje, nie.
+Sam kod źródłowy może być widoczny, ale plik odniesienia nie.
 
 ---
 
@@ -48,7 +48,7 @@ zastępuje):
 Plik jest rozwiązywany w następujący sposób:
 
 1. Ścieżka_źródłowa wtyczki (zapisywana automatycznie przez moduł ładujący mapy) to
-połączone z `SL5NET_AURA_PROJECT_ROOT` (czytane z `SL5NET_AURA_PROJECT_ROOT`
+połączone z `SL5NET_AURA_PROJECT_ROOT` (odczytywane z `SL5NET_AURA_PROJECT_ROOT`
 zmienna środowiskowa), aby uzyskać katalog wtyczki.
 2. Wartość „zamienna” jest dołączana do tego katalogu.
 3. Jeśli „FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL” nie ma wartości „True”, rozwiązana ścieżka
@@ -62,7 +62,7 @@ oryginalny ciąg „zastępczy” jest zwracany bez zmian.
 
 ## 4. Uwagi dotyczące bezpieczeństwa
 
-- Włącz opcję „FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL” tylko wtedy, gdy rozumiesz
+- Włącz `FILE4REPLACEMENT_ALLOW_PATH_TRAVERSAL` tylko wtedy, gdy rozumiesz
 implikacje: pozwala każdemu użytkownikowi, który może edytować plik `FUZZY_MAP_pre` (np.
 za pośrednictwem edytora map online), aby odczytać dowolne pliki, które może wykonać proces Aura
 dostęp i wyświetlanie ich zawartości jako tekstu wyjściowego na żywo.

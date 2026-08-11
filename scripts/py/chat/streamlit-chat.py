@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 import streamlit.components.v1 as components
 import socket
 os.environ["INTERFACE"] = "web"
-# PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+# SL5NET_AURA_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
 
 os.environ["INTERFACE"] = "web"
@@ -95,7 +95,7 @@ def st_speak(text, speed=1.0):
     """
     components.html(speak_js, height=0)
 
-# print("Loading .secrets from:", PROJECT_ROOT / ".secrets")
+# print("Loading .secrets from:", SL5NET_AURA_PROJECT_ROOT / ".secrets")
 
 API_PORT = 8830
 API_ENDPOINT = "process_cli"

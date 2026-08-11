@@ -33,7 +33,7 @@ __代码_块_3__
 ## CMD 特定注释
 
 - **没有本机进程超时**：CMD 没有相当于 Unix 的“超时”。该脚本将超时逻辑委托给 PowerShell 的“WaitForExit”。 PowerShell 必须可用（它适用于所有现代 Windows 系统）。
-
+- **`SL5NET_AURA_PROJECT_ROOT`**：通过系统属性将其设置为永久用户环境变量，或在“.bat”文件中硬编码路径。
 - **帮助脚本**：`update_github_ip.bat` 和 `start_service.bat` 必须存在于您的 `PATH` 或 `%USERPROFILE%\bin` 中。这些是 `update_github_ip` 和 `start_service` shell 函数的 CMD 等效项。
 - **Kiwix 脚本的`bash`：如果安装了 WSL，则 CMD 中可以使用 `bash`，并且`.sh` 脚本将直接运行。否则，将 `kiwix-docker-start-if-not-running.sh` 修改为等效的 `.bat`。
 - **报价处理**：CMD 具有严格且脆弱的报价规则。如果您的查询包含特殊字符（`&`、`|`、`>`、`<`），请将整个查询用双引号引起来：`s "your & Question"`。

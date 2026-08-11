@@ -75,7 +75,7 @@ __代码_块_6__
 
 |文件 |相|描述 |
 |---|---|---|
-| `FUZZY_MAP_pre.py` | Pre-LanguageTool |在拼写检查之前应用 |
+| `FUZZY_MAP_pre.py` |预语言工具 |在拼写检查之前应用 |
 | `FUZZY_MAP.py` |后语言工具 |拼写检查后应用 |
 | `PUNCTUATION_MAP.py` |预语言工具 |标点符号规则 |
 

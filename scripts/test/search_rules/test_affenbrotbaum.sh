@@ -10,13 +10,13 @@ clear
 #   bash scripts/search_rules/test_affenbrotbaum.sh --check-t7    -> parse log after manual run
 
 source "$(dirname "${BASH_SOURCE[0]}")/search_helpers.sh"
-cd "$PROJECT_ROOT" || exit 1
+cd "$SL5NET_AURA_PROJECT_ROOT" || exit 1
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOGFILE="$PROJECT_ROOT/log/test_affenbrotbaum.sh.log"
-mkdir -p "$PROJECT_ROOT/log"
+LOGFILE="$SL5NET_AURA_PROJECT_ROOT/log/test_affenbrotbaum.sh.log"
+mkdir -p "$SL5NET_AURA_PROJECT_ROOT/log"
 
-TARGET_FILE="$PROJECT_ROOT/config/maps/_privat/job/bewerbung/de-DE/FUZZY_MAP_pre.py"
+TARGET_FILE="$SL5NET_AURA_PROJECT_ROOT/config/maps/_privat/job/bewerbung/de-DE/FUZZY_MAP_pre.py"
 NEEDLE="aff"
 
 log() {
@@ -49,7 +49,7 @@ run_automated_tests() {
 
     SCOPED_OUT=$(bash "$SCRIPT_DIR/run_rule.sh" --load-scoped 2>/dev/null)
     T3=$(echo "$SCOPED_OUT" | grep -cF "$NEEDLE")
-    pass_fail "T3_load_scoped_pipeline" "$T3" "proot=$(cat "$PROJECT_ROOT/data/_search_rules_state/.search_rules_proot" 2>/dev/null)"
+    pass_fail "T3_load_scoped_pipeline" "$T3" "proot=$(cat "$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_proot" 2>/dev/null)"
 
     T4=$(echo "$FULL_OUT" | fzf --delimiter=$'\t' --with-nth=1 --filter="$NEEDLE" 2>/dev/null | wc -l)
     pass_fail "T4_fzf_filter_on_full_output" "$T4" "mode=non-interactive-filter"
@@ -60,7 +60,7 @@ run_automated_tests() {
     T5=$(echo -e "EXAMPLE: $NEEDLE" | fzf --filter="$NEEDLE" 2>/dev/null | wc -l)
     pass_fail "T5_fzf_filter_minimal_line" "$T5" "mode=synthetic-single-line"
 
-    H_FILE="$PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
+    H_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
     LAST_IQ=$(tail -n 1 "$H_FILE" 2>/dev/null)
     if [ -z "$LAST_IQ" ]; then
         echo "[PASS] T6_history_query_empty (matches=1)"

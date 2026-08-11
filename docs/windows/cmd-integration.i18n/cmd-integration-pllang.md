@@ -1,6 +1,6 @@
 # Integracja z wierszem poleceń (CMD) (Windows)
 
-Aby ułatwić interakcję z interfejsem CLI STT (Speech-to-Text) z wiersza poleceń systemu Windows, możesz utworzyć plik wsadowy `s.bat` i umieścić go w ścieżce `PATH`. Dzięki temu możesz po prostu wpisać „twoje pytanie” w dowolnym oknie CMD.
+Aby ułatwić interakcję z interfejsem CLI STT (przetwarzanie mowy na tekst) z poziomu wiersza poleceń systemu Windows, możesz utworzyć plik wsadowy `s.bat` i umieścić go w ścieżce `PATH`. Dzięki temu możesz po prostu wpisać „twoje pytanie” w dowolnym oknie CMD.
 
 > **Uwaga:** CMD (cmd.exe) to starsza powłoka systemu Windows, która ma znaczne ograniczenia w porównaniu z powłokami PowerShell i Unix. Aby uzyskać bogatsze wrażenia, rozważ zamiast tego użycie [PowerShell Integration](.././powershell-integration.i18n/powershell-integration-pllang.md) lub [WSL Integration](.././wsl-integration.i18n/wsl-integration-pllang.md).
 
@@ -34,7 +34,7 @@ __KOD_BLOKU_3__
 
 - **Brak natywnego limitu czasu procesu**: CMD nie ma odpowiednika uniksowego limitu czasu. Ten skrypt deleguje logikę limitu czasu do funkcji „WaitForExit” programu PowerShell. PowerShell musi być dostępny (jest we wszystkich nowoczesnych systemach Windows).
 - **`SL5NET_AURA_PROJECT_ROOT`**: Ustaw tę opcję jako stałą zmienną środowiskową użytkownika poprzez Właściwości systemu lub zakoduj na stałe ścieżkę w pliku `.bat`.
-- **Skrypty pomocnicze**: `update_github_ip.bat` i `start_service.bat` muszą istnieć w Twojej `PATH` lub w `%USERPROFILE%\bin`. Są to odpowiedniki CMD funkcji powłoki `update_github_ip` i `start_service`.
+- **Skrypty pomocnicze**: `update_github_ip.bat` i `start_service.bat` muszą istnieć w `PATH` lub w `%USERPROFILE%\bin`. Są to odpowiedniki CMD funkcji powłoki `update_github_ip` i `start_service`.
 - **`bash` dla skryptu Kiwix**: Jeśli zainstalowany jest WSL, `bash` jest dostępny w CMD i skrypt `.sh` zostanie uruchomiony bezpośrednio. W przeciwnym razie dostosuj `kiwix-docker-start-if-not-running.sh` do odpowiednika `.bat`.
 - **Obsługa ofert**: CMD ma rygorystyczne i niestabilne zasady dotyczące kwotowań. Jeśli zapytanie zawiera znaki specjalne (`&`, `|`, `>`, `<`), umieść całe zapytanie w cudzysłowie: `s "Twoje i pytanie"`.
 - **`ograniczenie set /p`**: `set /p` czyta tylko pierwszą linię pliku. W przypadku wyjścia wielowierszowego użyj `type`, aby bezpośrednio wydrukować plik (tak jak zrobiono to w gałęzi o długim czasie oczekiwania).

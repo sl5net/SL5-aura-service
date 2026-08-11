@@ -104,7 +104,7 @@ L’objectif est d’améliorer encore ce système. Par exemple, fournir un moye
   
 t1- Es ist in der Tat wesentlich benutzerfreundlicher and komfortabler, die Steuerung über die Sprachbefehle direct in diesem Dokumentationsabschnitt hervorzuheben [1].
 
-t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (comme « Aura, Lernmodus einschalten / ausschalten ») et les détails, comme « toggle_learning.py » das Aus- et Einkommentieren automatisiert [2].
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (comme « Aura, Lernmodus einschalten / ausschalten ») et les détails sont définis, comme « toggle_learning.py » das Aus- et Einkommentieren automatisés [2].
 
 
 ### Activation du mode d'apprentissage (formation inégalée)

@@ -5,26 +5,26 @@ from pathlib import Path
 
 
 def transform_file_content(content: str) -> tuple[str, bool]:
-    """Transforms PROJECT_ROOT references to SL5NET_AURA_PROJECT_ROOT safely."""
-    if "PROJECT_ROOT" not in content and "SL5NET_AURA_PROJECT_ROOT" not in content:
+    """Transforms SL5NET_AURA_PROJECT_ROOT references to SL5NET_AURA_PROJECT_ROOT safely."""
+    if "SL5NET_AURA_PROJECT_ROOT" not in content and "SL5NET_AURA_PROJECT_ROOT" not in content:
         return content, False
 
     original = content
 
     content = re.sub(
-        r"\bPROJECT_ROOT\s*=\s*(?:Path\([^\n]+\)|os\.environ\.get\([^\n]+\))",
+        r"\bSL5NET_AURA_PROJECT_ROOT\s*=\s*(?:Path\([^\n]+\)|os\.environ\.get\([^\n]+\))",
         "SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()",
         content,
     )
 
     # Replace os.environ.get(...) assignments
     content = re.sub(
-        r"(?:PROJECT_ROOT)\s*=\s*os\.environ\.get\(['\"](?:SL5NET_AURA_PROJECT_ROOT|PROJECT_ROOT)['\"][^\n]*\)",
+        r"(?:SL5NET_AURA_PROJECT_ROOT)\s*=\s*os\.environ\.get\(['\"](?:SL5NET_AURA_PROJECT_ROOT|SL5NET_AURA_PROJECT_ROOT)['\"][^\n]*\)",
         "SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()",
         content,
     )
 
-    content = re.sub(r"\bPROJECT_ROOT\b", "SL5NET_AURA_PROJECT_ROOT", content)
+    content = re.sub(r"\bSL5NET_AURA_PROJECT_ROOT\b", "SL5NET_AURA_PROJECT_ROOT", content)
 
     # Ensure import statement exists if get_aura_project_root is used
     import_stmt = (
@@ -70,7 +70,7 @@ def main():
     target_ext = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else "py"
 
     target_dir = Path(target_str).resolve()
-    print(f"Starting PROJECT_ROOT replacement {target_ext}-files in: {target_dir}")
+    print(f"Starting SL5NET_AURA_PROJECT_ROOT replacement {target_ext}-files in: {target_dir}")
 
     modified = process_directory(target_dir,target_ext)
     print(f"\nReplacement completed. Total modified {target_ext}-files: {len(modified)}")

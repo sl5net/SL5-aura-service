@@ -6,7 +6,7 @@ STT (Speech-to-Text) CLI との対話を容易にするために、`~/.zshrc` �
 
 ## セットアップ手順
 
-1. 任意のエディターで Zsh 構成を開きます。
+1. 好みのエディターで Zsh 構成を開きます。
    ```zsh
    nano ~/.zshrc
    open -e ~/.zshrc   # opens in TextEdit
@@ -85,7 +85,7 @@ s() {
 
 ## macOS 固有の注意事項
 
-- **`timeout` は macOS に組み込まれていません。** この機能を使用する前に、Homebrew 経由でインストールしてください。
+- **「timeout」は macOS に組み込まれていません。** この機能を使用する前に、Homebrew 経由でインストールしてください。
   ```zsh
   brew install coreutils
   ```

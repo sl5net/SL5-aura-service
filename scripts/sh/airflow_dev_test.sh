@@ -19,24 +19,24 @@ if [ "${OS:-}" = "Windows_NT" ] || [ -n "${WINDIR:-}" ]; then
 else
   tmp_dir='/tmp'
 fi
-PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+SL5NET_AURA_PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
 
 
 DAG_ID="${1:-aura_quiz_validation}"
 TASK_ID="${2:-}"
 
 echo "${YELLOW}=== Aura Airflow Dev-Test ===${NC}"
-echo "Project Root : $PROJECT_ROOT"
+echo "Project Root : $SL5NET_AURA_PROJECT_ROOT"
 echo "DAG          : $DAG_ID"
 
 # --- .venv aktivieren ---
-source "$PROJECT_ROOT/.venv/bin/activate"
-export AIRFLOW_HOME="$PROJECT_ROOT/orchestration"
-export AIRFLOW__CORE__DAGS_FOLDER="$PROJECT_ROOT/orchestration/dags"
+source "$SL5NET_AURA_PROJECT_ROOT/.venv/bin/activate"
+export AIRFLOW_HOME="$SL5NET_AURA_PROJECT_ROOT/orchestration"
+export AIRFLOW__CORE__DAGS_FOLDER="$SL5NET_AURA_PROJECT_ROOT/orchestration/dags"
 
 # --- DAG parsen (schnellster Check) ---
 echo "\n${YELLOW}[1/3] Parse-Check...${NC}"
-"$PROJECT_ROOT/.venv/bin/python3" "$PROJECT_ROOT/orchestration/dags/aura_orchestration_dag.py" 2>&1 \
+"$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3" "$SL5NET_AURA_PROJECT_ROOT/orchestration/dags/aura_orchestration_dag.py" 2>&1 \
   | grep -v "DeprecatedImportWarning\|deprecated\|py.warnings" \
   | grep -v "^$" || true
 echo "${GREEN}✅ Parse OK${NC}"

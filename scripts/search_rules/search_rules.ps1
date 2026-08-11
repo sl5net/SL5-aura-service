@@ -1,4 +1,4 @@
-# scripts/search_rules/search_rules.ps1
+﻿# scripts/search_rules/search_rules.ps1
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 param(
     [string]$MAPS_DIR = ""
@@ -18,14 +18,14 @@ $env:PYTHONIOENCODING = "utf-8:replace"
 
 $MY_HOME = [Environment]::GetFolderPath("UserProfile")
 $SCRIPT_DIR   = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
+$SL5NET_AURA_PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent $SCRIPT_DIR)
 
 $ENABLE_LOGGING = $true
 
 
 
 $ErrorActionPreference = 'Stop'
-$LOG_DIR = Join-Path $PROJECT_ROOT "log"
+$LOG_DIR = Join-Path $SL5NET_AURA_PROJECT_ROOT "log"
 if (-not (Test-Path $LOG_DIR)) { [void](New-Item -ItemType Directory -Path $LOG_DIR -Force) }
 
 $ScriptName = [System.IO.Path]::GetFileNameWithoutExtension((Get-Variable MyInvocation -Scope Script).Value.MyCommand.Path)
@@ -60,17 +60,17 @@ DBG "Script started."
 DBG "EXACT RUNNING PATH: $($MyInvocation.MyCommand.Definition)"
 
 
-$PYTHON_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+$PYTHON_BIN = Join-Path $SL5NET_AURA_PROJECT_ROOT ".venv\Scripts\python.exe"
 if (-not (Test-Path $PYTHON_BIN)) { $PYTHON_BIN = "python.exe" }
-#$PYTHONW_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\pythonw.exe"
-$PYTHONW_BIN = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+#$PYTHONW_BIN = Join-Path $SL5NET_AURA_PROJECT_ROOT ".venv\Scripts\pythonw.exe"
+$PYTHONW_BIN = Join-Path $SL5NET_AURA_PROJECT_ROOT ".venv\Scripts\python.exe"
 if (-not (Test-Path $PYTHONW_BIN)) { $PYTHONW_BIN = $PYTHON_BIN }
 
 
 # scripts/search_rules/search_rules.ps1:42
 # MAPS_DIR priority: param > env MAPS_DIR > default relative to project root
 if (-not $MAPS_DIR) { $MAPS_DIR = $env:MAPS_DIR }
-if (-not $MAPS_DIR) { $MAPS_DIR = Join-Path $PROJECT_ROOT "config\maps" }
+if (-not $MAPS_DIR) { $MAPS_DIR = Join-Path $SL5NET_AURA_PROJECT_ROOT "config\maps" }
 $MAPS_DIR = (Resolve-Path -Path $MAPS_DIR -ErrorAction SilentlyContinue).ProviderPath
 if (-not $MAPS_DIR) {
     Write-Error "MAPS_DIR not found: $MAPS_DIR"
@@ -127,7 +127,7 @@ if (-not $SEARCH_CLOSE_ON_OPEN) { $SEARCH_CLOSE_ON_OPEN = "True" }
     $REPO_URL = $env:GITHUB_BASE_URL
 if (-not $REPO_URL) {
     try {
-        $remote = git -C $PROJECT_ROOT remote get-url origin 2>$null
+        $remote = git -C $SL5NET_AURA_PROJECT_ROOT remote get-url origin 2>$null
         if ($remote) {
             # Convert git@github.com:org/repo.git to https://github.com/org/repo/blob/master
             if ($remote -match "^git@github\.com:(.+)\.git$") {
@@ -145,7 +145,7 @@ if (-not $REPO_URL) {
 function logger_info { return 0; param($m) Write-Host "INFO: $m" -ForegroundColor Cyan }
 
 #logger_info "Initializing search_rules.ps1..."
-#logger_info "Project root: $PROJECT_ROOT"
+#logger_info "Project root: $SL5NET_AURA_PROJECT_ROOT"
 # logger_info "Target maps dir: $MAPS_DIR"
 
 # -----------------------------------------------------------------------------
@@ -169,7 +169,7 @@ if (-not (Get-Command "fzf.exe" -ErrorAction SilentlyContinue)) {
 
 # --- Load initial query from history, but ignore overly long / suspicious entries ---
 
-# Ensure HISTORY_FILE is set; example: $HISTORY_FILE = Join-Path $PROJECT_ROOT ".search_rules_history"
+# Ensure HISTORY_FILE is set; example: $HISTORY_FILE = Join-Path $SL5NET_AURA_PROJECT_ROOT ".search_rules_history"
 #if (-not $HISTORY_FILE) {
 #    $HISTORY_FILE = Join-Path $env:USERPROFILE ".search_rules_history"
 #}
@@ -229,7 +229,7 @@ foreach ($pat in $SearchFilesFilter -split '\|') {
 # Filter by language via filter_maps_by_reality.py
 $FILTER_PY = Join-Path $SCRIPT_DIR "filter_maps_by_reality.py"
 # Convert backslashes to forward slashes to prevent Python escape sequence syntax errors
-$PROJECT_ROOT_POSIX = $PROJECT_ROOT.Replace('\', '/')
+$PROJECT_ROOT_POSIX = $SL5NET_AURA_PROJECT_ROOT.Replace('\', '/')
 $env:AURA_ACTIVE_WINDOW_TITLE = (& $PYTHON_BIN -c "
 import sys
 sys.path.insert(0, '$PROJECT_ROOT_POSIX')
@@ -367,7 +367,7 @@ $binds += "ctrl-g:execute-silent(powershell -NoProfile -WindowStyle Hidden  -Fil
 
 @"
 param(\$file,\$line,\$repo)
-\$rel = \$file.Replace('$PROJECT_ROOT' + [System.IO.Path]::DirectorySeparatorChar, '').Replace('\\','/')
+\$rel = \$file.Replace('$SL5NET_AURA_PROJECT_ROOT' + [System.IO.Path]::DirectorySeparatorChar, '').Replace('\\','/')
 \$url = \"{0}/\$rel#L\$line\" -f \$repo
 Start-Process \$url
 "@ | Out-File -FilePath $helperOpenGithub -Encoding utf8
@@ -455,7 +455,7 @@ while ($true) {
     }
 
 
-    $SELECTION_LOG = Join-Path $PROJECT_ROOT "log\search_rules_selections.log"
+    $SELECTION_LOG = Join-Path $SL5NET_AURA_PROJECT_ROOT "log\search_rules_selections.log"
     if ($SELECTED_LINE) {
         $SELECTED_LINE | Out-File -FilePath $SELECTION_LOG -Append -Encoding utf8
     }
@@ -482,7 +482,7 @@ while ($true) {
                 $LINE_NUM = $parts[2]
                 DBG "DEBUG: Tab-split success. File: $FILE_PATH | Line: $LINE_NUM"
                 $PREVIEW_PY = Join-Path $SCRIPT_DIR "preview_rule.py"
-                $PY = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+                $PY = Join-Path $SL5NET_AURA_PROJECT_ROOT ".venv\Scripts\python.exe"
                 if (Test-Path $PREVIEW_PY) {
                     $PY_EXE = if (Test-Path $PY) { $PY } else { "python" }
                     DBG "DEBUG: Running: $PY_EXE $PREVIEW_PY --extract $FILE_PATH $LINE_NUM"
@@ -513,7 +513,7 @@ while ($true) {
 
 if ($EXEC_QUERY) {
     $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
-    $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+    $PYW = Join-Path $SL5NET_AURA_PROJECT_ROOT ".venv\Scripts\python.exe"
     $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
 
     try {
@@ -536,7 +536,7 @@ if ($EXEC_QUERY) {
 #if ($EXEC_QUERY) {
 #
 #    $RUN_CMD = Join-Path $SCRIPT_DIR "run_palette_command.py"
-#    $PYW = Join-Path $PROJECT_ROOT ".venv\Scripts\python.exe"
+#    $PYW = Join-Path $SL5NET_AURA_PROJECT_ROOT ".venv\Scripts\python.exe"
 #    $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
 #
 #    DBG "RUN_CMD: $RUN_CMD"

@@ -20,9 +20,9 @@ By using AI Assist, you agree to Stack Overflow’s Terms of Service and Privacy
 '''
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-DB_DIR = PROJECT_ROOT / settings.path_unencrypted_cash
+DB_DIR = SL5NET_AURA_PROJECT_ROOT / settings.path_unencrypted_cash
 
 DB_PATH = DB_DIR / "_aura_result_cache.db"
 

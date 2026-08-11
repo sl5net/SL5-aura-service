@@ -1,4 +1,4 @@
-# s.ps1
+﻿# s.ps1
 param(
     [Parameter(ValueFromRemainingArguments=$true)]
     [string[]]$ArgsList
@@ -11,16 +11,16 @@ if (-not $query) {
 
 $tmp_dir = "C:\tmp"
 $pointerFile = "$tmp_dir\sl5_aura\sl5net_aura_project_root"
-$PROJECT_ROOT = (Get-Content -Path $pointerFile -Raw).Trim()
+$SL5NET_AURA_PROJECT_ROOT = (Get-Content -Path $pointerFile -Raw).Trim()
 
 $env:PYTHONUTF8 = "1"
-$env:PYTHONPATH = $PROJECT_ROOT
-$rootFile = $PROJECT_ROOT
+$env:PYTHONPATH = $SL5NET_AURA_PROJECT_ROOT
+$rootFile = $SL5NET_AURA_PROJECT_ROOT
 
-Set-Location -Path $PROJECT_ROOT
+Set-Location -Path $SL5NET_AURA_PROJECT_ROOT
 
-$pyExec = "$PROJECT_ROOT\.venv\Scripts\python.exe"
-$cliScript = "$PROJECT_ROOT\scripts\py\cli_client.py"
+$pyExec = "$SL5NET_AURA_PROJECT_ROOT\.venv\Scripts\python.exe"
+$cliScript = "$SL5NET_AURA_PROJECT_ROOT\scripts\py\cli_client.py"
 
 Write-Host "Setze PYTHONPATH auf: $env:PYTHONPATH"
 Write-Host "Starte Python mit: $pyExec"
@@ -55,13 +55,13 @@ try {
 # 2. Wake up API on-demand if port 8830 is closed
 if (-not $apiOpen) {
     Write-Host "Aura API is offline. Waking up background services..."
-    $startScript = "$PROJECT_ROOT\scripts\py\start_uvicorn_service.py"
+    $startScript = "$SL5NET_AURA_PROJECT_ROOT\scripts\py\start_uvicorn_service.py"
     if (Test-Path $startScript) {
         # Start the Uvicorn/FastAPI service silently in the background
         # Start-Process -FilePath $pyExec -ArgumentList $startScript -NoNewWindow
 
-#       Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $PROJECT_ROOT
-        Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $PROJECT_ROOT
+#       Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $SL5NET_AURA_PROJECT_ROOT
+        Start-Process -FilePath $pyExec -ArgumentList "-X utf8 `"$startScript`"" -NoNewWindow -WorkingDirectory $SL5NET_AURA_PROJECT_ROOT
 
         Start-Sleep -Seconds 2
     } else {

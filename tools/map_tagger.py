@@ -17,9 +17,9 @@ import time
 # -----------------------------------------------------------------------------
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
+SL5NET_AURA_PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
 
-MAPS_DIR = os.path.join(PROJECT_ROOT, "config", "maps")
+MAPS_DIR = os.path.join(SL5NET_AURA_PROJECT_ROOT, "config", "maps")
 SKIP_ALL_FAILURES = False
 
 
@@ -148,7 +148,7 @@ def process_file(filepath):
     shift_offset = 0
 
     # 1. Ensure File Header (Relative Path)
-    rel_path = os.path.relpath(filepath, PROJECT_ROOT)
+    rel_path = os.path.relpath(filepath, SL5NET_AURA_PROJECT_ROOT)
     expected_header = f"# {rel_path}\n"
 
     if not lines or not lines[0].startswith("# config/maps/"):
@@ -253,9 +253,9 @@ def process_file(filepath):
                 new_lines.append(line)
                 continue
 
-            # remove PROJECT_ROOT from filepath in print
-            if filepath.startswith(PROJECT_ROOT):
-                filepath_short = filepath[len(PROJECT_ROOT):].lstrip("/")  # remove leading slash if present
+            # remove SL5NET_AURA_PROJECT_ROOT from filepath in print
+            if filepath.startswith(SL5NET_AURA_PROJECT_ROOT):
+                filepath_short = filepath[len(SL5NET_AURA_PROJECT_ROOT):].lstrip("/")  # remove leading slash if present
             else:
                 filepath_short = filepath
 

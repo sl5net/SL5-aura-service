@@ -1,6 +1,6 @@
 # WSL-Integration (Windows-Subsystem für Linux).
 
-Mit WSL können Sie eine vollständige Linux-Umgebung direkt unter Windows ausführen. Nach der Einrichtung funktioniert die STT-Shell-Integration **identisch mit den Linux Bash- oder Zsh-Anleitungen** – für die Shell-Funktion selbst sind keine Windows-spezifischen Anpassungen erforderlich.
+Mit WSL können Sie eine vollständige Linux-Umgebung direkt unter Windows ausführen. Nach der Einrichtung funktioniert die STT-Shell-Integration **identisch mit den Linux-Bash- oder Zsh-Anleitungen** – für die Shell-Funktion selbst sind keine Windows-spezifischen Anpassungen erforderlich.
 
 > **Empfohlen für:** Windows-Benutzer, die mit einem Linux-Terminal vertraut sind oder WSL bereits für Entwicklungsarbeiten installiert haben. WSL bietet das zuverlässigste Erlebnis und die geringsten Kompatibilitätskompromisse.
 
@@ -94,7 +94,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Der Pfad „PY_EXEC“ in der Funktion („$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3“) funktioniert unverändert korrekt.
+Der „PY_EXEC“-Pfad in der Funktion („$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3“) funktioniert unverändert korrekt.
 
 ### Ausführen von „s“ über das Windows-Terminal
 

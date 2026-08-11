@@ -151,7 +151,7 @@ s your question here
 ## CMD 固有の注意事項
 
 - **ネイティブ プロセス タイムアウトなし**: CMD には、Unix の「タイムアウト」に相当するものがありません。このスクリプトは、タイムアウト ロジックを PowerShell の `WaitForExit` にインラインで委任します。 PowerShell が利用可能である必要があります (最新のすべての Windows システムにあります)。
-- **`SL5NET_AURA_PROJECT_ROOT`**: システム プロパティを介してこれを永続的なユーザー環境変数として設定するか、`.bat` ファイル内のパスをハードコードします。
+- **`SL5NET_AURA_PROJECT_ROOT`**: システム プロパティを介してこれを永続的なユーザー環境変数として設定するか、`.bat` ファイル内のパスをハードコーディングします。
 - **ヘルパー スクリプト**: `update_github_ip.bat` と `start_service.bat` が `PATH` または `%USERPROFILE%\bin` に存在する必要があります。これらは、CMD の「update_github_ip」および「start_service」シェル関数に相当します。
 - **Kiwix スクリプト用の `bash`**: WSL がインストールされている場合、CMD で `bash` が利用可能になり、`.sh` スクリプトが直接実行されます。それ以外の場合は、「kiwix-docker-start-if-not-running.sh」を同等の「.bat」に適応させます。
 - **引用符の処理**: CMD には厳密かつ脆弱な引用規則があります。クエリに特殊文字 (`&`、`|`、`>`、`<`) が含まれている場合は、クエリ全体を二重引用符で囲みます: `s "your & question"`。

@@ -164,9 +164,9 @@ def _apply_fix_name_error(file_path, bad_name, logger):
         if not has_import and filename in ["FUZZY_MAP.py", "FUZZY_MAP_pre.py"]:
             temp = """import re # noqa: F401
 from pathlib import Path as p;import os as o # noqa: E702
-with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
-#(f'{str(__file__)}', r'^(.*)$', 10,{'on_mat ch_exec':[PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
+#(f'{str(__file__)}', r'^(.*)$', 10,{'on_mat ch_exec':[SL5NET_AURA_PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']}), # noqa: E702
                         """
             lines.insert(1, f"{temp}\n")
             fixed_content = True
@@ -176,7 +176,7 @@ with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_roo
         old before 26.5.'26 13:34 Tue
         
         #from pathlib import Path as p;import os as o # noqa: E702
-        #with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+        #with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
         The only edge case: if someone ever runs a map file standalone outside the engine, the env os.environ var won't be set. You can guard that with os.environ.get(...) and a clear error message, but that's a minor concern.
 

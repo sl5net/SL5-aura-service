@@ -15,12 +15,12 @@ MAX_PATH_LIMIT = 260
 
 def analyze_path_headroom():
     # 1. Determine Project Root
-    # Assuming this script is located in: [PROJECT_ROOT]/tools/tests/
+    # Assuming this script is located in: [SL5NET_AURA_PROJECT_ROOT]/tools/tests/
     # We go up two levels from the script's location.
     script_location = Path(__file__).parent.resolve()
 
     # Adjust .parents[1] if your folder structure is different (e.g., just tools/)
-    # .parents[1] means: tools/tests -> tools -> PROJECT_ROOT
+    # .parents[1] means: tools/tests -> tools -> SL5NET_AURA_PROJECT_ROOT
     project_root = script_location.parents[1]
 
     print(f"--- PATH ANALYSIS TOOL ---")

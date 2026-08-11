@@ -41,7 +41,7 @@ cat << 'EOF' >> "$MAP_FILE"
 # Catch-All rule appended dynamically for testing
 FUZZY_MAP_pre.append(
     (f'{str(__file__)}', r'^(.*)$', 10, {
-        'on_match_exec': [PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
+        'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
     })
 )
 EOF

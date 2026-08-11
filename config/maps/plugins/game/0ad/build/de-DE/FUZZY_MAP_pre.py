@@ -90,6 +90,12 @@ FUZZY_MAP_pre = [
     # EXAMPLE: build markt
     ('m', fr'^{baue}?(ma|mar[ck]t?|bau\s*markt|markt\s*bauen|build\s*market|market)\s*$', 99, _common_meta),
 
+    # EXAMPLE: baue hafen
+    ('j', fr'^{baue}?(hafen)$', 99, _common_meta),
+
+    # EXAMPLE: Diplomatie
+    ('<', r'^Diplomat\w*$'),
+
     # schmiede
 
     # EXAMPLE: schmiede

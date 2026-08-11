@@ -57,9 +57,9 @@ import os
 from pathlib import Path
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
+SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
 
-TEST_FILE4_path = PROJECT_ROOT / "tools" / "tests" / "TEST_FILE4REPLACEMENT.txt"
+TEST_FILE4_path = SL5NET_AURA_PROJECT_ROOT / "tools" / "tests" / "TEST_FILE4REPLACEMENT.txt"
 
 FUZZY_MAP_pre = [
     ('.Zebra.txt', r'^(Zebra)$', 85,

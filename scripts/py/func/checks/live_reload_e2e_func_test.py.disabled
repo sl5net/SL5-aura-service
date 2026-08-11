@@ -18,12 +18,12 @@ TEST_INPUT = 'Recaps'
 EXPECTED_OUTPUT = 'regex'
 LANG_CODE = 'de-DE'
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
-# MAP_TARGET_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "standard_actions"
-MAP_TARGET_DIR = PROJECT_ROOT / "config" / "maps" / "plugins" / "standard_actions" / "calculator"
+SL5NET_AURA_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
+# MAP_TARGET_DIR = SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "standard_actions"
+MAP_TARGET_DIR = SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "standard_actions" / "calculator"
 
-# MAP_BACKUP_DIR = PROJECT_ROOT / "standard_actions_backup_temp"
-# TEMP_DIR = PROJECT_ROOT / "log"
+# MAP_BACKUP_DIR = SL5NET_AURA_PROJECT_ROOT / "standard_actions_backup_temp"
+# TEMP_DIR = SL5NET_AURA_PROJECT_ROOT / "log"
 temp_dir = (Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp"))
 MAP_BACKUP_DIR = temp_dir / "sl5_aura" / "standard_actions_backup_temp"  # ← /tmp/
 

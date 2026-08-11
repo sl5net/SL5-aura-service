@@ -39,7 +39,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
 
     trigger_file_path = config["TRIGGER_FILE"]
     heartbeat_file = config["HEARTBEAT_FILE"]
-    project_root = config["PROJECT_ROOT"]
+    project_root = config["SL5NET_AURA_PROJECT_ROOT"]
 
     SPEECH_PAUSE_TIMEOUT = config["SPEECH_PAUSE_TIMEOUT"]
 
@@ -159,13 +159,13 @@ def start_background_model_loader(logger, config, loaded_models):
     def loader_thread_target():
 
         models_to_load = {
-            path.split("model-")[1][:2]: config["PROJECT_ROOT"] / "models" / path
+            path.split("model-")[1][:2]: config["SL5NET_AURA_PROJECT_ROOT"] / "models" / path
             for path in config["PRELOAD_MODELS"]
         }
 
         # models_to_load = {
-            # "de": config["PROJECT_ROOT"] / "models/vosk-model-de-0.21",
-            # "en": config["PROJECT_ROOT"] / "models/vosk-model-en-us-0.22"
+            # "de": config["SL5NET_AURA_PROJECT_ROOT"] / "models/vosk-model-de-0.21",
+            # "en": config["SL5NET_AURA_PROJECT_ROOT"] / "models/vosk-model-en-us-0.22"
         #}
         try:
 
@@ -177,7 +177,7 @@ def start_background_model_loader(logger, config, loaded_models):
 
 
     # --- START: ONE-TIME PRIORITIZATION ON STARTUP ---
-    project_root = config["PROJECT_ROOT"]
+    project_root = config["SL5NET_AURA_PROJECT_ROOT"]
     last_used_file = project_root / "config/model_name_lastused.txt"
 
     # start_background_model_loader(logger, config, loaded_models)

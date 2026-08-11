@@ -51,7 +51,7 @@ __代码_块_1__
 加入“SL5NET_AURA_PROJECT_ROOT”（从“SL5NET_AURA_PROJECT_ROOT”读取
 环境变量）来获取插件的目录。
 2. `replacement` 值被加入到该目录中。
-3. 除非`FILE4REPLACMENT_ALLOW_PATH_TRAVERSAL`为`True`，否则解析的路径
+3.除非`FILE4REPLACMENT_ALLOW_PATH_TRAVERSAL`为`True`，否则解析的路径
 必须保留在插件的目录中，否则查找将被拒绝。
 4. 无论上述情况如何，任何以以下条目开头的已解析路径
 `FILE4REPLACMENT_DENY_PREFIXES` 始终被拒绝。

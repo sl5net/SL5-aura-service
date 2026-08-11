@@ -108,7 +108,7 @@ Définissez votre distribution WSL comme profil par défaut dans les paramètres
 
 ### Docker à la demande (Linux)
 
-Pour économiser les ressources système, vous pouvez configurer Docker pour qu'il démarre uniquement lorsque cela est nécessaire (par exemple, lorsqu'Aura demande la base de données Trino), plutôt que de s'exécuter constamment en arrière-plan.
+Pour économiser les ressources système, vous pouvez configurer Docker pour qu'il démarre uniquement lorsque cela est nécessaire (par exemple, lorsque Aura demande la base de données Trino), plutôt que de s'exécuter constamment en arrière-plan.
 
 Exécutez les commandes suivantes pour désactiver le service en arrière-plan continu et activer « l'activation du socket » à la place :
 

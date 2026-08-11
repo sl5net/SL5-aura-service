@@ -14,7 +14,7 @@ def windows_apply_correction_with_sync():
 
     current_time = time.time()
     global windows_apply_correction_LAST_NOTIFY_TIME
-    # global PROJECT_ROOT
+    # global SL5NET_AURA_PROJECT_ROOT
     if (current_time - windows_apply_correction_LAST_NOTIFY_TIME) < windows_apply_correction_notify_cooldown:
         return
 
