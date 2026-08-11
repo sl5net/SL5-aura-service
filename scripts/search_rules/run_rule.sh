@@ -56,22 +56,7 @@ get_one_per_file_flag() {
     cat "$ONE_PER_FILE_STATE_FILE" 2>/dev/null || echo "0"
 }
 
-get_single_gui_flag() {
-    cat "$SINGLE_GUI_STATE_FILE" 2>/dev/null || echo "1"
-}
-
-if [ "${1:-}" != "--load-full" ] && [ "${1:-}" != "--load-scoped" ]; then
-    if [ "$(get_single_gui_flag)" = "1" ]; then
-        MY_PID=$$
-        for pid in $(pgrep -f "run_rule.sh"); do
-            if [ "$pid" -ne "$MY_PID" ] && [ "$pid" -ne "$BASHPID" ] && [ "$pid" -ne "$PPID" ]; then
-                if ! pgrep -P "$MY_PID" 2>/dev/null | grep -q "^${pid}$"; then
-                    kill -9 "$pid" 2>/dev/null || true
-                fi
-            fi
-        done
-    fi
-fi
+source "$SCRIPT_DIR/ensure_single_instance.sh" "$@"
 
 get_ignore_flag() {
     local respect
