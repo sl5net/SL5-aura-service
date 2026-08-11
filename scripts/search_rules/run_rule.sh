@@ -13,7 +13,7 @@ export SL5NET_AURA_PROJECT_ROOT
 export PYTHONPATH
 export REPO_URL
 
-source "$SCRIPT_DIR/search_helpers.sh"
+source "$SCRIPT_DIR/func/common/search_helpers.sh"
 cd "$SL5NET_AURA_PROJECT_ROOT" || exit 1
 
 FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --glob=/g; s/^/--glob=/')
@@ -160,15 +160,15 @@ if [ "$ONE_PER_FILE_STATE" = "1" ]; then
                 fi" \
             --bind="alt-g:execute-silent(echo restart > $RESTART_MARKER)+clear-query+abort" \
             --bind="alt-f:$ALT_F_ACTION" \
-            --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
-            --bind="alt-u:execute-silent(bash \$SCRIPT_DIR/toggle_single_gui.sh; echo restart > $RESTART_MARKER)+abort" \
-            --bind="right-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh up \$SL5NET_AURA_PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
-            --bind="double-click:execute-silent(bash \$SCRIPT_DIR/proot_control.sh set \$SL5NET_AURA_PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_last_path)))\"; echo restart > $RESTART_MARKER)+clear-query+abort" \
-            --bind="alt-r:execute-silent(bash \$SCRIPT_DIR/proot_control.sh reset \$SL5NET_AURA_PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
+            --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
+            --bind="alt-u:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_single_gui.sh; echo restart > $RESTART_MARKER)+abort" \
+            --bind="right-click:execute-silent(bash \$SCRIPT_DIR/func/common/proot_control.sh up \$SL5NET_AURA_PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
+            --bind="double-click:execute-silent(bash \$SCRIPT_DIR/func/common/proot_control.sh set \$SL5NET_AURA_PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_last_path)))\"; echo restart > $RESTART_MARKER)+clear-query+abort" \
+            --bind="alt-r:execute-silent(bash \$SCRIPT_DIR/func/common/proot_control.sh reset \$SL5NET_AURA_PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --history="$H_FILE" --query="$CURRENT_QUERY" \
             --with-nth=1 \
             --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3} |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+F: 1/File | 2xClick: Set | RClick: Up | Alt+R: Reset | F1: Legend"  \
-            --bind="f1:execute-silent(bash \$SCRIPT_DIR/toggle_legend.sh)+refresh-preview" \
+            --bind="f1:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_legend.sh)+refresh-preview" \
             --bind="ctrl-z:previous-history" \
             --bind="ctrl-y:next-history" \
             --bind="ctrl-backspace:backward-kill-word" \
@@ -181,7 +181,7 @@ if [ "$ONE_PER_FILE_STATE" = "1" ]; then
             --bind="end:end-of-line" \
             --bind="ctrl-g:execute-silent(f={2}; rel=\${f#\$SL5NET_AURA_PROJECT_ROOT/}; systemd-run --user --collect --quiet xdg-open \"\$REPO_URL/\$rel#L{3}\")" \
             --expect="ctrl-e,ctrl-r" \
-            --preview='python3 '"$SCRIPT_DIR"'/preview_rule.py {2} {3}' \
+            --preview='python3 '"$SCRIPT_DIR"'/func/common/preview_rule.py {2} {3}' \
     )
 
     if [ -f "$RESTART_MARKER" ]; then
@@ -227,8 +227,8 @@ if [[ -z "$KEY" || "$KEY" = "ctrl-r" ]]; then
     if [[ -z "$KEY" && -n "$SEL" ]]; then
         logger_info "50: Enter pressed -> use"
         logger_info "$F_PATH:$L_NUM"
-        QUERY=$(python3 "$SCRIPT_DIR/preview_rule.py" --extract "$F_PATH" "$L_NUM")
-        logger_info "python3 '$SCRIPT_DIR/preview_rule.py' --extract '$F_PATH' '$L_NUM'"
+        QUERY=$(python3 "$SCRIPT_DIR/func/common/preview_rule.py" --extract "$F_PATH" "$L_NUM")
+        logger_info "python3 '$SCRIPT_DIR/func/common/preview_rule.py' --extract '$F_PATH' '$L_NUM'"
         logger_info "56: DBG extract='$QUERY'"
     fi
     if [[ -z "$QUERY" ]]; then

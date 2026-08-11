@@ -1,7 +1,7 @@
 #!/bin/bash
 # scripts/search_rules/search_helpers.sh
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SL5NET_AURA_PROJECT_ROOT="${SL5NET_AURA_PROJECT_ROOT:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+HELPER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SL5NET_AURA_PROJECT_ROOT="${SL5NET_AURA_PROJECT_ROOT:-$(cd "$HELPER_DIR/../.." && pwd)}"
 mkdir -p "$SL5NET_AURA_PROJECT_ROOT/log"
 LOGFILE="$SL5NET_AURA_PROJECT_ROOT/log/$(basename "$0").log"
 
