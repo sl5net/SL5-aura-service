@@ -1,5 +1,5 @@
 #!/bin/bash
-# scripts/search_rules/toggle_one_per_file.sh
+# scripts/search_rules/func/common/toggle_one_per_file.sh:2
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SL5NET_AURA_PROJECT_ROOT="${SL5NET_AURA_PROJECT_ROOT:-$(cd "$SCRIPT_DIR/../.." && pwd)}"

@@ -111,13 +111,17 @@ if [ "${1:-}" = "--load-scoped" ]; then
     exit 0
 fi
 
+ALT_G_STATE_FILE="$SCRIPT_DIR/../../data/_search_rules_state/.search_rules_alt_g_active"
+mkdir -p "$(dirname "$ALT_G_STATE_FILE")"
+
+
 RESTART_MARKER="/tmp/.search_rules_restart_$$"
 rm -f "$RESTART_MARKER"
 CURRENT_QUERY="$IQ"
 while true; do
     ONE_PER_FILE_STATE=$(get_one_per_file_flag)
 
-if [ "$ONE_PER_FILE_STATE" = "1" ]; then
+    if [ "$ONE_PER_FILE_STATE" = "1" ]; then
         ALT_F_ACTION="transform:
             bash \$SCRIPT_DIR/func/common/toggle_one_per_file.sh
             echo restart > $RESTART_MARKER
@@ -130,6 +134,51 @@ if [ "$ONE_PER_FILE_STATE" = "1" ]; then
             echo restart > $RESTART_MARKER
             echo 'abort'"
     fi
+
+    ## Alt-G action: always clear .query before toggle; do NOT immediately restore saved_query
+    #if [ "$(cat "$ALT_G_STATE_FILE" 2>/dev/null)" = "1" ]; then
+    #    ALT_G_ACTION="transform:
+    #        # Ensure query is cleared before toggling (so UI is cleared)
+    #        echo \"\" > ${RESTART_MARKER}.query
+    #        # Do NOT cat saved_query > .query here — leave saved_query in place for restoration after restart
+    #        # Do NOT remove ${RESTART_MARKER}.saved_query here
+    #        echo 0 > \"$ALT_G_STATE_FILE\"
+    #        bash \$SCRIPT_DIR/func/common/toggle_one_g_state_file.sh
+    #        echo restart > $RESTART_MARKER
+    #        echo 'abort'"
+    #else
+    #    ALT_G_ACTION="transform:
+    #        # Save current query, then clear .query before toggling
+    #        echo {q} > ${RESTART_MARKER}.saved_query
+    #        echo \"\" > ${RESTART_MARKER}.query
+    #        echo 1 > \"$ALT_G_STATE_FILE\"
+    #        bash \$SCRIPT_DIR/func/common/toggle_one_g_state_file.sh
+    #        echo restart > $RESTART_MARKER
+    #        echo 'abort'"
+    #fi
+
+
+
+
+# scripts/search_rules/run_rule.sh:134
+# TODO 11.8.'26 19:03 Tue :
+#    if [ "$????" = "1" ]; then
+#        ALT_G_ACTION="transform:
+#            bash \$SCRIPT_DIR/func/common/toggle_????.sh
+#            echo restart > $RESTART_MARKER
+#            echo 'abort'"
+#    else
+#        ALT_G_ACTION="transform:
+#            echo {q} > ${RESTART_MARKER}.saved_query
+#            echo \"\" > ${RESTART_MARKER}.query
+#            bash \$SCRIPT_DIR/func/common/toggle_one_per_file.sh
+#            echo restart > $RESTART_MARKER
+#            echo 'abort'"
+#    fi
+#            --bind="alt-g:$ALT_G_ACTION" \
+
+
+
 
     if [ -n "$CURRENT_QUERY" ]; then
         INIT_INPUT=$(bash "$SCRIPT_DIR/run_rule.sh" --load-full)
