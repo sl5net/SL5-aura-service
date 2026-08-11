@@ -25,7 +25,7 @@ REAL="${REAL:-1}"
 M_DIR="${1:-${MAPS_DIR:-config/maps}}"
 M_DIR="${M_DIR/#\~/$HOME}"
 
-source "$SCRIPT_DIR/get_active_window_title.sh"
+source "$SCRIPT_DIR/func/linux/get_active_window_title.sh"
 
 H_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
 PROOT_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_proot"
@@ -34,9 +34,9 @@ PROOT_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rul
 SINGLE_GUI_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_single_gui"
 [ -f "$SINGLE_GUI_STATE_FILE" ] || echo "1" > "$SINGLE_GUI_STATE_FILE"
 
-source "$SCRIPT_DIR/get_one_per_file_flag.sh"
-source "$SCRIPT_DIR/ensure_single_instance.sh" "$@"
-source "$SCRIPT_DIR/get_ignore_flag.sh"
+source "$SCRIPT_DIR/func/common/get_one_per_file_flag.sh"
+source "$SCRIPT_DIR/func/linux/ensure_single_instance.sh" "$@"
+source "$SCRIPT_DIR/func/common/get_ignore_flag.sh"
 
 
 cp "$H_FILE" "$H_FILE.bak"
