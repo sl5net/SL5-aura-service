@@ -66,8 +66,8 @@ AWK_SCRIPT='{
     }    gsub(/FUZZY_MAP_pre\.py/, "⚙️", short_path);
     gsub(/FUZZY_MAP\.py/, "📄", short_path);
     gsub(/PUNCTUATION_MAP\.py/, "※", short_path);
-    if (use_ditto == "1") {
-        if (full_path == prev_full_path_ditto) {
+if (use_ditto == "1") {
+        if (full_path == prev_full_path) {
             ditto_count++;
         } else {
             ditto_count = 0;
@@ -190,6 +190,18 @@ while true; do
         SORT_OPT="--no-sort"
     fi
     echo "$DITO_STATE" > "$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_ditto"
+    if [ "$DITO_STATE" = "1" ]; then
+        ALT_G_ACTION="transform:
+            echo restart > $RESTART_MARKER
+            echo 'abort'"
+    else
+        ALT_G_ACTION="transform:
+            echo {q} > ${RESTART_MARKER}.saved_query
+            echo \"\" > ${RESTART_MARKER}.query
+            echo restart > $RESTART_MARKER
+            echo 'abort'"
+    fi
+
     F_OUT=$(echo "$INIT_INPUT" | \
         fzf --print-query \
             --no-hscroll \
@@ -207,7 +219,7 @@ while true; do
                     echo restart > $RESTART_MARKER
                     echo 'abort'
                 fi" \
-            --bind="alt-g:execute-silent(echo restart > $RESTART_MARKER)+clear-query+abort" \
+            --bind="alt-g:$ALT_G_ACTION" \
             --bind="alt-f:$ALT_F_ACTION" \
             --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="alt-u:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_single_gui.sh; echo restart > $RESTART_MARKER)+abort" \
@@ -233,21 +245,15 @@ while true; do
             --preview='python3 '"$SCRIPT_DIR"'/func/common/preview_rule.py {2} {3}' \
     )
 
-    if [ -f "$RESTART_MARKER" ]; then
+if [ -f "$RESTART_MARKER" ]; then
         rm -f "$RESTART_MARKER"
 
-        if [ -s "${RESTART_MARKER}.saved_query" ]; then
-            SAVED_QUERY=$(cat "${RESTART_MARKER}.saved_query")
-            rm -f "${RESTART_MARKER}.saved_query"
-        fi
-
-        ONE_PER_FILE_STATE=$(get_one_per_file_flag)
-        if [ "$ONE_PER_FILE_STATE" = "0" ] && [ -n "$SAVED_QUERY" ]; then
-            CURRENT_QUERY="$SAVED_QUERY"
-            SAVED_QUERY=""
-        elif [ -f "${RESTART_MARKER}.query" ]; then
+        if [ -f "${RESTART_MARKER}.query" ]; then
             CURRENT_QUERY=$(cat "${RESTART_MARKER}.query" 2>/dev/null)
             rm -f "${RESTART_MARKER}.query"
+        elif [ -s "${RESTART_MARKER}.saved_query" ]; then
+            CURRENT_QUERY=$(cat "${RESTART_MARKER}.saved_query")
+            rm -f "${RESTART_MARKER}.saved_query"
         fi
 
         continue
