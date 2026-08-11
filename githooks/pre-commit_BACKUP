@@ -99,53 +99,38 @@ bash "$SCRIPT_DIR/check_translator_hijack.sh" || exit 1
 # 1. QUALITY CHECK (Flake8)
 # -----------------------------------------------------------------------------
 
-if [ -d ".venv/Scripts" ]; then
-  VENV_DIR=".venv/Scripts"
-else
-  VENV_DIR=".venv/bin"
-fi
-
 echo "Running ruff auto-fix..."
-if [ -f "$VENV_DIR/ruff" ] || [ -f "$VENV_DIR/ruff.exe" ]; then
-  "$VENV_DIR/ruff" check --fix ./aura_engine.py ./scripts ./config 2>/dev/null || true
+if [ -f .venv/bin/ruff ]; then
+  .venv/bin/ruff check --fix ./aura_engine.py ./scripts ./config 2>/dev/null || true
 fi
 
 # In pre-commit, nach ruff:
 echo "Running pylint (warnings only)..."
 
-# In pre-commit, not use ./aura_engine.py ./scripts ./config
-# proof only staged files:
-
-
-
-
-
-
+# In pre-commit, statt ./aura_engine.py ./scripts ./config
+# only staged files prüfen:
 staged=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' | tr '\n' ' ')
 if [ -n "$staged" ]; then
-  "$VENV_DIR/pylint" $staged \
+  .venv/bin/pylint $staged \
     --disable=all,W0718 \
     --enable=W0702,W0703,W0611,W0612 \
-    --exit-zero
+    --exit-zero  # blockiert NIE den commit, nur Ausgabe
 fi
 
 
 echo "Running flake8 code quality check..."
 
 # Activate virtual environment if it exists
-if [ -f "$VENV_DIR/activate" ]; then
-  source "$VENV_DIR/activate"
+if [ -f .venv/bin/activate ]; then
+  source .venv/bin/activate
 fi
 
-"$VENV_DIR/python" scripts/py/func/checks/check_comment_quality.py --sort-by=quality --fix
+.venv/bin/python scripts/py/func/checks/check_comment_quality.py --sort-by=quality --fix
 echo "✅ check_slop_comments passed. ✅"
 
-"$VENV_DIR/flake8" ./aura_engine.py ./scripts ./config
-
-
-
-
-
+# Run flake8 on specific directories
+# flake8 ./aura_engine.py ./scripts ./config
+./.venv/bin/flake8 ./aura_engine.py ./scripts ./config
 
 # Abort commit if flake8 finds errors
 if [ $? -ne 0 ]; then
@@ -312,8 +297,8 @@ fi
 # -----------------------------------------------------------------------------
 
 # Check if pipreqs is available in the venv
-if [ ! -f "$VENV_DIR/pipreqs" ] && [ ! -f "$VENV_DIR/pipreqs.exe" ]; then
-    echo "pipreqs is not installed in .venv. Please run '$VENV_DIR/pip install pipreqs' inside your virtual environment."
+if [ ! -x ".venv/bin/pipreqs" ]; then
+    echo "pipreqs is not installed in .venv. Please run '.venv/bin/pip install pipreqs' inside your virtual environment."
     exit 1
 fi
 
@@ -338,7 +323,8 @@ echo "INFO: Generating requirements.txt (taking into account .pipreqs-whitelist.
 # -----------------------------------------------------------------------------
 # We use --savepath to tell pipreqs to save the file in the current
 # directory while analyzing the temp directory.
-WARNINGS=$("$VENV_DIR/pipreqs" "$TMPDIR" --savepath ./requirements.txt --force --encoding=utf-8 2>&1 >/dev/null)
+WARNINGS=$(.venv/bin/pipreqs "$TMPDIR" --savepath ./requirements.txt --force --encoding=utf-8 2>&1 >/dev/null)
+
 # Filter warnings. Only show those NOT in the whitelist.
 if [ -s ".pipreqs-whitelist.txt" ]; then
     echo "$WARNINGS" | grep -v -f .pipreqs-whitelist.txt | grep -v "Please, verify manually"
