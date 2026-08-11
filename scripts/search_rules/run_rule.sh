@@ -119,14 +119,14 @@ while true; do
 
 if [ "$ONE_PER_FILE_STATE" = "1" ]; then
         ALT_F_ACTION="transform:
-            bash \$SCRIPT_DIR/toggle_one_per_file.sh
+            bash \$SCRIPT_DIR/func/common/toggle_one_per_file.sh
             echo restart > $RESTART_MARKER
             echo 'abort'"
     else
         ALT_F_ACTION="transform:
             echo {q} > ${RESTART_MARKER}.saved_query
             echo \"\" > ${RESTART_MARKER}.query
-            bash \$SCRIPT_DIR/toggle_one_per_file.sh
+            bash \$SCRIPT_DIR/func/common/toggle_one_per_file.sh
             echo restart > $RESTART_MARKER
             echo 'abort'"
     fi
