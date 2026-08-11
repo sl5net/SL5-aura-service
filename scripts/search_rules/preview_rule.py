@@ -259,7 +259,9 @@ def print_file_header(file_path):
 def save_last_selected_path(file_path):
     """Saves the highlighted map file path for fzf scoped reload state."""
     try:
-        state_file = os.path.join(os.path.expanduser("~"), ".search_rules_last_path")
+        SL5NET_AURA_PROJECT_ROOT = os.environ.get('SL5NET_AURA_PROJECT_ROOT', '')
+        state_file = os.path.join(SL5NET_AURA_PROJECT_ROOT, "data", "_search_rules_state", ".search_rules_last_path")
+
         with open(state_file, "w", encoding="utf-8") as f:
             f.write(os.path.abspath(file_path))
     except Exception:
@@ -268,15 +270,15 @@ def save_last_selected_path(file_path):
 
 def get_proot_display():
     """Reads current PROOT-State and returns it shortened for display."""
-    project_root = os.environ.get('SL5NET_AURA_PROJECT_ROOT', '')
+    SL5NET_AURA_PROJECT_ROOT = os.environ.get('SL5NET_AURA_PROJECT_ROOT', '')
     try:
-        state_file = os.path.join(os.path.expanduser("~"), ".search_rules_proot")
+        state_file = os.path.join(SL5NET_AURA_PROJECT_ROOT, "data", "_search_rules_state", ".search_rules_proot")
         with open(state_file, "r", encoding="utf-8") as f:
             proot_path = f.read().strip()
-        base = os.path.join(project_root, "config", "maps")
+        base = os.path.join(SL5NET_AURA_PROJECT_ROOT, "config", "maps")
         proot_path_abs = os.path.normpath(os.path.abspath(os.path.expanduser(proot_path)))
         base_abs = os.path.normpath(os.path.abspath(base))
-        proj_abs = os.path.normpath(os.path.abspath(project_root))
+        proj_abs = os.path.normpath(os.path.abspath(SL5NET_AURA_PROJECT_ROOT))
 
         if proot_path_abs == base_abs:
             return "config/maps"

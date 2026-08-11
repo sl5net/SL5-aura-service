@@ -3,8 +3,6 @@
 
 ####
 
-source "$(dirname "${BASH_SOURCE[0]}")/search_helpers.sh"
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SL5NET_AURA_PROJECT_ROOT="${SL5NET_AURA_PROJECT_ROOT:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
 PYTHONPATH="$SL5NET_AURA_PROJECT_ROOT${PYTHONPATH:+:$PYTHONPATH}"
@@ -15,6 +13,7 @@ export SL5NET_AURA_PROJECT_ROOT
 export PYTHONPATH
 export REPO_URL
 
+source "$SCRIPT_DIR/search_helpers.sh"
 cd "$SL5NET_AURA_PROJECT_ROOT" || exit 1
 
 FILT=$(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --glob=/g; s/^/--glob=/')
@@ -26,47 +25,19 @@ REAL="${REAL:-1}"
 M_DIR="${1:-${MAPS_DIR:-config/maps}}"
 M_DIR="${M_DIR/#\~/$HOME}"
 
-if [ -z "${AURA_ACTIVE_WINDOW_TITLE:-}" ]; then
-  AURA_ACTIVE_WINDOW_TITLE=$(python3 -c "
-  import sys
-  sys.path.insert(0, '$SL5NET_AURA_PROJECT_ROOT')
-  from scripts.py.func.get_active_window_title import get_active_window_title_safe
-  print(get_active_window_title_safe())
-  " 2>/dev/null)
-  export AURA_ACTIVE_WINDOW_TITLE
-fi
+source "$SCRIPT_DIR/get_active_window_title.sh"
 
 H_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
 PROOT_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_proot"
 [ -f "$PROOT_STATE_FILE" ] || echo "$SL5NET_AURA_PROJECT_ROOT/config/maps" > "$PROOT_STATE_FILE"
 
-GITIGNORE_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_respect_gitignore"
-[ -f "$GITIGNORE_STATE_FILE" ] || echo "0" > "$GITIGNORE_STATE_FILE"
-#
-#ONE_PER_FILE_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_one_per_file"
-#[ -f "$ONE_PER_FILE_STATE_FILE" ] || echo "0" > "$ONE_PER_FILE_STATE_FILE"
-
-ONE_PER_FILE_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_one_per_file"
-[ -f "$ONE_PER_FILE_STATE_FILE" ] || echo "0" > "$ONE_PER_FILE_STATE_FILE"
-
 SINGLE_GUI_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_single_gui"
 [ -f "$SINGLE_GUI_STATE_FILE" ] || echo "1" > "$SINGLE_GUI_STATE_FILE"
 
-get_one_per_file_flag() {
-    cat "$ONE_PER_FILE_STATE_FILE" 2>/dev/null || echo "0"
-}
-
+source "$SCRIPT_DIR/get_one_per_file_flag.sh"
 source "$SCRIPT_DIR/ensure_single_instance.sh" "$@"
+source "$SCRIPT_DIR/get_ignore_flag.sh"
 
-get_ignore_flag() {
-    local respect
-    respect=$(cat "$GITIGNORE_STATE_FILE" 2>/dev/null)
-    if [ "$respect" = "1" ]; then
-        echo ""
-    else
-        echo "--no-ignore"
-    fi
-}
 
 cp "$H_FILE" "$H_FILE.bak"
 
