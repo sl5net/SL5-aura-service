@@ -198,7 +198,6 @@ PY
     fi
   fi
 done < <(staged_files_with_suffix ".bat")
-
 # 2) Convert staged .ps1 files to UTF-8 with BOM
 while IFS= read -r -d '' f; do
   [ -f "$f" ] || continue
