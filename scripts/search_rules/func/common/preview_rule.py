@@ -235,7 +235,7 @@ def print_window_active_status(file_path, line_num):
         print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin | 🔴: title")
         print(f"🗺️ …/{get_proot_display()}")
         print("📜 ※.punct ⚙️pre 📄post| 〃same")
-        print(f"📜 F1:📜 Alt+G:{icon_g} Alt+F:{icon_f} Alt+I:{icon_i} Alt+U:{icon_u} Ctrl+L:{icon_l}")
+        print(f"📜 F1📜 Alt+G{icon_g} Alt+F{icon_f} Alt+I{icon_i} Alt+U{icon_u} Ctrl+L{icon_l}")
         print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")
         print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
         active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
