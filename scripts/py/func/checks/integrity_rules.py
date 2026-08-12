@@ -181,8 +181,15 @@ INTEGRITY_CHECKS = {
         r'--bind="alt-i:execute-silent',
         r'--bind="ctrl-g:execute-silent',
     ],
-    'scripts/search_rules/preview_rule.py': [
+    'scripts/search_rules/func/common/preview_rule.py': [
         'print(f"{COLOR_RED}⚠ EXAMPLE \'{example}\' not match Regex{COLOR_RESET}")',
+        'print(f"🗺️ .../{get_proot_display()}")',
+        'print("📜 ※.punct ⚙️pre 📄post| 〃same")',
+        'print(f"📜 F1:📜 Alt+G:{icon_g} Alt+F:{icon_f} Alt+I:{icon_i} Alt+U:{icon_u}")',
+        'print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")',
+        'print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")',
+        'print(f"🔴{active_win}',
+        'print("F1: show 📜 Legend")',
     ],
 
     #     logger.info(f"Using timeouts: Initial Wait={INITIAL_WAIT_TIMEOUT}s, Speech Pause={SPEECH_PAUSE_TIMEOUT}s")

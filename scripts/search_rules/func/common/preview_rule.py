@@ -220,18 +220,21 @@ def print_window_active_status(file_path, line_num):
         icon_i = "🔐" if gitignore_st == "ON" else "🔓Ո"
         icon_g = "〃" if ditto_st == "ON" else "⬟"
         icon_u = "🎯" if single_gui_st == "ON" else "⁘"
-        print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin")
+        print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin | 🔴: title")
         print(f"🗺️ .../{get_proot_display()}")
         print("📜 ※.punct ⚙️pre 📄post| 〃same")
         print(f"📜 F1:📜 Alt+G:{icon_g} Alt+F:{icon_f} Alt+I:{icon_i} Alt+U:{icon_u}")
         print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")
         print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
+        active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
+        if active_win:
+            print(f"🔴{active_win} (window title)")
+
     else:
         print("F1: show 📜 Legend")
 
-    active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
-    if not active_win:
-        return
+
+
 def print_file_header(file_path):
     """Prints the last 68 characters of the file path in the preview header."""
     clean_path = str(file_path).replace("\\", "/")

@@ -26,15 +26,12 @@ Basierend auf der Beschreibung und der Analogie zu **Alt+F** sollte die Logik f�
 - **Aktion**:
 - „DITTO_STATE“ ist auf „0“ gesetzt.
 - GUI wird neu geladen
-- „SAVED_QUERY“ wurde **wiederhergestellt**. (Dieser Schritt funktioniert derzeit nicht. 11.8.26 22:18 Di)
+- „SAVED_QUERY“ wurde **wiederhergestellt**.
 
 
 ---
 
-## **Alt+F funktioniert und Alt+G nicht am 11.8.26, 22:18 Uhr**
 
-Da **Alt+F** korrekt funktioniert, können wir **dieselbe Logik** für **Alt+G** übernehmen.
-
-### **Alt+F Logik (funktioniert)**
+### **Alt+F Logik**
 
 - **Wechsel vom Volltext → 1/Dateimodus**:

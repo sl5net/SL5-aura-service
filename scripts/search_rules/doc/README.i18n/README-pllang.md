@@ -26,15 +26,12 @@ Bazując na opisie i analogii z **Alt+F**, logika dla **Alt+G** powinna wygląda
 - **Działanie**:
 - `DITTO_STATE` jest ustawione na ``0''.
 - Przeładowuje GUI
-- `SAVED_QUERY` zostało **przywrócone**. (ten krok nie działa w tej chwili 11.8.'26 22:18 Wt)
+- `SAVED_QUERY` zostało **przywrócone**.
 
 
 ---
 
-## **Alt+F działa, a Alt+G nie działa o 11.8.'26 22:18 wtorek**
 
-Ponieważ **Alt+F** działa poprawnie, możemy przyjąć **taką samą logikę** dla **Alt+G**.
-
-### **Alt+F Logika (działa)**
+### **Alt+F Logika**
 
 - **Przełączanie z trybu pełnotekstowego → 1/pliku**:

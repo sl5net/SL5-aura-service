@@ -26,15 +26,12 @@ Com base na descrição e na analogia com **Alt+F**, a lógica para **Alt+G** de
 - **Ação**:
 - `DITTO_STATE` está definido como `"0"`.
 - Recarregamentos da GUI
-- `SAVED_QUERY` é **restaurado**. (esta etapa não funciona no momento 11.8.'26 22:18 Ter)
+- `SAVED_QUERY` é **restaurado**.
 
 
 ---
 
-## **Alt+F funciona e Alt+G não em 11.8.'26 22:18 Ter**
 
-Como **Alt+F** funciona corretamente, podemos adotar a **mesma lógica** para **Alt+G**.
-
-### **Lógica Alt+F (funciona)**
+### **Lógica Alt+F**
 
 - **Mudando de Texto Completo → 1/Modo Arquivo**:
