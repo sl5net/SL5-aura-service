@@ -7,7 +7,7 @@
 #      macOS:           bash setup/macos_setup.sh
 #      Windows:         setup/windows11_setup.ps1
 #
-# ⚠️  EXPERIMENTAL ...#
+# ⚠️  EXPERIMENTAL …#
 # ⚠️  EXPERIMENTAL — UNTESTED by the authors (we don't run NixOS).
 #     Written by analogy with ubuntu_setup.sh. Please report what breaks!
 #

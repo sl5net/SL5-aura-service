@@ -31,7 +31,7 @@ fi
 
 
 
-echo "Requesting restart for all services..."
+echo "Requesting restart for all services…"
 
 # --- Step 1: Check if any of the target processes are running ---
 # The -f flag for pgrep searches the full command line.
@@ -39,7 +39,7 @@ if ! pgrep -f "$SERVICE_NAME_MAIN" > /dev/null && ! pgrep -f "$SERVICE_NAME_WATC
     echo "Info: No running server or watcher processes found. Starting fresh."
 else
     # --- Step 2: Kill ALL old processes (Main Service AND Watcher) ---
-    echo "Stopping old processes..."
+    echo "Stopping old processes…"
     # Use -f to match the full command line, just like in pgrep.
     # pkill -f "$SERVICE_NAME_MAIN"
     pkill -9 "$SERVICE_NAME_MAIN"
@@ -53,7 +53,7 @@ else
     echo SCRIPT_DIR=$SCRIPT_DIR
     echo SL5NET_AURA_PROJECT_ROOT=$SL5NET_AURA_PROJECT_ROOT
 
-    echo "Activating virtual environment at '$SL5NET_AURA_PROJECT_ROOT/.venv'..."
+    echo "Activating virtual environment at '$SL5NET_AURA_PROJECT_ROOT/.venv'…"
     cd $SL5NET_AURA_PROJECT_ROOT
 
 #    find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
@@ -88,7 +88,7 @@ fi
 sleep 1
 
 # --- Step 4: Start the new server instance ---
-echo "Starting new server and watcher..."
+echo "Starting new server and watcher…"
 if [ -x "$SERVER_SCRIPT" ]; then
     "$SERVER_SCRIPT"
 else

@@ -71,7 +71,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
     Heuristics:
     - skip empty lines
     - prefer comment lines starting with '#' (take text after '#')
-    - accept common assignment patterns (password=..., key: ..., secret = "...")
+    - accept common assignment patterns (password=…, key: …, secret = "…")
     - strip surrounding quotes and whitespace, remove BOM and CR/LF
     - return as bytes using given encoding
     """

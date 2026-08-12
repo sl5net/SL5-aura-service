@@ -56,7 +56,7 @@ def _format_gb(mb):
 def load_single_model(logger, model_path, lang_key, loaded_models):
     """Loads a single Vosk model and adds it to the dictionary."""
     try:
-        logger.info(f"Attempting to load model '{lang_key}' from {model_path}...")
+        logger.info(f"Attempting to load model '{lang_key}' from {model_path}…")
         model = vosk.Model(str(model_path))
 
         with MODELS_LOCK:  # Protect access to the shared dictionary

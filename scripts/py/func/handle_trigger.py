@@ -42,7 +42,7 @@ global text_detected
 
 # File: scripts/py/func/handle_trigger.py
 
-# ... existing imports
+# … existing imports
 
 # Global sequence counter for the current session (must be synchronized)
 global session_chunk_counter
@@ -108,7 +108,7 @@ def session_thread_target(logger):
                     current_chunk_id = session_chunk_counter
 
                 if settings.DEV_MODE:
-                    logger.info(f"Chunk ID {current_chunk_id}: Starting processing for '{text_chunk[:30]}...'")
+                    logger.info(f"Chunk ID {current_chunk_id}: Starting processing for '{text_chunk[:30]}…'")
 
                 # Start the thread as before, but pass the ID and Session ID
                 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
@@ -259,7 +259,7 @@ def handle_trigger(
                 if text_chunk.strip():
                     text_detected = 1
                     # if settings.DEV_MODE:
-                    #     logger.info(f"Processing chunk: '{text_chunk[:30]}...'")
+                    #     logger.info(f"Processing chunk: '{text_chunk[:30]}…'")
                     output_dir = TMP_DIR / "sl5_aura" / "tts_output"
                     thread = threading.Thread(target=process_text_in_background,
                                               args=(logger, lt_language, text_chunk, output_dir,

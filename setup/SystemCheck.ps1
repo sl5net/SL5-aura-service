@@ -1,4 +1,4 @@
-# SystemCheck.ps1
+﻿# SystemCheck.ps1
 Write-Host "--- STARTE SYSTEM-DIAGNOSE ---" -ForegroundColor Cyan
 
 # 1. PFAD DEFINITIONEN
@@ -8,7 +8,7 @@ $testFile = "$tempDir\write_test.txt"
 $pythonPath = ".\.venv\Scripts\python.exe"
 
 # 2. SCHREIBTEST (Simuliert Vosk Service)
-Write-Host "[1/3] Prüfe Schreibrechte für Python..." -NoNewline
+Write-Host "[1/3] Prüfe Schreibrechte für Python…" -NoNewline
 if (-not (Test-Path $tempDir)) { New-Item -ItemType Directory -Path $tempDir -Force | Out-Null }
 
 try {
@@ -27,7 +27,7 @@ try {
 }
 
 # 3. AHK ADMIN CHECK
-Write-Host "[2/3] Prüfe AHK Berechtigungen..."
+Write-Host "[2/3] Prüfe AHK Berechtigungen…"
 # Wir prüfen, ob der aktuelle Prozess Admin-Rechte hat.
 # AHK erbt diese Rechte, wenn es von hier gestartet wird.
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
@@ -42,7 +42,7 @@ Write-Host " WARNUNG: Skript läuft NICHT als Admin." -ForegroundColor Yellow
 }
 
 # 4. TYPING TEST (Visueller Test)
-Write-Host "[3/3] Simuliere Tippen..."
+Write-Host "[3/3] Simuliere Tippen…"
 Write-Host "   Ein Notepad Fenster öffnet sich gleich. Wenn dort Text erscheint, funktioniert alles." -ForegroundColor Cyan
 Start-Sleep -Seconds 2
 

@@ -38,7 +38,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
     # importlib.reload(module): its changes the Memory of the Python-Interpreters (sys.modules).
     # iss also changes the:
-    # LAST_MODIFIED_TIMES[...] = ...:
+    # LAST_MODIFIED_TIMES[…] = …:
 
     # scripts/py/func/map_reloader.py:12
 
@@ -70,7 +70,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
 
         # run_mode_override # os.getenv('RUN_MODE')  # returns None or the value
-        logger.info(f'run_mode_override: {run_mode_override} (other examples: API_SERVICE , ...)')
+        logger.info(f'run_mode_override: {run_mode_override} (other examples: API_SERVICE , …)')
 
         # func/map_reloader.py:46
         for map_file_path in maps_base_dir.glob("**/*.py"):
@@ -158,7 +158,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                             logger.error(f"Failed to write last edited map path: {e}")
 
                     if settings.DEV_MODE:
-                        logger.info(f"🔄 Detected change in '{map_file_path}'. Reloading...")
+                        logger.info(f"🔄 Detected change in '{map_file_path}'. Reloading…")
 
 
                 # scripts / py / func / map_reloader.py: 84
@@ -243,7 +243,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
                     # --- NEW CODE START ---
                     if log_all_map_reloaded or log_all_changes:
-                        logger.info(f'before run: ↖️_trigger_upstream_hooks(📜...{str(map_file_path)[-25:]} ) ')
+                        logger.info(f'before run: ↖️_trigger_upstream_hooks(📜…{str(map_file_path)[-25:]} ) ')
                     _trigger_upstream_hooks(map_file_path, project_root, logger)
                     # --- NEW CODE END ---
 
@@ -268,7 +268,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     logger.error(f"L{ln}: {relative_path}")
                     was_fixed = try_auto_fix_module(relative_path, e, logger)
                     if was_fixed:
-                        logger.info("🔧 Fix successful. Reload...")
+                        logger.info("🔧 Fix successful. Reload…")
                         try:
                             importlib.invalidate_caches()
                             module = importlib.import_module(module_name)
@@ -535,7 +535,7 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
                         was_fixed = try_auto_fix_module(file_path, e, logger)
 
                         if was_fixed:
-                            logger.info(f"🔧 …{str(module_name)[-35:]} Fix wurde angewendet. Starte sofortigen Reload-Versuch...")
+                            logger.info(f"🔧 …{str(module_name)[-35:]} Fix wurde angewendet. Starte sofortigen Reload-Versuch…")
 
                             try:
                                 # IMPORTANT: Clear caches so Python knows the file is new on disk
@@ -563,13 +563,13 @@ def _trigger_upstream_hooks(start_path: Path, project_root: Path, logger):
 
                             """
 14:47:20,095 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
-14:47:20,959 - INFO     - ❌ scripts/py/func/map_reloader.py:361 -> _trigger_upstream_hooks(start_path ...) 🚨 error importing module 🚨 
+14:47:20,959 - INFO     - ❌ scripts/py/func/map_reloader.py:361 -> _trigger_upstream_hooks(start_path …) 🚨 error importing module 🚨 
 config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
 
                             """
 
                     except Exception as e:
-                        logger.info(f'❌ scripts/py/func/map_reloader.py:361 -> _trigger_upstream_hooks(start_path ...) '
+                        logger.info(f'❌ scripts/py/func/map_reloader.py:361 -> _trigger_upstream_hooks(start_path …) '
                                     f'🚨 error importing module 🚨 {module_name}: {e}')
                         continue
 
@@ -578,7 +578,7 @@ config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
 
                 # scripts/py/func/map_reloader.py
                 # Add a log before the hasattr check
-                # logger.info(f"375: Checking module {module_name} for hooks...")
+                # logger.info(f"375: Checking module {module_name} for hooks…")
 
                 if module is not None and module and hasattr(module, 'on_folder_change') and callable(module.on_folder_change):
 

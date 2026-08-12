@@ -127,7 +127,7 @@ with DAG(
         """
         Triggert den Index-Rebuild für Aura.
         Erhält den ZIM-Pfad über XCom vom vorherigen Task.
-        Im Produktionsbetrieb: subprocess.run([...], check=True).
+        Im Produktionsbetrieb: subprocess.run([…], check=True).
         """
         log.info("Starte Index-Rebuild für: %s", zim_path)
         # Simulierter Aufruf – in Prod: subprocess.run(INDEX_BUILD_CMD, shell=True, check=True)

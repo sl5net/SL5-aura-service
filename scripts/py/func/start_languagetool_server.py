@@ -140,7 +140,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url, for_self_
         logger.info(f"✅ LanguageTool Server is ALREADY online at {full_base_url}. Skipping startup.")
         return LT_ALREADY_RUNNING_SENTINEL
     else:
-        logger.info(f"x Failed: Checking for existing LanguageTool on {full_base_url}...")
+        logger.info(f"x Failed: Checking for existing LanguageTool on {full_base_url}…")
 
     # 2. Check Java path (existing logic)
     try:
@@ -151,7 +151,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url, for_self_
         java_executable_path = None
 
     if not java_executable_path or not Path(java_executable_path).exists():
-        logger.info("Java executable path is not set or invalid. Auto-detecting...")
+        logger.info("Java executable path is not set or invalid. Auto-detecting…")
         try:
             command = ['where', 'java'] if sys.platform == "win32" else ['which', 'java']
             result = subprocess.run(command, capture_output=True, text=True, check=True, encoding='utf-8')
@@ -228,7 +228,7 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url, for_self_
     # scripts/py/func/start_languagetool_server.py:137
     # 4. Wait for responsiveness (existing logic)
     if settings.DEV_MODE:
-        logger.info("Waiting for LanguageTool Server to be responsive...")
+        logger.info("Waiting for LanguageTool Server to be responsive…")
     for _ in range(40):
         log_file.flush()
         if _is_lt_server_responsive(full_base_url, timeout=1.5):

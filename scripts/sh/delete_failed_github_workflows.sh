@@ -1,5 +1,5 @@
 # cleanup of failed github workflow
-echo "--> Searching for all failed workflow runs..."
+echo "--> Searching for all failed workflow runs…"
 
 gh run list --status=failure --limit=500 --json databaseId --jq '.[].databaseId' | \
 while read run_id; do

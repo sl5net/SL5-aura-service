@@ -63,7 +63,7 @@ def start_trino_if_needed() -> str | None:
         logger.info("Trino container already running.")
         return None                                     # ← success
 
-    logger.info("Trino not running, attempting docker start...")
+    logger.info("Trino not running, attempting docker start…")
     start = subprocess.run(
         ['docker', 'start', 'trino'],
         capture_output=True, text=True
@@ -77,7 +77,7 @@ def start_trino_if_needed() -> str | None:
 async def wait_for_trino_connection(timeout=90):
     """Polls once per second until Trino JVM accepts connections."""
     import asyncio
-    logger.info("Waiting for Trino JVM to accept connections...")
+    logger.info("Waiting for Trino JVM to accept connections…")
     for i in range(timeout):
         try:
             conn = await open_trino_connection()

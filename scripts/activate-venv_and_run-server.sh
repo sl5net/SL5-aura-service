@@ -68,20 +68,20 @@ else
     echo "Service is not running."
 fi
 
-echo "Activating virtual environment at '$SL5NET_AURA_PROJECT_ROOT/.venv'..."
+echo "Activating virtual environment at '$SL5NET_AURA_PROJECT_ROOT/.venv'…"
 
 if [ ! -f "$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3" ]; then
-    echo "Virtual environment not found. Creating it at '$SL5NET_AURA_PROJECT_ROOT/.venv'..."
+    echo "Virtual environment not found. Creating it at '$SL5NET_AURA_PROJECT_ROOT/.venv'…"
     python3 -m venv "$SL5NET_AURA_PROJECT_ROOT/.venv"
 fi
 
 
 source "$SL5NET_AURA_PROJECT_ROOT/.venv/bin/activate"
 
-echo "Starting Python server from '$SL5NET_AURA_PROJECT_ROOT'..."
+echo "Starting Python server from '$SL5NET_AURA_PROJECT_ROOT'…"
 # We run the python script using its absolute path to be safe
 
-echo "Starting service..."
+echo "Starting service…"
 
 #    RSS (Resident Set Size): Das ist der tatsächliche RAM-Verbrauch in htop oder top. Mit mimalloc sollte dieser Wert nach einem anfänglichen Anstieg sehr stabil bleiben und bei Inaktivität des Services sogar leicht sinken (weil mimalloc Speicher aggressiver ans OS zurückgibt als die Standard-glibc).
 
@@ -135,7 +135,7 @@ fi
 echo "LD_PRELOAD=$LD_PRELOAD"  # ← zur Bestätigung
 
 # --- Start the Service ---
-echo "Starting $SCRIPT_TO_START..."
+echo "Starting $SCRIPT_TO_START…"
 #python3 "$SCRIPT_TO_START" &
 "$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3" "$SCRIPT_TO_START" &
 

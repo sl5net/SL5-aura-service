@@ -142,7 +142,7 @@ def collect_examples():
         print(f"logger.info: Error: Directory {MAPS_DIR} not found.")
         sys.exit(1)
 
-    print(f"logger.info: Scanning {os.path.relpath(MAPS_DIR)} ...")
+    print(f"logger.info: Scanning {os.path.relpath(MAPS_DIR)} …")
 
     file_count = 0
     for root, dirs, files in os.walk(MAPS_DIR):
@@ -250,7 +250,7 @@ def collect_examples_old_with_random_order():
         print(f"logger.info: Error: Directory {MAPS_DIR} not found.")
         sys.exit(1)
 
-    print(f"logger.info: Scanning {os.path.relpath(MAPS_DIR)} ...")
+    print(f"logger.info: Scanning {os.path.relpath(MAPS_DIR)} …")
 
     file_count = 0
     for root, dirs, files in os.walk(MAPS_DIR):
@@ -310,7 +310,7 @@ def collect_examples_old_with_random_order():
                     print(f"logger.info: Warning at {file}: {e}")
 
     # list of dictionaries
-    # Format: [{'text': 'git commit', 'tags': ['git']}, ...]
+    # Format: [{'text': 'git commit', 'tags': ['git']}, …]
     result_list = []
     for text in examples.keys():
         tags_list = list(examples[text])[::-1]
@@ -339,7 +339,7 @@ def export_to_copyq(items, tab_name):
         print("logger.info: No examples found.")
         return
 
-    print(f"logger.info: Resetting tab '{tab_name}' ...")
+    print(f"logger.info: Resetting tab '{tab_name}' …")
     try:
         subprocess.run([copyq_exe, "removetab", tab_name], check=False, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception as e202601222016:
@@ -347,7 +347,7 @@ def export_to_copyq(items, tab_name):
         pass
 
     # tools/export_to_copyq.py:312
-    print(f"logger.info: Creating/Switching to Tab '{tab_name}' ...")
+    print(f"logger.info: Creating/Switching to Tab '{tab_name}' …")
 
     # subprocess.run([copyq_exe, "tab", tab_name], check=True, env=env)
 
@@ -362,16 +362,16 @@ def export_to_copyq(items, tab_name):
         print(f"logger.info: Warning at {file}: {e202601222017}")
 
 
-    print("logger.info: Clearing old content ...")
+    print("logger.info: Clearing old content …")
     subprocess.run([copyq_exe, "eval", f"tab('{tab_name}'); if(size()>0) remove(0, size())"], check=True, env=env)
 
-    print(f"logger.info: Importing {len(items)} examples ...")
+    print(f"logger.info: Importing {len(items)} examples …")
 
     total = len(items)
 
     # We iterate 1-by-1.
     # We use 'write' which pushes new items to the top (Stack).
-    # Since the main block reverses the list (Z->A), writing Z then Y ... results in A at top.
+    # Since the main block reverses the list (Z->A), writing Z then Y … results in A at top.
 
     for i, item in enumerate(items):
         # text = text_original = item['text']
@@ -418,7 +418,7 @@ def export_to_copyq(items, tab_name):
             print(f"logger.info: Error adding item '{text}': {e}")
 
         if (i + 1) % 50 == 0:
-            print(f"  ... {i + 1} / {total}")
+            print(f"  … {i + 1} / {total}")
 
     print("\nlogger.info: Finished! Good luck with the demo.")
 

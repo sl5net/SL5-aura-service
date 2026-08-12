@@ -1,3 +1,4 @@
+# scripts/test/maps/plugins/game/0ad/signal/de-DE/mock/find_which_rule_in_select_matches_alarm.py:1
 # .venv/bin/python scripts/py/find_which_rule_in_select_matches_alarm.py
 
 import re
@@ -9,7 +10,7 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 test_input = "alarm"
-print(f"Scanning {len(module.FUZZY_MAP_pre)} rules in {file_path} for input '{test_input}'...\n")
+print(f"Scanning {len(module.FUZZY_MAP_pre)} rules in {file_path} for input '{test_input}'…\n")
 
 for idx, rule in enumerate(module.FUZZY_MAP_pre):
     target = rule[0]

@@ -9,7 +9,7 @@ import hashlib
 CHUNK_SIZE = 100 * 1024 * 1024  # 100MB in bytes
 
 def get_part_suffix(part_num):
-    """Generates suffixes aa, ab, ac..."""
+    """Generates suffixes aa, ab, ac…"""
     if part_num >= 26 * 26:
         raise ValueError("Too many parts, suffix generation not implemented for > zz")
     first_char_code = ord('a') + part_num // 26
@@ -34,11 +34,11 @@ def split_and_hash(filename):
     checksum_filename = f"{filename}.sha256sums.txt"
 
     # --- KORREKTUR, TEIL 1: Hash der kompletten Datei zuerst berechnen ---
-    print(f"Calculating SHA256 for the complete file: {filename}...")
+    print(f"Calculating SHA256 for the complete file: {filename}…")
     full_file_hash = calculate_sha256_of_file(filename)
     print(f"  -> Hash: {full_file_hash}")
 
-    print(f"Splitting '{filename}' into {CHUNK_SIZE // 1024 // 1024}MB parts...")
+    print(f"Splitting '{filename}' into {CHUNK_SIZE // 1024 // 1024}MB parts…")
 
     part_num = 0
     with open(filename, 'rb') as f_in, open(checksum_filename, 'w') as f_checksum:

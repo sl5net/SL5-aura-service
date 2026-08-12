@@ -13,7 +13,7 @@ low-signal or meta-discursive comment patterns:
 
 - Chat-session artifacts & placeholders (du/dein, "Hier wird es interessant", <====)
 - Non-technical qualifiers ("rough approximation for demonstration")
-- Narrative/Redundant styles ("This function does...", "You can")
+- Narrative/Redundant styles ("This function does…", "You can")
 - exclude Localization files: comments outside xx-XX locale directories
 
 Features:

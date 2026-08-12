@@ -1,4 +1,4 @@
-# update/update_for_windows_users.ps1
+﻿# update/update_for_windows_users.ps1
 # Description: Downloads the latest version and updates the application
 #              while preserving user settings. For non-developer use.
 
@@ -44,7 +44,7 @@ try {
     $response = Invoke-RestMethod -Uri $apiUrl -UseBasicParsing
     $remoteSha = $response.sha
 } catch {
-    Write-Host "WARNING: Could not fetch updates info from GitHub. Proceeding with download..." -ForegroundColor Yellow
+    Write-Host "WARNING: Could not fetch updates info from GitHub. Proceeding with download…" -ForegroundColor Yellow
 }
 
 
@@ -75,14 +75,14 @@ Write-Host "Your personal settings in 'config\settings_local.py' will be saved."
 
 if (-not ($env:CI -eq 'true'))
 {
-    Write-Host "this will take some time ..."
+    Write-Host "this will take some time …"
 #    Write-Host "Please close the main application if it is running."
 #    Read-Host -Prompt "Press Enter to continue or CTRL+C to cancel"
 }
 try {
     # 1. Clean up previous temporary files if they exist
     if (Test-Path $tempDir) {
-        Write-Host "INFO: Removing old temporary update folder..."
+        Write-Host "INFO: Removing old temporary update folder…"
         Remove-Item -Path $tempDir -Recurse -Force
     }
     New-Item -Path $tempDir -ItemType Directory | Out-Null
@@ -92,20 +92,20 @@ try {
 
     $backupPath = Join-Path $tempDir "settings_local.py.bak"
     if (Test-Path $localSettingsPath) {
-        Write-Host "INFO: Backing up your local settings..." -ForegroundColor Green
+        Write-Host "INFO: Backing up your local settings…" -ForegroundColor Green
         Copy-Item -Path $localSettingsPath -Destination $backupPath
     }
 
     # 3. Download the latest version
     $zipPath = Join-Path $tempDir "latest.zip"
-    Write-Host "INFO: Downloading latest version from GitHub..."
+    Write-Host "INFO: Downloading latest version from GitHub…"
 
     #  .NET WebClient download
     $webClient = New-Object System.Net.WebClient
     $webClient.DownloadFile($repoUrl, $zipPath)
 
     # 4. Extract the archive
-    Write-Host "INFO: Extracting update..."
+    Write-Host "INFO: Extracting update…"
 
     # Load .NET Compression and extract safely without dotfile bugs
     Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -117,7 +117,7 @@ try {
     # 5. Restore local settings into the new version
 
     if (Test-Path $backupPath) {
-        Write-Host "INFO: Restoring your local settings into the new version..." -ForegroundColor Green
+        Write-Host "INFO: Restoring your local settings into the new version…" -ForegroundColor Green
         Copy-Item -Path $backupPath -Destination (Join-Path $extractedFolder.FullName "config\")
 
     }
@@ -127,7 +127,7 @@ try {
 
     $batchScript = @'
 @echo off
-echo Finalizing update, please wait...
+echo Finalizing update, please wait…
 timeout /t 3 /nobreak > nul
 
 :: 1. Dateien verschieben
@@ -139,11 +139,11 @@ cd /d "{1}"
 :: 3. Abhängigkeiten aktualisieren
 echo.
 echo ---------------------------------------------------
-echo Updating dependencies (pip install)...
+echo Updating dependencies (pip install)…
 echo ---------------------------------------------------
 :: 3. Installer aufrufen (Dort passiert das pip upgrade und requirements install)
 if exist "{2}" (
-    echo Starting installer script...
+    echo Starting installer script…
     call "{2}"
 ) else (
 
@@ -154,7 +154,7 @@ if exist "{2}" (
     echo Expected: {2} in %CD%
     echo ===================================================
 
-    echo WARNING: "{2}" not found. Trying manual pip upgrade...
+    echo WARNING: "{2}" not found. Trying manual pip upgrade…
     :: Fallback, falls keine install.bat da ist:
     if exist ".venv\Scripts\activate.bat" (
         call .venv\Scripts\activate.bat

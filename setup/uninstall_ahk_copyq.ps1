@@ -1,7 +1,7 @@
-# uninstall_ahk_copyq.ps1
+﻿# uninstall_ahk_copyq.ps1
 # script_name: setup/uninstall_ahk_copyq.ps1
 
-Write-Host "Starting uninstallation of optional client tools..." -ForegroundColor Cyan
+Write-Host "Starting uninstallation of optional client tools…" -ForegroundColor Cyan
 
 # Check if winget is available
 if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
@@ -10,14 +10,14 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 }
 
 # --- STEP 1: Stop running processes ---
-Write-Host "Stopping running instances of CopyQ and AutoHotkey..." -ForegroundColor Yellow
+Write-Host "Stopping running instances of CopyQ and AutoHotkey…" -ForegroundColor Yellow
 Stop-Process -Name "copyq" -Force -ErrorAction SilentlyContinue
 Stop-Process -Name "AutoHotkey" -Force -ErrorAction SilentlyContinue
 Stop-Process -Name "AutoHotkey64" -Force -ErrorAction SilentlyContinue
 Stop-Process -Name "AutoHotkey32" -Force -ErrorAction SilentlyContinue
 
 # --- STEP 2: Uninstall CopyQ ---
-Write-Host "Attempting to uninstall CopyQ..." -ForegroundColor Yellow
+Write-Host "Attempting to uninstall CopyQ…" -ForegroundColor Yellow
 # We check if it is installed to avoid unnecessary error messages
 $copyqCheck = winget list --id "hluk.CopyQ"
 if ($copyqCheck) {
@@ -32,7 +32,7 @@ if ($copyqCheck) {
 }
 
 # --- STEP 3: Uninstall AutoHotkey ---
-Write-Host "Attempting to uninstall AutoHotkey..." -ForegroundColor Yellow
+Write-Host "Attempting to uninstall AutoHotkey…" -ForegroundColor Yellow
 $ahkCheck = winget list --id "AutoHotkey.AutoHotkey"
 if ($ahkCheck) {
     winget uninstall --id "AutoHotkey.AutoHotkey" --silent --accept-source-agreements

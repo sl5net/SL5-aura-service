@@ -26,7 +26,7 @@ REM Only check for admin rights if NOT running in a CI environment
 if /I NOT "%CI%"=="true" (
     net session >nul 2>&1
     if %errorLevel% neq 0 (
-        echo [ERROR] Re-launching with Admin rights...
+        echo [ERROR] Re-launching with Admin rights…
         REM update test: 2026-0122-1421
         REM  powershell -Command "Start-Process '%~f0' -Verb RunAs"
 
@@ -108,7 +108,7 @@ echo DBG21: checking errorlevel=%errorlevel%
 if "%errorlevel%"=="0" (
   echo [INFO] Admin-Hotkeys are already running.
 ) else (
-  echo [INFO] Starting Hotkeys in User-Mode...
+  echo [INFO] Starting Hotkeys in User-Mode…
   timeout /t 2 /nobreak >nul
   start "" "%~dp0trigger-hotkeys.ahk"
 )
@@ -122,17 +122,17 @@ echo [INFO] Background watchers have been started.
 
 
 :START_SERVICE_LOOP
-echo [INFO] Starting the Python STT backend service...
+echo [INFO] Starting the Python STT backend service…
 
 call .venv\Scripts\activate
 
 .\.venv\Scripts\python.exe -u aura_engine.py
 
 
-echo [INFO] Waiting 5 seconds for the service to initialize...
+echo [INFO] Waiting 5 seconds for the service to initialize…
 %SystemRoot%\System32\timeout.exe /t 5
 
-echo [INFO] Verifying service status via log file...
+echo [INFO] Verifying service status via log file…
 findstr /C:"Setup validation successful" "log\aura_engine.log" >nul 2>&1
 IF "%errorlevel%"=="0" goto :CONTINUE_SCRIPT
 
@@ -143,16 +143,16 @@ if defined REPAIR_ATTEMPTED (
     pause
     exit /b 1
 )
-echo [ACTION] Attempting automatic repair by reinstalling dependencies...
+echo [ACTION] Attempting automatic repair by reinstalling dependencies…
 set REPAIR_ATTEMPTED=true
 call .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-echo [INFO] Repair finished. Retrying service start...
+echo [INFO] Repair finished. Retrying service start…
 echo.
 goto :START_SERVICE_LOOP
 
 :CONTINUE_SCRIPT
 echo [INFO] Service verification successful.
-echo [*] Triggering the service...
+echo [*] Triggering the service…
 type nul > "C:\tmp\sl5_record.trigger"
 
 echo.

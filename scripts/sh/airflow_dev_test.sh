@@ -35,14 +35,14 @@ export AIRFLOW_HOME="$SL5NET_AURA_PROJECT_ROOT/orchestration"
 export AIRFLOW__CORE__DAGS_FOLDER="$SL5NET_AURA_PROJECT_ROOT/orchestration/dags"
 
 # --- DAG parsen (schnellster Check) ---
-echo "\n${YELLOW}[1/3] Parse-Check...${NC}"
+echo "\n${YELLOW}[1/3] Parse-Check…${NC}"
 "$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3" "$SL5NET_AURA_PROJECT_ROOT/orchestration/dags/aura_orchestration_dag.py" 2>&1 \
   | grep -v "DeprecatedImportWarning\|deprecated\|py.warnings" \
   | grep -v "^$" || true
 echo "${GREEN}✅ Parse OK${NC}"
 
 # --- Schema-Validierung direkt testen ---
-echo "\n${YELLOW}[2/3] Quiz-Schema-Validierung...${NC}"
+echo "\n${YELLOW}[2/3] Quiz-Schema-Validierung…${NC}"
 python3 - << 'PYEOF'
 import sys, json
 sys.path.insert(0, ".")
@@ -66,7 +66,7 @@ else:
 PYEOF
 
 # --- ZIM-Check testen ---
-echo "\n${YELLOW}[3/3] ZIM-Datei-Check...${NC}"
+echo "\n${YELLOW}[3/3] ZIM-Datei-Check…${NC}"
 python3 - << 'PYEOF'
 import sys, warnings; warnings.filterwarnings("ignore")
 from orchestration.dags.aura_orchestration_dag import ZIM_WATCH_DIR

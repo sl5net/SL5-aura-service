@@ -57,10 +57,10 @@ if __name__ == '__main__':
         result = looks_like_secret(text)
 
         if result == expected:
-            print(f"✅ PASS: '{text[:30]}...' -> {result}")
+            print(f"✅ PASS: '{text[:30]}…' -> {result}")
             passed += 1
         else:
-            print(f"❌ FAIL: '{text[:30]}...' | expected: {expected}, result: {result}")
+            print(f"❌ FAIL: '{text[:30]}…' | expected: {expected}, result: {result}")
 
     print(f"\nresult: {passed}/{len(tests)} .")
 

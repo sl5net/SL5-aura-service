@@ -18,13 +18,13 @@ def test_file():
     print("All Unit Tests Passed successfully.")
 
 def main():
-    print("Step 1: Cleaning examples...")
+    print("Step 1: Cleaning examples…")
     subprocess.run([sys.executable, "tools/clean_examples.py", TARGET], check=True)
 
-    print("Step 2: Running map_tagger...")
+    print("Step 2: Running map_tagger…")
     subprocess.run([".venv/bin/python", "tools/map_tagger.py", "--yes", TARGET], check=True)
 
-    print("Step 3: Running Unit Tests...")
+    print("Step 3: Running Unit Tests…")
     test_file()
 
 if __name__ == "__main__":

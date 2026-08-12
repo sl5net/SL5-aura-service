@@ -52,7 +52,7 @@ if not is_service_healthy(HEARTBEAT_FILE, HEARTBEAT_MAX_AGE_SECONDS):
         time.sleep(0.5)
 
     # 3. Start the service and wait for it to become ready.
-    subprocess.run(["notify-send", "SL5 STT", "Service not running. Starting..."])
+    subprocess.run(["notify-send", "SL5 STT", "Service not running. Starting…"])
     start_script = PROJECT_DIR / "scripts/activate-venv_and_run-server.sh"
     subprocess.Popen([str(start_script)], shell=False)
 
@@ -74,4 +74,4 @@ if not is_service_healthy(HEARTBEAT_FILE, HEARTBEAT_MAX_AGE_SECONDS):
 subprocess.run(["touch", TRIGGER_path, "Triggered"]) # <= thats works more tabel much better 12.7.'25 00:42 Sat
 
 # Optional: a quiet confirmation that the trigger was sent
-# subprocess.run(["notify-send", "-t", "1000", "SL5 STT", "Triggered..."])
+# subprocess.run(["notify-send", "-t", "1000", "SL5 STT", "Triggered…"])

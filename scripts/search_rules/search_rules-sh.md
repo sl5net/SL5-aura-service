@@ -2,7 +2,7 @@ In addition to the many search options, there is probably a full-text search in 
 
 scripts/search_rules/search_rules.sh
 
-This allows you to search in the existing maps or in the source code or documentation. and then you can open peace you found in your favorite edior or open it on github or ... please configure the script as you need it.
+This allows you to search in the existing maps or in the source code or documentation. and then you can open peace you found in your favorite edior or open it on github or … please configure the script as you need it.
 
 MAPS_DIR is configurable via positional arg or environment variable
 

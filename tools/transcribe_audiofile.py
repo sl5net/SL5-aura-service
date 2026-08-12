@@ -141,11 +141,11 @@ def main(logger):
         msg = f"FATAL ERROR: Model not found at '{MODEL_PATH}'"
         print(msg, file=sys.stderr); notify("Vosk Model Error", msg, "critical", "dialog-error"); sys.exit(1)
 
-    print(f"Loading model '{MODEL_NAME}'..."); model = vosk.Model(str(MODEL_PATH)); print("Model loaded.")
+    print(f"Loading model '{MODEL_NAME}'…"); model = vosk.Model(str(MODEL_PATH)); print("Model loaded.")
 
     temp_wav_path = None
     try:
-        print(f"Converting '{original_audio_path.name}' to temporary WAV...");
+        print(f"Converting '{original_audio_path.name}' to temporary WAV…");
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_f: temp_wav_path = tmp_f.name
         ffmpeg_cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", str(original_audio_path),
                       "-ar", str(EXPECTED_SAMPLE_RATE), "-ac", str(EXPECTED_CHANNELS), "-y", temp_wav_path]
@@ -153,7 +153,7 @@ def main(logger):
         print("Conversion successful.")
 
         with wave.open(temp_wav_path, "rb") as wf:
-            print("Transcribing audio...");
+            print("Transcribing audio…");
             recognizer = vosk.KaldiRecognizer(model, wf.getframerate()); recognizer.SetWords(True)
             while True:
                 data = wf.readframes(4000)

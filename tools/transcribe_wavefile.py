@@ -112,7 +112,7 @@ def main():
         sys.exit(1)
 
     # --- Load Model ---
-    print(f"Loading model '{MODEL_NAME}'... This may take a moment.")
+    print(f"Loading model '{MODEL_NAME}'… This may take a moment.")
     try:
         model = vosk.Model(str(MODEL_PATH))
         print("✅ Model loaded successfully.")
@@ -132,8 +132,8 @@ def main():
             if rate != EXPECTED_SAMPLE_RATE or channels != EXPECTED_CHANNELS:
                 print(f"Info: Audio format mismatch ({channels}ch @ {rate}Hz). "
                       f"Required: {EXPECTED_CHANNELS}ch @ {EXPECTED_SAMPLE_RATE}Hz.")
-                print("Attempting conversion with ffmpeg...")
-                notify("Vosk File Conversion", "Converting audio to required format...", "low", "media-record")
+                print("Attempting conversion with ffmpeg…")
+                notify("Vosk File Conversion", "Converting audio to required format…", "low", "media-record")
 
                 # Create a temporary file for the converted audio
                 with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_f:
@@ -153,8 +153,8 @@ def main():
 
         # --- Transcribe File ---
         with wave.open(str(path_to_process), "rb") as wf:
-            print(f"Transcribing '{path_to_process.name}'...")
-            notify("Vosk Transcription", f"Processing '{original_wave_path.name}'...", "low", "media-record")
+            print(f"Transcribing '{path_to_process.name}'…")
+            notify("Vosk Transcription", f"Processing '{original_wave_path.name}'…", "low", "media-record")
 
             recognizer = vosk.KaldiRecognizer(model, wf.getframerate())
             recognizer.SetWords(True)

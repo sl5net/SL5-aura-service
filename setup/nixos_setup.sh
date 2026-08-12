@@ -57,7 +57,7 @@ echo ""
 # and give a helpful error if not.
 # ==============================================================================
 
-echo "--> Checking runtime dependencies provided by shell.nix..."
+echo "--> Checking runtime dependencies provided by shell.nix…"
 
 check_cmd() {
     if ! command -v "$1" &> /dev/null; then
@@ -77,7 +77,7 @@ check_cmd ffmpeg
 check_cmd fzf
 
 # Java >= 17 check
-echo "--> Checking for a compatible Java version (>=17)..."
+echo "--> Checking for a compatible Java version (>=17)…"
 JAVA_OK=0
 if command -v java &> /dev/null; then
     VERSION=$(java -version 2>&1 | awk -F[\".] '/version/ {print ($2 == "1") ? $3 : $2}')
@@ -108,7 +108,7 @@ fi
 # ==============================================================================
 
 if [ ! -d ".venv" ]; then
-    echo "--> Creating Python virtual environment in './.venv'..."
+    echo "--> Creating Python virtual environment in './.venv'…"
     python3 -m venv .venv --system-site-packages
     # --system-site-packages is sometimes needed on NixOS so the venv can
     # find nixpkgs-provided libs. Remove it if it causes conflicts.
@@ -120,14 +120,14 @@ fi
 # --- 3. Python Requirements ---
 # ==============================================================================
 
-echo "--> Installing Python requirements into the virtual environment..."
+echo "--> Installing Python requirements into the virtual environment…"
 ./.venv/bin/pip install -r requirements.txt
 
 # ==============================================================================
 # --- 4. Project Structure ---
 # ==============================================================================
 
-echo "--> Setting up project directories and initial files..."
+echo "--> Setting up project directories and initial files…"
 python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 # ==============================================================================
@@ -135,7 +135,7 @@ python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 # (LanguageTool, Vosk models — identical logic to ubuntu_setup.sh)
 # ==============================================================================
 
-echo "--> Checking for required components (LanguageTool, Vosk-Models)..."
+echo "--> Checking for required components (LanguageTool, Vosk-Models)…"
 
 PREFIX="Z_"
 ARCHIVE_CONFIG=(
@@ -185,7 +185,7 @@ else
 fi
 
 # --- Phase 1: restore from local ZIP cache ---
-echo "    -> Phase 1: Checking and trying to restore from local cache..."
+echo "    -> Phase 1: Checking and trying to restore from local cache…"
 for config_line in "${INSTALL_CONFIG[@]}"; do
     read -r base_name final_name dest_path <<< "$config_line"
     target_path="$dest_path/$final_name"
@@ -193,9 +193,9 @@ for config_line in "${INSTALL_CONFIG[@]}"; do
 
     if [ -e "$target_path" ]; then continue; fi
 
-    echo "    -> Missing: '$target_path'. Searching for '$zip_file'..."
+    echo "    -> Missing: '$target_path'. Searching for '$zip_file'…"
     if [ -f "$zip_file" ]; then
-        echo "    -> Found ZIP cache. Extracting '$zip_file'..."
+        echo "    -> Found ZIP cache. Extracting '$zip_file'…"
         unzip -q "$zip_file" -d "$dest_path"
     else
         echo "    -> ZIP cache not found. A download is required."
@@ -205,10 +205,10 @@ done
 
 # --- Phase 2: download if necessary ---
 if [ "$DOWNLOAD_REQUIRED" = true ]; then
-    echo "    -> Phase 2: Running Python downloader for missing components..."
+    echo "    -> Phase 2: Running Python downloader for missing components…"
     mkdir -p ./models
     ./.venv/bin/python tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
-    echo "    -> Downloader finished. Retrying extraction..."
+    echo "    -> Downloader finished. Retrying extraction…"
 
     for config_line in "${INSTALL_CONFIG[@]}"; do
         read -r base_name final_name dest_path <<< "$config_line"
@@ -218,7 +218,7 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
         if [ -e "$target_path" ]; then continue; fi
 
         if [ -f "$zip_file" ]; then
-            echo "    -> Extracting newly downloaded '$zip_file'..."
+            echo "    -> Extracting newly downloaded '$zip_file'…"
             unzip -q "$zip_file" -d "$dest_path"
         else
             echo "    -> FATAL: Downloader ran but '$zip_file' is still missing. Aborting."
@@ -241,7 +241,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 # We cannot use apt or sudo here in the traditional sense.
 # ==============================================================================
 
-echo "--> Checking for dotool..."
+echo "--> Checking for dotool…"
 if ! command -v dotool &> /dev/null; then
     echo ""
     echo "    WARNING: 'dotool' not found."
@@ -266,7 +266,7 @@ fi
 # --- 8. Python package markers ---
 # ==============================================================================
 
-echo "--> Creating Python package markers (__init__.py)..."
+echo "--> Creating Python package markers (__init__.py)…"
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
 
@@ -275,7 +275,7 @@ touch config/languagetool_server/__init__.py
 # ==============================================================================
 
 CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
-echo "--> Ensuring user config file exists at $CONFIG_FILE..."
+echo "--> Ensuring user config file exists at $CONFIG_FILE…"
 mkdir -p "$(dirname "$CONFIG_FILE")"
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "[paths]" > "$CONFIG_FILE"
@@ -286,7 +286,7 @@ fi
 # --- 10. Default model ---
 # ==============================================================================
 
-echo "--> Configuring default model in config/model_name.txt..."
+echo "--> Configuring default model in config/model_name.txt…"
 if [ "$CI" == "true" ]; then
     echo "vosk-model-small-en-us-0.15" > config/model_name.txt
 elif [ "$SELECTED_LANG" == "de" ]; then

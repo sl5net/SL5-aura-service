@@ -13,7 +13,7 @@ def is_dataclass(class_node):
         # Check für @dataclass
         if isinstance(dec, ast.Name) and dec.id == 'dataclass':
             return True, "Ist eine @dataclass (Perfekter Kandidat!)"
-        # Check für @dataclass(kwarg=...)
+        # Check für @dataclass(kwarg=…)
         if isinstance(dec, ast.Call) and getattr(dec.func, 'id', '') == 'dataclass':
             # Prüfen, ob slots=True schon gesetzt ist
             has_slots = any(

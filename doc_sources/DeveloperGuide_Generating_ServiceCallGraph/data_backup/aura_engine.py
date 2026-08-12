@@ -67,7 +67,7 @@ yappi.start()
 
 def generate_graph_on_interrupt(sig, frame):
     """Signal-Handler für Yappi."""
-    print("\n[Yappi] SIGINT received. Stopping profiler...")
+    print("\n[Yappi] SIGINT received. Stopping profiler…")
 
     yappi.stop()
 
@@ -85,7 +85,7 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     # Check if the package is installed without actually importing it
     if importlib.util.find_spec("fasttext") is None:
         logging.warning("FastText is not installed but is enabled in config.")
-        logging.info("Attempting to install 'fasttext-wheel' automatically...")
+        logging.info("Attempting to install 'fasttext-wheel' automatically…")
         try:
             subprocess.check_call([sys.executable, "-m", "pip", "install", "fasttext-wheel"])
             logging.info("FastText installed successfully. Please restart the service to activate it.")
@@ -140,7 +140,7 @@ from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 
 
 # File: STT/aura_engine.py
-# ...
+# …
 # --- Wrapper Script Check ---
 
     #sys.exit(1)
@@ -476,7 +476,7 @@ if not start_languagetool_server:
 
 from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
 
-check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
+check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git … for normal users
 
 if settings.DEV_MODE :
     from scripts.py.func.log_memory_details import log_memory_details
@@ -591,7 +591,7 @@ if __name__ == "__main__":
     # ----------------------------------------
 
     try:
-        print("[Yappi] Starting multi-thread profiler...")
+        print("[Yappi] Starting multi-thread profiler…")
         yappi.set_clock_type("cpu")
         yappi.start()
 

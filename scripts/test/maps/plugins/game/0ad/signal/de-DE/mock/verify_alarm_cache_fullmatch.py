@@ -12,14 +12,14 @@ from scripts.py.func.process_text_in_background import process_text_in_backgroun
 
 db_path = Path("data/_aura_result_cache.db")
 
-print("Step 1: Clearing existing cache entries for 'alarm'...")
+print("Step 1: Clearing existing cache entries for 'alarm'…")
 if db_path.exists():
     conn = sqlite3.connect(str(db_path))
     conn.execute("DELETE FROM aura_result_cache WHERE rule_output LIKE '%alarm%' OR final_result LIKE '%ö%'")
     conn.commit()
     conn.close()
 
-print("\nStep 2: Processing text 'alarm'...")
+print("\nStep 2: Processing text 'alarm'…")
 logger = logging.getLogger("test_alarm")
 output_dir = Path("tmp/debug_output")
 output_dir.mkdir(parents=True, exist_ok=True)
@@ -34,7 +34,7 @@ res = process_text_in_background(
 )
 print(f"Execution result: {res}")
 
-print("\nStep 3: Querying newly generated SQLite cache row...")
+print("\nStep 3: Querying newly generated SQLite cache row…")
 if db_path.exists():
     conn = sqlite3.connect(str(db_path))
     conn.row_factory = sqlite3.Row

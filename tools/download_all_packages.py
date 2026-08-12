@@ -102,7 +102,7 @@ def download_and_verify_part(asset, expected_hash, max_retries=3):
             print(f"  [OK]  Verified: {part_name}")
             return part_name
         else:
-            print(f"  [RETRY] Hash mismatch for '{part_name}' (attempt {attempt + 1}/{max_retries}). Retrying...")
+            print(f"  [RETRY] Hash mismatch for '{part_name}' (attempt {attempt + 1}/{max_retries}). Retrying…")
             os.remove(tmp_name)
 
     raise RuntimeError(f"Failed to verify '{part_name}' after {max_retries} attempts.")
@@ -118,7 +118,7 @@ def verbose_discovery(assets):
     print("\n--- Starting Detailed Asset Discovery ---")
     packages = defaultdict(lambda: {'checksum_asset': None, 'part_assets': []})
 
-    print("\n[Step 1] Searching for package definition files (*.sha256sums.txt)...")
+    print("\n[Step 1] Searching for package definition files (*.sha256sums.txt)…")
     checksum_assets = [a for a in assets if a['name'].endswith('.sha256sums.txt')]
     if not checksum_assets:
         print("  [WARN] No *.sha256sums.txt files found in release assets!")
@@ -127,14 +127,14 @@ def verbose_discovery(assets):
         packages[base_name]['checksum_asset'] = asset
         print(f"  [OK]  Found definition for package: '{base_name}'")
 
-    print("\n[Step 2] Searching for part files (*.part.aa, etc)...")
+    print("\n[Step 2] Searching for part files (*.part.aa, etc)…")
     part_assets = [a for a in assets if '.part.' in a['name']]
     if not part_assets:
         print("  [WARN] No part files (*.part.*) found in release assets!")
     for asset in part_assets:
         print(f"  - Found potential part file: {asset['name']}")
 
-    print("\n[Step 3] Matching part files to packages (Tolerant to 'z_' and 'Z_')...")
+    print("\n[Step 3] Matching part files to packages (Tolerant to 'z_' and 'Z_')…")
     for asset in part_assets:
         matched = False
         for base_name in packages:
@@ -248,7 +248,7 @@ def process_package(base_name, package_files, remove_parts):
         print(f"\n  [FAIL] {len(failed_parts)} part(s) failed: {failed_parts}")
         return False
 
-    # Sort parts to ensure correct merge order (aa, ab, ac, ...)
+    # Sort parts to ensure correct merge order (aa, ab, ac, …)
     downloaded_parts.sort()
 
     # --- Step C: Merge and verify ---
@@ -307,7 +307,7 @@ def main():
     print(f"{'=' * 60}\n")
 
     # Fetch release assets from GitHub API
-    print(f"Fetching release assets for {OWNER}/{REPO} tag {TAG}...")
+    print(f"Fetching release assets for {OWNER}/{REPO} tag {TAG}…")
     try:
         headers = {}
         token = os.getenv('GITHUB_TOKEN')

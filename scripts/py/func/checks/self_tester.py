@@ -169,7 +169,7 @@ def _wait_for_languagetool_ready(lt_url, logger, timeout=60, interval=2):
     # health_url = f"{lt_url}/v2/languages"
     health_url = f"{lt_url.rstrip('/').replace('/v2/check', '')}/v2/languages"
     if global_state.LOGGING_ENABLED:
-        logger.info(f":st:⏳ Waiting for LanguageTool at {health_url} ...")
+        logger.info(f":st:⏳ Waiting for LanguageTool at {health_url} …")
 
     start = time.perf_counter()
     while time.perf_counter() - start < timeout:

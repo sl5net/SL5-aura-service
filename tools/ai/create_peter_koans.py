@@ -26,7 +26,7 @@ LANGUAGE = "de-DE"
 
 HEADER = '''import re # noqa: F401
 # Regel-Format: ('Ersatztext', r'muster', schwellwert, flags)
-# Logik: Top-Down, erster Treffer gewinnt. Fullmatch (^...$) stoppt die Pipeline.
+# Logik: Top-Down, erster Treffer gewinnt. Fullmatch (^…$) stoppt die Pipeline.
 '''
 
 
@@ -174,7 +174,7 @@ def create_peter_koans(dry_run=False):
             if "schwierigeNamen" in md_file.name:
                 lines = content.splitlines()
                 # Behalte nur die ersten 5 Zeilen als Kontext
-                short = "\n".join(lines[:5]) + "\n...(gekuerzt fuer Peter)\n"
+                short = "\n".join(lines[:5]) + "\n…(gekuerzt fuer Peter)\n"
                 if not dry_run:
                     target.parent.mkdir(parents=True, exist_ok=True)
                     target.write_text(short, encoding="utf-8")

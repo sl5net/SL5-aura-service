@@ -101,7 +101,7 @@ def wake_up_docker_and_trino_or_get_error():
         docker_check = run(["docker", "info"], capture_output=True, text=True, shell=use_shell)
 
         if docker_check.returncode != 0:
-            print("🚀 Docker schläft. Starte Docker Desktop On-Demand...")
+            print("🚀 Docker schläft. Starte Docker Desktop On-Demand…")
 
             # Check whether the path to Docker Desktop exists
             docker_path = r"C:\Program Files\Docker\Docker\Docker Desktop.exe"
@@ -131,7 +131,7 @@ def wake_up_docker_and_trino_or_get_error():
                 )
 
         # 2. Start the Trino container and check for errors
-        print("Starte Trino Container...")
+        print("Starte Trino Container…")
         start_container = run(["docker", "start", "trino"], capture_output=True, text=True, shell=use_shell)
 
         if start_container.returncode != 0:
@@ -147,7 +147,7 @@ def wake_up_docker_and_trino_or_get_error():
             return f"[Linux] Fehler beim Starten des Containers 'trino':\n'{docker_error}'"
 
     # --- GEMEINSAMES WARTEN AUF TRINO PORT 8083 (Windows & Linux) ---
-    print("Warte auf Trino Port 8083...")
+    print("Warte auf Trino Port 8083…")
     last_connection_error = "Keine Verbindung aufgebaut."
 
     max_retries = 30
@@ -192,7 +192,7 @@ except Exception as init_e:
         import sys
         import importlib
 
-        st.info("📦 Trino-Modul wird On-Demand installiert. Bitte warten...")
+        st.info("📦 Trino-Modul wird On-Demand installiert. Bitte warten…")
         try:
             # OS-unabhängige Installation ins aktuelle .venv
             run([sys.executable, "-m", "pip", "install", "trino"], check=True)

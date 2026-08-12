@@ -5,7 +5,7 @@ import requests
 
 def find_badge_urls(content):
     """Finds all GitHub Actions badge URLs in the README content."""
-    # This pattern looks for ![...](https://github.com/.../badge.svg)
+    # This pattern looks for ![…](https://github.com/…/badge.svg)
     pattern = re.compile(r'https://github\.com/.*?/badge\.svg')
     return set(pattern.findall(content))
 

@@ -42,7 +42,7 @@ def try_auto_install_package(package_name: str, logger) -> bool:
         logger.warning(f"[auto-install] Package '{package_name}' is not listed/whitelisted in requirements-web.txt. Aborting installation.")
         return False
 
-    logger.info(f"[auto-install] Whitelisted package '{package_name}' detected. Installing '{target_spec}' inside virtual environment...")
+    logger.info(f"[auto-install] Whitelisted package '{package_name}' detected. Installing '{target_spec}' inside virtual environment…")
 
     # Run pip install using the active python interpreter to guarantee it lands in .venv
     try:

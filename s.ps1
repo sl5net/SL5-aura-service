@@ -54,7 +54,7 @@ try {
 
 # 2. Wake up API on-demand if port 8830 is closed
 if (-not $apiOpen) {
-    Write-Host "Aura API is offline. Waking up background services..."
+    Write-Host "Aura API is offline. Waking up background services…"
     $startScript = "$SL5NET_AURA_PROJECT_ROOT\scripts\py\start_uvicorn_service.py"
     if (Test-Path $startScript) {
         # Start the Uvicorn/FastAPI service silently in the background
@@ -82,7 +82,7 @@ if ($exitCode -eq 0) {
 }
 
 # 2. Try with long timeout (70 seconds) if first run timed out
-Write-Host "answer > 2 sec. setting Timeout = 70 s..."
+Write-Host "answer > 2 sec. setting Timeout = 70 s…"
 $resLong = Invoke-AuraQuery 70
 Write-Host $resLong[1]
 if ($resLong[0] -ne 0) {

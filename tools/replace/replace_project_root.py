@@ -17,7 +17,7 @@ def transform_file_content(content: str) -> tuple[str, bool]:
         content,
     )
 
-    # Replace os.environ.get(...) assignments
+    # Replace os.environ.get(…) assignments
     content = re.sub(
         r"(?:SL5NET_AURA_PROJECT_ROOT)\s*=\s*os\.environ\.get\(['\"](?:SL5NET_AURA_PROJECT_ROOT|SL5NET_AURA_PROJECT_ROOT)['\"][^\n]*\)",
         "SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()",

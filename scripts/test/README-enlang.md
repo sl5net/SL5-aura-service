@@ -20,6 +20,6 @@ Developers should place new tests or mocks in the location that best fits their 
 ## Developer Rules for Test Scripts
 
 - **Execution Environment**: Always run test scripts using the virtual environment interpreter (`.venv/bin/python`) or with `PYTHONPATH=.`.
-- **No Manual `sys.path` Manipulation**: Never write `sys.path.insert(0, ...)` or manually alter `sys.path` inside test or mock scripts. Import paths must be managed by the execution environment or AURA framework itself.
+- **No Manual `sys.path` Manipulation**: Never write `sys.path.insert(0, …)` or manually alter `sys.path` inside test or mock scripts. Import paths must be managed by the execution environment or AURA framework itself.
 
 (S, 7.8.'26 13:49 Fri)

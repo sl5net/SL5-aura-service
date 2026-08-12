@@ -42,7 +42,7 @@ def st_speak_diagnostic(text, speed=1.0):
     safe_text = text.replace('"', '\\"').replace('\n', ' ')
     diag_html = f"""
     <div id="diag-box" style="padding:10px; border:1px solid #ccc; border-radius:5px; background:#f9f9f9; font-family:sans-serif; font-size:12px;">
-        <b>Browser-Status:</b> <span id="status">Warte auf Klick...</span><br>
+        <b>Browser-Status:</b> <span id="status">Warte auf Klick…</span><br>
         <b>Stimmen gefunden:</b> <span id="voices-count">0</span><br>
         <b>Fehlermeldung:</b> <span id="error-msg" style="color:red;">keine</span>
     </div>
@@ -60,11 +60,11 @@ def st_speak_diagnostic(text, speed=1.0):
                 window.speechSynthesis.cancel();
                 const msg = new SpeechSynthesisUtterance("{safe_text}");
                 msg.lang = "de-DE"; msg.rate = {speed};
-                msg.onstart = () => {{ status.innerText = "Spreche gerade..."; }};
+                msg.onstart = () => {{ status.innerText = "Spreche gerade…"; }};
                 msg.onend = () => {{ status.innerText = "Fertig gesprochen."; }};
                 msg.onerror = (e) => {{ status.innerText = "FEHLER!"; errorMsg.innerText = e.error; }};
                 window.speechSynthesis.speak(msg);
-                status.innerText = "Befehl an Browser gesendet...";
+                status.innerText = "Befehl an Browser gesendet…";
             }} catch (err) {{ errorMsg.innerText = err.message; }}
         }};
         const updateVoices = () => {{

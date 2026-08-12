@@ -98,7 +98,7 @@ def main():
 
         # Datei schreiben
         filepath.write_text(sentence, encoding="utf-8")
-        log_message(f"[{i}/{NUM_ITERATIONS}] WRITTEN  ({len(sentence)} chars): {filename[:40]}...")
+        log_message(f"[{i}/{NUM_ITERATIONS}] WRITTEN  ({len(sentence)} chars): {filename[:40]}…")
 
         # Warten bis type_watcher die Datei konsumiert hat
         consumed = wait_for_file_consumption(filepath, TIMEOUT_PER_SENTENCE_SEC)

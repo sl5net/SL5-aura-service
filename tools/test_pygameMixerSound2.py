@@ -44,15 +44,15 @@ try:
     medium_pitch_sound = create_sine_wave_sound(600, 3000, volume=0.6) # 600 Hz for 3 seconds
     low_pitch_sound = create_sine_wave_sound(200, 3000, volume=0.6)  # 200 Hz for 3 seconds
 
-    print("\nPlaying HIGH pitch sound (1200 Hz for 3 seconds)...")
+    print("\nPlaying HIGH pitch sound (1200 Hz for 3 seconds)…")
     high_pitch_sound.play()
     time.sleep(3.5) # Wait a bit longer than sound duration
 
-    print("\nPlaying MEDIUM pitch sound (600 Hz for 3 seconds)...")
+    print("\nPlaying MEDIUM pitch sound (600 Hz for 3 seconds)…")
     medium_pitch_sound.play()
     time.sleep(3.5)
 
-    print("\nPlaying LOW pitch sound (200 Hz for 3 seconds)...")
+    print("\nPlaying LOW pitch sound (200 Hz for 3 seconds)…")
     low_pitch_sound.play()
     time.sleep(3.5)
 

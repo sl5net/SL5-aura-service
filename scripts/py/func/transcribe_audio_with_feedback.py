@@ -161,7 +161,7 @@ def _get_downsampled_data(raw_data, input_rate, logger):
         return audio_np[::3].tobytes()
 
         # Lösung A:
-        # 1. Von Bytes zu Stereo-Array (2 Kanäle) .... neer versuch mit mono 1.1.'26 12:45 Thu
+        # 1. Von Bytes zu Stereo-Array (2 Kanäle) …. neer versuch mit mono 1.1.'26 12:45 Thu
         audio_np = np.frombuffer(raw_data, dtype=np.int16).reshape(-1, 2)
         return audio_np[::3, 0].tobytes()
 
@@ -170,7 +170,7 @@ def _get_downsampled_data(raw_data, input_rate, logger):
         """
 Lösung A (reshape) vermutlich technisch besser?
 Warum?
-Bei Lösung B springst du im Zeitverlauf zwischen linkem und rechtem Kanal hin und her (L0, R1, L3, R4...).
+Bei Lösung B springst du im Zeitverlauf zwischen linkem und rechtem Kanal hin und her (L0, R1, L3, R4…).
 Das erzeugt Phasenfehler und Verzerrungen.
 Die Fehlerquote steigt, wenn links und rechts unterschiedliche Signale liegen (z. B. Stimme links, Musik rechts).
 Lösung A ist nimmst nur einen Kanal (Links).
@@ -307,7 +307,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
     # In transcribe_audio_with_feedback.py
 
-    # ... (am Anfang der Funktion) ...
+    # … (am Anfang der Funktion) …
     q = queue.Queue()
 
     def audio_callback(indata, frames, time2, status):

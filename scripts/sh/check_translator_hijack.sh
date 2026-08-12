@@ -106,9 +106,9 @@ if [[ $TEST_MODE -eq 0 ]]; then
         exit 0
     fi
 
-    echo "[hijack-check] FUZZY_MAP_pre.py is staged — scanning for active rules..."
+    echo "[hijack-check] FUZZY_MAP_pre.py is staged — scanning for active rules…"
 else
-    echo "[hijack-check] Scanning file directly (test mode)..."
+    echo "[hijack-check] Scanning file directly (test mode)…"
 fi
 
 # ---------------------------------------------------------------------------
@@ -150,7 +150,7 @@ if [[ $FOUND_HIJACK -eq 0 ]]; then
     exit 0
 fi
 
-SHORT_PATH="...${FUZZY_MAP: -50}"
+SHORT_PATH="…${FUZZY_MAP: -50}"
 
 if [[ $TEST_MODE -eq 0 ]]; then
     # Real commit — unstage the file, let the commit proceed with other files

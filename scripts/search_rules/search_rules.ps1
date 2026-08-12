@@ -144,7 +144,7 @@ if (-not $REPO_URL) {
 
 function logger_info { return 0; param($m) Write-Host "INFO: $m" -ForegroundColor Cyan }
 
-#logger_info "Initializing search_rules.ps1..."
+#logger_info "Initializing search_rules.ps1…"
 #logger_info "Project root: $SL5NET_AURA_PROJECT_ROOT"
 # logger_info "Target maps dir: $MAPS_DIR"
 
@@ -275,7 +275,7 @@ $SearchData = $files | Select-String -Pattern ".*" | ForEach-Object {
     $shortPath = $shortPath -replace 'plugins/', '🧩'
 
 #t413- Ursache: Windows PowerShell und deren Fonts können Emojis (🇩🇪, 🗺️, 🧩) sowie … nicht rendern [t413].
-#t414- Lösung: Wir müssen diese im Skript durch ASCII ([DE], [EN], [PLUG], ...) ersetzen [t414].
+#t414- Lösung: Wir müssen diese im Skript durch ASCII ([DE], [EN], [PLUG], …) ersetzen [t414].
 
     # Language folder shortening
     while ($shortPath -match '/([a-z]{2}-[A-Z]{2})/') {
@@ -517,7 +517,7 @@ if ($EXEC_QUERY) {
     $PYW_EXE = if (Test-Path $PYW) { $PYW } else { "python" }
 
     try {
-        DBG "Launching completely hidden background process..."
+        DBG "Launching completely hidden background process…"
 
         # Erstellt das COM-Objekt, das alle Fenster-Typen im Prozessbaum erzwingend versteckt
         $wshell = New-Object -ComObject WScript.Shell
@@ -544,7 +544,7 @@ if ($EXEC_QUERY) {
 #    DBG "EXEC_QUERY: '$EXEC_QUERY'"
 #
 #    try {
-#        DBG "Launching completely hidden background process..."
+#        DBG "Launching completely hidden background process…"
 #
 #        $psi = [System.Diagnostics.ProcessStartInfo]::new()
 #        $psi.FileName = $PYW_EXE
@@ -571,7 +571,7 @@ if ($EXEC_QUERY) {
             exit 0
        } else { Start-Sleep -Milliseconds 300; continue }
 
-    } # end key ... equal ctrl-r
+    } # end key … equal ctrl-r
         # parse path:line:content
     #     if ($SELECTED_LINE -match '^([A-Za-z]:\\.+?):(\d+):(.*)$' -or $SELECTED_LINE -match '^(.+?):(\d+):(.*)$') {
     elseif ($KEY -eq "ctrl-e" -and $SELECTED_LINE) {
@@ -597,7 +597,7 @@ if ($EXEC_QUERY) {
         } catch { }
 
         if ($isBinary) {
-            logger_info "Binary detected, opening with system default viewer..."
+            logger_info "Binary detected, opening with system default viewer…"
             Start-Process -FilePath $FILE_PATH
         } else {
             # open in editor at line if supported
@@ -640,12 +640,12 @@ catch {
 #    $ahkLaunched = $env:AHK_LAUNCHED -eq '1'
 #    if ($ahkLaunched -or -not $Host.UI.RawUI.KeyAvailable) {
 #        Write-Host ""
-#        Write-Host "Press ENTER to exit..." -ForegroundColor Yellow
+#        Write-Host "Press ENTER to exit…" -ForegroundColor Yellow
 #        [void][System.Console]::ReadLine()
 #    }
 #} catch {
 #    # fallback: always wait for Enter
-#    Write-Host "Press ENTER to exit..."
+#    Write-Host "Press ENTER to exit…"
 #    [void][System.Console]::ReadLine()
 #}
 

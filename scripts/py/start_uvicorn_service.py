@@ -86,14 +86,14 @@ def ensure_dependencies():
         try:
             __import__(dep)
         except ImportError:
-            print(f"--- Modul '{dep}' fehlt. Installiere jetzt... ---")
+            print(f"--- Modul '{dep}' fehlt. Installiere jetzt… ---")
             subprocess.check_call([sys.executable, "-m", "pip", "install", dep])
 
 
 def start_uvicorn_service(host, port, module_path):
     """Startet den Uvicorn-Service neu."""
 
-    print(f"INFO: Starte Uvicorn auf {host}:{port} mit Modul {module_path}...")
+    print(f"INFO: Starte Uvicorn auf {host}:{port} mit Modul {module_path}…")
 
     env = os.environ.copy()
     env['RUN_MODE'] = 'API_SERVICE'
@@ -127,7 +127,7 @@ def start_uvicorn_service(host, port, module_path):
             readme = "" # noqa: F841
             readme = """
             In modules use import os and os.getenv('RUN_MODE') where needed.
-            Move any import-time side effects into startup handlers or under if RUN_MODE == ... guards.
+            Move any import-time side effects into startup handlers or under if RUN_MODE == … guards.
             """
             readme = " "
             print(readme)

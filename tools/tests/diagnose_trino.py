@@ -42,7 +42,7 @@ print(SEP)
 tcp_ok = check("TCP port reachable", tcp_check)
 
 if not tcp_ok:
-    print("\n  ➜  Port is closed. Attempting on-demand Trino initialization...")
+    print("\n  ➜  Port is closed. Attempting on-demand Trino initialization…")
     try:
         from scripts.py.func.db.init_trino_db import init_all_sync
         init_all_sync()

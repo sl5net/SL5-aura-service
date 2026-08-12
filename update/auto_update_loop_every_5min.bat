@@ -16,12 +16,12 @@ echo ====================================================================
 echo.
 
 :loop
-    echo [%DATE% %TIME%] Checking for updates...
+    echo [%DATE% %TIME%] Checking for updates…
     :: Set environment variable to bypass the interactive prompt inside PowerShell
     set "AURA_AUTO_UPDATE=true"
     powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%UPDATE_SCRIPT%"
 
     echo [%DATE% %TIME%] Update check complete.
-    echo Press ANY KEY to check again immediately, or wait 5 minutes...
+    echo Press ANY KEY to check again immediately, or wait 5 minutes…
     timeout /t 300
 goto loop

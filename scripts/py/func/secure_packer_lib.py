@@ -41,13 +41,13 @@ def execute_packing_logic(current_dir, logger):
 
         # logger.info(f"📍 Script Location: {current_file}")
         if log_everything:
-            logger.info(f"📂secure_packer_lib.py : Directory to pack (Source): ...{str(current_dir)[-30:]}")
-            logger.info(f"📂secure_packer_lib.py : Parent Directory (Target):  ...{str(parent_dir)[-30:]}")
+            logger.info(f"📂secure_packer_lib.py : Directory to pack (Source): …{str(current_dir)[-30:]}")
+            logger.info(f"📂secure_packer_lib.py : Parent Directory (Target):  …{str(parent_dir)[-30:]}")
 
         # 2. NAME CALCULATION
         folder_name = current_dir.name
         if log_everything:
-            logger.info(f"🔍secure_packer_lib.py : Analyzing Folder Name: '...{str(folder_name)[-30:]}'")
+            logger.info(f"🔍secure_packer_lib.py : Analyzing Folder Name: '…{str(folder_name)[-30:]}'")
 
         if folder_name.startswith('_'):
             base_name = folder_name[1:]
@@ -64,7 +64,7 @@ def execute_packing_logic(current_dir, logger):
         #
         # sys.exit(0)
 
-        # ... to: 📦 zip_path_outer = parent_dir / zip_name_outer ...
+        # … to: 📦 zip_path_outer = parent_dir / zip_name_outer …
 
         # --- SMART TIMESTAMP CHECK (DEBUG VERSION) ---
         if zip_path_outer.exists():
@@ -103,14 +103,14 @@ def execute_packing_logic(current_dir, logger):
                     if log_everything:
                         logger.info(f"⏭️ 📦 ZIP {zip_path_outer} is up-to-date. Skipping repack. ->  ↩️ return from execute_packing_logic")
                     return
-                logger.info(f"♻️ Content changed (Source is newer) then {zip_path_outer} --> Repacking...")
+                logger.info(f"♻️ Content changed (Source is newer) then {zip_path_outer} --> Repacking…")
 
             except Exception as e:
                 logger.warning(f"⚠️ Timestamp check failed, forcing repack: {e}")
         # ---------------------------------------------
 
 
-        # 2. Traverse Upwards ... search key?
+        # 2. Traverse Upwards … search key?
         # start_path_current_dir = None
         # scripts/py/func/secure_packer_lib.py:103
         project_root = Path(__file__).resolve().parent.parent.parent.parent
@@ -120,7 +120,7 @@ def execute_packing_logic(current_dir, logger):
         stop_search_key_file_is_found_year = False
 
         current_dir_loop = current_dir_loop.parent
-        # logger.info(f"🔍:122 found 📂current_dir_loop 🏃🏿‍♀️‍➡️ start = ...{str(current_dir_loop)[-35:]}")
+        # logger.info(f"🔍:122 found 📂current_dir_loop 🏃🏿‍♀️‍➡️ start = …{str(current_dir_loop)[-35:]}")
 
         while stop_dir in current_dir_loop.parents: # or current_dir == stop_dir:
             if log_everything:
@@ -133,7 +133,7 @@ def execute_packing_logic(current_dir, logger):
 
                 if file_path.name.startswith('.'):
                     if log_everything:
-                        logger.info(f"🔍:117 found 🔑...{str(file_path)[-35:]}")
+                        logger.info(f"🔍:117 found 🔑…{str(file_path)[-35:]}")
                     key_file = file_path
                     stop_search_key_file_is_found_year = True
                     break
@@ -147,11 +147,11 @@ def execute_packing_logic(current_dir, logger):
 
         # scripts/py/func/secure_packer_lib.py:101
         # 3. KEY FILE SEARCH
-        # logger.info("🔎 Searching for .auth_key file...")
+        # logger.info("🔎 Searching for .auth_key file…")
         # key_file = next(parent_dir.glob(".*.py"), None)
 
         if not key_file:
-            # logger.error(f"❌ No 🔑key file found in 📂...{str(parent_dir)[-30:]} that is 🔎 matching '.*.py' | current_dir: {str(current_dir)[-40:]}")
+            # logger.error(f"❌ No 🔑key file found in 📂…{str(parent_dir)[-30:]} that is 🔎 matching '.*.py' | current_dir: {str(current_dir)[-40:]}")
             # 20.12.'25 17:50 Sat that's not error. folder can be protected by _ from public and not must ave a akey
             # maybe we add a setup for this in config in future
 

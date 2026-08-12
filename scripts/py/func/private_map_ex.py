@@ -26,7 +26,7 @@ def _private_map_unpack(map_file_key: str, logger) -> bool:
     file_key_name = Path(map_file_key).name
 
     if log_everything:
-        logger.info(f'22: map_dir=📂...{map_dir[-30:]} file_key_name:📜{file_key_name} ')
+        logger.info(f'22: map_dir=📂…{map_dir[-30:]} file_key_name:📜{file_key_name} ')
 
 
     # 2. Check for the private map pattern in this directory
@@ -119,7 +119,7 @@ def _private_map_unpack(map_file_key: str, logger) -> bool:
                 source_dir = temp_unpack_dir  # Default: Flat structure
 
                 if len(unpacked_files) == 1 and unpacked_files[0] == "aura_secure.blob":
-                    logger.info("🔎 Detected Matryoshka-Container (Nested ZIP). Unpacking inner layer...")
+                    logger.info("🔎 Detected Matryoshka-Container (Nested ZIP). Unpacking inner layer…")
                     blob_path = os.path.join(temp_unpack_dir, "aura_secure.blob")
                     inner_temp = os.path.join(temp_unpack_dir, "_inner")
                     os.makedirs(inner_temp, exist_ok=True)

@@ -1,6 +1,6 @@
 REM windows11_setup.bat
 @echo off
-ECHO start Windows 11 Setup-Script...
+ECHO start Windows 11 Setup-Script…
 
 REM PowerShell, use Execution Policy this time
 REM %* passes all arguments (e.g., -Exclude "en") given to the BAT file to the PowerShell script.

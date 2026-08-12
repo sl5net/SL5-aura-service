@@ -27,7 +27,7 @@ def convert_aac_to_wav_ffmpeg(aac_file_path, wav_file_path):
     command = ["ffmpeg", "-i", aac_file_path, wav_file_path]
 
     try:
-        print(f"Attempting to convert '{aac_file_path}' to '{wav_file_path}' using ffmpeg...")
+        print(f"Attempting to convert '{aac_file_path}' to '{wav_file_path}' using ffmpeg…")
         # Run the command
         # capture_output=True captures stdout and stderr
         # text=True decodes output as text

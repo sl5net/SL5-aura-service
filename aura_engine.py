@@ -102,7 +102,7 @@ if settings.TRINO_ENABLED:
 
     trino_thread = threading.Thread(target=async_trino_init, daemon=True)
     trino_thread.start()
-    print("[AURA ENGINE] Trino database initialization started asynchronously in the background...")
+    print("[AURA ENGINE] Trino database initialization started asynchronously in the background…")
 
 verify_plugin_notation(settings.PLUGINS_ENABLED)
 
@@ -114,7 +114,7 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     # Check if the package is installed without actually importing it
     if importlib.util.find_spec("fasttext") is None:
         logging.warning("FastText is not installed but is enabled in config.")
-        logging.info("At    ting to install 'fasttext-wheel' automatically...")
+        logging.info("At    ting to install 'fasttext-wheel' automatically…")
         try:
             subprocess.check_call([sys.executable, "-m", "pip", "install", "fasttext-wheel"])
             logging.info("INFO: FastText installed successfully. Please restart the service to activate it.")
@@ -167,7 +167,7 @@ if not _log_dir.exists():
 setup_project_structure(SL5NET_AURA_PROJECT_ROOT)
 
 
-LOG_FILE = SL5NET_AURA_PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/...") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
+LOG_FILE = SL5NET_AURA_PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/…") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
 
 
 AURA_SELF_TEST_RUNNING =TMP_DIR / "sl5_aura" / "aura_self_test_running.flag"
@@ -210,7 +210,7 @@ from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
 
 
 # File: STT/aura_engine.py
-# ...
+# …
 # --- Wrapper Script Check ---
 
     #sys.exit(1)
@@ -321,7 +321,7 @@ class WindowsEmojiFilter1(logging.Filter):
             '🍒':'cherries'
         }
 
-        # Fancy text symbols˗ˏˋ꒰ 🍒 ꒱ˏˋ°•*⁀ ༊*·˚⋆·˚ ༘ *・ ・ೃ⁀ ⇢ ˗ˏˋ*ೃ༄︶︶༉‧₊˚.♡ ༉‧₊˚ੈ ‧₊˚☄. *. ⋆: ̗̀ ...
+        # Fancy text symbols˗ˏˋ꒰ 🍒 ꒱ˏˋ°•*⁀ ༊*·˚⋆·˚ ༘ *・ ・ೃ⁀ ⇢ ˗ˏˋ*ೃ༄︶︶༉‧₊˚.♡ ༉‧₊˚ੈ ‧₊˚☄. *. ⋆: ̗̀ …
 
 
     def filter(self, record):
@@ -592,7 +592,7 @@ class DittoFilter(logging.Filter):
 
             # IMPORTANT: We DO NOT update self.last_msg HERE.
             # We want the next line to still be with
-            # dem Original (z.B. "Verbindung...") vergleicht und
+            # dem Original (z.B. "Verbindung…") vergleicht und
             # not with the goosefoot ("〃").
         else:
             # Es ist eine neue Nachricht -> Speicher aktualisieren
@@ -1267,7 +1267,7 @@ if settings.DEV_MODE:
     from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
     from scripts.py.func.log_memory_details import log_memory_details,log4DEV
 
-    check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git ... for normal users
+    check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git … for normal users
 
 
     # from scripts.py.func.checks.live_reload_e2e_func_test import run_e2e_live_reload_func_test_v2
@@ -1327,11 +1327,11 @@ if settings.DEV_MODE:
 
         logSnippet = """
         without checks and clean all cashes before. it seems service can start in about 23 Seconds with a good german Model (s,25.11.'25 00:04 Tue)
-        23:59:57,438 - INFO     - DEV_MODE: Running punctuation map key validation...
+        23:59:57,438 - INFO     - DEV_MODE: Running punctuation map key validation…
         00:00:20,233 - INFO     - ==    ✅ MODEL READY: 'de'.
 
         without checks it seems service can start in about 27 Seconds with a good german Model (s,24.11.'25 15:16 Mon):
-        15:12:19,851 - INFO     - DEV_MODE: Running punctuation map key validation...
+        15:12:19,851 - INFO     - DEV_MODE: Running punctuation map key validation…
         15:12:46,853 - INFO     - ==    ✅ MODEL READY: 'de'.
 
         """

@@ -13,7 +13,7 @@ from collections import Counter # <-- FIX: Import Counter
 
 def validate_setup(project_root, logger):
     """Verifies that essential directories exist."""
-    logger.info("INFO: Running setup validation...")
+    logger.info("INFO: Running setup validation…")
     log_dir = os.path.join(project_root, 'log')
     if not os.path.isdir(log_dir):
         logger.info("\nFATAL: Setup validation failed. The 'log' directory is missing.")

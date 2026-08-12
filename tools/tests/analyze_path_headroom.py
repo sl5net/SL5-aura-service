@@ -32,7 +32,7 @@ def analyze_path_headroom():
     longest_file_rel = ""
     longest_file_abs = ""
 
-    print("Scanning project files...")
+    print("Scanning project files…")
 
     # 2. Walk through the project to find the file with the longest internal path
     for root, dirs, files in os.walk(project_root):
@@ -43,7 +43,7 @@ def analyze_path_headroom():
         for name in files:
             abs_path = Path(root) / name
             try:
-                # Get path relative to project root (e.g., "models/vosk.../README")
+                # Get path relative to project root (e.g., "models/vosk…/README")
                 rel_path = abs_path.relative_to(project_root)
                 rel_path_str = str(rel_path)
 
@@ -74,7 +74,7 @@ def analyze_path_headroom():
     # 4. Output Report
     print("\n📊 ANALYSIS RESULTS")
     print("-" * 60)
-    print(f"Longest internal file:   ...\\{longest_file_rel}")
+    print(f"Longest internal file:   …\\{longest_file_rel}")
     print(f"Internal path length:    {max_internal_length} characters")
     print("-" * 60)
     print(f"Windows Max Path Limit:  {MAX_PATH_LIMIT} characters")
@@ -110,5 +110,5 @@ def analyze_path_headroom():
 
 if __name__ == "__main__":
     analyze_path_headroom()
-    input("\nPress ENTER to close...")
+    input("\nPress ENTER to close…")
 

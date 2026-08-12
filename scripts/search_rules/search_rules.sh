@@ -111,7 +111,7 @@ get_preferred_editor() {
 }
 PREFERRED_EDITOR=$(get_preferred_editor)
 
-logger_info "Initializing search_rules.sh..."
+logger_info "Initializing search_rules.sh…"
 
 
 # MAPS_DIR_DISPLAY=MAPS_DIR
@@ -152,7 +152,7 @@ if [ -f "$HISTORY_FILE" ] && [ -s "$HISTORY_FILE" ]; then
         INITIAL_QUERY="$LAST_HISTORY_ENTRY"
     fi
 fi
-logger_info "Starting interactive search..."
+logger_info "Starting interactive search…"
 # -----------------------------------------------------------------------------
 # GITHUB OPEN (exported function for execute-silent)
 # -----------------------------------------------------------------------------

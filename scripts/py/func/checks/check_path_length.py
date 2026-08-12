@@ -76,7 +76,7 @@ def run_path_check(project_root, LOCK_DIR ,  force=False):
         print(f"❌ Your Path:     {total_len} characters")
         print("❌")
         print("❌ The file causing the overflow is inside:")
-        print(f"❌ ...\\{longest_relative_path}")
+        print(f"❌ …\\{longest_relative_path}")
         print("❌")
         print("❌ SOLUTION: Please move the entire folder to a shorter path.")
         print("❌ Example: Move it to 'C:\\SL5'")

@@ -39,7 +39,7 @@ Und auch die tausenden von sprachlichen Übersetzungen ( xxxxx .i18n ) automatis
 
 Beispiel:
 
-... scripts/py/func/checks/README.i18n/README-pt-BRlang.md scripts/py/func/checks/README.i18n/README-ptlang.md scripts/py/func/checks/README.i18n/README-zh-CNlang.md ...
+… scripts/py/func/checks/README.i18n/README-pt-BRlang.md scripts/py/func/checks/README.i18n/README-ptlang.md scripts/py/func/checks/README.i18n/README-zh-CNlang.md …
 
 Die ganzen .i18n Ordner müllen sonst deinen speicher ganz schnell voll. brauche wir nicht.
 
@@ -387,7 +387,7 @@ def process_package(base_name: str, package_files: dict, all_assets: list) -> bo
             print(f"  CRITICAL: {p_name} is corrupt! Aborting package.")
             return False
 
-    print(f"  Merging {len(downloaded_parts)} parts -> {final_filename} ...")
+    print(f"  Merging {len(downloaded_parts)} parts -> {final_filename} …")
     with open(final_filename, "wb") as out:
         for p in downloaded_parts:
             with open(p, "rb") as inp:
@@ -416,7 +416,7 @@ def discover_packages(assets: list) -> dict:
     Skips .i18n assets automatically.
     Returns:
       { base_name: { 'checksum_asset': asset|None,
-                     'part_assets':    [asset, ...] } }
+                     'part_assets':    [asset, …] } }
     """
     packages: dict = defaultdict(lambda: {"checksum_asset": None, "part_assets": []})
 

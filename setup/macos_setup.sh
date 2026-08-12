@@ -31,7 +31,7 @@ else
 fi
 # Install python only if missing
 if ! command -v python3 >/dev/null 2>&1; then
-    echo "Installing python via brew..."
+    echo "Installing python via brew…"
     brew install python
 else
     echo "python3 already installed: $(python3 --version)"
@@ -70,14 +70,14 @@ echo "--- Starting STT Setup for macOS ---"
 
 # create system symlink only after brew exists and openjdk is installed
 if ! brew list openjdk >/dev/null 2>&1; then
-  echo "--> Installing openjdk via Homebrew..."
+  echo "--> Installing openjdk via Homebrew…"
   brew install openjdk
 fi
 
-echo "--> Making system JDK symlink (so macOS/system tools find it)..."
+echo "--> Making system JDK symlink (so macOS/system tools find it)…"
 sudo ln -sfn "$(brew --prefix)/opt/openjdk/libexec/openjdk.jdk" /Library/Java/JavaVirtualMachines/openjdk.jdk
 
-echo "--> Checking for a compatible Java version (>=17)..."
+echo "--> Checking for a compatible Java version (>=17)…"
 
 JAVA_OK=0
 if command -v java &> /dev/null; then
@@ -93,10 +93,10 @@ else
 fi
 
 if [ "$JAVA_OK" -eq 0 ]; then
-    echo "    -> Installing a modern JDK via Homebrew..."
+    echo "    -> Installing a modern JDK via Homebrew…"
     brew install openjdk
 fi
-echo "--> Installing other core dependencies..."
+echo "--> Installing other core dependencies…"
 brew install fswatch wget unzip portaudio
 
 
@@ -106,32 +106,32 @@ brew install fswatch wget unzip portaudio
 
 # Ensure virtualenv use pattern is safe: create venv before any pip usage in later steps
 if [ ! -d ".venv" ]; then
-    echo "--> Creating Python virtual environment in './.venv'..."
+    echo "--> Creating Python virtual environment in './.venv'…"
     python3 -m venv .venv || { echo "ERROR: failed to create venv"; exit 1; }
 fi
 
 
 # --- 3. Python Requirements ---
-echo "--> Preparing requirements for macOS..."
+echo "--> Preparing requirements for macOS…"
 # The macOS equivalent, 'fswatch', is already installed via Homebrew.
 sed -i.bak '/inotify-tools/d' requirements.txt
-echo "--> Installing Python requirements into the virtual environment..."
+echo "--> Installing Python requirements into the virtual environment…"
 if ! ./.venv/bin/pip install -r requirements.txt; then
-    echo "ERROR: Failed to install requirements. Trying to fix other common version issues..."
+    echo "ERROR: Failed to install requirements. Trying to fix other common version issues…"
     # Example: Fix vosk version, then retry
     sed -i.bak 's/vosk==0.3.45/vosk/' requirements.txt
     # We run the command again after the potential fixes
     ./.venv/bin/pip install -r requirements.txt
 fi
 # --- 4. Project Structure and Configuration ---
-echo "--> Setting up project directories and initial files..."
+echo "--> Setting up project directories and initial files…"
 python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 # ==============================================================================
 # --- 5. Download and Extract Required Components ---
 # This block intelligently handles downloads and extractions.
 # ==============================================================================
 
-echo "--> Checking for required components (LanguageTool, Vosk-Models)..."
+echo "--> Checking for required components (LanguageTool, Vosk-Models)…"
 
 # --- Configuration ---
 PREFIX="Z_"
@@ -180,7 +180,7 @@ done
 # --- End Filter ---
 
 # --- Phase 1: Check and attempt to restore from local ZIP cache ---
-echo "    -> Phase 1: Checking and trying to restore from local cache..."
+echo "    -> Phase 1: Checking and trying to restore from local cache…"
 for config_line in "${INSTALL_CONFIG[@]}"; do
     read -r base_name final_name dest_path <<< "$config_line"
     target_path="$dest_path/$final_name"
@@ -192,9 +192,9 @@ for config_line in "${INSTALL_CONFIG[@]}"; do
     fi
 
     # The component is missing. Let's see if we can unzip it from a local cache.
-    echo "    -> Missing: '$target_path'. Searching for '$zip_file'..."
+    echo "    -> Missing: '$target_path'. Searching for '$zip_file'…"
     if [ -f "$zip_file" ]; then
-        echo "    -> Found ZIP cache. Extracting '$zip_file'..."
+        echo "    -> Found ZIP cache. Extracting '$zip_file'…"
         unzip -q "$zip_file" -d "$dest_path"
     else
         # The ZIP is not there. We MUST run the downloader.
@@ -205,7 +205,7 @@ done
 
 # --- Phase 2: Download if necessary ---
 if [ "$DOWNLOAD_REQUIRED" = true ]; then
-    echo "    -> Phase 2: Running Python downloader for missing components..."
+    echo "    -> Phase 2: Running Python downloader for missing components…"
 
     # Create the models directory before attempting to download files into it.
     mkdir -p ./models
@@ -215,7 +215,7 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
     else
         ./.venv/bin/python tools/download_all_packages.py
     fi
-    echo "    -> Downloader finished. Retrying extraction..."
+    echo "    -> Downloader finished. Retrying extraction…"
 
     # After downloading, we must re-check and extract anything that's still missing.
     for config_line in "${INSTALL_CONFIG[@]}"; do
@@ -228,7 +228,7 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
         fi
 
         if [ -f "$zip_file" ]; then
-            echo "    -> Extracting newly downloaded '$zip_file'..."
+            echo "    -> Extracting newly downloaded '$zip_file'…"
             unzip -q "$zip_file" -d "$dest_path"
         else
             echo "    -> FATAL: Downloader ran but '$zip_file' is still missing. Aborting."
@@ -248,7 +248,7 @@ echo "--> All components are present and correctly placed."
 
 # --- Install fzf (Fuzzy Finder) ---
 if ! command -v fzf &> /dev/null; then
-    echo "[INFO] fzf not found. Installing..."
+    echo "[INFO] fzf not found. Installing…"
     # Prüfen, ob brew installiert ist
     if command -v brew &> /dev/null; then
         brew install fzf
@@ -262,7 +262,7 @@ fi
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 # --- Automatisches Setzen des Standard-Modells ---
-echo "--> Configuring default model in config/model_name.txt..."
+echo "--> Configuring default model in config/model_name.txt…"
 if [ "$CI" == "true" ]; then
     echo "vosk-model-small-en-us-0.15" > config/model_name.txt
 elif [ "$SELECTED_LANG" == "de" ]; then

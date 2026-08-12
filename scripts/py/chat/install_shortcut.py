@@ -52,7 +52,7 @@ def _install_windows() -> None:
     # itself calls webbrowser.open() so no console window is needed.
     content = (
         "@echo off\n"
-        "title Aura Admin — starting...\n"
+        "title Aura Admin — starting…\n"
         f'start /B "" "{PYTHON}" "{LAUNCHER}"\n'
     )
     target = DESKTOP / "Aura Admin.bat"

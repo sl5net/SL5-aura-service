@@ -6,7 +6,7 @@ try:
     print("Pygame mixer initialized successfully.")
     # Create a simple sound
     beep_sound = pygame.mixer.Sound(b'\x00\xff\x00\xff' * 100)
-    print("Playing beep sound...")
+    print("Playing beep sound…")
     beep_sound.play()
     time.sleep(1) # Keep script alive for sound to play
     print("Sound played. Quitting mixer.")

@@ -15,7 +15,7 @@ def normalize_punctuation(text: str, punctuation_map: dict, logger2) -> Tuple[st
     lower_map = {k.lower(): v for k, v in punctuation_map.items()}
     search_text = text.strip().lower()
     if getattr(settings, "DEV_MODE_all_processing", False):
-        log4DEV(f'📍 Available Keys: {list(lower_map.keys())[:10]}... (Total: {len(lower_map)})', logger2)
+        log4DEV(f'📍 Available Keys: {list(lower_map.keys())[:10]}… (Total: {len(lower_map)})', logger2)
 
     # Exact Match Check
     if search_text in lower_map:

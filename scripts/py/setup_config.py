@@ -26,7 +26,7 @@ STRING_KEYS = [
     "text_help",         # short help line under it
     "prompt_primary",    # "primary language" prompt
     "prompt_secondary",  # "secondary language" prompt
-    "enter_hint",        # "press enter to confirm..." hint
+    "enter_hint",        # "press enter to confirm…" hint
 ]
 
 # Built-in fallback strings. These are used whenever no matching .md file
@@ -36,7 +36,7 @@ DEFAULT_STRINGS = {
     "de": [
         "Region erkannt: {country} | Vorschlag: {default_primary}",
         "Sprachcode wählen oder 'n' für Terminal-Modus (Keine Sprachen).",
-        "Primäre Sprache (de, en... oder 'n' für nein, keine Sprache) - automatische Bestätigung in 8 Sekunden",
+        "Primäre Sprache (de, en… oder 'n' für nein, keine Sprache) - automatische Bestätigung in 8 Sekunden",
         "Sekundäre Sprache (oder 'none' Default) - automatische Bestätigung in 8 Sekunden",
         "Drücken Sie die Eingabetaste zur Bestätigung oder geben Sie einen anderen Sprachcode ein.",
     ],
@@ -119,8 +119,8 @@ def parse_i18n_md(path):
       - blank lines
       - heading/comment lines starting with '#' (any amount of '#', with or
         without a space after it - translators are inconsistent here)
-      - HTML comments '<!-- ... -->'
-      - fenced code blocks (``` ... ```), including their contents
+      - HTML comments '<!-- … -->'
+      - fenced code blocks (``` … ```), including their contents
 
     Everything else is kept, with common list/quote markers ('1. ', '- ',
     '* ', '> ') stripped from the start of the line.

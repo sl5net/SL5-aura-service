@@ -126,7 +126,7 @@ def check_map_health(file_path, module, logger):
 #
 # If field 1 has regex characters but field 2 is "clean" -> SWAPED
 #         if bool(re.search(regex_indicators, item1)) and not bool(re.search(regex_indicators, item2)):
-#             logger.warning(f"🛠️  Auto-Repair: Tausche ID und Pattern in {os.path.basename(file_path)}...")
+#             logger.warning(f"🛠️  Auto-Repair: Tausche ID und Pattern in {os.path.basename(file_path)}…")
 #
 #             # 1. Im Arbeitsspeicher tauschen
 #             new_entry = list(entry)

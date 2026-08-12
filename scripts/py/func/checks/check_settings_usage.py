@@ -50,7 +50,7 @@ def analyze_usages(defined_vars):
     Runs the grep command to find 'settings . variable' in source code
     and compares them against the defined list.
     """
-    print("🔍 Analyzing source code for 'settings.' usages...")
+    print("🔍 Analyzing source code for 'settings.' usages…")
 
 
 

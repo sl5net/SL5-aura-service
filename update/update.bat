@@ -17,7 +17,7 @@ echo test > ".write_permission_check.tmp" 2>nul
 :: update.bat:17
 if exist ".write_permission_check.tmp" (
     del ".write_permission_check.tmp"
-    echo Schreibrechte vorhanden. Starten ohne Admin-Rechte...
+    echo Schreibrechte vorhanden. Starten ohne Admin-Rechte…
     goto run_script
 )
 
@@ -27,7 +27,7 @@ if exist ".write_permission_check.tmp" (
 :: 1. Check for administrative privileges
 net session >nul 2>&1
 if %errorLevel% NEQ 0 (
-    echo Requesting administrative privileges to run the updater...
+    echo Requesting administrative privileges to run the updater…
     powershell -Command "Start-Process -FilePath '%0' -Verb RunAs"
     Start-Sleep -Seconds 2.5
 )
@@ -39,7 +39,7 @@ call "%~dp0setup\fix_permissions.bat"
 ::    -ExecutionPolicy Bypass: Temporarily allows the script to run without changing system settings.
 ::    -File: Specifies the script to execute.
 :run_script
-echo Starting the update process...
+echo Starting the update process…
 powershell.exe -ExecutionPolicy Bypass -File "%~dp0update_for_windows_users.ps1"
 
 echo.

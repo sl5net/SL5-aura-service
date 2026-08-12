@@ -424,7 +424,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
                 if (getattr(settings, 'show_PLUGINS_DISABLED', True)
                         and plugin_name_before != plugin_name ):
                     if global_state.LOGGING_ENABLED:
-                        logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}...")
+                        logger.info(f"🗺️ FALSE (by hierarchy): {hierarchical_key} ▉ {modname[:-4]}…")
 
                     #basis_pfad = Path(os.path.dirname(settings._settings_file_path)) / "maps"
                     #eltern_pfad_maps = basis_pfad / hierarchical_key
@@ -438,7 +438,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
             if plugin_name_before != plugin_name:
 
                 if settings.show_PLUGINS_ENABLED:
-                    # logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}...")
+                    # logger.info(f"🗺️ ENABLED: {hierarchical_key} ▉ {modname[:-4]}…")
                     ENABLED_modname_list.append(hierarchical_key)
 
 

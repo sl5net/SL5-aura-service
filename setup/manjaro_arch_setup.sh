@@ -66,7 +66,7 @@ echo "--- Starting STT Setup for Manjaro/Arch Linux ---"
 
 # setup/manjaro_arch_setup.sh
 # --- 1. System Dependencies ---
-echo "--> Checking for a compatible Java version (>=17)..."
+echo "--> Checking for a compatible Java version (>=17)…"
 
 JAVA_OK=0
 if command -v java &> /dev/null; then
@@ -81,10 +81,10 @@ else
     echo "    -> No Java executable found."
 fi
 if [ "$JAVA_OK" -eq 0 ]; then
-    echo "    -> Installing a modern JDK to satisfy the requirement..."
+    echo "    -> Installing a modern JDK to satisfy the requirement…"
     sudo pacman -S --noconfirm --needed jdk-openjdk
 fi
-echo "--> Installing other core dependencies..."
+echo "--> Installing other core dependencies…"
 sudo pacman -S --noconfirm --needed \
     inotify-tools wget unzip portaudio xdotool
 
@@ -93,7 +93,7 @@ sudo pacman -S --needed sdl2 sdl2_mixer sdl2_ttf sdl2_image
 # --- 2. Python Virtual Environment ---
 # We check if the venv directory exists before creating it.
 if [ ! -d ".venv" ]; then
-    echo "--> Creating Python virtual environment in './.venv'..."
+    echo "--> Creating Python virtual environment in './.venv'…"
     python3 -m venv .venv
 else
     echo "--> Virtual environment already exists. Skipping creation."
@@ -101,11 +101,11 @@ fi
 
 # --- 3. Python Requirements ---
 # We call pip from the venv directly. This is more robust than sourcing 'activate'.
-echo "--> Installing Python requirements into the virtual environment..."
+echo "--> Installing Python requirements into the virtual environment…"
 ./.venv/bin/pip install -r requirements.txt
 
 # --- 4. Project Structure and Configuration ---
-echo "--> Setting up project directories and initial files..."
+echo "--> Setting up project directories and initial files…"
 # THIS IS THE KEY CHANGE. We call the Python script and pass the current
 # working directory (which is the project root) as an argument.
 # This one command replaces all old 'mkdir' and 'touch' commands for the project structure.
@@ -115,7 +115,7 @@ python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 # ==============================================================================
 # --- 4.1. Download and Extract Required Components ---
 # This block intelligently handles downloads and extractions.
-echo "--> Checking for required components (LanguageTool, Vosk-Models)..."
+echo "--> Checking for required components (LanguageTool, Vosk-Models)…"
 source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
 # ==============================================================================
 
@@ -133,7 +133,7 @@ DOWNLOAD_REQUIRED=false
 
 
 if [[ "$read_upgrade" =~ ^[Yy]$ ]]; then
-    echo "Running system upgrade (this may be large)..."
+    echo "Running system upgrade (this may be large)…"
     sudo pacman -Syu
 else
     echo "Skipping full system upgrade. You can run 'sudo pacman -Syu' later."

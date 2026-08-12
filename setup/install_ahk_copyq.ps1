@@ -1,4 +1,4 @@
-# install_ahk_copyq.ps1
+﻿# install_ahk_copyq.ps1
 # script_name: setup/install_ahk_copyq.ps1
 
 param([string]$ProjectRootPath)
@@ -53,24 +53,24 @@ function Register-AuraStartupTask {
     }
 }
 
-Write-Host "Starting setup for client tools..." -ForegroundColor Cyan
+Write-Host "Starting setup for client tools…" -ForegroundColor Cyan
 
 # --- TASK 1: AutoHotkey V2 ---
-Write-Host "`n[1/2] Checking AutoHotkey V2..." -ForegroundColor Yellow
+Write-Host "`n[1/2] Checking AutoHotkey V2…" -ForegroundColor Yellow
 
 if (Test-Path -Path $ahkInstalledPath) {
     Write-Host "AutoHotkey V2 is already installed. Skipping." -ForegroundColor Green
 } else {
     # Not installed, check local download
     if (Test-Path -Path $ahkLocalPath) {
-        Write-Host "Found installer in Downloads folder ($ahkInstallerName). Installing from local file..." -ForegroundColor Cyan
+        Write-Host "Found installer in Downloads folder ($ahkInstallerName). Installing from local file…" -ForegroundColor Cyan
         try {
             # Start local installer silent
             $process = Start-Process -FilePath $ahkLocalPath -ArgumentList "/silent" -Wait -PassThru
             if ($process.ExitCode -eq 0) {
                 Write-Host "AutoHotkey installed from local file successfully." -ForegroundColor Green
             } else {
-                Write-Warning "Local installer exited with code $($process.ExitCode). Trying Winget as fallback..."
+                Write-Warning "Local installer exited with code $($process.ExitCode). Trying Winget as fallback…"
                 winget install --id "AutoHotkey.AutoHotkey" -e --source winget --accept-package-agreements --accept-source-agreements
             }
         } catch {
@@ -78,7 +78,7 @@ if (Test-Path -Path $ahkInstalledPath) {
         }
     } else {
         # Not installed, no local file -> Use Winget
-        Write-Host "No local installer found. Installing via Winget..." -ForegroundColor Cyan
+        Write-Host "No local installer found. Installing via Winget…" -ForegroundColor Cyan
         winget install --id "AutoHotkey.AutoHotkey" -e --source winget --accept-package-agreements --accept-source-agreements
     }
 }
@@ -98,7 +98,7 @@ if ($ProjectRootPath) {
 
 
 # --- TASK 2: CopyQ ---
-Write-Host "`n[2/2] Checking CopyQ..." -ForegroundColor Yellow
+Write-Host "`n[2/2] Checking CopyQ…" -ForegroundColor Yellow
 
 # We rely on Winget's internal check here, as CopyQ installer filenames vary by version.
 # Winget will detect if it's already installed and skip/update accordingly.
@@ -119,7 +119,7 @@ winget install --id "hluk.CopyQ" -e --source winget --accept-package-agreements 
 # Write-Host "CopyQ check/install completed successfully." -ForegroundColor Green
 
 # --- NEU: Konfiguration des Hotkeys ---
-Write-Host "    -> Configuring Global Hotkey (Ctrl+Q)..."
+Write-Host "    -> Configuring Global Hotkey (Ctrl+Q)…"
 
 # 1. Pfad suchen (Da PATH evtl. noch nicht aktuell ist)
 $copyqExe = "copyq" # Fallback
@@ -150,7 +150,7 @@ $pythonPath = Join-Path $scriptDir '..\.venv\Scripts\python.exe'
 $pythonPath = (Resolve-Path $pythonPath).Path
 
 # setup/install_ahk_copyq.ps1:87
-Write-Host "Running map_tagger.py..."
+Write-Host "Running map_tagger.py…"
 $mapTagger  = Join-Path $scriptDir '..\tools\map_tagger.py'
 $mapTagger  = (Resolve-Path $mapTagger).Path
 & $pythonPath $mapTagger --yes
@@ -161,7 +161,7 @@ if ($LASTEXITCODE -eq 0) {
     Read-Host -Prompt "Press Enter to continue"
 }
 
-Write-Host "Running export_to_copyq.py..."
+Write-Host "Running export_to_copyq.py…"
 Start-Process "py" -ArgumentList "-3", "..\tools\export_to_copyq.py" -WorkingDirectory (Get-Location) -Wait -PassThru
 if ($LASTEXITCODE -eq 0) { "OK" } else {
     "Error: $LASTEXITCODE"
@@ -189,7 +189,7 @@ if (Test-Path "C:\Program Files\Notepad++\notepad++.exe")
     echo [OK] Notepad++ ist schon da.
 } else
 {
-    echo [..] Installiere Notepad++...
+    echo [..] Installiere Notepad++…
     winget install -e --id Notepad++.Notepad++ --silent --accept-source-agreements --accept-package-agreements
 }
 
@@ -199,7 +199,7 @@ if (Test-Path "C:\Program Files\Double Commander\doublecmd.exe")
     echo [OK] Double Commander ist schon da.
 } else
 {
-    echo [..] Installiere Double Commander...
+    echo [..] Installiere Double Commander…
     winget install -e --id DoubleCommander.DoubleCommander --silent --accept-source-agreements --accept-package-agreements
 }
 

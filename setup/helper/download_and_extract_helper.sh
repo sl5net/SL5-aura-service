@@ -54,7 +54,7 @@ else
             fi
 
 
-            # Hinzufügen weiterer spezifischer Exklusionsregeln nach Bedarf...
+            # Hinzufügen weiterer spezifischer Exklusionsregeln nach Bedarf…
         fi
 
         # Nur hinzufügen, wenn nicht ausgeschlossen
@@ -67,7 +67,7 @@ fi
 
 
 # --- Phase 1: Check and attempt to restore from local ZIP cache ---
-echo "    -> Phase 1: Checking and trying to restore from local cache..."
+echo "    -> Phase 1: Checking and trying to restore from local cache…"
 for config_line in "${INSTALL_CONFIG[@]}"; do
     read -r base_name final_name dest_path <<< "$config_line"
     target_path="$dest_path/$final_name"
@@ -79,9 +79,9 @@ for config_line in "${INSTALL_CONFIG[@]}"; do
     fi
 
     # The component is missing. Let's see if we can unzip it from a local cache.
-    echo "    -> Missing: '$target_path'. Searching for '$zip_file'..."
+    echo "    -> Missing: '$target_path'. Searching for '$zip_file'…"
     if [ -f "$zip_file" ]; then
-        echo "    -> Found ZIP cache. Extracting '$zip_file'..."
+        echo "    -> Found ZIP cache. Extracting '$zip_file'…"
         unzip -q "$zip_file" -d "$dest_path"
     else
         # The ZIP is not there. We MUST run the downloader.
@@ -92,13 +92,13 @@ done
 
 # --- Phase 2: Download if necessary ---
 if [ "$DOWNLOAD_REQUIRED" = true ]; then
-    echo "    -> Phase 2: Running Python downloader for missing components..."
+    echo "    -> Phase 2: Running Python downloader for missing components…"
 
     # Create the models directory before attempting to download files into it.
     mkdir -p ./models
 
     ./.venv/bin/python tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
-    echo "    -> Downloader finished. Retrying extraction..."
+    echo "    -> Downloader finished. Retrying extraction…"
 
     # After downloading, we must re-check and extract anything that's still missing.
     for config_line in "${INSTALL_CONFIG[@]}"; do
@@ -111,7 +111,7 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
         fi
 
         if [ -f "$zip_file" ]; then
-            echo "    -> Extracting newly downloaded '$zip_file'..."
+            echo "    -> Extracting newly downloaded '$zip_file'…"
             unzip -q "$zip_file" -d "$dest_path"
         else
             echo "    -> FATAL: Downloader ran but '$zip_file' is still missing. Aborting."

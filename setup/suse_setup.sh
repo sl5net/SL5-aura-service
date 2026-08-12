@@ -32,10 +32,10 @@ fi
 
 # setup/suse_setup.sh:20
 
-echo "--> Refreshing repositories..."
+echo "--> Refreshing repositories…"
 $SUDO zypper -n refresh
 
-echo "--> Resolving Python and compiler packages (robust across openSUSE releases) ..."
+echo "--> Resolving Python and compiler packages (robust across openSUSE releases) …"
 # Package names shift between openSUSE releases -- e.g. Leap 16.0 moved the
 # base interpreter to the versioned "python313" package (companion pip/devel
 # packages still use the unversioned "python3-" alias), while older Leap
@@ -133,7 +133,7 @@ echo "Installing: $COMMON $PY_SET $GCC_SET"
 $SUDO zypper -n install $COMMON $PY_SET $GCC_SET
 
 # Map resolved package name -> actual interpreter/compiler binary names.
-# Versioned packages (python313, gcc15, ...) install as python3.13/gcc-15,
+# Versioned packages (python313, gcc15, …) install as python3.13/gcc-15,
 # not literally "python313"/"gcc15".
 PY_PKG=$(awk '{print $1}' <<< "$PY_SET")
 case "$PY_PKG" in
@@ -149,7 +149,7 @@ case "$GCC_PKG" in
   *) CC="$GCC_PKG"; CXX="$GCC_PKG" ;;
 esac
 
-echo "--> Verifying resolved interpreter/compiler are actually callable..."
+echo "--> Verifying resolved interpreter/compiler are actually callable…"
 for bin in "$PY_BIN" "$CC" "$CXX"; do
   if ! command -v "$bin" >/dev/null 2>&1; then
     echo "ERROR: expected binary '$bin' (from package '$PY_PKG'/'$GCC_PKG') is not on PATH."
@@ -171,16 +171,16 @@ echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUD
 
 # Ensure virtualenv exists and pip is available inside it
 if [ ! -d ".venv" ]; then
-  echo "--> Creating Python virtual environment in './.venv'..."
+  echo "--> Creating Python virtual environment in './.venv'…"
   "$PY_BIN" -m venv .venv
 fi
 
-echo "--> Ensuring pip is available in the venv and upgrading packaging tools..."
+echo "--> Ensuring pip is available in the venv and upgrading packaging tools…"
 # Try ensurepip first, then upgrade pip/setuptools/wheel via venv python
 ./.venv/bin/python -m ensurepip --upgrade 2>/dev/null || true
 ./.venv/bin/python -m pip install --upgrade pip setuptools wheel
 
-echo "--> Installing project Python requirements..."
+echo "--> Installing project Python requirements…"
 ./.venv/bin/python -m pip install -r requirements.txt
 
 
@@ -197,7 +197,7 @@ echo "--- Starting STT Setup for openSUSE ---"
 set -e
 
 # --- 1. System Dependencies ---
-echo "--> Checking for a compatible Java version (>=17)..."
+echo "--> Checking for a compatible Java version (>=17)…"
 JAVA_OK=0
 if command -v java &> /dev/null; then
     VERSION=$(java -version 2>&1 | awk -F[\".] '/version/ {print ($2 == "1") ? $3 : $2}')
@@ -211,13 +211,13 @@ else
     echo "    -> No Java executable found."
 fi
 
-echo "--> Installing core dependencies..."
+echo "--> Installing core dependencies…"
 $SUDO zypper -n install \
     inotify-tools wget unzip portaudio-devel
 
 
 if [ "$JAVA_OK" -eq 0 ]; then
-    echo "    -> Installing a modern JDK (>=17)..."
+    echo "    -> Installing a modern JDK (>=17)…"
     $SUDO zypper refresh && $SUDO zypper -n install java-21-openjdk
 fi
 
@@ -225,7 +225,7 @@ fi
 # --- 2. Python Virtual Environment ---
 # (Already created above, kept here for standalone-script compatibility.)
 if [ ! -d ".venv" ]; then
-    echo "--> Creating Python virtual environment in './.venv'..."
+    echo "--> Creating Python virtual environment in './.venv'…"
     "$PY_BIN" -m venv .venv
 else
     echo "--> Virtual environment already exists. Skipping creation."
@@ -233,11 +233,11 @@ fi
 
 # --- 3. Python Requirements ---
 # (Already installed above; re-run is a fast no-op if nothing changed.)
-echo "--> Installing Python requirements into the virtual environment..."
+echo "--> Installing Python requirements into the virtual environment…"
 ./.venv/bin/pip install -r requirements.txt
 
 # --- 4. Project Structure and Configuration ---
-echo "--> Setting up project directories and initial files..."
+echo "--> Setting up project directories and initial files…"
 "$PY_BIN" "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 
@@ -248,7 +248,7 @@ echo "--> Setting up project directories and initial files..."
 # This block intelligently handles downloads and extractions.
 # ==============================================================================
 
-echo "--> Checking for required components (LanguageTool, Vosk-Models)..."
+echo "--> Checking for required components (LanguageTool, Vosk-Models)…"
 
 # --- Configuration ---
 PREFIX="Z_"
@@ -319,7 +319,7 @@ else
 
 
 
-            # Hinzufügen weiterer spezifischer Exklusionsregeln nach Bedarf...
+            # Hinzufügen weiterer spezifischer Exklusionsregeln nach Bedarf…
         fi
 
         # Nur hinzufügen, wenn nicht ausgeschlossen
@@ -332,7 +332,7 @@ fi
 
 
 # --- Phase 1: Check and attempt to restore from local ZIP cache ---
-echo "    -> Phase 1: Checking and trying to restore from local cache..."
+echo "    -> Phase 1: Checking and trying to restore from local cache…"
 for config_line in "${INSTALL_CONFIG[@]}"; do
     read -r base_name final_name dest_path <<< "$config_line"
     target_path="$dest_path/$final_name"
@@ -344,9 +344,9 @@ for config_line in "${INSTALL_CONFIG[@]}"; do
     fi
 
     # The component is missing. Let's see if we can unzip it from a local cache.
-    echo "    -> Missing: '$target_path'. Searching for '$zip_file'..."
+    echo "    -> Missing: '$target_path'. Searching for '$zip_file'…"
     if [ -f "$zip_file" ]; then
-        echo "    -> Found ZIP cache. Extracting '$zip_file'..."
+        echo "    -> Found ZIP cache. Extracting '$zip_file'…"
         unzip -q "$zip_file" -d "$dest_path"
     else
         # The ZIP is not there. We MUST run the downloader.
@@ -357,13 +357,13 @@ done
 
 # --- Phase 2: Download if necessary ---
 if [ "$DOWNLOAD_REQUIRED" = true ]; then
-    echo "    -> Phase 2: Running Python downloader for missing components..."
+    echo "    -> Phase 2: Running Python downloader for missing components…"
 
     # Create the models directory before attempting to download files into it.
     mkdir -p ./models
 
     ./.venv/bin/python tools/download_all_packages.py --exclude "$EXCLUDE_LANGUAGES"
-    echo "    -> Downloader finished. Retrying extraction..."
+    echo "    -> Downloader finished. Retrying extraction…"
 
     # After downloading, we must re-check and extract anything that's still missing.
     for config_line in "${INSTALL_CONFIG[@]}"; do
@@ -376,7 +376,7 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
         fi
 
         if [ -f "$zip_file" ]; then
-            echo "    -> Extracting newly downloaded '$zip_file'..."
+            echo "    -> Extracting newly downloaded '$zip_file'…"
             unzip -q "$zip_file" -d "$dest_path"
         else
             echo "    -> FATAL: Downloader ran but '$zip_file' is still missing. Aborting."
@@ -396,7 +396,7 @@ echo "--> All components are present and correctly placed."
 
 # --- Install fzf (Fuzzy Finder) ---
 if ! command -v fzf &> /dev/null; then
-    echo "[INFO] fzf not found. Installing..."
+    echo "[INFO] fzf not found. Installing…"
     $SUDO zypper install -y fzf
 else
     echo "[INFO] fzf is already installed."
@@ -410,7 +410,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 # --- 5. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.
 
-echo '--> Creating Python package markers (__init__.py)...'
+echo '--> Creating Python package markers (__init__.py)…'
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
 
@@ -418,7 +418,7 @@ touch config/languagetool_server/__init__.py
 # --- User-Specific Configuration ---
 # This part is about user config, so it's fine for it to stay here.
 CONFIG_FILE="$HOME/.config/sl5-stt/config.toml"
-echo "--> Ensuring user config file exists at $CONFIG_FILE..."
+echo "--> Ensuring user config file exists at $CONFIG_FILE…"
 mkdir -p "$(dirname "$CONFIG_FILE")"
 # Only write the file if it doesn't exist to avoid overwriting user settings
 if [ ! -f "$CONFIG_FILE" ]; then
@@ -429,7 +429,7 @@ fi
 
 # --- dotool setup ---
 if ! command -v dotool &> /dev/null; then
-    echo "--> Installing dotool..."
+    echo "--> Installing dotool…"
     $SUDO zypper install -y dotool || echo "WARNING: dotool not found in repos. Install manually. See docs/LINUX_WAYLAND_dotool.md"
 fi
 $SUDO usermod -aG input $USER
@@ -441,7 +441,7 @@ echo "See docs/LINUX_WAYLAND_dotool.md for details."
 
 
 # --- Automatisches Setzen des Standard-Modells ---
-echo "--> Configuring default model in config/model_name.txt..."
+echo "--> Configuring default model in config/model_name.txt…"
 if [ "$CI" == "true" ]; then
     echo "vosk-model-small-en-us-0.15" > config/model_name.txt
 elif [ "$SELECTED_LANG" == "de" ]; then

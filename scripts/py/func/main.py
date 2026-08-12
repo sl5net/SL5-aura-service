@@ -147,7 +147,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
     finally:
         observer.stop()
         observer.join()
-        logger.info("scripts/py/func/main.py:150\nWaiting for all background threads to finish...")
+        logger.info("scripts/py/func/main.py:150\nWaiting for all background threads to finish…")
         # for t in active_threads:
         #     t.join()
 

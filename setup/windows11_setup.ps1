@@ -1,4 +1,4 @@
-# setup/windows11_setup.ps1
+﻿# setup/windows11_setup.ps1
 
 #  how to start:
 #  .\setup\windows11_setup.ps1 -Exclude "en" or .\setup\windows11_setup.ps1 -Exclude "de" or .\setup\windows11_setup.ps1 -Exclude "all".
@@ -13,7 +13,7 @@ Write-Host "--> Running setup from project root: $(Get-Location)"
 # setup/windows11_setup.ps1:13
 
 if (!(Get-Command python -ErrorAction SilentlyContinue)) {
-    Write-Host "--> Python not found. Installing via winget..."
+    Write-Host "--> Python not found. Installing via winget…"
     winget install -e --id Python.Python.3.12 --accept-package-agreements --accept-source-agreements
 
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -48,7 +48,7 @@ if ($env:CI -ne 'true') {
     $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
     if (-not $isAdmin) {
-        Write-Host "[ERROR] Administrator privileges are required. Re-launching..."
+        Write-Host "[ERROR] Administrator privileges are required. Re-launching…"
         # Re-run the current script with elevated privileges for GitHub Actions
 #        Start-Process -FilePath $PSCommandPath -Verb RunAs
 
@@ -87,7 +87,7 @@ Fazit: please ignore it. The Das System works.
 if ($env:CI -ne 'true')
 {
     # --- 2. Java Installation Check ---
-    Write-Host "--> Checking Java installation..."
+    Write-Host "--> Checking Java installation…"
     $JavaVersion = $null
     try
     {
@@ -113,7 +113,7 @@ if ($env:CI -ne 'true')
     }
     else
     {
-        Write-Host "    -> Java 17+ ... OpenJDK 17..." -ForegroundColor Yellow
+        Write-Host "    -> Java 17+ … OpenJDK 17…" -ForegroundColor Yellow
         try
         {
             # setup/windows11_setup.ps1:91
@@ -141,7 +141,7 @@ if ($env:CI -ne 'true')
 
 
 # --- 3. Python Installation Check ---
-Write-Host "--> Checking Python installation..."
+Write-Host "--> Checking Python installation…"
 $PythonVersion = $null
 try {
     $PythonOutput = & python --version 2>&1
@@ -159,7 +159,7 @@ try {
 if ($PythonVersion) {
     Write-Host "    -> Python $PythonVersion detected. OK." -ForegroundColor Green
 } else {
-    Write-Host "    -> Python 3.8+ not found. Installing Python 3.11..." -ForegroundColor Yellow
+    Write-Host "    -> Python 3.8+ not found. Installing Python 3.11…" -ForegroundColor Yellow
     try {
         winget install --id Python.Python.3.11 --silent --accept-source-agreements --accept-package-agreements
         if ($LASTEXITCODE -eq 0) {
@@ -177,7 +177,7 @@ if ($PythonVersion) {
 }
 
 # --- 3. Python Virtual Environment ---
-Write-Host "--> Creating Python virtual environment in '.\.venv'..."
+Write-Host "--> Creating Python virtual environment in '.\.venv'…"
 if (-not (Test-Path -Path ".\.venv")) {
     python -m venv .venv
 } else {
@@ -186,12 +186,12 @@ if (-not (Test-Path -Path ".\.venv")) {
 
 
 # --- PATCH: Replace fasttext with fasttext-wheel in requirements.txt ---
-Write-Host "--> Patching requirements.txt for Windows fasttext-wheel compatibility..."
+Write-Host "--> Patching requirements.txt for Windows fasttext-wheel compatibility…"
 (Get-Content requirements.txt) -replace '^fasttext.*$', 'fasttext-wheel' | Set-Content requirements.txt
 
 
 # --- 5. Python Requirements ---
-Write-Host "--> Installing Python requirements into the virtual environment..."
+Write-Host "--> Installing Python requirements into the virtual environment…"
 
 #.\.venv\Scripts\pip.exe install --upgrade pip # falsch innerhalbe eines setupa
 python -m pip install --upgrade pip
@@ -207,7 +207,7 @@ $LtDir = "LanguageTool-6.6"
 
 
 # --- 6. External Tools & Models (using the robust Python downloader) ---
-Write-Host "--> Downloading external tools and models via Python downloader..."
+Write-Host "--> Downloading external tools and models via Python downloader…"
 
 # Create the models directory before attempting to download files into it.
 New-Item -ItemType Directory -Path ".\models" -Force | Out-Null
@@ -228,7 +228,7 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "    -> Python downloader completed successfully." -ForegroundColor Green
 
 # --- Now, extract the downloaded archives ---
-Write-Host "--> Extracting downloaded archives..."
+Write-Host "--> Extracting downloaded archives…"
 
 
 
@@ -288,7 +288,7 @@ if ($ExcludeList.Count -eq 0 -or $ExcludeList[0] -eq "") {
                 Write-Host "    -> Excluding (en): $($ConfigItem.BaseName)"
                 $IsExcluded = $true
             }
-            # Add other specific language checks here if needed...
+            # Add other specific language checks here if needed…
         }
 
         # Only add if not excluded
@@ -345,7 +345,7 @@ function Expand-And-Cleanup {
         exit 1
     }
 
-    Write-Host "    -> Extracting $ZipFile to $DestinationPath..."
+    Write-Host "    -> Extracting $ZipFile to $DestinationPath…"
 
     # Ensure destination directory exists
     if (-not (Test-Path $AbsDest)) {
@@ -377,7 +377,7 @@ Write-Host "    -> Extraction and cleanup successful." -ForegroundColor Green
 
 
 # --- Run initial model setup ---
-Write-Host "INFO: Setting up initial models based on system language..."
+Write-Host "INFO: Setting up initial models based on system language…"
 
 # Get the 2-letter language code (e.g., "de", "fr") from Windows
 $LangCode = (Get-Culture).Name.Substring(0, 2)
@@ -415,7 +415,7 @@ $sl5DictationPath = "C:\tmp\sl5_aura\tts_output"
 }
 
 # --- Create central config file ---
-Write-Host "--> Creating central config file..."
+Write-Host "--> Creating central config file…"
 $ConfigDir = Join-Path -Path $env:USERPROFILE -ChildPath ".config\sl5-stt"
 if (-not (Test-Path -Path $ConfigDir)) {
     Write-Host "    -> Creating config directory at $ConfigDir"
@@ -432,7 +432,7 @@ $ConfigFile = Join-Path -Path $ConfigDir -ChildPath "config.toml"
 Set-Content -Path $ConfigFile -Value $ConfigContent
 
 # --- 9. Project Configuration ---
-Write-Host "--> Creating Python package markers (__init__.py)..."
+Write-Host "--> Creating Python package markers (__init__.py)…"
 
 # Create log directory if it doesn't exist
 if (-not (Test-Path "log")) {
@@ -451,7 +451,7 @@ if (-not (Test-Path "log")) {
 
 
 # --- set standard-Modell ---
-Write-Host "--> Configuring default model in config/model_name.txt..."
+Write-Host "--> Configuring default model in config/model_name.txt…"
 $modelFile = "config\model_name.txt"
 
 if ($env:CI -eq "true") {

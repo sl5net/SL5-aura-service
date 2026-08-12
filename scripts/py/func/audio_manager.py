@@ -122,14 +122,14 @@ logger = logging.getLogger(__name__)
 def speak_inclusive_fallback(text_to_speak, language_code): # noqa: F811
     """TTS helper for plugins"""
     if not settings.PLUGIN_HELPER_TTS_ENABLED:
-        logger.info("no PLUGIN_HELPER_TTS_ENABLED > skipping audio-speak ...")
+        logger.info("no PLUGIN_HELPER_TTS_ENABLED > skipping audio-speak …")
         return  # Silent mode
 
     # Wait if self-test is running
     self_test_running = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
 
     if self_test_running.exists():
-        logger.info("Maintenance: Self-test is running, skipping audio-speak ...")
+        logger.info("Maintenance: Self-test is running, skipping audio-speak …")
         return
 
 
@@ -170,10 +170,10 @@ def speak_inclusive_fallback(text_to_speak, language_code): # noqa: F811
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL
             )
-            # logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}...' ")
-            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
-            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
-            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
+            # logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}…' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}…' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}…' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}…' ")
         except FileNotFoundError:
             logger.info(f"fallback fouled '{command[0]}' no found. platform_name:{platform_name}")
         except Exception as e202603092050:
@@ -674,7 +674,7 @@ def unmute_microphone(logger=None):
     # play_beep(500, 100)  # 500 Hz frequency, 100 ms duration
 
     # low_pitch_sound = create_sine_wave_sound(200, 200, volume=0.4)  # 200 Hz for 3 seconds
-    # print("\nPlaying LOW pitch sound (200 Hz for 3 seconds)...")
+    # print("\nPlaying LOW pitch sound (200 Hz for 3 seconds)…")
     # low_pitch_sound.play()
     # pygame.mixer.quit()
 
@@ -745,7 +745,7 @@ if __name__ == '__main__':
         initial_state = "Muted" if is_microphone_muted() else "Active"
         log.info(f"Initial microphone state: {initial_state}")
 
-        input("Press Enter to MUTE the microphone...")
+        input("Press Enter to MUTE the microphone…")
         mute_microphone()
 
         input("Press Enter to UNMUTE the microphone...")

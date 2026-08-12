@@ -34,7 +34,7 @@ load_dotenv(SECRETS_PATH)
 
 API_KEY_SECRET = os.environ.get("SERVICE_API_KEY", "DEVELOPMENT_KEY_PLACEHOLDER").strip()
 # Debug Print (Should be removed in production)
-print(f"DEBUG: Loaded API Key (length {len(API_KEY_SECRET)}): '{API_KEY_SECRET[:5]}...'")
+print(f"DEBUG: Loaded API Key (length {len(API_KEY_SECRET)}): '{API_KEY_SECRET[:5]}…'")
 
 TMP_DIR = Path(os.environ.get("TMPDIR", "/tmp")) / "sl5_aura_service"
 TMP_DIR.mkdir(parents=True, exist_ok=True)
@@ -53,7 +53,7 @@ app = FastAPI()
 
 def verify_api_key(x_api_key: str = Header(None, alias="X-API-Key")):
     # Debug Prints
-    # print(f"API_KEY_SECRET: {repr(API_KEY_SECRET)[:4]}...")
+    # print(f"API_KEY_SECRET: {repr(API_KEY_SECRET)[:4]}…")
 
     if x_api_key is None or x_api_key != API_KEY_SECRET:
         raise HTTPException(
@@ -155,7 +155,7 @@ def open_admin_panel():
     </head>
     <body>
         <div class="spinner"></div>
-        <h2>Initializing Aura Admin Dashboard...</h2>
+        <h2>Initializing Aura Admin Dashboard…</h2>
         <p>Installing dependencies and starting the dashboard server. Please wait a moment.</p>
     </body>
     </html>
@@ -224,7 +224,7 @@ async def process_text_command(request: ProcessRequest, valid: bool = Depends(ve
             interface='web',
         )
 
-        app_logger.info(f"API-Request: Processing started for lang={lang_code}, unmasked={unmasked}, text='{raw_text[:30]}...'")
+        app_logger.info(f"API-Request: Processing started for lang={lang_code}, unmasked={unmasked}, text='{raw_text[:30]}…'")
 
         return {
             "status": "success",

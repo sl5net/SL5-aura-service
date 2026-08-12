@@ -11,7 +11,7 @@ def check_code_integrity(project_root, logger):
     Checks files for the presence of critical code fragments defined in integrity_rules.py.
     If a fragment is missing, logs a fatal error and exits the program.
     """
-    logger.info("14: DEV_MODE: Running code integrity check...")
+    logger.info("14: DEV_MODE: Running code integrity check…")
     failed_checks = 0
 
     for file_path, fragments in INTEGRITY_CHECKS.items():
@@ -62,9 +62,9 @@ def check_code_integrity(project_root, logger):
                             # startswith prüft exakt den Anfang (Spalte 0)
                             if line.startswith(unsafe_start):
                                 logger.fatal("-" * 60)
-                                logger.fatal("FATAL SECURITY CHECK FAILED!")
-                                logger.fatal(f"  File: {full_path}:{line_num}")
-                                logger.fatal(f"❌ Unsafe Import detected at start of line: '{unsafe_start.strip()}...'")
+                                logger.fatal("FATAL SECURITY CHECK FAILED! ( scripts/py/func/checks/integrity_rules.py )")
+                                logger.fatal(f"🔴 File: {full_path}:{line_num}")
+                                logger.fatal(f"❌ Unsafe Import detected at start of line: '{unsafe_start.strip()}…'")
                                 logger.fatal("  Global settings imports MUST be inside a try-except block (indented).")
                                 logger.fatal("-" * 60)
                                 failed_checks += 1
@@ -78,7 +78,7 @@ def check_code_integrity(project_root, logger):
                                         continue
                                     logger.fatal("-" * 60)
                                     logger.fatal("FATAL SECURITY CHECK FAILED!")
-                                    logger.fatal(f"  File: … {str(full_path)[-65:]}:{line_num}")
+                                    logger.fatal(f"🔴 File: … {str(full_path)[-65:]}:{line_num}")
                                     logger.fatal(f"❌ Forbidden Pattern detected: '{forbidden}'")
                                     logger.fatal("  SOLUTION: Use 'if getattr(settings, \"VARIABLE\", False):' instead!")
                                     logger.fatal("-" * 60)

@@ -65,12 +65,12 @@ def manage_audio_routing(mode, logger=None):
 
     sink_name = "mic_and_desktop_Sink"
     if logger:
-        logger.info(f"manage_audio_routing.py:66 | manage_audio_routing({mode} , ...) | sink={sink_name}")
+        logger.info(f"manage_audio_routing.py:66 | manage_audio_routing({mode} , …) | sink={sink_name}")
     else:
-        print(f"manage_audio_routing.py:66 | manage_audio_routing({mode} , ...) | sink={sink_name}")
+        print(f"manage_audio_routing.py:66 | manage_audio_routing({mode} , …) | sink={sink_name}")
 
     try:
-        logger.info(f"manage_audio_routing.py:69 | manage_audio_routing({mode} , ...) | sink={sink_name}")
+        logger.info(f"manage_audio_routing.py:69 | manage_audio_routing({mode} , …) | sink={sink_name}")
         # Always attempt to clean up existing virtual modules
         subprocess.run(["pactl", "unload-module", "module-loopback"], capture_output=True)
         # subprocess.run(["pactl", "unload-module", "module-null-sink"], capture_output=True)
@@ -85,7 +85,7 @@ def manage_audio_routing(mode, logger=None):
 
         if mode == 'MIC_AND_DESKTOP':
 
-            logger.info(f"manage_audio_routing.py:76 | manage_audio_routing({mode} , ...) | sink={sink_name}")
+            logger.info(f"manage_audio_routing.py:76 | manage_audio_routing({mode} , …) | sink={sink_name}")
 
             subprocess.run(["pactl", "load-module", "module-null-sink", f"sink_name={sink_name}"], check=True)
             subprocess.run(

@@ -24,7 +24,7 @@ def cleanup(logger, files_to_remove):
 
 
     # Final location check
-    logger.info("🏁 Cleanup Stack-Trace (where the process ended):\n" + "".join(traceback.format_stack()))
+    logger.info("🏁 Cleanup Stack-Trace (where the process ended):\n " + "".join(traceback.format_stack()))
 
 
     for f in files_to_remove:

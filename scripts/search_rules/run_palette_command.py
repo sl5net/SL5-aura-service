@@ -123,7 +123,7 @@ def main():
     if not is_api_running():
         time.sleep(3)
     if not is_api_running():
-        print("🚀 Starting FastAPI Uvicorn Service in background...", flush=True)
+        print("🚀 Starting FastAPI Uvicorn Service in background…", flush=True)
         # CREATE_NO_WINDOW = 0x08000000
         DETACHED_PROCESS = '0x00000008' # noqa: F841
 

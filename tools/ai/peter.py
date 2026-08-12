@@ -392,7 +392,7 @@ def find_relevant_md(koan_dir):
 
     # Kein automatischer Treffer -> fzf automatisch oeffnen
     log.debug(f"find_relevant_md: keine Treffer fuer keywords={keywords} -> fzf")
-    print(f"  Kein automatischer Treffer – fzf oeffnet zur Auswahl...")
+    print(f"  Kein automatischer Treffer – fzf oeffnet zur Auswahl…")
     chosen = fzf_select_md(all_files)
     if chosen:
         return chosen, get_github_url(chosen)
@@ -465,7 +465,7 @@ def process_koan(koan_dir, dry_run=False):
     # ─────────────────────────────────────────────────────────
     # FALL 2: Keine TODO-Regel – Ollama + README_AI kreativ
     # ─────────────────────────────────────────────────────────
-    print("Keine auskommentierte Regel gefunden – Peter wird kreativ...\n")
+    print("Keine auskommentierte Regel gefunden – Peter wird kreativ…\n")
 
     # Passendes MD-Dokument suchen
     md_path, md_github_url = find_relevant_md(koan_dir)
@@ -664,7 +664,7 @@ TEST: (ein einfaches Wort ohne Sonderzeichen)
 def main():
     global MODEL_NAME
     parser = argparse.ArgumentParser(description=f"Peter v{VERSION} - KI-Agent fuer SL5 Aura Koans")
-    parser.add_argument('--koan', type=str, help='Koan-Nummer z.B. 01, 02, ...')
+    parser.add_argument('--koan', type=str, help='Koan-Nummer z.B. 01, 02, …')
     parser.add_argument('--list', action='store_true', help='Alle Koans auflisten')
     parser.add_argument('--dry-run', action='store_true', help='Nur vorschlagen, nichts schreiben')
     parser.add_argument('--model', type=str, default=MODEL_NAME, help=f'Ollama-Modell (default: {MODEL_NAME})')

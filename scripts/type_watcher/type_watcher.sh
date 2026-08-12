@@ -110,7 +110,7 @@ if [[ "$INPUT_METHOD" == "dotool" ]]; then
 
         # 3. dotoold Daemon starting if needed  (only when dotoold exists)
         if command -v dotoold &>/dev/null && ! pgrep -x "dotoold" >/dev/null 2>&1; then
-            echo "Aura: Starte dotoold Daemon..."
+            echo "Aura: Starte dotoold Daemon…"
             dotoold &
             for i in {1..6}; do
                 sleep 0.5

@@ -41,7 +41,7 @@ global fileStates := Map() ; Mögliche Zustände: "queued", "processing", "done"
 ; Am Anfang des Skripts (bevor der Watcher startet)
 CleanTempFolder() {
     global watchDir
-    Log("Cleaning up old session files...")
+    Log("Cleaning up old session files…")
     Loop Files, watchDir "\tts_output_*.txt" {
         try {
             FileDelete(A_LoopFileFullPath)
@@ -161,7 +161,7 @@ QueueFile(filename) {
 
 
 ProcessExistingFiles() {
-    Log("Scanning for existing files...")
+    Log("Scanning for existing files…")
     Loop Files, watchDir "\tts_output_*.txt" {
         QueueFile(A_LoopFileName)
     }
@@ -214,7 +214,7 @@ CleanupZombies() {
                     toDelete.Push(fullPath)
                 }
             } catch {
-                ; Noch gesperrt...
+                ; Noch gesperrt…
                 ; Datei ist noch gesperrt (wahrscheinlich von Python)
                 ; Wir lassen sie in der Map, damit sie nicht doppelt getippt wird.
             }

@@ -162,7 +162,7 @@ def process_file(filepath):
 
     new_lines = []
 
-    # PATTERN = r"..."
+    # PATTERN = r"…"
     # regex_finder = re.compile(r'=\s*r["\']([\^"\']+)["\']')
     regex_finder = re.compile(r'[:=,\(\s]\s*(?:fr|rf|r)(?P<q>"{3}|\'{3}|"|\')(?P<p>.*?)(?P=q)', re.DOTALL)
 
@@ -394,7 +394,7 @@ def main():
         print(f"Fehler: '{MAPS_DIR}' nothing found.")
         sys.exit(1)
 
-    print(f"Scanne {MAPS_DIR} ...")
+    print(f"Scanne {MAPS_DIR} …")
     for root, dirs, files in os.walk(MAPS_DIR):
         time.sleep(.005)
         for file in files:

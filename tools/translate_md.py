@@ -162,7 +162,7 @@ def process_file(filename):
         original_lines = [line.rstrip('\n') for line in f.readlines()]
 
     # --- Schritt 0: Schütze komplette Markdown Links/Bilder ---
-    #print("   -> Schritt 0: Schütze komplette Markdown Links/Bilder...")
+    #print("   -> Schritt 0: Schütze komplette Markdown Links/Bilder…")
     markdown_links = []
     def link_replacer(match):
         # ### GEÄNDERT: Verwendet das neue, sichere Format ###
@@ -175,7 +175,7 @@ def process_file(filename):
     #print(f"      Markdown-Strukturen gefunden und ersetzt: {len(markdown_links)}")
 
     # --- Schritt 1 & 2 & 3 bleiben identisch ---
-    #print("   -> Schritt 1: Ersetze Hard-Breaks (zwei Leerzeichen) durch einen Platzhalter...")
+    #print("   -> Schritt 1: Ersetze Hard-Breaks (zwei Leerzeichen) durch einen Platzhalter…")
     lines_step1 = []
     hard_breaks_found_count = 0
     for line in lines_step0:
@@ -186,10 +186,10 @@ def process_file(filename):
             lines_step1.append(line)
     #print(f"      Hard-Breaks gefunden und ersetzt: {hard_breaks_found_count}")
 
-    #print("   -> Schritt 2: Schütze mittige '__' Zeichen...")
+    #print("   -> Schritt 2: Schütze mittige '__' Zeichen…")
     lines_step2 = [line.replace("__", DUNDER_PLACEHOLDER) for line in lines_step1]
 
-    #print("   -> Schritt 3: Extrahiere Code-Blöcke...")
+    #print("   -> Schritt 3: Extrahiere Code-Blöcke…")
     lines_for_translation = []
     code_blocks = []
     in_code_block = False
@@ -243,7 +243,7 @@ def process_file(filename):
 
 
 
-        print(f"   -> Übersetze nach '{lang}' -> '{output_file}'...")
+        print(f"   -> Übersetze nach '{lang}' -> '{output_file}'…")
         try:
             process = subprocess.run(
                 ['trans', '-brief', f"{SOURCE_LANG}:{lang}"],
@@ -256,7 +256,7 @@ def process_file(filename):
 
         # --- WIEDERHERSTELLUNG IN UMGEKEHRTER REIHENFOLGE ---
 
-        #print("      -> Schritt A: Stelle Code-Blöcke wieder her...")
+        #print("      -> Schritt A: Stelle Code-Blöcke wieder her…")
         restored_step_A = []
         code_block_idx = 0
         for line in translated_lines:
@@ -267,9 +267,9 @@ def process_file(filename):
                 restored_step_A.append(line)
 
         # ### GEÄNDERT: Logik zur Wiederherstellung der sicheren Platzhalter ###
-        #print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her...")
+        #print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her…")
 # ### KORRIGIERT: Logik zur Wiederherstellung und Anpassung der Links ###
-        #print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her und passe sie an...")
+        #print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her und passe sie an…")
         restored_step_B = []
         placeholder_regex = re.compile(r'(XMDLINK\d+X)')
 
@@ -296,13 +296,13 @@ def process_file(filename):
             restored_step_B.append(restored_line)
 
 
-        #print("      -> Schritt C: Stelle mittige '__' wieder her...")
+        #print("      -> Schritt C: Stelle mittige '__' wieder her…")
         restored_step_C = [line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_B]
 
-        #print(f"      -> Schritt D: Stelle {hard_breaks_found_count} Hard-Break(s) aus Platzhaltern wieder her...")
+        #print(f"      -> Schritt D: Stelle {hard_breaks_found_count} Hard-Break(s) aus Platzhaltern wieder her…")
         final_lines = [line.replace(HARD_BREAK_PLACEHOLDER, "  ") for line in restored_step_C]
 
-        print(f"      -> Speichere Datei '{output_file}'...")
+        print(f"      -> Speichere Datei '{output_file}'…")
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write("\n".join(final_lines))
 
@@ -314,7 +314,7 @@ def main():
     # test_translation_links()
     # sys.exit(1)
 
-    print("Starte die intelligente Übersetzung von Markdown-Dateien...")
+    print("Starte die intelligente Übersetzung von Markdown-Dateien…")
     print(f"Quellsprache: {SOURCE_LANG}")
     print(f"Zielsprachen: {TARGET_LANGS}")
 

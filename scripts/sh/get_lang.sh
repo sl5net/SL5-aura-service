@@ -46,7 +46,7 @@ if [[ "$LANG_CODE" == "de" || "$LANG_CODE" == "en-us" ]]; then
 fi
 
 # 3. If it's a different language, proceed to download.
-log_info "Detected non-default language: '${LANG_CODE}'. Checking for model..."
+log_info "Detected non-default language: '${LANG_CODE}'. Checking for model…"
 
 MODEL_VERSION="0.22" # We primarily use this version for extra models
 MODEL_NAME="vosk-model-${LANG_CODE}-${MODEL_VERSION}"
@@ -59,7 +59,7 @@ mkdir -p "$MODEL_DIR"
 
 # Check if model already exists. If not, download and unpack it.
 if [ ! -d "$MODEL_PATH" ]; then
-  log_info "Downloading Vosk model '${MODEL_NAME}'..."
+  log_info "Downloading Vosk model '${MODEL_NAME}'…"
   wget -q --show-progress "$MODEL_URL" -O "$MODEL_ZIP_PATH"
   unzip -q "$MODEL_ZIP_PATH" -d "$MODEL_DIR"
   rm "$MODEL_ZIP_PATH"
@@ -69,7 +69,7 @@ else
 fi
 
 # 4. Configure settings_local.py safely.
-log_info "Updating configuration..."
+log_info "Updating configuration…"
 
 # These are the standard models that are always assumed to be present.
 DEFAULT_MODELS_PYTHON_LIST="\"vosk-model-de-0.21\", \"vosk-model-en-us-0.22\""

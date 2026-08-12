@@ -23,7 +23,7 @@ LANGUAGE_MAP = {
 
 def generate_rst_file():
 
-    print(f"Generating {OUTPUT_FILENAME}...")
+    print(f"Generating {OUTPUT_FILENAME}…")
     with open(OUTPUT_FILENAME, 'w') as f:
 
         f.write("Utility-Skripte\n")
@@ -65,7 +65,7 @@ def generate_rst_file():
 
         for filename in FILES_IN_ROOT:
             if os.path.exists(filename):
-                # ... (rest of the code for language mapping etc. goes here)
+                # … (rest of the code for language mapping etc. goes here)
                 name, ext = os.path.splitext(filename)
                 lang = LANGUAGE_MAP.get(ext, 'text')
                 f.write(f".. literalinclude:: {filename}\n")
