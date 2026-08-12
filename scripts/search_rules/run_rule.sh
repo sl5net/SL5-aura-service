@@ -35,6 +35,9 @@ SINGLE_GUI_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.searc
 [ -f "$SINGLE_GUI_STATE_FILE" ] || echo "1" > "$SINGLE_GUI_STATE_FILE"
 
 source "$SCRIPT_DIR/func/common/get_one_per_file_flag.sh"
+source "$SCRIPT_DIR/func/common/get_language_filter_flag.sh"
+CURRENT_SEARCH_LANGUAGE=$(python3 "$SL5NET_AURA_PROJECT_ROOT/scripts/py/func/get_current_search_language.py")
+
 source "$SCRIPT_DIR/func/linux/ensure_single_instance.sh" "$@"
 source "$SCRIPT_DIR/func/common/get_ignore_flag.sh"
 
@@ -51,6 +54,13 @@ IQ=".py pre # EXAMPLE:"
 AWK_SCRIPT='{
     full_path = $1;
     line = $2;
+    if (lang_filter == "1") {
+        langpos = match(full_path, /\/[a-z][a-z]-[A-Z][A-Z]\//);
+        if (langpos > 0) {
+            folder_lang = substr(full_path, langpos + 1, 5);
+            if (folder_lang != current_lang) next;
+        }
+    }
     content = substr($0, index($0, ":" line ":") + length(line) + 2);
     gsub(/^[ \t]+/, "", content);
     if (length(content) == 0) next;
@@ -94,14 +104,14 @@ get_scoped_search_input() {
     local scope_dir
     scope_dir=$(cat "$PROOT_STATE_FILE" 2>/dev/null)
     [ -z "$scope_dir" ] || [ ! -d "$scope_dir" ] && scope_dir="$SL5NET_AURA_PROJECT_ROOT/config/maps"
-    rg -nH $(get_ignore_flag) $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$SL5NET_AURA_PROJECT_ROOT" -v use_ditto="1" -v one_per_file="$(get_one_per_file_flag)" "$AWK_SCRIPT"
+    rg -nH $(get_ignore_flag) $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$SL5NET_AURA_PROJECT_ROOT" -v use_ditto="1" -v one_per_file="$(get_one_per_file_flag)" -v lang_filter="$(get_language_filter_flag)" -v current_lang="$CURRENT_SEARCH_LANGUAGE" "$AWK_SCRIPT"
 }
 
 
 if [ "${1:-}" = "--load-full" ]; then
     FULL_ROOT=$(cat "$PROOT_STATE_FILE" 2>/dev/null)
     [ -z "$FULL_ROOT" ] || [ ! -d "$FULL_ROOT" ] && FULL_ROOT="$SL5NET_AURA_PROJECT_ROOT/config/maps"
-    rg -nH $(get_ignore_flag) $FILT "^" "$FULL_ROOT" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$SL5NET_AURA_PROJECT_ROOT" -v use_ditto="0" -v one_per_file="$(get_one_per_file_flag)" "$AWK_SCRIPT"
+    rg -nH $(get_ignore_flag) $FILT "^" "$FULL_ROOT" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$SL5NET_AURA_PROJECT_ROOT" -v use_ditto="0" -v one_per_file="$(get_one_per_file_flag)" -v lang_filter="$(get_language_filter_flag)" -v current_lang="$CURRENT_SEARCH_LANGUAGE" "$AWK_SCRIPT"
     exit 0
 fi
 
@@ -223,12 +233,13 @@ while true; do
             --bind="alt-f:$ALT_F_ACTION" \
             --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="alt-u:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_single_gui.sh; echo restart > $RESTART_MARKER)+abort" \
+            --bind="ctrl-l:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_language_filter.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="right-click:execute-silent(bash \$SCRIPT_DIR/func/common/proot_control.sh up \$SL5NET_AURA_PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --bind="double-click:execute-silent(bash \$SCRIPT_DIR/func/common/proot_control.sh set \$SL5NET_AURA_PROJECT_ROOT/config/maps \"\$(dirname \$(dirname \$(cat \$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_last_path)))\"; echo restart > $RESTART_MARKER)+clear-query+abort" \
             --bind="alt-r:execute-silent(bash \$SCRIPT_DIR/func/common/proot_control.sh reset \$SL5NET_AURA_PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --history="$H_FILE" --query="$CURRENT_QUERY" \
             --with-nth=1 \
-            --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+F: 1/File | 2xClick: Set | RClick: Up | Alt+R: Reset | F1: Legend"  \
+            --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+F: 1/File | Ctrl+L: Lang | 2xClick: Set | RClick: Up | Alt+R: Reset | F1: Legend"  \
             --bind="f1:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_legend.sh)+refresh-preview" \
             --bind="ctrl-z:previous-history" \
             --bind="ctrl-y:next-history" \

@@ -181,6 +181,15 @@ def get_ditto_status():
 
 
 
+def get_language_filter_status():
+    """Reads language filter state from file and returns ON or OFF."""
+    state_file = os.path.join(get_state_dir(), ".search_rules_language_filter")
+    try:
+        with open(state_file, "r", encoding="utf-8") as f:
+            return "ON" if f.read().strip() == "1" else "OFF"
+    except Exception:
+        return "ON"
+
 
 
 
@@ -215,15 +224,18 @@ def print_window_active_status(file_path, line_num):
         one_pf_st = get_one_per_file_status()
         ditto_st = get_ditto_status()
         single_gui_st = get_single_gui_status()
+        language_st = get_language_filter_status()
 
         icon_f = "≣" if one_pf_st == "OFF" else "﹘"
         icon_i = "🔐" if gitignore_st == "ON" else "🔓Ո"
         icon_g = "〃" if ditto_st == "ON" else "⬟"
         icon_u = "🎯" if single_gui_st == "ON" else "⁘"
+        icon_l = "🌐" if language_st == "ON" else "🌍"
+
         print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin | 🔴: title")
         print(f"🗺️ …/{get_proot_display()}")
         print("📜 ※.punct ⚙️pre 📄post| 〃same")
-        print(f"📜 F1:📜 Alt+G:{icon_g} Alt+F:{icon_f} Alt+I:{icon_i} Alt+U:{icon_u}")
+        print(f"📜 F1:📜 Alt+G:{icon_g} Alt+F:{icon_f} Alt+I:{icon_i} Alt+U:{icon_u} Ctrl+L:{icon_l}")
         print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")
         print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
         active_win = os.getenv("AURA_ACTIVE_WINDOW_TITLE", "").strip()
