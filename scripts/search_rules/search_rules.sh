@@ -180,7 +180,7 @@ while true; do
 SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | sed 's/|/ --include=/g; s/^/--include=/') . "$MAPS_DIR" | \
     fzf --history="$HISTORY_FILE" \
         --query="$INITIAL_QUERY" \
-        --header="Caller:.. | Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
+        --header="Caller:??? | Enter: Edit | Ctrl+G: GitHub | Ctrl+A: Kopiere Vorschau | Ctrl+X: Kopiere Zeile" \
         --delimiter=":" \
         --bind="ctrl-z:previous-history" \
         --bind="ctrl-y:next-history" \

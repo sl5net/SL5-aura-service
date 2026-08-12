@@ -228,7 +228,7 @@ while true; do
             --bind="alt-r:execute-silent(bash \$SCRIPT_DIR/func/common/proot_control.sh reset \$SL5NET_AURA_PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --history="$H_FILE" --query="$CURRENT_QUERY" \
             --with-nth=1 \
-            --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3} |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+F: 1/File | 2xClick: Set | RClick: Up | Alt+R: Reset | F1: Legend"  \
+            --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+F: 1/File | 2xClick: Set | RClick: Up | Alt+R: Reset | F1: Legend"  \
             --bind="f1:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_legend.sh)+refresh-preview" \
             --bind="ctrl-z:previous-history" \
             --bind="ctrl-y:next-history" \

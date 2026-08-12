@@ -27,6 +27,7 @@ UNSAFE_LINE_STARTS = [
 # 11:05:48,817 - CRITICAL -   File: /home/seeh/projects/py/STT/.venv/lib/python3.13/site-packages/websockets/version.py:34
 # 11:05:48,817 - CRITICAL - ❌ Forbidden Pattern detected: 'pathlib.Path'
 FORBIDDEN_PATTERNS = [
+    "...",
     "if settings.DEV_MODE_memory:",
     "subprocess.run(['dotool'], input=command, text=True)",
     # "pathlib.Path",

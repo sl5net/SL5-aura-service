@@ -221,7 +221,7 @@ def print_window_active_status(file_path, line_num):
         icon_g = "〃" if ditto_st == "ON" else "⬟"
         icon_u = "🎯" if single_gui_st == "ON" else "⁘"
         print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin | 🔴: title")
-        print(f"🗺️ .../{get_proot_display()}")
+        print(f"🗺️ …/{get_proot_display()}")
         print("📜 ※.punct ⚙️pre 📄post| 〃same")
         print(f"📜 F1:📜 Alt+G:{icon_g} Alt+F:{icon_f} Alt+I:{icon_i} Alt+U:{icon_u}")
         print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")
