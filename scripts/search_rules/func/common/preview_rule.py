@@ -32,7 +32,7 @@ COLOR_BOLD = "\033[1m" if supports_color() else ""
 COLOR_RESET = "\033[0m" if supports_color() else ""
 
 def extract_example(file_path, line_num):
-    """Sucht ab der Zeile line_num rückwärts nach dem nächsten '# EXAMPLE:'."""
+    """search '# EXAMPLE:'."""
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             lines = f.readlines()
@@ -77,7 +77,6 @@ def print_smart_cache_preview(file_path, line_num, project_root):
     try:
         with open(abs_file_path, 'r', encoding='utf-8', errors='ignore') as f:
             lines = f.readlines()
-        # Zeilen rund um den Cursor zusammenführen
         start_idx = max(0, line_num - 4)
         end_idx = min(len(lines), line_num + 3)
         context_text = "".join(lines[start_idx:end_idx])

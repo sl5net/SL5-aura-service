@@ -212,6 +212,16 @@ while true; do
             echo 'abort'"
     fi
 
+    ALT_E_ACTION="transform:
+        q={q}
+        case \"\$q\" in
+            '# EXAMPLE: '*) new_q=\"\${q#'# EXAMPLE: '}\" ;;
+            *) new_q=\"# EXAMPLE: \$q\" ;;
+        esac
+        echo \"\$new_q\" > ${RESTART_MARKER}.query
+        echo restart > $RESTART_MARKER
+        echo 'abort'"
+
     F_OUT=$(echo "$INIT_INPUT" | \
         fzf --print-query \
             --no-hscroll \
@@ -231,6 +241,7 @@ while true; do
                 fi" \
             --bind="alt-g:$ALT_G_ACTION" \
             --bind="alt-f:$ALT_F_ACTION" \
+            --bind="alt-e:$ALT_E_ACTION" \
             --bind="alt-i:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_gitignore.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="alt-u:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_single_gui.sh; echo restart > $RESTART_MARKER)+abort" \
             --bind="ctrl-l:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_language_filter.sh; echo restart > $RESTART_MARKER)+abort" \
@@ -239,7 +250,7 @@ while true; do
             --bind="alt-r:execute-silent(bash \$SCRIPT_DIR/func/common/proot_control.sh reset \$SL5NET_AURA_PROJECT_ROOT/config/maps; echo restart > $RESTART_MARKER)+abort" \
             --history="$H_FILE" --query="$CURRENT_QUERY" \
             --with-nth=1 \
-            --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+F: 1/File | Ctrl+L: Lang | 2xClick: Set | RClick: Up | Alt+R: Reset | F1: Legend"  \
+            --header="Caller:${AURA_ACTIVE_WINDOW_TITLE:0:3}… |Enter: EXAMPLE / Ctrl+R: prompt | Ctrl+E: Edit | Alt+G: Ditto | Alt+F: 1/File | Ctrl+L: Lang | 2xClick: Set | RClick: Up | Alt+R: Reset | Alt+E: +EXAMPLE | F1: Legend"  \
             --bind="f1:execute-silent(bash \$SCRIPT_DIR/func/common/toggle_legend.sh)+refresh-preview" \
             --bind="ctrl-z:previous-history" \
             --bind="ctrl-y:next-history" \
