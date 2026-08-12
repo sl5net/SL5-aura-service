@@ -63,10 +63,10 @@ def print_code_context(file_path, line_num):
         print(f"Error reading file: {e}")
 
 def print_smart_cache_preview(file_path, line_num, project_root):
-    """Sucht intelligent nach passenden Cache-Einträgen für diese Code-Zeile."""
+    """ intelligent Cache-entries line."""
     abs_file_path = os.path.abspath(file_path)
 
-    # 1. Relativen Map-Pfad für das SQL-Wildcard-Matching ermitteln
+    # Map-path for SQL-Wildcard-Matching
     if 'config/maps/' in abs_file_path:
         rel_path = abs_file_path.split('config/maps/', 1)[1]
         search_path = f"%config/maps/{rel_path}"
@@ -232,8 +232,8 @@ def print_window_active_status(file_path, line_num):
         icon_l = "🌐" if language_st == "ON" else "🌍"
 
         print("⬟: AuraRoot | 🗺️: Maps | 🧩: Plugin | 🔴: title")
-        print(f"🗺️ …/{get_proot_display()}")
-        print("📜 ※.punct ⚙️pre 📄post| 〃same")
+        print(f"🗺️ …/{get_proot_display()} | Alt+E: +EXAMPLE")
+        print("📜 ※.punct ⚙️pre 📄post | 〃same")
         print(f"📜 F1📜 Alt+G{icon_g} Alt+F{icon_f} Alt+I{icon_i} Alt+U{icon_u} Ctrl+L{icon_l}")
         print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")
         print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")
