@@ -171,7 +171,7 @@ def start_kiwix():
             'bash',
             'config/maps/plugins/standard_actions/wikipedia_local/de-DE/kiwix-docker-start-if-not-running.sh'
         ])
-        return "Kiwix wird gestartet..."
+        return "Kiwix wird gestartet…"
     return "Kiwix läuft bereits"
 
 def execute(match_data):

@@ -33,7 +33,7 @@ def check_example_file_is_synced(project_root: Path):
     settings_file = project_root / "config" / "settings_local.py"
     example_file = project_root / "config" / "settings_local.py_Example.txt"
 
-    print("INFO: Checking if 'settings_local.py_Example.txt' is in sync...")
+    print("INFO: Checking if 'settings_local.py_Example.txt' is in sync…")
 
     if not settings_file.is_file():
         # No local settings, no need to check.

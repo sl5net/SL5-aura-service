@@ -156,7 +156,7 @@ def run_function_with_throttling(
 
     # --- 3. Execution Allowed ---
 
-    logger.info(f"Function call allowed. Running core logic for {state_file_name}...")
+    logger.info(f"Function call allowed. Running core logic for {state_file_name}…")
     self_test_start_time = current_time
 
     # EXECUTE CORE LOGIC: Use func_params to call the function

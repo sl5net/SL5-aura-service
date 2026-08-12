@@ -12,7 +12,7 @@ while true; do
       echo "Nach 'git add' nichts zum Committen."
     else
       if git commit -m "${COMMIT_MESSAGE}"; then
-        echo "Commit erfolgreich. Versuche zu pushen..."
+        echo "Commit erfolgreich. Versuche zu pushen…"
         if git push; then
           echo "Push erfolgreich."
         else

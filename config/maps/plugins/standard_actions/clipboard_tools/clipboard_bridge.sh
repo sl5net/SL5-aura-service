@@ -4,12 +4,12 @@
 FILE_IN="/tmp/aura_clipboard.txt"
 FILE_OUT="/tmp/aura_clipboard_out.txt"
 
-echo "Starte Bidirektionale Clipboard-Bridge..."
+echo "Starte Bidirektionale Clipboard-Bridge…"
 
 while true; do
     # 1. RÜCKKANAL PRÜFEN (Python -> Clipboard)
     if [ -f "$FILE_OUT" ]; then
-        echo "Änderung erkannt. Schreibe in Zwischenablage..."
+        echo "Änderung erkannt. Schreibe in Zwischenablage…"
 
         if command -v xclip &> /dev/null; then
             cat "$FILE_OUT" | xclip -selection clipboard -i

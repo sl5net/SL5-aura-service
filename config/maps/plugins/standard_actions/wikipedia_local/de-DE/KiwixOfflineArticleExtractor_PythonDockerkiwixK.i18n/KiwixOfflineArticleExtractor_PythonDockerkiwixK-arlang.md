@@ -193,13 +193,13 @@ if __name__ == '__main__':
     print("-" * 50)
     print("TEST: Tübingen")
     text_tuebingen = execute("Tübingen")
-    print(text_tuebingen[:200] + "...") 
+    print(text_tuebingen[:200] + "…") 
     
     # Test 2: Inexact search that requires fuzzy matching
     print("-" * 50)
     print("TEST: licht (should find Licht)")
     text_licht = execute("licht")
-    print(text_licht[:200] + "...")
+    print(text_licht[:200] + "…")
     
     # Test 3: Search with no result
     print("-" * 50)

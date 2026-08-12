@@ -25,6 +25,6 @@ if (isWin) {
     + 'setsid konsole -e bash "' + search_script + '" '
     + '</dev/null >/dev/null 2>&1 & disown';
 
-    print("Launching Linux terminal via bash setsid...");
+    print("Launching Linux terminal via bash setsid…");
     execute('bash', '-c', cmd);
 }

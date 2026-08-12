@@ -589,7 +589,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
 
             if 'file_path' in locals() and try_auto_fix_module(file_path, e, logger):
                 if global_state.LOGGING_ENABLED:
-                    logger.info("🔧 Auto-Fix in Background-Loop finished! try Reload...")
+                    logger.info("🔧 Auto-Fix in Background-Loop finished! try Reload…")
                 try:
                     importlib.invalidate_caches()
                     # Here you have to look at how the module was originally loaded
@@ -1192,7 +1192,7 @@ def process_text_in_background(logger,
             # Log only every N iterations:
             if wait_count % 100 == 0:
                 if global_state.LOGGING_ENABLED:
-                    logger.info(f"ID {chunk_id} arrived early. Waiting for {expected_id}...")
+                    logger.info(f"ID {chunk_id} arrived early. Waiting for {expected_id}…")
             wait_count += 1
 
             # --- CACHE: Legt uns in den Warte-Cache und wartet auf andere Threads, die abarbeiten ---
@@ -1340,7 +1340,7 @@ def process_text_in_background(logger,
 
             log4DEV(f"THREAD: Starting processing for: '{raw_text}'", logger)
 
-        notify("Processing...", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
+        notify("Processing…", f"THREAD: Starting processing for: '{raw_text}'", "low", replace_tag="transcription_status")
 
 
         lang_code_predictions = ''
@@ -2031,8 +2031,8 @@ def process_text_in_background(logger,
         # file: scripts/py/func/process_text_in_background.py
         if settings.DEV_MODE:
             if not privacy_taint_occurred:
-                log4DEV(f"✅ Background processing for '{raw_text[:20]}...' finished. ",logger)
-            notify(f" Background processing for '{raw_text[:20]}...' finished. ", duration=700, urgency="low")
+                log4DEV(f"✅ Background processing for '{raw_text[:20]}…' finished. ",logger)
+            notify(f" Background processing for '{raw_text[:20]}…' finished. ", duration=700, urgency="low")
 
         # scripts/py/func/process_text_in_background.py:433 TODO fallback:
         max_model_memory_footprint_mb_not_calculate =  5000
@@ -2164,7 +2164,7 @@ def sanitize_transcription_start(raw_text: str) -> str:
     (respecting Unicode, so it works for Cyrillic, CJK, etc.) and returns
     the substring from that point onward. Also cleans BOM and ZWSP.
     """
-    #logging.info(f"Sanitizing raw text: '{raw_text[:50]}...'")
+    #logging.info(f"Sanitizing raw text: '{raw_text[:50]}…'")
 
     start_index = -1
     for i, char in enumerate(raw_text):
@@ -2183,7 +2183,7 @@ def sanitize_transcription_start(raw_text: str) -> str:
     clean_text = clean_text.lstrip('\uFEFF')
     clean_text = clean_text.replace('\u200b', '').strip()
 
-    #logging.info(f"Returning sanitized text: '{clean_text[:50]}...'")
+    #logging.info(f"Returning sanitized text: '{clean_text[:50]}…'")
     return clean_text
 
 

@@ -193,7 +193,7 @@ def init_all_sync() -> None:
             time.sleep(0.5)
 
 async def init_all():
-    logger.info("Starting Trino DB initialization...")
+    logger.info("Starting Trino DB initialization…")
     try:
         err = start_trino_if_needed()
         if err:

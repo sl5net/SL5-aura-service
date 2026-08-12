@@ -331,7 +331,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
 
     recognizer.SetWords(True)
-    notify(f"Listening {LT_LANGUAGE}...", "Speak now. Will stop on silence.", "low", icon="media-record",
+    notify(f"Listening {LT_LANGUAGE}…", "Speak now. Will stop on silence.", "low", icon="media-record",
            replace_tag="transcription_status")
 
 
@@ -481,7 +481,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                             if modus == 'remove suspend_flag only': # when using this mode: you need rules for start sleeping. mabe there: config/maps/wake-up/de-DE/FUZZY_MAP_pre.py:31
                                 # 🌵
                                 if "kakturs" in partial_text.lower() or "teleskop" in partial_text.lower():
-                                    logger.info("🚀 Wake-Word erkannt! Aktiviere System...")
+                                    logger.info("🚀 Wake-Word erkannt! Aktiviere System…")
 
                                     # Delete flag file to make system work normally again
                                     suspend_flag.unlink(missing_ok=True)

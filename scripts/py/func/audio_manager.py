@@ -748,10 +748,10 @@ if __name__ == '__main__':
         input("Press Enter to MUTE the microphone…")
         mute_microphone()
 
-        input("Press Enter to UNMUTE the microphone...")
+        input("Press Enter to UNMUTE the microphone…")
         unmute_microphone()
 
-        input("Press Enter to TOGGLE the microphone...")
+        input("Press Enter to TOGGLE the microphone…")
         toggle_microphone_mute()
 
         log.info("--- Test finished. Toggling back to initial state... ---")

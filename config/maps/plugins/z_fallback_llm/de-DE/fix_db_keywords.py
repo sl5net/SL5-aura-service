@@ -18,7 +18,7 @@ def main():
         c.execute("SELECT hash, keywords FROM prompts WHERE keywords IS NOT NULL")
         rows = c.fetchall()
 
-        print(f"🔎 Prüfe {len(rows)} Einträge...")
+        print(f"🔎 Prüfe {len(rows)} Einträge…")
         updated_count = 0
 
         for row in rows:

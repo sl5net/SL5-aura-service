@@ -112,7 +112,7 @@ def get_instant_match(user_text):
     if not user_relevant:
         return None
 
-    # utils.log_debug(f"🚀 INSTANT MODE: Suche Match für {user_relevant}...")
+    # utils.log_debug(f"🚀 INSTANT MODE: Suche Match für {user_relevant}…")
 
     try:
         conn = sqlite3.connect(utils.DB_FILE)
@@ -570,10 +570,10 @@ def execute(match_data):
         # --- CACHE CHECK ---
 
             # --- AI GENERIERUNG (OLLAMA API) ---
-        # utils.log_debug("Cache MISS. Sende API-Request an Ollama...")
+        # utils.log_debug("Cache MISS. Sende API-Request an Ollama…")
 
             # --- AI GENERIERUNG (OLLAMA API) ---
-            utils.log_debug("Cache BYPASS (Slow Mode). Sende API-Request an Ollama...")
+            utils.log_debug("Cache BYPASS (Slow Mode). Sende API-Request an Ollama…")
 
         payload = {
             "model": "llama3.2:latest",

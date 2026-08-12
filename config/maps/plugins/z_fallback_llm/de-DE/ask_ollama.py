@@ -160,7 +160,7 @@ def get_embedding_model():
     """
     global _model
     if _model is None:
-        utils.log_debug("🚀 Loading Embedding Model (Lazy Load)...")
+        utils.log_debug("🚀 Loading Embedding Model (Lazy Load)…")
         from sentence_transformers import SentenceTransformer
         _model = SentenceTransformer('all-MiniLM-L6-v2')
     return _model
@@ -232,7 +232,7 @@ def save_to_aura_db(question, answer, file_path, use_semantics=False):
 
         conn.commit()
         conn.close()
-        # utils.log_debug(f"✅ Gespeichert (inkl. Vektor): {question[:30]}...")
+        # utils.log_debug(f"✅ Gespeichert (inkl. Vektor): {question[:30]}…")
     except Exception as e:
         print(f"Database Error: {e}")
 
@@ -357,7 +357,7 @@ def get_instant_match(user_text):
     if not user_relevant:
         return None
 
-    # utils.log_debug(f"🚀 INSTANT MODE: Suche Match für {user_relevant}...")
+    # utils.log_debug(f"🚀 INSTANT MODE: Suche Match für {user_relevant}…")
 
     try:
         conn = sqlite3.connect(utils.DB_FILE)
@@ -1110,7 +1110,7 @@ def execute(match_data):
                 utils.log_debug("♻️ Cache Entry EXPIRED.")
 
             # --- AI GENERIERUNG (OLLAMA API) ---
-        # utils.log_debug("Cache MISS. Sende API-Request an Ollama...")
+        # utils.log_debug("Cache MISS. Sende API-Request an Ollama…")
 
         payload = {
             "model": "llama3.2",

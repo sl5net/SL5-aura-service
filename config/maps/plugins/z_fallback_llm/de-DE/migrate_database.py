@@ -74,7 +74,7 @@ COMMAND_SYNONYMS = {
 # 3. MIGRATIONSLOGIK
 # ----------------------------------------------------
 def migrate_database():
-    print(f"Starte Datenbank-Migration für '{utils.DB_FILE}'...")
+    print(f"Starte Datenbank-Migration für '{utils.DB_FILE}'…")
     conn = sqlite3.connect(utils.DB_FILE)
     c = conn.cursor()
 

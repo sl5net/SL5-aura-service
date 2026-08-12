@@ -83,7 +83,7 @@ def generate_announcement_text(f_path): # f_path
         "Ah, interesting. Next document on the list.",
         "Okay, moving on to the next task.",
         "Let's check out this one.",
-        "Next up is a document about...",
+        "Next up is a document about…",
         "Scanning the next file now. Let's focus.",
         "Right, this looks like an important one."
     ]
@@ -587,7 +587,7 @@ def main():
 
 
         # --- PHASE 1: MODERATOR ---
-        print("AI Moderator is thinking...")
+        print("AI Moderator is thinking…")
         q_prompt = f"Datei: {os.path.basename(target)}\nInhalt: {content}\n\nStelle eine kurze Radio-Frage auf Deutsch. Am besten nur ein Satz."
         question = call_ollama(q_prompt, "Du bist Moderator beim Radio Aura. Deine Hobbies:  privacy-first, voice assistant, scriptable rule engines, regEx, SqlLite. Halte dich kurz.")
 
@@ -607,7 +607,7 @@ def main():
         mod_thread = speak(question, blocking=False,use_espeak=True)
 
         # 3. AI Expert Round
-        print("AI Expert is thinking...")
+        print("AI Expert is thinking…")
 
 
 

@@ -422,7 +422,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
 
     if global_state.LOGGING_ENABLED:
-        logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES...")
+        logger.info(f":st:Running {len(active_tests)} tests in parallel using PROCESSES…")
 
     # 3. Parallel Execution
     passed_count = 0
@@ -463,10 +463,10 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
     def _collect_results(futures_map):
         nonlocal passed_count, failed_count
         if is_ci:
-            print(f":st: DEBUG collecting {len(futures_map)} results...")
+            print(f":st: DEBUG collecting {len(futures_map)} results…")
         for future in concurrent.futures.as_completed(futures_map):
             if is_ci:
-                print(":st: DEBUG future completed, getting result...")
+                print(":st: DEBUG future completed, getting result…")
             try:
                 result = future.result(timeout=60)
                 success, raw, actual, expected, desc, duration, use_lt = result
@@ -873,7 +873,7 @@ if __name__ == "__main__":
     from scripts.py.func.process_text_in_background import load_maps_for_language
     load_maps_for_language(lang, test_logger)
 
-    print(f":st: Starting self-test (CLI mode) using {lt_url}...")
+    print(f":st: Starting self-test (CLI mode) using {lt_url}…")
     print(":st: gh workflow run self-test.yml")
     print(":st: gh run list --workflow=self-test.yml")
     try:

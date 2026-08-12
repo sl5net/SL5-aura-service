@@ -116,21 +116,21 @@ def test_trigger_no_word_cutoff():
         time.sleep(0.3)
 
         # Wake up the sink
-        print("Aktiviere test_sink...")
+        print("Aktiviere test_sink…")
         _activate_sink("test_sink")
 
         # Set default source BEFORE trigger so Aura opens stream on test_sink.monitor
-        print("Setze Default-Source auf test_sink.monitor...")
+        print("Setze Default-Source auf test_sink.monitor…")
         subprocess.run(["pactl", "set-default-source", "test_sink.monitor"], capture_output=True)
         time.sleep(0.5)
 
         # Start recording
-        print("Sende Start-Trigger...")
+        print("Sende Start-Trigger…")
         time_before = time.time()
         TRIGGER_FILE.touch()
 
         # Wait for stream and move as backup
-        print("Warte auf Aura-Stream...")
+        print("Warte auf Aura-Stream…")
         sid = _wait_for_aura_stream(timeout=10.0)
         if sid:
             print(f"Aura-Stream gefunden: {sid} → verschiebe auf test_sink.monitor (Backup)")
@@ -143,16 +143,16 @@ def test_trigger_no_word_cutoff():
         _pause_type_watcher()
 
         # Play WAV into the sink
-        print(f"Spiele {wav_file.name} ein...")
+        print(f"Spiele {wav_file.name} ein…")
         subprocess.run(["paplay", "--device", "test_sink", str(wav_file)], check=True)
         time.sleep(1.0)
 
         # Stop recording
-        print("Sende Stopp-Trigger...")
+        print("Sende Stopp-Trigger…")
         TRIGGER_FILE.touch()
 
         # Wait for output with polling loop
-        print("Warte auf Verarbeitung (max 30s)...")
+        print("Warte auf Verarbeitung (max 30s)…")
 
         texts = _wait_for_output(time_before, timeout=90.0)
 
@@ -182,11 +182,11 @@ def test_trigger_no_word_cutoff():
 
             aligned_aura = " ".join(aura_words_list[best_start_aura:])
             aligned_yt = " ".join(yt_words_list[best_start_yt:])
-            print(f"YT Referenz : '{aligned_yt[:80]}...'")
-            print(f"Aura Output : '{aligned_aura[:80]}...'")
+            print(f"YT Referenz : '{aligned_yt[:80]}…'")
+            print(f"Aura Output : '{aligned_aura[:80]}…'")
 
-            # print(f"YT Referenz : '{yt_ref[:80]}...'")
-            # print(f"Aura Output : '{full_text[:80]}...'")
+            # print(f"YT Referenz : '{yt_ref[:80]}…'")
+            # print(f"Aura Output : '{full_text[:80]}…'")
             try:
                 from jiwer import wer
                 error_rate = wer(yt_ref, full_text)

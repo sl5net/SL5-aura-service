@@ -87,6 +87,6 @@ def dump_full_bible():
         logger.info(f"Done: {total} verses written. {failed} failures.")
 
 if __name__ == "__main__":
-    logger.info("Starting full Bible download (Luther)...")
+    logger.info("Starting full Bible download (Luther)…")
     dump_full_bible()
     logger.info(f"Bible saved to {DATA_FILE}")

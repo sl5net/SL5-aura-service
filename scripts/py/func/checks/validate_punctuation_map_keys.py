@@ -11,7 +11,7 @@ def validate_punctuation_map_keys(project_root,logger):
     Scans all language maps and warns if any PUNCTUATION_MAP contains non-lowercase keys.
     This check only runs in DEV_MODE to help developers avoid common errors.
     """
-    logger.info("DEV_MODE: Running punctuation map key validation...")
+    logger.info("DEV_MODE: Running punctuation map key validation…")
     maps_path = os.path.join(project_root, 'config', 'maps')
     if not os.path.isdir(maps_path):
         logger.info(f"x -> Maps directory not found at …{str(maps_path)[-40:]}, skipping check.")

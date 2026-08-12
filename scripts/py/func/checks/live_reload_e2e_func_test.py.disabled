@@ -94,11 +94,11 @@ def run_e2e_live_reload_func_test_v2(logger, lt_url):
     TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
     self_test_running = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"
 
-    logger.info(f"e2eTEST [PID {os.getpid()}] Starting e2e test...")
+    logger.info(f"e2eTEST [PID {os.getpid()}] Starting e2e test…")
 
     # Wait if self-test is running
     if self_test_running.exists():
-        logger.info("e2eTEST : Self-test is running, skipping maintenance tasks...")
+        logger.info("e2eTEST : Self-test is running, skipping maintenance tasks…")
         return
 
 

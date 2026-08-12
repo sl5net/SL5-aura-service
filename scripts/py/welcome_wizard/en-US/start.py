@@ -24,7 +24,7 @@ def run(project_root):
         "Aura is your telescope for the PC: Control from a distance!\\n\\n"
         "TIP: Say 'Teleskop' during recording to toggle the\\n"
         "pause function (SUSPENDED) on or off.\\n\\n"
-        "Opening interactive tutorials (Koans) now..."
+        "Opening interactive tutorials (Koans) now…"
     )
 
 

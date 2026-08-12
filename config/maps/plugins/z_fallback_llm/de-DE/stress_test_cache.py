@@ -24,7 +24,7 @@ class MockMatchObj:
         return "Computer"
 
 def main():
-    print("🔨 Starte Cache Stress-Test (Papageien-Modus)...")
+    print("🔨 Starte Cache Stress-Test (Papageien-Modus)…")
     print("------------------------------------------------")
 
     # Diese Fragen deaktivieren die History -> Identischer Hash garantiert!
@@ -41,7 +41,7 @@ def main():
         print(f"\n📢 Teste Frage: '{q}'")
 
         for i in range(1, REPEAT_COUNT + 1):
-            print(f"   Lauf {i}/{REPEAT_COUNT}...", end="", flush=True)
+            print(f"   Lauf {i}/{REPEAT_COUNT}…", end="", flush=True)
 
             match_data = {'regex_match_obj': MockMatchObj(q)}
 

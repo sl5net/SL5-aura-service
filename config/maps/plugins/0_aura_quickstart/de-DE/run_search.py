@@ -27,6 +27,6 @@ def execute(match_data):
     subprocess.Popen(cmd, start_new_session=True)
 
 
-    print("Suche wird im Terminal geöffnet...")
+    print("Suche wird im Terminal geöffnet…")
     time.sleep(0.060)
     raise Exception('no text after replacement')

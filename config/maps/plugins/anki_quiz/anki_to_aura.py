@@ -49,7 +49,7 @@ def extract_anki():
 
     # Alte DB löschen, um Mix-Ups zu verhindern
     if DB_OUTPUT.exists():
-        print("Lösche alte Datenbank...")
+        print("Lösche alte Datenbank…")
         DB_OUTPUT.unlink()
 
     # Entpacken

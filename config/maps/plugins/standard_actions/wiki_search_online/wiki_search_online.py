@@ -77,7 +77,7 @@ def get_robust_summary(search_term, lang_code='de'):
 
 
     # SCRAPING FALLBACK
-    print(f"DEBUG: 🔄 Starte Scraping-Fallback für {search_term}...")
+    print(f"DEBUG: 🔄 Starte Scraping-Fallback für {search_term}…")
 
     summary_text = scrape_wikipedia_summary(search_term, lang_code)
 

@@ -142,7 +142,7 @@ def cache_response(
 
         conn.commit()
         conn.close()
-        utils.log_debug(f"✅ Cache saved to db💾. normalized_key: {hash_of_normalized_key[:8]} ...")
+        utils.log_debug(f"✅ Cache saved to db💾. normalized_key: {hash_of_normalized_key[:8]} …")
 
     except Exception as e:
         utils.log_debug(f"❌ DB ERROR in def cache_response(...): {e}")

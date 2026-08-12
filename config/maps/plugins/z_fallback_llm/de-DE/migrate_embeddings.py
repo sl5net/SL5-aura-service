@@ -48,7 +48,7 @@ if __name__ == "__main__":
             logger.error(f"Database file {DB_FILE} not found!")
             return
 
-        logger.info(f"Loading model: {MODEL_NAME}...")
+        logger.info(f"Loading model: {MODEL_NAME}…")
         model = SentenceTransformer(MODEL_NAME)
 
         try:
@@ -70,7 +70,7 @@ if __name__ == "__main__":
                 logger.info("No rows found that require migration.")
                 return
 
-            logger.info(f"Starting migration for {len(rows)} rows...")
+            logger.info(f"Starting migration for {len(rows)} rows…")
 
             for i, (prompt_hash, prompt_text) in enumerate(rows):
                 # Generate embedding

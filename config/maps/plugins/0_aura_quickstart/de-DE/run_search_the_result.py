@@ -48,7 +48,7 @@ def execute(match_data):
         f'SEARCH_FILES_FILTER="{file_filter}" bash "{search_script}" "{docs_dir}"; sleep {sleep_sec}'
     ]
     subprocess.Popen(cmd, start_new_session=True, env=env)
-    print("Suche wird im Terminal geoeffnet...")
+    print("Suche wird im Terminal geoeffnet…")
     time.sleep(0.060)
     raise Exception('no text after replacement')
 

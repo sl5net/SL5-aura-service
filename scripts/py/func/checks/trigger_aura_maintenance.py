@@ -41,8 +41,8 @@ def trigger_aura_maintenance(logger):
     global MAINTENANCE_TIMER
     if MAINTENANCE_TIMER:
         MAINTENANCE_TIMER.cancel()
-    logger.info("Maintenance: Timer scheduled (4s silence)...")
-    # speak_fallback("Maintenance: Timer scheduled (4s silence)...", 'de-DE')
+    logger.info("Maintenance: Timer scheduled (4s silence)…")
+    # speak_fallback("Maintenance: Timer scheduled (4s silence)…", 'de-DE')
 
     MAINTENANCE_TIMER = threading.Timer(4.0, _execute_maintenance_tasks, args=[logger])
     MAINTENANCE_TIMER.daemon = True
@@ -54,7 +54,7 @@ def _execute_maintenance_tasks(logger):
 
     # Wait if self-test is running
     if self_test_running.exists():
-        logger.info("Maintenance: Self-test is running, skipping maintenance tasks...")
+        logger.info("Maintenance: Self-test is running, skipping maintenance tasks…")
         return
 
     logger.info("!!! Maintenance Task Started !!!")

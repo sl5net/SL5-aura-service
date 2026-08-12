@@ -72,7 +72,7 @@ FUZZY_MAP_pre = [
     # (?<!\d)1(?!\d) stellt sicher, dass es wirklich "1" ist und nicht "10" oder "21".
 
     # Antwort 1
-    # Matcht: "Richtig ist 1", "Antwort 1", "Ich nehme die Eins", "Lösung ist 1die..."
+    # Matcht: "Richtig ist 1", "Antwort 1", "Ich nehme die Eins", "Lösung ist 1die…"
     # EXAMPLE: die Antwort
     ('Antwort 1',
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(1|eins|ein|one|erste)(?!\d).*',
@@ -84,7 +84,7 @@ FUZZY_MAP_pre = [
     # Richtig istantwort 3
 
     # Antwort 2
-    # Matcht: "richtig ist 2die lösung...", "Antwort zwei", "nehme 2"
+    # Matcht: "richtig ist 2die lösung…", "Antwort zwei", "nehme 2"
     # EXAMPLE: die Antwort
     ('Antwort 2',
      r'^(?:die\s+)?.*\b(?:Antwort|Lösung|Nummer|Richtig|Wähle|Nehme|ist)\b\s*(?:ist|wäre|die|der|das|den)?\s*(?<!\d)(2|zwei|zwo|two|zweite)(?!\d).*',

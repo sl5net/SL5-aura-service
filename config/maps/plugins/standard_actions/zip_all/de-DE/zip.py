@@ -221,7 +221,7 @@ def check_and_unpack_zips():
         zip_path = zip_dir / zip_name
 
         if _needs_unpacking(folder_path, zip_path):
-            logger.info(f"🔓 Update available for {folder_path.name}...")
+            logger.info(f"🔓 Update available for {folder_path.name}…")
 
             # 1. Find the key (somewhere up the tree)
             found_pw_file = find_password_file(folder_path)
@@ -281,7 +281,7 @@ def check_and_pack_zips():
         if (_needs_packing(folder_path, zip_target) == PackingStatus.CONTENT_CHANGED
                 or _needs_unpacking(folder_path, zip_target) == PackingStatus.ZIP_MISSING):
             if _needs_packing(folder_path, zip_target) == PackingStatus.CONTENT_CHANGED:
-                logger.info(f"♻️ Content changed. 📦 Zipping: ...{str(folder_path)[-30:]}")
+                logger.info(f"♻️ Content changed. 📦 Zipping: …{str(folder_path)[-30:]}")
                 # missing a zip has maybe good reasons
             try:
                 packer_lib.execute_packing_logic(folder_path, logger)
@@ -316,7 +316,7 @@ def on_reload():
 
 def execute(match_data):
     """Manual Voice Command."""
-    logger.info("🎤 Voice Command: Full Scan & Sync...")
+    logger.info("🎤 Voice Command: Full Scan & Sync…")
 
     count = scan_and_register_folders()
 

@@ -44,15 +44,15 @@ logging.basicConfig(filename=LOGFILE, level=logging.INFO, format="%(asctime)s %(
 def ensure_nltk_data():
     try: nltk.data.find('corpora/wordnet.zip')
     except nltk.downloader.DownloadError:
-        print("Downloading NLTK 'wordnet' corpus...")
+        print("Downloading NLTK 'wordnet' corpus…")
         nltk.download('wordnet', quiet=False)
 
 def ensure_english_word_list():
     if not ENGLISH_WORD_LIST_FILE.exists():
-        print(f"'{ENGLISH_WORD_LIST_FILE}' not found. Creating it...")
+        print(f"'{ENGLISH_WORD_LIST_FILE}' not found. Creating it…")
         try: nltk.data.find('corpora/words.zip')
         except nltk.downloader.DownloadError:
-            print("Downloading NLTK 'words' corpus...")
+            print("Downloading NLTK 'words' corpus…")
             nltk.download('words', quiet=False)
         from nltk.corpus import words
         with open(ENGLISH_WORD_LIST_FILE, "w", encoding="utf-8") as f:

@@ -156,7 +156,7 @@ def run_file4replacement_e2e_test(logger, lt_url):
     run_catch_all_training_e2e_test().
     """
     logger.info("-" * 50)
-    logger.info(f"file4replacementTest [PID {os.getpid()}] Starting file4replacement e2e test...")
+    logger.info(f"file4replacementTest [PID {os.getpid()}] Starting file4replacement e2e test…")
 
     _activate_plugin_dir(logger)
     _ensure_fixtures_exist(logger)

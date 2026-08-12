@@ -82,7 +82,7 @@ multiline_string_1 = """
 Use in Source-Code always English(also for Comments).
 - Bitte achte darauf (in deinen Tipps) das (bei use) möglichst keine closed source installiert wird und das es nichts kostet.
 
-- solltest du Source schreiben: Im Source bitte Schritte als logger.info ausgaben dokumentieren. Danke. logger.info("...")
+- solltest du Source schreiben: Im Source bitte Schritte als logger.info ausgaben dokumentieren. Danke. logger.info("…")
 
 Wichtig 1: Keine Kommentar in Shell-/Terminal-Befehlen!!!!!
 Wichtig 2: Wir gehen als Default immer davon aus, dass der Kunde ein Englisch sprechender Mensch ist.

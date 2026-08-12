@@ -84,7 +84,7 @@ def generate_user_question(last_aura_response, round_num):
     """
     Dieser Bot simuliert den User. Er reagiert auf Auras Antwort.
     """
-    # print(f"\n🤔 User-Bot überlegt (Runde {round_num})...")
+    # print(f"\n🤔 User-Bot überlegt (Runde {round_num})…")
 
     system_prompt_Ergotherapeut = ( # noqa: F841
         "Du bist ein User, Ergotherapeut mit Schwehrbehinderten, der sehr selten Computer benutz und das neue Open-Source assistant framework testet.\n"

@@ -327,7 +327,7 @@ class DynamicSettings:
 
                 if hasattr(self, 'PLUGINS_ENABLED') and isinstance(self.PLUGINS_ENABLED, dict):
                     # if settings.DEV_MODE:
-                    #     print("DEBUG: Resolving PLUGINS_ENABLED hierarchy...")
+                    #     print("DEBUG: Resolving PLUGINS_ENABLED hierarchy…")
 
                     # The merged Dictionary before it is resolved
                     raw_plugins_config = self.PLUGINS_ENABLED
@@ -406,10 +406,10 @@ def speak_fallback(text_to_speak, language_code="en-US"):
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL
             )
-            # logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}...' ")
-            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
-            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
-            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}...' ")
+            # logger.info(f"audio_manager 92 🔊 ({platform_name}) '{text_to_speak[:30]}…' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}…' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}…' ")
+            # logger.info(f"audio_manager.py: 92 🔊 Fallback ({platform_name}) '{text_to_speak[:30]}…' ")
         except FileNotFoundError:
             logger.info(f"fallback fouled '{command[0]}' no found. platform_name:{platform_name}")
         except Exception as e:

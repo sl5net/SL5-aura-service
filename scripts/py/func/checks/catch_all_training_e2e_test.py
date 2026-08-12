@@ -143,7 +143,7 @@ def run_catch_all_training_e2e_test(logger, lt_url):
     convention of run_e2e_live_reload_func_test_v2().
     """
     logger.info("-" * 50)
-    logger.info(f"catchAllTest [PID {os.getpid()}] Starting catch-all training e2e test...")
+    logger.info(f"catchAllTest [PID {os.getpid()}] Starting catch-all training e2e test…")
 
     _activate_plugin_dir(logger)
     _ensure_map_file_exists(MAP_TARGET_FILE, logger)
