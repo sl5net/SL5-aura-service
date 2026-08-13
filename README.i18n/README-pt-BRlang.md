@@ -15,7 +15,7 @@
 | 🗄️ Gestão Estadual | Orquestração Trino + Airflow, fzf, CopyQ, comandos de voz/terminal, UIs de navegador |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** por teste (39 testes com média de 0,34s · medido com [Eco-CI](https://metrics.green-coding.io/index.html)) · sem computação em nuvem
+⚡ **~2,87 J** por teste (39 testes com média de 0,34s 🌿 medido com [Eco-CI](https://metrics.green-coding.io/index.html)) · sem computação em nuvem
 
 <detalhes>
 <summary>Início rápido</summary>
@@ -128,8 +128,7 @@ Para uma referência técnica completa, incluindo todos os módulos e scripts, v
 👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ### Destaques de recursos
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pt-BRlang.md) — Pesquisa de regras `fzf` em painel duplo, visualizações de contexto ao vivo, execução instantânea de comandos via `Enter`/`Ctrl+R` e integração de editor via `Ctrl+E` (integrado com teclas de atalho globais `Super+S` e comandos de pesquisa vocal).
-
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pt-BRlang.md) — Pesquisa de regras `fzf` em painel duplo, visualizações de contexto ao vivo, execução instantânea de comandos via `Enter`/`Ctrl+R` e integração de editor via `Ctrl+E`. Suportado por uma tecla de atalho global (`Super+S`) e vários ambientes de pesquisa dedicados pré-configurados através de comandos de voz.
 
 ### Status da compilação
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ)
@@ -172,7 +171,7 @@ Assista ao processo completo de configuração de 6 minutos:
 
 
 A configuração é um processo de duas etapas:
-1. Baixe a versão ou master mais recente (https://github.com/sl5net/SL5-aura-service/archive/master.zip) ou clone este repositório em seu computador.
+1. Baixe a versão mais recente ou master (https://github.com/sl5net/SL5-aura-service/archive/master.zip) ou clone este repositório em seu computador.
 2. Execute o script de configuração único para seu sistema operacional.
 
 Os scripts de configuração cuidam de tudo: dependências do sistema, ambiente Python e download dos modelos e ferramentas necessários (~ 4 GB) diretamente de nossas versões do GitHub para velocidade máxima.
@@ -415,7 +414,7 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 ││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-pt-BRlang.md)) para executar ações avançadas, como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
 ││ * **Fuzzy Fallback:** A **Verificação de similaridade difusa** (controlada por um limite, por exemplo, 85%) atua como a camada de correção de erros de prioridade mais baixa. Ele só será executado se toda a execução anterior da regra determinística/em cascata não conseguir encontrar uma correspondência (current_rule_matched é False), otimizando o desempenho evitando verificações difusas lentas sempre que possível.  
 ├┬ **Gerenciamento de modelo/**   
-│├─ `prioritize_model.py` (otimiza o carregamento/descarregamento do modelo com base no uso) 🐧 🍏 🪟  
+│├─ `prioritize_model.py` (Otimiza o carregamento/descarregamento do modelo com base no uso) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (configura a configuração inicial do modelo) 🐧 🍏 🪟  
 ├─ **Tempo limite do VAD adaptável** 🐧 🍏 🪟  
 ├─ **Tecla de atalho adaptativa (Iniciar/Parar)** 🐧 🍏 🪟  

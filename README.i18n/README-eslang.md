@@ -15,7 +15,7 @@
 | 🗄️Gestión Estatal | Trino + Orquestación de flujo de aire, fzf, CopyQ, comandos de voz/terminal, interfaces de usuario del navegador |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** por prueba (39 pruebas a 0,34 s de promedio · medido con [Eco-CI](https://metrics.green-coding.io/index.html)) · sin computación en la nube
+⚡ **~2,87 J** por prueba (39 pruebas a 0,34 s de promedio 🌿 medido con [Eco-CI](https://metrics.green-coding.io/index.html)) · sin computación en la nube
 
 <detalles>
 <summary>Inicio rápido</summary>
@@ -332,7 +332,7 @@ f11::
 ```
 
 
-### 3. ¡Empiece a dictar!
+### 3. ¡Empieza a dictar!
 Haga clic en cualquier campo de texto, presione la tecla de acceso rápido y aparecerá una notificación "Escuchando...". Habla con claridad y luego haz una pausa. El texto corregido se escribirá por usted.
 
 </detalles>
@@ -482,7 +482,7 @@ Scripts para la configuración, prueba y ejecución del servicio del entorno.
 
 *Consejo: glogg le permite utilizar expresiones regulares para buscar eventos interesantes en sus archivos de registro.*   
 Marque la casilla de verificación durante la instalación para asociar con archivos de registro.    
-https://translate.google.com/translate?hl=en&sl=en&tl=es&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=es&u=https://glogg.bonnefon.org/     
   
 *Consejo: Después de definir sus patrones de expresiones regulares, ejecute `python3 tools/map_tagger.py` para generar automáticamente ejemplos de búsqueda para las herramientas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-eslang.md) para obtener más detalles.*
 

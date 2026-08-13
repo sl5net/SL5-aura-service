@@ -12,10 +12,10 @@
 
 
 | [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-pllang.md#the-oma-modus-beginner-shortcut) : po prostu napisz słowo, Aura zajmie się resztą | Ucz się z Koanami — jedna koncepcja na raz | Pełne skrypty Pythona, wtyczki, wywołania API |
-| 🗄️Zarządzanie państwem | Orkiestracja Trino + Airflow, fzf, CopyQ, polecenia głosowe/terminalowe, interfejsy użytkownika przeglądarki |
+| 🗄️Zarządzanie Państwem | Orkiestracja Trino + Airflow, fzf, CopyQ, polecenia głosowe/terminalowe, interfejsy użytkownika przeglądarki |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** na test (39 testów przy średnio 0,34 s · pomiar za pomocą [Eco-CI](https://metrics.green-coding.io/index.html)) · brak obliczeń w chmurze
+⚡ **~2,87 J** na test (39 testów przy średnim czasie trwania 0,34 s 🌿 mierzone za pomocą [Eco-CI](https://metrics.green-coding.io/index.html)) · brak obliczeń w chmurze
 
 <szczegóły>
 <summary>Szybki start</summary>
@@ -93,7 +93,7 @@ wpływając na innych. Zawiera **panel administracyjny** działający w czasie r
 </details>
 
 <szczegóły>
-<summary> 🔌 Gotowe do użycia integracje</summary>
+<summary> 🔌 Gotowe integracje</summary>
 XSPACEbreakX
 ## 🔌 Gotowe do użycia integracje
 
@@ -128,8 +128,7 @@ Aby uzyskać pełne informacje techniczne, w tym wszystkie moduły i skrypty, od
 👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ### Wyróżnione funkcje
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pllang.md) — Dwupanelowe wyszukiwanie reguł `fzf`, podgląd kontekstu na żywo, natychmiastowe wykonywanie poleceń poprzez `Enter`/`Ctrl+R` i integracja z edytorem poprzez `Ctrl+E` (zintegrowane z globalnym skrótem klawiszowym `Super+S` i poleceniami wyszukiwania głosowego).
-
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pllang.md) — Dwupanelowe wyszukiwanie reguł `fzf`, podgląd kontekstu na żywo, natychmiastowe wykonywanie poleceń poprzez `Enter`/`Ctrl+R` i integracja edytora poprzez `Ctrl+E`. Obsługiwane przez globalny klawisz skrótu („Super+S”) i wiele dedykowanych środowisk wyszukiwania, wstępnie skonfigurowanych za pomocą poleceń głosowych.
 
 ### Stan kompilacji
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
@@ -276,7 +275,7 @@ Silnik przetwarzający ściśle przestrzega **hierarchicznego łańcucha prioryt
 
 1. **Kolejność ładowania modułów (wysoki priorytet):** Reguły ładowane z podstawowych pakietów językowych (de-DE, en-US) mają pierwszeństwo przed regułami ładowanymi z katalogu plugins/ (które ładują się jako ostatnie w kolejności alfabetycznej).
 XSPACEbreakX
-2. **Kolejność w pliku (mikropriorytet):** W dowolnym pliku mapy (FUZZY_MAP_pre.py) reguły są przetwarzane ściśle według **numeru wiersza** (od góry do dołu).
+2. **Kolejność w pliku (mikropriorytet):** W dowolnym pliku mapy (FUZZY_MAP_pre.py) reguły są przetwarzane ściśle według **numeru linii** (od góry do dołu).
 XSPACEbreakX
 
 Architektura ta zapewnia ochronę podstawowych reguł systemowych, podczas gdy reguły specyficzne dla projektu lub kontekstowe (takie jak te dla CodeIgniter lub kontroli gier) można łatwo dodać jako rozszerzenia o niskim priorytecie za pośrednictwem wtyczek.
@@ -356,7 +355,7 @@ XSPACEbreakX
 ││ * **Kontrola deterministyczna:** wykorzystuje silnik RegEx-Rule-Engine do precyzyjnego sterowania poleceniami i tekstem o wysokim priorytecie.XSPACEbreakX
 │├ **Wtyczka Vector-Search** (Leniwe ładowanie): umożliwia wyszukiwanie semantyczne poprzez połączenie lokalnego osadzania wektorów z warstwą rezerwową Ollama/LLM 🐧XSPACEbreakX
 ││ * **Awaryjny algorytm Ollama AI (lokalny LLM):** służy jako opcjonalna kontrola o niskim priorytecie w przypadku **kreatywnych odpowiedzi, pytań i odpowiedzi oraz zaawansowanego dopasowywania rozmytego**, gdy nie jest spełniona żadna reguła deterministyczna.XSPACEbreakX
-││ * **Status:** Lokalna integracja LLM.
+││ * **Stan:** Lokalna integracja LLM.
 │└ 5. **Inteligentna korekta końcowa** (`FuzzyMap`)** – Udoskonalenie po LT** 🐧 🍏 🪟XSPACEbreakX
 ││ * Stosowane po LanguageTool w celu skorygowania wyników specyficznych dla LT. Działa zgodnie z tą samą ścisłą logiką priorytetów kaskadowych, co warstwa wstępnej korekty.XSPACEbreakX
 ││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-pllang.md)) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX

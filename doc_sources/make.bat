@@ -5,8 +5,18 @@ pushd %~dp0
 REM Command file for Sphinx documentation
 
 if "%SPHINXBUILD%" == "" (
-	set SPHINXBUILD=sphinx-build
+	where sphinx-build >nul 2>nul
+	if errorlevel 1 (
+		if exist "..\.venv\Scripts\sphinx-build.exe" (
+			set SPHINXBUILD=..\.venv\Scripts\sphinx-build.exe
+		) else (
+			set SPHINXBUILD=sphinx-build
+		)
+	) else (
+		set SPHINXBUILD=sphinx-build
+	)
 )
+
 set SOURCEDIR=.
 set BUILDDIR=_build
 

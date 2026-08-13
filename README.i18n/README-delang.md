@@ -15,7 +15,7 @@
 | 🗄️ Staatsverwaltung | Trino + Airflow-Orchestrierung, fzf, CopyQ, Sprach-/Terminalbefehle, Browser-Benutzeroberflächen |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** pro Test (39 Tests bei durchschnittlich 0,34 s · gemessen mit [Eco-CI](https://metrics.green-coding.io/index.html)) · kein Cloud-Computing
+⚡ **~2,87 J** pro Test (39 Tests bei durchschnittlich 0,34 s 🌿 gemessen mit [Eco-CI](https://metrics.green-coding.io/index.html)) · kein Cloud-Computing
 
 <Details>
 <summary>Schnellstart</summary>
@@ -45,7 +45,7 @@
 Erfordert mimalloc („sudo pacman -S mimalloc“) aufgrund der Glibc 2.43-Kompatibilität.
 * **Linux (NixOS):** 🧪 Experimentell – von der Community bereitgestelltes Setup, noch nicht getestet.
 Wenn Sie es versuchen, eröffnen Sie bitte eine Ausgabe oder PR mit Ihren Ergebnissen!    
-* **Linux (Manjaro):** Neu/experimentell: Ein systemweiter Hotkey öffnet eine fzf-ähnliche, tastaturgesteuerte Oberfläche, sodass Sie Aura-Befehle von überall auf dem Desktop ausführen können (völlig entkoppelt vom aktiven Fenster). Dieser Hotkey-gesteuerte Launcher wird derzeit unter Linux (Manjaro) implementiert und getestet. Andere Distributionen funktionieren möglicherweise, erfordern jedoch das Setup. Siehe in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-delang.md)   
+* **Linux (Manjaro):** Neu/experimentell: Ein systemweiter Hotkey öffnet eine fzf-ähnliche, tastaturgesteuerte Oberfläche, sodass Sie Aura-Befehle von überall auf dem Desktop ausführen können (völlig entkoppelt vom aktiven Fenster). Dieser Hotkey-gesteuerte Launcher wird derzeit unter Linux (Manjaro) implementiert und getestet; Andere Distributionen funktionieren möglicherweise, erfordern jedoch das Setup. Siehe in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-delang.md)   
 
 
   
@@ -128,8 +128,7 @@ Eine vollständige technische Referenz, einschließlich aller Module und Skripte
 👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ### Feature-Spotlights
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-delang.md) – Doppelfenster-„fzf“-Regelsuche, Live-Kontextvorschau, sofortige Befehlsausführung über „Enter“/„Strg+R“ und Editor-Integration über „Strg+E“ (integriert mit „Super+S“ globalen Hotkeys und Sprachsuchbefehlen).
-
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-delang.md) – Doppelfenster-„fzf“-Regelsuche, Live-Kontextvorschau, sofortige Befehlsausführung über „Enter“/„Strg+R“ und Editor-Integration über „Strg+E“. Unterstützt durch einen globalen Hotkey („Super+S“) und mehrere dedizierte Suchumgebungen, die über Sprachbefehle vorkonfiguriert sind.
 
 ### Build-Status
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )

@@ -4,14 +4,26 @@
 # Automatisch generierte Übersicht der Hilfsskripte.
 
 import os
+import sys
+from pathlib import Path
+
+project_root = Path(__file__).resolve().parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
+
+
+PROJECT_ROOT = get_aura_project_root()
 
 # Configuration: Directories to scan for scripts
-DIRS_TO_SCAN = ['setup', 'config', 'githooks', 'update','scripts']
+DIRS_TO_SCAN = ['setup', 'config', 'githooks', 'update', 'scripts']
 FILES_IN_ROOT = [
     'start_aura.bat', 'update.bat', 'install_hooks.sh'
 ]
-OUTPUT_FILENAME = 'utility_scripts.rst'
-
+OUTPUT_FILENAME = Path(__file__).parent / 'utility_scripts.rst'
 # Language mapping for syntax highlighting in Sphinx
 LANGUAGE_MAP = {
     '.sh': 'bash',
@@ -31,13 +43,14 @@ def generate_rst_file():
         f.write("Automatisch generierte Übersicht der Hilfsskripte.\n\n")
 
         for directory in DIRS_TO_SCAN:
-            if not os.path.isdir(directory):
+            dir_path = PROJECT_ROOT / directory
+            if not dir_path.is_dir():
                 continue
 
             f.write(f"{directory.capitalize()}-Skripte\n")
             f.write("-" * (len(directory) + 8) + "\n\n")
+            for filename in sorted(os.listdir(dir_path)):
 
-            for filename in sorted(os.listdir(directory)):
                 filepath = os.path.join(directory, filename)
 
                 # Prüfe, ob es eine Datei ist (und kein Ordner)

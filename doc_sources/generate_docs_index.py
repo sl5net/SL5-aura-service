@@ -3,18 +3,24 @@
 
 import os
 import logging
+import sys
+from pathlib import Path
+
+project_root = Path(__file__).resolve().parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
+PROJECT_ROOT = get_aura_project_root()
 
 # Basic logging setup
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # --- Configuration ---
-# The directory containing the .rst files we want to index.
-DOCS_DIR = "docs"
-# The name of the output file that will contain the table of contents.
+DOCS_DIR = Path(__file__).parent
 OUTPUT_FILENAME = "index.rst"
-# The full path to the output file.
-OUTPUT_FILEPATH = os.path.join(DOCS_DIR, OUTPUT_FILENAME)
-# We must exclude the generated index file itself to avoid a circular reference.
+OUTPUT_FILEPATH = DOCS_DIR / OUTPUT_FILENAME
 EXCLUDE_FILES = [OUTPUT_FILENAME]
 
 def generate_docs_index():

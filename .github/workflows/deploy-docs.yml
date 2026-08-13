@@ -1,11 +1,14 @@
 name: Deploy Documentation
 
 on:
-  release:
-    types: [published] 
+#  release:
+#    types: [published]
+#
+#  push:
+#    paths:
+#      - '.github/workflows/deploy-docs.yml'
+  workflow_dispatch:
 
-  workflow_dispatch: 
-  
 permissions:
   pages: write
   id-token: write
@@ -17,24 +20,42 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+
+
       - name: Set up Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Install dependencies
-        run: pip install -r requirements-docs.txt
-
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          python -m pip install --upgrade pip
+          python -m pip install sphinx furo myst-parser sphinx-copybutton
+      - name: Verify furo installation
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          python -c "import furo; print(furo.__file__)"
+          python -m pip list | grep -i furo
       - name: Get latest release version
-        run: echo "DOCS_VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
-
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          echo "DOCS_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo dev)" >> $GITHUB_ENV
       - name: Build documentation
-        run: make html
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          cd doc_sources
+          python -m sphinx -b html . _build/html
+#          make -C doc_sources html
+
+
+
+
+
 
       - name: Upload artifact
+
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _build/html
-
+          path: doc_sources/_build/html
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4

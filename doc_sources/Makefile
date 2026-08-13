@@ -4,7 +4,8 @@
 # You can set these variables from the command line, and also
 # from the environment for the first two.
 SPHINXOPTS    ?=
-SPHINXBUILD   ?= sphinx-build
+# SPHINXBUILD   ?= $(shell command -v sphinx-build 2>/dev/null || echo "../.venv/bin/sphinx-build")
+SPHINXBUILD   ?= $(shell command -v sphinx-build 2>/dev/null || echo "../.venv/bin/python3 -m sphinx.cmd.build")
 SOURCEDIR     = .
 BUILDDIR      = _build
 
