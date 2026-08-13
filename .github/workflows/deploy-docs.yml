@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          pip install sphinx myst-parser furo furo myst-parser sphinx-copybutton
+          python -m pip install sphinx furo myst-parser sphinx-copybutton
 
       - name: Get latest release version
         run: |
@@ -37,7 +37,9 @@ jobs:
       - name: Build documentation
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          make -C doc_sources html
+          cd doc_sources
+          python -m sphinx -b html . _build/html
+#          make -C doc_sources html
       - name: Upload artifact
 
         uses: actions/upload-pages-artifact@v3
