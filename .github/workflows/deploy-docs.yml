@@ -1,12 +1,12 @@
 name: Deploy Documentation
 
 on:
-  release:
-    types: [published] 
-
-  push:
-    paths:
-      - '.github/workflows/deploy-docs'
+#  release:
+#    types: [published]
+#
+#  push:
+#    paths:
+#      - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
 
 permissions:
@@ -39,7 +39,7 @@ jobs:
       - name: Get latest release version
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          echo "DOCS_VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+          echo "DOCS_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo dev)" >> $GITHUB_ENV
       - name: Build documentation
         run: |
           echo "BRANCH: ${{ github.ref_name }}"

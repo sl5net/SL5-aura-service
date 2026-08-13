@@ -15,7 +15,7 @@
 | 🗄️ 상태 관리 | Trino + Airflow 오케스트레이션, fzf, CopyQ, 음성/터미널 명령, 브라우저 UI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ 테스트당 **~2.87 J**(39개 테스트 @ 0.34초 평균 · [Eco-CI](https://metrics.green-coding.io/index.html)로 측정) · 클라우드 컴퓨팅 없음
+⚡ 테스트당 **~2.87 J**(39개 테스트 @ 0.34초 평균 🙂 [Eco-CI](https://metrics.green-coding.io/index.html)로 측정) · 클라우드 컴퓨팅 없음
 
 <상세>
 <summary>빠른 시작</summary>
@@ -49,7 +49,7 @@ glibc 2.43 호환성으로 인해 mimalloc(`sudo pacman -S mimalloc`)이 필요�
 
 
 XSPACEbreakX
-SL5 Aura는 **Vosk**(Speech-to-Text용) 및 **LanguageTool**(문법/스타일용)을 기반으로 구축된 완전한 **오프라인 음성 어시스턴트**이며, 창의적인 응답과 고급 퍼지 매칭을 위한 **로컬 LLM(Ollama) 대체** 옵션을 제공합니다. 플러그형 규칙 시스템과 동적 스크립팅 엔진을 통해 궁극적인 사용자 정의를 위해 설계된 음성을 정확한 동작과 텍스트로 변환합니다.
+SL5 Aura는 **Vosk**(Speech-to-Text용) 및 **LanguageTool**(문법/스타일용)을 기반으로 구축된 완벽한 **오프라인 음성 어시스턴트**이며, 창의적인 응답과 고급 퍼지 매칭을 위한 **로컬 LLM(Ollama) 대체** 옵션을 제공합니다. 플러그형 규칙 시스템과 동적 스크립팅 엔진을 통해 궁극적인 사용자 정의를 위해 설계된 음성을 정확한 동작과 텍스트로 변환합니다.
 XSPACEbreakX
 번역: 이 문서는 [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n)에도 존재합니다.
 
@@ -97,14 +97,14 @@ XSPACEbreakX
 XSPACEbreakX
 ## 🔌 즉시 사용 가능한 통합
 
-SL5-Aura는 **100개 이상의 사전 구성된 플러그인**으로 구성된 광범위한 에코시스템과 함께 제공됩니다. 다음은 몇 가지 주요 내용입니다.
+SL5-Aura는 **100개 이상의 사전 구성된 플러그인**으로 구성된 방대한 생태계와 함께 제공됩니다. 다음은 몇 가지 주요 내용입니다.
 
 ### OculiX / SikuliX IDE 음성 제어
 SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지원을 제공합니다. 이 통합을 통해 자동화 코드를 "말"할 수 있습니다.
 
 * **Voice-to-Snippet:** "클릭", "대기" 또는 "모두 찾기"라고 말하면 서비스가 즉시 올바른 Python 코드(예: `click("image.png")`)를 IDE에 입력합니다.
 * **창 인식:** 플러그인은 상황에 맞게 작동합니다. OculiX/SikuliX 창에 초점이 맞춰진 경우에만 활성화됩니다.
-* **스마트 영어 지원:** 비원어민 억양(예: 독일어-영어 음성학)에 특별히 초점을 맞춘 `en-US`에 최적화되어 글로벌 커뮤니티의 높은 인식 정확도를 보장합니다.
+* **스마트 영어 지원:** 비원어민 악센트(예: 독일어-영어 음성학)에 특별히 초점을 맞춘 `en-US`에 최적화되어 글로벌 커뮤니티의 높은 인식 정확도를 보장합니다.
 * **확장 가능:** 편집하기 쉬운 `FUZZY_MAP_pre.py` 형식을 사용합니다.
 
 > **상태:** OculiX 팀에서 커뮤니티 플러그인으로 인식했습니다([Issue #204](https://github.com/oculix-org/Oculix/issues/204) 참조).
@@ -131,7 +131,7 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 - [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-kolang.md) — 이중 창 `fzf` 규칙 검색, 실시간 컨텍스트 미리보기, `Enter`/`Ctrl+R`을 통한 즉각적인 명령 실행, `Ctrl+E`를 통한 편집기 통합. 글로벌 단축키(`Super+S`)와 음성 명령을 통해 사전 구성된 여러 전용 검색 환경으로 지원됩니다.
 
 ### 빌드 상태
-[![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ)
+[![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 
@@ -177,7 +177,7 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 설정 스크립트는 시스템 종속성, Python 환경, 최대 속도를 위해 GitHub 릴리스에서 직접 필요한 모델 및 도구(~4GB) 다운로드 등 모든 것을 처리합니다.
 
 
-#### Linux, macOS 및 Windows용(선택적 언어 제외 포함)
+#### Linux, macOS, Windows용(선택적 언어 제외 포함)
 
 디스크 공간과 대역폭을 절약하기 위해 설정 중에 특정 언어 모델(`de`, `en`) 또는 모든 선택적 모델(`all`)을 제외할 수 있습니다. **핵심 구성요소(LanguageTool,lid.176)는 항상 포함됩니다.**
 
@@ -232,7 +232,7 @@ windows11_setup.bat -Exclude "en"
 
 1. `setup` 폴더로 이동합니다.
 2. **`windows11_setup_with_ahk_copyq.bat`**를 두 번 클릭합니다.
-* *스크립트가 자동으로 관리자 권한을 묻는 메시지를 표시합니다.*
+* *스크립트는 관리자 권한을 묻는 메시지를 자동으로 표시합니다.*
 * *핵심 시스템, 언어 모델, **AutoHotkey v2** 및 **CopyQ**를 설치합니다.*
 3. 설치가 완료되면 **Aura Dictation**이 자동으로 실행됩니다.
 
@@ -333,7 +333,7 @@ f11::
 
 
 ### 3. 받아쓰기를 시작하세요!
-텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추세요. 수정된 텍스트가 자동으로 입력됩니다.
+텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추십시오. 수정된 텍스트가 자동으로 입력됩니다.
 
 </세부사항>
 
@@ -443,9 +443,9 @@ XSPACEbreakX
 ││ * **Ollama AI(로컬 LLM) 폴백:** 결정적 규칙이 충족되지 않는 경우 **창의적인 답변, Q&A 및 고급 퍼지 매칭**에 대한 선택적이고 우선순위가 낮은 검사 역할을 합니다.  
 ││ * **상태:** 로컬 LLM 통합.
 │└ 5. **지능형 사후 수정**(`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟XSPACEbreakX
-││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선순위 논리를 따릅니다.  
+││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선 순위 논리를 따릅니다.  
 ││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
-││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전 결정적/계단식 규칙 실행 전체가 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
+││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전의 전체 결정적/계단식 규칙 실행이 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
 ├┬ **모델 관리/** XSPACEbreakX
 │├─ `prioritize_model.py` (사용에 따라 모델 로드/언로드 최적화) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (최초 모델 설정 구성) 🐧 🍏 🪟  
@@ -458,7 +458,7 @@ XSPACEbreakX
 └─ Docker 필요 · 관리 UI: `http://localhost:8084` 🐧 🍏 🪟XSPACEbreakX
 
 **시스템 유틸리티/** XSPACEbreakX
-├┬ **LanguageTool 서버 관리/** XSPACEbreakX
+├┬ **LanguageTool 서버 관리/**   
 │├─ `start_언어tool_server.py`(로컬 LanguageTool 서버 초기화) 🐧 🍏 🪟  
 │└─ `stop_언어tool_server.py` (LanguageTool 서버 종료) 🐧 🍏
 ├─ `monitor_mic.sh` (예: 키보드와 모니터를 사용하지 않고 헤드셋과 함께 사용) 🐧 🍏 🪟XSPACEbreakX
