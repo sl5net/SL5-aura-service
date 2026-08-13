@@ -4,8 +4,11 @@ on:
   release:
     types: [published] 
 
-  workflow_dispatch: 
-  
+  push:
+    paths:
+      - '.github/workflows/deploy-docs'
+  workflow_dispatch:
+
 permissions:
   pages: write
   id-token: write
@@ -25,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          pip install sphinx myst-parser
+          pip install sphinx myst-parser furo
 
       - name: Get latest release version
         run: |
