@@ -11,11 +11,11 @@
 |---|---|---|
 
 
-| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-zh-CNlang.md#the-oma-modus-beginner-shortcut)：只需写一个字，剩下的由 Aura 完成 |与 Koans 一起学习 — 一次一个概念 |完整的 Python 脚本、插件、API 调用 |
+| [grandma-mode](../docs/GettingStarted-zh-CNlang.md#the-oma-modus-beginner-shortcut)：只需写一个字，剩下的由 Aura 完成 |与 Koans 一起学习 — 一次一个概念 |完整的 Python 脚本、插件、API 调用 |
 | 🗄️ 状态管理 | Trino + Airflow 编排、fzf、CopyQ、语音/终端命令、浏览器 UI
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2.87 J** 每次测试（39 次测试 @ 0.34 秒平均 · 使用 [Eco-CI](https://metrics.green-coding.io/index.html) 测量） · 无云计算
+⚡ **~2.87 J** 每次测试（39 次测试 @ 0.34 秒平均 🌿 使用 [Eco-CI](https://metrics.green-coding.io/index.html) 测量） · 无云计算
 
 <详情>
 <summary>快速入门</summary>
@@ -24,7 +24,7 @@
 1.下载或克隆此存储库
 2. 运行适用于您的操作系统的安装脚本（请参阅“setup/”文件夹）：
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 阅读 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-zh-CNlang.md)
+===> 🧩 阅读 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-zh-CNlang.md)
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS)：`nix-shell setup/shell.nix` 然后 `bash setup/nixos_setup.sh`
@@ -32,7 +32,7 @@
 - macOS：`bash setup/macos_setup.sh`
 - Windows：`setup/windows11_setup_with_ahk_copyq.bat`
 3.启动Aura：`./scripts/restart_venv_and_run-server.sh`
-4. 按热键并说话 — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-zh-CNlang.md)**
+4. 按热键并说话 — **[full guide →](../docs/GettingStarted-zh-CNlang.md)**
 
 
 **⚠️系统要求和兼容性**
@@ -45,7 +45,7 @@
 由于 glibc 2.43 兼容性，需要 mimalloc (`sudo pacman -S mimalloc`)。
 * **Linux (NixOS)：** 🧪 实验性 — 社区贡献的设置，尚未测试。
 如果您尝试一下，请用您的发现提出问题或 PR！  X空格符X
-* **Linux (Manjaro)：** 新/实验性：系统范围的热键打开类似 fzf 的键盘驱动界面，以便您可以从桌面上的任何位置运行 Aura 命令（与活动窗口完全解耦）。这个热键驱动的启动器目前在 Linux (Manjaro) 上实现和测试；其他发行版可能也可以工作，但需要进行设置。参见👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-zh-CNlang.md)   
+* **Linux (Manjaro)：** 新/实验性：系统范围的热键打开类似 fzf 的键盘驱动界面，以便您可以从桌面上的任何位置运行 Aura 命令（与活动窗口完全解耦）。这个热键驱动的启动器目前在 Linux (Manjaro) 上实现和测试；其他发行版可能也可以工作，但需要进行设置。参见👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-zh-CNlang.md)   
 
 
 X空格符X
@@ -65,7 +65,7 @@ X空格符X
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **提示：** 为了获得更好的终端体验，请参见[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-zh-CNlang.md)。
+> **提示：** 为了获得更好的终端体验，请参见[Zsh Integration](../docs/linux/zsh-integration-zh-CNlang.md)。
 
 ### 🎥 视频教程
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -86,7 +86,7 @@ X空格符X
 * **保守的 RAM 使用：** 智能管理内存，仅在有足够的可用 RAM 时才预加载模型，确保其他应用程序（例如您的 PC 游戏）始终具有优先权。
 * **跨平台：** 适用于 Linux、macOS 和 Windows。
 * **完全自动化：** 管理自己的 LanguageTool 服务器（但您也可以使用外部服务器）。
-* **极速：** 智能缓存可确保即时“正在收听...”通知和快速处理。
+* **极快：** 智能缓存可确保即时“正在收听...”通知和快速处理。
 * **通过 Trino 进行动态状态管理：** 接口感知配置引擎
 分离 `speech`、`terminal` 和 `web` 的设置 — 更改一个而不需要
 影响其他人。包括实时**管理仪表板**（端口 8084）。
@@ -128,7 +128,7 @@ SL5-Aura 为 **OculiX** 和 **SikuliX IDE** 提供一流的语音支持。这种
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ### 特色亮点
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-zh-CNlang.md) — 双窗格“fzf”规则搜索、实时上下文预览、通过“Enter”/“Ctrl+R”即时命令执行以及通过“Ctrl+E”进行编辑器集成。由全局热键（“Super+S”）和通过语音命令预先配置的多个专用搜索环境支持。
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-zh-CNlang.md) — 双窗格“fzf”规则搜索、实时上下文预览、通过“Enter”/“Ctrl+R”即时命令执行以及通过“Ctrl+E”进行编辑器集成。由全局热键（“Super+S”）和通过语音命令预先配置的多个专用搜索环境支持。
 
 ### 构建状态
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
@@ -181,7 +181,7 @@ SL5-Aura 为 **OculiX** 和 **SikuliX IDE** 提供一流的语音支持。这种
 
 为了节省磁盘空间和带宽，您可以在安装过程中排除特定语言模型（“de”、“en”）或所有可选模型（“all”）。 **始终包含核心组件（LanguageTool、lid.176）。**
 
-在项目根目录中打开终端并运行适用于您的系统的脚本：
+在项目根目录中打开终端并运行适用于您系统的脚本：
 
 __代码_块_0__
 
@@ -342,11 +342,11 @@ X空格符X
 **光环核心/** 🐧 🍏 🪟  
 ├─ `aura_engine.py`（编排 Aura 的主要 Python 服务）🐧 🍏 🪟  
 ├┬ **实时热重载**（配置和地图）🐧🍏🪟  
-│├ **安全私有地图加载（完整性第一）** 🔒 🐧 🍏 🪟  
+│├ **安全私人地图加载（完整性第一）** 🔒 🐧 🍏 🪟  
 │ │ * **工作流程：** 加载受密码保护的 ZIP 存档。 X空格符X
 │├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
 │├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
-│├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
+│├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
 ││ * **动态脚本执行：**规则可以触发自定义Python脚本（`on_match_exec`）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 │ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
 │ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
@@ -354,11 +354,11 @@ X空格符X
 │├ **4.具有 Ollama AI 后备功能的分层正则表达式规则引擎** 🐧 🍏 🪟  
 │ │ * **确定性控制：** 使用 RegEx-Rule-Engine 进行精确、高优先级的命令和文本控制。  
 │├ **矢量搜索插件**（延迟加载）：通过将本地矢量嵌入与 Ollama/LLM 后备层连接来启用语义搜索 🐧  
-││ * **Ollama AI（本地法学硕士）后备：** 在不满足确定性规则时，充当**创意答案、问答和高级模糊匹配**的可选、低优先级检查。  
+│ │ * **Ollama AI（本地法学硕士）后备：** 在不满足确定性规则时，充当**创意答案、问答和高级模糊匹配**的可选、低优先级检查。  
 │ │ * **状态：** 本地法学硕士整合。
 │└ 5. **智能后期校正** (`FuzzyMap`)**– LT后细化** 🐧 🍏 🪟  
 │ │ * 在 LanguageTool 之后应用以纠正 LT 特定的输出。遵循与预校正层相同的严格级联优先级逻辑。  
-││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
+││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](../docs/advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
 ││ * **模糊回退：** **模糊相似性检查**（由阈值控制，例如 85%）充当最低优先级的纠错层。仅当前面的整个确定性/级联规则运行未能找到匹配项（current_rule_matched 为 False）时才会执行它，通过尽可能避免缓慢的模糊检查来优化性能。  
 ├┬ **模型管理/**   
 │├─ `prioritize_model.py` (根据使用情况优化模型加载/卸载) 🐧 🍏 🪟  
@@ -398,7 +398,7 @@ X空格符X
 安装时请选中该复选框以与日志文件关联。  X空格符X
 https://translate.google.com/translate?hl=de&sl=en&tl=zh-CN&u=https://glogg.bonnefon.org/     
 X空格符X
-*提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-zh-CNlang.md)。*
+*提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-zh-CNlang.md)。*
 
 然后也许双击
 `日志/aura_engine.log`
@@ -427,7 +427,7 @@ X空格符X
 ├┬插件  
 │╰┬ **实时延迟重新加载** (*) 🐧 🍏 🪟  
 （*对插件激活/停用及其配置的更改将应用于下一次处理运行，无需重新启动服务。*）  
-│ ├ **git 命令**（发送 git 命令的语音控制）🐧 🍏 🪟  
+│ ├ **git 命令** (发送 git 命令的语音控制) 🐧 🍏 🪟  
 │ ├ **万韦尔**（德国-万韦尔位置地图）🐧 🍏 🪟  
 │ ├ **扑克插件（草案）**（扑克应用程序的语音控制）🐧 🍏 🪟  
 │ └ **0 A.D. 插件（草稿）**（0 A.D. 游戏的语音控制）🐧   
@@ -471,7 +471,7 @@ X空格符X
 
 |型号|尺寸|字错误率/速度 |笔记|许可证|
 | ------------------------------------------------------------------------------------------ | ---- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
-| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型|阿帕奇2.0 |
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69（librispeech 测试清理）<br/>6.05（tedlium）<br/>29.78（呼叫中心）|精准通用美式英语模型 |阿帕奇2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G| 9.83（Tuda-de 测试）<br/>24.00（播客）<br/>12.82（cv-测试）<br/>12.42（mls）<br/>33.26（mtedx）|德国大型电话和服务器模型|阿帕奇2.0 |
 
 此表提供了不同 Vosk 型号的概述，包括其大小、字错误率或速度、注释和许可证信息。

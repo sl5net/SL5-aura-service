@@ -20,23 +20,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build documentation
+
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          cd doc_sources
-          python -m sphinx -b html . _build/html
-
+          python -m pip install --upgrade pip
+          python -m pip install sphinx furo myst-parser sphinx-copybutton
       - name: Verify furo installation
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
           python -c "import furo; print(furo.__file__)"
           python -m pip list | grep -i furo
-
-      - name: Install dependencies
-        run: |
-          echo "BRANCH: ${{ github.ref_name }}"
-          python -m pip install sphinx furo myst-parser sphinx-copybutton
-
       - name: Get latest release version
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
@@ -47,6 +46,12 @@ jobs:
           cd doc_sources
           python -m sphinx -b html . _build/html
 #          make -C doc_sources html
+
+
+
+
+
+
       - name: Upload artifact
 
         uses: actions/upload-pages-artifact@v3
