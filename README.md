@@ -15,7 +15,7 @@
 | 🗄️ State Management | Trino + Airflow orchestration, fzf, CopyQ, voice/terminal commands, browser UIs |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2.87 J** per test (39 tests @ 0.34s avg · measured with [Eco-CI](https://metrics.green-coding.io/index.html)) · no cloud compute
+⚡ **~2.87 J** per test (39 tests @ 0.34s avg 🌿 measured with [Eco-CI](https://metrics.green-coding.io/index.html)) · no cloud compute
 
 <details>
 <summary>Quick Start</summary>

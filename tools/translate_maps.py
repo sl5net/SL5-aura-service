@@ -2,8 +2,7 @@
 # tools/translate_maps.py
 
 import argparse
-import re
-import subprocess
+import logging
 import time
 from pathlib import Path
 
@@ -33,12 +32,88 @@ PRESERVED_KEYWORDS = {
 #     """Returns True if path belongs to a private folder starting with /_."""
 #     return "/_" in path_str or "\\_" in path_str
 
-def is_private_path(path: Path) -> bool:
-    """Returns True if any path part (directory) starts with '_'."""
-    for part in path.parts[:-1]:  # optional: include last part if you also want files named _foo.py excluded
-        if part.startswith("_"):
+# def is_private_path(path: Path) -> bool:
+#     """Returns True if any path part (directory) starts with '_'."""
+#     for part in path.parts[:-1]:  # optional: include last part if you also want files named _foo.py excluded
+#         if part.startswith("_"):
+#             return True
+#     return False
+
+def is_private_path_fallback(path: Path) -> bool:
+    path_str = str(path)
+    ignored_patterns = [r"\.i18n", r"/__pycache__/", r"/\.venv/", r"/venv/", r"doc_sources"]
+    for pattern in ignored_patterns:
+        if re.search(pattern, path_str):
             return True
     return False
+
+
+from pathlib import Path
+import re
+import subprocess
+import shutil
+# from typing import Iterable
+
+_COMPILED_IGNORED = [re.compile(p) for p in (r"\.i18n", r"/__pycache__/", r"/\.venv/", r"/venv/", r"doc_sources")]
+
+# https://stackoverflow.com/ai-assist/chat/cea8533d-17dd-465b-9bf0-70c4c9483f2c
+def is_private_path(path: Path | str) -> bool:
+    path_obj = Path(path)
+    # normalize to posix string for consistent matching
+    path_str = path_obj.as_posix()
+
+    # static pattern check
+    for pattern in _COMPILED_IGNORED:
+        if pattern.search(path_str):
+            return True
+
+    # if git not available, skip to fallback
+    if shutil.which("git") is None:
+        return is_private_path_fallback(path_obj)
+
+    try:
+        result = subprocess.run(
+            ["git", "check-ignore", "-q", "--", path_str],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False
+        )
+        if result.returncode == 0:
+            return True
+        if result.returncode == 1:
+            return False
+    except Exception as e:
+        logging.exception(f"git check-ignore failed: {e}")
+        pass
+
+    return is_private_path_fallback(path_obj)
+
+
+# def is_private_path(path: Path) -> bool:
+#     path_obj = Path(path).resolve() # consisted path. https://stackoverflow.com/ai-assist/chat/cea8533d-17dd-465b-9bf0-70c4c9483f2c
+#     path_str = str(path_obj)
+#
+#     ignored_patterns = [r"\.i18n", r"/__pycache__/", r"/\.venv/", r"/venv/", r"doc_sources"]
+#     for pattern in ignored_patterns:
+#         if re.search(pattern, path_str):
+#             return True
+#
+#     try:
+#         result = subprocess.run(
+#             ["git", "check-ignore", "-q", "--", path_str],
+#             stdout=subprocess.DEVNULL,
+#             stderr=subprocess.DEVNULL,
+#             check=False
+#         )
+#         if result.returncode == 0:
+#             return True
+#         if result.returncode == 1:
+#             return False
+#     except Exception:
+#         pass
+#
+#     return is_private_path_fallback(path_obj)
+
 
 def is_url_or_cli_line(text: str) -> bool:
     """Returns True if text contains URLs, domains, or CLI commands."""
