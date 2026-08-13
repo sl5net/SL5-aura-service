@@ -1,33 +1,43 @@
-# config/maps/plugins/internals/en-US/FUZZY_MAP.py
-# file config/languagetool_server/maps/en-US/FUZZY_MAP.py
-
-# Map for fuzzy matching. More flexible but slightly slower.
-# Format: (replacement_text, text_to_match, required_similarity_score_%)
-# A higher score means the typo must be closer to the original text.
+# ==============================================================================
+# 🌐 AUTOMATICALLY GENERATED / MACHINE-TRANSLATED MAP
+# ==============================================================================
+# ℹ️  Source Language: German (de-DE)
+# ⚙️  Note: Speech recognition regexes (VOSK) and Koan instructions in this
+#     file were machine-translated. Spoken patterns may require refinement
+#     or tuning for natural speech in the target language.
 #
+# 🤝  CONTRIBUTIONS WELCOME!
+#     We would love your help improving this map! If you test or refine these
+#     regex patterns, please open a Pull Request with your improvements.
+# ==============================================================================
 
+# config/maps/plugins/internals/de-DE/FUZZY_MAP.py
 
-# The REGEX_MAP is currently kept minimal as most logic moves to the more robust FUZZY_MAP.
-# Todo: REGEX_MAP not implemented actually 21.7.'25 07:27 Mon
-REGEX_MAP = {
-    # This map is processed first for high-priority, exact matches.
-}
+import re # noqa: F401
 
-# Map for fuzzy matching. More flexible but slightly slower.
-# Format: (replacement_text, text_to_match_regex, required_similarity_score_%)
-# A higher score means the typo must be closer to the original text.
-# The regex is anchored (^...$) to ensure it matches the whole phrase.
+# This map uses a hybrid approach:
+
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
+
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
+
+# - The threshold is ignored for regex.
+
+# - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+
 
 FUZZY_MAP = [
+    # === General Terms (Case-Insensitive) ===
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
+
+    # Important to know:
+
+    # - it stops with first full match. Examples: ^...$ = Full Match = Stop Criterion!
+
+    # - means first is most important, lower rules maybe not get read.
 
 
-    # EXAMPLE: period
-    ('.', r'\bperiod|full stop|dot|point\b', 95),
-    # EXAMPLE: comma
-    (',', r'\bcomma\b', 95),
-    # EXAMPLE: question mark
-    ('?', r'\bquestion mark|christian monk|Christian luck|christian mk|question mk\b', 85),
-    # EXAMPLE: exclamation mark
-    ('!', r'\bexclamation mark|exclamation point\b', 95),
 
 ]

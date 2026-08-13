@@ -1,13 +1,30 @@
-# config/maps/koans_english/05_koan_search_example/en-US/bible_search.py
+# ==============================================================================
+# 🌐 AUTOMATICALLY GENERATED / MACHINE-TRANSLATED MAP
+# ==============================================================================
+# ℹ️  Source Language: German (de-DE)
+# ⚙️  Note: Speech recognition regexes (VOSK) and Koan instructions in this
+#     file were machine-translated. Spoken patterns may require refinement
+#     or tuning for natural speech in the target language.
+#
+# 🤝  CONTRIBUTIONS WELCOME!
+#     We would love your help improving this map! If you test or refine these
+#     regex patterns, please open a Pull Request with your improvements.
+# ==============================================================================
+
+# config/maps/koans_english/05_koan_search_example/de-DE/bible_search.py
+
 # bible_search.py
+
 
 import logging
 # import re
+
 from pathlib import Path
 from rapidfuzz import fuzz
 
 
 # --- Setup Logging ---
+
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -15,23 +32,32 @@ logger = logging.getLogger(__name__)
 import sqlite3
 
 # logger = logging.getLogger("bible_search_sqlite")
+
 # Optional: logging.basicConfig(level=logging.INFO)
 
-# Stelle sicher, dass du ``translation`` korrekt setzt (z.B.: 'kjv', 'luther')
+
+# Make sure you type ``translation`` correctly (e.g.: 'kjv', 'luther')
+
 TRANSLATION ='GerElb1905' # 'kjv'
-#              GerElb1905_books
+# GerElb1905_books
+
 
 # 
-#project_dir = Path(__file__).parent.parent.parent.parent.parent.parent
-
-#TRANSLATE_SCRIPT = project_dir / 'tools' / 'simple_translate.py'
-#PYTHON_EXECUTABLE = project_dir / '.venv' / 'bin' / 'python3'
+# project_dir = Path(__file__).parent.parent.parent.parent.parent.parent
 
 
+# TRANSLATE_SCRIPT = project_dir / 'tools' / 'simple_translate.py'
 
-#DATABASE_PATH = 'bible.sqlite3'  # Passe ggf. an
+# PYTHON_EXECUTABLE = project_dir/'.venv'/'bin'/'python3'
+
+
+
+
+# DATABASE_PATH = 'bible.sqlite3' # Adjust if necessary
+
 DATABASE_PATH = Path(__file__).parent / 'GerElb1905.db'
 # print(f"DATABASE_PATH={DATABASE_PATH}")
+
 
 
 def search_bible_sqlite(book_name, chapter, verse, translation=TRANSLATION, db_path=DATABASE_PATH):
@@ -51,7 +77,8 @@ def search_bible_sqlite(book_name, chapter, verse, translation=TRANSLATION, db_p
         con.row_factory = sqlite3.Row
         cur = con.cursor()
 
-        # Quotes um die Tabellennamen!
+        # Quotes about the table names!
+
         table_books = f'"{translation}_books"'
         table_verses = f'"{translation}_verses"'
 
@@ -59,9 +86,11 @@ def search_bible_sqlite(book_name, chapter, verse, translation=TRANSLATION, db_p
 
 
 
-        # --- START DES AKTUALISIERTEN SUCHBLOCKS ---
+        # --- START OF UPDATED SEARCH BLOCK ---
 
-        # 1. ALLE Bücher abfragen, da wir die Ähnlichkeit in Python berechnen müssen.
+
+        # 1. Query ALL books as we need to calculate similarity in Python.
+
         try:
             cur.execute(f"SELECT id, name FROM {table_books}")
             all_books = cur.fetchall()
@@ -73,63 +102,81 @@ def search_bible_sqlite(book_name, chapter, verse, translation=TRANSLATION, db_p
             logger.warning(f"Keine Bücher in Tabelle {table_books} gefunden.")
             return "Keine Bücher gefunden."
 
-        # Initialisierung der besten Übereinstimmung
+        # Best match initialization
+
         best_score = -1
         best_match_row = None
         user_input_lower = book_name.lower()
 
-        # Schwelle definieren: Bei einer Ähnlichkeit unter diesem Wert wird gewarnt,
-        # aber der beste Treffer trotzdem genutzt.
+        # Define threshold: If the similarity is below this value, a warning is given
+
+        # but the best hit was still used.
+
         MIN_ACCEPTABLE_SCORE = 60
 
-        # 2. Fuzzy-Vergleich durchführen
+        # 2. Perform fuzzy comparison
+
         for book_row in all_books:
             book_name_db = book_row['name']
 
-            # Wir verwenden fuzz.ratio, um die allgemeine Zeichenähnlichkeit zu messen.
-            # Bei sehr kurzen Namen kann auch fuzz.partial_ratio nützlich sein.
+            # We use fuzz.ratio to measure overall character similarity.
+
+            # For very short names, fuzz.partial_ratio can also be useful.
+
             score = fuzz.ratio(user_input_lower, book_name_db.lower())
 
             if score > best_score:
                 best_score = score
                 best_match_row = book_row
 
-        # 3. Ergebnis auswerten und zuweisen
+        # 3. Evaluate and assign results
+
         if best_match_row:
             book_id = best_match_row['id']
             matched_name = best_match_row['name']
 
-            # Wenn der Score unter der Schwelle liegt, protokollieren wir eine Warnung
+            # If the score is below the threshold, we log a warning
+
             if best_score < 100:
                 logger.info(f"Fuzzy Match: Eingabe '{book_name}' (Score: {best_score:.2f}) führte zu '{matched_name}'.")
 
-            # Wenn der Score sehr schlecht ist, geben wir eine informative Rückmeldung
+            # If the score is very bad, we will provide informative feedback
+
             if best_score < MIN_ACCEPTABLE_SCORE:
-                # Hier geben wir eine freundliche Warnung an den Nutzer aus
-                # Wir liefern aber trotzdem das beste Ergebnis, wie gewünscht
+                # Here we issue a friendly warning to the user
+
+                # However, we still deliver the best result as desired
+
                 print(f"Warnung: Die Spracheingabe '{book_name}' war undeutlich. Ich habe das ähnlichste Buch '{matched_name}' gewählt.")
 
 
             book_name = matched_name
 
-            # Hier können Sie mit book_id und matched_name weiterarbeiten
-            # Beispiel:
-            # print(f"Buch gefunden (ID: {book_id}): {matched_name}")
+            # Here you can continue working with book_id and matched_name
 
-            # return True # Oder die nächste Funktion aufrufen
+            # Example:
+
+            # print(f"Book found (ID: {book_id}): {matched_name}")
+
+
+            # return True # Or call the next function
+
         else:
-            # Dies sollte theoretisch nicht passieren, wenn die Datenbank Bücher enthält
+            # This theoretically shouldn't happen if the database contains books
+
             logger.error("Unerwarteter Fehler: Kein bestes Match gefunden.")
             return "Ein interner Fehler ist aufgetreten."
 
-        # --- ENDE DES AKTUALISIERTEN SUCHBLOCKS ---
+        # --- END OF UPDATED SEARCH BLOCK ---
 
 
 
 
 
 
-        # Suche nach Kapitel und Vers
+
+        # Search by chapter and verse
+
         cur.execute(
             f"SELECT text FROM {table_verses} WHERE book_id=? AND chapter=? AND verse=?",
             (book_id, int(chapter), int(verse))
@@ -138,7 +185,8 @@ def search_bible_sqlite(book_name, chapter, verse, translation=TRANSLATION, db_p
         if not verse_row:
             return f"{book_name} {chapter}:{verse} konnte nicht gefunden werden in '{translation}'."
 
-        # Optional: Übersetzungs-Metadaten holen
+        # Optional: Get translation metadata
+
         trans_meta = cur.execute(
             "SELECT title FROM translations WHERE translation = ?",
             (translation,)
@@ -194,5 +242,7 @@ def execute(match_data, translation=TRANSLATION, db_path=DATABASE_PATH):
 if __name__ == "__main__":
     # Example test data (assuming the regex matched these groups)
 
-    #test_data = {'regex_match_obj': DummyMatch()}
+
+    # test_data = {'regex_match_obj': DummyMatch()}
+
     print('execute(test_data)')
