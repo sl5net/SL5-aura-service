@@ -20,10 +20,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: '3.11'
+      - name: Build documentation
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          cd doc_sources
+          python -m sphinx -b html . _build/html
+
+      - name: Verify furo installation
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          python -c "import furo; print(furo.__file__)"
+          python -m pip list | grep -i furo
 
       - name: Install dependencies
         run: |
