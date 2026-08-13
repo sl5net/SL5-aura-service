@@ -23,18 +23,16 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r requirements-docs.txt
+        run: pip install sphinx myst-parser
 
       - name: Get latest release version
         run: echo "DOCS_VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Build documentation
-        run: make html
-
+        run: make -C doc_sources html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _build/html
-
+          path: doc_sources/_build/html
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
