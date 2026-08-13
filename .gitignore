@@ -158,6 +158,13 @@ wikipedia_de_all_mini.zim
 .secrets
 
 
+# Temporary clutter and backup txt files
+*.sha256sums.txt
+*_backup.txt
+requirements backup*.txt
+gitDiff*.txt
+debug*.txt
+
 temp*
 
 # But DO NOT ignore requirements.txt
