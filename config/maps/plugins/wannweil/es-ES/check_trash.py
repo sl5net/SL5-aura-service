@@ -1,0 +1,619 @@
+# ==============================================================================
+# 🌐 AUTOMATICALLY GENERATED / MACHINE-TRANSLATED MAP
+# ==============================================================================
+# ℹ️  Source Language: German (de-DE)
+# ⚙️  Note: Speech recognition regexes (VOSK) and Koan instructions in this
+#     file were machine-translated. Spoken patterns may require refinement
+#     or tuning for natural speech in the target language.
+#
+# 🤝  CONTRIBUTIONS WELCOME!
+#     We would love your help improving this map! If you test or refine these
+#     regex patterns, please open a Pull Request with your improvements.
+# ==============================================================================
+
+# config/maps/plugins/wannweil/de-DE/check_trash.py
+
+from scripts.py.func.get_project_root import get_aura_project_root
+import logging
+# ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
+
+# ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
+
+# o utilizar:
+
+# python.sh ./config/maps/plugins/wannweil/de-DE/check_trash.py &
+
+
+import sys
+import os
+import unicodedata
+from pathlib import Path
+
+import pdfplumber
+import datetime
+import re
+import subprocess
+import csv
+import smtplib
+import hashlib
+import time
+
+from email.message import EmailMessage
+from dotenv import load_dotenv
+
+
+
+class CustomFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        # dt_object = fecha y hora.de marca de tiempo (registro.creado)
+
+        dt_object = datetime.datetime.fromtimestamp(record.created)
+        # "El formato de registro estándar para asctime es '%Y-%m-%d %H:%M:%S,f'".
+
+        time_str_without_msecs = dt_object.strftime("%H:%M:%S")
+
+        milliseconds = int(record.msecs)
+        # "El 03d garantiza que los milisegundos tengan siempre tres dígitos (por ejemplo, 001, 010, 123)"
+
+        formatted_time = f"{time_str_without_msecs},{milliseconds:03d}"
+
+        return formatted_time
+
+tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+
+LOG_DIR = SL5NET_AURA_PROJECT_ROOT / "log"
+LOG_FILE = LOG_DIR / "_check_trash.log"
+
+if not LOG_DIR.exists():
+    LOG_DIR.mkdir(exist_ok=True)
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Borre los controladores preexistentes para evitar duplicados.
+
+if len(logger.handlers) > 0:
+    logger.handlers.clear()
+
+# Cree un formateador compartido con la función formatTime personalizada.
+
+
+log_formatter = CustomFormatter('%(asctime)s - %(levelname)-8s - %(message)s')
+
+# Cree, configure y agregue el controlador de archivos.
+
+# file_handler = logging.FileHandler(f'{SL5NET_AURA_PROJECT_ROOT}/log/dynamic_settings.log', modo='w', codificación='utf-8')
+
+file_handler = logging.FileHandler(f'{SL5NET_AURA_PROJECT_ROOT}/log/dynamic_settings.log', mode='a', encoding='utf-8')
+
+file_handler.setFormatter(log_formatter)
+logger.addHandler(file_handler)
+
+
+
+# --- CONFIGURACIÓN DE CORREO ELECTRÓNICO ---
+
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 465
+
+
+# Determine la carpeta donde se encuentra este script
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Busque el archivo .env exactamente en esta carpeta
+
+env_path = os.path.join(script_dir, '.env')
+
+# Cargue el archivo si existe
+
+if os.path.exists(env_path):
+    load_dotenv(dotenv_path=env_path)
+else:
+    print(f"Hinweis: Keine .env Datei in {script_dir} gefunden.")
+
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+APP_PASSWORD = os.getenv("APP_PASSWORD")
+
+RECEIVER_EMAIL = "sl5softwarelab@gmail.com" # Wo die Mail hin soll
+
+def sanitize_to_ascii(s: str, maxlen: int = None) -> str:
+    """
+    - Unicode normalisieren (NFKD), diakritische Zeichen trennen
+    - Non-ASCII entfernen (oder ersetzen)
+    - Steuerzeichen außer \t,\n,\r entfernen
+    - Optional kürzen
+    """
+    if s is None:
+        return ''
+
+
+
+    # 1) Normalizar (acentos separados)
+
+    s = unicodedata.normalize('NFKD', s)
+    # 2) Eliminar marcas de combinación (mantiene las letras ascii base)
+
+    s = ''.join(ch for ch in s if not unicodedata.combining(ch))
+    # 3) Reemplace los guiones/comillas Unicode comunes con equivalentes ascii
+
+    replacements = {
+        '\u2013': '-', '\u2014': '-', '\u2018': "'", '\u2019': "'",
+        '\u201c': '"', '\u201d': '"', '\u00A0': ' '
+    }
+    for k, v in replacements.items():
+        s = s.replace(k, v)
+    # 4) Eliminar NUL y otros controles no imprimibles (permitir tabulación, lf, cr)
+
+    s = s.replace('\x00', '')
+    s = re.sub(r'[^\x09\x0A\x0D\x20-\x7E]', '', s)
+    # 5) Contraer espacios en blanco
+
+    s = re.sub(r'\s+', ' ', s or "").strip()
+    # 6) Opcionalmente truncar
+
+    if maxlen and len(s) > maxlen:
+        s = (s or "")[:maxlen - 3].rstrip() + '...'
+    return s
+
+def send_mail_notification(subject, body):
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg['Subject'] = subject
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = RECEIVER_EMAIL
+
+    try:
+        with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
+            smtp.login(SENDER_EMAIL, APP_PASSWORD)
+            smtp.send_message(msg)
+        print("E-Mail erfolgreich gesendet.")
+    except Exception as e:
+        print(f"E-Mail Fehler: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --- CONFIGURACIÓN ---
+
+LANG_CODE = "de-DE"
+MAPPING = {
+    0: 'Gelber Sack 🟡',
+    1: 'Papiertonne 📄',
+    2: 'Restmüll 🗑️',
+    3: 'Biotonne 🍎',
+    4: 'Problemstoffe ⚠️'
+}
+
+# Lista de días laborables alemanes (0 = lunes, 6 = domingo)
+
+WOCHENTAGE_DE = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
+
+
+def espeak(text_to_speak, language_code):
+    # devolver verdadero
+
+
+
+    short_lang = language_code.split('-')[0]
+    command = ['espeak', '-v', short_lang, text_to_speak]
+    try:
+        subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception as e:
+        print(f"Espeak Fehler: {e}")
+
+
+def get_column_index(rel_x):
+    if rel_x < 10: return 0  # Gelber Sack
+    if rel_x < 19: return 1  # Papiertonne
+    if rel_x < 27: return 2  # Restmüll
+    if rel_x < 35: return 3  # Biotonne
+    return 4  # Problemstoffe
+
+
+def parse_wannweil_silo_logic(pdf_path, debug=False):
+    year_match = re.search(r'20\d{2}', pdf_path)
+    pdf_year = int(year_match.group(0)) if year_match else 2026
+
+    termine = []
+    monate_namen = ["Januar", "Februar", "März", "April", "Mai", "Juni",
+                    "Juli", "August", "September", "Oktober", "November", "Dezember"]
+
+    try:
+        with pdfplumber.open(pdf_path) as pdf:
+            page = pdf.pages[0]
+            words = page.extract_words(x_tolerance=2, y_tolerance=3)
+
+            anchors = []
+            for w in words:
+                txt = w['text']
+                rev_txt = txt[::-1]
+                for i, m in enumerate(monate_namen):
+                    if m.lower() in txt.lower() or m.lower() in rev_txt.lower():
+                        anchors.append({'nr': i + 1, 'name': m, 'x0': w['x0']})
+
+            anchors = sorted(anchors, key=lambda x: x['x0'])
+            unique_anchors = []
+            if anchors:
+                unique_anchors.append(anchors[0])
+                for a in anchors[1:]:
+                    if a['x0'] - unique_anchors[-1]['x0'] > 40:
+                        unique_anchors.append(a)
+
+            silos = []
+            for i in range(len(unique_anchors)):
+                a = unique_anchors[i]
+                x_max = unique_anchors[i + 1]['x0'] - 5 if i < len(unique_anchors) - 1 else a['x0'] + 70
+                silos.append({'nr': a['nr'], 'name': a['name'], 'x_min': a['x0'] - 15, 'x_max': x_max})
+
+            all_days = [w for w in words if w['text'].isdigit() and 1 <= int(w['text']) <= 31]
+            all_marks = [w for w in words if w['text'].lower() == 'x']
+
+            for silo in silos:
+                silo_days = [d for d in all_days if silo['x_min'] <= d['x0'] <= silo['x_max']]
+                silo_marks = [m for m in all_marks if silo['x_min'] <= m['x0'] <= silo['x_max']]
+
+                for mx in silo_marks:
+                    best_day = next((dy for dy in silo_days if abs(mx['top'] - dy['top']) < 3), None)
+
+                    if best_day:
+                        tag_nr = int(best_day['text'])
+                        rel_x = mx['x0'] - best_day['x1']
+
+                        if 2 < rel_x < 50:
+                            col_idx = get_column_index(rel_x)
+                            muell_name = MAPPING[col_idx]
+
+                            if col_idx == 0:
+
+                                tag_nr = muell_name = ''# 'Gelber Sack 🟡' FIX ... becouse i personally dont need the Ifor for the 'Gelber Sack 🟡' 13.2.'26 11:18 Fri
+                                # 0: 'Bolsa amarilla 🟡',
+
+                                continue
+
+
+                            try:
+                                datum = datetime.date(pdf_year, silo['nr'], tag_nr)
+                                # Las líneas incorrectas de tag_name se han eliminado aquí.
+
+                                termine.append({"datum": datum, "name": muell_name})
+                                # si depurar:
+
+                                # print(f"DEBUG: {tag_nr:02d}.{silo['nr']:02d} | rel_x: {rel_x:4.1f} -> {muell_name}")
+
+                            except ValueError:
+                                pass
+    except Exception as e:
+        print(f"Schwerer Parser-Fehler: {e}")
+
+    final_dict = {}
+    for t in termine:
+        d = t['datum']
+        if d not in final_dict: final_dict[d] = []
+        if t['name'] not in final_dict[d]: final_dict[d].append(t['name'])
+
+    return [{"datum": d, "namen": sorted(final_dict[d])} for d in sorted(final_dict.keys())], pdf_year
+
+
+def save_to_csv(termine, script_path, pdf_path):
+    print("csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print("csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print("csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+    print("csv NOT SAVED becouse i dont need save it alowas. save it in Januar is enought then it usually works for the year. 13.2.'26 11:13 Fri")
+
+
+    return True
+
+
+
+
+
+
+
+    # imprimir(f"{ruta_pdf} ----------------------------------------")
+
+    # csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "abfall_termine.csv")
+
+    csv_path = f"{pdf_path}.csv"
+
+    try:
+        with open(csv_path, 'w', encoding='utf-8') as f:
+            f.write(f"# {script_path}\n")
+            writer = csv.writer(f)
+            writer.writerow(["Datum", "Wochentag", "Abfallarten"])
+            for t in termine:
+                # Aquí obtenemos el nombre alemán a través del índice (datum.weekday())
+
+                wochentag_de = WOCHENTAGE_DE[t['datum'].weekday()]
+                writer.writerow([t['datum'].strftime('%Y-%m-%d'), wochentag_de, " & ".join(t['namen'])])
+        print(f"CSV gespeichert: {csv_path} ({len(termine)} Einträge)")
+    except Exception as e:
+        print(f"CSV Fehler: {e}")
+
+
+def check_and_notify(force_test=False):
+    script_path = "config/maps/plugins/wannweil/de-DE/check_trash.py"
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    pdf_files = [f for f in os.listdir(script_dir) if f.endswith('.pdf') and 'Abfall' in f]
+
+    if not pdf_files: return
+    pdf_path = os.path.join(script_dir, pdf_files[0])
+
+    termine_data, pdf_year = parse_wannweil_silo_logic(pdf_path, debug=force_test)
+
+    if termine_data:
+        save_to_csv(termine_data, script_path, pdf_path)
+    else:
+        print("Keine Termine gefunden.")
+        return
+
+    heute = datetime.date.today()
+    morgen = heute + datetime.timedelta(days=1)
+
+
+    check_csv_alerts()
+
+    for t in termine_data:
+        if t['datum'] == morgen:
+            inhalt = " & ".join(t['namen'])
+            os.system(f'notify-send "MÜLL-ALARM" "Morgen: {inhalt}" --urgency=critical')
+            espeak(f"Morgen wird der {inhalt} abgeholt", LANG_CODE)
+
+
+    # salida del sistema (0)
+
+
+
+    if force_test:
+        zukunft = [t for t in termine_data if t['datum'] >= heute]
+        if zukunft:
+            n = zukunft[0]
+            tag_name = WOCHENTAGE_DE[n['datum'].weekday()]
+            # msg = f"Próxima recogida: {n['date'].strftime('%d.%m.%Y')} ({' & '.join(n['names'])})"
+
+            # date_formatted = n['fecha'].strftime('%-d.%-m.%Y ')
+
+            d = n['datum']
+            datum_formatiert = n['datum'].strftime(f"{d.day}.{d.month}.{d.year}") # Für Windows und Linux geeignet
+            datum_formatiert_espeak = n['datum'].strftime(f"{d.day}.{d.month}.") # Für Windows und Linux geeignet
+            msg = f"{tag_name}, {datum_formatiert} ({' & '.join(n['namen'])}) | Nächste Abholung | MÜLL-VORSCHAU |"
+            msg_espeak = f"{tag_name}, {datum_formatiert_espeak} ({' & '.join(n['namen'])}) | {tag_name}, ({' & '.join(n['namen'])}) "
+            # msg_espeak_ohne_emojis = re.sub(r'[^\w\s.,!-]', '', msg_espeak).strip()
+
+            msg_espeak_ohne_emojis = re.sub(r'[^\w\s.,!-]', '', msg_espeak or "").strip()
+
+            print(msg)
+            os.system(f'notify-send "MÜLL-VORSCHAU" "{msg}"')
+
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+            espeak(msg_espeak_ohne_emojis, LANG_CODE)
+
+            # enviar_mail_notificación (mensaje, mensaje)
+
+
+# cuando/es-DE/_alerts/
+
+def check_csv_alerts():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_file = os.path.join(script_dir, "_alerts/alerts.csv")
+    if not os.path.exists(csv_file):
+        print(f"CSV Fehler: {csv_file}.")
+        return
+
+    print("check_trash.py:256")
+
+    # ahora = fechahora.fechahora.ahora()
+
+    # ahora = fechahora.ahora()
+
+
+    yad_row = 0
+
+    with (open(csv_file, 'r', codificación='utf-8') as f):
+        reader = csv.DictReader(f)
+        for row in reader:
+            print(row)
+
+
+            try:
+                # Utilice datetime.datetime.strptime aquí
+
+
+                now = datetime.datetime.now()
+
+
+                # 1. Leer datos y comprobar comodines
+
+                # ---------------------------------------------------
+
+
+                start_str = (row.get('Start') or "").strip()
+                end_str = (row.get('End') or "").strip()
+                modes = (row.get('Modes') or "").strip()
+                start_val = (row.get('Start') or "").strip()
+                end_val = (row.get('End') or "").strip()
+
+                if start_val in ('', '_', '-'):
+                    start_dt = datetime.datetime.now()
+                    start = start_dt
+                    start_val = start_dt.strftime("%Y-%m-%d %H:%M")
+                else:
+                    start = datetime.datetime.strptime(start_val, "%Y-%m-%d %H:%M")
+
+                if end_val in ('', '_', '-'):
+                    end = datetime.datetime.max  # für immer gültig
+                else:
+                    end = datetime.datetime.strptime(end_val, "%Y-%m-%d %H:%M")
+
+                # si end_val:
+
+                # si end_val en ('', '_', '-'):
+
+                # si valor_inicio:
+
+                # start_dt = datetime.datetime.strptime(start_val, "%Y-%m-%d %H:%M")
+
+                # end_dt = start_dt + fechahora.timedelta(minutos=30)
+
+                # end_val = end_dt.strftime("%Y-%m-%d %H:%M")
+
+                # fin = datetime.datetime.strptime(end_val, "%Y-%m-%d %H:%M")
+
+                # demás:
+
+                # final = Ninguno
+
+                # demás:
+
+                # end = datetime.datetime.max # "válido para siempre"
+
+
+                msg = f"{(row.get('Message') or '').strip()}"
+                msg = msg.replace('"', '\\"')  # Anführungszeichen escapen
+
+                # config/maps/plugins/wannweil/de-DE/check_trash.py:422
+
+                if "Biotonne" in msg:
+                    print('++++msg++++++msg+++++++msg++++++msg++++++++++++++++++')
+                    logger.info(f"DEBUG msg='{msg}' modes='{modes}'")
+                    print(f"DEBUG msg='{msg}' modes='{modes}'")
+                    print('++++msgmsg+++++++++++++++++++++++++++++++++++++')
+
+                if "Biotonne" in modes:
+                    print('++++msg++++++msg+++++++msg++++++msg++++++++++++++++++')
+                    logger.info(f"DEBUG msg='{msg}' modes='{modes}'")
+                    print(f"DEBUG msg='{msg}' modes='{modes}'")
+                    print('++++msgmsg+++++++++++++++++++++++++++++++++++++')
+
+
+
+                # start_str = fila.get('Inicio', '').strip()
+
+                # end_str = fila.get('Fin', '').strip()
+
+                # modos = fila.get('Modos', '').strip()
+
+                # msg = row.get('Mensaje', '').replace('"', '\\"') # Comillas de escape
+
+
+                # Definición: ¿Qué se considera una fecha “vacía”? (comodín)
+
+                wildcards = ['', '_', '-']
+                is_start_always = start_str in wildcards
+                is_end_forever = end_str in wildcards
+
+                if not is_start_always:
+                    start = datetime.datetime.strptime(row['Start'].strip(), "%Y-%m-%d %H:%M")
+
+                if not is_end_forever:
+                    end = datetime.datetime.strptime(row['End'].strip(), "%Y-%m-%d %H:%M")
+
+                tolerance = datetime.timedelta(hours=5)
+                print('check_trash.py:274')
+                if (is_start_always and is_end_forever ) or (is_start_always and now <= end + tolerance) or (start - tolerance <= now and is_end_forever) or (start - tolerance <= now <= end + tolerance) :
+                    print(' innerhalb des tolerierten Zeitfensters')
+
+
+                    # si inicio <= ahora <= fin:
+
+                    # msg = f"{fila['Inicio'].strip()} {fila['Mensaje'].strip()}"
+
+
+                    # mensaje = mensaje.reemplazar('"', '\\"')
+
+
+                    if 'P' in modes:
+                        if '📍' in modes or '📌' in modes:
+                            if '📍' in modes:
+                                msg_yad_save = sanitize_to_ascii(msg)
+                                yad_row += 1
+                                yad_y_offset = 150
+                                yad_y_pos = yad_row * yad_y_offset
+                                timeout = 60*15
+                                cmd = f'yad --text="{msg_yad_save}" --geometry=300x100+2000+{int(yad_y_pos-yad_y_offset/2)} --no-buttons --undecorated --sticky --on-top --timeout={timeout} &'
+                                os.system(cmd)
+                                # geom = f'{ancho}x{alto}+{geom_x}+{y}'
+
+                                # Establezca el tiempo de espera del diálogo en segundos.
+
+
+                            if '📌' in modes:
+                                # La crítica se queda para siempre.
+
+                                # os.system(f'notificar-enviar "AURA ALERT" "{msg}" --urgencia=crítico')
+
+                                hash_object = hashlib.md5(msg.encode())
+                                notif_id = int(hash_object.hexdigest(), 16) % 1000000
+                                os.system(f'notify-send "{msg} |{modes}" -r {notif_id} --urgency=critical -t 0')
+
+                        else:
+                            # os.system(f'notify-send "{msg} |{modos}" --urgency=critical -t 5000')
+
+                            os.system(f'notify-send "{msg} |{modes}" --urgency=normal')
+
+                    if 'V' in modes:
+                        # Aquí solo limpiamos la salida de voz (los emojis desaparecieron)
+
+
+                        msg = f"{row['Message'].strip()}"
+
+                        clean_voice = re.sub(r'[^\w\s.,!-]', '', msg)
+                        espeak(clean_voice, LANG_CODE)
+                    if 'M' in modes:
+                        send_mail_notification(f"Alert: {msg}", msg)  # Mail darf Emojis behalten
+            except Exception as e:
+                m = f"Fehler beim Parsen einer Alert-Zeile: {e}"
+                logger.info(m)
+                logger.info(m)
+                print(m)
+                time.sleep(1)
+                espeak(m, LANG_CODE)
+
+
+
+
+
+if __name__ == "__main__":
+
+    print('tipp: ')
+    print('killall yad ; clear; source .venv/bin/activate; python3 config/maps/plugins/wannweil/de-DE/check_trash.py test;')
+
+    # check_csv_alerts()
+
+
+    # Verdadero entre semana, Falso los sábados y domingos.
+
+    is_active = datetime.datetime.now().weekday() < 5
+    if not is_active:
+        is_active = datetime.datetime.now().weekday() == 6 # 6 probably Sunday
+
+
+    is_active = True
+    # is_active = Falso
+
+
+
+    if is_active:
+        check_and_notify(force_test="test" in sys.argv)

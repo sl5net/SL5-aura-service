@@ -1,10 +1,31 @@
 #!/usr/bin/env python3
 # tools/translate_maps.py
-
 import argparse
 import logging
 import time
+
 from pathlib import Path
+import re
+import subprocess
+import shutil
+# from typing import Iterable
+
+codes = """
+    es-ES — Spain
+    es-MX — Mexico
+    es-AR — Argentina
+    es-CO — Colombia
+"""
+
+
+print('/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾')
+print('')
+print('EXAMPLEs:')
+print('clear;python3 tools/translate_maps.py --target-lang en-US --demo')
+print('clear;python3 tools/translate_maps.py --target-lang fr-FR --demo')
+print('')
+print('\\_______________________')
+
 
 HEADER_TEMPLATE = """# ==============================================================================
 # 🌐 AUTOMATICALLY GENERATED / MACHINE-TRANSLATED MAP
@@ -48,13 +69,8 @@ def is_private_path_fallback(path: Path) -> bool:
     return False
 
 
-from pathlib import Path
-import re
-import subprocess
-import shutil
-# from typing import Iterable
-
 _COMPILED_IGNORED = [re.compile(p) for p in (r"\.i18n", r"/__pycache__/", r"/\.venv/", r"/venv/", r"doc_sources")]
+
 
 # https://stackoverflow.com/ai-assist/chat/cea8533d-17dd-465b-9bf0-70c4c9483f2c
 def is_private_path(path: Path | str) -> bool:
@@ -152,7 +168,7 @@ def translate_regex_pattern(pattern: str, target_lang: str) -> str:
             return token
         return translate_text(token, target_lang)
 
-    return re.sub(r"\{[a-zA-Z0-9_]+\}|[a-zA-ZäöüÄÖÜß]+", replace_token, pattern)
+    return re.sub(r"\{[a-zA-Z0-9_]+}|[a-zA-ZäöüÄÖÜß]+", replace_token, pattern)
 
 def process_line(line: str, target_lang: str) -> str:
     """Processes and translates a single line of a Python map file."""
@@ -221,9 +237,14 @@ def main():
 
     # Filter out private folders starting with /_
     # source_files = [f for f in all_source_files if not is_private_path(str(f))]
-    source_files = [f for f in all_source_files if not is_private_path(f)]
+    # source_files = [f for f in all_source_files if not is_private_path(f)]
 
-    total_files = len(source_files)
+    public_source_files = []
+    for path in all_source_files:
+        if not is_private_path(path):
+            public_source_files.append(path)
+
+    total_files = len(public_source_files)
     print(f"Found {total_files} public de-DE map files (ignored {len(all_source_files) - total_files} private files).")
 
 
@@ -233,7 +254,7 @@ def main():
     translated_count = 0
     start_time = time.time()
 
-    for i, src in enumerate(source_files):
+    for i, src in enumerate(public_source_files):
         target_path_str = str(src).replace("/de-DE/", f"/{args.target_lang}/")
         target_path = Path(target_path_str)
 
