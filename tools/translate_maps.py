@@ -41,9 +41,9 @@ def is_private_path(path: Path) -> bool:
     return False
 
 def is_url_or_cli_line(text: str) -> bool:
-    """Returns True if text contains URLs or CLI installation commands."""
-    return bool(re.search(r"https?://|ftp://|curl\s+|wget\s+|pip\s+install|install\.sh", text, re.IGNORECASE))
-
+    """Returns True if text contains URLs, domains, or CLI commands."""
+    pattern = r"https?://|ftp://|www\.|curl\s+|wget\s+|pip\s+install|install\.sh|youtube|youtu\.be|watch\?v="
+    return bool(re.search(pattern, text, re.IGNORECASE))
 
 def translate_text(text: str, target_lang: str) -> str:
     """Translates text using translate-shell (trans) CLI tool."""
