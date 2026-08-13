@@ -67,8 +67,53 @@ AWK_SCRIPT='{
     short_path = full_path;
 
     gsub(proot, "⬟", short_path);
-    gsub(/\/de-DE\//, "🇩🇪", short_path);
-    gsub(/\/en-US\//, "🇬🇧", short_path);
+
+    # English / North America
+gsub(/\/en-US\//, "🇺🇸", short_path);
+gsub(/\/en-GB\//, "🇬🇧", short_path);
+gsub(/\/en-CA\//, "🇨🇦", short_path);
+gsub(/\/en-AU\//, "🇦🇺", short_path);
+gsub(/\/es-MX\//, "🇲🇽", short_path);
+
+# Europe
+gsub(/\/de-DE\//, "🇩🇪", short_path);
+gsub(/\/de-AT\//, "🇦🇹", short_path);
+gsub(/\/de-CH\//, "🇨🇭", short_path);
+gsub(/\/fr-FR\//, "🇫🇷", short_path);
+gsub(/\/es-ES\//, "🇪🇸", short_path);
+gsub(/\/it-IT\//, "🇮🇹", short_path);
+gsub(/\/nl-NL\//, "🇳🇱", short_path);
+gsub(/\/pl-PL\//, "🇵🇱", short_path);
+gsub(/\/pt-PT\//, "🇵🇹", short_path);
+gsub(/\/ru-RU\//, "🇷🇺", short_path);
+gsub(/\/tr-TR\//, "🇹🇷", short_path);
+gsub(/\/uk-UA\//, "🇺🇦", short_path);
+gsub(/\/sv-SE\//, "🇸🇪", short_path);
+gsub(/\/da-DK\//, "🇩🇰", short_path);
+gsub(/\/fi-FI\//, "🇫🇮", short_path);
+gsub(/\/no-NO\//, "🇳🇴", short_path);
+gsub(/\/cs-CZ\//, "🇨🇿", short_path);
+gsub(/\/el-GR\//, "🇬🇷", short_path);
+
+# Latin America
+gsub(/\/pt-BR\//, "🇧🇷", short_path);
+gsub(/\/es-AR\//, "🇦🇷", short_path);
+gsub(/\/es-CL\//, "🇨🇱", short_path);
+gsub(/\/es-CO\//, "🇨🇴", short_path);
+
+# Asia & Middle East
+gsub(/\/ja-JP\//, "🇯🇵", short_path);
+gsub(/\/zh-CN\//, "🇨🇳", short_path);
+gsub(/\/zh-TW\//, "🇹🇼", short_path);
+gsub(/\/ko-KR\//, "🇰🇷", short_path);
+gsub(/\/hi-IN\//, "🇮🇳", short_path);
+gsub(/\/th-TH\//, "🇹🇭", short_path);
+gsub(/\/vi-VN\//, "🇻🇳", short_path);
+gsub(/\/ar-SA\//, "🇸🇦", short_path);
+gsub(/\/he-IL\//, "🇮🇱", short_path);
+
+
+
     gsub(/config\/maps\//, "🗺️", short_path);
     gsub(/plugins\//, "🧩", short_path);
     if (one_per_file == "1") {

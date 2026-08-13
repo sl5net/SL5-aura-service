@@ -10,6 +10,12 @@ import subprocess
 import shutil
 # from typing import Iterable
 
+codes = """
+    es-ES — Spain
+    es-MX — Mexico
+    es-AR — Argentina
+    es-CO — Colombia
+"""
 
 
 print('/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾')
