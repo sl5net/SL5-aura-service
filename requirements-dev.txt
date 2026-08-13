@@ -3,5 +3,3 @@ flake8
 ruff
 pylint
 pipreqs
-sphinx
-myst-parser
