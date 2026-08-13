@@ -1,28 +1,70 @@
-# config/maps/koans_english/01_koan_first_steps/en-US/FUZZY_MAP_pre.py
-import re  # noqa: F401
+# ==============================================================================
+# 🌐 AUTOMATICALLY GENERATED / MACHINE-TRANSLATED MAP
+# ==============================================================================
+# ℹ️  Source Language: German (de-DE)
+# ⚙️  Note: Speech recognition regexes (VOSK) and Koan instructions in this
+#     file were machine-translated. Spoken patterns may require refinement
+#     or tuning for natural speech in the target language.
+#
+# 🤝  CONTRIBUTIONS WELCOME!
+#     We would love your help improving this map! If you test or refine these
+#     regex patterns, please open a Pull Request with your improvements.
+# ==============================================================================
 
-# ============================================================
-# Koan 01: Your First Rule – Welcome to Aura!
-# ============================================================
-#
-# PREREQUISITE: Aura is running and your hotkey is configured.
-# If not: see docs/GettingStarted.md
-#
-# TASK:
-#   Remove the '#' before the rule below.
-#   Save – Aura reloads on the next hotkey trigger.
-#   Press your hotkey and say: "hello world"
-#
-# EXPECTED RESULT:
-#   Aura types: "Hello World 01"
-#
-# WHY DOES THE PIPELINE STOP?
-#   The pattern r'^.*$' matches EVERYTHING – no further rules
-#   are checked after a full match. See docs/FuzzyMapRuleGuide.md
-#
-# NEXT STEP: Koan 02
-# ============================================================
+# config/maps/koans_english/01_koan_first_steps/de-DE/FUZZY_MAP_pre.py
+
+import re # noqa: F401
+# from pathlib import Path as p;import os as o # noqa: E702
+
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+
+
+
+
+# This map uses a hybrid approach:
+
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
+
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
+
+# - The threshold is ignored for regex.
+
+# - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+
+
+BTW = """
+'... regular expressions began in the 1950s... Different syntaxes for writing regular expressions have existed since the 1980s, one being the POSIX standard and another, widely used, being the Perl syntax.
+... Regular expressions are used in search engines, in search and replace dialogs of word processors and text editors, in text processing utilities ... and in lexical analysis. Regular expressions are supported in many programming languages. '
+( https://en.wikipedia.org/wiki/Regular_expression )
+
+You probably know it already somehow or a part of it.
+"""
+
+
+
+
+
+
+
+
+
+
+
 
 FUZZY_MAP_pre = [
-    #('Hello World 01', r'^hello world$', 0, {'command_flags': re.IGNORECASE}),
+
+    # TO DO
+
+    # ('1', r'hi'),
+
+
+    # ('2 ', r'.*'),
+
+
+
+
+
 ]
+

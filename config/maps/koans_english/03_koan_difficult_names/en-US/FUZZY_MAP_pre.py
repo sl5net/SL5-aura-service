@@ -1,41 +1,34 @@
-# config/maps/koans_english/03_koan_difficult_names/en-US/FUZZY_MAP_pre.py
-import re  # noqa: F401
+# ==============================================================================
+# 🌐 AUTOMATICALLY GENERATED / MACHINE-TRANSLATED MAP
+# ==============================================================================
+# ℹ️  Source Language: German (de-DE)
+# ⚙️  Note: Speech recognition regexes (VOSK) and Koan instructions in this
+#     file were machine-translated. Spoken patterns may require refinement
+#     or tuning for natural speech in the target language.
+#
+# 🤝  CONTRIBUTIONS WELCOME!
+#     We would love your help improving this map! If you test or refine these
+#     regex patterns, please open a Pull Request with your improvements.
+# ==============================================================================
 
-# ============================================================
-# Koan 03: Difficult Names – Fuzzy Matching in Practice
-# ============================================================
-#
-# LEARNING GOAL:
-#   Vosk often mishears difficult names. With regex you can
-#   still match reliably – even with recognition errors.
-#
-# TASK:
-#   Try to say this title:
-#   "Your Most Noble Excellency Arch Administrative Councillor"
-#
-#   Then check what Vosk actually heard:
-#   grep "📢📢📢" log/aura_engine.log | tail -5
-#
-#   Activate the rule that fits best (remove '#').
-#
-# QUESTION TO THINK ABOUT:
-#   Which rule is more robust – the exact or the .* one?
-#   What are the trade-offs of r'^Your Most Noble.*$'?
-#
-# NEXT STEP: Koan 04
-# ============================================================
+# config/maps/koans_english/03_koan_difficult_names/de-DE/FUZZY_MAP_pre.py
 
-FUZZY_MAP_pre = [
-    # Exact match (precise but fragile):
-    # ('Great job!', r'^Your Most Noble Excellency.*$', 90, {'command_flags': re.IGNORECASE}),
+import re # noqa: F401
+# from pathlib import Path as p;import os as o # noqa: E702
 
-    # Flexible match:
-    # ('Success!', r'^.*Xenochronistic Chronology.*$', 90, {'command_flags': re.IGNORECASE}),
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
 
-    # Fuzzy match for the name:
-    # EXAMPLE: Countess
-    ('Phonetics mastered!', r'^.*(Countess|Mondes|kund des|Kaum des).*$', 90, {'command_flags': re.IGNORECASE}),
-]
+
+
+
+# This map uses a hybrid approach:
+
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
+
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
+
+# 2. If no regex matches, a simple fuzzy match is performed.
+
 
 difficultNames = """
 This is an excellent progression! To create a name that is phonetically maximum difficult to pronounce, we must overuse English consonant clusters, archaic titles, and unusual syllable combinations.
@@ -56,8 +49,80 @@ log/aura_engine.log?
 
 If you have multiple friends who are also Countesses? How do you distinguish them in speech output?
 
+solution is below
 
 """
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FUZZY_MAP_pre = [
+    # TODO: Help match these tongue twisters.
+
+
+    # Maybe like this for the title?
+
+    # ('Great job!', r'^Your Most Noble Excellency.*$', 90, {'command_flags': re.IGNORECASE}),
+
+
+    # Or a partial match?
+
+    # ('Success!', r'^.*Xenochronistic Chronology.*$', 90, {'command_flags': re.IGNORECASE}),
+
+
+    # And for the name?
+
+    # EXAMPLE: Countess
+
+    ('Phonetics mastered!', r'^.*(Countess|moon|customer des|Barely des|customer des|count tess).*$', 90, # min_accuracy
+ {'command_flags': re.IGNORECASE}),
+]
+
+# Hardly deskund deskund des
 

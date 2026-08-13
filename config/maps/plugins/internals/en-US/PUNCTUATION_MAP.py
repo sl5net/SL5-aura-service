@@ -1,110 +1,199 @@
-# config/maps/plugins/internals/en-US/PUNCTUATION_MAP.py
-# EXAMPLE: test
-PUNCTUATION_MAP = {
-    # Lowercase
-    # EXAMPLE: zero
-    'zero': '0', 'one': '1', 'two': '2', 'three': '3',
-    # EXAMPLE: five
-    'five': '5', 'six': '6', 'seven': '7', 'eight': '8', 'nine': '9',
-    # EXAMPLE: ten
-    'ten': '10', 'eleven': '11', 'twelve': '12', 'thirteen': '13',
-    # EXAMPLE: fourteen
-    'fourteen': '14', 'fifteen': '15', 'sixteen': '16', 'seventeen': '17',
-    # EXAMPLE: twenty
-    'twenty': '20', 'thirty': '30', 'forty': '40', 'fifty': '50',
-    # EXAMPLE: sixty
-    'sixty': '60', 'seventy': '70', 'eighty': '80', 'ninety': '90',
-    # EXAMPLE: hundred
-    'hundred': '100', 'thousand': '1000',
+# ==============================================================================
+# 🌐 AUTOMATICALLY GENERATED / MACHINE-TRANSLATED MAP
+# ==============================================================================
+# ℹ️  Source Language: German (de-DE)
+# ⚙️  Note: Speech recognition regexes (VOSK) and Koan instructions in this
+#     file were machine-translated. Spoken patterns may require refinement
+#     or tuning for natural speech in the target language.
+#
+# 🤝  CONTRIBUTIONS WELCOME!
+#     We would love your help improving this map! If you test or refine these
+#     regex patterns, please open a Pull Request with your improvements.
+# ==============================================================================
 
-    # EXAMPLE: period
-    'period': '.',
-    # EXAMPLE: full stop
-    'full stop': '.',
-    # EXAMPLE: torch
-    'torch': '.',
-    # EXAMPLE: dot
-    'dot': '.',
+# config/maps/plugins/internals/de-DE/PUNCTUATION_MAP.py
+
+# file config/languagetool_server/PUNCTUATION_MAP.py
+
+# German - Common, Mishearings
+
+PUNCTUATION_MAP = {
     # EXAMPLE: point
-    'point': '.',
+
+    'punkt': '.',
+    # EXAMPLE: splendor
+
+    'prunk': '.',
+
     # EXAMPLE: comma
-    'comma': ',',
+
+    'komma': ',',
     # EXAMPLE: question mark
-    'question mark': '?',
-    # EXAMPLE: christian monk
-    'christian monk': '?',
-    # EXAMPLE: christian luck
-    'christian luck': '?',
-    # EXAMPLE: christian mk
-    'christian mk': '?',
-    # EXAMPLE: question mk
-    'question mk': '?',
+
+    'fragezeichen': '?',
     # EXAMPLE: exclamation mark
-    'exclamation mark': '!',
-    # EXAMPLE: exclamation point
-    'exclamation point': '!',
+
+    'ausrufezeichen': '!',
     # EXAMPLE: colon
-    'colon': ':',
+
+    'doppelpunkt': ':',
     # EXAMPLE: semicolon
-    'semicolon': ';',
-    # EXAMPLE: parenthesis
-    'parenthesis': '(',
-    # EXAMPLE: parentheses
-    'parentheses': ('(', ')'),
-    # EXAMPLE: open parenthesis
-    'open parenthesis': '(',
-    # EXAMPLE: close parenthesis
-    'close parenthesis': ')',
-    # EXAMPLE: bracket
-    'bracket': '[',
-    # EXAMPLE: open bracket
-    'open bracket': '[',
-    # EXAMPLE: close bracket
-    'close bracket': ']',
-    # EXAMPLE: brace
-    'brace': '{',
-    # EXAMPLE: open brace
-    'open brace': '{',
-    # EXAMPLE: close brace
-    'close brace': '}',
+
+    'semikolon': ';',
+    # EXAMPLE: semicolon
+
+    'strichpunkt': ';',
+    # EXAMPLE: clip on
+
+    'klammer auf': '(',
+    # EXAMPLE: clamp closed
+
+    'klammer zu': ')',
+    # EXAMPLE: cling to
+
+    'klappe zu': ')',
+    'klammern zu': ')',
+    # EXAMPLE: pointed bracket
+
+    'spitze klammer': '<>',
+    # EXAMPLE: sharp brackets
+
+    'spitze klammern': '<>',
+    # EXAMPLE: pointy bracket on
+
+    'spitze klammer auf': '<',
+    # EXAMPLE: pointed clamp too
+
+    'spitze klammer zu': '>',
+    # EXAMPLE: round bracket
+
+    'runde klammer auf': '(',
+    # EXAMPLE: round bracket
+
+    'runde klammer zu': ')',
+    # EXAMPLE: square bracket on
+
+    'eckige klammer auf': '[',
+    # EXAMPLE: square bracket closed
+
+    'eckige klammer zu': ']',
+    # EXAMPLE: curly bracket on
+
+    'geschweifte klammer auf': '{',
+    # EXAMPLE: curly brace closed
+
+    'geschweifte klammer zu': '}',
     # EXAMPLE: hyphen
-    'hyphen': '-',
-    # EXAMPLE: dash
-    'dash': '-',
+
+    'bindestrich': '-',
     # EXAMPLE: minus
+
     'minus': '-',
+    # EXAMPLE: indent
+
+    'gedankenstrich': '–',
     # EXAMPLE: apostrophe
-    'apostrophe': "'",
-    # EXAMPLE: quote
-    'quote': '"',
-    # EXAMPLE: quotation mark
-    'quotation mark': '"',
-    # EXAMPLE: single quote
-    'single quote': "'",
-    # EXAMPLE: double quote
-    'double quote': '"',
+
+    'apostroph': "'",
+    # EXAMPLE: prime
+
+    'hochkomma': "'",
+    # EXAMPLE: quotation marks
+
+    'anführungszeichen': '"',
+    # EXAMPLE: quotes
+
+    'anführungsstriche': '"',
+    # EXAMPLE: final sign
+
+    'schlusszeichen': '"',
+    # EXAMPLE: goose feet
+
+    'gaensefuesschen': '"',
     # EXAMPLE: slash
+
+    'schrägstrich': '/',
+    # EXAMPLE: slash
+
     'slash': '/',
     # EXAMPLE: backslash
+
     'backslash': '\\',
-    # EXAMPLE: underscore
-    'underscore': '_',
-    # EXAMPLE: ellipsis
-    'ellipsis': '...',
+    # EXAMPLE: underlined
+
+    'unterstrich': '_',
     # EXAMPLE: dot dot dot
-    'dot dot dot': '...',
-    # EXAMPLE: hash
-    'hash': '#',
-    # EXAMPLE: number sign
-    'number sign': '#',
-    # EXAMPLE: and sign
-    'and sign': '&',
-    # EXAMPLE: ampersand
-    'ampersand': '&',
+
+    'punktpunktpunkt': '...',
+    # EXAMPLE: diamond
+
+    'raute': '#',
+    # EXAMPLE: aute
+
+    'aute': '#',
+    # EXAMPLE: andsign
+
+    'undzeichen': '&',
+    # EXAMPLE: etc
+
+    'etzeichen': '&',
     # EXAMPLE: at sign
-    'at sign': '@',
+
+    'atzeichen': '@',
+    # AT shows
+
     # EXAMPLE: star
-    'star': '*',
+
+    'stern': '*',
+
+    # EXAMPLE: tilde
+
+    'tilde': '~',
+    # EXAMPLE: haute
+
+    'haute': '#',
+
+    # EXAMPLE: kit
+
+    'kit': 'Git',
+
+    # EXAMPLE: cooking file
+
+    'Kochdatei': 'Logdatei',
+
+    # EXAMPLE: just criticism
+
+    'kritik nur': '.gitignore',
+    # EXAMPLE: git inner
+
+    'git innere': '.gitignore',
 
 
+    # EXAMPLE: coffee pace
+
+    'koffee pace': 'Copy Paste',
+    # EXAMPLE: copy pace
+
+    'copy pace': 'Copy Paste',
+    # EXAMPLE: hobby pest
+
+    'hobby pest': 'Copy Paste',
+
+    # EXAMPLE: harald utz
+
+    'harald utz': 'Harald Uetz',
+
+    # EXAMPLE: harald utz
+
+    'harald utz': 'Harald Uetz',
+    # EXAMPLE: Harald Uhd
+
+    'Harald Uhd': 'Harald Uetz',
+
+    # EXAMPLE: harald öz
+
+    'harald öz': 'Harald Uetz',
+    # EXAMPLE: etc
+
+    'uz': 'Uetz',
 }

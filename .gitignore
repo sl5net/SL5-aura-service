@@ -175,3 +175,4 @@ docs_old/
 settings
 orchestration/logs/
 orchestration/airflow.db
+.key

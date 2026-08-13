@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# scripts/search_rules/preview_rule.py
+# scripts/search_rules/func/common/preview_rule.py
 import sys
 import os
 import sqlite3

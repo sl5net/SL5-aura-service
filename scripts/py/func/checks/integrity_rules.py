@@ -185,14 +185,15 @@ INTEGRITY_CHECKS = {
         r'--bind="alt-i:execute-silent',
         r'--bind="ctrl-g:execute-silent',
     ],
+
     'scripts/search_rules/func/common/preview_rule.py': [
-        'print(f"{COLOR_RED}⚠ EXAMPLE \'{example}\' not match Regex{COLOR_RESET}")',
-        'print(f"🗺️ …/{get_proot_display()}")',
-        'print("📜 ※.punct ⚙️pre 📄post| 〃same")',
-        'print(f"📜 F1📜 Alt+G{icon_g} Alt+F{icon_f} Alt+I{icon_i} Alt+U{icon_u} Ctrl+L{icon_l}',
+        r"{COLOR_RED}⚠ EXAMPLE '{example}' not match Regex{COLOR_RESET}",
+        r'print(f"🗺️ …/{get_proot_display()} | Alt+E: +EXAMPLE")',
+        'print("📜 ※.punct ⚙️pre 📄post | 〃same")',
+        r'print(f"📜 F1📜 Alt+G{icon_g} Alt+F{icon_f} Alt+I{icon_i} Alt+U{icon_u} Ctrl+L{icon_l}',
         'print("📜 Alt+R:ResetPROOT 2xClick:SetPROOT RClick:Up")',
-        'print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")',
-        'print(f"🔴{active_win}',
+        r'print("Ctrl+E:Edit | Ctrl+R:RunPrompt | Ctrl+G:GitHub | Ctrl+Z/Y:History")',
+        r'print(f"🔴{active_win}',
         'print("F1: show 📜 Legend")',
     ],
 
