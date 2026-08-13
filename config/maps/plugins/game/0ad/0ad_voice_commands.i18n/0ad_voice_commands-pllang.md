@@ -6,4 +6,4 @@ proszę używać Mauritians civ. więc możesz przeszkodzić, aby wszyscy twoi p
 
 Przykład:
 
-https://translate.google.com/translate?hl=en&sl=en&tl=pl&u=https://www.youtube.com/watch?v=oZ2_b0TpgG0
+https://translate.google.com/translate?hl=de&sl=en&tl=pl&u=https://www.youtube.com/watch?v=oZ2_b0TpgG0
