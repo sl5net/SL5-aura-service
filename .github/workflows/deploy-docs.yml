@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          pip install sphinx myst-parser furo
+          pip install sphinx myst-parser furo furo myst-parser sphinx-copybutton
 
       - name: Get latest release version
         run: |
