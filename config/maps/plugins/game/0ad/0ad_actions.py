@@ -133,11 +133,10 @@ def execute(match_data):
         _dotool(f'key {text_after_replacement}')
         speak_inclusive_fallback("sentry_tower", "en-US")
         _schedule_idle_select()
-    elif 'baue hafen' == text_after_replacement:
+    elif 'hh' == text_after_replacement:
         _idle_select()
-        _dotool('key j')
-        # _dotool(f'keydown space\nkey j\nkeyup space')
-        speak_inclusive_fallback(text_after_replacement, "en-US")
+        _dotool('key h\nkey h')
+        speak_inclusive_fallback("defense_tower", "en-US")
         _schedule_idle_select()
     elif 'tt' == text_after_replacement:
         _idle_select()

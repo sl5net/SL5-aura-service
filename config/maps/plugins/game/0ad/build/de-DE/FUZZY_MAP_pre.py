@@ -91,7 +91,7 @@ FUZZY_MAP_pre = [
     ('m', fr'^{baue}?(ma|mar[ck]t?|bau\s*markt|markt\s*bauen|build\s*market|market)\s*$', 99, _common_meta),
 
     # EXAMPLE: baue hafen
-    ('j', fr'^{baue}?(hafen)$', 99, _common_meta),
+    ('hh', fr'^{baue}?(hafen)$', 99, _common_meta),
 
     # EXAMPLE: Diplomatie
     ('<', r'^Diplomat\w*$'),
