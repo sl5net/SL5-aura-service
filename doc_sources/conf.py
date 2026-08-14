@@ -26,7 +26,11 @@ author = 'Sebastian, Lena, Andy'
 
 # extensions = []
 extensions = ['sphinx.ext.autodoc', 'myst_parser']
-
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
+myst_heading_anchors = 3
 templates_path = ['_templates']
 exclude_patterns = ['.venv', '_build', 'Thumbs.db', '.DS_Store']
 # exclude_patterns = ['.venv']
