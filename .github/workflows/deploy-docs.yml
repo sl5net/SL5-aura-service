@@ -1,61 +1,76 @@
 name: Deploy Documentation
 
 on:
-#  release:
-#    types: [published]
-#
-#  push:
-#    paths:
-#      - '.github/workflows/deploy-docs.yml'
+  push:
+    branches: [ master, fix/deploy-docs-workflow ]
+    paths:
+      - 'doc_sources/**'
+      - '.github/workflows/deploy-docs.yml'
+  pull_request:
+    branches:
+      - master
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:
+  contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: Install dependencies
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
           python -m pip install --upgrade pip
           python -m pip install sphinx furo myst-parser sphinx-copybutton
-      - name: Verify furo installation
-        run: |
-          echo "BRANCH: ${{ github.ref_name }}"
-          python -c "import furo; print(furo.__file__)"
-          python -m pip list | grep -i furo
+
       - name: Get latest release version
         run: |
-          echo "BRANCH: ${{ github.ref_name }}"
           echo "DOCS_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo dev)" >> $GITHUB_ENV
+
       - name: Build documentation
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          cd doc_sources
-          python -m sphinx -b html . _build/html
-#          make -C doc_sources html
+          python -m sphinx -b html doc_sources doc_sources/_build/html
 
-
-
-
-
-
-      - name: Upload artifact
-
+      - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: doc_sources/_build/html
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-docs-preview
+          path: doc_sources/_build/html
+
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/master' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
