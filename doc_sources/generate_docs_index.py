@@ -40,6 +40,14 @@ def generate_docs_index():
         if root_readme.exists():
             shutil.copy2(root_readme, DOCS_DIR / "README.md")
 
+        root_readme_i18n = PROJECT_ROOT / "README.i18n"
+        if root_readme_i18n.is_dir():
+            shutil.copytree(root_readme_i18n, DOCS_DIR / "README.i18n", dirs_exist_ok=True)
+
+        root_docs_dir = PROJECT_ROOT / "docs"
+        if root_docs_dir.is_dir() and root_docs_dir != DOCS_DIR:
+            shutil.copytree(root_docs_dir, DOCS_DIR / "docs", dirs_exist_ok=True)
+
         exclude_dirs = {'.venv', '_build', '__pycache__', '.git', '_templates', '_static'}
         valid_exts = {'.rst', '.md'}
         doc_entries = []
