@@ -3,11 +3,15 @@ name: Deploy Documentation
 
 on:
   push:
-    branches:
-      - fix/deploy-docs-workflow
+    branches: [ master, fix/deploy-docs-workflow ]
     paths:
       - 'doc_sources/**'
       - '.github/workflows/deploy-docs.yml'
+  pull_request:
+    branches:
+      - master
+  release:
+    types: [published]
   workflow_dispatch:
 
 
