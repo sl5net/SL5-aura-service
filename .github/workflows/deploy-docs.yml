@@ -49,16 +49,14 @@ jobs:
           check-latest: true
           cache: 'npm'
 
-      - name: Install JS dependencies (choose correct installer)
+      - name: Install JS dependencies
+        working-directory: frontend
         run: |
           if [ -f yarn.lock ]; then
-            echo "Using yarn.lock -> yarn install (frozen)"
             yarn install --frozen-lockfile
           elif [ -f package-lock.json ]; then
-            echo "Using package-lock.json -> npm ci"
             npm ci
           else
-            echo "No lockfile found -> npm install (will create package-lock.json)"
             npm install
           fi
 
