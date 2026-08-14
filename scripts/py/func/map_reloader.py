@@ -20,8 +20,6 @@ from .validate_map_structure import check_map_health
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 from .utils.aura_cache import cleanup_cache_on_reload
 
-from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
-from .utils.aura_cache import cleanup_cache_on_reload
 from .get_current_language import get_current_language
 from .is_map_path_for_current_language import is_map_path_for_current_language
 LAST_MODIFIED_TIMES = {}  # noqa: F824
