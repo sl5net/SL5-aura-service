@@ -20,6 +20,8 @@ from .validate_map_structure import check_map_health
 from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 from .utils.aura_cache import cleanup_cache_on_reload
 
+from .get_current_language import get_current_language
+from .is_map_path_for_current_language import is_map_path_for_current_language
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 KNOWN_MAP_Names = {'FUZZY_MAP_pre', 'FUZZY_MAP', 'PUNCTUATION_MAP'}
@@ -64,6 +66,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
         # scripts/py/func/map_reloader.py:33
         project_root = Path(__file__).resolve().parent.parent.parent.parent
         maps_base_dir = project_root / "config" / "maps"
+        current_language = get_current_language(logger, project_root)
 
         # Track if any maps were reloaded, to know if we need a final GC call
         reload_performed = False
@@ -81,7 +84,8 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
             # Get path relative to /config/maps to check subfolders
             relative_path = map_file_path.relative_to(maps_base_dir)
-
+            if not is_map_path_for_current_language(relative_path, current_language):
+                continue
             # Security Check: Prevent loading of private maps (starting with _) in API mode
             # This checks ANY part of the path relative to maps_base_dir
             # scripts/py/func/map_reloader.py:85 auto_reload_modified_maps(logger,run_mode_override)
