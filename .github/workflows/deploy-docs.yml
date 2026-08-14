@@ -1,7 +1,4 @@
-name: Deploy Documentation
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+ame: Deploy Documentation
 
 on:
   push:
@@ -27,6 +24,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,24 +40,28 @@ jobs:
           node-version: 'lts/*'
           check-latest: true
           cache: 'npm'
-          # optional when lockfile not in repo root:
+          # If your lockfile is in a subfolder, point to it (or use a glob):
+          # cache-dependency-path: 'frontend/package-lock.json'
           # cache-dependency-path: '**/package-lock.json'
 
-      - name: Use Node (current LTS)
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          check-latest: true
-          cache: 'npm'
+      - name: Show Node version & npm cache location
+        run: |
+          node --version
+          /opt/hostedtoolcache/node/$(node -v | tr -d 'v')/x64/bin/npm config get cache || true
+          echo "WORKDIR: $PWD"
 
-      - name: Install JS dependencies
-        working-directory: frontend
+      - name: Install JS dependencies (detect lockfile)
+        # If your JS project is at the repo root, remove working-directory and adjust paths.
+        working-directory: frontend  # <-- change or remove this line depending on your layout
         run: |
           if [ -f yarn.lock ]; then
+            echo "Found yarn.lock -> using yarn (frozen)"
             yarn install --frozen-lockfile
           elif [ -f package-lock.json ]; then
+            echo "Found package-lock.json -> using npm ci"
             npm ci
           else
+            echo "No lockfile found -> using npm install (will generate package-lock.json)"
             npm install
           fi
 
@@ -65,11 +70,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          node --version
-          npm ci
           python -m pip install --upgrade pip
           python -m pip install sphinx furo myst-parser sphinx-copybutton
 
