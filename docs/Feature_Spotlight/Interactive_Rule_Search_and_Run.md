@@ -17,3 +17,7 @@ This spotlight highlights the interactive rule-searching and execution system, b
 
 ![Interactive Rule Search Console](./assets/interactive_rule_search_wie_wetter_heute20260727.png)
 
+![Interactive Rule Search Console](./assets/interactive_rule_search_20260814.png)
+
+
+
