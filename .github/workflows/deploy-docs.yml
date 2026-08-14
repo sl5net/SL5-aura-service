@@ -1,16 +1,19 @@
 name: Deploy Documentation
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 on:
   push:
     branches:
+      - master
       - fix/deploy-docs-workflow
     paths:
       - 'doc_sources/**'
       - '.github/workflows/deploy-docs.yml'
+  release:
+    types: [published]
   workflow_dispatch:
-
-
 
 permissions:
   contents: read
@@ -30,6 +33,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Use Node (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          check-latest: true
+          cache: 'npm'
+          # optional when lockfile not in repo root:
+          # cache-dependency-path: '**/package-lock.json'
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -38,6 +50,8 @@ jobs:
       - name: Install dependencies
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
+          node --version
+          npm ci
           python -m pip install --upgrade pip
           python -m pip install sphinx furo myst-parser sphinx-copybutton
 
