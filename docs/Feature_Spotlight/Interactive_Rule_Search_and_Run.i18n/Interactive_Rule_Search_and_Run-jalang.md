@@ -3,7 +3,7 @@
 このスポットライトでは、インタラクティブなルール検索および実行システム、ブリッジング音声コマンド、ライブ ナビゲーション、即時実行に焦点を当てています。
 
 ## コア機能
-[1] **デュアルペイン Live Search (`fzf`):** 左側のペインはルール ファイルをフィルタリングします。右側のペインには、`preview_rule.py` を介してラインコンテキストのプレビューが表示されます。
+[1] **デュアルペイン Live Search (`fzf`):** 左側のペインはルール ファイルをフィルタリングします。右側のペインには、「preview_rule.py」を介してラインコンテキストのプレビューが表示されます。
 [2] **インスタント実行 (`Enter` / `Ctrl+R`):** バックグラウンドで `run_palette_command.py` を介して、抽出されたターゲット コマンドを即座に実行します。
 [3] **直接編集 (`Ctrl+E`):** ターゲット行で直接エディター (CudaText では `@line`、Kate/VS Code では `--line`) を起動します。
 [4] **フローティング ウィンドウ ホットキー:** 高速なデスクトップ統合ワークスペース ワークフローのために「Super+S」にバインドされています。
@@ -16,3 +16,5 @@
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_20260727_155546.png)
 
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_wie_wetter_heute20260727.png)
+
+![Interactive Rule Search Console](.././assets/interactive_rule_search_20260814.png)

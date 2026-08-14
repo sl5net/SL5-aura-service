@@ -1,56 +1,70 @@
 # scripts/search_rules/func/common/lang_flags.awk
-# Maps language-region folder segments (e.g. /de-DE/) in short_path to
-# flag emoji, for display in the FZF rule search list. Included via a
+# Maps a language-region folder segment (e.g. /de-DE/) in short_path to
+# a flag emoji, for display in the FZF rule search list. Included via a
 # second -f argument alongside the main AWK_SCRIPT in run_rule.sh, and
 # invoked through the apply_lang_flags() function below.
-# Add new languages here; no changes needed in run_rule.sh.
+#
+# Since a path contains at most one language segment, this does a
+# single regex match + array lookup instead of testing ~35 gsub
+# patterns sequentially against the whole string.
+# Add new languages to LANG_FLAG[] below; no changes needed in run_rule.sh.
 
-function apply_lang_flags(short_path,    _sp) {
-    _sp = short_path;
-
+BEGIN {
     # English / North America
-    gsub(/\/en-US\//, "🇺🇸", _sp);
-    gsub(/\/en-GB\//, "🇬🇧", _sp);
-    gsub(/\/en-CA\//, "🇨🇦", _sp);
-    gsub(/\/en-AU\//, "🇦🇺", _sp);
-    gsub(/\/es-MX\//, "🇲🇽", _sp);
+    LANG_FLAG["en-US"] = "🇺🇸";
+    LANG_FLAG["en-GB"] = "🇬🇧";
+    LANG_FLAG["en-CA"] = "🇨🇦";
+    LANG_FLAG["en-AU"] = "🇦🇺";
+    LANG_FLAG["es-MX"] = "🇲🇽";
 
     # Europe
-    gsub(/\/de-DE\//, "🇩🇪", _sp);
-    gsub(/\/de-AT\//, "🇦🇹", _sp);
-    gsub(/\/de-CH\//, "🇨🇭", _sp);
-    gsub(/\/fr-FR\//, "🇫🇷", _sp);
-    gsub(/\/es-ES\//, "🇪🇸", _sp);
-    gsub(/\/it-IT\//, "🇮🇹", _sp);
-    gsub(/\/nl-NL\//, "🇳🇱", _sp);
-    gsub(/\/pl-PL\//, "🇵🇱", _sp);
-    gsub(/\/pt-PT\//, "🇵🇹", _sp);
-    gsub(/\/ru-RU\//, "🇷🇺", _sp);
-    gsub(/\/tr-TR\//, "🇹🇷", _sp);
-    gsub(/\/uk-UA\//, "🇺🇦", _sp);
-    gsub(/\/sv-SE\//, "🇸🇪", _sp);
-    gsub(/\/da-DK\//, "🇩🇰", _sp);
-    gsub(/\/fi-FI\//, "🇫🇮", _sp);
-    gsub(/\/no-NO\//, "🇳🇴", _sp);
-    gsub(/\/cs-CZ\//, "🇨🇿", _sp);
-    gsub(/\/el-GR\//, "🇬🇷", _sp);
+    LANG_FLAG["de-DE"] = "🇩🇪";
+    LANG_FLAG["de-AT"] = "🇦🇹";
+    LANG_FLAG["de-CH"] = "🇨🇭";
+    LANG_FLAG["fr-FR"] = "🇫🇷";
+    LANG_FLAG["es-ES"] = "🇪🇸";
+    LANG_FLAG["it-IT"] = "🇮🇹";
+    LANG_FLAG["nl-NL"] = "🇳🇱";
+    LANG_FLAG["pl-PL"] = "🇵🇱";
+    LANG_FLAG["pt-PT"] = "🇵🇹";
+    LANG_FLAG["ru-RU"] = "🇷🇺";
+    LANG_FLAG["tr-TR"] = "🇹🇷";
+    LANG_FLAG["uk-UA"] = "🇺🇦";
+    LANG_FLAG["sv-SE"] = "🇸🇪";
+    LANG_FLAG["da-DK"] = "🇩🇰";
+    LANG_FLAG["fi-FI"] = "🇫🇮";
+    LANG_FLAG["no-NO"] = "🇳🇴";
+    LANG_FLAG["cs-CZ"] = "🇨🇿";
+    LANG_FLAG["el-GR"] = "🇬🇷";
 
     # Latin America
-    gsub(/\/pt-BR\//, "🇧🇷", _sp);
-    gsub(/\/es-AR\//, "🇦🇷", _sp);
-    gsub(/\/es-CL\//, "🇨🇱", _sp);
-    gsub(/\/es-CO\//, "🇨🇴", _sp);
+    LANG_FLAG["pt-BR"] = "🇧🇷";
+    LANG_FLAG["es-AR"] = "🇦🇷";
+    LANG_FLAG["es-CL"] = "🇨🇱";
+    LANG_FLAG["es-CO"] = "🇨🇴";
 
     # Asia & Middle East
-    gsub(/\/ja-JP\//, "🇯🇵", _sp);
-    gsub(/\/zh-CN\//, "🇨🇳", _sp);
-    gsub(/\/zh-TW\//, "🇹🇼", _sp);
-    gsub(/\/ko-KR\//, "🇰🇷", _sp);
-    gsub(/\/hi-IN\//, "🇮🇳", _sp);
-    gsub(/\/th-TH\//, "🇹🇭", _sp);
-    gsub(/\/vi-VN\//, "🇻🇳", _sp);
-    gsub(/\/ar-SA\//, "🇸🇦", _sp);
-    gsub(/\/he-IL\//, "🇮🇱", _sp);
+    LANG_FLAG["ja-JP"] = "🇯🇵";
+    LANG_FLAG["zh-CN"] = "🇨🇳";
+    LANG_FLAG["zh-TW"] = "🇹🇼";
+    LANG_FLAG["ko-KR"] = "🇰🇷";
+    LANG_FLAG["hi-IN"] = "🇮🇳";
+    LANG_FLAG["th-TH"] = "🇹🇭";
+    LANG_FLAG["vi-VN"] = "🇻🇳";
+    LANG_FLAG["ar-SA"] = "🇸🇦";
+    LANG_FLAG["he-IL"] = "🇮🇱";
+}
 
-    return _sp;
+# Replaces a single /xx-XX/ language segment in short_path with its flag
+# emoji. Returns short_path unchanged if no segment is found or the
+# code has no mapping. One match() + one array lookup, not ~35 gsub scans.
+function apply_lang_flags(short_path,    pos, code, flag) {
+    pos = match(short_path, /\/[a-z][a-z]-[A-Z][A-Z]\//);
+    if (pos == 0) return short_path;
+
+    code = substr(short_path, pos + 1, 5);
+    flag = LANG_FLAG[code];
+    if (flag == "") return short_path;
+
+    return substr(short_path, 1, pos - 1) flag substr(short_path, pos + RLENGTH);
 }

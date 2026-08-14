@@ -16,3 +16,5 @@ Este destaque destaca o sistema interativo de busca e execução de regras, unin
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_20260727_155546.png)
 
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_wie_wetter_heute20260727.png)
+
+![Interactive Rule Search Console](.././assets/interactive_rule_search_20260814.png)

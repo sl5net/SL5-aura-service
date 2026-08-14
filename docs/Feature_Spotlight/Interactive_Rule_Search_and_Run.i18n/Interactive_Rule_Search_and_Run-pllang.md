@@ -16,3 +16,5 @@ W centrum uwagi znajduje się interaktywny system wyszukiwania i wykonywania reg
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_20260727_155546.png)
 
 ![Interactive Rule Search Console](.././assets/interactive_rule_search_wie_wetter_heute20260727.png)
+
+![Interactive Rule Search Console](.././assets/interactive_rule_search_20260814.png)
