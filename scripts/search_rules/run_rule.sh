@@ -1,7 +1,6 @@
 #!/bin/bash
 # scripts/search_rules/run_rule.sh
 
-####
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SL5NET_AURA_PROJECT_ROOT="${SL5NET_AURA_PROJECT_ROOT:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
@@ -68,50 +67,7 @@ AWK_SCRIPT='{
 
     gsub(proot, "⬟", short_path);
 
-    # English / North America
-gsub(/\/en-US\//, "🇺🇸", short_path);
-gsub(/\/en-GB\//, "🇬🇧", short_path);
-gsub(/\/en-CA\//, "🇨🇦", short_path);
-gsub(/\/en-AU\//, "🇦🇺", short_path);
-gsub(/\/es-MX\//, "🇲🇽", short_path);
-
-# Europe
-gsub(/\/de-DE\//, "🇩🇪", short_path);
-gsub(/\/de-AT\//, "🇦🇹", short_path);
-gsub(/\/de-CH\//, "🇨🇭", short_path);
-gsub(/\/fr-FR\//, "🇫🇷", short_path);
-gsub(/\/es-ES\//, "🇪🇸", short_path);
-gsub(/\/it-IT\//, "🇮🇹", short_path);
-gsub(/\/nl-NL\//, "🇳🇱", short_path);
-gsub(/\/pl-PL\//, "🇵🇱", short_path);
-gsub(/\/pt-PT\//, "🇵🇹", short_path);
-gsub(/\/ru-RU\//, "🇷🇺", short_path);
-gsub(/\/tr-TR\//, "🇹🇷", short_path);
-gsub(/\/uk-UA\//, "🇺🇦", short_path);
-gsub(/\/sv-SE\//, "🇸🇪", short_path);
-gsub(/\/da-DK\//, "🇩🇰", short_path);
-gsub(/\/fi-FI\//, "🇫🇮", short_path);
-gsub(/\/no-NO\//, "🇳🇴", short_path);
-gsub(/\/cs-CZ\//, "🇨🇿", short_path);
-gsub(/\/el-GR\//, "🇬🇷", short_path);
-
-# Latin America
-gsub(/\/pt-BR\//, "🇧🇷", short_path);
-gsub(/\/es-AR\//, "🇦🇷", short_path);
-gsub(/\/es-CL\//, "🇨🇱", short_path);
-gsub(/\/es-CO\//, "🇨🇴", short_path);
-
-# Asia & Middle East
-gsub(/\/ja-JP\//, "🇯🇵", short_path);
-gsub(/\/zh-CN\//, "🇨🇳", short_path);
-gsub(/\/zh-TW\//, "🇹🇼", short_path);
-gsub(/\/ko-KR\//, "🇰🇷", short_path);
-gsub(/\/hi-IN\//, "🇮🇳", short_path);
-gsub(/\/th-TH\//, "🇹🇭", short_path);
-gsub(/\/vi-VN\//, "🇻🇳", short_path);
-gsub(/\/ar-SA\//, "🇸🇦", short_path);
-gsub(/\/he-IL\//, "🇮🇱", short_path);
-
+    short_path = apply_lang_flags(short_path);
 
 
     gsub(/config\/maps\//, "🗺️", short_path);
@@ -149,14 +105,14 @@ get_scoped_search_input() {
     local scope_dir
     scope_dir=$(cat "$PROOT_STATE_FILE" 2>/dev/null)
     [ -z "$scope_dir" ] || [ ! -d "$scope_dir" ] && scope_dir="$SL5NET_AURA_PROJECT_ROOT/config/maps"
-    rg -nH $(get_ignore_flag) $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$SL5NET_AURA_PROJECT_ROOT" -v use_ditto="1" -v one_per_file="$(get_one_per_file_flag)" -v lang_filter="$(get_language_filter_flag)" -v current_lang="$CURRENT_SEARCH_LANGUAGE" "$AWK_SCRIPT"
+    rg -nH $(get_ignore_flag) $FILT "^" "$scope_dir" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$SL5NET_AURA_PROJECT_ROOT" -v use_ditto="1" -v one_per_file="$(get_one_per_file_flag)" -v lang_filter="$(get_language_filter_flag)" -v current_lang="$CURRENT_SEARCH_LANGUAGE" -f "$SCRIPT_DIR/func/common/lang_flags.awk" -f <(printf '%s' "$AWK_SCRIPT")
 }
 
 
 if [ "${1:-}" = "--load-full" ]; then
     FULL_ROOT=$(cat "$PROOT_STATE_FILE" 2>/dev/null)
     [ -z "$FULL_ROOT" ] || [ ! -d "$FULL_ROOT" ] && FULL_ROOT="$SL5NET_AURA_PROJECT_ROOT/config/maps"
-    rg -nH $(get_ignore_flag) $FILT "^" "$FULL_ROOT" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$SL5NET_AURA_PROJECT_ROOT" -v use_ditto="0" -v one_per_file="$(get_one_per_file_flag)" -v lang_filter="$(get_language_filter_flag)" -v current_lang="$CURRENT_SEARCH_LANGUAGE" "$AWK_SCRIPT"
+    rg -nH $(get_ignore_flag) $FILT "^" "$FULL_ROOT" | sort -t: -k1,1 -k2,2n | awk -F: -v proot="$SL5NET_AURA_PROJECT_ROOT" -v use_ditto="0" -v one_per_file="$(get_one_per_file_flag)" -v lang_filter="$(get_language_filter_flag)"  -v current_lang="$CURRENT_SEARCH_LANGUAGE" -f "$SCRIPT_DIR/func/common/lang_flags.awk" -f <(printf '%s' "$AWK_SCRIPT")
     exit 0
 fi
 
@@ -189,51 +145,6 @@ while true; do
             echo restart > $RESTART_MARKER
             echo 'abort'"
     fi
-
-    ## Alt-G action: always clear .query before toggle; do NOT immediately restore saved_query
-    #if [ "$(cat "$ALT_G_STATE_FILE" 2>/dev/null)" = "1" ]; then
-    #    ALT_G_ACTION="transform:
-    #        # Ensure query is cleared before toggling (so UI is cleared)
-    #        echo \"\" > ${RESTART_MARKER}.query
-    #        # Do NOT cat saved_query > .query here — leave saved_query in place for restoration after restart
-    #        # Do NOT remove ${RESTART_MARKER}.saved_query here
-    #        echo 0 > \"$ALT_G_STATE_FILE\"
-    #        bash \$SCRIPT_DIR/func/common/toggle_one_g_state_file.sh
-    #        echo restart > $RESTART_MARKER
-    #        echo 'abort'"
-    #else
-    #    ALT_G_ACTION="transform:
-    #        # Save current query, then clear .query before toggling
-    #        echo {q} > ${RESTART_MARKER}.saved_query
-    #        echo \"\" > ${RESTART_MARKER}.query
-    #        echo 1 > \"$ALT_G_STATE_FILE\"
-    #        bash \$SCRIPT_DIR/func/common/toggle_one_g_state_file.sh
-    #        echo restart > $RESTART_MARKER
-    #        echo 'abort'"
-    #fi
-
-
-
-
-# scripts/search_rules/run_rule.sh:134
-# TODO 11.8.'26 19:03 Tue :
-#    if [ "$????" = "1" ]; then
-#        ALT_G_ACTION="transform:
-#            bash \$SCRIPT_DIR/func/common/toggle_????.sh
-#            echo restart > $RESTART_MARKER
-#            echo 'abort'"
-#    else
-#        ALT_G_ACTION="transform:
-#            echo {q} > ${RESTART_MARKER}.saved_query
-#            echo \"\" > ${RESTART_MARKER}.query
-#            bash \$SCRIPT_DIR/func/common/toggle_one_per_file.sh
-#            echo restart > $RESTART_MARKER
-#            echo 'abort'"
-#    fi
-#            --bind="alt-g:$ALT_G_ACTION" \
-
-
-
 
     if [ -n "$CURRENT_QUERY" ]; then
         INIT_INPUT=$(bash "$SCRIPT_DIR/run_rule.sh" --load-full)
