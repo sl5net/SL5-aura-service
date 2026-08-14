@@ -1,5 +1,5 @@
 name: Deploy Documentation
-
+# helpful: https://www.yamllint.com/
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
