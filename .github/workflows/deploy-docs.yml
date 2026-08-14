@@ -42,6 +42,26 @@ jobs:
           # optional when lockfile not in repo root:
           # cache-dependency-path: '**/package-lock.json'
 
+      - name: Use Node (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          check-latest: true
+          cache: 'npm'
+
+      - name: Install JS dependencies (choose correct installer)
+        run: |
+          if [ -f yarn.lock ]; then
+            echo "Using yarn.lock -> yarn install (frozen)"
+            yarn install --frozen-lockfile
+          elif [ -f package-lock.json ]; then
+            echo "Using package-lock.json -> npm ci"
+            npm ci
+          else
+            echo "No lockfile found -> npm install (will create package-lock.json)"
+            npm install
+          fi
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
