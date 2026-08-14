@@ -52,8 +52,10 @@ jobs:
       - name: Build documentation
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          python -m sphinx -b html doc_sources doc_sources/_build/html
-
+          cd doc_sources
+          python generate_docs.py
+          python generate_docs_index.py
+          python -m sphinx -b html . _build/html
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
