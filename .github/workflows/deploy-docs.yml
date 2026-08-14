@@ -42,6 +42,7 @@ jobs:
           python -m pip install sphinx furo myst-parser sphinx-copybutton
 
       - name: Get latest release version
+        run: |
           echo "DOCS_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo dev)" >> $GITHUB_ENV
 
       - name: Build documentation
