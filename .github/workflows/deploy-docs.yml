@@ -1,16 +1,16 @@
-ame: Deploy Documentation
+name: Deploy Documentation
+
 
 on:
   push:
     branches:
-      - master
       - fix/deploy-docs-workflow
     paths:
       - 'doc_sources/**'
       - '.github/workflows/deploy-docs.yml'
-  release:
-    types: [published]
   workflow_dispatch:
+
+
 
 permissions:
   contents: read
@@ -24,61 +24,24 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Use Node (current LTS)
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          check-latest: true
-          cache: 'npm'
-          # If your lockfile is in a subfolder, point to it (or use a glob):
-          # cache-dependency-path: 'frontend/package-lock.json'
-          # cache-dependency-path: '**/package-lock.json'
-
-      - name: Show Node version & npm cache location
-        run: |
-          node --version
-          /opt/hostedtoolcache/node/$(node -v | tr -d 'v')/x64/bin/npm config get cache || true
-          echo "WORKDIR: $PWD"
-
-      - name: Install JS dependencies (detect lockfile)
-        # If your JS project is at the repo root, remove working-directory and adjust paths.
-        working-directory: frontend  # <-- change or remove this line depending on your layout
-        run: |
-          if [ -f yarn.lock ]; then
-            echo "Found yarn.lock -> using yarn (frozen)"
-            yarn install --frozen-lockfile
-          elif [ -f package-lock.json ]; then
-            echo "Found package-lock.json -> using npm ci"
-            npm ci
-          else
-            echo "No lockfile found -> using npm install (will generate package-lock.json)"
-            npm install
-          fi
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
           python -m pip install --upgrade pip
           python -m pip install sphinx furo myst-parser sphinx-copybutton
 
       - name: Get latest release version
-        run: |
-          echo "BRANCH: ${{ github.ref_name }}"
           echo "DOCS_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo dev)" >> $GITHUB_ENV
 
       - name: Build documentation
@@ -91,7 +54,14 @@ jobs:
         with:
           path: doc_sources/_build/html
 
-  deploy:
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-docs-preview
+          path: doc_sources/_build/html
+
+
+deploy:
     needs: build
     if: github.ref == 'refs/heads/master' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
