@@ -37,15 +37,16 @@ jobs:
 
       - name: Install dependencies
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"
           python -m pip install --upgrade pip
           python -m pip install sphinx furo myst-parser sphinx-copybutton
 
       - name: Get latest release version
-        run: |
           echo "DOCS_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo dev)" >> $GITHUB_ENV
 
       - name: Build documentation
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"
           python -m sphinx -b html doc_sources doc_sources/_build/html
 
       - name: Upload pages artifact
