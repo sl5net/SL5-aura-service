@@ -5,13 +5,10 @@ env:
 
 on:
   push:
-    branches: [ master, fix/deploy-docs-workflow ]
+    branches: [ fix/deploy-docs-workflow ]
     paths:
       - 'doc_sources/**'
       - '.github/workflows/deploy-docs.yml'
-  pull_request:
-    branches:
-      - master
   release:
     types: [published]
   workflow_dispatch:
