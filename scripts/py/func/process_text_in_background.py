@@ -2083,11 +2083,16 @@ def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_ma
     """
     import json
     from pathlib import Path
+    # 
+    # tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
+    # cache_dir = tmp_dir / "sl5_aura"
+    # cache_dir.mkdir(parents=True, exist_ok=True)
+    # cache_file = cache_dir / "active_maps_cache.json"
 
-    tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
-    cache_dir = tmp_dir / "sl5_aura"
+    cache_dir = SL5NET_AURA_PROJECT_ROOT / "data" / "_privat_no_zip" / "cache" / "maps"
     cache_dir.mkdir(parents=True, exist_ok=True)
-    cache_file = cache_dir / "active_maps_cache.json"
+    safe_lang = lang_code.replace('/', '_').strip() if lang_code else "default"
+    cache_file = cache_dir / f"active_maps_cache_{safe_lang}.json"
 
     cache_data = {
         "language": lang_code,

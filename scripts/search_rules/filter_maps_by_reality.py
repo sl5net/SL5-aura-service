@@ -16,8 +16,9 @@ SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_roo
 
 def get_cache_file(lang_code):
     safe_lang = lang_code.replace('/', '_').strip() if lang_code else "default"
-    return tmp_dir / "sl5_aura" / f"active_maps_cache_{safe_lang}.json"
-
+    cache_dir = SL5NET_AURA_PROJECT_ROOT / "data" / "_privat_no_zip" / "cache" / "maps"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    return cache_dir / f"active_maps_cache_{safe_lang}.json"
 # --- LOGGING ---
 log_file = SL5NET_AURA_PROJECT_ROOT / "log" / "search_rules" / f"{Path(__file__).stem}.log"
 log_file.parent.mkdir(parents=True, exist_ok=True)
