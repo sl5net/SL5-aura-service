@@ -331,9 +331,9 @@ def auto_reload_modified_maps(logger,run_mode_override):
                     ensure_init_files(map_file_path.parent, logger)
 
         # scripts/py/func/map_reloader.py:331
-        if LAST_MODIFIED_TIMES:
-            newest_file_path = max(LAST_MODIFIED_TIMES, key=LAST_MODIFIED_TIMES.get) # ignore PyCharm warning here. it cant be null 2.8.'26 23:36 Sun
-            logger.info(f"newest_file_path:…{str(newest_file_path)[-35:]}")
+        # if LAST_MODIFIED_TIMES:
+        #     newest_file_path = max(LAST_MODIFIED_TIMES, key=LAST_MODIFIED_TIMES.get) # ignore PyCharm warning here. it cant be null 2.8.'26 23:36 Sun
+            # logger.info(f"newest_file_path:…{str(newest_file_path)[-35:]}")
 
         # Optional: Final cleanup if any reload occurred
         if reload_performed:
