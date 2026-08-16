@@ -11,11 +11,11 @@
 |---|---|---|
 
 
-| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-jalang.md#the-oma-modus-beginner-shortcut) : 単語を書くだけで、残りは Aura がやってくれます | Koans で学ぶ - 一度に 1 つのコンセプト |完全な Python スクリプト、プラグイン、API 呼び出し |
+| [grandma-mode](../docs/GettingStarted-jalang.md#the-oma-modus-beginner-shortcut) : 単語を書くだけで、残りは Aura がやってくれます | Koans で学ぶ - 一度に 1 つのコンセプト |完全な Python スクリプト、プラグイン、API 呼び出し |
 | 🗄️ 状態管理 | Trino + Airflow オーケストレーション、fzf、CopyQ、音声/端末コマンド、ブラウザ UI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ テストあたり **~2.87 J** (39 テスト @ 平均 0.34 秒 🌿 [Eco-CI](https://metrics.green-coding.io/index.html) で測定) · クラウド コンピューティングなし
+⚡ テストあたり **~2.87 J** (39 テスト @ 0.09 秒のウォーム / 0.50 秒のコールド 🌿 [Eco-CI](https://metrics.green-coding.io/index.html) で測定) · クラウド コンピューティングなし
 
 <詳細>
 <summary>クイック スタート</summary>
@@ -24,7 +24,7 @@
 1. このリポジトリをダウンロードまたは複製します
 2. OS のセットアップ スクリプトを実行します (「setup/」フォルダーを参照)。
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-jalang.md) を読む
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-jalang.md) を読む
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS): `nix-shell setup/shell.nix` の次に `bash setup/nixos_setup.sh`
@@ -32,7 +32,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Aura を起動します: `./scripts/restart_venv_and_run-server.sh`
-4. ホットキーを押して話します — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-jalang.md)**
+4. ホットキーを押して話します — **[full guide →](../docs/GettingStarted-jalang.md)**
 
 
 **⚠️ システム要件と互換性**
@@ -45,7 +45,7 @@
 glibc 2.43 との互換性のため、mimalloc (`sudo pacman -S mimalloc`) が必要です。
 * **Linux (NixOS):** 🧪 実験的 — コミュニティ提供のセットアップであり、まだテストされていません。
 試してみたら、問題を報告するか、結果を PR してください。    
-* **Linux (Manjaro):** 新しい/実験的: システム全体のホットキーにより、fzf のようなキーボード駆動のインターフェイスが開き、デスクトップ上のどこからでも (アクティブなウィンドウから完全に切り離されて) Aura コマンドを実行できます。このホットキー駆動のランチャーは現在、Linux (Manjaro) 上で実装およびテストされています。他のディストリビューションも動作する可能性がありますが、セットアップが必要です。 👉で参照 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-jalang.md)   
+* **Linux (Manjaro):** 新しい/実験的: システム全体のホットキーにより、fzf のようなキーボード駆動のインターフェイスが開き、デスクトップ上のどこからでも (アクティブなウィンドウから完全に切り離されて) Aura コマンドを実行できます。このホットキー駆動のランチャーは現在、Linux (Manjaro) 上で実装およびテストされています。他のディストリビューションも動作する可能性がありますが、セットアップが必要です。 👉で参照 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-jalang.md)   
 
 
   
@@ -65,7 +65,7 @@ SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタ
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **ヒント:** 端末エクスペリエンスを向上させるには、[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-jalang.md) を参照してください。
+> **ヒント:** 端末エクスペリエンスを向上させるには、[Zsh Integration](../docs/linux/zsh-integration-jalang.md) を参照してください。
 
 ### 🎥 ビデオチュートリアル
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -82,7 +82,7 @@ SL5 Aura は、**Vosk** (Speech-to-Text 用) と **LanguageTool** (文法/スタ
 * **オフライン&プライベート:** 100% ローカル。データがマシンから流出することはありません。
 * **ダイナミック スクリプト エンジン:** テキストの置換を超えた機能。ルールはカスタム Python スクリプト (「on_match_exec」) を実行して、API の呼び出し (Wikipedia の検索など)、ファイルの操作 (ToDo リストの管理など)、動的コンテンツの生成 (コンテキストを認識した電子メールの挨拶など) などの高度なアクションを実行できます。
 * **コンテキスト認識ルール:** ルールを特定のアプリケーションに制限します。 「only_in_windows」を使用すると、特定のウィンドウ タイトル (「ターミナル」、「VS Code」、または「ブラウザ」など) がアクティブな場合にのみルールがトリガーされるようにできます。これはクロスプラットフォーム (Linux、Windows、macOS) で動作します。
-* **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定されるため、コーディングではなく**構成が必要です**。
+* **高度な制御の変換エンジン:** 構成主導の高度にカスタマイズ可能な処理パイプラインを実装します。ルールの優先順位、コマンド検出、およびテキスト変換は、純粋にファジー マップ内のルールの順序によって決定され、コーディングではなく**構成が必要です**。
 * **控えめな RAM 使用量:** メモリをインテリジェントに管理し、十分な空き RAM がある場合にのみモデルをプリロードし、他のアプリケーション (PC ゲームなど) が常に優先されるようにします。
 * **クロスプラットフォーム:** Linux、macOS、および Windows で動作します。
 * **完全に自動化:** 独自の LanguageTool サーバーを管理します (ただし、外部サーバーを使用することもできます)。
@@ -123,12 +123,12 @@ SL5-Aura は、**OculiX** および **SikuliX IDE** に最上級の音声サポ�
 
 ## ドキュメント
 
-すべてのモジュールとスクリプトを含む完全な技術リファレンスについては、公式ドキュメント ページを参照してください。これは自動的に生成され、常に最新の状態になります。
+すべてのモジュールとスクリプトを含む完全な技術リファレンスについては、公式ドキュメント ページをご覧ください。自動的に生成され、常に最新の状態になります。
 
 👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ### 注目の機能
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-jalang.md) — デュアルペインの「fzf」ルール検索、ライブコンテキストプレビュー、「Enter」/「Ctrl+R」による即時コマンド実行、および「Ctrl+E」によるエディターの統合。グローバル ホットキー (「Super+S」) と音声コマンドで事前設定された複数の専用検索環境によってサポートされます。
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-jalang.md) — デュアルペインの「fzf」ルール検索、ライブコンテキストプレビュー、「Enter」/「Ctrl+R」による即時コマンド実行、および「Ctrl+E」によるエディターの統合。グローバル ホットキー (「Super+S」) と音声コマンドで事前設定された複数の専用検索環境によってサポートされます。
 
 ### ビルドステータス
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
@@ -174,7 +174,7 @@ SL5-Aura は、**OculiX** および **SikuliX IDE** に最上級の音声サポ�
 1. 最新のリリースまたはマスター ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) をダウンロードするか、このリポジトリのクローンをコンピュータに作成します。
 2. オペレーティング システムのワンタイム セットアップ スクリプトを実行します。
 
-セットアップ スクリプトは、システムの依存関係、Python 環境、必要なモデルとツール (最大 4GB) を GitHub リリースから直接ダウンロードして最大速度を実現するなど、すべてを処理します。
+セットアップ スクリプトは、システムの依存関係、Python 環境、必要なモデルとツール (最大 4 GB) を GitHub リリースから直接ダウンロードして最大速度を実現するなど、すべてを処理します。
 
 
 #### Linux、macOS、および Windows の場合 (オプションの言語の除外あり)
@@ -333,7 +333,7 @@ f11::
 
 
 ### 3. ディクテーションを始めましょう!
-任意のテキスト フィールドをクリックしてホットキーを押すと、「Listening...」通知が表示されます。はっきりと話してから一時停止します。修正されたテキストが入力されます。
+任意のテキスト フィールドをクリックし、ホットキーを押すと、「Listening...」通知が表示されます。はっきりと話してから一時停止します。修正されたテキストが入力されます。
 
 </詳細>
 
@@ -378,7 +378,7 @@ f11::
 
 ## Windows ユーザー向けの主要なスクリプト
 
-Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを次に示します。
+ここでは、Windows システム上でアプリケーションをセットアップ、更新、実行するための最も重要なスクリプトのリストを示します。
 
 ### セットアップとアップデート
 
@@ -432,7 +432,7 @@ OS 互換性の凡例:
 ││ * **ワークフロー:** パスワードで保護された ZIP アーカイブを読み込みます。   
 │§ **テキスト処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
 │§ 1. `normalize_punctuation.py` (文字起こし後の句読点を標準化) 🐧 🍏 🪟  
-│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
+│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
 ││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト (「on_match_exec」) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **カスケード実行:** ルールは順番に処理され、その効果は **累積的**です。以前のルールによって変更されたテキストには、後のルールが適用されます。  
 ││ * **最優先停止基準:** ルールが **完全一致** (^...$) に達すると、そのトークンの処理パイプライン全体が直ちに停止します。このメカニズムは、信頼性の高い音声コマンドを実装するために重要です。  
@@ -444,7 +444,7 @@ OS 互換性の凡例:
 ││ * **ステータス:** ローカル LLM 統合。
 │└ 5. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の洗練** 🐧 🍏 🪟  
 ││ * LT 固有の出力を修正するために、LanguageTool の後に適用されます。前修正レイヤーと同じ厳密なカスケード優先順位ロジックに従います。  
-││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
+││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
 ││ * **ファジー フォールバック:** **ファジー類似性チェック** (しきい値、たとえば 85% によって制御される) は、優先度が最も低いエラー修正層として機能します。これは、先行する決定的/カスケード ルール実行全体で一致が見つからなかった場合 (current_rule_matched が False) にのみ実行され、可能な限り遅いファジー チェックを回避することでパフォーマンスを最適化します。  
 §┬ **モデル管理/**   
 │§─ `prioritize_model.py` (使用状況に基づいてモデルのロード/アンロードを最適化します) 🐧 🍏 🪟  
@@ -482,9 +482,9 @@ OS 互換性の凡例:
 
 *ヒント: glogg を使用すると、正規表現を使用してログ ファイル内の興味深いイベントを検索できます。*   
 ログファイルと関連付けるには、インストール時にチェックボックスをオンにしてください。    
-https://translate.google.com/translate?hl=de&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
   
-*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-jalang.md) を参照してください。*
+*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-jalang.md) を参照してください。*
 
 それからダブルクリックしてください
 `log/aura_engine.log`
@@ -493,7 +493,7 @@ https://translate.google.com/translate?hl=de&sl=en&tl=ja&u=https://glogg.bonnefo
 §┬ **仮想環境管理/**  
 │§ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏  
 │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
-§┬ **システム全体のディクテーション統合/**  
+§┬ **システム全体のディクテーションの統合/**  
 │§ Vosk-システム-リスナーの統合 🐧 🍏 🪟  
 │§ `scripts/monitor_mic.sh` (Linux 固有のマイクモニタリング) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey は認識されたテキストをリッスンし、システム全体で入力します) 🪟  
@@ -557,7 +557,7 @@ https://translate.google.com/translate?hl=de&sl=en&tl=ja&u=https://glogg.bonnefo
 `mv vosk-model-*.zip モデル/`
 
 
-|モデル |サイズ |ワードエラー率/速度 |メモ |ライセンス |
+|モデル |サイズ |ワードエラー率/速度 | Notes                                     |ライセンス |
 | -------------------------------------------------------------------------------------- | ---- | -------------------------------------------------------------------------------------------- | -------------------------------------- | ---------- |
 | [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69 (librispeech test-clean)<br/>6.05 (tedlium)<br/>29.78 (コールセンター) |正確な一般的な米国英語モデル |アパッチ2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G | 9.83 (Tuda-de テスト)<br/>24.00 (ポッドキャスト)<br/>12.82 (CV-テスト)<br/>12.42 (mls)<br/>33.26 (mtedx) |電話およびサーバー用のドイツの大型モデル |アパッチ2.0 |

@@ -11,11 +11,11 @@
 |---|---|---|
 
 
-| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-pt-BRlang.md#the-oma-modus-beginner-shortcut) : basta escrever uma palavra, Aura faz o resto | Aprenda com Koans — um conceito de cada vez | Scripting Python completo, plug-ins, chamadas de API |
+| [grandma-mode](../docs/GettingStarted-pt-BRlang.md#the-oma-modus-beginner-shortcut) : basta escrever uma palavra, Aura faz o resto | Aprenda com Koans — um conceito de cada vez | Scripting Python completo, plug-ins, chamadas de API |
 | 🗄️ Gestão Estadual | Orquestração Trino + Airflow, fzf, CopyQ, comandos de voz/terminal, UIs de navegador |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** por teste (39 testes com média de 0,34s 🌿 medido com [Eco-CI](https://metrics.green-coding.io/index.html)) · sem computação em nuvem
+⚡ **~2,87 J** por teste (39 testes @ 0,09s quente / 0,50s frio 🌿 medido com [Eco-CI](https://metrics.green-coding.io/index.html)) · sem computação em nuvem
 
 <detalhes>
 <summary>Início rápido</summary>
@@ -24,7 +24,7 @@
 1. Baixe ou clone este repositório
 2. Execute o script de configuração do seu sistema operacional (consulte a pasta `setup/`):
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 leia [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-pt-BRlang.md)
+===> 🧩 leia [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-pt-BRlang.md)
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS): `nix-shell setup/shell.nix` e depois `bash setup/nixos_setup.sh`
@@ -32,7 +32,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Inicie o Aura: `./scripts/restart_venv_and_run-server.sh`
-4. Pressione sua tecla de atalho e fale — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-pt-BRlang.md)**
+4. Pressione sua tecla de atalho e fale — **[full guide →](../docs/GettingStarted-pt-BRlang.md)**
 
 
 **⚠️ Requisitos do sistema e compatibilidade**
@@ -45,7 +45,7 @@
 Requer mimalloc (`sudo pacman -S mimalloc`) devido à compatibilidade com glibc 2.43.
 * **Linux (NixOS):** 🧪 Experimental — configuração contribuída pela comunidade, ainda não testada.
 Se você tentar, abra uma edição ou PR com suas descobertas!    
-* **Linux (Manjaro):** Novo / experimental: uma tecla de atalho em todo o sistema abre uma interface semelhante a fzf, controlada por teclado, para que você possa executar comandos do Aura de qualquer lugar na área de trabalho (completamente dissociado da janela ativa). Este iniciador baseado em teclas de atalho está atualmente implementado e testado em Linux (Manjaro); outras distribuições podem funcionar, mas requerem configuração. Veja em 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-pt-BRlang.md)   
+* **Linux (Manjaro):** Novo / experimental: uma tecla de atalho em todo o sistema abre uma interface semelhante a fzf, controlada por teclado, para que você possa executar comandos do Aura de qualquer lugar na área de trabalho (completamente dissociado da janela ativa). Este iniciador baseado em teclas de atalho está atualmente implementado e testado em Linux (Manjaro); outras distribuições podem funcionar, mas requerem configuração. Veja em 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-pt-BRlang.md)   
 
 
   
@@ -65,7 +65,7 @@ Nota: Muitos textos são traduções geradas automaticamente da documentação o
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Dica:** para uma melhor experiência de terminal, consulte [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pt-BRlang.md).
+> **Dica:** para uma melhor experiência de terminal, consulte [Zsh Integration](../docs/linux/zsh-integration-pt-BRlang.md).
 
 ### 🎥 Tutorial em vídeo
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -82,7 +82,7 @@ Nota: Muitos textos são traduções geradas automaticamente da documentação o
 * **Off-line e privado:** 100% local. Nenhum dado sai da sua máquina.
 * **Mecanismo de script dinâmico:** Vá além da substituição de texto. As regras podem executar scripts Python personalizados (`on_match_exec`) para executar ações avançadas, como chamar APIs (por exemplo, pesquisar na Wikipedia), interagir com arquivos (por exemplo, gerenciar uma lista de tarefas) ou gerar conteúdo dinâmico (por exemplo, uma saudação por e-mail com reconhecimento de contexto).
 * **Regras baseadas no contexto:** restrinja regras a aplicativos específicos. Usando `only_in_windows`, você pode garantir que uma regra seja acionada apenas se um título de janela específico (por exemplo, "Terminal", "Código VS" ou "Navegador") estiver ativo. Isso funciona em várias plataformas (Linux, Windows, macOS).
-* **Mecanismo de transformação de alto controle:** Implementa um pipeline de processamento altamente personalizável e orientado por configuração. A prioridade das regras, a detecção de comandos e as transformações de texto são determinadas puramente pela ordem sequencial das regras nos Mapas Fuzzy, exigindo **configuração, não codificação**.
+* **Mecanismo de transformação de alto controle:** implementa um pipeline de processamento altamente personalizável e orientado por configuração. A prioridade das regras, a detecção de comandos e as transformações de texto são determinadas puramente pela ordem sequencial das regras nos Mapas Fuzzy, exigindo **configuração, não codificação**.
 * **Uso conservador de RAM:** Gerencia a memória de forma inteligente, pré-carregando modelos apenas se houver RAM livre suficiente disponível, garantindo que outros aplicativos (como jogos de PC) sempre tenham prioridade.
 * **Plataforma cruzada:** Funciona em Linux, macOS e Windows.
 * **Totalmente Automatizado:** Gerencia seu próprio servidor LanguageTool (mas você também pode usar um externo).
@@ -97,7 +97,7 @@ afetando os outros. Inclui um **Painel de administração** em tempo real (porta
   
 ## 🔌 Integrações prontas para uso
 
-SL5-Aura vem com um vasto ecossistema de mais de **100 plug-ins pré-configurados**. Aqui estão alguns destaques:
+SL5-Aura vem com um vasto ecossistema de mais de **100+ plugins pré-configurados**. Aqui estão alguns destaques:
 
 ### Controle de voz OculiX / SikuliX IDE
 SL5-Aura oferece suporte de voz de primeira classe para **OculiX** e **SikuliX IDE**. Essa integração permite que você “fale” seu código de automação.
@@ -128,7 +128,7 @@ Para uma referência técnica completa, incluindo todos os módulos e scripts, v
 👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ### Destaques de recursos
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pt-BRlang.md) — Pesquisa de regras `fzf` em painel duplo, visualizações de contexto ao vivo, execução instantânea de comandos via `Enter`/`Ctrl+R` e integração de editor via `Ctrl+E`. Suportado por uma tecla de atalho global (`Super+S`) e vários ambientes de pesquisa dedicados pré-configurados através de comandos de voz.
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-pt-BRlang.md) — Pesquisa de regras `fzf` em painel duplo, visualizações de contexto ao vivo, execução instantânea de comandos via `Enter`/`Ctrl+R` e integração de editor via `Ctrl+E`. Suportado por uma tecla de atalho global (`Super+S`) e vários ambientes de pesquisa dedicados pré-configurados através de comandos de voz.
 
 ### Status da compilação
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ)
@@ -328,7 +328,7 @@ O mecanismo de processamento segue estritamente uma **Cadeia de Prioridade Hier�
 
 1. **Ordem de carregamento do módulo (alta prioridade):** As regras carregadas dos pacotes de idiomas principais (de-DE, en-US) têm precedência sobre as regras carregadas do diretório plugins/ (que são carregadas por último em ordem alfabética).
   
-2. **Ordem no arquivo (Micro Prioridade):** Dentro de qualquer arquivo de mapa (FUZZY_MAP_pre.py), as regras são processadas estritamente por **número de linha** (de cima para baixo).
+2. **Ordem no arquivo (micro prioridade):** Dentro de qualquer arquivo de mapa (FUZZY_MAP_pre.py), as regras são processadas estritamente por **número de linha** (de cima para baixo).
   
 
 Essa arquitetura garante que as regras básicas do sistema sejam protegidas, enquanto regras específicas do projeto ou sensíveis ao contexto (como aquelas para CodeIgniter ou controles de jogos) podem ser facilmente adicionadas como extensões de baixa prioridade por meio de plug-ins.
@@ -399,7 +399,7 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 ││ * **Fluxo de trabalho:** Carrega arquivos ZIP protegidos por senha.   
 │├ **Processamento e correção de texto/** Agrupado por idioma (por exemplo, `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (padroniza a pontuação pós-transcrição) 🐧 🍏 🪟  
-│├ 2. **Pré-correção inteligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-pt-BRlang.md)) 🐧 🍏 🪟  
+│├ 2. **Pré-correção inteligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-pt-BRlang.md)) 🐧 🍏 🪟  
 ││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados (`on_match_exec`) para executar ações avançadas como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
 ││ * **Execução em Cascata:** As regras são processadas sequencialmente e seus efeitos são **cumulativos**. Regras posteriores se aplicam ao texto modificado por regras anteriores.  
 ││ * **Critério de parada de prioridade mais alta:** Se uma regra atingir uma **Correspondência completa** (^...$), todo o pipeline de processamento desse token será interrompido imediatamente. Este mecanismo é fundamental para implementar comandos de voz confiáveis.  
@@ -411,13 +411,13 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 ││ * **Status:** Integração LLM local.
 │└ 5. **Pós-Correção Inteligente** (`FuzzyMap`)**– Refinamento Pós-LT** 🐧 🍏 🪟  
 ││ * Aplicado após o LanguageTool para corrigir saídas específicas do LT. Segue a mesma lógica estrita de prioridade em cascata da camada de pré-correção.  
-││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-pt-BRlang.md)) para executar ações avançadas, como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
+││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados ([on_match_exec](../docs/advanced-scripting-pt-BRlang.md)) para executar ações avançadas, como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
 ││ * **Fuzzy Fallback:** A **Verificação de similaridade difusa** (controlada por um limite, por exemplo, 85%) atua como a camada de correção de erros de prioridade mais baixa. Ele só será executado se toda a execução anterior da regra determinística/em cascata não conseguir encontrar uma correspondência (current_rule_matched é False), otimizando o desempenho evitando verificações difusas lentas sempre que possível.  
 ├┬ **Gerenciamento de modelo/**   
 │├─ `prioritize_model.py` (Otimiza o carregamento/descarregamento do modelo com base no uso) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (configura a configuração inicial do modelo) 🐧 🍏 🪟  
 ├─ **Tempo limite do VAD adaptável** 🐧 🍏 🪟  
-├─ **Tecla de atalho adaptativa (Iniciar/Parar)** 🐧 🍏 🪟  
+├─ **Tecla de atalho adaptável (Iniciar/Parar)** 🐧 🍏 🪟  
 ├─ **Troca instantânea de idioma** (Experimental via pré-carregamento de modelo) 🐧 🍏   
 ├─ **Orquestração de fluxo de ar** (automação de fluxo de trabalho baseada em DAG) 🐧 🍏 🪟
 │ Requer Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
@@ -449,9 +449,9 @@ Scripts para configuração de ambiente, teste e execução de serviço.
 
 *Dica: glogg permite que você use expressões regulares para pesquisar eventos interessantes em seus arquivos de log.*   
 Marque a caixa de seleção ao instalar para associar aos arquivos de log.    
-https://translate.google.com/translate?hl=de&sl=en&tl=pt-BR&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=en&sl=en&tl=pt-BR&u=https://glogg.bonnefon.org/     
   
-*Dica: depois de definir seus padrões regex, execute `python3 tools/map_tagger.py` para gerar automaticamente exemplos pesquisáveis para as ferramentas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pt-BRlang.md) para obter detalhes.*
+*Dica: depois de definir seus padrões regex, execute `python3 tools/map_tagger.py` para gerar automaticamente exemplos pesquisáveis para as ferramentas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-pt-BRlang.md) para obter detalhes.*
 
 Então talvez clique duas vezes
 `log/aura_engine.log`
@@ -475,7 +475,7 @@ Então talvez clique duas vezes
 ### **Recursos futuros/experimentais**  
 Recursos atualmente em desenvolvimento ou em status de rascunho.  
 
-**Recursos Experimentais/**  
+**Recursos experimentais/**  
 ├─ **ENTER_AFTER_DICTATION_REGEX** Exemplo de regra de ativação "(ExampleAplicationThatNotExist|Pi, sua IA pessoal)" 🐧  
 ├┬Plugins  
 │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟  
@@ -484,7 +484,7 @@ Recursos atualmente em desenvolvimento ou em status de rascunho.
 │ ├ **wannweil** (Mapa para localização Alemanha-Wannweil) 🐧 🍏 🪟  
 │ ├ **Poker Plugin (Draft)** (Controle de voz para aplicativos de pôquer) 🐧 🍏 🪟  
 │ └ **Plugin 0 A.D. (Draft)** (Controle de voz para jogo 0 A.D.) 🐧   
-├─ **Saída de som ao iniciar ou encerrar uma sessão** (Descrição pendente) 🐧   
+├─ **Saída de som ao iniciar ou encerrar uma sessão** (descrição pendente) 🐧   
 ├─ **Saída de fala para deficientes visuais** (Descrição pendente) 🐧 🍏 🪟  
 └─ **Protótipo SL5 Aura Android** (Ainda não totalmente offline) 📱  
 
