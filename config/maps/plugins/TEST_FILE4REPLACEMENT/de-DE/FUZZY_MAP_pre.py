@@ -18,7 +18,7 @@ FUZZY_MAP_pre = [
       }
      ),
 
-    (f'{TEST_FILE4_path}',r'^(Blumenkohl|7)$', 85,
+    (f'{TEST_FILE4_path}',r'^(Blumenkohl)$', 85,
      {'command_flags': re.IGNORECASE,
       'cache': False,
       }

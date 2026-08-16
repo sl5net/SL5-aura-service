@@ -359,6 +359,10 @@ def get_active_window_title_kde_native():
 
 
 def get_active_window_title_safe():
+    if os.environ.get("CI") == "true":
+        env_title = os.environ.get("AURA_ACTIVE_WINDOW_TITLE")
+        if env_title is not None and env_title.strip():
+            return env_title.strip()
     try:
         # --- WINDOWS ---
         if sys.platform == 'win32':
