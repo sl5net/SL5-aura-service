@@ -25,11 +25,12 @@ def cleanup(logger, files_to_remove):
         # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
         logger.info(
             "💡 Run this command to check for suspicious ghost map files:"
-            "\n\npython3 -c \"import pathlib, re; p=list(pathlib.Path('config/maps').rglob('*.py')); rx=re.compile(r'(\\s|\\.py\\.|\\b(off|bak|old|copy|tmp|disabled|backup)\\b|(?<=[-_])(off|bak|old|copy|tmp|disabled|backup)(?=[-_.]))', re.I); s=[f for f in p if rx.search(f.name)]; print(f'⚠️ Found {len(s)} suspicious map(s):\\n' + '\\n'.join(f' - {f}' for f in s) if s else f'✅ All {len(p)} map files look clean.')\"\n\n"
+            "\n\npython3 -c \"import pathlib, re; maps_dir=pathlib.Path('config') / 'maps'; p=list(maps_dir.rglob('*.py')); rx=re.compile(r'(\\s|\\.py\\.|\\b(off|bak|old|copy|tmp|disabled|backup)\\b|(?<=[-_])(off|bak|old|copy|tmp|disabled|backup)(?=[-_.]))', re.I); s=[f for f in p if rx.search(f.name)]; print(f'⚠️ Found {len(s)} suspicious map(s):\\n' + '\\n'.join(f' - {f}' for f in s) if s else f'✅ All {len(p)} map files look clean.')\"\n\n"  
         )
+        
         logger.info(
             "💡 Run this command to check syntax of recent map files:"
-            "\n\npython3 -c \"import pathlib, datetime, py_compile; maps=sorted(pathlib.Path('config/maps').rglob('*.py'), key=lambda x: x.stat().st_mtime, reverse=True)[:5]; print('🕒 Checking syntax of 5 most recent maps:'); [print(f' ✅ [{datetime.datetime.fromtimestamp(p.stat().st_mtime):%Y-%m-%d %H:%M}] {p}' if py_compile.compile(str(p), doraise=False) else f' ❌ [{datetime.datetime.fromtimestamp(p.stat().st_mtime):%Y-%m-%d %H:%M}] {p} -> SYNTAX ERROR') for p in maps]\"\n\n"
+            "\n\npython3 -c \"import pathlib, datetime, py_compile; maps_dir=pathlib.Path('config') / 'maps'; maps=sorted(maps_dir.rglob('*.py'), key=lambda x: x.stat().st_mtime, reverse=True)[:5]; print('🕒 Checking syntax of 5 most recent maps:'); [print(f' ✅ [{datetime.datetime.fromtimestamp(p.stat().st_mtime):%Y-%m-%d %H:%M}] {p}' if py_compile.compile(str(p), doraise=False) else f' ❌ [{datetime.datetime.fromtimestamp(p.stat().st_mtime):%Y-%m-%d %H:%M}] {p} -> SYNTAX ERROR') for p in maps]\"\n\n"  
         )
         # ----------------------------------------------
 
@@ -40,7 +41,8 @@ def cleanup(logger, files_to_remove):
         import datetime
         import ast
 
-        maps_dir = pathlib.Path("config/maps")
+        maps_dir = pathlib.Path("config") / "maps"
+        
         if maps_dir.exists():
             recent_maps = sorted(
                 maps_dir.rglob("*.py"),
