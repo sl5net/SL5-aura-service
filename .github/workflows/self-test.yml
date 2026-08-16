@@ -81,6 +81,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
           CI: "true"
           DISPLAY: :99
+          AURA_ACTIVE_WINDOW_TITLE: "Terminal"          
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
           Xvfb :99 -screen 0 1024x768x24 &
