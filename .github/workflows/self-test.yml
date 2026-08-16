@@ -95,7 +95,7 @@ jobs:
           START_TIME_2=$(date +%s.%N)
           ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results_2.log
           END_TIME_2=$(date +%s.%N)
-          DURATION_2=$(awk "BEGIN {print $END_TIME_2 - $START_TIME_2}")
+          grep -E "(FAIL:|Input:|Expected:|Got:)" test_results_2.log || true          DURATION_2=$(awk "BEGIN {print $END_TIME_2 - $START_TIME_2}")
 
           cp test_results_2.log test_results.log
 
