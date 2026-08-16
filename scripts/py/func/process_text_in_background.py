@@ -2082,7 +2082,6 @@ def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_ma
     Read by scripts/search_rules/filter_maps_by_reality.py.
     """
     import json
-    from pathlib import Path
     # 
     # tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
     # cache_dir = tmp_dir / "sl5_aura"

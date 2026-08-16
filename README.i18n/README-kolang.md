@@ -11,7 +11,7 @@
 |---|---|---|
 
 
-| [grandma-mode](../docs/GettingStarted-kolang.md#the-oma-modus-beginner-shortcut) : 단어만 작성하면 나머지는 Aura가 수행합니다 | Koans로 배우기 - 한 번에 하나의 개념 | 전체 Python 스크립팅, 플러그인, API 호출 |
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-kolang.md#the-oma-modus-beginner-shortcut) : 단어만 작성하면 나머지는 Aura가 수행합니다 | Koans로 배우기 - 한 번에 하나의 개념 | 전체 Python 스크립팅, 플러그인, API 호출 |
 | 🗄️ 상태 관리 | Trino + Airflow 오케스트레이션, fzf, CopyQ, 음성/터미널 명령, 브라우저 UI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -24,7 +24,7 @@
 1. 이 저장소를 다운로드하거나 복제하세요.
 2. OS에 대한 설정 스크립트를 실행합니다(`setup/` 폴더 참조).
 - 리눅스(Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool-kolang.md) 읽기
+===> 🧩 [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-kolang.md) 읽기
 - 리눅스(우분투/데비안): `bash setup/ubuntu_setup.sh`
 - Linux(openSUSE): `bash setup/suse_setup.sh`
 - Linux(NixOS): `nix-shell setup/shell.nix` 다음 `bash setup/nixos_setup.sh`
@@ -32,7 +32,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - 윈도우: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Aura 시작: `./scripts/restart_venv_and_run-server.sh`
-4. 단축키를 누르고 말하세요 — **[full guide →](../docs/GettingStarted-kolang.md)**
+4. 단축키를 누르고 말하세요 — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-kolang.md)**
 
 
 **⚠️ 시스템 요구 사항 및 호환성**
@@ -45,7 +45,7 @@
 glibc 2.43 호환성으로 인해 mimalloc(`sudo pacman -S mimalloc`)이 필요합니다.
 * **Linux(NixOS):** 🧪 실험적 — 커뮤니티에서 제공한 설정이며 아직 테스트되지 않았습니다.
 시도해보시면 이슈를 공개하거나 결과를 PR해 주세요!  XSPACEbreakX
-* **Linux(Manjaro):** 신규/실험적: 시스템 전체 단축키는 fzf와 유사한 키보드 기반 인터페이스를 열어 데스크탑 어디에서나 Aura 명령을 실행할 수 있습니다(활성 창에서 완전히 분리됨). 이 단축키 기반 실행 프로그램은 현재 Linux(Manjaro)에서 구현 및 테스트되었습니다. 다른 배포판도 작동할 수 있지만 설정이 필요합니다. 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-kolang.md) XSPACEbreakX에서 확인하세요.
+* **Linux(Manjaro):** 신규/실험적: 시스템 전체 단축키는 fzf와 유사한 키보드 기반 인터페이스를 열어 데스크탑 어디에서나 Aura 명령을 실행할 수 있습니다(활성 창에서 완전히 분리됨). 이 단축키 기반 실행 프로그램은 현재 Linux(Manjaro)에서 구현 및 테스트되었습니다. 다른 배포판도 작동할 수 있지만 설정이 필요합니다. 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-kolang.md) XSPACEbreakX에서 확인하세요.
 
 
 XSPACEbreakX
@@ -65,7 +65,7 @@ XSPACEbreakX
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **팁:** 더 나은 터미널 경험을 위해서는 [Zsh Integration](../docs/linux/zsh-integration-kolang.md)를 참조하세요.
+> **팁:** 더 나은 터미널 경험을 위해서는 [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-kolang.md)를 참조하세요.
 
 ### 🎥 비디오 튜토리얼
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -128,7 +128,7 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ### 기능 스포트라이트
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-kolang.md) — 이중 창 `fzf` 규칙 검색, 실시간 컨텍스트 미리보기, `Enter`/`Ctrl+R`을 통한 즉각적인 명령 실행, `Ctrl+E`를 통한 편집기 통합. 글로벌 단축키(`Super+S`)와 음성 명령을 통해 사전 구성된 여러 전용 검색 환경으로 지원됩니다.
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-kolang.md) — 이중 창 `fzf` 규칙 검색, 실시간 컨텍스트 미리보기, `Enter`/`Ctrl+R`을 통한 즉각적인 명령 실행, `Ctrl+E`를 통한 편집기 통합. 글로벌 단축키(`Super+S`)와 음성 명령을 통해 사전 구성된 여러 전용 검색 환경으로 지원됩니다.
 
 ### 빌드 상태
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
@@ -432,7 +432,7 @@ XSPACEbreakX
 ││ * **워크플로:** 비밀번호로 보호된 ZIP 아카이브를 로드합니다. XSPACEbreakX
 │├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
-│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(`on_match_exec`)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **계단식 실행:** 규칙은 순차적으로 처리되며 해당 효과는 **누적**됩니다. 이후 규칙은 이전 규칙에 의해 수정된 텍스트에 적용됩니다.  
 ││ * **가장 높은 우선순위 중지 기준:** 규칙이 **완전 일치**(^...$)를 달성하면 해당 토큰에 대한 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 안정적인 음성 명령을 구현하는 데 중요합니다.  
@@ -444,7 +444,7 @@ XSPACEbreakX
 ││ * **상태:** 로컬 LLM 통합.
 │└ 5. **지능형 사후 수정**(`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟XSPACEbreakX
 ││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선 순위 논리를 따릅니다.  
-││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../docs/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
+││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
 ││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전의 전체 결정적/계단식 규칙 실행이 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
 ├┬ **모델 관리/** XSPACEbreakX
 │├─ `prioritize_model.py` (사용에 따라 모델 로드/언로드 최적화) 🐧 🍏 🪟  
@@ -484,7 +484,7 @@ XSPACEbreakX
 로그 파일과 연결하려면 설치 시 확인란을 선택하세요.  XSPACEbreakX
 https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https://glogg.bonnefon.org/     
 XSPACEbreakX
-*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
+*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
 
 그런 다음 두 번 클릭해 보세요.
 `로그/aura_engine.log`
