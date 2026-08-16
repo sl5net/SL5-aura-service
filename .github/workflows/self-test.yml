@@ -114,15 +114,20 @@ jobs:
             TIME_PER_TEST="0"
           fi
 
+
+          MAPS_COUNT=$(find config/maps -type f -name "*.py" ! -name "__init__.py" | wc -l)
+          RULES_COUNT=$(python3 -c "import json, pathlib; f=pathlib.Path('data/_privat_no_zip/cache/maps/active_maps_cache_de-DE.json'); data=json.loads(f.read_text()) if f.exists() else {}; print(sum(len(v.get('rules', [])) for v in data.get('files', {}).values()))")
+
           echo "TESTS_PASSED=$TESTS_PASSED" >> $GITHUB_ENV
-          echo "TIME_PER_TEST=$TIME_PER_TEST" >> $GITHUB_ENV
-
-
+          echo "TIME_PER_TEST_1=$TIME_PER_TEST_1" >> $GITHUB_ENV
+          echo "TIME_PER_TEST_2=$TIME_PER_TEST_2" >> $GITHUB_ENV
+          echo "MAPS_COUNT=$MAPS_COUNT" >> $GITHUB_ENV
+          echo "RULES_COUNT=$RULES_COUNT" >> $GITHUB_ENV
 
           if grep -q "| 0 not passed" test_results.log; then
-            echo "✅ Final Guard: Success summary found. 0 tests failed."
+            echo " Final Guard: Success summary found. 0 tests failed."
           else
-            echo "❌ FINAL GUARD FAILURE: Success summary '| 0 failed' not found!"
+            echo " FINAL GUARD FAILURE: Success summary '| 0 failed' not found!"
             exit 1
           fi
 
@@ -130,7 +135,7 @@ jobs:
         uses: green-coding-solutions/eco-ci-energy-estimation@v5
         with:
           task: get-measurement
-          label: "Aura Core Logic (${{ env.TESTS_PASSED }} Tests, avg ${{ env.TIME_PER_TEST }}s/test)"
+          label: "Aura Core Logic (${{ env.TESTS_PASSED }} Tests across ${{ env.MAPS_COUNT }} Maps, avg ${{ env.TIME_PER_TEST_2 }}s warm / ${{ env.TIME_PER_TEST_1 }}s cold)"
 
       - name: Run Catch-All Training E2E Test
         env:
