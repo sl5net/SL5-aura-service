@@ -5,7 +5,7 @@ env:
 
 on:
   push:
-    branches: [ fix/deploy-docs-workflow ]
+    branches: [ fix/deploy-docs-workflow, feature/algolia-docsearch-multilang ]
     paths:
       - 'doc_sources/**'
       - '.github/workflows/deploy-docs.yml'
