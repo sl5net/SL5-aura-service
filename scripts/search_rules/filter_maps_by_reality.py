@@ -13,7 +13,10 @@ from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_
 # --- PATH LOGIC (cross-platform) ---
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text(encoding="utf-8").strip())
-CACHE_FILE = tmp_dir / "sl5_aura" / "active_maps_cache.json"
+
+def get_cache_file(lang_code):
+    safe_lang = lang_code.replace('/', '_').strip() if lang_code else "default"
+    return tmp_dir / "sl5_aura" / f"active_maps_cache_{safe_lang}.json"
 
 # --- LOGGING ---
 log_file = SL5NET_AURA_PROJECT_ROOT / "log" / "search_rules" / f"{Path(__file__).stem}.log"
@@ -78,15 +81,20 @@ def get_active_window_title():
         return os.environ.get("AURA_ACTIVE_WINDOW_TITLE", "")
 
 
-def read_cache():
-    if not CACHE_FILE.exists():
-        logger.info(f"Cache file not found: {CACHE_FILE}")
+def read_cache(lang_code):
+    cache_file = get_cache_file(lang_code)
+    if not cache_file.exists():
+        logger.info(f"Cache file not found: {cache_file}")
         return None
     try:
-        with open(CACHE_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+        with open(cache_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            if data.get("language") != lang_code:
+                logger.warning(f"Cache language mismatch: expected {lang_code}, got {data.get('language')}")
+                return None
+            return data
     except Exception as e:
-        logger.error(f"Failed to read cache: {e}")
+        logger.error(f"Failed to read cache {cache_file}: {e}")
         return None
 
 
@@ -149,7 +157,7 @@ def main():
         logger.info(f"Lang-only mode: {count} files for {lang_code}")
         return
 
-    cache_data = read_cache()
+    cache_data = read_cache(lang_code)
 
     if cache_data and args.window_filter:
         window_title = get_active_window_title()
