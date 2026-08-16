@@ -8,6 +8,8 @@ import re
 import sys
 from pathlib import Path
 
+from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
+
 # --- PATH LOGIC (cross-platform) ---
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text(encoding="utf-8").strip())
@@ -25,18 +27,6 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
-
-
-def guess_lt_language_from_model(model_name):
-    name = model_name.lower()
-    if "-de-" in name or name == 'de':
-        return "de-DE"
-    elif "-en-" in name or name == 'en':
-        return "en-US"
-    elif "-fr-" in name or name == 'fr':
-        return "fr-FR"
-    return "de-DE"
-
 
 def get_current_language():
     model_file = SL5NET_AURA_PROJECT_ROOT / "config" / "model_name.txt"
