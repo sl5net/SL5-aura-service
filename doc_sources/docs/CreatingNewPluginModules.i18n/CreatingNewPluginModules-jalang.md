@@ -1,0 +1,137 @@
+## 新しいプラグイン モジュールの作成 ( docs/CreatingNewPluginModules.md )
+
+私たちのフレームワークは、強力な自動検出システムを使用してルール モジュールを読み込みます。これにより、すべての新しいコンポーネントを手動で登録する必要がなく、新しいコマンド セットの追加が簡単かつクリーンになります。このガイドでは、独自のカスタム モジュールを作成、構造、管理する方法について説明します。
+
+### 中心となる概念: フォルダーベースのモジュール
+
+モジュールは単に「config/maps/」ディレクトリ内のフォルダーです。システムはこのディレクトリを自動的にスキャンし、各サブフォルダーを読み込み可能なモジュールとして扱います。
+
+### モジュール作成のステップバイステップガイド
+
+たとえば、特定のゲームのマクロを保持するための新しいモジュールを作成するには、次の手順に従います。
+
+**1.マップ ディレクトリに移動します**
+すべてのルール モジュールは、プロジェクトの `config/maps/` フォルダーに存在します。
+
+**2.モジュールフォルダーを作成します**
+新しいフォルダーを作成します。名前はわかりやすいものにし、スペースの代わりにアンダースコアを使用する必要があります (例: 「my_game_macros」、「custom_home_automation」)。
+
+**3.言語サブフォルダーの追加 (重要なステップ)**
+新しいモジュール フォルダー内に、サポートする言語ごとにサブフォルダーを作成する必要があります。
+
+* **命名規則:** これらのサブフォルダーの名前は **有効な言語ロケール コードである必要があります**。システムはこれらの名前を使用して、アクティブな言語の正しいルールをロードします。
+* **正しい例:** `de-DE`、`en-US`、`en-GB`、`pt-BR`
+* **警告:** `german` や `english_rules` などの標準以外の名前を使用すると、システムはフォルダーを無視するか、別の非言語固有モジュールとして扱います。
+
+**4.ルール ファイルを追加します**
+ルール ファイル (例: `FUZZY_MAP_pre.py`) を適切な言語サブフォルダー内に配置します。最も簡単な開始方法は、既存の言語モジュール フォルダーの内容をコピーしてテンプレートとして使用することです。
+
+### ディレクトリ構造の例
+
+```
+config/
+└── maps/
+    ├── standard_actions/      # An existing module
+    │   ├── de-DE/
+    │   └── en-US/
+    │
+    └── my_game_macros/        # <-- Your new custom module
+        └── de-DE/             # <-- Language-specific rules
+            └── FUZZY_MAP_pre.py
+
+        ├── __init__.py        # <-- Important: This Empty File must be in every Folders!!
+            
+```
+
+### 構成内のモジュールの管理
+
+このシステムは、最小限の構成が必要となるように設計されています。
+
+#### モジュールの有効化 (デフォルト)
+
+モジュールは**デフォルトで有効になっています**。モジュール フォルダーが `config/maps/` に存在する限り、システムはそれを見つけてそのルールをロードします。 **新しいモジュールを有効にするために設定ファイルにエントリを追加する必要はありません。**
+
+#### モジュールの無効化
+
+モジュールを無効にするには、設定ファイル内の `PLUGINS_ENABLED` 辞書にそのモジュールのエントリを追加し、その値を `False` に設定する必要があります。
+
+(オプション) True/False には、1/0 を使用することもできます。ただし、これは一般的ではないため、可読性が低下する可能性があります。
+
+**例 (`config/settings.py`):**
+```python
+# A dictionary to explicitly control the state of modules.
+# The key is the path to the module relative to 'config/maps/'.
+PLUGINS_ENABLED = {
+    "empty_all": False,
+
+    # This module is explicitly enabled.
+    "git": True,
+
+    # This module is also enabled. Second Parameter is per default True. Not False means True.
+    # "wannweil": False,
+
+    # This module is explicitly disabled.
+    "game": False,
+
+    # This module is disabled by other rule
+    "game/game-dealers_choice": True,
+
+    # This module is disabled by other rule
+    "game/0ad": True,
+}
+
+
+```
+### 重要な設計上の注意事項
+
+* **デフォルトの動作: エントリなしは「True」に相当します**
+モジュールが「PLUGINS_ENABLED」辞書にリストされていない場合、デフォルトでは**アクティブ**とみなされます。この設計では、例外をリストするだけで済むため、構成ファイルがクリーンな状態に保たれます。
+
+* **イネーブルの略語**
+構成システムは、値を指定せずにモジュール キーをリストすると、それが有効であることを意味することも理解します。たとえば、辞書に `"wannweil"` を追加することは、`"wannweil": True` を追加することと同じです。これは、モジュールを有効にするための便利な省略表現を提供します。
+  
+(オプション) True/False には、1/0 を使用することもできます。ただし、これは一般的ではないため、可読性が低下する可能性があります。
+
+* **親モジュールの無効化:** 意図された動作では、親モジュールを無効にするには   
+すべての子モジュールと言語サブフォルダーを自動的に無効にします。たとえば、`"standard_actions": False` を設定すると、`de-DE` と `en-US` の両方がロードされなくなります。 (27.10.'25 月)
+  
+* **目標**
+目標は、このシステムをさらに強化することです。たとえば、親が無効になっている場合でも子モジュールの設定が尊重される方法を提供したり、より複雑な継承ルールを導入したりできます。 (27.10.'25 月)
+
+
+  
+  
+  
+t1- Es ist in der Tat wesentlich benutzerfreundlicher und komfortabler, die Steuerung über die Sprachbefehle direkt in dieem Dokumentationsabschnitt hervorzuheben [1]。
+
+t2- Wir erweitern den Entwurf um eine klare Beschreibung der Tasten- bzw. Sprachsteuerungsbefehle (wie ``Aura, Lernmodus einschalten / ausschalten'') および erklären kurz、wie `toggle_learning.py` das Aus- und Einkcommentieren automatisiert [2]。
+
+
+### 学習モードの有効化 (比類のないトレーニング)
+
+「Lernmodus」（学習モード）がアクティブなときにカスタム モジュールが認識できないフレーズを自動的に学習できるようにするには、`FUZZY_MAP_pre` リストの **一番下** にキャッチオール ルールを追加します。
+
+このルールは、ファイル内の他の特定のルールが一致しない場合に、一致しないトレーニング プラグインを呼び出します。
+
+```python
+    # --- Training-Plugin (dynamically toggled by the learning mode) ---
+    (f'{str(__file__)}', r'^(.*)$', 10, {
+        'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'config' / 'maps' / 'plugins' / '1_collect_unmatched_training' / 'collect_unmatched.py']
+    }),
+```
+
+トレーニング プラグインは、「f'{str(__file__)}」を使用してファイルを検索し、認識されないフレーズを最初に利用可能なルール グループ (メイン コマンド グループなど) に自動的に追加します。
+
+#### 音声コマンドによる学習モードの切り替え
+
+ファイルを手動で編集する代わりに、この機能を管理する最も快適な方法は、組み込みの音声コマンドを使用することです。
+
+* **有効にするには:** *「Aura、学習モードがオン」* または *「Aura、Lernmodus starten」* と言います。
+* **無効にするには:** *「オーラ、学習モードオフ」* または *「オーラ、学習モード停止」* と言います。
+
+これらのコマンドは舞台裏で「toggle_learning.py」をトリガーし、アクティブなマップ ファイル全体のキャッチオール行を自動的にコメント化またはコメント解除します。
+  
+  
+  
+  
+*ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../../Developer_Guide/Map_Maintenance_Tools-jalang.md) を参照してください。*

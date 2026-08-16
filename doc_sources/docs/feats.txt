@@ -1,0 +1,110 @@
+feat: add flashcard progress tracking and update Anki quiz plugin files
+feat(anki): implement HTML stripping for questions and force CopyQ visabilty.
+feat(anki): implement stateful quiz logic with CopyQ display updates
+feat(anki): implement MC database generation and CopyQ display logic
+feat(anki): implement multiple choice logic for voice-controlled quiz
+feat(anki): integrate on_match_exec for automated quiz progression
+feat(anki): implement apkg to FUZZY_MAP_pre extractor logic
+feat(anki): initialize anki branch and generate first Python-Tresor deck
+feat(integrity): add file size and line count guards to auto-fixer
+feat(copyq): implement dictionary-style key extraction for PUNCTUATION_MAP
+feat(copyq): enhance exporter with relative paths and active module tracking
+feat(checks): add startup syntax validation for plugin configuration
+feat(0ad): integrate automated translation into hotkey importer
+feat(integrity): finalize bulk auto-fix logic for multiple map entries
+feat(maps): add auto-fixer for NameError and header cleanup
+feat(audio): implement mixed mic and desktop audio capture for Linux
+feat: implement rule normalization for FUZZY_MAP to support 2, 3 or 4 parameters
+feat(wikipedia): Auto-start Kiwix container when not running
+feat: port search_rules script to PowerShell for Windows compatibility
+feat: implement lifecycle hooks
+feat: Added `zip_me_nopassword` for non-sensitive assets.
+feat: enhance CopyQ export with folder-based tags and filtering
+feat(tools): add map_tagger.py and annotate regex maps with examples Introduces 'tools/map_tagger.py' to generate readable
+feat: add search_rules.sh dev tool for STT rules
+feat(security): replace zipfile with pyzipper and optimize packer workflow
+feat: allow unmasked output for local terminal usage
+feat: implement 'on_reload' lifecycle hook for plugins" -m "- Added support for optional on_reload() function in map modules. - Triggers automatically after a successful hot-reload (file modification). - Wrapped in try/except to prevent plugin errors from crashing the core loop. - Use case: specific cleanup, re-initialization, or security tasks (e.g., re-zipping).
+feat(ollama): Implement dedicated 'Slow/Normal' mode via ask_ollama_slow.py
+feat(setup): Add language exclusion logic to windows11_setup.ps1
+feat(setup): Add language exclusion logic to suse_setup script
+feat(setup): Add language exclusion logic to ubuntu_setup script
+feat(manjaro installer): Implement `exclude` argument for package filtering
+feat(setup): Implement `exclude` argument for package filtering
+feat: Add comprehensive German start triggers for pre-AI detection
+feat(llm): add 'Instant Mode' to ask_ollama.py and strict system grounding profile
+feat(llm): add adversarial conversation simulator
+feat(llm): implement intelligent SQLite caching and auto-warming
+feat(llm): add RAG-light capability for project documentation support
+feat(llm): finalize offline clipboard integration via file-bridge
+feat: add offline local LLM integration (Ollama/Llama 3.2) as fallback
+feat(cache): Implement generic, persistent TTL/Eternal SQLite caching for plugins
+feat(perf): Implement persistent/in-memory throttling for high-frequency checks
+feat: Enhance path_navigator for cross-platform and fix f-string syntax
+feat(path_navigator): Add dependency check for external CLI tools
+feat: Enhance stability and performance by resolving core module leak
+feat: Implement dedicated long-term memory leak analyzer
+feat: Implement single-line Git-aware fuzzy file search
+feat: Add fuzzy file search using fzf and git ls-files
+feat(voice-nav): Implement dynamic project path navigation
+feat: Add Japanese (JP) to supported live translation language. Add in Plugin Rule for live translation support for Japanese.
+feat(action): Implement 'renumber clipboard text' in plugin
+feat: add optional rule parameter: skip_list':['LT_SKIP_RATIO_THRESHOLD'] Usefull when you want use Langetool for sure
+feat: add arabisch aktivieren
+feat(watcher): Add keep-alive watchdog script for robustness
+feat(plugins): Enhance plugin API for language-aware TTS
+feat(tts): Centralize TTS control to prevent double speech
+feat: Add live translation feature
+feat: Implement external script execution engine on rule match
+feat: Advanced automatic text replacement with multi-pass and LT bypass
+feat:implemented a new function, `apply_all_rules_until_stable(text, rules_map, logger_instance)`, that allows applying multiple rules to the text instead of just one rule per text as before.
+feat: Implement more robust fuzzy matching and refine processing order
+feat: Added more robust fuzzy matching and refine processing order
+feat: Implement hot-reloading for dynamic settings
+feat: Add multiple new plugins and sound control, fix plugin parsing
+feat: Add support for auto-entering in apps using regex expressions filter
+feat: Optional: Start the service only on when there is an internet connection.
+feat: ADD_TO_SENCTENCE = "." # set ADD_TO_SENCTENCE = "" when you dont want it.
+feat: ADD_POINT_TO_SENCTENCE = 0 use 0 when you dont want it
+feat/ci-aware-update-scripts: Update scripts with recent changes and improvements
+feat(core): Make fasttext an optional, auto-installing dependency
+feat(installer): Implement robust cache-first setup logic
+feat: Implement automatic language detection
+feat(core): Mute microphone on stop for instant processing
+feat(processing): Enhance number formatting and cleanup
+feat(core): Implement pre-correction fuzzy map for faster replacements
+feat: Add initial draft for poker voice control plugin
+feat: Implement dynamic VAD for responsive dictation control
+feat: Implement automatic live-reloading for map files
+feat: Add pre-commit hook and startup config validation
+feat: Add static analysis for function call frequency
+feat: Add language-specific checks to self-tester
+feat(core): Enable configurable flags in FUZZY_MAP
+feat(config): Enable dynamic timeout configuration
+feat: mock-testing suite has been integrated into our development process
+feat: Implement mock test for dictation logic
+feat: Implement robust Dictation Session model
+feat(trigger): Use intuitive name for trigger file
+feat: Implement manual stop toggle, add logging & fix LT handle
+feat(recording): Implement manual stop trigger and fix timeout logic
+feat: Add Sphinx documentation setup
+feat(win): Implement self-terminating AHK scripts via heartbeat start
+feat(dev): update_for_windows_users
+feat(plugin): Implement configurable auto-enter functionality
+feat(dev): Add integrity checks for setup scripts
+feat: Add one-click starter script for Windows
+feat(dev): Implement robust self-testing framework
+feat(notify): Implement native macOS notifications
+feat(macos): Implement cross-platform watcher and update setup
+feat: Implement self-healing directory creation on startup
+feat: Implement robust file watcher with correct encoding
+feat: Implement robust Windows file watcher
+feat(core): Implement efficient event-driven watcher for Windows/macOS
+feat(core): Implement adaptive memory management
+feat(core): Implement model prioritization on startup and trigger
+feat(core): Prioritize active model to prevent unloading
+feat(core): Introduce dynamic model memory management
+feat(dev): Implement robust unused-function checker
+feat: Greatly improve German git command recognition
+feat: Implement instant language switching via model preloading
+feat: Improve installation robustness and handle LT init error

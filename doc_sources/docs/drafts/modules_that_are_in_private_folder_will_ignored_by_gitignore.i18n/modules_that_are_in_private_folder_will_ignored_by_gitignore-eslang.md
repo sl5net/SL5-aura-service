@@ -1,0 +1,1 @@
+módulos_que_están_en_carpeta_privada_will_ignored_by_gitignore.md

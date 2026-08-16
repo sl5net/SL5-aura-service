@@ -40,6 +40,33 @@ exclude_patterns = ['.venv', '_build', 'Thumbs.db', '.DS_Store']
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 # html_theme = 'alabaster'
-html_theme = 'furo'
 
+html_theme = 'furo'
 html_static_path = ['_static']
+
+def setup_page_context(app, pagename, templatename, context, doctree):
+    lang_map = {
+        '-delang': 'de',
+        '-eslang': 'es',
+        '-frlang': 'fr',
+        '-hilang': 'hi',
+        '-jalang': 'ja',
+        '-kolang': 'ko',
+        '-pllang': 'pl',
+        '-pt-BRlang': 'pt-BR',
+        '-ptlang': 'pt',
+        '-zh-CNlang': 'zh-CN',
+        '-arlang': 'ar',
+    }
+    detected = 'en'
+    for suffix, lang_code in lang_map.items():
+        if suffix in pagename:
+            detected = lang_code
+            break
+    else:
+        if 'FAQ-deutsch' in pagename or 'FAQ(Deutsch' in pagename:
+            detected = 'de'
+    context['docsearch_lang'] = detected
+
+def setup(app):
+    app.connect('html-page-context', setup_page_context)
