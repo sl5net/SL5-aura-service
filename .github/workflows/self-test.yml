@@ -2,7 +2,7 @@ name: Self-Test (Aura Logic)
 # .github/workflows/self-test.yml
 on:
   push:
-    branches: [ master ]
+    branches: [ master, '**self-test**' ]
   pull_request:
     branches: [ master ]
     paths-ignore:
@@ -48,6 +48,7 @@ jobs:
 
       - name: Prepare Bootstrap Pointer (The Master Key)
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"
           sudo mkdir -p /tmp/sl5_aura
           sudo chmod -R 777 /tmp/sl5_aura
           echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
@@ -59,11 +60,13 @@ jobs:
 
       - name: Install Additional Test Dependencies
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"
           sudo apt-get install -y xvfb xclip
 
 
       - name: Start LanguageTool Server
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"
           java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
           sleep 10
 
@@ -79,19 +82,33 @@ jobs:
           CI: "true"
           DISPLAY: :99
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"
           Xvfb :99 -screen 0 1024x768x24 &
 
-          START_TIME=$(date +%s.%N)
+          echo "=== RUN 1 (Cold Run) ==="
+          START_TIME_1=$(date +%s.%N)
+          ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results_1.log
+          END_TIME_1=$(date +%s.%N)
+          DURATION_1=$(awk "BEGIN {print $END_TIME_1 - $START_TIME_1}")
 
-          ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results.log
+          echo "=== RUN 2 (Warm Run) ==="
+          START_TIME_2=$(date +%s.%N)
+          ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results_2.log
+          END_TIME_2=$(date +%s.%N)
+          DURATION_2=$(awk "BEGIN {print $END_TIME_2 - $START_TIME_2}")
 
-          END_TIME=$(date +%s.%N)
-          DURATION=$(awk "BEGIN {print $END_TIME - $START_TIME}")
+          cp test_results_2.log test_results.log
+
+          echo "⏱️ Run 1 Duration: ${DURATION_1}s"
+          echo "⏱️ Run 2 Duration: ${DURATION_2}s"
 
           TESTS_PASSED=$(grep -oP 'Passed: all \K[0-9]+' test_results.log || echo "unknown")
 
           if [ "$TESTS_PASSED" != "0" ] && [ "$TESTS_PASSED" != "" ]; then
-            TIME_PER_TEST=$(awk "BEGIN {printf \"%.2f\", $DURATION / $TESTS_PASSED}")
+            TIME_PER_TEST_1=$(awk "BEGIN {printf \"%.2f\", $DURATION_1 / $TESTS_PASSED}")
+            TIME_PER_TEST_2=$(awk "BEGIN {printf \"%.2f\", $DURATION_2 / $TESTS_PASSED}")
+            echo "📊 Run 1 avg: ${TIME_PER_TEST_1}s/test | Run 2 avg: ${TIME_PER_TEST_2}s/test"
+            TIME_PER_TEST="$TIME_PER_TEST_2"
           else
             TIME_PER_TEST="0"
           fi
@@ -120,6 +137,7 @@ jobs:
           CI: "true"
           DISPLAY: :99
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"          
           ./.venv/bin/python3 -m scripts.py.func.checks.catch_all_training_e2e_test
 
       - name: Run file4replacement E2E Test
@@ -128,6 +146,7 @@ jobs:
           CI: "true"
           DISPLAY: :99
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"          
           ./.venv/bin/python3 -m scripts.py.func.checks.file4replacement_e2e_test
 
       - name: Display and Send Energy Results
