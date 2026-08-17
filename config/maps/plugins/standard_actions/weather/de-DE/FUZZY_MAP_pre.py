@@ -16,6 +16,8 @@ FUZZY_MAP_pre = [
     # EXAMPLE: wie ist das wetter
     ('', r'^(wie (wird|ist|nächstes)\b.*\bwetter|wetterbericht|wettervorhersage)\??$', 95, {
         'flags': re.IGNORECASE,
+        'skip_list': ['LanguageTool'],
+        'cache': False,
         'on_match_exec': [CONFIG_DIR /  '..' /  'weather.py']
     }),
 ]

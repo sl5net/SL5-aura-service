@@ -12,7 +12,82 @@ from pathlib import Path as p; import os as o  # noqa: E702
 with open(('C:/tmp' if o.name == 'nt' else '/tmp') + '/sl5_aura/sl5net_aura_project_root', encoding='utf-8') as f:
     SL5NET_AURA_PROJECT_ROOT = p(f.read().strip())  # noqa: E702
 
+# CONFIG_FILE = Path(__file__).parent / 'weather_config.ini'
+import urllib.parse
+import urllib.request
+
 CONFIG_FILE = Path(__file__).parent / 'weather_config.ini'
+
+WMO_WEATHER_CODES_DE = {
+    0: "Klarer Himmel",
+    1: "Hauptsächlich klar",
+    2: "Teilweise bewölkt",
+    3: "Bedeckt",
+    45: "Nebel",
+    48: "Reifnebel",
+    51: "Leichter Nieselregen",
+    53: "Mäßiger Nieselregen",
+    55: "Dichter Nieselregen",
+    61: "Leichter Regen",
+    63: "Mäßiger Regen",
+    65: "Starker Regen",
+    71: "Leichter Schneefall",
+    73: "Mäßiger Schneefall",
+    75: "Starker Schneefall",
+    80: "Leichte Regenschauer",
+    81: "Mäßige Regenschauer",
+    82: "Heftige Regenschauer",
+    95: "Gewitter",
+    96: "Gewitter mit leichtem Hagel",
+    99: "Gewitter mit schwerem Hagel",
+}
+
+
+def fetch_open_meteo_weather(city: str, lang: str = "de", is_tomorrow: bool = False):
+    encoded_city = urllib.parse.quote(city)
+    geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={encoded_city}&count=1&language={lang}&format=json"
+    req_geo = urllib.request.Request(geo_url, headers={"User-Agent": "SL5-Aura/1.0"})
+    with urllib.request.urlopen(req_geo, timeout=5) as resp_geo:
+        geo_data = json.loads(resp_geo.read().decode("utf-8"))
+
+    results = geo_data.get("results")
+    if not results:
+        return None
+
+    lat = results[0]["latitude"]
+    lon = results[0]["longitude"]
+    resolved_name = results[0].get("name", city)
+
+    forecast_url = (
+        f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}"
+        "&current=temperature_2m,apparent_temperature,weather_code"
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min"
+        "&timezone=auto"
+    )
+    req_fc = urllib.request.Request(forecast_url, headers={"User-Agent": "SL5-Aura/1.0"})
+    with urllib.request.urlopen(req_fc, timeout=5) as resp_fc:
+        fc_data = json.loads(resp_fc.read().decode("utf-8"))
+
+    if is_tomorrow:
+        daily = fc_data.get("daily", {})
+        min_temp = round(daily.get("temperature_2m_min", [0, 0])[1])
+        max_temp = round(daily.get("temperature_2m_max", [0, 0])[1])
+        code = daily.get("weather_code", [0, 0])[1]
+        desc = WMO_WEATHER_CODES_DE.get(code, "Wetterzustand unbekannt")
+        return (
+            f"Morgen in {resolved_name} liegt die Temperatur zwischen {min_temp} und {max_temp} Grad. "
+            f"Die Vorhersage meldet: {desc}."
+        )
+
+    current = fc_data.get("current", {})
+    temp_c = round(current.get("temperature_2m", 0))
+    feels_like_c = round(current.get("apparent_temperature", 0))
+    code = current.get("weather_code", 0)
+    desc = WMO_WEATHER_CODES_DE.get(code, "Wetterzustand unbekannt")
+    return (
+        f"Aktuell in {resolved_name} sind es {temp_c} Grad, gefuehlt wie {feels_like_c} Grad. "
+        f"Die Vorhersage meldet: {desc}."
+    )
 
 WEATHER_TTL = 900  # 15 Minuten
 
@@ -26,9 +101,6 @@ logger.addHandler(fh)
 
 CACHE_DIR_weather = p('/') / 'tmp' / 'sl5_aura' / 'weather_cache'
 CACHE_DIR_weather.mkdir(parents=True, exist_ok=True)
-
-# Aktuell in reutlingen sind es 25 Grad, gefuehlt wie 27 Grad. Die Vorhersage meldet: Leicht Bewölkt.
-# Aktuell in reutlingen sind es 25 Grad, gefuehlt wie 27 Grad. Die Vorhersage meldet: Leicht Bewölkt.
 
 def execute(match_data):
     """
@@ -79,44 +151,62 @@ def execute(match_data):
     except Exception as e:
         logger.error(f"Fehler beim Cache-Lesezugriff: {e}")
 
-    # 3. Wetterdaten von wttr.in abrufen
-    weather_data = None
-    try:
-        command = [
-            'curl',
-            '-s',
-            f'https://wttr.in/{city}?format=j1&lang={lang}'
-        ]
-        result = subprocess.run(
-            command,
-            capture_output=True,
-            text=True,
-            check=True,
-            encoding='utf-8',
-            timeout=10
-        )
-        weather_data = json.loads(result.stdout)
-    except FileNotFoundError:
-        logger.error("curl nicht gefunden.")
-        return "Fehler: Das Programm 'curl' wurde nicht gefunden. Bitte installiere es."
-    except subprocess.TimeoutExpired:
-        logger.warning("API-Timeout. Versuche Stale-Cache.")
-    except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
-        logger.warning(f"API-Fehler ({type(e).__name__}). Versuche Stale-Cache.")
-    except Exception as e:
-        logger.warning(f"Unbekannter Fehler beim API-Aufruf ({type(e).__name__}: {e}). Versuche Stale-Cache.")
-
-    # 4. Failover auf abgelaufenen Cache, falls API-Aufruf fehlschlug
-    if weather_data is None:
+        # 3. Wetterdaten via Open-Meteo abrufen (mit wttr.in Fallback)
+        response = None
         try:
-            stale_response = get_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, ttl_seconds=None,
-                                               logger=logger)
-            if stale_response:
-                logger.warning(" (stale) Cache Fallback.")
-                return stale_response
+            response = fetch_open_meteo_weather(city, lang, is_tomorrow)
         except Exception as e:
-            logger.error(f"Fehler beim Stale-Cache-Lesezugriff: {e}")
-        return f"Ich konnte die Wetterdaten fuer '{city}' leider nicht abrufen und habe keinen Cache."
+            logger.warning(f"Open-Meteo lookup failed ({type(e).__name__}: {e}). Trying wttr.in fallback.")
+
+        if response:
+            try:
+                set_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, response)
+                logger.info("Ergebnis erfolgreich in Cache geschrieben.")
+            except Exception as e:
+                logger.error(f"Fehler beim Cache-Schreibzugriff: {e}")
+            return response
+
+        weather_data = None
+        try:
+            command = [
+                'curl',
+                '-s',
+                f'https://wttr.in/{city}?format=j1&lang={lang}'
+            ]
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=True,
+                encoding='utf-8',
+                timeout=10
+            )
+            weather_data = json.loads(result.stdout)
+        except FileNotFoundError:
+            logger.error("curl nicht gefunden.")
+            return "Fehler: Das Programm 'curl' wurde nicht gefunden. Bitte installiere es."
+        except subprocess.TimeoutExpired:
+            logger.warning("API-Timeout. Versuche Stale-Cache.")
+        except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
+            logger.warning(f"API-Fehler ({type(e).__name__}). Versuche Stale-Cache.")
+        except Exception as e:
+            logger.warning(f"Unbekannter Fehler beim API-Aufruf ({type(e).__name__}: {e}). Versuche Stale-Cache.")
+
+        # 4. Failover auf abgelaufenen Cache, falls API-Aufruf fehlschlug
+        if weather_data is None:
+            try:
+                stale_response = get_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, ttl_seconds=None,
+                                                   logger=logger)
+                if stale_response:
+                    logger.warning(" (stale) Cache Fallback.")
+                    return stale_response
+            except Exception as e:
+                logger.error(f"Fehler beim Stale-Cache-Lesezugriff: {e}")
+            return f"Ich konnte die Wetterdaten fuer '{city}' leider nicht abrufen und habe keinen Cache."
+
+
+
+
 
     # 5. JSON verarbeiten und Antwort bauen
     try:
