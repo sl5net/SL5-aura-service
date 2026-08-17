@@ -29,7 +29,7 @@ KNOWN_MAP_Names = {'FUZZY_MAP_pre', 'FUZZY_MAP', 'PUNCTUATION_MAP'}
 
 
 def auto_reload_modified_maps(logger,run_mode_override):
-
+    reload_performed = False
     if os.getenv("AURA_SELF_TEST_RUNNING") == "1":
         return  # Skip reload during self-test
 
@@ -365,6 +365,9 @@ def auto_reload_modified_maps(logger,run_mode_override):
         from .log_memory_details import log_memory_details
 
         log_memory_details("def end", logger)
+
+
+    return reload_performed
 
 # scripts/py/func/map_reloader.py:174
 # --- HELPER FUNCTION  ---

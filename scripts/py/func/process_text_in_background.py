@@ -76,6 +76,7 @@ GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
 GLOBAL_LT_LANGUAGE = ""
+GLOBAL_was_reloaded = False
 
 
 
@@ -316,7 +317,8 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         log_memory_details("next: auto_reload_modified_maps", logger)
 
     # First reload all modules in memory to capture changes
-    auto_reload_modified_maps(logger,run_mode_override)
+    GLOBAL_was_reloaded = auto_reload_modified_maps(logger,run_mode_override)
+    
 
 
 
@@ -1058,6 +1060,7 @@ def process_text_in_background(logger,
        ):
 
     global GLOBAL_LT_LANGUAGE
+    global GLOBAL_was_reloaded
 
     GLOBAL_LT_LANGUAGE = LT_LANGUAGE
 
@@ -2061,7 +2064,7 @@ def process_text_in_background(logger,
             os.execv(sys.executable, ['python'] + sys.argv + ['restarted'])
 
         if not os.getenv("AURA_SELF_TEST_RUNNING"):
-            auto_reload_modified_maps(logger,run_mode_override)
+            GLOBAL_was_reloaded = auto_reload_modified_maps(logger,run_mode_override)
 
         # print(f':st: \nprocess_text_in_background:1753 raw_text:{raw_text}')
 
@@ -2081,6 +2084,8 @@ def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_ma
     Writes currently loaded and filtered maps to a JSON cache.
     Read by scripts/search_rules/filter_maps_by_reality.py.
     """
+    if not GLOBAL_was_reloaded:
+        return 
     import json
     # 
     # tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
@@ -2093,7 +2098,7 @@ def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_ma
     safe_lang = lang_code.replace('/', '_').strip() if lang_code else "default"
     cache_file = cache_dir / f"active_maps_cache_{safe_lang}.json"
 
-    cache_data = {
+    active_maps_cache_dict = {
         "language": lang_code,
         "timestamp": time.time(),
         "files": {}
@@ -2147,11 +2152,11 @@ def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_ma
             file_rules[source_path] = []
         file_rules[source_path].append(rule_info)
 
-    cache_data["files"] = file_rules
+    active_maps_cache_dict["files"] = file_rules
 
     try:
         with open(cache_file, "w", encoding="utf-8") as f:
-            json.dump(cache_data, f, indent=2, ensure_ascii=False)
+            json.dump(active_maps_cache_dict, f, indent=2, ensure_ascii=False)
     except Exception:
         pass
 
