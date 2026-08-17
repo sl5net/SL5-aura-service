@@ -15,7 +15,7 @@
 | 🗄️ Gestão Estadual | Orquestração Trino + Airflow, fzf, CopyQ, comandos de voz/terminal, UIs de navegador |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** por teste (39 testes @ 0,09s quente / 0,50s frio 🌿 medido com [Eco-CI](https://metrics.green-coding.io/index.html)) · sem computação em nuvem
+⚡ **~2,87 J** por teste (39 testes em >800 mapas a 0,09s de temperatura quente/0,45s de frio 🌿 medido com [Eco-CI](https://metrics.green-coding.io/index.html)) · sem computação em nuvem
 
 <detalhes>
 <summary>Início rápido</summary>
@@ -417,7 +417,7 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
 │├─ `prioritize_model.py` (Otimiza o carregamento/descarregamento do modelo com base no uso) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (configura a configuração inicial do modelo) 🐧 🍏 🪟  
 ├─ **Tempo limite do VAD adaptável** 🐧 🍏 🪟  
-├─ **Tecla de atalho adaptável (Iniciar/Parar)** 🐧 🍏 🪟  
+├─ **Tecla de atalho adaptativa (Iniciar/Parar)** 🐧 🍏 🪟  
 ├─ **Troca instantânea de idioma** (Experimental via pré-carregamento de modelo) 🐧 🍏   
 ├─ **Orquestração de fluxo de ar** (automação de fluxo de trabalho baseada em DAG) 🐧 🍏 🪟
 │ Requer Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
@@ -475,7 +475,7 @@ Então talvez clique duas vezes
 ### **Recursos futuros/experimentais**  
 Recursos atualmente em desenvolvimento ou em status de rascunho.  
 
-**Recursos experimentais/**  
+**Recursos Experimentais/**  
 ├─ **ENTER_AFTER_DICTATION_REGEX** Exemplo de regra de ativação "(ExampleAplicationThatNotExist|Pi, sua IA pessoal)" 🐧  
 ├┬Plugins  
 │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟  
@@ -484,7 +484,7 @@ Recursos atualmente em desenvolvimento ou em status de rascunho.
 │ ├ **wannweil** (Mapa para localização Alemanha-Wannweil) 🐧 🍏 🪟  
 │ ├ **Poker Plugin (Draft)** (Controle de voz para aplicativos de pôquer) 🐧 🍏 🪟  
 │ └ **Plugin 0 A.D. (Draft)** (Controle de voz para jogo 0 A.D.) 🐧   
-├─ **Saída de som ao iniciar ou encerrar uma sessão** (descrição pendente) 🐧   
+├─ **Saída de som ao iniciar ou encerrar uma sessão** (Descrição pendente) 🐧   
 ├─ **Saída de fala para deficientes visuais** (Descrição pendente) 🐧 🍏 🪟  
 └─ **Protótipo SL5 Aura Android** (Ainda não totalmente offline) 📱  
 

@@ -15,7 +15,7 @@
 | 🗄️ Gestion de l'État | Orchestration Trino + Airflow, fzf, CopyQ, commandes vocales/terminal, interfaces utilisateur du navigateur |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** par test (39 tests à 0,09 s à chaud / 0,50 s à froid 🌿 mesurés avec [Eco-CI](https://metrics.green-coding.io/index.html)) · pas de calcul cloud
+⚡ **~2,87 J** par test (39 tests sur >800 cartes à 0,09 s à chaud / 0,45 s à froid 🌿 mesuré avec [Eco-CI](https://metrics.green-coding.io/index.html)) · pas de calcul cloud
 
 <détails>
 <summary>Démarrage rapide</summary>
@@ -482,7 +482,7 @@ Scripts pour la configuration de l'environnement, les tests et l'exécution des 
 
 *Astuce : glogg vous permet d'utiliser des expressions régulières pour rechercher des événements intéressants dans vos fichiers journaux.*   
 Veuillez cocher la case lors de l'installation pour l'associer aux fichiers journaux.    
-https://translate.google.com/translate?hl=de&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
   
 *Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
 
@@ -519,7 +519,7 @@ Fonctionnalités actuellement en cours de développement ou à l'état de projet
 │ └ **0 A.D. Plugin (Draft)** (Commande vocale pour le jeu 0 A.D.) 🐧   
 ├─ **Sortie sonore au démarrage ou à la fin d'une session** (Description en attente) 🐧   
 ├─ **Sortie vocale pour les malvoyants** (Description en attente) 🐧 🍏 🪟  
-└─ **Prototype Android SL5 Aura** (Pas encore complètement hors ligne) 📱  
+└─ **Prototype Android SL5 Aura** (Pas encore entièrement hors ligne) 📱  
 
 ---
 

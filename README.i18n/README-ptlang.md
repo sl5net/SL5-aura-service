@@ -15,7 +15,7 @@
 | 🗄️ Gestão Estadual | Orquestração Trino + Airflow, fzf, CopyQ, comandos de voz/terminal, UIs de navegador |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** por teste (39 testes @ 0,09s quente / 0,50s frio 🌿 medido com [Eco-CI](https://metrics.green-coding.io/index.html)) · sem computação em nuvem
+⚡ **~2,87 J** por teste (39 testes em >800 mapas a 0,09s de temperatura quente/0,45s de frio 🌿 medido com [Eco-CI](https://metrics.green-coding.io/index.html)) · sem computação em nuvem
 
 <detalhes>
 <summary>Início rápido</summary>
@@ -97,7 +97,7 @@ afetando os outros. Inclui um **Painel de administração** em tempo real (porta
   
 ## 🔌 Integrações prontas para uso
 
-SL5-Aura vem com um vasto ecossistema de mais de **100 plug-ins pré-configurados**. Aqui estão alguns destaques:
+SL5-Aura vem com um vasto ecossistema de mais de **100+ plugins pré-configurados**. Aqui estão alguns destaques:
 
 ### Controle de voz OculiX / SikuliX IDE
 SL5-Aura oferece suporte de voz de primeira classe para **OculiX** e **SikuliX IDE**. Essa integração permite que você “fale” seu código de automação.
@@ -449,7 +449,7 @@ Scripts para configuração de ambiente, teste e execução de serviço.
 
 *Dica: glogg permite que você use expressões regulares para pesquisar eventos interessantes em seus arquivos de log.*   
 Marque a caixa de seleção ao instalar para associar aos arquivos de log.    
-https://translate.google.com/translate?hl=en&sl=en&tl=pt&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=pt&u=https://glogg.bonnefon.org/     
   
 *Dica: depois de definir seus padrões regex, execute `python3 tools/map_tagger.py` para gerar automaticamente exemplos pesquisáveis para as ferramentas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-ptlang.md) para obter detalhes.*
 

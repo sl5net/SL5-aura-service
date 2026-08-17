@@ -15,7 +15,7 @@
 | 🗄️ Staatsverwaltung | Trino + Airflow-Orchestrierung, fzf, CopyQ, Sprach-/Terminalbefehle, Browser-Benutzeroberflächen |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** pro Test (39 Tests auf über 900 Karten bei 0,09 s warm / 0,50 s kalt 🌿 gemessen mit [Eco-CI](https://metrics.green-coding.io/index.html)) · kein Cloud-Computing
+⚡ **~2,87 J** pro Test (39 Tests auf >800 Karten bei 0,09 s warm / 0,45 s kalt 🌿 gemessen mit [Eco-CI](https://metrics.green-coding.io/index.html)) · kein Cloud-Computing
 
 <Details>
 <summary>Schnellstart</summary>
@@ -478,11 +478,11 @@ Tools für den robusten Umgang mit großen Sprachmodellen.
 <summary>Entwicklungs- und Bereitstellungshelfer</summary>
 
 ### **Entwicklungs- und Bereitstellungshelfer**  
-Skripte für die Einrichtung, das Testen und die Dienstausführung der Umgebung.  
+Skripte zum Einrichten, Testen und Ausführen von Diensten.  
 
 *Tipp: Mit glogg können Sie reguläre Ausdrücke verwenden, um in Ihren Protokolldateien nach interessanten Ereignissen zu suchen.*   
 Bitte aktivieren Sie das Kontrollkästchen bei der Installation, um eine Verknüpfung mit Protokolldateien herzustellen.    
-https://translate.google.com/translate?hl=de&sl=en&tl=de&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=en&sl=en&tl=de&u=https://glogg.bonnefon.org/     
   
 *Tipp: Nachdem Sie Ihre Regex-Muster definiert haben, führen Sie „python3 tools/map_tagger.py“ aus, um automatisch durchsuchbare Beispiele für die CLI-Tools zu generieren. Weitere Informationen finden Sie unter [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-delang.md).*
 

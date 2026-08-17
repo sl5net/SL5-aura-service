@@ -15,7 +15,7 @@
 | 🗄️ राज्य प्रबंधन | ट्रिनो + एयरफ्लो ऑर्केस्ट्रेशन, एफजेडएफ, कॉपीक्यू, वॉयस/टर्मिनल कमांड, ब्राउज़र यूआई |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2.87 J** प्रति परीक्षण (39 परीक्षण @ 0.09s गर्म / 0.50s ठंडा 🌿 [Eco-CI](https://metrics.green-coding.io/index.html) से मापा गया) · कोई क्लाउड गणना नहीं
+⚡ **~2.87 J** प्रति परीक्षण (0.09s गर्म / 0.45s ठंडे पर >800 मानचित्रों पर 39 परीक्षण 🌿 [Eco-CI](https://metrics.green-coding.io/index.html) के साथ मापा गया) · कोई क्लाउड गणना नहीं
 
 <विवरण>
 <सारांश>त्वरित प्रारंभ</सारांश>

@@ -15,7 +15,7 @@
 | 🗄️Zarządzanie państwem | Orkiestracja Trino + Airflow, fzf, CopyQ, polecenia głosowe/terminalowe, interfejsy użytkownika przeglądarki |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** na test (39 testów przy 0,09 s ciepła / 0,50 s zimna 🌿 mierzone za pomocą [Eco-CI](https://metrics.green-coding.io/index.html)) · brak obliczeń w chmurze
+⚡ **~2,87 J** na test (39 testów na >800 mapach przy 0,09 s ciepła / 0,45 s zimna 🌿 mierzone za pomocą [Eco-CI](https://metrics.green-coding.io/index.html)) · brak obliczeń w chmurze
 
 <szczegóły>
 <summary>Szybki start</summary>
@@ -86,14 +86,14 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 * **Oszczędne wykorzystanie pamięci RAM:** Inteligentnie zarządza pamięcią, wstępnie ładując modele tylko wtedy, gdy dostępna jest wystarczająca ilość wolnej pamięci RAM, zapewniając, że inne aplikacje (takie jak gry komputerowe) zawsze mają priorytet.
 * **Wiele platform:** działa na systemach Linux, macOS i Windows.
 * **W pełni zautomatyzowany:** Zarządza własnym serwerem LanguageTool (ale możesz także użyć zewnętrznego).
-* **Niezwykła szybkość:** Inteligentne buforowanie zapewnia natychmiastowe powiadomienia „Słucham…” i szybkie przetwarzanie.
+* **Niezwykła szybkość:** Inteligentne buforowanie zapewnia natychmiastowe powiadomienia „Słuchanie…” i szybkie przetwarzanie.
 * **Dynamiczne zarządzanie stanem poprzez Trino:** Silnik konfiguracyjny obsługujący interfejs
 oddziela ustawienia dla „mowy”, „terminalu” i „sieci” — zmień je bez
 wpływając na innych. Zawiera **panel administracyjny** działający w czasie rzeczywistym (port 8084).
 </details>
 
 <szczegóły>
-<summary> 🔌 Gotowe do użycia integracje</summary>
+<summary> 🔌 Gotowe integracje</summary>
 XSPACEbreakX
 ## 🔌 Gotowe do użycia integracje
 

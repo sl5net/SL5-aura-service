@@ -15,7 +15,7 @@
 | 🗄️ 状態管理 | Trino + Airflow オーケストレーション、fzf、CopyQ、音声/端末コマンド、ブラウザ UI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ テストあたり **~2.87 J** (39 テスト @ 0.09 秒のウォーム / 0.50 秒のコールド 🌿 [Eco-CI](https://metrics.green-coding.io/index.html) で測定) · クラウド コンピューティングなし
+⚡ テストあたり **~2.87 J** (800 を超えるマップにわたる 39 のテスト @ 0.09 秒のウォーム / 0.45 秒のコールド 🌿 [Eco-CI](https://metrics.green-coding.io/index.html) で測定) · クラウド コンピューティングなし
 
 <詳細>
 <summary>クイック スタート</summary>
@@ -102,7 +102,7 @@ SL5-Aura には、**100 以上の事前設定されたプラグイン**からな
 ### OculiX / SikuliX IDE 音声コントロール
 SL5-Aura は、**OculiX** および **SikuliX IDE** に最上級の音声サポートを提供します。この統合により、自動化コードを「話す」ことができます。
 
-* **Voice-to-Snippet:** 「クリック」、「待つ」、または「すべて検索」と言うと、サービスは正しい Python コード (例: `click("image.png")`) を即座に IDE に入力します。
+* **Voice-to-Snippet:** 「クリック」、「待機」、または「すべて検索」と言うと、サービスは正しい Python コード (例: `click("image.png")`) を IDE に即座に入力します。
 * **ウィンドウ対応:** プラグインはコンテキスト依存です。 OculiX/SikuliX ウィンドウがフォーカスされている場合にのみアクティブになります。
 * **スマート英語サポート:** 非ネイティブのアクセント (ドイツ語と英語の音声学など) に特に焦点を当てて「en-US」向けに最適化されており、グローバル コミュニティ向けに高い認識精度を保証します。
 * **拡張可能:** 編集が簡単な `FUZZY_MAP_pre.py` 形式を使用します。
@@ -333,7 +333,7 @@ f11::
 
 
 ### 3. ディクテーションを始めましょう!
-任意のテキスト フィールドをクリックし、ホットキーを押すと、「Listening...」通知が表示されます。はっきりと話してから一時停止します。修正されたテキストが入力されます。
+任意のテキスト フィールドをクリックしてホットキーを押すと、「Listening...」通知が表示されます。はっきりと話してから一時停止します。修正されたテキストが入力されます。
 
 </詳細>
 
@@ -493,7 +493,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefo
 §┬ **仮想環境管理/**  
 │§ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏  
 │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
-§┬ **システム全体のディクテーションの統合/**  
+§┬ **システム全体のディクテーション統合/**  
 │§ Vosk-システム-リスナーの統合 🐧 🍏 🪟  
 │§ `scripts/monitor_mic.sh` (Linux 固有のマイクモニタリング) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey は認識されたテキストをリッスンし、システム全体で入力します) 🪟  
@@ -557,7 +557,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefo
 `mv vosk-model-*.zip モデル/`
 
 
-|モデル |サイズ |ワードエラー率/速度 | Notes                                     |ライセンス |
+|モデル |サイズ |ワードエラー率/速度 |メモ |ライセンス |
 | -------------------------------------------------------------------------------------- | ---- | -------------------------------------------------------------------------------------------- | -------------------------------------- | ---------- |
 | [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69 (librispeech test-clean)<br/>6.05 (tedlium)<br/>29.78 (コールセンター) |正確な一般的な米国英語モデル |アパッチ2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G | 9.83 (Tuda-de テスト)<br/>24.00 (ポッドキャスト)<br/>12.82 (CV-テスト)<br/>12.42 (mls)<br/>33.26 (mtedx) |電話およびサーバー用のドイツの大型モデル |アパッチ2.0 |
