@@ -1,1 +1,0 @@
-moduły_które_are_w_prywatnym_folderze_will_ignored_by_gitignore.md
