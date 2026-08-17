@@ -1,0 +1,6 @@
+{% extends "furo/page.html" %}
+{% block extrahead %}
+  {{ super() }}
+  <meta name="algolia-site-verification" content="EE9B96B9D07D1676" />
+  <meta name="docsearch:language" content="{{ docsearch_lang | default('en') }}" />
+{% endblock %}

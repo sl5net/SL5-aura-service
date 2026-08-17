@@ -62,10 +62,17 @@ def generate_docs_index():
                     rel_path = file_name if rel_root == Path('.') else str(rel_root / file_name)
                     doc_entries.append(Path(rel_path).with_suffix('').as_posix())
 
+
         priority = ["README", "goal", "workflow", "workflow_windows11", "BuildStatus_Page", "utility_scripts"]
         doc_entries = sorted(set(doc_entries), key=lambda x: (0, priority.index(x)) if x in priority else (1, 0,
                                                                                                            x.lower()) if "/" not in x else (
             2, 0, x.lower()))
+        # Fast test mode: only build 3 pages for fast CI testing
+        test_mode = os.environ.get("FAST_DOCS_BUILD", "1") == "1"
+        if test_mode:
+            doc_entries = [e for e in doc_entries if e in {"README", "README.i18n/README-delang", "goal"}][:3]
+
+
 
         logging.info(f"Found {len(doc_entries)} doc files to include in the index.")
         with open(OUTPUT_FILEPATH, "w", encoding="utf-8") as f:
