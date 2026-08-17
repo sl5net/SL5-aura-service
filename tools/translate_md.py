@@ -5,7 +5,7 @@ import glob
 import subprocess
 import time
 import re
-import sys
+# import sys
 from pathlib import Path
 
 # search_path = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
@@ -313,6 +313,19 @@ def main():
 
     # test_translation_links()
     # sys.exit(1)
+    current_branch = os.environ.get("GITHUB_REF_NAME", "")
+    if not current_branch:
+        try:
+            current_branch = subprocess.check_output(
+                ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                text=True,
+                stderr=subprocess.DEVNULL,
+            ).strip()
+        except Exception:
+            current_branch = ""
+    if current_branch and current_branch not in {"master", "HEAD"}:
+        print(f"Skipping translations: current branch '{current_branch}' is not 'master'.")
+        return
 
     print("Starte die intelligente Übersetzung von Markdown-Dateien…")
     print(f"Quellsprache: {SOURCE_LANG}")
@@ -344,44 +357,50 @@ def main():
         if re.search(r'-[a-z]{2,3}lang\.md$', filename):
             continue
 
-        # 4. Überspringe, wenn die Datei in einem .i18n Ordner liegt
+        # 4. skip .i18n
         if ".i18n" in filename:
+            continue
+
+        minimum_chars_changed = 30
+
+        # 5. Skip files with fewer than 10 non-whitespace characters
+        try:
+            if Path(filename).stat().st_size < minimum_chars_changed:
+                continue
+            if len(Path(filename).read_text(encoding="utf-8", errors="ignore").strip()) < minimum_chars_changed:
+                continue
+        except OSError:
             continue
 
         # eng ? de? fr?
         if not re.search(r'-([a-z]{2,3})\.md$', filename):
+            # NEU – angepasst an "lang"-Suffix-Format:
+            if not re.search(r'-[a-z]{2,10}lang\.md$', filename):
 
-            # ALT:
-            if not re.search(r'-([a-z]{2,3})\.md$', filename):
+                base_name = os.path.splitext(filename)[0]
+                # Prüfe ob ALLE Zielsprachen bereits im .i18n Ordner existieren
+                # already_done = all(
+                #    os.path.exists(f"{base_name}.i18n/{os.path.basename(base_name)}-{lang}lang.md")
+                #    for lang in TARGET_LANGS
+                #)
+
+                def is_fresh(l):
+                    tr = Path(f"{base_name}.i18n/{os.path.basename(base_name)}-{l}lang.md")
+                    return tr.exists() and tr.stat().st_mtime > Path(filename).stat().st_mtime
+
+                already_done = all(is_fresh(lang) for lang in TARGET_LANGS)
+
+                if already_done:
+                    # print(f"   -> Überspringe  '…{str(filename)[-40:]}' (alle Übersetzungen bereits vorhanden).")
+                    skipCount = skipCount + 1
+
+                    continue
                 process_file(filename)
 
-                # NEU – angepasst an "lang"-Suffix-Format:
-                if not re.search(r'-[a-z]{2,10}lang\.md$', filename):
 
-                    base_name = os.path.splitext(filename)[0]
-                    # Prüfe ob ALLE Zielsprachen bereits im .i18n Ordner existieren
-                    # already_done = all(
-                    #    os.path.exists(f"{base_name}.i18n/{os.path.basename(base_name)}-{lang}lang.md")
-                    #    for lang in TARGET_LANGS
-                    #)
-
-                    def is_fresh(l):
-                        tr = Path(f"{base_name}.i18n/{os.path.basename(base_name)}-{l}lang.md")
-                        return tr.exists() and tr.stat().st_mtime > Path(filename).stat().st_mtime
-
-                    already_done = all(is_fresh(lang) for lang in TARGET_LANGS)
-
-                    if already_done:
-                        # print(f"   -> Überspringe  '…{str(filename)[-40:]}' (alle Übersetzungen bereits vorhanden).")
-                        skipCount = skipCount + 1
-
-                        continue
-                    process_file(filename)
-
-
-            #print(f"process_file(…{str(filename)[-40:]})")
-            process_file(filename)
-            #print("")
+        print(f"process_file(…{str(filename)[-40:]})")
+        process_file(filename)
+        #print("")
     print(f'->line 365: skipCount already translated: {skipCount}')
 
     #print("----------------------------------------------------")

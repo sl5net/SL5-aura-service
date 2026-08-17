@@ -1,0 +1,109 @@
+# Przewodnik po zasadach FUZZY_MAP
+
+## Format reguły
+
+__KOD_BLOKU_0__
+
+| Pozycja | Imię | Opis |
+|---|---|---|
+| 1 | wymiana | Tekst wyjściowy po dopasowaniu reguły |
+| 2 | wzór | Regex lub ciąg rozmyty do dopasowania do |
+| 3 | próg | W przypadku reguł wyrażeń regularnych: ignorowane. W przypadku reguł rozmytych: minimalny wynik dopasowania (0–100) |
+| 4 | opcje | Słownik opcjonalny (patrz „Informacje o opcjach” poniżej). Użyj `0` lub pomiń dla wartości domyślnych |
+
+### Zastąpienia oparte na plikach
+Jeśli „zastąpienie” zaczyna się od prefiksu skonfigurowanego w „FILE4REPLACEMENT_ALLOWED_PREFIXES”
+(domyślnie: `-` lub `.`), Aura traktuje go jako nazwę pliku i wyszukuje jego zawartość w
+katalog wtyczki zamiast używać dosłownego ciągu znaków. Dzięki temu tajemnice (hasła,
+klucze API) z kodu źródłowego.
+Aby uzyskać szczegółowe informacje, zobacz [File_Based_Replacement.md](../../Feature_Spotlight/Secure_Private_Maps/File_Based_Replacement-pllang.md).
+
+### Surowe zamienniki
+Domyślnie (`False`) ciągi zastępcze są przetwarzane przez funkcję `re.sub()` w Pythonie, która obsługuje użycie odwołań zwrotnych do wyrażeń regularnych, takich jak `\1` lub `\2`, aby wstawić przechwycone grupy (na przykład: `(r'\1', r'(\d)\s+(?=\d)', 95)`).
+Jeśli zamiana jest ciągiem wielowierszowym lub zawiera ukośniki odwrotne bez ucieczki (takie jak szablony kodu lub ścieżki) i powinna zostać zachowana dokładnie tak, jak jest, włącz opcję „raw_replacement”: True w słowniku opcji:
+__KOD_BLOKU_1__
+
+### Dostępne opcje konfigurowane przez użytkownika:
+
+* **`command_flags`** (liczba całkowita): Flagi wyrażeń regularnych używane podczas kompilacji wzorca.
+*Przykład:* `{'command_flags': re.IGNORECASE}`
+* **`raw_replacement`** (boolean): Gdy `True`, tekst zastępczy jest traktowany jako czysty literał łańcuchowy i pomijany przez analizę składniową ukośnika odwrotnego `re.sub` w Pythonie. Ma kluczowe znaczenie w przypadku podpowiedzi wielowierszowych lub ciągów znaków z ukośnikami odwrotnymi bez ucieczki (`\`).
+*Przykład:* `{'raw_replacement': True}`
+* **`cache`** (boolean): Przełącza pamięć podręczną wyników AURA. Ustaw na „Fałsz” dla reguł generujących dane dynamiczne (np. bieżący czas, losowe dowcipy), aby mieć pewność, że są one oceniane na nowo w każdym meczu.
+*Przykład:* `{'cache': Fałsz}`
+* **`skip_list`** (lista ciągów znaków): Określa moduły potoku przetwarzania końcowego, które mają zostać pominięte, gdy pasuje ta reguła.
+*Przykład:* `{'skip_list': ['LanguageTool']}` (pomija sprawdzanie gramatyki)
+* **`only_in_windows`** (lista ciągów wyrażeń regularnych): Ogranicza regułę do uruchomienia tylko wtedy, gdy tytuł aktywnego okna pasuje do jednego z określonych wzorców.
+*Przykład:* `{'only_in_windows': [r'^Mozilla Firefox$', r'Chrome']}`
+* **`exclude_windows`** (lista ciągów wyrażeń regularnych): Zapobiega uruchomieniu reguły, jeśli tytuł aktywnego okna pasuje do jednego z określonych wzorców.
+*Przykład:* `{'exclude_windows': [r'Terminal', r'Claude']}`
+* **`window_ignore_case`** (boolean): Kontroluje, czy dopasowanie okna (`only_in_windows` / `exclude_windows`) jest oceniane bez rozróżniania wielkości liter (`True`) czy z rozróżnianiem wielkości liter (`False`). Jeśli zostanie pominięty, powraca do ustawienia globalnego `LOWERCASE_WINDOW_TITLES` w `config/settings.py`.
+*Przykład:* `{'window_ignore_case': Fałsz}`
+* **`on_match_exec`** (lista obiektów Path/string): Ścieżki do skryptów/wtyczek, które powinny zostać wykonane, gdy ta reguła zostanie dopasowana (często używane przez reguły catch-all i fallback).
+*Przykład:* `{'on_match_exec': [SL5NET_AURA_PROJECT_ROOT / 'scripts' / 'custom_action.py']}`
+
+## Logika potoku
+- Reguły są przetwarzane **z góry na dół**
+
+
+## Logika potoku
+
+- Reguły są przetwarzane **z góry na dół**
+- **Wszystkie** reguły dopasowywania są stosowane (skumulowane)
+- **fullmatch** (`^...$`) natychmiast zatrzymuje potok
+- Wcześniejsze zasady mają pierwszeństwo przed późniejszymi zasadami
+
+## Typowe wzorce
+
+### Dopasuj pojedyncze słowo (granica słowa)
+__KOD_BLOKU_2__
+
+### Dopasuj wiele wariantów
+__KOD_BLOKU_3__
+
+### Fullmatch – zatrzymuje potok
+__KOD_BLOKU_4__
+⚠️ To pasuje do **wszystko**. Rurociąg zatrzymuje się w tym miejscu. Wcześniejsze zasady nadal mają pierwszeństwo.
+
+### Dopasuj początek wejścia
+__KOD_BLOKU_5__
+
+### Dopasuj dokładną frazę
+__KOD_BLOKU_6__
+
+## Lokalizacje plików
+
+| Plik | Faza | Opis |
+|---|---|---|
+| `FUZZY_MAP_pre.py` | Narzędzie do nauki języka | Stosowane przed sprawdzaniem pisowni |
+| `FUZZY_MAP.py` | Narzędzie post-językowe | Stosowane po sprawdzeniu pisowni |
+| `PUNCTUATION_MAP.py` | Narzędzie do nauki języka | Zasady interpunkcji |
+
+## Porady
+
+- Umieść **szczegółowe** zasady przed **ogólnymi** zasadami
+- Używaj `^...$` pełnego dopasowania tylko wtedy, gdy chcesz zatrzymać całe dalsze przetwarzanie
+- `FUZZY_MAP_pre.py` jest idealny do poprawek przed sprawdzeniem pisowni
+- Reguły testowe za pomocą: „Twojego wejścia testowego” w konsoli Aura
+- Kopie zapasowe są tworzone automatycznie jako `.peter_backup`
+
+## Przykłady
+
+__KOD_BLOKU_7__
+
+## Twoja pierwsza zasada — krok po kroku
+
+1. Otwórz `config/maps/plugins/sandbox/de-DE/FUZZY_MAP_pre.py`
+2. Dodaj swoją regułę wewnątrz `FUZZY_MAP_pre = [...]`
+3. Zapisz — Aura ładuje się automatycznie, nie ma potrzeby ponownego uruchamiania
+4. Podyktuj frazę wyzwalającą i obserwuj, jak zadziała
+
+
+## Zalecana struktura plików
+
+Umieść swoje reguły **przed** długimi blokami komentarzy:
+__KOD_BLOKU_8__
+
+**Dlaczego?** Funkcja Auto-Fix firmy Aura skanuje tylko pierwszy ~1KB pliku.
+Jeśli reguły pojawiają się po długim nagłówku, funkcja Auto-Fix nie może ich znaleźć ani naprawić.
+Zalecany jest także komentarz do ścieżki w linii 1 — pomaga on szybko zidentyfikować plik.
