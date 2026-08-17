@@ -76,7 +76,7 @@ GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
 GLOBAL_LT_LANGUAGE = ""
-GLOBAL_was_reloaded = False
+GLOBAL_was_reloaded = True # True better (s, 17.8.'26 08:48 Mon, when False 812 MAPS online)
 
 
 
