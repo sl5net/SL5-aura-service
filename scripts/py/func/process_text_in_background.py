@@ -76,7 +76,7 @@ GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
 GLOBAL_LT_LANGUAGE = ""
-GLOBAL_was_reloaded = True # True better (s, 17.8.'26 08:48 Mon, when False 812 MAPS online)
+GLOBAL_was_reloaded = False # Interesting (s, 17.8.'26 08:48 Mon, when False 812 MAPS online, when True it was  811 Maps, )
 
 
 
@@ -316,11 +316,11 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         from .log_memory_details import log_memory_details
         log_memory_details("next: auto_reload_modified_maps", logger)
 
+    global GLOBAL_was_reloaded
     # First reload all modules in memory to capture changes
-    GLOBAL_was_reloaded = auto_reload_modified_maps(logger,run_mode_override)
-    
-
-
+    was_reloaded_temp = auto_reload_modified_maps(logger,run_mode_override)
+    if not GLOBAL_was_reloaded:
+        GLOBAL_was_reloaded = was_reloaded_temp
 
     if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
@@ -2064,7 +2064,9 @@ def process_text_in_background(logger,
             os.execv(sys.executable, ['python'] + sys.argv + ['restarted'])
 
         if not os.getenv("AURA_SELF_TEST_RUNNING"):
-            GLOBAL_was_reloaded = auto_reload_modified_maps(logger,run_mode_override)
+            was_reloaded_temp = auto_reload_modified_maps(logger,run_mode_override)
+            if not GLOBAL_was_reloaded:
+                GLOBAL_was_reloaded = was_reloaded_temp
 
         # print(f':st: \nprocess_text_in_background:1753 raw_text:{raw_text}')
 
