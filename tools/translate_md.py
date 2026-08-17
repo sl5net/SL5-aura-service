@@ -383,11 +383,10 @@ def main():
                 #    os.path.exists(f"{base_name}.i18n/{os.path.basename(base_name)}-{lang}lang.md")
                 #    for lang in TARGET_LANGS
                 #)
-
+                
                 def is_fresh(l):
                     tr = Path(f"{base_name}.i18n/{os.path.basename(base_name)}-{l}lang.md")
-                    return tr.exists() and tr.stat().st_mtime > Path(filename).stat().st_mtime
-
+                    return tr.exists() and tr.stat().st_mtime >= Path(filename).stat().st_mtime
                 already_done = all(is_fresh(lang) for lang in TARGET_LANGS)
 
                 if already_done:
