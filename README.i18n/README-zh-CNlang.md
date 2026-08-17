@@ -338,53 +338,7 @@ X空格符X
 X空格符X
 <详情>
 <summary>光环核心</summary>
-
-**光环核心/** 🐧 🍏 🪟  
-├─ `aura_engine.py`（编排 Aura 的主要 Python 服务）🐧 🍏 🪟  
-├┬ **实时热重载**（配置和地图）🐧🍏🪟  
-│├ **安全私人地图加载（完整性第一）** 🔒 🐧 🍏 🪟  
-│ │ * **工作流程：** 加载受密码保护的 ZIP 存档。 X空格符X
-│├ **文本处理和更正/** 按语言分组（例如 `de-DE`、`en-US`、...）   
-│├ 1. `normalize_punctuation.py`（转录后标点符号标准化）🐧 🍏 🪟  
-│├ 2. **智能预校正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-zh-CNlang.md)) 🐧 🍏 🪟  
-││ * **动态脚本执行：**规则可以触发自定义Python脚本（`on_match_exec`）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
-│ │ * **级联执行：**规则按顺序处理，其效果**累积**。后面的规则适用于前面的规则修改的文本。  
-│ │ * **最高优先级停止标准：** 如果规则实现 **完全匹配** (^...$)，则该令牌的整个处理管道将立即停止。这种机制对于实现可靠的语音命令至关重要。  
-│├ 3. ` Correct_text_by_languagetool.py` (集成LanguageTool用于语法/风格校正) 🐧 🍏 🪟  
-│├ **4.具有 Ollama AI 后备功能的分层正则表达式规则引擎** 🐧 🍏 🪟  
-│ │ * **确定性控制：** 使用 RegEx-Rule-Engine 进行精确、高优先级的命令和文本控制。  
-│├ **矢量搜索插件**（延迟加载）：通过将本地矢量嵌入与 Ollama/LLM 后备层连接来启用语义搜索 🐧  
-│ │ * **Ollama AI（本地法学硕士）后备：** 在不满足确定性规则时，充当**创意答案、问答和高级模糊匹配**的可选、低优先级检查。  
-│ │ * **状态：** 本地法学硕士整合。
-│└ 5. **智能后期校正** (`FuzzyMap`)**– LT后细化** 🐧 🍏 🪟  
-│ │ * 在 LanguageTool 之后应用以纠正 LT 特定的输出。遵循与预校正层相同的严格级联优先级逻辑。  
-││ * **动态脚本执行：**规则可以触发自定义Python脚本（[on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-zh-CNlang.md)）来执行高级操作，例如API调用、文件I/O或生成动态响应。  
-││ * **模糊回退：** **模糊相似性检查**（由阈值控制，例如 85%）充当最低优先级的纠错层。仅当前面的整个确定性/级联规则运行未能找到匹配项（current_rule_matched 为 False）时才会执行它，通过尽可能避免缓慢的模糊检查来优化性能。  
-├┬ **模型管理/**   
-│├─ `prioritize_model.py` (根据使用情况优化模型加载/卸载) 🐧 🍏 🪟  
-│└─ `setup_initial_model.py` (配置首次模型设置) 🐧 🍏 🪟  
-├─ **自适应 VAD 超时** 🐧 🍏 🪟  
-├─ **自适应热键（开始/停止）** 🐧 🍏 🪟  
-├─ **即时语言切换**（通过模型预加载进行实验）🐧 🍏   
-├─ **Airflow Orchestration**（基于 DAG 的工作流程自动化）🐧 🍏 🪟
-│ 需要 Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
-├─ **Trino 状态引擎**（每个语音/终端/网络的接口感知配置）🐧 🍏 🪟
-└─ 需要 Docker · 管理界面：`http://localhost:8084` 🐧 🍏 🪟  
-
-**系统实用程序/**   
-├┬ **LanguageTool 服务器管理/**   
-│├─ `start_languagetool_server.py` (初始化本地 LanguageTool 服务器) 🐧 🍏 🪟  
-│└─ `stop_languagetool_server.py` (关闭 LanguageTool 服务器) 🐧 🍏
-├─ `monitor_mic.sh` （例如，用于耳机而不使用键盘和显示器）🐧 🍏 🪟  
-
-### **模型和包管理**  
-用于稳健处理大型语言模型的工具。  
-
-**模型管理/** 🐧 🍏 🪟  
-├─ **强大的模型下载器**（GitHub 发布块）🐧 🍏 🪟  
-├─ `split_and_hash.py` （仓库所有者分割大文件并生成校验和的实用程序）🐧 🍏 🪟  
-└─ `download_all_packages.py` （供最终用户下载、验证和重新组装多部分文件的工具） 🐧 🍏 🪟  
-
+__代码_块_6__
 </详情>
 
 
@@ -396,7 +350,7 @@ X空格符X
 
 *提示：glogg 使您能够使用正则表达式在日志文件中搜索有趣的事件。*   
 安装时请选中该复选框以与日志文件关联。  X空格符X
-https://translate.google.com/translate?hl=en&sl=en&tl=zh-CN&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=zh-CN&u=https://glogg.bonnefon.org/     
 X空格符X
 *提示：定义正则表达式模式后，运行“python3 tools/map_tagger.py”以自动生成 CLI 工具的可搜索示例。有关详细信息，请参阅 [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-zh-CNlang.md)。*
 
@@ -443,7 +397,7 @@ X空格符X
 <详情>
 <summary>点击查看生成此脚本列表所使用的命令</summary>
 
-__代码_块_6__
+__代码_块_7__
 </详情>
 
 <详情>
@@ -460,7 +414,7 @@ X空格符X
 <详情>
 <summary>使用过的型号</summary>
 
-# 使用的型号：
+## 使用型号：
 
 建议：使用 Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 中的模型（可能更快）
 

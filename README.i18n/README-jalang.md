@@ -424,53 +424,53 @@ OS 互換性の凡例:
   
 <詳細>
 <summary>オーラコア</summary>
+```text
+**Aura-Core/** 🐧 🍏 🪟  
+├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
+├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+│├ **Secure Private Map Loading (Integrity-First)** 🔒  🐧 🍏 🪟  
+││ * **Workflow:** Loads password-protected ZIP archives.   
+│├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
+│├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
+│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (`on_match_exec`) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
+││ * **Cascading Execution:** Rules are processed sequentially and their effects are **cumulative**. Later rules apply to text modified by earlier rules.  
+││ * **Highest Priority Stop Criterion:** If a rule achieves a **Full Match** (^...$), the entire processing pipeline for that token stops immediately. This mechanism is critical for implementing reliable voice commands.  
+│├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
+│├ **4. Hierarchical RegEx-Rule-Engine with Ollama AI Fallback** 🐧 🍏 🪟  
+││ * **Deterministic Control:** Uses RegEx-Rule-Engine for precise, high-priority command and text control.  
+│├ **Vector-Search Plugin** (Lazy loading): Enables Semantic Search by connecting local Vector embeddings with the Ollama/LLM fallback layer 🐧  
+││ * **Ollama AI (Local LLM) Fallback:** Serves as an optional, low-priority check for **creative answers, Q&A, and advanced Fuzzy Matching** when no deterministic rule is met.  
+││ * **Status:** Local LLM integration.
+│└ 5. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟  
+││ * Applied after LanguageTool to correct LT-specific outputs. Follows the same strict cascading priority logic as the Pre-Correction layer.  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-jalang.md)) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
+││ * **Fuzzy Fallback:** The **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. It is only executed if the entire preceding deterministic/cascading rule run failed to find a match (current_rule_matched is False), optimizing performance by avoiding slow fuzzy checks whenever possible.  
+├┬ **Model Management/**   
+│├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
+│└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
+├─ **Adaptive VAD Timeout** 🐧 🍏 🪟  
+├─ **Adaptive Hotkey (Start/Stop)** 🐧 🍏 🪟  
+├─ **Instant Language Switching** (Experimental via model preloading) 🐧 🍏         
+├─ **Airflow Orchestration** (DAG-based workflow automation) 🐧 🍏 🪟
+│   Requires Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
+├─ **Trino State Engine** (Interface-aware config per speech/terminal/web) 🐧 🍏 🪟
+└─  Requires Docker · Admin UI: `http://localhost:8084` 🐧 🍏 🪟  
 
-**オーラコア/** 🐧 🍏 🪟  
-§─ `aura_engine.py` (Aura をオーケストレーションするメイン Python サービス) 🐧 🍏 🪟  
-§┬ **ライブ ホットリロード** (構成とマップ) 🐧 🍏 🪟  
-│§ **安全なプライベート マップの読み込み (整合性優先)** 🔒 🐧 🍏 🪟  
-││ * **ワークフロー:** パスワードで保護された ZIP アーカイブを読み込みます。   
-│§ **テキスト処理と修正/** 言語ごとにグループ化 (例: `de-DE`、`en-US`、...)   
-│§ 1. `normalize_punctuation.py` (文字起こし後の句読点を標準化) 🐧 🍏 🪟  
-│§ 2. **インテリジェントな事前修正** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
-││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト (「on_match_exec」) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
-││ * **カスケード実行:** ルールは順番に処理され、その効果は **累積的**です。以前のルールによって変更されたテキストには、後のルールが適用されます。  
-││ * **最優先停止基準:** ルールが **完全一致** (^...$) に達すると、そのトークンの処理パイプライン全体が直ちに停止します。このメカニズムは、信頼性の高い音声コマンドを実装するために重要です。  
-│§ 3. `correct_text_by_ languagetool.py` (文法/スタイル修正のために LanguageTool を統合) 🐧 🍏 🪟  
-│§＊＊４． Ollama AI フォールバックを備えた階層 RegEx ルール エンジン** 🐧 🍏 🪟  
-││ * **決定的制御:** 正確で優先度の高いコマンドおよびテキスト制御に RegEx-Rule-Engine を使用します。  
-│§ **Vector-Search Plugin** (遅延読み込み): ローカルの Vector 埋め込みを Ollama/LLM フォールバック レイヤーに接続することでセマンティック検索を有効にします 🐧  
-││ * **Ollama AI (ローカル LLM) フォールバック:** 決定論的なルールが満たされない場合、**創造的な回答、Q&A、および高度なファジー マッチング**のオプションの優先度の低いチェックとして機能します。  
-││ * **ステータス:** ローカル LLM 統合。
-│└ 5. **インテリジェントな事後修正** (`FuzzyMap`)**– LT 後の洗練** 🐧 🍏 🪟  
-││ * LT 固有の出力を修正するために、LanguageTool の後に適用されます。前修正レイヤーと同じ厳密なカスケード優先順位ロジックに従います。  
-││ * **動的スクリプト実行:** ルールはカスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-jalang.md)) をトリガーして、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりできます。  
-││ * **ファジー フォールバック:** **ファジー類似性チェック** (しきい値、たとえば 85% によって制御される) は、優先度が最も低いエラー修正層として機能します。これは、先行する決定的/カスケード ルール実行全体で一致が見つからなかった場合 (current_rule_matched が False) にのみ実行され、可能な限り遅いファジー チェックを回避することでパフォーマンスを最適化します。  
-§┬ **モデル管理/**   
-│§─ `prioritize_model.py` (使用状況に基づいてモデルのロード/アンロードを最適化します) 🐧 🍏 🪟  
-│└─ `setup_initial_model.py` (初回モデルのセットアップを構成します) 🐧 🍏 🪟  
-§─ **アダプティブ VAD タイムアウト** 🐧 🍏 🪟  
-§─ **アダプティブ ホットキー (開始/停止)** 🐧 🍏 🪟  
-§─ **インスタント言語切り替え** (モデルのプリロードによる実験的) 🐧 🍏   
-§─ **Airflow Orchestration** (DAG ベースのワークフロー自動化) 🐧 🍏 🪟
-│ Docker が必要 · UI: `http://localhost:8081` 🐧 🍏 🪟  
-§─ **Trino State Engine** (音声/端末/Web ごとのインターフェイス認識構成) 🐧 🍏 🪟
-━─ Docker が必要 · 管理 UI: `http://localhost:8084` 🐧 🍏 🪟  
+**SystemUtilities/**   
+├┬ **LanguageTool Server Management/**   
+│├─ `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
+│└─ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
+├─ `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
 
-**システムユーティリティ/**   
-§┬ **LanguageTool サーバー管理/**   
-│§─ `start_ languagetool_server.py` (ローカル LanguageTool サーバーを初期化します) 🐧 🍏 🪟  
-│└─ `stop_ languagetool_server.py` (LanguageTool サーバーをシャットダウンします) 🐧 🍏
-§─ `monitor_mic.sh` (例: キーボードとモニターを使用せずにヘッドセットで使用する場合) 🐧 🍏 🪟  
+### **Model & Package Management**  
+    Tools for robust handling of large language models.  
 
-### **モデルとパッケージの管理**  
-大規模な言語モデルを堅牢に処理するためのツール。  
-
-**モデル管理/** 🐧 🍏 🪟  
-§─ **堅牢なモデル ダウンローダー** (GitHub リリース チャンク) 🐧 🍏 🪟  
-§─ `split_and_hash.py` (リポジトリ所有者が大きなファイルを分割してチェックサムを生成するためのユーティリティ) 🐧 🍏 🪟  
-━─ `download_all_packages.py` (エンドユーザーがマルチパート ファイルをダウンロード、検証、再構築するためのツール) 🐧 🍏 🪟  
-
+**ModelManagement/** 🐧 🍏 🪟  
+├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
+├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
+└─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
+```
 </詳細>
 
 
@@ -482,7 +482,7 @@ OS 互換性の凡例:
 
 *ヒント: glogg を使用すると、正規表現を使用してログ ファイル内の興味深いイベントを検索できます。*   
 ログファイルと関連付けるには、インストール時にチェックボックスをオンにしてください。    
-https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=ja&u=https://glogg.bonnefon.org/     
   
 *ヒント: 正規表現パターンを定義した後、「python3 tools/map_tagger.py」を実行して、CLI ツールの検索可能なサンプルを自動的に生成します。詳細については、[Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-jalang.md) を参照してください。*
 
@@ -548,7 +548,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ja&u=https://glogg.bonnefo
 <詳細>
 <summary>使用モデル</summary>
 
-# 使用モデル:
+## 使用モデル:
 
 推奨事項: Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 のモデルを使用します (おそらく高速です)
 

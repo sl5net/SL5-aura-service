@@ -424,53 +424,53 @@ Notre principal moteur de reconnaissance vocale et de traitement audio hors lign
   
 <détails>
 <summary>Aura-Core</summary>
-
+```text
 **Aura-Core/** 🐧 🍏 🪟  
-├─ `aura_engine.py` (service Python principal orchestrant Aura) 🐧 🍏 🪟  
-├┬ **Live Hot-Reload** (Configuration et cartes) 🐧 🍏 🪟  
-│├ **Chargement sécurisé de la carte privée (intégrité d'abord)** 🔒 🐧 🍏 🪟  
-││ * **Workflow :** Charge les archives ZIP protégées par mot de passe.   
-│├ **Traitement et correction de texte/** Regroupés par langue ( par exemple `de-DE`, `en-US`, ... )   
-│├ 1. `normalize_punctuation.py` (Standardise la ponctuation après la transcription) 🐧 🍏 🪟  
-│├ 2. **Pré-correction intelligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
-││ * **Exécution de script dynamique :** Les règles peuvent déclencher des scripts Python personnalisés (`on_match_exec`) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
-││ * **Exécution en cascade :** Les règles sont traitées séquentiellement et leurs effets sont **cumulatifs**. Les règles ultérieures s'appliquent au texte modifié par les règles antérieures.  
-││ * **Critère d'arrêt de priorité la plus élevée :** Si une règle obtient une **Correspondance complète** (^...$), l'ensemble du pipeline de traitement pour ce jeton s'arrête immédiatement. Ce mécanisme est essentiel pour implémenter des commandes vocales fiables.  
-│├ 3. `correct_text_by_lingualtool.py` (Intégre LanguageTool pour la correction de grammaire/style) 🐧 🍏 🪟  
-│├ **4. Moteur de règles RegEx hiérarchique avec Ollama AI Fallback** 🐧 🍏 🪟  
-││ * **Contrôle déterministe :** utilise RegEx-Rule-Engine pour un contrôle précis et hautement prioritaire des commandes et du texte.  
-│├ **Plugin de recherche vectorielle** (chargement paresseux) : active la recherche sémantique en connectant les intégrations vectorielles locales avec la couche de secours Ollama/LLM 🐧  
-││ * **Ollama AI (Local LLM) Fallback :** Sert de vérification facultative et de faible priorité pour les **réponses créatives, les questions et réponses et la correspondance floue avancée** lorsqu'aucune règle déterministe n'est respectée.  
-││ * **Statut :** Intégration LLM locale.
-│└ 5. **Post-correction intelligente** (`FuzzyMap`)** – Affinement post-LT** 🐧 🍏 🪟  
-││ * Appliqué après LanguageTool pour corriger les sorties spécifiques à LT. Suit la même logique stricte de priorité en cascade que la couche de pré-correction.  
-││ * **Exécution de scripts dynamiques :** Les règles peuvent déclencher des scripts Python personnalisés ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-frlang.md)) pour effectuer des actions avancées telles que des appels d'API, des E/S de fichiers ou générer des réponses dynamiques.  
-││ * **Fuzzy Fallback :** Le **Fuzzy Similarity Check** (contrôlé par un seuil, par exemple 85 %) agit comme la couche de correction d'erreurs la plus basse priorité. Elle n'est exécutée que si l'exécution complète de la règle déterministe/en cascade précédente n'a pas réussi à trouver une correspondance (current_rule_matched est False), optimisant ainsi les performances en évitant les vérifications floues lentes autant que possible.  
-├┬ **Gestion des modèles/**   
-│├─ `prioritize_model.py` (Optimise le chargement/déchargement du modèle en fonction de l'utilisation) 🐧 🍏 🪟  
-│└─ `setup_initial_model.py` (Configure la première configuration du modèle) 🐧 🍏 🪟  
-├─ **Délai d'expiration VAD adaptatif** 🐧 🍏 🪟  
-├─ **Raccourci clavier adaptatif (Démarrer/Arrêter)** 🐧 🍏 🪟  
-├─ **Changement de langue instantané** (expérimental via le préchargement du modèle) 🐧 🍏   
-├─ **Airflow Orchestration** (automatisation du flux de travail basée sur DAG) 🐧 🍏 🪟
-│ Nécessite Docker · UI : `http://localhost:8081` 🐧 🍏 🪟  
-├─ **Trino State Engine** (configuration prenant en charge l'interface par parole/terminal/web) 🐧 🍏 🪟
-└─ Nécessite Docker · Interface utilisateur d'administration : `http://localhost:8084` 🐧 🍏 🪟  
+├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
+├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+│├ **Secure Private Map Loading (Integrity-First)** 🔒  🐧 🍏 🪟  
+││ * **Workflow:** Loads password-protected ZIP archives.   
+│├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
+│├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
+│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-frlang.md)) 🐧 🍏 🪟  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (`on_match_exec`) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
+││ * **Cascading Execution:** Rules are processed sequentially and their effects are **cumulative**. Later rules apply to text modified by earlier rules.  
+││ * **Highest Priority Stop Criterion:** If a rule achieves a **Full Match** (^...$), the entire processing pipeline for that token stops immediately. This mechanism is critical for implementing reliable voice commands.  
+│├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
+│├ **4. Hierarchical RegEx-Rule-Engine with Ollama AI Fallback** 🐧 🍏 🪟  
+││ * **Deterministic Control:** Uses RegEx-Rule-Engine for precise, high-priority command and text control.  
+│├ **Vector-Search Plugin** (Lazy loading): Enables Semantic Search by connecting local Vector embeddings with the Ollama/LLM fallback layer 🐧  
+││ * **Ollama AI (Local LLM) Fallback:** Serves as an optional, low-priority check for **creative answers, Q&A, and advanced Fuzzy Matching** when no deterministic rule is met.  
+││ * **Status:** Local LLM integration.
+│└ 5. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟  
+││ * Applied after LanguageTool to correct LT-specific outputs. Follows the same strict cascading priority logic as the Pre-Correction layer.  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-frlang.md)) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
+││ * **Fuzzy Fallback:** The **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. It is only executed if the entire preceding deterministic/cascading rule run failed to find a match (current_rule_matched is False), optimizing performance by avoiding slow fuzzy checks whenever possible.  
+├┬ **Model Management/**   
+│├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
+│└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
+├─ **Adaptive VAD Timeout** 🐧 🍏 🪟  
+├─ **Adaptive Hotkey (Start/Stop)** 🐧 🍏 🪟  
+├─ **Instant Language Switching** (Experimental via model preloading) 🐧 🍏         
+├─ **Airflow Orchestration** (DAG-based workflow automation) 🐧 🍏 🪟
+│   Requires Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
+├─ **Trino State Engine** (Interface-aware config per speech/terminal/web) 🐧 🍏 🪟
+└─  Requires Docker · Admin UI: `http://localhost:8084` 🐧 🍏 🪟  
 
-**Utilitaires système/**   
-├┬ **Gestion du serveur LanguageTool/**   
-│├─ `start_lingualtool_server.py` (Initialise le serveur LanguageTool local) 🐧 🍏 🪟  
-│└─ `stop_lingualtool_server.py` (Arrête le serveur LanguageTool) 🐧 🍏
-├─ `monitor_mic.sh` (par exemple pour une utilisation avec un casque sans utiliser le clavier ni le moniteur) 🐧 🍏 🪟  
+**SystemUtilities/**   
+├┬ **LanguageTool Server Management/**   
+│├─ `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
+│└─ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
+├─ `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
 
-### **Gestion des modèles et des packages**  
-Outils pour une gestion robuste des grands modèles de langage.  
+### **Model & Package Management**  
+    Tools for robust handling of large language models.  
 
-**Gestion de modèles/** 🐧 🍏 🪟  
-├─ **Téléchargeur de modèles robuste** (morceaux de la version GitHub) 🐧 🍏 🪟  
-├─ `split_and_hash.py` (Utilitaire permettant aux propriétaires de dépôts de diviser des fichiers volumineux et de générer des sommes de contrôle) 🐧 🍏 🪟  
-└─ `download_all_packages.py` (outil permettant aux utilisateurs finaux de télécharger, vérifier et réassembler des fichiers en plusieurs parties) 🐧 🍏 🪟  
-
+**ModelManagement/** 🐧 🍏 🪟  
+├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
+├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
+└─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
+```
 </détails>
 
 
@@ -482,7 +482,7 @@ Scripts pour la configuration de l'environnement, les tests et l'exécution des 
 
 *Astuce : glogg vous permet d'utiliser des expressions régulières pour rechercher des événements intéressants dans vos fichiers journaux.*   
 Veuillez cocher la case lors de l'installation pour l'associer aux fichiers journaux.    
-https://translate.google.com/translate?hl=en&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=fr&u=https://glogg.bonnefon.org/     
   
 *Conseil : après avoir défini vos modèles d'expression régulière, exécutez « python3 tools/map_tagger.py » pour générer automatiquement des exemples consultables pour les outils CLI. Voir [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-frlang.md) pour plus de détails.*
 
@@ -548,7 +548,7 @@ Fonctionnalités actuellement en cours de développement ou à l'état de projet
 <détails>
 <summary>Modèles utilisés</summary>
 
-# Modèles utilisés :
+## Modèles utilisés :
 
 Recommandation : utilisez les modèles de Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (probablement plus rapide)
 

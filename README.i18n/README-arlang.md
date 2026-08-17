@@ -416,61 +416,59 @@ f11::
 
 
 
-
-
 ### **المحرك الأساسي لتحويل الكلام إلى نص (Aura)**
 محركنا الأساسي للتعرف على الكلام ومعالجة الصوت دون اتصال بالإنترنت.
 
                                               اكس سبيس بريك اكس
                                                            <التفاصيل>
                                      <summary>هالة النواة</summary>
+```text
+**Aura-Core/** 🐧 🍏 🪟  
+├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
+├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
+│├ **Secure Private Map Loading (Integrity-First)** 🔒  🐧 🍏 🪟  
+││ * **Workflow:** Loads password-protected ZIP archives.   
+│├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
+│├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
+│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (`on_match_exec`) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
+││ * **Cascading Execution:** Rules are processed sequentially and their effects are **cumulative**. Later rules apply to text modified by earlier rules.  
+││ * **Highest Priority Stop Criterion:** If a rule achieves a **Full Match** (^...$), the entire processing pipeline for that token stops immediately. This mechanism is critical for implementing reliable voice commands.  
+│├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
+│├ **4. Hierarchical RegEx-Rule-Engine with Ollama AI Fallback** 🐧 🍏 🪟  
+││ * **Deterministic Control:** Uses RegEx-Rule-Engine for precise, high-priority command and text control.  
+│├ **Vector-Search Plugin** (Lazy loading): Enables Semantic Search by connecting local Vector embeddings with the Ollama/LLM fallback layer 🐧  
+││ * **Ollama AI (Local LLM) Fallback:** Serves as an optional, low-priority check for **creative answers, Q&A, and advanced Fuzzy Matching** when no deterministic rule is met.  
+││ * **Status:** Local LLM integration.
+│└ 5. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟  
+││ * Applied after LanguageTool to correct LT-specific outputs. Follows the same strict cascading priority logic as the Pre-Correction layer.  
+││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-arlang.md)) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
+││ * **Fuzzy Fallback:** The **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. It is only executed if the entire preceding deterministic/cascading rule run failed to find a match (current_rule_matched is False), optimizing performance by avoiding slow fuzzy checks whenever possible.  
+├┬ **Model Management/**   
+│├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
+│└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
+├─ **Adaptive VAD Timeout** 🐧 🍏 🪟  
+├─ **Adaptive Hotkey (Start/Stop)** 🐧 🍏 🪟  
+├─ **Instant Language Switching** (Experimental via model preloading) 🐧 🍏         
+├─ **Airflow Orchestration** (DAG-based workflow automation) 🐧 🍏 🪟
+│   Requires Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
+├─ **Trino State Engine** (Interface-aware config per speech/terminal/web) 🐧 🍏 🪟
+└─  Requires Docker · Admin UI: `http://localhost:8084` 🐧 🍏 🪟  
 
-                        **هالة النواة/** 🐧 🍏 🪟XSPACEbreakX
-├─ `aura_engine.py` (خدمة بايثون الرئيسية التي تنظم Aura) 🐧 🍏 🪟XSPACEbreakX
-├┬ **بث مباشر مباشر** (التكوين والخرائط) 🐧 🍏 🪟XSPACEbreakX
-│├ **تحميل خريطة خاصة آمنة (النزاهة أولاً)** 🔒 🐧 🍏 🪟XSPACEbreakX
-││ * **سير العمل:** يقوم بتحميل أرشيفات ZIP المحمية بكلمة مرور. اكس سبيس بريك اكس
-│├ **معالجة النصوص وتصحيحها/** مجمعة حسب اللغة (على سبيل المثال، `de-DE`، `en-US`، ...) XSPACEbreakX
-│├ 1. `normalize_peptication.py` (توحيد علامات الترقيم بعد النسخ) 🐧 🍏 🪟XSPACEbreakX
-│├ 2. **التصحيح المسبق الذكي** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟XSPACEbreakX
-││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة (`on_match_exec`) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
-││ * **التنفيذ المتتالي:** تتم معالجة القواعد بشكل تسلسلي وتكون تأثيراتها **تراكمية**. تنطبق القواعد اللاحقة على النص الذي تم تعديله بواسطة القواعد السابقة.XSPACEbreakX
-││ * **معيار الإيقاف ذو الأولوية الأعلى:** إذا حققت القاعدة **تطابقًا كاملاً** (^...$)، فسيتوقف مسار المعالجة بالكامل لهذا الرمز المميز على الفور. تعتبر هذه الآلية ضرورية لتنفيذ الأوامر الصوتية الموثوقة.XSPACEbreakX
-│├ 3. `correct_text_by_languagetool.py` (يدمج أداة اللغة لتصحيح القواعد النحوية/النمط) 🐧 🍏 🪟XSPACEbreakX
-│├ **4. محرك قواعد RegEx الهرمي مع تقنية Ollama AI الاحتياطية** 🐧 🍏 🪟XSPACEbreakX
-││ * **التحكم الحتمي:** يستخدم RegEx-Rule-Engine للأوامر الدقيقة ذات الأولوية العالية والتحكم في النص.XSPACEbreakX
-│├ **المكون الإضافي لبحث المتجهات** (التحميل البطيء): يتيح البحث الدلالي عن طريق ربط تضمينات Vector المحلية مع الطبقة الاحتياطية Ollama/LLM 🐧XSPACEbreakX
-││ * **Ollama AI (Local LLM) الاحتياطي:** بمثابة فحص اختياري منخفض الأولوية لـ **الإجابات الإبداعية، والأسئلة والأجوبة، والمطابقة الغامضة المتقدمة** في حالة عدم استيفاء قاعدة حتمية.XSPACEbreakX
-                          ││ * **الحالة:** تكامل LLM محلي.
-│└ 5. **التصحيح اللاحق الذكي** (`FuzzyMap`)** – تحسين ما بعد LT** 🐧 🍏 🪟XSPACEbreakX
-││ * يتم تطبيقه بعد LanguageTool لتصحيح المخرجات الخاصة بـ LT. يتبع نفس منطق الأولوية المتتالي الصارم مثل طبقة التصحيح المسبق.XSPACEbreakX
-││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-arlang.md)) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات (API)، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
-││ * **التراجع الضبابي:** يعمل **التحقق من التشابه الغامض** (الذي يتم التحكم فيه بواسطة عتبة، على سبيل المثال، 85%) بمثابة طبقة تصحيح الأخطاء ذات الأولوية الأدنى. يتم تنفيذه فقط في حالة فشل تشغيل القاعدة الحتمية/المتتالية السابقة بالكامل في العثور على تطابق (قاعدة_القاعدة_المتطابقة الحالية خاطئة)، مما يؤدي إلى تحسين الأداء عن طريق تجنب عمليات التحقق البطيئة الغامضة كلما أمكن ذلك.  
-                           ├┬ **إدارة النماذج/** XSPACEbreakX
-│├─ `prioritize_model.py` (يعمل على تحسين تحميل/تفريغ النموذج بناءً على الاستخدام) 🐧 🍏 🪟XSPACEbreakX
-│└─ `setup_initial_model.py` (يقوم بتكوين إعداد النموذج لأول مرة) 🐧 🍏 🪟XSPACEbreakX
-              ├─ **مهلة التكيف VAD** 🐧 🍏 🪟XSPACEbreakX
-├─ **مفتاح التشغيل السريع التكيفي (بدء/إيقاف)** 🐧 🍏 🪟XSPACEbreakX
-├─ **التبديل الفوري للغة** (تجريبي عبر التحميل المسبق للنموذج) 🐧 🍏XSPACEbreakX
-├─ **تنسيق تدفق الهواء** (أتمتة سير العمل المستندة إلى DAG) 🐧 🍏 🪟
-│ يتطلب Docker · واجهة المستخدم: `http://localhost:8081` 🐧 🍏 🪟XSPACEbreakX
-├─ **Trino State Engine** (تكوين مدرك للواجهة لكل خطاب/محطة/ويب) 🐧 🍏 🪟
-└─ يتطلب Docker · واجهة المستخدم الإدارية: `http://localhost:8084` 🐧 🍏 🪟XSPACEbreakX
+**SystemUtilities/**   
+├┬ **LanguageTool Server Management/**   
+│├─ `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
+│└─ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
+├─ `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
 
-                                             **SystemUtilities/**XSPACEbreakX
-                    ├┬ **إدارة خادم LanguageTool/** XSPACEbreakX
-│├─ `start_languagetool_server.py` (تهيئة خادم LanguageTool المحلي) 🐧 🍏 🪟XSPACEbreakX
-│└─ `stop_languagetool_server.py` (إيقاف تشغيل خادم LanguageTool) 🐧 🍏
-├─ `monitor_mic.sh` (على سبيل المثال للاستخدام مع سماعة الرأس دون استخدام لوحة المفاتيح والشاشة) 🐧 🍏 🪟XSPACEbreakX
+### **Model & Package Management**  
+    Tools for robust handling of large language models.  
 
-                   ### **إدارة النماذج والحزم**XSPACEbreakX
-أدوات للتعامل القوي مع نماذج اللغات الكبيرة.XSPACEbreakX
-
-                    **إدارة النماذج/** 🐧 🍏 🪟XSPACEbreakX
-├─ **أداة تنزيل النماذج القوية** (أجزاء إصدار GitHub) 🐧 🍏 🪟XSPACEbreakX
-├─ `split_and_hash.py` (أداة مساعدة لأصحاب الريبو لتقسيم الملفات الكبيرة وإنشاء مجاميع اختبارية) 🐧 🍏 🪟XSPACEbreakX
-└─ `download_all_packages.py` (أداة للمستخدمين النهائيين لتنزيل الملفات متعددة الأجزاء والتحقق منها وإعادة تجميعها) 🐧 🍏 🪟XSPACEbreakX
-
+**ModelManagement/** 🐧 🍏 🪟  
+├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
+├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
+└─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
+```
                                                           </التفاصيل>
 
 
@@ -482,7 +480,7 @@ f11::
 
 *نصيحة: يتيح لك glogg استخدام التعبيرات العادية للبحث عن الأحداث المثيرة للاهتمام في ملفات السجل الخاصة بك.* XSPACEbreakX
 يرجى تحديد مربع الاختيار عند التثبيت لربطه بملفات السجل.  اكس سبيس بريك اكس
-https://translate.google.com/translate?hl=de&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
                                               اكس سبيس بريك اكس
 *نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
 
@@ -548,7 +546,7 @@ https://translate.google.com/translate?hl=de&sl=en&tl=ar&u=https://glogg.bonnefo
                                                            <التفاصيل>
                          <summary>النماذج المستخدمة</summary>
 
-                                     # الموديلات المستعملة:
+                                    ## الموديلات المستعملة:
 
 توصية: استخدم نماذج من Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (ربما أسرع)
 

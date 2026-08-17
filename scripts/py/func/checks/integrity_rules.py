@@ -84,6 +84,7 @@ INTEGRITY_CHECKS = {
 
 
     'README.md': [
+        '```text',
         'setup/windows11_setup.ps1',
         'https://www.autohotkey.com/',
         './scripts/restart_venv_and_run-server.sh',
