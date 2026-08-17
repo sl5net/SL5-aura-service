@@ -2,7 +2,7 @@ name: Self-Test (Aura Logic)
 # .github/workflows/self-test.yml
 on:
   push:
-    branches: [ master, '**self-test**' ]
+    branches: [ master, '**self-test**', feat/cache-write-only-on-maps_changed ]
   pull_request:
     branches: [ master ]
     paths-ignore:
