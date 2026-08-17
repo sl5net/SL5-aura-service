@@ -416,15 +416,13 @@ Legend for OS Compatibility:
 
 
 
-
-
 ### **Core Speech-to-Text (Aura) Engine**
     Our primary engine for offline speech recognition and audio processing.
 
     
 <details>
 <summary>Aura-Core</summary>
-
+```text
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
@@ -470,7 +468,7 @@ Legend for OS Compatibility:
 ├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
 ├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
-
+```
 </details>
 
 
@@ -548,7 +546,7 @@ Then maybe double-click
 <details>
 <summary>Used Models</summary>
 
-# Used Models:
+## Used Models:
 
 Recommendation: use models from Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (probably faster)
 
