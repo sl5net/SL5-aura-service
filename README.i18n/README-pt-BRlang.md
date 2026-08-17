@@ -449,7 +449,7 @@ Scripts para configuração de ambiente, teste e execução de serviço.
 
 *Dica: glogg permite que você use expressões regulares para pesquisar eventos interessantes em seus arquivos de log.*   
 Marque a caixa de seleção ao instalar para associar aos arquivos de log.    
-https://translate.google.com/translate?hl=en&sl=en&tl=pt-BR&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=pt-BR&u=https://glogg.bonnefon.org/     
   
 *Dica: depois de definir seus padrões regex, execute `python3 tools/map_tagger.py` para gerar automaticamente exemplos pesquisáveis para as ferramentas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pt-BRlang.md) para obter detalhes.*
 

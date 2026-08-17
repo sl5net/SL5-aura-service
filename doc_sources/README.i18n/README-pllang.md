@@ -11,11 +11,11 @@
 |---|---|---|
 
 
-| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-pllang.md#the-oma-modus-beginner-shortcut) : po prostu napisz słowo, Aura zajmie się resztą | Ucz się z Koanami — jedna koncepcja na raz | Pełne skrypty Pythona, wtyczki, wywołania API |
+| [grandma-mode](../../docs/GettingStarted.i18n/GettingStarted-pllang.md#the-oma-modus-beginner-shortcut) : po prostu napisz słowo, Aura zajmie się resztą | Ucz się z Koanami — jedna koncepcja na raz | Pełne skrypty Pythona, wtyczki, wywołania API |
 | 🗄️Zarządzanie państwem | Orkiestracja Trino + Airflow, fzf, CopyQ, polecenia głosowe/terminalowe, interfejsy użytkownika przeglądarki |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ **~2,87 J** na test (39 testów na >800 mapach przy 0,09 s ciepła / 0,45 s zimna 🌿 mierzone za pomocą [Eco-CI](https://metrics.green-coding.io/index.html)) · brak obliczeń w chmurze
+⚡ **~2,87 J** na test (39 testów na ponad 900 mapach przy 0,09 s ciepła / 0,50 s zimna 🌿 mierzone za pomocą [Eco-CI](https://metrics.green-coding.io/index.html)) · brak obliczeń w chmurze
 
 <szczegóły>
 <summary>Szybki start</summary>
@@ -24,7 +24,7 @@
 1. Pobierz lub sklonuj to repozytorium
 2. Uruchom skrypt instalacyjny dla swojego systemu operacyjnego (zobacz folder `setup/`):
 - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 przeczytaj [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-pllang.md)
+===> 🧩 przeczytaj [docs/LINUX_WAYLAND_dotool](../../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-pllang.md)
 - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
 - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS): `nix-shell setup/shell.nix`, a następnie `bash setup/nixos_setup.sh`
@@ -32,7 +32,7 @@
 - macOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Uruchom Aurę: `./scripts/restart_venv_and_run-server.sh`
-4. Naciśnij klawisz skrótu i mów — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-pllang.md)**
+4. Naciśnij klawisz skrótu i mów — **[full guide →](../../docs/GettingStarted.i18n/GettingStarted-pllang.md)**
 
 
 **⚠️ Wymagania systemowe i kompatybilność**
@@ -45,7 +45,7 @@
 Wymaga mimalloc (`sudo pacman -S mimalloc`) ze względu na kompatybilność z glibc 2.43.
 * **Linux (NixOS):** 🧪 Eksperymentalny — konfiguracja opracowana przez społeczność, jeszcze nie przetestowana.
 Jeśli spróbujesz, otwórz problem lub PR i opisz swoje ustalenia!  XSPACEbreakX
-* **Linux (Manjaro):** Nowość/eksperyment: Ogólnosystemowy klawisz skrótu otwiera interfejs przypominający fzf, sterowany klawiaturą, dzięki czemu możesz uruchamiać polecenia Aury z dowolnego miejsca na pulpicie (całkowicie oddzielone od aktywnego okna). Ten program uruchamiający sterowany klawiszami skrótu jest obecnie zaimplementowany i przetestowany w systemie Linux (Manjaro); inne dystrybucje mogą działać, ale wymagają konfiguracji. Zobacz w 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-pllang.md) XSPACEbreakX
+* **Linux (Manjaro):** Nowość/eksperyment: Ogólnosystemowy klawisz skrótu otwiera interfejs przypominający fzf, sterowany klawiaturą, dzięki czemu możesz uruchamiać polecenia Aury z dowolnego miejsca na pulpicie (całkowicie oddzielone od aktywnego okna). Ten program uruchamiający sterowany klawiszami skrótu jest obecnie zaimplementowany i przetestowany w systemie Linux (Manjaro); inne dystrybucje mogą działać, ale wymagają konfiguracji. Zobacz w 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-pllang.md) XSPACEbreakX
 
 
 XSPACEbreakX
@@ -65,7 +65,7 @@ Uwaga: Wiele tekstów to wygenerowane maszynowo tłumaczenia oryginalnej dokumen
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **Wskazówka:** Aby uzyskać lepszą obsługę terminala, zobacz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
+> **Wskazówka:** Aby uzyskać lepszą obsługę terminala, zobacz [Zsh Integration](../../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
 
 ### 🎥 Samouczek wideo
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -128,7 +128,7 @@ Aby uzyskać pełne informacje techniczne, w tym wszystkie moduły i skrypty, od
 👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ### Wyróżnione funkcje
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pllang.md) — Dwupanelowe wyszukiwanie reguł `fzf`, podgląd kontekstu na żywo, natychmiastowe wykonywanie poleceń poprzez `Enter`/`Ctrl+R` i integracja edytora poprzez `Ctrl+E`. Obsługiwane przez globalny klawisz skrótu („Super+S”) i wiele dedykowanych środowisk wyszukiwania, wstępnie skonfigurowanych za pomocą poleceń głosowych.
+- [Interactive Rule Search & Run](../../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pllang.md) — Dwupanelowe wyszukiwanie reguł `fzf`, podgląd kontekstu na żywo, natychmiastowe wykonywanie poleceń poprzez `Enter`/`Ctrl+R` i integracja edytora poprzez `Ctrl+E`. Obsługiwane przez globalny klawisz skrótu („Super+S”) i wiele dedykowanych środowisk wyszukiwania, wstępnie skonfigurowanych za pomocą poleceń głosowych.
 
 ### Stan kompilacji
 [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
@@ -346,7 +346,7 @@ XSPACEbreakX
 ││ * **Przebieg pracy:** Ładuje archiwa ZIP chronione hasłem. XSPACEbreakX
 │├ **Przetwarzanie i korekta tekstu/** Pogrupowane według języka (np. `de-DE`, `en-US`, ... ) XSPACEbreakX
 │├ 1. `normalize_punstanding.py` (Standaryzuje interpunkcję po transkrypcji) 🐧 🍏 🪟XSPACEbreakX
-│├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - [The Primary Command Layer](../../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟XSPACEbreakX
 ││ * **Dynamiczne wykonywanie skryptów:** Reguły mogą uruchamiać niestandardowe skrypty Pythona (`on_match_exec`) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
 ││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego przez wcześniejsze reguły.XSPACEbreakX
 ││ * **Kryterium zatrzymania o najwyższym priorytecie:** Jeśli reguła osiągnie **Pełne dopasowanie** (^...$), cały potok przetwarzania dla tego tokena zostanie natychmiast zatrzymany. Mechanizm ten ma kluczowe znaczenie dla realizacji niezawodnych poleceń głosowych.XSPACEbreakX
@@ -358,7 +358,7 @@ XSPACEbreakX
 ││ * **Status:** Lokalna integracja LLM.
 │└ 5. **Inteligentna korekta końcowa** (`FuzzyMap`)** – Udoskonalenie po LT** 🐧 🍏 🪟XSPACEbreakX
 ││ * Stosowane po LanguageTool w celu skorygowania wyników specyficznych dla LT. Działa zgodnie z tą samą ścisłą logiką priorytetów kaskadowych, co warstwa wstępnej korekty.XSPACEbreakX
-││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-pllang.md)) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python ([on_match_exec](../../docs/advanced-scripting.i18n/advanced-scripting-pllang.md)) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
 ││ * **Fuzzy Fallback:** **Rozmyta kontrola podobieństwa** (kontrolowana przez próg, np. 85%) działa jako warstwa korekcji błędów o najniższym priorytecie. Jest wykonywana tylko wtedy, gdy w całym poprzedzającym uruchomieniu reguły deterministycznej/kaskadowej nie znaleziono dopasowania (bieżąca_rule_matched ma wartość False), optymalizując wydajność poprzez unikanie, jeśli to możliwe, powolnych kontroli rozmytych.XSPACEbreakX
 ├┬ **Zarządzanie modelami/** XSPACEbreakX
 │├─ `prioritize_model.py` (optymalizuje ładowanie/rozładowywanie modelu w oparciu o wykorzystanie) 🐧 🍏 🪟XSPACEbreakX
@@ -396,9 +396,9 @@ Skrypty do konfiguracji środowiska, testowania i wykonywania usług.XSPACEbreak
 
 *Wskazówka: glogg umożliwia używanie wyrażeń regularnych do wyszukiwania interesujących zdarzeń w plikach dziennika.* XSPACEbreakX
 Podczas instalacji zaznacz pole wyboru, aby powiązać je z plikami dziennika.  XSPACEbreakX
-https://translate.google.com/translate?hl=en&sl=en&tl=pl&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=pl&u=https://glogg.bonnefon.org/     
 XSPACEbreakX
-*Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pllang.md).*
+*Wskazówka: Po zdefiniowaniu wzorców wyrażeń regularnych uruchom `python3 Tools/map_tagger.py`, aby automatycznie wygenerować możliwe do przeszukiwania przykłady dla narzędzi CLI. Aby uzyskać szczegółowe informacje, zobacz [Map Maintenance Tools](../../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pllang.md).*
 
 Następnie może kliknij dwukrotnie
 `log/aura_engine.log`
