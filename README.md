@@ -422,7 +422,6 @@ Legend for OS Compatibility:
     
 <details>
 <summary>Aura-Core</summary>
-```text
 **Aura-Core/** 🐧 🍏 🪟  
 ├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
 ├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
@@ -468,7 +467,7 @@ Legend for OS Compatibility:
 ├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
 ├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
-```
+
 </details>
 
 
