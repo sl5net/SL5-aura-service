@@ -336,7 +336,52 @@ Nasz główny silnik do rozpoznawania mowy w trybie offline i przetwarzania dźw
 XSPACEbreakX
 <szczegóły>
 <summary>Rdzeń Aury</summary>
-__KOD_BLOKU_6__
+**Aura-Rdzeń/** 🐧 🍏 🪟XSPACEbreakX
+├─ `aura_engine.py` (główna usługa Pythona zarządzająca Aurą) 🐧 🍏 🪟XSPACEbreakX
+├┬ **Przeładuj na żywo** (konfiguracja i mapy) 🐧 🍏 🪟XSPACEbreakX
+│├ **Bezpieczne ładowanie prywatnej mapy (na pierwszym miejscu jest integralność)** 🔒 🐧 🍏 🪟XSPACEbreakX
+││ * **Przebieg pracy:** Ładuje archiwa ZIP chronione hasłem. XSPACEbreakX
+│├ **Przetwarzanie i korekta tekstu/** Pogrupowane według języka (np. `de-DE`, `en-US`, ... ) XSPACEbreakX
+│├ 1. `normalize_punstanding.py` (Standaryzuje interpunkcję po transkrypcji) 🐧 🍏 🪟XSPACEbreakX
+│├ 2. **Inteligentna korekta wstępna** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** Reguły mogą uruchamiać niestandardowe skrypty Pythona (`on_match_exec`) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
+││ * **Wykonanie kaskadowe:** Reguły są przetwarzane sekwencyjnie, a ich efekty są **kumulatywne**. Późniejsze reguły mają zastosowanie do tekstu zmodyfikowanego przez wcześniejsze reguły.XSPACEbreakX
+││ * **Kryterium zatrzymania o najwyższym priorytecie:** Jeśli reguła osiągnie **Pełne dopasowanie** (^...$), cały potok przetwarzania dla tego tokena zostanie natychmiast zatrzymany. Mechanizm ten ma kluczowe znaczenie dla realizacji niezawodnych poleceń głosowych.XSPACEbreakX
+│├ 3. `correct_text_by_languagetool.py` (integruje narzędzie LanguageTool do poprawiania gramatyki/stylu) 🐧 🍏 🪟XSPACEbreakX
+│├ **4. Hierarchiczny silnik reguł RegEx z rezerwą Ollama AI** 🐧 🍏 🪟XSPACEbreakX
+││ * **Kontrola deterministyczna:** wykorzystuje silnik RegEx-Rule-Engine do precyzyjnego sterowania poleceniami i tekstem o wysokim priorytecie.XSPACEbreakX
+│├ **Wtyczka Vector-Search** (Leniwe ładowanie): umożliwia wyszukiwanie semantyczne poprzez połączenie lokalnego osadzania wektorów z warstwą rezerwową Ollama/LLM 🐧XSPACEbreakX
+││ * **Awaryjny algorytm Ollama AI (lokalny LLM):** służy jako opcjonalna kontrola o niskim priorytecie w przypadku **kreatywnych odpowiedzi, pytań i odpowiedzi oraz zaawansowanego dopasowywania rozmytego**, gdy nie jest spełniona żadna reguła deterministyczna.XSPACEbreakX
+││ * **Status:** Lokalna integracja LLM.
+│└ 5. **Inteligentna korekta końcowa** (`FuzzyMap`)** – Udoskonalenie po LT** 🐧 🍏 🪟XSPACEbreakX
+││ * Stosowane po LanguageTool w celu skorygowania wyników specyficznych dla LT. Działa zgodnie z tą samą ścisłą logiką priorytetów kaskadowych, co warstwa wstępnej korekty.XSPACEbreakX
+││ * **Dynamiczne wykonywanie skryptów:** reguły mogą uruchamiać niestandardowe skrypty w języku Python ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-pllang.md)) w celu wykonywania zaawansowanych działań, takich jak wywołania API, operacje we/wy plików lub generowanie odpowiedzi dynamicznych.XSPACEbreakX
+││ * **Fuzzy Fallback:** **Rozmyta kontrola podobieństwa** (kontrolowana przez próg, np. 85%) działa jako warstwa korekcji błędów o najniższym priorytecie. Jest wykonywana tylko wtedy, gdy w całym poprzedzającym uruchomieniu reguły deterministycznej/kaskadowej nie znaleziono dopasowania (bieżąca_rule_matched ma wartość False), optymalizując wydajność poprzez unikanie, jeśli to możliwe, powolnych kontroli rozmytych.XSPACEbreakX
+├┬ **Zarządzanie modelami/** XSPACEbreakX
+│├─ `prioritize_model.py` (optymalizuje ładowanie/rozładowywanie modelu w oparciu o wykorzystanie) 🐧 🍏 🪟XSPACEbreakX
+│└─ `setup_initial_model.py` (Konfiguruje pierwszą konfigurację modelu) 🐧 🍏 🪟XSPACEbreakX
+├─ **Adaptacyjny limit czasu VAD** 🐧 🍏 🪟XSPACEbreakX
+├─ **Adaptacyjny klawisz skrótu (Start/Stop)** 🐧 🍏 🪟XSPACEbreakX
+├─ **Natychmiastowe przełączanie języka** (eksperymentalnie poprzez wstępne ładowanie modelu) 🐧 🍏 XSPACEbreakX
+├─ **Orkiestracja przepływu powietrza** (automatyzacja przepływu pracy oparta na DAG) 🐧 🍏 🪟
+│ Wymaga Dockera · Interfejs użytkownika: `http://localhost:8081` 🐧 🍏 🪟XSPACEbreakX
+├─ **Trino State Engine** (konfiguracja uwzględniająca interfejs dla mowy/terminalu/sieci) 🐧 🍏 🪟
+└─ Wymaga Dockera · Interfejs administratora: `http://localhost:8084` 🐧 🍏 🪟XSPACEbreakX
+
+**Narzędzia systemowe/** XSPACEbreakX
+├┬ **Zarządzanie serwerem LanguageTool/** XSPACEbreakX
+│├─ `start_languagetool_server.py` (Inicjuje lokalny serwer LanguageTool) 🐧 🍏 🪟XSPACEbreakX
+│└─ `stop_languagetool_server.py` (zamyka serwer LanguageTool) 🐧 🍏
+├─ `monitor_mic.sh` (np. do użytku z zestawem słuchawkowym bez użycia klawiatury i monitora) 🐧 🍏 🪟XSPACEbreakX
+
+### **Zarządzanie modelami i pakietami**XSPACEbreakX
+Narzędzia do niezawodnej obsługi dużych modeli językowych.XSPACEbreakX
+
+**Zarządzanie modelem/** 🐧 🍏 🪟XSPACEbreakX
+├─ ** Solidny program do pobierania modeli ** (fragmenty wersji GitHub) 🐧 🍏 🪟XSPACEbreakX
+├─ `split_and_hash.py` (Narzędzie dla właścicieli repozytoriów umożliwiające dzielenie dużych plików i generowanie sum kontrolnych) 🐧 🍏 🪟XSPACEbreakX
+└─ `download_all_packages.py` (Narzędzie dla użytkowników końcowych do pobierania, weryfikowania i ponownego składania plików wieloczęściowych) 🐧 🍏 🪟XSPACEbreakX
+
 </details>
 
 
@@ -395,7 +440,7 @@ Funkcje obecnie w fazie opracowywania lub w wersji roboczej.XSPACEbreakX
 <szczegóły>
 <summary>Kliknij, aby zobaczyć polecenie użyte do wygenerowania tej listy skryptów</summary>
 
-__KOD_BLOKU_7__
+__KOD_BLOKU_6__
 </details>
 
 <szczegóły>

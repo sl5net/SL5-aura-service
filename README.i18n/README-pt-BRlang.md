@@ -389,22 +389,52 @@ Nosso principal mecanismo para reconhecimento de fala offline e processamento de
   
 <detalhes>
 <summary>Aura-Núcleo</summary>
-```js
-copyq:
-var filePath = 'c:/tmp/sl5_record.trigger';
+**Aura-Core/** 🐧 🍏 🪟  
+├─ `aura_engine.py` (principal serviço Python orquestrando Aura) 🐧 🍏 🪟  
+├┬ **Live Hot-Reload** (Configuração e Mapas) 🐧 🍏 🪟  
+│├ **Carregamento seguro de mapa privado (integridade em primeiro lugar)** 🔒 🐧 🍏 🪟  
+││ * **Fluxo de trabalho:** Carrega arquivos ZIP protegidos por senha.   
+│├ **Processamento e correção de texto/** Agrupado por idioma (por exemplo, `de-DE`, `en-US`, ...)   
+│├ 1. `normalize_punctuation.py` (padroniza a pontuação pós-transcrição) 🐧 🍏 🪟  
+│├ 2. **Pré-correção inteligente** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-pt-BRlang.md)) 🐧 🍏 🪟  
+││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados (`on_match_exec`) para executar ações avançadas como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
+││ * **Execução em Cascata:** As regras são processadas sequencialmente e seus efeitos são **cumulativos**. Regras posteriores se aplicam ao texto modificado por regras anteriores.  
+││ * **Critério de parada de prioridade mais alta:** Se uma regra atingir uma **Correspondência completa** (^...$), todo o pipeline de processamento desse token será interrompido imediatamente. Este mecanismo é fundamental para implementar comandos de voz confiáveis.  
+│├ 3. `correct_text_by_languagetool.py` (Integra o LanguageTool para correção de gramática/estilo) 🐧 🍏 🪟  
+│├ **4. Motor de regras RegEx hierárquico com Ollama AI Fallback** 🐧 🍏 🪟  
+││ * **Controle Determinístico:** Usa RegEx-Rule-Engine para comando preciso e de alta prioridade e controle de texto.  
+│├ **Plugin de pesquisa de vetor** (carregamento lento): ativa a pesquisa semântica conectando embeddings de vetor locais com a camada de fallback Ollama/LLM 🐧  
+││ * **Ollama AI (Local LLM) Fallback:** Serve como uma verificação opcional de baixa prioridade para **respostas criativas, perguntas e respostas e correspondência difusa avançada** quando nenhuma regra determinística é atendida.  
+││ * **Status:** Integração LLM local.
+│└ 5. **Pós-Correção Inteligente** (`FuzzyMap`)**– Refinamento Pós-LT** 🐧 🍏 🪟  
+││ * Aplicado após o LanguageTool para corrigir saídas específicas do LT. Segue a mesma lógica estrita de prioridade em cascata da camada de pré-correção.  
+││ * **Execução dinâmica de script:** As regras podem acionar scripts Python personalizados ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-pt-BRlang.md)) para executar ações avançadas, como chamadas de API, E/S de arquivo ou gerar respostas dinâmicas.  
+││ * **Fuzzy Fallback:** A **Verificação de similaridade difusa** (controlada por um limite, por exemplo, 85%) atua como a camada de correção de erros de prioridade mais baixa. Ele só será executado se toda a execução anterior da regra determinística/em cascata não conseguir encontrar uma correspondência (current_rule_matched é False), otimizando o desempenho evitando verificações difusas lentas sempre que possível.  
+├┬ **Gerenciamento de modelo/**   
+│├─ `prioritize_model.py` (Otimiza o carregamento/descarregamento do modelo com base no uso) 🐧 🍏 🪟  
+│└─ `setup_initial_model.py` (configura a configuração inicial do modelo) 🐧 🍏 🪟  
+├─ **Tempo limite do VAD adaptável** 🐧 🍏 🪟  
+├─ **Tecla de atalho adaptativa (Iniciar/Parar)** 🐧 🍏 🪟  
+├─ **Troca instantânea de idioma** (Experimental via pré-carregamento de modelo) 🐧 🍏   
+├─ **Orquestração de fluxo de ar** (automação de fluxo de trabalho baseada em DAG) 🐧 🍏 🪟
+│ Requer Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
+├─ **Trino State Engine** (configuração com reconhecimento de interface por fala/terminal/web) 🐧 🍏 🪟
+└─ Requer Docker · UI de administrador: `http://localhost:8084` 🐧 🍏 🪟  
 
-var f = File(filePath);
+**Utilitários do sistema/**   
+├┬ **Gerenciamento de servidor LanguageTool/**   
+│├─ `start_languagetool_server.py` (inicializa o servidor LanguageTool local) 🐧 🍏 🪟  
+│└─ `stop_languagetool_server.py` (Desliga o servidor LanguageTool) 🐧 🍏
+├─ `monitor_mic.sh` (por exemplo, para uso com fone de ouvido sem usar teclado e monitor) 🐧 🍏 🪟  
 
-if (f.openAppend()) {
-    f.close();
-} else {
-    popup(
-        'error',
-        'cant read or open:\n' + filePath
-        + '\n' + f.errorString()
-    );
-}
-```
+### **Gerenciamento de modelos e pacotes**  
+Ferramentas para manipulação robusta de modelos de linguagem grandes.  
+
+**Gerenciamento de modelo/** 🐧 🍏 🪟  
+├─ **Downloader de modelo robusto** (pedaços de lançamento do GitHub) 🐧 🍏 🪟  
+├─ `split_and_hash.py` (Utilitário para proprietários de repositórios dividirem arquivos grandes e gerarem somas de verificação) 🐧 🍏 🪟  
+└─ `download_all_packages.py` (ferramenta para usuários finais baixarem, verificarem e remontarem arquivos de várias partes) 🐧 🍏 🪟  
+
 </detalhes>
 
 
@@ -416,7 +446,7 @@ Scripts para configuração de ambiente, teste e execução de serviço.
 
 *Dica: glogg permite que você use expressões regulares para pesquisar eventos interessantes em seus arquivos de log.*   
 Marque a caixa de seleção ao instalar para associar aos arquivos de log.    
-https://translate.google.com/translate?hl=en&sl=en&tl=pt-BR&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=pt-BR&u=https://glogg.bonnefon.org/     
   
 *Dica: depois de definir seus padrões regex, execute `python3 tools/map_tagger.py` para gerar automaticamente exemplos pesquisáveis para as ferramentas CLI. Consulte [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pt-BRlang.md) para obter detalhes.*
 
@@ -463,23 +493,20 @@ Recursos atualmente em desenvolvimento ou em status de rascunho.
 <detalhes>
 <summary>Clique para ver o comando usado para gerar esta lista de scripts</summary>
 
-```sh
-; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+```js
+copyq:
+var filePath = 'c:/tmp/sl5_record.trigger';
 
-;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
-;===================================================================
-f9::
-f10::
-f11::
-{
-    local TriggerFile := "c:\tmp\sl5_record.trigger"
-    FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
-    SetTimer(() => ToolTip(), -1500)
+var f = File(filePath);
+
+if (f.openAppend()) {
+    f.close();
+} else {
+    popup(
+        'error',
+        'cant read or open:\n' + filePath
+        + '\n' + f.errorString()
+    );
 }
 ```
 </detalhes>

@@ -422,53 +422,52 @@ OS 호환성 범례:XSPACEbreakX
 XSPACEbreakX
 <상세>
 <summary>오라 코어</summary>
-```text
-**Aura-Core/** 🐧 🍏 🪟  
-├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
-├┬ **Live Hot-Reload** (Config & Maps) 🐧 🍏 🪟  
-│├ **Secure Private Map Loading (Integrity-First)** 🔒  🐧 🍏 🪟  
-││ * **Workflow:** Loads password-protected ZIP archives.   
-│├ **Text Processing & Correction/** Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
-│├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
-│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟  
-││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts (`on_match_exec`) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
-││ * **Cascading Execution:** Rules are processed sequentially and their effects are **cumulative**. Later rules apply to text modified by earlier rules.  
-││ * **Highest Priority Stop Criterion:** If a rule achieves a **Full Match** (^...$), the entire processing pipeline for that token stops immediately. This mechanism is critical for implementing reliable voice commands.  
-│├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
-│├ **4. Hierarchical RegEx-Rule-Engine with Ollama AI Fallback** 🐧 🍏 🪟  
-││ * **Deterministic Control:** Uses RegEx-Rule-Engine for precise, high-priority command and text control.  
-│├ **Vector-Search Plugin** (Lazy loading): Enables Semantic Search by connecting local Vector embeddings with the Ollama/LLM fallback layer 🐧  
-││ * **Ollama AI (Local LLM) Fallback:** Serves as an optional, low-priority check for **creative answers, Q&A, and advanced Fuzzy Matching** when no deterministic rule is met.  
-││ * **Status:** Local LLM integration.
-│└ 5. **Intelligent Post-Correction** (`FuzzyMap`)**– Post-LT Refinement** 🐧 🍏 🪟  
-││ * Applied after LanguageTool to correct LT-specific outputs. Follows the same strict cascading priority logic as the Pre-Correction layer.  
-││ * **Dynamic Script Execution:** Rules can trigger custom Python scripts ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-kolang.md)) to perform advanced actions like API calls, file I/O, or generate dynamic responses.  
-││ * **Fuzzy Fallback:** The **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. It is only executed if the entire preceding deterministic/cascading rule run failed to find a match (current_rule_matched is False), optimizing performance by avoiding slow fuzzy checks whenever possible.  
-├┬ **Model Management/**   
-│├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
-│└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
-├─ **Adaptive VAD Timeout** 🐧 🍏 🪟  
-├─ **Adaptive Hotkey (Start/Stop)** 🐧 🍏 🪟  
-├─ **Instant Language Switching** (Experimental via model preloading) 🐧 🍏         
-├─ **Airflow Orchestration** (DAG-based workflow automation) 🐧 🍏 🪟
-│   Requires Docker · UI: `http://localhost:8081` 🐧 🍏 🪟  
-├─ **Trino State Engine** (Interface-aware config per speech/terminal/web) 🐧 🍏 🪟
-└─  Requires Docker · Admin UI: `http://localhost:8084` 🐧 🍏 🪟  
+**Aura-Core/** 🐧 🍏 🪟XSPACEbreakX
+├─ `aura_engine.py`(Aura를 조정하는 주요 Python 서비스) 🐧 🍏 🪟  
+├┬ **라이브 핫 리로드**(구성 및 맵) 🐧 🍏 🪟XSPACEbreakX
+│├ **보안된 비공개 지도 로드(무결성 우선)** 🔒 🐧 🍏 🪟XSPACEbreakX
+││ * **워크플로우:** 비밀번호로 보호된 ZIP 아카이브를 로드합니다. XSPACEbreakX
+│├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
+│├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
+│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
+││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(`on_match_exec`)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
+││ * **계단식 실행:** 규칙은 순차적으로 처리되며 해당 효과는 **누적**됩니다. 이후 규칙은 이전 규칙에 의해 수정된 텍스트에 적용됩니다.  
+││ * **가장 높은 우선순위 중지 기준:** 규칙이 **완전 일치**(^...$)를 달성하면 해당 토큰에 대한 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 안정적인 음성 명령을 구현하는 데 중요합니다.  
+│├ 3. `corright_text_by_언어tool.py` (문법/스타일 교정을 위한 LanguageTool 통합) 🐧 🍏 🪟  
+│├ **4. Ollama AI 폴백을 사용한 계층적 RegEx-Rule-Engine** 🐧 🍏 🪟XSPACEbreakX
+││ * **결정론적 제어:** 정확하고 우선순위가 높은 명령 및 텍스트 제어를 위해 RegEx-Rule-Engine을 사용합니다.  
+│├ **벡터 검색 플러그인**(지연 로딩): 로컬 벡터 임베딩을 Ollama/LLM 폴백 레이어와 연결하여 의미 체계 검색을 활성화합니다. 🐧  
+││ * **Ollama AI(로컬 LLM) 폴백:** 결정적 규칙이 충족되지 않는 경우 **창의적인 답변, Q&A 및 고급 퍼지 매칭**에 대한 선택적이고 우선순위가 낮은 검사 역할을 합니다.  
+││ * **상태:** 로컬 LLM 통합.
+│└ 5. **지능형 사후 수정**(`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟XSPACEbreakX
+││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선순위 논리를 따릅니다.  
+││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
+││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전의 전체 결정적/계단식 규칙 실행이 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
+├┬ **모델 관리/** XSPACEbreakX
+│├─ `prioritize_model.py` (사용에 따라 모델 로드/언로드 최적화) 🐧 🍏 🪟  
+│└─ `setup_initial_model.py` (최초 모델 설정 구성) 🐧 🍏 🪟  
+├─ **적응형 VAD 시간 초과** 🐧 🍏 🪟XSPACEbreakX
+├─ **적응형 단축키(시작/중지)** 🐧 🍏 🪟XSPACEbreakX
+├─ **즉각적인 언어 전환** (모델 사전 로드를 통한 실험) 🐧 🍏 XSPACEbreakX
+├─ **Airflow Orchestration** (DAG 기반 워크플로 자동화) 🐧 🍏 🪟
+│ Docker 필요 · UI: `http://localhost:8081` 🐧 🍏 🪟XSPACEbreakX
+├─ **Trino State Engine** (음성/터미널/웹별 인터페이스 인식 구성) 🐧 🍏 🪟
+└─ Docker 필요 · 관리 UI: `http://localhost:8084` 🐧 🍏 🪟XSPACEbreakX
 
-**SystemUtilities/**   
-├┬ **LanguageTool Server Management/**   
-│├─ `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
-│└─ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
-├─ `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
+**시스템 유틸리티/** XSPACEbreakX
+├┬ **LanguageTool 서버 관리/**   
+│├─ `start_언어tool_server.py`(로컬 LanguageTool 서버 초기화) 🐧 🍏 🪟  
+│└─ `stop_언어tool_server.py` (LanguageTool 서버 종료) 🐧 🍏
+├─ `monitor_mic.sh` (예: 키보드와 모니터를 사용하지 않고 헤드셋과 함께 사용) 🐧 🍏 🪟XSPACEbreakX
 
-### **Model & Package Management**  
-    Tools for robust handling of large language models.  
+### **모델 및 패키지 관리**XSPACEbreakX
+대규모 언어 모델을 강력하게 처리하기 위한 도구입니다.  
 
-**ModelManagement/** 🐧 🍏 🪟  
-├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 🍏 🪟  
-├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
-└─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
-```
+**모델 관리/** 🐧 🍏 🪟XSPACEbreakX
+├─ **강력한 모델 다운로더**(GitHub 릴리스 청크) 🐧 🍏 🪟XSPACEbreakX
+├─ `split_and_hash.py`(저장소 소유자가 대용량 파일을 분할하고 체크섬을 생성하는 유틸리티) 🐧 🍏 🪟  
+└─ `download_all_packages.py`(최종 사용자가 여러 부분으로 구성된 파일을 다운로드, 확인 및 재조립할 수 있는 도구) 🐧 🍏 🪟  
+
 </세부사항>
 
 
