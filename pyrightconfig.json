@@ -1,5 +1,5 @@
 {
-"typeCheckingMode": "off",
+"typeCheckingMode": "basic",
 "enableTypeIgnoreComments": true,
 "reportPossiblyUnboundVariable": "error"
 }
