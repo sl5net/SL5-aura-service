@@ -65,18 +65,14 @@ from typing import Any
 
 # global last_signature_time
 
-# active_window_title = None
-global _active_window_title
-
-global LAST_REMOVED_PREFIX
+_active_window_title = ""
 
 # scripts/py/func/process_text_in_background.py
 GLOBAL_PUNCTUATION_MAP = {} # noqa: F824
 GLOBAL_FUZZY_MAP_PRE = [] # noqa: F824
 GLOBAL_FUZZY_MAP = [] # noqa: F824
 
-GLOBAL_LT_LANGUAGE = ""
-GLOBAL_was_reloaded = False # Interesting from GitHub CI (17.8.'26 08:48 Mon, False 812 MAPS online, True 811 Maps,17.8.'26 09:04 Mon False: 810 Maps, avg 0.10s, 17.8.'26 09:28 Mon: Aura Core Logic (39 Tests across 812 Maps, avg 0.09s warm / 0.45s cold) )
+# Interesting from GitHub CI (17.8.'26 08:48 Mon, False 812 MAPS online, True 811 Maps,17.8.'26 09:04 Mon False: 810 Maps, avg 0.10s, 17.8.'26 09:28 Mon: Aura Core Logic (39 Tests across 812 Maps, avg 0.09s warm / 0.45s cold) )
 
 
 
@@ -314,17 +310,13 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         from .log_memory_details import log_memory_details
         log_memory_details("next: auto_reload_modified_maps", logger)
 
-    global GLOBAL_was_reloaded
     # First reload all modules in memory to capture changes
     was_reloaded_temp = auto_reload_modified_maps(logger,run_mode_override)
-    if not GLOBAL_was_reloaded:
-        GLOBAL_was_reloaded = was_reloaded_temp
 
     if getattr(settings, "DEV_MODE_memory", False):
         from .log_memory_details import log_memory_details
         log_memory_details("last: auto_reload_modified_maps", logger)
 
-    # Leere Container für die zusammengefügten Daten
     punctuation_map = {}
     fuzzy_map_pre   = []
     fuzzy_map       = []
@@ -637,7 +629,7 @@ def load_maps_for_language(lang_code, logger, run_mode_override=None):
         rule_count=len(fuzzy_map_pre),
         run_mode_override=run_mode_override
     )
-
+    _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_map, was_reloaded=was_reloaded_temp)
     return punctuation_map, fuzzy_map_pre, fuzzy_map
 
 
@@ -676,16 +668,15 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
 
     # A simpler approach for "simple fuzzy match" if 'match_phrase' is a target word:
     # Iterate through words in processed_text and check similarity.
-    words_in_text = re.findall(r'\b\w+\b', processed_text)  # Split text into words
 
+    result_text = processed_text
+    words_in_text = re.findall(r'\b\w+\b', result_text)  
     found_fuzzy_match = False
-    # temp_processed_text = processed_text  # Use a temporary variable for replacements
-
     for word_in_text in words_in_text:
+        words_in_text = re.findall(r'\b\w+\b', result_text)
+        temp_text_for_fuzzy_replace = result_text
 
-        # iterate over the words in `processed_text` and compare each to `replacement`.
-        words_in_text = re.findall(r'\b\w+\b', processed_text)
-        temp_text_for_fuzzy_replace = processed_text
+
 
         for word_in_text_idx, word_in_text in enumerate(words_in_text):
             sm = difflib.SequenceMatcher(None, word_in_text.lower(),
@@ -715,10 +706,12 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
                     # is_private = "/_" in source_path or "\\_" in source_path
 
                     found_fuzzy_match = True
+
                     if global_state.LOGGING_ENABLED:
                         logger.info(
-                            f"🚀Fuzzy: '{processed_text}' -> '{temp_text_for_fuzzy_replace}' (Target: '{replacement}')")
-                    processed_text = temp_text_for_fuzzy_replace  # Update processed_text
+                            f"Fuzzy: '{result_text}' -> '{temp_text_for_fuzzy_replace}' (Target: '{replacement}')")
+                    result_text = temp_text_for_fuzzy_replace
+
                     # If one fuzzy match is enough for this rule, break the inner loop
                     break  # Break from inner word iteration
 
@@ -726,15 +719,18 @@ def apply_fuzzy_replacement_logic(processed_text, replacement, threshold, logger
         if found_fuzzy_match:
             # current_rule_matched = True  # Mark rule as matched due to fuzzy
             break  # Break the main loop after a successful fuzzy match as per original logic
-    return processed_text
+    return result_text
 
 
 def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
-        interface,run_pipeline_callback=None, is_inner_rule=False):
+        interface,run_pipeline_callback=None, is_inner_rule=False, lang_code=None, window_title=None):
+    win_title = window_title if window_title is not None else _active_window_title
     new_processed_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred = apply_all_rules_until_stable(
     processed_text, fuzzy_map_pre, logger, interface,
     run_pipeline_callback=run_pipeline_callback,
-    is_inner_rule=is_inner_rule
+    is_inner_rule=is_inner_rule,
+    lang_code=lang_code,
+    window_title=win_title
     )
 
     is_private = False
@@ -827,7 +823,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
 
             exclude_windows_list = options_dict.get('exclude_windows', [])
             window_ignore_case = options_dict.get('window_ignore_case', None)
-            if is_window_title_skippable(_active_window_title, only_in_list=only_in_windows_list, exclude_list=exclude_windows_list, logger=logger, ignore_case=window_ignore_case):
+            if is_window_title_skippable(win_title, only_in_list=only_in_windows_list, exclude_list=exclude_windows_list, logger=logger, ignore_case=window_ignore_case):
 
                 continue
 
@@ -962,7 +958,7 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
                     # exclude_windows check before executing script
                     exclude_windows_list = options_dict.get('exclude_windows', [])
                     if exclude_windows_list and _active_window_title:
-                        if any(re.search(p, str(_active_window_title), re.IGNORECASE)
+                        if any(re.search(p, str(win_title), re.IGNORECASE)
                                for p in exclude_windows_list):
                             continue
 
@@ -1056,17 +1052,8 @@ def process_text_in_background(logger,
        interface: str = 'speech',
        custom_rules = None
        ):
-
-    global GLOBAL_LT_LANGUAGE
-    global GLOBAL_was_reloaded
-
-    GLOBAL_LT_LANGUAGE = LT_LANGUAGE
-
     new_current_text = None
     processed_text = None
-
-
-
     if settings.DEV_MODE:
         try:
             with open("/tmp/sl5_aura/debug_api_entry.txt", "a") as f:
@@ -1089,9 +1076,6 @@ def process_text_in_background(logger,
     # print(f':st: \nprocess_text_in_background:912 raw_text:{raw_text}')
 
     RUN_MODE = os.getenv('RUN_MODE')
-    global _active_window_title
-
-
     output_dir_override = ensure_path(output_dir_override)
     output_dir = ensure_path(output_dir)
 
@@ -1228,8 +1212,6 @@ def process_text_in_background(logger,
     # --- ENDE DER SEQUENZPRÜFUNG ---
 
 
-    global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP
-
     if custom_rules is not None:
         new_punctuation = []
         new_fuzzy_pre = custom_rules
@@ -1238,20 +1220,12 @@ def process_text_in_background(logger,
         # scripts/py/func/process_text_in_background.py:1176 (process_text_in_background)
         new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger, run_mode_override)
 
-        # Write active maps cache for search_rules filter
-        _write_active_maps_cache(LT_LANGUAGE, new_fuzzy_pre, new_fuzzy, new_punctuation)
-
-
     # scripts/py/func/process_text_in_background.py:1176 (process_text_in_background)
     # new_punctuation, new_fuzzy_pre, new_fuzzy = load_maps_for_language(LT_LANGUAGE, logger,run_mode_override)
 
     if getattr(settings, "DEV_MODE_all_processing", False):
         logger.info(f"📍new_punctuation={new_punctuation}")
         log4DEV(f"📍new_punctuation={new_punctuation}",logger)
-
-    GLOBAL_PUNCTUATION_MAP = new_punctuation
-    GLOBAL_FUZZY_MAP_PRE = new_fuzzy_pre
-    GLOBAL_FUZZY_MAP = new_fuzzy
 
     new_processed_text = ''
     skip_list=[]
@@ -1416,7 +1390,7 @@ def process_text_in_background(logger,
         if not privacy_taint_occurred:
 
             log4DEV(f"process_text_in_background.py:900 (process_text_in_background) raw_text:{raw_text}", logger)
-        processed_text, was_exact_match = normalize_punctuation(raw_text, GLOBAL_PUNCTUATION_MAP, logger)
+        processed_text, was_exact_match = normalize_punctuation(raw_text, new_punctuation, logger)
 
         # print(f':st: \nprocess_text_in_background:1208 processed_text:"{processed_text}"')
 
@@ -1503,14 +1477,16 @@ def process_text_in_background(logger,
                         from scripts.py.func.global_state import SilentException
                         try:
                             (new_processed_text
-                                    , regex_pre_is_replacing_all_maybe
-                                    , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
+                                 , regex_pre_is_replacing_all_maybe
+                                 , skip_list, privacy_taint_occurred) = apply_all_rules_may_until_stable(
                                 processed_text,
-                                GLOBAL_FUZZY_MAP_PRE,
+                                new_fuzzy_pre,
                                 logger,
                                 interface,
                                 run_pipeline_callback=run_pipeline_callback,
-                                is_inner_rule=(custom_rules is not None)
+                                is_inner_rule=(custom_rules is not None),
+                                lang_code=LT_LANGUAGE,
+                                window_title=_active_window_title
                             )
                         except SilentException:
                             time.sleep(0.005)
@@ -1634,7 +1610,7 @@ def process_text_in_background(logger,
             log4DEV(f"skip_list_backup: {skip_list_backup}", logger)
             if not regex_pre_is_replacing_all and not is_only_number:
                 log4DEV(f'in fuzzy_map: regex_pre_is_replacing_all:{regex_pre_is_replacing_all} ',logger)
-                for replacement, match_phrase, threshold, options_dict in GLOBAL_FUZZY_MAP:
+                for replacement, match_phrase, threshold, options_dict in new_fuzzy:
                     replacement = resolve_file_replacement(replacement, options_dict, logger)
 
                     if not privacy_taint_occurred:
@@ -1724,7 +1700,7 @@ def process_text_in_background(logger,
                 skip_list=skip_list_backup
 
                 # for replacement, match_phrase, threshold in fuzzy_map:
-                for replacement, match_phrase, threshold, *_ in GLOBAL_FUZZY_MAP:
+                for replacement, match_phrase, threshold, *_ in new_fuzzy:
                     # Skip regex patterns in this pass
                     if is_regex_pattern(match_phrase):
                         continue
@@ -2062,9 +2038,7 @@ def process_text_in_background(logger,
             os.execv(sys.executable, ['python'] + sys.argv + ['restarted'])
 
         if not os.getenv("AURA_SELF_TEST_RUNNING"):
-            was_reloaded_temp = auto_reload_modified_maps(logger,run_mode_override)
-            if not GLOBAL_was_reloaded:
-                GLOBAL_was_reloaded = was_reloaded_temp
+            auto_reload_modified_maps(logger,run_mode_override)
 
         # print(f':st: \nprocess_text_in_background:1753 raw_text:{raw_text}')
 
@@ -2079,12 +2053,12 @@ def process_text_in_background(logger,
         SEQUENCE_LOCK.execute_only_event.clear()
 
 
-def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_map):
+def _write_active_maps_cache(lang_code, fuzzy_map_pre, fuzzy_map, punctuation_map, was_reloaded=False):
     """
     Writes currently loaded and filtered maps to a JSON cache.
     Read by scripts/search_rules/filter_maps_by_reality.py.
     """
-    if not GLOBAL_was_reloaded:
+    if not was_reloaded:
         return 
     import json
     # 
@@ -2198,8 +2172,8 @@ def sanitize_transcription_start(raw_text: str) -> str:
 
 
 
-def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, run_pipeline_callback=None, is_inner_rule=False):
-
+def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, run_pipeline_callback=None, is_inner_rule=False, lang_code=None, window_title=None):
+    win_title = window_title if window_title is not None else _active_window_title
 
     """
     Applies all rules from the given rules_map iteratively to the text until the text no longer changes after a complete pass through all the rules.
@@ -2218,7 +2192,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                bool: True if a complete replacement of the text by a rule has taken place, indicating an early termination. False otherwise.
     """
     # log_all_changes = False and settings.DEV_MODE
-    # global GLOBAL_LT_LANGUAGE
 
     skip_list = []
     privacy_taint_occurred = False
@@ -2377,7 +2350,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
 
 
-                m_202602281126 = f"🔵 window_title: {_active_window_title} ◀️ {regex_pattern[0:72]} …"
+                m_202602281126 = f"🔵 window_title: {win_title} ◀️ {regex_pattern[0:72]} …"
                 if global_state.LOGGING_ENABLED:
                     logger_instance.info(m_202602281126)
                     logger_instance.info(f'🔴🔴🔴 exclude_windows_list: {exclude_windows_list}, '
@@ -2388,7 +2361,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
             window_ignore_case = options_dict.get('window_ignore_case', None)
 
-            if is_window_title_skippable(_active_window_title, only_in_list=only_in_windows_list, exclude_list=exclude_windows_list, logger=logger_instance, ignore_case=window_ignore_case):                continue
+            if is_window_title_skippable(win_title, only_in_list=only_in_windows_list, exclude_list=exclude_windows_list, logger=logger_instance, ignore_case=window_ignore_case):                continue
 
             # --- EXCLUDE LIST CHECK ---
             # if exclude_windows_list and _active_window_title:
@@ -2492,8 +2465,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
             # log4DEV(f"CACHE_HIT: cached='{_cached}' | changed={_cached != current_text}", logger_instance)
             _cache_hit = False
             if _source_path:
-
-                _cached_res = get_cached_result(current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''))
+                _cached_res = get_cached_result(current_text, lang_code or "", _source_path, options_dict, str(win_title or ''))
                 if _cached_res is not None:
                     _cached, _is_full = _cached_res if isinstance(_cached_res, tuple) else (_cached_res, False)
                     _cache_hit = True
@@ -2545,7 +2517,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
                         # exclude_windows check before executing script
                         exclude_windows_list = options_dict.get('exclude_windows', [])
-                        if exclude_windows_list and _active_window_title:
+                        if exclude_windows_list and win_title:
                             if any(re.search(p, str(_active_window_title), re.IGNORECASE)
                                    for p in exclude_windows_list):
                                 continue
@@ -2620,12 +2592,11 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                         # log4DEV(f"full_text_replaced_by_rule = {full_text_replaced_by_rule}",logger_instance)
 
                         # --- AURA CACHE SET ---
+                        
                         if _source_path:
                             # log4DEV(f"CACHE_SET: original='{original_text_for_script}' | new='{current_text}'", logger_instance)
                             is_full = bool(full_text_replaced_by_rule)
-
-                            set_cached_result(original_text_for_script, current_text, GLOBAL_LT_LANGUAGE, _source_path, options_dict, str(_active_window_title or ''), is_full_match=is_full)
-                            # --- END AURA CACHE SET ---
+                            set_cached_result(original_text_for_script, current_text, lang_code or "", _source_path, options_dict, str(win_title or ''), is_full_match=is_full)
 
 
                         if not privacy_taint_occurred:
@@ -2681,8 +2652,8 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
                             # exclude_windows check before executing script
                             exclude_windows_list = options_dict.get('exclude_windows', [])
-                            if exclude_windows_list and _active_window_title:
-                                if any(re.search(p, str(_active_window_title), re.IGNORECASE)
+                            if exclude_windows_list and win_title:
+                                if any(re.search(p, str(win_title), re.IGNORECASE)
                                        for p in exclude_windows_list):
                                     continue
 
