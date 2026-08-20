@@ -4,7 +4,6 @@ colorama>=0.4.0
 exrex==0.12.0
 fastapi==0.141.1
 genanki==0.13.1
-gi==0.8.1
 jellyfish
 jiwer==4.0.0
 keyboard==0.13.5
