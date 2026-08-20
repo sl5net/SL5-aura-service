@@ -1,0 +1,5 @@
+{
+"typeCheckingMode": "off",
+"enableTypeIgnoreComments": true,
+"reportPossiblyUnboundVariable": "error"
+}
