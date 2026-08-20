@@ -6,13 +6,8 @@ import shutil
 import json
 import tempfile
 from pathlib import Path
-
-# --- GLOBALER CACHE (Memory) ---
-_X11_ENV_CACHE = None
-
-# --- DATEI CACHE (Disk - überlebt Reloads) ---
+from functools import lru_cache
 X11_CACHE_FILE = Path(tempfile.gettempdir()) / "sl5_aura" / "sl5_aura_x11_env.json"
-
 
 def get_active_window_kde():
     # This command directly asks KWin for the title of the active window
@@ -189,28 +184,23 @@ def get_active_window_title_atspi_fallback():
 # print(f"Active Window: {get_active_window_plasma6()}")
 
 
+@lru_cache(maxsize=1)
 def get_linux_x11_env():
     """
     Ermittelt das Environment (DISPLAY, XAUTHORITY).
-    Mit Timeout-Schutz gegen hängende Reads in /proc.
+    Mit Timeout-Schutz gegen hngende Reads in /proc.
     """
-    global _X11_ENV_CACHE
-
-    # 1. Memory Cache
-    if _X11_ENV_CACHE: return _X11_ENV_CACHE
-
-    # 2. File Cache
+    # 1. File Cache
     if X11_CACHE_FILE.exists():
         try:
             with open(X11_CACHE_FILE, "r") as f:
                 cached_env = json.load(f)
             if os.path.exists(cached_env.get('XAUTHORITY', '')):
-                _X11_ENV_CACHE = cached_env
                 return cached_env
         except Exception as e:
             print(f'34 {e}')
             pass
-
+        
     target_env = os.environ.copy()
     found_auth = False
 
@@ -284,7 +274,6 @@ def get_linux_x11_env():
 
     # Save Cache SECURELY
     if found_auth:
-        _X11_ENV_CACHE = target_env
         try:
             cache_data = {'DISPLAY': target_env.get('DISPLAY'), 'XAUTHORITY': target_env.get('XAUTHORITY')}
 
@@ -490,11 +479,8 @@ def get_active_window_title_safe():
                     print(f'201 {e}')
                     pass
 
-            # 3. If it fails: Cache might be out of date! # new 1/17/26 01:21 Sat Maybe happens when logging in and out (not when rebooting)
             if res is None:
-                # We delete the global cache and file
-                global _X11_ENV_CACHE
-                _X11_ENV_CACHE = None
+                get_linux_x11_env.cache_clear()
                 if X11_CACHE_FILE.exists():
                     try: os.remove(X11_CACHE_FILE)
                     except Exception as e:
