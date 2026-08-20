@@ -14,8 +14,9 @@ def main() -> int:
         file_path = err["file"]
         line = err["range"]["start"]["line"] + 1
         message = err["message"]
-        print(f"{file_path}:{line} - {message}")
+        print(f"{file_path}:{line} - {message}", file=sys.stderr)
     print(len(errors))
+    
     return 0
 
 
