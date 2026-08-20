@@ -203,9 +203,6 @@ def execute(match_data):
         return f"Ich konnte die Wetterdaten fuer '{city}' leider nicht abrufen und habe keinen Cache."
 
 
-
-
-
     # 5. JSON verarbeiten und Antwort bauen
     try:
         if is_tomorrow:
