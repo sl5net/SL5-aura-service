@@ -3,6 +3,9 @@
 # 20.8.'26 22:51 Thu
 # 20.8.'26 22:51 Thu
 # 20.8.'26 22:51 Thu
+# 20.8.'26 22:51 Thu
+# 20.8.'26 22:51 Thu
+# 20.8.'26 22:51 Thu
 import subprocess
 from pathlib import Path
 import configparser
