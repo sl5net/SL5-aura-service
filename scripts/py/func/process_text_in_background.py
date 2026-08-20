@@ -2518,7 +2518,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                         # exclude_windows check before executing script
                         exclude_windows_list = options_dict.get('exclude_windows', [])
                         if exclude_windows_list and win_title:
-                            if any(re.search(p, str(_active_window_title), re.IGNORECASE)
+                            if any(re.search(p, str(win_title), re.IGNORECASE)
                                    for p in exclude_windows_list):
                                 continue
 
