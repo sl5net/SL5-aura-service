@@ -22,7 +22,7 @@ LOCK_TYPES = {"Lock", "RLock", "Semaphore", "BoundedSemaphore"}
 
 # Configuration
 ONLY_HIGH_PRIORITY = True   # Set True to show only HIGH priority issues
-MAX_DISPLAY_LINES = 1      # Max number of issues to show per file (0 = unlimited)
+MAX_DISPLAY_LINES = 10      # Max number of issues to show per file (0 = unlimited)
 
 RULE_PRIORITY = {
     "GLOBAL_STATE": (1, "HIGH (Runtime/Concurrency)"),

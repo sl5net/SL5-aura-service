@@ -1867,76 +1867,55 @@ def process_text_in_background(logger,
                                 # 2. Use the specific cooldown for this window
                                 last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
 
-                                if (current_time - last_time > active_cooldown):
+                                if current_time - last_time > active_cooldown:
                                     new_current_text += f"{active_sig}"
                                     SIGNATURE_TIMES[_active_window_title] = current_time
+                            # scripts/py/func/process_text_in_background.py:1566
 
 
 
 
-                if False and hasattr(settings, 'SIGNATURE_MAPPING'):
-                    if type(new_current_text) is str and len(new_current_text) >= 11:
-
-                        active_sig_default = settings.SIGNATURE_MAPPING.get("DEFAULT", "")
-                        active_sig = active_sig_default
-
-                        for pattern, sig in settings.SIGNATURE_MAPPING.items():
-                            if re.search(pattern, str(_active_window_title), re.IGNORECASE):
-                                active_sig = sig
-                                break
 
 
 
 
-                        if active_sig == active_sig_default:
-                            log4DEV(f'🔵 window_title: {_active_window_title}',logger)
-
-                        # for app_name, sig in settings.SIGNATURE_MAPPING.items():
-                        #     if app_name in _active_window_title:
-                        #         active_sig = sig
-                        #         break
-                        #
-                        if active_sig:
-                            signature_cooldown = getattr(settings, 'SIGNATURE_COOLDOWN', 3600)
-
-                            with SEQUENCE_LOCK.lock:
-                                last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
-                                current_time = time.time()
-
-                                if (current_time - last_time > signature_cooldown):
-                                    new_current_text += f" {active_sig}"
-                                    SIGNATURE_TIMES[_active_window_title] = current_time
-
-                if False and hasattr(settings, 'signatur1'):
-
-                    if len(new_current_text) >= 11:
-
-                        current_time = time.time()
-
-                        if not hasattr(process_text_in_background, "last_signature_times"):
-                            process_text_in_background.last_signature_times = {}
-
-                        last_times = process_text_in_background.last_signature_times
-                        last_time = last_times.get(_active_window_title, 0)
-
-                        signature_cooldown = getattr(settings, 'SIGNATURE_COOLDOWN', 3600)
-
-                        with SEQUENCE_LOCK.lock:
-                            last_time = SIGNATURE_TIMES.get(_active_window_title, 0)
-                            current_time = time.time()
-
-                            if (current_time - last_time > signature_cooldown):
-
-                                if type(new_current_text) is str:
-                                    new_current_text += f"{settings.signatur1}"
-
-                                    SIGNATURE_TIMES[_active_window_title] = current_time
-
-                                    # last_signature_times[_active_window_title] = current_time
-                                    # process_text_in_background.last_signature_times[_active_window_title] = current_time
 
 
-            # scripts/py/func/process_text_in_background.py:1566
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2539,9 +2518,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                         # time.sleep(1)
 
                         new_current_text = resolve_file_replacement(new_current_text, options_dict, logger_instance)
-
-                        with SEQUENCE_LOCK.lock:
-                            resolve_execute_only(options_dict)
+                        resolve_execute_only(options_dict)
                         logging.info("_________________________________")
                         execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
                         # logging.info(f"2489: execute_only={execute_only}")
