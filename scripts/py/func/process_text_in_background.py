@@ -2771,10 +2771,6 @@ def clear_global_maps(logger):
     This prevents memory leaks from unreferenced old map functions.
     """
     # logger.info("Starting CLEAR of global Map Registries.")
-
-    # CRITICAL FIX: Use 'global' to access the module-level variables for clearing.
-    global GLOBAL_PUNCTUATION_MAP, GLOBAL_FUZZY_MAP_PRE, GLOBAL_FUZZY_MAP # noqa: F824
-
     # Clearing the dictionaries explicitly breaks the reference to old functions.
     GLOBAL_PUNCTUATION_MAP.clear()
     GLOBAL_FUZZY_MAP_PRE.clear()
