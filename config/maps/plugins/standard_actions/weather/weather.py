@@ -1,5 +1,4 @@
 # config/maps/plugins/standard_actions/weather/weather.py
-# 20.8.'26 22:51 Thu
 import subprocess
 from pathlib import Path
 import configparser
@@ -151,58 +150,57 @@ def execute(match_data):
     except Exception as e:
         logger.error(f"Fehler beim Cache-Lesezugriff: {e}")
 
-        # 3. Wetterdaten via Open-Meteo abrufen (mit wttr.in Fallback)
-        response = None
+    # 3. Wetterdaten via Open-Meteo abrufen (mit wttr.in Fallback)
+    response = None
+    try:
+        response = fetch_open_meteo_weather(city, lang, is_tomorrow)
+    except Exception as e:
+        logger.warning(f"Open-Meteo lookup failed ({type(e).__name__}: {e}). Trying wttr.in fallback.")
+    if response:
         try:
-            response = fetch_open_meteo_weather(city, lang, is_tomorrow)
+            set_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, response)
+            logger.info("Ergebnis erfolgreich in Cache geschrieben.")
         except Exception as e:
-            logger.warning(f"Open-Meteo lookup failed ({type(e).__name__}: {e}). Trying wttr.in fallback.")
+            logger.error(f"Fehler beim Cache-Schreibzugriff: {e}")
+        return response
 
-        if response:
-            try:
-                set_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, response)
-                logger.info("Ergebnis erfolgreich in Cache geschrieben.")
-            except Exception as e:
-                logger.error(f"Fehler beim Cache-Schreibzugriff: {e}")
-            return response
+    weather_data = None
+    try:
+        command = [
+            'curl',
+            '-s',
+            f'https://wttr.in/{city}?format=j1&lang={lang}'
+        ]
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            check=True,
+            encoding='utf-8',
+            timeout=10
+        )
+        weather_data = json.loads(result.stdout)
+    except FileNotFoundError:
+        logger.error("curl nicht gefunden.")
+        return "Fehler: Das Programm 'curl' wurde nicht gefunden. Bitte installiere es."
+    except subprocess.TimeoutExpired:
+        logger.warning("API-Timeout. Versuche Stale-Cache.")
+    except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
+        logger.warning(f"API-Fehler ({type(e).__name__}). Versuche Stale-Cache.")
+    except Exception as e:
+        logger.warning(f"Unbekannter Fehler beim API-Aufruf ({type(e).__name__}: {e}). Versuche Stale-Cache.")
 
-        weather_data = None
+    # 4. Failover auf abgelaufenen Cache, falls API-Aufruf fehlschlug
+    if weather_data is None:
         try:
-            command = [
-                'curl',
-                '-s',
-                f'https://wttr.in/{city}?format=j1&lang={lang}'
-            ]
-            result = subprocess.run(
-                command,
-                capture_output=True,
-                text=True,
-                check=True,
-                encoding='utf-8',
-                timeout=10
-            )
-            weather_data = json.loads(result.stdout)
-        except FileNotFoundError:
-            logger.error("curl nicht gefunden.")
-            return "Fehler: Das Programm 'curl' wurde nicht gefunden. Bitte installiere es."
-        except subprocess.TimeoutExpired:
-            logger.warning("API-Timeout. Versuche Stale-Cache.")
-        except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
-            logger.warning(f"API-Fehler ({type(e).__name__}). Versuche Stale-Cache.")
+            stale_response = get_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, ttl_seconds=None,
+                                               logger=logger)
+            if stale_response:
+                logger.warning(" (stale) Cache Fallback.")
+                return stale_response
         except Exception as e:
-            logger.warning(f"Unbekannter Fehler beim API-Aufruf ({type(e).__name__}: {e}). Versuche Stale-Cache.")
-
-        # 4. Failover auf abgelaufenen Cache, falls API-Aufruf fehlschlug
-        if weather_data is None:
-            try:
-                stale_response = get_cached_result(CACHE_DIR_weather, 'get_weather', cache_key_args, ttl_seconds=None,
-                                                   logger=logger)
-                if stale_response:
-                    logger.warning(" (stale) Cache Fallback.")
-                    return stale_response
-            except Exception as e:
-                logger.error(f"Fehler beim Stale-Cache-Lesezugriff: {e}")
-            return f"Ich konnte die Wetterdaten fuer '{city}' leider nicht abrufen und habe keinen Cache."
+            logger.error(f"Fehler beim Stale-Cache-Lesezugriff: {e}")
+        return f"Ich konnte die Wetterdaten fuer '{city}' leider nicht abrufen und habe keinen Cache."
 
 
 
