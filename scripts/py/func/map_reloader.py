@@ -48,8 +48,6 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
     from .process_text_in_background import clear_global_maps
 
-    global LAST_MODIFIED_TIMES  # noqa: F824
-
     """
     Scans the map directories, detects changed files based on their
     modification time, and reloads only the necessary modules.
