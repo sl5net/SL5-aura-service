@@ -1,4 +1,6 @@
-# config/maps/plugins/standard_actions/de-DE/weather.py
+# config/maps/plugins/standard_actions/weather/weather.py
+
+
 
 import subprocess
 from pathlib import Path
