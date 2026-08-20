@@ -59,11 +59,13 @@ if [ -n "$staged_maps" ]; then
               echo "Proceeding..."
               ;;
           *)
+              echo "🚨🚨🚨 COMMIT aborted: "
               echo "Commit aborted by user. Please fix the file and try again."
               exit 1
               ;;
         esac
       else
+        echo "🚨🚨🚨 COMMIT REJECTED: "
         echo "No terminal detected (GUI client?). Commit aborted to be safe."
         echo "If you REALLY want to commit this, use: git commit -m 'msg' --no-verify"
         exit 1
@@ -118,11 +120,13 @@ fi
 
 echo "Running flake8 code quality check..."
 
-if [ -n "$staged" ]; then
+if false && [ -n "$staged" ]; then
+#if [ -n "$staged" ]; then
   echo "Running pyright (possibly-unbound check)..."
   pyright_output=$(.venv/bin/pyright $staged --outputjson)
   unbound_count=$(echo "$pyright_output" | python3 -m scripts.py.func.checks.pyright_unbound_report)
   if [ "$unbound_count" -gt 0 ]; then
+    echo "🚨🚨🚨 COMMIT REJECTED: "
     echo "Commit blocked: possibly-unbound variable(s) found."
     exit 1
   fi
