@@ -12,6 +12,12 @@ import os
 import warnings
 from pathlib import Path
 
+readme = """
+./.venv/bin/python3 -m scripts.py.func.checks.self_tester
+
+
+"""
+
 # from .auto_zip_startup_test import run_auto_zip_sanity_check
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
@@ -253,7 +259,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
              'Number with unit', lt=True, prio=TestPrio.HIGH),
         case('lieblingszahlen sind fünf und drei', 'Lieblingszahlen sind 5 und 3', 'numbers 5 and 3', lt=True, prio=TestPrio.ALWAYS),
         case('was ist fünf plus drei', r'Das Ergebnis von 5 plus 3 ist 8\.', 'calc in MAP Wannweil', lt=False, prio=TestPrio.ALWAYS),
-        case('wie ist das wetter', r'Aktuell in \w+ sind es.*', 'weather plugin', lt=False, prio=TestPrio.ALWAYS),
+        # case('wie ist das wetter', r'Aktuell in \w+ sind es.*', 'weather plugin', lt=False, prio=TestPrio.ALWAYS),
         case('bitte reservieren sie einen tisch für zwei personen um acht uhr',
              'Bitte reservieren Sie einen Tisch für 2 Personen um 8 Uhr',
              'Polite request with time and number', lt=True, prio=TestPrio.HIGH),

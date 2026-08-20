@@ -4,10 +4,13 @@
 #   tools/search.sh "search_string" [optional_path_prefix]
 #   Options available: -i (case-insensitive), -E (regex), -w (whole word).
 
+clear
+
 set -euo pipefail
 
 GREP_FLAGS="-Hn"
 INCLUDE_DOC_SOURCES=false
+ignore_comments=true 
 
 while [[ $# -gt 0 && "$1" == -* ]]; do
   case "$1" in
@@ -41,7 +44,15 @@ do_search() {
     done
 }
 
-matches=$(do_search "$PATTERN" | head -n 201)
+if [ "$ignore_comments" = "true" ]; then  
+  matches=$(do_search "$PATTERN" \
+  | sed 's/[[:space:]]*#.*$//' \
+  | grep -E -- "$PATTERN" \
+  | head -n 201)
+else
+ matches=$(do_search "$PATTERN" | head -n 201)
+fi
+
 count=$(echo -n "$matches" | grep -c '^' || true)
 
 if [ "$count" -eq 0 ]; then
@@ -49,20 +60,49 @@ if [ "$count" -eq 0 ]; then
   exit 0
 fi
 
+
 if [ "$count" -gt 200 ] && [[ "$GREP_FLAGS" != *"-w"* && "$PATTERN" != *"\\b"* ]]; then
   REFINED_PATTERN="\\b${PATTERN}\\b"
-  echo "Results exceeded 200 lines. Automatically refining pattern with word boundaries: '$REFINED_PATTERN'..." >&2
+
+
+
+
+
+
   refined_matches=$(do_search "$REFINED_PATTERN" | head -n 201)
   refined_count=$(echo -n "$refined_matches" | grep -c '^' || true)
+
+#  echo 22222222222222222222222222222222222222222222222
+#
+#   refined_matches=$(do_search "$REFINED_PATTERN" | grep -v '^\s*#' | head -n 201)
+#   echo 33333333333333333333333333333333333333333333333333333
+#   refined_count=$(printf '%s' "$refined_matches" | grep -c '^' || true)
+
+
+
+  echo "Results exceeded 200 lines. Automatically refining pattern with word boundaries: '$REFINED_PATTERN'..." >&2
+
+
+
+
   if [ "$refined_count" -gt 0 ]; then
     matches="$refined_matches"
     count="$refined_count"
+#  else 
+#    echo 1111111111111111111111111
+#    exit 
   fi
 fi
 
+#echo 444444444444444444444444444444444444444444444
 if [ "$count" -gt 200 ]; then
+#  echo 5555555555555555555555555555555555555
   echo "Results still exceed 200 lines. Truncating output to top 200 matches:" >&2
   echo "$matches" | head -n 200
 else
+  echo "count = $count" 
+#  echo 6666666666666666666666666666666666666666666666666666666666
   echo "$matches"
 fi
+echo '___________________________________________'
+
