@@ -17,12 +17,16 @@ MUTATING_METHODS = {
     "update", "setdefault", "add", "discard"
 }
 
+LOCK_CALLS = {"acquire", "release"}
+LOCK_TYPES = {"Lock", "RLock", "Semaphore", "BoundedSemaphore"}
+
 # Configuration
 ONLY_HIGH_PRIORITY = True   # Set True to show only HIGH priority issues
 MAX_DISPLAY_LINES = 1      # Max number of issues to show per file (0 = unlimited)
 
 RULE_PRIORITY = {
     "GLOBAL_STATE": (1, "HIGH (Runtime/Concurrency)"),
+    "CONCURRENCY_LOCK": (1, "HIGH (Lock Contention/Multi-Core)"),
     "MUTABLE_DEFAULT": (1, "HIGH (State Leak/Performance)"),
     "PARAM_MUTATION": (2, "MEDIUM (Shared State/Mutation)"),
     "NONLOCAL_STATE": (2, "MEDIUM (Closure Scope)"),
@@ -115,8 +119,42 @@ class FunctionalLinter(ast.NodeVisitor):
                             "msg": f"In-place subscript mutation on parameter '{target.value.id}'."
                         })
         self.generic_visit(node)
+    def visit_With(self, node: ast.With) -> None:
+        for item in node.items:
+            expr_repr = ast.unparse(item.context_expr) if hasattr(ast, "unparse") else ""
+            if "lock" in expr_repr.lower():
+                self.issues.append({
+                    "line": node.lineno,
+                    "col": node.col_offset,
+                    "rule": "CONCURRENCY_LOCK",
+                    "msg": f"Thread synchronization context 'with {expr_repr}' serializes CPU cores."
+                })
+        self.generic_visit(node)
 
     def visit_Call(self, node: ast.Call) -> None:
+        if isinstance(node.func, ast.Attribute):
+            if node.func.attr in LOCK_CALLS:
+                self.issues.append({
+                    "line": node.lineno,
+                    "col": node.col_offset,
+                    "rule": "CONCURRENCY_LOCK",
+                    "msg": f"Explicit lock synchronization '.{node.func.attr}()' serializes execution."
+                })
+            elif node.func.attr in LOCK_TYPES:
+                self.issues.append({
+                    "line": node.lineno,
+                    "col": node.col_offset,
+                    "rule": "CONCURRENCY_LOCK",
+                    "msg": f"Lock instantiation '{node.func.attr}()' introduces shared synchronization state."
+                })
+        elif isinstance(node.func, ast.Name) and node.func.id in LOCK_TYPES:
+            self.issues.append({
+                "line": node.lineno,
+                "col": node.col_offset,
+                "rule": "CONCURRENCY_LOCK",
+                "msg": f"Lock instantiation '{node.func.id}()' introduces shared synchronization state."
+            })
+
         if self.current_func and isinstance(node.func, ast.Attribute):
             if node.func.attr in MUTATING_METHODS:
                 if isinstance(node.func.value, ast.Name) and node.func.value.id in self.current_params:
@@ -127,7 +165,6 @@ class FunctionalLinter(ast.NodeVisitor):
                         "msg": f"Mutating method '{node.func.attr}()' called on parameter '{node.func.value.id}'."
                     })
         self.generic_visit(node)
-
     def visit_Return(self, node: ast.Return) -> None:
         if node.value is not None:
             self.has_return_val = True
