@@ -357,6 +357,7 @@ sed -i '/^pyaudio==/d' requirements.txt
 sed -i '/^pytest==/d' requirements.txt
 sed -i '/^python-slugify==/d' requirements.txt
 sed -i '/^soundfile==/d' requirements.txt
+sed -i '/^numpy/d' requirements.txt
 
 # Convert package names to lowercase to avoid duplicates like "Psutil" vs "psutil"
 # alt
