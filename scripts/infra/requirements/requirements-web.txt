@@ -1,0 +1,2 @@
+streamlit==1.52.0
+trino==0.332.0

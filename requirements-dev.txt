@@ -1,5 +1,0 @@
--r requirements.txt
-flake8
-ruff
-pylint
-pipreqs
