@@ -34,7 +34,7 @@ jobs:
           python-version: '3.11'
 
       - name: '3. Install Python Dependencies'
-        run: pip install -r requirements.txt
+        run: pip install -r scripts/infra/requirements/requirements.txt
 
       - name: '4. Install System Dependencies'
         # This step runs every time to ensure tools are present
@@ -57,7 +57,7 @@ jobs:
       - name: '6b. Set up Python venv (always)'
         run: |
           python3 -m venv .venv
-          .venv/bin/pip install -r requirements.txt
+          .venv/bin/pip install -r scripts/infra/requirements/requirements.txt
             
 
       - name: '7. Run Transcription and Verify Output'

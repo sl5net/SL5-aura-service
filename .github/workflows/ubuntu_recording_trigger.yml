@@ -5,8 +5,8 @@ on:
     branches: [ master, feature/cross-platform-setup-config ]
     paths:
       - 'setup/**'
-      - 'requirements.txt'
-      - 'requirements-dev.txt'
+      - 'scripts/infra/requirements/requirements.txt'
+      - 'scripts/infra/requirements/requirements-dev.txt'
       - '.github/workflows/ubuntu_recording_trigger.yml'
   pull_request:
     branches:
@@ -25,19 +25,19 @@ jobs:
         uses: actions/checkout@v4
 
 
-      - name: Validate requirements.txt syntax
+      - name: Validate scripts/infra/requirements/requirements.txt syntax
         run: |
           python3 -c "
           from pip._internal.req import parse_requirements
           from pip._internal.network.session import PipSession
-          list(parse_requirements('requirements.txt', session=PipSession()))
-          print('requirements.txt syntax is valid')
+          list(parse_requirements('scripts/infra/requirements/requirements.txt', session=PipSession()))
+          print('scripts/infra/requirements/requirements.txt syntax is valid')
           "
 
-      - name: Test fresh install of requirements.txt
+      - name: Test fresh install of scripts/infra/requirements/requirements.txt
         run: |
           python3 -m venv /tmp/test_venv
-          /tmp/test_venv/bin/pip install -r requirements.txt
+          /tmp/test_venv/bin/pip install -r scripts/infra/requirements/requirements.txt
           echo "✅ Fresh install successful"
 
 
@@ -78,14 +78,14 @@ jobs:
       - name: Install Development Dependencies
         run: |
           python3 -m pip install --upgrade pip
-          .venv/bin/pip install -r requirements-dev.txt
+          .venv/bin/pip install -r scripts/infra/requirements/requirements-dev.txt
 
       - name: Run pre-commit hook (dry-run)
         run: |
           sudo apt-get install -y unix2dos 2>/dev/null || true
           mkdir -p .git/hooks
-          cp githooks/pre-commit_BACKUP .git/hooks/pre-commit
-          bash ./githooks/pre-commit_BACKUP
+          cp scripts/infra/githooks/pre-commit_BACKUP .git/hooks/pre-commit
+          bash ./scripts/infra/githooks/pre-commit_BACKUP
           echo "✅ pre-commit hook passed"
 
 

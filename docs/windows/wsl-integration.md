@@ -91,7 +91,7 @@ Create and use a standard Linux virtual environment inside WSL:
 cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r scripts/infra/requirements/requirements.txt
 ```
 
 The `PY_EXEC` path in the function (`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) will work correctly as-is.

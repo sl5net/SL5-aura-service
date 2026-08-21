@@ -141,7 +141,7 @@ INTEGRITY_CHECKS = {
     #     'powershell -Command "Start-Process cmd -ArgumentList \'/c, """%~f0"""\' -Verb RunAs"',
     # ],
 
-    'requirements.txt': [
+    'scripts/infra/requirements/requirements.txt': [
 
         "comtypes==1.4.11; sys_platform == 'win32'",
         "pycaw==20240210; sys_platform == 'win32'",

@@ -47,7 +47,7 @@ do_search() {
 if [ "$ignore_comments" = "true" ]; then  
   matches=$(do_search "$PATTERN" \
   | sed 's/[[:space:]]*#.*$//' \
-  | grep -E -- "$PATTERN" \
+  | { grep -E -- "$PATTERN" || true; } \
   | head -n 201)
 else
  matches=$(do_search "$PATTERN" | head -n 201)
@@ -80,7 +80,7 @@ if [ "$count" -gt 200 ] && [[ "$GREP_FLAGS" != *"-w"* && "$PATTERN" != *"\\b"* ]
 
 
 
-  echo "Results exceeded 200 lines. Automatically refining pattern with word boundaries: '$REFINED_PATTERN'..." >&2
+  echo "⚠️⚠️Results exceeded 200 lines. Automatically refining pattern with word boundaries: '$REFINED_PATTERN'..." >&2
 
 
 

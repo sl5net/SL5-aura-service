@@ -5,8 +5,8 @@ on:
     branches: [ master ]
     paths:
       - 'setup/**'
-      - 'requirements.txt'
-      - 'requirements-dev.txt'
+      - 'scripts/infra/requirements/requirements.txt'
+      - 'scripts/infra/requirements/requirements-dev.txt'
       - '.github/workflows/win11_setup.yml'
   pull_request:
     branches:

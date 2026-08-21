@@ -91,7 +91,7 @@ Erstellen und verwenden Sie eine standardmäßige virtuelle Linux-Umgebung inner
 cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r scripts/infra/requirements/requirements.txt
 ```
 
 Der „PY_EXEC“-Pfad in der Funktion („$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3“) funktioniert unverändert korrekt.

@@ -91,7 +91,7 @@ export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r scripts/infra/requirements/requirements.txt
 ```
 
 سيعمل المسار `PY_EXEC` في الوظيفة (`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) بشكل صحيح كما هو.

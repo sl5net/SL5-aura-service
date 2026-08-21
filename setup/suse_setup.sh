@@ -10,7 +10,7 @@
 SCRIPT_NAME=$(basename "$0")
 # Check if the script is run from the project root.
 # This check is more robust than changing directory.
-if [ ! -f "requirements.txt" ]; then
+if [ ! -f "scripts/infra/requirements/requirements.txt" ]; then
     echo "ERROR: Please run this script from the project's root directory."
     echo ""
     echo "cd .. ; ./setup/$SCRIPT_NAME"
@@ -181,7 +181,7 @@ echo "--> Ensuring pip is available in the venv and upgrading packaging tools…
 ./.venv/bin/python -m pip install --upgrade pip setuptools wheel
 
 echo "--> Installing project Python requirements…"
-./.venv/bin/python -m pip install -r requirements.txt
+./.venv/bin/python -m pip install -r scripts/infra/requirements/requirements.txt
 
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
@@ -234,7 +234,7 @@ fi
 # --- 3. Python Requirements ---
 # (Already installed above; re-run is a fast no-op if nothing changed.)
 echo "--> Installing Python requirements into the virtual environment…"
-./.venv/bin/pip install -r requirements.txt
+./.venv/bin/pip install -r scripts/infra/requirements/requirements.txt
 
 # --- 4. Project Structure and Configuration ---
 echo "--> Setting up project directories and initial files…"

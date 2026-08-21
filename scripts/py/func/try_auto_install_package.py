@@ -11,7 +11,7 @@ def try_auto_install_package(package_name: str, logger) -> bool:
     """
     # Resolve the project root (3 levels up from scripts/py/func/)
     project_root = Path(__file__).resolve().parents[3]
-    req_file = project_root / "requirements-web.txt"
+    req_file = project_root / "infra" / "requirements" /  "requirements-web.txt"
 
     if not req_file.exists():
         logger.error(f"[auto-install] Error: requirements-web.txt not found at: {req_file}")

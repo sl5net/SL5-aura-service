@@ -159,7 +159,7 @@ if exist "{2}" (
     if exist ".venv\Scripts\activate.bat" (
         call .venv\Scripts\activate.bat
         python.exe -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r scripts/infra/requirements/requirements.txt
         color 07
     ) else (
         echo The update cannot proceed. Please verify the filename.

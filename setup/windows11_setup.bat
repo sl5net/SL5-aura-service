@@ -10,7 +10,7 @@ REM NOTE: The Python script call should ideally be inside the PowerShell script,
 REM as the virtual environment (.\.venv) is only guaranteed to be set up *after* the PS1 script finishes.
 REM Assuming the PS1 script now handles all necessary setup and model downloading/filtering.
 
-call .\.venv\Scripts\python.exe scripts/py/func/setup_initial_model.py
+call .\.venv\Scripts\python.exe -m pip install -r scripts/infra/requirements/requirements.txt
 
 ECHO
 ECHO Script is ended.

@@ -172,8 +172,8 @@ debug*.txt
 
 temp*
 
-# But DO NOT ignore requirements.txt
-!requirements.txt
+# But DO NOT ignore scripts/infra/requirements/requirements.txt
+!scripts/infra/requirements/requirements.txt
 !requirements-dev.txt
 !doc_sources
 !doc_sources/**/*.rst

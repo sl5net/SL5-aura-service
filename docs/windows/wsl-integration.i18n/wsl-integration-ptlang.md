@@ -114,7 +114,7 @@ export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r scripts/infra/requirements/requirements.txt
 ```
 Certifique-se de que as seguintes linhas estejam presentes e sem comentários (remova o `#`), salve e saia:
 ```powershell

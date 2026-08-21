@@ -1,0 +1,5 @@
+-r scripts/infra/requirements/requirements.txt
+flake8
+ruff
+pylint
+pipreqs

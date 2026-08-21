@@ -145,7 +145,7 @@ if defined REPAIR_ATTEMPTED (
 )
 echo [ACTION] Attempting automatic repair by reinstalling dependencies…
 set REPAIR_ATTEMPTED=true
-call .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
 echo [INFO] Repair finished. Retrying service start…
 echo.
 goto :START_SERVICE_LOOP

@@ -19,7 +19,7 @@
 SCRIPT_NAME=$(basename "$0")
 
 # --- Sanity check: must be run from project root ---
-if [ ! -f "requirements.txt" ]; then
+if [ ! -f "scripts/infra/requirements/requirements.txt" ]; then
     echo "ERROR: Please run this script from the project's root directory."
     echo ""
     echo "  cd .. ; bash setup/$SCRIPT_NAME"
@@ -121,7 +121,7 @@ fi
 # ==============================================================================
 
 echo "--> Installing Python requirements into the virtual environment…"
-./.venv/bin/pip install -r requirements.txt
+./.venv/bin/pip install -r scripts/infra/requirements/requirements.txt
 
 # ==============================================================================
 # --- 4. Project Structure ---
