@@ -1,5 +1,5 @@
 #!/bin/bash
-# scripts/infra/githooks/pre-commit
+# scripts/infra/scripts/infra/githooks/pre-commit
 
 
 
@@ -32,7 +32,7 @@ if [ -n "$staged_maps" ]; then
         warn=false
       fi
 
-# scripts/infra/githooks/pre-commit
+# scripts/infra/scripts/infra/githooks/pre-commit
 
 
     # Condition 2: File size is less than 50% of its previous size
@@ -44,7 +44,7 @@ if [ -n "$staged_maps" ]; then
       fi
     fi
 
-# scripts/infra/githooks/pre-commit
+# scripts/infra/scripts/infra/githooks/pre-commit
 
 
     # Trigger warning and ask for user input
