@@ -187,8 +187,7 @@ if (-not (Test-Path -Path ".\.venv")) {
 
 # --- PATCH: Replace fasttext with fasttext-wheel in requirements.txt ---
 Write-Host "--> Patching requirements.txt for Windows fasttext-wheel compatibility…"
-(Get-Content requirements.txt) -replace '^fasttext.*$', 'fasttext-wheel' | Set-Content requirements.txt
-
+(Get-Content scripts/infra/requirements/requirements.txt) -replace '^fasttext.*$', 'fasttext-wheel' | Set-Content scripts/infra/requirements/requirements.txt
 
 # --- 5. Python Requirements ---
 Write-Host "--> Installing Python requirements into the virtual environment…"
@@ -197,8 +196,7 @@ Write-Host "--> Installing Python requirements into the virtual environment…"
 python -m pip install --upgrade pip
 
 #.\.venv\Scripts\pip.exe install -r requirements.txt
-& ".\.venv\Scripts\python.exe" -m pip install -r requirements.txt
-
+& ".\.venv\Scripts\python.exe" -m pip install -r scripts/infra/requirements/requirements.txt
 # --- 5. External Tools & Models (from Releases) ---
 $LtDir = "LanguageTool-6.6"
 
