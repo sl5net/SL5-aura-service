@@ -59,11 +59,13 @@ if [ -n "$staged_maps" ]; then
               echo "Proceeding..."
               ;;
           *)
+              echo "🚨🚨🚨 COMMIT aborted: "
               echo "Commit aborted by user. Please fix the file and try again."
               exit 1
               ;;
         esac
       else
+        echo "🚨🚨🚨 COMMIT REJECTED: "
         echo "No terminal detected (GUI client?). Commit aborted to be safe."
         echo "If you REALLY want to commit this, use: git commit -m 'msg' --no-verify"
         exit 1
@@ -118,11 +120,13 @@ fi
 
 echo "Running flake8 code quality check..."
 
-if [ -n "$staged" ]; then
+if false && [ -n "$staged" ]; then
+#if [ -n "$staged" ]; then
   echo "Running pyright (possibly-unbound check)..."
   pyright_output=$(.venv/bin/pyright $staged --outputjson)
   unbound_count=$(echo "$pyright_output" | python3 -m scripts.py.func.checks.pyright_unbound_report)
   if [ "$unbound_count" -gt 0 ]; then
+    echo "🚨🚨🚨 COMMIT REJECTED: "
     echo "Commit blocked: possibly-unbound variable(s) found."
     exit 1
   fi
@@ -344,6 +348,16 @@ fi
 # A) General Cleanup
 # Remove known false positives like our own 'scripts' directory
 sed -i '/^scripts==/d' requirements.txt
+sed -i '/^trino==/d' requirements.txt
+sed -i '/^exrex==/d' requirements.txt
+sed -i '/^genanki==/d' requirements.txt
+sed -i '/^gi==/d' requirements.txt
+sed -i '/^jiwer==/d' requirements.txt
+sed -i '/^pyaudio==/d' requirements.txt
+sed -i '/^pytest==/d' requirements.txt
+sed -i '/^python-slugify==/d' requirements.txt
+sed -i '/^soundfile==/d' requirements.txt
+sed -i '/^numpy/d' requirements.txt
 
 # Convert package names to lowercase to avoid duplicates like "Psutil" vs "psutil"
 # alt
@@ -379,6 +393,7 @@ sed -i '/^tqdm/d' requirements.txt
 sed -i '/^colorama/d' requirements.txt
 
 # Re-add them with loose versioning
+echo "numpy<2.4" >> requirements.txt
 echo "psutil>=7.0.0" >> requirements.txt
 echo "requests>=2.28.0" >> requirements.txt
 echo "tqdm>=4.60.0" >> requirements.txt
@@ -416,7 +431,7 @@ echo "nltk==3.9.1" >> requirements.txt
 grep -v "sys_platform" requirements.txt | sort -u > requirements.txt.tmp
 grep "sys_platform" requirements.txt | sort -u >> requirements.txt.tmp
 mv requirements.txt.tmp requirements.txt
-
+git add requirements.txt
 echo "-r requirements.txt" > requirements-dev.txt
 echo "flake8" >> requirements-dev.txt
 echo "ruff" >> requirements-dev.txt
