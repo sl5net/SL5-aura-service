@@ -5,7 +5,7 @@ on:
     branches: [ master ]
     paths:
       - 'setup/**'
-      - 'requirements.txt'
+      - 'scripts/infra/requirements/requirements.txt'
       - 'requirements-dev.txt'
       - '.github/workflows/ubuntu_setup.yml'
   pull_request:

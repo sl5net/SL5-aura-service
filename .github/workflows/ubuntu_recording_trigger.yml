@@ -5,7 +5,7 @@ on:
     branches: [ master, feature/cross-platform-setup-config ]
     paths:
       - 'setup/**'
-      - 'requirements.txt'
+      - 'scripts/infra/requirements/requirements.txt'
       - 'requirements-dev.txt'
       - '.github/workflows/ubuntu_recording_trigger.yml'
   pull_request:

@@ -7,7 +7,7 @@ on:
     paths:
       - '.github/workflows/suse_setup.yml'
       - 'setup/suse_setup.sh'
-      - 'requirements.txt'
+      - 'scripts/infra/requirements/requirements.txt'
       - 'requirements-dev.txt'
   pull_request:
     branches:
