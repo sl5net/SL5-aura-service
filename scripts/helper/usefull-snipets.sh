@@ -33,14 +33,14 @@ for f in "${FILES[@]}"; do
     cp "$f" "$TMPDIR/"
 done
 
-# Generate requirements.txt from only those files using pipreqs from the venv
+# Generate scripts/infra/requirements/requirements.txt from only those files using pipreqs from the venv
 .venv/bin/pipreqs "$TMPDIR" --force
 
-# Replace the actual requirements.txt
-mv "$TMPDIR/requirements.txt" requirements.txt
+# Replace the actual scripts/infra/requirements/requirements.txt
+mv "$TMPDIR/requirements.txt" scripts/infra/requirements/requirements.txt
 
 # Convert package names to lowercase
-awk -F'==' '{print tolower($1) "==" $2}' requirements.txt > requirements.txt.tmp && mv requirements.txt.tmp requirements.txt
+awk -F'==' '{print tolower($1) "==" $2}' scripts/infra/requirements/requirements.txt > scripts/infra/requirements/requirements.txt.tmp && mv scripts/infra/requirements/requirements.txt.tmp scripts/infra/requirements/requirements.txt
 
 # Clean up temp directory
 rm -rf "$TMPDIR"

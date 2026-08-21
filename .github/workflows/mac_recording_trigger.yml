@@ -7,7 +7,7 @@ on:
     paths:
       - 'setup/**'
       - 'scripts/infra/requirements/requirements.txt'
-      - 'requirements-dev.txt'
+      - 'scripts/infra/requirements/requirements-dev.txt'
       - '.github/workflows/mac_recording_trigger.yml'
   pull_request:
     branches:
@@ -54,23 +54,23 @@ jobs:
           chmod +x ./setup/macos_setup.sh
           ./setup/macos_setup.sh
 
-      - name: Validate requirements.txt syntax
+      - name: Validate scripts/infra/requirements/requirements.txt syntax
         run: |
           python3 -c "
           from pip._internal.req import parse_requirements
           from pip._internal.network.session import PipSession
           list(parse_requirements('scripts/infra/requirements/requirements.txt', session=PipSession()))
-          print('requirements.txt syntax is valid')
+          print('scripts/infra/requirements/requirements.txt syntax is valid')
           "
 
-      - name: Test fresh install of requirements.txt
+      - name: Test fresh install of scripts/infra/requirements/requirements.txt
         run: |
           python3 -m venv /tmp/test_venv
           /tmp/test_venv/bin/pip install -r scripts/infra/requirements/requirements.txt
           echo "Fresh install successful"
 
       - name: Install Development Dependencies
-        run: .venv/bin/pip install -r requirements-dev.txt
+        run: .venv/bin/pip install -r scripts/infra/requirements/requirements-dev.txt
 
       - name: Run pre-commit hook (dry-run)
         run: |

@@ -2,7 +2,7 @@
 
 VENV_NAME=".venv"
 SL5NET_AURA_PROJECT_ROOT="$(git rev-parse --show-toplevel)"
-REQUIREMENTS_FILE="requirements.txt"
+REQUIREMENTS_FILE="scripts/infra/requirements/requirements.txt"
 
 echo "Running pre-commit hook..."
 
