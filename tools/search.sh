@@ -12,18 +12,60 @@ GREP_FLAGS="-Hn"
 INCLUDE_DOC_SOURCES=false
 ignore_comments=true 
 
+show_usage() {
+  cat <<'USAGE'
+Usage: tools/search.sh PATTERN [PATH_PREFIX] [OPTIONS]
+  PATTERN       Search string or regex pattern (required)
+  PATH_PREFIX   Limit search to this path (default: '.')
+Options:
+  -i, --ignore-case          Case-insensitive search
+  -E, --extended-regexp      Enable extended regex syntax
+  -w, --word-regexp          Match whole words only
+  -a, --all                  Include doc_sources directory (excluded by default)
+Examples:
+  tools/search.sh "def execute" scripts
+  tools/search.sh "TODO" . -i
+  tools/search.sh "class \w+Error" . -E
+USAGE
+}
+
 while [[ $# -gt 0 && "$1" == -* ]]; do
   case "$1" in
     -i|--ignore-case) GREP_FLAGS="$GREP_FLAGS -i" ;;
     -E|--extended-regexp) GREP_FLAGS="$GREP_FLAGS -E" ;;
     -w|--word-regexp) GREP_FLAGS="$GREP_FLAGS -w" ;;
     -a|--all|--include-doc-sources) INCLUDE_DOC_SOURCES=true ;;
+    -h|--help) show_usage; exit 0 ;;
     *) echo "Unknown option: $1" >&2; exit 1 ;;
   esac
   shift
 done
 
-PATTERN="${1:?Provide search pattern or regex}"
+#PATTERN="${1:?Provide search pattern or regex}"
+
+#if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+#  cat <<'USAGE'
+show_usage() {
+  cat <<'USAGE'
+Usage: tools/search.sh PATTERN [PATH_PREFIX] [OPTIONS]
+
+  PATTERN       Search string or regex pattern (required)
+  PATH_PREFIX   Limit search to this path (default: '.')
+
+Options:
+  -i, --ignore-case          Case-insensitive search
+  -E, --extended-regexp      Enable extended regex syntax
+  -w, --word-regexp          Match whole words only
+  -a, --all                  Include doc_sources directory (excluded by default)
+
+Examples:
+  tools/search.sh "def execute" scripts
+  tools/search.sh "TODO" . -i
+  tools/search.sh "class \w+Error" . -E
+USAGE
+}
+PATTERN="${1:?Provide search pattern or regex. Use -h for help.}"
+
 PREFIX="${2:-.}"
 
 clear
@@ -48,9 +90,10 @@ if [ "$ignore_comments" = "true" ]; then
   matches=$(do_search "$PATTERN" \
   | sed 's/[[:space:]]*#.*$//' \
   | { grep -E -- "$PATTERN" || true; } \
-  | head -n 201)
+  | { head -n 201; } || true )  
 else
- matches=$(do_search "$PATTERN" | head -n 201)
+# matches=$(do_search "$PATTERN" | head -n 201)
+ matches=$( { do_search "$PATTERN" | head -n 201; } || true )
 fi
 
 count=$(echo -n "$matches" | grep -c '^' || true)
@@ -69,7 +112,8 @@ if [ "$count" -gt 200 ] && [[ "$GREP_FLAGS" != *"-w"* && "$PATTERN" != *"\\b"* ]
 
 
 
-  refined_matches=$(do_search "$REFINED_PATTERN" | head -n 201)
+#  refined_matches=$(do_search "$REFINED_PATTERN" | head -n 201)
+  refined_matches=$( { do_search "$REFINED_PATTERN" | head -n 201; } || true )
   refined_count=$(echo -n "$refined_matches" | grep -c '^' || true)
 
 #  echo 22222222222222222222222222222222222222222222222
