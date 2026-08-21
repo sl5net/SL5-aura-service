@@ -1,4 +1,5 @@
 # Use Ubuntu LTS as stable base
+# setup/.draft-not-ready/Dockerfile
 FROM ubuntu:24.04
 
 # Prevent interactive prompts during package installation
@@ -20,12 +21,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Build dotool from source
-RUN git clone https://git.sr.ht/~geb/dotool /tmp/dotool && \
+RUN for i in 1 2 3; do \
+        git clone https://git.sr.ht/~geb/dotool /tmp/dotool && break || sleep 10; \
+    done && \
     cd /tmp/dotool && \
     ./build.sh && \
     ./build.sh install && \
     rm -rf /tmp/dotool
-
 # Create input group and non-root runner user with sudo rights
 RUN groupadd -f input && \
     useradd -m -s /bin/bash runner && \
