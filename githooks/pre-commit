@@ -348,6 +348,15 @@ fi
 # A) General Cleanup
 # Remove known false positives like our own 'scripts' directory
 sed -i '/^scripts==/d' requirements.txt
+sed -i '/^trino==/d' requirements.txt
+sed -i '/^exrex==/d' requirements.txt
+sed -i '/^genanki==/d' requirements.txt
+sed -i '/^gi==/d' requirements.txt
+sed -i '/^jiwer==/d' requirements.txt
+sed -i '/^pyaudio==/d' requirements.txt
+sed -i '/^pytest==/d' requirements.txt
+sed -i '/^python-slugify==/d' requirements.txt
+sed -i '/^soundfile==/d' requirements.txt
 
 # Convert package names to lowercase to avoid duplicates like "Psutil" vs "psutil"
 # alt
