@@ -91,7 +91,7 @@ WSL 내에서 표준 Linux 가상 환경을 만들고 사용합니다.
 cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r scripts/infra/requirements/requirements.txt
 ```
 
 함수(`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`)의 `PY_EXEC` 경로는 있는 그대로 올바르게 작동합니다.

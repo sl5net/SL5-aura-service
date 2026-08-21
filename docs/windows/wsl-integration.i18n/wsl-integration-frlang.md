@@ -91,7 +91,7 @@ Créez et utilisez un environnement virtuel Linux standard dans WSL :
 cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r scripts/infra/requirements/requirements.txt
 ```
 
 Le chemin `PY_EXEC` dans la fonction (`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) fonctionnera correctement tel quel.

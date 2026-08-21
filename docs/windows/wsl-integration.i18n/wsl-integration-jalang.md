@@ -91,7 +91,7 @@ WSL 内で標準の Linux 仮想環境を作成して使用します。
 cd "$SL5NET_AURA_PROJECT_ROOT"
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r scripts/infra/requirements/requirements.txt
 ```
 
 関数内の `PY_EXEC` パス (`$SL5NET_AURA_PROJECT_ROOT/.venv/bin/python3`) はそのままで正しく動作します。

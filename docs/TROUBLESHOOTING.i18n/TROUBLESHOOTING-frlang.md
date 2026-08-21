@@ -31,7 +31,7 @@ tail -30 log/aura_engine.log
 | Erreur dans le journal | Corriger |
 |---|---|
 | `ModuleNotFoundError` | Exécutez à nouveau le script d'installation : `bash setup/manjaro_arch_setup.sh` |
-| `Aucun module nommé 'objgraph'` | `.venv` a été recréé — réinstallez : `pip install -r Requirements.txt` |
+| `Aucun module nommé 'objgraph'` | `.venv` a été recréé — réinstallez : `pip install -r scripts/infra/requirements/requirements.txt` |
 | `Adresse déjà utilisée` | Tuer l'ancien processus : `pkill -9 -f aura_engine` |
 | `Modèle introuvable` | Réexécutez l'installation pour télécharger les modèles manquants |
 | `pygame.mixer non disponible` | Voir « Aucun son au démarrage » ci-dessous |
