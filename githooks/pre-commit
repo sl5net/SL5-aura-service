@@ -393,6 +393,7 @@ sed -i '/^tqdm/d' requirements.txt
 sed -i '/^colorama/d' requirements.txt
 
 # Re-add them with loose versioning
+echo "numpy<2.4" >> requirements.txt
 echo "psutil>=7.0.0" >> requirements.txt
 echo "requests>=2.28.0" >> requirements.txt
 echo "tqdm>=4.60.0" >> requirements.txt
@@ -430,7 +431,7 @@ echo "nltk==3.9.1" >> requirements.txt
 grep -v "sys_platform" requirements.txt | sort -u > requirements.txt.tmp
 grep "sys_platform" requirements.txt | sort -u >> requirements.txt.tmp
 mv requirements.txt.tmp requirements.txt
-
+git add requirements.txt
 echo "-r requirements.txt" > requirements-dev.txt
 echo "flake8" >> requirements-dev.txt
 echo "ruff" >> requirements-dev.txt
