@@ -1,0 +1,400 @@
+#!/bin/bash
+# scripts/infra/githooks/pre-commit
+
+
+
+# -----------------------------------------------------------------------------
+# GUARD: Check for empty or significantly reduced files in maps/
+# -----------------------------------------------------------------------------
+
+# Find staged files in maps/ (Added, Copied, Modified)
+staged_maps=$(git diff --cached --name-only --diff-filter=ACM | grep 'maps/' || true)
+
+if [ -n "$staged_maps" ]; then
+  for f in $staged_maps; do
+    # Get the exact byte size of the staged file
+    new_size=$(git cat-file -s ":$f" 2>/dev/null || echo 0)
+
+    # Get the exact byte size of the file in the previous commit (HEAD)
+    old_size=$(git cat-file -s "HEAD:$f" 2>/dev/null || echo 0)
+
+    warn=false
+    reason=""
+
+    # Condition 1: File is completely empty
+    if [ "$new_size" -eq 0 ]; then
+      warn=true
+      reason="File is completely empty (0 bytes)!"
+
+      # Skip empty-file check for any __init__.py files
+      base=$(basename "$f")
+      if [ "$base" = "__init__.py" ]; then
+        warn=false
+      fi
+
+# scripts/infra/githooks/pre-commit
+
+
+    # Condition 2: File size is less than 50% of its previous size
+    elif [ "$old_size" -gt 0 ]; then
+      threshold=$((old_size / 2))
+      if [ "$new_size" -lt "$threshold" ]; then
+        warn=true
+        reason="File size drastically reduced! (Old: ${old_size} bytes -> New: ${new_size} bytes)"
+      fi
+    fi
+
+# scripts/infra/githooks/pre-commit
+
+
+    # Trigger warning and ask for user input
+    if [ "$warn" = true ]; then
+      echo -e "\n=================================================================="
+      echo -e "⚠️  WARNING: Suspicious file change detected!"
+      echo -e "File: $f"
+      echo -e "Reason: $reason"
+      echo -e "=================================================================="
+
+      # Attempt to read from the terminal.
+      # (If using a GUI client like VSCode where /dev/tty fails, it auto-aborts)
+      if read -p "Do you really want to commit this file? (y/N): " response < /dev/tty; then
+        case "$response" in
+          [yY][eE][sS]|[yY])
+              echo "Proceeding..."
+              ;;
+          *)
+              echo "🚨🚨🚨 COMMIT aborted: "
+              echo "Commit aborted by user. Please fix the file and try again."
+              exit 1
+              ;;
+        esac
+      else
+        echo "🚨🚨🚨 COMMIT REJECTED: "
+        echo "No terminal detected (GUI client?). Commit aborted to be safe."
+        echo "If you REALLY want to commit this, use: git commit -m 'msg' --no-verify"
+        exit 1
+      fi
+    fi
+  done
+fi
+
+
+
+
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------------
+# Guard: block commit if a TRANSLATION_RULE is left un-commented
+# ---------------------------------------------------------------------------
+SCRIPT_DIR="$(git rev-parse --show-toplevel)/scripts/sh"
+bash "$SCRIPT_DIR/check_translator_hijack.sh" || exit 1
+
+
+# -----------------------------------------------------------------------------
+# 1. QUALITY CHECK (Flake8)
+# -----------------------------------------------------------------------------
+
+echo "Running ruff auto-fix..."
+if [ -f .venv/bin/ruff ]; then
+  .venv/bin/ruff check --fix ./aura_engine.py ./scripts ./config 2>/dev/null || true
+fi
+
+# In pre-commit, nach ruff:
+echo "Running pylint (warnings only)..."
+
+# In pre-commit, statt ./aura_engine.py ./scripts ./config
+# only staged files prüfen:
+staged=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' | tr '\n' ' ')
+if [ -n "$staged" ]; then
+  .venv/bin/pylint $staged \
+    --disable=all,W0718 \
+    --enable=W0702,W0703,W0611,W0612 \
+    --exit-zero  # blockiert NIE den commit, nur Ausgabe
+fi
+
+if [ -n "$staged" ]; then
+.venv/bin/pyright $staged --outputjson | python3 -c "import json,sys; d=json.load(sys.stdin); errs=[x for x in d['generalDiagnostics'] if x['rule']=='reportPossiblyUnboundVariable']; [print(f"{e['file']}:{e['range']['start']['line']+1} {e['message']}") for e in errs]; sys.exit(0)"
+fi
+
+
+echo "Running flake8 code quality check..."
+
+if false && [ -n "$staged" ]; then
+#if [ -n "$staged" ]; then
+  echo "Running pyright (possibly-unbound check)..."
+  pyright_output=$(.venv/bin/pyright $staged --outputjson)
+  unbound_count=$(echo "$pyright_output" | python3 -m scripts.py.func.checks.pyright_unbound_report)
+  if [ "$unbound_count" -gt 0 ]; then
+    echo "🚨🚨🚨 COMMIT REJECTED: "
+    echo "Commit blocked: possibly-unbound variable(s) found."
+    exit 1
+  fi
+fi
+
+
+
+.venv/bin/python scripts/py/func/checks/check_comment_quality.py --sort-by=quality --fix
+echo "✅ check_slop_comments passed. ✅"
+
+# Run flake8 on specific directories
+# flake8 ./aura_engine.py ./scripts ./config
+./.venv/bin/flake8 ./aura_engine.py ./scripts ./config
+
+# Abort commit if flake8 finds errors
+if [ $? -ne 0 ]; then
+  echo "🚨🚨🚨 COMMIT REJECTED: flake8 found issues. May use noqa: "
+  echo "# noqa: "
+  exit 1
+fi
+
+echo "✅ flake8 check passed. ✅"
+
+
+
+
+
+
+
+changed=0
+# helper: safe iterator over staged filenames matching a suffix
+staged_files_with_suffix() {
+  suffix="$1"
+  git diff --cached --name-only -z | \
+    while IFS= read -r -d '' f; do
+      case "$f" in
+        *"$suffix") printf '%s\0' "$f" ;;
+      esac
+    done
+}
+
+# 1) Convert staged .bat files to CRLF
+if command -v unix2dos >/dev/null 2>&1; then
+  converter="unix2dos -q"
+else
+  converter=""  # fall back to python conversion below
+fi
+
+while IFS= read -r -d '' f; do
+  [ -f "$f" ] || continue
+  if [ -n "$converter" ]; then
+    before_hash=$(git hash-object "$f" 2>/dev/null || true)
+    unix2dos -q "$f" >/dev/null 2>&1 || true
+    after_hash=$(git hash-object "$f" 2>/dev/null || true)
+
+    # Only restage and mark changed IF the bytes actually changed!
+    if [ "$before_hash" != "$after_hash" ]; then
+      git add -- "$f"
+      changed=1
+    fi
+  else
+    # Pure-Python conversion to CRLF
+    tmp=$(mktemp)
+    python3 - "$f" "$tmp" <<'PY' || rc=$?
+import sys,io
+p=sys.argv[1]; tmp=sys.argv[2]
+with open(p, 'rb') as r:
+    data=r.read()
+new = data.replace(b'\r\n', b'\n').replace(b'\n', b'\r\n')
+if new!=data:
+    with open(tmp,'wb') as w:
+        w.write(new)
+    sys.exit(0)
+else:
+    sys.exit(1)
+PY
+    rc=${rc:-$?}
+    if [ "$rc" -eq 0 ]; then
+      mv "$tmp" "$f"
+      git add -- "$f"
+      changed=1
+    else
+      rm -f "$tmp"
+    fi
+  fi
+done < <(staged_files_with_suffix ".bat")
+# 2) Convert staged .ps1 files to UTF-8 with BOM
+while IFS= read -r -d '' f; do
+  [ -f "$f" ] || continue
+  # Read file bytes, detect UTF-8 BOM, and write with BOM only if needed
+  python3 - "$f" <<'PY'
+import sys,os
+p=sys.argv[1]
+with open(p,'rb') as b:
+    data=b.read()
+# If already has UTF-8 BOM, leave alone
+BOM = b'\xef\xbb\xbf'
+if data.startswith(BOM):
+    sys.exit(1)
+# Try decode as utf-8 (if fails, do nothing)
+try:
+    text=data.decode('utf-8')
+except Exception:
+    sys.exit(1)
+# Write back with BOM + utf-8 bytes
+with open(p,'wb') as b:
+    b.write(BOM + text.encode('utf-8'))
+sys.exit(0)
+PY
+  rc=$?
+  if [ "$rc" -eq 0 ]; then
+    git add -- "$f"
+    changed=1
+  fi
+done < <(staged_files_with_suffix ".ps1")
+
+if [ "$changed" -eq 1 ]; then
+  cat <<'MSG' >&2
+pre-commit: Some staged files were modified (line endings/encoding).
+They have been restaged. Please review changes and re-run the commit.
+MSG
+  exit 1
+fi
+
+# -----------------------------------------------------------------------------
+# 2. SETUP FOR REQUIREMENTS GENERATION
+# -----------------------------------------------------------------------------
+
+# Check if pipreqs is available in the venv
+if [ ! -x ".venv/bin/pipreqs" ]; then
+    echo "pipreqs is not installed in .venv. Please run '.venv/bin/pip install pipreqs' inside your virtual environment."
+    exit 1
+fi
+
+TMPDIR=".pipreqs_temp"
+
+# Clean up and create a fresh temp directory
+rm -rf "$TMPDIR"
+mkdir "$TMPDIR"
+
+# Copy all relevant Python sources into the temp directory
+cp aura_engine.py "$TMPDIR/"
+# cp get_suggestions.py "$TMPDIR/"
+# Copy the entire 'scripts' directory to preserve import paths
+cp -r scripts "$TMPDIR/"
+cp -r tools "$TMPDIR/"
+
+
+echo "INFO: Generating requirements.txt (taking into account .pipreqs-whitelist.txt) ..."
+
+# -----------------------------------------------------------------------------
+# 3. GENERATE BASE REQUIREMENTS
+# -----------------------------------------------------------------------------
+# We use --savepath to tell pipreqs to save the file in the current
+# directory while analyzing the temp directory.
+WARNINGS=$(.venv/bin/pipreqs "$TMPDIR" --savepath ./requirements.txt --force --encoding=utf-8 2>&1 >/dev/null)
+
+# Filter warnings. Only show those NOT in the whitelist.
+if [ -s "scripts/infra/requirements/.pipreqs-whitelist.txt" ]; then
+    echo "$WARNINGS" | grep -v -f scripts/infra/requirements/.pipreqs-whitelist.txt | grep -v "Please, verify manually"
+else
+    echo "$WARNINGS"
+fi
+
+# -----------------------------------------------------------------------------
+# 4. PATCHING & CLEANUP (The "Patching Strategy")
+# -----------------------------------------------------------------------------
+
+# A) General Cleanup
+# Remove known false positives like our own 'scripts' directory
+sed -i '/^scripts==/d' requirements.txt
+sed -i '/^trino==/d' requirements.txt
+sed -i '/^exrex==/d' requirements.txt
+sed -i '/^genanki==/d' requirements.txt
+sed -i '/^gi==/d' requirements.txt
+sed -i '/^jiwer==/d' requirements.txt
+sed -i '/^pyaudio==/d' requirements.txt
+sed -i '/^pytest==/d' requirements.txt
+sed -i '/^python-slugify==/d' requirements.txt
+sed -i '/^soundfile==/d' requirements.txt
+sed -i '/^numpy/d' requirements.txt
+
+# Convert package names to lowercase to avoid duplicates like "Psutil" vs "psutil"
+# alt
+# awk -F'==' '/==/ {print tolower($1) "==" $2}' requirements.txt > requirements.txt.tmp && mv requirements.txt.tmp requirements.txt
+
+
+# neu 2026-0331-2141
+awk '/==/ {
+    idx = index($0, "==")
+    pkg = substr($0, 1, idx-1)
+    rest = substr($0, idx+2)
+    print tolower(pkg) "==" rest
+}
+!/==/ {print}' requirements.txt > requirements.txt.tmp && mv requirements.txt.tmp requirements.txt
+
+
+
+
+
+
+
+
+
+
+
+
+# B) RELAXATION FIX (Fix for psutil, requests, etc.)
+# We remove the strict entries generated by pipreqs and add relaxed versions (>=)
+# to prevent conflicts (e.g. 7.1.3 vs 7.0.0).
+sed -i '/^psutil/d' requirements.txt
+sed -i '/^requests/d' requirements.txt
+sed -i '/^tqdm/d' requirements.txt
+sed -i '/^colorama/d' requirements.txt
+
+# Re-add them with loose versioning
+echo "numpy<2.4" >> requirements.txt
+echo "psutil>=7.0.0" >> requirements.txt
+echo "requests>=2.28.0" >> requirements.txt
+echo "tqdm>=4.60.0" >> requirements.txt
+echo "colorama>=0.4.0" >> requirements.txt
+echo "pygame" >> requirements.txt
+
+# C) PLATFORM-SPECIFIC FIXES
+
+# Fix Fasttext: Remove generic, add platform specific
+echo "INFO: Applying Fasttext platform-specific fix..."
+sed -i '/^fasttext==/d' requirements.txt
+echo "fasttext==0.9.3; sys_platform != 'win32'" >> requirements.txt
+echo "fasttext-wheel==0.9.2; sys_platform == 'win32'" >> requirements.txt
+
+# Fix Windows Audio & Control (remove generic, add win32 only)
+sed -i '/^comtypes/d' requirements.txt
+sed -i '/^pycaw/d' requirements.txt
+echo "comtypes==1.4.11; sys_platform == 'win32'" >> requirements.txt
+echo "pycaw==20240210; sys_platform == 'win32'" >> requirements.txt
+
+# D) EXPLICIT EXTRAS
+# Add packages that might be missed by static analysis
+echo "wikipedia-api" >> requirements.txt
+echo "bs4" >> requirements.txt
+
+echo "pyperclip" >> requirements.txt
+echo "cologne_phonetics" >> requirements.txt
+echo "jellyfish" >> requirements.txt
+
+echo "nltk==3.9.1" >> requirements.txt
+
+
+# E) DEDUPLICATION & SORT
+# Remove duplicate lines, keep sys_platform lines at the bottom
+grep -v "sys_platform" requirements.txt | sort -u > requirements.txt.tmp
+grep "sys_platform" requirements.txt | sort -u >> requirements.txt.tmp
+mv requirements.txt.tmp requirements.txt
+git add requirements.txt
+echo "-r requirements.txt" > requirements-dev.txt
+echo "flake8" >> requirements-dev.txt
+echo "ruff" >> requirements-dev.txt
+echo "pylint" >> requirements-dev.txt
+echo "pipreqs" >> requirements-dev.txt
+
+
+# -----------------------------------------------------------------------------
+# 5. CLEANUP
+# -----------------------------------------------------------------------------
+rm -rf "$TMPDIR"
+
