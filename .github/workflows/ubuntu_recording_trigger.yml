@@ -30,7 +30,7 @@ jobs:
           python3 -c "
           from pip._internal.req import parse_requirements
           from pip._internal.network.session import PipSession
-          list(parse_requirements('requirements.txt', session=PipSession()))
+          list(parse_requirements('scripts/infra/requirements/requirements.txt', session=PipSession()))
           print('requirements.txt syntax is valid')
           "
 
