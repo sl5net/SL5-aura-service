@@ -4,7 +4,7 @@ import sys
 import os
 import re
 import shutil
-
+import locale
 # ---------------------------------------------------------------------------
 # i18n loader
 # ---------------------------------------------------------------------------
@@ -95,19 +95,44 @@ def list_available_i18n_langs(i18n_dir=I18N_DIR):
     return sorted(seen.values())
 
 
+def detect_system_locale_lang():
+    for env_var in ("LC_ALL", "LC_MESSAGES", "LANG", "LANGUAGE"):
+        val = os.environ.get(env_var)
+        if val:
+            cleaned = val.split(".")[0].split(":")[0]
+            if "_" in cleaned:
+                lang, territory = cleaned.split("_", 1)
+                if lang.lower() == "pt" and territory.upper() == "BR":
+                    return "pt-BR"
+                if lang.lower() == "zh" and territory.upper() in ("CN", "TW", "HK"):
+                    return "zh-CN"
+                return lang.lower()
+            elif len(cleaned) in (2, 3):
+                return cleaned.lower()
+    try:
+        loc = locale.getdefaultlocale()[0]
+        if loc:
+            return loc.split("_")[0].lower()
+    except Exception:
+        pass
+    return None
+
+
 def detect_default_lang(country_code, i18n_dir=I18N_DIR, fallback_lang=FALLBACK_LANG):
     """
-    Picks the language to auto-suggest based on the detected country, but
-    ONLY if a matching setup_config-<code>lang.md file actually exists.
-    This is what makes the detection dynamic: dropping a new translation
-    file into the i18n folder plus one line in COUNTRY_LANG_MAP is enough
-    for the script to start suggesting it automatically - it no longer
-    hardcodes a de/en-only choice regardless of what's available.
+    Picks the language to auto-suggest based on country code or system locale,
+    checking that a matching translation file exists.
     """
     candidate = COUNTRY_LANG_MAP.get((country_code or "").upper())
     if candidate and os.path.isfile(os.path.join(i18n_dir, i18n_filename(candidate))):
         return candidate
+
+    system_candidate = detect_system_locale_lang()
+    if system_candidate and os.path.isfile(os.path.join(i18n_dir, i18n_filename(system_candidate))):
+        return system_candidate
+
     return fallback_lang
+
 
 
 def parse_i18n_md(path):
@@ -277,11 +302,37 @@ def get_country():
         return f"Unknown{e}"
 
 
-def timed_input(prompt, default, timeout=8):
+def is_non_interactive():
+    if os.environ.get("CI", "").lower() in ("true", "1", "yes"):
+        return True
+    if os.environ.get("DEBIAN_FRONTEND") == "noninteractive":
+        return True
+    if not sys.stdin.isatty():
+        return True
+    return False
+
+
+def timed_input(prompt, default, timeout=8, enable_timeout=True):
     import os
     import time
+
+    if is_non_interactive():
+        sys.stderr.write(f"{prompt} [{default}]: (auto-selected in non-interactive/CI mode)\n")
+        sys.stderr.flush()
+        return default
+
     sys.stderr.write(f"{prompt} [{default}]: ")
     sys.stderr.flush()
+
+    if not enable_timeout or timeout <= 0:
+        try:
+            res = sys.stdin.readline().strip()
+            return res if res else default
+        except (EOFError, KeyboardInterrupt):
+            sys.stderr.write("\n")
+            sys.stderr.flush()
+            return default
+
     if os.name == 'nt':
         # Windows native timed input using msvcrt
         import msvcrt
@@ -317,7 +368,8 @@ def timed_input(prompt, default, timeout=8):
         sys.stderr.write("\n")
         sys.stderr.flush()
         return default
-
+    
+    
 
 def find_folder_counts(root):
     """
@@ -452,17 +504,24 @@ text_help = strings["text_help"]
 prompt_p = strings["prompt_primary"]
 prompt_s = strings["prompt_secondary"]
 
+auto_timeout_enabled = True
+if not is_non_interactive():
+    timeout_query = timed_input("Enable 8-second auto-confirmation countdown? (y/n)", "y", enable_timeout=False)
+    if timeout_query.lower() in ("n", "no"):
+        auto_timeout_enabled = False
+
 sys.stderr.write(f"{strings['enter_hint']}\n")
 sys.stderr.write(f"{text_detected}\n{text_help}\n")
 
-primary = timed_input(prompt_p, default_primary)
+primary = timed_input(prompt_p, default_primary, timeout=8, enable_timeout=auto_timeout_enabled)
 if primary in ["n", "none", "0"]:
     # If terminal mode is selected, we exclude all languages
     secondary = "none"
     excludes = []
     excludes_str = "all"
 else:
-    secondary = timed_input(prompt_s, "none")
+    secondary = timed_input(prompt_s, "none", timeout=8, enable_timeout=auto_timeout_enabled)
+    
     all_langs = sorted(set(list_available_i18n_langs()) | {FALLBACK_LANG})
     excludes = [lang for lang in all_langs if lang.lower() != primary.lower() and lang.lower() != str(secondary).lower()]
     excludes_str = ",".join(excludes)
@@ -484,7 +543,7 @@ print("")
 # Ask whether user wants to delete entire docs and/or doc_sources
 if info['docs_exists'] or info['doc_sources_exists']:
     # default to 'n' (no) after timeout
-    ans_all = timed_input("Delete entire docs and doc_sources folders? (y/n)", "n", timeout=8).lower()
+    ans_all = timed_input("Delete entire docs and doc_sources folders? (y/n)", "n", timeout=8, enable_timeout=auto_timeout_enabled).lower()
     if ans_all in ("y", "yes"):
         if info['docs_exists']:
             delete_path(os.path.join(repo_root, 'docs'))
@@ -492,7 +551,7 @@ if info['docs_exists'] or info['doc_sources_exists']:
             delete_path(os.path.join(repo_root, 'doc_sources'))
     else:
         # Offer the more granular option: delete only non-primary language md files
-        ans_partial = timed_input("Delete only docs md files that are NOT the selected primary language? (y/n)", "n", timeout=8).lower()
+        ans_partial = timed_input("Delete only docs md files that are NOT the selected primary language? (y/n)", "n", timeout=8, enable_timeout=auto_timeout_enabled).lower()        
         if ans_partial in ("y", "yes"):
             deleted, skipped = delete_non_primary_md(info, primary)
             print("")
