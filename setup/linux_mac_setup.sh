@@ -1,5 +1,5 @@
 #!/bin/bash
-#
+# 
 # setup/linux_mac_setup.sh
 # Universal POSIX setup dispatcher for Linux and macOS.
 #
@@ -12,7 +12,8 @@ OS_TYPE=$(uname -s)
 if [ "${OS_TYPE}" = "Darwin" ]; then
     TARGET="${SCRIPT_DIR}/macos_setup.sh"
     echo "[INFO] Detected macOS (Darwin). Dispatching to ${TARGET}..."
-    exec "${TARGET}" "$@"
+    "${TARGET}" "$@"
+    exit 0
 fi
 
 if [ "${OS_TYPE}" != "Linux" ]; then
@@ -63,4 +64,13 @@ case "${OS_ID}" in
 esac
 
 echo "[INFO] Detected Linux (${OS_ID}). Dispatching to ${TARGET}..."
-exec "${TARGET}" "$@"
+"${TARGET}" "$@"
+
+if [ "${CI}" != "true" ] && [ -t 0 ]; then
+    echo ""
+    read -r -p "Run CopyQ setup and hotkey configuration now? [Y/n] " user_choice
+    user_choice=${user_choice:-y}
+    if [[ "${user_choice}" =~ ^[yY](es)?$ ]]; then
+        "${SCRIPT_DIR}/helper/setup_copyq.sh" "${SELECTED_HOTKEY:-F12}"
+    fi
+fi
