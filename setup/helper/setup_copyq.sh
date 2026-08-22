@@ -28,19 +28,24 @@ else
     echo "[INFO] CopyQ is already installed."
 fi
 
-COPYQ_CONFIG_DIR="${HOME}/.config/copyq"
-mkdir -p "${COPYQ_CONFIG_DIR}"
+if ! pgrep -x "copyq" > /dev/null; then
+    copyq --start-server &
+    sleep 1
+fi
 
-cat <<EOF > "${COPYQ_CONFIG_DIR}/copyq-commands.ini"
-[Commands]
-1\Command=${TRIGGER_CMD}
-1\GlobalShortcut=${HOTKEY}
-1\Icon=\\xf028
-1\IsGlobalShortcut=true
-1\Name=SL5 Voice Trigger
-size=1
-EOF
-
+copyq eval "
+var newCmd = {
+    name: 'SL5 Voice Trigger',
+    cmd: '${TRIGGER_CMD}',
+    globalShortcuts: ['${HOTKEY}'],
+    isGlobalShortcut: true,
+    icon: '\xf028'
+};
+var cmds = commands();
+var filtered = cmds.filter(function(c){ return c.name !== 'SL5 Voice Trigger'; });
+filtered.push(newCmd);
+setCommands(filtered);
+"
 AUTOSTART_DIR="${HOME}/.config/autostart"
 mkdir -p "${AUTOSTART_DIR}"
 
