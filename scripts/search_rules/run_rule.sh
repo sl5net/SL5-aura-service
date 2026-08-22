@@ -27,7 +27,9 @@ M_DIR="${M_DIR/#\~/$HOME}"
 source "$SCRIPT_DIR/func/linux/get_active_window_title.sh"
 
 H_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
+[ -f "$H_FILE" ] || touch "$H_FILE"
 PROOT_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_proot"
+
 [ -f "$PROOT_STATE_FILE" ] || echo "$SL5NET_AURA_PROJECT_ROOT/config/maps" > "$PROOT_STATE_FILE"
 
 SINGLE_GUI_STATE_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_single_gui"
