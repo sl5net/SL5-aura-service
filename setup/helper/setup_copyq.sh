@@ -32,7 +32,42 @@ if ! pgrep -x "copyq" > /dev/null; then
     copyq --start-server &
     sleep 1
 fi
+
+SEARCH_RULE_JS=$(cat <<'EOF'
+// Test with:
+//   copyq eval "$(cat /tmp/run_rule.js)"
+
+// use for debugging: clear; copyq eval "logs()"
+// and maybe: debugger
+
+var tmp_dir = '/tmp';
+var rootFile = File(tmp_dir + '/sl5_aura/sl5net_aura_project_root');
+var project_root = '';
+
+if (rootFile.open()) {
+    project_root = str(rootFile.readAll()).trim();
+    rootFile.close();
+}
+
+var search_script = project_root + '/scripts/search_rules/run_rule.sh';
+
+var active_win_title = str(execute('bash', '-c', 'xdotool getactivewindow getwindowname 2>/dev/null || true').stdout).trim();
+
+var cmd = ''
+    + 'export LANG="de_DE.UTF-8"; '
+    + 'export LC_ALL="de_DE.UTF-8"; '
+    + 'export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"; '
+    + 'export SEARCH_FILES_FILTER="FUZZY_MAP*.py"; '
+    + 'export AURA_ACTIVE_WINDOW_TITLE="' + active_win_title + '"; '
+    + 'setsid konsole -e bash "' + search_script + '" '
+    + '</dev/null >/dev/null 2>&1 & disown';
+
+execute('bash', '-c', cmd);
+EOF
+)
+
 copyq eval "
+var searchCode = arguments[0];
 var voiceCmd = {
     name: 'SL5 Voice Trigger',
     cmd: '${TRIGGER_CMD}',
@@ -42,7 +77,7 @@ var voiceCmd = {
 };
 var searchCmd = {
     name: 'SL5 Rule Search',
-    cmd: 'var tmp_dir = \"/tmp\"; var rootFile = File(tmp_dir + \"/sl5_aura/sl5net_aura_project_root\"); var project_root = \"\"; if (rootFile.open()) { project_root = str(rootFile.readAll()).trim(); rootFile.close(); } var search_script = project_root + \"/scripts/search_rules/run_rule.sh\"; var active_win_title = str(execute(\"bash\", \"-c\", \"xdotool getactivewindow getwindowname 2>/dev/null || true\").stdout).trim(); var cmd = \"export LANG=\\\"de_DE.UTF-8\\\"; export LC_ALL=\\\"de_DE.UTF-8\\\"; export DBUS_SESSION_BUS_ADDRESS=\\\"unix:path=/run/user/\$(id -u)/bus\\\"; export SEARCH_FILES_FILTER=\\\"FUZZY_MAP*.py\\\"; export AURA_ACTIVE_WINDOW_TITLE=\\\"\" + active_win_title + \"\\\"; setsid konsole -e bash \\\"\" + search_script + \"\\\" </dev/null >/dev/null 2>&1 & disown\"; execute(\"bash\", \"-c\", cmd);',
+    cmd: searchCode,
     globalShortcuts: ['Meta+Y'],
     isGlobalShortcut: true,
     icon: '\xf002'
@@ -52,7 +87,8 @@ var filtered = cmds.filter(function(c){ return c.name !== 'SL5 Voice Trigger' &&
 filtered.push(voiceCmd);
 filtered.push(searchCmd);
 setCommands(filtered);
-"
+" "$SEARCH_RULE_JS"
+
 
 
 AUTOSTART_DIR="${HOME}/.config/autostart"
