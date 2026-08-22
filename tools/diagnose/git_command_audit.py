@@ -1,6 +1,7 @@
 import os
 import re
-from typing import Dict, List, Tuple
+import subprocess
+from typing import Any, Dict, List, Tuple
 from collections import Counter
 
 readme = """
@@ -72,13 +73,74 @@ def compute_statistics(git_commands: List[str]) -> Tuple[int, Dict[str, Dict[str
     return total_git, {grp: dict(cnt) for grp, cnt in counts.items()}
 
 
-def build_markdown_report(total_git: int, group_counts: Dict[str, Dict[str, int]]) -> str:
+def query_git_repo_metadata(repo_dir: str = ".") -> Dict[str, Any]:
+    def run_cmd(args: List[str]) -> str:
+        try:
+            res = subprocess.run(
+                ["git"] + args,
+                cwd=repo_dir,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            return res.stdout.strip()
+        except Exception:
+            return ""
+
+    if not os.path.isdir(os.path.join(repo_dir, ".git")):
+        return {}
+
+    repo_url = run_cmd(["remote", "get-url", "origin"])
+    repo_name = os.path.basename(repo_url.rstrip("/").removesuffix(".git")) if repo_url else os.path.basename(os.path.abspath(repo_dir))
+    current_branch = run_cmd(["rev-parse", "--abbrev-ref", "HEAD"])
+    total_commits_str = run_cmd(["rev-list", "--count", "HEAD"])
+    total_commits = int(total_commits_str) if total_commits_str.isdigit() else 0
+    merge_commits_str = run_cmd(["rev-list", "--min-parents=2", "--count", "HEAD"])
+    merge_commits = int(merge_commits_str) if merge_commits_str.isdigit() else 0
+
+    authors_raw = run_cmd(["log", "--format=%aN"]).splitlines()
+    author_counts = Counter([a.strip() for a in authors_raw if a.strip()])
+
+    return {
+        "repo_name": repo_name,
+        "current_branch": current_branch,
+        "total_commits": total_commits,
+        "merge_commits": merge_commits,
+        "total_contributors": len(author_counts),
+        "first_commit_date": run_cmd(["log", "--reverse", "--format=%cs", "-n", "1"]),
+        "last_commit_date": run_cmd(["log", "-1", "--format=%cs"]),
+        "ci_pre_commit": os.path.isfile(os.path.join(repo_dir, ".pre-commit-config.yaml")),
+        "ci_github_actions": os.path.isdir(os.path.join(repo_dir, ".github", "workflows")),
+        "ci_gitlab_ci": os.path.isfile(os.path.join(repo_dir, ".gitlab-ci.yml")),
+    }
+
+
+def build_markdown_report(
+    total_git: int,
+    group_counts: Dict[str, Dict[str, int]],
+    repo_meta: Dict[str, Any] = None,
+) -> str:
     lines = [
-        "# Git Command Audit Report",
-        "",
-        f"- Total Git Commands Analyzed: {total_git}",
+        "# Git Command & Repository Audit Report",
         "",
     ]
+    if repo_meta:
+        lines.extend([
+            "## Repository Context & Collaboration",
+            "",
+            f"- **Repository Name**: `{repo_meta.get('repo_name', 'N/A')}`",
+            f"- **Current Branch**: `{repo_meta.get('current_branch', 'N/A')}`",
+            f"- **Total Commits**: {repo_meta.get('total_commits', 0)} (Merge Commits: {repo_meta.get('merge_commits', 0)})",
+            f"- **Unique Contributors**: {repo_meta.get('total_contributors', 0)}",
+            f"- **Project Timespan**: {repo_meta.get('first_commit_date', 'N/A')} to {repo_meta.get('last_commit_date', 'N/A')}",
+            f"- **Quality / CI Workflows**: Pre-Commit: {repo_meta.get('ci_pre_commit', False)}, GitHub Actions: {repo_meta.get('ci_github_actions', False)}, GitLab CI: {repo_meta.get('ci_gitlab_ci', False)}",
+            "",
+        ])
+    lines.extend([
+        f"- **Total Shell Git Commands Analyzed**: {total_git}",
+        "",
+    ])    
+    
     for group_name, patterns in AUDIT_GROUPS.items():
         lines.append(f"## {group_name}")
         lines.append("")
@@ -92,8 +154,7 @@ def build_markdown_report(total_git: int, group_counts: Dict[str, Dict[str, int]
         lines.append("")
     return "\n".join(lines)
 
-
-def run_audit(history_file_path: str, output_file_path: str = "") -> str:
+def run_audit(history_file_path: str, output_file_path: str = "", repo_dir: str = ".") -> str:
     resolved_path = os.path.expanduser(os.path.expandvars(history_file_path))
     if not os.path.isfile(resolved_path):
         return f"File not found: {resolved_path}"
@@ -103,7 +164,8 @@ def run_audit(history_file_path: str, output_file_path: str = "") -> str:
 
     git_commands = extract_git_commands(lines)
     total, group_counts = compute_statistics(git_commands)
-    report = build_markdown_report(total, group_counts)
+    repo_meta = query_git_repo_metadata(repo_dir)
+    report = build_markdown_report(total, group_counts, repo_meta)
 
     if output_file_path:
         out_path = os.path.expanduser(os.path.expandvars(output_file_path))
@@ -118,7 +180,8 @@ if __name__ == "__main__":
 
     hist_path = sys.argv[1] if len(sys.argv) > 1 else os.path.expanduser("~/.zsh_history")
     out_file = sys.argv[2] if len(sys.argv) > 2 else "git_audit_report.md"
-    report_output = run_audit(hist_path, out_file)
+    repo_target = sys.argv[3] if len(sys.argv) > 3 else "."
+    report_output = run_audit(hist_path, out_file, repo_target)
     print(report_output)
     if not report_output.startswith("File not found"):
         print(f"\nReport saved to: {out_file}")
