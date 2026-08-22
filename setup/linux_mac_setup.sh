@@ -67,17 +67,22 @@ echo "[INFO] Detected Linux (${OS_ID}). Dispatching to ${TARGET}..."
 "${TARGET}" "$@"
 
 if [ "${CI}" != "true" ] && [ -t 0 ]; then
+    READ_OPTS=()
+    if [ "${AUTO_TIMEOUT_ENABLED:-1}" = "1" ]; then
+        READ_OPTS+=("-t" "8")
+    fi
+
     echo ""
-    read -r -p "Run CopyQ setup and hotkey configuration now? [Y/n] " user_choice
+    read "${READ_OPTS[@]}" -r -p "Run CopyQ setup and hotkey configuration now? [Y/n] " user_choice || user_choice="y"
     user_choice=${user_choice:-y}
     if [[ "${user_choice}" =~ ^[yY](es)?$ ]]; then
         "${SCRIPT_DIR}/helper/setup_copyq.sh" "${SELECTED_HOTKEY:-F12}"
     fi
     echo ""
-    read -r -p "Run Aura now? [Y/n] " user_choice
+    read "${READ_OPTS[@]}" -r -p "Run Aura now? [Y/n] " user_choice || user_choice="y"
     user_choice=${user_choice:-y}
     if [[ "${user_choice}" =~ ^[yY](es)?$ ]]; then
-#        "${SCRIPT_DIR}/../python3 aura_engine.py"
         "${SCRIPT_DIR}/../scripts/restart_venv_and_run-server.sh"
     fi
 fi
+
