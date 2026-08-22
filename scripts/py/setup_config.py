@@ -506,7 +506,7 @@ prompt_s = strings["prompt_secondary"]
 
 auto_timeout_enabled = True
 if not is_non_interactive():
-    timeout_query = timed_input("Enable 8-second auto-confirmation countdown? (y/n)", "y", timeout=8, enable_timeout=True)
+    timeout_query = timed_input("Enable 8-second auto-confirmation countdown? (y/n)", "y", enable_timeout=False)
     if timeout_query.lower() in ("n", "no"):
         auto_timeout_enabled = False
 
