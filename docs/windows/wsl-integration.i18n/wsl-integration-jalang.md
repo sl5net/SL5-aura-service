@@ -14,7 +14,7 @@ PowerShell または CMD を **管理者** として開き、以下を実行し�
 wsl --install
 ```
 
-これにより、デフォルトで WSL2 が Ubuntu とともにインストールされます。プロンプトが表示されたらマシンを再起動します。
+これにより、デフォルトで Ubuntu に WSL2 がインストールされます。プロンプトが表示されたらマシンを再起動します。
 
 特定のディストリビューションをインストールするには:
 
@@ -73,7 +73,7 @@ Windows ドライブは `/mnt/` の下にマウントされます。
 /mnt/d/   # → D:\
 ```
 
-プロジェクトが Windows ファイルシステム (例 `C:\Projects\stt`) 上にある場合は、`SL5NET_AURA_PROJECT_ROOT` を次のように設定します。
+プロジェクトが Windows ファイルシステム (例: `C:\Projects\stt`) 上にある場合は、`SL5NET_AURA_PROJECT_ROOT` を次のように設定します。
 
 ```bash
 export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
@@ -135,7 +135,7 @@ WantedBy=sockets.target
 
 Kiwix ヘルパー スクリプト (`kiwix-docker-start-if-not-running.sh`) には Docker が必要です。 Docker Desktop for Windows をインストールし、WSL 2 統合を有効にします。
 
-1.[Docker Desktop](https://www.docker.com/products/docker-desktop/)をダウンロードしてインストールします。
+1. [Docker Desktop](https://www.docker.com/products/docker-desktop/)をダウンロードしてインストールします。
 2. [Docker Desktop] → [設定] → [リソース] → [WSL 統合] で、WSL ディストリビューションを有効にします。
 3. WSL 内で確認します。
    ```bash

@@ -31,7 +31,7 @@ tail -30 log/aura_engine.log
 |ログにエラーがあります |修正 |
 |---|---|
 | `モジュールが見つかりませんエラー` |セットアップ スクリプトを再度実行します: `bash setup/manjaro_arch_setup.sh` |
-| `'objgraph' という名前のモジュールはありません` | `.venv` が再作成されました — 再インストール: `pip install -r required.txt` |
+| `'objgraph' という名前のモジュールはありません` | `.venv` が再作成されました — 再インストール: `pip install -r scripts/infra/requirements/requirements.txt` |
 | `アドレスはすでに使用されています` |古いプロセスを強制終了します: `pkill -9 -f aura_engine` |
 | `モデルが見つかりません` |セットアップを再実行して欠落しているモデルをダウンロードする |
 | `pygame.mixer は利用できません` |以下の「起動時に音が出ない」を参照してください。
@@ -58,7 +58,7 @@ sudo apt install libsdl2-mixer-2.0-0
 pip install pygame-ce --upgrade
 ```
 
-Aura は音声なしでも動作し続けます。これは致命的なエラーではありません。
+Aura は音なしでも動作し続けます。これは致命的なエラーではありません。
 
 ---
 
@@ -114,7 +114,7 @@ ls -la /tmp/sl5_record.trigger
 **症状:** CopyQ がインストールされ構成されているが、ホットキーを押すと、
 Wayland セッションでは何もありません。
 
-**原因:** CopyQ グローバル ホットキーは、これがないと Wayland で確実に機能しません。
+**原因:** CopyQ グローバル ホットキーは、Wayland 上で確実に動作しません。
 追加の構成。これは、KDE Plasma、GNOME、その他に影響します。
 Wayland コンポジター。
 
@@ -137,7 +137,7 @@ sudo pacman -S dotool        # Arch/Manjaro
 sudo apt install dotool      # Ubuntu (if available)
 ```
 
-次に、デスクトップのショートカット マネージャーを使用して以下を実行します。
+次に、デスクトップのショートカット マネージャーを使用して次を実行します。
 ```bash
 touch /tmp/sl5_record.trigger
 ```
@@ -217,7 +217,7 @@ LOG_ONLY = [
 LOG_EXCLUDE = []
 ```
 
-ファイルを保存します — Aura はフィルターを自動的に再読み込みします。再起動は必要ありません。
+ファイルを保存します — Aura はフィルターを自動的に再ロードします。再起動は必要ありません。
 
 ---
 

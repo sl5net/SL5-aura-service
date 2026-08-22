@@ -12,7 +12,7 @@ Otwórz PowerShell lub CMD **jako administrator** i uruchom:
 
 __KOD_BLOKU_0__
 
-To domyślnie instaluje WSL2 z Ubuntu. Po wyświetleniu monitu uruchom ponownie maszynę.
+To domyślnie instaluje WSL2 z Ubuntu. Uruchom ponownie komputer po wyświetleniu monitu.
 
 Aby zainstalować konkretną dystrybucję:
 
@@ -96,7 +96,7 @@ __KOD_BLOKU_12__
 
 ### Docker i Kiwix w WSL
 
-Skrypt pomocniczy Kiwix („kiwix-docker-start-if-not-running.sh”) wymaga Dockera. Zainstaluj Docker Desktop dla Windows i włącz integrację WSL 2:
+Skrypt pomocniczy Kiwix (`kiwix-docker-start-if-not-running.sh`) wymaga Dockera. Zainstaluj Docker Desktop dla Windows i włącz integrację WSL 2:
 
 1. Pobierz i zainstaluj [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 2. W Docker Desktop → Ustawienia → Zasoby → Integracja WSL włącz dystrybucję WSL.

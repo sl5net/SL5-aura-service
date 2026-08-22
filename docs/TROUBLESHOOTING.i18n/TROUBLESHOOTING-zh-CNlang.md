@@ -20,7 +20,7 @@ __代码_块_1__
 |日志中的错误 |修复 |
 |---|---|
 | `模块未找到错误` |再次运行安装脚本：`bash setup/manjaro_arch_setup.sh` |
-| `没有名为'objgraph'的模块` | `.venv` 已重新创建 — 重新安装：`pip install -rrequirements.txt` |
+| `没有名为'objgraph'的模块` | `.venv` 已重新创建 — 重新安装：`pip install -r script/infra/requirements/requirements.txt` |
 | `地址已被使用` |终止旧进程：`pkill -9 -f aura_engine` |
 | `找不到模型` |重新运行安装程序以下载丢失的模型 |
 | `pygame.mixer 不可用` |请参阅下面的“启动时没有声音”|
@@ -163,7 +163,7 @@ __代码_块_20__
 
 **症状：** CPU 100%，风扇全速运转，`plugins.zip`不断增长。
 
-**原因：** 安全打包程序正在无限循环中重新打包文件。
+**原因：** 安全加壳器正在无限循环中重新打包文件。
 
 **修复：** 确保“.blob”和“.zip”文件从时间戳扫描中排除。
 检查第 86 行附近的 `scripts/py/func/secure_packer_lib.py`：

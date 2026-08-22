@@ -105,7 +105,7 @@ __代码_块_13__
 
 ### 从 Windows 调用 WSL `s` 函数（可选）
 
-如果您想从 Windows CMD 或 PowerShell 窗口调用“s”快捷方式而不打开 WSL 终端，您可以将其包装：
+如果您想在不打开 WSL 终端的情况下从 Windows CMD 或 PowerShell 窗口调用 `s` 快捷方式，您可以将其包装：
 
 __代码_块_14__
 

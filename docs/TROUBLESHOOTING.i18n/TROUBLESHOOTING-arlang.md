@@ -31,7 +31,7 @@ tail -30 log/aura_engine.log
                                       | خطأ في السجل | إصلاح |
                                                                     |---|---|
 | `ModuleNotFoundError` | قم بتشغيل برنامج الإعداد مرة أخرى: `bash setup/manjaro_arch_setup.sh` |
-| `لا توجد وحدة باسم \'objgraph'' | تمت إعادة إنشاء `.venv` - أعد التثبيت: `pip install -r require.txt` |
+| `لا توجد وحدة باسم \'objgraph'' | تمت إعادة إنشاء `.venv` - أعد التثبيت: `pip install -r scripts/infra/requirements/requirements.txt` |
 | `العنوان قيد الاستخدام بالفعل` | إنهاء العملية القديمة: `pkill -9 -f aura_engine` |
 | `لم يتم العثور على النموذج` | أعد تشغيل برنامج الإعداد لتنزيل النماذج المفقودة |
 | `pygame.mixer غير متوفر` | راجع "لا يوجد صوت عند بدء التشغيل" أدناه |

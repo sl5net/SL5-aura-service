@@ -19,7 +19,7 @@ pgrep -a type_watcher
 
 ## 문제: Aura가 시작되지 않습니다.
 
-**증상:** 시작 소리가 나지 않고 'pgrep'에 프로세스가 표시되지 않습니다.
+**증상:** 시작 소리가 들리지 않고 'pgrep'에 프로세스가 표시되지 않습니다.
 
 **로그를 확인하세요:**
 ```bash
@@ -31,9 +31,9 @@ tail -30 log/aura_engine.log
 | 로그 오류 | 수정 |
 |---|---|
 | `ModuleNotFoundError` | 설정 스크립트를 다시 실행하십시오: `bash setup/manjaro_arch_setup.sh` |
-| `'objgraph'라는 모듈이 없습니다` | `.venv`가 다시 생성되었습니다 — 다시 설치: `pip install -r 요구 사항.txt` |
+| `'objgraph'라는 모듈이 없습니다` | `.venv`가 다시 생성되었습니다 — 다시 설치: `pip install -r scripts/infra/requirements/requirements.txt` |
 | `이미 사용 중인 주소` | 기존 프로세스 종료: `pkill -9 -f aura_engine` |
-| '모델을 찾을 수 없음' | 누락된 모델을 다운로드하려면 설정을 다시 실행하세요. |
+| '모델을 찾을 수 없음' | 누락된 모델을 다운로드하려면 설치를 다시 실행하세요. |
 | `pygame.mixer를 사용할 수 없음` | 아래의 "시작 시 소리가 나지 않음"을 참조하세요 |
 
 ---
@@ -161,7 +161,7 @@ touch /tmp/sl5_record.trigger
    ```bash
    touch /tmp/sl5_record.trigger
    ```
-3. 키 조합 지정
+3. 키 조합 할당
 
 ### 옵션 5: Wayland 수정 사항이 포함된 CopyQ
 
@@ -176,9 +176,9 @@ QT_QPA_PLATFORM=xcb copyq
 
 ## 문제: 텍스트가 나타나지만 수정 사항이 없습니다.
 
-**증상:** 받아쓰기가 작동하지만 모든 내용이 소문자로 유지되고 문법 수정이 이루어지지 않습니다.
+**증상:** 받아쓰기가 작동하지만 모든 내용이 소문자로 유지되고 문법이 수정되지 않습니다.
 
-**LanguageTool이 실행 중인지 확인:**
+**LanguageTool이 실행 중인지 확인하세요.**
 ```bash
 curl -s http://127.0.0.1:8082/v2/languages | head -5
 ```
@@ -223,7 +223,7 @@ LOG_EXCLUDE = []
 
 ## 문제: 플러그인.zip이 끝없이 증가함/높은 CPU
 
-**증상:** 100% CPU, 팬이 최고 속도로 작동 중, 'plugins.zip'이 멈추지 않고 커집니다.
+**증상:** 100% CPU, 팬이 최고 속도로 작동하고 'plugins.zip'이 멈추지 않고 커집니다.
 
 **원인:** 보안 패커가 무한 루프에서 파일을 다시 패키지하고 있습니다.
 
@@ -254,7 +254,7 @@ if file.startswith('.') or file.endswith('.pyc') or file.endswith('.blob') or fi
    ```bash
    grep "Yielding chunk" log/aura_engine.log | tail -5
    ```
-4. `only_in_windows`가 설정되어 있는데 잘못된 창이 활성화되어 있습니까?
+4. `only_in_windows`가 설정되어 있고 잘못된 창이 활성화되어 있습니까?
 5. 보다 일반적인 규칙이 먼저 일치합니까? 규칙은 위에서 아래로 처리됩니다.
 일반적인 규칙보다 구체적인 규칙을 두십시오.
 

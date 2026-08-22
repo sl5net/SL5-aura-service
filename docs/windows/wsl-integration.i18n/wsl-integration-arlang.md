@@ -85,7 +85,7 @@ export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 
                   ### بيئة بايثون الافتراضية داخل WSL
 
-إنشاء واستخدام بيئة Linux الافتراضية القياسية داخل WSL:
+قم بإنشاء واستخدام بيئة Linux الافتراضية القياسية داخل WSL:
 
 ```bash
 cd "$SL5NET_AURA_PROJECT_ROOT"
@@ -124,7 +124,7 @@ sudo systemctl start docker.socket
 ```bash
 sudo systemctl edit docker.socket
 ```
-تأكد من وجود الأسطر التالية وعدم التعليق عليها (قم بإزالة `#`)، ثم احفظ واخرج:
+تأكد من وجود الأسطر التالية وعدم التعليق عليها (أزل `#`)، ثم احفظ واخرج:
 ```ini
 [Install]
 WantedBy=sockets.target

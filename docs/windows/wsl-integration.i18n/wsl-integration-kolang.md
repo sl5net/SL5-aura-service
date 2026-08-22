@@ -79,7 +79,7 @@ Windows 드라이브는 `/mnt/`에 마운트됩니다:
 export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"
 ```
 
-이 줄을 `~/.bashrc`(또는 쉘에 해당하는 항목) `s()` 함수 **위**에 추가하세요.
+`~/.bashrc`(또는 쉘에 해당하는 항목) `s()` 함수 **위**에 이 줄을 추가하세요.
 
 > **성능 팁:** 최고의 I/O 성능을 위해서는 프로젝트 파일을 `/mnt/c/...`가 아닌 WSL 파일 시스템(예: `~/projects/stt`)에 보관하세요. WSL과 Windows 간의 파일 시스템 간 액세스는 상당히 느립니다.
 
@@ -124,7 +124,7 @@ sudo systemctl start docker.socket
 ```bash
 sudo systemctl edit docker.socket
 ```
-다음 줄이 있고 주석 처리가 해제되었는지 확인한 후(`#` 제거) 저장하고 종료합니다.
+다음 줄이 있고 주석 처리가 없는지 확인한 후(`#` 제거) 저장하고 종료합니다.
 ```ini
 [Install]
 WantedBy=sockets.target

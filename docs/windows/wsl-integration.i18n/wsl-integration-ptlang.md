@@ -101,7 +101,7 @@ Defina sua distribuição WSL como o perfil padrão nas configurações do Termi
 
 Para economizar recursos do sistema, você pode configurar o Docker para iniciar somente quando necessário (por exemplo, quando o Aura solicitar o banco de dados Trino), em vez de executar constantemente em segundo plano.
 
-Execute os seguintes comandos para desabilitar o serviço contínuo em segundo plano e habilitar a "ativação de soquete":
+Execute os seguintes comandos para desativar o serviço contínuo em segundo plano e ativar a "ativação de soquete":
 
 ```bash
 export SL5NET_AURA_PROJECT_ROOT="/mnt/c/Projects/stt"

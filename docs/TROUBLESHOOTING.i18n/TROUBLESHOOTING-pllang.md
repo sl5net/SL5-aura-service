@@ -20,7 +20,7 @@ __KOD_BLOKU_1__
 | Błąd w logu | Napraw |
 |---|---|
 | `ModuleNotFoundError` | Uruchom ponownie skrypt instalacyjny: `bash setup/manjaro_arch_setup.sh` |
-| `Brak modułu o nazwie 'objgraph'` | Odtworzono plik `.venv` — zainstaluj ponownie: `pip install -r wymagania.txt` |
+| `Brak modułu o nazwie 'objgraph'` | Odtworzono plik .venv — zainstaluj ponownie: `pip install -r scripts/infra/requirements/requirements.txt` |
 | `Adres już używany` | Zabij stary proces: `pkill -9 -f aura_engine` |
 | `Nie znaleziono modelu` | Uruchom ponownie instalację, aby pobrać brakujące modele |
 | `pygame.mixer niedostępny` | Zobacz „Brak dźwięku podczas uruchamiania” poniżej |
@@ -35,7 +35,7 @@ ale nie odtwarza żadnych dźwięków.
 **Przyczyna:** Kompilacja pygame w Twoim systemie nie obsługuje dźwięku ani SDL2
 brakuje bibliotek audio.
 
-**Poprawka w Arch/Manjaro:**
+**Poprawka na Arch/Manjaro:**
 __KOD_BLOKU_2__
 
 **Poprawka w Ubuntu/Debianie:**
