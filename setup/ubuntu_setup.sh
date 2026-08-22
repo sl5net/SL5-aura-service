@@ -65,7 +65,7 @@ fi
 echo "--> Installing other core dependencies…"
 sudo apt-get install -y \
     inotify-tools wget unzip portaudio19-dev python3-pip \
-    ffmpeg libnotify-bin xclip xvfb espeak-ng xdotool
+    ffmpeg libnotify-bin xclip xvfb espeak-ng xdotool fzf    
 # --- 2. Python Virtual Environment ---
 # (This section remains unchanged)
 if [ ! -d ".venv" ]; then
