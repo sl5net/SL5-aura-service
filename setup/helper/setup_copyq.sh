@@ -33,7 +33,23 @@ if ! pgrep -x "copyq" > /dev/null; then
     sleep 1
 fi
 
-SEARCH_RULE_JS=$(cat <<'EOF'
+# 1. Register SL5 Voice Trigger (F12 or selected hotkey)
+copyq eval "
+var voiceCmd = {
+    name: 'SL5 Voice Trigger',
+    cmd: '${TRIGGER_CMD}',
+    globalShortcuts: ['${HOTKEY}'],
+    isGlobalShortcut: true,
+    icon: '\xf028'
+};
+var cmds = commands();
+var filtered = cmds.filter(function(c){ return c.name !== 'SL5 Voice Trigger'; });
+filtered.push(voiceCmd);
+setCommands(filtered);
+"
+
+# 2. Register SL5 Rule Search (Meta+Y)
+export SEARCH_RULE_JS=$(cat <<'EOF'
 // Test with:
 //   copyq eval "$(cat /tmp/run_rule.js)"
 
@@ -67,27 +83,18 @@ EOF
 )
 
 copyq eval "
-var searchCode = arguments[0];
-var voiceCmd = {
-    name: 'SL5 Voice Trigger',
-    cmd: '${TRIGGER_CMD}',
-    globalShortcuts: ['${HOTKEY}'],
-    isGlobalShortcut: true,
-    icon: '\xf028'
-};
 var searchCmd = {
     name: 'SL5 Rule Search',
-    cmd: searchCode,
+    cmd: env('SEARCH_RULE_JS'),
     globalShortcuts: ['Meta+Y'],
     isGlobalShortcut: true,
     icon: '\xf002'
 };
 var cmds = commands();
-var filtered = cmds.filter(function(c){ return c.name !== 'SL5 Voice Trigger' && c.name !== 'SL5 Rule Search'; });
-filtered.push(voiceCmd);
+var filtered = cmds.filter(function(c){ return c.name !== 'SL5 Rule Search'; });
 filtered.push(searchCmd);
 setCommands(filtered);
-" "$SEARCH_RULE_JS"
+"
 
 
 
