@@ -525,15 +525,27 @@ else:
     all_langs = sorted(set(list_available_i18n_langs()) | {FALLBACK_LANG})
     excludes = [lang for lang in all_langs if lang.lower() != primary.lower() and lang.lower() != str(secondary).lower()]
     excludes_str = ",".join(excludes)
-# Print environment variables as before
+
+hotkey_map = {"1": "F12", "2": "Ctrl+Shift+Space", "3": "Scroll_Lock"}
+hotkey_input = timed_input(
+    "Select trigger hotkey (1=F12, 2=Ctrl+Shift+Space, 3=Scroll_Lock, or type custom key):",
+    "1",
+    timeout=8,
+    enable_timeout=auto_timeout_enabled,
+).strip()
+selected_hotkey = hotkey_map.get(hotkey_input, hotkey_input if hotkey_input else "F12")
+
 if os.name == 'nt':
     print(f"$env:SELECTED_LANG='{primary}'")
     print(f"$env:SECOND_LANG='{secondary}'")
     print(f"$env:EXCLUDE_LANGUAGES='{excludes_str}'")
+    print(f"$env:SELECTED_HOTKEY='{selected_hotkey}'")
 else:
     print(f"export SELECTED_LANG='{primary}'")
     print(f"export SECOND_LANG='{secondary}'")
     print(f"export EXCLUDE_LANGUAGES='{excludes_str}'")
+    print(f"export SELECTED_HOTKEY='{selected_hotkey}'")    
+    
 # --- New: show docs/doc_sources/i18n counts and ask about deletions ---
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 info = find_folder_counts(repo_root)
