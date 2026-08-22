@@ -77,6 +77,7 @@ if [ "${CI}" != "true" ] && [ -t 0 ]; then
     read -r -p "Run Aura now? [Y/n] " user_choice
     user_choice=${user_choice:-y}
     if [[ "${user_choice}" =~ ^[yY](es)?$ ]]; then
-        "${SCRIPT_DIR}/python3 aura_engine.py"
+#        "${SCRIPT_DIR}/../python3 aura_engine.py"
+        "${SCRIPT_DIR}/../scripts/restart_venv_and_run-server.sh"
     fi
 fi

@@ -132,20 +132,8 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 fi
 
-
-
 # --- dotool setup ---
-if ! command -v dotool &> /dev/null; then
-    echo "--> Installing dotool…"
-    sudo apt-get install -y dotool || echo "WARNING: dotool not in apt repos. Install manually. See docs/LINUX_WAYLAND_dotool.md"
-fi
-#sudo usermod -aG input $USER # before 22.8.'26 19:05 Sat
-sudo usermod -aG input "$USER"
-echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
-  | sudo tee /etc/udev/rules.d/80-dotool.rules
-sudo udevadm control --reload-rules && sudo udevadm trigger
-echo "NOTE: Re-login required for input group to take effect."
-echo "See docs/LINUX_WAYLAND_dotool.md for details."
+source "$(dirname "${BASH_SOURCE[0]}")/helper/install_dotool.sh"
 
 # --- automatically set user-Models ---
 echo "--> Configuring default model in config/model_name.txt…"
