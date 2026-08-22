@@ -73,4 +73,10 @@ if [ "${CI}" != "true" ] && [ -t 0 ]; then
     if [[ "${user_choice}" =~ ^[yY](es)?$ ]]; then
         "${SCRIPT_DIR}/helper/setup_copyq.sh" "${SELECTED_HOTKEY:-F12}"
     fi
+    echo ""
+    read -r -p "Run Aura now? [Y/n] " user_choice
+    user_choice=${user_choice:-y}
+    if [[ "${user_choice}" =~ ^[yY](es)?$ ]]; then
+        "${SCRIPT_DIR}/python3 aura_engine.py"
+    fi
 fi
