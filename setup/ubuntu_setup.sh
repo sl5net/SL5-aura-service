@@ -65,7 +65,7 @@ fi
 echo "--> Installing other core dependencies…"
 sudo apt-get install -y \
     inotify-tools wget unzip portaudio19-dev python3-pip \
-    ffmpeg libnotify-bin xclip xvfb espeak-ng xdotool fzf    
+    ffmpeg libnotify-bin xclip xvfb espeak-ng xdotool fzf ripgrep    
 # --- 2. Python Virtual Environment ---
 # (This section remains unchanged)
 if [ ! -d ".venv" ]; then
@@ -97,20 +97,24 @@ source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 
-# --- Install fzf (Fuzzy Finder) ---
-if ! command -v fzf &> /dev/null; then
-    echo "[INFO] fzf not found. Installing…"
-    # We use apt for simplicity in the setup script
-    sudo apt-get update && sudo apt-get install -y fzf
-
-    # Optional: If you want the latest version with full shell bindings:
-    # git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    # ~/.fzf/install --all
+# --- Install / Update fzf to a modern version (>= 0.36.0) ---
+FZF_VER=$(fzf --version 2>/dev/null | awk '{print $1}' || echo "0.0.0")
+if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.36.0" "${FZF_VER}" | sort -V | head -n1)" != "0.36.0" ]; then
+    echo "[INFO] Installing modern fzf release binary..."
+    ARCH=$(uname -m)
+    case "${ARCH}" in
+        x86_64) FZF_ARCH="linux_amd64" ;;
+        aarch64|arm64) FZF_ARCH="linux_arm64" ;;
+        *) FZF_ARCH="linux_amd64" ;;
+    esac
+    TMP_FZF=$(mktemp -d)
+    wget -qO- "https://github.com/junegunn/fzf/releases/download/v0.54.3/fzf-0.54.3-${FZF_ARCH}.tar.gz" | tar -xz -C "${TMP_FZF}"
+    sudo mv "${TMP_FZF}/fzf" /usr/local/bin/fzf
+    sudo chmod +x /usr/local/bin/fzf
+    rm -rf "${TMP_FZF}"
 else
-    echo "[INFO] fzf is already installed."
+    echo "[INFO] Modern fzf is already installed (${FZF_VER})."
 fi
-
-
 
 
 
