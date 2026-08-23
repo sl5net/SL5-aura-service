@@ -29,6 +29,11 @@ cd "$SL5NET_AURA_PROJECT_ROOT"
 echo "--> Running setup from project root: $(pwd)"
 # --- End of location-independent block ---
 
+LOG_DIR="${SL5NET_AURA_PROJECT_ROOT}/log"
+mkdir -p "${LOG_DIR}"
+LOG_FILE="${LOG_DIR}/ubuntu_setup.log"
+exec > >(tee -a "${LOG_FILE}") 2>&1
+
 set -e
 
 
@@ -158,7 +163,11 @@ fi
 source "$(dirname "${BASH_SOURCE[0]}")/helper/install_dotool.sh"
 
 # --- CudaText setup ---
+echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Sourcing install_cudatext.sh..."
 source "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
+echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
+
+echo "--> [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
 
 # --- automatically set user-Models ---
 echo "--> Configuring default model in config/model_name.txt…"
