@@ -88,18 +88,26 @@ else
 fi
 
 echo "[INFO] Installing to ${OPT_DIR}..."
+${SUDO} rm -rf "${OPT_DIR}"
 ${SUDO} mkdir -p "${OPT_DIR}"
 ${SUDO} cp -a "${EXTRACT_DIR}/." "${OPT_DIR}/"
 
-${SUDO} chmod +x "${OPT_DIR}/cudatext" || true
+if [[ -f "${OPT_DIR}/cudatext" && -x "${OPT_DIR}/cudatext" ]]; then
+  ACTUAL_BIN="${OPT_DIR}/cudatext"
+elif [[ -f "${OPT_DIR}/cudatext/cudatext" && -x "${OPT_DIR}/cudatext/cudatext" ]]; then
+  ACTUAL_BIN="${OPT_DIR}/cudatext/cudatext"
+else
+  ACTUAL_BIN="$(find "${OPT_DIR}" -type f -name 'cudatext' -perm /u+x,g+x,o+x | head -n1 || true)"
+fi
+
+${SUDO} chmod +x "${ACTUAL_BIN}" || true
 if [[ -d "${BIN_LINK}" && ! -L "${BIN_LINK}" ]]; then
   ${SUDO} rm -rf "${BIN_LINK}"
 else
   ${SUDO} rm -f "${BIN_LINK}"
 fi
-${SUDO} ln -sf "${OPT_DIR}/cudatext" "${BIN_LINK}"
-${SUDO} ln -sf "${OPT_DIR}/cudatext" /usr/bin/cudatext 2>/dev/null || true
-echo "[INFO] Installation complete. Checking version:"
+${SUDO} ln -sf "${ACTUAL_BIN}" "${BIN_LINK}"
+${SUDO} ln -sf "${ACTUAL_BIN}" /usr/bin/cudatext 2>/dev/null || trueecho "[INFO] Installation complete. Checking version:"
 "${BIN_LINK}" --version || "${BIN_LINK}" -v || echo "[WARN] Could not determine version."
 
 echo "[INFO] Done."
