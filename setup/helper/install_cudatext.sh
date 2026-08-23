@@ -5,7 +5,14 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Config
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+LOG_DIR="${PROJECT_ROOT}/log"
+mkdir -p "${LOG_DIR}"
+LOG_FILE="${LOG_DIR}/install_cudatext.log"
+
+exec > >(tee -a "${LOG_FILE}") 2>&1
+
 CANDIDATE_NAME="cudatext"
 OPT_DIR="/opt/${CANDIDATE_NAME}"
 BIN_LINK="/usr/local/bin/${CANDIDATE_NAME}"
@@ -13,9 +20,9 @@ SF_BASE="https://downloads.sourceforge.net/project/cudatext/release/Linux"
 FALLBACK_TAR="cudatext-linux-gtk2-amd64-1.217.0.0.tar.xz"
 
 cleanup() {
-  rc=$?
+  local rc=$?
   [[ -n "${TMP_DIR:-}" && -d "${TMP_DIR}" ]] && rm -rf "${TMP_DIR}"
-  return $rc
+  return "${rc}"
 }
 trap cleanup EXIT
 
