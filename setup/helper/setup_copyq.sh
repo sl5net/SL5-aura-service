@@ -35,13 +35,14 @@ fi
 
 JS_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/search_rules/run_rule_copyq.js"
 
+if [ ! -f "${JS_PATH}" ]; then
+    echo "[ERROR] CopyQ search script not found: ${JS_PATH}"
+    exit 1
+fi
+
+export SEARCH_RULE_JS="$(cat "${JS_PATH}")"
+
 copyq eval "
-var jsFile = File('${JS_PATH}');
-var searchScript = '';
-if (jsFile.open()) {
-    searchScript = str(jsFile.readAll());
-    jsFile.close();
-}
 var voiceCmd = {
     name: 'SL5 Voice Trigger',
     cmd: '${TRIGGER_CMD}',
@@ -51,7 +52,7 @@ var voiceCmd = {
 };
 var searchCmd = {
     name: 'SL5 Rule Search',
-    cmd: 'copyq:' + String.fromCharCode(10) + searchScript,
+    cmd: 'copyq:' + String.fromCharCode(10) + env('SEARCH_RULE_JS'),
     globalShortcuts: ['Meta+Y', 'F11'],
     isGlobalShortcut: true,
     icon: 'search'
