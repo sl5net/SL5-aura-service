@@ -1,7 +1,7 @@
 # scripts/py/welcome_wizard/de-DE/start.py
 import subprocess
 import platform
-
+import shutil
 def run(project_root):
     d = project_root / "scripts" / "search_rules"
     search_script = d / "search_rules.bat" if platform.system() == "Windows" else d / "search_rules.sh"
@@ -42,8 +42,19 @@ def run(project_root):
         if settings.DEV_MODE:
             sleep_sec = 5
 
-        cmd = [
-            'konsole', '-e', 'bash', '-c',
-            f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; sleep {sleep_sec}'
+        inner_cmd = f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; sleep {sleep_sec}'
+        term_candidates = [
+            "x-terminal-emulator",
+            "gnome-terminal",
+            "konsole",
+            "xfce4-terminal",
+            "mate-terminal",
+            "tilix",
+            "xterm",
         ]
+        term_bin = next((t for t in term_candidates if shutil.which(t)), "x-terminal-emulator")
+        if term_bin == "gnome-terminal":
+            cmd = [term_bin, "--", "bash", "-c", inner_cmd]
+        else:
+            cmd = [term_bin, "-e", "bash", "-c", inner_cmd]
         subprocess.Popen(cmd, start_new_session=True, env=env)
