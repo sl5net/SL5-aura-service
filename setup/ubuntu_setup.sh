@@ -65,7 +65,8 @@ fi
 echo "--> Installing other core dependencies…"
 sudo apt-get install -y \
     inotify-tools wget unzip portaudio19-dev python3-pip \
-    ffmpeg libnotify-bin xclip xvfb espeak-ng xdotool fzf ripgrep    
+    ffmpeg libnotify-bin xclip xvfb espeak-ng xdotool ripgrep    
+        
 # --- 2. Python Virtual Environment ---
 # (This section remains unchanged)
 if [ ! -d ".venv" ]; then
@@ -97,10 +98,10 @@ source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 
-# --- Install / Update fzf to a modern version (>= 0.49.0) ---
+# --- Automated Modern fzf Installation (>= 0.54.3) ---
 FZF_VER=$(fzf --version 2>/dev/null | awk '{print $1}' || echo "0.0.0")
-if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.49.0" "${FZF_VER}" | sort -V | head -n1)" != "0.49.0" ]; then
-    echo "[INFO] Installing modern fzf release binary..."
+if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.54.3" "${FZF_VER}" | sort -V | head -n1)" != "0.54.3" ]; then
+    echo "--> Installing modern fzf binary (>= 0.54.3)..."
     ARCH=$(uname -m)
     case "${ARCH}" in
         x86_64) FZF_ARCH="linux_amd64" ;;
