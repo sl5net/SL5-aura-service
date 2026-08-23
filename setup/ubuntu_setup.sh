@@ -97,9 +97,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 
-# --- Install / Update fzf to modern release (>= 0.50.0) ---
+# --- Install / Update fzf to modern release (>= 0.74.0) ---
 FZF_VER=$(fzf --version 2>/dev/null | awk '{print $1}' || echo "0.0.0")
-if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.50.0" "${FZF_VER}" | sort -V | head -n1)" != "0.50.0" ]; then
+if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.74.0" "${FZF_VER}" | sort -V | head -n1)" != "0.74.0" ]; then
     echo "--> Installing modern fzf release binary (v0.54.3)..."
     ARCH=$(uname -m)
     case "${ARCH}" in
@@ -107,13 +107,28 @@ if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.50.0" "${FZF_VER}" | s
         aarch64|arm64) FZF_ARCH="linux_arm64" ;;
         *) FZF_ARCH="linux_amd64" ;;
     esac
-    TMP_FZF=$(mktemp -d)
-    wget -qO- "https://github.com/junegunn/fzf/releases/download/v0.54.3/fzf-0.54.3-${FZF_ARCH}.tar.gz" | tar -xz -C "${TMP_FZF}"
-    sudo cp "${TMP_FZF}/fzf" /usr/local/bin/fzf
-    sudo cp "${TMP_FZF}/fzf" /usr/bin/fzf 2>/dev/null || true
-    sudo cp "${TMP_FZF}/fzf" /bin/fzf 2>/dev/null || true
-    sudo chmod +x /usr/local/bin/fzf /usr/bin/fzf /bin/fzf 2>/dev/null || true
-    rm -rf "${TMP_FZF}"
+
+    # https://stackoverflow.com/ai-assist/chat/6c39d0ae-c94e-43fd-a169-739e41ab916c    
+    sudo apt update && sudo apt install -y curl jq tar
+    
+    # https://stackoverflow.com/ai-assist/chat/6c39d0ae-c94e-43fd-a169-739e41ab916c    
+    # get latest release JSON, pick the linux_amd64 tar.gz asset, download and install
+    tmp=$(mktemp -d)
+    cd "$tmp"
+    release_json=$(curl -sS https://api.github.com/repos/junegunn/fzf/releases/latest)
+    url=$(echo "$release_json" | jq -r '.assets[] | select(.name | test("linux_amd64")) | .browser_download_url' | head -n1)
+    if [ -z "$url" ]; then
+      echo "Could not find linux_amd64 asset in latest release" >&2
+      exit 1
+    fi
+    curl -sSL -o fzf.tgz "$url"
+    tar -xzf fzf.tgz
+    sudo mv fzf /usr/local/bin/
+    sudo chmod +x /usr/local/bin/fzf
+    cd -
+    rm -rf "$tmp"
+    echo "fzf installed to /usr/local/bin/fzf"
+    
 else
     echo "    -> Modern fzf is already installed (${FZF_VER}). OK."
 fi
