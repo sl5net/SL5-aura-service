@@ -29,7 +29,7 @@ cd "$SL5NET_AURA_PROJECT_ROOT"
 echo "--> Running setup from project root: $(pwd)"
 # --- End of location-independent block ---
 
-LOG_DIR="${SL5NET_AURA_PROJECT_ROOT}/log"
+LOG_DIR="${SL5NET_AURA_PROJECT_ROOT}/log/setup"
 mkdir -p "${LOG_DIR}"
 LOG_FILE="${LOG_DIR}/ubuntu_setup.log"
 exec > >(tee -a "${LOG_FILE}") 2>&1
