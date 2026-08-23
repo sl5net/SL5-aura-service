@@ -170,11 +170,11 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Finished install_cudatext.sh (which: 
 
 echo "--> [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
 
-# --- automatically set user-Models ---
+# --- Configure default model ---
 echo "--> Configuring default model in config/model_name.txt…"
-if [ "$CI" == "true" ]; then
+if [ "${CI:-}" = "true" ]; then
     echo "vosk-model-small-en-us-0.15" > config/model_name.txt
-elif [ "$SELECTED_LANG" == "de" ]; then
+elif [ "${SELECTED_LANG:-}" = "de" ]; then
     echo "vosk-model-de-0.21" > config/model_name.txt
 else
     echo "Please set a vosk-model in config/model_name.txt e.g. vosk-model-en-us-0.22 and check https://alphacephei.com/vosk/models"

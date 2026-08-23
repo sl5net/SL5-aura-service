@@ -92,8 +92,13 @@ ${SUDO} mkdir -p "${OPT_DIR}"
 ${SUDO} cp -a "${EXTRACT_DIR}/." "${OPT_DIR}/"
 
 ${SUDO} chmod +x "${OPT_DIR}/cudatext" || true
+if [[ -d "${BIN_LINK}" && ! -L "${BIN_LINK}" ]]; then
+  ${SUDO} rm -rf "${BIN_LINK}"
+else
+  ${SUDO} rm -f "${BIN_LINK}"
+fi
 ${SUDO} ln -sf "${OPT_DIR}/cudatext" "${BIN_LINK}"
-
+${SUDO} ln -sf "${OPT_DIR}/cudatext" /usr/bin/cudatext 2>/dev/null || true
 echo "[INFO] Installation complete. Checking version:"
 "${BIN_LINK}" --version || "${BIN_LINK}" -v || echo "[WARN] Could not determine version."
 
