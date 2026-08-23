@@ -1,49 +1,91 @@
 #!/usr/bin/env bash
-#
-# setup/helper/install_cudatext.sh
-# Installs CudaText editor for Linux distributions.
-#
+
+# https://stackoverflow.com/ai-assist/chat/bc63713a-c27b-4f9f-80c6-47ae4deaa157 , 23.8.'26 17:27 Sun 
 
 set -euo pipefail
+IFS=$'\n\t'
 
-if command -v cudatext &> /dev/null; then
-    echo "[INFO] CudaText is already installed ($(command -v cudatext))."
-    exit 0
+# Config
+CANDIDATE_NAME="cudatext"
+OPT_DIR="/opt/${CANDIDATE_NAME}"
+BIN_LINK="/usr/local/bin/${CANDIDATE_NAME}"
+SF_BASE="https://downloads.sourceforge.net/project/cudatext/release/Linux"
+FALLBACK_TAR="cudatext-linux-gtk2-amd64-1.217.0.0.tar.xz"
+
+cleanup() {
+  rc=$?
+  [[ -n "${TMP_DIR:-}" && -d "${TMP_DIR}" ]] && rm -rf "${TMP_DIR}"
+  return $rc
+}
+trap cleanup EXIT
+
+if command -v "${CANDIDATE_NAME}" >/dev/null 2>&1; then
+  echo "[INFO] ${CANDIDATE_NAME} is already installed: $(command -v "${CANDIDATE_NAME}")"
+  exit 0
 fi
 
-echo "[INFO] Installing CudaText editor..."
+# Detect architecture
+ARCH="$(uname -m)"
+case "${ARCH}" in
+  x86_64|amd64) TAR_NAME_PREFIX="cudatext-linux-gtk2-amd64" ;;
+  aarch64|arm64) TAR_NAME_PREFIX="cudatext-linux-gtk2-arm64" ;; 
+  *)
+    echo "[ERROR] Unsupported CPU architecture: ${ARCH}"
+    exit 2
+    ;;
+esac
 
-# Arch / Manjaro
-if command -v pacman &> /dev/null; then
-    if command -v yay &> /dev/null; then
-        yay -S --noconfirm cudatext-gtk2-bin || true
-    fi
+TMP_DIR="$(mktemp -d)"
+echo "[INFO] Temporary directory: ${TMP_DIR}"
+
+echo "[INFO] Attempting to resolve latest release URL..."
+if command -v curl >/dev/null 2>&1; then
+  CUDATEXT_URL="$(curl -fsSL "https://sourceforge.net/projects/cudatext/rss?path=/release/Linux" \
+    | grep -o "https://[^<\"]*${TAR_NAME_PREFIX}-[^<\"]*\\.tar\\.xz/download" \
+    | head -n1 || true)"
 fi
 
-# Debian / Ubuntu / Linux Mint
-if ! command -v cudatext &> /dev/null; then
-    TMP_DIR=$(mktemp -d)
-    OPT_DIR="/opt/cudatext"
-
-    echo "[INFO] Downloading CudaText release package..."
-    CUDATEXT_URL="https://downloads.sourceforge.net/project/cudatext/release/Linux/cudatext-linux-gtk2-amd64-1.236.0.0.tar.xz"
-    wget -q --show-progress -O "${TMP_DIR}/cudatext.tar.xz" "${CUDATEXT_URL}" || \
-    wget -q -O "${TMP_DIR}/cudatext.tar.xz" "http://uvviewsoft.com/cudatext/files_linux/cudatext-linux-gtk2-amd64-1.236.0.0.tar.xz"
-
-    echo "[INFO] Extracting CudaText to ${OPT_DIR}..."
-    sudo mkdir -p "${OPT_DIR}"
-    sudo tar -xf "${TMP_DIR}/cudatext.tar.xz" -C "${OPT_DIR}" --strip-components=1 2>/dev/null || \
-    sudo tar -xf "${TMP_DIR}/cudatext.tar.xz" -C "${OPT_DIR}"
-
-    sudo chmod +x "${OPT_DIR}/cudatext"
-    sudo ln -sf "${OPT_DIR}/cudatext" /usr/local/bin/cudatext
-    sudo ln -sf "${OPT_DIR}/cudatext" /usr/bin/cudatext 2>/dev/null || true
-
-    rm -rf "${TMP_DIR}"
+if [[ -z "${CUDATEXT_URL:-}" ]]; then
+  echo "[WARN] Automatic resolution failed, using fallback URL."
+  CUDATEXT_URL="${SF_BASE}/${FALLBACK_TAR}"
 fi
 
-if command -v cudatext &> /dev/null; then
-    echo "[INFO] CudaText installed successfully."
+echo "[INFO] Downloading from: ${CUDATEXT_URL}"
+if command -v curl >/dev/null 2>&1; then
+  curl -fSL -o "${TMP_DIR}/cudatext.tar.xz" "${CUDATEXT_URL}"
 else
-    echo "[WARNING] CudaText could not be installed automatically."
+  wget -O "${TMP_DIR}/cudatext.tar.xz" "${CUDATEXT_URL}"
 fi
+
+EXTRACT_DIR="${TMP_DIR}/extracted"
+mkdir -p "${EXTRACT_DIR}"
+tar -xJf "${TMP_DIR}/cudatext.tar.xz" -C "${EXTRACT_DIR}"
+
+if [[ -x "${EXTRACT_DIR}/cudatext" ]]; then
+  BIN_SRC="${EXTRACT_DIR}/cudatext"
+else
+  BIN_SRC="$(find "${EXTRACT_DIR}" -type f -name 'cudatext' -perm /u+x,g+x,o+x | head -n1 || true)"
+fi
+
+if [[ -z "${BIN_SRC}" ]]; then
+  echo "[ERROR] Could not find executable 'cudatext' in archive."
+  exit 3
+fi
+
+if [[ ${EUID} -ne 0 ]]; then
+  SUDO="sudo"
+else
+  SUDO=""
+fi
+
+echo "[INFO] Installing to ${OPT_DIR}..."
+${SUDO} mkdir -p "${OPT_DIR}"
+${SUDO} cp -a "${EXTRACT_DIR}/." "${OPT_DIR}/"
+
+${SUDO} chmod +x "${OPT_DIR}/cudatext" || true
+${SUDO} ln -sf "${OPT_DIR}/cudatext" "${BIN_LINK}"
+
+echo "[INFO] Installation complete. Checking version:"
+"${BIN_LINK}" --version || "${BIN_LINK}" -v || echo "[WARN] Could not determine version."
+
+echo "[INFO] Done."
