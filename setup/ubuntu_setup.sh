@@ -97,9 +97,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 
-# --- Install / Update fzf to a modern version (>= 0.36.0) ---
+# --- Install / Update fzf to a modern version (>= 0.49.0) ---
 FZF_VER=$(fzf --version 2>/dev/null | awk '{print $1}' || echo "0.0.0")
-if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.36.0" "${FZF_VER}" | sort -V | head -n1)" != "0.36.0" ]; then
+if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.49.0" "${FZF_VER}" | sort -V | head -n1)" != "0.49.0" ]; then
     echo "[INFO] Installing modern fzf release binary..."
     ARCH=$(uname -m)
     case "${ARCH}" in
@@ -107,11 +107,14 @@ if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.36.0" "${FZF_VER}" | s
         aarch64|arm64) FZF_ARCH="linux_arm64" ;;
         *) FZF_ARCH="linux_amd64" ;;
     esac
+
     TMP_FZF=$(mktemp -d)
     wget -qO- "https://github.com/junegunn/fzf/releases/download/v0.54.3/fzf-0.54.3-${FZF_ARCH}.tar.gz" | tar -xz -C "${TMP_FZF}"
-    sudo mv "${TMP_FZF}/fzf" /usr/local/bin/fzf
-    sudo chmod +x /usr/local/bin/fzf
+    sudo cp "${TMP_FZF}/fzf" /usr/local/bin/fzf
+    sudo cp "${TMP_FZF}/fzf" /usr/bin/fzf
+    sudo chmod +x /usr/local/bin/fzf /usr/bin/fzf
     rm -rf "${TMP_FZF}"
+
 else
     echo "[INFO] Modern fzf is already installed (${FZF_VER})."
 fi
