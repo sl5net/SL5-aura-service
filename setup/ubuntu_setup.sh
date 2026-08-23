@@ -157,6 +157,9 @@ fi
 # --- dotool setup ---
 source "$(dirname "${BASH_SOURCE[0]}")/helper/install_dotool.sh"
 
+# --- CudaText setup ---
+source "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
+
 # --- automatically set user-Models ---
 echo "--> Configuring default model in config/model_name.txt…"
 if [ "$CI" == "true" ]; then

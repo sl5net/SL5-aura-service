@@ -33,70 +33,35 @@ if ! pgrep -x "copyq" > /dev/null; then
     sleep 1
 fi
 
-# 1. Register SL5 Voice Trigger (F12 or selected hotkey)
+JS_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/search_rules/run_rule_copyq.js"
+
 copyq eval "
+var jsFile = File('${JS_PATH}');
+var searchScript = '';
+if (jsFile.open()) {
+    searchScript = str(jsFile.readAll());
+    jsFile.close();
+}
 var voiceCmd = {
     name: 'SL5 Voice Trigger',
     cmd: '${TRIGGER_CMD}',
     globalShortcuts: ['${HOTKEY}'],
     isGlobalShortcut: true,
-    icon: '\xf028'
+    icon: 'audio-volume-high'
 };
-var cmds = commands();
-var filtered = cmds.filter(function(c){ return c.name !== 'SL5 Voice Trigger'; });
-filtered.push(voiceCmd);
-setCommands(filtered);
-"
-
-# 2. Register SL5 Rule Search (Meta+Y)
-export SEARCH_RULE_JS=$(cat <<'EOF'
-// Test with:
-//   copyq eval "$(cat /tmp/run_rule.js)"
-
-// use for debugging: clear; copyq eval "logs()"
-// and maybe: debugger
-
-var tmp_dir = '/tmp';
-var rootFile = File(tmp_dir + '/sl5_aura/sl5net_aura_project_root');
-var project_root = '';
-
-if (rootFile.open()) {
-    project_root = str(rootFile.readAll()).trim();
-    rootFile.close();
-}
-
-var search_script = project_root + '/scripts/search_rules/run_rule.sh';
-
-var active_win_title = str(execute('bash', '-c', 'xdotool getactivewindow getwindowname 2>/dev/null || true').stdout).trim();
-
-var cmd = ''
-    + 'export LANG="de_DE.UTF-8"; '
-    + 'export LC_ALL="de_DE.UTF-8"; '
-    + 'export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"; '
-    + 'export SEARCH_FILES_FILTER="FUZZY_MAP*.py"; '
-    + 'export AURA_ACTIVE_WINDOW_TITLE="' + active_win_title + '"; '
-    + 'setsid konsole -e bash "' + search_script + '" '
-    + '</dev/null >/dev/null 2>&1 & disown';
-
-execute('bash', '-c', cmd);
-EOF
-)
-
-copyq eval "
 var searchCmd = {
     name: 'SL5 Rule Search',
-    cmd: env('SEARCH_RULE_JS'),
-    globalShortcuts: ['Meta+Y'],
+    cmd: 'copyq:' + String.fromCharCode(10) + searchScript,
+    globalShortcuts: ['Meta+Y', 'F11'],
     isGlobalShortcut: true,
-    icon: '\xf002'
+    icon: 'search'
 };
 var cmds = commands();
-var filtered = cmds.filter(function(c){ return c.name !== 'SL5 Rule Search'; });
+var filtered = cmds.filter(function(c){ return c.name !== 'SL5 Voice Trigger' && c.name !== 'SL5 Rule Search'; });
+filtered.push(voiceCmd);
 filtered.push(searchCmd);
 setCommands(filtered);
 "
-
-
 
 AUTOSTART_DIR="${HOME}/.config/autostart"
 mkdir -p "${AUTOSTART_DIR}"

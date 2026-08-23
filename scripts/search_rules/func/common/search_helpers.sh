@@ -10,7 +10,7 @@ logger_info() {
 }
 
 get_preferred_editor() {
-    for c in cudatext kate code nano vi; do
+    for c in cudatext kate code xed gedit subl nano vi; do
         if command -v "$c" >/dev/null 2>&1; then echo "$c"; return; fi
     done
 }
