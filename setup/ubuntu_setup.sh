@@ -65,8 +65,7 @@ fi
 echo "--> Installing other core dependencies…"
 sudo apt-get install -y \
     inotify-tools wget unzip portaudio19-dev python3-pip \
-    ffmpeg libnotify-bin xclip xvfb
-
+    ffmpeg libnotify-bin xclip xvfb espeak-ng xdotool ripgrep        
 # --- 2. Python Virtual Environment ---
 # (This section remains unchanged)
 if [ ! -d ".venv" ]; then
@@ -98,19 +97,41 @@ source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 
-# --- Install fzf (Fuzzy Finder) ---
-if ! command -v fzf &> /dev/null; then
-    echo "[INFO] fzf not found. Installing…"
-    # We use apt for simplicity in the setup script
-    sudo apt-get update && sudo apt-get install -y fzf
+# --- Install / Update fzf to modern release (>= 0.74.0) ---
+FZF_VER=$(fzf --version 2>/dev/null | awk '{print $1}' || echo "0.0.0")
+if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.74.0" "${FZF_VER}" | sort -V | head -n1)" != "0.74.0" ]; then
+    echo "--> Installing modern fzf release binary (v0.54.3)..."
+    ARCH=$(uname -m)
+    case "${ARCH}" in
+        x86_64) FZF_ARCH="linux_amd64" ;;
+        aarch64|arm64) FZF_ARCH="linux_arm64" ;;
+        *) FZF_ARCH="linux_amd64" ;;
+    esac
 
-    # Optional: If you want the latest version with full shell bindings:
-    # git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    # ~/.fzf/install --all
+    # https://stackoverflow.com/ai-assist/chat/6c39d0ae-c94e-43fd-a169-739e41ab916c    
+    sudo apt update && sudo apt install -y curl jq tar
+    
+    # https://stackoverflow.com/ai-assist/chat/6c39d0ae-c94e-43fd-a169-739e41ab916c    
+    # get latest release JSON, pick the linux_amd64 tar.gz asset, download and install
+    tmp=$(mktemp -d)
+    cd "$tmp"
+    release_json=$(curl -sS https://api.github.com/repos/junegunn/fzf/releases/latest)
+    url=$(echo "$release_json" | jq -r '.assets[] | select(.name | test("linux_amd64")) | .browser_download_url' | head -n1)
+    if [ -z "$url" ]; then
+      echo "Could not find linux_amd64 asset in latest release" >&2
+      exit 1
+    fi
+    curl -sSL -o fzf.tgz "$url"
+    tar -xzf fzf.tgz
+    sudo mv fzf /usr/local/bin/
+    sudo chmod +x /usr/local/bin/fzf
+    cd -
+    rm -rf "$tmp"
+    echo "fzf installed to /usr/local/bin/fzf"
+    
 else
-    echo "[INFO] fzf is already installed."
+    echo "    -> Modern fzf is already installed (${FZF_VER}). OK."
 fi
-
 
 
 
@@ -133,20 +154,8 @@ if [ ! -f "$CONFIG_FILE" ]; then
     echo "project_root = \"$(pwd)\"" >> "$CONFIG_FILE"
 fi
 
-
-
 # --- dotool setup ---
-if ! command -v dotool &> /dev/null; then
-    echo "--> Installing dotool…"
-    sudo apt-get install -y dotool || echo "WARNING: dotool not in apt repos. Install manually. See docs/LINUX_WAYLAND_dotool.md"
-fi
-#sudo usermod -aG input $USER # before 22.8.'26 19:05 Sat
-sudo usermod -aG input "$USER"
-echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
-  | sudo tee /etc/udev/rules.d/80-dotool.rules
-sudo udevadm control --reload-rules && sudo udevadm trigger
-echo "NOTE: Re-login required for input group to take effect."
-echo "See docs/LINUX_WAYLAND_dotool.md for details."
+source "$(dirname "${BASH_SOURCE[0]}")/helper/install_dotool.sh"
 
 # --- automatically set user-Models ---
 echo "--> Configuring default model in config/model_name.txt…"

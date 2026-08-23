@@ -1,9 +1,10 @@
-# scripts/py/func/config/dynamic_settings.py:2
+# scripts/py/func/config/dynamic_settings.py
 import collections.abc
 import importlib
 import subprocess
-import sys
 import os
+import sys
+import shutil
 import threading
 from datetime import datetime
 from pathlib import Path
@@ -379,14 +380,16 @@ def speak_fallback(text_to_speak, language_code="en-US"):
     platform_name = ""
 
     if sys.platform.startswith('linux'):
-        platform_name = "🐧Linux (espeak)"
+        espeak_bin = shutil.which('espeak') or shutil.which('espeak-ng') or 'espeak'
+        platform_name = f"Linux ({os.path.basename(espeak_bin)})"
         espeak_voice = convert_lang_code_for_espeak(language_code)
         command = [
-            'espeak',
+            espeak_bin,
             '-v', espeak_voice,
             '-a', str(settings.ESPEAK_FALLBACK_AMPLITUDE),
             text_to_speak
         ]
+        
     elif sys.platform == 'win32':
         platform_name = "🪟Windows (PowerShell TTS)"
         clean_text = text_to_speak.replace("'", "''")
