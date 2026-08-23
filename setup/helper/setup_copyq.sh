@@ -28,14 +28,8 @@ else
     echo "[INFO] CopyQ is already installed."
 fi
 
-if [ -n "${SUDO_USER:-}" ] && [ "${SUDO_USER}" != "root" ]; then
-    USER_CMD="sudo -u ${SUDO_USER}"
-else
-    USER_CMD=""
-fi
-
 if ! pgrep -x "copyq" > /dev/null; then
-    ${USER_CMD} copyq --start-server &
+    copyq --start-server &
     sleep 1
 fi
 
@@ -48,7 +42,7 @@ fi
 
 export SEARCH_RULE_JS="$(cat "${JS_PATH}")"
 
-${USER_CMD} copyq eval "
+copyq eval "
 var voiceCmd = {
     name: 'SL5 Voice Trigger',
     cmd: '${TRIGGER_CMD}',
