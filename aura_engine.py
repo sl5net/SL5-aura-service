@@ -75,7 +75,10 @@ if settings.LOG_delete_on_startup:
     if not log_dir.is_dir():
         raise SystemExit(f"{log_dir} does not exist or is not a directory")
 
+    setup_log_dir = (log_dir / "setup").resolve()
     for p in log_dir.rglob("*.log"):  # rglob is recursive
+        if setup_log_dir in p.resolve().parents:
+            continue
         try:
             p.unlink()
         except Exception as e:

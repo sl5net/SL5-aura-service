@@ -8,7 +8,7 @@ set -e
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 PROJECT_ROOT=$(cd "${SCRIPT_DIR}/.." && pwd)
-LOG_DIR="${PROJECT_ROOT}/log"
+LOG_DIR="${PROJECT_ROOT}/log/setup"
 mkdir -p "${LOG_DIR}"
 LOG_FILE="${LOG_DIR}/mint_setup.log"
 exec > >(tee -a "${LOG_FILE}") 2>&1
