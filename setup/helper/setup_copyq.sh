@@ -41,12 +41,7 @@ if [ ! -f "${JS_PATH}" ]; then
 fi
 
 copyq eval "
-var f = File('${JS_PATH}');
-var scriptText = '';
-if (f.open()) {
-    scriptText = str(f.readAll());
-    f.close();
-}
+var scriptText = str(read('${JS_PATH}'));
 var voiceCmd = {
     name: 'SL5 Voice Trigger',
     cmd: '${TRIGGER_CMD}',
