@@ -40,9 +40,13 @@ if [ ! -f "${JS_PATH}" ]; then
     exit 1
 fi
 
-export SEARCH_RULE_JS="$(cat "${JS_PATH}")"
-
 copyq eval "
+var f = File('${JS_PATH}');
+var scriptText = '';
+if (f.open()) {
+    scriptText = str(f.readAll());
+    f.close();
+}
 var voiceCmd = {
     name: 'SL5 Voice Trigger',
     cmd: '${TRIGGER_CMD}',
@@ -52,7 +56,7 @@ var voiceCmd = {
 };
 var searchCmd = {
     name: 'SL5 Rule Search',
-    cmd: 'copyq:' + String.fromCharCode(10) + env('SEARCH_RULE_JS'),
+    cmd: 'copyq:' + String.fromCharCode(10) + scriptText,
     globalShortcuts: ['Meta+Y', 'F11'],
     isGlobalShortcut: true,
     icon: 'search'
