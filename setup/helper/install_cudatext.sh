@@ -7,9 +7,9 @@ IFS=$'\n\t'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-LOG_DIR="${PROJECT_ROOT}/log"
+LOG_DIR="${PROJECT_ROOT}/log/setup"
 mkdir -p "${LOG_DIR}"
-LOG_FILE="${LOG_DIR}/setup/install_cudatext.log"
+LOG_FILE="${LOG_DIR}/install_cudatext.log"
 
 exec > >(tee -a "${LOG_FILE}") 2>&1
 
