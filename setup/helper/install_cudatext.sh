@@ -16,8 +16,9 @@ exec > >(tee -a "${LOG_FILE}") 2>&1
 CANDIDATE_NAME="cudatext"
 OPT_DIR="/opt/${CANDIDATE_NAME}"
 BIN_LINK="/usr/local/bin/${CANDIDATE_NAME}"
-SF_BASE="https://downloads.sourceforge.net/project/cudatext/release/Linux"
-FALLBACK_TAR="cudatext-linux-gtk2-amd64-1.217.0.0.tar.xz"
+#SF_BASE="https://downloads.sourceforge.net/project/cudatext/release/Linux"
+
+FALLBACK_URL="https://downloads.sourceforge.net/project/cudatext/release/1.232.2.1/cudatext-linux-gtk2-amd64-1.232.2.1.tar.xz"
 
 cleanup() {
   local rc=$?
@@ -46,15 +47,16 @@ TMP_DIR="$(mktemp -d)"
 echo "[INFO] Temporary directory: ${TMP_DIR}"
 
 echo "[INFO] Attempting to resolve latest release URL..."
+
 if command -v curl >/dev/null 2>&1; then
-  CUDATEXT_URL="$(curl -fsSL "https://sourceforge.net/projects/cudatext/rss?path=/release/Linux" \
+  CUDATEXT_URL="$(curl -fsSL "https://sourceforge.net/projects/cudatext/rss?path=/release" \
     | grep -o "https://[^<\"]*${TAR_NAME_PREFIX}-[^<\"]*\\.tar\\.xz/download" \
     | head -n1 || true)"
 fi
 
 if [[ -z "${CUDATEXT_URL:-}" ]]; then
   echo "[WARN] Automatic resolution failed, using fallback URL."
-  CUDATEXT_URL="${SF_BASE}/${FALLBACK_TAR}"
+  CUDATEXT_URL="${FALLBACK_URL}"
 fi
 
 echo "[INFO] Downloading from: ${CUDATEXT_URL}"
