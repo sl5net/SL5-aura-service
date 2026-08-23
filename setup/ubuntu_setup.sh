@@ -145,6 +145,7 @@ fi
 # --- 5. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.
 echo "--> Creating Python package markers (__init__.py)…"
+mkdir -p config/languagetool_server
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
 
