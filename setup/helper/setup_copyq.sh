@@ -3,12 +3,9 @@
 # setup/helper/setup_copyq.sh
 # Installs CopyQ, configures trigger command, and creates autostart desktop entry.
 #
-
 set -e
-
 HOTKEY="${1:-${SELECTED_HOTKEY:-F12}}"
 TRIGGER_CMD="touch /tmp/sl5_record.trigger"
-
 echo "[INFO] Setting up CopyQ with trigger shortcut: ${HOTKEY}..."
 
 if ! command -v copyq &> /dev/null; then
@@ -28,19 +25,36 @@ else
     echo "[INFO] CopyQ is already installed."
 fi
 
-if ! pgrep -x "copyq" > /dev/null; then
-    copyq --start-server &
+if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ] && [ "${SUDO_USER}" != "root" ]; then
+    TARGET_USER="${SUDO_USER}"
+    TARGET_UID="$(id -u "${TARGET_USER}")"
+    RUNTIME_DIR="/run/user/${TARGET_UID}"
+    USER_CMD=(sudo -u "${TARGET_USER}" \
+        DISPLAY="${DISPLAY:-:0}" \
+        DBUS_SESSION_BUS_ADDRESS="unix:path=${RUNTIME_DIR}/bus" \
+        XDG_RUNTIME_DIR="${RUNTIME_DIR}")
+    echo "[INFO] Running as root via sudo - delegating CopyQ commands to user '${TARGET_USER}'."
+else
+    USER_CMD=()
+fi
+
+if [ "$(id -u)" -eq 0 ]; then
+    pkill -9 -f "/usr/bin/copyq" 2>/dev/null || true
+    sleep 0.5
+fi
+
+if ! "${USER_CMD[@]}" pgrep -x "copyq" > /dev/null 2>&1; then
+    "${USER_CMD[@]}" copyq --start-server &
     sleep 1
 fi
 
 JS_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/search_rules/run_rule_copyq.js"
-
 if [ ! -f "${JS_PATH}" ]; then
     echo "[ERROR] CopyQ search script not found: ${JS_PATH}"
     exit 1
 fi
 
-copyq eval "
+"${USER_CMD[@]}" copyq eval "
 var f = File('${JS_PATH}');
 var scriptText = '';
 if (f.open()) {
@@ -68,9 +82,14 @@ filtered.push(searchCmd);
 setCommands(filtered);
 "
 
-AUTOSTART_DIR="${HOME}/.config/autostart"
-mkdir -p "${AUTOSTART_DIR}"
+if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ]; then
+    TARGET_HOME="$(getent passwd "${SUDO_USER}" | cut -d: -f6)"
+else
+    TARGET_HOME="${HOME}"
+fi
 
+AUTOSTART_DIR="${TARGET_HOME}/.config/autostart"
+mkdir -p "${AUTOSTART_DIR}"
 cat <<EOF > "${AUTOSTART_DIR}/copyq.desktop"
 [Desktop Entry]
 Type=Application
@@ -85,5 +104,8 @@ StartupNotify=false
 X-GNOME-Autostart-enabled=true
 EOF
 
-echo "[INFO] CopyQ configuration and autostart setup complete."
+if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ]; then
+    chown -R "${SUDO_USER}:${SUDO_USER}" "${AUTOSTART_DIR}/copyq.desktop"
+fi
 
+echo "[INFO] CopyQ configuration and autostart setup complete."
