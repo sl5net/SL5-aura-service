@@ -108,14 +108,13 @@ if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.54.3" "${FZF_VER}" | s
         aarch64|arm64) FZF_ARCH="linux_arm64" ;;
         *) FZF_ARCH="linux_amd64" ;;
     esac
-
     TMP_FZF=$(mktemp -d)
     wget -qO- "https://github.com/junegunn/fzf/releases/download/v0.54.3/fzf-0.54.3-${FZF_ARCH}.tar.gz" | tar -xz -C "${TMP_FZF}"
     sudo cp "${TMP_FZF}/fzf" /usr/local/bin/fzf
     sudo cp "${TMP_FZF}/fzf" /usr/bin/fzf
-    sudo chmod +x /usr/local/bin/fzf /usr/bin/fzf
+    sudo cp "${TMP_FZF}/fzf" /bin/fzf
+    sudo chmod +x /usr/local/bin/fzf /usr/bin/fzf /bin/fzf    
     rm -rf "${TMP_FZF}"
-
 else
     echo "[INFO] Modern fzf is already installed (${FZF_VER})."
 fi
