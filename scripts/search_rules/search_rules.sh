@@ -88,28 +88,12 @@ fi
 #Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/bob/projects/py/STT
 #/home/bob/projects/py/STT/scripts/search_rules/search_rules.sh: Zeile 142: MAPS_DIR:: Kommando nicht gefundenOrange Rost
 
-#
-
-
-#
-
-
-
 
 echo "Line 64:" $MAPS_DIR " pwd: " $PWD
 
 HISTORY_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
-
-# 2. EDITOR FALLBACK LOGIC (Korrigierte Bash-Version deines Backups)
-get_preferred_editor() {
-    if command -v kate >/dev/null 2>&1; then echo "kate"; return; fi
-    if command -v code >/dev/null 2>&1; then echo "code"; return; fi
-    if command -v nano >/dev/null 2>&1; then echo "nano"; return; fi
-    if command -v notepad.exe >/dev/null 2>&1; then echo "notepad.exe"; return; fi
-    echo "vi" # Absoluter Linux-Standard-Fallback
-}
-PREFERRED_EDITOR=$(get_preferred_editor)
-
+# 2. EDITOR FALLBACK LOGIC - delegated to shared helper (TODO 25.6.'26 17:33 Thu resolved)
+source "$SCRIPT_DIR/func/common/search_helpers.sh"
 logger_info "Initializing search_rules.sh…"
 
 
