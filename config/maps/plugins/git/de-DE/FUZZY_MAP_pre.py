@@ -26,14 +26,18 @@ commitGit = r'(Commit|Komet|Komik|Comics|Gummi|gummis|kommt|kommend|mit|hitch|ko
 
 FUZZY_MAP_pre = [
 
-
-
     # EXAMPLE: versionsnummer
     ('git describe --tags --abbrev=0', r'^(version number|versionsnummer)$',
      90,
      {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool'],
-'only_in_windows': ['Konsole', 'konsole', 'Console',
-        r'cmd\.exe', 'PowerShell', 'Terminal', 'Eingabeaufforderung']
+        'only_in_windows':['Konsole', 'konsole', 'Console', 'console',
+        'Terminal', 'terminal', 'gnome-terminal', 'mate-terminal', 'xfce4-terminal',
+        'tilix', 'alacritty', 'kitty', 'terminator', 'xterm',
+        'fish', 'bash', 'zsh',
+        r'.*@.*:.*',
+        r'^~.*',
+        r'cmd\.exe', 'PowerShell', 'Eingabeaufforderung',
+        'double', 'Double Commander'],
       }),
 
     # EXAMPLE: no verify
