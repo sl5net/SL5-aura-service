@@ -35,11 +35,10 @@
 # MAPS_DIR="$SL5NET_AURA_PROJECT_ROOT/config/maps"
 
 
-
-# 1. PFADE & VARIABLEN
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SL5NET_AURA_PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
+# clear; cat log/search_rules.sh.log
 
 LOG_DIR="$SL5NET_AURA_PROJECT_ROOT/log"
 LOGFILE="$LOG_DIR/search_rules.sh.log"
@@ -198,7 +197,7 @@ SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | 
 )
 # xdg-openzoran suche ducken
 
-# 5. EXECUTION (Robustes Öffnen) #
+# 5. EXECUTION (Robust opening) #
 if [ -n "$SELECTED_LINE" ]; then
     FILE_PATH="$(echo "$SELECTED_LINE" | cut -d: -f1)"
     RAW_LINE_NUM="$(echo "$SELECTED_LINE" | cut -d: -f2)"
@@ -217,46 +216,46 @@ if [ -n "$SELECTED_LINE" ]; then
     BIN_EXTS="pdf png jpg jpeg gif webp mp4 mp3 zip tar gz 7z"
     # Text-Format ?
     MIME_TYPE=$(file --mime-type -b "$FILE_PATH" 2>/dev/null || echo "text/plain")
-    echo "160: MIME_TYPE=$MIME_TYPE "
+    logger_info "Execution trigger - raw: '$SELECTED_LINE' | path: '$FILE_PATH' | line: '$LINE_NUM' | mime: '$MIME_TYPE' | editor: '$PREFERRED_EDITOR'"
+
     if [[ " $BIN_EXTS " =~ " $EXT " ]] || [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" && "$MIME_TYPE" != "cannot open"* ]]; then
-        # Binary format (PDF, images, etc.) -> system default
-        echo "xdg-open $FILE_PATH > /dev/null 2>&1 &"
-        xdg-open "$FILE_PATH" > /dev/null 2>&1 &
+        logger_info "Launching via xdg-open: '$FILE_PATH'"
+        xdg-open "$FILE_PATH" >> "$LOGFILE" 2>&1 &
         sleep 8
 
     else
-        # Standard editor dispatching logic
+        logger_info "Dispatching to editor '$PREFERRED_EDITOR' for '$FILE_PATH' (line: '$LINE_NUM')"
         case $PREFERRED_EDITOR in
             cudatext)
                 if [ -n "$LINE_NUM" ]; then
-                    nohup "$PREFERRED_EDITOR" "$FILE_PATH@$LINE_NUM" > /dev/null 2>&1 &
+                    nohup "$PREFERRED_EDITOR" "$FILE_PATH@$LINE_NUM" >> "$LOGFILE" 2>&1 &
                 else
-                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" > /dev/null 2>&1 &
+                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" >> "$LOGFILE" 2>&1 &
                 fi
                 ;;
             xed|gedit)
                 if [ -n "$LINE_NUM" ]; then
-                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" "+$LINE_NUM" > /dev/null 2>&1 &
+                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" "+$LINE_NUM" >> "$LOGFILE" 2>&1 &
                 else
-                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" > /dev/null 2>&1 &
+                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" >> "$LOGFILE" 2>&1 &
                 fi
                 ;;
             code)
                 if [ -n "$LINE_NUM" ]; then
-                    nohup code -g "$FILE_PATH:$LINE_NUM" > /dev/null 2>&1 &
+                    nohup code -g "$FILE_PATH:$LINE_NUM" >> "$LOGFILE" 2>&1 &
                 else
-                    nohup code "$FILE_PATH" > /dev/null 2>&1 &
+                    nohup code "$FILE_PATH" >> "$LOGFILE" 2>&1 &
                 fi
                 ;;
             kate)
                 if [ -n "$LINE_NUM" ]; then
-                    nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 &
+                    nohup kate "$FILE_PATH" --line "$LINE_NUM" >> "$LOGFILE" 2>&1 &
                 else
-                    nohup kate "$FILE_PATH" > /dev/null 2>&1 &
+                    nohup kate "$FILE_PATH" >> "$LOGFILE" 2>&1 &
                 fi
                 ;;
             *)
-                nohup "$PREFERRED_EDITOR" "$FILE_PATH" > /dev/null 2>&1 &
+                nohup "$PREFERRED_EDITOR" "$FILE_PATH" >> "$LOGFILE" 2>&1 &
                 ;;
         esac        
     fi
