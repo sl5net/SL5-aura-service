@@ -221,12 +221,24 @@ if [ -n "$SELECTED_LINE" ]; then
         sleep 8
 
     else
-        # Normale Editor-Logik
+        # Standard editor dispatching logic
         case $PREFERRED_EDITOR in
-            kate) nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 & ;;
-            code) code --goto "$FILE_PATH:$LINE_NUM" ;;
-            *) $PREFERRED_EDITOR "$FILE_PATH" & disown ;;
-        esac
+            cudatext)
+                nohup "$PREFERRED_EDITOR" "$FILE_PATH@$LINE_NUM" > /dev/null 2>&1 &
+                ;;
+            xed|gedit)
+                nohup "$PREFERRED_EDITOR" "$FILE_PATH" "+$LINE_NUM" > /dev/null 2>&1 &
+                ;;
+            code)
+                nohup code -g "$FILE_PATH:$LINE_NUM" > /dev/null 2>&1 &
+                ;;
+            kate)
+                nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 &
+                ;;
+            *)
+                nohup "$PREFERRED_EDITOR" "$FILE_PATH" > /dev/null 2>&1 &
+                ;;
+        esac        
     fi
     # exit 0
 
@@ -242,6 +254,3 @@ else
 fi
 
 done
-
-
-
