@@ -306,32 +306,37 @@ def main():
     print(f"  Exclusions         : {exclude_list if exclude_list else '(none)'}")
     print(f"{'=' * 60}\n")
 
-    # Fetch release assets from GitHub API
-    print(f"Fetching release assets for {OWNER}/{REPO} tag {TAG}…")
-    try:
-        headers = {}
-        token = os.getenv('GITHUB_TOKEN')
-        if token:
-            headers['Authorization'] = f'Bearer {token}'
-        else:
-            print("  [WARN] No GITHUB_TOKEN found. Rate limit: 60/h (shared IP).")
+# Fetch release assets from GitHub API
+    print(f"Fetching release assets for {OWNER}/{REPO} tag {TAG}")
+    headers = {}
+    token = os.getenv('GITHUB_TOKEN') or os.getenv('GH_TOKEN')
+    if token:
+        headers['Authorization'] = f'Bearer {token}'
+    else:
+        print("  [WARN] No GITHUB_TOKEN found. Rate limit: 60/h (shared IP).")
 
-        response = requests.get(API_URL, headers=headers)
-        response.raise_for_status()
+    max_attempts = 4
+    response = None
+    for attempt in range(1, max_attempts + 1):
+        try:
+            response = requests.get(API_URL, headers=headers, timeout=30)
+            response.raise_for_status()
+            break
+        except requests.exceptions.RequestException as e:
+            if attempt < max_attempts:
+                print(f"  [WARN] Attempt {attempt} failed ({e}). Retrying in 4s...")
+                time.sleep(4)
+            else:
+                print(f"  [FATAL] Could not connect to GitHub API after {max_attempts} attempts: {e}")
+                sys.exit(1)
 
-        remaining = response.headers.get('X-RateLimit-Remaining', '?')
-        print(f"  [INFO] GitHub API rate limit remaining: {remaining}")
-
-        release_info = response.json()
-        assets = release_info.get('assets', [])
-        print(f"  [OK]  Found {len(assets)} asset(s) in release '{TAG}'.")
-
-        if not assets:
-            print("  [ERROR] Release has no assets. Nothing to download.")
-            sys.exit(1)
-
-    except requests.exceptions.RequestException as e:
-        print(f"  [FATAL] Could not connect to GitHub API: {e}")
+    remaining = response.headers.get('X-RateLimit-Remaining', '?')
+    print(f"  [INFO] GitHub API rate limit remaining: {remaining}")
+    release_info = response.json()
+    assets = release_info.get('assets', [])
+    print(f"  [OK]  Found {len(assets)} asset(s) in release '{TAG}'.")
+    if not assets:
+        print("  [ERROR] Release has no assets. Nothing to download.")
         sys.exit(1)
 
     packages = verbose_discovery(assets)
