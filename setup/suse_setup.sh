@@ -399,8 +399,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
 
 echo '--> Creating Python package markers (__init__.py)…'
 touch config/__init__.py
+mkdir -p config/languagetool_server
 touch config/languagetool_server/__init__.py
-
 
 # --- User-Specific Configuration ---
 # This part is about user config, so it's fine for it to stay here.
