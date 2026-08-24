@@ -32,6 +32,10 @@ sudo chmod 0440 "${SUDOERS_FILE}"
 
 echo "[INFO] NOPASSWD rule active for ${HOURS}h."
 
+# Reset existing timer unit if already loaded
+sudo systemctl stop sl5-sudo-expire.timer sl5-sudo-expire.service 2>/dev/null || true
+sudo systemctl reset-failed sl5-sudo-expire.timer sl5-sudo-expire.service 2>/dev/null || true
+
 # Schedule automatic removal
 sudo systemd-run --on-active="${HOURS}h" --unit=sl5-sudo-expire \
   /usr/bin/rm -f "${SUDOERS_FILE}"
