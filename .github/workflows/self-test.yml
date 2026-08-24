@@ -86,6 +86,11 @@ jobs:
           AURA_ACTIVE_WINDOW_TITLE: "Terminal"          
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
+          echo "=== CI DEBUG INFO ==="
+          echo "model_name: $(cat config/model_name.txt 2>/dev/null || echo 'NONE')"
+          echo "EXCLUDE_LANGUAGES: ${EXCLUDE_LANGUAGES:-NONE}"
+          ls -la data/_privat_no_zip/cache/maps/ 2>/dev/null || echo "NO_MAPS_CACHE_DIR"
+          echo "====================="
           Xvfb :99 -screen 0 1024x768x24 &
 
           echo "=== RUN 1 (Cold Run) ==="
