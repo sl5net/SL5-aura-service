@@ -56,6 +56,8 @@ jobs:
 
 
       - name: Run Official Ubuntu Setup
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash ./setup/ubuntu_setup.sh
 
       - name: Install Additional Test Dependencies
