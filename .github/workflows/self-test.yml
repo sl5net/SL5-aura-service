@@ -86,7 +86,8 @@ jobs:
           AURA_ACTIVE_WINDOW_TITLE: "Terminal"          
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
-          echo "=== CI DEBUG INFO ==="
+          echo "vosk-model-de-0.21" > config/model_name.txt
+          echo "=== CI DEBUG INFO (S, 24.8.26 16:47 Mon) ==="
           echo "model_name: $(cat config/model_name.txt 2>/dev/null || echo 'NONE')"
           echo "EXCLUDE_LANGUAGES: ${EXCLUDE_LANGUAGES:-NONE}"
           ls -la data/_privat_no_zip/cache/maps/ 2>/dev/null || echo "NO_MAPS_CACHE_DIR"
