@@ -168,6 +168,8 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Sourcing install_cudatext.sh..."
 source "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
 echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
 
+sudo ln -sf /opt/cudatext/cudatext /usr/bin/cudatext
+
 echo "--> [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
 
 # --- Configure default model ---
