@@ -1,5 +1,5 @@
 #!/bin/bash
-# scripts/infra/scripts/infra/githooks/pre-commit
+# scripts/infra/githooks/pre-commit
 
 
 
@@ -387,7 +387,8 @@ grep -v "sys_platform" scripts/infra/requirements/requirements.txt | sort -u > s
 grep "sys_platform" scripts/infra/requirements/requirements.txt | sort -u >> scripts/infra/requirements/requirements.txt.tmp
 mv scripts/infra/requirements/requirements.txt.tmp scripts/infra/requirements/requirements.txt
 git add scripts/infra/requirements/requirements.txt
-echo "-r scripts/infra/requirements/requirements.txt" > scripts/infra/requirements/requirements-dev.txt
+#echo "-r scripts/infra/requirements/requirements.txt" > scripts/infra/requirements/requirements-dev.txt
+echo "-r requirements.txt" > scripts/infra/requirements/requirements-dev.txt
 echo "flake8" >> scripts/infra/requirements/requirements-dev.txt
 echo "ruff" >> scripts/infra/requirements/requirements-dev.txt
 echo "pylint" >> scripts/infra/requirements/requirements-dev.txt
