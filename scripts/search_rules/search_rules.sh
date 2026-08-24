@@ -225,40 +225,15 @@ if [ -n "$SELECTED_LINE" ]; then
 
     else
         logger_info "Dispatching to editor '$PREFERRED_EDITOR' for '$FILE_PATH' (line: '$LINE_NUM')"
-        case $PREFERRED_EDITOR in
-            cudatext)
-                if [ -n "$LINE_NUM" ]; then
-                    nohup "$PREFERRED_EDITOR" "$FILE_PATH@$LINE_NUM" >> "$LOGFILE" 2>&1 &
-                else
-                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" >> "$LOGFILE" 2>&1 &
-                fi
-                ;;
-            xed|gedit)
-                if [ -n "$LINE_NUM" ]; then
-                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" "+$LINE_NUM" >> "$LOGFILE" 2>&1 &
-                else
-                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" >> "$LOGFILE" 2>&1 &
-                fi
-                ;;
-            code)
-                if [ -n "$LINE_NUM" ]; then
-                    nohup code -g "$FILE_PATH:$LINE_NUM" >> "$LOGFILE" 2>&1 &
-                else
-                    nohup code "$FILE_PATH" >> "$LOGFILE" 2>&1 &
-                fi
-                ;;
-            kate)
-                if [ -n "$LINE_NUM" ]; then
-                    nohup kate "$FILE_PATH" --line "$LINE_NUM" >> "$LOGFILE" 2>&1 &
-                else
-                    nohup kate "$FILE_PATH" >> "$LOGFILE" 2>&1 &
-                fi
-                ;;
-            *)
-                nohup "$PREFERRED_EDITOR" "$FILE_PATH" >> "$LOGFILE" 2>&1 &
-                ;;
-        esac        
-    fi
+if [[ "$PREFERRED_EDITOR" = "cudatext" ]]; then
+          nohup "$PREFERRED_EDITOR" "$FILE_PATH@$LINE_NUM" >> "$LOGFILE" 2>&1 &
+        elif [[ "$PREFERRED_EDITOR" = "xed" || "$PREFERRED_EDITOR" = "gedit" ]]; then
+          nohup "$PREFERRED_EDITOR" "$FILE_PATH" "+$LINE_NUM" >> "$LOGFILE" 2>&1 &
+        elif [[ "$PREFERRED_EDITOR" = "code" ]]; then
+          nohup "$PREFERRED_EDITOR" -g "$FILE_PATH:$LINE_NUM" >> "$LOGFILE" 2>&1 &
+        else
+          nohup "$PREFERRED_EDITOR" "$FILE_PATH" --line="$LINE_NUM" >> "$LOGFILE" 2>&1 &
+        fi    fi
     # exit 0
 
     # PDF ?
