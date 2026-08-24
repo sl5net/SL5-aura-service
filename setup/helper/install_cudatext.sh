@@ -112,7 +112,8 @@ fi
 #  ${SUDO} rm -f "${BIN_LINK}"
 #fi
 #${SUDO} ln -sf "${ACTUAL_BIN}" "${BIN_LINK}"
-#${SUDO} ln -sf "${ACTUAL_BIN}" /usr/bin/cudatext 2>/dev/null || trueecho "[INFO] Installation complete. Checking version:"
+#${SUDO} ln -sf "${ACTUAL_BIN}" /usr/bin/cudatext 2>/dev/null || true
+# echo "[INFO] Installation complete. Checking version:"
 #"${BIN_LINK}" --version || "${BIN_LINK}" -v || echo "[WARN] Could not determine version."
 
 if [[ -f "${OPT_DIR}/cudatext" && -x "${OPT_DIR}/cudatext" ]]; then

@@ -419,7 +419,9 @@ if ! command -v dotool &> /dev/null; then
     echo "--> Installing dotool…"
     $SUDO zypper install -y dotool || echo "WARNING: dotool not found in repos. Install manually. See docs/LINUX_WAYLAND_dotool.md"
 fi
-$SUDO usermod -aG input $USER
+getent group input >/dev/null 2>&1 || $SUDO groupadd -r input 2>/dev/null || true
+$SUDO usermod -aG input "${USER:-$(whoami)}" 2>/dev/null || true
+
 echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
   | $SUDO tee /etc/udev/rules.d/80-dotool.rules
 $SUDO udevadm control --reload-rules && $SUDO udevadm trigger
