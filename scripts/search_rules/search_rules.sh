@@ -201,22 +201,26 @@ SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | 
 # 5. EXECUTION (Robustes Öffnen) #
 if [ -n "$SELECTED_LINE" ]; then
     FILE_PATH="$(echo "$SELECTED_LINE" | cut -d: -f1)"
-    LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
+    RAW_LINE_NUM="$(echo "$SELECTED_LINE" | cut -d: -f2)"
+    if [[ "$RAW_LINE_NUM" =~ ^[0-9]+$ ]]; then
+        LINE_NUM="$RAW_LINE_NUM"
+    else
+        LINE_NUM=""
+    fi
+
+    if [[ "$FILE_PATH" != /* && -f "$SL5NET_AURA_PROJECT_ROOT/$FILE_PATH" ]]; then
+        FILE_PATH="$SL5NET_AURA_PROJECT_ROOT/$FILE_PATH"
+    fi
 
     EXT="${FILE_PATH##*.}"
     EXT="${EXT,,}"
-
     BIN_EXTS="pdf png jpg jpeg gif webp mp4 mp3 zip tar gz 7z"
-
     # Text-Format ?
-    MIME_TYPE=$(file --mime-type -b "$FILE_PATH")
+    MIME_TYPE=$(file --mime-type -b "$FILE_PATH" 2>/dev/null || echo "text/plain")
     echo "160: MIME_TYPE=$MIME_TYPE "
-
-    if [[ " $BIN_EXTS " =~ " $EXT " ]] || [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" ]]; then
-
-    #if [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" ]]; then
-        # Binär PDF etc. -> System-Standard
-        echo "xdg-open "$FILE_PATH" > /dev/null 2>&1 &"
+    if [[ " $BIN_EXTS " =~ " $EXT " ]] || [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" && "$MIME_TYPE" != "cannot open"* ]]; then
+        # Binary format (PDF, images, etc.) -> system default
+        echo "xdg-open $FILE_PATH > /dev/null 2>&1 &"
         xdg-open "$FILE_PATH" > /dev/null 2>&1 &
         sleep 8
 
@@ -224,16 +228,32 @@ if [ -n "$SELECTED_LINE" ]; then
         # Standard editor dispatching logic
         case $PREFERRED_EDITOR in
             cudatext)
-                nohup "$PREFERRED_EDITOR" "$FILE_PATH@$LINE_NUM" > /dev/null 2>&1 &
+                if [ -n "$LINE_NUM" ]; then
+                    nohup "$PREFERRED_EDITOR" "$FILE_PATH@$LINE_NUM" > /dev/null 2>&1 &
+                else
+                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" > /dev/null 2>&1 &
+                fi
                 ;;
             xed|gedit)
-                nohup "$PREFERRED_EDITOR" "$FILE_PATH" "+$LINE_NUM" > /dev/null 2>&1 &
+                if [ -n "$LINE_NUM" ]; then
+                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" "+$LINE_NUM" > /dev/null 2>&1 &
+                else
+                    nohup "$PREFERRED_EDITOR" "$FILE_PATH" > /dev/null 2>&1 &
+                fi
                 ;;
             code)
-                nohup code -g "$FILE_PATH:$LINE_NUM" > /dev/null 2>&1 &
+                if [ -n "$LINE_NUM" ]; then
+                    nohup code -g "$FILE_PATH:$LINE_NUM" > /dev/null 2>&1 &
+                else
+                    nohup code "$FILE_PATH" > /dev/null 2>&1 &
+                fi
                 ;;
             kate)
-                nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 &
+                if [ -n "$LINE_NUM" ]; then
+                    nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 &
+                else
+                    nohup kate "$FILE_PATH" > /dev/null 2>&1 &
+                fi
                 ;;
             *)
                 nohup "$PREFERRED_EDITOR" "$FILE_PATH" > /dev/null 2>&1 &
