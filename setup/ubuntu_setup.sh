@@ -169,7 +169,12 @@ source "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
 echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
 
 #sudo ln -sf /opt/cudatext/cudatext /usr/bin/cudatext
-sudo ln -sf /opt/cudatext/cudatext /opt/cudatext/cudatext/cudatext
+#sudo ln -sf /opt/cudatext/cudatext /opt/cudatext/cudatext/cudatext
+
+CUDATEXT_BIN=$(find /opt/cudatext -type f -name cudatext -executable | head -n1)
+if [ -n "$CUDATEXT_BIN" ]; then
+   ln -sf "$CUDATEXT_BIN" /usr/local/bin/cudatext
+fi
 
 echo "--> [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
 
