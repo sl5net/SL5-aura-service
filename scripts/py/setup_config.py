@@ -496,8 +496,7 @@ def delete_non_primary_md(info, primary):
 # Main flow
 # ---------------------------
 country = get_country()
-default_primary = detect_default_lang(country)
-
+default_primary = os.environ.get("SELECTED_LANG") or ("de" if is_non_interactive() else detect_default_lang(country))
 strings, i18n_source = get_strings(default_primary, country=country, default_primary=default_primary)
 text_detected = strings["text_detected"]
 text_help = strings["text_help"]
