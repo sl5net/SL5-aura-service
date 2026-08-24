@@ -35,11 +35,10 @@
 # MAPS_DIR="$SL5NET_AURA_PROJECT_ROOT/config/maps"
 
 
-
-# 1. PFADE & VARIABLEN
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SL5NET_AURA_PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
+# clear; cat log/search_rules.sh.log
 
 LOG_DIR="$SL5NET_AURA_PROJECT_ROOT/log"
 LOGFILE="$LOG_DIR/search_rules.sh.log"
@@ -89,28 +88,12 @@ fi
 #Line 137: MAPS_DIR:  ./scripts/py/func  pwd:  /home/bob/projects/py/STT
 #/home/bob/projects/py/STT/scripts/search_rules/search_rules.sh: Zeile 142: MAPS_DIR:: Kommando nicht gefundenOrange Rost
 
-#
-
-
-#
-
-
-
 
 echo "Line 64:" $MAPS_DIR " pwd: " $PWD
 
 HISTORY_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
-
-# 2. EDITOR FALLBACK LOGIC (Korrigierte Bash-Version deines Backups)
-get_preferred_editor() {
-    if command -v kate >/dev/null 2>&1; then echo "kate"; return; fi
-    if command -v code >/dev/null 2>&1; then echo "code"; return; fi
-    if command -v nano >/dev/null 2>&1; then echo "nano"; return; fi
-    if command -v notepad.exe >/dev/null 2>&1; then echo "notepad.exe"; return; fi
-    echo "vi" # Absoluter Linux-Standard-Fallback
-}
-PREFERRED_EDITOR=$(get_preferred_editor)
-
+# 2. EDITOR FALLBACK LOGIC - delegated to shared helper (TODO 25.6.'26 17:33 Thu resolved)
+source "$SCRIPT_DIR/func/common/search_helpers.sh"
 logger_info "Initializing search_rules.sh…"
 
 
@@ -198,36 +181,43 @@ SELECTED_LINE=$(grep --color=never -rnH -I $(echo "${SEARCH_FILES_FILTER:-*}" | 
 )
 # xdg-openzoran suche ducken
 
-# 5. EXECUTION (Robustes Öffnen) #
+# 5. EXECUTION (Robust opening) #
 if [ -n "$SELECTED_LINE" ]; then
     FILE_PATH="$(echo "$SELECTED_LINE" | cut -d: -f1)"
-    LINE_NUM=$(echo "$SELECTED_LINE" | cut -d: -f2)
+    RAW_LINE_NUM="$(echo "$SELECTED_LINE" | cut -d: -f2)"
+    if [[ "$RAW_LINE_NUM" =~ ^[0-9]+$ ]]; then
+        LINE_NUM="$RAW_LINE_NUM"
+    else
+        LINE_NUM=""
+    fi
+
+    if [[ "$FILE_PATH" != /* && -f "$SL5NET_AURA_PROJECT_ROOT/$FILE_PATH" ]]; then
+        FILE_PATH="$SL5NET_AURA_PROJECT_ROOT/$FILE_PATH"
+    fi
 
     EXT="${FILE_PATH##*.}"
     EXT="${EXT,,}"
-
     BIN_EXTS="pdf png jpg jpeg gif webp mp4 mp3 zip tar gz 7z"
-
     # Text-Format ?
-    MIME_TYPE=$(file --mime-type -b "$FILE_PATH")
-    echo "160: MIME_TYPE=$MIME_TYPE "
+    MIME_TYPE=$(file --mime-type -b "$FILE_PATH" 2>/dev/null || echo "text/plain")
+    logger_info "Execution trigger - raw: '$SELECTED_LINE' | path: '$FILE_PATH' | line: '$LINE_NUM' | mime: '$MIME_TYPE' | editor: '$PREFERRED_EDITOR'"
 
-    if [[ " $BIN_EXTS " =~ " $EXT " ]] || [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" ]]; then
-
-    #if [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" ]]; then
-        # Binär PDF etc. -> System-Standard
-        echo "xdg-open "$FILE_PATH" > /dev/null 2>&1 &"
-        xdg-open "$FILE_PATH" > /dev/null 2>&1 &
+    if [[ " $BIN_EXTS " =~ " $EXT " ]] || [[ "$MIME_TYPE" != text/* && "$MIME_TYPE" != "application/x-empty" && "$MIME_TYPE" != "cannot open"* ]]; then
+        logger_info "Launching via xdg-open: '$FILE_PATH'"
+        xdg-open "$FILE_PATH" >> "$LOGFILE" 2>&1 &
         sleep 8
 
     else
-        # Normale Editor-Logik
-        case $PREFERRED_EDITOR in
-            kate) nohup kate "$FILE_PATH" --line "$LINE_NUM" > /dev/null 2>&1 & ;;
-            code) code --goto "$FILE_PATH:$LINE_NUM" ;;
-            *) $PREFERRED_EDITOR "$FILE_PATH" & disown ;;
-        esac
-    fi
+        logger_info "Dispatching to editor '$PREFERRED_EDITOR' for '$FILE_PATH' (line: '$LINE_NUM')"
+if [[ "$PREFERRED_EDITOR" = "cudatext" ]]; then
+          nohup "$PREFERRED_EDITOR" "$FILE_PATH@$LINE_NUM" >> "$LOGFILE" 2>&1 &
+        elif [[ "$PREFERRED_EDITOR" = "xed" || "$PREFERRED_EDITOR" = "gedit" ]]; then
+          nohup "$PREFERRED_EDITOR" "$FILE_PATH" "+$LINE_NUM" >> "$LOGFILE" 2>&1 &
+        elif [[ "$PREFERRED_EDITOR" = "code" ]]; then
+          nohup "$PREFERRED_EDITOR" -g "$FILE_PATH:$LINE_NUM" >> "$LOGFILE" 2>&1 &
+        else
+          nohup "$PREFERRED_EDITOR" "$FILE_PATH" --line="$LINE_NUM" >> "$LOGFILE" 2>&1 &
+        fi    fi
     # exit 0
 
     # PDF ?
@@ -242,6 +232,3 @@ else
 fi
 
 done
-
-
-

@@ -5,7 +5,8 @@
 #
 
 set -e
-
+mkdir -p log/setup
+exec > >(tee -a "log/setup/linux_mac_setup.log") 2>&1
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 OS_TYPE=$(uname -s)
 
@@ -69,7 +70,8 @@ echo "[INFO] Detected Linux (${OS_ID}). Dispatching to ${TARGET}..."
 if [ "${CI}" != "true" ] && [ -t 0 ]; then
     READ_OPTS=()
     if [ "${AUTO_TIMEOUT_ENABLED:-1}" = "1" ]; then
-        READ_OPTS+=("-t" "8")
+        TIMEOUT_SEC="${AUTO_TIMEOUT_SECONDS:-8}"
+        READ_OPTS+=("-t" "${TIMEOUT_SEC}")
     fi
 
     echo ""

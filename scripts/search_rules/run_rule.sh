@@ -285,8 +285,13 @@ if [[ "$KEY" = "ctrl-e" && -n "$SEL" ]]; then
     logger_info "178: ctrl-e entered editor='$PREFERRED_EDITOR' path='$F_PATH' line='$L_NUM'"
     if [[ "$PREFERRED_EDITOR" = "cudatext" ]]; then
       nohup "$PREFERRED_EDITOR" "$F_PATH@$L_NUM" >> "$LOGFILE" 2>&1 &
+    elif [[ "$PREFERRED_EDITOR" = "xed" || "$PREFERRED_EDITOR" = "gedit" ]]; then
+      nohup "$PREFERRED_EDITOR" "$F_PATH" "+$L_NUM" >> "$LOGFILE" 2>&1 &
+    elif [[ "$PREFERRED_EDITOR" = "code" ]]; then
+      nohup "$PREFERRED_EDITOR" -g "$F_PATH:$L_NUM" >> "$LOGFILE" 2>&1 &
     else
       nohup "$PREFERRED_EDITOR" "$F_PATH" --line="$L_NUM" >> "$LOGFILE" 2>&1 &
     fi
+    
     logger_info "185: spawned pid=$!"
 fi

@@ -42,7 +42,7 @@ LANG_CODE=$(get_lang_code "$RAW_LANG")
 # 2. Check if the detected language is one of our defaults (already installed).
 if [[ "$LANG_CODE" == "de" || "$LANG_CODE" == "en-us" ]]; then
     log_info "System language '${LANG_CODE}' is a default. No extra model needed."
-    exit 0
+    return 0
 fi
 
 # 3. If it's a different language, proceed to download.

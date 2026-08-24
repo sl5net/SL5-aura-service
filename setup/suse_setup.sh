@@ -274,60 +274,47 @@ fi
 
 DOWNLOAD_REQUIRED=false
 
-# --- Filter Configuration based on EXCLUDE_LANGUAGES ---
+# --- Filter Configuration based on EXCLUDE_LANGUAGES and CI ---
 INSTALL_CONFIG=()
-if [ -z "$EXCLUDE_LANGUAGES" ]; then
-    # Keine Ausschlüsse, die gesamte MASTER-Liste wird installiert.
-    INSTALL_CONFIG=("${ARCHIVE_CONFIG[@]}")
-else
-    # Ausschlüsse aktiv, die Liste wird gefiltert.
-    for config_line in "${ARCHIVE_CONFIG[@]}"; do
-        read -r base_name final_name dest_path <<< "$config_line"
+for config_line in "${ARCHIVE_CONFIG[@]}"; do
+    read -r base_name final_name dest_path <<< "$config_line"
+    IS_MANDATORY=false
+    IS_EXCLUDED=false
+    # Components that are always required (e.g. LanguageTool Core)
+    if [[ "$base_name" == "LanguageTool-6.6" ]] || [[ "$base_name" == "lid.176" ]]; then
+        IS_MANDATORY=true
+    fi
 
-        IS_MANDATORY=false
-        IS_EXCLUDED=false
-
-        # Komponenten, die immer benötigt werden (z.B. LanguageTool Core)
-        if [[ "$base_name" == "LanguageTool-6.6" ]] || [[ "$base_name" == "lid.176" ]]; then
-            IS_MANDATORY=true
+    # 1. CI check: Exclude large models in CI mode
+    if [[ "${CI:-}" == "true" || "${GITHUB_ACTIONS:-}" == "true" ]]; then
+        if [[ "$base_name" == "vosk-model-en-us-0.22" || "$base_name" == "vosk-model-de-0.21" ]]; then
+            echo "    -> Excluding large in CI: $base_name"
+            IS_EXCLUDED=true
         fi
+    fi
 
-        # 1. Ausschluss-Check: exclude=all
+    # 2. Exclusions based on EXCLUDE_LANGUAGES
+    if [ "$IS_EXCLUDED" = false ] && [ -n "$EXCLUDE_LANGUAGES" ]; then
         if [ "$EXCLUDE_LANGUAGES" == "all" ] && [ "$IS_MANDATORY" = false ]; then
             echo "    -> Excluding (all): $base_name"
             IS_EXCLUDED=true
         fi
-
-        # 2. Ausschluss-Check: Spezifische Sprachen (z.B. de, en)
         if [ "$IS_EXCLUDED" = false ]; then
-            # Test auf 'de' im Namen und in der Ausschlussliste
             if [[ "$base_name" =~ vosk-model-de- ]] && [[ "$EXCLUDE_LANGUAGES" =~ de ]]; then
                 echo "    -> Excluding (de): $base_name"
                 IS_EXCLUDED=true
             fi
-            # Test auf 'en' im Namen und in der Ausschlussliste
-            if [[ "$base_name" =~ vosk-model.*en-us ]] && [[ "$EXCLUDE_LANGUAGES" =~ en ]]; then
+            if [[ "$base_name" =~ vosk-model-en-us- ]] && [[ "$EXCLUDE_LANGUAGES" =~ en ]]; then
                 echo "    -> Excluding (en): $base_name"
                 IS_EXCLUDED=true
             fi
-
-
-            if [[ "$base_name" == "vosk-model-en-us-0.22" ]] && ([[ "$EXCLUDE_LANGUAGES" =~ en ]] || [[ "$CI" == "true" ]]); then
-                echo "    -> Excluding large in CI (en): $base_name"
-                IS_EXCLUDED=true
-            fi
-
-
-
-            # Hinzufügen weiterer spezifischer Exklusionsregeln nach Bedarf…
         fi
+    fi
 
-        # Nur hinzufügen, wenn nicht ausgeschlossen
-        if [ "$IS_EXCLUDED" = false ]; then
-            INSTALL_CONFIG+=("$config_line")
-        fi
-    done
-fi
+    if [ "$IS_EXCLUDED" = false ]; then
+        INSTALL_CONFIG+=("$config_line")
+    fi
+done
 # --- End Filter Configuration ---
 
 

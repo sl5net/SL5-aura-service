@@ -29,6 +29,11 @@ cd "$SL5NET_AURA_PROJECT_ROOT"
 echo "--> Running setup from project root: $(pwd)"
 # --- End of location-independent block ---
 
+LOG_DIR="${SL5NET_AURA_PROJECT_ROOT}/log/setup"
+mkdir -p "${LOG_DIR}"
+LOG_FILE="${LOG_DIR}/ubuntu_setup.log"
+exec > >(tee -a "${LOG_FILE}") 2>&1
+
 set -e
 
 
@@ -140,6 +145,7 @@ fi
 # --- 5. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.
 echo "--> Creating Python package markers (__init__.py)…"
+mkdir -p config/languagetool_server
 touch config/__init__.py
 touch config/languagetool_server/__init__.py
 
@@ -157,11 +163,26 @@ fi
 # --- dotool setup ---
 source "$(dirname "${BASH_SOURCE[0]}")/helper/install_dotool.sh"
 
-# --- automatically set user-Models ---
+# --- CudaText setup ---
+echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Sourcing install_cudatext.sh..."
+source "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
+echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
+
+#sudo ln -sf /opt/cudatext/cudatext /usr/bin/cudatext
+#sudo ln -sf /opt/cudatext/cudatext /opt/cudatext/cudatext/cudatext
+
+CUDATEXT_BIN=$(find /opt/cudatext -type f -name cudatext -executable | head -n1)
+if [ -n "$CUDATEXT_BIN" ]; then
+   ln -sf "$CUDATEXT_BIN" /usr/local/bin/cudatext
+fi
+
+echo "--> [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
+
+# --- Configure default model ---
 echo "--> Configuring default model in config/model_name.txt…"
-if [ "$CI" == "true" ]; then
+if [ "${CI:-}" = "true" ]; then
     echo "vosk-model-small-en-us-0.15" > config/model_name.txt
-elif [ "$SELECTED_LANG" == "de" ]; then
+elif [ "${SELECTED_LANG:-}" = "de" ]; then
     echo "vosk-model-de-0.21" > config/model_name.txt
 else
     echo "Please set a vosk-model in config/model_name.txt e.g. vosk-model-en-us-0.22 and check https://alphacephei.com/vosk/models"

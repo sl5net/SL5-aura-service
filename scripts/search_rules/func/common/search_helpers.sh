@@ -1,5 +1,6 @@
 #!/bin/bash
 # scripts/search_rules/search_helpers.sh
+export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
 HELPER_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SL5NET_AURA_PROJECT_ROOT="${SL5NET_AURA_PROJECT_ROOT:-$(cd "$HELPER_DIR/../.." && pwd)}"
 mkdir -p "$SL5NET_AURA_PROJECT_ROOT/log"
@@ -10,7 +11,7 @@ logger_info() {
 }
 
 get_preferred_editor() {
-    for c in cudatext kate code nano vi; do
+    for c in cudatext kate code xed gedit subl nano vi; do
         if command -v "$c" >/dev/null 2>&1; then echo "$c"; return; fi
     done
 }
@@ -22,3 +23,4 @@ open_github() {
     xdg-open "$url"
 }
 export -f open_github
+

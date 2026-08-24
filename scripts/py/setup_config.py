@@ -496,8 +496,7 @@ def delete_non_primary_md(info, primary):
 # Main flow
 # ---------------------------
 country = get_country()
-default_primary = detect_default_lang(country)
-
+default_primary = os.environ.get("SELECTED_LANG") or ("de" if is_non_interactive() else detect_default_lang(country))
 strings, i18n_source = get_strings(default_primary, country=country, default_primary=default_primary)
 text_detected = strings["text_detected"]
 text_help = strings["text_help"]
@@ -505,47 +504,56 @@ prompt_p = strings["prompt_primary"]
 prompt_s = strings["prompt_secondary"]
 
 auto_timeout_enabled = True
+auto_timeout_seconds = 8
 if not is_non_interactive():
-    timeout_query = timed_input("Enable 8-second auto-confirmation countdown? (y/n)", "y", enable_timeout=False)
-    if timeout_query.lower() in ("n", "no"):
+    timeout_query = timed_input("Enable auto-confirmation countdown? (y/n, or enter seconds e.g. 1..60)", "y", enable_timeout=False).strip()
+    if timeout_query.lower() in ("n", "no", "0"):
         auto_timeout_enabled = False
-
+    elif timeout_query.isdigit() and int(timeout_query) > 0:
+        auto_timeout_seconds = int(timeout_query)
+        auto_timeout_enabled = True
 sys.stderr.write(f"{strings['enter_hint']}\n")
 sys.stderr.write(f"{text_detected}\n{text_help}\n")
 
-primary = timed_input(prompt_p, default_primary, timeout=8, enable_timeout=auto_timeout_enabled)
-if primary in ["n", "none", "0"]:
+primary = timed_input(prompt_p, default_primary, timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled)
+if is_non_interactive():
+    secondary = "none"
+    excludes_str = os.environ.get("EXCLUDE_LANGUAGES", "")
+elif primary in ["n", "none", "0"]:
     # If terminal mode is selected, we exclude all languages
     secondary = "none"
     excludes = []
     excludes_str = "all"
 else:
-    secondary = timed_input(prompt_s, "none", timeout=8, enable_timeout=auto_timeout_enabled)
-    
+    secondary = timed_input(prompt_s, "none", timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled) 
     all_langs = sorted(set(list_available_i18n_langs()) | {FALLBACK_LANG})
     excludes = [lang for lang in all_langs if lang.lower() != primary.lower() and lang.lower() != str(secondary).lower()]
     excludes_str = ",".join(excludes)
-
 hotkey_map = {"1": "F12", "2": "Ctrl+Shift+Space", "3": "Scroll_Lock"}
 hotkey_input = timed_input(
     "Select trigger hotkey (1=F12, 2=Ctrl+Shift+Space, 3=Scroll_Lock, or type custom key):",
     "1",
-    timeout=8,
+    timeout=auto_timeout_seconds,
     enable_timeout=auto_timeout_enabled,
 ).strip()
 selected_hotkey = hotkey_map.get(hotkey_input, hotkey_input if hotkey_input else "F12")
 
+auto_timeout_val = "1" if auto_timeout_enabled else "0"
+timeout_sec_val = str(auto_timeout_seconds) if auto_timeout_enabled else "0"
 if os.name == 'nt':
     print(f"$env:SELECTED_LANG='{primary}'")
     print(f"$env:SECOND_LANG='{secondary}'")
     print(f"$env:EXCLUDE_LANGUAGES='{excludes_str}'")
     print(f"$env:SELECTED_HOTKEY='{selected_hotkey}'")
+    print(f"$env:AUTO_TIMEOUT_ENABLED='{auto_timeout_val}'")
+    print(f"$env:AUTO_TIMEOUT_SECONDS='{timeout_sec_val}'")
 else:
     print(f"export SELECTED_LANG='{primary}'")
     print(f"export SECOND_LANG='{secondary}'")
     print(f"export EXCLUDE_LANGUAGES='{excludes_str}'")
-    print(f"export SELECTED_HOTKEY='{selected_hotkey}'")    
-    
+    print(f"export SELECTED_HOTKEY='{selected_hotkey}'")
+    print(f"export AUTO_TIMEOUT_ENABLED='{auto_timeout_val}'")
+    print(f"export AUTO_TIMEOUT_SECONDS='{timeout_sec_val}'")    
 # --- New: show docs/doc_sources/i18n counts and ask about deletions ---
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 info = find_folder_counts(repo_root)
