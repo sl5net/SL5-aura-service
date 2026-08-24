@@ -50,9 +50,11 @@ demo_secrets()
 # PREREQUISITE: Write project root early to prevent import crashes in submodules when the project was moved to other folder
 
 from scripts.py.func.get_project_root import get_aura_project_root
+from scripts.py.func.create_required_folders import setup_project_structure
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+setup_project_structure(SL5NET_AURA_PROJECT_ROOT)
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 PROJECT_ROOT_FILE = TMP_DIR / "sl5_aura" / "sl5net_aura_project_root"
@@ -139,7 +141,6 @@ from scripts.py.func.main import main
 # We need vosk here for the model loading
 # import vosk
 
-from scripts.py.func.create_required_folders import setup_project_structure
 
 
 
@@ -166,8 +167,6 @@ if not _log_dir.exists():
 
 
 
-# aura_engine.py:145
-setup_project_structure(SL5NET_AURA_PROJECT_ROOT)
 
 
 LOG_FILE = SL5NET_AURA_PROJECT_ROOT / "log" / "aura_engine.log"  # NICHT mit Path("log/…") überschreiben! könnte zu leidem äergerlichen unmerkbaren fehlern führen.
