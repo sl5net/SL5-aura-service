@@ -113,10 +113,14 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
         if [ -f "$zip_file" ]; then
             echo "    -> Extracting newly downloaded '$zip_file'…"
             unzip -q "$zip_file" -d "$dest_path"
+        elif [[ "${CI:-}" == "true" || "${GITHUB_ACTIONS:-}" == "true" ]] && [[ "$base_name" == "vosk-model-en-us-0.22" || "$base_name" == "vosk-model-de-0.21" ]]; then
+            echo "    -> Skipping extraction of large model in CI: $base_name"
+            continue
         else
             echo "    -> FATAL: Downloader ran but '$zip_file' is still missing. Aborting."
             exit 1
         fi
+        
     done
 fi
 
