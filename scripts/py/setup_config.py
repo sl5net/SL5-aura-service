@@ -517,17 +517,19 @@ sys.stderr.write(f"{strings['enter_hint']}\n")
 sys.stderr.write(f"{text_detected}\n{text_help}\n")
 
 primary = timed_input(prompt_p, default_primary, timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled)
-if primary in ["n", "none", "0"]:
+if is_non_interactive():
+    secondary = "none"
+    excludes_str = os.environ.get("EXCLUDE_LANGUAGES", "")
+elif primary in ["n", "none", "0"]:
     # If terminal mode is selected, we exclude all languages
     secondary = "none"
     excludes = []
     excludes_str = "all"
 else:
-    secondary = timed_input(prompt_s, "none", timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled)    
+    secondary = timed_input(prompt_s, "none", timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled) 
     all_langs = sorted(set(list_available_i18n_langs()) | {FALLBACK_LANG})
     excludes = [lang for lang in all_langs if lang.lower() != primary.lower() and lang.lower() != str(secondary).lower()]
     excludes_str = ",".join(excludes)
-
 hotkey_map = {"1": "F12", "2": "Ctrl+Shift+Space", "3": "Scroll_Lock"}
 hotkey_input = timed_input(
     "Select trigger hotkey (1=F12, 2=Ctrl+Shift+Space, 3=Scroll_Lock, or type custom key):",
