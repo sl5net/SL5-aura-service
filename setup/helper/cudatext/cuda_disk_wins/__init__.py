@@ -4,6 +4,7 @@ import time
 from cudatext import *
 
 readme = """
+setup/helper/cudatext/cuda_disk_wins/__init__.py:7
 TEST-COMMANDS:
 pkill cudatext 2>/dev/null || true
 rm -f /tmp/cuda_disk_wins.log
