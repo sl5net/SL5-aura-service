@@ -135,9 +135,46 @@ if [[ -n "${ACTUAL_BIN}" && -f "${ACTUAL_BIN}" ]]; then
   ${SUDO} ln -sf "${ACTUAL_BIN}" /usr/bin/cudatext 2>/dev/null || true
 fi
 
+# Install CudaText "Disk Wins" Auto-Reload Plugin & Disable ui_notif
+PLUGIN_SRC="$(dirname "${BASH_SOURCE[0]}")/cudatext/cuda_disk_wins"
+if [[ -d "${PLUGIN_SRC}" ]]; then
+  if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ] && [ "${SUDO_USER}" != "root" ]; then
+    TARGET_USER="${SUDO_USER}"
+    TARGET_HOME="$(getent passwd "${TARGET_USER}" | cut -d: -f6)"
+  else
+    TARGET_USER="$(id -un)"
+    TARGET_HOME="${HOME}"
+  fi
 
+  CUDATEXT_PY_DIR="${TARGET_HOME}/.config/cudatext/py"
+  CUDATEXT_SETTINGS_DIR="${TARGET_HOME}/.config/cudatext/settings"
+  USER_JSON="${CUDATEXT_SETTINGS_DIR}/user.json"
 
+  echo "[INFO] Installing CudaText plugin 'cuda_disk_wins' to ${CUDATEXT_PY_DIR}..."
+  mkdir -p "${CUDATEXT_PY_DIR}"
+  cp -r "${PLUGIN_SRC}" "${CUDATEXT_PY_DIR}/"
 
+  echo "[INFO] Configuring 'ui_notif: false' in ${USER_JSON}..."
+  mkdir -p "${CUDATEXT_SETTINGS_DIR}"
+  if [[ ! -f "${USER_JSON}" ]]; then
+    echo -e '{\n  "ui_notif": false\n}' > "${USER_JSON}"
+  else
+    python3 -c "
+import json
+from pathlib import Path
+p = Path('${USER_JSON}')
+try:
+    data = json.loads(p.read_text(encoding='utf-8'))
+except Exception:
+    data = {}
+data['ui_notif'] = False
+p.write_text(json.dumps(data, indent=2), encoding='utf-8')
+" 2>/dev/null || true
+  fi
 
+  if [ "$(id -u)" -eq 0 ] && [ -n "${TARGET_USER}" ] && [ "${TARGET_USER}" != "root" ]; then
+    chown -R "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.config/cudatext" 2>/dev/null || true
+  fi
+fi
 
 echo "[INFO] Done."
