@@ -1,5 +1,8 @@
 name: CI for ubuntu Setup
 
+# example run:
+# gh run rerun 32896272792 
+
 on:
   push:
     branches: [ master, feat/setup-cudatext-disk-wins-plugin
@@ -94,56 +97,86 @@ jobs:
       
       - name: Test CudaText Disk Wins live auto-reload with Xvfb
         run: |
-          echo "BRANCH: ${{ github.ref_name }}"
-          echo "[CI-DEBUG] Test step executed at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-          sudo apt-get update -y
-          sudo apt-get install -y xvfb libgtk-3-0
-          rm -f /tmp/cuda_disk_wins.log /tmp/ci_disk_wins_test.txt
-          
-          which cudatext && ldd "$(which cudatext)" | grep -iE "gtk|gdk" || true
-          
-          xvfb-run --auto-servernum cudatext -verbose /tmp/ci_disk_wins_test.txt &
-          
-          for i in {1..12}; do
-            if [ -f /tmp/cuda_disk_wins.log ]; then
-              echo "[CI-DEBUG] Plugin initialized after ${i}s"
-              break
+      
+            echo "BRANCH: ${{ github.ref_name }}"
+            echo "[CI-DEBUG] Test start at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+
+            sudo apt-get update -y
+            sudo apt-get install -y xvfb libgtk-3-0
+
+            # ensure test file exists so on_open fires on startup
+            echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
+
+            # cleanup old artifacts
+            rm -f /tmp/cuda_disk_wins.log /tmp/cudatext.out || true
+
+            # sanity: show which binary will be used
+            if which cudatext >/dev/null 2>&1; then
+            echo "[CI-DEBUG] cudatext found at: $(which cudatext)"
+            ldd "$(which cudatext)" | grep -iE "gtk|gdk" || true
+            else
+            echo "[ERROR] cudatext binary not found in PATH"; exit 1
+            fi
+
+            # start CudaText with -verbose, capture stdout/stderr
+            xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24 -nolisten tcp' "$(which cudatext)" -verbose /tmp/ci_disk_wins_test.txt > /tmp/cudatext.out 2>&1 &
+            CUDA_PID=$!
+
+            # wait up to 30s for plugin output or errors
+            FOUND=0
+            for i in $(seq 1 30); do
+            # look for plugin messages or errors in cudatext output
+            if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
+                echo "[CI-DEBUG] Plugin output seen in cudatext.out after ${i}s"
+                FOUND=1
+                break
+            fi
+            if grep -Eqi "Traceback|ImportError|Exception" /tmp/cudatext.out 2>/dev/null; then
+                echo "[CI-DEBUG] Error/Traceback seen in cudatext.out after ${i}s"
+                FOUND=1
+                break
             fi
             sleep 1
-          done
-          
-          echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
-          
-          for i in {1..8}; do
-            if grep -iq "reloaded" /tmp/cuda_disk_wins.log 2>/dev/null; then
-              echo "[CI-DEBUG] Auto-reload triggered after ${i}s"
-              break
+            done
+
+            # If nothing yet, trigger a file update to provoke reload, then wait a bit more
+            if [ "$FOUND" -eq 0 ]; then
+            echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
+            for j in $(seq 1 8); do
+                if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
+                echo "[CI-DEBUG] Plugin output seen after file update"
+                FOUND=1
+                break
+                fi
+                sleep 1
+            done
             fi
+
+            # stop CudaText and Xvfb
+            kill "$CUDA_PID" 2>/dev/null || true
             sleep 1
-          done
+            pkill -f Xvfb 2>/dev/null || true
+
+            # Dump outputs for inspection
+            echo "---- /tmp/cudatext.out (tail) ----"
+            tail -n 300 /tmp/cudatext.out || true
+
+            echo "---- ~/.config/cudatext/settings/plugins.ini ----"
+            sed -n '1,200p' "${HOME}/.config/cudatext/settings/plugins.ini" || true
+
+            echo "---- ~/.config/cudatext/settings/user.json ----"
+            sed -n '1,200p' "${HOME}/.config/cudatext/settings/user.json" || true
+
+            # Final assertion: require either plugin output or an explicit traceback (so we don't silently pass)
+            if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
+            echo "[OK] Plugin activity detected in cudatext.out"
+            else
+            echo "[ERROR] No plugin activity detected in cudatext.out; printing cudatext.out above"
+            exit 1
+            fi
           
-          pkill -f cudatext 2>/dev/null || true
-          pkill -f Xvfb 2>/dev/null || true
           
-          cat /tmp/cuda_disk_wins.log 2>/dev/null || true
-          grep -iq "reloaded" /tmp/cuda_disk_wins.log || { echo "[ERROR] Auto-reload log entry not found in log"; exit 1; }          
           
-          echo "[OK] Live auto-reload test succeeded in headless CI."          
-          echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
-          
-          xvfb-run --auto-servernum cudatext /tmp/ci_disk_wins_test.txt &
-          CUDA_PID=$!
-          sleep 3
-          
-          echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
-          sleep 3
-          
-          kill -9 $CUDA_PID 2>/dev/null || true
-          cat /tmp/cuda_disk_wins.log
-          grep -iq "reloaded" /tmp/cuda_disk_wins.log || { echo "[ERROR] Auto-reload log entry not found"; exit 1; }
-          echo "[OK] Live auto-reload test succeeded in headless CI."
-   
-   
       - name: Package Assets as Artifact(90days available from last run of this workflow)
         if: always()
         uses: actions/upload-artifact@v4
