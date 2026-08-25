@@ -70,15 +70,31 @@ jobs:
           which cudatext && ldd "$(which cudatext)" | grep -iE "gtk|gdk" || true
           
           xvfb-run --auto-servernum cudatext -verbose /tmp/ci_disk_wins_test.txt &
-          CUDA_PID=$!
-          sleep 4
+          
+          for i in {1..12}; do
+            if [ -f /tmp/cuda_disk_wins.log ]; then
+              echo "[CI-DEBUG] Plugin initialized after ${i}s"
+              break
+            fi
+            sleep 1
+          done
           
           echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
-          sleep 4
           
-          kill -9 $CUDA_PID 2>/dev/null || true
+          for i in {1..8}; do
+            if grep -iq "reloaded" /tmp/cuda_disk_wins.log 2>/dev/null; then
+              echo "[CI-DEBUG] Auto-reload triggered after ${i}s"
+              break
+            fi
+            sleep 1
+          done
+          
+          pkill -f cudatext 2>/dev/null || true
+          pkill -f Xvfb 2>/dev/null || true
+          
           cat /tmp/cuda_disk_wins.log 2>/dev/null || true
-          grep -iq "reloaded" /tmp/cuda_disk_wins.log || { echo "[ERROR] Auto-reload log entry not found"; exit 1; }
+          grep -iq "reloaded" /tmp/cuda_disk_wins.log || { echo "[ERROR] Auto-reload log entry not found in log"; exit 1; }          
+          
           echo "[OK] Live auto-reload test succeeded in headless CI."          
           echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
           
