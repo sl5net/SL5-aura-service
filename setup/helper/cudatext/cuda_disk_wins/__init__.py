@@ -173,5 +173,6 @@ class Command:
                 pass
 
         self.mtimes[fn] = disk_mtime
+        _log(f"File reloaded from disk: {fn}")
         msg_status('Disk Wins: "%s" changed on disk -> reloaded (unsaved editor changes discarded)'
                    % os.path.basename(fn))
