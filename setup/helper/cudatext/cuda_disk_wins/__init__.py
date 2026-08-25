@@ -1,5 +1,32 @@
 import os
+import sys
+import time
 from cudatext import *
+
+readme = """
+TEST-COMMANDS:
+pkill cudatext 2>/dev/null || true
+rm -f /tmp/cuda_disk_wins.log
+cudatext /tmp/test_disk_wins.txt &
+sleep 2
+cat /tmp/cuda_disk_wins.log
+"""
+print(readme)
+
+def _log(msg):
+    print(msg)
+    sys.stdout.flush()
+
+LOG_FILE = '/tmp/cuda_disk_wins.log'
+
+def _log(msg):
+    try:
+        with open(LOG_FILE, 'a', encoding='utf-8') as f:
+            f.write(f"[{time.strftime('%H:%M:%S')}] {msg}\n")
+    except Exception:
+        pass
+
+_log("Module loaded")
 
 # How often (ms) to poll open files for external changes.
 TIMER_INTERVAL = 1000
@@ -23,24 +50,28 @@ class Command:
         self.mtimes = {}   # filename -> last known mtime (float)
         self.enabled = True
         self.timer_started = False
-        print("[Disk Wins] Plugin Command instance initialized.")
+        _log("[Disk Wins] Plugin Command instance initialized.")
 
     def _ensure_timer(self):
         if not self.timer_started:
             timer_proc(TIMER_START, self.on_timer, TIMER_INTERVAL)
             self.timer_started = True
-            print(f"[Disk Wins] Timer started with interval {TIMER_INTERVAL}ms.")
+            _log(f"Timer started with interval {TIMER_INTERVAL}ms")
 
     # ---- events -------------------------------------------------
     def on_start(self, ed_self=None):
+        _log("on_start event")
         self._ensure_timer()
         self._scan_all(initial=True)
 
     def on_start2(self, ed_self=None):
+        _log("on_start2 event")
         self._ensure_timer()
         self._scan_all(initial=True)
 
     def on_open(self, ed_self):
+        fn = ed_self.get_filename()
+        _log(f"on_open event: {fn}")
         self._ensure_timer()
         fn = ed_self.get_filename()
         if fn and fn != '?':
