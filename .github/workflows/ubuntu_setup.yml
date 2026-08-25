@@ -1,8 +1,12 @@
 name: CI for ubuntu Setup
 
+# example run:
+# gh run rerun 32896272792 
+
 on:
   push:
-    branches: [ master ]
+    branches: [ master, feat/setup-cudatext-disk-wins-plugin
+ ]
     paths:
       - 'setup/**'
       - 'scripts/infra/requirements/requirements.txt'
@@ -40,7 +44,139 @@ jobs:
 
       - name: Run ubuntu_setup.sh
         run: bash ./setup/ubuntu_setup.sh
+   
+      - name: Verify CudaText and Disk Wins plugin setup
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
 
+          command -v cudatext || { echo "[ERROR] cudatext binary not found in PATH"; exit 1; }
+          test -d "${HOME}/.config/cudatext/py/cuda_disk_wins" || { echo "[ERROR] Plugin directory missing"; exit 1; }
+          grep -q '"ui_notif": false' "${HOME}/.config/cudatext/settings/user.json" || { echo "[ERROR] ui_notif: false not found in user.json"; exit 1; }
+          echo "[OK] CudaText and Disk Wins plugin verification passed."
+   
+#      - name: Test CudaText Disk Wins live auto-reload with Xvfb
+#        run: |
+#          echo "BRANCH: ${{ github.ref_name }}"
+#
+#          sudo add-apt-repository -y universe || true
+#          sudo apt-get update -y
+#          sudo apt-get install -y xvfb libgtk2.0-0t64 || sudo apt-get install -y xvfb libgtk2.0-0
+#          rm -f /tmp/cuda_disk_wins.log /tmp/ci_disk_wins_test.txt
+            
+      
+      - name: CI debug — show install script length and CudaText settings
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          echo "---- Full file length (lines) ----"
+          wc -l setup/helper/install_cudatext.sh || true
+          echo
+          echo "=== Repo plugin source (expected) ==="
+          ls -la setup/helper/cudatext || true
+          ls -la setup/helper/cudatext/cuda_disk_wins || true
+          echo
+          echo "=== Post-install: user config files (if present) ==="
+          echo "HOME=$HOME"
+          echo "List ~/.config/cudatext tree:"
+          ls -la "${HOME}/.config" || true
+          ls -la "${HOME}/.config/cudatext" || true
+          ls -la "${HOME}/.config/cudatext/py" || true
+          ls -la "${HOME}/.config/cudatext/py/cuda_disk_wins" || true
+      
+          echo
+          echo "---- plugins.ini (if exists) ----"
+          sed -n '1,200p' "${HOME}/.config/cudatext/settings/plugins.ini" || true
+      
+          echo
+          echo "---- user.json (if exists) ----"
+          sed -n '1,200p' "${HOME}/.config/cudatext/settings/user.json" || true
+      
+          echo
+          echo "---- /tmp/cuda_disk_wins.log (if exists) ----"
+          ls -la /tmp/cuda_disk_wins.log || true
+          sed -n '1,200p' /tmp/cuda_disk_wins.log || true
+      
+      - name: Test CudaText Disk Wins live auto-reload with Xvfb
+        run: |
+      
+            echo "BRANCH: ${{ github.ref_name }}"
+            echo "[CI-DEBUG] Test start at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+
+            sudo apt-get update -y
+            sudo apt-get install -y xvfb libgtk-3-0
+
+            # ensure test file exists so on_open fires on startup
+            echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
+
+            # cleanup old artifacts
+            rm -f /tmp/cuda_disk_wins.log /tmp/cudatext.out || true
+
+            # sanity: show which binary will be used
+            if which cudatext >/dev/null 2>&1; then
+            echo "[CI-DEBUG] cudatext found at: $(which cudatext)"
+            ldd "$(which cudatext)" | grep -iE "gtk|gdk" || true
+            else
+            echo "[ERROR] cudatext binary not found in PATH"; exit 1
+            fi
+
+            # start CudaText with -verbose, capture stdout/stderr
+            xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24 -nolisten tcp' "$(which cudatext)" -verbose /tmp/ci_disk_wins_test.txt > /tmp/cudatext.out 2>&1 &
+            CUDA_PID=$!
+
+            # wait up to 30s for plugin output or errors
+            FOUND=0
+            for i in $(seq 1 30); do
+            # look for plugin messages or errors in cudatext output
+            if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
+                echo "[CI-DEBUG] Plugin output seen in cudatext.out after ${i}s"
+                FOUND=1
+                break
+            fi
+            if grep -Eqi "Traceback|ImportError|Exception" /tmp/cudatext.out 2>/dev/null; then
+                echo "[CI-DEBUG] Error/Traceback seen in cudatext.out after ${i}s"
+                FOUND=1
+                break
+            fi
+            sleep 1
+            done
+
+            # If nothing yet, trigger a file update to provoke reload, then wait a bit more
+            if [ "$FOUND" -eq 0 ]; then
+            echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
+            for j in $(seq 1 8); do
+                if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
+                echo "[CI-DEBUG] Plugin output seen after file update"
+                FOUND=1
+                break
+                fi
+                sleep 1
+            done
+            fi
+
+            # stop CudaText and Xvfb
+            kill "$CUDA_PID" 2>/dev/null || true
+            sleep 1
+            pkill -f Xvfb 2>/dev/null || true
+
+            # Dump outputs for inspection
+            echo "---- /tmp/cudatext.out (tail) ----"
+            tail -n 300 /tmp/cudatext.out || true
+
+            echo "---- ~/.config/cudatext/settings/plugins.ini ----"
+            sed -n '1,200p' "${HOME}/.config/cudatext/settings/plugins.ini" || true
+
+            echo "---- ~/.config/cudatext/settings/user.json ----"
+            sed -n '1,200p' "${HOME}/.config/cudatext/settings/user.json" || true
+
+            # Final assertion: require either plugin output or an explicit traceback (so we don't silently pass)
+            if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
+            echo "[OK] Plugin activity detected in cudatext.out"
+            else
+            echo "[ERROR] No plugin activity detected in cudatext.out; printing cudatext.out above"
+            exit 1
+            fi
+          
+          
+          
       - name: Package Assets as Artifact(90days available from last run of this workflow)
         if: always()
         uses: actions/upload-artifact@v4
