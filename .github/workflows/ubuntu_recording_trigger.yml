@@ -74,6 +74,9 @@ jobs:
         run: echo "CI=true" >> $GITHUB_ENV
 
       - name: Run ubuntu_setup.sh (should now use local files)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: bash ./setup/ubuntu_setup.sh
 
       - name: Install Development Dependencies
