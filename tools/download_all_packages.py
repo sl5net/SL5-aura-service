@@ -324,7 +324,7 @@ def main():
             break
         except requests.exceptions.RequestException as e:
             if attempt < max_attempts:
-                print(f"  [WARN] Attempt {attempt} failed ({e}). Retrying in 4s...")
+                print(f"  [WARN] Attempt {attempt} failed ({e}). Retrying in 4s…")
                 time.sleep(4)
             else:
                 print(f"  [FATAL] Could not connect to GitHub API after {max_attempts} attempts: {e}")

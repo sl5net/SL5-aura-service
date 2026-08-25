@@ -30,8 +30,10 @@ else
 fi
 
 echo "[INFO] Configuring /dev/uinput permissions..."
+getent group input >/dev/null 2>&1 || sudo groupadd -r input 2>/dev/null || true
 TARGET_USER="${USER:-$(whoami 2>/dev/null || echo 'root')}"
-sudo usermod -aG input "${TARGET_USER}" || trueecho 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
+sudo usermod -aG input "${TARGET_USER}" || true
+echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
   | sudo tee /etc/udev/rules.d/80-dotool.rules > /dev/null
 sudo udevadm control --reload-rules || true
 sudo udevadm trigger || true
