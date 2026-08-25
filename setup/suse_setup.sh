@@ -419,15 +419,23 @@ if ! command -v dotool &> /dev/null; then
     echo "--> Installing dotool…"
     $SUDO zypper install -y dotool || echo "WARNING: dotool not found in repos. Install manually. See docs/LINUX_WAYLAND_dotool.md"
 fi
-getent group input >/dev/null 2>&1 || $SUDO groupadd -r input 2>/dev/null || true
-$SUDO usermod -aG input "${USER:-$(whoami)}" 2>/dev/null || true
-
-echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
-  | $SUDO tee /etc/udev/rules.d/80-dotool.rules
-$SUDO udevadm control --reload-rules && $SUDO udevadm trigger
-echo "NOTE: Re-login required for input group to take effect."
-echo "See docs/LINUX_WAYLAND_dotool.md for details."
-
+if [ "$CI" == "true" ] || [ "$GITHUB_ACTIONS" == "true" ]; then
+  echo "--> CI container detected: skipping input-group/udev setup (no udev daemon, no real hardware)."
+else
+  getent group input >/dev/null 2>&1 || $SUDO groupadd -r input 2>/dev/null || true
+  if ! $SUDO usermod -aG input "${USER:-$(whoami)}"; then
+    echo "WARNING: usermod failed to add user to 'input' group. See error above."
+  fi
+  echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
+    | $SUDO tee /etc/udev/rules.d/80-dotool.rules
+  if ! $SUDO udevadm control --reload-rules; then
+    echo "WARNING: udevadm control --reload-rules failed."
+  elif ! $SUDO udevadm trigger; then
+    echo "WARNING: udevadm trigger failed."
+  fi
+  echo "NOTE: Re-login required for input group to take effect."
+  echo "See docs/LINUX_WAYLAND_dotool.md for details."
+fi
 
 # --- Automatisches Setzen des Standard-Modells ---
 echo "--> Configuring default model in config/model_name.txt…"
