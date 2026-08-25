@@ -15,7 +15,9 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-
+  # gh workflow run suse_setup.yml --ref ci/suse-dotool-group-fix
+  # use your run number:
+  # gh run view 32798567946 --log-failed
 jobs:
   validate-suse-setup:
     runs-on: ubuntu-latest
