@@ -22,18 +22,31 @@ class Command:
     def __init__(self):
         self.mtimes = {}   # filename -> last known mtime (float)
         self.enabled = True
+        self.timer_started = False
+        print("[Disk Wins] Plugin Command instance initialized.")
+
+    def _ensure_timer(self):
+        if not self.timer_started:
+            timer_proc(TIMER_START, self.on_timer, TIMER_INTERVAL)
+            self.timer_started = True
+            print(f"[Disk Wins] Timer started with interval {TIMER_INTERVAL}ms.")
 
     # ---- events -------------------------------------------------
+    def on_start(self, ed_self=None):
+        self._ensure_timer()
+        self._scan_all(initial=True)
 
     def on_start2(self, ed_self=None):
-        timer_proc(TIMER_START, self.on_timer, TIMER_INTERVAL)
+        self._ensure_timer()
         self._scan_all(initial=True)
 
     def on_open(self, ed_self):
+        self._ensure_timer()
         fn = ed_self.get_filename()
         if fn and fn != '?':
             self._remember(fn)
-
+            
+            
     def on_save(self, ed_self):
         fn = ed_self.get_filename()
         if fn and fn != '?':
