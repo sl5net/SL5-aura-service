@@ -160,9 +160,10 @@ if [[ -d "${PLUGIN_SRC}" ]]; then
   CUDATEXT_SETTINGS_DIR="${TARGET_HOME}/.config/cudatext/settings"
   USER_JSON="${CUDATEXT_SETTINGS_DIR}/user.json"
 
-  echo "[INFO] Installing CudaText plugin 'cuda_disk_wins' to ${CUDATEXT_PY_DIR}..."
-  mkdir -p "${CUDATEXT_PY_DIR}"
-  cp -r "${PLUGIN_SRC}" "${CUDATEXT_PY_DIR}/"
+  echo "[INFO] Installing CudaText plugin 'cuda_disk_wins' to ${CUDATEXT_PY_DIR}/cuda_disk_wins..."
+  mkdir -p "${CUDATEXT_PY_DIR}/cuda_disk_wins"
+  cp -r "${PLUGIN_SRC}/." "${CUDATEXT_PY_DIR}/cuda_disk_wins/"  
+#  cp -r "${PLUGIN_SRC}" "${CUDATEXT_PY_DIR}/"
 
   echo "[INFO] Configuring 'ui_notif: false' in ${USER_JSON}..."
   mkdir -p "${CUDATEXT_SETTINGS_DIR}"
