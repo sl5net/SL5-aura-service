@@ -1,6 +1,11 @@
 import os
 import sys
 import time
+
+for p in ['/opt/cudatext/cudatext/py', '/opt/cudatext/py', '/usr/share/cudatext/py']:
+    if os.path.isdir(p) and p not in sys.path:
+        sys.path.insert(0, p)
+
 from cudatext import *
 
 readme = """
@@ -12,6 +17,10 @@ echo "DISK WINS TEST 123" > /tmp/test_disk_wins.txt; sleep 1;
 clear; cat /tmp/cuda_disk_wins.log
 
 find /opt/cudatext ~/.config/cudatext -name "*.json" 2>/dev/null || true
+
+to see inter errors of CudaText in Terminal:
+clear; pkill cudatext 2>/dev/null || true
+cudatext -verbose /tmp/test_disk_wins.txt
 
 """
 print(readme)
