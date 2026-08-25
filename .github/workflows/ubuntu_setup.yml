@@ -59,6 +59,39 @@ jobs:
 #          sudo apt-get update -y
 #          sudo apt-get install -y xvfb libgtk2.0-0t64 || sudo apt-get install -y xvfb libgtk2.0-0
 #          rm -f /tmp/cuda_disk_wins.log /tmp/ci_disk_wins_test.txt
+            
+      
+      - name: CI debug — show install script length and CudaText settings
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          echo "---- Full file length (lines) ----"
+          wc -l setup/helper/install_cudatext.sh || true
+          echo
+          echo "=== Repo plugin source (expected) ==="
+          ls -la setup/helper/cudatext || true
+          ls -la setup/helper/cudatext/cuda_disk_wins || true
+          echo
+          echo "=== Post-install: user config files (if present) ==="
+          echo "HOME=$HOME"
+          echo "List ~/.config/cudatext tree:"
+          ls -la "${HOME}/.config" || true
+          ls -la "${HOME}/.config/cudatext" || true
+          ls -la "${HOME}/.config/cudatext/py" || true
+          ls -la "${HOME}/.config/cudatext/py/cuda_disk_wins" || true
+      
+          echo
+          echo "---- plugins.ini (if exists) ----"
+          sed -n '1,200p' "${HOME}/.config/cudatext/settings/plugins.ini" || true
+      
+          echo
+          echo "---- user.json (if exists) ----"
+          sed -n '1,200p' "${HOME}/.config/cudatext/settings/user.json" || true
+      
+          echo
+          echo "---- /tmp/cuda_disk_wins.log (if exists) ----"
+          ls -la /tmp/cuda_disk_wins.log || true
+          sed -n '1,200p' /tmp/cuda_disk_wins.log || true
+      
       - name: Test CudaText Disk Wins live auto-reload with Xvfb
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
