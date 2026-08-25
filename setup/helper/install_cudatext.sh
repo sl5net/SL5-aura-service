@@ -162,9 +162,8 @@ if [[ -d "${PLUGIN_SRC}" ]]; then
   
   PLUGINS_INI="${CUDATEXT_SETTINGS_DIR}/plugins.ini"
   echo "[INFO] Configuring 'plugins.ini' in ${PLUGINS_INI}..."
-  printf "%s\n" \
-    "[events]" \
-    "cuda_disk_wins=on_start2,on_open,on_save" > "${PLUGINS_INI}"
+
+  printf "[events]\ncuda_disk_wins=on_start2,on_open~,on_save~\n" > "${PLUGINS_INI}"
   
   
   if [[ ! -f "${USER_JSON}" ]]; then
