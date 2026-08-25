@@ -43,6 +43,8 @@ jobs:
    
       - name: Verify CudaText and Disk Wins plugin setup
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+
           command -v cudatext || { echo "[ERROR] cudatext binary not found in PATH"; exit 1; }
           test -d "${HOME}/.config/cudatext/py/cuda_disk_wins" || { echo "[ERROR] Plugin directory missing"; exit 1; }
           grep -q '"ui_notif": false' "${HOME}/.config/cudatext/settings/user.json" || { echo "[ERROR] ui_notif: false not found in user.json"; exit 1; }
@@ -50,7 +52,11 @@ jobs:
    
       - name: Test CudaText Disk Wins live auto-reload with Xvfb
         run: |
-          sudo apt-get install -y xvfb libgtk2.0-0t64 libgdk-pixbuf-2.0-0 || sudo apt-get install -y xvfb libgtk2.0-0 libgdk-pixbuf2.0-0
+          echo "BRANCH: ${{ github.ref_name }}"
+
+          sudo add-apt-repository -y universe || true
+          sudo apt-get update -y
+          sudo apt-get install -y xvfb libgtk2.0-0t64 || sudo apt-get install -y xvfb libgtk2.0-0
           rm -f /tmp/cuda_disk_wins.log /tmp/ci_disk_wins_test.txt
           
           echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
