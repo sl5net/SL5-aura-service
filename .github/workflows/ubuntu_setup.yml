@@ -2,7 +2,8 @@ name: CI for ubuntu Setup
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, feat/setup-cudatext-disk-wins-plugin
+ ]
     paths:
       - 'setup/**'
       - 'scripts/infra/requirements/requirements.txt'
@@ -60,10 +61,25 @@ jobs:
 #          rm -f /tmp/cuda_disk_wins.log /tmp/ci_disk_wins_test.txt
       - name: Test CudaText Disk Wins live auto-reload with Xvfb
         run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          echo "[CI-DEBUG] Test step executed at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
           sudo apt-get update -y
           sudo apt-get install -y xvfb libgtk-3-0
           rm -f /tmp/cuda_disk_wins.log /tmp/ci_disk_wins_test.txt
           
+          which cudatext && ldd "$(which cudatext)" | grep -iE "gtk|gdk" || true
+          
+          xvfb-run --auto-servernum cudatext -verbose /tmp/ci_disk_wins_test.txt &
+          CUDA_PID=$!
+          sleep 4
+          
+          echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
+          sleep 4
+          
+          kill -9 $CUDA_PID 2>/dev/null || true
+          cat /tmp/cuda_disk_wins.log 2>/dev/null || true
+          grep -iq "reloaded" /tmp/cuda_disk_wins.log || { echo "[ERROR] Auto-reload log entry not found"; exit 1; }
+          echo "[OK] Live auto-reload test succeeded in headless CI."          
           echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
           
           xvfb-run --auto-servernum cudatext /tmp/ci_disk_wins_test.txt &
