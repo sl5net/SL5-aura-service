@@ -6,17 +6,15 @@ from cudatext import *
 readme = """
 setup/helper/cudatext/cuda_disk_wins/__init__.py:6
 TEST-COMMANDS:
-pkill cudatext 2>/dev/null || true
-rm -f /tmp/cuda_disk_wins.log
-cudatext /tmp/test_disk_wins.txt &
-sleep 2
-cat /tmp/cuda_disk_wins.log
+
+pkill cudatext 2>/dev/null || true; rm -f /tmp/cuda_disk_wins.log; sleep 1 ; cudatext /tmp/test_disk_wins.txt & sleep 2; 
+echo "DISK WINS TEST 123" > /tmp/test_disk_wins.txt; sleep 1; 
+clear; cat /tmp/cuda_disk_wins.log
+
+find /opt/cudatext ~/.config/cudatext -name "*.json" 2>/dev/null || true
+
 """
 print(readme)
-
-def _log(msg):
-    print(msg)
-    sys.stdout.flush()
 
 LOG_FILE = '/tmp/cuda_disk_wins.log'
 

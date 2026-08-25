@@ -88,6 +88,9 @@ else
   echo "[INFO] Installing to ${OPT_DIR}..."
   ${SUDO} rm -rf "${OPT_DIR}"
   ${SUDO} mkdir -p "${OPT_DIR}"
+  
+  
+  
   ${SUDO} cp -a "${EXTRACT_DIR}/." "${OPT_DIR}/"
 
   if [[ -f "${OPT_DIR}/cudatext" && -x "${OPT_DIR}/cudatext" ]]; then
@@ -155,6 +158,15 @@ if [[ -d "${PLUGIN_SRC}" ]]; then
 
   echo "[INFO] Configuring 'ui_notif: false' in ${USER_JSON}..."
   mkdir -p "${CUDATEXT_SETTINGS_DIR}"
+  
+  
+  PLUGINS_INI="${CUDATEXT_SETTINGS_DIR}/plugins.ini"
+  echo "[INFO] Configuring 'plugins.ini' in ${PLUGINS_INI}..."
+  printf "%s\n" \
+    "[events]" \
+    "cuda_disk_wins=on_start2,on_open,on_save" > "${PLUGINS_INI}"
+  
+  
   if [[ ! -f "${USER_JSON}" ]]; then
     echo -e '{\n  "ui_notif": false\n}' > "${USER_JSON}"
   else
