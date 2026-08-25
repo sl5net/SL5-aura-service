@@ -18,7 +18,11 @@ OPT_DIR="/opt/${CANDIDATE_NAME}"
 BIN_LINK="/usr/local/bin/${CANDIDATE_NAME}"
 #SF_BASE="https://downloads.sourceforge.net/project/cudatext/release/Linux"
 
-FALLBACK_URL="https://downloads.sourceforge.net/project/cudatext/release/1.232.2.1/cudatext-linux-gtk2-amd64-1.232.2.1.tar.xz"
+#FALLBACK_URL="https://downloads.sourceforge.net/project/cudatext/release/1.232.2.1/cudatext-linux-gtk2-amd64-1.232.2.1.tar.xz"
+
+FALLBACK_URL="https://downloads.sourceforge.net/project/cudatext/release/1.232.2.1/cudatext-linux-gtk3-amd64-1.232.2.1.tar.xz"
+
+
 
 cleanup() {
   local rc=$?
@@ -33,8 +37,12 @@ else
   # Detect architecture
   ARCH="$(uname -m)"
   case "${ARCH}" in
-    x86_64|amd64) TAR_NAME_PREFIX="cudatext-linux-gtk2-amd64" ;;
-    aarch64|arm64) TAR_NAME_PREFIX="cudatext-linux-gtk2-arm64" ;; 
+#    x86_64|amd64) TAR_NAME_PREFIX="cudatext-linux-gtk2-amd64" ;;
+#    aarch64|arm64) TAR_NAME_PREFIX="cudatext-linux-gtk2-arm64" ;;
+#  
+      x86_64|amd64) TAR_NAME_PREFIX="cudatext-linux-gtk3-amd64" ;;
+      aarch64|arm64) TAR_NAME_PREFIX="cudatext-linux-gtk3-arm64" ;;  
+  
     *)
       echo "[ERROR] Unsupported CPU architecture: ${ARCH}"
       exit 2
