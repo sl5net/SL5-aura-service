@@ -66,8 +66,7 @@ class Command:
         self._scan_all(initial=True)
 
     def on_start2(self, ed_self=None):
-        _log("on_start2 event")
-        self._ensure_timer()
+        timer_proc(TIMER_START, 'module=cuda_disk_wins;cmd=on_timer;', TIMER_INTERVAL)
         self._scan_all(initial=True)
 
     def on_open(self, ed_self):
