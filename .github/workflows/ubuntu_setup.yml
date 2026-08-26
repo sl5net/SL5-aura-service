@@ -110,31 +110,32 @@ jobs:
       - name: Test CudaText Disk Wins live auto-reload with Xvfb
         run: |
       
-          echo "BRANCH: ${{ github.ref_name }}"
-          echo "[CI-DEBUG] Test start at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            echo "BRANCH: ${{ github.ref_name }}"
+            echo "[CI-DEBUG] Test start at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 
-          sudo apt-get update -y
-          sudo apt-get install -y xvfb libgtk-3-0
+            sudo apt-get update -y
+            sudo apt-get install -y xvfb libgtk-3-0
 
-          # ensure test file exists so on_open fires on startup
-          echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
+            # ensure test file exists so on_open fires on startup
+            echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
 
-          # cleanup old artifacts
-          rm -f /tmp/cuda_disk_wins.log /tmp/cudatext.out || true
+            # cleanup old artifacts
+            rm -f /tmp/cuda_disk_wins.log /tmp/cudatext.out || true
 
-          # sanity: show which binary will be used
-          if which cudatext >/dev/null 2>&1; then
-          echo "[CI-DEBUG] 🎊 cudatext found at: $(which cudatext)"
-          ldd "$(which cudatext)" | grep -iE "gtk|gdk" || true
-          else
-          echo "[ERROR] ❌ cudatext binary not found in PATH"; exit 1
-          fi
+            # sanity: show which binary will be used
+            if which cudatext >/dev/null 2>&1; then
+            echo "[CI-DEBUG] 🎊 cudatext found at: $(which cudatext)"
+            ldd "$(which cudatext)" | grep -iE "gtk|gdk" || true
+            else
+            echo "[ERROR] ❌ cudatext binary not found in PATH"; exit 1
+            fi
 
-          # start CudaText with -verbose, capture stdout/stderr
-          xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24 -nolisten tcp' "$(which cudatext)" -verbose /tmp/ci_disk_wins_test.txt > /tmp/cudatext.out 2>&1 &
-          CUDA_PID=$!
+            # start CudaText with -verbose, capture stdout/stderr
+            xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24 -nolisten tcp' "$(which cudatext)" -verbose /tmp/ci_disk_wins_test.txt > /tmp/cudatext.out 2>&1 &
+            CUDA_PID=$!
 
-          FOUND=0
+            # wait up to 30s for plugin output or errors
+            FOUND=0
 #            for i in $(seq 1 30); do
 #            # look for plugin messages or errors in cudatext output
 #            if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
