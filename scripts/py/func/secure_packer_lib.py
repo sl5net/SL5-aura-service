@@ -151,14 +151,17 @@ def execute_packing_logic(current_dir, logger):
         # key_file = next(parent_dir.glob(".*.py"), None)
 
         if not key_file:
-            # logger.error(f"❌ No 🔑key file found in 📂…{str(parent_dir)[-30:]} that is 🔎 matching '.*.py' | current_dir: {str(current_dir)[-40:]}")
-            # 20.12.'25 17:50 Sat that's not error. folder can be protected by _ from public and not must ave a akey
-            # maybe we add a setup for this in config in future
-
-
-            # Listing files to help debug
-            # files_in_parent = [f.name for f in parent_dir.iterdir()]
-            # logger.info(f"ℹ Files actually present in parent: {files_in_parent}")
+            logger.warning(
+                f"SecurePacker: Auto-zip skipped for '{folder_name}'. "
+                f"No key file (matching '.*.py') found in '{current_dir}'. "
+                f"To pack without encryption, create '.nopassword.py'. "
+                f"To pack with password, create a dot-file (e.g. '.auth_key.py') with your password."
+            )
+            try:
+                from scripts.py.func.audio_manager import speak_inclusive_fallback
+                speak_inclusive_fallback(f"Auto-zip skipped for {folder_name}: missing password file", "en-US")
+            except Exception as e:
+                logger.debug(f"Could not trigger voice notification: {e}")
             return
 
         # logger.info(f"🔑 Key File found: {key_file}")
@@ -171,14 +174,19 @@ def execute_packing_logic(current_dir, logger):
         else:
 
             password = _extract_password(key_file, logger)
-            if not password:  # password == "nopassword" or:
-                logger.error("❌ Password extraction returned None/Empty!")
+            if not password:
                 logger.error(
-                    "=> when you want now password your password file must named '.nopassword.py'. for extracting then you dont need a password.")
-                logger.error("=>without password file create a zip is not allowed.")
-                logger.info("🏁 SecurePacker empty password entry is not allowed.")
-
+                    f"SecurePacker: Empty password extracted from '{file_key_name}'. "
+                    f"To pack without password, name the file '.nopassword.py'. "
+                    f"Without a valid password, creating a zip is blocked."
+                )
+                try:
+                    from scripts.py.func.audio_manager import speak_inclusive_fallback
+                    speak_inclusive_fallback(f"Auto-zip blocked for {folder_name}: empty password", "en-US")
+                except Exception as e:
+                    logger.debug(f"Could not trigger voice notification: {e}")
                 return
+            
             # Mask password for logs (show only length)
 
             # pass_len = len(password)
