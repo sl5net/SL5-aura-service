@@ -134,7 +134,6 @@ jobs:
             xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24 -nolisten tcp' "$(which cudatext)" -verbose /tmp/ci_disk_wins_test.txt > /tmp/cudatext.out 2>&1 &
             CUDA_PID=$!
 
-             wait up to 30s for plugin output or errors
             FOUND=0
 #            for i in $(seq 1 30); do
 #            # look for plugin messages or errors in cudatext output
