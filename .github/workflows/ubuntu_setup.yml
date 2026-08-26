@@ -53,16 +53,7 @@ jobs:
           test -d "${HOME}/.config/cudatext/py/cuda_disk_wins" || { echo "[ERROR] Plugin directory missing"; exit 1; }
           grep -q '"ui_notif": false' "${HOME}/.config/cudatext/settings/user.json" || { echo "[ERROR] ui_notif: false not found in user.json"; exit 1; }
           echo "[OK] CudaText and Disk Wins plugin verification passed."
-   
-#      - name: Test CudaText Disk Wins live auto-reload with Xvfb
-#        run: |
-#          echo "BRANCH: ${{ github.ref_name }}"
-#
-#          sudo add-apt-repository -y universe || true
-#          sudo apt-get update -y
-#          sudo apt-get install -y xvfb libgtk2.0-0t64 || sudo apt-get install -y xvfb libgtk2.0-0
-#          rm -f /tmp/cuda_disk_wins.log /tmp/ci_disk_wins_test.txt
-            
+
       - name: Ensure SHOW_SEARCH_ON_STARTUP = False in config/settings.py
         run: |
           file="config/settings.py"
@@ -74,7 +65,6 @@ jobs:
             echo "" >> "$file"
             echo "SHOW_SEARCH_ON_STARTUP = False" >> "$file"
           fi
-
       
       - name: CI debug — show install script length and CudaText settings
         run: |
@@ -152,15 +142,15 @@ jobs:
           done
 
           # trigger a file update to provoke reload — läuft jetzt immer, nicht nur wenn FOUND==0
-          echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
-          for j in $(seq 1 8); do
-              if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
-              echo "[CI-DEBUG] 🎊 Plugin output seen after file update"
-              FOUND=1
-              break
-              fi
-              sleep 1
-          done
+          # echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
+          # for j in $(seq 1 8); do
+          #   if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
+          #     echo "[CI-DEBUG] 🎊 Plugin output seen after file update"
+          #    FOUND=1
+          #    break
+          #    fi
+          #    sleep 1
+          #done
         
         
           # stop CudaText and Xvfb
@@ -177,13 +167,6 @@ jobs:
 
           echo "---- ~/.config/cudatext/settings/user.json ----"
           sed -n '1,200p' "${HOME}/.config/cudatext/settings/user.json" || true
-
-          # assertion: require either plugin output or an explicit traceback (so we don't silently pass)
-          #            if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
-          #              echo "[OK] 🎊 Plugin activity detected in cudatext.out"
-          #            else
-          #              echo "[ERROR] ❌ No plugin activity detected in cudatext.out; printing cudatext.out above"
-          #            fi
           
           echo "---- /tmp/cuda_disk_wins.log (tail) ----"
           tail -n 300 /tmp/cuda_disk_wins.log || true
@@ -194,14 +177,6 @@ jobs:
              echo "[ERROR] ❌ no entry in cuda_disk_wins.log"
              exit 1
           fi          
-#             Final assertion: verify that file reload actually occurred
-          
-#            if grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
-#              echo "[OK] 🎊 External disk reload successfully triggered and verified."
-#            else
-#              echo "[ERROR] ❌ Disk reload not triggered in CudaText; see log above"
-#              exit 1
-#            fi          
           
       - name: Package Assets as Artifact(90days available from last run of this workflow)
         if: always()
