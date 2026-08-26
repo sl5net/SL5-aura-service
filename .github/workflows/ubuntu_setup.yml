@@ -170,13 +170,20 @@ jobs:
           
           echo "---- /tmp/cuda_disk_wins.log (tail) ----"
           tail -n 300 /tmp/cuda_disk_wins.log || true
-              
-          if [ -f /tmp/cuda_disk_wins.log ] && grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
-            echo "[OK] 🎊 Plugin-Log Reload-Event"
-          else
-             echo "[ERROR] ❌ no entry in cuda_disk_wins.log"
-             exit 1
-          fi          
+
+
+          for j in $(seq 1 8); do
+            sleep 1
+            if [ -f /tmp/cuda_disk_wins.log ] && grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
+              echo "[OK] 🎊 Plugin-Log Reload-Event"
+            else
+               echo "[ERROR] ❌ no entry in cuda_disk_wins.log"
+               exit 1
+            fi          
+          done
+
+
+
           
       - name: Package Assets as Artifact(90days available from last run of this workflow)
         if: always()
