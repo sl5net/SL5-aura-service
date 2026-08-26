@@ -157,11 +157,11 @@ def execute_packing_logic(current_dir, logger):
                 f"To pack without encryption, create '.nopassword.py'. "
                 f"To pack with password, create a dot-file (e.g. '.auth_key.py') with your password."
             )
-            try:
-                from scripts.py.func.audio_manager import speak_inclusive_fallback
-                speak_inclusive_fallback(f"Auto-zip skipped for {folder_name}: missing password file", "en-US")
-            except Exception as e:
-                logger.debug(f"Could not trigger voice notification: {e}")
+            # try:
+            #     from scripts.py.func.audio_manager import speak_inclusive_fallback
+            #     speak_inclusive_fallback(f"Auto-zip skipped for {folder_name}: missing password file", "en-US")
+            # except Exception as e:
+            #     logger.debug(f"Could not trigger voice notification: {e}")
             return
 
         # logger.info(f"🔑 Key File found: {key_file}")
@@ -180,11 +180,11 @@ def execute_packing_logic(current_dir, logger):
                     f"To pack without password, name the file '.nopassword.py'. "
                     f"Without a valid password, creating a zip is blocked."
                 )
-                try:
-                    from scripts.py.func.audio_manager import speak_inclusive_fallback
-                    speak_inclusive_fallback(f"Auto-zip blocked for {folder_name}: empty password", "en-US")
-                except Exception as e:
-                    logger.debug(f"Could not trigger voice notification: {e}")
+                # try:
+                #     from scripts.py.func.audio_manager import speak_inclusive_fallback
+                #     speak_inclusive_fallback(f"Auto-zip blocked for {folder_name}: empty password", "en-US")
+                # except Exception as e:
+                #     logger.debug(f"Could not trigger voice notification: {e}")
                 return
             
             # Mask password for logs (show only length)
