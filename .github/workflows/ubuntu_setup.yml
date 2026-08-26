@@ -151,6 +151,8 @@ jobs:
           #    fi
           #    sleep 1
           #done
+
+          sleep 5
         
         
           # stop CudaText and Xvfb
