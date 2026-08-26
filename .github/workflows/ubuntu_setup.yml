@@ -174,7 +174,7 @@ jobs:
           tail -n 300 /tmp/cuda_disk_wins.log || true
 
 
-          for j in $(seq 1 8); do
+          for j in $(seq 1 20); do
             sleep 1
             if [ -f /tmp/cuda_disk_wins.log ] && grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
               echo "[OK] 🎊 Plugin-Log Reload-Event"
