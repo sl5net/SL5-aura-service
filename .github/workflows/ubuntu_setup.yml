@@ -142,7 +142,7 @@ jobs:
           done
 
           # trigger a file update to provoke reload — läuft jetzt immer, nicht nur wenn FOUND==0
-          # echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
+          echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
           # for j in $(seq 1 8); do
           #   if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
           #     echo "[CI-DEBUG] 🎊 Plugin output seen after file update"
@@ -152,7 +152,7 @@ jobs:
           #    sleep 1
           #done
 
-          sleep 5
+          sleep 1
         
         
           # stop CudaText and Xvfb
@@ -174,7 +174,7 @@ jobs:
           tail -n 300 /tmp/cuda_disk_wins.log || true
 
 
-          for j in $(seq 1 20); do
+          for j in $(seq 1 10); do
             sleep 1
             if [ -f /tmp/cuda_disk_wins.log ] && grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
               echo "[OK] 🎊 Plugin-Log Reload-Event"
