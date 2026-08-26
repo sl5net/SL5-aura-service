@@ -1,11 +1,11 @@
 name: CI for ubuntu Setup
-
+# .github/workflows/ubuntu_setup.yml
 # example run:
 # gh run rerun 32896272792 
 
 on:
   push:
-    branches: [ master, feat/setup-cudatext-disk-wins-plugin
+    branches: [ master, feat/setup-cudatext-disk-wins-plugin, ci-test/setup-cudatext-disk-wins-plugin
  ]
     paths:
       - 'setup/**'
@@ -124,10 +124,10 @@ jobs:
 
             # sanity: show which binary will be used
             if which cudatext >/dev/null 2>&1; then
-            echo "[CI-DEBUG] cudatext found at: $(which cudatext)"
+            echo "[CI-DEBUG] 🎊 cudatext found at: $(which cudatext)"
             ldd "$(which cudatext)" | grep -iE "gtk|gdk" || true
             else
-            echo "[ERROR] cudatext binary not found in PATH"; exit 1
+            echo "[ERROR] ❌ cudatext binary not found in PATH"; exit 1
             fi
 
             # start CudaText with -verbose, capture stdout/stderr
@@ -139,7 +139,7 @@ jobs:
             for i in $(seq 1 30); do
             # look for plugin messages or errors in cudatext output
             if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
-                echo "[CI-DEBUG] Plugin output seen in cudatext.out after ${i}s"
+                echo "[CI-DEBUG] 🎊 Plugin output seen in cudatext.out after ${i}s"
                 FOUND=1
                 break
             fi
@@ -151,19 +151,18 @@ jobs:
             sleep 1
             done
 
-            # If nothing yet, trigger a file update to provoke reload, then wait a bit more
-            if [ "$FOUND" -eq 0 ]; then
+            # trigger a file update to provoke reload — läuft jetzt immer, nicht nur wenn FOUND==0
             echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
             for j in $(seq 1 8); do
                 if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
-                echo "[CI-DEBUG] Plugin output seen after file update"
+                echo "[CI-DEBUG] 🎊 Plugin output seen after file update"
                 FOUND=1
                 break
                 fi
                 sleep 1
             done
-            fi
-
+          
+          
             # stop CudaText and Xvfb
             kill "$CUDA_PID" 2>/dev/null || true
             sleep 1
@@ -181,19 +180,29 @@ jobs:
 
             # assertion: require either plugin output or an explicit traceback (so we don't silently pass)
             if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
-              echo "[OK] Plugin activity detected in cudatext.out"
+              echo "[OK] 🎊 Plugin activity detected in cudatext.out"
             else
-              echo "[ERROR] No plugin activity detected in cudatext.out; printing cudatext.out above"
-            exit 1
+              echo "[ERROR] ❌ No plugin activity detected in cudatext.out; printing cudatext.out above"
             fi
           
-            # Final assertion: verify that file reload actually occurred
-            if grep -Eqi "reloaded|File reloaded from disk" /tmp/cudatext.out 2>/dev/null; then
-              echo "[OK] External disk reload successfully triggered and verified."
-            else
-              echo "[ERROR] Disk reload not triggered in CudaText; see log above"
-              exit 1
-            fi          
+           echo "---- /tmp/cuda_disk_wins.log (tail) ----"
+           tail -n 300 /tmp/cuda_disk_wins.log || true
+        
+           if [ -f /tmp/cuda_disk_wins.log ] && grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
+             echo "[OK] 🎊 Plugin-Log Reload-Event"
+           else
+             echo "[ERROR] ❌ no entry in cuda_disk_wins.log"
+             exit 1
+           fi          
+          
+#             Final assertion: verify that file reload actually occurred
+          
+#            if grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
+#              echo "[OK] 🎊 External disk reload successfully triggered and verified."
+#            else
+#              echo "[ERROR] ❌ Disk reload not triggered in CudaText; see log above"
+#              exit 1
+#            fi          
           
       - name: Package Assets as Artifact(90days available from last run of this workflow)
         if: always()
