@@ -185,16 +185,15 @@ jobs:
               echo "[ERROR] ❌ No plugin activity detected in cudatext.out; printing cudatext.out above"
             fi
           
-           echo "---- /tmp/cuda_disk_wins.log (tail) ----"
-           tail -n 300 /tmp/cuda_disk_wins.log || true
-        
-           if [ -f /tmp/cuda_disk_wins.log ] && grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
-             echo "[OK] 🎊 Plugin-Log Reload-Event"
-           else
-             echo "[ERROR] ❌ no entry in cuda_disk_wins.log"
-             exit 1
-           fi          
-          
+            echo "---- /tmp/cuda_disk_wins.log (tail) ----"
+            tail -n 300 /tmp/cuda_disk_wins.log || true
+
+            if [ -f /tmp/cuda_disk_wins.log ] && grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
+              echo "[OK] 🎊 Plugin-Log Reload-Event"
+            else
+              echo "[ERROR] ❌ no entry in cuda_disk_wins.log"
+              exit 1
+            fi          
 #             Final assertion: verify that file reload actually occurred
           
 #            if grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
