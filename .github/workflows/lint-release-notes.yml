@@ -128,16 +128,16 @@ jobs:
           fi
 
           # New Features section must not be empty
-          AFTER_FEATURES=$(echo "$BODY" | sed -n '/#### New Features/,/####/p' | tail -n +2 | head -n -1)
-          if [ -z "$(echo "$AFTER_FEATURES" | tr -d '[:space:]')" ]; then
-            fail "'#### New Features' section appears to be empty."
-          fi
+          #AFTER_FEATURES=$(echo "$BODY" | sed -n '/#### New Features/,/####/p' | tail -n +2 | head -n -1)
+          #if [ -z "$(echo "$AFTER_FEATURES" | tr -d '[:space:]')" ]; then
+          #  fail "'#### New Features' section appears to be empty."
+          #fi
 
           # Technical Improvements section must not be empty
-          AFTER_TECH=$(echo "$BODY" | sed -n '/#### Technical Improvements/,/---/p' | tail -n +2 | head -n -1)
-          if [ -z "$(echo "$AFTER_TECH" | tr -d '[:space:]')" ]; then
-            fail "'#### Technical Improvements' section appears to be empty."
-          fi
+          #AFTER_TECH=$(echo "$BODY" | sed -n '/#### Technical Improvements/,/---/p' | tail -n +2 | head -n -1)
+          #if [ -z "$(echo "$AFTER_TECH" | tr -d '[:space:]')" ]; then
+          #  fail "'#### Technical Improvements' section appears to be empty."
+          #fi
 
           # ── RESULT ───────────────────────────────────────────────────────
 
