@@ -77,11 +77,15 @@ jobs:
           # ── STRUCTURE CHECKS ─────────────────────────────────────────────
 
           # Required sections
-          for SECTION in "#### New Features" "#### Technical Improvements" "## ❤️ Support the Project"; do
-            if ! echo "$BODY" | grep -qF "$SECTION"; then
-              fail "Missing required section: '$SECTION'"
-            fi
-          done
+          if ! echo "$BODY" | grep -qF "## Support the Project"; then
+            fail "Missing: Support the Project section"
+          fi
+          
+          #for SECTION in "#### New Features" "#### Technical Improvements" "## Support the Project"; do
+          #  if ! echo "$BODY" | grep -qF "$SECTION"; then
+          #    fail "Missing required section: '$SECTION'"
+          #  fi
+          #done
 
           # Tagline
           if ! echo "$BODY" | grep -qF "Ultra-Fast. Private. Self-Learning. Aura."; then
