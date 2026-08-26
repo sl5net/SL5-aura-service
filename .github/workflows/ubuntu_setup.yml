@@ -143,14 +143,6 @@ jobs:
 
           # trigger a file update to provoke reload — läuft jetzt immer, nicht nur wenn FOUND==0
           echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
-          # for j in $(seq 1 8); do
-          #   if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
-          #     echo "[CI-DEBUG] 🎊 Plugin output seen after file update"
-          #    FOUND=1
-          #    break
-          #    fi
-          #    sleep 1
-          #done
 
           sleep 1
         
