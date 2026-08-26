@@ -63,6 +63,18 @@ jobs:
 #          sudo apt-get install -y xvfb libgtk2.0-0t64 || sudo apt-get install -y xvfb libgtk2.0-0
 #          rm -f /tmp/cuda_disk_wins.log /tmp/ci_disk_wins_test.txt
             
+      - name: Ensure SHOW_SEARCH_ON_STARTUP = False in config/settings.py
+        run: |
+          file="config/settings.py"
+          # Replace an existing assignment (handles spaces and quotes)
+          if grep -qE '^SHOW_SEARCH_ON_STARTUP\s*=' "$file"; then
+            sed -E -i "s/^SHOW_SEARCH_ON_STARTUP\s*=.*/SHOW_SEARCH_ON_STARTUP = False/" "$file"
+          else
+            # Append the setting if not present
+            echo "" >> "$file"
+            echo "SHOW_SEARCH_ON_STARTUP = False" >> "$file"
+          fi
+
       
       - name: CI debug — show install script length and CudaText settings
         run: |
@@ -167,15 +179,21 @@ jobs:
             echo "---- ~/.config/cudatext/settings/user.json ----"
             sed -n '1,200p' "${HOME}/.config/cudatext/settings/user.json" || true
 
-            # Final assertion: require either plugin output or an explicit traceback (so we don't silently pass)
+            # assertion: require either plugin output or an explicit traceback (so we don't silently pass)
             if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
-            echo "[OK] Plugin activity detected in cudatext.out"
+              echo "[OK] Plugin activity detected in cudatext.out"
             else
-            echo "[ERROR] No plugin activity detected in cudatext.out; printing cudatext.out above"
+              echo "[ERROR] No plugin activity detected in cudatext.out; printing cudatext.out above"
             exit 1
             fi
           
-          
+            # Final assertion: verify that file reload actually occurred
+            if grep -Eqi "reloaded|File reloaded from disk" /tmp/cudatext.out 2>/dev/null; then
+              echo "[OK] External disk reload successfully triggered and verified."
+            else
+              echo "[ERROR] Disk reload not triggered in CudaText; see log above"
+              exit 1
+            fi          
           
       - name: Package Assets as Artifact(90days available from last run of this workflow)
         if: always()
