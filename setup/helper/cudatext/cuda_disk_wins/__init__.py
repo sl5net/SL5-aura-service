@@ -23,7 +23,6 @@ clear; pkill cudatext 2>/dev/null || true
 cudatext -verbose /tmp/test_disk_wins.txt
 
 """
-print(readme)
 
 LOG_FILE = '/tmp/cuda_disk_wins.log'
 
@@ -35,6 +34,7 @@ def _log(msg):
         pass
 
 _log("Module loaded")
+_log(readme)
 
 # How often (ms) to poll open files for external changes.
 TIMER_INTERVAL = 1000
