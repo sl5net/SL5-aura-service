@@ -186,7 +186,7 @@
 
     let currentSelectedCode = 'en';
 
-    function initDocSearch(selectedLang) {
+    function initDocSearch(selectedLang, queryText = '') {
       const container = document.querySelector('.search-container');
       container.innerHTML = '<div id="docsearch"></div>';
       docsearch({
@@ -194,10 +194,17 @@
         appId: APP_ID,
         apiKey: API_KEY,
         indexName: INDEX_NAME,
+        initialQuery: queryText || '',
         searchParameters: {
           facetFilters: selectedLang ? [`lang:${selectedLang}`] : []
         }
       });
+
+      if (queryText) {
+        setTimeout(() => {
+          document.querySelector('.DocSearch-Button')?.click();
+        }, 120);
+      }
     }
 
     function openDropdown() {
@@ -330,9 +337,11 @@
       }
     });
 
-const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     const metaLang = document.querySelector('meta[name="default-language"]')?.getAttribute('content');
     const requestedLang = urlParams.get('lang') || metaLang || DEFAULT_LANG;
+    const requestedQuery = urlParams.get('q') || urlParams.get('query') || '';
+
     if (requestedLang) {
       const normalized = requestedLang.trim().toLowerCase();
       
@@ -344,8 +353,7 @@ const urlParams = new URLSearchParams(window.location.search);
       }
     }
 
-    initDocSearch(currentSelectedCode);
-    
+    initDocSearch(currentSelectedCode, requestedQuery);    
     
   </script>
 </body>
