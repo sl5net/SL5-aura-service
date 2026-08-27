@@ -29,6 +29,8 @@ from .check_memory_critical import check_memory_critical
 from .notify import notify
 from .config.dynamic_settings import settings
 
+from .update_search_default_lang_when_exist import update_search_default_lang_when_exist
+
 from vosk import SetLogLevel
 SetLogLevel(-1)
 # SetLogLevel(WARNINGS)
@@ -189,12 +191,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
 
             footprint = avail_before - avail_after
 
-
-
-
-
-
-
+            update_search_default_lang_when_exist(project_root, lang_key, logger)
 
             if footprint > max_model_memory_footprint_mb:
                 max_model_memory_footprint_mb = footprint
