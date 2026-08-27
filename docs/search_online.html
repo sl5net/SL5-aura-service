@@ -172,6 +172,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
   <script>
+    const DEFAULT_LANG = 'en';
     const APP_ID = 'ZYXRBS44SX';
     const API_KEY = 'cb4e4336383a25e26cb07eac118b6317';
     const INDEX_NAME = 'sl5-aura-service';
@@ -329,10 +330,12 @@
       }
     });
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const requestedLang = urlParams.get('lang');
+const urlParams = new URLSearchParams(window.location.search);
+    const metaLang = document.querySelector('meta[name="default-language"]')?.getAttribute('content');
+    const requestedLang = urlParams.get('lang') || metaLang || DEFAULT_LANG;
     if (requestedLang) {
       const normalized = requestedLang.trim().toLowerCase();
+      
       const matchItem = langItems.find(i => i.getAttribute('data-code').toLowerCase() === normalized);
       if (matchItem) {
         currentSelectedCode = matchItem.getAttribute('data-code');
