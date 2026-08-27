@@ -51,6 +51,7 @@
       margin-top: 24px;
       display: flex;
       justify-content: center;
+      min-height: 48px;
     }
     .nav-links {
       margin-top: 24px;
@@ -97,18 +98,18 @@
   <script>
     const APP_ID = 'ZYXRBS44SX';
     const API_KEY = 'cb4e4336383a25e26cb07eac118b6317';
-    const INDEX_NAME = 'SL5-aura-service';
+    const INDEX_NAME = 'sl5-aura-service';
 
     function initDocSearch(selectedLang) {
-      const container = document.getElementById('docsearch');
-      container.innerHTML = '';
+      const wrapper = document.querySelector('.search-container');
+      wrapper.innerHTML = '<div id="docsearch"></div>';
       docsearch({
         container: '#docsearch',
         appId: APP_ID,
         apiKey: API_KEY,
         indexName: INDEX_NAME,
         searchParameters: {
-          facetFilters: selectedLang ? ['lang:' + selectedLang] : []
+          facetFilters: [`lang:${selectedLang}`]
         }
       });
     }
