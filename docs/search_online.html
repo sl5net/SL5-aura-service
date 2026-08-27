@@ -329,6 +329,18 @@
       }
     });
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedLang = urlParams.get('lang');
+    if (requestedLang) {
+      const normalized = requestedLang.trim().toLowerCase();
+      const matchItem = langItems.find(i => i.getAttribute('data-code').toLowerCase() === normalized);
+      if (matchItem) {
+        currentSelectedCode = matchItem.getAttribute('data-code');
+        langBtnLabel.textContent = matchItem.textContent;
+        langItems.forEach(i => i.classList.toggle('selected', i === matchItem));
+      }
+    }
+
     initDocSearch(currentSelectedCode);
     
     
