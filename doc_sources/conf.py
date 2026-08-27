@@ -43,6 +43,8 @@ exclude_patterns = ['.venv', '_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = 'furo'
 html_static_path = ['_static']
+html_extra_path = ['../docs/search_online.html']
+
 
 def setup_page_context(app, pagename, templatename, context, doctree):
     lang_map = {
