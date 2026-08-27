@@ -202,7 +202,14 @@
     function openDropdown() {
       langDropdown.style.display = 'block';
       langFilterInput.value = '';
-      filterItems('');
+      langItems.forEach(item => {
+        item.style.display = '';
+        item.classList.remove('highlighted');
+      });
+      const selectedItem = langItems.find(i => i.classList.contains('selected')) || langItems[0];
+      if (selectedItem) {
+        selectedItem.classList.add('highlighted');
+      }
       langFilterInput.focus();
     }
 
@@ -229,9 +236,14 @@
       }
     }
 
-    function selectLanguage(code, label) {
+    function selectLanguage(code, label, isInitial = false) {
       currentSelectedCode = code;
       langBtnLabel.textContent = label;
+      try {
+        localStorage.setItem('docsearch_selected_lang', code);
+      } catch (err) {
+        // Ignore storage errors
+      }
       langItems.forEach(item => {
         if (item.getAttribute('data-code') === code) {
           item.classList.add('selected');
@@ -239,10 +251,13 @@
           item.classList.remove('selected');
         }
       });
-      closeDropdown();
+      langDropdown.style.display = 'none';
+      if (!isInitial) {
+        langBtn.focus();
+      }
       initDocSearch(code);
     }
-
+    
     langBtn.addEventListener('click', function () {
       if (langDropdown.style.display === 'block') {
         closeDropdown();
@@ -304,10 +319,34 @@
       if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'L')) {
         e.preventDefault();
         openDropdown();
+        return;
+      }
+
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key.length !== 1) return;
+
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select') return;
+      if (langDropdown.style.display === 'block') return;
+
+      const searchBtn = document.querySelector('.DocSearch-Button');
+      if (searchBtn) {
+        searchBtn.click();
+        setTimeout(() => {
+          const docSearchInput = document.querySelector('.DocSearch-Input');
+          if (docSearchInput && !docSearchInput.value) {
+            docSearchInput.value = e.key;
+            docSearchInput.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        }, 50);
       }
     });
 
-    initDocSearch(currentSelectedCode);
+    const initialCode = detectInitialLanguage();
+    const initialItem = langItems.find(i => i.getAttribute('data-code') === initialCode) || langItems[0];
+    selectLanguage(initialCode, initialItem.textContent, true);    
+    
+    
   </script>
 </body>
 </html>
