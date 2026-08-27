@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="algolia-site-verification" content="EE9B96B9D07D1676" />
+  <title>SL5 Aura - Documentation Search</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background-color: #f8f9fa;
+      color: #212529;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .search-card {
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      max-width: 600px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 1.6rem;
+      color: #1a1a1a;
+    }
+    .lang-row {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    select {
+      padding: 8px 12px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      background: #fff;
+      cursor: pointer;
+    }
+    .search-container {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      min-height: 48px;
+    }
+    .nav-links {
+      margin-top: 24px;
+      font-size: 0.9rem;
+    }
+    .nav-links a {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+    kbd {
+      font-size: 0.75rem;
+      padding: 2px 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #eee;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-card">
+    <h1>SL5 Aura Documentation Search</h1>
+    <div class="lang-row">
+      <label for="lang-select">Language <kbd>Ctrl+L</kbd>:</label>
+      <select id="lang-select">
+        <option value="en">English (en)</option>
+        <option value="de">Deutsch (de)</option>
+        <option value="es">Español (es)</option>
+        <option value="fr">Français (fr)</option>
+        <option value="hi">हिन्दी (hi)</option>
+        <option value="ja">日本語 (ja)</option>
+        <option value="ko">한국어 (ko)</option>
+        <option value="pl">Polski (pl)</option>
+        <option value="pt">Português (pt)</option>
+        <option value="pt-BR">Português Brasil (pt-BR)</option>
+        <option value="zh-CN">简体中文 (zh-CN)</option>
+        <option value="ar">العربية (ar)</option>
+      </select>
+    </div>
+    <div class="search-container">
+      <div id="docsearch"></div>
+    </div>
+    <div class="nav-links">
+      <a href="../README.html">Back to Documentation</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+  <script>
+    const APP_ID = 'ZYXRBS44SX';
+    const API_KEY = 'cb4e4336383a25e26cb07eac118b6317';
+    const INDEX_NAME = 'sl5-aura-service';
+
+    const langSelect = document.getElementById('lang-select');
+
+    function initDocSearch(selectedLang) {
+      const container = document.querySelector('.search-container');
+      container.innerHTML = '<div id="docsearch"></div>';
+      docsearch({
+        container: '#docsearch',
+        appId: APP_ID,
+        apiKey: API_KEY,
+        indexName: INDEX_NAME,
+        searchParameters: {
+          facetFilters: selectedLang ? [`lang:${selectedLang}`] : []
+        }
+      });
+    }
+
+    langSelect.addEventListener('change', function () {
+      initDocSearch(this.value);
+    });
+
+    window.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'L')) {
+        e.preventDefault();
+        langSelect.focus();
+        if (typeof langSelect.showPicker === 'function') {
+          try {
+            langSelect.showPicker();
+          } catch (err) {
+            // Native fallback
+          }
+        }
+      }
+    });
+
+    initDocSearch(langSelect.value);
+  </script>
+</body>
+</html>
+

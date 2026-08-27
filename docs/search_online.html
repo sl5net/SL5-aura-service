@@ -38,14 +38,73 @@
       justify-content: center;
       align-items: center;
       gap: 10px;
+      position: relative;
     }
-    select {
-      padding: 8px 12px;
+    .custom-select-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    .lang-btn {
+      padding: 8px 14px;
       border: 1px solid #ced4da;
       border-radius: 6px;
       font-size: 0.95rem;
       background: #fff;
       cursor: pointer;
+      min-width: 190px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .lang-btn:focus {
+      outline: 2px solid #0d6efd;
+    }
+    .lang-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      z-index: 1000;
+      padding: 8px;
+      display: none;
+      text-align: left;
+    }
+    .lang-filter-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 6px 10px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .lang-filter-input:focus {
+      outline: 2px solid #0d6efd;
+    }
+    .lang-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .lang-item {
+      padding: 7px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .lang-item:hover, .lang-item.highlighted {
+      background: #e9ecef;
+    }
+    .lang-item.selected {
+      font-weight: 600;
+      color: #0d6efd;
     }
     .search-container {
       margin-top: 24px;
@@ -64,27 +123,44 @@
     .nav-links a:hover {
       text-decoration: underline;
     }
+    kbd {
+      font-size: 0.75rem;
+      padding: 2px 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #eee;
+      color: #333;
+    }
   </style>
 </head>
 <body>
   <div class="search-card">
     <h1>SL5 Aura Documentation Search</h1>
     <div class="lang-row">
-      <label for="lang-select">Language:</label>
-      <select id="lang-select">
-        <option value="en">English (en)</option>
-        <option value="de">Deutsch (de)</option>
-        <option value="es">Español (es)</option>
-        <option value="fr">Français (fr)</option>
-        <option value="hi">हिन्दी (hi)</option>
-        <option value="ja">日本語 (ja)</option>
-        <option value="ko">한국어 (ko)</option>
-        <option value="pl">Polski (pl)</option>
-        <option value="pt">Português (pt)</option>
-        <option value="pt-BR">Português Brasil (pt-BR)</option>
-        <option value="zh-CN">简体中文 (zh-CN)</option>
-        <option value="ar">العربية (ar)</option>
-      </select>
+      <span>Language <kbd>Ctrl+L</kbd>:</span>
+      <div class="custom-select-wrapper" id="custom-select-wrapper">
+        <button type="button" class="lang-btn" id="lang-btn">
+          <span id="lang-btn-label">English (en)</span>
+          <span>▾</span>
+        </button>
+        <div class="lang-dropdown" id="lang-dropdown">
+          <input type="text" class="lang-filter-input" id="lang-filter-input" placeholder="Type language (e.g. de)..." autocomplete="off" />
+          <ul class="lang-list" id="lang-list">
+            <li class="lang-item selected" data-code="en">English (en)</li>
+            <li class="lang-item" data-code="de">Deutsch (de)</li>
+            <li class="lang-item" data-code="es">Español (es)</li>
+            <li class="lang-item" data-code="fr">Français (fr)</li>
+            <li class="lang-item" data-code="hi">हिन्दी (hi)</li>
+            <li class="lang-item" data-code="ja">日本語 (ja)</li>
+            <li class="lang-item" data-code="ko">한국어 (ko)</li>
+            <li class="lang-item" data-code="pl">Polski (pl)</li>
+            <li class="lang-item" data-code="pt">Português (pt)</li>
+            <li class="lang-item" data-code="pt-BR">Português Brasil (pt-BR)</li>
+            <li class="lang-item" data-code="zh-CN">简体中文 (zh-CN)</li>
+            <li class="lang-item" data-code="ar">العربية (ar)</li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="search-container">
       <div id="docsearch"></div>
@@ -100,26 +176,138 @@
     const API_KEY = 'cb4e4336383a25e26cb07eac118b6317';
     const INDEX_NAME = 'sl5-aura-service';
 
+    const langBtn = document.getElementById('lang-btn');
+    const langBtnLabel = document.getElementById('lang-btn-label');
+    const langDropdown = document.getElementById('lang-dropdown');
+    const langFilterInput = document.getElementById('lang-filter-input');
+    const langList = document.getElementById('lang-list');
+    const langItems = Array.from(langList.querySelectorAll('.lang-item'));
+
+    let currentSelectedCode = 'en';
+
     function initDocSearch(selectedLang) {
-      const wrapper = document.querySelector('.search-container');
-      wrapper.innerHTML = '<div id="docsearch"></div>';
+      const container = document.querySelector('.search-container');
+      container.innerHTML = '<div id="docsearch"></div>';
       docsearch({
         container: '#docsearch',
         appId: APP_ID,
         apiKey: API_KEY,
         indexName: INDEX_NAME,
         searchParameters: {
-          facetFilters: [`lang:${selectedLang}`]
+          facetFilters: selectedLang ? [`lang:${selectedLang}`] : []
         }
       });
     }
 
-    const langSelect = document.getElementById('lang-select');
-    langSelect.addEventListener('change', function () {
-      initDocSearch(this.value);
+    function openDropdown() {
+      langDropdown.style.display = 'block';
+      langFilterInput.value = '';
+      filterItems('');
+      langFilterInput.focus();
+    }
+
+    function closeDropdown() {
+      langDropdown.style.display = 'none';
+      langBtn.focus();
+    }
+
+    function filterItems(query) {
+      const q = query.trim().toLowerCase();
+      let firstVisible = null;
+      langItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const code = item.getAttribute('data-code').toLowerCase();
+        const matches = text.includes(q) || code.includes(q);
+        item.style.display = matches ? '' : 'none';
+        item.classList.remove('highlighted');
+        if (matches && !firstVisible) {
+          firstVisible = item;
+        }
+      });
+      if (firstVisible) {
+        firstVisible.classList.add('highlighted');
+      }
+    }
+
+    function selectLanguage(code, label) {
+      currentSelectedCode = code;
+      langBtnLabel.textContent = label;
+      langItems.forEach(item => {
+        if (item.getAttribute('data-code') === code) {
+          item.classList.add('selected');
+        } else {
+          item.classList.remove('selected');
+        }
+      });
+      closeDropdown();
+      initDocSearch(code);
+    }
+
+    langBtn.addEventListener('click', function () {
+      if (langDropdown.style.display === 'block') {
+        closeDropdown();
+      } else {
+        openDropdown();
+      }
     });
 
-    initDocSearch(langSelect.value);
+    langFilterInput.addEventListener('input', function () {
+      filterItems(this.value);
+    });
+
+    langFilterInput.addEventListener('keydown', function (e) {
+      const visibleItems = langItems.filter(item => item.style.display !== 'none');
+      const currentIndex = visibleItems.findIndex(item => item.classList.contains('highlighted'));
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const nextIndex = (currentIndex + 1) % visibleItems.length;
+        visibleItems.forEach(i => i.classList.remove('highlighted'));
+        if (visibleItems[nextIndex]) {
+          visibleItems[nextIndex].classList.add('highlighted');
+          visibleItems[nextIndex].scrollIntoView({ block: 'nearest' });
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prevIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
+        visibleItems.forEach(i => i.classList.remove('highlighted'));
+        if (visibleItems[prevIndex]) {
+          visibleItems[prevIndex].classList.add('highlighted');
+          visibleItems[prevIndex].scrollIntoView({ block: 'nearest' });
+        }
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const target = visibleItems[currentIndex] || visibleItems[0];
+        if (target) {
+          selectLanguage(target.getAttribute('data-code'), target.textContent);
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeDropdown();
+      }
+    });
+
+    langList.addEventListener('click', function (e) {
+      const item = e.target.closest('.lang-item');
+      if (item) {
+        selectLanguage(item.getAttribute('data-code'), item.textContent);
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('#custom-select-wrapper')) {
+        langDropdown.style.display = 'none';
+      }
+    });
+
+    window.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'L')) {
+        e.preventDefault();
+        openDropdown();
+      }
+    });
+
+    initDocSearch(currentSelectedCode);
   </script>
 </body>
 </html>
