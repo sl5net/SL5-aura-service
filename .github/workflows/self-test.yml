@@ -3,13 +3,26 @@ name: Self-Test (Aura Logic)
 on:
   push:
     branches: [ master, '**self-test**', feat/cache-write-only-on-maps_changed ]
+    paths-ignore:
+      - 'doc_sources/**'
+      - 'docs/**'
+      - '**.md'
+      - '**.rst'
+      - '**.html'
+      - '.github/workflows/deploy-docs.yml'
   pull_request:
     branches: [ master ]
     paths-ignore:
+      - 'doc_sources/**'
+      - 'docs/**'
       - '.github/workflows/**'
       - '**.md'
       - '**.yml'
+      - '**.rst'
+      - '**.html'
+      - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
