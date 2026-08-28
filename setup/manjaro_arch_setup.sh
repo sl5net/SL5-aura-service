@@ -16,44 +16,8 @@ fi
 
 sudo pacman -S --noconfirm --needed base-devel python python-pip uv
 
-eval $(python3 scripts/py/setup_config.py)
-echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
-
-echo ""
-echo "--- Setup for Manjaro/Arch is complete! ---"
-echo ""
-
-echo "Optional: If you are running Wayland (e.g. KDE Plasma 6, CachyOS),"
-echo "  'dotool' is REQUIRED for system-wide text input."
-echo "  On X11 dotool is optional but recommended for better compatibility."
-echo "  Install with:"
-
-echo "  yay -S dotool"
-echo "  sudo gpasswd -a \$USER input"
-echo "  echo 'KERNEL==\"uinput\", GROUP=\"input\", MODE=\"0660\", OPTIONS+=\"static_node=uinput\"' | sudo tee /etc/udev/rules.d/80-dotool.rules"
-echo "  sudo udevadm control --reload-rules && sudo udevadm trigger"
-echo "  (Re-login required after group change)"
-echo "  Then set x11_input_method_OVERRIDE = 'dotool' in config/settings_local.py"
-echo ""
-echo "To start Aura:"
-echo "  ./scripts/restart_venv_and_run-server.sh"
-echo ""
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
 SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
 cd "$SL5NET_AURA_PROJECT_ROOT"
 
@@ -125,10 +89,11 @@ echo "The script can optionally run a full system upgrade (pacman -Syu)."
 echo "This may download and install many packages (kernel, libs, etc.)."
 
 # Use native bash read with timeout to avoid python stdin EOF error
-read -t 8 -p "Run full system upgrade now? (y/N) [Auto N in 8s]: " read_upgrade
+read_upgrade="n"
+if [ -t 0 ]; then
+    read -t 8 -p "Run full system upgrade now? (y/N) [Auto N in 8s]: " read_upgrade || true
+fi
 read_upgrade=${read_upgrade:-n}
-
-DOWNLOAD_REQUIRED=false
 
 
 if [[ "$read_upgrade" =~ ^[Yy]$ ]]; then
