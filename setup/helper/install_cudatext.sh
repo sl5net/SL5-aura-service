@@ -201,23 +201,24 @@ else
   # echo "[INFO] Installation complete. Checking version:"
   #"${BIN_LINK}" --version || "${BIN_LINK}" -v || echo "[WARN] Could not determine version."
   
-  if [[ -f "${OPT_DIR}/cudatext" && -x "${OPT_DIR}/cudatext" ]]; then
-    ACTUAL_BIN="${OPT_DIR}/cudatext"
-  elif [[ -f "${OPT_DIR}/cudatext/cudatext" && -x "${OPT_DIR}/cudatext/cudatext" ]]; then
-    ACTUAL_BIN="${OPT_DIR}/cudatext/cudatext"
-  else
-    ACTUAL_BIN="$(find "${OPT_DIR}" -type f -name 'cudatext' -perm /u+x,g+x,o+x 2>/dev/null | head -n1 || true)"
-  fi
-
-  if [[ -n "${ACTUAL_BIN}" && -f "${ACTUAL_BIN}" ]]; then
-    ${SUDO} chmod +x "${ACTUAL_BIN}" || true
-    if [[ -d "${BIN_LINK}" && ! -L "${BIN_LINK}" ]]; then
-      ${SUDO} rm -rf "${BIN_LINK}"
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    if [[ -f "${OPT_DIR}/cudatext" && -x "${OPT_DIR}/cudatext" ]]; then
+      ACTUAL_BIN="${OPT_DIR}/cudatext"
+    elif [[ -f "${OPT_DIR}/cudatext/cudatext" && -x "${OPT_DIR}/cudatext/cudatext" ]]; then
+      ACTUAL_BIN="${OPT_DIR}/cudatext/cudatext"
     else
-      ${SUDO} rm -f "${BIN_LINK}"
+      ACTUAL_BIN="$(find "${OPT_DIR}" -type f -name 'cudatext' -perm /u+x,g+x,o+x 2>/dev/null | head -n1 || true)"
     fi
-    ${SUDO} ln -sf "${ACTUAL_BIN}" "${BIN_LINK}"
-    ${SUDO} ln -sf "${ACTUAL_BIN}" /usr/bin/cudatext 2>/dev/null || true
+    if [[ -n "${ACTUAL_BIN}" && -f "${ACTUAL_BIN}" ]]; then
+      ${SUDO} chmod +x "${ACTUAL_BIN}" || true
+      if [[ -d "${BIN_LINK}" && ! -L "${BIN_LINK}" ]]; then
+        ${SUDO} rm -rf "${BIN_LINK}"
+      else
+        ${SUDO} rm -f "${BIN_LINK}"
+      fi
+      ${SUDO} ln -sf "${ACTUAL_BIN}" "${BIN_LINK}"
+      ${SUDO} ln -sf "${ACTUAL_BIN}" /usr/bin/cudatext 2>/dev/null || true
+    fi
   fi
 fi
 
