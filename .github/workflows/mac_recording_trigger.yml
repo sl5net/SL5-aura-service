@@ -57,6 +57,17 @@ jobs:
       - name: Verify CudaText and Disk Wins plugin setup
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
+          echo "=== Diagnostic PATH ==="
+          echo "PATH=$PATH"
+          echo "=== Diagnostic log/setup/install_cudatext.log ==="
+          cat log/setup/install_cudatext.log 2>/dev/null || echo "log/setup/install_cudatext.log not found"
+          echo "=== Diagnostic /Applications/CudaText.app ==="
+          ls -la /Applications/CudaText.app 2>/dev/null || echo "/Applications/CudaText.app not found"
+          ls -la /Applications/CudaText.app/Contents/MacOS 2>/dev/null || echo "Contents/MacOS not found"
+          echo "=== Checking Symlinks ==="
+          ls -la "$(brew --prefix)/bin/cudatext" 2>/dev/null || echo "No brew symlink"
+          ls -la /usr/local/bin/cudatext 2>/dev/null || echo "No /usr/local/bin symlink"
+
           command -v cudatext || { echo "[ERROR] cudatext binary not found in PATH"; exit 1; }
           test -d "${HOME}/.config/cudatext/py/cuda_disk_wins" || test -d "${HOME}/Library/Application Support/CudaText/py/cuda_disk_wins" || { echo "[ERROR] Plugin directory missing"; exit 1; }
           grep -q '"ui_notif": false' "${HOME}/.config/cudatext/settings/user.json" || grep -q '"ui_notif": false' "${HOME}/Library/Application Support/CudaText/settings/user.json" || { echo "[ERROR] ui_notif: false not found in user.json"; exit 1; }
