@@ -49,18 +49,35 @@ elif [[ "$(uname -s)" == "Darwin" ]]; then
   if [[ -z "${CUDATEXT_URL:-}" ]]; then
     CUDATEXT_URL="https://downloads.sourceforge.net/project/cudatext/release/1.236.0.5/${TAR_NAME_PREFIX}-1.236.0.5.zip"
   fi
-  echo "[INFO] Downloading CudaText macOS from: ${CUDATEXT_URL}"
+
+echo "[INFO] Downloading CudaText macOS from: ${CUDATEXT_URL}"
   curl -fSL -o "${TMP_DIR}/cudatext.zip" "${CUDATEXT_URL}"
-  mkdir -p "${TMP_DIR}/extracted"
+  mkdir -p "${TMP_DIR}/extracted" "${TMP_DIR}/mnt"
   unzip -q "${TMP_DIR}/cudatext.zip" -d "${TMP_DIR}/extracted"
-  APP_SRC="$(find "${TMP_DIR}/extracted" -name "*.app" -type d | head -n1 || true)"
-  if [[ -n "${APP_SRC}" ]]; then
-    ${SUDO} rm -rf /Applications/CudaText.app
-    ${SUDO} cp -R "${APP_SRC}" /Applications/CudaText.app
-    echo "[INFO] Copied ${APP_SRC} to /Applications/CudaText.app"
+
+  DMG_FILE="$(find "${TMP_DIR}/extracted" -name "*.dmg" | head -n1 || true)"
+  if [[ -n "${DMG_FILE}" ]]; then
+    echo "[INFO] Mounting disk image: ${DMG_FILE}"
+    hdiutil attach "${DMG_FILE}" -mountpoint "${TMP_DIR}/mnt" -nobrowse -quiet
+    APP_SRC="$(find "${TMP_DIR}/mnt" -maxdepth 2 -name "*.app" | head -n1 || true)"
+    if [[ -n "${APP_SRC}" ]]; then
+      ${SUDO} rm -rf /Applications/CudaText.app
+      ${SUDO} cp -R "${APP_SRC}" /Applications/CudaText.app
+      echo "[INFO] Copied ${APP_SRC} to /Applications/CudaText.app"
+    fi
+    hdiutil detach "${TMP_DIR}/mnt" -quiet || true
+  else
+    APP_SRC="$(find "${TMP_DIR}/extracted" -name "*.app" -type d | head -n1 || true)"
+    if [[ -n "${APP_SRC}" ]]; then
+      ${SUDO} rm -rf /Applications/CudaText.app
+      ${SUDO} cp -R "${APP_SRC}" /Applications/CudaText.app
+      echo "[INFO] Copied ${APP_SRC} to /Applications/CudaText.app"
+    fi
   fi
-  APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f -perm +111 2>/dev/null | head -n1 || true)"
-  [[ -z "${APP_BIN}" && -f "/Applications/CudaText.app/Contents/MacOS/cudatext" ]] && APP_BIN="/Applications/CudaText.app/Contents/MacOS/cudatext"
+
+  APP_BIN="$(find /Applications/CudaText.app -type f -name "cudatext" 2>/dev/null | head -n1 || true)"
+  [[ -z "${APP_BIN}" ]] && APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f -perm +111 2>/dev/null | head -n1 || true)"  
+  
   if [[ -n "${APP_BIN}" ]]; then
     ${SUDO} chmod +x "${APP_BIN}" || true
     if command -v brew >/dev/null 2>&1; then
