@@ -117,9 +117,11 @@ python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 # This block intelligently handles downloads and extractions.
 echo "--> Checking for required components (LanguageTool, Vosk-Models)…"
 source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
+if [ -f "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh" ]; then
+    echo "--> Installing CudaText and plugins"
+    bash "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
+fi
 # ==============================================================================
-
-
 
 # After: show preview and ask for confirmation (default: no)
 echo "The script can optionally run a full system upgrade (pacman -Syu)."
