@@ -34,20 +34,49 @@ trap cleanup EXIT
 if command -v "${CANDIDATE_NAME}" >/dev/null 2>&1; then
   echo "[INFO] ${CANDIDATE_NAME} is already installed: $(command -v "${CANDIDATE_NAME}")"
 elif [[ "$(uname -s)" == "Darwin" ]]; then
-  echo "[INFO] Installing CudaText via Homebrew Cask on macOS..."
-  brew install --cask cudatext || true
-  APP_BIN="/Applications/CudaText.app/Contents/MacOS/cudatext"
-  if [[ ! -f "${APP_BIN}" ]]; then
-    APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -maxdepth 2 -type f 2>/dev/null | head -n1 || true)"
+  ARCH="$(uname -m)"
+  case "${ARCH}" in
+    arm64|aarch64) TAR_NAME_PREFIX="cudatext-macos-cocoa-aarch64" ;;
+    x86_64|amd64) TAR_NAME_PREFIX="cudatext-macos-cocoa-amd64" ;;
+    *) echo "[ERROR] Unsupported macOS architecture: ${ARCH}"; exit 2 ;;
+  esac
+  TMP_DIR="$(mktemp -d)"
+  CUDATEXT_URL="$(curl -fsSL "https://sourceforge.net/projects/cudatext/rss?path=/release" \
+    | grep -o "https://[^<\"]*${TAR_NAME_PREFIX}-[^<\"]*\\.(dmg|zip|dmg\\.zip)/download" \
+    | head -n1 || true)"
+  if [[ -z "${CUDATEXT_URL:-}" ]]; then
+    CUDATEXT_URL="https://downloads.sourceforge.net/project/cudatext/release/1.236.0.5/cudatext-macos-cocoa-aarch64-1.236.0.5.zip"
   fi
-  if [[ -n "${APP_BIN}" && -f "${APP_BIN}" ]]; then
-    BREW_BIN_DIR="$(brew --prefix)/bin"
-    mkdir -p "${BREW_BIN_DIR}"
-    ln -sf "${APP_BIN}" "${BREW_BIN_DIR}/cudatext" || true
-    ${SUDO} ln -sf "${APP_BIN}" /usr/local/bin/cudatext 2>/dev/null || true
-    echo "[INFO] CudaText symlinked from ${APP_BIN} to ${BREW_BIN_DIR}/cudatext"
+  echo "[INFO] Downloading CudaText macOS from ${CUDATEXT_URL}..."
+  curl -fSL -o "${TMP_DIR}/cudatext_pkg" "${CUDATEXT_URL}"
+  mkdir -p "${TMP_DIR}/extracted" "${TMP_DIR}/mnt"
+  if file "${TMP_DIR}/cudatext_pkg" | grep -qi "zip"; then
+    unzip -q "${TMP_DIR}/cudatext_pkg" -d "${TMP_DIR}/extracted"
+    DMG_FILE="$(find "${TMP_DIR}/extracted" -name "*.dmg" | head -n1 || true)"
+    if [[ -n "${DMG_FILE}" ]]; then
+      hdiutil attach "${DMG_FILE}" -mountpoint "${TMP_DIR}/mnt" -nobrowse -quiet
+      ${SUDO} cp -R "${TMP_DIR}/mnt/CudaText.app" /Applications/
+      hdiutil detach "${TMP_DIR}/mnt" -quiet || true
+    else
+      APP_FOUND="$(find "${TMP_DIR}/extracted" -name "CudaText.app" | head -n1 || true)"
+      [[ -n "${APP_FOUND}" ]] && ${SUDO} cp -R "${APP_FOUND}" /Applications/
+    fi
   else
-    echo "[WARN] Could not locate CudaText binary in /Applications/CudaText.app"
+    hdiutil attach "${TMP_DIR}/cudatext_pkg" -mountpoint "${TMP_DIR}/mnt" -nobrowse -quiet
+    ${SUDO} cp -R "${TMP_DIR}/mnt/CudaText.app" /Applications/
+    hdiutil detach "${TMP_DIR}/mnt" -quiet || true
+  fi
+  APP_BIN="/Applications/CudaText.app/Contents/MacOS/cudatext"
+  if [[ -f "${APP_BIN}" ]]; then
+    ${SUDO} chmod +x "${APP_BIN}" || true
+    if command -v brew >/dev/null 2>&1; then
+      BREW_BIN="$(brew --prefix)/bin"
+      mkdir -p "${BREW_BIN}"
+      ln -sf "${APP_BIN}" "${BREW_BIN}/cudatext" || true
+    fi
+    ${SUDO} mkdir -p /usr/local/bin
+    ${SUDO} ln -sf "${APP_BIN}" /usr/local/bin/cudatext 2>/dev/null || true
+    echo "[INFO] CudaText installed to /Applications/CudaText.app and symlinked to PATH"
   fi
 else
   # Detect architecture
