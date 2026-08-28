@@ -14,7 +14,7 @@ if [ ! -f "scripts/infra/requirements/requirements.txt" ]; then
     exit 1
 fi
 
-sudo pacman -S --noconfirm python python-pip
+sudo pacman -S --noconfirm --needed base-devel python python-pip uv
 
 eval $(python3 scripts/py/setup_config.py)
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
@@ -91,19 +91,16 @@ sudo pacman -S --noconfirm --needed \
 sudo pacman -S --noconfirm --needed sdl2 sdl2_mixer sdl2_ttf sdl2_image
 
 # --- 2. Python Virtual Environment ---
-# We check if the venv directory exists before creating it.
 if [ ! -d ".venv" ]; then
-    echo "--> Creating Python virtual environment in './.venv'…"
-    python3 -m venv .venv
+    echo "--> Creating Python 3.12 virtual environment in './.venv'"
+    uv venv --python 3.12 .venv
 else
     echo "--> Virtual environment already exists. Skipping creation."
 fi
 
 # --- 3. Python Requirements ---
-# We call pip from the venv directly. This is more robust than sourcing 'activate'.
-echo "--> Installing Python requirements into the virtual environment…"
-./.venv/bin/pip install -r scripts/infra/requirements/requirements.txt
-
+echo "--> Installing Python requirements into the virtual environment"
+uv pip install --python .venv/bin/python -r scripts/infra/requirements/requirements.txt
 # --- 4. Project Structure and Configuration ---
 echo "--> Setting up project directories and initial files…"
 # THIS IS THE KEY CHANGE. We call the Python script and pass the current
