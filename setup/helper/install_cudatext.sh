@@ -88,32 +88,31 @@ echo "[INFO] Downloading CudaText macOS from: ${CUDATEXT_URL}"
     fi
   fi
 
-APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f 2>/dev/null | head -n1 || true)"
+  APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f 2>/dev/null | head -n1 || true)"
   if [[ -n "${APP_BIN}" && -f "${APP_BIN}" ]]; then
     ${SUDO} chmod +x "${APP_BIN}" || true
-    WRAPPER_CONTENT="#!/bin/bash\nexec \"${APP_BIN}\" \"\$@\"\n"
+    ${SUDO} mkdir -p /usr/local/bin
+    ${SUDO} rm -f /usr/local/bin/cudatext /usr/local/bin/CudaText
+    ${SUDO} sh -c "cat << 'EOF' > /usr/local/bin/cudatext
+#!/bin/bash
+exec \"${APP_BIN}\" \"\$@\"
+EOF"
+    ${SUDO} chmod +x /usr/local/bin/cudatext
+    ${SUDO} ln -sf /usr/local/bin/cudatext /usr/local/bin/CudaText 2>/dev/null || true
+
     if command -v brew >/dev/null 2>&1; then
       BREW_BIN="$(brew --prefix)/bin"
       mkdir -p "${BREW_BIN}"
-      printf "${WRAPPER_CONTENT}" > "${BREW_BIN}/cudatext"
-      chmod +x "${BREW_BIN}/cudatext"
-      ln -sf "${BREW_BIN}/cudatext" "${BREW_BIN}/CudaText" || true
+      rm -f "${BREW_BIN}/cudatext" "${BREW_BIN}/CudaText"
+      ln -sf /usr/local/bin/cudatext "${BREW_BIN}/cudatext" || true
+      ln -sf /usr/local/bin/cudatext "${BREW_BIN}/CudaText" || true
     fi
-    ${SUDO} mkdir -p /usr/local/bin
-    printf "${WRAPPER_CONTENT}" | ${SUDO} tee /usr/local/bin/cudatext >/dev/null
-    ${SUDO} chmod +x /usr/local/bin/cudatext || true
-    ${SUDO} ln -sf /usr/local/bin/cudatext /usr/local/bin/CudaText 2>/dev/null || true
     echo "[INFO] CudaText wrapper created for ${APP_BIN} in PATH."
   else
-    
-    
     echo "[ERROR] Failed to locate CudaText binary inside /Applications/CudaText.app"
     exit 3
   fi
-  
-  
-else
-  
+else  
   
   # Detect architecture
   ARCH="$(uname -m)"
