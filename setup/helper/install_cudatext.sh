@@ -81,23 +81,25 @@ echo "[INFO] Downloading CudaText macOS from: ${CUDATEXT_URL}"
     fi
   fi
 
-  APP_BIN="$(find /Applications/CudaText.app -type f -name "cudatext" 2>/dev/null | head -n1 || true)"
-  [[ -z "${APP_BIN}" ]] && APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f -perm +111 2>/dev/null | head -n1 || true)"  
-  
-  if [[ -n "${APP_BIN}" ]]; then
+  APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f 2>/dev/null | head -n1 || true)"
+  if [[ -n "${APP_BIN}" && -f "${APP_BIN}" ]]; then
     ${SUDO} chmod +x "${APP_BIN}" || true
     if command -v brew >/dev/null 2>&1; then
       BREW_BIN="$(brew --prefix)/bin"
       mkdir -p "${BREW_BIN}"
       ln -sf "${APP_BIN}" "${BREW_BIN}/cudatext" || true
+      ln -sf "${APP_BIN}" "${BREW_BIN}/CudaText" || true
     fi
     ${SUDO} mkdir -p /usr/local/bin
     ${SUDO} ln -sf "${APP_BIN}" /usr/local/bin/cudatext 2>/dev/null || true
-    echo "[INFO] CudaText binary ${APP_BIN} symlinked to PATH."
+    ${SUDO} ln -sf "${APP_BIN}" /usr/local/bin/CudaText 2>/dev/null || true
+    echo "[INFO] CudaText binary ${APP_BIN} symlinked as cudatext to PATH."
   else
     echo "[ERROR] Failed to locate CudaText binary inside /Applications/CudaText.app"
     exit 3
   fi
+  
+  
 else
   
   
