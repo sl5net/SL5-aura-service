@@ -13,9 +13,16 @@ LOG_FILE="${LOG_DIR}/install_cudatext.log"
 
 exec > >(tee -a "${LOG_FILE}") 2>&1
 
+if [[ ${EUID} -ne 0 ]]; then
+  SUDO="sudo"
+else
+  SUDO=""
+fi
+
 CANDIDATE_NAME="cudatext"
 OPT_DIR="/opt/${CANDIDATE_NAME}"
 BIN_LINK="/usr/local/bin/${CANDIDATE_NAME}"
+
 #SF_BASE="https://downloads.sourceforge.net/project/cudatext/release/Linux"
 
 #FALLBACK_URL="https://downloads.sourceforge.net/project/cudatext/release/1.232.2.1/cudatext-linux-gtk2-amd64-1.232.2.1.tar.xz"
@@ -157,13 +164,8 @@ else
     exit 3
   fi
   
-  if [[ ${EUID} -ne 0 ]]; then
-    SUDO="sudo"
-  else
-    SUDO=""
-  fi
-  
   echo "[INFO] Installing to ${OPT_DIR}..."
+  
   ${SUDO} rm -rf "${OPT_DIR}"
   ${SUDO} mkdir -p "${OPT_DIR}"
   
