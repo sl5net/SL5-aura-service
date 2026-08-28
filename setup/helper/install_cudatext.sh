@@ -33,6 +33,8 @@ trap cleanup EXIT
 
 if command -v "${CANDIDATE_NAME}" >/dev/null 2>&1; then
   echo "[INFO] ${CANDIDATE_NAME} is already installed: $(command -v "${CANDIDATE_NAME}")"
+
+
 elif [[ "$(uname -s)" == "Darwin" ]]; then
   ARCH="$(uname -m)"
   case "${ARCH}" in
@@ -42,32 +44,24 @@ elif [[ "$(uname -s)" == "Darwin" ]]; then
   esac
   TMP_DIR="$(mktemp -d)"
   CUDATEXT_URL="$(curl -fsSL "https://sourceforge.net/projects/cudatext/rss?path=/release" \
-    | grep -o "https://[^<\"]*${TAR_NAME_PREFIX}-[^<\"]*\\.(dmg|zip|dmg\\.zip)/download" \
+    | grep -E -o "https://[^<\"]*${TAR_NAME_PREFIX}[^<\"]*\\.zip/download" \
     | head -n1 || true)"
   if [[ -z "${CUDATEXT_URL:-}" ]]; then
-    CUDATEXT_URL="https://downloads.sourceforge.net/project/cudatext/release/1.236.0.5/cudatext-macos-cocoa-aarch64-1.236.0.5.zip"
+    CUDATEXT_URL="https://downloads.sourceforge.net/project/cudatext/release/1.236.0.5/${TAR_NAME_PREFIX}-1.236.0.5.zip"
   fi
-  echo "[INFO] Downloading CudaText macOS from ${CUDATEXT_URL}..."
-  curl -fSL -o "${TMP_DIR}/cudatext_pkg" "${CUDATEXT_URL}"
-  mkdir -p "${TMP_DIR}/extracted" "${TMP_DIR}/mnt"
-  if file "${TMP_DIR}/cudatext_pkg" | grep -qi "zip"; then
-    unzip -q "${TMP_DIR}/cudatext_pkg" -d "${TMP_DIR}/extracted"
-    DMG_FILE="$(find "${TMP_DIR}/extracted" -name "*.dmg" | head -n1 || true)"
-    if [[ -n "${DMG_FILE}" ]]; then
-      hdiutil attach "${DMG_FILE}" -mountpoint "${TMP_DIR}/mnt" -nobrowse -quiet
-      ${SUDO} cp -R "${TMP_DIR}/mnt/CudaText.app" /Applications/
-      hdiutil detach "${TMP_DIR}/mnt" -quiet || true
-    else
-      APP_FOUND="$(find "${TMP_DIR}/extracted" -name "CudaText.app" | head -n1 || true)"
-      [[ -n "${APP_FOUND}" ]] && ${SUDO} cp -R "${APP_FOUND}" /Applications/
-    fi
-  else
-    hdiutil attach "${TMP_DIR}/cudatext_pkg" -mountpoint "${TMP_DIR}/mnt" -nobrowse -quiet
-    ${SUDO} cp -R "${TMP_DIR}/mnt/CudaText.app" /Applications/
-    hdiutil detach "${TMP_DIR}/mnt" -quiet || true
+  echo "[INFO] Downloading CudaText macOS from: ${CUDATEXT_URL}"
+  curl -fSL -o "${TMP_DIR}/cudatext.zip" "${CUDATEXT_URL}"
+  mkdir -p "${TMP_DIR}/extracted"
+  unzip -q "${TMP_DIR}/cudatext.zip" -d "${TMP_DIR}/extracted"
+  APP_SRC="$(find "${TMP_DIR}/extracted" -name "*.app" -type d | head -n1 || true)"
+  if [[ -n "${APP_SRC}" ]]; then
+    ${SUDO} rm -rf /Applications/CudaText.app
+    ${SUDO} cp -R "${APP_SRC}" /Applications/CudaText.app
+    echo "[INFO] Copied ${APP_SRC} to /Applications/CudaText.app"
   fi
-  APP_BIN="/Applications/CudaText.app/Contents/MacOS/cudatext"
-  if [[ -f "${APP_BIN}" ]]; then
+  APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f -perm +111 2>/dev/null | head -n1 || true)"
+  [[ -z "${APP_BIN}" && -f "/Applications/CudaText.app/Contents/MacOS/cudatext" ]] && APP_BIN="/Applications/CudaText.app/Contents/MacOS/cudatext"
+  if [[ -n "${APP_BIN}" ]]; then
     ${SUDO} chmod +x "${APP_BIN}" || true
     if command -v brew >/dev/null 2>&1; then
       BREW_BIN="$(brew --prefix)/bin"
@@ -76,9 +70,14 @@ elif [[ "$(uname -s)" == "Darwin" ]]; then
     fi
     ${SUDO} mkdir -p /usr/local/bin
     ${SUDO} ln -sf "${APP_BIN}" /usr/local/bin/cudatext 2>/dev/null || true
-    echo "[INFO] CudaText installed to /Applications/CudaText.app and symlinked to PATH"
+    echo "[INFO] CudaText binary ${APP_BIN} symlinked to PATH."
+  else
+    echo "[ERROR] Failed to locate CudaText binary inside /Applications/CudaText.app"
+    exit 3
   fi
 else
+  
+  
   # Detect architecture
   ARCH="$(uname -m)"
   case "${ARCH}" in
