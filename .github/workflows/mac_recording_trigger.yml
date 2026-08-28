@@ -54,7 +54,68 @@ jobs:
           chmod +x ./setup/macos_setup.sh
           ./setup/macos_setup.sh
 
+      - name: Verify CudaText and Disk Wins plugin setup
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          command -v cudatext || { echo "[ERROR] cudatext binary not found in PATH"; exit 1; }
+          test -d "${HOME}/.config/cudatext/py/cuda_disk_wins" || test -d "${HOME}/Library/Application Support/CudaText/py/cuda_disk_wins" || { echo "[ERROR] Plugin directory missing"; exit 1; }
+          grep -q '"ui_notif": false' "${HOME}/.config/cudatext/settings/user.json" || grep -q '"ui_notif": false' "${HOME}/Library/Application Support/CudaText/settings/user.json" || { echo "[ERROR] ui_notif: false not found in user.json"; exit 1; }
+          echo "[OK] CudaText and Disk Wins plugin verification passed."
+
+      - name: Test CudaText Disk Wins live auto-reload on macOS
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          echo "[CI-DEBUG] Test start at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+
+          echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
+          rm -f /tmp/cuda_disk_wins.log /tmp/cudatext.out || true
+
+          if which cudatext >/dev/null 2>&1; then
+            echo "[CI-DEBUG] cudatext found at: $(which cudatext)"
+          else
+            echo "[ERROR] cudatext binary not found in PATH"; exit 1
+          fi
+
+          cudatext -verbose /tmp/ci_disk_wins_test.txt > /tmp/cudatext.out 2>&1 &
+          CUDA_PID=$!
+
+          FOUND=0
+          for i in $(seq 1 20); do
+            if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
+              echo "[CI-DEBUG] Plugin output seen in cudatext.out after ${i}s"
+              FOUND=1
+              break
+            fi
+            sleep 1
+          done
+
+          echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
+          sleep 2
+
+          kill "$CUDA_PID" 2>/dev/null || true
+
+          echo "---- /tmp/cudatext.out (tail) ----"
+          tail -n 300 /tmp/cudatext.out || true
+
+          echo "---- /tmp/cuda_disk_wins.log (tail) ----"
+          tail -n 300 /tmp/cuda_disk_wins.log || true
+
+          for j in $(seq 1 10); do
+            sleep 1
+            if [ -f /tmp/cuda_disk_wins.log ] && grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
+              echo "[OK] Plugin-Log Reload-Event"
+              break
+            else
+              if [ "$j" -eq 10 ]; then
+                echo "[ERROR] no entry in cuda_disk_wins.log"
+                exit 1
+              fi
+            fi
+          done
+
       - name: Validate scripts/infra/requirements/requirements.txt syntax
+        
+        
         run: |
           python3 -c "
           from pip._internal.req import parse_requirements

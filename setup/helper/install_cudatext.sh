@@ -33,10 +33,17 @@ trap cleanup EXIT
 
 if command -v "${CANDIDATE_NAME}" >/dev/null 2>&1; then
   echo "[INFO] ${CANDIDATE_NAME} is already installed: $(command -v "${CANDIDATE_NAME}")"
+elif [[ "$(uname -s)" == "Darwin" ]]; then
+  echo "[INFO] Installing CudaText via Homebrew Cask on macOS..."
+  brew install --cask cudatext || true
+  if [[ -f "/Applications/CudaText.app/Contents/MacOS/cudatext" ]]; then
+    ${SUDO} ln -sf "/Applications/CudaText.app/Contents/MacOS/cudatext" /usr/local/bin/cudatext || true
+  fi
 else
   # Detect architecture
   ARCH="$(uname -m)"
   case "${ARCH}" in
+  
 #    x86_64|amd64) TAR_NAME_PREFIX="cudatext-linux-gtk2-amd64" ;;
 #    aarch64|arm64) TAR_NAME_PREFIX="cudatext-linux-gtk2-arm64" ;;
 #  
@@ -156,29 +163,30 @@ if [[ -d "${PLUGIN_SRC}" ]]; then
     TARGET_HOME="${HOME}"
   fi
 
-  CUDATEXT_PY_DIR="${TARGET_HOME}/.config/cudatext/py"
-  CUDATEXT_SETTINGS_DIR="${TARGET_HOME}/.config/cudatext/settings"
-  USER_JSON="${CUDATEXT_SETTINGS_DIR}/user.json"
 
-  echo "[INFO] Installing CudaText plugin 'cuda_disk_wins' to ${CUDATEXT_PY_DIR}/cuda_disk_wins..."
-  mkdir -p "${CUDATEXT_PY_DIR}/cuda_disk_wins"
-  cp -r "${PLUGIN_SRC}/." "${CUDATEXT_PY_DIR}/cuda_disk_wins/"  
-#  cp -r "${PLUGIN_SRC}" "${CUDATEXT_PY_DIR}/"
+  CONFIG_ROOTS=("${TARGET_HOME}/.config/cudatext")
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    CONFIG_ROOTS+=("${TARGET_HOME}/Library/Application Support/CudaText")
+  fi
 
-  echo "[INFO] Configuring 'ui_notif: false' in ${USER_JSON}..."
-  mkdir -p "${CUDATEXT_SETTINGS_DIR}"
-  
-  
-  PLUGINS_INI="${CUDATEXT_SETTINGS_DIR}/plugins.ini"
-  echo "[INFO] Configuring 'plugins.ini' in ${PLUGINS_INI}..."
+  for CFG_ROOT in "${CONFIG_ROOTS[@]}"; do
+    CUDATEXT_PY_DIR="${CFG_ROOT}/py"
+    CUDATEXT_SETTINGS_DIR="${CFG_ROOT}/settings"
+    USER_JSON="${CUDATEXT_SETTINGS_DIR}/user.json"
+    PLUGINS_INI="${CUDATEXT_SETTINGS_DIR}/plugins.ini"
 
-  printf "[events]\ncuda_disk_wins=on_start2,on_open~,on_save~\n" > "${PLUGINS_INI}"
-  
-  
-  if [[ ! -f "${USER_JSON}" ]]; then
-    echo -e '{\n  "ui_notif": false\n}' > "${USER_JSON}"
-  else
-    python3 -c "
+    echo "[INFO] Installing CudaText plugin 'cuda_disk_wins' to ${CUDATEXT_PY_DIR}/cuda_disk_wins..."
+    mkdir -p "${CUDATEXT_PY_DIR}/cuda_disk_wins"
+    cp -r "${PLUGIN_SRC}/." "${CUDATEXT_PY_DIR}/cuda_disk_wins/"
+
+    echo "[INFO] Configuring 'ui_notif: false' in ${USER_JSON}..."
+    mkdir -p "${CUDATEXT_SETTINGS_DIR}"
+    printf "[events]\ncuda_disk_wins=on_start2,on_open~,on_save~\n" > "${PLUGINS_INI}"
+
+    if [[ ! -f "${USER_JSON}" ]]; then
+      echo -e '{\n  "ui_notif": false\n}' > "${USER_JSON}"
+    else
+      python3 -c "
 import json
 from pathlib import Path
 p = Path('${USER_JSON}')
@@ -189,11 +197,13 @@ except Exception:
 data['ui_notif'] = False
 p.write_text(json.dumps(data, indent=2), encoding='utf-8')
 " 2>/dev/null || true
-  fi
+    fi
+  done
 
   if [ "$(id -u)" -eq 0 ] && [ -n "${TARGET_USER}" ] && [ "${TARGET_USER}" != "root" ]; then
     chown -R "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.config/cudatext" 2>/dev/null || true
   fi
 fi
+
 
 echo "[INFO] Done."
