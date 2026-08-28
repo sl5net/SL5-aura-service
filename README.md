@@ -25,7 +25,6 @@
 1. Download or clone this repository
 2. Run the setup script for your OS (see `setup/` folder):
    - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-   ===> 🧩 read [docs/LINUX_WAYLAND_dotool](docs/LINUX_WAYLAND_dotool.md)
    - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
    - Linux (openSUSE): `bash setup/suse_setup.sh`
    - Linux (NixOS): `nix-shell setup/shell.nix` then `bash setup/nixos_setup.sh`
@@ -46,7 +45,7 @@
     Requires mimalloc (`sudo pacman -S mimalloc`) due to glibc 2.43 compatibility.
 *   **Linux (NixOS):** 🧪 Experimental — community-contributed setup, not yet tested.
     If you try it, please open an issue or PR with your findings!    
-*   **Linux (Manjaro):** New / experimental : A system-wide hotkey opens an fzf-like, keyboard-driven interface so you can run Aura commands from anywhere on the desktop (completely decoupled from the active window). This hotkey-driven launcher is currently implemented and tested on Linux (Manjaro); other distributions may work but require the setup . See in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md)    
+*   **Linux (Manjaro):** New : A system-wide hotkey opens an fzf-like, keyboard-driven interface so you can run Aura commands from anywhere on the desktop (completely decoupled from the active window). This hotkey-driven launcher is currently implemented and tested on Linux (Manjaro); other distributions may work but require the setup . See in 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md)    
 
 
     
@@ -134,8 +133,12 @@ For a complete technical reference, including all modules and scripts, please vi
 - [Interactive Rule Search & Run](docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.md) — Dual-pane `fzf` rule search, live context previews, instant command execution via `Enter`/`Ctrl+R`, and editor integration via `Ctrl+E`. Supported by a global hotkey (`Super+S`) and multiple dedicated search-environments pre-configured via voice commands.
 
 ### Build Status
-[![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
+
+[![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
+
+
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
+
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/mac_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
