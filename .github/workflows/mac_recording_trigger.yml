@@ -53,11 +53,17 @@ jobs:
         run: |
           chmod +x ./setup/macos_setup.sh
           ./setup/macos_setup.sh
-
+      - name: Register CudaText binary path for subsequent steps
+        run: |
+          echo "/usr/local/bin" >> "$GITHUB_PATH"
+          if command -v brew >/dev/null 2>&1; then
+            echo "$(brew --prefix)/bin" >> "$GITHUB_PATH"
+          fi
       - name: Verify CudaText and Disk Wins plugin setup
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
           command -v cudatext || { echo "[ERROR] cudatext binary not found in PATH"; exit 1; }
+          
           test -d "${HOME}/.config/cudatext/py/cuda_disk_wins" || test -d "${HOME}/Library/Application Support/CudaText/py/cuda_disk_wins" || { echo "[ERROR] Plugin directory missing"; exit 1; }
           grep -q '"ui_notif": false' "${HOME}/.config/cudatext/settings/user.json" || grep -q '"ui_notif": false' "${HOME}/Library/Application Support/CudaText/settings/user.json" || { echo "[ERROR] ui_notif: false not found in user.json"; exit 1; }
           echo "[OK] CudaText and Disk Wins plugin verification passed."
