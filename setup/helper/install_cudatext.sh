@@ -26,7 +26,12 @@ FALLBACK_URL="https://downloads.sourceforge.net/project/cudatext/release/1.232.2
 
 cleanup() {
   local rc=$?
-  [[ -n "${TMP_DIR:-}" && -d "${TMP_DIR}" ]] && rm -rf "${TMP_DIR}"
+  if [[ -n "${TMP_DIR:-}" && -d "${TMP_DIR}" ]]; then
+    if command -v hdiutil >/dev/null 2>&1 && [[ -d "${TMP_DIR}/mnt" ]]; then
+      hdiutil detach "${TMP_DIR}/mnt" -force >/dev/null 2>&1 || true
+    fi
+    rm -rf "${TMP_DIR}" 2>/dev/null || true
+  fi
   return "${rc}"
 }
 trap cleanup EXIT
@@ -65,7 +70,8 @@ echo "[INFO] Downloading CudaText macOS from: ${CUDATEXT_URL}"
       ${SUDO} cp -R "${APP_SRC}" /Applications/CudaText.app
       echo "[INFO] Copied ${APP_SRC} to /Applications/CudaText.app"
     fi
-    hdiutil detach "${TMP_DIR}/mnt" -quiet || true
+#    hdiutil detach "${TMP_DIR}/mnt" -quiet || true
+    hdiutil detach "${TMP_DIR}/mnt" -force >/dev/null 2>&1 || true
   else
     APP_SRC="$(find "${TMP_DIR}/extracted" -name "*.app" -type d | head -n1 || true)"
     if [[ -n "${APP_SRC}" ]]; then
