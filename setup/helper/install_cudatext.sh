@@ -105,7 +105,6 @@ APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f 2>/dev/null | 
 exec \"${APP_BIN}\" \"\$@\"
 EOF"
       ${SUDO} chmod +x "${BIN_DIR}/cudatext"
-      ${SUDO} ln -sf "${BIN_DIR}/cudatext" "${BIN_DIR}/CudaText" 2>/dev/null || true
     done
     echo "[INFO] CudaText wrapper created for ${APP_BIN} in PATH."
   else
