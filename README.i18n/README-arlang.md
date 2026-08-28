@@ -1,6 +1,6 @@
 <img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-               # ⬟ SL5 Aura – صوتك. القواعد الخاصة بك.
+                 # ⬟ SL5 Aura - صوتك. القواعد الخاصة بك.
 
 > غير متصل بالإنترنت بنسبة 100%، إطار عمل المساعد الصوتي الذي يولي الأولوية للخصوصية.XSPACEbreakX
 > حدد بالضبط ما يفعله صوتك - من كلمة واحدةXSPACEbreakX
@@ -25,7 +25,6 @@
            1. قم بتنزيل هذا المستودع أو استنساخه
 2. قم بتشغيل البرنامج النصي للإعداد لنظام التشغيل لديك (راجع مجلد "الإعداد/"):
                    - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-                                                 ===> 🧩 اقرأ [docs/LINUX_WAYLAND_dotool](../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-arlang.md)
                         - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
                                - Linux (openSUSE): `bash setup/suse_setup.sh`
 - Linux (NixOS): `nix-shell setup/shell.nix` ثم `bash setup/nixos_setup.sh`.
@@ -46,11 +45,11 @@
 يتطلب mimalloc (`sudo pacman -S mimalloc`) بسبب توافق glibc 2.43.
 * **Linux (NixOS):** 🧪 تجريبي — إعداد ساهم به المجتمع، ولم يتم اختباره بعد.
 إذا حاولت ذلك، يرجى فتح قضية أو العلاقات العامة مع النتائج التي توصلت إليها!  اكس سبيس بريك اكس
-* **Linux (Manjaro):** جديد / تجريبي: يفتح مفتاح التشغيل السريع على مستوى النظام واجهة تعتمد على لوحة المفاتيح تشبه fzf حتى تتمكن من تشغيل أوامر Aura من أي مكان على سطح المكتب (منفصلة تمامًا عن النافذة النشطة). يتم حاليًا تنفيذ واختبار هذا المشغل الذي يعتمد على مفتاح التشغيل السريع على Linux (Manjaro)؛ قد تعمل توزيعات أخرى ولكنها تتطلب الإعداد. انظر في 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-arlang.md) XSPACEbreakX
+* **Linux (Manjaro):** جديد: يفتح مفتاح التشغيل السريع على مستوى النظام واجهة تعتمد على لوحة المفاتيح تشبه fzf حتى تتمكن من تشغيل أوامر Aura من أي مكان على سطح المكتب (منفصلة تمامًا عن النافذة النشطة). يتم حاليًا تنفيذ واختبار هذا المشغل الذي يعتمد على مفتاح التشغيل السريع على Linux (Manjaro)؛ قد تعمل توزيعات أخرى ولكنها تتطلب الإعداد. انظر في 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-arlang.md) XSPACEbreakX
 
 
                                               اكس سبيس بريك اكس
-SL5 Aura عبارة عن مساعد صوتي كامل، **غير متصل بالإنترنت**، مبني على **Vosk** (لتحويل الكلام إلى نص) و**LanguageTool** (للقواعد النحوية/الأسلوب)، ويتميز بوظيفة احتياطية **Local LLM (Ollama) اختيارية** للاستجابات الإبداعية والمطابقة الغامضة المتقدمة. إنه يحول صوتك إلى إجراءات ونص دقيق، مصمم للتخصيص النهائي من خلال نظام قواعد قابل للتوصيل ومحرك برمجة نصية ديناميكي.
+SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل بالإنترنت** مبني على **Vosk** (لتحويل الكلام إلى نص) و**LanguageTool** (للقواعد النحوية/الأسلوب)، ويتميز بوظيفة احتياطية **Local LLM (Ollama) اختيارية** للاستجابات الإبداعية والمطابقة الغامضة المتقدمة. إنه يحول صوتك إلى إجراءات ونص دقيق، مصمم للتخصيص النهائي من خلال نظام قواعد قابل للتوصيل ومحرك برمجة نصية ديناميكي.
                                               اكس سبيس بريك اكس
 الترجمات: هذا المستند موجود أيضًا في [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n).
 
@@ -71,7 +70,7 @@ SL5 Aura عبارة عن مساعد صوتي كامل، **غير متصل بال
                                              ### 🎥 فيديو تعليمي
                       [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
-                                    *(الرابط البديل: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+                                     *(الرابط البديل: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
 
                                                           </التفاصيل>
 
@@ -131,10 +130,11 @@ SL5 Aura عبارة عن مساعد صوتي كامل، **غير متصل بال
                                                                👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
                                                   ### ميزة الأضواء
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-arlang.md) — البحث عن القواعد `fzf` ثنائي الجزء، ومعاينات السياق المباشرة، والتنفيذ الفوري للأوامر عبر `Enter`/`Ctrl+R`، وتكامل المحرر عبر `Ctrl+E`. مدعوم بمفتاح تشغيل سريع عالمي (`Super+S`) وبيئات بحث مخصصة متعددة تم تكوينها مسبقًا عبر الأوامر الصوتية.
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-arlang.md) - البحث عن القواعد `fzf` ثنائي الجزء، ومعاينات السياق المباشرة، والتنفيذ الفوري للأوامر عبر `Enter`/`Ctrl+R`، وتكامل المحرر عبر `Ctrl+E`. مدعوم بمفتاح تشغيل سريع عالمي (`Super+S`) وبيئات بحث مخصصة متعددة تم تكوينها مسبقًا عبر الأوامر الصوتية.
 
                                                     ### حالة البناء
-                                    [![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ)
+
+[![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 
@@ -439,7 +439,7 @@ f11::
 │├ 3. `correct_text_by_languagetool.py` (يدمج أداة اللغة لتصحيح القواعد النحوية/النمط) 🐧 🍏 🪟XSPACEbreakX
 │├ **4. محرك قواعد RegEx الهرمي مع تقنية Ollama AI الاحتياطية** 🐧 🍏 🪟XSPACEbreakX
 ││ * **التحكم الحتمي:** يستخدم RegEx-Rule-Engine للأوامر الدقيقة ذات الأولوية العالية والتحكم في النص.XSPACEbreakX
-│├ **المكون الإضافي لبحث المتجهات** (التحميل البطيء): يتيح البحث الدلالي عن طريق ربط تضمينات Vector المحلية مع الطبقة الاحتياطية Ollama/LLM 🐧XSPACEbreakX
+│├ **المكوّن الإضافي لبحث المتجهات** (التحميل البطيء): يتيح البحث الدلالي عن طريق ربط تضمينات المتجهات المحلية مع الطبقة الاحتياطية Ollama/LLM 🐧XSPACEbreakX
 ││ * **Ollama AI (Local LLM) الاحتياطي:** بمثابة فحص اختياري منخفض الأولوية لـ **الإجابات الإبداعية، والأسئلة والأجوبة، والمطابقة الغامضة المتقدمة** في حالة عدم استيفاء قاعدة حتمية.XSPACEbreakX
                           ││ * **الحالة:** تكامل LLM محلي.
 │└ 5. **التصحيح اللاحق الذكي** (`FuzzyMap`)** – تحسين ما بعد LT** 🐧 🍏 🪟XSPACEbreakX
@@ -475,14 +475,14 @@ f11::
 
 
                                                            <التفاصيل>
-                  <summary>مساعدي التطوير والنشر</summary>
+                  <summary>مساعدو التطوير والنشر</summary>
 
                  ### **مساعدو التطوير والنشر**XSPACEbreakX
 البرامج النصية لإعداد البيئة والاختبار وتنفيذ الخدمة.XSPACEbreakX
 
 *نصيحة: يتيح لك glogg استخدام التعبيرات العادية للبحث عن الأحداث المثيرة للاهتمام في ملفات السجل الخاصة بك.* XSPACEbreakX
 يرجى تحديد مربع الاختيار عند التثبيت لربطه بملفات السجل.  اكس سبيس بريك اكس
-https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
+https://translate.google.com/translate?hl=de&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
                                               اكس سبيس بريك اكس
 *نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
 
@@ -512,7 +512,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefo
 ├─ **ENTER_AFTER_DICTATION_REGEX** مثال لقاعدة التنشيط "(ExampleAplicationThatNotExist|Pi، الذكاء الاصطناعي الشخصي الخاص بك)" 🐧XSPACEbreakX
                                            ├┬الإضافاتXSPACEbreakX
                 │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟XSPACEbreakX
-(*يتم تطبيق التغييرات التي تم إجراؤها على تنشيط/إلغاء تنشيط البرنامج المساعد وتكويناتها في عملية المعالجة التالية دون إعادة تشغيل الخدمة.*)XSPACEbreakX
+(*يتم تطبيق التغييرات على تنشيط/إلغاء تنشيط المكون الإضافي وتكويناتها في عملية المعالجة التالية دون إعادة تشغيل الخدمة.*)XSPACEbreakX
 │ ├ **أوامر git** (التحكم الصوتي لإرسال أوامر git) 🐧 🍏 🪟XSPACEbreakX
 │ ├ **wannweil** (خريطة الموقع ألمانيا-Wannweil) 🐧 🍏 🪟XSPACEbreakX
 │ ├ **البرنامج المساعد للبوكر (مسودة)** (التحكم الصوتي لتطبيقات البوكر) 🐧 🍏 🪟XSPACEbreakX
@@ -550,7 +550,7 @@ https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefo
 
                                     ## الموديلات المستعملة:
 
-توصية: استخدم نماذج من Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (ربما أسرع)
+توصية: استخدم النماذج من Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (ربما أسرع)
 
 يجب حفظ هذه النماذج المضغوطة في مجلد "النماذج/".
 
