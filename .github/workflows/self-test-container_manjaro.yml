@@ -1,8 +1,8 @@
-name: Self-Test (Container Aura & Input)
-# .github/workflows/self-test-container_ubuntu.yml
+name: Self-Test (Container Manjaro Aura & Input)
+
 on:
   push:
-    branches: [ master, ci/container-dotool-test ]
+    branches: [ master, ci/manjaro-container-workflow ]
     paths-ignore:
       - 'doc_sources/**'
       - 'docs/**'
@@ -20,14 +20,15 @@ on:
       - '**.html'
       - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
-    
-    
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 permissions:
   pull-requests: write
   contents: read
+
 jobs:
   run-input-test:
     runs-on: ubuntu-latest
@@ -40,23 +41,23 @@ jobs:
           sudo modprobe uinput
           sudo chmod 666 /dev/uinput
 
-      - name: Build Aura Test Docker Image
+      - name: Build Aura Manjaro Test Docker Image
         run: |
-          docker build -t aura-tester -f setup/docker/ubuntu/Dockerfile .
+          docker build -t aura-manjaro-tester -f setup/docker/manjaro/Dockerfile .
 
-      - name: Start Aura Test Container
+      - name: Start Aura Manjaro Test Container
         run: |
-          docker run -d --name aura-container \
+          docker run -d --name aura-manjaro-container \
             --privileged \
             --device /dev/uinput \
             -v ${{ github.workspace }}:/app \
-            aura-tester \
+            aura-manjaro-tester \
             tail -f /dev/null
 
       - name: Run E2E Input Simulation Test
         run: |
           # Execute the typing simulation inside the running container
-          docker exec aura-container bash -c '
+          docker exec aura-manjaro-container bash -c '
             # Prepare configuration override to force dotool input method
             mkdir -p /tmp/sl5_aura/settings_py_backup
             echo "dotool" > /tmp/sl5_aura/settings_py_backup/x11_input_method_OVERRIDE.txt
@@ -68,7 +69,7 @@ jobs:
 
             # Verify that the watcher started successfully and did not crash
             if ! kill -0 $WATCHER_PID 2>/dev/null; then
-              echo "❌ ERROR: Watcher failed to start!"
+              echo " ERROR: Watcher failed to start!"
               exit 1
             fi
 
@@ -81,12 +82,12 @@ jobs:
 
             # Verify that the watcher is still running (proves it did not exit with status 124/set -e)
             if ! kill -0 $WATCHER_PID 2>/dev/null; then
-              echo "❌ ERROR: Watcher crashed while or after typing the long text!"
+              echo " ERROR: Watcher crashed while or after typing the long text!"
               echo "--- log/type_watcher.log ---"
               cat log/type_watcher.log || echo "no log file found"
               exit 1
             fi
 
-            echo "✅ SUCCESS: Watcher successfully completed typing without crashes!"
+            echo " SUCCESS: Watcher successfully completed typing without crashes!"
             kill $WATCHER_PID
           '
