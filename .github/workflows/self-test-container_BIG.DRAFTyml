@@ -1,5 +1,5 @@
 name: Self-Test (Container Aura & Input)
-# .github/workflows/self-test-container.yml
+# .github/workflows/self-test-container_ubuntu.yml
 on:
   push:
     branches: [ master ]
@@ -44,7 +44,7 @@ jobs:
 
       - name: Build Aura Test Docker Image
         run: |
-          docker build -t aura-tester -f setup/.draft-not-ready/Dockerfile .
+          docker build -t aura-tester -f setup/docker/ubuntu/Dockerfile .
 
       - name: Start Aura Test Container
         run: |

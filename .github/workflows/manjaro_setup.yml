@@ -1,0 +1,161 @@
+name: CI for Manjaro Setup
+
+on:
+  push:
+    branches: [ master, ci/manjaro-container-workflow ]
+    paths:
+      - 'setup/**'
+      - 'scripts/infra/requirements/requirements.txt'
+      - 'scripts/infra/requirements/requirements-dev.txt'
+      - '.github/workflows/manjaro_setup.yml'
+  pull_request:
+    branches:
+      - master
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  validate-manjaro-setup:
+    runs-on: ubuntu-latest
+    container:
+      image: manjarolinux/base:latest
+    steps:
+      - name: Initialize Pacman Keys and System Packages
+        run: |
+          pacman-key --init
+          pacman-key --populate archlinux manjaro
+          pacman -Syu --noconfirm --needed sudo git curl tar xz procps-ng which xorg-server-xvfb gtk3
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Cache models and tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-manjaro-models-tools-${{ hashFiles('**/setup/manjaro_arch_setup.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-manjaro-models-tools-
+
+      - name: Run manjaro_arch_setup.sh
+        run: |
+          bash ./setup/manjaro_arch_setup.sh
+
+      - name: Verify CudaText and Disk Wins plugin setup
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          command -v cudatext || { echo "[ERROR] cudatext binary not found in PATH"; exit 1; }
+          test -d "${HOME}/.config/cudatext/py/cuda_disk_wins" || { echo "[ERROR] Plugin directory missing"; exit 1; }
+          grep -q '"ui_notif": false' "${HOME}/.config/cudatext/settings/user.json" || { echo "[ERROR] ui_notif: false not found in user.json"; exit 1; }
+          echo "[OK] CudaText and Disk Wins plugin verification passed."
+
+      - name: Ensure SHOW_SEARCH_ON_STARTUP = False in config/settings.py
+        run: |
+          file="config/settings.py"
+          if grep -qE '^SHOW_SEARCH_ON_STARTUP\s*=' "$file"; then
+            sed -E -i "s/^SHOW_SEARCH_ON_STARTUP\s*=.*/SHOW_SEARCH_ON_STARTUP = False/" "$file"
+          else
+            echo "" >> "$file"
+            echo "SHOW_SEARCH_ON_STARTUP = False" >> "$file"
+          fi
+
+      - name: CI debug — show install script length and CudaText settings
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          echo "---- Full file length (lines) ----"
+          wc -l setup/helper/install_cudatext.sh || true
+          echo
+          echo "=== Repo plugin source (expected) ==="
+          ls -la setup/helper/cudatext || true
+          ls -la setup/helper/cudatext/cuda_disk_wins || true
+          echo
+          echo "=== Post-install: user config files (if present) ==="
+          echo "HOME=$HOME"
+          echo "List ~/.config/cudatext tree:"
+          ls -la "${HOME}/.config" || true
+          ls -la "${HOME}/.config/cudatext" || true
+          ls -la "${HOME}/.config/cudatext/py" || true
+          ls -la "${HOME}/.config/cudatext/py/cuda_disk_wins" || true
+          echo
+          echo "---- plugins.ini (if exists) ----"
+          sed -n '1,200p' "${HOME}/.config/cudatext/settings/plugins.ini" || true
+          echo
+          echo "---- user.json (if exists) ----"
+          sed -n '1,200p' "${HOME}/.config/cudatext/settings/user.json" || true
+
+      - name: Test CudaText Disk Wins live auto-reload with Xvfb
+        run: |
+          echo "BRANCH: ${{ github.ref_name }}"
+          echo "[CI-DEBUG] Test start at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+
+          echo "Initial CI Content" > /tmp/ci_disk_wins_test.txt
+          rm -f /tmp/cuda_disk_wins.log /tmp/cudatext.out || true
+
+          if which cudatext >/dev/null 2>&1; then
+            echo "[CI-DEBUG] cudatext found at: $(which cudatext)"
+            ldd "$(which cudatext)" | grep -iE "gtk|gdk" || true
+          else
+            echo "[ERROR] cudatext binary not found in PATH"; exit 1
+          fi
+
+          xvfb-run --auto-servernum --server-args='-screen 0 1024x768x24 -nolisten tcp' "$(which cudatext)" -verbose /tmp/ci_disk_wins_test.txt > /tmp/cudatext.out 2>&1 &
+          CUDA_PID=$!
+
+          FOUND=0
+          for i in $(seq 1 30); do
+            if grep -Eqi "Disk Wins|cuda_disk_wins|reloaded" /tmp/cudatext.out 2>/dev/null; then
+              echo "[CI-DEBUG] Plugin output seen in cudatext.out after ${i}s"
+              FOUND=1
+              break
+            fi
+            if grep -Eqi "Traceback|ImportError|Exception" /tmp/cudatext.out 2>/dev/null; then
+              echo "[CI-DEBUG] Error/Traceback seen in cudatext.out after ${i}s"
+              FOUND=1
+              break
+            fi
+            sleep 1
+          done
+
+          echo "UPDATED_BY_CI_DISK_WINS" > /tmp/ci_disk_wins_test.txt
+          sleep 1
+
+          kill "$CUDA_PID" 2>/dev/null || true
+          sleep 1
+          pkill -f Xvfb 2>/dev/null || true
+
+          echo "---- /tmp/cudatext.out (tail) ----"
+          tail -n 300 /tmp/cudatext.out || true
+
+          echo "---- ~/.config/cudatext/settings/plugins.ini ----"
+          sed -n '1,200p' "${HOME}/.config/cudatext/settings/plugins.ini" || true
+
+          echo "---- ~/.config/cudatext/settings/user.json ----"
+          sed -n '1,200p' "${HOME}/.config/cudatext/settings/user.json" || true
+
+          echo "---- /tmp/cuda_disk_wins.log (tail) ----"
+          tail -n 300 /tmp/cuda_disk_wins.log || true
+
+          for j in $(seq 1 10); do
+            sleep 1
+            if [ -f /tmp/cuda_disk_wins.log ] && grep -qi "File reloaded from disk: /tmp/ci_disk_wins_test.txt" /tmp/cuda_disk_wins.log; then
+              echo "[OK] Plugin-Log Reload-Event"
+              break
+            else
+              if [ "$j" -eq 10 ]; then
+                echo "[ERROR] no entry in cuda_disk_wins.log"
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Package Assets as Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sl5-assets-pack-manjaro
+          path: |
+            ./LanguageTool-6.6
+            ./models/
