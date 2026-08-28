@@ -1,2 +1,0 @@
-TA KONFIGURACJA DOKERA JEST W wersji roboczej/nie jest gotowa
-NIE STOSOWAĆ W PRODUKCJI LUB CI.
