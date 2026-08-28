@@ -88,20 +88,25 @@ echo "[INFO] Downloading CudaText macOS from: ${CUDATEXT_URL}"
     fi
   fi
 
-  APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f 2>/dev/null | head -n1 || true)"
+APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f 2>/dev/null | head -n1 || true)"
   if [[ -n "${APP_BIN}" && -f "${APP_BIN}" ]]; then
     ${SUDO} chmod +x "${APP_BIN}" || true
+    WRAPPER_CONTENT="#!/bin/bash\nexec \"${APP_BIN}\" \"\$@\"\n"
     if command -v brew >/dev/null 2>&1; then
       BREW_BIN="$(brew --prefix)/bin"
       mkdir -p "${BREW_BIN}"
-      ln -sf "${APP_BIN}" "${BREW_BIN}/cudatext" || true
-      ln -sf "${APP_BIN}" "${BREW_BIN}/CudaText" || true
+      printf "${WRAPPER_CONTENT}" > "${BREW_BIN}/cudatext"
+      chmod +x "${BREW_BIN}/cudatext"
+      ln -sf "${BREW_BIN}/cudatext" "${BREW_BIN}/CudaText" || true
     fi
     ${SUDO} mkdir -p /usr/local/bin
-    ${SUDO} ln -sf "${APP_BIN}" /usr/local/bin/cudatext 2>/dev/null || true
-    ${SUDO} ln -sf "${APP_BIN}" /usr/local/bin/CudaText 2>/dev/null || true
-    echo "[INFO] CudaText binary ${APP_BIN} symlinked as cudatext to PATH."
+    printf "${WRAPPER_CONTENT}" | ${SUDO} tee /usr/local/bin/cudatext >/dev/null
+    ${SUDO} chmod +x /usr/local/bin/cudatext || true
+    ${SUDO} ln -sf /usr/local/bin/cudatext /usr/local/bin/CudaText 2>/dev/null || true
+    echo "[INFO] CudaText wrapper created for ${APP_BIN} in PATH."
   else
+    
+    
     echo "[ERROR] Failed to locate CudaText binary inside /Applications/CudaText.app"
     exit 3
   fi
@@ -234,8 +239,14 @@ if [[ -d "${PLUGIN_SRC}" ]]; then
     CONFIG_ROOTS+=("${TARGET_HOME}/Library/Application Support/CudaText")
   fi
 
+if [[ "$(uname -s)" == "Darwin" && -d "/Applications/CudaText.app/Contents/Resources/data" ]]; then
+    mkdir -p "${TARGET_HOME}/Library/Application Support/CudaText"
+    cp -Rn "/Applications/CudaText.app/Contents/Resources/data" "${TARGET_HOME}/Library/Application Support/CudaText/" 2>/dev/null || true
+  fi
+
   for CFG_ROOT in "${CONFIG_ROOTS[@]}"; do
     CUDATEXT_PY_DIR="${CFG_ROOT}/py"
+  
     CUDATEXT_SETTINGS_DIR="${CFG_ROOT}/settings"
     USER_JSON="${CUDATEXT_SETTINGS_DIR}/user.json"
     PLUGINS_INI="${CUDATEXT_SETTINGS_DIR}/plugins.ini"
