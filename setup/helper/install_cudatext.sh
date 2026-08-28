@@ -36,8 +36,18 @@ if command -v "${CANDIDATE_NAME}" >/dev/null 2>&1; then
 elif [[ "$(uname -s)" == "Darwin" ]]; then
   echo "[INFO] Installing CudaText via Homebrew Cask on macOS..."
   brew install --cask cudatext || true
-  if [[ -f "/Applications/CudaText.app/Contents/MacOS/cudatext" ]]; then
-    ${SUDO} ln -sf "/Applications/CudaText.app/Contents/MacOS/cudatext" /usr/local/bin/cudatext || true
+  APP_BIN="/Applications/CudaText.app/Contents/MacOS/cudatext"
+  if [[ ! -f "${APP_BIN}" ]]; then
+    APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -maxdepth 2 -type f 2>/dev/null | head -n1 || true)"
+  fi
+  if [[ -n "${APP_BIN}" && -f "${APP_BIN}" ]]; then
+    BREW_BIN_DIR="$(brew --prefix)/bin"
+    mkdir -p "${BREW_BIN_DIR}"
+    ln -sf "${APP_BIN}" "${BREW_BIN_DIR}/cudatext" || true
+    ${SUDO} ln -sf "${APP_BIN}" /usr/local/bin/cudatext 2>/dev/null || true
+    echo "[INFO] CudaText symlinked from ${APP_BIN} to ${BREW_BIN_DIR}/cudatext"
+  else
+    echo "[WARN] Could not locate CudaText binary in /Applications/CudaText.app"
   fi
 else
   # Detect architecture

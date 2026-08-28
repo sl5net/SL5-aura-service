@@ -3,7 +3,7 @@ name: CI macOS Recording Trigger
 
 on:
   push:
-    branches: [ master, feature/cross-platform-setup-config ]
+    branches: [ master, feature/cross-platform-setup-config, ci/mac-cudatext-simulation ]
     paths:
       - 'setup/**'
       - 'scripts/infra/requirements/requirements.txt'
