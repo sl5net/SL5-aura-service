@@ -58,8 +58,21 @@ jobs:
           ./aura-installer
           END_TS=$(date +%s)
           DURATION=$((END_TS - START_TS))
+
+          INSTALL_DIR="$HOME/.local/share/sl5-aura-service"
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            INSTALL_DIR="${LOCALAPPDATA:-$USERPROFILE/AppData/Local}/sl5-aura-service"
+          fi
+
+          DISK_USAGE="unknown"
+          if [ -d "$INSTALL_DIR" ]; then
+            DISK_USAGE=$(du -sh "$INSTALL_DIR" | cut -f1)
+          fi
+
           echo "### Installer Run (${{ matrix.os }})" >> $GITHUB_STEP_SUMMARY
           echo "- **Duration:** ${DURATION}s" >> $GITHUB_STEP_SUMMARY
+          echo "- **Disk Usage:** ${DISK_USAGE}" >> $GITHUB_STEP_SUMMARY
+
           FASTEST_BASELINE=90
           if [ "$DURATION" -gt $((FASTEST_BASELINE * 2)) ]; then
             echo "::warning title=Duration Warning::Execution on ${{ matrix.os }} took ${DURATION}s (> 2x baseline of ${FASTEST_BASELINE}s)."
