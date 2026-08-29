@@ -26,6 +26,9 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 
 **Windows (PowerShell):**
 ```bash
+
+# In development - please use Method 2 (standalone binary) for Windows
+
 irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
 ```
 
