@@ -38,3 +38,13 @@ jobs:
         working-directory: tools/installer
         run: |
           go build -v -o aura-installer main.go
+
+      - name: Run installer end-to-end
+        working-directory: tools/installer
+        shell: bash
+        env:
+          AURA_INSIDE_TERMINAL: "1"
+        run: |
+          ./aura-installer
+          
+          
