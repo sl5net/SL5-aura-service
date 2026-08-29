@@ -59,7 +59,9 @@ jobs:
           if command -v brew >/dev/null 2>&1; then
             echo "$(brew --prefix)/bin" >> "$GITHUB_PATH"
           fi
-      - name: Verify CudaText and Disk Wins plugin setup
+      #- name: Verify CudaText and Disk Wins plugin setup
+      - name: Diagnostic on failure
+        if: failure()
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
           echo "=== Diagnostic PATH ==="
