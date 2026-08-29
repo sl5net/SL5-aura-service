@@ -40,6 +40,20 @@ When you run the installer, Aura automatically:
 
 ---
 
+## Installation Details & Requirements
+
+- **Installation Duration:** Approximately 2–3 minutes.
+- **Disk Space Required:** Minimum ~1.5 GB (up to 2.5 GB depending on selected language models).
+- **Installation Directory:**
+  - **Linux & macOS:** `~/.local/share/sl5-aura-service`
+  - **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
+
+---
+
+## Next Steps
+
+---
+
 ## Next Steps
 
 - **Grandma-Mode:** Type a single word into your rule file and watch Aura auto-create rules.
