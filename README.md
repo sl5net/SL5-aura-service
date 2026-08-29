@@ -20,6 +20,17 @@
 <summary>Quick Start</summary>
 
 ## Quick Start
+
+
+### Option A: 1-Click Installer (Recommended / Zero-Setup)
+
+Download and double-click the standalone installer for Linux, Windows, or macOS:
+- **[→ 1-Click Installer Guide & Direct Downloads](docs/OneClickInstaller.md)**
+
+---
+
+### Option B: Manual Installation (Developers / Git)
+
 1. Download or clone this repository
 2. Run the setup script for your OS (see `setup/` folder):
    - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`

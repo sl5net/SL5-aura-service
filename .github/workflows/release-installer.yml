@@ -1,0 +1,57 @@
+name: Build and Release Installer
+
+on:
+  push:
+    paths:
+      - 'tools/installer/**'
+      - '.github/workflows/release-installer.yml'
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  build-binaries:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: aura-installer-linux
+            binary_name: aura-installer-linux
+          - os: windows-latest
+            artifact_name: aura-installer-windows.exe
+            binary_name: aura-installer-windows.exe
+          - os: macos-latest
+            artifact_name: aura-installer-macos
+            binary_name: aura-installer-macos
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Compile binary
+        working-directory: tools/installer
+        shell: bash
+        run: |
+          go build -v -ldflags="-s -w" -o "${{ matrix.binary_name }}" main.go
+
+      - name: Upload build artifact (Test Mode)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: tools/installer/${{ matrix.binary_name }}
+          if-no-files-found: error
+
+      - name: Upload to GitHub Release
+        if: github.event_name == 'release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ github.event.release.tag_name }}" "tools/installer/${{ matrix.binary_name }}" --clobber

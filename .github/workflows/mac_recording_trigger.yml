@@ -44,9 +44,6 @@ jobs:
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           fi
 
-      - name: Install Pygame dependencies via Homebrew
-        run: brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf portmidi
-
       - name: Run macos_setup.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

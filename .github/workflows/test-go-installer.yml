@@ -1,0 +1,79 @@
+name: Test Go Installer
+# .github/workflows/test-go-installer.yml:2
+
+# tips to start:
+# git commit --allow-empty -m "ci: trigger go installer test";git push
+# gh workflow run test-go-installer.yml --ref feat/go-bootstrap-installer
+
+on:
+  push:
+    paths:
+      - '.github/workflows/test-go-installer.yml'
+      - 'tools/installer/main.go'
+  pull_request:
+    paths:
+      - '.github/workflows/test-go-installer.yml'
+      - 'tools/installer/main.go'
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Code analysis and vet
+        working-directory: tools/installer
+        run: |
+          go vet main.go
+
+      - name: Compile installer binary
+        working-directory: tools/installer
+        run: |
+          go build -v -o aura-installer main.go
+
+      - name: Run installer end-to-end and track duration
+        working-directory: tools/installer
+        shell: bash
+        env:
+          AURA_INSIDE_TERMINAL: "1"
+        run: |
+          START_TS=$(date +%s)
+          ./aura-installer
+          END_TS=$(date +%s)
+          DURATION=$((END_TS - START_TS))
+
+          INSTALL_DIR="$HOME/.local/share/sl5-aura-service"
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            INSTALL_DIR="${LOCALAPPDATA:-$USERPROFILE/AppData/Local}/sl5-aura-service"
+          fi
+
+          DISK_USAGE="unknown"
+          if [ -d "$INSTALL_DIR" ]; then
+            DISK_USAGE=$(du -sh "$INSTALL_DIR" | cut -f1)
+          fi
+
+          echo "### Installer Run (${{ matrix.os }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **Duration:** ${DURATION}s" >> $GITHUB_STEP_SUMMARY
+          echo "- **Disk Usage:** ${DISK_USAGE}" >> $GITHUB_STEP_SUMMARY
+
+          FASTEST_BASELINE=90
+          if [ "$DURATION" -gt $((FASTEST_BASELINE * 2)) ]; then
+            echo "::warning title=Duration Warning::Execution on ${{ matrix.os }} took ${DURATION}s (> 2x baseline of ${FASTEST_BASELINE}s)."
+          fi          
