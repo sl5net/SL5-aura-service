@@ -12,10 +12,12 @@ import (
 	"strings"
 )
 
-const (
-	repoZipURL = "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/main.zip"
-	appName    = "sl5-aura-service"
-)
+const appName = "sl5-aura-service"
+
+var repoZipURLs = []string{
+	"https://github.com/sl5net/SL5-aura-service/archive/refs/heads/main.zip",
+	"https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip",
+}
 
 func ensureTerminal() {
 	if runtime.GOOS == "windows" {
@@ -77,25 +79,35 @@ func getInstallDir() (string, error) {
 	return filepath.Join(homeDir, ".local", "share", appName), nil
 }
 
-func downloadFile(url, destPath string) error {
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
+func downloadArchive(urls []string, destPath string) error {
+	var lastErr error
+	for _, candidateURL := range urls {
+		resp, err := http.Get(candidateURL)
+		if err != nil {
+			lastErr = err
+			continue
+		}
+		if resp.StatusCode != http.StatusOK {
+			resp.Body.Close()
+			lastErr = fmt.Errorf("HTTP %s from %s", resp.Status, candidateURL)
+			continue
+		}
 
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("unexpected HTTP status: %s", resp.Status)
-	}
+		out, err := os.Create(destPath)
+		if err != nil {
+			resp.Body.Close()
+			return err
+		}
 
-	out, err := os.Create(destPath)
-	if err != nil {
-		return err
+		_, copyErr := io.Copy(out, resp.Body)
+		resp.Body.Close()
+		out.Close()
+		if copyErr != nil {
+			return copyErr
+		}
+		return nil
 	}
-	defer out.Close()
-
-	_, err = io.Copy(out, resp.Body)
-	return err
+	return fmt.Errorf("all download attempts failed: %w", lastErr)
 }
 
 func unzipArchive(srcZip, destDir string) error {
@@ -157,17 +169,17 @@ func runSetup(installDir string) error {
 	var cmd *exec.Cmd
 
 	switch runtime.GOOS {
-		case "windows":
-			batPath := filepath.Join(installDir, "setup", "windows11_setup.bat")
-			cmd = exec.Command("cmd.exe", "/c", batPath)
-		case "darwin", "linux":
-			shPath := filepath.Join(installDir, "setup", "linux_mac_setup.sh")
-			if err := os.Chmod(shPath, 0755); err != nil {
-				return err
-			}
-			cmd = exec.Command("/bin/bash", shPath)
-		default:
-			return fmt.Errorf("unsupported OS: %s", runtime.GOOS)
+	case "windows":
+		batPath := filepath.Join(installDir, "setup", "windows11_setup.bat")
+		cmd = exec.Command("cmd.exe", "/c", batPath)
+	case "darwin", "linux":
+		shPath := filepath.Join(installDir, "setup", "linux_mac_setup.sh")
+		if err := os.Chmod(shPath, 0755); err != nil {
+			return err
+		}
+		cmd = exec.Command("/bin/bash", shPath)
+	default:
+		return fmt.Errorf("unsupported OS: %s", runtime.GOOS)
 	}
 
 	cmd.Dir = installDir
@@ -197,7 +209,7 @@ func main() {
 	defer os.Remove(tmpZip)
 
 	fmt.Println("[2/3] Downloading repository archive...")
-	if err := downloadFile(repoZipURL, tmpZip); err != nil {
+	if err := downloadArchive(repoZipURLs, tmpZip); err != nil {
 		fmt.Fprintf(os.Stderr, "Download failed: %v\n", err)
 		os.Exit(1)
 	}
