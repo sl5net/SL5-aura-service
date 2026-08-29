@@ -1,4 +1,8 @@
 name: Test Go Installer
+# .github/workflows/test-go-installer.yml:2
+
+# tips to start:
+# git commit --allow-empty -m "ci: trigger go installer test";git push
 
 on:
   push:
