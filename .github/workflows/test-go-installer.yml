@@ -25,10 +25,9 @@ jobs:
       max-parallel: 1
       matrix:
         os:
-          #- ubuntu-latest
-          #- windows-latest
+          - ubuntu-latest
+          - windows-latest
           - macos-latest
-
 
     steps:
       - name: Check out repository
@@ -49,12 +48,19 @@ jobs:
         run: |
           go build -v -o aura-installer main.go
 
-      - name: Run installer end-to-end
+      - name: Run installer end-to-end and track duration
         working-directory: tools/installer
         shell: bash
         env:
           AURA_INSIDE_TERMINAL: "1"
         run: |
+          START_TS=$(date +%s)
           ./aura-installer
-          
-          
+          END_TS=$(date +%s)
+          DURATION=$((END_TS - START_TS))
+          echo "### Installer Run (${{ matrix.os }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **Duration:** ${DURATION}s" >> $GITHUB_STEP_SUMMARY
+          FASTEST_BASELINE=90
+          if [ "$DURATION" -gt $((FASTEST_BASELINE * 2)) ]; then
+            echo "::warning title=Duration Warning::Execution on ${{ matrix.os }} took ${DURATION}s (> 2x baseline of ${FASTEST_BASELINE}s)."
+          fi          
