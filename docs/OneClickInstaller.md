@@ -18,9 +18,16 @@ You do **not** need:
 ### Method 1: Web One-Liner (Fastest & Recommended for Linux / macOS)
 Saves ~30 seconds of manual file handling and starts immediately in your terminal:
 
+**Linux & macOS:**
+
 ```bash
 curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
+```
 
+**Windows (PowerShell):**
+```bash
+irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
+```
 
 Method 2: Standalone Binary (Windows & Desktop Click)
 

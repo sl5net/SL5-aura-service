@@ -22,17 +22,18 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
+          - windows-latest
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Execute web installer stream
+      - name: Execute web installer on Linux / macOS
+        if: runner.os != 'Windows'
         shell: bash
         run: |
           START_TS=$(date +%s)
-          chmod +x web_install.sh
-          bash web_install.sh
+          cat web_install.sh | bash
           END_TS=$(date +%s)
           DURATION=$((END_TS - START_TS))
 
@@ -47,3 +48,26 @@ jobs:
           echo "### Web Installer Run (${{ matrix.os }})" >> $GITHUB_STEP_SUMMARY
           echo "- **Duration:** ${DURATION}s" >> $GITHUB_STEP_SUMMARY
           echo "- **Disk Usage:** ${DISK_USAGE}" >> $GITHUB_STEP_SUMMARY
+
+          FASTEST_BASELINE=90
+          if [ "$DURATION" -gt $((FASTEST_BASELINE * 2)) ]; then
+            echo "::warning title=Duration Warning::Execution on ${{ matrix.os }} took ${DURATION}s (> 2x baseline of ${FASTEST_BASELINE}s)."
+          fi
+
+      - name: Execute web installer on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $startTs = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+          Get-Content web_install.ps1 | Invoke-Expression
+          $endTs = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+          $duration = $endTs - $startTs
+
+          $installDir = Join-Path $env:LOCALAPPDATA "sl5-aura-service"
+          if (-not (Test-Path $installDir)) {
+            Write-Error "Installation directory $installDir does not exist!"
+            exit 1
+          }
+
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "### Web Installer Run (${{ matrix.os }})"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "- **Duration:** ${duration}s"
