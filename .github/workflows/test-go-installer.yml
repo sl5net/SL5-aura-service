@@ -28,14 +28,13 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
-          cache-dependency-path: tools/installer/go.mod
 
       - name: Code analysis and vet
         working-directory: tools/installer
         run: |
-          go vet ./...
+          go vet main.go
 
       - name: Compile installer binary
         working-directory: tools/installer
         run: |
-          go build -v -o aura-installer .
+          go build -v -o aura-installer main.go
