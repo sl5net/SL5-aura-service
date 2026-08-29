@@ -9,8 +9,6 @@
 
 | 👵 Beginner | 🎓 Learner | 🧑‍💻 Developer |
 |---|---|---|
-
-
 | [grandma-mode](docs/GettingStarted.md#the-oma-modus-beginner-shortcut) : just write a word, Aura does the rest | Learn with Koans — one concept at a time | Full Python scripting, plugins, API calls |
 | 🗄️ State Management | Trino + Airflow orchestration, fzf, CopyQ, voice/terminal commands, browser UIs |
 
