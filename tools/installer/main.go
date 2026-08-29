@@ -14,10 +14,27 @@ import (
 
 const appName = "sl5-aura-service"
 
-var repoZipURLs = []string{
-	"https://github.com/sl5net/SL5-aura-service/archive/refs/heads/main.zip",
-	"https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip",
+// var repoZipURLs = []string{
+// 	"https://github.com/sl5net/SL5-aura-service/archive/refs/heads/main.zip",
+// 	"https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip",
+// }
+
+func getCandidateURLs() []string {
+	urls := []string{}
+	if branch := os.Getenv("GITHUB_REF_NAME"); branch != "" {
+		urls = append(urls, fmt.Sprintf("https://github.com/sl5net/SL5-aura-service/archive/refs/heads/%s.zip", branch))
+	}
+	if customBranch := os.Getenv("AURA_BRANCH"); customBranch != "" {
+		urls = append(urls, fmt.Sprintf("https://github.com/sl5net/SL5-aura-service/archive/refs/heads/%s.zip", customBranch))
+	}
+	urls = append(urls,
+		"https://github.com/sl5net/SL5-aura-service/archive/refs/heads/main.zip",
+		"https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip",
+	)
+	return urls
 }
+
+
 
 func ensureTerminal() {
 	if runtime.GOOS == "windows" {
@@ -208,8 +225,8 @@ func main() {
 	tmpZip := filepath.Join(os.TempDir(), "sl5-aura-main.zip")
 	defer os.Remove(tmpZip)
 
-	fmt.Println("[2/3] Downloading repository archive...")
-	if err := downloadArchive(repoZipURLs, tmpZip); err != nil {
+    fmt.Println("[2/3] Downloading repository archive...")
+	if err := downloadArchive(getCandidateURLs(), tmpZip); err != nil {
 		fmt.Fprintf(os.Stderr, "Download failed: %v\n", err)
 		os.Exit(1)
 	}

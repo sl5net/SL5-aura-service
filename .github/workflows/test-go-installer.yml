@@ -3,6 +3,7 @@ name: Test Go Installer
 
 # tips to start:
 # git commit --allow-empty -m "ci: trigger go installer test";git push
+# gh workflow run test-go-installer.yml --ref feat/go-bootstrap-installer
 
 on:
   push:
