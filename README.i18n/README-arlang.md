@@ -9,8 +9,6 @@
 
            | 👵 مبتدأ | 🎓 المتعلم | 🧑u200d💻 مطور |
                                                                 |---|---|---|
-
-
 | [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-arlang.md#the-oma-modus-beginner-shortcut): فقط اكتب كلمة واحدة، وستقوم Aura بالباقي | تعلم مع Koans - مفهوم واحد في كل مرة | البرمجة النصية الكاملة لبايثون، والمكونات الإضافية، واستدعاءات واجهة برمجة التطبيقات |
 | 🗄️ إدارة الدولة | تنسيق Trino + Airflow، fzf، CopyQ، الأوامر الصوتية/الطرفية، واجهات مستخدم المتصفح |
 
@@ -574,7 +572,7 @@ https://translate.google.com/translate?hl=de&sl=en&tl=ar&u=https://glogg.bonnefo
                                                                           ---
                                                           </التفاصيل>
 
-                                                   ## ادعم المشروع
+                                                                             
 إذا وجدت هذه الأداة مفيدة، يرجى التفكير في شراء القهوة لنا! يساعد دعمك في تعزيز التحسينات المستقبلية.
 
                                      [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
