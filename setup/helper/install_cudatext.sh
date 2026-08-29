@@ -13,9 +13,16 @@ LOG_FILE="${LOG_DIR}/install_cudatext.log"
 
 exec > >(tee -a "${LOG_FILE}") 2>&1
 
+if [[ ${EUID} -ne 0 ]]; then
+  SUDO="sudo"
+else
+  SUDO=""
+fi
+
 CANDIDATE_NAME="cudatext"
 OPT_DIR="/opt/${CANDIDATE_NAME}"
 BIN_LINK="/usr/local/bin/${CANDIDATE_NAME}"
+
 #SF_BASE="https://downloads.sourceforge.net/project/cudatext/release/Linux"
 
 #FALLBACK_URL="https://downloads.sourceforge.net/project/cudatext/release/1.232.2.1/cudatext-linux-gtk2-amd64-1.232.2.1.tar.xz"
@@ -26,17 +33,92 @@ FALLBACK_URL="https://downloads.sourceforge.net/project/cudatext/release/1.232.2
 
 cleanup() {
   local rc=$?
-  [[ -n "${TMP_DIR:-}" && -d "${TMP_DIR}" ]] && rm -rf "${TMP_DIR}"
+  if [[ -n "${TMP_DIR:-}" && -d "${TMP_DIR}" ]]; then
+    if command -v hdiutil >/dev/null 2>&1 && [[ -d "${TMP_DIR}/mnt" ]]; then
+      hdiutil detach "${TMP_DIR}/mnt" -force >/dev/null 2>&1 || true
+    fi
+    rm -rf "${TMP_DIR}" 2>/dev/null || true
+  fi
   return "${rc}"
 }
 trap cleanup EXIT
 
 if command -v "${CANDIDATE_NAME}" >/dev/null 2>&1; then
   echo "[INFO] ${CANDIDATE_NAME} is already installed: $(command -v "${CANDIDATE_NAME}")"
-else
+
+
+elif [[ "$(uname -s)" == "Darwin" ]]; then
+  ARCH="$(uname -m)"
+  case "${ARCH}" in
+    arm64|aarch64) TAR_NAME_PREFIX="cudatext-macos-cocoa-aarch64" ;;
+    x86_64|amd64) TAR_NAME_PREFIX="cudatext-macos-cocoa-amd64" ;;
+    *) echo "[ERROR] Unsupported macOS architecture: ${ARCH}"; exit 2 ;;
+  esac
+  TMP_DIR="$(mktemp -d)"
+  CUDATEXT_URL="$(curl -fsSL "https://sourceforge.net/projects/cudatext/rss?path=/release" \
+    | grep -E -o "https://[^<\"]*${TAR_NAME_PREFIX}[^<\"]*\\.zip/download" \
+    | head -n1 || true)"
+  if [[ -z "${CUDATEXT_URL:-}" ]]; then
+    CUDATEXT_URL="https://downloads.sourceforge.net/project/cudatext/release/1.236.0.5/${TAR_NAME_PREFIX}-1.236.0.5.zip"
+  fi
+
+echo "[INFO] Downloading CudaText macOS from: ${CUDATEXT_URL}"
+  curl -fSL -o "${TMP_DIR}/cudatext.zip" "${CUDATEXT_URL}"
+  mkdir -p "${TMP_DIR}/extracted" "${TMP_DIR}/mnt"
+  unzip -q "${TMP_DIR}/cudatext.zip" -d "${TMP_DIR}/extracted"
+
+  DMG_FILE="$(find "${TMP_DIR}/extracted" -name "*.dmg" | head -n1 || true)"
+  if [[ -n "${DMG_FILE}" ]]; then
+    echo "[INFO] Mounting disk image: ${DMG_FILE}"
+    hdiutil attach "${DMG_FILE}" -mountpoint "${TMP_DIR}/mnt" -nobrowse -quiet
+    APP_SRC="$(find "${TMP_DIR}/mnt" -maxdepth 2 -name "*.app" | head -n1 || true)"
+    if [[ -n "${APP_SRC}" ]]; then
+      ${SUDO} rm -rf /Applications/CudaText.app
+      ${SUDO} cp -R "${APP_SRC}" /Applications/CudaText.app
+      echo "[INFO] Copied ${APP_SRC} to /Applications/CudaText.app"
+    fi
+#    hdiutil detach "${TMP_DIR}/mnt" -quiet || true
+    hdiutil detach "${TMP_DIR}/mnt" -force >/dev/null 2>&1 || true
+  else
+    APP_SRC="$(find "${TMP_DIR}/extracted" -name "*.app" -type d | head -n1 || true)"
+    if [[ -n "${APP_SRC}" ]]; then
+      ${SUDO} rm -rf /Applications/CudaText.app
+      ${SUDO} cp -R "${APP_SRC}" /Applications/CudaText.app
+      echo "[INFO] Copied ${APP_SRC} to /Applications/CudaText.app"
+    fi
+  fi
+
+APP_BIN="$(find /Applications/CudaText.app/Contents/MacOS -type f 2>/dev/null | head -n1 || true)"
+  if [[ -n "${APP_BIN}" && -f "${APP_BIN}" ]]; then
+    ${SUDO} chmod +x "${APP_BIN}" || true
+    TARGET_BINS=("/usr/local/bin")
+    if command -v brew >/dev/null 2>&1; then
+      BREW_BIN="$(brew --prefix)/bin"
+      [[ "${BREW_BIN}" != "/usr/local/bin" ]] && TARGET_BINS+=("${BREW_BIN}")
+    fi
+
+    for BIN_DIR in "${TARGET_BINS[@]}"; do
+      ${SUDO} mkdir -p "${BIN_DIR}"
+      ${SUDO} rm -f "${BIN_DIR}/cudatext" "${BIN_DIR}/CudaText"
+      ${SUDO} sh -c "cat << 'EOF' > '${BIN_DIR}/cudatext'
+#!/bin/bash
+exec \"${APP_BIN}\" \"\$@\"
+EOF"
+      ${SUDO} chmod +x "${BIN_DIR}/cudatext"
+    done
+    echo "[INFO] CudaText wrapper created for ${APP_BIN} in PATH."
+  else
+    
+    
+    echo "[ERROR] Failed to locate CudaText binary inside /Applications/CudaText.app"
+    exit 3
+  fi
+else  
+  
   # Detect architecture
   ARCH="$(uname -m)"
   case "${ARCH}" in
+  
 #    x86_64|amd64) TAR_NAME_PREFIX="cudatext-linux-gtk2-amd64" ;;
 #    aarch64|arm64) TAR_NAME_PREFIX="cudatext-linux-gtk2-arm64" ;;
 #  
@@ -87,13 +169,8 @@ else
     exit 3
   fi
   
-  if [[ ${EUID} -ne 0 ]]; then
-    SUDO="sudo"
-  else
-    SUDO=""
-  fi
-  
   echo "[INFO] Installing to ${OPT_DIR}..."
+  
   ${SUDO} rm -rf "${OPT_DIR}"
   ${SUDO} mkdir -p "${OPT_DIR}"
   
@@ -125,23 +202,24 @@ else
   # echo "[INFO] Installation complete. Checking version:"
   #"${BIN_LINK}" --version || "${BIN_LINK}" -v || echo "[WARN] Could not determine version."
   
-  if [[ -f "${OPT_DIR}/cudatext" && -x "${OPT_DIR}/cudatext" ]]; then
-    ACTUAL_BIN="${OPT_DIR}/cudatext"
-  elif [[ -f "${OPT_DIR}/cudatext/cudatext" && -x "${OPT_DIR}/cudatext/cudatext" ]]; then
-    ACTUAL_BIN="${OPT_DIR}/cudatext/cudatext"
-  else
-    ACTUAL_BIN="$(find "${OPT_DIR}" -type f -name 'cudatext' -perm /u+x,g+x,o+x 2>/dev/null | head -n1 || true)"
-  fi
-
-  if [[ -n "${ACTUAL_BIN}" && -f "${ACTUAL_BIN}" ]]; then
-    ${SUDO} chmod +x "${ACTUAL_BIN}" || true
-    if [[ -d "${BIN_LINK}" && ! -L "${BIN_LINK}" ]]; then
-      ${SUDO} rm -rf "${BIN_LINK}"
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    if [[ -f "${OPT_DIR}/cudatext" && -x "${OPT_DIR}/cudatext" ]]; then
+      ACTUAL_BIN="${OPT_DIR}/cudatext"
+    elif [[ -f "${OPT_DIR}/cudatext/cudatext" && -x "${OPT_DIR}/cudatext/cudatext" ]]; then
+      ACTUAL_BIN="${OPT_DIR}/cudatext/cudatext"
     else
-      ${SUDO} rm -f "${BIN_LINK}"
+      ACTUAL_BIN="$(find "${OPT_DIR}" -type f -name 'cudatext' -perm /u+x,g+x,o+x 2>/dev/null | head -n1 || true)"
     fi
-    ${SUDO} ln -sf "${ACTUAL_BIN}" "${BIN_LINK}"
-    ${SUDO} ln -sf "${ACTUAL_BIN}" /usr/bin/cudatext 2>/dev/null || true
+    if [[ -n "${ACTUAL_BIN}" && -f "${ACTUAL_BIN}" ]]; then
+      ${SUDO} chmod +x "${ACTUAL_BIN}" || true
+      if [[ -d "${BIN_LINK}" && ! -L "${BIN_LINK}" ]]; then
+        ${SUDO} rm -rf "${BIN_LINK}"
+      else
+        ${SUDO} rm -f "${BIN_LINK}"
+      fi
+      ${SUDO} ln -sf "${ACTUAL_BIN}" "${BIN_LINK}"
+      ${SUDO} ln -sf "${ACTUAL_BIN}" /usr/bin/cudatext 2>/dev/null || true
+    fi
   fi
 fi
 
@@ -156,29 +234,36 @@ if [[ -d "${PLUGIN_SRC}" ]]; then
     TARGET_HOME="${HOME}"
   fi
 
-  CUDATEXT_PY_DIR="${TARGET_HOME}/.config/cudatext/py"
-  CUDATEXT_SETTINGS_DIR="${TARGET_HOME}/.config/cudatext/settings"
-  USER_JSON="${CUDATEXT_SETTINGS_DIR}/user.json"
 
-  echo "[INFO] Installing CudaText plugin 'cuda_disk_wins' to ${CUDATEXT_PY_DIR}/cuda_disk_wins..."
-  mkdir -p "${CUDATEXT_PY_DIR}/cuda_disk_wins"
-  cp -r "${PLUGIN_SRC}/." "${CUDATEXT_PY_DIR}/cuda_disk_wins/"  
-#  cp -r "${PLUGIN_SRC}" "${CUDATEXT_PY_DIR}/"
+  CONFIG_ROOTS=("${TARGET_HOME}/.config/cudatext")
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    CONFIG_ROOTS+=("${TARGET_HOME}/Library/Application Support/CudaText")
+  fi
 
-  echo "[INFO] Configuring 'ui_notif: false' in ${USER_JSON}..."
-  mkdir -p "${CUDATEXT_SETTINGS_DIR}"
-  
-  
-  PLUGINS_INI="${CUDATEXT_SETTINGS_DIR}/plugins.ini"
-  echo "[INFO] Configuring 'plugins.ini' in ${PLUGINS_INI}..."
+if [[ "$(uname -s)" == "Darwin" && -d "/Applications/CudaText.app/Contents/Resources/data" ]]; then
+    mkdir -p "${TARGET_HOME}/Library/Application Support/CudaText"
+    cp -Rn "/Applications/CudaText.app/Contents/Resources/data" "${TARGET_HOME}/Library/Application Support/CudaText/" 2>/dev/null || true
+  fi
 
-  printf "[events]\ncuda_disk_wins=on_start2,on_open~,on_save~\n" > "${PLUGINS_INI}"
+  for CFG_ROOT in "${CONFIG_ROOTS[@]}"; do
+    CUDATEXT_PY_DIR="${CFG_ROOT}/py"
   
-  
-  if [[ ! -f "${USER_JSON}" ]]; then
-    echo -e '{\n  "ui_notif": false\n}' > "${USER_JSON}"
-  else
-    python3 -c "
+    CUDATEXT_SETTINGS_DIR="${CFG_ROOT}/settings"
+    USER_JSON="${CUDATEXT_SETTINGS_DIR}/user.json"
+    PLUGINS_INI="${CUDATEXT_SETTINGS_DIR}/plugins.ini"
+
+    echo "[INFO] Installing CudaText plugin 'cuda_disk_wins' to ${CUDATEXT_PY_DIR}/cuda_disk_wins..."
+    mkdir -p "${CUDATEXT_PY_DIR}/cuda_disk_wins"
+    cp -r "${PLUGIN_SRC}/." "${CUDATEXT_PY_DIR}/cuda_disk_wins/"
+
+    echo "[INFO] Configuring 'ui_notif: false' in ${USER_JSON}..."
+    mkdir -p "${CUDATEXT_SETTINGS_DIR}"
+    printf "[events]\ncuda_disk_wins=on_start2,on_open~,on_save~\n" > "${PLUGINS_INI}"
+
+    if [[ ! -f "${USER_JSON}" ]]; then
+      echo -e '{\n  "ui_notif": false\n}' > "${USER_JSON}"
+    else
+      python3 -c "
 import json
 from pathlib import Path
 p = Path('${USER_JSON}')
@@ -189,11 +274,13 @@ except Exception:
 data['ui_notif'] = False
 p.write_text(json.dumps(data, indent=2), encoding='utf-8')
 " 2>/dev/null || true
-  fi
+    fi
+  done
 
   if [ "$(id -u)" -eq 0 ] && [ -n "${TARGET_USER}" ] && [ "${TARGET_USER}" != "root" ]; then
     chown -R "${TARGET_USER}:${TARGET_USER}" "${TARGET_HOME}/.config/cudatext" 2>/dev/null || true
   fi
 fi
+
 
 echo "[INFO] Done."

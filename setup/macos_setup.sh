@@ -244,9 +244,13 @@ echo "--> All components are present and correctly placed."
 # --- End of Download/Extract block ---
 # ==============================================================================
 
-
+if [ -f "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh" ]; then
+    echo "--> Installing CudaText and plugins"
+    bash "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
+fi
 
 # --- Install fzf (Fuzzy Finder) ---
+
 if ! command -v fzf &> /dev/null; then
     echo "[INFO] fzf not found. Installing…"
     # Prüfen, ob brew installiert ist
