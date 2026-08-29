@@ -13,21 +13,43 @@ You do **not** need:
 
 ---
 
-## 3-Step Quick Start
+## Quick Start
 
-### 1. Download the Installer
-Download the single installer file matching your operating system from the [Latest GitHub Release](https://github.com/sl5net/SL5-aura-service/releases/latest):
+### Method 1: Web One-Liner (Fastest & Recommended for Linux / macOS)
+Saves ~30 seconds of manual file handling and starts immediately in your terminal:
 
+**Linux & macOS:**
+
+```bash
+curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
+```
+
+**Windows (PowerShell):**
+```bash
+
+# In development - please use Method 2 (standalone binary) for Windows
+
+irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
+```
+
+Method 2: Standalone Binary (Windows & Desktop Click)
+
+### 2.1 Download the Installer
+Download the single installer file matching your operating system from the [Latest GitHub Release]:
+
+- **Windows:** [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe.zip)
 - **Linux:** [aura-installer-linux](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-linux)
-- **Windows:** [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe)
 - **macOS:** [aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos)
 
 
-### 2. Run the Installer
+### 2.2. Run the Installer
+
+rename aura-installer-windows.exe.zip to aura-installer-windows.exe
+
 Double-click the downloaded file. A setup window will appear and automatically prepare the environment.
 
-### 3. Start Dictating
-Once finished, Aura creates a desktop shortcut and starts listening immediately in **Grandma-mode**.
+### 2.3. Start Dictating
+Once finished, Aura creates a desktop shortcut and starts listening immediately.
 
 ---
 
@@ -47,10 +69,6 @@ When you run the installer, Aura automatically:
 - **Installation Directory:**
   - **Linux & macOS:** `~/.local/share/sl5-aura-service`
   - **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
-
----
-
-## Next Steps
 
 ---
 
