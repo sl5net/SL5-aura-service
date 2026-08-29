@@ -9,9 +9,10 @@ echo "============================================"
 echo "   SL5 Aura Service - Web One-Liner Setup   "
 echo "============================================"
 echo "[INFO] Installation target: ${INSTALL_DIR}"
+echo "[INFO] Alternative setups (e.g. Docker) are available in setup/"
 
-if ! command -v curl >/dev/null 2>&1; then
-    echo "[ERROR] 'curl' is required but not installed. Please install curl first."
+if ! command -v curl >/dev/null 2>&1 && ! command -v wget >/dev/null 2>&1; then
+    echo "[ERROR] Neither 'curl' nor 'wget' is installed. Please install curl or wget first."
     exit 1
 fi
 
@@ -23,7 +24,11 @@ fi
 mkdir -p "${INSTALL_DIR}"
 
 echo "[INFO] Downloading and extracting latest release..."
-curl -sSL "${REPO_TAR_URL}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1
+if command -v curl >/dev/null 2>&1; then
+    curl -sSL "${REPO_TAR_URL}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1
+elif command -v wget >/dev/null 2>&1; then
+    wget -qO- "${REPO_TAR_URL}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1
+fi
 
 echo "[INFO] Launching system setup..."
 cd "${INSTALL_DIR}"
