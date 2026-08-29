@@ -97,7 +97,8 @@ if [ "$JAVA_OK" -eq 0 ]; then
     brew install openjdk
 fi
 echo "--> Installing other core dependencies…"
-brew install fswatch wget unzip portaudio
+#brew install fswatch wget unzip portaudio
+brew install fswatch wget unzip portaudio sdl2 sdl2_image sdl2_mixer sdl2_ttf portmidi
 
 
 
