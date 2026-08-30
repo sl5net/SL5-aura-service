@@ -52,7 +52,7 @@
 ### 1단계: 디렉터리 구조
 다음과 같은 폴더 구조를 만듭니다.
 ```text
-config/maps/private/
+config/maps/_private/
 ├── .auth_key.py          # Contains your password (e.g. # MySecretPass)
 └── private_maps.zip      # The encrypted archive
 ```
@@ -83,7 +83,7 @@ def on_reload():
 
 올바르게 설정되면 `git status`는 **만** 표시됩니다:
 ```text
-modified:   config/maps/private/private_maps.zip
+modified:   config/maps/_private/private_maps.zip
 ```
 `_private_maps` 폴더와 `.auth_key.py` 파일은 추적되지 않습니다.
 ```

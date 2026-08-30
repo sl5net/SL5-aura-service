@@ -52,7 +52,7 @@ Hier wird das System zur „Selbstheilung“:
 ### Schritt 1: Verzeichnisstruktur
 Erstellen Sie eine Ordnerstruktur wie diese:
 ```text
-config/maps/private/
+config/maps/_private/
 ├── .auth_key.py          # Contains your password (e.g. # MySecretPass)
 └── private_maps.zip      # The encrypted archive
 ```
@@ -83,7 +83,7 @@ def on_reload():
 
 Bei ordnungsgemäßer Einrichtung zeigt „git status“ **nur** Folgendes an:
 ```text
-modified:   config/maps/private/private_maps.zip
+modified:   config/maps/_private/private_maps.zip
 ```
 Der Ordner „_private_maps“ und die Datei „.auth_key.py“ werden niemals verfolgt.
 ```

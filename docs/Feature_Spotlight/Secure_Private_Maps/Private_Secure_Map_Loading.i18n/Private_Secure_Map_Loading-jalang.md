@@ -52,7 +52,7 @@
 ### ステップ 1: ディレクトリ構造
 次のようなフォルダー構造を作成します。
 ```text
-config/maps/private/
+config/maps/_private/
 ├── .auth_key.py          # Contains your password (e.g. # MySecretPass)
 └── private_maps.zip      # The encrypted archive
 ```
@@ -83,7 +83,7 @@ def on_reload():
 
 適切に設定すると、「git status」には**のみ**が表示されます。
 ```text
-modified:   config/maps/private/private_maps.zip
+modified:   config/maps/_private/private_maps.zip
 ```
 フォルダー「_private_maps」とファイル「.auth_key.py」は決して追跡されません。
 ```

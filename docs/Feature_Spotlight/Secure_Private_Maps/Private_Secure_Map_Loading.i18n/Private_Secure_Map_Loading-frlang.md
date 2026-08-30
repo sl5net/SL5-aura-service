@@ -52,7 +52,7 @@ C'est là que le système devient « auto-guérissant » :
 ### Étape 1 : Structure des répertoires
 Créez une structure de dossiers comme celle-ci :
 ```text
-config/maps/private/
+config/maps/_private/
 ├── .auth_key.py          # Contains your password (e.g. # MySecretPass)
 └── private_maps.zip      # The encrypted archive
 ```
@@ -83,7 +83,7 @@ def on_reload():
 
 Lorsqu'il est correctement configuré, `git status` affichera **uniquement** :
 ```text
-modified:   config/maps/private/private_maps.zip
+modified:   config/maps/_private/private_maps.zip
 ```
 Le dossier `_private_maps` et le fichier `.auth_key.py` ne sont jamais suivis.
 ```

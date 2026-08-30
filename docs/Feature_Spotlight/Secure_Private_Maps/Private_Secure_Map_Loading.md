@@ -52,7 +52,7 @@ This is where the system becomes "Self-Healing":
 ### Step 1: Directory Structure
 Create a folder structure like this:
 ```text
-config/maps/private/
+config/maps/_private/
 ├── .auth_key.py          # Contains your password (e.g. # MySecretPass)
 └── private_maps.zip      # The encrypted archive
 ```
@@ -83,7 +83,7 @@ def on_reload():
 
 When properly set up, `git status` will **only** show:
 ```text
-modified:   config/maps/private/private_maps.zip
+modified:   config/maps/_private/private_maps.zip
 ```
 The folder `_private_maps` and the file `.auth_key.py` are never tracked.
 ```

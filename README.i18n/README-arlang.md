@@ -21,16 +21,6 @@
 
                                                      ## بداية سريعة
 
-
-### الخيار أ: أداة التثبيت بنقرة واحدة (موصى به / إعداد صفري)
-
-قم بتنزيل برنامج التثبيت المستقل لنظام التشغيل Linux أو Windows أو macOS وانقر عليه نقرًا مزدوجًا:
-                                                              - **[→ 1-Click Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-arlang.md)**
-
-                                                                          ---
-
-    ### الخيار ب: التثبيت اليدوي (المطورون / Git)
-
            1. قم بتنزيل هذا المستودع أو استنساخه
 2. قم بتشغيل البرنامج النصي للإعداد لنظام التشغيل لديك (راجع مجلد "الإعداد/"):
                    - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
@@ -79,7 +69,7 @@ SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل با
                                              ### 🎥 فيديو تعليمي
                       [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
-                                    *(الرابط البديل: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+                                     *(الرابط البديل: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
 
                                                           </التفاصيل>
 
@@ -116,7 +106,7 @@ SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل با
 * **دعم اللغة الإنجليزية الذكية:** مُحسَّن للعمل في "en-US" مع التركيز بشكل خاص على اللهجات غير الأصلية (مثل الصوتيات الألمانية-الإنجليزية)، مما يضمن دقة التعرف العالية للمجتمع العالمي.
 * **قابل للتوسيع:** يستخدم تنسيق `FUZZY_MAP_pre.py` سهل التحرير.
 
-> **الحالة:** تم الاعتراف به كمكون إضافي للمجتمع بواسطة فريق OculiX (راجع [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
+> **الحالة:** تم الاعتراف به كمكون إضافي للمجتمع من قبل فريق OculiX (راجع [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
 
                                 ### التحكم الصوتي LibreOffice IDE
 
@@ -139,7 +129,7 @@ SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل با
                                                                👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
                                                   ### ميزة الأضواء
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-arlang.md) — البحث عن القواعد `fzf` ثنائي الجزء، ومعاينات السياق المباشرة، والتنفيذ الفوري للأوامر عبر `Enter`/`Ctrl+R`، وتكامل المحرر عبر `Ctrl+E`. مدعوم بمفتاح تشغيل سريع عالمي (`Super+S`) وبيئات بحث مخصصة متعددة تم تكوينها مسبقًا عبر الأوامر الصوتية.
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-arlang.md) - البحث عن القواعد `fzf` ثنائي الجزء، ومعاينات السياق المباشرة، والتنفيذ الفوري للأوامر عبر `Enter`/`Ctrl+R`، وتكامل المحرر عبر `Ctrl+E`. مدعوم بمفتاح تشغيل سريع عالمي (`Super+S`) وبيئات بحث مخصصة متعددة تم تكوينها مسبقًا عبر الأوامر الصوتية.
 
                                                     ### حالة البناء
 
@@ -460,7 +450,7 @@ f11::
 │└─ `setup_initial_model.py` (يقوم بتكوين إعداد النموذج لأول مرة) 🐧 🍏 🪟XSPACEbreakX
               ├─ **مهلة التكيف VAD** 🐧 🍏 🪟XSPACEbreakX
 ├─ **مفتاح التشغيل السريع التكيفي (بدء/إيقاف)** 🐧 🍏 🪟XSPACEbreakX
-                                                                             
+├─ **التبديل الفوري للغة** (تجريبي عبر التحميل المسبق للنموذج) 🐧 🍏XSPACEbreakX
 ├─ **تنسيق تدفق الهواء** (أتمتة سير العمل المستندة إلى DAG) 🐧 🍏 🪟
 │ يتطلب Docker · واجهة المستخدم: `http://localhost:8081` 🐧 🍏 🪟XSPACEbreakX
 ├─ **Trino State Engine** (تكوين مدرك للواجهة لكل خطاب/محطة/ويب) 🐧 🍏 🪟
@@ -470,25 +460,122 @@ f11::
                     ├┬ **إدارة خادم LanguageTool/** XSPACEbreakX
 │├─ `start_languagetool_server.py` (تهيئة خادم LanguageTool المحلي) 🐧 🍏 🪟XSPACEbreakX
 │└─ `stop_languagetool_server.py` (إيقاف تشغيل خادم LanguageTool) 🐧 🍏
-                                                                             
+├─ `monitor_mic.sh` (على سبيل المثال للاستخدام مع سماعة الرأس دون استخدام لوحة المفاتيح والشاشة) 🐧 🍏 🪟XSPACEbreakX
 
                    ### **إدارة النماذج والحزم**XSPACEbreakX
 أدوات للتعامل القوي مع نماذج اللغات الكبيرة.XSPACEbreakX
 
-                                                                             
+                    **إدارة النماذج/** 🐧 🍏 🪟XSPACEbreakX
 ├─ **أداة تنزيل النماذج القوية** (أجزاء إصدار GitHub) 🐧 🍏 🪟XSPACEbreakX
-                                                                             
+├─ `split_and_hash.py` (أداة مساعدة لأصحاب الريبو لتقسيم الملفات الكبيرة وإنشاء مجاميع اختبارية) 🐧 🍏 🪟XSPACEbreakX
 └─ `download_all_packages.py` (أداة للمستخدمين النهائيين لتنزيل الملفات متعددة الأجزاء والتحقق منها وإعادة تجميعها) 🐧 🍏 🪟XSPACEbreakX
 
-                                                                             
+                                                          </التفاصيل>
 
 
-                                                                             
-                                                                             
+                                                           <التفاصيل>
+                  <summary>مساعدو التطوير والنشر</summary>
 
-                                                                             
-                                                                             
+                 ### **مساعدو التطوير والنشر**XSPACEbreakX
+البرامج النصية لإعداد البيئة والاختبار وتنفيذ الخدمة.XSPACEbreakX
 
-                                                                             
-                                                                             
-https://translate.google.com/translate?hl=de&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
+*نصيحة: يتيح لك glogg استخدام التعبيرات العادية للبحث عن الأحداث المثيرة للاهتمام في ملفات السجل الخاصة بك.* XSPACEbreakX
+يرجى تحديد مربع الاختيار عند التثبيت لربطه بملفات السجل.  اكس سبيس بريك اكس
+https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
+                                              اكس سبيس بريك اكس
+*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
+
+                                 ثم ربما انقر نقرا مزدوجا
+                                                    "سجل/aura_engine.log".
+                                              اكس سبيس بريك اكس
+                                                  **DevHelpers/**XSPACEbreakX
+         ├┬ **إدارة البيئة الافتراضية/**XSPACEbreakX
+│├ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏XSPACEكسرX
+  │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟XSPACEbreakX
+├┬ **تكامل الإملاء على مستوى النظام/**XSPACEbreakX
+            │├ تكامل Vosk-System-Listener 🐧 🍏 🪟XSPACEbreakX
+│├ `scripts/monitor_mic.sh` (مراقبة الميكروفون الخاصة بنظام التشغيل Linux) 🐧XSPACEbreakX
+│└ `scripts/type_watcher.ahk` (يستمع AutoHotkey للنص الذي يتم التعرف عليه ويكتبه على مستوى النظام) 🪟XSPACEbreakX
+                                    └─ ** CI/CD Automation/**XSPACEbreakX
+└─ سير عمل GitHub الموسع (التثبيت والاختبار ونشر المستندات) 🐧 🍏 🪟 *(يعمل على إجراءات GitHub)*XSPACEbreakX
+
+                                                          </التفاصيل>
+
+                                                           <التفاصيل>
+                         <summary>الميزات التجريبية</summary>
+                                              اكس سبيس بريك اكس
+       ### **الميزات القادمة / التجريبية**XSPACEbreakX
+الميزات قيد التطوير حاليًا أو في حالة المسودة.XSPACEbreakX
+
+                           **الميزات التجريبية/**XSPACEbreakX
+├─ **ENTER_AFTER_DICTATION_REGEX** مثال لقاعدة التنشيط "(ExampleAplicationThatNotExist|Pi، الذكاء الاصطناعي الشخصي الخاص بك)" 🐧XSPACEbreakX
+                                           ├┬الإضافاتXSPACEbreakX
+                │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟XSPACEbreakX
+(*يتم تطبيق التغييرات على تنشيط/إلغاء تنشيط المكون الإضافي وتكويناتها في عملية المعالجة التالية دون إعادة تشغيل الخدمة.*)XSPACEbreakX
+│ ├ **أوامر git** (التحكم الصوتي لإرسال أوامر git) 🐧 🍏 🪟XSPACEbreakX
+│ ├ **wannweil** (خريطة الموقع ألمانيا-Wannweil) 🐧 🍏 🪟XSPACEbreakX
+│ ├ **البرنامج المساعد للبوكر (مسودة)** (التحكم الصوتي لتطبيقات البوكر) 🐧 🍏 🪟XSPACEbreakX
+│ └ **0 A.D. Plugin (مسودة)** (التحكم الصوتي في لعبة 0 A.D) 🐧 XSPACEbreakX
+├─ **مخرج الصوت عند بدء الجلسة أو إنهائها** (الوصف في انتظار المراجعة) 🐧 XSPACEbreakX
+├─ **مخرجات الكلام لضعاف البصر** (الوصف في انتظار المراجعة) 🐧 🍏 🪟XSPACEbreakX
+└─ **نموذج SL5 Aura Android** (غير متصل بالإنترنت بشكل كامل حتى الآن) 📱XSPACEbreakX
+
+                                                                          ---
+
+*(ملاحظة: توزيعات Linux المحددة مثل Arch (ARL) أو Ubuntu (UBT) مغطاة برمز Linux 🐧 العام. قد تتم تغطية الفروق التفصيلية في أدلة التثبيت.)*
+                                                          </التفاصيل>
+
+                                                           <التفاصيل>
+<summary>انقر لرؤية الأمر المستخدم لإنشاء قائمة البرامج النصية هذه</summary>
+
+```bash
+{ find . -maxdepth 1 -type f \( -name "aura_engine.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
+```
+                                                          </التفاصيل>
+
+                                                           <التفاصيل>
+        <summary>نظرة عامة رسومية على البنية</summary>
+
+                      ### نظرة عامة رسومية على البنية:
+
+                                                                   ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
+
+                                              اكس سبيس بريك اكس
+                                                                   ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
+                                                          </التفاصيل>
+
+                                                           <التفاصيل>
+                         <summary>النماذج المستخدمة</summary>
+
+                                    ## الموديلات المستعملة:
+
+توصية: استخدم النماذج من Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (ربما أسرع)
+
+يجب حفظ هذه النماذج المضغوطة في مجلد "النماذج/".
+
+                                                 `mv vosk-model-*.zipmodels/`
+
+
+| نموذج | الحجم | معدل/سرعة خطأ الكلمة | ملاحظات | الترخيص |
+| -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8 جيجا | 5.69 (اختبار الكلام المكتبي النظيف)<br/>6.05 (tedlium)<br/>29.78 (مركز الاتصال) | نموذج إنجليزي أمريكي عام دقيق | أباتشي 2.0 |
+| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9 جرام | 9.83 (اختبار Tuda-de)<br/>24.00 (بودكاست)<br/>12.82 (اختبار السيرة الذاتية)<br/>12.42 (مل)<br/>33.26 (mtedx) | الموديل الألماني الكبير للهواتف والسيرفرات | أباتشي 2.0 |
+
+يقدم هذا الجدول نظرة عامة على نماذج Vosk المختلفة، بما في ذلك حجمها ومعدل خطأ الكلمات أو سرعتها والملاحظات ومعلومات الترخيص.
+
+
+                                        - **نماذج فوسك:** [Vosk-Model List](https://alphacephei.com/vosk/models)
+                                       - **أداة اللغة:**XSPACEbreakX
+                                                             (6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
+
+                               **ترخيص أداة اللغة:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+                                                                          ---
+                                                          </التفاصيل>
+
+                                                   ## ادعم المشروع
+إذا وجدت هذه الأداة مفيدة، يرجى التفكير في شراء القهوة لنا! يساعد دعمك في تعزيز التحسينات المستقبلية.
+
+                                     [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
+
+                                                                   [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)

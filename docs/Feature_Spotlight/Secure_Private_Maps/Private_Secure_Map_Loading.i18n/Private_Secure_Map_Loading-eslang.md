@@ -52,7 +52,7 @@ Aquí es donde el sistema se vuelve "autocurativo":
 ### Paso 1: Estructura del directorio
 Cree una estructura de carpetas como esta:
 ```text
-config/maps/private/
+config/maps/_private/
 ├── .auth_key.py          # Contains your password (e.g. # MySecretPass)
 └── private_maps.zip      # The encrypted archive
 ```
@@ -83,7 +83,7 @@ def on_reload():
 
 Cuando se configura correctamente, `git status` **solo** mostrará:
 ```text
-modified:   config/maps/private/private_maps.zip
+modified:   config/maps/_private/private_maps.zip
 ```
 La carpeta `_private_maps` y el archivo `.auth_key.py` nunca son rastreados.
 ```

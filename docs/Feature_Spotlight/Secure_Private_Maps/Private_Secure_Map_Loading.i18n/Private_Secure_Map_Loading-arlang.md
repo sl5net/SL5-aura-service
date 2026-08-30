@@ -52,7 +52,7 @@
                                     ### الخطوة 1: بنية الدليل
                            قم بإنشاء بنية مجلد مثل هذا:
 ```text
-config/maps/private/
+config/maps/_private/
 ├── .auth_key.py          # Contains your password (e.g. # MySecretPass)
 └── private_maps.zip      # The encrypted archive
 ```
@@ -83,7 +83,7 @@ def on_reload():
 
 عند الإعداد بشكل صحيح، ستعرض `git Status` **فقط**:
 ```text
-modified:   config/maps/private/private_maps.zip
+modified:   config/maps/_private/private_maps.zip
 ```
 لا يتم تعقب المجلد `_private_maps` والملف `.auth_key.py` أبدًا.
 ```

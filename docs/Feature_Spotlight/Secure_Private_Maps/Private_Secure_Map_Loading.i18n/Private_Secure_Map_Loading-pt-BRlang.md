@@ -52,7 +52,7 @@ Se estes estiverem faltando, o sistema **cancela**.
 ### Etapa 1: Estrutura de diretório
 Crie uma estrutura de pastas como esta:
 ```text
-config/maps/private/
+config/maps/_private/
 ├── .auth_key.py          # Contains your password (e.g. # MySecretPass)
 └── private_maps.zip      # The encrypted archive
 ```
@@ -85,7 +85,7 @@ Quando configurado corretamente, `git status` irá **apenas** mostrar:
 __CODE_BLOCO_3__
 A pasta `_private_maps` e o arquivo `.auth_key.py` nunca são rastreados.
 ```text
-modified:   config/maps/private/private_maps.zip
+modified:   config/maps/_private/private_maps.zip
 ```
 # Guia do desenvolvedor: ganchos do ciclo de vida do plug-in
 
