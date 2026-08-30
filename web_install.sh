@@ -2,9 +2,10 @@
 set -e
 
 APP_NAME="sl5-aura-service"
-INSTALL_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/${APP_NAME}"
-REPO_TAR_URL="https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.tar.gz"
-
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export INSTALL_DIR="${XDG_DATA_HOME}/${APP_NAME}"
+REPO_BRANCH="${AURA_BRANCH:-master}"
+REPO_TAR_URL="https://github.com/sl5net/SL5-aura-service/archive/refs/heads/${REPO_BRANCH}.tar.gz"
 echo "============================================"
 echo "   SL5 Aura Service - Web One-Liner Setup   "
 echo "============================================"
