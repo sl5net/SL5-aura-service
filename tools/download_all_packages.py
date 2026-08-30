@@ -286,8 +286,18 @@ def main():
             "Examples: --exclude de en  OR  --exclude vosk-model-de-0.21 vosk-model-en-us-0.22"
         )
     )
+    # args = parser.parse_args()
+    # exclude_list = [x.strip().lower() for x in args.exclude if x.strip()]
+
     args = parser.parse_args()
     exclude_list = [x.strip().lower() for x in args.exclude if x.strip()]
+    if os.environ.get("CI") == "true" or os.environ.get("GITHUB_ACTIONS") == "true":
+        for m in ['vosk-model-de-0.21', 'vosk-model-en-us-0.22']:
+            if m not in exclude_list:
+                exclude_list.append(m)
+
+
+
 
     # Detect GitHub Actions and auto-exclude large models to save time/bandwidth
     is_ci = os.getenv('GITHUB_ACTIONS') == 'true'

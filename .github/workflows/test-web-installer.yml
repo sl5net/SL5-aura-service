@@ -34,8 +34,9 @@ jobs:
         shell: bash
         run: |
           START_TS=$(date +%s)
-          cat web_install.sh | bash -s -- --non-interactive
+          AURA_BRANCH="${{ github.head_ref || github.ref_name }}" cat web_install.sh | AURA_BRANCH="${{ github.head_ref || github.ref_name }}" bash -s -- --non-interactive
           END_TS=$(date +%s)
+
           DURATION=$((END_TS - START_TS))
 
           INSTALL_DIR="$HOME/.local/share/sl5-aura-service"
