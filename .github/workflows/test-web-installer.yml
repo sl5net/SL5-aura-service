@@ -33,7 +33,7 @@ jobs:
         shell: bash
         run: |
           START_TS=$(date +%s)
-          cat web_install.sh | bash
+          cat web_install.sh | bash -s -- --non-interactive
           END_TS=$(date +%s)
           DURATION=$((END_TS - START_TS))
 

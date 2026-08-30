@@ -34,15 +34,25 @@ echo "[INFO] Launching system setup..."
 cd "${INSTALL_DIR}"
 chmod +x setup/linux_mac_setup.sh
 
-if [ -t 0 ]; then
-    # Direct execution (e.g. bash web_install.sh)
+# Check if non-interactive mode is requested via flag or env variable
+NON_INTERACTIVE_MODE=false
+for arg in "$@"; do
+    if [ "$arg" = "--non-interactive" ] || [ "$arg" = "-y" ] || [ "$arg" = "--yes" ]; then
+        NON_INTERACTIVE_MODE=true
+        break
+    fi
+done
+
+if [ "$NON_INTERACTIVE_MODE" = true ] || [ "$NON_INTERACTIVE" = "true" ]; then
+    # Explicitly non-interactive -> do not attach /dev/tty
     exec bash setup/linux_mac_setup.sh "$@"
-elif [ -e /dev/tty ] && [ -r /dev/tty ]; then
-    # Piped in a real terminal (e.g. curl ... | bash) -> Reconnect stdin to keyboard
+elif [ -t 0 ]; then
+    # Direct execution in terminal
+    exec bash setup/linux_mac_setup.sh "$@"
+elif ( : < /dev/tty ) 2>/dev/null; then
+    # Piped (curl | bash) in an interactive terminal -> reconnect stdin
     exec bash setup/linux_mac_setup.sh "$@" < /dev/tty
 else
-    # CI / Non-interactive headless environment (no TTY available)
+    # Fallback for headless environments (CI / Docker)
     exec bash setup/linux_mac_setup.sh "$@"
 fi
-
-
