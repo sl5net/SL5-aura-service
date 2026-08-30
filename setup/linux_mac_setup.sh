@@ -2,9 +2,12 @@
 # 
 # setup/linux_mac_setup.sh
 # Universal POSIX setup dispatcher for Linux and macOS.
-#
 
 set -e
+
+# Immediately terminate entire process group on single Ctrl+C
+trap 'echo -e "\n[INFO] Setup aborted by user."; kill 0 2>/dev/null; exit 130' INT TERM
+
 mkdir -p log/setup
 exec > >(tee -a "log/setup/linux_mac_setup.log") 2>&1
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)

@@ -19,10 +19,10 @@ if (Test-Path $tempZip) {
     Remove-Item -Force $tempZip
 }
 
-Write-Host "[INFO] Downloading latest repository archive..."
+Write-Host "[INFO] Downloading latest repository archive…"
 Invoke-RestMethod -Uri $zipUrl -OutFile $tempZip
 
-Write-Host "[INFO] Extracting archive..."
+Write-Host "[INFO] Extracting archive…"
 Expand-Archive -Path $tempZip -DestinationPath $tempExtract -Force
 
 $extractedRoot = Get-ChildItem -Path $tempExtract -Directory | Select-Object -First 1
@@ -35,7 +35,7 @@ Copy-Item -Path "$($extractedRoot.FullName)\*" -Destination $installDir -Recurse
 Remove-Item -Force $tempZip
 Remove-Item -Recurse -Force $tempExtract
 
-Write-Host "[INFO] Launching Windows setup..." -ForegroundColor Green
+Write-Host "[INFO] Launching Windows setup…" -ForegroundColor Green
 Set-Location -Path $installDir
 
 $batPath = Join-Path $installDir "setup\windows11_setup.bat"

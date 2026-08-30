@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# Immediately terminate entire process group on single Ctrl+C
+trap 'echo -e "\n[INFO] Installation aborted by user."; kill 0 2>/dev/null; exit 130' INT TERM
+
 APP_NAME="sl5-aura-service"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export INSTALL_DIR="${XDG_DATA_HOME}/${APP_NAME}"
@@ -24,14 +27,14 @@ fi
 
 mkdir -p "${INSTALL_DIR}"
 
-echo "[INFO] Downloading and extracting latest release..."
+echo "[INFO] Downloading and extracting latest release…"
 if command -v curl >/dev/null 2>&1; then
     curl -sSL "${REPO_TAR_URL}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1
 elif command -v wget >/dev/null 2>&1; then
     wget -qO- "${REPO_TAR_URL}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1
 fi
 
-echo "[INFO] Launching system setup..."
+echo "[INFO] Launching system setup…"
 cd "${INSTALL_DIR}"
 chmod +x setup/linux_mac_setup.sh
 
