@@ -19,10 +19,7 @@
 try:
     # 1. TRY: Relative import (for python -m ... call)
 
-    from . import normalizer
-
-    from . import cache_core
-    from . import utils
+    from . import cache_core, normalizer, utils
 
 except ImportError:
     # 2. FALLBACK: Easy import (for plugin loaders)
@@ -34,34 +31,29 @@ except ImportError:
     # are all in the same folder as ask_ollama.py.
 
 
-    import normalizer
     import cache_core
+    import normalizer
     import utils
 
-import re
-import json
-# import os
-
-import sys
-import logging
-# import inspection
-
-import sqlite3
 import hashlib
-# import datetime
+import json
+import logging
+import re
 
-# import random
+# import inspection
+import sqlite3
 
-from pathlib import Path
+# import os
+import sys
+
 # import yake
-
-
-
 import time
-
-from urllib.error import HTTPError, URLError
-
 import urllib.request
+
+# import datetime
+# import random
+from pathlib import Path
+from urllib.error import HTTPError, URLError
 
 # https://translate.google.com/translate?hl=en&sl=de&tl=en&u=https://ollama.com/download
 
@@ -287,7 +279,6 @@ def save_to_history(user_text, ai_text):
             json.dump(history, f, ensure_ascii=False, indent=2)
     except Exception as e:
         utils.log_debug(f"{e}")
-        pass
 
 
 def secDauerSeitExecFunctionStart(reset=False):
@@ -417,7 +408,6 @@ def execute(match_data):
                     utils.MEMORY_FILE.unlink()
                 except Exception as e:
                     utils.log_debug(f"{e}")
-                    pass
             return "Gedächtnis gelöscht."
 
         # --- INSTANT MODE CHECK ---
@@ -460,7 +450,7 @@ def execute(match_data):
             "```\n"
         )
 
-        AURA_TECH_PROFILE = (  # noqa: F841
+        AURA_TECH_PROFILE = (
             "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte EXTREM kurz.\n\n"
 
             "WICHTIGSTE REGELN:\n"
@@ -833,7 +823,7 @@ def execute(match_data):
 
     except Exception as e:
         utils.log_debug(f"API Error: {e}")
-        return f"Interner Fehler: {str(e)}"
+        return f"Interner Fehler: {e!s}"
 
 
 

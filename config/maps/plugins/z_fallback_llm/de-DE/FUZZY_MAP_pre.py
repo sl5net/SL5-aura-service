@@ -1,9 +1,11 @@
 # config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py
-from scripts.py.func.get_project_root import get_aura_project_root
 import os
 import re
 import runpy
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
 CONFIG_DIR = Path(__file__).parent
 
 
@@ -39,7 +41,6 @@ Es gibt keine Accounts, Passwörter, Logins.
         }
     ),
 
-#
 
 
 # 1. Einfache Begrüßung mit Namen (Hallo/Hi [Name])

@@ -13,13 +13,10 @@
 
 # config/maps/wake-up/es-DE/FUZZY_MAP_pre.py
 
-import re # noqa: F401
-# desde pathlib importar ruta como p; importar sistema operativo como o # noqa: E702
+import re
 
-# con open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
-
-
-
+# desde pathlib importar ruta como p; importar sistema operativo como o
+# con open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 from pathlib import Path
 
 # Este mapa utiliza un enfoque híbrido:
@@ -35,7 +32,6 @@ from pathlib import Path
 # 2. Si no hay coincidencias de expresiones regulares, se realiza una coincidencia difusa simple en las reglas restantes.
 
 
-#
 
 CONFIG_DIR = Path(__file__).parent
 
@@ -59,7 +55,6 @@ wakeword = r'{nonsense_word}(telescopio|ocurre|tedesco|violoncelista|tenis|turí
 # STT activo. Se eliminó la bandera de silencio. Lo que tiene, escupe
 
 
-#
 
 FUZZY_MAP_pre = [
 
@@ -82,7 +77,6 @@ FUZZY_MAP_pre = [
 
     # podías verte quedándote dormido
 
-    #
 
     # EXAMPLE: quedarse dormido malas interpretaciones fonéticas 🌵
 

@@ -15,7 +15,8 @@
 
 # config/languagetool_server/maps/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
+
 # Formato de regla: ('texto de reemplazo', r'patrón', umbral, banderas)
 
 # Lógica: De arriba hacia abajo, el primer golpe gana. Fullmatch (^...$) detiene la canalización.

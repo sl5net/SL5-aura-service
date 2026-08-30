@@ -1,8 +1,10 @@
 # scripts/py/func/process_text_in_background_helper/load_module_from_path.py
-import os
-from pathlib import Path
 import importlib.util
 import logging
+import os
+from pathlib import Path
+
+
 def load_module_from_path(script_path, run_mode_override=None):
 
     path = Path(script_path)

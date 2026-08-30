@@ -3,22 +3,20 @@
 #import re
 #import hashlib
 
-import sqlite3
+import datetime
 import hashlib
 import random
-import datetime
-
+import sqlite3
 
 try:
     # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
 
 
-    from . import utils
-    from . import normalizer
+    from . import normalizer, utils
 
 except ImportError:
-    import utils # noqa: F401
-    import normalizer # noqa: F401
+    import normalizer  # noqa: F401
+    import utils
 
 
 #from pathlib import Path
@@ -163,4 +161,3 @@ def update_prompt_stats(prompt_hash):
         conn.close()
     except Exception as e:
         print(f'cache_core.py:165 Exception: {e} => pass')
-        pass

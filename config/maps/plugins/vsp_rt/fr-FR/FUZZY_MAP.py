@@ -13,7 +13,7 @@
 
 # config/maps/plugins/vsp_rt/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re
 
 # Cette carte utilise une approche hybride :
 
@@ -44,7 +44,7 @@ FUZZY_MAP = [
 
     # EXAMPLE: ergol décrié
 
-    ('Ergoltherabpeut', r'\b(ergol décrié)\b', 70, {'command_flags': re.IGNORECASE}),  #
+    ('Ergoltherabpeut', r'\b(ergol décrié)\b', 70, {'command_flags': re.IGNORECASE}),
 
 
 ]

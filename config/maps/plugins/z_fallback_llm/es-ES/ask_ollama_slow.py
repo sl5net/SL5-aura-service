@@ -19,10 +19,7 @@
 try:
     # 1. INTENTAR: Importación relativa (para python -m... llamada)
 
-    from . import normalizer
-
-    from . import cache_core
-    from . import utils
+    from . import cache_core, normalizer, utils
 
 except ImportError:
     # 2. FALLBACK: Importación sencilla (para cargadores de complementos)
@@ -34,34 +31,29 @@ except ImportError:
     # están todos en la misma carpeta que Ask_ollama.py.
 
 
-    import normalizer
     import cache_core
+    import normalizer
     import utils
 
-import re
-import json
-# importar sistema operativo
-
-import sys
-import logging
-# inspección de importación
-
-import sqlite3
 import hashlib
-# importar fecha y hora
+import json
+import logging
+import re
 
-# importar aleatoriamente
+# inspección de importación
+import sqlite3
 
-from pathlib import Path
+# importar sistema operativo
+import sys
+
 # importar yake
-
-
-
 import time
-
-from urllib.error import HTTPError, URLError
-
 import urllib.request
+
+# importar fecha y hora
+# importar aleatoriamente
+from pathlib import Path
+from urllib.error import HTTPError, URLError
 
 # https://ollama.com/download
 
@@ -287,7 +279,6 @@ def save_to_history(user_text, ai_text):
             json.dump(history, f, ensure_ascii=False, indent=2)
     except Exception as e:
         utils.log_debug(f"{e}")
-        pass
 
 
 def secDauerSeitExecFunctionStart(reset=False):
@@ -417,7 +408,6 @@ def execute(match_data):
                     utils.MEMORY_FILE.unlink()
                 except Exception as e:
                     utils.log_debug(f"{e}")
-                    pass
             return "Gedächtnis gelöscht."
 
         # --- VERIFICACIÓN DEL MODO INSTANTÁNEO ---
@@ -460,7 +450,7 @@ def execute(match_data):
             "```\n"
         )
 
-        AURA_TECH_PROFILE = (  # noqa: F841
+        AURA_TECH_PROFILE = (
             "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte EXTREM kurz.\n\n"
 
             "WICHTIGSTE REGELN:\n"
@@ -833,7 +823,7 @@ def execute(match_data):
 
     except Exception as e:
         utils.log_debug(f"API Error: {e}")
-        return f"Interner Fehler: {str(e)}"
+        return f"Interner Fehler: {e!s}"
 
 
 

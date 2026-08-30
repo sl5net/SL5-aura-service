@@ -19,19 +19,17 @@ system conditions, making it robust and responsive.
 """
 
 import math
-
+import re
 import threading
 
 import vosk
-import re
+from vosk import SetLogLevel
 
 from .check_memory_critical import check_memory_critical
-from .notify import notify
 from .config.dynamic_settings import settings
-
+from .notify import notify
 from .update_search_default_lang_when_exist import update_search_default_lang_when_exist
 
-from vosk import SetLogLevel
 SetLogLevel(-1)
 # SetLogLevel(WARNINGS)
 # vosk.SetLogLevel(-1) # sadly it changes nothing (se, 15.12.'25 15:10 Mon )
@@ -177,8 +175,8 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             loaded_models[lang_key] = loaded_model
 
             # Sync model_name.txt with actually loaded model
-            from pathlib import Path
             import os
+            from pathlib import Path
             tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
             project_root = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text(encoding="utf-8").strip())
             model_name_file = project_root / "config" / "model_name.txt"

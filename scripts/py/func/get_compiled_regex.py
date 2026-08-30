@@ -1,4 +1,5 @@
 import re
+
 from scripts.py.func.config.regex_cache import REGEX_COMPILE_CACHE
 
 # def get_compiled_regex(logger_instance, pattern, flags=0):

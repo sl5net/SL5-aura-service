@@ -19,10 +19,7 @@
 try:
     # 1. ESSAYEZ : importation relative (pour l'appel python -m ...)
 
-    from . import normalizer
-
-    from . import cache_core
-    from . import utils
+    from . import cache_core, normalizer, utils
 
 except ImportError:
     # 2. FALLBACK : importation facile (pour les chargeurs de plugins)
@@ -34,34 +31,29 @@ except ImportError:
     # sont tous dans le même dossier que Ask_ollama.py.
 
 
-    import normalizer
     import cache_core
+    import normalizer
     import utils
 
-import re
-import json
-# importer le système d'exploitation
-
-import sys
-import logging
-# inspection des importations
-
-import sqlite3
 import hashlib
-# importer la date et l'heure
+import json
+import logging
+import re
 
-# importer au hasard
+# inspection des importations
+import sqlite3
 
-from pathlib import Path
+# importer le système d'exploitation
+import sys
+
 # importer du yake
-
-
-
 import time
-
-from urllib.error import HTTPError, URLError
-
 import urllib.request
+
+# importer la date et l'heure
+# importer au hasard
+from pathlib import Path
+from urllib.error import HTTPError, URLError
 
 # https://ollama.com/download
 
@@ -287,7 +279,6 @@ def save_to_history(user_text, ai_text):
             json.dump(history, f, ensure_ascii=False, indent=2)
     except Exception as e:
         utils.log_debug(f"{e}")
-        pass
 
 
 def secDauerSeitExecFunctionStart(reset=False):
@@ -417,7 +408,6 @@ def execute(match_data):
                     utils.MEMORY_FILE.unlink()
                 except Exception as e:
                     utils.log_debug(f"{e}")
-                    pass
             return "Gedächtnis gelöscht."
 
         # --- VÉRIFICATION INSTANTANÉE DU MODE ---
@@ -460,7 +450,7 @@ def execute(match_data):
             "```\n"
         )
 
-        AURA_TECH_PROFILE = (  # noqa: F841
+        AURA_TECH_PROFILE = (
             "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte EXTREM kurz.\n\n"
 
             "WICHTIGSTE REGELN:\n"
@@ -833,7 +823,7 @@ def execute(match_data):
 
     except Exception as e:
         utils.log_debug(f"API Error: {e}")
-        return f"Interner Fehler: {str(e)}"
+        return f"Interner Fehler: {e!s}"
 
 
 

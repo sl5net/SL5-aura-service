@@ -1,5 +1,5 @@
-import re
 import importlib.util
+import re
 
 file_path = "config/maps/plugins/game/0ad/select/de-DE/FUZZY_MAP_pre.py"
 spec = importlib.util.spec_from_file_location("fuzzy_map", file_path)

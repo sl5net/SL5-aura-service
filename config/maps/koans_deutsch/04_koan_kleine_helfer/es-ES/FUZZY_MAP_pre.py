@@ -88,6 +88,5 @@ FUZZY_MAP_pre = [
 
     # ¿También puedes hacer otras preguntas? ¿Quizás le hayan emitido su propio número completo?
 
-    #
 
 ]

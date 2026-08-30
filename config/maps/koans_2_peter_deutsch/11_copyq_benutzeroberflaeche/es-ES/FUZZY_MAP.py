@@ -13,7 +13,8 @@
 
 # config/maps/koans_2_peter_deutsch/11_copyq_nutzeroberflaeche/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
+
 # Formato de regla: ('texto de reemplazo', r'patrón', umbral, banderas)
 
 # Lógica: De arriba hacia abajo, el primer golpe gana. Fullmatch (^...$) detiene la canalización.

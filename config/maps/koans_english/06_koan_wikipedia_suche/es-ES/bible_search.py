@@ -17,11 +17,11 @@
 
 
 import logging
+
 # importar re
-
 from pathlib import Path
-from rapidfuzz import fuzz
 
+from rapidfuzz import fuzz
 
 # --- Configurar registro ---
 

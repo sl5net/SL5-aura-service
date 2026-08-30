@@ -1,12 +1,11 @@
 import re
 from pathlib import Path
-from typing import Optional
 
 
 def update_search_default_lang_when_exist(
     project_root: Path,
     lang_code: str,
-    logger: Optional[object] = None,
+    logger: object | None = None,
 ) -> bool:
     """Safely updates the default language in docs/search_online.html if the file exists."""
     if not project_root or not lang_code:

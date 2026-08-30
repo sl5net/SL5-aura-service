@@ -1,9 +1,10 @@
 # config/maps/plugins/0_aura_quickstart/en-US/FUZZY_MAP_pre.py
 # TIP: Just type a word below this line (e.g., banana) and save.
-from scripts.py.func.get_project_root import get_aura_project_root
 import os
 import re
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 CONFIG_DIR = Path(__file__).parent
 # Using your robust root detection

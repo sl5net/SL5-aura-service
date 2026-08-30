@@ -16,18 +16,12 @@
 # its using https://github.com/scrollmapper/bible_databases/tree/master/formats/sqlite
 
 
-import re # noqa: F401
-# from pathlib import Path as p;import os as o # noqa: E702
+import re
 
-# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
-
-
-
+# from pathlib import Path as p;import os as o
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 # Rule format: ('replacement text', r'pattern', threshold, flags)
-
 # Logic: Top-down, first hit wins. Fullmatch (^...$) stops the pipeline.
-
-
 from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
@@ -70,7 +64,6 @@ FUZZY_MAP_pre = [
     # ('search in Ruth chapter 1 verse 1', fr'^.*$', 90, {'command_flags': re.IGNORECASE,'skip_list': ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
 
-    #
 
     # TODO: What happens now?
 

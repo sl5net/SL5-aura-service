@@ -1,7 +1,8 @@
 # scripts/py/func/checks/check_all_maps_syntax.py
+import ast
 import os
 import sys
-import ast
+
 
 def check_syntax(file_path):
     # log.info(f"Checking syntax for {file_path}") # Using print for direct feedback

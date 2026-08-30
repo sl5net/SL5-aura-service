@@ -17,7 +17,7 @@
 
 # https://regex101.com/
 
-import re # noqa: F401
+import re
 
 # Cette carte utilise une approche hybride :
 

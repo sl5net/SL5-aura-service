@@ -1,13 +1,12 @@
 # scripts/py/func/auto_fix_module.py
+import ast
 import os
 import re
-import ast
+import shutil
 import subprocess
 import time
-import shutil
 
 from scripts.py.func.config.dynamic_settings import settings
-
 
 
 def speak(text):
@@ -44,7 +43,7 @@ def try_auto_fix_module(file_path, exception_obj, logger):
         return False
 
 
-    ln = 32 # noqa: E741
+    ln = 32
     error_msg = str(exception_obj)
     if isinstance(exception_obj, TypeError) and "not callable" in error_msg:
         logger.error(f"L{ln}: 🚨 Critical Syntax Hint  …{str(file_path)[-35:]}:")

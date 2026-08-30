@@ -17,16 +17,14 @@
 
 import datetime
 import os
+
 # import torch
 
 
 try:
     # 1. TRY: Relative import (for python -m ... call)
 
-    from . import normalizer
-
-    from . import cache_core
-    from . import utils
+    from . import cache_core, normalizer, utils
 
 except ImportError:
     # 2. FALLBACK: Easy import (for plugin loaders)
@@ -38,35 +36,29 @@ except ImportError:
     # are all in the same folder as ask_ollama.py.
 
 
-    import normalizer
     import cache_core
+    import normalizer
     import utils
 
-import re
-import json
-# import os
-
-import sys
-import logging
-# import inspection
-
-import sqlite3
 import hashlib
-# import datetime
+import json
+import logging
+import re
 
-# import random
+# import inspection
+import sqlite3
 
-from pathlib import Path
+# import os
+import sys
+
 # import yake
-
-
-
 import time
-
-from urllib.error import HTTPError, URLError
-
 import urllib.request
 
+# import datetime
+# import random
+from pathlib import Path
+from urllib.error import HTTPError, URLError
 
 # from sentence_transformers import SentenceTransformer, util
 
@@ -354,6 +346,7 @@ def get_semantic_match(user_text):
             # 3. Load vector from BLOB (no model.encode here!)
 
             import pickle
+
             import torch
             db_embedding = torch.from_numpy(pickle.loads(blob)).to(user_embedding.device)
             # db_embedding = model.encode(user_text, convert_to_tensor=True)
@@ -1057,7 +1050,7 @@ def execute(match_data):
             "```"
         )
 
-        AURA_TECH_PROFILE = (  # noqa: F841
+        AURA_TECH_PROFILE = (
             "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte EXTREM kurz.\n\n"
 
             "WICHTIGSTE REGELN:\n"
@@ -1564,7 +1557,7 @@ def execute(match_data):
 
     except Exception as e:
         utils.log_debug(f"API Error: {e}")
-        return f"Interner Fehler: {str(e)} (2026-0506-0626)"
+        return f"Interner Fehler: {e!s} (2026-0506-0626)"
 
 
 

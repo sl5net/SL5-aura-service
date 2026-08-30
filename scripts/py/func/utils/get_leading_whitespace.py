@@ -1,4 +1,6 @@
 import re
+
+
 def get_leading_whitespace_of_line(line: str) -> str:
     m = re.match(r"\s*", line)
     return m.group() if m else ""

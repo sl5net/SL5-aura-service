@@ -22,30 +22,24 @@ How to Use:
     -   Call it with a logger: `mute_microphone(logger)`
 """
 
+import logging
 import os
-import sys
+import platform
 import shutil
+import subprocess
+import sys
 
 #import array
 #import math
-
 import threading
-import subprocess
-import logging
-
-from .config.dynamic_settings import settings
-
-
-import platform
-
 from pathlib import Path
 
 # perf(audio): optimize Windows interaction latency
 # - Moved heavy imports (comtypes, pycaw, numpy, pygame) to global scope.
 # (24.12.'25 18:34 Wed, https://github.com/sl5net/SL5-aura-service/commit/c95c4929f77c950ae59a7eb2ac38dc76b616d1e8 )
-
-
 from typing import Any
+
+from .config.dynamic_settings import settings
 
 pygame: Any = None
 np: Any = None
@@ -86,6 +80,7 @@ def _init_audio_dependencies():
 if os.name == 'nt':
     try:
         import winsound
+
         import comtypes
         from comtypes import CLSCTX_ALL
         from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
@@ -95,7 +90,6 @@ if os.name == 'nt':
             comtypes.CoInitialize()
         except Exception as e202604030126:
             print(f'error: {e202604030126}')
-            pass
     except ImportError:
         winsound = None
         logging.error("Windows audio dependencies (pycaw/comtypes) not found.")
@@ -106,7 +100,7 @@ logger = logging.getLogger(__name__)
 
 
 # Initialize the function as a placeholder for Windows to avoid NameError
-# def create_bent_sine_wave_sound(*args, **kwargs):  # noqa: F811
+# def create_bent_sine_wave_sound(*args, **kwargs):
 #     """
 #     Placeholder function for Windows and environments where Pygame is not used.
 #     Prevents NameError when sound functions are called.
@@ -120,7 +114,7 @@ logger = logging.getLogger(__name__)
 
 
 # scripts/py/func/audio_manager.py:54
-def speak_inclusive_fallback(text_to_speak, language_code): # noqa: F811
+def speak_inclusive_fallback(text_to_speak, language_code):
     """TTS helper for plugins"""
     if not settings.PLUGIN_HELPER_TTS_ENABLED:
         logger.info("no PLUGIN_HELPER_TTS_ENABLED > skipping audio-speak …")
@@ -251,7 +245,7 @@ if (sys.platform != "win32"
         #
         #     return pygame.mixer.Sound(samples)
 
-        # def create_bent_sine_wave_sound(  # noqa: F811
+        # def create_bent_sine_wave_sound(
         #         start_freq,
         #         end_freq,
         #         duration_ms,
@@ -510,7 +504,6 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
                 pygame.mixer.quit()
             except Exception as e2:
                 if logger: logger.info(f"424: {e2}")
-                pass
             continue # Try next channel setting or exit to winsound
 
     # FINAL FALLBACK: Never forget the Beep!
@@ -530,7 +523,7 @@ def _play_bent_sine_wave_or_beep(start_freq, end_freq, duration_ms, volume, logg
 # that's needed !!! from
 # scripts/py/func/main.py", line 97 !!
 # s, 29.3.'26 22:07 Sun
-def sound_program_loaded(): # noqa: F811
+def sound_program_loaded():
     if not getattr(settings, 'soundProgramLoaded', False):
         return
     _play_bent_sine_wave_or_beep(

@@ -43,7 +43,6 @@ FUZZY_MAP_pre = [
 
     # 1 2 3 a 2 3 test
 
-    #
 
     # EXAMPLE: b 0 b
 

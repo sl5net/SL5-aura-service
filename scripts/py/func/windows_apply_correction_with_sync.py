@@ -1,8 +1,7 @@
 import os
 import shutil
+
 # scripts/py/func/windows_apply_correction_with_sync.py
-
-
 import subprocess
 import time
 

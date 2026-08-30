@@ -1,15 +1,18 @@
 # scripts/py/func/private_map_ex.py _private_map_unpack(map_file_key: str, logger) -> bool:
 import os
-from pathlib import Path
 import shutil
 import sys
-from zipfile import ZipFile
-import pyzipper
+
 # PyZipper (~20MB):
 from io import BytesIO
+from pathlib import Path
+from zipfile import ZipFile
 
+import pyzipper
 
 from .password_extract import _extract_password
+
+
 # py/func/private_map_ex.py:13
 def _private_map_unpack(map_file_key: str, logger) -> bool:
     """

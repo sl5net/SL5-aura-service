@@ -13,9 +13,10 @@
 
 # config/maps/plugins/wannweil/de-DE/get_current_time.py
 
-from datetime import datetime
 import locale
 import random
+from datetime import datetime
+
 
 def execute(current_text):
     """

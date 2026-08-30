@@ -16,13 +16,10 @@
 # its using https://github.com/scrollmapper/bible_databases/tree/master/formats/sqlite
 
 
-import re # noqa: F401
-# depuis pathlib import Path as p;import os as o # noqa: E702
+import re
 
-# avec open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa : E702
-
-
-
+# depuis pathlib import Path as p;import os as o
+# avec open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 from pathlib import Path
 
 # ============================================================
@@ -89,7 +86,6 @@ FUZZY_MAP_pre = [
     # ('recherche dans Ruth chapitre 1 verset 1', fr'^.*$', 90, {'command_flags' : re.IGNORECASE,'skip_list' : ['fullMatchStop', 'LanguageTool', 'LT_SKIP_RATIO_THRESHOLD']}),
 
 
-    #
 
 
     # À FAIRE : Que se passe-t-il maintenant ?

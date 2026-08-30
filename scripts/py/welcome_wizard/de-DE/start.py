@@ -1,7 +1,9 @@
 # scripts/py/welcome_wizard/de-DE/start.py
-import subprocess
 import platform
 import shutil
+import subprocess
+
+
 def run(project_root):
     d = project_root / "scripts" / "search_rules"
     search_script = d / "search_rules.bat" if platform.system() == "Windows" else d / "search_rules.sh"

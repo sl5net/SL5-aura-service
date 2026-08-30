@@ -1,7 +1,9 @@
 # STT/scripts/py/func/checks/check_badges.py
 import re
 import sys
+
 import requests
+
 
 def find_badge_urls(content):
     """Finds all GitHub Actions badge URLs in the README content."""

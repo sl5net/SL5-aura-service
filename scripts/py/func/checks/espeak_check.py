@@ -1,6 +1,7 @@
 import shutil
 import subprocess
 
+
 def find_espeak_candidates():
     candidates = ["espeak-ng", "espeak"]
     # On Windows someone might have espeak.exe explicitly, but shutil.which handles extensions

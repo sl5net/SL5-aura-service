@@ -14,7 +14,7 @@
 # configmaps/koans deutsch/12_private_macros_demo/de-DE/FUZZY_MAP_pre.py
 
 
-import re # noqa: F401
+import re  # noqa: F401
 
 # NOTA: Lea las instrucciones de práctica en el archivo principal de Markdown:
 

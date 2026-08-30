@@ -1,11 +1,11 @@
 import sys
 
-
 from scripts.py.func.get_project_root import get_aura_project_root
 
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 import logging
+
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger("trace_rules")
 
@@ -16,6 +16,7 @@ gawt.get_active_window_title_safe = lambda: "0 A.D."
 ptib.get_active_window_title_safe = lambda: "0 A.D."
 
 from scripts.py.func import global_state
+
 global_state.LOGGING_ENABLED = True
 global_state.DEV_MODE_all_processing = 1
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # scripts/py/set_secrets_to_DEFAULT_CONTENT.py
-from pathlib import Path
-import tempfile
 import os
+import tempfile
+from pathlib import Path
 
 SECRETS_PATH = Path(".secrets")
 DEFAULT_CONTENT = """

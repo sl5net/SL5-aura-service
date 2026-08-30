@@ -1,9 +1,9 @@
 # config/settings.py
 # Central configuration for the application
 # please see also: settings_local.py_Example.txt
-from scripts.py.func.determine_current_user import determine_current_user
 import os
 
+from scripts.py.func.determine_current_user import determine_current_user
 
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
@@ -248,7 +248,6 @@ SPEECH_PAUSE_TIMEOUT = 1
 
 # Standardwert 2
 
-#
 
 # test start:
 # 1.2.'26 16:35 Sun cpu 6%,

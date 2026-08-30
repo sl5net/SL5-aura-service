@@ -1,10 +1,11 @@
 # /de-DE/run_doc_search.py
-from scripts.py.func.get_project_root import get_aura_project_root
+import os
 import re
 import subprocess
-import os
 import time
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 
 def execute(match_data):
@@ -41,7 +42,6 @@ def execute(match_data):
 
     docs_dir = 'config'
     print(f'hardcoded docs_dir: {docs_dir} , dirpath: {dirpath_spoken}')
-    #
 
     current_lang = Path(__file__).parent.name.split("-")[0]
     file_filter = f"*-{current_lang}lang.md"

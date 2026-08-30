@@ -13,7 +13,7 @@
 
 # config/maps/wake-up/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
 
 # Cette carte utilise une approche hybride :
 

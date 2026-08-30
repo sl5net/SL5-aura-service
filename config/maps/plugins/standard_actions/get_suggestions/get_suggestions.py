@@ -2,24 +2,25 @@
 #!/usr/bin/env python3
 # file get_suggestions.py
 # Oben NUR standard imports:
-import sys
 import logging
+import sys
 import time
 from pathlib import Path
-from typing import Dict, Set, List
+
 
 # Lazy load - nur wenn wirklich gebraucht:
 def _load_heavy_deps():
     global nltk, wordnet, cologne_encode, jellyfish, pyperclip, requests, subprocess, argparse, json
-    import nltk
-    from nltk.corpus import wordnet
-    from cologne_phonetics import encode as cologne_encode
-    import jellyfish
-    import pyperclip
-    import requests
-    import subprocess
     import argparse
     import json
+    import subprocess
+
+    import jellyfish
+    import nltk
+    import pyperclip
+    import requests
+    from cologne_phonetics import encode as cologne_encode
+    from nltk.corpus import wordnet
 
 # --- Constants & Configuration ---
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -79,7 +80,7 @@ def load_or_create_cache(source_path: Path, creation_func, *args):
     _cache[str(cache_path)] = data
     return data
 
-def create_thesaurus_phonetic_index(path: Path) -> Dict[str, Set[str]]:
+def create_thesaurus_phonetic_index(path: Path) -> dict[str, set[str]]:
     phonetic_index = {}
     with open(path, "r", encoding="utf-8") as f:
         for line in f:
@@ -98,7 +99,7 @@ def create_thesaurus_phonetic_index(path: Path) -> Dict[str, Set[str]]:
                     logging.warning(f"Could not generate code for '{key}'")
     return phonetic_index
 
-def create_wordlist_phonetic_index(path: Path) -> Dict[str, Set[str]]:
+def create_wordlist_phonetic_index(path: Path) -> dict[str, set[str]]:
     phonetic_index = {}
     with open(path, "r", encoding="utf-8") as f:
         for line in f:
@@ -111,7 +112,7 @@ def create_wordlist_phonetic_index(path: Path) -> Dict[str, Set[str]]:
                 phonetic_index[code] = {term}
     return phonetic_index
 
-def create_synonym_map(path: Path) -> Dict[str, Set[str]]:
+def create_synonym_map(path: Path) -> dict[str, set[str]]:
     synonyms = {}
     with open(path, "r", encoding="utf-8") as f:
         for line in f:
@@ -124,7 +125,7 @@ def create_synonym_map(path: Path) -> Dict[str, Set[str]]:
     return synonyms
 
 # --- Suggestion Logic ---
-def get_phonetically_similar(word: str, phonetic_index: Dict[str, Set[str]], language: str) -> List[str]:
+def get_phonetically_similar(word: str, phonetic_index: dict[str, set[str]], language: str) -> list[str]:
     word_lower = word.lower()
     try:
         if language == "de-DE":
@@ -140,7 +141,7 @@ def get_phonetically_similar(word: str, phonetic_index: Dict[str, Set[str]], lan
     ordered = sorted(similar_words, key=lambda w: jellyfish.levenshtein_distance(word_lower, w))
     return ordered[:NUM_SUGGESTIONS]
 
-def get_suggestions_from_lt(word: str, language: str) -> List[str]:
+def get_suggestions_from_lt(word: str, language: str) -> list[str]:
     try:
         response = requests.post(LANGUAGETOOL_BASE_URL, data={'language': language, 'text': word}, timeout=1.0)
         response.raise_for_status()
@@ -149,8 +150,8 @@ def get_suggestions_from_lt(word: str, language: str) -> List[str]:
         logging.error(f"Error querying LanguageTool: {e}")
         return []
 
-def get_english_synonyms(word: str) -> List[str]:
-    synonyms = {le.name().replace('_', ' ') for sy in wordnet.synsets(word) for le in sy.lemmas()} # noqa: E741
+def get_english_synonyms(word: str) -> list[str]:
+    synonyms = {le.name().replace('_', ' ') for sy in wordnet.synsets(word) for le in sy.lemmas()}
     synonyms.discard(word.lower())
     return list(synonyms)[:NUM_SUGGESTIONS]
 

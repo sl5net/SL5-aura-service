@@ -1,27 +1,25 @@
 # scripts/py/func/map_reloader.py
-from .config.regex_cache import clear_regex_cache
+import gc  # Added for forced garbage collection
 import importlib
-import sys
-import platform
-import gc # Added for forced garbage collection
-from pathlib import Path
 import os
+import platform
+import sys
 import time
+from pathlib import Path
 
 from pyzipper import zipfile
 
-from .config.dynamic_settings import settings
-
-
-from .log_memory_details import log4DEV
-from .private_map_ex import _private_map_unpack
 from .auto_fix_module import try_auto_fix_module
-from .validate_map_structure import check_map_health
-from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
-from .utils.aura_cache import cleanup_cache_on_reload
-
+from .config.dynamic_settings import settings
+from .config.regex_cache import clear_regex_cache
 from .get_current_language import get_current_language
 from .is_map_path_for_current_language import is_map_path_for_current_language
+from .log_memory_details import log4DEV
+from .private_map_ex import _private_map_unpack
+from .utils.aura_cache import cleanup_cache_on_reload
+from .validate_map_structure import check_map_health
+from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
+
 LAST_MODIFIED_TIMES = {}  # noqa: F824
 
 KNOWN_MAP_Names = {'FUZZY_MAP_pre', 'FUZZY_MAP', 'PUNCTUATION_MAP'}
@@ -255,7 +253,7 @@ def auto_reload_modified_maps(logger,run_mode_override):
 
 
                 except (NameError, SyntaxError) as e:
-                    ln = 215 # noqa: E741
+                    ln = 215
                     logger.error(f"L{ln}:🚨 Error in Map …{str(map_file_path)[-35:]}: {e}")
                     e_lineno = ''
                     if isinstance(e, SyntaxError):
@@ -608,7 +606,6 @@ config.maps.plugins.sandbox.de-DE.FUZZY_MAP_pre: name 'lauffe' is not defined
             except Exception as e:
                 # Suppress errors from unrelated files
                 logger.info(f'❌ 🚨 scripts/py/func/map_reloader.py:575 -> Exception: {e} <- …{str(file_path)[-45:]}')
-                pass
 
         # Move one level up
         if current_dir == stop_dir:

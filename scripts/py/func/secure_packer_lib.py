@@ -1,8 +1,9 @@
 # scripts/py/func/secure_packer_lib.py:1
-import os
 import logging
+import os
 import zipfile
 from pathlib import Path
+
 import pyzipper
 
 from scripts.py.func.password_extract import _extract_password
@@ -88,8 +89,7 @@ def execute_packing_logic(current_dir, logger):
                         file_path = Path(root) / file
                         mtime = file_path.stat().st_mtime
 
-                        if mtime > latest_source_mtime:
-                            latest_source_mtime = mtime
+                        latest_source_mtime = max(latest_source_mtime, mtime)
                             # newest_file = str(file_path)
 
                 if log_everything:

@@ -1,14 +1,11 @@
 # scripts/py/func/password_extract.py
-import re
 import os
+import re
 import sys
 
 # scripts/py/func/password_extract.py:5
 # def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
 import time
-
-from typing import Optional
-
 
 # Global cache to store results and timestamps per key_path
 # Structure: { key_path: { 'timestamp': float, 'data': bytes } }
@@ -33,7 +30,7 @@ if not hasattr(sys, CACHE_ATTR_NAME):
 
 
 # py/func/password_extract.py:33
-def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optional[bytes]:
+def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> bytes | None:
     """
     Extracts the password/content from the given key_path.
     Includes a 5-second throttling mechanism per key_path to prevent log spam and excessive I/O.
@@ -94,7 +91,7 @@ def _extract_password(key_path: str, logger, encoding: str = "utf-8") -> Optiona
 
 
 
-    def normalise(s: str) -> Optional[bytes]:
+    def normalise(s: str) -> bytes | None:
 
         if not s:
             return None

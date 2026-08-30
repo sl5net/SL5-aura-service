@@ -1,13 +1,10 @@
-import sqlite3
-import time
 import hashlib
 import json
-from pathlib import Path
-from typing import Optional
-
-
-from typing import Any, Tuple
 import os
+import sqlite3
+import time
+from pathlib import Path
+from typing import Any
 
 # --- Configuration ---
 # NOTE: Using a static name for the cache DB ensures all plugins use the same file.
@@ -29,9 +26,9 @@ def get_cache_db_path(base_dir: Path) -> Path:
 def get_cached_result(
         base_dir: Path,
         function_name: str,
-        key_args: Tuple[Any, ...],
-        ttl_seconds: Optional[int] = None,
-        logger: Optional[Any] = None) -> (str, None):
+        key_args: tuple[Any, ...],
+        ttl_seconds: int | None = None,
+        logger: Any | None = None) -> (str, None):
     # explained = """
     # Retrieves a result from the cache if it is valid (not expired).
     #
@@ -44,7 +41,6 @@ def get_cached_result(
     # Returns:
     #     The cached result (str) or None if not found or expired.
     # """
-    # noqa: F841
     db_path = get_cache_db_path(base_dir)
 
 
@@ -125,7 +121,7 @@ def get_cached_result(
     return None
 
 
-def set_cached_result(base_dir: Path, function_name: str, key_args: Tuple[Any, ...], result: str):
+def set_cached_result(base_dir: Path, function_name: str, key_args: tuple[Any, ...], result: str):
     """
     Saves a result to the cache.
     """

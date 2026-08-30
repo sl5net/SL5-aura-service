@@ -3,7 +3,8 @@
 
 import os
 import sys
-from .integrity_rules import INTEGRITY_CHECKS, UNSAFE_LINE_STARTS, FORBIDDEN_PATTERNS
+
+from .integrity_rules import FORBIDDEN_PATTERNS, INTEGRITY_CHECKS, UNSAFE_LINE_STARTS
 
 
 def check_code_integrity(project_root, logger):

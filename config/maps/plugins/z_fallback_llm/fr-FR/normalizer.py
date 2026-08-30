@@ -17,12 +17,7 @@
 import re
 
 # à partir des scripts d'importation idna.idnadata
-
-
 # importer du hashlib
-
-
-
 import sys
 from pathlib import Path
 
@@ -40,7 +35,7 @@ PROJECT_ROOT_DIR = CURRENT_FILE_DIR
 
 # try:
 
-# depuis scripts.py.func.audio_manager import * # noqa : F403 F401
+# depuis scripts.py.func.audio_manager import *
 
 # sauf ImportError comme e :
 
@@ -62,7 +57,9 @@ def _load_heavy_deps():
             raise RuntimeError(f"utils konnte nicht importiert werden: {e}")
 
     try:
-        from config.maps.plugins.standard_actions.get_suggestions import get_suggestions # noqa: F401
+        from config.maps.plugins.standard_actions.get_suggestions import (
+            get_suggestions,
+        )
     except ImportError as e:
         print(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")
         utils.log_debug(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")

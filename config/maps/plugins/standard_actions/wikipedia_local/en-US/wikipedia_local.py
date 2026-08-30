@@ -15,18 +15,17 @@
 
 # wikipedia_local.py
 
+import inspect
+import logging
+import os
+import socket
+import subprocess
+import sys
+from urllib.parse import quote, unquote
+
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import quote, unquote
-import logging
-import inspect
-import os
-import sys
 from rapidfuzz import fuzz
-
-import subprocess
-import socket
-
 
 """
 
@@ -49,8 +48,10 @@ Bei der Suche nach Krankenhaus ist der fuzzy Match nicht ausreicend, weil er sol
 
 """
 
-from pathlib import Path as p;import os as o # noqa: E702
-with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+import os as o
+from pathlib import Path as p
+
+with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 
 
 ZIM_FILE_NAME = SL5NET_AURA_PROJECT_ROOT / 'data' / 'wikipedia_de_all_mini.zim'
@@ -251,11 +252,7 @@ def execute(match_data):
         'Schröer',
         'Ralf Schröer',
         'Ralf Scharrer',
-        'Ergotherapeut',
-        'Schröer',
-        'Ergotherapie',
-        'Schröer',
-        'Ergotherapie'
+        'Ergotherapeut'
     }
     # config/maps/plugins/standard_actions/wikipedia_local/de-DE/wikipedia_local.py:220
 

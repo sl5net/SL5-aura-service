@@ -1,22 +1,20 @@
 # config/maps/plugins/anki_quiz/de-DE/anki_logic.py:1
 import json
 import os
-
 import platform
+import re
 import shutil
+import subprocess
+
 # from datetime import datetime
 from pathlib import Path
-import re
-
 
 from bs4 import BeautifulSoup
-import subprocess
 
 UNICODE_NUMS = {1: "1️", 2: "2️", 3: "3️"}
 
 
 import time
-
 
 # import time
 

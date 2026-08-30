@@ -1,10 +1,11 @@
 # PYTHONPATH=. .venv/bin/python scripts/test/maps/plugins/game/0ad/signal/de-DE/mock/verify_alarm_cache_fullmatch.py
-import sqlite3
 import logging
+import sqlite3
 from pathlib import Path
 
 import scripts.py.func.get_active_window_title as gawt
 import scripts.py.func.process_text_in_background as ptib
+
 gawt.get_active_window_title_safe = lambda: "0 A.D."
 ptib.get_active_window_title_safe = lambda: "0 A.D."
 

@@ -1,8 +1,9 @@
 # file: scripts/py/func/checks/setup_validator.py
 
+import importlib
 import os
 import sys
-import importlib
+
 # import ast
 
 # scripts/py/func/checks/validate_punctuation_map_keys.py:8

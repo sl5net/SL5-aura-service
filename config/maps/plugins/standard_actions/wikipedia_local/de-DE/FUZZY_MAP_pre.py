@@ -1,6 +1,7 @@
 # config/maps/plugins/standard_actions/wikipedia_local/de-DE/FUZZY_MAP_pre.py
-import re # noqa: F401
+import re
 from pathlib import Path
+
 CONFIG_DIR = Path(__file__).parent
 wikipedia = r"\s*\b(?:wikipedia|pedia|wiki|pedi|wik|pe|suche auf wikipedia nach)\b\s*"
 FUZZY_MAP_pre = [

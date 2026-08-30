@@ -1,10 +1,10 @@
 # config/maps/plugins/standard_actions/zip_all/de-DE/zip.pye
-import logging
-import json
-import os
-import sys
-import shutil
 import importlib.util
+import json
+import logging
+import os
+import shutil
+import sys
 from pathlib import Path
 
 # --- Configuration ---
@@ -44,14 +44,12 @@ def get_unpacker_lib():
     return module
 
 # --- JSON Helpers ---
-from pathlib import Path
-from typing import List, Any
-
-
 import tempfile
+from pathlib import Path
+from typing import Any
 
 
-def load_registry(auto_migrate: bool = True) -> List[Any]:
+def load_registry(auto_migrate: bool = True) -> list[Any]:
     if not JSON_DB_PATH.exists():
         logger.debug("Registry file %s does not exist; returning empty list", JSON_DB_PATH)
         return []
@@ -101,6 +99,7 @@ def save_registry(folder_list):
 # --- TIMESTAMPS / SEARCH LOGIC ---
 
 from enum import Enum
+
 
 class PackingStatus(Enum):
     NOT_NEEDED = 0
@@ -193,7 +192,7 @@ def check_and_unpack_zips():
 
     if not folders:
         print('2026-0109-1053')
-        return None
+        return
 
     unpacker_module = get_unpacker_lib()
     print('2026-0109-1049')
@@ -202,7 +201,7 @@ def check_and_unpack_zips():
         print('2026-0109-1107')
         print('2026-0109-1107')
         print('2026-0109-1107')
-        return None
+        return
 
     for folder_str in folders:
 
@@ -247,7 +246,7 @@ def check_and_unpack_zips():
 
                 except Exception as e:
                     logger.info(f"❌ Failed to unpack {zip_path.name}: {e}")
-                    return None
+                    return
 
                 finally:
                     # 4. Cleanup: Remove the copied key
@@ -259,8 +258,8 @@ def check_and_unpack_zips():
                             logger.warning(f"⚠️ Could not remove temp key {local_key_path}: {cleanup_err}")
             else:
                 logger.warning(f"⚠️ No password file found for {folder_path.name}. Cannot unpack.")
-                return None
-    return None
+                return
+    return
 
 
 def check_and_pack_zips():

@@ -1,16 +1,15 @@
 # scripts/py/func/config/dynamic_settings.py
 import collections.abc
 import importlib
-import subprocess
 import os
-import sys
+import platform
 import shutil
+import subprocess
+import sys
 import threading
 from datetime import datetime
 from pathlib import Path
 from threading import RLock
-import platform
-
 
 from scripts.py.func.get_project_root import get_aura_project_root
 
@@ -152,7 +151,7 @@ class DynamicSettings:
     def __new__(cls):
         with cls._lock:
             if cls._instance is None:
-                cls._instance = super(DynamicSettings, cls).__new__(cls)
+                cls._instance = super().__new__(cls)
                 logger.info(f"dynamic_settings.py: DEV_MODE={DEV_MODE}, settings.DEV_MODE = {settings.DEV_MODE}")
 
                 # if settings.DEV_MODE:
@@ -346,7 +345,7 @@ class DynamicSettings:
                         #     print(f"DEBUG: Plugin '{key}' -> Resolved Status: {resolved_status}")
 
                     # Überschreibe das alte PLUGINS_ENABLED mit dem neuen, aufgelösten Dictionary
-                    setattr(self, 'PLUGINS_ENABLED', resolved_plugins_config)
+                    self.PLUGINS_ENABLED = resolved_plugins_config
                     if settings.DEV_MODE:
                         # print("DEBUG: PLUGINS_ENABLED has been updated with resolved statuses.")
 
@@ -425,4 +424,4 @@ def speak_fallback(text_to_speak, language_code="en-US"):
 
 
 
-settings = DynamicSettings() # noqa: F811
+settings = DynamicSettings()

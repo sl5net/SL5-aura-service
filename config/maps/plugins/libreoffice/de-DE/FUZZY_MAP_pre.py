@@ -1,8 +1,9 @@
 # config/maps/plugins/libreoffice/de-DE/FUZZY_MAP_pre.py
-from scripts.py.func.get_project_root import get_aura_project_root
 import platform
 import re
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 CONFIG_DIR = Path(__file__).parent
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")

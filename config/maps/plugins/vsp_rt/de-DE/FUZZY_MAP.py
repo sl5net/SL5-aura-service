@@ -1,5 +1,5 @@
 # config/maps/plugins/vsp_rt/de-DE/FUZZY_MAP.py
-import re # noqa: F401
+import re
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
@@ -18,7 +18,7 @@ FUZZY_MAP = [
 
     # Uppercase
     # EXAMPLE: ergoltherabpeut
-    ('Ergoltherabpeut', r'\b(ergoltherabpeut)\b', 70, {'command_flags': re.IGNORECASE}),  #
+    ('Ergoltherabpeut', r'\b(ergoltherabpeut)\b', 70, {'command_flags': re.IGNORECASE}),
 
 
 ]

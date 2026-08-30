@@ -1,8 +1,8 @@
 # config/maps/plugins/standard_actions/de-DE/renumber_clipboard_text.py
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 
-import re
 import logging
+import re
 from pathlib import Path
 
 # --- Configuration ---

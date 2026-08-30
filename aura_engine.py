@@ -2,8 +2,6 @@
 import os
 import sys
 
-
-
 # == AUTO-BOOTSTRAP ============================================================================
 # --- PREREQUISITE 1: VIRTUAL ENVIRONMENT CHECK & AUTO-BOOTSTRAP ---
 # Ensures the engine actually runs inside its .venv to avoid dependency issues.
@@ -12,45 +10,42 @@ import sys
 # bootstrap_hello() # its a dummy hello to prevent removed by linter
 # === AUTO-BOOTSTRAP ===========================================================================
 from scripts.py.bootstrap_venv import bootstrap_hello
+
 bootstrap_hello()
 # === AUTO-BOOTSTRAP ===========================================================================
 
-import shutil
-import objgraph
-from datetime import datetime, timedelta
-import subprocess
-import signal
-import psutil
-import time
+#from config.settings import LANGUAGETOOL_CHECK_URL
+# Python path to ensure reliable imports on all platforms
+# This solves potential issues when running from a batch script on Windows
+# os.environ["AURA_SELF_TEST_RUNNING"] = "0"
+import atexit
+import importlib
+import logging
+import platform
 import re
-
+import shutil
+import signal
+import subprocess
 import threading
+import time
+from datetime import datetime, timedelta
+from pathlib import Path
+
+import objgraph
+import psutil
+import requests
 
 from scripts.py.func import global_state
 from scripts.py.func.config.dynamic_settings import settings
-
-#from config.settings import LANGUAGETOOL_CHECK_URL
-
-# Python path to ensure reliable imports on all platforms
-# This solves potential issues when running from a batch script on Windows
-
-# os.environ["AURA_SELF_TEST_RUNNING"] = "0"
-
-import atexit
-import requests
-import logging
-import platform
-import importlib
-from pathlib import Path
-
 from scripts.py.set_secrets_to_DEFAULT_CONTENT import demo_secrets
+
 SECRETS_PATH = Path(".secrets")
 demo_secrets()
 
 # PREREQUISITE: Write project root early to prevent import crashes in submodules when the project was moved to other folder
 
-from scripts.py.func.get_project_root import get_aura_project_root
 from scripts.py.func.create_required_folders import setup_project_structure
+from scripts.py.func.get_project_root import get_aura_project_root
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
@@ -68,7 +63,6 @@ if history_file.exists():
         history_file.unlink()
     except Exception as e:
         print(f"Ok. NP. {e}")
-        pass
 
 
 if settings.LOG_delete_on_startup:
@@ -88,10 +82,9 @@ if settings.LOG_delete_on_startup:
 
 
 from scripts.py.func.checks.check_path_length import run_path_check
-
 from scripts.py.func.checks.check_settings_usage import check_settings_usage
-
 from scripts.py.func.checks.espeak_check import espeak_check
+
 espeak_check(settings)
 
 from scripts.py.func.checks.check_settings_syntax import verify_plugin_notation
@@ -133,6 +126,7 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
 
 
 from scripts.py.func.main import main
+
 #from scripts.py.func.notify import notify
 #from scripts.py.func.cleanup import cleanup
 #from scripts.py.func.start_languagetool_server import start_languagetool_server
@@ -198,18 +192,10 @@ if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
 # sys.path.append(os.path.join(SCRIPT_DIR, 'scripts'))
 
 
-from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
-
 from scripts.py.func.checks.check_installer_sizes import check_installer_sizes
-
-
-
-
-
-
-
-
-
+from scripts.py.func.checks.validate_punctuation_map_keys import (
+    validate_punctuation_map_keys,
+)
 
 # File: STT/aura_engine.py
 # …
@@ -240,6 +226,7 @@ backup_settings_x11_input_method_OVERRIDE_PATH = settings_py_backup_PATH / 'x11_
 
 
 import os
+
 path = backup_settings_x11_input_method_OVERRIDE_PATH
 content = settings.x11_input_method_OVERRIDE
 # os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -346,9 +333,9 @@ class WindowsEmojiFilter(logging.Filter):
             '🚀': '[▲]',
             '🔁': '[⟳]',
             '📚': '[▉]',
-            '❌': '[■]',  # noqa: F601
+            '❌': '[■]',
             '⚠️': '[!]',
-            '✅': '[✓]',  #
+            '✅': '[✓]',
             '👍': '[OK]',
             '👎': '[NO]',
             '🎊': '[*]',
@@ -357,7 +344,7 @@ class WindowsEmojiFilter(logging.Filter):
             '⏹️': '[■]',
             '🚫️': '[■]',
             '🏁': '[>]',  # Start
-            '🔵': '●',  #
+            '🔵': '●',
             '🎤': '[◉]',
             '🎙️': '[▣]',
             '📢️': '[≡]',
@@ -370,7 +357,7 @@ class WindowsEmojiFilter(logging.Filter):
             '📚': '[▉]',
             '⌚': '[(-)]',
             '🗺️':'▀▄▀'
-        } # noqa: F601
+        }
         # ▣▣■
         # '🚀': '[>>>]',
 
@@ -417,6 +404,7 @@ logger = logging.getLogger()
 
 # aura_engine.py:371
 from config.filters.settings_local_log_filter import LOG_EXCLUDE, LOG_ONLY
+
 LOG_FILTER_COMPILED_LOG_ONLY = [re.compile(p) for p in LOG_ONLY]
 LOG_FILTER_COMPILED = [re.compile(p) for p in LOG_EXCLUDE]
 LOG_FILTER_SETTINGS_PATH = os.path.join(os.path.dirname(__file__), "config", "filters", "settings_local_log_filter.py")
@@ -442,6 +430,7 @@ def LOG_FILTER_refresh_if_needed():
     current_mtime = os.path.getmtime(LOG_FILTER_SETTINGS_PATH)
     if current_mtime != LOG_FILTER_last_modified:
         from importlib import reload
+
         import config.filters.settings_local_log_filter as settings202603030531
         reload(settings202603030531)
 
@@ -458,7 +447,7 @@ def LOG_FILTER_refresh_if_needed():
             LOG_FILTER_CHECK_INTERVAL_MAX
         )
 
-class SafeStreamToLogger(object):
+class SafeStreamToLogger:
     def __init__(self, logger, original_stream, file_handler):
         self.logger = logger
         self.terminal = original_stream
@@ -535,7 +524,6 @@ class SafeStreamToLogger(object):
 
                 except Exception as e202602281506:
                     print(f'lets ignore e202602281506: {e202602281506}')
-                    pass
                 finally:
                     self.is_logging = False
 
@@ -803,16 +791,19 @@ if settings.DEV_MODE :
 
 
 
-from scripts.py.func.notify import notify
+from scripts.py.func.audio_manager import stop_audio_manager
 from scripts.py.func.cleanup import cleanup
-from scripts.py.func.start_languagetool_server import start_languagetool_server, LT_ALREADY_RUNNING_SENTINEL
+from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
+from scripts.py.func.notify import notify
+from scripts.py.func.start_languagetool_server import (
+    LT_ALREADY_RUNNING_SENTINEL,
+    start_languagetool_server,
+)
+
 # from scripts.py.func.stop_languagetool_server import stop_languagetool_server
 # from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
 # from scripts.py.func.check_memory_critical import check_memory_critical
 from scripts.py.func.stop_languagetool_server import stop_languagetool_server
-from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
-
-from scripts.py.func.audio_manager import stop_audio_manager
 
 # aura_engine.py:809
 files_to_clean = [HEARTBEAT_FILE, PIDFILE, TRIGGER_FILE]
@@ -1267,7 +1258,7 @@ if getattr(settings, "copy_zip_files_when_source_newer", False):
 
 if settings.DEV_MODE:
     from scripts.py.func.checks.check_all_maps_syntax import check_folder_syntax
-    from scripts.py.func.log_memory_details import log_memory_details,log4DEV
+    from scripts.py.func.log_memory_details import log4DEV, log_memory_details
 
     check_folder_syntax(SCRIPT_DIR / 'config' ) # should also work for useer without git … for normal users
 
@@ -1290,13 +1281,13 @@ if settings.DEV_MODE:
 
 
 
-    from scripts.py.func.checks.check_example_file_is_synced import check_example_file_is_synced
-    # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
+    from scripts.py.func.checks.check_example_file_is_synced import (
+        check_example_file_is_synced,
+    )
 
+    # i call it two times because i removed the exit command when error today (2.10.'25 Thu). it's not critical but should not forget
     ##################### run_core_logic_self_test #############################
     #MODEL_NAME = MODEL_NAME_DEFAULT
-
-
     # aura_engine.py:1175
     from scripts.py.func.checks.self_tester import run_core_logic_self_test
 
@@ -1354,7 +1345,12 @@ if settings.DEV_MODE:
         check_badges(SCRIPT_DIR)
 
 
-        from scripts.py.func.checks.setup_validator import parse_all_files, validate_setup, check_for_unused_functions, check_for_frequent_calls
+        from scripts.py.func.checks.setup_validator import (
+            check_for_frequent_calls,
+            check_for_unused_functions,
+            parse_all_files,
+            validate_setup,
+        )
 
         validate_setup(SCRIPT_DIR, logger)
 
@@ -1372,8 +1368,10 @@ if settings.DEV_MODE:
 
         check_example_file_is_synced(SCRIPT_DIR)
 
-        from scripts.py.func.checks.validate_punctuation_map_keys import validate_punctuation_map_keys
         from scripts.py.func.checks.integrity_checker import check_code_integrity
+        from scripts.py.func.checks.validate_punctuation_map_keys import (
+            validate_punctuation_map_keys,
+        )
 
         check_code_integrity(SCRIPT_DIR, logger)
 

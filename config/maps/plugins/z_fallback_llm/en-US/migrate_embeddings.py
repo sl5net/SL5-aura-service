@@ -11,9 +11,10 @@
 #     regex patterns, please open a Pull Request with your improvements.
 # ==============================================================================
 
-from scripts.py.func.get_project_root import get_aura_project_root
 import logging
 import os
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 if __name__ == "__main__":
 
@@ -46,10 +47,9 @@ if __name__ == "__main__":
 
 
     import os
-    from pathlib import Path
-
     import pickle
     import sqlite3
+    from pathlib import Path
 
     from sentence_transformers import SentenceTransformer
 

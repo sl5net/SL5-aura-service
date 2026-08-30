@@ -13,8 +13,9 @@
 
 # config/maps/plugins/standard_actions/path_navigator/0ad-linux/de-DE/FUZZY_MAP_pre.py
 
-import re # noqa: F401
+import re
 from pathlib import Path
+
 CONFIG_DIR = Path(__file__).parent
 
 zad_variants = [

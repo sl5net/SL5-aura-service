@@ -41,7 +41,7 @@ def get_aura_project_root() -> Path:
     root_str = str(resolved_root)
     os.environ["SL5NET_AURA_PROJECT_ROOT"] = root_str
 
-    if "PYTHONPATH" in os.environ and os.environ["PYTHONPATH"]:
+    if os.environ.get("PYTHONPATH"):
         if root_str not in os.environ["PYTHONPATH"].split(os.pathsep):
             os.environ["PYTHONPATH"] = root_str + os.pathsep + os.environ["PYTHONPATH"]
     else:

@@ -15,16 +15,15 @@
 
 # utils.py
 
+import inspect
+
+# sistema de importación
+import logging
+import os
+import sqlite3
 import sys
 import time
-import inspect
-import os
-# sistema de importación
-
-import logging
-import sqlite3
 from pathlib import Path
-
 
 CURRENT_DIR = Path(__file__).resolve().parent
 # DB_FILE = CURRENT_DIR / "llm_cache.db"
@@ -196,7 +195,9 @@ sys.path.append(str(PROJECT_ROOT_DIR))
 try:
     # import scripts.py.func.audio_manager # no funciona para mí 4 de diciembre de 25 5:20 p.m. Jue
 
-    from scripts.py.func.audio_manager import sound_program_loaded # works 4.12.'25 17:20 Thu
+    from scripts.py.func.audio_manager import (
+        sound_program_loaded,  # works 4.12.'25 17:20 Thu
+    )
 except ImportError as e:
     print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
     log_debug(f"Fehler: Konnte 'audio_manager' no como módulo importar: {e}")
@@ -261,7 +262,7 @@ STOP_WORDS_DE_EXTREME.update({  'std',
     'zu', 'zur', 'auf', 'für', 'ist', 'sind', 'war', 'wäre', 'kannst', 'du', 'mir', 'uns',
     'ich', 'hallo', 'hey', 'bitte', 'danke', 'mal', 'eben', 'schnell', 'kurz',
     'computer', 'pc', 'system', 'aura',
-'wie', 'kann', 'zum', 'als', 'ich', 'mir', 'etc.'
+'wie', 'kann', 'zum', 'als', 'etc.'
 })
 
 
@@ -277,8 +278,7 @@ STOP_WORDS_DE_EXTREME.update({
 
     # Pronombres, adverbios y conjunciones
 
-    'dich', 'dir', 'ihm', 'ihr', 'sich', 'uns', 'euch', 'euch',
-    'auch', 'mal', 'noch', 'schon', 'denn', 'doch', 'halt', 'eben', 'vielleicht',
+    'dich', 'dir', 'ihm', 'ihr', 'sich', 'uns', 'euch', 'auch', 'mal', 'noch', 'schon', 'denn', 'doch', 'halt', 'eben', 'vielleicht',
     'etwas', 'nichts', 'alles', 'man'
 })
 

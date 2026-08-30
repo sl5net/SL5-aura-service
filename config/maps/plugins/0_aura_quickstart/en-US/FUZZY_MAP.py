@@ -17,7 +17,7 @@
 
 # https://translate.google.com/translate?hl=en&sl=de&tl=en&u=https://regex101.com/
 
-import re # noqa: F401
+import re
 
 # This map uses a hybrid approach:
 

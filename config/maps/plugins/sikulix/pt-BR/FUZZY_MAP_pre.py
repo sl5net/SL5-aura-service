@@ -1,8 +1,9 @@
 # config/maps/plugins/sikulix/pt-BR/FUZZY_MAP_pre.py
-from scripts.py.func.get_project_root import get_aura_project_root
 import os
 import re
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()

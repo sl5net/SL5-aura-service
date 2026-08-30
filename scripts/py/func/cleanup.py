@@ -1,8 +1,8 @@
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # scripts/py/func/cleanup.py
+import os
 import sys
 import traceback
-import os
 
 
 def cleanup(logger, files_to_remove):
@@ -37,9 +37,9 @@ def cleanup(logger, files_to_remove):
         # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
         # --- Automatic Check of Recent Maps ---
         logger.info("🔍 Checking syntax of 5 most recently modified map files:")
-        import pathlib
-        import datetime
         import ast
+        import datetime
+        import pathlib
 
         maps_dir = pathlib.Path("config") / "maps"
         

@@ -1,21 +1,18 @@
 # config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py
+import logging
 import os
 import re
+import subprocess
 import sys
 import time
 from pathlib import Path
-import subprocess
-import logging
 
 project_dir = Path(__file__).parent.parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(project_dir))
 
-from scripts.py.func.global_state import SIGNATURE_TIMES, SEQUENCE_LOCK
-
 from scripts.py.func.config.dynamic_settings import DynamicSettings
-
-
 from scripts.py.func.get_active_window_title import get_active_window_title_safe
+from scripts.py.func.global_state import SEQUENCE_LOCK, SIGNATURE_TIMES
 from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
 
 settings = DynamicSettings()
@@ -174,4 +171,4 @@ def execute(match_data):
         m = 'may you need install ? sudo pacman -S translate-shell ?'
         print(f"ERROR: [Translator Plugin] : {e}", file=sys.stderr)
         logger.info(f"ERROR: [Translator Plugin] : {e} # {m}")
-        return f"FEHLER-DETAILS: {str(e)} {m}"
+        return f"FEHLER-DETAILS: {e!s} {m}"

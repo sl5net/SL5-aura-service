@@ -1,26 +1,30 @@
 # Filename: scripts/py/func/checks/test_dictation_session_logic.py
 
+import logging
+import threading
+
+# import queue
+import time
 import unittest
 import unittest.mock
 import wave
-# import queue
-import time
-import logging
 from pathlib import Path
-import vosk
-import threading
 
+import vosk
 from vosk import SetLogLevel
+
 SetLogLevel(-1)
 
 
 # Ensure the script can find the modules in the parent directory
 import sys
+
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
-from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
-
 from scripts.py.func.config.dynamic_settings import settings
+from scripts.py.func.transcribe_audio_with_feedback import (
+    transcribe_audio_with_feedback,
+)
 
 TRIGGER_FILE_PATH = settings.TRIGGER_FILE_PATH
 SAMPLE_RATE = settings.SAMPLE_RATE

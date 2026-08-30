@@ -1,17 +1,13 @@
 # scripts/py/func/checks/trigger_aura_maintenance.py
-import threading
+import os
+import platform
 import random
-import time
 import shutil
-
-from pathlib import Path
-
 import subprocess
 import sys
-
-
-import platform
-import os
+import threading
+import time
+from pathlib import Path
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 self_test_running = TMP_DIR / "sl5_aura" / "core_logic_self_test_FILE_is_running"

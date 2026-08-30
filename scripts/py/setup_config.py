@@ -1,10 +1,11 @@
 # scripts/py/setup_config.py
-import urllib.request
-import sys
+import locale
 import os
 import re
 import shutil
-import locale
+import sys
+import urllib.request
+
 # ---------------------------------------------------------------------------
 # i18n loader
 # ---------------------------------------------------------------------------
@@ -557,9 +558,9 @@ else:
 # --- New: show docs/doc_sources/i18n counts and ask about deletions ---
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 info = find_folder_counts(repo_root)
-print("")  # spacer
+print()  # spacer
 print_counts(info)
-print("")
+print()
 # Ask whether user wants to delete entire docs and/or doc_sources
 if info['docs_exists'] or info['doc_sources_exists']:
     # default to 'n' (no) after timeout
@@ -574,7 +575,7 @@ if info['docs_exists'] or info['doc_sources_exists']:
         ans_partial = timed_input("Delete only docs md files that are NOT the selected primary language? (y/n)", "n", timeout=8, enable_timeout=auto_timeout_enabled).lower()        
         if ans_partial in ("y", "yes"):
             deleted, skipped = delete_non_primary_md(info, primary)
-            print("")
+            print()
             print(f"Deleted {len(deleted)} files (attempted).", file=sys.stderr)
             if deleted:
                 for d in deleted:

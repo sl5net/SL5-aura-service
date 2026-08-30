@@ -3,20 +3,22 @@
 Entry point invoked (via on_match_exec) when the catch-all rule matches.
 Delegates the actual file-update logic to helpers/process_unmatched_text.py.
 """
-from scripts.py.func.get_project_root import get_aura_project_root
 import logging
+import os
 import sys
 from pathlib import Path
-import os
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 sys.path.insert(0, str(Path(__file__).parent / 'helpers'))
 
-helpers_dir = str((Path(__file__).resolve().parent / "helpers"))
+helpers_dir = str(Path(__file__).resolve().parent / "helpers")
 if helpers_dir not in sys.path:
     sys.path.insert(0, helpers_dir)
 
 sys.path.insert(0, str(Path(__file__).parent / 'helpers'))
 from process_unmatched_text import process_unmatched_text
+
 # from process_unmatched_text import process_unmatched_text
 
 
@@ -50,7 +52,7 @@ def execute(match_data: dict):
 
     if not text:
         print(f'ERROR: text empty {text}')
-        return None
+        return
     process_unmatched_text(file_rule_path, text)
 
     # IMPORTANT: This raise is intentional and required!

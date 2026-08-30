@@ -1,8 +1,9 @@
 # scripts/py/func/try_auto_install_package.py
 import re
-import sys
 import subprocess
+import sys
 from pathlib import Path
+
 
 def try_auto_install_package(package_name: str, logger) -> bool:
     """

@@ -1,8 +1,9 @@
 # file scripts/py/func/log_memory_details.py
 import os
-import psutil
-from .config.dynamic_settings import settings
 
+import psutil
+
+from .config.dynamic_settings import settings
 
 # --- Start of suggested DEBUG memory analysis snippet ---
 
@@ -37,7 +38,7 @@ def log4DEV(text: str, logger):
                 break # Found the caller, exit loop
             except Exception as e:
                 logger.debug(f"⛑️ Error getting caller info: {e}")
-                pass # Continue to next frame if there's an issue with this one
+                # Continue to next frame if there's an issue with this one
 
     if not settings.DEV_MODE:
         # print('⛑️ 10:not settings.DEV_MODE: return')
@@ -78,7 +79,7 @@ def log_memory_details(stage: str, logger):
                 break # Found the caller, exit loop
             except Exception as e:
                 logger.debug(f"Error getting caller info: {e}")
-                pass # Continue to next frame if there's an issue with this one
+                # Continue to next frame if there's an issue with this one
 
     # Construct the log message for the memory details
     logger.info(f"--- Memory {caller_script_name} {caller_file_and_line} {stage} --- Tip: ^(?!.*(Memory|RSS|VMS|Data Segment)).*\\n ")

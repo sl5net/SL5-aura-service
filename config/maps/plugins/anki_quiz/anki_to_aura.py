@@ -1,10 +1,12 @@
-import sqlite3
-import zipfile
+import json
+import random
+
 #import os
 import shutil
+import sqlite3
+import zipfile
 from pathlib import Path
-import random
-import json
+
 # import re
 from bs4 import BeautifulSoup
 

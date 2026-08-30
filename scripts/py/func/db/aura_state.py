@@ -6,11 +6,11 @@ Readable interface for developers — wraps trino_client.py low-level operations
 Usage:
     from scripts.py.func.db.aura_state import enable_translation, disable_translation, get_interface_status
 """
-from pathlib import Path
 import sys
-
+from pathlib import Path
 
 from scripts.py.func.get_project_root import get_aura_project_root
+
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
@@ -18,8 +18,8 @@ if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
 
 from scripts.py.func.db.trino_client import (
     get_feature_state,
-    set_feature_state,
     get_target_lang,
+    set_feature_state,
     set_target_lang,
 )
 

@@ -2,8 +2,8 @@
 # scripts/py/func/checks/check_installer_sizes.py
 
 # import os
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # ANSI color codes for better output
 COLOR_GREEN = '\033[92m'

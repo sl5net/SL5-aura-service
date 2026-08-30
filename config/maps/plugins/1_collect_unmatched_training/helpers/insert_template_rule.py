@@ -3,11 +3,12 @@
 insert_template_rule.py
 Insert a template rule right before the catch-all rule."""
 
-from scripts.py.func.get_project_root import get_aura_project_root
-import re
-import os
-from pathlib import Path
 import logging
+import os
+import re
+from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # scripts/search_rules/func/common/preview_rule.py
-import sys
 import os
-import sqlite3
-
 import re
+import sqlite3
+import sys
+
 from scripts.py.func.get_project_root import get_aura_project_root
+
+
 def extract_pattern(file_path, line_num):
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
@@ -104,9 +106,7 @@ def print_smart_cache_preview(file_path, line_num, project_root):
             rule_output = row['rule_output']
             final_result = row['final_result']
 
-            if rule_output and rule_output.strip() and rule_output.strip() in context_text:
-                matched_rows.append(row)
-            elif final_result and final_result.strip() and final_result.strip() in context_text:
+            if rule_output and rule_output.strip() and rule_output.strip() in context_text or final_result and final_result.strip() and final_result.strip() in context_text:
                 matched_rows.append(row)
 
         if matched_rows:

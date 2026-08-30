@@ -17,16 +17,14 @@
 
 import datetime
 import os
+
 # importar antorcha
 
 
 try:
     # 1. INTENTAR: Importación relativa (para python -m... llamada)
 
-    from . import normalizer
-
-    from . import cache_core
-    from . import utils
+    from . import cache_core, normalizer, utils
 
 except ImportError:
     # 2. FALLBACK: Importación sencilla (para cargadores de complementos)
@@ -38,35 +36,29 @@ except ImportError:
     # están todos en la misma carpeta que Ask_ollama.py.
 
 
-    import normalizer
     import cache_core
+    import normalizer
     import utils
 
-import re
-import json
-# importar sistema operativo
-
-import sys
-import logging
-# inspección de importación
-
-import sqlite3
 import hashlib
-# importar fecha y hora
+import json
+import logging
+import re
 
-# importar aleatoriamente
+# inspección de importación
+import sqlite3
 
-from pathlib import Path
+# importar sistema operativo
+import sys
+
 # importar yake
-
-
-
 import time
-
-from urllib.error import HTTPError, URLError
-
 import urllib.request
 
+# importar fecha y hora
+# importar aleatoriamente
+from pathlib import Path
+from urllib.error import HTTPError, URLError
 
 # de sentencia_transformers importar SentenceTransformer, utilidad
 
@@ -354,6 +346,7 @@ def get_semantic_match(user_text):
             # 3. Cargue el vector desde BLOB (¡aquí no hay model.encode!)
 
             import pickle
+
             import torch
             db_embedding = torch.from_numpy(pickle.loads(blob)).to(user_embedding.device)
             # db_embedding = model.encode(texto_usuario, convert_to_tensor=True)
@@ -1057,7 +1050,7 @@ def execute(match_data):
             "```"
         )
 
-        AURA_TECH_PROFILE = (  # noqa: F841
+        AURA_TECH_PROFILE = (
             "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte EXTREM kurz.\n\n"
 
             "WICHTIGSTE REGELN:\n"
@@ -1564,7 +1557,7 @@ def execute(match_data):
 
     except Exception as e:
         utils.log_debug(f"API Error: {e}")
-        return f"Interner Fehler: {str(e)} (2026-0506-0626)"
+        return f"Interner Fehler: {e!s} (2026-0506-0626)"
 
 
 

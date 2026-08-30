@@ -1,8 +1,8 @@
 # config/maps/plugins/standard_actions/de-DE/greeting_generator.py
 # greeting_generator.py
-from datetime import datetime
-import random
 import locale
+import random
+from datetime import datetime
 
 # LLLLLLLLLLLLLLLL
 # LLLLLLLLLLLLLLLL

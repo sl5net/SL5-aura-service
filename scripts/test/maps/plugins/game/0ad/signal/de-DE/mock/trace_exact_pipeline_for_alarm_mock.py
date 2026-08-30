@@ -7,6 +7,7 @@ SL5NET_AURA_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
 import logging
+
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger("debug_trace")
 

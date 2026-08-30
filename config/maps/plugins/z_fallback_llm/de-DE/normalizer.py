@@ -3,10 +3,7 @@
 import re
 
 #from idna.idnadata import scripts
-
 #import hashlib
-
-
 import sys
 from pathlib import Path
 
@@ -19,7 +16,7 @@ PROJECT_ROOT_DIR = CURRENT_FILE_DIR
 # sys.path.append(str(PROJECT_ROOT_DIR))
 
 # try:
-#     from scripts.py.func.audio_manager import * # noqa: F403 F401
+#     from scripts.py.func.audio_manager import *
 # except ImportError as e:
 #     print(f"Fehler: Konnte 'audio_manager.py' nicht als Modul importieren: {e}")
 #     utils.log_debug(f"Fehler: Konnte 'audio_manager' nicht als Modul importieren: {e}")
@@ -36,7 +33,9 @@ def _load_heavy_deps():
             raise RuntimeError(f"utils konnte nicht importiert werden: {e}")
 
     try:
-        from config.maps.plugins.standard_actions.get_suggestions import get_suggestions # noqa: F401
+        from config.maps.plugins.standard_actions.get_suggestions import (
+            get_suggestions,
+        )
     except ImportError as e:
         print(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")
         utils.log_debug(f"Fehler: Konnte 'get_suggestions.py' nicht als Modul importieren: {e}")

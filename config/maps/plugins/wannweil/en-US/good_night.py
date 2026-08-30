@@ -18,6 +18,7 @@
 import random
 from datetime import datetime
 
+
 def execute(match_data):
     """
     Gibt eine nette und zur Tageszeit passende "Gute Nacht"-Antwort.

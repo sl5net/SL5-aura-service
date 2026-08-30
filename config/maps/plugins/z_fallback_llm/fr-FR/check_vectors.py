@@ -13,13 +13,13 @@
 
 # check_vectors.py
 
-import sqlite3
 import pickle
+import sqlite3
 
 try:
-    from .utils import init_db, DB_FILE
+    from .utils import DB_FILE, init_db
 except ImportError:
-    from utils import init_db, DB_FILE
+    from utils import DB_FILE, init_db
 
 # Assurez-vous que la base de données et ses tables existent avant d'interroger
 

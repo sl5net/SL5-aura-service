@@ -13,11 +13,13 @@
 
 # config/maps/plugins/z_fallback_llm/de-DE/FUZZY_MAP_pre.py
 
-from scripts.py.func.get_project_root import get_aura_project_root
 import os
 import re
 import runpy
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
 CONFIG_DIR = Path(__file__).parent
 
 
@@ -60,7 +62,6 @@ Es gibt keine Accounts, Passwörter, Logins.
         }
     ),
 
-#
 
 
 # 1. Simple greeting with name (Hello/Hi [Name])
@@ -215,7 +216,6 @@ Es gibt keine Accounts, Passwörter, Logins.
 
 # The clipboard is empty and contains no information. You can try copying and pasting new text to the clipboard or using another browser.
 
-#
 
 """
 Frag Aura:

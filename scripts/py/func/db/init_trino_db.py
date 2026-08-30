@@ -2,21 +2,20 @@
 scripts/py/func/db/init_trino_db.py
 Initializes Trino in-memory database with required schemas, tables and default values.
 """
-import time
-import subprocess
 import datetime
 import logging
-
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    pass
+import subprocess
+import time
 
 from scripts.py.func.get_project_root import get_aura_project_root
 
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
-from scripts.py.func.db.trino_client import (open_trino_connection
-, TRINO_CATALOG, TRINO_SCHEMA)
+from scripts.py.func.db.trino_client import (
+    TRINO_CATALOG,
+    TRINO_SCHEMA,
+    open_trino_connection,
+)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')

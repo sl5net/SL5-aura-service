@@ -1,14 +1,15 @@
 # scripts/py/chat/streamlit-chat.py
+import json
+import os
+import socket
 import sys
 from pathlib import Path
 
-import streamlit as st
 import requests
-import json
-import os
-from dotenv import load_dotenv
+import streamlit as st
 import streamlit.components.v1 as components
-import socket
+from dotenv import load_dotenv
+
 os.environ["INTERFACE"] = "web"
 # SL5NET_AURA_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
@@ -120,7 +121,7 @@ def get_api_base_url():
         sock.close()
         st.info(f"JSON auf: …{str(local_json_url)[-15:]}. HTTP online: …{str(public_http)[-15:]}.")
         return local_json_url
-    except (socket.error, ConnectionRefusedError):
+    except (OSError, ConnectionRefusedError):
         pass
     public_ip = get_external_ip()
     if public_ip:

@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 # scripts/search_rules/run_palette_command.py
-import sys
 import json
-import urllib.request
+import logging
 import os
 import socket
 import subprocess
+import sys
 import time
+import urllib.request
 from pathlib import Path
-import logging
-
 
 how_test_from_linux = """
 Examples:
@@ -56,7 +55,7 @@ def is_api_running():
     try:
         with socket.create_connection(("127.0.0.1", 8830), timeout=0.1):
             return True
-    except (socket.timeout, ConnectionRefusedError, OSError) as e20260803_1425:
+    except (TimeoutError, ConnectionRefusedError, OSError) as e20260803_1425:
         print(e20260803_1425)
         return False
 

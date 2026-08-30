@@ -1,7 +1,8 @@
 # scripts/py/welcome_wizard/main.py
-import platform
 import importlib.util
+import platform
 from pathlib import Path
+
 
 def run_wizard(user_language="de-DE"):
     # 1. Find project root via your robust method

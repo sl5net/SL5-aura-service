@@ -44,14 +44,13 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import wave
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 import pytest
-import re
 
 from scripts.py.func.config.dynamic_settings import settings
 
@@ -76,7 +75,7 @@ active_lt_url =LANGUAGETOOL_CHECK_URL = f"{LANGUAGETOOL_CHECK_URL}"
 # Optional-import helpers – give clear error messages when deps are missing
 # ---------------------------------------------------------------------------
 
-def _require(module_name: str, pip_name: Optional[str] = None):
+def _require(module_name: str, pip_name: str | None = None):
     """Import a module and raise a readable error if it is missing."""
     import importlib
     try:
@@ -130,7 +129,7 @@ class YoutubeAudioTestCase:
     test_aura_pipeline: bool = False
     # If set: assert Aura's final output equals this string exactly (after strip/lower).
     # If None: just assert WER of Aura output vs YT transcript, same as Vosk mode.
-    expected_output: Optional[str] = None
+    expected_output: str | None = None
 
     @property
     def duration(self) -> float:
@@ -342,7 +341,9 @@ def run_through_aura_pipeline(vosk_text: str, language: str) -> str:
 
 
     try:
-        from scripts.py.func.process_text_in_background import process_text_in_background
+        from scripts.py.func.process_text_in_background import (
+            process_text_in_background,
+        )
     except ImportError:
         pytest.skip(
             "Could not import process_text_in_background. "

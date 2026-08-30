@@ -1,13 +1,11 @@
 # scripts/py/func/utils/aura_cache.py
-import sqlite3
 import hashlib
 import os
-from pathlib import Path
+import sqlite3
 from datetime import datetime
+from pathlib import Path
 
 from scripts.py.func.config.dynamic_settings import settings
-
-
 
 README = '''
 python3 -c "import sqlite3; conn = sqlite3.connect('data/_aura_result_cache.db'); print('count:', conn.execute('SELECT count(*) FROM aura_result_cache').fetchone()[0]); conn.close()"

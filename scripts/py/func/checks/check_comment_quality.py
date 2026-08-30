@@ -1,10 +1,11 @@
 # file: scripts/py/func/checks/check_slop_comments.py
 import re
-import sys
 import subprocess
-import tomllib
+import sys
 from collections import defaultdict
 from pathlib import Path
+
+import tomllib
 
 """
 Automates the enforcement of technical documentation standards by detecting
@@ -227,8 +228,8 @@ def scan(
 
 def _read_single_key() -> str:
     try:
-        import tty
         import termios
+        import tty
         fd = sys.stdin.fileno()
         old = termios.tcgetattr(fd)
         tty.setraw(fd)

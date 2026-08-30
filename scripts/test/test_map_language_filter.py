@@ -1,7 +1,10 @@
 # scripts/test/test_map_language_filter.py
 from pathlib import Path
+
 from scripts.py.func.get_current_language import get_current_language
-from scripts.py.func.is_map_path_for_current_language import is_map_path_for_current_language
+from scripts.py.func.is_map_path_for_current_language import (
+    is_map_path_for_current_language,
+)
 
 VERBOSE_OUTPUT = True
 

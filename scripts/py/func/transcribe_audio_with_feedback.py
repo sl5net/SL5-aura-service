@@ -1,28 +1,24 @@
 # scripts/py/func/transcribe_audio_with_feedback.py
 
-import queue
 import json
+import os
+import platform
+import queue
+import runpy
 import time
 from pathlib import Path
-import os
 
 import numpy as np
-from .notify import notify
-from .audio_manager import mute_microphone, unmute_microphone
-from .manage_audio_routing import manage_audio_routing
-from .log_memory_details import log4DEV
 import sounddevice as sd
-
 import webrtcvad  # NEU: Import für Voice Activity Detection
-
 
 from scripts.py.func import global_state
 
-import platform
-
-import runpy
-
+from .audio_manager import mute_microphone, unmute_microphone
 from .config.dynamic_settings import settings
+from .log_memory_details import log4DEV
+from .manage_audio_routing import manage_audio_routing
+from .notify import notify
 
 SAMPLE_RATE = settings.SAMPLE_RATE
 
@@ -175,7 +171,7 @@ Das erzeugt Phasenfehler und Verzerrungen.
 Die Fehlerquote steigt, wenn links und rechts unterschiedliche Signale liegen (z. B. Stimme links, Musik rechts).
 Lösung A ist nimmst nur einen Kanal (Links).
 Wichtig: Bleib bei channels=2 im RawInputStream, sonst stürzt Lösung A mit einem Fehler ab!
-        """ # noqa: F841
+        """
 
         # 1. Von Bytes zu Stereo-Array (2 Kanäle)
         audio_np = np.frombuffer(raw_data, dtype=np.int16).reshape(-1, 2)
@@ -419,7 +415,6 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         is_suspended = suspend_flag.exists()
 
 
-                        #
 
                         #Wie ist das bitteWie ist das bitteAktuell in Tübingen sind es 0 Grad, gefühlt wie -0 Grad. Die Vorhersage meldet: Wolkenlos.
                         modus = 'toggle'
@@ -546,7 +541,6 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                         if is_suspended:
                             # log4DEV(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
                             last_activity_time = time.time()
-                            pass
                         else:
                             message1 = f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached)."
                             message2 = "Is your Microphone off ? or Microphone muted?"

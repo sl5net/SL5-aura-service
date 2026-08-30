@@ -3,10 +3,11 @@ intertingDontDeleteIt = """
 pkill -f aura_engine.py
 pgrep -f aura_engine.py
 """
-import system
 from pathlib import Path
 
-import tomllib # In Python 3.11+ Standard
+import system
+import tomllib  # In Python 3.11+ Standard
+
 CONFIG_PATH = Path.home() / ".config/sl5-stt/config.toml"
 with open(CONFIG_PATH, "rb") as f:
     config = tomllib.load(f)

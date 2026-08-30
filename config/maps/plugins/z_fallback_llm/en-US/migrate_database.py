@@ -20,8 +20,7 @@ try:
     # 1. TRY: Relative import (for python -m ... call)
 
 
-    from . import normalizer
-    from . import utils
+    from . import normalizer, utils
 
 except ImportError:
     import normalizer
@@ -51,8 +50,9 @@ Bitte prüfen Sie die DB mit der SQL GROUP BY Abfrage!
 
 """
 
-import sqlite3
 import hashlib
+import sqlite3
+
 # import re
 
 # from nltk.stem.snowball import GermanStemmer # Requires: pip install nltk

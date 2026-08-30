@@ -1,7 +1,7 @@
+import os
 import sqlite3
 import zipfile
 from pathlib import Path
-import os
 
 TEMP_DIR = Path("temp_debug")
 

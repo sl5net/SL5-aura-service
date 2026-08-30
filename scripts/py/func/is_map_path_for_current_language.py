@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from .guess_lt_language_from_model import (
     LANG_DEFAULT_REGION_MAP,
     LANG_REGION_PAIR_MAP,

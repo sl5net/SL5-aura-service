@@ -1,17 +1,17 @@
 """Orchestrate the update of a FUZZY_MAP_pre.py file for an unmatched text."""
-from scripts.py.func.get_project_root import get_aura_project_root
 import logging
 import os
 import sys
-
 from pathlib import Path
 
+from add_variant_to_rule import add_variant_to_rule
+from find_catch_all_index import find_catch_all_index
 
 # helpers4collect_unmatched
 from get_fuzzy_map_entries import get_fuzzy_map_entries
-from find_catch_all_index import find_catch_all_index
-from add_variant_to_rule import add_variant_to_rule
 from insert_template_rule import insert_template_rule
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 _tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
@@ -44,7 +44,7 @@ def process_unmatched_text(file_rule_path: str, text: str):
     """
 
     log(f'20260720_1942 called with argv={sys.argv}\n')
-    log(f'DEBUG process_unmatched_text: file_rule_path={repr(file_rule_path)}')
+    log(f'DEBUG process_unmatched_text: file_rule_path={file_rule_path!r}')
 
     fuzzy_map_file = Path(file_rule_path)
     if not fuzzy_map_file.is_absolute():

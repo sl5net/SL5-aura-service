@@ -18,7 +18,6 @@ for p in POSSIBLE_PATHS:
 
 if DB_PATH is None:
     print("DEBUG_JSON: DB_PATH is None -> skip Check.")
-    pass
 else:
     try:
         with open(DB_PATH, "r", encoding="utf-8") as f:
@@ -42,7 +41,6 @@ else:
 
         except Exception as e:
             print(f"{e}\n")
-            pass
         print("-------------------------------------\n")
 
     except Exception as e:

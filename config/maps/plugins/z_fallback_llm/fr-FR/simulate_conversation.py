@@ -13,16 +13,17 @@
 
 # config/maps/plugins/z_fallback_llm/de-DE/simulate_conversation.py
 
-from scripts.py.func.get_project_root import get_aura_project_root
 import datetime
 import logging
 import os
+import subprocess
 import sys
 import time
-import psutil
-import subprocess
-
 from pathlib import Path
+
+import psutil
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 # Votre logique SL5NET_AURA_PROJECT_ROOT
 
@@ -37,9 +38,9 @@ if PLUGIN_DIR not in sys.path:
 
 # Désormais, les importations absolues fonctionnent sans le point (.)
 
-import utils
-import health_checks
 import ask_ollama
+import health_checks
+import utils
 
 # --- CONFIGURATION ---
 
@@ -150,7 +151,7 @@ def generate_user_question(last_aura_response, round_num):
         "2. Beginne den Satz IMMER mit 'Aura, '.\n"
         "3. Sei kreativ! Schreib nur den Satz, keine Anführungszeichen.\n"
     )
-    system_prompt_LinuxMusikerin = ( # noqa: F841
+    system_prompt_LinuxMusikerin = (
         "Du bist ein kritische, kreative Jornalist, die Aura, den Offline Voice Assistant STT to Commands or Text, Pluggable System testet.\n"
         "Dich interessieren Beispiel oder einfache Regeln:\n"
         "Aura ist Headless / CLI. Keine GUI. Keine Maus für alle OS (z.B. Linux, Windows, Mac).\n"

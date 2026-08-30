@@ -13,10 +13,11 @@
 
 # config/maps/plugins/libreoffice/de-DE/libreoffice_actions.py
 
-from scripts.py.func.get_project_root import get_aura_project_root
+import re
 import subprocess
 import sys
-import re
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 
 def _dotool(command):

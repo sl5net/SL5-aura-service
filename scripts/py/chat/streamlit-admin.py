@@ -1,11 +1,11 @@
 # scripts/py/chat/streamlit-admin.py
 # Aura Admin Interface — Port 8084
+import logging
 import os
 import re
 import sys
-from pathlib import Path
 from importlib import metadata
-import logging
+from pathlib import Path
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_root").read_text().strip())
@@ -46,6 +46,7 @@ st.info("DEBUG 'from scripts.py.func.config.dynamic_settings import settings'")
 
 # scripts/py/chat/streamlit-admin.py:47
 from scripts.py.func.config.dynamic_settings import settings
+
 st.info(f"DEBUG settings.DEV_MODE: {settings.DEV_MODE}")
 
 # scripts/py/chat/streamlit-admin.py:32
@@ -86,8 +87,6 @@ error_category = "generic"
 import os
 import time
 import urllib.request
-
-import os
 from subprocess import run
 
 
@@ -175,10 +174,10 @@ def wake_up_docker_and_trino_or_get_error():
 
 try:
     from scripts.py.func.db.aura_state import (
-        get_all_status,
-        enable_translation,
         disable_translation,
+        enable_translation,
         ensure_fuzzy_map_in_sync,
+        get_all_status,
     )
     statuses = get_all_status()
     db_ready = True
@@ -189,8 +188,8 @@ except Exception as init_e:
 
     # --- NEU: Late-Binding / On-Demand Installation für das 'trino' Paket ---
     if "no module named 'trino'" in err_msg_lower:
-        import sys
         import importlib
+        import sys
 
         st.info("📦 Trino-Modul wird On-Demand installiert. Bitte warten…")
         try:

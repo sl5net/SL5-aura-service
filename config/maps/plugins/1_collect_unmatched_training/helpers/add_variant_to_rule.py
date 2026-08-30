@@ -1,10 +1,11 @@
 """Append a new text variant to an existing rule's trailing regex group."""
-from scripts.py.func.get_project_root import get_aura_project_root
 import logging
 import os
 from pathlib import Path
 
-from find_trailing_group_span import find_trailing_group_span  # noqa: E402
+from find_trailing_group_span import find_trailing_group_span
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 _tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()

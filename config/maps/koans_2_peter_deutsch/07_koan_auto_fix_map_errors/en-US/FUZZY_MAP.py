@@ -13,7 +13,8 @@
 
 # config/maps/koans_2_peter_deutsch/07_koan_auto_fix_map_errors/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
+
 # Rule format: ('replacement text', r'pattern', threshold, flags)
 
 # Logic: Top-down, first hit wins. Fullmatch (^...$) stops the pipeline.
@@ -41,7 +42,6 @@ Header-Cleanup (Dubletten entfernen, Pfade aktualisieren)
 """
 ]
 
-#
 
 
 

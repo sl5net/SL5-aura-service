@@ -2,10 +2,11 @@
 # bible_search.py
 
 import logging
+
 # import re
 from pathlib import Path
-from rapidfuzz import fuzz
 
+from rapidfuzz import fuzz
 
 # --- Setup Logging ---
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')

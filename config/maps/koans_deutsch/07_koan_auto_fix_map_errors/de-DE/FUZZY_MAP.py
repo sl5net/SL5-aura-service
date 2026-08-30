@@ -1,6 +1,5 @@
 # config/maps/koans_deutsch/07_koan_auto_fix_map_errors/de-DE/FUZZY_MAP.py
-import re # noqa: F401
-
+import re  # noqa: F401
 
 FUZZY_MAP = [
     ('tübingen', 'tübingen'),
@@ -19,7 +18,6 @@ Header-Cleanup (Dubletten entfernen, Pfade aktualisieren)
 ]
 
 
-#
 
 
 

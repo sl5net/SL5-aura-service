@@ -2,10 +2,11 @@
 # This script's only job is to ensure the dictation service is running and then trigger it.
 # The backend now handles language switching internally, so no restart is needed.
 
-import sys
 import subprocess
+import sys
 import time
 from pathlib import Path
+
 import tomllib
 
 # --- Configuration and Paths ---
@@ -34,7 +35,7 @@ def is_service_healthy(heartbeat_path, max_age):
     try:
         age = time.time() - int(heartbeat_path.read_text().strip())
         return age < max_age
-    except (IOError, ValueError):
+    except (OSError, ValueError):
         return False
 
 # --- Main Logic ---

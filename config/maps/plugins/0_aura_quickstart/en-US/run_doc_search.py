@@ -13,11 +13,12 @@
 
 # /de-DE/run_doc_search.py
 
-from scripts.py.func.get_project_root import get_aura_project_root
-import subprocess
 import os
+import subprocess
 import time
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 
 def execute(match_data):

@@ -13,7 +13,7 @@
 
 # config/maps/plugins/internals/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
 
 # Este mapa utiliza un enfoque híbrido:
 

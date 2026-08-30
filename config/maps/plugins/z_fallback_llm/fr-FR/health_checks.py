@@ -13,10 +13,11 @@
 
 # config/maps/plugins/z_fallback_llm/de-DE/health_checks.py
 
-from scripts.py.func.get_project_root import get_aura_project_root
 import os
 import sys
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 # Même logique ici pour garantir que les utils sont trouvés lorsqu'ils sont appelés depuis simulation_conversation
 
@@ -27,8 +28,10 @@ plugin_dir = str(SL5NET_AURA_PROJECT_ROOT / "config" / "maps" / "plugins" / "z_f
 if plugin_dir not in sys.path:
     sys.path.insert(0, plugin_dir)
 
-import utils
 import sqlite3
+
+import utils
+
 
 class LazyGermanStemmer:
     def __init__(self):

@@ -4,6 +4,7 @@ import ast
 import sys
 from pathlib import Path
 
+
 class ConfigKeyVisitor(ast.NodeVisitor):
     """
     An AST visitor that collects all assigned variable names and string keys

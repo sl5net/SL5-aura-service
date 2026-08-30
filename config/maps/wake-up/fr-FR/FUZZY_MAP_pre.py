@@ -13,13 +13,10 @@
 
 # config/maps/wake-up/de-DE/FUZZY_MAP_pre.py
 
-import re # noqa: F401
-# depuis pathlib import Path as p;import os as o # noqa: E702
+import re
 
-# avec open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa : E702
-
-
-
+# depuis pathlib import Path as p;import os as o
+# avec open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 from pathlib import Path
 
 # Cette carte utilise une approche hybride :
@@ -35,7 +32,6 @@ from pathlib import Path
 # 2. Si aucune expression régulière ne correspond, une simple correspondance floue est effectuée sur les règles restantes.
 
 
-#
 
 CONFIG_DIR = Path(__file__).parent
 
@@ -59,7 +55,6 @@ wakeword = r'{nonsense_word}(télescope|se produit|Tedesco|violoncelliste|tennis
 # STT Actif. Drapeau muet supprimé. Ce qui a, crache
 
 
-#
 
 FUZZY_MAP_pre = [
 
@@ -82,7 +77,6 @@ FUZZY_MAP_pre = [
 
     # tu te voyais t'endormir
 
-    #
 
     # EXAMPLE: endormez-vous avec des interprétations phonétiques erronées 🌵
 

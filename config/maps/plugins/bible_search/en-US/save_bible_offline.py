@@ -15,14 +15,14 @@
 
 import logging
 import re
-from pathlib import Path
-# import sys
 
+# import sys
 import time
+from pathlib import Path
+from urllib.parse import quote
 
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import quote
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)

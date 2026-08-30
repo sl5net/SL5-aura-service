@@ -1,15 +1,16 @@
 # config/maps/plugins/standard_actions/weather/weather.py
-import subprocess
-from pathlib import Path
 import configparser
 import json
 import logging
+import os as o
+import subprocess
+from pathlib import Path
+from pathlib import Path as p
 
 from scripts.py.func.simple_plugin_cache import get_cached_result, set_cached_result
 
-from pathlib import Path as p; import os as o  # noqa: E702
 with open(('C:/tmp' if o.name == 'nt' else '/tmp') + '/sl5_aura/sl5net_aura_project_root', encoding='utf-8') as f:
-    SL5NET_AURA_PROJECT_ROOT = p(f.read().strip())  # noqa: E702
+    SL5NET_AURA_PROJECT_ROOT = p(f.read().strip())
 
 # CONFIG_FILE = Path(__file__).parent / 'weather_config.ini'
 import urllib.parse
@@ -109,7 +110,7 @@ def execute(match_data):
 
     logger.info("--- Weather Execute Call ---")
     logger.info(f"Type of match_data: {type(match_data)}")
-    logger.info(f"Content of match_data: {repr(match_data)}")
+    logger.info(f"Content of match_data: {match_data!r}")
 
     # 1. Konfiguration einlesen
     if not CONFIG_FILE.exists():

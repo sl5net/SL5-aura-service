@@ -13,7 +13,7 @@
 
 # config/maps/plugins/standard_actions/bookmark_link_url_navigator/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
 
 # This map uses a hybrid approach:
 

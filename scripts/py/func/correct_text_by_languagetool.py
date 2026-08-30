@@ -4,7 +4,6 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-
 # scripts/py/func/correct_text_by_languagetool.py:6
 # _lt_session = None
 _session_cache = {}
@@ -14,9 +13,10 @@ get_lt_session = None
 
 # scripts/py/func/correct_text_by_languagetool.py
 
-import sqlite3
 import hashlib
 import json
+import sqlite3
+
 # from typing import Optional
 
 DB_PATH = "data/_languagetool_cache.db"

@@ -13,34 +13,29 @@
 
 # config/maps/plugins/wannweil/de-DE/check_trash.py
 
-from scripts.py.func.get_project_root import get_aura_project_root
+import csv
+import datetime
+import hashlib
 import logging
-# ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
-
-# ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
-
-# o utilizar:
-
-# python.sh ./config/maps/plugins/wannweil/de-DE/check_trash.py &
-
-
-import sys
 import os
+import re
+import smtplib
+import subprocess
+
+# ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
+# ./.venv/bin/python3 config/maps/plugins/wannweil/de-DE/check_trash.py &
+# o utilizar:
+# python.sh ./config/maps/plugins/wannweil/de-DE/check_trash.py &
+import sys
+import time
 import unicodedata
+from email.message import EmailMessage
 from pathlib import Path
 
 import pdfplumber
-import datetime
-import re
-import subprocess
-import csv
-import smtplib
-import hashlib
-import time
-
-from email.message import EmailMessage
 from dotenv import load_dotenv
 
+from scripts.py.func.get_project_root import get_aura_project_root
 
 
 class CustomFormatter(logging.Formatter):

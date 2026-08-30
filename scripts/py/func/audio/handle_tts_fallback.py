@@ -1,12 +1,12 @@
 
-from scripts.py.func.config.dynamic_settings import settings
-from .piper_speak_via_server import piper_speak_via_server
-
-# scripts/py/func/audio/handle_tts_fallback.py:11
-
-from pathlib import Path
 import platform
 
+# scripts/py/func/audio/handle_tts_fallback.py:11
+from pathlib import Path
+
+from scripts.py.func.config.dynamic_settings import settings
+
+from .piper_speak_via_server import piper_speak_via_server
 
 TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
 
@@ -32,7 +32,7 @@ def handle_tts_fallback(processed_text, LT_LANGUAGE, logger):
 
     # 2. Fallback zu Espeak
     if settings.USE_ESPEAK_FALLBACK:
-        from ..audio_manager import speak_inclusive_fallback # noqa: F811
+        from ..audio_manager import speak_inclusive_fallback
 
         speak_inclusive_fallback(processed_text, LT_LANGUAGE)
         return True

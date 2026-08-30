@@ -1,6 +1,6 @@
 # config/maps/plugins/standard_actions/get_suggestions/en-US/FUZZY_MAP.py
 # config/languagetool_server/maps/en-US/FUZZY_MAP.py
-import re # noqa: F401
+import re
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
@@ -19,6 +19,5 @@ FUZZY_MAP = [
     # EXAMPLE: Good evening
     ('hey all out there', r'Good evening', 95, {'command_flags': re.IGNORECASE}),
 
-    #
 
 ]

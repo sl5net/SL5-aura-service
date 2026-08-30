@@ -1,12 +1,13 @@
 # scripts/py/func/get_active_window_title.py
-import sys
-import os
-import subprocess
-import shutil
 import json
+import os
+import shutil
+import subprocess
+import sys
 import tempfile
-from pathlib import Path
 from functools import lru_cache
+from pathlib import Path
+
 X11_CACHE_FILE = Path(tempfile.gettempdir()) / "sl5_aura" / "sl5_aura_x11_env.json"
 
 def get_active_window_kde():
@@ -199,7 +200,6 @@ def get_linux_x11_env():
                 return cached_env
         except Exception as e:
             print(f'34 {e}')
-            pass
         
     target_env = os.environ.copy()
     found_auth = False
@@ -251,7 +251,6 @@ def get_linux_x11_env():
 
         except Exception as e:
             print(f'201 {e}')
-            pass
 
     # C: Fallback
     if not found_auth:
@@ -263,7 +262,6 @@ def get_linux_x11_env():
         try: possible_auths.extend(list(Path("/var/run/sddm").glob("*")))
         except Exception as e:
             print(f'111 {e}')
-            pass
 
         for p in possible_auths:
             if p.exists() and p.is_file():
@@ -285,12 +283,10 @@ def get_linux_x11_env():
                     os.chmod(X11_CACHE_FILE, 0o600)
                 except Exception as e:
                     print(f'Failed to chmod {X11_CACHE_FILE}: {e}')
-                    pass
 
                 json.dump(cache_data, f)
         except Exception as e:
             print(f'111 {e}')
-            pass
 
     return target_env
 
@@ -459,7 +455,6 @@ def get_active_window_title_safe():
 
                 except Exception as e:
                     print(f'145 {e}')
-                    pass
 
             # Versuch 2: xprop
             if shutil.which("xprop"):
@@ -477,7 +472,6 @@ def get_active_window_title_safe():
                     return res.decode("utf-8").split('=', 1)[-1].strip().strip('"')
                 except Exception as e:
                     print(f'201 {e}')
-                    pass
 
             if res is None:
                 get_linux_x11_env.cache_clear()
@@ -485,7 +479,6 @@ def get_active_window_title_safe():
                     try: os.remove(X11_CACHE_FILE)
                     except Exception as e:
                         print(f'111 {e}')
-                        pass
 
             # We get the environment FRESH (new scan)
             env = get_linux_x11_env()
@@ -497,7 +490,6 @@ def get_active_window_title_safe():
     except Exception as e:
         # scripts/py/func/get_active_window_title.py:206
         print(f'178 {e}')
-        pass
 
     return "NO_WINDOW_TITLE_511"
 
@@ -513,14 +505,12 @@ def get_clipboard_text_linux():
             return subprocess.check_output(["xclip", "-selection", "clipboard", "-o"], stderr=subprocess.DEVNULL, env=env, timeout=1.5).decode("utf-8")
         except Exception as e:
             print(f'194 {e}')
-        pass
 
     elif shutil.which("xsel"):
         try:
             return subprocess.check_output(["xsel", "-b", "-o"], stderr=subprocess.DEVNULL, env=env, timeout=1.5).decode("utf-8")
         except Exception as e:
             print(f'201 {e}')
-            pass
 
     return ""
 
@@ -534,11 +524,9 @@ def set_clipboard_text_linux(text):
             p.communicate(input=text.encode('utf-8'))
         except Exception as e:
             print(f'215 {e}')
-            pass
     elif shutil.which("xsel"):
         try:
             p = subprocess.Popen(["xsel", "-b", "-i"], stdin=subprocess.PIPE, env=env)
             p.communicate(input=text.encode('utf-8'))
         except Exception as e:
             print(f'220 {e}')
-            pass

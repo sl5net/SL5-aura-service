@@ -4,6 +4,7 @@ import locale
 import sys
 from pathlib import Path
 
+
 def get_system_language_code():
     """Detects the system language and returns a Vosk-compatible model key."""
     try:

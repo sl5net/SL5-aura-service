@@ -3,10 +3,7 @@
 
 try:
     # 1. VERSUCH: Relativer Import (für python -m ... Aufruf)
-    from . import normalizer
-
-    from . import cache_core
-    from . import utils
+    from . import cache_core, normalizer, utils
 
 except ImportError:
     # 2. FALLBACK: Einfacher Import (für Plugin-Lader)
@@ -14,29 +11,29 @@ except ImportError:
     # normalizer.py, cache_core.py, utils.py
     # alle im selben Ordner wie ask_ollama.py liegen.
 
-    import normalizer
     import cache_core
+    import normalizer
     import utils
 
-import re
+import hashlib
 import json
-# import os
-import sys
 import logging
+import re
+
 # import inspect
 import sqlite3
-import hashlib
+
+# import os
+import sys
+
+# import yake
+import time
+import urllib.request
+
 # import datetime
 # import random
 from pathlib import Path
-# import yake
-
-
-import time
-
 from urllib.error import HTTPError, URLError
-
-import urllib.request
 
 # https://ollama.com/download
 
@@ -225,7 +222,6 @@ def save_to_history(user_text, ai_text):
             json.dump(history, f, ensure_ascii=False, indent=2)
     except Exception as e:
         utils.log_debug(f"{e}")
-        pass
 
 
 def secDauerSeitExecFunctionStart(reset=False):
@@ -337,7 +333,6 @@ def execute(match_data):
                     utils.MEMORY_FILE.unlink()
                 except Exception as e:
                     utils.log_debug(f"{e}")
-                    pass
             return "Gedächtnis gelöscht."
 
         # --- INSTANT MODE CHECK ---
@@ -377,7 +372,7 @@ def execute(match_data):
             "```\n"
         )
 
-        AURA_TECH_PROFILE = (  # noqa: F841
+        AURA_TECH_PROFILE = (
             "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte EXTREM kurz.\n\n"
 
             "WICHTIGSTE REGELN:\n"
@@ -703,7 +698,7 @@ def execute(match_data):
 
     except Exception as e:
         utils.log_debug(f"API Error: {e}")
-        return f"Interner Fehler: {str(e)}"
+        return f"Interner Fehler: {e!s}"
 
 
 

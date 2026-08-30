@@ -1,9 +1,10 @@
 # config/maps/plugins/game/0ad/0ad_actions.py
-from scripts.py.func.get_project_root import get_aura_project_root
 import logging
 import os
 import subprocess
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 _tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
@@ -97,7 +98,7 @@ def execute(match_data):
         timer.daemon = True
         timer.start()
     if False:
-        print('')
+        print()
     elif 'h' == text_after_replacement:
         _idle_select()
         _dotool(f'key {text_after_replacement}')
@@ -178,29 +179,7 @@ def execute(match_data):
     elif text_after_replacement in ['select iddle', 'select_idle']:
         _idle_select()
 
-    elif text_after_replacement.startswith('select_'):
-        select_map = {
-            'select_infantry': ('i', 'infantry'),
-            'select_pikemen': ('p', 'pikemen'),
-            'select_cavalry': ('c', 'cavalry'),
-            'select_archers': ('a', 'archers'),
-            'select_swordsmen': ('s', 'swordsmen'),
-            'select_elephants': ('e', 'elephants'),
-            'select_catapults': ('k', 'catapults'),
-            'select_healers': ('h', 'healers'),
-            'select_women': ('w', 'woman'),
-            'select_military': ('m', 'military'),
-        }
-        item = select_map.get(text_after_replacement)
-        if item:
-            key_letter, spoken_label = item
-            _dotool(f'keydown leftalt\nkey {key_letter}\nkeyup leftalt')
-            speak_inclusive_fallback(f"select {spoken_label}", "en-US")
-
-
-
-
-    elif text_after_replacement.startswith('alt+'):
+    elif text_after_replacement.startswith('select_') or text_after_replacement.startswith('alt+'):
         select_map = {
             'select_infantry': ('i', 'infantry'),
             'select_pikemen': ('p', 'pikemen'),

@@ -13,13 +13,10 @@
 
 # config/maps/wake-up/de-DE/FUZZY_MAP_pre.py
 
-import re # noqa: F401
-# from pathlib import Path as p;import os as o # noqa: E702
+import re
 
-# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
-
-
-
+# from pathlib import Path as p;import os as o
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 from pathlib import Path
 
 # This map uses a hybrid approach:
@@ -35,7 +32,6 @@ from pathlib import Path
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 
-#
 
 CONFIG_DIR = Path(__file__).parent
 
@@ -59,7 +55,6 @@ wakeword = r'{nonsense_word}(telescope|occurs|tedesco|cellist|tennis|tourist|cre
 # STT Active. Mute flag removed.What has, spits
 
 
-#
 
 FUZZY_MAP_pre = [
 
@@ -82,7 +77,6 @@ FUZZY_MAP_pre = [
 
     # you could see yourself falling asleep
 
-    #
 
     # EXAMPLE: fall asleep phonetic misinterpretations 🌵
 

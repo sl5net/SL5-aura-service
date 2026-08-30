@@ -11,7 +11,8 @@
 #     regex patterns, please open a Pull Request with your improvements.
 # ==============================================================================
 
-import re # noqa: F401
+import re  # noqa: F401
+
 FUZZY_MAP_pre = [
 
 ]

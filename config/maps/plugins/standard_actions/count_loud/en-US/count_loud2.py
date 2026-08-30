@@ -15,8 +15,8 @@
 
 # import sys
 
-from pathlib import Path
 import subprocess
+from pathlib import Path
 
 RULES_FILE_PATH = Path(__file__).parent / 'FUZZY_MAP_pre.py'
 def speak(text):

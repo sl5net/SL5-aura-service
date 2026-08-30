@@ -1,5 +1,7 @@
 # scripts/py/func/stop_languagetool_server.py:1
 import subprocess
+
+
 def stop_languagetool_server(logger, languagetool_process):
     if languagetool_process and languagetool_process.poll() is None:
         if languagetool_process and hasattr(languagetool_process, 'wait'):

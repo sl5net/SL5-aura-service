@@ -15,7 +15,8 @@
 
 # config/languagetool_server/maps/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
+
 # Rule format: ('replacement text', r'pattern', threshold, flags)
 
 # Logic: Top-down, first hit wins. Fullmatch (^...$) stops the pipeline.

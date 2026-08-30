@@ -1,10 +1,11 @@
 # config/maps/plugins/standard_actions/de-DE/open_admin.py
 import logging
-import subprocess
-import socket
-import time
 import os
+import socket
+import subprocess
+import time
 from pathlib import Path
+
 
 def is_port_open(port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

@@ -1,6 +1,7 @@
 # config/maps/koans_2_peter_deutsch/03_koan_schwierige_namen/de-DE/FUZZY_MAP.py
 # config/languagetool_server/maps/de-DE/FUZZY_MAP.py
-import re # noqa: F401
+import re  # noqa: F401
+
 # Regel-Format: ('Ersatztext', r'muster', schwellwert, flags)
 # Logik: Top-Down, erster Treffer gewinnt. Fullmatch (^...$) stoppt die Pipeline.
 

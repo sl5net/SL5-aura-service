@@ -1,6 +1,6 @@
 # config/maps/plugins/linux_commands/de-DE/FUZZY_MAP.py
 # https://regex101.com/
-import re # noqa: F401
+import re
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.

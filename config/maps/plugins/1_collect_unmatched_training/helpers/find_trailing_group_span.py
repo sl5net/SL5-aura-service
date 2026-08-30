@@ -1,11 +1,11 @@
 """Locate the regex group that sits directly before the final '$' anchor
 of a rule's pattern string literal."""
-from scripts.py.func.get_project_root import get_aura_project_root
 import logging
+import os
 import re
 from pathlib import Path
-import os
 
+from scripts.py.func.get_project_root import get_aura_project_root
 
 _tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()

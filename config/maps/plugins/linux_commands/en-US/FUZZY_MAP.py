@@ -15,7 +15,7 @@
 
 # https://regex101.com/
 
-import re # noqa: F401
+import re
 
 # This map uses a hybrid approach:
 

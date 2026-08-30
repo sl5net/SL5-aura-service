@@ -24,8 +24,8 @@ import platform
 import time
 from pathlib import Path
 
-from ..process_text_in_background import process_text_in_background
 from ..config.dynamic_settings import settings
+from ..process_text_in_background import process_text_in_background
 
 LANG_CODE = "de-DE"
 

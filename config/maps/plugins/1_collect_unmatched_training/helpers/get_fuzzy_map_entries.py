@@ -1,11 +1,12 @@
 # config/maps/plugins/1_collect_unmatched_training/helpers/get_fuzzy_map_entries.py
 """Parse a FUZZY_MAP_pre.py file's source and locate its top-level rule entries."""
 
-from scripts.py.func.get_project_root import get_aura_project_root
 import ast
 import logging
 import os
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 _tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()

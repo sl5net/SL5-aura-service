@@ -1,5 +1,5 @@
 # config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP.py
-import re # noqa: F401
+import re  # noqa: F401
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.

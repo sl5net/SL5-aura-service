@@ -2,11 +2,11 @@
 
 
 import os
-import sys
 import subprocess
-import psutil
+import sys
 import time
 
+import psutil
 
 os.environ["PYTHONUTF8"] = "1"
 os.environ["PYTHONIOENCODING"] = "utf-8:replace"
@@ -24,7 +24,9 @@ if os.path.exists(root_pointer_file):
     if SL5NET_AURA_PROJECT_ROOT not in sys.path:
         sys.path.insert(0, SL5NET_AURA_PROJECT_ROOT)
 
-from scripts.py.func.config.dynamic_settings import settings # ! Dont move this import mor up!! 8.7.'26 16:43 Wed Important!
+from scripts.py.func.config.dynamic_settings import (
+    settings,  # ! Dont move this import mor up!! 8.7.'26 16:43 Wed Important!
+)
 
 # --- config ---
 HOST = "0.0.0.0"
@@ -124,7 +126,7 @@ def start_uvicorn_service(host, port, module_path):
 
             # RUN_MODE="API_SERVICE"
 
-            readme = "" # noqa: F841
+            readme = ""
             readme = """
             In modules use import os and os.getenv('RUN_MODE') where needed.
             Move any import-time side effects into startup handlers or under if RUN_MODE == … guards.

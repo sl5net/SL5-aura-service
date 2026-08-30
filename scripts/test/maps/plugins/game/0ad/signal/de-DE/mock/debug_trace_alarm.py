@@ -1,11 +1,11 @@
 import sys
 
-
 from scripts.py.func.get_project_root import get_aura_project_root
 
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 import logging
+
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger("debug_trace")
 

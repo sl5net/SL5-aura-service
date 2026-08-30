@@ -4,26 +4,21 @@
 # flake8: noqa: F821
 # F821: Undefined name (Accepting Closure access to handle_trigger arguments)
 
+import platform
 import threading
 import time
 from pathlib import Path
 
 import vosk
-
-from .config.dynamic_settings import settings
-
-
-from .model_manager import MODELS_LOCK
 from vosk import SetLogLevel
-import platform
 
-from .process_text_in_background import process_text_in_background
-
-from .guess_lt_language_from_model import guess_lt_language_from_model
-from .audio_manager import unmute_microphone, mute_microphone
-from .microphone_status_too_log import log_microphone_status
-
+from .audio_manager import mute_microphone, unmute_microphone
+from .config.dynamic_settings import settings
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED
+from .guess_lt_language_from_model import guess_lt_language_from_model
+from .microphone_status_too_log import log_microphone_status
+from .model_manager import MODELS_LOCK
+from .process_text_in_background import process_text_in_background
 
 PRE_RECORDING_TIMEOUT = settings.PRE_RECORDING_TIMEOUT
 SPEECH_PAUSE_TIMEOUT = settings.SPEECH_PAUSE_TIMEOUT

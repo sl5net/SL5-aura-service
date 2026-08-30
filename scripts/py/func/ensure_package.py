@@ -1,7 +1,8 @@
 # scripts/py/func/ensure_package.py
-import sys
-import subprocess
 import importlib
+import subprocess
+import sys
+
 
 def ensure_package(pkg_name):
     try:

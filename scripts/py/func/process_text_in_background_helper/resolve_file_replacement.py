@@ -3,6 +3,7 @@ import os
 
 from scripts.py.func.config.dynamic_settings import settings
 
+
 def resolve_file_replacement(replacement, options_dict, logger=None):
     if not settings.FILE4REPLACEMENT_USE:
         return replacement

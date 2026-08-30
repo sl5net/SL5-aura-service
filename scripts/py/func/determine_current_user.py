@@ -1,8 +1,8 @@
 import getpass
 import os
-from typing import Tuple
 
-def determine_current_user() -> Tuple[str, str]:
+
+def determine_current_user() -> tuple[str, str]:
     """Return (username, source). Tries getpass.getuser(), then env vars, else 'unknown_user'."""
     try:
         user = getpass.getuser()

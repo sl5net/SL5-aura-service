@@ -1,11 +1,12 @@
 import time
 from pathlib import Path
-import system
+
 import keyboard
+import system
 
 # SCRIPT_DIR = Path(__file__).resolve().parent
+import tomllib  # In Python 3.11+ Standard
 
-import tomllib # In Python 3.11+ Standard
 CONFIG_PATH = Path.home() / ".config/sl5-stt/config.toml"
 with open(CONFIG_PATH, "rb") as f:
     config = tomllib.load(f)

@@ -2,28 +2,22 @@
 
 import threading
 import time
-
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-
-from .config.dynamic_settings import settings
-
-
-from .audio_manager import sound_program_loaded
-from .log_memory_details import log_memory_details
-from .press_trigger_button import press_trigger_button
-
 from pathlib import Path
 
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
-
+from .audio_manager import sound_program_loaded
+from .config.dynamic_settings import settings
 from .handle_trigger import handle_trigger
+from .log_memory_details import log_memory_details
+from .model_manager import manage_models
+from .press_trigger_button import press_trigger_button
+
 # from .check_memory_critical import check_memory_critical
 # from .notify import notify
-
 from .prioritize_model import prioritize_model
 
-from .model_manager import manage_models
 
 def main(logger, loaded_models, config, suspicious_events, recording_time, active_lt_url):
 
@@ -96,8 +90,12 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
                 # sound_mute()
                 sound_program_loaded()
 
-                from scripts.py.func.process_text_in_background import process_text_in_background
-                from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
+                from scripts.py.func.guess_lt_language_from_model import (
+                    guess_lt_language_from_model,
+                )
+                from scripts.py.func.process_text_in_background import (
+                    process_text_in_background,
+                )
                 # lang_code = get_system_language_code()
 
                 found_key = list(loaded_models.keys())[0]

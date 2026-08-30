@@ -15,23 +15,20 @@
 
 import json
 import os
-
 import platform
-import shutil
-# à partir de dateheure importer dateheure
-
-from pathlib import Path
 import re
+import shutil
+import subprocess
 
+# à partir de dateheure importer dateheure
+from pathlib import Path
 
 from bs4 import BeautifulSoup
-import subprocess
 
 UNICODE_NUMS = {1: "1️", 2: "2️", 3: "3️"}
 
 
 import time
-
 
 # heure d'importation
 

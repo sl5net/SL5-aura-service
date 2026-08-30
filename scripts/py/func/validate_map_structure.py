@@ -2,6 +2,7 @@ import os
 import re
 import time
 
+
 def check_map_health(file_path, module, logger):
     try:
         # DEBUG: Show mtime in log if it doesn't trigger

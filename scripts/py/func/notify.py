@@ -1,13 +1,12 @@
 # File: scripts/py/func/notify.py
 import logging
-import subprocess
 import platform
+import subprocess
 from pathlib import Path
 
 # Assuming these are defined in your project's config
 # from config.settings import NOTIFY_SEND_PATH, NOTIFICATION_LEVEL
 from .config.dynamic_settings import settings
-
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +55,6 @@ def notify(summary: str, body: str = "", urgency: str = "low", icon: str = None,
         elif system == "Windows":
             logger.debug("💬Windows notifications are not yet implemented.")
             # Placeholder for future Windows notification logic
-            pass
 
     except subprocess.TimeoutExpired:
         logger.error(f"💬Notification command timed out for summary: '{summary}'")

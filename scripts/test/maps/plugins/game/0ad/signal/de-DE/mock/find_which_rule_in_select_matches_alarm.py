@@ -1,8 +1,8 @@
 # scripts/test/maps/plugins/game/0ad/signal/de-DE/mock/find_which_rule_in_select_matches_alarm.py:1
 # .venv/bin/python scripts/py/find_which_rule_in_select_matches_alarm.py
 
-import re
 import importlib.util
+import re
 
 file_path = "config/maps/plugins/game/0ad/select/de-DE/FUZZY_MAP_pre.py"
 spec = importlib.util.spec_from_file_location("select_map", file_path)

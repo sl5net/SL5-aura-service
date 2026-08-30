@@ -1,11 +1,10 @@
 # file: scripts/py/func/create_required_folders.py
 import sys
 from pathlib import Path
-from typing import Union
 
 
 # def setup_project_structure(project_root_str: str):
-def setup_project_structure(project_root: Union[str, Path]):
+def setup_project_structure(project_root: str | Path):
     """
     Creates all necessary directories and placeholder files within the project,
     using the provided project root path. This script is the single source of

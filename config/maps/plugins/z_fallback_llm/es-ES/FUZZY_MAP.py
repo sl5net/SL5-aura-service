@@ -15,22 +15,16 @@
 
 # config/languagetool_server/maps/plugins/Volkshochschule/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
 
 # Este mapa utiliza un enfoque híbrido:
-
 # 1. Las entradas de expresiones regulares se verifican primero. Son potentes y pueden no distinguir entre mayúsculas y minúsculas.
-
 # Estructura: ('reemplazo', r'regex_pattern', umbral, banderas)
-
 # - El umbral se ignora para las expresiones regulares.
-
 # - banderas: use {'command_flags': re.IGNORECASE} para no distinguir entre mayúsculas y minúsculas, o 0 para distinguir entre mayúsculas y minúsculas.
-
 # 2. Si no hay coincidencias de expresiones regulares, se realiza una coincidencia difusa simple en las reglas restantes.
-
-
 from pathlib import Path
+
 CONFIG_DIR = Path(__file__).parent
 
 

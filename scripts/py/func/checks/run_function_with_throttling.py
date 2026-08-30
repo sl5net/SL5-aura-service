@@ -1,10 +1,8 @@
 # scripts/py/func/checks/run_function_with_throttling.py
-import time
 import json
-from pathlib import Path
+import time
 from datetime import timedelta
-
-
+from pathlib import Path
 
 # --- Throttling Constants (Fixed Cooldown) ---
 # --- Constants for the Throttling Mechanism ---
@@ -55,11 +53,10 @@ def _load_throttle_state(state_file_path: Path):
             state['min_wait_time'] = float(state.get('min_wait_time', INITIAL_WAIT_TIME))
 
             # Ensure min_wait_time is at least the initial value (in case of manual file corruption)
-            if state['min_wait_time'] < INITIAL_WAIT_TIME:
-                state['min_wait_time'] = INITIAL_WAIT_TIME
+            state['min_wait_time'] = max(state['min_wait_time'], INITIAL_WAIT_TIME)
             return state
 
-    except (IOError, json.JSONDecodeError) as e:
+    except (OSError, json.JSONDecodeError) as e:
         # File access error or corrupt JSON: use default state and log the issue
         print(f"Warning: Could not load or decode state file {state_file_path}. Resetting state. Error: {e}")
         return default_state
@@ -74,7 +71,7 @@ def _save_throttle_state(state_file_path: Path, state: dict):
         state_file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(state_file_path, 'w') as f:
             json.dump(state, f, indent=4)
-    except IOError as e:
+    except OSError as e:
         print(f"Error: Could not save state file {state_file_path}: {e}")
 
 
@@ -112,7 +109,7 @@ def run_function_with_throttling(
                     'last_call_time': float(state.get('last_call_time', 0.0)),
                     'min_wait_time': max(INITIAL_WAIT_TIME, float(state.get('min_wait_time', INITIAL_WAIT_TIME)))
                 }
-        except (IOError, json.JSONDecodeError) as e:
+        except (OSError, json.JSONDecodeError) as e:
             logger.warning(f"Failed to load state file {state_file_path}. Resetting state. Error: {e}")
             return default_state
 
@@ -121,7 +118,7 @@ def run_function_with_throttling(
             state_file_path.parent.mkdir(parents=True, exist_ok=True)
             with open(state_file_path, 'w') as f:
                 json.dump(state, f, indent=4)
-        except IOError as e:
+        except OSError as e:
             logger.error(f"Could not save state file {state_file_path}: {e}")
 
     # --- Throttling Logic Starts Here ---

@@ -13,10 +13,11 @@
 
 # config/maps/plugins/TEST_FILE4REPLACEMENT/de-DE/FUZZY_MAP_pre.py
 
-from scripts.py.func.get_project_root import get_aura_project_root
-import re # noqa: F401
 import os
+import re
 from pathlib import Path
+
+from scripts.py.func.get_project_root import get_aura_project_root
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()

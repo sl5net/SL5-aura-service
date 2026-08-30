@@ -17,10 +17,10 @@
 import re
 from pathlib import Path
 
-
 CONFIG_DIR = Path(__file__).parent
 
 from scripts.py.func.determine_current_user import determine_current_user
+
 current_user,_ = determine_current_user()
 
 FUZZY_MAP_pre = [

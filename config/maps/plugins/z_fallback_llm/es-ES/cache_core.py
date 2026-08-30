@@ -20,23 +20,21 @@
 # importar hashlib
 
 
-import sqlite3
+import datetime
 import hashlib
 import random
-import datetime
-
+import sqlite3
 
 try:
     # 1. INTENTAR: Importación relativa (para python -m... llamada)
 
 
 
-    from . import utils
-    from . import normalizer
+    from . import normalizer, utils
 
 except ImportError:
-    import utils # noqa: F401
-    import normalizer # noqa: F401
+    import normalizer  # noqa: F401
+    import utils
 
 
 # desde pathlib importar ruta
@@ -205,4 +203,3 @@ def update_prompt_stats(prompt_hash):
         conn.close()
     except Exception as e:
         print(f'cache_core.py:165 Exception: {e} => pass')
-        pass

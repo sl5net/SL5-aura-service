@@ -4,7 +4,9 @@ import subprocess
 from pathlib import Path
 
 from scripts.py.func.config.dynamic_settings import settings
-from scripts.py.func.utils.get_leading_whitespace import get_leading_whitespace_before_pos
+from scripts.py.func.utils.get_leading_whitespace import (
+    get_leading_whitespace_before_pos,
+)
 
 # ---
 # Required imports that must exist in every FUZZY_MAP_pre.py
@@ -121,8 +123,7 @@ def execute(match_data):
                     idx = line.find("#")
                     prefix = line[:idx]
                     suffix = line[idx+1:]
-                    if suffix.startswith(" "):
-                        suffix = suffix[1:]
+                    suffix = suffix.removeprefix(" ")
                     new_lines.append(prefix + suffix)
                     status = "Lernmodus AKTIVIERT."
                 else:
@@ -167,7 +168,6 @@ def execute(match_data):
         except Exception:
             speak(f"Error deleting {last_edited_file}")
             print(f"Error deleting {last_edited_file}")
-            pass
 
 
     if settings.AUDIO_GUIDANCE_ENABLED:

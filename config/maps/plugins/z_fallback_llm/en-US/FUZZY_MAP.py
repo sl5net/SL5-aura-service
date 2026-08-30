@@ -15,22 +15,16 @@
 
 # config/languagetool_server/maps/plugins/Volkshochschule/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
 
 # This map uses a hybrid approach:
-
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-
 # Structure: ('replacement', r'regex_pattern', threshold, flags)
-
 # - The threshold is ignored for regex.
-
 # - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-
 # 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
-
-
 from pathlib import Path
+
 CONFIG_DIR = Path(__file__).parent
 
 

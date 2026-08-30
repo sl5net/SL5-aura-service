@@ -1,67 +1,56 @@
 # scripts/py/func/process_text_in_background.py
 import difflib
+import importlib
+import importlib.util
 import logging
 import os
 import pkgutil
+import platform
+import re
 import sys
-
-import importlib.util
+import time
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import psutil
-
-from . import global_state
-
-from .audio.handle_tts_fallback import handle_tts_fallback
-
-from .auto_fix_module import try_auto_fix_module
-from .get_active_window_title import get_active_window_title_safe
-from .log_memory_details import log4DEV
-from .process_text_in_background_helper.load_module_from_path import load_module_from_path
-from .process_text_in_background_helper.run_on_match_exec import run_on_match_exec
-from .state_manager import should_trigger_startup
-from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
-from .window_filter import is_window_title_skippable
-from .checks.trigger_aura_maintenance import trigger_aura_maintenance
-from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED, OUT_OF_ORDER_CACHE, SIGNATURE_TIMES, resolve_execute_only
-
-from .process_text_in_background_helper.resolve_file_replacement import resolve_file_replacement
-
-from .correct_text_by_languagetool import correct_text_by_languagetool
-
-from .utils.aura_cache import get_cached_result, set_cached_result
-
-import re
-import time
 from thefuzz import fuzz
-from .notify import notify
-import platform
 
-
-
-
-from .normalize_punctuation import normalize_punctuation
-from .map_reloader import auto_reload_modified_maps
-
-import importlib
-
+from scripts.py.func.config.dynamic_settings import settings
 from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
 
-from .setup_initial_model import get_model_name_from_key
-
-
+from . import global_state
+from .audio.handle_tts_fallback import handle_tts_fallback
+from .auto_fix_module import try_auto_fix_module
+from .checks.trigger_aura_maintenance import trigger_aura_maintenance
 
 # from .config.regex_cache import REGEX_COMPILE_CACHE
 from .config.regex_cache import get_cached_regex
-
-
-from typing import Union, Optional
-
-from scripts.py.func.config.dynamic_settings import settings
-
-from typing import Any
-
+from .correct_text_by_languagetool import correct_text_by_languagetool
+from .get_active_window_title import get_active_window_title_safe
+from .global_state import (
+    OUT_OF_ORDER_CACHE,
+    SEQUENCE_LOCK,
+    SESSION_LAST_PROCESSED,
+    SIGNATURE_TIMES,
+    resolve_execute_only,
+)
+from .log_memory_details import log4DEV
+from .map_reloader import auto_reload_modified_maps
+from .normalize_punctuation import normalize_punctuation
+from .notify import notify
+from .process_text_in_background_helper.load_module_from_path import (
+    load_module_from_path,
+)
+from .process_text_in_background_helper.resolve_file_replacement import (
+    resolve_file_replacement,
+)
+from .process_text_in_background_helper.run_on_match_exec import run_on_match_exec
+from .setup_initial_model import get_model_name_from_key
+from .state_manager import should_trigger_startup
+from .utils.aura_cache import get_cached_result, set_cached_result
+from .window_filter import is_window_title_skippable
+from .windows_apply_correction_with_sync import windows_apply_correction_with_sync
 
 # global last_signature_time
 
@@ -103,7 +92,7 @@ def _str_to_bool(val: Any) -> bool:
 #
 
 
-def ensure_path(p: Union[str, os.PathLike, Path, None]) -> Optional[Path]:
+def ensure_path(p: str | os.PathLike | Path | None) -> Path | None:
     if p is None:
         return None
     return p if isinstance(p, (Path, os.PathLike)) else Path(p)
@@ -209,6 +198,7 @@ def repariere_pakete_mit_laenderkuerzeln(logger, basis_pfad: Path, aktuelle_tief
 
 # Assumes 'models' directory is at the project root, parallel to 'scripts'
 from scripts.py.func.get_project_root import get_aura_project_root
+
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
 
 MODEL_PATH = SL5NET_AURA_PROJECT_ROOT / "models" / "lid.176.bin"
@@ -224,7 +214,6 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     else:
         import fasttext
         fasttext_model = fasttext.load_model(str(MODEL_PATH))
-        #
 
 
         print("168: TODO: performance killer (2025-1225-1950)")
@@ -1064,7 +1053,7 @@ def process_text_in_background(logger,
                 f.write(f"Hex: {raw_text.encode('utf-8').hex() if raw_text else 'None'}\n")
         except Exception as e:
             with open("/tmp/sl5_aura/debug_crash.txt", "a") as f:
-                f.write(f"CRASH: {str(e)}\n")
+                f.write(f"CRASH: {e!s}\n")
 
 
     # scripts/py/func/process_text_in_background.py:588 (process_text_in_background)
@@ -1101,7 +1090,7 @@ def process_text_in_background(logger,
                 f.write(f"Hex: {raw_text.encode('utf-8').hex() if raw_text else 'None'}\n")
         except Exception as e:
             with open("/tmp/sl5_aura/debug_crash.txt", "a") as f:
-                f.write(f"CRASH: {str(e)}\n")
+                f.write(f"CRASH: {e!s}\n")
 
 
     # print(f':st: \nprocess_text_in_background:933 raw_text:{raw_text}')
@@ -1279,7 +1268,7 @@ def process_text_in_background(logger,
                 log4DEV(f'raw_text:{raw_text}',logger)
             raw_text = settings.SPEECH_PAUSE_TIMEOUT
             if not SEQUENCE_LOCK.execute_only_event.is_set():
-                unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
+                unique_output_file.write_text(f'{raw_text!s}', encoding="utf-8-sig")
 
             # print(f':st: \nprocess_text_in_background:1089 raw_text:{raw_text}')
 
@@ -1289,7 +1278,7 @@ def process_text_in_background(logger,
 
                 log4DEV(f'raw_text:{raw_text}',logger)
             raw_text = settings.AUDIO_INPUT_DEVICE
-            unique_output_file.write_text(f'{str(raw_text)}', encoding="utf-8-sig")
+            unique_output_file.write_text(f'{raw_text!s}', encoding="utf-8-sig")
             return raw_text
 
 
@@ -2738,7 +2727,6 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
 
     return current_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
 
-#
 
 
 # scripts/py/func/process_text_in_background.py:1282

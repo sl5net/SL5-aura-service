@@ -1,17 +1,17 @@
 # config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py
+import datetime
+import hashlib
+import json
 import os
 import random
 import re
 import sqlite3
-import hashlib
-import json
-import datetime
-import sys
-import urllib.request
-import threading
-
-from pathlib import Path
 import subprocess  # Added for espeak support
+import sys
+import threading
+import urllib.request
+from pathlib import Path
+
 # config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py
 
 # --- METADATA ---
@@ -421,6 +421,7 @@ def open_url(url):
 
 
 from pathlib import Path
+
 
 def get_validated_github_url(stored_path):
     """

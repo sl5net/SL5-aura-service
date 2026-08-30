@@ -15,12 +15,14 @@
 
 # https://regex101.com/
 
-from scripts.py.func.get_project_root import get_aura_project_root
 import platform
-import re # noqa: F401
-# desde pathlib importar ruta como p; importar sistema operativo como o # noqa: E702
+import re
 
-# con open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702
+from scripts.py.func.get_project_root import get_aura_project_root
+
+# desde pathlib importar ruta como p; importar sistema operativo como o
+
+# con open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 
 
 

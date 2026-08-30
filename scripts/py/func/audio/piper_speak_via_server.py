@@ -1,11 +1,8 @@
-import requests
 import sys
-
 import threading
-
-
-
 import time
+
+import requests
 
 _speech_lock = threading.Lock()
 

@@ -13,7 +13,7 @@
 
 # config/maps/plugins/bible_search/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
 
 # This map uses a hybrid approach:
 

@@ -14,6 +14,7 @@
 # config/maps/koans_deutsch/00_koan_oma-modus/de-DE/FUZZY_MAP_pre.py
 
 import re  # noqa: F401
+
 # too<-from
 
 FUZZY_MAP_pre = [

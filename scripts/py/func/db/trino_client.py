@@ -1,10 +1,12 @@
 # scripts/py/func/db/trino_client.py
-import os
-from pathlib import Path
-import sys
 import logging
+import os
+import sys
+
 # sys.path.insert(0, str(Path(__file__).parents[4]))
 from datetime import datetime, timezone
+from pathlib import Path
+
 from scripts.py.func.determine_current_user import determine_current_user
 from scripts.py.func.ensure_package import ensure_package
 

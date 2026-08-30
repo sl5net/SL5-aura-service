@@ -1,6 +1,8 @@
-from scripts.py.func.get_project_root import get_aura_project_root
 import subprocess
 import time
+
+from scripts.py.func.get_project_root import get_aura_project_root
+
 
 def execute(match_data):
     # TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")

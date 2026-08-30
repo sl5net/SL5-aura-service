@@ -17,11 +17,11 @@
 
 
 import logging
+
 # importer re
-
 from pathlib import Path
-from rapidfuzz import fuzz
 
+from rapidfuzz import fuzz
 
 # --- Journalisation de configuration ---
 

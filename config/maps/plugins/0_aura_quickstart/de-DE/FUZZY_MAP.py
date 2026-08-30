@@ -1,7 +1,7 @@
 # config/maps/plugins/0_aura_quickstart/de-DE/FUZZY_MAP.py
 # config/languagetool_server/maps/  /de-DE/FUZZY_MAP.py
 # https://regex101.com/
-import re # noqa: F401
+import re
 
 # This map uses a hybrid approach:
 # 1. Regex entries are checked first. They are powerful and can be case-insensitive.

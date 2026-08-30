@@ -1,14 +1,13 @@
 # scripts/py/func/checks/self_tester.py
+import concurrent.futures
 import contextlib
 
+# import concurrent.futures
+import os
 import platform
 import re
-import concurrent.futures
 import shutil
 import sys
-# import concurrent.futures
-
-import os
 import warnings
 from pathlib import Path
 
@@ -25,15 +24,12 @@ SL5NET_AURA_PROJECT_ROOT = Path((tmp_dir / "sl5_aura" / "sl5net_aura_project_roo
 if str(SL5NET_AURA_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(SL5NET_AURA_PROJECT_ROOT))
 
-from scripts.py.func.process_text_in_background import process_text_in_background
-
 # from ..log_memory_details import log4DEV
 # from ..process_text_in_background import process_text_in_background
-
 # # scripts/py/func/global_state.py
 from scripts.py.func import global_state
-
 from scripts.py.func.config.dynamic_settings import settings
+from scripts.py.func.process_text_in_background import process_text_in_background
 
 is_ci = os.getenv('CI') == 'true'
 
@@ -44,6 +40,7 @@ else:
 
 
 from enum import IntEnum
+
 
 class TestPrio(IntEnum):
     ALWAYS = 1     # 100% Chance
@@ -76,7 +73,10 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 # Note: In aura_engine.py this might be SCRIPT_DIR instead of project_root
 
-from scripts.py.func.checks.run_function_with_throttling import run_function_with_throttling
+from scripts.py.func.checks.run_function_with_throttling import (
+    run_function_with_throttling,
+)
+
 # from ..config.dynamic_settings import settings
 
 
@@ -168,8 +168,8 @@ def case(input_text: str, expected: str, context: str = '',
 
 def _wait_for_languagetool_ready(lt_url, logger, timeout=60, interval=2):
     """Wait until LanguageTool server is ready to accept requests."""
-    import urllib.request
     import urllib.error
+    import urllib.request
 
 
     # health_url = f"{lt_url}/v2/languages"
@@ -637,7 +637,7 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
 
 Passed: 95 | ❌ Failed: 0 Tests (hint search for: ❌ FAIL )
 15:17:25,615 - INFO   - :st:⌚ Total Duration: 6.45 seconds
-    """ # noqa:F841
+    """
 
     if False and not is_ci:
         logger.info("-" * 40)
@@ -667,9 +667,10 @@ Passed: 95 | ❌ Failed: 0 Tests (hint search for: ❌ FAIL )
 #            for i, t in enumerate(active_tests)}
 
 
-import sys
 import os
+import sys
 import time
+
 # import traceback
 # from pathlib import Path
 
@@ -802,7 +803,6 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
             worker_dir.rmdir()
         except Exception as e:
             print(f':st:812: {e}')
-            pass
 
         # -- Sent via Aura --'
         pattern = r"(🗣|\-\-)"  # cut off signature . example: first sequence of digits
@@ -814,13 +814,14 @@ def run_single_test_202501311853(logger, index, test_data, lang_code, lt_url, te
         return bool(re.fullmatch(expected, actual)), raw_text, actual, expected2, description
 
     except Exception as e:
-        return False, raw_text, f"Error: {str(e)}", expected, description
+        return False, raw_text, f"Error: {e!s}", expected, description
 
 
 
 # from pathlib import Path
 # import time
 import hashlib
+
 # import shutil
 
 def sha256(path: Path, chunk_size=1 << 20):

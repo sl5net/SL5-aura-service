@@ -1,9 +1,9 @@
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # scripts/py/func/global_state.py
 
-from types import SimpleNamespace
 import threading
-from typing import Any, Dict
+from types import SimpleNamespace
+from typing import Any
 
 # Thread-local storage for per-thread transient state
 thread_state = threading.local()
@@ -25,14 +25,14 @@ LOGGING_ENABLED: bool = True
 
 # Cache to store chunks that arrived out of order.
 # Access must be synchronized by SEQUENCE_LOCK.lock.
-OUT_OF_ORDER_CACHE: Dict[int, Any] = {}
+OUT_OF_ORDER_CACHE: dict[int, Any] = {}
 
 # A mapping of all active session IDs to their last processed chunk ID.
 # Access must be synchronized by SEQUENCE_LOCK.lock.
-SESSION_LAST_PROCESSED: Dict[Any, int] = {}
+SESSION_LAST_PROCESSED: dict[Any, int] = {}
 
 # Signature times mapping (also protected by lock)
-SIGNATURE_TIMES: Dict[Any, float] = {}
+SIGNATURE_TIMES: dict[Any, float] = {}
 
 # Small ring keeping last recognitions (kept small; protect with lock if mutated from multiple threads)
 _last_recognitions = []
@@ -70,7 +70,7 @@ def _str_to_bool(val: Any) -> bool:
     return s in ("1", "true", "t", "yes", "y", "on")
 
 
-def resolve_execute_only(options: Dict[str, Any]) -> bool:
+def resolve_execute_only(options: dict[str, Any]) -> bool:
     """
     Resolve and possibly set the global "execute only" flag.
 

@@ -1,11 +1,13 @@
 # scripts/py/cli_client.py
+import argparse
+import json
+import os
 import sys
 from pathlib import Path
+
 import requests
-import json
-import argparse
-import os # noqa: F811
 from dotenv import load_dotenv
+
 # file: scripts/py/cli_client.py
 SERVICE_URL = "http://127.0.0.1:8830/process_cli"
 

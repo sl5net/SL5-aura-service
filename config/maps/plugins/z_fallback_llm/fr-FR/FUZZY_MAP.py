@@ -15,22 +15,16 @@
 
 # config/langagetool_server/maps/plugins/Volkshochschule/de-DE/FUZZY_MAP.py
 
-import re # noqa: F401
+import re  # noqa: F401
 
 # Cette carte utilise une approche hybride :
-
 # 1. Les entrées Regex sont vérifiées en premier. Ils sont puissants et peuvent ne pas être sensibles à la casse.
-
 # Structure : ('remplacement', r'regex_pattern', seuil, drapeaux)
-
 # - Le seuil est ignoré pour les regex.
-
 # - flags : utilisez {'command_flags': re.IGNORECASE} pour l'insensibilité à la casse, ou 0 pour la sensibilité à la casse.
-
 # 2. Si aucune expression régulière ne correspond, une simple correspondance floue est effectuée sur les règles restantes.
-
-
 from pathlib import Path
+
 CONFIG_DIR = Path(__file__).parent
 
 

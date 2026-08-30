@@ -2,9 +2,8 @@
 from datetime import datetime
 from pathlib import Path
 
-
-
 from scripts.py.func import global_state
+
 
 def between_first_last_hash_manual(s: str) -> str:
     try:

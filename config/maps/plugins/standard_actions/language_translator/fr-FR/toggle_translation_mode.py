@@ -16,11 +16,11 @@
 # traduction
 
 import os
+import re
 import shutil
+import subprocess
 import sys
 from pathlib import Path
-import subprocess
-import re
 
 from scripts.py.func.config.dynamic_settings import settings
 

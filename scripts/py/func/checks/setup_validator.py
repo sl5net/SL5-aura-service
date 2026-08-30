@@ -1,11 +1,11 @@
 # scripts/py/func/checks/setup_validator.py
 #
 
+import ast
 import os
 import sys
-import ast
+from collections import Counter  # <-- FIX: Import Counter
 from pathlib import Path
-from collections import Counter # <-- FIX: Import Counter
 
 # ==============================================================================
 # 1. CORE VALIDATION
@@ -95,7 +95,7 @@ def check_for_unused_functions(parsed_trees, project_root, logger):
         'get_lt_session_202601311817', 'correct_text_by_languagetool_202601311818','run_single_test_202501311853'
         'check_map_health_online_repairing', 'validate_map_structure'
         'check_map_health_online_repairing', 'run_single_test_202501311853', 'youtube_url', 'transcript_cache_path', 'test_vosk_wer_against_youtube_transcript',''
-        'check_map_health_online_repairing', 'run_single_test_202501311853', 'youtube_url', 'transcript_cache_path', 'test_vosk_wer_against_youtube_transcript','audio_cache_path','test_trigger_no_word_cutoff','start_background_model_loader','run_e2e_live_reload_func_test_v2', 'set_language',
+        'check_map_health_online_repairing', 'audio_cache_path','test_trigger_no_word_cutoff','start_background_model_loader','run_e2e_live_reload_func_test_v2', 'set_language',
          'open_admin_panel',
          'get_leading_whitespace_before_pos','get_leading_whitespace_of_line'
     }
@@ -177,8 +177,6 @@ def check_for_frequent_calls(parsed_trees, logger, threshold=3):
         'getframerate', 'logging', 'transcribed_chunks', 'patch',
         'MockRawInputStream',
 
-        'Path',
-        'glob',
         'expected_texts',
         'test_case',
         'test_output_dir',

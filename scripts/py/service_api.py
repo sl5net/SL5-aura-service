@@ -1,18 +1,18 @@
 # file: scripts/py/service_api.py
+import logging
+import os
+import socket
 import subprocess
 import time
-import os
-import logging
+from datetime import datetime
 from pathlib import Path
 
-import socket
+from dotenv import load_dotenv
 
 # Imports
-from fastapi import FastAPI, Depends, Header, HTTPException, Request
-from fastapi.responses import JSONResponse, RedirectResponse, HTMLResponse
-from datetime import datetime
+from fastapi import Depends, FastAPI, Header, HTTPException, Request
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from pydantic import BaseModel
-from dotenv import load_dotenv
 
 from scripts.py.func.process_text_in_background import process_text_in_background
 
@@ -236,7 +236,7 @@ async def process_text_command(request: ProcessRequest, valid: bool = Depends(ve
         app_logger.error(f"Error during background process execution: {e}")
         return {
             "status": "error",
-            "message": f"Could not start process: {str(e)}",
+            "message": f"Could not start process: {e!s}",
             "input_text": raw_text
         }
 

@@ -1,18 +1,17 @@
 # CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
 # scripts/py/func/start_languagetool_server.py
 
-from pathlib import Path
-import subprocess
-import requests
-import time
-import sys
 import importlib
-from .config.dynamic_settings import settings
-
 import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
 import psutil  # pip install psutil
+import requests
 
-
+from .config.dynamic_settings import settings
 
 # Sentinel object to indicate LT was already running.
 # The sentinel has the minimal methods (poll, terminate) to be safely passed

@@ -1,6 +1,6 @@
+import importlib.util
 import os
 import re
-import importlib.util
 
 base_dir = "config/maps/plugins/game/0ad"
 test_input = "alarm"
