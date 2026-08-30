@@ -28,6 +28,10 @@ set -e
 
 echo "--- Starting STT Setup for Manjaro/Arch Linux ---"
 
+eval "$(python3 scripts/py/setup_config.py)"
+echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
+
+
 # setup/manjaro_arch_setup.sh
 # --- 1. System Dependencies ---
 echo "--> Checking for a compatible Java version (>=17)…"
@@ -83,6 +87,18 @@ if [ -f "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh" ]; then
     bash "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
 fi
 # ==============================================================================
+
+# --- Configure default model ---
+echo "--> Configuring default model in config/model_name.txt…"
+if [ "${CI:-}" = "true" ]; then
+    echo "vosk-model-small-en-us-0.15" > config/model_name.txt
+elif [ "${SELECTED_LANG:-}" = "de" ]; then
+    echo "vosk-model-de-0.21" > config/model_name.txt
+else
+    echo "Please set a vosk-model in config/model_name.txt e.g. vosk-model-en-us-0.22 and check https://alphacephei.com/vosk/models"
+fi
+
+
 
 # After: show preview and ask for confirmation (default: no)
 echo "The script can optionally run a full system upgrade (pacman -Syu)."
