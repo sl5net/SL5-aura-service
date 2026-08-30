@@ -416,7 +416,7 @@ def find_folder_counts(root):
 
 
 def print_counts(info):
-    print("Repository documentation summary:")
+    print("Repository documentation summary:", file=sys.stderr)
     print(f"  docs folder exists: {info['docs_exists']}, files: {len(info['docs_files'])}", file=sys.stderr)
     print(f"  doc_sources folder exists: {info['doc_sources_exists']}, files: {len(info['doc_sources_files'])}", file=sys.stderr)
     if info['i18n_folders']:

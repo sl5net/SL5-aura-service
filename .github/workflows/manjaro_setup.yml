@@ -1,4 +1,5 @@
 name: CI for Manjaro Setup
+# .github/workflows/manjaro_setup.yml
 
 on:
   push:
