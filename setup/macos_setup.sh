@@ -39,7 +39,16 @@ fi
 
 #eval $(python3 scripts/py/setup_config.py)
 
-eval $(./.venv/bin/python scripts/py/setup_config.py) || eval $(python3 scripts/py/setup_config.py)
+
+# --- Python Virtual Environment ---
+if [ ! -d ".venv" ]; then
+    echo "--> Creating Python 3.12 virtual environment in './.venv'"
+    uv venv --python 3.12 .venv
+else
+    echo "--> Virtual environment already exists. Skipping creation."
+fi
+
+eval "$(./.venv/bin/python scripts/py/setup_config.py || python3 scripts/py/setup_config.py)"
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
 
 should_remove_zips_after_unpack=true
@@ -100,16 +109,6 @@ echo "--> Installing other core dependencies…"
 #brew install fswatch wget unzip portaudio
 brew install fswatch wget unzip portaudio sdl2 sdl2_image sdl2_mixer sdl2_ttf portmidi
 
-
-
-# --- 2. Python Virtual Environment ---
-
-
-# Ensure virtualenv use pattern is safe: create venv before any pip usage in later steps
-if [ ! -d ".venv" ]; then
-    echo "--> Creating Python virtual environment in './.venv'…"
-    python3 -m venv .venv || { echo "ERROR: failed to create venv"; exit 1; }
-fi
 
 
 # --- 3. Python Requirements ---
@@ -288,7 +287,7 @@ echo ""
 echo "1. Configure Java PATH:"
 echo "   To make Java available, you may need to add it to your shell's PATH."
 echo "   Run this command in your terminal:"
-echo '   export PATH="$(brew --prefix openjdk@21)/bin:$PATH"'
+echo "   export PATH=\"$(brew --prefix openjdk@21)/bin:$PATH\""
 echo "   (Consider adding this line to your ~/.zshrc or ~/.bash_profile file to make it permanent)."
 echo ""
 echo "2. Activate Environment and Run:"
