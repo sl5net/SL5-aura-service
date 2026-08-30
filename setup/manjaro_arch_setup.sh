@@ -36,7 +36,7 @@ else
     echo "--> Virtual environment already exists. Skipping creation."
 fi
 
-eval "$(./.venv/bin/python scripts/py/setup_config.py 2>/dev/null || python3 scripts/py/setup_config.py)"
+eval "$(./.venv/bin/python scripts/py/setup_config.py || python3 scripts/py/setup_config.py)"
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
   
 
