@@ -4,7 +4,7 @@
 Empfehlung:
 UmgebungEmpfehlungGitHub Actions4 — sicher, stabilLokaler Mac/Linux6-8 — schnell, noch übersichtlichSehr schnelle Leitung8 max — danach kaum Gewinn
 """
-
+import time
 from os import remove
 import requests
 import hashlib
