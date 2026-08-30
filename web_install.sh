@@ -33,4 +33,11 @@ fi
 echo "[INFO] Launching system setup..."
 cd "${INSTALL_DIR}"
 chmod +x setup/linux_mac_setup.sh
-exec bash setup/linux_mac_setup.sh "$@"
+
+# Check if /dev/tty is available, then attach it to stdin
+if [ -t 0 ] || [ -c /dev/tty ]; then
+    exec bash setup/linux_mac_setup.sh "$@" < /dev/tty
+else
+    exec bash setup/linux_mac_setup.sh "$@"
+fi
+
