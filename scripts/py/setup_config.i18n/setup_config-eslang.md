@@ -5,7 +5,7 @@ Región detectada: {país} | Sugerencia: {default_primary}
 Seleccione el código de idioma o 'n' para el modo terminal (sin idiomas).
 
 # mensaje_p
-Idioma principal (de, en... o 'n' para ninguno): confirmación automática en 8 segundos
+Idioma principal (de, en... o 'n' para modo terminal/solo GUI): confirmación automática en 8 segundos
 
 # mensajes_s
 Idioma secundario (o predeterminado 'ninguno'): confirmación automática en 8 segundos

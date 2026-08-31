@@ -295,13 +295,25 @@ if run_i18n_test(sys.argv):
 # ---------------------------------------------------------------------------
 # Original helpers (unchanged)
 # ---------------------------------------------------------------------------
-def get_country():
-    try:
-        with urllib.request.urlopen("https://ipapi.co/country/", timeout=2) as response:
-            return response.read().decode().strip()
-    except Exception as e:
-        return f"Unknown{e}"
+# def get_country():
+#     try:
+#         with urllib.request.urlopen("https://ipapi.co/country/", timeout=2) as response:
+#             return response.read().decode().strip()
+#     except Exception as e:
+#         return f"Unknown{e}"
 
+def get_country():
+    urls = ["https://ipapi.co/country/", "https://ipinfo.io/country"]
+    for url in urls:
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "curl/7.88.1"})
+            with urllib.request.urlopen(req, timeout=2) as response:
+                country = response.read().decode("utf-8").strip()
+                if country and len(country) == 2:
+                    return country.upper()
+        except Exception:
+            continue
+    return None
 
 def is_non_interactive():
     if os.environ.get("CI", "").lower() in ("true", "1", "yes"):
@@ -515,7 +527,6 @@ if not is_non_interactive():
         auto_timeout_enabled = True
 sys.stderr.write(f"{strings['enter_hint']}\n")
 sys.stderr.write(f"{text_detected}\n{text_help}\n")
-
 primary = timed_input(prompt_p, default_primary, timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled)
 if is_non_interactive():
     secondary = "none"
@@ -572,7 +583,7 @@ if info['docs_exists'] or info['doc_sources_exists']:
             delete_path(os.path.join(repo_root, 'doc_sources'))
     else:
         # Offer the more granular option: delete only non-primary language md files
-        ans_partial = timed_input("Delete only docs md files that are NOT the selected primary language? (y/n)", "n", timeout=8, enable_timeout=auto_timeout_enabled).lower()        
+        ans_partial = timed_input("Delete only docs md files that are NOT the selected primary language? (y/n)", "y", timeout=8, enable_timeout=auto_timeout_enabled).lower()        
         if ans_partial in ("y", "yes"):
             deleted, skipped = delete_non_primary_md(info, primary)
             print(file=sys.stderr)
