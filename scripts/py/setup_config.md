@@ -5,7 +5,7 @@ Region detected: {country} | Suggestion: {default_primary}
 Select language code or 'n' for terminal mode (no languages).
 
 # prompt_p
-Primary language (de, en... or 'n' for none) – automatic confirmation in 8 seconds
+Primary language (de, en... or 'n' for terminal/GUI-only mode) – auto-confirming in 8 seconds
 
 # prompt_s
 Secondary language (or 'none' default) – automatic confirmation in 8 seconds

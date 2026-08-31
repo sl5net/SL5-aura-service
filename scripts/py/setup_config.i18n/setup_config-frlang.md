@@ -5,7 +5,7 @@ Région détectée : {pays} | Suggestion : {default_primary}
 Sélectionnez le code de langue ou « n » pour le mode terminal (pas de langue).
 
 # prompt_p
-Langue principale (de, en... ou 'n' pour aucun) – confirmation automatique en 8 secondes
+Langue principale (de, en... ou 'n' pour le mode terminal/GUI uniquement) – confirmation automatique en 8 secondes
 
 # invite_s
 Langue secondaire (ou « aucune » par défaut) – confirmation automatique en 8 secondes

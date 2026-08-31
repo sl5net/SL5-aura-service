@@ -5,7 +5,7 @@ Region erkannt: {Land} | Vorschlag: {default_primary}
 Wählen Sie den Sprachcode oder „n“ für den Terminalmodus (keine Sprachen).
 
 # prompt_p
-Primärsprache (de, en... oder 'n' für keine) – automatische Bestätigung in 8 Sekunden
+Primäre Sprache (de, en... oder 'n' für Terminal-/GUI-only-Modus) – automatische Bestätigung in 8 Sekunden
 
 # prompt_s
 Sekundärsprache (oder standardmäßig „keine“) – automatische Bestätigung in 8 Sekunden
