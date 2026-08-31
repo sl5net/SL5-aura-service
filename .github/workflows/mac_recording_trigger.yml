@@ -147,7 +147,8 @@ jobs:
           echo "Fresh install successful"
 
       - name: Install Development Dependencies
-        run: .venv/bin/pip install -r scripts/infra/requirements/requirements-dev.txt
+        #run: .venv/bin/pip install -r scripts/infra/requirements/requirements-dev.txt
+        run: uv pip install --python .venv/bin/python -r scripts/infra/requirements/requirements-dev.txt
 
       - name: Run pre-commit hook (dry-run)
         run: |
