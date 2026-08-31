@@ -7,9 +7,10 @@ trap 'echo -e "\n[INFO] Installation aborted by user."; kill 0 2>/dev/null; exit
 APP_NAME="sl5-aura-service"
 #export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 
-mkdir -p "${HOME}/programs"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/programs/}"
-export INSTALL_DIR="${XDG_DATA_HOME}/${APP_NAME}"
+mkdir -p "${HOME}/opt"
+
+export INSTALL_DIR="${INSTALL_DIR:-$HOME/opt/${APP_NAME}}"
+
 REPO_BRANCH="${AURA_BRANCH:-master}"
 REPO_TAR_URL="https://github.com/sl5net/SL5-aura-service/archive/refs/heads/${REPO_BRANCH}.tar.gz"
 echo "============================================"

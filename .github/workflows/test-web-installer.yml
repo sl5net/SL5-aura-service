@@ -38,7 +38,7 @@ jobs:
 
           DURATION=$((END_TS - START_TS))
 
-          INSTALL_DIR="$HOME/.local/share/sl5-aura-service"
+          INSTALL_DIR="$HOME/opt/sl5-aura-service"
           if [ ! -d "$INSTALL_DIR" ]; then
             echo "::error::Installation directory $INSTALL_DIR does not exist!"
             exit 1

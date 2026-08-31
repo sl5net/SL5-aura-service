@@ -59,7 +59,7 @@ jobs:
           END_TS=$(date +%s)
           DURATION=$((END_TS - START_TS))
 
-          INSTALL_DIR="$HOME/.local/share/sl5-aura-service"
+          INSTALL_DIR="$HOME/opt/sl5-aura-service"
           if [ "$RUNNER_OS" = "Windows" ]; then
             INSTALL_DIR="${LOCALAPPDATA:-$USERPROFILE/AppData/Local}/sl5-aura-service"
           fi

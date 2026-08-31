@@ -67,7 +67,7 @@ When you run the installer, Aura automatically:
 - **Installation Duration:** Approximately 2–3 minutes.
 - **Disk Space Required:** Minimum ~1.5 GB (up to 2.5 GB depending on selected language models).
 - **Installation Directory:**
-  - **Linux & macOS:** `~/.local/share/sl5-aura-service`
+  - **Linux & macOS:** `~/opt/sl5-aura-service`
   - **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
 
 ---
