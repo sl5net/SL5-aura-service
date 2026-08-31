@@ -45,6 +45,7 @@ done
 
 #if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
 #  cat <<'USAGE'
+
 show_usage() {
   cat <<'USAGE'
 Usage: tools/search.sh PATTERN [PATH_PREFIX] [OPTIONS]
@@ -70,7 +71,8 @@ PREFIX="${2:-.}"
 
 clear
 #echo "tools/search.sh '$PATTERN' # flags='$GREP_FLAGS' prefix='$PREFIX'" >&2
-echo "tools/search.sh '$PATTERN' # flags='$GREP_FLAGS' prefix='$PREFIX' include_doc_sources='$INCLUDE_DOC_SOURCES'" >&2
+
+echo "tools/search.sh '$PATTERN' # flags='$GREP_FLAGS' prefix='$PREFIX' [help: -h]"  include_doc_sources='$INCLUDE_DOC_SOURCES'" >&2
 
 EXCLUDE_PAT="\.i18n|/__pycache__/|/\.venv/|/venv/"
 if [ "$INCLUDE_DOC_SOURCES" = "false" ]; then

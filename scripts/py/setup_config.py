@@ -264,8 +264,8 @@ def run_i18n_test(argv):
     """
     if "--i18n-langs" in argv:
         found = list_available_i18n_langs()
-        print("Available i18n languages (from *.md files):")
-        print(", ".join(found) if found else "(none found - only built-in 'de'/'en' fallback exist)")
+        print("Available i18n languages (from *.md files):", file=sys.stderr)
+        print(", ".join(found) if found else "(none found - only built-in 'de'/'en' fallback exist)", file=sys.stderr)
         return True
 
     if "--i18n-test" in argv:
@@ -279,10 +279,10 @@ def run_i18n_test(argv):
                 test_country = argv[cidx + 1]
 
         strings, source = get_strings(lang, country=test_country, default_primary=lang)
-        print(f"--- i18n test: lang='{lang}' | source={source} ---")
+        print(f"--- i18n test: lang='{lang}' | source={source} ---", file=sys.stderr)
         for key in STRING_KEYS:
-            print(f"{key}: {strings[key]}")
-        print("--- end i18n test ---")
+            print(f"{key}: {strings[key]}", file=sys.stderr)
+        print("--- end i18n test ---", file=sys.stderr)
         return True
 
     return False
@@ -436,7 +436,7 @@ def print_counts(info):
         for k, v in info['i18n_folders'].items():
             print(f"    {k} -> {len(v)} .md files", file=sys.stderr)
     else:
-        print("  no .i18n folders found.")
+        print("  no .i18n folders found.", file=sys.stderr)
 
 
 def delete_path(path):
@@ -553,19 +553,19 @@ selected_hotkey = hotkey_map.get(hotkey_input, hotkey_input if hotkey_input else
 auto_timeout_val = "1" if auto_timeout_enabled else "0"
 timeout_sec_val = str(auto_timeout_seconds) if auto_timeout_enabled else "0"
 if os.name == 'nt':
-    print(f"$env:SELECTED_LANG='{primary}'")
-    print(f"$env:SECOND_LANG='{secondary}'")
-    print(f"$env:EXCLUDE_LANGUAGES='{excludes_str}'")
-    print(f"$env:SELECTED_HOTKEY='{selected_hotkey}'")
-    print(f"$env:AUTO_TIMEOUT_ENABLED='{auto_timeout_val}'")
-    print(f"$env:AUTO_TIMEOUT_SECONDS='{timeout_sec_val}'")
+    print(f"$env:SELECTED_LANG='{primary}'", file=sys.stderr)
+    print(f"$env:SECOND_LANG='{secondary}'", file=sys.stderr)
+    print(f"$env:EXCLUDE_LANGUAGES='{excludes_str}'", file=sys.stderr)
+    print(f"$env:SELECTED_HOTKEY='{selected_hotkey}'", file=sys.stderr)
+    print(f"$env:AUTO_TIMEOUT_ENABLED='{auto_timeout_val}'", file=sys.stderr)
+    print(f"$env:AUTO_TIMEOUT_SECONDS='{timeout_sec_val}'", file=sys.stderr)
 else:
-    print(f"export SELECTED_LANG='{primary}'")
-    print(f"export SECOND_LANG='{secondary}'")
-    print(f"export EXCLUDE_LANGUAGES='{excludes_str}'")
-    print(f"export SELECTED_HOTKEY='{selected_hotkey}'")
-    print(f"export AUTO_TIMEOUT_ENABLED='{auto_timeout_val}'")
-    print(f"export AUTO_TIMEOUT_SECONDS='{timeout_sec_val}'")    
+    print(f"export SELECTED_LANG='{primary}'", file=sys.stderr)
+    print(f"export SECOND_LANG='{secondary}'", file=sys.stderr)
+    print(f"export EXCLUDE_LANGUAGES='{excludes_str}'", file=sys.stderr)
+    print(f"export SELECTED_HOTKEY='{selected_hotkey}'", file=sys.stderr)
+    print(f"export AUTO_TIMEOUT_ENABLED='{auto_timeout_val}'", file=sys.stderr)
+    print(f"export AUTO_TIMEOUT_SECONDS='{timeout_sec_val}'", file=sys.stderr)    
 # --- New: show docs/doc_sources/i18n counts and ask about deletions ---
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 info = find_folder_counts(repo_root)
