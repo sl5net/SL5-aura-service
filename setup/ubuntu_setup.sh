@@ -18,7 +18,7 @@ sudo apt-get update -y
 sudo apt-get install -y python3 python3-pip python3-venv
 
 #eval $(python3 scripts/py/setup_config.py) # before 22.8.'26 19:03 Sat
-eval "$(python3 scripts/py/setup_config.py)"
+eval "$(./.venv/bin/python scripts/py/setup_config.py || python3 scripts/py/setup_config.py)"
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
 
 # --- Make script location-independent ---

@@ -416,11 +416,11 @@ def find_folder_counts(root):
 
 
 def print_counts(info):
-    print("Repository documentation summary:")
+    print("Repository documentation summary:", file=sys.stderr)
     print(f"  docs folder exists: {info['docs_exists']}, files: {len(info['docs_files'])}", file=sys.stderr)
     print(f"  doc_sources folder exists: {info['doc_sources_exists']}, files: {len(info['doc_sources_files'])}", file=sys.stderr)
     if info['i18n_folders']:
-        print("  i18n folders found:")
+        print("  i18n folders found:", file=sys.stderr)
         for k, v in info['i18n_folders'].items():
             print(f"    {k} -> {len(v)} .md files", file=sys.stderr)
     else:
@@ -431,7 +431,7 @@ def delete_path(path):
     # safe delete with shutil.rmtree
     if os.path.exists(path):
         shutil.rmtree(path)
-        print(f"Deleted: {path}")
+        print(f"Deleted: {path}", file=sys.stderr)
     else:
         print(f"Not found (so not deleted): {path}", file=sys.stderr)
 
@@ -558,9 +558,9 @@ else:
 # --- New: show docs/doc_sources/i18n counts and ask about deletions ---
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 info = find_folder_counts(repo_root)
-print()  # spacer
+print(file=sys.stderr)
 print_counts(info)
-print()
+print(file=sys.stderr)
 # Ask whether user wants to delete entire docs and/or doc_sources
 if info['docs_exists'] or info['doc_sources_exists']:
     # default to 'n' (no) after timeout
@@ -575,7 +575,7 @@ if info['docs_exists'] or info['doc_sources_exists']:
         ans_partial = timed_input("Delete only docs md files that are NOT the selected primary language? (y/n)", "n", timeout=8, enable_timeout=auto_timeout_enabled).lower()        
         if ans_partial in ("y", "yes"):
             deleted, skipped = delete_non_primary_md(info, primary)
-            print()
+            print(file=sys.stderr)
             print(f"Deleted {len(deleted)} files (attempted).", file=sys.stderr)
             if deleted:
                 for d in deleted:

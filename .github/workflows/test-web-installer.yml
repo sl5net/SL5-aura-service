@@ -24,6 +24,7 @@ jobs:
           - macos-latest
           #- windows-latest
 
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -33,8 +34,9 @@ jobs:
         shell: bash
         run: |
           START_TS=$(date +%s)
-          cat web_install.sh | bash
+          AURA_BRANCH="${{ github.head_ref || github.ref_name }}" cat web_install.sh | AURA_BRANCH="${{ github.head_ref || github.ref_name }}" bash -s -- --non-interactive
           END_TS=$(date +%s)
+
           DURATION=$((END_TS - START_TS))
 
           INSTALL_DIR="$HOME/.local/share/sl5-aura-service"

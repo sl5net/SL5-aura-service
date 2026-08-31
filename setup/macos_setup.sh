@@ -39,7 +39,22 @@ fi
 
 #eval $(python3 scripts/py/setup_config.py)
 
-eval $(./.venv/bin/python scripts/py/setup_config.py) || eval $(python3 scripts/py/setup_config.py)
+
+# --- Python Virtual Environment ---
+if ! command -v uv >/dev/null 2>&1; then
+    echo "--> Installing 'uv' via Homebrew..."
+    brew install uv
+fi
+
+if [ ! -d ".venv" ]; then
+    echo "--> Creating Python 3.12 virtual environment in './.venv'"
+    uv venv --python 3.12 .venv
+else
+    echo "--> Virtual environment already exists. Skipping creation."
+fi
+
+
+eval "$(./.venv/bin/python scripts/py/setup_config.py || python3 scripts/py/setup_config.py)"
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
 
 should_remove_zips_after_unpack=true
@@ -102,28 +117,19 @@ brew install fswatch wget unzip portaudio sdl2 sdl2_image sdl2_mixer sdl2_ttf po
 
 
 
-# --- 2. Python Virtual Environment ---
-
-
-# Ensure virtualenv use pattern is safe: create venv before any pip usage in later steps
-if [ ! -d ".venv" ]; then
-    echo "--> Creating Python virtual environment in './.venv'…"
-    python3 -m venv .venv || { echo "ERROR: failed to create venv"; exit 1; }
-fi
-
-
 # --- 3. Python Requirements ---
 echo "--> Preparing requirements for macOS…"
 # The macOS equivalent, 'fswatch', is already installed via Homebrew.
 sed -i.bak '/inotify-tools/d' scripts/infra/requirements/requirements.txt
 echo "--> Installing Python requirements into the virtual environment…"
-if ! ./.venv/bin/pip install -r scripts/infra/requirements/requirements.txt; then
+
+if ! uv pip install --python .venv/bin/python -r scripts/infra/requirements/requirements.txt; then
     echo "ERROR: Failed to install requirements. Trying to fix other common version issues…"
-    # Example: Fix vosk version, then retry
     sed -i.bak 's/vosk==0.3.45/vosk/' scripts/infra/requirements/requirements.txt
-    # We run the command again after the potential fixes
-    ./.venv/bin/pip install -r scripts/infra/requirements/requirements.txt
+    uv pip install --python .venv/bin/python -r scripts/infra/requirements/requirements.txt
 fi
+
+
 # --- 4. Project Structure and Configuration ---
 echo "--> Setting up project directories and initial files…"
 python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
@@ -288,7 +294,7 @@ echo ""
 echo "1. Configure Java PATH:"
 echo "   To make Java available, you may need to add it to your shell's PATH."
 echo "   Run this command in your terminal:"
-echo '   export PATH="$(brew --prefix openjdk@21)/bin:$PATH"'
+echo "   export PATH=\"$(brew --prefix openjdk@21)/bin:$PATH\""
 echo "   (Consider adding this line to your ~/.zshrc or ~/.bash_profile file to make it permanent)."
 echo ""
 echo "2. Activate Environment and Run:"

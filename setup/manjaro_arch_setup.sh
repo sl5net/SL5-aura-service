@@ -28,6 +28,18 @@ set -e
 
 echo "--- Starting STT Setup for Manjaro/Arch Linux ---"
 
+# --- Python Virtual Environment ---
+if [ ! -d ".venv" ]; then
+    echo "--> Creating Python 3.12 virtual environment in './.venv'"
+    uv venv --python 3.12 .venv
+else
+    echo "--> Virtual environment already exists. Skipping creation."
+fi
+
+eval "$(./.venv/bin/python scripts/py/setup_config.py || python3 scripts/py/setup_config.py)"
+echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
+  
+
 # setup/manjaro_arch_setup.sh
 # --- 1. System Dependencies ---
 echo "--> Checking for a compatible Java version (>=17)…"
@@ -54,13 +66,6 @@ sudo pacman -S --noconfirm --needed \
 
 sudo pacman -S --noconfirm --needed sdl2 sdl2_mixer sdl2_ttf sdl2_image
 
-# --- 2. Python Virtual Environment ---
-if [ ! -d ".venv" ]; then
-    echo "--> Creating Python 3.12 virtual environment in './.venv'"
-    uv venv --python 3.12 .venv
-else
-    echo "--> Virtual environment already exists. Skipping creation."
-fi
 
 # --- 3. Python Requirements ---
 echo "--> Installing Python requirements into the virtual environment"
@@ -70,7 +75,8 @@ echo "--> Setting up project directories and initial files…"
 # THIS IS THE KEY CHANGE. We call the Python script and pass the current
 # working directory (which is the project root) as an argument.
 # This one command replaces all old 'mkdir' and 'touch' commands for the project structure.
-python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
+
+./.venv/bin/python "scripts/py/func/create_required_folders.py" "$(pwd)"
 
 
 # ==============================================================================
@@ -83,6 +89,18 @@ if [ -f "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh" ]; then
     bash "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
 fi
 # ==============================================================================
+
+# --- Configure default model ---
+echo "--> Configuring default model in config/model_name.txt…"
+if [ "${CI:-}" = "true" ]; then
+    echo "vosk-model-small-en-us-0.15" > config/model_name.txt
+elif [ "${SELECTED_LANG:-}" = "de" ]; then
+    echo "vosk-model-de-0.21" > config/model_name.txt
+else
+    echo "Please set a vosk-model in config/model_name.txt e.g. vosk-model-en-us-0.22 and check https://alphacephei.com/vosk/models"
+fi
+
+
 
 # After: show preview and ask for confirmation (default: no)
 echo "The script can optionally run a full system upgrade (pacman -Syu)."

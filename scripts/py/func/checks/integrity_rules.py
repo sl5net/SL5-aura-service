@@ -284,15 +284,32 @@ INTEGRITY_CHECKS = {
     #     'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
     # ],
 
+    "setup/macos_setup.sh": [
+         'venv/bin/python scripts/py/setup_config.py ||',
+    ],
+
+
     # Ensures language selection is included in the Ubuntu setup.
     # "setup/ubuntu_setup.sh": [
     #     'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
     # ],
 
+    # Ensures language selection is included in the Ubuntu setup.
+     "setup/ubuntu_setup.sh": [
+         'venv/bin/python scripts/py/setup_config.py ||',
+    ],
+
+
     # Ensures language selection is included in the Manjaro/Arch setup.
     # "setup/manjaro_arch_setup.sh": [
     #     'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
     # ],
+
+    # Ensures language selection is included in the Manjaro/Arch setup.
+    "setup/manjaro_arch_setup.sh": [
+         'venv/bin/python scripts/py/setup_config.py ||',
+     ],
+
 
     # Ensures language selection is included in the Windows setup.
     "setup/windows11_setup.ps1": [
