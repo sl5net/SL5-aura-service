@@ -297,11 +297,11 @@ FUZZY_MAP_pre = [
     ('AutoKey', r'\bCoche\s*k\w+\b', 82, {'command_flags': re.IGNORECASE}),
     # EXAMPLE: 0 d.C.
 
-    ('0 A.D.', r'\o zewa d\b', 82, {'command_flags': re.IGNORECASE}),
+    ('0 A.D.', r'\bo zewa d\b', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Juego 0 d.C.
 
-    ('0 A.D. spiel', r'\o zewa d juego\W*\b', 82, {'command_flags': re.IGNORECASE}),
+    ('0 A.D. spiel', r'\bo zewa d juego\W*\b', 82, {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: Juego 0 d.C.
 
