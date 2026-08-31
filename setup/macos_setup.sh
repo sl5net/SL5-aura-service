@@ -41,12 +41,18 @@ fi
 
 
 # --- Python Virtual Environment ---
+if ! command -v uv >/dev/null 2>&1; then
+    echo "--> Installing 'uv' via Homebrew..."
+    brew install uv
+fi
+
 if [ ! -d ".venv" ]; then
     echo "--> Creating Python 3.12 virtual environment in './.venv'"
     uv venv --python 3.12 .venv
 else
     echo "--> Virtual environment already exists. Skipping creation."
 fi
+
 
 eval "$(./.venv/bin/python scripts/py/setup_config.py || python3 scripts/py/setup_config.py)"
 echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUDE_LANGUAGES"
