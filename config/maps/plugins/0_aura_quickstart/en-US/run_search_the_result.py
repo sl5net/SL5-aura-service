@@ -46,7 +46,6 @@ def execute(match_data):
 
     # file_filter = "*.md"
 
-    #
     else:
         file_filter = "*.py|*.txt|*.md"
         print(f'exit docs_dir = {docs_dir} 2026-0407-1220')
