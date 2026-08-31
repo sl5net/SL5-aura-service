@@ -5,7 +5,7 @@ Wykryty region: {kraj} | Sugestia: {default_primary}
 Wybierz kod języka lub „n” dla trybu terminala (bez języków).
 
 # podpowiedź_p
-Język podstawowy (de, en... lub „n” w przypadku braku) – automatyczne potwierdzenie w ciągu 8 sekund
+Język podstawowy (de, en... lub „n” dla trybu tylko terminala/GUI) – automatyczne potwierdzenie w 8 sekund
 
 # podpowiedzi
 Język dodatkowy (lub domyślnie „brak”) – automatyczne potwierdzenie w ciągu 8 sekund

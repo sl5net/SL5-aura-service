@@ -527,7 +527,6 @@ if not is_non_interactive():
         auto_timeout_enabled = True
 sys.stderr.write(f"{strings['enter_hint']}\n")
 sys.stderr.write(f"{text_detected}\n{text_help}\n")
-# 
 primary = timed_input(prompt_p, default_primary, timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled)
 if is_non_interactive():
     secondary = "none"
