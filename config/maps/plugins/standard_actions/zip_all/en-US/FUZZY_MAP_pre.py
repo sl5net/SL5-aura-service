@@ -19,7 +19,9 @@
 import re
 
 # from pathlib import Path as p;import os as o
+
 # with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
+
 from pathlib import Path
 
 # This map uses a hybrid approach:
@@ -37,18 +39,18 @@ from pathlib import Path
 
 CONFIG_DIR = Path(__file__).parent
 
-    # A type file of courseinternalsSearch lifts the homeinternalsChips Update databaseinternalsScript Renovate databaseinternalsUpdate Chip twitter shareinternalsAll folders SkillinternalsAll folders updatedinternalsA layout by meinternalsRead all foldersKeyboard MorphinReadinternalsZwick data ininternalsJeep data ininternals
+    # Eine Typ Datei natürlichinternalsSuche hebt das heiminternalsChips Datenbank aktualisiereninternalsScript Datenbank renoviereninternalsAktualisiere Chip twitter teileninternalsAlle Ordner SkillinternalsAlle Ordner aktualisiertinternalsA layout by meinternalsAlle Ordner einlesenKeyboard Morphin leseninternalsZwick daten eininternalsJeep daten einleseninternals
 
 
-    # Find a zip filesinternalsUpdate all filesReportUpdate a zip filesinternalsFind your zip filesTravel report
+    # Eine Zip-Dateien sucheninternalsAlle Dateien aktualisierenBerichtEine ZIP Dateien aktualisiereninternalsDeine der Zip-Dateien findenReisebericht
 
 
     # === General Terms (Case-Insensitive) ===
     # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Important to know:
+    # Importing to know:
 
-    # - it stops with first full match. Examples: ^...$ = Full Match = Stop Criterion!
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
     # - first is read first imported, lower rules maybe not get read.
 
@@ -68,8 +70,9 @@ FUZZY_MAP_pre = [
         ),
 ]
 
-# Add zip fileScan complete. Found 11 targets. Zips updated.
+# Zip-Datei hinzuScan complete. Found 11 targets. Zips updated.
 
+#
 
 readme = '''
 Was deckt das jetzt alles ab?

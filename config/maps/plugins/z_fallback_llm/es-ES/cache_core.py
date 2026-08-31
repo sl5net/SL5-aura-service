@@ -160,7 +160,7 @@ def cache_response(
 
         # utils.log_debug(
 
-        # f"D: Prompt_hash={hash_of_normalized_key}, respuesta_text={response_text}, creado_at={ahora}, calificación={utils.DEFAULT_RATING}")
+        # f"D: Prompt_hash={hash_of_normalized_key}, respuesta_texto={response_text}, creado_at={ahora}, calificación={utils.DEFAULT_RATING}")
 
 
         # Limpieza si hay demasiados

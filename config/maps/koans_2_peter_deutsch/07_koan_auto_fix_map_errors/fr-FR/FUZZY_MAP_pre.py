@@ -35,7 +35,7 @@ FUZZY_MAP_pre = [
 
 # La correction automatique ne fonctionne que sur les fichiers inférieurs à ~ 1 Ko.
 
-# C'est intentionnel – réécriture incontrôlée des grands
+# C'est intentionnel - réécriture incontrôlée des grands
 
 # Cela empêche les fichiers de carte.
 
@@ -57,7 +57,7 @@ FUZZY_MAP_pre = [
 
 import re
 
-# depuis pathlib import Path as p;import os as o
+# depuis pathlib importer le chemin en tant que p; importer os en tant que o
 
 # avec open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 

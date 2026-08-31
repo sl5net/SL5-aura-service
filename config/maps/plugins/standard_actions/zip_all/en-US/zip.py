@@ -25,7 +25,7 @@ from pathlib import Path
 
 CURRENT_DIR = Path(__file__).parent
 JSON_DB_PATH = CURRENT_DIR / "zip_registry.json"
-# Go up 7 levels to the project root -> config -> maps
+# Geht 7 Ebenen hoch zum Projekt-Root -> config -> maps
 
 SCAN_ROOT = Path(__file__).resolve().parents[6] / "config" / "maps"
 
@@ -86,7 +86,7 @@ def load_registry(auto_migrate: bool = True) -> list[Any]:
     if isinstance(data, dict):
         if not auto_migrate:
             raise ValueError(f"Registry {JSON_DB_PATH} is a dict, expected list")
-        # Example migration: use the values as a list (or alternatively [data])
+        # Beispiel-Migration: verwende die Werte als Liste (oder alternativ [data])
 
         migrated = list(data.values())
         _atomic_write_json(JSON_DB_PATH, migrated)
@@ -96,7 +96,7 @@ def load_registry(auto_migrate: bool = True) -> list[Any]:
     raise ValueError(f"Registry {JSON_DB_PATH} contains unexpected JSON type: {type(data).__name__}")
 
 def _atomic_write_json(path: Path, obj: Any) -> None:
-    # writes atomically: temp -> rename, keeps backup
+    # schreibt atomar: temp -> rename, behält Backup
 
     backup = path.with_suffix(path.suffix + ".bak")
     if path.exists():
@@ -159,7 +159,7 @@ def _needs_unpacking(target_folder: Path, zip_file: Path) -> bool:
     """True if Zip is NEWER than Folder (or Folder missing)."""
     if not zip_file.exists(): return False
     if not target_folder.exists(): return True
-    # Buffer of 2 seconds for file system precisions
+    # Buffer of 2 seconds for filesystem precisions
 
     return zip_file.stat().st_mtime > (target_folder.stat().st_mtime + 2)
 
@@ -237,7 +237,7 @@ def check_and_unpack_zips():
         print('2026-0109-1050')
 
         folder_path = Path(folder_str)
-        # _t1 -> t1.zip (sibling)
+        # _t1 -> t1.zip (Sibling)
 
         zip_name = folder_path.name.lstrip('_') + ".zip"
         zip_dir = folder_path.parent
@@ -322,7 +322,7 @@ def check_and_pack_zips():
             except Exception as e:
                 logger.info(f"⚠️ Error packing …{str(folder_path)[-30:]}: {e}")
 
-# ---HOOKS---
+# --- HOOKS ---
 
 
 # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:234
@@ -341,7 +341,7 @@ def on_reload():
         return f"{m}"
         # sys.exit(1)
 
-        # 07:40:03,498 - ERROR - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
+        # 07:40:03,498 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
 
     try: # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:236
         check_and_pack_zips()
@@ -354,7 +354,7 @@ def on_reload():
         return f"{m}"
         # sys.exit(1)
 
-        # 07:40:03,498 - ERROR - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
+        # 07:40:03,498 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
 
 
 def execute(match_data):

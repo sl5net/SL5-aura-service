@@ -1,63 +1,150 @@
-# config/maps/plugins/internals/en-US/FUZZY_MAP_pre.py
-# config/languagetool_server/maps/de-DE/FUZZY_MAP.py
-import re
+# ==============================================================================
+# 🌐 AUTOMATICALLY GENERATED / MACHINE-TRANSLATED MAP
+# ==============================================================================
+# ℹ️  Source Language: German (de-DE)
+# ⚙️  Note: Speech recognition regexes (VOSK) and Koan instructions in this
+#     file were machine-translated. Spoken patterns may require refinement
+#     or tuning for natural speech in the target language.
+#
+# 🤝  CONTRIBUTIONS WELCOME!
+#     We would love your help improving this map! If you test or refine these
+#     regex patterns, please open a Pull Request with your improvements.
+# ==============================================================================
 
-# This map uses a hybrid approach:
-# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
-#    Structure: ('replacement', r'regex_pattern', threshold, flags)
-#    - The threshold is ignored for regex.
-#    - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
-# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+# config/maps/plugins/internals/de-DE/FUZZY_MAP_pre.py
+
+
+import re
+from pathlib import Path
+
+CONFIG_DIR = Path(__file__).parent
+
+from scripts.py.func.determine_current_user import determine_current_user
+
+current_user,_ = determine_current_user()
 
 FUZZY_MAP_pre = [
-    # === General Terms (Case-Insensitive) ===
-    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
-    # Importing to know:
-    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
-    # - means first is most importend, lower rules maybe not get read.
-
-    # Deutsche p Nun sprechen wir durch
-
-    #  Helps the Tool to switch to German
-    # {'flags': {'command_flags': re.IGNORECASE}, 'skip_list': ['filter1', 'filter4']}
-    # EXAMPLE: deutsche pizza
-    ('Deutsch bitte', r'^\s*(deutsche) (pizza|pigeons|putin|bit|p)\s*$', 82, {'command_flags': re.IGNORECASE}),
-
-    # EXAMPLE: lobtCase
-    ('lowerCase', r'\blobt\s*Case\b', 82, {'command_flags': re.IGNORECASE}),
 
 
-    # EXAMPLE: lobtCase
-    ('lowerCase', r'\blobt\s*Case\b', 82, {'command_flags': re.IGNORECASE}),
+    # EXAMPLE: Current user
+
+    (f'{current_user}', r'^More current user.user$'),
+
+    (f'{current_user}', '^Benutzer$',),
+
+    (f'{current_user}','^Aktueller Benutzer$'),
+    (f'{current_user}','^aktuelle benutzt$'),
+    (f'{current_user}','^Aktuelle Benutze$'),
+    (f'{current_user}','^aktueller bill$'),
 
 
-    # EXAMPLE: Manjaro
-    ('Manjaro', r'\b(Manjaro|much whole|munchau|mon travel|Mann schaue|Manchu|Much\s*whole)\b', 82, {'command_flags': re.IGNORECASE}),
-# Much whole Mon travel
-# One troll Michelle Mann schaue
+# Helps the Tool to switch to English
+
+    # EXAMPLE: English
+
+    ('english please', r'^\s*(English|english) (fleece|please)\s*$', 82, # min_accuracy
+ {'command_flags': re.IGNORECASE}),
+    # EXAMPLE: s switch to english x s
+
+    ('english please', r'^\s*(switch to english\s*\w*)\s*$', 82, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+    # EXAMPLE: colon
+
+    (':', r'\bcolon\b', 82, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
-#    ('.', r'^\s*(punkt|pup)\s*$', 82, {'command_flags': re.IGNORECASE}),
+    # EXAMPLE: we kink kidneys
+
+    ('quinquillieren', r'\b(kwink we kidneys|swing How lire|sounds How lire|kwink we you)\b', 82, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+    # EXAMPLE: question mark
+
+    ('??', r'\s+(question mark|questions|questioningly|ask|asks)\s*$', 80, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    # EXAMPLE: exclamation mark
+
+    ('!', r'\b(exclamation mark)\b', 80, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+    # EXAMPLE: Hazardous waste
+
+    ('Sondermüll!', r'\b(Hazardous waste)\b', 80, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
-#    ('zwei', r'ein|eins', 60, {'command_flags': re.IGNORECASE}),
-#    ('drei', r'zwei', 60, {'command_flags': re.IGNORECASE}),
+    # EXAMPLE: Difference aura
 
-
-    # EXAMPLE: Unterschied Aura
-    ('Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commands', r'^(Unterschied\b.*\bAura\b|Auras? .*\badvantage\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
+    ('Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commands', r'^(Difference\b.*\baura\b|Auras? .*\badvantage\b).*$', 80, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     ('SL5 Aura is a System-Wide, Offline Voice Automation and Command Framework. It instantly turns spoken words into commands, hotkeys, or text, with 100% privacy guarantee due to its offline operation. Its core is a powerful, scriptable RegEx Rule Engine that allows developers to create deeply customizable, multi-step workflows for professional and system-level automation.',
-     # EXAMPLE: Whats Aura
-     r'^(What\w*\b.*\bAura\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-    #What is aura What is aura
+     # EXAMPLE: Whatx Aura
+
+     r'^(What\w*\b.*\baura\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    #
+    # Eva conflict prevention report Nice report Eva court special report
 
 
-    # EXAMPLE:  Aura Strength
-    ('SL5 Aura (Strength): Recursive, Hierarchical Rule Engine with Live Parsing and RegEx. Inheritance and Sub-folders (e.g., game/0ad, it-begriffe/php/codeigniter) enable modular, maintainable plugins.100% GDPR-Compliance and Developer-Friendly Design for complex, long-term projects. Conclusion: Aura is the Architect Solution for privacy-compliant, specialized, and scalable voice control.', r'^(.*\bAura.*\bStrength\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    # EXAMPLE: "Report Error", "Log Error", "That was wrong"
+
+    ('report_error',
+     r'^(mistake( report|report|email|report)?|log mistake|cold wave|the was incorrect|there true What not|bug report|bug report|travel report|source bug report|freeride report|fred report|celebrate|ticket create|problem report|there is a mistake|mistake please|here the report|the report|mistake in the report|the is incorrect|many knowledge|the is a bug)$', 100,
+     # min_accuracycelebrateReportErrors pleaseinternals>misrecognitionsReportinternals>misrecognitionss
 
 
+     {
+         'command_flags': re.IGNORECASE,
+         'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
+     }),
 
+    # EXAMPLE: FVW own holder
+
+    ('report_error',
+     r'\b(?:(?:[FVW][eh]h?l[he]{1,2}|voters|Feller|four|peoples|Phäler)\s?(?:be?right|breaks|light|right))\b', 100,
+     {
+         'command_flags': re.IGNORECASE,
+         'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
+     }),
 
 ]
+
+# Quick effect Hello reports
+
+
+if current_user in ['seeh']:
+    FUZZY_MAP_pre_user_specific = [
+
+
+        # Rule B: Low hurdle (10%)
+
+        # EXAMPLE: Super fragile
+
+        ("Niedrige Genauigkeit erkannt", r'^(Super fragile|Good bye fragile)$', 10,
+         {
+             'command_flags': re.IGNORECASE,
+         }
+         ),
+
+        # Super fragile super super woman give Hello fragile survey Kübra fragile
+
+
+        # EXAMPLE: report errors
+
+        ('report_error',
+         r'^(mistake( report|report|email|report)?|log mistake|the was incorrect|there true What not|bug report|bug report|ticket create|problem report|there is a mistake|the is incorrect|the is a bug)$', 100,
+         # min_accuracy
+
+
+         {
+             'command_flags': re.IGNORECASE,
+             'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
+         })
+    ]
+
+    FUZZY_MAP_pre.extend( FUZZY_MAP_pre_user_specific )
+
+
+

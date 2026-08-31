@@ -26,18 +26,18 @@ CONFIG_DIR = p(__file__).parent
 FUZZY_MAP_pre = [
 
 
-    # EXAMPLE: à
+    # EXAMPLE: zur
 
-    ('add to einkaufsliste', r'\b(.+) (à|dans le) liste de courses\b', 95, {
+    ('add to einkaufsliste', r'\b(.+) (zur|in die) einkaufsliste\b', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR /  '..' / 'shopping_list.py']
     }),
 
-    # Règle d'affichage
+    # Regel zum Anzeigen
 
-    # EXAMPLE: afficher la liste de courses
+    # EXAMPLE: zeige die einkaufsliste
 
-    ('', r'montrer le liste de courses', 95, {
+    ('', r'zeige die einkaufsliste', 95, {
         'flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / '..' /  'shopping_list.py']
     }),

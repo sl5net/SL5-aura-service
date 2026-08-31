@@ -11,43 +11,43 @@
 #     regex patterns, please open a Pull Request with your improvements.
 # ==============================================================================
 
-# configmaps/koans deutsch/07_koan_auto_fix_map_errors/de-DE/FUZZY_MAP_pre.py
+# config/maps/koans_deutsch/07_koan_auto_fix_map_errors/de-DE/FUZZY_MAP_pre.py
 
 
 # ============================================================
-# Koan 07 : Auto-Fix & LanguageTool en pratique
+# Koan 07: Auto-Fix & LanguageTool in der Praxis
 
 # ============================================================
 #
-# OBJECTIF D'APPRENTISSAGE :
+# LERNZIEL:
 
-# La correspondance floue corrige les fautes de frappe dans la transcription.
+# Fuzzy-Matching korrigiert Tippfehler in der Transkription.
 
-# LanguageTool corrige ensuite la grammaire.
-
-#
-# TÂCHE:
-
-# Dire : "Serviette" (intentionnellement incorrect)
-
-# Résultat : Aura corrigée en "fuzzy1", LT en "manuel" ?
+# LanguageTool korrigiert Grammatik danach.
 
 #
-# LanguageTool est en cours d'exécution ?
+# AUFGABE:
+
+# Sprich: "Handuch" (absichtlich falsch)
+
+# Ergebnis: Aura korrigiert zu "fuzzy1", LT zu "Handbuch"?
+
+#
+# LanguageTool läuft?
 
 # curl http://localhost:8082/v2/languages | head -3
 
 #
-# PROCHAINE ÉTAPE : Koan 08
+# NÄCHSTER SCHRITT: Koan 08
 
 # ============================================================
 
 
 import re
 
-# depuis pathlib import Path as p;import os as o
+# from pathlib import Path as p;import os as o
 
-# avec open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 
 
 

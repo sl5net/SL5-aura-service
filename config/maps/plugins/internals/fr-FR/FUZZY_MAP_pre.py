@@ -26,9 +26,9 @@ current_user,_ = determine_current_user()
 FUZZY_MAP_pre = [
 
 
-    # EXAMPLE: Utilisateur actuel
+    # EXAMPLE: Aktueller user
 
-    (f'{current_user}', r'^Plus actuel utilisateur.utilisateur$'),
+    (f'{current_user}', r'^Aktueller user$'),
 
     (f'{current_user}', '^Benutzer$',),
 
@@ -38,61 +38,61 @@ FUZZY_MAP_pre = [
     (f'{current_user}','^aktueller bill$'),
 
 
-# Aide l'outil à passer à l'anglais
+# Helps the Tool to switch to English
 
-    # EXAMPLE: Anglais
+    # EXAMPLE: englisch
 
-    ('english please', r'^\s*(Anglais|Anglais) (toison|sil te plaît)\s*$', 82, # min_accuracy
+    ('english please', r'^\s*(englisch|english) (fleece|bitte)\s*$', 82, # min_accuracy
  {'command_flags': re.IGNORECASE}),
-    # EXAMPLE: s passer à l'anglais x s
+    # EXAMPLE: s switch to english x s
 
-    ('english please', r'^\s*(changer à Anglais\s*\w*)\s*$', 82, # min_accuracy
+    ('english please', r'^\s*(switch to english\s*\w*)\s*$', 82, # min_accuracy
  {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
-    # EXAMPLE: côlon
+    # EXAMPLE: Doppelpunkt
 
-    (':', r'\bcolon\b', 82, # min_accuracy
- {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-
-    # EXAMPLE: nous plions les reins
-
-    ('quinquillieren', r'\b(bizarre nous rognons|balançoire Comment lire|des sons Comment lire|bizarre nous toi)\b', 82, # min_accuracy
- {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-    # EXAMPLE: point d'interrogation
-
-    ('??', r'\s+(point dinterrogation|des questions|de manière interrogative|demander|demande)\s*$', 80, # min_accuracy
- {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-    # EXAMPLE: point d'exclamation
-
-    ('!', r'\b(point dexclamation)\b', 80, # min_accuracy
- {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
-
-    # EXAMPLE: Déchets dangereux
-
-    ('Sondermüll!', r'\b(Déchets dangereux)\b', 80, # min_accuracy
+    (':', r'\bDoppelpunkt\b', 82, # min_accuracy
  {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
-    # EXAMPLE: Aura de différence
+    # EXAMPLE: kwink wir nieren
 
-    ('Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commands', r'^(Différence\b.*\bAura\b|Auras? .*\mauvais avantage\b).*$', 80, # min_accuracy
+    ('quinquillieren', r'\b(kwink wir nieren|swing wie lire|klingt wie lire|kwink wir dir)\b', 82, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+    # EXAMPLE: fragezeichen
+
+    ('??', r'\s+(fragezeichen|fragen|fragend|frage|fragt)\s*$', 80, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+    # EXAMPLE: ausrufezeichen
+
+    ('!', r'\b(ausrufezeichen)\b', 80, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+    # EXAMPLE: Sondermüll
+
+    ('Sondermüll!', r'\b(Sondermüll)\b', 80, # min_accuracy
+ {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+
+
+    # EXAMPLE: Unterschied Aura
+
+    ('Auras key advantage is its Hierarchical and Recursive Rule Engine (RegEx). This architecture allows developers to create live-adaptable, modular, and highly maintainable plugins for complex, professional-grade tasks that go beyond simple commands', r'^(Unterschied\b.*\bAura\b|Auras? .*\badvantage\b).*$', 80, # min_accuracy
  {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
     ('SL5 Aura is a System-Wide, Offline Voice Automation and Command Framework. It instantly turns spoken words into commands, hotkeys, or text, with 100% privacy guarantee due to its offline operation. Its core is a powerful, scriptable RegEx Rule Engine that allows developers to create deeply customizable, multi-step workflows for professional and system-level automation.',
-     # EXAMPLE: Qu'est-ce qu'Aura
+     # EXAMPLE: Whatx  Aura
 
-     r'^(Quoi\w*\b.*\bAura\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+     r'^(What\w*\b.*\bAura\b).*$', 80, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
     #
-    # Rapport sur la prévention des conflits d'Eva Rapport de Nice Rapport spécial du tribunal d'Eva
+    # Eva Konflikt präventionBericht Schöner Bericht Eva Gericht Sonderbericht
 
 
-    # EXAMPLE: "Signaler une erreur", "Journal d'une erreur", "C'était faux"
+    # EXAMPLE: "Fehler melden", "Logge Fehler", "Das war falsch"
 
     ('report_error',
-     r'^(erreur( rapport|rapport|e-mail|rapport)?|enregistrer erreur|vague de froid|le était incorrect|là vrai Quoi pas|bogue rapport|rapport de bug|rapport de voyage|source rapport de bug|freeride rapport|fred rapport|célébrer|billet créer|problème rapport|là est un erreur|erreur sil te plaît|ici le rapport|le rapport|erreur dans le rapport|le est incorrect|beaucoup connaissance|le est un bogue)$', 100,
-     # min_accuracycelebrateReportErrors pleaseinternals>mauvaises reconnaissancesReportinternals>mauvaises reconnaissances
+     r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|erkältungswelle|das war falsch|da stimmt was nicht|bug melden|bugreport|reisebericht|quelle fehlerbericht|freeride bericht|frede bericht|zelebriere|ticket erstellen|problem melden|da ist ein fehler|fehler bitte|hier der bericht|der bericht|fehler im bericht|das ist falsch|viele wissen|das ist ein bug)$', 100,
+     # min_accuracyzelebriereBerichtFehler bitteinternals>misrecognitionsBerichtinternals>misrecognitionss
 
 
      {
@@ -100,10 +100,10 @@ FUZZY_MAP_pre = [
          'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
      }),
 
-    # EXAMPLE: FVW propre titulaire
+    # EXAMPLE: FVW eihä h l er
 
     ('report_error',
-     r'\b(?:(?:[FVW][hein]h?l[il]{1,2}|électeurs|Abatteur|quatre|les peuples|Phäler)\s?(?:être?droite|pauses|lumière|droite))\b', 100,
+     r'\b(?:(?:[FVW][eihä]h?l[er]{1,2}|Wähler|Feller|Vierer|Völer|Phäler)\s?(?:be?richt|bricht|licht|richt))\b', 100,
      {
          'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / '..' / 'report_error.py']
@@ -111,31 +111,31 @@ FUZZY_MAP_pre = [
 
 ]
 
-# Rapports Hello à effet rapide
+# Schnelle Wirkung Hallo Berichts
 
 
 if current_user in ['seeh']:
     FUZZY_MAP_pre_user_specific = [
 
 
-        # Règle B : obstacle faible (10 %)
+        # Regel B: Niedrige Hürde (10%)
 
-        # EXAMPLE: Très fragile
+        # EXAMPLE: Super fragill
 
-        ("Niedrige Genauigkeit erkannt", r'^(Super fragile|Au revoir fragile)$', 10,
+        ("Niedrige Genauigkeit erkannt", r'^(Super fragill|Servus fragil)$', 10,
          {
              'command_flags': re.IGNORECASE,
          }
          ),
 
-        # Super fragile super super femme donne une enquête Bonjour fragile Kübra fragile
+        # Super fragilsuper Superfrau gebenServus fragilSo BefragungKübra fragil
 
 
-        # EXAMPLE: signaler les erreurs
+        # EXAMPLE: fehler melden
 
         ('report_error',
-         r'^(erreur( rapport|rapport|e-mail|rapport)?|enregistrer erreur|le était incorrect|là vrai Quoi pas|bogue rapport|rapport de bug|billet créer|problème rapport|là est un erreur|le est incorrect|le est un bogue)$', 100,
-         # min_précision
+         r'^(fehler( melden|bericht|mail|meldung)?|logge fehler|das war falsch|da stimmt was nicht|bug melden|bugreport|ticket erstellen|problem melden|da ist ein fehler|das ist falsch|das ist ein bug)$', 100,
+         # min_accuracy
 
 
          {

@@ -15,32 +15,34 @@
 
 import re  # noqa: F401
 
-# desde pathlib importar ruta como p; importar sistema operativo como o
-# con open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
+# from pathlib import Path as p;import os as o
+
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
+
 from pathlib import Path  # noqa: F401
 
-# Este mapa utiliza un enfoque híbrido:
+# This map uses a hybrid approach:
 
-# 1. Las entradas de expresiones regulares se verifican primero. Son potentes y pueden no distinguir entre mayúsculas y minúsculas.
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 
-# Estructura: ('reemplazo', r'regex_pattern', umbral, banderas)
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
 
-# - El umbral se ignora para las expresiones regulares.
+# - The threshold is ignored for regex.
 
-# - banderas: use {'command_flags': re.IGNORECASE} para no distinguir entre mayúsculas y minúsculas, o 0 para distinguir entre mayúsculas y minúsculas.
+# - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 
-# 2. Si no hay coincidencias de expresiones regulares, se realiza una coincidencia difusa simple en las reglas restantes.
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
-    # Usar límites de palabras (\b) y agrupar (|) para detectar variaciones de manera eficiente.
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Importante saber:
+    # Importing to know:
 
-    # - se detiene con el primer partido completo. Ejemplos: ^...$ = Coincidencia completa = ¡Detener criterio!
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
-    # - Primero se lee primero y se importa, es posible que las reglas inferiores no se lean.
+    # - first is read first imported, lower rules maybe not get read.
 
 
 

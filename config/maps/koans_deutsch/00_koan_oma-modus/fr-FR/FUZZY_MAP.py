@@ -13,32 +13,32 @@
 
 # config/maps/koans_deutsch/00_koan_oma-modus/de-DE/FUZZY_MAP.py
 
-# config/langagetool_server/maps/de-DE/FUZZY_MAP.py
+# config/languagetool_server/maps/de-DE/FUZZY_MAP.py
 
 import re  # noqa: F401
 
-# Cette carte utilise une approche hybride :
+# This map uses a hybrid approach:
 
-# 1. Les entrées Regex sont vérifiées en premier. Ils sont puissants et peuvent ne pas être sensibles à la casse.
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 
-# Structure : ('remplacement', r'regex_pattern', seuil, drapeaux)
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
 
-# - Le seuil est ignoré pour les regex.
+# - The threshold is ignored for regex.
 
-# - flags : utilisez {'command_flags': re.IGNORECASE} pour l'insensibilité à la casse, ou 0 pour la sensibilité à la casse.
+# - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 
-# 2. Si aucune expression régulière ne correspond, une simple correspondance floue est effectuée sur les règles restantes.
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 
 FUZZY_MAP = [
     # === General Terms (Case-Insensitive) ===
-    # Utiliser les limites des mots (\b) et le regroupement (|) pour détecter efficacement les variations.
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Important à savoir :
+    # Importing to know:
 
-    # - ça s'arrête au premier match complet. Exemples : ^...$ = Correspondance complète = Critère d'arrêt !
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
-    # - signifie que le premier est le plus important, les règles inférieures peuvent ne pas être lues.
+    # - means first is most importend, lower rules maybe not get read.
 
 
 ]

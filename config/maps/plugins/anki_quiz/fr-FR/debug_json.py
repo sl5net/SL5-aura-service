@@ -34,11 +34,11 @@ if DB_PATH is None:
     print("DEBUG_JSON: DB_PATH is None -> skip Check.")
 else:
     try:
-        with open(DB_PATH, "r", codage="utf-8") as f:
+        with open(DB_PATH, "r", encoding="utf-8") as f:
             content = f.read()
         json.loads(content)
 
-        # print("SUCCÈS : JSON valide !")
+        # print("SUCCESS: JSON valide!")
 
 
     except json.JSONDecodeError as e:

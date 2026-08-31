@@ -18,39 +18,41 @@
 
 import re
 
-# depuis pathlib import Path as p;import os as o
-# avec open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
+# from pathlib import Path as p;import os as o
+
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
+
 from pathlib import Path
 
-# Cette carte utilise une approche hybride :
+# This map uses a hybrid approach:
 
-# 1. Les entrées Regex sont vérifiées en premier. Ils sont puissants et peuvent ne pas être sensibles à la casse.
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 
-# Structure : ('remplacement', rregex_pattern', seuil, drapeaux)
+# Structure: ('replacement', rregex_pattern', threshold, flags)
 
-# - Le seuil est ignoré pour les regex.
+# - The threshold is ignored for regex.
 
-# - flags : utilisez {'flags' : ...} pour l'insensibilité à la casse, ou 0 pour la sensibilité à la casse.
+# - flags: Use {'flags': ...} for case-insensitivity, or 0 for case-sensitivity.
 
-# 2. Si aucune expression régulière ne correspond, une simple correspondance floue est effectuée sur les règles restantes.
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 
 CONFIG_DIR = Path(__file__).parent
 
-    # Un fichier de type bien sûrinternesLa recherche lève la maisoninternesChips Mettre à jour la base de donnéesinternesScript Rénover la base de donnéesinternesMettre à jour la puce twitter shareinternalsTous les dossiers SkillinternalsTous les dossiers mis à jourinternesUne mise en page par moiinternalsLire tous les dossiersClavier MorphinLireinternalsZwick données ininternalsJeep données ininternals
+    # Eine Typ Datei natürlichinternalsSuche hebt das heiminternalsChips Datenbank aktualisiereninternalsScript Datenbank renoviereninternalsAktualisiere Chip twitter teileninternalsAlle Ordner SkillinternalsAlle Ordner aktualisiertinternalsA layout by meinternalsAlle Ordner einlesenKeyboard Morphin leseninternalsZwick daten eininternalsJeep daten einleseninternals
 
 
-    # Trouver un fichier zipinternalsMettre à jour tous les fichiersRapportMettre à jour un fichier zipinternalsTrouver vos fichiers zipRapport de voyage
+    # Eine Zip-Dateien sucheninternalsAlle Dateien aktualisierenBerichtEine ZIP Dateien aktualisiereninternalsDeine der Zip-Dateien findenReisebericht
 
 
     # === General Terms (Case-Insensitive) ===
-    # Utiliser les limites des mots (\b) et le regroupement (|) pour détecter efficacement les variations.
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Important à savoir :
+    # Importing to know:
 
-    # - ça s'arrête au premier match complet. Exemples : ^...$ = Correspondance complète = Critère d'arrêt !
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
-    # - le premier est lu en premier et les règles inférieures peuvent ne pas être lues.
+    # - first is read first imported, lower rules maybe not get read.
 
 FUZZY_MAP_pre = [
     ('find all zips', r'''^(
@@ -68,8 +70,9 @@ FUZZY_MAP_pre = [
         ),
 ]
 
-# Ajouter un fichier zipAnalyse terminée. J'ai trouvé 11 cibles. Zips mis à jour.
+# Zip-Datei hinzuScan complete. Found 11 targets. Zips updated.
 
+#
 
 readme = '''
 Was deckt das jetzt alles ab?

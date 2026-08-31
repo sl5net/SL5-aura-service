@@ -110,7 +110,7 @@ FUZZY_MAP_pre = [
     # - first is read first imported, lower rules maybe not get read.
 
 
-    # EXAMPLE: Activate English
+    # EXAMPLE: Englisch aktiviere
 
     ('en', fr'^{Englisch}{toggleCmd}$', 95, {
         'command_flags': re.IGNORECASE,
@@ -118,7 +118,7 @@ FUZZY_MAP_pre = [
     }),
 
 
-    # EXAMPLE: Turn on French
+    # EXAMPLE: französisch einschalten
 
     ('fr', fr'^(französisch) {toggleCmd}$', 95, {
         'command_flags': re.IGNORECASE,
@@ -132,103 +132,103 @@ FUZZY_MAP_pre = [
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: Japanese Switch
+    # EXAMPLE: japanisch  Switch
 
-    ('ja', fr'^(Japanese) {toggleCmd}$', 95, {
+    ('ja', fr'^(japanisch) {toggleCmd}$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
-    # EXAMPLE: Arabic Switch
+    # EXAMPLE: arabisch Switch
 
     ('ar', r'^(arabisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: Persian Switch
+    # EXAMPLE: persisch Switch
 
-    ('fa', r'^(Persian) (Switch|Activate|activate|activated|active|turn on|deactivate|deactivate|turn off|look out|toggle)', 95, {
+    ('fa', r'^(persisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: Portuguese Switch
+    # EXAMPLE: Portuguese  Switch
 
-    ('pt-BR', r'^(Switch|Activate|activate|activated|active|turn on|deactivate|deactivate|turn off|look out|toggle) (Portuguese|Portuguese|Portuguese\w*)\b', 95, {
+    ('pt-BR', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese\w*)\b', 95, {
          'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
-    # EXAMPLE: Portuguese Switch
+    # EXAMPLE: portugiesisch Switch
 
-    ('pt-BR', r'^(Portuguese) (activate|activated|active|a|turn on|abs\w*|deactivate|turn off|look out|toggle|Great Dane|double)\b', 95, {
+    ('pt-BR', r'^(portugiesisch) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
          'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: Spain Switch
+    # EXAMPLE: Spanien Switch
 
-    ('es', r'^(Spain|Spanish|rigid you|sparr you) (activate|activated|active|a|turn on|abs\w*|deactivate|turn off|look out|toggle|Great Dane|double)$', 95, {
+    ('es', r'^(Spanien|spanisch|starr dich|sparr dich) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)$', 95, {
          'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # Afghan toggle
+    # afghanisch toggle
 
-    # EXAMPLE: Afghan
+    # EXAMPLE: afghanisch
 
-    ('Dari', r'^(Afghan|Afghanistan|Organic) (activate|activated|active|a|turn on|abs\w*|deactivate|turn off|look out|toggle|Great Dane|double)$', 95, {
+    ('Dari', r'^(afghanisch|Afghanistan|Organisch) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)$', 95, {
          'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # Activate organically گرمایش را خاموش کنید (original: 'switch off heating').
+    # Organisch aktivierenگرمایش را خاموش کنید (original:'heizung ausschalten').
 
 
 
-    # EXAMPLE: translation: turn off deactivate toggle
+    # EXAMPLE: übersetzung: ausschalten deaktivieren toggle
 
-    ('de', r'^(\w*translation|heating|earnings estimates) (deactivate|deactivate|turn off|switch off|look out|toggle)\b.*$', 95, {
+    ('de', r'^(\w*bersetzung|heizung|gewinnschätzungen) (deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)\b.*$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
-    # translation on off
+    # übersetzung ein ausschalten
 
-    # EXAMPLE: turn off translation
+    # EXAMPLE: übersetzung ausschalten
 
-    ('de', r'^(\w*translation|heating|for the) (mode )? (Switch|Activate|activate|activated|active|turn on|deactivate|deactivate|turn off|switch off|look out|toggle)\b.*$', 95, {
+    ('de', r'^(\w*bersetzung|heizung|zum) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)\b.*$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
-    # EXAMPLE: translation Switch
+    # EXAMPLE: übersetzung Switch
 
-    ('de', r'^(\w*occupation\w*) (mode )? (Switch|Activate|activate|activated|active|turn on|deactivate|deactivate|turn off|look out|toggle)\b.*$', 95, {
+    ('de', r'^(\w*besetzung\w*) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)\b.*$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
-    # EXAMPLE: translation toggle
+    # EXAMPLE: übersetzung toggle
 
-    ('de', fr'^(\w*spoke\w*) (translation\w*)? {toggleCmd}$', 95, {
-        'command_flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-
-    # EXAMPLE: translation toggle
-
-    ('de', r'^(Switch|Activate|activate|activated|active|turn on|deactivate|deactivate|turn off|look out|toggle) (\w*translate\w*)\b.*$', 95, {
+    ('de', fr'^(\w*sprach\w*) (übersetz\w*)? {toggleCmd}$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: Good night
 
-    ('', r'\b(good night|sleep good|I go into the bed)\b', 95, {
+    # EXAMPLE: übersetzung toggle
+
+    ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*bersetz\w*)\b.*$', 95, {
+        'command_flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
+    # EXAMPLE: gute nacht
+
+    ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'good_night.py']
     }),
