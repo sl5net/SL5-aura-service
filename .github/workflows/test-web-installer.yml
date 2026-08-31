@@ -61,7 +61,8 @@ jobs:
         shell: pwsh
         run: |
           $startTs = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
-          Get-Content web_install.ps1 | Invoke-Expression
+          $env:AURA_BRANCH = "${{ github.head_ref || github.ref_name }}"
+          Get-Content web_install.ps1 -Raw | Invoke-Expression
           $endTs = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
           $duration = $endTs - $startTs
 
