@@ -21,20 +21,20 @@ import shutil
 import sys
 from pathlib import Path
 
-# ---Configuration---
+# --- Configuration ---
 
 CURRENT_DIR = Path(__file__).parent
 JSON_DB_PATH = CURRENT_DIR / "zip_registry.json"
-# Remontez de 7 niveaux jusqu'à la racine du projet -> config -> maps
+# Geht 7 Ebenen hoch zum Projekt-Root -> config -> maps
 
 SCAN_ROOT = Path(__file__).resolve().parents[6] / "config" / "maps"
 
-# --- Journalisation de configuration ---
+# --- Setup Logging ---
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
-# --- IMPORTATIONS DYNAMIQUES ---
+# --- DYNAMIC IMPORTS ---
 
 
 def get_packer_lib():
@@ -61,7 +61,7 @@ def get_unpacker_lib():
     spec.loader.exec_module(module)
     return module
 
-# --- Aides JSON ---
+# --- JSON Helpers ---
 
 import tempfile
 from pathlib import Path
@@ -86,7 +86,7 @@ def load_registry(auto_migrate: bool = True) -> list[Any]:
     if isinstance(data, dict):
         if not auto_migrate:
             raise ValueError(f"Registry {JSON_DB_PATH} is a dict, expected list")
-        # Exemple de migration : utiliser les valeurs sous forme de liste (ou alternativement [données])
+        # Beispiel-Migration: verwende die Werte als Liste (oder alternativ [data])
 
         migrated = list(data.values())
         _atomic_write_json(JSON_DB_PATH, migrated)
@@ -96,7 +96,7 @@ def load_registry(auto_migrate: bool = True) -> list[Any]:
     raise ValueError(f"Registry {JSON_DB_PATH} contains unexpected JSON type: {type(data).__name__}")
 
 def _atomic_write_json(path: Path, obj: Any) -> None:
-    # écrit de manière atomique : temp -> renommer, conserve la sauvegarde
+    # schreibt atomar: temp -> rename, behält Backup
 
     backup = path.with_suffix(path.suffix + ".bak")
     if path.exists():
@@ -117,7 +117,7 @@ def save_registry(folder_list):
             json.dump({"watched_folders": list(set(folder_list))}, f, indent=4)
     except Exception as e: logger.error(f"❌ Failed to save JSON: {e}")
 
-# --- HORODATAGE / LOGIQUE DE RECHERCHE ---
+# --- TIMESTAMPS / SEARCH LOGIC ---
 
 
 from enum import Enum
@@ -149,7 +149,7 @@ def _needs_packing(source_folder: Path, zip_file: Path) -> PackingStatus:
             file_time = file_path.stat().st_mtime
 
             if file_time > (zip_time + grace_period):
-                # logger.info(f"Le fichier {file} est plus récent que ZIP. Fichier : {file_time}, Zip : {zip_time}")
+                # logger.info(f"File {file} is newer than ZIP. File: {file_time}, Zip: {zip_time}")
 
                 return PackingStatus.CONTENT_CHANGED
 
@@ -159,7 +159,7 @@ def _needs_unpacking(target_folder: Path, zip_file: Path) -> bool:
     """True if Zip is NEWER than Folder (or Folder missing)."""
     if not zip_file.exists(): return False
     if not target_folder.exists(): return True
-    # Buffer de 2 secondes pour les précisions du système de fichiers
+    # Buffer of 2 seconds for filesystem precisions
 
     return zip_file.stat().st_mtime > (target_folder.stat().st_mtime + 2)
 
@@ -177,7 +177,7 @@ def find_password_file(start_dir: Path) -> Path:
         if current.exists():
             for item in current.iterdir():
                 if item.is_file() and item.name.startswith('.'):
-                    # Filtrer les fichiers système
+                    # Filter out system files
 
                     if item.name in ['.DS_Store', '.gitignore', '.gitkeep']:
                         continue
@@ -189,7 +189,7 @@ def find_password_file(start_dir: Path) -> Path:
 
     return None
 
-# --- FLUX DE TRAVAIL ---
+# --- WORKFLOWS ---
 
 
 def scan_and_register_folders():
@@ -237,7 +237,7 @@ def check_and_unpack_zips():
         print('2026-0109-1050')
 
         folder_path = Path(folder_str)
-        # _t1 -> t1.zip (frère)
+        # _t1 -> t1.zip (Sibling)
 
         zip_name = folder_path.name.lstrip('_') + ".zip"
         zip_dir = folder_path.parent
@@ -249,29 +249,29 @@ def check_and_unpack_zips():
         if _needs_unpacking(folder_path, zip_path):
             logger.info(f"🔓 Update available for {folder_path.name}…")
 
-            # 1. Trouvez la clé (quelque part dans l'arbre)
+            # 1. Find the key (somewhere up the tree)
 
             found_pw_file = find_password_file(folder_path)
 
             if found_pw_file:
-                # 2. Déterminez le chemin local de la clé (à côté du zip)
+                # 2. Determine local path for the key (next to zip)
 
                 local_key_path = zip_dir / found_pw_file.name
                 created_temp_copy = False
 
                 try:
-                    # Si la clé est plus haut, copiez-la temporairement
+                    # If key is further up, copy it down temporarily
 
                     if found_pw_file.parent.resolve() != zip_dir.resolve():
                         logger.info(f"   🔑 Copying temp key to: {local_key_path.name}")
                         shutil.copy2(found_pw_file, local_key_path)
                         created_temp_copy = True
 
-                    # 3. Appelez le décompresseur existant avec le chemin de clé LOCAL
+                    # 3. Call existing unpacker with the LOCAL key path
 
                     unpacker_module._private_map_unpack(str(local_key_path), logger)
 
-                    # Touchez le dossier pour mettre à jour mtime (empêcher la boucle)
+                    # Touch folder to update mtime (prevent loop)
 
                     if folder_path.exists():
                         os.utime(folder_path, None)
@@ -281,12 +281,12 @@ def check_and_unpack_zips():
                     return
 
                 finally:
-                    # 4. Nettoyage : supprimez la clé copiée
+                    # 4. Cleanup: Remove the copied key
 
                     if created_temp_copy and local_key_path.exists():
                         try:
                             local_key_path.unlink()
-                            # logger.debug("🧹 Fichier de clé temporaire supprimé.")
+                            # logger.debug("🧹 Removed temp key file.")
 
                         except Exception as cleanup_err:
                             logger.warning(f"⚠️ Could not remove temp key {local_key_path}: {cleanup_err}")
@@ -315,14 +315,14 @@ def check_and_pack_zips():
                 or _needs_unpacking(folder_path, zip_target) == PackingStatus.ZIP_MISSING):
             if _needs_packing(folder_path, zip_target) == PackingStatus.CONTENT_CHANGED:
                 logger.info(f"♻️ Content changed. 📦 Zipping: …{str(folder_path)[-30:]}")
-                # il manque un zip pour de bonnes raisons
+                # missing a zip has maybe good reasons
 
             try:
                 packer_lib.execute_packing_logic(folder_path, logger)
             except Exception as e:
                 logger.info(f"⚠️ Error packing …{str(folder_path)[-30:]}: {e}")
 
-# ---CROCHETS---
+# --- HOOKS ---
 
 
 # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:234
@@ -341,7 +341,7 @@ def on_reload():
         return f"{m}"
         # sys.exit(1)
 
-        # 07:40:03,498 - ERREUR - 🔥 Erreur dans zip_all/de-DE/zip.py:236 on_reload : tentative d'importation relative sans package parent connu
+        # 07:40:03,498 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
 
     try: # config/maps/plugins/standard_actions/zip_all/de-DE/zip.py:236
         check_and_pack_zips()
@@ -354,7 +354,7 @@ def on_reload():
         return f"{m}"
         # sys.exit(1)
 
-        # 07:40:03,498 - ERREUR - 🔥 Erreur dans zip_all/de-DE/zip.py:236 on_reload : tentative d'importation relative sans package parent connu
+        # 07:40:03,498 - ERROR    - 🔥 Error in zip_all/de-DE/zip.py:236 on_reload: attempted relative import with no known parent package
 
 
 def execute(match_data):

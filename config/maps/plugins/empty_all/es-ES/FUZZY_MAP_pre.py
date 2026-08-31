@@ -15,93 +15,93 @@
 
 import re
 
-# desde pathlib importar ruta como p; importar sistema operativo como o
+# from pathlib import Path as p;import os as o
 
-# con open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
-
-
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 
 
 
-# Este mapa utiliza un enfoque híbrido:
 
-# 1. Las entradas de expresiones regulares se verifican primero. Son potentes y pueden no distinguir entre mayúsculas y minúsculas.
 
-# Estructura: ('reemplazo', r'regex_pattern', umbral, banderas)
+# This map uses a hybrid approach:
 
-# - El umbral se ignora para las expresiones regulares.
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 
-# - banderas: utilice {'command_flags': re.IGNORECASE} para no distinguir entre mayúsculas y minúsculas, o 0 para distinguir entre mayúsculas y minúsculas.
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
 
-# 2. Si no hay coincidencias de expresiones regulares, se realiza una coincidencia difusa simple en las reglas restantes.
+# - The threshold is ignored for regex.
+
+# - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 
 # too<-from
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
-    # Usar límites de palabras (\b) y agrupar (|) para detectar variaciones de manera eficiente.
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Importante saber:
+    # Importing to know:
 
-    # - se detiene con el primer partido completo. Ejemplos: ^...$ = Coincidencia completa = ¡Detener criterio!
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
-    # - Primero se lee primero y se importa, es posible que las reglas inferiores no se lean.
-
-
-    # Acumulación: Reglas (acumular) de modo que quizás solo sea visible la última regla. Ejemplos:
+    # - first is read first imported, lower rules maybe not get read.
 
 
-    # La siguiente regla se aplica a todo:
+    # Kumulation: Regeln (kumulieren) so das vielleicht nur die letzte Regeln sichbar wird. Beispiele:
+
+
+    # Folgende regel betrifft alles:
 
     # ('---', r'^.*$', 5, # min_accuracy {'command_flags': re.IGNORECASE}),
 
 
-    # La siguiente regla se aplica a todo excepto a la palabra casa:
+    # Folgende regel betrifft alles außer dem Wort Haus:
 
-    # EXAMPLE: Casa
+    # EXAMPLE: Haus
 
-    # ('', r'^(?!Casa).*$', 5, {'command_flags': re.IGNORECASE}),
+    # ('', r'^(?!Haus).*$', 5, {'command_flags': re.IGNORECASE}),
 
-    # PruebaPruebaPruebaCasaCasaCasaMujer deCasa Árbol debajoBuen díaJaque mateJaque mate
+    # TestTestTestHausHausHausFrau ausHaus Baum unterGuten TagSchachmattSchachmatt
 
-    # Jaque mateJaque mate
-
-
-    # La siguiente regla se aplica a todo excepto a las palabras jaque, mate:
-
-    # EXAMPLE: Ajedrez
-
-    # ('', r'^(?!check|mate|mala|casa).*$', 5, {'command_flags': re.IGNORECASE}),
-
-    # AjedrezAjedrezCasaAjedrezAjedrezCuarto de baño
-
-    # Mate
+    # SchachmattSchachmatt
 
 
-    # EXAMPLE: Ajedrez
+    # Folgende regel betrifft alles außer den Wörtern Schach,Matt:
 
-    # ('Jaque mate', r'^(Jaque mate|malo|Casa).*$', 5, {'command_flags': re.IGNORECASE}),
+    # EXAMPLE: Schach
 
-    # Jaque mateJaque mate
+    # ('', r'^(?!Schach|Matt|bad|Haus).*$', 5, {'command_flags': re.IGNORECASE}),
+
+    # SchachSchachHausSchachSchachBad
+
+    # Schachmatt
+
+
+    # EXAMPLE: Schach
+
+    # ('Schachmatt', r'^(Schach|Matt|bad|Haus).*$', 5, {'command_flags': re.IGNORECASE}),
+
+    # SchachmattSchachmatt
 
 
 
 
     ('LECKER_EXAKT', 'Marmelade', 100, {'command_flags': re.IGNORECASE}),
-    # Mermelada MermeladaLECKER_EXAKT
+    # Marmelade MarmeladeLECKER_EXAKT
 
 
-    # Prueba 2: regla tolerante (se permiten errores tipográficos)
+    # Test 2: Tolerante Regel (Tippfehler erlaubt)
 
-    # También debe reconocerse la 'Marmelada' o 'Marmelad'.
+    # 'Marmelada' oder 'Marmelad' sollte auch erkannt werden.
 
-    # ('LECKER_FUZZY', 'JAM', 1, {'command_flags': re.IGNORECASE}),
+    # ('LECKER_FUZZY', 'Marmelade', 1, {'command_flags': re.IGNORECASE}),
 
 
-    # Mermelada Mermelada Mammon Mammon Mama Marion Málaga
+    # Marmelade Marmelade Mammon Mammon Mama Marion Málaga
 
-    # Mamá MarionA es delgada
+    # Mama MarionA lager mal mager
 
 
 

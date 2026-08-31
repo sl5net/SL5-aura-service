@@ -18,39 +18,39 @@
 
 import re
 
-# desde pathlib importar ruta como p; importar sistema operativo como o
-# con open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
+# from pathlib import Path as p;import os as o
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 from pathlib import Path
 
-# Este mapa utiliza un enfoque híbrido:
+# This map uses a hybrid approach:
 
-# 1. Las entradas de expresiones regulares se verifican primero. Son potentes y pueden no distinguir entre mayúsculas y minúsculas.
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 
-# Estructura: ('reemplazo', regex_pattern', umbral, banderas)
+# Structure: ('replacement', rregex_pattern', threshold, flags)
 
-# - El umbral se ignora para las expresiones regulares.
+# - The threshold is ignored for regex.
 
-# - banderas: utilice {'flags': ...} para no distinguir entre mayúsculas y minúsculas, o 0 para distinguir entre mayúsculas y minúsculas.
+# - flags: Use {'flags': ...} for case-insensitivity, or 0 for case-sensitivity.
 
-# 2. Si no hay coincidencias de expresiones regulares, se realiza una coincidencia difusa simple en las reglas restantes.
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 
 CONFIG_DIR = Path(__file__).parent
 
-    # Un archivo de tipo de cursointernalsSearch levanta el hogarinternalsChips Actualizar base de datosinternalsScript Renovar base de datosinternalsActualizar chip twitter shareinternalsTodas las carpetas SkillinternalsTodas las carpetas actualizadasinternalsUn diseño hecho por míinternalsLeer todas las carpetasTeclado MorphinReadinternalsDatos de Zwick eninternalsDatos de Jeep eninternals
+    # Eine Typ Datei natürlichinternalsSuche hebt das heiminternalsChips Datenbank aktualisiereninternalsScript Datenbank renoviereninternalsAktualisiere Chip twitter teileninternalsAlle Ordner SkillinternalsAlle Ordner aktualisiertinternalsA layout by meinternalsAlle Ordner einlesenKeyboard Morphin leseninternalsZwick daten eininternalsJeep daten einleseninternals
 
 
-    # Buscar archivos zip internos Actualizar todos los archivos Informe Actualizar archivos zip internos Encuentra tus archivos zip Informe de viaje
+    # Eine Zip-Dateien sucheninternalsAlle Dateien aktualisierenBerichtEine ZIP Dateien aktualisiereninternalsDeine der Zip-Dateien findenReisebericht
 
 
     # === General Terms (Case-Insensitive) ===
-    # Usar límites de palabras (\b) y agrupar (|) para detectar variaciones de manera eficiente.
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Importante saber:
+    # Importing to know:
 
-    # - se detiene con el primer partido completo. Ejemplos: ^...$ = Coincidencia completa = ¡Detener criterio!
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
-    # - Primero se lee primero y se importa, es posible que las reglas inferiores no se lean.
+    # - first is read first imported, lower rules maybe not get read.
 
 FUZZY_MAP_pre = [
     ('find all zips', r'''^(
@@ -68,7 +68,7 @@ FUZZY_MAP_pre = [
         ),
 ]
 
-# Agregar archivo zipEscaneo completo. Encontré 11 objetivos. Cremalleras actualizadas.
+# Zip-Datei hinzuScan complete. Found 11 targets. Zips updated.
 
 
 readme = '''

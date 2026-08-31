@@ -15,93 +15,93 @@
 
 import re
 
-# depuis pathlib import Path as p;import os as o
+# from pathlib import Path as p;import os as o
 
-# avec open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
-
-
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 
 
 
-# Cette carte utilise une approche hybride :
-
-# 1. Les entrées Regex sont vérifiées en premier. Ils sont puissants et peuvent ne pas être sensibles à la casse.
-
-# Structure : ('remplacement', r'regex_pattern', seuil, drapeaux)
-
-# - Le seuil est ignoré pour les regex.
-
-# - flags : utilisez {'command_flags': re.IGNORECASE} pour l'insensibilité à la casse, ou 0 pour la sensibilité à la casse.
-
-# 2. Si aucune expression régulière ne correspond, une simple correspondance floue est effectuée sur les règles restantes.
 
 
-# aussi<-de
+# This map uses a hybrid approach:
+
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
+
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
+
+# - The threshold is ignored for regex.
+
+# - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
+
+
+# too<-from
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
-    # Utiliser les limites des mots (\b) et le regroupement (|) pour détecter efficacement les variations.
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Important à savoir :
+    # Importing to know:
 
-    # - ça s'arrête au premier match complet. Exemples : ^...$ = Correspondance complète = Critère d'arrêt !
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
-    # - le premier est lu en premier et les règles inférieures peuvent ne pas être lues.
-
-
-    # Cumul : les règles (s'accumulent) de sorte que seule la dernière règle soit visible. Exemples :
+    # - first is read first imported, lower rules maybe not get read.
 
 
-    # La règle suivante s'applique à tout :
+    # Kumulation: Regeln (kumulieren) so das vielleicht nur die letzte Regeln sichbar wird. Beispiele:
+
+
+    # Folgende regel betrifft alles:
 
     # ('---', r'^.*$', 5, # min_accuracy {'command_flags': re.IGNORECASE}),
 
 
-    # La règle suivante s'applique à tout sauf au mot maison :
+    # Folgende regel betrifft alles außer dem Wort Haus:
 
-    # EXAMPLE: Maison
+    # EXAMPLE: Haus
 
     # ('', r'^(?!Haus).*$', 5, {'command_flags': re.IGNORECASE}),
 
-    # TestTestTestMaisonMaisonMaisonFemme deMaison Arbre sousBonne journéeÉchec et matÉchec et mat
+    # TestTestTestHausHausHausFrau ausHaus Baum unterGuten TagSchachmattSchachmatt
 
-    # Échec et matÉchec et mat
-
-
-    # La règle suivante s'applique à tout sauf aux mots check, mate :
-
-    # EXAMPLE: Échecs
-
-    # ('', r'^(?!check|mate|bad|house).*$', 5, {'command_flags': re.IGNORECASE}),
-
-    # ÉchecsÉchecsMaisonÉchecsÉchecsSalle de bain
-
-    # Échec et mat
+    # SchachmattSchachmatt
 
 
-    # EXAMPLE: Échecs
+    # Folgende regel betrifft alles außer den Wörtern Schach,Matt:
 
-    # ('Checkmate', r'^(Checkmate|bad|House).*$', 5, {'command_flags': re.IGNORECASE}),
+    # EXAMPLE: Schach
 
-    # Échec et matÉchec et mat
+    # ('', r'^(?!Schach|Matt|bad|Haus).*$', 5, {'command_flags': re.IGNORECASE}),
+
+    # SchachSchachHausSchachSchachBad
+
+    # Schachmatt
+
+
+    # EXAMPLE: Schach
+
+    # ('Schachmatt', r'^(Schach|Matt|bad|Haus).*$', 5, {'command_flags': re.IGNORECASE}),
+
+    # SchachmattSchachmatt
 
 
 
 
     ('LECKER_EXAKT', 'Marmelade', 100, {'command_flags': re.IGNORECASE}),
-    # Jam JamLECKER_EXAKT
+    # Marmelade MarmeladeLECKER_EXAKT
 
 
-    # Test 2 : Règle de tolérance (erreurs de frappe autorisées)
+    # Test 2: Tolerante Regel (Tippfehler erlaubt)
 
-    # Il faut également reconnaître 'Marmelada' ou 'Marmelad'.
+    # 'Marmelada' oder 'Marmelad' sollte auch erkannt werden.
 
-    # ('LECKER_FUZZY', 'JAM', 1, {'command_flags' : re.IGNORECASE}),
+    # ('LECKER_FUZZY', 'Marmelade', 1, {'command_flags': re.IGNORECASE}),
 
 
-    # Confiture Mammon Mammon Mama Marion Málaga
+    # Marmelade Marmelade Mammon Mammon Mama Marion Málaga
 
-    # Maman MarionA est maigre
+    # Mama MarionA lager mal mager
 
 
 

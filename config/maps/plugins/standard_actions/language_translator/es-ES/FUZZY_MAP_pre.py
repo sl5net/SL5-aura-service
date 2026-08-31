@@ -16,19 +16,19 @@
 import re
 from pathlib import Path
 
-# Este mapa utiliza un enfoque híbrido:
+# This map uses a hybrid approach:
 
-# 1. Las entradas de expresiones regulares se verifican primero. Son potentes y pueden no distinguir entre mayúsculas y minúsculas.
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 
-# Estructura: ('reemplazo', r'regex_pattern', umbral, banderas)
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
 
-# - El umbral se ignora para las expresiones regulares.
+# - The threshold is ignored for regex.
 
-# - banderas: use {'command_flags': re.IGNORECASE} para no distinguir entre mayúsculas y minúsculas, o 0 para distinguir entre mayúsculas y minúsculas.
+# - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 
-# 2. Si no hay coincidencias de expresiones regulares, se realiza una coincidencia difusa simple en las reglas restantes.
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
-# parada de entrega de idiomas
+# sprache gabe stopp
 
 
 
@@ -90,27 +90,27 @@ standards.
 
 CONFIG_DIR = Path(__file__).parent
 
-nonsense_start_word = r'(?:(a|a|uno|a|comer)\s*)?'
+nonsense_start_word = r'(?:(an|ein|eine|einen|essen)\s*)?'
 
-# EXAMPLE: inglés
+# EXAMPLE: Denglisch
 
-Englisch = fr'{nonsense_start_word}(inglés|Inglés\w*|inglés\w*|finalmente|Limpiar|nicho|Cualquier|de alguna manera|habló.*gabe|similar)\b\s*'
-# EXAMPLE: Cambiar
+Englisch = fr'{nonsense_start_word}(Denglisch|englisch\w*|english\w*|endlich|Wisch|nische|Irgendwelche|irgendwie|sprach.*gabe|ähnlich)\b\s*'
+# EXAMPLE: Switch
 
-toggleCmd=r'\s*(Cambiar|Activar|activar|activado|activo|encender|registrarse|desconectar|abolir|despedida|detener\w*|Detener|desactivar|desactivar|apagar|Estar atento|palanca)\s*'
+toggleCmd=r'\s*(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|einchecken|abschalten|abschaffen|abschied|stopp\w*|stop|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)\s*'
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
-    # Usar límites de palabras (\b) y agrupar (|) para detectar variaciones de manera eficiente.
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Importante saber:
+    # Importing to know:
 
-    # - se detiene con el primer partido completo. Ejemplos: ^...$ = Coincidencia completa = ¡Detener criterio!
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
-    # - Primero se lee primero y se importa, es posible que las reglas inferiores no se lean.
+    # - first is read first imported, lower rules maybe not get read.
 
 
-    # EXAMPLE: Activar inglés
+    # EXAMPLE: Englisch aktiviere
 
     ('en', fr'^{Englisch}{toggleCmd}$', 95, {
         'command_flags': re.IGNORECASE,
@@ -118,117 +118,117 @@ FUZZY_MAP_pre = [
     }),
 
 
-    # EXAMPLE: Activa el francés
+    # EXAMPLE: französisch einschalten
 
     ('fr', fr'^(französisch) {toggleCmd}$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: interruptor tailandés
+    # EXAMPLE: Thai Switch
 
-    ('th', fr'^(tailandés|tai|Hola|En) {toggleCmd}$', 95, {
+    ('th', fr'^(Thai|Tai|hi|Bei) {toggleCmd}$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: Interruptor japonés
+    # EXAMPLE: japanisch  Switch
 
-    ('ja', fr'^(japonés) {toggleCmd}$', 95, {
+    ('ja', fr'^(japanisch) {toggleCmd}$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
-    # EXAMPLE: Cambio árabe
+    # EXAMPLE: arabisch Switch
 
     ('ar', r'^(arabisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: Interruptor persa
+    # EXAMPLE: persisch Switch
 
-    ('fa', r'^(persa) (Cambiar|Activar|activar|activado|activo|encender|desactivar|desactivar|apagar|Estar atento|palanca)', 95, {
+    ('fa', r'^(persisch) (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: Cambio portugués
+    # EXAMPLE: Portuguese  Switch
 
-    ('pt-BR', r'^(Cambiar|Activar|activar|activado|activo|encender|desactivar|desactivar|apagar|Estar atento|palanca) (portugués|portugués|portugués\w*)\b', 95, {
+    ('pt-BR', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (portugiesisch|Portugiesen|portugiese\w*)\b', 95, {
          'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
-    # EXAMPLE: Cambio portugués
+    # EXAMPLE: portugiesisch Switch
 
-    ('pt-BR', r'^(portugués) (activar|activado|activo|a|encender|abdominales\w*|desactivar|apagar|Estar atento|palanca|perro danés|doble)\b', 95, {
+    ('pt-BR', r'^(portugiesisch) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)\b', 95, {
          'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: España Cambiar
+    # EXAMPLE: Spanien Switch
 
-    ('es', r'^(España|Español|rígido tú|sparr tú) (activar|activado|activo|a|encender|abdominales\w*|desactivar|apagar|Estar atento|palanca|perro danés|doble)$', 95, {
+    ('es', r'^(Spanien|spanisch|starr dich|sparr dich) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)$', 95, {
          'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # palanca afgana
+    # afghanisch toggle
 
-    # EXAMPLE: afgano
+    # EXAMPLE: afghanisch
 
-    ('Dari', r'^(afgano|Afganistán|Orgánico) (activar|activado|activo|a|encender|abdominales\w*|desactivar|apagar|Estar atento|palanca|perro danés|doble)$', 95, {
+    ('Dari', r'^(afghanisch|Afghanistan|Organisch) (aktivieren|aktiviert|aktiv|ein|einschalten|abs\w*|deaktivieren|ausschalten|ausschau|toggle|Dogge|doppelt)$', 95, {
          'command_flags': re.IGNORECASE,
          'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # Activar orgánicamente گرمایش را خاموش کنید (original: 'apagar la calefacción').
+    # Organisch aktivierenگرمایش را خاموش کنید (original:'heizung ausschalten').
 
 
 
-    # EXAMPLE: traducción: apagar desactivar alternar
+    # EXAMPLE: übersetzung: ausschalten deaktivieren toggle
 
-    ('de', r'^(\w*traducción|calefacción|estimaciones de ganancias) (desactivar|desactivar|apagar|desconectar|Estar atento|palanca)\b.*$', 95, {
+    ('de', r'^(\w*bersetzung|heizung|gewinnschätzungen) (deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)\b.*$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
 
-    # traducción encendido apagado
+    # übersetzung ein ausschalten
 
-    # EXAMPLE: desactivar la traducción
+    # EXAMPLE: übersetzung ausschalten
 
-    ('de', r'^(\w*traducción|calefacción|para el) (modo )? (Cambiar|Activar|activar|activado|activo|encender|desactivar|desactivar|apagar|desconectar|Estar atento|palanca)\b.*$', 95, {
+    ('de', r'^(\w*bersetzung|heizung|zum) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|abschalten|ausschau|toggle)\b.*$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
-    # EXAMPLE: interruptor de traducción
+    # EXAMPLE: übersetzung Switch
 
-    ('de', r'^(\w*ocupación\w*) (modo )? (Cambiar|Activar|activar|activado|activo|encender|desactivar|desactivar|apagar|Estar atento|palanca)\b.*$', 95, {
+    ('de', r'^(\w*besetzung\w*) (modus )? (Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle)\b.*$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
-    # EXAMPLE: alternar traducción
+    # EXAMPLE: übersetzung toggle
 
-    ('de', fr'^(\w*habló\w*) (traducción\w*)? {toggleCmd}$', 95, {
-        'command_flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
-    }),
-
-
-    # EXAMPLE: alternar traducción
-
-    ('de', r'^(Cambiar|Activar|activar|activado|activo|encender|desactivar|desactivar|apagar|Estar atento|palanca) (\w*traducir\w*)\b.*$', 95, {
+    ('de', fr'^(\w*sprach\w*) (übersetz\w*)? {toggleCmd}$', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
     }),
 
-    # EXAMPLE: Buenas noches
 
-    ('', r'\b(bien noche|dormir bien|I ir en el cama)\b', 95, {
+    # EXAMPLE: übersetzung toggle
+
+    ('de', r'^(Switch|Aktiviere|aktivieren|aktiviert|aktiv|einschalten|deaktivieren|deaktiviere|ausschalten|ausschau|toggle) (\w*bersetz\w*)\b.*$', 95, {
+        'command_flags': re.IGNORECASE,
+        'on_match_exec': [CONFIG_DIR / 'toggle_translation_mode.py']
+    }),
+
+    # EXAMPLE: gute nacht
+
+    ('', r'\b(gute nacht|schlaf gut|ich geh ins bett)\b', 95, {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'good_night.py']
     }),
@@ -236,11 +236,11 @@ FUZZY_MAP_pre = [
 
     # config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
 
-    # ANCLA: La siguiente línea está controlada por el script de alternancia.
+    # ANCHOR: The following line is controlled by the toggle script.
 
-    # Es mejor desactivarlo antes de ejecutar reglas de autoevaluación como: hacer coincidir todo con nada. como: .+ -> o .* -> ''
+    # best disable before run self-tester rules like: match all to nothing. like: .+ -> or .* -> ''
 
-    # REGLA_TRADUCCIÓN
+    # TRANSLATION_RULE
 
      # ('', r'.+', 5, {'command_flags': re.IGNORECASE,'on_match_exec': [CONFIG_DIR / 'translate_from_to.py']}),
 

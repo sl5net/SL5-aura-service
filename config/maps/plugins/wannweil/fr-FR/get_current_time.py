@@ -25,12 +25,12 @@ def execute(current_text):
     konsistenten Schnittstelle für alle Skripte.
     """
 
-    # S'assure que les jours du mois et de la semaine sont en allemand (au cas où vous en auriez besoin)
+    # Stellt sicher, dass Monats- und Wochentage auf Deutsch sind (falls du sie mal brauchst)
 
     try:
         locale.setlocale(locale.LC_TIME, "de_DE.UTF-8")
     except locale.Error:
-        # Solution de secours pour les systèmes sur lesquels de_DE n'est pas installé
+        # Fallback für Systeme, auf denen de_DE nicht installiert ist
 
         locale.setlocale(locale.LC_TIME, "")
 
@@ -40,7 +40,7 @@ def execute(current_text):
 
     antwort = ""
 
-    # 1. Nuit profonde (00h00 - 4h59)
+    # 1. Tiefe Nacht (0:00 - 4:59 Uhr)
 
     if 0 <= stunde < 5:
         antworten = [
@@ -50,7 +50,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 2. Tôt le matin (5h00 - 9h59)
+    # 2. Früher Morgen (5:00 - 9:59 Uhr)
 
     elif 5 <= stunde < 10:
         antworten = [
@@ -60,7 +60,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 3. Matin et déjeuner (10h00 - 13h59)
+    # 3. Vormittag & Mittag (10:00 - 13:59 Uhr)
 
     elif 10 <= stunde < 14:
         antworten = [
@@ -70,7 +70,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 4ème après-midi (14h00 - 17h59)
+    # 4. Nachmittag (14:00 - 17:59 Uhr)
 
     elif 14 <= stunde < 18:
         antworten = [
@@ -80,7 +80,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 5ème soirée (18h00 - 21h59)
+    # 5. Abend (18:00 - 21:59 Uhr)
 
     elif 18 <= stunde < 22:
         antworten = [
@@ -90,7 +90,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 6. Fin de soirée/nuit (22h00 - 23h59)
+    # 6. Später Abend / Nacht (22:00 - 23:59 Uhr)
 
     else: # stunde >= 22
         antworten = [
@@ -102,5 +102,5 @@ def execute(current_text):
 
     return antwort
 
-# Ouf, il est déjà 2h24 du matin. Les chouettes sont encore éveillées ! Il est 2h24 du matin. Un bon moment pour des idées créatives ou un sommeil profond.
+# Puh, es ist schon 02:24 Uhr. Die Eulen sind noch wach!Wir haben 02:24 Uhr. Eine gute Zeit für kreative Ideen oder tiefen Schlaf.
 

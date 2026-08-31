@@ -11,55 +11,55 @@
 #     regex patterns, please open a Pull Request with your improvements.
 # ==============================================================================
 
-# config/maps/plugins/it-terms/php/codeigniter/de-DE/FUZZY_MAP_pre.py
+# config/maps/plugins/it-begriffe/php/codeigniter/de-DE/FUZZY_MAP_pre.py
 
-# fichier config/maps/plugins/it-terms----/FUZZY_MAP_pr.py
+# file config/maps/plugins/it-begriffe----/FUZZY_MAP_pr.py
 
 # Beispiel: https://www.it-begriffe.de/#L
 
 import re
 
-# depuis pathlib import Path as p;import os as o
+# from pathlib import Path as p;import os as o
 
-# avec open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
-
-
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 
 
-# Cette carte utilise une approche hybride :
 
-# 1. Les entrées Regex sont vérifiées en premier. Ils sont puissants et peuvent ne pas être sensibles à la casse.
 
-# Structure : ('remplacement', r'regex_pattern', seuil, drapeaux)
+# This map uses a hybrid approach:
 
-# - Le seuil est ignoré pour les regex.
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 
-# - flags : utilisez {'command_flags': re.IGNORECASE} pour l'insensibilité à la casse, ou 0 pour la sensibilité à la casse.
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
 
-# 2. Si aucune expression régulière ne correspond, une simple correspondance floue est effectuée sur les règles restantes.
+# - The threshold is ignored for regex.
+
+# - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
+
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
-    # Utiliser les limites des mots (\b) et le regroupement (|) pour détecter efficacement les variations.
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Important à savoir :
+    # Importing to know:
 
-    # - ça s'arrête au premier match complet. Exemples : ^...$ = Correspondance complète = Critère d'arrêt !
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
-    # - le premier est lu en premier et les règles inférieures peuvent ne pas être lues.
-
-
+    # - first is read first imported, lower rules maybe not get read.
 
 
-    # EXAMPLE: allumeur de code
 
-    ('~projects/php/codeigniter/', r'^\b(allumeur de code|gothique Dieter|gothique Dieter)(\b)$', 80, # min_accuracy
+
+    # EXAMPLE: codeigniter
+
+    ('~projects/php/codeigniter/', r'^\b(codeigniter|Gotik Dieter|gothic Dieter)(\b)$', 80, # min_accuracy
  {'command_flags': re.IGNORECASE}),
 
     # EXAMPLE: code
 
-    ('~projects/php/codeigniter/', r'^\b(code|gothique|gothique)\s*(allumeur|enflammer|approprié|tondeuse|allumeur|Dieter|Dieter|devient|Wii|mignon)(\b)$', 70, # min_accuracy
+    ('~projects/php/codeigniter/', r'^\b(code|gothic|Gotik)\s*(igniter|ignite|eignete|knipser|igniter|Dieter|Dieter|wird|Wii|nette)(\b)$', 70, # min_accuracy
  {'command_flags': re.IGNORECASE}),
 
 

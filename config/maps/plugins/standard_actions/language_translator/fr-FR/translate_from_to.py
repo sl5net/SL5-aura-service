@@ -11,7 +11,7 @@
 #     regex patterns, please open a Pull Request with your improvements.
 # ==============================================================================
 
-# config/maps/plugins/standard_actions/langage_translator/de-DE/translate_from_to.py
+# config/maps/plugins/standard_actions/language_translator/de-DE/translate_from_to.py
 
 import logging
 import os
@@ -95,22 +95,22 @@ def execute(match_data):
         from scripts.py.func.db.trino_client import get_feature_state, get_target_lang
 
         INTERFACE = os.getenv("INTERFACE", "speech")
-        # print(f"DEBUG translation_from_to: INTERFACE={INTERFACE}")
+        # print(f"DEBUG translate_from_to: INTERFACE={INTERFACE}")
 
         feature_state = get_feature_state(interface=INTERFACE, feature='translation')
-        # print(f"DEBUG translation_from_to : feature_state={feature_state}")
+        # print(f"DEBUG translate_from_to: feature_state={feature_state}")
 
         if feature_state != 'on':
             return original_text
         lang_target = get_target_lang(interface=INTERFACE)
-        # print(f"DEBUG translation_from_to : lang_target={lang_target}")
+        # print(f"DEBUG translate_from_to: lang_target={lang_target}")
 
         if lang_target is None:
             return original_text
     except Exception as e:
-        # print(f"DEBUG translation_from_to: EXCEPTION={e}")
+        # print(f"DEBUG translate_from_to: EXCEPTION={e}")
 
-        # Solution de secours : translation_state.py si Trino n'est pas accessible
+        # Fallback: translation_state.py falls Trino nicht erreichbar
 
         logger.warning(f"Trino nicht erreichbar, Fallback auf STATE_FILE: {e}")
         STATE_FILE = Path(__file__).parent / 'translation_state.py'
@@ -123,7 +123,7 @@ def execute(match_data):
         lang_target = key.strip().replace('_', '-')
     logger.info(f'Translating to {lang_target} (interface={match_data.get("interface", "terminal")})')
 
-    # 2. Vérifiez le cache
+    # 2. Cache pruefen
 
     BASE_DIR_FOR_CACHE = Path(__file__).parent.parent.parent.parent.parent
     cache_key_args = (original_text, str(lang_target))
@@ -137,7 +137,7 @@ def execute(match_data):
         print(f"DEBUG: CACHE HIT! => {cached_response}")
         return cached_response
 
-    # 3. Traduire
+    # 3. Uebersetzen
 
     try:
         if not original_text:

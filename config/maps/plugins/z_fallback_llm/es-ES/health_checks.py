@@ -19,7 +19,7 @@ from pathlib import Path
 
 from scripts.py.func.get_project_root import get_aura_project_root
 
-# La misma lógica aquí para garantizar que se encuentren las utilidades cuando se llama desde simular_conversación
+# Same logic here to ensure utils is found when called from simulate_conversation
 
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
@@ -56,7 +56,7 @@ def check_db_statistics_and_exit_if_invalid():
 
         c = conn.cursor()
 
-        # Consultar el total de visitas correctamente
+        # Total Hits korrekt abfragen
 
         S1 = "SELECT COUNT(*) FROM responses"
         print(f"{S1}")
@@ -64,7 +64,7 @@ def check_db_statistics_and_exit_if_invalid():
         row = c.fetchone()
         total_hits = row[0] if row and row[0] is not None else 0
 
-        # Consulta mensajes únicos correctamente
+        # Unique Prompts korrekt abfragen
 
         S2 = "SELECT COUNT(DISTINCT prompt_hash) FROM responses"
         print(f"{S2}")
@@ -72,7 +72,7 @@ def check_db_statistics_and_exit_if_invalid():
         row = c.fetchone()
         unique_prompts = row[0] if row and row[0] is not None else 0
 
-        # Lógica de examen mejorada
+        # Verbessertes Prüfungs-Logik
 
         if unique_prompts == 0:
             diagnosis = f"{utils.DB_FILE} ist LEER. Es sind 0 eindeutige Fragen vorhanden. sqlitebrowser {utils.DB_FILE} & "
@@ -86,7 +86,7 @@ def check_db_statistics_and_exit_if_invalid():
                 conn.close()
             return True
 
-        # Salida de error en caso de falla
+        # Fehler-Ausgabe bei Fehlschlag
 
         print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         print("!!! KRITISCHER FEHLER: DATENBANK INKONSISTENT/ZU LEER !!!")

@@ -21,7 +21,7 @@ try:
 except ImportError:
     from utils import DB_FILE, init_db
 
-# Asegúrese de que la base de datos y sus tablas existan antes de realizar la consulta.
+# Ensure the database and its tables exist before querying
 
 init_db()
 

@@ -25,12 +25,12 @@ def execute(current_text):
     konsistenten Schnittstelle für alle Skripte.
     """
 
-    # Se asegura de que los días del mes y de la semana estén en alemán (en caso de que alguna vez los necesite)
+    # Stellt sicher, dass Monats- und Wochentage auf Deutsch sind (falls du sie mal brauchst)
 
     try:
         locale.setlocale(locale.LC_TIME, "de_DE.UTF-8")
     except locale.Error:
-        # Respaldo para sistemas donde de_DE no está instalado
+        # Fallback für Systeme, auf denen de_DE nicht installiert ist
 
         locale.setlocale(locale.LC_TIME, "")
 
@@ -40,7 +40,7 @@ def execute(current_text):
 
     antwort = ""
 
-    # 1. Noche profunda (00:00 – 04:59)
+    # 1. Tiefe Nacht (0:00 - 4:59 Uhr)
 
     if 0 <= stunde < 5:
         antworten = [
@@ -50,7 +50,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 2. Temprano en la mañana (5:00 a. m. - 9:59 a. m.)
+    # 2. Früher Morgen (5:00 - 9:59 Uhr)
 
     elif 5 <= stunde < 10:
         antworten = [
@@ -60,7 +60,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 3. Mañana y almuerzo (10:00 – 13:59)
+    # 3. Vormittag & Mittag (10:00 - 13:59 Uhr)
 
     elif 10 <= stunde < 14:
         antworten = [
@@ -70,7 +70,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 4ta tarde (14:00 - 17:59)
+    # 4. Nachmittag (14:00 - 17:59 Uhr)
 
     elif 14 <= stunde < 18:
         antworten = [
@@ -80,7 +80,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 5ta tarde (18:00 - 21:59)
+    # 5. Abend (18:00 - 21:59 Uhr)
 
     elif 18 <= stunde < 22:
         antworten = [
@@ -90,7 +90,7 @@ def execute(current_text):
         ]
         antwort = random.choice(antworten)
 
-    # 6. A última hora de la tarde/noche (22:00 - 23:59)
+    # 6. Später Abend / Nacht (22:00 - 23:59 Uhr)
 
     else: # stunde >= 22
         antworten = [
@@ -102,5 +102,5 @@ def execute(current_text):
 
     return antwort
 
-# Uf, ya son las 2:24 am. ¡Los búhos siguen despiertos! Son las 2:24 a. m. Un buen momento para ideas creativas o sueño profundo.
+# Puh, es ist schon 02:24 Uhr. Die Eulen sind noch wach!Wir haben 02:24 Uhr. Eine gute Zeit für kreative Ideen oder tiefen Schlaf.
 

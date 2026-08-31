@@ -15,102 +15,102 @@
 
 import re
 
-# desde pathlib importar ruta como p; importar sistema operativo como o
-# con open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
+# from pathlib import Path as p;import os as o
+# with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip())
 from pathlib import Path
 
-# Este mapa utiliza un enfoque híbrido:
+# This map uses a hybrid approach:
 
-# 1. Las entradas de expresiones regulares se verifican primero. Son potentes y pueden no distinguir entre mayúsculas y minúsculas.
+# 1. Regex entries are checked first. They are powerful and can be case-insensitive.
 
-# Estructura: ('reemplazo', r'regex_pattern', umbral, banderas)
+# Structure: ('replacement', r'regex_pattern', threshold, flags)
 
-# - El umbral se ignora para las expresiones regulares.
+# - The threshold is ignored for regex.
 
-# - banderas: use {'command_flags': re.IGNORECASE} para no distinguir entre mayúsculas y minúsculas, o 0 para distinguir entre mayúsculas y minúsculas.
+# - flags: Use {'command_flags': re.IGNORECASE} for case-insensitivity, or 0 for case-sensitivity.
 
-# 2. Si no hay coincidencias de expresiones regulares, se realiza una coincidencia difusa simple en las reglas restantes.
+# 2. If no regex matches, a simple fuzzy match is performed on the remaining rules.
 
 
 CONFIG_DIR = Path(__file__).parent
 
 FUZZY_MAP_pre = [
     # === General Terms (Case-Insensitive) ===
-    # Usar límites de palabras (\b) y agrupar (|) para detectar variaciones de manera eficiente.
+    # Using word boundaries (\b) and grouping (|) to catch variations efficiently.
 
-    # Importante saber:
+    # Importing to know:
 
-    # - se detiene con el primer partido completo. Ejemplos: ^...$ = Coincidencia completa = ¡Detener criterio!
+    # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion!
 
-    # - Primero se lee primero y se importa, es posible que las reglas inferiores no se lean.
-
-
-# La salchicha sería interna
+    # - first is read first imported, lower rules maybe not get read.
 
 
-    # EXAMPLE: Compartir iglesias
+# Bratwurst wäre intern
 
-    ('Kirchentellinsfurt', r'\b(iglesias\s*dividir|Kirchentellinsfurt|cantarín sostiene)\b', 82, # min_accuracy
+
+    # EXAMPLE: Kirchen teilen
+
+    ('Kirchentellinsfurt', r'\b(Kirchen\s*teilen|Kirchentellinsfurt|klirrend hält)\b', 82, # min_accuracy
     {'command_flags': re.IGNORECASE}),
 
-    # EXAMPLE: Ayuntamiento
+    # EXAMPLE: Rathaus
 
-    ('https://www.kirchentellinsfurt.de/de/kontakt', r'\b(Ayuntamiento|contacto)\b\s*\b(iglesias\s*dividir|Kirchentellinsfurt)\b', 82, # min_accuracy
+    ('https://www.kirchentellinsfurt.de/de/kontakt', r'\b(Rathaus|Kontakt)\b\s*\b(Kirchen\s*teilen|Kirchentellinsfurt)\b', 82, # min_accuracy
     {'command_flags': re.IGNORECASE}),
 
-    # EXAMPLE: el ayuntamiento sigue tintineando
+    # EXAMPLE: rathaus klirrend hält
 
-    ('https://www.kirchentellinsfurt.de/de/kontakt', r'\b(ayuntamiento cantarín sostiene)\b', 82, # min_accuracy
+    ('https://www.kirchentellinsfurt.de/de/kontakt', r'\b(rathaus klirrend hält)\b', 82, # min_accuracy
     {'command_flags': re.IGNORECASE}),
 
 
 # zieglersche https://www.zieglersche.de/altenhilfe.html pflegheim
 
 
-# El Ayuntamiento sigue tintineando
+# Rathaus klirrend hält
 
-# El sonido de la madera dura tintineando
+# Hartholz klirren tönt
 
 
-    # EXAMPLE: quien cachorro
+    # EXAMPLE: wen Welpe
 
-    ('Wannweil', r'\b(OMS\s*Cachorro)\b', 82, # min_accuracy
+    ('Wannweil', r'\b(wen\s*Welpe)\b', 82, # min_accuracy
     {'command_flags': re.IGNORECASE}),
 
-    # EXAMPLE: quien cachorro
+    # EXAMPLE: wen Welpe
 
-    ('Wannweil', r'\b(OMS\s*Cachorro)\b', 82, # min_accuracy
+    ('Wannweil', r'\b(wen\s*Welpe)\b', 82, # min_accuracy
     {'command_flags': re.IGNORECASE}),
-    # EXAMPLE: cuando porque
+    # EXAMPLE: Wannweil
 
-    ('Wannweil', r'^\s*(cuando porque|Annweiler|Cuando\s*porque|Cuando\s*Cuando\s*porque|Cuando\s*era\s*Señor|Cuando\s*era\s*él|A\s*porque|Cuando\s*llorar\w*|Cuando\s*vino|Furgoneta\s*porque|Cuando Qué)\s*$', 70, # min_accuracy
+    ('Wannweil', r'^\s*(Wannweil|Annweiler|wann\s*weil|Wann\s*wann\s*weil|Wann\s*war\s*Herr|Wann\s*war\s*er|An\s*weil|Wann\s*weine\w*|Wann\s*wein|Van\s*weil|wann was)\s*$', 70, # min_accuracy
     {'command_flags': re.IGNORECASE}),
 
-    # EXAMPLE: corredor sebastian
+    # EXAMPLE: Sebastian Läufer
 
     ('Sebastian Lauffer', r'\bSebastian (Läufer|laufer|Laura|lauf|lauf war)\b', 82, # min_accuracy
     {'command_flags': re.IGNORECASE}),
 
-    # EXAMPLE: cifra
+    # EXAMPLE: Figur
 
     ('Sigune Lauffer', r'\b(Figur|Sekunde|zugrunde|sigourney|sheego|Sie gute|gun|Ski gute|c gute|Schick ohne|sheikh ohne|gleich ohne|shi gunilla|spione)'
-                       # EXAMPLE: corredor
+                       # EXAMPLE: Läufer
 
-                       r' (corredor|corredor|Lauffer|correr|correr|correr|laura|correr era|en eso esperar|en montón|detener|nariz)\b', 82, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
+                       r' (Läufer|laufer|Lauffer|lauf|laufe|laufen|Laura|lauf war|darauf warten|in haufen|aufhören|nase)\b', 82, {'command_flags': re.IGNORECASE, 'skip_list': ['LanguageTool']}),
 
 
-    # EXAMPLE: estaRegexWillNeverMatch123ABC
+    # EXAMPLE: diesesRegexWirdNiemalsMatchen123ABC
 
-    ('TestFuzzyNiemalsMatchen', r'\b(esta expresión regular nunca coincidirá123abecedario)\b', 75, # min_accuracy
+    ('TestFuzzyNiemalsMatchen', r'\b(diesesRegexWirdNiemalsMatchen123ABC)\b', 75, # min_accuracy
     {'command_flags': re.IGNORECASE}),
 
-    # ('TestFuzzyAlways', r'\b(thisRegexWillAlwaysMatch)\b', 1, # min_accuracy{'command_flags': re.IGNORECASE}),
+    # ('TestFuzzyImmer', r'\b(diesesRegexWirdImmerMatchen)\b', 1, # min_accuracy{'command_flags': re.IGNORECASE}),
 
 
 
-    # EXAMPLE: Mentes paradigmáticas
+    # EXAMPLE: Paradigma Minds
 
-    ('pragmatic minds GmbH 2019', r'\b(paradigma Mentes)\b', 75, # min_accuracy
+    ('pragmatic minds GmbH 2019', r'\b(Paradigma Minds)\b', 75, # min_accuracy
     {'command_flags': re.IGNORECASE}),
 
 
