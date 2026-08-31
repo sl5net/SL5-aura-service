@@ -72,7 +72,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: viande
 
     ('gather meat',
-     r'^(viande|chasse|chasse|\w+ \w*a\w+fr|\w+ \w+a\w+fr|vestes|Oui|Oui bien|son avoir|viande|météo|lequel Amen|monter|volé|\w+\s\oser|nous avait)$',
+     r'^(viande|chasse|chasse|\w+ \w*a\w+fr|\w+ \w+a\w+fr|vestes|Oui|Oui bien|son avoir|viande|météo|lequel Amen|monter|volé|\w+\s\boser|nous avait)$',
      85,
      {
          'command_flags': re.IGNORECASE,

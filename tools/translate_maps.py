@@ -164,12 +164,15 @@ def translate_regex_pattern(pattern: str, target_lang: str) -> str:
         # Preserve Python variables in f-strings like {unterstrichen}
         if token.startswith("{") and token.endswith("}"):
             return token
+        # Preserve regex escape sequences like \b, \d, \s, \w, \A, \Z —
+        # must not be glued onto an adjacent word (see fix for "\boder" -> "boder" bug)
+        if token.startswith("\\"):
+            return token
         if token.lower() in PRESERVED_KEYWORDS or len(token) <= 1:
             return token
         return translate_text(token, target_lang)
 
-    return re.sub(r"\{[a-zA-Z0-9_]+}|[a-zA-ZäöüÄÖÜß]+", replace_token, pattern)
-
+    return re.sub(r"\{[a-zA-Z0-9_]+}|\\[a-zA-Z]|[a-zA-ZäöüÄÖÜß]+", replace_token, pattern)
 def process_line(line: str, target_lang: str) -> str:
     """Processes and translates a single line of a Python map file."""
     if "# EXAMPLE:" in line:
@@ -212,8 +215,19 @@ def translate_map_file(source_path: Path, target_path: Path, target_lang: str, f
 
         target_path.parent.mkdir(parents=True, exist_ok=True)
         final_content = HEADER_TEMPLATE + "\n".join(translated_lines) + "\n"
+
+        # Safety net: verify every raw-string regex pattern still compiles
+        # before writing a potentially broken map file to disk.
+        for m in re.finditer(r"r(['\"])((?:[^\\]|\\.)*?)\1", final_content):
+            try:
+                re.compile(m.group(2))
+            except re.error as e:
+                print(f"  [ERROR] Invalid regex produced for '{target_path.name}': {e} -> {m.group(2)!r}")
+                return False
+
         target_path.write_text(final_content, encoding="utf-8")
         return True
+    
     except Exception as e:
         print(f"Error translating '{source_path}': {e}")
         return False
