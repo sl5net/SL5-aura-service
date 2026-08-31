@@ -116,13 +116,14 @@ echo "--> Preparing requirements for macOS…"
 # The macOS equivalent, 'fswatch', is already installed via Homebrew.
 sed -i.bak '/inotify-tools/d' scripts/infra/requirements/requirements.txt
 echo "--> Installing Python requirements into the virtual environment…"
-if ! ./.venv/bin/pip install -r scripts/infra/requirements/requirements.txt; then
+
+if ! uv pip install --python .venv/bin/python -r scripts/infra/requirements/requirements.txt; then
     echo "ERROR: Failed to install requirements. Trying to fix other common version issues…"
-    # Example: Fix vosk version, then retry
     sed -i.bak 's/vosk==0.3.45/vosk/' scripts/infra/requirements/requirements.txt
-    # We run the command again after the potential fixes
-    ./.venv/bin/pip install -r scripts/infra/requirements/requirements.txt
+    uv pip install --python .venv/bin/python -r scripts/infra/requirements/requirements.txt
 fi
+
+
 # --- 4. Project Structure and Configuration ---
 echo "--> Setting up project directories and initial files…"
 python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
