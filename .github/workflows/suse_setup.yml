@@ -42,10 +42,10 @@ jobs:
           cat /etc/os-release || true
 
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Cache models and tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ./LanguageTool-6.6
@@ -64,7 +64,7 @@ jobs:
 
       - name: Package Assets as Artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: sl5-assets-pack-suse
           path: |
