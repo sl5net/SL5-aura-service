@@ -1,26 +1,35 @@
-# text_detected
+# DEFAULT_STRINGS['de'][0]
 Region erkannt: {Land} | Vorschlag: {default_primary}
 
-# text_help
-Wählen Sie den Sprachcode oder „n“ für den Terminalmodus (keine Sprachen).
+# DEFAULT_STRINGS['de'][1]
+Sprachcode wählen oder 'n' für Terminal-Modus (Keine Sprachen).
 
-# prompt_p
-Primäre Sprache (de, en... oder 'n' für Terminal-/GUI-only-Modus) – automatische Bestätigung in 8 Sekunden
+# DEFAULT_STRINGS['de'][2]
+Primäre Sprache (de, en… oder 'n' für nein, keine Sprache) - automatische Bestätigung in 8 Sekunden
 
-# prompt_s
-Sekundärsprache (oder standardmäßig „keine“) – automatische Bestätigung in 8 Sekunden
+# DEFAULT_STRINGS['de'][3]
+Sekundäre Sprache (oder 'none' Default) - automatische Bestätigung in 8 Sekunden
 
-# text_detected
+# DEFAULT_STRINGS['de'][4]
+Drücken Sie die Eingabetaste zur Bestätigung oder geben Sie einen anderen Sprachcode ein.
+
+# DEFAULT_STRINGS['en'][0]
 Region erkannt: {Land} | Vorgeschlagen: {default_primary}
 
-# text_help
+# DEFAULT_STRINGS['en'][1]
 Wählen Sie die Sprache aus oder geben Sie „n“ für „Terminal Mode (No Langs)“ ein.
 
-# prompt_p
+# DEFAULT_STRINGS['en'][2]
 Primäre Sprache (de, en usw. oder „n“) – automatische Bestätigung in 8 Sekunden
 
-# prompt_s
+# DEFAULT_STRINGS['en'][3]
 Sekundärsprache (oder „keine“) – automatische Bestätigung in 8 Sekunden
+
+# DEFAULT_STRINGS['en'][4]
+Drücken Sie zur Bestätigung die Eingabetaste oder geben Sie einen anderen Sprachcode ein.
+
+# sekundär
+keiner
 
 # sekundär
 keiner

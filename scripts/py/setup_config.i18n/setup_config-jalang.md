@@ -1,26 +1,35 @@
-# text_detected
-検出された地域: {国} |提案: {default_primary}
+# DEFAULT_STRINGS['de'][0]
+適切な地域: {country} |ヴォルシュラーク: {default_primary}
 
-# テキストヘルプ
-言語コードを選択するか、ターミナル モード (言語なし) の場合は「n」を選択します。
+# DEFAULT_STRINGS['de'][1]
+ターミナル モードのコードを変更します (Keine Sprachen)。
 
-# プロンプト_p
-第一言語 (de、en...、またはターミナル/GUI 専用モードの場合は「n」) – 8 秒以内に自動確認
+# DEFAULT_STRINGS['de'][2]
+Primäre Sprache (de, en… oder 'n' für nein, keine Sprache) - 8 Sekunden で自動化された Bestätigung
 
-# プロンプト_s
-第 2 言語 (またはデフォルトは「なし」) – 8 秒以内に自動確認
+# DEFAULT_STRINGS['de'][3]
+Sekundäre Sprache (または 'none' デフォルト) - 8 Sekunden での自動実行
 
-# text_detected
+# DEFAULT_STRINGS['de'][4]
+Drücken Sie die Eingabetaste zur Bestätigung oder geben Sie einen anderen Sprachcode ein.
+
+# DEFAULT_STRINGS['en'][0]
 検出された地域: {国} |推奨: {default_primary}
 
-# テキストヘルプ
+# DEFAULT_STRINGS['en'][1]
 言語を選択するか、ターミナル モード (言語なし) の場合は「n」と入力します。
 
-# プロンプト_p
+# DEFAULT_STRINGS['en'][2]
 プライマリ Lang (de、en など、または 'n') - 8 秒以内に自動確認
 
-# プロンプト_s
+# DEFAULT_STRINGS['en'][3]
 第二言語 (または「なし」) - 8 秒以内に自動確認されます
+
+# DEFAULT_STRINGS['en'][4]
+Enter を押して確定するか、別の言語コードを入力します。
+
+# セカンダリ
+なし
 
 # セカンダリ
 なし

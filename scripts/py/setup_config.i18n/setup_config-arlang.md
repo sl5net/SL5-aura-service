@@ -1,26 +1,35 @@
-#تم اكتشاف_النص
-المنطقة المكتشفة: {country} | الاقتراح: {default_primary}
+# DEFAULT_STRINGS[\'de'][0]
+ المنطقة الممكنة: {country} | فورشلاغ: {default_primary}
 
-                                                           #نص_مساعدة
-حدد رمز اللغة أو "n" للوضع الطرفي (بدون لغات).
+                                                  # DEFAULT_STRINGS[\'de'][1]
+           Sprachcode wählen oder \'n' für Terminal-Modus (Keine Sprachen).
 
-                                                                # موجه_ص
-اللغة الأساسية (de، en... أو \'n' للوضع الطرفي/واجهة المستخدم الرسومية فقط) - التأكيد التلقائي خلال 8 ثوانٍ
+                                                  # DEFAULT_STRINGS[\'de'][2]
+Primäre Sprache (de, en… oder \'n' für nein, keine Sprache) - تحديد تلقائي في 8 ثواني
 
-                                                                 # موجه_s
-اللغة الثانوية (أو الافتراضي "لا شيء") - التأكيد التلقائي خلال 8 ثوانٍ
+                                                  # DEFAULT_STRINGS[\'de'][3]
+Sekundäre Sprache (أو "لا شيء" افتراضي) - تحديد تلقائي في 8 ثواني
 
-                                                  #تم اكتشاف_النص
+                                                  # DEFAULT_STRINGS[\'de'][4]
+Drücken Sie the Eingabetaste zur Bestätigung or geben Sie anderen Sprachcode ein.
+
+                                                  # DEFAULT_STRINGS[\'en'][0]
 المنطقة المكتشفة: {country} | المقترح: {default_primary}
 
-                                                           #نص_مساعدة
+                                                  # DEFAULT_STRINGS[\'ar'][1]
 حدد اللغة أو اكتب "n" للوضع الطرفي (بدون لغات).
 
-                                                                # موجه_ص
+                                                  # DEFAULT_STRINGS[\'ar'][2]
 اللغة الأساسية (de، en، إلخ. أو \'n') - يتم التأكيد تلقائيًا خلال 8 ثوانٍ
 
-                                                                 # موجه_s
+                                                  # DEFAULT_STRINGS[\'ar'][3]
 اللغة الثانوية (أو "لا شيء") - يتم التأكيد تلقائيًا خلال 8 ثوانٍ
+
+                                                  # DEFAULT_STRINGS[\'ar'][4]
+اضغط على Enter للتأكيد، أو اكتب رمز لغة مختلفًا.
+
+                                                                  #ثانوي
+                                                                  لا أحد
 
                                                                   #ثانوي
                                                                   لا أحد
