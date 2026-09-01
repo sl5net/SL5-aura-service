@@ -4,7 +4,8 @@ on:
   push:
     branches: [ master, ci/manjaro-container-workflow ]
     paths-ignore:
-      - 'doc_sources/**'
+      - '.github/**'
+      - 'tools/**'
       - 'docs/**'
       - 'doc_sources/**'
       - 'scripts/infra/**'
@@ -13,6 +14,7 @@ on:
       - '**.rst'
       - '**.html'
       - '.github/workflows/deploy-docs.yml'
+
   pull_request:
     branches: [ master ]
     paths-ignore:
