@@ -49,7 +49,7 @@ Python_Tresor_Basis.apkg
 app.log
 conftest.py
 correct_text_by_languagetool
-heal_links_cascade.py
+# heal_links_cascade.py
 
 
 dictate.py

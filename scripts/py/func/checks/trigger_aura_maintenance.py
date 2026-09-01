@@ -26,8 +26,8 @@ LAST_CHECK_FILE = Path("/tmp/sl5_aura/last_smoke_zip_check")
 # radio_script = REPO_ROOT / "config/maps/plugins/z_fallback_llm/de-DE/radio_deep_dive.py"
 radio_script = REPO_ROOT / "config" / "maps" / "plugins" / "z_fallback_llm" / "de-DE" / "radio_deep_dive.py"
 translator_script = REPO_ROOT / "tools" / "translate_md.py"
-heal_links_cascade_script = REPO_ROOT / "heal_links_cascade.py"
-
+# heal_links_cascade_script = REPO_ROOT / "heal_links_cascade.py"
+heal_links_cascade_script = REPO_ROOT / "tools" / "replace" / "heal_links_cascade.py" 
 
 MAINTENANCE_TIMER = None
 
