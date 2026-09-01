@@ -89,20 +89,39 @@ fi
 #    done
 #}
 
+EXCLUDE_FILE_PAT='[^/]*(backup|draft)[^/]*$'
 
+# Before: 1.9.'26 11:51 Tue
+#ALL_FILES=$( (git ls-files "$PREFIX" && git ls-files --others --exclude-standard -- "$PREFIX") | grep -Ev "$EXCLUDE_PAT" || true )
 
-ALL_FILES=$( (git ls-files "$PREFIX" && git ls-files --others --exclude-standard -- "$PREFIX") | grep -Ev "$EXCLUDE_PAT" || true )
+get_matched_files() {
+  local target_prefix="$1"
+  (git ls-files "$target_prefix" && git ls-files --others --exclude-standard -- "$target_prefix") | grep -Ev "$EXCLUDE_PAT" || true
+}
 
-BACKUP_COUNT=0
+ALL_FILES=$(get_matched_files "$PREFIX")
+
+if [ -z "$ALL_FILES" ] && [ ! -e "$PREFIX" ] && [[ "$PREFIX" != *"*"* ]]; then
+  ALL_FILES=$(get_matched_files "$PREFIX*")
+fi
+
+if [ -z "$ALL_FILES" ]; then
+  echo "Hint: No files matched path prefix '$PREFIX'. Ensure it is a valid directory or pattern (e.g. '$PREFIX*')." >&2
+fi
+
+EXCLUDED_COUNT=0
+
 if [ -n "$ALL_FILES" ]; then
-  BACKUP_COUNT=$(printf '%s\n' "$ALL_FILES" | grep -iE '[^/]*backup[^/]*$' -c || true)
+  EXCLUDED_COUNT=$(printf '%s\n' "$ALL_FILES" | grep -iE "$EXCLUDE_FILE_PAT" -c || true)
 fi
 
-if [ "$BACKUP_COUNT" -gt 0 ]; then
-  echo "Excluded $BACKUP_COUNT backup file(s) from search." >&2
+if [ "$EXCLUDED_COUNT" -gt 0 ]; then
+  echo "Excluded $EXCLUDED_COUNT backup/draft file(s) from search." >&2
 fi
 
-TARGET_FILES=$( [ -n "$ALL_FILES" ] && printf '%s\n' "$ALL_FILES" | grep -viE '[^/]*backup[^/]*$' || true )
+TARGET_FILES=$( [ -n "$ALL_FILES" ] && printf '%s\n' "$ALL_FILES" | grep -viE "$EXCLUDE_FILE_PAT" || true )
+
+
 
 do_search() {
   local cur_pat="$1"
@@ -136,7 +155,7 @@ if [ "$count" -eq 0 ]; then
 fi
 
 
-if [ "$count" -gt 200 ] && [[ "$GREP_FLAGS" != *"-w"* && "$PATTERN" != *"\\b"* ]]; then
+if [ "$count" -gt 29 ] && [[ "$GREP_FLAGS" != *"-w"* && "$PATTERN" != *"\\b"* ]]; then
   REFINED_PATTERN="\\b${PATTERN}\\b"
 
 
@@ -156,7 +175,7 @@ if [ "$count" -gt 200 ] && [[ "$GREP_FLAGS" != *"-w"* && "$PATTERN" != *"\\b"* ]
 
 
 
-  echo "⚠️⚠️Results exceeded 200 lines. Automatically refining pattern with word boundaries: '$REFINED_PATTERN'..." >&2
+  echo "⚠️⚠️Results exceeded 29 lines. Automatically refining pattern with word boundaries: '$REFINED_PATTERN'..." >&2
 
 
 
@@ -171,10 +190,10 @@ if [ "$count" -gt 200 ] && [[ "$GREP_FLAGS" != *"-w"* && "$PATTERN" != *"\\b"* ]
 fi
 
 #echo 444444444444444444444444444444444444444444444
-if [ "$count" -gt 200 ]; then
+if [ "$count" -gt 29 ]; then
 #  echo 5555555555555555555555555555555555555
-  echo "Results still exceed 200 lines. Truncating output to top 200 matches:" >&2
-  echo "$matches" | head -n 200
+  echo "Results still exceed 29 lines. Truncating output to top 29 matches:" >&2
+  echo "$matches" | head -n 29
 else
   echo "count = $count" 
 #  echo 6666666666666666666666666666666666666666666666666666666666
