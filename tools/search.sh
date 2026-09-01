@@ -79,14 +79,44 @@ if [ "$INCLUDE_DOC_SOURCES" = "false" ]; then
   EXCLUDE_PAT="$EXCLUDE_PAT|doc_sources"
 fi
 
+# do_search() Version: 1.9.'26 10:58 Tue
+#do_search() {
+#  local cur_pat="$1"
+#  (git ls-files "$PREFIX" && git ls-files --others --exclude-standard -- "$PREFIX") | \
+#    grep -Ev "$EXCLUDE_PAT" | \
+#    while IFS= read -r f; do
+#      [ -f "$f" ] && grep $GREP_FLAGS -E "$cur_pat" "$f" 2>/dev/null || true
+#    done
+#}
+
+
+
+ALL_FILES=$( (git ls-files "$PREFIX" && git ls-files --others --exclude-standard -- "$PREFIX") | grep -Ev "$EXCLUDE_PAT" || true )
+
+BACKUP_COUNT=0
+if [ -n "$ALL_FILES" ]; then
+  BACKUP_COUNT=$(printf '%s\n' "$ALL_FILES" | grep -iE '[^/]*backup[^/]*$' -c || true)
+fi
+
+if [ "$BACKUP_COUNT" -gt 0 ]; then
+  echo "Excluded $BACKUP_COUNT backup file(s) from search." >&2
+fi
+
+TARGET_FILES=$( [ -n "$ALL_FILES" ] && printf '%s\n' "$ALL_FILES" | grep -viE '[^/]*backup[^/]*$' || true )
+
 do_search() {
   local cur_pat="$1"
-  (git ls-files "$PREFIX" && git ls-files --others --exclude-standard -- "$PREFIX") | \
-    grep -Ev "$EXCLUDE_PAT" | \
+  printf '%s\n' "$TARGET_FILES" | \
     while IFS= read -r f; do
-      [ -f "$f" ] && grep $GREP_FLAGS -E "$cur_pat" "$f" 2>/dev/null || true
+      [ -n "$f" ] && [ -f "$f" ] && grep $GREP_FLAGS -E "$cur_pat" "$f" 2>/dev/null || true
     done
 }
+
+
+
+
+
+
 
 if [ "$ignore_comments" = "true" ]; then  
   matches=$(do_search "$PATTERN" \
