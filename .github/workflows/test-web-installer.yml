@@ -31,6 +31,8 @@ jobs:
       - name: Execute web installer on Linux / macOS
         if: runner.os != 'Windows'
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
         run: |
           START_TS=$(date +%s)
           AURA_BRANCH="${{ github.head_ref || github.ref_name }}" cat web_install.sh | AURA_BRANCH="${{ github.head_ref || github.ref_name }}" bash -s -- --non-interactive
@@ -58,6 +60,8 @@ jobs:
       - name: Execute web installer on Windows
         if: runner.os == 'Windows'
         shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
         run: |
           $startTs = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
           $env:AURA_BRANCH = "${{ github.head_ref || github.ref_name }}"

@@ -1,5 +1,5 @@
 # config/maps/plugins/standard_actions/language_translator/de-DE/FUZZY_MAP_pre.py
-import re
+import re # noqa: F401
 from pathlib import Path
 
 # This map uses a hybrid approach:
