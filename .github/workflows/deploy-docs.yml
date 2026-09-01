@@ -54,6 +54,7 @@ jobs:
           python generate_docs.py
           python generate_docs_index.py
           python -m sphinx -b html . _build/html
+          python generate_algolia_records.py          
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
