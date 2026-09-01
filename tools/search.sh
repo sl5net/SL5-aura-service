@@ -72,7 +72,7 @@ PREFIX="${2:-.}"
 clear
 #echo "tools/search.sh '$PATTERN' # flags='$GREP_FLAGS' prefix='$PREFIX'" >&2
 
-echo "tools/search.sh '$PATTERN' # flags='$GREP_FLAGS' prefix='$PREFIX' [help: -h]"  include_doc_sources='$INCLUDE_DOC_SOURCES'" >&2
+echo "tools/search.sh '$PATTERN' # flags='$GREP_FLAGS' prefix='$PREFIX' [help: -h]  include_doc_sources='$INCLUDE_DOC_SOURCES'" >&2
 
 EXCLUDE_PAT="\.i18n|/__pycache__/|/\.venv/|/venv/"
 if [ "$INCLUDE_DOC_SOURCES" = "false" ]; then

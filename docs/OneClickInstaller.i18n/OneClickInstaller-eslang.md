@@ -19,16 +19,25 @@ Ponga **Aura** en funcionamiento en su máquina con un solo clic. No se requiere
 Ahorra ~30 segundos de manejo manual de archivos y se inicia inmediatamente en tu terminal:
 
 **Linux y macOS:**
-
+#### Web de una sola línea CodeBerg
+```bash
+curl -sSL https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | bash
+```
+o
+#### Web de una sola línea GitHub
 ```bash
 curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
 ```
 
 **Windows (PowerShell):**
+#### Web de una sola línea CodeBerg
+# no probado: utilice el método 2 (binario independiente) para Windows
 ```bash
-
-# In development - please use Method 2 (standalone binary) for Windows
-
+irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
+```
+o
+#### Web de una sola línea github
+```bash
 irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
 ```
 

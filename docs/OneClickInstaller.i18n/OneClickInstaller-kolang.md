@@ -6,7 +6,7 @@
 
 ## 전제 조건 없음
 
-다음은 필요하지 **않습니다**
+다음은 필요하지 **않습니다**:
 - Python이 사전 설치되어 있음
 - Git 또는 코드 저장소
 - 명령줄 또는 터미널 경험
@@ -19,16 +19,25 @@
 수동 파일 처리 시간을 최대 30초 절약하고 터미널에서 즉시 시작합니다.
 
 **리눅스 및 macOS:**
-
+#### 웹 원라이너 CodeBerg
+```bash
+curl -sSL https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | bash
+```
+또는
+#### 웹 원라이너 GitHub
 ```bash
 curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
 ```
 
 **윈도우(파워셸):**
+#### 웹 원라이너 CodeBerg
+# 테스트되지 않음 - Windows용 방법 2(독립형 바이너리)를 사용하세요.
 ```bash
-
-# In development - please use Method 2 (standalone binary) for Windows
-
+irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
+```
+또는
+#### 웹 원라이너 github
+```bash
 irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
 ```
 

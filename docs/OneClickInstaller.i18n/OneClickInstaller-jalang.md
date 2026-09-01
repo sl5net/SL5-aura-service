@@ -19,16 +19,25 @@
 手動でのファイル処理を最大 30 秒節約し、端末ですぐに開始できます。
 
 **Linux および macOS:**
-
+#### Web ワンライナー CodeBerg
+```bash
+curl -sSL https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | bash
+```
+または
+#### Web ワンライナー GitHub
 ```bash
 curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
 ```
 
 **Windows (PowerShell):**
+#### Web ワンライナー CodeBerg
+# テストされていません - Windows の場合は方法 2 (スタンドアロン バイナリ) を使用してください
 ```bash
-
-# In development - please use Method 2 (standalone binary) for Windows
-
+irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
+```
+または
+#### Web ワンライナー github
+```bash
 irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
 ```
 

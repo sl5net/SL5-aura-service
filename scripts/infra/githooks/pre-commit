@@ -95,13 +95,14 @@ SCRIPT_DIR="$(git rev-parse --show-toplevel)/scripts/sh"
 bash "$SCRIPT_DIR/check_translator_hijack.sh" || exit 1
 
 
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # 1. QUALITY CHECK (Flake8)
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 echo "Running ruff auto-fix..."
 if [ -f .venv/bin/ruff ]; then
-  .venv/bin/ruff check --fix ./aura_engine.py ./scripts ./config 2>/dev/null || true
+  # .venv/bin/ruff check --fix ./aura_engine.py ./scripts ./config 2>/dev/null || true
+  .venv/bin/ruff check --fix --config scripts/infra/config/ruff.toml ./aura_engine.py ./scripts ./config 2>/dev/null || true
 fi
 
 # In pre-commit, nach ruff:

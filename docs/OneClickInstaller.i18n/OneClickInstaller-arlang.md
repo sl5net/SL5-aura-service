@@ -19,16 +19,25 @@
 يوفر ما يقرب من 30 ثانية من المعالجة اليدوية للملفات ويبدأ فورًا في جهازك الطرفي:
 
                                                    **لينوكس وماك:**
-
+                                                  #### Web One-Liner CodeBerg
+```bash
+curl -sSL https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | bash
+```
+                                                                         أو
+                                   #### الويب أحادي الخط GitHub
 ```bash
 curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
 ```
 
                                            **ويندوز (باورشيل):**
+                                                  #### Web One-Liner CodeBerg
+# لم يتم اختباره - يرجى استخدام الطريقة الثانية (الثنائية المستقلة) لنظام التشغيل Windows
 ```bash
-
-# In development - please use Method 2 (standalone binary) for Windows
-
+irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
+```
+                                                                         أو
+                                     #### جيثب ويب أحادي الخط
+```bash
 irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
 ```
 

@@ -19,11 +19,19 @@ Uruchom **Aurę** na swoim komputerze jednym kliknięciem. Nie jest wymagana ża
 Oszczędza ~30 sekund ręcznej obsługi plików i uruchamia się natychmiast w terminalu:
 
 **Linux i macOS:**
-
+#### Jednoliniowy kod internetowy CodeBerg
 __KOD_BLOKU_0__
+Lub
+#### Internetowy serwis GitHub
+__KOD_BLOKU_1__
 
 **Windows (PowerShell):**
-__KOD_BLOKU_1__
+#### Jednoliniowy kod internetowy CodeBerg
+# nie testowano — użyj metody 2 (samodzielny plik binarny) dla systemu Windows
+__KOD_BLOKU_2__
+Lub
+#### GitHub o jednej linijce internetowej
+__KOD_BLOKU_3__
 
 Metoda 2: Samodzielny plik binarny (kliknięcie w systemie Windows i na komputerze)
 
@@ -59,13 +67,12 @@ Po uruchomieniu instalatora Aura automatycznie:
 
 - **Czas instalacji:** Około 2–3 minuty.
 - **Wymagane miejsce na dysku:** Minimum ~1,5 GB (do 2,5 GB w zależności od wybranych modeli językowych).
-- **Katalog instalacyjny:**
+
 - **Linux i macOS:** `~/opt/sl5-aura-service`
-- **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
 
----
 
-## Następne kroki
 
-- **Tryb babci:** Wpisz pojedyncze słowo do pliku reguł i zobacz, jak Aura automatycznie tworzy reguły.
-- **Ucz się z Koansem:** Poznaj szczegółowe koncepcje w [Getting Started](../GettingStarted.i18n/GettingStarted-pllang.md).
+
+
+
+- **Tryb Babci:** Wpisz jedno słowo do pliku reguł i zobacz, jak Aura automatycznie tworzy reguły.
