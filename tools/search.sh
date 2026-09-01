@@ -89,7 +89,7 @@ fi
 #    done
 #}
 
-EXCLUDE_FILE_PAT='[^/]*(backup|draft)[^/]*$'
+EXCLUDE_FILE_PAT='[^/]*(backup|BACKUP|draft)'
 
 # Before: 1.9.'26 11:51 Tue
 #ALL_FILES=$( (git ls-files "$PREFIX" && git ls-files --others --exclude-standard -- "$PREFIX") | grep -Ev "$EXCLUDE_PAT" || true )
