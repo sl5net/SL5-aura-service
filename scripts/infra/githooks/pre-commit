@@ -173,14 +173,7 @@ if [ $FLAKE8_EXIT_CODE -ne 0 ]; then
   exit 1
 fi
 
-
 echo "✅ flake8 check passed. ✅"
-
-
-
-
-
-
 
 changed=0
 # helper: safe iterator over staged filenames matching a suffix
