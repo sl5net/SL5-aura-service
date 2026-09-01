@@ -107,6 +107,9 @@ def _translate(text: str, project_root: Path) -> str | None:
 
 def _find_config(start: Path) -> Path | None:
     for parent in [start, *start.parents]:
+        infra_candidate = parent / "scripts" / "infra" / "config" / ".slop.toml"
+        if infra_candidate.exists():
+            return infra_candidate
         candidate = parent / ".slop.toml"
         if candidate.exists():
             return candidate

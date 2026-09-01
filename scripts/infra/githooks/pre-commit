@@ -154,7 +154,7 @@ echo "✅ check_slop_comments passed. ✅"
 #  exit 1
 #fi
 
-FLAKE8_OUTPUT=$(./.venv/bin/flake8 --config scripts/infra/.flake8 ./aura_engine.py ./scripts ./config 2>&1)
+FLAKE8_OUTPUT=$(./.venv/bin/flake8 --config scripts/infra/config/.flake8 ./aura_engine.py ./scripts ./config 2>&1)
 FLAKE8_EXIT_CODE=$?
 
 # Abort commit if flake8 finds errors
