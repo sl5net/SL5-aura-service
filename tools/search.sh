@@ -198,6 +198,10 @@ else
   echo "count = $count" 
 #  echo 6666666666666666666666666666666666666666666666666666666666
   echo "$matches"
+  if [ "$count" -eq 1 ]; then
+    match_file=$(echo "$matches" | cut -d: -f1)
+    echo "grep -n -C 5 \"$PATTERN\" '$match_file'"
+  fi
 fi
 echo '___________________________________________'
 
