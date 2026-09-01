@@ -4,21 +4,26 @@ on:
   push:
     branches: [ master, ci/container-dotool-test ]
     paths-ignore:
-      - 'doc_sources/**'
+      - '.github/**'
+      - 'tools/**'
       - 'docs/**'
+      - 'doc_sources/**'
+      - 'scripts/infra/**'
       - '**.md'
+      - '.gitignore'
       - '**.rst'
       - '**.html'
       - '.github/workflows/deploy-docs.yml'
   pull_request:
     branches: [ master ]
     paths-ignore:
-      - 'doc_sources/**'
+      - '.github/**'
+      - 'tools/**'
       - 'docs/**'
+      - 'doc_sources/**'
+      - 'scripts/infra/**'
       - '**.md'
-      - '**.rst'
-      - '**.html'
-      - '.github/workflows/deploy-docs.yml'
+      - '.gitignore'
   workflow_dispatch:
     
     

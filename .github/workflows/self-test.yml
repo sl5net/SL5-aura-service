@@ -4,15 +4,22 @@ on:
   push:
     branches: [ master, '**self-test**', feat/cache-write-only-on-maps_changed ]
     paths-ignore:
-      - 'doc_sources/**'
+      - '.github/**'
+      - 'tools/**'
       - 'docs/**'
+      - 'doc_sources/**'
+      - 'scripts/infra/**'
       - '**.md'
       - '**.rst'
       - '**.html'
       - '.github/workflows/deploy-docs.yml'
+      - '.gitignore'
   pull_request:
     branches: [ master ]
     paths-ignore:
+      - '.github/**'
+      - 'tools/**'
+      - 'docs/**'
       - 'doc_sources/**'
       - 'docs/**'
       - '.github/workflows/**'
@@ -21,6 +28,9 @@ on:
       - '**.rst'
       - '**.html'
       - '.github/workflows/deploy-docs.yml'
+      - '.gitignore'
+      - '.flake8'
+      - '.slop.toml'
   workflow_dispatch:
 
 concurrency:
