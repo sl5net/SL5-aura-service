@@ -154,7 +154,8 @@ jobs:
         run: |
           brew install unix2dos 2>/dev/null || true
           mkdir -p .git/hooks
-          cp scripts/infra/githooks/pre-commit_BACKUP .git/hooks/pre-commit
+          #cp scripts/infra/githooks/pre-commit_BACKUP .git/hooks/pre-commit
+          cp scripts/infra/githooks/pre-commit_BACKUP scripts/infra/githooks/pre-commit
           bash ./scripts/infra/githooks/pre-commit_BACKUP
           echo "pre-commit hook passed"
 
