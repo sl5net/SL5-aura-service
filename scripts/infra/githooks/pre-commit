@@ -144,14 +144,34 @@ echo "✅ check_slop_comments passed. ✅"
 
 # Run flake8 on specific directories
 # flake8 ./aura_engine.py ./scripts ./config
-./.venv/bin/flake8 ./aura_engine.py ./scripts ./config
+#./.venv/bin/flake8 --config scripts/infra/.flake8 ./aura_engine.py ./scripts ./config
+# Abort commit if flake8 finds errors
+
+# following works pretty good and is good fallback if you have problem with others 1.9.'26 10:46 Tue
+#if [ $? -ne 0 ]; then
+#  echo "🚨🚨🚨 COMMIT REJECTED: flake8 found issues. May use noqa: "
+#  echo "# noqa: "
+#  exit 1
+#fi
+
+FLAKE8_OUTPUT=$(./.venv/bin/flake8 --config scripts/infra/.flake8 ./aura_engine.py ./scripts ./config 2>&1)
+FLAKE8_EXIT_CODE=$?
 
 # Abort commit if flake8 finds errors
-if [ $? -ne 0 ]; then
+if [ $FLAKE8_EXIT_CODE -ne 0 ]; then
+  echo "$FLAKE8_OUTPUT"
   echo "🚨🚨🚨 COMMIT REJECTED: flake8 found issues. May use noqa: "
-  echo "# noqa: "
+  FLAKE8_CODES=$(echo "$FLAKE8_OUTPUT" | grep -oE ':[0-9]+:[0-9]+: [A-Z]+[0-9]+' | awk '{print $2}' | sort -u)
+  if [ -n "$FLAKE8_CODES" ]; then
+    for code in $FLAKE8_CODES; do
+      echo "# noqa: $code"
+    done
+  else
+    echo "# noqa: "
+  fi
   exit 1
 fi
+
 
 echo "✅ flake8 check passed. ✅"
 

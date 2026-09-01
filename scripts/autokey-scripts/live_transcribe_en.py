@@ -1,4 +1,4 @@
-# file: scripts/autokey-scripts/live_transcribe_en.py
+# scripts/autokey-scripts/live_transcribe_en.py
 intertingDontDeleteIt = """
 pkill -f aura_engine.py
 pgrep -f aura_engine.py
@@ -37,5 +37,6 @@ write_to_file(VOSK_MODEL_FILE, new_model)
 system.exec_command(f"notify-send 'Modell: ' '{new_model}' -t 2000")
 
 # Das live_transcribe Skript aufrufen. Eine Verzögerung ist nicht mehr nötig.
-engine.run_script("live_transcribe")
+engine.run_script("live_transcribe") # noqa: F821
+
 
