@@ -19,6 +19,8 @@ This spotlight highlights the interactive rule-searching and execution system, b
 
 ![Interactive Rule Search Console](./assets/interactive_rule_search_20260814.png)
 
-![Video: How to Close Search Console](https://youtu.be/to_CgOv_WWY)
+[Video: How to Close Search Console](https://youtu.be/to_CgOv_WWY)
+
+
 
 
