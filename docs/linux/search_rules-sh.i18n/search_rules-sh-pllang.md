@@ -18,7 +18,7 @@ Przykładowe użycie:
 - ./search_rules.sh ./docs używa podanej ścieżki
 - MAPS_DIR=/env/maps ./search_rules.sh
 
-Zachowuje to kompatybilność wsteczną, jednocześnie czyniąc konfigurację jawną.
+Zachowuje to kompatybilność wsteczną, jednocześnie określając konfigurację.
 
 Istnieje również wersja na komputer z systemem Windows (w tym folderze), która potrafi nieco mniej: search_rules.ps1
 
