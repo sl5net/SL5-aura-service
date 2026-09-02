@@ -1,18 +1,3 @@
-# DEFAULT_STRINGS['de'][0]
-Region erkannt: {country} | Vorschlag: {default_primary}
-
-# DEFAULT_STRINGS['de'][1]
-Sprachcode wählen oder 'n' für Terminal-Modus (Keine Sprachen).
-
-# DEFAULT_STRINGS['de'][2]
-Primäre Sprache (de, en… oder 'n' für nein, keine Sprache) - automatische Bestätigung in 8 Sekunden
-
-# DEFAULT_STRINGS['de'][3]
-Sekundäre Sprache (oder 'none' Default) - automatische Bestätigung in 8 Sekunden
-
-# DEFAULT_STRINGS['de'][4]
-Drücken Sie die Eingabetaste zur Bestätigung oder geben Sie einen anderen Sprachcode ein.
-
 # DEFAULT_STRINGS['en'][0]
 Region detected: {country} | Suggested: {default_primary}
 
@@ -27,6 +12,9 @@ Secondary Language (or 'none') - auto-confirms in 8s
 
 # DEFAULT_STRINGS['en'][4]
 Press Enter to confirm, or type a different language code.
+
+# DEFAULT_STRINGS['en'][5]
+Enable autostart on system boot? (y/n) - auto-confirms in 8s
 
 # secondary
 none

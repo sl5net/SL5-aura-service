@@ -27,26 +27,21 @@ STRING_KEYS = [
     "text_help",         # short help line under it
     "prompt_primary",    # "primary language" prompt
     "prompt_secondary",  # "secondary language" prompt
-    "enter_hint",        # "press enter to confirm…" hint
+    "enter_hint",        # "press enter to confirm" hint
+    "prompt_autostart",  # autostart setup prompt
 ]
 
 # Built-in fallback strings. These are used whenever no matching .md file
 # exists, or a .md file doesn't provide enough lines. They also double as
 # the reference/template content for translators.
 DEFAULT_STRINGS = {
-    "de": [
-        "Region erkannt: {country} | Vorschlag: {default_primary}",
-        "Sprachcode wählen oder 'n' für Terminal-Modus (Keine Sprachen).",
-        "Primäre Sprache (de, en… oder 'n' für nein, keine Sprache) - automatische Bestätigung in 8 Sekunden",
-        "Sekundäre Sprache (oder 'none' Default) - automatische Bestätigung in 8 Sekunden",
-        "Drücken Sie die Eingabetaste zur Bestätigung oder geben Sie einen anderen Sprachcode ein.",
-    ],
     "en": [
         "Region detected: {country} | Suggested: {default_primary}",
         "Select language or type 'n' for Terminal Mode (No Langs).",
         "Primary Lang (de, en, etc. or 'n') - auto-confirms in 8s",
         "Secondary Language (or 'none') - auto-confirms in 8s",
         "Press Enter to confirm, or type a different language code.",
+        "Enable autostart on system boot? (y/n) - auto-confirms in 8s",
     ],
 }
 
@@ -265,7 +260,8 @@ def run_i18n_test(argv):
     if "--i18n-langs" in argv:
         found = list_available_i18n_langs()
         print("Available i18n languages (from *.md files):", file=sys.stderr)
-        print(", ".join(found) if found else "(none found - only built-in 'de'/'en' fallback exist)", file=sys.stderr)
+        # print(", ".join(found) if found else "(none found - only built-in 'de'/'en' fallback exists)", file=sys.stderr)
+        print(", ".join(found) if found else "(none found - only built-in 'en' fallback exists)", file=sys.stderr)
         return True
 
     if "--i18n-test" in argv:
@@ -504,10 +500,36 @@ def delete_non_primary_md(info, primary):
             skipped.append((f, 'no suffix — assumed primary english'))
     return deleted, skipped
 
+def setup_linux_autostart(repo_root):
+    autostart_dir = os.path.expanduser("~/.config/autostart")
+    desktop_file = os.path.join(autostart_dir, "aura_engine.desktop")
+    script_path = os.path.join(repo_root, "scripts", "restart_venv_and_run-server.sh")
+    log_path = os.path.join(repo_root, "aura_engine.log")
+    try:
+        os.makedirs(autostart_dir, exist_ok=True)
+        content = (
+            "[Desktop Entry]\n"
+            "Type=Application\n"
+            "Name=aura_engine\n"
+            "Comment=Start SL5 Aura Service in background\n"
+            f"Exec=bash -c 'if [ -f /tmp/sl5_aura/sl5net_aura_project_root ]; then exit 0; else mkdir -p /tmp/sl5_aura && touch /tmp/sl5_aura/sl5net_aura_project_root; \"{script_path}\" >> \"{log_path}\" 2>&1; fi'\n"
+            "Icon=text-x-script\n"
+            "Terminal=false\n"
+            "StartupNotify=false\n"
+            "X-GNOME-Autostart-enabled=true\n"
+        )
+        with open(desktop_file, "w", encoding="utf-8") as f:
+            f.write(content)
+        os.chmod(desktop_file, 0o755)
+        print(f"[OK] Autostart desktop file written to {desktop_file}", file=sys.stderr)
+    except Exception as e:
+        print(f"[WARN] Failed to create autostart entry: {e}", file=sys.stderr)
+
 
 # ---------------------------
 # Main flow
 # ---------------------------
+
 country = get_country()
 default_primary = os.environ.get("SELECTED_LANG") or ("de" if is_non_interactive() else detect_default_lang(country))
 strings, i18n_source = get_strings(default_primary, country=country, default_primary=default_primary)
@@ -598,6 +620,12 @@ if info['docs_exists'] or info['doc_sources_exists']:
                         print(f"  - {s[0]}: {s[1]}", file=sys.stderr)
                     else:
                         print(f"  - {s}", file=sys.stderr)
+
 else:
     print("No docs or doc_sources folders detected; nothing to delete.", file=sys.stderr)
-# End
+
+if sys.platform.startswith("linux"):
+    prompt_auto = strings.get("prompt_autostart", "Enable autostart on system boot? (y/n)")
+    ans_autostart = timed_input(prompt_auto, "y", timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled).strip().lower()
+    if ans_autostart in ("y", "yes", "1"):
+        setup_linux_autostart(repo_root)
