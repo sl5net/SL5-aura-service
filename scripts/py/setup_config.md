@@ -16,12 +16,3 @@ Press Enter to confirm, or type a different language code.
 # DEFAULT_STRINGS['en'][5]
 Enable autostart on system boot? (y/n) - auto-confirms in 8s
 
-# secondary
-none
-
-# secondary
-none
-
-# excludes_str
-all
-

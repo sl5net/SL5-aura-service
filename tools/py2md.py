@@ -20,6 +20,8 @@ def is_translatable(var_name, text):
 
 def is_translatable(var_name, text):
     t = text.strip()
+    if " " not in t:
+        return False
     if len(t) <= 2:
         return False
     if "_" in t and " " not in t:
@@ -98,13 +100,21 @@ def write_md(py_path, translations):
 
     # sort line numbers
     translations.sort(key=lambda x: x[0])
+    new_content = "".join(f"# {var_name}\n{text}\n\n" for _, var_name, text in translations)
+
+    if os.path.isfile(md_path):
+        try:
+            with open(md_path, "r", encoding="utf-8") as f:
+                existing_content = f.read()
+            if existing_content == new_content:
+                print(f"unchanged ({len(translations)} strings found, skipped write): {md_path}")
+                return
+        except Exception:
+            pass
 
     with open(md_path, "w", encoding="utf-8") as f:
-        for _, var_name, text in translations:
-            f.write(f"# {var_name}\n{text}\n\n")
-
-    print(f"created ({len(translations)} strings found): {md_path}")
-
+        f.write(new_content)
+    print(f"written ({len(translations)} strings found): {md_path}")
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("use: python py2md.py <pfad_zu_py_datei>")
