@@ -32,6 +32,7 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
         run: |
           START_TS=$(date +%s)
@@ -61,6 +62,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
         run: |
           $startTs = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
