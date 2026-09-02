@@ -523,8 +523,66 @@ def setup_linux_autostart(repo_root):
         os.chmod(desktop_file, 0o755)
         print(f"[OK] Autostart desktop file written to {desktop_file}", file=sys.stderr)
     except Exception as e:
-        print(f"[WARN] Failed to create autostart entry: {e}", file=sys.stderr)
+        print(f"[WARN] Failed to create Linux autostart entry: {e}", file=sys.stderr)
 
+
+def setup_macos_autostart(repo_root):
+    agents_dir = os.path.expanduser("~/Library/LaunchAgents")
+    plist_file = os.path.join(agents_dir, "com.sl5net.aura.plist")
+    script_path = os.path.join(repo_root, "scripts", "restart_venv_and_run-server.sh")
+    log_path = os.path.join(repo_root, "aura_engine.log")
+    try:
+        os.makedirs(agents_dir, exist_ok=True)
+        content = (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n'
+            '<plist version="1.0">\n'
+            '<dict>\n'
+            '    <key>Label</key>\n'
+            '    <string>com.sl5net.aura</string>\n'
+            '    <key>ProgramArguments</key>\n'
+            '    <array>\n'
+            '        <string>/bin/bash</string>\n'
+            f'        <string>{script_path}</string>\n'
+            '    </array>\n'
+            '    <key>WorkingDirectory</key>\n'
+            f'    <string>{repo_root}</string>\n'
+            '    <key>RunAtLoad</key>\n'
+            '    <true/>\n'
+            '    <key>StandardOutPath</key>\n'
+            f'    <string>{log_path}</string>\n'
+            '    <key>StandardErrorPath</key>\n'
+            f'    <string>{log_path}</string>\n'
+            '</dict>\n'
+            '</plist>\n'
+        )
+        with open(plist_file, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"[OK] macOS LaunchAgent written to {plist_file}", file=sys.stderr)
+    except Exception as e:
+        print(f"[WARN] Failed to create macOS autostart entry: {e}", file=sys.stderr)
+
+
+def setup_windows_autostart(repo_root):
+    appdata = os.environ.get("APPDATA")
+    if not appdata:
+        print("[WARN] APPDATA environment variable not found.", file=sys.stderr)
+        return
+    startup_dir = os.path.join(appdata, "Microsoft", "Windows", "Start Menu", "Programs", "Startup")
+    bat_file = os.path.join(startup_dir, "aura_engine.bat")
+    target_bat = os.path.join(repo_root, "start_aura.bat")
+    try:
+        os.makedirs(startup_dir, exist_ok=True)
+        content = (
+            "@echo off\n"
+            f'cd /d "{repo_root}"\n'
+            f'call "{target_bat}"\n'
+        )
+        with open(bat_file, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"[OK] Windows autostart batch file written to {bat_file}", file=sys.stderr)
+    except Exception as e:
+        print(f"[WARN] Failed to create Windows autostart entry: {e}", file=sys.stderr)
 
 # ---------------------------
 # Main flow
@@ -624,8 +682,12 @@ if info['docs_exists'] or info['doc_sources_exists']:
 else:
     print("No docs or doc_sources folders detected; nothing to delete.", file=sys.stderr)
 
-if sys.platform.startswith("linux"):
-    prompt_auto = strings.get("prompt_autostart", "Enable autostart on system boot? (y/n)")
-    ans_autostart = timed_input(prompt_auto, "y", timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled).strip().lower()
-    if ans_autostart in ("y", "yes", "1"):
+prompt_auto = strings.get("prompt_autostart", "Enable autostart on system boot? (y/n)")
+ans_autostart = timed_input(prompt_auto, "y", timeout=auto_timeout_seconds, enable_timeout=auto_timeout_enabled).strip().lower()
+if ans_autostart in ("y", "yes", "1"):
+    if sys.platform == "darwin":
+        setup_macos_autostart(repo_root)
+    elif os.name == "nt" or sys.platform in ("win32", "cygwin"):
+        setup_windows_autostart(repo_root)
+    elif sys.platform.startswith("linux"):
         setup_linux_autostart(repo_root)
