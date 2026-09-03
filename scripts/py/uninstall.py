@@ -28,10 +28,10 @@ DEFAULT_STRINGS = {
     "en": [
         "Are you sure you want to uninstall SL5 Aura? (y/N)",
         "Keep custom maps and user configurations in 'config/maps/'? (Y/n)",
-        "Stopping running Aura processes...",
-        "Removing autostart configurations...",
+        "Stopping running Aura processes…",
+        "Removing autostart configurations…",
         "Backup of custom maps created at: {backup_path}",
-        "Removing application files and virtual environments...",
+        "Removing application files and virtual environments…",
         "SL5 Aura has been successfully uninstalled.",
         "Uninstallation cancelled by user.",
     ],
