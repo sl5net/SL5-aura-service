@@ -42,6 +42,16 @@ One-liner command or standalone installer for Linux, macOS, and Windows:
 3. Start Aura: `./scripts/restart_venv_and_run-server.sh`
 4. Press your hotkey and speak — **[full guide →](docs/GettingStarted.md)**
 
+---
+
+### Uninstallation
+To remove SL5 Aura background services, autostart entries, and virtual environments:
+- **Linux / macOS:** `bash setup/uninstall.sh`
+- **Windows (PowerShell):** `powershell -File setup/uninstall.ps1`
+*(Your custom rules in `config/maps/` are kept safe by default unless you specify `--purge`).*
+
+---
+
 
 **⚠️ System Requirements & Compatibility**
 

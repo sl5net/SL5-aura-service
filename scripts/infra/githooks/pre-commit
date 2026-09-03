@@ -118,17 +118,9 @@ if [ -n "$staged" ]; then
     --exit-zero  # blockiert NIE den commit, nur Ausgabe
 fi
 
-if [ -n "$staged" ]; then
-.venv/bin/pyright $staged --outputjson | python3 -c "import json,sys; d=json.load(sys.stdin); errs=[x for x in d['generalDiagnostics'] if x['rule']=='reportPossiblyUnboundVariable']; [print(f"{e['file']}:{e['range']['start']['line']+1} {e['message']}") for e in errs]; sys.exit(0)"
-fi
-
-
 echo "Running flake8 code quality check..."
-
-if false && [ -n "$staged" ]; then
-#if [ -n "$staged" ]; then
+if [ -x .venv/bin/pyright ] && [ -n "$staged" ]; then
   echo "Running pyright (possibly-unbound check)..."
-#  pyright_output=$(.venv/bin/pyright $staged --outputjson)
   pyright_output=$(.venv/bin/pyright --project scripts/infra/config/pyrightconfig.json $staged --outputjson)
   unbound_count=$(echo "$pyright_output" | python3 -m scripts.py.func.checks.pyright_unbound_report)
   if [ "$unbound_count" -gt 0 ]; then
