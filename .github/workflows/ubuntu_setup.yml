@@ -6,7 +6,7 @@ name: CI for ubuntu Setup
 
 on:
   push:
-    branches: [ master, feat/setup-cudatext-disk-wins-plugin, ci-test/setup-cudatext-disk-wins-plugin, ci-test/setup-cudatext-disk-wins-plugin2 ]
+    #branches: [ master, feat/setup-cudatext-disk-wins-plugin, ci-test/setup-cudatext-disk-wins-plugin, ci-test/setup-cudatext-disk-wins-plugin2 ]
     paths:
       - 'setup/**'
       - 'scripts/infra/requirements/requirements.txt'
