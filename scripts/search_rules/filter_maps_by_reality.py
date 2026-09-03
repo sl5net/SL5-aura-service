@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-from scripts.py.func.guess_lt_language_from_model import guess_lt_language_from_model
+from scripts.py.func.get_current_language import get_current_language
 
 # --- PATH LOGIC (cross-platform) ---
 tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
@@ -32,14 +32,13 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def get_current_language():
-    model_file = SL5NET_AURA_PROJECT_ROOT / "config" / "model_name.txt"
-    if not model_file.exists():
-        logger.warning("model_name.txt not found, defaulting to de-DE")
-        return "de-DE"
-    model_name = model_file.read_text(encoding="utf-8").strip()
-    return guess_lt_language_from_model(model_name)
-
+# def get_current_language():
+#     model_file = SL5NET_AURA_PROJECT_ROOT / "config" / "model_name.txt"
+#     if not model_file.exists():
+#         logger.warning("model_name.txt not found, defaulting to de-DE")
+#         return "de-DE"
+#     model_name = model_file.read_text(encoding="utf-8").strip()
+#     return guess_lt_language_from_model(model_name)
 
 def get_compiled_regex(pattern):
     try:
