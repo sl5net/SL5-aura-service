@@ -6,7 +6,7 @@ name: CI for ubuntu Setup
 
 on:
   push:
-    branches: [ master, feat/setup-cudatext-disk-wins-plugin, ci-test/setup-cudatext-disk-wins-plugin, ci-test/setup-cudatext-disk-wins-plugin2 ]
+    #branches: [ master, feat/setup-cudatext-disk-wins-plugin, ci-test/setup-cudatext-disk-wins-plugin, ci-test/setup-cudatext-disk-wins-plugin2 ]
     paths:
       - 'setup/**'
       - 'scripts/infra/requirements/requirements.txt'
@@ -176,10 +176,39 @@ jobs:
             fi          
           done
 
+      - name: Test uninstaller (Standard mode and Purge mode)
+        run: |
+          # Create custom test map to verify preservation
+          mkdir -p config/maps
+          echo "# Test map" > config/maps/ci_test_map.py
 
+          # Step 1: Run uninstaller in standard mode (keep maps)
+          bash setup/uninstall.sh --yes
 
-          
+          # Verify .venv directory was removed
+          if [ -d ".venv" ]; then
+            echo "::error::.venv directory was not removed by uninstaller!"
+            exit 1
+          fi
+
+          # Verify custom map was preserved
+          if [ ! -f "config/maps/ci_test_map.py" ]; then
+            echo "::error::Custom map config/maps/ci_test_map.py was lost!"
+            exit 1
+          fi
+
+          # Step 2: Run uninstaller in purge mode
+          bash setup/uninstall.sh --yes --purge
+
+          # Verify map was deleted in purge mode
+          if [ -f "config/maps/ci_test_map.py" ]; then
+            echo "::error::Custom map was not deleted in --purge mode!"
+            exit 1
+          fi
+          echo "[OK] Uninstaller tests (standard and purge) completed successfully."
+
       - name: Package Assets as Artifact(90days available from last run of this workflow)
+        
         if: always()
         uses: actions/upload-artifact@v6
         with:
