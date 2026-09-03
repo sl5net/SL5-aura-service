@@ -31,9 +31,27 @@ fi
 
 echo "[INFO] Configuring /dev/uinput permissions..."
 getent group input >/dev/null 2>&1 || sudo groupadd -r input 2>/dev/null || true
-TARGET_USER="${SUDO_USER:-${USER:-$(id -un)}}"
+
+TARGET_USER=""
+if [ -n "${SUDO_USER:-}" ]; then
+    TARGET_USER="${SUDO_USER}"
+elif TARGET_USER="$(logname 2>/dev/null)" && [ -n "${TARGET_USER}" ]; then
+    :
+elif [ -n "${USER:-}" ]; then
+    TARGET_USER="${USER}"
+elif TARGET_USER="$(id -un 2>/dev/null)" && [ -n "${TARGET_USER}" ]; then
+    :
+fi
+
+if [ -z "${TARGET_USER}" ] || [ "${TARGET_USER}" = "root" ]; then
+    echo "[ERROR]  not found root-Benutzer for sure." >&2
+    echo "        Please add explicit, e.g.:" >&2
+    echo "          sudo TARGET_USER=<your_user> $0" >&2
+    exit 1
+fi
+
 sudo usermod -aG input "${TARGET_USER}" || true
-[ -n "${USER}" ] && sudo usermod -aG input "${USER}" 2>/dev/null || true
+#[ -n "${USER}" ] && sudo usermod -aG input "${USER}" 2>/dev/null || true
 echo 'KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"' \
   | sudo tee /etc/udev/rules.d/80-dotool.rules > /dev/null
 sudo udevadm control --reload-rules || true
