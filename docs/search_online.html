@@ -7,33 +7,100 @@
   <title>SL5 Aura - Documentation Search</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
   <style>
+    :root {
+      --primary: #0d6efd;
+      --primary-hover: #0b5ed7;
+      --bg: #f4f6f9;
+      --card-bg: #ffffff;
+      --text: #212529;
+      --text-muted: #6c757d;
+      --border: #e2e8f0;
+    }
+    [data-theme="dark"] {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #1f2937;
+    }
+    .theme-toggle {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+      opacity: 0.5;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      background-color: #f8f9fa;
-      color: #212529;
+      padding: 40px 16px;
+      background: linear-gradient(180deg, #f8fafd 0%, var(--bg) 100%);
+      color: var(--text);
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
     }
     .search-card {
-      background: #ffffff;
-      padding: 32px;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-      max-width: 600px;
+      position: relative;
+      background: var(--card-bg);
+      padding: 36px 28px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border);
+      max-width: 640px;
       width: 100%;
       box-sizing: border-box;
       text-align: center;
     }
+    .logo {
+      width: 84px;
+      height: 84px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.06));
+    }
     h1 {
-      margin-top: 0;
-      font-size: 1.6rem;
-      color: #1a1a1a;
+      margin: 0 0 6px 0;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .slogan {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #eef2f6;
+      color: #334155;
+      font-weight: 600;
+      border: 1px solid #e2e8f0;
+    }
+    .badge-primary {
+      background: #e0edff;
+      color: var(--primary);
+      border-color: #bad5ff;
     }
     .lang-row {
-      margin: 20px 0;
+      margin: 18px 0 20px 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -46,29 +113,35 @@
     }
     .lang-btn {
       padding: 8px 14px;
-      border: 1px solid #ced4da;
-      border-radius: 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
       font-size: 0.95rem;
       background: #fff;
       cursor: pointer;
-      min-width: 190px;
+      min-width: 200px;
       text-align: left;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .lang-btn:hover {
+      border-color: #cbd5e1;
     }
     .lang-btn:focus {
-      outline: 2px solid #0d6efd;
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
     }
     .lang-dropdown {
       position: absolute;
-      top: calc(100% + 4px);
+      top: calc(100% + 6px);
       left: 0;
       right: 0;
       background: #fff;
-      border: 1px solid #ced4da;
-      border-radius: 6px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
       z-index: 1000;
       padding: 8px;
       display: none;
@@ -77,65 +150,120 @@
     .lang-filter-input {
       width: 100%;
       box-sizing: border-box;
-      padding: 6px 10px;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
       font-size: 0.9rem;
       margin-bottom: 6px;
     }
     .lang-filter-input:focus {
-      outline: 2px solid #0d6efd;
+      outline: none;
+      border-color: var(--primary);
     }
     .lang-list {
       list-style: none;
       margin: 0;
       padding: 0;
-      max-height: 200px;
+      max-height: 210px;
       overflow-y: auto;
     }
     .lang-item {
-      padding: 7px 10px;
-      border-radius: 4px;
+      padding: 8px 10px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 0.9rem;
     }
     .lang-item:hover, .lang-item.highlighted {
-      background: #e9ecef;
+      background: #f1f5f9;
     }
     .lang-item.selected {
       font-weight: 600;
-      color: #0d6efd;
+      color: var(--primary);
+      background: #eff6ff;
     }
     .search-container {
-      margin-top: 24px;
+      margin-top: 20px;
       display: flex;
       justify-content: center;
       min-height: 48px;
     }
-    .nav-links {
-      margin-top: 24px;
-      font-size: 0.9rem;
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0 20px 0;
     }
-    .nav-links a {
-      color: #0d6efd;
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #334155;
+      background: #f8fafc;
+      border: 1px solid var(--border);
       text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
     }
-    .nav-links a:hover {
-      text-decoration: underline;
+    .nav-btn:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+    .contributors-section {
+      margin-top: 24px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .contributor-avatars {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .contributor-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .contributor-avatar:hover {
+      transform: scale(1.15);
     }
     kbd {
       font-size: 0.75rem;
-      padding: 2px 5px;
-      border: 1px solid #ccc;
+      padding: 2px 6px;
+      border: 1px solid #cbd5e1;
       border-radius: 4px;
-      background: #eee;
-      color: #333;
+      background: #f1f5f9;
+      color: #475569;
+      font-family: inherit;
     }
   </style>
 </head>
 <body>
-  <div class="search-card">
-    <h1>SL5 Aura Documentation Search</h1>
+<div class="search-card">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">◐</button>
+    <img src="https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/data/image/logo.svg" alt="SL5 Aura Logo" class="logo" />
+    <h1>SL5 Aura Documentation</h1>
+    <div class="slogan">Ultra-Fast. Private. Self-Learning. Aura.</div>
+    
+    <div class="badge-row">
+      <span class="badge badge-primary">v0.64.0</span>
+      <span class="badge">🔒 100% Offline & Private</span>
+      <span class="badge">⚙️ Rule-Driven Automation</span>
+    </div>
+
     <div class="lang-row">
       <span>Language <kbd>Ctrl+L</kbd>:</span>
       <div class="custom-select-wrapper" id="custom-select-wrapper">
@@ -144,7 +272,7 @@
           <span>▾</span>
         </button>
         <div class="lang-dropdown" id="lang-dropdown">
-          <input type="text" class="lang-filter-input" id="lang-filter-input" placeholder="Type language (e.g. de)..." autocomplete="off" />
+          <input type="text" class="lang-filter-input" id="lang-filter-input" placeholder="Filter language (e.g. de, fr)..." autocomplete="off" />
           <ul class="lang-list" id="lang-list">
             <li class="lang-item selected" data-code="en">English (en)</li>
             <li class="lang-item" data-code="de">Deutsch (de)</li>
@@ -162,17 +290,24 @@
         </div>
       </div>
     </div>
+
     <div class="search-container">
       <div id="docsearch"></div>
     </div>
-    <div class="nav-links">
-      <a href="https://seeh.codeberg.page/SL5-aura-service/docs/search_online.html?lang=de">Documentation Suche auf CodeBerg</a>
+
+    <div class="divider"></div>
+
+    <div class="nav-buttons">
+      <a class="nav-btn" href="https://sl5net.github.io/SL5-aura-service/index.html">📖 Documentation</a>
+      <a class="nav-btn" href="https://github.com/sl5net/SL5-aura-service">🐙 GitHub</a>
+      <a class="nav-btn" href="https://codeberg.org/seeh/SL5-aura-service">🏔️ Codeberg</a>
     </div>
-    <div class="nav-links">
-      <a href="https://codeberg.org/seeh/SL5-aura-service/src/branch/master/docs">Documentation  auf CodeBerg</a>
-    </div>
-    <div class="nav-links">
-      <a href="https://sl5net.github.io/SL5-aura-service/index.html">Documentation on GitHub</a>
+
+    <div class="contributors-section">
+      <div>Maintained by the Open Source Community</div>
+      <div class="contributor-avatars" id="contributors-container">
+        <!-- Dynamically populated via GitHub API -->
+      </div>
     </div>
   </div>
 
@@ -314,6 +449,23 @@
       }
     });
 
+    // Dynamic Collaborators / Contributors Loader
+    fetch('https://api.github.com/repos/sl5net/SL5-aura-service/contributors?per_page=8')
+      .then(res => res.json())
+      .then(contributors => {
+        if (Array.isArray(contributors)) {
+          const container = document.getElementById('contributors-container');
+          contributors.forEach(c => {
+            const img = document.createElement('img');
+            img.src = c.avatar_url;
+            img.alt = c.login;
+            img.title = `${c.login} (${c.contributions} commits)`;
+            img.className = 'contributor-avatar';
+            container.appendChild(img);
+          });
+        }
+      })
+      .catch(() => {});
 
     window.addEventListener('keydown', function (e) {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'L')) {
@@ -350,7 +502,6 @@
 
     if (requestedLang) {
       const normalized = requestedLang.trim().toLowerCase();
-      
       const matchItem = langItems.find(i => i.getAttribute('data-code').toLowerCase() === normalized);
       if (matchItem) {
         currentSelectedCode = matchItem.getAttribute('data-code');
@@ -359,7 +510,18 @@
       }
     }
 
-    initDocSearch(currentSelectedCode, requestedQuery);    
+    // initDocSearch(currentSelectedCode, requestedQuery);
+    
+    const savedTheme = localStorage.getItem('aura-theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+      const nextTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('aura-theme', nextTheme);
+    });    
     
   </script>
 </body>
