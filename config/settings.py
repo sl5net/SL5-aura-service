@@ -99,6 +99,10 @@ SIGNATURE_MAPPING = {
 
 
 # --- Update Configuration ---
+# Options:
+#   "commits"  - Check for every new commit on master (nightly/development)
+#   "releases" - Check only for official GitHub releases (stable)
+#   False      - Disable update checks (offline default)
 CHECK_FOR_UPDATES_ON_STARTUP = False
 
 # --- Language Model Preloading ---
