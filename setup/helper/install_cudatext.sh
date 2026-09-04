@@ -114,9 +114,16 @@ EOF"
     exit 3
   fi
 else  
-  
+  if command -v apt-get >/dev/null 2>&1; then
+    if ! dpkg -s libharfbuzz-gobject0 >/dev/null 2>&1; then
+      echo "[INFO] Installing missing CudaText dependency: libharfbuzz-gobject0"
+      ${SUDO} apt-get update -y && ${SUDO} apt-get install -y libharfbuzz-gobject0 || true
+    fi
+  fi
+
   # Detect architecture
   ARCH="$(uname -m)"
+  
   case "${ARCH}" in
   
 #    x86_64|amd64) TAR_NAME_PREFIX="cudatext-linux-gtk2-amd64" ;;
