@@ -1,8 +1,12 @@
-# scripts/py/func/check_for_updates.py
 import json
+import os
 import subprocess
+import sys
 import urllib.request
 
+REPO_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
+if REPO_DIR not in sys.path:
+    sys.path.insert(0, REPO_DIR)
 
 
 def get_local_commit_sha():
@@ -10,15 +14,17 @@ def get_local_commit_sha():
     try:
         subprocess.run(
             ["git", "branch", "--set-upstream-to=origin/master", "master"],
+            cwd=REPO_DIR,
             capture_output=True,
-            timeout=1.0,
+            timeout=2.0,
             check=False
         )
         res = subprocess.run(
             ["git", "rev-parse", "--short", "HEAD"],
+            cwd=REPO_DIR,
             capture_output=True,
             text=True,
-            timeout=1.0,
+            timeout=2.0,
             check=True
         )
         return res.stdout.strip()
@@ -26,14 +32,15 @@ def get_local_commit_sha():
         return None
 
 
-def check_for_updates(logger=None, timeout_seconds=2.0):
+def check_for_updates(logger=None, timeout_seconds=4.0):
     """Checks GitHub for newer commits or official releases without blocking."""
     try:
         from config import settings
-        mode = getattr(settings, "CHECK_FOR_UPDATES_ON_STARTUP", False)
-        if not mode or mode in [False, "off", "disabled"]:
-            return
+        mode = getattr(settings, "CHECK_FOR_UPDATES_ON_STARTUP", "commits")
     except Exception:
+        mode = "commits"
+
+    if not mode or mode in [False, "off", "disabled"]:
         return
 
     mode_str = str(mode).lower()
@@ -53,8 +60,8 @@ def check_for_updates(logger=None, timeout_seconds=2.0):
                             logger.info(msg)
                         else:
                             print(f"[INFO] {msg}")
-        else:
-            # Default to tracking master commits
+        elif mode_str == "commits":
+            # Track and auto-update master commits
             local_sha = get_local_commit_sha()
             url = "https://api.github.com/repos/sl5net/SL5-aura-service/commits/master"
             req = urllib.request.Request(url, headers=headers)
@@ -63,19 +70,16 @@ def check_for_updates(logger=None, timeout_seconds=2.0):
                     data = json.loads(response.read().decode("utf-8"))
                     remote_sha = data.get("sha", "")[:7]
                     commit_msg = data.get("commit", {}).get("message", "").split("\n")[0]
-                    
+
                     if local_sha and remote_sha and local_sha != remote_sha:
-                        pull_res = subprocess.run(
-                            ["git", "pull", "--ff-only", "origin", "master"],
-                            capture_output=True,
-                            text=True,
-                            timeout=10.0,
-                            check=False
-                        )
-                        if pull_res.returncode == 0:
+                        # Overwrite any dirty local files to guarantee update succeeds
+                        subprocess.run(["git", "fetch", "origin", "master"], cwd=REPO_DIR, timeout=15.0, capture_output=True, check=False)
+                        reset_res = subprocess.run(["git", "reset", "--hard", "origin/master"], cwd=REPO_DIR, timeout=10.0, capture_output=True, text=True, check=False)
+
+                        if reset_res.returncode == 0:
                             msg = f"Update applied: pulled commit {remote_sha} ('{commit_msg}')."
                         else:
-                            msg = f"Update available: New commit {remote_sha} ('{commit_msg}'), but auto-pull failed: {pull_res.stderr.strip()}"
+                            msg = f"Update available: New commit {remote_sha} ('{commit_msg}'), but update failed: {reset_res.stderr.strip()}"
 
                         if logger:
                             logger.info(msg)
@@ -85,3 +89,9 @@ def check_for_updates(logger=None, timeout_seconds=2.0):
     except Exception:
         # Offline or timeout - fail silently without blocking startup
         pass
+
+
+if __name__ == "__main__":
+    check_for_updates()
+    
+    
