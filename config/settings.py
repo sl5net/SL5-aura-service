@@ -103,7 +103,7 @@ SIGNATURE_MAPPING = {
 #   "commits"  - Check for every new commit on master (nightly/development)
 #   "releases" - Check only for official GitHub releases (stable)
 #   False      - Disable update checks (offline default)
-CHECK_FOR_UPDATES_ON_STARTUP = False
+CHECK_FOR_UPDATES_ON_STARTUP = "commits"
 
 # --- Language Model Preloading ---
 # A list of Vosk model folder names to preload at startup if memory allows.
