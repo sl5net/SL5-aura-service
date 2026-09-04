@@ -108,7 +108,7 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
 
                     if local_sha and remote_sha and not remote_sha.startswith(local_sha):
                         log_msg(
-                            f"New commit found on origin/master ({remote_sha[:7]} vs local {local_sha[:7]}). Applying forced update...")
+                            f"New commit found on origin/master ({remote_sha[:7]} vs local {local_sha[:7]}). Applying forced update…")
 
                         # Execute forced update (overwriting dirty files)
                         success, result_msg = force_update_to_remote()
