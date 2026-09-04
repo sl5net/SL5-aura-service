@@ -6,6 +6,12 @@ import urllib.request
 def get_local_commit_sha():
     """Returns the short commit SHA of the local git HEAD if available."""
     try:
+        subprocess.run(
+            ["git", "branch", "--set-upstream-to=origin/master", "master"],
+            capture_output=True,
+            timeout=1.0,
+            check=False
+        )
         res = subprocess.run(
             ["git", "rev-parse", "--short", "HEAD"],
             capture_output=True,
@@ -55,8 +61,10 @@ def check_for_updates(logger=None, timeout_seconds=2.0):
                     data = json.loads(response.read().decode("utf-8"))
                     remote_sha = data.get("sha", "")[:7]
                     commit_msg = data.get("commit", {}).get("message", "").split("\n")[0]
+                    
                     if local_sha and remote_sha and local_sha != remote_sha:
-                        msg = f"Update available: New commit {remote_sha} ('{commit_msg}'). Run 'git pull' to update."
+                        msg = f"Update available: New commit {remote_sha} ('{commit_msg}'). Run 'git pull origin master' to update."                        
+                        
                         if logger:
                             logger.info(msg)
                         else:
