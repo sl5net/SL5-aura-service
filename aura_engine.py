@@ -89,6 +89,9 @@ espeak_check(settings)
 
 from scripts.py.func.checks.check_settings_syntax import verify_plugin_notation
 
+from scripts.py.func.check_for_updates import check_for_updates
+
+
 if settings.TRINO_ENABLED:
     from scripts.py.func.db.init_trino_db import init_all as init_trino
     def async_trino_init():
@@ -376,7 +379,7 @@ class WindowsEmojiFilter(logging.Filter):
 
 logger = logging.getLogger()
 
-
+check_for_updates(logger)
 
 # class PrintToConsoleAndFile(object):
 #     def __init__(self, logger):
