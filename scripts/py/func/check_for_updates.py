@@ -1,6 +1,8 @@
+# scripts/py/func/check_for_updates.py
 import json
 import subprocess
 import urllib.request
+
 
 
 def get_local_commit_sha():
@@ -63,12 +65,23 @@ def check_for_updates(logger=None, timeout_seconds=2.0):
                     commit_msg = data.get("commit", {}).get("message", "").split("\n")[0]
                     
                     if local_sha and remote_sha and local_sha != remote_sha:
-                        msg = f"Update available: New commit {remote_sha} ('{commit_msg}'). Run 'git pull origin master' to update."                        
-                        
+                        pull_res = subprocess.run(
+                            ["git", "pull", "--ff-only", "origin", "master"],
+                            capture_output=True,
+                            text=True,
+                            timeout=10.0,
+                            check=False
+                        )
+                        if pull_res.returncode == 0:
+                            msg = f"Update applied: pulled commit {remote_sha} ('{commit_msg}')."
+                        else:
+                            msg = f"Update available: New commit {remote_sha} ('{commit_msg}'), but auto-pull failed: {pull_res.stderr.strip()}"
+
                         if logger:
                             logger.info(msg)
                         else:
                             print(f"[INFO] {msg}")
+
     except Exception:
         # Offline or timeout - fail silently without blocking startup
         pass
