@@ -119,7 +119,7 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
             logger.info(f"✅ Model directory found: ..{str(model_path)[-30:]} = ..{str(script_dir)[-10:]} / 'models' / {model_name}")
 
 
-        # File: scripts/py/func/model_manager.py
+        # scripts/py/func/model_manager.py:122
         load_buffer_mb = math.ceil(threshold_mb * 0.10)
         required_memory_mb = threshold_mb + load_buffer_mb + max_model_memory_footprint_mb
         if avail_mb < required_memory_mb:

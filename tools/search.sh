@@ -139,9 +139,19 @@ if [ "$count" -eq 0 ]; then
 fi
 
 if [ "$count" -gt 29 ] && [[ "$GREP_FLAGS" != *"-w"* && "$PATTERN" != *"\\b"* ]]; then
-  REFINED_PATTERN="\\b${PATTERN}\\b"
+  
+#  REFINED_PATTERN="\\b${PATTERN}\\b"
+#
+#  refined_matches=$( { do_search "$REFINED_PATTERN" | head -n 201; } || true )
 
-  refined_matches=$( { do_search "$REFINED_PATTERN" | head -n 201; } || true )
+  REFINED_PATTERN="\\b(${PATTERN})\\b"
+
+  if [ "$ignore_comments" = "true" ]; then
+    refined_matches=$(do_search "$REFINED_PATTERN" | sed 's/[[:space:]]*#.*$//' | { grep $MATCH_FLAGS -E -- "$REFINED_PATTERN" || true; } | { head -n 201; } || true)
+  else
+    refined_matches=$( { do_search "$REFINED_PATTERN" | head -n 201; } || true )
+  fi
+  
   refined_count=$(echo -n "$refined_matches" | grep -c '^' || true)
 
   echo "⚠️⚠️Results exceeded 29 lines. Automatically refining pattern with word boundaries: '$REFINED_PATTERN'..." >&2
