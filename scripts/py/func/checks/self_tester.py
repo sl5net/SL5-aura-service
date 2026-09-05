@@ -14,6 +14,8 @@ from pathlib import Path
 readme = """
 ./.venv/bin/python3 -m scripts.py.func.checks.self_tester
 
+# To also run LT (LanguageTool)-dependent test cases in CI (normally skipped):
+AURA_RUN_LT_TESTS_IN_CI=true ./.venv/bin/python3 -m scripts.py.func.checks.self_tester
 
 """
 
@@ -32,6 +34,11 @@ from scripts.py.func.config.dynamic_settings import settings
 from scripts.py.func.process_text_in_background import process_text_in_background
 
 is_ci = os.getenv('CI') == 'true'
+# Opt-in switch: by default, LT (LanguageTool)-dependent test cases are
+# skipped in CI (they're slower and depend on a locally running LT server).
+# Set AURA_RUN_LT_TESTS_IN_CI=true (in the workflow's env block) to include
+# them anyway, e.g. for a periodic/nightly run that also validates LT rules.
+RUN_LT_TESTS_IN_CI = os.getenv('AURA_RUN_LT_TESTS_IN_CI', '').strip().lower() in ('1', 'true', 'yes', 'on')
 
 if platform.system() == "Windows":
     TMP_DIR = Path("C:/tmp")
@@ -405,9 +412,9 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
         raw_text, expected, description, check_lang, use_lt, prio = test_case
         if check_lang != lang_code:
             continue
-        if is_ci and use_lt:
+        if is_ci and use_lt and not RUN_LT_TESTS_IN_CI:
             skipped_lt_count += 1
-            continue  # Skip lt in CI
+            continue  # Skip LT in CI unless AURA_RUN_LT_TESTS_IN_CI is set
         if is_ci:
             chance = 1
         else:
@@ -500,9 +507,15 @@ def _execute_self_test_core(logger, tmp_dir_aura, lt_url, lang_code):
                 failed_count += 1
                 print(f":st: Process crashed: {e}")
 
-    lt_workers = 1 if is_ci else num_workers
+    if is_ci:
+        # Keep LT concurrency low even when enabled, to be gentle on the
+        # single local LanguageTool server instance started by the workflow.
+        lt_workers = min(2, num_workers or 1) if RUN_LT_TESTS_IN_CI else 1
+    else:
+        lt_workers = num_workers
 
     if is_ci:
+        print(f":st: DEBUG RUN_LT_TESTS_IN_CI={RUN_LT_TESTS_IN_CI}")
         print(f":st: DEBUG before Pool1: lt_workers = {lt_workers} , non_lt_tests={len(non_lt_tests)}")
     with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers, mp_context=ctx) as executor:
         futures = {}
@@ -698,7 +711,7 @@ class SimpleNullLogger:
     def __repr__(self): return ""
 
 # if somebody is confused send him:
-# find . -name "*settings.py"                                                                                                                                     ✔
+# find . -name "*settings.py"                                                                                                                                     ✔
 
 def run_single_test_process(index, test_data, lang_code, lt_url, test_base_dir_str):
 

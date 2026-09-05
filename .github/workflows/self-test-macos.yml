@@ -123,6 +123,7 @@ jobs:
       - name: Run Self-Tester with Final Guard
         env:
           PYTHONPATH: ${{ github.workspace }}
+          AURA_RUN_LT_TESTS_IN_CI: "true"
           CI: "true"
           AURA_ACTIVE_WINDOW_TITLE: "Terminal"
         run: |

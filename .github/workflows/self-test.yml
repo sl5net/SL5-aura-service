@@ -105,6 +105,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
           CI: "true"
+          AURA_RUN_LT_TESTS_IN_CI: "false"
           DISPLAY: :99
           AURA_ACTIVE_WINDOW_TITLE: "Terminal"          
         run: |
