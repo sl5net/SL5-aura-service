@@ -106,6 +106,15 @@ jobs:
           java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
           sleep 10
 
+      - name: Ensure GNU coreutils (Eco-CI needs microsecond-precise `date`)
+        # macOS ships BSD `date`, which lacks the sub-second precision that
+        # eco-ci-energy-estimation relies on internally. Installing GNU
+        # coreutils and prepending its "gnubin" dir makes `date` resolve to
+        # the GNU version for the rest of this job.
+        run: |
+          brew install coreutils
+          echo "$(brew --prefix coreutils)/libexec/gnubin" >> $GITHUB_PATH
+
       - name: Initialize Eco-CI
         uses: green-coding-solutions/eco-ci-energy-estimation@v5
         with:
