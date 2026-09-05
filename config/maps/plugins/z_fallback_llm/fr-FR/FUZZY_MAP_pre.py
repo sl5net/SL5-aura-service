@@ -58,7 +58,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 """, r'^\s*(aura|Aurore|laure|Dora|ère|Hourra|prora|ordinateur)\s+(w\w{2,3}) (sont|faire)?(toi)$', 100,
         {
         'command_flags': re.IGNORECASE,
-        'exclude_windows': [r'élément',r'Firefox', r'chrome', r'courageux','double'],
+        'exclude_windows': [r'élément',r'Firefox', r'chrome', r'courageux','double', r'nemo', r'thunar', r'caja'],
         }
     ),
 
@@ -101,7 +101,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 """, r'^\s*(aura|Aurore|laure|Dora|ère|Hourra|prora|ordinateur)\s*(\!|\.|\?|$)(\s+.*)?$', 100,
         {
         'command_flags': re.IGNORECASE,
-        'exclude_windows': [r'élément',r'Firefox', r'chrome', r'courageux','double'],
+        'exclude_windows': [r'élément',r'Firefox', r'chrome', r'courageux','double', r'nemo', r'thunar', r'caja'],
 
         }
     ),
@@ -172,7 +172,7 @@ Es gibt keine Accounts, Passwörter, Logins.
         {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
-        'exclude_windows': ['element', 'firefox', 'chrome', 'brave','.*double.*commander.*','double commander'],
+        'exclude_windows': ['element', 'firefox', 'chrome', 'brave','.*double.*commander.*','double commander', r'nemo', r'thunar', r'caja'],
         }
     ),
 
@@ -185,7 +185,7 @@ Es gibt keine Accounts, Passwörter, Logins.
         {
             'command_flags': re.IGNORECASE,
             'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
-            'exclude_windows': [r'élément',r'Firefox', r'chrome', r'courageux',r'double cmd',r'double commandant'],
+            'exclude_windows': [r'élément',r'Firefox', r'chrome', r'courageux',r'double cmd',r'double commandant', r'nemo', r'thunar', r'caja'],
         }
     ),
 

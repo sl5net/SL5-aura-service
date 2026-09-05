@@ -36,13 +36,13 @@ _gemini_phonetics = (
 _common_metaVERBOSE = {
     'command_flags': re.IGNORECASE | re.VERBOSE,
     'window_ignore_case': False,
-    'only_in_windows': [r'Mozilla Firefox', r'Chrome', r'Brave', r'FUZZY_MAP_pre', r'Kate'],
+    'only_in_windows': [r'Mozilla Firefox', r'Chrome', r'Brave', r'FUZZY_MAP_pre', r'Kate', r'CudaText', r'xed'],
     'exclude_windows': [r'element', r'mastodon', r'GitHub', r'Claude', r'Google AI'],
 }
 _common_meta = {
     'command_flags': re.IGNORECASE,
     'window_ignore_case': False,
-    'only_in_windows': [r'Mozilla Firefox', r'Chrome', r'Brave', r'FUZZY_MAP_pre', r'Kate'],
+    'only_in_windows': [r'Mozilla Firefox', r'Chrome', r'Brave', r'FUZZY_MAP_pre', r'Kate', r'CudaText', r'xed'],
     'exclude_windows': [r'element', r'mastodon', r'GitHub', r'Claude', r'Google AI'],
 }
 FUZZY_MAP_pre = [
