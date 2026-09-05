@@ -122,8 +122,13 @@ def manage_models(logger, loaded_models, desired_names, threshold_mb, script_dir
         # scripts/py/func/model_manager.py:122
         load_buffer_mb = math.ceil(threshold_mb * 0.10)
         required_memory_mb = threshold_mb + load_buffer_mb + max_model_memory_footprint_mb
+        if avail_mb < threshold_mb:
+            from .stop_languagetool_server import evict_languagetool_process
+            evict_languagetool_process(logger)
         if avail_mb < required_memory_mb:
             if max_model_memory_footprint_mb > 0:
+                
+                
                 # IMPROVED LOG: Explain the calculation for "Required Memory"
                 log_msg = (
                     f"Postponing load: {_format_gb(avail_mb)} available is not enough. "

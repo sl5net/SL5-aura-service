@@ -122,9 +122,17 @@ def get_languagetool_jvm_args(for_self_test=False):
     }
 
 
+from .language_tool_cooldown import is_language_tool_in_cooldown, get_language_tool_cooldown_remaining
+
 def start_languagetool_server(logger, languagetool_jar_path, base_url, for_self_test=False):
-    # 1. Port extrahieren und URL säubern
-    # Falls base_url nur eine Zahl ist, mach eine URL draus
+    if is_language_tool_in_cooldown():
+        remaining = get_language_tool_cooldown_remaining()
+        if logger:
+            logger.info(f"LanguageTool start skipped: memory cooldown active ({remaining:.0f}s left).")
+        return False
+    # 1. extract and URL clean    
+    
+    # create URL when number
     if base_url.isdigit():
         port = base_url
     else:
