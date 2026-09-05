@@ -83,34 +83,48 @@ echo "--- Starting STT Setup for macOS ---"
 
 
 
-# create system symlink only after brew exists and openjdk is installed
+# Install openjdk if missing
 if ! brew list openjdk >/dev/null 2>&1; then
   echo "--> Installing openjdk via Homebrew…"
   brew install openjdk
 fi
 
+OPENJDK_PREFIX="$(brew --prefix openjdk 2>/dev/null || true)"
+if [ -n "$OPENJDK_PREFIX" ] && [ -d "$OPENJDK_PREFIX/bin" ]; then
+    export PATH="$OPENJDK_PREFIX/bin:$PATH"
+fi
+
+if [ -d "$OPENJDK_PREFIX/libexec/openjdk.jdk" ]; then
 echo "--> Making system JDK symlink (so macOS/system tools find it)…"
-sudo ln -sfn "$(brew --prefix)/opt/openjdk/libexec/openjdk.jdk" /Library/Java/JavaVirtualMachines/openjdk.jdk
+    sudo mkdir -p /Library/Java/JavaVirtualMachines
+    sudo ln -sfn "$OPENJDK_PREFIX/libexec/openjdk.jdk" /Library/Java/JavaVirtualMachines/openjdk.jdk || true
+fi
 
 echo "--> Checking for a compatible Java version (>=17)…"
 
 JAVA_OK=0
-if command -v java &> /dev/null; then
-    VERSION=$(java -version 2>&1 | awk -F'[."]' '/version/ {print $2}')
-    if [ "$VERSION" -ge 17 ]; then
-        echo "    -> Found compatible Java version $VERSION. OK."
+if command -v java >/dev/null 2>&1; then
+    JAVA_MAJOR=$(java -version 2>&1 | sed -E -n 's/.*version "([0-9]+).*/\1/p')
+    if [ -n "$JAVA_MAJOR" ] && [ "$JAVA_MAJOR" -ge 17 ] 2>/dev/null; then
+        echo "    -> Found compatible Java version $JAVA_MAJOR. OK."
         JAVA_OK=1
     else
-        echo "    -> Found Java version $VERSION, but we need >=17."
+        echo "    -> Found Java version '$JAVA_MAJOR', but need >= 17."
     fi
 else
-  echo "    -> No Java executable found after install/symlink."
+    echo "    -> No Java executable found in PATH."
 fi
 
 if [ "$JAVA_OK" -eq 0 ]; then
-    echo "    -> Installing a modern JDK via Homebrew…"
+    echo "    -> Re-installing openjdk via Homebrew…"
     brew install openjdk
+    OPENJDK_PREFIX="$(brew --prefix openjdk 2>/dev/null || true)"
+    if [ -n "$OPENJDK_PREFIX" ] && [ -d "$OPENJDK_PREFIX/bin" ]; then
+        export PATH="$OPENJDK_PREFIX/bin:$PATH"
+  fi
 fi
+
+
 echo "--> Installing other core dependencies…"
 #brew install fswatch wget unzip portaudio
 brew install fswatch wget unzip portaudio sdl2 sdl2_image sdl2_mixer sdl2_ttf portmidi
