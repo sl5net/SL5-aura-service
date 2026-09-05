@@ -1,5 +1,7 @@
 name: CI for macOS Setup
 # .github/workflows/mac_setup.yml
+# get workflow_id:
+# gh api repos/sl5net/SL5-aura-service/actions/runs/33944425025 --jq '.workflow_id'
 
 on:
   push:

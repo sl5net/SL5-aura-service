@@ -1,201 +1,214 @@
-name: Self-Test (Aura Logic) for macOS
-# .github/workflows/self-test-macos.yml
-on:
-  push:
-    branches: [ master, '**self-test**', feat/cache-write-only-on-maps_changed ]
-    paths-ignore:
-      - '.github/**'
-      - 'tools/**'
-      - 'docs/**'
-      - 'doc_sources/**'
-      - 'scripts/infra/**'
-      - '**.md'
-      - '**.rst'
-      - '**.html'
-      - '.github/workflows/deploy-docs.yml'
-      - '.gitignore'
-  pull_request:
-    branches: [ master ]
-    paths-ignore:
-      - '.github/**'
-      - 'tools/**'
-      - 'docs/**'
-      - 'doc_sources/**'
-      - '.github/workflows/**'
-      - '**.md'
-      - '**.yml'
-      - '**.rst'
-      - '**.html'
-      - '.github/workflows/deploy-docs.yml'
-      - '.gitignore'
-      - '.flake8'
-      - '.slop.toml'
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-permissions:
-  pull-requests: write
-  contents: read
-
-jobs:
-  run-self-test-macos:
-    runs-on: macos-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v5
-
-      # NOTE: catchpoint/workflow-telemetry-action is Linux-only and is
-      # intentionally omitted here (it does not support macOS runners).
-
-      - name: Cache models and tools
-        uses: actions/cache@v5
-        with:
-          path: |
-            ./tools/
-            ./LanguageTool-6.6
-            ./models/
-          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
-          restore-keys: |
-            ${{ runner.os }}-models-tools-
-
-      - name: Install Xcode Command Line Tools
-        run: xcode-select --install || true
-
-      - name: Install Homebrew
-        run: |
-          if ! command -v brew &> /dev/null; then
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          fi
-
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Prepare Bootstrap Pointer (The Master Key)
-        run: |
-          echo "BRANCH: ${{ github.ref_name }}"
-          sudo mkdir -p /tmp/sl5_aura
-          sudo chmod -R 777 /tmp/sl5_aura
-          echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
-          cp config/settings_local.py_Example.txt config/settings_local.py
-
-      - name: Run Official macOS Setup
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # This assumes setup/macos_setup.sh has `set -e` and a `#!/bin/bash` shebang.
-        run: |
-          chmod +x ./setup/macos_setup.sh
-          echo "--- DEBUG INFO START ---"
-          pwd
-          ls -la
-          echo "--- DEBUG INFO END ---"
-          ./setup/macos_setup.sh
-
-      # NOTE: The Ubuntu workflow installs xvfb + xclip here. Neither is needed
-      # on macOS: there is no X11 to virtualize, and clipboard access is native
-      # via pbcopy/pbpaste, so this step is intentionally skipped.
-
-      - name: Start LanguageTool Server
-        run: |
-          echo "BRANCH: ${{ github.ref_name }}"
-          java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
-          sleep 10
-
-      - name: Initialize Eco-CI
-        uses: green-coding-solutions/eco-ci-energy-estimation@v5
-        with:
-          task: start-measurement
-
-      - name: Run Self-Tester with Final Guard
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-          CI: "true"
-          AURA_ACTIVE_WINDOW_TITLE: "Terminal"
-        run: |
-          echo "BRANCH: ${{ github.ref_name }}"
-          echo "vosk-model-de-0.21" > config/model_name.txt
-          echo "=== CI DEBUG INFO (macOS) ==="
-          echo "model_name: $(cat config/model_name.txt 2>/dev/null || echo 'NONE')"
-          echo "EXCLUDE_LANGUAGES: ${EXCLUDE_LANGUAGES:-NONE}"
-          ls -la data/_privat_no_zip/cache/maps/ 2>/dev/null || echo "NO_MAPS_CACHE_DIR"
-          echo "====================="
-          echo "=== RUN 1 (Cold Run) ==="
-          START_TIME_1=$(python3 -c "import time; print(time.time())")
-          ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results_1.log
-          END_TIME_1=$(python3 -c "import time; print(time.time())")
-          DURATION_1=$(awk "BEGIN {print $END_TIME_1 - $START_TIME_1}")
-          echo "=== RUN 2 (Warm Run) ==="
-          START_TIME_2=$(python3 -c "import time; print(time.time())")
-          ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results_2.log
-          END_TIME_2=$(python3 -c "import time; print(time.time())")
-          grep -E "(FAIL:|Input:|Expected:|Got:)" test_results_2.log || true
-          DURATION_2=$(awk "BEGIN {print $END_TIME_2 - $START_TIME_2}")
-          cp test_results_2.log test_results.log
-          echo "⏱️ Run 1 Duration: ${DURATION_1}s"
-          echo "⏱️ Run 2 Duration: ${DURATION_2}s"
-          TESTS_PASSED=$(grep -oE 'Passed: all [0-9]+' test_results.log | grep -oE '[0-9]+' || echo "unknown")
-          if [[ "$TESTS_PASSED" =~ ^[1-9][0-9]*$ ]]; then
-            TIME_PER_TEST_1=$(awk "BEGIN {printf \"%.2f\", $DURATION_1 / $TESTS_PASSED}")
-            TIME_PER_TEST_2=$(awk "BEGIN {printf \"%.2f\", $DURATION_2 / $TESTS_PASSED}")
-            echo "📊 Run 1 avg: ${TIME_PER_TEST_1}s/test | Run 2 avg: ${TIME_PER_TEST_2}s/test"
-            TIME_PER_TEST="$TIME_PER_TEST_2"
-          else
-            TIME_PER_TEST="0"
-          fi
-          MAPS_COUNT=$(find config/maps -type f -name "*.py" ! -name "__init__.py" | wc -l)
-          RULES_COUNT=$(python3 -c "import json, pathlib; f=pathlib.Path('data/_privat_no_zip/cache/maps/active_maps_cache_de-DE.json'); data=json.loads(f.read_text()) if f.exists() else {}; print(sum(len(v) if isinstance(v, list) else len(v.get('rules', [])) for v in data.get('files', {}).values()))")
-          echo "TESTS_PASSED=$TESTS_PASSED" >> $GITHUB_ENV
-          echo "TIME_PER_TEST_1=$TIME_PER_TEST_1" >> $GITHUB_ENV
-          echo "TIME_PER_TEST_2=$TIME_PER_TEST_2" >> $GITHUB_ENV
-          echo "MAPS_COUNT=$MAPS_COUNT" >> $GITHUB_ENV
-          echo "RULES_COUNT=$RULES_COUNT" >> $GITHUB_ENV
-          if grep -q "| 0 not passed" test_results.log; then
-            echo " Final Guard: Success summary found. 0 tests failed."
-          else
-            echo " FINAL GUARD FAILURE: Success summary '| 0 failed' not found!"
-            exit 1
-          fi
-
-      - name: Measure Core Logic Tests
-        uses: green-coding-solutions/eco-ci-energy-estimation@v5
-        with:
-          task: get-measurement
-          label: "Aura Core Logic (${{ env.TESTS_PASSED }} Tests across ${{ env.MAPS_COUNT }} Maps, avg ${{ env.TIME_PER_TEST_2 }}s warm / ${{ env.TIME_PER_TEST_1 }}s cold)"
-
-      - name: Run Catch-All Training E2E Test
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-          CI: "true"
-        run: |
-          echo "BRANCH: ${{ github.ref_name }}"
-          ./.venv/bin/python3 -m scripts.py.func.checks.catch_all_training_e2e_test
-
-      - name: Run file4replacement E2E Test
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-          CI: "true"
-        run: |
-          echo "BRANCH: ${{ github.ref_name }}"
-          ./.venv/bin/python3 -m scripts.py.func.checks.file4replacement_e2e_test
-
-      - name: Display and Send Energy Results
-        uses: green-coding-solutions/eco-ci-energy-estimation@v5
-        with:
-          task: display-results
-          pr-comment: true
-          send-data: true
-          calculate-co2: false  # External CO2 data often unavailable for GH runners
-
-      - name: Package Assets as Artifact
-        if: always()
-        uses: actions/upload-artifact@v6
-        with:
-          name: sl5-assets-pack-macos-tester
-          path: |
-            ./LanguageTool-6.6
-            ./models/
+  name: Self-Test (Aura Logic) for macOS
+  # .github/workflows/self-test-macos.yml
+  on:
+    push:
+      branches: [ master, '**self-test**', feat/cache-write-only-on-maps_changed ]
+      paths-ignore:
+        - '.github/**'
+        - 'tools/**'
+        - 'docs/**'
+        - 'doc_sources/**'
+        - 'scripts/infra/**'
+        - '**.md'
+        - '**.rst'
+        - '**.html'
+        - '.github/workflows/deploy-docs.yml'
+        - '.gitignore'
+    pull_request:
+      branches: [ master ]
+      paths-ignore:
+        - '.github/**'
+        - 'tools/**'
+        - 'docs/**'
+        - 'doc_sources/**'
+        - '.github/workflows/**'
+        - '**.md'
+        - '**.yml'
+        - '**.rst'
+        - '**.html'
+        - '.github/workflows/deploy-docs.yml'
+        - '.gitignore'
+        - '.flake8'
+        - '.slop.toml'
+    workflow_dispatch:
+  
+  concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+  
+  permissions:
+    pull-requests: write
+    contents: read
+  
+  jobs:
+    run-self-test-macos:
+      runs-on: macos-latest
+      steps:
+        - name: Check out repository code
+          uses: actions/checkout@v5
+  
+        # NOTE: catchpoint/workflow-telemetry-action is Linux-only and is
+        # intentionally omitted here (it does not support macOS runners).
+  
+        - name: Cache models and tools
+          uses: actions/cache@v5
+          with:
+            path: |
+              ./tools/
+              ./LanguageTool-6.6
+              ./models/
+            key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
+            restore-keys: |
+              ${{ runner.os }}-models-tools-
+  
+        - name: Install Xcode Command Line Tools
+          run: xcode-select --install || true
+  
+        - name: Install Homebrew
+          run: |
+            if ! command -v brew &> /dev/null; then
+              /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            fi
+  
+        - name: Set up Python
+          uses: actions/setup-python@v7
+          with:
+            python-version: '3.11'
+            cache: 'pip'
+  
+        - name: Prepare Bootstrap Pointer (The Master Key)
+          run: |
+            echo "BRANCH: ${{ github.ref_name }}"
+            sudo mkdir -p /tmp/sl5_aura
+            sudo chmod -R 777 /tmp/sl5_aura
+            echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
+            cp config/settings_local.py_Example.txt config/settings_local.py
+  
+        - name: Run Official macOS Setup
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # This assumes setup/macos_setup.sh has `set -e` and a `#!/bin/bash` shebang.
+          run: |
+            chmod +x ./setup/macos_setup.sh
+            echo "--- DEBUG INFO START ---"
+            pwd
+            ls -la
+            echo "--- DEBUG INFO END ---"
+            ./setup/macos_setup.sh
+  
+        # NOTE: The Ubuntu workflow installs xvfb + xclip here. Neither is needed
+        # on macOS: there is no X11 to virtualize, and clipboard access is native
+        # via pbcopy/pbpaste, so this step is intentionally skipped.
+  
+        - name: Start LanguageTool Server
+          run: |
+            echo "BRANCH: ${{ github.ref_name }}"
+            java -cp LanguageTool-6.6/languagetool-server.jar org.languagetool.server.HTTPServer --port 8082 --allow-origin "*" &
+            sleep 10
+  
+        - name: Ensure GNU coreutils (Eco-CI needs microsecond-precise `date`)
+          # macOS ships BSD `date`, which lacks the sub-second precision that
+          # eco-ci-energy-estimation relies on internally. Installing GNU
+          # coreutils and prepending its "gnubin" dir makes `date` resolve to
+          # the GNU version for the rest of this job.
+          run: |
+            brew install coreutils
+            echo "$(brew --prefix coreutils)/libexec/gnubin" >> $GITHUB_PATH
+  
+        - name: Initialize Eco-CI
+          uses: green-coding-solutions/eco-ci-energy-estimation@v5
+          with:
+            task: start-measurement
+  
+        - name: Run Self-Tester with Final Guard
+          env:
+            PYTHONPATH: ${{ github.workspace }}
+            AURA_RUN_LT_TESTS_IN_CI: "true"
+            CI: "true"
+            AURA_ACTIVE_WINDOW_TITLE: "Terminal"
+          run: |
+            echo "BRANCH: ${{ github.ref_name }}"
+            echo "vosk-model-de-0.21" > config/model_name.txt
+            echo "=== CI DEBUG INFO (macOS) ==="
+            echo "model_name: $(cat config/model_name.txt 2>/dev/null || echo 'NONE')"
+            echo "EXCLUDE_LANGUAGES: ${EXCLUDE_LANGUAGES:-NONE}"
+            ls -la data/_privat_no_zip/cache/maps/ 2>/dev/null || echo "NO_MAPS_CACHE_DIR"
+            echo "====================="
+            echo "=== RUN 1 (Cold Run) ==="
+            START_TIME_1=$(python3 -c "import time; print(time.time())")
+            ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results_1.log
+            END_TIME_1=$(python3 -c "import time; print(time.time())")
+            DURATION_1=$(awk "BEGIN {print $END_TIME_1 - $START_TIME_1}")
+            echo "=== RUN 2 (Warm Run) ==="
+            START_TIME_2=$(python3 -c "import time; print(time.time())")
+            ./.venv/bin/python3 -m scripts.py.func.checks.self_tester | tee test_results_2.log
+            END_TIME_2=$(python3 -c "import time; print(time.time())")
+            grep -E "(FAIL:|Input:|Expected:|Got:)" test_results_2.log || true
+            DURATION_2=$(awk "BEGIN {print $END_TIME_2 - $START_TIME_2}")
+            cp test_results_2.log test_results.log
+            echo "⏱️ Run 1 Duration: ${DURATION_1}s"
+            echo "⏱️ Run 2 Duration: ${DURATION_2}s"
+            TESTS_PASSED=$(grep -oE 'Passed: all [0-9]+' test_results.log | grep -oE '[0-9]+' || echo "unknown")
+            if [[ "$TESTS_PASSED" =~ ^[1-9][0-9]*$ ]]; then
+              TIME_PER_TEST_1=$(awk "BEGIN {printf \"%.2f\", $DURATION_1 / $TESTS_PASSED}")
+              TIME_PER_TEST_2=$(awk "BEGIN {printf \"%.2f\", $DURATION_2 / $TESTS_PASSED}")
+              echo "📊 Run 1 avg: ${TIME_PER_TEST_1}s/test | Run 2 avg: ${TIME_PER_TEST_2}s/test"
+              TIME_PER_TEST="$TIME_PER_TEST_2"
+            else
+              TIME_PER_TEST="0"
+            fi
+            MAPS_COUNT=$(find config/maps -type f -name "*.py" ! -name "__init__.py" | wc -l)
+            RULES_COUNT=$(python3 -c "import json, pathlib; f=pathlib.Path('data/_privat_no_zip/cache/maps/active_maps_cache_de-DE.json'); data=json.loads(f.read_text()) if f.exists() else {}; print(sum(len(v) if isinstance(v, list) else len(v.get('rules', [])) for v in data.get('files', {}).values()))")
+            echo "TESTS_PASSED=$TESTS_PASSED" >> $GITHUB_ENV
+            echo "TIME_PER_TEST_1=$TIME_PER_TEST_1" >> $GITHUB_ENV
+            echo "TIME_PER_TEST_2=$TIME_PER_TEST_2" >> $GITHUB_ENV
+            echo "MAPS_COUNT=$MAPS_COUNT" >> $GITHUB_ENV
+            echo "RULES_COUNT=$RULES_COUNT" >> $GITHUB_ENV
+            if grep -q "| 0 not passed" test_results.log; then
+              echo " Final Guard: Success summary found. 0 tests failed."
+            else
+              echo " FINAL GUARD FAILURE: Success summary '| 0 failed' not found!"
+            echo "--- Tail of test_results.log (RUN 2 / Warm Run) for diagnosis ---"
+            tail -n 60 test_results.log
+            echo "-------------------------------------------------------------"
+              exit 1
+            fi
+  
+        - name: Measure Core Logic Tests
+          uses: green-coding-solutions/eco-ci-energy-estimation@v5
+          with:
+            task: get-measurement
+            label: "Aura Core Logic (${{ env.TESTS_PASSED }} Tests across ${{ env.MAPS_COUNT }} Maps, avg ${{ env.TIME_PER_TEST_2 }}s warm / ${{ env.TIME_PER_TEST_1 }}s cold)"
+  
+        - name: Run Catch-All Training E2E Test
+          env:
+            PYTHONPATH: ${{ github.workspace }}
+            CI: "true"
+          run: |
+            echo "BRANCH: ${{ github.ref_name }}"
+            ./.venv/bin/python3 -m scripts.py.func.checks.catch_all_training_e2e_test
+  
+        - name: Run file4replacement E2E Test
+          env:
+            PYTHONPATH: ${{ github.workspace }}
+            CI: "true"
+          run: |
+            echo "BRANCH: ${{ github.ref_name }}"
+            ./.venv/bin/python3 -m scripts.py.func.checks.file4replacement_e2e_test
+  
+        - name: Display and Send Energy Results
+          uses: green-coding-solutions/eco-ci-energy-estimation@v5
+          with:
+            task: display-results
+            pr-comment: true
+            send-data: true
+            calculate-co2: false  # External CO2 data often unavailable for GH runners
+  
+        - name: Package Assets as Artifact
+          if: always()
+          uses: actions/upload-artifact@v6
+          with:
+            name: sl5-assets-pack-macos-tester
+            path: |
+              ./LanguageTool-6.6
+              ./models/
