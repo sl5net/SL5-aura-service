@@ -137,22 +137,22 @@ FUZZY_MAP_pre = [
     # EXAMPLE: solicitudes de extracción
 
     ('pull requests', r'^\s*(jalar\s*solicitudes.solicitudes?|Suéter\s*Búsqueda)\s*$', 82, # min_accuracy
-   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: solicitudes de extracción
 
     ('pull requests', r'\b(cero|jalar) solicitudes.solicitudes\b', 82, # min_accuracy
-   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: el rompió
 
     ('er branch', r'él\b (en bancarrota|Principal)\b', 82, # min_accuracy
-   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: Príncipe destacado
 
     ('feature branch ', r'\bCaracterística\s*príncipe\b', 82, # min_accuracy
-   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: Príncipe destacado
 
@@ -163,7 +163,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: git pago
 
     ('git checkout ', r'^\s*(git|va)\s+(Git Verificar|Controlar-afuera)\s*$', 80, # min_accuracy
-   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: git pago
 
@@ -181,16 +181,16 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Comprometerse
 
     (' Commit ', r'\convertirse\s*con\b\s*', 82, # min_accuracy
-           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: mensaje de confirmación
 
     (' Commit Message ', r'\recibir\s*con\s*Mensaje\b', 82, # min_accuracy
-           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: nuevo lanzamiento
 
     ('neues Release ', r'\nuevo\s*(Liberar|mazmorra)\b', 82, # min_accuracy
-           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 
 
@@ -208,22 +208,22 @@ FUZZY_MAP_pre = [
     # EXAMPLE: estadogit
 
     ('git status ', r'^\s*(Va|Ella va|git|conseguir|red|falla|estado miembro|niños|kate)\s+(status|Estado|estado|estático|estado|comenzar|comienza|comenzar|granero|fechas)\s*$', 82, # min_accuracy
-   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: estados miembros
 
     ('git status ', r'^\s*(estado miembro|estados miembros|Ahora Ciudad|Va Estado es|va status)\s+(es)\s*$', 80, # min_accuracy
-   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: estado miembro
 
     ('git status ', r'^\s*(estado miembro|Pedal de arranque|Ahora comienza)\s*$', 80, # min_accuracy
-   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: gitschtal
 
     ('git status', r'^\s*(gitschtal|se deslizó|charlas tenía|chirridos|chirridos convertirse|Disparates tenía|Va hizo a nosotros)\s+$', 80, # min_accuracy
-   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+   {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # es estático
 
@@ -236,12 +236,12 @@ FUZZY_MAP_pre = [
     # EXAMPLE: git agregar.
 
     ('git add .', r'^\s*(git|va[^\s]*|ir|red|gita|kate|kathe|gatito|fíat|con)\s+(agregar|en|hizo|papá|tiene|dueto|deslizar|él|ahora|aplicación|él tiene)\s*(\.|\punto b\b)?\s*$', 82, # min_accuracy
-           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+           {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: Cuna
 
     ('git add .', r'^\s*(Cuna|Va él allá|crédito|membrillo tiene)\s*$', 78, # min_accuracy
-     {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+     {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # va el tiene
 
@@ -263,12 +263,12 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: git WIP empujar
 
-    ('!git add . && git commit -m "WIP" && git push', r'^\s*(git|va[^\s]*|ir|red|gita|kate|kathe|gatito|fíat|con)\s+(agregar|en|hizo|papá|tiene|dueto|deslizar|él|ahora|aplicación)\s*(rápido|rápido|sucio|limpiar)?\s*$', 82,      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+    ('!git add . && git commit -m "WIP" && git push', r'^\s*(git|va[^\s]*|ir|red|gita|kate|kathe|gatito|fíat|con)\s+(agregar|en|hizo|papá|tiene|dueto|deslizar|él|ahora|aplicación)\s*(rápido|rápido|sucio|limpiar)?\s*$', 82,      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 
     # EXAMPLE: git WIP empujar
 
-    ('!git add . && git commit -m "WIP" && git push; && git ', r'^\s*(git|va[^\s]*|ir|red|gita|kate|kathe|gatito|fíat|con)\s*(rápido|rápido|sucio|limpiar)?\s*$', 82,      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+    ('!git add . && git commit -m "WIP" && git push; && git ', r'^\s*(git|va[^\s]*|ir|red|gita|kate|kathe|gatito|fíat|con)\s*(rápido|rápido|sucio|limpiar)?\s*$', 82,      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     ############################################
 
     # (f'cd {CONFIG_DIR}/../../../../../; !git add . && git commit -m "WIP" && git push', r'^\s*(git|go[^\s]*|go|gitter|Gitta|kate|käthe|kitte|fiat|mit)\s+(add|at|tat|dad|hat|duett|rutsch|es|now|app)\s*(quick|fast|dirty|wip)?\s*$', 82, {'command_flags': re.IGNORECASE, 'only_in_windows': ['consola', 'consola', 'Terminal', 'Consola']}),
@@ -282,151 +282,151 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Klitschko con
 
     ('git commit ', r'^\s*Klitschko con\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: kate comprometerse
 
     ('git commit ', r'^\s*kate Comprometerse\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: un cometa
 
     ('git commit ', r'^\s*A cometas\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: ir a comprometerse
 
     ('git commit ', r'^\s*(Va Comprometerse|Va con qué|petkovic)\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: ve, ven a comprometerte
 
     ('git commit ', r'^\s*Va venir Comprometerse\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: tu vas conmigo
 
     ('git commit ', r'^\s*(ir tú con)\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: con qué
 
     ('git commit ', r'^\s*con qué\s*$', 85, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: va cobit uno
 
     ('git commit ', r'^va cobit a$', 85, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: git empujar
 
     ('git push ', r'^\s*(git|grande|va|red)\s*(arbusto|empujar|empujar|controlar|desaparecido)\s*$', 85, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: Kate Bush
 
     ('git push ', r'^\s*kate\s+arbusto\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: pitbull
 
     ('git push ', r'^\s*pitbull\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # --- git pull ---
 
     # EXAMPLE: git tirar
 
     ('git pull ', r'^\s*(git|va|tranquilo|red)\s*(jalar|pohl|piscina)\s*$', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: s git tirar s
 
     ('git pull ', r'^\s*git\s*jalar\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # --- git diferencia ---
 
     # EXAMPLE: diferencia git
 
-    ('git diff ', r'^\s*(equipo|git|va|durazno)\s*(diff|profundo|pelea|tuv|jugo|consejos|va\'s|kittys|dies|die)\s*$', 75,      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+    ('git diff ', r'^\s*(equipo|git|va|durazno)\s*(diff|profundo|pelea|tuv|jugo|consejos|va\'s|kittys|dies|die)\s*$', 75,      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 
     # EXAMPLE: Comparación con el penúltimo compromiso
 
     ('git diff HEAD~1', r'^Comparación con penúltimo Comprometerse\s*$', 75, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: Última confirmación con diff s
 
     ('git log -p -1', r'^Último Comprometerse con Diff\s*$', 75, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: Muestra cambios preparados pero no comprometidos.
 
     ('git diff --cached', r'^Espectáculos escenificado (pero no comprometido) cambios\s*$', 75, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 
 
     # EXAMPLE: interruptor de git
 
     ('git switch ', r'^\s*(git|va|durazno)\s*(cambiar|Schmidt)\s*$', 75, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: git tirar
 
     ('git fetch; git pull"', r'^\s*(git|Aplica|va) (jalar|gordo)\s*$"', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 ##################################################################
 
     # EXAMPLE: solicitudes de extracción
 
     ('pull requests', r'^\s*(jalar\s*solicitudes.solicitudes?|Suéter\s*Búsqueda)\s*$', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: solicitudes de extracción
 
     ('pull requests', r'\b(cero|jalar) solicitudes.solicitudes\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 # por favor escríbeme porque vendrá con texto'
 
     # EXAMPLE: viene con texto
 
     ('git commit text', r'\b(va venir con texto)\b', 75, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 
     # EXAMPLE: Príncipe destacado
 
     ('feature branch', r'\bCaracterística\s*príncipe\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: Eliminar rama
 
     ('git branch -d', r'\b(Rama|Príncipe)\s*borrar\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: Nombres de ranchos
 
     ('Branch Name', r'\rama\s*nombres\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: mensaje de confirmación
 
     (' Commit', r'\convertirse\s*con\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: ven con mensaje
 
     (' Commit Message', r'\recibir\s*con\s*Mensaje\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: nuevo lanzamiento
 
     ('neues Release', r'\nuevo\s*(mazmorra|Liberar)\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: Sección de código
 
     ('Code Abschnitt', r'\bkot\s*secciones\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: botón de parada
 
     ('StopButton', r'\bstob\s*botón\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: alaba el caso
 
     ('lowerCase', r'\manchas\s*Caso\b', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # --- estado de git ---
 
@@ -435,14 +435,14 @@ FUZZY_MAP_pre = [
     # EXAMPLE: estadogit
 
     ('git status', r'^\s*(git|va|red|niños)\s+(status|estado|fechas)\s*$', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # --- git agregar . ---
 
     # EXAMPLE: agregar git
 
     ('git add .', r'^\s*(git|va|ir|red|kate|fíat|con)\s+(agregar|lejos|en|conducir|hizo|papá|tiene|dueto|él)\s*(\.|\punto b\b)?\s*$', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # --- git confirmar ---
 
@@ -452,104 +452,104 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Klitschko con s
 
     ('git commit ', r'^\s*Klitschko con\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: Kate se compromete
 
     ('git commit ', r'^\s*kate Comprometerse\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: ir cometa
 
     ('git commit ', r'^\s*Va (cometa|próximo|Comprometerse)\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: un cometa
 
     ('git commit ', r'^\s*A cometas\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: Ir a comprometerse
 
     ('git commit ', r'^\s*Va Comprometerse\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: Ve, ven a comprometerte.
 
     ('git commit ', r'^\s*Va venir Comprometerse\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: Va
 
     ('git commit ', r'^\s*(Va|git|con) (venir|cometas|Comprometerse)\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: cometa
 
     ('commit ', r'\s+cometa\s+', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: git
 
     ('git commit ', r'^\s*(git|con) venir\s*con\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: con que
 
     ('git commit ', r'^\s*con qué\s*$', 85, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: git
 
     ('git commit -m "', r'^\s*(git|va) venir?\s*con\s*$"', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: git
 
     ('git commit -m "', r'^\s*(git|Aplica|va) (cometa|venir)\s*$"', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # --- git push ---
 
     # EXAMPLE: git
 
     ('git push', r'^\s*(git|va|red)\s*(arbusto|empujar)\s*$', 85, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # --- git pull ---
 
     # EXAMPLE: git
 
     ('git pull', r'^\s*(git|va|red)\s*(pohl|piscina)\s*$', 82, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
     # EXAMPLE: s git tirar s
 
     ('git pull', r'^\s*git\s*jalar\s*$', 80, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # --- git diferencia ---
 
     # EXAMPLE: git
 
     ('git diff', r'^\s*(git|va|durazno)\s*(diff|profundo|jugo)\s*$', 75, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 
     # EXAMPLE: Mostrar lo que se cambió en las últimas confirmaciones
 
     ('git show HEAD > gitDiff.txt; kate gitDiff.txt', r'^\s*Espectáculo Qué en el último Comprometerse cambió convertirse\s*$', 75, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 
     # EXAMPLE: Crítica de gruñidos
 
     ('.gitignore', r'^\s*(crítica gruñido|crítica Noé|Reseñas|gatito knorr|crítica knorr)\s*$', 75, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: da knorr
 
     ('.gitignore', r'\b(da knorr)\b$', 75, # min_accuracy
-      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
     # EXAMPLE: nuevo lanzamiento
 
-    ("alias release_protokoll='gh release list --limit 100 | awk \"{print $1}\" | while read tag; do if [ -n \"$tag\" ]; then echo -e \"\n\n--- RELEASE: $tag ---\n\"; gh release view \"$tag\"; fi; done > all_releases.txt && kate all_releases.txt'", r'\b(lanzamientos\w* protocolo\w*|relé\w* Protocolos|todo lanzamientos|lanzamientos\w* exportar\w*|papas fritas Protocolos)\b$', 75,      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console']}),
+    ("alias release_protokoll='gh release list --limit 100 | awk \"{print $1}\" | while read tag; do if [ -n \"$tag\" ]; then echo -e \"\n\n--- RELEASE: $tag ---\n\"; gh release view \"$tag\"; fi; done > all_releases.txt && kate all_releases.txt'", r'\b(lanzamientos\w* protocolo\w*|relé\w* Protocolos|todo lanzamientos|lanzamientos\w* exportar\w*|papas fritas Protocolos)\b$', 75,      {'command_flags': re.IGNORECASE, 'only_in_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 'xterm', 'tilix', 'terminator']}),
 
 
 ]
