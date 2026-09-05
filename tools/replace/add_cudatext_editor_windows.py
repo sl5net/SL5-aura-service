@@ -7,9 +7,9 @@ import sys
 
 
 def transform_window_list(content: str) -> str:
-    """Pure transformation function to insert CudaText and xed alongside Kate."""
+    """Pure transformation function to insert CudaText and xed alongside Kate/kate."""
     pattern = re.compile(
-        r"('only_in_windows':\s*\[[^\]]*r'Kate')(?!,\s*r'CudaText')([^\]]*\])"
+        r"('only_in_windows':\s*\[[^\]]*r'[Kk]ate')(?!,\s*r'CudaText')([^\]]*\])"
     )
     replacement = r"\1, r'CudaText', r'xed'\2"
     return pattern.sub(replacement, content)
