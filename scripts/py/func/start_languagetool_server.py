@@ -59,7 +59,65 @@ def _update_settings_file(logger, java_path):
     if settings.DEV_MODE:
         logger.info(f"Settings file updated. Java path set to: {java_path}")
 
-def _is_lt_server_responsive(url, timeout=0.9, logger=None):
+def _is_working_java(path):
+    if not path:
+        return False
+    p = Path(path)
+    if not p.is_file():
+        return False
+    try:
+        result = subprocess.run([str(p), "-version"], capture_output=True, text=True, timeout=5)
+        return result.returncode == 0
+    except (subprocess.SubprocessError, OSError):
+        return False
+
+def _find_working_java(logger=None):
+    candidates = []
+    if sys.platform == "darwin":
+        try:
+            brew_prefix = subprocess.run(['brew', '--prefix'], capture_output=True, text=True, check=False,
+                                         encoding='utf-8').stdout.strip()
+            if brew_prefix:
+                candidates.append(f"{brew_prefix}/opt/openjdk/bin/java")
+                candidates.append(f"{brew_prefix}/bin/java")
+        except Exception:
+            pass
+        candidates.extend([
+            "/opt/homebrew/opt/openjdk/bin/java",
+            "/opt/homebrew/bin/java",
+            "/usr/local/opt/openjdk/bin/java",
+            "/usr/local/bin/java",
+        ])
+        try:
+            jh = subprocess.run(['/usr/libexec/java_home'], capture_output=True, text=True, check=False,
+                                encoding='utf-8').stdout.strip()
+            if jh:
+                candidates.append(f"{jh}/bin/java")
+        except Exception:
+            pass
+
+    java_home = os.environ.get("JAVA_HOME")
+    if java_home:
+        exe = "java.exe" if sys.platform == "win32" else "java"
+        candidates.append(str(Path(java_home) / "bin" / exe))
+
+    try:
+        command = ['where', 'java'] if sys.platform == "win32" else ['which', 'java']
+        result = subprocess.run(command, capture_output=True, text=True, check=False, encoding='utf-8')
+        if result.returncode == 0:
+            for line in result.stdout.strip().split('\n'):
+                cleaned = line.strip()
+                if cleaned:
+                    candidates.append(cleaned)
+    except Exception:
+        pass
+
+    for cand in candidates:
+        if _is_working_java(cand):
+            return cand
+    return None
+
+def _is_lt_server_responsive(url, timeout=0.9, logger=None):    
     """Checks if the LanguageTool server at the given URL is responsive."""
     try:
         response = requests.post(
@@ -157,18 +215,14 @@ def start_languagetool_server(logger, languagetool_jar_path, base_url, for_self_
     except (ImportError, AttributeError):
         java_executable_path = None
 
-    if not java_executable_path or not Path(java_executable_path).exists():
-        logger.info("Java executable path is not set or invalid. Auto-detecting…")
-        try:
-            command = ['where', 'java'] if sys.platform == "win32" else ['which', 'java']
-            result = subprocess.run(command, capture_output=True, text=True, check=True, encoding='utf-8')
-            detected_path = result.stdout.strip().split('\n')[0].strip()
-
+    if not _is_working_java(java_executable_path):
+        logger.info("Java executable path is not set or invalid. Auto-detecting")
+        detected_path = _find_working_java(logger=logger)
+        if detected_path:
             _update_settings_file(logger, detected_path)
             java_executable_path = detected_path
-
-        except (subprocess.CalledProcessError, FileNotFoundError, IndexError) as e:
-            logger.critical(f"CRITICAL: Failed to auto-detect Java. Please install it. Error: {e}")
+        else:
+            logger.critical("CRITICAL: Failed to auto-detect a working Java runtime. Please install Java (>=17).")
             return False
 
     if not java_executable_path:

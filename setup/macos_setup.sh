@@ -95,12 +95,18 @@ if [ -n "$OPENJDK_PREFIX" ] && [ -d "$OPENJDK_PREFIX/bin" ]; then
 fi
 
 if [ -d "$OPENJDK_PREFIX/libexec/openjdk.jdk" ]; then
-echo "--> Making system JDK symlink (so macOS/system tools find it)…"
+echo "--> Making system JDK symlink (so macOS/system tools find it)"
     sudo mkdir -p /Library/Java/JavaVirtualMachines
     sudo ln -sfn "$OPENJDK_PREFIX/libexec/openjdk.jdk" /Library/Java/JavaVirtualMachines/openjdk.jdk || true
 fi
-
-echo "--> Checking for a compatible Java version (>=17)…"
+if [ -n "$OPENJDK_PREFIX" ] && [ -x "$OPENJDK_PREFIX/bin/java" ]; then
+    BREW_BIN="$(brew --prefix 2>/dev/null)/bin"
+    if [ -d "$BREW_BIN" ]; then
+        echo "--> Making user-accessible Homebrew java symlink: $BREW_BIN/java"
+        ln -sfn "$OPENJDK_PREFIX/bin/java" "$BREW_BIN/java" 2>/dev/null || true
+    fi
+fi
+echo "--> Checking for a compatible Java version (>=17)"
 
 JAVA_OK=0
 if command -v java >/dev/null 2>&1; then
@@ -116,12 +122,16 @@ else
 fi
 
 if [ "$JAVA_OK" -eq 0 ]; then
-    echo "    -> Re-installing openjdk via Homebrew…"
+    echo "    -> Re-installing openjdk via Homebrew"
     brew install openjdk
     OPENJDK_PREFIX="$(brew --prefix openjdk 2>/dev/null || true)"
     if [ -n "$OPENJDK_PREFIX" ] && [ -d "$OPENJDK_PREFIX/bin" ]; then
         export PATH="$OPENJDK_PREFIX/bin:$PATH"
-  fi
+        BREW_BIN="$(brew --prefix 2>/dev/null)/bin"
+        if [ -d "$BREW_BIN" ] && [ -x "$OPENJDK_PREFIX/bin/java" ]; then
+            ln -sfn "$OPENJDK_PREFIX/bin/java" "$BREW_BIN/java" 2>/dev/null || true
+        fi
+    fi
 fi
 
 
