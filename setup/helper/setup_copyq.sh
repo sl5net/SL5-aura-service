@@ -19,8 +19,31 @@ if ! command -v copyq &> /dev/null; then
 
 elif command -v zypper &> /dev/null; then
         sudo zypper install -y copyq
-    elif command -v brew &> /dev/null; then
-        brew install --cask copyq
+    elif [ "$(uname -s)" = "Darwin" ]; then
+        echo "[INFO] macOS detected. Installing CopyQ from official release DMG..."
+        ARCH=$(uname -m)
+        if [ "${ARCH}" = "arm64" ]; then
+            PATTERN="m1\.dmg"
+            FALLBACK_URL="https://github.com/hluk/CopyQ/releases/download/v16.0.0/CopyQ-16.0.0-macos-12-m1.dmg"
+        else
+            PATTERN="macos-.*\.dmg"
+            FALLBACK_URL="https://github.com/hluk/CopyQ/releases/download/v16.0.0/CopyQ-16.0.0-macos-13.dmg"
+        fi
+        CURL_HDR=()
+        if [ -n "${GITHUB_TOKEN:-}" ]; then
+            CURL_HDR=(-H "Authorization: token ${GITHUB_TOKEN}")
+        fi
+        DMG_URL=$(curl -fsSL "${CURL_HDR[@]}" https://api.github.com/repos/hluk/CopyQ/releases/latest 2>/dev/null | grep "browser_download_url" | grep -E "${PATTERN}" | head -n 1 | cut -d '"' -f 4 || true)
+        DMG_URL="${DMG_URL:-${FALLBACK_URL}}"
+        TMP_DMG="/tmp/CopyQ.dmg"
+        echo "[INFO] Downloading CopyQ from ${DMG_URL}..."
+        curl -fsSL -L "${DMG_URL}" -o "${TMP_DMG}"
+        MOUNT_DIR=$(mktemp -d /tmp/copyq_mount.XXXXXX)
+        hdiutil attach "${TMP_DMG}" -nobrowse -mountpoint "${MOUNT_DIR}" -quiet
+        cp -R "${MOUNT_DIR}/CopyQ.app" /Applications/
+        hdiutil detach "${MOUNT_DIR}" -quiet || true
+        rm -rf "${MOUNT_DIR}" "${TMP_DMG}"
+        xattr -r -d com.apple.quarantine /Applications/CopyQ.app 2>/dev/null || true
     else
         echo "[WARNING] Unknown package manager. Please install CopyQ manually."
     fi
@@ -29,15 +52,18 @@ else
 fi
 
 if [ "$(uname -s)" = "Darwin" ]; then
-    if ! command -v copyq &> /dev/null && [ -x "/Applications/CopyQ.app/Contents/MacOS/copyq" ]; then
+    if [ -x "/Applications/CopyQ.app/Contents/MacOS/copyq" ]; then
         if command -v brew &> /dev/null; then
-            BREW_BIN="$(brew --prefix)/bin"
+            BREW_BIN="$(brew --prefix 2>/dev/null)/bin"
             mkdir -p "${BREW_BIN}"
             ln -sfn "/Applications/CopyQ.app/Contents/MacOS/copyq" "${BREW_BIN}/copyq" 2>/dev/null || true
         fi
         export PATH="/Applications/CopyQ.app/Contents/MacOS:$PATH"
     fi
 fi
+
+
+
 if [ "$(id -u)" -eq 0 ] && [ -n "${SUDO_USER:-}" ] && [ "${SUDO_USER}" != "root" ]; then
     TARGET_USER="${SUDO_USER}"
     TARGET_UID="$(id -u "${TARGET_USER}")"
