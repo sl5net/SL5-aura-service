@@ -2,9 +2,10 @@ name: Test macOS Installer & Aura E2E
 # .github/workflows/test-macos-installer-e2e.yml
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ '**mac-test**' ]
+    branches: [ master, '**self-test**', '**mac-test**', fix/macos-silicon-setup-copyq-lt ]
+    
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
