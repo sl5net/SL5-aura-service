@@ -1,0 +1,96 @@
+name: Test macOS Installer & Aura E2E
+# .github/workflows/test-macos-installer-e2e.yml
+
+on:
+  push:
+    branches: [ master, '**self-test**', '**mac-test**', fix/macos-silicon-setup-copyq-lt ]
+    
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test-macos-installation:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v5
+
+      - name: Cache models and tools
+        uses: actions/cache@v5
+        with:
+          path: |
+            ./tools/
+            ./LanguageTool-6.6
+            ./models/
+          key: ${{ runner.os }}-models-tools-${{ hashFiles('**/setup/*.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-models-tools-
+
+      - name: Install Xcode Command Line Tools
+        run: xcode-select --install || true
+
+      - name: Install Homebrew
+        run: |
+          if ! command -v brew &> /dev/null; then
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Prepare Bootstrap Pointer
+        run: |
+          sudo mkdir -p /tmp/sl5_aura
+          sudo chmod -R 777 /tmp/sl5_aura
+          echo "${{ github.workspace }}" > /tmp/sl5_aura/sl5net_aura_project_root
+          cp config/settings_local.py_Example.txt config/settings_local.py
+
+      - name: Run Official macOS Setup
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x ./setup/macos_setup.sh
+          ./setup/macos_setup.sh
+
+      - name: Test CopyQ Setup Helper
+        run: |
+          chmod +x ./setup/helper/setup_copyq.sh
+          ./setup/helper/setup_copyq.sh F12
+          echo "Verifying copyq command availability:"
+          which copyq || ls -la /Applications/CopyQ.app/Contents/MacOS/copyq
+
+      - name: Verify LanguageTool Auto-Start via Python
+        run: |
+          ./.venv/bin/python3 -c "
+          import logging
+          from pathlib import Path
+          from scripts.py.func.start_languagetool_server import start_languagetool_server, _is_lt_server_responsive
+          logging.basicConfig(level=logging.INFO)
+          logger = logging.getLogger('ci-test')
+          jar = Path('LanguageTool-6.6/languagetool-server.jar')
+          assert jar.exists(), f'JAR not found at {jar}'
+          proc = start_languagetool_server(logger, jar, 'http://127.0.0.1:8082', for_self_test=True)
+          assert proc, 'start_languagetool_server failed to start process'
+          assert _is_lt_server_responsive('http://127.0.0.1:8082'), 'LT server is not responding'
+          print('SUCCESS: LanguageTool auto-started and responded.')
+          "
+
+      - name: Run Self-Tester
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          AURA_RUN_LT_TESTS_IN_CI: "true"
+          CI: "true"
+          AURA_ACTIVE_WINDOW_TITLE: "Terminal"
+        run: |
+          echo "vosk-model-de-0.21" > config/model_name.txt
+          ./.venv/bin/python3 -m scripts.py.func.checks.self_tester
+
