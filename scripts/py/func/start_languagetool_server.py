@@ -117,8 +117,18 @@ def _find_working_java(logger=None):
             return cand
     return None
 
-def _is_lt_server_responsive(url, timeout=0.9, logger=None):    
+def _is_lt_server_responsive(url, timeout=2.5, logger=None):    
     """Checks if the LanguageTool server at the given URL is responsive."""
+    try:
+        response = requests.get(
+            f"{url}/v2/languages",
+            timeout=timeout,
+            allow_redirects=True
+        )
+        if response.status_code == 200:
+            return True
+    except Exception:
+        pass
     try:
         response = requests.post(
             f"{url}/v2/check",
@@ -128,6 +138,7 @@ def _is_lt_server_responsive(url, timeout=0.9, logger=None):
         )
         return response.status_code == 200 and "software" in response.text
     except Exception as e:
+        
         print(f"LanguageTool(LT) Check failed: {e}")
         if logger:
             logger.debug(f"LanguageTool(LT) Check failed: {e}")

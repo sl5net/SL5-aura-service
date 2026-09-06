@@ -80,7 +80,7 @@ jobs:
           assert jar.exists(), f'JAR not found at {jar}'
           proc = start_languagetool_server(logger, jar, 'http://127.0.0.1:8082', for_self_test=True)
           assert proc, 'start_languagetool_server failed to start process'
-          assert _is_lt_server_responsive('http://127.0.0.1:8082'), 'LT server is not responding'
+          assert _is_lt_server_responsive('http://127.0.0.1:8082', timeout=5.0), 'LT server is not responding'
           print('SUCCESS: LanguageTool auto-started and responded.')
           "
 
