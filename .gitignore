@@ -8,6 +8,7 @@ gitDiff.txt
 .stignore
 backup/
 self_test_zip_tmp
+**/self_test_zip_tmp
 
 
 *.bak

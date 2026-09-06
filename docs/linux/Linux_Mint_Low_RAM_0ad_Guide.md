@@ -25,9 +25,13 @@ On systems with ≤ 6 GiB RAM, running a heavy desktop environment, a 3D RTS gam
 
 ## Verification Commands
 To inspect system memory and process states:
-```bash
 # Check memory and swap usage
+```bash
 free -h
+```
 
 # Check if LanguageTool process is evicted
+```bash
 ps aux | grep -i "[l]anguagetool"
+```
+

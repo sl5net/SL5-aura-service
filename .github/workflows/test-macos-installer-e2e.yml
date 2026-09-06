@@ -1,11 +1,38 @@
 name: Test macOS Installer & Aura E2E
 # .github/workflows/test-macos-installer-e2e.yml
-
+ 
 on:
   push:
     branches: [ master, '**self-test**', '**mac-test**', fix/macos-silicon-setup-copyq-lt ]
-    
+    paths-ignore:
+      - '.github/**'
+      - 'tools/**'
+      - 'docs/**'
+      - 'doc_sources/**'
+      - 'scripts/infra/**'
+      - '**.md'
+      - '**.rst'
+      - '**.html'
+      - '.github/workflows/deploy-docs.yml'
+      - '.gitignore'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '.github/**'
+      - 'tools/**'
+      - 'docs/**'
+      - 'doc_sources/**'
+      - '.github/workflows/**'
+      - '**.md'
+      - '**.yml'
+      - '**.rst'
+      - '**.html'
+      - '.github/workflows/deploy-docs.yml'
+      - '.gitignore'
+      - '.flake8'
+      - '.slop.toml'
   workflow_dispatch:
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

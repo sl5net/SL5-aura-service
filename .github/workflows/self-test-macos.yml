@@ -1,8 +1,15 @@
 name: Self-Test (Aura Logic) for macOS
 # .github/workflows/self-test-macos.yml
+
+#############################
+#############   deprecated 6.9.'26 07:26 Sun
+# better use:
+# test-macos-installer-e2e.yml
+
+
 on:
   push:
-    branches: [ master, '**self-test**', feat/cache-write-only-on-maps_changed ]
+    branches: [ feat/cache-write-only-on-maps_changed ]
     paths-ignore:
       - '.github/**'
       - 'tools/**'
