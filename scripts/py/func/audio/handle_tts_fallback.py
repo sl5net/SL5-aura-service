@@ -1,4 +1,4 @@
-
+# scripts/py/func/audio/handle_tts_fallback.py:1
 import platform
 
 # scripts/py/func/audio/handle_tts_fallback.py:11
@@ -25,15 +25,22 @@ def handle_tts_fallback(processed_text, LT_LANGUAGE, logger):
 
     # 1. Try Piper Server (if not ESPEAK primary)
     if str(getattr(settings, "USE_AS_PRIMARY_SPEAK", "")).upper() != "ESPEAK":
-        from ..audio_manager import speak_inclusive_fallback
+        
         if piper_speak_via_server(processed_text):
             return True
-        logger.warning("Primary TTS failed. Trying Fallback…")
-
+        logger.warning("Primary TTS failed. Trying Wyoming fallback")
+        from .wyoming_speak import wyoming_speak
+        if wyoming_speak(processed_text, logger=logger):
+            logger.info("Wyoming TTS synthesis started successfully")
+            return True
+        logger.warning("Wyoming TTS failed or unreachable. Trying espeak fallback")
     # 2. Fallback Espeak
     if settings.USE_ESPEAK_FALLBACK:
+        logger.info("Triggering espeak fallback")
         from ..audio_manager import speak_inclusive_fallback
 
         speak_inclusive_fallback(processed_text, LT_LANGUAGE)
         return True
+
+
     return False
