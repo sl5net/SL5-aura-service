@@ -3,8 +3,10 @@ import sys
 import threading
 import time
 import requests
+
 # from config import settings
 from scripts.py.func.config.dynamic_settings import settings
+
 _speech_lock = threading.Lock()
 # http://localhost:5002/speak
 PIPER_SERVER_HOST = settings.PIPER_SERVER_HOST
@@ -17,26 +19,28 @@ from pathlib import Path
 def piper_speak_via_server(text: str) -> bool:
     """Returns True only if Piper server is reachable, then speaks async."""
     try:
-        requests.get(f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/",
-                     verify=False, timeout=1) 
+        requests.get(
+            f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/", verify=False, timeout=1
+        )
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
         return False  # espeak Fallback
 
     speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False)
     return True
 
+
 # scripts/py/func/audio/piper_speak_via_server.py:22
 def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
-    if not text or not globals().get('SPEECH_ENABLED', True):
+    if not text or not globals().get("SPEECH_ENABLED", True):
         return None
 
     def _do_speak(use_espeak2):
         try:
-            with open('/tmp/speak_server_input.txt', 'w') as f:
+            with open("/tmp/speak_server_input.txt", "w") as f:
                 f.write(text)
             requests.post(settings.PIPER_SERVER_URL, verify=False, timeout=60)  # nosec B501 - localhost only
 
-            time.sleep(.1)
+            time.sleep(0.1)
 
             p = Path("/tmp/speak_server_input.txt")
             try:
@@ -62,4 +66,4 @@ def speak(text, voice="de-de", pitch=50, blocking=False, use_espeak=False):
     if blocking:
         t.join()
 
-    return t  # Thread 
+    return t  # Thread

@@ -19,7 +19,9 @@ _file_logger = logging.getLogger("wyoming_speak")
 if not _file_logger.handlers:
     _file_logger.setLevel(logging.DEBUG)
     _handler = logging.FileHandler(_LOG_FILE, encoding="utf-8")
-    _handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+    _handler.setFormatter(
+        logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    )
     _file_logger.addHandler(_handler)
 
 
@@ -31,7 +33,9 @@ def _is_server_reachable(host: str, port: int, timeout: float = 0.5) -> bool:
         return False
 
 
-def _synthesize_and_play(text: str, host: str, port: int, logger: logging.Logger = None) -> None:
+def _synthesize_and_play(
+    text: str, host: str, port: int, logger: logging.Logger = None
+) -> None:
     try:
         _file_logger.info(f"Connecting to Wyoming server at {host}:{port}")
         with socket.create_connection((host, port), timeout=10.0) as sock:
@@ -111,6 +115,8 @@ def wyoming_speak(text: str, logger: logging.Logger = None) -> bool:
         return False
 
     _file_logger.info(f"Wyoming server at {host}:{port} reachable. Starting synthesis…")
-    thread = threading.Thread(target=_synthesize_and_play, args=(text, host, port, logger), daemon=True)
+    thread = threading.Thread(
+        target=_synthesize_and_play, args=(text, host, port, logger), daemon=True
+    )
     thread.start()
     return True
