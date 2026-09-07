@@ -33,7 +33,9 @@ def force_update_to_remote(repo_dir=REPO_DIR):
         if getattr(settings, "DEV_MODE", False):
             return False, "DEV_MODE is enabled; skipping forced reset"
 
-        current_branch = get_current_branch()
+        current_branch = get_current_branch(repo_dir)
+        if not current_branch:
+            return False, "Cannot determine git branch; skipping reset to prevent data loss"
 
         # 1. Fetch latest commits from origin for the current branch
         fetch_res = subprocess.run(
@@ -64,7 +66,7 @@ def force_update_to_remote(repo_dir=REPO_DIR):
         return False, str(e)
 
 
-def get_current_branch(repo_dir=REPO_DIR) -> str:
+def get_current_branch(repo_dir=REPO_DIR):
     try:
         proc = subprocess.run(
             ["git", "rev-parse", "--abbrev-ref", "HEAD"],
@@ -74,11 +76,12 @@ def get_current_branch(repo_dir=REPO_DIR) -> str:
             timeout=5.0,
             check=False
         )
-        return proc.stdout.strip() if proc.returncode == 0 else "master"
-    except Exception as e:
-        print(f"ERROR {e}")
-        exit(1)
-
+        if proc.returncode == 0:
+            branch = proc.stdout.strip()
+            return branch if branch and branch != "HEAD" else None
+    except Exception:
+        pass
+    return None
 def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
     """Checks GitHub for newer commits and forcefully applies updates."""
     mode = True
@@ -121,7 +124,9 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
                 log_msg("Update check skipped: DEV_MODE is enabled.")
                 return
            
-            current_branch = get_current_branch()
+            current_branch = get_current_branch(REPO_DIR)
+            if not current_branch:
+                return False, "Cannot determine git branch; skipping reset to prevent data loss"
 
             local_sha = get_local_commit_sha()
             url = f"https://api.github.com/repos/sl5net/SL5-aura-service/commits/{current_branch}"            
