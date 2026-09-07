@@ -163,15 +163,31 @@ if [ "$count" -gt 29 ] && [[ "$GREP_FLAGS" != *"-w"* && "$PATTERN" != *"\\b"* ]]
   fi
 fi
 
+#if [ "$count" -gt 29 ]; then
+#  echo "Results still exceed 29 lines. Truncating output to top 29 matches:" >&2
+#  echo "$matches" | head -n 29
+#else
+#  echo "count = $count"
+#  echo "$matches"
+#  if [ "$count" -eq 1 ]; then
+#    match_file=$(echo "$matches" | cut -d: -f1)
+#    echo "grep -n -C 5 \"$PATTERN\" '$match_file'"
+#  fi
+#fi
+
+formatted_matches=$(echo "$matches" | sed -E 's/^([^:]+:[0-9]+):/\1 /')
+
 if [ "$count" -gt 29 ]; then
   echo "Results still exceed 29 lines. Truncating output to top 29 matches:" >&2
-  echo "$matches" | head -n 29
+  echo "$formatted_matches" | head -n 29
 else
   echo "count = $count"
-  echo "$matches"
+  echo "$formatted_matches"
   if [ "$count" -eq 1 ]; then
     match_file=$(echo "$matches" | cut -d: -f1)
     echo "grep -n -C 5 \"$PATTERN\" '$match_file'"
   fi
 fi
+
+
 echo '___________________________________________'

@@ -1,9 +1,19 @@
 # config/settings.py
-# Central configuration for the application
-# please see also: settings_local.py_Example.txt
+# ===============================================================================
+# DEFAULT CONFIGURATION — DO NOT EDIT DIRECTLY!
+# ===============================================================================
+# Changes in this file will be overwritten on git pull / update.
+# Furthermore, if config/settings_local.py exists, edits here will have NO EFFECT.
+#
+# HOW TO CONFIGURE:
+#   1. Copy config/settings_local.py_Example.txt to config/settings_local.py
+#   2. Edit your values inside config/settings_local.py (ignored by Git)
+# ===============================================================================
+
 import os
 
 from scripts.py.func.determine_current_user import determine_current_user
+
 
 SERVICE_START_OPTION = 0
 # Option 1: Start the service only on when there is an internet connection.
@@ -126,19 +136,32 @@ LOWERCASE_WINDOW_TITLES = True  # Set to False to enable case-sensitive window m
 
 # config/settings.py
 
-PIPER_SERVER_PATH = "~/projects/py/TTS"
-PIPER_SERVER_URL = "http://127.0.0.1:5002/speak"
-# Timeout Server-anser (in Sec):
-PIPER_SERVER_TIMEOUT = 2.0
+# ============================================================
+# --- Text-to-Speech (TTS) Configuration ---
+# ============================================================
+# Master toggle for TTS subsystem (0 = disabled, 1 = enabled)
+PLUGIN_HELPER_TTS_ENABLED = 1
 
-# Enable or disable TTS subsystem
-PLUGIN_HELPER_TTS_ENABLED = 1          # 0 = disabled, 1 = enabled
-
-# Primary engine: 'piper' or 'espeak'
+# PRIMARY ENGINE SELECTION: 'Piper' or 'espeak'
 USE_AS_PRIMARY_SPEAK = 'Piper'
 
-# Fallback to espeak if primary engine is unreachable
-USE_ESPEAK_FALLBACK = 1          # 0 = disabled, 1 = enabled
+# --- Piper Server Connection (optional: used when USE_AS_PRIMARY_SPEAK = 'Piper') ---
+PIPER_SERVER_PATH = "~/projects/py/TTS"
+PIPER_SERVER_HOST = "127.0.0.1"
+PIPER_SERVER_PORT = 5002
+PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
+# PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"
+# Timeout Server-answer (in Sec):
+PIPER_SERVER_TIMEOUT = 2.0
+
+# Secondary Piper provider fallback (Wyoming protocol)
+
+WYOMING_PIPER_HOST = "127.0.0.1"
+WYOMING_PIPER_PORT = 10200
+
+# --- General Fallback ---
+# Fallback to espeak if Piper cannot be reached (0 = disabled, 1 = enabled)
+USE_ESPEAK_FALLBACK = 1
 ESPEAK_FALLBACK_AMPLITUDE = 80
 
 

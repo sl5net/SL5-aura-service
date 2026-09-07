@@ -19,7 +19,7 @@ def get_local_commit_sha(repo_dir=REPO_DIR):
             capture_output=True,
             text=True,
             timeout=2.0,
-            check=True
+            check=True,
         )
         return res.stdout.strip()
     except Exception:
@@ -27,28 +27,39 @@ def get_local_commit_sha(repo_dir=REPO_DIR):
 
 
 def force_update_to_remote(repo_dir=REPO_DIR):
-    """Forces the local repository to match origin/master, discarding any local modifications."""
+    """Forces the local repository to match the current remote branch, discarding modifications."""
     try:
-        # 1. Fetch latest commits from origin master
+        from scripts.py.func.config.dynamic_settings import settings
+
+        if getattr(settings, "DEV_MODE", False):
+            return False, "DEV_MODE is enabled; skipping forced reset"
+
+        current_branch = get_current_branch(repo_dir)
+        if not current_branch:
+            return (
+                False,
+                "Cannot determine git branch; skipping reset to prevent data loss",
+            )
+
+        # 1. Fetch latest commits from origin for the current branch
         fetch_res = subprocess.run(
-            ["git", "fetch", "origin", "master"],
+            ["git", "fetch", "origin", current_branch],
             cwd=repo_dir,
             capture_output=True,
             text=True,
             timeout=20.0,
-            check=False
+            check=False,
         )
         if fetch_res.returncode != 0:
             return False, f"git fetch failed: {fetch_res.stderr.strip()}"
-
-        # 2. Hard reset working tree and index to origin/master (overwriting all local changes)
+        # 2. Hard reset working tree and index to origin/<current_branch>
         reset_res = subprocess.run(
-            ["git", "reset", "--hard", "origin/master"],
+            ["git", "reset", "--hard", f"origin/{current_branch}"],
             cwd=repo_dir,
             capture_output=True,
             text=True,
             timeout=10.0,
-            check=False
+            check=False,
         )
         if reset_res.returncode != 0:
             return False, f"git reset failed: {reset_res.stderr.strip()}"
@@ -58,11 +69,30 @@ def force_update_to_remote(repo_dir=REPO_DIR):
         return False, str(e)
 
 
+def get_current_branch(repo_dir=REPO_DIR):
+    try:
+        proc = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=repo_dir,
+            capture_output=True,
+            text=True,
+            timeout=5.0,
+            check=False,
+        )
+        if proc.returncode == 0:
+            branch = proc.stdout.strip()
+            return branch if branch and branch != "HEAD" else None
+    except Exception:
+        pass
+    return None
+
+
 def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
     """Checks GitHub for newer commits and forcefully applies updates."""
     mode = True
     try:
         from config import settings
+
         mode = getattr(settings, "CHECK_FOR_UPDATES_ON_STARTUP", True)
     except Exception:
         pass
@@ -75,13 +105,15 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
             print(f"{prefix} {msg}")
 
     if not force and mode in [False, "off", "disabled"]:
-        log_msg("Update check is disabled in config/settings.py (CHECK_FOR_UPDATES_ON_STARTUP = False).")
+        log_msg(
+            "Update check is disabled in config/settings.py (CHECK_FOR_UPDATES_ON_STARTUP = False)."
+        )
         return
 
     mode_str = str(mode).lower() if not force else "commits"
     headers = {
         "User-Agent": "SL5-Aura-Service-Update-Checker",
-        "Accept": "application/vnd.github.v3+json"
+        "Accept": "application/vnd.github.v3+json",
     }
 
     try:
@@ -93,31 +125,56 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
                     data = json.loads(response.read().decode("utf-8"))
                     latest_tag = data.get("tag_name", "")
                     if latest_tag:
-                        log_msg(f"Release update available: {latest_tag}. Run update script to upgrade.")
+                        log_msg(
+                            f"Release update available: {latest_tag}. Run update script to upgrade."
+                        )
         else:
-            # Default: Track commits on master branch
+            from scripts.py.func.config.dynamic_settings import settings
+
+            if getattr(settings, "DEV_MODE", False):
+                log_msg("Update check skipped: DEV_MODE is enabled.")
+                return
+
+            current_branch = get_current_branch(REPO_DIR)
+            if not current_branch:
+                return (
+                    False,
+                    "Cannot determine git branch; skipping reset to prevent data loss",
+                )
+
             local_sha = get_local_commit_sha()
-            url = "https://api.github.com/repos/sl5net/SL5-aura-service/commits/master"
+            url = f"https://api.github.com/repos/sl5net/SL5-aura-service/commits/{current_branch}"
             req = urllib.request.Request(url, headers=headers)
 
             with urllib.request.urlopen(req, timeout=timeout_seconds) as response:
                 if response.status == 200:
                     data = json.loads(response.read().decode("utf-8"))
                     remote_sha = data.get("sha", "")
-                    commit_msg = data.get("commit", {}).get("message", "").split("\n")[0]
+                    commit_msg = (
+                        data.get("commit", {}).get("message", "").split("\n")[0]
+                    )
 
-                    if local_sha and remote_sha and not remote_sha.startswith(local_sha):
+                    if (
+                        local_sha
+                        and remote_sha
+                        and not remote_sha.startswith(local_sha)
+                    ):
                         log_msg(
-                            f"New commit found on origin/master ({remote_sha[:7]} vs local {local_sha[:7]}). Applying forced update…")
+                            f"New commit found on origin/master ({remote_sha[:7]} vs local {local_sha[:7]}). Applying forced update…"
+                        )
 
                         # Execute forced update (overwriting dirty files)
                         success, result_msg = force_update_to_remote()
                         if success:
-                            log_msg(f"Update successfully applied: pulled commit {remote_sha[:7]} ('{commit_msg}').")
+                            log_msg(
+                                f"Update successfully applied: pulled commit {remote_sha[:7]} ('{commit_msg}')."
+                            )
                         else:
                             log_msg(f"Update failed: {result_msg}", is_error=True)
                     else:
-                        log_msg(f"Aura is up to date ({local_sha[:7] if local_sha else 'unknown'}).")
+                        log_msg(
+                            f"Aura is up to date ({local_sha[:7] if local_sha else 'unknown'})."
+                        )
 
     except Exception as e:
         log_msg(f"Update check failed: {e}", is_error=True)
@@ -126,4 +183,3 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
 if __name__ == "__main__":
     print("=== Starting manual update check (forced) ===")
     check_for_updates(force=True)
-    
