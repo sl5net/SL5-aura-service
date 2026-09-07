@@ -33,14 +33,6 @@ def force_update_to_remote(repo_dir=REPO_DIR):
         if getattr(settings, "DEV_MODE", False):
             return False, "DEV_MODE is enabled; skipping forced reset"
 
-        branch_proc = subprocess.run(
-            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
-            cwd=repo_dir,
-            capture_output=True,
-            text=True,
-            timeout=5.0,
-            check=False
-        )
         current_branch = get_current_branch()
 
         # 1. Fetch latest commits from origin for the current branch
@@ -128,15 +120,7 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
             if getattr(settings, "DEV_MODE", False):
                 log_msg("Update check skipped: DEV_MODE is enabled.")
                 return
-
-            branch_proc = subprocess.run(
-                ["git", "rev-parse", "--abbrev-ref", "HEAD"],
-                cwd=REPO_DIR,
-                capture_output=True,
-                text=True,
-                timeout=5.0,
-                check=False
-            )
+           
             current_branch = get_current_branch()
 
             local_sha = get_local_commit_sha()
