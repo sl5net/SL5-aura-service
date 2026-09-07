@@ -148,7 +148,7 @@ USE_AS_PRIMARY_SPEAK = 'Piper'
 # --- Piper Server Connection (optional: used when USE_AS_PRIMARY_SPEAK = 'Piper') ---
 PIPER_SERVER_PATH = "~/projects/py/TTS"
 PIPER_SERVER_URL = "http://127.0.0.1:5002/speak"
-# Timeout Server-anser (in Sec):
+# Timeout Server-answer (in Sec):
 PIPER_SERVER_TIMEOUT = 2.0
 
 # Secondary Piper provider fallback (Wyoming protocol)
