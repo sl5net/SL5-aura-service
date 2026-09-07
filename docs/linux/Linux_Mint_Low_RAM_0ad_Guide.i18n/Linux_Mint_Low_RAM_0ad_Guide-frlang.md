@@ -25,4 +25,12 @@ Sur les systèmes avec ≤ 6 Gio de RAM, l'exécution d'un environnement de bur
 
 ## Commandes de vérification
 Pour inspecter la mémoire système et les états des processus :
-__CODE_BLOCK_0__
+# Vérifiez l'utilisation de la mémoire et du swap
+```bash
+free -h
+```
+
+# Vérifiez si le processus LanguageTool est expulsé
+```bash
+ps aux | grep -i "[l]anguagetool"
+```

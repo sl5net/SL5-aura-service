@@ -25,4 +25,12 @@
 
 ## 확인 명령
 시스템 메모리 및 프로세스 상태를 검사하려면:
-__CODE_BLOCK_0__
+# 메모리 및 스왑 사용량 확인
+```bash
+free -h
+```
+
+# LanguageTool 프로세스가 제거되었는지 확인
+```bash
+ps aux | grep -i "[l]anguagetool"
+```

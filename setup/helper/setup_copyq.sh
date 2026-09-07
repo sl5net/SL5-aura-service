@@ -40,11 +40,13 @@ elif command -v zypper &> /dev/null; then
         curl -fsSL -L "${DMG_URL}" -o "${TMP_DMG}"
         MOUNT_DIR=$(mktemp -d /tmp/copyq_mount.XXXXXX)
         hdiutil attach "${TMP_DMG}" -nobrowse -mountpoint "${MOUNT_DIR}" -quiet
+
         cp -R "${MOUNT_DIR}/CopyQ.app" /Applications/
         hdiutil detach "${MOUNT_DIR}" -quiet || true
         rm -rf "${MOUNT_DIR}" "${TMP_DMG}"
-        xattr -r -d com.apple.quarantine /Applications/CopyQ.app 2>/dev/null || true
-    else
+        xattr -cr /Applications/CopyQ.app 2>/dev/null || true
+        codesign --force --deep --sign - /Applications/CopyQ.app 2>/dev/null || true
+    else      
         echo "[WARNING] Unknown package manager. Please install CopyQ manually."
     fi
 else

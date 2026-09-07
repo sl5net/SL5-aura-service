@@ -25,4 +25,12 @@ Em sistemas com ≤ 6 GiB de RAM, a execução simultânea de um ambiente de des
 
 ## Comandos de verificação
 Para inspecionar a memória do sistema e os estados do processo:
-__CODE_BLOCK_0__
+# Verifique a memória e o uso de swap
+```bash
+free -h
+```
+
+# Verifique se o processo do LanguageTool foi despejado
+```bash
+ps aux | grep -i "[l]anguagetool"
+```

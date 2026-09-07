@@ -25,4 +25,8 @@ W systemach z ≤ 6 GiB RAM, jednoczesne uruchomienie ciężkiego środowiska gr
 
 ## Polecenia weryfikacyjne
 Aby sprawdzić stan pamięci systemowej i procesów:
+# Sprawdź użycie pamięci i zamiany
 __KOD_BLOKU_0__
+
+# Sprawdź, czy proces LanguageTool został wykluczony
+__KOD_BLOKU_1__

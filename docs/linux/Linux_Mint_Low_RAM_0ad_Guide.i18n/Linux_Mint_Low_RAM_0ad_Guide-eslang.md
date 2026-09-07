@@ -25,4 +25,12 @@ En sistemas con ≤ 6 GiB de RAM, ejecutar un entorno de escritorio pesado, un j
 
 ## Comandos de verificación
 Para inspeccionar la memoria del sistema y los estados de proceso:
-__CODE_BLOCK_0__
+# Verificar la memoria y el uso de intercambio
+```bash
+free -h
+```
+
+# Comprobar si el proceso de LanguageTool está desalojado
+```bash
+ps aux | grep -i "[l]anguagetool"
+```

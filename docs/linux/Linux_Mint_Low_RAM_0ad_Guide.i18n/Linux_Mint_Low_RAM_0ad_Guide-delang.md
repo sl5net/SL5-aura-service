@@ -25,4 +25,12 @@ Auf Systemen mit ≤ 6 GiB RAM erfordert die gleichzeitige Ausführung einer umf
 
 ## Verifizierungsbefehle
 So überprüfen Sie den Systemspeicher und den Prozessstatus:
-__CODE_BLOCK_0__
+# Überprüfen Sie die Speicher- und Swap-Nutzung
+```bash
+free -h
+```
+
+# Überprüfen Sie, ob der LanguageTool-Prozess entfernt wurde
+```bash
+ps aux | grep -i "[l]anguagetool"
+```
