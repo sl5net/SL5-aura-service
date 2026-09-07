@@ -20,7 +20,7 @@ def find_espeak_candidates():
     return None
 
 def espeak_check(settings):
-    if settings.USE_AS_PRIMARY_SPEAK == "ESPEAK" or settings.USE_ESPEAK_FALLBACK:
+    if str(getattr(settings, "USE_AS_PRIMARY_SPEAK", "")).upper() == "ESPEAK" or settings.USE_ESPEAK_FALLBACK:
         espeak_path = find_espeak_candidates()
         if not espeak_path:
             print("espeak-ng not found, please install espeak-ng.")

@@ -125,17 +125,22 @@ LOWERCASE_WINDOW_TITLES = True  # Set to False to enable case-sensitive window m
 
 
 # config/settings.py
-PLUGIN_HELPER_TTS_ENABLED = True
 
 PIPER_SERVER_PATH = "~/projects/py/TTS"
 PIPER_SERVER_URL = "http://127.0.0.1:5002/speak"
 # Timeout Server-anser (in Sec):
 PIPER_SERVER_TIMEOUT = 2.0
 
-USE_AS_PRIMARY_SPEAK = "piper"
-USE_AS_PRIMARY_SPEAK = "ESPEAK"
-USE_ESPEAK_FALLBACK = True
+# Enable or disable TTS subsystem
+PLUGIN_HELPER_TTS_ENABLED = 1          # 0 = disabled, 1 = enabled
+
+# Primary engine: 'piper' or 'espeak'
+USE_AS_PRIMARY_SPEAK = 'Piper'
+
+# Fallback to espeak if primary engine is unreachable
+USE_ESPEAK_FALLBACK = 1          # 0 = disabled, 1 = enabled
 ESPEAK_FALLBACK_AMPLITUDE = 80
+
 
 AUDIO_GUIDANCE_ENABLED=True
 

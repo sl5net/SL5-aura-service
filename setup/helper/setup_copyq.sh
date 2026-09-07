@@ -9,7 +9,7 @@ TRIGGER_CMD="touch /tmp/sl5_record.trigger"
 echo "[INFO] Setting up CopyQ with trigger shortcut: ${HOTKEY}..."
 
 if ! command -v copyq &> /dev/null; then
-    echo "[INFO] Installing CopyQ via package manager..."
+  echo "[INFO] Installing CopyQ via package manager..."
     if command -v apt-get &> /dev/null; then
         sudo apt-get update -y && sudo apt-get install -y copyq
     elif command -v pacman &> /dev/null; then
@@ -17,7 +17,7 @@ if ! command -v copyq &> /dev/null; then
     elif command -v dnf &> /dev/null; then
         sudo dnf install -y copyq
 
-elif command -v zypper &> /dev/null; then
+    elif command -v zypper &> /dev/null; then
         sudo zypper install -y copyq
     elif [ "$(uname -s)" = "Darwin" ]; then
         echo "[INFO] macOS detected. Installing CopyQ from official release DMG..."

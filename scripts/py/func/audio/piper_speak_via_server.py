@@ -1,11 +1,11 @@
+# scripts/py/func/audio/piper_speak_via_server.py
 import sys
 import threading
 import time
-
 import requests
 
 _speech_lock = threading.Lock()
-
+# http://localhost:5002/speak
 PIPER_SERVER_HOST = '127.0.0.1'
 PIPER_SERVER_PORT = 5002
 PIPER_SERVER_URL = f"https://{PIPER_SERVER_HOST}:{PIPER_SERVER_PORT}/speak"

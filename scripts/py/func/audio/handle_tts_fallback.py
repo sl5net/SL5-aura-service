@@ -23,14 +23,14 @@ def handle_tts_fallback(processed_text, LT_LANGUAGE, logger):
         return False
 
 
-    # 1. Try via Piper Server (if not ESPEAK primary)
-    if settings.USE_AS_PRIMARY_SPEAK != "ESPEAK":
+    # 1. Try Piper Server (if not ESPEAK primary)
+    if str(getattr(settings, "USE_AS_PRIMARY_SPEAK", "")).upper() != "ESPEAK":
         from ..audio_manager import speak_inclusive_fallback
         if piper_speak_via_server(processed_text):
             return True
         logger.warning("Primary TTS failed. Trying Fallback…")
 
-    # 2. Fallback zu Espeak
+    # 2. Fallback Espeak
     if settings.USE_ESPEAK_FALLBACK:
         from ..audio_manager import speak_inclusive_fallback
 
