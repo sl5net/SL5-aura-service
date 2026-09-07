@@ -34,12 +34,13 @@ Options:
                               (default: comment-only matches, e.g. shebang
                               lines, are stripped and hidden)
 Examples:
-  tools/search.sh "def execute" scripts
-  tools/search.sh "TODO" . -i
-  tools/search.sh "class \w+Error" . -E
-  tools/search.sh "bin/bash" scripts -e sh
-  tools/search.sh "pattern" . --all-ext
-  tools/search.sh "bin/bash" scripts -e sh -c
+  ./tools/search.sh "def execute" scripts
+  ./tools/search.sh "TODO" . -i
+  ./tools/search.sh "class \w+Error" . -E
+  ./tools/search.sh "bin/bash" scripts -e sh
+  ./tools/search.sh xvfb-run .github/workflows -e yml 
+  ./tools/search.sh "pattern" . --all-ext
+  ./tools/search.sh "bin/bash" scripts -e sh -c
 USAGE
 }
 

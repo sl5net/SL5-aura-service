@@ -121,3 +121,16 @@ jobs:
           echo "vosk-model-de-0.21" > config/model_name.txt
           ./.venv/bin/python3 -m scripts.py.func.checks.self_tester
 
+      - name: Test F12 Hotkey Trigger File
+        run: |
+          rm -f /tmp/sl5_record.trigger
+          osascript -e 'tell application "System Events" to key code 111'
+          for i in $(seq 1 20); do
+            if [ -f /tmp/sl5_record.trigger ]; then
+              echo "SUCCESS: Trigger file detected."
+              exit 0
+            fi
+            sleep 0.5
+          done
+          echo "ERROR: /tmp/sl5_record.trigger not created within 10s timeout"
+          exit 1
