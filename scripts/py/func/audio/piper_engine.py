@@ -1,6 +1,8 @@
+# scripts/py/func/audio/piper_engine.py
+
 # import os
 #
-# _voice = None # Singleton
+# _voice = None # SingletonPIPER_SERER_PATH = "~/projects/py/TTS"
 #
 # def speak_with_piper(text, model_path):
 #     global _voice
