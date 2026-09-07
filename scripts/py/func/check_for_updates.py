@@ -27,11 +27,25 @@ def get_local_commit_sha(repo_dir=REPO_DIR):
 
 
 def force_update_to_remote(repo_dir=REPO_DIR):
-    """Forces the local repository to match origin/master, discarding any local modifications."""
+    """Forces the local repository to match the current remote branch, discarding modifications."""
     try:
-        # 1. Fetch latest commits from origin master
+        from scripts.py.func.config.dynamic_settings import settings
+        if getattr(settings, "DEV_MODE", False):
+            return False, "DEV_MODE is enabled; skipping forced reset"
+
+        branch_proc = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=repo_dir,
+            capture_output=True,
+            text=True,
+            timeout=5.0,
+            check=False
+        )
+        current_branch = get_current_branch()
+
+        # 1. Fetch latest commits from origin for the current branch
         fetch_res = subprocess.run(
-            ["git", "fetch", "origin", "master"],
+            ["git", "fetch", "origin", current_branch],
             cwd=repo_dir,
             capture_output=True,
             text=True,
@@ -40,10 +54,10 @@ def force_update_to_remote(repo_dir=REPO_DIR):
         )
         if fetch_res.returncode != 0:
             return False, f"git fetch failed: {fetch_res.stderr.strip()}"
-
-        # 2. Hard reset working tree and index to origin/master (overwriting all local changes)
+        # 2. Hard reset working tree and index to origin/<current_branch>
         reset_res = subprocess.run(
-            ["git", "reset", "--hard", "origin/master"],
+            ["git", "reset", "--hard", f"origin/{current_branch}"],            
+            
             cwd=repo_dir,
             capture_output=True,
             text=True,
@@ -57,6 +71,21 @@ def force_update_to_remote(repo_dir=REPO_DIR):
     except Exception as e:
         return False, str(e)
 
+
+def get_current_branch(repo_dir=REPO_DIR) -> str:
+    try:
+        proc = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=repo_dir,
+            capture_output=True,
+            text=True,
+            timeout=5.0,
+            check=False
+        )
+        return proc.stdout.strip() if proc.returncode == 0 else "master"
+    except Exception as e:
+        print(f"ERROR {e}")
+        exit(1)
 
 def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
     """Checks GitHub for newer commits and forcefully applies updates."""
@@ -95,9 +124,23 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
                     if latest_tag:
                         log_msg(f"Release update available: {latest_tag}. Run update script to upgrade.")
         else:
-            # Default: Track commits on master branch
+            from scripts.py.func.config.dynamic_settings import settings
+            if getattr(settings, "DEV_MODE", False):
+                log_msg("Update check skipped: DEV_MODE is enabled.")
+                return
+
+            branch_proc = subprocess.run(
+                ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                cwd=REPO_DIR,
+                capture_output=True,
+                text=True,
+                timeout=5.0,
+                check=False
+            )
+            current_branch = get_current_branch()
+
             local_sha = get_local_commit_sha()
-            url = "https://api.github.com/repos/sl5net/SL5-aura-service/commits/master"
+            url = f"https://api.github.com/repos/sl5net/SL5-aura-service/commits/{current_branch}"            
             req = urllib.request.Request(url, headers=headers)
 
             with urllib.request.urlopen(req, timeout=timeout_seconds) as response:
