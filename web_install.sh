@@ -80,12 +80,20 @@ if [ "${DOWNLOAD_SUCCESS}" = false ]; then
     echo "[ERROR] Failed to download and extract repository archive from all candidate URLs."
     exit 1
 fi
+
+
+#echo "[INFO] Launching system setup"
+#cd "${INSTALL_DIR}"
+#chmod +x setup/linux_mac_setup.sh
+
 echo "[INFO] Launching system setup"
-
-
-
+if [ ! -d "${INSTALL_DIR}" ] || [ ! -w "${INSTALL_DIR}" ]; then
+    echo "[ERROR] Target directory '${INSTALL_DIR}' does not exist or is not writable."
+    exit 1
+fi
 cd "${INSTALL_DIR}"
 chmod +x setup/linux_mac_setup.sh
+
 
 # Check if non-interactive mode is requested via flag or env variable
 NON_INTERACTIVE_MODE=false
@@ -98,14 +106,14 @@ done
 
 if [ "$NON_INTERACTIVE_MODE" = true ] || [ "$NON_INTERACTIVE" = "true" ]; then
     # Explicitly non-interactive -> do not attach /dev/tty
-    exec bash setup/linux_mac_setup.sh "$@"
+    exec bash -- setup/linux_mac_setup.sh "$@"
 elif [ -t 0 ]; then
     # Direct execution in terminal
-    exec bash setup/linux_mac_setup.sh "$@"
+    exec bash -- setup/linux_mac_setup.sh "$@"
 elif ( : < /dev/tty ) 2>/dev/null; then
     # Piped (curl | bash) in an interactive terminal -> reconnect stdin
-    exec bash setup/linux_mac_setup.sh "$@" < /dev/tty
+    exec bash -- setup/linux_mac_setup.sh "$@" < /dev/tty
 else
     # Fallback for headless environments (CI / Docker)
-    exec bash setup/linux_mac_setup.sh "$@"
+    exec bash -- setup/linux_mac_setup.sh "$@"
 fi
