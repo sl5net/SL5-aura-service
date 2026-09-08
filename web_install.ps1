@@ -3,8 +3,7 @@
 $appName = "sl5-aura-service"
 $installDir = Join-Path $env:LOCALAPPDATA $appName
 $repoBranch = if ($env:AURA_BRANCH) { $env:AURA_BRANCH } else { "master" }
-$zipUrl = "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/$repoBranch.zip"
-
+$zipUrl = "https://github.com/sl5net/SL5-aura-service/archive/$repoBranch.zip"
 $tempZip = Join-Path $env:TEMP "$appName-master.zip"
 $tempExtract = Join-Path $env:TEMP "$appName-extract"
 
