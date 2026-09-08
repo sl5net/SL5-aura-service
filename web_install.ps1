@@ -20,8 +20,38 @@ if (Test-Path $tempZip) {
     Remove-Item -Force $tempZip
 }
 
-Write-Host "[INFO] Downloading latest repository archive…"
-Invoke-RestMethod -Uri $zipUrl -OutFile $tempZip
+#Write-Host "[INFO] Downloading latest repository archive…"
+#Invoke-RestMethod -Uri $zipUrl -OutFile $tempZip
+
+
+$headers = @{}
+$token = if ($env:GITHUB_TOKEN) { $env:GITHUB_TOKEN } else { $env:GH_TOKEN }
+if ($token) {
+    $headers["Authorization"] = "Bearer $token"
+}
+
+$urlsToTry = @(
+    "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/$repoBranch.zip",
+    "https://github.com/sl5net/SL5-aura-service/archive/refs/tags/$repoBranch.zip",
+    "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.zip"
+)
+
+$downloadSuccess = $false
+foreach ($url in $urlsToTry) {
+    try {
+        Write-Host "[INFO] Trying to download archive from $url"
+        Invoke-RestMethod -Uri $url -OutFile $tempZip -Headers $headers
+        $downloadSuccess = $true
+        break
+    } catch {
+        Write-Host "[WARN] Download failed for $url"
+    }
+}
+
+if (-not $downloadSuccess) {
+    throw "Failed to download repository archive from all candidate URLs."
+}
+
 
 Write-Host "[INFO] Extracting archive…"
 Expand-Archive -Path $tempZip -DestinationPath $tempExtract -Force
