@@ -53,6 +53,7 @@ jobs:
         shell: bash
         env:
           AURA_INSIDE_TERMINAL: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           START_TS=$(date +%s)
           ./aura-installer
