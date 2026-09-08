@@ -157,7 +157,7 @@ def handle_trigger(
     global active_transcription_thread
 
     # --- ACTION 1: STOP an ongoing session ---
-    # scripts/py/func/handle_trigger.py:154
+    # 
     if dictation_session_active.is_set():
         logger.info("🎬⏹️ Manual 🛑 stop trigger detected. Signaling session to end.")
         mute_microphone()

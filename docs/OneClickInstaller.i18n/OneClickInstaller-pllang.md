@@ -19,15 +19,15 @@ Uruchom **Aurę** na swoim komputerze jednym kliknięciem. Nie jest wymagana ża
 Oszczędza ~30 sekund ręcznej obsługi plików i uruchamia się natychmiast w terminalu:
 
 **Linux i macOS:**
-#### Jednoliniowy kod internetowy CodeBerg
+#### Jednowierszowy kod internetowy CodeBerg
 __KOD_BLOKU_0__
 Lub
 #### Internetowy serwis GitHub
 __KOD_BLOKU_1__
 
 **Windows (PowerShell):**
-#### Jednoliniowy kod internetowy CodeBerg
-# nie testowano — użyj metody 2 (samodzielny plik binarny) dla systemu Windows
+#### Jednowierszowy kod internetowy CodeBerg
+
 __KOD_BLOKU_2__
 Lub
 #### GitHub o jednej linijce internetowej
@@ -60,19 +60,3 @@ Po uruchomieniu instalatora Aura automatycznie:
 - Konfiguruje lokalny, prywatny silnik rozpoznawania mowy.
 - Pobiera domyślne modele głosu.
 - Konfiguruje wszystkie niezbędne skróty systemowe i programy uruchamiające na pulpicie.
-
----
-
-## Szczegóły i wymagania dotyczące instalacji
-
-- **Czas instalacji:** Około 2–3 minuty.
-- **Wymagane miejsce na dysku:** Minimum ~1,5 GB (do 2,5 GB w zależności od wybranych modeli językowych).
-
-- **Linux i macOS:** `~/opt/sl5-aura-service`
-
-
-
-
-
-
-- **Tryb Babci:** Wpisz jedno słowo do pliku reguł i zobacz, jak Aura automatycznie tworzy reguły.

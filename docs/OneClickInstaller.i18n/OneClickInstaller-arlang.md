@@ -31,7 +31,7 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 
                                            **ويندوز (باورشيل):**
                                                   #### Web One-Liner CodeBerg
-# لم يتم اختباره - يرجى استخدام الطريقة الثانية (الثنائية المستقلة) لنظام التشغيل Windows
+
 ```bash
 irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```

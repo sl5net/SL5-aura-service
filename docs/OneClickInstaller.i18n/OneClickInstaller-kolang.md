@@ -6,7 +6,7 @@
 
 ## 전제 조건 없음
 
-다음은 필요하지 **않습니다**:
+다음은 필요하지 **않습니다**
 - Python이 사전 설치되어 있음
 - Git 또는 코드 저장소
 - 명령줄 또는 터미널 경험
@@ -31,7 +31,7 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 
 **윈도우(파워셸):**
 #### 웹 원라이너 CodeBerg
-# 테스트되지 않음 - Windows용 방법 2(독립형 바이너리)를 사용하세요.
+
 ```bash
 irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
@@ -75,7 +75,7 @@ aura-installer-windows.exe.zip의 이름을 aura-installer-windows.exe로 바꿉
 
 - **설치 시간:** 약 2~3분.
 - **필요한 디스크 공간:** 최소 ~1.5GB(선택한 언어 모델에 따라 최대 2.5GB).
-- **설치 디렉터리:**
+- **설치 디렉토리:**
 - **Linux 및 macOS:** `~/opt/sl5-aura-service`
 - **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
 

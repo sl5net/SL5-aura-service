@@ -31,7 +31,7 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 
 **Windows (PowerShell):**
 #### Web de una sola línea CodeBerg
-# no probado: utilice el método 2 (binario independiente) para Windows
+
 ```bash
 irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```

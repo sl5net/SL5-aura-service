@@ -31,7 +31,7 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 
 **Windows (PowerShell):**
 #### Web ワンライナー CodeBerg
-# テストされていません - Windows の場合は方法 2 (スタンドアロン バイナリ) を使用してください
+
 ```bash
 irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
