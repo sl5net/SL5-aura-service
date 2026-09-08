@@ -13,6 +13,8 @@ import vosk
 from vosk import SetLogLevel
 
 from .audio_manager import mute_microphone, unmute_microphone
+from .delayed_mic_unmute import schedule_delayed_unmute, cancel_delayed_unmute
+
 from .config.dynamic_settings import settings
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED
 from .guess_lt_language_from_model import guess_lt_language_from_model
@@ -157,7 +159,7 @@ def handle_trigger(
     global active_transcription_thread
 
     # --- ACTION 1: STOP an ongoing session ---
-    # 
+    # scripts/py/func/handle_trigger.py:154
     if dictation_session_active.is_set():
         logger.info("🎬⏹️ Manual 🛑 stop trigger detected. Signaling session to end.")
         mute_microphone()
@@ -168,11 +170,10 @@ def handle_trigger(
         listen_persistent_flag = tmp / "sl5_aura" / "aura_vosk_listen_persistent.flag"
 
         aura_vosk_suspended.unlink(missing_ok=True)
+        # listen_persistent_flag.unlink(missing_ok=True)
         listen_persistent_flag.unlink(missing_ok=True)
-
-
-
-        # unmute_microphone()
+        schedule_delayed_unmute(delay_seconds=0.8, logger=logger)
+        # We just send the signal and exit immediately.
 
         # We just send the signal and exit immediately.
         # We DO NOT wait here for the thread to finish. This prevents
@@ -187,6 +188,7 @@ def handle_trigger(
 
     # --- ACTION 2: START a new session ---
 
+    cancel_delayed_unmute()
     unmute_microphone()
 
     session_id = object() # Wir verwenden ein Dummy-Objekt als einzigartige ID
