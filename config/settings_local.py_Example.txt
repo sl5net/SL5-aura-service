@@ -186,7 +186,7 @@ LOG_in_selftest = False
 # --- Developer Mode (advanced users only) ---
 # Enables additional log output and internal checks.
 # See docs/dev_mode_setup.md for setup instructions.
-DEV_MODE = True
+DEV_MODE = False
 DEV_MODE_all_processing = False
 DEV_MODE_memory = False
 DEV_MODE_zip_processing = False

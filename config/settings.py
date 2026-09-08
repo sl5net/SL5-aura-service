@@ -107,7 +107,6 @@ SIGNATURE_MAPPING = {
     r".*": ("🗣[ SL5net Aura ]", 1800)             # 30 Min Fallback
 }
 
-
 # --- Update Configuration (if DEV_MODE = 0) ---
 # Options:
 #   "commits"  - Check for every new commit on your branch (nightly/development)
