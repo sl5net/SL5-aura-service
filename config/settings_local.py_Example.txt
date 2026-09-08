@@ -35,12 +35,12 @@ ENABLE_WAKE_WORD = False
 # Kill competing LanguageTool or Eloquent instances on startup
 KILL_COMPETING_LT_AND_ELOQUENT_ON_START = 0
 
-# --- Update Configuration ---
+# --- Update Configuration (if DEV_MODE = 0) ---
 # Options:
-#   "commits"  - Check for every new commit on master (nightly/development)
+#   "commits"  - Check for every new commit on your branch (nightly/development)
 #   "releases" - Check only for official GitHub releases (stable)
 #   False      - Disable update checks (offline default)
-CHECK_FOR_UPDATES_ON_STARTUP = False
+CHECK_FOR_UPDATES_ON_STARTUP = "commits"
 
 
 # Enable or disable the type watcher (client-side typing integration)

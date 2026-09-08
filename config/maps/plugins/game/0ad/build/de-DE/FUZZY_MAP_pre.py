@@ -20,28 +20,20 @@ _common_meta = {
     'execute_only': True
 }
 
-
-
-
 baue = r'(\s*(\w+au\w+|auto|\waue|bauer\w|bauens|build|bei|bike|anbau\w*|aber|bürohilfe|paul|paulus|warum|warhols|power|our|ich|build|\w+ild|white)\s*)'
 farm = r'f\w*a\w*m|fa\w*en|fa|farmstead|fahren|fahrer|farben|frau|frauen|fragen|haben|hahn|arm|am|zahn'
 bauernhof = r'(\s*(b\w+\s*(hof|haus)|bauch|rosenhof|Bauherrn|braun)\s*)'
 
-feld = r'(\w*feld|korns\w*|paul|felsen|fällt|zählt|fell|fest|filmt|hält|sind|will|verhilft|powershell|gröbenzell)'
+feld = r'(\w*feld|korns\w*|paul|felsen|fällt|zählt|fell|fest|filmt|hält|sind|will|verhilft|powershell|gröbenzell|fällt)'
 bauefeld_nonsens = '(vfl|aushält|ruhe sie sind|graues hält|ausfällt|warum es will|warum filmt|alles rund|oh accounts|auch im kornfeld|eure kornfeld)'
 
-pflanze = r'(kartoffel\w*|weizen\w*|getreide\w*|salat\w*|blume\w*|blumen\w*|garten|conf|korn\w*|acker\w*)'
+pflanze = r'(kartoffel\w*|weizen\w*|getreide\w*|salat\w*|blume\w*|blumen\w*|garten|conf|korn\w*|gerade|acker\w*)'
 
 acker_nonsens = r'(kopfschmerzen|barack obama|drucker pflanzen|acab)'
 
 kaserne = r'(kaserne|\wa[\s\w]*[äei]rn?e|Katze|klasse|\wa\werne|\w*aracke|barrack\w?|Truppenunterkunft)'
 
 tempel = r'(Tempel|Temp\w*|Tipp|campen|\w[öae]mp\wl|Jampil|Tim)'
-
-
-# kas     erne
-# was\s+w äre
-# \was[\s\w]*[äe]rn?e
 
 ignore_this_fill_words = r'(\b\w{1,3}\b\s*)?'
 

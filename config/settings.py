@@ -60,7 +60,7 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 
 # --- Notification Settings ---
 # Default for new users is the most verbose level.
-NOTIFICATION_LEVEL = 0 # 0=Silent, 1=Essential, 2=Verbose
+NOTIFICATION_LEVEL = 1 # 0=Silent, 1=Essential, 2=Verbose
 
 SHOW_SEARCH_ON_STARTUP = True
 SEARCH_CLOSE_ON_OPEN = False
@@ -108,9 +108,9 @@ SIGNATURE_MAPPING = {
 }
 
 
-# --- Update Configuration ---
+# --- Update Configuration (if DEV_MODE = 0) ---
 # Options:
-#   "commits"  - Check for every new commit on master (nightly/development)
+#   "commits"  - Check for every new commit on your branch (nightly/development)
 #   "releases" - Check only for official GitHub releases (stable)
 #   False      - Disable update checks (offline default)
 CHECK_FOR_UPDATES_ON_STARTUP = "commits"
