@@ -10,11 +10,19 @@ APP_NAME="sl5-aura-service"
 
 mkdir -p "${HOME}/opt"
 
-export INSTALL_DIR="${INSTALL_DIR:-$HOME/opt/${APP_NAME}}"
-
+#export INSTALL_DIR="${INSTALL_DIR:-$HOME/opt/${APP_NAME}}"
 #REPO_BRANCH="${AURA_BRANCH:-master}"
 #REPO_TAR_URL="https://github.com/sl5net/SL5-aura-service/archive/refs/heads/${REPO_BRANCH}.tar.gz"
 #REPO_TAR_URL="https://github.com/sl5net/SL5-aura-service/archive/${REPO_BRANCH}.tar.gz"
+
+export INSTALL_DIR="${INSTALL_DIR:-$HOME/opt/${APP_NAME}}"
+REPO_BRANCH="${AURA_BRANCH:-master}"
+CANDIDATE_URLS=(
+    "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/${REPO_BRANCH}.tar.gz"
+    "https://github.com/sl5net/SL5-aura-service/archive/refs/tags/${REPO_BRANCH}.tar.gz"
+    "https://github.com/sl5net/SL5-aura-service/archive/refs/heads/master.tar.gz"
+)
+
 echo "============================================"
 echo "   SL5 Aura Service - Web One-Liner Setup   "
 echo "============================================"
