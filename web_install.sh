@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+# web_install.sh
 
 # Immediately terminate entire process group on single Ctrl+C
 trap 'echo -e "\n[INFO] Installation aborted by user."; kill 0 2>/dev/null; exit 130' INT TERM
@@ -11,9 +12,9 @@ mkdir -p "${HOME}/opt"
 
 export INSTALL_DIR="${INSTALL_DIR:-$HOME/opt/${APP_NAME}}"
 
-REPO_BRANCH="${AURA_BRANCH:-master}"
+#REPO_BRANCH="${AURA_BRANCH:-master}"
 #REPO_TAR_URL="https://github.com/sl5net/SL5-aura-service/archive/refs/heads/${REPO_BRANCH}.tar.gz"
-REPO_TAR_URL="https://github.com/sl5net/SL5-aura-service/archive/${REPO_BRANCH}.tar.gz"
+#REPO_TAR_URL="https://github.com/sl5net/SL5-aura-service/archive/${REPO_BRANCH}.tar.gz"
 echo "============================================"
 echo "   SL5 Aura Service - Web One-Liner Setup   "
 echo "============================================"
@@ -32,14 +33,49 @@ fi
 
 mkdir -p "${INSTALL_DIR}"
 
-echo "[INFO] Downloading and extracting latest release…"
-if command -v curl >/dev/null 2>&1; then
-    curl -sSL "${REPO_TAR_URL}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1
-elif command -v wget >/dev/null 2>&1; then
-    wget -qO- "${REPO_TAR_URL}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1
+#echo "[INFO] Downloading and extracting latest release…"
+#if command -v curl >/dev/null 2>&1; then
+#    curl -sSL "${REPO_TAR_URL}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1
+#elif command -v wget >/dev/null 2>&1; then
+#    wget -qO- "${REPO_TAR_URL}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1
+#fi
+#
+#echo "[INFO] Launching system setup…"
+
+echo "[INFO] Downloading and extracting latest release"
+TOKEN="${GITHUB_TOKEN:-${GH_TOKEN:-}}"
+CURL_AUTH=()
+WGET_AUTH=()
+if [ -n "${TOKEN}" ]; then
+    CURL_AUTH=(-H "Authorization: Bearer ${TOKEN}")
+    WGET_AUTH=(--header="Authorization: Bearer ${TOKEN}")
 fi
 
-echo "[INFO] Launching system setup…"
+DOWNLOAD_SUCCESS=false
+for url in "${CANDIDATE_URLS[@]}"; do
+    echo "[INFO] Trying to download archive from ${url}..."
+    if command -v curl >/dev/null 2>&1; then
+        if curl -fsSL "${CURL_AUTH[@]}" "${url}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1 2>/dev/null; then
+            DOWNLOAD_SUCCESS=true
+            break
+        fi
+    elif command -v wget >/dev/null 2>&1; then
+        if wget "${WGET_AUTH[@]}" -qO- "${url}" | tar -xz -C "${INSTALL_DIR}" --strip-components=1 2>/dev/null; then
+            DOWNLOAD_SUCCESS=true
+            break
+        fi
+    fi
+    echo "[WARN] Download failed for ${url}"
+done
+
+if [ "${DOWNLOAD_SUCCESS}" = false ]; then
+    echo "[ERROR] Failed to download and extract repository archive from all candidate URLs."
+    exit 1
+fi
+echo "[INFO] Launching system setup"
+
+
+
 cd "${INSTALL_DIR}"
 chmod +x setup/linux_mac_setup.sh
 
