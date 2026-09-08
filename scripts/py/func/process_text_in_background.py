@@ -1237,8 +1237,7 @@ def process_text_in_background(logger,
     # print(f':st: \nprocess_text_in_background:1061\n')
     # print(f':st: \nprocess_text_in_background:1062 output_dir_override:{output_dir_override} settings.DEV_MODE:{settings.DEV_MODE}\n')
 
-    if settings.DEV_MODE: # some test. want check if we can change setting and get some setting correct back ( 2026-0104-1433 4.1.'26 14:33 Sun )
-        # timestamp = str(recording_time).replace('.', '_')
+    if settings.DEV_MODE or output_dir_override: # some test. want check if we can change setting and get some setting correct back ( 2026-0104-1433 4.1.'26 14:33 Sun )
 
         # print(f':st: \nprocess_text_in_background:1061 output_dir_override:{output_dir_override}\n\n')
 
