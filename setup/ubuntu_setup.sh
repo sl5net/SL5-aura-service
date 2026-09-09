@@ -123,15 +123,11 @@ if ! command -v fzf &> /dev/null || [ "$(printf '%s\n' "0.74.0" "${FZF_VER}" | s
 
     tmp=$(mktemp -d)
     cd "$tmp"
-    AUTH_HEADER=()
-    if [ -n "${GITHUB_TOKEN:-}" ]; then
-        AUTH_HEADER=(-H "Authorization: Bearer ${GITHUB_TOKEN}")
-    fi
-    release_json=$(curl -sS "${AUTH_HEADER[@]}" https://api.github.com/repos/junegunn/fzf/releases/latest 2>/dev/null || echo "{}")
-    url=$(echo "$release_json" | jq -r ".assets[]? | select(.name | test(\"${FZF_ARCH}\")) | .browser_download_url" 2>/dev/null | head -n1 || true)
-    if [ -z "$url" ] || [ "$url" = "null" ]; then
-        echo "Warning: GitHub API rate limited or asset lookup failed. Falling back to direct release download." >&2
-        url="https://github.com/junegunn/fzf/releases/download/v0.60.3/fzf-0.60.3-${FZF_ARCH}.tar.gz"
+    release_json=$(curl -sS https://api.github.com/repos/junegunn/fzf/releases/latest)
+    url=$(echo "$release_json" | jq -r '.assets[] | select(.name | test("linux_amd64")) | .browser_download_url' | head -n1)
+    if [ -z "$url" ]; then
+      echo "Could not find linux_amd64 asset in latest release" >&2
+      exit 1
     fi
 
     
