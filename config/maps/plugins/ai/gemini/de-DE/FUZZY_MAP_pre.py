@@ -29,7 +29,7 @@ _common_meta = {
     'command_flags': re.IGNORECASE,
     'window_ignore_case': False,
     'only_in_windows': [r'Mozilla Firefox', r'Chrome', r'Brave', r'FUZZY_MAP_pre', r'Kate', r'CudaText', r'xed'],
-    'exclude_windows': [r'Element', r'Mastodon', r'GitHub', r'Claude', r'Google AI'],
+    'exclude_windows': [r'Element', r'Mastodon', r'GitHub', r'Claude', r'Google AI', 'gmail' ],
 }
 FUZZY_MAP_pre = [
 

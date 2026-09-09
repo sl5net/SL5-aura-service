@@ -46,7 +46,7 @@ FUZZY_MAP_pre = [
 
     # EXAMPLE: deutschlandfunk
     # Einen  is somtimes noise of nothing
-    ('https://www.deutschlandradio.de/streamingdienste-100.html', r'^(Einen\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor|deutschland frank|deutschlands)\s*$', 70, # min_accuracy
+    ('https://f141.rndfnk.com/ard/dlf/01/opus/24/stream.opus?aggregator=web&cid=01FBPWZ12X2XN8SDSMBZ7X0ZTT&sid=3J53NUOKUJ2YWccSGcln6ITWKLk&token=30RhW4jYeoTtNMfw6l_uBDDJzd6zJR5Gs3GrG1B4JQw&tvf=YCl5u2yo0xhmMTQxLnJuZGZuay5jb20', r'^(Einen\s*)?(deutschlandfunk|Deutschlandradio|deutsch\w* radio|deutsch\w* vor|deutschland frank|deutschlands)\s*$', 70, # min_accuracy
  {'command_flags': re.IGNORECASE}),
 
     # dein deutschlands
