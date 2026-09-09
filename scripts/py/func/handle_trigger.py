@@ -1,6 +1,5 @@
 # scripts/py/func/handle_trigger.py
-
-
+import os
 # flake8: noqa: F821
 # F821: Undefined name (Accepting Closure access to handle_trigger arguments)
 
@@ -13,8 +12,11 @@ import vosk
 from vosk import SetLogLevel
 
 from .audio_manager import mute_microphone, unmute_microphone
-from .delayed_mic_unmute import schedule_delayed_unmute, cancel_delayed_unmute
-
+from .delayed_mic_unmute import (
+    cancel_delayed_unmute,
+    record_pre_session_mute_state,
+    schedule_delayed_unmute,
+)
 from .config.dynamic_settings import settings
 from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED
 from .guess_lt_language_from_model import guess_lt_language_from_model
@@ -58,9 +60,18 @@ def session_thread_target(logger):
         with SEQUENCE_LOCK.lock:
             SESSION_LAST_PROCESSED[session_id] = 0
             session_chunk_counter = 0  # Reset for this new session
+        # 
+        # project_root = os.environ.get('SL5NET_AURA_PROJECT_ROOT', '')
+        # 
+        # 
+        # target_model_name = (project_root / "config/model_name.txt").read_text().strip()
 
-
-        target_model_name = (project_root / "config/model_name.txt").read_text().strip()
+        project_root_env = os.environ.get('SL5NET_AURA_PROJECT_ROOT', '')
+        project_root = Path(project_root_env) if project_root_env else Path.cwd()
+        model_file = project_root / "config" / "model_name.txt"
+        target_model_name = model_file.read_text().strip() if model_file.is_file() else ""
+        selected_model = target_model_name
+        
         logger.info("----> Target model name: %s", target_model_name)
         
         if not target_model_name:
@@ -189,6 +200,7 @@ def handle_trigger(
     # --- ACTION 2: START a new session ---
 
     cancel_delayed_unmute()
+    record_pre_session_mute_state(logger)
     unmute_microphone()
 
     session_id = object() # Wir verwenden ein Dummy-Objekt als einzigartige ID
