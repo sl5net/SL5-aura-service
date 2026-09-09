@@ -28,10 +28,18 @@ def run(project_root):
 
 
     if platform.system() == "Windows":
-        # Wir übergeben das Koan-Verzeichnis an die .bat
-        # Windows handles background processes differently, usually no fix needed
         subprocess.Popen(['cmd', '/c', 'start', str(search_script), str(koan_dir)], start_new_session=True)
-
+    elif platform.system() == "Darwin":
+        from scripts.py.func.config.dynamic_settings import settings
+        sleep_sec = 5 if settings.DEV_MODE else 0
+        inner_cmd = f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; sleep {sleep_sec}'
+        escaped_cmd = inner_cmd.replace('\\', '\\\\').replace('"', '\\"')
+        osascript_cmd = [
+            'osascript',
+            '-e', 'tell application "Terminal" to activate',
+            '-e', f'tell application "Terminal" to do script "{escaped_cmd}"'
+        ]
+        subprocess.Popen(osascript_cmd, start_new_session=True)
     else:
         import os
         env = os.environ.copy()
