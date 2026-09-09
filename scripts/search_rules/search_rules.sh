@@ -191,10 +191,12 @@ if [ -n "$SELECTED_LINE" ]; then
         LINE_NUM=""
     fi
 
-    if [[ "$FILE_PATH" != /* && -f "$SL5NET_AURA_PROJECT_ROOT/$FILE_PATH" ]]; then
-        FILE_PATH="$SL5NET_AURA_PROJECT_ROOT/$FILE_PATH"
+    if [[ -e "$FILE_PATH" ]]; then
+        FILE_PATH="$(realpath "$FILE_PATH" 2>/dev/null || echo "$FILE_PATH")"
+    elif [[ "$FILE_PATH" != /* && -f "$SL5NET_AURA_PROJECT_ROOT/$FILE_PATH" ]]; then
+        FILE_PATH="$(realpath "$SL5NET_AURA_PROJECT_ROOT/$FILE_PATH" 2>/dev/null || echo "$SL5NET_AURA_PROJECT_ROOT/$FILE_PATH")"
     fi
-
+    
     EXT="${FILE_PATH##*.}"
     EXT="${EXT,,}"
     BIN_EXTS="pdf png jpg jpeg gif webp mp4 mp3 zip tar gz 7z"
@@ -209,7 +211,10 @@ if [ -n "$SELECTED_LINE" ]; then
 
     else
         logger_info "Dispatching to editor '$PREFERRED_EDITOR' for '$FILE_PATH' (line: '$LINE_NUM')"
-if [[ "$PREFERRED_EDITOR" = "cudatext" ]]; then
+        
+        
+        
+        if [[ "$PREFERRED_EDITOR" = "cudatext" ]]; then
           nohup "$PREFERRED_EDITOR" "$FILE_PATH@$LINE_NUM" >> "$LOGFILE" 2>&1 &
         elif [[ "$PREFERRED_EDITOR" = "xed" || "$PREFERRED_EDITOR" = "gedit" ]]; then
           nohup "$PREFERRED_EDITOR" "$FILE_PATH" "+$LINE_NUM" >> "$LOGFILE" 2>&1 &
@@ -217,15 +222,15 @@ if [[ "$PREFERRED_EDITOR" = "cudatext" ]]; then
           nohup "$PREFERRED_EDITOR" -g "$FILE_PATH:$LINE_NUM" >> "$LOGFILE" 2>&1 &
         else
           nohup "$PREFERRED_EDITOR" "$FILE_PATH" --line="$LINE_NUM" >> "$LOGFILE" 2>&1 &
-        fi    fi
-    # exit 0
-
-    # PDF ?
-    # if [[ "${FILE_PATH,,}" == *.pdf ]]; then
-
+        fi
+        BG_PID=$!
+        disown $BG_PID 2>/dev/null || true
+    fi
     if [ "$SEARCH_CLOSE_ON_OPEN" = "True" ]; then
+        sleep 0.5
         exit 0
     fi
+
 
 else
     exit 0
