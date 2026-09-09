@@ -31,8 +31,17 @@ def run(project_root):
 
     if platform.system() == "Windows":
         subprocess.Popen(['cmd', '/c', 'start', str(search_script), str(koan_dir)], start_new_session=True)
-
+    elif platform.system() == "Darwin":
+        inner_cmd = f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}; exec bash'
+        escaped_cmd = inner_cmd.replace('\\', '\\\\').replace('"', '\\"')
+        osascript_cmd = [
+            'osascript',
+            '-e', 'tell application "Terminal" to activate',
+            '-e', f'tell application "Terminal" to do script "{escaped_cmd}"'
+        ]
+        subprocess.Popen(osascript_cmd, start_new_session=True)
     else:
+        
         cmd = [
             'konsole', '--hold', '-e', 'bash', '-c',
             #f'echo -e "{welcome_msg}"; sleep 2; bash {search_script} {koan_dir}'
