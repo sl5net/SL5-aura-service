@@ -58,7 +58,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 """, r'^\s*(aura|Aurora|laura|dora|era|Hurra|prora|computadora)\s+(w\w{2,3}) (son|hacer)?(tú)$', 100,
         {
         'command_flags': re.IGNORECASE,
-        'exclude_windows': [r'elemento',r'firefox', r'cromo', r'corajudo','double', r'nemo', r'thunar', r'caja'],
+        'exclude_windows': [r'elemento',r'firefox', r'cromo', r'corajudo','double', r'nemo', r'thunar', r'caja', r'finder', r'forklift', r'commander one'],
         }
     ),
 
@@ -101,7 +101,7 @@ Es gibt keine Accounts, Passwörter, Logins.
 """, r'^\s*(aura|Aurora|laura|dora|era|Hurra|prora|computadora)\s*(\!|\.|\?|$)(\s+.*)?$', 100,
         {
         'command_flags': re.IGNORECASE,
-        'exclude_windows': [r'elemento',r'firefox', r'cromo', r'corajudo','double', r'nemo', r'thunar', r'caja'],
+        'exclude_windows': [r'elemento',r'firefox', r'cromo', r'corajudo','double', r'nemo', r'thunar', r'caja', r'finder', r'forklift', r'commander one'],
 
         }
     ),
@@ -172,7 +172,7 @@ Es gibt keine Accounts, Passwörter, Logins.
         {
         'command_flags': re.IGNORECASE,
         'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
-        'exclude_windows': ['element', 'firefox', 'chrome', 'brave','.*double.*commander.*','double commander', r'nemo', r'thunar', r'caja'],
+        'exclude_windows': ['element', 'firefox', 'chrome', 'brave','.*double.*commander.*','double commander', r'nemo', r'thunar', r'caja', r'finder', r'forklift', r'commander one'],
         }
     ),
 
@@ -185,7 +185,7 @@ Es gibt keine Accounts, Passwörter, Logins.
         {
             'command_flags': re.IGNORECASE,
             'on_match_exec': [CONFIG_DIR / 'ask_ollama.py'],
-            'exclude_windows': [r'elemento',r'firefox', r'cromo', r'corajudo',r'doble cmd',r'doble comandante', r'nemo', r'thunar', r'caja'],
+            'exclude_windows': [r'elemento',r'firefox', r'cromo', r'corajudo',r'doble cmd',r'doble comandante', r'nemo', r'thunar', r'caja', r'finder', r'forklift', r'commander one'],
         }
     ),
 
