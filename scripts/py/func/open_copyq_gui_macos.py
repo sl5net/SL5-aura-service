@@ -5,12 +5,14 @@ import subprocess
 from pathlib import Path
 
 
-def open_copyq_gui_macos(logger=None) -> bool:
+def open_copyq_gui_macos(logger=None, open_commands: bool = True) -> bool:
     """
     Safely opens the CopyQ GUI window on macOS upon Aura startup.
+    Optionally opens the Commands/Shortcuts configuration dialog (F6).
     Resets window geometry to prevent off-screen position bugs.
     Never raises exceptions to prevent any disturbance to Aura startup.
     """
+    
     if platform.system() != "Darwin":
         return False
 
@@ -45,6 +47,7 @@ def open_copyq_gui_macos(logger=None) -> bool:
         )
 
         # Fallback to macOS open command if IPC show did not succeed
+
         if res.returncode != 0:
             subprocess.run(
                 ["open", "-a", "CopyQ"],
@@ -54,9 +57,22 @@ def open_copyq_gui_macos(logger=None) -> bool:
                 check=False,
             )
 
+        if open_commands:
+            # Open the Commands dialog (F6) so the user can inspect and configure shortcuts
+            subprocess.run(
+                [copyq_bin, "eval", "addCommands([])"],
+                capture_output=True,
+                text=True,
+                timeout=3,
+                check=False,
+            )
+            if logger:
+                logger.info("CopyQ commands dialog requested on macOS.")
+
         if logger:
             logger.info("CopyQ GUI window requested on macOS.")
-        return True
+        return True    
+    
     except (subprocess.SubprocessError, OSError) as exc:
         if logger:
             logger.warning(f"Failed to open CopyQ GUI on macOS: {exc}")
