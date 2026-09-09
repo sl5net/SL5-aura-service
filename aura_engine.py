@@ -804,6 +804,8 @@ from scripts.py.func.start_languagetool_server import (
     start_languagetool_server,
 )
 
+from scripts.py.func.open_copyq_gui_macos import open_copyq_gui_macos
+
 # from scripts.py.func.stop_languagetool_server import stop_languagetool_server
 # from scripts.py.func.transcribe_audio_with_feedback import transcribe_audio_with_feedback
 # from scripts.py.func.check_memory_critical import check_memory_critical
@@ -1239,9 +1241,11 @@ if not languagetool_process:
 VOSK_MODEL_FILE = SCRIPT_DIR / "config/model_name.txt"
 vosk_model_from_file = Path(VOSK_MODEL_FILE).read_text().strip() if Path(VOSK_MODEL_FILE).exists() else ""
 lang_code = guess_lt_language_from_model(logger, vosk_model_from_file)
-
 logger.info(f"lang_code: {lang_code}")
 
+if not os.getenv('CI'):
+    open_copyq_gui_macos(logger)
+    
 if os.getenv('CI'):
     logger.info("CI environment detected. Skipping Welcome Wizard 🧙")
 elif settings.SHOW_SEARCH_ON_STARTUP:
