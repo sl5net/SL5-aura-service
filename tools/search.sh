@@ -56,7 +56,8 @@ while [[ $# -gt 0 ]]; do
     -w|--word-regexp) GREP_FLAGS="$GREP_FLAGS -w"; MATCH_FLAGS="$MATCH_FLAGS -w" ;;
     -a|--all|--include-doc-sources) INCLUDE_DOC_SOURCES=true ;;
     -e|--ext) SEARCH_EXT="${2:?Provide extension for -e/--ext}"; shift ;;
-    --all-ext) ALL_EXT=true ;;
+    -e=*|--ext=*|ext=*) SEARCH_EXT="${1#*=}" ;;
+    --all-ext|all_ext=true) ALL_EXT=true ;;
     -c|--include-comments) ignore_comments=false ;;
     -h|--help) show_usage; exit 0 ;;
     --) shift
