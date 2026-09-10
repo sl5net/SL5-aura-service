@@ -10,6 +10,7 @@ from watchdog.observers import Observer
 from .audio_manager import sound_program_loaded
 from .config.dynamic_settings import settings
 from .handle_trigger import handle_trigger
+from .overlay.recording_overlay_manager import stop_recording_overlay
 from .log_memory_details import log_memory_details
 from .model_manager import manage_models
 from .press_trigger_button import press_trigger_button
@@ -143,6 +144,7 @@ def main(logger, loaded_models, config, suspicious_events, recording_time, activ
         logger.error(f"FATAL ERROR {e} in main loop:", exc_info=True)
         logger.info("\nscripts/py/func/main.py:146\nService interrupted by user.")
     finally:
+        stop_recording_overlay()
         observer.stop()
         observer.join()
         logger.info("scripts/py/func/main.py:150\nWaiting for all background threads to finish…")

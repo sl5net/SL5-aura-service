@@ -21,6 +21,7 @@ from .global_state import SEQUENCE_LOCK, SESSION_LAST_PROCESSED
 from .guess_lt_language_from_model import guess_lt_language_from_model
 from .microphone_status_too_log import log_microphone_status
 from .model_manager import MODELS_LOCK
+from .overlay.recording_overlay_manager import set_overlay_state
 from .process_text_in_background import process_text_in_background
 
 PRE_RECORDING_TIMEOUT = settings.PRE_RECORDING_TIMEOUT
@@ -49,7 +50,7 @@ global text_detected
 def finalize_recording_session(logger):
     """A dedicated function to clean up after a recording session."""
     global active_transcription_thread
-
+    set_overlay_state("idle")
     if settings.DEV_MODE:
         logger.info("Finalizing recording session: All new audio intake has stopped.")
 
@@ -76,6 +77,7 @@ def handle_trigger(
     # scripts/py/func/handle_trigger.py:154
     if dictation_session_active.is_set():
         logger.info("🎬⏹️ Manual 🛑 stop trigger detected. Signaling session to end.")
+        set_overlay_state("idle")
         mute_microphone()
 
         tmp = (Path("C:/tmp") if platform.system() == "Windows" else Path(
@@ -109,6 +111,7 @@ def handle_trigger(
     session_id = object() # Wir verwenden ein Dummy-Objekt als einzigartige ID
 
     logger.info("🎬🏁 Trigger received. Starting new dictation session.")
+    set_overlay_state("recording")
     dictation_session_active.set()
 
     # --- Select a model safely ---
