@@ -62,6 +62,15 @@ ENABLE_AUTO_LANGUAGE_DETECTION = False # Deprecated . Better set it to False
 # Default for new users is the most verbose level.
 NOTIFICATION_LEVEL = 1 # 0=Silent, 1=Essential, 2=Verbose
 
+
+# Recording Overlay (OSD)
+RECORDING_OVERLAY_ENABLED = True
+RECORDING_OVERLAY_TOPMOST = True
+RECORDING_OVERLAY_POSITION = "tr"  # "tr" or "bl"
+RECORDING_OVERLAY_IDLE_MODE = "hidden"  # "hidden" or "pentagon"
+RECORDING_OVERLAY_SIZE = 36
+
+
 SHOW_SEARCH_ON_STARTUP = True
 SEARCH_CLOSE_ON_OPEN = False
 

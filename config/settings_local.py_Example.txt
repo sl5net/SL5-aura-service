@@ -80,6 +80,14 @@ AUDIO_INPUT_DEVICE = 'SYSTEM_DEFAULT'
 # 0 = Silent, 1 = Essential messages only, 2 = Verbose
 NOTIFICATION_LEVEL = 0
 
+# Recording Overlay (OSD)
+RECORDING_OVERLAY_ENABLED = True
+RECORDING_OVERLAY_TOPMOST = True
+RECORDING_OVERLAY_POSITION = "tr"  # "tr" or "bl"
+RECORDING_OVERLAY_IDLE_MODE = "hidden"  # "hidden" or "pentagon"
+RECORDING_OVERLAY_SIZE = 36
+
+
 # --- Sound Feedback ---
 # 1 = enabled (recommended: audio cues for start/stop recording)
 soundMute = 1
