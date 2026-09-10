@@ -542,11 +542,16 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                             # log4DEV(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
                             last_activity_time = time.time()
                         else:
-                            message1 = f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached)."
-                            message2 = "Is your Microphone off ? or Microphone muted?"
-                            logger.info(message1 + message2)
+                            #message1 = f"⏹️ Loop finished (timeout of {current_timeout:.1f}s reached)."
+                            # message2 = "Is your Microphone off ? or Microphone muted?"
+                            #logger.info(message1 + message2)
                             mute_microphone(logger, onlySound=True)
-                            speak_inclusive_fallback(message2 , 'en-US')
+
+                            notify(f"⏹️ {LT_LANGUAGE}… OFF", "⏹️ {LT_LANGUAGE}… OFF", "low",
+                                   icon="media-record",
+                                   replace_tag="transcription_status")
+
+                            # speak_inclusive_fallback(message2 , 'en-US')
                             # "Mute" sound: quick down-bending tone
                             break
 

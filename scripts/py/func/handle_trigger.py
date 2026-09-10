@@ -1,6 +1,5 @@
 # scripts/py/func/handle_trigger.py
 import os
-# flake8: noqa: F821
 # F821: Undefined name (Accepting Closure access to handle_trigger arguments)
 
 import platform
@@ -44,104 +43,8 @@ global text_detected
 # … existing imports
 
 # Global sequence counter for the current session (must be synchronized)
-global session_chunk_counter
-session_chunk_counter = 0
-
-
-
-# --- Define the session logic inside a nested function ---
-def session_thread_target(logger):
-    global session_chunk_counter
-    session_id = None
-    lt_language = 'unknown'
-
-    try:
-        # Initialize session counter
-        with SEQUENCE_LOCK.lock:
-            SESSION_LAST_PROCESSED[session_id] = 0
-            session_chunk_counter = 0  # Reset for this new session
-        # 
-        # project_root = os.environ.get('SL5NET_AURA_PROJECT_ROOT', '')
-        # 
-        # 
-        # target_model_name = (project_root / "config/model_name.txt").read_text().strip()
-
-        project_root_env = os.environ.get('SL5NET_AURA_PROJECT_ROOT', '')
-        project_root = Path(project_root_env) if project_root_env else Path.cwd()
-        model_file = project_root / "config" / "model_name.txt"
-        target_model_name = model_file.read_text().strip() if model_file.is_file() else ""
-        selected_model = target_model_name
-        
-        logger.info("----> Target model name: %s", target_model_name)
-        
-        if not target_model_name:
-            raise FileNotFoundError
-
-        # Find the requested model among loaded ones
-        for key, model_dict in loaded_models.items():
-            if f"-{key}-" in target_model_name:
-                selected_model = model_dict
-                found_key = key
-                break
-
-        if not selected_model:
-            logger.info(f"Model for '{target_model_name}' not ready. Using first available.")
-            found_key = list(loaded_models.keys())[0]
-            selected_model = loaded_models[found_key]
-            logger.info(f"Model selected '{selected_model}'.")
-
-    # py/func/handle_trigger.py:74
-    except FileNotFoundError:
-        logger.warning("No target model file found. Using first available.")
-        found_key = list(loaded_models.keys())[0]
-        selected_model = loaded_models[found_key]
-
-        from .transcribe_audio_with_feedback import transcribe_audio_with_feedback
-        text_chunk_iterator = transcribe_audio_with_feedback(
-            logger,
-            recognizer,
-            lt_language,
-            initial_silence_timeout,
-            session_active_event,
-            AUTO_ENTER_AFTER_DICTATION_global
-        )
-
-        for text_chunk in text_chunk_iterator:
-            if text_chunk.strip():
-                # text_detected = 1
-
-                # --- CRITICAL: ASSIGN SEQUENCE ID AND START THREAD ---
-                with SEQUENCE_LOCK.lock:
-                    session_chunk_counter += 1
-                    current_chunk_id = session_chunk_counter
-
-                if settings.DEV_MODE:
-                    logger.info(f"Chunk ID {current_chunk_id}: Starting processing for '{text_chunk[:30]}…'")
-
-                # Start the thread as before, but pass the ID and Session ID
-                TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
-                output_dir = TMP_DIR / "sl5_aura" / "tts_output"
-                thread = threading.Thread(
-                    target=process_text_in_background,
-                    args=(logger, lt_language, text_chunk, output_dir,
-                          time.time(), lt_language, None,  # Existing arguments
-                          current_chunk_id, session_id),
-                    kwargs = {'interface': 'speech'}
-                )
-                thread.start()
-
-            if not dictation_session_active.is_set():
-                logger.info("Stop signal received. Gracefully exiting recording loop.")
-                break
-
-    finally:
-        # --- CLEANUP LOCK STATE ---
-        if session_id is not None:
-            with SEQUENCE_LOCK.lock:
-                if session_id in SESSION_LAST_PROCESSED:
-                    del SESSION_LAST_PROCESSED[session_id]
-            # Note: We keep OUT_OF_ORDER_CACHE items until they time out/are picked up
-
+# global session_chunk_counter
+# session_chunk_counter = 0
 
 def finalize_recording_session(logger):
     """A dedicated function to clean up after a recording session."""
@@ -266,10 +169,14 @@ def handle_trigger(
 
             for text_chunk in text_chunk_iterator:
                 if text_chunk.strip():
+                    
                     text_detected = 1
                     # if settings.DEV_MODE:
                     #     logger.info(f"Processing chunk: '{text_chunk[:30]}…'")
                     output_dir = TMP_DIR / "sl5_aura" / "tts_output"
+                    
+                    
+                    
                     thread = threading.Thread(target=process_text_in_background,
                                               args=(logger, lt_language, text_chunk, output_dir,
                                                     time.time(), active_lt_url),
