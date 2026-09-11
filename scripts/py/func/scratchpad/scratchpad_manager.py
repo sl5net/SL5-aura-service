@@ -29,6 +29,18 @@ def _create_scratchpad(
     _window_ref = ScratchpadWindow(
         top, target_win_id, server_url, language, initial_text
     )
+    top.lift()
+    top.focus_force()
+    _window_ref.text_area.focus_set()
+    with open("/tmp/aura_overlay_debug.log", "a") as f:
+        f.write(
+            f"after focus_force: top_viewable={top.winfo_viewable()}, "
+            f"focus_widget={top.focus_get()}\n"
+        )
+        f.flush()
+    
+    
+    
     def _on_destroy(event: tk.Event) -> None:
         global _window_ref, _is_open
         if event.widget is top:

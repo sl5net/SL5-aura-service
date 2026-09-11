@@ -24,7 +24,7 @@ class ScratchpadWindow:
         self.server_url = server_url
         self.language = language
 
-        self.text_area, self.panel = create_scratchpad_layout(root)
+        self.text_area, self.panel, self.hint = create_scratchpad_layout(root)        
         self._debounce_id: Optional[str] = None
         self._analysis_generation = 0
         if initial_text:            
@@ -35,6 +35,7 @@ class ScratchpadWindow:
         self.text_area.bind("<<Modified>>", self._on_text_modified)
         self.root.bind("<Control-Return>", lambda e: self._on_accept())
         self.root.bind("<Escape>", lambda e: self.root.destroy())
+        self.text_area.focus_set()
 
     def get_text(self) -> str:
         return self.text_area.get("1.0", "end-1c")
@@ -80,8 +81,17 @@ class ScratchpadWindow:
         def _apply_updates() -> None:
             highlight_matches(self.text_area, matches)
             render_suggestions_panel(self.panel, matches, self._on_replace)
+            if matches:
+                self.panel.pack(fill="x", padx=8, pady=4, before=self.hint)
+            else:
+                self.panel.pack_forget()
+            with open("/tmp/aura_overlay_debug.log", "a") as f:
+                f.write(
+                    f"panel visibility updated: matches={len(matches)}, mapped={self.panel.winfo_ismapped()}\n"
+                )
+                f.flush()
         run_on_tk_thread(_apply_updates)
-        
+
         
     def _on_replace(self, offset: int, length: int, rep: str) -> None:
         new_text = apply_match_replacement(
