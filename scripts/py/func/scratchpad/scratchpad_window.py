@@ -24,21 +24,29 @@ class ScratchpadWindow:
         self.language = language
 
         self.text_area, self.panel = create_scratchpad_layout(root)
+        self._debounce_id: Optional[str] = None
         if initial_text:
             self.text_area.insert("end", initial_text)
             self.refresh_analysis()
-
+        self.text_area.edit_modified(False)
+        self.text_area.bind("<<Modified>>", self._on_text_modified)
         self.root.bind("<Control-Return>", lambda e: self._on_accept())
         self.root.bind("<Escape>", lambda e: self.root.destroy())
-
-    def append_text(self, chunk: str) -> None:
-        self.text_area.insert("end", chunk)
-        self.text_area.see("end")
 
     def get_text(self) -> str:
         return self.text_area.get("1.0", "end-1c")
 
-    def refresh_analysis(self) -> None:
+    def _on_text_modified(self, event=None) -> None:
+        self.text_area.edit_modified(False)
+        if self._debounce_id is not None:
+            self.root.after_cancel(self._debounce_id)
+        self._debounce_id = self.root.after(1000, self._trigger_debounced_refresh)
+
+    def _trigger_debounced_refresh(self) -> None:
+        self._debounce_id = None
+        self.refresh_analysis()
+
+    def refresh_analysis(self) -> None:        
         with open("/tmp/aura_overlay_debug.log", "a") as f:
             f.write(f"refresh_analysis called, text={self.get_text()!r}\n")
             f.flush()

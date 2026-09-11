@@ -9,7 +9,7 @@ _overlay_ref = None
 _is_open = False
 _lock = threading.Lock()
 def _create_overlay() -> None:
-    global _overlay_ref, _is_open
+    global _overlay_ref
     root = ensure_tk_root_running()
     top = tk.Toplevel(root)
     size = getattr(settings, "RECORDING_OVERLAY_SIZE", 36)
@@ -17,6 +17,7 @@ def _create_overlay() -> None:
     idle_mode = getattr(settings, "RECORDING_OVERLAY_IDLE_MODE", "hidden")
     topmost = getattr(settings, "RECORDING_OVERLAY_TOPMOST", True)
     _overlay_ref = OverlayWindow(top, _cmd_queue, size, position, idle_mode, topmost)
+
     def _on_destroy(event: tk.Event) -> None:
         global _overlay_ref, _is_open
         if event.widget is top:
