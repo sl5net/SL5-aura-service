@@ -66,6 +66,13 @@ class ScratchpadWindow:
             return "break"
         return None
 
+    def append_text(self, text: str) -> None:
+        current_content = self.text_area.get("1.0", "end-1c")
+        prefix = " " if current_content and not current_content.endswith((" ", "\n")) else ""
+        self.text_area.insert("end", prefix + text)
+        self.text_area.see("end")
+        self.refresh_analysis()
+
     def get_text(self) -> str:
         return self.text_area.get("1.0", "end-1c")
 

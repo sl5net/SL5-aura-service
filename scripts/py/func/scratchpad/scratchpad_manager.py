@@ -35,8 +35,8 @@ def _create_scratchpad(
     _window_ref = ScratchpadWindow(
         top, target_win_id, server_url, language, initial_text
     )
+    top.attributes("-topmost", True)
     top.lift()
-
     top.focus_force()
     _window_ref.text_area.focus_set()
     with open("/tmp/aura_overlay_debug.log", "a") as f:
@@ -54,6 +54,28 @@ def _create_scratchpad(
             _window_ref = None
             _is_open = False
     top.bind("<Destroy>", _on_destroy)
+
+def append_to_scratchpad(text: str) -> bool:
+    # global _window_ref
+    with _lock:
+        if _window_ref is None or not _is_open:
+            return False
+        ref = _window_ref
+
+    def _do_append() -> None:
+        try:
+            if ref.root.winfo_exists():
+                ref.append_text(text)
+                ref.root.attributes("-topmost", True)
+                ref.root.lift()
+                ref.root.focus_force()
+                ref.text_area.focus_set()
+        except Exception:
+            pass
+
+    run_on_tk_thread(_do_append)
+    return True
+
 
 def open_scratchpad(
     server_url: str, language: str, initial_text: str = ""
@@ -79,5 +101,21 @@ def open_scratchpad(
     )
 
 def is_scratchpad_open() -> bool:
-    return _is_open
-
+    global _window_ref, _is_open
+    with _lock:
+        if not _is_open or _window_ref is None:
+            _is_open = False
+            _window_ref = None
+            return False
+        try:
+            if not _window_ref.root.winfo_exists():
+                _is_open = False
+                _window_ref = None
+                return False
+        except Exception:
+            _is_open = False
+            _window_ref = None
+            return False
+        return True
+    
+    

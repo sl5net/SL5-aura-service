@@ -1262,6 +1262,7 @@ def process_text_in_background(logger,
         else:
             unique_output_file = output_dir / f"tts_output_{timestamp}.txt"
 
+
         if not privacy_taint_occurred:
             log4DEV(f'raw_text:{raw_text}',logger)
         if raw_text == '->SPEECH_PAUSE_TIMEOUT<-':
@@ -1871,7 +1872,18 @@ def process_text_in_background(logger,
 
             if custom_rules is None:
 
+                if not settings.DEV_MODE and custom_rules is None:
+                    # scripts/py/func/process_text_in_background.py:1885
+                    if route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
+                        # new_current_text = "CIAO5"
+                        # time.sleep(0.1)
+                        return
+                        # from scripts.py.func.global_state import SilentException
+                        # raise SilentException()
+
+
                 if not SEQUENCE_LOCK.execute_only_event.is_set():
+
                     unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
             # print(f':st: \nprocess_text_in_background:1672 raw_text:{raw_text}')
 
@@ -1879,32 +1891,11 @@ def process_text_in_background(logger,
             # KORREKTUR 1: Verwende die NEUEN Variablen für den Fallback
             execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
             if not privacy_taint_occurred and custom_rules is None and not execute_only:
+
+
+
                 handle_tts_fallback(new_current_text, lang_for_tts, logger)
 
-                if not settings.DEV_MODE and custom_rules is None:
-                    # environment for CHILD-Prozesse
-                    # os.environ['LANG'] = 'de_DE.UTF-8'
-                    # os.environ['PYTHONUTF8'] = '1'
-                    #os.environ['LD_PRELOAD'] = '/usr/lib/libmimalloc.so'
-
-                    # Optional:
-                    # try:
-                    #     locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
-                    # except locale.Error:
-                    #     # Fallback or Logging
-                    #     pass
-                    # 
-                    # # Python 3.7+:
-                    # try:
-                    #     sys.stdout.reconfigure(encoding='utf-8')
-                    #     sys.stderr.reconfigure(encoding='utf-8')
-                    # except AttributeError:
-                    #     import io
-                    #     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-                    #     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
-
-                    if route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
-                        return
 
 
 
