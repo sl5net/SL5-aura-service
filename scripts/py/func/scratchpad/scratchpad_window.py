@@ -4,6 +4,7 @@ import tkinter as tk
 from typing import Optional
 from .apply_match_replacement import apply_match_replacement
 from .get_languagetool_matches import get_languagetool_matches
+from .highlight_matches import highlight_matches
 from .inject_text_to_window import inject_text_to_window
 from .scratchpad_layout import create_scratchpad_layout
 from .scratchpad_suggestions_panel import render_suggestions_panel
@@ -62,12 +63,13 @@ class ScratchpadWindow:
         with open("/tmp/aura_overlay_debug.log", "a") as f:
             f.write(f"_run_async: scheduling render with {len(matches)} matches\n")
             f.flush()
-        run_on_tk_thread(
-            lambda: render_suggestions_panel(
-                self.panel, matches, self._on_replace
-            ),
-        )
 
+        def _apply_updates() -> None:
+            highlight_matches(self.text_area, matches)
+            render_suggestions_panel(self.panel, matches, self._on_replace)
+        run_on_tk_thread(_apply_updates)
+        
+        
     def _on_replace(self, offset: int, length: int, rep: str) -> None:
         new_text = apply_match_replacement(
             self.get_text(), offset, length, rep
