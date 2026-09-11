@@ -323,6 +323,9 @@ LANGUAGETOOL_BASE_URL = f"http://127.0.0.1:{LANGUAGETOOL_PORT}"
 LANGUAGETOOL_CHECK_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check"
 LANGUAGETOOL_RELATIVE_PATH = "LanguageTool-6.6/languagetool-server.jar"
 
+# Scratchpad Review Mode (Eloquent-style buffer with interactive corrections)
+SCRATCHPAD_REVIEW_MODE_ENABLED = False
+
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"
 

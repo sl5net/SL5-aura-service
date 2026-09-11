@@ -24,6 +24,8 @@ from .audio.handle_tts_fallback import handle_tts_fallback
 from .auto_fix_module import try_auto_fix_module
 from .checks.trigger_aura_maintenance import trigger_aura_maintenance
 
+from .scratchpad.route_to_scratchpad import route_to_scratchpad
+
 # from .config.regex_cache import REGEX_COMPILE_CACHE
 from .config.regex_cache import get_cached_regex
 from .correct_text_by_languagetool import correct_text_by_languagetool
@@ -1860,56 +1862,9 @@ def process_text_in_background(logger,
                                     SIGNATURE_TIMES[_active_window_title] = current_time
                             # scripts/py/func/process_text_in_background.py:1566
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             new_current_text = sanitize_transcription_start(new_current_text)
 
-
+            
             # THIS LINE WAS ALREADY CORRECT:
             # scripts/py/func/process_text_in_background.py:1891
 
@@ -1924,6 +1879,9 @@ def process_text_in_background(logger,
             execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
             if not privacy_taint_occurred and custom_rules is None and not execute_only:
                 handle_tts_fallback(new_current_text, lang_for_tts, logger)
+
+                if not settings.DEV_MODE and custom_rules is None and route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
+                    return
 
                 log4DEV(f"handle_tts_fallback({new_current_text}, {lang_for_tts})",logger)
 
