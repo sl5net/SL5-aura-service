@@ -32,9 +32,19 @@ def _run_tk_mainloop() -> None:
     with open("/tmp/aura_overlay_debug.log", "a") as f:
         f.write("_run_tk_mainloop starting\n")
         f.flush()
+
+    # root = tk.Tk()
+    # root.withdraw()
+    # _root = root
+
     root = tk.Tk()
+    try:
+        root.tk.call("encoding", "system", "utf-8")
+    except Exception:
+        pass
     root.withdraw()
     _root = root
+
     _ready_event.set()
     root.after(_POLL_INTERVAL_MS, _poll_pending_callbacks)
     root.mainloop()

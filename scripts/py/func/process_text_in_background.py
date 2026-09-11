@@ -2,6 +2,7 @@
 import difflib
 import importlib
 import importlib.util
+import locale
 import logging
 import os
 import pkgutil
@@ -1880,8 +1881,33 @@ def process_text_in_background(logger,
             if not privacy_taint_occurred and custom_rules is None and not execute_only:
                 handle_tts_fallback(new_current_text, lang_for_tts, logger)
 
-                if not settings.DEV_MODE and custom_rules is None and route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
-                    return
+                if not settings.DEV_MODE and custom_rules is None:
+                    # environment for CHILD-Prozesse
+                    # os.environ['LANG'] = 'de_DE.UTF-8'
+                    # os.environ['PYTHONUTF8'] = '1'
+                    #os.environ['LD_PRELOAD'] = '/usr/lib/libmimalloc.so'
+
+                    # Optional:
+                    # try:
+                    #     locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
+                    # except locale.Error:
+                    #     # Fallback or Logging
+                    #     pass
+                    # 
+                    # # Python 3.7+:
+                    # try:
+                    #     sys.stdout.reconfigure(encoding='utf-8')
+                    #     sys.stderr.reconfigure(encoding='utf-8')
+                    # except AttributeError:
+                    #     import io
+                    #     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+                    #     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
+                    if route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
+                        return
+
+
+
 
                 log4DEV(f"handle_tts_fallback({new_current_text}, {lang_for_tts})",logger)
 

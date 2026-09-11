@@ -1,3 +1,5 @@
+# scripts/py/func/scratchpad/scratchpad_manager.py
+import os
 import shutil
 import subprocess
 import sys
@@ -17,6 +19,10 @@ def _create_scratchpad(
     target_win_id: Optional[str],
 ) -> None:
     global _window_ref
+
+    os.environ['LANG'] = 'de_DE.UTF-8'
+    os.environ['PYTHONUTF8'] = '1'
+
     with open("/tmp/aura_overlay_debug.log", "a") as f:
         f.write("_create_scratchpad called\n")
         f.flush()
@@ -30,6 +36,7 @@ def _create_scratchpad(
         top, target_win_id, server_url, language, initial_text
     )
     top.lift()
+
     top.focus_force()
     _window_ref.text_area.focus_set()
     with open("/tmp/aura_overlay_debug.log", "a") as f:
@@ -52,6 +59,10 @@ def open_scratchpad(
     server_url: str, language: str, initial_text: str = ""
 ) -> None:
     global _is_open
+
+    os.environ['LANG'] = 'de_DE.UTF-8'
+    os.environ['PYTHONUTF8'] = '1'
+
     with open("/tmp/aura_overlay_debug.log", "a") as f:
         f.write(f"open_scratchpad called, _is_open={_is_open}\n")
         f.flush()

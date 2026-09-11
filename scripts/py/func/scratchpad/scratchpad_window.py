@@ -6,6 +6,7 @@ from .apply_match_replacement import apply_match_replacement
 from .get_languagetool_matches import get_languagetool_matches
 from .highlight_matches import highlight_matches
 from .inject_text_to_window import inject_text_to_window
+from .resolve_keysym_char import resolve_keysym_char
 from .scratchpad_layout import create_scratchpad_layout
 from .scratchpad_suggestions_panel import render_suggestions_panel
 from ..gui.tk_root_manager import run_on_tk_thread
@@ -27,15 +28,43 @@ class ScratchpadWindow:
         self.text_area, self.panel, self.hint = create_scratchpad_layout(root)        
         self._debounce_id: Optional[str] = None
         self._analysis_generation = 0
-        if initial_text:            
-            
+        if initial_text:
+
+            with open("/tmp/aura_overlay_debug.log", "a") as f:
+                f.write(f"before insert, initial_text: {initial_text.encode('unicode_escape')!r}\n")
+                f.flush()
             self.text_area.insert("end", initial_text)
+            with open("/tmp/aura_overlay_debug.log", "a") as f:
+                inserted = self.text_area.get("1.0", "end-1c")
+                f.write(f"after insert, text_area content: {inserted.encode('unicode_escape')!r}\n")
+                f.flush()
             self.refresh_analysis()
+            
+        with open("/tmp/aura_overlay_debug.log", "a") as f:
+            f.write(f"tcl encoding system={self.root.tk.call('encoding', 'system')}\n")
+            f.flush()
+            
         self.text_area.edit_modified(False)
+        
         self.text_area.bind("<<Modified>>", self._on_text_modified)
+        self.text_area.bind("<KeyPress>", self._on_key_press)
         self.root.bind("<Control-Return>", lambda e: self._on_accept())
         self.root.bind("<Escape>", lambda e: self.root.destroy())
         self.text_area.focus_set()
+
+    def _on_key_press(self, event: tk.Event) -> Optional[str]:
+        keysym_num = getattr(event, "keysym_num", None)
+        char = resolve_keysym_char(event.keysym, event.char, keysym_num)
+        
+        if char is not None:
+            try:
+                self.text_area.delete("sel.first", "sel.last")
+            except tk.TclError:
+                pass
+            self.text_area.insert("insert", char)
+            self.text_area.see("insert")
+            return "break"
+        return None
 
     def get_text(self) -> str:
         return self.text_area.get("1.0", "end-1c")
