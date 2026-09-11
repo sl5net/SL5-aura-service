@@ -34,6 +34,18 @@ def force_update_to_remote(repo_dir=REPO_DIR):
         if getattr(settings, "DEV_MODE", False):
             return False, "DEV_MODE is enabled; skipping forced reset"
 
+        # Example: settings.UPDATE_EXCLUDED_USERS expected as iterable of usernames
+        excluded = getattr(settings, "UPDATE_EXCLUDED_USERS", None)
+        if excluded:
+            # normalize to set of lowercase strings for robust checks
+            if not isinstance(excluded, (set, list, tuple)):
+                raise TypeError("UPDATE_EXCLUDED_USERS must be a list, tuple or set of usernames")
+            excluded_set = {str(u).lower() for u in excluded}
+
+            # current_user should be provided by caller (or derived elsewhere)
+            if settings.current_user and str(settings.current_user).lower() in excluded_set:
+                return False, f"User '{settings.current_user}' is excluded from forced updates"
+
         current_branch = get_current_branch(repo_dir)
         if not current_branch:
             return (

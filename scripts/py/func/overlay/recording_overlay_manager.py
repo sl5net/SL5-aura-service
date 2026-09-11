@@ -3,32 +3,36 @@ import threading
 import tkinter as tk
 from .overlay_window import OverlayWindow
 from ..config.dynamic_settings import settings
-
+from ..gui.tk_root_manager import ensure_tk_root_running, run_on_tk_thread
 _cmd_queue: queue.Queue = queue.Queue()
-_overlay_thread = None
+_overlay_ref = None
+_is_open = False
 _lock = threading.Lock()
-
-
-def _run_tk() -> None:
-    root = tk.Tk()
+def _create_overlay() -> None:
+    global _overlay_ref
+    root = ensure_tk_root_running()
+    top = tk.Toplevel(root)
     size = getattr(settings, "RECORDING_OVERLAY_SIZE", 36)
     position = getattr(settings, "RECORDING_OVERLAY_POSITION", "tr")
     idle_mode = getattr(settings, "RECORDING_OVERLAY_IDLE_MODE", "hidden")
     topmost = getattr(settings, "RECORDING_OVERLAY_TOPMOST", True)
-    OverlayWindow(root, _cmd_queue, size, position, idle_mode, topmost)
-    root.mainloop()
+    _overlay_ref = OverlayWindow(top, _cmd_queue, size, position, idle_mode, topmost)
 
-
+    def _on_destroy(event: tk.Event) -> None:
+        global _overlay_ref, _is_open
+        if event.widget is top:
+            _overlay_ref = None
+            _is_open = False
+    top.bind("<Destroy>", _on_destroy)
 def start_recording_overlay() -> None:
-    global _overlay_thread
+    global _is_open
     if not getattr(settings, "RECORDING_OVERLAY_ENABLED", False):
         return
     with _lock:
-        if _overlay_thread is None or not _overlay_thread.is_alive():
-            _overlay_thread = threading.Thread(target=_run_tk, daemon=True)
-            _overlay_thread.start()
-
-
+        if _is_open:
+            return
+        _is_open = True
+    run_on_tk_thread(_create_overlay)
 def set_overlay_state(state: str) -> None:
     if getattr(settings, "RECORDING_OVERLAY_ENABLED", False):
         start_recording_overlay()
@@ -36,5 +40,5 @@ def set_overlay_state(state: str) -> None:
 
 
 def stop_recording_overlay() -> None:
-    if _overlay_thread is not None and _overlay_thread.is_alive():
+    if _is_open:
         _cmd_queue.put("stop")
