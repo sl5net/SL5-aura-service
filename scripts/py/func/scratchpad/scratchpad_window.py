@@ -26,7 +26,9 @@ class ScratchpadWindow:
 
         self.text_area, self.panel = create_scratchpad_layout(root)
         self._debounce_id: Optional[str] = None
-        if initial_text:
+        self._analysis_generation = 0
+        if initial_text:            
+            
             self.text_area.insert("end", initial_text)
             self.refresh_analysis()
         self.text_area.edit_modified(False)
@@ -47,22 +49,33 @@ class ScratchpadWindow:
         self._debounce_id = None
         self.refresh_analysis()
 
-    def refresh_analysis(self) -> None:        
+
+    def refresh_analysis(self) -> None:
+        self._analysis_generation += 1
+        gen = self._analysis_generation
         with open("/tmp/aura_overlay_debug.log", "a") as f:
-            f.write(f"refresh_analysis called, text={self.get_text()!r}\n")
+            f.write(f"refresh_analysis called, gen={gen}, text={self.get_text()!r}\n")
             f.flush()
         threading.Thread(
-            target=self._run_async, args=(self.get_text(),), daemon=True
+            target=self._run_async, args=(self.get_text(), gen), daemon=True
         ).start()
 
-
-    def _run_async(self, text: str) -> None:
+    def _run_async(self, text: str, gen: int) -> None:
+        with open("/tmp/aura_overlay_debug.log", "a") as f:
+            f.write(f"_run_async: gen={gen} calling get_languagetool_matches\n")
+            f.flush()
         matches = get_languagetool_matches(
             self.server_url, self.language, text
         )
         with open("/tmp/aura_overlay_debug.log", "a") as f:
-            f.write(f"_run_async: scheduling render with {len(matches)} matches\n")
+            f.write(
+                f"_run_async: gen={gen} got {len(matches)} matches, "
+                f"current_generation={self._analysis_generation}, "
+                f"scheduling render={gen == self._analysis_generation}\n"
+            )
             f.flush()
+        if gen != self._analysis_generation:
+            return
 
         def _apply_updates() -> None:
             highlight_matches(self.text_area, matches)
