@@ -72,9 +72,12 @@ def open_scratchpad(
     )
 
 def append_scratchpad(text_chunk: str) -> None:
+    with open("/tmp/aura_overlay_debug.log", "a") as f:
+        f.write(f"append_scratchpad called with: {text_chunk!r}\n")
+        f.flush()
     if is_scratchpad_open():
         _cmd_queue.put(("append", text_chunk))
-
+        
 
 def is_scratchpad_open() -> bool:
     return _is_open

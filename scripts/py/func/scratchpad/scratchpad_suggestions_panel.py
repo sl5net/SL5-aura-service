@@ -11,8 +11,12 @@ def render_suggestions_panel(
     """
     Renders clickable suggestion buttons inside the container frame.
     """
+    with open("/tmp/aura_overlay_debug.log", "a") as f:
+        f.write(f"render_suggestions_panel called, matches={len(matches)}, container_mapped={container.winfo_ismapped()}\n")
+        f.flush()
     for child in container.winfo_children():
         child.destroy()
+        
 
     count = 0
     for m in matches:
@@ -37,5 +41,10 @@ def render_suggestions_panel(
                     off, ln, r
                 ),
             )
+
             btn.pack(side="left", padx=3, pady=2)
             count += 1
+        with open("/tmp/aura_overlay_debug.log", "a") as f:
+            f.write(
+                f"render_suggestions_panel done, buttons_created={count}, container_children={len(container.winfo_children())}\n")
+            f.flush()

@@ -26,13 +26,24 @@ def get_languagetool_matches(
         "text": text,
         "maxSuggestions": max_suggestions,
     }
+
+    with open("/tmp/aura_overlay_debug.log", "a") as f:
+        f.write(f"get_languagetool_matches called, url={check_url}, text_len={len(text)}\n")
+        f.flush()
     try:
         with requests.Session() as session:
             resp = session.post(check_url, data=payload, timeout=timeout)
             resp.raise_for_status()
             data = resp.json()
-    except Exception:
+    except Exception as exc:
+        with open("/tmp/aura_overlay_debug.log", "a") as f:
+            f.write(f"get_languagetool_matches EXCEPTION: {exc!r}\n")
+            f.flush()
         return []
+    with open("/tmp/aura_overlay_debug.log", "a") as f:
+        f.write(f"get_languagetool_matches got {len(data.get('matches', []))} matches\n")
+        f.flush()
+        
     normalized = []
     for m in data.get("matches", []):
         offset = int(m.get("offset", 0))

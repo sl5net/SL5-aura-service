@@ -214,8 +214,6 @@ EXTERNAL_LANGUAGETOOL_URL = "http://127.0.0.1:8081"
 
 # if true call iteratively all rules
 default_mode_is_all = True
-#  1 zwei drei vier 5
-#
 
 # LT_SKIP_RATIO_THRESHOLD = 20
 LT_SKIP_RATIO_THRESHOLD = 4

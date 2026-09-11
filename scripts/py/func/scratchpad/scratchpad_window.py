@@ -1,3 +1,4 @@
+# scripts/py/func/scratchpad/scratchpad_window.py
 import threading
 import tkinter as tk
 from typing import Optional
@@ -6,7 +7,7 @@ from .get_languagetool_matches import get_languagetool_matches
 from .inject_text_to_window import inject_text_to_window
 from .scratchpad_layout import create_scratchpad_layout
 from .scratchpad_suggestions_panel import render_suggestions_panel
-
+from ..gui.tk_root_manager import run_on_tk_thread
 
 class ScratchpadWindow:
     def __init__(
@@ -25,6 +26,7 @@ class ScratchpadWindow:
         self.text_area, self.panel = create_scratchpad_layout(root)
         if initial_text:
             self.text_area.insert("end", initial_text)
+            self.refresh_analysis()
 
         self.root.bind("<Control-Return>", lambda e: self._on_accept())
         self.root.bind("<Escape>", lambda e: self.root.destroy())
@@ -37,16 +39,22 @@ class ScratchpadWindow:
         return self.text_area.get("1.0", "end-1c")
 
     def refresh_analysis(self) -> None:
+        with open("/tmp/aura_overlay_debug.log", "a") as f:
+            f.write(f"refresh_analysis called, text={self.get_text()!r}\n")
+            f.flush()
         threading.Thread(
             target=self._run_async, args=(self.get_text(),), daemon=True
         ).start()
+
 
     def _run_async(self, text: str) -> None:
         matches = get_languagetool_matches(
             self.server_url, self.language, text
         )
-        self.root.after(
-            0,
+        with open("/tmp/aura_overlay_debug.log", "a") as f:
+            f.write(f"_run_async: scheduling render with {len(matches)} matches\n")
+            f.flush()
+        run_on_tk_thread(
             lambda: render_suggestions_panel(
                 self.panel, matches, self._on_replace
             ),
@@ -59,6 +67,8 @@ class ScratchpadWindow:
         self.text_area.delete("1.0", "end")
         self.text_area.insert("1.0", new_text)
         self.refresh_analysis()
+
+
 
     def _on_accept(self) -> None:
         inject_text_to_window(self.get_text(), self.target_window_id)
