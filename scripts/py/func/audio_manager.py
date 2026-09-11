@@ -154,9 +154,15 @@ def speak_inclusive_fallback(text_to_speak, language_code):
         clean_text = text_to_speak.replace("'", "''")
         ps_command = f"Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{clean_text}')"
         command = ['powershell', '-Command', ps_command]
+
     elif sys.platform == 'darwin':  # macOS
-        platform_name = "🍏macOS (say)"
-        command = ['say', text_to_speak]
+        platform_name = "macOS (say)"
+        macos_voice = convert_lang_code_for_macos(language_code)
+        if macos_voice:
+            command = ['say', '-v', macos_voice, text_to_speak]
+        else:
+            command = ['say', text_to_speak]
+
     else:
         logger.warning(f"no TTS-Fallback  '{sys.platform}' .")
         return
@@ -180,6 +186,24 @@ def speak_inclusive_fallback(text_to_speak, language_code):
     thread = threading.Thread(target=run_command)
     thread.daemon = True
     thread.start()
+
+
+def convert_lang_code_for_macos(long_code: str) -> str:
+    short_code = convert_lang_code_for_espeak(long_code)
+    voices = {
+        'de': 'Anna',
+        'en': 'Samantha',
+        'fr': 'Amelie',
+        'es': 'Monica',
+        'it': 'Alice',
+        'pt': 'Luciana',
+        'nl': 'Claire',
+        'pl': 'Ewa',
+        'ru': 'Milena'
+    }
+    return voices.get(short_code, '')
+
+
 
 
 def convert_lang_code_for_espeak(long_code: str) -> str:
