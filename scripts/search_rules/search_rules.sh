@@ -92,6 +92,9 @@ fi
 echo "Line 64:" $MAPS_DIR " pwd: " $PWD
 
 HISTORY_FILE="$SL5NET_AURA_PROJECT_ROOT/data/_search_rules_state/.search_rules_history"
+mkdir -p "$(dirname "$HISTORY_FILE")"
+[[ -f "$HISTORY_FILE" ]] || touch "$HISTORY_FILE"
+
 # 2. EDITOR FALLBACK LOGIC - delegated to shared helper (TODO 25.6.'26 17:33 Thu resolved)
 source "$SCRIPT_DIR/func/common/search_helpers.sh"
 logger_info "Initializing search_rules.sh…"
