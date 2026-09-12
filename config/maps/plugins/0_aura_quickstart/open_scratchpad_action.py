@@ -1,4 +1,5 @@
 # config/maps/plugins/0_aura_quickstart/open_scratchpad_action.py
+# PYTHONPATH=. .venv/bin/python3 config/maps/plugins/0_aura_quickstart/open_scratchpad_action.py
 import logging
 import os
 from pathlib import Path
@@ -43,8 +44,20 @@ def execute(match_data: dict) -> None:
     raise SilentException()
 
 
+# if __name__ == "__main__":
+#     try:
+#         execute({})
+#     except SilentException:
+#         pass
+
 if __name__ == "__main__":
+    import time
+    from scripts.py.func.scratchpad.scratchpad_manager import is_scratchpad_open
+
     try:
         execute({})
     except SilentException:
         pass
+    time.sleep(0.5)
+    while is_scratchpad_open():
+        time.sleep(0.2)

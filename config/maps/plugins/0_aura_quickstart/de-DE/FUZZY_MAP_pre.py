@@ -32,9 +32,6 @@ _aura_pad_meta = {
 }
 
 FUZZY_MAP_pre = [
-
-    # 
-
     # EXAMPLE: Aura Pad
     ('Aura Pad', fr'^{AURA_VARIANTS}\s*\b(Pad|S\w*Pad|Scratch.*|.*\bQuatsch|.*\bQuietscht)(\s*öffnen)?$', 100, _aura_pad_meta),
 
