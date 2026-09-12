@@ -117,6 +117,7 @@ signatur_ja = f""
 signatur_pt_br = f""
 
 # Scratchpad Review Mode (Eloquent-style buffer with interactive corrections)
+# experimental (s, 11.9.'26 21:34 Fri)
 SCRATCHPAD_REVIEW_MODE_ENABLED = False
 
 # --- Piper Server Connection (optional: used when USE_AS_PRIMARY_SPEAK = 'Piper') ---

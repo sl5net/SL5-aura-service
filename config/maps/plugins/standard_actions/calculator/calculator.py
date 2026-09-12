@@ -24,5 +24,5 @@ def execute(match_data):
         return f"Das Ergebnis von {num1} {operator} {num2} ist {result}."
 
     except (IndexError, ValueError):
-        return f"Ich konnte die Zahlen in deiner Frage nicht verstehen. num1:{num1} operator:{operator} num2:{num2}"
+        return f"Ich konnte die Zahlen in deiner Frage nicht verstehen. "
 

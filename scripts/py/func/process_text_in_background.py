@@ -1867,24 +1867,16 @@ def process_text_in_background(logger,
             new_current_text = sanitize_transcription_start(new_current_text)
 
             
-            # THIS LINE WAS ALREADY CORRECT:
-            # scripts/py/func/process_text_in_background.py:1891
-
             if custom_rules is None:
 
                 if not settings.DEV_MODE and custom_rules is None:
                     # scripts/py/func/process_text_in_background.py:1885
                     if route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
-                        # new_current_text = "CIAO5"
-                        # time.sleep(0.1)
                         return
-                        # from scripts.py.func.global_state import SilentException
-                        # raise SilentException()
-
 
                 if not SEQUENCE_LOCK.execute_only_event.is_set():
-
                     unique_output_file.write_text(new_current_text, encoding="utf-8-sig")
+
             # print(f':st: \nprocess_text_in_background:1672 raw_text:{raw_text}')
 
 
@@ -1892,12 +1884,7 @@ def process_text_in_background(logger,
             execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
             if not privacy_taint_occurred and custom_rules is None and not execute_only:
 
-
-
                 handle_tts_fallback(new_current_text, lang_for_tts, logger)
-
-
-
 
 
                 log4DEV(f"handle_tts_fallback({new_current_text}, {lang_for_tts})",logger)
@@ -1912,8 +1899,6 @@ def process_text_in_background(logger,
             else:
                 if global_state.LOGGING_ENABLED:
                     logger.info(f"✅ 💾 THREAD: Successfully wrote to …{str(unique_output_file)[-30:]} '{new_current_text}'")
-
-
 
 
             # Auto-Zip Smoke Test

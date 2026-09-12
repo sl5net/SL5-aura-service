@@ -21,12 +21,21 @@ suche = r'(such|suche|suche du|sucht|suchen|sure|Schuhe|hoover|buch|zug|Zuge|sti
 _meta_run_search_result = {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
-    # EXAMPLE: py
-    'only_in_windows': [ r'\.py'],
 }
-# Sherlock
+
+_aura_pad_meta = {
+    'command_flags': re.IGNORECASE,
+    'on_match_exec': [CONFIG_DIR.parent / "open_scratchpad_action.py"],
+    'execute_only': True,
+}
+
 FUZZY_MAP_pre = [
 
+    # EXAMPLE: Aura Pad
+    ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bPad$', 100, _aura_pad_meta),
+    ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bS\w*Pad$', 100, _aura_pad_meta),
+    ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bScratch.*$', 100, _aura_pad_meta),
+    
     # EXAMPLE: log
     ('log', r'^(log|look|Programm geladen. Viel Spaß|woran lernmodus deaktivieren|ausprobieren|blumenkohl|das ist überraschend)$', 70, _meta_run_search_result),
 

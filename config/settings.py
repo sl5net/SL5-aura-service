@@ -322,6 +322,7 @@ LANGUAGETOOL_CHECK_URL = f"{LANGUAGETOOL_BASE_URL}/v2/check"
 LANGUAGETOOL_RELATIVE_PATH = "LanguageTool-6.6/languagetool-server.jar"
 
 # Scratchpad Review Mode (Eloquent-style buffer with interactive corrections)
+# experimental (s, 11.9.'26 21:34 Fri)
 SCRATCHPAD_REVIEW_MODE_ENABLED = False
 
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
