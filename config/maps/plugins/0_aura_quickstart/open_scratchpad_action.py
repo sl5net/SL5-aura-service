@@ -1,3 +1,4 @@
+# config/maps/plugins/0_aura_quickstart/open_scratchpad_action.py
 import logging
 import os
 from pathlib import Path
