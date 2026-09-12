@@ -27,14 +27,21 @@ _aura_pad_meta = {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR.parent / "open_scratchpad_action.py"],
     'execute_only': True,
+    'exclude_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 
+                        'xterm', 'tilix', 'terminator', 'iTerm2', 'iTerm', 'Alacritty', 'kitty', 'Warp', 'Ghostty'],
 }
 
 FUZZY_MAP_pre = [
 
+    # 
+
     # EXAMPLE: Aura Pad
-    ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bPad$', 100, _aura_pad_meta),
-    ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bS\w*Pad$', 100, _aura_pad_meta),
-    ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bScratch.*$', 100, _aura_pad_meta),
+    ('Aura Pad', fr'^{AURA_VARIANTS}\s*\b(Pad|S\w*Pad|Scratch.*|.*\bQuatsch|.*\bQuietscht)(\s*öffnen)?$', 100, _aura_pad_meta),
+
+    # ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bPad$', 100, _aura_pad_meta),
+    # ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bS\w*Pad$', 100, _aura_pad_meta),
+    # ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bScratch.*$', 100, _aura_pad_meta),
+
     
     # EXAMPLE: log
     ('log', r'^(log|look|Programm geladen. Viel Spaß|woran lernmodus deaktivieren|ausprobieren|blumenkohl|das ist überraschend)$', 70, _meta_run_search_result),
@@ -121,3 +128,5 @@ FUZZY_MAP_pre = [
     }),
 
 ]
+
+
