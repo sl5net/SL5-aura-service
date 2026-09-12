@@ -401,6 +401,9 @@ echo "ruff" >> scripts/infra/requirements/requirements-dev.txt
 echo "pylint" >> scripts/infra/requirements/requirements-dev.txt
 echo "pipreqs" >> scripts/infra/requirements/requirements-dev.txt
 
+echo "PyGObject; sys_platform == 'linux'" >> scripts/infra/requirements/requirements.txt
+
+
 
 # -----------------------------------------------------------------------------
 # 5. CLEANUP
