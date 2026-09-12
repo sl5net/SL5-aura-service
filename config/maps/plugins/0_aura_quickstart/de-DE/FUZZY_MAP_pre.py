@@ -44,7 +44,7 @@ FUZZY_MAP_pre = [
 
     
     # EXAMPLE: log
-    ('log', r'^(log|look|Programm geladen. Viel Spaß|woran lernmodus deaktivieren|ausprobieren|blumenkohl|das ist überraschend)$', 70, _meta_run_search_result),
+    ('log', r'^(log|look)$', 70, _meta_run_search_result),
 
     # EXAMPLE: log
     ('log', fr'^{AURA_VARIANTS}\s*(logik|logdateien|log-datei|logdateien|logging|rainer|ein rock|lockt hat|ein okt hat|log-datei|logdatei|eine logdatei|ein oktett|ein log-datei)$', 70, _meta_run_search_result),
