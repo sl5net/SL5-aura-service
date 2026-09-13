@@ -500,7 +500,9 @@ def delete_non_primary_md(info, primary):
             skipped.append((f, 'no suffix — assumed primary english'))
     return deleted, skipped
 
+# scripts/py/setup_config.py:503
 def setup_linux_autostart(repo_root):
+    # scripts/py/setup_config.py:503
     autostart_dir = os.path.expanduser("~/.config/autostart")
     desktop_file = os.path.join(autostart_dir, "aura_engine.desktop")
     script_path = os.path.join(repo_root, "scripts", "restart_venv_and_run-server.sh")

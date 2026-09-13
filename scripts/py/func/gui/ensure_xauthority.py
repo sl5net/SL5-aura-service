@@ -25,9 +25,39 @@ def find_valid_xauthority(candidate_dirs: Iterable[Path]) -> Optional[Path]:
     return valid_files[0]
 
 
+def find_valid_display(current_uid: Optional[int] = None) -> Optional[str]:
+    """Pure resolver returning the X11 display socket owned by current user."""
+    uid = os.getuid() if current_uid is None else current_uid
+    x11_dir = Path("/tmp/.X11-unix")
+    if not x11_dir.is_dir():
+        return None
+
+    try:
+        user_sockets = []
+        for sock in x11_dir.glob("X*"):
+            try:
+                stat = sock.stat()
+                if stat.st_uid == uid and sock.name[1:].isdigit():
+                    user_sockets.append((int(sock.name[1:]), stat.st_mtime))
+            except OSError:
+                continue
+        if user_sockets:
+            user_sockets.sort(key=lambda item: item[1], reverse=True)
+            return f":{user_sockets[0][0]}"
+    except OSError:
+        pass
+    return None
+
+
 def ensure_xauthority_env() -> Optional[str]:
-    """Ensures XAUTHORITY is set to a readable file in os.environ."""
+    """Ensures XAUTHORITY and DISPLAY are properly set for current user."""
+    user_display = find_valid_display()
+    current_display = os.environ.get("DISPLAY")
+    if user_display and (not current_display or current_display == ":0"):
+        os.environ["DISPLAY"] = user_display
+
     current = os.environ.get("XAUTHORITY")
+
     if current and os.path.isfile(current) and os.path.getsize(current) > 0:
         return current
 

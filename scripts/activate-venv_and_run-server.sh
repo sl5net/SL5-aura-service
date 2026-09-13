@@ -48,7 +48,19 @@ export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
 
 
 export DISPLAY=:0
-if [ -f "$HOME/.Xauthority" ]; then export XAUTHORITY="$HOME/.Xauthority"; else XAUTH_TMP=$(ls -t /tmp/xauth_* 2>/dev/null | head -n 1); [ -n "$XAUTH_TMP" ] && export XAUTHORITY="$XAUTH_TMP"; fi
+
+# if [ -f "$HOME/.Xauthority" ]; then export XAUTHORITY="$HOME/.Xauthority"; else XAUTH_TMP=$(ls -t /tmp/xauth_* 2>/dev/null | head -n 1); [ -n "$XAUTH_TMP" ] && export XAUTHORITY="$XAUTH_TMP"; fi
+
+if command -v systemctl >/dev/null 2>&1; then
+    USER_ENV=$(systemctl --user show-environment 2>/dev/null | grep -E '^(DISPLAY|WAYLAND_DISPLAY|XAUTHORITY|DBUS_SESSION_BUS_ADDRESS)=' | sed 's/^/export /' || true)
+    [ -n "$USER_ENV" ] && eval "$USER_ENV"
+fi
+if [ -z "$XAUTHORITY" ]; then
+    if [ -f "$HOME/.Xauthority" ]; then export XAUTHORITY="$HOME/.Xauthority"; else XAUTH_TMP=$(ls -t /tmp/xauth_* 2>/dev/null | head -n 1); [ -n "$XAUTH_TMP" ] && export XAUTHORITY="$XAUTH_TMP"; fi
+fi
+
+
+
 export DICTATION_SERVICE_STARTED_CORRECTLY="true"
 
 if [ -f "$HEARTBEAT_FILE" ]

@@ -2,11 +2,15 @@
 # PYTHONPATH=. .venv/bin/python3 config/maps/plugins/0_aura_quickstart/open_scratchpad_action.py
 import logging
 import os
+import subprocess
+import sys
+import time
 from pathlib import Path
 from scripts.py.func.config.dynamic_settings import settings
 from scripts.py.func.get_project_root import get_aura_project_root
 from scripts.py.func.global_state import SilentException
-from scripts.py.func.scratchpad.scratchpad_manager import open_scratchpad
+from scripts.py.func.gui.ensure_xauthority import ensure_xauthority_env
+from scripts.py.func.scratchpad.scratchpad_manager import open_scratchpad, is_scratchpad_open
 
 _tmp_dir = Path("C:/tmp") if os.name == "nt" else Path("/tmp")
 SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
@@ -27,9 +31,8 @@ if not _logger.handlers:
 def log(msg: str) -> None:
     _logger.info(msg)
 
-
-def execute(match_data: dict) -> None:
-    log("execute called for scratchpad action")
+def run_gui_window() -> None:
+    ensure_xauthority_env()
     server_url = getattr(
         settings,
         "LANGUAGETOOL_BASE_URL",
@@ -41,23 +44,37 @@ def execute(match_data: dict) -> None:
     )
     language = getattr(settings, "LT_LANGUAGE", "de-DE")
     open_scratchpad(server_url, language, initial_text="")
-    raise SilentException()
-
-
-# if __name__ == "__main__":
-#     try:
-#         execute({})
-#     except SilentException:
-#         pass
-
-if __name__ == "__main__":
-    import time
-    from scripts.py.func.scratchpad.scratchpad_manager import is_scratchpad_open
-
-    try:
-        execute({})
-    except SilentException:
-        pass
     time.sleep(0.5)
     while is_scratchpad_open():
         time.sleep(0.2)
+
+
+def execute(match_data: dict) -> None:
+    log("execute called: spawning detached scratchpad process")
+    python_bin = sys.executable or str(SL5NET_AURA_PROJECT_ROOT / ".venv" / "bin" / "python3")
+    script_path = Path(__file__).resolve()
+
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(SL5NET_AURA_PROJECT_ROOT)
+
+    ensure_xauthority_env()
+    if "DISPLAY" in os.environ:
+        env["DISPLAY"] = os.environ["DISPLAY"]
+    if "XAUTHORITY" in os.environ:
+        env["XAUTHORITY"] = os.environ["XAUTHORITY"]
+
+    subprocess.Popen(
+        [python_bin, str(script_path), "--run-window"],
+        cwd=str(SL5NET_AURA_PROJECT_ROOT),
+        env=env,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        stdin=subprocess.DEVNULL,
+        close_fds=True,
+        start_new_session=True,
+    )
+    raise SilentException()
+
+
+if __name__ == "__main__":
+    run_gui_window()

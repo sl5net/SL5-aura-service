@@ -23,17 +23,41 @@ _meta_run_search_result = {
     'on_match_exec': [Path(__file__).resolve().parent / "run_search_the_result.py"],
 }
 
-_aura_pad_meta = {
+_open_scratchpad_meta = {
     'command_flags': re.IGNORECASE,
     'on_match_exec': [CONFIG_DIR.parent / "open_scratchpad_action.py"],
     'execute_only': True,
-    'exclude_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 
-                        'xterm', 'tilix', 'terminator', 'iTerm2', 'iTerm', 'Alacritty', 'kitty', 'Warp', 'Ghostty'],
+    # 'exclude_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 
+    #                     'xterm', 'tilix', 'terminator', 'iTerm2', 'iTerm', 'Alacritty', 'kitty', 'Warp', 'Ghostty'],
+}
+
+_start_scratchpad_meta = {
+    'command_flags': re.IGNORECASE,
+    'on_match_exec': [CONFIG_DIR.parent / "start_scratchpad.py"],
+    'execute_only': True,
+    # 'exclude_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 
+    #                     'xterm', 'tilix', 'terminator', 'iTerm2', 'iTerm', 'Alacritty', 'kitty', 'Warp', 'Ghostty'],
+}
+
+_pad_meta_async = {
+    'command_flags': re.IGNORECASE,
+    'on_match_exec': [CONFIG_DIR.parent / "start_scratchpad_async.py"],
+    'execute_only': True,
+    # 'exclude_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 
+    #                     'xterm', 'tilix', 'terminator', 'iTerm2', 'iTerm', 'Alacritty', 'kitty', 'Warp', 'Ghostty'],
+}
+
+_pad_meta_multiprocessing = {
+    'command_flags': re.IGNORECASE,
+    'on_match_exec': [CONFIG_DIR.parent / "start_scratchpad_multiprocessing.py"],
+    'execute_only': True,
+    # 'exclude_windows': ['Konsole', 'konsole', 'Terminal', 'Console', 'gnome-terminal', 
+    #                     'xterm', 'tilix', 'terminator', 'iTerm2', 'iTerm', 'Alacritty', 'kitty', 'Warp', 'Ghostty'],
 }
 
 FUZZY_MAP_pre = [
     # EXAMPLE: Aura Pad
-    ('Aura Pad', fr'^{AURA_VARIANTS}\s*\b(Pad|S\w*Pad|Scratch.*|.*\bQuatsch|.*\bQuietscht)(\s*öffnen)?$', 100, _aura_pad_meta),
+    ('Aura Pad', fr'^{AURA_VARIANTS}\s*\b(Pad|S\w*Pad|Scratch.*|.*\bQuatsch|.*\bQuietscht)\s*(öffnen|open)?$', 100, _open_scratchpad_meta),
 
     # ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bPad$', 100, _aura_pad_meta),
     # ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bS\w*Pad$', 100, _aura_pad_meta),

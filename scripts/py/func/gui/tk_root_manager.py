@@ -1,3 +1,6 @@
+# scripts/py/func/gui/tk_root_manager.py
+#  PYTHONPATH=. .venv/bin/python3 config/maps/plugins/0_aura_quickstart/open_scratchpad_action.py
+
 """
 Manages a single shared Tk root running in exactly one dedicated
 daemon thread. All Tk widget creation/mutation must be scheduled
@@ -8,7 +11,7 @@ import queue
 import threading
 import tkinter as tk
 from typing import Callable, Optional
-from .ensure_xauthority import ensure_xauthority_env
+# from .ensure_xauthority import ensure_xauthority_env
 
 _root: Optional[tk.Tk] = None
 _ready_event = threading.Event()
@@ -33,7 +36,7 @@ def _run_tk_mainloop() -> None:
     with open("/tmp/aura_overlay_debug.log", "a") as f:
         f.write("_run_tk_mainloop starting\n")
         f.flush()
-    ensure_xauthority_env()
+    # ensure_xauthority_env()
     
     # root = tk.Tk()
     # root.withdraw()
