@@ -16,4 +16,6 @@ FUZZY_MAP = [
     # - it stops with first full-match. Examples: ^...$ = Full Match = Stop Criterion! 
     # - means first is most importend, lower rules maybe not get read.
 
+    # 
+
 ]

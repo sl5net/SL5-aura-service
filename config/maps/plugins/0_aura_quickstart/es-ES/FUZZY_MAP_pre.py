@@ -67,7 +67,7 @@ FUZZY_MAP_pre = [
 
     ('Lernmodus...', fr'^({AURA_VARIANTS}|Lauer vacío).*(aprender|vacío|aprender|Ruido|Señor)?\s*(modo|moda|debe|a través del cual)\s*(a\w*|a\w*|fuera de\w*|Excª\w+|absch\w+|comenzar|detener|activar\w+|DESACTIVAR\w*)?\s*\w*$', 100, {
         'command_flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
+        'on_match_exec': [CONFIG_DIR.parent / 'toggle_learning.py']
     }),
 
 

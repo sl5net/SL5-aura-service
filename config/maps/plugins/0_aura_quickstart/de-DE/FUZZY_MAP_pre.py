@@ -59,6 +59,8 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Aura Pad
     ('Aura Pad', fr'^{AURA_VARIANTS}\s*\b(Pad|S\w*Pad|Scratch.*|.*\bQuatsch|.*\bQuietscht)\s*(öffnen|open)?$', 100, _open_scratchpad_meta),
 
+    #hallo
+
     # ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bPad$', 100, _aura_pad_meta),
     # ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bS\w*Pad$', 100, _aura_pad_meta),
     # ('Aura Pad', fr'^{AURA_VARIANTS}\s*\bScratch.*$', 100, _aura_pad_meta),
@@ -81,7 +83,7 @@ FUZZY_MAP_pre = [
     # EXAMPLE: Lernmodus einschalten ausschalten
     ('Lernmodus...', fr'^({AURA_VARIANTS}|Lauer leer).*(lern|leeren|lernen|Lärm|Herr)?\s*(modus|mode|muss|wodurch)\s*(an\w*|ein\w*|aus\w*|aussch\w+|absch\w+|starten|stoppen|aktivier\w+|DEAKTIVIER\w*)?\s*\w*$', 100, {
         'command_flags': re.IGNORECASE,
-        'on_match_exec': [CONFIG_DIR / 'toggle_learning.py']
+        'on_match_exec': [CONFIG_DIR.parent / 'toggle_learning.py']
     }),
 
 

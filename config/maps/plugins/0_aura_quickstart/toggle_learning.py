@@ -134,7 +134,7 @@ def execute(match_data):
             if is_turning_off:
                 new_lines.append(line)
             if not is_turning_off:
-                status = "Learn-modus rule not found. it will be added now."
+                status = "Learn-modus rule not found. it will be added maybe (Currently only FUZZY_MAP_pre is supported)."
                 new_lines.append(line)
 
                 # Append new rule if list exists

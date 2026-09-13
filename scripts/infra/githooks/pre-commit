@@ -386,6 +386,8 @@ echo "jellyfish" >> scripts/infra/requirements/requirements.txt
 
 echo "nltk==3.9.1" >> scripts/infra/requirements/requirements.txt
 
+echo "PyGObject; sys_platform == 'linux'" >> scripts/infra/requirements/requirements.txt
+
 # scripts/infra/githooks/pre-commit:382
 
 # E) DEDUPLICATION & SORT
