@@ -84,7 +84,12 @@ fi
 # --- 3. Python Requirements ---
 # (This section remains unchanged)
 echo "--> Installing Python requirements into the virtual environment…"
-./.venv/bin/pip install -r scripts/infra/requirements/requirements.txt
+REQ_FILE="scripts/infra/requirements/requirements.txt"
+if [ -f /.dockerenv ]; then
+    grep -v "^PyGObject" "$REQ_FILE" > /tmp/req_docker.txt
+    REQ_FILE="/tmp/req_docker.txt"
+fi
+./.venv/bin/pip install -r "$REQ_FILE"
 
 # --- 4. Project Structure and Configuration ---
 echo "--> Setting up project directories and initial files…"
