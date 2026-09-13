@@ -99,6 +99,71 @@ def get_current_branch(repo_dir=REPO_DIR):
     return None
 
 
+def ensure_git_repo(
+    repo_dir=REPO_DIR,
+    default_branch="master",
+    remote_url="https://github.com/sl5net/SL5-aura-service.git",
+) -> bool:
+    """Initializes git repository and sets up tracking branch if .git is missing."""
+    git_dir = os.path.join(repo_dir, ".git")
+    if os.path.isdir(git_dir):
+        return True
+
+    try:
+        init_res = subprocess.run(
+            ["git", "init"],
+            cwd=repo_dir,
+            capture_output=True,
+            text=True,
+            timeout=10.0,
+            check=False,
+        )
+        if init_res.returncode != 0:
+            return False
+
+        subprocess.run(
+            ["git", "remote", "remove", "origin"],
+            cwd=repo_dir,
+            capture_output=True,
+            text=True,
+            timeout=5.0,
+            check=False,
+        )
+        add_res = subprocess.run(
+            ["git", "remote", "add", "origin", remote_url],
+            cwd=repo_dir,
+            capture_output=True,
+            text=True,
+            timeout=5.0,
+            check=False,
+        )
+        if add_res.returncode != 0:
+            return False
+
+        fetch_res = subprocess.run(
+            ["git", "fetch", "origin", default_branch],
+            cwd=repo_dir,
+            capture_output=True,
+            text=True,
+            timeout=30.0,
+            check=False,
+        )
+        if fetch_res.returncode != 0:
+            return False
+
+        checkout_res = subprocess.run(
+            ["git", "checkout", "-B", default_branch, f"origin/{default_branch}"],
+            cwd=repo_dir,
+            capture_output=True,
+            text=True,
+            timeout=10.0,
+            check=False,
+        )
+        return checkout_res.returncode == 0
+    except Exception:
+        return False
+
+
 def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
     """Checks GitHub for newer commits and forcefully applies updates."""
     mode = True
@@ -147,7 +212,19 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
                 log_msg("Update check skipped: DEV_MODE is enabled.")
                 return
 
+            if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
+                log_msg("Git repository not found. Initializing git tracking...")
+                update_branch = getattr(settings, "AURA_UPDATE_BRANCH", "master")
+                remote_url = getattr(settings, "AURA_REMOTE_URL", "https://github.com/sl5net/SL5-aura-service.git")
+                if ensure_git_repo(REPO_DIR, default_branch=update_branch, remote_url=remote_url):
+                    log_msg("Git repository initialized successfully.")
+                else:
+                    log_msg("Failed to initialize git repository for updates.", is_error=True)
+                    return False, "Failed to initialize git repository"
+
             current_branch = get_current_branch(REPO_DIR)
+            
+            
             if not current_branch:
                 return (
                     False,
