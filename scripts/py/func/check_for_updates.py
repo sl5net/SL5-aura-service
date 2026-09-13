@@ -193,6 +193,10 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
         "Accept": "application/vnd.github.v3+json",
     }
 
+    if not force and (os.environ.get("CI") or os.environ.get("GITHUB_ACTIONS")):
+        log_msg("Update check skipped: running in CI environment.")
+        return
+
     try:
         if mode_str in ["releases", "stable"]:
             url = "https://api.github.com/repos/sl5net/SL5-aura-service/releases/latest"
@@ -211,6 +215,7 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
             if getattr(settings, "DEV_MODE", False):
                 log_msg("Update check skipped: DEV_MODE is enabled.")
                 return
+
 
             if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
                 log_msg("Git repository not found. Initializing git tracking...")
