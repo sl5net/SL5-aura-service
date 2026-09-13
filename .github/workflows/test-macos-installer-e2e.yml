@@ -108,10 +108,26 @@ jobs:
           proc = start_languagetool_server(logger, jar, 'http://127.0.0.1:8082', for_self_test=True)
           assert proc, 'start_languagetool_server failed to start process'
           assert _is_lt_server_responsive('http://127.0.0.1:8082', timeout=5.0), 'LT server is not responding'
+
+
           print('SUCCESS: LanguageTool auto-started and responded.')
           "
 
+      - name: Verify Tk GUI Smoke Test
+        run: |
+          ./.venv/bin/python3 -c "
+          import tkinter as tk
+          root = tk.Tk()
+          assert root.winfo_exists(), 'Tk root window was not created'
+          ws = root.tk.call('tk', 'windowingsystem')
+          print(f'Tk windowingsystem: {ws}')
+          root.update()
+          root.destroy()
+          print('SUCCESS: Tk window created, updated and destroyed.')
+          "
+
       - name: Run Self-Tester
+
         env:
           PYTHONPATH: ${{ github.workspace }}
           AURA_RUN_LT_TESTS_IN_CI: "true"
