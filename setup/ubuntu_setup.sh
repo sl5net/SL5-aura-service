@@ -15,7 +15,7 @@ if [ ! -f "scripts/infra/requirements/requirements.txt" ]; then
 fi
 
 sudo apt-get update -y
-sudo apt-get install -y python3 python3-pip python3-venv
+sudo apt-get install -y python3 python3-pip python3-venv python3-tk
 
 #eval $(python3 scripts/py/setup_config.py) # before 22.8.'26 19:03 Sat
 eval "$(./.venv/bin/python scripts/py/setup_config.py || python3 scripts/py/setup_config.py)"
