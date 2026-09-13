@@ -8,6 +8,7 @@ import queue
 import threading
 import tkinter as tk
 from typing import Callable, Optional
+from .ensure_xauthority import ensure_xauthority_env
 
 _root: Optional[tk.Tk] = None
 _ready_event = threading.Event()
@@ -32,7 +33,8 @@ def _run_tk_mainloop() -> None:
     with open("/tmp/aura_overlay_debug.log", "a") as f:
         f.write("_run_tk_mainloop starting\n")
         f.flush()
-
+    ensure_xauthority_env()
+    
     # root = tk.Tk()
     # root.withdraw()
     # _root = root
