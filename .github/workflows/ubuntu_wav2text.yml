@@ -51,8 +51,8 @@ jobs:
       - name: '6a. Download Vosk model'
         if: steps.cache-vosk-model.outputs.cache-hit != 'true'
         run: |
-          chmod +x ./setup/ubuntu_setup.sh
-          ./setup/ubuntu_setup.sh
+          chmod +x ./setup/linux_mac_setup.sh
+          ./setup/linux_mac_setup.sh
 
       - name: '6b. Set up Python venv (always)'
         run: |

@@ -55,7 +55,7 @@ USER runner
 
 # Initialize configuration and Python virtual environment
 RUN cp -f config/settings_local.py_Example.txt config/settings_local.py || true && \
-    if [ -f ./setup/ubuntu_setup.sh ]; then bash ./setup/ubuntu_setup.sh; fi
+    if [ -f ./setup/linux_mac_setup.sh ]; then bash ./setup/linux_mac_setup.sh; fi
 
 # Default to bash shell
 CMD ["bash"]

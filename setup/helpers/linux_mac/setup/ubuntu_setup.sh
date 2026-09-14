@@ -17,7 +17,7 @@ fi
 #sudo apt-get update -y
 #sudo apt-get install -y python3 python3-pip python3-venv python3-tk libgirepository-2.0-dev
 
-source "$(dirname "$0")/helpers/system-deps-ubuntu.sh"
+source "$(dirname "$0")/../system_deps/system-deps-ubuntu.sh"
 sudo apt-get update -y
 sudo apt-get install -y python3 python3-pip python3-venv python3-tk $PYGOBJECT_BUILD_DEPS_UBUNTU
 
@@ -175,11 +175,11 @@ if [ ! -f "$CONFIG_FILE" ]; then
 fi
 
 # --- dotool setup ---
-source "$(dirname "${BASH_SOURCE[0]}")/helper/install_dotool.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../install_dotool.sh"
 
 # --- CudaText setup ---
 echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Sourcing install_cudatext.sh..."
-source "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/helpers/linux_mac/install_cudatext.sh"
 echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
 
 #sudo ln -sf /opt/cudatext/cudatext /usr/bin/cudatext

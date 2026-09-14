@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# setup/helper/install_dotool.sh
+# setup/helpers/linux_mac/install_dotool.sh
 # Installs dotool and dotoold binaries and configures uinput permissions.
 #
 

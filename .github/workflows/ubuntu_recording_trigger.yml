@@ -42,7 +42,7 @@ jobs:
 
       - name: Install system dependencies for PyGObject/pycairo build
         run: |
-          source setup/helpers/system-deps-ubuntu.sh
+          source setup/helpers/linux_mac/system_deps/system-deps-ubuntu.sh
           sudo apt-get update -y
           sudo apt-get install -y $PYGOBJECT_BUILD_DEPS_UBUNTU
           
@@ -52,9 +52,6 @@ jobs:
           python3 -m venv /tmp/test_venv
           /tmp/test_venv/bin/pip install -r scripts/infra/requirements/requirements.txt
           echo "✅ Fresh install successful"
-
-
-
 
 
       - name: Cache models and tools
@@ -89,7 +86,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
-        run: bash ./setup/ubuntu_setup.sh
+        run: bash ./setup/linux_mac_setup.sh
 
       - name: Install Development Dependencies
         run: |

@@ -9,7 +9,7 @@ for p in ['/opt/cudatext/cudatext/py', '/opt/cudatext/py', '/usr/share/cudatext/
 from cudatext import *
 
 readme = """
-setup/helper/cudatext/cuda_disk_wins/__init__.py:6
+setup/helpers/linux_mac/cudatext/cuda_disk_wins/__init__.py:6
 TEST-COMMANDS:
 
 pkill cudatext 2>/dev/null || true; rm -f /tmp/cuda_disk_wins.log; sleep 1 ; cudatext /tmp/test_disk_wins.txt & sleep 2; 

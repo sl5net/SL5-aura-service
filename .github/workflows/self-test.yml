@@ -81,7 +81,7 @@ jobs:
       - name: Run Official Ubuntu Setup
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash ./setup/ubuntu_setup.sh
+        run: bash ./setup/linux_mac_setup.sh
 
       - name: Install Additional Test Dependencies
         run: |

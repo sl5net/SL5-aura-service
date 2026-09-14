@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# setup/helper/install_cudatext.sh
+# setup/helpers/linux_mac/install_cudatext.sh
 # https://stackoverflow.com/ai-assist/chat/bc63713a-c27b-4f9f-80c6-47ae4deaa157 , 23.8.'26 17:27 Sun 
 
 set -euo pipefail

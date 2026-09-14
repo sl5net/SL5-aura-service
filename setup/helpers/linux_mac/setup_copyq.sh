@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# setup/helper/setup_copyq.sh
+# setup/helpers/linux_mac/setup_copyq.sh
 # Installs CopyQ, configures trigger command, and creates autostart desktop entry.
 #
 set -e
@@ -95,7 +95,8 @@ else
     fi
 fi
 
-JS_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/search_rules/run_rule_copyq.js"
+JS_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)/scripts/search_rules/run_rule_copyq.js"
+
 if [ ! -f "${JS_PATH}" ]; then
     echo "[ERROR] CopyQ search script not found: ${JS_PATH}"
     exit 1

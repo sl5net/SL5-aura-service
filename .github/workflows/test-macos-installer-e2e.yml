@@ -90,8 +90,8 @@ jobs:
 
       - name: Test CopyQ Setup Helper
         run: |
-          chmod +x ./setup/helper/setup_copyq.sh
-          ./setup/helper/setup_copyq.sh F12
+          chmod +x ./setup/helpers/linux_mac/setup_copyq.sh
+          ./setup/helpers/linux_mac/setup_copyq.sh F12
           echo "Verifying copyq command availability:"
           which copyq || ls -la /Applications/CopyQ.app/Contents/MacOS/copyq
 
