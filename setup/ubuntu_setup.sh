@@ -19,7 +19,7 @@ fi
 
 source "$(dirname "$0")/helpers/system-deps-ubuntu.sh"
 sudo apt-get update -y
-sudo apt-get install -y python3 python3-pip python3-venv python3-tk "$PYGOBJECT_BUILD_DEPS_UBUNTU"
+sudo apt-get install -y python3 python3-pip python3-venv python3-tk $PYGOBJECT_BUILD_DEPS_UBUNTU
 
 
 #eval $(python3 scripts/py/setup_config.py) # before 22.8.'26 19:03 Sat
