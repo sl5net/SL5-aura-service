@@ -96,12 +96,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # This assumes setup/macos_setup.sh has `set -e` and a `#!/bin/bash` shebang.
         run: |
-          chmod +x ./setup/macos_setup.sh
+          chmod +x ./setup/linux_mac_setup.sh
           echo "--- DEBUG INFO START ---"
           pwd
           ls -la
           echo "--- DEBUG INFO END ---"
-          ./setup/macos_setup.sh
+          ./setup/linux_mac_setup.sh
 
       # NOTE: The Ubuntu workflow installs xvfb + xclip here. Neither is needed
       # on macOS: there is no X11 to virtualize, and clipboard access is native

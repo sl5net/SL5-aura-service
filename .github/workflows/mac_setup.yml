@@ -57,12 +57,12 @@ jobs:
 
         run: |
 
-          chmod +x ./setup/macos_setup.sh
+          chmod +x ./setup/linux_mac_setup.sh
 
           echo "--- DEBUG INFO START ---"
           pwd
           ls -la
           echo "--- DEBUG INFO END ---"
 
-          ./setup/macos_setup.sh
+          ./setup/linux_mac_setup.sh
 

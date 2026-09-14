@@ -48,8 +48,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          chmod +x ./setup/macos_setup.sh
-          ./setup/macos_setup.sh
+          chmod +x ./setup/linux_mac_setup.sh
+          ./setup/linux_mac_setup.sh
       - name: Register CudaText binary path for subsequent steps
         run: |
           echo "/usr/local/bin" >> "$GITHUB_PATH"
