@@ -84,9 +84,9 @@ echo "--> Setting up project directories and initial files…"
 # This block intelligently handles downloads and extractions.
 echo "--> Checking for required components (LanguageTool, Vosk-Models)…"
 source "$(dirname "${BASH_SOURCE[0]}")/../download_and_extract_helper.sh"
-if [ -f "$(dirname "${BASH_SOURCE[0]}")/helpers/linux_mac/install_cudatext.sh" ]; then
+if [ -f "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh" ]; then
     echo "--> Installing CudaText and plugins"
-    bash "$(dirname "${BASH_SOURCE[0]}")/helpers/linux_mac/install_cudatext.sh"
+    bash "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh"
 fi
 # ==============================================================================
 

@@ -275,9 +275,9 @@ echo "--> All components are present and correctly placed."
 # --- End of Download/Extract block ---
 # ==============================================================================
 
-if [ -f "$(dirname "${BASH_SOURCE[0]}")/helpers/linux_mac/install_cudatext.sh" ]; then
+if [ -f "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh" ]; then
     echo "--> Installing CudaText and plugins"
-    bash "$(dirname "${BASH_SOURCE[0]}")/helpers/linux_mac/install_cudatext.sh"
+    bash "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh"
 fi
 
 # --- Install fzf (Fuzzy Finder) ---
