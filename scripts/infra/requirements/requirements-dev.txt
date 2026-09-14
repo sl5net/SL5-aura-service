@@ -3,3 +3,4 @@ flake8
 ruff
 pylint
 pipreqs
+PyGObject; sys_platform == 'linux'
