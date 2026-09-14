@@ -60,7 +60,7 @@ jobs:
           # and runs privileged commands directly since this container runs
           # as root. Package/compiler resolution also happens inside the
           # script now, so nothing needs to be patched in from the workflow.
-          bash ./setup/suse_setup.sh
+          bash ./setup/linux_mac_setup.sh
 
       - name: Package Assets as Artifact
         if: always()
