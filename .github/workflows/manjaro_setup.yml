@@ -43,7 +43,7 @@ jobs:
 
       - name: Run manjaro_arch_setup.sh
         run: |
-          bash ./setup/manjaro_arch_setup.sh
+          bash ./setup/linux_mac_setup.sh
 
       - name: Verify CudaText and Disk Wins plugin setup
         run: |

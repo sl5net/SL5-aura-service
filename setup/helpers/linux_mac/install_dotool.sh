@@ -44,9 +44,9 @@ elif TARGET_USER="$(id -un 2>/dev/null)" && [ -n "${TARGET_USER}" ]; then
 fi
 
 if [ -z "${TARGET_USER}" ] || [ "${TARGET_USER}" = "root" ]; then
-    echo "[ERROR]  not found root-Benutzer for sure." >&2
-    echo "        Please add explicit, e.g.:" >&2
-    echo "          sudo TARGET_USER=<your_user> $0" >&2
+    echo "[ERROR] not found root-user for sure." >&2
+    echo "Please add explicit, e.g.:" >&2
+    echo "sudo TARGET_USER=<your_user> $0" >&2
     exit 1
 fi
 

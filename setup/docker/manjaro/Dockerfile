@@ -46,7 +46,7 @@ USER runner
 
 # Initialize configuration and Python virtual environment
 RUN cp -f config/settings_local.py_Example.txt config/settings_local.py || true && \
-    if [ -f ./setup/manjaro_arch_setup.sh ]; then bash ./setup/manjaro_arch_setup.sh || true; fi
+    if [ -f ./setup/linux_mac_setup.sh ]; then bash ./setup/linux_mac_setup.sh || true; fi
 
 # Default to bash shell
 CMD ["bash"]
