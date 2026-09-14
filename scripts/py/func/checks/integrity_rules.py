@@ -281,7 +281,7 @@ INTEGRITY_CHECKS = {
 
     # Ensures language selection is included in the macOS setup.
     # "setup/macos_setup.sh": [
-    #     'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
+    #     'source "scripts/sh/get_lang.sh"',
     # ],
 
     "setup/macos_setup.sh": [
@@ -291,7 +291,7 @@ INTEGRITY_CHECKS = {
 
     # Ensures language selection is included in the Ubuntu setup.
     # "setup/ubuntu_setup.sh": [
-    #     'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
+    #     'source "scripts/sh/get_lang.sh"',
     # ],
 
     # Ensures language selection is included in the Ubuntu setup.
@@ -302,7 +302,7 @@ INTEGRITY_CHECKS = {
 
     # Ensures language selection is included in the Manjaro/Arch setup.
     # "setup/manjaro_arch_setup.sh": [
-    #     'source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"',
+    #     'source "scripts/sh/get_lang.sh"',
     # ],
 
     # Ensures language selection is included in the Manjaro/Arch setup.

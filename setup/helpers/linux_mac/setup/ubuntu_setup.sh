@@ -110,7 +110,7 @@ echo "--> Checking for required components (LanguageTool, Vosk-Models)…"
 source "$(dirname "${BASH_SOURCE[0]}")/../download_and_extract_helper.sh"
 # ==============================================================================
 
-source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
+source "scripts/sh/get_lang.sh"
 
 
 # --- Install / Update fzf to modern release (>= 0.74.0) ---

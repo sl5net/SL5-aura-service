@@ -233,7 +233,7 @@ echo "--> All components are present and correctly placed."
 # --- 6. Language detection helper ---
 # ==============================================================================
 
-source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
+source "scripts/sh/get_lang.sh"
 
 # ==============================================================================
 # --- 7. dotool setup ---

@@ -423,7 +423,7 @@ fi
 
 
 
-source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
+source "scripts/sh/get_lang.sh"
 
 # --- 5. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.

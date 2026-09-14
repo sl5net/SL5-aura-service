@@ -294,7 +294,7 @@ else
     echo "[INFO] fzf is already installed."
 fi
 
-source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
+source "scripts/sh/get_lang.sh"
 
 # --- Automatisches Setzen des Standard-Modells ---
 echo "--> Configuring default model in config/model_name.txt…"
