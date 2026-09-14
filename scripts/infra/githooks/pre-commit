@@ -386,7 +386,7 @@ echo "jellyfish" >> scripts/infra/requirements/requirements.txt
 
 echo "nltk==3.9.1" >> scripts/infra/requirements/requirements.txt
 
-echo "PyGObject; sys_platform == 'linux'" >> scripts/infra/requirements/requirements.txt
+echo "PyGObject<3.48.0; sys_platform == 'linux'" >> scripts/infra/requirements/requirements.txt
 
 # scripts/infra/githooks/pre-commit:382
 
@@ -403,8 +403,7 @@ echo "ruff" >> scripts/infra/requirements/requirements-dev.txt
 echo "pylint" >> scripts/infra/requirements/requirements-dev.txt
 echo "pipreqs" >> scripts/infra/requirements/requirements-dev.txt
 
-echo "PyGObject; sys_platform == 'linux'" >> scripts/infra/requirements/requirements-dev.txt
-echo "PyGObject; sys_platform == 'linux'" >> scripts/infra/requirements/requirements.txt
+echo "PyGObject<3.48.0; sys_platform == 'linux'" >> scripts/infra/requirements/requirements.txt
 
 
 
