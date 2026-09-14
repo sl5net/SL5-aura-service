@@ -17,7 +17,7 @@ fi
 #sudo apt-get update -y
 #sudo apt-get install -y python3 python3-pip python3-venv python3-tk libgirepository-2.0-dev
 
-source "$(dirname "$0")/helpers/system-deps-ubuntu.sh"
+source "$(dirname "$0")/linux_mac_setup_helpers/system-deps-ubuntu.sh"
 sudo apt-get update -y
 sudo apt-get install -y python3 python3-pip python3-venv python3-tk $PYGOBJECT_BUILD_DEPS_UBUNTU
 
