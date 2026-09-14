@@ -65,7 +65,8 @@ GCC_CANDIDATES=(
   "gcc12 gcc12-c++"
   "gcc gcc-c++"
 )
-COMMON="git tar make"
+#COMMON="git tar make"
+COMMON="git tar make cairo-devel"
 
 # Optional: if running under GitHub Actions, also surface results in the
 # job summary. Harmless no-op standalone (GITHUB_STEP_SUMMARY unset -> /dev/null).
@@ -122,6 +123,10 @@ if ! pick_working_set PY_SET "${PY_CANDIDATES[@]}"; then
 fi
 echo "--> Selected python set: $PY_SET"
 
+
+
+
+
 GCC_SET=""
 if ! pick_working_set GCC_SET "${GCC_CANDIDATES[@]}"; then
   echo "ERROR: No usable gcc package set resolved for this system."
@@ -131,6 +136,32 @@ echo "--> Selected gcc set: $GCC_SET"
 
 echo "Installing: $COMMON $PY_SET $GCC_SET"
 $SUDO zypper -n install $COMMON $PY_SET $GCC_SET
+
+
+GCC_SET=""
+if ! pick_working_set GCC_SET "${GCC_CANDIDATES[@]}"; then
+  echo "ERROR: No usable gcc package set resolved for this system."
+  exit 1
+fi
+echo "--> Selected gcc set: $GCC_SET"
+
+GI_CANDIDATES=(
+  "libgirepository-2_0-devel"
+  "girepository-2_0-devel"
+  "gobject-introspection-devel"
+)
+GI_SET=""
+if ! pick_working_set GI_SET "${GI_CANDIDATES[@]}"; then
+  echo "ERROR: No usable girepository package set resolved for this system."
+  exit 1
+fi
+echo "--> Selected girepository set: $GI_SET"
+
+echo "Installing: $COMMON $PY_SET $GCC_SET $GI_SET"
+$SUDO zypper -n install $COMMON $PY_SET $GCC_SET $GI_SET
+
+
+
 
 # Map resolved package name -> actual interpreter/compiler binary names.
 # Versioned packages (python313, gcc15, …) install as python3.13/gcc-15,
