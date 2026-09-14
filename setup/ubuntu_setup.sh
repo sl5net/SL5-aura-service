@@ -14,9 +14,12 @@ if [ ! -f "scripts/infra/requirements/requirements.txt" ]; then
     exit 1
 fi
 
-sudo apt-get update -y
-sudo apt-get install -y python3 python3-pip python3-venv python3-tk libgirepository-2.0-dev
+#sudo apt-get update -y
+#sudo apt-get install -y python3 python3-pip python3-venv python3-tk libgirepository-2.0-dev
 
+source "$(dirname "$0")/helpers/system-deps-ubuntu.sh"
+sudo apt-get update -y
+sudo apt-get install -y python3 python3-pip python3-venv python3-tk $PYGOBJECT_BUILD_DEPS_UBUNTU
 
 
 #eval $(python3 scripts/py/setup_config.py) # before 22.8.'26 19:03 Sat
