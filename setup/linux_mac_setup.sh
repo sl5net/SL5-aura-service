@@ -64,6 +64,8 @@ else
     exit 1
 fi
 
+chmod +x "${TARGET}"
+
 "${TARGET}" "$@"
 
 if [ "${CI}" != "true" ] && [ -t 0 ]; then
