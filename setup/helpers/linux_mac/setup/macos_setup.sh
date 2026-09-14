@@ -66,7 +66,7 @@ fi
 
 # --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR/../../../..")
+SL5NET_AURA_PROJECT_ROOT=$(cd "$SCRIPT_DIR/../../../.." && pwd)
 cd "$SL5NET_AURA_PROJECT_ROOT"
 
 echo "--> Running setup from project root: $(pwd)"
