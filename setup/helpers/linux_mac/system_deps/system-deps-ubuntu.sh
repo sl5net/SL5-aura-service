@@ -10,4 +10,4 @@
 # Sourced by:
 #   - setup/ubuntu_setup.sh
 #   - .github/workflows/ubuntu_recording_trigger.yml
-PYGOBJECT_BUILD_DEPS_UBUNTU="libgirepository-2.0-dev libcairo2-dev"
+PYGOBJECT_BUILD_DEPS_UBUNTU="libgirepository1.0-dev libcairo2-dev pkg-config"
