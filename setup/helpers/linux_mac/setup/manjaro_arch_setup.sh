@@ -14,7 +14,7 @@ if [ ! -f "scripts/infra/requirements/requirements.txt" ]; then
     exit 1
 fi
 
-sudo pacman -S --noconfirm --needed base-devel python python-pip uv
+sudo pacman -S --noconfirm --needed base-devel python python-pip uv gobject-introspection cairo
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
