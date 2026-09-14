@@ -179,7 +179,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/../install_dotool.sh"
 
 # --- CudaText setup ---
 echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Sourcing install_cudatext.sh..."
-source "$(dirname "${BASH_SOURCE[0]}")/helpers/linux_mac/install_cudatext.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh"
 echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
 
 #sudo ln -sf /opt/cudatext/cudatext /usr/bin/cudatext
