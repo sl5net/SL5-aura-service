@@ -14,11 +14,11 @@ if [ ! -f "scripts/infra/requirements/requirements.txt" ]; then
     exit 1
 fi
 
-sudo pacman -S --noconfirm --needed base-devel python python-pip uv
+sudo pacman -S --noconfirm --needed base-devel python python-pip uv gobject-introspection cairo
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
-SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+SL5NET_AURA_PROJECT_ROOT=$(cd "$SCRIPT_DIR/../../../.." && pwd)
 cd "$SL5NET_AURA_PROJECT_ROOT"
 
 echo "--> Running setup from project root: $(pwd)"
@@ -83,10 +83,10 @@ echo "--> Setting up project directories and initial files…"
 # --- 4.1. Download and Extract Required Components ---
 # This block intelligently handles downloads and extractions.
 echo "--> Checking for required components (LanguageTool, Vosk-Models)…"
-source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
-if [ -f "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh" ]; then
+source "$(dirname "${BASH_SOURCE[0]}")/../download_and_extract_helper.sh"
+if [ -f "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh" ]; then
     echo "--> Installing CudaText and plugins"
-    bash "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
+    bash "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh"
 fi
 # ==============================================================================
 

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# setup/helper/install_cudatext.sh
+# setup/helpers/linux_mac/install_cudatext.sh
 # https://stackoverflow.com/ai-assist/chat/bc63713a-c27b-4f9f-80c6-47ae4deaa157 , 23.8.'26 17:27 Sun 
 
 set -euo pipefail
 IFS=$'\n\t'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 LOG_DIR="${PROJECT_ROOT}/log/setup"
 mkdir -p "${LOG_DIR}"
 LOG_FILE="${LOG_DIR}/install_cudatext.log"

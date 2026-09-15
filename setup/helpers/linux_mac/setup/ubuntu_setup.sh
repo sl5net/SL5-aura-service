@@ -17,7 +17,7 @@ fi
 #sudo apt-get update -y
 #sudo apt-get install -y python3 python3-pip python3-venv python3-tk libgirepository-2.0-dev
 
-source "$(dirname "$0")/helpers/system-deps-ubuntu.sh"
+source "$(dirname "$0")/../system_deps/system-deps-ubuntu.sh"
 sudo apt-get update -y
 sudo apt-get install -y python3 python3-pip python3-venv python3-tk $PYGOBJECT_BUILD_DEPS_UBUNTU
 
@@ -28,7 +28,7 @@ echo "LANG 1: $SELECTED_LANG | LANG 2: $SECOND_LANG | EXCLUDE_LANGUAGES: $EXCLUD
 
 # --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+SL5NET_AURA_PROJECT_ROOT=$(cd "$SCRIPT_DIR/../../../.." && pwd)
 cd "$SL5NET_AURA_PROJECT_ROOT"
 
 echo "--> Running setup from project root: $(pwd)"
@@ -107,10 +107,10 @@ python3 "scripts/py/func/create_required_folders.py" "$(pwd)"
 # --- 4.1. Download and Extract Required Components ---
 # This block intelligently handles downloads and extractions.
 echo "--> Checking for required components (LanguageTool, Vosk-Models)…"
-source "$(dirname "${BASH_SOURCE[0]}")/helper/download_and_extract_helper.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../download_and_extract_helper.sh"
 # ==============================================================================
 
-source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
+source "scripts/sh/get_lang.sh"
 
 
 # --- Install / Update fzf to modern release (>= 0.74.0) ---
@@ -175,11 +175,11 @@ if [ ! -f "$CONFIG_FILE" ]; then
 fi
 
 # --- dotool setup ---
-source "$(dirname "${BASH_SOURCE[0]}")/helper/install_dotool.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../install_dotool.sh"
 
 # --- CudaText setup ---
 echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Sourcing install_cudatext.sh..."
-source "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh"
 echo "$(date '+%Y-%m-%d %H:%M:%S') [SETUP] Finished install_cudatext.sh (which: $(command -v cudatext || echo 'not found'))."
 
 #sudo ln -sf /opt/cudatext/cudatext /usr/bin/cudatext

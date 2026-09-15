@@ -13,8 +13,10 @@ exec > >(tee -a "log/setup/linux_mac_setup.log") 2>&1
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 OS_TYPE=$(uname -s)
 
+SETUPS_DIR="${SCRIPT_DIR}/helpers/linux_mac/setup"
+
 if [ "${OS_TYPE}" = "Darwin" ]; then
-    TARGET="${SCRIPT_DIR}/macos_setup.sh"
+    TARGET="${SETUPS_DIR}/macos_setup.sh"
     echo "[INFO] Detected macOS (Darwin). Dispatching to ${TARGET}..."
 elif [ "${OS_TYPE}" = "Linux" ]; then
     if [ ! -f "/etc/os-release" ]; then
@@ -25,32 +27,32 @@ elif [ "${OS_TYPE}" = "Linux" ]; then
     OS_LIKE=$(grep -E '^ID_LIKE=' /etc/os-release | cut -d= -f2 | tr -d '"' | tr '[:upper:]' '[:lower:]')
     case "${OS_ID}" in
         manjaro|arch|endeavouros|garuda)
-            TARGET="${SCRIPT_DIR}/manjaro_arch_setup.sh"
+            TARGET="${SETUPS_DIR}/manjaro_arch_setup.sh"
             ;;
         linuxmint)
-            TARGET="${SCRIPT_DIR}/mint_setup.sh"
+            TARGET="${SETUPS_DIR}/mint_setup.sh"
             ;;
         ubuntu|debian|pop)
-            TARGET="${SCRIPT_DIR}/ubuntu_setup.sh"
+            TARGET="${SETUPS_DIR}/ubuntu_setup.sh"
             ;;
         fedora|rhel|centos|rocky|almalinux)
-            TARGET="${SCRIPT_DIR}/fedora_setup.sh"
+            TARGET="${SETUPS_DIR}/fedora_setup.sh"
             ;;
         opensuse*|suse)
-            TARGET="${SCRIPT_DIR}/suse_setup.sh"
+            TARGET="${SETUPS_DIR}/suse_setup.sh"
             ;;
         *)
             if [[ "${OS_LIKE}" =~ (arch) ]]; then
-                TARGET="${SCRIPT_DIR}/manjaro_arch_setup.sh"
+                TARGET="${SETUPS_DIR}/manjaro_arch_setup.sh"
             elif [[ "${OS_LIKE}" =~ (ubuntu|debian) ]]; then
-                TARGET="${SCRIPT_DIR}/ubuntu_setup.sh"
+                TARGET="${SETUPS_DIR}/ubuntu_setup.sh"
             elif [[ "${OS_LIKE}" =~ (fedora|rhel) ]]; then
-                TARGET="${SCRIPT_DIR}/fedora_setup.sh"
+                TARGET="${SETUPS_DIR}/fedora_setup.sh"
             elif [[ "${OS_LIKE}" =~ (suse) ]]; then
-                TARGET="${SCRIPT_DIR}/suse_setup.sh"
+                TARGET="${SETUPS_DIR}/suse_setup.sh"
             else
                 echo "[ERROR] Unsupported Linux distribution: ID='${OS_ID}', ID_LIKE='${OS_LIKE}'"
-                echo "[INFO] Please run the appropriate script manually from setup/"
+                echo "[INFO] Please run the appropriate script manually from setup/helpers/linux_mac/setup/"
                 exit 1
             fi
             ;;
@@ -61,6 +63,8 @@ else
     echo "[INFO] For Windows, please run: setup/windows11_setup.bat or setup/windows11_setup.ps1"
     exit 1
 fi
+
+chmod +x "${TARGET}"
 
 "${TARGET}" "$@"
 
@@ -75,7 +79,7 @@ if [ "${CI}" != "true" ] && [ -t 0 ]; then
     read "${READ_OPTS[@]}" -r -p "Run CopyQ setup and hotkey configuration now? [Y/n] " user_choice || user_choice="y"
     user_choice=${user_choice:-y}
     if [[ "${user_choice}" =~ ^[yY](es)?$ ]]; then
-        "${SCRIPT_DIR}/helper/setup_copyq.sh" "${SELECTED_HOTKEY:-F12}"
+        "${SCRIPT_DIR}/helpers/linux_mac/setup_copyq.sh" "${SELECTED_HOTKEY:-F12}"
     fi
     echo ""
     read "${READ_OPTS[@]}" -r -p "Run Aura now? [Y/n] " user_choice || user_choice="y"

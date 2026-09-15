@@ -66,7 +66,7 @@ fi
 
 # --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+SL5NET_AURA_PROJECT_ROOT=$(cd "$SCRIPT_DIR/../../../.." && pwd)
 cd "$SL5NET_AURA_PROJECT_ROOT"
 
 echo "--> Running setup from project root: $(pwd)"
@@ -275,9 +275,9 @@ echo "--> All components are present and correctly placed."
 # --- End of Download/Extract block ---
 # ==============================================================================
 
-if [ -f "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh" ]; then
+if [ -f "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh" ]; then
     echo "--> Installing CudaText and plugins"
-    bash "$(dirname "${BASH_SOURCE[0]}")/helper/install_cudatext.sh"
+    bash "$(dirname "${BASH_SOURCE[0]}")/../install_cudatext.sh"
 fi
 
 # --- Install fzf (Fuzzy Finder) ---
@@ -294,7 +294,7 @@ else
     echo "[INFO] fzf is already installed."
 fi
 
-source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
+source "scripts/sh/get_lang.sh"
 
 # --- Automatisches Setzen des Standard-Modells ---
 echo "--> Configuring default model in config/model_name.txt…"

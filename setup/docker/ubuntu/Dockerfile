@@ -28,6 +28,16 @@ RUN for i in 1 2 3; do \
     ./build.sh && \
     ./build.sh install && \
     rm -rf /tmp/dotool
+
+RUN ( for i in 1 2 3; do git clone https://git.sr.ht/~geb/dotool /tmp/dotool && exit 0; sleep 10; done; exit 1 ) || \
+    ( echo "[WARN] git.sr.ht unreachable, falling back to GitHub mirror" >&2; \
+      for i in 1 2 3; do git clone https://github.com/simono41/dotool /tmp/dotool && exit 0; sleep 10; done; exit 1 ) && \
+    cd /tmp/dotool && \
+    ./build.sh && \
+    ./build.sh install && \
+    rm -rf /tmp/dotool
+
+
 # Create input group and non-root runner user with sudo rights
 RUN groupadd -f input && \
     useradd -m -s /bin/bash runner && \
@@ -55,7 +65,7 @@ USER runner
 
 # Initialize configuration and Python virtual environment
 RUN cp -f config/settings_local.py_Example.txt config/settings_local.py || true && \
-    if [ -f ./setup/ubuntu_setup.sh ]; then bash ./setup/ubuntu_setup.sh; fi
+    if [ -f ./setup/linux_mac_setup.sh ]; then bash ./setup/linux_mac_setup.sh; fi
 
 # Default to bash shell
 CMD ["bash"]

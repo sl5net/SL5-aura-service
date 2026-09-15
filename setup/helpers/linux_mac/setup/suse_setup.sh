@@ -18,7 +18,7 @@ if [ ! -f "scripts/infra/requirements/requirements.txt" ]; then
 fi
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+SL5NET_AURA_PROJECT_ROOT=$(cd "$SCRIPT_DIR/../../../.." && pwd)
 #cd "$SL5NET_AURA_PROJECT_ROOT"
 
 # This script may run as a normal user (with sudo) or as root in a
@@ -216,7 +216,7 @@ echo "--> Installing project Python requirements…"
 
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+SL5NET_AURA_PROJECT_ROOT=$(cd "$SCRIPT_DIR/../../../.." && pwd)
 cd "$SL5NET_AURA_PROJECT_ROOT"
 
 echo "--> Running setup from project root: $(pwd)"
@@ -423,7 +423,7 @@ fi
 
 
 
-source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
+source "scripts/sh/get_lang.sh"
 
 # --- 5. Project Configuration ---
 # Ensures Python can treat 'config' directories as packages.

@@ -17,13 +17,14 @@ RUN pacman-key --init && \
     pacman -Scc --noconfirm
 
 # Build dotool from source
-RUN for i in 1 2 3; do \
-        git clone https://git.sr.ht/~geb/dotool /tmp/dotool && break || sleep 10; \
-    done && \
+RUN ( for i in 1 2 3; do git clone https://git.sr.ht/~geb/dotool /tmp/dotool && exit 0; sleep 10; done; exit 1 ) || \
+    ( echo "[WARN] git.sr.ht unreachable, falling back to GitHub mirror" >&2; \
+      for i in 1 2 3; do git clone https://github.com/simono41/dotool /tmp/dotool && exit 0; sleep 10; done; exit 1 ) && \
     cd /tmp/dotool && \
     ./build.sh && \
     ./build.sh install && \
     rm -rf /tmp/dotool
+
 
 # Create input group and non-root runner user with sudo rights
 RUN groupadd -f input && \
@@ -46,7 +47,7 @@ USER runner
 
 # Initialize configuration and Python virtual environment
 RUN cp -f config/settings_local.py_Example.txt config/settings_local.py || true && \
-    if [ -f ./setup/manjaro_arch_setup.sh ]; then bash ./setup/manjaro_arch_setup.sh || true; fi
+    if [ -f ./setup/linux_mac_setup.sh ]; then bash ./setup/linux_mac_setup.sh || true; fi
 
 # Default to bash shell
 CMD ["bash"]

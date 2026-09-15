@@ -37,7 +37,7 @@ set -e
 
 # --- Make script location-independent ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-SL5NET_AURA_PROJECT_ROOT=$(dirname "$SCRIPT_DIR")
+SL5NET_AURA_PROJECT_ROOT=$(cd "$SCRIPT_DIR/../../../.." && pwd)
 cd "$SL5NET_AURA_PROJECT_ROOT"
 echo "--> Running setup from project root: $(pwd)"
 
@@ -233,7 +233,7 @@ echo "--> All components are present and correctly placed."
 # --- 6. Language detection helper ---
 # ==============================================================================
 
-source "$(dirname "${BASH_SOURCE[0]}")/../scripts/sh/get_lang.sh"
+source "scripts/sh/get_lang.sh"
 
 # ==============================================================================
 # --- 7. dotool setup ---
