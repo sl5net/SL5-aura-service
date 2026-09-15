@@ -36,7 +36,8 @@ jobs:
 
       - name: '2b. Install system dependencies for PyGObject/pycairo build'
         run: |
-          source setup/linux_mac_setup_helpers/system-deps-ubuntu.sh
+          source setup/helpers/linux_mac/system_deps/system-deps-ubuntu.sh
+          
           sudo apt-get update -y
           sudo apt-get install -y $PYGOBJECT_BUILD_DEPS_UBUNTU
 
