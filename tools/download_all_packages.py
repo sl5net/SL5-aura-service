@@ -36,8 +36,10 @@ def download_file(url, filepath, do_overwrite=False):
     if os.path.exists(filepath) and not do_overwrite:
         print(f"  [SKIP] '{os.path.basename(filepath)}' already exists.")
         return True
+    headers = {"User-Agent": "SL5-aura-downloader"}
     try:
-        response = requests.get(url, stream=True)
+        # response = requests.get(url, stream=True)
+        response = requests.get(url, headers=headers, stream=True, timeout=60)
         response.raise_for_status()
         total_size = int(response.headers.get('content-length', 0))
         with open(filepath, 'wb') as f, tqdm(
@@ -94,6 +96,8 @@ def download_and_verify_part(asset, expected_hash, max_retries=3):
     for attempt in range(max_retries):
         if not download_file(asset['browser_download_url'], tmp_name, do_overwrite=True):
             print(f"  [RETRY] Download failed for '{part_name}' (attempt {attempt + 1}/{max_retries}).")
+            if attempt < max_retries - 1:
+                time.sleep(2 * (attempt + 1))
             continue
 
         actual_hash = calculate_sha256(tmp_name)
@@ -104,7 +108,8 @@ def download_and_verify_part(asset, expected_hash, max_retries=3):
         else:
             print(f"  [RETRY] Hash mismatch for '{part_name}' (attempt {attempt + 1}/{max_retries}). Retrying…")
             os.remove(tmp_name)
-
+            if attempt < max_retries - 1:
+                time.sleep(2 * (attempt + 1))
     raise RuntimeError(f"Failed to verify '{part_name}' after {max_retries} attempts.")
 
 
