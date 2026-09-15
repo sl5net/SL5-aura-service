@@ -73,12 +73,6 @@ for config_line in "${INSTALL_CONFIG[@]}"; do
     target_path="$dest_path/$final_name"
     zip_file="$SL5NET_AURA_PROJECT_ROOT/${PREFIX}${base_name}.zip"
 
-
-    # If the component already exists, we're good for this one.
-    if [ -e "$target_path" ]; then
-        continue
-    fi
-
     # If the component already exists, we're good for this one.
     # LanguageTool gets an extra completeness check: an interrupted extraction
     # can leave the directory present but unusable, and a missing/broken
