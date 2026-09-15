@@ -1,4 +1,4 @@
-# setup/../download_and_extract_helper.sh
+# setup/helpers/linux_mac/download_and_extract_helper.sh
 # --- Configuration ---
 PREFIX="Z_"
 # Format: "BaseName FinalDirName DestinationPath"
@@ -73,16 +73,29 @@ for config_line in "${INSTALL_CONFIG[@]}"; do
     target_path="$dest_path/$final_name"
     zip_file="$SL5NET_AURA_PROJECT_ROOT/${PREFIX}${base_name}.zip"
 
+
     # If the component already exists, we're good for this one.
     if [ -e "$target_path" ]; then
         continue
     fi
 
+    # If the component already exists, we're good for this one.
+    # LanguageTool gets an extra completeness check: an interrupted extraction
+    # can leave the directory present but unusable, and a missing/broken
+    # LanguageTool is easy to miss during use (unlike a missing Vosk model).
+    if [ "$base_name" == "LanguageTool-6.6" ]; then
+        [ -e "$target_path/languagetool-commandline.jar" ] && continue
+    elif [ -e "$target_path" ]; then
+        continue
+    fi
+
+
+
     # The component is missing. Let's see if we can unzip it from a local cache.
     echo "    -> Missing: '$target_path'. Searching for '$zip_file'…"
     if [ -f "$zip_file" ]; then
         echo "    -> Found ZIP cache. Extracting '$zip_file'…"
-        unzip -q "$zip_file" -d "$dest_path"
+        unzip -qo "$zip_file" -d "$dest_path"
     else
         # The ZIP is not there. We MUST run the downloader.
         echo "    -> ZIP cache not found. A download is required."
@@ -106,13 +119,17 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
         target_path="$dest_path/$final_name"
         zip_file="$SL5NET_AURA_PROJECT_ROOT/${PREFIX}${base_name}.zip"
 
-        if [ -e "$target_path" ]; then
+
+        if [ "$base_name" == "LanguageTool-6.6" ]; then
+            [ -e "$target_path/languagetool-commandline.jar" ] && continue
+        elif [ -e "$target_path" ]; then
             continue
         fi
 
+
         if [ -f "$zip_file" ]; then
             echo "    -> Extracting newly downloaded '$zip_file'…"
-            unzip -q "$zip_file" -d "$dest_path"
+            unzip -qo "$zip_file" -d "$dest_path"
         elif [[ "${CI:-}" == "true" || "${GITHUB_ACTIONS:-}" == "true" ]] && [[ "$base_name" == "vosk-model-en-us-0.22" || "$base_name" == "vosk-model-de-0.21" ]]; then
             echo "    -> Skipping extraction of large model in CI: $base_name"
             continue

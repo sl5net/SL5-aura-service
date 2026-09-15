@@ -197,6 +197,8 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
         log_msg("Update check skipped: running in CI environment.")
         return
 
+    verify_and_repair_languagetool(logger)
+
     try:
         if mode_str in ["releases", "stable"]:
             url = "https://api.github.com/repos/sl5net/SL5-aura-service/releases/latest"
@@ -272,6 +274,55 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
 
     except Exception as e:
         log_msg(f"Update check failed: {e}", is_error=True)
+
+
+def verify_and_repair_languagetool(logger=None, repo_dir=REPO_DIR):
+    """Verifies LanguageTool-6.6 is completely installed and repairs it via
+    the shared download/extract helper if the completeness marker is missing.
+    A broken LanguageTool (unlike a missing Vosk model) is easy to miss
+    during normal use, so this runs on every startup."""
+
+    def log_msg(msg, is_error=False):
+        if logger:
+            logger.error(msg) if is_error else logger.info(msg)
+        else:
+            prefix = "[ERROR]" if is_error else "[INFO]"
+            print(f"{prefix} {msg}")
+
+    marker = os.path.join(repo_dir, "LanguageTool-6.6", "languagetool-commandline.jar")
+    if os.path.isfile(marker):
+        return
+
+    log_msg("LanguageTool installation incomplete or missing. Attempting repair...")
+
+    helper_script = os.path.join(
+        repo_dir, "setup", "helpers", "linux_mac", "download_and_extract_helper.sh"
+    )
+    env = os.environ.copy()
+    env["SL5NET_AURA_PROJECT_ROOT"] = repo_dir
+    env["EXCLUDE_LANGUAGES"] = "all"  # skip Vosk models; LanguageTool/lid.176 are mandatory
+
+    try:
+        result = subprocess.run(
+            ["bash", "-c", f'source "{helper_script}"'],
+            cwd=repo_dir,
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=300.0,
+        )
+    except Exception as e:
+        log_msg(f"LanguageTool repair failed to run: {e}", is_error=True)
+        return
+
+    if os.path.isfile(marker):
+        log_msg("LanguageTool repair successful.")
+    else:
+        log_msg(
+            f"LanguageTool repair failed (helper exit {result.returncode}): "
+            f"{result.stderr.strip()[-500:]}",
+            is_error=True,
+        )
 
 
 if __name__ == "__main__":

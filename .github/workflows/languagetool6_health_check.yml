@@ -1,20 +1,50 @@
-# CODE_LANGUAGE_DIRECTIVE: ENGLISH_ONLY
+# .github/workflows/languagetool6_health_check.yml
 name: LanguageTool-6.6 Health Check
 
 # This workflow runs automatically on any push that modifies files inside the LanguageTool-6.6 directory.
 # It also allows for manual runs from the GitHub Actions tab.
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'setup/helpers/linux_mac/download_and_extract_helper.sh'
+      - 'scripts/py/func/check_for_updates.py'
+      - '.github/workflows/languagetool6_health_check.yml'
 
+      
 jobs:
   health-check:
     name: Verify LanguageTool Server Startup
     runs-on: ubuntu-latest
     steps:
+
       - name: Check out repository code
         uses: actions/checkout@v5
 
+      - name: Install downloader dependencies
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install requests tqdm
+
+      - name: Download LanguageTool-6.6
+        run: |
+          export SL5NET_AURA_PROJECT_ROOT="$(pwd)"
+          export EXCLUDE_LANGUAGES="all"
+          source setup/helpers/linux_mac/download_and_extract_helper.sh
+
+      - name: Simulate broken LanguageTool and verify repair
+        run: |
+          JAR="LanguageTool-6.6/languagetool-server.jar"
+          test -f "$JAR" || { echo "Precondition failed: $JAR missing after download"; exit 1; }
+          rm -f "$JAR"
+          python3 -c "
+          from scripts.py.func.check_for_updates import verify_and_repair_languagetool
+          verify_and_repair_languagetool()
+          "
+          test -f "$JAR" && [ -s "$JAR" ] && echo "PASS: repaired" || { echo "FAIL: not repaired"; exit 1; }
+
       - name: Set up Java
+
         uses: actions/setup-java@v5
         with:
           distribution: 'temurin' # A popular open-source distribution of OpenJDK
