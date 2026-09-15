@@ -1,5 +1,5 @@
 #!/bin/bash
-# setup/helpers/system-deps-ubuntu.sh
+# setup/helpers/linux_mac/system_deps/system-deps-ubuntu.sh
 #
 # Shared list of Debian/Ubuntu system packages
 # from source via pip.
