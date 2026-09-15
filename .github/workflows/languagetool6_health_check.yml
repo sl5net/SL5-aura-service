@@ -27,6 +27,8 @@ jobs:
           .venv/bin/pip install requests tqdm
 
       - name: Download LanguageTool-6.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
         run: |
           export SL5NET_AURA_PROJECT_ROOT="$(pwd)"
           export EXCLUDE_LANGUAGES="all"

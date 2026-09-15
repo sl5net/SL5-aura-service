@@ -8,6 +8,13 @@ clear
 
 set -euo pipefail
 
+
+if [[ "$*" == *".github/workflows"* ]]; then
+  set -- "$@" -e yml
+fi
+
+
+
 ORIG_ARGS=("$@")
 
 GREP_FLAGS="-Hn"
