@@ -84,7 +84,7 @@ for config_line in "${INSTALL_CONFIG[@]}"; do
     # can leave the directory present but unusable, and a missing/broken
     # LanguageTool is easy to miss during use (unlike a missing Vosk model).
     if [ "$base_name" == "LanguageTool-6.6" ]; then
-        [ -e "$target_path/languagetool-commandline.jar" ] && continue
+        [ -e "$target_path/languagetool-server.jar" ] && continue        
     elif [ -e "$target_path" ]; then
         continue
     fi
@@ -121,7 +121,7 @@ if [ "$DOWNLOAD_REQUIRED" = true ]; then
 
 
         if [ "$base_name" == "LanguageTool-6.6" ]; then
-            [ -e "$target_path/languagetool-commandline.jar" ] && continue
+        [ -e "$target_path/languagetool-server.jar" ] && continue            
         elif [ -e "$target_path" ]; then
             continue
         fi
