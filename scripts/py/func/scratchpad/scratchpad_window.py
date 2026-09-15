@@ -1,5 +1,6 @@
 # scripts/py/func/scratchpad/scratchpad_window.py
 import threading
+import time
 import tkinter as tk
 from typing import Optional
 from .apply_match_replacement import apply_match_replacement
@@ -48,8 +49,10 @@ class ScratchpadWindow:
         
         self.text_area.bind("<<Modified>>", self._on_text_modified)
         self.text_area.bind("<KeyPress>", self._on_key_press)
-        self.root.bind("<Control-Return>", lambda e: self._on_accept())
-        self.root.bind("<Escape>", lambda e: self.root.destroy())
+
+        self.root.bind("<Control-Return>",   self._on_control_return)
+        self.root.bind("<Escape>", self._on_escape)
+        self.root.bind("<Destroy>", self._on_window_destroy)
         self.text_area.focus_set()
 
     def _on_key_press(self, event: tk.Event) -> Optional[str]:
@@ -71,6 +74,8 @@ class ScratchpadWindow:
         prefix = " " if current_content and not current_content.endswith((" ", "\n")) else ""
         self.text_area.insert("end", prefix + text)
         self.text_area.see("end")
+        # Explicit pause to stabilize GUI event queue on incoming speech chunks
+        time.sleep(0.05)
         self.refresh_analysis()
 
     def get_text(self) -> str:
@@ -135,10 +140,33 @@ class ScratchpadWindow:
         )
         self.text_area.delete("1.0", "end")
         self.text_area.insert("1.0", new_text)
+        # Explicit pause to prevent event race conditions during rapid button replacements
+        time.sleep(0.05)
         self.refresh_analysis()
 
+    def _on_escape(self, event=None) -> None:
+        with open("/tmp/aura_overlay_debug.log", "a") as f:
+            f.write(f"Escape key pressed at {event}, destroying scratchpad\n")
+            f.flush()
+        self.root.destroy()
 
+    def _on_control_return(self, event=None) -> None:
+        with open("/tmp/aura_overlay_debug.log", "a") as f:
+            f.write(f"Control-Return pressed at {event}, triggering _on_accept\n")
+            f.flush()
+        self._on_accept()
+
+    def _on_window_destroy(self, event=None) -> None:
+        if event and event.widget == self.root:
+            with open("/tmp/aura_overlay_debug.log", "a") as f:
+                f.write(f"Scratchpad root window destroyed via {event}\n")
+                f.flush()
 
     def _on_accept(self) -> None:
+        with open("/tmp/aura_overlay_debug.log", "a") as f:
+            f.write(f"_on_accept called, target_window_id={self.target_window_id}\n")
+            f.flush()
         inject_text_to_window(self.get_text(), self.target_window_id)
         self.root.destroy()
+        
+        

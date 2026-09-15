@@ -170,6 +170,7 @@ INTEGRITY_CHECKS = {
 
     'scripts/search_rules/search_rules.sh': [
         r'--bind="ctrl-g',
+        r'8082',
     ],
     'scripts/search_rules/run_rule.sh': [
         r'--bind="ctrl-backspace:backward-kill-word"',
