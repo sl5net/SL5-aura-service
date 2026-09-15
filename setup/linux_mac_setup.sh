@@ -13,7 +13,7 @@ exec > >(tee -a "log/setup/linux_mac_setup.log") 2>&1
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 OS_TYPE=$(uname -s)
 
-SETUPS_DIR="${SCRIPT_DIR}/helpers/linux_mac/setup"
+SETUPS_DIR="${SCRIPT_DIR}/helpers/linux_mac/distros"
 
 if [ "${OS_TYPE}" = "Darwin" ]; then
     TARGET="${SETUPS_DIR}/macos_setup.sh"
@@ -52,7 +52,7 @@ elif [ "${OS_TYPE}" = "Linux" ]; then
                 TARGET="${SETUPS_DIR}/suse_setup.sh"
             else
                 echo "[ERROR] Unsupported Linux distribution: ID='${OS_ID}', ID_LIKE='${OS_LIKE}'"
-                echo "[INFO] Please run the appropriate script manually from setup/helpers/linux_mac/setup/"
+                echo "[INFO] Please run the appropriate script manually from setup/helpers/linux_mac/distros/"
                 exit 1
             fi
             ;;
