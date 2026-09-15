@@ -265,8 +265,12 @@ if [[ "$(uname -s)" == "Darwin" && -d "/Applications/CudaText.app/Contents/Resou
 
     echo "[INFO] Configuring 'ui_notif: false' in ${USER_JSON}..."
     mkdir -p "${CUDATEXT_SETTINGS_DIR}"
-    printf "[events]\ncuda_disk_wins=on_start2,on_open~,on_save~\n" > "${PLUGINS_INI}"
-
+    if [[ -d "${SCRIPT_DIR}/cudatext/cuda_silent_close" ]]; then
+      echo "[INFO] Installing CudaText plugin 'cuda_silent_close' to ${CUDATEXT_PY_DIR}/cuda_silent_close..."
+      mkdir -p "${CUDATEXT_PY_DIR}/cuda_silent_close"
+      cp -r "${SCRIPT_DIR}/cudatext/cuda_silent_close/." "${CUDATEXT_PY_DIR}/cuda_silent_close/"
+    fi
+    printf "[events]\ncuda_disk_wins=on_start2,on_open~,on_save~\ncuda_silent_close=on_close_pre,on_exit_pre\n" > "${PLUGINS_INI}"
     if [[ ! -f "${USER_JSON}" ]]; then
       echo -e '{\n  "ui_notif": false\n}' > "${USER_JSON}"
     else

@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 import time
@@ -56,8 +57,13 @@ ENC_MAP = {
 class Command:
     def __init__(self):
         self.mtimes = {}   # filename -> last known mtime (float)
-        self.enabled = True
         self.timer_started = False
+        cfg_path = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_disk_wins.json')
+        try:
+            with open(cfg_path, 'r', encoding='utf-8') as f:
+                self.enabled = bool(json.load(f).get('enabled', True))
+        except Exception:
+            self.enabled = True
         _log("[Disk Wins] Plugin Command instance initialized.")
 
     def _ensure_timer(self):
@@ -97,9 +103,19 @@ class Command:
     # ---- commands (Plugins menu) ---------------------------------
 
     def cmd_toggle(self):
+        _log("cmd_toggle called")
         self.enabled = not self.enabled
-        msg_status('Disk Wins auto-reload: ' + ('ON' if self.enabled else 'OFF'))
-
+        cfg_path = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_disk_wins.json')
+        try:
+            with open(cfg_path, 'w', encoding='utf-8') as f:
+                json.dump({'enabled': self.enabled}, f, indent=2)
+            _log(f"Config written to {cfg_path}")
+        except Exception as ex:
+            _log(f"Config write failed: {ex}")
+        state_label = 'ON' if self.enabled else 'OFF'
+        msg_status(f"Disk Wins auto-reload: {state_label}")
+        msg_box(f"Disk Wins auto-reload is now {state_label}", MB_OK | MB_ICONINFO)
+        _log(f"msg_box executed for state {state_label}")    
     def cmd_check_now(self):
         self._scan_all()
         msg_status('Disk Wins: checked all open files against disk')

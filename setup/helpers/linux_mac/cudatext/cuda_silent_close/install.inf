@@ -1,0 +1,15 @@
+[info]
+title=Silent Close
+desc=Silently closes modified tabs or editor without save confirmation dialogs
+type=cudatext-plugin
+subdir=cuda_silent_close
+homepage=
+
+[item1]
+section=events
+events=on_close_pre,on_exit_pre
+
+[item11]
+section=commands
+caption=Silent Close\Toggle silent close on/off
+method=cmd_toggle
