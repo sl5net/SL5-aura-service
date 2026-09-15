@@ -289,7 +289,9 @@ def verify_and_repair_languagetool(logger=None, repo_dir=REPO_DIR):
             prefix = "[ERROR]" if is_error else "[INFO]"
             print(f"{prefix} {msg}")
 
-    marker = os.path.join(repo_dir, "LanguageTool-6.6", "languagetool-commandline.jar")
+    # LanguageTool-6.6/languagetool-server.jar
+
+    marker = os.path.join(repo_dir, "LanguageTool-6.6", "languagetool-server.jar")
     if os.path.isfile(marker):
         return
 
