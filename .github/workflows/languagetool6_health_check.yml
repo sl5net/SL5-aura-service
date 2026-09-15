@@ -64,7 +64,7 @@ jobs:
           for i in {1..40}; do
             # Use curl to check if the server is responding on port 8081.
             # -s: silent, -f: fail fast on server error, -o /dev/null: discard output
-            if curl -sf -o /dev/null http://localhost:8081; then
+            if curl -sf -o /dev/null http://localhost:8082; then
               echo "✅ Success: LanguageTool server started and is responding."
               # Cleanly stop the server and exit with success code 0
               kill $SERVER_PID
