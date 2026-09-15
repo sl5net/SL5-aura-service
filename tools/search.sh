@@ -8,6 +8,13 @@ clear
 
 set -euo pipefail
 
+
+if [[ "$*" == *".github/workflows"* ]]; then
+  set -- "$@" -e yml
+fi
+
+
+
 ORIG_ARGS=("$@")
 
 GREP_FLAGS="-Hn"
@@ -71,6 +78,10 @@ while [[ $# -gt 0 ]]; do
 done
 
 PATTERN="${POSITIONAL[0]:?Provide search pattern or regex. Use -h for help.}"
+
+# Replace a literal "\b8081\b" in the PATTERN variable with "8082"
+PATTERN="${PATTERN//\\b8081\\b/8082}"
+
 PREFIX="${POSITIONAL[1]:-.}"
 
 clear

@@ -230,7 +230,7 @@ if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
 """
 doc:
 how test language tool in command line:
-curl --data "language=de-DE&text=das stimmt unsere ist nicht absolut fehlerfrei" http://localhost:8081/v2/check
+curl --data "language=de-DE&text=das stimmt unsere ist nicht absolut fehlerfrei" http://localhost:8082/v2/check
 """
 
 # from config.settings import SUSPICIOUS_THRESHOLD, SUSPICIOUS_TIME_WINDOW
