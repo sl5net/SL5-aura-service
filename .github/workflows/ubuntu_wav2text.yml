@@ -33,8 +33,16 @@ jobs:
         with:
           python-version: '3.11'
 
+
+      - name: '2b. Install system dependencies for PyGObject/pycairo build'
+        run: |
+          source setup/linux_mac_setup_helpers/system-deps-ubuntu.sh
+          sudo apt-get update -y
+          sudo apt-get install -y $PYGOBJECT_BUILD_DEPS_UBUNTU
+
       - name: '3. Install Python Dependencies'
         run: pip install -r scripts/infra/requirements/requirements.txt
+
 
       - name: '4. Install System Dependencies'
         # This step runs every time to ensure tools are present
