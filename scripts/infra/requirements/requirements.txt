@@ -22,7 +22,7 @@ sounddevice==0.5.2
 streamlit==1.52.0
 thefuzz==0.22.1
 tqdm>=4.60.0
-urllib3==2.7.0
+urllib3==2.8.0
 vosk==0.3.45
 watchdog==6.0.0
 webrtcvad_wheels==2.0.14

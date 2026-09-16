@@ -324,6 +324,9 @@ LANGUAGETOOL_RELATIVE_PATH = "LanguageTool-6.6/languagetool-server.jar"
 # Scratchpad Review Mode (Eloquent-style buffer with interactive corrections)
 # experimental (s, 11.9.'26 21:34 Fri)
 SCRATCHPAD_REVIEW_MODE_ENABLED = False
+# SCRATCHPAD_REVIEW_MODE_ENABLED = True
+
+
 
 NOTIFY_SEND_PATH = "/usr/bin/notify-send"
 XDOTOOL_PATH = "/usr/bin/xdotool"

@@ -1,36 +1,32 @@
 import os
-
 from ..config.dynamic_settings import settings
-from .scratchpad_manager import (
-    # append_scratchpad,
-    open_scratchpad,
-)
+from .scratchpad_manager import deliver_text
+
+LOG_FILE = "/tmp/aura_overlay_debug.log"
 
 
-from ..config.dynamic_settings import settings
-# from .scratchpad_manager import is_scratchpad_open, open_scratchpad
-from .scratchpad_manager import (
-    append_to_scratchpad,
-    is_scratchpad_open,
-    open_scratchpad,
-)
+def _log(msg: str) -> None:
+    try:
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{msg}\n")
+    except Exception:
+        pass
+
 
 def route_to_scratchpad(text: str, active_lt_url: str, language: str) -> bool:
     """
     Routes text to the Scratchpad buffer if Review Mode is enabled.
-    Returns True if handled, False otherwise.
+    Returns True only if the text was CONFIRMED delivered to a live pad.
+    Returns False if Review Mode is off, or if delivery failed - the caller
+    should then fall back to the normal output path instead of losing text.
     """
-    # with open('datei.txt', 'r', encoding='utf-8') as f:
-    with open("/tmp/aura_overlay_debug.log", "a", encoding='utf-8') as f:
+    with open(LOG_FILE, "a", encoding='utf-8') as f:
         f.write(f"route_to_scratchpad received: {text.encode('unicode_escape')!r}\n")
         f.flush()
-    
+
     if not getattr(settings, "SCRATCHPAD_REVIEW_MODE_ENABLED", False):
         return False
-    if is_scratchpad_open():
-        append_to_scratchpad(text)
-        return True
-    
+
     server_url = active_lt_url or getattr(
         settings,
         "LANGUAGETOOL_BASE_URL",
@@ -39,5 +35,8 @@ def route_to_scratchpad(text: str, active_lt_url: str, language: str) -> bool:
     os.environ['LANG'] = 'de_DE.UTF-8'
     os.environ['PYTHONUTF8'] = '1'
 
-    open_scratchpad(server_url, language, initial_text=text)
-    return True
+    if deliver_text(text, server_url, language):
+        return True
+
+    _log(f"route_to_scratchpad: giving up, pad unavailable for {text.encode('unicode_escape')!r}")
+    return False
