@@ -20,15 +20,22 @@ _lock = threading.Lock()
 _pending_callbacks: "queue.Queue[Callable[[], None]]" = queue.Queue()
 _POLL_INTERVAL_MS = 30
 
+def _safe_run_callback(callback: Callable[[], None]) -> None:
+    try:
+        callback()
+    except Exception:
+        pass
+
 def _poll_pending_callbacks() -> None:
     try:
         while True:
             callback = _pending_callbacks.get_nowait()
-            callback()
+            _safe_run_callback(callback)
     except queue.Empty:
         pass
-    if _root is not None:
-        _root.after(_POLL_INTERVAL_MS, _poll_pending_callbacks)
+    finally:
+        if _root is not None:
+            _root.after(_POLL_INTERVAL_MS, _poll_pending_callbacks)
 
 
 def _run_tk_mainloop() -> None:
