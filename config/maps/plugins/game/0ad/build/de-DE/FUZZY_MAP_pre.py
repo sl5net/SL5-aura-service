@@ -48,8 +48,8 @@ turmtype = r'(\s*(verteidigungs|stein|stein|wehr|defense)\s*)'
 
 FUZZY_MAP_pre = [
     # EXAMPLE: baue Haus
-    #            ('h', fr'^{baue}?(\w?aus|House|\wau[^\se]*|haben|Hopp|Hase|Rust|Rau|Baujahr|Raumes)$',
-    ('h', fr'^(?!bauern?){baue}?(\w?aus|House|\wau[^\se]*|haben|Hopp|Hase|Rust|Rau|Baujahr|Raumes)$',
+    # ('h', fr'^{baue}?(\w?aus|House|\wau[^\se]*|wohnhaft|[wh]ohn\s*Haus|haben|Hopp|Hase|Rust|Rau|Baujahr|Raumes)$',
+    ('h', fr'^(?!bauern?){baue}?(\w?aus|House|\wau[^\se]*|[wh]ohn\s*Haus|haben|Hopp|Hase|Rust|Rau|Baujahr|Raumes)$',
      99, _common_meta),
 
     # fr'^({baue}\s*)?(kartoffel\w*|(weizen\s*)*weizen\w*|\wei\w+en[\s\w]*will|(getreide\s*)+\w*|acker\w*|(salat\s*)+\w*|blume\w*|\wumen|garten|conf|korn{feld}\w*|{feld}\w*)\s*{ignore_this_fill_words}(anbau\w*|{baue}|empfehlen|pflanz\w*)?\s*$',
