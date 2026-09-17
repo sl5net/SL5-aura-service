@@ -12,6 +12,17 @@ def create_scratchpad_layout(root: tk.Tk) -> Tuple[tk.Text, tk.Frame, tk.Label]:
     root.geometry("700x480")
     root.configure(bg="#1e1e1e")
 
+    hint = tk.Label(
+        root,
+        text="Ctrl+Enter: Inject & Close | Esc: Discard",
+        bg="#1e1e1e",
+        fg="#777777",
+        font=("Sans", 9),
+    )
+    hint.pack(side="top", anchor="w", padx=8, pady=(6, 2))
+
+    panel_frame = tk.Frame(root, bg="#1e1e1e")
+
     text_area = tk.Text(
         root,
         wrap="word",
@@ -22,15 +33,6 @@ def create_scratchpad_layout(root: tk.Tk) -> Tuple[tk.Text, tk.Frame, tk.Label]:
         padx=8,
         pady=8,
     )
-    text_area.pack(expand=True, fill="both", padx=8, pady=(8, 4))
-
-    panel_frame = tk.Frame(root, bg="#1e1e1e")
-    hint = tk.Label(
-        root,
-        text="Ctrl+Enter: Inject & Close | Esc: Discard",
-        bg="#1e1e1e",
-        fg="#777777",
-        font=("Sans", 9),
-    )
-    hint.pack(anchor="w", padx=8, pady=(0, 6))
+    text_area.pack(side="top", expand=True, fill="both", padx=8, pady=(4, 8))    
+    
     return text_area, panel_frame, hint
