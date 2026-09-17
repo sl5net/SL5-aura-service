@@ -9,7 +9,7 @@ def create_scratchpad_layout(root: tk.Tk) -> Tuple[tk.Text, tk.Frame, tk.Label]:
     Returns (text_area, suggestions_panel, hint_label).
     """
     root.title("AURA Review Scratchpad")
-    root.geometry("680x380")
+    root.geometry("700x480")
     root.configure(bg="#1e1e1e")
 
     text_area = tk.Text(
