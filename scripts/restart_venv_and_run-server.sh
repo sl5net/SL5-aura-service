@@ -44,7 +44,9 @@ else
     echo "Stopping old processes…"
     # Use -f to match the full command line, just like in pgrep.
     # pkill -f "$SERVICE_NAME_MAIN"
-    pkill -9 "$SERVICE_NAME_MAIN"
+    
+    # Use -f to match the full command line, just like in pgrep.
+    pkill -9 -f "$SERVICE_NAME_MAIN"
     pkill -f "$SERVICE_NAME_WATCHER"
 
     # realpath /tmp/../tmp/../tmp
