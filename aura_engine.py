@@ -13,6 +13,8 @@ import sys
 from scripts.py.bootstrap_venv import bootstrap_hello
 
 bootstrap_hello()
+from scripts.py.end_aura_engine import end_service_script
+end_service_script("aura_engine.py", exclude_pid=os.getpid())
 # === AUTO-BOOTSTRAP ===========================================================================
 
 #from config.settings import LANGUAGETOOL_CHECK_URL
