@@ -1,3 +1,4 @@
+# scripts/py/func/scratchpad/scratchpad_layout.py
 import tkinter as tk
 from typing import Tuple
 

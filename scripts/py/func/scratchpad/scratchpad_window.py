@@ -123,7 +123,7 @@ class ScratchpadWindow:
             highlight_matches(self.text_area, matches)
             render_suggestions_panel(self.panel, matches, self._on_replace)
             if matches:
-                self.panel.pack(fill="x", padx=8, pady=4, before=self.hint)
+                self.panel.pack(side="bottom", fill="x", padx=8, pady=4)
             else:
                 self.panel.pack_forget()
             with open("/tmp/aura_overlay_debug.log", "a") as f:

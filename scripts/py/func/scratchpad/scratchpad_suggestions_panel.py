@@ -1,3 +1,4 @@
+# scripts/py/func/scratchpad/scratchpad_suggestions_panel.py
 import tkinter as tk
 from typing import Callable, List
 

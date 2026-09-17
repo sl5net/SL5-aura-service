@@ -75,7 +75,7 @@ https://gitlab.com/4trik/ModernGUI
 
 | Sprich | Aktion |
 |---|---|
-| "baue Haus" | Haus bauen |
+| "baue wohnhaus" | Haus bauen |
 | "baue feld" | Feld anlegen (Bauern pflanzen automatisch, Ernte nach ca. 8 Sekunden) |
 | "acker pflanzen" | Feld anlegen (Alternative zu "baue feld") |
 | "getreide pflanzen" | Feld anlegen (empfohlen — beste Erkennungsrate) |
