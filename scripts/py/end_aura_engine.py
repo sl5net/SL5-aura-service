@@ -1,24 +1,29 @@
-import subprocess
+import psutil
 from typing import Optional
 
 
-def _kill_target_pid(single_pid: str, service_name: str) -> None:
+def _is_matching_process(proc: psutil.Process, service_name: str, exclude_pid: Optional[int]) -> bool:
+    if exclude_pid is not None and proc.pid == exclude_pid:
+        return False
     try:
-        subprocess.run(['kill', '-9', single_pid], check=True)
-        print(f'{service_name} process with PID {single_pid} has been terminated.')
-    except Exception:
+        return service_name in " ".join(proc.cmdline())
+    except (psutil.NoSuchProcess, psutil.AccessDenied):
+        return False
+
+
+def _kill_single_process(proc: psutil.Process, service_name: str) -> None:
+    try:
+        proc.kill()
+        print(f'{service_name} process with PID {proc.pid} has been terminated.')
+    except (psutil.NoSuchProcess, psutil.AccessDenied):
         pass
 
 
 def end_service_script(service_name: str, exclude_pid: Optional[int] = None) -> None:
-    try:
-        pid_output = subprocess.check_output(['pgrep', '-f', service_name], text=True)
-        for single_pid in pid_output.strip().splitlines():
-            if exclude_pid is not None and single_pid.strip() == str(exclude_pid):
-                continue
-            _kill_target_pid(single_pid, service_name)
-    except subprocess.CalledProcessError:
-        pass
+    for proc in psutil.process_iter(['pid']):
+        if _is_matching_process(proc, service_name, exclude_pid):
+            _kill_single_process(proc, service_name)    
+    
 if __name__ == '__main__':
     service_name = 'aura_engine.py'
     end_service_script(service_name)
