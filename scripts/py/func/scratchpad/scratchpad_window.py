@@ -29,6 +29,12 @@ class ScratchpadWindow:
         self.text_area, self.panel, self.hint = create_scratchpad_layout(root)        
         self._debounce_id: Optional[str] = None
         self._analysis_generation = 0
+
+
+        self._alt_mode = False
+        self._suggestion_actions: list = []
+        self._current_matches: list = []        
+        
         if initial_text:
 
             with open("/tmp/aura_overlay_debug.log", "a") as f:
@@ -56,6 +62,24 @@ class ScratchpadWindow:
         self.text_area.focus_set()
 
     def _on_key_press(self, event: tk.Event) -> Optional[str]:
+        if event.keysym == "Tab" and self._current_matches:
+            self._toggle_alt_mode()
+            return "break"
+        key = event.keysym[3:] if event.keysym.startswith("KP_") else event.keysym
+        if self._current_matches and key in "123456789":
+            alt_pressed = bool(event.state & 0x0008 or event.state & 0x20000)
+            should_trigger = alt_pressed if self._alt_mode else (not alt_pressed and not (event.state & 4))
+            if should_trigger:
+                num = int(key)
+                if num == 9:
+                    self._on_replace_all()
+                    return "break"
+                if 1 <= num <= len(self._suggestion_actions):
+                    self._suggestion_actions[num - 1]()
+                    return "break"                
+                if 1 <= num <= len(self._suggestion_actions):
+                    self._suggestion_actions[num - 1]()
+                    return "break"
         keysym_num = getattr(event, "keysym_num", None)
         char = resolve_keysym_char(event.keysym, event.char, keysym_num)
         
@@ -120,8 +144,9 @@ class ScratchpadWindow:
             return
 
         def _apply_updates() -> None:
+            self._current_matches = matches
             highlight_matches(self.text_area, matches)
-            render_suggestions_panel(self.panel, matches, self._on_replace)
+            self._render_current_panel()            
             if matches:
                 self.panel.pack(side="top", fill="x", padx=8, pady=2, before=self.text_area)
             else:
@@ -135,6 +160,31 @@ class ScratchpadWindow:
         run_on_tk_thread(_apply_updates)
 
         
+    def _toggle_alt_mode(self) -> None:
+        self._alt_mode = not self._alt_mode
+        self._render_current_panel()
+
+    def _render_current_panel(self) -> None:
+        self._suggestion_actions, _ = render_suggestions_panel(
+            self.panel,
+            self._current_matches,
+            self._on_replace,
+            self._on_replace_all,
+            self._toggle_alt_mode,
+            self._alt_mode,
+        )
+
+    def _on_replace_all(self) -> None:
+        text = self.get_text()
+        sorted_matches = sorted(self._current_matches, key=lambda m: m.get("offset", 0), reverse=True)
+        for m in sorted_matches:
+            reps = m.get("replacements", [])
+            if reps:
+                text = apply_match_replacement(text, m.get("offset", 0), m.get("length", 0), reps[0])
+        self.text_area.delete("1.0", "end")
+        self.text_area.insert("1.0", text)
+        self.refresh_analysis()
+
     def _on_replace(self, offset: int, length: int, rep: str) -> None:
         new_text = apply_match_replacement(
             self.get_text(), offset, length, rep
