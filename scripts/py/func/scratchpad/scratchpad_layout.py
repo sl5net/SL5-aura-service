@@ -3,7 +3,7 @@ import tkinter as tk
 from typing import Tuple
 
 
-def create_scratchpad_layout(root: tk.Tk) -> Tuple[tk.Text, tk.Frame, tk.Label]:
+def create_scratchpad_layout(root: tk.Tk) -> Tuple[tk.Text, tk.Frame, tk.Button]:
     """
     Configures and packs standard UI widgets for the AURA Scratchpad.
     Returns (text_area, suggestions_panel, hint_label).
@@ -12,15 +12,21 @@ def create_scratchpad_layout(root: tk.Tk) -> Tuple[tk.Text, tk.Frame, tk.Label]:
     root.geometry("700x480")
     root.configure(bg="#1e1e1e")
 
-    hint = tk.Label(
+    hint = tk.Button(
         root,
         text="Ctrl+Enter: Inject & Close | Esc: Discard",
         bg="#1e1e1e",
-        fg="#777777",
+        fg="#888888",
+        activebackground="#252526",
+        activeforeground="#ffffff",
         font=("Sans", 9),
+        relief="flat",
+        anchor="w",
+        cursor="hand2",
+        padx=2,
+        pady=1,
     )
-    hint.pack(side="top", anchor="w", padx=8, pady=(6, 2))
-
+    hint.pack(side="top", anchor="w", padx=8, pady=(4, 2))
     panel_frame = tk.Frame(root, bg="#1e1e1e")
 
     text_area = tk.Text(

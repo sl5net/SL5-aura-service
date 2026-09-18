@@ -1,23 +1,60 @@
 # scripts/py/func/scratchpad/scratchpad_suggestions_panel.py
 import tkinter as tk
-from typing import Callable, List
+from typing import Callable, List, Optional, Tuple
+
+
+def _build_panel_button(
+    container: tk.Frame,
+    text: str,
+    cmd: Callable[[], None],
+) -> tk.Button:
+    btn = tk.Button(
+        container,
+        text=text,
+        bg="#2d2d2d",
+        fg="#4ec9b0",
+        activebackground="#3e3e42",
+        activeforeground="#ffffff",
+        font=("Sans", 9),
+        relief="flat",
+        padx=5,
+        pady=2,
+        command=cmd,
+    )
+    btn.pack(side="left", padx=2, pady=2)
+    return btn
 
 
 def render_suggestions_panel(
     container: tk.Frame,
     matches: List[dict],
     on_replace: Callable[[int, int, str], None],
-    max_badges: int = 5,
-) -> None:
-    """
-    Renders clickable suggestion buttons inside the container frame.
-    """
-    with open("/tmp/aura_overlay_debug.log", "a") as f:
-        f.write(f"render_suggestions_panel called, matches={len(matches)}, container_mapped={container.winfo_ismapped()}\n")
-        f.flush()
+    on_replace_all: Callable[[], None],
+    on_toggle_mode: Callable[[], None],
+    alt_mode: bool = False,
+    max_badges: int = 8,
+) -> Tuple[List[Callable[[], None]], Optional[Callable[[], None]]]:
     for child in container.winfo_children():
         child.destroy()
+    if not matches:
+        return [], None
         
+    actions: List[Callable[[], None]] = []
+    mode_text = "[Tab: Alt+1-9]" if alt_mode else "[Tab: 1-9]"
+    mode_btn = tk.Button(
+        container,
+        text=mode_text,
+        bg="#1e1e1e",
+        fg="#9cdcfe",
+        activebackground="#252526",
+        activeforeground="#ffffff",
+        font=("Sans", 9, "bold"),
+        relief="flat",
+        padx=4,
+        pady=2,
+        command=on_toggle_mode,
+    )
+    mode_btn.pack(side="left", padx=(0, 4), pady=2)
 
     count = 0
     for m in matches:
@@ -26,26 +63,17 @@ def render_suggestions_panel(
         length = m.get("length", 0)
         for rep in m.get("replacements", []):
             if count >= max_badges:
-                return
-            btn = tk.Button(
-                container,
-                text=f"{word} -> {rep}",
-                bg="#2d2d2d",
-                fg="#4ec9b0",
-                activebackground="#3e3e42",
-                activeforeground="#ffffff",
-                font=("Sans", 9),
-                relief="flat",
-                padx=6,
-                pady=2,
-                command=lambda off=offset, ln=length, r=rep: on_replace(
-                    off, ln, r
-                ),
-            )
-
-            btn.pack(side="left", padx=3, pady=2)
+                break
             count += 1
-        with open("/tmp/aura_overlay_debug.log", "a") as f:
-            f.write(
-                f"render_suggestions_panel done, buttons_created={count}, container_children={len(container.winfo_children())}\n")
-            f.flush()
+            prefix = f"Alt+{count}: " if alt_mode else f"{count}: "
+            action = lambda off=offset, ln=length, r=rep: on_replace(off, ln, r) # noqa: E731
+            actions.append(action)
+            _build_panel_button(container, f"{prefix}{word} -> {rep}", action)
+
+    apply_all_action = None
+    if len(actions) > 1:
+        all_prefix = "Alt+9: All" if alt_mode else "9: All"
+        apply_all_action = on_replace_all
+        _build_panel_button(container, all_prefix, on_replace_all)
+
+    return actions, apply_all_action

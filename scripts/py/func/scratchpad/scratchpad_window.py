@@ -9,6 +9,7 @@ from .highlight_matches import highlight_matches
 from .inject_text_to_window import inject_text_to_window
 from .resolve_keysym_char import resolve_keysym_char
 from .scratchpad_layout import create_scratchpad_layout
+from .scratchpad_state_io import load_scratchpad_state, save_scratchpad_state
 from .scratchpad_suggestions_panel import render_suggestions_panel
 from ..gui.tk_root_manager import run_on_tk_thread
 
@@ -26,9 +27,20 @@ class ScratchpadWindow:
         self.server_url = server_url
         self.language = language
 
-        self.text_area, self.panel, self.hint = create_scratchpad_layout(root)        
+        self.text_area, self.panel, self.hint = create_scratchpad_layout(root)
+        
         self._debounce_id: Optional[str] = None
         self._analysis_generation = 0
+        self._alt_mode, self._enter_submits = load_scratchpad_state()
+        self._suggestion_actions: list = []
+        self._current_matches: list = []
+        self.hint.config(
+            command=self._toggle_enter_mode,
+            text="Enter: Inject & Close | Esc: Discard" if self._enter_submits else "Ctrl+Enter: Inject & Close | Esc: Discard",
+        )        
+        self._suggestion_actions: list = []
+        self._current_matches: list = []        
+        
         if initial_text:
 
             with open("/tmp/aura_overlay_debug.log", "a") as f:
@@ -56,6 +68,38 @@ class ScratchpadWindow:
         self.text_area.focus_set()
 
     def _on_key_press(self, event: tk.Event) -> Optional[str]:
+        if event.keysym in ("Return", "KP_Enter"):
+            ctrl_pressed = bool(event.state & 4)
+            if self._enter_submits:
+                if not ctrl_pressed:
+                    self._on_accept()
+                    return "break"
+                self.text_area.insert("insert", "\n")
+                self.text_area.see("insert")
+                return "break"
+            if ctrl_pressed:
+                self._on_accept()
+                return "break"
+        if event.keysym == "Tab" and self._current_matches:
+            
+            
+            self._toggle_alt_mode()
+            return "break"
+        key = event.keysym[3:] if event.keysym.startswith("KP_") else event.keysym
+        if self._current_matches and key in "123456789":
+            alt_pressed = bool(event.state & 0x0008 or event.state & 0x20000)
+            should_trigger = alt_pressed if self._alt_mode else (not alt_pressed and not (event.state & 4))
+            if should_trigger:
+                num = int(key)
+                if num == 9:
+                    self._on_replace_all()
+                    return "break"
+                if 1 <= num <= len(self._suggestion_actions):
+                    self._suggestion_actions[num - 1]()
+                    return "break"                
+                if 1 <= num <= len(self._suggestion_actions):
+                    self._suggestion_actions[num - 1]()
+                    return "break"
         keysym_num = getattr(event, "keysym_num", None)
         char = resolve_keysym_char(event.keysym, event.char, keysym_num)
         
@@ -70,10 +114,10 @@ class ScratchpadWindow:
         return None
 
     def append_text(self, text: str) -> None:
-        current_content = self.text_area.get("1.0", "end-1c")
-        prefix = " " if current_content and not current_content.endswith((" ", "\n")) else ""
-        self.text_area.insert("end", prefix + text)
-        self.text_area.see("end")
+        prev_char = self.text_area.get("insert - 1 chars", "insert")
+        prefix = " " if prev_char and not prev_char.isspace() else ""
+        self.text_area.insert("insert", prefix + text)
+        self.text_area.see("insert")
         # Explicit pause to stabilize GUI event queue on incoming speech chunks
         time.sleep(0.05)
         self.refresh_analysis()
@@ -120,8 +164,9 @@ class ScratchpadWindow:
             return
 
         def _apply_updates() -> None:
+            self._current_matches = matches
             highlight_matches(self.text_area, matches)
-            render_suggestions_panel(self.panel, matches, self._on_replace)
+            self._render_current_panel()            
             if matches:
                 self.panel.pack(side="top", fill="x", padx=8, pady=2, before=self.text_area)
             else:
@@ -135,6 +180,37 @@ class ScratchpadWindow:
         run_on_tk_thread(_apply_updates)
 
         
+    def _toggle_enter_mode(self) -> None:
+        self._enter_submits = not self._enter_submits
+        text = "Enter: Inject & Close | Esc: Discard" if self._enter_submits else "Ctrl+Enter: Inject & Close | Esc: Discard"
+        self.hint.config(text=text)
+        save_scratchpad_state(self._alt_mode, self._enter_submits)
+
+    def _toggle_alt_mode(self) -> None:
+        self._alt_mode = not self._alt_mode
+        self._render_current_panel()
+        save_scratchpad_state(self._alt_mode, self._enter_submits)
+    def _render_current_panel(self) -> None:
+        self._suggestion_actions, _ = render_suggestions_panel(
+            self.panel,
+            self._current_matches,
+            self._on_replace,
+            self._on_replace_all,
+            self._toggle_alt_mode,
+            self._alt_mode,
+        )
+
+    def _on_replace_all(self) -> None:
+        text = self.get_text()
+        sorted_matches = sorted(self._current_matches, key=lambda m: m.get("offset", 0), reverse=True)
+        for m in sorted_matches:
+            reps = m.get("replacements", [])
+            if reps:
+                text = apply_match_replacement(text, m.get("offset", 0), m.get("length", 0), reps[0])
+        self.text_area.delete("1.0", "end")
+        self.text_area.insert("1.0", text)
+        self.refresh_analysis()
+
     def _on_replace(self, offset: int, length: int, rep: str) -> None:
         new_text = apply_match_replacement(
             self.get_text(), offset, length, rep
