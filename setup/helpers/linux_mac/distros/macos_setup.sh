@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# setup/macos_setup.sh
+# setup/helpers/linux_mac/distros/macos_setup.sh:3
 # Run this setup script from the project's root directory.
 #
 
