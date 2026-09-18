@@ -10,10 +10,7 @@ def load_scratchpad_state() -> Tuple[str, bool]:
         if STATE_FILE.is_file():
             with open(STATE_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
-            mode = data.get("shortcut_mode")
-            if not mode:
-                mode = "alt" if data.get("alt_mode") else "direct"
-            return str(mode), bool(data.get("enter_submits", False))
+            return str(data.get("shortcut_mode", "direct")), bool(data.get("enter_submits", False))
     except Exception:
         pass
     return "direct", False
