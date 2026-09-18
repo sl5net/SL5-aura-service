@@ -293,7 +293,7 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
     # scripts/py/func/transcribe_audio_with_feedback.py:262
     # --- NEU: VAD Initialisierung ---
     vad = webrtcvad.Vad()
-    vad.set_mode(1)  # Wir starten mit dem sanftesten Modus (weniger aggressiv)
+    vad.set_mode(2)  # Mode 2 is more aggressive against laptop fan and background noise    
     FRAME_DURATION_MS = 30  # VAD arbeitet am besten mit 10, 20 oder 30 ms Frames
     FRAME_SIZE = int(SAMPLE_RATE * FRAME_DURATION_MS / 1000)
     FRAME_BYTES = FRAME_SIZE * 2  # int16 = 2 bytes per sample
@@ -335,6 +335,12 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
 
     current_timeout = initial_silence_timeout
     last_activity_time = time.time()  # Our independent activity clock.
+    last_word_time = 0.0
+    max_recording_timeout = float(getattr(settings, "MAX_RECORDING_TIMEOUT", 60.0))
+    max_noise_only_duration = 3.5    
+    session_start_time = time.time()
+    
+    
     # session_stopped_manually = False
 
     # If the script is running in a Continuous Integration environment (like GitHub Actions),
@@ -500,10 +506,16 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                             if text:
                                 yield text
                         else:
+                            
                             #partial_result = json.loads(recognizer.PartialResult())
-                            if is_voice_active_in_chunk or partial_result.get('partial'):
-                                last_activity_time = time.time()  # Aktivität erkannt, Timer zurücksetzen
-
+                            
+                            has_partial = bool(partial_result.get('partial'))
+                            if has_partial:
+                                last_word_time = time.time()
+                                last_activity_time = time.time()
+                            elif is_voice_active_in_chunk:
+                                if last_word_time > 0.0 or (time.time() - session_start_time < max_noise_only_duration):
+                                    last_activity_time = time.time()
                             # Timeout-change when first activity
                             if not is_speech_started and (is_voice_active_in_chunk or partial_result.get('partial')):
                                 is_speech_started = True
@@ -535,9 +547,10 @@ def transcribe_audio_with_feedback(logger, recognizer, LT_LANGUAGE
                             current_timeout = 2.0
                         logger.info(f"Graceful shutdown initiated. Final timeout set to {current_timeout}s.")
 
-                    # 2. Check for timeout
-                    if not is_listen_persistent and time.time() - last_activity_time > current_timeout:
-
+                    # 2. Check for timeout or hard safety limit
+                    is_timed_out = not is_listen_persistent and (time.time() - last_activity_time > current_timeout)
+                    is_hard_limit_reached = (time.time() - session_start_time > max_recording_timeout)
+                    if is_hard_limit_reached or is_timed_out:
                         if is_suspended:
                             # log4DEV(f"is_suspended -> dont execute -> ty sleep and wait for active command", logger)
                             last_activity_time = time.time()
