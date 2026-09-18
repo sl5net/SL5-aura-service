@@ -25,13 +25,21 @@ def _build_panel_button(
     return btn
 
 
+def _format_button_prefix(shortcut_mode: str, count: int) -> str:
+    if shortcut_mode == "alt":
+        return f"Alt+{count}: "
+    if shortcut_mode == "numpad":
+        return f"Num{count}: "
+    return f"{count}: "
+
+
 def render_suggestions_panel(
     container: tk.Frame,
     matches: List[dict],
     on_replace: Callable[[int, int, str], None],
     on_replace_all: Callable[[], None],
     on_toggle_mode: Callable[[], None],
-    alt_mode: bool = False,
+    shortcut_mode: str = "direct",
     max_badges: int = 8,
 ) -> Tuple[List[Callable[[], None]], Optional[Callable[[], None]]]:
     for child in container.winfo_children():
@@ -40,10 +48,10 @@ def render_suggestions_panel(
         return [], None
         
     actions: List[Callable[[], None]] = []
-    mode_text = "[Tab: Alt+1-9]" if alt_mode else "[Tab: 1-9]"
+    mode_labels = {"alt": "[Tab: Alt+1-9]", "numpad": "[Tab: NumPad]", "direct": "[Tab: 1-9]"}
     mode_btn = tk.Button(
         container,
-        text=mode_text,
+        text=mode_labels.get(shortcut_mode, "[Tab: 1-9]"),
         bg="#1e1e1e",
         fg="#9cdcfe",
         activebackground="#252526",
@@ -65,14 +73,14 @@ def render_suggestions_panel(
             if count >= max_badges:
                 break
             count += 1
-            prefix = f"Alt+{count}: " if alt_mode else f"{count}: "
+            prefix = _format_button_prefix(shortcut_mode, count)
             action = lambda off=offset, ln=length, r=rep: on_replace(off, ln, r) # noqa: E731
             actions.append(action)
             _build_panel_button(container, f"{prefix}{word} -> {rep}", action)
 
     apply_all_action = None
     if len(actions) > 1:
-        all_prefix = "Alt+9: All" if alt_mode else "9: All"
+        all_prefix = _format_button_prefix(shortcut_mode, 9) + "All"
         apply_all_action = on_replace_all
         _build_panel_button(container, all_prefix, on_replace_all)
 
