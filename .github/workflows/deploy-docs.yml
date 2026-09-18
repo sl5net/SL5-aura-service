@@ -41,7 +41,7 @@ jobs:
         run: |
           echo "BRANCH: ${{ github.ref_name }}"
           python -m pip install --upgrade pip
-          python -m pip install sphinx furo myst-parser sphinx-copybutton
+          python -m pip install sphinx furo myst-parser sphinx-copybutton sphinx-sitemap
 
       - name: Get latest release version
         run: |

@@ -25,7 +25,10 @@ author = 'Sebastian, Lena, Andy'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 # extensions = []
-extensions = ['sphinx.ext.autodoc', 'myst_parser']
+extensions = ['sphinx.ext.autodoc', 'myst_parser', 'sphinx_sitemap']
+html_baseurl = 'https://sl5net.github.io/SL5-aura-service/'
+sitemap_url_scheme = '{link}'
+
 source_suffix = {
     '.rst': 'restructuredtext',
     '.md': 'markdown',
