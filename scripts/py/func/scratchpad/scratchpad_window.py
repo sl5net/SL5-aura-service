@@ -9,6 +9,7 @@ from .highlight_matches import highlight_matches
 from .inject_text_to_window import inject_text_to_window
 from .resolve_keysym_char import resolve_keysym_char
 from .scratchpad_layout import create_scratchpad_layout
+from .scratchpad_state_io import load_scratchpad_state, save_scratchpad_state
 from .scratchpad_suggestions_panel import render_suggestions_panel
 from ..gui.tk_root_manager import run_on_tk_thread
 
@@ -26,12 +27,17 @@ class ScratchpadWindow:
         self.server_url = server_url
         self.language = language
 
-        self.text_area, self.panel, self.hint = create_scratchpad_layout(root)        
+        self.text_area, self.panel, self.hint = create_scratchpad_layout(root)
+        
         self._debounce_id: Optional[str] = None
         self._analysis_generation = 0
-        self._alt_mode = False
-        self._enter_submits = False
-        self.hint.config(command=self._toggle_enter_mode)        
+        self._alt_mode, self._enter_submits = load_scratchpad_state()
+        self._suggestion_actions: list = []
+        self._current_matches: list = []
+        self.hint.config(
+            command=self._toggle_enter_mode,
+            text="Enter: Inject & Close | Esc: Discard" if self._enter_submits else "Ctrl+Enter: Inject & Close | Esc: Discard",
+        )        
         self._suggestion_actions: list = []
         self._current_matches: list = []        
         
@@ -178,11 +184,12 @@ class ScratchpadWindow:
         self._enter_submits = not self._enter_submits
         text = "Enter: Inject & Close | Esc: Discard" if self._enter_submits else "Ctrl+Enter: Inject & Close | Esc: Discard"
         self.hint.config(text=text)
+        save_scratchpad_state(self._alt_mode, self._enter_submits)
 
     def _toggle_alt_mode(self) -> None:
         self._alt_mode = not self._alt_mode
         self._render_current_panel()
-
+        save_scratchpad_state(self._alt_mode, self._enter_submits)
     def _render_current_panel(self) -> None:
         self._suggestion_actions, _ = render_suggestions_panel(
             self.panel,
