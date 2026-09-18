@@ -312,8 +312,11 @@ sed -i '/^scripts==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^trino==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^exrex==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^genanki==/d' scripts/infra/requirements/requirements.txt
+
 sed -i '/^gi==/d' scripts/infra/requirements/requirements.txt
+sed -i '/^pygobject==/Id' scripts/infra/requirements/requirements.txt
 sed -i '/^jiwer==/d' scripts/infra/requirements/requirements.txt
+
 sed -i '/^pyaudio==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^pytest==/d' scripts/infra/requirements/requirements.txt
 sed -i '/^python-slugify==/d' scripts/infra/requirements/requirements.txt
