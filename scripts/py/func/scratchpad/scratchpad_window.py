@@ -208,8 +208,7 @@ class ScratchpadWindow:
         self._enter_submits = not self._enter_submits
         text = "Enter: Inject & Close | Esc: Discard" if self._enter_submits else "Ctrl+Enter: Inject & Close | Esc: Discard"
         self.hint.config(text=text)
-        save_scratchpad_state(self._alt_mode, self._enter_submits)
-
+        save_scratchpad_state(self._shortcut_mode, self._enter_submits)
     def _toggle_shortcut_mode(self) -> None:
         cycle = {"direct": "alt", "alt": "numpad", "numpad": "direct"}
         self._shortcut_mode = cycle.get(self._shortcut_mode, "direct")
