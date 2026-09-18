@@ -8,11 +8,31 @@ from .get_languagetool_matches import get_languagetool_matches
 from .highlight_matches import highlight_matches
 from .inject_text_to_window import inject_text_to_window
 from .resolve_keysym_char import resolve_keysym_char
+from typing import Optional, Tuple
 from .scratchpad_layout import create_scratchpad_layout
 from .scratchpad_state_io import load_scratchpad_state, save_scratchpad_state
 from .scratchpad_suggestions_panel import render_suggestions_panel
 from ..gui.tk_root_manager import run_on_tk_thread
 
+KP_CODE_MAP = {
+    87: 1, 88: 2, 89: 3,
+    83: 4, 84: 5, 85: 6,
+    79: 7, 80: 8, 81: 9,
+    97: 1, 98: 2, 99: 3,
+    100: 4, 101: 5, 102: 6,
+    103: 7, 104: 8, 105: 9,
+}
+
+
+def _resolve_digit_key(event: tk.Event) -> Tuple[Optional[int], bool]:
+    code = getattr(event, "keycode", 0)
+    if code in KP_CODE_MAP:
+        return KP_CODE_MAP[code], True
+    if event.keysym.startswith("KP_") and event.keysym[3:] in "123456789":
+        return int(event.keysym[3:]), True
+    if event.keysym in "123456789":
+        return int(event.keysym), False
+    return None, False
 class ScratchpadWindow:
     def __init__(
         self,
@@ -31,7 +51,7 @@ class ScratchpadWindow:
         
         self._debounce_id: Optional[str] = None
         self._analysis_generation = 0
-        self._alt_mode, self._enter_submits = load_scratchpad_state()
+        self._shortcut_mode, self._enter_submits = load_scratchpad_state()
         self._suggestion_actions: list = []
         self._current_matches: list = []
         self.hint.config(
@@ -81,22 +101,26 @@ class ScratchpadWindow:
                 self._on_accept()
                 return "break"
         if event.keysym == "Tab" and self._current_matches:
-            
-            
-            self._toggle_alt_mode()
+            self._toggle_shortcut_mode()
             return "break"
-        key = event.keysym[3:] if event.keysym.startswith("KP_") else event.keysym
-        if self._current_matches and key in "123456789":
+        num, is_kp = _resolve_digit_key(event)
+        if self._current_matches and num is not None:
             alt_pressed = bool(event.state & 0x0008 or event.state & 0x20000)
-            should_trigger = alt_pressed if self._alt_mode else (not alt_pressed and not (event.state & 4))
+            if self._shortcut_mode == "alt":
+                should_trigger = alt_pressed
+            elif self._shortcut_mode == "numpad":
+                should_trigger = is_kp and not alt_pressed and not (event.state & 4)
+            else:
+                should_trigger = not alt_pressed and not (event.state & 4)
             if should_trigger:
-                num = int(key)
                 if num == 9:
                     self._on_replace_all()
                     return "break"
                 if 1 <= num <= len(self._suggestion_actions):
                     self._suggestion_actions[num - 1]()
-                    return "break"                
+                    return "break"
+                
+                
                 if 1 <= num <= len(self._suggestion_actions):
                     self._suggestion_actions[num - 1]()
                     return "break"
@@ -186,18 +210,20 @@ class ScratchpadWindow:
         self.hint.config(text=text)
         save_scratchpad_state(self._alt_mode, self._enter_submits)
 
-    def _toggle_alt_mode(self) -> None:
-        self._alt_mode = not self._alt_mode
+    def _toggle_shortcut_mode(self) -> None:
+        cycle = {"direct": "alt", "alt": "numpad", "numpad": "direct"}
+        self._shortcut_mode = cycle.get(self._shortcut_mode, "direct")
         self._render_current_panel()
-        save_scratchpad_state(self._alt_mode, self._enter_submits)
+        save_scratchpad_state(self._shortcut_mode, self._enter_submits)
+
     def _render_current_panel(self) -> None:
         self._suggestion_actions, _ = render_suggestions_panel(
             self.panel,
             self._current_matches,
             self._on_replace,
             self._on_replace_all,
-            self._toggle_alt_mode,
-            self._alt_mode,
+            self._toggle_shortcut_mode,
+            self._shortcut_mode,
         )
 
     def _on_replace_all(self) -> None:
