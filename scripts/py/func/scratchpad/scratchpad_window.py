@@ -29,9 +29,9 @@ class ScratchpadWindow:
         self.text_area, self.panel, self.hint = create_scratchpad_layout(root)        
         self._debounce_id: Optional[str] = None
         self._analysis_generation = 0
-
-
         self._alt_mode = False
+        self._enter_submits = False
+        self.hint.config(command=self._toggle_enter_mode)        
         self._suggestion_actions: list = []
         self._current_matches: list = []        
         
@@ -62,7 +62,21 @@ class ScratchpadWindow:
         self.text_area.focus_set()
 
     def _on_key_press(self, event: tk.Event) -> Optional[str]:
+        if event.keysym in ("Return", "KP_Enter"):
+            ctrl_pressed = bool(event.state & 4)
+            if self._enter_submits:
+                if not ctrl_pressed:
+                    self._on_accept()
+                    return "break"
+                self.text_area.insert("insert", "\n")
+                self.text_area.see("insert")
+                return "break"
+            if ctrl_pressed:
+                self._on_accept()
+                return "break"
         if event.keysym == "Tab" and self._current_matches:
+            
+            
             self._toggle_alt_mode()
             return "break"
         key = event.keysym[3:] if event.keysym.startswith("KP_") else event.keysym
@@ -94,10 +108,10 @@ class ScratchpadWindow:
         return None
 
     def append_text(self, text: str) -> None:
-        current_content = self.text_area.get("1.0", "end-1c")
-        prefix = " " if current_content and not current_content.endswith((" ", "\n")) else ""
-        self.text_area.insert("end", prefix + text)
-        self.text_area.see("end")
+        prev_char = self.text_area.get("insert - 1 chars", "insert")
+        prefix = " " if prev_char and not prev_char.isspace() else ""
+        self.text_area.insert("insert", prefix + text)
+        self.text_area.see("insert")
         # Explicit pause to stabilize GUI event queue on incoming speech chunks
         time.sleep(0.05)
         self.refresh_analysis()
@@ -160,6 +174,11 @@ class ScratchpadWindow:
         run_on_tk_thread(_apply_updates)
 
         
+    def _toggle_enter_mode(self) -> None:
+        self._enter_submits = not self._enter_submits
+        text = "Enter: Inject & Close | Esc: Discard" if self._enter_submits else "Ctrl+Enter: Inject & Close | Esc: Discard"
+        self.hint.config(text=text)
+
     def _toggle_alt_mode(self) -> None:
         self._alt_mode = not self._alt_mode
         self._render_current_panel()
