@@ -48,6 +48,7 @@ Examples:
   ./tools/search.sh xvfb-run .github/workflows -e yml 
   ./tools/search.sh "pattern" . --all-ext
   ./tools/search.sh "bin/bash" scripts -e sh -c
+  ./tools/search.sh "_windows" docs -e md -a
 USAGE
 }
 

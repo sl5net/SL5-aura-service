@@ -30,8 +30,8 @@ echo "--- Starting STT Setup for Manjaro/Arch Linux ---"
 
 # --- Python Virtual Environment ---
 if [ ! -d ".venv" ]; then
-    echo "--> Creating Python 3.12 virtual environment in './.venv'"
-    uv venv --python 3.12 .venv
+    echo "--> Creating Python virtual environment with system Python in './.venv'"
+    uv venv --python python3 .venv
 else
     echo "--> Virtual environment already exists. Skipping creation."
 fi

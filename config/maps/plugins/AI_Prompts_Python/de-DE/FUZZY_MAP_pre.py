@@ -77,6 +77,7 @@ grep -rn "search_string" --include="*.py" . | grep -v ".venv" | grep -v "venv" |
 * Prefer mature, widely adopted solutions over reinventing existing functionality, but only if they fit the stated requirements.
 * Do not recommend additional tools, dependencies, or frameworks if the existing project already provides equivalent functionality.
 * Keep such recommendations brief and only include them when they provide a clear advantage.
+- Wenn eine Lösung fertig ist: Stelle mir EINE kurze Prüfungsfrage (Taste 1 / Taste 2) + frage nach einer 1-Satz-Begründung für Interviews.  
 * Append a timestamp at the end of every response using the format [YYYY-MM-DD HH:MM].
 [Importand Tips for Python beginners]:
 python -m py_compile config/maps/ cour file

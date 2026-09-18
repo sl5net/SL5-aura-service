@@ -12,6 +12,7 @@ psutil>=7.0.0
 pydantic==2.13.5
 pygame
 pygame==2.6.1
+pygobject==3.46.0
 pyperclip
 pyperclip==1.11.0
 pystray==0.19.5
