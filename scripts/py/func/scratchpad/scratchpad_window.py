@@ -95,12 +95,27 @@ class ScratchpadWindow:
 
         word_start_pos = text_before_cursor.rfind(" ", 0, len(text_before_cursor))
         if word_start_pos == -1:
-            word_start_pos = 0
+            word_start_pos = 0  
         else:
-            word_start_pos += 1
+            word_start_pos += 1 
 
-        self.text_area.delete(f"1.0 + {word_start_pos} chars", current_pos)
-        return "break"
+        text_word = text_before_cursor[word_start_pos:]
+        trailing_spaces_in_word = 0
+
+        for char in reversed(text_word):
+            if char.isspace():
+                trailing_spaces_in_word += 1
+            else:
+                break
+
+        if trailing_spaces_in_word > 0:
+            self.text_area.delete(
+                f"1.0 + {word_start_pos} chars",
+                f"1.0 + {len(text_before_cursor) - trailing_spaces_in_word} chars"
+            )
+        else:
+            self.text_area.delete(f"1.0 + {word_start_pos} chars", current_pos)
+
 
     def _on_key_press(self, event: tk.Event) -> Optional[str]:
         if event.keysym in ("Return", "KP_Enter"):
