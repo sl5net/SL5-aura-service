@@ -1872,8 +1872,7 @@ def process_text_in_background(logger,
                 if not settings.DEV_MODE and custom_rules is None:
                     # scripts/py/func/process_text_in_background.py:1885 
                     
-                    
-                    if getattr(settings, "SCRATCHPAD_REVIEW_MODE_ENABLED", False) and route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
+                    if not regex_pre_is_replacing_all_maybe and getattr(settings, "SCRATCHPAD_REVIEW_MODE_ENABLED", False) and route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
                         return
 
                 if not SEQUENCE_LOCK.execute_only_event.is_set():
@@ -2397,12 +2396,17 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                 if _cached_res is not None:
                     _cached, _is_full = _cached_res if isinstance(_cached_res, tuple) else (_cached_res, False)
                     _cache_hit = True
+
                     if _cached != current_text:
                         if _is_full:
                             full_text_replaced_by_rule = True
                             return _cached, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
                         current_text = _cached
                         made_a_change_in_cycle = True
+                    elif _is_full:
+                        full_text_replaced_by_rule = True
+                        return current_text, full_text_replaced_by_rule, skip_list, privacy_taint_occurred
+
 
             # --- END AURA CACHE LOOKUP ---
             if _cache_hit:
