@@ -1870,8 +1870,10 @@ def process_text_in_background(logger,
             if custom_rules is None:
 
                 if not settings.DEV_MODE and custom_rules is None:
-                    # scripts/py/func/process_text_in_background.py:1885
-                    if route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
+                    # scripts/py/func/process_text_in_background.py:1885 
+                    
+                    
+                    if getattr(settings, "SCRATCHPAD_REVIEW_MODE_ENABLED", False) and route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
                         return
 
                 if not SEQUENCE_LOCK.execute_only_event.is_set():
@@ -1880,7 +1882,6 @@ def process_text_in_background(logger,
             # print(f':st: \nprocess_text_in_background:1672 raw_text:{raw_text}')
 
 
-            # KORREKTUR 1: Verwende die NEUEN Variablen für den Fallback
             execute_only = SEQUENCE_LOCK.execute_only_event.is_set()
             if not privacy_taint_occurred and custom_rules is None and not execute_only:
 

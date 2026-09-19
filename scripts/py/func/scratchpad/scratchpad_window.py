@@ -79,13 +79,43 @@ class ScratchpadWindow:
             
         self.text_area.edit_modified(False)
         
+        # Event-Bindings
         self.text_area.bind("<<Modified>>", self._on_text_modified)
         self.text_area.bind("<KeyPress>", self._on_key_press)
+        self.text_area.bind("<Control-BackSpace>", self._delete_word)
 
         self.root.bind("<Control-Return>",   self._on_control_return)
         self.root.bind("<Escape>", self._on_escape)
         self.root.bind("<Destroy>", self._on_window_destroy)
         self.text_area.focus_set()
+
+    def _delete_word(self, event: tk.Event) -> str:
+        current_pos = self.text_area.index(tk.INSERT)
+        text_before_cursor = self.text_area.get("1.0", current_pos)
+
+        word_start_pos = text_before_cursor.rfind(" ", 0, len(text_before_cursor))
+        if word_start_pos == -1:
+            word_start_pos = 0  
+        else:
+            word_start_pos += 1 
+
+        text_word = text_before_cursor[word_start_pos:]
+        trailing_spaces_in_word = 0
+
+        for char in reversed(text_word):
+            if char.isspace():
+                trailing_spaces_in_word += 1
+            else:
+                break
+
+        if trailing_spaces_in_word > 0:
+            self.text_area.delete(
+                f"1.0 + {word_start_pos} chars",
+                f"1.0 + {len(text_before_cursor) - trailing_spaces_in_word} chars"
+            )
+        else:
+            self.text_area.delete(f"1.0 + {word_start_pos} chars", current_pos)
+
 
     def _on_key_press(self, event: tk.Event) -> Optional[str]:
         if event.keysym in ("Return", "KP_Enter"):
