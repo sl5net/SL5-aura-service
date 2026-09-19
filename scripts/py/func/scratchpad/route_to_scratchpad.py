@@ -24,8 +24,8 @@ def route_to_scratchpad(text: str, active_lt_url: str, language: str) -> bool:
         f.write(f"route_to_scratchpad received: {text.encode('unicode_escape')!r}\n")
         f.flush()
 
-    if not getattr(settings, "SCRATCHPAD_REVIEW_MODE_ENABLED", False):
-        return False
+    # if not getattr(settings, "SCRATCHPAD_REVIEW_MODE_ENABLED", False):
+    #     return False
 
     server_url = active_lt_url or getattr(
         settings,
