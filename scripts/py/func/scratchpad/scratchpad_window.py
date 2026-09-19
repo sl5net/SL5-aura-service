@@ -84,6 +84,9 @@ class ScratchpadWindow:
         self.text_area.bind("<KeyPress>", self._on_key_press)
         self.text_area.bind("<Control-BackSpace>", self._delete_word)
 
+        self.text_area.bind("<Control-Key-a>", self._select_all)
+        self.text_area.bind("<Control-Key-A>", self._select_all)
+
         self.root.bind("<Control-Return>",   self._on_control_return)
         self.root.bind("<Escape>", self._on_escape)
         self.root.bind("<Destroy>", self._on_window_destroy)
@@ -115,6 +118,15 @@ class ScratchpadWindow:
             )
         else:
             self.text_area.delete(f"1.0 + {word_start_pos} chars", current_pos)
+
+    def _select_all(self, event: tk.Event) -> str:
+        # Markiere alles im Text-Widget
+        self.text_area.tag_add("sel", "1.0", "end")
+        # Setze Einfügemarke an den Anfang (optional)
+        self.text_area.mark_set(tk.INSERT, "1.0")
+        self.text_area.see(tk.INSERT)
+        # Verhindere weitere Verarbeitung des Events
+        return "break"
 
 
     def _on_key_press(self, event: tk.Event) -> Optional[str]:
