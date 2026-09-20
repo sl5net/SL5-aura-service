@@ -875,6 +875,8 @@ def apply_all_rules_may_until_stable(processed_text, fuzzy_map_pre, logger,
                 match_obj = re.search(match_phrase, processed_text, flags=command_flags)
 
                 if match_obj:
+
+                    
                     # logger.info(
                     #     f"🔁 455: Regex_pre in: '{processed_text}' --> '{replacement}' based on pattern '{match_phrase}'")
 
@@ -1872,7 +1874,8 @@ def process_text_in_background(logger,
                 if not settings.DEV_MODE and custom_rules is None:
                     # scripts/py/func/process_text_in_background.py:1885 
                     
-                    if not regex_pre_is_replacing_all_maybe and getattr(settings, "SCRATCHPAD_REVIEW_MODE_ENABLED", False) and route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE):
+                    if (not regex_pre_is_replacing_all_maybe 
+                            and getattr(settings, "SCRATCHPAD_REVIEW_MODE_ENABLED", False) and route_to_scratchpad(new_current_text, active_lt_url, LT_LANGUAGE)):
                         return
 
                 if not SEQUENCE_LOCK.execute_only_event.is_set():
@@ -2415,6 +2418,17 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                 match_obj = compiled_regex.fullmatch(current_text)
 
                 if match_obj:
+                    full_text_replaced_by_rule = True
+                    if settings.LOGGING_ENABLED:
+                        logger_instance.info(
+                            "FULL-MATCH CANDIDATE: input=%r pattern=%r replacement=%r source=%r",
+                            current_text,
+                            regex_pattern,
+                            replacement_text,
+                            options_dict.get("source_path", ""),
+                        )
+                    
+                    
                     # The original text before anything is changed
                     original_text_for_script = current_text
                     # print(f"1571:🔎 🔎 🔎 original..={original_text_for_script} current_text={current_text}")
