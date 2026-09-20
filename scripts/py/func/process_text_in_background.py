@@ -2418,16 +2418,7 @@ def apply_all_rules_until_stable(text, rules_map, logger_instance, interface, ru
                 match_obj = compiled_regex.fullmatch(current_text)
 
                 if match_obj:
-                    full_text_replaced_by_rule = True
-                    if settings.LOGGING_ENABLED:
-                        logger_instance.info(
-                            "FULL-MATCH CANDIDATE: input=%r pattern=%r replacement=%r source=%r",
-                            current_text,
-                            regex_pattern,
-                            replacement_text,
-                            options_dict.get("source_path", ""),
-                        )
-                    
+                    full_text_replaced_by_rule = True                   
                     
                     # The original text before anything is changed
                     original_text_for_script = current_text
