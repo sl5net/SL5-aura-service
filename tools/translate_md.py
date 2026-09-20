@@ -44,15 +44,66 @@ TARGET_LANGS = ["ar","de","es","fr","hi","ja","ko","pl","pt","pt-BR","zh-CN"]
 
 DUNDER_PLACEHOLDER = "XDUNDERX"
 HARD_BREAK_PLACEHOLDER = "XSPACEBREAKX"
+
 # ### NEU: Ein kugelsicherer Platzhalter für Links ###
 MD_LINK_PLACEHOLDER_FORMAT = "XMDLINK{}X"
 # --- ENDE KONFIGURATION ---
 
 
 import logging
+import sys
 
-# Setup a simple logger for demonstration
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+try:
+    from tools.i18n.section_cache import (
+        compute_section_hash,
+        get_cached_translation,
+        load_cache,
+        save_cache,
+        split_markdown_by_h2,
+        store_cached_translation,
+    )
+except ImportError:
+    from i18n.section_cache import (
+        compute_section_hash,
+        get_cached_translation,
+        load_cache,
+        save_cache,
+        split_markdown_by_h2,
+        store_cached_translation,
+    )
+
+cache_file = script_dir / "i18n" / "translation_cache.json"
+log_dir = script_dir.parent / "log"
+log_dir.mkdir(parents=True, exist_ok=True)
+log_file = log_dir / "translate_md.log"
+
+
+class LogTee:
+
+    def __init__(self, target_file, stream):
+        self.file = open(target_file, "a", encoding="utf-8")
+        self.stream = stream
+
+    def write(self, data):
+        self.file.write(data)
+        self.file.flush()
+        self.stream.write(data)
+        self.stream.flush()
+
+    def flush(self):
+        self.file.flush()
+        self.stream.flush()
+
+
+tee_stdout = LogTee(log_file, sys.stdout)
+sys.stdout = tee_stdout
+sys.stderr = tee_stdout
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
 logger = logging.getLogger()
 
 
@@ -154,42 +205,32 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
     # Use re.sub with our replacement function to process all links in the line
     return markdown_link_pattern.sub(replace_link, line)
 
-def process_file(filename):
-    """Verarbeitet eine einzelne Markdown-Datei."""
-    #print(f"Bearbeite Datei:  '…{str(filename)[-40:]}' ")
 
-    with open(filename, 'r', encoding='utf-8') as f:
-        original_lines = [line.rstrip('\n') for line in f.readlines()]
 
-    # --- Schritt 0: Schütze komplette Markdown Links/Bilder ---
-    #print("   -> Schritt 0: Schütze komplette Markdown Links/Bilder…")
+
+
+def translate_section(section_text: str, lang: str) -> str:
+    original_lines = section_text.splitlines()
+
     markdown_links = []
+
     def link_replacer(match):
-        # ### GEÄNDERT: Verwendet das neue, sichere Format ###
         placeholder = MD_LINK_PLACEHOLDER_FORMAT.format(len(markdown_links))
         markdown_links.append(match.group(0))
         return placeholder
 
-    link_regex = re.compile(r'!?(?:\[[^\]]*\])\((?:[^\)]*)\)')
+    link_regex = re.compile(r"!?(?:\[[^\]]*\])\((?:[^\)]*)\)")
     lines_step0 = [link_regex.sub(link_replacer, line) for line in original_lines]
-    #print(f"      Markdown-Strukturen gefunden und ersetzt: {len(markdown_links)}")
 
-    # --- Schritt 1 & 2 & 3 bleiben identisch ---
-    #print("   -> Schritt 1: Ersetze Hard-Breaks (zwei Leerzeichen) durch einen Platzhalter…")
     lines_step1 = []
-    hard_breaks_found_count = 0
     for line in lines_step0:
         if line.endswith("  "):
-            hard_breaks_found_count += 1
             lines_step1.append(line[:-2] + HARD_BREAK_PLACEHOLDER)
         else:
             lines_step1.append(line)
-    #print(f"      Hard-Breaks gefunden und ersetzt: {hard_breaks_found_count}")
 
-    #print("   -> Schritt 2: Schütze mittige '__' Zeichen…")
     lines_step2 = [line.replace("__", DUNDER_PLACEHOLDER) for line in lines_step1]
 
-    #print("   -> Schritt 3: Extrahiere Code-Blöcke…")
     lines_for_translation = []
     code_blocks = []
     in_code_block = False
@@ -208,106 +249,137 @@ def process_file(filename):
             current_block.append(line)
         else:
             lines_for_translation.append(line)
-    #print(f"      Code-Blöcke extrahiert: {len(code_blocks)}")
 
     text_to_translate = "\n".join(lines_for_translation)
+    if not text_to_translate.strip():
+        return section_text
 
-    # --- SCHLEIFE DURCH ZIELSPRACHEN ---
+    try:
+        process = subprocess.run(
+            ["trans", "-e", "bing", "-brief", f"{SOURCE_LANG}:{lang}"],
+            input=text_to_translate,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            check=True,
+            timeout=60,
+        )
+        translated_lines = process.stdout.strip().split("\n")
+    except (
+        subprocess.CalledProcessError,
+        FileNotFoundError,
+        subprocess.TimeoutExpired,
+    ) as e:
+        print(f"      [ERROR] Section translation failed: {e}")
+        return section_text
+
+    restored_step_A = []
+    for line in translated_lines:
+        code_match = re.match(r"^__CODE_BLOCK_(\d+)__$", line.strip())
+        if code_match:
+            idx = int(code_match.group(1))
+            if idx < len(code_blocks):
+                restored_step_A.extend(code_blocks[idx].split("\n"))
+                continue
+        restored_step_A.append(line)
+
+    restored_step_B = []
+    placeholder_regex = re.compile(r"(XMDLINK\d+X)")
+    for line in restored_step_A:
+        restored_line = line
+        placeholders_in_line = placeholder_regex.findall(restored_line)
+        for placeholder in placeholders_in_line:
+            link_index = int(re.search(r"\d+", placeholder).group())
+            if link_index < len(markdown_links):
+                original_link = markdown_links[link_index]
+                modified_link = add_lang_to_md_links(original_link, lang)
+                restored_line = restored_line.replace(placeholder, modified_link, 1)
+        restored_step_B.append(restored_line)
+
+    restored_step_C = [
+        line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_B
+    ]
+    final_lines = [
+        line.replace(HARD_BREAK_PLACEHOLDER, "  ") for line in restored_step_C
+    ]
+    return "\n".join(final_lines)
+
+
+def process_file(filename):
+    with open(filename, "r", encoding="utf-8") as f:
+        raw_content = f.read()
+
+    sections = split_markdown_by_h2(raw_content)
     base_name = os.path.splitext(filename)[0]
-    skipCount = 0
+    cache_data = load_cache(cache_file)
+
     for lang in TARGET_LANGS:
-
-        # output_file = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
-
-
-
-        # output_file = f"{base_name}-{lang}lang.md"
-
-
-        # NEU:
         i18n_dir = f"{base_name}.i18n"
         os.makedirs(i18n_dir, exist_ok=True)
         output_file = f"{i18n_dir}/{os.path.basename(base_name)}-{lang}lang.md"
 
-
-
-        # if os.path.exists(output_file):
-            # print(f"   -> Überspringe '…{str(output_file)[-40:]}' (existiert bereits).")
-            #skipCount = skipCount + 1
-            #continue
-
         output_path = Path(output_file)
-        if output_path.exists() and output_path.stat().st_mtime > Path(filename).stat().st_mtime:
-            skipCount = skipCount + 1
+        if (
+            output_path.exists()
+            and output_path.stat().st_mtime > Path(filename).stat().st_mtime
+        ):
             continue
 
+        print(f"   -> Processing '{lang}' -> '{output_file}'…")
+        translated_sections = []
+        has_cache_miss = False
 
+        for section in sections:
+            sec_hash = compute_section_hash(section)
+            cached_text = get_cached_translation(cache_data, sec_hash, lang)
 
-        print(f"   -> Übersetze nach '{lang}' -> '{output_file}'…")
-        try:
-            process = subprocess.run(
-                ['trans', '-brief', f"{SOURCE_LANG}:{lang}"],
-                input=text_to_translate, capture_output=True, text=True, encoding='utf-8', check=True
-            )
-            translated_lines = process.stdout.strip().split('\n')
-        except (subprocess.CalledProcessError, FileNotFoundError) as e:
-            print(f"      \033[0;31m[FEHLER]\033[0m bei der Übersetzung: {e}")
-            continue
-
-        # --- WIEDERHERSTELLUNG IN UMGEKEHRTER REIHENFOLGE ---
-
-        #print("      -> Schritt A: Stelle Code-Blöcke wieder her…")
-        restored_step_A = []
-        code_block_idx = 0
-        for line in translated_lines:
-            if re.match(r'^__CODE_BLOCK_\d+__$', line.strip()) and code_block_idx < len(code_blocks):
-                restored_step_A.extend(code_blocks[code_block_idx].split('\n'))
-                code_block_idx += 1
+            if cached_text is not None:
+                translated_sections.append(cached_text)
             else:
-                restored_step_A.append(line)
+                has_cache_miss = True
+                translated = translate_section(section, lang)
+                store_cached_translation(cache_data, sec_hash, lang, translated)
+                translated_sections.append(translated)
+                time.sleep(1)
 
-        # ### GEÄNDERT: Logik zur Wiederherstellung der sicheren Platzhalter ###
-        #print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her…")
-# ### KORRIGIERT: Logik zur Wiederherstellung und Anpassung der Links ###
-        #print("      -> Schritt B: Stelle Markdown Links/Bilder wieder her und passe sie an…")
-        restored_step_B = []
-        placeholder_regex = re.compile(r'(XMDLINK\d+X)')
+        full_output = "".join(translated_sections)
+        output_lines = full_output.splitlines()
 
-        for line in restored_step_A:
-            restored_line = line
-            # Finde alle Platzhalter in der aktuellen Zeile
-            placeholders_in_line = placeholder_regex.findall(restored_line)
+        if len(output_lines) <= 2:
+            print(
+                f"      [SKIP] Output for '{lang}' has only {len(output_lines)} lines, skipping write."
+            )
+            continue
+        if any(
+            line.strip().startswith("https://translate.google.com")
+            for line in output_lines
+        ):
+            print(
+                f"      [SKIP] Output for '{lang}' contains redirect URL, skipping write."
+            )
+            continue
+        if len(full_output) < (len(raw_content) * 0.35):
+            print(
+                f"      [SKIP] Output for '{lang}' is suspiciously short, skipping write."
+            )
+            continue
 
-            for placeholder in placeholders_in_line:
-                # Extrahiere die Indexnummer aus dem Platzhalter (z.B. 0 aus 'XMDLINK0X')
-                link_index = int(re.search(r'\d+', placeholder).group())
+        print(f"      -> Saving file '{output_file}'…")
+        with open(output_file, "w", encoding="utf-8") as f:
+            f.write(full_output)
 
-                if link_index < len(markdown_links):
-                    # 1. Hole den originalen Link aus der Liste
-                    original_link = markdown_links[link_index]
-
-                    # 2. Wende die Modifikationsfunktion auf den originalen Link an
-                    #    Die Funktion ist robust genug, um eine Zeile zu verarbeiten, die nur aus einem Link besteht.
-                    modified_link = add_lang_to_md_links(original_link, lang)
-
-                    # 3. Ersetze den Platzhalter durch den MODIFIZIERTEN Link
-                    restored_line = restored_line.replace(placeholder, modified_link, 1)
-
-            restored_step_B.append(restored_line)
-
-
-        #print("      -> Schritt C: Stelle mittige '__' wieder her…")
-        restored_step_C = [line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_B]
-
-        #print(f"      -> Schritt D: Stelle {hard_breaks_found_count} Hard-Break(s) aus Platzhaltern wieder her…")
-        final_lines = [line.replace(HARD_BREAK_PLACEHOLDER, "  ") for line in restored_step_C]
-
-        print(f"      -> Speichere Datei '{output_file}'…")
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write("\n".join(final_lines))
-
-        time.sleep(2)
-    #print(f'-> line 297: skipCount already translated: {skipCount}')
+        if has_cache_miss:
+            save_cache(cache_file, cache_data)        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    #logger.info(f'-> line 297: skipCount already translated: {skipCount}')
 
 def main():
 
@@ -324,12 +396,12 @@ def main():
         except Exception:
             current_branch = ""
     if current_branch and current_branch not in {"master", "HEAD"}:
-        print(f"Skipping translations: current branch '{current_branch}' is not 'master'.")
+        logger.info(f"Skipping translations: current branch '{current_branch}' is not 'master'.")
         return
 
-    print("Starte die intelligente Übersetzung von Markdown-Dateien…")
-    print(f"Quellsprache: {SOURCE_LANG}")
-    print(f"Zielsprachen: {TARGET_LANGS}")
+    logger.info("Starte die intelligente Übersetzung von Markdown-Dateien…")
+    logger.info(f"Quellsprache: {SOURCE_LANG}")
+    logger.info(f"Zielsprachen: {TARGET_LANGS}")
 
 
     # search_path = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
@@ -337,7 +409,7 @@ def main():
     search_path = script_dir.parent / '**' / '*.md' # neu
 
 
-    #print(f"---- {search_path} ------------------------------------------------")
+    #logger.info(f"---- {search_path} ------------------------------------------------")
     # for filename in glob.glob(str(search_path)):
     skipCount = 0
     for filename in glob.glob(str(search_path), recursive=True):
@@ -372,38 +444,38 @@ def main():
         except OSError:
             continue
 
-        # eng ? de? fr?
-        if not re.search(r'-([a-z]{2,3})\.md$', filename):
-            # NEU – angepasst an "lang"-Suffix-Format:
-            if not re.search(r'-[a-z]{2,10}lang\.md$', filename):
-
-                base_name = os.path.splitext(filename)[0]
-                # Prüfe ob ALLE Zielsprachen bereits im .i18n Ordner existieren
-                # already_done = all(
-                #    os.path.exists(f"{base_name}.i18n/{os.path.basename(base_name)}-{lang}lang.md")
-                #    for lang in TARGET_LANGS
-                #)
-                
-                def is_fresh(l):
-                    tr = Path(f"{base_name}.i18n/{os.path.basename(base_name)}-{l}lang.md")
-                    return tr.exists() and tr.stat().st_mtime >= Path(filename).stat().st_mtime
-                already_done = all(is_fresh(lang) for lang in TARGET_LANGS)
-
-                if already_done:
-                    # print(f"   -> Überspringe  '…{str(filename)[-40:]}' (alle Übersetzungen bereits vorhanden).")
-                    skipCount = skipCount + 1
-
-                    continue
-                process_file(filename)
+        source_file = Path(filename)
 
 
-        print(f"process_file(…{str(filename)[-40:]})")
+
+
+
+
+     
+        if not re.search(r'-[a-z]{2,10}lang\.md$', filename):
+
+            base_name = os.path.splitext(filename)[0]
+            
+            def is_fresh(l):
+                tr = Path(f"{base_name}.i18n/{os.path.basename(base_name)}-{l}lang.md")
+                return tr.exists() and tr.stat().st_mtime >= Path(filename).stat().st_mtime
+            already_done = all(is_fresh(lang) for lang in TARGET_LANGS)
+
+            if already_done:
+                skipCount = skipCount + 1
+
+                continue
+
+        logger.info(f"Processing: …{str(filename)[-40:]}")
         process_file(filename)
-        #print("")
-    print(f'->line 365: skipCount already translated: {skipCount}')
+        
+        
+        
+        
+    logger.info(f'->line 365: skipCount already translated: {skipCount}')
 
-    #print("----------------------------------------------------")
-    print("Alle Übersetzungen abgeschlossen!")
+    #logger.info("----------------------------------------------------")
+    logger.info("Alle Übersetzungen abgeschlossen!")
 
 if __name__ == "__main__":
     main()

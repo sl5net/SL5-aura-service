@@ -1,1 +1,0 @@
-https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https://glogg.bonnefon.org/     

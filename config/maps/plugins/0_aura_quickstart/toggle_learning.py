@@ -8,9 +8,9 @@ from scripts.py.func.utils.get_leading_whitespace import (
     get_leading_whitespace_before_pos,
 )
 
-# ---
+
 # Required imports that must exist in every FUZZY_MAP_pre.py
-# ---
+
 _REQUIRED_IMPORTS = [
     "from pathlib import Path as p;import os as o # noqa: E702",
     "with open(('C:/tmp'if o.name=='nt'else'/tmp')+'/sl5_aura/sl5net_aura_project_root',encoding='utf-8') as f:SL5NET_AURA_PROJECT_ROOT=p(f.read().strip()) # noqa: E702",

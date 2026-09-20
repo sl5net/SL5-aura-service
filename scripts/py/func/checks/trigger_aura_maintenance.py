@@ -55,19 +55,18 @@ def _execute_maintenance_tasks(logger):
 
     logger.info("!!! Maintenance Task Started !!!")
 
-    """Zentraler Manager für Hintergrund-Aufgaben."""
     try:
         # 1. Throttling: Only take a test every 10 minutes
         now = time.time()
         if LAST_CHECK_FILE.exists():
             try:
-                last_time = float(LAST_CHECK_FILE.read_text())
+                last_time = float(LAST_CHECK_FILE.read_text(encoding="utf-8").strip())
                 if now - last_time < 60 * 2:
                     return
             except Exception:
                 pass
-
-        # 2. RADIO-AURA CACHE GENERIERUNG
+        LAST_CHECK_FILE.parent.mkdir(parents=True, exist_ok=True)
+        LAST_CHECK_FILE.write_text(str(now), encoding="utf-8")   
         logger.info(f"Maintenance: Checking Path: …{str(radio_script)[-40:]}")
 
         if radio_script.exists():
