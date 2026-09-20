@@ -124,42 +124,42 @@ Note: Many texts are machine-generated translations of the original English docu
 <details>
 <summary> 🔌 Ready-to-Use Integrations</summary>
     
-## 🔌 Integraciones Listas para Usar
+## 🔌 Intégrations Prêtes à l'Emploi
 
-SL5-Aura viene con un vasto ecosistema de más de **100+ plugins preconfigurados**. Aquí hay algunos aspectos destacados:
+SL5-Aura est livré avec un vaste écosystème de plus de **100+ plugins pré-configurés**. Voici quelques points forts :
 
-### Control de Voz del IDE OculiX / SikuliX
-SL5-Aura ofrece soporte de voz de primera clase para **OculiX** y **SikuliX IDE**. Esta integración te permite "hablar" tu código de automatización.
+### Contrôle Vocal de l'IDE OculiX / SikuliX
+SL5-Aura fournit un support vocal de première classe pour **OculiX** et **SikuliX IDE**. Cette intégration vous permet de « parler » votre code d'automatisation.
 
-*   **De voz a fragmento:** Di "click", "wait" o "find all", y el servicio escribe instantáneamente el código Python correcto (por ejemplo, `click("image.png")`) en el IDE.
-*   **Consciente de la ventana:** El complemento es sensible al contexto; solo se activa cuando la ventana de OculiX/SikuliX está enfocada.
-*   **Soporte Inteligente de Inglés:** Optimizado para `en-US` con un enfoque especial en acentos no nativos (por ejemplo, fonética alemán-inglés), asegurando una alta precisión de reconocimiento para la comunidad global.
-*   **Extensible:** Utiliza el formato `FUZZY_MAP_pre.py`, fácil de editar.
+*   **De la voix au fragment :** Dites « click », « wait » ou « find all », et le service tape instantanément le code Python correct (par ex., `click("image.png")`) dans l'IDE.
+*   **Conscient de la fenêtre :** Le plugin est sensible au contexte ; il ne s’active que lorsque la fenêtre OculiX/SikuliX est focalisée.
+*   **Support intelligent en anglais :** Optimisé pour `en-US` avec une attention particulière aux accents non natifs (par exemple, la phonétique allemande-anglais), garantissant une grande précision de reconnaissance pour la communauté mondiale.
+*   **Extensible :** Utilise le format `FUZZY_MAP_pre.py` facile à modifier.
 
-> **Estado:** Reconocido como un plugin comunitario por el equipo de OculiX (ver [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
+> **Statut :** Reconnu comme un plugin communautaire par l'équipe OculiX (voir [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
 
-### Control por Voz del IDE de LibreOffice
+### Contrôle vocal de l'IDE LibreOffice
 
-### 0 A.D. Control por Voz
+### 0 A.D. Contrôle Vocal
 
 ---
 
-</detalles>
+</details>
 
 
-<detalles>
-<summary>Documentación</summary>
+<détails>
+<summary>Documentation</summary>
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)## Documentación
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)## Documentation
 
-Para una referencia técnica completa, incluyendo todos los módulos y scripts, por favor visite nuestra página oficial de documentación. Se genera automáticamente y siempre está actualizada.
+For a complete technical reference, including all modules and scripts, please visit our official documentation page. It is automatically generated and always up-to-date.
 
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
-### Características Destacadas
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-eslang.md) — Búsqueda de reglas `fzf` de doble panel, vistas previas de contexto en vivo, ejecución instantánea de comandos mediante `Enter`/`Ctrl+R` e integración con el editor mediante `Ctrl+E`. Soportado por una tecla de acceso global (`Super+S`) y múltiples entornos de búsqueda dedicados preconfigurados mediante comandos de voz.
+### Feature Spotlights
+- [Interactive Rule Search & Run](docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.md) — Dual-pane `fzf` rule search, live context previews, instant command execution via `Enter`/`Ctrl+R`, and editor integration via `Ctrl+E`. Supported by a global hotkey (`Super+S`) and multiple dedicated search-environments pre-configured via voice commands.
 
-### Estado de la compilación
+### Build Status
 
 [![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
@@ -171,76 +171,128 @@ Para una referencia técnica completa, incluyendo todos los módulos y scripts, 
 [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
 <div align="left">
 <a href="https://github.com/sl5net/SL5-aura-service/stargazers">
-<img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Observadores de estrellas">
+<img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
 </a>
-<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="Licencia">
+<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="License">
 <a href="https://sl5net.github.io/SL5-aura-service/">
-<img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Documentación">
+<img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Documentation">
 </a>
 </div>
 
-</detalles>
+</details>
 
-👉 **Leer esto en otros idiomas:**
+👉 **Read this in other languages:**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-eslang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-eslang.md) | [🇪🇸 Español](../README.i18n/README-eslang.md) | [🇫🇷 Français](../README.i18n/README-frlang-eslang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-eslang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-eslang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-eslang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-eslang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-eslang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-eslang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-eslang.md)
+[🇬🇧 English](README.md) | [🇸🇦 العربية](README.i18n/README-arlang.md) | [🇩🇪 Deutsch](README.i18n/README-delang.md) | [🇪🇸 Español](README.i18n/README-eslang.md) | [🇫🇷 Français](README.i18n/README-frlang.md) | [🇮🇳 हिन्दी](README.i18n/README-hilang.md) | [🇯🇵 日本語](README.i18n/README-jalang.md) | [🇰🇷 한국어](README.i18n/README-kolang.md) | [🇵🇱 Polski](README.i18n/README-pllang.md) | [🇵🇹 Português](README.i18n/README-ptlang.md) | [🇧🇷 Português Brasil](README.i18n/README-pt-BRlang.md) | [🇨🇳 简体中文](README.i18n/README-zh-CNlang.md)
 
 ---
 
-<detalles>
-<resumen>Instalación</resumen>## Instalación
+<details>
+<summary>Installation</summary>
 
-### 🎥 Instalación rápida sin moderación (Video de Manjaro/Arch)
-Mira el proceso de configuración completo de 6 minutos:
-* **Descargar:** ~3 minutos
-* **Configuración y Primer Inicio:** ~3 minutos (incluyendo el Asistente de Bienvenida)
+## Installation
+
+### 🎥 Quick Installation without moderation (Manjaro/Arch Video)
+Watch the full 6-minute setup process:
+* **Download:** ~3 minutes
+* **Setup & First Start:** ~3 minutes (including Welcome Wizard)
 
 👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
 
 
-La configuración es un proceso de dos pasos:
-1. Descargue la última versión o la rama master (https://github.com/sl5net/SL5-aura-service/archive/master.zip) o clone este repositorio en su computadora.
-2. Ejecute el script de configuración única para su sistema operativo.
+The setup is a two-step process:
+1.  Download the latest Release or master ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) or clone this repository to your computer.
+2.  Run the one-time setup script for your operating system.
 
-Los scripts de configuración manejan todo: dependencias del sistema, entorno de Python y la descarga de los modelos y herramientas necesarios (~4GB) directamente desde nuestros lanzamientos en GitHub para máxima velocidad.
+The setup scripts handle everything: system dependencies, Python environment, and downloading the necessary models and tools (~4GB) directly from our GitHub Releases for maximum speed.
 
 
-#### Para Linux, macOS y Windows (con Exclusión de Idioma Opcional)
+#### For Linux, macOS, and Windows (with Optional Language Exclusion)
 
-Para ahorrar espacio en disco y ancho de banda, puedes excluir modelos de idioma específicos (`de`, `en`) o todos los modelos opcionales (`all`) durante la configuración. **Los componentes principales (LanguageTool, lid.176) siempre están incluidos.**
+To save disk space and bandwidth, you can exclude specific language models (`de`, `en`) or all optional models (`all`) during setup. **Core components (LanguageTool, lid.176) are always included.**
 
-Abre una terminal en el directorio raíz del proyecto y ejecuta el script para tu sistema:
+Open a terminal in the project's root directory and run the script for your system:
 
-__BLOQUE_DE_CÓDIGO_0__
+```bash
+# For Ubuntu/Debian, Manjaro/Arch, macOS, or other derivatives
+# (Note: Use bash or sh to execute the setup script)
 
-#### Para Windows
-Ejecute el script de instalación con privilegios de administrador.
+bash setup/{your-os}_setup.sh [OPTION]
 
-**Instale una herramienta para leer y ejecutar, por ejemplo, [CopyQ](https://github.com/hluk/CopyQ) o [AutoHotkey v2](https://www.autohotkey.com/)**. Esto es necesario para el observador de escritura de texto.
+# For Arch-based systems (Manjaro, CachyOS, EndeavourOS, etc.):
+`bash setup/manjaro_arch_setup.sh`
 
-La instalación está completamente automatizada y tarda aproximadamente **8-10 minutos** al usar 2 modelos en un sistema nuevo.
+`sudo pacman -S mimalloc`
 
-1. Navega a la carpeta `setup`.
-2. Haz doble clic en **`windows11_setup_with_ahk_copyq.bat`**.
-   * *El script solicitará automáticamente privilegios de Administrador.*
-* *Instala el Sistema Central, los Modelos de Lenguaje, **AutoHotkey v2** y **CopyQ**.*
-3. Una vez que la instalación esté completa, **Aura Dictation** se iniciará automáticamente.
 
-> **Nota:** No necesitas instalar Python o Git de antemano; el script se encarga de todo.
+# Examples:
+# Install everything (Default):
+# bash setup/manjaro_arch_setup.sh
+
+# Exclude German models:
+# bash setup/manjaro_arch_setup.sh exclude=de
+
+# Exclude all VOSK language models:
+# bash setup/manjaro_arch_setup.sh exclude=all
+
+# For Windows in an Admin-Powershell session
+
+setup/windows11_setup.ps1 -Exclude [OPTION]
+
+# Examples:
+# Install everything (Default):
+# setup/windows11_setup.ps1
+
+# Exclude English models:
+# setup/windows11_setup.ps1 -Exclude "en"
+
+# Exclude German and English models:
+# setup/windows11_setup.ps1 -Exclude "de,en"
+
+# Or (recommend) - Run the BAT file: 
+windows11_setup.bat -Exclude "en"
+```
+
+#### For Windows
+Run the setup script with administrator privileges.
+
+**Install a tool to read and run, e.g., [CopyQ](https://github.com/hluk/CopyQ) or [AutoHotkey v2](https://www.autohotkey.com/)**. This is required for the text-typing watcher.
+
+The installation is fully automated and takes about **8-10 minutes** when using 2 Models on a fresh system.
+
+1. Navigate to the `setup` folder.
+2. Double-click on **`windows11_setup_with_ahk_copyq.bat`**.
+   * *The script will automatically prompt for Administrator privileges.*
+   * *It installs the Core System, Language Models, **AutoHotkey v2**, and **CopyQ**.*
+3. Once the installation is complete, **Aura Dictation** will launch automatically.
+
+> **Note:** You do not need to install Python or Git beforehand; the script handles everything.
 
 ---
 
-#### Instalación Avanzada / Personalizada
-Si prefieres no instalar las herramientas del cliente (AHK/CopyQ) o quieres ahorrar espacio en disco excluyendo idiomas específicos, puedes ejecutar el script principal a través de la línea de comandos:
+#### Advanced / Custom Installation
+If you prefer not to install the client tools (AHK/CopyQ) or want to save disk space by excluding specific languages, you can run the core script via the command line:
 
-__BLOQUE_DE_CÓDIGO_1__
+```powershell
+# Core Setup only (No AHK, No CopyQ)
+setup/windows11_setup_with_ahk_copyq.bat
+
+# Exclude specific language models (saves space):
+# Exclude English:
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
+
+# Exclude German and English:
+setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
+```
 
 ---
-</detalles>
+</details>
 
 
-<detalles>
-<summary>Uso</summary>## Usage
+<details>
+<summary>Usage</summary>
+
+## Usage
 
 ### 1. Start the Services
 
@@ -321,52 +373,52 @@ Click in any text field, press your hotkey, and a "Listening..." notification wi
 <details>
 <summary>Advanced Configuration (Optional)</summary>
 
-## Configuración Avanzada (Opcional)
+## Configuration avancée (optionnelle)
 
-Puedes personalizar el comportamiento de la aplicación creando un archivo de configuración local.
+Vous pouvez personnaliser le comportement de l'application en créant un fichier de configuration local.
 
-1. Navega al directorio `config/`.
-2. Crea una copia de `config/settings_local.py_Example.txt` y cámbiale el nombre a `config/settings_local.py`.
-3. Edita `config/settings_local.py` (este sobrescribe cualquier configuración del archivo principal `config/settings.py`).
+1. Accédez au répertoire `config/`.
+2. Créez une copie de `config/settings_local.py_Example.txt` et renommez-la en `config/settings_local.py`.
+3. Modifiez `config/settings_local.py` (il remplace toute configuration du fichier principal `config/settings.py`).
 
-Este archivo `config/settings_local.py` es ignorado por Git por defecto, por lo que tus cambios personales no serán sobrescritos por actualizaciones.
+Ce fichier `config/settings_local.py` est ignoré par Git par défaut, donc vos modifications personnelles ne seront pas écrasées par les mises à jour.
 
-### Estructura y lógica del complemento
+### Structure et logique du plug-in
 
-La modularidad del sistema permite una ampliación robusta a través del directorio plugins/.
+La modularité du système permet une extension robuste via le répertoire plugins/.
 
-El motor de procesamiento se adhiere estrictamente a una **Cadena de Prioridad Jerárquica**:
+Le moteur de traitement adhère strictement à une **chaîne de priorité hiérarchique** :
 
-1. **Orden de Carga de Módulos (Alta Prioridad):** Las reglas cargadas desde los paquetes de idioma principales (de-DE, en-US) tienen prioridad sobre las reglas cargadas desde el directorio plugins/ (que se cargan al final alfabéticamente).
-  XESPACIOPAUSAX
-2. **Orden dentro del archivo (Prioridad micro):** Dentro de cualquier archivo de mapa dado (FUZZY_MAP_pre.py), las reglas se procesan estrictamente por **número de línea** (de arriba hacia abajo).
-  XESPACIOPAUSAX
+1. **Ordre de chargement des modules (Haute priorité) :** Les règles chargées à partir des packs linguistiques principaux (de-DE, en-US) ont la priorité sur les règles chargées à partir du répertoire plugins/ (qui se chargent en dernier par ordre alphabétique).
+    
+2. **Ordre dans le fichier (Priorité micro) :** Dans tout fichier de carte donné (FUZZY_MAP_pre.py), les règles sont traitées strictement par **numéro de ligne** (de haut en bas).
+    
 
-Esta arquitectura asegura que las reglas principales del sistema estén protegidas, mientras que las reglas específicas del proyecto o conscientes del contexto (como las de CodeIgniter o los controles de juegos) pueden añadirse fácilmente como extensiones de baja prioridad a través de complementos.
+Cette architecture garantit que les règles principales du système sont protégées, tandis que les règles spécifiques au projet ou sensibles au contexte (comme celles pour CodeIgniter ou les contrôles de jeu) peuvent être facilement ajoutées comme extensions à faible priorité via des plug-ins.
 
-</detalles>
+</details>
 
-<detalles>
-<resumen>Scripts clave para usuarios de Windows</resumen>## Scripts Clave para Usuarios de Windows
+<détails>
+<summary>Scripts clés pour les utilisateurs Windows</summary>## Scripts clés pour les utilisateurs de Windows
 
-Aquí hay una lista de los scripts más importantes para configurar, actualizar y ejecutar la aplicación en un sistema Windows.
+Voici une liste des scripts les plus importants pour configurer, mettre à jour et exécuter l'application sur un système Windows.
 
-### Configuración y Actualización
+### Configuration et mise à jour
 
 *   `chmod +x update.sh; ./update.sh`
-*   `setup/setup.bat`: El script principal para la **configuración inicial única** del entorno.
-* [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Ejecutar powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
+*   `setup/setup.bat` : Le script principal pour la **configuration initiale unique** de l'environnement.
+* [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Exécuter powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
-*   `update.bat` : Ejecuta esto desde la carpeta del proyecto para **obtener el código y las dependencias más recientes**.
+*   `update.bat` : Exécutez ceci depuis le dossier du projet pour **obtenir le code et les dépendances les plus récents**.
 
-### Ejecutando la Aplicación
-*   `start_aura.bat`: Un script principal para **iniciar el servicio de dictado**.
+### Exécution de l'application
+*   `start_aura.bat` : Un script principal pour **démarrer le service de dictée**.
 
-### Scripts principales y auxiliares
-*   `aura_engine.py`: El servicio central de Python (generalmente iniciado por uno de los scripts mencionados arriba).
-*   `get_suggestions.py`: Un script auxiliar para funcionalidades específicas.
+### Scripts principaux et auxiliaires
+*   `aura_engine.py` : Le service Python principal (généralement démarré par l'un des scripts ci-dessus).
+*   `get_suggestions.py` : Un script d'assistance pour des fonctionnalités spécifiques.
 
-</detalles>## 🚀 Key Features & OS Compatibility
+</details>## 🚀 Key Features & OS Compatibility
 
 <details>
 <summary>Legend for OS Compatibility</summary>
@@ -512,32 +564,32 @@ Then maybe double-click
 <details>
 <summary>Used Models</summary>
 
-## Modelos Utilizados:
+## Modèles utilisés :
 
-Recomendación: use modelos de Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (probablemente más rápido)
+Recommandation : utilisez les modèles de Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (probablement plus rapide)
 
-Estos modelos comprimidos deben guardarse en la carpeta `models/`
+Ces modèles compressés doivent être enregistrés dans le dossier `models/`
 
 `mv vosk-model-*.zip models/`
 
 
-| Modelo                                                                                 | Tamaño | Tasa de error de palabras/Velocidad                                                     | Notas                                     | Licencia    |
+| Modèle                                                                                  | Taille | Taux d'erreur de mots/Vitesse                                                               | Remarques                                 | Licence    |
 | -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
-| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69 (librispeech test-clean)<br/>6.05 (tedlium)<br/>29.78 (callcenter)                       | Modelo genérico preciso de inglés estadounidense         | Apache 2.0 |
-| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip)       | 1.9G | 9.83 (prueba Tuda)<br/>24.00 (podcast)<br/>12.82 (prueba cv)<br/>12.42 (mls)<br/>33.26 (mtedx) | Gran modelo alemán para telefonía y servidor | Apache 2.0 |
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1,8 Go | 5,69 (librispeech test-clean)<br/>6,05 (tedlium)<br/>29,78 (centre d'appels)                       | Modèle précis d'anglais américain générique         | Apache 2.0 |
+| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip)       | 1,9 Go | 9,83 (Tuda-de test)<br/>24,00 (podcast)<br/>12,82 (cv-test)<br/>12,42 (mls)<br/>33,26 (mtedx) | Grand modèle allemand pour la téléphonie et le serveur | Apache 2.0 |
 
-Esta tabla proporciona una visión general de los diferentes modelos de Vosk, incluyendo su tamaño, tasa de error de palabras o velocidad, notas e información sobre la licencia.
+Ce tableau fournit un aperçu des différents modèles Vosk, y compris leur taille, leur taux d'erreur de mots ou leur vitesse, leurs notes et les informations sur la licence.
 
 
-- **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)
-- **LanguageTool:**
+- **Modèles Vosk :** [Vosk-Model List](https://alphacephei.com/vosk/models)
+- **LanguageTool:**  
    (6.6) [https://languagetool.org/download/](https://languagetool.org/download/) 
 
-**Licencia de LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+**Licence de LanguageTool :** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ---
-</detalles>## Apoya el Proyecto
-Si encuentras útil esta herramienta, ¡por favor considera comprarnos un café! Tu apoyo ayuda a impulsar futuras mejoras.
+</details>## Soutenez le projet
+Si vous trouvez cet outil utile, veuillez envisager de nous offrir un café ! Votre soutien contribue à alimenter les améliorations futures.
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 

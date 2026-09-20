@@ -16,7 +16,7 @@
 
 | 👵 Anfänger | 🎓 Lernender | 🧑‍💻 Entwickler |
 |---|---|---|
-| [grandma-mode](../docs/GettingStarted-delang.md#the-oma-modus-beginner-shortcut) : schreibe einfach ein Wort, Aura erledigt den Rest | Lernen mit Koans — ein Konzept nach dem anderen | Vollständiges Python-Scripting, Plugins, API-Aufrufe |
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-delang.md#the-oma-modus-beginner-shortcut) : schreibe einfach ein Wort, Aura erledigt den Rest | Lernen mit Koans — ein Konzept nach dem anderen | Vollständiges Python-Scripting, Plugins, API-Aufrufe |
 | 🗄️ Zustandsverwaltung | Trino + Airflow-Orchestrierung, fzf, CopyQ, Sprach-/Terminalbefehle, Browser-UIs |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)

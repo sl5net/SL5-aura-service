@@ -53,6 +53,7 @@ MD_LINK_PLACEHOLDER_FORMAT = "XMDLINK{}X"
 import logging
 import sys
 
+
 try:
     from tools.i18n.section_cache import (
         compute_section_hash,
@@ -61,6 +62,10 @@ try:
         save_cache,
         split_markdown_by_h2,
         store_cached_translation,
+    )
+    from tools.i18n.engine_fallback import (
+        load_cooldowns,
+        translate_with_engine_fallback,
     )
 except ImportError:
     from i18n.section_cache import (
@@ -71,8 +76,15 @@ except ImportError:
         split_markdown_by_h2,
         store_cached_translation,
     )
+    from i18n.engine_fallback import (
+        load_cooldowns,
+        translate_with_engine_fallback,
+    )
 
 cache_file = script_dir / "i18n" / "translation_cache.json"
+cooldown_file = script_dir / "i18n" / "engine_cooldowns.json"
+
+
 log_dir = script_dir.parent / "log"
 log_dir.mkdir(parents=True, exist_ok=True)
 log_file = log_dir / "translate_md.log"
@@ -207,9 +219,7 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
 
 
 
-
-
-def translate_section(section_text: str, lang: str) -> str:
+def translate_section(section_text: str, lang: str) -> str | None:
     original_lines = section_text.splitlines()
 
     markdown_links = []
@@ -254,24 +264,18 @@ def translate_section(section_text: str, lang: str) -> str:
     if not text_to_translate.strip():
         return section_text
 
-    try:
-        process = subprocess.run(
-            ["trans", "-e", "bing", "-brief", f"{SOURCE_LANG}:{lang}"],
-            input=text_to_translate,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            check=True,
-            timeout=60,
+    cooldowns = load_cooldowns(cooldown_file)
+    translated_lines = translate_with_engine_fallback(
+        text=text_to_translate,
+        source_lang=SOURCE_LANG,
+        target_lang=lang,
+        cooldowns=cooldowns,
+        cooldown_file=cooldown_file,
+        timeout=40,
         )
-        translated_lines = process.stdout.strip().split("\n")
-    except (
-        subprocess.CalledProcessError,
-        FileNotFoundError,
-        subprocess.TimeoutExpired,
-    ) as e:
-        print(f"      [ERROR] Section translation failed: {e}")
-        return section_text
+    if not translated_lines:
+        print(f"      [ERROR] All translation engines failed for '{lang}'.")
+        return None
 
     restored_step_A = []
     for line in translated_lines:
@@ -329,6 +333,10 @@ def process_file(filename):
         translated_sections = []
         has_cache_miss = False
 
+        translated_sections = []
+        has_cache_miss = False
+        section_failed = False
+
         for section in sections:
             sec_hash = compute_section_hash(section)
             cached_text = get_cached_translation(cache_data, sec_hash, lang)
@@ -338,11 +346,26 @@ def process_file(filename):
             else:
                 has_cache_miss = True
                 translated = translate_section(section, lang)
+                if translated is None:
+                    print(f"      [SKIP] Failed to translate section for '{lang}', aborting file write.")
+                    section_failed = True
+                    break
                 store_cached_translation(cache_data, sec_hash, lang, translated)
                 translated_sections.append(translated)
-                time.sleep(1)
+                time.sleep(5)
+
+        if section_failed:
+            continue
 
         full_output = "".join(translated_sections)
+        
+        
+        
+        
+        
+        
+        
+        
         output_lines = full_output.splitlines()
 
         if len(output_lines) <= 2:
@@ -370,7 +393,7 @@ def process_file(filename):
 
         if has_cache_miss:
             save_cache(cache_file, cache_data)        
-        
+            time.sleep(4)
         
         
         
