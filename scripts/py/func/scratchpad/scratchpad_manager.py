@@ -43,13 +43,13 @@ def _pad_alive() -> bool:
         return False
 
 
-def is_scratchpad_open() -> bool:
-    global _window_ref
-    if _pad_alive():
-        return True
-    with _state_lock:
-        _window_ref = None
-    return False
+# def is_scratchpad_open() -> bool:
+#     global _window_ref
+#     if _pad_alive():
+#         return True
+#     with _state_lock:
+#         _window_ref = None
+#     return False
 
 
 def _create_scratchpad(
@@ -159,36 +159,38 @@ def deliver_text(text: str, server_url: str, language: str, timeout: float = 2.0
         return success
 
 
-def open_scratchpad(
-    server_url: str,
-    language: str,
-    initial_text: str = "",
-    wait: bool = False,
-    timeout: float = 2.0,
-) -> bool:
-    """Kept for the standalone subprocess entry point (open_scratchpad_action.py)."""
-    global _generation
-    os.environ['LANG'] = 'de_DE.UTF-8'
-    os.environ['PYTHONUTF8'] = '1'
-    with _op_lock:
-        if _pad_alive():
-            return True
-        _generation += 1
-        gen = _generation
-        ready = threading.Event()
-        _log(f"[gen={gen}] open_scratchpad called")
-        target_win = get_active_window_id()
-        run_on_tk_thread(lambda: _create_scratchpad(gen, ready, server_url, language, initial_text, target_win))
-        if not wait:
-            return True
-        ok = ready.wait(timeout)
-        success = ok and _pad_alive()
-        if not success:
-            _log(f"[gen={gen}] open_scratchpad TIMED OUT or FAILED (ok={ok})")
-        return success
+# def open_scratchpad(
+#     server_url: str,
+#     language: str,
+#     initial_text: str = "",
+#     wait: bool = False,
+#     timeout: float = 2.0,
+# ) -> bool:
+#     """Kept for the standalone subprocess entry point (open_scratchpad_action.py)."""
+#     global _generation
+#     os.environ['LANG'] = 'de_DE.UTF-8'
+#     os.environ['PYTHONUTF8'] = '1'
+#     with _op_lock:
+#         if _pad_alive():
+#             return True
+#         _generation += 1
+#         gen = _generation
+#         ready = threading.Event()
+#         _log(f"[gen={gen}] open_scratchpad called")
+#         target_win = get_active_window_id()
+#         run_on_tk_thread(lambda: _create_scratchpad(gen, ready, server_url, language, initial_text, target_win))
+#         if not wait:
+#             return True
+#         ok = ready.wait(timeout)
+#         success = ok and _pad_alive()
+#         if not success:
+#             _log(f"[gen={gen}] open_scratchpad TIMED OUT or FAILED (ok={ok})")
+#         return success
 
 
-def append_to_scratchpad(text: str, timeout: float = 1.5) -> bool:
-    """Kept for the standalone subprocess entry point."""
-    with _op_lock:
-        return _append_locked(text, timeout)
+
+# 
+# def append_to_scratchpad(text: str, timeout: float = 1.5) -> bool:
+#     """Kept for the standalone subprocess entry point."""
+#     with _op_lock:
+#         return _append_locked(text, timeout)

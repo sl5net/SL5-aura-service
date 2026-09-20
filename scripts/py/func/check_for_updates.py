@@ -220,7 +220,7 @@ def check_for_updates(logger=None, timeout_seconds=4.0, force=False):
 
 
             if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
-                log_msg("Git repository not found. Initializing git tracking...")
+                log_msg("Git repository not found. Initializing git tracking…")
                 update_branch = getattr(settings, "AURA_UPDATE_BRANCH", "master")
                 remote_url = getattr(settings, "AURA_REMOTE_URL", "https://github.com/sl5net/SL5-aura-service.git")
                 if ensure_git_repo(REPO_DIR, default_branch=update_branch, remote_url=remote_url):
@@ -295,7 +295,7 @@ def verify_and_repair_languagetool(logger=None, repo_dir=REPO_DIR):
     if os.path.isfile(marker):
         return
 
-    log_msg("LanguageTool installation incomplete or missing. Attempting repair...")
+    log_msg("LanguageTool installation incomplete or missing. Attempting repair…")
 
     helper_script = os.path.join(
         repo_dir, "setup", "helpers", "linux_mac", "download_and_extract_helper.sh"

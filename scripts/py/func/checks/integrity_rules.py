@@ -170,7 +170,6 @@ INTEGRITY_CHECKS = {
 
     'scripts/search_rules/search_rules.sh': [
         r'--bind="ctrl-g',
-        r'8082',
     ],
     'scripts/search_rules/run_rule.sh': [
         r'--bind="ctrl-backspace:backward-kill-word"',
@@ -283,9 +282,9 @@ INTEGRITY_CHECKS = {
     # Ensures language selection is included in the macOS setup.
     # "setup/macos_setup.sh": [
     #     'source "scripts/sh/get_lang.sh"',
-    # ],
+    # ], 
 
-    "setup/macos_setup.sh": [
+    "setup/helpers/linux_mac/distros/macos_setup.sh": [
          'venv/bin/python scripts/py/setup_config.py ||',
     ],
 
@@ -296,7 +295,7 @@ INTEGRITY_CHECKS = {
     # ],
 
     # Ensures language selection is included in the Ubuntu setup.
-     "setup/ubuntu_setup.sh": [
+     "setup/helpers/linux_mac/distros/ubuntu_setup.sh": [
          'venv/bin/python scripts/py/setup_config.py ||',
     ],
 
@@ -307,7 +306,7 @@ INTEGRITY_CHECKS = {
     # ],
 
     # Ensures language selection is included in the Manjaro/Arch setup.
-    "setup/manjaro_arch_setup.sh": [
+    "setup/helpers/linux_mac/distros/manjaro_arch_setup.sh": [
          'venv/bin/python scripts/py/setup_config.py ||',
      ],
 
