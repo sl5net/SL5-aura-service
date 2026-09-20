@@ -92,7 +92,7 @@ class ScratchpadWindow:
         self.root.bind("<Destroy>", self._on_window_destroy)
         self.text_area.focus_set()
 
-    def _delete_word(self, event: tk.Event) -> str:
+    def _delete_word(self, event: tk.Event) -> None:
         current_pos = self.text_area.index(tk.INSERT)
         text_before_cursor = self.text_area.get("1.0", current_pos)
 
