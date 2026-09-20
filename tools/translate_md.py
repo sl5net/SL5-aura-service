@@ -352,7 +352,7 @@ def process_file(filename):
                     break
                 store_cached_translation(cache_data, sec_hash, lang, translated)
                 translated_sections.append(translated)
-                time.sleep(5)
+                time.sleep(8)
 
         if section_failed:
             continue
@@ -390,10 +390,11 @@ def process_file(filename):
         print(f"      -> Saving file '{output_file}'…")
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(full_output)
+            time.sleep(15)
 
         if has_cache_miss:
             save_cache(cache_file, cache_data)        
-            time.sleep(4)
+            time.sleep(15)
         
         
         
@@ -498,7 +499,7 @@ def main():
     logger.info(f'->line 365: skipCount already translated: {skipCount}')
 
     #logger.info("----------------------------------------------------")
-    logger.info("Alle Übersetzungen abgeschlossen!")
+    logger.info("may all translated?!")
 
 if __name__ == "__main__":
     main()

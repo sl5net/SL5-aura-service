@@ -31,8 +31,9 @@ def get_active_engines(cooldowns: dict, engines: list | None = None) -> list:
     return [e for e in selected_engines if cooldowns.get(e, 0) <= now]
 
 
+# tools/i18n/engine_fallback.py:34 3600=1h 300=5min 600=10min 1600=26min
 def mark_engine_blocked(
-    cooldowns: dict, engine: str, file_path: Path, duration_sec: int = 3600
+    cooldowns: dict, engine: str, file_path: Path, duration_sec: int = 1600
 ) -> None:
     cooldowns[engine] = time.time() + duration_sec
     save_cooldowns(file_path, cooldowns)
