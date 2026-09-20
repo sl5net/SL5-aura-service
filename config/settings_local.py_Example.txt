@@ -40,8 +40,8 @@ KILL_COMPETING_LT_AND_ELOQUENT_ON_START = 0
 #   "commits"  - Check for every new commit on your branch (nightly/development)
 #   "releases" - Check only for official GitHub releases (stable)
 #   False      - Disable update checks (offline default)
+UPDATE_EXCLUDED_USERS = ["bob20260920_1721"]  # e.g. ["alice", "bob"]
 CHECK_FOR_UPDATES_ON_STARTUP = "commits"
-
 
 # Enable or disable the type watcher (client-side typing integration)
 TYPE_WATCHER_ENABLED = True
