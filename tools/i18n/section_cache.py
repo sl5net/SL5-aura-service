@@ -68,13 +68,21 @@ def split_markdown_by_h2(content: str) -> List[str]:
                 for sub in subparts:
                     if not sub:
                         continue
+                        
                     if re.match(r"^#{2,6} ", sub) and current:
                         logger.debug("New H%d+ section encountered. Finalizing previous section", sub.count("#", 0, sub.find(" ")))
                         sections.append("".join(current))
-                        current = [sub]
-                    else:
-                        current.append(sub)
+                        current = []
 
+                    table_pieces = [p for p in re.split(r"((?:^[ \t]*\|[^\n]*(?:\n|\Z))+)", sub, flags=re.MULTILINE) if p]
+                    for piece in table_pieces:
+                        if re.match(r"^[ \t]*\|", piece):
+                            if current:
+                                sections.append("".join(current))
+                                current = []
+                            sections.append(piece)
+                        else:
+                                current.append(piece)
 
 
 

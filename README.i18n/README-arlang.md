@@ -1,167 +1,140 @@
 <img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-               # ⬟ SL5 Aura – صوتك. القواعد الخاصة بك.
+# ⬟ SL5 Aura – ﻚﺑ ﺔﺻﺎﺨﻟﺍ ﺪﻋﺍﻮﻘﻟﺍ .ﻚﺗﻮﺻ.
 
-          <!-- تجاوز سعة المكدس وشارات المجتمع -->
-                   [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
-                                               [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-                                                                [![Privacy](https://img.shields.io/badge/Privacy-100%25_Local_%26_Offline-2ea44f?style=for-the-badge&logo=keepassxc&logoColor=white)](#)
-                                                                [![Latency](https://img.shields.io/badge/Latency-0.07s-blueviolet?style=for-the-badge&logo=speedtest&logoColor=white)](#)
-                              [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+<!-- Stack Overflow & Community Badges -->
+[![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Privacy](https://img.shields.io/badge/Privacy-100%25_Local_%26_Offline-2ea44f?style=for-the-badge&logo=keepassxc&logoColor=white)](#)
+[![Latency](https://img.shields.io/badge/Latency-0.07s-blueviolet?style=for-the-badge&logo=speedtest&logoColor=white)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> غير متصل بالإنترنت بنسبة 100%، إطار عمل المساعد الصوتي الذي يولي الأولوية للخصوصية.XSPACEbreakX
-> حدد بالضبط ما يفعله صوتك - من كلمة واحدةXSPACEbreakX
-> إلى نصوص بايثون الكاملة. لا سحابة. لا توجد بيانات تترك جهازك.XSPACEbreakX
-> يعمل في المحطة الطرفية، أو المتصفح، أو كخدمة خلفية - على Linux، وmacOS، وWindows.
+XSPACEbreakX.ﺔﻴﺻﻮﺼﺨﻠﻟ ﺔﻳﻮﻟﻭﻷ﻿ﺍ ﻲﻟﻮﻳ ﻱﺬﻟﺍ ﻲﺗﻮﺼﻟﺍ ﺪﻋﺎﺴﻤﻟﺍ ﻞﻤﻋ ﺭﺎﻃﺇ 
+          XSPACEbreakXﺓﺪﺣﺍﻭ ﺔﻤﻠﻛ ﻦﻣ - ﻚﺗﻮﺻ ﻪﻠﻌﻔﻳ ﺎﻣ ﻂﺒﻀﻟﺎﺑ ﺩﺪﺣ <
+XSPACEbreakX.ﻙﺯﺎﻬﺟ ﻙﺮﺘﺗ ﺕﺎﻧﺎﻴﺑ ﺪﺟﻮﺗ ﻻ﻿ .ﺔﺑﺎﺤﺳ ﻻ﻿ .ﺔﻠﻣﺎﻜﻟﺍ ﻥﻮﺜﻳﺎﺑ ﺹ
+.Windowsﻭ ،macOSﻭ ،Linux ﻰﻠﻋ - ﺔﻴﻔﻠﺧ ﺔﻣﺪﺨﻛ ﻭﺃ ،ﺢﻔﺼﺘﻤﻟﺍ ﻭﺃ ،ﺔﻴﻓﺮﻄ
 
-           | 👵 مبتدأ | 🎓 المتعلم | 🧑u200d💻 مطور |
-                                                                |---|---|---|
-| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-arlang.md#the-oma-modus-beginner-shortcut): فقط اكتب كلمة واحدة، وستقوم Aura بالباقي | تعلم مع Koans - مفهوم واحد في كل مرة | البرمجة النصية الكاملة لبايثون، والمكونات الإضافية، واستدعاءات واجهة برمجة التطبيقات |
-| 🗄️ إدارة الدولة | تنسيق Trino + Airflow، fzf، CopyQ، الأوامر الصوتية/الطرفية، واجهات مستخدم المتصفح |
+                          | ﺭﻮﻄﻣ 💻u200d🧑 | ﻢﻠﻌﺘﻤﻟﺍ 🎓 | ﺃﺪﺘﺒﻣ 👵 |
+|---|---|---|
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-arlang.md#the-oma-modus-beginner-shortcut): ﻡﻮﻘﺘﺳﻭ ،ﺓﺪﺣﺍﻭ ﺔﻤﻠﻛ ﺐﺘﻛﺍ ﻂﻘﻓ Aura ﻊﻣ ﻢﻠﻌﺗ | ﻲﻗﺎﺒﻟﺎﺑ 
+| ﺢﻔﺼﺘﻤﻟﺍ ﻡﺪﺨﺘﺴﻣ ﺕﺎﻬﺟﺍﻭ ،ﺔﻴﻓﺮﻄﻟﺍ/ﺔﻴﺗﻮﺼﻟﺍ ﺮﻣﺍﻭﻷ﻿ﺍ ،Trino + Airflow
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 
-⚡ **~2.87 J** لكل اختبار (39 اختبارًا بدون LanguageTool عبر أكثر من 800 خريطة عند 0.07 ثانية دافئة / 0.36 ثانية باردة 🌿 تم قياسها باستخدام [Eco-CI](https://metrics.green-coding.io/index.html)) · لا يوجد حساب سحابي
+⚡ **~2.87 J** ﺭﺎﺒﺘﺧﺍ ﻞﻜﻟ (39 tests without LanguageTool across >800 maps @ 0.07s warm / 0.36s cold 🌿 measured with XMDLINK7X) · ﻲﺑﺎﺤﺳ ﺏﺎﺴﺣ ﺪﺟﻮﻳ ﻻ﻿
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=350653175)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=350653175)
 
-⚡ **مجموعة الاختبارات الكاملة:** 94 اختبارًا باستخدام LanguageTool عبر أكثر من 800 خريطة في 0.07 ثانية دافئة / 0.46 ثانية باردة · لا يوجد حساب سحابي
+ﻲﺑﺎﺤﺳ ﺏﺎﺴﺣ ﺪﺟﻮﻳ ﻻ﻿ · ﺓﺩﺭﺎﺑ ﺔﻴﻧﺎﺛ 0.46 / ﺔﺌﻓﺍﺩ ﺔﻴﻧﺎﺛ 0.07 ﻲﻓ ﺔﻄﻳﺮﺧ
 
-                                                           <التفاصيل>
-                                   <summary>البدء السريع</summary>
+<details>
+<summary>ﺔﻌﻳﺮﺳ ﺔﻳﺍﺪﺑ</summary>ﺔﻌﻳﺮﺳ ﺔﻳﺍﺪﺑ ##(Recommended) ﺐﻳﻮﻟﺍ ﺖﺒﺜﻣﻭ ﺓﺪﺣﺍﻭ ﺓﺮﻘﻧ :ﺃ ﺭﺎﻴﺨﻟﺍ ###
 
-                                                     ## بداية سريعة
+:Windowsﻭ macOSﻭ Linux ﻞﻴﻐﺸﺘﻟﺍ ﺔﻤﻈﻧﻷ﻿ ﻞﻘﺘﺴﻣ ﺖﻴﺒﺜﺗ ﺞﻣﺎﻧﺮﺑ ﻭﺃ ﻂﺨﻟﺍ 
+- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-arlang.md)**
 
-### الخيار أ: نقرة واحدة ومثبت الويب (مستحسن)
+---(Developers / Git) ﻱﻭﺪﻴﻟﺍ ﺖﻴﺒﺜﺘﻟﺍ :ﺏ ﺭﺎﻴﺨﻟﺍ ###
 
-أمر أحادي الخط أو برنامج تثبيت مستقل لأنظمة التشغيل Linux وmacOS وWindows:
-                                                              - **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-arlang.md)**
+                           ﻪﺧﺎﺴﻨﺘﺳﺍ ﻭﺃ ﻉﺩﻮﺘﺴﻤﻟﺍ ﺍﺬﻫ ﻞﻳﺰﻨﺘﺑ ﻢﻗ .1
+:ﻚﺑ ﺹﺎﺨﻟﺍ (see `setup/` folder) ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻨﻟ ﺩﺍﺪﻋﻺ﻿ﻟ ﻲﺼﻨﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﻞﻴﻐﺸﺘﺑ 
+- Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
+- Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
+- Linux (openSUSE): `bash setup/suse_setup.sh`
+- Linux (NixOS): `nix-shell setup/shell.nix` ﻢﺛ `bash setup/n
+ﺲﻛﺍ ﻚﻳﺮﺑ ﺲﻴﺒﺳ ﺲﻛﺍ !ﺕﺎﻘﻴﻠﻌﺘﻟﺎﺑ ﺐﺣﺮﻧ ،ﻦﻴﻔﻟﺆﻤﻟﺍ ﻞﺒﻗ ﻦﻣ ﻩﺭﺎﺒﺘﺧﺍ ﻢﺘﻳ 
+               `macOS: `bash setup/macos_setup.sh ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻧ -
+            `setup/windows11_setup_with_ahk_copyq.bat` :ﺯﻭﺪﻨﻳﻭ -
+        `Aura: `./scripts/restart_venv_and_run-server.sh ﺃﺪﺑﺍ .3
+          **[full guide →](../docs/GettingStarted.i18n/GettingStarted-arlang.md)** — ﺙﺪﺤﺗﻭ ﻊﻳﺮﺴﻟﺍ ﻞﻴﻐﺸﺘﻟﺍ ﺡﺎﺘﻔﻣ ﻰﻠﻋ ﻂﻐﺿﺍ .4
 
-                                                                          ---
+---ﺖﻴﺒﺜﺘﻟﺍ ءﺎﻐﻟﺇ ###
+:ﺔﻴﺿﺍﺮﺘﻓﻻ﻿ﺍ ﺕﺎﺌﻴﺒﻟﺍﻭ ﻲﺋﺎﻘﻠﺘﻟﺍ ﻞﻴﻐﺸﺘﻟﺍ ﺕﻻ﻿ﺎﺧﺩﺇﻭ SL5 Aura ﺔﻴﻔﻠﺨﻟﺍ ﺕﺎ
+- **Linux / macOS:** `bash setup/uninstall.sh`
+- **Windows (PowerShell):** `powershell -File setup/uninstall.ps1`
+*(Your custom rules in `config/maps/` are kept safe by default unless you specify `--purge`).*
 
-    ### الخيار ب: التثبيت اليدوي (المطورون / Git)
-
-           1. قم بتنزيل هذا المستودع أو استنساخه
-2. قم بتشغيل البرنامج النصي للإعداد لنظام التشغيل لديك (راجع مجلد "الإعداد/"):
-                   - Linux (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-                        - Linux (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
-                               - Linux (openSUSE): `bash setup/suse_setup.sh`
-- Linux (NixOS): `nix-shell setup/shell.nix` ثم `bash setup/nixos_setup.sh`.
-===> ⚠️ تجريبي — لم يتم اختباره من قبل المؤلفين، نرحب بالتعليقات! اكس سبيس بريك اكس
-                 - نظام التشغيل macOS: `bash setup/macos_setup.sh`
-                   - ويندوز: `setup/windows11_setup_with_ahk_copyq.bat`
-                 3. ابدأ Aura: `./scripts/restart_venv_and_run-server.sh`
-4. اضغط على مفتاح التشغيل السريع وتحدث — **[full guide →](../docs/GettingStarted.i18n/GettingStarted-arlang.md)**
-
-                                                                          ---
-
-                                                ### إلغاء التثبيت
-لإزالة خدمات الخلفية SL5 Aura وإدخالات التشغيل التلقائي والبيئات الافتراضية:
-                               - **Linux / macOS:** `bash setup/uninstall.sh`
-           - **Windows (PowerShell):** `powershell -File setup/uninstall.ps1`
-*(قواعدك المخصصة في `config/maps/` تظل آمنة بشكل افتراضي ما لم تحدد `--purge`).*
-
-                                                                          ---
+---
 
 
-                      **⚠️ متطلبات النظام والتوافق**
+                                   **ﻖﻓﺍﻮﺘﻟﺍﻭ ﻡﺎﻈﻨﻟﺍ ﺕﺎﺒﻠﻄﺘﻣ ⚠️**
 
-* **Windows:** ✅ مدعوم بالكامل (يستخدم AutoHotkey/PowerShell).
-       * **macOS:** ✅ مدعوم بالكامل (يستخدم AppleScript).
-                       * **Linux (X11/Xorg):** ✅ مدعوم بالكامل.
-* **Linux (Wayland):** ✅ مدعوم بالكامل (تم اختباره على KDE Plasma 6 / Wayland).
-* **Linux (إصدار متجدد قائم على CachyOS / Arch):** ✅ مدعوم بالكامل.
-يتطلب mimalloc (`sudo pacman -S mimalloc`) بسبب توافق glibc 2.43.
-* **Linux (NixOS):** 🧪 تجريبي — إعداد ساهم به المجتمع، ولم يتم اختباره بعد.
-إذا حاولت ذلك، يرجى فتح قضية أو العلاقات العامة مع النتائج التي توصلت إليها!  اكس سبيس بريك اكس
-* **Linux (Manjaro):** جديد: يفتح مفتاح التشغيل السريع على مستوى النظام واجهة تعتمد على لوحة المفاتيح تشبه fzf حتى تتمكن من تشغيل أوامر Aura من أي مكان على سطح المكتب (منفصلة تمامًا عن النافذة النشطة). يتم حاليًا تنفيذ واختبار هذا المشغل الذي يعتمد على مفتاح التشغيل السريع على Linux (Manjaro)؛ قد تعمل توزيعات أخرى ولكنها تتطلب الإعداد. انظر في 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-arlang.md) XSPACEbreakX
-
-
-                                              اكس سبيس بريك اكس
-SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل بالإنترنت** مبني على **Vosk** (لتحويل الكلام إلى نص) و**LanguageTool** (للقواعد النحوية/الأسلوب)، ويتميز بوظيفة احتياطية **Local LLM (Ollama) اختيارية** للاستجابات الإبداعية والمطابقة الغامضة المتقدمة. إنه يحول صوتك إلى إجراءات ونص دقيق، مصمم للتخصيص النهائي من خلال نظام قواعد قابل للتوصيل ومحرك برمجة نصية ديناميكي.
-                                              اكس سبيس بريك اكس
-الترجمات: هذا المستند موجود أيضًا في [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n).
+* **Windows:** ✅ (uses AutoHotkey/PowerShell) ﻞﻣﺎﻜﻟﺎﺑ ﻡﻮﻋﺪﻣ.
+* **macOS:** ✅ (uses AppleScript) ﻞﻣﺎﻜﻟﺎﺑ ﻡﻮﻋﺪﻣ.
+* **Linux (X11/Xorg):** ✅ ﻞﻣﺎﻜﻟﺎﺑ ﻡﻮﻋﺪﻣ.
+* **Linux (Wayland):** ✅ (tested on KDE Plasma 6 / Wayland) ﻞﻣﺎﻜﻟﺎﺑ ﻡﻮﻋﺪﻣ.
+* **Linux (CachyOS / Arch-based rolling release):** ✅ ﻞﻣﺎﻜﻟﺎﺑ ﻡﻮﻋﺪﻣ.
+           .glibc 2.43 ﻊﻣ ﻖﻓﺍﻮﺘﻟﺍ ﺐﺒﺴﺑ mimalloc (`sudo pacman -S mimalloc`) ﺐﻠﻄﺘﻳ
+* **Linux (NixOS):** 🧪 ﺪﻌﺑ ﻩﺭﺎﺒﺘﺧﺍ ﻢﺘﻳ ﻢﻟ ،ﻊﻤﺘﺠﻤﻟﺍ ﻪﺑ ﻢﻫﺎﺳ ﺩﺍ
+ﺲﻛﺍ ﻚﻳﺮﺑ ﺲﻴﺒﺳ ﺲﻛﺍ  !ﺎﻬﻴﻟﺇ ﺖﻠﺻﻮﺗ ﻲﺘﻟﺍ ﺞﺋﺎﺘﻨﻟﺍ ﻊﻣ ﺔﻣﺎﻌﻟﺍ ﺕﺎﻗﻼ﻿ﻌﻟﺍ ﻭ
+* **Linux (Manjaro):** ﻪﺒﺸﺗ ﺢﻴﺗﺎﻔﻤﻟﺍ ﺔﺣﻮﻟ ﻰﻠﻋ ﺪﻤﺘﻌﺗ ﺔﻬﺟﺍﻭ ﻡﺎﻈﻨ
 
 
-ملحوظة: العديد من النصوص عبارة عن ترجمات تم إنشاؤها آليًا للوثائق الإنجليزية الأصلية وهي مخصصة للإرشاد العام فقط. وفي حالة وجود تناقضات أو غموض، فإن النسخة الإنجليزية هي التي تسود دائمًا. نحن نرحب بالمساعدة من المجتمع لتحسين هذه الترجمة!
+                                               ﺲﻛﺍ ﻚﻳﺮﺑ ﺲﻴﺒﺳ ﺲﻛﺍ
+SL5 Aura ﻰﻠﻋ ﻲﻨﺒﻣ ،**ﺖﻧﺮﺘﻧﻹ﻿ﺎﺑ ﻞﺼﺘﻣ ﺮﻴﻏ** ،ﻞﻣﺎﻛ ﻲﺗﻮﺻ ﺪﻋﺎﺴﻣ ﻦﻋ ﺓﺭﺎ
+                                               ﺲﻛﺍ ﻚﻳﺮﺑ ﺲﻴﺒﺳ ﺲﻛﺍ
+                  .[other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n) ﻲﻓ ﺎﻀًﻳﺃ ﺩﻮﺟﻮﻣ ﺪﻨﺘﺴﻤﻟﺍ ﺍﺬﻫ :ﺕﺎﻤﺟﺮﺘﻟﺍ
 
-                                                          </التفاصيل>
 
-                                                           <التفاصيل>
-                                       <summary>عرض توضيحي</summary>
+!ﺔﻤﺟﺮﺘﻟﺍ ﻩﺬﻫ ﻦﻴﺴﺤﺘﻟ ﻊﻤﺘﺠﻤﻟﺍ ﻦﻣ ﺓﺪﻋﺎﺴﻤﻟﺎﺑ ﺐﺣﺮﻧ ﻦﺤﻧ .ﺎﻤًﺋﺍﺩ ﺩﻮﺴﺗ ﻲﺘ
 
-                            ### 📺 العرض التجريبي للمحطة
+</details>
+
+<details>
+<summary>Demo</summary>ﺔﻄﺤﻤﻠﻟ ﻲﺒﻳﺮﺠﺘﻟﺍ ﺽﺮﻌﻟﺍ 📺 ###
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **نصيحة:** للحصول على تجربة طرفية أفضل، راجع [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-arlang.md).
+       .[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-arlang.md) ﻊﺟﺍﺭ ،ﻞﻀﻓﺃ ﺔﻴﻓﺮﻃ ﺔﺑﺮﺠﺗ ﻰﻠﻋ ﻝﻮﺼﺤﻠﻟ **:ﺔﺤﻴﺼﻧ** <ﻲﻤﻴﻠﻌﺗ ﻮﻳﺪﻴﻓ 🎥 ###
+[![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
-                                             ### 🎥 فيديو تعليمي
-                     [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
+*(Alternative link: XMDLINK1X)*
 
-                                    *(الرابط البديل: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
+</details>
 
-                                                          </التفاصيل>
+<details>
+<summary> ﺔﻴﺴﻴﺋﺮﻟﺍ ﺕﺍﺰﻴﻤﻟﺍ </summary>ﺔﻴﺴﻴﺋﺮﻟﺍ ﺕﺍﺰﻴﻤﻟﺍ ##
 
-                                                           <التفاصيل>
-                           <summary>الميزات الرئيسية</summary>
+.ﻕﻼ﻿ﻃﻹ﻿ﺍ ﻰﻠﻋ ﻙﺯﺎﻬﺟ ﻙﺮﺘﺗ ﺕﺎﻧﺎﻴﺑ ﺪﺟﻮﺗ ﻻ﻿ .%100 ﻲﻠﺤﻣ **:ﺖﻧﺮﺘﻧﻹ﻿ﺎﺑ ﻞﺼﺘﻣ 
+.(e.g., a context-aware email greeting) ﻲﻜﻴﻣﺎﻨﻳﺩ ﻯﻮﺘﺤﻣ ءﺎﺸﻧﺇ ﻭﺃ (e.g., manage a to-do list) ﺕﺎﻔﻠﻤﻟﺍ ﻊﻣ ﻞﻋﺎﻔﺘﻟ
+.(Linux, Windows, macOS) ﺔﺼﻨﻣ ﺮﺒﻋ ﺍﺬﻫ ﻞﻤﻌﻳ .ﺎﻄًﺸﻧ (e.g., "Terminal", "VS Code" or "Browser") ﻦﻴﻌﻣ ﺓﺬﻓﺎﻧ ﻥﺍﻮﻨﻋ 
+.**ﺰﻴﻣﺮﺘﻟﺍ ﺲﻴﻟﻭ ،ﻦﻳﻮﻜﺘﻟﺍ** ﺐﻠﻄﺘﻳ ﺎﻤﻣ ،ﺔﻀﻣﺎﻐﻟﺍ ﻂﺋﺍﺮﺨﻟﺍ ﻲﻓ ﺪﻋﺍﻮﻘﻠﻟ
+.(like your PC games) ﻯﺮﺧﻷ﻿ﺍ ﺕﺎﻘﻴﺒﻄﺘﻠﻟ ﺎﻤًﺋﺍﺩ ﺔﻳﻮﻟﻭﻷ﻿ﺍ ﻦﻤﻀﻳ ﺎﻤﻣ ،ﺔﻴﻓﺎﻛ ﻲﺋﺍﻮﺸﻋ
+    .Windowsﻭ macOSﻭ Linux ﻰﻠﻋ ﻞﻤﻌﻳ **:ﻙﺮﺘﺸﻤﻟﺍ ﻲﺳﺎﺳﻷ﻿ﺍ ﻡﺎﻈﻨﻟﺍ** *
+.(but you can also use an external one) ﻪﺑ ﺹﺎﺨﻟﺍ LanguageTool ﻡﺩﺎﺧ ﺮﻳﺪﻳ ** :ﻞﻣﺎﻜﻟﺎﺑ ﺖﻤﺗﺆﻣ **
+.ﺔﻌﻳﺮﺴﻟﺍ ﺔﺠﻟﺎﻌﻤﻟﺍﻭ ﺔﻳﺭﻮﻔﻟﺍ "...ﻉﺎﻤﺘﺳﻻ﻿ﺍ" ﺕﺍﺭﺎﻌﺷﺇ ﻲﻛﺬﻟﺍ ﺖﻗﺆﻤﻟﺍ ﻦﻳﺰ
+ﺔﻬﺟﺍﻮﻠﻟ ﻙﺭﺪﻣ ﻦﻳﻮﻜﺗ ﻙﺮﺤﻣ **:Trino ﺮﺒﻋ ﺔﻴﻜﻴﻣﺎﻨﻳﺪﻟﺍ ﺔﻟﺎﺤﻟﺍ ﺓﺭﺍﺩﺇ** 
+ﻥﻭﺪﺑ ﺩﺍﺪﻋﻹ﻿ﺍ ﺮﻴﻴﻐﺘﺑ ﻢﻗ - "ﺐﻳﻮﻟﺍ"ﻭ "ﺔﻴﻓﺮﻄﻟﺍ ﺔﻄﺤﻤﻟﺍ"ﻭ "ﻡﻼ﻿ﻜﻟﺍ" ﺕﺍﺩﺍﺪ
+.ﻲﻠﻌﻔﻟﺍ ﺖﻗﻮﻟﺍ ﻲﻓ (port 8084) **ﻑﺮﺸﻤﻟﺍ ﻢﻜﺤﺗ ﺔﺣﻮﻟ** ﻦﻤﻀﺘﻳ .ﻦﻳﺮﺧﻵ﻿ﺍ ﻰ
+</details>
 
-                                           ## الميزات الرئيسية
+<details>
+<summary> 🔌 ﻡﺍﺪﺨﺘﺳﻼ﻿ﻟ ﺓﺰﻫﺎﺠﻟﺍ ﻞﻣﺎﻜﺘﻟﺍ ﺕﺎﻴﻠﻤﻋ</summary>
+                                               ﺲﻛﺍ ﻚﻳﺮﺑ ﺲﻴﺒﺳ ﺲﻛﺍﻡﺍﺪﺨﺘﺳﻼ﻿ﻟ ﺓﺰﻫﺎﺠﻟﺍ ﻞﻣﺎﻜﺘﻟﺍ ﺕﺎﻴﻠﻤﻋ 🔌 ##
 
-* **خاص وغير متصل بالإنترنت:** محلي 100%. لا توجد بيانات تترك جهازك على الإطلاق.
-* **محرك البرمجة الديناميكية:** تجاوز مجرد استبدال النص. يمكن للقواعد تنفيذ برامج Python النصية المخصصة (`on_match_exec`) لتنفيذ إجراءات متقدمة مثل استدعاء واجهات برمجة التطبيقات (على سبيل المثال، البحث في Wikipedia)، أو التفاعل مع الملفات (على سبيل المثال، إدارة قائمة المهام)، أو إنشاء محتوى ديناميكي (على سبيل المثال، تحية بريد إلكتروني تراعي السياق).
-* **قواعد مدركة للسياق:** تقييد القواعد على تطبيقات محددة. باستخدام `only_in_windows`، يمكنك التأكد من تشغيل القاعدة فقط إذا كان عنوان نافذة معين (على سبيل المثال، "Terminal" أو "VS Code" أو "Browser") نشطًا. يعمل هذا عبر الأنظمة الأساسية (Linux، Windows، macOS).
-* **محرك التحويل عالي التحكم:** ينفذ خط أنابيب معالجة يعتمد على التكوين وقابل للتخصيص بدرجة كبيرة. يتم تحديد أولوية القاعدة، واكتشاف الأوامر، وتحويلات النص بشكل كامل من خلال الترتيب التسلسلي للقواعد في الخرائط الغامضة، مما يتطلب **التكوين، وليس الترميز**.
-* **الاستخدام المحافظ لذاكرة الوصول العشوائي:** يدير الذاكرة بذكاء، ولا يتم تحميل النماذج مسبقًا إلا في حالة توفر ذاكرة وصول عشوائي كافية، مما يضمن دائمًا إعطاء الأولوية للتطبيقات الأخرى (مثل ألعاب الكمبيوتر الشخصي).
-* **النظام الأساسي المشترك:** يعمل على Linux وmacOS وWindows.
-* ** مؤتمت بالكامل: ** يدير خادم LanguageTool الخاص به (ولكن يمكنك أيضًا استخدام خادم خارجي).
-* **سرعة فائقة:** يضمن التخزين المؤقت الذكي إشعارات "الاستماع..." الفورية والمعالجة السريعة.
-* **إدارة الحالة الديناميكية عبر Trino:** محرك تكوين مدرك للواجهة
-يفصل بين إعدادات "الكلام" و"المحطة الطرفية" و"الويب" - قم بتغيير الإعداد بدون
-تؤثر على الآخرين. يتضمن **لوحة تحكم المشرف** في الوقت الفعلي (المنفذ 8084).
-                                                          </التفاصيل>
+:ﺓﺯﺭﺎﺒﻟﺍ ﻁﺎﻘﻨﻟﺍ ﺾﻌﺑ ﻲﻠﻳ ﺎﻤﻴﻓ .**ﺎﻘًﺒﺴﻣ ﻪﻨﻳﻮﻜﺗ ﻢﺗ ﻲﻓﺎﺿﺇ ﻥﻮﻜﻣ +100*OculiX / SikuliX IDE ﻲﻓ ﻲﺗﻮﺼﻟﺍ ﻢﻜﺤﺘﻟﺍ ###
+.ﻚﺑ ﺹﺎﺨﻟﺍ ﺔﺘﻤﺗﻷ﻿ﺍ ﺰﻣﺮﺑ "ﺙﺪﺤﺘﻟﺍ" ﻞﻣﺎﻜﺘﻟﺍ ﺍﺬﻫ ﻚﻟ ﺢﻴﺘﻳ .**SikuliX ID
 
-                                                           <التفاصيل>
-<summary> 🔌 عمليات التكامل الجاهزة للاستخدام</summary>
-                                              اكس سبيس بريك اكس
-        ## 🔌 عمليات التكامل الجاهزة للاستخدام
+.IDE ﻲﻓ (`(e.g., `click("image.png") ﺢﻴﺤﺼﻟﺍ Python ﺰﻣﺭ ﺔﺑﺎﺘﻜﺑ ﺭﻮﻔﻟﺍ ﻰﻠﻋ ﺔﻣﺪﺨﻟﺍ ﻡ
+* **Window-Aware:** ﺓﺬﻓﺎﻧ ﻰﻠﻋ ﺰﻴﻛﺮﺘﻟﺍ ﺪﻨﻋ ﻂﻘﻓ ﻪﻄﻴﺸﻨﺗ ﻢﺘﻳ ؛ﻕﺎﻴﺴﻠﻟ
+.ﻲﻤﻟﺎﻌﻟﺍ ﻊﻤﺘﺠﻤﻠﻟ ﺔﻴﻟﺎﻌﻟﺍ ﻑﺮﻌﺘﻟﺍ ﺔﻗﺩ ﻦﻤﻀﻳ ﺎﻤﻣ ،(e.g., German-English phonetics) ﺔﻴﻠﺻﻷ﻿ﺍ 
+.ﺮﻳﺮﺤﺘﻟﺍ ﻞﻬﺳ `FUZZY_MAP_pre.py` ﻖﻴﺴﻨﺗ ﻡﺪﺨﺘﺴﻳ **:ﻊﻴﺳﻮﺘﻠﻟ ﻞﺑﺎﻗ** *
 
-يأتي SL5-Aura مزودًا بنظام بيئي واسع يضم أكثر من **100+ مكون إضافي تم تكوينه مسبقًا**. فيما يلي بعض النقاط البارزة:
+.OculiX (see XMDLINK0X) ﻖﻳﺮﻓ ﺔﻄﺳﺍﻮﺑ ﻊﻤﺘﺠﻤﻠﻟ ﻲﻓﺎﺿﺇ ﻥﻮﻜﻤﻛ ﻪﺑ ﻑﺍﺮﺘﻋﻻ﻿ﺍ ﻢﺗLibreOffice IDE ﻲﺗﻮﺼﻟﺍ ﻢﻜﺤﺘﻟﺍ ###ﻲﺗﻮﺼﻟﺍ ﻢﻜﺤﺘﻟﺍ ﻡ 0 ###
 
-                      ### التحكم الصوتي في OculiX / SikuliX IDE
-يوفر SL5-Aura دعمًا صوتيًا من الدرجة الأولى لـ **OculiX** و **SikuliX IDE**. يتيح لك هذا التكامل "التحدث" برمز الأتمتة الخاص بك.
+---
 
-* **صوت إلى مقتطف:** قل "انقر" أو "انتظر" أو "ابحث عن الكل"، وستقوم الخدمة على الفور بكتابة رمز Python الصحيح (على سبيل المثال، `click("image.png")`) في IDE.
-* **Window-Aware:** المكون الإضافي حساس للسياق؛ يتم تنشيطه فقط عند التركيز على نافذة OculiX/SikuliX.
-* **دعم اللغة الإنجليزية الذكية:** مُحسَّن للعمل في "en-US" مع التركيز بشكل خاص على اللهجات غير الأصلية (مثل الصوتيات الألمانية-الإنجليزية)، مما يضمن دقة التعرف العالية للمجتمع العالمي.
-* **قابل للتوسيع:** يستخدم تنسيق `FUZZY_MAP_pre.py` سهل التحرير.
-
-> **الحالة:** تم الاعتراف به كمكون إضافي للمجتمع بواسطة فريق OculiX (راجع [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
-
-                                ### التحكم الصوتي LibreOffice IDE
-
-                                           ### 0 م التحكم الصوتي
-
-                                                                          ---
-
-                                                          </التفاصيل>
+</details>
 
 
-                                                           <التفاصيل>
-                                            <summary>التوثيق</summary>
+<details>
+<summary>ﻖﺋﺎﺛﻮﻟﺍ</summary>
 
-                                                               🔍[Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+🔍[Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)ﻖﻴﺛﻮﺘﻟﺍ ##
 
-                                                            ## التوثيق
+.ﺎﻤًﺋﺍﺩ ﻪﺜﻳﺪﺤﺗ ﻢﺘﻳﻭ ﺎﻴًﺋﺎﻘﻠﺗ ﻩﺅﺎﺸﻧﺇ ﻢﺘﻳ .ﺎﻨﻳﺪﻟ ﺔﻴﻤﺳﺮﻟﺍ ﻖﺋﺎﺛﻮﻟﺍ ﺔﺤﻔ
 
-للحصول على مرجع فني كامل، بما في ذلك جميع الوحدات والبرامج النصية، يرجى زيارة صفحة الوثائق الرسمية لدينا. يتم إنشاؤه تلقائيًا ويتم تحديثه دائمًا.
-
-                                                               👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
-
-                                                  ### ميزة الأضواء
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-arlang.md) - البحث عن القواعد `fzf` ثنائي الجزء، ومعاينات السياق المباشرة، والتنفيذ الفوري للأوامر عبر `Enter`/`Ctrl+R`، وتكامل المحرر عبر `Ctrl+E`. مدعوم بمفتاح تشغيل سريع عالمي (`Super+S`) وبيئات بحث مخصصة متعددة تم تكوينها مسبقًا عبر الأوامر الصوتية.
-
-                                                    ### حالة البناء
+👉[**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)ءﺍﻮﺿﻷ﻿ﺍ ﺓﺰﻴﻣ ###
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-arlang.md) — ﺪﻋﺍﻮﻗ ﻦﻋ ﻲﺋﺎﻨﺛ ﺚﺤﺑ `fzf`، ﺮﺒﻋ ﺮﻣﺍﻭﻸ﻿ﻟ ﻱﺭﻮﻓ ﺬﻴﻔﻨﺗﻭ ،ءﺎﻨﺒﻟﺍ ﺔﻟﺎﺣ ###
 
 [![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
@@ -170,50 +143,43 @@ SL5 Aura عبارة عن مساعد صوتي متكامل **غير متصل با
 [![macOS](https://github.com/sl5net/SL5-aura-service/actions/workflows/mac_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/macos_setup.yml)
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/win11_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
-                            [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
-                                              <div محاذاة = "يسار">
-             <a href="https://github.com/sl5net/SL5-aura-service/stargazers">
+[![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
+<div align="left">
+<a href="https://github.com/sl5net/SL5-aura-service/stargazers">
 <img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
-                                                                        </أ>
+</a>
 <img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="License">
-                        <a href="https://sl5net.github.io/SL5-aura-service/">
+<a href="https://sl5net.github.io/SL5-aura-service/">
 <img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Documentation">
-                                                                        </أ>
-                                                                       </div>
+</a>
+</div>
 
-                                                          </التفاصيل>
+</details>
 
-                                👉 **اقرأ هذا بلغات أخرى:**
+                                      **:ﻯﺮﺧﺃ ﺕﺎﻐﻠﺑ ﺍﺬﻫ ﺃﺮﻗﺍ** 👉
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-arlang.md) | [🇪🇸 Español](../README.i18n/README-eslang-arlang.md) | [🇫🇷 Français](../README.i18n/README-frlang-arlang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-arlang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-arlang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-arlang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-arlang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-arlang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-arlang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-arlang.md)
+[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-arlang.md) | [🇪🇸 Español](../README.i18n/README-eslang-arlang.md) | [🇫🇷 Français](../README.i18n/README-frlang-arlang.md) | XMD
 
-                                                                          ---
+---
 
-                                                           <التفاصيل>
-                                            <summary>التثبيت</summary>
+<details>
+<summary>ﺖﻴﺒﺜﺘﻟﺍ</summary>ﺖﻴﺒﺜﺗ ##(Manjaro/Arch Video) ﻝﺍﺪﺘﻋﺍ ﻥﻭﺩ ﻊﻳﺮﺴﻟﺍ ﺖﻴﺒﺜﺘﻟﺍ 🎥 ###
+                  :ﻖﺋﺎﻗﺩ 6 ﻕﺮﻐﺘﺴﺗ ﻲﺘﻟﺍ ﺔﻠﻣﺎﻜﻟﺍ ﺩﺍﺪﻋﻹ﻿ﺍ ﺔﻴﻠﻤﻋ ﺪﻫﺎﺷ
+                                         ﻖﺋﺎﻗﺩ 3~ **:ﻞﻴﻤﺤﺘﻟﺍ** *
+                   (including Welcome Wizard) ﻖﺋﺎﻗﺩ 3~ **:ﻝﻭﻷ﻿ﺍ ءﺪﺒﻟﺍﻭ ﺩﺍﺪﻋﻹ﻿ﺍ** *
 
-                                                                ## تثبيت
-
-### 🎥 التثبيت السريع دون اعتدال (Manjaro/Arch Video)
-شاهد عملية الإعداد الكاملة التي تستغرق 6 دقائق:
-                                          * **التحميل:** ~3 دقائق
-* **الإعداد والبدء الأول:** ~3 دقائق (بما في ذلك معالج الترحيب)
-
-                                                          👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
+👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
 
 
-                            الإعداد هو عملية من خطوتين:
-1. قم بتنزيل الإصدار الأخير أو الإصدار الرئيسي ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) أو انسخ هذا المستودع على جهاز الكمبيوتر الخاص بك.
-2. قم بتشغيل البرنامج النصي للإعداد لمرة واحدة لنظام التشغيل الخاص بك.
+                                      :ﻦﻴﺗﻮﻄﺧ ﻦﻣ ﺔﻴﻠﻤﻋ ﻮﻫ ﺩﺍﺪﻋﻹ﻿ﺍ
+.ﻚﺑ ﺹﺎﺨﻟﺍ ﺮﺗﻮﻴﺒﻤﻜﻟﺍ ﺯﺎﻬﺟ ﻰﻠﻋ ﻉﺩﻮﺘﺴﻤﻟﺍ ﺍﺬﻫ ﺥﺎﺴﻨﺘﺳﺎﺑ ﻢﻗ ﻭﺃ XHTMLTA
+.ﻚﺑ ﺹﺎﺨﻟﺍ ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻨﻟ ﺓﺪﺣﺍﻭ ﺓﺮﻤﻟ ﺩﺍﺪﻋﻺ﻿ﻟ ﻲﺼﻨﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﻞﻴﻐﺸﺘﺑ 
 
-تتعامل نصوص الإعداد مع كل شيء: تبعيات النظام، وبيئة Python، وتنزيل النماذج والأدوات الضرورية (حوالي 4 جيجابايت) مباشرةً من إصدارات GitHub الخاصة بنا لتحقيق أقصى سرعة.
+.ﺔﻋﺮﺳ ﻰﺼﻗﺃ ﻖﻴﻘﺤﺘﻟ ﺎﻨﺑ ﺔﺻﺎﺨﻟﺍ GitHub ﺕﺍﺭﺍﺪﺻﺇ ﻦﻣ ﺓﺮﺷﺎﺒﻣ (~4GB)Windows (with Optional Language Exclusion)ﻭ macOSﻭ Linux ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻨﻟ ####
 
+**.(LanguageTool, lid.176) ﺔﻴﺳﺎﺳﻷ﻿ﺍ ﺕﺎﻧﻮﻜﻤﻟﺍ ﻦﻴﻤﻀﺗ ﺎﻤًﺋﺍﺩ ﻢﺘﻳ** .ﺩﺍﺪﻋﻹ﻿ﺍ ءﺎﻨﺛﺃ X
 
-#### لنظام التشغيل Linux وmacOS وWindows (مع استثناء اللغة الاختياري)
-
-لتوفير مساحة القرص وعرض النطاق الترددي، يمكنك استبعاد نماذج لغة محددة (`de`، `en`) أو كافة النماذج الاختيارية (`all`) أثناء الإعداد. **يتم تضمين المكونات الأساسية (LanguageTool, Lid.176) دائمًا.**
-
-افتح محطة طرفية في الدليل الجذر للمشروع وقم بتشغيل البرنامج النصي لنظامك:
+:ﻚﻣﺎﻈﻨﻟ ﻲﺼﻨﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﻞﻴﻐﺸﺘﺑ ﻢﻗﻭ ﻉﻭﺮﺸﻤﻠﻟ ﺭﺬﺠﻟﺍ ﻞﻴﻟﺪﻟﺍ ﻲﻓ ﺔﻴﻓﺮﻃ 
 
 ```bash
 # For Ubuntu/Debian, Manjaro/Arch, macOS, or other derivatives
@@ -224,56 +190,52 @@ bash setup/{your-os}_setup.sh [OPTION]
 # For Arch-based systems (Manjaro, CachyOS, EndeavourOS, etc.):
 `bash setup/manjaro_arch_setup.sh`
 
-`sudo pacman -S mimalloc`
+```sudo pacman -S mimalloc```
 
 
-# Examples:
-# Install everything (Default):
-# bash setup/manjaro_arch_setup.sh
+                                                         :ﺔﻠﺜﻣﺃ#
+                                      :(Default) ءﻲﺷ ﻞﻛ ﺖﻴﺒﺜﺗ #
+                               manjaro_arch_setup.sh/ﺵﺎﺑ ﺩﺍﺪﻋﺇ #
 
-# Exclude German models:
+                                     :ﺔﻴﻧﺎﻤﻟﻷ﻿ﺍ ﺝﺫﺎﻤﻨﻟﺍ ﺩﺎﻌﺒﺘﺳﺍ #
 # bash setup/manjaro_arch_setup.sh exclude=de
 
-# Exclude all VOSK language models:
+                                  :VOSK ﺔﻐﻟ ﺝﺫﺎﻤﻧ ﻊﻴﻤﺟ ﺩﺎﻌﺒﺘﺳﺍ #
 # bash setup/manjaro_arch_setup.sh exclude=all
 
-# For Windows in an Admin-Powershell session
+                Admin-Powershell ﺔﺴﻠﺟ ﻲﻓ Windows ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻨﻟ #
 
-setup/windows11_setup.ps1 -Exclude [OPTION]
+setup/windows11_setup.ps1 -[ﺭﺎﻴﺧ] ﺩﺎﻌﺒﺘﺳﺍ
 
-# Examples:
-# Install everything (Default):
-# setup/windows11_setup.ps1
+                                                         :ﺔﻠﺜﻣﺃ#
+                                      :(Default) ءﻲﺷ ﻞﻛ ﺖﻴﺒﺜﺗ #
+                                     windows11_setup.ps1/ﺩﺍﺪﻋﻹ﻿ﺍ#
 
-# Exclude English models:
-# setup/windows11_setup.ps1 -Exclude "en"
+                                    :ﺔﻳﺰﻴﻠﺠﻧﻹ﻿ﺍ ﺝﺫﺎﻤﻨﻟﺍ ﺩﺎﻌﺒﺘﺳﺍ #
+# setup/windows11_setup.ps1 -ﺩﺎﻌﺒﺘﺳﺍ "en"
 
-# Exclude German and English models:
-# setup/windows11_setup.ps1 -Exclude "de,en"
+                          :ﺔﻳﺰﻴﻠﺠﻧﻹ﻿ﺍﻭ ﺔﻴﻧﺎﻤﻟﻷ﻿ﺍ ﺝﺫﺎﻤﻨﻟﺍ ﺩﺎﻌﺒﺘﺳﺍ #
+# setup/windows11_setup.ps1 -ﺩﺎﻌﺒﺘﺳﺍ "de,en"
 
-# Or (recommend) - Run the BAT file: 
-windows11_setup.bat -Exclude "en"
-```
+                            :BAT ﻒﻠﻣ ﻞﻴﻐﺸﺘﺑ ﻢﻗ - (recommend) ﻭﺃ #
+windows11_setup.bat -ﺩﺎﻌﺒﺘﺳﺍ "en"
+__CODE_BLOCK_1__Windows ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻨﻟ ####
+              .ﻝﻭﺆﺴﻤﻟﺍ ﺕﺍﺯﺎﻴﺘﻣﺎﺑ ﺩﺍﺪﻋﻺ﻿ﻟ ﻲﺼﻨﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﻞﻴﻐﺸﺘﺑ ﻢﻗ
 
-                                       #### لنظام التشغيل Windows
-قم بتشغيل البرنامج النصي للإعداد بامتيازات المسؤول.
+.ﺺﻨﻟﺍ ﺔﺑﺎﺘﻛ ﺐﻗﺍﺮﻤﻟ ﺏﻮﻠﻄﻣ ﺍﺬﻫﻭ .**[AutoHotkey v2](https://www.autohotkey.com/) ﻭﺃ [CopyQ](https://github.com/hluk/CopyQ) ،ﻝﺎﺜﻤﻟﺍ 
 
-**قم بتثبيت أداة للقراءة والتشغيل، على سبيل المثال، [CopyQ](https://github.com/hluk/CopyQ) أو [AutoHotkey v2](https://www.autohotkey.com/)**. وهذا مطلوب لمراقب كتابة النص.
+.ﺪﻳﺪﺟ ﻡﺎﻈﻧ ﻰﻠﻋ ﻦﻴﺟﺫﻮﻤﻧ ﻡﺍﺪﺨﺘﺳﺍ ﺪﻨﻋ **ﻖﺋﺎﻗﺩ 10-8** ﻲﻟﺍﻮﺣ ﻕﺮﻐﺘﺴﻳﻭ 
 
-يتم التثبيت تلقائيًا بالكامل ويستغرق حوالي **8-10 دقائق** عند استخدام نموذجين على نظام جديد.
+                                     ."ﺩﺍﺪﻋﻹ﻿ﺍ" ﺪﻠﺠﻣ ﻰﻟﺇ ﻞﻘﺘﻧﺍ .1
+.**`windows11_setup_with_ahk_copyq.bat`** ﻕﻮﻓ ﺎﺟًﻭﺩﺰﻣ ﺍﺮًﻘﻧ ﺮﻘﻧﺍ .
+            *.ﻝﻭﺆﺴﻤﻟﺍ ﺕﺍﺯﺎﻴﺘﻣﺎﺑ ﺎﻴًﺋﺎﻘﻠﺗ ﻲﺼﻨﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﺐﻟﺎﻄﻴﺳ* *
+*.**CopyQ**ﻭ ،**AutoHotkey v2**ﻭ ،ﺔﻐﻠﻟﺍ ﺝﺫﺎﻤﻧﻭ ،ﻲﺳﺎﺳﻷ﻿ﺍ ﻡﺎﻈﻨﻟﺍ ﺖﻴ
+ .ﺎﻴًﺋﺎﻘﻠﺗ **Aura Dictation** ﻞﻴﻐﺸﺗ ﻢﺘﻴﺳ ،ﺖﻴﺒﺜﺘﻟﺍ ﻝﺎﻤﺘﻛﺍ ﺩﺮﺠﻤﺑ .3
 
-                              1. انتقل إلى مجلد "الإعداد".
-2. انقر نقرًا مزدوجًا فوق **`windows11_setup_with_ahk_copyq.bat`**.
-* *سيطالب البرنامج النصي تلقائيًا بامتيازات المسؤول.*
-* *يقوم بتثبيت النظام الأساسي، ونماذج اللغة، و**AutoHotkey v2**، و**CopyQ**.*
-3. بمجرد اكتمال التثبيت، سيتم تشغيل **Aura Dictation** تلقائيًا.
+.ءﻲﺷ ﻞﻛ ﻊﻣ ﻞﻣﺎﻌﺘﻳ ﻲﺼﻨﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ؛ﺎﻘًﺒﺴﻣ Git ﻭﺃ Python ﺖﻴﺒﺜﺗ ﻰﻟﺇ 
 
-> **ملاحظة:** لا تحتاج إلى تثبيت Python أو Git مسبقًا؛ البرنامج النصي يتعامل مع كل شيء.
-
-                                                                          ---
-
-                            #### التثبيت المتقدم / المخصص
-إذا كنت تفضل عدم تثبيت أدوات العميل (AHK/CopyQ) أو تريد توفير مساحة القرص عن طريق استبعاد لغات معينة، فيمكنك تشغيل البرنامج النصي الأساسي عبر سطر الأوامر:
+---ﺺﺼﺨﻤﻟﺍ / ﻡﺪﻘﺘﻤﻟﺍ ﺖﻴﺒﺜﺘﻟﺍ ####
+:ﺮﻣﺍﻭﻷ﻿ﺍ ﺮﻄﺳ ﺮﺒﻋ ﻲﺳﺎﺳﻷ﻿ﺍ ﻲﺼﻨﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﻞﻴﻐﺸﺗ ﻚﻨﻜﻤﻴﻓ ،ﺔﻨﻴﻌﻣ ﺕﺎﻐﻟ ﺩ
 
 ```powershell
 # Core Setup only (No AHK, No CopyQ)
@@ -287,43 +249,31 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "en"
 setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
 
-                                                                          ---
-                                                          </التفاصيل>
+---
+</details>
 
 
-                                                           <التفاصيل>
-                                        <summary>الاستخدام</summary>
-
-                                                        ## الاستخدام
-
-                                               ### 1. ابدأ الخدمات
-
-                                                    #### على Linux وmacOS
-نص واحد يعالج كل شيء. يبدأ خدمة الإملاء الرئيسية ومراقب الملفات تلقائيًا في الخلفية.
+<details>
+<summary>ﻡﺍﺪﺨﺘﺳﻻ﻿ﺍ</summary>ﻡﺍﺪﺨﺘﺳﻻ﻿ﺍ ##ﺕﺎﻣﺪﺨﻟﺍ ﺃﺪﺑﺍ .1 ###macOSﻭ Linux ﻰﻠﻋ ####
+.ﺔﻴﻔﻠﺨﻟﺍ ﻲﻓ ﺎﻴًﺋﺎﻘﻠﺗ ﺕﺎﻔﻠﻤﻟﺍ ﺐﻗﺍﺮﻣﻭ ﺔﻴﺴﻴﺋﺮﻟﺍ ءﻼ﻿ﻣﻹ﻿ﺍ ﺔﻣﺪﺧ ﺃﺪﺒﻳ .ءﻲﺷ
 ```bash
 # Run this from the project's root directory
 ./scripts/restart_venv_and_run-server.sh
-```
+```Windows ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻧ ﻰﻠﻋ ####
+             :**ﻦﻴﺗﻮﻄﺧ ﻦﻣ ﺔﻧﻮﻜﻣ ﺔﻳﻭﺪﻳ ﺔﻴﻠﻤﻋ** ﺮﺒﻋ ﺔﻣﺪﺨﻟﺍ ءﺪﺑ ﻢﺘﻳ
 
-                                  #### على نظام التشغيل Windows
-يتم بدء الخدمة عبر **عملية يدوية مكونة من خطوتين**:
+python3 ﻡﺍﺪﺨﺘﺳﺎﺑ ﺔﻣﺪﺨﻟﺍ venv. ﻦﻣ ﺃﺪﺑﺍ ﻭﺃ .`start_aura.bat` ﻞﻴﻐﺸﺘﻚﺑ ﺹﺎﺨﻟﺍ ﻊﻳﺮﺴﻟﺍ ﻞﻴﻐﺸﺘﻟﺍ ﺡﺎﺘﻔﻣ ﻦﻳﻮﻜﺘﺑ ﻢﻗ .2 ###
 
-1. ** ابدأ الخدمة الرئيسية: ** قم بتشغيل `start_aura.bat`. أو ابدأ من .venv الخدمة باستخدام python3
+.[CopyQ](https://github.com/hluk/CopyQ) ﺔﻴﺳﺎﺳﻷ﻿ﺍ ﺔﻤﻈﻧﻷ﻿ﺍ ﻦﻴﺑ ﺔﻛﺮﺘﺸﻤﻟﺍ ﺓﺍﺩﻷ﻿ﺍ ﻡﺍﺪﺨﺘﺳﺎﺑ ﺓﺪﺸﺑ ﻲﺻﻮﻧCopyQ :ﺎﻨﺘﻴﺻﻮﺗ ####
 
-### 2. قم بتكوين مفتاح التشغيل السريع الخاص بك
+                .ﻡﺎﻋ ﺭﺎﺼﺘﺧﺍ ﻡﺍﺪﺨﺘﺳﺎﺑ CopyQ ﻲﻓ ﺪﻳﺪﺟ ﺮﻣﺃ ءﺎﺸﻧﺈﺑ ﻢﻗ
 
-لتشغيل الإملاء، تحتاج إلى مفتاح تشغيل سريع عالمي يقوم بإنشاء ملف محدد. نوصي بشدة باستخدام الأداة المشتركة بين الأنظمة الأساسية [CopyQ](https://github.com/hluk/CopyQ).
-
-                                                   #### توصيتنا: CopyQ
-
-قم بإنشاء أمر جديد في CopyQ باستخدام اختصار عام.
-
-                    **الأوامر لنظام التشغيل Linux/macOS:**
+                           **:Linux/macOS ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻨﻟ ﺮﻣﺍﻭﻷ﻿ﺍ**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-**أمر لنظام التشغيل Windows عند استخدام [CopyQ](https://github.com/hluk/CopyQ):**
+            **:[CopyQ](https://github.com/hluk/CopyQ) ﻡﺍﺪﺨﺘﺳﺍ ﺪﻨﻋ Windows ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻨﻟ ﺮﻣﺃ**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -342,7 +292,7 @@ if (f.openAppend()) {
 ```
 
 
-**أمر لنظام التشغيل Windows عند استخدام [AutoHotkey](https://AutoHotkey.com):**
+            **:[AutoHotkey](https://AutoHotkey.com) ﻡﺍﺪﺨﺘﺳﺍ ﺪﻨﻋ Windows ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻨﻟ ﺮﻣﺃ**
 ```sh
 ; trigger-hotkeys.ahk
 ; AutoHotkey v2 Skript
@@ -361,251 +311,212 @@ f11::
     ToolTip("Aura Trigger ausgelöst!")
     SetTimer(() => ToolTip(), -1500)
 }
-```
+```!ءﻼ﻿ﻣﻹ﻿ﺍ ﺃﺪﺑﺍ .3 ###
+.ﻚﻟ ﺢﺤﺼﻤﻟﺍ ﺺﻨﻟﺍ ﺔﺑﺎﺘﻛ ﻢﺘﻴﺳ .ﻒﻗﻮﺗ ﻢﺛ ،ﺡﻮﺿﻮﺑ ﺙﺪﺤﺗ ."...ﻉﺎﻤﺘﺳﻻ﻿ﺍ" ﺭﺎ
+
+</details>
+
+---
 
 
-                                              ### 3. ابدأ الإملاء!
-انقر فوق أي حقل نصي، واضغط على مفتاح التشغيل السريع، وسيظهر إشعار "الاستماع...". تحدث بوضوح، ثم توقف. سيتم كتابة النص المصحح لك.
+<details>
+<summary>ﻡﺪﻘﺘﻤﻟﺍ ﻦﻳﻮﻜﺘﻟﺍ (Optional)</summary>(Optional) ﻡﺪﻘﺘﻤﻟﺍ ﻦﻳﻮﻜﺘﻟﺍ ##
 
-                                                          </التفاصيل>
+        .ﻲﻠﺤﻣ ﺕﺍﺩﺍﺪﻋﺇ ﻒﻠﻣ ءﺎﺸﻧﺇ ﻖﻳﺮﻃ ﻦﻋ ﻖﻴﺒﻄﺘﻟﺍ ﻙﻮﻠﺳ ﺺﻴﺼﺨﺗ ﻚﻨﻜﻤﻳ
 
-                                                                          ---
+                                  .`/config` ﻞﻴﻟﺪﻟﺍ ﻰﻟﺇ ﻞﻘﺘﻧﺍ .1
+.`config/settings_local.py` ﻰﻟﺇ ﺎﻬﺘﻴﻤﺴﺗ ﺪﻋﺃﻭ `config/settings_lo
+             .config/settings_local.py` (it overrides any setting from the main `config/settings.py` file)` ﺮﻳﺮﺤﺘﺑ ﻢﻗ .3
 
+.ﺕﺎﺜﻳﺪﺤﺘﻟﺎﺑ ﺔﻴﺼﺨﺸﻟﺍ ﻚﺗﺍﺮﻴﻴﻐﺗ ﻝﺍﺪﺒﺘﺳﺍ ﻢﺘﻳ ﻦﻟ ﻚﻟﺬﻟ ،ﺎﻴًﺿﺍﺮﺘﻓﺍ Git ﺔﻪﻘﻄﻨﻣﻭ ﻲﻓﺎﺿﻹ﻿ﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ ﺔﻴﻨﺑ ###
 
-                                                           <التفاصيل>
-            <summary>التكوين المتقدم (اختياري)</summary>
+             ./plugins ﻞﻴﻟﺪﻟﺍ ﺮﺒﻋ ﺎﻳًﻮﻗ ﺍﺩًﺍﺪﺘﻣﺍ ﻡﺎﻈﻨﻟﺍ ﺔﻴﻄﻤﻧ ﺢﻴﺘﺗ
 
-                            ## التكوين المتقدم (اختياري)
+    :**ﺔﻴﻣﺮﻬﻟﺍ ﺕﺎﻳﻮﻟﻭﻷ﻿ﺍ ﺔﻠﺴﻠﺳ** ـﺑ ﻡﺭﺎﺻ ﻞﻜﺸﺑ ﺔﺠﻟﺎﻌﻤﻟﺍ ﻙﺮﺤﻣ ﻡﺰﺘﻠﻳ
 
-يمكنك تخصيص سلوك التطبيق عن طريق إنشاء ملف إعدادات محلي.
+.(which load last alphabetically) /ﻲﻓﺎﺿﻹ﻿ﺍ ﻞﻴﻟﺪﻟﺍ ﻦﻣ ﺔﻠﻤﺤﻤﻟﺍ ﺪﻋﺍﻮﻘﻟﺍ ﻰﻠﻋ ﺔﻳﻮﻟﻭﻷ﻿ﺍ ﺎﻬﻟ XH
+                                               ﺲﻛﺍ ﻚﻳﺮﺑ ﺲﻴﺒﺳ ﺲﻛﺍ
+.(top-to-bottom) **ﺮﻄﺴﻟﺍ ﻢﻗﺭ** ﺔﻄﺳﺍﻮﺑ ﺔﻗﺪﺑ ﺪﻋﺍﻮﻘﻟﺍ ﺔﺠﻟﺎﻌﻣ ﻢﺘﺗ ،XHTMLT
+                                               ﺲﻛﺍ ﻚﻳﺮﺑ ﺲﻴﺒﺳ ﺲﻛﺍ
 
-                                 1. انتقل إلى الدليل `config/`.
-2. قم بإنشاء نسخة من `config/settings_local.py_Example.txt` وأعد تسميتها إلى `config/settings_local.py`.
-3. قم بتحرير `config/settings_local.py` (يتجاوز أي إعداد من ملف `config/settings.py` الرئيسي).
+.ﺔﻴﻓﺎﺿﻹ﻿ﺍ ﺕﺎﻧﻮﻜﻤﻟﺍ ﺮﺒﻋ ﺔﻀﻔﺨﻨﻣ ﺔﻳﻮﻟﻭﺃ ﺕﺍﺫ ﺕﺍﺩﺍﺪﺘﻣﺎﻛ ﺔﻟﻮﻬﺴﺑ XHTMLTA
 
-يتم تجاهل هذا الملف `config/settings_local.py` بواسطة Git افتراضيًا، لذلك لن يتم استبدال تغييراتك الشخصية بالتحديثات.
+</details>
 
-                    ### بنية البرنامج الإضافي ومنطقه
+<details>
+        Windows</summary> ﻲﻣﺪﺨﺘﺴﻤﻟ <summary>Key ﺔﻴﺼﻨﻟﺍ ﺞﻣﺍﺮﺒﻟﺍWindows ﻲﻣﺪﺨﺘﺴﻤﻟ ﺔﻴﺳﺎﺳﻷ﻿ﺍ ﺔﻴﺼﻨﻟﺍ ﺞﻣﺍﺮﺒﻟﺍ ##
 
-تتيح نمطية النظام امتدادًا قويًا عبر الدليل plugins/.
+.Windows ﻡﺎﻈﻧ ﻰﻠﻋ ﻪﻠﻴﻐﺸﺗﻭ ﻪﺜﻳﺪﺤﺗﻭ ﻖﻴﺒﻄﺘﻟﺍ ﺩﺍﺪﻋﻹ﻿ ﺔﻴﺼﻨﻟﺍ ﺞﻣﺍﺮﺒﻟﺍ ﻢﺚﻳﺪﺤﺘﻟﺍﻭ ﺩﺍﺪﻋﻹ﻿ﺍ ###
 
-يلتزم محرك المعالجة بشكل صارم بـ **سلسلة الأولويات الهرمية**:
+* `chmod +x update.sh; ./update.sh`
+* `setup/setup.bat`: ﻂﻘﻓ ﺓﺪﺣﺍﻭ ﺓﺮﻤﻟ ﺔﺌﻴﺒﻠﻟ ﻲﻟﻭﻷ﻿ﺍ ﺩﺍﺪﻋﻺ﻿ﻟ ﻲﺴﻴﺋﺮﻟﺍ 
+* [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `ﻞﻴﻐﺸﺗ powershell -Command "Set-ExecutionPolicy -Exe
 
-1. **ترتيب تحميل الوحدة (أولوية عالية):** القواعد المحملة من حزم اللغات الأساسية (de-DE، en-US) لها الأولوية على القواعد المحملة من الدليل plugins/ (الذي يتم تحميله أخيرًا أبجديًا).
-                                              اكس سبيس بريك اكس
-2. **الترتيب داخل الملف (أولوية صغيرة):** داخل أي ملف خريطة محدد (FUZZY_MAP_pre.py)، تتم معالجة القواعد بدقة بواسطة **رقم السطر** (من الأعلى إلى الأسفل).
-                                              اكس سبيس بريك اكس
+* `update.bat`: ﺕﺎﻴﻌﺒﺘﻟﺍﻭ ﺔﻴﺠﻣﺮﺒﻟﺍ ﺕﺎﻤﻴﻠﻌﺘﻟﺍ ﺙﺪﺣﺃ ﻰﻠﻋ ﻝﻮﺼﺤﻟﺍ** ﻰﻖﻴﺒﻄﺘﻟﺍ ﻞﻴﻐﺸﺗ ###
+* `start_aura.bat`: ءﻼ﻿ﻣﻹ﻿ﺍ ﺔﻣﺪﺧ ءﺪﺒﻟ** ﻲﺳﺎﺳﺃ ﻲﺼﻧ ﺞﻣﺎﻧﺮﺑ**.ﺪﻋﺎﺴﻤﻟﺍﻭ ﺔﻴﺳﺎﺳﻷ﻿ﺍ ﺔﻴﺼﻨﻟﺍ ﺞﻣﺍﺮﺒﻟﺍ ###
+* `aura_engine.py`: ﺔﻣﺪﺧ Python ﺔﻴﺳﺎﺳﻷ﻿ﺍ (usually started by one of the scripts above).
+* `get_suggestions.py`: ﺓﺩﺪﺤﻣ ﻒﺋﺎﻇﻮﻟ ﺪﻋﺎﺴﻣ ﻲﺼﻧ ﺞﻣﺎﻧﺮﺑ.
 
-تضمن هذه البنية حماية قواعد النظام الأساسية، في حين يمكن إضافة القواعد الخاصة بالمشروع أو القواعد المدركة للسياق (مثل تلك الخاصة بـ CodeIgniter أو عناصر التحكم في اللعبة) بسهولة كامتدادات ذات أولوية منخفضة عبر المكونات الإضافية.
+</details>ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻧ ﻊﻣ ﻖﻓﺍﻮﺘﻟﺍﻭ ﺔﻴﺴﻴﺋﺮﻟﺍ ﺕﺍﺰﻴﻤﻟﺍ 🚀 ##
 
-                                                          </التفاصيل>
+<details>
+<summary>ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻧ ﻊﻣ ﻖﻓﺍﻮﺘﻟﺍ ﺓﺭﻮﻄﺳﺃ</summary>
 
-                                                           <التفاصيل>
-<summary>النصوص البرمجية الأساسية لمستخدمي Windows</summary>
+               XSPACEbreakX:ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻧ ﻊﻣ ﻖﻓﺍﻮﺘﻠﻟ ﺡﺎﻀﻳﻹ﻿ﺍ ﺔﻠﻴﺳﻭ
+                            (e.g., Arch, Ubuntu)XSPACEbreakX **ﺲﻜﻨﻴﻟ** 🐧 *
+* 🍏 **macOS**XSPACEbreakX
+                                      XSPACEbreakX**ﺯﻭﺪﻨﻳﻭ** 🪟 *
+* 📱 **Android** (for mobile-specific features)XSPACEbreakX
 
+---
 
+</details>**ﺺﻧ ﻰﻟﺇ ﻡﻼ﻿ﻜﻟﺍ ﻞﻳﻮﺤﺘﻟ ﻲﺳﺎﺳﻷ﻿ﺍ (Aura) ﻙﺮﺤﻣ** ###
+.ﺖﻧﺮﺘﻧﻹ﻿ﺎﺑ ﻝﺎﺼﺗﺍ ﻥﻭﺩ ﺕﻮﺼﻟﺍ ﺔﺠﻟﺎﻌﻣﻭ ﻡﻼ﻿ﻜﻟﺍ ﻰﻠﻋ ﻑﺮﻌﺘﻠﻟ ﻲﺳﺎﺳﻷ﻿ﺍ ﺎﻨﻛﺮﺤﻣ
 
+                                               ﺲﻛﺍ ﻚﻳﺮﺑ ﺲﻴﺒﺳ ﺲﻛﺍ
+<details>
+<summary>Aura-Core</summary>
+                              XSPACEbreakX🪟 🍏 🐧 **/ﺓﺍﻮﻨﻟﺍ ﺔﻟﺎﻫ**
+├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟XSPACEbreakX
+               (Config & Maps) 🐧 🍏 🪟XSPACEbreakX **ﻦﺧﺎﺳ ﺮﺷﺎﺒﻣ ﺚﺑ** ┬├
+(Integrity-First)** 🔒 🐧 🍏 🪟XSPACEbreakX ﺔﺻﺎﺨﻟﺍ ﺔﻄﻳﺮﺨﻟﺍ ﻞﻴﻤﺤﺗ ﻦﻴﻣﺄﺗ** ├│
+ﺲﻛﺍ ﻚﻳﺮﺑ ﺲﻴﺒﺳ ﺲﻛﺍ .ﺭﻭﺮﻣ ﺔﻤﻠﻜﺑ ﺔﻴﻤﺤﻤﻟﺍ ZIP ﺕﺎﻔﻴﺷﺭﺃ ﻞﻴﻤﺤﺘﺑ ﻡﻮﻘﻳ **
+( e.g. `de-DE`, `en-US`, ... ) XSPACEbreakX ﺔﻐﻠﻟﺍ ﺐﺴﺣ ﺔﻌﻤﺠﻣ **/ﺎﻬﺤﻴﺤﺼﺗﻭ ﺹﻮﺼﻨﻟﺍ ﺔﺠﻟﺎﻌ
+│├ 1. `normalize_peptication.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟XSPACEbreakX
+     (`FuzzyMap Pre` - XMDLINK0X) 🐧 🍏 🪟XSPACEbreakX **ﻲﻛﺬﻟﺍ ﻖﺒﺴﻤﻟﺍ ﺢﻴﺤﺼﺘﻟﺍ** .2 ├│
+XSPACEbreakX.ﺔﻴﻜﻴﻣﺎﻨﻳﺩ ﺕﺎﺑﺎﺠﺘﺳﺍ ءﺎﺸﻧﺇ ﻭﺃ ،ﺕﺎﻔﻠﻤﻟﺍ ﺝﺍﺮﺧﺇ/ﻝﺎﺧﺩﺇ ﻭﺃ
+XSPACEbreakX.ﺔﻘﺑﺎﺴﻟﺍ ﺪﻋﺍﻮﻘﻟﺍ ﺔﻄﺳﺍﻮﺑ ﻪﻠﻳﺪﻌﺗ ﻢﺗ ﻱﺬﻟﺍ ﺺﻨﻟﺍ ﻰﻠﻋ ﺔﻘﺣﻼ
+XSPACEbreakX.ﺔﻗﻮﺛﻮﻤﻟﺍ ﺔﻴﺗﻮﺼﻟﺍ ﺮﻣﺍﻭﻷ﻿ﺍ ﺬﻴﻔﻨﺘﻟ ﺔﻳﺭﻭﺮﺿ ﺔﻴﻟﻵ﻿ﺍ ﻩﺬﻫ ﺮﺒﺘ
+│├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟XSPACEb
+XSPACEbreakX🪟 🍏 🐧 **ﺔﻴﻃﺎﻴﺘﺣﻻ﻿ﺍ Ollama AI ﺔﻴﻨﻘﺗ ﻊﻣ ﻲﻣﺮﻬﻟﺍ RegEx ﺪﻋ
+XSPACEbreakX.ﺺﻨﻟﺍ ﻲﻓ ﻢﻜﺤﺘﻟﺍﻭ ﺔﻴﻟﺎﻌﻟﺍ ﺔﻳﻮﻟﻭﻷ﻿ﺍ ﺕﺍﺫ ﺔﻘﻴﻗﺪﻟﺍ ﺮﻣﺍﻭﻸ﻿ﻟ 
+Ollama/LLM 🐧XSPACEbreakX ﺔﻴﻃﺎﻴﺘﺣﻻ﻿ﺍ ﺔﻘﺒﻄﻟﺍ ﻊﻣ ﺔﻴﻠﺤﻤﻟﺍ ﺕﺎﻬﺠﺘﻤﻟﺍ ﺕﺎ
+││ * **Ollama AI (Local LLM) Fallback:** ﺔﻴﻤﺘﺣ ﺓﺪﻋﺎﻗ ﻱﺃ ءﺎﻔﻴﺘﺳﺍ 
+                                .ﻲﻠﺤﻣ LLM ﻞﻣﺎﻜﺗ **:ﺔﻟﺎﺤﻟﺍ** * ││
+LT** 🐧 🍏 🪟XSPACEbreakX ﺪﻌﺑ ﺎﻣ ﻦﻴﺴﺤﺗ – **(`FuzzyMap`) **ﻲﻛﺬﻟﺍ ﻖﺣﻼ﻿ﻟ
+XSPACEbreakX.ﻖﺒﺴﻤﻟﺍ ﺢﻴﺤﺼﺘﻟﺍ ﺔﻘﺒﻃ ﻞﺜﻣ ﻡﺭﺎﺼﻟﺍ ﻲﻟﺎﺘﺘﻤﻟﺍ ﺔﻳﻮﻟﻭﻷ﻿ﺍ ﻖﻄﻨ
+XSPACEbreakX.ﺔﻴﻜﻴﻣﺎﻨﻳﺩ ﺕﺎﺑﺎﺠﺘﺳﺍ ءﺎﺸﻧﺇ ﻭﺃ ،ﺕﺎﻔﻠﻤﻟﺍ ﺝﺍﺮﺧﺇ/ﻝﺎﺧﺩﺇ ﻭﺃ
+XSPACEbreakX.ﻚﻟﺫ ﻦﻜﻣﺃ ﺎﻤﻠﻛ ﺔﻀﻣﺎﻐﻟﺍ ﺔﺌﻴﻄﺒﻟﺍ ﻖﻘﺤﺘﻟﺍ ﺕﺎﻴﻠﻤﻋ ﺐﻨﺠﺗ ﻖﻳ
+                              XSPACEbreakX **/ﺝﺫﺎﻤﻨﻟﺍ ﺓﺭﺍﺩﺇ** ┬├
+│├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟XSPACEbreakX
+│└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟XSPACEbreakX
+                        VAD** 🐧 🍏 🪟XSPACEbreakX ﻒﻴﻜﺘﻟﺍ ﺔﻠﻬﻣ** ─├
+(Start/Stop)** 🐧 🍏 🪟XSPACEbreakX ﻲﻔﻴﻜﺘﻟﺍ ﻊﻳﺮﺴﻟﺍ ﻞﻴﻐﺸﺘﻟﺍ ﺡﺎﺘﻔﻣ** ─
+         (Experimental via model preloading) 🐧 🍏 XSPACEbreakX **ﺔﻐﻠﻟ ﻱﺭﻮﻔﻟﺍ ﻞﻳﺪﺒﺘﻟﺍ** ─├
+                      🪟 🍏 🐧 (DAG-based workflow automation) **ءﺍﻮﻬﻟﺍ ﻖﻓﺪﺗ ﻖﻴﺴﻨﺗ** ─├
+http://localhost:8081` 🐧 🍏 🪟XSPACEbreakX` :ﻡﺪﺨﺘﺴﻤﻟﺍ ﺔﻬﺟﺍﻭ · Dock
+                       🪟 🍏 🐧 Trino State** (Interface-aware config per speech/terminal/web) ﻙﺮﺤﻣ** ─├
+http://localhost:8084` 🐧 🍏 🪟XSPACEbreakX` :ﺔﻳﺭﺍﺩﻹ﻿ﺍ ﻡﺪﺨﺘﺴﻤﻟﺍ ﺔﻬﺟﺍ
 
+**SystemUtilities/**XSPACEbreakX
+                    LanguageTool/** XSPACEbreakX ﻡﺩﺎﺧ ﺓﺭﺍﺩﺇ** ┬├
+│├─ `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟XSPACEbreakX
+│└─ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏
+├─ `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟XSPACEbreakXXSPACEbreakX**ﻡﺰﺤﻟﺍﻭ ﺝﺫﺎﻤﻨﻟﺍ ﺓﺭﺍﺩﺇ** ###
+        XSPACEbreakX.ﺓﺮﻴﺒﻜﻟﺍ ﺕﺎﻐﻠﻟﺍ ﺝﺫﺎﻤﻧ ﻊﻣ ﻱﻮﻘﻟﺍ ﻞﻣﺎﻌﺘﻠﻟ ﺕﺍﻭﺩﺃ
 
+                            XSPACEbreakX🪟 🍏 🐧 **/ﺝﺫﺎﻤﻨﻟﺍ ﺓﺭﺍﺩﺇ**
+   (GitHub Release chunks) 🐧 🍏 🪟XSPACEbreakX **ﺔﻳﻮﻘﻟﺍ ﺝﺫﺎﻤﻨﻟﺍ ﻞﻳﺰﻨﺗ ﺓﺍﺩﺃ** ─├
+├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟XSPACEbreakX
+└─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟XSPACEﺮﺴﻛX
 
-     ## البرامج النصية الأساسية لمستخدمي Windows
-
-فيما يلي قائمة بأهم البرامج النصية لإعداد التطبيق وتحديثه وتشغيله على نظام Windows.
-
-                                          ### الإعداد والتحديث
-
-                                          * `chmod +x update.sh; ./update.sh`
-* `setup/setup.bat`: البرنامج النصي الرئيسي للإعداد الأولي للبيئة لمرة واحدة فقط.
-* [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `تشغيل powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
-
-* `update.bat`: قم بتشغيل هذا من مجلد المشروع للحصول على **الحصول على أحدث التعليمات البرمجية والتبعيات**.
-
-                                                ### تشغيل التطبيق
-* `start_aura.bat`: برنامج نصي أساسي **لبدء خدمة الإملاء**.
-
-            ### البرامج النصية الأساسية والمساعد
-* `aura_engine.py`: خدمة Python الأساسية (تبدأ عادةً بواسطة أحد البرامج النصية أعلاه).
-* `get_suggestions.py`: برنامج نصي مساعد لوظائف محددة.
-
-                                                          </التفاصيل>
-
-
-
-## 🚀 الميزات الرئيسية والتوافق مع نظام التشغيل
-
-                                                           <التفاصيل>
-  <summary>أسطورة التوافق مع نظام التشغيل</summary>
-
-وسيلة الإيضاح للتوافق مع نظام التشغيل:XSPACEbreakX
-  * 🐧 **Linux** (على سبيل المثال، Arch وUbuntu)XSPACEbreakX
-                                                 * 🍏 **macOS**XSPACEbreakX
-                                          * 🪟 **ويندوز**XSPACEbreakX
-* 📱 **Android** (للميزات الخاصة بالهاتف المحمول)XSPACEbreakX
-
-                                                                          ---
-
-                                                          </التفاصيل>
-
-
-
-### **المحرك الأساسي لتحويل الكلام إلى نص (Aura)**
-محركنا الأساسي للتعرف على الكلام ومعالجة الصوت دون اتصال بالإنترنت.
-
-                                              اكس سبيس بريك اكس
-                                                           <التفاصيل>
-                                     <summary>هالة النواة</summary>
-                        **هالة النواة/** 🐧 🍏 🪟XSPACEbreakX
-├─ `aura_engine.py` (خدمة بايثون الرئيسية التي تنظم Aura) 🐧 🍏 🪟XSPACEbreakX
-├┬ **بث مباشر مباشر** (التكوين والخرائط) 🐧 🍏 🪟XSPACEbreakX
-│├ **تحميل خريطة خاصة آمنة (النزاهة أولاً)** 🔒 🐧 🍏 🪟XSPACEbreakX
-││ * ** سير العمل: ** يقوم بتحميل أرشيفات ZIP المحمية بكلمة مرور. اكس سبيس بريك اكس
-│├ **معالجة النصوص وتصحيحها/** مجمعة حسب اللغة (على سبيل المثال، `de-DE`، `en-US`، ...) XSPACEbreakX
-│├ 1. `normalize_peptication.py` (توحيد علامات الترقيم بعد النسخ) 🐧 🍏 🪟XSPACEbreakX
-│├ 2. **التصحيح المسبق الذكي** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟XSPACEbreakX
-││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة (`on_match_exec`) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
-││ * **التنفيذ المتتالي:** تتم معالجة القواعد بشكل تسلسلي وتكون تأثيراتها **تراكمية**. تنطبق القواعد اللاحقة على النص الذي تم تعديله بواسطة القواعد السابقة.XSPACEbreakX
-││ * **معيار الإيقاف ذو الأولوية الأعلى:** إذا حققت القاعدة **تطابق كامل** (^...$)، فسيتوقف مسار المعالجة بالكامل لهذا الرمز المميز على الفور. تعتبر هذه الآلية ضرورية لتنفيذ الأوامر الصوتية الموثوقة.XSPACEbreakX
-│├ 3. `correct_text_by_languagetool.py` (يدمج أداة اللغة لتصحيح القواعد النحوية/النمط) 🐧 🍏 🪟XSPACEbreakX
-│├ **4. محرك قواعد RegEx الهرمي مع تقنية Ollama AI الاحتياطية** 🐧 🍏 🪟XSPACEbreakX
-││ * **التحكم الحتمي:** يستخدم RegEx-Rule-Engine للأوامر الدقيقة ذات الأولوية العالية والتحكم في النص.XSPACEbreakX
-│├ **المكوّن الإضافي لبحث المتجهات** (التحميل البطيء): يتيح البحث الدلالي عن طريق ربط تضمينات المتجهات المحلية مع الطبقة الاحتياطية Ollama/LLM 🐧XSPACEbreakX
-││ * **Ollama AI (Local LLM) الاحتياطي:** بمثابة فحص اختياري منخفض الأولوية لـ **الإجابات الإبداعية، والأسئلة والأجوبة، والمطابقة الغامضة المتقدمة** في حالة عدم استيفاء أي قاعدة حتمية.XSPACEbreakX
-                          ││ * **الحالة:** تكامل LLM محلي.
-│└ 5. **التصحيح اللاحق الذكي** (`FuzzyMap`)** – تحسين ما بعد LT** 🐧 🍏 🪟XSPACEbreakX
-││ * يتم تطبيقه بعد LanguageTool لتصحيح المخرجات الخاصة بـ LT. يتبع نفس منطق الأولوية المتتالي الصارم مثل طبقة التصحيح المسبق.XSPACEbreakX
-││ * **تنفيذ البرنامج النصي الديناميكي:** يمكن للقواعد تشغيل برامج Python النصية المخصصة ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-arlang.md)) لتنفيذ إجراءات متقدمة مثل استدعاءات واجهة برمجة التطبيقات (API)، أو إدخال/إخراج الملفات، أو إنشاء استجابات ديناميكية.XSPACEbreakX
-││ * **التراجع الضبابي:** يعمل **التحقق من التشابه الغامض** (يتم التحكم فيه عن طريق عتبة، على سبيل المثال، 85%) بمثابة طبقة تصحيح الأخطاء ذات الأولوية الأدنى. يتم تنفيذه فقط في حالة فشل تشغيل القاعدة الحتمية/المتتالية السابقة بالكامل في العثور على تطابق (قاعدة_القاعدة_المتطابقة الحالية خاطئة)، مما يؤدي إلى تحسين الأداء عن طريق تجنب عمليات التحقق البطيئة الغامضة كلما أمكن ذلك.  
-                           ├┬ **إدارة النماذج/** XSPACEbreakX
-│├─ `prioritize_model.py` (يعمل على تحسين تحميل/تفريغ النموذج بناءً على الاستخدام) 🐧 🍏 🪟XSPACEbreakX
-│└─ `setup_initial_model.py` (يقوم بتكوين إعداد النموذج لأول مرة) 🐧 🍏 🪟XSPACEbreakX
-              ├─ **مهلة التكيف VAD** 🐧 🍏 🪟XSPACEbreakX
-├─ **مفتاح التشغيل السريع التكيفي (بدء/إيقاف)** 🐧 🍏 🪟XSPACEbreakX
-├─ **التبديل الفوري للغة** (تجريبي عبر التحميل المسبق للنموذج) 🐧 🍏XSPACEbreakX
-├─ **تنسيق تدفق الهواء** (أتمتة سير العمل المستندة إلى DAG) 🐧 🍏 🪟
-│ يتطلب Docker · واجهة المستخدم: `http://localhost:8081` 🐧 🍏 🪟XSPACEbreakX
-├─ **Trino State Engine** (تكوين مدرك للواجهة لكل خطاب/محطة/ويب) 🐧 🍏 🪟
-└─ يتطلب Docker · واجهة المستخدم الإدارية: `http://localhost:8084` 🐧 🍏 🪟XSPACEbreakX
-
-                                             **SystemUtilities/**XSPACEbreakX
-                    ├┬ **إدارة خادم LanguageTool/** XSPACEbreakX
-│├─ `start_languagetool_server.py` (تهيئة خادم LanguageTool المحلي) 🐧 🍏 🪟XSPACEbreakX
-│└─ `stop_languagetool_server.py` (إيقاف تشغيل خادم LanguageTool) 🐧 🍏
-├─ `monitor_mic.sh` (على سبيل المثال للاستخدام مع سماعة الرأس دون استخدام لوحة المفاتيح والشاشة) 🐧 🍏 🪟XSPACEbreakX
-
-                   ### **إدارة النماذج والحزم**XSPACEbreakX
-أدوات للتعامل القوي مع نماذج اللغات الكبيرة.XSPACEbreakX
-
-                    **إدارة النماذج/** 🐧 🍏 🪟XSPACEbreakX
-├─ **أداة تنزيل النماذج القوية** (أجزاء إصدار GitHub) 🐧 🍏 🪟XSPACEbreakX
-├─ `split_and_hash.py` (أداة مساعدة لأصحاب الريبو لتقسيم الملفات الكبيرة وإنشاء مجاميع اختبارية) 🐧 🍏 🪟XSPACEbreakX
-└─ `download_all_packages.py` (أداة للمستخدمين النهائيين لتنزيل الملفات متعددة الأجزاء والتحقق منها وإعادة تجميعها) 🐧 🍏 🪟XSPACEbreakX
-
-                                                          </التفاصيل>
+</details>
 
 
-                                                           <التفاصيل>
-                  <summary>مساعدو التطوير والنشر</summary>
+<details>
+<summary>ﺮﺸﻨﻟﺍﻭ ﺮﻳﻮﻄﺘﻟﺍ ﻭﺪﻋﺎﺴﻣ</summary>  **ﺮﺸﻨﻟﺍﻭ ﺮﻳﻮﻄﺘﻟﺍ ﻭﺪﻋﺎﺴﻣ** ###
+         .ﺔﻣﺪﺨﻟﺍ ﻞﻴﻐﺸﺗﻭ ،ﺕﺍﺭﺎﺒﺘﺧﻻ﻿ﺍﻭ ،ﺔﺌﻴﺒﻟﺍ ﺩﺍﺪﻋﻹ﻿ ﺔﻴﺼﻨﻟﺍ ﺞﻣﺍﺮﺒﻟﺍ
 
-                 ### **مساعدو التطوير والنشر**XSPACEbreakX
-البرامج النصية لإعداد البيئة والاختبار وتنفيذ الخدمة.XSPACEbreakX
+*.ﻚﺑ ﺔﺻﺎﺨﻟﺍ ﻞﺠﺴﻟﺍ ﺕﺎﻔﻠﻣ ﻲﻓ ﻡﺎﻤﺘﻫﻼ﻿ﻟ ﺓﺮﻴﺜﻤﻟﺍ ﺙﺍﺪﺣﻷ﻿ﺍ ﻦﻋ ﺚﺤﺒﻠﻟ ﺔﻴﻄﻤﻨ
+   .ﻞﺠﺴﻟﺍ ﺕﺎﻔﻠﻤﺑ ﻁﺎﺒﺗﺭﻼ﻿ﻟ ﺖﻴﺒﺜﺘﻟﺍ ﺪﻨﻋ ﺭﺎﻴﺘﺧﻻ﻿ﺍ ﺔﻧﺎﺧ ﺪﻳﺪﺤ
+https://www.translatetheweb.com/?from=en&to=ar&a=https://glogg.bonnefon.org/     
+  
+*.ﻞﻴﺻﺎﻔﺘﻠﻟ [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) ﺮﻈﻧﺍ .ﺎﻴًﺋﺎﻘﻠﺗ ﺔﻴﻓﺮﻄﻟﺍ ﺕﺍﻭﺩﻸ﻿ﻟ ﺚﺤﺒﻠﻟ ﺔﻠﺑﺎﻗ ﺔﻠ
 
-*نصيحة: يتيح لك glogg استخدام التعبيرات العادية للبحث عن الأحداث المثيرة للاهتمام في ملفات السجل الخاصة بك.* XSPACEbreakX
-يرجى تحديد مربع الاختيار عند التثبيت لربطه بملفات السجل.  اكس سبيس بريك اكس
-https://translate.google.com/translate?hl=en&sl=en&tl=ar&u=https://glogg.bonnefon.org/     
-                                              اكس سبيس بريك اكس
-*نصيحة: بعد تحديد أنماط التعبير العادي، قم بتشغيل `python3 Tools/map_tagger.py` لإنشاء أمثلة قابلة للبحث تلقائيًا لأدوات CLI. راجع [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) للحصول على التفاصيل.*
+                                        ﺎًﺟﻭﺩﺰﻣ ﺍًﺮﻘﻧ ﺮﻘﻧﺍ ﺎﻤﺑﺭ ﻢﺛ
+`log/aura_engine.log`
+  
+**DevHelpers/**  
+                        **/ﺔﻴﺿﺍﺮﺘﻓﻻ﻿ﺍ ﺔﺌﻴﺒﻟﺍ ﺓﺭﺍﺩﺇ** ┬├
+│├ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏XSPACE
+│└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟XSPACEB
+                  **/ﻡﺎﻈﻨﻟﺍ ﻯﻮﺘﺴﻣ ﻰﻠﻋ ءﻼ﻿ﻣﻹ﻿ﺍ ﻞﻣﺎﻜﺗ** ┬├
+                      Vosk 🐧 🍏 🪟   ﻡﺎﻈﻧ ﻊﻤﺘﺴﻣ ﻞﻣﺎﻜﺗ ├│
+│├ `scripts/monitor_mic.sh` (Linux-specific microphone monitoring) 🐧  
+│└ `scripts/type_watcher.ahk` (AutoHotkey listens for recognized text and types it out system-wide) 🪟  
+                                 CI/CD/**   ﺔﺘﻤﺗﺃ** ─└
+GitHub (Installation, testing, docs deployment) 🐧 🍏 🪟 *(Runs on GitHub Actions)*   ﻞﻤﻋ ﺮﻴﺳ ﻊﺳَّﻮﻣ ─└
 
-                                 ثم ربما انقر نقرا مزدوجا
-                                                    "سجل/aura_engine.log".
-                                              اكس سبيس بريك اكس
-                                                  **DevHelpers/**XSPACEbreakX
-         ├┬ **إدارة البيئة الافتراضية/**XSPACEbreakX
-│├ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏XSPACEكسرX
-  │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟XSPACEbreakX
-├┬ **تكامل الإملاء على مستوى النظام/**XSPACEbreakX
-            │├ تكامل Vosk-System-Listener 🐧 🍏 🪟XSPACEbreakX
-│├ `scripts/monitor_mic.sh` (مراقبة الميكروفون الخاصة بنظام التشغيل Linux) 🐧XSPACEbreakX
-│└ `scripts/type_watcher.ahk` (يستمع AutoHotkey للنص الذي يتم التعرف عليه ويكتبه على مستوى النظام) 🪟XSPACEbreakX
-                                    └─ ** CI/CD Automation/**XSPACEbreakX
-└─ سير عمل GitHub الموسع (التثبيت والاختبار ونشر المستندات) 🐧 🍏 🪟 *(يعمل على إجراءات GitHub)*XSPACEbreakX
+</details>
 
-                                                          </التفاصيل>
+<details>
+                                                   ﺔﻴﺒﻳﺮﺠﺗ ﺕﺍﺰﻴﻣ
+  XSPACEbreakX**ﺔﻴﺒﻳﺮﺠﺘﻟﺍ / ﺔﻣﺩﺎﻘﻟﺍ ﺕﺍﺰﻴﻤﻟﺍ** ###
+       XSPACEbreakX.ﺓﺩﻮﺴﻤﻟﺍ ﺔﻟﺎﺣ ﻲﻓ ﻭﺃ ﺎﻴًﻟﺎﺣ ﺮﻳﻮﻄﺘﻟﺍ ﺪﻴﻗ ﺕﺍﺰﻴﻤﻟﺍ
 
-                                                           <التفاصيل>
-                         <summary>الميزات التجريبية</summary>
-                                              اكس سبيس بريك اكس
-       ### **الميزات القادمة / التجريبية**XSPACEbreakX
-الميزات قيد التطوير حاليًا أو في حالة المسودة.XSPACEbreakX
+                              XSPACEbreakX**/ﺔﻴﺒﻳﺮﺠﺘﻟﺍ ﺕﺍﺰﻴﻤﻟﺍ**
+├─ **ENTER_AFTER_DICTATION_REGEX** ﻂﻴﺸﻨﺘﻟﺍ ﺓﺪﻋﺎﻘﻟ ﻝﺎﺜﻣ "XHTMLTAG
+                                           XSPACEbreakXﺕﺎﻓﺎﺿﻹ﻿ﺍ┬├
+│╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟XSPACEbreakX
+(*Changes to Plugin activation/deactivation, and their configurations, are applied on the next processing run without service restart.*)XSPACEbreakX
+                  git** (Voice control for send git commands) 🐧 🍏 🪟XSPACEbreakX ﺮﻣﺍﻭﺃ** ├ │
+│ ├ **wannweil** (Map for Location Germany-Wannweil) 🐧 🍏 🪟XSPACEbreakX
+(Draft)** (Voice control for poker applications) 🐧 🍏 🪟XSPACEbreakX ﺮﻛﻮﺒﻠﻟ ﺪﻋﺎﺴﻤﻟﺍ ﺞﻣﺎﻧﺮﺒﻟ
+│ └ **0 AD ﺪﻋﺎﺴﻤﻟﺍ ﺞﻣﺎﻧﺮﺒﻟﺍ (Draft)** (Voice control for 0 A.D. game) 🐧 XSPACEbrea
+(Description pending) 🐧 XSPACEbreakX **ﺎﻬﺋﺎﻬﻧﺇ ﻭﺃ ﺔﺴﻠﺠﻟﺍ ءﺪﺑ ﺪﻨﻋ ﺕﻮﺼﻟﺍ ﺝﺮﺨﻣ
+   (Description pending) 🐧 🍏 🪟XSPACEbreakX **ﺮﺼﺒﻟﺍ ﻑﺎﻌﻀﻟ ﻡﻼ﻿ﻜﻟﺍ ﺕﺎﺟﺮﺨﻣ** ─├
+         SL5 Aura Android** (Not fully offline yet) 📱XSPACEbreakX ﺝﺫﻮﻤﻧ** ─└
 
-                           **الميزات التجريبية/**XSPACEbreakX
-├─ **ENTER_AFTER_DICTATION_REGEX** مثال لقاعدة التنشيط "(ExampleAplicationThatNotExist|Pi، الذكاء الاصطناعي الشخصي الخاص بك)" 🐧XSPACEbreakX
-                                           ├┬الإضافاتXSPACEbreakX
-                │╰┬ **Live Lazy-Reload** (*) 🐧 🍏 🪟XSPACEbreakX
-(*يتم تطبيق التغييرات على تنشيط/إلغاء تنشيط المكون الإضافي وتكويناتها في عملية المعالجة التالية دون إعادة تشغيل الخدمة.*)XSPACEbreakX
-│ ├ **أوامر git** (التحكم الصوتي لإرسال أوامر git) 🐧 🍏 🪟XSPACEbreakX
-│ ├ **wannweil** (خريطة الموقع ألمانيا-Wannweil) 🐧 🍏 🪟XSPACEbreakX
-│ ├ **البرنامج المساعد للبوكر (مسودة)** (التحكم الصوتي لتطبيقات البوكر) 🐧 🍏 🪟XSPACEbreakX
-│ └ **0 A.D. Plugin (مسودة)** (التحكم الصوتي في لعبة 0 A.D) 🐧 XSPACEbreakX
-├─ **مخرج الصوت عند بدء الجلسة أو إنهائها** (الوصف في انتظار المراجعة) 🐧 XSPACEbreakX
-├─ **مخرجات الكلام لضعاف البصر** (الوصف في انتظار المراجعة) 🐧 🍏 🪟XSPACEbreakX
-└─ **نموذج SL5 Aura Android** (غير متصل بالإنترنت بشكل كامل حتى الآن) 📱XSPACEbreakX
+---
 
-                                                                          ---
+*(Note: Specific Linux distributions like Arch (ARL) ﻭﺃ Ubuntu (UBT) ﺰﻣﺮﺑ ﺓﺎﻄﻐﻣ Linux 🐧 ﺖﻴﺒﺜﺘﻟﺍ ﺔﻟ
+</details>
 
-*(ملاحظة: توزيعات Linux المحددة مثل Arch (ARL) أو Ubuntu (UBT) مغطاة برمز Linux 🐧 العام. قد تتم تغطية الفروق التفصيلية في أدلة التثبيت.)*
-                                                          </التفاصيل>
-
-                                                           <التفاصيل>
-<summary>انقر لرؤية الأمر المستخدم لإنشاء قائمة البرامج النصية هذه</summary>
+<details>
+<summary>ﻩﺬﻫ ﺔﻴﺼﻨﻟﺍ ﺞﻣﺍﺮﺒﻟﺍ ﺔﻤﺋﺎﻗ ءﺎﺸﻧﻹ﻿ ﻡﺪﺨﺘﺴﻤﻟﺍ ﺮﻣﻷ﻿ﺍ ﺔﻳﺅﺮﻟ ﺮﻘ
 
 ```bash
 { find . -maxdepth 1 -type f \( -name "aura_engine.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
 ```
-                                                          </التفاصيل>
+</details>
 
-                                                           <التفاصيل>
-        <summary>نظرة عامة رسومية على البنية</summary>
+<details>
+<summary>A ﺔﻴﻨﺑ ﻰﻠﻋ ﺔﻴﻣﻮﺳﺭ ﺔﻣﺎﻋ ﺓﺮﻈﻧ </summary>:ﺔﻴﻨﺒﻟﺍ ﻰﻠﻋ ﺔﻴﻣﻮﺳﺭ ﺔﻣﺎﻋ ﺓﺮﻈﻧ ###
 
-                      ### نظرة عامة رسومية على البنية:
+![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
-                                                                   ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
+      
+![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
+</details>
 
-                                              اكس سبيس بريك اكس
-                                                                   ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
-                                                          </التفاصيل>
+<details>
+                                               ﺔﻣﺪﺨﺘﺴﻤﻟﺍ ﺝﺫﺎﻤﻨﻟﺍ:ﺔﻠﻤﻌﺘﺴﻤﻟﺍ ﺕﻼ﻿ﻳﺩﻮﻤﻟﺍ ##
 
-                                                           <التفاصيل>
-                         <summary>النماذج المستخدمة</summary>
+Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v
 
-                                    ## الموديلات المستعملة:
+                ."/ﺝﺫﺎﻤﻨﻟﺍ" ﺪﻠﺠﻣ ﻲﻓ ﺔﻃﻮﻐﻀﻤﻟﺍ ﺝﺫﺎﻤﻨﻟﺍ ﻩﺬﻫ ﻆﻔﺣ ﺐﺠﻳ
 
-توصية: استخدم النماذج من Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (ربما أسرع)
-
-يجب حفظ هذه النماذج المضغوطة في مجلد "النماذج/".
-
-                                                 `mv vosk-model-*.zipmodels/`
+`mv vosk-model-*.zipmodels/`
 
 
-| نموذج | الحجم | معدل/سرعة خطأ الكلمة | ملاحظات | الترخيص |
-| -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
-| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8 جيجا | 5.69 (اختبار الكلام المكتبي النظيف)<br/>6.05 (tedlium)<br/>29.78 (مركز الاتصال) | نموذج إنجليزي أمريكي عام دقيق | أباتشي 2.0 |
-| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9 جرام | 9.83 (اختبار Tuda-de)<br/>24.00 (بودكاست)<br/>12.82 (اختبار السيرة الذاتية)<br/>12.42 (مل)<br/>33.26 (mtedx) | الموديل الألماني الكبير للهواتف والسيرفرات | أباتشي 2.0 |
+     | ﺺﻴﺧﺮﺘﻟﺍ | ﺕﺎﻈﺣﻼ﻿ﻣ | ﺔﻤﻠﻜﻟﺍ ﺄﻄﺧ ﺔﻋﺮﺳ/ﻝﺪﻌﻣ | ﻢﺠﺤﻟﺍ | ﺝﺫﻮﻤﻧ |
+| --------------------------------------------------------------
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8 5.69 | ﺎﺠﻴﺟ (librispeech test-clean)<br/>6.05 XHTMLTAG3
+| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9 9.83 | ﻡﺍﺮﺟ (Tuda-de test)<br/>24.00 XHTMLTAG
 
-يقدم هذا الجدول نظرة عامة على نماذج Vosk المختلفة، بما في ذلك حجمها ومعدل خطأ الكلمات أو سرعتها والملاحظات ومعلومات الترخيص.
+.ﺺﻴﺧﺮﺘﻟﺍ ﺕﺎﻣﻮﻠﻌﻣﻭ ﺕﺎﻈﺣﻼ﻿ﻤﻟﺍﻭ ﺎﻬﺘﻋﺮﺳ ﻭﺃ ﺕﺎﻤﻠﻜﻟﺍ ﺄﻄﺧ ﻝﺪﻌﻣﻭ ﺎﻬﻤﺠﺣ ﻚﻟ
 
 
-                                        - **نماذج فوسك:** [Vosk-Model List](https://alphacephei.com/vosk/models)
-                                       - **أداة اللغة:**XSPACEbreakX
-                                                             (6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
+                                     [Vosk-Model List](https://alphacephei.com/vosk/models) **:ﻚﺳﻮﻓ ﺝﺫﺎﻤﻧ** -
+                                   XSPACEbreakX**:ﺔﻐﻠﻟﺍ ﺓﺍﺩﺃ** -
+(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
 
-                               **ترخيص أداة اللغة:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+                                 [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) **:ﺔﻐﻠﻟﺍ ﺓﺍﺩﺃ ﺺﻴﺧﺮﺗ**
 
-                                                                          ---
-                                                          </التفاصيل>
+---
+</details>ﻉﻭﺮﺸﻤﻟﺍ ﻢﻋﺩﺍ ##
+.ﺔﻴﻠﺒﻘﺘﺴﻤﻟﺍ ﺕﺎﻨﻴﺴﺤﺘﻟﺍ ﺰﻳﺰﻌﺗ ﻲﻓ ﻚﻤﻋﺩ ﺪﻋﺎﺴﻳ !ﺎﻨﻟ ﺓﻮﻬﻘﻟﺍ ءﺍﺮﺷ ﻲﻓ ﺮﻴ
 
-                                                   ## ادعم المشروع
-إذا وجدت هذه الأداة مفيدة، يرجى التفكير في شراء القهوة لنا! يساعد دعمك في تعزيز التحسينات المستقبلية.
+[![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
-                                     [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
-
-                                                                   [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+[Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)

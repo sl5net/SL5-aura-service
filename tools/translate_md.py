@@ -7,6 +7,8 @@ import time
 import re
 # import sys
 from pathlib import Path
+import fcntl
+import random
 
 # search_path = script_dir.parent / 'docs' / 'Feature_Spotlight' / 'Implementing*.md'
 
@@ -281,7 +283,12 @@ def translate_section(section_text: str, lang: str) -> str | None:
     if not text_to_translate.strip():
         return section_text
 
+    # writes bevor echt translation, also when it's not error later:
+    # last_error_file = log_dir / "i18n_last_error_segment.log"
+    # last_error_file.write_text(section_text, encoding="utf-8")
+
     cooldowns = load_cooldowns(cooldown_file)
+    
     translated_lines = translate_with_engine_fallback(
         text=text_to_translate,
         source_lang=SOURCE_LANG,
@@ -292,6 +299,8 @@ def translate_section(section_text: str, lang: str) -> str | None:
         )
     
     if not translated_lines:
+        last_error_file = log_dir / "i18n_last_error_segment.log"
+        last_error_file.write_text(section_text, encoding="utf-8")
         print(f"      [ERROR] All translation engines failed for '{lang}'.")
         return None
 
@@ -347,7 +356,13 @@ def translate_section(section_text: str, lang: str) -> str | None:
     return "\n".join(final_lines)
 
 
+def compute_adaptive_delay(content_length: int, base_seconds: float = 4.0, char_rate: float = 200.0) -> float:
+    jitter = random.uniform(1.0, 3.0)
+    return base_seconds + (content_length / char_rate) + jitter
+
+
 def process_file(filename):
+    
     with open(filename, "r", encoding="utf-8") as f:
         raw_content = f.read()
 
@@ -394,23 +409,16 @@ def process_file(filename):
                 store_cached_translation(cache_data, sec_hash, lang, translated)
                 save_cache(cache_file, cache_data)          # <- NEU: sofort persistieren
                 logger.info(f"      -> Section cached (hash={sec_hash[:8]}…, lang='{lang}')")
-                translated_sections.append(translated)
-                time.sleep(8)
 
+                translated_sections.append(translated)
+                delay_sec = compute_adaptive_delay(len(section))
+                time.sleep(delay_sec)
+                
         if section_failed:
             continue
 
 
-
-
-
         full_output = "".join(translated_sections)
-
-
-
-
-
-
 
 
         output_lines = full_output.splitlines()
@@ -434,8 +442,17 @@ def process_file(filename):
             )
             continue
 
+        orig_name = os.path.basename(filename)
+        disclaimer = (
+            f"> ℹ️ *This is a machine-translated document. "
+            f"In case of discrepancies, refer to the [original document](../{orig_name}).*\n\n"
+        )
+        if not full_output.startswith("> ℹ️ *This is a machine-translated document"):
+            full_output = disclaimer + full_output
+
         print(f"      -> Saving file '{output_file}'…")
         with open(output_file, "w", encoding="utf-8") as f:
+
             f.write(full_output)
             time.sleep(7)
 
@@ -445,6 +462,14 @@ def process_file(filename):
 
 def main():
 
+    lock_file = open(log_dir / "translate_md.lock", "w")
+    try:
+        fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        logger.warning("Another instance of translate_md.py is already running. Exiting.")
+        sys.exit(0)
+
+    # test_translation_links()
     # test_translation_links()
     # sys.exit(1)
     current_branch = os.environ.get("GITHUB_REF_NAME", "")

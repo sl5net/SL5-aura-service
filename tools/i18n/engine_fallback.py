@@ -76,7 +76,7 @@ def get_active_engines(cooldowns: dict, engines: list | None = None) -> list:
 
 # tools/i18n/engine_fallback.py:34 3600=1h 300=5min 600=10min 1600=26min
 def mark_engine_blocked(
-    cooldowns: dict, engine: str, file_path: Path, duration_sec: int = 7200
+    cooldowns: dict, engine: str, file_path: Path, duration_sec: int = 600
 ) -> None:
     cooldowns[engine] = time.time() + duration_sec
     save_cooldowns(file_path, cooldowns)
@@ -134,9 +134,17 @@ def translate_with_engine_fallback(
             FileNotFoundError,
             subprocess.TimeoutExpired,
         ) as e:
+
             logger.warning("Engine '%s' failed: %s", engine, e)
-            mark_engine_blocked(cooldowns, engine, cooldown_file)
+            duration = (
+                3600
+                if isinstance(e, subprocess.CalledProcessError) and e.returncode == 1 and engine == "google"
+                else 600
+            )
+            mark_engine_blocked(cooldowns, engine, cooldown_file, duration_sec=duration)
             continue
+
+
 
     logger.error("All engines exhausted, translation failed for %s->%s.", source_lang, target_lang)
     return None
