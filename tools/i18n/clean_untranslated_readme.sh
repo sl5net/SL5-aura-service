@@ -27,9 +27,9 @@ done < <(find "${TARGET_DIR}" -type f -name "*.md")
 
 echo "Deleted ${FOUND_COUNT} untranslated file(s)."
 
-if [[ -f "${CACHE_FILE}" ]]; then
-    echo "Removing stale translation cache: ${CACHE_FILE}"
-    rm -f "${CACHE_FILE}"
-fi
+# if [[ -f "${CACHE_FILE}" ]]; then
+#     echo "Removing stale translation cache: ${CACHE_FILE}"
+#     rm -f "${CACHE_FILE}"
+# fi
 
-echo "Cleanup completed successfully."
+# echo "Cleanup completed successfully."

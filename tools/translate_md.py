@@ -208,7 +208,8 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
                 new_path = path
 
         # if not new_path.startswith(('/')):
-        new_path = f"../{new_path}"
+        if not new_path.startswith('../'):
+            new_path = f"../{new_path}"
         new_link = f"{link_text}({new_path})"
 
         logger.info(f"     + Modifying to: {new_link}")
@@ -229,9 +230,25 @@ def translate_section(section_text: str, lang: str) -> str | None:
         markdown_links.append(match.group(0))
         return placeholder
 
-    link_regex = re.compile(r"!?(?:\[[^\]]*\])\((?:[^\)]*)\)")
-    lines_step0 = [link_regex.sub(link_replacer, line) for line in original_lines]
+    # link_regex = re.compile(r"!?(?:\[[^\]]*\])\((?:[^\)]*)\)")
+    link_regex = re.compile(r"\[\s*!\[[^\]]*\]\([^\)]*\)\s*\]\([^\)]*\)|!?\[[^\]]*\]\([^\)]*\)")
 
+    html_tags = []
+
+    def html_replacer(match):
+        placeholder = f"XHTMLTAG{len(html_tags)}X"
+        html_tags.append(match.group(0))
+        return placeholder
+
+    # link2_tags = [] #     (http
+    # def link2_replacer(match):
+    #     placeholder = f"link2LTAG{len(html_tags)}X"
+    #     link2_tags.append(match.group(0))
+    #     return placeholder
+
+    html_tag_regex = re.compile(r"(<[^>]+>|\([^)]+\))")
+    lines_step_link = [link_regex.sub(link_replacer, line) for line in original_lines]
+    lines_step0 = [html_tag_regex.sub(html_replacer, line) for line in lines_step_link]
     lines_step1 = []
     for line in lines_step0:
         if line.endswith("  "):
@@ -273,6 +290,7 @@ def translate_section(section_text: str, lang: str) -> str | None:
         cooldown_file=cooldown_file,
         timeout=40,
         )
+    
     if not translated_lines:
         print(f"      [ERROR] All translation engines failed for '{lang}'.")
         return None
@@ -300,9 +318,29 @@ def translate_section(section_text: str, lang: str) -> str | None:
                 restored_line = restored_line.replace(placeholder, modified_link, 1)
         restored_step_B.append(restored_line)
 
+
+
+
+    html_placeholder_regex = re.compile(r"(XHTMLTAG\d+X)")
+    restored_step_html = []
+    for line in restored_step_B:
+        restored_line = line
+        placeholders_in_line = html_placeholder_regex.findall(restored_line)
+        for placeholder in placeholders_in_line:
+            idx = int(re.search(r"\d+", placeholder).group())
+            if idx < len(html_tags):
+                restored_line = restored_line.replace(placeholder, html_tags[idx], 1)
+        restored_step_html.append(restored_line)
+
     restored_step_C = [
-        line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_B
+        line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_html
     ]
+
+
+
+
+
+    
     final_lines = [
         line.replace(HARD_BREAK_PLACEHOLDER, "  ") for line in restored_step_C
     ]
@@ -324,8 +362,8 @@ def process_file(filename):
 
         output_path = Path(output_file)
         if (
-            output_path.exists()
-            and output_path.stat().st_mtime > Path(filename).stat().st_mtime
+                output_path.exists()
+                and output_path.stat().st_mtime > Path(filename).stat().st_mtime
         ):
             continue
 
@@ -336,6 +374,9 @@ def process_file(filename):
         translated_sections = []
         has_cache_miss = False
         section_failed = False
+
+
+
 
         for section in sections:
             sec_hash = compute_section_hash(section)
@@ -351,21 +392,27 @@ def process_file(filename):
                     section_failed = True
                     break
                 store_cached_translation(cache_data, sec_hash, lang, translated)
+                save_cache(cache_file, cache_data)          # <- NEU: sofort persistieren
+                logger.info(f"      -> Section cached (hash={sec_hash[:8]}…, lang='{lang}')")
                 translated_sections.append(translated)
                 time.sleep(8)
 
         if section_failed:
             continue
 
+
+
+
+
         full_output = "".join(translated_sections)
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
         output_lines = full_output.splitlines()
 
         if len(output_lines) <= 2:
@@ -374,8 +421,8 @@ def process_file(filename):
             )
             continue
         if any(
-            line.strip().startswith("https://translate.google.com")
-            for line in output_lines
+                line.strip().startswith("https://translate.google.com")
+                for line in output_lines
         ):
             print(
                 f"      [SKIP] Output for '{lang}' contains redirect URL, skipping write."
@@ -390,20 +437,11 @@ def process_file(filename):
         print(f"      -> Saving file '{output_file}'…")
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(full_output)
-            time.sleep(15)
+            time.sleep(7)
 
+        # def save_cache(cache_file: Path, cache_data: dict) -> None:
         if has_cache_miss:
-            save_cache(cache_file, cache_data)        
-            time.sleep(15)
-        
-        
-        
-        
-        
-        
-        
-        
-    #logger.info(f'-> line 297: skipCount already translated: {skipCount}')
+            time.sleep(7)
 
 def main():
 
@@ -468,14 +506,6 @@ def main():
         except OSError:
             continue
 
-        source_file = Path(filename)
-
-
-
-
-
-
-     
         if not re.search(r'-[a-z]{2,10}lang\.md$', filename):
 
             base_name = os.path.splitext(filename)[0]
@@ -493,13 +523,8 @@ def main():
         logger.info(f"Processing: …{str(filename)[-40:]}")
         process_file(filename)
         
-        
-        
-        
     logger.info(f'->line 365: skipCount already translated: {skipCount}')
-
-    #logger.info("----------------------------------------------------")
-    logger.info("may all translated?!")
+    logger.info("----------------------------------------------------")
 
 if __name__ == "__main__":
     main()
