@@ -41,8 +41,8 @@ ARGOS_MODE = "fallback"
 # TARGET_LANGS = ["de", "pt", "es", "fr"]
 # TARGET_LANGS = ["de"]
 #TARGET_LANGS = ["de","pt","pt-BR","es","fr","ja","ko","hi","zh-CN","pl","ar"]
-TARGET_LANGS = ["ar","de","es","fr","hi","ja","ko","pl","pt","pt-BR","zh-CN"]
 
+TARGET_LANGS = ["ar", "de", "en", "es", "fr", "hi", "ja", "ko", "pl", "pt", "pt-BR", "zh-CN"]
 
 
 
@@ -75,7 +75,8 @@ try:
         translate_with_engine_fallback,
     )
     from tools.i18n.argos_engine import translate_with_argos
-
+    from tools.i18n.detect_language import detect_source_language
+    
 except ImportError:
     from i18n.section_cache import (
         compute_section_hash,
@@ -261,7 +262,8 @@ def is_translatable_line(line: str) -> bool:
     return bool(re.search(r"[a-zA-Z]", cleaned))
 
 
-def translate_section(section_text: str, lang: str) -> str | None:
+# ---
+def translate_section(section_text: str, lang: str, source_lang: str = SOURCE_LANG) -> str | None:    
     original_lines = section_text.split("\n")
 
     markdown_links = []
@@ -333,6 +335,7 @@ def translate_section(section_text: str, lang: str) -> str | None:
     line_suffixes = []
     lines_to_send = []
     for line in raw_lines_to_send:
+
         p = ""
         m_p = re.match(r"^(\s*[>│├└─┌┬┴\s]+)", line)
         if m_p:
@@ -342,7 +345,14 @@ def translate_section(section_text: str, lang: str) -> str | None:
             p += "<summary>"
             rest = rest[len("<summary>"):]
 
+        m_list = re.match(r"^([-*+]\s+|\d+\.\s+)", rest)
+        if m_list:
+            p += m_list.group(1)
+            rest = rest[len(m_list.group(1)):]
+
         s = ""
+
+
         if rest.rstrip().endswith("</summary>"):
             idx = rest.rfind("</summary>")
             s = rest[idx:]
@@ -365,13 +375,13 @@ def translate_section(section_text: str, lang: str) -> str | None:
 
         raw_translated = None
         if ARGOS_MODE in ("primary", "only"):
-            raw_translated = translate_with_argos(text_to_translate, SOURCE_LANG, lang)
+            raw_translated = translate_with_argos(text_to_translate, source_lang, lang)
 
         if not raw_translated and ARGOS_MODE != "only":
             cooldowns = load_cooldowns(cooldown_file)
             raw_translated = translate_with_engine_fallback(
                 text=text_to_translate,
-                source_lang=SOURCE_LANG,
+                source_lang=source_lang,
                 target_lang=lang,
                 cooldowns=cooldowns,
                 cooldown_file=cooldown_file,
@@ -379,21 +389,21 @@ def translate_section(section_text: str, lang: str) -> str | None:
             )
     
             if not raw_translated and ARGOS_MODE == "fallback":
-                raw_translated = translate_with_argos(text_to_translate, SOURCE_LANG, lang)
-            if not raw_translated:
-                last_error_file = log_dir / "i18n_last_error_segment.log"
-                last_error_file.write_text(section_text, encoding="utf-8")
-                print(f"      [ERROR] All translation engines failed for '{lang}'.")
-                return None
-    
-            if len(raw_translated) != len(lines_to_send):
-                logger.warning(
-                    "Line count mismatch for '%s': expected %d, got %d",
-                    lang,
-                    len(lines_to_send),
-                    len(raw_translated),
-                )
-                return None
+                raw_translated = translate_with_argos(text_to_translate, source_lang, lang)
+                if not raw_translated:
+                    last_error_file = log_dir / "i18n_last_error_segment.log"
+                    last_error_file.write_text(section_text, encoding="utf-8")
+                    print(f"      [ERROR] All translation engines failed for '{lang}'.")
+                    return None
+        
+                if len(raw_translated) != len(lines_to_send):
+                    logger.warning(
+                        "Line count mismatch for '%s': expected %d, got %d",
+                        lang,
+                        len(lines_to_send),
+                        len(raw_translated),
+                    )
+                    return None
 
             translated_lines = list(lines_for_translation)
             for idx, prefix, suffix, trans_line in zip(
@@ -490,11 +500,16 @@ def process_file(filename):
     with open(filename, "r", encoding="utf-8") as f:
         raw_content = f.read()
 
+    source_lang = detect_source_language(raw_content, default=SOURCE_LANG)
     sections = split_markdown_by_h2(raw_content)
     base_name = os.path.splitext(filename)[0]
     cache_data = load_cache(cache_file)
 
-    for lang in TARGET_LANGS:
+
+    target_languages = [lang for lang in TARGET_LANGS if lang != source_lang]
+        
+    for lang in target_languages:
+        
         i18n_dir = f"{base_name}.i18n"
         os.makedirs(i18n_dir, exist_ok=True)
         output_file = f"{i18n_dir}/{os.path.basename(base_name)}-{lang}lang.md"
@@ -506,7 +521,7 @@ def process_file(filename):
         ):
             continue
 
-        print(f"   -> Processing '{lang}' -> '{output_file}'…")
+        print(f"📁📄  -> Processing '{lang}' -> '{output_file}'…")
 
         translated_sections = []
         has_cache_miss = False
@@ -521,8 +536,7 @@ def process_file(filename):
             else:
                 has_cache_miss = True
 
-                translated = translate_section(section, lang)
-
+                translated = translate_section(section, lang, source_lang=source_lang)
                 if translated is None:
                     print(f"      [SKIP] Failed to translate section for '{lang}', aborting file write.")
                     section_failed = True
@@ -539,7 +553,6 @@ def process_file(filename):
                 
         if section_failed:
             continue
-
 
         full_output = "".join(translated_sections)
 
@@ -563,7 +576,22 @@ def process_file(filename):
             print(
                 f"      [SKIP] Output for '{lang}' is suspiciously short, skipping write."
             )
-            continue
+            continue        
+        
+        
+        if any(
+                line.strip().startswith("https://translate.google.com")
+                for line in output_lines
+        ):
+            print(
+                f"      [SKIP] Output for '{lang}' contains redirect URL, skipping write."
+            )
+            return 
+        if len(full_output) < (len(raw_content) * 0.35):
+            print(
+                f"      [SKIP] Output for '{lang}' is suspiciously short, skipping write."
+            )
+            return 
 
         orig_name = os.path.basename(filename)
         disclaimer = (
@@ -663,8 +691,16 @@ def main():
             def is_fresh(l):
                 tr = Path(f"{base_name}.i18n/{os.path.basename(base_name)}-{l}lang.md")
                 return tr.exists() and tr.stat().st_mtime >= Path(filename).stat().st_mtime
-            already_done = all(is_fresh(lang) for lang in TARGET_LANGS)
 
+            try:
+                with open(filename, "r", encoding="utf-8") as f_check:
+                    file_head = f_check.read(1500)
+                file_source_lang = detect_source_language(file_head, default=SOURCE_LANG)
+            except Exception:
+                file_source_lang = SOURCE_LANG
+
+            active_targets = [l for l in TARGET_LANGS if l != file_source_lang]
+            already_done = all(is_fresh(lang) for lang in active_targets)
             if already_done:
                 skipCount = skipCount + 1
 
