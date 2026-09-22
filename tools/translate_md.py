@@ -35,6 +35,10 @@ script_dir = Path(__file__).resolve().parent
 
 # --- KONFIGURATION ---
 SOURCE_LANG = "en"
+# Options: "fallback" (on engine failure), "primary" (Argos first), "only" (strictly offline), "off"
+ARGOS_MODE = "fallback"
+
+
 # TARGET_LANGS = ["de", "pt", "es", "fr"]
 # TARGET_LANGS = ["de"]
 #TARGET_LANGS = ["de","pt","pt-BR","es","fr","ja","ko","hi","zh-CN","pl","ar"]
@@ -65,10 +69,14 @@ try:
         split_markdown_by_h2,
         store_cached_translation,
     )
+
+
     from tools.i18n.engine_fallback import (
         load_cooldowns,
         translate_with_engine_fallback,
     )
+    from tools.i18n.argos_engine import translate_with_argos
+
 except ImportError:
     from i18n.section_cache import (
         compute_section_hash,
@@ -220,9 +228,42 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
     # Use re.sub with our replacement function to process all links in the line
     return markdown_link_pattern.sub(replace_link, line)
 
+# 
+# def is_translatable_line(line: str) -> bool:
+#     s = line.strip()
+#     if not s:
+#         return False
+#     if s.startswith("<!--") and s.endswith("-->"):
+#         return False
+#     if re.fullmatch(r"(?:XMDLINK\d+X\s*)+", s):
+#         return False
+#     if re.fullmatch(r"<[^>]+>", s):
+#         return False
+#     if re.match(r"^__CODE_BLOCK_\d+__$", s):
+#         return False
+#     return True
+# 
+
+# ---
+def is_translatable_line(line: str) -> bool:
+    s = line.strip()
+    if not s:
+        return False
+    if s.startswith("<!--") and s.endswith("-->"):
+        return False
+    cleaned = re.sub(r"XMDLINK\d+X", "", s)
+    cleaned = re.sub(r"XINLINECODE\d+X", "", cleaned)
+    cleaned = re.sub(r"XHTMLTAG\d+X", "", cleaned)
+    
+    cleaned = re.sub(r"__CODE_BLOCK_\d+__", "", cleaned)
+    cleaned = re.sub(r"XDUNDERX|XSPACEBREAKX", "", cleaned)
+    cleaned = re.sub(r"<[^>]+>", "", cleaned)
+    cleaned = re.sub(r"\[\s*\]\([^\)]*\)", "", cleaned)
+    return bool(re.search(r"[a-zA-Z]", cleaned))
 
 
 def translate_section(section_text: str, lang: str) -> str | None:
+
     original_lines = section_text.splitlines()
 
     markdown_links = []
@@ -248,9 +289,19 @@ def translate_section(section_text: str, lang: str) -> str | None:
     #     link2_tags.append(match.group(0))
     #     return placeholder
 
-    html_tag_regex = re.compile(r"(<[^>]+>|\([^)]+\))")
+    inline_codes = []
+
+    def inline_code_replacer(match):
+        placeholder = f"XINLINECODE{len(inline_codes)}X"
+        inline_codes.append(match.group(0))
+        return placeholder
+
+    inline_code_regex = re.compile(r"`[^`\n]+`")
+    
+    html_tag_regex = re.compile(r"<[^>]+>")    
     lines_step_link = [link_regex.sub(link_replacer, line) for line in original_lines]
-    lines_step0 = [html_tag_regex.sub(html_replacer, line) for line in lines_step_link]
+    lines_step_inline = [inline_code_regex.sub(inline_code_replacer, line) for line in lines_step_link]
+    lines_step0 = [html_tag_regex.sub(html_replacer, line) for line in lines_step_inline]
     lines_step1 = []
     for line in lines_step0:
         if line.endswith("  "):
@@ -279,87 +330,136 @@ def translate_section(section_text: str, lang: str) -> str | None:
         else:
             lines_for_translation.append(line)
 
-    text_to_translate = "\n".join(lines_for_translation)
-    if not text_to_translate.strip():
-        return section_text
 
-    # writes bevor echt translation, also when it's not error later:
-    # last_error_file = log_dir / "i18n_last_error_segment.log"
-    # last_error_file.write_text(section_text, encoding="utf-8")
-
-    cooldowns = load_cooldowns(cooldown_file)
-    
-    translated_lines = translate_with_engine_fallback(
-        text=text_to_translate,
-        source_lang=SOURCE_LANG,
-        target_lang=lang,
-        cooldowns=cooldowns,
-        cooldown_file=cooldown_file,
-        timeout=40,
-        )
-    
-    if not translated_lines:
-        last_error_file = log_dir / "i18n_last_error_segment.log"
-        last_error_file.write_text(section_text, encoding="utf-8")
-        print(f"      [ERROR] All translation engines failed for '{lang}'.")
-        return None
-
-    restored_step_A = []
-    for line in translated_lines:
-        code_match = re.match(r"^__CODE_BLOCK_(\d+)__$", line.strip())
-        if code_match:
-            idx = int(code_match.group(1))
-            if idx < len(code_blocks):
-                restored_step_A.extend(code_blocks[idx].split("\n"))
-                continue
-        restored_step_A.append(line)
-
-    restored_step_B = []
-    placeholder_regex = re.compile(r"(XMDLINK\d+X)")
-    for line in restored_step_A:
-        restored_line = line
-        placeholders_in_line = placeholder_regex.findall(restored_line)
-        for placeholder in placeholders_in_line:
-            link_index = int(re.search(r"\d+", placeholder).group())
-            if link_index < len(markdown_links):
-                original_link = markdown_links[link_index]
-                modified_link = add_lang_to_md_links(original_link, lang)
-                restored_line = restored_line.replace(placeholder, modified_link, 1)
-        restored_step_B.append(restored_line)
-
-
-
-
-    html_placeholder_regex = re.compile(r"(XHTMLTAG\d+X)")
-    restored_step_html = []
-    for line in restored_step_B:
-        restored_line = line
-        placeholders_in_line = html_placeholder_regex.findall(restored_line)
-        for placeholder in placeholders_in_line:
-            idx = int(re.search(r"\d+", placeholder).group())
-            if idx < len(html_tags):
-                restored_line = restored_line.replace(placeholder, html_tags[idx], 1)
-        restored_step_html.append(restored_line)
-
-    restored_step_C = [
-        line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_html
+    translatable_indices = [
+        idx for idx, line in enumerate(lines_for_translation) if is_translatable_line(line)
     ]
+    raw_lines_to_send = [lines_for_translation[idx] for idx in translatable_indices]
 
-
-
-
-
+    quote_prefixes = []
     
-    final_lines = [
-        line.replace(HARD_BREAK_PLACEHOLDER, "  ") for line in restored_step_C
-    ]
-    return "\n".join(final_lines)
+    line_prefixes = []
+    line_suffixes = []
+    lines_to_send = []
+    for line in raw_lines_to_send:
+        m_p = re.match(r"^(\s*(?:[>│├└─┌┬┴]+\s*)+)", line)
+        p = m_p.group(1) if m_p else ""
+        body = line[len(p):]
 
+        m_s = re.search(r"(\s*[\U0001f300-\U0001f9ff\U0001fa00-\U0001faff\u2600-\u27bf\s]+)$", body)
+        if m_s and any(ord(c) > 127 for c in m_s.group(1)):
+            s = m_s.group(1)
+            body = body[:-len(s)]
+        else:
+            s = ""
 
-def compute_adaptive_delay(content_length: int, base_seconds: float = 4.0, char_rate: float = 200.0) -> float:
-    jitter = random.uniform(1.0, 3.0)
+        line_prefixes.append(p)
+        line_suffixes.append(s)
+        lines_to_send.append(body)        
+        
+    if not lines_to_send:
+        translated_lines = list(lines_for_translation)
+    else:
+        text_to_translate = "\n".join(lines_to_send)
+
+        raw_translated = None
+        if ARGOS_MODE in ("primary", "only"):
+            raw_translated = translate_with_argos(text_to_translate, SOURCE_LANG, lang)
+
+        if not raw_translated and ARGOS_MODE != "only":
+            cooldowns = load_cooldowns(cooldown_file)
+            raw_translated = translate_with_engine_fallback(
+                text=text_to_translate,
+                source_lang=SOURCE_LANG,
+                target_lang=lang,
+                cooldowns=cooldowns,
+                cooldown_file=cooldown_file,
+                timeout=40,
+            )
+    
+            if not raw_translated and ARGOS_MODE == "fallback":
+                raw_translated = translate_with_argos(text_to_translate, SOURCE_LANG, lang)
+            if not raw_translated:
+                last_error_file = log_dir / "i18n_last_error_segment.log"
+                last_error_file.write_text(section_text, encoding="utf-8")
+                print(f"      [ERROR] All translation engines failed for '{lang}'.")
+                return None
+    
+            if len(raw_translated) != len(lines_to_send):
+                logger.warning(
+                    "Line count mismatch for '%s': expected %d, got %d",
+                    lang,
+                    len(lines_to_send),
+                    len(raw_translated),
+                )
+                return None
+
+            translated_lines = list(lines_for_translation)
+            for idx, prefix, suffix, trans_line in zip(
+                translatable_indices, line_prefixes, line_suffixes, raw_translated
+            ):
+                translated_lines[idx] = f"{prefix}{trans_line}{suffix}"
+
+            restored_step_a = []
+            for line in translated_lines:
+                code_match = re.match(r"^__CODE_BLOCK_(\d+)__$", line.strip())
+                if code_match:
+                    idx = int(code_match.group(1))
+                    if idx < len(code_blocks):
+                        restored_step_a.extend(code_blocks[idx].split("\n"))
+                        continue
+                restored_step_a.append(line)
+
+            restored_step_b = []
+            placeholder_regex = re.compile(r"(XMDLINK\d+X)")
+            for line in restored_step_a:
+                restored_line = line
+                placeholders_in_line = placeholder_regex.findall(restored_line)
+                for placeholder in placeholders_in_line:
+                    link_index = int(re.search(r"\d+", placeholder).group())
+                    if link_index < len(markdown_links):
+                        original_link = markdown_links[link_index]
+                        modified_link = add_lang_to_md_links(original_link, lang)
+                        restored_line = restored_line.replace(placeholder, modified_link, 1)
+                restored_step_b.append(restored_line)
+
+        
+        
+        
+            html_placeholder_regex = re.compile(r"(XHTMLTAG\d+X)")
+            restored_step_html = []
+            for line in restored_step_b:
+                restored_line = line
+                placeholders_in_line = html_placeholder_regex.findall(restored_line)
+                for placeholder in placeholders_in_line:
+                    idx = int(re.search(r"\d+", placeholder).group())
+                    if idx < len(html_tags):
+                        restored_line = restored_line.replace(placeholder, html_tags[idx], 1)
+                restored_step_html.append(restored_line)
+        
+            inline_placeholder_regex = re.compile(r"(XINLINECODE\d+X)")
+            restored_step_inline = []
+            for line in restored_step_html:
+                restored_line = line
+                placeholders_in_line = inline_placeholder_regex.findall(restored_line)
+                for placeholder in placeholders_in_line:
+                    idx = int(re.search(r"\d+", placeholder).group())
+                    if idx < len(inline_codes):
+                        restored_line = restored_line.replace(placeholder, inline_codes[idx], 1)
+                restored_step_inline.append(restored_line)
+
+            restored_step_c = [
+                line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_inline
+            ]
+   
+            final_lines = [
+                line.replace(HARD_BREAK_PLACEHOLDER, "  ") for line in restored_step_c
+            ]
+            return "\n".join(final_lines)
+
+def compute_adaptive_delay(content_length: int, base_seconds: float = 12.0, char_rate: float = 100.0) -> float:
+    jitter = random.uniform(14.0, 18.0)
     return base_seconds + (content_length / char_rate) + jitter
-
 
 def process_file(filename):
     
@@ -466,7 +566,9 @@ def main():
     try:
         fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except OSError:
-        logger.warning("Another instance of translate_md.py is already running. Exiting.")
+        logger.warning("Another instance of translate_md.py is already running. Exiting. Tips/Idea:")
+        logger.info("pkill -f translate_md.py")
+        logger.info("________________________")
         sys.exit(0)
 
     # test_translation_links()

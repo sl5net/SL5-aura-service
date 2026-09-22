@@ -1,3 +1,5 @@
+> ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
+
 <img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
 # ⬟ SL5 Aura – Deine Stimme. Deine Regeln.

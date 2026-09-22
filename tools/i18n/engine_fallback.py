@@ -102,7 +102,11 @@ def translate_with_engine_fallback(
         return None
 
     for engine in available_engines:
+        if engine == "bing" and len(text) > 400:
+            logger.info("Skipping engine 'bing' for text length %d (> 400 chars).", len(text))
+            continue
         logger.info("Trying engine '%s' for %s->%s", engine, source_lang, target_lang)
+        
         try:
             process = subprocess.run(
                 ["trans", "-e", engine, "-brief", f"{source_lang}:{target_lang}"],
