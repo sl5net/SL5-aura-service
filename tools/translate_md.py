@@ -573,7 +573,7 @@ def process_file(filename):
         if not full_output.startswith("> ℹ️ *This is a machine-translated document"):
             full_output = disclaimer + full_output
 
-        print(f"      -> Saving file '{output_file}'…")
+        print(f"📁📄      -> Saving file '{output_file}'…")
         with open(output_file, "w", encoding="utf-8") as f:
 
             f.write(full_output)

@@ -590,5 +590,69 @@
     "pt-BR": "\nEsta tabela fornece uma visão geral dos diferentes modelos Vosk, incluindo seu tamanho, taxa de erro de palavras ou velocidade, observações e informações de licença.\n\n\n- **Modelos Vosk:** [Vosk-Model List](https://alphacephei.com/vosk/models)\n- **LanguageTool:**  \n   (6.6) [https://languagetool.org/download/](https://languagetool.org/download/) \n\n**Licença do LanguageTool:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)\n\n---\n</details>\n\n",
     "zh-CN": "\n本表概述了不同的沃斯克模型,包括它们的大小,词错误率或速度,注释,以及许可证信息等.\n\n\n- ** Vosk-模型:** [Vosk-Model List](https://alphacephei.com/vosk/models)\n- **语言工具:SPACEBREAKX\n   (6.6) [https://languagetool.org/download/](https://languagetool.org/download/) \n\n**语言工具的语素:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)\n\n---\n</details>\n\n",
     "ar": "\nيقدم هذا الجدول نظرة عامة على نماذج Vosk المختلفة، بما في ذلك حجمها ومعدل خطأ الكلمات أو سرعتها والملاحظات ومعلومات الترخيص.\n\n\n                                         - **نماذج فوسك:** [Vosk-Model List](https://alphacephei.com/vosk/models)\n                                                   - **أداة اللغة:**  \n   (6.6) [https://languagetool.org/download/](https://languagetool.org/download/) \n\n                                **ترخيص أداة اللغة:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)\n\n---\n</details>\n\n"
+  },
+  "6f8d50030457c1c181a91d94191dd49e08db399554a66faa4d10e32db4485d0b": {
+    "ar": "# تبديل-التبويب:\n\n                                                              # بديل: 1-9\n",
+    "de": "# Tab-Umschalten:\n\n# Alt: 1-9\n",
+    "es": "# Tab-Toggle:\n\n# Alt: 1-9\n",
+    "fr": "# Tab-Toggle :\n\n# Alt: 1-9\n",
+    "hi": "# Tab-Toggle:\n\n# Alt: 1-9\n",
+    "ja": "# タブトグル:\n\n# アルト: 1-9\n",
+    "ko": "# 탭-토글:\n\n# 대체: 1-9\n",
+    "pl": "# Przełącznik-Kart\n\n# Alt: 1-9\n",
+    "pt": "# Alternar-Abas:\n\n# Alt: 1-9\n",
+    "pt-BR": "# Alternar-Abas:\n\n# Alt: 1-9\n",
+    "zh-CN": "# 标签切换：\n\n# 替代: 1-9\n"
+  },
+  "50a3d616ec2f8d92095f123010096d09062097f54561489fc3ddebe70beb485e": {
+    "ar": "## Alt+9 يقوم بتشغيل كافة الأزرار\n\n                                             # علامة التبويب: 1-9\n",
+    "de": "## Alt+9 löst alle Tasten aus\n\n# Tab: 1-9\n",
+    "es": "## Alt+9 activa todos los botones\n\n# Tab: 1-9\n",
+    "fr": "## Alt+9 déclenche tous les boutons\n\nOnglet : 1-9\n",
+    "hi": "## Alt+9 सभी बटन ट्रिगर करता है\n\n# टैब: 1-9\n",
+    "ja": "## Alt+9 はすべてのボタンをトリガーします\n\n# タブ:1-9\n",
+    "ko": "## Alt+9가 모든 버튼을 작동시킵니다\n\n# 탭: 1-9\n",
+    "pl": "## Alt+9 uruchamia wszystkie przyciski\n\n# Karta: 1-9\n",
+    "pt": "## Alt+9 aciona todos os botões\n\n# Aba: 1-9\n",
+    "pt-BR": "## Alt+9 aciona todos os botões\n\n# Aba: 1-9\n",
+    "zh-CN": "## Alt+9 触发所有按钮\n\n# 标签: 1-9\n"
+  },
+  "34e19897f04b8b1fc2bcfd6d95dec6dd7fed7efee1f758dad1bfbfa463397270": {
+    "ar": "## 9 يشغّل جميع الأزرار\n\n                                               # لوحة الأرقام: 1-9\n",
+    "de": "## 9 löst alle Tasten aus\n\n# NumPad: 1-9\n",
+    "es": "## 9 activa todos los botones\n\n# NumPad: 1-9\n",
+    "fr": "## 9 déclenche tous les boutons\n\n# NumPad: 1-9\n",
+    "hi": "# 9 सभी बटनों को ट्रिगर करता है\n\n#NumPad: 1-9\n",
+    "ja": "#9 はすべてのボタンをトリガーします\n\n# NumPad: 1-9\n",
+    "ko": "## 9이 모든 버튼을 트리거합니다\n\n# 숫자패드: 1-9\n",
+    "pl": "## 9 uruchamia wszystkie przyciski\n\n# Klawiatura numeryczna: 1-9\n",
+    "pt": "## 9 ativa todos os botões\n\n# TecladoNumérico: 1-9\n",
+    "pt-BR": "## 9 ativa todos os botões\n\n# TecladoNumérico: 1-9\n",
+    "zh-CN": "## 9 触发所有按钮\n\n# 小键盘：1-9\n"
+  },
+  "aad3fe4f4491e5ea010065f67c293d9570900f5834b4da1e2ef5439150443410": {
+    "ar": "## NumPad+9 يقوم بتشغيل كافة الأزرار\n",
+    "de": "## NumPad+9 löst alle Tasten aus\n",
+    "es": "## NumPad+9 activa todos los botones\n",
+    "fr": "## NumPad+9 déclenche tous les boutons\n",
+    "hi": "## NumPad+9 सभी बटनों को ट्रिगर करता है\n",
+    "ja": "## NumPad+9 は全てのボタンをトリガーします\n",
+    "ko": "## NumPad+9가 모든 버튼을 작동시킵니다\n",
+    "pl": "## NumPad+9 uruchamia wszystkie przyciski\n",
+    "pt": "## NumPad+9 aciona todos os botões\n",
+    "pt-BR": "## NumPad+9 aciona todos os botões\n",
+    "zh-CN": "## 数字键盘+9 触发所有按钮\n"
+  },
+  "799652e5ba28fed4eadbce938a6c8320cc29a04285469b0537d55400854053f2": {
+    "ar": "# الشهادات والتطوير المستمر\n\n"
+  },
+  "61cee57dca3a1d57fdcadad8ca3a331a058ba8bf8820c25ca6a8314942531e6a": {
+    "ar": "محرر مساهم من الخبراء\n\n** جماعة التدفق الزائد** (2012 - ساخن) على الإنترنت\n\n- Edit-Privileg: Inhaber erweiterter Community-Rechte zur\n  qualitätsichernden Bearbeitung fremder Beiträge ohne Peer-Review.\n\n- Reichweite: Über 530.000 erreichte Entwickler mit technischem Fokus\n  auf RegEx, Automation und System-Integration.\n\n- Auszeichnung: Verleihung des Gold-Badges ”Socratic“ für die\n  Bereitstellung zahlreicher technischer Lösungen mit hohem\n  مجتمعيّ.\n\n"
+  },
+  "eeb4f4f6d555dca3ef4463c2c1bad5e931ae94d668f2d6f8f58b878c62d5ee4b": {
+    "ar": "## SL5صغير-نمط الإزاحة\n\n                   **ويكيبيديا (مؤرشف)** (2017) web.archive.org\n\nنمط مسافة بادئة خاص لـ AutoHotkey، موثق باللغة الألمانية\n                                                          ويكيبيديا.\n[Archiv-Link](https://web.archive.org/web/20171229200102/https:/de.wikipedia.org/wiki/Einr%C3%BCckungsstil#SL5small-Stil)\n\n"
+  },
+  "f686c6476f4b283f0f36d2c95473f14ca7e2897dcec87017b5e0d3da1122ca1e": {
+    "ar": "## خوارزميات وهياكل بيانات جافاسكريبت القديمة\n\n                          **freeCodeCamp.org** (2023) على الإنترنت\n\nتعميق تصميم الخوارزميات وهياكل البيانات في العصر الحديث\n                                                         سياق JavaScript.\n\n                       - **إطار عمل PHP Symfony** (Testgorilla، 2021)\n"
   }
 }

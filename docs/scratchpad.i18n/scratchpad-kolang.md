@@ -1,0 +1,12 @@
+> ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../scratchpad.md).*
+
+# 탭-토글:
+
+# 대체: 1-9
+## Alt+9가 모든 버튼을 작동시킵니다
+
+# 탭: 1-9
+## 9이 모든 버튼을 트리거합니다
+
+# 숫자패드: 1-9
+## NumPad+9가 모든 버튼을 작동시킵니다
