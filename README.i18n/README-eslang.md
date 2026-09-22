@@ -14,10 +14,14 @@
 > 100% fuera de línea, marco de asistente de voz centrado en la privacidad.  
 > Define exactamente lo que hace tu voz — desde una sola palabra
 > a scripts completos de Python. Sin nube. Ningún dato sale de tu máquina.  
-> Se ejecuta en la terminal, navegador o como un servicio en segundo plano, en Linux, macOS y Windows.| 👵 Principiante | 🎓 Estudiante | 🧑‍💻 Desarrollador |
+> Se ejecuta en la terminal, navegador o como un servicio en segundo plano, en Linux, macOS y Windows.
+
+| 👵 Principiante | 🎓 Estudiante | 🧑‍💻 Desarrollador |
 |---|---|---|
 | [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-eslang.md#the-oma-modus-beginner-shortcut) : solo escribe una palabra, Aura hace el resto | Aprende con Koans — un concepto a la vez | Script completo en Python, complementos, llamadas API |
-| 🗄️ Gestión del Estado | Orquestación Trino + Airflow, fzf, CopyQ, comandos de voz/terminal, interfaces de usuario de navegador |[![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
+| 🗄️ Gestión del Estado | Orquestación Trino + Airflow, fzf, CopyQ, comandos de voz/terminal, interfaces de usuario de navegador |
+
+[![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 
 ⚡ **~2.87 J** por prueba (39 tests without LanguageTool across >800 maps @ 0.07s warm / 0.36s cold 🌿 measured with XMDLINK1X) · sin computación en la nube
 
@@ -26,12 +30,18 @@
 ⚡ **Suite de pruebas completa:** 94 pruebas con LanguageTool en más de 800 mapas @ 0,07 s en caliente / 0,46 s en frío · sin computación en la nube
 
 <details>
-<summary>Inicio Rápido</summary>## Inicio Rápido### Opción A: Instalador Web y de 1 Clic (Recommended)
+<summary>Inicio Rápido</summary>
+
+## Inicio Rápido
+
+### Opción A: Instalador Web y de 1 Clic (Recommended)
 
 Comando de una línea o instalador independiente para Linux, macOS y Windows:
 - **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-eslang.md)**
 
----### Opción B: Instalación manual (Developers / Git)
+---
+
+### Opción B: Instalación manual (Developers / Git)
 
 1. Descarga o clona este repositorio
 2. Ejecute el script de configuración para su sistema operativo (see `setup/` folder):
@@ -46,6 +56,7 @@ Comando de una línea o instalador independiente para Linux, macOS y Windows:
 4. Presione su tecla de acceso rápido y hable: **[full guide →](../docs/GettingStarted.i18n/GettingStarted-eslang.md)**
 
 ---
+
 ### Desinstalación
 Para eliminar los servicios en segundo plano, las entradas de inicio automático y los entornos virtuales de SL5 Aura:
 - **Linux/macOS:** `bash setup/uninstall.sh`
@@ -80,11 +91,13 @@ Nota: Muchos textos son traducciones generadas automáticamente de la documentac
 
 <details>
 <summary>Demostración</summary>
+
 ### 📺 Demo de Terminal
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
 > **Consejo:** Para una mejor experiencia en la terminal, consulte [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-eslang.md).
+
 ### 🎥 Tutorial en Video
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
@@ -94,6 +107,7 @@ Nota: Muchos textos son traducciones generadas automáticamente de la documentac
 
 <details>
 <summary>Características principales</summary>
+
 ## Características clave
 
 * **Sin conexión y privado:** 100% local. Ningún dato sale nunca de su máquina.
@@ -111,9 +125,12 @@ afectando a los demás. Incluye un **Panel de administración** (port 8084) en t
 
 <details>
 <summary> 🔌 Integraciones listas para usar</summary>
-    ## 🔌 Integraciones listas para usar
+  
+    
+## 🔌 Integraciones listas para usar
 
 SL5-Aura viene con un vasto ecosistema de más de **100+ complementos preconfigurados**. Aquí hay algunos aspectos destacados:
+
 ### Control de voz OculiX / SikuliX IDE
 SL5-Aura proporciona soporte de voz de primera clase para **OculiX** y **SikuliX IDE**. Esta integración le permite "decir" su código de automatización.
 
@@ -123,7 +140,9 @@ SL5-Aura proporciona soporte de voz de primera clase para **OculiX** y **SikuliX
 * **Extensible:** Utiliza el formato `FUZZY_MAP_pre.py` fácil de editar.
 
 > **Estado:** Reconocido como complemento comunitario por el equipo de OculiX (see XMDLINK0X).
+
 ### Control por voz de LibreOffice IDE
+
 ### 0 A.D. Control por Voz
 
 ---
@@ -135,13 +154,16 @@ SL5-Aura proporciona soporte de voz de primera clase para **OculiX** y **SikuliX
 Documentación de XHTML
 
 🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+
 ## Documentación
 
 Para obtener una referencia técnica completa, incluidos todos los módulos y scripts, visite nuestra página de documentación oficial. Se genera automáticamente y siempre está actualizado.
 
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+
 ### Características Destacadas
 - [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-eslang.md) — Búsqueda de reglas `fzf` de doble panel, vistas previas de contexto en vivo, ejecución instantánea de comandos mediante `Enter`/`Ctrl+R` e integración con el editor a través de `Ctrl+E`. Compatible con un atajo de teclado global (`Super+S`) y múltiples entornos de búsqueda dedicados preconfigurados mediante comandos de voz.
+
 ### Estado de compilación
 
 [![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
@@ -172,7 +194,9 @@ Para obtener una referencia técnica completa, incluidos todos los módulos y sc
 
 <details>
 <summary>Instalación</summary>
+
 ## Instalación
+
 ### 🎥 Instalación rápida y sin moderación (Manjaro/Arch Video)
 Vea el proceso de configuración completo de 6 minutos:
 * **Descargar:** ~3 minutos
@@ -186,6 +210,7 @@ La configuración es un proceso de dos pasos:
 2. Ejecute el script de configuración única para su sistema operativo.
 
 Los scripts de configuración manejan todo: dependencias del sistema, entorno Python y descarga de los modelos y herramientas necesarios (~4GB) directamente desde nuestras versiones de GitHub para obtener la máxima velocidad.
+
 
 #### Para Linux, macOS y Windows (with Optional Language Exclusion)
 
@@ -231,7 +256,9 @@ setup/windows11_setup.ps1 -Excluir [OPCIÓN]
 
 # O (recommend) - Ejecute el archivo BAT:
 windows11_setup.bat -Excluir "en"
-__CODE_BLOCK_1__#### Para Windows
+__CODE_BLOCK_1__
+
+#### Para Windows
 Ejecute el script de configuración con privilegios de administrador.
 
 **Instale una herramienta para leer y ejecutar, por ejemplo, [CopyQ](https://github.com/hluk/CopyQ) o [AutoHotkey v2](https://www.autohotkey.com/)**. Esto es necesario para el observador de escritura de texto.
@@ -247,6 +274,7 @@ La instalación es totalmente automatizada y tarda entre **8 y 10 minutos** cuan
 > **Nota:** No es necesario instalar Python o Git de antemano; el guión se encarga de todo.
 
 ---
+
 #### Instalación avanzada/personalizada
 Si prefiere no instalar las herramientas del cliente (AHK/CopyQ) o desea ahorrar espacio en disco excluyendo idiomas específicos, puede ejecutar el script principal a través de la línea de comando:
 
@@ -268,21 +296,27 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 
 <details>
 <summary>Uso</summary>
+
 ## Uso
+
 ### 1. Iniciar los servicios
+
 #### En Linux y macOS
 Un solo script maneja todo. Inicia el servicio principal de dictado y el monitor de archivos automáticamente en segundo plano.
 ```bash
 # Run this from the project's root directory
 ./scripts/restart_venv_and_run-server.sh
 ```
+
 #### En Windows
 Iniciar el servicio es un **proceso manual de dos pasos**:
 
 1. **Inicie el servicio principal:** Ejecute `start_aura.bat`. o iniciar desde `.venv` el servicio con `python3`
+
 ### 2. Configura tu tecla de acceso rápido
 
 Para activar la dictado, necesitas un atajo de teclado global que cree un archivo específico. Recomendamos encarecidamente la herramienta multiplataforma [CopyQ](https://github.com/hluk/CopyQ).
+
 #### Nuestra Recomendación: CopyQ
 
 Crea un nuevo comando en CopyQ con un atajo global.
@@ -332,6 +366,7 @@ f11::
 }
 ```
 
+
 ### 3. ¡Comienza a dictar!
 Haga clic en cualquier campo de texto, presione su tecla de acceso rápido y aparecerá una notificación de "Escuchando...". Hable claramente, luego haga una pausa. El texto corregido se escribirá por usted.
 
@@ -342,6 +377,7 @@ Haga clic en cualquier campo de texto, presione su tecla de acceso rápido y apa
 
 <details>
 <summary>Configuración avanzada (Optional)</summary>
+
 Configuración avanzada (Optional)
 
 Puede personalizar el comportamiento de la aplicación creando un archivo de configuración local.
@@ -351,6 +387,7 @@ Puede personalizar el comportamiento de la aplicación creando un archivo de con
 3. Editar `config/settings local.py` (it overrides any setting from the main `config/settings.py` file).
 
 Este archivo 'config/settings local.py` es ignorado por Git por defecto, por lo que sus cambios personales no serán sobrescritos por actualizaciones.
+
 ### Plug-in Estructura y lógica
 
 La modularidad del sistema permite una extensión robusta a través de los plugins/ directorio.
@@ -373,9 +410,11 @@ Esta arquitectura garantiza que las reglas básicas del sistema estén protegida
 
 
 
+
 ## Scripts Clave para Usuarios de Windows
 
 Aquí hay una lista de los scripts más importantes para configurar, actualizar y ejecutar la aplicación en un sistema Windows.
+
 ### Configuración y Actualización
 
 *   `chmod +x update.sh; ./update.sh`
@@ -383,13 +422,16 @@ Aquí hay una lista de los scripts más importantes para configurar, actualizar 
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Ejecutar powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
 *   `update.bat` : Ejecuta esto desde la carpeta del proyecto para **obtener el código y las dependencias más recientes**.
+
 ### Ejecutando la Aplicación
 *   `start_aura.bat`: Un script principal para **iniciar el servicio de dictado**.
+
 ### Scripts Principales y Auxiliares
 *   `aura_engine.py`: El servicio principal de Python (usually started by one of the scripts above).
 *   `get_suggestions.py`: Un script auxiliar para funcionalidades específicas.
 
 </details>
+
 
 
 ## 🚀 Características clave y compatibilidad del sistema operativo
@@ -408,20 +450,22 @@ Leyenda para la compatibilidad del sistema operativo:
 </details>
 
 
+
 #### **Core Speech-to-Text (Aura) Engine**
 Nuestro motor primario para reconocimiento de voz y procesamiento de audio sin conexión.
 
     
 <details>
 <summary>Aura-Core</summary>
-*Aura-Core/*
+  
+*Aura-Core/*  
 🍏 🪟 🪟  
 ** 🪟 ACE  
-* Mapa privado seguro Carga (Integrity-First)**
+* Mapa privado seguro Carga (Integrity-First)**  
 * * Flujo de trabajo* Carga archivos ZIP protegidos por contraseña.   
 * Procesamiento de texto* Grouped by Language ( e.g. `de-DE`, `en-US`, ... )   
 │ 🪟 🪟 🪟  
-2. ** Intelligent Pre-Correction** (`FuzzyMap Pre` - XMDLINK0X)
+2. ** Intelligent Pre-Correction** (`FuzzyMap Pre` - XMDLINK0X)  
 * * Ejecución diabética del script:** Las reglas pueden activar scripts Python personalizados (`on_match_exec`) para realizar acciones avanzadas como llamadas API, archivo I/O o generar respuestas dinámicas.  
 * Ejecución de la causa:** Las reglas se procesan secuencialmente y sus efectos son **cumulativos**. Las reglas posteriores se aplican al texto modificado por reglas anteriores.  
 *El más alto nivel de prioridad parar la crisis* Si una regla logra un **Full Match** (^...$), todo el conducto de procesamiento para ese token se detiene inmediatamente. Este mecanismo es fundamental para implementar comandos de voz fiables.   
@@ -430,29 +474,30 @@ Nuestro motor primario para reconocimiento de voz y procesamiento de audio sin c
 * **Control Determinístico:** Utiliza RegEx-Rule-Engine para un control preciso, de alta prioridad y de texto.   
 **  
 Ollama AI (Local LLM) Fallback:** Sirve como un cheque opcional de baja prioridad para ** respuestas creativas, Q emparejado y avanzado Fuzzy Matching** cuando no se cumple ninguna regla determinista.  
-* **Estatus:** Integración local de LLM.
-5. ** Intelligent Post-Correction** (`FuzzyMap`)**– Refinement post-LT**
+* **Estatus:** Integración local de LLM.  
+5. ** Intelligent Post-Correction** (`FuzzyMap`)**– Refinement post-LT**  
 * Aplicado después de LanguageTool para corregir las salidas específicas de LT. Sigue la misma lógica de prioridad de cascada estricta que la capa de Precorrección.  
 * * Ejecución diabética del script:** Las reglas pueden activar scripts Python personalizados (XMDLINK1X) para realizar acciones avanzadas como llamadas API, archivo I/O o generar respuestas dinámicas.  
 * *Fuzzy Fallback* El **Fuzzy Similarity Check** (controlled by a threshold, e.g., 85%) actúa como la capa de corrección de errores de prioridad más baja. Sólo se ejecuta si toda la regla determinista / caduca anterior no encontró un partido (current_rule_matched is False), optimizando el rendimiento evitando controles lentos siempre que sea posible.   
 * Gestión de modelos/*   
 │ 🪟 🪟 🪟  
 └ 🪟 🪟 🪟  
-** 🪟
+** 🪟  
 🍏 🪟 ACE  
 🍏 🍏   
-** 🪟 ├ ├
+** 🪟 ├ ├  
 Requiere Docker · UI: http://localhost:8081` 🍏 🪟 🪟 🪟  
-* Motor Estatal de Turín*
+* Motor Estatal de Turín*  
 ─ Requiere a Docker · Admin UI: http://localhost:8084` 🍏 🪟 🪟 🪟  
-
+  
 **SystemUtilities/**   
 √ **LanguageTool Server Management/**   
 🍏 🪟 🪟 🪟  
-└
+└  
 🍏 🪟 ACE  
+
 ### **Gestión de Modelos y Paquetes**  
-Herramientas para el manejo robusto de modelos de lenguaje grandes.
+Herramientas para el manejo robusto de modelos de lenguaje grandes.  
 
 **ModelManagement/** 🐧 🍏 🪟  
 ├─ **Descargador de Modelos Robusto** (GitHub Release chunks) 🐧 🍏 🪟  
@@ -464,6 +509,7 @@ Herramientas para el manejo robusto de modelos de lenguaje grandes.
 
 <details>
 <summary>Desarrolladores y Ayudantes de Implementación</summary>
+
 #### **Development &amp; Deployment Helpers**  
 Scripts para la configuración, pruebas y ejecución de servicios ambientales.   
 
@@ -484,14 +530,16 @@ Entonces tal vez doble clic
 │ 🪟 🪟  
 │  
 └  
-─ ¿Quién?
+─ ¿Quién?  
 └ 🪟 *(Runs on GitHub Actions)*  
 
 </details>
 
 <details>
 <summary>Experimental Características</summary>
-    #### ## Upcoming / Experimental Features**  
+  
+    
+#### ## Upcoming / Experimental Features**  
 Características actualmente en desarrollo o en proyecto de estado.  
 
 **Características/**  
@@ -501,8 +549,8 @@ Características actualmente en desarrollo o en proyecto de estado.
 (*Changes to Plugin activation/deactivation, and their configurations, are applied on the next processing run without service restart.*)  
 │ 🪟  
 │ 🪟   
-* Enchufe de muelles (Draft)** (Voice control for poker applications)
-Plugin A.D. (Draft)** (Voice control for 0 A.D. game)
+* Enchufe de muelles (Draft)** (Voice control for poker applications)  
+Plugin A.D. (Draft)** (Voice control for 0 A.D. game)  
 ─ ** Producto de sonido cuando se inicia o termina una sesión** (Description pending) 🐧   
 Out 🪟 🪟 🪟  
 ─ **SL5 Aura Android Prototipo** (Not fully offline yet) 📱  
@@ -522,6 +570,7 @@ Out 🪟 🪟 🪟
 
 <details>
 <summary>A panorama gráfico de la arquitectura</summary>
+
 ### Una visión gráfica de la arquitectura:
 
 ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
@@ -532,6 +581,7 @@ Out 🪟 🪟 🪟
 
 <details>
 Modelos usados
+
 ## Modelos Utilizados:
 
 Recomendación: use modelos de Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (probably faster)
@@ -540,10 +590,12 @@ Estos modelos comprimidos deben guardarse en la carpeta `models/`
 
 `mv vosk-model-*.zip models/`
 
+
 Silencio Modelo Silencioso Tamaño Silencio Word error rate/Speed Silencioso
 | -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
 (librispeech test-clean)HTMLTAG1X6.05 (tedlium)<br/>29.78 (callcenter) Silencioso genérico de EE.UU.
 (Tuda-de test)<br/>24.00 (podcast)HTMLTAG8X12.82 (cv-test)<br/><br/>12.42 (mls)HTMLTAG12XX<br/>33.26 (mtedx)
+
 Esta tabla proporciona una visión general de los diferentes modelos de Vosk, incluyendo su tamaño, tasa de error de palabras o velocidad, notas e información sobre la licencia.
 
 
@@ -555,9 +607,11 @@ Esta tabla proporciona una visión general de los diferentes modelos de Vosk, in
 
 ---
 </details>
+
 ## Apoya el Proyecto
 Si encuentras útil esta herramienta, ¡por favor considera comprarnos un café! Tu apoyo ayuda a impulsar futuras mejoras.
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+

@@ -15,10 +15,12 @@
 > सटीक रूप से परिभाषित करें कि आपकी आवाज़ क्या करती है — एक शब्द से
 > पूरा Python स्क्रिप्ट तक। कोई क्लाउड नहीं। कोई डेटा आपके मशीन को नहीं छोड़ता।  
 > टर्मिनल, ब्राउज़र में, या बैकग्राउंड सेवा के रूप में चलता है — Linux, macOS, और Windows पर।
+
 | 👵 शुरुआती | 🎓 सीखने वाला | 🧑‍💻 डेवलपर |
 |---|---|---|
 | [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-hilang.md#the-oma-modus-beginner-shortcut) : बस एक शब्द लिखें, बाकी काम ऑरा करती है | कोअन के साथ सीखें — एक समय में एक अवधारणा | पूर्ण पायथन स्क्रिप्टिंग, प्लगइन्स, एपीआई कॉल्स |
 | 🗄️ स्टेट प्रबंधन | Trino + Airflow ऑर्केस्ट्रेशन, fzf, CopyQ, वॉइस/टर्मिनल कमांड, ब्राउज़र यूआई |
+
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 
 ⚡ **प्रति परीक्षण ~2.87 J** (39 tests without LanguageTool across >800 maps @ 0.07s warm / 0.36s cold 🌿 measured with XMDLINK1X) · बिना क्लाउड कंप्यूट
@@ -29,13 +31,16 @@
 
 <details>
 <summary>त्वरित प्रारंभ</summary>
+
 ## त्वरित शुरूआत
+
 ### विकल्प A: 1-क्लिक और वेब इंस्टॉलर (Recommended)
 
 Linux, macOS और Windows के लिए वन-लाइनर कमांड या स्टैंडअलोन इंस्टॉलर:
 - **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-hilang.md)**
 
 ---
+
 ## Option B: मैनुअल इंस्टालेशन (Developers / Git)
 
 1. इस भंडार को डाउनलोड या क्लोन करें
@@ -51,6 +56,7 @@ Linux, macOS और Windows के लिए वन-लाइनर कमां
 4. अपनी हॉटकी दबाएं और बोलें - ** [full guide →](../docs/GettingStarted.i18n/GettingStarted-hilang.md)*
 
 ---
+
 ## अनइंस्टॉलेशन
 SL5 Aura पृष्ठभूमि सेवाओं, ऑटोस्टार्ट प्रविष्टियों और आभासी वातावरण को हटाने के लिए:
 ** लिनक्स / मैक ओएस: ** `bash setup/uninstall.sh`
@@ -70,7 +76,7 @@ SL5 Aura पृष्ठभूमि सेवाओं, ऑटोस्टा�
 Glibc 2.43 संगतता के कारण mimalloc (`sudo pacman -S mimalloc`) की आवश्यकता है।
 **Linux (NixOS):***: Experimental — सामुदायिक योगदान सेटअप, अभी तक परीक्षण नहीं.
 यदि आप इसे आज़माते हैं, तो कृपया अपने निष्कर्षों के साथ एक मुद्दा या PR खोलें!   
-** लिनक्स (Manjaro): ** नया: एक सिस्टम-वाइड हॉटकी एक fzf-like, कीबोर्ड संचालित इंटरफ़ेस खोलता है ताकि आप डेस्कटॉप (completely decoupled from the active window) पर कहीं से Aura कमांड चला सकें। इस हॉटकी-चालित लॉन्चर को वर्तमान में लिनक्स (Manjaro) पर कार्यान्वित और परीक्षण किया गया है; अन्य वितरण सेटअप की आवश्यकता पर काम कर सकते हैं। [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-hilang.md)    में देखें
+** लिनक्स (Manjaro): ** नया: एक सिस्टम-वाइड हॉटकी एक fzf-like, कीबोर्ड संचालित इंटरफ़ेस खोलता है ताकि आप डेस्कटॉप (completely decoupled from the active window) पर कहीं से Aura कमांड चला सकें। इस हॉटकी-चालित लॉन्चर को वर्तमान में लिनक्स (Manjaro) पर कार्यान्वित और परीक्षण किया गया है; अन्य वितरण सेटअप की आवश्यकता पर काम कर सकते हैं। [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-hilang.md)    में देखें  
 
 
     
@@ -85,11 +91,13 @@ SL5 Aura एक पूर्ण, **ऑफलाइन वॉयस असिस�
 
 <details>
 <summary>Demo</summary>
+
 ### 📺 टर्मिनल डेमो
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
 > **संकेत:** बेहतर टर्मिनल अनुभव के लिए, [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-hilang.md) देखें।
+
 ### 🎥 वीडियो ट्यूटोरियल
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
@@ -99,6 +107,7 @@ SL5 Aura एक पूर्ण, **ऑफलाइन वॉयस असिस�
 
 <details>
 <summary>मुख्य विशेषताएँ</summary>
+
 ## कुंजी सुविधाएँ
 
 * ** ऑफ़लाइन और निजी:* 100% स्थानीय। कोई डेटा कभी भी आपकी मशीन को छोड़ देता है।
@@ -116,9 +125,11 @@ XINlineCODE2X, `terminal` और `web` के लिए सेटिंग्स
 
 <details>
 <summary>.
-    ## 🔌 तैयार-से-उपयोग इंटीग्रेशन
+    
+## 🔌 तैयार-से-उपयोग इंटीग्रेशन
 
 SL5-Aura एक विशाल इकोसिस्टम के साथ आता है जिसमें **100+ प्री-कॉन्फ़िगर किए गए प्लगइन्स** शामिल हैं। यहाँ कुछ मुख्य बातें हैं:
+
 ## OculiX / SikuliX IDE वॉयस कंट्रोल
 SL5-Aura ** Oculix** और **SikuliX IDE* के लिए प्रथम श्रेणी की आवाज समर्थन प्रदान करता है। यह एकीकरण आपको अपने स्वचालन कोड को "स्पाक" करने की अनुमति देता है।
 
@@ -128,7 +139,9 @@ SL5-Aura ** Oculix** और **SikuliX IDE* के लिए प्रथम श�
 ** आसानी से संपादित `FUZZY_MAP_pre.py` प्रारूप का उपयोग करता है।
 
 > ** OculiX टीम (see XMDLINK0X) द्वारा सामुदायिक प्लगइन के रूप में मान्यता प्राप्त है।
+
 ### LibreOffice आईडीई वॉइस कंट्रोल
+
 ### 0 ई.स. वॉइस कंट्रोल
 
 ---
@@ -140,13 +153,16 @@ SL5-Aura ** Oculix** और **SikuliX IDE* के लिए प्रथम श�
 <summary>प्रलेखन</summary>
 
 🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+
 ## दस्तावेज़ीकरण
 
 एक पूर्ण तकनीकी संदर्भ के लिए, जिसमें सभी मॉड्यूल और स्क्रिप्ट शामिल हैं, कृपया हमारे आधिकारिक प्रलेखन पृष्ठ पर जाएं। यह स्वचालित रूप से उत्पन्न होता है और हमेशा अद्यतन होता है।
 
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+
 ### फीचर स्पॉटलाइट
 - [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-hilang.md) - दोहरी पेन `fzf` नियम खोज, लाइव संदर्भ पूर्वावलोकन, XINlineCODE1X / `Ctrl+R` के माध्यम से तत्काल आदेश निष्पादन और `Ctrl+E` के माध्यम से संपादक एकीकरण। एक वैश्विक हॉटकी (`Super+S`) द्वारा समर्थित और कई समर्पित खोज-पर्यावरणों ने आवाज कमांड के माध्यम से पूर्व विन्यास किया।
+
 ################################################################################################################################################################################################################################################################
 
 [![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
@@ -177,7 +193,9 @@ SL5-Aura ** Oculix** और **SikuliX IDE* के लिए प्रथम श�
 
 <details>
 <summary>Installation</summary>
+
 ## स्थापना
+
 बिना मॉडरेशन (Manjaro/Arch Video)
 पूर्ण 6 मिनट की सेटअप प्रक्रिया देखें:
 डाउनलोड:* ~3 मिनट
@@ -191,6 +209,7 @@ SL5-Aura ** Oculix** और **SikuliX IDE* के लिए प्रथम श�
 2. अपने ऑपरेटिंग सिस्टम के लिए एक बार सेटअप स्क्रिप्ट चलाएं।
 
 सेटअप स्क्रिप्ट सब कुछ संभालती हैं: सिस्टम निर्भरताएं, पायथन पर्यावरण, और आवश्यक मॉडल और उपकरण (~4GB) को सीधे अधिकतम गति के लिए हमारे गिटहब रिलीज से डाउनलोड करती हैं।
+
 
 ####                                                                                                                             
 
@@ -237,6 +256,7 @@ setup/windows11_setup.ps1 -Exclude [OPTION]
 # Or (recommend) - Run the BAT file: 
 windows11_setup.bat -Exclude "en"
 ```
+
 ###
 व्यवस्थापक विशेषाधिकारों के साथ सेटअप स्क्रिप्ट चलाएं।
 
@@ -253,6 +273,7 @@ windows11_setup.bat -Exclude "en"
 > ** आपको पहले पायथन या गिट स्थापित करने की आवश्यकता नहीं है; स्क्रिप्ट सब कुछ संभालती है।
 
 ---
+
 ### उन्नत / कस्टम स्थापना
 यदि आप क्लाइंट टूल (AHK/CopyQ) को इंस्टॉल नहीं करना चाहते हैं या विशिष्ट भाषाओं को छोड़कर डिस्क स्पेस को सहेजना चाहते हैं, तो आप कमांड लाइन के माध्यम से मुख्य स्क्रिप्ट चला सकते हैं:
 
@@ -274,21 +295,27 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 
 <details>
 <summary>Usage</summary>
+
 # उपयोग
+
 ## 1। सेवा शुरू करें
+
 ###                                                                   
 एक एकल स्क्रिप्ट सब कुछ संभालती है। यह मुख्य तानाशाही सेवा शुरू करता है और फ़ाइल दर्शक स्वचालित रूप से पृष्ठभूमि में।
 ```bash
 # Run this from the project's root directory
 ./scripts/restart_venv_and_run-server.sh
 ```
+
 ###
 सेवा शुरू करना एक ** दो-चरण मैनुअल प्रक्रिया है*:
 
 1. ** मेन सर्विस शुरू करें:* रन `start_aura.bat`. या `.venv` से शुरू होकर `python3` के साथ सेवा शुरू करें
+
 ##2. अपने हॉटकी को कॉन्फ़िगर करें
 
 डिक्टेशन को ट्रिगर करने के लिए, आपको एक वैश्विक हॉटकी की आवश्यकता है जो एक विशिष्ट फ़ाइल बनाता है। हम अत्यधिक क्रॉस-प्लेटफॉर्म टूल [CopyQ](https://github.com/hluk/CopyQ) की सिफारिश करते हैं।
+
 ### हमारी सिफारिश: CopyQ
 
 एक वैश्विक शॉर्टकट के साथ कॉपीक्यू में एक नया कमांड बनाएं।
@@ -338,6 +365,7 @@ f11::
 }
 ```
 
+
 ##1.
 किसी भी टेक्स्ट फ़ील्ड में क्लिक करें, अपनी हॉटकी दबाएं, और एक "लिस्टिंग" अधिसूचना दिखाई देगी। स्पष्ट रूप से बोलो, फिर रोकें। सही पाठ आपके लिए टाइप किया जाएगा।
 
@@ -348,6 +376,7 @@ f11::
 
 <details>
 <summary>Advanced विन्यास (Optional)</summary>
+
 ## उन्नत विन्यास (Optional)
 
 आप एक स्थानीय सेटिंग फ़ाइल बनाकर एप्लिकेशन के व्यवहार को अनुकूलित कर सकते हैं।
@@ -357,6 +386,7 @@ f11::
 3. `config/settings_local.py` (it overrides any setting from the main `config/settings.py` file) संपादित करें।
 
 इस XINlineCODE5X फ़ाइल को डिफ़ॉल्ट रूप से गिट द्वारा नजरअंदाज कर दिया गया है, इसलिए आपके व्यक्तिगत परिवर्तन अद्यतनों से अधिक नहीं होंगे।
+
 ## प्लग-इन संरचना और तर्क
 
 सिस्टम की मॉड्यूलरिटी प्लगइन्स / डायरेक्टरी के माध्यम से मजबूत विस्तार की अनुमति देती है।
@@ -379,9 +409,11 @@ f11::
 
 
 
+
 ## विंडोज उपयोगकर्ताओं के लिए प्रमुख स्क्रिप्ट
 
 यहाँ विंडोज़ सिस्टम पर एप्लिकेशन सेट अप, अपडेट और चलाने के लिए सबसे महत्वपूर्ण स्क्रिप्ट्स की सूची है।
+
 ### सेटअप और अपडेट
 
 *   `chmod +x update.sh; ./update.sh`
@@ -389,13 +421,16 @@ f11::
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
 *   `update.bat` : परियोजना फ़ोल्डर से इसे चलाएं **ताज़ा कोड और डिपेंडेंसीज़ प्राप्त करने के लिए**।
+
 ### एप्लिकेशन चलाना
 *   `start_aura.bat`: **वाच्य सेवा शुरू करने** के लिए एक प्राथमिक स्क्रिप्ट।
+
 ### मुख्य और सहायक स्क्रिप्ट्स
 *   `aura_engine.py`: कोर पायथन सेवा (usually started by one of the scripts above).
 *   `get_suggestions.py`: विशिष्ट कार्यों के लिए एक सहायक स्क्रिप्ट।
 
 </details>
+
 
 
 ## 🚀 प्रमुख विशेषताएँ और OS संगतता
@@ -414,54 +449,57 @@ OS संगतता के लिए किंवदंती:
 </details>
 
 
+
 ## ** कोर स्पीच-टू-टेक्सट (Aura) इंजन **
 ऑफ़लाइन भाषण मान्यता और ऑडियो प्रसंस्करण के लिए हमारा प्राथमिक इंजन।
 
     
 <details>
 <summary>Aura-Core</summary>
-**Aura-Core/***
+  
+**Aura-Core/***  
 ├─ `aura_engine.py` (Main Python service orchestrating Aura) 🐧 🍏 🪟  
-├┬ ** लाइव हॉट-रीलोड** (Config & Maps)
-│├ ** सुरक्षित निजी मानचित्र लोड हो रहा है (Integrity-First)***
+├┬ ** लाइव हॉट-रीलोड** (Config & Maps)  
+│├ ** सुरक्षित निजी मानचित्र लोड हो रहा है (Integrity-First)***  
 ││ ** वर्कफ़्लो:* पासवर्ड संरक्षित ZIP अभिलेखागार लोड करता है।   
 │├ **टेक्स्ट प्रोसेसिंग और सुधार Language ( e.g. `de-DE`, `en-US`, ... )   
 │├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
-│├ **इंटेलिजेंट प्री-कोरेक्शन*** (`FuzzyMap Pre` - XMDLINK0X)
+│├ **इंटेलिजेंट प्री-कोरेक्शन*** (`FuzzyMap Pre` - XMDLINK0X)  
 ││ **************************************************************************************************************************************************************************************************************************************************************** नियम कस्टम पायथन स्क्रिप्ट (`on_match_exec`) को एपीआई कॉल, फ़ाइल I/O जैसे उन्नत कार्यों को करने या गतिशील प्रतिक्रियाओं को उत्पन्न करने के लिए ट्रिगर कर सकते हैं।   
 ││ **Cascading निष्पादन:* नियम क्रमिक रूप से संसाधित होते हैं और उनके प्रभाव ** संचयी* हैं। बाद में नियम पहले के नियमों द्वारा संशोधित पाठ पर लागू होते हैं।   
 ││ **सबसे ज्यादा प्राथमिकता बंद मानदंड:* यदि कोई नियम ** पूर्ण मैच** (^...$) को प्राप्त करता है, तो उस टोकन के लिए पूरी प्रोसेसिंग पाइपलाइन तुरंत बंद हो जाती है। यह तंत्र विश्वसनीय वॉयस कमांड को लागू करने के लिए महत्वपूर्ण है।   
 │├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar/style correction) 🐧 🍏 🪟  
-│├ **4. Hierarchical RegEx-Rule-Engine with Ollama AI Fallback***
+│├ **4. Hierarchical RegEx-Rule-Engine with Ollama AI Fallback***  
 ││ **परिचय नियंत्रण:* सटीक, उच्च प्राथमिकता आदेश और पाठ नियंत्रण के लिए RegEx-Rule-इंजन का उपयोग करता है।   
-│├ ** वेक्टर-खोज प्लगइन** (Lazy loading): Ollama/LLM गिरने वाली परत के साथ स्थानीय वेक्टर एम्बेडिंग को जोड़कर Semantic खोज को सक्षम करता है।
+│├ ** वेक्टर-खोज प्लगइन** (Lazy loading): Ollama/LLM गिरने वाली परत के साथ स्थानीय वेक्टर एम्बेडिंग को जोड़कर Semantic खोज को सक्षम करता है।  
 ││ ** Ollama AI (Local LLM) Fallback:* ** रचनात्मक उत्तर, क्यू एंड ए और उन्नत फ़ज़ी मैचिंग* के लिए वैकल्पिक, कम प्राथमिकता जांच के रूप में सेवा करता है जब कोई निश्चित नियम पूरा नहीं होता है।   
-││ **Status:* स्थानीय LLM एकीकरण।
-│└ **इंटेलिजेंट पोस्ट-Correction** (`FuzzyMap`)**- पोस्ट-LT रिफाइनमेंट****
+││ **Status:* स्थानीय LLM एकीकरण।  
+│└ **इंटेलिजेंट पोस्ट-Correction** (`FuzzyMap`)**- पोस्ट-LT रिफाइनमेंट****  
 ││ * LT-विशिष्ट आउटपुट को सही करने के लिए LanguageTool के बाद लागू। एक ही सख्त cascading प्राथमिकता तर्क के रूप में पूर्व सुधार परत.  
 ││ **************************************************************************************************************************************************************************************************************************************************************** नियम कस्टम पायथन स्क्रिप्ट (XMDLINK1X) को एपीआई कॉल, फ़ाइल I/O जैसे उन्नत कार्यों को करने या गतिशील प्रतिक्रियाओं को उत्पन्न करने के लिए ट्रिगर कर सकते हैं।   
 ││ **Fuzzy Fallback:* ** Fuzzy समानता चेक** (controlled by a threshold, e.g., 85%) सबसे कम प्राथमिकता त्रुटि सुधार परत के रूप में कार्य करता है। यह केवल तभी निष्पादित किया जाता है जब पूरे पूर्ववर्ती नियतात्मक/cascading नियम रन एक मैच (current_rule_matched is False) खोजने में विफल रहा, जब भी संभव हो तो धीमी गति से फजी चेक से बचने के द्वारा प्रदर्शन का अनुकूलन किया गया।   
 ├┬ ** मॉडल प्रबंधन/*   
 │├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (Configures the first-time model setup) 🐧 🍏 🪟  
-├─ **Adaptive VAD Timeout**
-├─ **Adaptive Hotkey (Start/Stop)***
+├─ **Adaptive VAD Timeout**  
+├─ **Adaptive Hotkey (Start/Stop)***  
 ├─ **इंस्टेंट भाषा स्विचिंग** (Experimental via model preloading)
-├─ **एयरफ्लो ऑर्केस्ट्रेशन** (DAG-based workflow automation)
+├─ **एयरफ्लो ऑर्केस्ट्रेशन** (DAG-based workflow automation)  
 │   की आवश्यकता है Docker · यूआई: `http://localhost:8081`
-├─ **Trino State Engine** (Interface-aware config per speech/terminal/web)
+├─ **Trino State Engine** (Interface-aware config per speech/terminal/web)  
 └─  की आवश्यकता है Docker · व्यवस्थापक यूआई: `http://localhost:8084`
-
+  
 ** सिस्टम उपयोगिताएँ/*   
 ├┬ **LanguageTool सर्वर प्रबंधन /*   
 │├─ `start_languagetool_server.py` (Initializes the local LanguageTool server) 🐧 🍏 🪟  
-│└─ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏 
+│└─ `stop_languagetool_server.py` (Shuts down the LanguageTool server) 🐧 🍏  
 ├─ `monitor_mic.sh` (e.g. for use with Headset without use keyboard and Monitor) 🐧 🍏 🪟  
+
 ## **मॉडल और पैकेज प्रबंधन**  
 बड़ी भाषा मॉडलों की मजबूत हैंडलिंग के लिए उपकरण।   
 
-**ModelManagement/***
-├─ **Robust Model Downloader** (GitHub Release chunks)
+**ModelManagement/***  
+├─ **Robust Model Downloader** (GitHub Release chunks)  
 ├─ `split_and_hash.py` (Utility for repo owners to split large files and generate checksums) 🐧 🍏 🪟  
 └─ `download_all_packages.py` (Tool for end-users to download, verify, and reassemble multi-part files) 🐧 🍏 🪟  
 
@@ -470,6 +508,7 @@ OS संगतता के लिए किंवदंती:
 
 <details>
 <summary>विकास और तैनाती सहायक </summary>
+
 ## **विकास और तैनाती सहायक***  
 पर्यावरण सेटअप, परीक्षण और सेवा निष्पादन के लिए स्क्रिप्ट।   
 
@@ -483,35 +522,37 @@ https://glogg.bonnefon.org/
 `log/aura_engine.log`
     
 **DevHelpers /*  
-├┬ ** पर्यावरण प्रबंधन
+├┬ ** पर्यावरण प्रबंधन  
 │├ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧 🍏  
 │└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
 ├┬ ** सिस्टम-वाइड डिक्टेशन इंटीग्रेशन/*   
-│├ Vosk-System-Listener इंटीग्रेशन 🔥
+│├ Vosk-System-Listener इंटीग्रेशन 🔥  
 │├ `scripts/monitor_mic.sh` (Linux-specific microphone monitoring) 🐧  
 │└ `scripts/type_watcher.ahk` (AutoHotkey listens for recognized text and types it out system-wide) 🪟  
 └─ **CI/CD स्वचालन/*  
-    └─ विस्तारित गिटहब वर्कफ़्लोज़ (Installation, testing, docs deployment)
+    └─ विस्तारित गिटहब वर्कफ़्लोज़ (Installation, testing, docs deployment)  
 
 </details>
 
 <details>
 <summary> एक्सपेरिमेंटल फीचर्स</summary>
-    ## **Upcoming / Experimental Features**  
+  
+    
+## **Upcoming / Experimental Features**  
 वर्तमान में विकास या मसौदा स्थिति में सुविधाएँ   
 
 ** एक्सपेरिमेंटल फीचर्स /*   
-├─ **ENTER AFTER DICTATION REGEX ** उदाहरण सक्रियण नियम "(ExampleAplicationThatNotExist|Pi, your personal AI)"
+├─ **ENTER AFTER DICTATION REGEX ** उदाहरण सक्रियण नियम "(ExampleAplicationThatNotExist|Pi, your personal AI)"  
 ├┬प्लगइन्स   
-│Englishالعربية中文(简体)हिन्दी; हिंदीاردو
+│Englishالعربية中文(简体)हिन्दी; हिंदीاردو  
 (*Changes to Plugin activation/deactivation, and their configurations, are applied on the next processing run without service restart.*)  
-│ ├ ** (Voice control for send git commands).
-│ ├ **wannweil** (Map for Location Germany-Wannweil)
-│ ├ ** पोकर प्लगइन (Draft)** (Voice control for poker applications)
-│ └ **0 एडी प्लगइन (Draft)**(Voice control for 0 A.D. game)
-├─ ** ध्वनि आउटपुट जब सत्र * (Description pending) शुरू या समाप्त होता है
-├─ ** विजुअल इम्पीयर्ड** (Description pending) के लिए स्पीच आउटपुट
-└─ **SL5 Aura Android प्रोटोटाइप* (Not fully offline yet)
+│ ├ ** (Voice control for send git commands).  
+│ ├ **wannweil** (Map for Location Germany-Wannweil)  
+│ ├ ** पोकर प्लगइन (Draft)** (Voice control for poker applications)  
+│ └ **0 एडी प्लगइन (Draft)**(Voice control for 0 A.D. game)  
+├─ ** ध्वनि आउटपुट जब सत्र * (Description pending) शुरू या समाप्त होता है  
+├─ ** विजुअल इम्पीयर्ड** (Description pending) के लिए स्पीच आउटपुट  
+└─ **SL5 Aura Android प्रोटोटाइप* (Not fully offline yet)  
 
 ---
 
@@ -528,6 +569,7 @@ https://glogg.bonnefon.org/
 
 <details>
 <summary>A वास्तुकला का चित्रमय अवलोकन </summary>
+
 ### वास्तुकला का एक चित्रमय अवलोकन:
 
 ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
@@ -538,6 +580,7 @@ https://glogg.bonnefon.org/
 
 <details>
 <summary>Used Models</summary>
+
 ## प्रयुक्त मॉडल:
 
 सिफारिश: मिरर से मॉडल का उपयोग https://github.com/sl5net/SL5-aura-service/release/tag/v0.2.0.1 (probably faster)
@@ -546,10 +589,12 @@ https://glogg.bonnefon.org/
 
 `mv vosk-model-*.zip models/`
 
+
 The number of the number of the number of the number of the number of the number.
 | -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
 [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) ([vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip))
 Apache 2.0 (mls)<br/>33.26 (mtedx)
+
 यह तालिका विभिन्न वोस्क मॉडलों का अवलोकन प्रदान करती है, जिसमें उनके आकार, शब्द त्रुटि दर या गति, नोट्स और लाइसेंस की जानकारी शामिल है।
 
 
@@ -561,9 +606,11 @@ Apache 2.0 (mls)<br/>33.26 (mtedx)
 
 ---
 </details>
+
 ## समर्थन परियोजना
 यदि आप इस उपकरण को उपयोगी पाते हैं तो कृपया हमें कॉफी खरीदने पर विचार करें! आपका समर्थन भविष्य में सुधार को बढ़ावा देने में मदद करता है।
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+

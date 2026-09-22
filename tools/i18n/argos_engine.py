@@ -25,7 +25,7 @@ def ensure_argos_package(src_lang: str, tgt_lang: str) -> bool:
         if pkg_name in check_proc.stdout:
             return True
 
-        logger.info("Argos package '%s' missing. Attempting on-the-fly installation...", pkg_name)
+        logger.info("Argos package '%s' missing. Attempting on-the-fly installation", pkg_name)
         install_proc = subprocess.run(
             ["argospm", "install", pkg_name],
             stdout=subprocess.PIPE,

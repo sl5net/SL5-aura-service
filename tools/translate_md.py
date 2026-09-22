@@ -5,7 +5,6 @@ import glob
 import subprocess
 import time
 import re
-# import sys
 from pathlib import Path
 import fcntl
 import random
@@ -263,8 +262,7 @@ def is_translatable_line(line: str) -> bool:
 
 
 def translate_section(section_text: str, lang: str) -> str | None:
-
-    original_lines = section_text.splitlines()
+    original_lines = section_text.split("\n")
 
     markdown_links = []
 
@@ -298,19 +296,14 @@ def translate_section(section_text: str, lang: str) -> str | None:
 
     inline_code_regex = re.compile(r"`[^`\n]+`")
     
-    html_tag_regex = re.compile(r"<[^>]+>")    
+    # html_tag_regex = re.compile(r"<[^>]+>")
+    html_tag_regex = re.compile(r"<(?!/?summary\b)[^>]+>")
+    
     lines_step_link = [link_regex.sub(link_replacer, line) for line in original_lines]
     lines_step_inline = [inline_code_regex.sub(inline_code_replacer, line) for line in lines_step_link]
     lines_step0 = [html_tag_regex.sub(html_replacer, line) for line in lines_step_inline]
-    lines_step1 = []
-    for line in lines_step0:
-        if line.endswith("  "):
-            lines_step1.append(line[:-2] + HARD_BREAK_PLACEHOLDER)
-        else:
-            lines_step1.append(line)
 
-    lines_step2 = [line.replace("__", DUNDER_PLACEHOLDER) for line in lines_step1]
-
+    lines_step2 = [line.replace("__", DUNDER_PLACEHOLDER) for line in lines_step0]
     lines_for_translation = []
     code_blocks = []
     in_code_block = False
@@ -336,27 +329,35 @@ def translate_section(section_text: str, lang: str) -> str | None:
     ]
     raw_lines_to_send = [lines_for_translation[idx] for idx in translatable_indices]
 
-    quote_prefixes = []
-    
     line_prefixes = []
     line_suffixes = []
     lines_to_send = []
     for line in raw_lines_to_send:
-        m_p = re.match(r"^(\s*(?:[>│├└─┌┬┴]+\s*)+)", line)
-        p = m_p.group(1) if m_p else ""
-        body = line[len(p):]
+        p = ""
+        m_p = re.match(r"^(\s*[>│├└─┌┬┴\s]+)", line)
+        if m_p:
+            p += m_p.group(1)
+        rest = line[len(p):]
+        if rest.startswith("<summary>"):
+            p += "<summary>"
+            rest = rest[len("<summary>"):]
 
-        m_s = re.search(r"(\s*[\U0001f300-\U0001f9ff\U0001fa00-\U0001faff\u2600-\u27bf\s]+)$", body)
-        if m_s and any(ord(c) > 127 for c in m_s.group(1)):
-            s = m_s.group(1)
-            body = body[:-len(s)]
-        else:
-            s = ""
+        s = ""
+        if rest.rstrip().endswith("</summary>"):
+            idx = rest.rfind("</summary>")
+            s = rest[idx:]
+            rest = rest[:idx]
+        
+        m_s = re.search(r"([\U00010000-\U0010ffff\u2600-\u27bf\s]+)$", rest)
+        if m_s:
+            cand = m_s.group(1)
+            if any(ord(c) > 127 for c in cand) or cand.endswith("  ") or cand.endswith("\t"):
+                s = cand + s
+                rest = rest[:-len(cand)]
 
         line_prefixes.append(p)
         line_suffixes.append(s)
-        lines_to_send.append(body)        
-        
+        lines_to_send.append(rest)        
     if not lines_to_send:
         translated_lines = list(lines_for_translation)
     else:
@@ -426,7 +427,8 @@ def translate_section(section_text: str, lang: str) -> str | None:
         
         
         
-            html_placeholder_regex = re.compile(r"(XHTMLTAG\d+X)")
+            html_placeholder_regex = re.compile(r"(XHTML[TL]*TAG\d+X)")
+            
             restored_step_html = []
             for line in restored_step_b:
                 restored_line = line
@@ -438,6 +440,7 @@ def translate_section(section_text: str, lang: str) -> str | None:
                 restored_step_html.append(restored_line)
         
             inline_placeholder_regex = re.compile(r"(XINLINECODE\d+X)")
+            
             restored_step_inline = []
             for line in restored_step_html:
                 restored_line = line
@@ -451,15 +454,36 @@ def translate_section(section_text: str, lang: str) -> str | None:
             restored_step_c = [
                 line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_inline
             ]
-   
-            final_lines = [
-                line.replace(HARD_BREAK_PLACEHOLDER, "  ") for line in restored_step_c
-            ]
-            return "\n".join(final_lines)
 
+            guaranteed_lines = []
+            for i, line in enumerate(restored_step_c):
+                guaranteed_lines.append(line)
+                if "</summary>" in line and i + 1 < len(restored_step_c) and restored_step_c[i + 1].strip() != "":
+                    guaranteed_lines.append("")
+
+            return "\n".join(guaranteed_lines)        
+        
+        
+        
 def compute_adaptive_delay(content_length: int, base_seconds: float = 12.0, char_rate: float = 100.0) -> float:
     jitter = random.uniform(14.0, 18.0)
     return base_seconds + (content_length / char_rate) + jitter
+
+def harmonize_newlines(reference_text: str, target_text: str) -> str:
+    cleaned_target = re.sub(r"(?i)XSPACE\s*BREAK\s*X", "  ", target_text)
+    cleaned_target = re.sub(r"(</summary>[ \t]*\n)(?!\s*\n)", r"\1\n", cleaned_target)
+
+    ref_lines = reference_text.split("\n")
+    tgt_lines = cleaned_target.split("\n")
+    if len(ref_lines) == len(tgt_lines):
+        for i, ref_l in enumerate(ref_lines):
+            if ref_l.endswith("  ") and not tgt_lines[i].endswith("  "):
+                tgt_lines[i] = tgt_lines[i].rstrip() + "  "
+        cleaned_target = "\n".join(tgt_lines)
+
+    leading_count = len(reference_text) - len(reference_text.lstrip("\n"))
+    trailing_count = len(reference_text) - len(reference_text.rstrip("\n"))
+    return ("\n" * leading_count) + cleaned_target.strip("\n") + ("\n" * trailing_count)
 
 def process_file(filename):
     
@@ -483,31 +507,30 @@ def process_file(filename):
             continue
 
         print(f"   -> Processing '{lang}' -> '{output_file}'…")
-        translated_sections = []
-        has_cache_miss = False
 
         translated_sections = []
         has_cache_miss = False
         section_failed = False
-
-
-
 
         for section in sections:
             sec_hash = compute_section_hash(section)
             cached_text = get_cached_translation(cache_data, sec_hash, lang)
 
             if cached_text is not None:
-                translated_sections.append(cached_text)
+                translated_sections.append(harmonize_newlines(section, cached_text))
             else:
                 has_cache_miss = True
+
                 translated = translate_section(section, lang)
+
                 if translated is None:
                     print(f"      [SKIP] Failed to translate section for '{lang}', aborting file write.")
                     section_failed = True
                     break
+                translated = harmonize_newlines(section, translated)
                 store_cached_translation(cache_data, sec_hash, lang, translated)
-                save_cache(cache_file, cache_data)          # <- NEU: sofort persistieren
+                
+                save_cache(cache_file, cache_data)          
                 logger.info(f"      -> Section cached (hash={sec_hash[:8]}…, lang='{lang}')")
 
                 translated_sections.append(translated)

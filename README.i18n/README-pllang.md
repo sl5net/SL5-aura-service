@@ -15,10 +15,12 @@
 > Zdefiniuj dokładnie, co robi Twój głos — od pojedynczego słowa
 > do pełnych skryptów Pythona. Żadnej chmury. Żadne dane nie opuszczają twojego komputera.
 > Działa w terminalu, przeglądarce lub jako usługa w tle — na Linuxie, macOS i Windows.
+
 | 👵 Początkujący | 🎓 Uczeń | 🧑‍💻 Programista |
 |---|---|---|
-| [grandma-mode](../docs/GettingStarted-pllang.md#the-oma-modus-beginner-shortcut) : po prostu wpisz słowo, resztę zrobi Aura | Ucz się z Koans — po jednej koncepcji naraz | Pełne skrypty w Pythonie, wtyczki, wywołania API |
+| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-pllang.md#the-oma-modus-beginner-shortcut) : po prostu wpisz słowo, resztę zrobi Aura | Ucz się z Koans — po jednej koncepcji naraz | Pełne skrypty w Pythonie, wtyczki, wywołania API |
 | 🗄️ Zarządzanie Stanem | Orkiestracja Trino + Airflow, fzf, CopyQ, polecenia głosowe/terminalowe, interfejsy przeglądarki |
+
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 
 ⚡ **~2,87 J** na test (39 tests without LanguageTool across >800 maps @ 0.07s warm / 0.36s cold 🌿 measured with XMDLINK1X) · bez obliczeń w chmurze
@@ -29,13 +31,16 @@
 
 <details>
 <summary>Szybki start</summary>
+
 ## Szybki start
+
 ### Opcja A: Instalator 1-Click & Web (Recommended)
 
 Jednolinijkowe polecenie lub samodzielny instalator dla systemów Linux, macOS i Windows:
-- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller-pllang.md)**
+- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-pllang.md)**
 
 ---
+
 # # # Opcja B: Instalacja ręczna (programiści / Git)
 
 1. Pobierz lub sklonuj to repozytorium
@@ -48,9 +53,10 @@ Jednolinijkowe polecenie lub samodzielny instalator dla systemów Linux, macOS i
 - MacOS: `bash setup/macos_setup.sh`
 - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Start aura: `./scripts/restart_venv_and_run-server.sh`
-4. Naciśnij swój hotkey i mówić - * * [full guide →](../docs/GettingStarted-pllang.md)
+4. Naciśnij swój hotkey i mówić - * * [full guide →](../docs/GettingStarted.i18n/GettingStarted-pllang.md)
 
 ---
+
 # # Deinstalacja
 Aby usunąć usługi tła SL5 Aura, wpisy autostart i środowiska wirtualne:
 - * * Linux / macOS: * * `bash setup/uninstall.sh`
@@ -70,7 +76,7 @@ Aby usunąć usługi tła SL5 Aura, wpisy autostart i środowiska wirtualne:
 Wymaga mimalloc (`sudo pacman -S mimalloc`) ze względu na kompatybilność glibc 2.43.
 * * * Linux (NixOS): * * Independent Experimental - community- contributed setup, jeszcze nie przetestowany.
 Jeśli spróbujesz, proszę otworzyć problem lub PR ze swoimi ustaleniami!   
-* * * Linux (Manjaro): * * Nowy: Szeroki systemowy hotkey otwiera interfejs fzf- like, keyboard- driven, dzięki czemu można uruchomić polecenia Aura z dowolnego miejsca na pulpicie (całkowicie oddzielone od aktywnego okna). Wyrzutnia ta jest obecnie wdrażana i testowana na Linuksie (Manjaro); inne dystrybucje mogą działać, ale wymagają ustawienia. Patrz: [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-pllang.md)   
+* * * Linux (Manjaro): * * Nowy: Szeroki systemowy hotkey otwiera interfejs fzf- like, keyboard- driven, dzięki czemu można uruchomić polecenia Aura z dowolnego miejsca na pulpicie (całkowicie oddzielone od aktywnego okna). Wyrzutnia ta jest obecnie wdrażana i testowana na Linuksie (Manjaro); inne dystrybucje mogą działać, ale wymagają ustawienia. Patrz: [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-pllang.md)   
 
 
     
@@ -85,11 +91,13 @@ Uwaga: Wiele tekstów jest generowanych maszynowo tłumaczeń oryginalnej angiel
 
 <details>
 <summary>Demo</summary>
+
 {C: $aaccff} Tłumaczenie:
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> * * Tip: * * Aby uzyskać lepsze doświadczenie końcowe, patrz [Zsh Integration](../docs/linux/zsh-integration-pllang.md).
+> * * Tip: * * Aby uzyskać lepsze doświadczenie końcowe, patrz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
+
 Tłumaczenie:
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
@@ -99,6 +107,7 @@ Tłumaczenie:
 
 <details>
 <summary>Klucz Features</summary>
+
 # # Kluczowe cechy
 
 * * * Offline & Private: * * 100% lokalnych. Żadne dane nie opuszczają twojej maszyny.
@@ -116,9 +125,12 @@ na innych. Zawiera real- time * * Admin Dashboard * * (port 8084).
 
 <details>
 <summary> Ready- to- Use Integrations</summary>
-    {C: $aaccff} Tłumaczenie:
+  
+    
+{C: $aaccff} Tłumaczenie:
 
 SL5- Aura ma ogromny ekosystem ponad * * 100 + wstępnie skonfigurowane wtyczki * *. Oto kilka atrakcji:
+
 # # OculiX / SikuliX IDE Voice Control
 SL5- Aura zapewnia obsługę głosu pierwszej klasy dla * * OculiX * * i * * SikuliX IDE * *. Ta integracja pozwala na "mówienie" kodu automatyki.
 
@@ -128,7 +140,9 @@ SL5- Aura zapewnia obsługę głosu pierwszej klasy dla * * OculiX * * i * * Sik
 * * * Extensible: * * Używa łatwego do edycji formatu `FUZZY_MAP_pre.py`.
 
 > / Stan: Rozpoznany jako wtyczka społeczności przez zespół OculiX (patrz [Issue #204](https://github.com/oculix-org/Oculix/issues/204)).
+
 LibreOffice IDE Voice Control
+
 # # 0 A.D. Voice Control
 
 ---
@@ -140,13 +154,16 @@ LibreOffice IDE Voice Control
 <summary>Documentation</summary>
 
 🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+
 # # Dokumentacja
 
 Aby uzyskać pełne odniesienie techniczne, w tym wszystkie moduły i skrypty, odwiedź naszą oficjalną stronę dokumentacji. Jest ona automatycznie generowana i zawsze aktualizowana.
 
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+
 # # Feature Spotlights
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-pllang.md) - Dual- pan `fzf` rule search, live context previews, instant command execution via `Enter` / `Ctrl+R`, and editor integration via `Ctrl+E`. Obsługiwane przez globalny hotkey (`Super+S`) i wiele dedykowanych środowisk wyszukiwania skonfigurowanych za pomocą komend głosowych.
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pllang.md) - Dual- pan `fzf` rule search, live context previews, instant command execution via `Enter` / `Ctrl+R`, and editor integration via `Ctrl+E`. Obsługiwane przez globalny hotkey (`Super+S`) i wiele dedykowanych środowisk wyszukiwania skonfigurowanych za pomocą komend głosowych.
+
 # # Build Status
 
 [![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
@@ -177,7 +194,9 @@ Aby uzyskać pełne odniesienie techniczne, w tym wszystkie moduły i skrypty, o
 
 <details>
 <summary>Installation</summary>
+
 # # Instalacja
+
 # # # Szybka instalacja bez umiarkowania (Manjaro / Arch Video)
 Obejrzyj cały proces konfiguracji 6- minutowego:
 * * * Pobierz: * * ~ 3 minuty
@@ -191,6 +210,7 @@ Konfiguracja jest procesem dwuetapowym:
 2. Uruchom skrypt konfiguracji dla systemu operacyjnego.
 
 Skrypty konfiguracji zajmują się wszystkim: zależnościami systemowymi, środowiskiem Pythona i pobieraniem niezbędnych modeli i narzędzi (~ 4GB) bezpośrednio z naszych GitHub Releases dla maksymalnej prędkości.
+
 
 #### Dla systemów Linux, macOS i Windows (z opcjonalnym wykluczeniem języka)
 
@@ -237,6 +257,7 @@ setup/windows11_setup.ps1 -Exclude [OPTION]
 # Or (recommend) - Run the BAT file: 
 windows11_setup.bat -Exclude "en"
 ```
+
 Dla Windows
 Uruchom skrypt konfiguracji z uprawnieniami administratora.
 
@@ -253,6 +274,7 @@ Instalacja jest w pełni zautomatyzowana i zajmuje około * * 8- 10 minut * * pr
 > * * Note: * * Nie trzeba instalować Pythona lub Gita wcześniej; skrypt obsługuje wszystko.
 
 ---
+
 #### Zaawansowana / Niestandardowa instalacja
 Jeśli wolisz nie instalować narzędzi klienckich (AHK/CopyQ) lub chcesz zaoszczędzić miejsce na dysku, wykluczając konkretne języki, możesz uruchomić główny skrypt za pomocą wiersza poleceń:
 
@@ -274,21 +296,27 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 
 <details>
 <summary>Użycie</summary>
+
 ## Użytkowanie
+
 ### 1. Uruchom usługi
+
 #### Na Linuxie i macOS
 Jeden skrypt obsługuje wszystko. Automatycznie uruchamia główną usługę dyktowania i monitor plików w tle.
 ```bash
 # Run this from the project's root directory
 ./scripts/restart_venv_and_run-server.sh
 ```
+
 #### Na Windows
 Uruchamianie usługi to **dwustopniowy proces ręczny**:
 
 1.  **Uruchom główną usługę:** Uruchom `start_aura.bat`. lub rozpocznij od `.venv` usługę za pomocą `python3`
+
 ### 2. Skonfiguruj swój skrót klawiszowy
 
 Aby uruchomić dyktowanie, potrzebny jest globalny skrót klawiszowy, który tworzy określony plik. Zdecydowanie polecamy narzędzie wieloplatformowe [CopyQ](https://github.com/hluk/CopyQ).
+
 #### Nasza rekomendacja: CopyQ
 
 Utwórz nowe polecenie w CopyQ z globalnym skrótem klawiszowym.
@@ -338,6 +366,7 @@ f11::
 }
 ```
 
+
 Zacznij dyktować!
 Kliknij w dowolnym polu tekstowym, naciśnij swój hotkey, a pojawi się "Słuchanie"... Mów wyraźnie, a potem pauza. Poprawiony tekst zostanie napisany dla Ciebie.
 
@@ -348,6 +377,7 @@ Kliknij w dowolnym polu tekstowym, naciśnij swój hotkey, a pojawi się "Słuch
 
 <details>
 <summary>Zaawansowana konfiguracja (opcjonalnie) </summary>
+
 # # Zaawansowana konfiguracja (opcjonalnie)
 
 Możesz dostosować zachowanie aplikacji poprzez utworzenie pliku ustawień lokalnych.
@@ -357,6 +387,7 @@ Możesz dostosować zachowanie aplikacji poprzez utworzenie pliku ustawień loka
 3. Edycja `config/settings_local.py` (nadpisuje wszelkie ustawienia z głównego pliku `config/settings.py`).
 
 Ten plik `config/settings_local.py` jest domyślnie ignorowany przez Gita, więc Twoje osobiste zmiany nie zostaną nadpisane przez aktualizacje.
+
 Wtyczka w strukturze i logice
 
 Modularność systemu pozwala na solidne rozszerzenie poprzez wtyczki / katalog.
@@ -379,9 +410,11 @@ Skrypty <summary>Key dla Windows Users</summary>
 
 
 
+
 # # Kluczowe skrypty dla użytkowników systemu Windows
 
 Oto lista najważniejszych skryptów do skonfigurowania, aktualizacji i uruchomienia aplikacji w systemie Windows.
+
 # # # Ustawienia i aktualizacja
 
 *   `chmod +x update.sh; ./update.sh`
@@ -389,13 +422,16 @@ Oto lista najważniejszych skryptów do skonfigurowania, aktualizacji i uruchomi
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
 * `update.bat`: Uruchom to z folderu projektu, aby * * uzyskać najnowszy kod i zależności * *.
+
 - Uruchomienie aplikacji
 * `start_aura.bat`: Podstawowy skrypt, aby * * rozpocząć usługę dyktowania * *.
+
 # # # Core & Helper Scripts
 * `aura_engine.py`: Podstawowa usługa Python (zazwyczaj uruchamiana przez jeden ze skryptów powyżej).
 * `get_suggestions.py`: Skrypt pomocniczy dla specyficznych funkcji.
 
 </details>
+
 
 
 # # Cechy kluczowe i kompatybilność systemu operacyjnego
@@ -414,62 +450,66 @@ Legenda dotycząca kompatybilności systemu operacyjnego:
 </details>
 
 
+
 # # # * * Core Speech-to-Text (Aura) Engine * *
 Nasz główny silnik do rozpoznawania mowy offline i przetwarzania dźwięku.
 
     
 <details>
 <summary>Aura- Core</summary>
+  
 * * Aura- Core / * * Simpson  
-├─ `aura_engine.py` (główna usługa Python orcheposting Aura)
-├┬ * * Live Hot- Reload * * (Konfiguracja i mapy)
+├─ `aura_engine.py` (główna usługa Python orcheposting Aura)  
+├┬ * * Live Hot- Reload * * (Konfiguracja i mapy)  
 │├ * * Bezpieczne prywatne ładowanie mapy (Integrity- First) * * KLASYFIKACJA   
 ││ * * * Workflow * * Wczytuje archiwa ZIP chronione hasłem.   
 │├ * * Przetwarzanie tekstu i korekta / * * Zgrupowane według języka (np. `de-DE`, `en-US`,...)   
-│├ 1. `normalize_punctuation.py` (Standaryzuje interpunkcję po transkrypcji)
-│├ 2. * * Inteligentna korekta wstępna * * (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-pllang.md))
+│├ 1. `normalize_punctuation.py` (Standaryzuje interpunkcję po transkrypcji)  
+│├ 2. * * Inteligentna korekta wstępna * * (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-pllang.md))  
 ││ * * * Dynamiczne wykonanie skryptu: * * Zasady mogą uruchamiać własne skrypty Pythona (`on_match_exec`) do wykonywania zaawansowanych działań, takich jak wywołania API, plik I / O lub generowanie odpowiedzi dynamicznych.   
-││ * * * Cascading Execution: * * Zasady są przetwarzane kolejno, a ich skutki są * * skumulowane * *. Późniejsze zasady mają zastosowanie do tekstu zmodyfikowanego przez wcześniejsze zasady.
+││ * * * Cascading Execution: * * Zasady są przetwarzane kolejno, a ich skutki są * * skumulowane * *. Późniejsze zasady mają zastosowanie do tekstu zmodyfikowanego przez wcześniejsze zasady.  
 ││ * * * Najwyższe kryterium Priority Stop: * * Jeśli reguła osiąga * * Full Match * * (^... $), cały rurociąg przetwarzania dla tego symbolu natychmiast zatrzymuje się. Mechanizm ten ma kluczowe znaczenie dla wdrażania niezawodnych poleceń głosowych.   
-│├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar / style correction)
-│├ * * 4. Hierarchiczny RegEx- Rule- Engine z Ollama AI Fallback
+│├ 3. `correct_text_by_languagetool.py` (Integrates LanguageTool for grammar / style correction)  
+│├ * * 4. Hierarchiczny RegEx- Rule- Engine z Ollama AI Fallback  
 ││ * * * Deterministic Control: * * Używa RegEx- Rule- Engine do precyzyjnego, priorytetowego polecenia i sterowania tekstem.   
-│├ * * Vector- Search Plugin * * (Lazy loading): Włącza semantyczne wyszukiwanie łącząc lokalne osadzenia wektorowe z warstwą Ollama / LLM
+│├ * * Vector- Search Plugin * * (Lazy loading): Włącza semantyczne wyszukiwanie łącząc lokalne osadzenia wektorowe z warstwą Ollama / LLM  
 ││ * * * Ollama AI (Local LLM) Fallback: * * Służy jako opcjonalny, niskopriorytetowy sprawdzian dla * * kreatywnych odpowiedzi, Q & A, i zaawansowanych Fuzzy Matching * * gdy nie jest określona reguła met.  
-││ * * * Status: * * Lokalna integracja LLM.
+││ * * * Status: * * Lokalna integracja LLM.  
 │└ 5. * * Inteligentna korekta post- * * (`FuzzyMap`) * * * - Rafinowanie post- LT * * Refinezja   
 ││ * Stosowane po LanguageTool w celu skorygowania specyficznych wyjść LT. Follows the same strict cascading priority logics as the Pre- Correction layer.  
-││ * * * Dynamiczne wykonanie skryptu: * * Zasady mogą uruchamiać własne skrypty Pythona ([on_match_exec](../docs/advanced-scripting-pllang.md)), aby wykonywać zaawansowane działania, takie jak wywołania API, plik I / O lub generować odpowiedzi dynamiczne.   
+││ * * * Dynamiczne wykonanie skryptu: * * Zasady mogą uruchamiać własne skrypty Pythona ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-pllang.md)), aby wykonywać zaawansowane działania, takie jak wywołania API, plik I / O lub generować odpowiedzi dynamiczne.   
 ││ * * * Fuzzy Fallback * * * * FUZY SUPLIarity Check * * (kontrolowany przez próg, np. 85%) działa jako najniższa warstwa błędu priorytetowego. Jest on wykonywany tylko wtedy, gdy cała poprzednia reguła determinaristic / cascading nie uda się znaleźć dopasowania (current _ rule _ match is False), optymalizując wydajność poprzez unikanie powolnych, rozmytych kontroli w miarę możliwości.   
 ├┬ * * Model Management / * *   
-│├─ `prioritize_model.py` (Optymalizuje model załadunku / rozładunku w zależności od zastosowania)
-│└─ `setup_initial_model.py` (Konfiguracja modelu po raz pierwszy)
+│├─ `prioritize_model.py` (Optymalizuje model załadunku / rozładunku w zależności od zastosowania)  
+│└─ `setup_initial_model.py` (Konfiguracja modelu po raz pierwszy)  
 ├─ * * Adaptive VAD Timeout * * Significations   
-├─ * * Adaptive Hotkey (Start / Stop)
+├─ * * Adaptive Hotkey (Start / Stop)  
 ├─ * * Instant Language Switching * * (Experimental via model preloading)
-├─ * * Orchestracja przepływu powietrza * * (automatyzacja przepływu pracy oparta na DAG) 🐧 🍏 🪟
+├─ * * Orchestracja przepływu powietrza * * (automatyzacja przepływu pracy oparta na DAG) 🐧 🍏 🪟  
 │   Wymagane Docker · Interfejs: `http://localhost:8081`
-├─ * * Trino State Engine * 🐧 🍏 🪟
+├─ * * Trino State Engine * 🐧 🍏 🪟  
 └─  Wymagane Docker · Admin UI: `http://localhost:8084`
-
+  
   
 ├┬ * * LanguageTool Server Management / * *   
 │├─ `start_languagetool_server.py` (Inicjuje lokalny serwer LanguageTool)
-│└─ `stop_languagetool_server.py` (Wyłącza serwer LanguageTool) 🐧 🍏 
+│└─ `stop_languagetool_server.py` (Wyłącza serwer LanguageTool) 🐧 🍏  
 ├─ `monitor_mic.sh` (np. do stosowania z zestawem słuchawkowym bez użycia klawiatury i monitora)
+
 # # # * * Model & Zarządzanie pakietami * *   
 Narzędzia do solidnego obchodzenia się z dużymi modelami językowym.  
 
 * * ModelManagement / * * Simpson  
-├─ * * Solidny model * * (GitHub Release chunks)
-├─ `split_and_hash.py` (Użyteczność dla właścicieli repo do podziału dużych plików i generowania kwot kontrolnych)
-└─ `download_all_packages.py` (Narzędzie dla użytkowników końcowych do pobierania, weryfikacji i ponownego składania plików wieloczęściowych)
+├─ * * Solidny model * * (GitHub Release chunks)  
+├─ `split_and_hash.py` (Użyteczność dla właścicieli repo do podziału dużych plików i generowania kwot kontrolnych)  
+└─ `download_all_packages.py` (Narzędzie dla użytkowników końcowych do pobierania, weryfikacji i ponownego składania plików wieloczęściowych)  
 
 </details>
 
 
 <details>
 <summary>Rozwój i wdrażanie Helpers</summary>
+
 *   
 Skrypty dotyczące konfiguracji środowiska, testowania i wykonywania usług.   
 
@@ -477,41 +517,43 @@ Skrypty dotyczące konfiguracji środowiska, testowania i wykonywania usług.
 Proszę zaznaczyć pole wyboru podczas instalacji, aby powiązać je z plikami log-.   
 https: / / glogg.bonnefon.org /   
     
-* Wskazówka: Po zdefiniowaniu wzorców regex, uruchom `python3 tools/map_tagger.py`, aby automatycznie wygenerować przykłady przeszukiwania dla narzędzi CLI. Szczegóły znajdują się w [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-pllang.md). *
+* Wskazówka: Po zdefiniowaniu wzorców regex, uruchom `python3 tools/map_tagger.py`, aby automatycznie wygenerować przykłady przeszukiwania dla narzędzi CLI. Szczegóły znajdują się w [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pllang.md). *
 
 To może podwójne kliknięcie
 `log/aura_engine.log`
     
 * * DevHelpers / * *   
 ├┬ * * Wirtualne zarządzanie środowiskiem / * *   
-│├ `scripts/restart_venv_and_run-server.sh` (Linux / macOS)
-│└ `scripts/restart_venv_and_run-server.ahk` (Windows)
+│├ `scripts/restart_venv_and_run-server.sh` (Linux / macOS)  
+│└ `scripts/restart_venv_and_run-server.ahk` (Windows)  
 ├┬ * * System- wide Dictation Integration / * *   
-│├ Vosk- System- Integracja słuchaczy
+│├ Vosk- System- Integracja słuchaczy  
 │├ `scripts/monitor_mic.sh` (monitorowanie mikrofonu specyficznego dla Linuksa)   
 │└ `scripts/type_watcher.ahk` (AutoHotkey słucha rozpoznanego tekstu i wypisuje go system- wide)   
 └─ * * CI / CD Automation / * *   
-    └─ Rozszerzone ćwiczenia GitHub (Instalacja, testowanie, wdrażanie dokumentów)
+    └─ Rozszerzone ćwiczenia GitHub (Instalacja, testowanie, wdrażanie dokumentów)  
 
 </details>
 
 <details>
 <summary>Experimental Features</summary>
-    *   
+  
+    
+*   
 Funkcje obecnie opracowywane lub w projekcie status.  
 
 * * ExperimentalFeatures / * *   
 ├─ * * ENTER _ after _ DICTATION _ REGEX * * Przykład zasady aktywacji "(ExampleAplicationThatNotExist124; Pi, Twoja osobista AI)"   
 ├┬Plugins  
-│* * Live Lazy- Reload * * * (*)
+│* * Live Lazy- Reload * * * (*)  
 (* Zmiany aktywacji / dezaktywacji wtyczki oraz ich konfiguracje są stosowane w następnym procesie przetwarzania bez ponownego uruchomienia usługi. *)   
-│ ├ * * git commands * * (Voice control for send git commands)
-│ ├ * * wannweil * * (Mapa lokalizacji Germany-Wannweil)
-│ ├ * * Wtyczka Poker (Draft) * * (Kontrola głosowa dla aplikacji pokerowych)
-│ └ * * 0 A.D. Plugin (Draft) * * (Voice Control for 0 A.D. game)
-├─ * * Wyjście dźwiękowe przy starcie lub zakończeniu sesji * * (Opis oczekujący)
-├─ * * Speech Output for Visual Imparial * * (Opis oczekujący)
-└─ * * SL5 Aura Android Prototyp * * (Nie w pełni offline jeszcze)
+│ ├ * * git commands * * (Voice control for send git commands)  
+│ ├ * * wannweil * * (Mapa lokalizacji Germany-Wannweil)  
+│ ├ * * Wtyczka Poker (Draft) * * (Kontrola głosowa dla aplikacji pokerowych)  
+│ └ * * 0 A.D. Plugin (Draft) * * (Voice Control for 0 A.D. game)  
+├─ * * Wyjście dźwiękowe przy starcie lub zakończeniu sesji * * (Opis oczekujący)  
+├─ * * Speech Output for Visual Imparial * * (Opis oczekujący)  
+└─ * * SL5 Aura Android Prototyp * * (Nie w pełni offline jeszcze)  
 
 ---
 
@@ -528,6 +570,7 @@ Funkcje obecnie opracowywane lub w projekcie status.
 
 <details>
 <summary>A graficzny przegląd architektury </summary>
+
 # # # Graficzny przegląd architektury:
 
 ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
@@ -538,6 +581,7 @@ Funkcje obecnie opracowywane lub w projekcie status.
 
 <details>
 <summary>Używane modele </summary>
+
 Używane modele:
 
 Zalecenie: stosować modele z Mirror https: / / github.com / sl5net / SL5-aura- service / releases / tag / v0.2.0.1 (prawdopodobnie szybciej)
@@ -546,10 +590,12 @@ Te zapięte modele muszą być zapisane w folderze `models/`
 
 `mv vosk-model-*.zip models/`
 
+
 Reg.
 | -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
 124; [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) X124; 1.8G X124; 5.69 (librispeech test- clean) <br/>6.05 (tedlium) <br/>29.78 (callcenter) X124; Accurate generyczny amerykański model angielski X124; Apache 2.0 X124;
 124; [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) XXX124; 1.9G XXX124; 9.83 (Tuda- de test) <br/>24.00 (podcast) <br/>12.82 (cv- test) <br/>12.42 (mls) <br/>33.26 (mtedx) <br/>24.00 (podcast) <br/>12.82 (cv- test) XHTMLTAG412.42 (mls) <br/>33.26 (mtedx) X124; Duży niemiecki model telefonii i serwera 124; Apache 2.0 XI124;
+
 Ta tabela przedstawia przegląd różnych modeli Vosk, w tym ich rozmiar, współczynnik błędów słów lub prędkość, uwagi oraz informacje o licencji.
 
 
@@ -561,9 +607,11 @@ Ta tabela przedstawia przegląd różnych modeli Vosk, w tym ich rozmiar, wspó�
 
 ---
 </details>
+
 ## Wspieraj Projekt
 Jeśli uważasz to narzędzie za przydatne, rozważ proszę kupienie nam kawy! Twoje wsparcie pomaga w finansowaniu przyszłych ulepszeń.
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+

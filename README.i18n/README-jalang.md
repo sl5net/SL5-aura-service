@@ -15,10 +15,12 @@
 > 自分の声が正確に何をするのか定義してください — 1つの単語から
 > 完全な Python スクリプトへ。クラウドはなし。データはあなたのマシンを離れません。
 > Linux、macOS、Windowsで、ターミナル、ブラウザ、またはバックグラウンドサービスとして動作します。
+
 | 👵 初心者 | 🎓 学習者 | 🧑‍💻 開発者 |
 |---|---|---|
 | [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-jalang.md#the-oma-modus-beginner-shortcut) : 単語を書くだけで、Auraが残りを行います | コアンで学ぶ — 一度に一つの概念 | 完全なPythonスクリプティング、プラグイン、API呼び出し |
 | 🗄️ 状態管理 | Trino + Airflow オーケストレーション, fzf, CopyQ, 音声/ターミナルコマンド, ブラウザUI |
+
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
 
 ⚡ **テストごとに約2.87 J** (39 tests without LanguageTool across >800 maps @ 0.07s warm / 0.36s cold 🌿 measured with XMDLINK1X) · クラウドコンピューティングなし
@@ -29,13 +31,16 @@
 
 <details>
 <summary>クイックスタート</summary>
+
 ## クイックスタート
+
 ### オプションA：ワンクリック＆ウェブインストーラー (Recommended)
 
 Linux、macOS、Windows用のワンライナーコマンドまたはスタンドアロンインストーラー：
 - **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-jalang.md)**
 
 ---
+
 ##Option B:手動インストール(Developers / Git)
 
 1。 このリポジトリをダウンロードまたはクローンする
@@ -51,6 +56,7 @@ Linux、macOS、Windows用のワンライナーコマンドまたはスタンド
 4。 あなたのホットキーを押して話す - **[full guide →](../docs/GettingStarted.i18n/GettingStarted-jalang.md)**
 
 ---
+
 ### アンインストール
 SL5 Auraの背景サービス、自動起動エントリ、仮想環境を削除します。
 - **Linux / macOS:** `bash setup/uninstall.sh`
@@ -85,11 +91,13 @@ SL5 Aura は、**Vosk** (for Speech-to-Text) と **LanguageTool** (for Grammar/S
 
 <details>
 <summary>デモXHTMLタグ19X
+
 ##### クラウド デモ
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
 > **ヒント:** より良い端末体験については、[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-jalang.md) をご覧ください。
+
 ### ◀ ビデオチュートリアル
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
@@ -99,6 +107,7 @@ SL5 Aura は、**Vosk** (for Speech-to-Text) と **LanguageTool** (for Grammar/S
 
 <details>
 <summary>Keyの特徴</summary>
+
 ## 主な特長
 
 *** オフライン&プライベート:** 100%ローカル。 データを残さない
@@ -116,9 +125,12 @@ SL5 Aura は、**Vosk** (for Speech-to-Text) と **LanguageTool** (for Grammar/S
 
 <details>
 <summary> 🔌 使いやすい統合</summary>
-    ## 🔌 既知の統合
+  
+    
+## 🔌 既知の統合
 
 SL5-Auraは、**100以上の事前構成プラグインの広大な生態系が付属しています**。 ここにいくつかのハイライトがあります。
+
 ## OculiX / SikuliX IDE 音声制御
 SL5-Auraは、**OculiX**と**SikuliX IDE**の一流の音声サポートを提供します。 この統合により、自動化コードを「話す」することができます。
 
@@ -128,7 +140,9 @@ SL5-Auraは、**OculiX**と**SikuliX IDE**の一流の音声サポートを提�
 *** 拡張可能:** `FUZZY_MAP_pre.py`形式を簡単に編集できます。
 
 > **ステータス:** OculiXチーム(see XMDLINK0X)のコミュニティプラグインとして認識。
+
 ### LibreOffice IDE 音声操作
+
 ### 紀元0年 音声コントロール
 
 ---
@@ -140,13 +154,16 @@ SL5-Auraは、**OculiX**と**SikuliX IDE**の一流の音声サポートを提�
 XHTMLタグ2XドキュメンテーションXHTMLタグ3X
 
 🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+
 ## ドキュメンテーション
 
 すべてのモジュールとスクリプトを含む完全な技術的リファレンスについては、公式ドキュメントページをご覧ください。これは自動的に生成され、常に最新の状態に保たれています。
 
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+
 ## 機能スポットライト
 - [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-jalang.md) — デュアルパン`fzf`ルール検索、ライブコンテキストプレビュー、`Enter`/`Ctrl+R`によるインスタントコマンド実行、および`Ctrl+E`によるエディタ統合。 グローバルなホットキー (`Super+S`) と複数の専用の検索環境で、ボイスコマンドで事前設定を行えます。
+
 ## ビルドステータス
 
 [![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
@@ -177,7 +194,9 @@ XHTMLタグ2XドキュメンテーションXHTMLタグ3X
 
 <details>
 <summary>インストール</summary>
+
 ## インストール
+
 ## ◀ モデレーションなしでクイックインストール(Manjaro/Arch Video)
 6分間のセットアッププロセスをすべて見る:
 ※ダウンロード:**〜3分
@@ -191,6 +210,7 @@ XHTMLタグ2XドキュメンテーションXHTMLタグ3X
 2。 オペレーティングシステム用のワンタイムセットアップスクリプトを実行します。
 
 セットアップスクリプトは、システム依存性、Python環境、および必要なモデルをダウンロードし、GitHubリリースから直接(~4GB)をダウンロードし、最大速度を実現します。
+
 
 Linux、macOS、Windows (with Optional Language Exclusion) 用の #### ### ## ## ## # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -237,6 +257,7 @@ setup/windows11_setup.ps1 -Exclude [OPTION]
 # Or (recommend) - Run the BAT file: 
 windows11_setup.bat -Exclude "en"
 ```
+
 Windows用の#####
 セットアップスクリプトを管理者権限で実行します。
 
@@ -253,6 +274,7 @@ Windows用の#####
 > **注意:** 事前にPythonやGitをインストールする必要はありません。スクリプトはすべてを処理します。
 
 ---
+
 #### 高度/注文の取付け
 クライアントツール(AHK/CopyQ)をインストールしたり、特定の言語を除外してディスクスペースを保存したい場合は、コマンドラインでコアスクリプトを実行できます。
 
@@ -274,21 +296,27 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 
 <details>
 <summary>UsageXHTMLタグ6X
+
 ## 使用法
+
 ##1. サービスを開始
+
 ###LinuxとmacOSの
 単一のスクリプトはすべてを処理します。 メインディクテーションサービスと、バックグラウンドで自動的にファイル監視を開始します。
 ```bash
 # Run this from the project's root directory
 ./scripts/restart_venv_and_run-server.sh
 ```
+
 Windowsの#####
 サービスの開始は2段階の手動プロセスです**:
 
 1。**メインサービスを開始:** `start_aura.bat`を実行または`python3`でサービスを開始
+
 ##2. ホットキーの設定
 
 予測をトリガーするには、特定のファイルを作成するグローバルホットキーが必要です。 クロスプラットフォームの[CopyQ](https://github.com/hluk/CopyQ)を推奨しています。
+
 ##### 推奨事項: CopyQ
 
 グローバルなショートカットで CopyQ で新しいコマンドを作成します。
@@ -338,6 +366,7 @@ f11::
 }
 ```
 
+
 ##3. ディクティングを開始!
 テキストフィールドをクリックし、ホットキーを押し、"リスニング..."通知が表示されます。 明確に話します。, その後、一時停止. 修正されたテキストは入力されます。
 
@@ -348,6 +377,7 @@ f11::
 
 <details>
 <summary>Advanced 設定 (オプション)</summary>
+
 ## 高度の構成(任意)
 
 ローカル設定ファイルを作成すると、アプリケーションの動作をカスタマイズできます。
@@ -357,6 +387,7 @@ f11::
 3. `config/settings_local.py` の編集(`config/settings.py` ファイルから任意の設定を上書き)
 
 この`config/settings_local.py`ファイルはデフォルトでGitによって無視されますので、個人的な変更は更新によって上書きされません。
+
 ##プラグイン構造とロジック
 
 システムのモジュール性は、プラグイン/ディレクトリを介して堅牢な拡張を可能にします。
@@ -379,9 +410,11 @@ Windowsユーザー用の<summary>Keyスクリプト</summary>
 
 
 
+
 ## Windowsユーザー向けの主要スクリプト
 
 ここに、Windowsシステムでアプリケーションをセットアップ、更新、実行するために最も重要なスクリプトのリストがあります。
+
 ### セットアップと更新
 
 *   `chmod +x update.sh; ./update.sh`
@@ -389,13 +422,16 @@ Windowsユーザー用の<summary>Keyスクリプト</summary>
 * [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
 *   `update.bat` : プロジェクトフォルダからこれを実行して、**最新のコードと依存関係を取得**します。
+
 ### アプリケーションの実行
 *   `start_aura.bat`: **音声認識サービスを開始する**ための主要なスクリプト。
+
 ### コアおよびヘルパースクリプト
 *   `aura_engine.py`: コアPythonサービス（通常は上記のスクリプトのいずれかによって起動されます）。
 *   `get_suggestions.py`: 特定の機能のためのヘルパースクリプト。
 
 </details>
+
 
 
 ## OSTキー機能とOSの互換性
@@ -405,13 +441,14 @@ OSの互換性のための<summary>Legend</summary>
 
 OS対応のレジェンド:  
 * Linux** (例、Archi、Ubuntu)  
-* macOS**XSpaceBREAKXは、
-*Windows**XSpaceBREAKX は、
+* macOS**  は、
+*Windows**   は、
 * ◀**Android**(モバイル固有の機能の場合)  
 
 ---
 
 </details>
+
 
 
 ##**Core Speech-to-Text (Aura) エンジン**
@@ -457,38 +494,40 @@ Aura-Core/** 🐧 X   ** ** ** ** **
 │├─ `start_languagetool_server.py` (ローカルランゲージツールサーバーを初期化) 🐧 X X X   
 │└─ `stop_languagetool_server.py` (ランゲージツールサーバをシャットダウン) 🐧 🍏 
 ├─ `monitor_mic.sh` (例:ヘッドセットを使用せずにキーボードとモニター) 🐧 X  
+
 ##**モデルとパッケージ管理**  
 大規模な言語モデルの堅牢な処理のためのツール。  
 
 **モデル管理/** 🐧  
-├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 X X X    🐧 ** ** ** ** ** ** ** ** ** ** ** ** ** **
+├─ **Robust Model Downloader** (GitHub Release chunks) 🐧 X X X    🐧 ** ** ** ** ** ** ** ** ** ** ** ** ** **  
 ├─ `split_and_hash.py` (リポジトリの所有者が大きなファイルを分割し、チェックサムを生成するためのユーティリティ) 🐧  
-└─ `download_all_packages.py`(エンドユーザがマルチパートファイルをダウンロード、検証、再構築するためのツール)
+└─ `download_all_packages.py`(エンドユーザがマルチパートファイルをダウンロード、検証、再構築するためのツール)  
 
 </details>
 
 
 <details>
 <summary>開発と展開ヘルプ</summary>
-##**XSpaceBREAKXの開発と展開のヘルプ
-環境設定、テスト、サービスの実行のためのスクリプト。 エスプレッソ
 
-*Tip: glogg を使用すると、ログファイル内の興味深いイベントを検索するために正規表現を使うことができます。* エスプレッソ
-ログファイルと関連付ける際は、チェックボックスをご確認ください。 エスプレッソ
-https://glogg.bonnefon.org/ エスプレッソ
+##**  の開発と展開のヘルプ  
+環境設定、テスト、サービスの実行のためのスクリプト。 エスプレッソ  
+
+*Tip: glogg を使用すると、ログファイル内の興味深いイベントを検索するために正規表現を使うことができます。* エスプレッソ  
+ログファイルと関連付ける際は、チェックボックスをご確認ください。 エスプレッソ  
+https://glogg.bonnefon.org/ エスプレッソ  
     
 *Tip: 正規表現パターンを定義した後、`python3 tools/map_tagger.py` を実行して、CLI ツールの検索可能な例を自動的に生成します。 詳細は [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-jalang.md) をご覧ください。*
 
 その後、ダブルクリック
 `log/aura_engine.log`
     
-**DevHelpers/**XSpaceBREAKX **
+**DevHelpers/**   **  
 ├┬ **仮想環境管理/**  
-│├ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧   (`scripts/restart_venv_and_run-server.sh`)
+│├ `scripts/restart_venv_and_run-server.sh` (Linux/macOS) 🐧   (`scripts/restart_venv_and_run-server.sh`)  
 │└ `scripts/restart_venv_and_run-server.ahk` (ウィンドウズ) 🪟  
 ├┬ **システム全体のディシテーションの統合/**  
 │├ Vosk-System-Listenerの統合 🍏  
-│├ `scripts/monitor_mic.sh` (Linux 固有のマイク監視)
+│├ `scripts/monitor_mic.sh` (Linux 固有のマイク監視)  
 │└ `scripts/type_watcher.ahk`(AutoHotkeyは認識されたテキストを聞き、システム全体でタイプします) 🪟  
 └─ **CI/CDのオートメーション/**  
     └─ GitHub ワークフロー拡張 (インストール、テスト、ドキュメントの展開) 🐧  * *(GitHub アクションの実行)*  
@@ -497,20 +536,22 @@ https://glogg.bonnefon.org/ エスプレッソ
 
 <details>
 <summary>実験的特徴</summary>
-    ##**アップコム/実験的特徴**  
+  
+    
+##**アップコム/実験的特徴**  
 開発中、または開発中の状況下にある機能。  
 
 **実験的特徴/**  
-├─ **ENTER AFTER DICTATION REGEX ** 例のアクティベーションルール "(例AplicationThatNotExist|Pi, your personal AI)"
+├─ **ENTER AFTER DICTATION REGEX ** 例のアクティベーションルール "(例AplicationThatNotExist|Pi, your personal AI)"  
 ├┬プラグイン  
 │╰┬ **ライブレイジーリロード** (*) 🐧  
-(*プラグインのアクティベーション/無効化の変更、およびその設定は、サービス再起動なしの次の処理実行に適用されます。*)XSpaceBREAKX
+(*プラグインのアクティベーション/無効化の変更、およびその設定は、サービス再起動なしの次の処理実行に適用されます。*)  
 │ ├ **git command** (git コマンドを送信するためのVoice 制御) 🐧 X X  
 │ ├ **wannweil** (所在地ドイツ-Wannweilの地図) 🐧  
 │ ├ **Poker Plugin (Draft)** (火かき棒の塗布のための声制御) 🐧  
 │ └ **0 A.D. プラグイン (Draft)** (0 A.D. ゲームのVoice制御)   
 ├─ **セッションの開始または終了時の音声出力** (説明の終了) の  
-├─ **Speech Output for Visually Impaired** (Description pending) 🐧   (Description pending) 🐧   (Description pending)
+├─ **Speech Output for Visually Impaired** (Description pending) 🐧   (Description pending) 🐧   (Description pending)  
 └─ **SL5 Aura Android Prototype** (まだ完全にオフラインではありません) ◀  
 
 ---
@@ -528,6 +569,7 @@ https://glogg.bonnefon.org/ エスプレッソ
 
 <details>
 <summary>アーキテクチャのグラフィカルな概要</summary>
+
 ### アーキテクチャのグラフィカルな概要:
 
 ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
@@ -538,6 +580,7 @@ https://glogg.bonnefon.org/ エスプレッソ
 
 <details>
 <summary>使用モデル</summary>
+
 ## はモデルを使用しました:
 
 推奨: ミラー https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 からモデルを使用する (おそらく高速)
@@ -546,10 +589,12 @@ https://glogg.bonnefon.org/ エスプレッソ
 
 `mv vosk-model-*.zip models/`
 
+
 | モデル | サイズ | ワードエラー率・スピード | ノート | ライセンス |
 | -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
 | [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69(librispeech test-clean)<br/>6.05(tedlium)<br/>29.78(callcenter) | 正確な一般的な米国英語モデル | Apache 2.0 |
 | [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G | 9.83(Tuda-de test)<br/>24.00(Podcast)<br/>12.82(cv-test)<br/>12.42(ml)<br/>33.26(mtedx) | テレフォニー・サーバー向け大型ドイツモデル | Apache 2.0 | Apache 2.0 |
+
 この表は、サイズ、単語のエラー率、速度、メモ、ライセンス情報など、さまざまなVoskモデルの概要を提供します。
 
 
@@ -561,9 +606,11 @@ https://glogg.bonnefon.org/ エスプレッソ
 
 ---
 </details>
+
 ## プロジェクトをサポート
 こちらのツールがお役に立ちましたら、お買い求めください! あなたのサポートは未来の改善に燃料を供給するのに役立ちます。
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+

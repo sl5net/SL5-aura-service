@@ -109,7 +109,7 @@ def load_cache(cache_file: Path) -> Dict:
         text = cache_file.read_text(encoding="utf-8")
         logger.debug("Raw cache text read (bytes=%d)", len(text))
 
-        logger.info("Parsing JSON cache data...")
+        logger.info("Parsing JSON cache data")
         data = json.loads(text)
 
         if not isinstance(data, dict):
@@ -152,7 +152,7 @@ def save_cache(cache_file: Union[str, Path], cache_data: Dict) -> None:
     parent_dir.mkdir(parents=True, exist_ok=True)
 
     # Step 3: Serialize to JSON
-    logger.info("Serializing cache_data to JSON...")
+    logger.info("Serializing cache_data to JSON")
     try:
         text = json.dumps(cache_data, ensure_ascii=False, indent=2)
         logger.info("JSON serialization complete (size=%d bytes)", len(text.encode("utf-8")))
@@ -167,13 +167,13 @@ def save_cache(cache_file: Union[str, Path], cache_data: Dict) -> None:
         logger.info("Creating temporary file in directory: %s", parent_dir)
         with tempfile.NamedTemporaryFile("w", encoding="utf-8", delete=False, dir=str(parent_dir)) as tmp:
             tmp_path = Path(tmp.name)
-            logger.info("Created temp file: %s. Writing payload...", tmp_path)
+            logger.info("Created temp file: %s. Writing payload", tmp_path)
             tmp.write(text)
 
-            logger.debug("Flushing buffer to disk...")
+            logger.debug("Flushing buffer to disk")
             tmp.flush()
 
-            logger.debug("Executing os.fsync on file descriptor...")
+            logger.debug("Executing os.fsync on file descriptor")
             os.fsync(tmp.fileno())
             logger.info("Temp file write and fsync completed successfully")
 
