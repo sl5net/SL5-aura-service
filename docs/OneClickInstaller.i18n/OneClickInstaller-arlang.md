@@ -21,7 +21,7 @@
                                                    **لينوكس وماك:**
                                                   #### Web One-Liner CodeBerg
 ```bash
-curl -sSL https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | bash
+curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
 ```
                                                                          أو
                                    #### الويب أحادي الخط GitHub
@@ -33,7 +33,7 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
                                                   #### Web One-Liner CodeBerg
 
 ```bash
-irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
+irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
                                                                          أو
                                      #### جيثب ويب أحادي الخط

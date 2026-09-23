@@ -21,7 +21,7 @@
 **Linux および macOS:**
 #### Web ワンライナー CodeBerg
 ```bash
-curl -sSL https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | bash
+curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
 ```
 または
 #### Web ワンライナー GitHub
@@ -33,7 +33,7 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 #### Web ワンライナー CodeBerg
 
 ```bash
-irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
+irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
 または
 #### Web ワンライナー github

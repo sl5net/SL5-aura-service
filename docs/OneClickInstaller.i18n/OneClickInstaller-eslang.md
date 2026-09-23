@@ -21,7 +21,7 @@ Ahorra ~30 segundos de manejo manual de archivos y se inicia inmediatamente en t
 **Linux y macOS:**
 #### Web de una sola línea CodeBerg
 ```bash
-curl -sSL https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | bash
+curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
 ```
 o
 #### Web de una sola línea GitHub
@@ -33,7 +33,7 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 #### Web de una sola línea CodeBerg
 
 ```bash
-irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
+irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
 o
 #### Web de una sola línea github

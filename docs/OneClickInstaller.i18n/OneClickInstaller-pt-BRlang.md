@@ -21,7 +21,7 @@ Saves ~30 seconds of manual file handling and starts immediately in your termina
 **Linux & macOS:**
 #### Web One-Liner CodeBerg
 ```bash
-curl -sSL https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | bash
+curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
 ```
 or
 #### Web One-Liner GitHub
@@ -33,7 +33,7 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 #### Web One-Liner CodeBerg
 
 ```bash
-irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
+irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
 or
 #### Web One-Liner github

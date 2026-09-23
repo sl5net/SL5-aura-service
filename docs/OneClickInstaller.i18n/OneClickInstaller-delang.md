@@ -21,7 +21,7 @@ Spart ca. 30 Sekunden manuelle Dateiverwaltung und startet sofort in Ihrem Termi
 **Linux und macOS:**
 #### Web One-Liner CodeBerg
 ```bash
-curl -sSL https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | bash
+curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
 ```
 oder
 #### Web One-Liner GitHub
@@ -33,7 +33,7 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 #### Web One-Liner CodeBerg
 
 ```bash
-irm https://codeberg.org/seeh/SL5-aura-service/raw/branch/master/web_install.sh | iex
+irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
 oder
 #### Web One-Liner Github
