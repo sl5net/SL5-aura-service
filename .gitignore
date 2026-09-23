@@ -80,6 +80,7 @@ scripts/type_watcher/log/type_watcher_keep_alive.log
 
 *.blob
 
+tools/i18n/engine_cooldowns.json
 
 config/maps/2025/
 
