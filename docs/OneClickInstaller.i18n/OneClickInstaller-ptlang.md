@@ -1,29 +1,31 @@
-# 1-Click Installer (Zero-Setup)
+> ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../OneClickInstaller.md).*
 
-Get **Aura** up and running on your machine with a single click. No programming knowledge, terminal commands, or manual Python setup required.
+# Instalador com 1 Clique (Configuração Zero)
 
----
-
-## Zero Prerequisites
-
-You do **not** need:
-- Python pre-installed
-- Git or code repositories
-- Command-line or terminal experience
+Coloque o **Aura** em funcionamento no seu computador com um único clique. Nenhum conhecimento de programação, comandos no terminal ou configuração manual do Python é necessário.
 
 ---
 
-## Quick Start
+## Zero Pré-requisitos
 
-### Method 1: Web One-Liner (Fastest & Recommended for Linux / macOS)
-Saves ~30 seconds of manual file handling and starts immediately in your terminal:
+Você **não** precisa:
+- Python pré-instalado
+- Repositórios Git ou de código
+- Experiência com linha de comando ou terminal
 
-**Linux & macOS:**
+---
+
+## Início Rápido
+
+### Método 1: Linha Única na Web (Mais Rápido e Recomendado para Linux / macOS)
+Economiza cerca de 30 segundos de manuseio manual de arquivos e inicia imediatamente no seu terminal:
+
+**Linux e macOS:**
 #### Web One-Liner CodeBerg
 ```bash
 curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
 ```
-or
+ou
 #### Web One-Liner GitHub
 ```bash
 curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
@@ -35,53 +37,53 @@ curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_i
 ```bash
 irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
-or
+ou
 #### Web One-Liner github
 ```bash
 irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
 ```
 
-Method 2: Standalone Binary (Windows & Desktop Click)
+Método 2: Binário Independente (Windows e Clique na Área de Trabalho)
 
-### 2.1 Download the Installer
-Download the single installer file matching your operating system from the [Latest GitHub Release]:
+### 2.1 Baixar o Instalador
+Baixe o arquivo único do instalador correspondente ao seu sistema operacional a partir da [Última Versão no GitHub]:
 
 - **Windows:** [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe.zip)
 - **Linux:** [aura-installer-linux](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-linux)
 - **macOS:** [aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos)
 
 
-### 2.2. Run the Installer
+### 2.2. Execute o Instalador
 
-rename aura-installer-windows.exe.zip to aura-installer-windows.exe
+renomeie aura-installer-windows.exe.zip para aura-installer-windows.exe
 
-Double-click the downloaded file. A setup window will appear and automatically prepare the environment.
+Clique duas vezes no arquivo baixado. Uma janela de instalação aparecerá e preparará automaticamente o ambiente.
 
-### 2.3. Start Dictating
-Once finished, Aura creates a desktop shortcut and starts listening immediately.
-
----
-
-## What Happens Automatically?
-
-When you run the installer, Aura automatically:
-- Configures the local, private speech recognition engine.
-- Downloads the default voice models.
-- Sets up all necessary system shortcuts and desktop launchers.
+### 2.3. Começar a ditar
+Uma vez terminado, o Aura cria um atalho na área de trabalho e começa a escutar imediatamente.
 
 ---
 
-## Installation Details & Requirements
+## O Que Acontece Automaticamente?
 
-- **Installation Duration:** Approximately 2–3 minutes.
-- **Disk Space Required:** Minimum ~1.5 GB (up to 2.5 GB depending on selected language models).
-- **Installation Directory:**
-  - **Linux & macOS:** `~/opt/sl5-aura-service`
+Quando você executa o instalador, o Aura automaticamente:
+- Configura o mecanismo local e privado de reconhecimento de fala.
+- Faz o download dos modelos de voz padrão.
+- Configura todos os atalhos de sistema e inicializadores de área de trabalho necessários.
+
+---
+
+## Detalhes de Instalação e Requisitos
+
+- **Duração da Instalação:** Aproximadamente 2–3 minutos.
+- **Espaço em Disco Necessário:** Mínimo ~1,5 GB (até 2,5 GB dependendo dos modelos de linguagem selecionados).
+- **Diretório de Instalação:**
+  - **Linux e macOS:** `~/opt/sl5-aura-service`
   - **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
 
 ---
 
-## Next Steps
+## Próximos Passos
 
-- **Grandma-Mode:** Type a single word into your rule file and watch Aura auto-create rules.
-- **Learn with Koans:** Explore step-by-step concepts in [Getting Started](GettingStarted.md).
+- **Modo Vovó:** Digite uma única palavra no seu arquivo de regras e veja o Aura criar regras automaticamente.
+- **Aprenda com Koans:** Explore conceitos passo a passo em [Getting Started](../GettingStarted.i18n/GettingStarted-ptlang.md).

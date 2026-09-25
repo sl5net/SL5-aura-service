@@ -1,64 +1,66 @@
+> ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../OneClickInstaller.md).*
+
 # Instalador de 1 clic (configuración cero)
 
 Ponga **Aura** en funcionamiento en su máquina con un solo clic. No se requieren conocimientos de programación, comandos de terminal ni configuración manual de Python.
 
 ---
 
-## Cero requisitos previos
+## Cero Requisitos Previos
 
-**No** necesitas:
+No necesitas:
 - Python preinstalado
-- Git o repositorios de código
+- Repositorios de Git o de código
 - Experiencia en línea de comandos o terminal
 
 ---
 
-## Inicio rápido
+## Inicio Rápido
 
-### Método 1: Web One-Liner (más rápido y recomendado para Linux/macOS)
+### Método 1: Una línea web (Más rápido y recomendado para Linux / macOS)
 Ahorra ~30 segundos de manejo manual de archivos y se inicia inmediatamente en tu terminal:
 
 **Linux y macOS:**
-#### Web de una sola línea CodeBerg
+#### Código de una línea para Web en CodeBerg
 ```bash
 curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
 ```
 o
-#### Web de una sola línea GitHub
+#### GitHub de una sola línea web
 ```bash
 curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
 ```
 
 **Windows (PowerShell):**
-#### Web de una sola línea CodeBerg
+#### Código de una línea Web en CodeBerg
 
 ```bash
 irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
 o
-#### Web de una sola línea github
+#### Línea única web github
 ```bash
 irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
 ```
 
-Método 2: binario independiente (clic en Windows y escritorio)
+Método 2: Binario independiente (Windows y clic de escritorio)
 
 ### 2.1 Descargar el instalador
-Descargue el archivo de instalación único que coincida con su sistema operativo desde la [Última versión de GitHub]:
+Descargue el archivo único de instalación que coincida con su sistema operativo desde el [Último Lanzamiento en GitHub]:
 
-- **Windows:** XMLDLINK0X
+- **Windows:** [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe.zip)
 - **Linux:** [aura-installer-linux](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-linux)
 - **macOS:** [aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos)
 
 
-### 2.2. Ejecute el instalador
+### 2.2. Ejecutar el instalador
 
-cambie el nombre de aura-installer-windows.exe.zip a aura-installer-windows.exe
+renombrar aura-installer-windows.exe.zip a aura-installer-windows.exe
 
-Haga doble clic en el archivo descargado. Aparecerá una ventana de configuración y preparará automáticamente el entorno.
+Haga doble clic en el archivo descargado. Aparecerá una ventana de instalación y preparará automáticamente el entorno.
 
-### 2.3. Empezar a dictar
-Una vez terminado, Aura crea un acceso directo en el escritorio y comienza a escuchar inmediatamente.
+### 2.3. Comenzar a Dictar
+Una vez terminado, Aura crea un acceso directo en el escritorio y comienza a escuchar de inmediato.
 
 ---
 
@@ -71,17 +73,17 @@ Cuando ejecutas el instalador, Aura automáticamente:
 
 ---
 
-## Detalles y requisitos de instalación
+## Detalles y Requisitos de Instalación
 
-- **Duración de la instalación:** Aproximadamente 2 a 3 minutos.
-- **Espacio en disco requerido:** Mínimo ~1,5 GB (hasta 2,5 GB según los modelos de idioma seleccionados).
+- **Duración de la instalación:** Aproximadamente 2–3 minutos.
+- **Espacio en disco requerido:** Mínimo ~1,5 GB (hasta 2,5 GB dependiendo de los modelos de idioma seleccionados).
 - **Directorio de instalación:**
-- **Linux y macOS:** `~/opt/sl5-aura-service`
-- **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
+  - **Linux y macOS:** `~/opt/sl5-aura-service`
+  - **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
 
 ---
 
 ## Próximos pasos
 
-- **Modo abuela:** Escribe una sola palabra en tu archivo de reglas y observa cómo Aura crea reglas automáticamente.
+- **Modo-Abuela:** Escribe una sola palabra en tu archivo de reglas y observa cómo Aura crea reglas automáticamente.
 - **Aprende con Koans:** Explora conceptos paso a paso en [Getting Started](../GettingStarted.i18n/GettingStarted-eslang.md).

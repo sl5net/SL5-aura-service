@@ -1,69 +1,89 @@
+> ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../OneClickInstaller.md).*
+
 # 一键安装程序（零配置）
 
 只需点击一次，即可在您的电脑上启动 **Aura**。无需编程知识、终端命令或手动安装 Python。
 
----## 零前提
+---
+
+## 零先决条件
 
 你**不**需要：
 - 预装 Python
 - Git 或代码仓库
 - 命令行或终端经验
 
----## 快速入门
+---
 
-### 方法 1：Web One-Liner（最快且推荐用于 Linux / macOS）
-节省约 30 秒的手动文件处理时间并立即在终端中启动：
+## 快速开始
 
-**Linux 和 macOS：**
+### 方法1：网页单行命令（最快且推荐用于Linux / macOS）
+节省约 30 秒的手动文件处理时间，并在终端中立即启动：
+
+**Linux 和 macOS:**
+QQ 网络一环码Berg
+```bash
+curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
+```
+或者说
+*                                                                           
+```bash
+curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
+```
+
+** 窗户(PowerShell):**
 #### Web 单行 CodeBerg
-__代码_块_0__
-或者
-#### Web OneLiner GitHub
-__代码_块_1__
 
-**Windows（PowerShell）：**
-#### Web 单行 CodeBerg
-
-__代码_块_2__
+```bash
+irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
+```
 或者
 #### Web One-Liner github
-__代码_块_3__
+```bash
+irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
+```
 
 方法 2：独立二进制（Windows 和桌面单击）
 
-### 2.1 下载安装程序
-从 [最新 GitHub 版本] 下载与您的操作系统匹配的单个安装程序文件：
+& 2.1 下载安装器
+从 [Lastest GitHub Release] 下载匹配您的操作系统的单个安装器文件 :
 
-- **Windows：** [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe.zip)
-- **Linux：** [aura-installer-linux](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-linux)
-- **macOS：** [aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos)
+- ** 窗户:** [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe.zip)
+- ** 林纳:** [aura-installer-linux](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-linux)
+- **macOS:** [aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos)(英语:[aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos)).
 
 
-### 2.2。运行安装程序
+QQ 2.2. 运行安装器
 
-将 aura-installer-windows.exe.zip 重命名为 aura-installer-windows.exe
+将aura-installer-windows.exe.zip更名为aura-installer-windows.ex.
 
-双击下载的文件。将出现一个设置窗口并自动准备环境。
+双击已下载文件 。 设置窗口将出现并自动准备环境.
 
-### 2.3。开始听写
-完成后，Aura 会创建一个桌面快捷方式并立即开始收听。
+2.3. 开始录音
+完成后,Aura创建了桌面快捷键并立即开始收听.
 
----## 自动发生什么？
+---
 
-当您运行安装程序时，Aura 会自动：
-- 配置本地私有语音识别引擎。
-- 下载默认语音模型。
-- 设置所有必要的系统快捷方式和桌面启动器。
+□什么是自动发生的?
 
----## 安装细节和要求
+当运行安装器时, Aura 自动:
+- 配置本地,私人语音识别引擎.
+- 下载默认语音模式。
+- 设置所有必要的系统快捷键和桌面发射器.
 
-- **安装持续时间：** 大约 2-3 分钟。
-- **所需磁盘空间：** 最小 ~1.5 GB（最多 2.5 GB，具体取决于所选语言模型）。
-- **安装目录：**
-- **Linux 和 macOS：** `~/opt/sl5-aura-service`
-- **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
+---
 
----## 后续步骤
+□ 安装细节和要求
 
-- **奶奶模式：** 在规则文件中输入一个单词并观看 Aura 自动创建规则。
-- **与 Koans 一起学习：** 探索 [Getting Started](../GettingStarted.i18n/GettingStarted-zh-CNlang.md) 中的逐步概念。
+- ** 安装时间:** 大约2至3分钟。
+- ** Disk Space Required:** 最小~1.5 GB(根据所选语言模型,最高为2.5 GB).
+- ** 安装目录:**
+  - ** Linux & macOS:** `~/opt/sl5-aura-service` 存档副本.
+  - ** 窗户:** `%LOCALAPPDATA%\sl5-aura-service`
+
+---
+
+□ 下一步
+
+- ** 奶奶-模式:** 在规则文件中输入一个单词,并观看Aura自动创建规则.
+- **与Koans一起学习:**探索[Getting Started](../GettingStarted.i18n/GettingStarted-zh-CNlang.md)中的分步概念.

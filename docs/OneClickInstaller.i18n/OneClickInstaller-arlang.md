@@ -1,87 +1,89 @@
-# 1-انقر فوق أداة التثبيت (إعداد صفري)
+> ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../OneClickInstaller.md).*
 
-احصل على **Aura** وتشغيله على جهازك بنقرة واحدة. لا يلزم معرفة البرمجة أو الأوامر الطرفية أو إعداد Python اليدوي.
+(ﺩﺍﺪﻋﺇ ﻥﻭﺪﺑ) ﺓﺪﺣﺍﻭ ﺓﺮﻘﻨﺑ ﺖﺒﺜﻤﻟﺍ #
 
-                                                                          ---
+.ﺎﻳًﻭﺪﻳ Python ﺩﺍﺪﻋﺇ ﻭﺃ ،ﺔﻴﻓﺮﻄﻟﺍ ﺮﻣﺍﻭﺃ ﻭﺃ ،ﺔﺠﻣﺮﺒﻟﺎﺑ ﺔﻓﺮﻌﻤﻟ ﺔﺟﺎﺣ ﻻ
 
-                                ## صفر المتطلبات الأساسية
+---
 
-                                           أنت **لا** تحتاج إلى:
-                                         - بايثون مثبتة مسبقا
-                                       - مستودعات Git أو الكود
-          - تجربة سطر الأوامر أو المحطة الطرفية
+ﺔﻴﺳﺎﺳﻷ﻿ﺍ ﺕﺎﺒﻠﻄﺘﻤﻟﺍ ﺮﻔﺻ ##
 
-                                                                          ---
+                                            :ﻰﻟﺇ ﺝﺎﺘﺤﺗ **ﻻ﻿** ﺖﻧﺃ
+-                                               ﺎﻘﺒﺴﻣ ﺔﺘﺒﺜﻣ ﻥﻮﺜﻳﺎﺑ
+-                               ﺔﻴﺠﻣﺮﺒﻟﺍ ﺕﺎﻤﻴﻠﻌﺘﻟﺍ ﻭﺃ Git ﺕﺎﻋﺩﻮﺘﺴﻣ
+-                               ﺔﻴﻓﺮﻄﻟﺍ ﺔﻄﺤﻤﻟﺍ ﻭﺃ ﺮﻣﺍﻭﻷ﻿ﺍ ﺮﻄﺳ ﺔﺑﺮﺠﺗ
 
-                                                     ## بداية سريعة
+---
 
-### الطريقة الأولى: Web One-Liner (الأسرع والموصى به لنظام التشغيل Linux / macOS)
-يوفر ما يقرب من 30 ثانية من المعالجة اليدوية للملفات ويبدأ فورًا في جهازك الطرفي:
+ﺔﻌﻳﺮﺳ ﺔﻳﺍﺪﺑ ##
 
-                                                   **لينوكس وماك:**
-                                                  #### Web One-Liner CodeBerg
+(macOS ﻭ Linux ﻲﻣﺎﻈﻨﻟ ﻦﺴﺤﺘﺴﻤﻟﺍﻭ ﻉﺮﺳﻷ﻿ﺍ) ﺐﻳﻮﻟﺍ ﻰﻠﻋ ﺪﺣﺍﻭ ﺮﻄﺳ :1 ﺔﻘﻳ
+:ﻚﺑ ﺔﺻﺎﺨﻟﺍ ﺔﻴﻓﺮﻄﻟﺍ ﻲﻓ ﺍﺭًﻮﻓ ﺃﺪﺒﻳﻭ ﺕﺎﻔﻠﻤﻟﺍ ﻊﻣ ﻱﻭﺪﻴﻟﺍ ﻞﻣﺎﻌﺘﻟﺍ ﻦﻣ ﺔﻴ
+
+                                           **:ﺱﺇ ﻭﺃ ﻙﺎﻣﻭ ﺲﻜﻨﻴﻟ**
+#### Web One-Liner CodeBerg
 ```bash
 curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
 ```
-                                                                         أو
-                                   #### الويب أحادي الخط GitHub
+                                                              ﻭﺃ
+GitHub ﻰﻠﻋ ﺪﺣﺍﻭ ﺮﻄﺳ ####
 ```bash
 curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
 ```
 
-                                           **ويندوز (باورشيل):**
-                                                  #### Web One-Liner CodeBerg
+                                          **:(ﻞﻴﺷ ﺭﻭﺎﺑ) ﺯﻭﺪﻨﻳﻭ**
+#### Web One-Liner CodeBerg
 
 ```bash
 irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
 ```
-                                                                         أو
-                                     #### جيثب ويب أحادي الخط
+                                                              ﻭﺃ
+ﺐﻳﻮﻠﻟ ﺪﺣﺍﻮﻟﺍ ﺮﻄﺴﻟﺍ ﺐﻫَ ﺖﺟِ ####
 ```bash
 irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
 ```
 
-الطريقة الثانية: ثنائي مستقل (النقر على Windows وسطح المكتب)
+           (ﺐﺘﻜﻤﻟﺍ ﺢﻄﺳﻭ ﺯﻭﺪﻨﻳﻭ) ﻞﻘﺘﺴﻤﻟﺍ ﻲﺋﺎﻨﺜﻟﺍ ﻒﻠﻤﻟﺍ :2 ﺔﻘﻳﺮﻄﻟﺍ
 
-                        ### 2.1 قم بتنزيل برنامج التثبيت
-قم بتنزيل ملف التثبيت الفردي المطابق لنظام التشغيل الخاص بك من [أحدث إصدار لـ GitHub]:
+ﺖﻴﺒﺜﺘﻟﺍ ﺞﻣﺎﻧﺮﺑ ﻞﻳﺰﻨﺘﺑ ﻢﻗ 2.1 ###
+:[GitHub ـﻟ ﺭﺍﺪﺻﺇ ﺙﺪﺣﺃ] ﻦﻣ ﻚﺑ ﺹﺎﺨﻟﺍ ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻨﻟ ﻖﺑﺎﻄﻤﻟﺍ ﻱﺩﺮﻔﻟﺍ
 
-                                                - **ويندوز:** [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe.zip)
-                                                  - **لينكس:** [aura-installer-linux](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-linux)
-                                                      - **ماك:** [aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos)
+-                                            [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe.zip) **:ﺯﻭﺪﻨﻳﻭ**
+-                                             [aura-installer-linux](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-linux) **:ﺲﻜﻨﻴﻟ**
+-                                Mac: ** [aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos) ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻧ **
 
 
-                                       ###2.2. قم بتشغيل المثبت
+ﺖﺒّﺜﻤﻟﺍ ﻞﻴﻐﺸﺗ .2.2 ###
 
-إعادة تسمية aura-installer-windows.exe.zip إلى aura-installer-windows.exe
+aura-installer-windows.exe ﻰﻟﺇ aura-installer-windows.exe.zip ﺔﻴ
 
-انقر نقرًا مزدوجًا فوق الملف الذي تم تنزيله. ستظهر نافذة الإعداد وتقوم تلقائيًا بإعداد البيئة.
+.ﺔﺌﻴﺒﻟﺍ ﺮﻴﻀﺤﺘﺑ ﺎﻴًﺋﺎﻘﻠﺗ ﻡﻮﻘﺗﻭ ﺩﺍﺪﻋﻹ﻿ﺍ ﺓﺬﻓﺎﻧ ﺮﻬﻈﺘﺳ .ﻪﻠﻳﺰﻨﺗ ﻢﺗ ﻱﺬﻟﺍ
 
-                                              ###2.3. ابدأ الإملاء
-بمجرد الانتهاء، تقوم Aura بإنشاء اختصار على سطح المكتب وتبدأ في الاستماع على الفور.
+ءﻼ﻿ﻣﻹ﻿ﺍ ﺃﺪﺑﺍ .###2.3
+.ﺭﻮﻔﻟﺍ ﻰﻠﻋ ﻉﺎﻤﺘﺳﻻ﻿ﺍ ﻲﻓ ﺃﺪﺒﺗﻭ ﺐﺘﻜﻤﻟﺍ ﺢﻄﺳ ﻰﻠﻋ ﺭﺎﺼﺘﺧﺍ ءﺎﺸﻧﺈﺑ Aura ﻡﻮ
 
-                                                                          ---
+---
 
-                                      ## ماذا يحدث تلقائيًا؟
+؟ﺎﻴًﺋﺎﻘﻠﺗ ﺙﺪﺤﻳ ﺍﺫﺎﻣ ##
 
-عند تشغيل برنامج التثبيت، تقوم Aura تلقائيًا بما يلي:
-- تكوين محرك التعرف على الكلام المحلي والخاص.
-             - تنزيل النماذج الصوتية الافتراضية.
-- يقوم بإعداد جميع اختصارات النظام ومشغلات سطح المكتب الضرورية.
+        :ـﺑ ﺎﻴًﺋﺎﻘﻠﺗ ﺍﺭﻭﺭﻭﺃ ﺞﻣﺎﻧﺮﺑ ﻡﻮﻘﻳ ،ﺖﺒﺜﻤﻟﺍ ﻞﻴﻐﺸﺘﺑ ﻡﻮﻘﺗ ﺎﻣﺪﻨﻋ
+-                   .ﺹﺎﺨﻟﺍﻭ ﻲﻠﺤﻤﻟﺍ ﻡﻼ﻿ﻜﻟﺍ ﻰﻠﻋ ﻑﺮﻌﺘﻟﺍ ﻙﺮﺤﻣ ﻂﺒﻀﺑ ﻡﻮﻘﻳ
+-                                      .ﺔﻴﺿﺍﺮﺘﻓﻻ﻿ﺍ ﺕﻮﺼﻟﺍ ﺝﺫﺎﻤﻧ ﻝﺰﻨﻳ
+-       .ﺐﺘﻜﻤﻟﺍ ﺢﻄﺳ ﺕﻼ﻿ﻐﺸﻣﻭ ﺔﻣﺯﻼ﻿ﻟﺍ ﻡﺎﻈﻨﻟﺍ ﺕﺍﺭﺎﺼﺘﺧﺍ ﻊﻴﻤﺟ ﺩﺍﺪﻋﺈﺑ ﻡﻮﻘﻳ
 
-                                                                          ---
+---
 
-                              ## تفاصيل ومتطلبات التثبيت
+ﺖﻴﺒﺜﺘﻟﺍ ﺕﺎﺒﻠﻄﺘﻣﻭ ﻞﻴﺻﺎﻔﺗ ##
 
-                      - **مدة التثبيت:** حوالي 2-3 دقائق.
-- **مساحة القرص المطلوبة:** الحد الأدنى ~ 1.5 جيجابايت (يصل إلى 2.5 جيجابايت حسب طرازات اللغة المحددة).
-                                               - **دليل التثبيت:**
-                                - **Linux وmacOS:** `~/opt/sl5-aura-service`
-                             - **Windows:** `%LOCALAPPDATA%\sl5-aura-service`
+-                                .ﻖﺋﺎﻗﺩ 3-2 ﻲﻟﺍﻮﺣ **:ﺖﻴﺒﺜﺘﻟﺍ ﺓﺪﻣ**
+- .(ﺓﺩﺪﺤﻤﻟﺍ ﺔﻐﻠﻟﺍ ﺕﺍﺯﺍﺮﻃ ﺐﺴﺣ ﺖﻳﺎﺑﺎﺠﻴﺟ 2.5 ﻰﻟﺇ ﻞﺼﻳ) ﺖﻳﺎﺑﺎﺠﻴﺟ 1.5 ~ 
+-                                                **:ﺖﻴﺒﺜﺘﻟﺍ ﻞﻴﻟﺩ**
+  - ** Linux ﻭ macOS: ** `~/opt/sl5-aura-service`
+  -                                        `%LOCALAPPDATA%\sl5-aura-service` **:ﺯﻭﺪﻨﻳﻭ**
 
-                                                                          ---
+---
 
-                                             ## الخطوات التالية
+ﺔﻴﻟﺎﺘﻟﺍ ﺕﺍﻮﻄﺨﻟﺍ ##
 
-- **وضع الجدة:** اكتب كلمة واحدة في ملف القاعدة الخاص بك وشاهد قواعد Aura تُنشئ تلقائيًا.
-- **تعلم مع Koans:** استكشف المفاهيم خطوة بخطوة في [Getting Started](../GettingStarted.i18n/GettingStarted-arlang.md).
+- .ﺎﻴًﺋﺎﻘﻠﺗ ﺪﻋﺍﻮﻘﻟﺍ ﺊﺸﻨﺗ ﺍﺭﻭﺃ ﺪﻫﺎﺷﻭ ﻚﺑ ﺹﺎﺨﻟﺍ ﺓﺪﻋﺎﻘﻟﺍ ﻒﻠﻣ ﻲﻓ ﺓﺪﺣﺍﻭ ﺔ
+-   .[Getting Started](../GettingStarted.i18n/GettingStarted-arlang.md) ﻲﻓ ﺓﻮﻄﺨﺑ ﺓﻮﻄﺧ ﻢﻴﻫﺎﻔﻤﻟﺍ ﻒﺸﻜﺘﺳﺍ **:ﺕﺎﻧﺍﻮﻜﻟﺍ ﻊﻣ ﻢﻠّﻌﺗ**

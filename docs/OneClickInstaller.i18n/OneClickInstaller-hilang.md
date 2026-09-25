@@ -1,79 +1,89 @@
-# 1-इंस्टॉलर पर क्लिक करें (शून्य-सेटअप)
+> ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../OneClickInstaller.md).*
 
-एक क्लिक से **आभा** को अपनी मशीन पर चालू करें। किसी प्रोग्रामिंग ज्ञान, टर्मिनल कमांड या मैन्युअल पायथन सेटअप की आवश्यकता नहीं है।
+# 1-Click Installer (Zero-Setup)
 
----
-
-## शून्य पूर्वापेक्षाएँ
-
-आप की जरूरत नहीं:
-- पायथन पूर्व-स्थापित
-- गिट या कोड रिपॉजिटरी
-- कमांड-लाइन या टर्मिनल अनुभव
+**Aura** प्राप्त करें और एक क्लिक के साथ अपनी मशीन पर चल रहा है। कोई प्रोग्रामिंग ज्ञान, टर्मिनल कमांड या मैनुअल पायथन सेटअप की आवश्यकता नहीं है।
 
 ---
 
-## त्वरित शुरुआत
+## शून्य Prerequisites
 
-### विधि 1: वेब वन-लाइनर (लिनक्स/मैकओएस के लिए सबसे तेज़ और अनुशंसित)
-मैन्युअल फ़ाइल प्रबंधन के ~30 सेकंड बचाता है और आपके टर्मिनल में तुरंत प्रारंभ हो जाता है:
+आप **नहीं* की जरूरत है:
+- पायथन पूर्व स्थापित
+- गिट या कोड भंडार
+- कमांड लाइन या टर्मिनल अनुभव
 
-**लिनक्स और मैकओएस:**
-#### वेब वन-लाइनर कोडबर्ग
-__CODE_ब्लॉक_0__
+---
+
+## त्वरित शुरूआत
+
+## Method 1: Web One-Liner (Fastest & Linux / MacOS के लिए अनुशंसित)
+मैन्युअल फ़ाइल हैंडलिंग के ~ 30 सेकंड बचाता है और तुरंत अपने टर्मिनल में शुरू होता है:
+
+** लिनक्स और मैक ओएस: **
+### Web One-Liner CodeBerg
+```bash
+curl -sSL https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | bash
+```
 या
-#### वेब वन-लाइनर गिटहब
-__CODE_ब्लॉक_1__
+### Web One-Liner GitHub
+```bash
+curl -sSL https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.sh | bash
+```
 
-**विंडोज़ (पॉवरशेल):**
-#### वेब वन-लाइनर कोडबर्ग
+** विंडोज (पावरशेल):**
+### Web One-Liner CodeBerg
 
-__CODE_ब्लॉक_2__
+```bash
+irm https://codeberg.org/sl5net/SL5-aura-service/raw/branch/master/web_install.sh | iex
+```
 या
-#### वेब वन-लाइनर जीथब
-__CODE_ब्लॉक_3__
+###                                                                     
+```bash
+irm https://raw.githubusercontent.com/sl5net/SL5-aura-service/master/web_install.ps1 | iex
+```
 
-विधि 2: स्टैंडअलोन बाइनरी (विंडोज़ और डेस्कटॉप क्लिक)
+विधि 2: स्टैंडअलोन बाइनरी (विंडोज और डेस्कटॉप क्लिक)
 
-### 2.1 इंस्टॉलर डाउनलोड करें
-[नवीनतम GitHub रिलीज़] से अपने ऑपरेटिंग सिस्टम से मेल खाने वाली एकल इंस्टॉलर फ़ाइल डाउनलोड करें:
+## 2.1 Installer डाउनलोड
+[नवीनतम गिटहब रिलीज] से अपने ऑपरेटिंग सिस्टम से मिलान करने वाली एकल इंस्टॉलर फ़ाइल डाउनलोड करें:
 
-- **विंडोज़:** [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe.zip)
-- **लिनक्स:** [aura-installer-linux](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-linux)
-- **मैकओएस:** [aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos)
+- ** Windows:* [aura-installer-windows.exe](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-windows.exe.zip)
+- ** लिनक्स:* [aura-installer-linux](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-linux)
+- ** MacOS:* [aura-installer-macos](https://github.com/sl5net/SL5-aura-service/releases/latest/download/aura-installer-macos)
 
 
-### 2.2. इंस्टालर चलाएँ
+## 2.2. Installer
 
-aura-installer-windows.exe.zip का नाम बदलकर aura-installer-windows.exe कर दें
+Aura-installer-windows.exe.zip to aura-installer-windows.exe
 
-डाउनलोड की गई फ़ाइल पर डबल-क्लिक करें। एक सेटअप विंडो दिखाई देगी और स्वचालित रूप से वातावरण तैयार कर देगी।
+डाउनलोड की गई फ़ाइल को डबल-क्लिक करें। एक सेटअप विंडो दिखाई देगी और स्वचालित रूप से पर्यावरण तैयार करेगी।
 
-### 2.3. हुक्म चलाना शुरू करें
-एक बार समाप्त होने पर, ऑरा एक डेस्कटॉप शॉर्टकट बनाता है और तुरंत सुनना शुरू कर देता है।
-
----
-
-## स्वचालित रूप से क्या होता है?
-
-जब आप इंस्टॉलर चलाते हैं, तो ऑरा स्वचालित रूप से:
-- स्थानीय, निजी वाक् पहचान इंजन को कॉन्फ़िगर करता है।
-- डिफ़ॉल्ट वॉयस मॉडल डाउनलोड करता है।
-- सभी आवश्यक सिस्टम शॉर्टकट और डेस्कटॉप लॉन्चर सेट करता है।
+## 2.3.
+एक बार समाप्त हो जाने के बाद, Aura एक डेस्कटॉप शॉर्टकट बनाता है और तुरंत सुनने लगता है।
 
 ---
 
-## स्थापना विवरण और आवश्यकताएँ
+क्या है?
 
-- **स्थापना अवधि:** लगभग 2-3 मिनट।
-- **डिस्क स्थान आवश्यक:** न्यूनतम ~1.5 जीबी (चयनित भाषा मॉडल के आधार पर 2.5 जीबी तक)।
-- **स्थापना निर्देशिका:**
-- **लिनक्स और मैकओएस:** `~/opt/sl5-aura-service`
-- **विंडोज़:** `%LOCALAPPDATA%\sl5-aura-service`
+जब आप इंस्टॉलर चलाते हैं, तो Aura स्वचालित रूप से:
+- स्थानीय, निजी भाषण मान्यता इंजन को कॉन्फ़िगर करता है।
+- डिफ़ॉल्ट आवाज मॉडल डाउनलोड करें।
+- सभी आवश्यक सिस्टम शॉर्टकट और डेस्कटॉप लॉन्चर सेट करें।
 
 ---
 
-## अगले कदम
+## स्थापना विवरण & आवश्यकताएँ
 
-- **दादी-मोड:** अपनी नियम फ़ाइल में एक शब्द टाइप करें और ऑरा ऑटो-क्रिएट नियम देखें।
-- **कोअन्स के साथ सीखें:** [Getting Started](../GettingStarted.i18n/GettingStarted-hilang.md) में चरण-दर-चरण अवधारणाओं का अन्वेषण करें।
+- ** स्थापना अवधि:* लगभग 2-3 मिनट
+- ** डिस्क स्पेस आवश्यक: ** न्यूनतम ~ 1.5 जीबी (चुने हुए भाषा मॉडल के आधार पर 2.5 जीबी तक)।
+- **Installation निर्देशिका:*
+  - ** लिनक्स और मैक ओएस: ** `~/opt/sl5-aura-service`
+  - ** विंडोज:* `%LOCALAPPDATA%\sl5-aura-service`
+
+---
+
+## अगला कदम
+
+- ** दादी मां:* अपने नियम फ़ाइल में एक एकल शब्द टाइप करें और Aura ऑटो-create नियमों को देखें।
+- ** कोन्स के साथ जानें:* [Getting Started](../GettingStarted.i18n/GettingStarted-hilang.md) में चरण-दर-चरण अवधारणाओं का अन्वेषण करें।
