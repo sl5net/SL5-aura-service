@@ -1,12 +1,35 @@
 #!/usr/bin/env bash
+: "${TERM:=dumb}"
+export TERM
+
+# tools/search.sh
 # Repository-wide search tool filtering ignored and deleted files with regex support.
 # - MANDATORY SEARCH RULE: Always use the repository search script instead of custom grep commands:
 #   tools/search.sh "search_string" [optional_path_prefix]
 #   Options available: -i (case-insensitive), -E (regex), -w (whole word).
 
-clear
+clear || true
 
 set -euo pipefail
+
+
+export TERM="${TERM:-dumb}" 
+
+: "${TERM:=xterm-256color}"
+export TERM
+
+
+tmp_dir='/tmp'
+
+SL5NET_AURA_PROJECT_ROOT="$(realpath "$(tr -d '\r' < "$tmp_dir/sl5_aura/sl5net_aura_project_root")")"
+
+cd "$SL5NET_AURA_PROJECT_ROOT"
+
+# 3) Optional: try clear only if a terminal is attached
+if [ -t 1 ]; then
+  clear || true
+fi
+
 
 
 if [[ "$*" == *".github/workflows"* ]]; then
@@ -45,6 +68,7 @@ Examples:
   ./tools/search.sh "TODO" . -i
   ./tools/search.sh "class \w+Error" . -E
   ./tools/search.sh "bin/bash" scripts -e sh
+  ./tools/search.sh minimal log -e log 
   ./tools/search.sh xvfb-run .github/workflows -e yml 
   ./tools/search.sh "pattern" . --all-ext
   ./tools/search.sh "bin/bash" scripts -e sh -c
@@ -91,7 +115,10 @@ echo "→ pattern='$PATTERN' prefix='$PREFIX' flags='$GREP_FLAGS' ext='$SEARCH_E
 
 #echo "→ pattern='$PATTERN' prefix='$PREFIX' flags='$GREP_FLAGS' ext='$SEARCH_EXT' all_ext='$ALL_EXT' ignore_comments='$ignore_comments' include_doc_sources='$INCLUDE_DOC_SOURCES' [help: -h]" >&2
 
-EXCLUDE_PAT="\.i18n|/__pycache__/|/\.venv/|/venv/"
+#EXCLUDE_PAT="\.i18n|/__pycache__/|/\.venv/|/venv/"
+
+EXCLUDE_PAT="\.i18n|/__pycache__/|/\.venv/|/venv/|\.idea"
+
 if [ "$INCLUDE_DOC_SOURCES" = "false" ]; then
   EXCLUDE_PAT="$EXCLUDE_PAT|doc_sources"
 fi
@@ -100,7 +127,11 @@ EXCLUDE_FILE_PAT='[^/]*(backup|BACKUP|draft)'
 
 get_matched_files() {
   local target_prefix="$1"
-  (git ls-files "$target_prefix" && git ls-files --others --exclude-standard -- "$target_prefix") | \
+  local exclude_opt="--exclude-standard"
+  if [[ "$target_prefix" =~ ^(\./)?log ]]; then
+    exclude_opt=""
+  fi
+  (git ls-files "$target_prefix" && git ls-files --others $exclude_opt -- "$target_prefix") | \
     grep -Ev "$EXCLUDE_PAT" || true
 }
 
