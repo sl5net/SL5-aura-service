@@ -114,11 +114,14 @@ if getattr(settings, 'KILL_COMPETING_LT_AND_ELOQUENT_ON_START', False):
     os.system("pkill -f 'eloquent'")
     os.system("pkill -f '/app/LanguageTool/languagetool-server.jar'")
 
+
 if settings.ENABLE_AUTO_LANGUAGE_DETECTION:
     # Check if the package is installed without actually importing it
+    import importlib.util
+
     if importlib.util.find_spec("fasttext") is None:
         logging.warning("FastText is not installed but is enabled in config.")
-        logging.info("At    ting to install 'fasttext-wheel' automatically…")
+        logging.info("At ting to install 'fasttext-wheel' automatically…")
         try:
             subprocess.check_call([sys.executable, "-m", "pip", "install", "fasttext-wheel"])
             logging.info("INFO: FastText installed successfully. Please restart the service to activate it.")
@@ -747,8 +750,9 @@ if settings.SERVICE_START_OPTION > 1:
             print(m)
             logging.info(m)
             time.sleep(8)
-            os.system('reboot')
-            os.system('sudo systemctl restart systemd')
+            if settings.SERVICE_START_OPTION == 11:
+                os.system('reboot')
+                os.system('sudo systemctl restart systemd')
         else:
             sys.exit(1)
 

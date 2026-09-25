@@ -120,7 +120,6 @@ class ScratchpadWindow:
             self.text_area.delete(f"1.0 + {word_start_pos} chars", current_pos)
 
     def _select_all(self, event: tk.Event) -> str:
-        # Markiere alles im Text-Widget
         self.text_area.tag_add("sel", "1.0", "end")
         # Setze Einfügemarke an den Anfang (optional)
         self.text_area.mark_set(tk.INSERT, "1.0")

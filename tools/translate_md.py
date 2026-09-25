@@ -36,6 +36,13 @@ script_dir = Path(__file__).resolve().parent
 SOURCE_LANG = "en"
 # Options: "fallback" (on engine failure), "primary" (Argos first), "only" (strictly offline), "off"
 ARGOS_MODE = "fallback"
+# ARGOS_MODE = "primary"
+# ARGOS_MODE = "only"
+
+# pkill -f translate_md.py
+
+# tools/search.sh test_minimal log -e log 
+
 
 
 # TARGET_LANGS = ["de", "pt", "es", "fr"]
@@ -44,6 +51,14 @@ ARGOS_MODE = "fallback"
 
 TARGET_LANGS = ["ar", "de", "en", "es", "fr", "hi", "ja", "ko", "pl", "pt", "pt-BR", "zh-CN"]
 
+
+# cache_file_i18n = script_dir / "i18n" / ".translation_cache.json"
+cooldown_file = script_dir / "i18n" / "engine_cooldowns.json"
+
+
+log_dir = script_dir.parent / "log"
+log_dir.mkdir(parents=True, exist_ok=True)
+log_file = log_dir / "translate_md.log"
 
 
 
@@ -78,6 +93,8 @@ try:
     from tools.i18n.detect_language import detect_source_language
     
 except ImportError:
+    from i18n.argos_engine import translate_with_argos
+    from i18n.detect_language import detect_source_language
     from i18n.section_cache import (
         compute_section_hash,
         get_cached_translation,
@@ -91,13 +108,6 @@ except ImportError:
         translate_with_engine_fallback,
     )
 
-cache_file = script_dir / "i18n" / "translation_cache.json"
-cooldown_file = script_dir / "i18n" / "engine_cooldowns.json"
-
-
-log_dir = script_dir.parent / "log"
-log_dir.mkdir(parents=True, exist_ok=True)
-log_file = log_dir / "translate_md.log"
 
 
 class LogTee:
@@ -390,26 +400,29 @@ def translate_section(section_text: str, lang: str, source_lang: str = SOURCE_LA
     
             if not raw_translated and ARGOS_MODE == "fallback":
                 raw_translated = translate_with_argos(text_to_translate, source_lang, lang)
-                if not raw_translated:
-                    last_error_file = log_dir / "i18n_last_error_segment.log"
-                    last_error_file.write_text(section_text, encoding="utf-8")
-                    print(f"      [ERROR] All translation engines failed for '{lang}'.")
-                    return None
-        
-                if len(raw_translated) != len(lines_to_send):
-                    logger.warning(
-                        "Line count mismatch for '%s': expected %d, got %d",
-                        lang,
-                        len(lines_to_send),
-                        len(raw_translated),
-                    )
-                    return None
 
-            translated_lines = list(lines_for_translation)
-            for idx, prefix, suffix, trans_line in zip(
-                translatable_indices, line_prefixes, line_suffixes, raw_translated
-            ):
-                translated_lines[idx] = f"{prefix}{trans_line}{suffix}"
+
+
+        if not raw_translated:
+            last_error_file = log_dir / "i18n_last_error_segment.log"
+            last_error_file.write_text(section_text, encoding="utf-8")
+            print(f"      [ERROR] All translation engines failed for '{lang}'.")
+            return None
+
+        if len(raw_translated) != len(lines_to_send):
+            logger.warning(
+                "Line count mismatch for '%s': expected %d, got %d",
+                lang,
+                len(lines_to_send),
+                len(raw_translated),
+            )
+            return None
+
+        translated_lines = list(lines_for_translation)
+        for idx, prefix, suffix, trans_line in zip(
+            translatable_indices, line_prefixes, line_suffixes, raw_translated
+        ):
+            translated_lines[idx] = f"{prefix}{trans_line}{suffix}"
 
             restored_step_a = []
             for line in translated_lines:
@@ -503,14 +516,16 @@ def process_file(filename):
     source_lang = detect_source_language(raw_content, default=SOURCE_LANG)
     sections = split_markdown_by_h2(raw_content)
     base_name = os.path.splitext(filename)[0]
-    cache_data = load_cache(cache_file)
+    i18n_dir = f"{base_name}.i18n"
+    # global cache_file_i18n
+    cache_file_i18n = Path(i18n_dir) / ".translation_cache.json"
+    cache_data = load_cache(cache_file_i18n)
 
 
     target_languages = [lang for lang in TARGET_LANGS if lang != source_lang]
         
     for lang in target_languages:
         
-        i18n_dir = f"{base_name}.i18n"
         os.makedirs(i18n_dir, exist_ok=True)
         output_file = f"{i18n_dir}/{os.path.basename(base_name)}-{lang}lang.md"
 
@@ -544,7 +559,7 @@ def process_file(filename):
                 translated = harmonize_newlines(section, translated)
                 store_cached_translation(cache_data, sec_hash, lang, translated)
                 
-                save_cache(cache_file, cache_data)          
+                save_cache(cache_file_i18n, cache_data)          
                 logger.info(f"      -> Section cached (hash={sec_hash[:8]}…, lang='{lang}')")
 
                 translated_sections.append(translated)
@@ -559,7 +574,7 @@ def process_file(filename):
 
         output_lines = full_output.splitlines()
 
-        if len(output_lines) <= 2:
+        if len(output_lines) < 1:
             print(
                 f"      [SKIP] Output for '{lang}' has only {len(output_lines)} lines, skipping write."
             )

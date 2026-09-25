@@ -1,0 +1,11 @@
+{
+  "2ef6f0661c48c63a3fa050a23a1dc27f7c4f85214665ac3c74c20f9ad0b46400": {
+    "en": "# CopyQ – User interface & integration with SL5 Aura\n\n"
+  },
+  "5f2c37d304177b6a7fe69f11fbbb1a8c7c4884c6d29939ea9b3de1c02eea6fcb": {
+    "en": "What is CopyQ?\n\nCopyQ is an extensible clipboard manager with a scriptable user interface.\nIt stores a history of all copied content and allows access by command line,\nPython script or keyboard shortcuts.\n\nFor SL5 Aura, CopyQ is the primary tool for voice-to-text results\nin the interim storage and administer there.\n\n"
+  },
+  "4baf2b0fe5df1da957dd6eff7138fcc155c5411d7d2030289b7df4d68c3e41d4": {
+    "en": "## Relevant files in the repo\n\n"
+  }
+}

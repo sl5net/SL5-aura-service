@@ -1,0 +1,14 @@
+{
+  "51331e4899ed1898da18362c8940185fb0f7e996719602a20487b6bbdb631d0f": {
+    "en": "The sorting results from the combination of **alphabetical sorting** at each level and the **hierarchy** of the folders.\n\nPrinciple 'First Match Wins', determined by the loading order, decides the priority.\n\nYou start from a common root directory that contains `de-DE`, `en-US`, and `plugins`.\n\n---\n\n"
+  },
+  "2000b1ae181775874bc0938bf6fe85961ef59d1326820b7df3955833d9f5fe65": {
+    "en": "## General Sorting and Priority Order\n\nThe loading order (and thus the priority) is usually determined by the alphabetical sorting of the folders and modules at each level.\n\n"
+  },
+  "01771a5844f8cbf1cc6d28b4fb50d2618ab519947ce0d7d117ebed0be0e56f39": {
+    "en": "### 1. Global Folder Level (Highest Priority)\n\nThe folders at the top level are processed alphabetically first:\n\n"
+  },
+  "540d6d1a74901701c69b1374c374893190d86cfa029bc527909d4fafaa73d5fb": {
+    "en": "| Folder | Priority | Remark |\n| :--- | :--- | :--- |\n| `de-DE` | **1. priority** | Loads first. |\n| `en-US` | **2. priority** | Loaded to `de-DE`. |\n| `plugins` | **3. priority** | Last loaded. |\n"
+  }
+}

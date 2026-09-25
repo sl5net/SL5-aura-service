@@ -24,10 +24,10 @@ models/lid.176.bin
 *\ *
 * *
 vosk*
-.venv/
 
 .venv/
 venv/
+
 ENV/
 .env
 

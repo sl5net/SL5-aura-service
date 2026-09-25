@@ -1,0 +1,29 @@
+{
+  "7dbb793a2c0e9ff4c1b9951341770c69a0738dad6ce3b8660be4d300c1893927": {
+    "en": "# dotool – Installation & Configuration (Manjaro / Arch based)\n\n"
+  },
+  "dbe6027c4ac2e185be2861adcb0e115b2dae3fbe15c8156e3e03a5026d0648af": {
+    "en": "## What is dotool?\n\n`dotool` is a quick tool for simulating keyboard input in Linux.\nIt is significantly faster than `xdotool` and works on both X11 and Wayland.\n\n---\n\n"
+  },
+  "cbcf22e3fb0b4172c956eac7d52f00ce1426b6d771d5bc6ac7880c558e99c8f3": {
+    "en": "## Installation (Manjaro/Arch)\n\n"
+  },
+  "85063418791f51643f90ec5e386d02934894d29400cf31051ed82f4ae083ee2b": {
+    "en": "### 1. Install package\n\n```bash\npamac build dotool\n# oder mit yay:\nyay -S dotool\n```\n\n"
+  },
+  "cd9123c1d310cfc3f4d2bf74bd6a51fa11786ccb4515af75751c3f889e31613b": {
+    "en": "### 2. Add user to the `input` group\n\n```bash\nsudo gpasswd -a $USER input\n```\n\n"
+  },
+  "e6f0d623c0f23368bb73d825f67b56cdc98e988a5180068ced980580afa62086": {
+    "en": "### Create the 3. udev rule\n\n```bash\necho 'KERNEL==\"uinput\", GROUP=\"input\", MODE=\"0660\", OPTIONS+=\"static_node=uinput\"' \\\n  | sudo tee /etc/udev/rules.d/80-dotool.rules\n```\n\n"
+  },
+  "f899b5e6f044696a34a68f643ecc386ffe30a39b869edfc71bf72661ea0820b6": {
+    "en": "### Reload 4. udev\n\n```bash\nsudo udevadm control --reload-rules && sudo udevadm trigger\n```\n\n"
+  },
+  "14c436cd19e033f3daa25269fe600f17bde26d62438e1d71059b98de1eeef029": {
+    "en": "### 5 New login (important!)\n\nWithout new login, group membership does not apply.\n\n---\n\n"
+  },
+  "338225b983a14e4fc452885d46651d4780f97a4edb5751e9b2e57332903653bf": {
+    "en": "## Configuration in the project\n\n"
+  }
+}

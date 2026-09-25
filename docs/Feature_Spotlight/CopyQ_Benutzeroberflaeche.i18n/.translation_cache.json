@@ -1,0 +1,14 @@
+{
+  "2ef6f0661c48c63a3fa050a23a1dc27f7c4f85214665ac3c74c20f9ad0b46400": {
+    "en": "# CopyQ – User Interface & Integration in SL5 Aura\n\n"
+  },
+  "5f2c37d304177b6a7fe69f11fbbb1a8c7c4884c6d29939ea9b3de1c02eea6fcb": {
+    "en": "## What is CopyQ?\n\nCopyQ is an extensible clipboard manager with a scriptable interface.\nIt saves a history of all copied content and allows access via command line,\nPython script or keyboard shortcut.\n\nFor SL5 Aura, CopyQ is the primary tool for speech-to-text results\nto the clipboard and manage it there.\n\n"
+  },
+  "4baf2b0fe5df1da957dd6eff7138fcc155c5411d7d2030289b7df4d68c3e41d4": {
+    "en": "## Relevant files in the repo\n\n"
+  },
+  "b975861507a714b5fb3fae87632eb5404b9a068fcd7ae9da28244b282febd3e0": {
+    "en": "| File | Purpose |\n|---|---|\n| `tools/export_to_copyq.py` | Exports FUZZY_MAP rules to CopyQ |\n| `scripts/py/func/process_text_in_background.py` | Processes text and sends it to CopyQ |\n| `config/maps/plugins/standard_actions/de-DE/renumber_clipboard_text.py` | Numbers clipboard text by |\n| `config/maps/plugins/z_fallback_llm/de-DE/test_clipboard.py` | Test script for clipboard access |\n| `config/maps/koans_deutsch/11_copyq_benutzeroberflaeche/` | Koan exercises on the topic |\n"
+  }
+}

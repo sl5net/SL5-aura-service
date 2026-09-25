@@ -1,8 +1,11 @@
 # STT/scripts/py/func/checks/check_badges.py
+import platform
 import re
 import sys
+from pathlib import Path
 
 import requests
+from get_project_root import get_aura_project_root
 
 
 def find_badge_urls(content):
@@ -17,7 +20,7 @@ def check_badge_status(url):
     Returns 'passing', 'failing', or 'broken_link'.
     """
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=3)
 
         # If the URL is wrong, the link is broken
         if response.status_code != 200:
@@ -37,10 +40,11 @@ def check_badge_status(url):
     except requests.exceptions.RequestException:
         return 'network_error'
 
-def check_badges(SCRIPT_DIR):
+def check_badges(aura_project_root):
     """Main function to run the badge checks."""
+
     try:
-        with open(f'{SCRIPT_DIR}/README.md' , encoding='utf-8') as f:
+        with open(f'{aura_project_root}/README.md' , encoding='utf-8') as f:
             readme_content = f.read()
     except FileNotFoundError:
         print("❌ ERROR: Cannot find the file.")
@@ -84,5 +88,7 @@ def check_badges(SCRIPT_DIR):
         # sys.exit(0) # Exit with a success code
 
 if __name__ == '__main__':
-    check_badges()
+    TMP_DIR = Path("C:/tmp") if platform.system() == "Windows" else Path("/tmp")
+    SL5NET_AURA_PROJECT_ROOT = get_aura_project_root()
+    check_badges(SL5NET_AURA_PROJECT_ROOT)
 

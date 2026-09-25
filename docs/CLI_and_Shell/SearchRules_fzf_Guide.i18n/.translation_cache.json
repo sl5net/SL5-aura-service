@@ -1,0 +1,23 @@
+{
+  "09ff2bf7a0f875a3102c74ce99f4834df129faa5b75cf1ac1dcc455141eed2b1": {
+    "en": "# search_rules.sh – Interactive rule search with fzf\n\n> ⚠️ Linux/macOS only. No Windows support (fzf + xdg-open).\n\n"
+  },
+  "84838e0f95d0caff5a26acf50f59b0696038ff427ebf5826a3bd9d08075f3ac5": {
+    "en": "## What it does\n\n`search_rules.sh` searches all map files in `config/maps/` interactively with `fzf`.\nHits can be opened directly in the editor or viewed on GitHub.\n\n"
+  },
+  "0833cb16f3e0bccd21a859273a277e14697731cd536f43db2b28c09f1198893c": {
+    "en": "## Files in the repo\n\n```\nscripts/search_rules/search_rules.sh   ← offizielle Version\ntools/search_rules.sh                  ← veraltet, hat hardcodierten Pfad-Bug\n```\n\nThe version in `tools/` should be removed or replaced with a symlink:\n```bash\nrm ~/projects/py/STT/tools/search_rules.sh\nln -s ../scripts/search_rules/search_rules.sh ~/projects/py/STT/tools/search_rules.sh\n```\n\n"
+  },
+  "5530f81b14b38bd884c28e4f35d95b1ae8f22a93fa54ef75d03941bb058e9eba": {
+    "en": "## Requirements\n\n```bash\n# fzf installieren (falls nicht vorhanden)\nsudo apt install fzf        # Debian/Ubuntu\nsudo pacman -S fzf          # Arch\nbrew install fzf            # macOS\n```\n\n"
+  },
+  "1e28acbb6d3405f40e3320801d5a483f1c22eae5307b5ba9c1c8bd0c6a653530": {
+    "en": "## Usage\n\n```bash\ncd ~/projects/py/STT\nbash scripts/search_rules/search_rules.sh\n```\n\n"
+  },
+  "677e58d90b7dde581066a34737802f65c5efdcb09bc70cfc4cffa119c0160af9": {
+    "en": "## fzf Keyboard Shortcuts\n\n"
+  },
+  "e2b66cd9b45585c4dea692845c0562ca483e97a2c4f8ce1c38ac19d864551c62": {
+    "en": "| Key | Action |\n|---|---|\n| Type | Enter search query |\n| `Enter` | Open file in editor (Kate) |\n| `Ctrl+G` | Open line on GitHub in browser |\n| `Ctrl+Z` | Previous search request from History |\n| `Ctrl+Y` | Next search from History |\n| `Ctrl+P` | Previous History Entry |\n| `Ctrl+N` | Next History Entry |\n| `Ctrl+A` | Select all hits |\n| `Ctrl+C` | Cancel |\n| `Ctrl+←/→` | Wordwise Navigate |\n| `Ctrl+Backspace` | Delete word (left) |\n| `Ctrl+Delete` | Delete word (right) |\n"
+  }
+}
