@@ -10,9 +10,14 @@ LANG_MAP = {
     "zh-CN": "zh",
 }
 
+FAILED_PACKAGES: set[str] = set()
+
 
 def ensure_argos_package(src_lang: str, tgt_lang: str) -> bool:
     pkg_name = f"translate-{src_lang}_{tgt_lang}"
+    if pkg_name in FAILED_PACKAGES:
+        return False
+
     try:
 
         check_proc = subprocess.run(
@@ -37,9 +42,11 @@ def ensure_argos_package(src_lang: str, tgt_lang: str) -> bool:
             logger.info("Argos package '%s' installed successfully.", pkg_name)
             return True
 
+        FAILED_PACKAGES.add(pkg_name)
         logger.warning("Failed to install Argos package '%s'.", pkg_name)
         return False
     except Exception as exc:
+        FAILED_PACKAGES.add(pkg_name)
         logger.warning("Error verifying/installing Argos package '%s': %s", pkg_name, exc)
         return False
 
