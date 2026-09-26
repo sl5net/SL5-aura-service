@@ -51,14 +51,7 @@ def ensure_argos_package(src_lang: str, tgt_lang: str) -> bool:
         return False
 
 
-def translate_with_argos(text: str, source_lang: str, target_lang: str) -> list[str] | None:
-    src = LANG_MAP.get(source_lang, source_lang)
-    tgt = LANG_MAP.get(target_lang, target_lang)
-
-    if not ensure_argos_package(src, tgt):
-        logger.warning("Argos model translate-%s_%s unavailable.", src, tgt)
-        return None
-
+def _execute_argos_cli(text: str, src: str, tgt: str) -> list[str] | None:
     try:
         logger.info("Executing local Argos translation: %d chars (%s->%s)", len(text), src, tgt)
 
@@ -76,3 +69,29 @@ def translate_with_argos(text: str, source_lang: str, target_lang: str) -> list[
     except Exception as exc:
         logger.warning("Argos translation execution failed: %s", exc)
         return None
+
+
+def translate_with_argos(text: str, source_lang: str, target_lang: str) -> list[str] | None:
+    src = LANG_MAP.get(source_lang, source_lang)
+    tgt = LANG_MAP.get(target_lang, target_lang)
+
+    if ensure_argos_package(src, tgt):
+        return _execute_argos_cli(text, src, tgt)
+
+    pivot_lang = "en"
+    can_pivot = (
+        src != pivot_lang
+        and tgt != pivot_lang
+        and ensure_argos_package(src, pivot_lang)
+        and ensure_argos_package(pivot_lang, tgt)
+    )
+
+    if can_pivot:
+        logger.info("Pivoting Argos translation via '%s': %s -> %s -> %s", pivot_lang, src, pivot_lang, tgt)
+        intermediate = _execute_argos_cli(text, src, pivot_lang)
+        if intermediate is None:
+            return None
+        return _execute_argos_cli("\n".join(intermediate), pivot_lang, tgt)
+
+    logger.warning("Argos model translate-%s_%s unavailable (direct and pivot).", src, tgt)
+    return None
