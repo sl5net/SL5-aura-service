@@ -19,5 +19,23 @@
   },
   "e2b66cd9b45585c4dea692845c0562ca483e97a2c4f8ce1c38ac19d864551c62": {
     "en": "| Key | Action |\n|---|---|\n| Type | Enter search query |\n| `Enter` | Open file in editor (Kate) |\n| `Ctrl+G` | Open line on GitHub in browser |\n| `Ctrl+Z` | Previous search request from History |\n| `Ctrl+Y` | Next search from History |\n| `Ctrl+P` | Previous History Entry |\n| `Ctrl+N` | Next History Entry |\n| `Ctrl+A` | Select all hits |\n| `Ctrl+C` | Cancel |\n| `Ctrl+←/→` | Wordwise Navigate |\n| `Ctrl+Backspace` | Delete word (left) |\n| `Ctrl+Delete` | Delete word (right) |\n"
+  },
+  "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b": {
+    "en": "\n\n"
+  },
+  "ede48c3084c40f7b67b26f2cd85d3ae3436ae7b83e4f865e7cfa582ff27317dd": {
+    "en": "## Configuration\n\nCustomizable at the beginning of the script:\n\n```bash\nPREFERRED_EDITOR=\"kate\"          # Editor für Ctrl+Enter\nHISTORY_FILE=\"$HOME/.search_rules_history\"  # Suchverlauf\nDEFAULT_QUERY=\".py pre # EXAMPLE:\"          # Startsuche beim ersten Aufruf\nREPO_URL=\"https://github.com/sl5net/SL5-aura-service/blob/master\"\n```\n\n"
+  },
+  "345650744b59c7e3984f74195d00de96682010e19544c48b9639b26a336c6de3": {
+    "en": "## Preview Window\n\nThe fzf window displays a preview of the match at the top (50%):\n- 5 lines before and after the match\n- The hit line is marked with `>`\n- Line numbers are displayed\n\n"
+  },
+  "b3fd67a893d5a6c3374ec948cea59f6aaeddf19dc2c2911faad0a4ac44e37baa": {
+    "en": "## Search History\n\nThe last search query is automatically used as the starting value the next time it is called.\nThe course is located in `~/.search_rules_history`.\n\n"
+  },
+  "ea00f7a2015e148f41e67fcc8aafe50a4356ba5d6cf8e172634d8d89204d7496": {
+    "en": "## Typical search queries\n\n```\nFUZZY_MAP_pre                    # alle pre-Map Regeln\n# TODO                           # auskommentierte Aufgaben\n^.*$                             # Fullmatch-Regeln (Pipeline-Stopper)\nre.IGNORECASE                    # alle Regex-Regeln mit Flag\nkoans                            # alle Koan-Dateien\n```\n\n"
+  },
+  "8114d908c0453b2be84a8b8918c28ac8d9cbc2eabc4b03f03f330e6ca0248b87": {
+    "en": "## Known Limitations\n\n- Only Linux/macOS (no Windows because of `fzf` and `xdg-open`)\n- Editor hardcoded to `kate` – change to `PREFERRED_EDITOR` for another editor\n- Search only in `config/maps/` – not in the entire repo\n"
   }
 }

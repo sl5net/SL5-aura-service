@@ -254,7 +254,7 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
 #     return True
 # 
 
-# ---
+
 def is_translatable_line(line: str) -> bool:
     s = line.strip()
     if not s:
@@ -271,9 +271,12 @@ def is_translatable_line(line: str) -> bool:
     cleaned = re.sub(r"\[\s*\]\([^\)]*\)", "", cleaned)
     return bool(re.search(r"[a-zA-Z]", cleaned))
 
-
-# ---
-def translate_section(section_text: str, lang: str, source_lang: str = SOURCE_LANG) -> str | None:    
+def translate_section(
+    section_text: str,
+    lang: str,
+    source_lang: str = SOURCE_LANG,
+    argos_mode: str = ARGOS_MODE,
+) -> str | None:    
     original_lines = section_text.split("\n")
 
     markdown_links = []
@@ -384,10 +387,10 @@ def translate_section(section_text: str, lang: str, source_lang: str = SOURCE_LA
         text_to_translate = "\n".join(lines_to_send)
 
         raw_translated = None
-        if ARGOS_MODE in ("primary", "only"):
+        if argos_mode in ("primary", "only"):
             raw_translated = translate_with_argos(text_to_translate, source_lang, lang)
 
-        if not raw_translated and ARGOS_MODE != "only":
+        if not raw_translated and argos_mode != "only":
             cooldowns = load_cooldowns(cooldown_file)
             raw_translated = translate_with_engine_fallback(
                 text=text_to_translate,
@@ -397,11 +400,9 @@ def translate_section(section_text: str, lang: str, source_lang: str = SOURCE_LA
                 cooldown_file=cooldown_file,
                 timeout=40,
             )
-    
-            if not raw_translated and ARGOS_MODE == "fallback":
+
+            if not raw_translated and argos_mode == "fallback":
                 raw_translated = translate_with_argos(text_to_translate, source_lang, lang)
-
-
 
         if not raw_translated:
             last_error_file = log_dir / "i18n_last_error_segment.log"
@@ -424,68 +425,67 @@ def translate_section(section_text: str, lang: str, source_lang: str = SOURCE_LA
         ):
             translated_lines[idx] = f"{prefix}{trans_line}{suffix}"
 
-            restored_step_a = []
-            for line in translated_lines:
-                code_match = re.match(r"^__CODE_BLOCK_(\d+)__$", line.strip())
-                if code_match:
-                    idx = int(code_match.group(1))
-                    if idx < len(code_blocks):
-                        restored_step_a.extend(code_blocks[idx].split("\n"))
-                        continue
-                restored_step_a.append(line)
 
-            restored_step_b = []
-            placeholder_regex = re.compile(r"(XMDLINK\d+X)")
-            for line in restored_step_a:
-                restored_line = line
-                placeholders_in_line = placeholder_regex.findall(restored_line)
-                for placeholder in placeholders_in_line:
-                    link_index = int(re.search(r"\d+", placeholder).group())
-                    if link_index < len(markdown_links):
-                        original_link = markdown_links[link_index]
-                        modified_link = add_lang_to_md_links(original_link, lang)
-                        restored_line = restored_line.replace(placeholder, modified_link, 1)
-                restored_step_b.append(restored_line)
 
-        
-        
-        
-            html_placeholder_regex = re.compile(r"(XHTML[TL]*TAG\d+X)")
-            
-            restored_step_html = []
-            for line in restored_step_b:
-                restored_line = line
-                placeholders_in_line = html_placeholder_regex.findall(restored_line)
-                for placeholder in placeholders_in_line:
-                    idx = int(re.search(r"\d+", placeholder).group())
-                    if idx < len(html_tags):
-                        restored_line = restored_line.replace(placeholder, html_tags[idx], 1)
-                restored_step_html.append(restored_line)
-        
-            inline_placeholder_regex = re.compile(r"(XINLINECODE\d+X)")
-            
-            restored_step_inline = []
-            for line in restored_step_html:
-                restored_line = line
-                placeholders_in_line = inline_placeholder_regex.findall(restored_line)
-                for placeholder in placeholders_in_line:
-                    idx = int(re.search(r"\d+", placeholder).group())
-                    if idx < len(inline_codes):
-                        restored_line = restored_line.replace(placeholder, inline_codes[idx], 1)
-                restored_step_inline.append(restored_line)
+    restored_step_a = []
+    for line in translated_lines:
+        code_match = re.match(r"^__CODE_BLOCK_(\d+)__$", line.strip())
+        if code_match:
+            idx = int(code_match.group(1))
+            if idx < len(code_blocks):
+                restored_step_a.extend(code_blocks[idx].split("\n"))
+                continue
+        restored_step_a.append(line)
 
-            restored_step_c = [
-                line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_inline
-            ]
+    restored_step_b = []
+    placeholder_regex = re.compile(r"(XMDLINK\d+X)")
+    for line in restored_step_a:
+        restored_line = line
+        placeholders_in_line = placeholder_regex.findall(restored_line)
+        for placeholder in placeholders_in_line:
+            link_index = int(re.search(r"\d+", placeholder).group())
+            if link_index < len(markdown_links):
+                original_link = markdown_links[link_index]
+                modified_link = add_lang_to_md_links(original_link, lang)
+                restored_line = restored_line.replace(placeholder, modified_link, 1)
+        restored_step_b.append(restored_line)
 
-            guaranteed_lines = []
-            for i, line in enumerate(restored_step_c):
-                guaranteed_lines.append(line)
-                if "</summary>" in line and i + 1 < len(restored_step_c) and restored_step_c[i + 1].strip() != "":
-                    guaranteed_lines.append("")
+    html_placeholder_regex = re.compile(r"(XHTML[TL]*TAG\d+X)")
 
-            return "\n".join(guaranteed_lines)        
-        
+    restored_step_html = []
+    for line in restored_step_b:
+        restored_line = line
+        placeholders_in_line = html_placeholder_regex.findall(restored_line)
+        for placeholder in placeholders_in_line:
+            idx = int(re.search(r"\d+", placeholder).group())
+            if idx < len(html_tags):
+                restored_line = restored_line.replace(placeholder, html_tags[idx], 1)
+        restored_step_html.append(restored_line)
+
+    inline_placeholder_regex = re.compile(r"(XINLINECODE\d+X)")
+
+    restored_step_inline = []
+    for line in restored_step_html:
+        restored_line = line
+        placeholders_in_line = inline_placeholder_regex.findall(restored_line)
+        for placeholder in placeholders_in_line:
+            idx = int(re.search(r"\d+", placeholder).group())
+            if idx < len(inline_codes):
+                restored_line = restored_line.replace(placeholder, inline_codes[idx], 1)
+        restored_step_inline.append(restored_line)
+
+    restored_step_c = [
+        line.replace(DUNDER_PLACEHOLDER, "__") for line in restored_step_inline
+    ]
+
+    guaranteed_lines = []
+    for i, line in enumerate(restored_step_c):
+        guaranteed_lines.append(line)
+        if "</summary>" in line and i + 1 < len(restored_step_c) and restored_step_c[i + 1].strip() != "":
+            guaranteed_lines.append("")
+
+    return "\n".join(guaranteed_lines)
+
         
         
 def compute_adaptive_delay(content_length: int, base_seconds: float = 12.0, char_rate: float = 100.0) -> float:
@@ -522,6 +522,11 @@ def process_file(filename):
     cache_data = load_cache(cache_file_i18n)
 
 
+    is_private_dir = any(part.startswith("_") for part in Path(filename).parts)
+    effective_argos_mode = "only" if is_private_dir else ARGOS_MODE
+    target_languages = [lang for lang in TARGET_LANGS if lang != source_lang]    
+    effective_argos_mode = "only" if is_private_dir else ARGOS_MODE
+    
     target_languages = [lang for lang in TARGET_LANGS if lang != source_lang]
         
     for lang in target_languages:
@@ -551,7 +556,12 @@ def process_file(filename):
             else:
                 has_cache_miss = True
 
-                translated = translate_section(section, lang, source_lang=source_lang)
+                translated = translate_section(
+                    section,
+                    lang,
+                    source_lang=source_lang,
+                    argos_mode=effective_argos_mode,
+                )                
                 if translated is None:
                     print(f"      [SKIP] Failed to translate section for '{lang}', aborting file write.")
                     section_failed = True

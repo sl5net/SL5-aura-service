@@ -68,7 +68,8 @@ Examples:
   ./tools/search.sh "TODO" . -i
   ./tools/search.sh "class \w+Error" . -E
   ./tools/search.sh "bin/bash" scripts -e sh
-  ./tools/search.sh minimal log -e log 
+  ./tools/search.sh "saved to" log -e log
+grep "saved to" log/translate_md.log | tail -n 1
   ./tools/search.sh xvfb-run .github/workflows -e yml 
   ./tools/search.sh "pattern" . --all-ext
   ./tools/search.sh "bin/bash" scripts -e sh -c

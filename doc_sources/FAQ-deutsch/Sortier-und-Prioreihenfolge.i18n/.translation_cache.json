@@ -10,5 +10,29 @@
   },
   "540d6d1a74901701c69b1374c374893190d86cfa029bc527909d4fafaa73d5fb": {
     "en": "| Folder | Priority | Remark |\n| :--- | :--- | :--- |\n| `de-DE` | **1. priority** | Loads first. |\n| `en-US` | **2. priority** | Loaded to `de-DE`. |\n| `plugins` | **3. priority** | Last loaded. |\n"
+  },
+  "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b": {
+    "en": "\n\n"
+  },
+  "02c48a79c2ab7627657e843aaf7ad10c6e07b0cf380bcec8365430b11ff15bce": {
+    "en": "### 2. Loading of the Core Rules (de-DE and en-US)\n\nThe rules from these core language folders are first inserted into list `fuzzy_map_pre`.\n\n"
+  },
+  "210f63841de27073326fd0a005a63c63947c71717ae060e4f3cd668e1daacd63": {
+    "en": "### 3. Loading of the plug-in rules (Lower priority)\n\nThe plug-ins come only in third place because the folder `plugins` comes alphabetically after `de-DE` and `en-US`.\n\nWithin the `plugins` folder, the subfolders are traversed alphabetically again:\n\n"
+  },
+  "15c4e3fe34580f4d492c06c541f14ff87a49557ec843fb739a08847a210fb1c0": {
+    "en": "| Plug-in | Alphabetical Order |\n| :--- | :--- |\n| `CCC_tue` | 1. Plug-in |\n| `digits_to_numbers` | 2. Plug-in |\n"
+  },
+  "0de4a37bee3450be012f41a7e0fca25c171b9b9169def13f7add121f4a68300a": {
+    "en": "### 4. Final priority chain for `FUZZY_MAP_pre`\n\nThe loading process collects *all* found rules into the final list. Priority order:\n\n"
+  },
+  "a38022ad000ee09966556c6bacbaf178c8e1781256c8bdce5430c89073e8e054": {
+    "en": "| Place in `fuzzy_map_pre` | Path to the rule | Priority |\n| :--- | :--- | :--- |\n| **1.** | `de-DE/FUZZY_MAP_pre.py` | **Highest** (Basic language rules) |\n| **2.** | `en-US/FUZZY_MAP_pre.py` | High (basic language rules) |\n| **3.** | `plugins/CCC_tue/de-DE/FUZZY_MAP_pre.py` | Middle High (Plugins are sorted alphabetically, `CCC` comes before `digits`) |\n| **4.** | `plugins/digits_to_numbers/de-DE/FUZZY_MAP_pre.py` | Low (plugins are sorted alphabetically) |\n"
+  },
+  "001f2ec17593c1054eb46367d8453ef24a173ce96b7117d91f9a68d44fef8b01": {
+    "en": "\n---\n\n"
+  },
+  "df99d1fd0b56c1270ed45cc0c568c31ff4f59426d55022b5d77d15383b6b4cda": {
+    "en": "## Important: Focus on language (context dependency)\n\nIt is filtered according to the currently active language.\n\nLoading only the rules for **German (`de-DE`)** results in a more logical priority that values core rules higher than plugin rules:\n\n1.  **Core Rules:** `de-DE/FUZZY_MAP_pre.py`\n2.  **Plugin Rules (CCC):** `plugins/CCC_tue/de-DE/FUZZY_MAP_pre.py`\n3.  **Plugin Rules (Digits):** `plugins/digits_to_numbers/de-DE/FUZZY_MAP_pre.py`\n\n**Conclusion on prioritization:**\n\n*   **Core rules** prevail against all plugins because they are loaded first by sorting the folders alphabetically.\n*   **Plugins among themselves** are sorted strictly alphabetically according to the name of the plugin folder (`C` before `D`). This means that `CCC_tue` has a higher priority than `digits_to_numbers`.\n\n"
   }
 }

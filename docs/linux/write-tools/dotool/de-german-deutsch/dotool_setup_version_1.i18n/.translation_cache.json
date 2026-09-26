@@ -25,5 +25,35 @@
   },
   "338225b983a14e4fc452885d46651d4780f97a4edb5751e9b2e57332903653bf": {
     "en": "## Configuration in the project\n\n"
+  },
+  "a48b9f36fd7151639b9c4a284d99f0f8c372f361d11de39a1e3d4faef4fe7ff5": {
+    "en": "### `config/settings.py`\n\n```python\n# Eingabemethode für X11: \"dotool\" (schnell) oder \"xdotool\" (Fallback)\nx11_input_method_OVERRIDE = \"dotool\"\n\n# Delay zwischen Tastenanschlägen in Millisekunden\n# 2ms = dotool-Default, zuverlässig auch für Umlaute (ä, ö, ü, ß)\n# 0ms = maximal schnell, kann Sonderzeichen verschlucken\ndotool_typedelay = 2\n```\n\n---\n\n"
+  },
+  "86fd5039e747dd0d1bb15d8c4dcde0403a5a2acd316cb5100a9907ffbff8baac": {
+    "en": "## How the script uses dotool\n\n"
+  },
+  "d2792d47908c3b8b57fc97f04b1616ce3f28704f49fe5841785d246a59e36dc9": {
+    "en": "### Input Function\n\n```bash\ndo_type() {\n    local text=\"$1\"\n    if [[ \"$INPUT_METHOD\" == \"dotool\" ]]; then\n        printf 'typedelay %s\\ntype %s\\n' \"$DOTOOL_TYPEDELAY\" \"$text\" | dotool\n    else\n        LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 12 \"$text\"\n    fi\n}\n```\n\n"
+  },
+  "973f129cdf513e0e8a156cdb0eb80c98c06ef5ac57e90bf2954bb918b27dcc9d": {
+    "en": "### Read configuration (without side effects)\n\nSettings are read in such a way that `print()` outputs in `settings.py`\ndo not falsify the value:\n\n```bash\nOVERRIDE=$(python3 -c \"\nimport importlib.util, sys, io\nspec = importlib.util.spec_from_file_location('settings', '$(pwd)/config/settings.py')\nold_stdout = sys.stdout\nsys.stdout = io.StringIO()\nmod = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(mod)\nsys.stdout = old_stdout\nprint(mod.x11_input_method_OVERRIDE)\n\")\n[[ \"$OVERRIDE\" == \"dotool\" ]] && INPUT_METHOD=\"dotool\"\n\nDOTOOL_TYPEDELAY=$(python3 -c \"\nimport importlib.util, sys, io\nspec = importlib.util.spec_from_file_location('settings', '$(pwd)/config/settings.py')\nold_stdout = sys.stdout\nsys.stdout = io.StringIO()\nmod = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(mod)\nsys.stdout = old_stdout\nprint(mod.dotool_typedelay)\n\")\n```\n\n---\n\n"
+  },
+  "25d4bf4afbec93d1ac686bb874c52d55a39a129c1d6926415b2f2dc739cedd64": {
+    "en": "## Notes\n\n- ** Umlaute & Sonderzeichen:** `typedelay 2` (dotool-Default) is recommended.\n  In `typedelay 0`, characters such as ä, ö, ü, ß can be lost.\n- **Too fast for the target application?** Some apps (e.g. Electron, browser inputs)\n  lose signs at low delay. In this case, use `dotool_typedelay = 5` or higher.\n- **Wayland:** dotool also works under Wayland, xdotool does not.\n- **Fallback:** If dotool is not installed, the script automatically falls back to `xdotool`.\n---\n\n"
+  },
+  "8ea69eeb941e2cabe48eae0aa806e745266de1d01a37cb6ef11b7796d5af00ae": {
+    "en": "## How the script uses dotool\n\nThe script starts a persistent `dotool` process via a FIFO,\nto avoid the overhead of a new process with each keystroke.\n\n"
+  },
+  "5664bbdccf9e3317c9d79f3499d5952b823d23a58b8727655a30125b4310b72f": {
+    "en": "### Relevant code (`type_watcher.sh`)\n\n```bash\nexport DOTOOL_DELAY=0\n\n# Alten Listener beenden falls noch läuft\npkill -f \"dotool < /tmp/dotool_fifo\" 2>/dev/null\n\nDOTOOL_PID=$!\n\n# typedelay direkt nach Start setzen\nsleep 0.1\necho \"typedelay 0\" > /tmp/dotool_fifo\n\n# Cleanup beim Beenden\ntrap \"kill $DOTOOL_PID 2>/dev/null; rm -f /tmp/dotool_fifo\" EXIT\n```\n\n"
+  },
+  "3acac7754ce1bc4806169695cf8cd55d014d56a17de40552f1ef727ec24f5f78": {
+    "en": "### Input Function\n\n```bash\ndo_type() {\n    local text=\"$1\"\n    if [[ \"$INPUT_METHOD\" == \"dotool\" ]]; then\n        printf 'typedelay 0\\ntype %s\\n' \"$text\" | dotool\n        # printf 'typedelay 0\\ntype %s\\n' \"$text\" > /tmp/dotool_fifo\n        # printf 'type %s\\n' \"$text\" | dotool\n\n    else\n        LC_ALL=C.UTF-8 xdotool type --clearmodifiers --delay 12 \"$text\"\n    fi\n}\n```\n\n"
+  },
+  "41b2dc0b21ad9a8befef080ad4b124f1519df92f26c5b299458d2f57f043bcca": {
+    "en": "### Read configuration (without side effects)\n\nSettings are read in such a way that `print()` outputs in `settings.py`\ndo not falsify the value:\n\n```bash\nOVERRIDE=$(python3 -c \"\nimport importlib.util, sys, io\nspec = importlib.util.spec_from_file_location('settings', '$(pwd)/config/settings.py')\nold_stdout = sys.stdout\nsys.stdout = io.StringIO()\nmod = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(mod)\nsys.stdout = old_stdout\nprint(mod.x11_input_method_OVERRIDE)\n\")\n[[ \"$OVERRIDE\" == \"dotool\" ]] && INPUT_METHOD=\"dotool\"\n```\n\n---\n\n"
+  },
+  "1246a47259e9df73652fe506d06be341ce7dc1e9bf75a231592ece7e477ab7c8": {
+    "en": "## Notes\n\n- **Too fast for the target application?** Some apps (e.g., Electron, browser inputs)\n  lose characters at `typedelay 0`. In this case, use `typedelay 5` or `typedelay 10`.\n- **Wayland:** dotool also works under Wayland, whereas xdotool does not.\n- **Fallback:** If dotool is not installed, the script automatically falls back to `xdotool`.\n"
   }
 }

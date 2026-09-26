@@ -10,5 +10,38 @@
   },
   "b975861507a714b5fb3fae87632eb5404b9a068fcd7ae9da28244b282febd3e0": {
     "en": "| File | Purpose |\n|---|---|\n| `tools/export_to_copyq.py` | Exports FUZZY_MAP rules to CopyQ |\n| `scripts/py/func/process_text_in_background.py` | Processes text and sends it to CopyQ |\n| `config/maps/plugins/standard_actions/de-DE/renumber_clipboard_text.py` | Numbers clipboard text by |\n| `config/maps/plugins/z_fallback_llm/de-DE/test_clipboard.py` | Test script for clipboard access |\n| `config/maps/koans_deutsch/11_copyq_benutzeroberflaeche/` | Koan exercises on the topic |\n"
+  },
+  "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b": {
+    "en": "\n\n"
+  },
+  "e72fbffac4ea31dabed73281252de11bc934b2bed87f2db7b1f6591a6d4b4e7f": {
+    "en": "## export_to_copyq.py\n\nThe script `tools/export_to_copyq.py` reads the map files of the repo (read-only)\nand sends the rules as structured items to CopyQ.\n\n**Important:** The script does not change any files in the repo – it only sends commands\nto the external CopyQ process.\n\n"
+  },
+  "ddedbe1265951b83d8ac65100ab0654aafa3eb272556c0feac91f6fcb14b837d": {
+    "en": "### Platforms\n\n- **Linux:** `copyq` is directly available in the PATH\n- **Windows:** Typical paths are automatically searched, e.g., `C:\\Program Files\\CopyQ\\copyq.exe`\n\n"
+  },
+  "d5a71048608465ca0d55cfd814a2c1d6e9b2369dcd9b74df80d3e4b3505fa41f": {
+    "en": "### Usage\n\n```bash\npython tools/export_to_copyq.py\n```\n\n"
+  },
+  "9f3fa2e3a0c5bbfbb7605e4c3d4ce740cb88f198e1a266919d0ce67aaf3377c0": {
+    "en": "## Controlling CopyQ via command line\n\nCopyQ has a built-in CLI:\n\n```bash\n# Aktuellen Clipboard-Inhalt zeigen\ncopyq read 0\n\n# Text in Clipboard schreiben\ncopyq add \"Mein Text\"\n\n# Item aus History holen (Index 0 = aktuell)\ncopyq read 0\n\n# CopyQ-Fenster öffnen\ncopyq show\n\n# Script ausführen\ncopyq eval \"popup('Hallo von Aura!')\"\n```\n\n"
+  },
+  "fc290e8e3678e33600ea4991c6dd475a8ba51861bb96921c22c01743bd296628": {
+    "en": "## Koan 11 – CopyQ User Interface\n\nThe Koan `11_copyq_benutzeroberflaeche` contains rules that the word \"koans\"\nrecover from typical STT recognition errors.\n\n"
+  },
+  "65e6163cdc8ec8d89ee07fccbd28c7f33a5948f3123e1907313db2d296bae062": {
+    "en": "### FUZZY_MAP_pre.py (before LanguageTool)\n\n```python\nFUZZY_MAP_pre = [\n    ('koans', '^(korn|korns|koons|cohens|kreuz|kohl|kurz|chor ins|cuarn|twain|kurt)$'),\n]\n```\n\nThis rule applies in the case of full match (`^...$`) – thus stopping the further pipeline.\n\n"
+  },
+  "40cf89a076b813db9983f93975fe65df60a7ef481eea9aecd0b4d87e9f7f751a": {
+    "en": "### FUZZY_MAP.py (according to LanguageTool)\n\n```python\nFUZZY_MAP = [\n    ('koans', '(korn|korns|chor|chor ins|kohlen)'),\n]\n```\n\nThis rule also applies within a longer sentence (no full match).\n\n"
+  },
+  "e66e96c6a2f5fd01b9b8d6090490c0772ef5f61aec91c435e6b60b0715ac51fe": {
+    "en": "## Typical STT Errors with \"CopyQ\"\n\nVosk often recognizes \"CopyQ\" as:\n- `copy cue`\n- `kopie ku`\n- `copy queue`\n- `kopi q`\n\nPossible correction rule for `FUZZY_MAP_pre.py`:\n\n```python\n('CopyQ', r'\\b(copy\\s*q(ue|ue?ue)?|kopi\\s*q)\\b', 0, {'command_flags': re.IGNORECASE}),\n```\n\n"
+  },
+  "b477cdecb1eb2ba0e560161a4fa499032b8101ee38a8dfd82b2259b585d29b3d": {
+    "en": "## pyperclip as a Python alternative\n\nIf CopyQ is not available, Aura `pyperclip` is used as a fallback:\n\n```python\nimport pyperclip\npyperclip.copy(\"Text in Clipboard\")\ntext = pyperclip.paste()\n```\n\n`pyperclip` is installed in `.venv` (`site-packages/pyperclip/`).\n\n"
+  },
+  "79c3fe51468069f94c7fdc8bc7df91c8055b41f971bd8628fde5fb411de3616e": {
+    "en": "## Notes\n\n- CopyQ must run as a background process for the CLI to work\n- On Linux: `copyq &` at system startup\n- On Windows: CopyQ starts automatically in the tray when installed\n- For tests: `config/maps/plugins/z_fallback_llm/de-DE/test_clipboard.py`\n"
   }
 }
