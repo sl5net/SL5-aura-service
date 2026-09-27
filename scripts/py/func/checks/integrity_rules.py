@@ -107,6 +107,7 @@ INTEGRITY_CHECKS = {
         '`mv vosk-model-*.zip models/`'
     ],
 
+    # Enable pipefail so failed downloads via curl do not report false success with BSD tar on macOS (s,27.9.26 17:51 Sun)
     'web_install.sh': [
         "set -eo pipefail",
     ],

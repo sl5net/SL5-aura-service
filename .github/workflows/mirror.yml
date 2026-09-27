@@ -26,5 +26,5 @@ jobs:
 
       - name: Mirror to Codeberg
         run: |
-          git remote add codeberg git@codeberg.org:seeh/SL5-aura-service.git
+          git remote add codeberg git@codeberg.org:sl5net/SL5-aura-service.git
           git push --mirror codeberg

@@ -11,7 +11,7 @@ if (rootFile.open()) {
 }
 
 if (!project_root) {
-    project_root = '/home/bob/projects/py/STT';
+    project_root = '/home/seeh/projects/py/STT';
 }
 
 var search_script = project_root + '/scripts/search_rules/search_rules.sh';
