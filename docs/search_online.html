@@ -403,7 +403,10 @@
     }
 
     function selectLanguage(code, label) {
+      
       currentSelectedCode = code;
+      localStorage.setItem('aura-lang', code);
+      
       langBtnLabel.textContent = label;
       langItems.forEach(item => {
         if (item.getAttribute('data-code') === code) {
@@ -521,6 +524,9 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const metaLang = document.querySelector('meta[name="default-language"]')?.getAttribute('content');
+    
+    const savedLang = localStorage.getItem('aura-lang');
+    
     const requestedLang = urlParams.get('lang') || metaLang || DEFAULT_LANG;
     const requestedQuery = urlParams.get('q') || urlParams.get('query') || '';
 
@@ -534,7 +540,7 @@
       }
     }
 
-    // initDocSearch(currentSelectedCode, requestedQuery);
+    initDocSearch(currentSelectedCode, requestedQuery);
     
     const savedTheme = localStorage.getItem('aura-theme');
     if (savedTheme) {
