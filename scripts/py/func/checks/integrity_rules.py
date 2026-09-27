@@ -107,6 +107,10 @@ INTEGRITY_CHECKS = {
         '`mv vosk-model-*.zip models/`'
     ],
 
+    'web_install.sh': [
+        "set -eo pipefail",
+    ],
+
     # scripts/py/func/checks/integrity_rules.py:53
     'setup/install_ahk_copyq.ps1': [
         "AuraDictation_Hotkeys",

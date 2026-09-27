@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -eo pipefail
 # web_install.sh
 
 # Immediately terminate entire process group on single Ctrl+C
