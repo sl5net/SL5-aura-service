@@ -150,9 +150,9 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 <details>
 <summary>Documentation</summary>
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
-
 ## Documentation
+
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
 
 For a complete technical reference, including all modules and scripts, please visit our official documentation page. It is automatically generated and always up-to-date.
 
