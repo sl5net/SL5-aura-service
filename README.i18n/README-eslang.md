@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5 Aura – Tu Voz. Tus reglas
+# ⬟ SL5 Aura – Tu Voz. Tus Reglas.
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -11,10 +11,10 @@
 [![Latency](https://img.shields.io/badge/Latency-0.07s-blueviolet?style=for-the-badge&logo=speedtest&logoColor=white)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> Marco de asistente de voz 100% fuera de línea y que prioriza la privacidad.  
-> Define exactamente lo que hace tu voz, a partir de una sola palabra  
-> a scripts completos de Python. Ninguna nube. No salen datos de su máquina.  
-> Se ejecuta en terminal, navegador o como servicio en segundo plano (en Linux, macOS y Windows).
+> Marco de asistente de voz 100% offline, con prioridad en la privacidad.  
+> Define exactamente lo que hace tu voz — desde una sola palabra  
+> a scripts completos de Python. Nada de nube. Ningún dato sale de tu máquina.  
+> Se ejecuta en la terminal, el navegador o como un servicio en segundo plano, en Linux, macOS y Windows.
 
 | 👵 Principiante | 🎓 Estudiante | 🧑‍💻 Desarrollador |
 |---|---|---|
@@ -316,7 +316,7 @@ Iniciar el servicio es un **proceso manual de dos pasos**:
 
 Para activar la dictado, necesitas un atajo de teclado global que cree un archivo específico. Recomendamos encarecidamente la herramienta multiplataforma [CopyQ](https://github.com/hluk/CopyQ).
 
-#### Nuestra recomendación: CopyQ
+#### Nuestra Recomendación: CopyQ
 
 Crea un nuevo comando en CopyQ con un atajo global.
 
@@ -344,15 +344,15 @@ if (f.openAppend()) {
 ```
 
 
-**Comando para Windows cuando se usa [AutoHotkey](https://AutoHotkey.com):**
+**Comando para Windows al usar [AutoHotkey](https://AutoHotkey.com):**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```

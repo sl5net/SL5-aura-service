@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5 Aura – Sua Voz. Suas Regras
+# ⬟ SL5 Aura – Sua Voz. Suas regras.
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -11,10 +11,10 @@
 [![Latency](https://img.shields.io/badge/Latency-0.07s-blueviolet?style=for-the-badge&logo=speedtest&logoColor=white)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> Framework de assistente de voz 100% offline, com foco na privacidade.  
-> Defina exatamente o que sua voz faz — a partir de uma única palavra  
+> Estrutura de assistente de voz 100% offline e que prioriza a privacidade.  
+> Defina exatamente o que sua voz faz – a partir de uma única palavra  
 > para scripts Python completos. Sem nuvem. Nenhum dado sai da sua máquina.  
-> Funciona no terminal, no navegador ou como um serviço em segundo plano — no Linux, macOS e Windows.
+> Funciona em terminal, navegador ou como serviço em segundo plano – no Linux, macOS e Windows.
 
 | 👵 Iniciante | 🎓 Aprendiz | 🧑‍💻 Desenvolvedor |
 |---|---|---|
@@ -316,16 +316,16 @@ Configurar sua tecla de atalho
 
 Para ativar o ditado, você precisa de uma tecla de atalho global que crie um arquivo específico. Recomendamos altamente a ferramenta multiplataforma [CopyQ](https://github.com/hluk/CopyQ).
 
-Nossa recomendação: CopyQ
+#### Nossa recomendação: CopyQ
 
-Criar um novo comando no CopyQ com um atalho global.
+Crie um novo comando no CopyQ com um atalho global.
 
 **Comando para Linux/macOS:**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-**Comando para Windows quando usar [CopyQ](https://github.com/hluk/CopyQ): * *
+**Comando para Windows ao usar [CopyQ](https://github.com/hluk/CopyQ):**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -344,15 +344,15 @@ if (f.openAppend()) {
 ```
 
 
-** Comando para Windows quando usar [AutoHotkey](https://AutoHotkey.com): * *
+**Comando para Windows ao usar [AutoHotkey](https://AutoHotkey.com):**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```

@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5 Aura – Sua Voz. Suas Regras
+# ⬟ SL5 Aura – Sua Voz. Suas Regras.
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -347,12 +347,12 @@ if (f.openAppend()) {
 **Comando para Windows ao usar [AutoHotkey](https://AutoHotkey.com):**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```

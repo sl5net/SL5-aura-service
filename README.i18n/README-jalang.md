@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5オーラ – あなたの声。あなたのルール
+# ⬟ SL5 オーラ – あなたの声。あなたのルール。
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -316,16 +316,16 @@ Windowsの#####
 
 予測をトリガーするには、特定のファイルを作成するグローバルホットキーが必要です。 クロスプラットフォームの[CopyQ](https://github.com/hluk/CopyQ)を推奨しています。
 
-##### 推奨事項: CopyQ
+#### 私たちのおすすめ: CopyQ
 
-グローバルなショートカットで CopyQ で新しいコマンドを作成します。
+CopyQ でグローバル ショートカットを使用して新しいコマンドを作成します。
 
-Linux/macOS のコマンド:**
+**Linux/macOS のコマンド:**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-※[CopyQ](https://github.com/hluk/CopyQ)使用時はWindows対応
+**[CopyQ](https://github.com/hluk/CopyQ) を使用する場合の Windows のコマンド:**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -344,15 +344,15 @@ if (f.openAppend()) {
 ```
 
 
-※[AutoHotkey](https://AutoHotkey.com)使用時はWindows対応
+**[AutoHotkey](https://AutoHotkey.com) を使用する場合の Windows のコマンド:**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```

@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5 Aura – Votre voix. Vos règles
+# ⬟ SL5 Aura – Votre Voix. Vos Règles.
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -316,16 +316,16 @@ Configurez votre hotkey
 
 Pour déclencher la dictée, vous avez besoin d'une touche d'écoute globale qui crée un fichier spécifique. Nous vous recommandons vivement l'outil multiplateforme [CopyQ](https://github.com/hluk/CopyQ).
 
-Notre recommandation: CopyQ
+#### Notre recommandation : CopyQ
 
 Créez une nouvelle commande dans CopyQ avec un raccourci global.
 
-**Commande pour Linux/macOS:**
+**Commande pour Linux/macOS :**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-**Commande pour Windows lors de l'utilisation de [CopyQ](https://github.com/hluk/CopyQ): * *
+**Commande pour Windows lors de l'utilisation de [CopyQ](https://github.com/hluk/CopyQ) :**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -344,15 +344,15 @@ if (f.openAppend()) {
 ```
 
 
-**Commande pour Windows lors de l'utilisation de [AutoHotkey](https://AutoHotkey.com): * *
+**Commande pour Windows lors de l'utilisation de [AutoHotkey](https://AutoHotkey.com) :**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```

@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5 光环 – 你的声音。你的规则
+# ⬟ SL5 气场 – 你的声音。你的规则。
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -316,16 +316,16 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 
 要触发听写，您需要一个可以创建特定文件的全局快捷键。我们强烈推荐跨平台工具 [CopyQ](https://github.com/hluk/CopyQ)。
 
-我们的建议:复制Q
+#### 我们的推荐：CopyQ
 
-在 CopyQ 中创建一个带有全局快捷键的新命令 。
+在 CopyQ 中创建一个带有全局快捷键的新命令。
 
-** Linux/macOS的命令:**
+**Linux/macOS 的命令：**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-** 当使用[CopyQ](https://github.com/hluk/CopyQ)时对Windows下达命令: * *
+**在使用 [CopyQ](https://github.com/hluk/CopyQ) 时的 Windows 命令：**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -344,15 +344,15 @@ if (f.openAppend()) {
 ```
 
 
-** 当使用 [AutoHotkey](https://AutoHotkey.com) 时, Windows 命令: * *
+**在使用 [AutoHotkey](https://AutoHotkey.com) 时的 Windows 命令：**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```

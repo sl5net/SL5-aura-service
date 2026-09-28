@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5 आभा – आपकी आवाज़। आपके नियम
+SL5 Aura - आपकी आवाज। आपका नियम
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -11,10 +11,10 @@
 [![Latency](https://img.shields.io/badge/Latency-0.07s-blueviolet?style=for-the-badge&logo=speedtest&logoColor=white)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> 100% ऑफ़लाइन, गोपनीयता-प्रथम वॉइस असिस्टेंट फ्रेमवर्क।  
-> सटीक रूप से परिभाषित करें कि आपकी आवाज़ क्या करती है — एक ही शब्द से  
-> पूरे पाइथन स्क्रिप्ट तक। कोई क्लाउड नहीं। आपका डेटा आपके मशीन से बाहर नहीं जाता।  
-> टर्मिनल, ब्राउज़र में, या बैकग्राउंड सेवा के रूप में चलता है — Linux, macOS, और Windows पर।
+> 100% ऑफ़लाइन, गोपनीयता-पहले वॉयस असिस्टेंट फ्रेमवर्क।  
+> वास्तव में क्या आपकी आवाज़ करता है - एक ही शब्द से  
+> पूर्ण पायथन स्क्रिप्ट के लिए। कोई बादल नहीं। कोई डेटा आपकी मशीन को छोड़ देता है।  
+> टर्मिनल, ब्राउज़र में या एक पृष्ठभूमि सेवा के रूप में - लिनक्स, मैकओएस और विंडोज पर।
 
 The first day of the day.
 |---|---|---|
@@ -316,16 +316,16 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 
 डिक्टेशन को ट्रिगर करने के लिए, आपको एक वैश्विक हॉटकी की आवश्यकता है जो एक विशिष्ट फ़ाइल बनाता है। हम अत्यधिक क्रॉस-प्लेटफॉर्म टूल [CopyQ](https://github.com/hluk/CopyQ) की सिफारिश करते हैं।
 
-### हमारी सिफारिश: CopyQ
+#### हमारी सिफारिश: CopyQ
 
-एक वैश्विक शॉर्टकट के साथ कॉपीक्यू में एक नया कमांड बनाएं।
+CopyQ में एक नया कमांड एक ग्लोबल शॉर्टकट के साथ बनाएं।
 
-** Linux/macOS के लिए
+**Linux/macOS के लिए कमांड:**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-** [CopyQ](https://github.com/hluk/CopyQ) का उपयोग करते समय Windows के लिए कमीशन: * *
+**Windows के लिए कमांड जब [CopyQ](https://github.com/hluk/CopyQ) का उपयोग करें:**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -344,15 +344,15 @@ if (f.openAppend()) {
 ```
 
 
-** [AutoHotkey](https://AutoHotkey.com) का उपयोग करते समय Windows के लिए कमीशन: * *
+**[AutoHotkey](https://AutoHotkey.com) का उपयोग करते समय Windows के लिए कमांड:**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```

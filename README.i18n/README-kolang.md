@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5 아우라 – 당신의 목소리. 당신의 규칙
+# ⬟ SL5 오라 – 당신의 목소리. 당신의 규칙.
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -14,7 +14,7 @@
 > 100% 오프라인, 프라이버시 중심 음성 비서 프레임워크.  
 > 단어 하나에서 당신의 목소리가 정확히 무엇을 하는지 정의하세요  
 > 전체 Python 스크립트로. 클라우드 없음. 데이터가 머신을 벗어나지 않습니다.  
-> 터미널, 브라우저에서 실행되거나 백그라운드 서비스로 실행됨 — Linux, macOS, 그리고 Windows에서.
+> 터미널, 브라우저 또는 백그라운드 서비스로 실행됨 — Linux, macOS 및 Windows에서.
 
 | 👵 초보자 | 🎓 학습자 | 🧑‍💻 개발자 |
 |---|---|---|
@@ -318,14 +318,14 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 
 #### 우리의 추천: CopyQ
 
-CopyQ에서 전역 단축키로 새 명령을 만드세요.
+글로벌 단축키로 CopyQ에 새 명령을 만드세요.
 
 **리눅스/macOS용 명령어:**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-**[CopyQ](https://github.com/hluk/CopyQ)를 사용할 때 Windows용 명령:**
+**[CopyQ](https://github.com/hluk/CopyQ)를 사용할 때 Windows용 명령어:**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -347,12 +347,12 @@ if (f.openAppend()) {
 **[AutoHotkey](https://AutoHotkey.com)를 사용할 때 Windows용 명령:**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```

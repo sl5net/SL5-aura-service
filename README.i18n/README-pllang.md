@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5 Aura – Twój Głos. Twoje Zasady
+SL5 Aura - Twój głos. Twoje zasady.
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -11,10 +11,10 @@
 [![Latency](https://img.shields.io/badge/Latency-0.07s-blueviolet?style=for-the-badge&logo=speedtest&logoColor=white)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> 100% offline, priorytetowo traktujący prywatność framework asystenta głosowego.  
-> Określ dokładnie, co robi Twój głos — od pojedynczego słowa  
-> do pełnych skryptów Pythona. Brak chmury. Żadne dane nie opuszczają twojego komputera.  
-> Działa w terminalu, przeglądarce lub jako usługa w tle — na Linuxie, macOS i Windows.
+> 100% offline, prywatne-pierwszy głos asystent ramy.  
+> Zdefiniuj dokładnie co twój głos robi - z jednego słowa  
+> do pełnych skryptów Pythona. Nie ma chmur. Brak danych opuszcza twoją maszynę.  
+> Działa w terminalu, przeglądarce lub jako usługa w tle - na Linux, MacOS i Windows.
 
 124; Beginner 124; Beginner 124; Beginner Deweloper 124;
 |---|---|---|
@@ -316,16 +316,16 @@ Konfiguracja klucza
 
 Aby wywołać dyktowanie, potrzebujesz globalnego klucza, który tworzy określony plik. Serdecznie polecamy narzędzie cross- platform [CopyQ](https://github.com/hluk/CopyQ).
 
-Nasza rekomendacja: CopyQ
+#### Nasza rekomendacja: CopyQ
 
-Utwórz nowe polecenie w CopyQ z globalnym skrótem.
+Utwórz nowe polecenie w CopyQ za pomocą globalnego skrótu.
 
-* * Polecenie dla Linux / MacOS: * *
+**Polecenie dla systemu Linux/macOS:**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-* * Polecenie dla systemu Windows przy użyciu [CopyQ](https://github.com/hluk/CopyQ): * *
+**Polecenie dla Windows przy użyciu [CopyQ](https://github.com/hluk/CopyQ):**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -344,15 +344,15 @@ if (f.openAppend()) {
 ```
 
 
-* * Polecenie dla systemu Windows przy użyciu [AutoHotkey](https://AutoHotkey.com): * *
+**Polecenie dla Windows przy użyciu [AutoHotkey](https://AutoHotkey.com):**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```
