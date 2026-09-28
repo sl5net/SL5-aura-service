@@ -1,8 +1,8 @@
 > ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo"> 
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-# ⬟ SL5 ﻙﺪﻋﺍﻮﻗ .ﻚﺗﻮﺻ – ﺍﺭﻭﺃ
+# ⬟ SL5 ﻙﺪﻋﺍﻮﻗ .ﻚﺗﻮﺻ – ﺍﺭﻭﺃ.
 
 <!-- Stack Overflow & Community Badges -->
 [![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
@@ -18,7 +18,7 @@
 
 | ﺭﻮﻄﻣ 💻u200d🧑 | ﻢﻠﻌﺘﻤﻟﺍ 🎓 | ﻦﻴﺋﺪﺘﺒﻤﻟﺍ 👵 |
 |---|---|---|
-| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-arlang.md#the-oma-modus-beginner-shortcut): ﻡﻮﻘﺘﺳﻭ ،ﺓﺪﺣﺍﻭ ﺔﻤﻠﻛ ﺐﺘﻛﺍ ﻂﻘﻓ Aura ﻊﻣ ﻢﻠﻌﺗ | ﻲﻗﺎﺒﻟﺎﺑ 
+| [grandma-mode](../docs/GettingStarted-arlang.md#the-oma-modus-beginner-shortcut): ﻡﻮﻘﺘﺳﻭ ،ﺓﺪﺣﺍﻭ ﺔﻤﻠﻛ ﺐﺘﻛﺍ ﻂﻘﻓ Aura ﻊﻣ ﻢﻠﻌﺗ | ﻲﻗﺎﺒﻟﺎﺑ 
 | ﺢﻔﺼﺘﻤﻟﺍ ﻡﺪﺨﺘﺴﻣ ﺕﺎﻬﺟﺍﻭ ،ﺔﻴﻓﺮﻄﻟﺍ/ﺔﻴﺗﻮﺼﻟﺍ ﺮﻣﺍﻭﻷ﻿ﺍ ،Trino + Airflow
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -37,7 +37,7 @@
 (ﻪﺑ ﻰﺻﻮﻣ) ﺐﻳﻮﻟﺍ ﺖﺒﺜﻣﻭ ﺓﺪﺣﺍﻭ ﺓﺮﻘﻨﺑ ﺖﻴﺒﺜﺘﻟﺍ :ﺃ ﺭﺎﻴﺨﻟﺍ ###
 
    :Windows ﻭ macOS ﻭ Linux ﻲﻣﺎﻈﻨﻟ ﻞﻘﺘﺴﻣ ﺖﺒﺜﻣ ﻭﺃ ﺪﺣﺍﻭ ﺮﻄﺳ ﻦﻣ ﺮﻣﺃ
-- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-arlang.md)**
+- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller-arlang.md)**
 
 ---
 
@@ -53,7 +53,7 @@
    -                                  `bash setup/macos_setup.sh` :ﻙﺎﻣ ﻞﻴﻐﺸﺘﻟﺍ ﻡﺎﻈﻧ
    -                                            `setup/windows11_setup_with_ahk_copyq.bat` :ﺯﻭﺪﻨﻳﻭ
 3.                                        `./scripts/restart_venv_and_run-server.sh` :ﺔﻟﺎﻬﻟﺍ ءﺪﺑ
-4.     **[full guide →](../docs/GettingStarted.i18n/GettingStarted-arlang.md)** — ﺙﺪﺤﺗﻭ ﻚﺑ ﺹﺎﺨﻟﺍ ﻊﻳﺮﺴﻟﺍ ﻞﻴﻐﺸﺘﻟﺍ ﺡﺎﺘﻔﻣ ﻰﻠﻋ ﻂﻐﺿﺍ
+4.     **[full guide →](../docs/GettingStarted-arlang.md)** — ﺙﺪﺤﺗﻭ ﻚﺑ ﺹﺎﺨﻟﺍ ﻊﻳﺮﺴﻟﺍ ﻞﻴﻐﺸﺘﻟﺍ ﺡﺎﺘﻔﻣ ﻰﻠﻋ ﻂﻐﺿﺍ
 
 ---
 
@@ -76,7 +76,7 @@
     Requires mimalloc (`sudo pacman -S mimalloc`) due to glibc 2.43 compatibility.
 *   ** Linux (NixOS):** . Experimental — community-contributed setup, not yet tested.
     إذا حاولت، يرجى فتح قضية أو العلاقات العامة مع النتائج الخاصة بك!    
-*   ** لينوكس (مانجارو):** New : A system-wide hotkey opens an fzf-like, keyboard-driven interface so you can run Aura commands from anywhere on the officetop (completely decoupled from the active window). ويجري حالياً تنفيذ هذا القاذف الذي يقوده الهوكي واختباره على لينكس (منجارو)؛ وقد تنجح عمليات التوزيع الأخرى ولكنها تتطلب التجهيز. See in   [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-arlang.md)    
+*   ** لينوكس (مانجارو):** New : A system-wide hotkey opens an fzf-like, keyboard-driven interface so you can run Aura commands from anywhere on the officetop (completely decoupled from the active window). ويجري حالياً تنفيذ هذا القاذف الذي يقوده الهوكي واختباره على لينكس (منجارو)؛ وقد تنجح عمليات التوزيع الأخرى ولكنها تتطلب التجهيز. See in   [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-arlang.md)    
 
 
     
@@ -96,7 +96,7 @@ SL5 Aura is a complete, **offline voice Assistant** built on **Vosk** (for Speec
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
->     .[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-arlang.md) ﺮﻈﻧﺍ ،ﺔﻴﻓﺮﻄﻟﺍ ﻲﻓ ﻞﻀﻓﺃ ﺔﺑﺮﺠﺗ ﻰﻠﻋ ﻝﻮﺼﺤﻠﻟ **:ﺔﺤﻴﺼﻧ**
+>     .[Zsh Integration](../docs/linux/zsh-integration-arlang.md) ﺮﻈﻧﺍ ،ﺔﻴﻓﺮﻄﻟﺍ ﻲﻓ ﻞﻀﻓﺃ ﺔﺑﺮﺠﺗ ﻰﻠﻋ ﻝﻮﺼﺤﻠﻟ **:ﺔﺤﻴﺼﻧ**
 
 ﺭﻮﺼﻤﻟﺍ ﺱﺭﺪﻟﺍ 🎥 ###
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -161,7 +161,7 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ##أضواءالإنارة
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-arlang.md) - Dual-pane `fzf` rule search, live context previews, immediate command execution via `Enter`/`Ctrl+R`, and editor integration via `Ctrl+E`. دعمه هوكي عالمي (`Super+S`) وتعدد البيئات المكرسة للبحث عن طريق أوامر الصوت.
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-arlang.md) - Dual-pane `fzf` rule search, live context previews, immediate command execution via `Enter`/`Ctrl+R`, and editor integration via `Ctrl+E`. دعمه هوكي عالمي (`Super+S`) وتعدد البيئات المكرسة للبحث عن طريق أوامر الصوت.
 
 ♪ Build status
 
@@ -316,16 +316,16 @@ On Linux and macOS
 
 لإثارة الإملاء، تحتاج إلى الهوكي العالمي الذي يخلق ملفاً محدداً نحن نوصي بشدة بأداة "إكس إم دلينك اكس".
 
-التوصية:
+#### توصيتنا: CopyQ
 
-إنشاء قيادة جديدة في قسم النسخ مع طريق مختصر عالمي
+  إنشاء أمر جديد في CopyQ باستخدام اختصار عام.
 
-** عضو في شركة لينكس/ماكوس:**
+                                      **أمر لنظام لينكس/ماك**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-**
+          **أمر لنظام ويندوز عند استخدام [CopyQ](https://github.com/hluk/CopyQ):**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -344,15 +344,15 @@ if (f.openAppend()) {
 ```
 
 
-**
+          **أمر لنظام ويندوز عند استخدام [AutoHotkey](https://AutoHotkey.com):**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -360,7 +360,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```
@@ -464,7 +464,7 @@ Legend for OS Compatibility:
 ││ * ** سير العمل** محفوظات محميه من كلمة السر   
 │├ ** تجهيز النصوص &quot; تصحيح/** مجمَّعة باللغة (مثل `de-DE`, `en-US`, ...)   
 │├ 1. `normalize_punctuation.py` (Standardizes punctuation post-transcription) 🐧 🍏 🪟  
-│├ 2. ** Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟  
+│├ 2. ** Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-arlang.md)) 🐧 🍏 🪟  
 ││ * ** تنفيذ القانون الديناميكي: يمكن أن تحفز القواعد نصوصاً خاصة بالبيتون (`on_match_exec`) للقيام بأعمال متطورة مثل المكالمات الهاتفية، أو الملف الأول/أو، أو توليد استجابات دينامية.  
 ││ * ** التنفيذ:** وتتم معالجة القواعد بالتتابع، وتترتب عليها آثار**. وتنطبق القواعد اللاحقة على النص المعدل بقواعد سابقة.  
 ││ * ** أرفع خط للوقف ذي الأولوية**: إذا حققت قاعدة ماتش ** Full Match** (...$)، فإن خط تجهيز كامل لذلك المقطع يتوقف فورا. وتتسم هذه الآلية بأهمية حاسمة في تنفيذ أوامر الصوت الموثوق بها.  
@@ -476,7 +476,7 @@ Legend for OS Compatibility:
 ││ * **Status:** Local LLM integration.
 │└ 5. ** Intelligent Post-Correction** (`FuzzyMap`)**- Post-LT Refinement * 🐧 🍏 🪟  
 ││ * Applied after LanguageTool to correct LT-specific outputs. يتبع نفس المنطق الدقيق الذي يكتنف الأولوية كطبقة ما قبل الثورة.  
-││ * * تنفيذ القانون الديناميكي: يمكن أن تحفز القواعد نصوصاً خاصة بالبيتون ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-arlang.md)) للقيام بأعمال متطورة مثل المكالمات الهاتفية، أو الملف الأول/أو، أو توليد استجابات دينامية.  
+││ * * تنفيذ القانون الديناميكي: يمكن أن تحفز القواعد نصوصاً خاصة بالبيتون ([on_match_exec](../docs/advanced-scripting-arlang.md)) للقيام بأعمال متطورة مثل المكالمات الهاتفية، أو الملف الأول/أو، أو توليد استجابات دينامية.  
 ││ * ** فوزي فالباك** The **Fuzzy Similarity check** (controlled by a threshold, e.g., 85%) acts as the lowest priority error-correction layer. ولا يُنفذ إلا إذا أخفقت القاعدة المحددة/القاضية بأكملها في العثور على تطابق (القاعدة الحالية المتطابقة زائفة)، مما أدى إلى تحقيق الأداء الأمثل بتفادي إجراء عمليات تفتيش بطيئة الازدحام كلما أمكن ذلك.  
 ├┬ ** إدارة النموذج**   
 │├─ `prioritize_model.py` (Optimizes model loading/unloading based on usage) 🐧 🍏 🪟  
@@ -516,7 +516,7 @@ Legend for OS Compatibility:
 من فضلك تحقق من صندوق الشيكات عند تركيبه لربطه بملفات السجل    
 https://glogg.bonnefon.org/     
     
-Tip: After defining your regex patterns, run `python3 tools/map_tagger.py` to automatically generate searchable examples for the CLI tools. انظر [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-arlang.md) للتفاصيل. *
+Tip: After defining your regex patterns, run `python3 tools/map_tagger.py` to automatically generate searchable examples for the CLI tools. انظر [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-arlang.md) للتفاصيل. *
 
 ثم ربما مزدوجة
 `log/aura_engine.log`

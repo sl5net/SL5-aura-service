@@ -345,12 +345,12 @@ if (f.openAppend()) {
 **Command for Windows when use [AutoHotkey](https://AutoHotkey.com):**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -358,7 +358,7 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```

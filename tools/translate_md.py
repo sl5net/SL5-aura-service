@@ -523,12 +523,13 @@ def process_file(filename):
 
 
     is_private_dir = any(part.startswith("_") for part in Path(filename).parts)
+
+
     effective_argos_mode = "only" if is_private_dir else ARGOS_MODE
-    target_languages = [lang for lang in TARGET_LANGS if lang != source_lang]    
-    effective_argos_mode = "only" if is_private_dir else ARGOS_MODE
-    
+
     target_languages = [lang for lang in TARGET_LANGS if lang != source_lang]
-        
+    logger.info(f"source_lang='{source_lang}', targets={target_languages}")
+
     for lang in target_languages:
         
         os.makedirs(i18n_dir, exist_ok=True)
@@ -539,9 +540,10 @@ def process_file(filename):
                 output_path.exists()
                 and output_path.stat().st_mtime > Path(filename).stat().st_mtime
         ):
+            logger.info(f"Skipping fresh: {output_file}")
             continue
 
-        print(f"📁📄  -> Processing '{lang}' -> '{output_file}'…")
+        logger.info(f"📁📄  -> Processing '{lang}' -> '{output_file}'…")
 
         translated_sections = []
         has_cache_miss = False
@@ -563,7 +565,7 @@ def process_file(filename):
                     argos_mode=effective_argos_mode,
                 )                
                 if translated is None:
-                    print(f"      [SKIP] Failed to translate section for '{lang}', aborting file write.")
+                    logger.warning(f"      [SKIP] Failed to translate section for '{lang}', aborting file write.")
                     section_failed = True
                     break
                 translated = harmonize_newlines(section, translated)
@@ -585,7 +587,7 @@ def process_file(filename):
         output_lines = full_output.splitlines()
 
         if len(output_lines) < 1:
-            print(
+            logger.warning(
                 f"      [SKIP] Output for '{lang}' has only {len(output_lines)} lines, skipping write."
             )
             continue
@@ -593,30 +595,23 @@ def process_file(filename):
                 line.strip().startswith("https://translate.google.com")
                 for line in output_lines
         ):
-            print(
+            logger.warning(
                 f"      [SKIP] Output for '{lang}' contains redirect URL, skipping write."
             )
             continue
+
+
+#
+
+
         if len(full_output) < (len(raw_content) * 0.35):
-            print(
+            logger.warning(
                 f"      [SKIP] Output for '{lang}' is suspiciously short, skipping write."
             )
-            continue        
-        
-        
-        if any(
-                line.strip().startswith("https://translate.google.com")
-                for line in output_lines
-        ):
-            print(
-                f"      [SKIP] Output for '{lang}' contains redirect URL, skipping write."
-            )
-            return 
-        if len(full_output) < (len(raw_content) * 0.35):
-            print(
-                f"      [SKIP] Output for '{lang}' is suspiciously short, skipping write."
-            )
-            return 
+            continue
+
+
+
 
         orig_name = os.path.basename(filename)
         disclaimer = (
@@ -626,7 +621,7 @@ def process_file(filename):
         if not full_output.startswith("> ℹ️ *This is a machine-translated document"):
             full_output = disclaimer + full_output
 
-        print(f"📁📄      -> Saving file '{output_file}'…")
+        logger.info(f"📁📄      -> Saving file '{output_file}'…")
         with open(output_file, "w", encoding="utf-8") as f:
 
             f.write(full_output)
