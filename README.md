@@ -156,7 +156,11 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 
 For a complete technical reference, including all modules and scripts, please visit our official documentation page. It is automatically generated and always up-to-date.
 
-👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+👉 [**🇬🇧 Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+
+👉 [**🇩🇪 Zur deutschen Documentation delang**](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html
+)
+
 
 ### Feature Spotlights
 - [Interactive Rule Search & Run](docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.md) — Dual-pane `fzf` rule search, live context previews, instant command execution via `Enter`/`Ctrl+R`, and editor integration via `Ctrl+E`. Supported by a global hotkey (`Super+S`) and multiple dedicated search-environments pre-configured via voice commands.
