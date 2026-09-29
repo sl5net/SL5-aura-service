@@ -1,7 +1,7 @@
 bs4
 cologne_phonetics
 colorama>=0.4.0
-fastapi==0.141.1
+fastapi==0.142.0
 jellyfish
 keyboard==0.13.5
 nltk==3.9.1

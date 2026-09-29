@@ -156,9 +156,9 @@ SL5-Auraは、**OculiX**と**SikuliX IDE**の一流の音声サポートを提�
 
 🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=ja)
 
-すべてのモジュールとスクリプトを含む完全な技術的リファレンスについては、公式ドキュメントページをご覧ください。これは自動的に生成され、常に最新の状態に保たれています。
+すべてのモジュールとスクリプトを含む完全な技術的リファレンスについては、公式ドキュメントページをご覧ください。これは自動生成されており、常に最新の状態です。
 
-👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ## 機能スポットライト
 - [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-jalang.md) — デュアルパン`fzf`ルール検索、ライブコンテキストプレビュー、`Enter`/`Ctrl+R`によるインスタントコマンド実行、および`Ctrl+E`によるエディタ統合。 グローバルなホットキー(`Super+S`)と、ボイスコマンドで事前設定された複数の専用の検索環境でサポートされている。

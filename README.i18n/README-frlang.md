@@ -152,13 +152,13 @@ SL5-Aura fournit une prise en charge vocale de première classe pour l'IDE **Ocu
 <details>
 <summary>Documentation</summary>
 
-Documentation
+## Documentation
 
 🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=fr)
 
-Pour une référence technique complète, incluant tous les modules et scripts, veuillez consulter notre page de documentation officielle. Il est généré automatiquement et toujours à jour.
+Pour une référence technique complète, incluant tous les modules et scripts, veuillez consulter notre page de documentation officielle. Elle est générée automatiquement et toujours à jour.
 
-👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 Pleins feux
 - [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-frlang.md) — Recherche de règles `fzf` à double panneau, prévisualisations en direct du contexte, exécution instantanée de la commande via `Enter`/`Ctrl+R` et intégration de l'éditeur via `Ctrl+E`. Prise en charge par un hotkey global (`Super+S`) et plusieurs environnements de recherche dédiés préconfigurés par des commandes vocales.
