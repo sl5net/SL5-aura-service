@@ -151,19 +151,7 @@ except ImportError:
 _model = None  # Globaler Cache für das Modell
 
 def get_embedding_model():
-    """
-    Lazy loader for the embedding model.
-    Only loads torch and the model into RAM when actually needed.
-    """
-    global _model
-    if _model is None:
-        utils.log_debug("🚀 Loading Embedding Model (Lazy Load)…")
-        from sentence_transformers import SentenceTransformer
-        _model = SentenceTransformer('all-MiniLM-L6-v2')
-    return _model
-
-
-# config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.py:153
+    return None
 
 log = logging.getLogger("simulate_conversation")
 GITHUB_BASE = "https://github.com/sl5net/SL5-aura-service/blob/master"
@@ -193,7 +181,7 @@ def save_to_aura_db(question, answer, file_path, use_semantics=False):
     clean_input = question.lower().replace("?", "").strip()
 
     embedding_blob = None
-    if use_semantics: # Nur für den interaktiven Chat aktivieren
+    if use_semantics: 
         import pickle
         model = get_embedding_model()
         embedding = model.encode(question)
@@ -235,106 +223,8 @@ def save_to_aura_db(question, answer, file_path, use_semantics=False):
 
 
 def get_semantic_match(user_text):
-    # 1. Encode user input once
+    return None
 
-    from sentence_transformers import util
-    model = get_embedding_model()
-    user_embedding = model.encode(user_text, convert_to_tensor=True)
-    try:
-        conn = sqlite3.connect(utils.DB_FILE, timeout=90)
-        c = conn.cursor()
-        # 2. Fetch PRE-CALCULATED embeddings (BLOBs)
-        c.execute("SELECT hash, embedding FROM prompts WHERE embedding IS NOT NULL")
-        rows = c.fetchall()
-        best_hash, max_sim = None, 0.0
-
-        SEMANTIC_THRESHOLD = 0.7  # Live-Betrieb
-        # SEMANTIC_THRESHOLD = -1.0 # Test alway match
-
-        for db_hash, blob in rows:
-            # 3. Load vector from BLOB (no model.encode here!)
-            import pickle
-
-            import torch
-            db_embedding = torch.from_numpy(pickle.loads(blob)).to(user_embedding.device)
-            # db_embedding = model.encode(user_text, convert_to_tensor=True)
-
-            similarity = util.cos_sim(user_embedding, db_embedding).item()
-
-            if similarity > max_sim:
-                max_sim, best_hash = similarity, db_hash
-        if best_hash and max_sim > SEMANTIC_THRESHOLD:
-            c.execute("SELECT response_text FROM responses WHERE prompt_hash=? LIMIT 1", (best_hash,))
-            res = c.fetchone()
-
-            conn.close()
-
-            if res:
-                utils.play_cache_hit_sound()
-                return res[0]
-        return None
-    except Exception as e:
-        utils.log_debug(f"Semantic Error: {e}")
-        return None
-
-
-# def get_semantic_match_22222(user_text):
-#     """
-#     Performs a semantic search for the best matching response.
-#     Uses Cosine Similarity to find matches even without exact keyword overlaps.
-#     """
-#     # utils.init_db()
-#
-#     # Convert user input into a vector embedding
-#     user_embedding = model.encode(user_text, convert_to_tensor=True)
-#
-#     try:
-#         conn = sqlite3.connect(utils.DB_FILE)
-#         c = conn.cursor()
-#         # Fetch pre-calculated embeddings from the database
-#         c.execute("SELECT hash, prompt_text FROM prompts")
-#         rows = c.fetchall()
-#
-#         utils.log_debug(f"DEBUG: Semantic Search loaded {len(rows)} embeddings from {utils.DB_FILE}")
-#
-#         best_hash = None
-#         max_similarity = 0.0
-#         threshold = 0.3
-#         threshold = -1.0
-#
-#         for row in rows:
-#             db_hash, db_text = row[0], row[1]
-#
-#             # Calculate semantic similarity
-#             db_embedding = model.encode(db_text, convert_to_tensor=True)
-#             similarity = util.cos_sim(user_embedding, db_embedding).item()
-#
-#             if similarity > max_similarity:
-#                 max_similarity = similarity
-#                 best_hash = db_hash
-#
-#         if best_hash and max_similarity > threshold:
-#             utils.log_debug(f"🧠 Semantischer Match! Score: {max_similarity:.2f}")
-#
-#             utils.log_debug(f"🚀 Instant Match gefunden! (Hash: {best_hash[:8]})")
-#
-#             c.execute(
-#                 "SELECT response_text FROM responses WHERE prompt_hash=? ORDER BY rating DESC, created_at DESC LIMIT 1",
-#                 (best_hash,))
-#             resp_row = c.fetchone()
-#             conn.close()
-#
-#             if resp_row:
-#                 utils.play_cache_hit_sound()
-#                 # return f"[SOFORT-MODUS]: {resp_row[0]}"
-#                 return f"{resp_row[0]}"
-#
-#             return db_text
-#
-#         return None
-#     except Exception as e:
-#         utils.log_debug(f"Semantic Error: {e}")
-#         return None
 
 # --- INSTANT MODE MATCHING ---
 def get_instant_match(user_text):
@@ -914,7 +804,8 @@ def execute(match_data):
 
         AURA_NORMAL_PROFILE = (
             "Du bist SL5 Aura, der Offline-Voice-Assistant. Antworte normal ausführlich und hilfreich. "
-            "Deine Antworten dürfen freundlicher sein und mehr Kontext liefern, aber bleibe präzise. "
+            "KEINE Begrüßungen oder Floskeln. Antworte sofort direkt auf die Aufgabe. "
+            "bleibe präzise. "
             "Du bist NICHT an die EXTREM-Kürze des Tech-Modus gebunden.\n\n"
 
             "REGELN:\n"
@@ -992,7 +883,7 @@ def execute(match_data):
 
         context_data = ""
         mode_prefix = "STD"  # Standard Mode
-        system_role = f"{AURA_TECH_PROFILE}"
+        # system_role = f"{AURA_TECH_PROFILE}"
         use_history = True
         input_lower = user_input_raw.lower()
         bypass_cache = bypass_cache
@@ -1245,16 +1136,12 @@ def execute(match_data):
                 "Bitte lese Details in der Dokumentation: https://SL5.de/Aura"
             )
 
-
-
-
-
-
     # config/maps/plugins/z_fallback_llm/de-DE/ask_ollama.py:1252
-    except Exception as e:
-        utils.log_debug(f"API Error: {e}")
-        return f"Interner Fehler: {e!s} (2026-0506-0626)"
 
+    except Exception as e:
+        import traceback
+        tb = traceback.extract_tb(e.__traceback__)[-1]
+        return f"ERROR in {tb.filename}:{tb.lineno}: {e!s}"
 
 
 
