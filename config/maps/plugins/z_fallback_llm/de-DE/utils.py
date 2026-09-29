@@ -303,4 +303,14 @@ def play_cache_hit_sound():
     #         log_debug(f"Error: {error_msg}")
     #         pass
 
+def ensure_package(pkg: str) -> bool:
+    from scripts.py.func.config.dynamic_settings import DynamicSettings
+    settings = DynamicSettings()
 
+    plugins = getattr(settings, "PLUGINS_ENABLED", {})
+    if not plugins.get("z_fallback_llm", False):
+        return False
+    
+    import subprocess, sys
+    subprocess.check_call([sys.executable, "-m", "pip", "install", pkg])
+    return True

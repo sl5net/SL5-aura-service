@@ -300,7 +300,7 @@ def process_text_cli(request: ProcessRequest, valid: bool = Depends(verify_api_k
         time.sleep(0.05)
 
     actual_result_text = actual_result_text.strip()
-    app_logger.info(f"API-CLI-Call: Finished. Input='{raw_text[:20]}', Result='{actual_result_text[:20]}'")
+    app_logger.info(f"API-CLI-Call: Finished. Input='…{raw_text[:20]}', Result='{actual_result_text[:20]}'")
 
     return {
         "status": "completed" if actual_result_text != "[NO OUTPUT FILE CREATED]" else "timeout",
