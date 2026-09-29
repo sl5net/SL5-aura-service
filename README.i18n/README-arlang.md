@@ -154,7 +154,7 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 
 ﻖﺋﺎﺛﻮﻟﺍ ##
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=ar)
 
 .ﺙﺪﺤﻣ ﺎﻤًﺋﺍﺩ ﻮﻫﻭ ﺎﻴًﺋﺎﻘﻠﺗ ﻩﺅﺎﺸﻧﺇ ﻢﺘﻳ .ﺎﻨﻳﺪﻟ ﺔﻴﻤﺳﺮﻟﺍ ﻖﺋﺎﺛﻮﻟﺍ ﺔﺤﻔﺻ ﺓ
 

@@ -154,7 +154,7 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**의 일류 음성 지원을 제공합�
 
 ## 문서
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=ko)
 
 모든 모듈과 스크립트를 포함한 완전한 기술 참조를 위해, 공식 문서 페이지를 방문하십시오. 이 문서는 자동으로 생성되며 항상 최신 상태로 유지됩니다.
 
@@ -316,7 +316,7 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 
 음성 입력을 트리거하려면 특정 파일을 생성하는 전역 단축키가 필요합니다. 우리는 크로스 플랫폼 도구 [CopyQ](https://github.com/hluk/CopyQ)를 강력히 추천합니다.
 
-#### 우리의 추천: CopyQ
+#### 저희 추천: CopyQ
 
 글로벌 단축키로 CopyQ에 새 명령을 만드세요.
 

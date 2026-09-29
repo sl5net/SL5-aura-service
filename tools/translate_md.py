@@ -147,8 +147,11 @@ def test_translation_links():
     test_cases = [
         ('[Normaler Link](about.md)', "Standard Markdown Link"),
         ('[Link mit Anker](contact.md#form)', "Markdown Link mit Anker"),
+        
         ('[Die README](README.md)', "Spezialfall README"),
+        ('[Search](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)', "Online Search"),
         ('![Ein Bild](images/logo.png)', "Asset / Bild (kein MD)"),
+        
         ('[Extern](https://google.com)', "Absoluter Link (sollte gleich bleiben)"),
         ('[Anker](#abschnitt)', "Interner Anker (sollte gleich bleiben)"),
         ('[](../about-delang.md)', "Bereits korrigierter Link (Idempotenz)"),
@@ -196,6 +199,18 @@ def add_lang_to_md_links(line: str, lang: str) -> str:
         url = match.group(2)
 
         logger.info(f"  -> Found link: {match.group(0)}")
+
+        # --- Conditions to NOT modify the link ---
+        # 1. It's an absolute URL
+
+        
+        if "search_online.html" in url:
+            if re.search(r"([?&]lang=)[a-zA-Z0-9_-]+", url):
+                new_url = re.sub(r"([?&]lang=)[a-zA-Z0-9_-]+", rf"\g<1>{lang}", url)
+            else:
+                sep = "&" if "?" in url else "?"
+                new_url = f"{url}{sep}lang={lang}"
+            return f"{link_text}({new_url})"
 
         # --- Conditions to NOT modify the link ---
         # 1. It's an absolute URL
@@ -625,7 +640,6 @@ def process_file(filename):
         with open(output_file, "w", encoding="utf-8") as f:
 
             f.write(full_output)
-            time.sleep(7)
 
         # def save_cache(cache_file: Path, cache_data: dict) -> None:
         if has_cache_miss:

@@ -154,7 +154,7 @@ SL5-Aura fournit une prise en charge vocale de première classe pour l'IDE **Ocu
 
 Documentation
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=fr)
 
 Pour une référence technique complète, incluant tous les modules et scripts, veuillez consulter notre page de documentation officielle. Il est généré automatiquement et toujours à jour.
 

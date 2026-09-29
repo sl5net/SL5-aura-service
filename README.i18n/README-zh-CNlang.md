@@ -154,7 +154,7 @@ SL5-Aura为**奥库利X**和**SikulIX IDE**提供一等语音支持. 这种集�
 
 ## 文档
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=zh-CN)
 
 有关完整的技术参考，包括所有模块和脚本，请访问我们的官方文档页面。它是自动生成的，并且始终是最新的。
 

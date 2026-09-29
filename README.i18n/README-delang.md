@@ -142,7 +142,7 @@ SL5-Aura bietet erstklassige Sprachunterstützung für **OculiX** und **SikuliX 
 
 ### LibreOffice IDE-Sprachsteuerung
 
-### 0 n. Chr. Sprachsteuerung
+### 0 A.D. Sprachsteuerung
 
 ---
 
@@ -154,14 +154,14 @@ SL5-Aura bietet erstklassige Sprachunterstützung für **OculiX** und **SikuliX 
 
 ## Dokumentation
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=de)
 
 Eine vollständige technische Referenz, einschließlich aller Module und Skripte, finden Sie auf unserer offiziellen Dokumentationsseite. Es wird automatisch generiert und ist immer aktuell.
 
 👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
 
 ### Funktions-Highlights
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-delang.md) — Doppelfenster `fzf` Regel-Suche, Live-Kontextvorschauen, sofortige Befehlsausführung über `Enter`/`Ctrl+R` und Editor-Integration über `Ctrl+E`. Unterstützt durch eine globale Tastenkombination (`Super+S`) und mehrere vorab konfigurierte Suchumgebungen, die über Sprachbefehle gesteuert werden.
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-delang.md) — Doppelfenster-`fzf`-Regelsuche, Live-Kontextvorschauen, sofortige Befehlsausführung über `Enter`/`Ctrl+R` und Editor-Integration über `Ctrl+E`. Unterstützt durch eine globale Tastenkombination (`Super+S`) und mehrere dedizierte Suchumgebungen, die über Sprachbefehle vorkonfiguriert sind.
 
 ### Build-Status
 
@@ -298,7 +298,7 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 
 ## Nutzung
 
-### 1. Starten Sie die Dienste
+### 1. Starte die Dienste
 
 #### Unter Linux und macOS
 Ein einziges Skript erledigt alles. Es startet den Haupt-Diktierdienst und den Datei-Watcher automatisch im Hintergrund.
@@ -423,7 +423,7 @@ Hier ist eine Liste der wichtigsten Skripte, um die Anwendung auf einem Windows-
 *   `update.bat`: Führen Sie dies aus dem Projektordner aus, um **den neuesten Code und die neuesten Abhängigkeiten abzurufen**.
 
 ### Die Anwendung ausführen
-*   `start_aura.bat`: Ein Hauptskript, um **den Diktierdienst zu starten**.
+*   `start_aura.bat`: Ein primäres Skript, um **den Diktatdienst zu starten**.
 
 ### Kern- und Hilfsskripte
 *   `aura_engine.py`: Der Kern-Python-Dienst (normalerweise von einem der oben genannten Skripte gestartet).
@@ -433,7 +433,7 @@ Hier ist eine Liste der wichtigsten Skripte, um die Anwendung auf einem Windows-
 
 
 
-## 🚀 Hauptfunktionen & OS-Kompatibilität
+## 🚀 Hauptfunktionen & Betriebssystemkompatibilität
 
 <details>
 <summary>Legende für die OS-Kompatibilität</summary>
@@ -507,7 +507,7 @@ Legende für die OS-Kompatibilität:
 
 
 <details>
-<summary>Entwicklungs- & Bereitstellungshilfen</summary>
+<summary>Entwicklungs- und Bereitstellungshilfen</summary>
 
 ### **Entwicklungs- und Einsatzhelfer*  
     Skripte für die Einrichtung, das Testen und die Ausführung von Diensten in der Umgebung.  
@@ -569,7 +569,7 @@ Dann vielleicht Doppelklick
 <details>
 <summary>Eine grafische Übersicht über die Architektur</summary>
 
-### Eine grafische Übersicht über die Architektur:
+### Eine grafische Übersicht der Architektur:
 
 ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 

@@ -154,7 +154,7 @@ SL5-Auraは、**OculiX**と**SikuliX IDE**の一流の音声サポートを提�
 
 ## ドキュメンテーション
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=ja)
 
 すべてのモジュールとスクリプトを含む完全な技術的リファレンスについては、公式ドキュメントページをご覧ください。これは自動的に生成され、常に最新の状態に保たれています。
 

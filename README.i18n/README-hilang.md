@@ -154,7 +154,7 @@ SL5-Aura ** Oculix** और **SikuliX IDE* के लिए प्रथम श�
 
 ## प्रलेखन
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=hi)
 
 एक पूर्ण तकनीकी संदर्भ के लिए, जिसमें सभी मॉड्यूल और स्क्रिप्ट शामिल हैं, कृपया हमारे आधिकारिक दस्तावेज़ पृष्ठ पर जाएँ। यह स्वचालित रूप से उत्पन्न होता है और हमेशा अद्यतन रहता है।
 

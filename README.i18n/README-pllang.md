@@ -154,7 +154,7 @@ SL5- Aura zapewnia obsługę głosu pierwszej klasy dla * * OculiX * * i * * Sik
 
 ## Dokumentacja
 
-🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=en)
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=pl)
 
 Aby uzyskać kompletny podręcznik techniczny, w tym wszystkie moduły i skrypty, prosimy odwiedzić naszą oficjalną stronę dokumentacji. Jest ona generowana automatycznie i zawsze aktualna.
 
