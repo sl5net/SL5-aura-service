@@ -185,7 +185,7 @@ For a complete technical reference, including all modules and scripts, please vi
 
 👉 **Read this in other languages:**
 
-[🇬🇧 English](README.md) | [🇸🇦 العربية](README.i18n/README-arlang.md) | [🇩🇪 Deutsch](README.i18n/README-delang.md) | [🇪🇸 Español](README.i18n/README-eslang.md) | [🇫🇷 Français](README.i18n/README-frlang.md) | [🇮🇳 हिन्दी](README.i18n/README-hilang.md) | [🇯🇵 日本語](README.i18n/README-jalang.md) | [🇰🇷 한국어](README.i18n/README-kolang.md) | [🇵🇱 Polski](README.i18n/README-pllang.md) | [🇵🇹 Português](README.i18n/README-ptlang.md) | [🇧🇷 Português Brasil](README.i18n/README-pt-BRlang.md) | [🇨🇳 简体中文](README.i18n/README-zh-CNlang.md)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ---
 
