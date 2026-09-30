@@ -163,7 +163,7 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 ##أضواءالإنارة
 - [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-arlang.md) - Dual-pane `fzf` rule search, live context previews, immediate command execution via `Enter`/`Ctrl+R`, and editor integration via `Ctrl+E`. دعمه هوكي عالمي (`Super+S`) وتعدد البيئات المكرسة للبحث عن طريق أوامر الصوت.
 
-♪ Build status
+### حالة البناء
 
 [![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
@@ -185,14 +185,14 @@ SL5-Aura provides first-class voice support for the **OculiX** and **SikuliX IDE
 
 </details>
 
-اقرأ هذا بلغات أخرى:
+                                👉 **اقرأ هذا بلغات أخرى:**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-arlang.md) | [🇪🇸 Español](../README.i18n/README-eslang-arlang.md) | [🇫🇷 Français](../README.i18n/README-frlang-arlang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-arlang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-arlang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-arlang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-arlang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-arlang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-arlang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-arlang.md)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ---
 
 <details>
-<summary>التركيب</summary>
+<summary>                                                               التثبيت</summary>
 
 التركيب
 

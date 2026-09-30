@@ -18,7 +18,7 @@
 
 | 👵 初心者 | 🎓 学習者 | 🧑‍💻 開発者 |
 |---|---|---|
-| [grandma-mode](../docs/GettingStarted.i18n/GettingStarted-jalang.md#the-oma-modus-beginner-shortcut)：単語を1つ書くだけで、Auraが残りを処理します | 公案で学ぶ — 1つの概念ずつ | 完全なPythonスクリプティング、プラグイン、APIコール |
+| [grandma-mode](../docs/GettingStarted-jalang.md#the-oma-modus-beginner-shortcut)：単語を1つ書くだけで、Auraが残りを処理します | 公案で学ぶ — 1つの概念ずつ | 完全なPythonスクリプティング、プラグイン、APIコール |
 | 🗄️ 状態管理 | Trino + Airflow オーケストレーション, fzf, CopyQ, 音声/ターミナルコマンド, ブラウザUI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -37,7 +37,7 @@
 ### オプションA：1クリック＆ウェブインストーラー（推奨）
 
 Linux、macOS、Windows用のワンライナーコマンドまたはスタンドアロンインストーラー：
-- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-jalang.md)**
+- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller-jalang.md)**
 
 ---
 
@@ -53,7 +53,7 @@ Linux、macOS、Windows用のワンライナーコマンドまたはスタンド
    - macOS: `bash setup/macos_setup.sh`(`bash setup/macos_setup.sh`)
    - ウィンドウ: `setup/windows11_setup_with_ahk_copyq.bat`
 3. スタートオーラ:`./scripts/restart_venv_and_run-server.sh`
-4. あなたのホットキーを押して話す - **[full guide →](../docs/GettingStarted.i18n/GettingStarted-jalang.md) *
+4. あなたのホットキーを押して話す - **[full guide →](../docs/GettingStarted-jalang.md) *
 
 ---
 
@@ -76,7 +76,7 @@ SL5 Auraの背景サービス、自動起動エントリ、仮想環境を削除
     glibc 2.43 の互換性のために mimalloc (`sudo pacman -S mimalloc`) を要求します。
 *   **Linux (NixOS):** ** 実験 — コミュニティ結合セットアップ, まだテストされていない.
     是非お試し下さい。ぜひご活用ください。    
-*   **Linux(Manjaro):** 新しい : システム全体ホットキーが fzf のようなキーボード駆動インターフェイスを開くので、デスクトップ上のどこからでも Aura コマンドを実行できます(アクティブウィンドウから完全にデカップリング)。 このホットキー主導のランチャーは、現在Linux(Manjaro)で実装およびテストされています。 その他の配布物は動作する場合がありますが、設定が必要です。 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-jalang.md)で見る    
+*   **Linux(Manjaro):** 新しい : システム全体ホットキーが fzf のようなキーボード駆動インターフェイスを開くので、デスクトップ上のどこからでも Aura コマンドを実行できます(アクティブウィンドウから完全にデカップリング)。 このホットキー主導のランチャーは、現在Linux(Manjaro)で実装およびテストされています。 その他の配布物は動作する場合がありますが、設定が必要です。 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-jalang.md)で見る    
 
 
     
@@ -96,7 +96,7 @@ SL5 Auraは、**Vosk**(Speech-to-Text用)と**LanguageTool**(Grammar/Style用)�
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **ヒント:** より良いターミナル体験のために、[Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-jalang.md) を参照してください。
+> **ヒント:** より良いターミナル体験のために、[Zsh Integration](../docs/linux/zsh-integration-jalang.md) を参照してください。
 
 ### 🎥 ビデオチュートリアル
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -161,9 +161,9 @@ SL5-Auraは、**OculiX**と**SikuliX IDE**の一流の音声サポートを提�
 [🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ## 機能スポットライト
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-jalang.md) — デュアルパン`fzf`ルール検索、ライブコンテキストプレビュー、`Enter`/`Ctrl+R`によるインスタントコマンド実行、および`Ctrl+E`によるエディタ統合。 グローバルなホットキー(`Super+S`)と、ボイスコマンドで事前設定された複数の専用の検索環境でサポートされている。
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-jalang.md) — デュアルパン`fzf`ルール検索、ライブコンテキストプレビュー、`Enter`/`Ctrl+R`によるインスタントコマンド実行、および`Ctrl+E`によるエディタ統合。 グローバルなホットキー(`Super+S`)と、ボイスコマンドで事前設定された複数の専用の検索環境でサポートされている。
 
-## ビルドステータス
+### ビルドステータス
 
 [![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
@@ -185,9 +185,9 @@ SL5-Auraは、**OculiX**と**SikuliX IDE**の一流の音声サポートを提�
 
 </details>
 
-他の言語でこれを読む:
+👉 **他の言語で読む:**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-jalang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-jalang.md) | [🇪🇸 Español](../README.i18n/README-eslang-jalang.md) | [🇫🇷 Français](../README.i18n/README-frlang-jalang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-jalang.md) | [🇯🇵 日本語](../README.i18n/README-jalang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-jalang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-jalang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-jalang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-jalang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-jalang.md)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ---
 
@@ -464,7 +464,7 @@ OS互換性の凡例：
 ││ * **ワークフロー:** パスワード保護されたZIPアーカイブをロードします。   
 │├ **テキスト処理と修正/** 言語によってグループ化(例:`de-DE`、`en-US`、...)   
 │├ 1. `normalize_punctuation.py`(プンクチュエーションポストトランスクリプションの標準化) 🐧 🍏 🪟  
-│├ 2. **インテリジェントなプレコレクション** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
+│├ 2. **インテリジェントなプレコレクション** (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-jalang.md)) 🐧 🍏 🪟  
 ││ * **動的 Script の実行: ルールは、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりするために、カスタム Python スクリプト (`on_match_exec`) をトリガーできます。  
 ││ * **ケースケーディング 実行:** 規則は順次処理され、その効果は**累積**です。 その後のルールは、以前の規則によって変更されたテキストに適用されます。  
 ││ * **最も優先順位停止基準:** 規則が**フルマッチ**(^...$)を達成した場合、そのトークンの全処理パイプラインは直ちに停止します。 この仕組みは、信頼性の高い音声コマンドを実装するために不可欠です。  
@@ -476,7 +476,7 @@ OS互換性の凡例：
 ││ * **Status:**ローカルLMの統合。
 │└ 5. **理性的な後処理** (`FuzzyMap`)**–ポストLTの精製* * * 🐧 🍏 🪟  
 ││ * LT固有の出力を修正するために LanguageTool が適用されます。 同一の厳密なcascading優先ロジックをプレ補正レイヤーとしてフォローします。  
-││ * *Dynamic Script Execution: ルールは、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりするために、カスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-jalang.md)) をトリガーできます。  
+││ * *Dynamic Script Execution: ルールは、API 呼び出し、ファイル I/O などの高度なアクションを実行したり、動的応答を生成したりするために、カスタム Python スクリプト ([on_match_exec](../docs/advanced-scripting-jalang.md)) をトリガーできます。  
 ││ * **ファジーフォールバック:** **Fuzzy 類似性 Check** (例えば、85%) は最優先誤差層として機能します。 前項の決定書/キャスケーディング規則がマッチ(現在のルールマッチは false)が見つからなかった場合にのみ実行され、可能な限り遅いファジーチェックを避けてパフォーマンスを最適化します。  
 ├┬ **モデル管理/**   
 │├─ `prioritize_model.py`(用途に応じたモデルロード/アンロードの最適化) 🐧 🍏 🪟  
@@ -516,7 +516,7 @@ OS互換性の凡例：
 ログファイルと関連付ける際は、チェックボックスをご確認ください。    
 https://glogg.bonnefon.org/     
     
-ヒント: 正規表現パターンを定義した後、`python3 tools/map_tagger.py` を実行して、CLI ツールの検索可能な例を自動的に生成します。 詳細は [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-jalang.md) をご覧ください。
+ヒント: 正規表現パターンを定義した後、`python3 tools/map_tagger.py` を実行して、CLI ツールの検索可能な例を自動的に生成します。 詳細は [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-jalang.md) をご覧ください。
 
 その後、ダブルクリック
 `log/aura_engine.log`

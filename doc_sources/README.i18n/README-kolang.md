@@ -1,113 +1,144 @@
-<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura 로고">
+> ℹ️ *This is a machine-translated document. In case of discrepancies, refer to the [original document](../README.md).*
 
-# ⬟ SL5 Aura - 당신의 목소리. 귀하의 규칙.
+<img src="data/image/logo.svg" align="right" width="150" alt="⬟ SL5 Aura Logo">
 
-> 100% 오프라인, 개인 정보 보호 우선 음성 지원 프레임워크.  
-> 한 단어로 자신의 목소리가 하는 일을 정확하게 정의하세요.  
-> 전체 Python 스크립트. 클라우드가 없습니다. 데이터가 컴퓨터 밖으로 나가지 않습니다.  
-> Linux, macOS, Windows에서 터미널, 브라우저 또는 백그라운드 서비스로 실행됩니다.
+# ⬟ SL5 오라 – 당신의 목소리. 당신의 규칙.
 
-| 👵 초급 | 🎓 학습자 | 🧑u200d💻 개발자 |
+<!-- Stack Overflow & Community Badges -->
+[![Stack Overflow](https://img.shields.io/badge/Stack_Overflow-536k+_Reached-F48024?style=for-the-badge&logo=stackoverflow&logoColor=white)](https://stackoverflow.com/users/2891692/sl5net)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Privacy](https://img.shields.io/badge/Privacy-100%25_Local_%26_Offline-2ea44f?style=for-the-badge&logo=keepassxc&logoColor=white)](#)
+[![Latency](https://img.shields.io/badge/Latency-0.07s-blueviolet?style=for-the-badge&logo=speedtest&logoColor=white)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+> 100% 오프라인, 프라이버시 중심 음성 비서 프레임워크.  
+> 한 단어에서 당신의 목소리가 정확히 무엇을 하는지 정의하세요  
+> 전체 Python 스크립트로. 클라우드 없음. 데이터가 머신을 벗어나지 않습니다.  
+> 터미널, 브라우저 또는 백그라운드 서비스로 실행되며 — Linux, macOS 및 Windows에서 가능합니다.
+
+| 👵 초보 | 🎓 학습자 | 🧑‍💻 개발자 |
 |---|---|---|
-
-
-| [grandma-mode](../../docs/GettingStarted.i18n/GettingStarted-kolang.md#the-oma-modus-beginner-shortcut) : 단어만 작성하면 나머지는 Aura가 수행합니다 | Koans로 배우기 - 한 번에 하나의 개념 | 전체 Python 스크립팅, 플러그인, API 호출 |
+| [grandma-mode](../../docs/GettingStarted.i18n/GettingStarted-kolang.md#the-oma-modus-beginner-shortcut) : 단어만 쓰면, Aura가 나머지를 처리합니다 | 코안으로 배우기 — 한 번에 한 개념씩 | 전체 Python 스크립팅, 플러그인, API 호출 |
 | 🗄️ 상태 관리 | Trino + Airflow 오케스트레이션, fzf, CopyQ, 음성/터미널 명령, 브라우저 UI |
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
-⚡ 테스트당 **~2.87 J**(900개 이상의 맵에서 39개 테스트 @ 따뜻한 0.09초 / 차가운 0.50초 🌿 [Eco-CI](https://metrics.green-coding.io/index.html)로 측정) · 클라우드 컴퓨팅 없음
 
-<상세>
+⚡ **테스트당 약 2.87 J** (LanguageTool 없이 800개 이상의 맵에서 39회 테스트, 0.07초 웜 / 0.36초 콜드 🌿 [Eco-CI](https://metrics.green-coding.io/index.html)로 측정) · 클라우드 컴퓨팅 없음
+
+[![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=350653175)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=350653175)
+
+⚡ **전체 테스트 스위트:** 94개의 테스트, LanguageTool과 함께 800개 이상의 맵에서 @ 0.07초 워밍업 / 0.46초 콜드 · 클라우드 컴퓨팅 없음
+
+<details>
 <summary>빠른 시작</summary>
 
 ## 빠른 시작
-1. 이 저장소를 다운로드하거나 복제하세요.
-2. OS에 대한 설정 스크립트를 실행합니다(`setup/` 폴더 참조).
-- 리눅스(Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
-===> 🧩 [docs/LINUX_WAYLAND_dotool](../../docs/LINUX_WAYLAND_dotool.i18n/LINUX_WAYLAND_dotool-kolang.md) 읽기
-- 리눅스(우분투/데비안): `bash setup/ubuntu_setup.sh`
-- Linux(openSUSE): `bash setup/suse_setup.sh`
-- Linux(NixOS): `nix-shell setup/shell.nix` 다음 `bash setup/nixos_setup.sh`
-===> ⚠️ 실험적 — 작성자의 테스트를 거치지 않았으며 피드백을 환영합니다! XSPACEbreakX
-- macOS: `bash setup/macos_setup.sh`
-- 윈도우: `setup/windows11_setup_with_ahk_copyq.bat`
-3. Aura 시작: `./scripts/restart_venv_and_run-server.sh`
-4. 단축키를 누르고 말하세요 — **[full guide →](../../docs/GettingStarted.i18n/GettingStarted-kolang.md)**
+
+### 옵션 A: 1-클릭 및 웹 설치 프로그램 (권장)
+
+Linux, macOS 및 Windows용 한 줄 명령어 또는 독립 실행형 설치 프로그램:
+- **[→ Installer Guide & Direct Downloads](../../docs/OneClickInstaller.i18n/OneClickInstaller-kolang.md)**
+
+---
+
+## 옵션 B: 수동 설치 (개발자 / Git)
+
+1. 다운로드 또는 복제 이 저장소
+2. OS의 설정 스크립트를 실행 (`setup/` 폴더 참조):
+   - 리눅스 (Arch/Manjaro): `bash setup/manjaro_arch_setup.sh`
+   - 리눅스 (Ubuntu/Debian): `bash setup/ubuntu_setup.sh`
+   - 리눅스 (openSUSE): `bash setup/suse_setup.sh`
+   - 리눅스 (NixOS): `nix-shell setup/shell.nix` 다음 `bash setup/nixos_setup.sh`
+   ===> ⚠️ 실험 - 저자, 피드백 환영에 의해 테스트!   
+   - 맥 OS: `bash setup/macos_setup.sh`
+   - 윈도우: `setup/windows11_setup_with_ahk_copyq.bat`
+3. 시작 Aura: `./scripts/restart_venv_and_run-server.sh`
+4. 단축키를 누르고 말하기 —**[full guide →](../../docs/GettingStarted.i18n/GettingStarted-kolang.md)**
+
+---
+
+### 제거
+SL5 Aura 배경 서비스, autostart 항목 및 가상 환경을 제거하려면 :
+- ** 리눅스 / macOS:** `bash setup/uninstall.sh`
+- **윈도우(PowerShell):** `powershell -File setup/uninstall.ps1`
+* (`config/maps/`의 사용자 정의 규칙은 `--purge`를 지정하지 않는 한 기본적으로 안전합니다).*
+
+---
 
 
 **⚠️ 시스템 요구 사항 및 호환성**
 
-* **Windows:** ✅ 완전히 지원됩니다(AutoHotkey/PowerShell 사용).
-* **macOS:** ✅ 완전히 지원됩니다(AppleScript 사용).
-* **Linux(X11/Xorg):** ✅ 완전히 지원됩니다.
-* **Linux(Wayland):** ✅ 완전히 지원됩니다(KDE Plasma 6 / Wayland에서 테스트됨).
-* **Linux(CachyOS / Arch 기반 롤링 릴리스):** ✅ 완벽하게 지원됩니다.
-glibc 2.43 호환성으로 인해 mimalloc(`sudo pacman -S mimalloc`)이 필요합니다.
-* **Linux(NixOS):** 🧪 실험적 — 커뮤니티에서 제공한 설정이며 아직 테스트되지 않았습니다.
-시도해보시면 이슈를 공개하거나 결과를 PR해 주세요!  XSPACEbreakX
-* **Linux(Manjaro):** 신규/실험적: 시스템 전체 단축키는 fzf와 유사한 키보드 기반 인터페이스를 열어 데스크탑 어디에서나 Aura 명령을 실행할 수 있습니다(활성 창에서 완전히 분리됨). 이 단축키 기반 실행 프로그램은 현재 Linux(Manjaro)에서 구현 및 테스트되었습니다. 다른 배포판도 작동할 수 있지만 설정이 필요합니다. 👉 [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-kolang.md) XSPACEbreakX에서 확인하세요.
+*   **Windows:** ✅ 완전 지원 (AutoHotkey/PowerShell 사용).
+*   ** macOS:** ✅ 완전 지원 (AppleScript 사용).
+*   ** 리눅스 (X11/Xorg):** ✅ 완전 지원.
+*   **Linux (Wayland) :** ✅ 완전 지원 (KDE Plasma 6 / Wayland 테스트).
+*   **Linux (CachyOS / Arch 기반 롤링 릴리스) : ** ✅ 완전 지원.
+    glibc 2.43 호환성 때문에 mimalloc (`sudo pacman -S mimalloc`)가 필요합니다.
+*   **Linux (NixOS):**   Experimental — 커뮤니티 기여 설정, 아직 테스트되지 않았습니다.
+    당신이 그것을 시도하면, 당신의 발견과 문제 또는 PR을 열어!    
+*   **리눅스 (Manjaro):** 새로운 : 시스템 전체 단축키는 fzf-like, 키보드 구동 인터페이스를 열고 바탕 화면의 어디에서나 Aura 명령을 실행할 수 있습니다. (일반적으로 활성 창에서 분리 됨). 이 단축키 구동 발사기는 현재 리눅스 (Manjaro); 다른 배포에서 구현 및 테스트되었지만 설정이 필요합니다. [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-kolang.md)에 대해서    
 
 
-XSPACEbreakX
-SL5 Aura는 **Vosk**(Speech-to-Text용) 및 **LanguageTool**(문법/스타일용)을 기반으로 구축된 완벽한 **오프라인 음성 어시스턴트**이며, 창의적인 응답과 고급 퍼지 매칭을 위한 **로컬 LLM(Ollama) 대체** 옵션을 제공합니다. 플러그형 규칙 시스템과 동적 스크립팅 엔진을 통해 궁극적인 사용자 정의를 위해 설계된 음성을 정확한 동작과 텍스트로 변환합니다.
-XSPACEbreakX
-번역: 이 문서는 [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n)에도 존재합니다.
+    
+SL5 Aura는**Vosk**(오라마)에 내장된 완전성**(오라마)과 **LanguageTool**(오라마/스타일용)로 구성되어 있습니다. 플러그 가능한 규칙 시스템과 동적 스크립트 엔진을 통해 궁극적 인 사용자 정의를 위해 설계된 정확한 행동과 텍스트로 목소리를 변환합니다.
+    
+번역: 이 문서는 [other languages](https://github.com/sl5net/SL5-aura-service/tree/master/README.i18n)에서도 존재합니다.
 
 
-참고: 많은 텍스트는 원래 영어 문서를 기계로 생성한 번역이며 일반적인 지침으로만 사용됩니다. 불일치나 모호성이 있는 경우에는 항상 영어 버전이 우선합니다. 이 번역을 개선하기 위한 커뮤니티의 도움을 환영합니다!
+참고 : 많은 텍스트는 원래 영어 문서의 기계 생성 된 번역이며 일반적인지도에만 사용됩니다. discrepancies 또는 ambiguities의 경우, 영어 버전은 항상 준비합니다. 우리는이 번역을 개선하기 위해 커뮤니티에서 도움을 환영합니다!
 
-</세부사항>
+</details>
 
-<상세>
-<summary>데모</summary>
+<details>
+<summary>계정 만들기</summary>
 
 ### 📺 터미널 데모
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> **팁:** 더 나은 터미널 경험을 위해서는 [Zsh Integration](../../docs/linux/zsh-integration.i18n/zsh-integration-kolang.md)를 참조하세요.
+> **팁:** 더 나은 터미널 경험을 위해 [Zsh Integration](../../docs/linux/zsh-integration.i18n/zsh-integration-kolang.md)를 참조하세요.
 
 ### 🎥 비디오 튜토리얼
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
 
 *(대체 링크: [skipvids.com](https://skipvids.com/?v=BZCHonTqwUw))*
 
-</세부사항>
+</details>
 
-<상세>
-<summary>주요 기능</summary>
+<details>
+<summary>주요 특징</summary>
 
-## 주요 기능
+## 키 기능
 
-* **오프라인 및 비공개:** 100% 로컬. 어떤 데이터도 귀하의 컴퓨터를 떠나지 않습니다.
-* **동적 스크립팅 엔진:** 텍스트 교체 이상의 기능을 제공합니다. 규칙은 사용자 정의 Python 스크립트(`on_match_exec`)를 실행하여 API 호출(예: Wikipedia 검색), 파일 상호 작용(예: 할 일 목록 관리) 또는 동적 콘텐츠 생성(예: 상황 인식 이메일 인사말)과 같은 고급 작업을 수행할 수 있습니다.
-* **컨텍스트 인식 규칙:** 규칙을 특정 애플리케이션으로 제한합니다. `only_in_windows`를 사용하면 특정 창 제목(예: "터미널", "VS Code" 또는 "브라우저")이 활성화된 경우에만 규칙이 트리거되도록 할 수 있습니다. 이는 크로스 플랫폼(Linux, Windows, macOS)에서 작동합니다.
-* **고도의 제어 변환 엔진:** 구성 중심의 고도로 사용자 정의 가능한 처리 파이프라인을 구현합니다. 규칙 우선순위, 명령 감지 및 텍스트 변환은 순전히 퍼지 맵의 규칙 순서에 따라 결정되며 **코딩이 아닌 구성**이 필요합니다.
-* **보수적인 RAM 사용:** 메모리를 지능적으로 관리하고 여유 RAM이 충분한 경우에만 모델을 사전 로드하여 다른 애플리케이션(예: PC 게임)이 항상 우선순위를 갖도록 합니다.
-* **크로스 플랫폼:** Linux, macOS, Windows에서 작동합니다.
-* **완전 자동화:** 자체 LanguageTool 서버를 관리합니다(그러나 외부 서버도 사용할 수 있습니다).
-* **매우 빠른 속도:** 지능형 캐싱은 즉각적인 "듣기..." 알림과 빠른 처리를 보장합니다.
-* **Trino를 통한 동적 상태 관리:** 인터페이스 인식 구성 엔진
-`음성`, `터미널` 및 `웹`에 대한 설정을 분리합니다.
-다른 사람에게 영향을 미칩니다. 실시간 **관리 대시보드**(포트 8084)가 포함되어 있습니다.
-</세부사항>
+*   ** 오프라인 및 개인 : ** 100 % 로컬. 아무 자료도 당신의 기계를 떠난다.
+*   **Dynamic 스크립트 엔진: ** 텍스트 교체를 넘어갑니다. 규칙은 API를 호출하는 것과 같은 고급 작업을 수행하기 위해 사용자 정의 파이썬 스크립트 (`on_match_exec`)를 실행할 수 있습니다 (예를 들어, 파일과 상호 작용 (예를 들어, to-do 목록을 관리), 또는 동적 콘텐츠 생성 (예를들면, 컨텍스트 인식 이메일 인사).
+*   **Context-Aware Rules:** 특정 애플리케이션에 대한 규칙을 제한합니다. `only_in_windows`를 사용하여 특정 창 제목 (예 : "Terminal", "VS Code"또는 "Browser")이 활성화되면 규칙 만 트리거를 보장 할 수 있습니다. Cross-platform(리눅스, 윈도우, macOS)를 사용합니다.
+*  **높은 제어 변환 엔진: ** 구성 구동, 높은 customizable 처리 파이프라인을 구현합니다. 규칙 우선, 명령 감지 및 텍스트 변환은 퓨지 맵의 규칙의 순차적 순서에 의해 순으로 결정됩니다 ** 구성, 코딩하지 않는 **.
+*   ** 보존 RAM 사용 : ** 지능적으로 메모리를 관리, 충분한 무료 RAM을 사용할 수 있다면 사전 로드 모델, 다른 응용 프로그램을 보장 (당신의 PC 게임과 같은) 항상 우선.
+*   ** 크로스 플랫폼: ** Linux, macOS 및 Windows에서 작동합니다.
+*   **Fully Automated:** 자신의 LanguageTool 서버를 관리 (하지만 외부를 사용할 수도 있습니다).
+*   ** 빠른 검색 : ** 지능형 캐싱은 즉각적인 "듣기 ..." 알림 및 빠른 처리를 보장합니다.
+*   ** Trino를 통한 Dynamic State Management: ** Interface-aware 구성 엔진
+    `speech`, `terminal` 및 `web`에 대한 설정 분리 -없이 하나를 변경
+    다른 사람에 영향을 미치는. 실시간 **Admin Dashboard** (포트 8084)를 포함합니다.
+</details>
 
-<상세>
-<summary> 🔌 즉시 사용 가능한 통합</summary>
-XSPACEbreakX
-## 🔌 즉시 사용 가능한 통합
+<details>
+<summary>bool Ready-to-Use 통합</summary>
+    
+## 🔌 바로 사용 가능한 통합
 
-SL5-Aura는 **100개 이상의 사전 구성된 플러그인**으로 구성된 광범위한 에코시스템과 함께 제공됩니다. 다음은 몇 가지 주요 내용입니다.
+SL5-Aura는 **100개 이상의 미리 구성된 플러그인**을 갖춘 방대한 생태계를 제공합니다. 다음은 몇 가지 하이라이트입니다:
 
-### OculiX / SikuliX IDE 음성 제어
-SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지원을 제공합니다. 이 통합을 통해 자동화 코드를 "말"할 수 있습니다.
+### OculiX/SikuliX IDE 음성 제어
+SL5-Aura는 **OculiX** 및 **SikuliX IDE**의 일류 음성 지원을 제공합니다. 이 통합은 자동화 코드를 "speak"할 수 있습니다.
 
-* **Voice-to-Snippet:** "클릭", "대기" 또는 "모두 찾기"라고 말하면 서비스가 즉시 올바른 Python 코드(예: `click("image.png")`)를 IDE에 입력합니다.
-* **창 인식:** 플러그인은 상황에 맞게 작동합니다. OculiX/SikuliX 창에 초점이 맞춰진 경우에만 활성화됩니다.
-* **스마트 영어 지원:** 비원어민 악센트(예: 독일어-영어 음성학)에 특별히 초점을 맞춘 `en-US`에 최적화되어 글로벌 커뮤니티의 높은 인식 정확도를 보장합니다.
-* **확장 가능:** 편집하기 쉬운 `FUZZY_MAP_pre.py` 형식을 사용합니다.
+*   **Voice-to-Snippet: ** "click", "wait", 또는 "find all", 및 서비스는 즉시 올바른 파이썬 코드를 입력합니다 (예 : `click("image.png")`) IDE.
+*   **Window-Aware:** 플러그인은 컨텍스트 감지; OculiX/SikuliX 창이 집중될 때만 활성화합니다.
+*   **Smart English Support:** 비정상적인 악센트(e.g., German-English phonetics)에 특별한 초점과 `en-US`에 최적화되어 글로벌 커뮤니티의 높은 인식 정확도를 보장합니다.
+*   ** 예외:** 쉽게 편집 `FUZZY_MAP_pre.py` 형식을 사용합니다.
 
-> **상태:** OculiX 팀에서 커뮤니티 플러그인으로 인식했습니다([Issue #204](https://github.com/oculix-org/Oculix/issues/204) 참조).
+> ** 서버:** OculiX 팀의 커뮤니티 플러그인으로 인정 ([Issue #204](https://github.com/oculix-org/Oculix/issues/204) 참조).
 
 ### LibreOffice IDE 음성 제어
 
@@ -115,23 +146,26 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 
 ---
 
-</세부사항>
+</details>
 
 
-<상세>
+<details>
 <summary>문서</summary>
 
 ## 문서
 
-모든 모듈과 스크립트를 포함한 전체 기술 참조를 보려면 공식 문서 페이지를 방문하세요. 자동으로 생성되며 항상 최신 상태를 유지합니다.
+🔍 [Interactive Search (Algolia)](https://sl5net.github.io/SL5-aura-service/search_online.html?lang=ko)
 
-👉 [**Go to Documentation sl5net.github.io/SL5-aura-service**](https://sl5net.github.io/SL5-aura-service/)
+모든 모듈과 스크립트를 포함한 완전한 기술 참조를 위해서는 공식 문서 페이지를 방문하십시오. 이 문서는 자동으로 생성되며 항상 최신 상태로 유지됩니다.
 
-### 기능 스포트라이트
-- [Interactive Rule Search & Run](../../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-kolang.md) — 이중 창 `fzf` 규칙 검색, 실시간 컨텍스트 미리보기, `Enter`/`Ctrl+R`을 통한 즉각적인 명령 실행, `Ctrl+E`를 통한 편집기 통합. 글로벌 단축키(`Super+S`)와 음성 명령을 통해 사전 구성된 여러 전용 검색 환경으로 지원됩니다.
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
+
+### 기능 하이라이트
+- [Interactive Rule Search & Run](../../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-kolang.md) — 이중 창 `fzf` 규칙 검색, 실시간 컨텍스트 미리보기, `Enter`/`Ctrl+R`를 통한 즉시 명령 실행, 그리고 `Ctrl+E`를 통한 편집기 통합. 전역 단축키(`Super+S`)와 음성 명령으로 미리 구성된 여러 전용 검색 환경이 지원됩니다.
 
 ### 빌드 상태
-[![Linux Manjaro](https://img.shields.io/badge/Manjaro-Tested-27ae60?style=for-the-badge&logo=manjaro)](https://youtu.be/29xiwIW1ZHQ )
+
+[![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
 [![Linux Suse](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/suse_setup.yml)
 
@@ -139,49 +173,49 @@ SL5-Aura는 **OculiX** 및 **SikuliX IDE**에 대해 최고 수준의 음성 지
 [![Windows 11](https://github.com/sl5net/SL5-aura-service/actions/workflows/win11_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/windows11_setup_bat.yml)
 
 [![OculiX Compatible](https://img.shields.io/badge/OculiX-Compatible-blueviolet?style=for-the-badge&logo=python)](https://github.com/oculix-org/Oculix)
-<div 정렬="왼쪽">
+<div align="left">
 <a href="https://github.com/sl5net/SL5-aura-service/stargazers">
 <img src="https://img.shields.io/github/stars/sl5net/SL5-aura-service?style=social" alt="Stargazers">
 </a>
-<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="라이센스">
+<img src="https://img.shields.io/github/license/sl5net/SL5-aura-service" alt="License">
 <a href="https://sl5net.github.io/SL5-aura-service/">
-<img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="문서">
+<img src="https://img.shields.io/badge/documentation-live-brightgreen" alt="Documentation">
 </a>
 </div>
 
-</세부사항>
+</details>
 
-👉 **다른 언어로 읽어 보세요:**
+👉 **다른 언어로 읽기:**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-kolang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-kolang.md) | [🇪🇸 Español](../README.i18n/README-eslang-kolang.md) | [🇫🇷 Français](../README.i18n/README-frlang-kolang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-kolang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-kolang.md) | [🇰🇷 한국어](../README.i18n/README-kolang.md) | [🇵🇱 Polski](../README.i18n/README-pllang-kolang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-kolang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-kolang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-kolang.md)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ---
 
-<상세>
+<details>
 <summary>설치</summary>
 
 ## 설치
 
-### 🎥 조정 없이 빠른 설치 (만자로/아치 영상)
-전체 6분 설정 과정을 시청하세요:
-* **다운로드:** ~3분
-* **설정 및 첫 시작:** ~3분(환영 마법사 포함)
+### 😀 빠른 설치 모드없이 (Manjaro/Arch 비디오)
+가득 차있는 6 분 체제 과정을 보십시오:
+* ** 다운로드:** ~3 분
+* ** 설정 및 첫 시작:** ~3 분 (웰컴 마법사 포함)
 
 👉 **[SL5 Aura Installation Live-Demo on YouTube](https://www.youtube.com/watch?v=29xiwIW1ZHQ)**
 
 
-설정은 2단계 프로세스로 이루어집니다.
-1. 최신 릴리스 또는 마스터( https://github.com/sl5net/SL5-aura-service/archive/master.zip )를 다운로드하거나 이 저장소를 컴퓨터에 복제하십시오.
-2. 운영 체제에 대한 일회성 설정 스크립트를 실행합니다.
+설정은 두 단계 과정입니다:
+1.  최신 릴리스 또는 마스터 다운로드 ( https://github.com/sl5net/SL5-aura-service/archive/master.zip ) 또는 컴퓨터에 저장소 복제.
+2.  운영 체제의 한 번 설정 스크립트를 실행합니다.
 
-설정 스크립트는 시스템 종속성, Python 환경, 최대 속도를 위해 GitHub 릴리스에서 직접 필요한 모델 및 도구(~4GB) 다운로드 등 모든 것을 처리합니다.
+설정 스크립트는 모든 것을 처리합니다: 시스템 의존성, Python 환경, 그리고 필요한 모델과 도구를 다운로드 (~4GB)는 GitHub 릴리스에서 최고 속도.
 
 
-#### Linux, macOS 및 Windows용(선택적 언어 제외 포함)
+#### 리눅스, macOS, 및 윈도우용 (선택적 언어 제외 포함)
 
-디스크 공간과 대역폭을 절약하기 위해 설정 중에 특정 언어 모델(`de`, `en`) 또는 모든 선택적 모델(`all`)을 제외할 수 있습니다. **핵심 구성요소(LanguageTool,lid.176)는 항상 포함됩니다.**
+디스크 공간과 대역폭을 절약하기 위해 설치 과정에서 특정 언어 모델(`de`, `en`)이나 모든 선택적 모델(`all`)을 제외할 수 있습니다. **핵심 구성 요소(LanguageTool, lid.176)는 항상 포함됩니다.**
 
-프로젝트의 루트 디렉터리에서 터미널을 열고 시스템에 대한 스크립트를 실행합니다.
+프로젝트의 루트 디렉터리에서 터미널을 열고 시스템에 맞는 스크립트를 실행하세요:
 
 ```bash
 # For Ubuntu/Debian, Manjaro/Arch, macOS, or other derivatives
@@ -192,7 +226,7 @@ bash setup/{your-os}_setup.sh [OPTION]
 # For Arch-based systems (Manjaro, CachyOS, EndeavourOS, etc.):
 `bash setup/manjaro_arch_setup.sh`
 
-`sudo pacman -S mimalloc`
+```sudo pacman -S mimalloc```
 
 
 # Examples:
@@ -223,25 +257,25 @@ setup/windows11_setup.ps1 -Exclude [OPTION]
 windows11_setup.bat -Exclude "en"
 ```
 
-#### 윈도우의 경우
+Windows를 위한 ####
 관리자 권한으로 설정 스크립트를 실행합니다.
 
-**읽고 실행하려면 [CopyQ](https://github.com/hluk/CopyQ) 또는 [AutoHotkey v2](https://www.autohotkey.com/)와 같은 도구를 설치하세요**. 이는 텍스트 입력 감시자에게 필요합니다.
+** 읽기 및 실행 도구, 예를 들어, [CopyQ](https://github.com/hluk/CopyQ) 또는 [AutoHotkey v2](https://www.autohotkey.com/)**. 이것은 text-typing watcher에 필요합니다.
 
-설치는 완전 자동화되어 있으며 새 시스템에서 2개 모델을 사용할 경우 약 **8~10분** 정도 소요됩니다.
+설치는 완전히 자동화되고 약 걸립니다 ** 8-10 분 ** 신선한 시스템에 2 개의 모델을 사용할 때.
 
 1. `setup` 폴더로 이동합니다.
-2. **`windows11_setup_with_ahk_copyq.bat`**를 두 번 클릭합니다.
-* *스크립트는 관리자 권한을 묻는 메시지를 자동으로 표시합니다.*
-* *핵심 시스템, 언어 모델, **AutoHotkey v2** 및 **CopyQ**를 설치합니다.*
-3. 설치가 완료되면 **Aura Dictation**이 자동으로 실행됩니다.
+2. **`windows11_setup_with_ahk_copyq.bat`**에서 더블 클릭.
+   * *이 스크립트는 Administrator 특권에 대해 자동으로 프롬프트합니다.*
+   * *Core System, Language Models, **AutoHotkey v2** 및 **CopyQ**.*를 설치합니다.
+3. 설치가 완료되면 **Aura Dictation**가 자동으로 시작됩니다.
 
-> **참고:** Python이나 Git을 미리 설치할 필요는 없습니다. 스크립트가 모든 것을 처리합니다.
+> **주의:** Python 또는 Git beforehand를 설치할 필요가 없습니다. 스크립트는 모든 것을 처리합니다.
 
 ---
 
-#### 고급/사용자 정의 설치
-클라이언트 도구(AHK/CopyQ)를 설치하지 않거나 특정 언어를 제외하여 디스크 공간을 절약하려는 경우 명령줄을 통해 핵심 스크립트를 실행할 수 있습니다.
+#### 고급 / 사용자 지정 설치
+클라이언트 도구(AHK/CopyQ)를 설치하지 않거나 특정 언어를 제외하여 디스크 공간을 절약하고 싶다면, 명령줄을 통해 핵심 스크립트를 실행할 수 있습니다:
 
 ```powershell
 # Core Setup only (No AHK, No CopyQ)
@@ -256,42 +290,42 @@ setup/windows11_setup_with_ahk_copyq.bat -Exclude "de,en"
 ```
 
 ---
-</세부사항>
+</details>
 
 
-<상세>
-<summary>사용</summary>
+<details>
+<summary>사용법</summary>
 
-## 용법
+## 사용법
 
-### 1. 서비스 시작
+### 1. 서비스를 시작합니다
 
-#### Linux 및 macOS의 경우
-단일 스크립트가 모든 것을 처리합니다. 기본 받아쓰기 서비스와 파일 감시자가 백그라운드에서 자동으로 시작됩니다.
+#### 리눅스 및 macOS에서
+하나의 스크립트가 모든 것을 처리합니다. 메인 받아쓰기 서비스와 파일 감시기를 자동으로 백그라운드에서 시작합니다.
 ```bash
 # Run this from the project's root directory
 ./scripts/restart_venv_and_run-server.sh
 ```
 
-#### 윈도우즈의 경우
-서비스 시작은 **2단계 수동 프로세스**로 이루어집니다.
+#### 윈도우에서
+서비스 시작은 **두 단계의 수동 과정**입니다:
 
-1. **메인 서비스 시작:** `start_aura.bat`를 실행합니다. 또는 `python3`을 사용하여 `.venv`에서 서비스를 시작합니다.
+1.  **주요 서비스 시작:** `start_aura.bat`를 실행하거나 `.venv`에서 `python3`로 서비스를 시작하세요
 
-### 2. 단축키 구성
+### 2. 단축키 설정
 
-받아쓰기를 실행하려면 특정 파일을 생성하는 전역 단축키가 필요합니다. 크로스 플랫폼 도구 [CopyQ](https://github.com/hluk/CopyQ)를 적극 권장합니다.
+음성 입력을 트리거하려면 특정 파일을 생성하는 전역 단축키가 필요합니다. 우리는 크로스 플랫폼 도구 [CopyQ](https://github.com/hluk/CopyQ)를 강력히 추천합니다.
 
 #### 우리의 추천: CopyQ
 
-전역 단축키를 사용하여 CopyQ에서 새 명령을 만듭니다.
+글로벌 단축키로 CopyQ에 새 명령을 만드세요.
 
-**Linux/macOS용 명령:**
+**리눅스/macOS용 명령어:**
 ```bash
 touch /tmp/sl5_record.trigger
 ```
 
-**[CopyQ](https://github.com/hluk/CopyQ) 사용 시 Windows용 명령:**
+**[CopyQ](https://github.com/hluk/CopyQ)를 사용할 때 Windows용 명령어:**
 ```js
 copyq:
 var filePath = 'c:/tmp/sl5_record.trigger';
@@ -310,15 +344,15 @@ if (f.openAppend()) {
 ```
 
 
-**[AutoHotkey](https://AutoHotkey.com) 사용 시 Windows용 명령:**
+**[AutoHotkey](https://AutoHotkey.com)를 사용할 때 Windows용 명령:**
 ```sh
 ; trigger-hotkeys.ahk
-; AutoHotkey v2 Skript
-#SingleInstance Force ; Stellt sicher, dass nur eine Instanz des Skripts läuft
+; AutoHotkey v2 script
+#SingleInstance Force ; Ensures only one instance of the script runs
 
 ;===================================================================
-; Hotkey zum Auslösen des Aura Triggers
-; Drücke Strg + Alt + T, um die Trigger-Datei zu schreiben.
+; Hotkey to trigger Aura
+; Press Ctrl + Alt + T to write the trigger file.
 ;===================================================================
 f9::
 f10::
@@ -326,257 +360,256 @@ f11::
 {
     local TriggerFile := "c:\tmp\sl5_record.trigger"
     FileAppend("t", TriggerFile)
-    ToolTip("Aura Trigger ausgelöst!")
+    ToolTip("Aura Trigger activated!")
     SetTimer(() => ToolTip(), -1500)
 }
 ```
 
 
 ### 3. 받아쓰기를 시작하세요!
-텍스트 필드를 클릭하고 단축키를 누르면 "듣기..." 알림이 나타납니다. 명확하게 말한 다음 잠시 멈추십시오. 수정된 텍스트가 자동으로 입력됩니다.
+텍스트 입력란을 클릭하고, 단축키를 누르면 '듣는 중...' 알림이 나타납니다. 명확하게 말한 후 잠시 멈추세요. 수정된 텍스트가 자동으로 입력됩니다.
 
-</세부사항>
+</details>
 
 ---
 
 
-<상세>
-<summary>고급 구성(선택 사항)</summary>
+<details>
+<summary>고급 설정 (선택 사항)</summary>
 
-## 고급 구성(선택 사항)
+## (선택) 진보된 윤곽
 
-로컬 설정 파일을 생성하여 애플리케이션의 동작을 사용자 정의할 수 있습니다.
+로컬 설정 파일을 작성하여 응용 프로그램의 행동을 사용자 정의 할 수 있습니다.
 
-1. `config/` 디렉토리로 이동합니다.
-2. `config/settings_local.py_Example.txt`의 복사본을 만들고 이름을 `config/settings_local.py`로 바꿉니다.
-3. `config/settings_local.py`를 편집합니다(기본 `config/settings.py` 파일의 모든 설정을 재정의합니다).
+1.  `config/` 디렉토리로 이동합니다.
+2.  `config/settings_local.py_Example.txt`의 복사본을 만들고 `config/settings_local.py`로 이름을 변경합니다.
+3.  `config/settings_local.py`를 편집하십시오 (주요 `config/settings.py` 파일에서 어떤 설정을 overrides).
 
-이 `config/settings_local.py` 파일은 Git에서 기본적으로 무시되므로 업데이트로 인해 개인 변경 사항을 덮어쓰지 않습니다.
+이 `config/settings_local.py` 파일은 기본적으로 Git에 의해 무시됩니다, 그래서 귀하의 개인 변경은 업데이트에 의해 과잉되지 않습니다.
 
-### 플러그인 구조 및 로직
+### 플러그인 구조 및 논리
 
-시스템의 모듈성은 플러그인/ 디렉토리를 통한 강력한 확장을 허용합니다.
+시스템의 모듈성은 플러그인 / 디렉토리를 통해 강력한 확장을 허용합니다.
 
-처리 엔진은 **계층적 우선순위 체인**을 엄격하게 준수합니다.
+가공 엔진은 **Hierarchical Priority Chain**에 엄격히 준수합니다.
 
-1. **모듈 로드 순서(높은 우선순위):** 핵심 언어 팩(de-DE, en-US)에서 로드된 규칙은 플러그인/ 디렉터리에서 로드된 규칙(알파벳순으로 마지막으로 로드됨)보다 우선합니다.
-XSPACEbreakX
-2. **파일 내 순서(마이크로 우선순위):** 지정된 맵 파일(FUZZY_MAP_pre.py) 내에서 규칙은 **줄 번호**(위에서 아래로)에 따라 엄격하게 처리됩니다.
-XSPACEbreakX
+1. **Module 선적 순서 (높은 우선권): ** 핵심 언어 팩 (de-DE, en-US)에서 로드된 규칙은 플러그인/ 디렉토리 (마지막 알파벳으로 로드되는)에서 로드된 규칙에 대한 우선 순위를 취합니다.
+    
+2. **In-File Order (Micro Priority): ** 주어진 맵 파일 내 (FUZZY MAP pre.py), 규칙은 **라인 번호** (top-to-bottom)로 엄격히 처리됩니다.
+    
 
-이 아키텍처는 핵심 시스템 규칙이 보호되는 동시에 프로젝트별 또는 상황 인식 규칙(예: CodeIgniter 또는 게임 컨트롤의 규칙)을 플러그인을 통해 우선순위가 낮은 확장으로 쉽게 추가할 수 있도록 보장합니다.
+이 아키텍처는 핵심 시스템 규칙이 보호되고, 프로젝트 별 또는 컨텍스트 인식 규칙 (CodeIgniter 또는 게임 컨트롤과 같은)은 플러그 인을 통해 낮은 선명도 확장으로 쉽게 추가 할 수 있습니다.
 
-</세부사항>
+</details>
 
-<상세>
-<summary>Windows 사용자를 위한 주요 스크립트</summary>
-
-
+<details>
+<summary>Windows 사용자용 키 스크립트</summary>
 
 
 
 
-## Windows 사용자를 위한 주요 스크립트
+
+
+## 윈도우 사용자용 주요 스크립트
 
 다음은 Windows 시스템에서 애플리케이션을 설정, 업데이트 및 실행하는 데 가장 중요한 스크립트 목록입니다.
 
-### 설정 및 업데이트
+### 설치 및 업데이트
 
-* `chmod +x update.sh; ./update.sh`
-* `setup/setup.bat`: 환경의 **초기 일회성 설정**을 위한 기본 스크립트입니다.
-* [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `powershell 실행 -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
+*   `chmod +x update.sh; ./update.sh`
+*   `setup/setup.bat`: 환경의 **초기 일회성 설정**을 위한 주요 스크립트입니다.
+* [or](https://github.com/sl5net/SL5-aura-service/actions/runs/16548962826/job/46800935182) `Run powershell -Command "Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; .\setup\windows11_setup.ps1"`
 
-* `update.bat` : 프로젝트 폴더에서 이를 실행하여 **최신 코드와 종속성을 가져옵니다**.
+*   `update.bat` : 최신 코드와 종속성을 **가져오기 위해** 프로젝트 폴더에서 이것을 실행하세요.
 
 ### 애플리케이션 실행
-* `start_aura.bat`: **받아쓰기 서비스를 시작**하는 기본 스크립트입니다.
+*   `start_aura.bat`: **받아쓰기 서비스를 시작**하는 주요 스크립트입니다.
 
-### 핵심 및 도우미 스크립트
-* `aura_engine.py`: 핵심 Python 서비스(일반적으로 위 스크립트 중 하나에 의해 시작됨).
-* `get_suggestions.py`: 특정 기능을 위한 도우미 스크립트입니다.
+### 핵심 및 보조 스크립트
+*   `aura_engine.py`: 핵심 Python 서비스(보통 위의 스크립트 중 하나로 시작됨).
+*   `get_suggestions.py`: 특정 기능을 위한 도우미 스크립트.
 
-</세부사항>
+</details>
 
 
 
-## 🚀 주요 기능 및 OS 호환성
+## 🚀 주요 기능 및 운영 체제 호환성
 
-<상세>
-<summary>OS 호환성 전설</summary>
+<details>
+<summary>OS 호환성 범례</summary>
 
-OS 호환성 범례:XSPACEbreakX
-* 🐧 **Linux**(예: Arch, Ubuntu)XSPACEbreakX
-* 🍏 **macOS**XSPACEbreakX
-* 🪟 **윈도우**XSPACEbreakX
-* 📱 **Android**(모바일 전용 기능용)  
+운영 체제 호환성 전설:  
+*   🐧 **리눅스** (예: 아치, 우분투)  
+    *   🍏 **macOS**  
+*   🪟 **윈도우**  
+*   📱 **안드로이드** (모바일 전용 기능용)  
 
 ---
 
-</세부사항>
+</details>
 
 
 
+##**Core Speech-to-Text (Aura) 엔진**
+    오프라인 음성 인식 및 오디오 처리를위한 주요 엔진.
 
+    
+<details>
+<summary>Aura 핵심</summary>
 
-### **핵심 음성-텍스트(Aura) 엔진**
-오프라인 음성 인식 및 오디오 처리를 위한 기본 엔진입니다.
-
-XSPACEbreakX
-<상세>
-<summary>오라 코어</summary>
-
-**Aura-Core/** 🐧 🍏 🪟XSPACEbreakX
-├─ `aura_engine.py`(Aura를 조정하는 주요 Python 서비스) 🐧 🍏 🪟  
-├┬ **라이브 핫 리로드**(구성 및 맵) 🐧 🍏 🪟XSPACEbreakX
-│├ **보안된 비공개 지도 로드(무결성 우선)** 🔒 🐧 🍏 🪟XSPACEbreakX
-││ * **워크플로우:** 비밀번호로 보호된 ZIP 아카이브를 로드합니다. XSPACEbreakX
-│├ **텍스트 처리 및 수정/** 언어별로 그룹화됨(예: `de-DE`, `en-US`, ... ) XSPACEbreakX
-│├ 1. `normalize_punkation.py` (구두점 표기 표준화) 🐧 🍏 🪟  
-│├ 2. **지능형 사전 수정** (`FuzzyMap Pre` - [The Primary Command Layer](../../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟XSPACEbreakX
-││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트(`on_match_exec`)를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
-││ * **계단식 실행:** 규칙은 순차적으로 처리되며 해당 효과는 **누적**됩니다. 이후 규칙은 이전 규칙에 의해 수정된 텍스트에 적용됩니다.  
-││ * **가장 높은 우선순위 중지 기준:** 규칙이 **완전 일치**(^...$)를 달성하면 해당 토큰에 대한 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 안정적인 음성 명령을 구현하는 데 중요합니다.  
-│├ 3. `corright_text_by_언어tool.py` (문법/스타일 교정을 위한 LanguageTool 통합) 🐧 🍏 🪟  
-│├ **4. Ollama AI 폴백을 사용한 계층적 RegEx-Rule-Engine** 🐧 🍏 🪟XSPACEbreakX
-││ * **결정론적 제어:** 정확하고 우선순위가 높은 명령 및 텍스트 제어를 위해 RegEx-Rule-Engine을 사용합니다.  
-│├ **벡터 검색 플러그인**(지연 로딩): 로컬 벡터 임베딩을 Ollama/LLM 폴백 레이어와 연결하여 의미 체계 검색을 활성화합니다. 🐧  
-││ * **Ollama AI(로컬 LLM) 폴백:** 결정적 규칙이 충족되지 않는 경우 **창의적인 답변, Q&A 및 고급 퍼지 매칭**에 대한 선택적이고 우선순위가 낮은 검사 역할을 합니다.  
-││ * **상태:** 로컬 LLM 통합.
-│└ 5. **지능형 사후 수정**(`FuzzyMap`)**– LT 이후 개선** 🐧 🍏 🪟XSPACEbreakX
-││ * LT 관련 출력을 수정하기 위해 LanguageTool 다음에 적용됩니다. 사전 수정 레이어와 동일한 엄격한 계단식 우선순위 논리를 따릅니다.  
-││ * **동적 스크립트 실행:** 규칙은 사용자 정의 Python 스크립트([on_match_exec](../../docs/advanced-scripting.i18n/advanced-scripting-kolang.md))를 트리거하여 API 호출, 파일 I/O와 같은 고급 작업을 수행하거나 동적 응답을 생성할 수 있습니다.  
-││ * **퍼지 폴백:** **퍼지 유사성 검사**(임계값(예: 85%)으로 제어됨)은 우선순위가 가장 낮은 오류 수정 레이어 역할을 합니다. 이전의 전체 결정적/계단식 규칙 실행이 일치 항목을 찾지 못한 경우에만 실행되며(current_rule_matched는 False임) 가능할 때마다 느린 퍼지 검사를 피하여 성능을 최적화합니다.  
-├┬ **모델 관리/** XSPACEbreakX
-│├─ `prioritize_model.py` (사용에 따라 모델 로드/언로드 최적화) 🐧 🍏 🪟  
+** 아우라 코어 / ** 🐧 🍏 🪟  
+├─ `aura_engine.py` (주요 파이썬 서비스 오케스트라 아우라) 🐧 🍏 🪟  
+├┬ **리브 핫로드 ** (Config & Maps) 🐧 🍏 🪟  
+│├ **Secure 개인지도 로딩 (Integrity-First)** 🔒  🐧 🍏 🪟  
+││ * ** 워크플로우:** 비밀번호 보호 ZIP 아카이브를로드합니다.   
+│├ ** 텍스트 처리 및 수정 ** 언어에 의해 그룹화 (예 : `de-DE`, `en-US`, ... )   
+│├ 1. `normalize_punctuation.py` (표준화 후문) 🐧 🍏 🪟  
+│├ 2. **Intelligent Pre-Correction** (`FuzzyMap Pre` - [The Primary Command Layer](../../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-kolang.md)) 🐧 🍏 🪟  
+││ * **Dynamic 스크립트 실행:** 규칙은 API 호출, 파일 I/O와 같은 고급 작업을 수행하기 위해 Python 스크립트 (`on_match_exec`)를 트리거하거나 동적 응답을 생성합니다.  
+││ * **Cascading 실행:** 규칙은 순차적으로 처리되고 그들의 효력은 **cumulative **입니다. 나중에 규칙은 이전 규칙에 의해 수정 된 텍스트에 적용됩니다.  
+││ * **Highest Priority Stop Criterion:** 규칙이 **Full Match** (^...$)를 달성하면 토큰의 전체 처리 파이프라인이 즉시 중지됩니다. 이 메커니즘은 신뢰할 수있는 음성 명령을 구현하는 데 중요합니다.  
+│├ 3. `correct_text_by_languagetool.py` (문자 / 스타일 보정을위한 언어 도구 통합) 🐧 🍏 🪟  
+│├ **4. Ollama AI Fallback을 가진 Hierarchical RegEx-Rule-Engine ** 🐧 🍏 🪟  
+││ * **Deterministic Control:** 정확한, 높은 선명한 명령 및 텍스트 제어를 위한 RegEx-Rule-Engine을 사용합니다.  
+│├ **Vector-Search Plugin** (라지 로딩): Ollama/LLM fallback layer와 로컬 Vector embeddings를 연결하여 Semantic Search를 활성화 🐧  
+││ * **올라마 AI (Local LLM) Fallback:** **creative Answer, Q&A 및 고급 Fuzzy Matching**에 대한 선택적, 낮은 선명도 검사로 제공.  
+││ * **Status:** 로컬 LLM 통합.
+│└ 5. **Intelligent Post-Correction** (`FuzzyMap`)**– 포스트-LT Refinement** 🐧 🍏 🪟  
+││ * LanguageTool가 LT-specific output을 수정한 후 적용됨. Pre-Correction 레이어와 동일한 엄격한 캐스케이드 우선 논리를 따릅니다.  
+││ * **Dynamic 스크립트 실행:** 규칙은 API 호출, 파일 I/O와 같은 고급 작업을 수행하기 위해 Python 스크립트 ([on_match_exec](../../docs/advanced-scripting.i18n/advanced-scripting-kolang.md))를 트리거하거나 동적 응답을 생성합니다.  
+││ * **Fuzzy Fallback: ** **Fuzzy similarity Check** (계값에 의해 제어, 예를 들어, 85 %)는 가장 낮은 우선 오류 방지 층 역할을합니다. 전신 결정/캐스케이드 규칙이 일치 (current rule  matching is False)를 발견하지 못하는 경우에만 실행됩니다, 가능한 한 느슨한 체크를 피하여 성능 최적화.  
+├┬ **모델 관리/**   
+│├─ `prioritize_model.py` (사용에 따라 모델로드 /로드 최적화) 🐧 🍏 🪟  
 │└─ `setup_initial_model.py` (최초 모델 설정 구성) 🐧 🍏 🪟  
-├─ **적응형 VAD 시간 초과** 🐧 🍏 🪟XSPACEbreakX
-├─ **적응형 단축키(시작/중지)** 🐧 🍏 🪟XSPACEbreakX
-├─ **즉각적인 언어 전환** (모델 사전 로드를 통한 실험) 🐧 🍏 XSPACEbreakX
-├─ **Airflow Orchestration** (DAG 기반 워크플로 자동화) 🐧 🍏 🪟
-│ Docker 필요 · UI: `http://localhost:8081` 🐧 🍏 🪟XSPACEbreakX
-├─ **Trino State Engine** (음성/터미널/웹별 인터페이스 인식 구성) 🐧 🍏 🪟
-└─ Docker 필요 · 관리 UI: `http://localhost:8084` 🐧 🍏 🪟XSPACEbreakX
+├─ ** 적합한 VAD 타임 아웃 ** 🐧 🍏 🪟  
+├─ **Adaptive Hotkey (시작 / 정지) ** 🐧 🍏 🪟  
+├─ ** 즉시 언어 전환 ** (모델 사전 로드를 통해 실험) 🐧 🍏         
+├─ **Airflow Orchestration** (DAG 기반 워크플로우 자동화) 🐧 🍏 🪟
+│   도커 · UI 필요: `http://localhost:8081` 🐧 🍏 🪟  
+├─ **Trino State Engine** (문자/terminal/web 당 인터페이스) 🐧 🍏 🪟
+└─  Docker · Admin UI가 필요합니다. `http://localhost:8084` 🐧 🍏 🪟  
 
-**시스템 유틸리티/** XSPACEbreakX
+**시스템/**   
 ├┬ **LanguageTool 서버 관리/**   
-│├─ `start_언어tool_server.py`(로컬 LanguageTool 서버 초기화) 🐧 🍏 🪟  
-│└─ `stop_언어tool_server.py` (LanguageTool 서버 종료) 🐧 🍏
-├─ `monitor_mic.sh` (예: 키보드와 모니터를 사용하지 않고 헤드셋과 함께 사용) 🐧 🍏 🪟XSPACEbreakX
+│├─ `start_languagetool_server.py` (지역 언어 도구 서버 통합) 🐧 🍏 🪟  
+│└─ `stop_languagetool_server.py` (LanguageTool 서버를 중단) 🐧 🍏 
+├─ `monitor_mic.sh` (e.g. 사용 키보드 및 모니터없이 헤드셋 사용) 🐧 🍏 🪟  
 
-### **모델 및 패키지 관리**XSPACEbreakX
-대규모 언어 모델을 강력하게 처리하기 위한 도구입니다.  
+### **모델 및 패키지 관리**  
+    대형 언어 모델을 안정적으로 다루기 위한 도구.  
 
-**모델 관리/** 🐧 🍏 🪟XSPACEbreakX
-├─ **강력한 모델 다운로더**(GitHub 릴리스 청크) 🐧 🍏 🪟XSPACEbreakX
-├─ `split_and_hash.py`(저장소 소유자가 대용량 파일을 분할하고 체크섬을 생성하는 유틸리티) 🐧 🍏 🪟  
-└─ `download_all_packages.py`(최종 사용자가 여러 부분으로 구성된 파일을 다운로드, 확인 및 재조립할 수 있는 도구) 🐧 🍏 🪟  
+**모델관리/** 🐧 🍏 🪟  
+├─ **강력한 모델 다운로더** (GitHub 릴리스 청크) 🐧 🍏 🪟  
+├─ `split_and_hash.py` (큰 파일을 분할하고 체크섬을 생성하기 위한 저장소 소유자용 유틸리티) 🐧 🍏 🪟  
+└─ `download_all_packages.py` (최종 사용자가 다중 파트 파일을 다운로드, 확인 및 재조립하기 위한 도구) 🐧 🍏 🪟  
 
-</세부사항>
+</details>
 
 
-<상세>
+<details>
 <summary>개발 및 배포 도우미</summary>
 
-### **개발 및 배포 도우미**XSPACEbreakX
-환경 설정, 테스트, 서비스 실행을 위한 스크립트입니다.  
+###**개발 및 배포 지원**  
+    환경 설정, 테스트 및 서비스 실행에 대한 스크립트.  
 
-*팁: glogg를 사용하면 정규식을 사용하여 로그 파일에서 흥미로운 이벤트를 검색할 수 있습니다.*   
-로그 파일과 연결하려면 설치 시 확인란을 선택하세요.  XSPACEbreakX
-https://translate.google.com/translate?hl=en&sl=en&tl=ko&u=https://glogg.bonnefon.org/     
-XSPACEbreakX
-*팁: 정규식 패턴을 정의한 후 `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예제를 자동으로 생성하세요. 자세한 내용은 [Map Maintenance Tools](../../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-kolang.md)를 참조하세요.*
+*Tip: glogg는 로그 파일에서 흥미로운 이벤트를 검색하려면 정규 표현식을 사용할 수 있습니다.*     
+로그 파일과 연관될 때 체크 박스를 확인하십시오.    
+https://glogg.bonnefon.org/ - 한국어     
+    
+*Tip: regex 패턴을 정의한 후, `python3 tools/map_tagger.py`를 실행하여 CLI 도구에 대한 검색 가능한 예를 자동으로 생성합니다. 자세한 내용은 [Map Maintenance Tools](../../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-kolang.md) 참조.*
 
-그런 다음 두 번 클릭해 보세요.
-`로그/aura_engine.log`
-XSPACEbreakX
-**DevHelpers/**XSPACEbreakX
-├┬ **가상 환경 관리/**XSPACEbreakX
-│├ `scripts/restart_venv_and_run-server.sh`(Linux/macOS) 🐧 🍏  
-│└ `scripts/restart_venv_and_run-server.ahk` (Windows) 🪟  
-├┬ **시스템 전체 받아쓰기 통합/**  
-│├ Vosk-시스템-리스너 통합 🐧 🍏 🪟XSPACEbreakX
-│├ `scripts/monitor_mic.sh`(Linux 전용 마이크 모니터링) 🐧  
-│└ `scripts/type_watcher.ahk` (AutoHotkey는 인식된 텍스트를 듣고 시스템 전체에 입력합니다) 🪟  
-└─ **CI/CD 자동화/**XSPACEbreakX
-└─ 확장된 GitHub 워크플로(설치, 테스트, 문서 배포) 🐧 🍏 🪟 *(GitHub Actions에서 실행)*XSPACEbreakX
+그런 다음 두 번 클릭
+`log/aura_engine.log`
+    
+**DevHelpers / **  
+├┬ **가상 환경 관리/**  
+│├ `scripts/restart_venv_and_run-server.sh` (리눅스/macOS) 🐧 🍏  
+│└ `scripts/restart_venv_and_run-server.ahk` (윈도우) 🪟  
+├┬ **시스템 전체 Dictation 통합/**  
+│├ Vosk-System-Listener 통합 🐧 🍏 🪟  
+│├ `scripts/monitor_mic.sh` (리눅스 특정 마이크 모니터링) 🐧  
+│└ `scripts/type_watcher.ahk` (AutoHotkey는 인식 된 텍스트를 듣고 시스템 전체를 입력합니다) 🪟  
+└─ **CI/CD 자동화/**  
+    └─ 확장된 GitHub Workflows (설치, 테스트, 문서 배포) 李俊億  
 
-</세부사항>
+</details>
 
-<상세>
-<summary>실험적 기능</summary>
-XSPACEbreakX
-### **향후/실험적 기능**XSPACEbreakX
-현재 개발 중이거나 초안 상태인 기능입니다.  
+<details>
+<summary>실험 기능</summary>
+    
+###**실행 / 실험 기능**  
+    현재 개발중인 기능 또는 초안 상태.  
 
-**실험적 기능/**XSPACEbreakX
-├─ **ENTER_AFTER_DICTATION_REGEX** 활성화 규칙 예시 "(ExampleAplicationThatNotExist|Pi, 개인 AI)" 🐧  
-├┬플러그인XSPACEbreakX
-│╰┬ **라이브 지연 새로고침** (*) 🐧 🍏 🪟XSPACEbreakX
-(*플러그인 활성화/비활성화에 대한 변경 사항 및 해당 구성은 서비스를 다시 시작하지 않고 다음 처리 실행 시 적용됩니다.*)  
-│ ├ **git 명령** (git 명령 보내기를 위한 음성 제어) 🐧 🍏 🪟  
-│ ├ **wannweil** (독일 Wannweil 위치 지도) 🐧 🍏 🪟XSPACEbreakX
-│ ├ **포커 플러그인(초안)** (포커 애플리케이션용 음성 제어) 🐧 🍏 🪟XSPACEbreakX
-│ └ **0 A.D. 플러그인(초안)** (0 A.D. 게임용 음성 제어) 🐧 XSPACEbreakX
-├─ **세션 시작 또는 종료 시 소리 출력** (설명 보류) 🐧 XSPACEbreakX
-├─ **시각 장애인을 위한 음성 출력** (설명 보류 중) 🐧 🍏 🪟XSPACEbreakX
-└─ **SL5 Aura Android 프로토타입** (아직 완전히 오프라인이 아님) 📱XSPACEbreakX
+**ExperimentalFeatures/ **  
+├─ **ENTER AFTER DICTATION REGEX ** 예제 활성화 규칙 "(ExampleAplicationThatNotExist|Pi, 개인 AI)" 🐧  
+├┬플러그인  
+│**Live Lazy-Reload** (*) 🐧 🍏 🪟  
+(*Changes to Plugin Activation/deactivation, and their configurations, service restart.*없이 다음 처리 실행에 적용됩니다.)  
+│ ├ **git 명령** (git 명령어를 보내는 음성 제어) 🐧 🍏 🪟  
+│ ├ ** Wannweil** (위치 독일-Wannweil 지도) 🐧 🍏 🪟  
+│ ├ **Poker 플러그인 (Draft) ** (포커 애플리케이션의 음성 제어) 🐧 🍏 🪟  
+│ └ **0 A.D. Plugin (Draft)** (0 A.D. 게임용 마우스 컨트롤) 🐧   
+├─ ** 세션 시작 또는 종료시 출력 ** (Description pending) 🐧   
+├─ **Speech는 Visually Impaired에 대한 출력** (Description pending) 🐧 🍏 🪟  
+└─ **SL5 Aura Android Prototype** (전체 오프라인 없음) 📱  
 
 ---
 
-*(참고: Arch(ARL) 또는 Ubuntu(UBT)와 같은 특정 Linux 배포판에는 일반 Linux 🐧 기호가 표시됩니다. 자세한 차이점은 설치 가이드에서 다룰 수 있습니다.)*
-</세부사항>
+* (주: Arch (ARL) 또는 Ubuntu (UBT)와 같은 특정 Linux 배포는 일반 Linux 李俊億 상세 구분은 설치 안내서에 포함될 수 있습니다.)*
+</details>
 
-<상세>
-<summary>이 스크립트 목록을 생성하는 데 사용된 명령을 보려면 클릭하세요.</summary>
+<details>
+<summary>이 스크립트 목록을 생성하기 위해 사용되는 명령을 보려면</summary>
 
 ```bash
 { find . -maxdepth 1 -type f \( -name "aura_engine.py" -o -name "get_suggestions.py" \) ; find . -path "./.venv" -prune -o -path "./.env" -prune -o -path "./backup" -prune -o -path "./LanguageTool-6.6" -prune -o -type f \( -name "*.bat" -o -name "*.ahk" -o -name "*.ps1" \) -print | grep -vE "make.bat|notification_watcher.ahk"; }
 ```
-</세부사항>
+</details>
 
-<상세>
-<summary>아키텍처의 그래픽 개요</summary>
+<details>
+<summary>건축의 그래픽 개요</summary>
 
 ### 아키텍처의 그래픽 개요:
 
 ![yappi_call_graph](../doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png "doc_sources/DeveloperGuide_Generating_ServiceCallGraph/yappi_call_graph_stripped.svg_20251024_010459.png")
 
-XSPACEbreakX
+      
 ![pydeps -v -o dependencies.svg scripts/py/func/main.py](../doc_sources/dependencies.svg)
-</세부사항>
+</details>
 
-<상세>
+<details>
 <summary>사용된 모델</summary>
 
-# 사용 모델:
+## 사용된 모델:
 
-권장 사항: Mirror https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1의 모델을 사용하십시오(아마도 더 빠름).
+권장: Mirror의 모델 사용 https://github.com/sl5net/SL5-aura-service/releases/tag/v0.2.0.1 (아마 더 빠름)
 
-압축된 모델은 'models/' 폴더에 저장해야 합니다.
+이 압축된 모델들은 `models/` 폴더에 저장되어야 합니다
 
-`mv vosk-model-*.zip 모델/`
-
-
-| 모델 | 사이즈 | 단어 오류율/속도 | 메모 | 라이센스 |
-| ------------------------------------------------------------------------- | ---- | -------------------------------------------------------------------------------- | ---------------------------- | ---------- |
-| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69(librispeech 테스트-클린)<br/>6.05(tedlium)<br/>29.78(callcenter) | 정확한 일반 미국 영어 모델 | 아파치 2.0 |
-| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G | 9.83(Tuda-de 테스트)<br/>24.00(팟캐스트)<br/>12.82(cv-테스트)<br/>12.42(mls)<br/>33.26(mtedx) | 전화 통신 및 서버 분야의 대형 독일 모델 | 아파치 2.0 |
-
-이 표에는 크기, 단어 오류율 또는 속도, 참고 사항, 라이센스 정보를 포함하여 다양한 Vosk 모델에 대한 개요가 제공됩니다.
+`mv vosk-model-*.zip models/`
 
 
-- **Vosk 모델:** [Vosk-Model List](https://alphacephei.com/vosk/models)
-- **언어 도구:**XSPACEbreakX
-(6.6) [https://languagetool.org/download/](https://languagetool.org/download/)
+| 모델 | 크기 | 단어 오류율/속도 | 주 | 라이센스 |
+| -------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------- |
+| [vosk-model-en-us-0.22](https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip) | 1.8G | 5.69 (librispeech test-clean)<br/>6.05 (tedlium)<br/>29.78 (callcenter) | 정확한 일반 미국 영어 모델 | 아파치 2.0 |
+| [vosk-model-de-0.21](https://alphacephei.com/vosk/models/vosk-model-de-0.21.zip) | 1.9G | 9.83 (Tuda-de test)<br/>24.00 (podcast)<br/>12.82 (cv-test)<br/>12.42 (ml)<br/>33.26 (mtedx) | 텔레폰 및 서버를위한 큰 독일어 모델 | 아파치 2.0 |
 
-**LanguageTool 라이센스:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+이 표는 크기, 단어 오류율 또는 속도, 참고 사항 및 라이선스 정보를 포함하여 다양한 Vosk 모델에 대한 개요를 제공합니다.
+
+
+- **Vosk-모델:** [Vosk-Model List](https://alphacephei.com/vosk/models)
+- **LanguageTool:**  
+   (6.6) [https://languagetool.org/download/](https://languagetool.org/download/) 
+
+**LanguageTool 라이선스:** [GNU Lesser General Public License (LGPL) v2.1 or later](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
 
 ---
-</세부사항>
+</details>
 
 ## 프로젝트 지원
-이 도구가 유용하다고 생각하시면 커피 한 잔 구입해 보시기 바랍니다! 귀하의 지원은 향후 개선을 촉진하는 데 도움이 됩니다.
+이 도구가 유용하다고 생각되시면, 저희에게 커피 한 잔을 사 주시는 것을 고려해 주세요! 여러분의 지원은 앞으로의 개선에 큰 힘이 됩니다.
 
 [![ko-fi](https://storage.ko-fi.com/cdn/useruploads/C0C445TF6/qrcode.png?v=5151393b-8fbb-4a04-82e2-67fcaea9d5d8?v=2)](https://ko-fi.com/C0C445TF6)
 
 [Stripe-Buy Now](https://buy.stripe.com/3cIdRa1cobPR66P1LP5kk00)
+

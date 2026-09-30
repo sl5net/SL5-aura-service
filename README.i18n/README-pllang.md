@@ -18,7 +18,7 @@ SL5 Aura - Twój głos. Twoje zasady.
 
 124; Beginner 124; Beginner 124; Beginner Deweloper 124;
 |---|---|---|
-[grandma-mode](../docs/GettingStarted.i18n/GettingStarted-pllang.md#the-oma-modus-beginner-shortcut): po prostu napisz słowo, Aura robi resztę Xi124; Ucz się z Koans - jedna koncepcja na raz Xi124; Full Python scripting, plugins, API wzywa Xi124;
+[grandma-mode](../docs/GettingStarted-pllang.md#the-oma-modus-beginner-shortcut): po prostu napisz słowo, Aura robi resztę Xi124; Ucz się z Koans - jedna koncepcja na raz Xi124; Full Python scripting, plugins, API wzywa Xi124;
 Description
 
 [![Energy Consumption](https://api.green-coding.io/v1/ci/badge/get?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)](https://metrics.green-coding.io/ci.html?repo=sl5net/SL5-aura-service&branch=master&workflow=261851628)
@@ -37,7 +37,7 @@ Description
 ### Opcja A: instalacja jednym kliknięciem i siecią (zalecana)
 
 Jednowierszowe polecenie lub samodzielny instalator dla systemów Linux, macOS i Windows:
-- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller.i18n/OneClickInstaller-pllang.md)**
+- **[→ Installer Guide & Direct Downloads](../docs/OneClickInstaller-pllang.md)**
 
 ---
 
@@ -53,7 +53,7 @@ Jednowierszowe polecenie lub samodzielny instalator dla systemów Linux, macOS i
    - MAKOS: `bash setup/macos_setup.sh`
    - Windows: `setup/windows11_setup_with_ahk_copyq.bat`
 3. Start Aura: `./scripts/restart_venv_and_run-server.sh`
-4. Naciśnij swój hotkey i mówić - * * [full guide →](../docs/GettingStarted.i18n/GettingStarted-pllang.md) * *
+4. Naciśnij swój hotkey i mówić - * * [full guide →](../docs/GettingStarted-pllang.md) * *
 
 ---
 
@@ -76,7 +76,7 @@ Wymagania systemowe i zgodność * *
     Wymaga mimalloc (`sudo pacman -S mimalloc`) ze względu na kompatybilność glibc 2.43.
 *   * * Linux (NixOS): * * Independent Experimental - community- contributed setup, jeszcze nie przetestowany.
     Jeśli spróbujesz, proszę otworzyć problem lub PR ze swoimi ustaleniami!    
-*   * * Linux (Manjaro): * * Nowy: Szeroki systemowy hotkey otwiera interfejs fzf- like, keyboard- driven, dzięki czemu można uruchomić polecenia Aura z dowolnego miejsca na pulpicie (całkowicie oddzielone od aktywnego okna). Wyrzutnia ta jest obecnie wdrażana i testowana na Linuksie (Manjaro); Inne dystrybucje mogą działać, ale wymagają ustawienia. Patrz: [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.i18n/CopyQ_Shortcut_Super_s-pllang.md)    
+*   * * Linux (Manjaro): * * Nowy: Szeroki systemowy hotkey otwiera interfejs fzf- like, keyboard- driven, dzięki czemu można uruchomić polecenia Aura z dowolnego miejsca na pulpicie (całkowicie oddzielone od aktywnego okna). Wyrzutnia ta jest obecnie wdrażana i testowana na Linuksie (Manjaro); Inne dystrybucje mogą działać, ale wymagają ustawienia. Patrz: [docs/Feature_Spotlight/CopyQ_Shortcut_Super_s.md](../docs/Feature_Spotlight/CopyQ_Shortcut_Super_s-pllang.md)    
 
 
     
@@ -96,7 +96,7 @@ Uwaga: Wiele tekstów jest generowanych maszynowo tłumaczeń oryginalnej angiel
 
 [![Terminal Demo](https://github.com/sl5net/SL5-aura-service/raw/master/data/demo_fast.gif)](https://github.com/sl5net/SL5-aura-service/blob/master/data/demo_fast.gif)
 
-> * * Tip: * * Aby uzyskać lepsze doświadczenie końcowe, patrz [Zsh Integration](../docs/linux/zsh-integration.i18n/zsh-integration-pllang.md).
+> * * Tip: * * Aby uzyskać lepsze doświadczenie końcowe, patrz [Zsh Integration](../docs/linux/zsh-integration-pllang.md).
 
 Tłumaczenie:
 [![SL5 Aura: HowTo crash SL5 Aura?](https://img.youtube.com/vi/BZCHonTqwUw/0.jpg)](https://www.youtube.com/watch?v=BZCHonTqwUw)
@@ -161,9 +161,9 @@ Aby uzyskać kompletny podręcznik techniczny, obejmujący wszystkie moduły i s
 [🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 # # Feature Spotlights
-- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run.i18n/Interactive_Rule_Search_and_Run-pllang.md) - Dual- pan `fzf` rule search, live context previews, instant command execution via `Enter` / `Ctrl+R`, and editor integration via `Ctrl+E`. Obsługiwane przez globalny hotkey (`Super+S`) i wiele dedykowanych środowisk wyszukiwania skonfigurowanych za pomocą komend głosowych.
+- [Interactive Rule Search & Run](../docs/Feature_Spotlight/Interactive_Rule_Search_and_Run-pllang.md) - Dual- pan `fzf` rule search, live context previews, instant command execution via `Enter` / `Ctrl+R`, and editor integration via `Ctrl+E`. Obsługiwane przez globalny hotkey (`Super+S`) i wiele dedykowanych środowisk wyszukiwania skonfigurowanych za pomocą komend głosowych.
 
-* * Build status *
+### Status kompilacji
 
 [![Linux Manjaro](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/manjaro_setup.yml)
 [![Linux Ubuntu](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml/badge.svg)](https://github.com/sl5net/SL5-aura-service/actions/workflows/ubuntu_setup.yml)
@@ -185,9 +185,9 @@ Aby uzyskać kompletny podręcznik techniczny, obejmujący wszystkie moduły i s
 
 </details>
 
-Przeczytaj to w innych językach:
+👉 **Przeczytaj to w innych językach:**
 
-[🇬🇧 English](../README.md) | [🇸🇦 العربية](../README.i18n/README-arlang-pllang.md) | [🇩🇪 Deutsch](../README.i18n/README-delang-pllang.md) | [🇪🇸 Español](../README.i18n/README-eslang-pllang.md) | [🇫🇷 Français](../README.i18n/README-frlang-pllang.md) | [🇮🇳 हिन्दी](../README.i18n/README-hilang-pllang.md) | [🇯🇵 日本語](../README.i18n/README-jalang-pllang.md) | [🇰🇷 한국어](../README.i18n/README-kolang-pllang.md) | [🇵🇱 Polski](../README.i18n/README-pllang.md) | [🇵🇹 Português](../README.i18n/README-ptlang-pllang.md) | [🇧🇷 Português Brasil](../README.i18n/README-pt-BRlang-pllang.md) | [🇨🇳 简体中文](../README.i18n/README-zh-CNlang-pllang.md)
+[🇬🇧 English](https://sl5net.github.io/SL5-aura-service/README.html) | [🇸🇦 العربية](https://sl5net.github.io/SL5-aura-service/README.i18n/README-arlang.html) | [🇩🇪 Deutsch](https://sl5net.github.io/SL5-aura-service/README.i18n/README-delang.html) | [🇪🇸 Español](https://sl5net.github.io/SL5-aura-service/README.i18n/README-eslang.html) | [🇫🇷 Français](https://sl5net.github.io/SL5-aura-service/README.i18n/README-frlang.html) | [🇮🇳 हिन्दी](https://sl5net.github.io/SL5-aura-service/README.i18n/README-hilang.html) | [🇯🇵 日本語](https://sl5net.github.io/SL5-aura-service/README.i18n/README-jalang.html) | [🇰🇷 한국어](https://sl5net.github.io/SL5-aura-service/README.i18n/README-kolang.html) | [🇵🇱 Polski](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pllang.html) | [🇵🇹 Português](https://sl5net.github.io/SL5-aura-service/README.i18n/README-ptlang.html) | [🇧🇷 Português Brasil](https://sl5net.github.io/SL5-aura-service/README.i18n/README-pt-BRlang.html) | [🇨🇳 简体中文](https://sl5net.github.io/SL5-aura-service/README.i18n/README-zh-CNlang.html)
 
 ---
 
@@ -464,7 +464,7 @@ Legenda dla zgodności z systemem operacyjnym:
 ││ * * * Workflow * * Wczytuje archiwa ZIP chronione hasłem.   
 │├ * * Text Processing & Correction / * * Grupowana według języka (np. `de-DE`, `en-US`,...)   
 │├ 1. `normalize_punctuation.py` (Standaryzuje interpunkcję po transkrypcji) 🐧 🍏 🪟  
-│├ 2. * * Inteligentna korekta wstępna * * (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules.i18n/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟  
+│├ 2. * * Inteligentna korekta wstępna * * (`FuzzyMap Pre` - [The Primary Command Layer](../docs/CreatingNewPluginModules-pllang.md)) 🐧 🍏 🪟  
 ││ * * * Dynamic Script Execution: Rules może uruchomić własne skrypty Python (`on_match_exec`) do wykonywania zaawansowanych działań, takich jak wywołania API, plik I / O lub generowanie odpowiedzi dynamicznych.  
 ││ * * * Cascading Execution: * * Zasady są przetwarzane kolejno, a ich skutki są * * skumulowane * *. Późniejsze zasady mają zastosowanie do tekstu zmienionego przez wcześniejsze zasady.  
 ││ * * * Najwyższe kryterium Priority Stop: * * Jeśli reguła osiąga * * Full Match * * (^... $), cały rurociąg przetwarzania dla tego tokena zatrzymuje się natychmiast. Mechanizm ten ma kluczowe znaczenie dla wdrażania niezawodnych poleceń głosowych.  
@@ -476,7 +476,7 @@ Legenda dla zgodności z systemem operacyjnym:
 ││ * * * Status: * * Lokalna integracja LLM.
 │└ 5. * * Intelligent Post- Correction * * (`FuzzyMap`) * * - Post- LT Refinement * * 🐧 🍏 🪟  
 ││ * Stosowany po LanguageTool w celu skorygowania specyficznych wyjść LT. Śledzi taką samą ścisłą logikę kaskadowania jak warstwa przed korekcją.  
-││ * * Dynamic Script Execution: Rules może uruchomić własne skrypty Python ([on_match_exec](../docs/advanced-scripting.i18n/advanced-scripting-pllang.md)) do wykonywania zaawansowanych działań, takich jak wywołania API, plik I / O, lub generowanie odpowiedzi dynamicznych.  
+││ * * Dynamic Script Execution: Rules może uruchomić własne skrypty Python ([on_match_exec](../docs/advanced-scripting-pllang.md)) do wykonywania zaawansowanych działań, takich jak wywołania API, plik I / O, lub generowanie odpowiedzi dynamicznych.  
 ││ * * * Fuzzy Fallback * * * * FUZY SUPLIarity Check * * (kontrolowany przez próg, np. 85%) działa jako najniższa warstwa błędu priorytetowego. Jest on wykonywany tylko wtedy, gdy cała poprzednia reguła determinaristic / cascading nie uda się znaleźć dopasowania (obecna reguła dopasowana jest fałszywa), optymalizując wydajność poprzez unikanie powolnych, rozmytych kontroli w miarę możliwości.  
 ├┬ * * Model Management / * *   
 │├─ `prioritize_model.py` (optymalizuje model załadunku / rozładunku w zależności od zastosowania) 🐧 🍏 🪟  
@@ -516,7 +516,7 @@ Legenda dla zgodności z systemem operacyjnym:
 Proszę zaznaczyć pole wyboru podczas instalacji, aby powiązać je z plikami dziennika.    
 https: / / glogg.bonnefon.org /     
     
-Wskazówka: Po zdefiniowaniu wzorców regex, uruchom `python3 tools/map_tagger.py`, aby automatycznie wygenerować przykłady do przeszukiwania dla narzędzi CLI. Szczegóły znajdują się w [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools.i18n/Map_Maintenance_Tools-pllang.md). *
+Wskazówka: Po zdefiniowaniu wzorców regex, uruchom `python3 tools/map_tagger.py`, aby automatycznie wygenerować przykłady do przeszukiwania dla narzędzi CLI. Szczegóły znajdują się w [Map Maintenance Tools](../docs/Developer_Guide/Map_Maintenance_Tools-pllang.md). *
 
 To może podwójne kliknięcie
 `log/aura_engine.log`
