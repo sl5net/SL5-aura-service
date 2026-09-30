@@ -1,0 +1,9 @@
+#!/bin/sh
+# Strip the leading comment char from staged file lines in the commit nothing else. must works in all languges de/en/fr end more. dont change anything else
+case "$2" in
+  ""|template) ;;
+  *) exit 0 ;;
+esac
+
+# GNU/Linux (GNU sed)
+sed -i '/^# .*[^ ]/,/^#$/ { /^#[[:space:]]/ s/^#[[:space:]]\+// }' "$1"
